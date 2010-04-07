@@ -50,7 +50,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 SHELL = /bin/sh
 #
 MAKEINFO = LC_ALL=C LANG=en makeinfo
-MAKEHTML = $(MAKEINFO) --html --no-split
+MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css
 ##                            ^^^^^^^^^^ today's bandwidth is fast
 #MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
@@ -79,7 +79,7 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 ESSDIR=ess-$(ESSVERSION)
 ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-GNUTAR=tar
+GNUTAR=gtar
 SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
