@@ -927,7 +927,8 @@ of the expression are preserved."
 ;;;*;;; Support functions for indentation
 
 (defun ess-comment-indent ()
-  (if (looking-at "###")
+  (if (or (looking-at "###")
+      (and (looking-at "#!") (= 1 (line-number-at-pos))))
       (current-column)
     (if (looking-at "##")
 	(let ((tem (ess-calculate-indent)))

@@ -1,5 +1,11 @@
 @itemize @w{}
 
+Changes/New Features in 5.9:
+@itemize @bullet
+@item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
+ thanks to Jeffrey Arnold.
+@end itemize
+
 Changes/New Features in 5.8:
 @itemize @bullet
 @item @ESS{[R]}: New ess-rutils.el with utilities for listing, loading,

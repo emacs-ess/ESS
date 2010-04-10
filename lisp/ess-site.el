@@ -259,6 +259,14 @@ between .s or .S files and assembly mode.
           )
 	 auto-mode-alist)))
 
+;; Rscript and littler interpreters recognized
+(setq interpreter-mode-alist
+      (append
+       '(("Rscript" . r-mode)
+	 ("r"       . r-mode)
+	 )
+       interpreter-mode-alist))
+
 ;; (1.4) Customize the dialects for your setup.
 
 ;;; AS OF ESS 5.1.14, if you are using Emacs 20.x, x>3, or XEmacs

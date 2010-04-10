@@ -1,3 +1,10 @@
+2010-04-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (S-indent-line): also consider '#!'; using patch
+	from Jeffrey Arnold
+	* ess-site.el (interpreter-mode-alist): ditto
+	* ess-mode.el (ess-comment-indent): ditto
+
 2010-03-25  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-roxy.el (ess-roxy-get-function-args): also remove tabs
