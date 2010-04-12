@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Tue Feb 16 18:27:56 2010 (UTC)
+;; Last-Updated: Sun Apr 11 18:34:06 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -39,15 +39,15 @@
 ;; Acknowledgements:
 ;;
 ;; I am grateful to John Fox for having written his init.el file for
-;; XEmacs, which motivated this Emacs alternative. I wanted to add some
+;; XEmacs, which motivated this Emacs alternative.  I wanted to add some
 ;; object management comforts and came across Stephen Eglen's
 ;; ess-rdired.el, which provides a lot of these. ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
 ;; ------------------------------------------------------------------------
 ;;; Code:
 
-;; autoloads and requires. What else should be 'required' here?
-(autoload 'ess-rdired "ess-rdired" "View *R* objects in a dired-like buffer." t)
+;; ;; autoloads and requires. What else should be 'required' here?
+;; (autoload 'ess-rdired "ess-rdired" "View *R* objects in a dired-like buffer." t)
 (require 'ess-site)
 
 (defvar ess-rutils-buf "*R temp*"
@@ -275,26 +275,32 @@ File extension not required."
   (ess-switch-to-end-of-ESS)
   (kill-buffer ess-rutils-buf))
 
-(defun ess-rutils-htmldocs ()
-  "Use w3m to navigate R html documentation.
+(defun ess-rutils-htmldocs (&optional remote)
+  "Use `browse-url' to navigate R html documentation.
 Documentation is produced by a modified help.start(), that returns the URL
-produced by GNU R's http server.  This function must be available in the workspace."
+produced by GNU R's http server.  This function must be available in the
+workspace.  If called with a prefix, the modified help.start() is called
+with update=TRUE.  The optional REMOTE argument should be a string with a
+valid URL for the 'R_HOME' directory on a remote server (defaults to NULL)."
   (interactive)
-  (let ((rhtml ".rutils.help.start()\n")
-	(tmpbuf (get-buffer-create "**ess-rutils-mode**")))
+  (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
+	 (remote (if (or (and remote (not (string= "" remote))))
+		     (concat "remote=" remote) "remote=NULL"))
+	 (rhtml (format ".rutils.help.start(%s, %s)\n" update remote))
+	 (tmpbuf (get-buffer-create "**ess-rutils-mode**")))
     (ess-command rhtml tmpbuf)
     (set-buffer tmpbuf)
     (let* ((begurl (search-backward "http://"))
-    	   (endurl (search-forward "index.html"))
-    	   (url (buffer-substring-no-properties begurl endurl)))
-      (w3m-goto-url-new-session url))
+	   (endurl (search-forward "index.html"))
+	   (url (buffer-substring-no-properties begurl endurl)))
+      (browse-url url))
     (kill-buffer tmpbuf)))
 
 (defun ess-rutils-rsitesearch (string)
-  "Search the R archives for STRING, using default criteria.  If called with a prefix,
-options are offered (with completion) for matches per page,
-sections of the archives to search, for displaying results in
-long or short formats, and for sorting by any given field.
+  "Search the R archives for STRING, using default criteria, and show results
+using `browse-url'.  If called with a prefix, options are offered (with
+completion) for matches per page, sections of the archives to search,
+displaying results in long or short formats, and sorting by any given field.
 Options should be separated by value of `crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")

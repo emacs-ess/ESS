@@ -1,3 +1,8 @@
+2010-04-11  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4271 Provided optional argument REMOTE to
+	`ess-rutils-rhtmldocs', fixed doc strings throughout.
+
 2010-04-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-s-l.el (S-indent-line): also consider '#!'; using patch
