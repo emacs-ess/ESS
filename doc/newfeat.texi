@@ -4,6 +4,8 @@ Changes/New Features in 5.9:
 @itemize @bullet
 @item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
  thanks to Jeffrey Arnold.
+@item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
+@item @ESS{[R]}: Roxygen brakes @ESS{} on XEmacs so it is now disabled on XEmacs.
 @end itemize
 
 Changes/New Features in 5.8:
