@@ -483,6 +483,10 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.9:
+        * ESS[R]: Editing support for "#!" (Rscript / littler) editing,
+          thanks to Jeffrey Arnold.
+
      Changes/New Features in 5.8:
         * ESS[R]: New ess-rutils.el with utilities for listing, loading,
           installing, and updating packages, as well as object

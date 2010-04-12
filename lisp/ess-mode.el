@@ -950,25 +950,28 @@ Return the amount the indentation changed by."
 	   (setq indent (current-indentation)))
 	  (t
 	   (skip-chars-forward " \t")
-	   (if (and ess-fancy-comments (looking-at "###"))
-	       (setq indent 0))
-	   (if (and ess-fancy-comments
-		    (looking-at "#")
-		    (not (looking-at "##")))
-	       (setq indent comment-column)
-	     (if (eq indent t) (setq indent 0))
-	     (if (listp indent) (setq indent (car indent)))
-	     (cond ((and (looking-at "else\\b")
-			 (not (looking-at "else\\s_")))
-		    (setq indent (save-excursion
-				   (ess-backward-to-start-of-if)
-				   (+ ess-else-offset (current-indentation)))))
-		   ((= (following-char) ?})
-		    (setq indent
-			  (+ indent
-			     (- ess-close-brace-offset ess-indent-level))))
-		   ((= (following-char) ?{)
-		    (setq indent (+ indent ess-brace-offset)))))))
+	   (cond ((and ess-fancy-comments ;; ### or #!
+		       (or (looking-at "###")
+			   (and (looking-at "#!") (= 1 (line-number-at-pos)))))
+		  (setq indent 0))
+		 ;; Single # comment
+		 ((and ess-fancy-comments
+		       (looking-at "#") (not (looking-at "##")))
+		  (setq indent comment-column))
+		 (t
+		  (if (eq indent t) (setq indent 0))
+		  (if (listp indent) (setq indent (car indent)))
+		  (cond ((and (looking-at "else\\b")
+			      (not (looking-at "else\\s_")))
+			 (setq indent (save-excursion
+					(ess-backward-to-start-of-if)
+					(+ ess-else-offset (current-indentation)))))
+			((= (following-char) ?})
+			 (setq indent
+			       (+ indent
+				  (- ess-close-brace-offset ess-indent-level))))
+			((= (following-char) ?{)
+			 (setq indent (+ indent ess-brace-offset))))))))
     (skip-chars-forward " \t")
     (setq shift-amt (- indent (current-column)))
     (if (zerop shift-amt)
