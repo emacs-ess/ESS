@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Sun Apr 11 18:34:06 2010 (UTC)
+;; Last-Updated: Tue Apr 13 21:45:45 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -19,7 +19,7 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 ;; ------------------------------------------------------------------------
-;; Description and installation:
+;;; Commentary:
 ;;
 ;; This library provides key bindings for performing basic R functions,
 ;; such as loading and managing packages, as well as object manipulation
@@ -41,13 +41,11 @@
 ;; I am grateful to John Fox for having written his init.el file for
 ;; XEmacs, which motivated this Emacs alternative.  I wanted to add some
 ;; object management comforts and came across Stephen Eglen's
-;; ess-rdired.el, which provides a lot of these. ess-rutils.el builds upon
+;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
 ;; ------------------------------------------------------------------------
 ;;; Code:
 
-;; ;; autoloads and requires. What else should be 'required' here?
-;; (autoload 'ess-rdired "ess-rdired" "View *R* objects in a dired-like buffer." t)
 (require 'ess-site)
 
 (defvar ess-rutils-buf "*R temp*"
@@ -55,6 +53,13 @@
 
 (defvar ess-rutils-mode-map nil
   "Keymap for the *R temp* buffer.")
+
+(defvar ess-rutils-rhtml-fn
+  (concat ess-etc-directory
+	  "ess-rutils-help-start.R")
+  "Path to the file defining the R function .rutils.help.start().
+This file is loaded into the inferior R process and is called by
+`ess-rutils-htmldocs'.")
 
 (if ess-rutils-mode-map
     ()
@@ -124,7 +129,7 @@ Useful bindings to handle package loading and installing.
 
 (defun ess-rutils-repospkgs ()
   "List available packages from the repositories as listed by
-  getOptions(\"repos\") in the current R session."
+getOptions(\"repos\") in the current R session."
   (interactive)
   (if (get-buffer ess-rutils-buf)
       (progn
@@ -425,6 +430,10 @@ Options should be separated by value of `crm-default-separator'."
 	  '("Manage objects" . ess-rutils-objs)))))
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
+
+(add-hook 'ess-post-run-hook
+	  (lambda ()
+	    (ess-load-file ess-rutils-rhtml-fn)) t)
 
 
 (provide 'ess-rutils)
