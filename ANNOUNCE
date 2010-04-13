@@ -212,8 +212,19 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
      Changes/New Features in 5.9:
+        * ESSscript editing: ess-eval-deactivate-mark default is now t
+          as suggested by Leo Alekseyev and subsequent "unanimous"
+          ESS-help  discussion.
+
         * ESS[R]: Editing support for "#!" (Rscript / littler) editing,
           thanks to Jeffrey Arnold.
+
+        * ESS Manual now more visually pleasing;
+          `http://ess.r-project.org/Manual/ess.html'
+
+        * ESS[R]: Roxygen on XEmacs no longer font locks for now  (as
+          it required missing features and hence broke ESS startup,
+          there).
 
      Changes/New Features in 5.8:
         * ESS[R]: New ess-rutils.el with utilities for listing, loading,

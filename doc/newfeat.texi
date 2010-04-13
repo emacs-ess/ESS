@@ -2,10 +2,14 @@
 
 Changes/New Features in 5.9:
 @itemize @bullet
+@item @ESS script editing: ess-eval-deactivate-mark default is now t,
+ as suggested by Leo Alekseyev and subsequent ``unanimous'' ESS-help
+ discussion.
 @item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
  thanks to Jeffrey Arnold.
 @item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
-@item @ESS{[R]}: Roxygen brakes @ESS{} on XEmacs so it is now disabled on XEmacs.
+@item @ESS{[R]}: Roxygen on XEmacs no longer font locks for now
+ (as it required missing features and hence broke ESS startup, there).
 @end itemize
 
 Changes/New Features in 5.8:
