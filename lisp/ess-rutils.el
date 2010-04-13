@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Tue Apr 13 21:45:45 2010 (UTC)
+;; Last-Updated: Tue Apr 13 22:51:46 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -55,8 +55,7 @@
   "Keymap for the *R temp* buffer.")
 
 (defvar ess-rutils-rhtml-fn
-  (concat ess-etc-directory
-	  "ess-rutils-help-start.R")
+  (expand-file-name "ess-rutils-help-start.R" ess-etc-directory)
   "Path to the file defining the R function .rutils.help.start().
 This file is loaded into the inferior R process and is called by
 `ess-rutils-htmldocs'.")
