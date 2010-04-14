@@ -2572,6 +2572,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Toolbar::                     Support for toolbar in ESS
 * TAGS::                        Using TAGS for S files
 * Rdired::                      Directory editor for R objects
+* Rutils::                      R object/package management and help utilities
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2778,9 +2779,8 @@ R CMD rtags --help
 @end example
 
 
-
 @comment  node-name,  next,  previous,  up
-@node Rdired, , TAGS, Miscellaneous
+@node Rdired, Rutils, TAGS, Miscellaneous
 @section Rdired
 
 Ess-rdired provides a dired-like buffer for viewing, editing and
@@ -2819,6 +2819,102 @@ Type @kbd{C-h m} or @kbd{?} to get a list of the keybindings for this
 mode.  For example, with your point on the line of a variable, `p' will
 plot the object, `v' will view it, and `d' will mark the object for
 deletion (`x' will actually perform the deletion).
+
+
+@comment  node-name,  next,  previous,  up
+@node Rutils, , Rdired, Miscellaneous
+@section Rutils
+
+Ess-rutils builds up on ess-rdired, providing key bindings for
+performing basic R functions in the inferior-ESS process buffer, such as
+loading and managing packages, object manipulation (listing, viewing,
+and deleting), and alternatives to @code{help.start()} and
+@code{RSiteSearch()} that use the @command{browse-url} Emacs function.
+The library can be loaded using @kbd{M-x load-file}, but the easiest is
+to include:
+
+@lisp
+(require 'ess-rutils)
+@end lisp
+
+in your .emacs.  Once R is started with @kbd{M-x R}, several key
+bindings are activated in iESS process buffers:
+
+@itemize @bullet
+@item
+@kbd{C-c c l} (@command{ess-rutils-localpkgs}) @*
+@pindex ess-rutils-localpkgs
+List all packages in all available libraries.
+
+@item
+@kbd{C-c c r} (@command{ess-rutils-repospkgs}) @*
+@pindex ess-rutils-repospkgs
+List available packages from repositories listed by
+@command{getOptions(``repos'')} in the current R session.
+
+@item
+@kbd{C-c c u} (@command{ess-rutils-updatepkgs}) @*
+@pindex ess-rutils-updatepkgs
+Update packages in a particular library and repository.
+
+@item
+@kbd{C-c c a} (@command{ess-rutils-apropos}) @*
+@pindex ess-rutils-apropos
+Search for a string using apropos.
+
+@item
+@kbd{C-c c m} (@command{ess-rutils-rmall}) @*
+@pindex ess-rutils-rmall
+Remove all R objects.
+
+@item
+@kbd{C-c c o} (@command{ess-rutils-objs}) @*
+@pindex ess-rutils-objs
+Manipulate R objects; wrapper for @command{ess-rdired}.
+
+@item
+@kbd{C-c c w} (@command{ess-rutils-loadwkspc}) @*
+@pindex ess-rutils-loadwkspc
+Load a workspace file into R.
+
+@item
+@kbd{C-c c s} (@command{ess-rutils-savewkspc}) @*
+@pindex ess-rutils-savewkspc
+Save a workspace file.
+
+@item
+@kbd{C-c c d} (@command{ess-change-directory}) @*
+@pindex ess-change-directory
+Change the working directory for the current R session.
+
+@item
+@kbd{C-c c H} (@command{ess-rutils-htmldocs}) @*
+@pindex ess-rutils-htmldocs
+Use @command{browse-url} to navigate R html documentation.
+
+@end itemize
+
+Furthermore, the function @command{ess-rutils-rsitesearch} is provided
+without a particular key binding.  This function is useful in any Emacs
+buffer, so can be bound to a user-defined key:
+
+@lisp
+(eval-after-load "ess-rutils"
+  '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
+@end lisp
+@pindex ess-rutils-rsitesearch
+
+If the customizable variable @code{ess-rutils-keys} is set to true, then
+a submenu @code{ess-rutils} is shown under the iESS menu, showing these
+interactive functions.
+
+Functions for listing objects and packages
+(@command{ess-rutils-localpkgs}, @command{ess-rutils-repospkgs}, and
+@command{ess-rutils-objs}) show results in a separate buffer and window,
+in @code{ess-rutils-mode}, providing useful key bindings in this mode
+(type @kbd{?} in this buffer for a description).
+
+
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
 @node Mailing lists/bug reports, Customization, Miscellaneous, Top

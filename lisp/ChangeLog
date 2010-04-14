@@ -5,6 +5,7 @@
 	that `ess-rutils-htmldocs' is now fully functional.
 	(ess-rutils-rhtml-fn): 4294 Use `expand-file-name' to define path
 	to ess-rutils-help-start.R.
+	Reintroduced autoloading of ess-rdired.el; we really need it.
 
 2010-04-11  Sebastian P. Luque  <spluque@gmail.com>
 
