@@ -1,3 +1,7 @@
+2010-04-14  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-htmldocs): 4296 Fixed doc string.
+
 2010-04-13  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el: 4290 Incorporated R function

@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Wed Apr 14 03:12:18 2010 (UTC)
+;; Last-Updated: Wed Apr 14 12:28:46 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -284,10 +284,11 @@ File extension not required."
 (defun ess-rutils-htmldocs (&optional remote)
   "Use `browse-url' to navigate R html documentation.
 Documentation is produced by a modified help.start(), that returns the URL
-produced by GNU R's http server.  This function must be available in the
-workspace.  If called with a prefix, the modified help.start() is called
-with update=TRUE.  The optional REMOTE argument should be a string with a
-valid URL for the 'R_HOME' directory on a remote server (defaults to NULL)."
+produced by GNU R's http server.  This function is defined in a file given
+by the path in variable `ess-rutils-rhtml-fn'.  If called with a prefix,
+the modified help.start() is called with update=TRUE.  The optional REMOTE
+argument should be a string with a valid URL for the 'R_HOME' directory on
+a remote server (defaults to NULL)."
   (interactive)
   (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
 	 (remote (if (or (and remote (not (string= "" remote))))
