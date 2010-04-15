@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Wed Apr 14 12:28:46 2010 (UTC)
+;; Last-Updated: Thu Apr 15 22:15:43 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -367,69 +367,70 @@ Options should be separated by value of `crm-default-separator'."
   (ess-rutils-mode))
 
 ;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
-;; Suggested by Rich Heiberger. Not sure how to implement this.
+;; Suggested by Rich Heiberger.
 (defcustom ess-rutils-keys nil
   "Non-nil means activate ess-rutils keybindings and menu."
   :group 'ess-R
   :type 'boolean)
 
-;; Keybindings and associated menu.
+;; Keybindings
 (defun ess-rutils-keys ()
   "Provide key bindings."
   (interactive)
-  (if ess-rutils-keys
-      (progn
-	;; Some key bindings suggested by Patrick Dreschler.
-	(define-key inferior-ess-mode-map [(control c) (c) (l)]
-	  'ess-rutils-localpkgs)
-	(define-key inferior-ess-mode-map [(control c) (c) (r)]
-	  'ess-rutils-repospkgs)
-	(define-key inferior-ess-mode-map [(control c) (c) (u)]
-	  'ess-rutils-updatepkgs)
-	(define-key inferior-ess-mode-map [(control c) (c) (a)]
-	  'ess-rutils-apropos)
-	(define-key inferior-ess-mode-map [(control c) (c) (m)]
-	  'ess-rutils-rmall)
-	(define-key inferior-ess-mode-map [(control c) (c) (o)]
-	  'ess-rutils-objs)
-	(define-key inferior-ess-mode-map [(control c) (c) (w)]
-	  'ess-rutils-loadwkspc)
-	(define-key inferior-ess-mode-map [(control c) (c) (s)]
-	  'ess-rutils-savewkspc)
-	(define-key inferior-ess-mode-map [(control c) (c) (d)]
-	  'ess-change-directory)
-	(define-key inferior-ess-mode-map [(control c) (c) (H)]
-	  'ess-rutils-htmldocs)
-	;; Menu, as suggested by Martin Maechler.
-	(define-key-after
-	  (lookup-key inferior-ess-mode-map [menu-bar iESS])
-	  [sep]
-	  '("--") 'ess-submit-bug-report)
-	(define-key-after
-	  (lookup-key inferior-ess-mode-map [menu-bar iESS])
-	  [ess-rutils]
-	  (cons "ess-rutils" (make-sparse-keymap "ess-rutils"))
-	  'ess-submit-bug-report)
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils htmldocs]
-	  '("Browse HTML" . ess-rutils-htmldocs))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils apropos]
-	  '("Apropos" . ess-rutils-apropos))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils chgdir]
-	  '("Change directory" . ess-change-directory))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils savewkspc]
-	  '("Save workspace" . ess-rutils-savewkspc))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils loadwkspc]
-	  '("Load workspace" . ess-rutils-loadwkspc))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils updatepkgs]
-	  '("Update packages" . ess-rutils-updatepkgs))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils repospkgs]
-	  '("Packages in repositories" . ess-rutils-repospkgs))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils localpkgs]
-	  '("Local packages" . ess-rutils-localpkgs))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils rmall]
-	  '("Remove objects" . ess-rutils-rmall))
-	(define-key inferior-ess-mode-map [menu-bar iESS ess-rutils objs]
-	  '("Manage objects" . ess-rutils-objs)))))
+  (when ess-rutils-keys
+    ;; Some key bindings suggested by Patrick Dreschler.
+    (define-key inferior-ess-mode-map [(control c) (control .) (l)]
+      'ess-rutils-localpkgs)
+    (define-key inferior-ess-mode-map [(control c) (control .) (r)]
+      'ess-rutils-repospkgs)
+    (define-key inferior-ess-mode-map [(control c) (control .) (u)]
+      'ess-rutils-updatepkgs)
+    (define-key inferior-ess-mode-map [(control c) (control .) (a)]
+      'ess-rutils-apropos)
+    (define-key inferior-ess-mode-map [(control c) (control .) (m)]
+      'ess-rutils-rmall)
+    (define-key inferior-ess-mode-map [(control c) (control .) (o)]
+      'ess-rutils-objs)
+    (define-key inferior-ess-mode-map [(control c) (control .) (w)]
+      'ess-rutils-loadwkspc)
+    (define-key inferior-ess-mode-map [(control c) (control .) (s)]
+      'ess-rutils-savewkspc)
+    (define-key inferior-ess-mode-map [(control c) (control .) (d)]
+      'ess-change-directory)
+    (define-key inferior-ess-mode-map [(control c) (control .) (H)]
+      'ess-rutils-htmldocs)))
+
+;; Menu, as suggested by Martin Maechler
+(when inferior-ess-mode-map
+  (define-key-after
+    (lookup-key inferior-ess-mode-map [menu-bar iESS])
+    [sep]
+    '("--") 'ess-submit-bug-report)
+  (define-key-after
+    (lookup-key inferior-ess-mode-map [menu-bar iESS])
+    [Rutils]
+    (cons "Rutils" (make-sparse-keymap "Rutils"))
+    'ess-submit-bug-report)
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils htmldocs]
+    '("Browse HTML" . ess-rutils-htmldocs))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils apropos]
+    '("Apropos" . ess-rutils-apropos))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils chgdir]
+    '("Change directory" . ess-change-directory))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils savewkspc]
+    '("Save workspace" . ess-rutils-savewkspc))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils loadwkspc]
+    '("Load workspace" . ess-rutils-loadwkspc))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils updatepkgs]
+    '("Update packages" . ess-rutils-updatepkgs))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils repospkgs]
+    '("Packages in repositories" . ess-rutils-repospkgs))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils localpkgs]
+    '("Local packages" . ess-rutils-localpkgs))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils rmall]
+    '("Remove objects" . ess-rutils-rmall))
+  (define-key inferior-ess-mode-map [menu-bar iESS Rutils objs]
+    '("Manage objects" . ess-rutils-objs)))
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 

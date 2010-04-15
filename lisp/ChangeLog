@@ -1,3 +1,8 @@
+2010-04-15  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4297 Unconditionally activate submenu Rutils, and
+	changed key bindings to avoid using 'C-c c' (reserved for users).
+
 2010-04-14  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el (ess-rutils-htmldocs): 4296 Fixed doc string.
