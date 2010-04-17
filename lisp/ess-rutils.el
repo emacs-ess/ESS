@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Thu Apr 15 22:15:43 2010 (UTC)
+;; Last-Updated: Fri Apr 16 15:02:19 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -368,7 +368,7 @@ Options should be separated by value of `crm-default-separator'."
 
 ;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
 ;; Suggested by Rich Heiberger.
-(defcustom ess-rutils-keys nil
+(defcustom ess-rutils-keys t
   "Non-nil means activate ess-rutils keybindings and menu."
   :group 'ess-R
   :type 'boolean)

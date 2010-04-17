@@ -1,3 +1,8 @@
+2010-04-16  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-keys): 4298 Turn on by default, now
+	that bindings do not interfere with anything.
+
 2010-04-15  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el: 4297 Unconditionally activate submenu Rutils, and
