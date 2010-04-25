@@ -1,6 +1,10 @@
+2010-04-25  Henning Redestig  <henning.red@googlemail.com>
+
+	* doc/ess.texi (Roxygen): added documentation for ess-roxy
+
 2010-04-08  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* doc/ess.texi (Top): Cosmetic change to see 
+	* doc/ess.texi (Top): Cosmetic change to see
 	if the web page is updating like it should
 
 2010-03-03  ESS Maintainers <ESS-core@stat.math.ethz.ch>

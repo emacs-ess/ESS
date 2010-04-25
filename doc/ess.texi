@@ -96,7 +96,7 @@ analysis languages.
 
 * ESS for the S family::
 * Editing::                     How to create/edit objects and functions
-* Editing R documentation files::
+* Editing R documentation::
 * Help::                        Reading help files
 
 * ESS for SAS::
@@ -1674,7 +1674,7 @@ from @Sl{} mode, also available in @Sl{} Transcript Mode.
 @include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Editing, Editing R documentation files, ESS for the S family, Top
+@node Editing, Editing R documentation, ESS for the S family, Top
 @chapter Editing S functions
 
 @cindex editing functions
@@ -1942,11 +1942,8 @@ behavior by adding the line
 @code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
 @vindex ess-fancy-comments
 
-@cindex roxygen
-ESS now has preliminary support for editing roxygen tags within R mode
-buffers.  In particular, when the function @code{ess-roxygen-fn} (bound
-to @kbd{C-c C-o}) is called with point inside a R function, the roxygen
-template for the function is added just above the function.
+ESS also supports more Roxygen comments to use for R documentation
+@xref{Roxygen}.
 
 The indentation commands provided by ESS are:
 @cindex indenting
@@ -2223,15 +2220,28 @@ be created, you will be asked whether you wish to create the directory.
 If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
-@node Editing R documentation files, Help, Editing, Top
-@chapter Editing R documentation files
+@node Editing R documentation, Help, Editing, Top
+@chapter Editing R documentation
 
-ESS also provides support for editing @dfn{R documentation} (``Rd'')
-files.  @R{} objects are documented in files written in Rd format, a
-simple markup language closely resembling (La)@TeX{}, which can be
-processed into a variety of formats, including La@TeX{}, @acronym{HTML},
-and plain text.  Rd format is described in section ``Rd format'' of the
-``Writing R Extensions'' manual in the R distribution.
+ESS provides two ways of writing documentation for R objects. Either
+using the standard R documentation system or using in-source
+documentation written as structured comment fields for use with the
+Roxygen package.
+
+@menu
+* R documentation files::       Edit objects in a specialized buffer
+* Roxygen::                     Loading source files into the ESS process
+@end menu
+
+@node R documentation files, Roxygen, Editing R documentation, Editing R documentation
+@section Editing R documentation (Rd) files
+
+@R{} objects are documented in files written in the @dfn{R
+documentation} (``Rd''), a simple markup language closely resembling
+(La)@TeX{}, which can be processed into a variety of formats, including
+La@TeX{}, @acronym{HTML}, and plain text.  Rd format is described in
+section ``Rd format'' of the ``Writing R Extensions'' manual in the R
+distribution. ESS has several features that facilitate editing Rd files.
 
 Visiting an Rd file as characterized by its extension @file{Rd} will
 activate Rd Mode, which provides several facilities for making editing R
@@ -2328,9 +2338,120 @@ add the following lines to one of your Emacs startup files:
            (font-lock-mode 1)))
 @end example
 
+@node Roxygen, , R documentation files, Editing R documentation
+@section Editing Roxygen documentation
+@cindex Roxygen
+@cindex roxy
+@cindex ess-roxy
+
+The Roxygen R package makes it possible to keep the intended contents
+for Rd files as structured comments in the R source files. Roxygen can
+then parse R files and generate appropriate Rd files from these
+comments, fill the usage fields as well as updating @file{NAMESPACE}
+files. See the Roxygen documentation found via @uref{http://roxygen.org}
+for more information its usage. An example of an Roxygen entry for a
+simple R function can look like this:
+
+@example
+@verbatim
+##' Description of the function
+##'
+##' Further details about this function
+##' @title A title
+##' @param me all parameters must be listed and documented
+##' @return Description of the return value
+##' @author The author
+myfun <- function(me)
+  cat("Hello", me, "\n")
+@end verbatim
+@end example
+The entry is immediately preceding the object to document and all lines
+start with the Roxygen start string, in this case @code{##'}. ESS
+provides support to edit these documentation entries by providing line
+filling, navigation, template generation etc. Syntax highlighting is
+provided for Emacs but not for XEmacs.
+
+Roxygen is customized by the variables in the customization group ``Ess
+Roxy''. Customizables include the Roxygen start string, use of folding
+to toggle visibility of Roxygen entries and the Roxygen template.
+
+All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
+by default in ESS. The following special Emacs commands are provided.
+
+@table @kbd
+@item C-c C-o (@code{ess-roxy-update-entry})
+@pindex ess-roxy-update-entry
+Generate a Roxygen template or update the parameter list in Roxygen
+entry at point (or above the function at the point). Documented
+parameters that are not in the function are placed last in the list,
+parameters that are not documented and not in the definition are
+dropped. 
+
+@item C-c C-e C-c (@code{ess-roxy-toggle-roxy-region})
+@pindex ess-roxy-toggle-roxy-region
+Toggle the presence  of the leading Roxygen string on all lines in the
+marked region. Convenient for transferring text to Roxygen entries and
+to evaluate example fields.
+
+@item C-c C-e C-r (@code{ess-roxy-preview-Rd})
+@pindex ess-roxy-preview-Rd
+Use the attached R process to parse the entry at point obtain the input
+for an Rd file. Convenient for checking syntax. When used with the
+prefix argument, i.e. @kbd{C-u C-c C-e C-r}, place the content in a
+buffer associated with a Rd file with the same name as the
+documentation. Requires the Roxygen package to be installed.
+
+@item C-c C-e p (@code{ess-roxy-previous-entry})
+@pindex ess-roxy-previous-entry
+Go to start of the Roxygen entry above point.
+
+@item C-c C-e n (@code{ess-roxy-next-entry})
+@pindex ess-roxy-next-entry
+Go to end of the Roxygen entry above point.
+
+@item C-c C-e C-h (@code{ess-roxy-hide-all})
+@pindex ess-roxy-hide-all
+Use the hideshow mode to fold away the visibility of all Roxygen
+entries. Hide-show support must be enabled for this binding to get
+defined.
+@end table
+
+ESS also advices several standard editing functions in order to make
+Roxygen editing more intuitive. The advised functions are as follows.
+
+@table @kbd
+@item C-c TAB (@code{ess-R-complete-object-name})
+@pindex ess-R-complete-object-name
+Complete Roxygen tag at point. E.g. doing @kbd{C-c TAB} when the point
+is at the end of @code{@@par} completes to
+@code{@@param}. 
+
+@item M-h (@code{mark-paragraph})
+@pindex mark-paragraph
+If the transient mark mode is active, place mark and point at start end
+end of the field at point and activate the mark. 
+
+@item TAB (@code{ess-indent-command})
+@pindex ess-indent-command
+If hide-show support is enabled, fold away the visibility of the Roxygen
+entry at point. 
+
+@item M-q (@code{fill-paragraph})
+@pindex fill-paragraph
+Fill the Roxygen field at point. 
+
+@item C-a (@code{move-beginning-of-line})
+@pindex move-beginning-of-line
+Move to the point directly to the right of the Roxygen start
+string. 
+
+@item ENTER (@code{newline-and-indent})
+@pindex newline-and-indent
+Insert a new line and the Roxygen start string. 
+@end table
 
 @comment  node-name,  next,  previous,  up
-@node Help, ESS for SAS, Editing R documentation files, Top
+@node Help, ESS for SAS, Editing R documentation, Top
 @chapter Reading help files
 @cindex help files
 

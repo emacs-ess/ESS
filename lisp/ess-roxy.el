@@ -68,14 +68,14 @@
     `((,(concat ess-roxy-str " *\\([@\\]"
 		(regexp-opt ess-roxy-tags-param t)
 		"\\)\\>")
-       (1 font-lock-keyword-face prepend))
+       (1 'font-lock-keyword-face prepend))
       (,(concat ess-roxy-str " *\\([@\\]"
          (regexp-opt '("param") t)
          "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
-       (1 font-lock-keyword-face prepend)
-       (3 font-lock-variable-name-face prepend))
+       (1 'font-lock-keyword-face prepend)
+       (3 'font-lock-variable-name-face prepend))
       (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
-       (0 font-lock-variable-name-face prepend))
+       (0 'font-lock-variable-name-face prepend))
       (,(concat ess-roxy-str)
        (0 'bold prepend)))))
 

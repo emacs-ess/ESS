@@ -910,19 +910,23 @@ Changes/New Features in 5.9:
 <li>ESS Manual now more visually pleasing; <a href="http://ess.r-project.org/Manual/ess.html">http://ess.r-project.org/Manual/ess.html</a>
 <li><acronym>ESS[R]</acronym>: Roxygen on XEmacs no longer font locks for now
  (as it required missing features and hence broke ESS startup, there). 
+<li><acronym>ESS[R]</acronym>: Function <samp><span class="command">ess-rutils-htmldocs</span></samp> in
+<samp><span class="file">ess-rutils.el</span></samp> offers an alternative to <code>help.start()</code> for
+navigating R documentation, using the <samp><span class="command">browse-url</span></samp> Emacs
+function. 
 </ul>
 
      <p>Changes/New Features in 5.8:
           <ul>
-<li><acronym>ESS[R]</acronym>: New ess-rutils.el with utilities for listing, loading,
+<li><acronym>ESS[R]</acronym>: New <samp><span class="file">ess-rutils.el</span></samp> with utilities for listing, loading,
 installing, and updating packages, as well as object manipulation
 (listing, viewing, and deleting).  It also provides an alternative to
-RSiteSearch() that uses the browse-url function, so results can be
-viewed in an Emacs web browser. 
+<code>RSiteSearch()</code> that uses the <samp><span class="command">browse-url</span></samp> function, so
+results can be viewed in an Emacs web browser. 
 <li><acronym>ESS[R]</acronym>: much more extensive Roxygen interface, via ess-roxy.el
  from Henning Redestig. Ess-roxy supports filling of roxygen fields,
  generation and updating roxygen templates, completion of roxygen tags,
- basic navigation (marking and moving between entries), foling using
+ basic navigation (marking and moving between entries), folding using
  hs-minor-mode and preview of the Rd file. 
 <li>Emacs lisp files have got better names (partly, for now). 
 </ul>

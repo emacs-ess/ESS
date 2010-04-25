@@ -498,19 +498,23 @@ shell, simply type `M-x S+6-msdos RET'.
           it required missing features and hence broke ESS startup,
           there).
 
+        * ESS[R]: Function `ess-rutils-htmldocs' in `ess-rutils.el'
+          offers an alternative to `help.start()' for navigating R
+          documentation, using the `browse-url' Emacs function.
+
      Changes/New Features in 5.8:
-        * ESS[R]: New ess-rutils.el with utilities for listing, loading,
-          installing, and updating packages, as well as object
+        * ESS[R]: New `ess-rutils.el' with utilities for listing,
+          loading, installing, and updating packages, as well as object
           manipulation (listing, viewing, and deleting).  It also
-          provides an alternative to RSiteSearch() that uses the
-          browse-url function, so results can be viewed in an Emacs web
-          browser.
+          provides an alternative to `RSiteSearch()' that uses the
+          `browse-url' function, so results can be viewed in an Emacs
+          web browser.
 
         * ESS[R]: much more extensive Roxygen interface, via ess-roxy.el
           from Henning Redestig. Ess-roxy supports filling of roxygen
           fields,  generation and updating roxygen templates,
           completion of roxygen tags,  basic navigation (marking and
-          moving between entries), foling using  hs-minor-mode and
+          moving between entries), folding using  hs-minor-mode and
           preview of the Rd file.
 
         * Emacs lisp files have got better names (partly, for now).
