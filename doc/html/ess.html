@@ -3791,8 +3791,8 @@ extends beyond the indentation column.  You turn off the default
 behavior by adding the line
 <code>(setq ess-fancy-comments nil)</code> to your <samp><span class="file">.emacs</span></samp> file. 
 <a name="index-ess_002dfancy_002dcomments-156"></a>
-ESS also supports more Roxygen comments to use for R documentation
-See <a href="#Roxygen">Roxygen</a>.
+ESS also supports Roxygen entries which is R documentation maintained in
+the source code as comments See <a href="#Roxygen">Roxygen</a>.
 
    <p>The indentation commands provided by ESS are:
 <a name="index-indenting-157"></a><a name="index-formatting-source-code-158"></a>
@@ -4203,64 +4203,65 @@ simple R function can look like this:
 </pre>
 </pre>
    <p>The entry is immediately preceding the object to document and all lines
-start with the Roxygen start string, in this case <code>##'</code>. ESS
+start with the Roxygen prefix string, in this case <code>##'</code>. ESS
 provides support to edit these documentation entries by providing line
 filling, navigation, template generation etc. Syntax highlighting is
 provided for Emacs but not for XEmacs.
 
    <p>Roxygen is customized by the variables in the customization group &ldquo;Ess
-Roxy&rdquo;. Customizables include the Roxygen start string, use of folding
+Roxy&rdquo;. Customizables include the Roxygen prefix, use of folding
 to toggle visibility of Roxygen entries and the Roxygen template.
 
    <p>All ESS Roxygen support is defined in <samp><span class="file">ess-roxy.el</span></samp> which is loaded
 by default in ESS. The following special Emacs commands are provided.
 
      <dl>
-<dt><kbd>C-c C-o (</kbd><code>ess-roxy-update-entry</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dupdate_002dentry-184"></a>Generate a Roxygen template or update the parameter list in Roxygen
-entry at point (or above the function at the point). Documented
-parameters that are not in the function are placed last in the list,
-parameters that are not documented and not in the definition are
-dropped.
+<dt><kbd>C-c C-o</kbd><dd><a name="index-ess_002droxy_002dupdate_002dentry-184"></a><code>ess-roxy-update-entry</code>: Generate a Roxygen template or update the
+parameter list in Roxygen entry at point (or above the function at the
+point). Documented parameters that are not in the function are placed
+last in the list, parameters that are not documented and not in the
+definition are dropped.
 
-     <br><dt><kbd>C-c C-e C-c (</kbd><code>ess-roxy-toggle-roxy-region</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dtoggle_002droxy_002dregion-185"></a>Toggle the presence  of the leading Roxygen string on all lines in the
-marked region. Convenient for transferring text to Roxygen entries and
-to evaluate example fields.
+     <br><dt><kbd>C-c C-e C-c</kbd><dd><a name="index-ess_002droxy_002dtoggle_002droxy_002dregion-185"></a><code>ess-roxy-toggle-roxy-region</code>: Toggle the presence of the leading
+Roxygen string on all lines in the marked region. Convenient for
+transferring text to Roxygen entries and to evaluate example fields.
 
-     <br><dt><kbd>C-c C-e C-r (</kbd><code>ess-roxy-preview-Rd</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dpreview_002dRd-186"></a>Use the attached R process to parse the entry at point obtain the input
-for an Rd file. Convenient for checking syntax. When used with the
-prefix argument, i.e. <kbd>C-u C-c C-e C-r</kbd>, place the content in a
-buffer associated with a Rd file with the same name as the
-documentation. Requires the Roxygen package to be installed.
+     <br><dt><kbd>C-c C-e C-r</kbd><dd><a name="index-ess_002droxy_002dpreview_002dRd-186"></a><code>ess-roxy-preview-Rd</code>: Use the attached R process to parse the
+entry at point obtain the input for an Rd file. Convenient for checking
+syntax. When used with the prefix argument, i.e. <kbd>C-u C-c C-e C-r</kbd>,
+place the content in a buffer associated with a Rd file with the same
+name as the documentation. Requires the Roxygen package to be installed.
 
-     <br><dt><kbd>C-c C-e p (</kbd><code>ess-roxy-previous-entry</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dprevious_002dentry-187"></a>Go to start of the Roxygen entry above point.
+     <br><dt><kbd>C-c C-e p </kbd><code>ess-roxy-previous-entry</code><dd><a name="index-ess_002droxy_002dprevious_002dentry-187"></a>Go to start of the Roxygen entry above point.
 
-     <br><dt><kbd>C-c C-e n (</kbd><code>ess-roxy-next-entry</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dnext_002dentry-188"></a>Go to end of the Roxygen entry above point.
+     <br><dt><kbd>C-c C-e n</kbd><dd><a name="index-ess_002droxy_002dnext_002dentry-188"></a><code>ess-roxy-next-entry</code>: Go to end of the Roxygen entry above point.
 
-     <br><dt><kbd>C-c C-e C-h (</kbd><code>ess-roxy-hide-all</code><kbd>)</kbd><dd><a name="index-ess_002droxy_002dhide_002dall-189"></a>Use the hideshow mode to fold away the visibility of all Roxygen
-entries. Hide-show support must be enabled for this binding to get
-defined. 
+     <br><dt><kbd>C-c C-e C-h</kbd><dd><a name="index-ess_002droxy_002dhide_002dall-189"></a><code>ess-roxy-hide-all</code>: Use the hideshow mode to fold away the
+visibility of all Roxygen entries. Hide-show support must be enabled for
+this binding to get defined. 
 </dl>
 
    <p>ESS also advices several standard editing functions in order to make
 Roxygen editing more intuitive. The advised functions are as follows.
 
      <dl>
-<dt><kbd>C-c TAB (</kbd><code>ess-R-complete-object-name</code><kbd>)</kbd><dd><a name="index-ess_002dR_002dcomplete_002dobject_002dname-190"></a>Complete Roxygen tag at point. E.g. doing <kbd>C-c TAB</kbd> when the point
-is at the end of <code>@par</code> completes to
-<code>@param</code>.
+<dt><kbd>C-c TAB</kbd><dd><a name="index-ess_002dR_002dcomplete_002dobject_002dname-190"></a><code>ess-R-complete-object-name</code>: Complete Roxygen tag at
+point. E.g. doing <kbd>C-c TAB</kbd> when the point is at the end of
+<code>@par</code> completes to <code>@param</code>.
 
-     <br><dt><kbd>M-h (</kbd><code>mark-paragraph</code><kbd>)</kbd><dd><a name="index-mark_002dparagraph-191"></a>If the transient mark mode is active, place mark and point at start end
-end of the field at point and activate the mark.
+     <br><dt><kbd>M-h</kbd><dd><a name="index-mark_002dparagraph-191"></a><code>mark-paragraph</code>: If the transient mark mode is active, place mark
+and point at start end end of the field at point and activate the mark.
 
-     <br><dt><kbd>TAB (</kbd><code>ess-indent-command</code><kbd>)</kbd><dd><a name="index-ess_002dindent_002dcommand-192"></a>If hide-show support is enabled, fold away the visibility of the Roxygen
-entry at point.
+     <br><dt><kbd>TAB</kbd><dd><a name="index-ess_002dindent_002dcommand-192"></a><code>ess-indent-command</code>: If hide-show support is enabled, fold away
+the visibility of the Roxygen entry at point.
 
-     <br><dt><kbd>M-q (</kbd><code>fill-paragraph</code><kbd>)</kbd><dd><a name="index-fill_002dparagraph-193"></a>Fill the Roxygen field at point.
+     <br><dt><kbd>M-q</kbd><dd><a name="index-fill_002dparagraph-193"></a><code>fill-paragraph</code>: Fill the Roxygen field at point.
 
-     <br><dt><kbd>C-a (</kbd><code>move-beginning-of-line</code><kbd>)</kbd><dd><a name="index-move_002dbeginning_002dof_002dline-194"></a>Move to the point directly to the right of the Roxygen start
-string.
+     <br><dt><kbd>C-a</kbd><dd><a name="index-move_002dbeginning_002dof_002dline-194"></a><code>move-beginning-of-line</code>: Move to the point directly to the right
+of the Roxygen start string.
 
-     <br><dt><kbd>ENTER (</kbd><code>newline-and-indent</code><kbd>)</kbd><dd><a name="index-newline_002dand_002dindent-195"></a>Insert a new line and the Roxygen start string. 
+     <br><dt><kbd>ENTER</kbd><dd><a name="index-newline_002dand_002dindent-195"></a><code>newline-and-indent</code>: Insert a new line and the Roxygen prefix
+string. 
 </dl>
 
 <!-- node-name,  next,  previous,  up -->

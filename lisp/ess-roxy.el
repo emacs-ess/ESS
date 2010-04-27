@@ -112,8 +112,6 @@
 ;; (setq hs-c-start-regexp ess-roxy-str)
 ;; (make-variable-buffer-local 'hs-c-start-regexp)
 
-
-
 ;; Function definitions
 (defun ess-roxy-beg-of-entry ()
   "Get point number at start of current entry, 0 if not in entry"
@@ -238,10 +236,12 @@ function at point. if here is supplied start inputting
       (goto-char here))
     (while (stringp (car (car args)))
       (setq arg-des (pop args))
-      (insert (concat "\n"
-		      ess-roxy-str " @param " (car arg-des) " "))
-      (insert (concat (car (cdr arg-des))))
-      (ess-roxy-fill-field))))
+      (unless (string= (car arg-des) "")
+	  (progn
+	    (insert (concat "\n"
+			    ess-roxy-str " @param " (car arg-des) " "))
+	    (insert (concat (car (cdr arg-des))))
+	    (ess-roxy-fill-field))))))
 
 (defun ess-roxy-merge-args (fun ent)
   "Take two args lists (alists) and return their union. Result

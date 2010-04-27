@@ -1,3 +1,11 @@
+2010-04-26  Henning Redestig  <henning.red@googlemail.com>
+
+	* ess-roxy.el (ess-roxy-insert-args): do not add param field to
+	functions without arguments
+
+	* ess-mode.el (ess-mode-menu): menu entries for editing roxygen
+	entries
+
 2010-04-16  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el (ess-rutils-keys): 4298 Turn on by default, now

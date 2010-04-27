@@ -675,7 +675,7 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-str "##'"
-  "String to insert before each line in a roxygen block."
+  "Prefix string to insert before each line in a roxygen block."
   :group 'ess-roxy
   :type 'string)
 
