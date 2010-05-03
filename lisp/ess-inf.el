@@ -1151,7 +1151,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
 	    (process-send-string sprocess "\n"))))))
 
   (message "Finished evaluation")
-  (if ess-eval-deactivate-mark
+  (if (and (fboundp 'deactivate-mark) ess-eval-deactivate-mark)
       (deactivate-mark))
   ;; return value
   (list start end))
