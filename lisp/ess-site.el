@@ -564,11 +564,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; The following two expressions automatically enable font-lock-mode
 ;; for ess-mode and inferior-ess-mode buffers.
 
-;; FIXME: XEmacs and Emacs 21.x has font-lock for ttys, as well.
-;; So we need a better check! [or do this unconditionally -working everywhere ??]
-(when (and window-system ess-font-lock-mode)
+;; no longer requiring  (window-system)  here:
+(when ess-font-lock-mode
   (add-hook 'ess-mode-hook 'turn-on-font-lock t)
   (add-hook 'ess-transcript-mode-hook 'turn-on-font-lock t)
+  (add-hook 'Rd-mode-hook 'turn-on-font-lock t)
   (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t))
 
 ;; If nil, then don't font-lock the input

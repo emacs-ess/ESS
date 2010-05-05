@@ -276,14 +276,13 @@ Variables you can use to customize Rd mode
 
 Turning on Rd mode runs the hook `Rd-mode-hook'.
 
-To automatically turn on the abbrev and font-lock features, add the
+To automatically turn on the abbrev(iate) features, add the
 following lines to your `.emacs' file:
 
   (add-hook 'Rd-mode-hook
 	    (lambda ()
-	      (abbrev-mode 1)
-	      (if (eq window-system 'x)
-		  (font-lock-mode 1))))"
+	      (abbrev-mode 1)))
+"
 
   (interactive)
   (text-mode)
