@@ -421,9 +421,9 @@ string. Convenient for editing example fields."
 (defun ess-roxy-preview-Rd (&optional arg)
   "Use the connected R session and the roxygen package to create
 a preview of the Rd file of the entry at point. If called with
-`arg' is non-nil (e.g. called with the universal argument), also
-set the visited file name of the created buffer to allow for
-saving (and using Rd-modes preview function) of the file."
+a non-nil `arg' (e.g. called with the universal argument), also
+set the visited file name of the created buffer to facilitate
+saving of that file."
   (interactive "P")
   (let ((beg (ess-roxy-beg-of-entry))
 	(roxy-tmp (make-temp-file "ess-roxy"))
@@ -436,22 +436,25 @@ saving (and using Rd-modes preview function) of the file."
       (forward-line 1)
       (setq beg-end (ess-end-of-function))
       (append-to-file beg (car (cdr beg-end)) roxy-tmp)
-      (ess-command "library(roxygen)\n" roxy-buf)
+      ;; Call this in a way that does *not* rely on English language error/warnings:
+      (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
+		   roxy-buf)
       (save-excursion
 	(set-buffer roxy-buf)
 	(goto-char 1)
-	(if (search-forward-regexp "Error in library(roxygen)" nil t)
-	    (error "Failed to load the roxygen package")))
-      (ess-command ".ess_roxy_roclet <- make.Rd.roclet(NULL)\n")
-      (ess-command (concat ".ess_roxy_roclet$parse(\"" roxy-tmp "\")\n") roxy-buf)
-      (delete-file roxy-tmp))
+	(if (search-forward-regexp "FALSE" nil t)
+	    (error (concat "Failed to load the roxygen package; "
+			   "in R, try  install.packages(\"roxygen\")"))))
+      (ess-command (concat "make.Rd.roclet()$parse(\"" roxy-tmp "\")\n") roxy-buf))
+    (delete-file roxy-tmp)
     (pop-to-buffer roxy-buf)
     (if arg
 	(save-excursion
 	  (goto-char 1)
 	  (search-forward-regexp "name{\\(.+\\)}")
-	  (set-visited-file-name (concat (match-string 1) ".Rd"))))
-    )(Rd-mode))
+	  (set-visited-file-name (concat (match-string 1) ".Rd")))))
+  (Rd-mode))
+
 
 (defun ess-roxy-mark-active ()
   "True if region is active and transient mark mode activated"

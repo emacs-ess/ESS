@@ -484,6 +484,10 @@ shell, simply type `M-x S+6-msdos RET'.
 =================
 
      Changes/New Features in 5.9:
+        * Font locking: is now turned on  even without `window-system'
+          is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
+          default.
+
         * ESSscript editing: ess-eval-deactivate-mark default is now t
           as suggested by Leo Alekseyev and subsequent "unanimous"
           ESS-help  discussion.
@@ -497,6 +501,8 @@ shell, simply type `M-x S+6-msdos RET'.
         * ESS[R]: Roxygen on XEmacs no longer font locks for now  (as
           it required missing features and hence broke ESS startup,
           there).
+
+        * ESS[R]: Roxygen has a sub-menu on the [ESS] menu.
 
         * ESS[R]: Function `ess-rutils-htmldocs' in `ess-rutils.el'
           offers an alternative to `help.start()' for navigating R
