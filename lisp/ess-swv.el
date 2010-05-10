@@ -165,7 +165,10 @@ Sweave file buffer name) and display it."
 	 (latex-filename (concat namestem ".tex"))
 	 (tex-buf (get-buffer-create " *ESS-tex-output*"))
 	 (pdfviewer (ess-get-pdf-viewer))
-	 (pdf-status))
+	 (pdf-status)
+	 (cmdstr-win (format "start \"%s\" \"%s.pdf\""
+			     pdfviewer namestem ".pdf\""))
+	 (cmdstr (format "%s %s.pdf &" pdfviewer namestem)))
     ;;(shell-command (concat "pdflatex " latex-filename))
     (message "Running pdfLaTeX on '%s' ..." latex-filename)
     (switch-to-buffer tex-buf)
@@ -174,10 +177,10 @@ Sweave file buffer name) and display it."
     (if (not (= 0 pdf-status))
 	(message "** OOPS: error in 'pdflatex' (%d)!" pdf-status)
       ;; else: pdflatex probably ok
-      (shell-command (concat
-	(if (and ess-microsoft-p (w32-shell-dos-semantics))
-	    "start \"" pdfviewer "\" \"" namestem ".pdf\""
-	          "\"" pdfviewer "\" \"" namestem ".pdf\" &"))))
+      (shell-command
+       (concat (if (and ess-microsoft-p (w32-shell-dos-semantics))
+		   cmdstr-win
+		 cmdstr))))
     (switch-to-buffer buf)
     (display-buffer tex-buf)))
 

@@ -1,3 +1,8 @@
+2010-05-10  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-swv.el (ess-swv-PDF): 4251 Fixed command string for
+	`shell-command' to view file.
+
 2010-05-05  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-site.el (ess-font-lock-mode): is alone determining the
