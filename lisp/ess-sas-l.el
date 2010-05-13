@@ -250,7 +250,7 @@ number."
       (list
      ;; .log NOTE: messages
      (cons "^NOTE: .*$"                          font-lock-comment-face)
-     (cons "^      [^ ].*[.]$"                   font-lock-comment-face)
+     (cons "^      [^ @].*[.]$"                   font-lock-comment-face)
      (cons "^      [a-z].*[a-z][ ]?$"            font-lock-comment-face)
      (cons "^      Engine:[ ]+V.+$"              font-lock-comment-face)
      (cons "^      Physical Name:[ ]+.+$"        font-lock-comment-face)
@@ -299,16 +299,16 @@ number."
      (cons "^ERROR\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"   
                                                  font-lock-keyword-face)
      ;       ERROR:
-     (cons "^       [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"  
+     (cons "^       [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"  
                                                  font-lock-keyword-face)
      ;       ERROR #-###:
-     (cons "^             [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+     (cons "^             [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"
                                                  font-lock-keyword-face)
      ;       ERROR ##-###:
-     (cons "^              [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
+     (cons "^              [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
 						 font-lock-keyword-face)
      ;       ERROR ###-###:
-     (cons "^               [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
+     (cons "^               [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
 						 font-lock-keyword-face)
      (cons "^              a format name."       font-lock-keyword-face)
      (cons "^       where a numeric operand is required. The condition was: "
@@ -319,16 +319,16 @@ number."
      (cons "^WARNING\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"  
                                                  font-lock-function-name-face)
      ;       WARNING:
-     (cons "^         [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+     (cons "^         [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"
                                                  font-lock-function-name-face)
      ;       WARNING #-###:
-     (cons "^               [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+     (cons "^               [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"
                                                  font-lock-function-name-face)
      ;       WARNING ##-###:
-     (cons "^                [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+     (cons "^                [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"
                                                  font-lock-function-name-face)
      ;       WARNING ###-###:
-     (cons "^                 [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+     (cons "^                 [^ @].*\\([.][ ]?\\|[,a-z][ ]\\)$"
                                                  font-lock-function-name-face)
 
      ;; SAS comments
