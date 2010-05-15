@@ -513,7 +513,14 @@ sending `inferior-ess-language-start' to S-Plus.")
       (progn
 	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-	(setq ess-rterm-version-paths (ess-find-rterm))
+	(setq ess-rterm-version-paths ;; (ess-find-rterm))
+	      (ess-uniq-list
+	       (nconc
+		(ess-find-rterm (concat (getenv "ProgramFiles") "/R/"))       ;; always 32 on 32 bit OS
+		;;                                                            ;; depends on 32 or 64 process on 64 bit OS
+		(ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
+		(ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
+		)))
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
