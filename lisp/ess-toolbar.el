@@ -89,9 +89,11 @@ For beginners, this is probably better set to a non-nil value."
 
 (defcustom ess-toolbar-items
   '( (R   "startr"  "Start R process")
-     (S   "spluslogo" "Start S process")
+     (S   "spluslogo" "Start S process") ;; "splus_icon_small"  needs to be converted to xpm and ppm
      (ess-eval-line-and-step   "rline" "Eval line & step")
      (ess-eval-region   "rregion" "Eval region")
+     (ess-eval-function-or-paragraph-and-step "rregion"
+        "Eval function or paragraph and step")
      (ess-load-file   "rbuffer" "Load file")
      (ess-eval-function   "rfunction" "Eval function")
      (ess-switch-to-ESS   "switch_ess" "Switch to ESS buffer"))

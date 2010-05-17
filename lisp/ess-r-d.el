@@ -134,6 +134,7 @@ to R, put them in the variable `inferior-R-args'."
 			       r-always-arg
 			       "'] ? "))
 		    nil)))
+	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
 	 )
 	 ;;Micro$ ?: default-process-coding-system ;-breaks UTF locales on Unix:
     (if ess-microsoft-p

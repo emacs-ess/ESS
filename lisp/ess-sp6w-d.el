@@ -199,7 +199,9 @@ to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
-    (let ((s-proj (getenv "S_PROJ")))
+    (let ((s-proj (getenv "S_PROJ"))
+	  (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+	  )
       (cd (w32-short-file-name (directory-file-name default-directory)))
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
@@ -297,7 +299,9 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   "Call 'Sqpe' from 'S-PLUS [678].x for Windows', the 'Real Thing' from StatSci."
   (interactive)
   (setq ess-customize-alist Sqpe+6-customize-alist)
-  (let* ((shome-nil-p (equal (getenv "SHOME") nil)))
+  (let* ((shome-nil-p (equal (getenv "SHOME") nil))
+	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+	 )
     (if shome-nil-p (setenv "SHOME" inferior-Sqpe+6-SHOME-name))
     (ess-write-to-dribble-buffer
      (format "\n(Sqpe+6): ess-dialect=%s, buf=%s\n" ess-dialect
