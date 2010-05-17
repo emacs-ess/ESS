@@ -2,6 +2,9 @@
 
 Changes/New Features in 5.9:
 @itemize @bullet
+@item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
+ completion candidates for help file aliases, in addition to object
+ names.
 @item Font locking: is now turned on
  even without @command{window-system} is @code{nil}, whenever
  @var{ess-font-lock-mode} is non-nil, i.e., by default.
@@ -15,9 +18,9 @@ Changes/New Features in 5.9:
  (as it required missing features and hence broke ESS startup, there).
 @item @ESS{[R]}: Roxygen has a sub-menu on the [ESS] menu.
 @item @ESS{[R]}: Function @command{ess-rutils-htmldocs} in
-@file{ess-rutils.el} offers an alternative to @code{help.start()} for
-navigating R documentation, using the @command{browse-url} Emacs
-function.
+ @file{ess-rutils.el} offers an alternative to @code{help.start()} for
+ navigating R documentation, using the @command{browse-url} Emacs
+ function.
 @end itemize
 
 Changes/New Features in 5.8:

@@ -1,3 +1,8 @@
+2010-05-17  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el: 4278 `ess-find-help-file' now calls the additional
+	function `ess-get-help-aliases-list' so that it offers completion
+	on aliases, in addition to object names, removing duplicates.
 
 2010-05-17  Richard M. Heiberger  <rmh@temple.edu>
 
