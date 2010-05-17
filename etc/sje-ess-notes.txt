@@ -1,0 +1,9 @@
+* Debugger
+
+Would like to implement a debugger akin to Norm Matloff's work:
+
+http://cran.r-project.org/web/packages/edtdbg/index.html
+
+http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR/
+
+Norm posted that he had started work on ESS, but had to abandon it.
