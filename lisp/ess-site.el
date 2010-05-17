@@ -466,7 +466,19 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
 (cond (ess-microsoft-p ; MS-Windows
-       (fset 'S 'S+6)
+;;        (fset 'S
+;; 	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+;; 		 'S+6-msdos
+;; 	       'S+6))
+       (defun S-by-icon (&rest x)
+	 (interactive)
+	 (message "Please start S+ from the icon.\n Then you can connect emacs to it with `M-x S-existing'.")
+	 )
+       (fset 'S 'S-by-icon)
+       (fset 'S-existing
+	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+		 'S+6-msdos-existing
+	       'S+6-existing))
        (fset 'Sqpe 'Sqpe+6)
        (fset 's-mode 'S+6-mode)
        (fset 's-transcript-mode 'S+6-transcript-mode))
@@ -521,6 +533,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 		(ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
 		(ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
 		)))
+	(setq ess-rterm-version-paths (mapcar '(lambda(x) (w32-short-file-name x)) ess-rterm-version-paths))
 	)
     ;;else  real OS :
       (setq ess-s-versions-created

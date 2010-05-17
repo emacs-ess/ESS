@@ -1,15 +1,30 @@
+
+2010-05-17  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-site.el: I added a call to `w32-short-file-name' on each item
+	in `ess-rterm-version-path'.  Otherwise Windows can't find files
+	with embedded spaces in the directory name.
+
+	I redefined S in Windows.  Now it gives a message to start the S
+	GUI from the icon and then connect to it with M-x `S-existing'.
+	This applies to M-x S, to the S menu item, and to clicking on the
+	icon.
+
+	* ess-sp6w-d.el: turned off a few more `use-dialog-box' and put in
+	some more `w32-short-file-name' calls.
+	
 2010-05-16  Richard M. Heiberger  <rmh@temple.edu>
 
-	* ess-sp6w-d.el, ess-r-d.el: set use-dialog-box to nil for Windows.
+	* ess-sp6w-d.el, ess-r-d.el: set `use-dialog-box' to nil for Windows.
 	Old version of Windows can't load directories from the dialog.
 
-	* ess-site.el: I revised ess-rterm-version-path so it will find
+	* ess-site.el: I revised `ess-rterm-version-path' so it will find
         both 64-bit and 32-bit versions of R on 64-bit Windows.  I tested it
         on 64-bit Windows 7 and 32-bit Windows XP.
 
 	* ess-toolbar.el: add C-c C-c
-	ess-eval-function-or-paragraph-and-step to ess-toolbar-items.
-	Change spluslog to splus_icon_small logo (from S-Plus 7 and
+	`ess-eval-function-or-paragraph-and-step' to `ess-toolbar-items'.
+	Started to change spluslogo to splus_icon_small logo (from S-Plus 7 and
 	earlier to S+ 8).  This needs an xpm and ppm file and permission
 	from TIBCO.  I wrote to Lou Bajuk asking for permission.
 	

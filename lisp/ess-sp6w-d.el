@@ -85,7 +85,7 @@ connects it to the '(ddeESS [S+6])' window.")
 				   " "
 				   inferior-S+6-print-command
 				   " S_PROJ="
-				   (directory-file-name default-directory)))
+				   (w32-short-file-name (directory-file-name default-directory))))
 ;;    (inferior-ess-ddeclient      . "ddeclient")
 ;;    (inferior-ess-client-name    . "S-PLUS")
 ;;    (inferior-ess-client-command . "SCommand")
@@ -203,7 +203,7 @@ to start the Splus program."
 	  (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
 	  )
       (cd (w32-short-file-name (directory-file-name default-directory)))
-      (setenv "S_PROJ" default-directory)
+      (setenv "S_PROJ" (w32-short-file-name default-directory))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in '(ddeESS [S+6])' should follow the "$"
@@ -366,7 +366,7 @@ S-Plus 7 or S-Plus 8."
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
 (expand the `[678]?' to match your setup) to your `exec-path' or
 specify the complete path to `Splus.exe' in the variable
-`inferior-S+6-program-name' in your `.emacs' file.")
+`inferior-S+6-program-name' in your `.emacs' file.")  ;;; " This comment keeps emacs font-lock from getting out of phase.
       (progn
     (forward-line)
       (if (search-backward "splus\t6.0" (point-min) t)
@@ -404,9 +404,11 @@ to start the Splus program."
 	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (setq ess-customize-alist		; change inferior-ess-start-args
 	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
-    (let ((s-proj (getenv "S_PROJ")))
+    (let ((s-proj (getenv "S_PROJ"))
+	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+	  )
       (cd (w32-short-file-name (directory-file-name default-directory)))
-      (setenv "S_PROJ" default-directory)
+      (setenv "S_PROJ" (w32-short-file-name default-directory))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
 		    ; command in '(ddeESS [S+6])' should follow the "$"
