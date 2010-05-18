@@ -1104,7 +1104,7 @@ default 100 ms and be passed to \\[accept-process-output]."
 	(if (or wait-last-prompt
 		(> (length text) 0))
 	  (while (progn
-		   (accept-process-output nil 0 timeout-ms)
+		   (accept-process-output sprocess 0 timeout-ms)
 		   (goto-char (marker-position (process-mark sprocess)))
 		   (beginning-of-line)
 		   (if (< (point) start-of-output)
