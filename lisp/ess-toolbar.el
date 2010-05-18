@@ -89,7 +89,7 @@ For beginners, this is probably better set to a non-nil value."
 
 (defcustom ess-toolbar-items
   '( (R   "startr"  "Start R process")
-     (S   "splus_letter_small" "Start S process")
+     (S   "spluslogo" "Start S process")
      (ess-eval-line-and-step   "rline" "Eval line & step")
      (ess-eval-region   "rregion" "Eval region")
      (ess-eval-function-or-paragraph-and-step "rregion"
