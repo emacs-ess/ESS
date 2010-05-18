@@ -2,6 +2,10 @@
 
 Changes/New Features in 5.9:
 @itemize @bullet
+@item Indentation: New documentation and code has been added to make it 
+easier to change how ESS indents code.  In particular, see 
+@code{ess-default-style}, @code{ess-own-style-list} and the documention
+subsection ``Changing indentation styles''.
 @item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
  completion candidates for help file aliases, in addition to object
  names.

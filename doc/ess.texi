@@ -1913,7 +1913,7 @@ of the window, you will need to set the variable
 @node Indenting, Other edit buffer commands, Evaluating code, Editing
 @section Indenting and formatting S code
 
-ESS now provides a sophisticated mechanism for indenting @Sl{} source
+ESS provides a sophisticated mechanism for indenting @Sl{} source
 code (thanks to Ken'ichi Shibayama).  Compound statements (delimited by
 @samp{@{} and @samp{@}}) are indented relative to their enclosing block.
 In addition, the braces have been electrified to automatically indent to
@@ -1979,12 +1979,56 @@ appropriate comment marker.
 @item
 @kbd{M-x ess-set-style} @*
 Set the formatting style in this buffer to be one of the predefined
-styles: @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
-The @code{DEFAULT} style uses the default values for the indenting
-variables (unless they have been modified in your @file{.emacs} file.)
-@cindex @file{.emacs} file
-This command causes all of the formatting variables to be buffer-local.
+styles, including @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and
+@code{C++}. The @code{DEFAULT} style uses the default values for the
+indenting variables;  The @code{OWN} style allows you to use your own
+private values of the indentation variable, see below.
 @end itemize
+
+@menu
+* Styles::                     Changing indentation styles
+@end menu
+
+@comment  node-name,  next,  previous,  up
+@node Styles,  , ,Indenting 
+@subsection Changing indentation styles
+
+The combined value of nine variables that control indentation are
+collected termed a @i{style}.  ESS provides several styles covering the
+common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
+@code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{CLB}.  The
+variable @code{ess-style-alist} lists the value of each indentation
+variable per style.  
+
+If you wish to change from one predefined style to another, change the
+variable @code{ess-default-style}, for example:
+
+@example
+(setq ess-default-style 'C++)
+@end example
+
+The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
+you wish to edit some of the default values, set
+@code{ess-default-style} to @code{'OWN} and change
+@code{ess-own-style-list}.  
+@xref{Customization}, for convenient ways to set both these variables.
+
+
+If you prefer not to use the custom facility, you can change individual
+indentation variables within a hook, for example:
+
+@example
+(defun myindent-ess-hook ()
+  (setq ess-indent-level 4))
+(add-hook 'ess-mode-hook 'myindent-ess-hook) 
+@end example
+
+In the rare case that you'd like to add an entire new indentation style
+of your own, copy the definition of @code{ess-own-style-list} to a new
+variable and ensure that the last line of the @code{:set} declaration
+calls @code{ess-add-style} with a unique name for your style
+(e.g. @code{'MINE}).  Finally, add @code{(setq ess-default-style 'MINE)}
+to use your new style.
 
 @comment  node-name,  next,  previous,  up
 @node Other edit buffer commands, Source Files, Indenting, Editing
