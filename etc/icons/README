@@ -14,3 +14,12 @@ has header:
 whereas I have set "c None" to indicate the background pixel; this line 
 seems to work for both toolbars:
 ". c None s backgroundToolBarColor",
+
+* splus_letters_small.xpm
+
+2010-05-18: SJE made this new Splus icon from the
+splus_letters_large.xpm file that Rich provided.  I had to move the
+cross over to the left by one pixel, to then allow the image to be
+cropped to 48x48 (cropping performed in gimp).  kiconedit was then
+used to rescale the icon to 24x24.  Finally, background transparency
+added manually to the file, as noted above.

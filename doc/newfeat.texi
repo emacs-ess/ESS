@@ -2,6 +2,7 @@
 
 Changes/New Features in 5.9:
 @itemize @bullet
+@item Toolbar:  The toolbar now has an icon for starting Splus.
 @item Indentation: New documentation and code has been added to make it 
 easier to change how ESS indents code.  In particular, see 
 @code{ess-default-style}, @code{ess-own-style-list} and the documention
