@@ -1,3 +1,9 @@
+2010-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-inf.el (ess-eval-linewise): Partially work around a bug
+	in GNU Emacs 23.x; thanks to Markus Triska; see 
+	http://article.gmane.org/gmane.emacs.ess.general/4366
+
 2010-05-18  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-custom.el (ess-own-style-list): New customized variable.
