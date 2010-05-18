@@ -367,45 +367,31 @@ regardless of where in the line point is when the TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
-(defcustom ess-indent-level 2
-  "Indentation of S statements with respect to containing block."
-  :type 'integer
-  :group 'ess-edit)
+(defvar ess-indent-level 2
+  "Indentation of S statements with respect to containing block.")
 
-(defcustom ess-brace-imaginary-offset 0
-  "Imagined indentation of an open brace following a statement."
-  :type 'integer
-  :group 'ess-edit)
+(defvar ess-brace-imaginary-offset 0
+  "Imagined indentation of an open brace following a statement.")
 
-(defcustom ess-brace-offset 0
+(defvar ess-brace-offset 0
   "Extra indentation for open braces.
-Compares with other text in same context."
-  :type 'integer
-  :group 'ess-edit)
+Compares with other text in same context.")
 
-(defcustom ess-continued-statement-offset 2
-  "Extra indent for lines not starting new statements."
-  :type 'integer
-  :group 'ess-edit)
+(defvar ess-continued-statement-offset 2
+  "Extra indent for lines not starting new statements.")
 
-(defcustom ess-continued-brace-offset 0
+(defvar ess-continued-brace-offset 0
   "Extra indent for substatements that start with open-braces.
-This is in addition to ess-continued-statement-offset."
-  :type 'integer
-  :group 'ess-edit)
+This is in addition to ess-continued-statement-offset.")
 
-(defcustom ess-arg-function-offset 2
+(defvar ess-arg-function-offset 2
   "Extra indent for internal substatements of function `foo' that called
 in `arg=foo(...)' form.
-If not number, the statements are indented at open-parenthesis following foo."
-  :type 'integer
-  :group 'ess-edit)
+If not number, the statements are indented at open-parenthesis following foo.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
-(defcustom ess-close-brace-offset 0
-  "Extra indentation for closing braces."
-  :type 'integer
-  :group 'ess-edit)
+(defvar ess-close-brace-offset 0
+  "Extra indentation for closing braces.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-fancy-comments t
@@ -417,24 +403,17 @@ If not number, the statements are indented at open-parenthesis following foo."
 ;; PeterDalgaard, 1Apr97 :
 ;;The default ess-else-offset should be 0, not 2 IMHO (try looking at
 ;;the ls() function, for instance).  Was 2.
-(defcustom ess-else-offset 0
-  "Extra indent for `else' lines."
-  :type 'integer
-  :group 'ess-edit)
+(defvar ess-else-offset 0
+  "Extra indent for `else' lines.")
 
-(defcustom ess-expression-offset 4
+(defvar ess-expression-offset 4
   "Extra indent for internal substatements of `expression' that specified
 in `obj <- expression(...)' form.
 If not number, the statements are indented at open-parenthesis following
-`expression'."
-  :type 'integer
-  :group 'ess-edit)
+`expression'.")
 
 ;;;*;;; Editing styles
 
-;;; **FIXME**  The following NEEDS to be customized.
-;; SJE: I disagree; this variable should not be customized; individual vars,
-;; such as ess-indent-level are already customizable.
 (defvar ess-default-style-list
   (list 'DEFAULT
 	(cons 'ess-indent-level ess-indent-level)
@@ -495,16 +474,35 @@ If not number, the statements are indented at open-parenthesis following
 	       (ess-else-offset . 0)
 	       (ess-close-brace-offset . 2))))
   "Predefined formatting styles for ESS code.
-Values for all groups, except DEFAULT, are fixed.
-To change the value of variables in the DEFAULT group, change
-the corresponding variables, e.g. `ess-indent-level'.
-The default style in use is controlled by `ess-default-style'.")
+Values for all groups, except OWN, are fixed.  To change the
+value of variables in the OWN group, customize the variable
+`ess-own-style-list'.  The default style in use is controlled by
+`ess-default-style'.")
+
+(defun ess-add-style (key entries)
+  "Add a new style to `ess-style-list', with the key KEY.
+Remove any existing entry with the same KEY before adding the new one.
+This can be used"
+  (setq ess-style-alist (assq-delete-all key ess-style-alist))
+  (add-to-list 'ess-style-alist (cons key entries)))
+
+(defcustom ess-own-style-list (cdr ess-default-style-list)
+  "Indentation variables for your own style that can be changed.
+Set `ess-default-style' to 'OWN to use these values.  To change
+these values, use the customize interface."
+  :group 'ess-edit
+  :type '(repeat (cons symbol integer))
+  :initialize 'custom-initialize-set
+  :set (lambda (symbol value)
+	 (set symbol value)
+	 (ess-add-style 'OWN value)))
 
 (defcustom ess-default-style 'DEFAULT
   "The default value of `ess-style'.
 See the variable `ess-style-alist' for how these groups (DEFAULT,
-GNU, BSD, ...) map onto different settings for variables."
+OWN, GNU, BSD, ...) map onto different settings for variables."
   :type '(choice (const DEFAULT)
+		 (const OWN)
 		 (const GNU)
 		 (const BSD)
 		 (const K&R)
