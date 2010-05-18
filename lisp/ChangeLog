@@ -1,3 +1,12 @@
+2010-05-18  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-custom.el (ess-own-style-list): New customized variable.
+	(ess-add-style): New function, to allow new indentation styles to
+	be added.
+	Nine indentation variables no longer defcustom, as they are set
+	through the `ess-set-style' code, and thus not directly changeable
+	by the user via customize.
+
 2010-05-17  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-help.el: 4278 `ess-find-help-file' now calls the additional
