@@ -1994,7 +1994,7 @@ private values of the indentation variable, see below.
 @subsection Changing indentation styles
 
 The combined value of nine variables that control indentation are
-collected termed a @i{style}.  ESS provides several styles covering the
+collectively termed a @i{style}.  ESS provides several styles covering the
 common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
 @code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{CLB}.  The
 variable @code{ess-style-alist} lists the value of each indentation
