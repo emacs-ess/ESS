@@ -1,3 +1,9 @@
+2010-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-custom.el (ess-eval-deactivate-mark): The default is true 
+	since ESS version 5.9, except on XEmacs which doesn't have 
+	\\[deactivate-mark] and friends
+
 2010-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-inf.el (ess-eval-linewise): Partially work around a bug
