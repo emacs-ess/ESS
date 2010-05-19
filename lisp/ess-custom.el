@@ -1207,9 +1207,10 @@ Experienced users often change / customize it to 'nil'."
   :group 'ess-proc
   :type 'boolean)
 
-(defcustom ess-eval-deactivate-mark t; was nil till 2010-03-22
+(defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
- (see \\[deactivate-mark]).  The default is true since ESS version 5.9 and
+ (see \\[deactivate-mark]).  The default is true since ESS version 5.9,
+ except on XEmacs which doesn't have \\[deactivate-mark] and friends:
  only affects the situation where `transient-mark-mode' is non-nil."
   :group 'ess-proc
   :type 'boolean)
