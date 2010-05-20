@@ -595,12 +595,12 @@ current buffer if nil."
 
             (comint-send-input))))))))
 
-(defun ess-sas-file-path ()
+(defun ess-sas-file-path (&optional force)
  "Define `ess-sas-file-path' to be the current buffer depending on suffix."
   (interactive)
 
   (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
-    (if (string-match ess-sas-suffix-regexp ess-sas-temp-file) ;;(progn
+    (if (or force (string-match ess-sas-suffix-regexp ess-sas-temp-file)) ;;(progn
 	(setq ess-sas-file-path
 	   (nth 0 (split-string ess-sas-temp-file "[<]")))))))
 	;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
@@ -877,7 +877,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
 "Creates an MS RTF portrait file from the current buffer."
     (interactive)
-    (ess-sas-file-path)
+    (ess-sas-file-path t)
     (ess-revert-wisely)
 
     (if (equal ess-tmp-font-size nil)
@@ -891,7 +891,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 	(goto-char (point-min))
 	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
 	(goto-line 2)
-	(insert "\\margl720\\margr720\\margt720\\margb720\n")
+	(if (string-match ess-sas-suffix-regexp ess-sas-file-path)
+	    (insert "\\margl720\\margr720\\margt720\\margb720\n"))
         (goto-char (point-min))
 
         (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
