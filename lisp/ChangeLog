@@ -1,3 +1,11 @@
+2010-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait): 
+	creation of portrait RTFs with the ESS[SAS] font sizes
+	for non-ESS[SAS]-related buffers, such as .el, now
+	allowed, but functionality is somewhat limited
+	TODO: ess-sas-rtf-landscape
+
 2010-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-custom.el (ess-eval-deactivate-mark): The default is true 
