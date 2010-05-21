@@ -3,8 +3,8 @@
 Changes/New Features in 5.9:
 @itemize @bullet
 @item Toolbar:  The toolbar now has an icon for starting Splus.
-@item Indentation: New documentation and code has been added to make it 
-easier to change how ESS indents code.  In particular, see 
+@item Indentation: New documentation and code has been added to make it
+easier to change how ESS indents code.  In particular, see
 @code{ess-default-style}, @code{ess-own-style-list} and the documention
 subsection ``Changing indentation styles''.
 @item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
@@ -18,6 +18,9 @@ subsection ``Changing indentation styles''.
  discussion.
 @item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
  thanks to Jeffrey Arnold.
+@item @ESS{[R]}: Now finds all R versions, both 64-bit and 32-bit, on some
+ 64-bit Windows machines.  Please report back to ess-core success or failure
+ on your 64-bit Windows machine.
 @item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
 @item @ESS{[R]}: Roxygen on XEmacs no longer font locks for now
  (as it required missing features and hence broke ESS startup, there).

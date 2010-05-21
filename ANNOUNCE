@@ -212,6 +212,17 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
      Changes/New Features in 5.9:
+        * Toolbar:  The toolbar now has an icon for starting Splus.
+
+        * Indentation: New documentation and code has been added to
+          make it easier to change how ESS indents code.  In
+          particular, see `ess-default-style', `ess-own-style-list' and
+          the documention subsection "Changing indentation styles".
+
+        * `ess-display-help-on-object' (`C-c C-v') now offers
+          completion candidates for help file aliases, in addition to
+          object  names.
+
         * Font locking: is now turned on  even without `window-system'
           is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
           default.
@@ -223,6 +234,10 @@ in the file COPYING in the same directory as this file for more details.
         * ESS[R]: Editing support for "#!" (Rscript / littler) editing,
           thanks to Jeffrey Arnold.
 
+        * ESS[R]: Now finds all R versions, both 64-bit and 32-bit, on
+          some  64-bit Windows machines.  Please report back to
+          ess-core success or failure  on your 64-bit Windows machine.
+
         * ESS Manual now more visually pleasing;
           `http://ess.r-project.org/Manual/ess.html'
 
@@ -232,9 +247,9 @@ in the file COPYING in the same directory as this file for more details.
 
         * ESS[R]: Roxygen has a sub-menu on the [ESS] menu.
 
-        * ESS[R]: Function `ess-rutils-htmldocs' in `ess-rutils.el'
-          offers an alternative to `help.start()' for navigating R
-          documentation, using the `browse-url' Emacs function.
+        * ESS[R]: Function `ess-rutils-htmldocs' in  `ess-rutils.el'
+          offers an alternative to `help.start()' for  navigating R
+          documentation, using the `browse-url' Emacs  function.
 
      Changes/New Features in 5.8:
         * ESS[R]: New `ess-rutils.el' with utilities for listing,
