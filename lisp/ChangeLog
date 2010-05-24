@@ -1,3 +1,11 @@
+
+2010-05-23  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-site.el, ess-r-d.el: Detect cases when `R/R-x.y.x' exists and
+	`R/R-x.y.z/bin/Rterm.exe' does not exist.  In `ess-find-rterm' in file
+	`ess-r-d.el', replace such values with `nil'.  In `ess-site.el',
+	use `ess-flatten-list' to remove the `nil'.
+	
 2010-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait): 
