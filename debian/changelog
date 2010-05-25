@@ -1,3 +1,18 @@
+ess (5.9-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+  * debian/control: Increased Standards-Version: to current version
+  * debian/source/format: Added with value "1.0" to please lintian
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 21 May 2010 02:32:53 -0500
+
+ess (5.8-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 03 Mar 2010 06:25:04 -0600
+
 ess (5.7.1-1) unstable; urgency=low
 
   * New upstream version released this afternoon
