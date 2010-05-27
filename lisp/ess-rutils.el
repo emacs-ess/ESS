@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Fri Apr 16 15:02:19 2010 (UTC)
+;; Last-Updated: Thu May 27 02:59:43 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -262,7 +262,9 @@ checkBuilt=TRUE to rebuild installed packages if needed."
 (defun ess-rutils-objs ()
   "Manipulate R objects; wrapper for `ess-rdired'."
   (interactive)
-  (ess-rdired))
+  (ess-rdired)
+  (if (featurep 'fit-frame)
+      (fit-frame)))
 
 (defun ess-rutils-loadwkspc (file)
   "Load workspace FILE into R."

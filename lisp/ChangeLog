@@ -1,3 +1,7 @@
+2010-05-26  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-objs): 4299 Added `fit-frame' (if
+	available) after calling rdired.
 
 2010-05-23  Richard M. Heiberger  <rmh@temple.edu>
 
