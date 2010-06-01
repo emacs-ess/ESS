@@ -2944,7 +2944,7 @@ started:
 R CMD rtags --help
 @end example
 
-For further details, see @uref{http://dsarkar.fhcrc.org/rtags/}
+For further details, see @uref{http://developer.r-project.org/rtags.html}
 
 @comment  node-name,  next,  previous,  up
 @node Rdired, Rutils, TAGS, Miscellaneous
