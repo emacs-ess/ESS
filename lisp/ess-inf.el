@@ -1424,7 +1424,11 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
-  (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
+
+  ;; 2010-06-03 SJE
+  ;; disabled this in favour of ess-dirs.  Martin was not sure why this
+  ;; key was defined anyway in this mode.
+  ;;(define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
   (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
   ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
   (define-key inferior-ess-mode-map "\C-c\M-l" 'comint-dynamic-list-input-ring)
@@ -1613,6 +1617,9 @@ to continue it."
 	(setq comint-input-sender 'inferior-R-input-sender))
        ( (member ess-dialect '("S3" "S4" "S+3" "S+4" "S+5" "S+6" "S"))
 	(setq comint-input-sender 'inferior-ess-input-sender))))
+
+  (when (string= ess-language "S")
+    (local-set-key "\M-\r"    'ess-dirs))
 
   ;; Configuration for Stata input handling
   ;; AJR: Stata is hell.   This is the primary configuration point.

@@ -1,3 +1,9 @@
+2010-06-03  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (inferior-ess-mode): Bind M-RET to 'ess-dirs in *R*
+	and *S* buffers only.
+	* ess-r-d.el (ess-dirs): New function.
+
 2010-05-26  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-rutils.el (ess-rutils-objs): 4299 Added `fit-frame' (if
