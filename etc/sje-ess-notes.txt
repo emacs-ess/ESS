@@ -1,3 +1,5 @@
+Stephen Eglen's notes on future changes to ESS                   -*- org -*-
+
 * Debugger
 
 Would like to implement a debugger akin to Norm Matloff's work:
@@ -7,3 +9,36 @@ http://cran.r-project.org/web/packages/edtdbg/index.html
 http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR/
 
 Norm posted that he had started work on ESS, but had to abandon it.
+
+
+* Comint so slow? ess-eval-visibly-p should be t again.
+
+Why is comint so slow when passing code line by line?  Markus Triska
+recently looked at this:
+
+To: ess-help@stat.math.ethz.ch
+connect(): No such file or directory
+From: Markus Triska <markus.triska@gmx.at>
+Date: Sun, 16 May 2010 13:59:57 +0200
+Subject: Re: [ESS] ESS on Mac slower than R.app?
+Sender: ess-help-bounces@stat.math.ethz.ch
+
+Hi Rodney,
+
+Rodney Sparapani <rsparapa@mcw.edu> writes:
+
+> I think if you update to the latest version of ESS this problem will
+> go away.  See the previous discussion of a very similar GNU Emacs bug
+> fix at https://stat.ethz.ch/pipermail/ess-bugs/2009q4/000584.html
+
+I think ess-eval-visibly-p should remain true by default, as it is quite
+useful. If you change the accept-process-output call in
+ess-eval-linewise to:
+
+    (accept-process-output sprocess 0 timeout-ms)
+
+(the difference being that you explicitly state to wait for input from
+"sprocess"), the test case works instantly also with ess-eval-visibly-p.
+
+All the best,
+Markus
