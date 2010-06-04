@@ -1,5 +1,14 @@
 @itemize @w{}
 
+Changes/New Features in 5.10:
+@itemize @bullet
+
+@item @kbd{M-RET} in *S* buffers is now bound to
+@code{ess-dirs}.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+@code{setwd()} within a *S* process.
+@end itemize
+
 Changes/New Features in 5.9:
 @itemize @bullet
 @item Toolbar:  The toolbar now has an icon for starting Splus.

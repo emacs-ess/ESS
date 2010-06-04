@@ -350,6 +350,8 @@ prefixed by "##").
 setwd() command, emacs does not recognise that you have changed the
 current directory.  
 
-Solution: Use @kbd{M-x ess-change-directory}.  This will
-ensure that Emacs will know that you have changed the directory, and
-update the emacs variable @code{default-directory}.
+Solution: Use @kbd{M-x ess-change-directory}.  This will prompt you for
+the directory to change to.  It will then change directory within the
+*S* buffer, and also update the emacs variable @code{default-directory}.
+Alternatively, if you have already executed setwd(), press @kbd{M-RET}
+within the *S* buffer so that Emacs can update @code{default-directory}.
