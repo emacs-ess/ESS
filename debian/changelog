@@ -1,3 +1,10 @@
+ess (5.9.1-2) unstable; urgency=low
+
+  * lisp/*: Upgraded to svn revision 5352 with a fix by Sebastian Luque 
+    for the XEmacs incompatibility			(Closes: #583857)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 04 Jun 2010 09:59:22 -0500
+
 ess (5.9.1-1) unstable; urgency=low
 
   * New upstream version 
