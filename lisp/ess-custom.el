@@ -119,7 +119,7 @@
 
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.9.1"
+(defvar ess-version "5.10"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
