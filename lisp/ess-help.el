@@ -499,7 +499,7 @@ Stata or XLispStat for additional information."
 	(string-match "STA" ess-language)
 	(string-match "SAS" ess-language)))
       (let* ((help-files-list
-	      (delete-dups (append (ess-get-help-files-list)
+	      (ess-uniq-list (append (ess-get-help-files-list)
 				   (ess-get-help-aliases-list)
 				   (mapcar 'list
 					   (ess-get-object-list
@@ -530,7 +530,7 @@ Stata or XLispStat for additional information."
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
-  (delete-dups
+  (ess-uniq-list
    (mapcar 'list
 	   (apply 'append
 		  (mapcar '(lambda (a-file)

@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Thu May 27 02:59:43 2010 (UTC)
+;; Last-Updated: Fri Jun  4 04:03:15 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -313,7 +313,7 @@ displaying results in long or short formats, and sorting by any given field.
 Options should be separated by value of `crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
-	(okstring (replace-regexp-in-string " +" "+" string)))
+	(okstring (ess-replace-regexp-in-string " +" "+" string)))
     (if current-prefix-arg
 	(let ((mpp (concat
 		    "&max="
@@ -380,59 +380,58 @@ Options should be separated by value of `crm-default-separator'."
   "Provide key bindings."
   (interactive)
   (when ess-rutils-keys
-    ;; Some key bindings suggested by Patrick Dreschler.
-    (define-key inferior-ess-mode-map [(control c) (control .) (l)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
       'ess-rutils-localpkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (r)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
       'ess-rutils-repospkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (u)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
       'ess-rutils-updatepkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (a)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
       'ess-rutils-apropos)
-    (define-key inferior-ess-mode-map [(control c) (control .) (m)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
       'ess-rutils-rmall)
-    (define-key inferior-ess-mode-map [(control c) (control .) (o)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
       'ess-rutils-objs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (w)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
       'ess-rutils-loadwkspc)
-    (define-key inferior-ess-mode-map [(control c) (control .) (s)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
       'ess-rutils-savewkspc)
-    (define-key inferior-ess-mode-map [(control c) (control .) (d)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (d)]
       'ess-change-directory)
-    (define-key inferior-ess-mode-map [(control c) (control .) (H)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (H)]
       'ess-rutils-htmldocs)))
 
-;; Menu, as suggested by Martin Maechler
-(when inferior-ess-mode-map
-  (define-key-after
-    (lookup-key inferior-ess-mode-map [menu-bar iESS])
-    [sep]
-    '("--") 'ess-submit-bug-report)
-  (define-key-after
-    (lookup-key inferior-ess-mode-map [menu-bar iESS])
-    [Rutils]
-    (cons "Rutils" (make-sparse-keymap "Rutils"))
-    'ess-submit-bug-report)
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils htmldocs]
-    '("Browse HTML" . ess-rutils-htmldocs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils apropos]
-    '("Apropos" . ess-rutils-apropos))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils chgdir]
-    '("Change directory" . ess-change-directory))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils savewkspc]
-    '("Save workspace" . ess-rutils-savewkspc))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils loadwkspc]
-    '("Load workspace" . ess-rutils-loadwkspc))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils updatepkgs]
-    '("Update packages" . ess-rutils-updatepkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils repospkgs]
-    '("Packages in repositories" . ess-rutils-repospkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils localpkgs]
-    '("Local packages" . ess-rutils-localpkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils rmall]
-    '("Remove objects" . ess-rutils-rmall))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils objs]
-    '("Manage objects" . ess-rutils-objs)))
+(easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
+  "Submenu of `inferior-ess-mode' to use with RUtils."
+  '("RUtils"
+    ["Manage objects" 	       ess-rutils-objs		t]
+    ["Remove objects"  	       ess-rutils-rmall		t]
+    "------"
+    ["Local packages"           ess-rutils-localpkgs	t]
+    ["Packages in repositories" ess-rutils-repospkgs	t]
+    ["Update packages"          ess-rutils-update-pkgs	t]
+    "------"
+    ["Load workspace"           ess-rutils-loadwkspc	t]
+    ["Save workspace"           ess-rutils-savewkspc	t]
+    ["Change directory"	       ess-change-directory	t]
+    "------"
+    ["Browse HTML" 	       ess-rutils-htmldocs	t]
+    ["Apropos"	  	       ess-rutils-apropos	t]))
+
+(when (featurep 'xemacs)
+  (defun ess-rutils-mode-xemacs-menu ()
+    "Hook to install `ess-rutils-mode' menu for XEmacs (with easymenu)."
+    (if 'inferior-ess-mode
+	;; Why does using nil for 2nd arg put menu at top level?
+	(easy-menu-add-item inferior-ess-mode-menu nil
+			    ess-rutils-mode-menu)
+      (easy-menu-remove-item inferior-ess-mode-menu nil
+			     ess-rutils-mode-menu)))
+  (add-hook 'inferior-ess-mode-hook 'ess-rutils-mode-xemacs-menu t))
+
+(unless (featurep 'xemacs)
+  (easy-menu-add-item inferior-ess-mode-menu nil
+		      ess-rutils-mode-menu))
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 
