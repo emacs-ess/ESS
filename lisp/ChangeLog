@@ -1,3 +1,11 @@
+2010-06-03  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el (ess-find-help-file): 4318 Replaced `delete-dups' by
+	`ess-uniq-list', since XEmacs doesn't know about it.
+
+	* ess-rutils.el: 4345 Redesigned menu generation and key binding
+	definitions so that Xemacs understands them.
+
 2010-06-03  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (inferior-ess-mode): Bind M-RET to 'ess-dirs in *R*
@@ -15,10 +23,10 @@
 	`R/R-x.y.z/bin/Rterm.exe' does not exist.  In `ess-find-rterm' in file
 	`ess-r-d.el', replace such values with `nil'.  In `ess-site.el',
 	use `ess-flatten-list' to remove the `nil'.
-	
+
 2010-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait): 
+	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait):
 	creation of portrait RTFs with the ESS[SAS] font sizes
 	for non-ESS[SAS]-related buffers, such as .el, now
 	allowed, but functionality is somewhat limited
@@ -26,14 +34,14 @@
 
 2010-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-custom.el (ess-eval-deactivate-mark): The default is true 
-	since ESS version 5.9, except on XEmacs which doesn't have 
+	* ess-custom.el (ess-eval-deactivate-mark): The default is true
+	since ESS version 5.9, except on XEmacs which doesn't have
 	\\[deactivate-mark] and friends
 
 2010-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-inf.el (ess-eval-linewise): Partially work around a bug
-	in GNU Emacs 23.x; thanks to Markus Triska; see 
+	in GNU Emacs 23.x; thanks to Markus Triska; see
 	http://article.gmane.org/gmane.emacs.ess.general/4366
 
 2010-05-18  Stephen Eglen  <stephen@gnu.org>
@@ -64,7 +72,7 @@
 
 	* ess-sp6w-d.el: turned off a few more `use-dialog-box' and put in
 	some more `w32-short-file-name' calls.
-	
+
 2010-05-16  Richard M. Heiberger  <rmh@temple.edu>
 
 	* ess-sp6w-d.el, ess-r-d.el: set `use-dialog-box' to nil for Windows.
@@ -79,7 +87,7 @@
 	Started to change spluslogo to splus_icon_small logo (from S-Plus 7 and
 	earlier to S+ 8).  This needs an xpm and ppm file and permission
 	from TIBCO.  I wrote to Lou Bajuk asking for permission.
-	
+
 2010-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): we can safely
