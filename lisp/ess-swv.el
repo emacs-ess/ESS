@@ -167,8 +167,8 @@ Sweave file buffer name) and display it."
 	 (pdfviewer (ess-get-pdf-viewer))
 	 (pdf-status)
 	 (cmdstr-win (format "start \"%s\" \"%s.pdf\""
-			     pdfviewer namestem ".pdf\""))
-	 (cmdstr (format "%s %s.pdf &" pdfviewer namestem)))
+			     pdfviewer namestem))
+	 (cmdstr (format "\"%s\" \"%s.pdf\" &" pdfviewer namestem)))
     ;;(shell-command (concat "pdflatex " latex-filename))
     (message "Running pdfLaTeX on '%s' ..." latex-filename)
     (switch-to-buffer tex-buf)

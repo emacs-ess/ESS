@@ -1,5 +1,7 @@
 2010-06-06  Sebastian P. Luque  <spluque@gmail.com>
 
+	* ess-swv.el (ess-swv-PDF): 4308 Fixed cmdstr-*.
+
 	* ess-rutils.el (ess-rutils-updatepkgs): 4352 Use better defaults.
 
 2010-06-03  Sebastian P. Luque  <spluque@gmail.com>
