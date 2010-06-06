@@ -1,7 +1,7 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Fri Jun  4 04:03:15 2010 (UTC)
+;; Last-Updated: Sun Jun  6 19:28:52 2010 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
@@ -228,13 +228,19 @@ User is asked for confirmation."
       (message "no packages flagged to install"))))
 
 (defun ess-rutils-updatepkgs (lib repos)
-  "Update packages in library LIB and repos REPOS. Defaults are the Debian
-local library directory (/usr/local/lib/R/site-library) and the Canadian
-CRAN repository (http://probability.ca/cran/). This also uses
-checkBuilt=TRUE to rebuild installed packages if needed."
+  "Update packages in library LIB and repos REPOS. Defaults are the first
+element returned by .libPaths() for LIB, and the repository named CRAN
+returned by getOption(\"repos\") for REPOS. This also uses checkBuilt=TRUE
+to rebuild installed packages if needed."
   (interactive "DPath to library to update: \nsrepos: ")
-  (if (string= "" lib) (setq lib "/usr/local/lib/R/site-library"))
-  (if (string= "" repos) (setq repos "http://probability.ca/cran/"))
+  (if (string= "" lib)
+      (setq lib
+	    (car (ess-get-words-from-vector
+		  "as.character(.libPaths())\n"))))
+  (if (string= "" repos)
+      (setq repos
+	    (car (ess-get-words-from-vector
+		  "as.character(getOption(\"repos\")[\"CRAN\"])\n"))))
   (ess-execute (concat "update.packages(lib.loc='"
 		       lib "', repos='" repos
 		       "', ask=FALSE, checkBuilt=TRUE)") 'buffer))

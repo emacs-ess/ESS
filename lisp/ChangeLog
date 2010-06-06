@@ -1,3 +1,7 @@
+2010-06-06  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-updatepkgs): 4352 Use better defaults.
+
 2010-06-03  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-help.el (ess-find-help-file): 4318 Replaced `delete-dups' by
