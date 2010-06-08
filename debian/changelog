@@ -1,3 +1,9 @@
+ess (5.10-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 08 Jun 2010 05:29:06 -0500
+
 ess (5.9.1-2) unstable; urgency=low
 
   * lisp/*: Upgraded to svn revision 5352 with a fix by Sebastian Luque 
