@@ -900,7 +900,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.9:
+Changes/New Features in 5.10:
+          <ul>
+<li><kbd>M-RET</kbd> in *S* buffers is now bound to
+<code>ess-dirs</code>.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+<code>setwd()</code> within a *S* process. 
+</ul>
+
+     <p>Changes/New Features in 5.9:
           <ul>
 <li>Toolbar:  The toolbar now has an icon for starting Splus. 
 <li>Indentation: New documentation and code has been added to make it

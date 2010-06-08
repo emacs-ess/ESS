@@ -584,7 +584,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.9:
+Changes/New Features in 5.10:
+          <ul>
+<li><kbd>M-RET</kbd> in *S* buffers is now bound to
+<code>ess-dirs</code>.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+<code>setwd()</code> within a *S* process. 
+</ul>
+
+     <p>Changes/New Features in 5.9:
           <ul>
 <li>Toolbar:  The toolbar now has an icon for starting Splus. 
 <li>Indentation: New documentation and code has been added to make it
@@ -3531,9 +3539,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 setwd() command, emacs does not recognise that you have changed the
 current directory.
 
-   <p>Solution: Use <kbd>M-x ess-change-directory</kbd>.  This will
-ensure that Emacs will know that you have changed the directory, and
-update the emacs variable <code>default-directory</code>.
+   <p>Solution: Use <kbd>M-x ess-change-directory</kbd>.  This will prompt you for
+the directory to change to.  It will then change directory within the
+*S* buffer, and also update the emacs variable <code>default-directory</code>. 
+Alternatively, if you have already executed setwd(), press <kbd>M-RET</kbd>
+within the *S* buffer so that Emacs can update <code>default-directory</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
