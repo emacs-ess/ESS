@@ -483,6 +483,12 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.10:
+        * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This
+          function will set Emacs's current directory to be the same as
+          the *S* process.  This is useful if you use `setwd()' within
+          a *S* process.
+
      Changes/New Features in 5.9:
         * Toolbar:  The toolbar now has an icon for starting Splus.
 
