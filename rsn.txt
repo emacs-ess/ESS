@@ -1,0 +1,157 @@
+
+Kevin Wright: 
+
+I want to change the background color of code chunks in noweb buffers.
+
+
+Erik Iverson:
+
+I think ESS is very feature complete at this point.  The only thing
+I've looked at that seems interesting is some sort of 'intellisense'
+feature that uses R's built-in completion mechanism to temporarily
+display available completions using something like company-mode,
+autocomplete, or completion-ui.  I had at one point something that
+almost worked, but I believe the library it was built in,
+company-mode, has now changed significantly.
+
+Another separate point is that the manual could be slightly updated to
+keep up with current features.  For example, the main evaluation
+command in R buffers, C-c C-c, is not documented.  A great feature for
+showing R function arguments when the '(' key is pressed only shows up
+in the Changelog, and is claimed to be on be default
+(ess-r-args-electric-paren), when that no longer seems to be the case.
+Simple features like this can draw users to ESS who might not know why
+it is useful to them otherwise.
+
+
+Josh Wiley:
+
+This may be windows centric, but it would be minorly convenient if
+options("width") in R was paired with the size of the window in Emacs.
+
+
+Brendan Halpin:
+
+Clearer documentation - what I know how to do I found out often by
+trial and error, and the mailing list.
+
+
+Bill Venables:
+
+Better default customisation of iESS - nothing that can't be fixed
+with a hook, though.
+
+
+Felix Andrews:
+
+ESS eval seems to be very slow: when I do C-c C-b it takes a very long
+time and there is no visual indication that anything is happening (it
+says "Starting evaluation...").  I know this can be avoided using
+ess-eval-visibly-p but it would often be helpful to see the code
+echoed as well.
+
+
+Kjetil Halvorsen:
+
+A good cheatsheet to print and put on the wall. 
+
+
+Andreas Kiermeier:
+
+When writing code using lattice (e.g. xyplot) and I have a panel
+function, then C-c C-c when pressed inside the panel function only
+submits the panel function rather than the whole plotting
+expression. I would love if this could be extended (same goes for
+apply functions and probably others) to cover the whole expression (or
+even 'paragraph') rather than just the panel function.
+
+
+Gray Calhoun:
+
+I'd like to be able to direct graphical output to a buffer, have
+graphics with multiple pages sent to multiple buffers, and have
+multiple graphics open at a time.
+
+
+Ista Zahn:
+
+Function/variable completion in script files (maybe this already is
+supposed to work, but for me completion only works in interactive
+sessions).
+
+
+Gerhard Schon:
+
+For consulting, I need to use SPSS 18. It would be nice, to interact
+with SPSS 18.
+
+
+Derek Eder:
+
+Easier configuration!  "font lock" and "visible execution" are 2
+features which I always have trouble turning off (on multiple
+machines) because I can never remember where they are in the
+configuration menus.
+
+
+Paul Hewson:
+
+Object browser (e.g. open another frame listing variable names of a dataframe)
+
+
+Deepayan Sarkar:
+
+Not have R output be fontified as if it were R code.
+
+
+David Carslaw:
+
+The one feature I really miss is the showing of function arguments in
+the R buffer.  I think I saw an explanation for why this is not made
+available as "the source is real" paradigm.  However, showing the
+function options in the R buffer in my view would be very useful and
+not take anything away from the "source is real" approach.  The simple
+reason is it is difficult to remember what the options are!  It's very
+useful when writing the scripts - where it is available.  RKward does
+this too and it's useful.
+
+
+Gerald Jean:
+
+Having function arguments show up in the mini-buffer UNTIL the
+closing parenthesis is typed.  By the way, in R it shows up briefly,
+but not at all in Splus; would be great to have it for all "S"
+variants.
+
+
+Charles Berry:
+
+Handle \Sexpr{}'s in Sweave code.
+
+How 'about
+
+     ess-eval-sexpr
+
+     Tangle the current contents of \Sexpr{ } and send it to the
+     inferior ESS process.
+
+
+     ess-eval-sexprs-in-region
+
+     Tangle the contents of \Sexpr{ }'s in region and send them to the
+     inferior ESS process. (Maybe even open a *Sexpr* buffer (say) and
+     place the region contents in that buffer with the \Sexpr{}'s
+     replaced by their printed results.)
+
+More than a few times, I have had Sweave terminate with an error or
+deliver unreadable results because of a silly error in an \Sexpr.
+
+
+Sven Hartenstein:
+
+I am sometimes annoyed by emacs "popup" windows, e.g. after expanding
+some string or when a R help buffer was opened. My request would be a
+simple key binding that - whatever the current window layout and
+active buffers are - gives me my two pane view with the latest *.R
+file as the active buffer in the upper 3/4 of the frame and the R
+process the other 1/4 of the frame.
