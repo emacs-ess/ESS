@@ -1,3 +1,7 @@
+2010-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-r-d.el (ess-dirs): give a message, and also set ess-directory.
+
 2010-06-06  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-swv.el (ess-swv-PDF): 4308 Fixed cmdstr-*.

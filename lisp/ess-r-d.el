@@ -586,12 +586,13 @@ Completion is available for supplying options."
 If you change directory within *R* using setwd(), run this command so that
 Emacs can update its `default-directory' variable for the *R* buffer.
 
-Currently this function has been tested only for *R*, but should also work for 
+Currently this function has been tested only for *R*, but should also work for
 *S* buffers."
   (interactive)
-  (let ((dir))
-    (setq dir (car (ess-get-words-from-vector "getwd()\n")))
-    (setq default-directory (file-name-as-directory dir))))
+  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
+    (message "new (ESS / default) directory: %s" dir)
+    (setq ess-directory (file-name-as-directory dir)))
+    (setq default-directory ess-directory))
 
 
  ; provides
