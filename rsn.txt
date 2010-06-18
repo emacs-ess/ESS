@@ -1,4 +1,31 @@
 
+ESS User Poll Tally
+
+Stat package used with ESS
+R	    43
+SAS	     7
+JAGS	     6
+Stata	     5
+Splus	     4
+BUGS	     1
+Other	     1   Sage?
+
+emacs used with ESS
+GNU Emacs   42
+XEmacs	     3
+Aquamacs     2
+Other	     0
+
+OS used with ESS
+Linux	    37
+Windows	    23
+Mac OS X     9
+Solaris	     3
+Other	     1	 Cygwin
+
+
+Feature Requests
+
 Kevin Wright: 
 
 I want to change the background color of code chunks in noweb buffers.
@@ -155,3 +182,111 @@ simple key binding that - whatever the current window layout and
 active buffers are - gives me my two pane view with the latest *.R
 file as the active buffer in the upper 3/4 of the frame and the R
 process the other 1/4 of the frame.
+
+
+Francois Pepin:
+
+I haven't looked recently to see how hard this currently is, but I
+often run R on another linux machine through ssh and screen.  I would
+love it if there was an easy way to connect ESS to the other R
+instance more or less seamlessly. Last time I looked, the proposed
+solutions seemed to be a bit clunky.
+
+
+Patrick Connolly and Emanuel Heitlinger:
+
+A clever way of dealing with the unbalanced quotes (to R's way of
+thinking) that can be returned to Emacs from a bash call.  The `
+character screws up the font colouring.  Can't imagine how it could be
+done, and I realize it's really a bash issue, but I'd be very grateful
+if someone could work out a way of dealing with it.  I invariably see
+colours as though it's all a string irrespective of function names or
+anything else.  
+
+
+Brian Diggs:
+
+Interactive integration with SAS on Windows.  I realize this is a
+problem with SAS, not ESS, though.
+
+
+Tengfei Yin:
+
+I would say, supporting more with Rsweave, especially some convenient key
+binding.  That may require more work with AUCTeX guys, I don't know.  It 
+will be wonderful if I can just press Ctrl-C C, Rnw --> Latex->pdf viewer,
+and all the error messages could show up and I don't have to open another 
+TeX file and click Ctrl-C C to see the output
+
+
+Keith Ponting:
+
+(Vaguely related to other comments about font locking, which I second,
+but probably an issue for two-mode-mode rather than for ESS) I use
+Sweave a lot with emacs two-mode-mode. When in an ESS block (for which I
+use \begin{Scode}...\end{Scode}) the font locking is often corrupted by
+characters in the rest of the file. It appears that the two modes are
+not completely isolated, so that an unbalanced $ in an ESS block will
+cause the LaTeX sections to be treated as in math mode, conversely
+unbalanced ' in the LaTeX sections causes the ESS sections to be treated
+as strings.  There is a work-around - adding the balancing symbol as a 
+comment in the appropriate language, but it does take a bit of finding 
+sometimes.
+
+
+Jeff Arnold:
+
+I would like to see closer integration with CEDET (http://cedet.sourceforge.net/); adding the ESS languages to CEDET would open up a lot of development environment tools without reinventing the wheel. This would require writing a grammar for the parser for each language, but external parsers like etags/ctags can be used to bootstrap language support.
+
+I also find the fact that ESS includes several unrelated languages to be confusing.  From what I have seen of the code, there doesn't appear to much shared code between the S/R, SAS, Stata, and BUGS/JAGS parts of ESS.  I found this confusing both as a user and as a contributor, primarily because sometimes it is not immediately clear whether an ess-* function is generic to all the languages, or just a S/R related function.  Refactoring the ESS package into four major modes (S, SAS, Stata, and BUGS) released by the ESS project would seem to make for a cleaner code base.  Consistency among the major modes could still be enforced through conventions for the functions and key-bindings included in a major mode.
+
+
+John Maindonald:
+
+A GUI interface to commonly used commands, organised
+structured a/c the general nature of the command.  There
+are a few Emacs commands that should also be noted,
+in a separate category.  You might want to take a poll on
+which are the commands that get used, or would be used
+if one could remember them:
+
+<CRTL-C><CTRL-D>
+<CRTL-C><CTRL-L>
+<CTRL-C><CTRL-P>
+
+<CRTL-X><CTRL-V>
+<CRTL-X><B>
+<CRTL-X><CTRL-B>
+<CRTL-X>5F
+
+<ESC>p
+<ESC>n
+<ESC>;  (with region selected)
+<ESC><CTRL>\    and <ESC>x 1
+<ESC><RET>
+<ESC>r
+<ESC>x ess-rdired
+<ESC>x occur <RET> << RET  (lines with <<)
+<ESC>-x ess-font-lock-
+
+Commands for creating & handling transcript files:
+<ESC>X <CTRL-C><CTRL-W>
+
+
+Don MacQueen:
+
+An option to send R output to a separate window, with the commands
+that caused the output echoed before the output.
+
+
+Ross Boylan:
+
+I wish that ?foo, where foo is a non-existent
+command, didn't leave a *help[R](foo)* buffer lying around.
+
+
+Johan Sandblom:
+
+Some manner of font-lock integration with AUCTeX (I use mmm-mode)
+though I realize that may be more a matter for AUCTeX.
+
