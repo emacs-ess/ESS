@@ -22,7 +22,7 @@ subsection ``Changing indentation styles''.
 @item Font locking: is now turned on
  even without @command{window-system} is @code{nil}, whenever
  @var{ess-font-lock-mode} is non-nil, i.e., by default.
-@item @ESS script editing: ess-eval-deactivate-mark default is now t,
+@item @ESS{} script editing: ess-eval-deactivate-mark default is now t,
  as suggested by Leo Alekseyev and subsequent ``unanimous'' ESS-help
  discussion.
 @item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
