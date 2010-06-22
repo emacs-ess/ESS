@@ -2355,7 +2355,8 @@ form completions."
 	(if (featurep 'xemacs) ;; work around Xemacs bug
 	    (comint-dynamic-complete-filename)
 	  ;; GNU emacs and correctly working Xemacs:
-	  (comint-replace-by-expanded-filename))
+	  ;;(comint-replace-by-expanded-filename))
+	  (comint-dynamic-complete-filename))
 	;; always return t if in a string
 	t)))
 

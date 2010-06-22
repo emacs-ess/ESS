@@ -1,5 +1,8 @@
 2010-06-22  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-inf.el (ess-complete-filename): Use
+	comint-dynamic-complete-filename so that filename is not expanded.
+
 	* ess-r-d.el (ess-R-complete-object-name): If there are no
 	possible-completions, should return nil, so that when this
 	function is called from comint-dynamic-complete-functions, other
