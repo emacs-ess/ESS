@@ -1,3 +1,9 @@
+2010-06-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el: allow customizable "pdflatex" command, via
+	* ess-custom.el (ess-swv-pdflatex-commands, ess-sweave): new
+	variable, in new group;
+
 2010-06-22  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-complete-filename): Use
@@ -8,7 +14,6 @@
 	function is called from comint-dynamic-complete-functions, other
 	functions can then be tried.  This should fix bug that history
 	expansion was not working (reported by Vinu Jacob).
-
 
 2010-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 

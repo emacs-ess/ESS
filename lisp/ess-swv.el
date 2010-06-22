@@ -157,9 +157,16 @@ Sweave file buffer name) and display it."
     (switch-to-buffer buf)
     ))
 
-(defun ess-swv-PDF ()
-  "Create a PDF file ('pdflatex') and display it."
-  (interactive)
+(defun ess-swv-PDF (&optional pdflatex-cmd)
+  "From LaTeX file, create a PDF (via 'texi2pdf' or 'pdflatex', ...), by
+default using the first entry of `ess-swv-pdflatex-commands' and display it."
+  (interactive
+   (list
+    (let ((def (elt ess-swv-pdflatex-commands 0)))
+      (completing-read (format "pdf latex command (%s): " def)
+		       ess-swv-pdflatex-commands ; <- collection to choose from
+		       nil 'confirm ; or 'confirm-after-completion
+		       nil nil def))))
   (let* ((buf (buffer-name))
 	 (namestem (file-name-sans-extension (buffer-file-name)))
 	 (latex-filename (concat namestem ".tex"))
@@ -170,12 +177,16 @@ Sweave file buffer name) and display it."
 			     pdfviewer namestem))
 	 (cmdstr (format "\"%s\" \"%s.pdf\" &" pdfviewer namestem)))
     ;;(shell-command (concat "pdflatex " latex-filename))
-    (message "Running pdfLaTeX on '%s' ..." latex-filename)
+    (message "Running '%s' on '%s' ..." pdflatex-cmd latex-filename)
     (switch-to-buffer tex-buf)
     (setq pdf-status
-	  (call-process "pdflatex" nil tex-buf 1 latex-filename))
+	  (call-process pdflatex-cmd nil tex-buf 1
+			(if (string= "texi2" (substring pdflatex-cmd 0 5))
+			    ;; workaround (bug?): texi2pdf or texi2dvi *fail* to work with full path:
+			    (file-name-nondirectory latex-filename)
+			  latex-filename)))
     (if (not (= 0 pdf-status))
-	(message "** OOPS: error in 'pdflatex' (%d)!" pdf-status)
+	(message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
       ;; else: pdflatex probably ok
       (shell-command
        (concat (if (and ess-microsoft-p (w32-shell-dos-semantics))

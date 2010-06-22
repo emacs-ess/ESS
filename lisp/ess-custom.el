@@ -117,6 +117,11 @@
   :prefix "ess-" ;; << -- added for ESS integration  FIXME??
   :group 'tools)
 
+(defgroup ess-sweave nil
+  "Mode for editing Sweave (*.[SR]nw) files."
+  :group 'ess-S
+  :prefix "ess-")
+
 ;; Variables (not user-changeable)
 
 (defvar ess-version "5.10"
@@ -676,6 +681,13 @@ syntactically correct roxygen entries)"
   "Prefix string to insert before each line in a roxygen block."
   :group 'ess-roxy
   :type 'string)
+
+(defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
+  "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
+the first entry is the default command."
+  :group 'ess-sweave
+  :type 'list)
+
 
  ; System variables
 

@@ -826,7 +826,7 @@ Assumes that buffer has not already been in found in current frame."
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
-  (if ess-microsoft-p 
+  (if ess-microsoft-p
       (progn
 	;; Debug: C-c C-l fails (to start R or give good message) in Windows
 	(ess-write-to-dribble-buffer
@@ -1865,12 +1865,14 @@ A negative prefix argument gets the objects for that position
   (interactive "P")
   (ess-execute inferior-ess-search-list-command	 invert "S search list"))
 
+;; FIXME --- this *only* works in S / S-plus; not in R
+;; -----     ("at least" is not assigned to any key by default)
 (defun ess-execute-attach (dir &optional posn)
   "Attach a directory in the `ess-language' process with the attach() command.
 When used interactively, user is prompted for DIR to attach and
 prefix argument is used for POSN (or 2, if absent.)
 Doesn't work for data frames."
-  (interactive "DAttach directory: \nP")
+  (interactive "Attach directory: \nP")
   (ess-execute (concat "attach(\""
 		     (directory-file-name (expand-file-name dir))
 		     "\""
