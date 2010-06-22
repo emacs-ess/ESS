@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.10
+   5.11
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -483,6 +483,13 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.11:
+        * `M-n P' in Sweave buffers now prompts for the command to run
+          instead of using `pdflatex' unconditionally, offering
+          completion from customizable collection
+          `ess-swv-pdflatex-commands', the first of which is taken as
+          default and that defaults to `texi2pdf'.
+
      Changes/New Features in 5.10:
         * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This
           function will set Emacs's current directory to be the same as
@@ -505,7 +512,7 @@ shell, simply type `M-x S+6-msdos RET'.
           is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
           default.
 
-        * ESSscript editing: ess-eval-deactivate-mark default is now t
+        * ESS script editing: ess-eval-deactivate-mark default is now t,
           as suggested by Leo Alekseyev and subsequent "unanimous"
           ESS-help  discussion.
 

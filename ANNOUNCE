@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.10
+   5.11
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -211,6 +211,13 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
+     Changes/New Features in 5.11:
+        * `M-n P' in Sweave buffers now prompts for the command to run
+          instead of using `pdflatex' unconditionally, offering
+          completion from customizable collection
+          `ess-swv-pdflatex-commands', the first of which is taken as
+          default and that defaults to `texi2pdf'.
+
      Changes/New Features in 5.10:
         * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This
           function will set Emacs's current directory to be the same as
@@ -233,7 +240,7 @@ in the file COPYING in the same directory as this file for more details.
           is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
           default.
 
-        * ESSscript editing: ess-eval-deactivate-mark default is now t
+        * ESS script editing: ess-eval-deactivate-mark default is now t,
           as suggested by Leo Alekseyev and subsequent "unanimous"
           ESS-help  discussion.
 

@@ -268,7 +268,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.10
+   <p>5.11
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -900,7 +900,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.10:
+Changes/New Features in 5.11:
+          <ul>
+<li><kbd>M-n P</kbd> in Sweave buffers now prompts for the command to run
+instead of using <samp><span class="command">pdflatex</span></samp> unconditionally, offering completion from
+customizable collection <code>ess-swv-pdflatex-commands</code>, the first of
+which is taken as default and that defaults to <samp><span class="command">texi2pdf</span></samp>. 
+</ul>
+
+     <p>Changes/New Features in 5.10:
           <ul>
 <li><kbd>M-RET</kbd> in *S* buffers is now bound to
 <code>ess-dirs</code>.  This function will set Emacs's current
@@ -921,7 +929,7 @@ subsection &ldquo;Changing indentation styles&rdquo;.
 <li>Font locking: is now turned on
  even without <samp><span class="command">window-system</span></samp> is <code>nil</code>, whenever
  <var>ess-font-lock-mode</var> is non-nil, i.e., by default. 
-<li><acronym>ESSscript editing: ess-eval-deactivate-mark default is now t</acronym>
+<li><acronym>ESS</acronym> script editing: ess-eval-deactivate-mark default is now t,
  as suggested by Leo Alekseyev and subsequent &ldquo;unanimous&rdquo; ESS-help
  discussion. 
 <li><acronym>ESS[R]</acronym>: Editing support for &ldquo;#!&rdquo; (Rscript / littler) editing,

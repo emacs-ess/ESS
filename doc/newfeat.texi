@@ -1,8 +1,15 @@
 @itemize @w{}
 
+Changes/New Features in 5.11:
+@itemize @bullet
+@item @kbd{M-n P} in Sweave buffers now prompts for the command to run
+instead of using @command{pdflatex} unconditionally, offering completion from
+customizable collection @code{ess-swv-pdflatex-commands}, the first of
+which is taken as default and that defaults to @command{texi2pdf}.
+@end itemize
+
 Changes/New Features in 5.10:
 @itemize @bullet
-
 @item @kbd{M-RET} in *S* buffers is now bound to
 @code{ess-dirs}.  This function will set Emacs's current
 directory to be the same as the *S* process.  This is useful if you use
