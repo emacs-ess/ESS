@@ -1,3 +1,12 @@
+2010-06-22  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-R-complete-object-name): If there are no
+	possible-completions, should return nil, so that when this
+	function is called from comint-dynamic-complete-functions, other
+	functions can then be tried.  This should fix bug that history
+	expansion was not working (reported by Vinu Jacob).
+
+
 2010-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-r-d.el (ess-dirs): give a message, and also set ess-directory.

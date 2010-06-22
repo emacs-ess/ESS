@@ -470,9 +470,16 @@ To be used instead of ESS' completion engine for R versions >= 2.5.0
 	    (ess-get-words-from-vector
 	     (concat NS ".retrieveCompletions()\n")))))
 
-    (or (comint-dynamic-simple-complete token-string
-					possible-completions)
-	'none)))
+    ;; If there are no possible-completions, should return nil, so
+    ;; that when this function is called from
+    ;; comint-dynamic-complete-functions, other functions can then be
+    ;; tried.
+    (if (null possible-completions)
+	nil
+      (or (comint-dynamic-simple-complete token-string
+					  possible-completions)
+	  'none))))
+
 
 ;;;### autoload
 (defun Rnw-mode ()
