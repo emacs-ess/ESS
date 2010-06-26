@@ -1,3 +1,9 @@
+2010-06-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (R-mode-hook): new, use in
+	* ess-site.el: add ess-roxy-mode to R-mode-hook instead of
+	ess-mode-hook.
+
 2010-06-22  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-swv.el: allow customizable "pdflatex" command, via

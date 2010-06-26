@@ -1,6 +1,6 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <blindglobe@gmail.com>
@@ -609,6 +609,11 @@ Good for evaluating ESS code."
   "Hook for customizing ESS transcript mode."
   :group 'ess-hooks
   :type 'hook)
+
+(defcustom R-mode-hook nil
+  "Hook run when entering R mode."
+  :type 'hook
+  :group 'ess-R)
 
 (defcustom Rnw-mode-hook nil
   "Hook run when entering Rnw mode."

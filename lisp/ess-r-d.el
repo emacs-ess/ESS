@@ -173,6 +173,7 @@ to R, put them in the variable `inferior-R-args'."
 	(ess-eval-linewise inferior-ess-language-start
 			   nil nil nil 'wait-prompt))))
 
+
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
@@ -189,8 +190,7 @@ to R, put them in the variable `inferior-R-args'."
 	     (ess-imenu-R)))
   ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
-  )
-
+  (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
 
