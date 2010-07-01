@@ -910,7 +910,8 @@ Completion is also provided over file names, which is particularly
 useful when using @Sl{} functions such as @code{get()} or @code{scan()}
 which require fully expanded file names.  Whenever the cursor is within
 an @Sl{} string, pressing @kbd{TAB} completes the file name before
-point, and also expands any @samp{~} or environment variable references.
+point.  Since ESS 5.11, it no longer also expands any @samp{~} or
+environment variable references.
 
 If the cursor is not in a string and does not follow a (partial) object
 name, the @key{TAB} key has a third use: it expands history references.
