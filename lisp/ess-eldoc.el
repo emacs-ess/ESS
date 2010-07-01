@@ -183,12 +183,11 @@ This is the first version; works only on function name, not within arg list."
 (defun ess-use-eldoc ()
   "Switch on eldoc for ESS (R mode only)."
   (interactive)
-  (when (equal ess-dialect "R")
-    (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc)
-    (eldoc-mode t)))
+  (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc)
+  (eldoc-mode t))
 
 ;; For now, while testing, switch on ess-eldoc.  Later, ths could be removed
 ;; and instead ask user to add it.
-(add-hook 'ess-mode-hook 'ess-use-eldoc)
+(add-hook 'R-mode-hook 'ess-use-eldoc)
 
 (provide 'ess-eldoc)
