@@ -2,6 +2,10 @@
 
 Changes/New Features in 5.11:
 @itemize @bullet
+@item Filename completion within buffers now adds only trailing
+characters to complete the filename, rather than expanding to an
+absolute file path.  This filename completion is bound to the TAB key.
+
 @item @kbd{M-n P} in Sweave buffers now prompts for the command to run
 instead of using @command{pdflatex} unconditionally, offering completion from
 customizable collection @code{ess-swv-pdflatex-commands}, the first of
