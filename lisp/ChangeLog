@@ -1,3 +1,7 @@
+2010-07-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-R-use-this-dir): New defun.
+
 2010-07-01  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-eldoc.el (ess-use-eldoc): Use the new R-mode-hook instead of
