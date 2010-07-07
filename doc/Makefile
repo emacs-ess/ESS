@@ -110,16 +110,16 @@ install-other-docs: pdf html
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
 	@echo "making HTML documentation..."
-	$(MAKEHTML) ess.texi && mv -f ess.html html
+	$(MAKEHTML) ess.texi > html/ess.html
 #MM	$(TEXI2HTML) $(SPLITCHAP) ess.texi
 #MM	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
 #MM	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
 html/readme.html: $(TEXISRC)
-	$(MAKEHTML)  --no-validate readme.texi
+	$(MAKEHTML)  --no-validate readme.texi > html/readme.html
 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
-	mv -f readme.html html
+#	mv -f readme.html html
 
 refcard/refcard.pdf: refcard/refcard.tex
 	(cd refcard ; pdflatex refcard)

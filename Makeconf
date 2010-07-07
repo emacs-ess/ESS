@@ -50,7 +50,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 SHELL = /bin/sh
 #
 MAKEINFO = LC_ALL=C LANG=en makeinfo
-MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css
+MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o -
 ##                            ^^^^^^^^^^ today's bandwidth is fast
 #MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
