@@ -1,9 +1,8 @@
 ####======= Common Declarations for *all* ESS -*-Makefile-*-s ==========
 
 ## To install ESS for all users on your unix system:
-## 1. Edit ess-site.el accordingly
-## 2. Edit Section 1 and 2 below
-## 3. Execute: gmake install
+## 1. Edit Section 1 and 2 below
+## 2. Execute: gmake install
 
 ## Section 1
 ## Installation variables for your emacs variant
