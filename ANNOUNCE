@@ -224,9 +224,8 @@ in the file COPYING in the same directory as this file for more details.
           default and that defaults to `texi2pdf'.
 
         * `M-RET' is now also bound in S language (R and S+) buffers to
-          `ess-use-this-dir'. It sends `setwd(..)' to the S process
-          such that working directory is set to the one of the source
-          file.
+          `ess-use-this-dir'. It sends `setwd(..)' to the S process to
+          set the working directory to the one of the source file.
 
      Changes/New Features in 5.10:
         * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This
