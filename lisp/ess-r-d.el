@@ -588,20 +588,6 @@ Completion is available for supplying options."
 			  "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
 
 
-(defun ess-R-use-this-dir ()
-  "Synchronise the current dir of *R* process to directory of current buffer.
-If the current buffer has no associated *R* process, provide a message."
-  (interactive)
-  (if ess-local-process-name
-      (let ((cmd (format "setwd('%s')\n" default-directory))
-	    )
-	(ess-command cmd)
-	(message "Directory of *%s* process set to %s"
-		 ess-local-process-name default-directory))
-        ;; no local process
-    (message "No *R* process associated with this buffer.")))
-
-
 (defun ess-dirs ()
   "Set Emacs' current directory to be the same as the *R* process.
 If you change directory within *R* using setwd(), run this command so that
