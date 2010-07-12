@@ -484,11 +484,21 @@ shell, simply type `M-x S+6-msdos RET'.
 =================
 
      Changes/New Features in 5.11:
+        * Filename completion within buffers now adds only trailing
+          characters to complete the filename, rather than expanding to
+          an absolute file path.  This filename completion is bound to
+          the TAB key.
+
         * `M-n P' in Sweave buffers now prompts for the command to run
           instead of using `pdflatex' unconditionally, offering
           completion from customizable collection
           `ess-swv-pdflatex-commands', the first of which is taken as
           default and that defaults to `texi2pdf'.
+
+        * `M-RET' is now also bound in S language (R and S+) buffers to
+          `ess-use-this-dir'. It sends `setwd(..)' to the S process
+          such that working directory is set to the one of the source
+          file.
 
      Changes/New Features in 5.10:
         * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This

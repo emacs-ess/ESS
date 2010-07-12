@@ -1,3 +1,8 @@
+2010-07-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (ess-use-this-dir): renamed and moved here: For S and R.
+	(ess-mode-hook): bind ess-use-this-dir to M-<RET>
+
 2010-07-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-r-d.el (ess-R-use-this-dir): New defun.

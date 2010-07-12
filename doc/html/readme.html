@@ -58,7 +58,7 @@ h1 {
 	margin-top: 0em; 
 	margin-right: -1em;
 	
-	background-image: url(../images/skyline.jpg);
+	background-image: url(../images/logoESS.gif);
 	background-position: left 25%;
 	
 	-o-background-size: 100% auto;
@@ -251,7 +251,8 @@ p, dl, ul, ol { voice-family: male; }
 acronym { speak:spell-out; voice-family: female; }
 abbr[title]::after { content: "This abbreviation means" attr(title); speak:normal; }
 acronym[title]::after { content: "This acronym means" attr(title); speak:normal; }
-}--></style>
+}
+--></style>
 </head>
 <body>
 <div class="node">
@@ -902,10 +903,17 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
      <ul>
 Changes/New Features in 5.11:
           <ul>
-<li><kbd>M-n P</kbd> in Sweave buffers now prompts for the command to run
+<li>Filename completion within buffers now adds only trailing
+characters to complete the filename, rather than expanding to an
+absolute file path.  This filename completion is bound to the TAB key.
+
+          <li><kbd>M-n P</kbd> in Sweave buffers now prompts for the command to run
 instead of using <samp><span class="command">pdflatex</span></samp> unconditionally, offering completion from
 customizable collection <code>ess-swv-pdflatex-commands</code>, the first of
 which is taken as default and that defaults to <samp><span class="command">texi2pdf</span></samp>. 
+<li><kbd>M-RET</kbd> is now also bound in S language (R and S+) buffers
+to <samp><span class="command">ess-use-this-dir</span></samp>. It sends <code>setwd(..)</code> to the S process
+such that working directory is set to the one of the source file. 
 </ul>
 
      <p>Changes/New Features in 5.10:

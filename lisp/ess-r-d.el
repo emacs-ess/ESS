@@ -596,11 +596,10 @@ If the current buffer has no associated *R* process, provide a message."
       (let ((cmd (format "setwd('%s')\n" default-directory))
 	    )
 	(ess-command cmd)
-	(message "Directory of *%s* process set to %s" 
+	(message "Directory of *%s* process set to %s"
 		 ess-local-process-name default-directory))
         ;; no local process
     (message "No *R* process associated with this buffer.")))
-  
 
 
 (defun ess-dirs ()
