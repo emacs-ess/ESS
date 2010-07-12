@@ -450,7 +450,6 @@ Uses the file given by the variable `ess-function-outline-file'."
     (goto-char (1+ oldpos))))
 
 
-;;; FIXME: generalize this for Stata, SAS, Xlispstat...
 (defun ess-use-this-dir ()
   "Synchronise the current directory of the S or R process to the one of the current
 buffer. If that buffer has no associated *R* process, provide a message."
@@ -458,6 +457,11 @@ buffer. If that buffer has no associated *R* process, provide a message."
   (if ess-local-process-name
       (let ((cmd (format "setwd('%s')\n" default-directory))
 	    )
+	(unless (string= ess-language "S")
+	  ;; FIXME: generalize this for Stata, SAS, Xlispstat... -- then move to ess-mode.el
+	  (error
+	   "ESS setting working directory in *%s* not yet implemented for language %s"
+	   ess-local-process-name ess-language))
 	(ess-command cmd)
 	(message "Directory of *%s* process set to %s"
 		 ess-local-process-name default-directory))
