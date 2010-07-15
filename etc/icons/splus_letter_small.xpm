@@ -1,7 +1,7 @@
 /* XPM */
 static char *dummy[]={
 "25 19 151 2",
-"Qt c None",
+"Qt c None s backgroundToolBarColor",
 "#M c #044b83",
 "#R c #044c86",
 "#t c #044c87",
