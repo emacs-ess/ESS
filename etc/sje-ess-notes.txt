@@ -71,7 +71,7 @@ If at the start of the line, or numeric prefix provided, call
 	  '(lambda ()   (local-set-key "\t" 'ess-indent-or-complete)))
 
 
-* ess-eldoc
+* ess-eldoc.el
 
 ** Switch to use R-mode-hook, rather than ess-mode-hook
 
