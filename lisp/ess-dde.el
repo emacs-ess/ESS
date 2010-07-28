@@ -1,4 +1,4 @@
-;;; essd-dde.el --- ESS customization for ddeclients under Windows 9x/NT
+;;; ess-dde.el --- ESS customization for ddeclients under Windows 9x/NT
 
 ;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin

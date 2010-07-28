@@ -33,7 +33,7 @@ details.
 	command.com /c date
 	C-q C-m RET
 
-@item (RMH) Changes in essd-r.el for Windows
+@item (RMH) Changes in ess-r-d.el for Windows
 
 	One of the design goals in ESS was to make it almost
 	unnecessary for users to make modifications to the ess-*.el

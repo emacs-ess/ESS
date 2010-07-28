@@ -1,4 +1,4 @@
-;;; Documentation for essd-rgui.el --- Support for running Rgui on
+;;; Documentation for ess-r-gui.el --- Support for running Rgui on
 ;;; Windows as an inferior Emacs process
 
 ;; Copyright (C) 2008 A.J. Rossini, Richard M. Heiberger, Martin
@@ -28,7 +28,7 @@ Here are the steps.
 
 4. Make sure you have a directory named c:/TEMP
 
-5. Then, load essd-rgui.el into emacs and type
+5. Then, load ess-r-gui.el into emacs and type
      M-x Rgui
 
 This will create a new MSDOS command buffer named "*R*" which will

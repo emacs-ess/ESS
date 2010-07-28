@@ -32,7 +32,7 @@
 ;; function and variable namess.
 
 ;; This file extends eldoc to work in R buffers.  It currently uses
-;; Sven's essd-r-args.el file to retrieve args for a given R function
+;; Sven's ess-r-args.el file to retrieve args for a given R function
 ;; (via ess-r-args-get).  Note that it works slightly different to
 ;; Sven's code, in that you just need to have the point over the name
 ;; of an R function, or inside its arguments list, for eldoc to show

@@ -282,7 +282,7 @@ Customization Examples and Solutions to Problems
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
    using S version 4, and sick and tired of the buffer-name *S+3*
    we've stuck you with.  Simply edit the "ess-dialect" alist entry in 
-   the essd-s+3.el and essd-s4.el files to be "S" instead of "S4" and
+   the ess-s3-d.el and ess-s4-d.el files to be "S" instead of "S4" and
    "S+3".  This will insure that all the inferior process buffer names 
    are "*S*".
 

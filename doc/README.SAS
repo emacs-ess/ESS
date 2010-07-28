@@ -354,7 +354,7 @@ Here is a typical myfile.sas:
 Recommended autoexec.sas
 ========================
 
-The default settings of the inferior-SAS-args in essd-sas.el
+The default settings of the inferior-SAS-args in ess-sas-d.el
 are "-stdio -linesize 80 -noovp -nosyntaxcheck"
 with the interpretations:
   -stdio          required to make the redirection of stdio work

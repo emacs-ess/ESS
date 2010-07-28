@@ -215,7 +215,7 @@ Detailed Help For S-PLUS 2000 and the License Manager
 Found the solution to getting Sqpe-mode to work with the license manager - I
 set S_ELMHOST in Emacs with (setenv "S_ELMHOST" "123.45.67.890"), instead of
 trying to make it a command-line argument.  Thus I was also able to reduce
-the number of modifications to "essd-sp4.el".  I still change the delay time
+the number of modifications to "ess-sp4-d.el".  I still change the delay time
 by hand (from 30 seconds to 10); I wish this were a variable so I could just
 put (setq-default inferior-ess-delay 10) in my .emacs.
 
@@ -249,7 +249,7 @@ User can put additional customization in P:/Home/.emacs
 3) ESS:
 <http://ess.stat.wisc.edu/>  get "ess-5.1.21.zip"
 Extract to C:\emacs-20.4, thus creating C:/emacs-20.4/ess-5.1.21
-In C:/emacs-20.4/ess-5.1.21/lisp/essd-sp4.el:
+In C:/emacs-20.4/ess-5.1.21/lisp/ess-sp4-d.el:
   Change (sleep-for 30) to (sleep-for 10)  (twice)
 
 4) Cygwin:

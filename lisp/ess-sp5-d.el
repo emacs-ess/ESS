@@ -28,8 +28,8 @@
 
 ;;; Commentary:
 ;;; AJR copied S4 to be S+5.
-;;; DB contributed the changes from essd-sp3.el to
-;;; essd-s4.el. (removed the old ugly approach).
+;;; DB contributed the changes from ess-sp3-d.el to
+;;; ess-s4-d.el. (removed the old ugly approach).
 ;;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
 ;;; to RMH and JMC for code and suggestions
 ;;; Thanks to MM for making this sensible.

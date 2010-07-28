@@ -1,5 +1,8 @@
 2010-07-28  Sebastian P. Luque  <spluque@gmail.com>
 
+	* ess-inf.el: 4369 Corrected autoloading of
+	`ess-R-complete-object-name' (due to old renaming below).
+
 	* Makefile: 4350 Corrected the "clean" target to account for
 	old renaming of essd-* files.
 

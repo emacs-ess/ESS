@@ -54,7 +54,7 @@
 
 (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload).")
 
-(autoload 'ess-R-complete-object-name	    "essd-r"	"(autoload).")
+(autoload 'ess-R-complete-object-name	    "ess-r-d"	"(autoload).")
 
 (autoload 'ess-eval-region-ddeclient	    "ess-dde"	"(autoload).")
 (autoload 'ess-eval-linewise-ddeclient	    "ess-dde"	"(autoload).")
@@ -1607,7 +1607,7 @@ to continue it."
   ;; i.e. put it as a buffer local var, in S or R defuns...
   ;;
   ;; SJE: Do you mean that we should put this code into (R) and the S
-  ;; dialects?  I agree that would be cleaner. e.g. in essd-r.el, for
+  ;; dialects?  I agree that would be cleaner. e.g. in ess-r-d.el, for
   ;; the R defun we could have:
   ;; (inferior-ess r-start-args) ;; (R)
   ;; (setq comint-input-sender 'inferior-R-input-sender) ;; <<- add this.
@@ -2238,7 +2238,7 @@ In all cases, the value is an list of object names."
 	  ;; Take a directory listing
 	  (and ess-filenames-map
 	       ;; first try .Data subdirectory:
-	       ;;FIXME: move ".Data" or ``this function'' to essd-sp6.el etc:
+	       ;;FIXME: move ".Data" or ``this function'' to ess-sp6-d.el etc:
 	       (let ((dir (concat (file-name-as-directory obj) ".Data")))
 		 (if (not (file-accessible-directory-p dir))
 		     (setq dir obj))

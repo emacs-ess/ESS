@@ -362,7 +362,7 @@ NOTE: Not all of these are clean OR are even consistent.
 * (RMH)
 
   
-  5. essd-s+3.el
+  5. ess-s3-d.el
   63	                             ;;(if (string= ess-version-running "S3")
   This comment seems inconsistent with ess-version-running.  I think it should be
   	                             ;;(if (string= ess-version-running "S+3")
@@ -718,8 +718,8 @@ NOTE: Not all of these are clean OR are even consistent.
   for errors (problems) and so forth.  It also uses different keywords
   for the Help file (__Help instead of .Help).  These are functional
   differences, not just cosmetic differences where the font would be
-  wrong.  See the comments in essd-s4.el (based on my original s4.el).
-  (just noticed, the current essd-s4.el has two ending pages.)  It is
+  wrong.  See the comments in ess-s4-d.el (based on my original s4.el).
+  (just noticed, the current ess-s4-d.el has two ending pages.)  It is
   easy to make ess-mode work for S4 by overriding all the differences
   (which is how s4.el works).  It is harder to do it cleanly so the
   same emacs session can be used for S4 and S3.  Lots of currently
@@ -1044,7 +1044,7 @@ NOTE: Not all of these are clean OR are even consistent.
   *S* buffer should go to the filename.s that was the most recent
   sender of ^C^N or ^C^R.
 
-  Here is cook's sas-mode-map and how it fits with my essd-sas.el
+  Here is cook's sas-mode-map and how it fits with my ess-sas-d.el
  
    "\C-c\C-i" 'indent-sas-statement)		\t  use recommended conventions
    "\C-c\C-a" 'beginning-of-sas-statement)	use
