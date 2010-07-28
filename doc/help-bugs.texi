@@ -17,8 +17,8 @@ interactive submission of BUGS commands is also supported.
 @section ESS[BUGS]--Model files
 
 Model files with the @file{.bug} extension are edited in @ESS{[BUGS]} mode
-if @code{(require 'essd-bugs)} was performed or edited in @ESS{[JAGS]} mode
-if @code{(require 'essd-jags)}.
+if @code{(require 'ess-bugs-d)} was performed or edited in @ESS{[JAGS]} mode
+if @code{(require 'ess-jags-d)}.
 Three keys are bound for your use in @ESS{[BUGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.  
 @kbd{F2} performs the same action as it does in @ESS{[SAS]},
 @xref{ESS(SAS)--Function keys for batch processing}.  @kbd{C-c C-c} performs the

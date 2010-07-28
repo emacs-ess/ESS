@@ -1,3 +1,8 @@
+2010-07-28  Sebastian P. Luque  <spluque@gmail.com>
+
+	* Makefile: 4350 Corrected the "clean" target to account for
+	old renaming of essd-* files.
+
 2010-07-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-s-l.el (ess-use-this-dir): renamed and moved here: For S and R.
