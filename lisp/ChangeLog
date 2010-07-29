@@ -1,3 +1,11 @@
+2010-07-29  Sebastian P. Luque  <spluque@gmail.com>
+
+	* Makefile (clean): 4394 Reverted this rule to the previous
+	version since it was intended to also clean files with older
+	names.  Removed 'ess-rdired.elc' from this rule, since it is
+	already in the ELC variable, and "clean" removes those files.
+	However, kept the fixed 'ess-xls-d.elc' and 'ess-vst-d.elc' rules.
+
 2010-07-28  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-inf.el: 4369 Corrected autoloading of

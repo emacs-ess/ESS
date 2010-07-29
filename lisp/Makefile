@@ -72,14 +72,14 @@ dist: ess-custom.el
 clean:
 	rm -f $(ELC) \
 	ess-cust.elc ess-emcs.elc essl-bug.elc \
-	essl-sas.elc ess-sas-d.elc essa-sas.elc \
-	essl-bugs.elc ess-bugs-d.elc ess-jags-d.elc \
-	essl-sta.elc ess-sta-d.elc \
-	essl-s.elc ess-s3-d.elc ess-s4-d.elc \
-	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
-	ess-r-d.elc ess-rdired.elc ess-r-args.elc essa-r.elc ess-rd.elc \
-	ess-sp6w-d.elc \
-	ess-arc-d.elc ess-omg-d.elc ess-vst-d.elc ess-xls-d.elc essl-lsp.elc essl-omg.elc ess-mous.elc
+	essl-sas.elc essd-sas.elc essa-sas.elc \
+	essl-bugs.elc essd-bugs.elc essd-jags.elc \
+	essl-sta.elc essd-sta.elc \
+	essl-s.elc essd-s3.elc essd-s4.elc \
+	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
+	essd-r.elc essd-r-args.elc essa-r.elc essddr.elc \
+	essd-sp6w.elc \
+	essd-arc.elc essd-omg.elc essd-vst.elc essd-xls.elc essl-lsp.elc essl-omg.elc ess-mous.elc
 
 distclean: clean
 # and potentially more
