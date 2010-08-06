@@ -1,3 +1,9 @@
+2010-08-06  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-get-function-args): fixed bug: function
+	args could not be fetched if 'function' was part of the function
+	name
+
 2010-07-29  Sebastian P. Luque  <spluque@gmail.com>
 
 	* Makefile (clean): 4394 Reverted this rule to the previous

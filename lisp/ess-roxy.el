@@ -40,6 +40,14 @@
 ;; - preview
 ;;   - C-c C-e C-r :: create a preview of the Rd file as generated
 ;;     using roxygen
+;;     
+;; Known issues:
+;;
+;; - hideshow mode does not work very well. In particular, if ordinary
+;;   comments precede a roxygen entry, then both will be hidden in the
+;;   same overlay from start and not unfoldable using TAB since the
+;;   roxygen prefix is not present. The planned solution is implement
+;;   a replacement for hideshow.
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
@@ -502,7 +510,7 @@ list of strings."
 	     (ess-beginning-of-function)
 	     (buffer-substring-no-properties
 	      (progn
-		(search-forward-regexp "function *" nil nil 1)
+		(search-forward-regexp "[=,-] *function *" nil nil 1)
 		(+ (point) 1))
 	      (progn
 		(ess-roxy-match-paren)
