@@ -655,8 +655,8 @@ Used to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-template-alist
-  (list (cons "description"  "<description>")
-	(cons "details" "<details>")
+  (list (cons "description"  ".. content for \\description{} ..")
+	(cons "details" ".. content for \\details{} ..")
 	(cons "title" "")
 	(cons "param"  "")
 	(cons "return" "")

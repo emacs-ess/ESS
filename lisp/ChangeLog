@@ -1,3 +1,8 @@
+2010-08-10  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-custom.el (ess-roxy-template-alist): less cryptic default
+	for description and details fields
+
 2010-08-06  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-get-function-args): fixed bug: function
