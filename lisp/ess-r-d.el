@@ -177,7 +177,7 @@ to R, put them in the variable `inferior-R-args'."
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
-  (interactive)
+  (interactive "P")
   (setq ess-customize-alist R-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
