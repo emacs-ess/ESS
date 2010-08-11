@@ -272,9 +272,10 @@ the empty string."
     (nreverse res-arg)))
 
 (defun ess-roxy-update-entry ()
-  "Update the current entry or the entry above the function which
-the point is in. Add basic roxygen documentation if no roxygen
-entry is available."
+  "Update the entry at the point or the entry above the function which
+the point is in. Add a template empty roxygen documentation if no roxygen
+entry is available. The template can be customized via the
+variable `ess-roxy-template-alist'."
   (interactive)
   (save-excursion
     (let* ((args-fun (ess-roxy-get-args-list-from-def))

@@ -1,3 +1,10 @@
+2010-08-11  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-custom.el: advice user that no empty lines are allowed in
+	description
+
+	* ess-roxy.el (ess-roxy-update-entry): improved documentation
+
 2010-08-10  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-custom.el (ess-roxy-template-alist): less cryptic default
