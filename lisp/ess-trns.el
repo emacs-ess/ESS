@@ -270,9 +270,9 @@ prompt from those lines that remain.  Prefix argument means to use
 \\[toggle-read-only] to clean even if the buffer is \\[read-only]."
   (interactive "r\nP")
   (unless inferior-ess-prompt
-    (error "Cannot clean ESS transcript region in this mode!\n
- That only works in \\[ess-transcript-mode] or \\[inferior-ess-mode] ('*R*' etc)."
-	   ;; Maybe call \\[ess-clean-region-in-new-transcript] ?"))
+    (error "Cannot clean ESS transcript region in this mode!
+ That only works in ess-transcript-mode or inferior-ess-mode ('*R*' etc)."
+	   ;; Maybe call ess-clean-region-in-new-transcript ?"))
 	   ))
   (let ((do-toggle (and buffer-read-only even-if-read-only))
 	(ess-prompt-rx (concat "^" inferior-ess-prompt)))
