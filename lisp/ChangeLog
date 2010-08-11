@@ -1,3 +1,8 @@
+2010-08-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-clean-region): give error (instead of
+	"hang") when inferior-ess-prompt is empty.
+
 2010-08-11  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-custom.el: advice user that no empty lines are allowed in

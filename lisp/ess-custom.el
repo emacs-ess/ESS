@@ -1754,7 +1754,7 @@ Defaults to `ess-S-non-functions'."
  ; ess-mode: editing S source
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
-;;; ess-trans.el, so we provide it here.
+;;; ess-trns.el, so we provide it here.
 (defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
 (make-variable-buffer-local 'ess-mode-syntax-table)
 
