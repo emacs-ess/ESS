@@ -1,3 +1,8 @@
+2010-08-13  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/ess.texi (Org): New section describing interaction with Org
+	mode, contributed by Dan Davison and Eric Schulte.
+
 2010-07-13  ESS Maintainers <ESS-core@stat.math.ethz.ch>
 
   * Version 5.11 released.
