@@ -479,7 +479,7 @@ on your system.
 @include unixlike.texi
 @include windows.texi
 
-@node Requirements,  , Installation, Installation
+@node Requirements, , Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up
 @section Requirements
 @include requires.texi
@@ -2748,6 +2748,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * TAGS::                        Using TAGS for S files
 * Rdired::                      Directory editor for R objects
 * Rutils::                      R object/package management and help utilities
+* Org::                         Interaction with Org mode
 @end menu
 
 @comment  node-name,  next,  previous,  up
