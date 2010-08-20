@@ -84,16 +84,24 @@
 
 
 (defvar ess-rdired-objects ".rdired.objects <- function(objs) {
-  if (length(objs)==0)
+  if (length(objs)==0) {
     \"No objects to view!\"
-  else {
+  } else {
   mode <- sapply(objs, function(my.x) {
-    eval(parse(text=(paste('data.class(',my.x,')',sep=''))))})
+    eval( parse( text=sprintf('data.class(get(\"%s\"))', my.x))) })
   length <- sapply(objs, function(my.x) {
-    eval(parse(text=(paste('length(',my.x,')',sep=''))))
-  })
+    eval( parse( text=sprintf('length(get(\"%s\"))', my.x))) })
   d <- data.frame(mode, length)
-  row.names(d) <- paste('  ', row.names(d), sep='')
+  
+  var.names <- row.names(d)
+
+  ## If any names contain spaces, we need to quote around them.
+  quotes = rep('', length(var.names))
+  spaces = grep(' ', var.names)
+  if (any(spaces))
+    quotes[spaces] <- '\"'
+  var.names = paste(quotes, var.names, quotes, sep='')
+  row.names(d) <- paste('  ', var.names, sep='')
   d
   }
 }; .rdired.objects(ls())"
@@ -192,17 +200,25 @@ for more information!"
   )
 
 (defun ess-rdired-object ()
-  "Return name of object on current line."
+  "Return name of object on current line.
+Handle special case when object contains spaces."
   (save-excursion
     (beginning-of-line)
     (forward-char 2)
-    (if (looking-at " ")
-	nil				;on first line
-      ;;
-      (let (beg end)
-	(setq beg (point))
-	(search-forward " ")		;assume space follows object name.
-	(buffer-substring-no-properties beg (1- (point)))))))
+
+    (cond ((looking-at " ")		; First line?
+	   nil)
+	  ((looking-at "\"")		; Object name contains spaces?
+	   (let (beg)
+	     (setq beg (point))
+	     (forward-char 1)
+	     (search-forward "\"")
+	     (buffer-substring-no-properties beg (point))))
+	   (t				;should be a regular object.
+	    (let (beg)
+	      (setq beg (point))
+	      (search-forward " ") ;assume space follows object name.
+	      (buffer-substring-no-properties beg (1- (point))))))))
 
 (defun ess-rdired-edit ()
   "Edit (fix) the object at point."
@@ -214,34 +230,50 @@ for more information!"
   "View the object at point."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-execute objname nil "R view" )))
+    (ess-execute (ess-rdired-get objname)
+		 nil "R view" )))
+
+(defun ess-rdired-get (name) 
+  "Generate R code to get the value of the variable name.
+This is complicated because some variables might have spaces in their names.
+Otherwise, we could just pass the variable name directly to *R*."
+  (concat "get(" (ess-rdired-quote name) ")")
+  )
+
+(defun ess-rdired-quote (name)
+  "Quote name if not already quoted."
+  (if (equal (substring name 0 1) "\"")
+      name
+    (concat "\"" name "\"")))
+
 
 (defun ess-rdired-View ()
   "View the object at point in its own buffer.
 Like `ess-rdired-view', but the object gets its own buffer name."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-execute ;;(concat "edit(" objname ")\n")
-     objname
+    (ess-execute 
+     (ess-rdired-get objname)
      nil (concat "R view " objname ))))
 
 (defun ess-rdired-plot ()
   "Plot the object on current line."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-command (concat "plot(" objname ")\n"))))
+    (ess-command (concat "plot(" (ess-rdired-get objname) ")\n"))))
 
 (defun ess-rdired-type ()
   "Run the mode() on command at point.
-Named type because of similarity
-with the dired command bound to y key."
+Named type because of similarity with the dired command bound to
+y key."
   (interactive)
   (let ((objname (ess-rdired-object))
 	;; create a temp buffer, and then show output in echo area
 	(tmpbuf (get-buffer-create "**ess-rdired-mode**")))
     (if objname
 	(progn
-	  (ess-command (concat "mode(" objname ")\n")  tmpbuf )
+	  (ess-command (concat "mode(" (ess-rdired-get objname) ")\n")
+		       tmpbuf )
 	  (set-buffer tmpbuf)
 	  (message (concat
 		    objname ": "
@@ -292,7 +324,7 @@ User is queried first to check that objects should really be deleted."
   (let ((objs "rm(")
 	(count 0))
     (save-excursion
-      (goto-line 2)
+      (goto-char (point-min)) (forward-line 1)
       (while (< (count-lines (point-min) (point))
 		(count-lines (point-min) (point-max)))
 	(beginning-of-line)

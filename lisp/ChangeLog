@@ -1,5 +1,9 @@
 2010-08-20  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-rdired.el (ess-rdired-objects): R variable names can include
+	spaces; handle this case.  Bug report by Sigve Berge Hofland
+	<sigve@hofland.no> 2010-08-14.
+
 	* ess-inf.el (ess-load-file): If filename is a tramp-filename,
 	preserve just the localname of the file.  Bug report and patch
 	provided by Erik Iverson <eriki@ccbr.umn.edu> 2010-08-13.
