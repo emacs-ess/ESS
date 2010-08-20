@@ -1365,6 +1365,9 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 	    (ess-force-buffer-current "Process to load into: ")
 	    (ess-check-modifications)))
       (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+	    (filename (if (tramp-tramp-file-p filename)
+			  (tramp-file-name-localname (tramp-dissect-file-name filename))
+			filename))
 	    error-occurred nomessage)
 	(ess-command (format inferior-ess-load-command filename) errbuffer) ;sleep ?
 	(save-excursion

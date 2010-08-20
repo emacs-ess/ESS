@@ -1,3 +1,9 @@
+2010-08-20  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-load-file): If filename is a tramp-filename,
+	preserve just the localname of the file.  Bug report and patch
+	provided by Erik Iverson <eriki@ccbr.umn.edu> 2010-08-13.
+
 2010-08-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-trns.el (ess-transcript-clean-region): give error (instead of
