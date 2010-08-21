@@ -1,3 +1,8 @@
+2010-08-21  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-load-file): Check that tramp-tramp-file-p is
+	defined before using.
+
 2010-08-20  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-rdired.el (ess-rdired-objects): R variable names can include
