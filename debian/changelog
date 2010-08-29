@@ -1,3 +1,11 @@
+ess (5.11-2) unstable; urgency=low
+
+  * (unreleased)
+  * debian/emacen-startup: Follow suggestion by Kevin Ryde in #594750 and
+    use debian-pkg-add-load-path-item as well
+
+ --
+
 ess (5.11-1) unstable; urgency=low
 
   * New upstream version released today
