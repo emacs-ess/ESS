@@ -229,3 +229,38 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     return(x)
 }
 
+
+## From: "Sebastian P. Luque" <spluque@gmail.com>
+## To: ess-bugs@stat.math.ethz.ch
+## Subject: [ESS-bugs] ess-mode 5.12; `ess-indent-line' error
+## Date: Tue, 17 Aug 2010 13:08:25 -0500
+
+## With the following input, and point on the line with "Table 8.3":
+
+if (require(lme4)) {
+    ## Model in p. 213
+    (fm1 <- lmer(logFEV1 ~ age + log(height) + age0 + log(height0) + (age | id),
+                 data=fev1, subset=logFEV1 > -0.5))
+    ## Table 8.3
+    VarCorr(fm1)$id * 100
+    
+    ## Model in p. 216
+    (fm2 <- update(fm1, . ~ . - (age | id) + (log(height) | id)))
+}
+
+## hitting TAB (`ess-indent-command'), which calls `ess-indent-line' I get
+## the following trace:
+
+## ....: (scan-error "Containing expression ends prematurely" 20 20)
+##   scan-sexps(177 -2)
+##   forward-sexp(-2)
+##   ...
+##   ess-continued-statement-p()
+## ......................
+
+## Interestingly, if the lines 2-4 are absent, then the problem is gone.
+## The problem is also there in ESS 5.11.
+
+## I'll try to find out what is going on in `ess-continued-statement-p' but
+## given that I'm not very familiar with the stuff in ess-mode.el, I'm
+## submitting the report in case somebody can detect the issue sooner.
