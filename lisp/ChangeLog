@@ -1,3 +1,8 @@
+2010-09-20  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-update-entry): optionally do not fill
+	parameter descriptions upon ess-roxy-update-entry.
+
 2010-08-21  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-load-file): Check that tramp-tramp-file-p is

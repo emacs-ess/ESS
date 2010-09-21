@@ -670,6 +670,12 @@ syntactically correct roxygen entries)"
   :group 'ess-roxy
   :type '(alist :value-type (group string)))
 
+(defcustom ess-roxy-fill-param-p nil
+  "Non-nil causes parameter descriptions to be filled (word-wrapped) upon `ess-roxy-update-entry'."
+  :group 'ess-roxy
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)))
+
 (defcustom ess-roxy-hide-show-p nil
   "Non-nil means ess-roxy uses hs-minor-mode for block hiding with TAB."
   :group 'ess-roxy

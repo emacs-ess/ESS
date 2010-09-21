@@ -2432,7 +2432,8 @@ Generate a Roxygen template or update the parameter list in Roxygen
 entry at point (or above the function at the point). Documented
 parameters that are not in the function are placed last in the list,
 parameters that are not documented and not in the definition are
-dropped.
+dropped. Parameter descriptions are filled if
+@code{ess-roxy-fill-param-p} is non-nil.
 
 @item
 @kbd{C-c C-e C-c} (@code{ess-roxy-toggle-roxy-region}) @*
