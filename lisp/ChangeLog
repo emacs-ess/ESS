@@ -1,3 +1,8 @@
+2010-09-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-mode.el (ess-electric-brace): fix curly braces
+	bug for XEmacs as reported by Joshua Wiley
+
 2010-09-20  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-update-entry): optionally do not fill

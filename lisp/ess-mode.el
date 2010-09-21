@@ -742,7 +742,7 @@ With prefix argument, only shows the errors ESS reported."
   "Insert character and correct line's indentation."
   (interactive "P")
 ;; skeleton-pair takes precedence
-(if (and (boundp 'skeleton-pair) skeleton-pair (fboundp 'skeleton-pair-insert-maybe))
+(if (and (boundp 'skeleton-pair) skeleton-pair (featurep 'skeleton))
   (skeleton-pair-insert-maybe "{")
 ;; else
   (let (insertpos)
@@ -753,7 +753,7 @@ With prefix argument, only shows the errors ESS reported."
 		   (bolp))
 		 (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
 	(progn
-	  (insert last-command-event)
+	  (insert (if (featurep 'xemacs) (event-to-character last-command-event) last-command-event))
 	  (ess-indent-line)
 	  (if ess-auto-newline
 	      (progn
