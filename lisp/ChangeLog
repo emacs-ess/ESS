@@ -1,3 +1,8 @@
+2010-10-14  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): bringing the
+	PROCs up to v. 9.22
+
 2010-09-30  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): many ERROR
