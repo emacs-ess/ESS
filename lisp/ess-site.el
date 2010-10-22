@@ -263,7 +263,6 @@ between .s or .S files and assembly mode.
 ;; be regexps, which complicates matters as "r" on its own matches 
 ;; other interpeters like "perl".
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
-
 (add-to-list 'interpreter-mode-alist
 	     (cons (if (featurep 'xemacs) "r$" "r")    'r-mode))
 
