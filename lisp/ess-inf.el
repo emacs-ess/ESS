@@ -2104,7 +2104,7 @@ completions are listed [__UNIMPLEMENTED__]."
 			   (if classname
 			       (ess-slot-names classname)
 			     ;; Default case: It hangs here when
-			     ;;    options(error=recoves) :
+			     ;;    options(error=recover) :
 			     (ess-get-object-list ess-current-process-name)))))
 	;; always return a non-nil value to prevent history expansions
 	(or (comint-dynamic-simple-complete  pattern components) 'none))))
@@ -2159,7 +2159,7 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 (defun ess-get-object-list (name)
   "Return a list of current S object names associated with process NAME,
 using `ess-object-list' if that is non-nil."
-  (or ess-object-list ;; <<-  MM: I think this is now always nil
+  (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
 	(ess-make-buffer-current)
@@ -2168,7 +2168,7 @@ using `ess-object-list' if that is non-nil."
 	    (progn (ess-write-to-dribble-buffer "--> (ess-get-modtime-list)\n")
 		   (ess-get-modtime-list))
 	  ;;else
-	  (ess-write-to-dribble-buffer " using existing ess-*-alist\n")
+	  (ess-write-to-dribble-buffer " using existing ess-sl-modtime-alist\n")
 	  )
 	(let* ((alist ess-sl-modtime-alist)
 	       (i 2)
@@ -2457,7 +2457,7 @@ The result is stored in `ess-sl-modtime-alist'."
       (setq searchlist (cdr searchlist)))
     ;;DBG:
     (ess-write-to-dribble-buffer
-     (format "ess-get-modtime-list: new alist of length %d\n"
+     (format "(ess-get-modtime-list): created new alist of length %d\n"
 	     (length newalist)));; todo : also give length of components!
 
     (setq ess-sl-modtime-alist newalist)))
