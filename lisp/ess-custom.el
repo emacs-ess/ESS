@@ -636,7 +636,7 @@ If nil, ESS will try finding one from a list."
 
 ;; ---- ./ess-roxy.el : ------------
 
-(defcustom ess-roxy-tags-noparam '("export")
+(defcustom ess-roxy-tags-noparam '("export" "nord")
   "The tags used in roxygen fields that can be used alone.  Used
 to decide highlighting and tag completion."
   :group 'ess-roxy
@@ -648,7 +648,11 @@ to decide highlighting and tag completion."
 				 "name" "note" "param"
 				 "include" "references" "return"
 				 "seealso" "source" "docType"
-				 "title" "TODO" "usage")
+				 "title" "TODO" "usage" "import"
+                                 "exportClass" "exportPattern" "S3method"
+                                 "importFrom" "importClassesFrom"
+                                 "importMethodsFrom" "useDynLib"
+                                 "rdname" "slot")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy

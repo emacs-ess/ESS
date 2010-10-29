@@ -1,3 +1,8 @@
+2010-10-28  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-custom.el (ess-roxy-tags-param): Vinh Nguyens patch for
+	updating the available roxygen tags
+
 2010-10-21  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-site.el (interpreter-mode-alist): Condition upon XEmacs to
