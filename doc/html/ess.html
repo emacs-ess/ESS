@@ -585,7 +585,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.11:
+Changes/New Features in 5.12:
+          <ul>
+<li><acronym>ESS[SAS]</acronym> Font-locking:
+ update of PROCs keywords (up to SAS 9.22); error/warnings. 
+<li><acronym>ESS[R]</acronym>: Roxygen improvements: S4 classes;
+ also optionally keep spaces when filling arguments
+<li><acronym>ESS[Rd]</acronym>: support new keywords:
+ section-name \subsection plus a dozen &ldquo;new&rdquo; keywords; should match R
+ 2.12.x now. 
+</ul>
+
+     <p>Changes/New Features in 5.11:
           <ul>
 <li>Filename completion within buffers now adds only trailing
 characters to complete the filename, rather than expanding to an
@@ -4310,7 +4321,8 @@ by default in ESS. The following special Emacs commands are provided.
 entry at point (or above the function at the point). Documented
 parameters that are not in the function are placed last in the list,
 parameters that are not documented and not in the definition are
-dropped.
+dropped. Parameter descriptions are filled if
+<code>ess-roxy-fill-param-p</code> is non-nil.
 
      <li><kbd>C-c C-e C-c</kbd> (<code>ess-roxy-toggle-roxy-region</code>) <br>
 <a name="index-ess_002droxy_002dtoggle_002droxy_002dregion-184"></a>Toggle the presence of the leading Roxygen string on all lines in the

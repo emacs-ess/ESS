@@ -1,5 +1,16 @@
 @itemize @w{}
 
+Changes/New Features in 5.12:
+@itemize @bullet
+@item @ESS{[SAS]} Font-locking:
+ update of PROCs keywords (up to SAS 9.22); error/warnings.
+@item @ESS{[R]}: Roxygen improvements: S4 classes;
+ also optionally keep spaces when filling arguments
+@item @ESS{[Rd]}: support new keywords:
+ section-name \subsection plus a dozen ``new'' keywords; should match R
+ 2.12.x now.
+@end itemize
+
 Changes/New Features in 5.11:
 @itemize @bullet
 @item Filename completion within buffers now adds only trailing

@@ -454,6 +454,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
+(autoload 'ess-transcript-clean-region "ess-trns" no-doc t)
 
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)

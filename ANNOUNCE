@@ -211,6 +211,16 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
+     Changes/New Features in 5.12:
+        * ESS[SAS] Font-locking:  update of PROCs keywords (up to SAS
+          9.22); error/warnings.
+
+        * ESS[R]: Roxygen improvements: S4 classes;  also optionally
+          keep spaces when filling arguments
+
+        * ESS[Rd]: support new keywords:  section-name \subsection plus
+          a dozen "new" keywords; should match R  2.12.x now.
+
      Changes/New Features in 5.11:
         * Filename completion within buffers now adds only trailing
           characters to complete the filename, rather than expanding to
