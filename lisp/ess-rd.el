@@ -33,7 +33,7 @@
   "Current version of ess-rd.el.")
 
 (defvar essddr-maintainer-address
-  "Kurt Hornik <Kurt.Hornik@R-project.org>"
+  "ESS Core Team <ess-core@stat.math.ethz.ch>"
   "Current maintainer of ess-rd.el.")
 
 (defun Rd-active-mark () nil)		;silence compiler.
@@ -87,6 +87,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`sa" "\\seealso")
   (define-abbrev Rd-mode-abbrev-table "`se" "\\section")
   (define-abbrev Rd-mode-abbrev-table "`so" "\\source")
+  (define-abbrev Rd-mode-abbrev-table "`ss" "\\subsection")
   (define-abbrev Rd-mode-abbrev-table "`sy" "\\synopsis")
   (define-abbrev Rd-mode-abbrev-table "`ta" "\\tabular")
   (define-abbrev Rd-mode-abbrev-table "`ti" "\\title")
@@ -132,7 +133,8 @@ All Rd mode abbrevs start with a grave accent (`).")
   '("Rdversion" "arguments" "alias" "author" "concept" "describe" "description"
     "details" "docType" "encoding" "enumerate" "examples" "format"
     "itemize" "keyword" "name" "note" "preformatted" "references"
-    "seealso" "section" "source" "synopsis" "tabular" "title" "usage"
+    "seealso" "section" "source" "subsection" "synopsis"
+    "tabular" "title" "usage"
     "value"))
 
 (defvar Rd-keywords
@@ -141,11 +143,14 @@ All Rd mode abbrevs start with a grave accent (`).")
     "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
     "ge" "le" "left" "right"
     ;;
-    "R" "S3method" "S4method" "acronym"
+    "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
-    "dontshow" "dots" "email" "emph" "env" "eqn" "file"
+    "dontshow" "dots" "email" "emph" "enc" "env" "eqn" "file"
+    "href" "if" "ifelse"
     "item" "kbd" "ldots" "linkS4class" "link" "method"
-    "option" "pkg" "sQuote" "samp" "strong" "tab" "url" "var" ;;maybe? "verb"
+    "newcommand" "option" "out"
+    "pkg" "sQuote" "renewcommand"
+    "samp" "strong" "tab" "url" "var" "verb"
     ))
 
 ;; Need to fix Rd-bold-face problem.
