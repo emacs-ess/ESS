@@ -1440,6 +1440,12 @@ session.")
 
 (make-variable-buffer-local 'ess-object-list)
 
+(defvar ess-help-topics-list nil
+  ;; List of currently known help topics.
+  "Cache of help topics")
+
+(make-variable-buffer-local 'ess-help-topics-list)
+
 ;;*;; Miscellaneous system variables
 
 (defvar ess-temp-point nil

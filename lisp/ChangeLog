@@ -1,3 +1,11 @@
+2010-11-01  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el (ess-find-help-file): Implemented caching of help
+	topics (thanks to Vitalie Spinu).
+
+	* ess-custom.el (ess-help-topics-list): New buffer-local variable
+	needed for caching help topics.
+
 2010-10-30  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-rd.el (Rd-section-names, Rd-keywords): "subsection" etc
