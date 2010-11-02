@@ -1,9 +1,11 @@
 2010-11-02  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-help.el: Do not use (mapcar 'list ...) construct in
-	`ess-get-help-topics-list', `ess-get-help-files-list', and
-	`ess-get-help-aliases-list', since we do not need to create lists
-	of lists (thanks to Vitalie Spinu).
+	`ess-get-help-files-list', and `ess-get-help-aliases-list', since
+	we only need to create lists of lists in `ess-find-help-file',
+	where it's needed for useful completion.
+	Always return the existing `ess-help-topics-list' list if one
+	exists for the current process.
 
 2010-11-01  Sebastian P. Luque  <spluque@gmail.com>
 

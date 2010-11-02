@@ -518,18 +518,20 @@ Stata or XLispStat for additional information."
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
 the latter and return it.  Otherwise, return `ess-help-topics-list'."
-  (or (save-excursion
-	(set-buffer (process-buffer (get-ess-process name)))
-	(ess-make-buffer-current)
-	(ess-write-to-dribble-buffer
-	 (format "(ess-get-help-topics-list %s) .." name))
-	(if (or (not ess-help-topics-list) ess-sp-change)
-	    (setq ess-help-topics-list
-		  (ess-uniq-list
-		   (append (ess-get-help-files-list)
-			   (ess-get-help-aliases-list)
-			   (ess-get-object-list name))))))
-      ess-help-topics-list))
+  (save-excursion
+    (set-buffer (process-buffer (get-ess-process name)))
+    (ess-make-buffer-current)
+    (ess-write-to-dribble-buffer
+     (format "(ess-get-help-topics-list %s) .." name))
+    (if (or (not ess-help-topics-list) ess-sp-change)
+	(setq ess-help-topics-list
+	      (ess-uniq-list
+	       (mapcar 'list
+		       (append (ess-get-help-files-list)
+			       (ess-get-help-aliases-list)
+			       (ess-get-object-list name)))))
+      ;; else return the existing list
+      ess-help-topics-list)))
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."
