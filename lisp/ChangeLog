@@ -1,3 +1,10 @@
+2010-11-02  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el: Do not use (mapcar 'list ...) construct in
+	`ess-get-help-topics-list', `ess-get-help-files-list', and
+	`ess-get-help-aliases-list', since we do not need to create lists
+	of lists (thanks to Vitalie Spinu).
+
 2010-11-01  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-help.el (ess-find-help-file): Implemented caching of help

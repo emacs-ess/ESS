@@ -528,32 +528,29 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
 		  (ess-uniq-list
 		   (append (ess-get-help-files-list)
 			   (ess-get-help-aliases-list)
-			   (mapcar 'list
-				   (ess-get-object-list name)))))))
+			   (ess-get-object-list name))))))
       ess-help-topics-list))
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."
-  (mapcar 'list
-	  (apply 'append
-		 (mapcar '(lambda (dirname)
-			    (if (file-directory-p dirname)
-				(directory-files dirname)))
-			 (mapcar '(lambda (str) (concat str "/.Help"))
-				 (ess-search-list))))))
+  (apply 'append
+	 (mapcar '(lambda (dirname)
+		    (if (file-directory-p dirname)
+			(directory-files dirname)))
+		 (mapcar '(lambda (str) (concat str "/.Help"))
+			 (ess-search-list)))))
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
-  (ess-uniq-list
-   (apply 'append
-	  (mapcar '(lambda (a-file)
-		     (if (file-exists-p a-file)
+  (apply 'append
+	 (mapcar '(lambda (a-file)
+		    (if (file-exists-p a-file)
+			(ess-get-words-from-vector
+			 (format
+			  "names(.readRDS(\"%s\"))\n" a-file))))
+		 (mapcar '(lambda (str) (concat str "/help/aliases.rds"))
 			 (ess-get-words-from-vector
-			  (format
-			   "names(.readRDS(\"%s\"))\n" a-file))))
-		  (mapcar '(lambda (str) (concat str "/help/aliases.rds"))
-			  (ess-get-words-from-vector
-			   "searchpaths()\n"))))))
+			  "searchpaths()\n")))))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."
