@@ -34,14 +34,20 @@ fi
 install -m 755 -d ${ELCDIR}
 cd ${ELDIR}
 FILES=$(ls -1 *.el | grep -vx 'ess.el')
-cp ${FILES} ess.el ${ELCDIR}
+## edd 08 Nov 2010 old code
+#cp ${FILES} ess.el ${ELCDIR}
+#cd ${ELCDIR}
+## edd 08 Nov 2010 replaced by this (cf #594750)
 cd ${ELCDIR}
+for f in ${ELDIR}/*.el; do
+    ln -sf $f .
+done
 
 cat << EOF > path.el
 (setq load-path (cons "." load-path) byte-compile-warnings nil)
 EOF
 ${FLAVOR} ${FLAGS} ${FILES}
 ${FLAVOR} ${FLAGS} ess.el
-rm -f *.el path.el
+#rm -f *.el path.el
 
 exit 0
