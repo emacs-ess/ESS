@@ -221,6 +221,10 @@ in the file COPYING in the same directory as this file for more details.
         * ESS[Rd]: support new keywords:  section-name \subsection plus
           a dozen "new" keywords; should match R  2.12.x now.
 
+        * `ess-display-help-on-object' (`C-c C-v')  now _cashes_ the
+          list of topics, thus speeding up the improvemed  feature
+          introduced in 5.9.
+
      Changes/New Features in 5.11:
         * Filename completion within buffers now adds only trailing
           characters to complete the filename, rather than expanding to

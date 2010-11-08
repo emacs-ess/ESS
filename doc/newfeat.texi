@@ -9,6 +9,9 @@ Changes/New Features in 5.12:
 @item @ESS{[Rd]}: support new keywords:
  section-name \subsection plus a dozen ``new'' keywords; should match R
  2.12.x now.
+@item @command{ess-display-help-on-object} (@kbd{C-c C-v})
+ now @emph{cashes} the list of topics, thus speeding up the improvemed
+ feature introduced in 5.9.
 @end itemize
 
 Changes/New Features in 5.11:
