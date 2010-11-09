@@ -1,13 +1,13 @@
 @itemize @bullet
 @item Languages Supported:
   @itemize @bullet
-  @item S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
+  @item S family (S 3/4, S-PLUS and R)
   @item SAS
   @item BUGS/JAGS
   @item Stata 
   @item XLispStat including Arc and ViSta
   @end itemize
-@item Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
+@item Editing source code (S family, SAS, BUGS/JAGS, Stata)
   @itemize @bullet
   @item Syntactic indentation and highlighting of source code
   @item Partial evaluation of code
@@ -16,7 +16,7 @@
   @item Batch execution (SAS, BUGS/JAGS)
   @item Use of imenu to provide links to appropriate functions
   @end itemize
-@item Interacting with the process (S family, SAS, XLispStat)
+@item Interacting with the process (S family, SAS, Stata)
   @itemize @bullet
   @item Command-line editing
   @item Searchable Command history
@@ -25,7 +25,7 @@
   @item Transcript recording
   @item Interface to the help system
   @end itemize
-@item Transcript manipulation (S family, XLispStat)
+@item Transcript manipulation (S family, Stata)
   @itemize @bullet
   @item Recording and saving transcript files
   @item Manipulating and editing saved transcripts
