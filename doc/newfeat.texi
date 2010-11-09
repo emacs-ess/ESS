@@ -10,7 +10,7 @@ Changes/New Features in 5.12:
  section-name \subsection plus a dozen ``new'' keywords; should match R
  2.12.x now.
 @item @command{ess-display-help-on-object} (@kbd{C-c C-v})
- now @emph{cashes} the list of topics, thus speeding up the improvemed
+ now @emph{caches} the list of topics, thus speeding up the improvement
  feature introduced in 5.9.
 @end itemize
 
