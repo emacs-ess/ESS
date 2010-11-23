@@ -68,6 +68,7 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-t")   'ess-roxy-preview-HTML)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
   (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry))
 
@@ -429,13 +430,10 @@ string. Convenient for editing example fields."
 	(replace-match to-string))
       (widen))))
 
-(defun ess-roxy-preview-Rd (&optional arg)
-  "Use the connected R session and the roxygen package to create
-a preview of the Rd file of the entry at point. If called with
-a non-nil `arg' (e.g. called with the universal argument), also
-set the visited file name of the created buffer to facilitate
-saving of that file."
-  (interactive "P")
+(defun ess-roxy-preview ()
+  "Use the connected R session and the roxygen package to
+generate the Rd code for entry at point, place it in a temporary
+buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
 	(roxy-tmp (make-temp-file "ess-roxy"))
 	(roxy-buf (get-buffer-create " *RoxygenPreview*"))
@@ -447,25 +445,55 @@ saving of that file."
       (forward-line 1)
       (setq beg-end (ess-end-of-function))
       (append-to-file beg (car (cdr beg-end)) roxy-tmp)
-      ;; Call this in a way that does *not* rely on English language error/warnings:
       (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
 		   roxy-buf)
-      (save-excursion
-	(set-buffer roxy-buf)
+      (with-current-buffer roxy-buf
 	(goto-char 1)
 	(if (search-forward-regexp "FALSE" nil t)
 	    (error (concat "Failed to load the roxygen package; "
 			   "in R, try  install.packages(\"roxygen\")"))))
       (ess-command (concat "make.Rd.roclet()$parse(\"" roxy-tmp "\")\n") roxy-buf))
     (delete-file roxy-tmp)
+    roxy-buf))
+
+(defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
+  "Use the connected R session and the roxygen package to
+generate a HTML page for the roxygen entry at point and open that
+buffer in a browser. Opens the HTML file instead of showing it in
+a browser if `visit-instead-of-open' is non-nil"
+  (interactive "P")
+  (let ((roxy-buf (ess-roxy-preview))
+	(rd-tmp-file (make-temp-file "ess-roxy-" nil ".Rd"))
+	(html-tmp-file (make-temp-file "ess-roxy-" nil ".html")))
+    (with-current-buffer roxy-buf
+      (set-visited-file-name rd-tmp-file)
+      (save-buffer)
+      (kill-buffer roxy-buf))
+    (ess-command "print(suppressWarnings(require(tools, quietly=TRUE)))\n")
+    (if (not visit-instead-of-open)
+	(ess-command 
+	 (concat "browseURL(Rd2HTML(\"" rd-tmp-file "\",\"" 
+		 html-tmp-file "\", stages=c(\"render\")))\n"))
+      (ess-command 
+       (concat "Rd2HTML(\"" rd-tmp-file "\",\"" 
+	       html-tmp-file "\", stages=c(\"render\"))\n"))
+      (find-file html-tmp-file))))
+
+(defun ess-roxy-preview-Rd (&optional name-file)
+  "Use the connected R session and the roxygen package to
+generate the Rd code for the roxygen entry at point. If called
+with a non-nil `name-file' (e.g. universal argument C-u),
+also set the visited file name of the created buffer to
+facilitate saving that file."
+  (interactive "P")
+  (let ((roxy-buf (ess-roxy-preview)))
     (pop-to-buffer roxy-buf)
-    (if arg
+    (if name-file
 	(save-excursion
 	  (goto-char 1)
 	  (search-forward-regexp "name{\\(.+\\)}")
-	  (set-visited-file-name (concat (match-string 1) ".Rd")))))
-  (Rd-mode))
-
+	  (set-visited-file-name (concat (match-string 1) ".Rd"))))
+    (Rd-mode)))
 
 (defun ess-roxy-mark-active ()
   "True if region is active and transient mark mode activated"

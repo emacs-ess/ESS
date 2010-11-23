@@ -1,3 +1,12 @@
+2010-11-23  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-mode.el (ess-mode-menu): link to new ess-roxy-preview-HTML
+	function in the roxygen menu
+
+	* ess-roxy.el (ess-roxy-preview-HTML): New function that
+	generates (and opens) a HTML version of a roxygen entry. Request
+	from Kevin Wright.
+
 2010-11-02  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-help.el: Do not use (mapcar 'list ...) construct in

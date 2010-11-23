@@ -238,6 +238,7 @@
    ("Roxygen"
     ["Update/Generate Template" ess-roxy-update-entry	        t]
     ["Preview Rd"	 ess-roxy-preview-Rd     		t]
+    ["Preview HTML"	 ess-roxy-preview-HTML     		t]
     ["Toggle Roxygen Prefix"	 ess-roxy-toggle-roxy-region    t]
     )
    ("Start Process"
