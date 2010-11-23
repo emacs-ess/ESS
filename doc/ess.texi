@@ -2445,11 +2445,19 @@ to evaluate example fields.
 @item
 @kbd{C-c C-e C-r} (@code{ess-roxy-preview-Rd}) @*
 @pindex ess-roxy-preview-Rd
-Use the attached R process to parse the entry at point obtain the input
-for an Rd file. Convenient for checking syntax. When used with the
+Use the attached R process to parse the entry at point to obtain the Rd
+code. Convenient for previewing and checking syntax. When used with the
 prefix argument, i.e. @kbd{C-u C-c C-e C-r}, place the content in a
 buffer associated with a Rd file with the same name as the
 documentation. Requires the Roxygen package to be installed.
+
+@item
+@kbd{C-c C-e C-t} (@code{ess-roxy-preview-HTML}) @*
+@pindex ess-roxy-preview-Rd
+Use the attached R process to parse the entry at to generate HTML for
+the entry and open it in a browser. When used with the prefix argument,
+i.e. @kbd{C-u C-c C-e C-t}, visit the generated HTML file instead.
+Requires the Roxygen and tools packages to be installed.
 
 @item
 @kbd{C-c C-e p} (@code{ess-roxy-previous-entry}) @*
