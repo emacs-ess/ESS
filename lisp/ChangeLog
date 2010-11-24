@@ -1,4 +1,15 @@
+2010-11-24  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-get-function-args): fix bug that stopped
+	ess-roxy from updating setMethod definitions.
+
 2010-11-23  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-preview): enable preview for all types of
+	entries (not only for functions)
+	(ess-roxy-toggle-roxy-region): make toggle region operate on the
+	visible region instead of the actual start and the
+	beginning of the region (behave more like comment-region)
 
 	* ess-mode.el (ess-mode-menu): link to new ess-roxy-preview-HTML
 	function in the roxygen menu

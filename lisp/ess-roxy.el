@@ -40,6 +40,8 @@
 ;; - preview
 ;;   - C-c C-e C-r :: create a preview of the Rd file as generated
 ;;     using roxygen
+;;   - C-c C-e C-t :: create a preview of the Rd HTML file as generated
+;;     using roxygen and the tools package
 ;;     
 ;; Known issues:
 ;;
@@ -48,6 +50,7 @@
 ;;   same overlay from start and not unfoldable using TAB since the
 ;;   roxygen prefix is not present. The planned solution is implement
 ;;   a replacement for hideshow.
+;; - only limited functionality for S4 documentation. 
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
@@ -55,9 +58,6 @@
 (require 'hideshow)
 
 ;; ------------------
-(defconst ess-roxy-version "0.2"
-  "Current version of ess-roxy.el.")
-
 (defvar ess-roxy-mode-map nil
   "Keymap for `ess-roxy' mode.")
 (if ess-roxy-mode-map
@@ -419,7 +419,7 @@ string. Convenient for editing example fields."
   	  (error "region is not active")))
   (save-excursion
     (let (RE to-string)
-      (narrow-to-region beg end)
+      (narrow-to-region beg (- end 1))
       (if (ess-roxy-entry-p)
 	  (progn (setq RE (concat "^" ess-roxy-str " *"))
 		 (setq to-string ""))
@@ -436,15 +436,14 @@ generate the Rd code for entry at point, place it in a temporary
 buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
 	(roxy-tmp (make-temp-file "ess-roxy"))
-	(roxy-buf (get-buffer-create " *RoxygenPreview*"))
-	beg-end)
+	(roxy-buf (get-buffer-create " *RoxygenPreview*")))
     (if (= beg 0)
 	(error "Point is not in a Roxygen entry"))
     (save-excursion
       (goto-char (ess-roxy-end-of-entry))
-      (forward-line 1)
-      (setq beg-end (ess-end-of-function))
-      (append-to-file beg (car (cdr beg-end)) roxy-tmp)
+      (while (and (forward-line 1) (not (looking-at "^$")) 
+		  (not (looking-at ess-roxy-str))))
+      (append-to-file beg (point) roxy-tmp)
       (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
 		   roxy-buf)
       (with-current-buffer roxy-buf
@@ -459,7 +458,7 @@ buffer and return that buffer."
 (defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
   "Use the connected R session and the roxygen package to
 generate a HTML page for the roxygen entry at point and open that
-buffer in a browser. Opens the HTML file instead of showing it in
+buffer in a browser. Visit the HTML file instead of showing it in
 a browser if `visit-instead-of-open' is non-nil"
   (interactive "P")
   (let ((roxy-buf (ess-roxy-preview))
@@ -541,7 +540,7 @@ list of strings."
 	     (ess-beginning-of-function)
 	     (buffer-substring-no-properties
 	      (progn
-		(search-forward-regexp "[=,-] *function *" nil nil 1)
+		(search-forward-regexp "[=,-]* *function *" nil nil 1)
 		(+ (point) 1))
 	      (progn
 		(ess-roxy-match-paren)
