@@ -1,3 +1,8 @@
+2010-11-25  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-preview): Fixed introduced bug that broke
+	preview for functions with empty lines.
+
 2010-11-24  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-get-function-args): fix bug that stopped

@@ -441,9 +441,12 @@ buffer and return that buffer."
 	(error "Point is not in a Roxygen entry"))
     (save-excursion
       (goto-char (ess-roxy-end-of-entry))
-      (while (and (forward-line 1) (not (looking-at "^$")) 
-		  (not (looking-at ess-roxy-str))))
-      (append-to-file beg (point) roxy-tmp)
+      (forward-line 1)
+      (if (ess-end-of-function nil t)
+	  (append-to-file beg (point) roxy-tmp)
+	(while (and (forward-line 1) (not (looking-at "^$")) 
+		    (not (looking-at ess-roxy-str))))
+	(append-to-file beg (point) roxy-tmp))
       (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
 		   roxy-buf)
       (with-current-buffer roxy-buf
