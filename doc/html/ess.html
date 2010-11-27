@@ -271,7 +271,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.12
+5.13
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -585,7 +585,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.12:
+Changes/New Features in 5.13:
+          <ul>
+<li><acronym>ESS</acronym>: New functions and keys C-c [up] / [down]
+ for evaluating the buffer &ldquo;from beginning till here&rdquo;. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+</ul>
+
+     <p>Changes/New Features in 5.12:
           <ul>
 <li><acronym>ESS[SAS]</acronym> Font-locking:
  update of PROCs keywords (up to SAS 9.22); error/warnings. 
@@ -595,7 +602,7 @@ Changes/New Features in 5.12:
  section-name \subsection plus a dozen &ldquo;new&rdquo; keywords; should match R
  2.12.x now. 
 <li><samp><span class="command">ess-display-help-on-object</span></samp> (<kbd>C-c C-v</kbd>)
- now <em>cashes</em> the list of topics, thus speeding up the improvemed
+ now <em>caches</em> the list of topics, thus speeding up the improvement
  feature introduced in 5.9. 
 </ul>
 
@@ -1948,8 +1955,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <h3 class="section">2.3 Requirements</h3>
 
 <p>ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. The one exception
-is BUGS which is quite old, but should still work.
+statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is quite
+old now, is deprecated but it might still work.
 
    <p>ESS supports current/recent versions of GNU Emacs and XEmacs. 
 Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
@@ -4333,20 +4340,26 @@ marked region. Convenient for transferring text to Roxygen entries and
 to evaluate example fields.
 
      <li><kbd>C-c C-e C-r</kbd> (<code>ess-roxy-preview-Rd</code>) <br>
-<a name="index-ess_002droxy_002dpreview_002dRd-185"></a>Use the attached R process to parse the entry at point obtain the input
-for an Rd file. Convenient for checking syntax. When used with the
+<a name="index-ess_002droxy_002dpreview_002dRd-185"></a>Use the attached R process to parse the entry at point to obtain the Rd
+code. Convenient for previewing and checking syntax. When used with the
 prefix argument, i.e. <kbd>C-u C-c C-e C-r</kbd>, place the content in a
 buffer associated with a Rd file with the same name as the
 documentation. Requires the Roxygen package to be installed.
 
+     <li><kbd>C-c C-e C-t</kbd> (<code>ess-roxy-preview-HTML</code>) <br>
+<a name="index-ess_002droxy_002dpreview_002dRd-186"></a>Use the attached R process to parse the entry at to generate HTML for
+the entry and open it in a browser. When used with the prefix argument,
+i.e. <kbd>C-u C-c C-e C-t</kbd>, visit the generated HTML file instead. 
+Requires the Roxygen and tools packages to be installed.
+
      <li><kbd>C-c C-e p</kbd> (<code>ess-roxy-previous-entry</code>) <br>
-<a name="index-ess_002droxy_002dprevious_002dentry-186"></a>Go to start of the Roxygen entry above point.
+<a name="index-ess_002droxy_002dprevious_002dentry-187"></a>Go to start of the Roxygen entry above point.
 
      <li><kbd>C-c C-e n</kbd>  (<code>ess-roxy-next-entry</code>) <br>
-<a name="index-ess_002droxy_002dnext_002dentry-187"></a>Go to end of the Roxygen entry above point.
+<a name="index-ess_002droxy_002dnext_002dentry-188"></a>Go to end of the Roxygen entry above point.
 
      <li><kbd>C-c C-e C-h</kbd> (<code>ess-roxy-hide-all</code>) <br>
-<a name="index-ess_002droxy_002dhide_002dall-188"></a>Use the hideshow mode to fold away the visibility of all Roxygen
+<a name="index-ess_002droxy_002dhide_002dall-189"></a>Use the hideshow mode to fold away the visibility of all Roxygen
 entries. Hide-show support must be enabled for this binding to get
 defined.
 
@@ -4354,25 +4367,25 @@ defined.
 Roxygen editing more intuitive:
 
      <li><kbd>C-c TAB</kbd> (<code>ess-R-complete-object-name</code>) <br>
-<a name="index-ess_002dR_002dcomplete_002dobject_002dname-189"></a>Complete Roxygen tag at point. E.g. doing <kbd>C-c TAB</kbd> when the point
+<a name="index-ess_002dR_002dcomplete_002dobject_002dname-190"></a>Complete Roxygen tag at point. E.g. doing <kbd>C-c TAB</kbd> when the point
 is at the end of <code>@par</code> completes to <code>@param</code>.
 
      <li><kbd>M-h</kbd> (<code>mark-paragraph</code>) <br>
-<a name="index-mark_002dparagraph-190"></a>If the transient mark mode is active, place mark and point at start end
+<a name="index-mark_002dparagraph-191"></a>If the transient mark mode is active, place mark and point at start end
 end of the field at point and activate the mark.
 
      <li><kbd>TAB</kbd> (<code>ess-indent-command</code>) <br>
-<a name="index-ess_002dindent_002dcommand-191"></a>If hide-show support is enabled, fold away the visibility of the Roxygen
+<a name="index-ess_002dindent_002dcommand-192"></a>If hide-show support is enabled, fold away the visibility of the Roxygen
 entry at point.
 
      <li><kbd>M-q</kbd> (<code>fill-paragraph</code>) <br>
-<a name="index-fill_002dparagraph-192"></a>Fill the Roxygen field at point.
+<a name="index-fill_002dparagraph-193"></a>Fill the Roxygen field at point.
 
      <li><kbd>C-a</kbd> (<code>move-beginning-of-line</code>) <br>
-<a name="index-move_002dbeginning_002dof_002dline-193"></a>Move to the point directly to the right of the Roxygen start string.
+<a name="index-move_002dbeginning_002dof_002dline-194"></a>Move to the point directly to the right of the Roxygen start string.
 
      <li><kbd>ENTER</kbd> (<code>newline-and-indent</code>) <br>
-<a name="index-newline_002dand_002dindent-194"></a>Insert a new line and the Roxygen prefix string. 
+<a name="index-newline_002dand_002dindent-195"></a>Insert a new line and the Roxygen prefix string. 
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -4387,11 +4400,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="chapter">9 Reading help files</h2>
 
-<p><a name="index-help-files-195"></a>
+<p><a name="index-help-files-196"></a>
 ESS provides an easy-to-use facility for reading S help files from
 within Emacs.  From within the ESS process buffer or any ESS edit
 buffer, typing <kbd>C-c C-v</kbd> (<code>ess-display-help-on-object</code>)
-<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-196"></a>will prompt you for the name of an object for which you would like
+<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-197"></a>will prompt you for the name of an object for which you would like
 documentation.  Completion is provided over all objects which have help
 files.
 
@@ -4405,15 +4418,15 @@ through the help file:
 Help commands:
 
      <li><kbd>?</kbd> (<code>ess-describe-help-mode</code>) <br>
-<a name="index-ess_002ddescribe_002dhelp_002dmode-197"></a>Pops up a help buffer with a list of the commands available in S help
+<a name="index-ess_002ddescribe_002dhelp_002dmode-198"></a>Pops up a help buffer with a list of the commands available in S help
 mode.
 
      <li><kbd>h</kbd> (<code>ess-display-help-on-object</code>) <br>
-<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-198"></a>Pop up a help buffer for a different object
+<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-199"></a>Pop up a help buffer for a different object
 
      <p>Paging commands:
 
-     <p><a name="index-paging-commands-in-help-buffers-199"></a><li><kbd>b</kbd> or <kbd>DEL</kbd> (<code>scroll-down</code>) <br>
+     <p><a name="index-paging-commands-in-help-buffers-200"></a><li><kbd>b</kbd> or <kbd>DEL</kbd> (<code>scroll-down</code>) <br>
 Move one page backwards through the help file.
 
      <li><kbd>SPC</kbd> (<code>scroll-up</code>) <br>
@@ -4427,7 +4440,7 @@ Move to the beginning and end of the help file, respectively.
 
      <li><kbd>n</kbd> (<code>ess-skip-to-next-section</code>) and <kbd>p</kbd>
 (<code>ess-skip-to-previous-section</code>) <br> Move to the next and previous
-<a name="index-ess_002dskip_002dto_002dnext_002dsection-200"></a><a name="index-ess_002dskip_002dto_002dprevious_002dsection-201"></a>section header in the help file, respectively.  A section header
+<a name="index-ess_002dskip_002dto_002dnext_002dsection-201"></a><a name="index-ess_002dskip_002dto_002dprevious_002dsection-202"></a>section header in the help file, respectively.  A section header
 consists of a number of capitalized words, followed by a colon.
 
      <p>In addition, the <kbd>s</kbd> key followed by one of the following letters
@@ -4448,7 +4461,7 @@ sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo
      <!-- S and S-plus only: -->
      <!-- @item S			SIDE EFFECTS: -->
      <p>Do use <kbd>s ?</kbd> to get the current list of active key bindings. 
-<a name="index-ess_002dskip_002dto_002dhelp_002dsection-202"></a>
+<a name="index-ess_002dskip_002dto_002dhelp_002dsection-203"></a>
           <dl>
 <dt>&lsquo;<samp><span class="samp">a</span></samp>&rsquo;<dd>ARGUMENTS:
 
@@ -4488,11 +4501,11 @@ sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo
      <p>Miscellaneous:
 
      <li><kbd>l</kbd> (<code>ess-eval-line-and-step</code>) <br>
-<a name="index-ess_002deval_002dline_002dand_002dstep-203"></a>Evaluates the current line in the ESS process, and moves to the next
+<a name="index-ess_002deval_002dline_002dand_002dstep-204"></a>Evaluates the current line in the ESS process, and moves to the next
 line.  Useful for running examples in help files.
 
      <li><kbd>r</kbd> (<code>ess-eval-region</code>) <br>
-<a name="index-ess_002deval_002dregion-204"></a>Send the contents of the current region to the ESS process.  Useful
+<a name="index-ess_002deval_002dregion-205"></a>Send the contents of the current region to the ESS process.  Useful
 for running examples in help files.
 
      <li><kbd>/</kbd> (<code>isearch-forward</code>) <br>
@@ -4501,7 +4514,7 @@ Same as <kbd>C-s</kbd>.
      <p>Quit commands:
 
      <li><kbd>q</kbd> (<code>ess-switch-to-end-of-ESS</code>) <br>
-<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-205"></a>Returns to the ESS process buffer in another window, leaving the
+<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-206"></a>Returns to the ESS process buffer in another window, leaving the
 help window visible.
 
      <li><kbd>k</kbd> (<code>kill-buffer</code>) <br>
@@ -4530,7 +4543,7 @@ frame.  If you wish help buffers to appear in their own frame (either
 one per help buffer, or one for all help buffers), you can customize the
 variable <code>ess-help-own-frame</code>.
 
-   <p><a name="index-ess_002dquit-206"></a><a name="index-ess_002dcleanup-207"></a><a name="index-temporary-buffers-208"></a>
+   <p><a name="index-ess_002dquit-207"></a><a name="index-ess_002dcleanup-208"></a><a name="index-temporary-buffers-209"></a>
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <a name="ESS-for-SAS"></a>
@@ -5530,7 +5543,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <p>ESS provides Font-Lock (see <a href="emacs.html#Faces">Using Multiple Typefaces</a>) patterns for Inferior S Mode, S
 Mode, and S Transcript Mode buffers. 
-<a name="index-Font_002dlock-mode-209"></a><a name="index-highlighting-210"></a>
+<a name="index-Font_002dlock-mode-210"></a><a name="index-highlighting-211"></a>
 Syntax highlighting within ESS buffers is controlled by the variable
 <code>ess-font-lock-mode</code>, which by default is true. 
 Input to inferior ESS processes is also highlighted syntactically if
@@ -5549,7 +5562,7 @@ emacs for your changes to take effect.
 may modify if desired:
 
 <div class="defun">
-&mdash; Variable: <b>inferior-ess-R-font-lock-keywords</b><var><a name="index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-211"></a></var><br>
+&mdash; Variable: <b>inferior-ess-R-font-lock-keywords</b><var><a name="index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-212"></a></var><br>
 <blockquote><p>Font-lock patterns for inferior *R* processes.  (There is a
 corresponding <code>inferior-ess-S-font-lock-keywords</code> for *S*
 processes.) The default value highlights prompts, inputs, assignments,
@@ -5558,7 +5571,7 @@ output messages, vector and matrix labels, and literals such as
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Variable: <b>ess-R-mode-font-lock-keywords</b><var><a name="index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-212"></a></var><br>
+&mdash; Variable: <b>ess-R-mode-font-lock-keywords</b><var><a name="index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-213"></a></var><br>
 <blockquote><p>Font-lock patterns for ESS R programming mode.  (There is a
 corresponding <code>ess-S-mode-font-lock-keywords</code> for S buffers.) The
 default value highlights function names, literals, assignments, source
@@ -5604,7 +5617,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <h3 class="section">13.3 Using graphics with ESS</h3>
 
-<p><a name="index-graphics-213"></a>One of the main features of the <code>S</code> package is its ability to
+<p><a name="index-graphics-214"></a>One of the main features of the <code>S</code> package is its ability to
 generate high-resolution graphics plots, and ESS provides a number of
 features for dealing with such plots.
 
@@ -5632,7 +5645,7 @@ based plots which can be contained within the ESS process buffer
 itself.  To start using character graphics, issue the S command
 <pre class="example">     printer(width=79)
 </pre>
-   <p><a name="index-printer_0028_0029-214"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
+   <p><a name="index-printer_0028_0029-215"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
 80 on an 80-column terminal.  Use a different value for a terminal with
 a different number of columns.) Plotting commands do not generate
 graphics immediately, but are stored until the <code>show()</code> command
@@ -5650,13 +5663,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">13.3.2 Using ESS with windowing devices</h4>
 
-<p><a name="index-X-windows-215"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
+<p><a name="index-X-windows-216"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
 system.  Under X11, this requires that the DISPLAY environment
 variable be appropriately set, which may not always be the case within
 your Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the ESS process is started if the variable
 <code>ess-ask-about-display</code>
-<a name="index-ess_002dask_002dabout_002ddisplay-216"></a>is non-<code>nil</code>.
+<a name="index-ess_002dask_002dabout_002ddisplay-217"></a>is non-<code>nil</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -5669,7 +5682,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">13.3.3 Java Graphics Device</h4>
 
-<p><a name="index-winjava-217"></a>
+<p><a name="index-winjava-218"></a>
 S+6.1 and newer on Windows contains a java library that supports graphics.  Send
 the commands:
 
@@ -5838,35 +5851,35 @@ bindings become available in iESS process buffers:
 
      <ul>
 <li><kbd>C-c C-. l</kbd> (<samp><span class="command">ess-rutils-localpkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002dlocalpkgs-218"></a>List all packages in all available libraries.
+<a name="index-ess_002drutils_002dlocalpkgs-219"></a>List all packages in all available libraries.
 
      <li><kbd>C-c C-. r</kbd> (<samp><span class="command">ess-rutils-repospkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002drepospkgs-219"></a>List available packages from repositories listed by
+<a name="index-ess_002drutils_002drepospkgs-220"></a>List available packages from repositories listed by
 <samp><span class="command">getOptions(``repos'')</span></samp> in the current R session.
 
      <li><kbd>C-c C-. u</kbd> (<samp><span class="command">ess-rutils-updatepkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002dupdatepkgs-220"></a>Update packages in a particular library and repository.
+<a name="index-ess_002drutils_002dupdatepkgs-221"></a>Update packages in a particular library and repository.
 
      <li><kbd>C-c C-. a</kbd> (<samp><span class="command">ess-rutils-apropos</span></samp>) <br>
-<a name="index-ess_002drutils_002dapropos-221"></a>Search for a string using apropos.
+<a name="index-ess_002drutils_002dapropos-222"></a>Search for a string using apropos.
 
      <li><kbd>C-c C-. m</kbd> (<samp><span class="command">ess-rutils-rmall</span></samp>) <br>
-<a name="index-ess_002drutils_002drmall-222"></a>Remove all R objects.
+<a name="index-ess_002drutils_002drmall-223"></a>Remove all R objects.
 
      <li><kbd>C-c C-. o</kbd> (<samp><span class="command">ess-rutils-objs</span></samp>) <br>
-<a name="index-ess_002drutils_002dobjs-223"></a>Manipulate R objects; wrapper for <samp><span class="command">ess-rdired</span></samp>.
+<a name="index-ess_002drutils_002dobjs-224"></a>Manipulate R objects; wrapper for <samp><span class="command">ess-rdired</span></samp>.
 
      <li><kbd>C-c C-. w</kbd> (<samp><span class="command">ess-rutils-loadwkspc</span></samp>) <br>
-<a name="index-ess_002drutils_002dloadwkspc-224"></a>Load a workspace file into R.
+<a name="index-ess_002drutils_002dloadwkspc-225"></a>Load a workspace file into R.
 
      <li><kbd>C-c C-. s</kbd> (<samp><span class="command">ess-rutils-savewkspc</span></samp>) <br>
-<a name="index-ess_002drutils_002dsavewkspc-225"></a>Save a workspace file.
+<a name="index-ess_002drutils_002dsavewkspc-226"></a>Save a workspace file.
 
      <li><kbd>C-c C-. d</kbd> (<samp><span class="command">ess-change-directory</span></samp>) <br>
-<a name="index-ess_002dchange_002ddirectory-226"></a>Change the working directory for the current R session.
+<a name="index-ess_002dchange_002ddirectory-227"></a>Change the working directory for the current R session.
 
      <li><kbd>C-c C-. H</kbd> (<samp><span class="command">ess-rutils-htmldocs</span></samp>) <br>
-<a name="index-ess_002drutils_002dhtmldocs-227"></a>Use <samp><span class="command">browse-url</span></samp> to navigate R html documentation.
+<a name="index-ess_002drutils_002dhtmldocs-228"></a>Use <samp><span class="command">browse-url</span></samp> to navigate R html documentation.
 
    </ul>
 
@@ -5878,7 +5891,7 @@ any Emacs buffer, so can be bound to a user-defined key:
 <pre class="lisp">     (eval-after-load "ess-rutils"
        '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
 </pre>
-   <p><a name="index-ess_002drutils_002drsitesearch-228"></a>
+   <p><a name="index-ess_002drutils_002drsitesearch-229"></a>
 Functions for listing objects and packages
 (<samp><span class="command">ess-rutils-localpkgs</span></samp>, <samp><span class="command">ess-rutils-repospkgs</span></samp>, and
 <samp><span class="command">ess-rutils-objs</span></samp>) show results in a separate buffer and window,
@@ -5940,7 +5953,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.1 Bugs</h3>
 
-<p><a name="index-bugs-229"></a>
+<p><a name="index-bugs-230"></a>
 
      <ul>
 <li>Commands like <code>ess-display-help-on-object</code> and list completion
@@ -5990,7 +6003,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.2 Reporting Bugs</h3>
 
-<p><a name="index-Bug-reports-230"></a><a name="index-ess_002dsubmit_002dbug_002dreport-231"></a>
+<p><a name="index-Bug-reports-231"></a><a name="index-ess_002dsubmit_002dbug_002dreport-232"></a>
 
    <p>Please send bug reports, suggestions etc. to
 <a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
@@ -6079,7 +6092,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="appendix">Appendix A Customizing ESS</h2>
 
-<p><a name="index-customization-232"></a>
+<p><a name="index-customization-233"></a>
 ESS can be easily customized to your taste simply by including the
 appropriate lines in your <samp><span class="file">.emacs</span></samp> file.  There are numerous
 variables which affect the behavior of ESS in certain situations which

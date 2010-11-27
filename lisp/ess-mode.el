@@ -136,6 +136,8 @@
   (define-key ess-mode-map "\C-c\M-r"	'ess-eval-region-and-go)
   (define-key ess-mode-map "\C-c\C-b"	'ess-eval-buffer)
   (define-key ess-mode-map "\C-c\M-b"	'ess-eval-buffer-and-go)
+  (define-key ess-mode-map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
+  (define-key ess-mode-map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
   (define-key ess-mode-map "\C-c\C-f"	'ess-eval-function)
   (define-key ess-mode-map "\C-c\M-f"	'ess-eval-function-and-go)
   (define-key ess-mode-map "\C-c\C-c"	'ess-eval-function-or-paragraph-and-step)
@@ -197,6 +199,8 @@
     )
    ("ESS Eval"
     ["Eval buffer"	ess-eval-buffer			  t]
+    ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
+    ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
     ["Eval region"	ess-eval-region			  t]
     ["Eval function"	ess-eval-function		  t]
     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]

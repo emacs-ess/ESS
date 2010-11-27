@@ -6,6 +6,10 @@
 	* doc/stabilty.texi (Stability): \
 	Minor tweaks to bring it slightly more up-to-date.
 
+2010-11-08  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 5.12 released.
+
 2010-08-13  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/ess.texi (Org): New section describing interaction with Org

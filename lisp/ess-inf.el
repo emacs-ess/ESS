@@ -1162,6 +1162,17 @@ Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
 
+(defun ess-eval-buffer-from-beg-to-here (vis)
+  (interactive "P")
+  (ess-eval-region (point-min) (point) vis "Eval buffer from the beginning
+of the buffer until here, i.e. 'point'"))
+
+(defun ess-eval-buffer-from-here-to-end (vis)
+  (interactive "P")
+  (ess-eval-region (point) (point-max) vis "Eval buffer from here ('point') until
+the end of the buffer"))
+
+
 (defun ess-eval-function (vis)
   "Send the current function to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."

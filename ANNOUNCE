@@ -3,18 +3,18 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.12
+   5.13
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
-S-PLUS, R, SAS, BUGS and other statistical analysis packages under the
-Unix, Microsoft Windows, and Apple Mac OS operating systems.  ESS is a
-package for the GNU Emacs and XEmacs text editors whose features ESS
-uses to streamline the creation and use of statistical software.  ESS
-knows the syntax and grammar of statistical analysis packages and
-provides consistent display and editing features based on that
-knowledge.  ESS assists in interactive and batch execution of
-statements written in these statistical analysis languages.
+R/S-PLUS, SAS, BUGS/JAGS, Stata and other statistical analysis packages
+under the UNIX, GNU Linux, Microsoft Windows, Mac OS X and other
+operating systems.  ESS is a package for the GNU Emacs and XEmacs text
+editors whose features ESS uses to streamline the creation and use of
+statistical software.  ESS knows the syntax and grammar of statistical
+analysis packages and provides consistent display and editing features
+based on that knowledge.  ESS assists in interactive and batch
+execution of statements written in these statistical analysis languages.
 
    ESS is freely available under the GNU General Public License (GPL).
 Please read the file COPYING which comes with the distribution, for
@@ -62,7 +62,7 @@ certificate permanently and will not be asked about it anymore.
 ====================
 
    * Languages Supported:
-        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
+        * S family (S 3/4, S-PLUS and R)
 
         * SAS
 
@@ -72,7 +72,7 @@ certificate permanently and will not be asked about it anymore.
 
         * XLispStat including Arc and ViSta
 
-   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
+   * Editing source code (S family, SAS, BUGS/JAGS, Stata)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluation of code
@@ -85,7 +85,7 @@ certificate permanently and will not be asked about it anymore.
 
         * Use of imenu to provide links to appropriate functions
 
-   * Interacting with the process (S family, SAS, XLispStat)
+   * Interacting with the process (S family, SAS, Stata)
         * Command-line editing
 
         * Searchable Command history
@@ -99,7 +99,7 @@ certificate permanently and will not be asked about it anymore.
 
         * Interface to the help system
 
-   * Transcript manipulation (S family, XLispStat)
+   * Transcript manipulation (S family, Stata)
         * Recording and saving transcript files
 
         * Manipulating and editing saved transcripts
@@ -117,8 +117,8 @@ certificate permanently and will not be asked about it anymore.
 ================
 
 ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. The one exception
-is BUGS which is quite old, but should still work.
+statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is
+quite old now, is deprecated but it might still work.
 
    ESS supports current/recent versions of GNU Emacs and XEmacs.  Most
 notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
@@ -127,10 +127,11 @@ notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 1.4 Stability
 =============
 
-All released versions (5.x, x >= 4) are meant to be release-quality
-versions.  While some new features are being introduced, we are
-cleaning up and improving the interface.  We know about some remaining
-documentation inconsistencies.  Patches or suggested fixes with bug
+All recent released versions are meant to be release-quality versions.
+While some new features are being introduced, we are cleaning up and
+improving the interface.  We know that there are many remaining
+opportunities for documentation improvements, but all contributors are
+volunteers and time is precious. Patches or suggested fixes with bug
 reports are much appreciated!
 
 1.5 Mailing List
@@ -211,6 +212,12 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
+     Changes/New Features in 5.13:
+        * ESS: New functions and keys C-c [up] / [down]  for evaluating
+          the buffer "from beginning till here".
+
+        * ESS[R]: more Roxygen improvements.
+
      Changes/New Features in 5.12:
         * ESS[SAS] Font-locking:  update of PROCs keywords (up to SAS
           9.22); error/warnings.
@@ -221,8 +228,8 @@ in the file COPYING in the same directory as this file for more details.
         * ESS[Rd]: support new keywords:  section-name \subsection plus
           a dozen "new" keywords; should match R  2.12.x now.
 
-        * `ess-display-help-on-object' (`C-c C-v')  now _cashes_ the
-          list of topics, thus speeding up the improvemed  feature
+        * `ess-display-help-on-object' (`C-c C-v')  now _caches_ the
+          list of topics, thus speeding up the improvement  feature
           introduced in 5.9.
 
      Changes/New Features in 5.11:

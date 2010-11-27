@@ -1,5 +1,12 @@
 @itemize @w{}
 
+Changes/New Features in 5.13:
+@itemize @bullet
+@item @ESS{}: New functions and keys C-c [up] / [down]
+ for evaluating the buffer ``from beginning till here''.
+@item @ESS{[R]}: more Roxygen improvements.
+@end itemize
+
 Changes/New Features in 5.12:
 @itemize @bullet
 @item @ESS{[SAS]} Font-locking:

@@ -1,3 +1,10 @@
+2010-11-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-buffer-from-beg-to-here, *-from-here-to-end):
+	new functions thanks to Roland Rau, with
+	* ess-mode.el (ess-mode-map, ess-mode-menu): key bindings C-c [up]
+	/ [down] and corresponding menu entries.
+
 2010-11-25  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-preview): Fixed introduced bug that broke

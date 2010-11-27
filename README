@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.12
+   5.13
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -70,18 +70,19 @@ in the file COPYING in the same directory as this file for more details.
 1.2 Stability
 =============
 
-All released versions (5.x, x >= 4) are meant to be release-quality
-versions.  While some new features are being introduced, we are
-cleaning up and improving the interface.  We know about some remaining
-documentation inconsistencies.  Patches or suggested fixes with bug
+All recent released versions are meant to be release-quality versions.
+While some new features are being introduced, we are cleaning up and
+improving the interface.  We know that there are many remaining
+opportunities for documentation improvements, but all contributors are
+volunteers and time is precious. Patches or suggested fixes with bug
 reports are much appreciated!
 
 1.3 Requirements
 ================
 
 ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. The one exception
-is BUGS which is quite old, but should still work.
+statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is
+quite old now, is deprecated but it might still work.
 
    ESS supports current/recent versions of GNU Emacs and XEmacs.  Most
 notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
@@ -429,7 +430,7 @@ shell, simply type `M-x S+6-msdos RET'.
 ====================
 
    * Languages Supported:
-        * S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
+        * S family (S 3/4, S-PLUS and R)
 
         * SAS
 
@@ -439,7 +440,7 @@ shell, simply type `M-x S+6-msdos RET'.
 
         * XLispStat including Arc and ViSta
 
-   * Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
+   * Editing source code (S family, SAS, BUGS/JAGS, Stata)
         * Syntactic indentation and highlighting of source code
 
         * Partial evaluation of code
@@ -452,7 +453,7 @@ shell, simply type `M-x S+6-msdos RET'.
 
         * Use of imenu to provide links to appropriate functions
 
-   * Interacting with the process (S family, SAS, XLispStat)
+   * Interacting with the process (S family, SAS, Stata)
         * Command-line editing
 
         * Searchable Command history
@@ -466,7 +467,7 @@ shell, simply type `M-x S+6-msdos RET'.
 
         * Interface to the help system
 
-   * Transcript manipulation (S family, XLispStat)
+   * Transcript manipulation (S family, Stata)
         * Recording and saving transcript files
 
         * Manipulating and editing saved transcripts
@@ -483,6 +484,12 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.13:
+        * ESS: New functions and keys C-c [up] / [down]  for evaluating
+          the buffer "from beginning till here".
+
+        * ESS[R]: more Roxygen improvements.
+
      Changes/New Features in 5.12:
         * ESS[SAS] Font-locking:  update of PROCs keywords (up to SAS
           9.22); error/warnings.
@@ -493,8 +500,8 @@ shell, simply type `M-x S+6-msdos RET'.
         * ESS[Rd]: support new keywords:  section-name \subsection plus
           a dozen "new" keywords; should match R  2.12.x now.
 
-        * `ess-display-help-on-object' (`C-c C-v')  now _cashes_ the
-          list of topics, thus speeding up the improvemed  feature
+        * `ess-display-help-on-object' (`C-c C-v')  now _caches_ the
+          list of topics, thus speeding up the improvement  feature
           introduced in 5.9.
 
      Changes/New Features in 5.11:

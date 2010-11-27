@@ -269,7 +269,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.12
+   <p>5.13
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -348,11 +348,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.2 Stability</h3>
 
-<p>All released versions (5.x, x &gt;= 4) are meant to be release-quality
-versions.  While some new features are being introduced, we are cleaning up
-and improving the interface.  We know about some remaining documentation
-inconsistencies. 
-Patches or suggested fixes with bug reports are much appreciated!
+<p>All recent released versions are meant to be release-quality versions. 
+While some new features are being introduced, we are cleaning up and
+improving the interface.  We know that there are many remaining
+opportunities for documentation improvements, but all contributors are
+volunteers and time is precious. Patches or suggested fixes with bug
+reports are much appreciated!
 
 <div class="node">
 <a name="Requirements"></a>
@@ -367,8 +368,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.3 Requirements</h3>
 
 <p>ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. The one exception
-is BUGS which is quite old, but should still work.
+statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is quite
+old now, is deprecated but it might still work.
 
    <p>ESS supports current/recent versions of GNU Emacs and XEmacs. 
 Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
@@ -850,13 +851,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
      <ul>
 <li>Languages Supported:
           <ul>
-  <li>S family (S 3/4, S-PLUS 3.x/4.x/5.x/6.x/7.x/8.x, and R)
+  <li>S family (S 3/4, S-PLUS and R)
   <li>SAS
   <li>BUGS/JAGS
   <li>Stata
   <li>XLispStat including Arc and ViSta
   </ul>
-     <li>Editing source code (S family, SAS, BUGS/JAGS, XLispStat)
+     <li>Editing source code (S family, SAS, BUGS/JAGS, Stata)
           <ul>
   <li>Syntactic indentation and highlighting of source code
   <li>Partial evaluation of code
@@ -865,7 +866,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
   <li>Batch execution (SAS, BUGS/JAGS)
   <li>Use of imenu to provide links to appropriate functions
   </ul>
-     <li>Interacting with the process (S family, SAS, XLispStat)
+     <li>Interacting with the process (S family, SAS, Stata)
           <ul>
   <li>Command-line editing
   <li>Searchable Command history
@@ -874,7 +875,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
   <li>Transcript recording
   <li>Interface to the help system
   </ul>
-     <li>Transcript manipulation (S family, XLispStat)
+     <li>Transcript manipulation (S family, Stata)
           <ul>
   <li>Recording and saving transcript files
   <li>Manipulating and editing saved transcripts
@@ -901,7 +902,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.12:
+Changes/New Features in 5.13:
+          <ul>
+<li><acronym>ESS</acronym>: New functions and keys C-c [up] / [down]
+ for evaluating the buffer &ldquo;from beginning till here&rdquo;. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+</ul>
+
+     <p>Changes/New Features in 5.12:
           <ul>
 <li><acronym>ESS[SAS]</acronym> Font-locking:
  update of PROCs keywords (up to SAS 9.22); error/warnings. 
@@ -911,7 +919,7 @@ Changes/New Features in 5.12:
  section-name \subsection plus a dozen &ldquo;new&rdquo; keywords; should match R
  2.12.x now. 
 <li><samp><span class="command">ess-display-help-on-object</span></samp> (<kbd>C-c C-v</kbd>)
- now <em>cashes</em> the list of topics, thus speeding up the improvemed
+ now <em>caches</em> the list of topics, thus speeding up the improvement
  feature introduced in 5.9. 
 </ul>
 
