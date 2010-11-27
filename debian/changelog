@@ -1,7 +1,7 @@
 ess (5.12-1) unstable; urgency=low
 
   * New upstream version released today
-  
+
   * debian/emacen-startup: Follow suggestion by Kevin Ryde in #594750 and
     use debian-pkg-add-load-path-item as well; also improved emacsen-install
     script by using soft links instead of copies	(Closes: #594750)
@@ -22,14 +22,14 @@ ess (5.10-1) unstable; urgency=low
 
 ess (5.9.1-2) unstable; urgency=low
 
-  * lisp/*: Upgraded to svn revision 5352 with a fix by Sebastian Luque 
+  * lisp/*: Upgraded to svn revision 5352 with a fix by Sebastian Luque
     for the XEmacs incompatibility			(Closes: #583857)
 
  -- Dirk Eddelbuettel <edd@debian.org>  Fri, 04 Jun 2010 09:59:22 -0500
 
 ess (5.9.1-1) unstable; urgency=low
 
-  * New upstream version 
+  * New upstream version
 
  -- Dirk Eddelbuettel <edd@debian.org>  Tue, 25 May 2010 09:02:10 -0500
 
@@ -72,10 +72,10 @@ ess (5.5-1) unstable; urgency=low
 
   * debian/control: Updated Depends: list by adding 'emacs23' to list
   * debian/control: Updated Homepage: URL to 'ess.r-project.org'
-  
+
   * debian/control: Increased Standards-Version: to 3.8.1
-    + debian/control: Added '${misc:Depends}' to Depends 
-    + debian/control: Added 'dpkg (>= 1.15.4) | install-info' 
+    + debian/control: Added '${misc:Depends}' to Depends
+    + debian/control: Added 'dpkg (>= 1.15.4) | install-info'
 
  -- Dirk Eddelbuettel <edd@debian.org>  Wed, 07 Oct 2009 09:31:55 -0500
 
@@ -95,13 +95,13 @@ ess (5.4-1) unstable; urgency=low
 
 ess (5.3.11-1) unstable; urgency=low
 
-  * New upstream release 
+  * New upstream release
 
  -- Dirk Eddelbuettel <edd@debian.org>  Fri, 23 Jan 2009 12:00:52 -0600
 
 ess (5.3.10.1-1) unstable; urgency=low
 
-  * New upstream release 5.3.10 
+  * New upstream release 5.3.10
   * This release is relabeled 5.3.10.1 as we used the 5.3.10 version number
     for the bugfix release which turns out to have been a pre-release.
 
@@ -109,15 +109,15 @@ ess (5.3.10.1-1) unstable; urgency=low
 
 ess (5.3.10-2) unstable; urgency=low
 
-  * Updated to SVN revision 4001 which addresses the bug report 
-    'ess: fails setting up' when no R version is present	(Closes: #507510)		
+  * Updated to SVN revision 4001 which addresses the bug report
+    'ess: fails setting up' when no R version is present	(Closes: #507510)
 
  -- Dirk Eddelbuettel <edd@debian.org>  Thu, 04 Dec 2008 09:25:16 -0600
 
 ess (5.3.10-1) unstable; urgency=low
 
   * New upstream release
-  
+
   * Closes open bug 'emacs warning on upgrade'			(Closes: #507299)
 
  -- Dirk Eddelbuettel <edd@debian.org>  Sat, 29 Nov 2008 20:39:02 -0600
@@ -134,7 +134,7 @@ ess (5.3.8~svn3917-1) unstable; urgency=low
 
   * debian/rules: Add trailing slash to ess-etc-directory definition -- with
     thanks to Martin Maechler for finding this as the cause to SAS load issues
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Thu, 17 Jul 2008 19:16:57 -0500
 
 ess (5.3.8~svn3902-1) unstable; urgency=low
@@ -144,50 +144,50 @@ ess (5.3.8~svn3902-1) unstable; urgency=low
     really fixed bug report 482351 addressed in the previous upload.
 
   * debian/watch: Updated URL and regular expression
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Fri, 23 May 2008 21:39:40 -0500
 
 ess (5.3.8~svn3899-1) unstable; urgency=low
 
   * New upstream version based on svn revision 3899
   * lisp/Makefile: Add ess-eldoc to targets			(Closes: #482351)
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Thu, 22 May 2008 06:13:36 -0500
 
 ess (5.3.8~svn3895-1) unstable; urgency=low
 
   * New upstream version based on svn revision 3895 approaching release 5.3.8.
 
-  * New maintainers: the package is now maintained by group of Ess and 
-    Debian developers that can be reached at ess-debian@stat.math.ethz.ch. 
-    Camm's many years of diligent maintenance are gratefully acknowledged.    
-  * The group repository is available at https://svn.R-project.org/ESS 
-  
+  * New maintainers: the package is now maintained by group of Ess and
+    Debian developers that can be reached at ess-debian@r-project.org.
+    Camm's many years of diligent maintenance are gratefully acknowledged.
+  * The group repository is available at https://svn.R-project.org/ESS
+
   [ Stefan Theussl ]
   * debian/control: Change build-depends to texlive packages 	(Closes: #420945)
-  * debian/emacsen-startup.el: Applied patch kindly supplied by Peter Galbraith 
+  * debian/emacsen-startup.el: Applied patch kindly supplied by Peter Galbraith
     to not load Ess when it has been purged 			(Closes: #440194)
   * Add details to copyright.
 
   [ Martin Maechler ]
   * doc/refcard/refcard.tex:  Switched to fullpage.sty		(Closes: #443462)
-  
+
   [ Dirk Eddelbuettel ]
-  * New upstream version addresses the following bugs: 
+  * New upstream version addresses the following bugs:
     "options(error=recover) in R confuses ESS			(Closes: #400382)
     "upgrade to fix complaints about .Last.value"		(Closes: #442159)
     "warning: make-variable-buffer-local should be called ..."	(Closes: #456001)
-  * Bug report #371058 is being looked at upstream and the missing functionality 
+  * Bug report #371058 is being looked at upstream and the missing functionality
     may be added in the future.  All other open bugs are now closed.
   * debian/copyright: Updated to new parseable form for copyright and license
   * debian/doc-base: Updated Section:
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Mon, 19 May 2008 21:13:02 -0500
 
 ess (5.3.0-1) unstable; urgency=low
 
   * New upstream release
-  * Add tetex-extra to build-depends, Closes: #363080, Closes: #358327. 
+  * Add tetex-extra to build-depends, Closes: #363080, Closes: #358327.
   * Apply xemacs key binding fix, Closes: #343234.
   * Comment out svn references in refcard.tex, as Debian does not have
     svn.sty at the moment.

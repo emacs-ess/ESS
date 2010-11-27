@@ -6,7 +6,7 @@
 
 ;; Original Author: A.J. Rossini
 ;; Created: September 4, 2000
-;; Maintainer: ESS Core Team <ESS-core@stat.math.ethz.ch>
+;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 
 ;; Keywords: statistical support
 

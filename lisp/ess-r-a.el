@@ -5,7 +5,7 @@
 
 ;; Original Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 17 November 1999
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: editing and process modes.
 

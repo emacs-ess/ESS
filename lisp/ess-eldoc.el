@@ -5,7 +5,7 @@
 
 ;; Original Author: Stephen Eglen
 ;; Created: 2007-06-30
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -104,7 +104,7 @@
 ;; following two defvars are not currently used.
 (defvar ess-eldoc-last-name nil
   "Name of the last function looked up in eldoc.
-We remember this to see whether we need to look up documentation, or used 
+We remember this to see whether we need to look up documentation, or used
 the cached value in `ess-eldoc-last-args'.")
 
 (defvar ess-eldoc-last-args nil
@@ -119,15 +119,15 @@ to look up any doc strings."
 	name)
     (when ess-local-process-name
       (setq name (ess-guess-fun))		;guess the word at point.
-      (unless (= (length name) 0) 
+      (unless (= (length name) 0)
 	;; look up function name at point.
 	(setq doc (ess-r-args-get name)))
       (unless doc
 	;; no function found at point; see if we are in a arg-list
 	;; of a function.
 	(save-excursion
-	  (condition-case nil 
-	      (progn 
+	  (condition-case nil
+	      (progn
 		(up-list -1)
 		(setq name (ess-guess-fun))
 		(setq doc (ess-r-args-get name)))
@@ -136,7 +136,7 @@ to look up any doc strings."
     (if doc
 	(concat name ": " doc)
       doc)))
-  
+
 (defun ess-eldoc-2 ()
   ;; simple, old version.
   (interactive)
@@ -155,9 +155,9 @@ This is the first version; works only on function name, not within arg list."
   (if ess-current-process-name
       (progn
 	(setq name (ess-guess-fun))		;guess the word at point.
-	(if (equal (length name) 0) 
+	(if (equal (length name) 0)
 	    nil
-	  ;; else 
+	  ;; else
 	  (unless (equal name ess-eldoc-last-name)
 	    ;; name is different to the last name we lookedup, so get
 	    ;; new args from R and store them.

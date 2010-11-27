@@ -6,7 +6,7 @@
 
 ;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 30 Jun 2000
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: start up, configuration.
 

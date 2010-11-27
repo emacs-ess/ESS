@@ -1,7 +1,7 @@
 Source: ess
 Section: gnu-r
 Priority: optional
-Maintainer: ESS Debian Maintainers <ess-debian@stat.math.ethz.ch>
+Maintainer: ESS Debian Maintainers <ess-debian@r-project.org>
 Uploaders: Dirk Eddelbuettel <edd@debian.org>
 Standards-Version: 3.9.1
 Build-Depends: debhelper (>= 7.0.0)

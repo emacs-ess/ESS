@@ -6,7 +6,7 @@
 
 ;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: February 1999
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: processes
 

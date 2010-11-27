@@ -51,7 +51,7 @@ in @file{~/.emacs} and restart Emacs.
 @item
 If you see a buffer named @file{*ESS*}, then the manual instructions
 were most likely successful.  If not, then send a query to
-@email{ess-help@@stat.math.ethz.ch}
+@email{ess-help@@r-project.org}
 explicitly describing your problem and your environment
 including operating system, Emacs version, @ESS{} version, etc.
 @end enumerate
@@ -116,7 +116,7 @@ in @file{~/.xemacs/init.el} and restart XEmacs.
 @item
 If you see a buffer named @file{*ESS*}, then the manual instructions
 were most likely successful.  If not, then send a query to
-@email{ess-help@@stat.math.ethz.ch}
+@email{ess-help@@r-project.org}
 explicitly describing your problem and your environment
 including operating system, XEmacs version, @ESS{} version, etc.
 @end enumerate

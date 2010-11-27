@@ -6,7 +6,7 @@
 
 ;; Original Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 25 July 1997
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: start up, configuration.
 

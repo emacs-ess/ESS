@@ -5,7 +5,7 @@
 
 ;; Original Author: Stephen Eglen <stephen@anc.ed.ac.uk>
 ;; Created: Thu 24 Oct 2002
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -233,7 +233,7 @@ Handle special case when object contains spaces."
     (ess-execute (ess-rdired-get objname)
 		 nil "R view" )))
 
-(defun ess-rdired-get (name) 
+(defun ess-rdired-get (name)
   "Generate R code to get the value of the variable name.
 This is complicated because some variables might have spaces in their names.
 Otherwise, we could just pass the variable name directly to *R*."
@@ -252,7 +252,7 @@ Otherwise, we could just pass the variable name directly to *R*."
 Like `ess-rdired-view', but the object gets its own buffer name."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-execute 
+    (ess-execute
      (ess-rdired-get objname)
      nil (concat "R view " objname ))))
 

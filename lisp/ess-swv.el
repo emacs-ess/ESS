@@ -5,7 +5,7 @@
 
 ;; Original Author: David Whiting <david.whiting@ncl.ac.uk>
 ;; Created: 15 April 2005
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: Noweb, Literate Statistical Practice, Sweave
 

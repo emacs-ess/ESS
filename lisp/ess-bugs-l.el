@@ -4,7 +4,7 @@
 
 ;; Original Author: Rodney Sparapani
 ;; Created: 16 August 2006
-;; Maintainers: ESS-help <ess-help@stat.math.ethz.ch>
+;; Maintainers: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 
@@ -189,22 +189,22 @@ and `ess-bugs-file-dir'."
 			    (ess-bugs-replacement-9 0)
 			    (ess-bugs-replacement-diff 0))
      (while (search-forward-regexp "-?[0-9][.][0-9][0-9][0-9]E[+-][0-9]" nil t)
-	    (setq ess-bugs-replacement-string 
+	    (setq ess-bugs-replacement-string
 		  (int-to-string (string-to-number (match-string 0))))
 	    (setq ess-bugs-replacement-diff (- (match-end 0) (match-beginning 0)))
 	    (save-match-data
-	        (setq ess-bugs-replacement-9 
+	        (setq ess-bugs-replacement-9
 		    (string-match "99999999999$" ess-bugs-replacement-string))
 
 		(if (not ess-bugs-replacement-9)
-		    (setq ess-bugs-replacement-9 
+		    (setq ess-bugs-replacement-9
 			(string-match "000000000001$" ess-bugs-replacement-string))))
-	
-	    (if ess-bugs-replacement-9	
-		(setq ess-bugs-replacement-string 
+
+	    (if ess-bugs-replacement-9
+		(setq ess-bugs-replacement-string
 		    (substring ess-bugs-replacement-string 0 ess-bugs-replacement-9)))
 
-	    (setq ess-bugs-replacement-diff 
+	    (setq ess-bugs-replacement-diff
 		(- ess-bugs-replacement-diff (string-width ess-bugs-replacement-string)))
 
 	   (while (> ess-bugs-replacement-diff 0)

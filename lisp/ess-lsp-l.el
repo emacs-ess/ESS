@@ -6,7 +6,7 @@
 
 ;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 1 Sept 1997
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS.
 

@@ -4,7 +4,7 @@
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Rodney A. Sparapani
-;; Maintainer: ESS-core@stat.math.ethz.ch
+;; Maintainer: ESS-core@r-project.org
 ;; Created: 17 November 1999
 ;; Keywords: SAS
 
@@ -567,7 +567,7 @@ current buffer if nil."
 	  (if ess-tmp-glyph (progn
 		(switch-to-buffer (file-name-nondirectory ess-tmp-graph))
 		(ess-xemacs-insert-glyph
-		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))    
+		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
 
           ;;else use the appropriate graphics file image viewer
 	    (while (< ess-tmp-counter ess-tmp-length)
@@ -668,7 +668,7 @@ current buffer if nil."
 
 	      (if revert
 		  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
-			   (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file))) 
+			   (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file)))
 			      ess-sas-log-max))
 		      (progn
 			(insert-file-contents ess-sas-temp-file nil 0
@@ -1133,9 +1133,9 @@ Keep in mind that the maximum command line length in MS-DOS is
 (defun ess-sas-toggle-sas-log-mode ()
   "Toggle SAS-log-mode for .log files."
   (interactive)
-  
+
   (ess-sas-goto-log)
-  (kill-buffer nil)  
+  (kill-buffer nil)
 
 ;  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
 ;      (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
@@ -1148,7 +1148,7 @@ Keep in mind that the maximum command line length in MS-DOS is
 ;      (font-lock-mode 1)
 ;      (font-lock-fontify-buffer))
 
-  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) 
+  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode)
       (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
       (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
   (ess-sas-goto-log))

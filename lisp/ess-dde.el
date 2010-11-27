@@ -6,7 +6,7 @@
 
 ;; Original Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Created: 9 Dec 1998
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 

@@ -6,7 +6,7 @@
 ;; Original Author: Stephen Eglen
 ;; Created: 2004-05-06
 ;; Revised: 2009-03-16
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 

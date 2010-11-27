@@ -9,7 +9,7 @@
 
 ;; ESS-related Changes first added by Mark Lunt and A.J. Rossini, March, 1999.
 
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

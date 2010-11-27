@@ -4,7 +4,7 @@
 
 ;; Original Author: Rodney Sparapani
 ;; Created: 13 March 2008
-;; Maintainers: ESS-help <ess-help@stat.math.ethz.ch>
+;; Maintainers: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 

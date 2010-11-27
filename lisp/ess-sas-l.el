@@ -7,7 +7,7 @@
 ;;          A.J. Rossini,
 ;;          Rodney Sparapani
 ;; Created: 20 Aug 1997
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: start up, configuration.
 

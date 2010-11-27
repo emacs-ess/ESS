@@ -7,7 +7,7 @@
 ;; Original Authors: Thomas Lumley <thomas@biostat.washington.edu>,
 ;;         	     Brendan Halpin <brendan@essex.ac.uk>
 ;; Created: 2 Nov 1997
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: start up, configuration.
 

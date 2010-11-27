@@ -91,7 +91,7 @@ ChangeLog: VERSION
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
-	     " ESS Maintainers <ESS-core@stat.math.ethz.ch>" ; \
+	     " ESS Maintainers <ESS-core@r-project.org>" ; \
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
 	@rm ChangeLog.old

@@ -18,7 +18,7 @@ This package was initially debianized by Camm Maguire <camm@enhanced.com> on
 Sat, 11 Sep 1999 12:03:46 -0400.
 
 As of May 2008, the package is maintained by a group of ESS and Debian
-developers which can be reached at ess-debian@stat.math.ethz.ch.
+developers which can be reached at ess-debian@r-project.org.
 
 Sources were downloaded from http://ESS.R-project.org/downloads/ess/ and
 changes, typically only to files in the Debian/ directory are fully documented

@@ -7,7 +7,7 @@
 ;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: December 1998
 
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: start up, configuration.
 

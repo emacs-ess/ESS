@@ -6,7 +6,7 @@
 
 ;; Original Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Created: October 14, 1991
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: statistical support
 ;; Summary: general functions for ESS
@@ -50,7 +50,7 @@
 ;;;
 ;;; There is an informal mailing list for discussions of ESS. Alpha
 ;;; and beta releases of ESS are also announced here. Send mail
-;;; to ess-request@stat.math.ethz.ch to join.
+;;; to ess-help-request@r-project.org to join.
 
 ;;; OVERVIEW OF ESS
 ;;;
@@ -91,7 +91,7 @@
 ;;; Maechler, and A.J. Rossini to David Smith.
 
 ;;; BUG REPORTS
-;;; Please report bugs to ess-bugs@stat.math.ethz.ch
+;;; Please report bugs to ess-bugs@r-project.org
 ;;; Comments, suggestions, words of praise and large cash donations
 ;;; are also more than welcome, but should generally be split between
 ;;; all authors :-).

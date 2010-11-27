@@ -6,7 +6,7 @@
 
 ;; Original Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 15 Aug 1999
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 

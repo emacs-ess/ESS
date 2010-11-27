@@ -5,7 +5,7 @@
 
 ;; Original Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -33,7 +33,7 @@
   "Current version of ess-rd.el.")
 
 (defvar essddr-maintainer-address
-  "ESS Core Team <ess-core@stat.math.ethz.ch>"
+  "ESS Core Team <ess-core@r-project.org>"
   "Current maintainer of ess-rd.el.")
 
 (defun Rd-active-mark () nil)		;silence compiler.

@@ -9,7 +9,7 @@
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -607,7 +607,7 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report
-     "ess-bugs@stat.math.ethz.ch"
+     "ess-bugs@r-project.org"
      (concat "ess-mode " ess-version)
      (list 'ess-language
 	   'ess-dialect

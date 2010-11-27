@@ -7,7 +7,7 @@
 ;; Original Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;          A.J. Rossini <rossini@u.washington.edu>
 ;; Created: April 18, 1999
-;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
+;; Maintainers: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: statistical support
 ;; Summary: Noweb support for ESS
