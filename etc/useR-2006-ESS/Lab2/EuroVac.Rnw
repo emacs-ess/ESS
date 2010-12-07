@@ -1,0 +1,501 @@
+%% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+
+\documentclass{article}
+
+\begin{document}
+
+This is a quick discussion of the statistical characteristics and
+corresponding sample size requirements for an HVTN/EuroVac trial to
+evaluate 2 issues with respect to related MVA and NYVAC products.
+Larry Corey has initially proposed two Phase II trials.  The first is
+to examine the differences between the two pox vector vaccines; the
+second to look at the effect of ordering with an MVA and DNA in a
+prime-boost setting.
+
+\section{Proposed Trial Designs}
+\label{SEC:prop-trial-designs}
+
+This section contains the proposed trials designs along with some of
+the reasoning behind the approaches.
+
+Statistician's conjectures:
+\begin{itemize}
+\item we should see cellular as well as humoral responses; however,
+  the design will be based on cellular immune response assays with
+  qualitative (binary) responses.
+\item it will take at least a 15\% difference in immune response
+  (i.e. 15\% vs 30\%, or 40\% vs. 55\%, or 60\% vs 75\%) for us to
+  consider one to be better than the other.  
+\item we need the lower bound of the 95\% confidence interval to be at
+  least 30\% to move forward to a Phase IIb or III trial.
+\end{itemize}
+
+\subsection{Pox Vector Comparisons}
+\label{SEC:pox-vect-comp}
+
+The primary goal of this study is to compare the effectiveness of
+NYVAC with MVA when considering immunological response.  The proposed
+schedule is a 3 visit regimen (for example, 0, 1, 3) with the primary
+immunological endpoints being recorded after the 3rd visit.
+
+Questions that the study will look at (ordered in terms of importance):
+\begin{enumerate}
+\item Is one delivery vector (NYVAC, MVA) uniformly better than the
+  other (qualitative cellular immune response, for either a single
+  time point or for a cumulative probability of response).
+\item Do any of the arms have sufficient immune response
+  characteristics to warrant a Phase 3 trial?
+\item Do the gene inserts play a role in immune response? 
+\item If the last two are true, which factor has a stronger effect on
+  immune response?
+\end{enumerate}
+
+We propose the following schema based on a conservative approach for
+answering the first question.  This will have 80\% power to detect at
+minimum of a 15\% difference in immunological response (40\% vs. 55\%)
+at a single time point (or for cumulative response), with an
+adjustment of 6 additional to cover possible 10\% attrition over the
+course of the study.  We have more power as the probability of immune
+response moves away (higher or lower) from 50\%.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{l|rr|c}
+    Group & Vector & Clade & N \\ \hline
+    A1    & MVA    & B/B   & 64 \\
+    B1    & MVA    & C/C   & 64 \\
+    C1    & MVA    & B/C   & 64 \\
+    D1    & NYVAC  & B/B   & 64 \\
+    E1    & NYVAC  & C/C   & 64 \\
+    F1    & NYVAC  & B/C   & 64 \\
+    G1    & CTRL   &       & 60 \\ \hline
+    Total &        &       & 444
+  \end{tabular}
+  \caption{Trial 1 Schema.  For 90\% power, increase the group size to
+           85.}
+  \label{tab:trial1:schema}
+\end{table}
+
+We pay dearly to reduce the difference in immune response to 10\% from
+15\%; this would require more than doubling each arm, i.e. to 144 per
+group, for a total of $6 \times 144 = 864$ plus a suitable control
+group.
+
+Since these products could be stand-alone vaccines in their own right,
+we describe the information that will be obtained from this trial, for
+characterizing each arm for moving forward to a subsequence Phase III
+study.  With respect to characterizing each arm, we will have at least
+80\% power to determine that the lower bound of an 95\% confidence
+interval for the net (adjusted for false-positive) immunological
+response is greater than 30\%, if the observed rate is at least 61\%
+(i.e. if this was the true situation, we would expect of 64 vaccinees,
+that $64 \times 0.61 = 39$ positive immune responses would be observed
+in the study, prior to adjusting for the false positives in the
+control arm).  This computation assumes a 10\% false positive rate (6
+positives in the $N=60$ control arm).  \textbf{If we don't think that
+  we can pull off a 61\% response, it might be worth increasing the
+  size of the arms}.
+
+For the first primary hypothesis (which delivery vector is better?),
+the statistical analysis plan is to compare 2 proportions, one
+combining groups A1,B1,C1 against groups D1,E1,F1.
+
+For the second primary hypothesis (which arms are worth bringing
+forward to a Phase III trial), the characterization will be done by
+looking at each of the arms (A1,B1,C1,D1,E1,F1) and comparing each
+with the control arm (G1).  
+
+Assuming no vector effect, we will have 80\% power (79.4\%) to detect
+a 20\% difference in the gene inserts (B,C, and the B/C combination)
+for each vaccine.  A priori, it seems doubtful (to me) that the
+inserts will have this much effect.  This was computed via a
+Bonferroni adjustment to the 2-sample power calculation.
+
+I have not characterized the other secondary goals (selection of best
+response, etc), but these would definitely be part of the statistical
+analysis plan.
+
+\subsection{Prime-Boost Comparison}
+\label{SEC:prime-boost-comp}
+
+The goal of this study is to evaluate the immunogenicity of 3
+prime-boost strategies using DNA and NYVAC vaccine products, using
+regimens which employ 3 vaccinations.
+
+Questions that the study will look at (ordered in terms of importance):
+\begin{enumerate}
+\item Which DNA-NYVAC prime-boost strategy produces the highest immune
+  response, 2 weeks after the third vaccination?
+\item Do any of the arms meet the criteria for moving forward?
+\end{enumerate}
+
+We propose the following schema based on a conservative approach, with
+80\% power to detect at minimum of a 15\% difference in immunological
+response (40\% vs. 55\%) at a single time point (or for cumulative
+response), with an adjustment of 6 additional to cover possible 10\%
+attrition over the course of the study.  We have more power as the
+true probability of immune response moves away (higher or lower) from
+50\%.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{r|ccc|c}
+    Group & M0     & M1    & M2    & N  \\ \hline
+    A2    & NYVAC  & NYVAC & DNA   & 85 \\
+    B2    & DNA    & NYVAC & NYVAC & 85 \\
+    C2    & DNA    & DNA   & NYVAC & 85 \\ 
+    D2    & CTRL   & CTRL  & CTRL  & 80 \\ \hline
+    Total &        &       &       & 335
+  \end{tabular}
+
+  \caption{DNA/NYVAC prime-boost study.  For 90\% power, increase the
+          size of each arm to 110 (with a corresponding increase in the
+          control group).}
+  \label{tab:primeboost:schema}
+\end{table}
+
+The larger sample sizes are due to the primary analysis being a
+3-group rather than 2-group comparison.   It might be possible to
+combine B2 and C2 for determination of the primary question (order of
+products), and lower the numbers, but this assumes that the regimens
+are pretty much equivalent, i.e. that it does not matter whether NYVAC
+or DNA is given at the second vaccination.
+
+For characterization purposes, we have moved from 61\% to 58\% as far
+as what the true target to achieve is, given 10\% a false positive
+rate in the assay.
+
+See the first trial for increased verbiage trying to describe how we
+are looking at the first and second questions of interest.
+
+\clearpage
+
+\appendix
+
+\centerline{\Large \textbf{The following can be ignored}}
+
+(unless you are curious about some of the numbers, or other options;
+included primarily for future HVTN Stat group discussion).
+
+
+<<initialize,echo=FALSE>>=
+exists.HVTNDESIGN <- require(hvtndesign)
+exists.STATMOD <- require(statmod)
+@ 
+
+\section{Computations for the proposed designs}
+\label{SEC:comp-upon-with}
+
+
+\subsection{Pox Vector Trial Calculations}
+\label{SEC:calculations:poxvector}
+
+The following considers a trial to conservatively detect 15\%
+difference at 80\% power.
+
+<<trial 1 vector comparison>>=
+trial1.characteristics <- power.prop.test(p1=0.40,p2=0.55,power=0.8)
+print(trial1.characteristics)
+@ 
+N is the number assigned to MVA and assigned to NYVAC,
+which then will be divided into 3 to form the comparison, 
+assuming that the gene insert has no effect
+<<trial 1 vector comparison>>=
+NperArm <- trial1.characteristics$n / 3
+@ 
+so the number per arm assuming no loss
+<<trial 1 vector comparison>>=
+ceiling(NperArm)
+@ 
+and the number per arm assuming 10\% loss to followup
+<<trial 1 vector comparison>>=
+ceiling(NperArm * 1.1)
+@ 
+
+If we consider a scenario with 80\% power to detect a 10\% difference,
+we have the following:
+
+<<trial 1 vector comparison>>=
+trial1.characteristics.2 <- power.prop.test(p1=0.45,p2=0.55,power=0.8)
+print(trial1.characteristics.2)
+@ 
+N is the number assigned to MVA and assigned to NYVAC,
+which then will be divided into 3 to form the comparison, 
+assuming that the gene insert has no effect
+<<trial 1 vector comparison>>=
+NperArm <- trial1.characteristics.2$n / 3
+@ 
+so the number per arm assuming no loss
+<<trial 1 vector comparison>>=
+ceiling(NperArm)
+@ 
+and the number per arm assuming 10\% loss to followup
+<<trial 1 vector comparison>>=
+ceiling(NperArm * 1.1)
+@ 
+
+and we end up having to pay dearly to achieve be able to detect a 10\%
+difference. 
+
+\textbf{NEW:}
+The following considers a trial to conservatively detect 15\%
+difference at 90\% power.
+
+<<trial 1 vector comparison>>=
+trial1.characteristics3 <- power.prop.test(p1=0.40,p2=0.55,power=0.9)
+print(trial1.characteristics3)
+@ 
+N is the number assigned to MVA and assigned to NYVAC,
+which then will be divided into 3 to form the comparison, 
+assuming that the gene insert has no effect
+<<trial 1 vector comparison>>=
+NperArm3 <- trial1.characteristics3$n / 3
+@ 
+so the number per arm assuming no loss
+<<trial 1 vector comparison>>=
+ceiling(NperArm3)
+@ 
+and the number per arm assuming 10\% loss to followup
+<<trial 1 vector comparison>>=
+ceiling(NperArm3 * 1.1)
+@ 
+
+
+
+
+We describe the 3-way comparison of inserts by adjusting the significance
+level via a Bonferroni correction, and compute via:
+<<Three-way pox insert comparison>>=
+power.prop.test(n=128,p1=0.40,p2=0.6,sig.level=0.0166)
+@ 
+
+
+
+
+\subsection{Prime-Boost Trial Calculations}
+\label{SEC:calculations:primeboost}
+
+<<trial 2 order>>=
+trial2.characteristics <- power.prop.test(p1=0.40,p2=0.55,power=0.8,sig.level=0.0166)
+print(trial2.characteristics)
+@ 
+N is the number assigned to MVA and assigned to NYVAC,
+which then will be divided into 3 to form the comparison, 
+assuming that the gene insert has no effect
+<<trial 2 vector comparison>>=
+NperArm2 <- trial2.characteristics$n / 3
+@ 
+so the number per arm assuming no loss
+<<trial 2 vector comparison>>=
+ceiling(NperArm2)
+@ 
+and the number per arm assuming 10\% loss to followup
+<<trial 2 vector comparison>>=
+ceiling(NperArm2 * 1.1)
+@ 
+
+At 90\% power, we have:
+<<trial 2 order>>=
+trial2.characteristics2 <- power.prop.test(p1=0.40,p2=0.55,power=0.9,sig.level=0.0166)
+print(trial2.characteristics2)
+@ 
+N is the number assigned to MVA and assigned to NYVAC,
+which then will be divided into 3 to form the comparison, 
+assuming that the gene insert has no effect
+<<trial 2 vector comparison>>=
+NperArm4 <- trial2.characteristics2$n / 3
+@ 
+so the number per arm assuming no loss
+<<trial 2 vector comparison>>=
+ceiling(NperArm4)
+@ 
+and the number per arm assuming 10\% loss to followup
+<<trial 2 vector comparison>>=
+ceiling(NperArm4 * 1.1)
+@ 
+
+
+
+\section{General Computations}
+\label{SEC:computations}
+
+
+\subsection{2-sample tests of proportions}
+\label{SEC:2-sample-tests}
+
+We present here the computations used to generate the numbers for
+discussion.  The characteristics were computed using R 1.7.1, with the
+following code below.
+
+We will be conservative and will consider that the insert has no
+effect, and use the ``worst'' situation (to be calculated below).
+
+<<PowerDataFrame,echo=FALSE,eval=TRUE>>=
+PowerDataFrame <- function(PowerList=seq(from=0.8,to=0.9,by=0.05),
+                           LowerResponseList=seq(from=0.1,to=0.6,by=0.05),
+                           DeltaList=seq(from=0.1,to=0.2,by=0.05)) {
+
+  power.results <- NULL
+  for (Power in PowerList) {
+    for (Delta in DeltaList) {
+      for (LowerResponse in LowerResponseList) {
+        power.temp <- power.prop.test(p1=LowerResponse,
+                                      p2=LowerResponse + Delta,
+                                      power=Power,
+                                      sig.level=0.05,
+                                      n=NULL)
+        power.results <- rbind(power.results,
+                               c(power.temp$p1,
+                                 power.temp$p2,
+                                 power.temp$p2 - power.temp$p1,
+                                 power.temp$power,
+                                 power.temp$n))
+      }
+    }
+  }
+  colnames(power.results) <- c("Low","High",
+                               "Delta",
+                               "Power","N")
+  as.data.frame(power.results)
+}                           
+@ %def PowerDataFrame
+
+<<compute power for Pox Trial vector comparison>>=
+power.dataframe <- PowerDataFrame(PowerList=c(0.8))
+@ 
+
+The results suggest that.
+
+<<display Pox Trial power for vector comparison,results=tex,echo=FALSE>>= 
+if (require(xtable)) {
+  xtable(power.dataframe,label="tab:80power:5diff",
+         caption=paste("Scenarios used for considering 80\\% power: ",
+           "based on test of binomial proportions, ",
+           "multiply n by 2 for whole trial, divide by 3 for each group"))
+}
+@ 
+
+
+\subsection{Characterization in the presence of False Positives}
+\label{sec:char-pres-false}
+
+
+<<False Positive Characterization Function>>=
+ci.false.positive <- function(nrep=50000, #nrep
+                              nCtl =60,   # n2
+                              nVac =90,   # n1
+                              pCtl =0.10, #p2
+                              pVac =0.5,  #p1
+                              H0VacMCtl = 0.3) ## null hypthosis for net rate
+{
+
+  Ctl.resp <- rbinom(nrep,nCtl,pCtl)
+  Vac.resp <- rbinom(nrep,nVac,pVac)
+
+  phat.Ctl <- Ctl.resp / nCtl
+  phat.Vac <- Vac.resp / nVac
+
+  pDiff <- phat.Vac - phat.Ctl
+
+
+  vCtl <- phat.Ctl * (1 - phat.Ctl)  / nCtl
+  vVac <- phat.Vac * (1 - phat.Vac)  / nVac
+  vDiff <- vCtl + vVac
+
+  results.asympt <- 1.0 - (sum(H0VacMCtl > (pDiff - (1.96 * sqrt(vDiff))) &
+                               H0VacMCtl < (pDiff + (1.96 * sqrt(vDiff)))) /
+                           nrep)
+
+  results.emp <-  quantile(pDiff,c(0.025,0.975))
+  list(PowerAsympt=results.asympt,EmpiricalCI=results.emp)
+}
+@ %def ci.false.positive
+
+
+
+<<Characterizing Arms in Pox Vector study>>=
+ci.false.positive(nCtl=60,nVac=64)
+ci.false.positive(nCtl=60,nVac=64,pVac=0.55)
+ci.false.positive(nCtl=60,nVac=64,pVac=0.60)
+ci.false.positive(nCtl=60,nVac=64,pVac=0.61)
+ci.false.positive(nCtl=60,nVac=64,pVac=0.65)
+@ 
+
+
+
+
+<<Characterizing Arms in Pox Vector study>>=
+ci.false.positive(nCtl=80,nVac=85)
+ci.false.positive(nCtl=80,nVac=85,pVac=0.55)
+ci.false.positive(nCtl=80,nVac=85,pVac=0.58)
+ci.false.positive(nCtl=85,nVac=85,pVac=0.58)
+
+ci.false.positive(nCtl=80,nVac=85,pVac=0.60)
+ci.false.positive(nCtl=80,nVac=85,pVac=0.61)
+ci.false.positive(nCtl=80,nVac=85,pVac=0.65)
+@ 
+
+
+\subsection{Selection}
+\label{SEC:selection}
+
+
+<<SelectionProb Function>>=
+Selection.prob <- function(N=10000,
+                           n=rep(30,4),
+                           probs=c(0.5,rep(0.2,3)),
+                           DEBUG=FALSE,
+                           random.seed=583,
+                           SPACE.PROBLEMS=TRUE) {
+  ## check args
+  if (!(length(n) == length(probs))) {
+    stop("Length of n and probs do not match.")
+  }
+  set.seed(random.seed)
+  k <- length(n) 
+
+  ## Simulate Trials
+  if (SPACE.PROBLEMS) {
+    ## loop for computation
+    select <- NULL
+    for (i in 1:N) {
+      if (DEBUG) cat("\n*****\n","trial ",i,"\n")
+      ## N trials
+      trial <- rbinom(k,n,probs)
+      if (DEBUG) {
+        cat("N per trial  :",n,"\n")
+        cat("Trial results:",trial,"\n")
+        cat("True Probs:",probs,"\n")
+        cat("Best Trial/Prob",
+            which(trial == max(trial)),
+            which(probs == max(probs)))
+      }
+      ## Do we need to handle the "multiple max" problem?
+      if (DEBUG) cat("\nResult: ")
+      if (which(probs == max(probs),
+                arr.ind=TRUE) %in%
+          which(trial == max(trial),
+                arr.ind=TRUE)) {
+        select <- c(select,TRUE)
+        if (DEBUG) cat("TRUE\n")
+      } else {
+        select <- c(select,FALSE)
+        if (DEBUG) cat("FALSE\n")
+      }
+    }
+  } else {
+    ## compute in a single matrix
+    select <- FALSE
+  }
+  
+  sum(select) / N
+}
+@ 
+
+<<SelectionProbTest>>=
+Selection.prob(n=c(30,30,30,30,30),probs=c(0.2,0.2,0.2,0.2,0.5))
+Selection.prob(n=c(rep(64,6),60),probs=c(rep(0.4,5),0.5,0.1))
+Selection.prob(n=c(rep(64,6),60),probs=c(rep(0.42,5),0.58,0.1))
+@ 
+
+\end{document}

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Lab Session 2</title>
+  </head>
+
+  <body>
+    <h1>Lab Session 2</h1>
+
+    <p>
+      Links to the <a href="cph-2.pdf">Lecture 2 Slides</a> and <a
+	href="refcard.pdf">Emacs quick reference guide</a> might be
+      helpful (in other windows!)
+    </p>
+
+    <p>
+      This lab was initially done on a Linux system.  Modifications
+      might be necessary to make it work under other systems.  I will
+      willingly accept corrections and additions which will make it
+      work, but short of being asked to give a similar course again,
+      do not have time to make it work on different platforms.  The
+      necessary files, <a
+	href="Sweave-Example.Rnw">Sweave-Example.Rnw</a>, <a
+	href="SweaveMakefile">SweaveMakefile</a>, and <a
+	href="Sweave.sh">Sweave.sh</a> are available.  Note that
+      Sweave.sh is a shell script which needs to be made executable.
+    </p>
+
+    <p>
+      Note that you need to have ESS and R installed to do this lab.
+    </p>
+
+    <pre>
+Commands to type are generally in parens, i.e. (type this)  means to
+type "type this", not "(type this)")!
+
+1.  Using PUTTY or a similar Windows SSH shell, log in
+    to ?? or Lannerfalk.kubism.ku.dk
+
+2.  Change into the Lab2 directory (cd Lab2)
+
+3.  First example:  try starting an R session using
+    emacs -f R
+
+4.  Now, we are going to load in the first example Sweave file,
+    (C-x C-f Sweave-Example.Rnw)
+
+5.  However, it isn't going to be in the right mode by default, so we
+    need to get it there:
+
+    (M-x noweb-mode)
+    (M-x noweb-set-code-mode R-mode)
+
+6.  Look at the file, change the author to you, and evaluate it
+    (M-x compile {ret} make -k -f SweaveMakefile)
+
+    You will have to add the "-f SweaveMakefile" to the compile
+    command!
+
+7.  To view the results, you will have to make a WWW directory;
+    (mkdir ~/public_html)
+    and copy the files you'd like to view (the final PDF file!) there
+    (cp Sweave-Example.pdf ~/public_html)
+    Now you can use your local WWW browser to display:
+
+      http://www.biostat.ku.dk/~bsguest1/Sweave-Example.pdf
+
+    but you might need to change bsguest1 to the account that you are
+    using!
+
+8.  Now, move the cursor into the Sweave-Example.Rnw
+    file.  You might need to use (C-x b) to switch back to it.
+
+9.  We will now step through the R code to evaluate it.  That should
+    be possible within the noweb code chunks; you might get prompted
+    as to the process to use when changing the code chunks.  Step
+    through them using (C-c C-n) (which will only work if the file is
+    in the right (ESS[R]) mode.  Always check modes, if there is a
+    problem, let Tony know -- Emacs sometimes gets confused).
+
+    It might be hard for the plots, but the text output should
+    respond.
+
+8.  If you have gotten to this point, talk with Tony about the options
+    for finishing off this Lab (I'm not sure how long this will take).
+
+    There are three other templates to look at:
+       EuroVac.Rnw, HVTNScenarios.Rnw, esApply.Rnw
+
+    (and corresponding makefiles exist, as well).
+
+9.  The last part of the exercise is to use the code in Part 1 (the
+    ToothGrowth data, with a linear models fit) and the
+    Sweave-Example.Rnw  template to create a new data analysis.
+
+10. (C-x C-r ../Lab1/Lab1-2.R) to open the old R file read-only.
+
+11. Cut-and-Paste is done via   C-{space}  to set mark, moving the
+    cursor, and  C-w  to cut,  ESC-w to copy, and C-y  to paste.
+
+12. (C-x C-f  Lab2.Rnw )  to load in an empty buffer
+
+13. (C-x i  Sweave-Example.Rnw ) to insert the Sweave Example into
+    the Lab2.Rnw buffer  (and save, C-x C-s)
+
+14. Produce a quick data analysis report, using the old file.  Add a
+    bit of text to make it "real".
+
+15. (C-x C-f Makefile ) to open up the makefile
+
+16. Insert SweaveMakefile into it.  Edit the line (SOURCE=) to be
+      SOURCE=Lab2
+
+17. Save the buffer
+
+18. Now, you should be able to (M-x compile) the Lab2 Sweave report.
+
+19. if it works, cp Lab2.pdf ~/public_html/
+
+20. View by going to the URL:
+
+      http://www.biostat.ku.dk/~bsguest1/Lab2.pdf
+
+   (replacing bsguest1 with your account (2,3,4) if needed).
+
+9.  See you Friday morning!
+
+10. The End.
+    </pre>
+
+    <hr>
+    <address><a href="mailto:rossini@u.washington.edu">A.J. Rossini</a></address>
+<!-- Created: Sun Oct  5 08:56:20 PDT 2003 -->
+<!-- hhmts start -->
+Last modified: Tue Oct  7 04:37:43 PDT 2003
+<!-- hhmts end -->
+  </body>
+</html>

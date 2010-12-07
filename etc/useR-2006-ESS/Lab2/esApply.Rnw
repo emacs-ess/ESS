@@ -1,0 +1,120 @@
+%
+% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
+% likely to be overwritten.
+%
+% \VignetteIndexEntry{esApply Introduction}
+%\VignetteDepends{Biobase}
+%\VignetteKeywords{Expression Analysis}
+%\VignettePackage{Biobase}
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,pstricks}
+\usepackage[authoryear,round]{natbib}
+\usepackage{hyperref}
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+
+
+\bibliographystyle{plainnat}
+
+\begin{document}
+
+\section*{A note on {\tt esApply}}
+
+{\tt exprSet}s are complex objects.  We will think
+of them as linked arrays: the \Robject{exprs} element
+of an \Rclass{exprSet} is $G \times N$, where $G$ is
+the number of genes on a chip and $N$ is the number
+of tissues analyzed, and the \Robject{pData} element
+of the associated \Robject{phenoData} element is $N \times p$,
+where $p$ is the number of phenotypic or demographic, etc.,
+variables collected.
+
+Abstractly, we are often interested in evaluating
+functions $f(y;x)$ where $y$ is an $N$-vector of
+expression results for a specific gene and $x$ is
+an $N$-dimensional structure, coordinated with $y$, that
+distinguishes elements of $y$ for processing in the function $f$.
+A basic problem is to guarantee that the $j$th element
+of $y$ is correctly associated with the $j$th component of $x$.
+
+<<R.hide, results=hide, echo=FALSE>>=
+library(Biobase)
+data(eset)
+@
+As an example, let's consider \Robject{eset} which is an %'
+\Rclass{exprSet} supplied with Biobase.  We will print
+a little report, then
+the first $N$-vector of gene expressions and
+some covariate data:
+<<R>>=
+print(eset)
+print(exprs(eset)[1,])
+print(pData(eset)[1:2,1:3])
+
+@
+
+Now let's see how expressions %'
+and a covariate are related:
+
+<<R>>=
+print( rbind(exprs(eset[1,]),
+cov1=t(pData(eset))[1,]))
+@
+A function that evaluates the difference in median expression across
+strata defined using an abstract covariate \Robject{x} is
+<<R>>=
+medContr <- function( y, x ) {
+ ys <- split(y,x)
+ median(ys[[1]]) - median(ys[[2]])
+ }
+@
+We can apply this to a small
+\Rclass{exprSet} that gives back the data listed above:
+<<R>>=
+print(apply(exprs(eset[1,,drop=F]),1,
+  medContr, pData(eset)[["cov1"]]))
+@
+That's a bit clumsy.  This is where %'
+\Rfunction{esApply} comes in.  We pay for some
+simplicity by following a strict protocol
+for the definition of the statistical
+function to be applied.
+<<R>>=
+medContr1 <- function(y) {
+ ys <- split(y,cov1)
+ median(ys[[1]]) - median(ys[[2]])
+ }
+
+print(esApply( eset, 1, medContr1 )[1])
+@
+The manual page on \Rfunction{esApply} has a number of
+additional examples that show how applicable functions
+can be constructed and used.  The important thing to
+note is that the applicable functions {\em know} the names of
+the covariates in the \Robject{pData} dataframe.
+
+This is achieved by having an environment populated with all the
+variables in the \Robject{phenoData} component of the \Rclass{exprSet} put
+in as the environment of the function that will be applied. If that
+function already has an environment we retain that but in the second
+position. Thus, there is some potential for variable shadowing.
+
+\end{document}

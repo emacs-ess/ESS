@@ -1,0 +1,135 @@
+\documentclass[pdf,final,azure]{prosper}
+
+\usepackage{textcomp}
+\usepackage{semhelv}
+\usepackage{mathptm}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{pstricks}
+\usepackage{pst-grad}
+\usepackage{url}
+\usepackage{hyperref}
+
+\title{Modern Statistical Computing}
+\subtitle{Statistical Documents}
+\author{A.J. Rossini}
+\email{rossini@u.washington.edu}
+\institution{Department of Medical Education and Biomedical Informatics \\
+  University of Washington \\
+  and \\ 
+  Biostatistics, HIV Vaccine Trials Network \\
+  Fred Hutchinson Cancer Research Center
+  \href{http://www.analytics.washington.edu/~rossini/courses/cph-statcomp/}
+  {http://www.analytics.washington.edu/\~{}rossini/courses/cph-statcomp/}}
+\slideCaption{Lecture 2: Statistical Documents, 6 October 2003}
+
+%\DefaultTransition{Glitter}
+%\DefaultTransition{Wipe}
+\DefaultTransition{Replace}
+%\DefaultTransition{Blinds}
+%\DefaultTransition{Box}
+%\DefaultTransition{Dissolve}
+
+\begin{document}
+
+\maketitle 
+
+\overlays{2}{%
+  \begin{slide}{Statistical Documents}
+    Definitions:
+    \begin{itemstep}
+    \item \textbf{Document:} information recorded using some medium
+      (paper, electronic format) which can be processed later (read,
+      copied, edited).
+    \item \textbf{Statistical Document:} A document which contains 
+      statistical information (tables, figures), possibly with other
+      forms of information.
+    \end{itemstep}
+  \end{slide}
+}
+
+\overlays{4}{%
+  \begin{slide}{Outline of Lecture}
+    \begin{itemstep}
+    \item Introduction
+    \item Markup Langauges
+    \item ``Literate'' Documents
+    \item Current and Future Extensions
+    \end{itemstep}
+  \end{slide}
+}
+
+\begin{slide}{Markup Languages: \LaTeX{}}
+  
+\end{slide}
+
+\begin{slide}{Markup Languages: HTML}
+  
+\end{slide}
+
+
+\begin{slide}{Markup Languages: in general}
+  Computer languages, generally used for adding context to
+  data. Uses and Examples:
+  \begin{itemize}
+  \item typesetting (\LaTeX{}, \TeX{}, HTML, DocBook-XML)
+  \item data (CSV, XML applications, BiBTeX)
+  \item programming (Noweb)
+  \item general purpose (SGML, XML)
+  \item specialized applications of XML (to describe particular forms
+    of data, documents, and communications): MAGE-ML, StatDataML,
+    XHTML, XML-RPC, MATH-ML, many, many (100s?) others.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Markup Languages: XML}
+  XML is special; it was one of the first markup languages to require
+  a means for validation of format and determination of document
+  consistency, through use of document schemas (XML-Schema, Document
+  Type Descriptions (DTDs), and other descriptions of allowable
+  content forms).
+\end{slide}
+
+
+\begin{slide}{XML}
+  Example of XML, and DTD.
+\end{slide}
+
+\begin{slide}{DOM and XML}
+  Documents as objects, with tree-like representations; no longer
+  restricted to be linear. \\
+\vspace*{4mm} 
+\centerline{\includegraphics[height=4\semin,width=8\semin]{xml-dom.eps}}
+
+\end{slide}
+
+\begin{slide}{Markup within Markup}
+  \begin{itemize}
+  \item MATH-ML within XHTML;
+  \item \LaTeX{} and/or XHTML within Noweb
+  \item XPath, XQuery within MAGEML
+  \end{itemize}
+\end{slide}
+
+
+
+
+\begin{slide}{Relevance to Statistics? }
+  
+  Question: How is this relevant (to) statistical research? 
+
+\end{slide}
+
+\begin{slide}{End of Lecture, Start of Lab}
+    \vspace*{1cm}
+  {\tiny
+    \url{http://www.analytics.washington.edu/~rossini/courses/cph-statcomp}
+  }
+\end{slide}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: LaTeX
+%%% TeX-master: "cph-2.tex"
+%%% End: 

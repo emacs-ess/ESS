@@ -1,0 +1,578 @@
+\documentclass{article}
+
+%%
+%% This is an Sweave file.  To generate a latex file from this, use (in R): 
+%% > library(tools)
+%% > Sweave("HVTNscenarios")
+%% and then in a regular Unix (or MSDOS, or...) shell, 
+%% $ latex HVTNscenarios
+%% to generate the results.
+%%
+
+
+%% The following is for creating PDF.
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+  \pdffalse     % not running PDFLaTeX
+\else
+  \pdfoutput=1  % running PDFLaTeX
+  \pdftrue
+\fi
+
+\ifpdf
+  \usepackage{thumbpdf}
+\fi
+%\usepackage{html,heqn,htmllist}
+%\usepackage[latex2html]{hyperref} 
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{hyperref} 
+\else
+  \usepackage[dvips]{graphicx}
+  \usepackage[dvips]{hyperref} 
+\fi
+
+\usepackage{url}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textheight}{0.2in}
+\addtolength{\textwidth}{1in}
+
+\hypersetup{backref,colorlinks=true,pagebackref=true,
+  hyperindex=true}%pdfpagemode=FullScreen,
+
+\ifpdf
+  \DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps}
+\fi
+
+\title{Understanding moderate immunogenicity response
+  in the context of Phase Ia HIV vaccine trials}   
+\author{A.J. Rossini \\
+  HVTN/SCHARP/FHCRC \\
+  Seattle, WA. USA}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  HVTN Phase Ia trials usually consist of 2-6 armed trials with each
+  arm having 10 vaccinees and 2 associated control subjects for
+  blinding.  Two issues confronting the HVTN are:
+  \begin{enumerate}
+  \item What criteria should be used for advancing to the next trial,
+    either a Phase Ib or Phase II?
+  \item What can we strongly believe about the characteristics of the
+    vaccine regimen?
+  \end{enumerate}
+  While the precision of trial results can be understood
+  theoretically, a review of simulated trials can help clarify how to
+  respond in practice.  Part of the work of the Phase I/II committee
+  work is to understand how to interpret how the point-prevalence
+  response rate, and more importantly, how to think about what the
+  clinical trial results imply about the true product characteristics.
+  This article presents point prevalence results from simulated
+  clinical trials which are based on potentially real scenarios.
+  These results are initially presented in a blinded fashion.
+  Conjecturing what the true results are and comparison with the
+  actual ``truth'', should help investigators understand the level of
+  information which can be gleaned from moderate immunogenicity
+  results from a Phase Ia trial.
+\end{abstract}
+
+<<initialize functions, eval=TRUE, echo=FALSE>>=
+VacScenarios <- function(Nvacgrp=3,
+                         Ngrp = rep(10,Nvacgrp),
+                         Nctl = floor(0.2 * sum(Ngrp)),
+                         falsePosRate=0.1,
+                         VacProbs=c(rep(0.3+falsePosRate,Nvacgrp)),
+                         display.truth=TRUE) {
+  
+  control.response <- rbinom(1,Nctl,falsePosRate)
+  control.percentage <- control.response / Nctl
+
+  group.response <- vector("numeric",length(Ngrp))
+  group.percentage <-  vector("numeric",length(Ngrp))
+
+  for (i in 1:length(Ngrp)) {
+    group.response[i] <- rbinom(1,Ngrp[i],VacProbs[i])
+    group.percentage[i] <-  group.response[i]/Ngrp[i]
+  }
+  results <- structure(list(ctl.true=falsePosRate,
+                            ctl.perc=control.percentage,
+                            ctl.resp=control.response,
+                            ctl.N=Nctl,
+                            grp.true=VacProbs,
+                            grp.perc=group.percentage,
+                            grp.resp=group.response,
+                            grp.N=Ngrp),
+                       class="VacScen")
+}
+
+barplot.VacScen <- function(x,display.truth=TRUE,...) {
+  if (class(x) != "VacScen") {
+    stop("Object not a VacScen class object.")
+  }
+  response <- c(x$ctl.perc,x$grp.perc)
+  barplot(response,ylim=c(0,1),
+          names.arg=c(paste("C",format(x$ctl.perc,digits=3)),
+            paste("V",format(x$grp.perc,digits=3))))
+  if (display.truth) {
+    title(main=paste("ctl=",
+            x$ctl.true,
+            paste(" vac=",x$grp.true, sep=" ",collapse="")),
+          sub=paste("Vac group includes  false pos, N = ",
+            x$ctl.N,", ",paste(x$grp.N,collapse=","),
+            sep=" ",
+            collapse=""))
+  }
+}
+
+barpanel.VacScen <- function(...,display.truth=TRUE,random.seed=sample(10000,1)) {
+  set.seed(random.seed)
+#  par(mfrow=c(3,3))
+#  for (i in 1:9) {
+#    barplot.VacScen(VacScenarios(...),display.truth)
+#  }
+  par(mfrow=c(3,2))
+  for (i in 1:6) {
+    barplot.VacScen(VacScenarios(...),display.truth)
+  }
+  par(mfrow=c(1,1))
+}
+
+#print(VacScenarios())
+
+#barpanel.VacScen(falsePosRate=0.1,random.seed=427)
+
+## 8/2
+#barpanel.VacScen(Nvacgrp=3,Nctl=6,Ngrp=rep(8,3),falsePosRate=0.05,
+#                 VacProbs=c(0.2,0.4,0.6),random.seed=6313)
+
+## 10/2
+#barpanel.VacScen(falsePosRate=0.1,VacProbs=c(0.2,0.4,0.6),display.truth=FALSE,random.seed=613)
+#barpanel.VacScen(falsePosRate=0.1,VacProbs=c(0.2,0.4,0.6),random.seed=613)
+
+@ 
+
+
+\section{Introduction}
+\label{SEC-introduction}
+
+Recent vaccine clinical trial designs in the HIV Vaccine Trials
+Network have usually followed a standard evaluation program to
+progress to the end of Phase II \citep{Rossini:etal:2003}.  The
+complete evaluation program is a 3 stage procedure, usually starts
+with a first-in-man dose escalation study, followed by a selection
+design for optimizing the vaccine regimen, and finally, ends with a
+traditional Phase II study for both characterization and comparison of
+optimized regimens.  While these studies have been characterized
+theoretically from a statistical design perspective, it is difficult
+for clinical trialists to understand the practical ramifications of
+these designs.  In particular, it can be hard to determine the extent
+to which information can be trusted.  This report attempts to provide
+some guidance, through the use of illustrating examples and
+question-and-answer, for understanding the results of a Phase Ia
+dose-escalation trial as generally specified for the HVTN.
+
+New and novel products in the development pipeline, combined with new
+immunological assays under development, will hopefully reduce the need
+for this article.  However, if we are exceedingly conservative, the
+relationship between immunological assays and actual vaccine
+protection are not well understood.  In addition, with all the
+parameters that go into optimizing a vaccine regimen, it is possible
+to suspect that future successful products might exist which have only
+moderate responses during their un-optimized initial trial.  In either
+event, the exercise provided by this paper will not be in vain.
+
+The next section of this report contains a description of the
+simulated data.  This is followed by simulated scenarios which
+represent the results from clinical trials.  Real observations from
+HVTN trials are used next, broken down into 10/2 arms.  Finally, we
+conclude with the a description of which decisions are possible and
+which are potentially unjustified to be based on data from a Phase Ia
+trial.
+
+\section{Point Prevalence Responses}
+\label{SEC-point-prev-resp}
+
+The preferred basis for decision making using immunological responses
+is to consider the percentage of positive responses from a qualitative
+readout from an immunological assay at a particular time-point.  We
+refer to this quantity as the assay's point-prevalence response.  This
+is idealized data that might result from 51-Cr CTL assays or
+qualitative ELISPOT calls.  For example, it would be fair to assume
+that we are looking at day 98 qualitative ELISPOT data from a 0,1,3
+month schedule, assays done on samples taken 2-weeks post the 3rd
+injection.  The bars in a single plot, example given in
+Figure~\ref{fig:var:0}, can be assumed to represent the control group,
+the lowest vaccine titer, the middle titer, and the highest titer.  In
+this context, we expect that the control group has a response of 0\%
+(unless the assay has some false positive responses).  If there is no
+relationship between titer and immunogenicity, the three groups should
+be equal.  If there is a positive response, the groups should be
+increasing.
+
+Current thinking for decision-making has assumed that at least a 30\%
+response rate is necessary, though not sufficient, for considering a
+regimen for subsequent evaluation in a Phase III trial.  However, it
+is not clear what the lower limit in Phase I and II studies should be,
+especially given uncertainties with immunological assays when a
+devil's advocate view is taken.
+
+\setkeys{Gin}{width=5cm}
+
+\begin{figure}[tb]
+  \centering
+<<testTrial, fig=TRUE,echo=FALSE>>=
+barplot.VacScen(VacScenarios())
+@
+  \caption{Variation 0:}
+  \label{fig:var:0}
+\end{figure}
+
+The next section display 9 panels of results.  Each panel consists of
+6 barcharts which display the proportion responding.   For each
+barchart, one may consider the first group to be the control group,
+and hence this is the observed false-positive rate for the assay,
+which has been chosen to be one of 5\%, and 10\%, based on
+historical as well as potentially reasonable rates.  The other 3
+groups could be considered as the results from a dose-escalation
+trial.  Consider the responses in the lowest dose to be 20\%, 30\%, or
+40\%.  Then the third and fourth groups will be specified using one of
+4 true dose-response models:
+\begin{enumerate}
+\item flat-response (all groups have the same response), 
+\item increasing  (change of 5, 10, or 20\% from one arm to the next)
+\item decreasing (change of 5 or 10\% from one arm to the next), or 
+\item hill top (middle group is the best by 10\% or 30\%).
+\end{enumerate}
+Of course, not all combinations will be presented.  For guessing, the
+goal is to come fairly close to the true model used to generate the
+results, by guessing the false positive rate (5\% or 10\%), the shape
+of the response, and whether any of the arms actually has more than a
+40\% response rate (and which one is it).
+
+
+The suggested approach for reading this paper is to consider each page
+of 6 barcharts separately from each other.  The charts on the same
+page result from the same model.  By this, we mean that all 6 are from
+a scenario with 6 in the control group, and 10 (except for one
+scenario with 8) in the vaccine groups such as: 5\% false positive
+response in the control group, 35\% (30\% true + 5\% false positive)
+response in the first vaccine group, 45\% (40\% true + 5\% false
+positive) in the second vaccine group, and 55\% (50\% true + 5\% false
+positive) in the third vaccine group.  For the sake of analysis, we
+combine the control subjects into a single group.  The true models
+used are provided in the appendix.  
+
+The goal, to be done for each scenario (each separate page of graphs)
+will be to answer the following questions:
+\begin{enumerate}
+\item Does the product have an immune response worth moving to a Phase
+  Ib selection design (trial arms of size 30/6)?  
+\item Is there sufficient information to establish a relationship
+  between dose and immunogenicity (positive or negative dose-response,
+  ``hill-top'' response, flat/plateau response).
+\item Is there sufficient information to seriously consider planning a
+  Phase III trial (certainty that at least one vaccine regimen
+  (combination of dose, schedule, route, etc) has at least a 30\%
+  response rate?
+\end{enumerate}
+The answers to each question can be deduced from the true dose curve
+which is provided in the appendix
+
+
+\clearpage
+
+\section{Samples to discuss}
+\label{sec:samples}
+
+\setkeys{Gin}{width=0.8\textwidth}
+
+
+\begin{figure}[htb]
+  \centering
+<<smallTrial, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,Nctl=6,Ngrp=rep(8,3),falsePosRate=0.05,
+                 VacProbs=c(0.3,0.3,0.3),display.truth=FALSE,
+                 random.seed=6313)
+@
+  \caption{Variation 1: 3 8/2 vaccine arms, i.e. 6 controls, 8 in each
+    of three vaccine regimens.}
+  \label{fig:var:1}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialOne, fig=TRUE,echo=FALSE>>=
+  barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+  VacProbs=c(0.3,0.3,0.3),display.truth=FALSE,random.seed=4373) 
+@
+  \caption{Variation 2: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:2}
+\end{figure}
+
+
+\clearpage
+
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialTwo, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.2,0.4,0.6),display.truth=FALSE,random.seed=9873)
+@ 
+  \caption{Variation 3: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:3}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialThree, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.5,0.4,0.3),display.truth=FALSE,random.seed=523)
+@ 
+  \caption{Variation 4: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:4}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialFour, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.3,0.5,0.3),display.truth=FALSE,random.seed=13)
+@ 
+  \caption{Variation 5: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:5}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialFive, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.3,0.4,0.5),display.truth=FALSE,random.seed=6013)
+@ 
+  \caption{Variation 6: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:6}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialSix, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.2,0.2,0.2),display.truth=FALSE,random.seed=6013)
+@ 
+  \caption{Variation 7: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:7}
+\end{figure}
+
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialSeven, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.1,0.1,0.1),display.truth=FALSE,random.seed=623)
+@ 
+  \caption{Variation 8: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:8}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrialEight, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,
+                 VacProbs=c(0.05,0.2,0.2),display.truth=FALSE,random.seed=641)
+@ 
+  \caption{Variation 9: 3 10/2 vaccine arms, i.e. 6 controls, 10 in each
+    of three vaccine regimens.}
+  \label{fig:var:9}
+\end{figure}
+
+\clearpage
+
+\section{Smaller versions based on real trials}
+\label{SEC-real}
+
+
+\begin{itemize}
+\item 203 trial, as given in Figures~\ref{fig:var:10},
+  \ref{fig:var:10a}, and~\ref{fig:var:10b},
+\item 041 trial, as given in Figure.
+\end{itemize}
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrial203, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,Ngrp=c(60,90,90),Nctl=60,
+                 VacProbs=c(0.2,0.3,0.4),display.truth=FALSE,random.seed=623)
+@ 
+  \caption{Variation 10: Trial similar to HVTN 203: 60,90,90 vaccine
+    groups, 60 controls.}
+  \label{fig:var:10}
+\end{figure}
+
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrial203a, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,Ngrp=c(60,90,90),Nctl=60,
+                 VacProbs=c(0.3,0.3,0.3),display.truth=FALSE,random.seed=623)
+@ 
+  \caption{Variation 10a: Trial similar to HVTN 203: 60,90,90 vaccine
+    groups, 60 controls.}
+  \label{fig:var:10a}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrial203b, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=3,falsePosRate=0.05,Ngrp=c(60,90,90),Nctl=60,
+                 VacProbs=c(0.4,0.4,0.4),display.truth=FALSE,random.seed=623)
+@ 
+  \caption{Variation 10b: Trial similar to HVTN 203: 60,90,90 vaccine
+    groups, 60 controls.}
+  \label{fig:var:10b}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[htb]
+  \centering
+<<standardTrial041, fig=TRUE,echo=FALSE>>=
+barpanel.VacScen(Nvacgrp=5,falsePosRate=0.05,Ngrp=rep(20,5),Nctl=20,
+                 VacProbs=c(0.05,0.2,0.2),display.truth=FALSE,random.seed=641)
+@ 
+  \caption{Variation 11, HVTN 041 based.}
+  \label{fig:var:11}
+\end{figure}
+
+\clearpage
+
+\section{Discussion}
+\label{SEC-discussion}
+
+The first exercise, judging response rates from a single 10/2 3-armed
+dose escalation trial, demonstrates the extent to which one needs to
+take the results from our Phase Ia trials with a grain of salt.  While
+the general conclusion of immunogenicity (or lack thereof) can be
+taken from the trial, it is very difficult to say much more,
+especially with respect to either general conclusions such as the
+presence or absence of a dose response across the range of proposed
+vaccine titers, or to even more precise conclusions, such as optimal
+dose.
+
+Most of the simulated trials exhibited substantial differences from
+the ``true'' model, the main exception being the model simulated for
+Figure~\ref{fig:var:3}.  This model has a strong signal (40\%
+difference between small and large responses), and yet it only comes
+across in 4 of the 6 simulations.
+
+\bibliographystyle{plainnat}
+\bibliography{HVTNscenarios}
+
+\clearpage
+
+\appendix
+
+\section{Actual Scenarios for the Clinical Trials simulations}
+\label{SEC-actu-scen-clin}
+
+Table~\ref{tab:answers} provides the true trial characteristics
+simulated.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{r|cccc}
+    Model            & \multicolumn{4}{|c}{Proportion Responding} \\
+    Example, Design             & Control (n=6) &  Trt1 &  Trt2 &  Trt3 \\
+    \hline
+    Figure~\ref{fig:var:1} : 8/2  & 5\%     &  35\% &  35\% &  35\% \\
+    Figure~\ref{fig:var:2} : 10/2 & 5\%     &  35\% &  35\% &  35\% \\
+    Figure~\ref{fig:var:3} : 10/2 & 5\%     &  25\% &  45\% &  65\% \\
+    Figure~\ref{fig:var:4} : 10/2 & 5\%     &  55\% &  45\% &  35\% \\
+    Figure~\ref{fig:var:5} : 10/2 & 5\%     &  35\% &  45\% &  55\% \\
+    Figure~\ref{fig:var:6} : 10/2 & 5\%     &  35\% &  55\% &  35\% \\
+    Figure~\ref{fig:var:7} : 10/2 & 5\%     &  25\% &  25\% &  25\% \\
+    Figure~\ref{fig:var:8} : 10/2 & 5\%     &  15\% &  15\% &  15\% \\
+    Figure~\ref{fig:var:9} : 10/2 & 5\%     &  10\% &  25\% &  25\% 
+  \end{tabular}
+  \caption{Correct answers to the simulations.  Note that the
+    treatment response proportion INCLUDES the false positive rate.}  
+  \label{tab:answers}
+\end{table}
+
+%\clearpage
+
+%\section{Probability Models}
+%\label{SEC-probability-models}
+
+
+%The following is probably not important unless you are hands-on and
+%want to play a bit more.  The following computer code is for the R
+%statistical computing language, more details available at
+%\url{http://www.r-project.org/}
+
+
+%The models considered are binomial responses, with a constant false
+%positive rate added to the response probabilities in all groups.
+%For example, consider try proportion of responders in a single regimen
+%arm in a clinical trial, with a 30\% response rate.  In a sample of 10
+%repetitions of this experience we might see:
+
+%<<binomial.response>>=
+%set.seed(20324)
+%results1 <- rbinom(10,10,0.3)
+%print(results1)
+%@ 
+
+%and the following computation is used to generate the MLE estimate for
+%the response probability.
+
+
+%<<MLE>>=
+%mle.estimate <- sum(results1) / 100
+%print(mle.estimate)
+%@ 
+
+%Here, we estimate the response to be 25\%, when the true response
+%should be 30\%.  
+
+
+\end{document}

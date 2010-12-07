@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Lab Session 1</title>
+  </head>
+
+  <body>
+    <h1>Lab Session 1</h1>
+
+    <p>
+      Links to the <a href="cph-1.pdf">Lecture 1 Slides</a> and <a
+	href="refcard.pdf">Emacs quick reference guide</a> might be
+      helpful (in other windows!)
+    </p>
+
+    <pre>
+Commands to type are generally in parens, i.e. (type this)  means to
+type "type this", not "(type this)")!
+
+1.  Using PUTTY or a similar Windows SSH shell, log in
+    Lannerfalk.kubism.ku.dk
+
+2.  See if Lab1 exists (ls)
+    if not, make the directory (mkdir Lab1)
+    Change into it  (cd Lab1)
+
+3.  First example:  try starting an R session using
+    emacs -f R
+
+4.  Try the following commands:
+
+    data(ToothGrowth)
+    ## Find out about it
+    ?ToothGrowth
+    model1 <- lm(len~dose,data=ToothGrowth)
+    ## Now, to edit the model to add "supp" as a factor, use
+    ## M-p (ESC then p) to recall the previous line.  Edit it,
+    ## to add "+ supp" to the model, rename model1 to model2,
+    ## and hit return to submit it.
+    summary(model1)
+    ## now, make a summary of model2 by retrieving the previous
+    ## command (M-p) and editing it, then evaluating it.
+    ## To retrieve the data command, start typing (dat) and then
+    ## (C-c M-r)  or (M-x comint-previous-matching-input-from-input)
+
+5.  Save the transcript as Lab1-1.Rt using the write-file command,
+    either (C-x C-w)  or   M-x write-file
+
+6.  Quit ESS and R (C-c C-q)  (doing it this way removes buffers from
+    Emacs, possibly saving memory)
+
+7.  Quit Emacs (C-x C-c)
+
+8.  Next: Process transcript.   Make a copy:  (cp Lab1-1.Rt Lab1-2.Rt)
+
+9.  Start emacs (emacs -f R)
+
+10. Load in Lab1-2.Rt (C-x C-f Lab1-2.Rt)
+
+11. It is write protected, you need to undo it
+    -- to toggle read-only, (C-x C-q)
+
+12. Mark a region in the buffer (ESC-<, C-{space}) to move to the
+    beginning of the file and set a mark, then (ESC->) to move the
+    cursor, also known in the Emacs documentation as POINT to the
+    end.
+
+13. Clean out the code:  (M-x ess-transcript-clean-region)
+
+14. Write the buffer as an R code file:  (M-x write-file {ret} Lab1-2.R)
+
+15. Remove the transcript buffer from Emacs, do not save it, if asked:
+    (M-x kill-buffer Lab1-2.Rt)
+
+16. Load in Lab1-1.Rt.  You should now move the cursor to the
+    beginning of the file.  Step through to look at the commands,
+    using  (C-c C-n) to move forward, and (C-c C-p) to move back.
+    Now move to the first command, and evaluate them in the R process
+    by simply using the {enter} (or {return}) keys.  This is how ESS
+    allows for transcript reuse.
+
+17. Next, Load in Lab1-2.R (C-x C-f Lab1-2.R).  We will do the same
+    with the R file.
+
+18. Put your cursor at the beginning, and try using the
+    Evaluate-Buffer (C-c C-b) command.
+
+19. Highlight a region as described in #12 (mostly: set a mark
+    (C-{space}), and move the cursor).   Try using the
+    Evaluate-Region (C-c C-r) command.
+
+20. Move to the beginning of the file (ESC-<) and step through the
+    file using (C-c C-n), evaluate-line-and-step
+
+21. The End!  Ask Tony if you have any questions, extensions, or
+    suggestions.
+    </pre>
+
+    <hr>
+    <address><a href="mailto:rossini@u.washington.edu">A.J. Rossini</a></address>
+<!-- Created: Sun Oct  5 08:56:20 PDT 2003 -->
+<!-- hhmts start -->
+Last modified: Mon Oct  6 03:18:11 PDT 2003
+<!-- hhmts end -->
+  </body>
+</html>

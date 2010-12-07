@@ -1,0 +1,16 @@
+;; Object useR-ESS/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "useR-ESS/"
+  :tables (list 
+   (semanticdb-table "Makefile"
+    :major-mode 'makefile-mode
+    :tags '((".PHONY" function (:arguments ("default" "package")) nil [1 26]) ("default" function (:arguments ("package")) nil [26 45]) ("package" function nil nil [45 175]))
+    :file "Makefile"
+    :pointmax 175
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

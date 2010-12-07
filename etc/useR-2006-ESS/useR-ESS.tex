@@ -1,0 +1,1255 @@
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \setbeamercovered{transparent}
+}
+
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[Emacs and R]{Emacs enhances data analysis and programming with R}
+\subtitle{ESS useR Short Course} 
+\author[Rossini]{A.J.~Rossini}
+
+\institute[Novartis Pharma AG]
+{
+  Modeling and Simulation \\
+  Novartis Pharma AG \\
+  Basel, Switzerland
+}
+
+\date[14.06.2006]
+{14.06.2006 / useR-2006}
+
+\subject{Talks}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+% \AtBeginSubsection[]
+% {
+%   \begin{frame}<beamer>
+%     \frametitle{Outline}
+%     \tableofcontents[currentsection,currentsubsection]
+%   \end{frame}
+% }
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Outline}
+  %% \tableofcontents[hideallsubsections]
+  \begin{enumerate}
+  \item Introduction (now, 15 minutes)
+  \item Using Emacs (45 minutes)
+  \item Using ESS (60 minutes)
+  \item Exercise 1: ESS
+  \item Exercise 2: Sweave
+  \item Emacs extensions (30 minutes)
+  \item Emacs Lisp (30 minutes)
+  \item Discussion and Misc Topics (related Emacs tools, ESS extensions, future designs)
+  \end{enumerate}
+\end{frame}
+
+\subsection[Goals]{Goals for Today}
+
+\begin{frame}
+  \frametitle{\#1: Efficient Program Editing}
+  \framesubtitle{Edit, and let the computer repeat}
+  \begin{itemize}
+  \item Weird archaic keystrokes are dominant
+  \item Weird archaic keystrokes can make life easier
+  \item Menus and toolbars help Emacs
+  \item Knowing R and data analysis means we can enhance related activities.
+  \item Folding editors, Object explorers
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\#2: Process Interaction}
+  \framesubtitle{You enter text for the process, so edit\ldots}
+  \begin{itemize}
+  \item R vs. ``emacs -f R''
+  \item Getting Help
+  \item Approaches for interacting
+  \item Practical Directory layout
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\#3: Emacs is Extended and Extensible}
+  \framesubtitle{Lisp and other hackers are your friends}
+  \begin{itemize}
+  \item Introduction to Lisp and Emacs Lisp
+  \item Lisp extends Emacs
+  \item Design of ESS
+  \item Future Extensions??
+  \end{itemize}
+\end{frame}
+
+%% \begin{frame}
+%%   \frametitle{Make Titles Informative.}
+%%   You can create overlays\dots
+%%   \begin{itemize}
+%%   \item using the \texttt{pause} command:
+%%     \begin{itemize}
+%%     \item
+%%       First item.
+%%       \pause
+%%     \item    
+%%       Second item.
+%%     \end{itemize}
+%%   \item
+%%     using overlay specifications:
+%%     \begin{itemize}
+%%     \item<3->
+%%       First item.
+%%     \item<4->
+%%       Second item.
+%%     \end{itemize}
+%%   \item
+%%     using the general \texttt{uncover} command:
+%%     \begin{itemize}
+%%       \uncover<5->{\item
+%%         First item.}
+%%       \uncover<6->{\item
+%%         Second item.}
+%%     \end{itemize}
+%%   \end{itemize}
+%% \end{frame}
+
+\begin{frame}
+  \frametitle{Disclaimer}
+  \begin{itemize}
+  \item ESS (and Emacs) is many (different) things to different
+    people.
+  \item Even for R development, the variation in personal philosophies
+    and approaches for use is extremely high (even in the Core
+    development team).
+  \item Religious issues focusing on Emacs should be discussed elsewhere 
+    (c.f. \url{http://www.dina.kvl.dk/~abraham/religion/})
+  \end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Demo!}
+  \framesubtitle{It'll get boring before it gets better\ldots}
+  \alert{Please note or comment on any part that you'd like covered later.}
+\end{frame}
+
+\subsection{Introducing Emacs}
+
+\begin{frame} \frametitle{Overview}
+  \begin{itemize}
+  \item Emacs is the extensible, customizable, self-documenting
+    real-time display editor.
+  \item One of the oldest and yet still most powerful display editors
+  \item The name \textbf{Emacs} comes from Editor (or Extensible)
+    MACroS. (source of other amusing acronym expansions)
+  \item Originally written in 1976 as a set of extensions to TECO
+    (Text Editor and COrrector).  It has since evolved.
+  \end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Pros and Cons for Emacs}
+  \begin{itemize}
+  \item \alert{Why use Emacs?}  It is a powerful text editor which
+    can be extended to be a general interface to a computer (everything can be done within it).
+  \item It is highly portable (in its own way) across many platforms.
+  \item \alert{Why do not use it?} It has a different user interface,
+    which is understandable given its age (little change since 1985).
+  \item It does not follow ``modern'' keybindings.
+  \item People don't understand Lisp (otherwise, what they want to do
+    could be done in Emacs)
+  \end{itemize}
+  \centerline{\alert{some people are allergic to it}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{On-line Resources}
+  Links to links:
+  \begin{itemize}
+  \item Emacs Wiki: \url{http://www.emacswiki.org/}
+  \item Emacs \url{http://www.gnu.org/software/emacs/}
+  \item XEmacs \url{http://www.xemacs.org/}
+  \item Emacs Lisp Library \url{http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.html}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Emacsen Problem}
+  \framesubtitle{different religions cause stress}
+  There are many variants or dialects of Emacs (\textit{similar to the
+    S language having AT\&T's S, Insightful's S-PLUS, and R-core's R})
+  \begin{itemize}
+  \item Emacs: ``classic version''
+  \item XEmacs: ``experiments'' (GUIs, dynamic loading, packaging)
+  \item SXEmacs: ``splinter'' (Unix-focus, streamlining XEmacs)
+  \end{itemize}
+  
+  ESS support is best in order (Emacs, XEmacs, SXEmacs).  Most active
+  ESS developers use Emacs.  Users seem to be split 50/50 between
+  Emacs and XEmacs.\\
+  No bug reports on SXEmacs\ldots 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Installation}
+  \framesubtitle{the bane of Emacs}
+  Installation can be tricky:
+  \begin{itemize}
+  \item Linux: Emacs usually can be installed or is preinstalled
+  \item Microsoft: XEmacs is easier to install, Emacs might be better
+    supported.
+  \item Mac OSX: Emacs, AquaEmacs; via Fink, or UCLA package, or\ldots
+    (check on the list).
+  \end{itemize}
+  We aren't dealing with this here!
+\end{frame}
+
+\begin{frame} \frametitle{Editing methodology}
+  \framesubtitle{Emacs resembles modern editors unlike dual-mode VI}
+
+  \begin{itemize}
+  \item Idea: every keystroke (or sequence of keystrokes) generates a
+    list to evaluate (i.e. command, or lisp function with arguments).
+  \item Pressing ``X'' evaluates the list (self-insert-command "X")  (we'll talk about Lisp later)    
+  \item Modifiers extend the keyboard (CTL, SHIFT, ALT, pressed
+    simultaneously, some such as ESC, META, and others are pressed
+    first, released, and then followed by a key).
+  \end{itemize}
+\end{frame}
+
+\subsection{Introducing ESS}
+
+\begin{frame}
+  \frametitle{Overview}
+  \framesubtitle{ESS augments Emacs for R}
+  \begin{itemize}
+  \item Emacs Speaks Statistics (or Emacs Statistical System)
+  \item Oldest active statistically-focused OSS project (1989).
+  \item Design goal: a consistent interface unifying batch and
+    interactive data analysis styles.
+  \item Novelty (at the time): process control, unified interface. 
+  \item String (stream) operations; ``cheap parser''.
+  \item Supports R, S-PLUS, SAS, Stata, LispStat
+  \item Current development team (n=6) spans the US and Europe.
+  \end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{History}
+  \begin{itemize}
+  \item 3 branches: S-mode, SAS-mode, Stata-mode
+  \item S-mode: 1989, 2 groups managing the project before (Bates/F
+    Ritter/E Kademan, M Meyer, DM Smith (now Insightful)).
+    R added in 1995 (Rossini/Maechler)
+  \item SAS: '94, Tom Cook ('92, John Sall, SAS).  Integrated '95-6, Rossini
+  \item Stata-mode: 1997, Thomas Lumley. Added 1997 (Rossini). 
+  \item 1997: last major restructuring (``grand unification'')
+  \item 2004: switch leaders: Maechler takes over
+  \end{itemize}
+  \alert{We are still suffering from the 1997 grand unification.}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interactive Programming}
+  \framesubtitle{Everything goes back to being Lisp}
+  \begin{itemize}
+  \item Interactive programming (as originating with Lisp): works
+    extremely well for data analysis (Lisp being the original
+    ``programming with data'' language).
+  \item Theories/methods for how to do this are reflected in styles
+    for using ESS.
+  \end{itemize}
+  \alert{Good Statistical Analysis is on-line Interactive Programming}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Installation}
+  \framesubtitle{We have to deal with this here, though\ldots}
+  \begin{itemize}
+  \item Fetch the ESS package (tar or zip-file)
+  \item unpack
+  \item add a line in \textbf{.emacs} to load the \textbf{ess-site.el} file.
+  \item restart Emacs (or \textbf{M-x load-file /path/to/ess-site.el}).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Review: Introduction}
+  \begin{itemize}
+  \item ESS is a program in Lisp to extend Emacs
+  \item Characteristics: OSS, developed initially to make life easier;
+    continued development supported research in enhanced data analysis
+    interfaces.
+  \item Emacs has strengths and weaknesses; these are usually
+    different than percieved strengths and weaknesses.
+  \end{itemize}
+\end{frame}
+
+\section{Using Emacs}
+
+\subsection{Overview: Emacs}
+
+\begin{frame} \frametitle{Goals}
+  \begin{itemize}
+  \item use of Emacs to edit files
+  \item filesystem interaction
+  \end{itemize}
+\end{frame}
+
+\subsection{Getting Started}
+
+\begin{frame}[fragile]
+  \frametitle{Starting (X)Emacs}
+  \framesubtitle{trivial but essential}
+  \alert{emacs} can be used instead of \alert{xemacs}.
+\begin{verbatim}
+xemacs <filename>  run xemacs, edit <filename>
+xemacs -nw         run xemacs in _text_ mode
+                   (nw="No Window"; useful for 
+                    slow remote connections)
+\end{verbatim}
+  \begin{itemize}
+  \item Once started, no need for more.
+  \item \alert{Only run one Emacs session}.  This is a cardinal rule,
+    do not violate it.
+    (c.f.\hyperlink{keystrokes:fileloading}{\beamerbutton{file-loading section}})
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Breaking and Quitting!}
+  \framesubtitle{essential knowledge}
+  \label{emacs:basics}
+  \begin{itemize}
+  \item Decide you were wrong while Emacs works: \verb+C-g+  (universal break)
+  \item Quit and terminate: \verb+C-x C-c+ (will usually prompt you
+    for any files which are modified but not saved)
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Understanding Keystrokes.}
+  \begin{itemize}
+  \item \verb+[tab]+ is the TAB (indent) key.
+  \item \verb+[return]+ is the Return (carriage return, enter) key.
+  \item \textbf{C-h} means press \alert{control key} AND ``\alert{h}'' key at same time.
+  \item \textbf{ESC-h} means press \alert{ESC key} THEN ``\alert{h}''
+  \item \textbf{M-h} means press \alert{ALT key} AND ``\alert{h}''
+  \item \textbf{M-C-h} means press Meta or Alt while pressing h.  OR
+    (if no meta/alt): ESC THEN (control and h keys together).
+  \end{itemize}
+  Older keyboards (and sometimes older Macs) without ALT or Meta lead
+  to confusion between ESC and Meta, but ideally they should be different.
+\end{frame}
+
+\begin{frame} \frametitle{Stopping Activity}
+  \framesubtitle{you need to know this\ldots}
+  \alert{C-g} stops the current Emacs activity to the best of its ability.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Windows and Frames}
+  \begin{itemize}
+  \item Window:  a different view on (usually) a different buffer within the same application
+  \item Frame: a different window/application in the windowing system.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{File suffices drive mode setup}
+  \framesubtitle{Use the right file name formats:}
+  \begin{itemize}
+  \item \verb+.S+, such as \verb+critical_simulation.S+
+  \item \verb+.R+, such as \verb+speedy_simulation.R+
+  \end{itemize}
+  There are other ways to force a file to be edited in a particular
+  mode, but at this point, keep it simple.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Commands}
+  
+  Emacs has a single command-entry mode.  There are 2 approaches for commands:
+  \begin{itemize}
+    \item \textbf{M-x (command-name)}
+    \item keystrokes/toolbars/menus (which implement the above)
+  \end{itemize}
+  
+\end{frame}
+
+\subsection{Keystrokes}
+
+\begin{frame}
+  \frametitle{Learning the Strokes.}
+  \begin{itemize}
+  \item forced practice: painful but fast.  Keep a copy of the
+    reference cards nearby!  (usually 2-3 days of severe pain,
+    followed by bliss).
+  \item accelerators and menus can help: but they quickly become a crutch.
+  \item Consider working through the tutorial (\textbf{C-h t}).
+  \end{itemize}
+  \alert{this is a major issue for speed typists converting to/from
+    Emacs usage.}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Loading Files}
+  \label{keystrokes:fileloading}
+  \begin{itemize}
+  \item \verb+C-x C-f+    (load new file, \textbf{not} deleting old)
+  \item \verb+C-x 4 C-f+  (load new file in different window)
+  \item \verb+C-x 5 C-f+  (load new file in different frame)
+  \end{itemize}
+  (c.f. \hyperlink{emacs:basics}{\beamerbutton{basics}})
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Changing Active Buffer (edit file)}
+  To edit (operate on) another file:
+  \begin{itemize}
+  \item \verb+C-x b+    (switch to new buffer in same window)
+  \item \verb+C-x 4 b+  (replaces current file in different window)
+  \item \verb+C-x 5 b+  (replaces current file in different frame)
+  \end{itemize}
+  Buffers represent the files you are editing (explain).
+\end{frame}
+
+\begin{frame}
+  \frametitle{Review of Common Keystrokes}
+  \framesubtitle{Demo and pain}
+\end{frame}
+
+
+\subsection{In Any Emacs Buffer}
+
+\begin{frame}[fragile] \frametitle{Moving Around}
+\begin{verbatim}
+C-v    Move forward one screenful
+M-v    Move backward one screenful
+C-l    Clear and redraw screen
+M- ->  Meta-<right> - moves forward a word 
+M- <-  Meta-<left> - moves back a word
+M- |^  Meta-<up> - move up a paragraph
+M- V   Meta-<down> - move down a paragraph
+M- <   Meta-<less than> - move to file start
+M- >   Meta-<greater than> - move to file end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Cut and Paste}
+\begin{verbatim}
+C-d    _D_elete
+C-k    _K_ill from the cursor position to
+       end of line
+C-y    Recover/Paste (_Y_ank) killed text 
+       (repeat to copy) 
+M-y    recover former killed text (after C-y).
+       Repeat to go back through stack).
+C-x u  _U_ndo
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Loading / Saving Files}
+\begin{verbatim}
+C-x C-f  _F_ind a file
+C-x C-s  _S_ave the file
+
+If you find a second file with C-x C-f, 
+the first file remains inside Emacs.  
+You can switch back to it by finding it 
+again with C-x C-b.  This way you can get 
+quite a number of files inside Emacs.
+ \end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Managing Buffers and Windows}
+\begin{verbatim}
+C-x 0      Move between windows  
+           (Oh, not Zero!)
+C-x 1      One window 
+           (i.e., kill all other windows).
+C-x b      Switch to new _b_uffer
+C-x C-b    List _b_uffers
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Search and Replace}
+\begin{verbatim}
+M-x (then) replace-string
+           Replace string
+M-x (then) query-replace-string
+           Will ask you, for each match,
+           if you really want to replace
+           the old string with the new one.
+C-s        _S_earch forward (repeat to
+           reuse past search strings)
+C-r        Search _R_everse (repeat to
+           reuse past search strings)
+\end{verbatim}
+\end{frame}
+
+                     
+\begin{frame}[fragile] \frametitle{Misc Emacs Actions}
+\begin{verbatim}
+C-h or C-h ?    _H_elp
+C-h c (command) _H_elp on this _c_ommand
+
+C-u 8 (character or command)   
+             Repeat character/command 8 times
+
+C-g          Stop, unhang.
+C-x C-c      Stop and exit (_c_lose) Emacs  
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Point and Mark}
+  \framesubtitle{critical concepts to learn}
+
+  \begin{itemize}
+  \item Point:  where the cursor is.
+  \item Mark: a location that you've decided (actively or inactively)
+    is important.
+  \item Example:   Move cursor somewhere.  \textbf{M-x set-mark} or
+    \textbf{C-(space)}.
+  \item Exchange point and mark:   \textbf{M-x
+      exchange-point-and-mark} or \textbf{C-x C-x}.
+  \end{itemize}
+\end{frame}
+
+\subsection{Review: Using Emacs}
+
+\begin{frame}
+  \frametitle{Review}
+  \framesubtitle{Emacs}
+  \begin{itemize}
+  \item \textbf{C-g} stops emacs activity and returns to edit mode; \textbf{C-x C-c} quits
+  \item Try to use the keyboard and not the mouse, menus, or toolbars.
+  \item Keypresses are simply commands.
+  \item Biggest user headache?  Differenting commands and text entry
+  \item Buffers represent the files you are editing.  Morally, they
+    are the files themselves (with important exceptions).
+  \end{itemize}
+\end{frame}
+
+
+\section{Using ESS}
+
+\subsection{Overview: ESS}
+
+\begin{frame}
+  \frametitle{Overview: ESS}
+  This section should provide an overview for 
+  \begin{itemize}
+  \item editing
+  \item interaction with R
+  \item facilitating help
+  \item reusing transcripts
+  \item Sweave support
+  \end{itemize}
+  and finally, \alert{putting it all together}
+\end{frame}
+
+\subsection{Editing}
+
+\begin{frame}[fragile]
+  \frametitle{Coding Style}
+  \framesubtitle{Indentation makes code readable}
+
+  Comment conventions:
+  \begin{enumerate}
+  \item \verb+#+ gets moved to the right-side of the line
+  \item \verb+##+ is placed at the current indentation level
+  \item \verb+###+ is placed flush-left.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Indentation Example}
+\begin{verbatim}
+    my.x <- rnorm(10)
+### This is flush
+    ## but this is at level
+                         # this is right
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Editing, ESS adds\ldots}
+  \begin{itemize}
+  \item Automatic fontification, indentation
+  \end{itemize}
+  If R is running in another buffer:
+  \begin{itemize}
+  \item evaluation of lines (C-c C-n), regions (C-c C-r), functions
+    (C-c C-f), and buffers (C-c C-b)
+  \item help output in other buffers (and via command, C-c C-v)
+  \item Object (data, function) completion
+    \begin{itemize}
+    \item \verb+C-c [tab]+ 
+    \item \verb+[tab]+ (sometimes).
+    \end{itemize}
+  \item Filename completion: M-\[tab\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{R editing buffer}
+  \framesubtitle{Usually named for the file being edited}
+  (mode line says "ESS[S]")
+\begin{verbatim}
+C-c C-j        Send line to R
+C-c C-n        Send line to R 
+               and go to _n_ext line
+C-c C-r        Send highlighted _r_egion to R
+C-c C-b        Send whole _b_uffer to R
+C-c C-f        Send _f_unction surrounding
+               cursor to R
+C-c C-v xxx    get R help on "xxx"
+\end{verbatim}
+\end{frame}
+
+\subsection{Interactive}
+
+\begin{frame}
+  \frametitle{Run R}
+  \begin{itemize}
+  \item Within emacs
+  \item At the command line
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{R process within Emacs (on start)}
+  \framesubtitle{starting from the command line or launcher}
+  Replace the command \textbf{R} with one of:
+\begin{verbatim}
+emacs -f R        run (x)emacs, starting R
+xemacs -f R       session                   
+\end{verbatim}
+  adds a few nice features to the command interface.  (follow with
+  \textbf{\&} to background the process; \verb+xemacs+ might also
+  work)
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{R process within Emacs (running emacs)}
+  \framesubtitle{Starting from a running emacs}
+\begin{verbatim}
+M-x R         Start R process buffer
+M-x R-mode    Change mode of current buffer
+              for R code editing
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Evaluate file contents}
+  \framesubtitle{working from the editing (ESS) buffer}. 
+
+  From a file of commands:
+  \begin{itemize}
+  \item Send current line to R: \verb+C-c C-j+
+  \item Send current function to R (assumes the cursor is in the
+    function body): \verb+C-c C-f+.
+  \item Send current region (highlighted) to R  \verb+C-c C-r+
+  \item Send whole buffer/file to R  \verb+C-c C-b+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Object and File completion}
+  Completion of objects (functions and data):
+  \begin{enumerate}
+  \item \verb+C-c [tab]+
+  \item \verb+[tab]+ (sometimes).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dumping Objects}
+  \framesubtitle{Getting objects back}
+  (for modification, saving, eventual reloading):
+  \begin{enumerate}
+  \item \textbf{C-c C-d} dumps the named object into an editing buffer
+  \item Examples: today's date for use as a log file; (140606), ``lm''.
+  \item if object doesn't exist: create a blank buffer
+  \item if object exists: insert the object's textual representation (no comments)
+  \item The file will be stored in \textbf{/tmp/username.objectname.R}
+    (unless you want it elsewhere or named something else).
+  \end{enumerate}
+  Type commands into the edit file, evaluate them when desired, edit
+  as needed for correctness (and comment mistakes, with reasons for
+  them, for later reminders and documentation).
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Commandline History}
+  \framesubtitle{ESS remembers what you've done}
+  Search command-line history ``manually'', matching on current input
+  \begin{enumerate}
+  \item backwards: \verb+M-p+
+  \item forwards:  \verb+M-n+
+  \end{enumerate}
+  Complete current line based on command-line history:
+  \begin{enumerate}
+  \item backwards: \verb+\C-[uparrow]-p+
+  \item forwards:  \verb+M-n+
+  \end{enumerate}
+  If you are reviewing old commands, to re-enter it (i.e. cursor on that line)
+  \verb+[return]+.  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Philosophy: Files are ``truth''}
+  \framesubtitle{Don't believe your .RData}
+  \begin{itemize}
+  \item This is a generally decent approach.
+  \item Saving objects in binary format in special files can be a
+    reasonable strategy
+  \item Work from an R file, \emph{submitting} commands to the R
+    process.  This saves the source, and allows for structuring of the
+    input, along with having a transcript of the order of commands to
+    understand reproducibility aspects.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Working from R process}
+  \framesubtitle{from the process (inferior ESS, or iESS) buffer}
+  \alert{not usually recommended}
+  \begin{enumerate}
+  \item One improvement is to use a \verb+source()+-like facility.  To
+    source a file into R (within ESS): \textbf{C-c C-l} (load file)
+  \item To find what the errors are (if any): \textbf{C-c `} (backquote).
+  \end{enumerate}
+  The latter will tell you what the error is.  You'll have to go back
+  to the file (\textbf{C-x C-b} or use \textit{Buffers} menu item to
+  bring in back to the screen) and correct it.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Working from R buffer}
+  \framesubtitle{from the editing (ESS) buffer}
+  Better yet, use a file, and send material from the file straight to
+  the process.  This works if the file ends in the proper suffix (and
+  hence, the mode at the bottom should say ``ESS'').  The following is
+  possible:
+  \begin{itemize}
+  \item Send current line to R: \textbf{C-c C-j}
+  \item Send current function to R (assumes the cursor is in the
+    function body): \textbf{C-c C-f}
+  \item Send current region (highlighted) to R: \textbf{C-c C-r}
+  \item Send whole buffer/file to R: \textbf{C-c C-b}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Philosophy: RData is true}
+  \framesubtitle{Editing objects without source}
+  \begin{itemize}
+  \item This is a dangerous approach; corruption of the RData file is
+    more difficult to fix using an editor or other external tools than
+    corruption of text files, usually.
+  \item Trusting .RData to have what you've done is rather suboptimal
+    strategy (quite prone to user mistakes)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{If you must use a command line\ldots}
+  \begin{itemize}
+  \item This style is useful for quick and dirty exercises/testing.
+  \item Transcripts can be cleaned and edited to record the salient
+    points of the sesssion.
+  \end{itemize}
+\end{frame}
+
+\subsection{Putting it together}
+
+\begin{frame}
+  \frametitle{Begin ESS/Emacs/R}
+  \begin{enumerate}
+  \item Start XEmacs  (in a terminal window, enter \textbf{xemacs \&})
+  \item Start R (\textbf{M-x R}).
+  \item Load a file (\textbf{C-x C-f} \textit{filename})
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Data Analysis Example}
+  Demo.
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Function Editing}
+  \begin{enumerate}
+  \item demo.R: evaluate.
+  \item Try editing existing functions: \textbf{my.test.function} and
+    \textbf{that}, by \textbf{C-c C-d this}.  Remember that you should
+    be able to complete the name using \textit{ajr.t}\textbf{SPACE}
+    (i.e.  Control-C, then SPACE key).  Generally, completion of
+    variables and functions can be done using \textbf{C-c [tab]} in the
+    editing buffer, and \textbf{SPACE} in the command entry area (at
+    the very bottom of the Emacs screen/window).
+  \end{enumerate}
+\end{frame}
+
+\subsection{Special Facilities and Activties}
+
+\begin{frame}
+  \frametitle{Navigating Help Buffers}
+  \begin{itemize}
+  \item To get help on a function (help(``lm'')) without
+    spoiling your input line:  \textbf{C-c C-v}
+  \item Navigation of sections: ``n'' next section, ``p'' prev section.
+  \item evaluation of example: ``l'' (eval line) ``r'' eval region.
+  \item searching: ``/'' isearch forward
+  \item kill-buffer and go \textit{back}: ``x''
+  \end{itemize}
+  See menu items
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using Transcripts}
+  \framesubtitle{for teaching, reproduction, and audits}
+  \begin{itemize}
+  \item Transcript suffix:  .Rt
+  \item Stepping through entries:
+  \item Cleaning transcripts: \textbf{M-x ess-transcript-clean-buffer}
+  \item Cleaning transcripts: \textbf{M-x ess-transcript-DO-clean-region} (even when read-only toggled)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using Multiple Processes}
+  \framesubtitle{For when you want to multitask}
+  ESS supports multiple processes.   This is useful for 
+  \begin{itemize}
+  \item testing on multiple versions of R
+  \item testing on R and S-PLUS (and S4, if one still has a copy)
+  \item inefficient multiprocessing
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using Remote Processes}
+  \framesubtitle{loading other people's computers}
+  Since we are capturing/using R text I/O, local or remote is not an
+  issue (running R in an Emacs shell, logged in (shell account via
+  telnet, ssh, rlogin) to another machine)
+  \begin{itemize}
+  \item \textbf{M-x ESS-remote}
+  \item follow instructions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Customizing ESS}
+  See (commented out) example customizations in ess-site.el (assuming
+  that the lisp files are installed:
+\begin{verbatim}
+M-x locate-library [return] ess-site [return]
+\end{verbatim}
+  will help.  Also, 
+\begin{verbatim}
+M-x customize-group [return] ess
+\end{verbatim}
+  helps to review possible customizations (this is an alternative to
+  editing the \textbf{\~{}/.emacs} file for setting customizing
+  variables).
+\end{frame}
+
+\subsection{Sweave Support}
+
+\begin{frame}
+  \frametitle{Overview: Sweave}
+  Sweave originated from the Literate Data Analysis philosophy which
+  in itself was the idea of applying Literate Programming to the
+  specialized programming discipline \emph{interactive data analysis}.
+
+  Support for editing Noweb files existed within ESS 4 years before
+  Sweave, but Sweave is a ``Killer App''.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Documents as Programs}
+  \begin{itemize}
+  \item Every electronic document is a ``computer program'' (sometimes
+    at a primitive level) for some rendering device or program (such
+    as: Microsoft Word; Postscript printers; Adobe Acrobat Reader;
+    Emacs)
+  \item This is the general theory behind the WWW, as well as the
+    so-called \emph{Semantic Web}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Literate Programming} 
+  A programming methodology devised by Donald Knuth in the late 70s,
+  early 80s, which mixes computer programs doing mathematics with
+  mathematical documentation (formulas, theorems, algorithms).
+
+  2 operations:
+  \begin{itemize}
+  \item Tangling: translating document into undocumented computer source code for
+    compiling.
+  \item Weaving: translating document into documentation for the source code.
+  \end{itemize}
+  The original tool was called Web (predates the \textit{World-Wide-Web}).
+\end{frame}
+
+\begin{frame} \frametitle{Literate Statistical Practice}
+  \framesubtitle{or \emph{Literate Data Analysis:}}
+  The application of literate programming to statistics; recognizing
+  that statistical data analysis is a specialized programming activity
+  with different characteristics than systems programming or
+  applications programming.
+
+  (realization prototype: ESS-Noweb and Sweave).
+\end{frame}
+
+\begin{frame} \frametitle{ESS enhances Sweave}
+  \begin{itemize}
+  \item context specific modes (doc: latex, html, muse; code: R, etc).
+  \item chunk and thread evaluation.
+  \item functions for processing Sweave files.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Evaluation}
+  \framesubtitle{Chunks and Threads}
+  \begin{itemize}
+  \item eval-chunk (run code inside a code chunk)
+  \item eval-thread (run code inside a series of code chunks)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Accelerated Sweave Development }
+  \begin{itemize}
+  \item ESS has specialized support
+  \item use Makefiles (editor-neutral approach)
+  \item \textbf{M-x ess-makeSweave}    or \textbf{M-n s}
+  \item \textbf{M-x ess-makeLatex}     or \textbf{M-n l}
+  \item \textbf{M-x ess-makePS}        or \textbf{M-n p}  
+  \item \textbf{M-x ess-makePDF}       or \textbf{M-n P}
+  \item \textbf{M-x ess-insert-Sexpr}  or \textbf{M-n x}
+  \end{itemize}
+\end{frame}
+
+\subsection{Review: ESS}
+
+\begin{frame}
+  \frametitle{Review: Using ESS}
+  \begin{itemize}
+  \item ESS for R has 4 modes: editing, interactive, transcript, help.
+  \item Focus on learning to use keystrokes rather than mouse.
+  \end{itemize}
+\end{frame}
+
+\section{Emacs is Extended}
+
+\begin{frame}
+  \frametitle{Packages and Extensions.}
+  Emacs has many modes: 
+  \begin{itemize}
+  \item language-specific markup (programming, markup)
+  \item editor behavior (spell checking, pending delete, folding,
+    editor emulation (vi, brief))
+  \item IDE capabilities (object explorers, completers)
+  \item database (edb)
+  \item communication (mail, news, www, rdf)
+  \item sub (inferior) process control (telnet, R, \ldots)
+  \item publication (text mode conversion)
+  \item version control interfaces
+  \item anything you can program!    
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Relevant to Data analysis and R}
+  \begin{itemize}
+  \item folding modes (outline; however, the newer version, allout,
+    stomps on R-mode)
+  \item object explorers (ecb)
+  \item documentation modes
+    \begin{itemize}
+    \item specialized:  latex, html, rtf
+    \item generic: muse, \ldots (idea: simple markup which translates to
+      html, latex, texinfo, etc).
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Dired}
+  A directory/file explorer and navigator.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Emacs Code Browser}
+  \begin{itemize}
+  \item ESS integrates to support R
+  \item Extension/customization: through imenu support.
+  \item file-level navigation and objects, editing history of files,
+    files in current directory, directory tree.
+  \end{itemize}
+  (demo with R-examples/FCS.R)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Muse}
+  \framesubtitle{a mode for documentation and notes}
+  \begin{itemize}
+  \item Wiki-like editing, hyperlinks, within text.
+  \item simple format
+  \item Supports generation of latex, pdf, (x)html, xml.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planner: Task management}
+  \framesubtitle{getting organized and tracking activity}
+  \begin{itemize}
+  \item Plain-text task management and organization
+  \item Supports many common time-management approaches (GTD, ).
+  \item Extremely customizeable
+  \end{itemize}
+\end{frame}
+
+\subsection{LaTeX Extensions}
+
+\begin{frame}
+  \frametitle{LaTeX Support}
+  \framesubtitle{nearly WYSIWYG}
+  \begin{itemize}
+  \item AUC-TeX: latex document support
+  \item BiBTeX-mode and RefTeX: citation management
+  \item X-Symbol: native display of mathematical symbols
+  \item tex-preview: You can see what you will get (YCSWYWG)
+  \end{itemize}
+\end{frame}
+
+\section{Lisp and Emacs Lisp}
+
+\begin{frame}
+  \frametitle{Customizing Emacs}
+  \framesubtitle{Sometimes with Lisp}
+  \begin{itemize}
+  \item Critical components for customizing Emacs: current best
+    practices suggest that you customize via ``M-x customize''. (this
+    is a recent (last 5 years) change!).
+  \item However, adding Lisp commands to your \textbf{.emacs} file is 
+    still very useful (and sometimes required).
+  \item Note that commas denote comments (from the comma until the end
+    of the line).
+  \end{itemize}
+\end{frame}
+
+\subsection{Introduction to Lisp}
+
+\begin{frame}[fragile]
+  \frametitle{Lisp}
+  Lisp (LISt Processor) is different than most high-level computing
+  languages, and similar to Emacs, it is very old (1956).  Lisp is
+  built on lists of things which might be evaluated:
+\begin{verbatim}
+(function data1 data2 data3)
+\end{verbatim}
+  or ``quoted'':
+\begin{verbatim}
+'(function data1 data2 data3)
+\end{verbatim}
+  The difference is important -- lists of data (the second) are not
+  functions applied to data (the first).
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Evaluation}
+  Lisp is built on lists of things which might be evaluated:
+\begin{verbatim}
+(function data1 data2 data3)
+\end{verbatim}
+  or ``quoted'':
+\begin{verbatim}
+'(function data1 data2 data3)
+(list function data1 data2 data3)
+\end{verbatim}
+  The difference is important -- lists of data (the second) are not
+  functions applied to data (the first).
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Defining Variables}
+  \framesubtitle{Setting variables}
+\begin{verbatim}
+(setq <variable> <value>)
+\end{verbatim}
+  Example:
+\begin{verbatim}
+(setq ess-source-directory
+      "/home/rossini/R-src")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Defining on the fly}
+\begin{verbatim}
+(setq ess-source-directory
+   (lambda () (file-name-as-directory
+         (expand-file-name
+           (concat (default-directory)
+                   ess-suffix "-src")))))
+\end{verbatim}
+  (Lambda-expressions are anonymous functions, i.e. ``instant-functions'') 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Function Reuse}
+  By naming the function, we could make the previous example reusable
+  (if possible):
+\begin{verbatim}
+(defun my-src-directory ()
+      (file-name-as-directory
+         (expand-file-name
+           (concat (default-directory)
+                   ess-suffix "-src"))))
+\end{verbatim}
+  Example:
+\begin{verbatim}
+(setq ess-source-directory (my-src-directory))
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Programming Emacs Lisp} 
+
+  There are three general approaches to testing, evaluating, and
+  deploying Emacs Lisp code.
+  \begin{itemize}
+  \item Loading files:  \verb+M-x load-file <filename.el>+
+  \item Using the \verb+*scratch*+ buffer
+  \item \verb+ielm+ , an emacs-lisp REPL
+  \end{itemize}
+  Review the latter two
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Playing in the scratch buffer.}
+  \begin{enumerate}
+  \item \verb+C-x b *scratch*+
+  \item (display-time)\verb+C-j+
+  \item (setq my-test ``asdf'')\verb+C-j+
+  \item my-test\verb+C-j+
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{ielm: command-line usage.}
+  \begin{enumerate}
+  \item M-x ielm
+  \item follow the instructions for more information (similar to using
+    R in interactive mode)
+  \end{enumerate}
+\end{frame}
+
+\subsection{Extending Emacs and ESS}
+
+\begin{frame}
+  \frametitle{Organization.}
+  \framesubtitle{Structure of ESS}
+  \begin{itemize}
+  \item How ESS works
+  \item Reading the code
+  \item making extensions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Debugging.}
+  \begin{itemize}
+  \item Set options to ``debug on error'' and ``debug on signal''.
+    Both bring up the stack-trace of the current status of the lisp
+    program (nesting and variable values).
+  \item Look for errors in loading to determine the path taken to the error
+  \item more sophisticated debuggers exist.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Idea generation: SLIME}
+  \framesubtitle{Lisp IDE suggests ESS improvements}
+  \begin{itemize}
+  \item Use R subprocesses (old idea of DTL).
+  \item Synchronize processes
+  \end{itemize}
+\end{frame}
+
+
+\section{Discussion}
+
+\begin{frame}
+  \frametitle{Future?}
+  \begin{itemize}
+  \item Continued support for R within ESS
+  \item Object and formating support
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle<presentation>{Summary}
+
+  % Keep the summary *very short*.
+  \begin{itemize}
+  \item
+    Emacs takes time to learn, but rewards the user.
+  \item
+    ESS enhances R.
+  \item
+    Lisp is worth learning.
+  \end{itemize}
+  
+  % The following outlook is optional.
+  \vskip0pt plus.5fill
+  \begin{itemize}
+  \item
+    Outlook
+    \begin{itemize}
+    \item
+      ESS is the oldest open-source statistics project; yet it can
+      always be improved!
+    \item
+      Many possible extensions for supporting work modes for
+      Statisticians and Data Analysts.  More need implementation.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,30 @@
+SOURCE=HVTNscenarios
+SWEAVE=./Sweave.sh
+
+.SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .Rnw .pdf
+##.nw.html: ;       $(NOWEAVE) -filter l2h -index -html $*.nw > $*.html
+##.nw.tex:  ;       $(NOWEAVE) -index -delay $*.nw | cpif $*.tex
+##.nw.h:  ;       $(NOTANGLE) -R$*.h | cpif $*.h
+##.nw.c:  ;       $(NOTANGLE) -R$*.c | cpif $*.c
+##.Rnw.tex: ;       $(SWEAVE) $*.Rnw
+##.tex.pdf: ;       pdflatex '\scrollmode \input '"$*"; while grep -s 'Rerun to get cross-references right' $*.log; do pdflatex '\scrollmode \input '"$*"; done
+##.tex.dvi: ;          latex '\scrollmode \input '"$*"; while grep -s 'Rerun to get cross-references right' $*.log; do    latex '\scrollmode \input '"$*"; done
+.Rnw.pdf: ;       $(SWEAVE) $*.Rnw ; pdflatex '\scrollmode \input '"$*"; bibtex $* ;while grep -s 'Rerun to get cross-references right' $*.log; do pdflatex '\scrollmode \input '"$*"; done
+
+
+default : $(SOURCE).pdf 
+	xpdf $(SOURCE).pdf
+
+finalPDF : 
+	thumbpdf $(SOURCE)
+	pdflatex $(SOURCE)
+
+
+#$(SOURCE).dvi $(SOURCE).ps
+$(SOURCE).pdf : $(SOURCE).tex
+$(SOURCE).tex : $(SOURCE).Rnw
+#$(SOURCE).dvi : $(SOURCE).tex
+#$(SOURCE).ps  : $(SOURCE).dvi
+#	dvips $(SOURCE) -o
+
+

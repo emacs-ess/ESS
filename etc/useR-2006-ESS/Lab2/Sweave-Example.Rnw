@@ -1,0 +1,161 @@
+\documentclass[12pt]{report}
+
+%%
+%% This is an Sweave file.  To generate a latex file from this, use (in R): 
+%% > library(tools)
+%% > Sweave("HVTNscenarios")
+%% and then in a regular Unix (or MSDOS, or...) shell, 
+%% $ latex HVTNscenarios
+%% to generate the results.
+%%
+
+%% The following is for creating PDF.
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+  \pdffalse     % not running PDFLaTeX
+\else
+  \pdfoutput=1  % running PDFLaTeX
+  \pdftrue
+\fi
+
+%\ifpdf
+%  \usepackage{thumbpdf}
+%\fi
+%\usepackage{html,heqn,htmllist}
+%\usepackage[latex2html]{hyperref} 
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{hyperref} 
+\else
+  \usepackage[dvips]{graphicx}
+  \usepackage[dvips]{hyperref} 
+\fi
+
+\usepackage{url}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textheight}{0.2in}
+\addtolength{\textwidth}{1in}
+
+\hypersetup{backref,colorlinks=true,pagebackref=true,
+  hyperindex=true}%pdfpagemode=FullScreen,
+
+\ifpdf
+  \DeclareGraphicsExtensions{.jpg,.pdf,.png,.mps}
+\fi
+
+\title{Analysis}
+\author{AJ Rossini}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\begin{abstract}
+  An example for using Sweave.
+\end{abstract}
+
+%% For setting graphics for Sweave
+%\setkeys{Gin}{width=5cm}
+%\setkeys{Gin}{width=0.8\textwidth}
+
+Possible settings for sweave chunks: 
+\begin{itemize}
+\item eval=TRUE
+\item fig=TRUE, eps=FALSE
+\item results=hide, tex
+\item echo=TRUE
+\item prefix=FALSE
+\item include=FALSE
+\end{itemize} 
+
+Indexing works.  You can see that from Table~\ref{tab:1} and
+Figure~\ref{fig:control}.
+
+<<example data 1>>=
+x <- rnorm(10) + 2
+y <- x + rnorm(10)
+my.lm.fit <- lm(y~x)
+@ 
+
+
+\chapter{Tables}
+\label{CHA:tables}
+
+<<Check library existence,echo=FALSE,eval=TRUE>>=
+xtableExists <- require(xtable)
+@ 
+
+We have our first table
+
+<<example output for data 1,results=tex,echo=FALSE>>=
+if (xtableExists) {
+   xtable(my.lm.fit)
+}
+@ 
+
+and the second table, with Caption and \LaTeX{} reference label. 
+
+<<example output for data 1,results=tex,echo=FALSE>>=
+if (xtableExists) {
+  xtable(my.lm.fit,caption="My First Table Caption",label="tab:1")
+}
+@ 
+
+\clearpage
+
+We could do the same thing and echo the code, as well:
+
+We have our first table
+
+<<example output for data 1,results=tex,echo=TRUE>>=
+if (xtableExists) {
+   xtable(my.lm.fit)
+}
+@ 
+
+\clearpage
+
+and the second table, with Caption and \LaTeX{} reference label. 
+
+<<example output for data 1,results=tex,echo=TRUE>>=
+if (xtableExists) {
+  xtable(my.lm.fit,caption="My Second Table Caption",label="tab:2")
+}
+@ 
+
+\chapter{Figures}
+\label{CHA:figures}
+
+Normally you can just include plots, by specifying that the chunk
+generates a figure.
+
+<<exampleFigureOne,fig=TRUE,echo=FALSE>>=
+plot(rnorm(10),rnorm(10))
+@ 
+
+\clearpage
+
+However, if you want more control, such as Labels on figures as well
+as floating placement (i.e. letting \LaTeX{} place it for you
+appropriately), you might:
+
+\begin{figure}[htbp]
+  \centering
+<<exampleFigureTwo,fig=TRUE,echo=FALSE>>=  
+plot(rnorm(10),rnorm(10))
+@ 
+  \caption{Example of more control}
+  \label{fig:control}
+\end{figure}
+
+\end{document}
