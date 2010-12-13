@@ -1,3 +1,8 @@
+2010-12-13  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-request-a-process): Set default to ess-dialect
+	rather than ess-language.  Patch from Vitalie S.
+
 2010-11-27  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-eval-buffer-from-beg-to-here, *-from-here-to-end):

@@ -642,7 +642,7 @@ Returns the name of the selected process."
 			      'require-match
 			      ;; If in S buffer, don't offer current process
 			      (if (eq major-mode 'inferior-ess-mode)
-				  ess-language
+				  ess-dialect
 				ess-current-process-name
 				;; maybe ess-local-process-name IF exists?
 				)))))
