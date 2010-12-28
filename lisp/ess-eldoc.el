@@ -69,6 +69,11 @@
 ;; undesirable behaviour, in which case a solution would be to only
 ;; look up the function name if it is followed by (.
 
+;; If you want to use this feature in *R* buffers, add the following
+;; to .emacs:
+;; (add-hook 'inferior-ess-mode-hook 'ess-use-eldoc)
+
+
 ;; In the current version, I do not cache the arg list, but that was
 ;; done in an earlier version, to save repeated calls to
 ;; ess-r-args-get.
