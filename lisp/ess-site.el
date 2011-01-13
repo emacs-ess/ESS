@@ -1,7 +1,7 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2007 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2011 A.J. Rossini, Richard M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
