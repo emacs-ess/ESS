@@ -531,12 +531,25 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-rterm-version-paths ;; (ess-find-rterm))
 	      (ess-flatten-list
 	       (ess-uniq-list
-		(nconc
-		 (ess-find-rterm (concat (getenv "ProgramFiles") "/R/"))       ;; always 32 on 32 bit OS
-		 ;;                                                            ;; depends on 32 or 64 process on 64 bit OS
-		 (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
-		 (ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
-		 ))))
+		(if (getenv "ProgramW6432") 
+		    (nconc		 
+		     ;; always 32 on 64 bit OS, nil on 32 bit OS
+		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/Rterm.exe")
+		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/i386/Rterm.exe")
+		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/x64/Rterm.exe") ;; keep this x64 option both for symmetry and because it can happen
+		     
+		     ;; always 64 on 64 bit OS, nil on 32 bit OS
+		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/Rterm.exe")
+		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/i386/Rterm.exe")
+		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/x64/Rterm.exe")
+		     )
+		  (nconc
+		   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/Rterm.exe")
+		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/i386/Rterm.exe")
+		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/x64/Rterm.exe")
+		   )
+		  ))))
 	(setq ess-rterm-version-paths (mapcar '(lambda(x) (w32-short-file-name x)) ess-rterm-version-paths))
 	)
     ;;else  real OS :
