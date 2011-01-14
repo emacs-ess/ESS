@@ -140,12 +140,13 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-keywords
   '(
     ;; the next two lines: only valid in R <= 2.8.1
-    "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
-    "ge" "le" "left" "right"
+    ;; commented out on 2011-01-14 for ESS version 5.13:
+    ;; "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
+    ;; "ge" "le" "left" "right"
     ;;
     "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
-    "dontshow" "dots" "email" "emph" "enc" "env" "eqn" "file"
+    "dontshow" "donttest" "dots" "email" "emph" "enc" "env" "eqn" "file"
     "href" "if" "ifelse"
     "item" "kbd" "ldots" "linkS4class" "link" "method"
     "newcommand" "option" "out"
