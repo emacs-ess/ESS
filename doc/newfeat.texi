@@ -2,6 +2,8 @@
 
 Changes/New Features in 5.13:
 @itemize @bullet
+@item `Rd-preview-help' now generates preview buffers with navigation
+facilities the same as regular help buffers.
 @item @ESS{}: New functions and keys C-c [up] / [down]
  for evaluating the buffer ``from beginning till here''.
 @item @ESS{[R]}: more Roxygen improvements.
