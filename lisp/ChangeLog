@@ -1,3 +1,11 @@
+2011-01-19  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-rd.el (Rd-preview-help): Quote filename to prevent spaces in
+	filenames causing problems running the shell-command.
+	Fix up so that navigation shortcuts present in normal R Help buffers
+	work in the output buffer.
+	Add a short docstring and tidy code.
+
 2010-12-13  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-request-a-process): Set default to ess-dialect
