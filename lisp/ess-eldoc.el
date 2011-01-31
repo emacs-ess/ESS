@@ -29,7 +29,7 @@
 ;; buffers.  Eldoc is used in Emacs lisp buffers to show the function
 ;; arglist and docstrings for variables.  To try it, view an emacs
 ;; lisp buffer, and then do M-x turn-on-eldoc-mode, and move over
-;; function and variable namess.
+;; function and variable names.
 
 ;; This file extends eldoc to work in R buffers.  It currently uses
 ;; Sven's ess-r-args.el file to retrieve args for a given R function
@@ -38,7 +38,7 @@
 ;; of an R function, or inside its arguments list, for eldoc to show
 ;; the arg list.
 
-;; To use this functionality, simply add 
+;; To use this functionality, simply add
 ;;
 ;; (require 'ess-eldoc)
 ;;

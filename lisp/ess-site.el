@@ -259,8 +259,8 @@ between .s or .S files and assembly mode.
           )
 	 auto-mode-alist)))
 
-;; Rscript and littler interpreters recognized.  XEmacs entries can 
-;; be regexps, which complicates matters as "r" on its own matches 
+;; Rscript and littler interpreters recognized.  XEmacs entries can
+;; be regexps, which complicates matters as "r" on its own matches
 ;; other interpeters like "perl".
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
 (add-to-list 'interpreter-mode-alist
@@ -468,33 +468,32 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
-(cond (ess-microsoft-p ; MS-Windows
-;;        (fset 'S
-;; 	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-;; 		 'S+6-msdos
-;; 	       'S+6))
-       (defun S-by-icon (&rest x)
-	 (interactive)
-	 (message "Please start S+ from the icon.\n Then you can connect emacs to it with `M-x S-existing'.")
-	 )
-       (fset 'S 'S-by-icon)
-       (fset 'S-existing
-	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-		 'S+6-msdos-existing
-	       'S+6-existing))
-       (fset 'Sqpe 'Sqpe+6)
-       (fset 's-mode 'S+6-mode)
-       (fset 's-transcript-mode 'S+6-transcript-mode))
+(cond  (ess-microsoft-p
+	;; MS-Windows-------------------------------------------------
 
-      ((eq system-type 'gnu/linux)	; Linux -- no S+3
-       (fset 'S 'S+6)
-       (fset 's-mode 'S+6-mode)
-       (fset 's-transcript-mode 'S+6-transcript-mode))
+	;;        (fset 'S
+	;; 	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+	;; 		 'S+6-msdos
+	;; 	       'S+6))
+	(defun S-by-icon (&rest x)
+	  (interactive)
+	  (message "Please start S+ from the icon.
+ Then you can connect emacs to it with `M-x S-existing'.")
+	  )
+	(fset 'S 'S-by-icon)
+	(fset 'S-existing
+	      (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+		  'S+6-msdos-existing
+		'S+6-existing))
+	(fset 'Sqpe 'Sqpe+6)
+	(fset 's-mode 'S+6-mode)
+	(fset 's-transcript-mode 'S+6-transcript-mode))
 
-      (t				; Other Unixen
-       (fset 'S 'S+6)
-       (fset 's-mode 'S+6-mode)
-       (fset 's-transcript-mode 'S+6-transcript-mode)))
+       (t ;;((eq system-type 'gnu/linux)
+	;; Linux etc (including Mac OSX !?) --------------------------
+	(fset 'S 'S+6)
+	(fset 's-mode 'S+6-mode)
+	(fset 's-transcript-mode 'S+6-transcript-mode)))
 
 
 ;;;;* Alias S-mode to s-mode
@@ -528,16 +527,17 @@ sending `inferior-ess-language-start' to S-Plus.")
       (progn
 	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-	(setq ess-rterm-version-paths ;; (ess-find-rterm))
+	(setq ess-rterm-version-long-paths ;; (ess-find-rterm))
 	      (ess-flatten-list
 	       (ess-uniq-list
-		(if (getenv "ProgramW6432") 
-		    (nconc		 
+		(if (getenv "ProgramW6432")
+		    (nconc
 		     ;; always 32 on 64 bit OS, nil on 32 bit OS
 		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/Rterm.exe")
 		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/i386/Rterm.exe")
-		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/x64/Rterm.exe") ;; keep this x64 option both for symmetry and because it can happen
-		     
+		     ;; keep this x64 option both for symmetry and because it can happen:
+		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/x64/Rterm.exe")
+
 		     ;; always 64 on 64 bit OS, nil on 32 bit OS
 		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/Rterm.exe")
 		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/i386/Rterm.exe")
@@ -550,7 +550,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/x64/Rterm.exe")
 		   )
 		  ))))
-	(setq ess-rterm-version-paths (mapcar '(lambda(x) (w32-short-file-name x)) ess-rterm-version-paths))
+	(setq ess-rterm-version-paths
+	      (mapcar '(lambda(x) (w32-short-file-name x))
+		      ess-rterm-version-long-paths))
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
@@ -577,6 +579,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 			    ess-versions-created)))
       (easy-menu-add-item ess-mode-menu '("Start Process")
 			  (cons "Other" new-menu)))))
+;;--end-- ess-s-versions-created ---------------------------------------
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
