@@ -519,45 +519,40 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; -----  *and* update the "Start Process" menu (below)
 ;;    -> To this: wrap the following in functions that can be re-called
 
-(let ( (ess-s-versions-created)
-       ;;(ess-r-versions-created)
-       (R-newest-list '("R-newest"))
-       )
+;; Create  ess-versions-created,
+;;         ess-r-versions-created,
+;; and on Windows, ess-rterm-version-paths -----------------------------------------
+(let ((R-newest-list '("R-newest"))
+      (ess-s-versions-created (if ess-microsoft-p
+				  (ess-sqpe-versions-create); use ess-SHOME-versions
+				(ess-s-versions-create)))) ;; use ess-s-versions
   (if ess-microsoft-p
-      (progn
-	(setq ess-s-versions-created
-	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-	(setq ess-rterm-version-long-paths ;; (ess-find-rterm))
-	      (ess-flatten-list
-	       (ess-uniq-list
-		(if (getenv "ProgramW6432")
+      (setq ess-rterm-version-paths ;; (ess-find-rterm))
+	    (ess-flatten-list
+	     (ess-uniq-list
+	      (if (getenv "ProgramW6432")
+		  (let ((P-1 (getenv "ProgramFiles(x86)"))
+			(P-2 (getenv "ProgramW6432")))
 		    (nconc
 		     ;; always 32 on 64 bit OS, nil on 32 bit OS
-		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/Rterm.exe")
-		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/i386/Rterm.exe")
-		     ;; keep this x64 option both for symmetry and because it can happen:
-		     (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/") "bin/x64/Rterm.exe")
+		     (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+		     (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+		     ;; keep this both for symmetry and because it can happen:
+		     (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
 
 		     ;; always 64 on 64 bit OS, nil on 32 bit OS
-		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/Rterm.exe")
-		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/i386/Rterm.exe")
-		     (ess-find-rterm (concat (getenv "ProgramW6432")      "/R/") "bin/x64/Rterm.exe")
-		     )
+		     (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+		     (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+		     (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+		     ))
+		(let ((PF (getenv "ProgramFiles")))
 		  (nconc
 		   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/Rterm.exe")
-		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/i386/Rterm.exe")
-		   (ess-find-rterm (concat (getenv "ProgramFiles")      "/R/") "bin/x64/Rterm.exe")
-		   )
-		  ))))
-	(setq ess-rterm-version-paths
-	      (mapcar '(lambda(x) (w32-short-file-name x))
-		      ess-rterm-version-long-paths))
-	)
-    ;;else  real OS :
-      (setq ess-s-versions-created
-	    (ess-s-versions-create))      ;; use ess-s-versions
-      )
+		   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+		   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+		   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+		   ))
+		)))))
 
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
 	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
@@ -570,20 +565,20 @@ sending `inferior-ess-language-start' to S-Plus.")
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
 		 '(R-newest-list
 		   ess-r-versions-created
-		   ess-s-versions-created))))
+		   ess-s-versions-created)))));;--end-- ess-s-versions-created -------
 
-  (when ess-versions-created
-    ;; new-menu will be a list of 3-vectors, of the form:
-    ;; ["R-1.8.1" R-1.8.1 t]
-    (let ((new-menu (mapcar '(lambda(x) (vector x (intern x) t))
-			    ess-versions-created)))
-      (easy-menu-add-item ess-mode-menu '("Start Process")
-			  (cons "Other" new-menu)))))
 ;;--end-- ess-s-versions-created ---------------------------------------
+
+(when ess-versions-created
+  ;; new-menu will be a list of 3-vectors, of the form:
+  ;; ["R-1.8.1" R-1.8.1 t]
+  (let ((new-menu (mapcar '(lambda(x) (vector x (intern x) t))
+			  ess-versions-created)))
+    (easy-menu-add-item ess-mode-menu '("Start Process")
+			(cons "Other" new-menu))))
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
-(require 'ess-r-d)
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 
 ;;; 3. Customization (and examples) for your site

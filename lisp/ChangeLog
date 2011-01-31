@@ -1,3 +1,12 @@
+2011-01-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-rterm-version-paths): now use *long* filenames
+	* ess-r-d.el (ess-r-versions-create): ditto; now produce "proper"
+	version names.
+	* ess-r-d.el (ess-rterm-arch-version): extend to return cons; and
+	use "-32bit" / "-64bit" in the bi-arch cases.
+
+
 2011-01-19  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-rd.el (Rd-preview-help): Quote filename to prevent spaces in
