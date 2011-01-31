@@ -351,7 +351,7 @@ prompt for command line arguments."
       (fset 'R-newest
 	    (intern
 	     (if ess-microsoft-p
-		 (car (ess-rterm-arch-version rnewest))
+		 (ess-rterm-arch-version rnewest)
 	       rnewest)))
       ;;(fset 'R-newest (intern rnewest))
       (R-newest start-args))))
