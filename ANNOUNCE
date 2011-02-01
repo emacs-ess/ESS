@@ -213,6 +213,13 @@ in the file COPYING in the same directory as this file for more details.
 ================
 
      Changes/New Features in 5.13:
+        * ESS[R]: On Windows, for R 2.12.0 and later, the Rterm
+          executables  (in subdirectories i386 / x64) now are found as
+          well as for earlier R versions.
+
+        * `Rd-preview-help' now generates preview buffers with
+          navigation facilities the same as regular help buffers.
+
         * ESS: New functions and keys C-c [up] / [down]  for evaluating
           the buffer "from beginning till here".
 
