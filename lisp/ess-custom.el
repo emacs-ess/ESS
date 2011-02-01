@@ -1182,6 +1182,10 @@ corresponding program.")
 (setq-default inferior-ess-program inferior-S-program-name)
 
 
+(defvar inferior-R-version "R (newest)"
+  "A (short) name of the current R version.  A global variable for
+ESS internal communication.")
+
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
 If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")

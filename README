@@ -489,13 +489,16 @@ shell, simply type `M-x S+6-msdos RET'.
           executables  (in subdirectories i386 / x64) now are found as
           well as for earlier R versions.
 
+        * ESS[R]: When prompting for a starting directory, the R
+          version is  (always?) correct now.
+
+        * ESS[R]: more Roxygen improvements.
+
         * `Rd-preview-help' now generates preview buffers with
           navigation facilities the same as regular help buffers.
 
         * ESS: New functions and keys C-c [up] / [down]  for evaluating
           the buffer "from beginning till here".
-
-        * ESS[R]: more Roxygen improvements.
 
      Changes/New Features in 5.12:
         * ESS[SAS] Font-locking:  update of PROCs keywords (up to SAS
