@@ -22,6 +22,19 @@
 	work in the output buffer.
 	Add a short docstring and tidy code.
 
+2011-01-12  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-site.el (ess-rterm-version-paths): extend to find all 32-bit
+	and 64-bit versions of R using both the newer R-2.12.x naming
+	convention using the architecture-specific i386 and x64
+	subdirectories and the older R-2.11.x naming convention.
+	* ess-r-d.el (ess-rterm-arch-version): Isolate this function from within
+	ess-r-versions-create to construct an architecture-specific name
+	for VERSION, an absolute path to R on Windows.
+	* ess-r-d.el (ess-r-versions-create): Remove
+	ess-rterm-arch-version into its own function.
+
+
 2010-12-13  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-request-a-process): Set default to ess-dialect
