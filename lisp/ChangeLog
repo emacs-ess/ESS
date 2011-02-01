@@ -1,5 +1,7 @@
 2011-02-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* ess-r-d.el (R): change use-dialog-box (to nil) only on windows.
+
 	* ess-inf.el (ess-get-directory): now use new inferior-R-version
 	which is set in the created R-X.Y version functions.
 

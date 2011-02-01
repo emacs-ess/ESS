@@ -6,6 +6,10 @@ Changes/New Features in 5.13:
  (in subdirectories i386 / x64) now are found as well as for earlier R versions.
 @item @ESS{[R]}: When prompting for a starting directory, the R version is
  (always?) correct now.
+@item @ESS{[R]}: on non-Windows platforms, the @code{use-dialog-box}
+ variable is no longer temporarily changed (to @code{nil} for R-x.y.z version
+ functions and to @code{t} for @command{R} itself), but rather the user
+ customization is obeyed.
 @item @ESS{[R]}: more Roxygen improvements.
 @item `Rd-preview-help' now generates preview buffers with navigation
 facilities the same as regular help buffers.

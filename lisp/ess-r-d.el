@@ -135,11 +135,14 @@ to R, put them in the variable `inferior-R-args'."
 			       r-always-arg
 			       "'] ? "))
 		    nil)))
-	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
-	 )
-	 ;;Micro$ ?: default-process-coding-system ;-breaks UTF locales on Unix:
-    (if ess-microsoft-p
-	(setq default-process-coding-system '(undecided-dos . undecided-dos)))
+	 use-dialog-box)
+
+    (when (or ess-microsoft-p
+	      (eq system-type 'cygwin))
+       (setq use-dialog-box nil)
+       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
+	   (setq default-process-coding-system '(undecided-dos . undecided-dos))))
+
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
     (ess-write-to-dribble-buffer
