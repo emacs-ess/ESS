@@ -801,14 +801,23 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :type 'string)
 
 
-(defcustom ess-program-files
+(defcustom ess-program-files ;; 32 bit version
   (if ess-microsoft-p
-      (w32-short-file-name (getenv "ProgramFiles"))
+      (if (getenv "ProgramW6432")
+	  (w32-short-file-name (getenv "ProgramFiles(x86)"));; always 32 on 64 bit OS
+	(w32-short-file-name (getenv "ProgramFiles")))      ;; always 32 on 32 bit OS
     nil)
-  "Safe (no embedded blanks) 8.3 name that works across internationalization."
+  "Safe (no embedded blanks) 8.3 name for 32-bit programs that works across internationalization."
   :group 'ess
   :type 'string)
 
+(defcustom ess-program-files-64 ;; 64 bit version
+  (if (and ess-microsoft-p (getenv "ProgramW6432"))
+      (w32-short-file-name (getenv "ProgramW6432"))
+    nil)
+  "Safe (no embedded blanks) 8.3 name for 64-bit programs that works across internationalization."
+  :group 'ess
+  :type 'string)
 
 (defcustom ess-rterm-version-paths nil
   "Stores the full path file names of Rterm versions, computed via
@@ -842,6 +851,7 @@ file."
        "/Insightful/splus8.0.4"
        "/Insightful/splus80"
        "/TIBCO/splus81"
+       "/TIBCO/splus82"
 ))
   "List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
@@ -850,6 +860,27 @@ correspond to a directory on your machine, running the function
 `ess-sqpe-versions-create' will create a function, for example, `M-x
 splus70', that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
+locations other than these default values, redefine this variable with
+a `custom-set-variables' statement in your site-start.el or .emacs
+file.  The list of functions actually created appears in the *ESS*
+buffer and should appear in the \"ESS / Start Process / Other\"
+menu."
+  :group 'ess-SPLUS
+  :type '(repeat string))
+
+(defcustom ess-SHOME-versions-64
+    ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
+    (mapcar
+     '(lambda (ch) (concat ess-program-files-64 ch))
+     '("/TIBCO/splus82"
+))
+  "List of possible values of the environment variable SHOME for recent
+releases of 64-bit S-Plus.  These are the default locations for several
+current and recent releases of S-Plus.  If any of these pathnames
+correspond to a directory on your machine, running the function
+`ess-sqpe-versions-create' will create a function, for example, `M-x
+splus70', that will start the corresponding version Sqpe inside an
+emacs buffer in iESS[S] mode.  If you have versions of 64-bit S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
 file.  The list of functions actually created appears in the *ESS*
@@ -946,7 +977,7 @@ different computer."
 
 (if ess-microsoft-p
     (defcustom inferior-S+6-program-name
-      (concat ess-program-files "/TIBCO/splus81/cmd/Splus.exe")
+      (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
       "Program name to invoke an external GUI S+6 for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1 and with bash as the shell.
@@ -985,13 +1016,13 @@ in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :type 'string)
 
 (defcustom inferior-Sqpe+6-program-name
-  (concat ess-program-files "/TIBCO/splus81/cmd/Sqpe.exe")
+  (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
 (defcustom inferior-Sqpe+6-SHOME-name
-  (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus81" ""))
+  (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus82" ""))
   "SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1.  For any other version or location,

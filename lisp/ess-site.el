@@ -524,7 +524,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; and on Windows, ess-rterm-version-paths -----------------------------------------
 (let ((R-newest-list '("R-newest"))
       (ess-s-versions-created (if ess-microsoft-p
-				  (ess-sqpe-versions-create); use ess-SHOME-versions
+				  (nconc
+				   (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
+				   (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
 				(ess-s-versions-create)))) ;; use ess-s-versions
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
@@ -565,9 +567,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
 		 '(R-newest-list
 		   ess-r-versions-created
-		   ess-s-versions-created)))));;--end-- ess-s-versions-created -------
+		   ess-s-versions-created)))))
 
-;;--end-- ess-s-versions-created ---------------------------------------
 
 (when ess-versions-created
   ;; new-menu will be a list of 3-vectors, of the form:

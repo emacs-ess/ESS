@@ -1,3 +1,17 @@
+2011-02-02  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-custom.el (ess-program-files, ess-program-files-64)
+	(ess-SHOME-versions, ess-SHOME-versions-64)
+	(inferior-S+6-program-name, inferior-Sqpe+6-program-name)
+	(inferior-Sqpe+6-SHOME-name): Pathnames for all 32-bit and 64-bit
+	versions of Sqpe.  Add the most recent "/TIBCO/splus82" and make
+	it the default.
+	* ess-sp6w-d.el (ess-sqpe-versions-create): Give the function an
+	argument of pathnames and an indicator whether they are 32-bit or
+	64bit pathnames.
+	* ess-site.el (ess-s-versions-created): Use the revised functions
+	and variables to find all 32-bit and 64-bit versions of Sqpe.
+
 2011-02-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-r-d.el (R): change use-dialog-box (to nil) only on windows.

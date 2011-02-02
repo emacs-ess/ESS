@@ -494,13 +494,15 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (toggle-read-only t)		; restore ESS buffer to be read-only
     ))
 
-(defun ess-sqpe-versions-create ()
+(defun ess-sqpe-versions-create (ess-SHOME-versions &optional x64)
   "Generate the `M-x splusxy' functions for starting other versions of
-Sqpe.  See `ess-sqpe-versions' for strings that determine which
+Sqpe.  `ESS-SHOME-VERSIONS' is normally taken from
+`ess-sqpe-versions', a variable that contains strings that determine which
 functions are created.  This works by creating a temp buffer where the
 template function `Sqpe+template' is edited by replacing the string
 'Sqpe+template' by the version name.  The list of functions actually
-created appears in the *ESS* buffer.
+created appears in the *ESS* buffer.  If `X64' is not nil, then
+modify the function name to show \"-64bit\" in its name.
 
 The result `ess-sqpe-versions-created' will store a list of the new
 Sqpe defuns, if any, that were created.  The defuns will normally be
@@ -518,6 +520,7 @@ placed on the menubar upon ESS initialisation."
       (delete-region (point-min) (point-max))
 
       ;; Find which versions of Sqpe we want.
+      (setq x64 (if x64 "-64bit"))
       (setq versions (ess-uniq-list ess-SHOME-versions))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (while versions
@@ -526,23 +529,24 @@ placed on the menubar upon ESS initialisation."
 	(if (file-executable-p version)
 	    (progn
 	      (setq beg (point))
+	      (setq version-function-name (concat (file-name-nondirectory version) x64))
 	      (prin1 (symbol-function 'Sqpe+template) eval-buf)
 	      (insert "\n\n")
 	      (goto-char beg)
 	      (while (search-forward "lambda" nil t 1)
 		(replace-match
-		 (concat "defun " (file-name-nondirectory version))
+		 (concat "defun " version-function-name)
 		 t t))
 	      (while (search-forward "ess-SHOME" nil t)
 		(replace-match version t t))
 	      (goto-char (point-max))
 	      (setq ess-sqpe-versions-created
-		    (cons (file-name-nondirectory version)
+		    (cons version-function-name
 			  ess-sqpe-versions-created))
 	      (ess-write-to-dribble-buffer
 	       (format
 		"(Sqpe): ess-sqpe-versions-create making M-x defun %s for %s \n"
-		(file-name-nondirectory version) version))
+		 version-function-name version))
 	      )))
       ;; buffer has now been created with defuns, so eval them!
       (eval-buffer)
