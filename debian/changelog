@@ -1,3 +1,9 @@
+ess (5.13-1) unstable; urgency=low
+
+  * New upstream version released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 03 Feb 2011 16:10:05 -0600
+
 ess (5.12-1) unstable; urgency=low
 
   * New upstream version released today
