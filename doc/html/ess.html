@@ -589,8 +589,14 @@ Changes/New Features in 5.13:
           <ul>
 <li><acronym>ESS[R]</acronym>: On Windows, for R 2.12.0 and later, the Rterm executables
  (in subdirectories i386 / x64) now are found as well as for earlier R versions. 
+<li><acronym>ESS[S+]</acronym>: on Windows, both 32- and 64-bit versions of S+ (&ldquo;S-PLUS&rdquo;)
+ are found now and made available on the menu. 
 <li><acronym>ESS[R]</acronym>: When prompting for a starting directory, the R version is
  (always?) correct now. 
+<li><acronym>ESS[R]</acronym>: on non-Windows platforms, the <code>use-dialog-box</code>
+ variable is no longer temporarily changed (to <code>nil</code> for R-x.y.z version
+ functions and to <code>t</code> for <samp><span class="command">R</span></samp> itself), but rather the user
+ customization is obeyed. 
 <li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
 <li>`Rd-preview-help' now generates preview buffers with navigation
 facilities the same as regular help buffers. 

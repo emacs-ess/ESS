@@ -217,8 +217,16 @@ in the file COPYING in the same directory as this file for more details.
           executables  (in subdirectories i386 / x64) now are found as
           well as for earlier R versions.
 
+        * ESS[S+]: on Windows, both 32- and 64-bit versions of S+
+          ("S-PLUS")  are found now and made available on the menu.
+
         * ESS[R]: When prompting for a starting directory, the R
           version is  (always?) correct now.
+
+        * ESS[R]: on non-Windows platforms, the `use-dialog-box'
+          variable is no longer temporarily changed (to `nil' for
+          R-x.y.z version  functions and to `t' for `R' itself), but
+          rather the user  customization is obeyed.
 
         * ESS[R]: more Roxygen improvements.
 
