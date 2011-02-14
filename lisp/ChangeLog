@@ -1,3 +1,12 @@
+2011-02-13  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-custom.el (ess-swv-plug-into-AUCTeX-p): New customizable
+	variable, which defaults to nil, to determine whether AUCTeX
+	interface is enabled or not.
+
+	* ess-swv.el: New functions to allow working with Sweave via
+	AUCTeX.
+
 2011-02-02  Richard M. Heiberger  <rmh@temple.edu>
 
 	* ess-custom.el (ess-program-files, ess-program-files-64)

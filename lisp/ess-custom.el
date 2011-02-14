@@ -703,6 +703,13 @@ the first entry is the default command."
   :group 'ess-sweave
   :type 'list)
 
+(defcustom ess-swv-plug-into-AUCTeX-p nil
+  "Non-nil means add commands to AUCTeX's \\[TeX-command-list]
+to sweave the current noweb file and latex the result."
+  :group 'ess-sweave
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)))
+
 
  ; System variables
 
