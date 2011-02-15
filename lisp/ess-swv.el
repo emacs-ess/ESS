@@ -237,7 +237,7 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
   (unless (and (featurep 'tex-site) (featurep 'tex))
     (error "AUCTeX does not seem to be loaded"))
   (add-to-list 'TeX-command-list
-	       '("Sweave" "R CMD Sweave %s"
+	       '("Sweave" "R CMD Sweave %t"
 		 TeX-run-command nil (latex-mode) :help
 		 "Run Sweave") t)
   (add-to-list 'TeX-command-list

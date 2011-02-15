@@ -1,3 +1,8 @@
+2011-02-14  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-swv.el (ess-swv-add-TeX-commands): Use "%t" instead of "%s"
+	when Sweave'ing via AUCTeX.
+
 2011-02-13  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-custom.el (ess-swv-plug-into-AUCTeX-p): New customizable
