@@ -1,5 +1,17 @@
 @itemize @w{}
 
+Changes/New Features in 5.14:
+@itemize @bullet
+@item @ESS{[BUGS/JAGS]}:  Batch BUGS is back!  For recent OpenBUGS
+versions, 3.0.8+, a batch BUGS script is once again available,
+but for Linux only.  Therefore, since it seems that BUGS and JAGS must
+co-exist (rather than a transition from BUGS to JAGS), .bug files are
+now in ESS[BUGS] mode and .jug files are in ESS[JAGS] mode.  ESS[BUGS] now
+works like ESS[JAGS] rather than the orignal mode ESS[BUGS] mode which
+was difficult to maintain.  However, ESS[BUGS] needs a lot of work
+such as support for thinning, multiple data files, etc.
+@end itemize
+
 Changes/New Features in 5.13:
 @itemize @bullet
 @item @ESS{[R]}: On Windows, for R 2.12.0 and later, the Rterm executables
