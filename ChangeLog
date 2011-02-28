@@ -1,3 +1,8 @@
+2011-02-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/requires.texi: update BUGS info and
+	include texi2dvi WARNING
+
 2011-02-03  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 5.13 released.
