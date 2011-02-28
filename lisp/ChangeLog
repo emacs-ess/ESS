@@ -1,3 +1,16 @@
+2011-02-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-site.el, ess-bugs-l.el, ess-bugs-d.el, ess-jags-d.el:
+	Batch BUGS is back!  With OpenBUGS, a batch BUGS script is
+	available for Linux.  Therefore, since it seems that BUGS
+	and JAGS must co-exist (rather than a transition from BUGS
+	to JAGS), .bug files are in ESS[BUGS] mode and .jug files
+	are in ESS[JAGS] mode.  ESS[BUGS] now works like ESS[JAGS]
+	rather than the orignal mode ESS[BUGS] mode which was 
+	difficult to maintain.  However, ESS[BUGS] needs a lot of
+	work such as support for thinning, multiple data files,
+	etc.
+
 2011-02-14  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-swv.el (ess-swv-add-TeX-commands): Use "%t" instead of "%s"
