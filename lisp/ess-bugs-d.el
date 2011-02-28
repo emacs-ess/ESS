@@ -1,6 +1,6 @@
 ;;; ess-bugs-d.el -- ESS[BUGS] dialect
 
-;; Copyright (C) 2008-2009 Rodney Sparapani
+;; Copyright (C) 2008-2011 Rodney Sparapani
 
 ;; Original Author: Rodney Sparapani
 ;; Created: 13 March 2008
@@ -29,98 +29,153 @@
 ;; Code:
 
 (require 'ess-bugs-l)
+(require 'ess-utils)
+(require 'ess-inf)
 
-(setq auto-mode-alist 
-    (delete '("\\.[bB][uU][gG]\\'" . ess-jags-mode) auto-mode-alist))
-
-(setq auto-mode-alist 
+(setq auto-mode-alist
     (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
 
-(defcustom ess-bugs-batch-version "0.6"
-"ESS[BUGS]: Major version of BUGS, i.e. 0.6 or 0.5"
-    :group 'ess-bugs
-    :type  'string
-)
+(defvar ess-bugs-command "OpenBUGS.sh" "Default BUGS program in PATH.")
+(make-local-variable 'ess-bugs-command)
 
-(setq ess-bugs-batch-command 
-    (if (equal ess-bugs-batch-version "0.5") "backbug5" "backbugs"))
+(defvar ess-bugs-monitor '("") "Default list of variables to monitor.")
+(make-local-variable 'ess-bugs-monitor)
 
-(defcustom ess-bugs-default-bins "32"
-"ESS[BUGS]: Number of bins for the Griddy algorithm (Metropolis sampling)."
-    :group 'ess-bugs
-    :type  'string
-)
+(defvar ess-bugs-thin 1 "Default thinning parameter.")
+(make-local-variable 'ess-bugs-thin)
 
-(defcustom ess-bugs-default-checkpoint "100"
-    "ESS[BUGS]: Make a snapshot every this many iterations."
-    :group 'ess-bugs
-    :type  'string
-)
+(defvar ess-bugs-chains 1 "Default number of chains.")
+(make-local-variable 'ess-bugs-chains)
+
+(defvar ess-bugs-burnin 10000 "Default burn-in.")
+(make-local-variable 'ess-bugs-burnin)
+
+(defvar ess-bugs-update 10000 "Default number of updates after burnin.")
+(make-local-variable 'ess-bugs-update)
+
+(defvar ess-bugs-system nil "Default whether BUGS recognizes the system command.")
 
 (defvar ess-bugs-font-lock-keywords
     (list
 	;; .bug files
 	(cons "#.*\n"			font-lock-comment-face)
 
-	(cons "^[ \t]*\\(model\\|const\\|data\\|inits\\|var\\)\\>"
+	(cons "^[ \t]*\\(model\\|var\\)\\>"
 					font-lock-keyword-face)
 
-	(cons "\\<in[ \t]+[1-9]\\>"	font-lock-keyword-face)
-
-	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisqr\\|"
-		"dexp\\|dirch\\|exp\\|gamma\\|lnorm\\|logis\\|"
-		"mnorm\\|multi\\|negbin\\|norm\\|par\\|pois\\|"
-		"t\\|unif\\|weib\\|wish\\)[ \t\n]*(")
+	(cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|"
+		"dexp\\|dirch\\|exp\\|\\(gen[.]\\)?gamma\\|hyper\\|"
+		"interval\\|lnorm\\|logis\\|mnorm\\|mt\\|multi\\|"
+		"negbin\\|norm\\(mix\\)?\\|par\\|pois\\|sum\\|t\\|"
+		"unif\\|weib\\|wish\\)[ \t\n]*(")
 					font-lock-constant-face)
 
-	(cons (concat "\\<\\(for\\|cloglog\\|equals\\|exp\\|inprod\\|"
-		"inverse\\|log\\(det\\|fact\\|gam\\|it\\)?\\|max\\|"
-		"mean\\|min\\|phi\\|pow\\|probit\\|sd\\|sqrt\\|"
-		"step\\|sum\\|I\\)[ \t\n]*(")
+	(cons (concat "\\<\\(abs\\|cos\\|dim\\|\\(i\\)?cloglog\\|equals\\|"
+		"exp\\|for\\|inprod\\|interp[.]line\\|inverse\\|length\\|"
+		"\\(i\\)?logit\\|logdet\\|logfact\\|loggam\\|max\\|mean\\|"
+		"mexp\\|min\\|phi\\|pow\\|probit\\|prod\\|rank\\|round\\|"
+		"sd\\|sin\\|sort\\|sqrt\\|step\\|sum\\|t\\|trunc\\|T\\)[ \t\n]*(")
 					font-lock-function-name-face)
 
 	;; .bmd files
-	(cons (concat "\\<\\(clear\\|checkpoint\\|compile\\|data\\|"
-		"diag\\|help\\|inits\\|iter\\|model\\|monitor\\|"
-		"out\\|q\\|save\\|stats\\|update\\)[ \t\n]*(")
+	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|data\\|dir\\|"
+		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitors\\|parameters\\|"
+		"pwd\\|run\\|s\\(amplers\\|ystem\\)\\|to\\|update\\)[ \t\n]")
+					font-lock-keyword-face)
+
+	(cons "\\<\\(compile\\|monitor\\)[, \t\n]"
+					font-lock-keyword-face)
+
+	(cons "[, \t\n]\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*("
 					font-lock-function-name-face)
     )
     "ESS[BUGS]: Font lock keywords."
 )
 
-(defun ess-bugs-switch-to-suffix (suffix)
-   "ESS: Switch to file with suffix."
+(defun ess-bugs-switch-to-suffix (suffix &optional bugs-chains bugs-monitor bugs-thin
+   bugs-burnin bugs-update)
+   "ESS[BUGS]: Switch to file with suffix."
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
    (if (equal 0 (buffer-size)) (progn
 	(if (equal ".bug" suffix) (progn
-	    (insert (concat "model %MODEL;\n"))
-	    (insert (concat "const N = 0;#%N\n"))
-	    (insert "var ;\n")
-	    (insert "#%MONITOR;\n")
-	    (insert "#%STATS;\n")
-	    (insert (concat "data  in \"%DATA\";\n"))
-	    (insert (concat "inits in \"%INITS\";\n"))
-	    (insert "{\n")
+	    ;(insert "var ;\n")
+	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
             (insert "    }\n")
             (insert "}\n")
+	    (insert "#Local Variables" ":\n")
+	    (insert "#ess-bugs-chains:1\n")
+	    (insert "#ess-bugs-monitor:(\"\")\n")
+	    (insert "#ess-bugs-thin:1\n")
+	    (insert "#ess-bugs-burnin:10000\n")
+	    (insert "#ess-bugs-update:10000\n")
+	    (insert "#End:\n")
 	))
 
 	(if (equal ".bmd" suffix) (let
-	    ((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
-	    (insert (concat "compile(\"" tmp-bugs-file-dir ess-bugs-file-root ".bug\")\n"))
-	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in0\")\n"))
-	    (insert (concat "update(" ess-bugs-default-burn-in ")\n"))
-	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in1\")\n"))
-	    (insert "#%MONITOR\n\n#%MONITOR\n")
-	    (if (equal ess-bugs-batch-version "0.6")
-		(insert (concat "checkpoint(" ess-bugs-default-checkpoint ")\n")))
-	    (insert (concat "update(" ess-bugs-default-update ")\n"))
-	    (insert (concat "save(\"" tmp-bugs-file-dir ess-bugs-file-root ".in2\")\n"))
-	    (insert "#%STATS\n\n#%STATS\n")
-	    (insert "q()\n")
-	    ;;(insert "q(\"" ess-bugs-file-dir ess-bugs-file-root ".bog\")\n")
+	    ((ess-bugs-temp-chains "") (ess-bugs-temp-monitor "") (ess-bugs-temp-chain ""))
+
+	    (if bugs-chains (setq ess-bugs-chains bugs-chains))
+	    (if bugs-monitor (setq ess-bugs-monitor bugs-monitor))
+	    (if bugs-thin (setq ess-bugs-thin bugs-thin))
+
+	    (setq ess-bugs-temp-chains
+		(concat "modelCompile(" (format "%d" ess-bugs-chains) ")\n"))
+
+	    (setq bugs-chains ess-bugs-chains)
+
+	    (while (< 0 bugs-chains)
+		(setq ess-bugs-temp-chains
+		    (concat ess-bugs-temp-chains
+			"modelInits('" ess-bugs-file-root
+			".##" (format "%d" bugs-chains) "', "
+			(format "%d" bugs-chains) ")\n"))
+		(setq bugs-chains (- bugs-chains 1)))
+
+	    (setq ess-bugs-temp-monitor "")
+
+		(while (and (listp ess-bugs-monitor) (consp ess-bugs-monitor))
+		    (if (not (string-equal "" (car ess-bugs-monitor)))
+			(setq ess-bugs-temp-monitor
+			    (concat ess-bugs-temp-monitor "samplesSet('"
+				(car ess-bugs-monitor) 
+				;", thin(" (format "%d" ess-bugs-thin) 
+				"')\n")))
+		    (setq ess-bugs-monitor (cdr ess-bugs-monitor)))
+
+	    (insert "modelCheck('" ess-bugs-file-root ".bug')\n")
+	    (insert "modelData('" ess-bugs-file-root ".bdt')\n")
+	    (insert (ess-replace-in-string ess-bugs-temp-chains "##" "in"))
+	    (insert "modelGenInits()\n")
+	    (insert "modelUpdate(" (format "%d" (* bugs-thin bugs-burnin)) ")\n")
+	    (insert ess-bugs-temp-monitor)
+	    (insert "modelUpdate(" (format "%d" (* bugs-thin bugs-update)) ")\n")
+;	    (insert (ess-replace-in-string
+;		(ess-replace-in-string ess-bugs-temp-chains
+;		    "modelCompile([0-9]+)" "#") "##" "to"))
+	    (insert "SamplesCoda('*', '" ess-bugs-file-root "')\n")
+
+;	    (if ess-bugs-system (progn
+;		(insert "system rm -f " ess-bugs-file-root ".ind\n")
+;		(insert "system ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind\n")
+
+;		(setq bugs-chains ess-bugs-chains)
+
+;		(while (< 0 bugs-chains)
+;		    (setq ess-bugs-temp-chain (format "%d" bugs-chains))
+
+;		    ;.txt not recognized by BOA and impractical to over-ride
+;		    (insert "system rm -f " ess-bugs-file-root ess-bugs-temp-chain ".out\n")
+;		    (insert "system ln -s " ess-bugs-file-root "chain" ess-bugs-temp-chain ".txt "
+;			ess-bugs-file-root ess-bugs-temp-chain ".out\n")
+;		    (setq bugs-chains (- bugs-chains 1)))))
+
+	    (insert "modelQuit()\n")
+	    (insert "Local Variables" ":\n")
+	    (insert "ess-bugs-chains:" (format "%d" ess-bugs-chains) "\n")
+	    (insert "ess-bugs-command:\"bugs\"\n")
+	    (insert "End:\n")
 	))
     ))
 )
@@ -130,15 +185,18 @@
    (interactive)
    (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug)
    ;;else
-   (if (equal ".bmd" ess-bugs-file-suffix) (ess-bugs-na-bmd))
+   (if (equal ".bmd" ess-bugs-file-suffix) (progn
+	(ess-save-and-set-local-variables)
+	(ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))))
 )
 
-(defun ess-bugs-na-bmd ()
+(defun ess-bugs-na-bmd (bugs-command bugs-chains)
     "ESS[BUGS]: Perform the Next-Action for .bmd."
-
-    (save-buffer)
+    ;(ess-save-and-set-local-variables)
+(if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bmd")
+;else
     (shell)
 
     (if (w32-shell-dos-semantics)
@@ -150,166 +208,64 @@
 	)
     )
 
-	(insert (concat "cd \"" ess-bugs-file-dir "\""))
+	(insert "cd \"" ess-bugs-file-dir "\"")
 	(comint-send-input)
 
-	(insert (concat ess-bugs-batch-pre-command " " ess-bugs-batch-command " "
-	    (if (equal ess-bugs-batch-version "0.6") ess-bugs-default-bins)
-	     " " ess-bugs-file-root " "
-	    (if (equal ess-bugs-batch-version "0.6")
-		 ess-bugs-file (concat ess-bugs-file-root ".bmd"))
-	     " " ess-bugs-batch-post-command))
+;    (let ((ess-bugs-temp-chains ""))
+;
+;	(while (< 0 bugs-chains)
+;	    (setq ess-bugs-temp-chains
+;		(concat (format "%d " bugs-chains) ess-bugs-temp-chains))
+;	    (setq bugs-chains (- bugs-chains 1)))
+
+	(insert ess-bugs-batch-pre-command " " bugs-command " "
+		ess-bugs-file-root ".bmd "
+
+		(if (or (equal shell-file-name "/bin/csh")
+			(equal shell-file-name "/bin/tcsh")
+			(equal shell-file-name "/bin/zsh"))
+			    (concat ">& " ess-bugs-file-root ".bog ")
+		;else
+			    "> " ess-bugs-file-root ".bog 2>&1 ")
+
+;		;.txt not recognized by BOA and impractical to over-ride
+;		"&& (rm -f " ess-bugs-file-root ".ind; "
+;		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
+;		"for i in " ess-bugs-temp-chains "; do; "
+;		"rm -f " ess-bugs-file-root "$i.out; "
+;		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
+
+		ess-bugs-batch-post-command)
 
 	(comint-send-input)
-)
+));)
 
 (defun ess-bugs-na-bug ()
     "ESS[BUGS]: Perform Next-Action for .bug"
 
 	(if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bug")
-	    (save-excursion (let
-		((tmp-bugs-file-dir (if (equal ess-bugs-batch-version "0.6") ess-bugs-file-dir)))
-		(goto-char (point-min))
-
-	        (if (search-forward "%MODEL" nil t)
-		    (replace-match ess-bugs-file-root t t))
-
-	        (if (search-forward "%DATA" nil t) (progn
-		    (setq ess-bugs-file-data
-			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-data-suffix))
-		    (replace-match ess-bugs-file-data t t))
-	        ;;else
-	        (if (search-forward-regexp "data.+in[ \t\n]+\"\\(.*\\)\"" nil t)
-		    (setq ess-bugs-file-data (match-string 1))
-		;;else
-		    (setq ess-bugs-file-data "...")
-		))
-
-	        (if (search-forward "%INITS" nil t)
-		    (replace-match
-			(concat tmp-bugs-file-dir ess-bugs-file-root ess-bugs-inits-suffix) t t))
-
-		(let ((ess-bugs-temp-string " ")
-		    (ess-bugs-buffer-ptr nil))
-		    (goto-char (point-min))
-
-		    (if (search-forward-regexp
-			    "N[ \t]*=[ \t]*[0-9]+[ \t]*;[ \t]*#[ \t]*%N" nil t) (progn
-
-			(save-excursion (save-match-data
-			    (setq ess-bugs-buffer-ptr (find-buffer-visiting ess-bugs-file-data))
-
-			    (if ess-bugs-buffer-ptr (set-buffer ess-bugs-buffer-ptr)
-				(set-buffer (create-file-buffer ess-bugs-file-data))
-				(insert-file-contents ess-bugs-file-data t))
-
-			    (setq ess-bugs-temp-string
-				(concat "N = "
-				    (int-to-string (count-lines (point-min) (point-max))) ";#%N"))
-			))
-
-			(replace-match ess-bugs-temp-string t t)
-		    ))
-		)
-
-		(let (
-		    (ess-bugs-search-min nil)
-		    (ess-bugs-search-max nil)
-		    (ess-bugs-search-vars
-"\\([a-zA-Z0-9.]+\\)\\(\\(\\[\\)[a-zA-Z0-9]*\\(,\\)?[a-zA-Z0-9]*\\(\\]\\)\\)?[ \t]*[,]?[ \t]*\\(#.*\\)?[\n]?"
-		    ))
-
-		    (goto-char (point-min))
-
-		    (if (search-forward-regexp "%MONITOR[ \t]+" nil t)
-			(setq ess-bugs-search-min (point))
-		    ;;else
-			(setq ess-bugs-search-min (search-forward "var"))
-		    )
-
-		    (setq ess-bugs-search-max (search-forward-regexp ";"))
-
-		    (goto-char ess-bugs-search-min)
-		    (setq ess-bugs-monitor-vars "")
-
-		    (while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
-
-			(setq ess-bugs-monitor-vars
-			    (concat ess-bugs-monitor-vars "monitor("
-				(match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
-		    )
-
-		    (setq ess-bugs-monitor-vars
-			(concat "#%MONITOR\n" ess-bugs-monitor-vars "#%MONITOR\n"))
-
-		    (goto-char (point-min))
-
-		    (if (search-forward-regexp "%STATS[ \t]+" nil t) (progn
-			(setq ess-bugs-search-min (point))
-			(setq ess-bugs-search-max (search-forward-regexp ";"))
-
-			(goto-char ess-bugs-search-min)
-			(setq ess-bugs-stats-vars "")
-
-			(while (search-forward-regexp ess-bugs-search-vars ess-bugs-search-max t)
-
-			    (setq ess-bugs-stats-vars
-				(concat ess-bugs-stats-vars "stats("
-				    (match-string 1) (match-string 3) (match-string 4) (match-string 5) ")\n"))
-			)
-
-			(setq ess-bugs-stats-vars (concat "#%STATS\n" ess-bugs-stats-vars "#%STATS\n"))
-		    )
-
-		    ;;else
-		    (setq ess-bugs-stats-vars ess-bugs-monitor-vars)
-
-		    (while (string-match "#%MONITOR" ess-bugs-stats-vars)
-			(setq ess-bugs-stats-vars
-			    (replace-match "#%STATS" t t ess-bugs-stats-vars)))
-
-		    (while (string-match "monitor" ess-bugs-stats-vars)
-			(setq ess-bugs-stats-vars
-			    (replace-match "stats" t t ess-bugs-stats-vars)))
-
-		    )
-		)
-
-	    ))
-
-	    (save-buffer)
-	    (ess-bugs-switch-to-suffix ".bmd")
-
-    (save-excursion
-	(goto-char (point-min))
-
-	(if (search-forward-regexp "#%MONITOR\\(.\\|\n\\)*#%MONITOR\n" nil t)
-	    (replace-match ess-bugs-monitor-vars t))
-
-	(if (search-forward-regexp "#%STATS\\(.\\|\n\\)*#%STATS\n" nil t)
-	    (replace-match ess-bugs-stats-vars t))
-    )
-
-	)
+	;else
+	    (ess-save-and-set-local-variables)
+	    (ess-bugs-switch-to-suffix ".bmd"
+		ess-bugs-chains ess-bugs-monitor ess-bugs-thin ess-bugs-burnin ess-bugs-update))
 )
 
 (defun ess-bugs-mode ()
-   "ESS[BUGS]: Major mode for Classic BUGS."
+   "ESS[BUGS]: Major mode for BUGS."
    (interactive)
    (kill-all-local-variables)
+   (ess-setq-vars-local '((comment-start . "#")))
    (setq major-mode 'ess-bugs-mode)
    (setq mode-name "ESS[BUGS]")
    (use-local-map ess-bugs-mode-map)
    (setq font-lock-auto-fontify t)
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
-   ;; SJE: Basic comment functionality.
-   (setq comment-start "#")
    (run-hooks 'ess-bugs-mode-hook)
 
    (if (not (w32-shell-dos-semantics))
 	(add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
 )
 
-(setq features (delete 'ess-jags-d features))
+(setq features (delete 'ess-bugs-d features))
 (provide 'ess-bugs-d)
