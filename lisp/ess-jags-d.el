@@ -1,6 +1,6 @@
 ;;; ess-jags-d.el -- ESS[JAGS] dialect
 
-;; Copyright (C) 2008-2009 Rodney Sparapani
+;; Copyright (C) 2008-2011 Rodney Sparapani
 
 ;; Original Author: Rodney Sparapani
 ;; Created: 13 March 2008
@@ -33,10 +33,7 @@
 (require 'ess-inf)
 
 (setq auto-mode-alist
-    (delete '("\\.[bB][uU][gG]\\'" . ess-bugs-mode) auto-mode-alist))
-
-(setq auto-mode-alist
-    (append '(("\\.[bB][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
+    (append '(("\\.[jJ][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
 (defvar ess-jags-command "jags" "Default JAGS program in PATH.")
 (make-local-variable 'ess-jags-command)
@@ -60,7 +57,7 @@
 
 (defvar ess-jags-font-lock-keywords
     (list
-	;; .bug files
+	;; .jug files
 	(cons "#.*\n"			font-lock-comment-face)
 
 	(cons "^[ \t]*\\(model\\|var\\)\\>"
@@ -101,7 +98,7 @@
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
    (if (equal 0 (buffer-size)) (progn
-	(if (equal ".bug" suffix) (progn
+	(if (equal ".jug" suffix) (progn
 	    (insert "var ;\n")
 	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
@@ -145,8 +142,8 @@
 				(car ess-jags-monitor) ", thin(" (format "%d" ess-jags-thin) ")\n")))
 		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
-	    (insert "model in \"" ess-bugs-file-root ".bug\"\n")
-	    (insert "data in \"" ess-bugs-file-root ".txt\"\n")
+	    (insert "model in \"" ess-bugs-file-root ".jug\"\n")
+	    (insert "data in \"" ess-bugs-file-root ".jdt\"\n")
 	    (insert (ess-replace-in-string ess-jags-temp-chains "##" "in"))
 	    (insert "initialize\n")
 	    (insert "update " (format "%d" (* jags-thin jags-burnin)) "\n")
@@ -188,7 +185,7 @@
    (interactive)
    (ess-bugs-file)
 
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-jags-na-bug)
+   (if (equal ".jug" ess-bugs-file-suffix) (ess-jags-na-bug)
    ;;else
    (if (equal ".jmd" ess-bugs-file-suffix) (progn
 	(ess-save-and-set-local-variables)
@@ -244,9 +241,9 @@
 ));)
 
 (defun ess-jags-na-bug ()
-    "ESS[JAGS]: Perform Next-Action for .bug"
+    "ESS[JAGS]: Perform Next-Action for .jug"
 
-	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".bug")
+	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jug")
 	;else
 	    (ess-save-and-set-local-variables)
 	    (ess-jags-switch-to-suffix ".jmd"
