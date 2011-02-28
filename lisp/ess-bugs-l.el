@@ -1,6 +1,6 @@
 ;;; ess-bugs-l.el -- ESS[BUGS] languages
 
-;; Copyright (C) 2006-2009 Rodney Sparapani
+;; Copyright (C) 2006-2011 Rodney Sparapani
 
 ;; Original Author: Rodney Sparapani
 ;; Created: 16 August 2006
