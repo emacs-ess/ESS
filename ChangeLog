@@ -1,3 +1,7 @@
+2011-03-01  Stephen Eglen  <stephen@gnu.org>
+
+	* doc/ess.texi (Debugging R): New node.
+
 2011-02-28  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/requires.texi: update BUGS info and
