@@ -3105,10 +3105,10 @@ in @code{ess-rutils-mode}, providing useful key bindings in this mode
 @node Org, Sweave and AUCTeX, Rutils, Miscellaneous
 @section Interaction with Org mode
 
-Org-mode (@uref{http://orgmode.org} now supports reproducible research
+Org-mode (@uref{http://orgmode.org}) now supports reproducible research
 and literate programming in many languages (including R) -- see chapter
 14 of the Org manual
-(@uref{http://orgmode.org/org.html#Working-With-Source-Code}.  For ESS
+(@uref{http://orgmode.org/org.html#Working-With-Source-Code}).  For ESS
 users, this offers a document-based work environment within which to
 embed ESS usage.  R code lives in code blocks of an Org document, from
 which it can be edited in ess-mode, evaluated, extracted ("tangled") to
