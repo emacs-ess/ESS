@@ -2759,6 +2759,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Rutils::                      R object/package management and help utilities
 * Org::                         Interaction with Org mode
 * Sweave and AUCTeX::           Support for Sweave in ESS and AUCTeX
+* Debugging R::                 Debugging R code in ESS
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -3120,7 +3121,7 @@ R process.  (This section contributed by Dan Davison and Eric Schulte.)
 
 
 @comment  node-name,  next,  previous,  up
-@node Sweave and AUCTeX, , Org, Miscellaneous
+@node Sweave and AUCTeX, Debugging R, Org, Miscellaneous
 @section Support for Sweave in ESS and AUCTeX
 
 ESS provides support for writing and processing Sweave
@@ -3169,6 +3170,28 @@ inferior-ESS process.  Similarly, LaTeX'ing can be done by @kbd{C-c C-c
 LaTeXSweave RET}.  In both cases, the process can be monitored with
 @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
 @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
+
+@comment  node-name,  next,  previous,  up
+@node  Debugging R,  , Sweave and AUCTeX, Miscellaneous
+@section Debugging R code in ESS
+
+There are currently two extra facilities that have been developed for
+debugging R code within ESS.
+
+@itemize @bullet
+@item ``Ess-tracebug is a package for interactive visual debugging of R code from
+ESS. It provides visual debugging, browser, recover and conditional
+breakpoints; watch window and loggers; interactive debug/undebug of R
+functions and methods at point; highlighting and easy error navigation and
+interactive traceback.''  @uref{http://code.google.com/p/ess-tracebug/}
+
+
+@item The R package edtdbg ``integrates R's debugging facilities with your
+text editor, featuring code tracking, variable display, quick breakpoint
+setting, and easy toggling of function debug status.''  It provides
+support for both Emacs and VIM.  Package available from CRAN mirrors.
+
+@end itemize
 
 
 
