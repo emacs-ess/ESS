@@ -3031,18 +3031,18 @@ bindings become available in iESS process buffers:
 
 @itemize @bullet
 @item
-@kbd{C-c C-. l} (@command{ess-rutils-localpkgs}) @*
+@kbd{C-c C-. l} (@command{ess-rutils-local-pkgs}) @*
 @pindex ess-rutils-localpkgs
 List all packages in all available libraries.
 
 @item
-@kbd{C-c C-. r} (@command{ess-rutils-repospkgs}) @*
+@kbd{C-c C-. r} (@command{ess-rutils-repos-pkgs}) @*
 @pindex ess-rutils-repospkgs
 List available packages from repositories listed by
 @command{getOptions(``repos'')} in the current R session.
 
 @item
-@kbd{C-c C-. u} (@command{ess-rutils-updatepkgs}) @*
+@kbd{C-c C-. u} (@command{ess-rutils-update-pkgs}) @*
 @pindex ess-rutils-updatepkgs
 Update packages in a particular library and repository.
 
@@ -3052,7 +3052,7 @@ Update packages in a particular library and repository.
 Search for a string using apropos.
 
 @item
-@kbd{C-c C-. m} (@command{ess-rutils-rmall}) @*
+@kbd{C-c C-. m} (@command{ess-rutils-rm-all}) @*
 @pindex ess-rutils-rmall
 Remove all R objects.
 
@@ -3062,12 +3062,12 @@ Remove all R objects.
 Manipulate R objects; wrapper for @command{ess-rdired}.
 
 @item
-@kbd{C-c C-. w} (@command{ess-rutils-loadwkspc}) @*
+@kbd{C-c C-. w} (@command{ess-rutils-load-wkspc}) @*
 @pindex ess-rutils-loadwkspc
 Load a workspace file into R.
 
 @item
-@kbd{C-c C-. s} (@command{ess-rutils-savewkspc}) @*
+@kbd{C-c C-. s} (@command{ess-rutils-save-wkspc}) @*
 @pindex ess-rutils-savewkspc
 Save a workspace file.
 
@@ -3077,7 +3077,7 @@ Save a workspace file.
 Change the working directory for the current R session.
 
 @item
-@kbd{C-c C-. H} (@command{ess-rutils-htmldocs}) @*
+@kbd{C-c C-. H} (@command{ess-rutils-html-docs}) @*
 @pindex ess-rutils-htmldocs
 Use @command{browse-url} to navigate R html documentation.
 
@@ -3095,7 +3095,7 @@ any Emacs buffer, so can be bound to a user-defined key:
 @pindex ess-rutils-rsitesearch
 
 Functions for listing objects and packages
-(@command{ess-rutils-localpkgs}, @command{ess-rutils-repospkgs}, and
+(@command{ess-rutils-local-pkgs}, @command{ess-rutils-repos-pkgs}, and
 @command{ess-rutils-objs}) show results in a separate buffer and window,
 in @code{ess-rutils-mode}, providing useful key bindings in this mode
 (type @kbd{?} in this buffer for a description).
