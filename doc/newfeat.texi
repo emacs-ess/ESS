@@ -10,6 +10,10 @@ now in ESS[BUGS] mode and .jug files are in ESS[JAGS] mode.  ESS[BUGS] now
 works like ESS[JAGS] rather than the orignal mode ESS[BUGS] mode which
 was difficult to maintain.  However, ESS[BUGS] needs a lot of work
 such as support for thinning, multiple data files, etc.
+
+@item @ESS{[R]}: New customizable variable @code{ess-swv-plug-into-AUCTeX-p}
+Commands to Sweave current file and LaTeX the result are now available
+to AUCTeX users, if this variable is set to @code{t}.
 @end itemize
 
 Changes/New Features in 5.13:
