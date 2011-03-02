@@ -1,3 +1,8 @@
+2011-03-02  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: Standardized function names for consistency.
+	Thanks to Cesar Rabak (ESS-help).
+
 2011-02-28  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-site.el, ess-bugs-l.el, ess-bugs-d.el, ess-jags-d.el:

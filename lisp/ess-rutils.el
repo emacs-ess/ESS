@@ -1,11 +1,11 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Sun Jun  6 19:28:52 2010 (UTC)
+;; Last-Updated: Wed Mar  2 21:08:11 2011 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
-;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010 Sebastian P. Luque
+;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sebastian P. Luque
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
@@ -60,7 +60,7 @@
   (expand-file-name "ess-rutils-help-start.R" ess-etc-directory)
   "Path to the file defining the R function .rutils.help.start().
 This file is loaded into the inferior R process so that
-`ess-rutils-htmldocs' can use .rutils.help.start().")
+`ess-rutils-html-docs' can use .rutils.help.start().")
 
 (if ess-rutils-mode-map
     ()
@@ -73,7 +73,7 @@ This file is loaded into the inferior R process so that
   (define-key ess-rutils-mode-map "?" 'ess-rutils-help))
 
 (defun ess-rutils-mode ()
-  "Major mode for output from `ess-rutils-localpkgs' and `ess-rutils-repospkgs'.
+  "Major mode for output from `ess-rutils-local-pkgs' and `ess-rutils-repos-pkgs'.
 Useful bindings to handle package loading and installing.
 \\{ess-rutils-mode-map}"
   (kill-all-local-variables)
@@ -81,7 +81,7 @@ Useful bindings to handle package loading and installing.
   (setq major-mode 'ess-rutils-mode)
   (setq mode-name (concat "R utils " ess-local-process-name)))
 
-(defun ess-rutils-localpkgs ()
+(defun ess-rutils-local-pkgs ()
   "List all packages in all libraries."
   (interactive)
   (if (get-buffer ess-rutils-buf)
@@ -128,7 +128,7 @@ Useful bindings to handle package loading and installing.
 		       'buffer))
       nil)))
 
-(defun ess-rutils-repospkgs ()
+(defun ess-rutils-repos-pkgs ()
   "List available packages from the repositories as listed by
 getOptions(\"repos\") in the current R session."
   (interactive)
@@ -227,7 +227,7 @@ User is asked for confirmation."
       ;; else nothing to install
       (message "no packages flagged to install"))))
 
-(defun ess-rutils-updatepkgs (lib repos)
+(defun ess-rutils-update-pkgs (lib repos)
   "Update packages in library LIB and repos REPOS. Defaults are the first
 element returned by .libPaths() for LIB, and the repository named CRAN
 returned by getOption(\"repos\") for REPOS. This also uses checkBuilt=TRUE
@@ -259,7 +259,7 @@ to rebuild installed packages if needed."
   (setq buffer-read-only t)
   (ess-rutils-mode))
 
-(defun ess-rutils-rmall ()
+(defun ess-rutils-rm-all ()
   "Remove all R objects."
   (interactive)
   (if (y-or-n-p "Delete all objects? ")
@@ -272,12 +272,12 @@ to rebuild installed packages if needed."
   (if (featurep 'fit-frame)
       (fit-frame)))
 
-(defun ess-rutils-loadwkspc (file)
+(defun ess-rutils-load-wkspc (file)
   "Load workspace FILE into R."
   (interactive "fFile with workspace to load: ")
   (ess-execute (concat "load('" file "')") 'buffer))
 
-(defun ess-rutils-savewkspc (file)
+(defun ess-rutils-save-wkspc (file)
   "Save FILE workspace.
 File extension not required."
   (interactive "FSave workspace to file (no extension): ")
@@ -289,7 +289,7 @@ File extension not required."
   (ess-switch-to-end-of-ESS)
   (kill-buffer ess-rutils-buf))
 
-(defun ess-rutils-htmldocs (&optional remote)
+(defun ess-rutils-html-docs (&optional remote)
   "Use `browse-url' to navigate R html documentation.
 Documentation is produced by a modified help.start(), that returns the URL
 produced by GNU R's http server.  This function is defined in a file given
@@ -387,41 +387,41 @@ Options should be separated by value of `crm-default-separator'."
   (interactive)
   (when ess-rutils-keys
     (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
-      'ess-rutils-localpkgs)
+      'ess-rutils-local-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
-      'ess-rutils-repospkgs)
+      'ess-rutils-repos-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
-      'ess-rutils-updatepkgs)
+      'ess-rutils-update-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
       'ess-rutils-apropos)
     (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
-      'ess-rutils-rmall)
+      'ess-rutils-rm-all)
     (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
       'ess-rutils-objs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
-      'ess-rutils-loadwkspc)
+      'ess-rutils-load-wkspc)
     (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
-      'ess-rutils-savewkspc)
+      'ess-rutils-save-wkspc)
     (define-key inferior-ess-mode-map [(control c) (control \.) (d)]
       'ess-change-directory)
     (define-key inferior-ess-mode-map [(control c) (control \.) (H)]
-      'ess-rutils-htmldocs)))
+      'ess-rutils-html-docs)))
 
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
   "Submenu of `inferior-ess-mode' to use with RUtils."
   '("RUtils"
     ["Manage objects" 	       ess-rutils-objs		t]
-    ["Remove objects"  	       ess-rutils-rmall		t]
+    ["Remove objects"  	       ess-rutils-rm-all	t]
     "------"
-    ["Local packages"           ess-rutils-localpkgs	t]
-    ["Packages in repositories" ess-rutils-repospkgs	t]
+    ["Local packages"           ess-rutils-local-pkgs	t]
+    ["Packages in repositories" ess-rutils-repos-pkgs	t]
     ["Update packages"          ess-rutils-update-pkgs	t]
     "------"
-    ["Load workspace"           ess-rutils-loadwkspc	t]
-    ["Save workspace"           ess-rutils-savewkspc	t]
+    ["Load workspace"           ess-rutils-load-wkspc	t]
+    ["Save workspace"           ess-rutils-save-wkspc	t]
     ["Change directory"	       ess-change-directory	t]
     "------"
-    ["Browse HTML" 	       ess-rutils-htmldocs	t]
+    ["Browse HTML" 	       ess-rutils-html-docs	t]
     ["Apropos"	  	       ess-rutils-apropos	t]))
 
 (when (featurep 'xemacs)
