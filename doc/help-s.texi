@@ -24,7 +24,8 @@
 @end itemize
 
 @ESS{[S]} mode should be automatically turned on when loading a file with
-the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
+the suffices found in ess-site (*.R, *.S, *.s, etc).  Alternatively,
+type @kbd{M-x R-mode} to put the current buffer into R mode.  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
