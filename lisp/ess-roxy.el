@@ -65,12 +65,16 @@
   (setq ess-roxy-mode-map (make-sparse-keymap))
   (if ess-roxy-hide-show-p
       (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
+  ;; short version (*first*: -> key binding shown in menu):
+  (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
+  ;; For consistency (e.g. C-c C-e C-h !): kept here *in* addition to above
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-t")   'ess-roxy-preview-HTML)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry))
+  )
 
 (defconst ess-roxy-font-lock-keywords
   (eval-when-compile
