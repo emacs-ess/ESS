@@ -271,7 +271,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.13
+5.14
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -585,7 +585,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 5.13:
+Changes/New Features in 5.14:
+          <ul>
+<li><acronym>ESS[BUGS/JAGS]</acronym>:  Batch BUGS is back!  For recent OpenBUGS
+versions, 3.0.8+, a batch BUGS script is once again available,
+but for Linux only.  Therefore, since it seems that BUGS and JAGS must
+co-exist (rather than a transition from BUGS to JAGS), .bug files are
+now in ESS[BUGS] mode and .jug files are in ESS[JAGS] mode.  ESS[BUGS] now
+works like ESS[JAGS] rather than the orignal mode ESS[BUGS] mode which
+was difficult to maintain.  However, ESS[BUGS] needs a lot of work
+such as support for thinning, multiple data files, etc.
+
+          <li><acronym>ESS[R]</acronym>: New customizable variable <code>ess-swv-plug-into-AUCTeX-p</code>
+Commands to Sweave current file and LaTeX the result are now available
+to AUCTeX users, if this variable is set to <code>t</code>. 
+</ul>
+
+     <p>Changes/New Features in 5.13:
           <ul>
 <li><acronym>ESS[R]</acronym>: On Windows, for R 2.12.0 and later, the Rterm executables
  (in subdirectories i386 / x64) now are found as well as for earlier R versions. 
@@ -1967,12 +1983,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
 <h3 class="section">2.3 Requirements</h3>
 
 <p>ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is quite
-old now, is deprecated but it might still work.
+statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
    <p>ESS supports current/recent versions of GNU Emacs and XEmacs. 
 Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 (beta/pre-release versions are NOT SUPPORTED).
+
+   <p>To build the PDF documentation, you will need a version of TeX Live or
+texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
+texinfo RPMs, do NOT include texi2dvi).
 
 <!-- ESS has been tested with -->
 <!-- @itemize @bullet -->
@@ -3242,7 +3261,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#ESS-for-the-S-family">ESS for the S fa
 </ul>
 
    <p><acronym>ESS[S]</acronym> mode should be automatically turned on when loading a file with
-the suffices found in ess-site (*.R, *.S, *.s, etc).  However, one
+the suffices found in ess-site (*.R, *.S, *.s, etc).  Alternatively,
+type <kbd>M-x R-mode</kbd> to put the current buffer into R mode.  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
@@ -5539,6 +5559,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 <li><a accesskey="7" href="#Rdired">Rdired</a>:                       Directory editor for R objects
 <li><a accesskey="8" href="#Rutils">Rutils</a>:                       R object/package management and help utilities
 <li><a accesskey="9" href="#Org">Org</a>:                          Interaction with Org mode
+<li><a href="#Sweave-and-AUCTeX">Sweave and AUCTeX</a>:            Support for Sweave in ESS and AUCTeX
+<li><a href="#Debugging-R">Debugging R</a>:                  Debugging R code in ESS
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -5862,35 +5884,35 @@ the customizable variable <code>ess-rutils-keys</code> is true, several key
 bindings become available in iESS process buffers:
 
      <ul>
-<li><kbd>C-c C-. l</kbd> (<samp><span class="command">ess-rutils-localpkgs</span></samp>) <br>
+<li><kbd>C-c C-. l</kbd> (<samp><span class="command">ess-rutils-local-pkgs</span></samp>) <br>
 <a name="index-ess_002drutils_002dlocalpkgs-219"></a>List all packages in all available libraries.
 
-     <li><kbd>C-c C-. r</kbd> (<samp><span class="command">ess-rutils-repospkgs</span></samp>) <br>
+     <li><kbd>C-c C-. r</kbd> (<samp><span class="command">ess-rutils-repos-pkgs</span></samp>) <br>
 <a name="index-ess_002drutils_002drepospkgs-220"></a>List available packages from repositories listed by
 <samp><span class="command">getOptions(``repos'')</span></samp> in the current R session.
 
-     <li><kbd>C-c C-. u</kbd> (<samp><span class="command">ess-rutils-updatepkgs</span></samp>) <br>
+     <li><kbd>C-c C-. u</kbd> (<samp><span class="command">ess-rutils-update-pkgs</span></samp>) <br>
 <a name="index-ess_002drutils_002dupdatepkgs-221"></a>Update packages in a particular library and repository.
 
      <li><kbd>C-c C-. a</kbd> (<samp><span class="command">ess-rutils-apropos</span></samp>) <br>
 <a name="index-ess_002drutils_002dapropos-222"></a>Search for a string using apropos.
 
-     <li><kbd>C-c C-. m</kbd> (<samp><span class="command">ess-rutils-rmall</span></samp>) <br>
+     <li><kbd>C-c C-. m</kbd> (<samp><span class="command">ess-rutils-rm-all</span></samp>) <br>
 <a name="index-ess_002drutils_002drmall-223"></a>Remove all R objects.
 
      <li><kbd>C-c C-. o</kbd> (<samp><span class="command">ess-rutils-objs</span></samp>) <br>
 <a name="index-ess_002drutils_002dobjs-224"></a>Manipulate R objects; wrapper for <samp><span class="command">ess-rdired</span></samp>.
 
-     <li><kbd>C-c C-. w</kbd> (<samp><span class="command">ess-rutils-loadwkspc</span></samp>) <br>
+     <li><kbd>C-c C-. w</kbd> (<samp><span class="command">ess-rutils-load-wkspc</span></samp>) <br>
 <a name="index-ess_002drutils_002dloadwkspc-225"></a>Load a workspace file into R.
 
-     <li><kbd>C-c C-. s</kbd> (<samp><span class="command">ess-rutils-savewkspc</span></samp>) <br>
+     <li><kbd>C-c C-. s</kbd> (<samp><span class="command">ess-rutils-save-wkspc</span></samp>) <br>
 <a name="index-ess_002drutils_002dsavewkspc-226"></a>Save a workspace file.
 
      <li><kbd>C-c C-. d</kbd> (<samp><span class="command">ess-change-directory</span></samp>) <br>
 <a name="index-ess_002dchange_002ddirectory-227"></a>Change the working directory for the current R session.
 
-     <li><kbd>C-c C-. H</kbd> (<samp><span class="command">ess-rutils-htmldocs</span></samp>) <br>
+     <li><kbd>C-c C-. H</kbd> (<samp><span class="command">ess-rutils-html-docs</span></samp>) <br>
 <a name="index-ess_002drutils_002dhtmldocs-228"></a>Use <samp><span class="command">browse-url</span></samp> to navigate R html documentation.
 
    </ul>
@@ -5905,7 +5927,7 @@ any Emacs buffer, so can be bound to a user-defined key:
 </pre>
    <p><a name="index-ess_002drutils_002drsitesearch-229"></a>
 Functions for listing objects and packages
-(<samp><span class="command">ess-rutils-localpkgs</span></samp>, <samp><span class="command">ess-rutils-repospkgs</span></samp>, and
+(<samp><span class="command">ess-rutils-local-pkgs</span></samp>, <samp><span class="command">ess-rutils-repos-pkgs</span></samp>, and
 <samp><span class="command">ess-rutils-objs</span></samp>) show results in a separate buffer and window,
 in <code>ess-rutils-mode</code>, providing useful key bindings in this mode
 (type <kbd>?</kbd> in this buffer for a description).
@@ -5914,6 +5936,7 @@ in <code>ess-rutils-mode</code>, providing useful key bindings in this mode
 <div class="node">
 <a name="Org"></a>
 <p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Sweave-and-AUCTeX">Sweave and AUCTeX</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="#Rutils">Rutils</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
@@ -5921,10 +5944,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <h3 class="section">13.9 Interaction with Org mode</h3>
 
-<p>Org-mode (<a href="http://orgmode.org">http://orgmode.org</a> now supports reproducible research
+<p>Org-mode (<a href="http://orgmode.org">http://orgmode.org</a>) now supports reproducible research
 and literate programming in many languages (including R) &ndash; see chapter
 14 of the Org manual
-(<a href="http://orgmode.org/org.html#Working-With-Source-Code">http://orgmode.org/org.html#Working-With-Source-Code</a>.  For ESS
+(<a href="http://orgmode.org/org.html#Working-With-Source-Code">http://orgmode.org/org.html#Working-With-Source-Code</a>).  For ESS
 users, this offers a document-based work environment within which to
 embed ESS usage.  R code lives in code blocks of an Org document, from
 which it can be edited in ess-mode, evaluated, extracted ("tangled") to
@@ -5933,6 +5956,85 @@ surrounding text to several formats including HTML and LaTeX.  Results of
 evaluation including figures can be captured in the Org document, and
 data can be passed from the Org document (e.g. from a table) to the ESS
 R process.  (This section contributed by Dan Davison and Eric Schulte.)
+
+<!-- node-name,  next,  previous,  up -->
+<div class="node">
+<a name="Sweave-and-AUCTeX"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Debugging-R">Debugging R</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Org">Org</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
+
+</div>
+
+<h3 class="section">13.10 Support for Sweave in ESS and AUCTeX</h3>
+
+<p>ESS provides support for writing and processing Sweave
+(<a href="http://www.statistik.lmu.de/~leisch/Sweave">http://www.statistik.lmu.de/~leisch/Sweave</a>), building up on
+Emacs' noweb-mode for literate programming.  When working on an Sweave
+document, the following key bindings are available:
+
+     <ul>
+<li><kbd>M-n s</kbd> (<samp><span class="command">ess-swv-weave</span></samp>) <br>
+<a name="index-ess_002dswv_002dweave-230"></a>Run Sweave on the current .Rnw file.
+
+     <li><kbd>M-n l</kbd> (<samp><span class="command">ess-swv-latex</span></samp>) <br>
+<a name="index-ess_002dswv_002dlatex-231"></a>Run LaTeX after Sweave'ing.
+
+     <li><kbd>M-n p</kbd> (<samp><span class="command">ess-swv-PS</span></samp>) <br>
+<a name="index-ess_002dswv_002dPS-232"></a>Generate and display a postscript file after LaTeX'ing.
+
+     <li><kbd>M-n P</kbd> (<samp><span class="command">ess-swv-PDF</span></samp>) <br>
+<a name="index-ess_002dswv_002dPDF-233"></a>Generate and display a PDF file after LaTeX'ing.  The command used to
+generate the PDF file is the first element of
+<code>ess-swv-pdflatex-commands</code>.
+
+   </ul>
+
+   <p>Sweave'ing with <code>ess-swv-weave</code> starts an inferior-ESS process, if
+one is not available.  Other commands are available from the
+&lsquo;<samp><span class="samp">Sweaving, Tangling, ...</span></samp>&rsquo; submenu of the Noweb menu.
+
+   <p>AUCTeX (<a href="http://www.gnu.org/software/auctex">http://www.gnu.org/software/auctex</a>) users may prefer to
+set the variable <code>ess-swv-plug-into-AUCTeX-p</code> (available from the
+&ldquo;ESS Sweave&rdquo; customization group) to t.  Alternatively, the same can
+be achieved by activating the entry &ldquo;AUCTeX Interface&rdquo; from the
+&lsquo;<samp><span class="samp">Sweaving, Tangling, ...</span></samp>&rsquo; submenu, which toggles this variable on
+or off.  When the interface is activated, new entries for Sweave'ing and
+LaTeX'ing thereafter are available from AUCTeX's &ldquo;Command&rdquo; menu. 
+Sweave'ing can, thus, be done by <kbd>C-c C-c Sweave RET</kbd> without an
+inferior-ESS process.  Similarly, LaTeX'ing can be done by <kbd>C-c C-c
+LaTeXSweave RET</kbd>.  In both cases, the process can be monitored with
+<kbd>C-c C-l</kbd> (<code>TeX-recenter-output-buffer</code>).  Open the viewer with
+<kbd>C-c C-v</kbd> (<code>TeX-view</code>), as usual in AUCTeX.
+
+<!-- node-name,  next,  previous,  up -->
+<div class="node">
+<a name="Debugging-R"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Sweave-and-AUCTeX">Sweave and AUCTeX</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
+
+</div>
+
+<h3 class="section">13.11 Debugging R code in ESS</h3>
+
+<p>There are currently two extra facilities that have been developed for
+debugging R code within ESS.
+
+     <ul>
+<li>&ldquo;Ess-tracebug is a package for interactive visual debugging of R code from
+ESS. It provides visual debugging, browser, recover and conditional
+breakpoints; watch window and loggers; interactive debug/undebug of R
+functions and methods at point; highlighting and easy error navigation and
+interactive traceback.&rdquo;  <a href="http://code.google.com/p/ess-tracebug/">http://code.google.com/p/ess-tracebug/</a>
+
+     <li>The R package edtdbg &ldquo;integrates R's debugging facilities with your
+text editor, featuring code tracking, variable display, quick breakpoint
+setting, and easy toggling of function debug status.&rdquo;  It provides
+support for both Emacs and VIM.  Package available from CRAN mirrors.
+
+   </ul>
 
 <!-- node-name,  next,  previous,  up@chapter Using S4 -->
 <div class="node">
@@ -5965,7 +6067,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.1 Bugs</h3>
 
-<p><a name="index-bugs-230"></a>
+<p><a name="index-bugs-234"></a>
 
      <ul>
 <li>Commands like <code>ess-display-help-on-object</code> and list completion
@@ -6015,7 +6117,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.2 Reporting Bugs</h3>
 
-<p><a name="index-Bug-reports-231"></a><a name="index-ess_002dsubmit_002dbug_002dreport-232"></a>
+<p><a name="index-Bug-reports-235"></a><a name="index-ess_002dsubmit_002dbug_002dreport-236"></a>
 
    <p>Please send bug reports, suggestions etc. to
 <a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
@@ -6104,7 +6206,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="appendix">Appendix A Customizing ESS</h2>
 
-<p><a name="index-customization-233"></a>
+<p><a name="index-customization-237"></a>
 ESS can be easily customized to your taste simply by including the
 appropriate lines in your <samp><span class="file">.emacs</span></samp> file.  There are numerous
 variables which affect the behavior of ESS in certain situations which

@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.13
+   5.14
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -81,12 +81,15 @@ reports are much appreciated!
 ================
 
 ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is
-quite old now, is deprecated but it might still work.
+statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
    ESS supports current/recent versions of GNU Emacs and XEmacs.  Most
 notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 (beta/pre-release versions are NOT SUPPORTED).
+
+   To build the PDF documentation, you will need a version of TeX Live
+or texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
+texinfo RPMs, do NOT include texi2dvi).
 
 1.4 Getting the Latest Version
 ==============================
@@ -483,6 +486,21 @@ shell, simply type `M-x S+6-msdos RET'.
 
 1.10 New Features
 =================
+
+     Changes/New Features in 5.14:
+        * ESS[BUGS/JAGS]:  Batch BUGS is back!  For recent OpenBUGS
+          versions, 3.0.8+, a batch BUGS script is once again available,
+          but for Linux only.  Therefore, since it seems that BUGS and
+          JAGS must co-exist (rather than a transition from BUGS to
+          JAGS), .bug files are now in ESS[BUGS] mode and .jug files
+          are in ESS[JAGS] mode.  ESS[BUGS] now works like ESS[JAGS]
+          rather than the orignal mode ESS[BUGS] mode which was
+          difficult to maintain.  However, ESS[BUGS] needs a lot of work
+          such as support for thinning, multiple data files, etc.
+
+        * ESS[R]: New customizable variable `ess-swv-plug-into-AUCTeX-p'
+          Commands to Sweave current file and LaTeX the result are now
+          available to AUCTeX users, if this variable is set to `t'.
 
      Changes/New Features in 5.13:
         * ESS[R]: On Windows, for R 2.12.0 and later, the Rterm

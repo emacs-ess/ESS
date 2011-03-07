@@ -269,7 +269,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <p><a name="index-README-1"></a>
 This is the README file for the distribution of ESS version
 
-   <p>5.13
+   <p>5.14
 
    <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -368,12 +368,15 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.3 Requirements</h3>
 
 <p>ESS is most likely to work with current/recent versions of the following
-statistical packages: R/S-PLUS, SAS, Stata and JAGS. BUGS, which is quite
-old now, is deprecated but it might still work.
+statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
    <p>ESS supports current/recent versions of GNU Emacs and XEmacs. 
 Most notably, the GNU Emacs 22 series and XEmacs 21.4.14 or higher
 (beta/pre-release versions are NOT SUPPORTED).
+
+   <p>To build the PDF documentation, you will need a version of TeX Live or
+texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
+texinfo RPMs, do NOT include texi2dvi).
 
 <!-- ESS has been tested with -->
 <!-- @itemize @bullet -->
@@ -902,7 +905,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.13:
+Changes/New Features in 5.14:
+          <ul>
+<li><acronym>ESS[BUGS/JAGS]</acronym>:  Batch BUGS is back!  For recent OpenBUGS
+versions, 3.0.8+, a batch BUGS script is once again available,
+but for Linux only.  Therefore, since it seems that BUGS and JAGS must
+co-exist (rather than a transition from BUGS to JAGS), .bug files are
+now in ESS[BUGS] mode and .jug files are in ESS[JAGS] mode.  ESS[BUGS] now
+works like ESS[JAGS] rather than the orignal mode ESS[BUGS] mode which
+was difficult to maintain.  However, ESS[BUGS] needs a lot of work
+such as support for thinning, multiple data files, etc.
+
+          <li><acronym>ESS[R]</acronym>: New customizable variable <code>ess-swv-plug-into-AUCTeX-p</code>
+Commands to Sweave current file and LaTeX the result are now available
+to AUCTeX users, if this variable is set to <code>t</code>. 
+</ul>
+
+     <p>Changes/New Features in 5.13:
           <ul>
 <li><acronym>ESS[R]</acronym>: On Windows, for R 2.12.0 and later, the Rterm executables
  (in subdirectories i386 / x64) now are found as well as for earlier R versions. 
