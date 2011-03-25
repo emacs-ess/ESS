@@ -984,7 +984,8 @@ heavy censoring."
   (save-excursion
     (shell-command-on-region
      start end
-     "sed \"\\?          *\\.          *\\.          *\\.    ?d\"" t)))
+     "sed '/[ ][.][ ]/d'" t)))
+     ;;"sed \"\\?          *\\.          *\\.          *\\.    ?d\"" t)))
 ;;(vip-goto-line 1)
 ;;(setq ex-g-flag nil
 ;;ex-g-variant nil)
