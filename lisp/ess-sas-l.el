@@ -441,21 +441,21 @@ number."
 ;	      "\\>")
 ;	     font-lock-keyword-face)
 ;
-       ;; SAS statements
+       ;; SAS base and SAS/Graph statements
        (cons (concat ;"\\<"
 	      (regexp-opt
 	       '(
 		 "do" "to" "by" "goto" ; "go"
 		"abort" "and" "array" "assess" "attrib" 
 		"baseline" "bayes" "between" 
-		"change" "class" "contains" "contrast"
+		"change" "choro" "class" "contains" "contrast"
 		"delete" "display" "dm" "drop"
 		"else" "error" "exchange" "exclude" 
 		"file" "filename" "format" "freq"
 		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
 		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
 		"goptions" ; "ge" "gt" 
-		"hazardratio"
+		"hazardratio" "hbar" "hbar3d"
 		"id" "if" "index" "infile" "informat" "input" ; "is" rarely used, but common false pos.
 		"keep" 
 		"label" "length" "libname" "like" "link" "lsmeans" ; "le" "lt"
@@ -469,7 +469,7 @@ number."
 		 "title" "title1" "title2" "title3" "title4" "title5" 
 		 "title6" "title7" "title8" "title9" "title10"
 		"update"
-		"value" "var"
+		"value" "var" "vbar" "vbar3d"
 		"weight" "where" "window" "with" 
 		; "x"
 		 ) 'words)) ;"\\>")
