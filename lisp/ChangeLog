@@ -1,3 +1,9 @@
+2011-04-06  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): most
+	common SAS/Graph statements now added; next up:
+	SAS/Stat
+
 2011-04-01  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): adding
