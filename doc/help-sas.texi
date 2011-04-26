@@ -73,23 +73,26 @@ iterative @code{DO} statement, @code{TO} and @code{BY} are not highlighted.
 @node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, ESS for SAS
 @section ESS(SAS)--@key{TAB} key
 
-Two options.  The @key{TAB} key is bound by default to @code{sas-indent-line}.  This
-function is used to syntactically indent @SAS{} code so @code{PROC} and @code{RUN} are in
-the left margin, other statements are indented @code{sas-indent-width} spaces from the margin,
-continuation lines are indented @code{sas-indent-width} spaces in from the beginning column of
-that statement.  This is the type of functionality that emacs provides
-in most programming language modes.  This functionality is equivalent to
-uncommenting the following line in @file{ess-site.el}:
+Two options.  The @key{TAB} key is bound by default to
+@code{sas-indent-line}.  This function is used to syntactically indent
+@SAS{} code so @code{PROC} and @code{RUN} are in the left margin,
+other statements are indented @code{sas-indent-width} spaces from the
+margin, continuation lines are indented @code{sas-indent-width} spaces
+in from the beginning column of that statement.  This is the type of
+functionality that emacs provides in most programming language modes.
+This functionality is activated by placing the following line in your
+initialization file prior to a @code{require}/@code{load}:
 @example
 (setq ess-sas-edit-keys-toggle nil)
 @end example
 
-@ESS{} provides an alternate behavior for @key{TAB} that makes it behave
-as it does in @SAS{} Display Manager, i.e. move the cursor to the next stop.
-The alternate behavior also provides a "TAB" backwards, @wkbd{C-@key{TAB}}, that
-moves the cursor to the stop to the left and deletes any characters
-between them.  This functionality is obtained by uncommenting the
-following line in @file{ess-site.el}:
+@ESS{} provides an alternate behavior for @key{TAB} that makes it
+behave as it does in @SAS{} Display Manager, i.e. move the cursor to
+the next stop.  The alternate behavior also provides a "TAB"
+backwards, @wkbd{C-@key{TAB}}, that moves the cursor to the stop to
+the left and deletes any characters between them.  This functionality
+is obtained by placing the following line in your initialization file
+prior to a @code{require}/@code{load}:
 @example
 (setq ess-sas-edit-keys-toggle t)
 @end example
@@ -260,10 +263,11 @@ person installing @ESS{} for a site or by an individual.
 
 @enumerate a
 @item
-For a site installation or an individual, uncomment @strong{ONLY ONE} of the
-following lines in your @file{ess-site.el}.  @ESS{[SAS]} function keys are
-available in @ESS{[SAS]} if you uncomment either 2 or 3 and in all modes if
-you uncomment 4 or 5:
+For a site installation or an individual, place @strong{ONLY ONE} of
+the following lines in your initialization file prior to a
+@code{require}/@code{load}.  @ESS{[SAS]} function keys are available
+in @ESS{[SAS]} if you choose either 2 or 3 and in all modes if you
+choose 4 or 5:
 @example
 ;;2; (setq ess-sas-local-unix-keys t)
 ;;3; (setq ess-sas-local-pc-keys t)
