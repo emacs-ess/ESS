@@ -1,3 +1,10 @@
+2011-04-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/help-sas.texi (ESS(SAS)--TAB key): removing all references
+	to uncommenting ess-site.el code since we moved away from that
+	several years ago, however, the vestiges still linger (OK, but
+	isn't that what vestiges do?)
+
 2011-03-07  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/help-s.texi (ESS(S)--Editing files): Document calling R-mode
