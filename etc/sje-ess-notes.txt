@@ -1,6 +1,53 @@
 Stephen Eglen's notes on future changes to ESS                   -*- org -*-
 
 
+* ess-history-file
+
+needs documenting and possibly updating:
+
+From: Stephen Eglen <S.J.Eglen@damtp.cam.ac.uk>
+To: Erik Iverson <eriki@ccbr.umn.edu>
+Comments: In-reply-to Erik Iverson <eriki@ccbr.umn.edu>
+	message dated "Wed, 20 Apr 2011 09:36:26 -0500."
+Date: Tue, 26 Apr 2011 09:01:29 +0100
+Cc: Feng Li <m@feng.li>, ess-help@stat.math.ethz.ch
+Subject: Re: [ESS] ESS and .Rhistory
+Sender: ess-help-bounces@r-project.org
+
+Dear Erik, Feng,
+
+Thanks for this -- I was blissfully unaware about this persistence of
+history across R sessions.  Howabout if we change the semantics of
+ess-history-file to be:
+
+nil -- do not attempt to read/write a history file
+t -- use the default naming scheme for loading the history
+"some.string" -- use this value as the filename.
+
+
+Stephen
+> Feng,
+> 
+> On 04/20/2011 09:00 AM, Feng Li wrote:
+> > Dear list,
+> >
+> > I tried to change the ESS default R history to a permanent file so
+> > that ESS does not generate .Rhistory everywhere. I tried both
+> >
+> > (setq ess-history-directory "~/.R/history")
+> >
+> > and
+> >
+> > (setq ess-history-file "~/.R/history/.Rhistory")
+> 
+> If I recall correctly, it's because of the way the ess-history-file
+> variable is set in the ESS code.  The following works for me:
+> 
+>   (defun ei-no-rhistory ()
+>     (setq ess-history-file "/dev/null"))
+> 
+>   (add-hook 'inferior-ess-mode-hook 'ei-no-rhistory)
+
 * completion of functions within buffers
 
 From: Stephen Eglen <S.J.Eglen@damtp.cam.ac.uk>
