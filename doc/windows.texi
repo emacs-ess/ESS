@@ -16,10 +16,10 @@ and ESS, the installation process is simple.
 Extract all the files from @file{ess-VERSION.zip} (by
 double clicking on it and selecting ``Extract all files''
 which launches the Folders Extraction Wizard)
-into the @file{site-lisp} directory that exists for packages like @ESS{}.
+into an @file{ESS} sub-directory of the @file{site-lisp} directory that exists for packages like @ESS{}.
 If GNU Emacs was installed in the default location, then this
 directory can be found somewhere like
-@file{C:\Program Files\GNU Emacs\emacs-22.x\site-lisp}.
+@file{C:\Program Files\GNU Emacs\emacs-22.x\site-lisp}
 
 @item
 Add the line

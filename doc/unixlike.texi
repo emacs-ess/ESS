@@ -13,14 +13,17 @@ and ESS, the installation process is simple.
 
 @enumerate
 @item
-Extract all the files from @file{ess-VERSION.tgz} when you are in
-the current working directory of @file{/usr/local/share/emacs/site-lisp}
-which exists for packages like @ESS{}
-(and for Mac OS X create a link to it from the directory
-@file{/Applications/Emacs.app/Contents/Resources/site-lisp}):
+Extract all the files from @file{ess-VERSION.tgz} into
+the directory @file{PREFIX/site-lisp}
+where @file{PREFIX} is appropriate for GNU Emacs on your system;
+@file{PREFIX} will most likely be either 
+@file{/usr/share/emacs} or @file{/usr/local/share/emacs}
+@comment which exists for packages like @ESS{}
+(on Mac OS X, @file{PREFIX} will most likely be something like
+@file{/Applications/Emacs.app/Contents/Resources}):
 @example
-%prompt gtar zxf ess-VERSION.tgz            # for GNU tar
-%prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
+GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp             
+Unix tar % gunzip < ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp 
 @end example
 
 @item

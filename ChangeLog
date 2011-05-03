@@ -1,3 +1,10 @@
+2011-05-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* doc/unixlike.texi (Unix installation): 
+	* Makeconf (LISPDIR): 
+	Installing everything into site-lisp is sloppy; better to create
+	an ess sub-directory and install there.
+
 2011-04-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/help-sas.texi (ESS(SAS)--TAB key): removing all references
