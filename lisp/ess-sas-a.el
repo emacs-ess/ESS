@@ -1040,7 +1040,8 @@ i.e. let arg1 be your local equivalent of
        (insert ess-sas-submit-pre-command " " arg1 " "
 	 (substring (file-name-sans-extension
 	    (file-name-nondirectory ess-sas-file-path)) 1)
-	 " " arg2 " " ess-sas-submit-post-command))
+	 " " arg2 " " ess-sas-submit-post-command)
+	(comint-send-input))
     ;;else
       (ess-sas-goto-shell t)
       (ess-sas-cd)
@@ -1051,7 +1052,8 @@ i.e. let arg1 be your local equivalent of
 ;	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
 ;	" " arg2 " " ess-sas-submit-post-command))
 ;    (ess-sleep)
-    (comint-send-input))
+;    (comint-send-input))
+))
 
 (defun ess-sas-submit-windows (arg1 arg2)
   "Windows using MS-DOS prompt in the *shell* buffer.
