@@ -1048,12 +1048,11 @@ i.e. let arg1 be your local equivalent of
 ;      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
 ;"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
 ;      (comint-send-input)
-;      (insert ess-sas-submit-pre-command " " arg1 " "
-;	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
-;	" " arg2 " " ess-sas-submit-post-command))
+      (insert ess-sas-submit-pre-command " " arg1 " "
+	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
+	" " arg2 " " ess-sas-submit-post-command))
 ;    (ess-sleep)
-;    (comint-send-input))
-))
+    (comint-send-input))
 
 (defun ess-sas-submit-windows (arg1 arg2)
   "Windows using MS-DOS prompt in the *shell* buffer.
