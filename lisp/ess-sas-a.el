@@ -268,7 +268,7 @@ should set this variable to 'sh regardless of their local shell
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sleep-for (if ess-microsoft-p 5 0)
+(defcustom ess-sleep-for (if ess-microsoft-p 5 1) ; GNU Emacs needs this
   "*`ess-sas-submit-sh' may need to pause before sending output
 to the shell on Windows when `ess-sas-submit-method' is 'sh."
   :group 'ess-sas
@@ -320,13 +320,14 @@ before ess-site is loaded) for it to take effect.")
 	    (call-process-region (match-beginning 0) (match-end 0)
 		    ess-tmp-util t (list t nil) t ess-tmp-util-args)))))
 
+
 (defun ess-exit-notify-sh (string)
 "Detect completion or failure of submitted job and notify the user."
-  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
+  ;(let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
+  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*") ; GNU Emacs needs this
 	 (beg (string-match exit-done string)))
     (if beg
 	(message (substring string beg (match-end 0))))))
-
 
 
 (defun ess-sas-append-log ()
@@ -780,6 +781,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 		   (switch-to-buffer temp-shell-buffer))
     (shell)
     (rename-buffer temp-shell-buffer)
+    (ess-sleep) ; GNU Emacs needs this
 
     (if temp-shell-buffer-remote-host (progn
 	(insert (concat
@@ -1041,17 +1043,14 @@ i.e. let arg1 be your local equivalent of
 	 " " arg2 " " ess-sas-submit-post-command))
     ;;else
       (ess-sas-goto-shell t)
-;      (if ess-microsoft-p
-;	  (insert "cd "  (file-name-directory ess-sas-file-path))
-;	(insert "cd " (car (last (split-string
-;	    (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
-      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
-"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
-      (comint-send-input)
-      (insert ess-sas-submit-pre-command " " arg1 " "
-	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
-	" " arg2 " " ess-sas-submit-post-command))
-    (ess-sleep)
+      (ess-sas-cd)
+;      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
+;"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
+;      (comint-send-input)
+;      (insert ess-sas-submit-pre-command " " arg1 " "
+;	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
+;	" " arg2 " " ess-sas-submit-post-command))
+;    (ess-sleep)
     (comint-send-input))
 
 (defun ess-sas-submit-windows (arg1 arg2)
