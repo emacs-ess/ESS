@@ -1,3 +1,7 @@
+2011-05-08  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-inf.el (ess-show-buffer): Fixed minor typo in doc string.
+
 2011-05-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el: several changes necessary to

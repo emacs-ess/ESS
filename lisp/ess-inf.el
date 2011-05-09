@@ -746,7 +746,7 @@ visible (it may have been iconified).
 3. If buffer is not visible in any frame, simply show it in another window
 in the current frame.
 
-Iff VISIT is non-nil, as well as making BUF visible, we also select it
+If VISIT is non-nil, as well as making BUF visible, we also select it
 as the current buffer."
   (let ( (frame))
     (if (ess-buffer-visible-this-frame buf)
