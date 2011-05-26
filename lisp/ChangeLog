@@ -1,3 +1,11 @@
+2011-05-26  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-eval-paragraph-and-step): Apply Erik Iverson's
+	patch from Feb 2011, so that after evaluating the paragraph, it
+	skips any blank lines and comments, just like
+	ess-eval-line-and-step.
+	(ess-eval-function-or-paragraph-and-step): As above.
+
 2011-05-08  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-inf.el (ess-show-buffer): Fixed minor typo in doc string.

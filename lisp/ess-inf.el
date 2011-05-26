@@ -1218,7 +1218,8 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 	  (princ (concat "Loading: " name) t)
 	  (ess-eval-region beg end-fun vis
 			   (concat "Eval function " name))
-	  (goto-char (1+ end-fun)))
+	  (goto-char end-fun)
+	  (ess-next-code-line))
       ;; else: not in a function
       (ess-eval-paragraph-and-step vis)
       ))
@@ -1331,7 +1332,8 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
 the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let ((beg-end (ess-eval-paragraph vis)))
-    (goto-char (1+ (cadr beg-end))))
+    (goto-char (cadr beg-end))
+    (ess-next-code-line))
 )
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
