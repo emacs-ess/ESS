@@ -124,7 +124,7 @@ or `ess-sas-data-view-insight'."
   :group 'ess-sas
   :type  'integer)
 
-(defcustom ess-sas-rtf-font-name "Lucida Sans Typewriter"
+(defcustom ess-sas-rtf-font-name "Bitstream Vera Sans Mono"
   "*Name of font to create MS RTF with"
   :group 'ess-sas
   :type  'string)
@@ -870,11 +870,20 @@ optional argument is non-nil, then set-buffer rather than switch."
   (kill-buffer nil)
 )
 
-;(eval-when-compile
-  (condition-case nil
-      (progn
-        (require 'rtf-support)
-        (when (featurep 'rtf-support)
+;  (condition-case nil
+;      (progn
+;        (require 'rtf-support)
+;        (when (featurep 'rtf-support)
+
+(defun ess-rtf-replace-chars ()
+"Convert a text file to an MS RTF file."
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\n" nil t) (replace-match "\\par\n" nil t))
+  (goto-char (point-min))
+  (while (re-search-forward "\f" nil t) (replace-match "\\page" nil t))
+  (goto-char (point-min))
+  (while (re-search-forward "\t" nil t) (replace-match "\\tab" nil t)))
 
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
 "Creates an MS RTF portrait file from the current buffer."
@@ -882,23 +891,35 @@ optional argument is non-nil, then set-buffer rather than switch."
     (ess-sas-file-path t)
     (ess-revert-wisely)
 
-    (if (equal ess-tmp-font-size nil)
-	(setq ess-tmp-font-size "21"))
+;    (if (equal ess-tmp-font-size nil)
+;	(setq ess-tmp-font-size "21"))
 
     (let
-	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
-	    ;(expand-file-name (buffer-name)) "[.][^.]*$" ".rtf")))
-	(rtf-export ess-temp-rtf-file)
+	((ess-temp-rtf-file 
+	  (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
+	;(rtf-export ess-temp-rtf-file)
+        (copy-file ess-sas-file-path ess-temp-rtf-file t)
 	(ess-sas-goto "rtf" t)
-	(goto-char (point-min))
-	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
-	(goto-line 2)
-	(if (string-match ess-sas-suffix-regexp ess-sas-file-path)
-	    (insert "\\margl720\\margr720\\margt720\\margb720\n"))
-        (goto-char (point-min))
+	(ess-rtf-replace-chars)
+	;(goto-char (point-min))
+	;;(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
+	;(if (re-search-forward "\\\\fmodern .*;" nil t)
+	;    (replace-match (concat "\\\\fmodern " ess-sas-rtf-font-name ";") nil nil))
+	;(goto-line 2)
+	(goto-char (point-min)) 
+	(insert (concat
+		 "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
+		 "\\margl720\\margr720\\margt720\\margb720\n"
+		 "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
+		 "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
+		 "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))        
 
-        (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
-
+	(goto-char (point-max))
+	(insert "}}}}\n")
+	;(goto-char (point-min))
+        ;;(while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
+	;(while (re-search-forward "\\\\fs[0-9]+" nil t)
+	;  (replace-match (concat "\\\\fs" ess-tmp-font-size) nil nil))
         (save-buffer)
 	(kill-buffer (current-buffer))))
 
@@ -927,8 +948,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
     (save-buffer)
     (kill-buffer (current-buffer)))
-))
-    (error nil)) ;)
+;))
+;    (error nil)) 
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that

@@ -1,3 +1,10 @@
+2011-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el: re-implemented rudimentary RTF support since 
+	GNU Emacs does not work with rtf-support.el (sadly, XEmacs
+	has had this for over a decade); does NOT support font re-sizing; 
+	you are stuck with a point size of 8.  Enjoy!
+
 2011-05-26  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-inf.el (ess-eval-paragraph-and-step): Apply Erik Iverson's
