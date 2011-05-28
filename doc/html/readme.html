@@ -494,13 +494,16 @@ Retrieve the latest tgz file (<samp><span class="file">ess-VERSION.tgz</span></s
 and ESS, the installation process is simple.
 
      <ol type=1 start=1>
-<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
-the current working directory of <samp><span class="file">/usr/local/share/emacs/site-lisp</span></samp>
-which exists for packages like <acronym>ESS</acronym>
-(and for Mac OS X create a link to it from the directory
-<samp><span class="file">/Applications/Emacs.app/Contents/Resources/site-lisp</span></samp>):
-     <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
-          %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
+<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> into
+the directory <samp><span class="file">PREFIX/site-lisp</span></samp>
+where <samp><span class="file">PREFIX</span></samp> is appropriate for GNU Emacs on your system;
+<samp><span class="file">PREFIX</span></samp> will most likely be either
+<samp><span class="file">/usr/share/emacs</span></samp> or <samp><span class="file">/usr/local/share/emacs</span></samp>
+<!-- which exists for packages like @ESS{} -->
+(on Mac OS X, <samp><span class="file">PREFIX</span></samp> will most likely be something like
+<samp><span class="file">/Applications/Emacs.app/Contents/Resources</span></samp>):
+     <pre class="example">          GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp
+          Unix tar % gunzip &lt; ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp
 </pre>
      <li>Then, add the line
      <pre class="example">          (require 'ess-site)
@@ -610,10 +613,10 @@ and ESS, the installation process is simple.
 <li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> (by
 double clicking on it and selecting &ldquo;Extract all files&rdquo;
 which launches the Folders Extraction Wizard)
-into the <samp><span class="file">site-lisp</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
+into an <samp><span class="file">ESS</span></samp> sub-directory of the <samp><span class="file">site-lisp</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
 If GNU Emacs was installed in the default location, then this
 directory can be found somewhere like
-<samp><span class="file">C:\Program Files\GNU Emacs\emacs-22.x\site-lisp</span></samp>.
+<samp><span class="file">C:\Program Files\GNU Emacs\emacs-22.x\site-lisp</span></samp>
 
      <li>Add the line
      <pre class="example">          (require 'ess-site)
@@ -918,7 +921,13 @@ such as support for thinning, multiple data files, etc.
 
           <li><acronym>ESS[R]</acronym>: New customizable variable <code>ess-swv-plug-into-AUCTeX-p</code>
 Commands to Sweave current file and LaTeX the result are now available
-to AUCTeX users, if this variable is set to <code>t</code>. 
+to AUCTeX users, if this variable is set to <code>t</code>.
+
+          <li><acronym>ESS[S]</acronym>: <kbd>C-c C-c</kbd>
+(<code>ess-eval-function-or-paragraph-and-step</code>) is now skipping over
+comments as the other paragraph functions do. 
+It (and similar functions) should no longer wrongly find
+&lsquo;<samp><span class="samp">function()</span></samp>&rsquo; beginnings inside comments or strings. 
 </ul>
 
      <p>Changes/New Features in 5.13:

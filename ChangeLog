@@ -1,7 +1,7 @@
 2011-05-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* doc/unixlike.texi (Unix installation): 
-	* Makeconf (LISPDIR): 
+	* doc/unixlike.texi (Unix installation):
+	* Makeconf (LISPDIR):
 	Installing everything into site-lisp is sloppy; better to create
 	an ess sub-directory and install there.
 
@@ -15,7 +15,7 @@
 2011-03-07  Stephen Eglen  <stephen@gnu.org>
 
 	* doc/help-s.texi (ESS(S)--Editing files): Document calling R-mode
-	directly. 
+	directly.
 
 2011-03-01  Stephen Eglen  <stephen@gnu.org>
 
@@ -27,10 +27,6 @@
 	include texi2dvi WARNING
 
 2011-02-03  ESS Maintainers <ESS-core@r-project.org>
-
-  * Version 5.13 released.
-
-2011-02-01  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 5.13 released.
 

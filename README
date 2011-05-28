@@ -141,13 +141,14 @@ area (http://ess.r-project.org/index.php?Section=download).
    _GNU Emacs Simple Instructions:_ for recent versions of Emacs (22.x
 or higher) and ESS, the installation process is simple.
 
-  1. Extract all the files from `ess-VERSION.tgz' when you are in the
-     current working directory of `/usr/local/share/emacs/site-lisp'
-     which exists for packages like ESS (and for Mac OS X create a link
-     to it from the directory
-     `/Applications/Emacs.app/Contents/Resources/site-lisp'):
-          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
-          %prompt gunzip < ess-VERSION.tgz | tar xf - # for Unix tar
+  1. Extract all the files from `ess-VERSION.tgz' into the directory
+     `PREFIX/site-lisp' where `PREFIX' is appropriate for GNU Emacs on
+     your system; `PREFIX' will most likely be either
+     `/usr/share/emacs' or `/usr/local/share/emacs' (on Mac OS X,
+     `PREFIX' will most likely be something like
+     `/Applications/Emacs.app/Contents/Resources'):
+          GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp
+          Unix tar % gunzip < ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp
 
   2. Then, add the line
           (require 'ess-site)
@@ -237,10 +238,11 @@ or higher) and ESS, the installation process is simple.
 
   1. Extract all the files from `ess-VERSION.zip' (by double clicking
      on it and selecting "Extract all files" which launches the Folders
-     Extraction Wizard) into the `site-lisp' directory that exists for
-     packages like ESS.  If GNU Emacs was installed in the default
-     location, then this directory can be found somewhere like
-     `C:\Program Files\GNU Emacs\emacs-22.x\site-lisp'.
+     Extraction Wizard) into an `ESS' sub-directory of the `site-lisp'
+     directory that exists for packages like ESS.  If GNU Emacs was
+     installed in the default location, then this directory can be
+     found somewhere like `C:\Program Files\GNU
+     Emacs\emacs-22.x\site-lisp'
 
   2. Add the line
           (require 'ess-site)
@@ -501,6 +503,12 @@ shell, simply type `M-x S+6-msdos RET'.
         * ESS[R]: New customizable variable `ess-swv-plug-into-AUCTeX-p'
           Commands to Sweave current file and LaTeX the result are now
           available to AUCTeX users, if this variable is set to `t'.
+
+        * ESS[S]: `C-c C-c' (`ess-eval-function-or-paragraph-and-step')
+          is now skipping over comments as the other paragraph
+          functions do.  It (and similar functions) should no longer
+          wrongly find `function()' beginnings inside comments or
+          strings.
 
      Changes/New Features in 5.13:
         * ESS[R]: On Windows, for R 2.12.0 and later, the Rterm

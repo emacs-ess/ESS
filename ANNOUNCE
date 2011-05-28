@@ -230,6 +230,12 @@ in the file COPYING in the same directory as this file for more details.
           Commands to Sweave current file and LaTeX the result are now
           available to AUCTeX users, if this variable is set to `t'.
 
+        * ESS[S]: `C-c C-c' (`ess-eval-function-or-paragraph-and-step')
+          is now skipping over comments as the other paragraph
+          functions do.  It (and similar functions) should no longer
+          wrongly find `function()' beginnings inside comments or
+          strings.
+
      Changes/New Features in 5.13:
         * ESS[R]: On Windows, for R 2.12.0 and later, the Rterm
           executables  (in subdirectories i386 / x64) now are found as

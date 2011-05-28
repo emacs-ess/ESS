@@ -14,6 +14,12 @@ such as support for thinning, multiple data files, etc.
 @item @ESS{[R]}: New customizable variable @code{ess-swv-plug-into-AUCTeX-p}
 Commands to Sweave current file and LaTeX the result are now available
 to AUCTeX users, if this variable is set to @code{t}.
+
+@item @ESS{[S]}: @kbd{C-c C-c}
+(@code{ess-eval-function-or-paragraph-and-step}) is now skipping over
+comments as the other paragraph functions do.
+It (and similar functions) should no longer wrongly find
+@samp{function()} beginnings inside comments or strings.
 @end itemize
 
 Changes/New Features in 5.13:
