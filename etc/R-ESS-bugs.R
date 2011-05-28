@@ -1,6 +1,8 @@
 #### File showing off  things that go wrong or *went* wrong in the past
 #### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
 
+
+
 ### -------- 1 ---------  extraneous comment chars :  This seems fixed
 
 ## From: Robert Gentleman <rgentlem@fhcrc.org>
@@ -50,7 +52,7 @@ mindiff <- function(df) df[which.min(df$diff),
 f1 <- function(x) be.friendly(x, force=TRUE); f2 <- function(x,y) x*sin(pi*x)
 
 ### --- Suggestion (Jenny Brian): --> Create a (defun ess-eval-multiline .)
-### Here is useful valid R "test code":
+## Here is useful valid R "test code":
 
 ## From 'example(plot.default)' :
 
@@ -243,7 +245,7 @@ if (require(lme4)) {
                  data=fev1, subset=logFEV1 > -0.5))
     ## Table 8.3
     VarCorr(fm1)$id * 100
-    
+
     ## Model in p. 216
     (fm2 <- update(fm1, . ~ . - (age | id) + (log(height) | id)))
 }
@@ -264,3 +266,21 @@ if (require(lme4)) {
 ## I'll try to find out what is going on in `ess-continued-statement-p' but
 ## given that I'm not very familiar with the stuff in ess-mode.el, I'm
 ## submitting the report in case somebody can detect the issue sooner.
+
+### --------------- C-c C-c  was finding the wrong "beginning of function"
+##				[fixed, 2011-05-28]
+foobar <- function(...) {}
+rm(list=ls())
+
+##--------> consequence of the above experiments:
+## the 2nd form is numerically "uniformly better" than the first
+##--------> 2011-05-27:  Change Frank's psiInv() to
+## psiInv = function(t,theta)
+##     -log1p(exp(-theta)*expm1((1-t)*theta)/expm1(-theta))
+
+##--- In the following block, in the first line, C-c C-c does *NOT* behave
+
+th <- 48 # now do ls() and see what happened ... the horror !!!
+d <- 3
+cpF <- list("Frank", list(th, 1:d))
+cop <- acF <- cpF$copula

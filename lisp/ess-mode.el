@@ -563,7 +563,9 @@ it cannot find a function beginning."
 
       ;; In the case of non-success, it is inefficiently
       ;; going back in the buffer through all function definitions...
-      (unless (re-search-backward ess-function-pattern (point-min) t)
+      (unless
+	  (and (re-search-backward ess-function-pattern (point-min) t)
+	       (not (ess-inside-string-or-comment-p (point))))
 	(goto-char init-point)
 	(if no-error
 	    (setq  done t  beg nil)

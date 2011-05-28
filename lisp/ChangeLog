@@ -1,8 +1,13 @@
+2011-05-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-beginning-of-function): test that the beg.of.fun.
+	is not inside a string or comment.
+
 2011-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el: re-implemented rudimentary RTF support since 
+	* ess-sas-a.el: re-implemented rudimentary RTF support since
 	GNU Emacs does not work with rtf-support.el (sadly, XEmacs
-	has had this for over a decade); does NOT support font re-sizing; 
+	has had this for over a decade); does NOT support font re-sizing;
 	you are stuck with a point size of 8.  Enjoy!
 
 2011-05-26  Stephen Eglen  <stephen@gnu.org>
@@ -37,7 +42,7 @@
 
 	* ess-sas-l.el (sas-fix-life-tables): I assume that sed
 	command worked for someone at some point, but it was not
-	working for me; and it was overly complicated, so I 
+	working for me; and it was overly complicated, so I
 	simplified; hopefully it works now; please test.
 
 2011-03-02  Sebastian P. Luque  <spluque@gmail.com>
@@ -53,7 +58,7 @@
 	and JAGS must co-exist (rather than a transition from BUGS
 	to JAGS), .bug files are in ESS[BUGS] mode and .jug files
 	are in ESS[JAGS] mode.  ESS[BUGS] now works like ESS[JAGS]
-	rather than the orignal mode ESS[BUGS] mode which was 
+	rather than the orignal mode ESS[BUGS] mode which was
 	difficult to maintain.  However, ESS[BUGS] needs a lot of
 	work such as support for thinning, multiple data files,
 	etc.
