@@ -1221,9 +1221,8 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 	  (goto-char end-fun)
 	  (ess-next-code-line))
       ;; else: not in a function
-      (ess-eval-paragraph-and-step vis)
-      ))
-)
+      (ess-eval-paragraph-and-step vis))))
+
 
 (defun ess-eval-line (vis)
   "Send the current line to the inferior ESS process.
