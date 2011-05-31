@@ -719,6 +719,9 @@ With prefix argument, only shows the errors ESS reported."
       (goto-char (point-max))
       (if
 	  (re-search-backward
+	   ;; FIXME: R does not give "useful" error messages -
+	   ;; -----  by default: We (ESS) could try to use a more useful one, via
+	   ;;   options(error = essErrorHandler)
 	   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
 	   nil
 	   t)
@@ -736,7 +739,8 @@ With prefix argument, only shows the errors ESS reported."
 		  (set-buffer fbuffer)
 		  (ess-mode)))
 	      (pop-to-buffer fbuffer)
-	      (goto-line linenum))
+	      ;;(goto-line linenum) gives warning: is said to be replaced by
+	      (goto-char (point-min)) (forward-line (1- linenum)))
 	    (princ errmess t))
 	(message "Not a syntax error.")
 	(ess-display-temp-buffer errbuff)))))
@@ -1207,11 +1211,11 @@ style variables buffer local."
     (if (not quiet)
 	(message "ESS-style: %s" ess-style))
     ; finally, set the indentation style variables making each one local
-    (mapcar (function (lambda (ess-style-pair)
-			(make-local-variable (car ess-style-pair))
-			(set (car ess-style-pair)
-			     (cdr ess-style-pair))))
-	    (cdr (assq ess-style ess-style-alist)))
+    (mapc (function (lambda (ess-style-pair)
+		      (make-local-variable (car ess-style-pair))
+		      (set (car ess-style-pair)
+			   (cdr ess-style-pair))))
+	  (cdr (assq ess-style ess-style-alist)))
     ess-style))
 
 ;;*;; Creating and manipulating dump buffers
