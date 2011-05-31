@@ -1,7 +1,12 @@
-2011-05-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+2011-05-31  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-mode.el (ess-beginning-of-function): test that the beg.of.fun.
-	is not inside a string or comment.
+	* ess-sas-l.el (sas-fix-life-tables): re-implemented
+	with re-search-forward/replace-match
+	(fix-page-breaks): re-implemented
+	with re-search-forward/replace-match; unfortunately,
+	not really sure what this function is meant to do;
+	probably not very useful to anyone at this point, but
+	it does compile without any warnings!
 
 2011-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
 
