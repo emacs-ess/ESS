@@ -752,34 +752,34 @@ With prefix argument, only shows the errors ESS reported."
 (defun ess-electric-brace (arg)
   "Insert character and correct line's indentation."
   (interactive "P")
-;; skeleton-pair takes precedence
-(if (and (boundp 'skeleton-pair) skeleton-pair (featurep 'skeleton))
-  (skeleton-pair-insert-maybe "{")
-;; else
-  (let (insertpos)
-    (if (and (not arg)
-	     (eolp)
-	     (or (save-excursion
-		   (skip-chars-backward " \t")
-		   (bolp))
-		 (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
-	(progn
-	  (insert (if (featurep 'xemacs) (event-to-character last-command-event) last-command-event))
-	  (ess-indent-line)
-	  (if ess-auto-newline
-	      (progn
-		(newline)
-		;; (newline) may have done auto-fill
-		(setq insertpos (- (point) 2))
-		(ess-indent-line)))
+  ;; skeleton-pair takes precedence
+  (if (and (boundp 'skeleton-pair) skeleton-pair (featurep 'skeleton))
+      (skeleton-pair-insert-maybe "{")
+    ;; else
+    (let (insertpos)
+      (if (and (not arg)
+	       (eolp)
+	       (or (save-excursion
+		     (skip-chars-backward " \t")
+		     (bolp))
+		   (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
+	  (progn
+	    (insert (if (featurep 'xemacs) (event-to-character last-command-event) last-command-event))
+	    (ess-indent-line)
+	    (if ess-auto-newline
+		(progn
+		  (newline)
+		  ;; (newline) may have done auto-fill
+		  (setq insertpos (- (point) 2))
+		  (ess-indent-line)))
+	    (save-excursion
+	      (if insertpos (goto-char (1+ insertpos)))
+	      (delete-char -1))))
+      (if insertpos
 	  (save-excursion
-	    (if insertpos (goto-char (1+ insertpos)))
-	    (delete-char -1))))
-    (if insertpos
-	(save-excursion
-	  (goto-char insertpos)
-	  (self-insert-command (prefix-numeric-value arg)))
-      (self-insert-command (prefix-numeric-value arg))))))
+	    (goto-char insertpos)
+	    (self-insert-command (prefix-numeric-value arg)))
+	(self-insert-command (prefix-numeric-value arg))))))
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
