@@ -98,6 +98,7 @@ the mode line."
   "`ess-transcript-mode' for SAS."
   (interactive)
   (SAS-mode)
+  (setq mode-name "ESS[LOG]")
   (ess-transcript-minor-mode 1)
   (toggle-read-only t)) ;; to protect the buffer.
 

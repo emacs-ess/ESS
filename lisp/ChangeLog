@@ -1,3 +1,10 @@
+2011-06-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-log-mode): change
+	mode-name to ESS[LOG] so that tabbar-mode
+	knows to list the .log's separately from
+	the .sas buffers
+
 2011-05-31  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (sas-fix-life-tables): re-implemented
