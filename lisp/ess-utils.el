@@ -90,41 +90,18 @@ from the beginning of the buffer."
   "Revert from disk if file and buffer last modification times are different."
   (interactive)
 
-; vc-revert-buffer acting strangely in Emacs 21.1; no longer used
-
-; Long-winded Explanation
-
-; Maybe I am being a little hard on 21.1, but it behaves differently.
-; Basically, revert means roll-back.  But, for SAS purposes, you never
-; really want to roll-back.  You want to refresh the buffer with the
-; disk file which is being modified in the background.  So, we only
-; roll-back when the date/time stamp of the file is newer than the buffer
-; (technically, this is roll-ahead).
-
-; However, I was supporting a version control system (RCS) when I originally
-; wrote this function.  I added functionality so that the roll-back was
-; performed by vc.  This worked fine until 21.1.  In 21.1 when you call this
-; function with vc/CVS, it actually rolls-back to the prior version of the
-; file rather than refreshing.  Apparently, it ignores the file on disk.
-; This change actually makes some sense, but it isn't what we want.
-
-; Long-winded Explanation Ends (no longer interesting, will remove soon)
-
 ; whether or not a revert is needed, force load local variables
 ; for example, suppose that you change the local variables and then
 ; save the file, a revert is unneeded, but a force load is
   (hack-local-variables)
 
   (if (not (verify-visited-file-modtime (current-buffer))) (progn
-      (revert-buffer t t)
+      (let ((ess-temp-store-point (point)))
+	(revert-buffer t t)
+	(goto-char ess-temp-store-point))
       t)
   nil))
 
-;;      (cond ((and (fboundp 'vc-backend-deduce)
-;;		  (vc-backend-deduce (buffer-file-name))) (vc-revert-buffer))
-;;	    ((and (fboundp 'vc-backend)
-;;		  (vc-backend (buffer-file-name))) (vc-revert-buffer))
-;;	    (t (revert-buffer t t)))))
 
 (defun ess-space-around (word &optional from verbose)
   "Replace-regexp .. ensuring space around all occurences of WORD,
