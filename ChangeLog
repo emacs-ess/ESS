@@ -1,3 +1,8 @@
+2011-06-20  Henning Redestig  <henning@psc.riken.jp>
+
+	* etc/ess-roxy-tests.R (trickyInArgsComments): small examples I
+	used to try out ess-roxy
+
 2011-05-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* doc/unixlike.texi (Unix installation):
@@ -1394,7 +1399,7 @@
 
 	* lisp/ess-iw32.el:
 	The repair of the C-c C-l problem reported by S.McClatchie
-	<s.mcclatchie@niwa.cri.nz> and BjÅ¯rn-Helge Mevik <bhm@math.uio.no>
+	<s.mcclatchie@niwa.cri.nz> and Bjî©Ãrn-Helge Mevik <bhm@math.uio.no>
 	required a change to ess-command in ess-iw32.el.  I believe the problem
 	was limited to Windows machines and first appeared in 5.1.19 when I added
 	ess-command to ess-iw32.el.

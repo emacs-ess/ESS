@@ -547,11 +547,12 @@ list of strings."
 	     (ess-beginning-of-function)
 	     (buffer-substring-no-properties
 	      (progn
-		(search-forward-regexp "[=,-]* *function *" nil nil 1)
+		(search-forward-regexp "\\([=,-]+ *function *\\|^\s*function\\)" nil nil 1)
 		(+ (point) 1))
 	      (progn
 		(ess-roxy-match-paren)
 		(point))))))
+      (setq args-txt (replace-regexp-in-string "#+.*\n" "" args-txt))
       (setq args-txt (replace-regexp-in-string "([^)]+)" "" args-txt))
       (setq args-txt (replace-regexp-in-string "=[^,]+" "" args-txt))
       (setq args-txt (replace-regexp-in-string "[ \t\n]+" "" args-txt))
