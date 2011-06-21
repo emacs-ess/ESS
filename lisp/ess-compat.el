@@ -252,10 +252,10 @@ the correct \"8.3\"-style directory name."))))
 
 
 (defun ess-sleep ()
-  "Put emacs to sleep for `ess-sleep-for' seconds (floats work).
+  "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work).
 Sometimes its necessary to wait for a shell prompt."
-  (if (featurep 'xemacs) (sleep-for ess-sleep-for)
-    (sleep-for 0 (truncate (* ess-sleep-for 1000)))))
+  (if (featurep 'xemacs) (sleep-for ess-sleep-for-shell)
+    (sleep-for 0 (truncate (* ess-sleep-for-shell 1000)))))
 
 (provide 'ess-compat)
 

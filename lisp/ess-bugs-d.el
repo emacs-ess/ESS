@@ -35,7 +35,7 @@
 (setq auto-mode-alist
     (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
 
-(defvar ess-bugs-command "OpenBUGS.sh" "Default BUGS program in PATH.")
+(defvar ess-bugs-command "OpenBUGS" "Default BUGS program in PATH.")
 (make-local-variable 'ess-bugs-command)
 
 (defvar ess-bugs-monitor '("") "Default list of variables to monitor.")
@@ -154,7 +154,7 @@
 ;	    (insert (ess-replace-in-string
 ;		(ess-replace-in-string ess-bugs-temp-chains
 ;		    "modelCompile([0-9]+)" "#") "##" "to"))
-	    (insert "SamplesCoda('*', '" ess-bugs-file-root "')\n")
+	    (insert "samplesCoda('*', '" ess-bugs-file-root "')\n")
 
 ;	    (if ess-bugs-system (progn
 ;		(insert "system rm -f " ess-bugs-file-root ".ind\n")
@@ -174,7 +174,7 @@
 	    (insert "modelQuit()\n")
 	    (insert "Local Variables" ":\n")
 	    (insert "ess-bugs-chains:" (format "%d" ess-bugs-chains) "\n")
-	    (insert "ess-bugs-command:\"bugs\"\n")
+	    (insert "ess-bugs-command:\"" ess-bugs-command "\"\n")
 	    (insert "End:\n")
 	))
     ))
@@ -198,6 +198,7 @@
 (if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bmd")
 ;else
     (shell)
+    (ess-sleep)
 
     (if (w32-shell-dos-semantics)
 	(if (string-equal ":" (substring ess-bugs-file 1 2))
@@ -218,15 +219,9 @@
 ;		(concat (format "%d " bugs-chains) ess-bugs-temp-chains))
 ;	    (setq bugs-chains (- bugs-chains 1)))
 
-	(insert ess-bugs-batch-pre-command " " bugs-command " "
-		ess-bugs-file-root ".bmd "
-
-		(if (or (equal shell-file-name "/bin/csh")
-			(equal shell-file-name "/bin/tcsh")
-			(equal shell-file-name "/bin/zsh"))
-			    (concat ">& " ess-bugs-file-root ".bog ")
-		;else
-			    "> " ess-bugs-file-root ".bog 2>&1 ")
+	(insert (concat
+		 ess-bugs-batch-pre-command " " bugs-command " < "
+		 ess-bugs-file-root ".bmd > " ess-bugs-file-root ".bog "
 
 ;		;.txt not recognized by BOA and impractical to over-ride
 ;		"&& (rm -f " ess-bugs-file-root ".ind; "
@@ -235,10 +230,10 @@
 ;		"rm -f " ess-bugs-file-root "$i.out; "
 ;		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
 
-		ess-bugs-batch-post-command)
+		ess-bugs-batch-post-command))
 
 	(comint-send-input)
-));)
+))
 
 (defun ess-bugs-na-bug ()
     "ESS[BUGS]: Perform Next-Action for .bug"

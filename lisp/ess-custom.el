@@ -1311,6 +1311,10 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type '(choice (const nil) number))
 
+(defcustom ess-sleep-for-shell (if ess-microsoft-p 5 1)
+  "*Pause before sending output to the shell."
+  :group 'ess-proc
+  :type  'number)
 
  ; System variables
 

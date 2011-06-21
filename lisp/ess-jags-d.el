@@ -198,6 +198,7 @@
 (if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jmd")
 ;else
     (shell)
+    (ess-sleep)
 
     (if (w32-shell-dos-semantics)
 	(if (string-equal ":" (substring ess-bugs-file 1 2))
@@ -238,7 +239,7 @@
 		ess-bugs-batch-post-command)
 
 	(comint-send-input)
-));)
+))
 
 (defun ess-jags-na-bug ()
     "ESS[JAGS]: Perform Next-Action for .jug"
