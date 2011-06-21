@@ -1,3 +1,13 @@
+2011-06-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-rtf-replace-chars): fixing form feed bug
+
+	* ess-bugs-d.el/ess-custom.el/ess-compat.el:
+	fix a bunch of bugs and get ESS[BUGS] working for GNU Emacs
+	utilize (ess-sleep) after (shell) which, apparently, is
+	necessary for GNU Emacs; rename ess-sleep-for to
+	ess-sleep-for-shell and move to ess-custom
+
 2011-06-20  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-get-function-args): Enhancement to handle

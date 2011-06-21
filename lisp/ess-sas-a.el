@@ -875,7 +875,7 @@ optional argument is non-nil, then set-buffer rather than switch."
   (goto-char (point-min))
   (while (re-search-forward "\n" nil t) (replace-match "\\par\n" nil t))
   (goto-char (point-min))
-  (while (re-search-forward "\f" nil t) (replace-match "\\page" nil t))
+  (while (re-search-forward "\f" nil t) (replace-match "\\page\n" nil t))
   (goto-char (point-min))
   (while (re-search-forward "\t" nil t) (replace-match "\\tab" nil t)))
 
