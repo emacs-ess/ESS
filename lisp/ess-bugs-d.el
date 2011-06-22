@@ -78,16 +78,14 @@
 					font-lock-function-name-face)
 
 	;; .bmd files
-	(cons (concat "\\<\\(adapt\\|cd\\|clear\\|coda\\|data\\|dir\\|"
-		"exit\\|in\\(itialize\\)?\\|load\\|model\\|monitors\\|parameters\\|"
-		"pwd\\|run\\|s\\(amplers\\|ystem\\)\\|to\\|update\\)[ \t\n]")
-					font-lock-keyword-face)
+	(cons (concat (regexp-opt '("modelCheck" "modelCompile" "modelData" "modelGenInits" 
+				    "modelInits" "modelQuit" "modelUpdate" 
+				    "samplesCoda" "samplesSet"
+				    ) 'words) "(")
+	     font-lock-function-name-face)
 
-	(cons "\\<\\(compile\\|monitor\\)[, \t\n]"
-					font-lock-keyword-face)
-
-	(cons "[, \t\n]\\(by\\|chain\\|nchains\\|stem\\|thin\\|type\\)[ \t\n]*("
-					font-lock-function-name-face)
+	(cons (concat (regexp-opt '("Local Variables" "End") 'words) ":")
+	     font-lock-keyword-face)
     )
     "ESS[BUGS]: Font lock keywords."
 )
@@ -105,6 +103,7 @@
             (insert "    }\n")
             (insert "}\n")
 	    (insert "#Local Variables" ":\n")
+;	    (insert "#enable-local-variables: :all\n")
 	    (insert "#ess-bugs-chains:1\n")
 	    (insert "#ess-bugs-monitor:(\"\")\n")
 	    (insert "#ess-bugs-thin:1\n")
@@ -173,6 +172,7 @@
 
 	    (insert "modelQuit()\n")
 	    (insert "Local Variables" ":\n")
+;	    (insert "enable-local-variables: :all\n")
 	    (insert "ess-bugs-chains:" (format "%d" ess-bugs-chains) "\n")
 	    (insert "ess-bugs-command:\"" ess-bugs-command "\"\n")
 	    (insert "End:\n")

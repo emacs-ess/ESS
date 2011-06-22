@@ -1,3 +1,9 @@
+2011-06-22  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-font-lock-keywords): updating to 
+	new OpenBUGS scripting language (incomplete so far, but
+	serviceable)
+
 2011-06-21  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-rtf-replace-chars): fixing form feed bug
