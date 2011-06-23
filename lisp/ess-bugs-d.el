@@ -80,7 +80,7 @@
 	;; .bmd files
 	(cons (concat (regexp-opt '("modelCheck" "modelCompile" "modelData" "modelGenInits" 
 				    "modelInits" "modelQuit" "modelUpdate" 
-				    "samplesCoda" "samplesSet"
+				    "samplesCoda" "samplesSet" "samplesThin"
 				    ) 'words) "(")
 	     font-lock-function-name-face)
 
@@ -178,18 +178,6 @@
 	    (insert "End:\n")
 	))
     ))
-)
-
-(defun ess-bugs-next-action ()
-   "ESS[BUGS]: Perform the appropriate next action."
-   (interactive)
-   (ess-bugs-file)
-
-   (if (equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug)
-   ;;else
-   (if (equal ".bmd" ess-bugs-file-suffix) (progn
-	(ess-save-and-set-local-variables)
-	(ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))))
 )
 
 (defun ess-bugs-na-bmd (bugs-command bugs-chains)

@@ -33,7 +33,7 @@
 (require 'ess-inf)
 
 (setq auto-mode-alist
-    (append '(("\\.[jJ][uU][gG]\\'" . ess-jags-mode)) auto-mode-alist))
+    (append '(("\\.[jJ][aA][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
 (defvar ess-jags-command "jags" "Default JAGS program in PATH.")
 (make-local-variable 'ess-jags-command)
@@ -57,7 +57,7 @@
 
 (defvar ess-jags-font-lock-keywords
     (list
-	;; .jug files
+	;; .jag files
 	(cons "#.*\n"			font-lock-comment-face)
 
 	(cons "^[ \t]*\\(model\\|var\\)\\>"
@@ -98,7 +98,7 @@
    (find-file (concat ess-bugs-file-dir ess-bugs-file-root suffix))
 
    (if (equal 0 (buffer-size)) (progn
-	(if (equal ".jug" suffix) (progn
+	(if (equal ".jag" suffix) (progn
 	    (insert "var ;\n")
 	    (insert "model {\n")
             (insert "    for (i in 1:N) {\n    \n")
@@ -142,7 +142,7 @@
 				(car ess-jags-monitor) ", thin(" (format "%d" ess-jags-thin) ")\n")))
 		    (setq ess-jags-monitor (cdr ess-jags-monitor)))
 
-	    (insert "model in \"" ess-bugs-file-root ".jug\"\n")
+	    (insert "model in \"" ess-bugs-file-root ".jag\"\n")
 	    (insert "data in \"" ess-bugs-file-root ".jdt\"\n")
 	    (insert (ess-replace-in-string ess-jags-temp-chains "##" "in"))
 	    (insert "initialize\n")
@@ -178,18 +178,6 @@
 	    (insert "End:\n")
 	))
     ))
-)
-
-(defun ess-bugs-next-action ()
-   "ESS[JAGS]: Perform the appropriate next action."
-   (interactive)
-   (ess-bugs-file)
-
-   (if (equal ".jug" ess-bugs-file-suffix) (ess-jags-na-bug)
-   ;;else
-   (if (equal ".jmd" ess-bugs-file-suffix) (progn
-	(ess-save-and-set-local-variables)
-	(ess-jags-na-jmd ess-jags-command ess-jags-chains))))
 )
 
 (defun ess-jags-na-jmd (jags-command jags-chains)
@@ -242,9 +230,9 @@
 ))
 
 (defun ess-jags-na-bug ()
-    "ESS[JAGS]: Perform Next-Action for .jug"
+    "ESS[JAGS]: Perform Next-Action for .jag"
 
-	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jug")
+	(if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jag")
 	;else
 	    (ess-save-and-set-local-variables)
 	    (ess-jags-switch-to-suffix ".jmd"

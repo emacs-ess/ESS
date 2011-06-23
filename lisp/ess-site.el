@@ -246,7 +246,7 @@ between .s or .S files and assembly mode.
 	   ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
 	   ;; Many .log/.lst files, not just SAS
 	   ;;("\\.log\\'"	. SAS-log-mode)
-	   ;;("\\.lst\\'"	. SAS-listing-mode)
+	   ;;("\\.[Ll][Ss][Tt]\\'"	. SAS-listing-mode)
 	   ("\\.[Ss]t\\'"	. S-transcript-mode)
 	   ("\\.[Ss]out"	. S-transcript-mode)
 	   ("\\.[Rr]t\\'"	. R-transcript-mode)
@@ -255,7 +255,7 @@ between .s or .S files and assembly mode.
            ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
-           ("\\.[Jj][Uu][Gg]\\'"         . ess-jags-mode)
+           ("\\.[Jj][Aa][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Oo][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
           )

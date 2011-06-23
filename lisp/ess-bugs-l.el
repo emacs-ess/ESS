@@ -181,6 +181,21 @@ and `ess-bugs-file-dir'."
     (interactive)
     (insert "<- "))
 
+(defun ess-bugs-next-action ()
+   "ESS[BUGS/JAGS]: Perform the appropriate next action."
+   (interactive)
+   (ess-bugs-file)
+
+   (cond ((equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+	 ((equal ".jag" ess-bugs-file-suffix) (ess-jags-na-bug))
+	 ((equal ".bmd" ess-bugs-file-suffix) 
+	  (ess-save-and-set-local-variables)
+	  (ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))
+	 ((equal ".jmd" ess-bugs-file-suffix) 
+	  (ess-save-and-set-local-variables)
+	  (ess-jags-na-jmd ess-jags-command ess-jags-chains)))
+)
+
 (defun ess-bugs-sci-to-round-4-dp () 
     "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
     (interactive)
@@ -225,7 +240,7 @@ and `ess-bugs-file-dir'."
   :group 'ess-bugs-shell
   :type  'string)
 
-(defcustom ess-bugs-shell-command "bugs"
+(defcustom ess-bugs-shell-command "OpenBUGS"
   "*ESS[BUGS-Shell]: The name of the command to run BUGS interactively.
 
 Set to the name of the batch BUGS script that comes with ESS or

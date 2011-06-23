@@ -1,3 +1,10 @@
+2011-06-23  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-l.el (ess-bugs-next-action): separation of
+	ESS[BUGS] and ESS[JAGS] is now functional.  ESS[JAGS]
+	is pretty complete, but ESS[BUGS] is still in development,
+	however, it does appear to work.
+	
 2011-06-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-d.el (ess-bugs-font-lock-keywords): updating to 
