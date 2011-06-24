@@ -212,7 +212,8 @@
 
 		(if (or (equal shell-file-name "/bin/csh")
 			(equal shell-file-name "/bin/tcsh")
-			(equal shell-file-name "/bin/zsh"))
+			(equal shell-file-name "/bin/zsh")
+			(equal shell-file-name "/bin/bash"))
 			    (concat ">& " ess-bugs-file-root ".jog ")
 		;else
 			    "> " ess-bugs-file-root ".jog 2>&1 ")
