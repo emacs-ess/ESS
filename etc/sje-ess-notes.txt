@@ -1,6 +1,6 @@
 Stephen Eglen's notes on future changes to ESS                   -*- org -*-
 
-
+* Problem with ESS infrastructure and Martin away?  Email isg@math.ethz.ch
 * ess-history-file
 
 needs documenting and possibly updating:
