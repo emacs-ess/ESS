@@ -207,18 +207,13 @@
 ;		(concat (format "%d " bugs-chains) ess-bugs-temp-chains))
 ;	    (setq bugs-chains (- bugs-chains 1)))
 
-	(insert (concat
+	(insert "echo '"
 		 ess-bugs-batch-pre-command " " bugs-command " < "
-		 ess-bugs-file-root ".bmd > " ess-bugs-file-root ".bog "
+		 ess-bugs-file-root ".bmd > " ess-bugs-file-root ".bog 2>&1 "
+		 ess-bugs-batch-post-command "' > " ess-bugs-file-root ".bsh")
+	(comint-send-input)
 
-;		;.txt not recognized by BOA and impractical to over-ride
-;		"&& (rm -f " ess-bugs-file-root ".ind; "
-;		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
-;		"for i in " ess-bugs-temp-chains "; do; "
-;		"rm -f " ess-bugs-file-root "$i.out; "
-;		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
-
-		ess-bugs-batch-post-command))
+	(insert "at -f " ess-bugs-file-root ".bsh now")
 
 	(comint-send-input)
 ))
