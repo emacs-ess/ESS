@@ -1,3 +1,10 @@
+2011-07-08  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-font-lock-keywords): adding
+	keywords that are members of both the OpenBUGS script
+	language and BRUGS (why the 2 sets are not the
+	same; I don't know)
+
 2011-07-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the 

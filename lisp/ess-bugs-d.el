@@ -78,9 +78,21 @@
 					font-lock-function-name-face)
 
 	;; .bmd files
-	(cons (concat (regexp-opt '("modelCheck" "modelCompile" "modelData" "modelGenInits" 
-				    "modelInits" "modelQuit" "modelUpdate" 
-				    "samplesCoda" "samplesSet" "samplesThin"
+	(cons (concat (regexp-opt '(
+				    "dicClear" "dicSet" "dicStats"
+				    "infoMemory" "infoModules" "infoNodeMethods" 
+				    "infoNodeTypes" "infoNodeValues"
+				    "infoUpdatersbyDepth" "infoUpdatersbyName"
+				    "modelCheck" "modelCompile" "modelData" 
+				    "modelDisable" "modelEnable" "modelGenInits" 
+				    "modelInits" "modelPrecision" "modelQuit" 
+				    "modelSaveState" "modelSetAP" "modelSetIts" 
+				    "modelSetOR" "modelSetRN" "modelUpdate" 
+				    "ranksClear" "ranksSet" "ranksStats"
+				    "samplesAutoC" "samplesBgr" "samplesCoda" 
+				    "samplesDensity" "samplesHistory" "samplesSet" 
+				    "sampleStats" "samplesThin"
+				    "summaryClear" "summarySet" "summaryStats"
 				    ) 'words) "(")
 	     font-lock-function-name-face)
 
