@@ -423,6 +423,7 @@ on the way."
     ;(interactive)
     (ess-sas-file-path)
     (ess-sas-goto-shell t)
+    (comint-send-input)
     (if (equal ess-sas-submit-method 'sh)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
 	"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))

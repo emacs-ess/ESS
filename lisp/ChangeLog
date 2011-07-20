@@ -1,5 +1,9 @@
 2011-07-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
+	* ess-sas-a.el (ess-sas-cd): attempt to 
+	workaround Emacs bug; shell buffer snarfing 
+	the cd command
+
 	* ess-bugs-d.el (ess-bugs-na-bmd): attempt to 
 	workaround Emacs bug; shell buffer snarfing 
 	the cd command
