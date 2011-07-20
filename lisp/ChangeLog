@@ -1,3 +1,9 @@
+2011-07-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-na-bmd): attempt to 
+	workaround Emacs bug; shell buffer snarfing 
+	the cd command
+
 2011-07-08  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-d.el (ess-bugs-font-lock-keywords): adding

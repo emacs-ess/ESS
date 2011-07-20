@@ -200,15 +200,10 @@
     (shell)
     (ess-sleep)
 
-    (if (w32-shell-dos-semantics)
-	(if (string-equal ":" (substring ess-bugs-file 1 2))
-	    (progn
-		(insert (substring ess-bugs-file 0 2))
-		(comint-send-input)
-	    )
-	)
-    )
+    (if (and (w32-shell-dos-semantics) (string-equal ":" (substring ess-bugs-file 1 2)))
+		(insert (substring ess-bugs-file 0 2)))
 
+	(comint-send-input)
 	(insert "cd \"" ess-bugs-file-dir "\"")
 	(comint-send-input)
 
