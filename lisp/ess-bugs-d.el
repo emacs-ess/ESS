@@ -214,13 +214,20 @@
 ;		(concat (format "%d " bugs-chains) ess-bugs-temp-chains))
 ;	    (setq bugs-chains (- bugs-chains 1)))
 
+	;; (insert "echo '"
+	;; 	 ess-bugs-batch-pre-command " " bugs-command " < "
+	;; 	 ess-bugs-file-root ".bmd > " ess-bugs-file-root ".bog 2>&1 "
+	;; 	 ess-bugs-batch-post-command "' > " ess-bugs-file-root ".bsh")
+	;; (comint-send-input)
+
+	;; (insert "at -f " ess-bugs-file-root ".bsh now")
+
+	;; (comint-send-input)
+
 	(insert "echo '"
 		 ess-bugs-batch-pre-command " " bugs-command " < "
 		 ess-bugs-file-root ".bmd > " ess-bugs-file-root ".bog 2>&1 "
-		 ess-bugs-batch-post-command "' > " ess-bugs-file-root ".bsh")
-	(comint-send-input)
-
-	(insert "at -f " ess-bugs-file-root ".bsh now")
+		 ess-bugs-batch-post-command "' | at now")
 
 	(comint-send-input)
 ))

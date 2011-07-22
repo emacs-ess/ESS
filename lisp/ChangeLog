@@ -1,3 +1,9 @@
+2011-07-22  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the 
+	OpenBUGS nohup bug with "at"; this time without
+	creating additional files, i.e. piping to "at"
+
 2011-07-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-cd): attempt to 
