@@ -1,18 +1,21 @@
+2011-07-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (ess-insert-S-assign): factored out from
+	ess-smart-underscore; now also assigned to A-- for *-MM-keys.
+
+
 2011-07-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the 
+	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the
 	OpenBUGS nohup bug with "at"; this time without
 	creating additional files, i.e. piping to "at"
 
 2011-07-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el (ess-sas-cd): attempt to 
-	workaround Emacs bug; shell buffer snarfing 
-	the cd command
+	* ess-sas-a.el (ess-sas-cd): attempt to workaround Emacs bug; shell
+	buffer snarfing the cd command.
 
-	* ess-bugs-d.el (ess-bugs-na-bmd): attempt to 
-	workaround Emacs bug; shell buffer snarfing 
-	the cd command
+	* ess-bugs-d.el (ess-bugs-na-bmd): ditto
 
 2011-07-08  Rodney Sparapani  <rsparapa@mcw.edu>
 
@@ -23,7 +26,7 @@
 
 2011-07-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the 
+	* ess-bugs-d.el (ess-bugs-na-bmd): workaround the
 	OpenBUGS nohup bug with "at"
 
 2011-06-24  Rodney Sparapani  <rsparapa@mcw.edu>
@@ -36,10 +39,10 @@
 	ESS[BUGS] and ESS[JAGS] is now functional.  ESS[JAGS]
 	is pretty complete, but ESS[BUGS] is still in development,
 	however, it does appear to work.
-	
+
 2011-06-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-bugs-d.el (ess-bugs-font-lock-keywords): updating to 
+	* ess-bugs-d.el (ess-bugs-font-lock-keywords): updating to
 	new OpenBUGS scripting language (incomplete so far, but
 	serviceable)
 

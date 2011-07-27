@@ -660,11 +660,20 @@ an underscore is always inserted. "
        (ess-inside-string-or-comment-p (point))
        (not (equal ess-language "S")))
       (insert "_")
-    ;; Else one keypress produces ess-S-assign; a second keypress will delete
-    ;; ess-S-assign and instead insert _
-    ;; Rather than trying to count a second _ keypress, just check whether
-    ;; the current point is preceded by ess-S-assign.
-    (let ((assign-len (length ess-S-assign)))
+    ;; else:
+    (ess-insert-S-assign)))
+
+
+(defun ess-insert-S-assign ()
+  "Insert the assignment operator `ess-S-assign', unless it is already there.
+In that case, the it is removed and replaced by the underscore.
+  `ess-S-assign', typically \" <- \", can be customized."
+  (interactive)
+  ;; one keypress produces ess-S-assign; a second keypress will delete
+  ;; ess-S-assign and instead insert _
+  ;; Rather than trying to count a second _ keypress, just check whether
+  ;; the current point is preceded by ess-S-assign.
+  (let ((assign-len (length ess-S-assign)))
       (if (and
 	   (>= (point) (+ assign-len (point-min))) ;check that we can move back
 	   (save-excursion
@@ -675,7 +684,7 @@ an underscore is always inserted. "
 	    (delete-backward-char assign-len)
 	    (insert "_"))
 	(delete-horizontal-space)
-	(insert ess-S-assign)))))
+	(insert ess-S-assign))))
 
 (defun ess-toggle-underscore (force)
   "Set the \"_\" (underscore) key to \\[ess-smart-underscore] or back to \"_\".
@@ -709,6 +718,10 @@ an underscore is always inserted. "
   (require 'ess-inf); dito
   (define-key ess-mode-map          "\C-cf" 'ess-insert-function-outline)
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
+
+  ;; Make A-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
+  (define-key ess-mode-map          [?\A--] 'ess-insert-S-assign)
+  (define-key inferior-ess-mode-map [?\A--] 'ess-insert-S-assign)
   )
 
 
