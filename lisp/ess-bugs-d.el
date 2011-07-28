@@ -165,6 +165,9 @@
 ;	    (insert (ess-replace-in-string
 ;		(ess-replace-in-string ess-bugs-temp-chains
 ;		    "modelCompile([0-9]+)" "#") "##" "to"))
+
+	    (if (< 1 bugs-thin) (insert "samplesThin(" (format "%d" bugs-thin) ")\n"))
+
 	    (insert "samplesCoda('*', '" ess-bugs-file-root "')\n")
 
 ;	    (if ess-bugs-system (progn
