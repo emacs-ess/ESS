@@ -1,3 +1,7 @@
+2011-07-30  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 5.14 released.
+
 2011-06-20  Henning Redestig  <henning@psc.riken.jp>
 
 	* etc/ess-roxy-tests.R (trickyInArgsComments): small examples I
