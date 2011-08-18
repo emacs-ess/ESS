@@ -159,7 +159,8 @@
 	    (insert "modelData('" ess-bugs-file-root ".bdt')\n")
 	    (insert (ess-replace-in-string ess-bugs-temp-chains "##" "in"))
 	    (insert "modelGenInits()\n")
-	    (insert "modelUpdate(" (format "%d" (* bugs-thin bugs-burnin)) ")\n")
+	    (insert "modelUpdate(" (format "%d" bugs-burnin) ")\n")
+	    ;(insert "modelUpdate(" (format "%d" (* bugs-thin bugs-burnin)) ")\n")
 	    (insert ess-bugs-temp-monitor)
 	    (insert "modelUpdate(" (format "%d" (* bugs-thin bugs-update)) ")\n")
 ;	    (insert (ess-replace-in-string

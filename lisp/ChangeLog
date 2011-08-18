@@ -1,3 +1,8 @@
+2011-08-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-switch-to-suffix): let's not
+	magnify burn-in (via the thinning multiple)
+
 2011-08-17  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-r-d.el (ess-r-versions): Add "R32" and "R64" if working on a
