@@ -76,21 +76,20 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
   )
 
-(defconst ess-roxy-font-lock-keywords
-  (eval-when-compile
-    `((,(concat ess-roxy-str " *\\([@\\]"
-		(regexp-opt ess-roxy-tags-param t)
-		"\\)\\>")
-       (1 'font-lock-keyword-face prepend))
-      (,(concat ess-roxy-str " *\\([@\\]"
-         (regexp-opt '("param") t)
-         "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
-       (1 'font-lock-keyword-face prepend)
-       (3 'font-lock-variable-name-face prepend))
-      (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
-       (0 'font-lock-variable-name-face prepend))
-      (,(concat ess-roxy-str)
-       (0 'bold prepend)))))
+(defvar ess-roxy-font-lock-keywords
+  `((,(concat ess-roxy-str " *\\([@\\]"
+	      (regexp-opt ess-roxy-tags-param t)
+	      "\\)\\>")
+     (1 'font-lock-keyword-face prepend))
+    (,(concat ess-roxy-str " *\\([@\\]"
+	      (regexp-opt '("param") t)
+	      "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
+     (1 'font-lock-keyword-face prepend)
+     (3 'font-lock-variable-name-face prepend))
+    (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
+     (0 'font-lock-variable-name-face prepend))
+    (,(concat ess-roxy-str)
+     (0 'bold prepend))))
 
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing in-code documentation."
