@@ -1,3 +1,8 @@
+2011-08-30  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-swv.el (ess-swv-plug-into-AUCTeX): Evaluate this function
+	after loading tex.
+
 2011-08-18  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-d.el (ess-bugs-switch-to-suffix): let's not

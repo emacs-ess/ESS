@@ -269,7 +269,7 @@ file and latex the result."
       (add-hook 'Rnw-mode-hook 'ess-swv-add-TeX-commands)
     (remove-hook 'Rnw-mode-hook 'ess-swv-add-TeX-commands)
     (ess-swv-remove-TeX-commands)))
-(when ess-swv-plug-into-AUCTeX-p (ess-swv-plug-into-AUCTeX))
+(eval-after-load "tex" '(ess-swv-plug-into-AUCTeX))
 
 (defun ess-swv-toggle-plug-into-AUCTeX ()
   "Toggle inclusion of commands to sweave noweb files and latex the results in
