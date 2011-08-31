@@ -1,3 +1,8 @@
+2011-08-31  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el (ess-get-help-aliases-list): Choose whether to use
+	.readRDS() or readRDS() based on R version.
+
 2011-08-30  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-swv.el (ess-swv-plug-into-AUCTeX): Evaluate this function

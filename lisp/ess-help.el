@@ -544,15 +544,19 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
-  (apply 'append
-	 (mapcar '(lambda (a-file)
-		    (if (file-exists-p a-file)
-			(ess-get-words-from-vector
-			 (format
-			  "names(.readRDS(\"%s\"))\n" a-file))))
-		 (mapcar '(lambda (str) (concat str "/help/aliases.rds"))
-			 (ess-get-words-from-vector
-			  "searchpaths()\n")))))
+  (let ((readrds (if (ess-current-R-at-least "2.13.0")
+		     "readRDS"
+		   ".readRDS")))
+    (apply 'append
+	   (mapcar '(lambda (a-file)
+		      (if (file-exists-p a-file)
+			  (ess-get-words-from-vector
+			   (format
+			    "names(%s(\"%s\"))\n" readrds a-file))))
+		   (mapcar '(lambda (str)
+			      (concat str "/help/aliases.rds"))
+			   (ess-get-words-from-vector
+			    "searchpaths()\n"))))))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."
