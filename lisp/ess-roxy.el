@@ -138,6 +138,20 @@
 	(setq beg (point)))
       beg)))
 
+(defun ess-roxy-in-header-p () 
+  "true if point is the description / details field"
+  (save-excursion
+    (let ((res t)
+	  (cont (ess-roxy-entry-p)))
+      (beginning-of-line)
+      (while cont
+	(if (looking-at (concat "^" ess-roxy-str " *[@].+"))
+	    (progn (setq res nil)
+		   (setq cont nil)))
+	(forward-line -1)
+	(setq cont (ess-roxy-entry-p)))
+	res)))
+
 (defun ess-roxy-beg-of-field ()
   "Get point number at beginning of current field, 0 if not in entry"
   (save-excursion
@@ -149,11 +163,12 @@
 	(setq beg (point))
 	(if (looking-at (concat "^" ess-roxy-str " *[@].+"))
 	    (setq cont nil))
-	(if (looking-at (concat "^" ess-roxy-str " *$"))
-	    (progn
-	      (forward-line 1)
-	      (setq beg (point))
-	      (setq cont nil)))
+	(if (ess-roxy-in-header-p)
+	    (if (looking-at (concat "^" ess-roxy-str " *$"))
+		(progn
+		  (forward-line 1)
+		  (setq beg (point))
+		  (setq cont nil))))
 	(if cont (setq cont (= (forward-line -1) 0))))
       beg)))
 
@@ -182,8 +197,11 @@
       (forward-line 1)
       (setq cont t)
       (while (and (ess-roxy-entry-p) cont)
-	(setq end (point))
-	(if (or (looking-at (concat "^" ess-roxy-str " *$"))
+	(save-excursion 
+	  (end-of-line)
+	  (setq end (point)))
+	(if (or (and (ess-roxy-in-header-p) 
+		     (looking-at (concat "^" ess-roxy-str " *$")))
 		(looking-at (concat "^" ess-roxy-str " *[@].+")))
 	    (progn
 	      (forward-line -1)
