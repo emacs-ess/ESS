@@ -423,7 +423,7 @@ point is"
 		    (string-match "[^[:space:]]*" args-text)
 		    (setq arg-name (match-string 0 args-text))
 		    (setq desc (replace-regexp-in-string
-				(concat "^" arg-name " *") "" args-text))
+				(concat "^" (regexp-quote arg-name) " *") "" args-text))
 		    (setq args (cons (list (concat arg-name)
 					   (concat desc)) args))))
 	      (forward-line -1))

@@ -1,3 +1,8 @@
+2011-09-01  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-get-args-list-from-entry): couldnt really
+	handle the ... argument param description before. can now.
+
 2011-09-01  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-custom.el (ess-history-file): now three-valued;
