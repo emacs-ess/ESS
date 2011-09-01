@@ -165,7 +165,10 @@ to R, put them in the variable `inferior-R-args'."
 		   "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
 
 	    (ess-eval-linewise
-	     (concat ".help.ESS <- " my-R-help-cmd) nil nil nil 'wait-prompt)
+	     ;; not just into .GlobalEnv where it's too easily removed..
+	     (concat "assignInNamespace(\".help.ESS\","
+		     my-R-help-cmd ", ns = asNamespace(\"base\"))")
+	     nil nil nil 'wait-prompt)
 	  ))
 
       ;; else R version <= 2.4.1
