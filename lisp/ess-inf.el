@@ -258,9 +258,12 @@ Alternatively, it can appear in its own frame if
 
       ;; Start from the "right" directory
       (if startdir (setq default-directory startdir))
-      ;; Set up history
-      (setq-default ess-history-file
-		    (concat "." ess-dialect "history"))
+      (if ess-history-file ;; Set up history
+	  (if (eq t ess-history-file)
+	      (setq ess-history-file (concat "." ess-dialect "history"))
+	    ;; otherwise must be a string "..."
+	    (unless (stringp ess-history-file)
+	      (error "`ess-history-file' must be nil, t, or a string"))))
       ;; initialize.
       (let ((ess-directory (if startdir default-directory ess-directory)))
 	(ess-multi procname buf inferior-ess-start-args)))))
@@ -332,9 +335,11 @@ there is no process NAME)."
 	(setq ess-local-process-name proc-name)
 	(goto-char (point-max))
 	;; load past history
-	(setq comint-input-ring-file-name
-	      (expand-file-name ess-history-file ess-directory))
-	(comint-read-input-ring)
+	(when ess-history-file
+	  (setq comint-input-ring-file-name
+		(expand-file-name ess-history-file
+				  (or ess-history-directory ess-directory)))
+	  (comint-read-input-ring))
 	;; create and run process.
 	(ess-write-to-dribble-buffer
 	 (format "(ess-multi 1):  start-args=%s \n"

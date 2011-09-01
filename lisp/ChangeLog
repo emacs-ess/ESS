@@ -1,3 +1,11 @@
+2011-09-01  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (ess-history-file): now three-valued;
+	(nil, t, <string>). If nil, *no* history is read or written.
+
+	* ess-inf.el (inferior-ess, ess-multi): ess-history-file changes;
+	finally *use* the ess-history-directory.
+
 2011-08-31  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-end-of-field): attempt to handle mutiple

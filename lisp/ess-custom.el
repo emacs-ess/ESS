@@ -254,11 +254,16 @@ If this is nil, the history file is relative to `ess-directory'."
   :group 'ess
   :type '(choice (const nil) directory))
 
-(defcustom ess-history-file nil
-  "File to pick up history from.
-If this is a relative file name, it is relative to `ess-history-directory'."
+(defcustom ess-history-file t
+  "File to pick up history from.  nil means *no* history is read or written.
+t means something like \".Rhistory\".
+If this is a relative file name, it is relative to `ess-history-directory'.
+Consequently, if that is set explicitly, you will have one history file
+for all projects."
   :group 'ess
-  :type '(choice (const nil) file))
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)
+		 file))
 
 (defcustom ess-plain-first-buffername t
   "No fancy process buffname for the first process of each type (novice mode)."
