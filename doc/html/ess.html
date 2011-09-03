@@ -271,7 +271,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-5.14
+5.15
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -2619,7 +2619,7 @@ window.
 
 <p class="noindent">to make more of the last output visible.  (To make this happen
 automatically for all inputs, set the variable
-<code>comint-scroll-to-bottom-on-input</code> to <code>t</code>.)
+<code>comint-scroll-to-bottom-on-input</code> to <code>t</code> or <code>'this</code>.)
 
    <p>If the first part of the output is still obscured, use
 <a name="index-reading-long-command-outputs-55"></a>
@@ -2802,7 +2802,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 <p><a name="index-command-history-71"></a><a name="index-editing-commands-72"></a><a name="index-re_002dexecuting-commands-73"></a>
 ESS provides easy-to-use facilities for re-executing or editing previous
 commands.  An input history of the last few commands is maintained (by
-default the last 50 commands are stored, although this can be changed by
+default the last 500 commands are stored, although this can be changed by
 setting the variable <code>comint-input-ring-size</code> in
 <a name="index-comint_002dinput_002dring_002dsize-74"></a><code>inferior-ess-mode-hook</code>.) The simplest history commands simply
 select the next and previous commands in the input history:
@@ -2826,38 +2826,93 @@ it against a regular expression (see <a href="emacs.html#Regexps">Syntax of Regu
 particular variable name for example, these commands are also available:
 
      <ul>
-<li><kbd>M-r</kbd> (<code>comint-previous-matching-input</code>) <br>
-<a name="index-comint_002dprevious_002dmatching_002dinput-77"></a>Prompt for a regular expression, and search backwards through the input
+<li><kbd>M-r</kbd> (<code>comint-history-isearch-backward-regexp</code>) <br>
+<a name="index-comint_002dhistory_002disearch_002dbackward_002dregexp-77"></a>Prompt for a regular expression, and search backwards through the input
 history for a command matching the expression.
 
-     <li><kbd>M-s</kbd> (<code>comint-next-matching-input</code>) <br>
-<a name="index-comint_002dnext_002dmatching_002dinput-78"></a>Prompt for a regular expression, and search backwards through the input
-history for a command matching the expression. 
-</ul>
+     <!-- @item -->
+     <!-- @kbd{M-s} (@code{comint-next-matching-input}) @* -->
+     <!-- @pindex comint-next-matching-input -->
+     <!-- Prompt for a regular expression, and search backwards through the input -->
+     <!-- history for a command matching the expression. -->
+   </ul>
 
 <p class="noindent">A common type of search is to find the last command that began with a
 particular sequence of characters; the following two commands provide an
 easy way to do this:
 
      <ul>
-<li><kbd>A-M-r</kbd> (<code>comint-previous-matching-input-from-input</code>) <br>
-<a name="index-comint_002dprevious_002dmatching_002dinput_002dfrom_002dinput-79"></a>Select the previous command in the history which matches the string
+<li><kbd>C-c M-r</kbd> (<code>comint-previous-matching-input-from-input</code>) <br>
+<a name="index-comint_002dprevious_002dmatching_002dinput_002dfrom_002dinput-78"></a>Select the previous command in the history which matches the string
 typed so far.
 
-     <li><kbd>A-M-s</kbd> (<code>comint-next-matching-input-from-input</code>) <br>
-<a name="index-comint_002dnext_002dmatching_002dinput_002dfrom_002dinput-80"></a>Select the next command in the history which matches the string typed so
+     <li><kbd>C-c M-s</kbd> (<code>comint-next-matching-input-from-input</code>) <br>
+<a name="index-comint_002dnext_002dmatching_002dinput_002dfrom_002dinput-79"></a>Select the next command in the history which matches the string typed so
 far. 
 </ul>
 
 <p class="noindent">Instead of prompting for a regular expression to match against, as they
 instead select commands starting with those characters already entered. 
 For instance, if you wanted to re-execute the last <code>attach()</code>
-command, you may only need to type <kbd>att</kbd> and then <kbd>A-M-r</kbd> and
-<kbd>RET</kbd>.  (Note: you may not have an &lt;ALT&gt; key on your keyboard,
-in which case it may be a good idea to bind these commands to some other
-keys.)
+command, you may only need to type <kbd>att</kbd> and then <kbd>C-c M-r</kbd> and
+<kbd>RET</kbd>.
 
-   <p>See <a href="emacs.html#Shell-Ring">Shell History Ring</a>, for a more detailed discussion of the history mechanism.
+   <p>See <a href="emacs.html#Shell-Ring">Shell History Ring</a>, for a more detailed discussion of the history mechanism,
+and do experiment with the <code>In/Out</code> menu to explore the possibilities.
+
+   <p>Many ESS users like to have even easier access to these, and recommend
+to add something like
+<pre class="example">       (eval-after-load "comint"
+        '(progn
+           (define-key comint-mode-map [up]
+             'comint-previous-matching-input-from-input)
+           (define-key comint-mode-map [down]
+             'comint-next-matching-input-from-input)
+     
+           ;; also recommended for ESS use --
+           (setq comint-scroll-to-bottom-on-input 'this)
+           (setq comint-scroll-to-bottom-on-output 'others)
+           (setq comint-scroll-show-maximum-output t)
+           ))
+</pre>
+   <p>to your <samp><span class="file">.emacs</span></samp> file,
+where the last two settings are typically desirable for the situation where
+you work with a script (e.g., <samp><span class="file">code.R</span></samp>) and send code chunks to the
+process buffer (e.g. <code>*R*</code>). 
+Note however that these settings influence all <code>comint</code>-using emacs
+modes, not just the ESS ones, and for that reason, these customization
+cannot be part of <code>ESS</code> itself.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Saving-History">Saving History</a>
+</ul>
+
+<div class="node">
+<a name="Saving-History"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command-History">Command History</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Command-History">Command History</a>
+
+</div>
+
+<h4 class="subsection">4.5.1 Saving the command history</h4>
+
+<p>The <code>ess-history-file</code> variable, which is <code>t</code> by default,
+together with  <code>ess-history-directory</code>, governs if and where the
+command history is saved and restored between sessions. 
+By default, <code>ess-history-directory</code> is <code>nil</code>, and the command
+history will be stored (as text file) in the <code>ess-directory</code>, e.g., as
+<samp><span class="file">.Rhistory</span></samp>.
+
+   <p>Experienced ESS users often work exclusively with script files rather than
+in a (e.g., <code>*R</code>) console session, and may not want to save any
+history files, and hence have
+<pre class="smallexample">       (setq ess-history-file nil)
+</pre>
+   <p>or will only want one global command history file and have
+<pre class="smallexample">       (setq ess-history-directory "~/.R/")
+</pre>
+   <p>in there <samp><span class="file">.emacs</span></samp> file.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -2892,7 +2947,7 @@ to select particular <dfn>words</dfn> of the input.  A word is defined as a
 sequence of characters separated by whitespace.  (You can modify this
 definition by setting the value of <code>comint-delimiter-argument-list</code>
 to a list of characters that are allowed to separate words and
-<a name="index-comint_002ddelimiter_002dargument_002dlist-81"></a>themselves form words.)  Words are numbered beginning with zero.  The
+<a name="index-comint_002ddelimiter_002dargument_002dlist-80"></a>themselves form words.)  Words are numbered beginning with zero.  The
 word designator usually begins with a &lsquo;<samp><span class="samp">:</span></samp>&rsquo; (colon) character;
 however it may be omitted if the word reference begins with a &lsquo;<samp><span class="samp">^</span></samp>&rsquo;,
 &lsquo;<samp><span class="samp">$</span></samp>&rsquo;, &lsquo;<samp><span class="samp">*</span></samp>&rsquo; or &lsquo;<samp><span class="samp">-</span></samp>&rsquo;.  If the word is to be selected from the
@@ -2963,7 +3018,7 @@ clutter up your transcript and for this reason some of the hot keys
 display their output in a temporary buffer instead of the process buffer
 by default.  This behavior is controlled by the variable
 <code>ess-execute-in-process-buffer</code> which, if
-<a name="index-ess_002dexecute_002din_002dprocess_002dbuffer-82"></a>non-<code>nil</code>, means that these commands will produce their output in
+<a name="index-ess_002dexecute_002din_002dprocess_002dbuffer-81"></a>non-<code>nil</code>, means that these commands will produce their output in
 the process buffer instead.  In any case, passing a prefix argument to
 the commands (with <kbd>C-u</kbd>) will reverse the meaning of
 <code>ess-execute-in-process-buffer</code> for that command, i.e. the output
@@ -2973,18 +3028,18 @@ this way:
 
      <ul>
 <li><kbd>C-c C-x</kbd> (<code>ess-execute-objects</code>) <br>
-<a name="index-ess_002dexecute_002dobjects-83"></a>Sends the <code>objects()</code>
-<a name="index-objects_0028_0029-84"></a>command to the ESS process.  A prefix argument specifies the
+<a name="index-ess_002dexecute_002dobjects-82"></a>Sends the <code>objects()</code>
+<a name="index-objects_0028_0029-83"></a>command to the ESS process.  A prefix argument specifies the
 position on the search list (use a negative argument to toggle
 <code>ess-execute-in-process-buffer</code> as well).  A quick way to see what
 objects are in your working directory. 
-<a name="index-objects-85"></a><a name="index-objects_0028_0029-86"></a>
+<a name="index-objects-84"></a><a name="index-objects_0028_0029-85"></a>
 <li><kbd>C-c C-s</kbd> (<code>ess-execute-search</code>) <br>
-<a name="index-ess_002dexecute_002dsearch-87"></a>Sends the <code>search()</code>
-<a name="index-search_0028_0029-88"></a>command to the ESS process. 
-<a name="index-search-list-89"></a><a name="index-search_0028_0029-90"></a>
+<a name="index-ess_002dexecute_002dsearch-86"></a>Sends the <code>search()</code>
+<a name="index-search_0028_0029-87"></a>command to the ESS process. 
+<a name="index-search-list-88"></a><a name="index-search_0028_0029-89"></a>
 <li><kbd>C-c C-e</kbd> (<code>ess-execute</code>) <br>
-<a name="index-ess_002dexecute-91"></a>Prompt for an ESS expression, and evaluate it. 
+<a name="index-ess_002dexecute-90"></a>Prompt for an ESS expression, and evaluate it. 
 </ul>
 
    <p><code>ess-execute</code> may seem pointless when you could just type the
@@ -2993,39 +3048,39 @@ would otherwise clutter your transcript, or for evaluating an expression
 while partway through entering a command.  You can also use this command
 to generate new hot keys using the Emacs keyboard macro facilities;
 see <a href="emacs.html#Keyboard-Macros">Keyboard Macros</a>. 
-<a name="index-hot-keys-92"></a><a name="index-keyboard-short-cuts-93"></a>
+<a name="index-hot-keys-91"></a><a name="index-keyboard-short-cuts-92"></a>
 The following hot keys do not use <code>ess-execute-in-process-buffer</code>
 to decide where to display the output &mdash; they either always display in
 the process buffer or in a separate buffer, as indicated:
 
      <ul>
 <li><kbd>C-c C-a</kbd> (<code>ess-execute-attach</code>) <br>
-<a name="index-ess_002dexecute_002dattach-94"></a>Prompts for a directory to attach to the ESS process with the
+<a name="index-ess_002dexecute_002dattach-93"></a>Prompts for a directory to attach to the ESS process with the
 <code>attach()</code> command. 
-<a name="index-attach_0028_0029-95"></a>If a numeric prefix argument is given it is used as the position on the
+<a name="index-attach_0028_0029-94"></a>If a numeric prefix argument is given it is used as the position on the
 search list to attach the directory; otherwise the S default of 2 is
 used.  The <code>attach()</code> command actually executed appears in the
 process buffer.
 
      <li><kbd>C-c C-l</kbd> (<code>ess-load-file</code>) <br>
-<a name="index-ess_002dload_002dfile-96"></a>Prompts for a file to load into the ESS process using
+<a name="index-ess_002dload_002dfile-95"></a>Prompts for a file to load into the ESS process using
 <code>source()</code>.  If there is an error during loading, you can jump to
 the error in the file with <kbd>C-x `</kbd> (<code>ess-parse-errors</code>). 
-<a name="index-ess_002dparse_002derrors-97"></a>See <a href="#Error-Checking">Error Checking</a>, for more details.
+<a name="index-ess_002dparse_002derrors-96"></a>See <a href="#Error-Checking">Error Checking</a>, for more details.
 
      <li><kbd>C-c C-v</kbd> (<code>ess-display-help-on-object</code>) <br> Pops up a help
 buffer for an S object or function.  See <a href="#Help">Help</a> for more
 details.
 
      <li><kbd>C-c C-q</kbd> (<code>ess-quit</code>) <br>
-<a name="index-quitting-from-ESS-98"></a><a name="index-killing-the-ESS-process-99"></a>Sends the <code>q()</code>
-<a name="index-q_0028_0029-100"></a>command to the ESS process (or <code>(exit)</code>
-<a name="index-exit_0028_0029-101"></a>to the <b>XLS</b> process), and cleans up any temporary buffers (such as
+<a name="index-quitting-from-ESS-97"></a><a name="index-killing-the-ESS-process-98"></a>Sends the <code>q()</code>
+<a name="index-q_0028_0029-99"></a>command to the ESS process (or <code>(exit)</code>
+<a name="index-exit_0028_0029-100"></a>to the <b>XLS</b> process), and cleans up any temporary buffers (such as
 help buffers or edit buffers) you may have created along the way.  Use
 this command when you have finished your S session instead of simply
 typing <code>q()</code> yourself, otherwise you will need to issue the command
 <kbd>M-x ess-cleanup</kbd>
-<a name="index-ess_002dcleanup-102"></a><a name="index-cleaning-up-103"></a><a name="index-temporary-buffers_002c-killing-104"></a><a name="index-killing-temporary-buffers-105"></a>command explicitly to make sure that all the files that need to be saved
+<a name="index-ess_002dcleanup-101"></a><a name="index-cleaning-up-102"></a><a name="index-temporary-buffers_002c-killing-103"></a><a name="index-killing-temporary-buffers-104"></a>command explicitly to make sure that all the files that need to be saved
 have been saved, and that all the temporary buffers have been killed. 
 </ul>
 
@@ -3042,7 +3097,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 
 <h3 class="section">4.8 Is the Statistical Process running under ESS?</h3>
 
-<p><a name="index-STERM-106"></a><a name="index-STERM-107"></a>For the S languages (S, S-Plus, R) ESS sets an option in the current
+<p><a name="index-STERM-105"></a><a name="index-STERM-106"></a>For the S languages (S, S-Plus, R) ESS sets an option in the current
 process that programs in the language can check to determine the
 environment in which they are currently running.
 
@@ -3084,7 +3139,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 
 <h3 class="section">4.9 Using emacsclient</h3>
 
-<p><a name="index-emacsclient-108"></a>
+<p><a name="index-emacsclient-107"></a>
 When starting R or S under Unix, ESS sets
 <code>options(editor="emacsclient")</code>.  (Under Microsoft Windows, it will
 use gnuclient.exe rather than emacsclient, but the same principle
@@ -3112,19 +3167,19 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Entering-commands">Entering commands</
 
      <ul>
 <li><kbd>C-c C-c</kbd> (<code>comint-interrupt-subjob</code>) <br>
-<a name="index-comint_002dinterrupt_002dsubjob-109"></a>Sends a Control-C signal to the ESS process.  This has the effect of
-<a name="index-aborting-S-commands-110"></a><a name="index-interrupting-S-commands-111"></a>aborting the current command.
+<a name="index-comint_002dinterrupt_002dsubjob-108"></a>Sends a Control-C signal to the ESS process.  This has the effect of
+<a name="index-aborting-S-commands-109"></a><a name="index-interrupting-S-commands-110"></a>aborting the current command.
 
      <li><kbd>C-c C-z</kbd> (<code>ess-abort</code>) <br>
-<a name="index-ess_002dabort-112"></a><a name="index-comint_002dstop_002dsubjob-113"></a>Sends a STOP signal to the ESS process, killing it immediately. 
+<a name="index-ess_002dabort-111"></a><a name="index-comint_002dstop_002dsubjob-112"></a>Sends a STOP signal to the ESS process, killing it immediately. 
 It's not a good idea to use this, in general: Neither <code>q()</code> nor
 <code>.Last</code> will be executed and device drivers will not finish
 cleanly.  This command is provided as a safety to
 <code>comint-stop-subjob</code>, which is usually bound to <kbd>C-c C-z</kbd>.  If
 you want to quit from S, use <kbd>C-c C-q</kbd> (<code>ess-quit</code>) instead. 
-<a name="index-ess_002dquit-114"></a><a name="index-aborting-the-ESS-process-115"></a>
+<a name="index-ess_002dquit-113"></a><a name="index-aborting-the-ESS-process-114"></a>
 <li><kbd>C-c C-d</kbd> (<code>ess-dump-object-into-edit-buffer</code>) <br>
-<a name="index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-116"></a>Prompts for an object to be edited in an edit buffer.  See <a href="#Editing">Editing</a>. 
+<a name="index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-115"></a>Prompts for an object to be edited in an edit buffer.  See <a href="#Editing">Editing</a>. 
 </ul>
 
    <p>Other commands available in Inferior S mode are discussed in
@@ -3154,7 +3209,7 @@ is what Transcript Mode is for.
    <p>If you load file a with the suffix <samp><span class="file">.St</span></samp> into Emacs, it is placed
 in S Transcript Mode.  Transcript Mode is similar to Inferior S mode
 (see <a href="#Entering-commands">Entering commands</a>):
-<a name="index-transcript-mode-motion-117"></a><a name="index-motion-in-transcript-mode-118"></a>paragraphs are defined as a command and its output, and you can move
+<a name="index-transcript-mode-motion-116"></a><a name="index-motion-in-transcript-mode-117"></a>paragraphs are defined as a command and its output, and you can move
 though commands either with the paragraph commands or with <kbd>C-c C-p</kbd>
 and <kbd>C-c C-n</kbd>.
 
@@ -3181,11 +3236,11 @@ transcript file to a running ESS process.  They are:
      <ul>
 <li><kbd>RET</kbd> (<code>ess-transcript-send-command</code>) <br>
 Send the current command line to the ESS process, and execute it. 
-<a name="index-ess_002dtranscript_002dsend_002dcommand-119"></a>
+<a name="index-ess_002dtranscript_002dsend_002dcommand-118"></a>
 <li><kbd>C-c RET</kbd> (<code>ess-transcript-copy-command</code>) <br>
 Copy the current command to the ESS process, and switch to the
 ESS process buffer (ready to edit the copied command). 
-<a name="index-ess_002dtranscript_002dcopy_002dcommand-120"></a>
+<a name="index-ess_002dtranscript_002dcopy_002dcommand-119"></a>
 <li><kbd>M-RET</kbd> (<code>ess-transcript-send-command-and-move</code>) <br>
 Send the current command to the ESS process, and move to the next
 command line.  This command is useful for submitting a series of
@@ -3318,7 +3373,7 @@ these programs (by default S+6) to the simpler name:
 
    <p>M-x S
 
-   <p><a name="index-command-line-arguments-121"></a>In the (rare) case that you wish to pass command line arguments to the
+   <p><a name="index-command-line-arguments-120"></a>In the (rare) case that you wish to pass command line arguments to the
 starting S+6 process, set the variable <code>inferior-Splus-args</code>.
 
    <p>Note that R has some extremely useful command line arguments.  For
@@ -3636,7 +3691,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="chapter">7 Editing S functions</h2>
 
-<p><a name="index-editing-functions-122"></a>ESS provides facilities for editing S objects within your Emacs
+<p><a name="index-editing-functions-121"></a>ESS provides facilities for editing S objects within your Emacs
 session.  Most editing is performed on S functions, although in
 theory you may edit datasets as well.  Edit buffers are always
 associated with files, although you may choose to make these files
@@ -3668,23 +3723,23 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
 <h3 class="section">7.1 Creating or modifying S objects</h3>
 
-<p><a name="index-edit-buffer-123"></a>
+<p><a name="index-edit-buffer-122"></a>
 To edit an S object, type
 
      <ul>
 <li><kbd>C-c C-d</kbd> (<code>ess-dump-object-into-edit-buffer</code>) <br>
-<a name="index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-124"></a>Edit an S object in its own edit buffer. 
+<a name="index-ess_002ddump_002dobject_002dinto_002dedit_002dbuffer-123"></a>Edit an S object in its own edit buffer. 
 </ul>
 
    <p>from within the ESS process buffer (<code>*S*</code>).  You will then be
 prompted for an object to edit: you may either type in the name of an
 existing object (for which completion is available using the <kbd>TAB</kbd>
 key),
-<a name="index-completion_002c-when-prompted-for-object-names-125"></a>or you may enter the name of a new object. 
-<a name="index-creating-new-objects-126"></a><a name="index-new-objects_002c-creating-127"></a>A buffer will be created containing the text representation of the
+<a name="index-completion_002c-when-prompted-for-object-names-124"></a>or you may enter the name of a new object. 
+<a name="index-creating-new-objects-125"></a><a name="index-new-objects_002c-creating-126"></a>A buffer will be created containing the text representation of the
 requested object or, if you entered the name of a non-existent object at
 the prompt and the variable <code>ess-function-template</code>
-<a name="index-ess_002dfunction_002dtemplate-128"></a>is non-<code>nil</code>, you will be presented with a template defined by that
+<a name="index-ess_002dfunction_002dtemplate-127"></a>is non-<code>nil</code>, you will be presented with a template defined by that
 variable, which defaults to a skeleton function construct.
 
    <p>You may then edit the function as required.  The edit buffer generated
@@ -3694,7 +3749,7 @@ S source code.  Commands are provided to intelligently indent S
 code, evaluate portions of S code and to move around S code
 constructs.
 
-   <p><a name="index-dump-files-129"></a><a name="index-reverting-function-definitions-130"></a>Note: when you dump a file with <kbd>C-c C-d</kbd>, ESS first checks
+   <p><a name="index-dump-files-128"></a><a name="index-reverting-function-definitions-129"></a>Note: when you dump a file with <kbd>C-c C-d</kbd>, ESS first checks
 to see whether there already exists an edit buffer containing that
 object and, if so, pops you directly to that buffer.  If not, ESS next
 checks whether there is a file in the appropriate place with the
@@ -3703,7 +3758,7 @@ You can use this facility to return to an object you were editing in a
 previous session (and which possibly was never loaded to the S
 session).  Finally, if both these tests fail, the ESS process is
 consulted and a <code>dump()</code> command issued. 
-<a name="index-dump_0028_0029-131"></a>If you want to force ESS to ask the ESS process for the object's
+<a name="index-dump_0028_0029-130"></a>If you want to force ESS to ask the ESS process for the object's
 definition (say, to reformat an unmodified buffer or to revert back to
 S's idea of the object's definition) pass a prefix argument to
 <code>ess-dump-object-into-edit-buffer</code> by typing <kbd>C-u C-c C-d</kbd>.
@@ -3729,8 +3784,8 @@ process:
 
      <ul>
 <li><kbd>C-c C-l</kbd> (<code>ess-load-file</code>) <br>
-<a name="index-ess_002dload_002dfile-132"></a>Loads a file into the ESS process using <code>source()</code>. 
-<a name="index-source_0028_0029-133"></a></ul>
+<a name="index-ess_002dload_002dfile-131"></a>Loads a file into the ESS process using <code>source()</code>. 
+<a name="index-source_0028_0029-132"></a></ul>
 
 <p class="noindent">After typing <kbd>C-c C-l</kbd> you will prompted for the name of the file to
 load into S; usually this is the current buffer's file which is the
@@ -3752,11 +3807,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
 <h3 class="section">7.3 Detecting errors in source files</h3>
 
-<p><a name="index-errors-134"></a><a name="index-parsing-errors-135"></a>If any errors occur when loading a file with <code>C-c C-l</code>, ESS will
+<p><a name="index-errors-133"></a><a name="index-parsing-errors-134"></a>If any errors occur when loading a file with <code>C-c C-l</code>, ESS will
 inform you of this fact.  In this case, you can jump directly to the
 line in the source file which caused the error by typing <kbd>C-c `</kbd>
 (<code>ess-parse-errors</code>). 
-<a name="index-ess_002dparse_002derrors-136"></a>You will be returned to the offending file (loading it into a buffer if
+<a name="index-ess_002dparse_002derrors-135"></a>You will be returned to the offending file (loading it into a buffer if
 necessary) with point at the line S reported as containing the
 error.  You may then correct the error, and reload the file.  Note that
 none of the commands in an S source file will take effect if any
@@ -3789,45 +3844,45 @@ whether both the commands and their output appear in the process buffer
 (as if you had typed in the commands yourself) or if the output alone is
 echoed.  The behavior is controlled by the variable
 <code>ess-eval-visibly-p</code> whose default is <code>nil</code>
-<a name="index-ess_002deval_002dvisibly_002dp-137"></a>(display output only).  Passing a prefix argument (<kbd>C-u</kbd>) to any of
+<a name="index-ess_002deval_002dvisibly_002dp-136"></a>(display output only).  Passing a prefix argument (<kbd>C-u</kbd>) to any of
 the following commands, however, reverses the meaning of
 <code>ess-eval-visibly-p</code> for that command only &mdash; for example <kbd>C-u
 C-c C-j</kbd> echoes the current line of S (or other) code in the ESS
 process buffer, followed by its output.  This method of evaluation is an
 alternative to S's <code>source()</code> function
-<a name="index-source_0028_0029-138"></a><a name="index-echoing-commands-when-evaluating-139"></a><a name="index-evaluating-code-with-echoed-commands-140"></a>when you want the input as well as the output to be displayed.  (You can
+<a name="index-source_0028_0029-137"></a><a name="index-echoing-commands-when-evaluating-138"></a><a name="index-evaluating-code-with-echoed-commands-139"></a>when you want the input as well as the output to be displayed.  (You can
 sort of do this with <code>source()</code> when the option <code>echo=T</code> is
 set, except that prompts do not get displayed.  ESS puts prompts in the
 right places.) The commands for evaluating code are:
 
      
-<a name="index-evaluating-S-expressions-141"></a>
+<a name="index-evaluating-S-expressions-140"></a>
 <ul><li><kbd>C-c C-j</kbd> (<code>ess-eval-line</code>) <br>
-<a name="index-ess_002deval_002dline-142"></a>Send the line containing point to the ESS process.
+<a name="index-ess_002deval_002dline-141"></a>Send the line containing point to the ESS process.
 
      <li><kbd>C-c M-j</kbd> (<code>ess-eval-line-and-go</code>) <br>
-<a name="index-ess_002deval_002dline_002dand_002dgo-143"></a>As above, but returns you to the ESS process buffer as well.
+<a name="index-ess_002deval_002dline_002dand_002dgo-142"></a>As above, but returns you to the ESS process buffer as well.
 
      <li><kbd>C-c C-f</kbd> or <kbd>ESC C-x</kbd> (aka <kbd>M-C-x</kbd>) (<code>ess-eval-function</code>) <br>
-<a name="index-ess_002deval_002dfunction-144"></a>Send the S function containing point to the ESS process.
+<a name="index-ess_002deval_002dfunction-143"></a>Send the S function containing point to the ESS process.
 
      <li><kbd>C-c M-f</kbd> (<code>ess-eval-function-and-go</code>) <br>
-<a name="index-ess_002deval_002dfunction_002dand_002dgo-145"></a>As above, but returns you to the ESS process buffer as well.
+<a name="index-ess_002deval_002dfunction_002dand_002dgo-144"></a>As above, but returns you to the ESS process buffer as well.
 
      <li><kbd>C-c C-r</kbd> (<code>ess-eval-region</code>) <br>
-<a name="index-ess_002deval_002dregion-146"></a>Send the text between point and mark to the ESS process.
+<a name="index-ess_002deval_002dregion-145"></a>Send the text between point and mark to the ESS process.
 
      <li><kbd>C-c M-r</kbd> (<code>ess-eval-region-and-go</code>) <br>
-<a name="index-ess_002deval_002dregion_002dand_002dgo-147"></a>As above, but returns you to the ESS process buffer as well.
+<a name="index-ess_002deval_002dregion_002dand_002dgo-146"></a>As above, but returns you to the ESS process buffer as well.
 
      <li><kbd>C-c C-b</kbd> (<code>ess-eval-buffer</code>) <br>
-<a name="index-ess_002deval_002dbuffer-148"></a>Send the contents of the edit buffer to the ESS process.
+<a name="index-ess_002deval_002dbuffer-147"></a>Send the contents of the edit buffer to the ESS process.
 
      <li><kbd>C-c M-b</kbd> (<code>ess-eval-buffer-and-go</code>) <br>
-<a name="index-ess_002deval_002dfunction_002dand_002dgo-149"></a>As above, but returns you to the ESS process buffer as well.
+<a name="index-ess_002deval_002dfunction_002dand_002dgo-148"></a>As above, but returns you to the ESS process buffer as well.
 
      <li><kbd>C-c C-n</kbd> (<code>ess-eval-line-and-step</code>) <br>
-<a name="index-ess_002deval_002dline_002dand_002dstep-150"></a><a name="index-stepping-through-code-151"></a><a name="index-debugging-S-functions-152"></a>Sends the current line to the ESS process, echoing it in the process
+<a name="index-ess_002deval_002dline_002dand_002dstep-149"></a><a name="index-stepping-through-code-150"></a><a name="index-debugging-S-functions-151"></a>Sends the current line to the ESS process, echoing it in the process
 buffer, and moves point to the next line.  Useful when debugging for
 stepping through your code. 
 </ul>
@@ -3843,7 +3898,7 @@ obsolete.
 
      <ul>
 <kbd>C-c C-t</kbd> (<code>ess-execute-in-tb</code>) <br>
-<a name="index-ess_002dexecute_002din_002dtb-153"></a>Prompt for an S expression and evaluate it.  Displays result in a
+<a name="index-ess_002dexecute_002din_002dtb-152"></a>Prompt for an S expression and evaluate it.  Displays result in a
 temporary buffer. 
 </ul>
 
@@ -3882,7 +3937,7 @@ variables are provided to control the amount if indentation in each
 case, and there are also a number of predefined indentation styles to
 choose from.
 
-   <p><a name="index-comments-in-S-154"></a>Comments are also handled specially by ESS, using an idea borrowed from
+   <p><a name="index-comments-in-S-153"></a>Comments are also handled specially by ESS, using an idea borrowed from
 the Emacs-Lisp indentation style.  By default,
 comments beginning with &lsquo;<samp><span class="samp">###</span></samp>&rsquo;
 are aligned to the beginning of the line.  Comments beginning with
@@ -3890,16 +3945,16 @@ are aligned to the beginning of the line.  Comments beginning with
 containing the comment.  Finally, comments beginning with &lsquo;<samp><span class="samp">#</span></samp>&rsquo; are
 aligned to a column on the right (the 40th column by default, but this
 value is controlled by the variable <code>comment-column</code>,)
-<a name="index-comment_002dcolumn-155"></a>or just after the expression on the line containing the comment if it
+<a name="index-comment_002dcolumn-154"></a>or just after the expression on the line containing the comment if it
 extends beyond the indentation column.  You turn off the default
 behavior by adding the line
 <code>(setq ess-fancy-comments nil)</code> to your <samp><span class="file">.emacs</span></samp> file. 
-<a name="index-ess_002dfancy_002dcomments-156"></a>
+<a name="index-ess_002dfancy_002dcomments-155"></a>
 ESS also supports Roxygen entries which is R documentation maintained in
 the source code as comments See <a href="#Roxygen">Roxygen</a>.
 
    <p>The indentation commands provided by ESS are:
-<a name="index-indenting-157"></a><a name="index-formatting-source-code-158"></a>
+<a name="index-indenting-156"></a><a name="index-formatting-source-code-157"></a>
      <ul>
 <li><kbd>TAB</kbd> (<code>ess-indent-command</code>) <br>
 Indents the current line as S code.  If a prefix argument is given,
@@ -3931,7 +3986,7 @@ private values of the indentation variable, see below.
 </ul>
 
 <ul class="menu">
-<li><a accesskey="1" href="#Styles">Styles</a>:                      Changing indentation styles
+<li><a accesskey="1" href="#Styles">Styles</a>:                       Changing indentation styles
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -3993,10 +4048,10 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 in the edit buffer:
      <ul>
 <li><kbd>ESC C-a</kbd> aka <kbd>C-M-a</kbd> (<code>ess-beginning-of-function</code>) <br>
-<a name="index-ess_002dbeginning_002dof_002dfunction-159"></a>Moves point to the beginning of the function containing point.
+<a name="index-ess_002dbeginning_002dof_002dfunction-158"></a>Moves point to the beginning of the function containing point.
 
      <li><kbd>ESC C-e</kbd> aka <kbd>C-M-e</kbd> (<code>ess-end-of-function</code>) <br>
-<a name="index-ess_002dend_002dof_002dfunction-160"></a>Moves point to the end of the function containing point.
+<a name="index-ess_002dend_002dof_002dfunction-159"></a>Moves point to the end of the function containing point.
 
      <li><kbd>ESC C-h</kbd> aka <kbd>C-M-h</kbd> (<code>ess-mark-function</code>) <br>
 Places point at the beginning of the S function containing point, and
@@ -4005,7 +4060,7 @@ mark at the end.
    Don't forget the usual Emacs commands for moving over balanced
 expressions and parentheses: See <a href="Emacs.html#Lists">Lists and Sexps</a>.
 
-   <p><a name="index-completion-in-edit-buffer-161"></a>Completion is provided in the edit buffer in a similar fashion to the
+   <p><a name="index-completion-in-edit-buffer-160"></a>Completion is provided in the edit buffer in a similar fashion to the
 process buffer: <kbd>M-TAB</kbd> completes file names and <kbd>M-?</kbd> lists
 file completions.  Since &lt;TAB&gt; is used for indentation in the edit
 buffer, object completion is now performed with <kbd>C-c TAB</kbd>.  Note
@@ -4017,11 +4072,11 @@ functions or other variables local to the function you are editing.
 
      <ul>
 <li><kbd>C-c C-z</kbd> (<code>ess-switch-to-end-of-ESS</code>) <br>
-<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-162"></a>Returns you to the ESS process buffer, placing point at the end of the
+<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-161"></a>Returns you to the ESS process buffer, placing point at the end of the
 buffer.
 
      <li><kbd>C-c C-y</kbd> (<code>ess-switch-to-ESS</code>) <br>
-<a name="index-ess_002dswitch_002dto_002dESS-163"></a>Also returns to to the ESS process buffer, but leaves point where it was. 
+<a name="index-ess_002dswitch_002dto_002dESS-162"></a>Also returns to to the ESS process buffer, but leaves point where it was. 
 </ul>
 
    <p>In addition some commands available in the process buffer are also
@@ -4047,10 +4102,10 @@ Dump files are created whenever you type <kbd>C-c C-d</kbd>
 (<code>ess-dump-object-into-edit-buffer</code>), and may either be deleted
 after use, or kept as a backup file or as a means of keeping several
 versions of an S function. 
-<a name="index-dump-files-164"></a>
+<a name="index-dump-files-163"></a>
 
 <div class="defun">
-&mdash; User Option: <b>ess-delete-dump-files</b><var><a name="index-ess_002ddelete_002ddump_002dfiles-165"></a></var><br>
+&mdash; User Option: <b>ess-delete-dump-files</b><var><a name="index-ess_002ddelete_002ddump_002dfiles-164"></a></var><br>
 <blockquote><p>If non-<code>nil</code>, dump files created with C-c C-d are deleted
 immediately after they are created by the ess-process. 
 </p></blockquote></div>
@@ -4066,7 +4121,7 @@ S's <code>dump</code> function; it doesn't apply to source files which already
 exist.  The default value is <code>t</code>.
 
 <div class="defun">
-&mdash; User Option: <b>ess-keep-dump-files</b><var><a name="index-ess_002dkeep_002ddump_002dfiles-166"></a></var><br>
+&mdash; User Option: <b>ess-keep-dump-files</b><var><a name="index-ess_002dkeep_002ddump_002dfiles-165"></a></var><br>
 <blockquote><p>Option controlling what to do with the dump file after an object has
 been successfully loaded into S.  Valid values are <code>nil</code> (always
 delete), <code>ask</code> (always ask whether to delete), <code>check</code> (delete
@@ -4082,7 +4137,7 @@ definition, and so some people prefer to delete the disk file rather
 than unnecessarily use up space.  This option allows you to do just
 that.
 
-   <p><a name="index-comments-167"></a><a name="index-project-work-in-S-168"></a><a name="index-historic-backups-169"></a>If the value of <code>ess-keep-dump-files</code> is <code>t</code>, dump files are
+   <p><a name="index-comments-166"></a><a name="index-project-work-in-S-167"></a><a name="index-historic-backups-168"></a>If the value of <code>ess-keep-dump-files</code> is <code>t</code>, dump files are
 never deleted after they are loaded.  Thus you can maintain a complete
 text record of the functions you have edited within ESS.  Backup files
 are kept as usual, and so by using the Emacs numbered backup facility &mdash;
@@ -4122,7 +4177,7 @@ while loading the file with <kbd>C-c C-l</kbd>, the dump file is <em>never</em>
 deleted.  This is so that you can edit the file in a new Emacs session
 if you happen to quit Emacs before correcting the error.
 
-   <p><a name="index-autosaving-170"></a>Dump buffers are always autosaved, regardless of the value of
+   <p><a name="index-autosaving-169"></a>Dump buffers are always autosaved, regardless of the value of
 <code>ess-keep-dump-files</code>.
 
 <!-- node-name,  next,  previous,  up -->
@@ -4136,11 +4191,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing">Editing</a>
 
 <h3 class="section">7.8 Names and locations of dump files</h3>
 
-<p><a name="index-dump-file-names-171"></a>Every dump file should be given a unique file name, usually the dumped
+<p><a name="index-dump-file-names-170"></a>Every dump file should be given a unique file name, usually the dumped
 object name with some additions.
 
 <div class="defun">
-&mdash; User Option: <b>ess-dump-filename-template</b><var><a name="index-ess_002ddump_002dfilename_002dtemplate-172"></a></var><br>
+&mdash; User Option: <b>ess-dump-filename-template</b><var><a name="index-ess_002ddump_002dfilename_002dtemplate-171"></a></var><br>
 <blockquote><p>Template for filenames of dumped objects.  <code>%s</code> is replaced by the
 object name. 
 </p></blockquote></div>
@@ -4152,10 +4207,10 @@ The username part is included to avoid clashes when dumping into a
 publicly-writable directory, such as <samp><span class="file">/tmp</span></samp>; you may wish to remove
 this part if you are dumping into a directory owned by you.
 
-   <p><a name="index-dump-file-directories-173"></a>You may also specify the directory in which dump files are written:
+   <p><a name="index-dump-file-directories-172"></a>You may also specify the directory in which dump files are written:
 
 <div class="defun">
-&mdash; User Option: <b>ess-source-directory</b><var><a name="index-ess_002dsource_002ddirectory-174"></a></var><br>
+&mdash; User Option: <b>ess-source-directory</b><var><a name="index-ess_002dsource_002ddirectory-173"></a></var><br>
 <blockquote><p>Directory name (ending in a slash) where S dump files are to be written. 
 </p></blockquote></div>
 
@@ -4164,7 +4219,7 @@ when <code>ess-keep-dump-files</code> is <code>nil</code>.  If you are keeping d
 files, then you will probably want to keep them somewhere in your home
 directory, say <samp><span class="file">~/S-source</span></samp>.  This could be achieved by including
 the following line in your <samp><span class="file">.emacs</span></samp> file:
-<a name="index-g_t_0040file_007b_002eemacs_007d-file-175"></a>
+<a name="index-g_t_0040file_007b_002eemacs_007d-file-174"></a>
 <pre class="example">     (setq ess-source-directory (expand-file-name "~/S-source/"))
 </pre>
    <p>If you would prefer to keep your dump files in separate directories
@@ -4182,7 +4237,7 @@ directory the ESS process was run in.
            (lambda ()
               (concat ess-directory "Src/")))
 </pre>
-   <p class="noindent"><a name="index-ess_002ddirectory-176"></a>(<code>ess-directory</code> is a buffer-local variable in process buffers
+   <p class="noindent"><a name="index-ess_002ddirectory-175"></a>(<code>ess-directory</code> is a buffer-local variable in process buffers
 which records the directory the ESS process was run from.)  This is
 useful if you keep your dump files and you often edit objects with the
 same name in different ESS processes.  Alternatively, if you often
@@ -4191,7 +4246,7 @@ like to keep dump files in some subdirectory of the directory pointed to
 by the first element of the current search list.  This way you can edit
 objects of the same name in different directories during the one S
 session:
-<a name="index-search-list-177"></a><a name="index-working-directory-178"></a>
+<a name="index-search-list-176"></a><a name="index-working-directory-177"></a>
 <pre class="example">     (setq ess-source-directory
         (lambda ()
             (file-name-as-directory
@@ -4199,7 +4254,7 @@ session:
                                 (car ess-search-list)
                                 "/.Src")))))
 </pre>
-   <p><a name="index-ess_002dsearch_002dlist-179"></a>
+   <p><a name="index-ess_002dsearch_002dlist-178"></a>
 If the directory generated by the lambda function does not exist but can
 be created, you will be asked whether you wish to create the directory. 
 If you choose not to, or the directory cannot be created, you will not
@@ -4333,7 +4388,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Editing-R-documentation">Editing R doc
 
 <h3 class="section">8.2 Editing Roxygen documentation</h3>
 
-<p><a name="index-Roxygen-180"></a><a name="index-roxy-181"></a><a name="index-ess_002droxy-182"></a>
+<p><a name="index-Roxygen-179"></a><a name="index-roxy-180"></a><a name="index-ess_002droxy-181"></a>
 The Roxygen R package makes it possible to keep the intended contents
 for Rd files as structured comments in the R source files. Roxygen can
 then parse R files and generate appropriate Rd files from these
@@ -4368,7 +4423,7 @@ by default in ESS. The following special Emacs commands are provided.
 
      <ul>
 <li><kbd>C-c C-o</kbd> (<code>ess-roxy-update-entry</code>) <br>
-<a name="index-ess_002droxy_002dupdate_002dentry-183"></a>Generate a Roxygen template or update the parameter list in Roxygen
+<a name="index-ess_002droxy_002dupdate_002dentry-182"></a>Generate a Roxygen template or update the parameter list in Roxygen
 entry at point (or above the function at the point). Documented
 parameters that are not in the function are placed last in the list,
 parameters that are not documented and not in the definition are
@@ -4376,31 +4431,31 @@ dropped. Parameter descriptions are filled if
 <code>ess-roxy-fill-param-p</code> is non-nil.
 
      <li><kbd>C-c C-e C-c</kbd> (<code>ess-roxy-toggle-roxy-region</code>) <br>
-<a name="index-ess_002droxy_002dtoggle_002droxy_002dregion-184"></a>Toggle the presence of the leading Roxygen string on all lines in the
+<a name="index-ess_002droxy_002dtoggle_002droxy_002dregion-183"></a>Toggle the presence of the leading Roxygen string on all lines in the
 marked region. Convenient for transferring text to Roxygen entries and
 to evaluate example fields.
 
      <li><kbd>C-c C-e C-r</kbd> (<code>ess-roxy-preview-Rd</code>) <br>
-<a name="index-ess_002droxy_002dpreview_002dRd-185"></a>Use the attached R process to parse the entry at point to obtain the Rd
+<a name="index-ess_002droxy_002dpreview_002dRd-184"></a>Use the attached R process to parse the entry at point to obtain the Rd
 code. Convenient for previewing and checking syntax. When used with the
 prefix argument, i.e. <kbd>C-u C-c C-e C-r</kbd>, place the content in a
 buffer associated with a Rd file with the same name as the
 documentation. Requires the Roxygen package to be installed.
 
      <li><kbd>C-c C-e C-t</kbd> (<code>ess-roxy-preview-HTML</code>) <br>
-<a name="index-ess_002droxy_002dpreview_002dRd-186"></a>Use the attached R process to parse the entry at to generate HTML for
+<a name="index-ess_002droxy_002dpreview_002dRd-185"></a>Use the attached R process to parse the entry at to generate HTML for
 the entry and open it in a browser. When used with the prefix argument,
 i.e. <kbd>C-u C-c C-e C-t</kbd>, visit the generated HTML file instead. 
 Requires the Roxygen and tools packages to be installed.
 
      <li><kbd>C-c C-e p</kbd> (<code>ess-roxy-previous-entry</code>) <br>
-<a name="index-ess_002droxy_002dprevious_002dentry-187"></a>Go to start of the Roxygen entry above point.
+<a name="index-ess_002droxy_002dprevious_002dentry-186"></a>Go to start of the Roxygen entry above point.
 
      <li><kbd>C-c C-e n</kbd>  (<code>ess-roxy-next-entry</code>) <br>
-<a name="index-ess_002droxy_002dnext_002dentry-188"></a>Go to end of the Roxygen entry above point.
+<a name="index-ess_002droxy_002dnext_002dentry-187"></a>Go to end of the Roxygen entry above point.
 
      <li><kbd>C-c C-e C-h</kbd> (<code>ess-roxy-hide-all</code>) <br>
-<a name="index-ess_002droxy_002dhide_002dall-189"></a>Use the hideshow mode to fold away the visibility of all Roxygen
+<a name="index-ess_002droxy_002dhide_002dall-188"></a>Use the hideshow mode to fold away the visibility of all Roxygen
 entries. Hide-show support must be enabled for this binding to get
 defined.
 
@@ -4408,25 +4463,25 @@ defined.
 Roxygen editing more intuitive:
 
      <li><kbd>C-c TAB</kbd> (<code>ess-R-complete-object-name</code>) <br>
-<a name="index-ess_002dR_002dcomplete_002dobject_002dname-190"></a>Complete Roxygen tag at point. E.g. doing <kbd>C-c TAB</kbd> when the point
+<a name="index-ess_002dR_002dcomplete_002dobject_002dname-189"></a>Complete Roxygen tag at point. E.g. doing <kbd>C-c TAB</kbd> when the point
 is at the end of <code>@par</code> completes to <code>@param</code>.
 
      <li><kbd>M-h</kbd> (<code>mark-paragraph</code>) <br>
-<a name="index-mark_002dparagraph-191"></a>If the transient mark mode is active, place mark and point at start end
+<a name="index-mark_002dparagraph-190"></a>If the transient mark mode is active, place mark and point at start end
 end of the field at point and activate the mark.
 
      <li><kbd>TAB</kbd> (<code>ess-indent-command</code>) <br>
-<a name="index-ess_002dindent_002dcommand-192"></a>If hide-show support is enabled, fold away the visibility of the Roxygen
+<a name="index-ess_002dindent_002dcommand-191"></a>If hide-show support is enabled, fold away the visibility of the Roxygen
 entry at point.
 
      <li><kbd>M-q</kbd> (<code>fill-paragraph</code>) <br>
-<a name="index-fill_002dparagraph-193"></a>Fill the Roxygen field at point.
+<a name="index-fill_002dparagraph-192"></a>Fill the Roxygen field at point.
 
      <li><kbd>C-a</kbd> (<code>move-beginning-of-line</code>) <br>
-<a name="index-move_002dbeginning_002dof_002dline-194"></a>Move to the point directly to the right of the Roxygen start string.
+<a name="index-move_002dbeginning_002dof_002dline-193"></a>Move to the point directly to the right of the Roxygen start string.
 
      <li><kbd>ENTER</kbd> (<code>newline-and-indent</code>) <br>
-<a name="index-newline_002dand_002dindent-195"></a>Insert a new line and the Roxygen prefix string. 
+<a name="index-newline_002dand_002dindent-194"></a>Insert a new line and the Roxygen prefix string. 
 </ul>
 
 <!-- node-name,  next,  previous,  up -->
@@ -4441,11 +4496,11 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="chapter">9 Reading help files</h2>
 
-<p><a name="index-help-files-196"></a>
+<p><a name="index-help-files-195"></a>
 ESS provides an easy-to-use facility for reading S help files from
 within Emacs.  From within the ESS process buffer or any ESS edit
 buffer, typing <kbd>C-c C-v</kbd> (<code>ess-display-help-on-object</code>)
-<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-197"></a>will prompt you for the name of an object for which you would like
+<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-196"></a>will prompt you for the name of an object for which you would like
 documentation.  Completion is provided over all objects which have help
 files.
 
@@ -4459,15 +4514,15 @@ through the help file:
 Help commands:
 
      <li><kbd>?</kbd> (<code>ess-describe-help-mode</code>) <br>
-<a name="index-ess_002ddescribe_002dhelp_002dmode-198"></a>Pops up a help buffer with a list of the commands available in S help
+<a name="index-ess_002ddescribe_002dhelp_002dmode-197"></a>Pops up a help buffer with a list of the commands available in S help
 mode.
 
      <li><kbd>h</kbd> (<code>ess-display-help-on-object</code>) <br>
-<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-199"></a>Pop up a help buffer for a different object
+<a name="index-ess_002ddisplay_002dhelp_002don_002dobject-198"></a>Pop up a help buffer for a different object
 
      <p>Paging commands:
 
-     <p><a name="index-paging-commands-in-help-buffers-200"></a><li><kbd>b</kbd> or <kbd>DEL</kbd> (<code>scroll-down</code>) <br>
+     <p><a name="index-paging-commands-in-help-buffers-199"></a><li><kbd>b</kbd> or <kbd>DEL</kbd> (<code>scroll-down</code>) <br>
 Move one page backwards through the help file.
 
      <li><kbd>SPC</kbd> (<code>scroll-up</code>) <br>
@@ -4481,7 +4536,7 @@ Move to the beginning and end of the help file, respectively.
 
      <li><kbd>n</kbd> (<code>ess-skip-to-next-section</code>) and <kbd>p</kbd>
 (<code>ess-skip-to-previous-section</code>) <br> Move to the next and previous
-<a name="index-ess_002dskip_002dto_002dnext_002dsection-201"></a><a name="index-ess_002dskip_002dto_002dprevious_002dsection-202"></a>section header in the help file, respectively.  A section header
+<a name="index-ess_002dskip_002dto_002dnext_002dsection-200"></a><a name="index-ess_002dskip_002dto_002dprevious_002dsection-201"></a>section header in the help file, respectively.  A section header
 consists of a number of capitalized words, followed by a colon.
 
      <p>In addition, the <kbd>s</kbd> key followed by one of the following letters
@@ -4502,7 +4557,7 @@ sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo
      <!-- S and S-plus only: -->
      <!-- @item S			SIDE EFFECTS: -->
      <p>Do use <kbd>s ?</kbd> to get the current list of active key bindings. 
-<a name="index-ess_002dskip_002dto_002dhelp_002dsection-203"></a>
+<a name="index-ess_002dskip_002dto_002dhelp_002dsection-202"></a>
           <dl>
 <dt>&lsquo;<samp><span class="samp">a</span></samp>&rsquo;<dd>ARGUMENTS:
 
@@ -4542,11 +4597,11 @@ sections &lsquo;<samp><span class="samp">BACKGROUND</span></samp>&rsquo;, &lsquo
      <p>Miscellaneous:
 
      <li><kbd>l</kbd> (<code>ess-eval-line-and-step</code>) <br>
-<a name="index-ess_002deval_002dline_002dand_002dstep-204"></a>Evaluates the current line in the ESS process, and moves to the next
+<a name="index-ess_002deval_002dline_002dand_002dstep-203"></a>Evaluates the current line in the ESS process, and moves to the next
 line.  Useful for running examples in help files.
 
      <li><kbd>r</kbd> (<code>ess-eval-region</code>) <br>
-<a name="index-ess_002deval_002dregion-205"></a>Send the contents of the current region to the ESS process.  Useful
+<a name="index-ess_002deval_002dregion-204"></a>Send the contents of the current region to the ESS process.  Useful
 for running examples in help files.
 
      <li><kbd>/</kbd> (<code>isearch-forward</code>) <br>
@@ -4555,7 +4610,7 @@ Same as <kbd>C-s</kbd>.
      <p>Quit commands:
 
      <li><kbd>q</kbd> (<code>ess-switch-to-end-of-ESS</code>) <br>
-<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-206"></a>Returns to the ESS process buffer in another window, leaving the
+<a name="index-ess_002dswitch_002dto_002dend_002dof_002dESS-205"></a>Returns to the ESS process buffer in another window, leaving the
 help window visible.
 
      <li><kbd>k</kbd> (<code>kill-buffer</code>) <br>
@@ -4584,7 +4639,7 @@ frame.  If you wish help buffers to appear in their own frame (either
 one per help buffer, or one for all help buffers), you can customize the
 variable <code>ess-help-own-frame</code>.
 
-   <p><a name="index-ess_002dquit-207"></a><a name="index-ess_002dcleanup-208"></a><a name="index-temporary-buffers-209"></a>
+   <p><a name="index-ess_002dquit-206"></a><a name="index-ess_002dcleanup-207"></a><a name="index-temporary-buffers-208"></a>
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
 <a name="ESS-for-SAS"></a>
@@ -5590,7 +5645,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <p>ESS provides Font-Lock (see <a href="emacs.html#Faces">Using Multiple Typefaces</a>) patterns for Inferior S Mode, S
 Mode, and S Transcript Mode buffers. 
-<a name="index-Font_002dlock-mode-210"></a><a name="index-highlighting-211"></a>
+<a name="index-Font_002dlock-mode-209"></a><a name="index-highlighting-210"></a>
 Syntax highlighting within ESS buffers is controlled by the variable
 <code>ess-font-lock-mode</code>, which by default is true. 
 Input to inferior ESS processes is also highlighted syntactically if
@@ -5609,7 +5664,7 @@ emacs for your changes to take effect.
 may modify if desired:
 
 <div class="defun">
-&mdash; Variable: <b>inferior-ess-R-font-lock-keywords</b><var><a name="index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-212"></a></var><br>
+&mdash; Variable: <b>inferior-ess-R-font-lock-keywords</b><var><a name="index-inferior_002dess_002dR_002dfont_002dlock_002dkeywords-211"></a></var><br>
 <blockquote><p>Font-lock patterns for inferior *R* processes.  (There is a
 corresponding <code>inferior-ess-S-font-lock-keywords</code> for *S*
 processes.) The default value highlights prompts, inputs, assignments,
@@ -5618,7 +5673,7 @@ output messages, vector and matrix labels, and literals such as
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Variable: <b>ess-R-mode-font-lock-keywords</b><var><a name="index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-213"></a></var><br>
+&mdash; Variable: <b>ess-R-mode-font-lock-keywords</b><var><a name="index-ess_002dR_002dmode_002dfont_002dlock_002dkeywords-212"></a></var><br>
 <blockquote><p>Font-lock patterns for ESS R programming mode.  (There is a
 corresponding <code>ess-S-mode-font-lock-keywords</code> for S buffers.) The
 default value highlights function names, literals, assignments, source
@@ -5664,7 +5719,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Miscellaneous">Miscellaneous</a>
 
 <h3 class="section">13.3 Using graphics with ESS</h3>
 
-<p><a name="index-graphics-214"></a>One of the main features of the <code>S</code> package is its ability to
+<p><a name="index-graphics-213"></a>One of the main features of the <code>S</code> package is its ability to
 generate high-resolution graphics plots, and ESS provides a number of
 features for dealing with such plots.
 
@@ -5692,7 +5747,7 @@ based plots which can be contained within the ESS process buffer
 itself.  To start using character graphics, issue the S command
 <pre class="example">     printer(width=79)
 </pre>
-   <p><a name="index-printer_0028_0029-215"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
+   <p><a name="index-printer_0028_0029-214"></a>(the <code>width=79</code> argument prevents Emacs line-wrapping at column
 80 on an 80-column terminal.  Use a different value for a terminal with
 a different number of columns.) Plotting commands do not generate
 graphics immediately, but are stored until the <code>show()</code> command
@@ -5710,13 +5765,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">13.3.2 Using ESS with windowing devices</h4>
 
-<p><a name="index-X-windows-216"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
+<p><a name="index-X-windows-215"></a>Of course, the ideal way to use graphics with ESS is to use a windowing
 system.  Under X11, this requires that the DISPLAY environment
 variable be appropriately set, which may not always be the case within
 your Emacs process.  ESS provides a facility for setting the value of
 DISPLAY before the ESS process is started if the variable
 <code>ess-ask-about-display</code>
-<a name="index-ess_002dask_002dabout_002ddisplay-217"></a>is non-<code>nil</code>.
+<a name="index-ess_002dask_002dabout_002ddisplay-216"></a>is non-<code>nil</code>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -5729,7 +5784,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Graphics">Graphics</a>
 
 <h4 class="subsection">13.3.3 Java Graphics Device</h4>
 
-<p><a name="index-winjava-218"></a>
+<p><a name="index-winjava-217"></a>
 S+6.1 and newer on Windows contains a java library that supports graphics.  Send
 the commands:
 
@@ -5898,35 +5953,35 @@ bindings become available in iESS process buffers:
 
      <ul>
 <li><kbd>C-c C-. l</kbd> (<samp><span class="command">ess-rutils-local-pkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002dlocalpkgs-219"></a>List all packages in all available libraries.
+<a name="index-ess_002drutils_002dlocalpkgs-218"></a>List all packages in all available libraries.
 
      <li><kbd>C-c C-. r</kbd> (<samp><span class="command">ess-rutils-repos-pkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002drepospkgs-220"></a>List available packages from repositories listed by
+<a name="index-ess_002drutils_002drepospkgs-219"></a>List available packages from repositories listed by
 <samp><span class="command">getOptions(``repos'')</span></samp> in the current R session.
 
      <li><kbd>C-c C-. u</kbd> (<samp><span class="command">ess-rutils-update-pkgs</span></samp>) <br>
-<a name="index-ess_002drutils_002dupdatepkgs-221"></a>Update packages in a particular library and repository.
+<a name="index-ess_002drutils_002dupdatepkgs-220"></a>Update packages in a particular library and repository.
 
      <li><kbd>C-c C-. a</kbd> (<samp><span class="command">ess-rutils-apropos</span></samp>) <br>
-<a name="index-ess_002drutils_002dapropos-222"></a>Search for a string using apropos.
+<a name="index-ess_002drutils_002dapropos-221"></a>Search for a string using apropos.
 
      <li><kbd>C-c C-. m</kbd> (<samp><span class="command">ess-rutils-rm-all</span></samp>) <br>
-<a name="index-ess_002drutils_002drmall-223"></a>Remove all R objects.
+<a name="index-ess_002drutils_002drmall-222"></a>Remove all R objects.
 
      <li><kbd>C-c C-. o</kbd> (<samp><span class="command">ess-rutils-objs</span></samp>) <br>
-<a name="index-ess_002drutils_002dobjs-224"></a>Manipulate R objects; wrapper for <samp><span class="command">ess-rdired</span></samp>.
+<a name="index-ess_002drutils_002dobjs-223"></a>Manipulate R objects; wrapper for <samp><span class="command">ess-rdired</span></samp>.
 
      <li><kbd>C-c C-. w</kbd> (<samp><span class="command">ess-rutils-load-wkspc</span></samp>) <br>
-<a name="index-ess_002drutils_002dloadwkspc-225"></a>Load a workspace file into R.
+<a name="index-ess_002drutils_002dloadwkspc-224"></a>Load a workspace file into R.
 
      <li><kbd>C-c C-. s</kbd> (<samp><span class="command">ess-rutils-save-wkspc</span></samp>) <br>
-<a name="index-ess_002drutils_002dsavewkspc-226"></a>Save a workspace file.
+<a name="index-ess_002drutils_002dsavewkspc-225"></a>Save a workspace file.
 
      <li><kbd>C-c C-. d</kbd> (<samp><span class="command">ess-change-directory</span></samp>) <br>
-<a name="index-ess_002dchange_002ddirectory-227"></a>Change the working directory for the current R session.
+<a name="index-ess_002dchange_002ddirectory-226"></a>Change the working directory for the current R session.
 
      <li><kbd>C-c C-. H</kbd> (<samp><span class="command">ess-rutils-html-docs</span></samp>) <br>
-<a name="index-ess_002drutils_002dhtmldocs-228"></a>Use <samp><span class="command">browse-url</span></samp> to navigate R html documentation.
+<a name="index-ess_002drutils_002dhtmldocs-227"></a>Use <samp><span class="command">browse-url</span></samp> to navigate R html documentation.
 
    </ul>
 
@@ -5938,7 +5993,7 @@ any Emacs buffer, so can be bound to a user-defined key:
 <pre class="lisp">     (eval-after-load "ess-rutils"
        '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
 </pre>
-   <p><a name="index-ess_002drutils_002drsitesearch-229"></a>
+   <p><a name="index-ess_002drutils_002drsitesearch-228"></a>
 Functions for listing objects and packages
 (<samp><span class="command">ess-rutils-local-pkgs</span></samp>, <samp><span class="command">ess-rutils-repos-pkgs</span></samp>, and
 <samp><span class="command">ess-rutils-objs</span></samp>) show results in a separate buffer and window,
@@ -5989,16 +6044,16 @@ document, the following key bindings are available:
 
      <ul>
 <li><kbd>M-n s</kbd> (<samp><span class="command">ess-swv-weave</span></samp>) <br>
-<a name="index-ess_002dswv_002dweave-230"></a>Run Sweave on the current .Rnw file.
+<a name="index-ess_002dswv_002dweave-229"></a>Run Sweave on the current .Rnw file.
 
      <li><kbd>M-n l</kbd> (<samp><span class="command">ess-swv-latex</span></samp>) <br>
-<a name="index-ess_002dswv_002dlatex-231"></a>Run LaTeX after Sweave'ing.
+<a name="index-ess_002dswv_002dlatex-230"></a>Run LaTeX after Sweave'ing.
 
      <li><kbd>M-n p</kbd> (<samp><span class="command">ess-swv-PS</span></samp>) <br>
-<a name="index-ess_002dswv_002dPS-232"></a>Generate and display a postscript file after LaTeX'ing.
+<a name="index-ess_002dswv_002dPS-231"></a>Generate and display a postscript file after LaTeX'ing.
 
      <li><kbd>M-n P</kbd> (<samp><span class="command">ess-swv-PDF</span></samp>) <br>
-<a name="index-ess_002dswv_002dPDF-233"></a>Generate and display a PDF file after LaTeX'ing.  The command used to
+<a name="index-ess_002dswv_002dPDF-232"></a>Generate and display a PDF file after LaTeX'ing.  The command used to
 generate the PDF file is the first element of
 <code>ess-swv-pdflatex-commands</code>.
 
@@ -6080,7 +6135,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.1 Bugs</h3>
 
-<p><a name="index-bugs-234"></a>
+<p><a name="index-bugs-233"></a>
 
      <ul>
 <li>Commands like <code>ess-display-help-on-object</code> and list completion
@@ -6130,7 +6185,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Mailing-lists_002fbug-reports">Mailing
 
 <h3 class="section">14.2 Reporting Bugs</h3>
 
-<p><a name="index-Bug-reports-235"></a><a name="index-ess_002dsubmit_002dbug_002dreport-236"></a>
+<p><a name="index-Bug-reports-234"></a><a name="index-ess_002dsubmit_002dbug_002dreport-235"></a>
 
    <p>Please send bug reports, suggestions etc. to
 <a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
@@ -6219,7 +6274,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
 
 <h2 class="appendix">Appendix A Customizing ESS</h2>
 
-<p><a name="index-customization-237"></a>
+<p><a name="index-customization-236"></a>
 ESS can be easily customized to your taste simply by including the
 appropriate lines in your <samp><span class="file">.emacs</span></samp> file.  There are numerous
 variables which affect the behavior of ESS in certain situations which
