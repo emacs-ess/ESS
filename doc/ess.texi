@@ -1032,7 +1032,7 @@ window.
 @noindent
 to make more of the last output visible.  (To make this happen
 automatically for all inputs, set the variable
-@code{comint-scroll-to-bottom-on-input} to @code{t}.)
+@code{comint-scroll-to-bottom-on-input} to @code{t} or @code{'this}.)
 
 If the first part of the output is still obscured, use
 @cindex reading long command outputs
@@ -1214,7 +1214,7 @@ only the commands.  Don't forget to remove any erroneous commands first!
 
 ESS provides easy-to-use facilities for re-executing or editing previous
 commands.  An input history of the last few commands is maintained (by
-default the last 50 commands are stored, although this can be changed by
+default the last 500 commands are stored, although this can be changed by
 setting the variable @code{comint-input-ring-size} in
 @vindex comint-input-ring-size
 @code{inferior-ess-mode-hook}.) The simplest history commands simply
@@ -1246,17 +1246,18 @@ particular variable name for example, these commands are also available:
 
 @itemize @bullet
 @item
-@kbd{M-r} (@code{comint-previous-matching-input}) @*
-@pindex comint-previous-matching-input
+@kbd{M-r} (@code{comint-history-isearch-backward-regexp}) @*
+@pindex comint-history-isearch-backward-regexp
 Prompt for a regular expression, and search backwards through the input
 history for a command matching the expression.
 
-@item
-@kbd{M-s} (@code{comint-next-matching-input}) @*
-@pindex comint-next-matching-input
-Prompt for a regular expression, and search backwards through the input
-history for a command matching the expression.
+@c @item
+@c @kbd{M-s} (@code{comint-next-matching-input}) @*
+@c @pindex comint-next-matching-input
+@c Prompt for a regular expression, and search backwards through the input
+@c history for a command matching the expression.
 @end itemize
+
 
 @noindent
 A common type of search is to find the last command that began with a
@@ -1265,13 +1266,13 @@ easy way to do this:
 
 @itemize @bullet
 @item
-@kbd{A-M-r} (@code{comint-previous-matching-input-from-input}) @*
+@kbd{C-c M-r} (@code{comint-previous-matching-input-from-input}) @*
 @pindex comint-previous-matching-input-from-input
 Select the previous command in the history which matches the string
 typed so far.
 
 @item
-@kbd{A-M-s} (@code{comint-next-matching-input-from-input}) @*
+@kbd{C-c M-s} (@code{comint-next-matching-input-from-input}) @*
 @pindex comint-next-matching-input-from-input
 Select the next command in the history which matches the string typed so
 far.
@@ -1281,13 +1282,62 @@ far.
 Instead of prompting for a regular expression to match against, as they
 instead select commands starting with those characters already entered.
 For instance, if you wanted to re-execute the last @code{attach()}
-command, you may only need to type @kbd{att} and then @kbd{A-M-r} and
-@kbd{RET}.  (Note: you may not have an @key{ALT} key on your keyboard,
-in which case it may be a good idea to bind these commands to some other
-keys.)
+command, you may only need to type @kbd{att} and then @kbd{C-c M-r} and
+@kbd{RET}.
 
 @xref{Shell Ring,,Shell History Ring,emacs, The GNU Emacs Reference
-Manual}, for a more detailed discussion of the history mechanism.
+Manual}, for a more detailed discussion of the history mechanism,
+and do experiment with the @code{In/Out} menu to explore the possibilities.
+
+Many ESS users like to have even easier access to these, and recommend
+to add something like
+@example
+  (eval-after-load "comint"
+   '(progn
+      (define-key comint-mode-map [up]
+        'comint-previous-matching-input-from-input)
+      (define-key comint-mode-map [down]
+        'comint-next-matching-input-from-input)
+
+      ;; also recommended for ESS use --
+      (setq comint-scroll-to-bottom-on-input 'this)
+      (setq comint-scroll-to-bottom-on-output 'others)
+      (setq comint-scroll-show-maximum-output t)
+      ))
+@end example
+to your @file{.emacs} file,
+where the last two settings are typically desirable for the situation where
+you work with a script (e.g., @file{code.R}) and send code chunks to the
+process buffer (e.g. @code{*R*}).
+Note however that these settings influence all @code{comint}-using emacs
+modes, not just the ESS ones, and for that reason, these customization
+cannot be part of @code{ESS} itself.
+
+@menu
+* Saving History::
+@end menu
+
+@node Saving History,  , Command History, Command History
+@subsection Saving the command history
+
+The @code{ess-history-file} variable, which is @code{t} by default,
+together with  @code{ess-history-directory}, governs if and where the
+command history is saved and restored between sessions.
+By default, @code{ess-history-directory} is @code{nil}, and the command
+history will be stored (as text file) in the @code{ess-directory}, e.g., as
+@file{.Rhistory}.
+
+Experienced ESS users often work exclusively with script files rather than
+in a (e.g., @code{*R}) console session, and may not want to save any
+history files, and hence have
+@smallexample
+  (setq ess-history-file nil)
+@end smallexample
+or will only want one global command history file and have
+@smallexample
+  (setq ess-history-directory "~/.R/")
+@end smallexample
+in there @file{.emacs} file.
 
 @comment  node-name,  next,  previous,  up
 @node History expansion, Hot keys, Command History, Entering commands
@@ -1987,7 +2037,7 @@ private values of the indentation variable, see below.
 @end itemize
 
 @menu
-* Styles::                     Changing indentation styles
+* Styles::                      Changing indentation styles
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -1999,7 +2049,7 @@ collectively termed a @i{style}.  ESS provides several styles covering the
 common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
 @code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{CLB}.  The
 variable @code{ess-style-alist} lists the value of each indentation
-variable per style.  
+variable per style.
 
 If you wish to change from one predefined style to another, change the
 variable @code{ess-default-style}, for example:
@@ -2011,7 +2061,7 @@ variable @code{ess-default-style}, for example:
 The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
 you wish to edit some of the default values, set
 @code{ess-default-style} to @code{'OWN} and change
-@code{ess-own-style-list}.  
+@code{ess-own-style-list}.
 @xref{Customization}, for convenient ways to set both these variables.
 
 
@@ -2021,7 +2071,7 @@ indentation variables within a hook, for example:
 @example
 (defun myindent-ess-hook ()
   (setq ess-indent-level 4))
-(add-hook 'ess-mode-hook 'myindent-ess-hook) 
+(add-hook 'ess-mode-hook 'myindent-ess-hook)
 @end example
 
 In the rare case that you'd like to add an entire new indentation style
@@ -2464,7 +2514,7 @@ Requires the Roxygen and tools packages to be installed.
 @pindex ess-roxy-previous-entry
 Go to start of the Roxygen entry above point.
 
-@item 
+@item
 @kbd{C-c C-e n}  (@code{ess-roxy-next-entry}) @*
 @pindex ess-roxy-next-entry
 Go to end of the Roxygen entry above point.
@@ -2477,7 +2527,7 @@ entries. Hide-show support must be enabled for this binding to get
 defined.
 
 ESS also advices the following standard editing functions in order to make
-Roxygen editing more intuitive: 
+Roxygen editing more intuitive:
 
 @item
 @kbd{C-c TAB} (@code{ess-R-complete-object-name}) @*
