@@ -142,15 +142,15 @@
   "true if point is the description / details field"
   (save-excursion
     (let ((res t)
-	  (cont (ess-roxy-entry-p)))
+	  (cont (and (point > 0) (ess-roxy-entry-p))))
       (beginning-of-line)
       (while cont
 	(if (looking-at (concat "^" ess-roxy-str " *[@].+"))
 	    (progn (setq res nil)
 		   (setq cont nil)))
 	(forward-line -1)
-	(setq cont (ess-roxy-entry-p)))
-	res)))
+	(setq cont (and (point > 0) (ess-roxy-entry-p)))
+	res))))
 
 (defun ess-roxy-beg-of-field ()
   "Get point number at beginning of current field, 0 if not in entry"

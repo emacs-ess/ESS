@@ -4,10 +4,12 @@
 ##' sl="def", ll="def", hotelling=0.95, rug=TRUE, sub=NULL,...)
 ##' @param object 
 ##' @param pcs 
+##' @param tjo 
 ##' @return None, used for side effect.
+##' @export
 ##' @author Henning Redestig
 setMethod("slplot", "pcaRes",
-          function(object, pcs=c(1,2)) {
+          function(object, pcs=c(1,2), tjo) {
 #(ess-roxy-get-function-args)
   opar <- par(no.readonly=TRUE)
   cl <- match.call()
@@ -27,6 +29,23 @@ trickyInArgsComments <- function(a,#comment
                                  b,#hejhopp trams
                                  d,asd) {
   print("hello")
+}
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param a 
+##' @param b 
+##' @param cc 
+##' @return 
+##' @author Henning Redestig
+withdef <- function(a, b=c("asd","ffd", "asd", "ffd",
+                         "asd",
+                         "ffd","asd",
+                         "ffd"), cc) {
+  print("hello")
+
 }
 
 setClass(Class="inference", representation=representation(model="character"
