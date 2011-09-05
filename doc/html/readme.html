@@ -908,7 +908,16 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <h3 class="section">1.10 New Features</h3>
 
      <ul>
-Changes/New Features in 5.14:
+Changes/New Features in 5.15:
+          <ul>
+<li><acronym>ESS[S]</acronym>, notably <code>R</code>: Saved command history:
+ <var>ess-history-file</var> now accepts <code>t</code> (default), <code>nil</code>, or a
+ file name. By setting it to <code>nil</code> no command line history is saved
+ anymore.   <var>ess-history-directory</var> now allows to have the history all
+ saved in one &ldquo;central&rdquo; file. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+</ul>
+
           <ul>
 <li><acronym>ESS[BUGS/JAGS]</acronym>:  Batch BUGS is back!  For recent OpenBUGS
 versions, 3.0.8+, a batch BUGS script is once again available,

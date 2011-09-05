@@ -1,6 +1,15 @@
 @itemize @w{}
 
-Changes/New Features in 5.14:
+Changes/New Features in 5.15:
+@itemize @bullet
+@item @ESS{[S]}, notably @code{R}: Saved command history:
+ @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
+ file name. By setting it to @code{nil} no command line history is saved
+ anymore.   @var{ess-history-directory} now allows to have the history all
+ saved in one ``central'' file.
+@item @ESS{[R]}: more Roxygen improvements.
+@end itemize
+
 @itemize @bullet
 @item @ESS{[BUGS/JAGS]}:  Batch BUGS is back!  For recent OpenBUGS
 versions, 3.0.8+, a batch BUGS script is once again available,
@@ -21,7 +30,7 @@ comments as the other paragraph functions do.
 It (and similar functions) should no longer wrongly find
 @samp{function()} beginnings inside comments or strings.
 
-@item @ESS{[SAS]}: improved by better support for GNU Emacs 
+@item @ESS{[SAS]}: improved by better support for GNU Emacs
 @end itemize
 
 Changes/New Features in 5.13:

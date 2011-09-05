@@ -215,7 +215,15 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-     Changes/New Features in 5.14:
+     Changes/New Features in 5.15:
+        * ESS[S], notably `R': Saved command history:  ESS-HISTORY-FILE
+          now accepts `t' (default), `nil', or a  file name. By setting
+          it to `nil' no command line history is saved  anymore.
+          ESS-HISTORY-DIRECTORY now allows to have the history all
+          saved in one "central" file.
+
+        * ESS[R]: more Roxygen improvements.
+
         * ESS[BUGS/JAGS]:  Batch BUGS is back!  For recent OpenBUGS
           versions, 3.0.8+, a batch BUGS script is once again available,
           but for Linux only.  Therefore, since it seems that BUGS and
