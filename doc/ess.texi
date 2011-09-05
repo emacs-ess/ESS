@@ -1300,9 +1300,10 @@ to add something like
         'comint-next-matching-input-from-input)
 
       ;; also recommended for ESS use --
-      (setq comint-scroll-to-bottom-on-input 'this)
       (setq comint-scroll-to-bottom-on-output 'others)
       (setq comint-scroll-show-maximum-output t)
+      ;; somewhat extreme, almost disabling writing in *R*, *shell* buffers above prompt:
+      (setq comint-scroll-to-bottom-on-input 'this)
       ))
 @end example
 to your @file{.emacs} file,
