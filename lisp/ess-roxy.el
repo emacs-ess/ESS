@@ -77,18 +77,18 @@
   )
 
 (defvar ess-roxy-font-lock-keywords
-  `((,(concat ess-roxy-str " *\\([@\\]"
+  `((,(concat "^" ess-roxy-str " *\\([@\\]"
 	      (regexp-opt ess-roxy-tags-param t)
 	      "\\)\\>")
      (1 'font-lock-keyword-face prepend))
-    (,(concat ess-roxy-str " *\\([@\\]"
+    (,(concat "^" ess-roxy-str " *\\([@\\]"
 	      (regexp-opt '("param") t)
 	      "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
     (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
      (0 'font-lock-variable-name-face prepend))
-    (,(concat ess-roxy-str)
+    (,(concat "^" ess-roxy-str)
      (0 'bold prepend))))
 
 (define-minor-mode ess-roxy-mode
@@ -528,11 +528,11 @@ facilitate saving that file."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-    (while (search-forward ess-roxy-str (point-max) t 1)
-      (if (not (hs-already-hidden-p))
-	  (hs-hide-block))
-      (goto-char (ess-roxy-end-of-entry))
-      (forward-line 1))))
+      (while (re-search-forward (concat "^" ess-roxy-str) (point-max) t 1)
+	(if (not (hs-already-hidden-p))
+	    (hs-hide-block))
+	(goto-char (ess-roxy-end-of-entry))
+	(forward-line 1))))
 
 (defun ess-roxy-previous-entry ()
   "Go to beginning of previous Roxygen entry. "
