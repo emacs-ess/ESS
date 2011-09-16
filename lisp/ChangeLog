@@ -2,6 +2,7 @@
 
 	* ess-swv.el (ess-swv-remove-TeX-commands): Simplify removal of
 	commands from TeX-command-list (AUCTeX users).  Thanks to Stephen.
+	(ess-swv-toggle-plug-into-AUCTeX): Fixed doc string.
 
 2011-09-11  Henning Redestig  <henning@psc.riken.jp>
 

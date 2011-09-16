@@ -262,8 +262,7 @@ file and latex the result."
       (add-hook 'Rnw-mode-hook 'ess-swv-add-TeX-commands)
     (remove-hook 'Rnw-mode-hook 'ess-swv-add-TeX-commands)
     (setq TeX-command-list (mapcar 'ess-swv-remove-TeX-commands TeX-command-list)
-	  ;; this will remove the items, but leave nils in there place.
-	  ;; so now remove the nil elements from a list.
+	  ;; this will remove the items, leaving nils, so remove them.
 	  TeX-command-list (delq nil TeX-command-list))))
 ;; as ess-swv-plug-into-AUCTeX-p is customizable ... :
 (if ess-swv-plug-into-AUCTeX-p
@@ -274,13 +273,13 @@ file and latex the result."
 \\[TeX-command-list] on and off.  Commands are added via \\[Rnw-mode-hook]."
   (interactive)
   (unless (and (featurep 'tex-site) (featurep 'tex))
-    (error "AUCTeX does not seem to be loaded"))
+    (error "AUCTeX are not available"))
   (setq ess-swv-plug-into-AUCTeX-p (not ess-swv-plug-into-AUCTeX-p))
   (ess-swv-plug-into-AUCTeX)
   (TeX-normal-mode t)
   (if ess-swv-plug-into-AUCTeX-p
-      (message "Sweave and LaTeXSweave are known in AUCTeX.")
-    (message "Sweave and LaTeXSweave are no longer known in AUCTeX.")))
+      (message "Sweave and LaTeXSweave are activated in AUCTeX.")
+    (message "Sweave and LaTeXSweave are de-activated in AUCTeX.")))
 
 
 ;;; Now bind some keys.
