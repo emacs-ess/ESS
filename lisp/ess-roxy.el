@@ -149,7 +149,7 @@
 	    (progn (setq res nil)
 		   (setq cont nil)))
 	(setq cont (and (= (forward-line -1) 0) (ess-roxy-entry-p)))
-	res))))
+	)res)))
 
 (defun ess-roxy-beg-of-field ()
   "Get point number at beginning of current field, 0 if not in entry"
@@ -224,14 +224,22 @@
     (narrow-to-region beg end)))
 
 (defun ess-roxy-fill-field ()
-  "Fill the current roxygen field."
+  "Fill the current paragraph in the current roxygen field."
   (interactive)
   (if (ess-roxy-entry-p)
       (save-excursion
 	(let ((beg (ess-roxy-beg-of-field))
 	      (end (ess-roxy-end-of-field))
-	      (fill-prefix (concat ess-roxy-str " ")))
-	  (fill-region beg end nil t)))))
+	      (fill-prefix (concat ess-roxy-str " "))
+	      (beg-par (point-min))
+	      (end-par (point-max)))
+	  (save-excursion 
+	    (if (re-search-backward (concat "^" ess-roxy-str " *$") beg t)
+		(setq beg-par (match-end 0))))
+	  (save-excursion
+	    (if (re-search-forward (concat "^" ess-roxy-str " *$") end t)
+		(setq end-par (- (match-beginning 0) 1))))
+	  (fill-region (max beg beg-par) (min end end-par))))))
 
 (defun ess-roxy-goto-func-def ()
   "put point at start of function either that the point is in or
@@ -437,10 +445,13 @@ string. Convenient for editing example fields."
   (condition-case nil
       (if (not (ess-roxy-mark-active))
   	  (error "region is not active")))
+  (ess-roxy-roxy-region beg end (ess-roxy-entry-p)))
+
+(defun ess-roxy-roxy-region (beg end &optional on)
   (save-excursion
     (let (RE to-string)
       (narrow-to-region beg (- end 1))
-      (if (ess-roxy-entry-p)
+      (if on
 	  (progn (setq RE (concat "^" ess-roxy-str " *"))
 		 (setq to-string ""))
 	(setq RE "^")

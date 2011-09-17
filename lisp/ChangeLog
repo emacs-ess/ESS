@@ -1,3 +1,9 @@
+2011-09-17  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-fill-field): Filling text inside roxygen
+	entries now operate on individual paragraphs instead of the whole
+	field.
+
 2011-09-16  Sebastian P. Luque  <spluque@gmail.com>
 
 	* ess-swv.el (ess-swv-remove-TeX-commands): Simplify removal of
@@ -6,7 +12,8 @@
 
 2011-09-11  Henning Redestig  <henning@psc.riken.jp>
 
-	* ess-roxy.el (ess-roxy-update-entry): fixes problem with roxy entries in the beginning of a file
+	* ess-roxy.el (ess-roxy-update-entry): fixes problem with roxy
+	entries in the beginning of a file
 
 2011-09-03  Henning Redestig  <henning@psc.riken.jp>
 
