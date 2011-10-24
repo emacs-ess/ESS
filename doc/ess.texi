@@ -1865,13 +1865,16 @@ command line; the @code{source()} function is not used.  You may choose
 whether both the commands and their output appear in the process buffer
 (as if you had typed in the commands yourself) or if the output alone is
 echoed.  The behavior is controlled by the variable
-@code{ess-eval-visibly-p} whose default is @code{nil}
+@code{ess-eval-visibly-p} whose default is @code{t}
 @vindex ess-eval-visibly-p
 (display output only).  Passing a prefix argument (@kbd{C-u}) to any of
 the following commands, however, reverses the meaning of
-@code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u
-C-c C-j} echoes the current line of S (or other) code in the ESS
-process buffer, followed by its output.  This method of evaluation is an
+@code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u C-c C-j} 
+@comment these remarks only make sense IF the default is nil (which it is NOT)
+@comment echoes the current line of S (or other) code in the ESS process
+@comment buffer, followed by its output.  This method of evaluation is an
+suppresses the current line of S (or other) code in the ESS process buffer.  
+This method of evaluation is an
 alternative to S's @code{source()} function
 @pindex source()
 @cindex echoing commands when evaluating
