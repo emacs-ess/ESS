@@ -1867,7 +1867,7 @@ whether both the commands and their output appear in the process buffer
 echoed.  The behavior is controlled by the variable
 @code{ess-eval-visibly-p} whose default is @code{t}
 @vindex ess-eval-visibly-p
-(display output only).  Passing a prefix argument (@kbd{C-u}) to any of
+(display commands and output).  Passing a prefix argument (@kbd{C-u}) to any of
 the following commands, however, reverses the meaning of
 @code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u C-c C-j} 
 @comment these remarks only make sense IF the default is nil (which it is NOT)
