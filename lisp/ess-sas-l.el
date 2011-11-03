@@ -106,6 +106,7 @@ the mode line."
   "Fundamental mode with `ess-listing-minor-mode' and read-only."
   (interactive)
   (fundamental-mode)
+  (setq mode-name "ESS[LST]")
   (ess-listing-minor-mode 1)
   (use-local-map sas-mode-local-map)
   (toggle-read-only t)) ;; to protect the buffer.

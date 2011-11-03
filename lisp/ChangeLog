@@ -2,6 +2,8 @@
 
 	* ess-sas-l.el (sas-fix-life-tables): if read-only,
 	then toggle to read-write first
+	(SAS-listing-mode): name ESS[LST] for emacs functionality
+	that cares about names like tabbar
 
 2011-09-30  Rodney Sparapani  <rsparapa@mcw.edu>
 
