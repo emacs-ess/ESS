@@ -981,6 +981,7 @@ opening /* appears.  returns 0 otherwise."
 Proc Lifetest.  Operates on current region.  A major space saver if there is
 heavy censoring."
   (interactive)
+  (if buffer-read-only (toggle-read-only))
     (goto-char (point-min))
 (while (re-search-forward "^.*[ ]+[.][ ]+[.][ ]+[.][ ]+.*$" nil t)
      (replace-match "" nil nil)))
