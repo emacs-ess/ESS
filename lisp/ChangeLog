@@ -1,3 +1,38 @@
+2011-11-12  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (ess-use-ido-p): users can disable ido if they
+	don't want it.
+	(ess--completing-hist): new internal variable to store completion
+	history.
+
+	* ess-inf.el (ess-get-words-from-vector): addapted regular
+	expression to match "\"", this was breaking the command
+	before. See etc/R-ESS-bugs.el (bug 1).
+
+	Added comment on max.print truncating the vector in the
+	doc string (bug 2 in etc/R-ESS-bugs.el). Sill not sure if
+	should wrap the code automatically or leave it to the user.
+
+2011-11-11  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (R-customize-alist): added
+	`inferior-ess-command-prompt' to R-customize-alist. Solves bug 3
+	in etc/R-ESS-bugs.el.
+
+	* ess-custom.el (inferior-ess-command-prompt): new prompt regexp
+	to be used specifically in ess-command. If nil (the default)
+	ess-command uses `inferior-ess-primary-prompt' as it was before.
+
+	* ess-inf.el (ess-command): Anchoring the prompt to the end of
+	buffer in order to avoid premature prompt detection (see
+	etc/R-ESS-bugs.el bug 4). Moved ..ok{ess-command} inside
+	unwind-protect. Before it was ..ok even when ess-command failed.
+	(ess-prompt-wait): Added new required parameter PROMPT-REG for the
+	local prompt regexp to be passed explicitly. Before, it was using
+	global value of the prompt regexp.
+	Dropped start-of-output argument. It's never used in ess-code and
+	had confusing meaning wich was not even documented.
+
 2011-11-03  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (sas-fix-life-tables): if read-only,

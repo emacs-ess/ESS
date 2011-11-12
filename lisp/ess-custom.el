@@ -277,6 +277,15 @@ Avoids the plain dialect name."
   :group 'ess
   :type 'boolean)
 
+(defcustom  ess-use-ido-p t
+  "If t ess will try to use ido completion whenever possible."
+  :group 'ess
+  :type 'boolean)
+
+(defvar ess--completing-hist nil
+  "Variable to store completion history.
+Used by `ess-completion-read' command.")
+
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
@@ -1261,6 +1270,15 @@ anchor to bol with `^'."
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ?")
+
+(defcustom inferior-ess-command-prompt nil
+  "Regular expression used by `ess-command' to detect the primary prompt.
+If nil `ess-command' will use `inferior-ess-primary-prompt'."
+  :group 'ess-proc
+  :type 'string)
+
+(make-variable-buffer-local 'inferior-ess-command-prompt)
+(setq-default inferior-ess-command-prompt nil)
 
 ;;*;; Variables controlling interaction with the ESS process
 
