@@ -1,3 +1,8 @@
+2011-11-11  Vitalie Spinu (spinuvit@gmail.com)  <spinuvit@gmail.com>
+
+	* etc/R-ESS-bugs.el: added this file for tracking R-bugs from the
+	lisp side.
+
 2011-07-30  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 5.14 released.
