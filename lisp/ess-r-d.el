@@ -627,6 +627,26 @@ Completion is available for supplying options."
       (browse-url (concat site okstring "&max=20&result=normal&sort=score"
 			  "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
 
+(defvar ess--packages-cache nil
+  "Cache var to store package names. Used by
+  `ess-install.packages'.")
+
+(defun ess-install.packages (&optional update)
+  "Prompt and install R package. With argument, update cached packages list."
+  (interactive "P")
+  (if (not (string-match "^R" ess-dialect))
+      (message "Sorry, not available for %s" ess-dialect)
+    (when (or update
+              (not ess--packages-cache))
+      (setq ess--packages-cache
+            (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(rownames(available.packages()));options(oo)})\n")))
+    (let ((ess-eval-visibly-p t)
+          pack)
+      (setq pack (ess-completing-read "Package to install: " ess--packages-cache))
+      (process-send-string (get-process ess-current-process-name)
+                           (format "install.packages('%s')\n" pack))
+      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+      )))
 
 (defun ess-dirs ()
   "Set Emacs' current directory to be the same as the *R* process.

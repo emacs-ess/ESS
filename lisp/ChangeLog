@@ -1,5 +1,13 @@
 2011-11-12  Vitalie Spinu  <spinuvit@gmail.com>
 
+
+	* ess.el (ess-completing-read): new function to use for completion
+	in ESS. It uses ido completion mechanism whenever available, and
+	falls back on classical completing-read  otherwise.
+
+	* ess-r-d.el (ess-install.packages): fast way to instal packages
+	with ido interface.
+
 	* ess-custom.el (ess-use-ido-p): users can disable ido if they
 	don't want it.
 	(ess--completing-hist): new internal variable to store completion
