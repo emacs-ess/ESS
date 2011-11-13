@@ -1140,7 +1140,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
 	    (process-send-region sprocess start end)
 	    (process-send-string sprocess "\n"))))))
 
-  (message "Finished evaluation")
+  (message (or message "Finished evaluation"))
   (if (and (fboundp 'deactivate-mark) ess-eval-deactivate-mark)
       (deactivate-mark))
   ;; return value
@@ -1171,12 +1171,18 @@ Arg has same meaning as for `ess-eval-region'."
     (let* ((beg-end (ess-end-of-function))
 	   (beg (nth 0 beg-end))
 	   (end (nth 1 beg-end))
-	   name)
+	   name assigned-in-ns)
       (goto-char beg)
       (setq name (ess-read-object-name-default))
-      (princ (concat "Loading: " name) t)
-      (ess-eval-region beg end vis
-		       (concat "Eval function " name)))))
+      (when (and (string-match "^R" ess-dialect) ;; how about S?
+                 (ess-get-process-variable ess-local-process-name 'ess--developer-p))
+          (setq assigned-in-ns (ess-developer-assign-function name (buffer-substring-no-properties beg end))))
+      (unless assigned-in-ns
+        (princ (concat "Loading: " name) t)
+        (ess-eval-region beg end vis
+                         (concat "Eval function " (or name "???"))))))
+  )
+
 
 ;; This is from	 Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
 ;; 31 Aug 1995 14:11:43		To: S-mode@stat.math.ethz.ch
@@ -1582,7 +1588,7 @@ to continue it."
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")		;(concat "iESS:" ess-dialect))
   (setq mode-line-process
-	'(" [" ess-local-process-name "]: %s"))
+	'(" [" ess-mode-line-indicator "]: %s"))
   (use-local-map inferior-ess-mode-map)
   (if ess-mode-syntax-table
       (set-syntax-table ess-mode-syntax-table)

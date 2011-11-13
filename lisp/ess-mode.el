@@ -426,8 +426,11 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   ;;  (make-local-variable 'ess-local-process-name)
   ;;  (make-local-variable 'ess-keep-dump-files)
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
-  (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
-	'(" [" (ess-local-process-name ess-local-process-name "none") "]"))
+  (if (featurep 'xemacs)
+      (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
+            '(" [" ess-local-process-name  "]")) ;; xemacs does not support :eval
+    (setq mode-line-process
+          '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
   (if (> emacs-major-version 21)
@@ -435,6 +438,19 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     ;; old emacs 21.x
     (run-hooks 'ess-mode-hook))
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
+
+
+(defun ess--get-mode-line-indicator ()
+  "Get `ess-mode-line-indicator' from process buffer.
+Internal function to be used for dynamic mode-line dysplay in
+ess-mode."
+  (if ess-local-process-name
+      (let* ((proc (get-process ess-local-process-name))
+              (buff (if proc (process-buffer proc))))
+         (if (and proc (buffer-live-p buff))
+             (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
+           "none"))
+    "none"))
 
 ;;*;; User commands in ess-mode
 

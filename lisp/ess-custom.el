@@ -730,7 +730,9 @@ to sweave the current noweb file and latex the result."
 ;; SJE -- this should not be defcustom - user does not set it.
 (defvar ess-local-process-name nil
   "The name of the ESS process associated with the current buffer.")
+(put 'ess-local-process-name 'risky-local-variable t)
 (make-variable-buffer-local 'ess-local-process-name)
+
 
 (defcustom ess-kermit-command "gkermit -T"
   "Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
@@ -1346,6 +1348,24 @@ of Emacs until the code has been successfully evaluated."
 ;; SJE -- this shouldn't be customixed by user.
 (defvar ess-current-process-name nil
   "Name of the current S process.")
+
+(defvar ess-mode-line-indicator '("" ess-local-process-name)
+  "List of ESS mode-line indicators.
+Local in process buffers. Changes of this variable are
+automatically reflected in mode-lines of the process and all
+associated buffer in ess-mode.
+
+First element must be a string. Add a symbol and then remove with
+`delq'. Note that the symbols which are part of this list should
+better have 'risky-local-variable property set to t. Otherwise the text
+properties are not displayed.
+
+External utilities such as `ess-tracebug' and `ess-developer'
+customize this variable to indicate the changes of the process
+status or user interaction.
+")
+(put 'ess-mode-line-indicator 'risky-local-variable t)
+(make-variable-buffer-local 'ess-mode-line-indicator)
 
 (defvar ess-process-name-list nil
   "Alist of active ESS processes.")

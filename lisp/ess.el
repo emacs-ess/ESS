@@ -187,9 +187,6 @@ Some useful keys for IDO completion:
                    'ess--completing-hist))
     (when (and def (not use-ido)) ;; ido places in front and highlights the default
       (setq prompt (format "%s(default %s) " prompt def)))
-    (when (and (featurep 'xemacs) ;; xemacs workaround
-               (not (listp (car collection))))
-      (setq collection (mapcar 'list collection)))
     (if use-ido
         (let ((reset-ido (and use-ido (not ido-mode))) ;people not using ido but having it)
               (ido-current-directory nil)
@@ -213,6 +210,9 @@ Some useful keys for IDO completion:
             )
           sel)
       ;; else usual completion
+      (when (and (featurep 'xemacs) ;; xemacs workaround
+                 (not (listp (car collection))))
+        (setq collection (mapcar 'list collection)))
       (completing-read prompt collection predicate require-match initial-input hist def)
       )))
 

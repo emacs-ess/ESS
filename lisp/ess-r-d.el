@@ -35,7 +35,7 @@
 (require 'ess-s-l)
 
 (require 'ess-r-args); for now --- should the default rather become ess-eldoc?
-
+(require 'ess-developer)
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 

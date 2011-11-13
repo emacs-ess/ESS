@@ -1,3 +1,19 @@
+2011-11-13  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess.el (ess-completing-read): moved code around.
+
+	* ess-inf.el (ess-eval-function): integrated ess-developer in ess-eval-function
+	Works only for R, needed for S as well?
+
+	* ess-mode.el (ess-mode): integrated mode-line-indicator.
+
+	* ess-inf.el (inferior-ess-mode): integrated mode-line-indicator.
+
+	* ess-custom.el (ess-mode-line-indicator): added dynamic mode-line
+	indicator. Mode line of ess-mode is now in sync with process. This
+	feature is used by ess-developer and ess-tracebug.  Xemacs does
+	not support it.
+
 2011-11-12  Vitalie Spinu  <spinuvit@gmail.com>
 
 
