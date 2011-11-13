@@ -282,6 +282,15 @@ Avoids the plain dialect name."
   :group 'ess
   :type 'boolean)
 
+(defcustom  ess-ido-flex-matching t
+  "If t ido for ESS completion uses flex matching.
+See `ido-enable-flex-matching' for details.
+If you have an old computer, or you load lot of packages, you
+might want to set this to nil.
+"
+  :group 'ess
+  :type 'boolean)
+
 (defvar ess--completing-hist nil
   "Variable to store completion history.
 Used by `ess-completion-read' command.")
@@ -1762,6 +1771,14 @@ If nil, input is in the `font-lock-variable-name-face'."
 ;; modules, but they can all call it so we may as well put it here.
 
 ;;*;; Variables relating to ess-help-mode
+
+
+(defcustom ess-help-pop-to-buffer nil
+  "If non-nil ess-help buffers are given focus during the display.
+For consistency with emacs help system, the default is nil.
+"
+  :group 'ess-help
+  :type 'boolean)
 
 (defcustom ess-help-own-frame nil
   "Controls whether ESS help buffers should start in a different frame.

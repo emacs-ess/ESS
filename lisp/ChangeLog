@@ -1,18 +1,57 @@
 2011-11-13  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-help.el (ess-get-helpobj-at-point): modified the name of
+	ess-read-helpobj-name-default to a more intuitive one.
+
+	* ess-custom.el (ess-help-pop-to-buffer): If non-nil ess-help
+	buffers are given focus during the display.
+	(ess-ido-flex-matching): if you don't use ido flex matching but
+	still want it for ESS, here it is.
+
+	* ess-help.el (ess-display-help-on-object): put cache update on
+	universal argument, it also regenerates the help buffer as
+	before. Removed curr-* kludge which was not necessary. Removed the
+	handling of help buffer into separate function.
+	(ess-help-type): local variable in help files holding the help
+	type symbol. So far, 'help, 'index, 'vignette.
+	(ess-help-object): local in help files holding the name of the
+	help object, i.e. name of the package for index and help topic for
+	ordinary help.
+	(ess-help-mode-map): new keys - i for index, v for vignette, w for
+	help in web-browser. "q" key is not burring the buffer instead of
+	jumping to the end of ESS. C-c C-z is standard combination for
+	that action.
+	(ess-help-mode-menu): new menu entries for index vignette and
+	browse in web-browser.
+	(ess-find-help-file): This one does not do the prompt processing
+	anymore. Everything is done in ess-completing-read now.
+	(ess-get-help-topics-list): topics are now list of strings instead
+	of alist. IDO and emacs handles them better. A workaround is
+	implemented for Xemacs to use alist in ess-completing-read.
+	-------------
+	New functions:
+	(ess-display-index): linked index with ido request.
+	(ess-R-display-vignettes, ess-display-vignettes): display
+	vignettes in nicely formatted, linked help buffer. In xemacs emits
+	the call to browseVignettes() instead.
+	(ess-display-help-in-browser): pop the current help page in
+	browser.
+	(ess--switch-to-help-buffer): display help buffers, consistently
+	with `ess-help-pop-to-buffer' and `ess-help-own-frame'.
+
 	* ess.el (ess-completing-read): moved code around.
 
 	* ess-inf.el (ess-eval-function): integrated ess-developer in ess-eval-function
-	Works only for R, needed for S as well?
+	Works only for R, useful for S as well?
 
 	* ess-mode.el (ess-mode): integrated mode-line-indicator.
 
 	* ess-inf.el (inferior-ess-mode): integrated mode-line-indicator.
 
 	* ess-custom.el (ess-mode-line-indicator): added dynamic mode-line
-	indicator. Mode line of ess-mode is now in sync with process. This
-	feature is used by ess-developer and ess-tracebug.  Xemacs does
-	not support it.
+	indicator. Mode line of ess-mode is now in sync with the
+	associated process. This feature is used by ess-developer and
+	ess-tracebug.  Xemacs does not have the necessary support for it.
 
 2011-11-12  Vitalie Spinu  <spinuvit@gmail.com>
 

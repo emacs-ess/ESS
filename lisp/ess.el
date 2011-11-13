@@ -170,21 +170,25 @@
 (defun ess-completing-read (prompt collection &optional predicate
                                    require-match initial-input hist def)
   "Read a string in the minibuffer, with completion.
-Use `ido-completing-read' if ido interface is present, or fall
+Use `ido-completing-read' if IDO interface is present, or fall
 back on classical `completing-read' otherwise. Meaning of
 arguments is as in `completing-read'. If HIST is null use
 `ess--completing-hist' as history.
 
+By default ESS uses enables IDO flex matching. See
+`ido-enable-flex-matching' for details on flex matching and
+`ess-ido-flex-matching' on how to disable it for ESS, if you
+don't want it.
+
 Some useful keys for IDO completion:
 
  - C-s (next) or C-r (previous) to move through the list.
- - C-SPC to restrict the list to currently matched items.
- - TAB - display possible completion in a buffer
- - C-t   `ido-toggle-regexp'
+ - C-SPC   to restrict the list to currently matched items.
+ - TAB     to display possible completion in a buffer
+ - C-t     `ido-toggle-regexp'
 "
   (let ((use-ido (and ess-use-ido-p (featurep 'ido))))
-    (setq hist (or hist
-                   'ess--completing-hist))
+    (setq hist (or hist 'ess--completing-hist))
     (when (and def (not use-ido)) ;; ido places in front and highlights the default
       (setq prompt (format "%s(default %s) " prompt def)))
     (if use-ido
@@ -193,8 +197,9 @@ Some useful keys for IDO completion:
               (ido-directory-nonreadable nil)
               (ido-directory-too-big nil)
               (ido-context-switch-command 'ignore)
-              (ido-choice-list collection)
-              sel )
+              (ido-enable-flex-matching ess-ido-flex-matching) ;it's fast and useful, may be get into options
+              (ido-choice-list (copy-sequence collection)) ;ido removes the match (reported)
+              sel)
           (unwind-protect
               (progn
                 (ido-init-completion-maps)
@@ -206,8 +211,7 @@ Some useful keys for IDO completion:
                     (set hist (cons sel  (symbol-value hist))))))
             (when reset-ido
               (remove-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
-              (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string))
-            )
+              (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string)))
           sel)
       ;; else usual completion
       (when (and (featurep 'xemacs) ;; xemacs workaround

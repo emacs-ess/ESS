@@ -120,18 +120,35 @@ Utility used in \\[ess-display-help-on-object]."
       ;; else
       res)))
 
+(defvar ess-help-type nil
+  "Type of help file, help, index, vingettes etc.
+Local in ess-help buffers.")
+(make-variable-buffer-local 'ess-help-type)
+
+(defvar ess-help-object nil
+  "Name of the object the help is displayed for.
+Is name of the package for package index.
+Local in ess-help buffers.")
+(make-variable-buffer-local 'ess-help-object)
+
+
 (defun ess-display-help-on-object (object)
   "Display documentation for OBJECT in another window.
-If prefix arg is given, forces a query of the  ESS process for the help
-file.  Otherwise just pops to an existing buffer if it exists.
-Uses the variable `inferior-ess-help-command' for the actual help command.
-Prompts for the object name based on the cursor location for all cases
-except the S-Plus GUI.  With S-Plus on Windows (both GUI and in an inferior
-emacs buffer) the GUI help window is used."
+If prefix arg is given, force an update of the cached help topics
+and query the ESS process for the help file instead of reusing an
+existing buffer if it exists.  Uses the variable
+`inferior-ess-help-command' for the actual help command.  Prompts
+for the object name based on the cursor location for all cases
+except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
+an inferior emacs buffer) the GUI help window is used."
   (interactive
-   (if (ess-ddeclient-p)
-       (list (read-string "Help on: "))
-     (ess-find-help-file "Help on: ")))
+   (progn
+     (when current-prefix-arg ;update cache if prefix
+       (with-current-buffer (process-buffer (get-ess-process ess-current-process-name))
+         (setq ess-sp-change t)))
+     (if (ess-ddeclient-p)
+         (list (read-string "Help on: "))
+       (ess-find-help-file "Help on: "))))
 
   (if (or (ess-ddeclient-p)
 	  (equal inferior-ess-help-filetype "chm"))
@@ -144,117 +161,327 @@ emacs buffer) the GUI help window is used."
 			    ess-current-process-name
 			    "](" object ")*"))
 	   (old-hb-p	(get-buffer hb-name))
-	   (curr-win-mode major-mode)
 	   (tbuffer	(get-buffer-create hb-name))
-	   (curr-help-command		inferior-ess-help-command)
-	   ;;-- pass the buffer-local 'ess-help-sec-..'  to the ess-help buffer:
-	   (curr-help-sec-regex		ess-help-sec-regex)
-	   (curr-help-sec-keys-alist	ess-help-sec-keys-alist)
-	   (curr-help-syntax-table	(syntax-table))
-	   (curr-help-filetype	        inferior-ess-help-filetype)
+           ;;?VS: this curr-* kludge is not needed here,
+           ;;everything should be set by ess-setq-vars-local latter
+           ;; (curr-help-sec-regex              ess-help-sec-regex)
+           ;; (curr-help-sec-keys-alist ess-help-sec-keys-alist)
+           ;; ....
 	   (alist		ess-local-customize-alist))
+      (with-current-buffer tbuffer
+        (ess-setq-vars-local (eval alist))
+        (set-syntax-table ess-mode-syntax-table)
+        (setq ess-help-object object
+              ess-help-type 'help)
 
-      (set-buffer tbuffer)
-      (ess-setq-vars-local (eval alist))
-      (setq ess-help-sec-regex	  curr-help-sec-regex)
-      (setq ess-help-sec-keys-alist curr-help-sec-keys-alist)
-      (setq inferior-ess-help-filetype curr-help-filetype)
-      ;; see above, do same for inferior-ess-help-command... (i.e. remove
-      ;; hack, restore old code :-).
+        (if (or (not old-hb-p)
+                current-prefix-arg
+                (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
+                )
 
-      (if (or (not old-hb-p)
-	      current-prefix-arg
-	      (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
-	      )
+            ;; Ask the corresponding ESS process for the help file:
+            (progn
+              (if buffer-read-only (setq buffer-read-only nil))
+              (delete-region (point-min) (point-max))
+              (ess-help-mode)
+              (setq ess-local-process-name ess-current-process-name)
+              (ess-command (format inferior-ess-help-command object) tbuffer)
+              (ess-help-underline)
+              ;; Stata is clean, so we get a big BARF from this.
+              (if (not (string= ess-language "STA"))
+                  (ess-nuke-help-bs))
 
-	  ;; Ask the corresponding ESS process for the help file:
-	  (progn
-	    (if buffer-read-only (setq buffer-read-only nil))
-	    (delete-region (point-min) (point-max))
-	    (ess-help-mode)
-	    (setq ess-local-process-name ess-current-process-name)
-	    (ess-command (format curr-help-command object) tbuffer)
-	    ;; was inferior-ess-help-command
+              (goto-char (point-min))))
 
-	    (ess-help-underline)
-	    ;; Stata is clean, so we get a big BARF from this.
-	    (if (not (string= ess-language "STA"))
-		(ess-nuke-help-bs))
+        (save-excursion
+          (let ((PM (point-min))
+                (nodocs
+                 (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
+            (goto-char PM)
+            (if (and nodocs
+                     ess-help-kill-bogus-buffers)
+                (progn
+                  (if (not (listp nodocs))
+                      (setq nodocs (list PM (point-max))))
+                  (ess-write-to-dribble-buffer
+                   (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
+                           (buffer-name) (car nodocs) (cadr nodocs)))
+                  ;; Avoid using 'message here -- may be %'s in string
+                  ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
+                  ;; MM [3/2000]: why avoid?  Yes, I *do* want message:
+                  (message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
+                  ;; ^^^ fixme : remove new lines from the above {and abbrev.}
+                  (ding)
+                  (kill-buffer tbuffer))
 
-	    (goto-char (point-min))))
+              ;; else : show the help buffer.
 
-      (save-excursion
-	(let ((PM (point-min))
-	      (nodocs
-	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
-	  (goto-char PM)
-	  (if (and nodocs
-		   ess-help-kill-bogus-buffers)
-	      (progn
-		(if (not (listp nodocs))
-		    (setq nodocs (list PM (point-max))))
-		(ess-write-to-dribble-buffer
-		 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
-			 (buffer-name) (car nodocs) (cadr nodocs)))
-		;; Avoid using 'message here -- may be %'s in string
-		;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
-		;; MM [3/2000]: why avoid?  Yes, I *do* want message:
-		(message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
-		;; ^^^ fixme : remove new lines from the above {and abbrev.}
-		(ding)
-		(kill-buffer tbuffer))
+              ;; Check if this buffer describes where help can be found in
+              ;; various packages. (R only).  This is a kind of bogus help
+              ;; buffer, but it should not be killed immediately even if
+              ;; ess-help-kill-bogus-buffers is t.
 
-	    ;; else : show the help buffer.
+              ;; e.g. if within R, the user does:
 
-	    ;; Check if this buffer describes where help can be found in
-	    ;; various packages. (R only).  This is a kind of bogus help
-	    ;; buffer, but it should not be killed immediately even if
-	    ;; ess-help-kill-bogus-buffers is t.
+              ;; > options("help.try.all.packages" = TRUE)
 
-	    ;; e.g. if within R, the user does:
+              ;; > ?rlm
 
-	    ;; > options("help.try.all.packages" = TRUE)
+              ;; then a list of packages for where ?rlm is defined is
+              ;; shown.  (In this case, rlm is in package MASS).  This
+              ;; help buffer is then renamed *help[R](rlm in packages)* so
+              ;; that after MASS is loaded, ?rlm will then show
+              ;; *help[R](rlm)*
 
-	    ;; > ?rlm
+              (if (equal inferior-ess-program inferior-R-program-name)
+                  ;; this code should be used only for R processes.
+                  (save-excursion
+                    (goto-char (point-min))
+                    (if (looking-at "Help for topic")
+                        (let
+                            ( (newbuf
+                               (concat "*help[" ess-current-process-name
+                                       "](" object " in packages)*")))
+                          ;; if NEWBUF already exists, remove it.
+                          (if (get-buffer newbuf)
+                              (kill-buffer newbuf))
+                          (rename-buffer  newbuf)))))
 
-	    ;; then a list of packages for where ?rlm is defined is
-	    ;; shown.  (In this case, rlm is in package MASS).  This
-	    ;; help buffer is then renamed *help[R](rlm in packages)* so
-	    ;; that after MASS is loaded, ?rlm will then show
-	    ;; *help[R](rlm)*
+              ;;dbg (ess-write-to-dribble-buffer
+              ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
+              (set-buffer-modified-p 'nil)
+              (toggle-read-only t)))))
+      (ess--switch-to-help-buffer tbuffer)
+      )))
 
-	    (if (equal inferior-ess-program inferior-R-program-name)
-		;; this code should be used only for R processes.
-		(save-excursion
-		  (goto-char (point-min))
-		  (if (looking-at "Help for topic")
-		      (let
-			  ( (newbuf
-			     (concat "*help[" ess-current-process-name
-				     "](" object " in packages)*")))
-			;; if NEWBUF already exists, remove it.
-			(if (get-buffer newbuf)
-			    (kill-buffer newbuf))
-			(rename-buffer  newbuf)))))
 
-	    ;;dbg (ess-write-to-dribble-buffer
-	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
-	    (let ((special-display-regexps
-		   (if ess-help-own-frame '(".") nil))
-		  (special-display-frame-alist ess-help-frame-alist)
-		  (special-display-function
-		   (if (eq ess-help-own-frame 'one)
-		       'ess-help-own-frame
-		     special-display-function)))
-	      (if (eq curr-win-mode 'ess-help-mode)
-		  (if ess-help-own-frame
-		      (pop-to-buffer tbuffer)
-		    (switch-to-buffer tbuffer))
-		(ess-display-temp-buffer tbuffer)))
-	    (if curr-help-syntax-table
-		(set-syntax-table curr-help-syntax-table))
-	    (set-buffer-modified-p 'nil)
-	    (toggle-read-only t)))))))
+(defun ess-display-help-in-browser ()
+  (interactive)
+  ;; Three ways to find html help, 1) ask sub-process 2) get url/file from subproces
+  ;; 3) call elisp function to get the file path
+  ;; For 2 and 3 call browse-url on the output
+  (let (com-html-help                   ;1) command for sub-process to trigger
+                                        ;help, must contain %s for help obj
+        com-get-file-path               ;2) command for sub-process to return a
+                                        ; location for the help page, must
+                                        ; contain %s for help obj
+        fun-get-file-path               ;3) elisp function to return the
+                                        ;location, gets one argument, help topic
+        not-implemented
+        )
+    (cond
+     ((string-match "^R" ess-dialect)
+      (setq com-html-help "help('%s', help_type='html')\n"))
+     (t (setq not-implemented t))
+     )
+    (if not-implemented
+        (message "Sorry, not implemented for %s " ess-dialect)
+      (if (or (not ess-help-object)
+              (not (eq ess-help-type 'help)))
+          (message "No help topic found")
+        (if com-html-help
+            (ess-command (format com-html-help  ess-help-object))
+          (require 'browse-url)
+          (if com-get-file-path
+              (browse-url (car (ess-get-words-from-vector (format com-get-file-path ess-help-object))))
+            (when (functionp fun-get-file-path)
+              (browse-url (funcall fun-get-file-path ess-help-object))))))
+      )))
+
+(defun ess--action-help-on-object (&optional pos)
+  "Provide help on object at the beginning of line.
+Intended to be used in R-index help pages. Load the package if necessary.
+It is bound to RET and C-m in R-index pages."
+  (interactive)
+  (save-excursion
+    (let ((package (buffer-name))
+          (link-beg (previous-single-property-change pos 'button))
+          (link-end (next-single-property-change pos 'button))
+          pre-commands ;command to send to process, %s is replaced by ess-help-object
+          obj)
+      (cond
+       ((string-match "^R" ess-dialect)
+        (setq pre-commands "require('%s')\n"))  ;;might not be loaded
+       )
+      (when (and  pre-commands
+                  ess-help-object)
+        (ess-command (format pre-commands ess-help-object)))
+      (ess-display-help-on-object (get-text-property pos 'help-object))
+      ))
+  )
+
+(defun ess-display-index ()
+  "Prompt for package name and display its index."
+  (interactive)
+  (let ((object (buffer-name))
+        (alist		ess-local-customize-alist)
+        pack buff all-packs  not-implemented
+        ;; Available customization for ess languages/dialects:
+        com-package-for-object ;command to get the package of current help object
+        com-packages ;command to get a list of available packages (REQUIRED)
+        com-package-index ;command to get the package index (REQUIRED)
+        reg-keyword ;regexp used to find keywords for linking in index listing
+                                        ; only (1st subexpression is used)
+        reg-start ;regexp from where to start searching for keywords in index listing
+        )
+    (cond
+     ((string-match "R" ess-dialect)
+      (setq com-package-for-object "sub('package:', '', utils::find('%s'))\n"
+            com-packages           ".packages(all.available = TRUE)\n"
+            com-package-index      "help(package='%s', help_type = 'text')\n"
+            reg-keyword             "^\\([-a-zA-Z0-9._@$]+\\)[^:\n]*$"
+            reg-start              "^Index:"))
+     (t (setq not-implemented t)))
+    (if not-implemented
+        (message "Sorry, not implemented for %s " ess-dialect)
+      (when (and com-package-for-object
+                 ess-help-object
+                 (eq ess-help-type 'help))
+        (setq pack (car (ess-get-words-from-vector
+                         (format com-package-for-object ess-help-object))))
+        )
+      (setq all-packs (ess-get-words-from-vector com-packages))
+      (unless pack ;try symbol at point
+        (setq pack  (car (member (ess-read-object-name-default) all-packs))))
+      (setq pack (ess-completing-read "Index of: " ;; for xemacs must be an alist:(
+                                      all-packs nil nil nil nil pack))
+      (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
+      (with-current-buffer buff
+        (ess-setq-vars-local (eval alist))
+        (set-syntax-table ess-mode-syntax-table)
+        (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
+              ess-help-type 'index
+              ess-help-object pack
+              ess-local-process-name ess-current-process-name)
+        (setq buffer-read-only nil)
+        (delete-region (point-min) (point-max))
+        (ess-help-mode)
+        (ess-command (format com-package-index pack) buff)
+        (ess-help-underline)
+        (set-buffer-modified-p 'nil)
+        (goto-char (point-min))
+        (when reg-start  ;; go to the beginning of listing
+          (re-search-forward  reg-start  nil t))
+        (when (and reg-keyword (featurep 'emacs))
+          ;;linkify the buffer
+          (save-excursion
+            (while (re-search-forward reg-keyword nil t)
+              (make-text-button (match-beginning 1) (match-end 1)
+                                'mouse-face 'highlight
+                                'action #'ess--action-help-on-object
+                                'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
+                                'follow-link t
+                                'help-echo "help on object")))
+          )
+        (toggle-read-only t))
+      (ess--switch-to-help-buffer buff)
+      )))
+
+
+(defun ess-display-vignettes ()
+  (interactive)
+  (cond
+   ((string-match "^R" ess-dialect) (ess-R-display-vignettes))
+   (t (message "Sorry, not implemented for %s" ess-dialect))
+   ))
+
+(defun ess-R-display-vignettes ()
+  "Display R vignettes in ess-help-like buffer."
+  (interactive)
+  (if (featurep 'xemacs)
+      (ess-eval-linewise "browseVignettes()\n") ;VS:cannot make regexp bellow work in xemacs
+    (let ((buff (get-buffer-create " *ess-command-output*"))
+          (alist		ess-local-customize-alist)
+          packs details
+          p row)
+      (ess-command "local({oo <- options(width = 1000);print.default(browseVignettes());options(oo)})\n" buff)
+      (with-current-buffer buff
+        (save-excursion
+          (goto-char (point-max))
+          (while (re-search-backward "\\(?:\\$\\(\\sw+\\)$\\)\\|\\(?:^ ?\\[[0-9]+,\\]\\s-+\"\\(.*\\)\"\\s-*$\\)" nil t)
+            (when (setq row (match-string-no-properties 2))
+              (setq details
+                    (append (list (split-string row  "\"\\s-+\""))
+                            details))
+              )
+            (when (setq p (match-string-no-properties 1))
+              (setq packs (append (list (cons p details)) packs))
+              (setq details nil)))
+          ))
+      (setq buff  (get-buffer-create (format "*[%s]vignettes*"  ess-dialect)))
+      (with-current-buffer buff
+        (setq buffer-read-only nil)
+        (delete-region (point-min) (point-max))
+        (ess-setq-vars-local (eval alist))
+        (set-syntax-table ess-mode-syntax-table)
+        (setq ess-help-sec-regex "^\\w+:$"
+              ess-help-type 'vignettes
+              ess-local-process-name ess-current-process-name)
+        (ess-help-mode)
+        (set-buffer-modified-p 'nil)
+        (goto-char (point-min))
+        (dolist (el packs)
+          (let ((pack (pop el)) path)
+            (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
+            (dolist (el2 el)
+              (setq path (nth 0 el2))
+              ;; (if xemacs-p
+              ;;     (insert (format "Dir: %s \t%s\n" (concat path "/doc/") (nth 2 el2)))
+              (insert-text-button "Pdf"
+                                  'mouse-face 'highlight
+                                  'action #'ess--action-R-open-vignete
+                                  'follow-link t
+                                  'vignette (file-name-sans-extension (nth 4 el2))
+                                  'package pack
+                                  'help-echo (concat path "/doc/" (nth 4 el2)))
+              (insert " ")
+              (insert-text-button "Rnw"
+                                  'mouse-face 'highlight
+                                  'action #'ess--action-open-in-emacs
+                                  'follow-link t
+                                  'help-echo (concat path "/doc/" (nth 1 el2)))
+              (insert " ")
+              (insert-text-button "R"
+                                  'mouse-face 'highlight
+                                  'action #'ess--action-open-in-emacs
+                                  'follow-link t
+                                  'help-echo (concat path "/doc/" (nth 3 el2)))
+              (insert (format "\t%s\n" (nth 2 el2)))
+              )))
+        (goto-char (point-min))
+        (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
+        (delete-char 1)
+        (toggle-read-only t))
+      (ess--switch-to-help-buffer buff)
+      )))
+
+(defun ess--action-open-in-emacs (pos)
+  (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
+(defun ess--action-R-open-vignete (pos)
+  (ess-command (format "vignette('%s', package='%s')\n"
+                       (get-text-property pos 'vignette)
+                       (get-text-property pos 'package))))
+
+(defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
+  "Switch to help buffer and take into account `ess-help-own-frame'.
+For internal use. Used in `ess-display-help-on-object',
+`ess-display-index', and `ess-display-vignettes'.
+ CURR-MAJOR-MODE default to current major mode.
+"
+  (setq curr-major-mode (or curr-major-mode major-mode))
+  (let ((special-display-regexps (if ess-help-own-frame '(".") nil))
+        (special-display-frame-alist ess-help-frame-alist)
+        (special-display-function (if (eq ess-help-own-frame 'one)
+                                      'ess-help-own-frame
+                                    special-display-function)))
+    (if (eq curr-major-mode 'ess-help-mode)
+        (if ess-help-own-frame
+            (pop-to-buffer buff)
+          (switch-to-buffer buff))
+      (if ess-help-pop-to-buffer
+          (pop-to-buffer buff)
+        (ess-display-temp-buffer buff))
+      )))
 
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
@@ -306,12 +533,15 @@ emacs buffer) the GUI help window is used."
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
-  (define-key ess-help-mode-map "q" 'ess-switch-to-end-of-ESS)
+  (define-key ess-help-mode-map "q" 'bury-buffer) ;was 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-m" 'next-line)
   ;; (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
-;; TODO: `electric mouse-2'
-;; (define-key ess-help-mode-map [mouse-2] 'ess-display-help-on-object)
+  (define-key ess-help-mode-map "w" 'ess-display-help-in-browser)
+  (define-key ess-help-mode-map "i" 'ess-display-index)
+  (define-key ess-help-mode-map "v" 'ess-display-vignettes)
+  ;; TODO: `electric mouse-2'
+  ;; (define-key ess-help-mode-map [mouse-2] 'ess-display-help-on-object)
   (define-key ess-help-mode-map "l" 'ess-eval-line-and-step)
   (define-key ess-help-mode-map "r" 'ess-eval-region-and-go)
   (define-key ess-help-mode-map "f" 'ess-eval-function-or-paragraph-and-step)
@@ -351,6 +581,9 @@ emacs buffer) the GUI help window is used."
 	["End of Buffer"		end-of-buffer t]
 	"-"
 	["Help on ..."			ess-display-help-on-object t]
+        ["Index of ..."                 ess-display-index t]
+        ["Vignettes"                    ess-display-vignettes t]
+        ["Open in Browser"              ess-display-help-in-browser t]
 	"-"
 	["Eval Line"			ess-eval-line-and-step t]
 	["Eval Paragraph & step" 	ess-eval-paragraph-and-step t]
@@ -443,8 +676,8 @@ to see which keystrokes find which sections."
 
 (defun ess-describe-help-mode nil
   "Display help for `ess-mode'."
- (interactive)
- (describe-function 'ess-help-mode))
+  (interactive)
+  (describe-function 'ess-help-mode))
 
 (defun ess-kill-buffer-and-go nil
   "Kill the current buffer and switch back to the ESS process."
@@ -474,11 +707,11 @@ Keystroke    Section
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))
 
-(defun ess-read-helpobj-name-default (olist)
+(defun ess-get-helpobj-at-point (slist)
   ;;; Returns the object name at point, or else the name of the
   ;;; function call point is in if that has a help file. A name has a
-  ;;; help file if it is a member of olist.
-  (or (car (assoc (ess-read-object-name-default) olist))
+  ;;; help file if it is a member of slist (string-list).
+  (or (car (member (ess-read-object-name-default) slist))
       (condition-case ()
 	  (save-excursion
 	    (save-restriction
@@ -486,31 +719,20 @@ Keystroke    Section
 				(point-max))
 	      (backward-up-list 1)
 	      (backward-char 1)
-	      (car (assoc (ess-read-object-name-default) olist))))
+	      (car (member (ess-read-object-name-default) slist))))
 	(error nil))))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
 Stata or XLispStat for additional information."
   (ess-make-buffer-current)
-  (if (not
-       (or
-	(string-match "XLS" ess-language)
-	(string-match "STA" ess-language)
-	(string-match "SAS" ess-language)))
-      (let* ((help-files-list
-	      (ess-get-help-topics-list ess-current-process-name))
-	     (default (ess-read-helpobj-name-default help-files-list))
-	     (prompt-string (if default
-				(format "%s(default %s) " p-string default)
-			      p-string))
-	     (spec (completing-read prompt-string help-files-list)))
-	(list (cond
-	       ((string= spec "") default)
-	       (t spec))))
-    (let* ((spec (read-string p-string)))
-      (list spec))))
-
+  (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
+      (list (read-string p-string))
+    (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
+           (default (ess-get-helpobj-at-point help-files-list)))
+      (list (ess-completing-read p-string help-files-list
+                                 nil nil nil nil default))
+      )))
 
 ;;*;; Utility functions
 
@@ -525,11 +747,11 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
      (format "(ess-get-help-topics-list %s) .." name))
     (if (or (not ess-help-topics-list) ess-sp-change)
 	(setq ess-help-topics-list
-	      (ess-uniq-list
-	       (mapcar 'list
-		       (append (ess-get-help-files-list)
-			       (ess-get-help-aliases-list)
-			       (ess-get-object-list name)))))
+              (ess-uniq-list
+               (append (ess-get-object-list name)
+                       (ess-get-help-files-list)
+                       (ess-get-help-aliases-list)
+                       )))
       ;; else return the existing list
       ess-help-topics-list)))
 
