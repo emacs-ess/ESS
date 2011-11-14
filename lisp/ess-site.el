@@ -588,6 +588,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
+(ess-message "[ess-site:] after ess-check-R-prog... ...")
 
 ;;; 3. Customization (and examples) for your site
 ;;;; ===============================================
@@ -738,6 +739,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
 
  ; Local variables section
+(ess-message "[ess-site:] *very* end ...")
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
