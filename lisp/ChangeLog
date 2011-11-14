@@ -1,7 +1,13 @@
+2011-11-14  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-help.el (ess-read-helpobj-name-default): defined alias for
+		  ess-helpobj-at-point.
+
 2011-11-13  Vitalie Spinu  <spinuvit@gmail.com>
 
-	* ess-help.el (ess-get-helpobj-at-point): modified the name of
-	ess-read-helpobj-name-default to a more intuitive one.
+	* ess-help.el (ess-helpobj-at-point): modified the name of
+	ess-read-helpobj-name-default to a more intuitive one and
+	consistent with emacs conventions.
 
 	* ess-custom.el (ess-help-pop-to-buffer): If non-nil ess-help
 	buffers are given focus during the display.

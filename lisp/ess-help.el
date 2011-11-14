@@ -707,7 +707,7 @@ Keystroke    Section
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))
 
-(defun ess-get-helpobj-at-point (slist)
+(defun ess-helpobj-at-point (slist)
   ;;; Returns the object name at point, or else the name of the
   ;;; function call point is in if that has a help file. A name has a
   ;;; help file if it is a member of slist (string-list).
@@ -722,6 +722,9 @@ Keystroke    Section
 	      (car (member (ess-read-object-name-default) slist))))
 	(error nil))))
 
+;; defalias for old name:
+(defalias 'ess-read-helpobj-name-default 'ess-helpobj-at-point)
+
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
 Stata or XLispStat for additional information."
@@ -729,7 +732,7 @@ Stata or XLispStat for additional information."
   (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
       (list (read-string p-string))
     (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
-           (default (ess-get-helpobj-at-point help-files-list)))
+           (default (ess-helpobj-at-point help-files-list)))
       (list (ess-completing-read p-string help-files-list
                                  nil nil nil nil default))
       )))
