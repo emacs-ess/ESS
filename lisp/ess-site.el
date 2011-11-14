@@ -524,6 +524,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; -----  *and* update the "Start Process" menu (below)
 ;;    -> To this: wrap the following in functions that can be re-called
 
+(ess-message "[ess-site:] before creating ess-versions-* ...")
 ;; Create  ess-versions-created,
 ;;         ess-r-versions-created,
 ;; and on Windows, ess-rterm-version-paths -----------------------------------------
@@ -533,6 +534,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 				   (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
 				   (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
 				(ess-s-versions-create)))) ;; use ess-s-versions
+  (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
 	    (ess-flatten-list
@@ -560,6 +562,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 		   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
 		   ))
 		)))))
+  (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
 
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
 	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
