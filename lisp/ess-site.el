@@ -421,6 +421,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; ALWAYS:
 (ess-message "[ess-site:] require 'ess   *ITSELF* ...")
 (require 'ess); -> loads ess-custom.el and more
+(ess-message "[ess-site:] .. after requiring 'ess ...")
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
@@ -428,6 +429,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; (1.8) Speedbar and mouse
 
+(ess-message "[ess-site:] require 'ess-menu ...")
 (require 'ess-menu)
 (require 'ess-mouse)
 
@@ -435,6 +437,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; To remove toolbar support under ESS, add "(setq ess-use-toolbar nil)"
 ;; to your ~/.emacs or ~/.xemacs/init.el before (require 'ess-site)
+(ess-message "[ess-site:] require 'ess-toolbar ...")
 (require 'ess-toolbar)
 
 ;;; 2. Site Specific setup
@@ -579,6 +582,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 			  ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
 			(cons "Other" new-menu))))
+
+(ess-message "[ess-site:] after ess-versions-created ...")
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
