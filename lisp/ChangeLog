@@ -1,3 +1,10 @@
+2011-11-17  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-eval-function-or-paragraph-and-step): now calls
+	ess-eval-function in order to reuse ess-developer and ess-tracebug
+	improvements of ess-eval-function.
+	(ess-eval-function): new argument 'no-error
+
 2011-11-14  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-help.el (ess-read-helpobj-name-default): defined alias for

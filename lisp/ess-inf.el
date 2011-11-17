@@ -1163,25 +1163,30 @@ of the buffer until here, i.e. 'point'"))
 the end of the buffer"))
 
 
-(defun ess-eval-function (vis)
+(defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'."
+Arg has same meaning as for `ess-eval-region'.  If NO-ERROR is
+non-nil and the function is successfully  evaluate return t,
+nil otherwise"
   (interactive "P")
+  (ess-force-buffer-current "Process to load into: ")
   (save-excursion
-    (let* ((beg-end (ess-end-of-function))
-	   (beg (nth 0 beg-end))
-	   (end (nth 1 beg-end))
-	   name assigned-in-ns)
-      (goto-char beg)
-      (setq name (ess-read-object-name-default))
-      (when (and (string-match "^R" ess-dialect) ;; how about S?
-                 (ess-get-process-variable ess-local-process-name 'ess--developer-p))
-          (setq assigned-in-ns (ess-developer-assign-function name (buffer-substring-no-properties beg end))))
-      (unless assigned-in-ns
-        (princ (concat "Loading: " name) t)
-        (ess-eval-region beg end vis
-                         (concat "Eval function " (or name "???"))))))
-  )
+    (let ((beg-end (ess-end-of-function nil no-error)))
+      (if beg-end
+	  (let ((beg (nth 0 beg-end))
+		(end (nth 1 beg-end))
+		name assigned-in-ns)
+	    (goto-char beg)
+	    (setq name (ess-read-object-name-default))
+	    (when (and (string-match "^R" ess-dialect) ;; how about S?
+		       (ess-get-process-variable ess-local-process-name 'ess--developer-p))
+	      (setq assigned-in-ns (ess-developer-assign-function name (buffer-substring-no-properties beg end))))
+	    (unless assigned-in-ns
+	      (princ (concat "Loading: " name) t)
+	      (ess-eval-region beg end vis
+			       (concat "Eval function " (or name "???"))))
+	    t ) ;;success
+	nil))))
 
 
 ;; This is from	 Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
@@ -1216,19 +1221,8 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 paragraph other to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
-  (let ((beg (ess-beginning-of-function 'no-error)))
-    (if beg ;; inside a function
-	(let ((end-fun (cadr (ess-end-of-function beg)))
-	      name)
-	  (goto-char beg)
-	  (setq name (ess-read-object-name-default))
-	  (princ (concat "Loading: " name) t)
-	  (ess-eval-region beg end-fun vis
-			   (concat "Eval function " name))
-	  (goto-char end-fun)
-	  (ess-next-code-line))
-      ;; else: not in a function
-      (ess-eval-paragraph-and-step vis))))
+  (unless (ess-eval-function vis 'no-error)
+    (ess-eval-paragraph-and-step vis)))
 
 
 (defun ess-eval-line (vis)
