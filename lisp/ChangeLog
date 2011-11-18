@@ -1,5 +1,8 @@
 2011-11-18  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-developer.el (ess-developer-source-current-file):
+	interface to insertSource.
+
 	* ess-inf.el (ess-get-process-variable): added (boundedp var)
 	check.  If var is not defined ess-get-process-variable returns
 	nil. Useful when some vars are defined for one mode and not for

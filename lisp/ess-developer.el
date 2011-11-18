@@ -26,16 +26,14 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;; In develper mode `ess-eval-function' (and frends) checks
-;; if the function name could be found in the `ess-developer-packages'.  If
-;; so, it assigns the function into the namespace using
-;; 'assignInNamespace()'.
+;; In develper mode `ess-eval-function' (and frends) checks if the current
+;; function's name can be found in a package listed in `ess-developer-packages'.
+;; If found so, it assigns the currrent function into the namespace using 'assignInNamespace()'.
+
 ;; "C-M-d t" to toggle developer mode
 ;; "C-M-d a" to add a package to your development list (with C-u - remove)
-;; "C-M-d r" to remove a package to your development list
-;;
-
-
+;; "C-M-d r" to remove a package from your  development list
+;; "C-c l" to 'evalSource' current file into the package
 
 
 (require 'ess-site) ;; need to assigne the keys in the map
@@ -46,6 +44,8 @@
 (define-key inferior-ess-mode-map [(control meta ?d) (?a)] 'ess-developer-add-package)
 (define-key ess-mode-map [(control meta ?d) (?r)] 'ess-developer-remove-package)
 (define-key inferior-ess-mode-map [(control meta ?d) (?r)] 'ess-developer-remove-package)
+
+(define-key ess-mode-map [(control meta  ?d) (?s)] 'ess-developer-source-current-file)
 
 
 (defgroup ess-developer nil
@@ -73,6 +73,12 @@ Use `ess-developer' to set this variable.
 Use `ess-developer-add-package' to modify interactively this
 list. "
   :group 'ess-developer)
+
+(defcustom ess-developer-force-attach nil
+  "If non-nill all the packages listed in `ess-developer-packages' are attached,
+when ess-developer mode is turned on."
+  :group 'ess-developer
+  :type 'boolean)
 
 (defcustom ess-developer-enter-source "~/ess-developer-enter.R"
   "File to 'source()' in on entering `ess-developer' mode."
@@ -160,6 +166,31 @@ print('@OK@')})\n"
         assigned-p)
       )))
 
+
+(defun ess-developer-source-current-file ()
+  "Ask for namespace to evalSource current file.
+If *current* is selected just invoke source('file_name'),
+otherwise call insertSource."
+  (interactive)
+  (ess-force-buffer-current "R process to use: ")
+  (if (not buffer-file-name)
+      (message "Buffer '%s' does not visit a file" (buffer-name (current-buffer)))
+    (let* ((file (file-name-nondirectory buffer-file-name))
+	   (env (ess-completing-read (format "insertSource '%s' into: " file)
+				    (append ess-developer-packages (list "*current*" ))
+				    nil t))
+	  comm)
+      (save-buffer)
+      (setq comm (if (equal env "*current*")
+		     (format "\n invisible(eval({source(file=\"%s\")\ncat(\"\nSourced '%s' in \", format(parent.frame()), fill=T)}))\n"
+			     buffer-file-name file )
+		   (format "\n invisible(eval({require('methods');\n insertSource(source='%s',package='%s')\n cat(\"\nevalSourced '%s' in namespace '%s'\n\")}))\n"
+			   buffer-file-name env file env)))
+      (save-selected-window
+	(ess-switch-to-ESS t)) ;; this should go away eventually
+      (process-send-string (get-process ess-local-process-name) comm)
+      )))
+
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.
 If optional VAL is non-negative, turn on the developer mode. If
@@ -172,6 +203,7 @@ so, it assigns the function into the namespace using
 "
   (interactive)
   (when (eq val t) (setq val 1))
+  (ess-force-buffer-current "Process to load into: " t)
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
     (let ((ess-dev  (if (numberp val)
                         (if (< val 0) nil t)
@@ -181,10 +213,17 @@ so, it assigns the function into the namespace using
             (run-hooks 'ess-developer-enter-hook)
             (when (file-readable-p ess-developer-enter-source)
               (ess-eval-linewise (format "source(%s)\n" ess-developer-enter-source)))
+	    (unless (fboundp 'orig-ess-load-file)
+	      (defalias 'orig-dev-ess-load-file (symbol-function 'ess-load-file))
+	      (defalias 'ess-load-file (symbol-function 'ess-developer-source-current-file))
+	      )
             (message "Developer mode is on"))
         (run-hooks 'ess-developer-exit-hook)
         (when (file-readable-p ess-developer-exit-source)
           (ess-eval-linewise (format "source(%s)\n" ess-developer-exit-source)))
+	(when (fboundp 'orig-ess-load-file)
+	  (defalias 'ess-load-file (symbol-function 'orig-ess-load-file))
+	  (fmakunbound 'orig-ess-load-file))
         (message "Developer mode is off"))
       (setq ess--developer-p ess-dev))
     (setq ess-local-process-name
