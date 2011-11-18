@@ -567,7 +567,8 @@ Returns the name of the process, or nil if the current buffer has none."
   "Return the variable VAR (symbol) local to ESS process called NAME (string)."
   (save-excursion
     (set-buffer (process-buffer (get-ess-process name)))
-    (symbol-value var)))
+    (if (boundp var)
+	(symbol-value var))))
 
 (defun ess-set-process-variable (name var val)
   "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
@@ -1166,8 +1167,9 @@ the end of the buffer"))
 (defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'.  If NO-ERROR is
-non-nil and the function is successfully  evaluate return t,
-nil otherwise"
+non-nil and the function was successfully evaluated, return '(beg
+end) indicating the beginning and end of function under cursor ,
+nil otherwise."
   (interactive "P")
   (ess-force-buffer-current "Process to load into: ")
   (save-excursion
@@ -1185,7 +1187,7 @@ nil otherwise"
 	      (princ (concat "Loading: " name) t)
 	      (ess-eval-region beg end vis
 			       (concat "Eval function " (or name "???"))))
-	    t ) ;;success
+	    (list beg end)) ;;success
 	nil))))
 
 
@@ -1221,8 +1223,11 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 paragraph other to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
-  (unless (ess-eval-function vis 'no-error)
-    (ess-eval-paragraph-and-step vis)))
+  (let ((beg-end (ess-eval-function vis 'no-error)))
+    (if (null beg-end)
+	(ess-eval-paragraph-and-step vis)
+      (goto-char (cadr beg-end))
+      (ess-next-code-line))))
 
 
 (defun ess-eval-line (vis)
