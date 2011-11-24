@@ -832,16 +832,20 @@ ordinary inferior process.  Alway nil on Unix machines."
 		    (default-value 'inferior-ess-ddeclient))))))
 
 (defun ess-prompt-wait (proc prompt-reg &optional sleep )
-  "Wait for a prompt to appear at BOL of current buffer.
+  "Wait for a prompt to appear at the end of current buffer.
 PROC is the ESS process. PROMPT-REG is a regexp of the process
-prompt to look for. Does not change point."
+prompt to look for. Does not change point. Not to be used in
+inferior-process buffer. Use `inferior-ess-wait-for-prompt'
+instead. "
   (if sleep (sleep-for sleep)); we sleep here, *and* wait below
   (save-excursion
-      (while (progn
-	       (accept-process-output proc 0 500)
-               (goto-char (marker-position (process-mark proc)))
-               (beginning-of-line)
-               (not (looking-at prompt-reg))))))
+      (while (or (accept-process-output proc 0 100)
+		 (progn ;; if no more output, check for prompt
+		   (goto-char (marker-position (process-mark proc)))
+		   (beginning-of-line)
+		   (not (re-search-forward prompt-reg nil t))
+		   )))))
+
 
 (defun ordinary-insertion-filter (proc string)
   (let ((old-buffer (current-buffer)))

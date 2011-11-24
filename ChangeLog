@@ -1,3 +1,7 @@
+2011-11-24  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* etc/R-ESS-bugs.el ("\n\n\n"): double prompt bug (5))
+
 2011-11-11  Vitalie Spinu (spinuvit@gmail.com)  <spinuvit@gmail.com>
 
 	* etc/R-ESS-bugs.el: added this file for tracking R-bugs from the

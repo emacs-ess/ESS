@@ -4,21 +4,21 @@
 
  ;;;; 1 ess-get-words-from-vector stumbles over \"
 (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
-;;-> ("      " "ccc" "dddd"): solved 
+;;-> ("      " "ccc" "dddd"): SOLVED
 
 
 ;;;; 2 ess-get-words-from-vector disregards max.print
-;; options(max.print=1000)
+;; options(max.print=1000) (warning added to the docs)
 (length (ess-get-words-from-vector "as.character(1:10000)\n"))
 ;;-> 1001 with "max.print" at the end; added a comment in the function doc
 
-;;;; 3 inferior-ess-primary-prompt does not capture "+ + > "
-;;     this hangs emacs; solved 
+;;;; 3 Inferior-ess-primary-prompt does not capture "+ + > "
+;;     this hangs emacs; SOLVED
 (ess-command    "tf<-function(N){
 N}\n")
 
 ;;;;  4 ess-command detects the prompt prematurely
-;;   this outputs str(iris) in the inferior buffer
+;;   this outputs str(iris) in the inferior buffer; SOLVED
 (ess-command "
 lm_test <- function (formula, data, subset, weights, na.action, method = 'qr',
           model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE,
@@ -86,6 +86,10 @@ lm_test <- function (formula, data, subset, weights, na.action, method = 'qr',
 }
 str(iris)
 ")
+
+;;;; 5 double prompt > > used to stall emacs; SOLVED
+(ess-command "\n\n\n")
+
 
 
 

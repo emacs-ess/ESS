@@ -1,3 +1,11 @@
+2011-11-24  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-prompt-wait): ess-prompt-wait is more
+	sophisticated now. It checks for prompt only if no more output has
+	been received from the process. Looking-at is replaced with
+	re-search-forward in order to avoid anchoring the prompt to the
+	bol.
+
 2011-11-18  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-developer.el (ess-developer-source-current-file):
@@ -14,6 +22,7 @@
 	ess-eval-function in order to reuse ess-developer and ess-tracebug
 	improvements of ess-eval-function.
 	(ess-eval-function): new argument 'no-error
+
 
 2011-11-14  Vitalie Spinu  <spinuvit@gmail.com>
 
