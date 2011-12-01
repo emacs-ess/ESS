@@ -648,6 +648,19 @@ Completion is available for supplying options."
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
 
+(defun ess-library ()
+  "Prompt and install R package. With argument, update cached packages list."
+  (interactive)
+  (if (not (string-match "^R" ess-dialect))
+      (message "Sorry, not available for %s" ess-dialect)            
+    (let ((ess-eval-visibly-p t)
+	  (packs (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(.packages(T));options(oo)})\n"))
+          pack)
+      (setq pack (ess-completing-read "Load package: " packs))
+      (ess-eval-linewise (format "library('%s')\n" pack))
+      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+      )))
+
 (defun ess-dirs ()
   "Set Emacs' current directory to be the same as the *R* process.
 If you change directory within *R* using setwd(), run this command so that

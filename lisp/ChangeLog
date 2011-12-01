@@ -1,3 +1,7 @@
+2011-12-01  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (ess-library): ido interface to library()
+
 2011-11-24  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-inf.el (ess-prompt-wait): ess-prompt-wait is more
