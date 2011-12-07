@@ -284,3 +284,25 @@ th <- 48 # now do ls() and see what happened ... the horror !!!
 d <- 3
 cpF <- list("Frank", list(th, 1:d))
 cop <- acF <- cpF$copula
+
+
+## From: Aleksandar Blagotic <aca.blagotic@gmail.com>
+## To: <ess-help@stat.math.ethz.ch>
+## Subject: [ESS] R-mode: forward-sexp: Scan error: "Unbalanced parentheses"
+## Date: Tue, 6 Dec 2011 01:24:11 +0100
+#
+## Let's presuppose that I have a function like this:
+#
+fn <- function(x, ...){
+  re <- "^#{1,6} [[:print:]]+$"
+  grepl(re, x, ...)
+}
+## As soon as I put my cursor at the end of the line with regexp, and
+## press RET, I get this error:
+
+## forward-sexp: Scan error: "Unbalanced parentheses"
+##
+##-------
+## Rodney S: I can reproduce it ...
+## Martin M: I can NOT reproduce it, neither with 'emacs -Q';
+##	tried both ESS 5.14 and ESS from svn
