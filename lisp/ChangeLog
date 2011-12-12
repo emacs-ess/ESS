@@ -1,3 +1,9 @@
+2011-12-12  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-developer.el (ess-developer): the bulk of ess-developer.el
+	and ess-developer.R is finished. See the file header for the full
+	details.
+
 2011-12-01  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-library): ido interface to library()
