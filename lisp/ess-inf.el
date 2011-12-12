@@ -1191,7 +1191,7 @@ nil otherwise."
 	      (princ (concat "Loading: " name) t)
 	      (ess-eval-region beg end vis
 			       (concat "Eval function " (or name "???"))))
-	    (list beg end)) ;;success
+	    beg-end) ;;success
 	nil))))
 
 

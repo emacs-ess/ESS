@@ -1,3 +1,8 @@
+2011-12-12  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* etc/ess-developer.R: R side of ess-developer.el
+
+
 2011-11-24  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* etc/R-ESS-bugs.el ("\n\n\n"): double prompt bug (5))

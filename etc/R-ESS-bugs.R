@@ -250,6 +250,7 @@ if (require(lme4)) {
     (fm2 <- update(fm1, . ~ . - (age | id) + (log(height) | id)))
 }
 
+### --------------------
 ## hitting TAB (`ess-indent-command'), which calls `ess-indent-line' I get
 ## the following trace:
 
@@ -258,7 +259,7 @@ if (require(lme4)) {
 ##   forward-sexp(-2)
 ##   ...
 ##   ess-continued-statement-p()
-## ......................
+## .............
 
 ## Interestingly, if the lines 2-4 are absent, then the problem is gone.
 ## The problem is also there in ESS 5.11.
@@ -266,6 +267,14 @@ if (require(lme4)) {
 ## I'll try to find out what is going on in `ess-continued-statement-p' but
 ## given that I'm not very familiar with the stuff in ess-mode.el, I'm
 ## submitting the report in case somebody can detect the issue sooner.
+
+## another example: hitting Tab at }else line
+.essDev_differs <- function(f1, f2){
+    if (is.function(f1) && is.function(f2)){
+        !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
+     }else
+         !identical(f1, f2)
+}
 
 ### --------------- C-c C-c  was finding the wrong "beginning of function"
 ##				[fixed, 2011-05-28]
