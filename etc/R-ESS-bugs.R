@@ -231,6 +231,19 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     return(x)
 }
 
+## swanky functions:
+
+
+
+`swank:quit-inspector` <- function(slimeConnection, sldbState) {
+    resetInspector(slimeConnection)
+    FALSE
+}
+
+'swank:quit-inspector' <- function(slimeConnection, sldbState) {
+    resetInspector(slimeConnection)
+    FALSE
+}
 
 ## From: "Sebastian P. Luque" <spluque@gmail.com>
 ## To: ess-bugs@stat.math.ethz.ch
