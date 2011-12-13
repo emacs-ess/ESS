@@ -1184,7 +1184,7 @@ nil otherwise."
 		name assigned-in-ns)
 	    (goto-char beg)
 	    (setq name (ess-read-object-name-default))
-	    (when (and (string-match "^R" ess-dialect) ;; how about S?
+	    (when (and (string-match "^R" ess-dialect)
 		       (ess-get-process-variable ess-local-process-name 'ess--developer-p))
 	      (setq assigned-in-ns (ess-developer-assign-function name (buffer-substring-no-properties beg end))))
 	    (unless assigned-in-ns
