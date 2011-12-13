@@ -426,12 +426,6 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   ;;  (make-local-variable 'ess-local-process-name)
   ;;  (make-local-variable 'ess-keep-dump-files)
 
-  ;; make swank/slime work in ESS Buffers:
-  (set (make-local-variable 'beginning-of-defun-function)
-       'ess-beginning-of-function)
-  (set (make-local-variable 'end-of-defun-function)
-       'ess-end-of-function)
-
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (if (featurep 'xemacs)
       (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.

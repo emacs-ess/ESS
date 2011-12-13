@@ -200,6 +200,13 @@ to R, put them in the variable `inferior-R-args'."
 	     (ess-imenu-R)))
   ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
+
+  ;; make swankr/slime work in ESS Buffers:
+  (set (make-local-variable 'beginning-of-defun-function)
+       'ess-beginning-of-function)
+  (set (make-local-variable 'end-of-defun-function)
+       'ess-end-of-function)
+
   (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
@@ -652,7 +659,7 @@ Completion is available for supplying options."
   "Prompt and install R package. With argument, update cached packages list."
   (interactive)
   (if (not (string-match "^R" ess-dialect))
-      (message "Sorry, not available for %s" ess-dialect)            
+      (message "Sorry, not available for %s" ess-dialect)
     (let ((ess-eval-visibly-p t)
 	  (packs (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(.packages(T));options(oo)})\n"))
           pack)
