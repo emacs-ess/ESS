@@ -1,3 +1,10 @@
+2011-12-13  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-mode): set beginning-of-defun-function and
+	end-of-defun-function to make swank/slime work.
+	(ess-function-pattern): allowed for function names of the form
+	'.+', '.+', ".+" in ess-R-function-pattern.
+
 2011-12-12  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-developer.el (ess-developer): the bulk of ess-developer.el
