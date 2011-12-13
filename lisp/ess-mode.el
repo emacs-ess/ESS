@@ -427,10 +427,10 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   ;;  (make-local-variable 'ess-keep-dump-files)
 
   ;; make swank/slime work in ESS Buffers:
-  (make-local-variable 'beginning-of-defun-function)
-  (setq beginning-of-defun-function 'ess-beginning-of-function)
-  (make-local-variable 'end-of-defun-function)
-  (setq end-of-defun-function 'ess-end-of-function)
+  (set (make-local-variable 'beginning-of-defun-function)
+       'ess-beginning-of-function)
+  (set (make-local-variable 'end-of-defun-function)
+       'ess-end-of-function)
 
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (if (featurep 'xemacs)
