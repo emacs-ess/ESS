@@ -1027,6 +1027,7 @@ Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
     (let ((indent-point (point))
+	  (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
 	  (case-fold-search nil)
 	  state
 	  containing-sexp)

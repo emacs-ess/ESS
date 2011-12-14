@@ -1,3 +1,9 @@
+2011-12-14  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-calculate-indent): let bind
+	beginning-of-defun-function to nil in ess-calculate-indent to
+	prevent the use of ess-beginning-of-function
+
 2011-12-13  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-mode.el (ess-mode): set beginning-of-defun-function and
