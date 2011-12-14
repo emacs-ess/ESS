@@ -201,9 +201,11 @@ to R, put them in the variable `inferior-R-args'."
   ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
 
-  ;; make swankr/slime work in ESS Buffers:
+  ;; useful for swankr/slime:
   (set (make-local-variable 'beginning-of-defun-function)
-       'ess-beginning-of-function)
+       '(lambda (&optional ARG)
+	  (skip-chars-backward " \t\n")
+	  (ess-beginning-of-function)))
   (set (make-local-variable 'end-of-defun-function)
        'ess-end-of-function)
 
