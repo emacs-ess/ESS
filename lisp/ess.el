@@ -110,7 +110,10 @@
 
 (require 'ess-compat)
 
-(if (featurep 'emacs)
+(if (and (featurep 'emacs)
+	 ;; MM: this triggers  tramp - and that leads to havoc -- for me @ SfS
+	 ;;    but not for 'maechi' (who has export use_ESS_devel=yes --> calls MM's ESS)
+	 (not (string= user-login-name "maechler")))
     (require 'ido nil t))
 
 (eval-and-compile
