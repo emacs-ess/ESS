@@ -8,8 +8,10 @@ Changes/New Features in 5.15:
  anymore.   @var{ess-history-directory} now allows to have the history all
  saved in one ``central'' file.
 @item @ESS{[R]}: more Roxygen improvements.
+@item @ESS{[R]}: @kbd{C-c .} to set (indentation) style.
 @end itemize
 
+Changes/New Features in 5.14:
 @itemize @bullet
 @item @ESS{[BUGS/JAGS]}:  Batch BUGS is back!  For recent OpenBUGS
 versions, 3.0.8+, a batch BUGS script is once again available,

@@ -166,6 +166,7 @@
   ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
   (define-key ess-mode-map "\C-c\C-k"	'ess-force-buffer-current)
   (define-key ess-mode-map "\C-c`"	'ess-parse-errors) ; \C-x reserved!
+  (define-key ess-mode-map "\C-c."	'ess-set-style); analogous to binding in C-mode
   (define-key ess-mode-map "{"		'ess-electric-brace)
   (define-key ess-mode-map "}"		'ess-electric-brace)
   (define-key ess-mode-map "\C-\M-q"	'ess-indent-exp)

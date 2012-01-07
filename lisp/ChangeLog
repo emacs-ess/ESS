@@ -1,3 +1,7 @@
+2012-01-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-mode-map): C-c . sets style (as in C-mode)
+
 2011-12-14  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-mode.el (ess-calculate-indent): let bind
