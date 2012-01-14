@@ -1,6 +1,25 @@
+2012-01-14  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (R-customize-alist): removed
+	inferior-ess-command-prompt. It is no longer necessary with recent
+	changes in the waiting mechanism.
+
+
+2012-01-14  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-eldoc.el (ess-eldoc): remove new lines from argument list to
+	avoid frequent distortion of emacs windows.
+
 2012-01-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-mode.el (ess-mode-map): C-c . sets style (as in C-mode)
+
+2011-12-23  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-smart-comma): inspired by slime-repl ,shortcut.
+	If "," is the first character typed in the inferior-ess buffer it
+	requests for execution one of the commands in ess-handy-commands
+	list.
 
 2011-12-14  Vitalie Spinu  <spinuvit@gmail.com>
 

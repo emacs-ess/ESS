@@ -900,11 +900,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 		(and ess-cmd-delay sleep)))
 	(if do-sleep (setq sleep (* sleep ess-cmd-delay)))
 	(setq prompt-reg
-	      ;; The default for inferior-ess-command-prompt should be nil, but
-	      ;; it is messed up by ess-setq-vars-default in inferior-ess-mode.
-	      ;; Thus, need to check here for local value :(
-	      (concat (or (cdr (assoc 'inferior-ess-command-prompt (buffer-local-variables)))
-			  inferior-ess-primary-prompt) "\\'")) ;anchor to eob
+	      (concat inferior-ess-primary-prompt) "\\'") ;anchor to eob
 	(ess-if-verbose-write (format "(ess-command %s ..)" com))
 	(save-excursion
 	  (goto-char (marker-position (process-mark sprocess)))
@@ -1462,7 +1458,9 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name)
   (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
-  (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process))
+  (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
+  (define-key inferior-ess-mode-map ","        'ess-smart-comma)
+  )
 
 (easy-menu-define
  inferior-ess-mode-menu inferior-ess-mode-map
@@ -2540,6 +2538,22 @@ P-STRING is the prompt string."
 	    (or object-name "Temporary"))))
     (error nil)))
 
+;;;; smart comma
+;;;; inspired by slime repl shortcuts
+
+(defun ess-smart-comma ()
+  "If comma is invoched at the process marker of an ESS inferior
+buffer, request and execute a command from `ess-handy-commands'
+list."
+  (interactive)
+  (let ((proc (get-buffer-process (current-buffer))))
+    (if (and proc
+	     (eq (point) (marker-position (process-mark proc))))
+	(call-interactively
+	 (intern (ess-completing-read "Execute:" (mapcar 'symbol-name ess-handy-commands) nil t)))
+      (delete-horizontal-space)
+      (insert ", ")
+    )))
 
 ;;*;; Temporary buffer handling
 

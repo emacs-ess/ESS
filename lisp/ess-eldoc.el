@@ -138,9 +138,11 @@ to look up any doc strings."
 		(setq doc (ess-r-args-get name)))
 	    ;; error handler -- not possible to go up one list level.
 	    (error nil) ))))
-    (if doc
-	(concat name ": " doc)
-      doc)))
+    (when doc
+      (setq doc (replace-regexp-in-string "[\n \t]+" " " doc)) ;; remove new lines
+      ;; (setq doc (replace-regexp-in-string " *=[^=,]*\\(,\\|\\'\\)" "\\1" doc)) ;; remove defaults?
+      (concat name ": " doc))
+    ))
 
 (defun ess-eldoc-2 ()
   ;; simple, old version.

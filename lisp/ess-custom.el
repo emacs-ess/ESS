@@ -165,6 +165,15 @@ as `ess-imenu-use-S'."
 
 ;;
 
+(defcustom ess-handy-commands '(ess-change-directory
+				ess-install.packages ess-library
+				ess-search-list ess-display-index
+				ess-display-vignettes
+				ess-display-help-on-object)
+  "List of custom ess commands available for call by `ess-smart-comma' function."
+  :group 'ess
+  :type 'list)
+
 (defcustom ess-user-full-name (user-full-name)
   "The full name of the user."
   :group 'ess
@@ -1283,15 +1292,6 @@ anchor to bol with `^'."
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ?")
-
-(defcustom inferior-ess-command-prompt nil
-  "Regular expression used by `ess-command' to detect the primary prompt.
-If nil `ess-command' will use `inferior-ess-primary-prompt'."
-  :group 'ess-proc
-  :type 'string)
-
-(make-variable-buffer-local 'inferior-ess-command-prompt)
-(setq-default inferior-ess-command-prompt nil)
 
 ;;*;; Variables controlling interaction with the ESS process
 

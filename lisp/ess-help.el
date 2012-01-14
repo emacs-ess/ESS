@@ -162,7 +162,7 @@ an inferior emacs buffer) the GUI help window is used."
 			    "](" object ")*"))
 	   (old-hb-p	(get-buffer hb-name))
 	   (tbuffer	(get-buffer-create hb-name))
-           ;;?VS: this curr-* kludge is not needed here,
+           ;;VS: this curr-* kludge is not needed here,
            ;;everything should be set by ess-setq-vars-local latter
            ;; (curr-help-sec-regex              ess-help-sec-regex)
            ;; (curr-help-sec-keys-alist ess-help-sec-keys-alist)
