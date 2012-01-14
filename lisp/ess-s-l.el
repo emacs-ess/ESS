@@ -103,6 +103,7 @@
 (defvar inferior-S-language-start
   '(concat "options("
 	     "STERM='"	ess-STERM  "'"
+	     ", str.dendrogram.last =\"'\""
 	     (if ess-editor (concat ", editor='" ess-editor "'"))
 	     (if ess-pager  (concat ", pager='"	 ess-pager  "', help.pager='"  ess-pager  "'"))
 	     ")")
@@ -682,7 +683,7 @@ In that case, the it is removed and replaced by the underscore.
 	     (looking-at ess-S-assign)))
 	  ;; If we are currently looking at ess-S-assign, replace it with _
 	  (progn
-	    (delete-backward-char assign-len)
+	    (delete-char (- assign-len))
 	    (insert "_"))
 	(delete-horizontal-space)
 	(insert ess-S-assign))))

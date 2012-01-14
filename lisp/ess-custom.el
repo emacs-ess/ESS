@@ -1263,6 +1263,8 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   :group 'ess-proc
   :type 'string)
 
+;; does it make sense to customize here, as we currently set this *directly*
+;; in the FOO-BAR-cust-alist's ???
 (defcustom inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
   "Regular expression used by `ess-mode' to detect the primary prompt.
 Do not anchor to bol with `^'."
