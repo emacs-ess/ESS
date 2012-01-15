@@ -140,14 +140,12 @@ Alternatively, it can appear in its own frame if
       (set-buffer ess-dribble-buffer)
       ;; Hack to work around the following "default" (global) setting of vars:
       ;; make sure our comint-... hack doesn't affect anything else
-      ;;(make-variable-buffer-local 'comint-use-prompt-regexp-instead-of-fields)
-      (make-local-variable 'comint-use-prompt-regexp-instead-of-fields)
+      ;;(make-variable-buffer-local 'comint-use-prompt-regexp)
+      (make-local-variable 'comint-use-prompt-regexp)
       ;; now the abomination:
       (ess-setq-vars-default ess-customize-alist)
 
-      ;; Emacs 22.0.50: ".. obsolete since 22.1;
-      ;;		use `comint-use-prompt-regexp' instead
-      (setq-default comint-use-prompt-regexp-instead-of-fields nil) ; re set HACK!
+      (setq-default comint-use-prompt-regexp nil) ; re set HACK!
       ;;>> Doesn't set ess-language,
       ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
       ;;>> => that's why things fail:
@@ -361,7 +359,6 @@ there is no process NAME)."
 	    (setq ess-process-name-list
 		  (cons (cons proc-name nil) ess-process-name-list))))
 	(ess-make-buffer-current)
-	(inferior-ess-wait-for-prompt)
 	(goto-char (point-max))
 	(setq ess-sl-modtime-alist nil)
 	;; Get search list when needed
@@ -370,17 +367,35 @@ there is no process NAME)."
 	;; Add the process filter to catch certain output.
 	(set-process-filter (get-process proc-name)
 			    'inferior-ess-output-filter)
-
-	(run-hooks 'ess-post-run-hook))
+	;; (inferior-ess-wait-for-prompt)
+	(ess-wait-for-process (get-process proc-name))
+	(run-hooks 'ess-post-run-hook)
+	;; user initialization can take a long time ...
+	(ess-wait-for-process (get-process proc-name))
+	)
       (if (and inferior-ess-same-window (not inferior-ess-own-frame))
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
+
+(defun inferior-ess-set-status (proc string)
+  "internal function to set the satus of the PROC"
+  ;; todo: do it in one search blow
+  (process-put proc 'busy
+	       (not (string-match (concat inferior-ess-primary-prompt "\\'") string)))
+  (process-put proc 'sec-prompt
+	       (string-match (concat inferior-ess-secondary-prompt "\\'") string))
+  )
+
+(defun inferior-ess-mark-as-busy (proc)
+  (process-put proc 'busy t)
+  (process-put proc 'sec-prompt nil))
 
 (defun inferior-ess-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
+  (inferior-ess-set-status proc string)
   (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
 
 (defun inferior-ess-strip-ctrl-g (string)
@@ -516,29 +531,29 @@ there is one."
 	  (error "Process %s is not running" name))))))
 
 
-(defun inferior-ess-wait-for-prompt ()
-  "Wait until the ESS process is ready for input."
-  (let* ((cbuffer (current-buffer))
-	 (sprocess (get-ess-process ess-current-process-name))
-	 (sbuffer (process-buffer sprocess))
-	 (r nil)
-	 (timeout 0))
-    (set-buffer sbuffer)
-    (while (progn
-	     (if (not (eq (process-status sprocess) 'run))
-		 (ess-error "ESS process has died unexpectedly.")
-	       (if (> (setq timeout (1+ timeout)) ess-loop-timeout)
-		   (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
-	       (accept-process-output)
-	       (goto-char (point-max))
-	       (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?)
-	       ;; above, except for Stata, which has "broken" i/o,
-	       ;; sigh... (AJR)
-	       (setq r (looking-at inferior-ess-prompt))
-	       (not (or r (looking-at ".*\\?\\s *"))))))
-    (goto-char (point-max))
-    (set-buffer cbuffer)
-    (symbol-value r)))
+;; (defun inferior-ess-wait-for-prompt ()
+;;   "Wait until the ESS process is ready for input."
+;;   (let* ((cbuffer (current-buffer))
+;; 	 (sprocess (get-ess-process ess-current-process-name))
+;; 	 (sbuffer (process-buffer sprocess))
+;; 	 (r nil)
+;; 	 (timeout 0))
+;;     (set-buffer sbuffer)
+;;     (while (progn
+;; 	     (if (not (eq (process-status sprocess) 'run))
+;; 		 (ess-error "ESS process has died unexpectedly.")
+;;  	       (if (> (setq timeout (1+ timeout)) ess-loop-timeout)
+;; 		   (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
+;; 	       (accept-process-output)
+;; 	       (goto-char (point-max))
+;; 	       (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?)
+;; 	       ;; above, except for Stata, which has "broken" i/o,
+;; 	       ;; sigh... (AJR)
+;; 	       (setq r (looking-at inferior-ess-prompt))
+;; 	       (not (or r (looking-at ".*\\?\\s *"))))))
+;;     (goto-char (point-max))
+;;     (set-buffer cbuffer)
+;;     (symbol-value r)))
 
 ;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
 ;;- (defun ess-set-inferior-program-name (filename)
@@ -831,35 +846,55 @@ ordinary inferior process.  Alway nil on Unix machines."
 		     ess-local-process-name 'inferior-ess-ddeclient)
 		    (default-value 'inferior-ess-ddeclient))))))
 
-(defun ess-prompt-wait (proc prompt-reg &optional sleep )
-  "Wait for a prompt to appear at the end of current buffer.
-PROC is the ESS process. PROMPT-REG is a regexp of the process
-prompt to look for. Does not change point. Not to be used in
-inferior-process buffer. Use `inferior-ess-wait-for-prompt'
-instead. "
-  (if sleep (sleep-for sleep)); we sleep here, *and* wait below
-  (save-excursion
-      (while (or (accept-process-output proc 0 100)
-		 (progn ;; if no more output, check for prompt
-		   (goto-char (marker-position (process-mark proc)))
-		   (beginning-of-line)
-		   (not (re-search-forward prompt-reg nil t))
-		   )))))
+;; (defun ess-prompt-wait (proc prompt-reg &optional sleep )
+;;   "Wait for a prompt to appear at the end of current buffer.
+;; PROC is the ESS process. PROMPT-REG is a regexp of the process
+;; prompt to look for. Does not change point. Not to be used in
+;; inferior-process buffer. Use `inferior-ess-wait-for-prompt'
+;; instead. "
+;;   (if sleep (sleep-for sleep)); we sleep here, *and* wait below
+;;   (save-excursion
+;;       (while (or (accept-process-output proc 0 100)
+;; 		 (progn ;; if no more output, check for prompt
+;; 		   (goto-char (marker-position (process-mark proc)))
+;; 		   (beginning-of-line)
+;; 		   (not (re-search-forward prompt-reg nil t))
+;; 		   )))))
 
+(defun ess-wait-for-process (proc &optional sec-prompt wait force-redisplay)
+  "Wait for 'busy property of the process to become nil.
+If SEC-PROMPT is non-nil return if secondary prompt is detected
+regardless of whether primary prompt was detected or not.  If
+WAIT is non-nil wait for WAIT seconds for process output before
+the prompt check, default 0s. FORCE-REDISPLAY is non implemented yet."
+  (unless (eq (process-status proc) 'run)
+    (ess-error "ESS process has died unexpectedly."))
+  (setq wait (or wait 0))
+  (save-excursion
+    (while (or (accept-process-output proc wait)
+	       (if (and sec-prompt (process-get proc 'sec-prompt))
+		   nil
+		 (process-get proc 'busy))))))
+
+;; (defun ordinary-insertion-filter (proc string)
+;;   (let ((old-buffer (current-buffer)))
+;;     (unwind-protect
+;; 	(let (moving)
+;; 	  (set-buffer (process-buffer proc))
+;; 	  (setq moving (= (point) (process-mark proc)))
+;; 	  (save-excursion
+;; 	    ;; Insert the text, moving the process-marker.
+;; 	    (goto-char (process-mark proc))
+;; 	    (insert string)
+;; 	    (set-marker (process-mark proc) (point)))
+;; 	  (if moving (goto-char (process-mark proc))))
+;;       (set-buffer old-buffer))))
 
 (defun ordinary-insertion-filter (proc string)
-  (let ((old-buffer (current-buffer)))
-    (unwind-protect
-	(let (moving)
-	  (set-buffer (process-buffer proc))
-	  (setq moving (= (point) (process-mark proc)))
-	  (save-excursion
-	    ;; Insert the text, moving the process-marker.
-	    (goto-char (process-mark proc))
-	    (insert string)
-	    (set-marker (process-mark proc) (point)))
-	  (if moving (goto-char (process-mark proc))))
-      (set-buffer old-buffer))))
+  (inferior-ess-set-status proc string)
+  (with-current-buffer (process-buffer proc)
+    ;; (message "%s:%s" (current-buffer) string)
+    (insert string)))
 
 (defun ess-command (com &optional buf sleep no-prompt-check)
   "Send the ESS process command COM and delete the output
@@ -884,7 +919,7 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
     ;; else: "normal", non-DDE behavior:
 
     (let* ((sprocess (get-ess-process ess-current-process-name))
- 	   sbuffer prompt-reg
+ 	   sbuffer primary-prompt
 	   do-sleep end-of-output
 	   oldpb oldpf oldpm
 	   )
@@ -894,22 +929,17 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
       (setq sbuffer (process-buffer sprocess))
       (save-excursion
 	(set-buffer sbuffer)
+	(setq primary-prompt inferior-ess-primary-prompt)
 	(setq do-sleep		    ; only now when in sprocess buffer
 	      (progn
 		(if sleep (if (numberp sleep) nil (setq sleep 1))) ; t means 1
 		(and ess-cmd-delay sleep)))
 	(if do-sleep (setq sleep (* sleep ess-cmd-delay)))
-	(setq prompt-reg
-	      (concat inferior-ess-primary-prompt) "\\'") ;anchor to eob
 	(ess-if-verbose-write (format "(ess-command %s ..)" com))
-	(save-excursion
-	  (goto-char (marker-position (process-mark sprocess)))
-	  (beginning-of-line)
-	  (unless no-prompt-check
-	    (if (looking-at inferior-ess-primary-prompt)
-		nil
-	      (ess-error
-	       "ESS process not ready. Finish your command before trying again."))))
+	(unless no-prompt-check
+	  (when (process-get sprocess 'busy) ;;(looking-at inferior-ess-primary-prompt)
+	    (ess-error
+	     "ESS process not ready. Finish your command before trying again.")))
 	(setq oldpf (process-filter sprocess))
 	(setq oldpb (process-buffer sprocess))
 	(setq oldpm (marker-position (process-mark sprocess)))
@@ -921,16 +951,19 @@ will be used in a few places where `a' is proportional to `ess-cmd-delay'."
 	      ;; Output is now going to BUF:
 	      (save-excursion
 		(set-buffer buf)
+		(setq inferior-ess-primary-prompt primary-prompt) ;; set local value
 		(erase-buffer)
 		(set-marker (process-mark sprocess) (point-min))
+		(inferior-ess-mark-as-busy sprocess)
 		(process-send-string sprocess com)
 		;; need time for ess-create-object-name-db on PC
 		(if no-prompt-check
 		    (sleep-for 0.020); 0.1 is noticable!
 		  ;; else: default
-		  (ess-prompt-wait sprocess prompt-reg
-				   (and do-sleep (* 0.4 sleep))));MS: 4
-		;; delete the prompt
+		  (ess-wait-for-process sprocess nil .01))
+		  ;; (ess-prompt-wait sprocess prompt-reg
+		  ;; 		   (and do-sleep (* 0.4 sleep))));MS: 4
+		  ;; delete the prompt
 		(goto-char (point-max))
 		(delete-region (point-at-bol) (point-max))
 		)
@@ -1004,23 +1037,25 @@ Otherwise treat \\ in NEWTEXT string as special:
 
 (defun ess-eval-linewise (text-withtabs &optional
 					invisibly eob even-empty
-					wait-last-prompt sleep-sec timeout-ms)
+					wait-last-prompt sleep-sec wait-sec)
   ;; RDB 28/8/92 added optional arg eob
   ;; AJR 971022: text-withtabs was text.
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
-  ;; MM 2007-01-05: added 'sleep-sec'
+  ;; VS 2012-01-18 it was nil replaced with wait-sec - 0 default
+  ;; MM 2007-01-05: added 'sleep-sec' VS:? this one seems redundant to wait-last-prompt
   "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
-If optional second arg INVISIBLY is non-nil, don't echo commands.  If it
-is a string, just include that string.	If optional third arg
-EOB is non-nil go to end of ESS process buffer after evaluation.  If
-optional 4th arg EVEN-EMPTY is non-nil, also send empty text (e.g. an
-empty line).  If 5th arg WAIT-LAST-PROMPT is non-nil, also wait for
-the prompt after the last line;  if 6th arg SLEEP-SEC is a number, ESS
-will call '(\\[sleep-for] SLEEP-SEC) at the end of this function.  If the
-7th arg TIMEOUT-MS is set to number, it will be used instead of the
-default 100 ms and be passed to \\[accept-process-output]."
+If optional second arg INVISIBLY is non-nil, don't echo commands.
+If it is a string, just include that string. If optional third
+arg EOB is non-nil go to end of ESS process buffer after
+evaluation.  If optional 4th arg EVEN-EMPTY is non-nil, also send
+empty text (e.g. an empty line).  If 5th arg WAIT-LAST-PROMPT is
+non-nil, also wait for the prompt after the last line; if 6th arg
+SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
+at the end of this function.  If the 7th arg WAIT-SEC is set, it
+will be used instead of the default 0s and be passed to
+\\[ess-wait-for-process]."
 ;; but the effect is unclear
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text-withtabs
@@ -1029,6 +1064,8 @@ default 100 ms and be passed to \\[accept-process-output]."
 				       ess-eval-ddeclient-sleep))
 
     ;; else: "normal", non-DDE behavior:
+    (unless (numberp wait-sec)
+      (setq wait-sec 0))
 
     ;; Use this to evaluate some code, but don't wait for output.
     (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
@@ -1038,11 +1075,6 @@ default 100 ms and be passed to \\[accept-process-output]."
 	   (text (ess-replace-in-string text-withtabs "\t" " "))
 	   start-of-output
 	   com pos txt-gt-0)
-
-      (unless (numberp timeout-ms)
-	(setq timeout-ms 100));; << make '100' into a custom-variable
-
-      ;;(message "'ess-eval-linewise: sbuffer = %s" sbuffer)
       (set-buffer sbuffer)
 
       ;; the following is required to make sure things work!
@@ -1050,6 +1082,7 @@ default 100 ms and be passed to \\[accept-process-output]."
 	(if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
 	    (setq text (ess-replace-in-string text ";" "\n")))
 	(setq invisibly t))
+      (setq text (propertize text 'field 'input 'front-sticky t))
       ;; dbg:
       ;; dbg(ess-write-to-dribble-buffer
       ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
@@ -1070,37 +1103,17 @@ default 100 ms and be passed to \\[accept-process-output]."
 	      (setq com (concat (substring text 0 pos) "\n"))
 	      (setq text (substring text (min (length text) (1+ pos)))))
 	  ;; else 0-length text
-	  (setq com "\n")
-	  )
+	  (setq com "\n"))
 	(goto-char (marker-position (process-mark sprocess)))
-	(if (not invisibly)
-	    ;; Terrible kludge -- need to insert after all markers *except*`
-	    ;; the process mark
-	    (let ((dokludge (eq (point)
-				(marker-position (process-mark sprocess)))))
+	(when (not invisibly)
 	      (insert com)
-	      (if dokludge (set-marker (process-mark sprocess) (point)))))
+	      (set-marker (process-mark sprocess) (point)))
 	(setq start-of-output (marker-position (process-mark sprocess)))
-	;; A kludge to prevent the delay between insert and process output
-	;; affecting the display.	 A case for a comint-send-input-hook?
-	;; (save-excursion
-	;;   ;; comint-postoutput-scroll-to-bottom can change
-	;;   ;; current-buffer. Argh.
-	;;   (let ((functions comint-output-filter-functions))
-	;;     (while functions
-	;;	 (funcall (car functions) com)
-	;;	 (setq functions (cdr functions)))))
+	(inferior-ess-mark-as-busy sprocess)
 	(process-send-string sprocess com)
-	;; wait for the prompt - after the last line of input only if wait-last:
 	(if (or wait-last-prompt
 		(> (length text) 0))
-	  (while (progn
-		   (accept-process-output sprocess 0 timeout-ms)
-		   (goto-char (marker-position (process-mark sprocess)))
-		   (beginning-of-line)
-		   (if (< (point) start-of-output)
-		       (goto-char start-of-output))
-		   (not (looking-at inferior-ess-prompt))))))
+	    (ess-wait-for-process sprocess t wait-sec)))
 
       (goto-char (marker-position (process-mark sprocess)))
       (if eob
@@ -1797,28 +1810,85 @@ to continue it."
   (comint-send-input)
   (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
 
+;; (defun inferior-ess-get-old-input ()
+;;   "Return the ESS command surrounding point."
+;;   (save-excursion
+;;     (beginning-of-line)
+;;     (if (not (looking-at inferior-ess-prompt))
+;;         (ess-error "No command on this line."))
+;;     (if (looking-at inferior-ess-primary-prompt) nil
+;;         (re-search-backward (concat "^" inferior-ess-primary-prompt)))
+;;     (comint-skip-prompt)
+;;     (let (command
+;;            (beg (point)))
+;;       (end-of-line)
+;;       (setq command (buffer-substring beg (point)))
+;;       (forward-line 1)
+;;       (while (looking-at inferior-ess-secondary-prompt)
+;;         (comint-skip-prompt)
+;;         (setq beg (point))
+;;         (end-of-line)
+;;         (setq command (concat command "\n" (buffer-substring beg (point))))
+;;         (forward-line 1))
+;;       (forward-line -1)
+;;       (setq ess-temp-point (point))
+;;       command)))
+
+(defun inferior-ess-goto-input-start ()
+  "Move point to the begining of input skiping all continuation lines.
+If in the output field,  goes to the begining of previous input field.
+"
+  (goto-char (field-beginning))
+  ;; move to the begining of non-output field
+  (while (and (not (= (point) (point-min)))
+	      (eq (field-at-pos (point)) 'output))
+    (goto-char (field-beginning nil t)))
+  ;; skip all secondary prompts
+  (let ((pos (field-beginning (point) t))
+	(secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
+    (while (and pos
+		(if (eq (get-text-property pos 'field) 'output)
+		    (string-match secondary-prompt (field-string-no-properties pos))
+		  t))
+      (goto-char pos)
+      (setq pos (previous-single-property-change pos 'field))))
+  )
+
+
+(defun inferior-ess-goto-input-end ()
+  "Move point to the end of input skiping all continuation lines.
+If in the output field,  goes to the begining of previous input field.
+" ;; this func is not used but might be useful some day
+  (goto-char (field-end))
+  (let ((pos (point))
+	(secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
+    (while (and pos
+		(if (eq (get-text-property pos 'field) 'output)
+		  (string-match secondary-prompt (field-string-no-properties pos))
+		  t))
+      (goto-char pos)
+      (setq pos (next-single-property-change pos 'field)))
+    ))
+
+;; (setq comint-use-prompt-regexp t)
 (defun inferior-ess-get-old-input ()
   "Return the ESS command surrounding point."
   (save-excursion
-    (beginning-of-line)
-    (if (not (looking-at inferior-ess-prompt))
+    (if (eq (field-at-pos (point)) 'output)
 	(ess-error "No command on this line."))
-    (if (looking-at inferior-ess-primary-prompt) nil
-	(re-search-backward (concat "^" inferior-ess-primary-prompt)))
-    (comint-skip-prompt)
-    (let (command
-	   (beg (point)))
-      (end-of-line)
-      (setq command (buffer-substring beg (point)))
-      (forward-line 1)
-      (while (looking-at inferior-ess-secondary-prompt)
-	(comint-skip-prompt)
-	(setq beg (point))
-	(end-of-line)
-	(setq command (concat command "\n" (buffer-substring beg (point))))
-	(forward-line 1))
-      (forward-line -1)
-      (setq ess-temp-point (point))
+    (inferior-ess-goto-input-start)
+    ;; field-string does not return
+    (let ((command (field-string-no-properties (min (1+ (point)) (point-max))))
+	  (pos (next-single-property-change (point) 'field ))
+	  (secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
+      (while (and pos
+		  (cond
+		   ((eq (get-text-property pos 'field) 'input)
+		    (setq command (concat command "\n" (field-string-no-properties pos))))
+		   ((eq (get-text-property pos 'field) 'output)
+		    (string-match secondary-prompt (field-string-no-properties pos)))
+		   (t)));; just skip if unknown
+	(setq pos (next-single-property-change pos 'field)))
       command)))
 
 ;;;*;;; Hot key commands
