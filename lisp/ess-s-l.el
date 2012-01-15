@@ -113,8 +113,7 @@
   '((ess-language                  . "S")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
-    ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help(?) :
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+    (comint-use-prompt-regexp      . nil)
   )
   "S-language common settings for all <dialect>-customize-alist s"
 )
@@ -143,8 +142,8 @@
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
      (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
-     (inferior-ess-primary-prompt   . "[a-zA-Z0-9() ]*> ?")
-     (inferior-ess-secondary-prompt . "+ ?")
+     (inferior-ess-primary-prompt   . "> ")
+     (inferior-ess-secondary-prompt . "+ ")
 
      (ess-editor . S-editor)
      (ess-pager  . S-pager)

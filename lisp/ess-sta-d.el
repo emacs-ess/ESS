@@ -61,7 +61,7 @@
     (inferior-ess-exit-command     . "exit\n")
     (inferior-ess-primary-prompt   . "^.") ;; "^. ?")
     (inferior-ess-secondary-prompt . "^.") ;; "^. ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+    (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
  "Variables to customize for Stata.")

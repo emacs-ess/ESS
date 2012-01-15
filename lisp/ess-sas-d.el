@@ -183,7 +183,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (ess-loop-timeout              .  500000 )
     (inferior-ess-primary-prompt   . "^")
     (inferior-ess-secondary-prompt . "^")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+    (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
     (inferior-ess-start-args       . inferior-SAS-args-temp)
     (inferior-ess-font-lock-keywords . SAS-mode-font-lock-keywords)

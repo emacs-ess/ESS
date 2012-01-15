@@ -1,3 +1,30 @@
+2012-01-15  Vitally Spinu  <spinuvit@gmail.com>
+
+	Major re-factoring of ess-inf.el - new waiting-for-prompt mechanism.
+
+	* ess-inf.el (ordinary-insertion-filter): complete cleanup.
+	(inferior-ess-output-filter): sets process status (i.e. busy,
+	sec-prompt properties)
+
+	* ess-inf.el (ess-multi): removed inferior-ess-wait-for-prompt and
+	replaces with ess-wait-for-process which uses new prompt
+	monitoring mechanism
+	(ess-eval-linewise): removed timeout-ms and replaced with wait-sec
+	to be parsed to ess-wait-for-process. Default is 0s. Removed
+	kludges and prompt waiting loop.
+	(inferior-ess-get-old-input): completely redefined to take
+	advantage of fields.
+	(inferior-ess-goto-input-end):
+	(inferior-ess-goto-input-end): new functions to navigate through
+	input by means of fields in inferior-buffer or transcript.
+
+	* ess-custom.el (inferior-ess-primary-prompt): simplified default
+	prompts to "> " and "+ "
+
+	* ess-arc-d.el (xxx-customize-alist): replaced deprecated
+	comint-use-prompt-regexp-instead-of-fields with
+	comint-use-prompt-regexp.
+
 2012-01-14  Vitally Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (R-customize-alist): removed

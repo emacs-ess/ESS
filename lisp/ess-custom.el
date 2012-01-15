@@ -1274,16 +1274,16 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 ;; does it make sense to customize here, as we currently set this *directly*
 ;; in the FOO-BAR-cust-alist's ???
-(defcustom inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?"
+(defcustom inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.
 Do not anchor to bol with `^'."
   :group 'ess-proc
   :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
-(setq-default inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?")
+(setq-default inferior-ess-primary-prompt "> ")
 
-(defcustom inferior-ess-secondary-prompt "+ ?"
+(defcustom inferior-ess-secondary-prompt "+ "
   "Regular expression used by ess-mode to detect the secondary prompt.
  (This is issued by S to continue an incomplete expression). Do not
 anchor to bol with `^'."
@@ -1291,7 +1291,7 @@ anchor to bol with `^'."
   :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
-(setq-default inferior-ess-secondary-prompt "+ ?")
+(setq-default inferior-ess-secondary-prompt "+ ")
 
 ;;*;; Variables controlling interaction with the ESS process
 

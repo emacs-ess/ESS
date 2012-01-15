@@ -62,7 +62,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-primary-prompt   . "\\[[0-9]*\\]")
     (inferior-ess-secondary-prompt . ".. ?")
-    (comint-use-prompt-regexp-instead-of-fields . t) ;; emacs 21 and up
+    (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-omg")
     (inferior-ess-start-args       . ""))
  "Variables to customize for OMG (Omegahat)")

@@ -450,8 +450,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; You will need to change the following two variables if you use a
 ;;; non-standard S prompt.
-;; (setq inferior-ess-primary-prompt "[a-zA-Z0-9() ]*> ?")
-;; (setq inferior-ess-secondary-prompt "+ ?")
+;; (setq inferior-ess-primary-prompt "> ")
+;; (setq inferior-ess-secondary-prompt "+ ")
 
 
 ;;; 2.1 Backwards compatibility (roll your own!)
