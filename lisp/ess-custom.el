@@ -165,12 +165,16 @@ as `ess-imenu-use-S'."
 
 ;;
 
-(defcustom ess-handy-commands '(ess-change-directory
-				ess-install.packages ess-library
-				ess-search-list ess-display-index
-				ess-display-vignettes
-				ess-display-help-on-object)
-  "List of custom ess commands available for call by `ess-smart-comma' function."
+(defcustom ess-handy-commands '(("change-directory" . ess-change-directory)
+				("install.packages" . ess-install.packages)
+				("library"          . ess-library)
+				("search"           . ess-execute-search)
+				("objects[ls]"      . ess-execute-objects)
+				("set-width"        . ess-execute-screen-options)
+				("help-index"       . ess-display-index)
+				("vignettes"        . ess-display-vignettes)
+				("help-object"      . ess-display-help-on-object))
+  "An alyst  of custom ess commands available for call by `ess-smart-comma' function."
   :group 'ess
   :type 'list)
 

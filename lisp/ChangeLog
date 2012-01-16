@@ -1,3 +1,16 @@
+2012-01-16  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (inferior-ess-get-old-input): supports both fields
+	and regexp comint and acts in accordance with the value of
+	'comint-use-prompt-regexp.
+	(ess-smart-comma): improved usability.
+
+	* ess-custom.el (ess-handy-commands): improved handy commands for
+	smart comma.
+
+	* ess-trns.el (ess-transcript-mode): set comint-use-prompt-regexp
+	to t in trns-mode and adjusted regexp of the inferior-ess-prompt.
+
 2012-01-15  Vitally Spinu  <spinuvit@gmail.com>
 
 	Major re-factoring of ess-inf.el - new waiting-for-prompt mechanism.

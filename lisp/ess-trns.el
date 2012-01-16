@@ -188,12 +188,14 @@ in the region, leaving only the S commands.  Other keybindings are:
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate "^\^L")
   (setq inferior-ess-prompt
-	;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
-	(concat "\\("
+	;; Do not anchor to bol with `^'       
+	(concat "\\([A-Za-z0-9./]*" ;; inferior-ess-primary-prompt is just "> " since svn 4590
 		inferior-ess-primary-prompt
 		"\\|"
 		inferior-ess-secondary-prompt
 		"\\)"))
+  (make-local-variable 'comint-use-prompt-regexp)
+  (setq comint-use-prompt-regexp t)
   (make-local-variable 'comint-prompt-regexp)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
 
