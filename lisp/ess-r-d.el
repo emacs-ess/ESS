@@ -151,6 +151,9 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))
     ;; can test only now that R is running:
+    (ess-write-to-dribble-buffer
+     (format "(R): version %s\n"
+	     (ess-get-words-from-vector "as.character(getRversion())\n")))
     (if (ess-current-R-at-least '2.5.0)
 	(progn
 	  (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
@@ -170,7 +173,7 @@ to R, put them in the variable `inferior-R-args'."
 		     my-R-help-cmd ", ns = asNamespace(\"base\"))")
 	     nil nil nil 'wait-prompt)
 	  ))
-
+      
       ;; else R version <= 2.4.1
 
       ;; for R <= 2.1.x : define baseenv() :

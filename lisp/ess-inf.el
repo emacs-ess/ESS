@@ -368,6 +368,8 @@ there is no process NAME)."
 	(set-process-filter (get-process proc-name)
 			    'inferior-ess-output-filter)
 	;; (inferior-ess-wait-for-prompt)
+	(inferior-ess-mark-as-busy (get-process proc-name))
+	(process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if comp is super fast.
 	(ess-wait-for-process (get-process proc-name))
 	(run-hooks 'ess-post-run-hook)
 	;; user initialization can take a long time ...

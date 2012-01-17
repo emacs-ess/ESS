@@ -1,4 +1,13 @@
+2012-01-17  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (R): write proc version into dribble.
+
+	* ess-inf.el (ess-multi): marking newly created ess process as
+	busy and wait for the proc afterward.
+
 2012-01-16  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-trns.el (ess-transcript-mode): small adjustment of the prompt.
 
 	* ess-inf.el (inferior-ess-get-old-input): supports both fields
 	and regexp comint and acts in accordance with the value of
