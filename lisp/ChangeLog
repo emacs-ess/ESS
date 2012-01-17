@@ -1,5 +1,12 @@
 2012-01-17  Vitally Spinu  <spinuvit@gmail.com>
 
+	* ess.el: added xemacs support for process-plist,
+	set-process-plist, process-put and process-get.  All should be
+	removed when xemacs finally supports them.
+
+	* ess-site.el: removed the piece on customizing prompts, it does
+	not work and is misleading for the users.
+
 	* ess-r-d.el (R): write proc version into dribble.
 
 	* ess-inf.el (ess-multi): marking newly created ess process as

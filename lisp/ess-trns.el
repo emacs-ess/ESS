@@ -183,19 +183,18 @@ in the region, leaving only the S commands.  Other keybindings are:
 	'(" [" ess-local-process-name "]"))
   (make-local-variable 'ess-local-process-name)
   (setq ess-local-process-name nil)
+  (unless inferior-ess-prompt ;; For S languages it is set in custom-alist
+    (setq inferior-ess-prompt
+	  ;; Do not anchor to bol with `^'       
+	  (concat "\\("
+		  inferior-ess-primary-prompt
+		  "\\|"
+		  inferior-ess-secondary-prompt
+		  "\\)")))
   (make-local-variable 'paragraph-start)
-  (setq inferior-ess-primary-prompt ;; inferior-ess-primary-prompt is just "> " since svn 4590
-	(concat "[A-Za-z0-9./]*" inferior-ess-primary-prompt))
-  (setq paragraph-start (concat "^" inferior-ess-primary-prompt "\\|^\^L"))
+  (setq paragraph-start (concat "^" inferior-ess-prompt "\\|^\^L"))
   (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate "^\^L")
-  (setq inferior-ess-prompt
-	;; Do not anchor to bol with `^'       
-	(concat "\\("
-		inferior-ess-primary-prompt
-		"\\|"
-		inferior-ess-secondary-prompt
-		"\\)"))
+  (setq paragraph-separate "^\^L") 
   (make-local-variable 'comint-use-prompt-regexp)
   (setq comint-use-prompt-regexp t)
   (make-local-variable 'comint-prompt-regexp)

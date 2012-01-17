@@ -234,7 +234,37 @@ Some useful keys for IDO completion:
 ;; ;;         (ding)
 ;;            (sit-for 1))))))
 
+;;; xemacs process-put and process-get workarounds: 
+;;; !!!! remove this when xemacs starts supporting them!!!
 
+(when (featurep 'xemacs)
+  (defvar process-plist-map (make-hash-table :test 'eq :weakness 'key)
+    "Property list information for process, when XEmacs doesn't provide this.
+See `process-plist' and `set-process-plist'.")
+
+  (defun-when-void process-plist (process)
+    "Return the property list of PROCESS."
+    (check-argument-type #'processp process)
+    (gethash process process-plist-map))
+
+  (defun-when-void set-process-plist (process plist)
+    "Set the property list of PROCESS to PLIST."
+    (check-argument-type #'processp process)
+    (check-argument-type #'valid-plist-p plist)
+    (puthash process plist process-plist-map))
+
+  
+  (defun-when-void process-get (process propname)
+    "Return the value of PROCESS' PROPNAME property.
+This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
+    (plist-get (process-plist process) propname))
+
+  (defun-when-void process-put (process propname value)
+    "Change PROCESS' PROPNAME property to VALUE.
+It can be retrieved with `(process-get PROCESS PROPNAME)'."
+    (set-process-plist process
+		       (plist-put (process-plist process) propname value)))
+)
 
 ;;; Running these must be done "every time" before use, since
 ;;; they depend on a customizable variable.

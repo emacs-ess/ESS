@@ -110,10 +110,17 @@
   "S language expression for startup -- default for all S dialects.")
 
 (defconst S-common-cust-alist
-  '((ess-language                  . "S")
+  `((ess-language                  . "S")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
-    (comint-use-prompt-regexp      . nil)
+    (comint-use-prompt-regexp      . (when (featurep 'xemacs) t ))  ;;use fields if nil
+    ;; these prompt are the same for all S-languages As long as custom prompt
+    ;; ends in inferior-ess-primary-prompt everything should work as expected.
+    (inferior-ess-primary-prompt   . "> ")
+    (inferior-ess-secondary-prompt . "+ ")
+    ;; inferior-ess-prompt is used by ESS only if comint-use-prompt-regexp is t
+    ;; transcript-mode also relies on this regexp
+    (inferior-ess-prompt           . "\\([a-zA-Z0-9() ]*> ?\\|+ ?\\)")
   )
   "S-language common settings for all <dialect>-customize-alist s"
 )
@@ -142,9 +149,6 @@
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
      (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
-     (inferior-ess-primary-prompt   . "> ")
-     (inferior-ess-secondary-prompt . "+ ")
-
      (ess-editor . S-editor)
      (ess-pager  . S-pager)
      )

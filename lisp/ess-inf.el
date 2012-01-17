@@ -369,11 +369,13 @@ there is no process NAME)."
 			    'inferior-ess-output-filter)
 	;; (inferior-ess-wait-for-prompt)
 	(inferior-ess-mark-as-busy (get-process proc-name))
-	(process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if comp is super fast.
-	(ess-wait-for-process (get-process proc-name))
+	(process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
+	(ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)")
+	(ess-wait-for-process (get-process proc-name) nil 0.01)
 	(run-hooks 'ess-post-run-hook)
-	;; user initialization can take a long time ...
-	(ess-wait-for-process (get-process proc-name))
+	;; user initialization can take some time ...
+	(ess-write-to-dribble-buffer "(ess-multi 2): waiting for process after hook")
+	(ess-wait-for-process (get-process proc-name) nil 0.01)
 	)
       (if (and inferior-ess-same-window (not inferior-ess-own-frame))
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
@@ -868,10 +870,10 @@ ordinary inferior process.  Alway nil on Unix machines."
 If SEC-PROMPT is non-nil return if secondary prompt is detected
 regardless of whether primary prompt was detected or not.  If
 WAIT is non-nil wait for WAIT seconds for process output before
-the prompt check, default 0s. FORCE-REDISPLAY is non implemented yet."
+the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
   (unless (eq (process-status proc) 'run)
     (ess-error "ESS process has died unexpectedly."))
-  (setq wait (or wait 0))
+  (setq wait (or wait 0.001)) ;;xemacs is stuck if it's 0 here
   (save-excursion
     (while (or (accept-process-output proc wait)
 	       (if (and sec-prompt (process-get proc 'sec-prompt))
@@ -1056,7 +1058,7 @@ empty text (e.g. an empty line).  If 5th arg WAIT-LAST-PROMPT is
 non-nil, also wait for the prompt after the last line; if 6th arg
 SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
 at the end of this function.  If the 7th arg WAIT-SEC is set, it
-will be used instead of the default 0s and be passed to
+will be used instead of the default .001s and be passed to
 \\[ess-wait-for-process]."
 ;; but the effect is unclear
   (if (ess-ddeclient-p)
@@ -1067,7 +1069,7 @@ will be used instead of the default 0s and be passed to
 
     ;; else: "normal", non-DDE behavior:
     (unless (numberp wait-sec)
-      (setq wait-sec 0))
+      (setq wait-sec 0.001))  ;;don't make it lower 0. xemacs is stuck
 
     ;; Use this to evaluate some code, but don't wait for output.
     (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
@@ -1591,15 +1593,16 @@ to continue it."
   ;; SJE: is this the proper place for setting inferior-ess-prompt,
   ;; rather than within ess-multi?  Tony - have you remembered yet
   ;; about the setq-default, as I changed it back to setq.
-  (setq inferior-ess-prompt
-	;; shouldn't be setq-default!  And I've
-	;; forgotten why!   (AJR)
-	;; Do not anchor to bol with `^'
-	(concat "\\("
-		inferior-ess-primary-prompt
-		"\\|"
-		inferior-ess-secondary-prompt
-		"\\)"))
+  (unless inferior-ess-prompt ;; construct only if unset
+    (setq inferior-ess-prompt
+	  ;; shouldn't be setq-default!  And I've
+	  ;; forgotten why!   (AJR)
+	  ;; Do not anchor to bol with `^'
+	  (concat "\\("
+		  inferior-ess-primary-prompt
+		  "\\|"
+		  inferior-ess-secondary-prompt
+		  "\\)")))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")		;(concat "iESS:" ess-dialect))

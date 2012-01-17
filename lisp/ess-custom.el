@@ -826,6 +826,7 @@ non-nil."
   :group 'ess-proc
   :type 'boolean)
 
+
 (defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")
   "Program name for invoking an inferior ESS with \\[R]."
@@ -844,6 +845,7 @@ been created using the variable `ess-r-versions'."
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
+
 
 
 (defcustom ess-program-files ;; 32 bit version
@@ -1278,21 +1280,19 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 ;; does it make sense to customize here, as we currently set this *directly*
 ;; in the FOO-BAR-cust-alist's ???
-(defcustom inferior-ess-primary-prompt "> "
-  "Regular expression used by `ess-mode' to detect the primary prompt.
-Do not anchor to bol with `^'."
-  :group 'ess-proc
-  :type 'string)
+;; VS: Right. It only confuses users. It should be set in
+;; post-run-hook if desired. Made defvar.
+(defvar inferior-ess-primary-prompt "> "
+  "Regular expression used by `ess-mode' to detect the primary prompt.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
 (setq-default inferior-ess-primary-prompt "> ")
 
-(defcustom inferior-ess-secondary-prompt "+ "
+(defvar inferior-ess-secondary-prompt "+ "
   "Regular expression used by ess-mode to detect the secondary prompt.
- (This is issued by S to continue an incomplete expression). Do not
-anchor to bol with `^'."
-  :group 'ess-proc
-  :type 'string)
+ (This is issued by S to continue an incomplete expression).")
+  ;; :group 'ess-proc
+  ;; :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ")
@@ -1482,9 +1482,14 @@ prevent timeouts in certain processes, such as completion.")
 ;;*;; Regular expressions
 
 (defvar inferior-ess-prompt nil
-  "The regular expression inferior ess mode uses for recognizing prompts.
- Constructed at run time from `inferior-ess-primary-prompt' and
- `inferior-ess-secondary-prompt' within \\[ess-multi].")
+  "The regular expression  used for recognizing prompts.
+
+It is always used in transcript mode.  In inferior ess mode it is
+used only if `comint-use-prompt-regexp' is t.
+
+If not set in language cust-alist it is constructed at run time
+from `inferior-ess-primary-prompt' and
+`inferior-ess-secondary-prompt' within \\[ess-multi].")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 

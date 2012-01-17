@@ -448,11 +448,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;(setq inferior-ess-program "Splus")
 ;;(setq inferior-ess-program (concat (getenv "SHOME") "/Splus"))
 
-;;; You will need to change the following two variables if you use a
-;;; non-standard S prompt.
-;; (setq inferior-ess-primary-prompt "> ")
-;; (setq inferior-ess-secondary-prompt "+ ")
-
 
 ;;; 2.1 Backwards compatibility (roll your own!)
 ;;; What you want S and R to call...
