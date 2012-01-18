@@ -5,7 +5,7 @@
 ;; Maintainer: Spinu Vitalie
 ;; Copyright (C) 2010-2012, Spinu Vitalie, all rights reserved.
 ;; Created: Oct 14 14:15:22 2010
-;; Version: 0.3
+;; Version: 0.4ESS
 ;; URL: http://code.google.com/p/ess-tracebug/
 ;; Keywords: debug, watch, traceback, ESS, R
 ;;
@@ -89,7 +89,7 @@
   (require 'face-remap nil t) ;; desirable for scaling of the text in watch buffer
   (require 'ido nil t) ;; desirable for debug/undebug at point functionality
   (require 'overlay)
-  (require 'cl))
+  (require 'cl)) ;;todo remove cl dependence
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
