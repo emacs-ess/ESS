@@ -382,13 +382,15 @@ there is no process NAME)."
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
 
 (defun inferior-ess-set-status (proc string)
-  "internal function to set the satus of the PROC"
-  ;; todo: do it in one search blow
-  (process-put proc 'busy
-	       (not (string-match (concat inferior-ess-primary-prompt "\\'") string)))
-  (process-put proc 'sec-prompt
-	       (string-match (concat inferior-ess-secondary-prompt "\\'") string))
-  )
+  "internal function to set the satus of the PROC
+Return the 'busy state."
+  ;; todo: do it in one search blow and use starting position
+  (let ((busy (not (string-match (concat inferior-ess-primary-prompt "\\'") string))))
+    (process-put proc 'busy busy)
+    (process-put proc 'sec-prompt
+		 (string-match (concat inferior-ess-secondary-prompt "\\'") string))
+    busy
+    ))
 
 (defun inferior-ess-mark-as-busy (proc)
   (process-put proc 'busy t)
@@ -1115,10 +1117,9 @@ will be used instead of the default .001s and be passed to
 	(setq start-of-output (marker-position (process-mark sprocess)))
 	(inferior-ess-mark-as-busy sprocess)
 	(process-send-string sprocess com)
-	(if (or wait-last-prompt
-		(> (length text) 0))
-	    (ess-wait-for-process sprocess t wait-sec)))
-
+	(when (or wait-last-prompt
+		  (> (length text) 0))
+	  (ess-wait-for-process sprocess t wait-sec)))
       (goto-char (marker-position (process-mark sprocess)))
       (if eob
 	  (progn

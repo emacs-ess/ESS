@@ -36,6 +36,7 @@
 
 (require 'ess-r-args); for now --- should the default rather become ess-eldoc?
 (require 'ess-developer)
+(require 'ess-tracebug)
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 
@@ -494,11 +495,11 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 Needs version of R>2.7.0"
   (let* ((bol (save-excursion (comint-bol nil) (point)))
 	 (comm (format
-	       "{utils:::.assignLinebuffer('%s')
+	       "local({utils:::.assignLinebuffer('%s')
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
 utils:::.completeToken()
-utils:::.retrieveCompletions()}\n"
+utils:::.retrieveCompletions()})\n"
 	       (buffer-substring bol (point-at-eol))
 	       (- (point) bol))))
     (ess-get-words-from-vector comm)
