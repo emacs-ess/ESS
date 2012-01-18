@@ -1727,7 +1727,12 @@ to continue it."
        (cons "/" ""))
 
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
-
+  ;; auto-complete integration
+  (when (and ess-use-ac-p
+	     (featurep 'auto-complete))
+    (add-to-list 'ac-modes 'inferior-ess-mode)
+    (add-to-list 'ac-sources 'ac-source-filename) ;;useful
+    (add-to-list 'ac-sources 'ess-ac-source))
   ;;; Keep <tabs> out of the code.
   (set (make-local-variable 'indent-tabs-mode) nil)
 

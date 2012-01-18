@@ -84,6 +84,7 @@
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
      (inferior-ess-start-args		. "")
+     (ess-ac-source			. ess-ac-source-R)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
      (ess-pager		. R-pager)
@@ -142,9 +143,10 @@ to R, put them in the variable `inferior-R-args'."
        (setq use-dialog-box nil)
        (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
 	   (setq default-process-coding-system '(undecided-dos . undecided-dos))))
-
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
+    ;; auto-complete R-source
+    (setq ess-ac-source ess-ac-source-R) ;;customizable
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))
@@ -171,7 +173,7 @@ to R, put them in the variable `inferior-R-args'."
 		     my-R-help-cmd ", ns = asNamespace(\"base\"))")
 	     nil nil nil 'wait-prompt)
 	  ))
-      
+
       ;; else R version <= 2.4.1
 
       ;; for R <= 2.1.x : define baseenv() :
@@ -486,6 +488,22 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 		     (if (file-exists-p R-path) R-path)))
 		R-ver))))
 
+
+(defun ess-R-get-rcompletions ()
+  "Calls R internal complation utilities for posible completions.
+Needs version of R>2.7.0"
+  (let* ((bol (save-excursion (comint-bol nil) (point)))
+	 (comm (format
+	       "{utils:::.assignLinebuffer('%s')
+utils:::.assignEnd(%d)
+utils:::.guessTokenFromLine()
+utils:::.completeToken()
+utils:::.retrieveCompletions()}\n"
+	       (buffer-substring bol (point-at-eol))
+	       (- (point) bol))))
+    (ess-get-words-from-vector comm)
+    ))
+
 ;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
 ;; originally named  'alt-ess-complete-object-name'.
 ;; Use rcompgen in ESS
@@ -493,42 +511,43 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 ;; (define-key inferior-ess-mode-map "\t" 'ess-R-complete-object-name)
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
-To be used instead of ESS' completion engine for R versions >= 2.5.0
- (or slightly older versions of R with an attached and working 'rcompgen' package)."
+To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive)
   (ess-make-buffer-current)
-  (let* ((comint-completion-addsuffix nil)
-	 (beg-of-line (save-excursion (comint-bol nil) (point)))
-	 (end-of-line (point-at-eol))
-	 (line-buffer (buffer-substring beg-of-line end-of-line))
-	 (NS (if (ess-current-R-at-least '2.7.0)
-		 "utils:::"
-	       "rcompgen:::"))
-	 (token-string ;; setup, including computation of the token
-	  (progn
-	    (ess-command
-	     (format (concat NS ".assignLinebuffer('%s')\n") line-buffer))
-	    (ess-command (format (concat NS ".assignEnd(%d)\n")
-				 (- (point) beg-of-line)))
-	    (car (ess-get-words-from-vector
-		  (concat NS ".guessTokenFromLine()\n")))))
-
-	 (possible-completions ;; compute and retrieve possible completions
-	  (progn
-	    (ess-command (concat NS ".completeToken()\n"))
-	    (ess-get-words-from-vector
-	     (concat NS ".retrieveCompletions()\n")))))
-
+  (let ((possible-completions (ess-R-get-rcompletions))
+	token-string)
     ;; If there are no possible-completions, should return nil, so
     ;; that when this function is called from
     ;; comint-dynamic-complete-functions, other functions can then be
     ;; tried.
     (if (null possible-completions)
 	nil
+      (setq token-string ;; token is set in ess-R-get-rcompletions
+	    (car (ess-get-words-from-vector "get('token', envir = utils:::.CompletionEnv)\n")))
       (or (comint-dynamic-simple-complete token-string
 					  possible-completions)
 	  'none))))
 
+;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
+(defun ess-ac-get-help-text (sym)
+  "Help string for ac."
+  (interactive)
+  (with-temp-buffer
+    (ess-command (format inferior-ess-help-command sym) (current-buffer))
+    (ess-help-underline)
+    (buffer-string)))
+
+(defun ess-ac-get-start ()
+  "Get initial position  of the string to complete."
+  (let ((chars "]A-Za-z0-9.$@_:[")
+	(bad-start-regexp "/") ;; don't use this source if this is the starting string
+	)
+    (when (string-match (format "[%s]" chars) (char-to-string (char-before)))
+      (save-excursion
+	(when (re-search-backward (format "[^%s]" chars) nil t)
+	  (unless (looking-at bad-start-regexp)
+	    (1+ (point)))
+	  )))))
 
 ;;;### autoload
 (defun Rnw-mode ()

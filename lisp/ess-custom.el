@@ -309,6 +309,45 @@ might want to set this to nil.
 Used by `ess-completion-read' command.")
 
 
+;;; auto-completion integration
+(defvar  ess-ac-source nil
+  "Auto-completion source for ESS.
+This is a buffer local variable and should be set to mode
+specific source (i.e.`ess-ac-source-R') in custom-alist or during
+mode-hooks.
+
+To have an effect, you have to set it in mode-hook. Seting it in
+your .custom or .emacs files might have unpredictable results.
+")
+(make-variable-buffer-local 'ess-ac-source)
+
+(defcustom ess-use-ac-p t
+  "Use auto-complete package whenever available."
+  :group 'ess
+  :type 'boolean)
+
+(defcustom  ess-ac-source-R
+  '((prefix     . ess-ac-get-start)
+    (requires   . 1)
+    (candidates . ess-R-get-rcompletions)
+    (document   . ess-get-help-text))
+  "Auto-completion source for R"
+  :group 'ess-R
+  ;;xemacs doesn't have alist.
+  :type 'list)
+
+;; not really needed and is confusing:
+;; (defcustom  ess-ac-sources-R '(ess-ac-source ac-source-filename)
+;;   "List of auto-completion sources for R.
+;; By default only the internal R-completion and filename
+;; sources. Should be pretty enough for most of the users.
+;; See also `ess-ac-sources-R' for the default R source.
+;; "
+;;   :group 'ess-R
+;;   :type 'list ;;xemacs doesn't have alist.
+;;   )
+
+
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
  Used by \\[ess-smart-underscore]."

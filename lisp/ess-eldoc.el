@@ -135,12 +135,10 @@ to look up any doc strings."
 	      (progn
 		(up-list -1)
 		(setq name (ess-guess-fun))
-		(setq doc (ess-r-args-get name)))
+		(setq doc (ess-r-args-get name t)))
 	    ;; error handler -- not possible to go up one list level.
 	    (error nil) ))))
     (when doc
-      (setq doc (replace-regexp-in-string "[\n \t]+" " " doc)) ;; remove new lines
-      ;; (setq doc (replace-regexp-in-string " *=[^=,]*\\(,\\|\\'\\)" "\\1" doc)) ;; remove defaults?
       (concat name ": " doc))
     ))
 

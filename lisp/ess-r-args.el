@@ -203,10 +203,13 @@ found."
 	(if (posix-string-match "^[a-zA-Z0-9_\.]+$" rfunname)
 	    rfunname nil)))))
 
-(defun ess-r-args-get (&optional function)
-  "Returns string of arguments and their default values of R function
-FUNCTION or nil if no possible function name found. Calls
-ess-r-args-current-function if no argument given."
+(defun ess-r-args-get (&optional function trim)
+  "Returns string of arguments and their default values of R
+function FUNCTION or nil if no possible function name
+found. Calls ess-r-args-current-function if no argument given.
+If TRIM is non-nill remove tabs and newlines and replace ' = '
+with '=' (useful for display in minibuffer to avoid window and
+buffer readjustments for multiline string)."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (when (and function
@@ -229,9 +232,12 @@ ess-r-args-current-function if no argument given."
 	  (search-backward ")" nil t)
 	  (delete-region (point) (point-max))
 	  (ess-nuke-trailing-whitespace); should also work in Xemacs
-	  (setq args (buffer-string))))
-      (kill-buffer "*ess-r-args-tmp*")
-      args)))
+	  (setq args (buffer-string))
+	  (if trim
+	      (replace-regexp-in-string " = " "="
+					(replace-regexp-in-string "[\n \t]+" " " args))
+	    args)
+	  )))))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -241,20 +247,21 @@ ess-r-args-current-function if no argument given."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (ess-message ".... function='%s'" function)
-  (if function
-    (let ((args (ess-r-args-get function)))
+  (when function
+    (let* ((tt (and (equal ess-r-args-show-as 'tooltip)
+		    ess-has-tooltip))
+	   (args (concat ess-r-args-show-prefix (ess-r-args-get function (not tt)))))
       (ess-message "(ess-r-args-show): args='%s'" args)
-      (unless (null args)
-	(if (and (equal ess-r-args-show-as 'tooltip)
-		 ess-has-tooltip)
-	    (progn (require 'tooltip)
-		   ;; value of 30 in next call is just a guess, 
-                   ;; should really be based 
-		   ;; on something like pixel height of 1-2 vertical 
-                   ;; lines of text
-		   (tooltip-show-at-point 
-		    (concat ess-r-args-show-prefix args) 0 30))
-	  (message (concat ess-r-args-show-prefix args)))))))
+      (when  args
+	(if (not tt)
+	    (message args)
+	  (require 'tooltip)
+	  ;; value of 30 in next call is just a guess,
+	  ;; should really be based
+	  ;; on something like pixel height of 1-2 vertical
+	  ;; lines of text
+	  (tooltip-show-at-point args 0 30))
+	))))
 
 (defun ess-r-args-auto-show ()
   "Typically assigned to \"(\": If there's an ess-process, automatically show arguments
@@ -289,7 +296,7 @@ ess-r-args-current-function if no argument given."
 ;; 		(define-key ess-mode-map "(" 'ess-r-args-auto-show))))
 
 
-;; SJE: 2009-01-30 -- this contribution from 
+;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
 (require 'assoc)			;needed for aput, below.
 (defun tooltip-show-at-point (text xo yo)
@@ -304,9 +311,9 @@ and y-offsets for the toolbar from point."
 
     ;; The following comment was found before code looking much like that
     ;; of frame-left and frame-top below in the file
-    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe 
-    ;; the same behavior with the Emacs window maximized under Windows XP. 
-    
+    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe
+    ;; the same behavior with the Emacs window maximized under Windows XP.
+
     ;; -----original comment--------
     ;; handles the case where (frame-parameter nil 'top) or
     ;; (frame-parameter nil 'left) return something like (+ -4).
@@ -314,40 +321,40 @@ and y-offsets for the toolbar from point."
     ;; least on Windows XP. The handling code is "shamelessly
     ;; stolen" from cedet/speedbar/dframe.el
     ;; (contributed by Andrey Grigoriev)
-    
+
     (setq frame-left (if (not (consp fx))
 			 fx
 		       (if (eq (car fx) '-)
 			   (- (x-display-pixel-width) (car (cdr fx)) fw)
 			 (car (cdr fx)))))
-    
+
     (setq frame-top (if (not (consp fy))
 			fy
 		      (if (eq (car fy) '-)
 			  (- (x-display-pixel-height) (car (cdr fy)) fh)
 			(car (cdr fy)))))
-    
+
     ;; calculate the offset from point, use xo and yo to adjust to preference
     (setq my-x-offset (+ (car(window-inside-pixel-edges))
 			 (car(posn-x-y (posn-at-point)))
 			 frame-left xo))
-    
+
     (setq my-y-offset (+ (cadr(window-inside-pixel-edges))
 			 (cdr(posn-x-y (posn-at-point)))
 			 frame-top yo))
-    
+
     ;; this clobbers current tooltip-frame-parameters 'top' and 'left',
     ;; which are not set by default.  use push/pop instead of aput/adelete?
     ;; the problem with using aput again is that if top/left were nil, aput'ing
-    ;; nil will have no effect. 
-    
+    ;; nil will have no effect.
+
     (aput 'tooltip-frame-parameters 'top my-y-offset)
     (aput 'tooltip-frame-parameters 'left my-x-offset)
-    
+
     (tooltip-show text)
-    
-    ;; remove parameters so that further tooltip-show calls aren't shown in 
-    ;; odd place (i.e., wherever point happened to be the last time this was 
+
+    ;; remove parameters so that further tooltip-show calls aren't shown in
+    ;; odd place (i.e., wherever point happened to be the last time this was
     ;; called
     (adelete 'tooltip-frame-parameters 'top)
     (adelete 'tooltip-frame-parameters 'left)
