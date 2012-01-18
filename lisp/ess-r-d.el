@@ -36,7 +36,8 @@
 
 (require 'ess-r-args); for now --- should the default rather become ess-eldoc?
 (require 'ess-developer)
-(require 'ess-tracebug)
+(when (featurep 'emacs)
+  (require 'ess-tracebug))
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 
