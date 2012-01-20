@@ -1319,8 +1319,8 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 ;; does it make sense to customize here, as we currently set this *directly*
 ;; in the FOO-BAR-cust-alist's ???
-;; VS: Right. It only confuses users. It should be set in
-;; post-run-hook if desired. Made defvar.
+;; VS: Right. It only confuses users. It should be set in post-run-hook if
+;; desired;  inferior-ess-S-prompt should be customized instead.
 (defvar inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
@@ -1335,6 +1335,15 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ")
+
+(defcustom inferior-ess-S-prompt "\\([a-zA-Z0-9() ]*> ?\\|+ ?\\)"
+  "Regexp used in S and R inferior and transcript buffers for prompt and navigation.
+
+You can set it to '[a-zA-Z0-9() ]*> ?' if you want to skip
+secondary prompt during navigation.
+ "
+  :group 'ess-proc
+  :type 'string)
 
 ;;*;; Variables controlling interaction with the ESS process
 

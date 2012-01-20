@@ -1,3 +1,15 @@
+2012-01-20  Vitally Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (inferior-ess--goto-input-start:regexp): new function
+	for regexp based input search.
+	(inferior-ess-get-old-input): ESS now fully supports both field
+	and regexp input handling. Fields are not used though; may be in
+	the future.
+
+	* ess-custom.el (inferior-ess-S-prompt): new custom var. User can
+	customize this regexp to enhance navigation in comint and
+	transcript buffers.
+
 2012-01-19  Vitally Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-R-get-rcompletions): require 'ess-tracebug

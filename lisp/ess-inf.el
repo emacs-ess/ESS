@@ -1821,12 +1821,11 @@ to continue it."
   (comint-send-input)
   (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
 
-(defun inferior-ess-goto-input-start ()
+(defun inferior-ess--goto-input-start:field ()
   "Move point to the begining of input skiping all continuation lines.
 If in the output field, goes to the begining of previous input
 field.
-
-NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
+Note: inferior-ess-secondary-prompt should match exactly.
 "
   (goto-char (field-beginning))
   ;; move to the begining of non-output field
@@ -1844,8 +1843,7 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
       (setq pos (previous-single-property-change pos 'field))))
   )
 
-
-(defun inferior-ess-goto-input-end ()
+(defun inferior-ess--goto-input-end:field ()
   "Move point to the end of input skiping all continuation lines.
 If in the output field,  goes to the begining of previous input field.
 
@@ -1862,13 +1860,12 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
       (setq pos (next-single-property-change pos 'field)))
     ))
 
-(defun inferior-ess--get-old-input-field ()
-  "Return the ESS command surrounding point (for use with fields)."
+(defun inferior-ess--get-old-input:field ()
+  "Return the ESS command surrounding point (use with fields)."
   (save-excursion
     (if (eq (field-at-pos (point)) 'output)
 	(ess-error "No command on this line."))
-    (inferior-ess-goto-input-start)
-    ;; field-string does not return
+    (inferior-ess--goto-input-start:field)
     (let ((command (field-string-no-properties (point)))
 	  (pos (next-single-property-change (point) 'field ))
 	  (secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
@@ -1882,35 +1879,52 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
 	(setq pos (next-single-property-change pos 'field)))
       command)))
 
-(defun inferior-ess--get-old-input-regexp ()
-  "Return the ESS command surrounding point (for use with regexp)."
+
+(defun inferior-ess--goto-input-start:regexp ()
+  "Move point to the begining of input skiping all continuation lines.
+If in the output field, goes to the begining of previous input.
+"
+  (beginning-of-line)
+  (unless (looking-at inferior-ess-prompt)
+    (re-search-backward (concat "^" inferior-ess-prompt)))
+  (while (and (looking-at inferior-ess-secondary-prompt)
+	      (not (eq (point) (point-min))))
+    (forward-line -1))
+  (if (looking-at inferior-ess-prompt)
+      (comint-skip-prompt)
+    (ess-error "Beggining of input not found"))
+  )
+
+(defun inferior-ess--get-old-input:regexp ()
+  "Return the ESS command surrounding point (use with regexp)."
   (save-excursion
-    (beginning-of-line)
-    (if (not (looking-at inferior-ess-prompt))
+    (let ((inhibit-field-text-motion t)
+	  command)
+      (goto-char (point-at-bol));    (beginning-of-line) does not work in comint
+      (unless (or (looking-at inferior-ess-prompt); cust.var, might not include sec-prompt
+		  (looking-at inferior-ess-secondary-prompt))
 	(ess-error "No command on this line."))
-    (if (looking-at inferior-ess-primary-prompt) nil
-      (re-search-backward (concat "^" inferior-ess-primary-prompt)))
-    (comint-skip-prompt)
-    (let (command
-	  (beg (point)))
-      (end-of-line)
-      (setq command (buffer-substring beg (point)))
+      (comint-skip-prompt)
+      (inferior-ess--goto-input-start:regexp)
+      (setq command (buffer-substring-no-properties (point) (point-at-eol)))
       (forward-line 1)
-      (while (looking-at inferior-ess-secondary-prompt)
-	(comint-skip-prompt)
-	(setq beg (point))
-	(end-of-line)
-	(setq command (concat command "\n" (buffer-substring beg (point))))
-	(forward-line 1))
+      (let ((comint-prompt-regexp inferior-ess-secondary-prompt))
+	(while (looking-at inferior-ess-secondary-prompt)
+	  (comint-skip-prompt)
+	  (setq beg (point))
+	  (end-of-line)
+	  (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
+	  (forward-line 1)))
       (forward-line -1)
       (setq ess-temp-point (point))
-      command)))
+      command)
+    ))
 
 (defun inferior-ess-get-old-input ()
   "Return the ESS command surrounding point."
   (if comint-use-prompt-regexp
-      (inferior-ess--get-old-input-regexp)
-    (inferior-ess--get-old-input-field))
+      (inferior-ess--get-old-input:regexp)
+    (inferior-ess--get-old-input:field))
   )
 
 ;;;*;;; Hot key commands
