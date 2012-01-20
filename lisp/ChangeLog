@@ -1,3 +1,8 @@
+2012-01-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-font-lock-keywords): add
+	censoring notation: C( , )
+
 2012-01-20  Vitally Spinu  <spinuvit@gmail.com>
 
 	* ess-inf.el (inferior-ess--goto-input-start:regexp): new function

@@ -70,7 +70,7 @@
 		"unif\\|weib\\|wish\\)[ \t\n]*(")
 					font-lock-constant-face)
 
-	(cons (concat "\\<\\(abs\\|cos\\|dim\\|\\(i\\)?cloglog\\|equals\\|"
+	(cons (concat "\\<\\(abs\\|cos\\|C\\|dim\\|\\(i\\)?cloglog\\|equals\\|"
 		"exp\\|for\\|inprod\\|interp[.]line\\|inverse\\|length\\|"
 		"\\(i\\)?logit\\|logdet\\|logfact\\|loggam\\|max\\|mean\\|"
 		"mexp\\|min\\|phi\\|pow\\|probit\\|prod\\|rank\\|round\\|"
