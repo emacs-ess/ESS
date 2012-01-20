@@ -479,11 +479,14 @@ following lines to your `.emacs' file:
   "Preview the current buffer contents using `Rd-to-help-command'."
   (interactive)
   (require 'ess-help)
-  (let ((sbuf buffer-file-name)
-	(pbuf (get-buffer-create "R Help Preview")))
+  (let* ((sbuf buffer-file-name)
+	(pbuf (get-buffer-create "R Help Preview"))
+	(shcmd (format "%s '%s'" Rd-to-help-command sbuf)))
     (set-buffer pbuf)
     (erase-buffer)
-    (shell-command (format "%s '%s'" Rd-to-help-command sbuf) t)
+    (ess-write-to-dribble-buffer
+     (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
+    (shell-command shcmd t)
     (setq ess-help-sec-regex ess-help-R-sec-regex
 	  ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
     (ess-nuke-help-bs)
