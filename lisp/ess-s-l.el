@@ -113,14 +113,14 @@
   `((ess-language                  . "S")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
-    (comint-use-prompt-regexp      . (when (featurep 'xemacs) t ))  ;;use fields if nil
+    (comint-use-prompt-regexp      . t)  ;;use fields if nil
     ;; these prompt are the same for all S-languages As long as custom prompt
     ;; ends in inferior-ess-primary-prompt everything should work as expected.
     (inferior-ess-primary-prompt   . "> ")
     (inferior-ess-secondary-prompt . "+ ")
-    ;; inferior-ess-prompt is used by ESS only if comint-use-prompt-regexp is t
-    ;; transcript-mode also relies on this regexp
-    (inferior-ess-prompt           . "\\([a-zA-Z0-9() ]*> ?\\|+ ?\\)")
+    ;; inferior-ess-prompt is used by comint for navigation only if
+    ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
+    (inferior-ess-prompt           . inferior-ess-S-prompt) ;customizable
   )
   "S-language common settings for all <dialect>-customize-alist s"
 )
