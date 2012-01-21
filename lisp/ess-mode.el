@@ -433,12 +433,6 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
             '(" [" ess-local-process-name  "]")) ;; xemacs does not support :eval
     (setq mode-line-process
           '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
-  ;;; auto-complete integration
-  (when (and ess-use-ac-p
-	   (featurep 'auto-complete))
-      (add-to-list 'ac-modes 'ess-mode)
-      (add-to-list 'ac-sources 'ac-source-filename) ;;useful
-      (add-to-list 'ac-sources 'ess-ac-source)) ;; default is nil, does nothing
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
   (if (> emacs-major-version 21)

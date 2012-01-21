@@ -38,56 +38,24 @@
 ;;
 ;;; Commentary:
 ;;  Ess-tracebug is a package for interactive debugging of R code from
-;;ESS and provides such features as:
-;;- visual debugging
-;;- browser, recover and conditional  breakpoints
-;;- watch window and loggers
-;;- on the fly  debug/undebug of R functions and methods
-;;- highlighting of error source references and easy error navigation
-;;- interactive traceback.
-;;For a complete description please see the
-;;documentation at http://code.google.com/p/ess-tracebug/
+;;  ESS and provides such features as:
+;;  - visual debugging
+;;  - browser, recover and conditional  breakpoints
+;;  - watch window and loggers
+;;  - on the fly  debug/undebug of R functions and methods
+;;  - highlighting of error source references and easy error navigation
+;;  - interactive traceback.
+;;  For a complete description please see the
+;;  documentation at http://code.google.com/p/ess-tracebug/
 ;;
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change log:
-;;
-;;
-;; Version 0.2
-;; New features:
-;; 1) Watch window and loggers (http://code.google.com/p/ess-tracebug/#Watch_Window)
-;; 2) Conditional Breakpoints (http://code.google.com/p/ess-tracebug/#Conditional_Breakpoints)
-;; 3) Debug/undebug  on the fly (http://code.google.com/p/ess-tracebug/#Flag/Unflag_for_Debugging)
-;; 4) New recover mode. When user enters the recover command (directly or through recover breakpoint) digit keys
-;;are enabled 0-9 for frame navigation; c,q, n also trigger the exit from recover (0) to be compatible with the
-;;browser mode.
-;;
-;; Important changes:
-;; 1) ess-traceback and ess-debug are now completely merged into single mode ess-tracebug, but internal code is
-;;still divided on conceptual grounds.
-;; 2) Input-ring and debug-ring are renamed to forward-ring and backward-ring and merged into joint structure
-;;called S-ring (http://code.google.com/p/ess-tracebug/#Work-Flow). The M-c d for backward navigation is replaced
-;;by M-c I. M-c d now flags function and methods for debugging.
-;; 3) Considerable effort have been made to make the program more stable. Particularly, ess-tracebug now uses
-;;internal mechanism to check for availability of R process and do not really on ess commands to communicate to the
-;;process. Critical variables, indicating the state of the R process are no longer buffer local but part of process plist.
-;;
-;;
-;; Version 0.1
-;; 1) Visual  navigation during the debugging
-;; 2) Navigation to errors and debug references in inferior buffer
-;; 3) Traceback buffer (M-c `) with links to errors to source code
-;; 4) Browser and Recover breakpoints
-;; 5) Support for custom breakpoints.
-;; 6) On Error action toggling
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
 
+(require 'ess-site)
 (eval-when-compile
   (require 'face-remap nil t) ;; desirable for scaling of the text in watch buffer
-  (require 'ido nil t) ;; desirable for debug/undebug at point functionality
   (require 'overlay)
   (require 'cl)) ;;todo remove cl dependence
 
@@ -2646,73 +2614,53 @@ local({
     signatures
     ))
 
-(defvar ess-dbg-use-ido t
-  "If non-nil use ido completion for debug/undebug functionality.
-`ido-mode' is part of emacs. If you are using different
-completions mechanisms such as icicle you should set this to nil.
-If you are not using ido `ess-dbg-flag-for-debugging' will
-activate the ido mode for the period of completion resulting in a
-slight overhead of starting the global mode.")
 
 (defun ess-dbg-flag-for-debugging ()
   "Set the debugging flag on a function.
 Ask the user for a function and if it turns to be generic, ask
 for signature and trace it with browser tracer."
   (interactive)
-  (let ((obj-at-point (word-at-point))
-        (tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
+  (let ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
         (all-functions (ess-get-words-from-vector "apropos(\".\", mode = \"function\")\n"))
-        (loc-completing-read (if (and ess-dbg-use-ido (featurep 'ido))
-                                 (function ido-completing-read)
-                               (function completing-read)))
-        ufunc signature default-string
-        reset-ido out-message
+        obj-at-point ufunc signature default-string out-message
         )
-    (when obj-at-point
-      (if (member obj-at-point all-functions)
-          (setq default-string (concat "(" obj-at-point ")"))
-        (setq obj-at-point nil)
-        ))
-    (unwind-protect
-        (progn
-          (when  (and ess-dbg-use-ido (featurep 'ido) (not ido-mode))
-            (setq reset-ido t)
-            (add-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
-            (add-hook 'choose-completion-string-functions 'ido-choose-completion-string))
-          (setq ufunc
-                (funcall loc-completing-read
-                         (concat "Debug " default-string ": ")
-                         all-functions nil t nil nil obj-at-point ))
-          ;; check if is generic
-          (if (equal "TRUE"
-                     (car (ess-get-words-from-vector  (concat "as.character(isGeneric(\"" ufunc "\"))\n"))))
-              (save-excursion ;; if so, find teh signature
-                (setq signature (funcall loc-completing-read
-                                         (concat "Method for generic '" ufunc "' : ")
-                                         (ess-dbg-get-signatures ufunc) ;;signal error if not found
-                                         nil t nil nil "*default*"))
-                (if (equal signature "*default*")
-                    (progn
-                      (ess-command (concat "trace(\"" ufunc "\", tracer = browser)\n") tbuffer) ;debug the default ufunc
-                      )
-                  (ess-command (concat "trace(\"" ufunc "\", tracer = browser, signature = c(" signature "))\n") tbuffer)
-                  )
-                (set-buffer tbuffer)
-                (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; gives appropriate message or error
-                )
-            ;; not generic
-            (save-excursion
-              (ess-command (concat "debug(\"" ufunc "\")\n") tbuffer)
-              (set-buffer tbuffer)
-              (if (= (point-max) 1)
-                  (setq out-message (format "Flagged function '%s' for debugging" ufunc))
-                (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; error occurred
-                ))
-            ))
-      (when reset-ido
-        (remove-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
-        (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string))
-      )
+    (setq obj-at-point (ess-helpobj-at-point all-functions))
+    (setq ufunc (ess-completing-read "Debug"
+				     all-functions nil t nil nil obj-at-point))
+    ;; check if is generic
+    (if (equal "TRUE"
+	       (car (ess-get-words-from-vector  (concat "as.character(isGeneric(\"" ufunc "\"))\n"))))
+	(save-excursion ;; if so, find the signature
+	  (setq signature
+		(ess-completing-read (concat "Method for generic '" ufunc "'")
+				     (ess-dbg-get-signatures ufunc) ;;signal error if not found
+				     nil t nil nil "*default*"))
+	  (if (equal signature "*default*")
+	      (progn
+		(ess-command (concat "trace(\"" ufunc "\", tracer = browser)\n") tbuffer) ;debug the default ufunc
+		)
+	    (ess-command (concat "trace(\"" ufunc "\", tracer = browser, signature = c(" signature "))\n") tbuffer)
+	    )
+	  (set-buffer tbuffer)
+	  (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; give appropriate message or error
+	  )
+      ;;else, not S4 generic
+      (when (car (ess-get-words-from-vector  (concat "as.character(.knownS3Generics[\"" ufunc "\"])\n")))
+	(setq all-functions (ess-get-words-from-vector (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
+	(setq all-functions (delq nil (mapcar (lambda (el) (if (not (char-equal ?* (aref el (1- (length el))))) el))
+					      all-functions)))
+	;; cannot debug nonvisible functions,
+	;; tothink: ess-developer?
+	(setq ufunc (ess-completing-read (format "Method for S3 generic '%s'" ufunc)
+					 all-functions
+					 nil t)))
+      (save-excursion
+	(ess-command (concat "debug(\"" ufunc "\")\n") tbuffer)
+	(set-buffer tbuffer)
+	(if (= (point-max) 1)
+	    (setq out-message (format "Flagged function '%s' for debugging" ufunc))
+	  (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; error occurred
+	  )))
     (message out-message)
     ))
 
@@ -2721,40 +2669,26 @@ for signature and trace it with browser tracer."
   "Prompt for the debugged/traced function or method and undebug/untrace it."
   (interactive)
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo\
-        (loc-completing-read (if (and ess-dbg-use-ido (featurep 'ido))
-                                 (function ido-completing-read)
-                               (function completing-read)))
-        reset-ido out-message
-        debugged fun def-val)
-    (setq debugged (ess-get-words-from-vector ".ess_dbg_getTracedAndDebugged()\n"))
-    (print debugged)
+	(debugged (ess-get-words-from-vector ".ess_dbg_getTracedAndDebugged()\n"))
+	out-message fun def-val)
+    (prin1 debugged)
     (if (eq (length debugged) 0)
-        (message "No debugged or traced functions/methods found")
-      (when  (and ess-dbg-use-ido
-                  (featurep 'ido )
-                  (not ido-mode))
-        ;; start an ido mode if needed, completions for methods are difficult without it
-        (setq reset-ido t)
-        (ido-mode 'buffer))
-      (unwind-protect
-          (progn
-            (setq def-val (if (eq (length debugged) 1)
-                              (car debugged)
-                            "*ALL*"))
-            (setq fun (funcall loc-completing-read "Un-debug: " debugged nil t nil nil def-val))
-            (if (equal fun "*ALL*" )
-                (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat '(lambda (x) x) debugged "\", \"") "\"))\n") tbuffer)
-              (ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer)
-              )
-            (with-current-buffer  tbuffer
-              (if (= (point-max) 1)
-                  (setq out-message (format  "Un-debugged '%s' " fun))
-                (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
-                )))
-        (when reset-ido
-          (ido-mode nil)))
-      (message out-message)
-      )))
+        (setq out-message "No debugged or traced functions/methods found")
+      (setq def-val (if (eq (length debugged) 1)
+			(car debugged)
+		      "*ALL*"))
+      (setq fun (ess-completing-read "Un-debug: " debugged nil t nil nil def-val))
+      (if (equal fun "*ALL*" )
+	  (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat '(lambda (x) x) debugged "\", \"") "\"))\n") tbuffer)
+	(ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer)
+	)
+      (with-current-buffer  tbuffer
+	(if (= (point-max) 1) ;; not reliable todo:
+	    (setq out-message (format  "Un-debugged '%s' " fun))
+	  (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
+	  )))
+    (message out-message)
+    ))
 
 
 ;;;_ * Kludges and Fixes

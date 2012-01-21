@@ -172,8 +172,9 @@
   "Read a string in the minibuffer, with completion.
 Use `ido-completing-read' if IDO interface is present, or fall
 back on classical `completing-read' otherwise. Meaning of
-arguments is as in `completing-read'. If HIST is null use
-`ess--completing-hist' as history.
+arguments is as in `completing-read' (PROMPT is automatically
+suffixed with ': ' and (default %s) when needed). If HIST
+is null use `ess--completing-hist' as history.
 
 By default ESS uses enables IDO flex matching. See
 `ido-enable-flex-matching' for details on flex matching and
@@ -190,7 +191,8 @@ Some useful keys for IDO completion:
   (let ((use-ido (and ess-use-ido-p (featurep 'ido))))
     (setq hist (or hist 'ess--completing-hist))
     (when (and def (not use-ido)) ;; ido places in front and highlights the default
-      (setq prompt (format "%s(default %s) " prompt def)))
+      (setq prompt (format "%s(default %s)" prompt def)))
+    (setq prompt (concat prompt ": "))
     (if use-ido
         (let ((reset-ido (and use-ido (not ido-mode))) ;people not using ido but having it)
               (ido-current-directory nil)
@@ -234,7 +236,7 @@ Some useful keys for IDO completion:
 ;; ;;         (ding)
 ;;            (sit-for 1))))))
 
-;;; xemacs process-put and process-get workarounds: 
+;;; xemacs process-put and process-get workarounds:
 ;;; !!!! remove this when xemacs starts supporting them!!!
 
 (when (featurep 'xemacs)
@@ -253,7 +255,7 @@ See `process-plist' and `set-process-plist'.")
     (check-argument-type #'valid-plist-p plist)
     (puthash process plist process-plist-map))
 
-  
+
   (defun-when-void process-get (process propname)
     "Return the value of PROCESS' PROPNAME property.
 This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."

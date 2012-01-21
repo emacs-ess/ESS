@@ -86,7 +86,6 @@
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
      (inferior-ess-start-args		. "")
-     (ess-ac-source			. ess-ac-source-R)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
      (ess-pager		. R-pager)
@@ -147,8 +146,6 @@ to R, put them in the variable `inferior-R-args'."
 	   (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
-    ;; auto-complete R-source
-    (setq ess-ac-source ess-ac-source-R) ;;customizable
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))
@@ -491,19 +488,30 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 		R-ver))))
 
 
-(defun ess-R-get-rcompletions ()
+
+
+
+(defun ess-R-get-rcompletions (&optional no-args)
   "Calls R internal complation utilities for posible completions.
-Needs version of R>2.7.0"
+Needs version of R>2.7.0
+
+If NO-ARGS is non-nil don't ask for argument completions.
+(doesn't work in current 14.1 R)
+"
   (let* ((bol (save-excursion (comint-bol nil) (point)))
+	 (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
+	 (opts2 (if no-args "rc.options(op)" ""))
 	 (comm (format
-	       "local({utils:::.assignLinebuffer('%s')
+	       "local({%s
+utils:::.assignLinebuffer('%s')
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
 utils:::.completeToken()
-utils:::.retrieveCompletions()})\n"
-	       (buffer-substring bol (point-at-eol))
-	       (- (point) bol))))
-    (ess-get-words-from-vector comm)
+utils:::.retrieveCompletions()
+%s})\n"
+	       opts1 (buffer-substring bol (point-at-eol))
+	       (- (point) bol) opts2)))
+     (ess-get-words-from-vector comm)
     ))
 
 ;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
@@ -531,7 +539,43 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 	  'none))))
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
-(defun ess-ac-get-help-text (sym)
+
+(defun ess-init-ac (&optional not-inferior)
+  "Convenience function to initialize the default ac configuration.
+The default activated ac-sources are `ac-source-R-args',
+`ac-source-R-objects' and `ac-source-filename'.
+
+  If NOT-INFERIOR is non-nil don't initialize in ess-inferior
+mode."
+  (interactive "P")
+  (if (not (featurep 'auto-complete))
+      (ess-error "Auto-complete package is not loaded")
+    (add-to-list 'ac-modes 'ess-mode)
+    (add-hook 'ess-mode-hook 'ess--ac-initialize)
+    (make-local-variable 'ac-use-comphist)
+    (unless not-inferior
+      (add-to-list 'ac-modes 'inferior-ess-mode)
+      (add-hook 'inferior-ess-mode-hook 'ess--ac-initialize)
+      )))
+
+;; OBJECTS
+(defvar  ac-source-R-objects
+  '((prefix     . ess-ac-get-start)
+    (requires   . 1)
+    (candidates . ess-ac-get-R-objects)
+    (document   . ess-ac-get-help-object))
+  "Auto-completion source for R"
+  )
+
+(defun ess-ac-get-R-objects ()
+  "Get's the args of the function when inside parathesis."
+  (unless ess--ac-R:objects
+    (ess-R--set-args-and-objects))
+  (let ((objects ess--ac-R:objects))
+    (setq ess--ac-R:objects nil)
+    objects))
+
+(defun ess-ac-get-help-object (sym)
   "Help string for ac."
   (interactive)
   (with-temp-buffer
@@ -539,10 +583,62 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (ess-help-underline)
     (buffer-string)))
 
+;; ARGS
+(defvar  ac-source-R-args
+  '((prefix     . ess-ac-get-start) ;;must be more involeved
+    (requires   . 1)
+    (action	. tt)
+    (candidates . ess-ac-get-R-args)
+    (document   . ess-ac-get-help-arg)
+    (symbol	. "a"))
+  "Auto-completion source for R"
+  )
+
+
+(defun ess-ac-get-R-args ()
+  "Get's the args of the function when inside parathesis."
+  (unless ess--ac-R:args
+    (ess-R--set-args-and-objects))
+  (let ((args ess--ac-R:args))
+    (setq ess--ac-R:args nil)
+    (if args
+	(setq ac-use-comphist nil) ;; local
+      (setq ac-use-comphist t)) ;; local
+    args))
+
+(defun ess-ac-get-help-object (sym)
+  "Help string for ac."
+  (interactive)
+  (with-temp-buffer
+    (ess-command (format inferior-ess-help-command sym) (current-buffer))
+    (ess-help-underline)
+    (buffer-string)))
+
+;; internal ac functions
+
+(defun ess--ac-initialize ()
+  "Function used in hooks to initialize ac."
+  (when (equal ess-dialect "R")
+    (setq ac-sources '(ac-source-R-args ac-source-R-objects ac-source-filename))
+  ))
+
+(defvar ess--ac-R:args nil
+  "Storage for func args. ")
+(defvar ess--ac-R:objects nil
+  "Storage for objects. ")
+
+(defun ess-R--set-args-and-objects ()
+  (setq ess--ac-R:objects nil
+	ess--ac-R:args nil)
+  (dolist (el (ess-R-get-rcompletions))
+    (if (char-equal ?= (aref el (1- (length el))))
+	(setq ess--ac-R:args (cons el ess--ac-R:args))
+      (setq ess--ac-R:objects (cons el ess--ac-R:objects)))))
+
 (defun ess-ac-get-start ()
   "Get initial position  of the string to complete."
   (let ((chars "]A-Za-z0-9.$@_:[")
-	(bad-start-regexp "/") ;; don't use this source if this is the starting string
+	(bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
 	)
     (when (string-match (format "[%s]" chars) (char-to-string (char-before)))
       (save-excursion
@@ -551,6 +647,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 	    (1+ (point)))
 	  )))))
 
+
+;; (ess-ac-sort-predicate "sfdsf=" "sdfdsf")
 ;;;### autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
