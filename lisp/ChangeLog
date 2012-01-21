@@ -1,5 +1,9 @@
 2012-01-21  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-tracebug.el : several corrections to silent the compiler.
+
+	* Makefile (ELC): added developer and tracebug.
+
 	* ess-r-d.el (ac-source-R-objects, ac-source-R-args): two sources for ac.
 	(ess-init-ac): default initialization of ac.
 
