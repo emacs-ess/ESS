@@ -59,6 +59,8 @@
   (require 'overlay)
   (require 'cl)) ;;todo remove cl dependence
 
+(autoload 'ess-helpobj-at-point	"ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
+
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
 Currently only R is supported."
@@ -1067,6 +1069,8 @@ of the ring."
   (message "Point inserted into the forward-ring")
   )
 
+(defvar orig-R-mode-line-process nil)
+
 (defun ess-dbg-start ()
   "Start the debug session.
 Add to ESS the interactive debugging functionality, breakpoints,
@@ -1808,8 +1812,8 @@ List format is identical to that of `ess-bp-type-spec-alist'."
 			(list 'display (list 'left-fringe fringe-bitmap fringe-face))
 		      (list 'display (list '(margin left-margin)
 					   (propertize "dummy"
-						       'font-lock-face face
-						       'face face)))))
+						       'font-lock-face fringe-face
+						       'face fringe-face)))))
 	      (add-text-properties dum-beg dum-end
 				   (append dum-props
 					   (list 'ess-bp t
