@@ -1,3 +1,7 @@
+2012-01-23  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (inferior-ess-S-prompt): small adjustment of S prompt regexp.
+
 2012-01-21  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-tracebug.el : several corrections to silent the compiler.
