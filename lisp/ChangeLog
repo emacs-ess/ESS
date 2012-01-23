@@ -1,5 +1,11 @@
 2012-01-23  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-inf.el (ess-smart-comma): made smart operators
+	customizable. New ess-smart-variables local var to hold smart ops
+	which are active in the mode.
+
+	* ess-r-d.el: further work on AC.
+
 	* ess-custom.el (inferior-ess-S-prompt): small adjustment of S prompt regexp.
 
 2012-01-21  Vitalie Spinu  <spinuvit@gmail.com>

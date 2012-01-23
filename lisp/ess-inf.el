@@ -2638,7 +2638,7 @@ P-STRING is the prompt string."
 	    (or object-name "Temporary"))))
     (error nil)))
 
-;;;; smart comma
+;;;; start of ess-smart-operators
 ;;;; inspired by slime repl shortcuts
 
 (defun ess-smart-comma ()
@@ -2652,8 +2652,11 @@ list."
 	(call-interactively
 	 (cdr (assoc (ess-completing-read "Execute:" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
 		     ess-handy-commands)))
-      (delete-horizontal-space)
-      (insert ", ")
+      (if ess-smart-operators
+	  (progn
+	    (delete-horizontal-space)
+	    (insert ", "))
+	(insert ","))
     )))
 
 ;;*;; Temporary buffer handling

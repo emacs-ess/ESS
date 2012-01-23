@@ -176,6 +176,8 @@
   ;(define-key ess-mode-map [delete]	'backward-delete-char-untabify)
   (define-key ess-mode-map "\t"		'ess-indent-command)
   (define-key ess-mode-map "\C-c\C-q"	'ess-quit)
+  ;; smart operators; most likely will go in the future into a separate local map
+  (define-key ess-mode-map ","		'ess-smart-comma)
   (define-key ess-mode-map "\C-c\C-e"	ess-eval-map))
 
 (require 'noweb-mode)

@@ -74,6 +74,7 @@
      (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file		. "ess-r-namedb.el" )
      (ess-imenu-mode-function		. 'ess-imenu-R)
+     (ess-smart-operators		. ess-R-smart-operators)
      (inferior-ess-program		. inferior-R-program-name)
      (inferior-ess-objects-command	. inferior-R-objects-command)
      (inferior-ess-font-lock-keywords   . inferior-ess-R-font-lock-keywords)
@@ -496,7 +497,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 Needs version of R>2.7.0
 
 If NO-ARGS is non-nil don't ask for argument completions.
-(doesn't work in current 14.1 R)
+  (doesn't work in current 14.1 R)
 "
   (let* ((bol (save-excursion (comint-bol nil) (point)))
 	 (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
@@ -516,9 +517,6 @@ utils:::.retrieveCompletions()
 
 ;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
 ;; originally named  'alt-ess-complete-object-name'.
-;; Use rcompgen in ESS
-;; Can be activated by something like
-;; (define-key inferior-ess-mode-map "\t" 'ess-R-complete-object-name)
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
@@ -540,27 +538,42 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
 
-(defun ess-init-ac (&optional not-inferior)
-  "Convenience function to initialize the default ac configuration.
+(defun ess-init-ac (&optional inferior)
+  "Convenience function to initialize the default AC configuration.
 The default activated ac-sources are `ac-source-R-args',
 `ac-source-R-objects' and `ac-source-filename'.
 
-  If NOT-INFERIOR is non-nil don't initialize in ess-inferior
-mode."
+  If INFERIOR is non-nil, also initialize in ess-inferior mode.
+
+If you don't' like default AC keys for menu navigation do
+something like:
+
+  (define-key ac-completing-map \"\M-n\" nil)
+  (define-key ac-completing-map \"\M-p\" nil)
+  (define-key ac-completing-map \"\M-,\" 'ac-next)
+  (define-key ac-completing-map \"\M-k\" 'ac-previous)
+
+AC completion keys are defined in `ac-completing-map':
+
+\\{ac-completing-map}
+"
   (interactive "P")
-  (if (not (featurep 'auto-complete))
-      (ess-error "Auto-complete package is not loaded")
-    (add-to-list 'ac-modes 'ess-mode)
-    (add-hook 'ess-mode-hook 'ess--ac-initialize)
-    (make-local-variable 'ac-use-comphist)
-    (unless not-inferior
-      (add-to-list 'ac-modes 'inferior-ess-mode)
-      (add-hook 'inferior-ess-mode-hook 'ess--ac-initialize)
-      )))
+  (require 'auto-complete)
+  (add-to-list 'ac-trigger-commands 'ac-trigger-key-command)
+  (add-to-list 'ac-modes 'ess-mode)
+  (add-hook 'ess-mode-hook 'ess--ac-initialize)
+  (make-local-variable 'ac-use-comphist)
+  (ac-set-trigger-key "TAB")
+  (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
+	  '(ess-r-args-auto-show ess-smart-comma smart-operator-comma))
+  (when inferior
+    (add-to-list 'ac-modes 'inferior-ess-mode)
+    (add-hook 'inferior-ess-mode-hook 'ess-ac-initialize-in-hook)
+    ))
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
-  '((prefix     . ess-ac-get-start)
+  '((prefix     . ess-ac-get-start-objects)
     (requires   . 1)
     (candidates . ess-ac-get-R-objects)
     (document   . ess-ac-get-help-object))
@@ -577,17 +590,17 @@ mode."
 
 (defun ess-ac-get-help-object (sym)
   "Help string for ac."
-  (interactive)
-  (with-temp-buffer
+  (with-current-buffer (get-buffer-create " *ess-command-output*")
+    (require 'ess-help) ;; replace by autoloads?
     (ess-command (format inferior-ess-help-command sym) (current-buffer))
     (ess-help-underline)
+    (goto-char (point-min))
     (buffer-string)))
 
 ;; ARGS
 (defvar  ac-source-R-args
-  '((prefix     . ess-ac-get-start) ;;must be more involeved
-    (requires   . 1)
-    (action	. tt)
+  '((prefix     . ess-ac-get-start-args) ;;must be more involeved
+    (requires   . 0)
     (candidates . ess-ac-get-R-args)
     (document   . ess-ac-get-help-arg)
     (symbol	. "a"))
@@ -602,23 +615,43 @@ mode."
   (let ((args ess--ac-R:args))
     (setq ess--ac-R:args nil)
     (if args
-	(setq ac-use-comphist nil) ;; local
-      (setq ac-use-comphist t)) ;; local
-    args))
+	(setq ac-use-comphist nil) ;; b-local var
+      (setq ac-use-comphist t)) ;; b-local var
+    (delete "...=" args)
+    ))
 
-(defun ess-ac-get-help-object (sym)
+(defun ess-ac-get-start-args ()
+  "Get initial position for args completion"
+  (if (and (looking-back "[( \t]")
+	   (condition-case nil ;; check if it is inside a functon call
+	       (save-excursion (up-list -1) (looking-back "\\w"))
+	     (error nil)))
+      (point)
+    (ess--ac-get-start-objects)))
+
+(defun ess-ac-get-help-arg (sym)
   "Help string for ac."
-  (interactive)
-  (with-temp-buffer
-    (ess-command (format inferior-ess-help-command sym) (current-buffer))
-    (ess-help-underline)
-    (buffer-string)))
+  nil)
+
+
+(defun ess-ac-get-start-objects ()
+  "Get initial position for objects position."
+  (let ((chars "]A-Za-z0-9.$@_:[")
+	(bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
+	)
+    (when (string-match (format "[%s]" chars) (char-to-string (char-before)))
+      (save-excursion
+	(when (re-search-backward (format "[^%s]" chars) nil t)
+	  (unless (looking-at bad-start-regexp)
+	    (1+ (point)))
+	  )))))
 
 ;; internal ac functions
 
-(defun ess--ac-initialize ()
+(defun ess-ac-initialize-in-hook ()
   "Function used in hooks to initialize ac."
   (when (equal ess-dialect "R")
+    (local-set-key (kbd "M-TAB") 'auto-complete)
     (setq ac-sources '(ac-source-R-args ac-source-R-objects ac-source-filename))
   ))
 
@@ -634,19 +667,6 @@ mode."
     (if (char-equal ?= (aref el (1- (length el))))
 	(setq ess--ac-R:args (cons el ess--ac-R:args))
       (setq ess--ac-R:objects (cons el ess--ac-R:objects)))))
-
-(defun ess-ac-get-start ()
-  "Get initial position  of the string to complete."
-  (let ((chars "]A-Za-z0-9.$@_:[")
-	(bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
-	)
-    (when (string-match (format "[%s]" chars) (char-to-string (char-before)))
-      (save-excursion
-	(when (re-search-backward (format "[^%s]" chars) nil t)
-	  (unless (looking-at bad-start-regexp)
-	    (1+ (point)))
-	  )))))
-
 
 ;; (ess-ac-sort-predicate "sfdsf=" "sdfdsf")
 ;;;### autoload

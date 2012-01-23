@@ -308,6 +308,19 @@ might want to set this to nil.
   "Variable to store completion history.
 Used by `ess-completion-read' command.")
 
+(defvar ess-smart-operators ()
+  "List of smart operators to be used in ESS and IESS modes.
+")
+(make-variable-buffer-local 'ess-smart-operators)
+
+(defvar ess-R-smart-operators nil
+  "If nil don't use any of smart operators.
+If 'all use all. If an axplicit list of operators use only those operators.
+
+It controls the behavior of ess-smart-comma only in this version
+of ESS, but will be enriched in the for future.
+")
+
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
@@ -1297,11 +1310,12 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ")
 
-(defcustom inferior-ess-S-prompt "\\([]a-zA-Z0-9.:/[]*> ?\\|+ ?\\)"
-  "Regexp used in S and R inferior and transcript buffers for prompt and navigation.
+;; need to recognise  + + + > > >  ass well
+(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*\\([>+] \\)+"
+  "Regexp used in S and R inferior and transcript buffers for prompt detection and navigation.
 
-You can set it to '[a-zA-Z0-9() ]*> ?' if you want to skip
-secondary prompt during navigation.
+You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
+skip secondary prompt during navigation.
  "
   :group 'ess-proc
   :type 'string)
