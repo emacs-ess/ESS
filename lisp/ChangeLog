@@ -1,5 +1,7 @@
 2012-01-23  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-r-d.el (ess-library): set ess-sp-change to t.
+
 	* ess-inf.el (ess-smart-comma): made smart operators
 	customizable. New ess-smart-variables local var to hold smart ops
 	which are active in the mode.
