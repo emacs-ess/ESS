@@ -1313,3 +1313,13 @@ multiple chains (initialization and creation):  Done!
 
 Rodney
 
+
+01-24-12: ESS[R] and Tramp bug
+
+The help doesn't work nicely.
+?chol doesn't pop up a new buffer like it does locally; instead it
+puts you into a pager of some sort.  Also, help.start() doesn't work
+unless you launch firefox remotely (which defeats the purpose of
+working remotely for the most part).
+
+Rodney
