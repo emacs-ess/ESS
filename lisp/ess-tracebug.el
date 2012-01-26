@@ -210,9 +210,27 @@ this reference number. Ess-debug finds this number in the
 referenced buffer.
 ")
 
+(defun ess-quote-special-chars (string)
+  (replace-regexp-in-string
+   "\"" "\\\\\\&"
+   (replace-regexp-in-string ;; replace backslashes
+    "\\\\" "\\\\" string nil t)))
+
+(defvar ess--tb-buffer-sym nil)
+(make-variable-buffer-local 'ess--tb-buffer-sym)
+
 (defun ess--tb-get-source-refd-string (beg end)
-  "beg end of the region"
-  (let ((filename (file-name-nondirectory (buffer-file-name))))
+  "Encapsulate the region string into eval(parse ... )
+block (used for source references insertion)"
+  (let ((filename buffer-file-name))
+    (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
+    (unless ess--tb-buffer-sym
+      (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
+    (unless filename ;; org, etc
+      (setq filename (format "[%s]" ess--tb-buffer-sym))
+      (if org-src-mode ;;
+	  (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
+				 filename))))
     ;; next drops are not necesarry for function but will be for regions
     (goto-char beg)
     (when (looking-at "\\s +") ;drop trailing lines
@@ -222,14 +240,32 @@ referenced buffer.
     (when (looking-back "\\s +") ;drop the end empty lines
       (re-search-backward "[^ \t\n]" nil t)
       (setq end (point-at-eol)))
-    (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
     (put-text-property beg end 'tb-index ess--tracebug-eval-index)
     (format "eval(parse(text=\"%s\",srcfile=srcfile(\"%s@%d\")))\n"
-	    (replace-regexp-in-string
-	     "\"" "\\\\\\&"
-	     (replace-regexp-in-string ;; how to avoid this double matching? same thing for \'???
-	      "\\\\\"" "\\\\\\&" (buffer-substring-no-properties beg end)))
+	    (ess-quote-special-chars (buffer-substring-no-properties beg end))
 	    filename ess--tracebug-eval-index)))
+
+;; (defun ess--tb-get-source-refd-string (beg end)
+;;   "beg end of the region"
+;;   (let* (org-src-mode
+;; 	 (filename (file-name-nondirectory (buffer-file-name))))
+;;     ;; next drops are not necesarry for function but will be for regions
+;;     (goto-char beg)
+;;     (when (looking-at "\\s +") ;drop trailing lines
+;;       (re-search-forward "[^ \t\n]" nil t)
+;;       (setq beg (point-at-bol)))
+;;     (goto-char end)
+;;     (when (looking-back "\\s +") ;drop the end empty lines
+;;       (re-search-backward "[^ \t\n]" nil t)
+;;       (setq end (point-at-eol)))
+;;     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
+;;     (put-text-property beg end 'tb-index ess--tracebug-eval-index)
+;;     (format "eval(parse(text=\"%s\",srcfile=srcfile(\"%s@%d\")))\n"
+;; 	    (replace-regexp-in-string
+;; 	     "\"" "\\\\\\&"
+;; 	     (replace-regexp-in-string ;; how to avoid this double matching? same thing for \'???
+;; 	      "\\\\\"" "\\\\\\&" (buffer-substring-no-properties beg end)))
+;; 	    filename ess--tracebug-eval-index)))
 
 
 (defun ess--tb-assign-function (name beg end &optional dev-p)
@@ -1320,7 +1356,7 @@ is non nil, attempt to open the location in a different window."
   "Opens the reference given by FILE, LINE and COL,
 Try to open in a different window if OTHER-WINDOW is nil.  Return
 the buffer if found, or nil otherwise be found.
-`ess-dbg-find-file' is used to find the FILE and open the
+`ess-dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil or TB-INDEX is not found
 returns nil.
 "
@@ -1345,7 +1381,7 @@ Return list of two markers MK-start and MK-end. MK-start is the
 	     (null tb-index))
     (setq tb-index (string-to-number (match-string 2 file)))
     (setq file (match-string 1 file)))
-  (let ((buffer (ess-dbg-find-file  file))
+  (let ((buffer (ess-dbg-find-buffer  file))
 	pos )
     (when (and buffer  line)
       (with-current-buffer buffer
@@ -1365,63 +1401,133 @@ Return list of two markers MK-start and MK-end. MK-start is the
 	    (list (point-marker) (copy-marker (point-at-bol))))
 	  )))))
 
-(defun ess-dbg-find-file (filename )
+
+(defun ess-dbg-find-buffer (filename )
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess-dbg-ask-for-file' is non-nil.  Search the directories in
 `ess-dbg-search-path'."
   (let ((dirs ess-dbg-search-path)
         (spec-dir default-directory)
-                  ;; add current dir of ess here :TODO:
-        buffer thisdir fmts name)
-    (if (file-name-absolute-p filename)
-        ;; The file name is absolute.  Use its explicit directory as
-        ;; the first in the search path, and strip it from FILENAME.
-        (setq filename (abbreviate-file-name (expand-file-name filename))
-              dirs (cons (file-name-directory filename) dirs)
-              filename (file-name-nondirectory filename))
-      ;; else check for possible files which are already open
-      (let (pos-dirs bf-fname)
-	(dolist (bf (buffer-list))
-	  (setq bf-fname (buffer-file-name bf))
-	  (when (and bf-fname
-		     (string-match (format "%s\\'" filename) bf-fname))
-	    (setq pos-dirs (cons (file-name-directory (buffer-file-name bf)) pos-dirs))))
-	(setq dirs (append (reverse pos-dirs) dirs)))
-      (setq filename (file-name-nondirectory filename))
-      )
-    (setq dirs (cons spec-dir dirs)) ;; current dir has priority todo:should be R working dir
-    ;; Now search the path.
-    (while (and dirs (null buffer))
-      (setq thisdir (car dirs))
-      (setq name (expand-file-name filename thisdir)
-	    buffer (and (file-exists-p name)
-			(find-file-noselect name)))
-      (setq dirs (cdr dirs)))
-    (if (and ess-dbg-ask-for-file ;; ask for file if not found VS: maybe remove this part
-	     (null buffer))
-        (save-excursion            ;This save-excursion is probably not right.
-          (let* ((pop-up-windows t)
-                 (name (read-file-name
-                        (format "Find next line in (default %s): "  filename)
-                        spec-dir filename t nil
-                        ))
-                 (origname name))
-            (cond
-             ((not (file-exists-p name))
-              (message "Cannot find file `%s'" name)
-              (ding) (sit-for 2))
-             ((and (file-directory-p name)
-                   (not (file-exists-p
-                         (setq name (expand-file-name filename name)))))
-              (message "No `%s' in directory %s" filename origname)
-              (ding) (sit-for 2))
-             (t
-              (setq buffer (find-file-noselect name)))))
-          )
-      )
+	(is-org)
+	;; add current dir of ess here :TODO:
+        buffer thisdir fmts name buffername)
+    (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
+    ;; 0. get the buffsym reference if discovered
+    ;; (message filename)
+    (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
+      (setq buffsym (match-string 2 filename)
+	    filename (match-string 1 filename))
+      (message "buf:%s---file:%s" buffsym filename)
+      (setq buffer (dolist (bf (buffer-list))
+		     (when (equal (buffer-local-value 'ess--tb-buffer-sym bf)
+				  buffsym)
+			 (return bf)))))
+    (unless buffer
+      ;; 1. first search already open buffers for match (associate file might not even exist yet)
+      (dolist (bf (buffer-list))
+	(with-current-buffer  bf
+	  (when (and buffer-file-name
+		     (string-match (format "%s\\'" filename) buffer-file-name))
+	      (return bf))))
+      ;; 2. The file name is absolute.  Use its explicit directory as
+      ;; the first in the search path, and strip it from FILENAME.
+      (when (and (null  buffer)
+		 (file-name-absolute-p filename))
+	(setq filename (abbreviate-file-name (expand-file-name filename))
+	      dirs (cons (file-name-directory filename) dirs)
+	      filename (file-name-nondirectory filename)))
+      ;; 3. Now search the path.
+      (while (and (null buffer)
+		  dirs )
+	(setq thisdir (car dirs))
+	(setq name (expand-file-name filename thisdir)
+	      buffer (and (file-exists-p name)
+			  (find-file-noselect name)))
+	(setq dirs (cdr dirs)))
+      ;; 4. Ask for file if not found (tothink: maybe remove this part?)
+      (if (and (null buffer)
+	       ess-dbg-ask-for-file)
+	  (save-excursion            ;This save-excursion is probably not right.
+	    (let* ((pop-up-windows t)
+		   (name (read-file-name
+			  (format "Find next line in (default %s): "  filename)
+			  spec-dir filename t nil
+			  ))
+		   (origname name))
+	      (cond
+	       ((not (file-exists-p name))
+		(message "Cannot find file `%s'" name)
+		(ding) (sit-for 2))
+	       ((and (file-directory-p name)
+		     (not (file-exists-p
+			   (setq name (expand-file-name filename name)))))
+		(message "No `%s' in directory %s" filename origname)
+		(ding) (sit-for 2))
+	       (t
+		(setq buffer (find-file-noselect name)))))
+	    )
+	))
     buffer);; nil if not found
   )
+
+;; (defun ess-dbg-find-buffer (filename )
+;;   "Find a buffer for file FILENAME.
+;; If FILENAME is not found at all, ask the user where to find it if
+;; `ess-dbg-ask-for-file' is non-nil.  Search the directories in
+;; `ess-dbg-search-path'."
+;;   (let ((dirs ess-dbg-search-path)
+;;         (spec-dir default-directory)
+;;                   ;; add current dir of ess here :TODO:
+;;         buffer thisdir fmts name)
+;;     (if (file-name-absolute-p filename)
+;;         ;; The file name is absolute.  Use its explicit directory as
+;;         ;; the first in the search path, and strip it from FILENAME.
+;;         (setq filename (abbreviate-file-name (expand-file-name filename))
+;;               dirs (cons (file-name-directory filename) dirs)
+;;               filename (file-name-nondirectory filename))
+;;       ;; else check for possible files which are already open
+;;       (let (pos-dirs bf-fname)
+;; 	(dolist (bf (buffer-list))
+;; 	  (setq bf-fname (buffer-file-name bf))
+;; 	  (when (and bf-fname
+;; 		     (string-match (format "%s\\'" filename) bf-fname))
+;; 	    (setq pos-dirs (cons (file-name-directory (buffer-file-name bf)) pos-dirs))))
+;; 	(setq dirs (append (reverse pos-dirs) dirs)))
+;;       (setq filename (file-name-nondirectory filename))
+;;       )
+;;     (setq dirs (cons spec-dir dirs)) ;; current dir has priority todo:should be R working dir
+;;     ;; Now search the path.
+;;     (while (and dirs (null buffer))
+;;       (setq thisdir (car dirs))
+;;       (setq name (expand-file-name filename thisdir)
+;; 	    buffer (and (file-exists-p name)
+;; 			(find-file-noselect name)))
+;;       (setq dirs (cdr dirs)))
+;;     (if (and ess-dbg-ask-for-file ;; ask for file if not found VS: maybe remove this part
+;; 	     (null buffer))
+;;         (save-excursion            ;This save-excursion is probably not right.
+;;           (let* ((pop-up-windows t)
+;;                  (name (read-file-name
+;;                         (format "Find next line in (default %s): "  filename)
+;;                         spec-dir filename t nil
+;;                         ))
+;;                  (origname name))
+;;             (cond
+;;              ((not (file-exists-p name))
+;;               (message "Cannot find file `%s'" name)
+;;               (ding) (sit-for 2))
+;;              ((and (file-directory-p name)
+;;                    (not (file-exists-p
+;;                          (setq name (expand-file-name filename name)))))
+;;               (message "No `%s' in directory %s" filename origname)
+;;               (ding) (sit-for 2))
+;;              (t
+;;               (setq buffer (find-file-noselect name)))))
+;;           )
+;;       )
+;;     buffer);; nil if not found
+;;   )
 
 (defun ess-dbg-get-next-ref (n &optional pt BOUND REG nF nL nC)
   "Move point to the next reference in the *ess.dbg* buffer.
@@ -1466,7 +1572,7 @@ given by the reference.  This is the value of
         (progn
           (set-marker ess-dbg-current-ref (line-end-position))
           (set-marker overlay-arrow-position (line-beginning-position))
-          (setq dbuff (ess-dbg-find-file  (car loc)))
+          (setq dbuff (ess-dbg-find-buffer  (car loc)))
           (switch-to-buffer dbuff)
           (save-restriction
             (widen)

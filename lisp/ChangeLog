@@ -1,3 +1,8 @@
+2012-01-27  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-tracebug.el (ess-dbg-flag-for-debugging): added support for
+	org mode and file free buffers.
+
 2012-01-23  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-library): set ess-sp-change to t.
