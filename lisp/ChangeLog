@@ -1,5 +1,10 @@
 2012-01-27  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-tracebug.el (ess-dbg-mode-line-indicator): dynamic mode line
+	support.
+
+	* ess-custom.el (ess-mode-line-indicator): doc string
+
 	* ess-tracebug.el (ess-dbg-flag-for-debugging): added support for
 	org mode and file free buffers.
 

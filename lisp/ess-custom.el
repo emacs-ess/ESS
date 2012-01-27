@@ -1389,18 +1389,20 @@ of Emacs until the code has been successfully evaluated."
 
 (defvar ess-mode-line-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
-Local in process buffers. Changes of this variable are
-automatically reflected in mode-lines of the process and all
-associated buffer in ess-mode.
+Local in process buffers and must start with a string. Changes of
+this variable are automatically reflected in mode-lines of the
+process and all associated with it buffers.
 
-First element must be a string. Add a symbol and then remove with
-`delq'. Note that the symbols which are part of this list should
-better have 'risky-local-variable property set to t. Otherwise the text
+Each symbol must evaluate ot one of the standard mode line
+objecst. See info node `(elisp)Mode Line Data').  Add a symbol
+with `add-to-list' and remove with `delq'. Note that the symbols
+which are part of this list should better have
+'risky-local-variable property set to t, otherwise the text
 properties are not displayed.
 
 External utilities such as `ess-tracebug' and `ess-developer'
-customize this variable to indicate the changes of the process
-status or user interaction.
+customize this variable to indicate changes in the process
+status.
 ")
 (put 'ess-mode-line-indicator 'risky-local-variable t)
 (make-variable-buffer-local 'ess-mode-line-indicator)
