@@ -57,7 +57,7 @@
 (eval-when-compile
   (require 'face-remap nil t) ;; desirable for scaling of the text in watch buffer
   (require 'overlay)
-  (require 'cl)) ;;todo remove cl dependence
+  (require 'cl))
 
 (autoload 'ess-helpobj-at-point	"ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 
@@ -1418,7 +1418,7 @@ If FILENAME is not found at all, ask the user where to find it if
     (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
       (setq buffsym (match-string 2 filename)
 	    filename (match-string 1 filename))
-      (message "buf:%s---file:%s" buffsym filename)
+      ;; (message "buf:%s---file:%s" buffsym filename)
       (setq buffer (dolist (bf (buffer-list))
 		     (when (equal (buffer-local-value 'ess--tb-buffer-sym bf)
 				  buffsym)
