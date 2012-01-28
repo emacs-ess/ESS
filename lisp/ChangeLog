@@ -1,3 +1,22 @@
+2012-01-28  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-developer.el (ess-developer-assign-function): integrated
+	with ess-eval-function; also takes care of tracebug.
+
+	* ess-tracebug.el (ess-tracebug-assign-function): tracebug doesn't
+	reassign ess-eval-function anymore (it's integrated now in ESS)
+	(ess-process-send-string): moved into ess-inf.el
+
+	* ess-inf.el (ess-process-send-string): low level wrapper for
+	process-send to enable pre-processing of input string. Currently
+	removes empty lines when debugging is active.
+
+	* ess-inf.el (ess-load-file): if in developer mode call
+	ess-developer-source-current-file.
+	(ess-process-get): new function,  wrapper for process-get
+	(ess-eval-function): is now aware of ess-developer and ess-tracebug
+	(ess-command): added two new arguments wait and prompt
+
 2012-01-27  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-tracebug.el (ess-dbg-mode-line-indicator): dynamic mode line

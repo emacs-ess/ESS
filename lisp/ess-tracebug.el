@@ -73,11 +73,11 @@ Currently only R is supported."
   name. Indicates that ess-traceback-mode is turned on. "
 )
 
-(defvar ess--tracebug-p nil
-  "Non nil if ess-tracebug is turned on for current process.
-Function `ess-tracebug'  toggles on/off this variable.")
-(make-variable-buffer-local 'ess--tracebug-p)
-(add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
+;; (defvar ess--tracebug-p nil
+;;   "Non nil if ess-tracebug is turned on for current process.
+;; Function `ess-tracebug'  toggles on/off this variable.")
+;; (make-variable-buffer-local 'ess--tracebug-p)
+;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
 
 
 (defcustom ess-tracebug-command-prefix "\M-c"
@@ -173,34 +173,6 @@ Use `add-hook' to insert append your functions to this list.
 "
   )
 
-(defun ess-eval-function2 (vis &optional no-error)
-  "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'."
-  (interactive "P")
-  (save-excursion
-    (let ((beg-end (ess-end-of-function nil no-error)))
-      (if beg-end
-	  (let ((beg (nth 0 beg-end))
-		(end (nth 1 beg-end))
-		name assigned-p)
-	    (goto-char beg)
-	    (setq name (ess-read-object-name-default))
-	    (when (string-match "^R" ess-dialect) ;; how about S?
-	      (let ((tb-p  (and (boundp 'ess--tracebug-p)
-				(ess-get-process-variable ess-local-process-name 'ess--tracebug-p)))
-		    (dev-p 	  (ess-get-process-variable ess-local-process-name 'ess--developer-p))
-		    )
-		(if tb-p
-		    (setq assigned-p (ess--tb-assign-function name beg end dev-p))
-		  (if dev-p
-		      (setq assigned-p (ess-developer-assign-function name (buffer-substring-no-properties beg end))))
-		  )))
-	    (unless assigned-p
-	      (princ (concat "Loading: " name) t)
-	      (ess-eval-region beg end vis
-			       (concat "Sourced function " (or name "???"))))
-	    beg-end)
-	nil))))
 
 (defvar ess--tracebug-eval-index 0
   "This is used by to track source references in evaluation with source.
@@ -268,19 +240,13 @@ block (used for source references insertion)"
 ;; 	    filename ess--tracebug-eval-index)))
 
 
-(defun ess--tb-assign-function (name beg end &optional dev-p)
+(defun ess-tracebug-assign-function (beg end name)
   (save-excursion
-    (let ((ess-eval-visibly-p nil)
-	  (comm (ess--tb-get-source-refd-string beg end))
-	  assigned-p)
+    (let ((comm (ess--tb-get-source-refd-string beg end)))
       (ess-tb-set-last-input)
-      (when  dev-p
-	(setq assigned-p (ess-developer-assign-function name comm)))
-      (unless assigned-p
-	(ess-process-send-string (get-process ess-local-process-name) comm)
-	(message "Sourced function %s " (or name "???")))
-      )
-    t ;; it was assigned-p
+      (ess-process-send-string (get-process ess-local-process-name) comm)
+      (message  "Sourced function %s " (or name "???")))
+    t ;; it was assigned
     ))
 
 
@@ -377,7 +343,7 @@ activated/deactivate separately with `ess-traceback' and
       (setq arg
             (if arg
                 (prefix-numeric-value arg)
-              (if ess--tracebug-p -1 1)))
+              (if (ess-process-get ess-local-process-name 'tracebug) -1 1)))
       (if (> arg 0)
           (progn
             (ess-tb-start)
@@ -557,10 +523,10 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
       (defalias 'orig-ess-eval-region (symbol-function 'ess-eval-region))
       (defalias 'ess-eval-region (symbol-function 'ess-eval-region2))
       )
-    (unless (fboundp 'orig-ess-eval-function)
-      (defalias 'orig-ess-eval-function (symbol-function 'ess-eval-function))
-      (defalias 'ess-eval-function (symbol-function 'ess-eval-function2))
-      )
+    ;; (unless (fboundp 'orig-ess-eval-function)
+    ;;   (defalias 'orig-ess-eval-function (symbol-function 'ess-eval-function))
+    ;;   (defalias 'ess-eval-function (symbol-function 'ess-eval-function2))
+    ;;   )
     (unless (fboundp 'orig-ess-parse-errors)
       (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
       (defalias 'ess-parse-errors (symbol-function 'next-error))
@@ -571,14 +537,14 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
       )
     ;; hooks
     (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t t)
-    (setq ess--tracebug-p t)
+    (ess-process-put  ess-local-process-name 'tracebug t)
     )
   )
 
 (defun ess-tb-stop ()
   "Stop ess traceback session in the current ess process"
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
-    (setq ess--tracebug-p nil)
+    (ess-process-put  ess-local-process-name 'tracebug nil)
     ;; restore original definitions
     (when (fboundp 'orig-inferior-R-input-sender)
       (defalias 'inferior-R-input-sender (symbol-function 'orig-inferior-R-input-sender))
@@ -586,9 +552,9 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
     (when (fboundp 'orig-ess-eval-region)
       (defalias 'ess-eval-region (symbol-function 'orig-ess-eval-region))
       (fmakunbound 'orig-ess-eval-region))
-    (when (fboundp 'orig-ess-eval-function)
-      (defalias 'ess-eval-function (symbol-function 'orig-ess-eval-function))
-      (fmakunbound 'orig-ess-eval-function))
+    ;; (when (fboundp 'orig-ess-eval-function)
+    ;;   (defalias 'ess-eval-function (symbol-function 'orig-ess-eval-function))
+    ;;   (fmakunbound 'orig-ess-eval-function))
     (when (fboundp 'orig-ess-parse-errors)
       (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
       (fmakunbound 'orig-ess-parse-errors))
@@ -1291,7 +1257,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;;     ))
       (ess-dbg-deactivate-overlays)
       (process-put proc 'dbg-active nil)
-      (message "|<-- exited debugging -->|")
+      ;; (message "|<-- exited debugging -->|")
       (when wbuff
         (ess-watch-refresh-buffer-visibly wbuff ))
       )
@@ -1718,19 +1684,21 @@ debug history."
   ;; make it more elaborate :todo:
   (interactive)
   (ess-force-buffer-current "R process to use: ")
-  (if (not buffer-file-name)
-      (let ((ess-eval-visibly-p nil)
-	    (ess-tracebug-inject-source-p t))
-	(ess-eval-region2 (point-min) (point-max) nil
-			  (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
-    (save-buffer)
-    (save-selected-window
-      (ess-switch-to-ESS t))
-    (ess-tb-set-last-input)
-    (process-send-string (get-process ess-current-process-name)
-			 (concat "\ninvisible(eval({source(file=\"" buffer-file-name
-				 "\")\n cat(\"Sourced: " buffer-file-name "\\n\")}, env=globalenv()))\n"))
-    ))
+  (if (process-get (get-process ess-local-process-name) 'developer)
+      (ess-developer-source-current-file)
+    (if (not buffer-file-name)
+	(let ((ess-eval-visibly-p nil)
+	      (ess-tracebug-inject-source-p t))
+	  (ess-eval-region2 (point-min) (point-max) nil
+			    (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
+      (save-buffer)
+      (save-selected-window
+	(ess-switch-to-ESS t))
+      (ess-tb-set-last-input)
+      (process-send-string (get-process ess-current-process-name)
+			   (concat "\ninvisible(eval({source(file=\"" buffer-file-name
+				   "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))\n"))
+      )))
 
 ;;;_ + BREAKPOINTS
 
@@ -3040,16 +3008,6 @@ intanbible, step char backward first"
 ;; (defun inferior-ess-input-sender (proc string &optional invisibly)
 ;;   (ess-eval-linewise (concat string "\n") invisibly nil ess-eval-empty))
 
-
-(defun ess-process-send-string (process string)
-  (when (process-get process 'dbg-active)
-    (setq string (replace-regexp-in-string
-                  "\n\\s *$" "" string))) ; remove empty lines (interfere with evals) in debug state
-  (setq string
-        (replace-regexp-in-string  "^[^#]+\\()\\)[^)]*\\'" "\n)" string nil nil 1)) ;;needed for busy prompt
-  (inferior-ess-mark-as-busy process)
-  (process-send-string process (concat string "\n"))
-  )
 
 
 (defun ess-eval-region2 (start end toggle &optional message)
