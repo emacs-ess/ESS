@@ -476,12 +476,20 @@ following lines to your `.emacs' file:
 
 
 (defun Rd-preview-help ()
-  "Preview the current buffer contents using `Rd-to-help-command'."
+  "Preview the current buffer contents using `Rd-to-help-command'.
+If the current buffer is not associated with a file, create a
+temporary one in `temporary-file-directory'.
+"
   (interactive)
   (require 'ess-help)
-  (let* ((sbuf buffer-file-name)
+  (let ((file  buffer-file-name)
 	(pbuf (get-buffer-create "R Help Preview"))
-	(shcmd (format "%s '%s'" Rd-to-help-command sbuf)))
+	 del-p shcmd)
+    (unless file
+      (setq file  (make-temp-file "RD_" nil ".Rd"))
+      (write-region (point-min) (point-max) file)
+      (setq del-p t))
+    (setq shcmd (format "%s '%s'" Rd-to-help-command file))
     (set-buffer pbuf)
     (erase-buffer)
     (ess-write-to-dribble-buffer
@@ -491,6 +499,7 @@ following lines to your `.emacs' file:
 	  ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
     (ess-nuke-help-bs)
     (ess-help-mode)
+    (when del-p (delete-file file))
     (unless (get-buffer-window pbuf 'visible)
       (display-buffer pbuf t))))
 

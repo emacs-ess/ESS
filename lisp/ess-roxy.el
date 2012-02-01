@@ -42,7 +42,8 @@
 ;;     using roxygen
 ;;   - C-c C-e C-t :: create a preview of the Rd HTML file as generated
 ;;     using roxygen and the tools package
-;;     
+;;   - C-c C-e t :: create a preview of the Rd text file
+;;
 ;; Known issues:
 ;;
 ;; - hideshow mode does not work very well. In particular, if ordinary
@@ -50,12 +51,13 @@
 ;;   same overlay from start and not unfoldable using TAB since the
 ;;   roxygen prefix is not present. The planned solution is implement
 ;;   a replacement for hideshow.
-;; - only limited functionality for S4 documentation. 
+;; - only limited functionality for S4 documentation.
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
 (require 'ess-custom)
 (require 'hideshow)
+(autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 
 ;; ------------------
 (defvar ess-roxy-mode-map nil
@@ -73,6 +75,7 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-t")   'ess-roxy-preview-HTML)
+  (define-key ess-roxy-mode-map (kbd "C-c C-e t")   'ess-roxy-preview-text)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
   )
 
@@ -138,7 +141,7 @@
 	(setq beg (point)))
       beg)))
 
-(defun ess-roxy-in-header-p () 
+(defun ess-roxy-in-header-p ()
   "true if point is the description / details field"
   (save-excursion
     (let ((res t)
@@ -196,10 +199,10 @@
       (forward-line 1)
       (setq cont t)
       (while (and (ess-roxy-entry-p) cont)
-	(save-excursion 
+	(save-excursion
 	  (end-of-line)
 	  (setq end (point)))
-	(if (or (and (ess-roxy-in-header-p) 
+	(if (or (and (ess-roxy-in-header-p)
 		     (looking-at (concat "^" ess-roxy-str " *$")))
 		(looking-at (concat "^" ess-roxy-str " *[@].+")))
 	    (progn
@@ -233,7 +236,7 @@
 	      (fill-prefix (concat ess-roxy-str " "))
 	      (beg-par (point-min))
 	      (end-par (point-max)))
-	  (save-excursion 
+	  (save-excursion
 	    (if (re-search-backward (concat "^" ess-roxy-str " *$") beg t)
 		(setq beg-par (match-end 0))))
 	  (save-excursion
@@ -277,8 +280,8 @@ function at point. if here is supplied start inputting
 	  (progn
 	    (insert (concat "\n"
 			    ess-roxy-str " @param " (car arg-des) " "))
-	    (insert 
-	     (ess-replace-in-string (concat (car (cdr arg-des))) "\n" 
+	    (insert
+	     (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
 				    (concat "\n" ess-roxy-str)))
 	    (if ess-roxy-fill-param-p
 		(ess-roxy-fill-field))
@@ -291,7 +294,7 @@ association from ent are preferred over entries from fun. Also,
 drop entries from ent that are not in fun and are associated with
 the empty string."
   (let ((res-arg nil)
-	(arg-des))			
+	(arg-des))
     (while (stringp (car (car fun)))
       (setq arg-des (pop fun))
       (if (assoc (car arg-des) ent)
@@ -475,7 +478,7 @@ buffer and return that buffer."
       (forward-line 1)
       (if (ess-end-of-function nil t)
 	  (append-to-file beg (point) roxy-tmp)
-	(while (and (forward-line 1) (not (looking-at "^$")) 
+	(while (and (forward-line 1) (not (looking-at "^$"))
 		    (not (looking-at ess-roxy-str))))
 	(append-to-file beg (point) roxy-tmp))
       (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
@@ -504,13 +507,21 @@ a browser if `visit-instead-of-open' is non-nil"
       (kill-buffer roxy-buf))
     (ess-command "print(suppressWarnings(require(tools, quietly=TRUE)))\n")
     (if (not visit-instead-of-open)
-	(ess-command 
-	 (concat "browseURL(Rd2HTML(\"" rd-tmp-file "\",\"" 
+	(ess-command
+	 (concat "browseURL(Rd2HTML(\"" rd-tmp-file "\",\""
 		 html-tmp-file "\", stages=c(\"render\")))\n"))
-      (ess-command 
-       (concat "Rd2HTML(\"" rd-tmp-file "\",\"" 
+      (ess-command
+       (concat "Rd2HTML(\"" rd-tmp-file "\",\""
 	       html-tmp-file "\", stages=c(\"render\"))\n"))
       (find-file html-tmp-file))))
+
+
+(defun ess-roxy-preview-text ()
+  "Use the connected R session and the roxygen package to
+generate the text help page of the roxygen entry at point."
+  (interactive)
+  (with-current-buffer (ess-roxy-preview)
+    (Rd-preview-help)))
 
 (defun ess-roxy-preview-Rd (&optional name-file)
   "Use the connected R session and the roxygen package to

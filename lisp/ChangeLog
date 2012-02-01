@@ -1,3 +1,11 @@
+2012-02-01  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-roxy.el (ess-roxy-mode-map): new key C-c C-e t for preview-text
+	(ess-roxy-preview-text): new function for preview in text format
+
+	* ess-rd.el (Rd-preview-help): solved nil file-name bug with roxy
+	preview.
+
 2012-01-28  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-developer.el (ess-developer-assign-function): integrated
