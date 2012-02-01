@@ -1,7 +1,10 @@
 2012-02-01  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-r-d.el (ess-sos, ess-setRepositories, ess-setCRANMiror): added two more handy
+	commands.
+
 	* ess-roxy.el (ess-roxy-mode-map): new key C-c C-e t for preview-text
-	(ess-roxy-preview-text): new function for preview in text format
+	(ess-roxyb-preview-text): new function for preview in text format
 
 	* ess-rd.el (Rd-preview-help): solved nil file-name bug with roxy
 	preview.

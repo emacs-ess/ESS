@@ -784,17 +784,60 @@ Completion is available for supplying options."
   (interactive "P")
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
+    (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
+      (ess-setCRANMiror)
+      (ess-wait-for-process (get-process ess-current-process-name))
+      (setq update t))
     (when (or update
               (not ess--packages-cache))
+      (message "Fetching R packages ... ")
       (setq ess--packages-cache
             (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(rownames(available.packages()));options(oo)})\n")))
     (let ((ess-eval-visibly-p t)
           pack)
-      (setq pack (ess-completing-read "Package to install: " ess--packages-cache))
+      (setq pack (ess-completing-read "Package to install" ess--packages-cache))
       (process-send-string (get-process ess-current-process-name)
                            (format "install.packages('%s')\n" pack))
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
+
+
+(defun ess-setRepositories ()
+  "Call setRepositories()"
+  (interactive)
+  (if (not (string-match "^R" ess-dialect))
+      (message "Sorry, not available for %s" ess-dialect)
+    (ess-eval-linewise "setRepositories(FALSE)\n")
+    ))
+
+(defun ess-setCRANMiror ()
+  "Set cran mirror"
+  (interactive)
+  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors();print(paste(out$Name,'[',out$URL,']',sep = ''))})\n"))
+	 (M2 (mapcar (lambda (el)
+n		       (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
+		       (propertize (match-string 1 el) 'URL (match-string 2 el)))
+		     M1))
+	 (opt  (ess-completing-read "Choose CRAN mirror" M2 nil t)))
+    (when opt
+      (setq opt (get-text-property 0 'URL opt))
+      (ess-command
+       (format "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n" opt))
+      (message "New CHRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
+      )))
+
+(defun ess-sos (cmd)
+  "Interface to findFn in the library sos."
+                                        ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
+  (interactive  "sfindFn: ")
+  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(require(sos))\n")))
+    (if (y-or-n-p "Library 'sos' is not installed. Install? ")
+	(progn (ess-eval-linewise "install.packages('sos')\n")
+	       (ess-eval-linewise "library(sos)\n"))
+      (signal 'quit nil)))
+  (message nil)
+  (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd))
+  )
 
 (defun ess-library ()
   "Prompt and install R package. With argument, update cached packages list."

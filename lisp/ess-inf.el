@@ -2684,7 +2684,7 @@ list."
     (if (and proc
 	     (eq (point) (marker-position (process-mark proc))))
 	(call-interactively
-	 (cdr (assoc (ess-completing-read "Execute:" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
+	 (cdr (assoc (ess-completing-read "Execute" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
 		     ess-handy-commands)))
       (if ess-smart-operators
 	  (progn
