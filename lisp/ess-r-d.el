@@ -815,7 +815,7 @@ Completion is available for supplying options."
   (interactive)
   (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors();print(paste(out$Name,'[',out$URL,']',sep = ''))})\n"))
 	 (M2 (mapcar (lambda (el)
-n		       (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
+		       (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
 		       (propertize (match-string 1 el) 'URL (match-string 2 el)))
 		     M1))
 	 (opt  (ess-completing-read "Choose CRAN mirror" M2 nil t)))
