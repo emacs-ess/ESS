@@ -1,3 +1,5 @@
+library('methods')
+
 .essDev_differs <- function(f1, f2){
     if (is.function(f1) && is.function(f2)){
         !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
@@ -5,10 +7,8 @@
          !identical(f1, f2)
 }
 
-.essDev_sourceInNamespace <- function (source, package = "")
-                               ##       ourc               , functions = allPlainObjects(),
-                               ##                      methods = (if (missing(functions)) allMethodTables() else NULL),
-                               ## force = missing(functions) & missing(methods))
+
+.essDev_source <- function (source, expr, package = "")
 {
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
@@ -30,7 +30,7 @@
     if (is.null(envns))
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
                       package), domain = NA)
-    env <- .evalSource(source, package)
+    env <- .essDev_evalSource(source, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
@@ -67,13 +67,13 @@
                 if(is.function(thisPkg) && is.function(thisEnv)){
                     if(.essDev_differs(thisPkg, thisEnv)){
                         environment(thisEnv) <- environment(thisPkg)
-                        .essDev_assign(this, thisEnv, envns)
+                        .essDev_assign(this, thisEnv, envpkg)
                         funcPkg <- c(funcPkg, this)}
                 }else{
                     newPkg <- c(newPkg, this)}
             }else{
                 if(!identical(thisPkg, thisEnv)){
-                    .essDev_assign(this, thisEnv, envns)
+                    .essDev_assign(this, thisEnv, envpkg)
                     objectsPkg <- c(objectsPkg, this)}}
         }else{
             newPkg <- c(newPkg, this)}
@@ -102,11 +102,11 @@
         }
     }
     if(length(funcNs))
-        objectsNs <- c(objectsNs, sprintf("F[%s]", paste(funcNs, collapse = ", ")))
+        objectsNs <- c(objectsNs, sprintf("FUN[%s]", paste(funcNs, collapse = ", ")))
     if(length(funcPkg))
-        objectsPkg <- c(objectsPkg, sprintf("F[%s]", paste(funcPkg, collapse = ", ")))
+        objectsPkg <- c(objectsPkg, sprintf("FUN[%s]", paste(funcPkg, collapse = ", ")))
     if(length(newFunc))
-        newObjects <- c(newObjects, sprintf("F[%s]", paste(newFunc, collapse = ", ")))
+        newObjects <- c(newObjects, sprintf("FUN[%s]", paste(newFunc, collapse = ", ")))
 
     ## CLASSES
     classesPkg <- classesNs <- newClasses <- character()
@@ -142,11 +142,11 @@
         }
     }
     if(length(classesPkg))
-        objectsPkg <- gettextf("C[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesPkg, collapse = ", ")))
+        objectsPkg <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesPkg, collapse = ", ")))
     if(length(classesNs))
-        objectsNs <- gettextf("C[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesNs, collapse = ", ")))
+        objectsNs <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesNs, collapse = ", ")))
     if(length(newClasses))
-        newObjects <- gettextf("C[%s]", sub(methods:::.ClassMetaPattern(), "", paste(newClasses, collapse = ", ")))
+        newObjects <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(newClasses, collapse = ", ")))
 
 
     ## METHODS:
@@ -179,18 +179,18 @@
         }
     }
     if(length(methodsNs))
-        objectsNs <- c(objectsNs, gettextf("M[%s]", paste(methodsNs, collapse = ", ")))
+        objectsNs <- c(objectsNs, gettextf("METH[%s]", paste(methodsNs, collapse = ", ")))
     if(length(newMethods))
-        newObjects <- c(newObjects, gettextf("M[%s]", paste(newMethods, collapse = ", ")))
+        newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
     if(length(objectsPkg))
-        cat(sprintf(">%s(pkg):\t%s\n", package, paste(objectsPkg, collapse = ", ")))
+        cat(sprintf("%s@PKG:\t%s\n", package, paste(objectsPkg, collapse = ", ")))
     if(length(objectsNs))
-        cat(sprintf(">%s(ns):\t%s\n", package, paste(objectsNs, collapse = ", ")))
+        cat(sprintf("%s@NS:\t%s\n", package, paste(objectsNs, collapse = ", ")))
     if(length(newObjects))
-        cat(sprintf(">GlobalEnv:\t%s\n", paste(newObjects, collapse = ", ")))
+        cat(sprintf("*GlobalEnv*:\t%s\n", paste(newObjects, collapse = ", ")))
     if(length(c(objectsNs, objectsPkg, newObjects)) == 0L)
-        cat(sprintf("*** Nothing was explicitly assigned ***\n"))
+        cat(sprintf("*** Nothing explicitly assigned ***\n"))
     invisible(env)
 }
 
@@ -212,7 +212,7 @@
 }
 
 
-.evalSource <- function (source, package = "")
+.essDev_evalSource <- function (source, expr, package = "")
 {
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if(is.null(envns))
@@ -221,11 +221,11 @@
     env <- new.env(parent = envns)
     env[[".packageName"]] <- package
     methods:::setCacheOnAssign(env, TRUE)
-    if (is(source, "character"))
+    if (missing(source))
+        eval(expr, envir = env)
+    else  if (is(source, "character"))
         for (text in source) sys.source(text, envir = env)
-    else if (is(source, "connection"))
-        sys.source(source, envir = env)
-    else stop(gettextf("Invalid source argument: expected file names(s) or connection, got an object of class \"%s\"",
+    else stop(gettextf("Invalid source argument:  got an object of class \"%s\"",
                        class(source)[[1]]), domain = NA)
     env
 }
