@@ -1,13 +1,13 @@
 ;;; ess-developer.el --- Developer mode for R.
 
-;; Copyright (C) 2011 V. Spinu, A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 2011-2012 V. Spinu, A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Vitalie Spinu
+;; Author: Vitalie Spinu
 ;; Created: 12-11-2011
 ;; Maintainers: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: developement, interaction.
+;; Keywords: development, interaction.
 
 ;; This file is part of ESS.
 
@@ -26,6 +26,7 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
+;;;
 ;;  To understand how ess-developer works you must be familiar with namespace
 ;;  system in R.
 ;;
@@ -44,12 +45,11 @@
 ;;  .GlobalEnv can see the objects in 'package:foo'. See also
 ;;  http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces
 ;;
-
 ;;  In order to use ess-developer mode you should add names of the packages you
 ;;  are developing to `ess-developer-packages'. You can add packages
 ;;  interactively with "C-M-d a" and remove with "C-M-d r".
 ;;
-;;  The `ess-developer-prefix' is by default "C-M-d", you can customize it.
+;;  The `ess-developer-prefix' is by default "C-M-d".
 ;;  Bindings are in `ess-developer-map':
 ;;
 ;;  "t" to toggle developer mode
@@ -57,18 +57,11 @@
 ;;  "r" to remove a package from your  development list
 ;;  "s" or "C-c l" to 'source' current file into the namespace (asks for the package)
 ;;
-;; In develper mode several ess commands behave differently:
+;; In developer mode ESS commands behave differently:
 ;;
-;; -- `ess-eval-function' and frends check if the current function's name can be
-;;    found in a namespace:foo or package:foo for a 'foo' from
-;;    `ess-developer-packages'.  If found, and new function definition differs
-;;    from the old one, the function is assigned into that namespace. If not
-;;    found, it is assigned into .GlobalEnv.
-;;
-;; -- `ess-load-file' [C-c l] (`ess-dbg-source-current-file' [M-c s] if
-;;    ess-tracebug is active todo:not implemented yet) asks for the package to
-;;    source into and inserts all redefined objects into the package:foo or
-;;    namespace:foo accordingly:
+;; -- `ess-load-file' [C-c l] (`ess-tracebug-source-current-file' [M-c s] if
+;;    ess-tracebug is active) asks for the package to source into and inserts
+;;    all redefined objects into the package:foo or namespace:foo accordingly:
 ;;
 ;;    -- PLAIN OBJECTS and FUNCTIONS: If the object is found in an environment
 ;;    (packag:foo or namespace:foo), and differs from the old one it is assigned
@@ -100,8 +93,15 @@
 ;;    Note that if method or generic is exported the *same* table (which is an
 ;;    environment) is present in package:foo.
 ;;
-;; -- `ess-eval-region' acts as `ess-load-file' but only on the region
-;;     todo: not implemented yet
+;; -- `ess-eval-region' and functions that depend on it `ess-eval-paragraph',
+;;    `ess-eval-buffer' etc., behave as `ess-load-file', but restrict the
+;;    evaluation to the co responding region
+;;
+;; -- `ess-eval-function' and frends check if the current function's name can be
+;;    found in a namespace:foo or package:foo for a 'foo' from
+;;    `ess-developer-packages'.  If found, and new function definition differs
+;;    from the old one, the function is assigned into that namespace. If not
+;;    found, it is assigned into .GlobalEnv.
 
 
 (require 'ess-site) ;; need to assigne the keys in the map
@@ -202,20 +202,21 @@ With prefix argument removes the packages, defaults to *ALL*."
   (if (and remove (null ess-developer-packages))
       (message "Nothing to remove, 'ess-developer-packages' is empty")
     (let ((sel (if remove
-                   (ess-completing-read "Remove pakage(s): "
+                   (ess-completing-read "Remove pakage(s)"
                                         (append ess-developer-packages (list "*ALL*"))
                                         nil t nil nil "*ALL*")
-                 (ess-completing-read "Add package: "
+                 (ess-completing-read "Add package"
                                       (ess-get-words-from-vector ".packages(TRUE)\n") nil t)
                  )))
       (if remove
           (if (equal "*ALL*" sel)
               (progn
                 (setq ess-developer-packages nil)
-                (message "Removed *ALL* packages from ess-developer-packages."))
+                (message "Removed *ALL* packages from the `ess-developer-packages' list."))
             (setq ess-developer-packages (delete sel ess-developer-packages))
-            (message "Removed package '%s' from ess-developer-packages list" (propertize sel 'face 'font-lock-function-name-face)))
+            (message "Removed package '%s' from the  ess-`developer-packages' list" (propertize sel 'face 'font-lock-function-name-face)))
         (setq ess-developer-packages (ess-uniq-list (append  ess-developer-packages (list sel))))
+	(ess-eval-linewise (format "library('%s')" sel))
         (message "You are developing: %s" ess-developer-packages)
         ))))
 
@@ -224,51 +225,16 @@ With prefix argument removes the packages, defaults to *ALL*."
   (interactive)
   (ess-developer-add-package t))
 
+(defun ess-developer-send-region-fallback (proc beg end visibly &optional message tracebug func)
+  (if tracebug
+      (ess-tracebug-send-region proc beg end visibly message t)
+    (ess-send-region proc beg end visibly message)))
 
-(defun ess-developer-assign-function (beg end name &optional tracebug)
-  (save-excursion
-    (if (null ess-developer-packages)
-	(error "ess-developer-packages is empty! Add packages with 'ess-developer-add-package' first")
-      (if (null name)
-	  (error "Oops, could not find function name (probably a regexp bug)")
-	(let ((comm (if tracebug
-			(ess--tb-get-source-refd-string beg end)
-		      (ess-quote-special-chars (buffer-substring-no-properties beg end))))
-	      (nms (ess-get-words-from-vector "loadedNamespaces()\n"))
-	      (dev-packs ess-developer-packages)
-	      assigned-p ns)
-	  (if tracebug (ess-tb-set-last-input))
-
-	  (while (and (setq ns (pop dev-packs))
-		      (not assigned-p))
-	    (when (and (member ns nms)
-		       (equal "TRUE" (car (ess-get-words-from-vector
-					   (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
-	      (ess-developer-source-string comm ns
-					   (format "devSourcing function '%s' ... " name))
-	      (setq assigned-p t)))
-        assigned-p)
-      ))))
-
-
-(defun ess-developer-source-string (quoted-string package &optional mess)
-  "devSource quoted STRING into the PACKAGE.
-String must be quoted with `ess-quote-special-chars'."
-  ;; assumes a started process
-  (unless (process-get (get-process ess-local-process-name) 'developer)
-    (error "Ess-developer mode is not active"))
-  (let ((comm  (format
-		"require('methods'); .essDev_source(source=textConnection(\"%s\"),package='%s')"
-		quoted-string package)))
-      (message (or mess
-		   (format "devSourcing string '%s ...'" (substring quoted-string 0 (min 20 (length string))))))
-      (ess--developer-command comm 'ess--developer-propertize-output)
-      ))
 
 (defun ess-developer-source-current-file (&optional filename)
   "Ask for namespace to source the current file into.
 If *current* is selected just invoke source('file_name'),
-otherwise call insertSource."
+otherwise call devSource."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
   (unless (process-get (get-process ess-local-process-name) 'developer)
@@ -278,18 +244,67 @@ otherwise call insertSource."
       (error "Buffer '%s' doesn't visit a file" (buffer-name (current-buffer)))
     (let* ((filename (or filename buffer-file-name))
 	   (file (file-name-nondirectory filename))
-	   (env (ess-completing-read (format "devSource '%s' into: " file)
-				    (append ess-developer-packages (list "*current*" ))
-				    nil t))
+	   (env (ess-completing-read (format "devSource '%s' into" file)
+				     (append ess-developer-packages (list "*current*" )) nil t))
 	   (comm  (if (equal env "*current*")
-		      (format "source(file=\"%s\", local=F)\n cat(\"Sourced file '%s' into\", capture.output(environment()), '\n')"
-			      filename file)
-		    (format "require('methods');.essDev_source(source='%s',package='%s')"
-			    filename env))))
+		      (format "source(file=\"%s\", local=F)\n cat(\"Sourced file '%s' into\", capture.output(environment()), '\n')" filename file)
+		    (format "require('methods');.essDev_source(source='%s',package='%s')" filename env))))
       (when (buffer-modified-p) (save-buffer))
       (message "devSourcing '%s' ..." file)
       (ess--developer-command comm 'ess--developer-propertize-output)
       )))
+
+(defun ess-developer-send-function (proc beg end name &optional visibly message tracebug)
+  (save-excursion
+    (if (null ess-developer-packages)
+	(error "Add packages to `ess-developer-packages' first! ")
+      (if (null name)
+	  (error "Oops, could not find function name (probably a regexp bug)")
+	(let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
+	      (dev-packs ess-developer-packages)
+	      assigned-p ns)
+	  (if tracebug (ess-tb-set-last-input proc))
+	  (while (and (setq ns (pop dev-packs))
+		      (not assigned-p))
+	    (when (and (member ns nms)
+		       (equal "TRUE" (car (ess-get-words-from-vector
+				    (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
+	      (let ((comm (if tracebug
+			      (ess--tb-get-source-refd-string beg end)
+			    (buffer-substring beg end))))
+		(ess-developer-devSource-string proc comm ns)
+		(setq assigned-p t)
+		)))
+	  (unless assigned-p
+	    (ess-developer-send-region-fallback proc beg end visibly message tracebug))
+      )))))
+
+(defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
+  "Ask for for the package and devSource region into it."
+  (let ((package
+	 (ess-completing-read "devEval into"
+			      (append ess-developer-packages (list "*current*" )) nil t))
+	(message  (if message (format "dev%s ..." message))))
+    (if (equal package "*current*")
+	(ess-developer-send-region-fallback proc beg end visibly message tracebug))
+      ;; else, (ignore VISIBLY here)
+      (let ((comm  (if tracebug
+		      (ess--tb-get-source-refd-string beg end)
+		     (buffer-substring-no-properties beg end))))
+	(ess-developer-devSource-string proc comm package message))))
+
+(defun ess-developer-devSource-string (proc command package &optional mess)
+  "devSource COMMAND into the PACKAGE.
+String must be quoted with `ess-quote-special-chars'."
+  ;; assumes a started process
+  (unless (process-get proc 'developer)
+    (error "Ess-developer mode is not active"))
+  (let ((comm  (format ".essDev_source(expr={%s}, package='%s')"
+		       command package)))
+    (if mess (message mess))
+    (ess--developer-command comm  'ess--developer-propertize-output)
+    ))
+
 
 (defun ess--developer-command (comm &optional propertize-func)
   "Evaluate the command and popup a message with the output if succed.
@@ -298,11 +313,10 @@ On error  insert the error at the end of the inferior-ess buffer.
 PROPERTIZE-FUNC is a function called with the output buffer being current.
 usually used to manipulate the output, for example insert some text properties.
 "
-  (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\ncat('\\n!@@!')\n" comm))
+  (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
   (let ((buff (get-buffer-create "*ess-command-output*"))
 	out)
-    ;; (message comm)
-    (ess-command comm buff nil nil 0.1 "^!@@!.*\\'")
+    (ess-command comm buff nil nil 0.1)
     (with-current-buffer buff
       (goto-char (point-min))
       (delete-region (point) (min (point-max) ;; delete + + +
@@ -321,16 +335,17 @@ usually used to manipulate the output, for example insert some text properties.
 	  (let ((proc (get-process ess-local-process-name)))
 	    (goto-char (process-mark proc))
 	    (insert (format "%s\n> " out))
-	    (set-marker (process-mark proc) (point)))
-	  ))
+	    (set-marker (process-mark proc) (point))))
+	(error "Error occurred; dumped into process buffer")
+	)
       )))
 
 (defun ess--developer-propertize-output ()
   (goto-char (point-min))
-  (while (re-search-forward "\\([FCMG]\\)\\[" nil t)
+  (while (re-search-forward "\\(FUN\\|CLS\\METH\\)\\[" nil t)
     (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-function-name-face))
   (goto-char (point-min))
-  (while (re-search-forward "^>\\(.+\\):" nil t)
+  (while (re-search-forward "^\\(\\w.+\\):" nil t)
     (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)
     ))
 
@@ -339,7 +354,8 @@ usually used to manipulate the output, for example insert some text properties.
 If optional VAL is non-negative, turn on the developer mode. If
 VAL is negative turn it off.
 
-See the preamble of the source file for more info. It will get here eventually. todo:
+See the preamble of the source file for more info. It will get
+here eventually. todo:
 "
   (interactive)
   (when (eq val t) (setq val 1))
@@ -349,8 +365,8 @@ See the preamble of the source file for more info. It will get here eventually. 
 	 (ess-dev  (if (numberp val)
 		       (if (< val 0) nil t)
 		     (not developer-p)))
-	 (devR-file (concat (file-name-directory ess-lisp-directory)
-			    "etc/ess-developer.R")))
+	 (devR-file (concat (file-name-directory ess-etc-directory)
+			    "ess-developer.R")))
     (if ess-dev
 	(progn
 	  (unless (or (file-exists-p devR-file)

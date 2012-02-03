@@ -61,8 +61,8 @@
 (autoload 'ess-load-file-ddeclient	    "ess-dde"	"(autoload).")
 (autoload 'ess-command-ddeclient	    "ess-dde"	"(autoload).")
 
-(autoload 'ess-tracebug-assign-function	    "ess-tracebug"	"(autoload).")
-(autoload 'ess-developer-assign-function    "ess-developer"	"(autoload).")
+(autoload 'ess-tracebug-send-function	    "ess-tracebug"	"(autoload).")
+(autoload 'ess-developer-send-function    "ess-developer"	"(autoload).")
 
  ;;*;; Process handling
 
@@ -600,16 +600,16 @@ Returns the name of the process, or nil if the current buffer has none."
     (set-buffer (process-buffer (get-ess-process name)))
     (set var val)))
 
-(defun ess-process-get (pname propname)
-  "Return the variable PROPNAME (symbol) from the plist of ESS process
-called PNAME (string)."
-  (process-get (get-process pname) propname))
+(defun ess-process-get (propname)
+  "Return the variable PROPNAME (symbol) from the plist of the
+current ESS process."
+  (process-get (get-process ess-current-process-name) propname))
 
 
-(defun ess-process-put (pname propname value)
+(defun ess-process-put (propname value)
   "Set the variable PROPNAME (symbol) to VALUE in the plist of
-ESS process called PNAME (string)."
-  (process-put (get-process pname) propname value))
+the current ESS process."
+  (process-put (get-process ess-current-process-name) propname value))
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
@@ -913,20 +913,41 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
 (defun ordinary-insertion-filter (proc string)
   (inferior-ess-set-status proc string)
   (with-current-buffer (process-buffer proc)
-    ;; (message "%s:%s" (current-buffer) string)
+    ;; (princ (format "%s:" string))
     (insert string)))
 
-(defun ess-process-send-string (process string)
+(defun ess-send-region (process start end &optional visibly message)
+  "Low level ESS version of `process-send-region'.
+If VISIBLY call `ess-eval-linewise', else call `ess-send-string'.
+If MESSAGE is supplied, display it at the end."
+  (if (ess-ddeclient-p)
+      (ess-eval-region-ddeclient start end 'even-empty)
+    ;; else: "normal", non-DDE behavior:
+    (if visibly
+	(ess-eval-linewise (buffer-substring start end))
+      (ess-send-string process (buffer-substring start end))))
+  (if message (message message)))
+
+(defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
-Removes empty lines during the debugging."
-  (when (process-get process 'dbg-active)
-    (setq string (replace-regexp-in-string
-                  "\n\\s *$" "" string))) ; remove empty lines (interfere with evals) in debug state
+Removes empty lines during the debugging.
+STRING  need not end with \\n."
+  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
+      (setq string (replace-regexp-in-string
+		    "\n\\s *$" "" string))) ; remove empty lines (which interfere with evals) in debug state
   ;; (setq string
   ;;       (replace-regexp-in-string  "^[^#]+\\()\\)[^)]*\\'" "\n)" string nil nil 1)) ;;needed for busy prompt
   (inferior-ess-mark-as-busy process)
-  (process-send-string process (concat string "\n"))
-  )
+  (if visibly
+      (ess-eval-linewise string)
+    (process-send-string process (concat string "\n")))
+  (if message (message message)))
+
+(defvar ess--dbg-del-empty-p t
+  "Internal variable to control removal of empty lines during the
+debugging.  Let-bind it to nil before calling
+`ess-send-string' or `ess-send-region' if no
+removal is necessary.")
 
 (defun ess-command (com &optional buf sleep no-prompt-check wait prompt)
   "Send the ESS process command COM and delete the output from
@@ -1173,22 +1194,18 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   ;;(untabify start end); do we really need to save-excursion?
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
+  (setq message (or message "Eval region"))
 
-  (if (ess-ddeclient-p)
-      (ess-eval-region-ddeclient start end 'even-empty)
-    ;; else: "normal", non-DDE behavior:
-    (let ((visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p)))
-      (if visibly
-	  (ess-eval-linewise (buffer-substring start end))
-	(if ess-synchronize-evals
-	    (ess-eval-linewise (buffer-substring start end)
-			       (or message "Eval region"))
-	  ;; else [almost always!]
-	  (let ((sprocess (get-ess-process ess-current-process-name)))
-	    (process-send-region sprocess start end)
-	    (process-send-string sprocess "\n"))))))
+  (let* ((proc (get-process ess-local-process-name))
+	 (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
+	 (dev-p (process-get proc 'developer))
+	 (tb-p  (process-get proc 'tracebug)))
+    (cond
+     (dev-p	(ess-developer-send-region proc start end visibly message tb-p))
+     (tb-p	(ess-tracebug-send-region proc start end visibly message))
+     (t		(ess-send-region proc start end visibly message))
+     ))
 
-  (message (or message "Finished evaluation"))
   (if (and (fboundp 'deactivate-mark) ess-eval-deactivate-mark)
       (deactivate-mark))
   ;; return value
@@ -1218,25 +1235,24 @@ non-nil and the function was successfully evaluated, return '(beg
 end) representing the beginning and end of the function under
 cursor, nil otherwise."
   (interactive "P")
+  (ess-force-buffer-current "Process to use: ")
   (save-excursion
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
-	  (let ((beg (nth 0 beg-end))
-		(end (nth 1 beg-end))
-		(tb-p  (ess-process-get ess-local-process-name 'tracebug))
-		(dev-p (ess-process-get ess-local-process-name 'developer))
-		name assigned-p comm)
-	    (goto-char beg)
-	    (forward-word) ;;func names starting with . are not recognized??
-	    (setq name (ess-read-object-name-default))
-	    (setq assigned-p
-		  (cond
-		   (dev-p (ess-developer-assign-function beg end name tb-p))
-		   (tb-p (ess-tracebug-assign-function beg end name))))
-	    (unless assigned-p
-	      (princ (concat "Loading: " name) t)
-	      (ess-eval-region beg end vis
-			       (concat "Sourced function " (or name "???"))))
+	  (let* ((beg (nth 0 beg-end))
+		 (end (nth 1 beg-end))
+		 (proc (get-process ess-local-process-name))
+		 (tb-p  (process-get proc 'tracebug))
+		 (dev-p (process-get proc 'developer))
+		 (name (progn (goto-char beg)
+			      (forward-word) ;;func names starting with . are not recognized??
+			      (ess-read-object-name-default)))
+		 (mess (format "Eval function %s" (or name "???")))
+		 (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
+	    (cond
+	     (dev-p	(ess-developer-send-function proc beg end name visibly mess tb-p))
+	     (tb-p	(ess-tracebug-send-region proc beg end visibly mess t))
+	     (t		(ess-send-region proc beg end visibly mess)))
 	    beg-end)
 	nil))))
 
@@ -1403,64 +1419,67 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		      (buffer-file-name))
 		 (expand-file-name
 		  (read-file-name "Load S file: " nil nil t)))))
-  (if (process-get (get-process ess-local-process-name) 'developer)
+  (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
-    (ess-make-buffer-current)
-    (if ess-microsoft-p
-	(setq filename (ess-replace-in-string filename "[\\]" "/")))
-    (let ((source-buffer (get-file-buffer filename)))
-      (if (ess-check-source filename)
-	  (error "Buffer %s has not been saved" (buffer-name source-buffer)))
-      ;; else
-      (if (ess-ddeclient-p)
-	  (ess-load-file-ddeclient filename)
+    (if (ess-process-get 'tracebug)
+	(ess-tracebug-source-current-file filename)
 
-	;; else: "normal", non-DDE behavior:
+      (ess-make-buffer-current)
+      (if ess-microsoft-p
+	  (setq filename (ess-replace-in-string filename "[\\]" "/")))
+      (let ((source-buffer (get-file-buffer filename)))
+	(if (ess-check-source filename)
+	    (error "Buffer %s has not been saved" (buffer-name source-buffer)))
+	;; else
+	(if (ess-ddeclient-p)
+	    (ess-load-file-ddeclient filename)
 
-	;; Find the process to load into
-	(if source-buffer
+	  ;; else: "normal", non-DDE behavior:
+
+	  ;; Find the process to load into
+	  (if source-buffer
+	      (save-excursion
+		(set-buffer source-buffer)
+		(ess-force-buffer-current "Process to load into: ")
+		(ess-check-modifications)))
+	  (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+		(filename (if (and (fboundp 'tramp-tramp-file-p)
+				   (tramp-tramp-file-p filename))
+			      (tramp-file-name-localname (tramp-dissect-file-name filename))
+			    filename))
+		error-occurred nomessage)
+	    (ess-command (format inferior-ess-load-command filename) errbuffer) ;sleep ?
 	    (save-excursion
-	      (set-buffer source-buffer)
-	      (ess-force-buffer-current "Process to load into: ")
-	      (ess-check-modifications)))
-	(let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-	      (filename (if (and (fboundp 'tramp-tramp-file-p)
-				 (tramp-tramp-file-p filename))
-			    (tramp-file-name-localname (tramp-dissect-file-name filename))
-			  filename))
-	      error-occurred nomessage)
-	  (ess-command (format inferior-ess-load-command filename) errbuffer) ;sleep ?
-	  (save-excursion
-	    (set-buffer errbuffer)
-	    (goto-char (point-max))
-	    (setq error-occurred (re-search-backward ess-dump-error-re nil t))
-	    (setq nomessage (= (buffer-size) 0)))
-	  (if error-occurred
-	      (message "Errors: Use %s to find error."
-		       (substitute-command-keys
-			"\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
-	    ;; Load did not cause an error
-	    (if nomessage (message "Load successful.")
-	      ;; There was a warning message from S
-	      (ess-display-temp-buffer errbuffer))
-	    ;; Consider deleting the file
-	    (let ((skdf (if source-buffer
-			    (save-excursion
-			      (set-buffer source-buffer)
-			      ess-keep-dump-files)
-			  ess-keep-dump-files))) ;; global value
-	      (cond
-	       ((null skdf)
-		(delete-file filename))
-	       ((memq skdf '(check ask))
-		(let ((doit (y-or-n-p (format "Delete %s " filename))))
-		  (if doit (delete-file filename))
-		  (and source-buffer
-		       (local-variable-p 'ess-keep-dump-files source-buffer)
-		       (save-excursion
-			 (set-buffer source-buffer)
-			 (setq ess-keep-dump-files doit)))))))
-	    (ess-switch-to-ESS t)))))))
+	      (set-buffer errbuffer)
+	      (goto-char (point-max))
+	      (setq error-occurred (re-search-backward ess-dump-error-re nil t))
+	      (setq nomessage (= (buffer-size) 0)))
+	    (if error-occurred
+		(message "Errors: Use %s to find error."
+			 (substitute-command-keys
+			  "\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
+	      ;; Load did not cause an error
+	      (if nomessage (message "Load successful.")
+		;; There was a warning message from S
+		(ess-display-temp-buffer errbuffer))
+	      ;; Consider deleting the file
+	      (let ((skdf (if source-buffer
+			      (save-excursion
+				(set-buffer source-buffer)
+				ess-keep-dump-files)
+			    ess-keep-dump-files))) ;; global value
+		(cond
+		 ((null skdf)
+		  (delete-file filename))
+		 ((memq skdf '(check ask))
+		  (let ((doit (y-or-n-p (format "Delete %s " filename))))
+		    (if doit (delete-file filename))
+		    (and source-buffer
+			 (local-variable-p 'ess-keep-dump-files source-buffer)
+			 (save-excursion
+			   (set-buffer source-buffer)
+			   (setq ess-keep-dump-files doit)))))))
+	      (ess-switch-to-ESS t))))))))
 
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

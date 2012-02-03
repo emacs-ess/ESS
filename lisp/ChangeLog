@@ -1,3 +1,31 @@
+2012-02-03  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-tracebug.el (ess-tracebug-inject-source-p): better control
+	source injection.
+	(ess-eval-region2): removed eva-region, eva-linewise,
+	eval-function fixes from tracebug (everything incorporated into
+	the core).
+
+	* ess-inf.el (ess-eval-function): complete rewrite to accommodate
+	developer and tracebug and potentially other addons in the future.
+	(ess-load-file) calls ess-tracebug-source-current-file if tb is
+	active.
+
+	* ess-developer.el: Many unifying changes, bug fixes. Follows
+	ess-eval-visibly-p whenever possible. Implemented region and
+	function devEvals.
+
+	* ess-inf.el (ess-eval-region): moved ddeclient to lower level
+	`ess-send-region'
+	(ess-send-string, ess-send-region): consolidated these low-level
+	work-horse functions.
+
+2012-02-02  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-eval-region): removed the archaic
+	ess-synchronize-evals, a workaround for emacs 18.57.
+	(ess-eval-region): is now aware of ess-tracebug and ess-developer.
+
 2012-02-01  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-sos, ess-setRepositories, ess-setCRANMiror): added two more handy
