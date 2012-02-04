@@ -53,7 +53,7 @@
 ;;
 ;;; Code:
 
-(require 'ess-site)
+(require 'ess)
 (eval-when-compile
   (require 'face-remap nil t) ;; desirable for scaling of the text in watch buffer
   (require 'overlay)
@@ -262,7 +262,7 @@ Default ess-tracebug key bindings:
  u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
 
-* Navigation to errors (emacs functionality):
+* Navigation to errors (emacs general functionality):
 
  C-x `, M-g n   . `next-error'
  M-g p          . `previous-error'
@@ -282,9 +282,9 @@ Default ess-tracebug key bindings:
  I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
 
 * Misc:
- s   . Source current file . `ess-tracebug-source-current-file'
- ?   . Show this help . `ess-tracebug-show-help'
- C-c . `capitalize-word'
+ s   . Source current file	. `ess-tracebug-source-current-file'
+ ?   . Show this help		. `ess-tracebug-show-help'
+ C-c				. `capitalize-word'
 ")
 
 (defun ess-tracebug-show-help (&optional ev)
@@ -1348,7 +1348,7 @@ If FILENAME is not found at all, ask the user where to find it if
         (spec-dir default-directory)
 	(is-org)
 	;; add current dir of ess here :TODO:
-        buffer thisdir fmts name buffername)
+        buffsym buffer  thisdir fmts name buffername )
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
     ;; 0. get the buffsym reference if discovered
     (message filename)
@@ -2029,7 +2029,7 @@ assign('.ess_watch_eval', function(){
 # e       edit the expression
 # r       rename
 # n/p     navigate
-# u/U     move the expression up/down
+# u/d,U   move the expression up/down
 # q       kill the buffer
 ')
     }else{
@@ -2088,11 +2088,8 @@ environment(.ess_log_eval) <- .GlobalEnv
       )))
 
 (defun ess-watch-mode ()
-  "Major mode for output from `ess-rdired'.
-`ess-rdired' provides a dired-like mode for R objects.  It shows the
-list of current objects in the current environment, one-per-line.  You
-can then examine these objects, plot them, and so on.
-\\{ess-rdired-mode-map}"
+  "Major mode in ess-watch window.
+\\{ess-watch-mode-map}"
   (let ((cur-block (max 1 (ess-watch-block-at-point)))
         (dummy-string
          (ess-tracebug--propertize "|" 'current-watch-bar 'font-lock-keyword-face))
@@ -2156,6 +2153,7 @@ for more information.
   (define-key ess-watch-mode-map "q" 'ess-watch-quit)
   (define-key ess-watch-mode-map "u" 'ess-watch-move-up)
   (define-key ess-watch-mode-map "U" 'ess-watch-move-down)
+  (define-key ess-watch-mode-map "d" 'ess-watch-move-down)
   (define-key ess-watch-mode-map "n" 'ess-watch-next-block)
   (define-key ess-watch-mode-map "p" 'ess-watch-previous-block)
   ;; R mode keybindings.
@@ -2166,6 +2164,7 @@ for more information.
   ;; Debug keys:
   (define-key ess-watch-mode-map ess-tracebug-command-prefix ess-tracebug-map)
   )
+
 
 (defface ess-watch-current-block-face
   '(
@@ -2216,6 +2215,16 @@ Has exactly the same meaning and initial value as `split-width-threshold'."
 Each step scales the height of the default face in the watch
 window by the variable `text-scale-mode-step' (a negative number
 of steps decreases the height by the same amount)")
+
+(defvar ess-watch-help nil
+  "Keymap for the *R watch* buffer.
+
+\\{ess-watch-mode-map}
+")
+
+(defun ess-watch-help ()
+  (interactive)
+  (describe-variable 'ess-watch-help))
 
 (defun ess-watch-block-limits-at-point ()
   "Return start and end positions of the watch block."

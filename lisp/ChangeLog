@@ -1,4 +1,12 @@
+2012-02-04  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-tracebug.el (ess-watch-mode): corrected watch-mode
+	documentation and added the ? and d keys.
+
 2012-02-03  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (inferior-ess--get-old-input:regexp): silent
+	byte-compile on free var.
 
 	* ess-tracebug.el (ess-tracebug-inject-source-p): better control
 	source injection.
