@@ -3,7 +3,7 @@
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "-help" -o "$1" = "--help" ]
 then
     echo "usage: gpl-check [-h|-help|--help|-2|-3|-u|-n] file1 [file2 ...]"
-    echo "   -h|-help|--help       print this help for recursive grep"
+    echo "   -h|-help|--help       print this help"
     echo "   -2                    print file names found with GPLv2+"
     echo "   -3                    print file names found with GPLv3+"
     echo "   -u                    print file names found with a GPL of unknown version"
