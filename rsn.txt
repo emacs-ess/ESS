@@ -93,6 +93,7 @@ apply functions and probably others) to cover the whole expression (or
 even 'paragraph') rather than just the panel function.
 
 
+
 Gray Calhoun:
 
 I'd like to be able to direct graphical output to a buffer, have
