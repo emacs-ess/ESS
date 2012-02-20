@@ -219,11 +219,12 @@ buffer readjustments for multiline string)."
     ;; ^^^^^^^^^^^^^^^ has own error handler
     (let ((ess-nuke-trailing-whitespace-p t)
 	  (args))
-      (ess-command (concat "try(args(" function "), silent=TRUE)\n")
+      (ess-command (format "try({fun<-\"%s\"; fundef<-paste(fun, '.default',sep='')
+if(exists(fundef, mode = \"function\")) args(fundef) else args(fun)}, silent=F)\n" function)
 		   (get-buffer-create "*ess-r-args-tmp*"))
       (with-current-buffer "*ess-r-args-tmp*"
 	(goto-char (point-min))
-	(if (null (search-forward "function" 10 t))
+	(if (null (search-forward "function" 20 t))
 	    (message ess-r-args-noargsmsg)
 	  (goto-char (point-min))
 	  (search-forward "(" nil t)
