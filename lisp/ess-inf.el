@@ -385,13 +385,14 @@ there is no process NAME)."
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
 
 (defun inferior-ess-set-status (proc string)
-  "internal function to set the satus of the PROC
+  "Internal function to set the satus of the PROC
 Return the 'busy state."
-  ;; todo: do it in one search blow and use starting position
+  ;; todo: do it in one search, use starting position, use prog1
   (let ((busy (not (string-match (concat inferior-ess-primary-prompt "\\'") string))))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
 		 (string-match (concat inferior-ess-secondary-prompt "\\'") string))
+    (process-put proc 'last-eval (float-time))
     busy
     ))
 
@@ -498,6 +499,20 @@ This was rewritten by KH in April 1996."
 
 
 ;;*;; General process handling code
+
+(defmacro with-current-process-buffer (no-error &rest body)
+  "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
+If NO-ERROR is t don't trigger the error when there is not current process.
+
+Symbol *proc* is bound to current process during the evaluation of BODY.
+"
+  (declare (indent 1))
+  `(let ((*proc* (and ess-current-process-name (get-process ess-current-process-name))))
+     (if *proc*
+	 (with-current-buffer (process-buffer *proc*)
+	   ,@body)
+       (unless no-error
+	 (error "No current ESS process")))))
 
 (defun get-ess-process (name &optional try-another)
   "Return the ESS process named by NAME.  If TRY-ANOTHER is non-nil,
@@ -728,6 +743,8 @@ made current."
   (ess-make-buffer-current)
   (if (and ess-current-process-name (get-process ess-current-process-name))
       (progn
+	(unless ess-local-process-name
+	  (setq ess-local-process-name ess-current-process-name))
 	;; Display the buffer, but don't select it yet.
 	(ess-show-buffer
 	 (buffer-name (process-buffer (get-process ess-current-process-name)))
@@ -949,7 +966,8 @@ debugging.  Let-bind it to nil before calling
 `ess-send-string' or `ess-send-region' if no
 removal is necessary.")
 
-(defun ess-command (com &optional buf sleep no-prompt-check wait prompt)
+
+(defun ess-command (com &optional buf sleep no-prompt-check wait)
   "Send the ESS process command COM and delete the output from
 the ESS process buffer.  If an optional second argument BUF
 exists save the output in that buffer. BUF is erased before use.
@@ -957,9 +975,7 @@ COM should have a terminating newline.  Guarantees that the value
 of .Last.value will be preserved.  When optional third arg SLEEP
 is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
 places where `a' is proportional to `ess-cmd-delay'.  WAIT is
-passed to `ess-wait-for-process' with the default of 0.02sec.
-PROMPT, is a custom prompt to wait for, otherwise
-`inferior-ess-primary-prompt' is used."
+passed to `ess-wait-for-process' with the default of 0.02sec."
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
 
@@ -975,22 +991,16 @@ PROMPT, is a custom prompt to wait for, otherwise
     ;; else: "normal", non-DDE behavior:
 
     (let* ((sprocess (get-ess-process ess-current-process-name))
- 	   sbuffer primary-prompt
-	   do-sleep end-of-output
-	   oldpb oldpf oldpm
-	   )
-      (if (null sprocess)
-	  ;; should hardly happen, since (get-ess-process *)  already checked:
-	  (error "Process %s is not running!" ess-current-process-name))
+ 	   sbuffer primary-prompt end-of-output oldpb oldpf oldpm
+ 	   )
+      
+      (unless  sprocess
+	;; should hardly happen, since (get-ess-process *)  already checked:
+	(error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (save-excursion
 	(set-buffer sbuffer)
-	(setq primary-prompt (or prompt inferior-ess-primary-prompt))
-	(setq do-sleep		    ; only now when in sprocess buffer
-	      (progn
-		(if sleep (if (numberp sleep) nil (setq sleep 1))) ; t means 1
-		(and ess-cmd-delay sleep)))
-	(if do-sleep (setq sleep (* sleep ess-cmd-delay)))
+	(setq primary-prompt  inferior-ess-primary-prompt)
 	(ess-if-verbose-write (format "(ess-command %s ..)" com))
 	(unless no-prompt-check
 	  (when (process-get sprocess 'busy) ;;(looking-at inferior-ess-primary-prompt)
@@ -1014,12 +1024,9 @@ PROMPT, is a custom prompt to wait for, otherwise
 		(process-send-string sprocess com)
 		;; need time for ess-create-object-name-db on PC
 		(if no-prompt-check
-		    (sleep-for 0.020); 0.1 is noticable!
+		    (sleep-for 0.020); 0.1 is noticeable!
 		  ;; else: default
 		  (ess-wait-for-process sprocess nil (or wait .02)))
-		  ;; (ess-prompt-wait sprocess prompt-reg
-		  ;; 		   (and do-sleep (* 0.4 sleep))));MS: 4
-		  ;; delete the prompt
 		(goto-char (point-max))
 		(delete-region (point-at-bol) (point-max))
 		)
@@ -1029,7 +1036,8 @@ PROMPT, is a custom prompt to wait for, otherwise
 	  ;; Restore old values for process filter
 	  (set-process-buffer sprocess oldpb)
 	  (set-process-filter sprocess oldpf)
-	  (set-marker (process-mark sprocess) oldpm))))))
+	  (set-marker (process-mark sprocess) oldpm))))
+    ))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
   "Replace all matches in STR for REGEXP with NEWTEXT string.
@@ -2350,13 +2358,14 @@ using `ess-object-list' if that is non-nil."
 	    (setq i (1+ i)))
 	  (setq ess-object-list (ess-uniq-list result))))))
 
-(defun ess-get-words-from-vector (command &optional no-prompt-check)
+(defun ess-get-words-from-vector (command &optional no-prompt-check wait)
   "Evaluate the S command COMMAND, which returns a character vector.
-Return the elements of the result of COMMAND as an alist of strings.
-COMMAND should have a terminating newline.
+Return the elements of the result of COMMAND as an alist of
+strings.  COMMAND should have a terminating newline. WAIT is
+passed to `ess-command'.
 
-To avoid max.print to truncate your vector, wrap your
-command (%s) in local call:
+To avoid max.print to truncate long vectors, wrap your
+command (%s) like this:
 
 local({oo<-options(max.print=100000);
 out<-try({%s});print(out);options(oo)\n}))
@@ -2367,10 +2376,7 @@ out<-try({%s});print(out);options(oo)\n}))
     (save-excursion
       (set-buffer tbuffer)
       (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
-      ;; VS: wrap automatically?
-      ;; (ess-command (format "local({oo<-options(max.print=100000);\nout<-try({%s});print(out);options(oo)\n})\n" command)
-      ;;              tbuffer 'sleep no-prompt-check)
-      (ess-command command tbuffer 'sleep no-prompt-check)
+      (ess-command command tbuffer 'sleep no-prompt-check wait)
       (ess-if-verbose-write " [ok] ..")
       (goto-char (point-min))
       (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
