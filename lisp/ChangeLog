@@ -1,3 +1,34 @@
+2012-02-20  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (inferior-ess-set-status): set 'last-eval property
+	giving the time of the last interaction with the process.
+
+	* ess-r-d.el (ess--funargs-cache, ess-function-arguments): New
+	uniform caching support for argument completion. Arg are reliably
+	cached on first completion invocation. All completion mechanisms
+	should use ess-function-arguments.
+	(ess-funname.point): Retrieve the name of a function call and
+	starting point of a call. All interfaces should use it for
+	argument completion.
+
+	* ess-r-args.el (ess-r-args-get): completes arguments for S3
+	generic if found.
+
+	* ess-r-d.el (ac-source-R, ac-source-R-objects)
+	(ac-source-R-args): Completely rewrote the ac support. ESS now
+	provides the above 3 sources to accomplish any completion taste.
+
+2012-02-19  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-switch-to-ESS): Associates the buffer with
+	current process. Make sense when the buffer is not yet associated
+	with any process.
+	(with-current-process-buffer): new macro to execute the &body
+	inside current ess process buffer.
+	(ess-command): removed PROMPT argument.
+	(ess-command): removed sleeping, not relevant anymore argument
+	still stays, apparently needed for dde.
+
 2012-02-04  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-tracebug.el (ess-watch-mode): corrected watch-mode

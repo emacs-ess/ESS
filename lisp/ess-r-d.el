@@ -38,6 +38,8 @@
 (require 'ess-developer)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
+
+
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 
@@ -491,9 +493,66 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 
 
 
+(defvar ess--funargs-cache (make-hash-table :test 'equal)
+  "Chache for R functions' arguments")
+
+(defun ess-function-arguments (funname &optional force-cache)
+  "Get FUNARGS from cache or ask R for it.
+
+FUNARGS is a list with first element the name of the package the
+function comes from, second element is a string giving arguments
+of a function as they appear in documentation, all the rest are
+arguments as returned by utils:::functionArgs utility (formerly
+rcompletion package).
+
+Arguments of functions from R_GlobalEnv are always updated.
+
+As a side effect store funargs in 'ess--funargs-cache. If FUNNAME
+is a special name containing :,&,$ or @ don't cache unless
+FORCE-CACHE is non-nil.
+"
+  (or (let ((args (gethash funname ess--funargs-cache)))
+	(and (not (equal (car args)  "R_GlobalEnv" ))
+					; note,todo: in later versions funcs
+					; from .globenv will be always kept in
+					; sync and this will be removed
+	     args))
+      ;; todo: unify these 3 calls into one:
+      (let ((args (ess-r-args-get funname t))
+	    (all-args (ess-get-words-from-vector
+		       (format "utils:::functionArgs(\"%s\", '')\n" funname)))
+	    (envir   (ess-get-words-from-vector
+		      (format "try(environmentName(environment(get('%s',mode='function'))), silent=F)\n"
+			      funname))))
+	(and args all-args  ;; if nil don't store
+	     (or force-cache (not (string-match-p "[:$@]" funname)))
+	     (puthash funname `(,@envir ,args ,@all-args) ess--funargs-cache))
+	)))
+
+(defvar ess--funname.point nil)
+(defun ess-funname.point ()
+  "If inside a function call, return (cons FUNNAMME BEG) where
+FUNNAME is a function name found before ( and beg is where
+FUNNAME starts.
+
+Also store the cons in 'ess--funname.point for later use."
+    (setq ess--funname.point
+	  (condition-case nil ;; check if it is inside a functon call
+	      (save-excursion
+		(up-list -1)
+		(when (looking-back "\\w")
+		  (let* ((delim "[ \t\n\\+-*/)]")
+			 (curpoint (point))
+			 (funname
+			  (progn (re-search-backward delim nil t)
+				 (when (re-search-forward (concat delim "+\\(.*\\)") curpoint)
+				   (match-string-no-properties 1))))
+			 (beg (match-beginning 1)))
+		    (cons funname beg))))
+		(error nil))))
 
 (defun ess-R-get-rcompletions (&optional no-args)
-  "Calls R internal complation utilities for posible completions.
+  "Calls R internal completion utilities (rcomp) for possible completions.
 Needs version of R>2.7.0
 
 If NO-ARGS is non-nil don't ask for argument completions.
@@ -514,6 +573,8 @@ utils:::.retrieveCompletions()
 	       (- (point) bol) opts2)))
      (ess-get-words-from-vector comm)
     ))
+
+
 
 ;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
 ;; originally named  'alt-ess-complete-object-name'.
@@ -537,61 +598,81 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 	  'none))))
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
+(defvar  ac-source-R
+  '((prefix     . ess-ac-start)
+    (requires   . 0)
+    (candidates . ess-ac-candidates)
+    (document   . ess-ac-help)
+    (action	. ess-ac-action-args))
+  "Auto-completion source for R function arguments"
+  )
 
-(defun ess-init-ac (&optional inferior)
-  "Convenience function to initialize the default AC configuration.
-The default activated ac-sources are `ac-source-R-args',
-`ac-source-R-objects' and `ac-source-filename'.
+(defun ess-ac-start ()
+  (or (ess-ac-start-args)
+      (ess-ac-start-objects)))
 
-  If INFERIOR is non-nil, also initialize in ess-inferior mode.
+(defun ess-ac-candidates ()
+  "OBJECTS + ARGS"
+  (let ((args (ess-ac-args)))
+    (if (< (length ac-prefix) 2)
+	args
+      (if args
+	  (append args (ess-ac-objects t))
+	(ess-ac-objects)))))
 
-If you don't' like default AC keys for menu navigation do
-something like:
-
-  (define-key ac-completing-map \"\M-n\" nil)
-  (define-key ac-completing-map \"\M-p\" nil)
-  (define-key ac-completing-map \"\M-,\" 'ac-next)
-  (define-key ac-completing-map \"\M-k\" 'ac-previous)
-
-AC completion keys are defined in `ac-completing-map':
-
-\\{ac-completing-map}
-"
-  (interactive "P")
-  (require 'auto-complete)
-  (add-to-list 'ac-trigger-commands 'ac-trigger-key-command)
-  (add-to-list 'ac-modes 'ess-mode)
-  (add-hook 'ess-mode-hook 'ess--ac-initialize)
-  (make-local-variable 'ac-use-comphist)
-  (ac-set-trigger-key "TAB")
-  (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
-	  '(ess-r-args-auto-show ess-smart-comma smart-operator-comma))
-  (when inferior
-    (add-to-list 'ac-modes 'inferior-ess-mode)
-    (add-hook 'inferior-ess-mode-hook 'ess-ac-initialize-in-hook)
-    ))
+(defun ess-ac-help (sym)
+  (if (string-match-p "=\\'" sym)
+      (ess-ac-help-arg sym)
+    (ess-ac-help-object sym)))
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
-  '((prefix     . ess-ac-get-start-objects)
-    (requires   . 1)
-    (candidates . ess-ac-get-R-objects)
-    (document   . ess-ac-get-help-object))
-  "Auto-completion source for R"
+  '((prefix     . ess-ac-start-objects)
+    (requires   . 2)
+    (candidates . ess-ac-objects)
+    (document   . ess-ac-help-object))
+  "Auto-completion source for R objects"
   )
 
-(defun ess-ac-get-R-objects ()
-  "Get's the args of the function when inside parathesis."
-  (unless ess--ac-R:objects
-    (ess-R--set-args-and-objects))
-  (let ((objects ess--ac-R:objects))
-    (setq ess--ac-R:objects nil)
-    objects))
+(defun ess-ac-objects (&optional no-kill)
+  "Get all cached objects"
+  (unless no-kill ;; workaround
+    (kill-local-variable 'ac-use-comphist))
+  (if (string-match-p "[:$@]" ac-prefix)
+      (ess-R-get-rcompletions) ;; no-args doesn complete anything :(
+    (with-current-process-buffer 'no-error
+      (unless (process-get *proc* 'busy)
+	(let ((le (process-get *proc* 'last-eval))
+	      (lobu (process-get *proc* 'last-objlist-update)))
+	  (process-put *proc* 'last-objlist-update (float-time))
+	  (when (and le (> le lobu)) ;;re-read .GlobalEnv
+	    (if (and ess-sl-modtime-alist
+		     (not  ess-sp-change))
+		(ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+	      (ess-get-modtime-list)
+	      (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
+	      ))
+	  (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+	  )))))
 
-(defun ess-ac-get-help-object (sym)
+(defun ess-ac-start-objects ()
+  "Get initial position for objects completion."
+  (let ((chars "]A-Za-z0-9.$@_:[")
+	(bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
+	)
+    (when (string-match-p  (format "[%s]" chars) (char-to-string (char-before)))
+      (save-excursion
+	(when (re-search-backward (format "[^%s]" chars) nil t)
+	  (unless (looking-at bad-start-regexp)
+	    (1+ (point)))
+	  )))))
+
+(defun ess-ac-help-object (sym)
   "Help string for ac."
   (with-current-buffer (get-buffer-create " *ess-command-output*")
-    (require 'ess-help) ;; replace by autoloads?
+    (require 'ess-help)
+    (when (string-match ":+\\(.*\\)" sym)
+      (setq sym (match-string 1 sym)))
     (ess-command (format inferior-ess-help-command sym) (current-buffer))
     (ess-help-underline)
     (goto-char (point-min))
@@ -599,76 +680,126 @@ AC completion keys are defined in `ac-completing-map':
 
 ;; ARGS
 (defvar  ac-source-R-args
-  '((prefix     . ess-ac-get-start-args) ;;must be more involeved
+  '((prefix     . ess-ac-start-args)
     (requires   . 0)
-    (candidates . ess-ac-get-R-args)
-    (document   . ess-ac-get-help-arg)
-    (symbol	. "a"))
-  "Auto-completion source for R"
+    (candidates . ess-ac-args)
+    (document   . ess-ac-help-arg)
+    (action	. ess-ac-action-args))
+  "Auto-completion source for R function arguments"
   )
 
+(defun ess-ac-start-args ()
+  "Get initial position for args completion"
+  (when (and ess-local-process-name
+	     (not (eq (get-text-property (point) 'face) 'font-lock-string-face)))
+    (when (ess-funname.point)
+      (if (looking-back "[(,]+[ \t\n]*")
+	  (point)
+	(ess-ac-start-objects)))))
 
-(defun ess-ac-get-R-args ()
-  "Get's the args of the function when inside parathesis."
-  (unless ess--ac-R:args
-    (ess-R--set-args-and-objects))
-  (let ((args ess--ac-R:args))
-    (setq ess--ac-R:args nil)
-    (if args
-	(setq ac-use-comphist nil) ;; b-local var
-      (setq ac-use-comphist t)) ;; b-local var
-    (delete "...=" args)
+(defun ess-ac-args ()
+  "Get the args of the function when inside parathesis."
+  (when  ess--funname.point ;; stored by a coll to ess-ac-start-args
+    (let ((args (nthcdr 3 (ess-function-arguments (car ess--funname.point))))
+	  (len (length ac-prefix)))
+      (if args
+	  (set (make-local-variable 'ac-use-comphist) nil)
+	(kill-local-variable 'ac-use-comphist))
+      (delete "...=" args))))
+
+(defun ess-ac-action-args ()
+  (when (looking-back "=")
+    (delete-char -1)
+    (insert " = ")))
+
+
+(defun ess-ac-help-arg (sym)
+  "Help string for ac."
+  (setq sym (substring sym 0 -1)) ;; get rid of =
+  (let ((buff (get-buffer-create " *ess-command-output*"))
+	(fun (car ess--funname.point))
+	doc)
+    (ess-command (format ess--ac-help-arg-command sym fun) buff)
+    (with-current-buffer buff
+      (goto-char (point-min))
+      (forward-line)
+      (setq doc (buffer-substring-no-properties (point) (point-max))))))
+
+
+(defvar ess--ac-help-arg-command
+  "
+getArgHelp <- function(arg, func = NULL){
+    fguess <-
+        if(is.null(func)) get('fguess', envir = utils:::.CompletionEnv)
+        else func
+    findArgHelp <- function(fun, arg){
+        file <- help(fun, try.all.packages=FALSE)[[1]]
+        hlp <- utils:::.getHelpFile(file)
+        id <- grep('arguments', tools:::RdTags(hlp), fixed=TRUE)
+        if(length(id)){
+            arg_section <- hlp[[id[[1L]]]]
+            items <- grep('item', tools:::RdTags(arg_section), fixed=TRUE)
+            ## cat('items:', items,fill = T)
+            if(length(items)){
+                arg_section <- arg_section[items]
+                args <- unlist(lapply(arg_section,
+                                      function(el) paste(unlist(el[[1]][[1]], T,F),collapse='')))
+                fits <- grep(arg, args, fixed= T)
+                ## cat('args', args, 'fits',fill=T)
+                if(length(fits))
+                    paste(unlist(arg_section[[fits[1L]]][[2]],T,F),collapse='')
+             }
+        }
+    }
+    funcs <- c(fguess, tryCatch(methods(fguess),
+                                warning = function(w) {NULL},
+                                error = function(e) {NULL}))
+    if(length(funcs) > 1 && length(pos <- grep('default', funcs))){
+        funcs <- c(funcs[[pos[[1L]]]], funcs[-pos[[1L]]])
+    }
+    i <- 1L; found <- FALSE
+    out <- 'No help found'
+    while(i <= length(funcs) && is.null(out <-
+            tryCatch(findArgHelp(funcs[[i]], arg),
+                     warning = function(w) {NULL},
+                     error = function(e) {NULL})
+            ))
+        i <- i + 1L
+    cat(' \n\n', as.character(out), '\n\n')
+}; getArgHelp('%s','%s')
+")
+
+;; AC INITS
+
+(defun ess-init-ac (&optional inferior)
+  "Convenience function to initialize the default AC configuration.
+The default activated ac-sources are `ac-source-R-args',
+`ac-source-R-objects' and `ac-source-filename'.  If INFERIOR is
+non-nil, also initialize in ess-inferior mode.
+
+AC completion keys are defined in `ac-completing-map':
+\\{ac-completing-map}
+"
+  (interactive "P")
+  (require 'auto-complete)
+  (add-to-list 'ac-modes 'ess-mode)
+  (add-hook 'ess-mode-hook 'ess-ac-initialize-in-hook)
+  (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
+	  '(ess-smart-comma smart-operator-comma))
+  (when inferior
+    (add-to-list 'ac-modes 'inferior-ess-mode)
+    (add-hook 'inferior-ess-mode-hook 'ess-ac-initialize-in-hook)
     ))
 
-(defun ess-ac-get-start-args ()
-  "Get initial position for args completion"
-  (if (and (looking-back "[( \t]")
-	   (condition-case nil ;; check if it is inside a functon call
-	       (save-excursion (up-list -1) (looking-back "\\w"))
-	     (error nil)))
-      (point)
-    (ess--ac-get-start-objects)))
-
-(defun ess-ac-get-help-arg (sym)
-  "Help string for ac."
-  nil)
-
-
-(defun ess-ac-get-start-objects ()
-  "Get initial position for objects position."
-  (let ((chars "]A-Za-z0-9.$@_:[")
-	(bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
-	)
-    (when (string-match (format "[%s]" chars) (char-to-string (char-before)))
-      (save-excursion
-	(when (re-search-backward (format "[^%s]" chars) nil t)
-	  (unless (looking-at bad-start-regexp)
-	    (1+ (point)))
-	  )))))
-
-;; internal ac functions
 
 (defun ess-ac-initialize-in-hook ()
   "Function used in hooks to initialize ac."
   (when (equal ess-dialect "R")
-    (local-set-key (kbd "M-TAB") 'auto-complete)
-    (setq ac-sources '(ac-source-R-args ac-source-R-objects ac-source-filename))
-  ))
+    (setq ac-sources
+	  '(ac-source-R ac-source-filename ac-source-words-in-buffer))
+    ))
 
-(defvar ess--ac-R:args nil
-  "Storage for func args. ")
-(defvar ess--ac-R:objects nil
-  "Storage for objects. ")
 
-(defun ess-R--set-args-and-objects ()
-  (setq ess--ac-R:objects nil
-	ess--ac-R:args nil)
-  (dolist (el (ess-R-get-rcompletions))
-    (if (char-equal ?= (aref el (1- (length el))))
-	(setq ess--ac-R:args (cons el ess--ac-R:args))
-      (setq ess--ac-R:objects (cons el ess--ac-R:objects)))))
-
-;; (ess-ac-sort-predicate "sfdsf=" "sdfdsf")
 ;;;### autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
