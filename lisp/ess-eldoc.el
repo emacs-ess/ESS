@@ -115,8 +115,8 @@
 ;;  (defvar ess-eldoc-last-args nil
 ;;   "Args list last looked up for eldoc.  Used as cache.")
 
-(defcustom ess-eldoc-everywhere-p nil
-  "Non-nil means eldoc will show help string whenever a point is on a symbol.
+(defcustom ess-eldoc-show-on-symbol nil
+  "If non-nil show help string whenever the point is on a symbol.
 If nil show only when is after ( in a function call."
   :group 'ess
   :type 'boolean)
@@ -128,7 +128,7 @@ to look up any doc strings."
   (interactive)
   (when (and ess-current-process-name
 	     (not (ess-process-get 'busy)))
-    (let* ((funname (or (and ess-eldoc-everywhere-p ;; aggressive completion
+    (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
 			     (ess-get-object-at-point))
 			(car (ess-funname.start))))
 	   (doc (cadr (ess-function-arguments funname))))
