@@ -500,7 +500,7 @@ This was rewritten by KH in April 1996."
 
 ;;*;; General process handling code
 
-(defmacro with-current-process-buffer (no-error &rest body)
+(defmacro with-current-ess-process-buffer (no-error &rest body)
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
 If NO-ERROR is t don't trigger the error when there is not current process.
 
@@ -993,7 +993,7 @@ passed to `ess-wait-for-process' with the default of 0.02sec."
     (let* ((sprocess (get-ess-process ess-current-process-name))
  	   sbuffer primary-prompt end-of-output oldpb oldpf oldpm
  	   )
-      
+
       (unless  sprocess
 	;; should hardly happen, since (get-ess-process *)  already checked:
 	(error "Process %s is not running!" ess-current-process-name))
