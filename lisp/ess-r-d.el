@@ -497,17 +497,25 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
-    funname <- '%s'
-    fun <- tryCatch(get(funname, mode = 'function'), error = function(e) NULL)
-    if(is.null(fun)){
+    fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
+    funname<- '%s'
+    special <- grepl('[:$@[]', funname)
+    if(is.null(fun) || !is.function(fun)){
         NULL
     }else{
-        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args(plot.default)),collapse = ''))
+	args<-if(!special){
+		fundef<-paste(funname, '.default',sep='')
+		if(exists(fundef, mode = 'function')) args(fundef) else args(fun)
+	}
+        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse = ''))
         args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ',args), fixed = TRUE)
-        allargs <- utils:::functionArgs(funname, '')
+	allargs <-
+	        if(special) paste(names(formals(fun)), '=', sep='')
+		else tryCatch(utils:::functionArgs(funname, ''), error = function(e) NULL)
         envname <- environmentName(environment(fun))
         c(envname,args,allargs)
-    }})
+     }
+})
 ")
 
 (defun ess-function-arguments (funname)
@@ -519,51 +527,60 @@ string giving arguments of the function as they appear in
 documentation, all the rest are arguments as returned by
 utils:::functionArgs utility (formerly rcompletion package).
 
-If package_name is R_GlobalEnv or nil, and time_stamp is less
+If package_name is R_GlobalEnv or \"\", and time_stamp is less
 recent than the time of the last user interaction to the process,
 then update the entry.
 
-Package_name is nil if funname was not found or is a special name,
+Package_name is \"\" if funname was not found or is a special name,
 i.e. contains :,$ or @.
 "
   (let* ((args (gethash funname ess--funargs-cache))
 	 (pack (caar args))
-	 (ts   (cadr args)))
+	 (ts   (cdar args)))
     (when (and args
 	       (and (or (null pack)
 			(equal pack "R_GlobalEnv"))
 		    (< ts (ess-process-get 'last-eval))))
       (setq args nil))
     (or args
-	(let ((args (ess-get-words-from-vector (format ess--funargs-command funname)
-					       nil .005))) ;; should be enough
+	(let ((args (ess-get-words-from-vector
+		     (format ess--funargs-command funname funname) nil .01)))
 	  (when  args
 	    (setq args (cons (cons (car args) (float-time))
-			     (cdr args)))
+			     (cons (replace-regexp-in-string  "\\\\" "" (cadr args))
+				   (cddr args))))
 	    (puthash funname args ess--funargs-cache)))
 	)))
 
-(defvar ess--funname.point nil)
-(defun ess-funname.point ()
+(defun ess-get-object-at-point ()
+  "A very permissive version of symbol-at-point.
+Suitable for R object's names."
+  (let ((delim "[ \"\t\n\\+-*/()%]"))
+    (unless (and (looking-back delim)
+		 (looking-at   delim))
+      (save-excursion
+	(re-search-backward delim nil t)
+	(let ((beg (goto-char (1+ (point)))))
+	  (re-search-forward delim nil t)
+	  (buffer-substring-no-properties beg (1- (point))))))))
+
+
+(defvar ess--funname.start nil)
+(defun ess-funname.start ()
   "If inside a function call, return (cons FUNNAMME BEG) where
 FUNNAME is a function name found before ( and beg is where
 FUNNAME starts.
 
-Also store the cons in 'ess--funname.point for later use."
-    (setq ess--funname.point
+Also store the cons in 'ess--funname.start for potential use later."
+    (setq ess--funname.start
 	  (condition-case nil ;; check if it is inside a functon call
 	      (save-excursion
 		(up-list -1)
-		(when (looking-back "\\w")
-		  (let* ((delim "[ \t\n\\+-*/)]")
-			 (curpoint (point))
-			 (funname
-			  (progn (re-search-backward delim nil t)
-				 (when (re-search-forward (concat delim "+\\(.*\\)") curpoint)
-				   (match-string-no-properties 1))))
-			 (beg (match-beginning 1)))
-		    (cons funname beg))))
-		(error nil))))
+		(let ((funname (ess-get-object-at-point)))
+		  (when funname
+		    (cons funname (- (point) (length funname))))
+		  ))
+	    (error nil))))
 
 (defun ess-R-get-rcompletions (&optional no-args)
   "Calls R internal completion utilities (rcomp) for possible completions.
@@ -706,15 +723,15 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "Get initial position for args completion"
   (when (and ess-local-process-name
 	     (not (eq (get-text-property (point) 'face) 'font-lock-string-face)))
-    (when (ess-funname.point)
+    (when (ess-funname.start)
       (if (looking-back "[(,]+[ \t\n]*")
 	  (point)
 	(ess-ac-start-objects)))))
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
-  (when  ess--funname.point ;; stored by a coll to ess-ac-start-args
-    (let ((args (nthcdr 3 (ess-function-arguments (car ess--funname.point))))
+  (when  ess--funname.start ;; stored by a coll to ess-ac-start-args
+    (let ((args (nthcdr 3 (ess-function-arguments (car ess--funname.start))))
 	  (len (length ac-prefix)))
       (if args
 	  (set (make-local-variable 'ac-use-comphist) nil)
@@ -731,7 +748,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "Help string for ac."
   (setq sym (substring sym 0 -1)) ;; get rid of =
   (let ((buff (get-buffer-create " *ess-command-output*"))
-	(fun (car ess--funname.point))
+	(fun (car ess--funname.start))
 	doc)
     (ess-command (format ess--ac-help-arg-command sym fun) buff)
     (with-current-buffer buff
