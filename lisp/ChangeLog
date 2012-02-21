@@ -1,3 +1,15 @@
+2012-02-21  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-eldoc.el (ess-eldoc-everywhere-p): controls whether to show
+	args everywhere or only inside function call.
+	(ess-eldoc): complete rewrite of ess-eldoc, to use argument
+	completion api. Automatic caching + generic args + handling of
+	complex expressions + calling process only when really needed.
+
+	* ess-r-d.el (ess-function-arguments): optimized funarg retrieval.
+	(ess-get-object-at-point): a very permissive version of
+	symbol-at-point. Allows almost any R object.
+
 2012-02-20  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-inf.el (inferior-ess-set-status): set 'last-eval property

@@ -499,10 +499,10 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 (defvar ess--funargs-command  "local({
     fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
     funname<- '%s'
-    special <- grepl('[:$@[]', funname)
     if(is.null(fun) || !is.function(fun)){
         NULL
     }else{
+	special <- grepl('[:$@[]', funname)
 	args<-if(!special){
 		fundef<-paste(funname, '.default',sep='')
 		if(exists(fundef, mode = 'function')) args(fundef) else args(fun)
@@ -555,7 +555,7 @@ i.e. contains :,$ or @.
 (defun ess-get-object-at-point ()
   "A very permissive version of symbol-at-point.
 Suitable for R object's names."
-  (let ((delim "[ \"\t\n\\+-*/()%]"))
+  (let ((delim "[ ,\"\t\n\\+-*/()%]"))
     (unless (and (looking-back delim)
 		 (looking-at   delim))
       (save-excursion

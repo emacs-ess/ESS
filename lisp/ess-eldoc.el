@@ -103,87 +103,81 @@
 
 ;;; Code:
 
-;; This could be done on buffer local basis.
-(setq ess-r-args-noargsmsg "")
+;; ;; This could be done on buffer local basis.
+;; (setq ess-r-args-noargsmsg "")
 
-;; following two defvars are not currently used.
-(defvar ess-eldoc-last-name nil
-  "Name of the last function looked up in eldoc.
-We remember this to see whether we need to look up documentation, or used
-the cached value in `ess-eldoc-last-args'.")
+;; ;; following two defvars are not currently used.
+;; (defvar ess-eldoc-last-name nil
+;;   "Name of the last function looked up in eldoc.
+;; We remember this to see whether we need to look up documentation, or used
+;; the cached value in `ess-eldoc-last-args'.")
 
-(defvar ess-eldoc-last-args nil
-  "Args list last looked up for eldoc.  Used as cache.")
+;;  (defvar ess-eldoc-last-args nil
+;;   "Args list last looked up for eldoc.  Used as cache.")
+
+(defcustom ess-eldoc-everywhere-p nil
+  "Non-nil means eldoc will show help string whenever a point is on a symbol.
+If nil show only when is after ( in a function call."
+  :group 'ess
+  :type 'boolean)
 
 (defun ess-eldoc ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (let ((doc nil)
-	name)
-    (when ess-local-process-name
-      (setq name (ess-guess-fun))		;guess the word at point.
-      (unless (= (length name) 0)
-	;; look up function name at point.
-	(setq doc (ess-r-args-get name)))
-      (unless doc
-	;; no function found at point; see if we are in a arg-list
-	;; of a function.
-	(save-excursion
-	  (condition-case nil
-	      (progn
-		(up-list -1)
-		(setq name (ess-guess-fun))
-		(setq doc (ess-r-args-get name t)))
-	    ;; error handler -- not possible to go up one list level.
-	    (error nil) ))))
-    (when doc
-      (concat name ": " doc))
-    ))
+  (when (and ess-current-process-name
+	     (not (ess-process-get 'busy)))
+    (let* ((funname (or (and ess-eldoc-everywhere-p ;; aggressive completion
+			     (ess-get-object-at-point))
+			(car (ess-funname.start))))
+	   (doc (cadr (ess-function-arguments funname))))
+      (when doc
+	(format "%s: %s" funname doc))
+    )))
 
-(defun ess-eldoc-2 ()
-  ;; simple, old version.
-  (interactive)
-  (ess-r-args-get (ess-read-object-name-default)))
+;; (defun ess-eldoc-2 ()
+;;   ;; simple, old version.
+;;   (interactive)
+;;   (ess-r-args-get (ess-read-object-name-default)))
 
-(defun ess-eldoc-1 ()
-  "Return the doc string, or nil.
-This is the first version; works only on function name, not within arg list."
-  (interactive)
+;; (defun ess-eldoc-1 ()
+;;   "Return the doc string, or nil.
+;; This is the first version; works only on function name, not within arg list."
+;;   (interactive)
 
-  ;; Possible ways to get the function at point.
-  ;;(setq name (thing-at-point 'sexp))
-  ;;(setq name (ess-read-object-name-default))
-  ;;(setq name (find-tag-default))
+;;   ;; Possible ways to get the function at point.
+;;   ;;(setq name (thing-at-point 'sexp))
+;;   ;;(setq name (ess-read-object-name-default))
+;;   ;;(setq name (find-tag-default))
 
-  (if ess-current-process-name
-      (progn
-	(setq name (ess-guess-fun))		;guess the word at point.
-	(if (equal (length name) 0)
-	    nil
-	  ;; else
-	  (unless (equal name ess-eldoc-last-name)
-	    ;; name is different to the last name we lookedup, so get
-	    ;; new args from R and store them.
-	    (setq ess-eldoc-last-args (ess-r-args-get name)
-		  ess-eldoc-last-name name))
-	  ess-eldoc-last-args))
-    ;; no ESS process current.
-    nil)
-)
+;;   (if ess-current-process-name
+;;       (progn
+;; 	(setq name (ess-guess-fun))		;guess the word at point.
+;; 	(if (equal (length name) 0)
+;; 	    nil
+;; 	  ;; else
+;; 	  (unless (equal name ess-eldoc-last-name)
+;; 	    ;; name is different to the last name we lookedup, so get
+;; 	    ;; new args from R and store them.
+;; 	    (setq ess-eldoc-last-args (ess-r-args-get name)
+;; 		  ess-eldoc-last-name name))
+;; 	  ess-eldoc-last-args))
+;;     ;; no ESS process current.
+;;     nil)
+;; )
 
 
-(defsubst ess-guess-fun ()
-  "Guess what the function at point is."
-  ;; Derived from Man-default-man-entry in man.el
-  (let (word)
-    (save-excursion
-      (skip-chars-backward "-a-zA-Z0-9._+:")
-      (let ((start (point)))
-	(skip-chars-forward "-a-zA-Z0-9._+:")
-	(setq word (buffer-substring-no-properties start (point)))))
-      word))
+;; (defsubst ess-guess-fun ()
+;;   "Guess what the function at point is."
+;;   ;; Derived from Man-default-man-entry in man.el
+;;   (let (word)
+;;     (save-excursion
+;;       (skip-chars-backward "-a-zA-Z0-9._+:")
+;;       (let ((start (point)))
+;; 	(skip-chars-forward "-a-zA-Z0-9._+:")
+;; 	(setq word (buffer-substring-no-properties start (point)))))
+;;       word))
 
 (defun ess-use-eldoc ()
   "Switch on eldoc for ESS (R mode only)."
