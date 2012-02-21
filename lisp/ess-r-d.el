@@ -496,37 +496,51 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 (defvar ess--funargs-cache (make-hash-table :test 'equal)
   "Chache for R functions' arguments")
 
-(defun ess-function-arguments (funname &optional force-cache)
+(defvar ess--funargs-command  "local({
+    funname <- '%s'
+    fun <- tryCatch(get(funname, mode = 'function'), error = function(e) NULL)
+    if(is.null(fun)){
+        NULL
+    }else{
+        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args(plot.default)),collapse = ''))
+        args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ',args), fixed = TRUE)
+        allargs <- utils:::functionArgs(funname, '')
+        envname <- environmentName(environment(fun))
+        c(envname,args,allargs)
+    }})
+")
+
+(defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
-FUNARGS is a list with first element the name of the package the
-function comes from, second element is a string giving arguments
-of a function as they appear in documentation, all the rest are
-arguments as returned by utils:::functionArgs utility (formerly
-rcompletion package).
+Return FUNARGS - a list with the first element being a
+cons (package_name . time_stamp_of_request), second element is a
+string giving arguments of the function as they appear in
+documentation, all the rest are arguments as returned by
+utils:::functionArgs utility (formerly rcompletion package).
 
-Arguments of functions from R_GlobalEnv are always updated.
+If package_name is R_GlobalEnv or nil, and time_stamp is less
+recent than the time of the last user interaction to the process,
+then update the entry.
 
-As a side effect store funargs in 'ess--funargs-cache. If FUNNAME
-is a special name containing :,&,$ or @ don't cache unless
-FORCE-CACHE is non-nil.
+Package_name is nil if funname was not found or is a special name,
+i.e. contains :,$ or @.
 "
-  (or (let ((args (gethash funname ess--funargs-cache)))
-	(and (not (equal (car args)  "R_GlobalEnv" ))
-					; note,todo: in later versions funcs
-					; from .globenv will be always kept in
-					; sync and this will be removed
-	     args))
-      ;; todo: unify these 3 calls into one:
-      (let ((args (ess-r-args-get funname t))
-	    (all-args (ess-get-words-from-vector
-		       (format "utils:::functionArgs(\"%s\", '')\n" funname)))
-	    (envir   (ess-get-words-from-vector
-		      (format "try(environmentName(environment(get('%s',mode='function'))), silent=F)\n"
-			      funname))))
-	(and args all-args  ;; if nil don't store
-	     (or force-cache (not (string-match-p "[:$@]" funname)))
-	     (puthash funname `(,@envir ,args ,@all-args) ess--funargs-cache))
+  (let* ((args (gethash funname ess--funargs-cache))
+	 (pack (caar args))
+	 (ts   (cadr args)))
+    (when (and args
+	       (and (or (null pack)
+			(equal pack "R_GlobalEnv"))
+		    (< ts (ess-process-get 'last-eval))))
+      (setq args nil))
+    (or args
+	(let ((args (ess-get-words-from-vector (format ess--funargs-command funname)
+					       nil .005))) ;; should be enough
+	  (when  args
+	    (setq args (cons (cons (car args) (float-time))
+			     (cdr args)))
+	    (puthash funname args ess--funargs-cache)))
 	)))
 
 (defvar ess--funname.point nil)
@@ -698,14 +712,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 	(ess-ac-start-objects)))))
 
 (defun ess-ac-args ()
-  "Get the args of the function when inside parathesis."
+  "Get the args of the function when inside parentheses."
   (when  ess--funname.point ;; stored by a coll to ess-ac-start-args
     (let ((args (nthcdr 3 (ess-function-arguments (car ess--funname.point))))
 	  (len (length ac-prefix)))
       (if args
 	  (set (make-local-variable 'ac-use-comphist) nil)
 	(kill-local-variable 'ac-use-comphist))
-      (delete "...=" args))))
+      args)))
 
 (defun ess-ac-action-args ()
   (when (looking-back "=")
