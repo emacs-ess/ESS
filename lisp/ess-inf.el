@@ -700,31 +700,35 @@ Returns the name of the selected process."
       proc)))
 
 
-(defun ess-force-buffer-current (&optional prompt force)
+(defun ess-force-buffer-current (&optional prompt force autostart)
   "Make sure the current buffer is attached to an ESS process.
-If not, or FORCE (prefix argument) is non-nil,
-prompt for a process name with PROMPT.
-`ess-local-process-name' is set to the name of the process selected.
-`ess-dialect' is set to the dialect associated with the process selected."
-  (interactive
-   (list (concat ess-dialect " process to use: ") current-prefix-arg))
-  (if (and (not force) (ess-make-buffer-current))
-      nil ; do nothing
-    ;; Make sure the source buffer is attached to a process
-    (if (and ess-local-process-name (not force))
-	(error "Process %s has died" ess-local-process-name)
-      ;; ess-local-process-name is nil -- which process to attach to
-      (save-excursion
-	(let ((proc (ess-request-a-process prompt 'no-switch))
-	      temp-ess-help-filetype
-	      dialect)
-	  (save-excursion
-	    (set-buffer (process-buffer (get-process proc)))
-	    (setq temp-ess-help-filetype inferior-ess-help-filetype)
-	    (setq dialect ess-dialect))
-	  (setq ess-local-process-name proc)
-	  (setq inferior-ess-help-filetype temp-ess-help-filetype)
-	  (setq ess-dialect dialect))))))
+If not, or FORCE (prefix argument) is non-nil, prompt for a
+process name with PROMPT. If AUTOSTART is non-nil starts the new
+process if process associated with current buffer has died.
+`ess-local-process-name' is set to the name of the process
+selected.  `ess-dialect' is set to the dialect associated with
+the process selected."
+  (interactive)
+   (setq prompt (or prompt
+		    (concat ess-dialect " process to use: ") current-prefix-arg))
+  (let ((proc-name (ess-make-buffer-current)))
+    (if (and (not force) proc-name (get-process proc-name))
+	nil ; do nothing
+      ;; Make sure the source buffer is attached to a process
+      (if (and ess-local-process-name (not force) (not autostart))
+	  (error "Process %s has died" ess-local-process-name)
+	;; ess-local-process-name is nil -- which process to attach to
+	(save-excursion
+	  (let ((proc (ess-request-a-process prompt 'no-switch))
+		temp-ess-help-filetype
+		dialect)
+	    (save-excursion
+	      (set-buffer (process-buffer (get-process proc)))
+	      (setq temp-ess-help-filetype inferior-ess-help-filetype)
+	      (setq dialect ess-dialect))
+	    (setq ess-local-process-name proc)
+	    (setq inferior-ess-help-filetype temp-ess-help-filetype)
+	    (setq ess-dialect dialect)))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
@@ -740,11 +744,9 @@ This function should follow the description in `ess-show-buffer'
 for showing the iESS buffer, except that the iESS buffer is also
 made current."
   (interactive "P")
-  (ess-make-buffer-current)
+  (ess-force-buffer-current nil nil t)
   (if (and ess-current-process-name (get-process ess-current-process-name))
       (progn
-	(unless ess-local-process-name
-	  (setq ess-local-process-name ess-current-process-name))
 	;; Display the buffer, but don't select it yet.
 	(ess-show-buffer
 	 (buffer-name (process-buffer (get-process ess-current-process-name)))
