@@ -8,7 +8,7 @@ default. Set @code{`ess-use-eldoc'} to nil, if you don't want to use
 it. Also available from the menu ESS/Extras.
 @item @code{Eldoc} generics completion: eldoc shows arguments of a
 generic function if found.
-@item @code{Auto Comopletion}: todo
+@item @code{Auto Comopletion}: todo ...
 @item Argument Completion System: New unified much faster argument completion
 system.  Eldoc and auto-completion integration are using this system
 now.
@@ -22,8 +22,19 @@ documentation. Bound to @kbd{C-c C-e t}.
 
 New Features:
 @itemize @bullet
-@item todo1 ..
-@item todo2..
+@item source injection: Tracebug now can inject source references on the
+fly during code evaluation, i.e. you don't have to source your file, but
+just evaluate your code in normal fashion. Variable
+@code{ess-tracebug-inject-source-p} controls this behavior - if t,
+always inject source reference, if @code{'function}, inject only for
+functions (this is the default), if @code{nil}, never inject.
+
+During the source injection the value of `ess-eval-visibly-p' is
+ignored.
+@item Added support for org-mode. Visual debugger is now aware of the
+temporary org source editing buffer (@kbd{C-c '}) and jumps through this
+buffers if still alive, or in original org buffer otherwise.
+@item Two new keys in watch mode: @kbd{?} and @kbd{d}
 @end itemize
 
 @item @ESS{[R]}: New package @code{ess-developer} to evaluate @code{R}
@@ -40,7 +51,46 @@ insert the definition accordingly. See the documentation section ??? for
 more details.
 
 @item Functions with non-standard names (for example 'aaa-bbb:cc') are
-     properly handled by font-lock and evaluation routines.
+properly handled by font-lock and evaluation routines.
+
+@item @ESS{[S]}: ``@kbd{,}`` is bound to ess-smart-comma:
+If comma is invoked at the process marker of an ESS inferior
+buffer, request and execute a command from @code{`ess-handy-commands'}
+list. If @code{ess-R-smart-operators} is t @code{`ess-smart-comma}
+also inserts `` `` after comma.
+@item @ESS{[S]}, notably @code{R}: Variable @code{`ess-handy-commands'}
+stores an alist of useful commands which are called by @code{ess-smart-comma} in
+the inferior buffer. Currently containing:
+
+change-directory     @code{ess-change-directory}
+help-index           @code{ess-display-index}
+help-object          @code{ess-display-help-on-object}
+vignettes            @code{ess-display-vignettes}
+objects[ls]          @code{ess-execute-objects}
+search               @code{ess-execute-search}
+set-width            @code{ess-execute-screen-options}
+install.packages     @code{ess-install.packages}
+library              @code{ess-library}
+setRepos             @code{ess-setRepositories}
+sos                  @code{ess-sos}
+
+@item @ESS{[R]}: New handy commands: @code{ess-library},
+@code{ess-install.packages}, etc - ask for item with completion and
+execute the correspond command. @code{ess-sos} is a interface to
+@code{findFn} function in package @code{sos}. If package @code{sos} is
+not found, ask user for interactive install.
+@item New dynamic mode line indicator: Process status is automatically
+reflected in all mode-lines of associated with the process
+buffers. Particularly useful for displaying debug status of
+@code{ess-tracebug} and developer status of @code{ess-developer}.
+
+@item New @code{ess-completing-read} mechanism: @ESS{} uses @code{ido} completions
+whenever possible. Variable @code{ess-use-ido} controls whether to use
+ido completion or not. Active by default.
+
+@item todo: stopped at 2012-01-20 ...
+
+
 
 @item @ESS{[S]}, notably @code{R}: Saved command history:
  @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
