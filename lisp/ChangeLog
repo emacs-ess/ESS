@@ -410,7 +410,7 @@
 	* ess-r-d.el (ess-install.packages): fast way to instal packages
 	with ido interface.
 
-	* ess-custom.el (ess-use-ido-p): users can disable ido if they
+	* ess-custom.el (ess-use-ido): users can disable ido if they
 	don't want it.
 	(ess--completing-hist): new internal variable to store completion
 	history.

@@ -942,10 +942,8 @@ If MESSAGE is supplied, display it at the end."
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
-    (if visibly
-	(ess-eval-linewise (buffer-substring start end))
-      (ess-send-string process (buffer-substring start end))))
-  (if message (message message)))
+    (ess-send-string process (buffer-substring-no-properties start end) visibly message)
+    ))
 
 (defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
@@ -2704,7 +2702,7 @@ P-STRING is the prompt string."
 ;;;; inspired by slime repl shortcuts
 
 (defun ess-smart-comma ()
-  "If comma is invoched at the process marker of an ESS inferior
+  "If comma is invoked at the process marker of an ESS inferior
 buffer, request and execute a command from `ess-handy-commands'
 list."
   (interactive)

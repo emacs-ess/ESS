@@ -179,7 +179,7 @@ as `ess-imenu-use-S'."
 				)
   "An alyst  of custom ess commands available for call by `ess-smart-comma' function."
   :group 'ess
-  :type 'list)
+  :type (if (featurep 'emacs) 'alist 'list))
 
 (defcustom ess-user-full-name (user-full-name)
   "The full name of the user."
@@ -293,7 +293,7 @@ Avoids the plain dialect name."
   :group 'ess
   :type 'boolean)
 
-(defcustom  ess-use-ido-p t
+(defcustom  ess-use-ido t
   "If t ess will try to use ido completion whenever possible."
   :group 'ess
   :type 'boolean)
@@ -313,15 +313,18 @@ Used by `ess-completion-read' command.")
 
 (defvar ess-smart-operators ()
   "List of smart operators to be used in ESS and IESS modes.
+Not to be set by users. It is redefined by mode specific
+settings, such as `ess-R-smart-operators'.
 ")
 (make-variable-buffer-local 'ess-smart-operators)
 
 (defvar ess-R-smart-operators nil
   "If nil don't use any of smart operators.
-If 'all use all. If an axplicit list of operators use only those operators.
+If t use all. If an axplicit list of operators use only those
+operators.
 
-It controls the behavior of ess-smart-comma only in this version
-of ESS, but will be enriched in the for future.
+In current verion of ESS, it controls the behavior of
+ess-smart-comma only, but will be enriched in the near future.
 ")
 
 

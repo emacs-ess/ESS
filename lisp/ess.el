@@ -188,7 +188,7 @@ Some useful keys for IDO completion:
  - TAB     to display possible completion in a buffer
  - C-t     `ido-toggle-regexp'
 "
-  (let ((use-ido (and ess-use-ido-p (featurep 'ido))))
+  (let ((use-ido (and ess-use-ido (featurep 'ido))))
     (setq hist (or hist 'ess--completing-hist))
     (when (and def (not use-ido)) ;; ido places in front and highlights the default
       (setq prompt (format "%s(default %s)" prompt def)))
