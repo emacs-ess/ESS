@@ -12,7 +12,7 @@ generic function if found.
 @item Argument Completion System: New unified much faster argument completion
 system.  Eldoc and auto-completion integration are using this system
 now.
-@item @code{ess-switch-to-end-of-ESS}(@kbd{C-c C-z),
+@item @code{ess-switch-to-end-of-ESS}(@kbd{C-c C-z}),
 and @code{ess-switch-to-ESS}(@kbd{C-c C-y}): Automatically start the
 process whenever needed.
 @item @ESS{[R]}: @code{roxy} knows about previewing text version of the
