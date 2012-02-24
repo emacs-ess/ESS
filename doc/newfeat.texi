@@ -2,6 +2,46 @@
 
 Changes/New Features in 5.15:
 @itemize @bullet
+@item @code{Documentation}: todo...
+@item @code{Eldoc}: Eldoc was rewritten and is not activated by
+default. Set @code{`ess-use-eldoc'} to nil, if you don't want to use
+it. Also available from the menu ESS/Extras.
+@item @code{Eldoc} generics completion: eldoc shows arguments of a
+generic function if found.
+@item @code{Auto Comopletion}: todo
+@item Argument Completion System: New unified much faster argument completion
+system.  Eldoc and auto-completion integration are using this system
+now.
+@item @code{ess-switch-to-end-of-ESS}(@kbd{C-c C-z),
+and @code{ess-switch-to-ESS}(@kbd{C-c C-y}): Automatically start the
+process whenever needed.
+@item @ESS{[R]}: @code{roxy} knows about previewing text version of the
+documentation. Bound to @kbd{C-c C-e t}.
+@item @ESS{[R]}: Solved the ``nil filename'' bug in roxygen support.
+@item @ESS{[R]}: @code{ess-tracebug} is now part of @ESS{}:
+
+New Features:
+@itemize @bullet
+@item todo1 ..
+@item todo2..
+@end itemize
+
+@item @ESS{[R]}: New package @code{ess-developer} to evaluate @code{R}
+code directly in the package environment and namespace. It can be too
+togled on and off with @kbd{C-c d t}. When @code{ess-developer} is on
+all ESS evaluation commands are redefined to evaluate code in
+appropriate environments. Add package names to the list of your
+development packages with @kbd{C-d a}, and remove with @kbd{C-d
+r}. Source the current file with @kbd{C-d s}.Evaluation function which
+depend on @code{`ess-eval-region'} ask for the package to source the
+code into, @code{ess-eval-function} and alternatives search for the
+function name in the development packages' environment and namespace and
+insert the definition accordingly. See the documentation section ??? for
+more details.
+
+@item Functions with non-standard names (for example 'aaa-bbb:cc') are
+     properly handled by font-lock and evaluation routines.
+
 @item @ESS{[S]}, notably @code{R}: Saved command history:
  @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
  file name. By setting it to @code{nil} no command line history is saved
