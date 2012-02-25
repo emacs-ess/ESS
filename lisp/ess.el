@@ -176,17 +176,7 @@ arguments is as in `completing-read' (PROMPT is automatically
 suffixed with ': ' and (default %s) when needed). If HIST
 is null use `ess--completing-hist' as history.
 
-By default ESS uses enables IDO flex matching. See
-`ido-enable-flex-matching' for details on flex matching and
-`ess-ido-flex-matching' on how to disable it for ESS, if you
-don't want it.
-
-Some useful keys for IDO completion:
-
- - C-s (next) or C-r (previous) to move through the list.
- - C-SPC   to restrict the list to currently matched items.
- - TAB     to display possible completion in a buffer
- - C-t     `ido-toggle-regexp'
+See also `ess-use-ido'.
 "
   (let ((use-ido (and ess-use-ido (featurep 'ido))))
     (setq hist (or hist 'ess--completing-hist))

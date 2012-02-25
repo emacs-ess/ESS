@@ -1,3 +1,7 @@
+2012-02-25  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* doc/newfeat.texi: completed documenting changes.
+
 2011-12-13  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* etc/R-ESS-bugs.R (`swank:quit-inspector`): added swanky functions.
