@@ -446,12 +446,15 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
   :group 'ess-traceback)
 
 (defcustom inferior-ess-replace-long+ t
-  "If non-nil,  '+ + + + ' containing more than 3 + is replaced by `ess-long+replacement'"
+  "If non-nil,  '+ + + + ' containing more than 4 + is replaced by `ess-long+replacement'"
   :group 'ess-traceback)
 
-(defcustom ess-long+replacement "+ ... + "
-  "Replacement used for long + prompt."
-  :group 'ess-traceback)
+(defvar ess-long+replacement "+ . + "
+  "Replacement used for long + prompt.
+Customization of this variable is not recommended. You can set it
+to '. '. If you set it to anything else you will have to change
+`inferior-ess-S-prompt' to assure the correct prompt navigation
+in inferior buffers.  ")
 
 (defmacro ess-copy-key (from-map to-map fun)
   `(define-key ,to-map
@@ -1199,7 +1202,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
             ))
     ;; replace long prompts
     (when inferior-ess-replace-long+
-      (setq string (replace-regexp-in-string "\\(\\+ \\)\\{3\\}\\(\\+ \\)+" ess-long+replacement string)))
+      (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
     ;; COMINT
     (comint-output-filter proc string)
     ;; WATCH

@@ -88,15 +88,33 @@ buffers. Particularly useful for displaying debug status of
 whenever possible. Variable @code{ess-use-ido} controls whether to use
 ido completion or not. Active by default.
 
-@item todo: stopped at 2012-01-20 ...
+@item @ESS now supports comint fields for output and input
+detection. This feature is not used by default, but might be useful in
+the future.
 
+@item @ESS{[S]}: New custom variable @code{inferior-ess-S-prompt} to
+customize prompt detection regular expression in the inferior ESS
+buffers. You can customize this variable to enhance comint navigation
+(@code{comint-previous-prompt} and @code{comint-next-prompt}) the
+inferior buffers.
 
+@item @ESS{[R]}: Internal @code{R} completion retrieval
+(@code{ess-R-complete-object-name})  was rewritten and is faster now.
+
+@item @ESS{} is using process plist to store process specific variables,
+as opposed to buffer local variables as it was using before. The use of
+buffer local variables to store process variables is discouraged.
+
+@item Two new @ESS{} functions to manipulate process
+plists: @code{ess-process-get} and @code{ess-process-set}.
+
+@item Internal
 
 @item @ESS{[S]}, notably @code{R}: Saved command history:
  @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
  file name. By setting it to @code{nil} no command line history is saved
- anymore.   @var{ess-history-directory} now allows to have the history all
- saved in one ``central'' file.
+ anymore.  @var{ess-history-directory} now allows to have the history
+ all saved in one ``central'' file.
 @item @ESS{[R]}: more Roxygen improvements.
 @item @ESS{[R]}: @kbd{C-c .} to set (indentation) style.
 @end itemize

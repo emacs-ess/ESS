@@ -1316,9 +1316,10 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ")
 
-;; need to recognise  + + + > > >  ass well
-(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*\\([>+] \\)+"
-  "Regexp used in S and R inferior and transcript buffers for prompt detection and navigation.
+;; need to recognise  + + + > > >
+;; and "+ . + " in tracebug prompt
+(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)+"
+  "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 
 You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
 skip secondary prompt during navigation.

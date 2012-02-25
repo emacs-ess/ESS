@@ -1,3 +1,13 @@
+2012-02-25  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-tracebug.el (ess-long+replacement): it's shorter "+ . +" now.
+
+	* ess-custom.el (inferior-ess-S-prompt): small adjustment of the
+	prompt for tracebug cuts.
+
+	* ess-r-d.el (ess-function-arguments): modified the form of the
+	returned value.
+
 2012-02-23  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-inf.el:

@@ -1934,7 +1934,10 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
 	(setq pos (next-single-property-change pos 'field)))
       command)))
 
-
+;; todo: error when entering a multiline function
+;; check.integer <- function(N){
+;;      is.integer(N) | !length(grep("[^[:digit:]]", as.character(N)))
+;; }
 (defun inferior-ess--goto-input-start:regexp ()
   "Move point to the begining of input skiping all continuation lines.
 If in the output field, goes to the begining of previous input.
