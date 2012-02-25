@@ -524,8 +524,8 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 Return FUNARGS - a list with the first element being a
 cons (package_name . time_stamp_of_request), second element is a
 string giving arguments of the function as they appear in
-documentation, all the rest are arguments as returned by
-utils:::functionArgs utility (formerly rcompletion package).
+documentation, third element is a list of arguments of all S3
+methods as returned by utils:::functionArgs utility.
 
 If package_name is R_GlobalEnv or \"\", and time_stamp is less
 recent than the time of the last user interaction to the process,
@@ -546,9 +546,9 @@ i.e. contains :,$ or @.
 	(let ((args (ess-get-words-from-vector
 		     (format ess--funargs-command funname funname) nil .01)))
 	  (when  args
-	    (setq args (cons (cons (car args) (float-time))
-			     (cons (replace-regexp-in-string  "\\\\" "" (cadr args))
-				   (cddr args))))
+	    (setq args (list (cons (car args) (float-time))
+			     (replace-regexp-in-string  "\\\\" "" (cadr args))
+			     (cddr args)))
 	    (puthash funname args ess--funargs-cache)))
 	)))
 
@@ -731,7 +731,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
   (when  ess--funname.start ;; stored by a coll to ess-ac-start-args
-    (let ((args (nthcdr 3 (ess-function-arguments (car ess--funname.start))))
+    (let ((args (nth 2 (ess-function-arguments (car ess--funname.start))))
 	  (len (length ac-prefix)))
       (if args
 	  (set (make-local-variable 'ac-use-comphist) nil)
