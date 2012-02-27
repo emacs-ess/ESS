@@ -1,3 +1,15 @@
+2012-02-26  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* doc/ess.texi: rearranged, renamed and completed with several new
+	chapters and sections to reflect newly added features
+	(``Completion'', ``Developing with ESS'', ``ESS tracebug'', ``ESS
+	developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
+	Code'').
+
+	First chapters are all about S and R, no special distinctions is
+	necessary in the section names. ESS is defector 80% R, and docs
+	are reflecting that.
+
 2012-02-25  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* doc/newfeat.texi: completed documenting changes.

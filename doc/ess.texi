@@ -13,7 +13,7 @@ ESS @w{version @ESSVER}
 
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani, S.J. Eglen,
-@author S.P. Luque and H. Redestig)
+@author S.P. Luque, V. Spinu and H. Redestig)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
@@ -21,7 +21,7 @@ ESS @w{version @ESSVER}
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2010 The ESS Developers
+@author Copyright @copyright{} 2002--2012 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -65,7 +65,8 @@ by  A.J. Rossini,
     M. Maechler,
     R.A. Sparapani,
     S.J. Eglen,
-    S.P. Luque
+    S.P. Luque,
+    V. Spinu
 and H. Redestig.
 @end display
 
@@ -90,138 +91,28 @@ analysis languages.
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
 
+* ESS for S::                   Overview of ESS features for the S family
 * Interactive ESS::             Interacting with statistical programs
 * Entering commands::           Interacting with the ESS process
+* Evaluating code::             Sending code to the ESS process
 * Transcript Mode::             Manipulating saved transcript files
-
-* ESS for the S family::
-* Editing::                     How to create/edit objects and functions
-* Editing R documentation::
+* Editing objects::             How to create/edit objects and functions
 * Help::                        Reading help files
+* Completion::                  Various completion mechanisms
+* Developing with ESS::         Tools for package development and debugging
+* Extras::                      Other ESS features for the S family
 
 * ESS for SAS::
 * ESS for BUGS::
 * ESS for JAGS::
 
-* Miscellaneous::               Other features of ESS
 * Mailing lists/bug reports::   How to get assistance with ESS
 * Customization::               Customizing ESS
-
 * Key Index::
 * Concept Index::
-* Variable and command index::
-@c
+* Variable and command index::  @c
 @c @detailmenu
-@c  --- The Detailed Node Listing ---
 @c
-@c Introduction to ESS
-@c
-@c * Features::                    Why should I use ESS?
-@c * New features::
-@c * Credits::                     Authors of and contributors to ESS
-@c * Latest version::              Getting the latest version of ESS
-@c * Manual::                      How to read this manual
-@c
-@c Installing ESS on your system
-@c * Unix installation::              Installing ESS on your Unix system
-@c * Microsoft Windows installation:: Installing ESS on your MS Windows system
-@c * Requirements::         emacs, Operating Systems and Statistical Packages
-@c * System dependent::               Other variables you may need to change
-@c
-@c Starting the ESS process
-@c
-@c * Multiple ESS processes::
-@c * ESS processes on Remote Computers::
-@c * Customizing startup::         Changing the startup actions
-@c
-@c Help for the S family
-@c
-@c * ESS(S)--Editing files::
-@c * iESS(S)--Inferior ESS processes::
-@c * Handling and Reusing Transcripts::
-@c * ESS-help--assistance with viewing help::
-@c * Philosophies for using ESS(S)::
-@c * Scenarios for use (possibilities--based on actual usage)::
-@c * Customization Examples and Solutions to Problems::
-@c
-@c Help for SAS
-@c
-@c * ESS(SAS)--Design philosophy::
-@c * ESS(SAS)--Editing files::
-@c * iESS(SAS)--Interactive SAS processes::
-@c * ESS(SAS)--Batch SAS processes::
-@c * ESS(SAS)--Function keys for batch processing::
-@c * ESS(SAS)--TAB key::
-@c * ESS(SAS)--Usage scenarios::
-@c * iESS(SAS)--Common problems::
-@c * ESS(SAS)--MS Windows::
-@c
-@c Interacting with the ESS process
-@c
-@c * Command-line editing::        Entering commands and fixing mistakes
-@c * Completion::                  Completion of object names
-@c * Completion details::          Advanced completion concepts
-@c * Transcript::                  Manipulating the transcript
-@c * Command History::             Command History
-@c * History expansion::           References to historical commands
-@c * Hot keys::                    Hot keys for common commands
-@c * Statistical Process running in ESS?::
-@c * Other::                       Other commands provided by inferior-ESS
-@c
-@c Manipulating the transcript
-@c
-@c * Last command::                Manipulating the output from the last command
-@c * Process buffer motion::       Viewing older commands
-@c * Transcript resubmit::         Re-submitting commands from the transcript
-@c * Saving transcripts::          Keeping a record of your S session
-@c
-@c Editing S functions
-@c
-@c * Edit buffer::                 Edit objects in a specialized buffer
-@c * Loading::                     Loading source files into the ESS process
-@c * Error Checking::              Detecting errors in source files
-@c * Evaluating code::             Sending code to the ESS process
-@c * Indenting::                   Indenting and formatting @Sl{} code
-@c * Other edit buffer commands::  Commands for motion, completion and more
-@c * Source Files::                Maintaining @Sl{} source files
-@c * Source Directories::          Names and locations of dump files
-@c
-@c Manipulating saved transcript files
-@c
-@c * Resubmit::                    Resubmitting commands from the transcript file
-@c * Clean::                       Cleaning transcript files
-@c
-@c Other features of ESS
-@c
-@c * Highlighting::                Syntactic highlighting of buffers
-@c * Graphics::                    Using graphics with ESS
-@c * Object Completion::
-@c
-@c Using graphics with ESS
-@c
-@c * printer::                     The printer() graphics driver
-@c * X11::                         The X11() (and other X-windows based) driver
-@c
-@c Bugs and Bug Reporting, Mailing Lists
-@c
-@c * Bugs::
-@c * Reporting Bugs::
-@c * Mailing Lists::
-@c
-@c Customizing ESS
-@c
-@c * Variables::                   Variables for customization
-@c * Hooks::                       Customizing ESS with hooks
-@c * Keybindings::                 Changing the default ESS keybindings
-@c
-@c Variables for customization
-@c
-@c * Variables for starting ESS::  Variables for starting ESS
-@c * Dump file variables::         Variables for dump files
-@c * Indentation variables::       Variables controlling indentation
-@c * Variables controlling interaction::  Variables controlling interaction
-@c 					with the ESS process
-@c @end detailmenu
 @end menu
 
 @comment node-name,  next,  previous,  up
@@ -458,7 +349,7 @@ change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
-@node Installation, Interactive ESS, Introduction, Top
+@node Installation, ESS for S, Introduction, Top
 @chapter Installing ESS on your system
 @cindex installation
 
@@ -479,14 +370,26 @@ on your system.
 @include unixlike.texi
 @include windows.texi
 
-@node Requirements, , Microsoft Windows installation, Installation
+@node Requirements,  ,Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up
 @section Requirements
 @include requires.texi
 
+@comment  node-name,  next,  previous,  up
+@node ESS for S, Interactive ESS, Installation, Top
+@chapter Overview of ESS features for the S family
+@menu
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+@end menu
+@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Interactive ESS, Entering commands, Installation, Top
+@node Interactive ESS, Entering commands, ESS for S, Top
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
@@ -769,7 +672,7 @@ Alternatively, change @code{inferior-ess-same-window} if you wish the
 process to appear within another window of the current frame.
 
 @comment  node-name,  next,  previous,  up
-@node Entering commands, Transcript Mode, Interactive ESS, Top
+@node Entering commands, Evaluating code, Interactive ESS, Top
 @chapter Interacting with the ESS process
 @cindex entering commands
 @cindex commands
@@ -777,8 +680,8 @@ process to appear within another window of the current frame.
 
 The primary function of the ESS package is to provide an easy-to-use
 front end to the @Sl{} interpreter.  This is achieved by running the S
-process from within an Emacs buffer, so that the Emacs editing commands
-are available to correct mistakes in commands, etc.  The features of
+process from within an Emacs buffer, called hereafter @emph{inferior}
+buffer, which has an active @code{inferior-ess-mode}. The features of
 Inferior @Sl{} mode are similar to those provided by the standard Emacs
 shell mode (@pxref{Shell Mode,,, emacs, The Gnu Emacs Reference
 Manual}).  Command-line completion of @Sl{} objects and a number of `hot
@@ -787,8 +690,6 @@ typing.
 
 @menu
 * Command-line editing::        Entering commands and fixing mistakes
-* Completion::                  Completion of object names
-* Completion details::          Advanced completion concepts
 * Transcript::                  Manipulating the transcript
 * Command History::             Command History
 * History expansion::           References to historical commands
@@ -799,7 +700,7 @@ typing.
 @end menu
 
 @comment  node-name,  next,  previous,  up
-@node Command-line editing, Completion, Entering commands, Entering commands
+@node Command-line editing, Transcript, Entering commands, Entering commands
 @section Entering commands and fixing mistakes
 @cindex command-line editing
 
@@ -844,125 +745,9 @@ prompt, if any.
 @xref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}, for other
 commands relevant to entering input.
 
-@comment  node-name,  next,  previous,  up
-@node  Completion, Completion details, Command-line editing, Entering commands
-@section Completion of object names
-@cindex completion of object names
-@cindex command-line completion
-
-In the process buffer, the @key{TAB} key is for completion, similar to
-that provided by Shell Mode for filenames.  In Inferior @Sl{} mode,
-pressing the @key{TAB} key when the cursor is following the first few
-characters of an object name @emph{completes} the object name; if the
-cursor is following a file name @kbd{TAB} completes the file name.
-
-@itemize @bullet
-@item
-@kbd{TAB} (@code{comint-dynamic-complete}) @*
-@pindex comint-dynamic-complete
-Complete the @Sl{} object name or filename before point.
-@end itemize
-
-When the cursor is just after a partially-completed object name,
-pressing @key{TAB} provides completion in a similar fashion to
-@code{tcsh}
-@cindex tcsh
-except that completion is performed over all known @Sl{} object names
-instead of file names.  ESS maintains a list of all objects known to S
-at any given time, which basically consists of all objects (functions
-and datasets) in every attached directory listed by the @code{search()}
-command
-@pindex search()
-along with the component objects of attached data frames
-@cindex data frames
-(if your version of @Sl{} supports them).
-
-For example, consider the three functions (available in Splus version
-3.0) called @code{binomplot()}, @code{binom.test()} and
-@code{binomial()}.  Typing @kbd{bin TAB} after the @Sl{} prompt will
-insert the characters @samp{om}, completing the longest prefix
-(@samp{binom}) which distinguishes these three commands.  Pressing
-@kbd{TAB} once more provides a list of the three commands which have
-this prefix, allowing you to add more characters (say, @samp{.}) which
-specify the function you desire.  After entering more characters
-pressing @kbd{TAB} yet again will complete the object name up to
-uniqueness, etc.  If you just wish to see what completions exist without
-adding any extra characters, type @kbd{M-?}.
-
-@itemize @bullet
-@item
-@kbd{M-?} (@code{ess-list-object-completions}) @*
-@pindex ess-list-object-completions
-List all possible completions of the object name at point.
-@end itemize
-
-ESS also provides completion over the components of named lists accessed
-using the @samp{$} notation, to any level of nested lists.  This feature
-is particularly useful for checking what components of a list object
-exist while partway through entering a command: simply type the object
-name and @samp{$} and press @kbd{TAB} to see the names of existing list
-components for that object.
-@cindex lists, completion on
-@cindex completion on lists
-
-@cindex completion on file names
-Completion is also provided over file names, which is particularly
-useful when using @Sl{} functions such as @code{get()} or @code{scan()}
-which require fully expanded file names.  Whenever the cursor is within
-an @Sl{} string, pressing @kbd{TAB} completes the file name before
-point.  Since ESS 5.11, it no longer also expands any @samp{~} or
-environment variable references.
-
-If the cursor is not in a string and does not follow a (partial) object
-name, the @key{TAB} key has a third use: it expands history references.
-@xref{History expansion}.
 
 @comment  node-name,  next,  previous,  up
-@node Completion details, Transcript, Completion, Entering commands
-@section Completion details
-
-ESS automatically keeps track of any objects added or deleted to the
-system (such as new objects created, or directories added to the search
-list) to make completion as accurate as possible.  Whenever ESS notices
-that search list has changed
-@vindex ess-change-sp-regexp
-@footnote{The variable @code{ess-change-sp-regexp} is a regular
-expression matching commands which change the search list.  You will
-need to modify this variable if you have defined custom commands (other
-than @code{attach}, @code{detach}, @code{collection} or @code{library})
-which modify the search list.}  when you attach a directory or data
-frame, the objects associated with it immediately become available for a
-completion; when it is detached completion is no longer available on
-those objects.
-
-To maintain a list of accessible objects for completion, ESS needs to
-determine which objects are contained in each directory or data frame on
-the search list.  This is done at the start of each @Sl{} session, by
-running the @code{objects()} command on every element of the search
-list.
-
-@c On some systems, however, this can be rather slow; it's doubly
-@c frustrating when you consider that most of the directories on the search
-@c list are the standard @Sl{} libraries, which never change anyway!  When
-@c ESS was installed, a database of the standard object names should have
-@c been created which should speed up this process at the start of an S
-@c session; if it has not been created you will get a warning like
-@c `S-namedb.el does not exist'.  @xref{Installation}, for information on
-@c how to create this database.
-
-Efficiency in completion is gained by maintaining a cache of objects
-currently known to S; when a new object becomes available or is deleted,
-only one component of the cache corresponding to the associated
-directory needs to be refreshed.  If ESS ever becomes confused about
-what objects are available for completion (such as when if refuses to
-complete an object you @strong{know} is there), the command @kbd{M-x
-ess-resynch}
-@pindex ess-resynch
-forces the @emph{entire} cache to be refreshed, which should fix the
-problem.
-
-@comment  node-name,  next,  previous,  up
-@node Transcript, Command History, Completion details, Entering commands
+@node Transcript, Command History, Command-line editing, Entering commands
 @section Manipulating the transcript
 
 Most of the time, the cursor spends most of its time at the bottom of
@@ -1625,238 +1410,14 @@ you want to quit from S, use @kbd{C-c C-q} (@code{ess-quit}) instead.
 @item
 @kbd{C-c C-d} (@code{ess-dump-object-into-edit-buffer}) @*
 @pindex ess-dump-object-into-edit-buffer
-Prompts for an object to be edited in an edit buffer.  @xref{Editing}.
+Prompts for an object to be edited in an edit buffer.  @xref{Editing objects}.
 @end itemize
 
 Other commands available in Inferior @Sl{} mode are discussed in
 @ref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}.
 
-@comment  node-name,  next,  previous,  up
-@node Transcript Mode, ESS for the S family, Entering commands, Top
-@chapter Manipulating saved transcript files
-
-Inferior @Sl{} mode records the transcript (the list of all commands
-executed, and their output) in the process buffer, which can be saved as
-a @dfn{transcript file}, which should normally have the suffix
-@file{.St}.  The most obvious use for a transcript file is as a static
-record of the actions you have performed in a particular @Sl{} session.
-Sometimes, however, you may wish to re-execute commands recorded in the
-transcript file by submitting them to a running ESS process.  This
-is what Transcript Mode is for.
-
-If you load file a with the suffix @file{.St} into Emacs, it is placed
-in S Transcript Mode.  Transcript Mode is similar to Inferior @Sl{} mode
-(@pxref{Entering commands}):
-@cindex transcript mode motion
-@cindex motion in transcript mode
-paragraphs are defined as a command and its output, and you can move
-though commands either with the paragraph commands or with @kbd{C-c C-p}
-and @kbd{C-c C-n}.
-
-@menu
-* Resubmit::                    Resubmitting commands from the transcript file
-* Clean::                       Cleaning transcript files
-@end menu
-
-@comment  node-name,  next,  previous,  up
-@node Resubmit, Clean, Transcript Mode, Transcript Mode
-@section Resubmitting commands from the transcript file
-
-Three commands are provided to re-submit command lines from the
-transcript file to a running ESS process.  They are:
-
-@itemize @bullet
-@item
-@kbd{RET} (@code{ess-transcript-send-command}) @*
-Send the current command line to the ESS process, and execute it.
-@pindex ess-transcript-send-command
-
-@item
-@kbd{C-c RET} (@code{ess-transcript-copy-command}) @*
-Copy the current command to the ESS process, and switch to the
-ESS process buffer (ready to edit the copied command).
-@pindex ess-transcript-copy-command
-
-@item
-@kbd{M-RET} (@code{ess-transcript-send-command-and-move}) @*
-Send the current command to the ESS process, and move to the next
-command line.  This command is useful for submitting a series of
-commands.
-@end itemize
-
-@noindent
-Note that these commands are similar to those on the same keys in
-Inferior @Sl{} Mode.  In all three cases, the commands should be
-executed when the cursor is on a command line in the transcript; the
-prompt is automatically removed before the command is submitted.
-
-@comment  node-name,  next,  previous,  up
-@node Clean,  , Resubmit, Transcript Mode
-@section Cleaning transcript files
-
-Yet another use for transcript files is to extract the command lines for
-inclusion in an @Sl{} source file or function.  Transcript mode provides
-one command which does just this:
-
-@itemize @bullet
-@item
-@kbd{C-c C-w} (@code{ess-transcript-clean-region}) @*
-Deletes all prompts and command output in the region, leaving only the
-commands themselves.
-@end itemize
-
-@noindent
-The remaining command lines may then be copied to a source file or edit
-buffer for inclusion in a function definition, or may be evaluated
-directly (@pxref{Evaluating code}) using the code evaluation commands
-from @Sl{} mode, also available in @Sl{} Transcript Mode.
-
-
-@comment  node-name,  next,  previous,  up
-@node ESS for the S family, Editing, Transcript Mode, Top
-@chapter ESS for the S family
-@menu
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-@end menu
-@include help-s.texi
-
-@comment  node-name,  next,  previous,  up
-@node Editing, Editing R documentation, ESS for the S family, Top
-@chapter Editing S functions
-
-@cindex editing functions
-ESS provides facilities for editing @Sl{} objects within your Emacs
-session.  Most editing is performed on @Sl{} functions, although in
-theory you may edit datasets as well.  Edit buffers are always
-associated with files, although you may choose to make these files
-temporary if you wish.  Alternatively, you may make use of a simple yet
-powerful mechanism for maintaining backups of text representations of
-@Sl{} functions.  Error-checking is performed when @Sl{} code is loaded
-into the ESS process.
-
-@menu
-* Edit buffer::                 Edit objects in a specialized buffer
-* Loading::                     Loading source files into the ESS process
-* Error Checking::              Detecting errors in source files
-* Evaluating code::             Sending code to the ESS process
-* Indenting::                   Indenting and formatting S code
-* Other edit buffer commands::  Commands for motion, completion and more
-* Source Files::                Maintaining @Sl{} source files
-* Source Directories::          Names and locations of dump files
-@end menu
-
-@comment  node-name,  next,  previous,  up
-@node Edit buffer, Loading, Editing, Editing
-@section Creating or modifying S objects
-@cindex edit buffer
-
-To edit an @Sl{} object, type
-
-@itemize @bullet
-@item
-@kbd{C-c C-d} (@code{ess-dump-object-into-edit-buffer}) @*
-@pindex ess-dump-object-into-edit-buffer
-Edit an @Sl{} object in its own edit buffer.
-@end itemize
-
-from within the ESS process buffer (@code{*S*}).  You will then be
-prompted for an object to edit: you may either type in the name of an
-existing object (for which completion is available using the @kbd{TAB}
-key),
-@cindex completion, when prompted for object names
-or you may enter the name of a new object.
-@cindex creating new objects
-@cindex new objects, creating
-A buffer will be created containing the text representation of the
-requested object or, if you entered the name of a non-existent object at
-the prompt and the variable @code{ess-function-template}
-@vindex ess-function-template
-is non-@code{nil}, you will be presented with a template defined by that
-variable, which defaults to a skeleton function construct.
-
-You may then edit the function as required.  The edit buffer generated
-by @code{ess-dump-object-into-edit-buffer} is placed in the @code{ESS}
-major mode which provides a number of commands to facilitate editing
-@Sl{} source code.  Commands are provided to intelligently indent @Sl{}
-code, evaluate portions of @Sl{} code and to move around @Sl{} code
-constructs.
-
-@cindex dump files
-@cindex reverting function definitions
-Note: when you dump a file with @kbd{C-c C-d}, ESS first checks
-to see whether there already exists an edit buffer containing that
-object and, if so, pops you directly to that buffer.  If not, ESS next
-checks whether there is a file in the appropriate place with the
-appropriate name (@pxref{Source Files}) and if so, reads in that file.
-You can use this facility to return to an object you were editing in a
-previous session (and which possibly was never loaded to the @Sl{}
-session).  Finally, if both these tests fail, the ESS process is
-consulted and a @code{dump()} command issued.
-@pindex dump()
-If you want to force ESS to ask the ESS process for the object's
-definition (say, to reformat an unmodified buffer or to revert back to
-S's idea of the object's definition) pass a prefix argument to
-@code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-d}.
-
-@comment  node-name,  next,  previous,  up
-@node Loading, Error Checking, Edit buffer, Editing
-@section Loading source files into the ESS process
-
-The best way to get information --- particularly function definitions
---- into @Sl{} is to load them in as source file, using S's
-@code{source} function.  You have already seen how to create source
-files using @kbd{C-c C-d}; ESS provides a complementary command for
-loading source files (even files not created with ESS!) into the ESS
-process:
-
-@itemize @bullet
-@item
-@kbd{C-c C-l} (@code{ess-load-file}) @*
-@pindex ess-load-file
-Loads a file into the ESS process using @code{source()}.
-@pindex source()
-@end itemize
-
-@noindent
-After typing @kbd{C-c C-l} you will prompted for the name of the file to
-load into S; usually this is the current buffer's file which is the
-default value (selected by simply pressing @kbd{RET} at the prompt).
-You will be asked to save the buffer first if it has been modified (this
-happens automatically if the buffer was generated with @kbd{C-c C-d}).
-The file will then be loaded, and if it loads successfully you will be
-returned to the ESS process.
-
-@comment  node-name,  next,  previous,  up
-@node Error Checking, Evaluating code, Loading, Editing
-@section Detecting errors in source files
-@cindex errors
-@cindex parsing errors
-If any errors occur when loading a file with @code{C-c C-l}, ESS will
-inform you of this fact.  In this case, you can jump directly to the
-line in the source file which caused the error by typing @kbd{C-c `}
-(@code{ess-parse-errors}).
-@pindex ess-parse-errors
-You will be returned to the offending file (loading it into a buffer if
-necessary) with point at the line @Sl{} reported as containing the
-error.  You may then correct the error, and reload the file.  Note that
-none of the commands in an @Sl{} source file will take effect if any
-part of the file contains errors.
-
-Sometimes the error is not caused by a syntax error (loading a
-non-existent file for example). In this case typing @kbd{C-c `} will
-simply display a buffer containing S's error message.  You can force
-this behavior (and avoid jumping to the file when there @emph{is} a
-syntax error) by passing a prefix argument to @code{ess-parse-errors}
-with @kbd{C-u C-c `}.
-
-@comment  node-name,  next,  previous,  up
-@node Evaluating code, Indenting, Error Checking, Editing
-@section Sending code to the ESS process
+@node Evaluating code, Transcript Mode, Entering commands, Top
+@chapter Sending code to the ESS process
 
 Other commands are also available for evaluating portions of code in the
 S process.  These commands cause the selected code to be evaluated
@@ -1869,11 +1430,11 @@ echoed.  The behavior is controlled by the variable
 @vindex ess-eval-visibly-p
 (display commands and output).  Passing a prefix argument (@kbd{C-u}) to any of
 the following commands, however, reverses the meaning of
-@code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u C-c C-j} 
+@code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u C-c C-j}
 @comment these remarks only make sense IF the default is nil (which it is NOT)
 @comment echoes the current line of S (or other) code in the ESS process
 @comment buffer, followed by its output.  This method of evaluation is an
-suppresses the current line of S (or other) code in the ESS process buffer.  
+suppresses the current line of S (or other) code in the ESS process buffer.
 This method of evaluation is an
 alternative to S's @code{source()} function
 @pindex source()
@@ -1965,7 +1526,217 @@ of the window, you will need to set the variable
 
 
 @comment  node-name,  next,  previous,  up
-@node Indenting, Other edit buffer commands, Evaluating code, Editing
+@node Transcript Mode, Editing objects, Evaluating code, Top
+@chapter Manipulating saved transcript files
+
+Inferior @Sl{} mode records the transcript (the list of all commands
+executed, and their output) in the process buffer, which can be saved as
+a @dfn{transcript file}, which should normally have the suffix
+@file{.St}.  The most obvious use for a transcript file is as a static
+record of the actions you have performed in a particular @Sl{} session.
+Sometimes, however, you may wish to re-execute commands recorded in the
+transcript file by submitting them to a running ESS process.  This
+is what Transcript Mode is for.
+
+If you load file a with the suffix @file{.St} into Emacs, it is placed
+in S Transcript Mode.  Transcript Mode is similar to Inferior @Sl{} mode
+(@pxref{Entering commands}):
+@cindex transcript mode motion
+@cindex motion in transcript mode
+paragraphs are defined as a command and its output, and you can move
+though commands either with the paragraph commands or with @kbd{C-c C-p}
+and @kbd{C-c C-n}.
+
+@menu
+* Resubmit::                    Resubmitting commands from the transcript file
+* Clean::                       Cleaning transcript files
+@end menu
+
+@comment  node-name,  next,  previous,  up
+@node Resubmit, Clean, Transcript Mode, Transcript Mode
+@section Resubmitting commands from the transcript file
+
+Three commands are provided to re-submit command lines from the
+transcript file to a running ESS process.  They are:
+
+@itemize @bullet
+@item
+@kbd{RET} (@code{ess-transcript-send-command}) @*
+Send the current command line to the ESS process, and execute it.
+@pindex ess-transcript-send-command
+
+@item
+@kbd{C-c RET} (@code{ess-transcript-copy-command}) @*
+Copy the current command to the ESS process, and switch to the
+ESS process buffer (ready to edit the copied command).
+@pindex ess-transcript-copy-command
+
+@item
+@kbd{M-RET} (@code{ess-transcript-send-command-and-move}) @*
+Send the current command to the ESS process, and move to the next
+command line.  This command is useful for submitting a series of
+commands.
+@end itemize
+
+@noindent
+Note that these commands are similar to those on the same keys in
+Inferior @Sl{} Mode.  In all three cases, the commands should be
+executed when the cursor is on a command line in the transcript; the
+prompt is automatically removed before the command is submitted.
+
+@comment  node-name,  next,  previous,  up
+@node Clean,  , Resubmit, Transcript Mode
+@section Cleaning transcript files
+
+Yet another use for transcript files is to extract the command lines for
+inclusion in an @Sl{} source file or function.  Transcript mode provides
+one command which does just this:
+
+@itemize @bullet
+@item
+@kbd{C-c C-w} (@code{ess-transcript-clean-region}) @*
+Deletes all prompts and command output in the region, leaving only the
+commands themselves.
+@end itemize
+
+@noindent
+The remaining command lines may then be copied to a source file or edit
+buffer for inclusion in a function definition, or may be evaluated
+directly (@pxref{Evaluating code}) using the code evaluation commands
+from @Sl{} mode, also available in @Sl{} Transcript Mode.
+
+
+@node Editing objects, Help, Transcript Mode, Top
+@chapter Editing objects and functions
+
+@cindex editing functions
+ESS provides facilities for editing @Sl{} objects within your Emacs
+session.  Most editing is performed on @Sl{} functions, although in
+theory you may edit datasets as well.  Edit buffers are always
+associated with files, although you may choose to make these files
+temporary if you wish.  Alternatively, you may make use of a simple yet
+powerful mechanism for maintaining backups of text representations of
+@Sl{} functions.  Error-checking is performed when @Sl{} code is loaded
+into the ESS process.
+
+@menu
+* Edit buffer::                 Edit objects in a specialized buffer
+* Loading::                     Loading source files into the ESS process
+* Error Checking::              Detecting errors in source files
+* Indenting::                   Indenting and formatting S code
+* Other edit buffer commands::  Commands for motion, completion and more
+* Source Files::                Maintaining @Sl{} source files
+* Source Directories::          Names and locations of dump files
+@end menu
+
+@comment  node-name,  next,  previous,  up
+@node Edit buffer, Loading, Editing objects, Editing objects
+@section Creating or modifying S objects
+@cindex edit buffer
+
+To edit an @Sl{} object, type
+
+@itemize @bullet
+@item
+@kbd{C-c C-d} (@code{ess-dump-object-into-edit-buffer}) @*
+@pindex ess-dump-object-into-edit-buffer
+Edit an @Sl{} object in its own edit buffer.
+@end itemize
+
+from within the ESS process buffer (@code{*S*}).  You will then be
+prompted for an object to edit: you may either type in the name of an
+existing object (for which completion is available using the @kbd{TAB}
+key),
+@cindex completion, when prompted for object names
+or you may enter the name of a new object.
+@cindex creating new objects
+@cindex new objects, creating
+A buffer will be created containing the text representation of the
+requested object or, if you entered the name of a non-existent object at
+the prompt and the variable @code{ess-function-template}
+@vindex ess-function-template
+is non-@code{nil}, you will be presented with a template defined by that
+variable, which defaults to a skeleton function construct.
+
+You may then edit the function as required.  The edit buffer generated
+by @code{ess-dump-object-into-edit-buffer} is placed in the @code{ESS}
+major mode which provides a number of commands to facilitate editing
+@Sl{} source code.  Commands are provided to intelligently indent @Sl{}
+code, evaluate portions of @Sl{} code and to move around @Sl{} code
+constructs.
+
+@cindex dump files
+@cindex reverting function definitions
+Note: when you dump a file with @kbd{C-c C-d}, ESS first checks
+to see whether there already exists an edit buffer containing that
+object and, if so, pops you directly to that buffer.  If not, ESS next
+checks whether there is a file in the appropriate place with the
+appropriate name (@pxref{Source Files}) and if so, reads in that file.
+You can use this facility to return to an object you were editing in a
+previous session (and which possibly was never loaded to the @Sl{}
+session).  Finally, if both these tests fail, the ESS process is
+consulted and a @code{dump()} command issued.
+@pindex dump()
+If you want to force ESS to ask the ESS process for the object's
+definition (say, to reformat an unmodified buffer or to revert back to
+S's idea of the object's definition) pass a prefix argument to
+@code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-d}.
+
+@comment  node-name,  next,  previous,  up
+@node Loading, Error Checking, Edit buffer, Editing objects
+@section Loading source files into the ESS process
+
+The best way to get information --- particularly function definitions
+--- into @Sl{} is to load them in as source file, using S's
+@code{source} function.  You have already seen how to create source
+files using @kbd{C-c C-d}; ESS provides a complementary command for
+loading source files (even files not created with ESS!) into the ESS
+process:
+
+@itemize @bullet
+@item
+@kbd{C-c C-l} (@code{ess-load-file}) @*
+@pindex ess-load-file
+Loads a file into the ESS process using @code{source()}.
+@pindex source()
+@end itemize
+
+@noindent
+After typing @kbd{C-c C-l} you will prompted for the name of the file to
+load into S; usually this is the current buffer's file which is the
+default value (selected by simply pressing @kbd{RET} at the prompt).
+You will be asked to save the buffer first if it has been modified (this
+happens automatically if the buffer was generated with @kbd{C-c C-d}).
+The file will then be loaded, and if it loads successfully you will be
+returned to the ESS process.
+
+@comment  node-name,  next,  previous,  up
+@node Error Checking, Indenting, Loading, Editing objects
+@section Detecting errors in source files
+@cindex errors
+@cindex parsing errors
+If any errors occur when loading a file with @code{C-c C-l}, ESS will
+inform you of this fact.  In this case, you can jump directly to the
+line in the source file which caused the error by typing @kbd{C-c `}
+(@code{ess-parse-errors}).
+@pindex ess-parse-errors
+You will be returned to the offending file (loading it into a buffer if
+necessary) with point at the line @Sl{} reported as containing the
+error.  You may then correct the error, and reload the file.  Note that
+none of the commands in an @Sl{} source file will take effect if any
+part of the file contains errors.
+
+Sometimes the error is not caused by a syntax error (loading a
+non-existent file for example). In this case typing @kbd{C-c `} will
+simply display a buffer containing S's error message.  You can force
+this behavior (and avoid jumping to the file when there @emph{is} a
+syntax error) by passing a prefix argument to @code{ess-parse-errors}
+with @kbd{C-u C-c `}.
+
+@comment  node-name,  next,  previous,  up
+
+@comment  node-name,  next,  previous,  up
+@node Indenting, Other edit buffer commands, Error Checking, Editing objects
 @section Indenting and formatting S code
 
 ESS provides a sophisticated mechanism for indenting @Sl{} source
@@ -2086,7 +1857,7 @@ calls @code{ess-add-style} with a unique name for your style
 to use your new style.
 
 @comment  node-name,  next,  previous,  up
-@node Other edit buffer commands, Source Files, Indenting, Editing
+@node Other edit buffer commands, Source Files, Indenting, Editing objects
 @section Commands for motion, completion and more
 
 A number of commands are provided to move across function definitions
@@ -2143,7 +1914,7 @@ available in the edit buffer.  You can still read help files with
 for more details on these commands.
 
 @comment  node-name,  next,  previous,  up
-@node Source Files, Source Directories, Other edit buffer commands, Editing
+@node Source Files, Source Directories, Other edit buffer commands, Editing objects
 @section Maintaining S source files
 
 Every edit buffer in ESS is associated with a @dfn{dump file} on disk.
@@ -2237,7 +2008,7 @@ Dump buffers are always autosaved, regardless of the value of
 @code{ess-keep-dump-files}.
 
 @comment  node-name,  next,  previous,  up
-@node Source Directories,  , Source Files, Editing
+@node Source Directories,  , Source Files, Editing objects
 @section Names and locations of dump files
 
 @cindex dump file names
@@ -2319,256 +2090,7 @@ be created, you will be asked whether you wish to create the directory.
 If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
-@node Editing R documentation, Help, Editing, Top
-@chapter Editing R documentation
-
-ESS provides two ways of writing documentation for R objects. Either
-using the standard R documentation system or using in-source
-documentation written as structured comment fields for use with the
-Roxygen package.
-
-@menu
-* R documentation files::       Edit objects in a specialized buffer
-* Roxygen::                     Loading source files into the ESS process
-@end menu
-
-@node R documentation files, Roxygen, Editing R documentation, Editing R documentation
-@section Editing R documentation (Rd) files
-
-@R{} objects are documented in files written in the @dfn{R
-documentation} (``Rd''), a simple markup language closely resembling
-(La)@TeX{}, which can be processed into a variety of formats, including
-La@TeX{}, @acronym{HTML}, and plain text.  Rd format is described in
-section ``Rd format'' of the ``Writing R Extensions'' manual in the R
-distribution. ESS has several features that facilitate editing Rd files.
-
-Visiting an Rd file as characterized by its extension @file{Rd} will
-activate Rd Mode, which provides several facilities for making editing R
-documentation files more convenient, by helping with indentation,
-insertions, even doing some of the typing for you (with Abbrev Mode),
-and by showing Rd keywords, strings, etc.@: in different faces (with
-Font Lock Mode).
-
-Note that R also accepts Rd files with extension @file{rd}; to activate
-@ESS{[Rd]} support for this extension, you may need to add
-
-@example
-(add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
-@end example
-
-@noindent
-to one of your Emacs startup files.
-
-In Rd mode, the following special Emacs commands can be used in addition
-to the standard Emacs commands.
-
-@table @kbd
-@item C-h m
-Describe the features of Rd mode.
-
-@item LFD
-@itemx RET
-Reindent the current line, insert a newline and indent the new line
-(@code{reindent-then-newline-and-indent}).  An abbrev before point is
-expanded if @code{abbrev-mode} is non-@code{nil}.
-
-@item TAB
-Indent current line based on its contents and on previous lines
-(@code{indent-according-to-mode}).
-
-@item C-c C-e
-Insert a ``skeleton'' with Rd markup for at least all mandatory entries
-in Rd files (@code{Rd-mode-insert-skeleton}).  Note that many users
-might prefer to use the R function @code{prompt} on an existing R object
-to generate a non-empty Rd ``shell'' documenting the object (which
-already has all information filled in which can be obtained from the
-object).
-
-@item C-c C-f
-Insert ``font'' specifiers for some of the Rd markup commands markup
-available for emphasizing or quoting text, including markup for URLs and
-email addresses (@code{Rd-font}).  @kbd{C-c C-f} is only a prefix; see
-e.g.@: @kbd{C-c C-f TAB} for the available bindings.  Note that
-currently, not all of the Rd text markup as described in section
-``Marking text'' of ``Writing R Extensions'' can be accessed via
-@kbd{C-c C-f}.
-
-@item C-c C-j
-Insert a suitably indented  @samp{\item@{} on the next line
-(@code{Rd-mode-insert-item}).
-
-@item C-c C-p
-Preview a plain text version (``help file'', @pxref{Help}) generated
-from the Rd file (@code{Rd-preview-help}).
-@end table
-
-In addition, when editing Rd files one can interact with a running R
-process in a similar way as when editing R language files.  E.g.,
-@kbd{C-c C-v} provides access to on-line help, and @kbd{C-c C-n} sends
-the current line to the R process for evaluation.  This interaction is
-particularly useful when editing the examples in the Rd file.  See
-@kbd{C-h m} for all available commands.
-
-Rd mode also provides access to abbreviations for most of the Rd markup
-commands.  Type @kbd{M-x list-abbrevs} with Abbrev mode turned on to
-list all available abbrevs.  Note that all Rd abbrevs start with a grave
-accent.
-
-Rd mode can be customized via the following variables.
-
-@table @code
-@item Rd-mode-hook
-Hook to be run when Rd mode is entered.
-@item Rd-indent-level
-The indentation of Rd code with respect to containing blocks.  Default
-is 2.
-@item Rd-to-help-command
-The shell command used for converting Rd source to help text.  Default
-is @samp{R CMD Rd2txt}.
-@end table
-
-To automatically turn on the abbrev and font-lock features of Rd mode,
-add the following lines to one of your Emacs startup files:
-
-@example
-(add-hook 'Rd-mode-hook
-          (lambda ()
-           (abbrev-mode 1)
-           (font-lock-mode 1)))
-@end example
-
-@node Roxygen,  , R documentation files, Editing R documentation
-@section Editing Roxygen documentation
-@cindex Roxygen
-@cindex roxy
-@cindex ess-roxy
-
-The Roxygen R package makes it possible to keep the intended contents
-for Rd files as structured comments in the R source files. Roxygen can
-then parse R files and generate appropriate Rd files from these
-comments, fill the usage fields as well as updating @file{NAMESPACE}
-files. See the Roxygen documentation found via @uref{http://roxygen.org}
-for more information its usage. An example of an Roxygen entry for a
-simple R function can look like this:
-
-@example
-@verbatim
-##' Description of the function
-##'
-##' Further details about this function
-##' @title A title
-##' @param me all parameters must be listed and documented
-##' @return Description of the return value
-##' @author The author
-myfun <- function(me)
-  cat("Hello", me, "\n")
-@end verbatim
-@end example
-The entry is immediately preceding the object to document and all lines
-start with the Roxygen prefix string, in this case @code{##'}. ESS
-provides support to edit these documentation entries by providing line
-filling, navigation, template generation etc. Syntax highlighting is
-provided for Emacs but not for XEmacs.
-
-Roxygen is customized by the variables in the customization group ``Ess
-Roxy''. Customizables include the Roxygen prefix, use of folding
-to toggle visibility of Roxygen entries and the Roxygen template.
-
-All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
-by default in ESS. The following special Emacs commands are provided.
-
-@itemize @bullet
-
-@item
-@kbd{C-c C-o} (@code{ess-roxy-update-entry}) @*
-@pindex ess-roxy-update-entry
-Generate a Roxygen template or update the parameter list in Roxygen
-entry at point (or above the function at the point). Documented
-parameters that are not in the function are placed last in the list,
-parameters that are not documented and not in the definition are
-dropped. Parameter descriptions are filled if
-@code{ess-roxy-fill-param-p} is non-nil.
-
-@item
-@kbd{C-c C-e C-c} (@code{ess-roxy-toggle-roxy-region}) @*
-@pindex ess-roxy-toggle-roxy-region
-Toggle the presence of the leading Roxygen string on all lines in the
-marked region. Convenient for transferring text to Roxygen entries and
-to evaluate example fields.
-
-@item
-@kbd{C-c C-e C-r} (@code{ess-roxy-preview-Rd}) @*
-@pindex ess-roxy-preview-Rd
-Use the attached R process to parse the entry at point to obtain the Rd
-code. Convenient for previewing and checking syntax. When used with the
-prefix argument, i.e. @kbd{C-u C-c C-e C-r}, place the content in a
-buffer associated with a Rd file with the same name as the
-documentation. Requires the Roxygen package to be installed.
-
-@item
-@kbd{C-c C-e C-t} (@code{ess-roxy-preview-HTML}) @*
-@pindex ess-roxy-preview-Rd
-Use the attached R process to parse the entry at to generate HTML for
-the entry and open it in a browser. When used with the prefix argument,
-i.e. @kbd{C-u C-c C-e C-t}, visit the generated HTML file instead.
-Requires the Roxygen and tools packages to be installed.
-
-@item
-@kbd{C-c C-e p} (@code{ess-roxy-previous-entry}) @*
-@pindex ess-roxy-previous-entry
-Go to start of the Roxygen entry above point.
-
-@item
-@kbd{C-c C-e n}  (@code{ess-roxy-next-entry}) @*
-@pindex ess-roxy-next-entry
-Go to end of the Roxygen entry above point.
-
-@item
-@kbd{C-c C-e C-h} (@code{ess-roxy-hide-all}) @*
-@pindex ess-roxy-hide-all
-Use the hideshow mode to fold away the visibility of all Roxygen
-entries. Hide-show support must be enabled for this binding to get
-defined.
-
-ESS also advices the following standard editing functions in order to make
-Roxygen editing more intuitive:
-
-@item
-@kbd{C-c TAB} (@code{ess-R-complete-object-name}) @*
-@pindex ess-R-complete-object-name
-Complete Roxygen tag at point. E.g. doing @kbd{C-c TAB} when the point
-is at the end of @code{@@par} completes to @code{@@param}.
-
-@item
-@kbd{M-h} (@code{mark-paragraph}) @*
-@pindex mark-paragraph
-If the transient mark mode is active, place mark and point at start end
-end of the field at point and activate the mark.
-
-@item
-@kbd{TAB} (@code{ess-indent-command}) @*
-@pindex ess-indent-command
-If hide-show support is enabled, fold away the visibility of the Roxygen
-entry at point.
-
-@item
-@kbd{M-q} (@code{fill-paragraph}) @*
-@pindex fill-paragraph
-Fill the Roxygen field at point.
-
-@item
-@kbd{C-a} (@code{move-beginning-of-line}) @*
-@pindex move-beginning-of-line
-Move to the point directly to the right of the Roxygen start string.
-
-@item
-@kbd{ENTER} (@code{newline-and-indent}) @*
-@pindex newline-and-indent
-Insert a new line and the Roxygen prefix string.
-@end itemize
-
-@comment  node-name,  next,  previous,  up
-@node Help, ESS for SAS, Editing R documentation, Top
+@node Help, Completion, Editing objects, Top
 @chapter Reading help files
 @cindex help files
 
@@ -2757,52 +2279,659 @@ variable @code{ess-help-own-frame}.
 @pindex ess-cleanup
 @cindex temporary buffers
 
+@node Completion, Developing with ESS, Help, Top
+@chapter Completion
 @comment  node-name,  next,  previous,  up
-@node ESS for SAS, ESS for BUGS, Help, Top
-@chapter ESS for SAS
-
 @menu
-* ESS(SAS)--Design philosophy::
-* ESS(SAS)--Editing files::
-* ESS(SAS)--TAB key::
-* ESS(SAS)--Batch SAS processes::
-* ESS(SAS)--Function keys for batch processing::
-* iESS(SAS)--Interactive SAS processes::
-* iESS(SAS)--Common problems::
-* ESS(SAS)--Graphics::
-* ESS(SAS)--Windows::
+* Object names::
+* Function arguments::
+* Minibufer completion::
+* Auto-complete::
 @end menu
-@include help-sas.texi
 
+@node  Object names, Function arguments, Completion, Completion
+@section Completion of object names
+@cindex completion of object names
+@cindex command-line completion
+
+In the process buffer, the @key{TAB} key is for completion, similar to
+that provided by Shell Mode for filenames.  In Inferior @Sl{} mode,
+pressing the @key{TAB} key when the cursor is following the first few
+characters of an object name @emph{completes} the object name; if the
+cursor is following a file name @kbd{TAB} completes the file name.
+
+@itemize @bullet
+@item
+@kbd{TAB} (@code{comint-dynamic-complete}) @*
+@pindex comint-dynamic-complete
+Complete the @Sl{} object name or filename before point.
+@end itemize
+
+When the cursor is just after a partially-completed object name,
+pressing @key{TAB} provides completion in a similar fashion to
+@code{tcsh}
+@cindex tcsh
+except that completion is performed over all known @Sl{} object names
+instead of file names.  ESS maintains a list of all objects known to S
+at any given time, which basically consists of all objects (functions
+and datasets) in every attached directory listed by the @code{search()}
+command
+@pindex search()
+along with the component objects of attached data frames
+@cindex data frames
+(if your version of @Sl{} supports them).
+
+For example, consider the three functions (available in Splus version
+3.0) called @code{binomplot()}, @code{binom.test()} and
+@code{binomial()}.  Typing @kbd{bin TAB} after the @Sl{} prompt will
+insert the characters @samp{om}, completing the longest prefix
+(@samp{binom}) which distinguishes these three commands.  Pressing
+@kbd{TAB} once more provides a list of the three commands which have
+this prefix, allowing you to add more characters (say, @samp{.}) which
+specify the function you desire.  After entering more characters
+pressing @kbd{TAB} yet again will complete the object name up to
+uniqueness, etc.  If you just wish to see what completions exist without
+adding any extra characters, type @kbd{M-?}.
+
+@itemize @bullet
+@item
+@kbd{M-?} (@code{ess-list-object-completions}) @*
+@pindex ess-list-object-completions
+List all possible completions of the object name at point.
+@end itemize
+
+ESS also provides completion over the components of named lists accessed
+using the @samp{$} notation, to any level of nested lists.  This feature
+is particularly useful for checking what components of a list object
+exist while partway through entering a command: simply type the object
+name and @samp{$} and press @kbd{TAB} to see the names of existing list
+components for that object.
+@cindex lists, completion on
+@cindex completion on lists
+
+@cindex completion on file names
+Completion is also provided over file names, which is particularly
+useful when using @Sl{} functions such as @code{get()} or @code{scan()}
+which require fully expanded file names.  Whenever the cursor is within
+an @Sl{} string, pressing @kbd{TAB} completes the file name before
+point.  Since ESS 5.11, it no longer also expands any @samp{~} or
+environment variable references.
+
+If the cursor is not in a string and does not follow a (partial) object
+name, the @key{TAB} key has a third use: it expands history references.
+@xref{History expansion}.
+
+@c @comment  node-name,  next,  previous,  up
+@c @node Completion details, Transcript, Completion, Entering commands
+
+@c ------ VS: this will change in the next release, thus commented out
+@c @section Completion details
+
+@c ESS automatically keeps track of any objects added or deleted to the
+@c system (such as new objects created, or directories added to the search
+@c list) to make completion as accurate as possible.  Whenever ESS notices
+@c that search list has changed
+@c @vindex ess-change-sp-regexp
+@c @footnote{The variable @code{ess-change-sp-regexp} is a regular
+@c expression matching commands which change the search list.  You will
+@c need to modify this variable if you have defined custom commands (other
+@c than @code{attach}, @code{detach}, @code{collection} or @code{library})
+@c which modify the search list.}  when you attach a directory or data
+@c frame, the objects associated with it immediately become available for a
+@c completion; when it is detached completion is no longer available on
+@c those objects.
+
+@c To maintain a list of accessible objects for completion, ESS needs to
+@c determine which objects are contained in each directory or data frame on
+@c the search list.  This is done at the start of each @Sl{} session, by
+@c running the @code{objects()} command on every element of the search
+@c list.
+
+@c On some systems, however, this can be rather slow; it's doubly
+@c frustrating when you consider that most of the directories on the search
+@c list are the standard @Sl{} libraries, which never change anyway!  When
+@c ESS was installed, a database of the standard object names should have
+@c been created which should speed up this process at the start of an S
+@c session; if it has not been created you will get a warning like
+@c `S-namedb.el does not exist'.  @xref{Installation}, for information on
+@c how to create this database.
+
+Efficiency in completion is gained by maintaining a cache of objects
+currently known to S; when a new object becomes available or is deleted,
+only one component of the cache corresponding to the associated
+directory needs to be refreshed.  If ESS ever becomes confused about
+what objects are available for completion (such as when if refuses to
+complete an object you @strong{know} is there), the command @kbd{M-x
+ess-resynch}
+@pindex ess-resynch
+forces the @emph{entire} cache to be refreshed, which should fix the
+problem.
+
+@node Function arguments, Minibufer completion, Object names, Completion
+@section Completion of function arguments
+
+When inside a function call (i.e. following `@code{(}'), @kbd{TAB}
+completion also provides function arguments. If function is a generic,
+completion will provide all the arguments of @code{S3} methods known to
+@code{R}.
+
+A related functionality is @xref{ESS ElDoc}, which displays function
+arguments in the echo area whenever point is inside a function call.
+
+@node Minibufer completion, Auto-complete, Function arguments, Completion
+@section Minibufer completion
 @comment  node-name,  next,  previous,  up
-@node ESS for BUGS, ESS for JAGS, ESS for SAS, Top
-@chapter ESS for BUGS
+
+@cindex IDO completions
+@pindex ess-use-ido, ess-completing-read
+From version ????, ESS uses @code{IDO} mechanism (part of default emacs)
+for minibufer completion if @code{ido.el} package is available and the
+value of @code{ess-use-ido} it @code{t} (the default). The completion
+command @code{ess-completing-read} falls back on classic
+@code{completion-read} interface if this feature is not available for
+whatever reason.
+
+@node Auto-complete,  , Minibufer completion, Completion
+@section Integration with auto-complete package
+@cindex auto-complete
+@pindex ac-source-R
+@pindex ac-source-R-args
+@pindex ac-source-R-objects
+ESS provides three sources for @code{Auto Completion} mode
+(@uref{http://cx4a.org/software/auto-complete/}) -
+@code{ac-source-R-args}, @code{ac-source-R-objects} and
+@code{ac-source-R}.  Last one combines the previous two and makes them
+play nicely together.  See auto-complete package documentation
+(@uref{http://cx4a.org/software/auto-complete/}) for how to modify and
+install completion sources.
+
+To start using it, install the latest version of @code{auto-complete}
+package and place the following into your init file:
+
+@example
+(setq ess-use-auto-complete t)
+@end example
+
+Or, to activate auto-completion only in the @code{ess-mode} buffers:
+
+@example
+(setq ess-use-auto-complete 'script-only)
+@end example
+
+ESS provides AC help both for arguments and objects (default keys
+@kbd{C-?}  or @kbd{<f1>}). You can bind @kbd{M-h} to display quick help
+pop-ups:
+
+@example
+(define-key ac-completing-map (kbd "M-h") 'ac-quick-help)
+@end example
+
+@code{AC} binds @kbd{M-n}, and @kbd{M-p} for the navigation in the
+completion menu, which might be inconvenient if you want it to use in
+the inferior R. Bind it to something else:
+
+@example
+(define-key ac-completing-map "\M-n" nil) ;; was ac-next
+(define-key ac-completing-map "\M-p" nil) ;; was ac-previous
+(define-key ac-completing-map "\M-," 'ac-next)
+(define-key ac-completing-map "\M-k" 'ac-previous)
+@end example
+
+@node Developing with ESS, Extras, Completion, Top
+@chapter Developing with ESS
+@comment  node-name,  next,  previous,  up
+
+ESS provides several tools to help you with the development of your R
+packages:
 
 @menu
-* ESS(BUGS)--Model files::
-* ESS(BUGS)--Command files::
-* ESS(BUGS)--Log files::
+* ESS tracebug::                Visual debugging, breakpoints, tracing, watch etc.
+* Editing documentation::       Tools to edit R documentation
+* ESS developer::               Develop your packages on the fly
 @end menu
-@include help-bugs.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for JAGS, Miscellaneous, ESS for BUGS, Top
-@chapter ESS for JAGS
+@node ESS tracebug, Editing documentation, Developing with ESS, Developing with ESS
+@section ESS tracebug
+@cindex ESS tracebug
+@pindex ess-tracebug
+@emph{Note:} The official ess-tracebug documentation is at
+@uref{http://code.google.com/p/ess-tracebug/}, and is currently being
+moved into ESS user manual.
+
+ESS @code{tracebug} package offers visual debugging, interactive error
+navigation, interactive backtrace, breakpoints manipulation, control over R error
+actions, watch window and interactive flagging/unflagging functions for
+debugging.
+
+To use these features you have to set the tracebug prefix to a
+@emph{fast} key. If you don't use @kbd{M-t} (@code{transpose-words})
+very often, do something like this:
+
+@example
+(setq ess-tracebug-prefix "\M-t")
+(setq ess-use-tracebug t)
+@end example
+
+This will automatically set @code{transpose-words} to be triggered by
+@kbd{M-t M-t}.
+
+Assuming that the prefix key is @kbd{M-t}, you can always call @kbd{M-t
+?} to display the following menu:
+
+@verbatim
+
+* Breakpoints:
+
+ b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
+ B   . Set conditional BP               . `ess-bp-set-conditional'
+ k   . Kill BP                          . `ess-bp-kil'
+ K   . Kill all BPs                     . `ess-bp-kill-all'
+ t   . Toggle BP state                  . `ess-bp-toggle-state'
+ l   . Set logger BP                    . `ess-bp-set-logger'
+ C-n . Goto next BP                     . `ess-bp-next'
+ C-p . Goto previous BP                 . `ess-bp-previous'
+
+* General Debugging:
+
+ `   . Show R Traceback                     . `ess-show-R-traceback'
+ e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
+ d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
+ u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ w   . Watch window                         . `ess-watch'
+
+* Navigation to errors (emacs general functionality):
+
+ C-x `, M-g n   . `next-error'
+ M-g p          . `previous-error'
+
+* Interactive Debugging:
+
+ c   . Continue                  . `ess-dbg-command-c'
+ n   . Next step                 . `ess-dbg-command-n'
+ p   . Previous step             . `previous-error'
+ q   . Quit debugging            . `ess-dbg-command-Q'
+ 1..9. Enter recover frame       . `ess-dbg-command-digit'
+ 0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+
+* Input Ring:
+
+ i   . Goto input event marker forwards     . `ess-dbg-goto-input-event-marker'
+ I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
+
+* Misc:
+ s   . Source current file	. `ess-tracebug-source-current-file'
+ ?   . Show this help		. `ess-tracebug-show-help'
+ C-c				. `capitalize-word'
+
+@end verbatim
+
+
+
+
+@node Editing documentation, ESS developer, ESS tracebug, Developing with ESS
+@section Editing documentation
+
+ESS provides two ways of writing documentation for R objects. Either
+using the standard R documentation system or using in-source
+documentation written as structured comment fields for use with the
+Roxygen package.
 
 @menu
-* ESS(JAGS)--Model files::
-* ESS(JAGS)--Command files::
-* ESS(JAGS)--Log files::
+* R documentation files::       Edit objects in a specialized buffer
+* Roxygen::                     Loading source files into the ESS process
 @end menu
-@include help-jags.texi
+
+@node R documentation files, Roxygen, Editing documentation, Editing documentation
+@subsection Editing R documentation (Rd) files
+
+@R{} objects are documented in files written in the @dfn{R
+documentation} (``Rd''), a simple markup language closely resembling
+(La)@TeX{}, which can be processed into a variety of formats, including
+La@TeX{}, @acronym{HTML}, and plain text.  Rd format is described in
+section ``Rd format'' of the ``Writing R Extensions'' manual in the R
+distribution. ESS has several features that facilitate editing Rd files.
+
+Visiting an Rd file as characterized by its extension @file{Rd} will
+activate Rd Mode, which provides several facilities for making editing R
+documentation files more convenient, by helping with indentation,
+insertions, even doing some of the typing for you (with Abbrev Mode),
+and by showing Rd keywords, strings, etc.@: in different faces (with
+Font Lock Mode).
+
+Note that R also accepts Rd files with extension @file{rd}; to activate
+@ESS{[Rd]} support for this extension, you may need to add
+
+@example
+(add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
+@end example
+
+@noindent
+to one of your Emacs startup files.
+
+In Rd mode, the following special Emacs commands can be used in addition
+to the standard Emacs commands.
+
+@table @kbd
+@item C-h m
+Describe the features of Rd mode.
+
+@item LFD
+@itemx RET
+Reindent the current line, insert a newline and indent the new line
+(@code{reindent-then-newline-and-indent}).  An abbrev before point is
+expanded if @code{abbrev-mode} is non-@code{nil}.
+
+@item TAB
+Indent current line based on its contents and on previous lines
+(@code{indent-according-to-mode}).
+
+@item C-c C-e
+Insert a ``skeleton'' with Rd markup for at least all mandatory entries
+in Rd files (@code{Rd-mode-insert-skeleton}).  Note that many users
+might prefer to use the R function @code{prompt} on an existing R object
+to generate a non-empty Rd ``shell'' documenting the object (which
+already has all information filled in which can be obtained from the
+object).
+
+@item C-c C-f
+Insert ``font'' specifiers for some of the Rd markup commands markup
+available for emphasizing or quoting text, including markup for URLs and
+email addresses (@code{Rd-font}).  @kbd{C-c C-f} is only a prefix; see
+e.g.@: @kbd{C-c C-f TAB} for the available bindings.  Note that
+currently, not all of the Rd text markup as described in section
+``Marking text'' of ``Writing R Extensions'' can be accessed via
+@kbd{C-c C-f}.
+
+@item C-c C-j
+Insert a suitably indented  @samp{\item@{} on the next line
+(@code{Rd-mode-insert-item}).
+
+@item C-c C-p
+Preview a plain text version (``help file'', @pxref{Help}) generated
+from the Rd file (@code{Rd-preview-help}).
+@end table
+
+In addition, when editing Rd files one can interact with a running R
+process in a similar way as when editing R language files.  E.g.,
+@kbd{C-c C-v} provides access to on-line help, and @kbd{C-c C-n} sends
+the current line to the R process for evaluation.  This interaction is
+particularly useful when editing the examples in the Rd file.  See
+@kbd{C-h m} for all available commands.
+
+Rd mode also provides access to abbreviations for most of the Rd markup
+commands.  Type @kbd{M-x list-abbrevs} with Abbrev mode turned on to
+list all available abbrevs.  Note that all Rd abbrevs start with a grave
+accent.
+
+Rd mode can be customized via the following variables.
+
+@table @code
+@item Rd-mode-hook
+Hook to be run when Rd mode is entered.
+@item Rd-indent-level
+The indentation of Rd code with respect to containing blocks.  Default
+is 2.
+@item Rd-to-help-command
+The shell command used for converting Rd source to help text.  Default
+is @samp{R CMD Rd2txt}.
+@end table
+
+To automatically turn on the abbrev and font-lock features of Rd mode,
+add the following lines to one of your Emacs startup files:
+
+@example
+(add-hook 'Rd-mode-hook
+          (lambda ()
+           (abbrev-mode 1)
+           (font-lock-mode 1)))
+@end example
+
+@node Roxygen,  , R documentation files, Editing documentation
+@subsection Editing Roxygen documentation
+@cindex Roxygen
+@cindex roxy
+@cindex ess-roxy
+
+The Roxygen R package makes it possible to keep the intended contents
+for Rd files as structured comments in the R source files. Roxygen can
+then parse R files and generate appropriate Rd files from these
+comments, fill the usage fields as well as updating @file{NAMESPACE}
+files. See the Roxygen documentation found via @uref{http://roxygen.org}
+for more information its usage. An example of an Roxygen entry for a
+simple R function can look like this:
+
+@example
+@verbatim
+##' Description of the function
+##'
+##' Further details about this function
+##' @title A title
+##' @param me all parameters must be listed and documented
+##' @return Description of the return value
+##' @author The author
+myfun <- function(me)
+  cat("Hello", me, "\n")
+@end verbatim
+@end example
+The entry is immediately preceding the object to document and all lines
+start with the Roxygen prefix string, in this case @code{##'}. ESS
+provides support to edit these documentation entries by providing line
+filling, navigation, template generation etc. Syntax highlighting is
+provided for Emacs but not for XEmacs.
+
+Roxygen is customized by the variables in the customization group ``Ess
+Roxy''. Customizables include the Roxygen prefix, use of folding
+to toggle visibility of Roxygen entries and the Roxygen template.
+
+All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
+by default in ESS. The following special Emacs commands are provided.
+
+@itemize @bullet
+
+@item
+@kbd{C-c C-o} (@code{ess-roxy-update-entry}) @*
+@pindex ess-roxy-update-entry
+Generate a Roxygen template or update the parameter list in Roxygen
+entry at point (or above the function at the point). Documented
+parameters that are not in the function are placed last in the list,
+parameters that are not documented and not in the definition are
+dropped. Parameter descriptions are filled if
+@code{ess-roxy-fill-param-p} is non-nil.
+
+@item
+@kbd{C-c C-e C-c} (@code{ess-roxy-toggle-roxy-region}) @*
+@pindex ess-roxy-toggle-roxy-region
+Toggle the presence of the leading Roxygen string on all lines in the
+marked region. Convenient for transferring text to Roxygen entries and
+to evaluate example fields.
+
+@item
+@kbd{C-c C-e C-r} (@code{ess-roxy-preview-Rd}) @*
+@pindex ess-roxy-preview-Rd
+Use the attached R process to parse the entry at point to obtain the Rd
+code. Convenient for previewing and checking syntax. When used with the
+prefix argument, i.e. @kbd{C-u C-c C-e C-r}, place the content in a
+buffer associated with a Rd file with the same name as the
+documentation. Requires the Roxygen package to be installed.
+
+@item
+@kbd{C-c C-e C-t} (@code{ess-roxy-preview-HTML}) @*
+@pindex ess-roxy-preview-Rd
+Use the attached R process to parse the entry at to generate HTML for
+the entry and open it in a browser. When used with the prefix argument,
+i.e. @kbd{C-u C-c C-e C-t}, visit the generated HTML file instead.
+Requires the Roxygen and tools packages to be installed.
+
+@item
+@kbd{C-c C-e p} (@code{ess-roxy-previous-entry}) @*
+@pindex ess-roxy-previous-entry
+Go to start of the Roxygen entry above point.
+
+@item
+@kbd{C-c C-e n}  (@code{ess-roxy-next-entry}) @*
+@pindex ess-roxy-next-entry
+Go to end of the Roxygen entry above point.
+
+@item
+@kbd{C-c C-e C-h} (@code{ess-roxy-hide-all}) @*
+@pindex ess-roxy-hide-all
+Use the hideshow mode to fold away the visibility of all Roxygen
+entries. Hide-show support must be enabled for this binding to get
+defined.
+
+ESS also advices the following standard editing functions in order to make
+Roxygen editing more intuitive:
+
+@item
+@kbd{C-c TAB} (@code{ess-R-complete-object-name}) @*
+@pindex ess-R-complete-object-name
+Complete Roxygen tag at point. E.g. doing @kbd{C-c TAB} when the point
+is at the end of @code{@@par} completes to @code{@@param}.
+
+@item
+@kbd{M-h} (@code{mark-paragraph}) @*
+@pindex mark-paragraph
+If the transient mark mode is active, place mark and point at start end
+end of the field at point and activate the mark.
+
+@item
+@kbd{TAB} (@code{ess-indent-command}) @*
+@pindex ess-indent-command
+If hide-show support is enabled, fold away the visibility of the Roxygen
+entry at point.
+
+@item
+@kbd{M-q} (@code{fill-paragraph}) @*
+@pindex fill-paragraph
+Fill the Roxygen field at point.
+
+@item
+@kbd{C-a} (@code{move-beginning-of-line}) @*
+@pindex move-beginning-of-line
+Move to the point directly to the right of the Roxygen start string.
+
+@item
+@kbd{ENTER} (@code{newline-and-indent}) @*
+@pindex newline-and-indent
+Insert a new line and the Roxygen prefix string.
+@end itemize
+
+@node ESS developer,  , Editing documentation, Developing with ESS
+@section ESS developer
+@cindex ess developer
+
+Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
+the current buffer to the process for the evaluation in
+@code{R_GlobalEnv} environment. Often, in process of the developing
+packages with namespaces, it is necessary to evaluate code directly in
+the package's environment of namespace. The @code{ess-developer} utility
+provides such a functionality with minimal distortions of the usual ESS
+work-flow.
+
+To understand how ess-developer works you must be familiar with namespace
+system in R.
+
+In a nutshell, all objects defined in a package 'foo' are stored in an
+environment called 'namespace:foo'. Parent environment of
+'namespace:foo' is an environment 'imports:foo' which contains copies of
+all objects from other packages which 'foo' imports. Parent environment
+of 'imports:foo' is the 'namespace:base'. Parent environment of
+'namespace:base' is .GlobalEnv. Thus functions and methods stored in
+'namespace:foo' see all the objects in .GlobalEnv unless shadowed by
+objects in 'imports:foo', 'namespace:base', or 'namespace:foo'
+itself. There is another environment associated with 'foo' -
+'package:foo'. This environment stores *copies* of exported objects from
+'namespace:foo' and is placed on the search() path, i.e. if 'foo' is
+loaded and if you start with .GlobalEnv and iteratively call
+parent.env() you will get eventually to 'package:foo'. Thus all methods
+and functions defined in .GlobalEnv can see the objects in
+'package:foo'. See also
+@uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
+
+In order to use ess-developer mode you should add names of the packages
+you are developing to @code{ess-developer-packages}. You can add
+packages to this list, interactively, with @kbd{C-d a}, and remove with
+@kbd{C-d r}. When developer mode is on, the name of the process in the
+mode line is highlighted with @code{ess-developer-indicator-face}.
+
+@itemize @bullet
+@item @kbd{C-c d t}(@code{ess-developer}) @*
+      Toggle developer mode on and off.
+@item @kbd{C-c d a}(@code{ess-developer-add-package}) @*
+      Add  a package to your development list
+@item @kbd{C-c d r}(@code{ess-developer-remove-package}) @*
+      Remove a package from your development list.
+@item @kbd{C-c d s}(@code{ess-developer-source-current-file}) @*
+ Source current file into the namespace (ask for the package). When
+ developer mode is on, @kbd{C-c C-l}(@code{ess-load-file}) calls
+ @code{ess-developer-source-current-file} instead.
+@end itemize
+
+When developer mode is on, ESS evaluation commands behave differently:
+@itemize @bullet
+
+@item @kbd{C-c l} (@code{ess-load-file}) asks for the package to source
+into and inserts all redefined objects into the package:foo or
+name space:foo accordingly:
+
+@itemize @minus
+
+@item PLAIN OBJECTS and FUNCTIONS: @*
+ If the object is found in an environment (packag:foo or namespace:foo),
+  and differs from the old one it is assigned into the corresponding
+  environment. If the object is not found it is assigned into
+  .GlobalEnv. The environment of functions is set to namespace:foo.
+
+@item CLASSES: @*
+Same as plain objects, with the difference that even if the class
+definition is assigned into .GlobalEnv, it is still associated with the
+package foo. Thus if you issue getClassDeff("foo") you will get a class
+definition with the slot @@package pointing to package "foo".
+
+     @emph{Note:} Occasionally, after adding new classes you might get warnings
+    from "setClass". This is especially true if new class inherits or is
+    inherited by a class whose definition is not exported. You might get
+    something like:
+@code{
+       Warning: Class "boo" is defined (with package slot ‘foo’) but no
+       metadata object found to revise subclass information---not exported?
+}
+
+   In my experience you can safely ignore this warnings.
+
+@item METHODS: @*
+Similarly to function definitions modified methods are assigned in the
+local method table in the namespace:foo. New methods are assigned into
+.GlobalEnv, but with the environment pointing to namespace:foo. There is
+a suttle catch with method caching in R though. See ess-developer.R for
+more detailed comments.
+
+  Note that if method or generic is exported the *same* table (which is an
+  environment) is present in package:foo.
+
+@end itemize
+
+@item @kbd{C-c C-r}(@code{ess-eval-region}  and functions that depend on
+it (@code{ess-eval-paragraph}, @code{ess-eval-buffer} etc., behave as
+ess-load-file', but restrict the evaluation to the co responding region
+
+@item @kbd{C-c C-f} (@code{ess-eval-function}) and friends check if the
+current function's name can be found in a namespace:foo or package:foo
+for a 'foo' from `ess-developer-packages'.  If found, and new function
+definition differs from the old one, the function is assigned into that
+namespace. If not found, it is assigned into .GlobalEnv.
+@end itemize
+
 
 @comment  node-name,  next,  previous,  up
-@node Miscellaneous, Mailing lists/bug reports, ESS for JAGS, Top
-@chapter Other features of ESS
+@node Extras, ESS for SAS, Developing with ESS, Top
+@chapter Other ESS features for the S family
 
-ESS has a few miscellaneous features, which didn't fit anywhere else.
-
+ESS has a few extra features, which didn't fit anywhere else.
+@c todo: sort alphabetically
 @menu
+* ESS ElDoc::                   Display function arguments in minibuffer
+* Handy commands::              Usefully commands at your fingertips
 * Highlighting::                Syntactic highlighting of buffers
 * Parens::                      Parenthesis matching
 * Graphics::                    Using graphics with ESS
@@ -2813,11 +2942,78 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Rutils::                      R object/package management and help utilities
 * Org::                         Interaction with Org mode
 * Sweave and AUCTeX::           Support for Sweave in ESS and AUCTeX
-* Debugging R::                 Debugging R code in ESS
 @end menu
 
+@node ESS ElDoc, Handy commands, Extras, Extras
+@section ElDoc
+@cindex ElDoc
+In ElDoc mode, the echo area displays function's arguments at
+point. From version ??? of @ESS{}, ElDoc is active by default in
+@code{ess-mode} and @code{inferior-ess-mode} buffers. To activate only
+in @code{ess-mode} buffers place the following into your init file:
+
+@example
+(setq ess-use-eldoc 'script-only)
+@end example
+
+Set @code{ess-use-eldoc} to nil if you don't want @code{ElDoc} altogether.
+
+Variable @code{ess-eldoc-show-on-symbol} controls how ``aggressive'' the
+completion is. If set to @code{t}, @code{ElDoc} shows help string
+whenever the point is on a symbol, otherwise, show only when the point
+is in a function call, i.e. after @code{'(')}.
+
+@node Handy commands, Highlighting, ESS ElDoc, Extras
+@section Handy commands
+@cindex Handy commands
+@pindex ess-handy-commands
+@pindex ess-smart-comma
+
+If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
+line of an ESS inferior buffer (i.e. process marker), ESS request and
+execute a command from @code{`ess-handy-commands'} list. If
+@code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
+`` `` after comma.
+
+Variable @code{`ess-handy-commands'} stores an alist of useful commands
+which are called by @code{ess-smart-comma} in the inferior buffer.
+
+Currently containing:
+
+@table @asis
+@item change-directory
+    @code{ess-change-directory}
+@item help-index
+          @code{ess-display-index}
+@item help-object
+         @code{ess-display-help-on-object}
+@item vignettes
+           @code{ess-display-vignettes}
+@item objects[ls]
+         @code{ess-execute-objects}
+@item search
+              @code{ess-execute-search}
+@item set-width
+           @code{ess-execute-screen-options}
+@item install.packages
+    @code{ess-install.packages}
+@item library
+             @code{ess-library}
+@item setRepos
+            @code{ess-setRepositories}
+@item sos
+                 @code{ess-sos}
+@end table
+
+Handy commands: @code{ess-library}, @code{ess-install.packages}, etc -
+ask for item with completion and execute the correspond
+command. @code{ess-sos} is a interface to @code{findFn} function in
+package @code{sos}. If package @code{sos} is not found, ask user for
+interactive install.
+
+
 @comment  node-name,  next,  previous,  up
-@node Highlighting, Parens, Miscellaneous, Miscellaneous
+@node Highlighting, Parens, Handy commands, Extras
 @section Syntactic highlighting of buffers
 
 ESS provides Font-Lock (@pxref{Faces,,Using Multiple Typefaces,
@@ -2868,7 +3064,7 @@ functions and reserved words.
 
 
 @comment  node-name,  next,  previous,  up
-@node Parens, Graphics, Highlighting, Miscellaneous
+@node Parens, Graphics, Highlighting, Extras
 @section Parenthesis matching
 
 Emacs and XEmacs have facilities for highlighting the parenthesis
@@ -2888,7 +3084,7 @@ initialisation file:
 
 
 @comment  node-name,  next,  previous,  up
-@node Graphics, Imenu, Parens, Miscellaneous
+@node Graphics, Imenu, Parens, Extras
 @section Using graphics with ESS
 
 @cindex graphics
@@ -2953,7 +3149,7 @@ interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
 @comment  node-name,  next,  previous,  up
-@node Imenu, Toolbar, Graphics, Miscellaneous
+@node Imenu, Toolbar, Graphics, Extras
 @section Imenu
 
 Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
@@ -2970,7 +3166,7 @@ check the value of @code{imenu-generic-expression}.  This value is set
 by various ESS variables such as @code{ess-imenu-S-generic-expression}.
 
 @comment  node-name,  next,  previous,  up
-@node Toolbar, TAGS, Imenu, Miscellaneous
+@node Toolbar, TAGS, Imenu, Extras
 @section Toolbar
 
 The R and S editing modes have support for a toolbar.  This toolbar
@@ -2980,7 +3176,7 @@ present if your emacs can display images.  @xref{Customization}, for ways
 to change the toolbar.
 
 @comment  node-name,  next,  previous,  up
-@node TAGS, Rdired, Toolbar, Miscellaneous
+@node TAGS, Rdired, Toolbar, Extras
 @section TAGS
 
 The Emacs tags facility can be used to navigate around your files
@@ -3022,7 +3218,7 @@ R CMD rtags --help
 For further details, see @uref{http://developer.r-project.org/rtags.html}
 
 @comment  node-name,  next,  previous,  up
-@node Rdired, Rutils, TAGS, Miscellaneous
+@node Rdired, Rutils, TAGS, Extras
 @section Rdired
 
 Ess-rdired provides a dired-like buffer for viewing, editing and
@@ -3064,7 +3260,7 @@ deletion (`x' will actually perform the deletion).
 
 
 @comment  node-name,  next,  previous,  up
-@node Rutils, Org, Rdired, Miscellaneous
+@node Rutils, Org, Rdired, Extras
 @section Rutils
 
 Ess-rutils builds up on ess-rdired, providing key bindings for
@@ -3157,7 +3353,7 @@ in @code{ess-rutils-mode}, providing useful key bindings in this mode
 
 
 @comment  node-name,  next,  previous,  up
-@node Org, Sweave and AUCTeX, Rutils, Miscellaneous
+@node Org, Sweave and AUCTeX, Rutils, Extras
 @section Interaction with Org mode
 
 Org-mode (@uref{http://orgmode.org}) now supports reproducible research
@@ -3175,7 +3371,7 @@ R process.  (This section contributed by Dan Davison and Eric Schulte.)
 
 
 @comment  node-name,  next,  previous,  up
-@node Sweave and AUCTeX, Debugging R, Org, Miscellaneous
+@node Sweave and AUCTeX,  , Org, Extras
 @section Support for Sweave in ESS and AUCTeX
 
 ESS provides support for writing and processing Sweave
@@ -3225,32 +3421,49 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
 @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
 
+
 @comment  node-name,  next,  previous,  up
-@node  Debugging R,  , Sweave and AUCTeX, Miscellaneous
-@section Debugging R code in ESS
+@node ESS for SAS, ESS for BUGS, Extras, Top
+@chapter ESS for SAS
 
-There are currently two extra facilities that have been developed for
-debugging R code within ESS.
+@menu
+* ESS(SAS)--Design philosophy::
+* ESS(SAS)--Editing files::
+* ESS(SAS)--TAB key::
+* ESS(SAS)--Batch SAS processes::
+* ESS(SAS)--Function keys for batch processing::
+* iESS(SAS)--Interactive SAS processes::
+* iESS(SAS)--Common problems::
+* ESS(SAS)--Graphics::
+* ESS(SAS)--Windows::
+@end menu
+@include help-sas.texi
 
-@itemize @bullet
-@item ``Ess-tracebug is a package for interactive visual debugging of R code from
-ESS. It provides visual debugging, browser, recover and conditional
-breakpoints; watch window and loggers; interactive debug/undebug of R
-functions and methods at point; highlighting and easy error navigation and
-interactive traceback.''  @uref{http://code.google.com/p/ess-tracebug/}
+@comment  node-name,  next,  previous,  up
+@node ESS for BUGS, ESS for JAGS, ESS for SAS, Top
+@chapter ESS for BUGS
 
+@menu
+* ESS(BUGS)--Model files::
+* ESS(BUGS)--Command files::
+* ESS(BUGS)--Log files::
+@end menu
+@include help-bugs.texi
 
-@item The R package edtdbg ``integrates R's debugging facilities with your
-text editor, featuring code tracking, variable display, quick breakpoint
-setting, and easy toggling of function debug status.''  It provides
-support for both Emacs and VIM.  Package available from CRAN mirrors.
+@comment  node-name,  next,  previous,  up
+@node ESS for JAGS, Mailing lists/bug reports, ESS for BUGS, Top
+@chapter ESS for JAGS
 
-@end itemize
-
+@menu
+* ESS(JAGS)--Model files::
+* ESS(JAGS)--Command files::
+* ESS(JAGS)--Log files::
+@end menu
+@include help-jags.texi
 
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
-@node Mailing lists/bug reports, Customization, Miscellaneous, Top
+@node Mailing lists/bug reports, Customization, ESS for JAGS, Top
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu

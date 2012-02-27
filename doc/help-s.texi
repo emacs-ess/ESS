@@ -1,4 +1,8 @@
-@node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, , ESS for the S family
+@c @comment  node-name,  next,  previous,  up
+@c @node ESS for S
+@c @chapter Overview of ESS features for the S family
+
+@node ESS(S)--Editing files, iESS(S)--Inferior ESS processes, ESS for S, ESS for S
 @comment  node-name,  next,  previous,  up -- don't use @ESS ..
 @section ESS[S]--Editing files
 
@@ -29,7 +33,7 @@ type @kbd{M-x R-mode} to put the current buffer into R mode.  However, one
 will have to start up an inferior process to take advantage of the
 interactive features.
 
-@node iESS(S)--Inferior ESS processes, ESS-help--assistance with viewing help, ESS(S)--Editing files, ESS for the S family
+@node iESS(S)--Inferior ESS processes, ESS-help--assistance with viewing help, ESS(S)--Editing files, ESS for S
 @comment  node-name,  next,  previous,  up
 @section iESS[S]--Inferior ESS processes
 iESS (inferior ESS) is the mode for interfacing with active
@@ -166,14 +170,14 @@ starting different versions of S-Plus, type @kbd{M-x spl} and then hit
 "ESS->Start Process->Other" menu.
 
 
-@node ESS-help--assistance with viewing help, Philosophies for using ESS(S),iESS(S)--Inferior ESS processes,ESS for the S family
+@node ESS-help--assistance with viewing help, Philosophies for using ESS(S), iESS(S)--Inferior ESS processes, ESS for S
 @comment  node-name,  next,  previous,  up
 @section ESS-help--assistance with viewing help
 
 ESS has built-in facilities for viewing help files from S.  @xref{Help}.
 
 
-@node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, ESS for the S family
+@node Philosophies for using ESS(S), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, ESS for S
 @section Philosophies for using ESS[S]
 
 The first is preferred, and configured for.  The second one can be
@@ -196,7 +200,7 @@ retrieved again, by changing emacs variables.
 The second saves a small amount of disk space.  The first allows for
 better portability as well as external version control for code.
 
-@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(S),ESS for the S family
+@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(S), ESS for S
 @section Scenarios for use (possibilities--based on actual usage)
 
 We present some basic suggestions for using ESS to interact with S.
@@ -320,7 +324,7 @@ prefixed by "##").
 @end display
 
 
-@node Customization Examples and Solutions to Problems,  , Scenarios for use (possibilities--based on actual usage),ESS for the S family
+@node Customization Examples and Solutions to Problems,  , Scenarios for use (possibilities--based on actual usage), ESS for S
 @section Customization Examples and Solutions to Problems
 
 1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
@@ -332,7 +336,7 @@ prefixed by "##").
 
 2. Suppose that you WANT to have the first buffer name indexed by
    ":1", in the same manner as your S-PLUS processes 2,3,4, and 5 (for
-   you heavy simulation people).  Then 
+   you heavy simulation people).  Then
    add after your (require 'ess-site) or (load "ess-site") command
     in your .emacs file, the line:
 @example
@@ -348,7 +352,7 @@ prefixed by "##").
 
 4. When you change directory within a *R* or *S* session using the
 setwd() command, emacs does not recognise that you have changed the
-current directory.  
+current directory.
 
 Solution: Use @kbd{M-x ess-change-directory}.  This will prompt you for
 the directory to change to.  It will then change directory within the

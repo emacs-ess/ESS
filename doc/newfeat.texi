@@ -2,20 +2,24 @@
 
 Changes/New Features in 5.15:
 @itemize @bullet
-@item @code{Documentation}: todo...???
-@item @code{Eldoc}: Eldoc was rewritten and is not activated by
-default. Set @code{`ess-use-eldoc'} to nil, if you don't want to use
-it. Also available from the menu ESS/Extras.
-@item @ESS{[R]}: eldoc shows arguments of a generic function whenever found.
+@item @code{Documentation}: ESS user manual has been rearranged and
+completed with several new chapters and sections to reflect newly added
+features (``Completion'', ``Developing with ESS'', ``ESS tracebug'',
+``ESS developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
+Code'')
+@item @code{Eldoc}: Eldoc was rewritten and is now activated by
+default. See @code{ess-use-eldoc} and @code{ess-eldoc-show-on-symbol}
+variables for how to change the default behavior. @emph{Note:}
+@code{skeleton-pair-insert-maybe} prohibits eldoc display, on @kbd{(}
+insertion.
+@item @ESS{[R]}: Eldoc shows arguments of a generic function whenever found.
 @item @ESS{[R]}: Out of the box integration with @code{Auto
 Completion} mode (http://cx4a.org/software/auto-complete/). Three AC
 sources @code{ac-source-R-args}, @code{ac-source-R-objects} and
-@code{ess-ac-source-R} are provided. The last one combines the previous
-two and makes them play nicely together. Set
-@code{ess-use-auto-complete} to @code{t} to start using it. Also
-available from ESS/Extras menu. Refer to documentation string of
-@code{ac-use-auto-complete} for further information. [todo
-... documentation reference ????]
+@code{ac-source-R} are provided. The last one combines the previous two
+and makes them play nicely together. Set @code{ess-use-auto-complete} to
+@code{t} to start using it.  Refer to documentation string of
+@code{ac-use-auto-complete} for further information.
 @item @ESS{[R]}: New unified and fast argument completion system,
 comprised of @code{ess-funname.start}, @code{ess-function-arguments},
 @code{ess-get-object-at-point}. Eldoc and auto-completion integration
@@ -56,8 +60,8 @@ r}. Source the current file with @kbd{C-d s}.Evaluation function which
 depend on @code{`ess-eval-region'} ask for the package to source the
 code into, @code{ess-eval-function} and alternatives search for the
 function name in the development packages' environment and namespace and
-insert the definition accordingly. See the documentation section ??? for
-more details.
+insert the definition accordingly. See the documentation section
+``Developing with ESS/ESS developer'' for more details.
 
 @item @ESS{[R]} help system:
 
@@ -76,12 +80,13 @@ option.
 @code{nil} - normal emacs and @ESS{} behavior.
 @item New menu entries for the above functions.
 @end itemize
-@item @ESS{} is now relies on @code{IDO} completing read functionality
-for all the interactive requests (todo: ). It uses ido completion mechanism
-whenever available, and falls back on classical completing-read
-otherwise. You can set @code{ess-use-ido} to nil if you don't want the
-IDO completion. See the documentation string of @code{ess-use-ido} for
-more information about @code{IDO} and @ESS{} configuration.
+@item @ESS{} now uses @code{IDO} completing read functionality
+for all the interactive requests. It uses ido completion
+mechanism whenever available, and falls back on classical
+completing-read otherwise. You can set @code{ess-use-ido} to nil if you
+don't want the IDO completion. See the documentation string of
+@code{ess-use-ido} for more information about @code{IDO} and @ESS{}
+configuration.
 
 @item @ESS{[S]}: ``@kbd{,}`` is bound to ess-smart-comma:
 If comma is invoked at the process marker of an ESS inferior
