@@ -48,14 +48,12 @@
 ;;  For a complete description please see the
 ;;  documentation at http://code.google.com/p/ess-tracebug/
 ;;
-;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
 
 (require 'ess)
 (eval-when-compile
-  (require 'face-remap nil t) ;; desirable for scaling of the text in watch buffer
   (require 'overlay)
   (require 'cl))
 
@@ -80,22 +78,20 @@ Currently only R is supported."
 ;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
 
 
-(defcustom ess-tracebug-command-prefix "\M-c"
-  "*Key to be used as prefix in ess-debug command key bindings.
+(defcustom ess-tracebug-prefix nil
+  "*Key to be used as prefix for all ess-tracebug commands.
 
-The postfix keys are defined in `ess-tracebug-map'.
-The overwritten binding is `capitalize-word' and is bound to 'M-c M-c'.
-You can set this to \"M-t\" for example,  which would rebind the
-default binding `transpose-words'. In this case make sure to
-rebind `M-t` to transpose-words command in the `ess-tracebug-map'.
+Set this to a key cominbation you don't use often, like:
 
-Keys currently bound in `ess-tracebug-map':
+ (setq ess-tracebug-prefix \"\\M-t\")
 
+The postfix keys are defined in `ess-tracebug-map':
 \\{ess-tracebug-map}
 "
   :type 'string
   :group 'ess-tracebug)
 
+(define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
 (defcustom ess-tracebug-inject-source-p 'function
   "Control the source injection into evaluated code.
@@ -153,25 +149,24 @@ Use `add-hook' to insert append your functions to this list.
     (define-key map "\C-n" 'ess-bp-next)
     (define-key map "\C-p" 'ess-bp-previous)
     (define-key map "e" 'ess-dbg-toggle-error-action)
-    (define-key map "c" 'ess-dbg-easy-command)
-    (define-key map "n" 'ess-dbg-easy-command)
-    (define-key map "p" 'ess-dbg-easy-command)
-    (define-key map "q" 'ess-dbg-easy-command)
-    (define-key map "0" 'ess-dbg-easy-command)
-    (define-key map "1" 'ess-dbg-easy-command)
-    (define-key map "2" 'ess-dbg-easy-command)
-    (define-key map "3" 'ess-dbg-easy-command)
-    (define-key map "4" 'ess-dbg-easy-command)
-    (define-key map "5" 'ess-dbg-easy-command)
-    (define-key map "6" 'ess-dbg-easy-command)
-    (define-key map "7" 'ess-dbg-easy-command)
-    (define-key map "8" 'ess-dbg-easy-command)
-    (define-key map "9" 'ess-dbg-easy-command)
+    (define-key map "c" 'ess-dbg-singlekey-command)
+    (define-key map "n" 'ess-dbg-singlekey-command)
+    (define-key map "p" 'ess-dbg-singlekey-command)
+    (define-key map "q" 'ess-dbg-singlekey-command)
+    (define-key map "0" 'ess-dbg-singlekey-command)
+    (define-key map "1" 'ess-dbg-singlekey-command)
+    (define-key map "2" 'ess-dbg-singlekey-command)
+    (define-key map "3" 'ess-dbg-singlekey-command)
+    (define-key map "4" 'ess-dbg-singlekey-command)
+    (define-key map "5" 'ess-dbg-singlekey-command)
+    (define-key map "6" 'ess-dbg-singlekey-command)
+    (define-key map "7" 'ess-dbg-singlekey-command)
+    (define-key map "8" 'ess-dbg-singlekey-command)
+    (define-key map "9" 'ess-dbg-singlekey-command)
     (define-key map "s" 'ess-tracebug-source-current-file)
     (define-key map "?" 'ess-tracebug-show-help)
-    (define-key map "\M-c" 'capitalize-word)
     map)
-  "Keymap used as a binding for `ess-tracebug-command-prefix' key
+  "Keymap used as a binding for `ess-tracebug-prefix' key
  in ESS and iESS mode.
 
 \\{ess-tracebug-map}
@@ -284,7 +279,6 @@ Default ess-tracebug key bindings:
 * Misc:
  s   . Source current file	. `ess-tracebug-source-current-file'
  ?   . Show this help		. `ess-tracebug-show-help'
- C-c				. `capitalize-word'
 ")
 
 (defun ess-tracebug-show-help (&optional ev)
@@ -326,15 +320,13 @@ activated/deactivate separately with `ess-traceback' and
   (interactive "P")
   (ess-force-buffer-current "R process to activate the tracebug mode: ")
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
-    (when (or (equal ess-language "S")
-              (equal ess-dialect "R"))
-      ;; activate only for S language family
+    (when (equal ess-dialect "R")
       (setq arg
             (if arg
                 (prefix-numeric-value arg)
               (if (ess-process-get 'tracebug) -1 1)))
       (if (> arg 0)
-          (progn
+          (unless (ess-process-get 'tracebug) ;; only if already not active
             (ess-tb-start)
             (ess-dbg-start)
 	    (add-hook 'ess-mode-hook 'ess-bp-recreate-all)
@@ -343,17 +335,37 @@ activated/deactivate separately with `ess-traceback' and
 		(when (and (eq major-mode 'ess-mode)
 			   (equal ess-dialect "R"))
 		  (ess-bp-recreate-all))))
+	    ;; Un/Debug at point functionality
+	    (ess-dbg-inject-un/debug-commands)
+	    (sleep-for 0.05) ;; not needed  but let it be
+	    ;; watch functionality
+	    (ess-watch-inject-commands)
+	    (sleep-for 0.05)
+	    (if ess-tracebug-prefix
+		(let ((comm (key-binding ess-tracebug-prefix)))
+		  (when (commandp comm)
+		    (define-key ess-tracebug-map ess-tracebug-prefix comm))
+		  (define-key ess-mode-map ess-tracebug-prefix ess-tracebug-map)
+		  (define-key inferior-ess-mode-map ess-tracebug-prefix ess-tracebug-map)
+		  (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map)
+		  )
+	      (message "`ess-tracebug-prefix' is not defined, tracebug bindings are not active ..."))
 	    (run-hooks 'ess-tracebug-enter-hook)
-            (message "ess-tracebug mode enabled")
-            )
-        (ess-tb-stop)
-        (ess-dbg-stop)
-	(remove-hook 'ess-mode-hook 'ess-bp-recreate-all)
-	(run-hooks 'ess-tracebug-exit-hook)
-        (message "ess-tracebug mode disabled")
-        )
-      )
-    ))
+	    (ess-process-put 'tracebug t)
+            (message "ess-tracebug mode enabled"))
+	(when (ess-process-get 'tracebug) ;;only when active
+	  (ess-process-put  'tracebug nil)
+	  ;; unset the map
+	  (when ess-tracebug-prefix
+	    (define-key ess-mode-map ess-tracebug-prefix nil)
+	    (define-key inferior-ess-mode-map ess-tracebug-prefix nil))
+	  (ess-tb-stop)
+	  (ess-dbg-stop)
+	  (remove-hook 'ess-mode-hook 'ess-bp-recreate-all)
+	  (run-hooks 'ess-tracebug-exit-hook)
+	  (message "ess-tracebug mode disabled")
+	  ))
+      )))
 
 
 ;;;_* TRACEBACK
@@ -477,9 +489,8 @@ in inferior buffers.  ")
 (defun ess-tb-start ()
   "Start traceback session "
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
-    (if (member ess-dialect '("XLS" "SAS" "STA"))
-        (error "Can not activate the debuger for %s dialect" ess-dialect)
-      )
+    (unless (equal ess-dialect "R")
+        (error "Can not activate the debuger for %s dialect" ess-dialect))
     (setq comint-process-echoes nil) ;; makes the display wiggly :(
     (setq inferior-R-2-input-help "^ *\\(\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;; ?? bug
     (make-local-variable 'compilation-error-regexp-alist)
@@ -521,14 +532,12 @@ in inferior buffers.  ")
       )
     ;; hooks
     (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t t)
-    (ess-process-put 'tracebug t)
     )
   )
 
 (defun ess-tb-stop ()
   "Stop ess traceback session in the current ess process"
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
-    (ess-process-put  'tracebug nil)
     ;; restore original definitions
     (when (fboundp 'orig-inferior-R-input-sender)
       (defalias 'inferior-R-input-sender (symbol-function 'orig-inferior-R-input-sender))
@@ -610,15 +619,14 @@ You can bind 'no-select' versions of this commands:
                                         ;(use-local-map ess-traceback-minor-mode-map)
       (pop-to-buffer trbuf)
       ;; tracebug keys
-      (local-set-key ess-tracebug-command-prefix ess-tracebug-map)
+      (when ess-tracebug-prefix
+	(local-set-key ess-tracebug-prefix ess-tracebug-map))
       ;; ess keys
       (local-set-key "\C-c\C-s" 'ess-watch-switch-process)
       (local-set-key "\C-c\C-y" 'ess-switch-to-ESS)
       (local-set-key "\C-c\C-z" 'ess-switch-to-end-of-ESS)
       (setq buffer-read-only t)
-      )
-    )
-  )
+      )))
 
 (defun ess-tb-next-error-goto-process-marker ()
   ;; assumes current buffer is the process buffer with compilation enabled
@@ -765,7 +773,7 @@ Elements should be directory names, not file names of directories.
 (defcustom ess-dbg-auto-single-key-p t
   "If t entering the debug state triggers single-key mode.
 Set it to nil if you want to trigger single-key mode manually
-with the `ess-tracebug-command-prefix' key.
+with the `ess-tracebug-prefix' key.
 ")
 
 (defvar ess-dbg-current-debug-position (make-marker)
@@ -858,7 +866,7 @@ If nil, the currently debugged line is highlighted for
   :group 'ess-debug
   :type 'boolean)
 
-(defvar ess-debug-easy-map
+(defvar ess-debug-singlekey-map
   (let ((map (make-sparse-keymap)))
     (define-prefix-command 'map)
     (define-key map "c" 'ess-dbg-command-c)
@@ -877,10 +885,10 @@ If nil, the currently debugged line is highlighted for
     (define-key map "9" 'ess-dbg-command-digit)
     (define-key map "?" 'ess-tracebug-show-help)
     map)
-  "Keymap used to define commands for easy input mode.
-This commands are triggered by `ess-dbg-easy-command' .
+  "Keymap used to define commands for single key input mode.
+This commands are triggered by `ess-dbg-singlekey-command' .
 
-\\{ess-debug-easy-map}
+\\{ess-debug-singlekey-map}
 "
   )
 
@@ -955,7 +963,7 @@ The list of actions are specified in `ess-dbg-error-action-alist'. "
 
    Mainly useful during/after debugging, to jump to the place
 from where the code was initialy executed.  This is an
-easy-command, which means that after the command is triggered a
+singlekey-command, which means that after the command is triggered a
 single key event is enough to navigate through the input-event-S-ring.
 If the key-event which triggered the command is Shift modified
 the input-event-S-ring is traversed backwards.
@@ -1006,7 +1014,7 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
 Jump to markers stored in `ess-dbg-backward-ring'. If
 debug session is active, first jump to current debug line.
 
-This is an easy-command. Shift triggers the opposite traverse
+This is an singlekey-command. Shift triggers the opposite traverse
 of the ring."
   (interactive)
   (let* ((debug-point (ring-ref ess-dbg-backward-ring 0))
@@ -1059,7 +1067,7 @@ of the ring."
   "Start the debug session.
 Add to ESS the interactive debugging functionality, breakpoints,
 watch and loggers.  Integrates into ESS and iESS modes by binding
-`ess-tracebug-map' to `ess-tracebug-command-prefix' in
+`ess-tracebug-map' to `ess-tracebug-prefix' in
 `ess-mode-map' and `inferior-ess-mode-map' respectively.
 "
   (interactive)
@@ -1070,9 +1078,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
                                         ; Active debug states are usually those, in which prompt start with Browser[d]>
     (set-process-filter proc 'inferior-ess-dbg-output-filter)
     (with-current-buffer (process-buffer proc)
-      (if (member ess-dialect '("XLS" "SAS" "STA"))
-          (error "Can not activate the debuger for %s dialect" ess-dialect)
-        )
+      (unless (equal ess-dialect "R")
+	(error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
       )
@@ -1088,16 +1095,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
       ;;      (beginning-of-line)
       ;; (setq buffer-read-only t)
       )
-    (define-key ess-mode-map ess-tracebug-command-prefix ess-tracebug-map)
-    (define-key inferior-ess-mode-map ess-tracebug-command-prefix ess-tracebug-map)
-    ;; Un/Debug at point functionality
-    (ess-dbg-inject-un/debug-commands)
-    (sleep-for 0.05) ;; not needed  but let it be
-    ;; watch functionality
-    (ess-watch-inject-commands)
-    (sleep-for 0.05)
-    )
-  )
+    ))
 
 (defun ess-dbg-stop ()
   "End the debug session.
@@ -1121,11 +1119,7 @@ Kill the *ess.dbg.[R_name]* buffer."
     ;;   ;;   )
     ;;   (kill-buffer ess-dbg-buffer)
     ;;   )
-    )
-  ;; unset the map
-  (define-key ess-mode-map ess-tracebug-command-prefix nil)
-  (define-key inferior-ess-mode-map ess-tracebug-command-prefix nil)
-  )
+    ))
 
 
 (defun ess--make-busy-timer-function (process)
@@ -1237,14 +1231,14 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when wbuff
         (ess-watch-refresh-buffer-visibly wbuff ))
       )
-    ;; ACTIVATE the debugger and trigger EASY COMMAND if entered for the first time
+    ;; ACTIVATE the debugger and trigger singlekey COMMAND if entered for the first time
     (when (and (not was-active)
                (or match-jump match-active))
       (unless is-iess
         (ring-insert ess-dbg-forward-ring input-point))
       (process-put proc 'dbg-active t)
       (when ess-dbg-auto-single-key-p
-        (ess-dbg-easy-command t))
+        (ess-dbg-singlekey-command t))
       )
     ))
 
@@ -1473,25 +1467,25 @@ given by the reference.  This is the value of
     )
   )
 
-(defun ess-dbg-easy-command (&optional wait)
-  "Call commands defined in `ess-debug-easy-map'.
-Easy input commands are those, which once executed do not requre
+(defun ess-dbg-singlekey-command (&optional wait)
+  "Call commands defined in `ess-debug-singlekey-map'.
+Single-key input commands are those, which once executed do not requre
 the prefix command for subsequent invocation.
 
  For example, if the prefix command is 'M-c' and
 `ess-dbg-command-n' is bound to 'n' and `ess-dbg-command-c' is
-bound to 'c' then 'M-c n n c' executes `ess-dbg-command-n'
-twise and `ess-dbg-command-c' once. Any other input not defined
-in `ess-debug-easy-map' will cause the exit from easy input mode.
-If WAIT is t, wait for next input and ignore the keystroke which
-triggered the command."
+bound to 'c' then 'M-c n n c' executes `ess-dbg-command-n' twice
+and `ess-dbg-command-c' once. Any other input not defined in
+`ess-debug-singlekey-map' will cause the exit from single-key
+input mode.  If WAIT is t, wait for next input and ignore the
+keystroke which triggered the command."
   (interactive)
   (let* ((ev last-command-event)
-         (command (lookup-key ess-debug-easy-map (vector ev))))
+         (command (lookup-key ess-debug-singlekey-map (vector ev))))
     (unless wait
       (call-interactively command))
     (while (setq command
-                 (lookup-key ess-debug-easy-map
+                 (lookup-key ess-debug-singlekey-map
                              (vector (setq ev (read-event)))))
       (funcall command ev)
       )
@@ -2112,7 +2106,7 @@ environment(.ess_log_eval) <- .GlobalEnv
     (overlay-put ess-watch-current-block-overlay 'line-prefix dummy-string)
     (overlay-put ess-watch-current-block-overlay 'face 'ess-watch-current-block-face)
     (ess-watch-set-current cur-block) ;;
-    (when (featurep 'face-remap)
+    (when (require 'face-remap nil t)
       ;; scale the font
       (setq text-scale-mode-amount ess-watch-scale-amount)
       (text-scale-mode 1)                                        ;    (text-scale-mode -1) ;;restore to default
@@ -2165,7 +2159,6 @@ for more information.
   (define-key ess-watch-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-watch-mode-map "g" 'revert-buffer)
   ;; Debug keys:
-  (define-key ess-watch-mode-map ess-tracebug-command-prefix ess-tracebug-map)
   )
 
 

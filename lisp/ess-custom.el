@@ -114,6 +114,7 @@
   "Mode for editing in-code Roxygen documentation."
   :group 'ess
   :group 'convenience
+  :group 'ess-extras
   :prefix "ess-" ;; << -- added for ESS integration  FIXME??
   :group 'tools)
 
@@ -122,6 +123,10 @@
   :group 'ess-S
   :prefix "ess-")
 
+(defgroup ess-extras nil
+  "Extra utilities for ESS"
+  :group 'ess
+  :prefix "ess-")
 ;; Variables (not user-changeable)
 
 (defvar ess-version "5.15"
@@ -311,8 +316,42 @@ Some useful keys for IDO completion:
   :group 'ess
   :type 'boolean)
 
+(defcustom ess-use-eldoc t
+  "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
+If 'script-only activate in ess-mode buffers only.
+
+See also `ess-eldoc-show-on-symbol'."
+  :group 'ess-extras
+  :type '(choice (const t) (const script-only) (const nil)))
+
+(defcustom ess-eldoc-show-on-symbol nil
+  "If non-nil, show help string whenever the point is on a symbol.
+If nil show only when the point is in a function call, i.e. after (."
+  :group 'ess-extras
+  :type  'boolean)
+
+(defcustom ess-use-auto-complete nil
+  "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
+If 'script-only activate in ess-mode buffers only.
+
+If non-nil add `ac-source-R' and `ac-source-filename' to the
+`ac-sources buffer local variable.
+
+ESS defines three AC sources `ac-source-R',`ac-source-R-objects'
+and `ac-source-R-args'. See auto-complete package
+documentation (http://cx4a.org/software/auto-complete/) for how
+to install your custom sources.
+"
+  :group 'ess-extras
+  :type '(choice (const t) (const script-only) (const nil)))
+
+(defcustom ess-use-tracebug nil
+  "If t, load `ess-tracebug when R process starts."
+  :group 'ess-extras
+  :type  'boolean)
+
 (defcustom  ess-ido-flex-matching t
-  "If t ido for ESS completion uses flex matching.
+  "If t, ido for ESS completion uses flex matching.
 See `ido-enable-flex-matching' for details.
 If you have an old computer, or you load lot of packages, you
 might want to set this to nil.
@@ -332,8 +371,8 @@ settings, such as `ess-R-smart-operators'.
 (make-variable-buffer-local 'ess-smart-operators)
 
 (defvar ess-R-smart-operators nil
-  "If nil don't use any of smart operators.
-If t use all. If an axplicit list of operators use only those
+  "If nil, don't use any of smart operators.
+If t, use all. If an axplicit list of operators, use only those
 operators.
 
 In current verion of ESS, it controls the behavior of

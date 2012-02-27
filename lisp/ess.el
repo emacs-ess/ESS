@@ -1,8 +1,10 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
+;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Original Authors: Doug Bates, Ed Kademan, Frank Ritter, David Smith
 ;; Created: October 14, 1991
@@ -211,6 +213,41 @@ See also `ess-use-ido'.
         (setq collection (mapcar 'list collection)))
       (completing-read prompt collection predicate require-match initial-input hist def)
       )))
+
+
+(defun ess-load-extras (&optional inferior)
+  "Load all the extra features depending on custom settings."
+
+  (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
+	(Rp (string-match-p "^R" ess-dialect))
+	(emacsp (featurep 'emacs)))
+
+    ;; auto-complete
+    (when (and emacsp Rp
+	       (require 'auto-complete nil t)
+	       (if inferior
+		   (eq ess-use-auto-complete t)
+		 ess-use-auto-complete))
+      (add-to-list 'ac-modes mode)
+      (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
+	      '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
+      (setq ac-sources '(ac-source-R ac-source-filename)))
+
+    ;; eldoc
+    (require 'eldoc)
+    (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
+    (when (or (and (not inferior) ess-use-eldoc)
+	      (and inferior (eq ess-use-eldoc t)))
+      (when (> eldoc-idle-delay 0.2)
+	(set (make-local-variable 'eldoc-idle-delay) 0.05))
+      (turn-on-eldoc-mode))
+
+    ;; tracebug
+    (when (and  ess-use-tracebug emacsp inferior Rp)
+      (ess-tracebug 1))
+    ))
+
+
 
 ;; not in use since 2004
 ;; (defun ess-load-object-name-db-file ()

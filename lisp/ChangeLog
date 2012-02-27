@@ -1,3 +1,23 @@
+2012-02-27  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess.el (ess-load-extras): new function to load extra features.
+
+	* ess-tracebug.el (ess-tracebug-map): a couple of renames.
+
+	* ess-mode.el (ess-mode): (ess-load-extras)
+
+	* ess-eldoc.el (ess-eldoc): moved the code into ess-r-d.el.
+
+	* ess-developer.el: moved documentation into the user manual
+
+	* ess-custom.el (ess-use-eldoc, ess-eldoc-show-on-symbol)
+	(ess-use-auto-complete): Implemented ess-use-xxx system.
+
+2012-02-26  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-tracebug.el (ess-tracebug-prefix): set to nil, as to require
+	the user to choose the binging.
+
 2012-02-25  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-tracebug.el (ess-long+replacement): it's shorter "+ . +" now.

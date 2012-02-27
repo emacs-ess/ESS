@@ -77,6 +77,7 @@
 (autoload 'ess-object-modtime		"ess-inf" "" nil)
 (autoload 'ess-quit			"ess-inf" "" nil)
 
+(autoload 'ess-turn-on-eldoc		"ess-r-d" "" nil)
 (autoload 'ess-ddeclient-p		"ess-inf" "(autoload)" nil)
 (autoload 'ess-dump-object-ddeclient	"ess-dde" "(autoload)" nil)
 
@@ -435,6 +436,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
             '(" [" ess-local-process-name  "]")) ;; xemacs does not support :eval
     (setq mode-line-process
           '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
+
+  ;;; extras
+  (ess-load-extras)
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
   (if (> emacs-major-version 21)

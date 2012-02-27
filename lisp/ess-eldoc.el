@@ -25,6 +25,10 @@
 
 ;;; Commentary:
 
+;;;;; eldoc funcitonality has been moved into the core ;;;;;
+;;;;; this file has no effect and is left in ESS in order not to break
+;;;;; users configuration
+
 ;; This is an initial attempt to use the emacs facility ELDOC in R
 ;; buffers.  Eldoc is used in Emacs lisp buffers to show the function
 ;; arglist and docstrings for variables.  To try it, view an emacs
@@ -82,6 +86,8 @@
 ;; Emacs 21, because it needs the variable
 ;; eldoc-documentation-function.
 
+;;;; VS [25-02-2012]: all these issues were at least partially addresed in the
+;;;; new implementation:
 
 ;; Bug (in eldoc?): the arg list for legend() is too long to fit in
 ;; minibuffer, and it seems that we see the last N lines of the arg
@@ -114,27 +120,6 @@
 
 ;;  (defvar ess-eldoc-last-args nil
 ;;   "Args list last looked up for eldoc.  Used as cache.")
-
-(defcustom ess-eldoc-show-on-symbol nil
-  "If non-nil show help string whenever the point is on a symbol.
-If nil show only when is after ( in a function call."
-  :group 'ess
-  :type 'boolean)
-
-(defun ess-eldoc ()
-  "Return the doc string, or nil.
-If an ESS process is not associated with the buffer, do not try
-to look up any doc strings."
-  (interactive)
-  (when (and ess-current-process-name
-	     (not (ess-process-get 'busy)))
-    (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-			     (ess-get-object-at-point))
-			(car (ess-funname.start))))
-	   (doc (cadr (ess-function-arguments funname))))
-      (when doc
-	(format "%s: %s" funname doc))
-    )))
 
 ;; (defun ess-eldoc-2 ()
 ;;   ;; simple, old version.
@@ -180,13 +165,11 @@ to look up any doc strings."
 ;;       word))
 
 (defun ess-use-eldoc ()
-  "Switch on eldoc for ESS (R mode only)."
-  (interactive)
-  (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc)
-  (eldoc-mode t))
+  "Does nothing. Defined not to break old users' code."
+  (interactive))
 
 ;; For now, while testing, switch on ess-eldoc.  Later, ths could be removed
 ;; and instead ask user to add it.
-(add-hook 'R-mode-hook 'ess-use-eldoc)
+;; (add-hook 'R-mode-hook 'ess-use-eldoc)
 
 (provide 'ess-eldoc)

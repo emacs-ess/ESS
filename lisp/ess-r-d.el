@@ -33,8 +33,8 @@
 
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
 (require 'ess-s-l)
-
-(require 'ess-r-args); for now --- should the default rather become ess-eldoc?
+(require 'eldoc)
+;; (require 'ess-r-args); for now --- should the default rather become ess-eldoc?
 (require 'ess-developer)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
@@ -156,7 +156,7 @@ to R, put them in the variable `inferior-R-args'."
     (ess-write-to-dribble-buffer
      (format "(R): version %s\n"
 	     (ess-get-words-from-vector "as.character(getRversion())\n")))
-    (if (ess-current-R-at-least '2.5.0)
+    (if (ess-current-R-at-least '2.7.0)
 	(progn
 	  (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
 	      (progn ; nothing to happen here -- is all in ess-complete-object-name
@@ -491,8 +491,26 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 		R-ver))))
 
 
+;;; eldoc
 
+(defun ess-eldoc-function ()
+  "Return the doc string, or nil.
+If an ESS process is not associated with the buffer, do not try
+to look up any doc strings."
+  (interactive)
+  (when (and ess-local-process-name
+	     (get-process ess-local-process-name)
+	     (not (ess-process-get 'busy)))
+    (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
+			     (ess-get-object-at-point))
+			(car (ess-funname.start))))
+	   (doc (cadr (ess-function-arguments funname))))
+      (comint-preinput-scroll-to-bottom)
+      (when doc
+	(format "%s: %s" funname doc))
+      )))
 
+;;; function argument completions
 (defvar ess--funargs-cache (make-hash-table :test 'equal)
   "Chache for R functions' arguments")
 
@@ -543,14 +561,15 @@ i.e. contains :,$ or @.
 		    (< ts (ess-process-get 'last-eval))))
       (setq args nil))
     (or args
-	(let ((args (ess-get-words-from-vector
-		     (format ess--funargs-command funname funname) nil .01)))
-	  (when  args
-	    (setq args (list (cons (car args) (float-time))
-			     (replace-regexp-in-string  "\\\\" "" (cadr args))
-			     (cddr args)))
-	    (puthash funname args ess--funargs-cache)))
-	)))
+	(when (and ess-local-process-name (get-process ess-local-process-name))
+	  (let ((args (ess-get-words-from-vector
+		       (format ess--funargs-command funname funname) nil .01)))
+	    (when  args
+	      (setq args (list (cons (car args) (float-time))
+			       (replace-regexp-in-string  "\\\\" "" (cadr args))
+			       (cddr args)))
+	      (puthash funname args ess--funargs-cache)))
+	  ))))
 
 (defun ess-get-object-at-point ()
   "A very permissive version of symbol-at-point.
@@ -736,7 +755,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (if args
 	  (set (make-local-variable 'ac-use-comphist) nil)
 	(kill-local-variable 'ac-use-comphist))
-      args)))
+      (delete "...=" args))))
 
 (defun ess-ac-action-args ()
   (when (looking-back "=")
@@ -799,36 +818,6 @@ getArgHelp <- function(arg, func = NULL){
     cat(' \n\n', as.character(out), '\n\n')
 }; getArgHelp('%s','%s')
 ")
-
-;; AC INITS
-
-(defun ess-init-ac (&optional inferior)
-  "Convenience function to initialize the default AC configuration.
-The default activated ac-sources are `ac-source-R-args',
-`ac-source-R-objects' and `ac-source-filename'.  If INFERIOR is
-non-nil, also initialize in ess-inferior mode.
-
-AC completion keys are defined in `ac-completing-map':
-\\{ac-completing-map}
-"
-  (interactive "P")
-  (require 'auto-complete)
-  (add-to-list 'ac-modes 'ess-mode)
-  (add-hook 'ess-mode-hook 'ess-ac-initialize-in-hook)
-  (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
-	  '(ess-smart-comma smart-operator-comma))
-  (when inferior
-    (add-to-list 'ac-modes 'inferior-ess-mode)
-    (add-hook 'inferior-ess-mode-hook 'ess-ac-initialize-in-hook)
-    ))
-
-
-(defun ess-ac-initialize-in-hook ()
-  "Function used in hooks to initialize ac."
-  (when (equal ess-dialect "R")
-    (setq ac-sources
-	  '(ac-source-R ac-source-filename ac-source-words-in-buffer))
-    ))
 
 
 ;;;### autoload

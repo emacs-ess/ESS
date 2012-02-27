@@ -62,7 +62,7 @@
 (autoload 'ess-command-ddeclient	    "ess-dde"	"(autoload).")
 
 (autoload 'ess-tracebug-send-function	    "ess-tracebug"	"(autoload).")
-(autoload 'ess-developer-send-function    "ess-developer"	"(autoload).")
+(autoload 'ess-developer-send-function      "ess-developer"	"(autoload).")
 
  ;;*;; Process handling
 
@@ -375,6 +375,8 @@ there is no process NAME)."
 	(process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
 	(ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)")
 	(ess-wait-for-process (get-process proc-name) nil 0.01)
+	;; EXTRAS
+	(ess-load-extras t)
 	(run-hooks 'ess-post-run-hook)
 	;; user initialization can take some time ...
 	(ess-write-to-dribble-buffer "(ess-multi 2): waiting for process after hook")
@@ -504,7 +506,7 @@ This was rewritten by KH in April 1996."
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
 If NO-ERROR is t don't trigger the error when there is not current process.
 
-Symbol *proc* is bound to current process during the evaluation of BODY.
+Symbol *proc* is boundq to current process during the evaluation of BODY.
 "
   (declare (indent 1))
   `(let ((*proc* (and ess-current-process-name (get-process ess-current-process-name))))
@@ -618,13 +620,15 @@ Returns the name of the process, or nil if the current buffer has none."
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
 current ESS process."
-  (process-get (get-process ess-current-process-name) propname))
+  (process-get (get-process (or ess-local-process-name
+				ess-current-process-name)) propname))
 
 
 (defun ess-process-put (propname value)
   "Set the variable PROPNAME (symbol) to VALUE in the plist of
 the current ESS process."
-  (process-put (get-process ess-current-process-name) propname value))
+  (process-put (get-process (or ess-local-process-name
+				ess-current-process-name)) propname value))
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using

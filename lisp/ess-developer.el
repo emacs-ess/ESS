@@ -27,82 +27,7 @@
 
 ;;; Commentary:
 ;;;
-;;  To understand how ess-developer works you must be familiar with namespace
-;;  system in R.
-;;
-;;  In a nutshell, all objects defined in a package 'foo' are stored in an
-;;  environment called 'namespace:foo'. Parent environment of 'namespace:foo' is
-;;  an environment 'imports:foo' which contains copies of all objects from other
-;;  packages which 'foo' imports. Parent environment of 'imports:foo' is the
-;;  'namespace:base'. Parent environment of 'namespace:base' is .GlobalEnv. Thus
-;;  functions and methods stored in 'namespace:foo' see all the objects in
-;;  .GlobalEnv unless shadowed by objects in 'imports:foo', 'namespace:base', or
-;;  'namespace:foo' itself. There is another environment associated with 'foo' -
-;;  'package:foo'. This environment stores *copies* of exported objects from
-;;  'namespace:foo' and is placed on the search() path, i.e. if 'foo' is loaded
-;;  and if you start with .GlobalEnv and iteratively call parent.env() you will
-;;  get eventually to 'package:foo'. Thus all methods and functions defined in
-;;  .GlobalEnv can see the objects in 'package:foo'. See also
-;;  http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces
-;;
-;;  In order to use ess-developer mode you should add names of the packages you
-;;  are developing to `ess-developer-packages'. You can add packages
-;;  interactively with "C-M-d a" and remove with "C-M-d r".
-;;
-;;  The `ess-developer-prefix' is by default "C-M-d".
-;;  Bindings are in `ess-developer-map':
-;;
-;;  "t" to toggle developer mode
-;;  "a" to add a package to your development list
-;;  "r" to remove a package from your  development list
-;;  "s" or "C-c l" to 'source' current file into the namespace (asks for the package)
-;;
-;; In developer mode ESS commands behave differently:
-;;
-;; -- `ess-load-file' [C-c l] (`ess-tracebug-source-current-file' [M-c s] if
-;;    ess-tracebug is active) asks for the package to source into and inserts
-;;    all redefined objects into the package:foo or namespace:foo accordingly:
-;;
-;;    -- PLAIN OBJECTS and FUNCTIONS: If the object is found in an environment
-;;    (packag:foo or namespace:foo), and differs from the old one it is assigned
-;;    into the corresponding environment. If the object is not found it is
-;;    assigned into .GlobalEnv. The environment of functions is set to
-;;    namespace:foo.
-;;
-;;    -- CLASSES: same as plain objects, with the difference that even if the
-;;    class definition is assigned into .GlobalEnv, it is still associated with
-;;    the package foo. Thus if you issue getClassDeff("foo") you will get a
-;;    class definition with the slot @package pointing to package "foo".
-;;
-;;       Note: Occasionally, after adding new classes you might get warnings
-;;      from "setClass". This is especially true if new class inherits or is
-;;      inherited by a class whose definition is not exported. You might get
-;;      something like:
-;;
-;;         Warning: Class "boo" is defined (with package slot ‘foo’) but no
-;;         metadata object found to revise subclass information---not exported?
-;;
-;;      In my experience you can safely ignore this warnings.
-;;
-;;    -- METHODS: Similarly to function definitions modified methods are
-;;    assigned in the local method table in the namespace:foo. New methods are
-;;    assigned into .GlobalEnv, but with the environment pointing to
-;;    namespace:foo. There is a suttle catch with method caching in R
-;;    though. See ess-developer.R for more detailed comments.
-;;
-;;    Note that if method or generic is exported the *same* table (which is an
-;;    environment) is present in package:foo.
-;;
-;; -- `ess-eval-region' and functions that depend on it `ess-eval-paragraph',
-;;    `ess-eval-buffer' etc., behave as `ess-load-file', but restrict the
-;;    evaluation to the co responding region
-;;
-;; -- `ess-eval-function' and frends check if the current function's name can be
-;;    found in a namespace:foo or package:foo for a 'foo' from
-;;    `ess-developer-packages'.  If found, and new function definition differs
-;;    from the old one, the function is assigned into that namespace. If not
-;;    found, it is assigned into .GlobalEnv.
-
+;;; see apropriate documentation section of ESS user manual
 
 (require 'ess-site) ;; need to assigne the keys in the map
 
@@ -121,21 +46,21 @@
   )
 
 
-(defcustom ess-developer-prefix  "\C-\M-d"
-  "Prefix key for ess-developer actions.
+;; (defcustom ess-developer-prefix  "\C-\M-d"
+;;   "Prefix key for ess-developer actions.
 
-Action keys are defined in `ess-developer-map':
+;; Action keys are defined in `ess-developer-map':
 
-\\{ess-developer-map}
+;; \\{ess-developer-map}
 
-It should be a string in the format accepted by define-key such
-as '\C-cz'.
+;; It should be a string in the format accepted by define-key such
+;; as '\C-cz'.
 
-Set this to nil if you don't want ess-developer-map to be
-installed in ess-mode-map altogether.
-"
-  :group 'ess-developer
-  :type 'string)
+;; Set this to nil if you don't want ess-developer-map to be
+;; installed in ess-mode-map altogether.
+;; "
+;;   :group 'ess-developer
+;;   :type 'string)
 
 (defvar ess-developer-map
   (let ((map (make-sparse-keymap)))
@@ -147,15 +72,19 @@ installed in ess-mode-map altogether.
     map)
   "Ess-developer keymap.")
 
-(defun ess-developer-install-prefix-key ()
-  "Install the prefix key `ess-developer-prefix' into ess-mode-map."
-  (when (and ess-developer-prefix
-	     (equal ess-dialect "R"))
-    (define-key ess-mode-map ess-developer-prefix ess-developer-map)
-    (define-key inferior-ess-mode-map ess-developer-prefix ess-developer-map)
-    ))
+(define-key ess-mode-map "\C-cd"		ess-developer-map)
+(define-key inferior-ess-mode-map "\C-cd"	ess-developer-map)
 
-(add-hook 'inferior-ess-mode-hook 'ess-developer-install-prefix-key)
+
+;; (defun ess-developer-install-prefix-key ()
+;;   "Install the prefix key `ess-developer-prefix' into ess-mode-map."
+;;   (when (and ess-developer-prefix
+;; 	     (equal ess-dialect "R"))
+;;     (define-key ess-mode-map ess-developer-prefix ess-developer-map)
+;;     (define-key inferior-ess-mode-map ess-developer-prefix ess-developer-map)
+;;     ))
+
+;; (add-hook 'inferior-ess-mode-hook 'ess-developer-install-prefix-key)
 
 ;; (defvar ess--developer-p nil
 ;;   "t if ESS is in developer mode for current process.
