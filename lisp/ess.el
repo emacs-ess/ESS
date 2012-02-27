@@ -112,9 +112,6 @@
 
 (require 'ess-compat)
 
-(if (featurep 'emacs)
-    (require 'ido nil t))
-
 (eval-and-compile
   (require 'ess-custom))
 
