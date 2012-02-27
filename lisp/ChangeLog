@@ -1,5 +1,10 @@
 2012-02-27  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-help.el (ess-help-bogus-buffer-p): regexp includes the name
+	of the doc object.
+	(ess-display-help-on-object): killed buffer display bug fix
+	/reported and fixed by Sam Steingold/.
+
 	* ess-r-d.el (ess-funname.start, ess-function-arguments):
 	execution bugs corrected and robustified  caching.
 

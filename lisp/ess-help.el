@@ -108,7 +108,7 @@ Utility used in \\[ess-display-help-on-object]."
 		   (progn (goto-char PM) ;; S-plus 5.1 :
 			  (re-search-forward "^cat: .*--"	nr-first t))
 		   (progn (goto-char PM) ;; S version 3 ; R :
-			  (re-search-forward "no documentation" nr-first t))
+			  (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
 		   )))
 	      )))
     (if debug
@@ -250,9 +250,8 @@ an inferior emacs buffer) the GUI help window is used."
               ;;dbg (ess-write-to-dribble-buffer
               ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
               (set-buffer-modified-p 'nil)
-              (toggle-read-only t)))))
-      (ess--switch-to-help-buffer tbuffer)
-      )))
+              (toggle-read-only t)
+              (ess--switch-to-help-buffer tbuffer))))))))
 
 
 (defun ess-display-help-in-browser ()
