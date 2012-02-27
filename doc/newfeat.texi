@@ -68,6 +68,10 @@ insert the definition accordingly. See the documentation section
 New Features:
 
 @itemize @minus
+@item @kbd{q} quits window instead of calling @code{ess-switch-to-end-of-ESS}.
+This is consistent with emacs behavior help and other special buffers.
+@item @kbd{k} kills window without asking for the name (pointed by Sam Steingold)
+@item Help map inherits from @code{special-mode-map} as sugested by Sam Steingold.
 @item Package index: new function @code{ess-display-index} bound to
 @kbd{i} in help mode map.
 @item Package vignettes: new function @code{ess-display-vignettes} bound to
