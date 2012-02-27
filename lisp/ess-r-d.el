@@ -536,7 +536,7 @@ to look up any doc strings."
 })
 ")
 
-(defconst ess-funname-ignore '("function" "for" )')
+(defconst ess-funname-ignore '("function" "for" ))
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
