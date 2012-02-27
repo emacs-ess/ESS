@@ -525,14 +525,17 @@ For internal use. Used in `ess-display-help-on-object',
 ;; (make-variable-buffer-local 'ess-help-sec-map)
 
 (defvar ess-help-mode-map nil "Keymap for ESS help mode.")
-(if ess-help-mode-map
-    nil
+(unless ess-help-mode-map
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
+  (if (fboundp 'set-keymap-parent)
+      (set-keymap-parent ess-help-mode-map special-mode-map)
+    (define-key ess-help-mode-map "q" 'quit-window)  ;was 'ess-switch-to-end-of-ESS)
+    (define-key ess-help-mode-map ">" 'end-of-buffer)
+    (define-key ess-help-mode-map "<" 'beginning-of-buffer))
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
-  (define-key ess-help-mode-map "q" 'bury-buffer) ;was 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-m" 'next-line)
   ;; (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
@@ -547,10 +550,8 @@ For internal use. Used in `ess-display-help-on-object',
   (define-key ess-help-mode-map "n" 'ess-skip-to-next-section)
   (define-key ess-help-mode-map "p" 'ess-skip-to-previous-section)
   (define-key ess-help-mode-map "/" 'isearch-forward)
-  (define-key ess-help-mode-map ">" 'end-of-buffer)
-  (define-key ess-help-mode-map "<" 'beginning-of-buffer)
   (define-key ess-help-mode-map "x" 'ess-kill-buffer-and-go)
-  (define-key ess-help-mode-map "k" 'kill-buffer)
+  (define-key ess-help-mode-map "k" 'kill-this-buffer)
   (define-key ess-help-mode-map "?" 'ess-describe-help-mode)
   ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
   (define-key ess-help-mode-map "\C-c\C-s" 'ess-switch-process)
@@ -567,7 +568,8 @@ For internal use. Used in `ess-display-help-on-object',
   (define-key ess-help-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map "\C-c\C-l" 'ess-load-file)
   (define-key ess-help-mode-map "\C-c\C-v" 'ess-display-help-on-object)
-  (define-key ess-help-mode-map "\C-c\C-k" 'ess-request-a-process))
+  (define-key ess-help-mode-map "\C-c\C-k" 'ess-request-a-process)
+  )
 
 ;; One reason for the following menu is to <TEACH> the user about key strokes
 (defvar ess-help-mode-menu
@@ -593,7 +595,7 @@ For internal use. Used in `ess-display-help-on-object',
 	"-"
 	["Describe ESS-help Mode"	ess-describe-help-mode t]
 	"-"
-	["Kill Buffer"			kill-buffer t]
+	["Kill Buffer"			kill-this-buffer t]
 	["Kill Buffer & Go"		ess-kill-buffer-and-go t]
 	)
   "Menu used in ess-help mode.")
