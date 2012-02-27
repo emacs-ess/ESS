@@ -536,6 +536,7 @@ to look up any doc strings."
 })
 ")
 
+(defconst ess-funname-ignore '("function" "for" )')
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
@@ -565,17 +566,18 @@ i.e. contains :,$ or @.
 	  (when (and ess-local-process-name (get-process ess-local-process-name))
 	    (let ((args (ess-get-words-from-vector
 			 (format ess--funargs-command funname funname) nil .01)))
-	      (when  args
-		(setq args (list (cons (car args) (float-time))
-				 (replace-regexp-in-string  "\\\\" "" (cadr args))
-				 (cddr args)))
-		(puthash funname args ess--funargs-cache)))
+	      (setq args (list (cons (car args) (float-time))
+			       (when (stringp (cadr args)) ;; error occured
+					      (replace-regexp-in-string  "\\\\" "" (cadr args)))
+			       (cddr args)))
+	      ;; push even if nil
+	      (puthash funname args ess--funargs-cache))
 	    )))))
 
 (defun ess-get-object-at-point ()
   "A very permissive version of symbol-at-point.
 Suitable for R object's names."
-  (let ((delim "[ ,\"\t\n\\+-*/()%]"))
+  (let ((delim "[ ,\"\t\n\\+-*/()%{}]"))
     (unless (and (looking-back delim)
 		 (looking-at   delim))
       (save-excursion
@@ -598,7 +600,8 @@ Also store the cons in 'ess--funname.start for potential use later."
 	      (save-excursion
 		(up-list -1)
 		(let ((funname (ess-get-object-at-point)))
-		  (when funname
+		  (when (and funname
+			     (not (member funname ess-S-non-functions)))
 		    (cons funname (- (point) (length funname))))
 		  ))
 	    (error nil)))))
