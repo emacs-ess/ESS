@@ -34,7 +34,7 @@
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
 (require 'ess-s-l)
 (require 'eldoc)
-;; (require 'ess-r-args); for now --- should the default rather become ess-eldoc?
+(require 'ess-r-args); some. ~/.emacs rely ess-r-args-show .. replace by autoload !?
 (require 'ess-developer)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
