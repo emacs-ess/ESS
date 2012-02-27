@@ -736,6 +736,10 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;
 ;;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
 
+(ess-message "[ido:]")
+(if (featurep 'emacs)
+    (require 'ido nil t))
+
  ; Local variables section
 (ess-message "[ess-site:] *very* end ...")
 
