@@ -498,8 +498,9 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when (and ess-local-process-name
-	     (get-process ess-local-process-name)
+  (ess-make-buffer-current)
+  (when (and ess-current-process-name
+	     (get-process ess-current-process-name)
 	     (not (ess-process-get 'busy)))
     (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
 			     (ess-get-object-at-point))
@@ -563,7 +564,7 @@ i.e. contains :,$ or @.
 		      (< ts (ess-process-get 'last-eval))))
 	(setq args nil))
       (or args
-	  (when (and ess-local-process-name (get-process ess-local-process-name))
+	  (when (and ess-current-process-name (get-process ess-current-process-name))
 	    (let ((args (ess-get-words-from-vector
 			 (format ess--funargs-command funname funname) nil .01)))
 	      (setq args (list (cons (car args) (float-time))

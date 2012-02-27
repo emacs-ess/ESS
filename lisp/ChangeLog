@@ -1,5 +1,9 @@
 2012-02-27  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-r-d.el (ess-function-arguments): works with current instead
+	of local process. That means eldoc and completion are available
+	even if buffer is not associated with a process.
+
 	* ess-help.el (ess-help-bogus-buffer-p): regexp includes the name
 	of the doc object.
 	(ess-display-help-on-object): killed buffer display bug fix,
