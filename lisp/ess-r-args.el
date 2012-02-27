@@ -217,28 +217,31 @@ buffer readjustments for multiline string)."
 		 (interactive-p)))
     (ess-force-buffer-current "R process to use: ")
     ;; ^^^^^^^^^^^^^^^ has own error handler
-    (let ((ess-nuke-trailing-whitespace-p t)
-	  (args))
-      (ess-command (format "try({fun<-\"%s\"; fundef<-paste(fun, '.default',sep='')
-if(exists(fundef, mode = \"function\")) args(fundef) else args(fun)}, silent=F)\n" function)
-		   (get-buffer-create "*ess-r-args-tmp*"))
-      (with-current-buffer "*ess-r-args-tmp*"
-	(goto-char (point-min))
-	(if (null (search-forward "function" 20 t))
-	    (message ess-r-args-noargsmsg)
-	  (goto-char (point-min))
-	  (search-forward "(" nil t)
-	  (delete-region (point-min) (point))
-	  (goto-char (point-max))
-	  (search-backward ")" nil t)
-	  (delete-region (point) (point-max))
-	  (ess-nuke-trailing-whitespace); should also work in Xemacs
-	  (setq args (buffer-string))
-	  (if trim
-	      (replace-regexp-in-string " = " "="
-					(replace-regexp-in-string "[\n \t]+" " " args))
-	    args)
-	  )))))
+    (cadr (ess-function-arguments function))
+    ))
+
+;;     (let ((ess-nuke-trailing-whitespace-p t)
+;; 	  (args))
+;;       (ess-command (format "try({fun<-\"%s\"; fundef<-paste(fun, '.default',sep='')
+;; if(exists(fundef, mode = \"function\")) args(fundef) else args(fun)}, silent=F)\n" function)
+;; 		   (get-buffer-create "*ess-r-args-tmp*"))
+;;       (with-current-buffer "*ess-r-args-tmp*"
+;; 	(goto-char (point-min))
+;; 	(if (null (search-forward "function" 20 t))
+;; 	    (message ess-r-args-noargsmsg)
+;; 	  (goto-char (point-min))
+;; 	  (search-forward "(" nil t)
+;; 	  (delete-region (point-min) (point))
+;; 	  (goto-char (point-max))
+;; 	  (search-backward ")" nil t)
+;; 	  (delete-region (point) (point-max))
+;; 	  (ess-nuke-trailing-whitespace); should also work in Xemacs
+;; 	  (setq args (buffer-string))
+;; 	  (if trim
+;; 	      (replace-regexp-in-string " = " "="
+;; 					(replace-regexp-in-string "[\n \t]+" " " args))
+;; 	    args)
+	  ;; )))))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -269,7 +272,8 @@ if(exists(fundef, mode = \"function\")) args(fundef) else args(fun)}, silent=F)\
 and their default values of an R function. Built on \\[ess-r-args-show]."
   (interactive)
   (insert "("); (skeleton-pair-insert-maybe nil)
-  (if (and ess-local-process-name ; has a process and it must still be running
+  (if (and (not eldoc-mode)
+	   ess-local-process-name ; has a process and it must still be running
 	   (get-ess-process ess-local-process-name))
       (ess-r-args-show)))
 

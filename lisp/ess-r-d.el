@@ -505,7 +505,7 @@ to look up any doc strings."
 			     (ess-get-object-at-point))
 			(car (ess-funname.start))))
 	   (doc (cadr (ess-function-arguments funname))))
-      (comint-preinput-scroll-to-bottom)
+      ;; (comint-preinput-scroll-to-bottom)
       (when doc
 	(format "%s: %s" funname doc))
       )))
@@ -552,24 +552,25 @@ then update the entry.
 Package_name is \"\" if funname was not found or is a special name,
 i.e. contains :,$ or @.
 "
-  (let* ((args (gethash funname ess--funargs-cache))
-	 (pack (caar args))
-	 (ts   (cdar args)))
-    (when (and args
-	       (and (or (null pack)
-			(equal pack "R_GlobalEnv"))
-		    (< ts (ess-process-get 'last-eval))))
-      (setq args nil))
-    (or args
-	(when (and ess-local-process-name (get-process ess-local-process-name))
-	  (let ((args (ess-get-words-from-vector
-		       (format ess--funargs-command funname funname) nil .01)))
-	    (when  args
-	      (setq args (list (cons (car args) (float-time))
-			       (replace-regexp-in-string  "\\\\" "" (cadr args))
-			       (cddr args)))
-	      (puthash funname args ess--funargs-cache)))
-	  ))))
+  (when funname ;; might be nil as returned by ess-funname.start
+    (let* ((args (gethash funname ess--funargs-cache))
+	   (pack (caar args))
+	   (ts   (cdar args)))
+      (when (and args
+		 (and (or (null pack)
+			  (equal pack "R_GlobalEnv"))
+		      (< ts (ess-process-get 'last-eval))))
+	(setq args nil))
+      (or args
+	  (when (and ess-local-process-name (get-process ess-local-process-name))
+	    (let ((args (ess-get-words-from-vector
+			 (format ess--funargs-command funname funname) nil .01)))
+	      (when  args
+		(setq args (list (cons (car args) (float-time))
+				 (replace-regexp-in-string  "\\\\" "" (cadr args))
+				 (cddr args)))
+		(puthash funname args ess--funargs-cache)))
+	    )))))
 
 (defun ess-get-object-at-point ()
   "A very permissive version of symbol-at-point.
@@ -591,6 +592,7 @@ FUNNAME is a function name found before ( and beg is where
 FUNNAME starts.
 
 Also store the cons in 'ess--funname.start for potential use later."
+  (when (not (ess-inside-string-p))
     (setq ess--funname.start
 	  (condition-case nil ;; check if it is inside a functon call
 	      (save-excursion
@@ -599,7 +601,7 @@ Also store the cons in 'ess--funname.start for potential use later."
 		  (when funname
 		    (cons funname (- (point) (length funname))))
 		  ))
-	    (error nil))))
+	    (error nil)))))
 
 (defun ess-R-get-rcompletions (&optional no-args)
   "Calls R internal completion utilities (rcomp) for possible completions.

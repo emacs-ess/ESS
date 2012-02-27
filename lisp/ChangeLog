@@ -1,5 +1,9 @@
 2012-02-27  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-r-d.el (ess-funname.start, ess-function-arguments): execution bugs corrected.
+
+	* ess-r-args.el (ess-r-args-get): relies on ess-function-arguments now.
+
 	* ess.el (ess-load-extras): new function to load extra features.
 
 	* ess-tracebug.el (ess-tracebug-map): a couple of renames.
