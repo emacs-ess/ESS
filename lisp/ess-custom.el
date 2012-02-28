@@ -1902,7 +1902,7 @@ the variable `ess-help-own-frame' is non-nil."
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
 
-(defcustom ess-help-kill-bogus-buffers nil
+(defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."
   :group 'ess-help
   :type 'boolean)
