@@ -2,7 +2,7 @@
 ESS User Poll Tally
 
 Stat package used with ESS
-R	    43
+R	    44
 SAS	     7
 JAGS	     6
 Stata	     5
@@ -11,13 +11,13 @@ BUGS	     1
 Other	     1   Sage?
 
 emacs used with ESS
-GNU Emacs   42
+GNU Emacs   43
 XEmacs	     3
 Aquamacs     2
 Other	     0
 
 OS used with ESS
-Linux	    37
+Linux	    38
 Windows	    23
 Mac OS X     9
 Solaris	     3
@@ -236,9 +236,24 @@ sometimes.
 
 Jeff Arnold:
 
-I would like to see closer integration with CEDET (http://cedet.sourceforge.net/); adding the ESS languages to CEDET would open up a lot of development environment tools without reinventing the wheel. This would require writing a grammar for the parser for each language, but external parsers like etags/ctags can be used to bootstrap language support.
+I would like to see closer integration with CEDET
+(http://cedet.sourceforge.net/); adding the ESS languages to CEDET
+would open up a lot of development environment tools without
+reinventing the wheel. This would require writing a grammar for the
+parser for each language, but external parsers like etags/ctags can be
+used to bootstrap language support.
 
-I also find the fact that ESS includes several unrelated languages to be confusing.  From what I have seen of the code, there doesn't appear to much shared code between the S/R, SAS, Stata, and BUGS/JAGS parts of ESS.  I found this confusing both as a user and as a contributor, primarily because sometimes it is not immediately clear whether an ess-* function is generic to all the languages, or just a S/R related function.  Refactoring the ESS package into four major modes (S, SAS, Stata, and BUGS) released by the ESS project would seem to make for a cleaner code base.  Consistency among the major modes could still be enforced through conventions for the functions and key-bindings included in a major mode.
+I also find the fact that ESS includes several unrelated languages to
+be confusing.  From what I have seen of the code, there doesn't appear
+to much shared code between the S/R, SAS, Stata, and BUGS/JAGS parts
+of ESS.  I found this confusing both as a user and as a contributor,
+primarily because sometimes it is not immediately clear whether an
+ess-* function is generic to all the languages, or just a S/R related
+function.  Refactoring the ESS package into four major modes (S, SAS,
+Stata, and BUGS) released by the ESS project would seem to make for a
+cleaner code base.  Consistency among the major modes could still be
+enforced through conventions for the functions and key-bindings
+included in a major mode.
 
 
 John Maindonald:
@@ -283,10 +298,27 @@ Ross Boylan:
 
 I wish that ?foo, where foo is a non-existent
 command, didn't leave a *help[R](foo)* buffer lying around.
-
+ACTUALLY, IT HAS ALREADY BEEN IMPLEMENTED: JUST CUSTOMISE
+ESS-HELP-KILL-BOGUS-BUFFERS TO t (thanks to Sam Steingold)
 
 Johan Sandblom:
 
 Some manner of font-lock integration with AUCTeX (I use mmm-mode)
 though I realize that may be more a matter for AUCTeX.
+
+
+Rasmus Pank:
+
+Improvements of AUCTeX integration. Sometimes results are
+weird. Compilation works poorly. It would be nice to easily specify
+new compilers to use for example pgfsweave.
+
+
+Mathieu Basille:
+
+Integration of Rubber as I said earlier! But I would definitely second
+Rasmus request of integration with AUCTeX. As I use mostly R in Sweave
+docs, I'd like to be able to use C-c C-c to compile, as I'm used to do
+for LateX documents. Well, of course it would go in two passes instead
+of one: 1) with Sweave, 2) with Rubber.
 
