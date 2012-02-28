@@ -299,7 +299,7 @@ Ross Boylan:
 I wish that ?foo, where foo is a non-existent
 command, didn't leave a *help[R](foo)* buffer lying around.
 ACTUALLY, IT HAS ALREADY BEEN IMPLEMENTED: JUST CUSTOMISE
-ESS-HELP-KILL-BOGUS-BUFFERS TO t (thanks to Sam Steingold)
+ess-help-kill-bogus-buffers TO t (thanks to Sam Steingold)
 
 Johan Sandblom:
 
