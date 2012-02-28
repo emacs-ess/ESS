@@ -57,10 +57,10 @@ Stata-mode (Thomas Lumley).
 1.1 License
 ===========
 
-ESS is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2, or (at your option) any later
-version.
+The source and documentation of ESS is free software.  You can
+redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation; either
+version 2, or (at your option) any later version.
 
    ESS is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -490,14 +490,227 @@ shell, simply type `M-x S+6-msdos RET'.
 =================
 
      Changes/New Features in 5.15:
+        * `Documentation': ESS user manual has been rearranged and
+          completed with several new chapters and sections to reflect
+          newly added features ("Completion", "Developing with ESS",
+          "ESS tracebug", "ESS developer", "ESS ElDoc", "IDO
+          Comppletion" and "Evaluating Code")
+
+        * `Eldoc': Eldoc was rewritten and is now activated by default.
+          See `ess-use-eldoc' and `ess-eldoc-show-on-symbol' variables
+          for how to change the default behavior. _Note:_
+          `skeleton-pair-insert-maybe' prohibits eldoc display, on `('
+          insertion.
+
+        * ESS[R]: Eldoc shows arguments of a generic function whenever
+          found.
+
+        * ESS[R]: Out of the box integration with `Auto Completion'
+          mode (http://cx4a.org/software/auto-complete/). Three AC
+          sources `ac-source-R-args', `ac-source-R-objects' and
+          `ac-source-R' are provided. The last one combines the
+          previous two and makes them play nicely together. Set
+          `ess-use-auto-complete' to `t' to start using it.  Refer to
+          documentation string of `ac-use-auto-complete' for further
+          information.
+
+        * ESS[R]: New unified and fast argument completion system,
+          comprised of `ess-funname.start', `ess-function-arguments',
+          `ess-get-object-at-point'. Eldoc and auto-completion
+          integration are using this system.
+
+        * ESS: `ess-switch-to-end-of-ESS'(`C-c C-z'), and
+          `ess-switch-to-ESS'(`C-c C-y'): Automatically start the
+          process whenever needed.
+
+        * ESS[R]: `roxy' knows about previewing text version of the
+          documentation. Bound to `C-c C-e t'.
+
+        * ESS[R]: Solved the "nil filename" bug in roxygen support.
+
+        * ESS[R]: `ess-tracebug' is now part of ESS:
+
+          New Features:
+
+             - Source injection: Tracebug now can inject source
+               references on the fly during code evaluation, i.e. you
+               don't have to source your file, but just evaluate your
+               code in normal fashion. Variable
+               `ess-tracebug-inject-source-p' controls this behavior -
+               if t, always inject source reference, if `'function',
+               inject only for functions (this is the default), if
+               `nil', never inject.
+
+               During the source injection the value of
+               `ess-eval-visibly-p' is ignored.
+
+             - Org-mode support: Visual debugger is now aware of the
+               temporary org source editing buffer (`C-c '') and jumps
+               through this buffers if still alive, or in original org
+               buffer otherwise.
+
+             - New keys in watch mode: `?' and `d'
+
+        * ESS[R]: New package `ess-developer' to evaluate `R' code
+          directly in the package environment and namespace. It can be
+          toggled on and off with `C-c d t'. When `ess-developer' is on
+          all ESS evaluation commands are redefined to evaluate code in
+          appropriate environments. Add package names to the list of
+          your development packages with `C-d a', and remove with `C-d
+          r'. Source the current file with `C-d s'.Evaluation function
+          which depend on ``ess-eval-region'' ask for the package to
+          source the code into, `ess-eval-function' and alternatives
+          search for the function name in the development packages'
+          environment and namespace and insert the definition
+          accordingly. See the documentation section "Developing with
+          ESS/ESS developer" for more details.
+
+        * ESS[R] help system:
+
+          New Features:
+
+             - `q' quits window instead of calling
+               `ess-switch-to-end-of-ESS'.  This is consistent with
+               emacs behavior help and other special buffers.
+
+             - `k' kills window without asking for the name (pointed by
+               Sam Steingold)
+
+             - Help map inherits from `special-mode-map' as sugested by
+               Sam Steingold.
+
+             - Package index: new function `ess-display-index' bound to
+               `i' in help mode map.
+
+             - Package vignettes: new function `ess-display-vignettes'
+               bound to `v' in help mode map.
+
+             - Display help in HTML browser: new function
+               `ess-display-help-in-browser' bound to `w' in help mode
+               map. It depends on `R''s `browser' option.
+
+             - New custom variable `ess-help-pop-to-buffer': if non-nil
+               ESS help buffers are given focus on display. The default
+               is `nil' - normal emacs and ESS behavior.
+
+             - New menu entries for the above functions.
+
+        * ESS now uses `IDO' completing read functionality for all the
+          interactive requests. It uses ido completion mechanism
+          whenever available, and falls back on classical
+          completing-read otherwise. You can set `ess-use-ido' to nil
+          if you don't want the IDO completion. See the documentation
+          string of `ess-use-ido' for more information about `IDO' and
+          ESS configuration.
+
+        * ESS[S]: "`,'" is bound to ess-smart-comma: If comma is
+          invoked at the process marker of an ESS inferior buffer,
+          request and execute a command from ``ess-handy-commands''
+          list. If `ess-R-smart-operators' is t ``ess-smart-comma' also
+          inserts " " after comma.
+
+        * ESS[S], notably `R': Variable ``ess-handy-commands'' stores
+          an alist of useful commands which are called by
+          `ess-smart-comma' in the inferior buffer.
+
+          Currently containing:
+
+         change-directory
+               `ess-change-directory'
+
+         help-index
+               `ess-display-index'
+
+         help-object
+               `ess-display-help-on-object'
+
+         vignettes
+               `ess-display-vignettes'
+
+         objects[ls]
+               `ess-execute-objects'
+
+         search
+               `ess-execute-search'
+
+         set-width
+               `ess-execute-screen-options'
+
+         install.packages
+               `ess-install.packages'
+
+         library
+               `ess-library'
+
+         setRepos
+               `ess-setRepositories'
+
+         sos
+               `ess-sos'
+
+          Handy commands: `ess-library', `ess-install.packages', etc -
+          ask for item with completion and execute the correspond
+          command. `ess-sos' is a interface to `findFn' function in
+          package `sos'. If package `sos' is not found, ask user for
+          interactive install.
+
+        * ESS: New dynamic mode line indicator: Process status is
+          automatically reflected in all mode-lines of associated with
+          the process buffers. Particularly useful for displaying debug
+          status of `ess-tracebug' and developer status of
+          `ess-developer' in all associated buffers.
+
+        * ESS: New `ess-completing-read' mechanism: ESS uses `ido'
+          completions whenever possible. Variable `ess-use-ido'
+          controls whether to use ido completion or not. Active by
+          default.
+
+        * ESS now supports comint fields for output and input
+          detection. This feature is not used by default, but might be
+          useful in the future.
+
+        * ESS[S]: New custom variable `inferior-ess-S-prompt' to
+          customize prompt detection regular expression in the inferior
+          ESS buffers. You can customize this variable to enhance
+          comint navigation (`comint-previous-prompt' and
+          `comint-next-prompt') the inferior buffers.
+
+        * ESS[R]: Internal `R' completion retrieval
+          (`ess-R-complete-object-name')  was rewritten and is faster
+          now.
+
+        * ESS is using process plist to store process specific
+          variables, as opposed to buffer local variables as it was
+          using before. The use of buffer local variables to store
+          process variables is discouraged.
+
+        * ESS: new functions to manipulate process plists:
+          `ess-process-get' and `ess-process-set'.
+
+        * ESS: Internal process waiting mechanism was completely
+          rewritten. ESS no more relies on prompt regular expressions
+          for the prompt detection. The only requirement on the primary
+          process prompt is to end in `> '. This could be overwritten
+          by setting `inferor-ess-primary-prompt'.
+
         * ESS[S], notably `R': Saved command history:  ESS-HISTORY-FILE
           now accepts `t' (default), `nil', or a  file name. By setting
           it to `nil' no command line history is saved  anymore.
-          ESS-HISTORY-DIRECTORY now allows to have the history all
+          ESS-HISTORY-DIRECTORY now allows to have the history  all
           saved in one "central" file.
 
         * ESS[R]: more Roxygen improvements.
 
+        * ESS[R]: `C-c .' to set (indentation) style.
+
+        * ESS[R]: Functions with non-standard names (for example
+          'aaa-bbb:cc') are properly handled by font-lock and
+          evaluation routines.
+
+        * ESS[R]:Several regexp bugs (described in etc/R-ESS-bugs.el)
+          were fixed in `ess-get-words-from-vector' and `ess-command'.
+
+     Changes/New Features in 5.14:
         * ESS[BUGS/JAGS]:  Batch BUGS is back!  For recent OpenBUGS
           versions, 3.0.8+, a batch BUGS script is once again available,
           but for Linux only.  Therefore, since it seems that BUGS and
@@ -966,6 +1179,8 @@ low-volume mailing list.
    * Stephen Eglen (mailto:stephen@gnu.org)
 
    * Sebastian P. Luque (mailto:spluque@gmail.com)
+
+   * Vitalie Spinu (mailto:spinuvit@gmail.com)
 
    * Henning Redestig (mailto:henning.red@googlemail.com)
 
