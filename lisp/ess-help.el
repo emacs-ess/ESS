@@ -289,8 +289,8 @@ an inferior emacs buffer) the GUI help window is used."
 
 (defun ess--action-help-on-object (&optional pos)
   "Provide help on object at the beginning of line.
-Intended to be used in R-index help pages. Load the package if necessary.
-It is bound to RET and C-m in R-index pages."
+It's intended to be used in R-index help pages. Load the package
+if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (save-excursion
     (let ((package (buffer-name))

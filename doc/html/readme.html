@@ -325,7 +325,9 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!-- node-name,  next,  previous,  up -->
 <h3 class="section">1.1 License</h3>
 
-<p>ESS is free software; you can redistribute it and/or modify it under
+<!-- ESS is free software; you can redistribute it and/or modify it under -->
+<p>The source and documentation of ESS is free software. 
+You can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2, or (at your option) any later
 version.
@@ -910,14 +912,178 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
      <ul>
 Changes/New Features in 5.15:
           <ul>
-<li><acronym>ESS[S]</acronym>, notably <code>R</code>: Saved command history:
- <var>ess-history-file</var> now accepts <code>t</code> (default), <code>nil</code>, or a
- file name. By setting it to <code>nil</code> no command line history is saved
- anymore.   <var>ess-history-directory</var> now allows to have the history all
- saved in one &ldquo;central&rdquo; file. 
-<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+<li><code>Documentation</code>: ESS user manual has been rearranged and
+completed with several new chapters and sections to reflect newly added
+features (&ldquo;Completion&rdquo;, &ldquo;Developing with ESS&rdquo;, &ldquo;ESS tracebug&rdquo;,
+&ldquo;ESS developer&rdquo;, &ldquo;ESS ElDoc&rdquo;, &ldquo;IDO Comppletion&rdquo; and &ldquo;Evaluating
+Code&rdquo;)
+<li><code>Eldoc</code>: Eldoc was rewritten and is now activated by
+default. See <code>ess-use-eldoc</code> and <code>ess-eldoc-show-on-symbol</code>
+variables for how to change the default behavior. <em>Note:</em>
+<code>skeleton-pair-insert-maybe</code> prohibits eldoc display, on <kbd>(</kbd>
+insertion. 
+<li><acronym>ESS[R]</acronym>: Eldoc shows arguments of a generic function whenever found. 
+<li><acronym>ESS[R]</acronym>: Out of the box integration with <code>Auto
+Completion</code> mode (http://cx4a.org/software/auto-complete/). Three AC
+sources <code>ac-source-R-args</code>, <code>ac-source-R-objects</code> and
+<code>ac-source-R</code> are provided. The last one combines the previous two
+and makes them play nicely together. Set <code>ess-use-auto-complete</code> to
+<code>t</code> to start using it.  Refer to documentation string of
+<code>ac-use-auto-complete</code> for further information. 
+<li><acronym>ESS[R]</acronym>: New unified and fast argument completion system,
+comprised of <code>ess-funname.start</code>, <code>ess-function-arguments</code>,
+<code>ess-get-object-at-point</code>. Eldoc and auto-completion integration
+are using this system. 
+<li><acronym>ESS</acronym>: <code>ess-switch-to-end-of-ESS</code>(<kbd>C-c C-z</kbd>),
+and <code>ess-switch-to-ESS</code>(<kbd>C-c C-y</kbd>): Automatically start the
+process whenever needed. 
+<li><acronym>ESS[R]</acronym>: <code>roxy</code> knows about previewing text version of the
+documentation. Bound to <kbd>C-c C-e t</kbd>. 
+<li><acronym>ESS[R]</acronym>: Solved the &ldquo;nil filename&rdquo; bug in roxygen support. 
+<li><acronym>ESS[R]</acronym>: <code>ess-tracebug</code> is now part of <acronym>ESS</acronym>:
+
+          <p>New Features:
+
+               <ul>
+<li>Source injection: Tracebug now can inject source references on the
+fly during code evaluation, i.e. you don't have to source your file, but
+just evaluate your code in normal fashion. Variable
+<code>ess-tracebug-inject-source-p</code> controls this behavior - if t,
+always inject source reference, if <code>'function</code>, inject only for
+functions (this is the default), if <code>nil</code>, never inject.
+
+               <p>During the source injection the value of `ess-eval-visibly-p' is
+ignored. 
+<li>Org-mode support: Visual debugger is now aware of the
+temporary org source editing buffer (<kbd>C-c '</kbd>) and jumps through this
+buffers if still alive, or in original org buffer otherwise. 
+<li>New keys in watch mode: <kbd>?</kbd> and <kbd>d</kbd>
 </ul>
 
+          <li><acronym>ESS[R]</acronym>: New package <code>ess-developer</code> to evaluate <code>R</code>
+code directly in the package environment and namespace. It can be
+toggled on and off with <kbd>C-c d t</kbd>. When <code>ess-developer</code> is on
+all ESS evaluation commands are redefined to evaluate code in
+appropriate environments. Add package names to the list of your
+development packages with <kbd>C-d a</kbd>, and remove with <kbd>C-d
+r</kbd>. Source the current file with <kbd>C-d s</kbd>.Evaluation function which
+depend on <code>`ess-eval-region'</code> ask for the package to source the
+code into, <code>ess-eval-function</code> and alternatives search for the
+function name in the development packages' environment and namespace and
+insert the definition accordingly. See the documentation section
+&ldquo;Developing with ESS/ESS developer&rdquo; for more details.
+
+          <li><acronym>ESS[R]</acronym> help system:
+
+          <p>New Features:
+
+               <ul>
+<li><kbd>q</kbd> quits window instead of calling <code>ess-switch-to-end-of-ESS</code>. 
+This is consistent with emacs behavior help and other special buffers. 
+<li><kbd>k</kbd> kills window without asking for the name (pointed by Sam Steingold)
+<li>Help map inherits from <code>special-mode-map</code> as sugested by Sam Steingold. 
+<li>Package index: new function <code>ess-display-index</code> bound to
+<kbd>i</kbd> in help mode map. 
+<li>Package vignettes: new function <code>ess-display-vignettes</code> bound to
+<kbd>v</kbd> in help mode map. 
+<li>Display help in HTML browser: new function <code>ess-display-help-in-browser</code> bound to
+<kbd>w</kbd> in help mode map. It depends on <code>R</code>'s <code>browser</code>
+option. 
+<li>New custom variable <code>ess-help-pop-to-buffer</code>: if non-nil
+<acronym>ESS</acronym> help buffers are given focus on display. The default is
+<code>nil</code> - normal emacs and <acronym>ESS</acronym> behavior. 
+<li>New menu entries for the above functions. 
+</ul>
+          <li><acronym>ESS</acronym> now uses <code>IDO</code> completing read functionality
+for all the interactive requests. It uses ido completion
+mechanism whenever available, and falls back on classical
+completing-read otherwise. You can set <code>ess-use-ido</code> to nil if you
+don't want the IDO completion. See the documentation string of
+<code>ess-use-ido</code> for more information about <code>IDO</code> and <acronym>ESS</acronym>
+configuration.
+
+          <li><acronym>ESS[S]</acronym>: &ldquo;<kbd>,</kbd>&ldquo; is bound to ess-smart-comma:
+If comma is invoked at the process marker of an ESS inferior
+buffer, request and execute a command from <code>`ess-handy-commands'</code>
+list. If <code>ess-R-smart-operators</code> is t <code>`ess-smart-comma</code>
+also inserts &ldquo; &ldquo; after comma. 
+<li><acronym>ESS[S]</acronym>, notably <code>R</code>: Variable <code>`ess-handy-commands'</code>
+stores an alist of useful commands which are called by <code>ess-smart-comma</code> in
+the inferior buffer.
+
+          <p>Currently containing:
+
+               <dl>
+<dt>change-directory<dd>    <code>ess-change-directory</code>
+<br><dt>help-index<dd>          <code>ess-display-index</code>
+<br><dt>help-object<dd>         <code>ess-display-help-on-object</code>
+<br><dt>vignettes<dd>           <code>ess-display-vignettes</code>
+<br><dt>objects[ls]<dd>         <code>ess-execute-objects</code>
+<br><dt>search<dd>              <code>ess-execute-search</code>
+<br><dt>set-width<dd>           <code>ess-execute-screen-options</code>
+<br><dt>install.packages<dd>    <code>ess-install.packages</code>
+<br><dt>library<dd>             <code>ess-library</code>
+<br><dt>setRepos<dd>            <code>ess-setRepositories</code>
+<br><dt>sos<dd>                 <code>ess-sos</code>
+</dl>
+
+          <p>Handy commands: <code>ess-library</code>, <code>ess-install.packages</code>, etc -
+ask for item with completion and execute the correspond
+command. <code>ess-sos</code> is a interface to <code>findFn</code> function in
+package <code>sos</code>. If package <code>sos</code> is not found, ask user for
+interactive install.
+
+          <li><acronym>ESS</acronym>: New dynamic mode line indicator: Process status is automatically
+reflected in all mode-lines of associated with the process
+buffers. Particularly useful for displaying debug status of
+<code>ess-tracebug</code> and developer status of <code>ess-developer</code> in all
+associated buffers.
+
+          <li><acronym>ESS</acronym>: New <code>ess-completing-read</code> mechanism: <acronym>ESS</acronym> uses
+<code>ido</code> completions whenever possible. Variable <code>ess-use-ido</code>
+controls whether to use ido completion or not. Active by default.
+
+          <li><acronym>ESS</acronym> now supports comint fields for output and input
+detection. This feature is not used by default, but might be useful in
+the future.
+
+          <li><acronym>ESS[S]</acronym>: New custom variable <code>inferior-ess-S-prompt</code> to
+customize prompt detection regular expression in the inferior ESS
+buffers. You can customize this variable to enhance comint navigation
+(<code>comint-previous-prompt</code> and <code>comint-next-prompt</code>) the
+inferior buffers.
+
+          <li><acronym>ESS[R]</acronym>: Internal <code>R</code> completion retrieval
+(<code>ess-R-complete-object-name</code>)  was rewritten and is faster now.
+
+          <li><acronym>ESS</acronym> is using process plist to store process specific variables,
+as opposed to buffer local variables as it was using before. The use of
+buffer local variables to store process variables is discouraged.
+
+          <li><acronym>ESS</acronym>: new functions to manipulate process plists:
+<code>ess-process-get</code> and <code>ess-process-set</code>.
+
+          <li><acronym>ESS</acronym>: Internal process waiting mechanism was completely rewritten. ESS
+no more relies on prompt regular expressions for the prompt
+detection. The only requirement on the primary process prompt is to end
+in <code>&gt; </code>. This could be overwritten by setting
+<code>inferor-ess-primary-prompt</code>.
+
+          <li><acronym>ESS[S]</acronym>, notably <code>R</code>: Saved command history:
+ <var>ess-history-file</var> now accepts <code>t</code> (default), <code>nil</code>, or a
+ file name. By setting it to <code>nil</code> no command line history is saved
+ anymore.  <var>ess-history-directory</var> now allows to have the history
+ all saved in one &ldquo;central&rdquo; file. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+<li><acronym>ESS[R]</acronym>: <kbd>C-c .</kbd> to set (indentation) style.
+
+          <li><acronym>ESS[R]</acronym>: Functions with non-standard names (for example 'aaa-bbb:cc') are
+properly handled by font-lock and evaluation routines. 
+<li><acronym>ESS[R]</acronym>:Several regexp bugs (described in etc/R-ESS-bugs.el) were
+fixed in <code>ess-get-words-from-vector</code> and <code>ess-command</code>. 
+</ul>
+
+     <p>Changes/New Features in 5.14:
           <ul>
 <li><acronym>ESS[BUGS/JAGS]</acronym>:  Batch BUGS is back!  For recent OpenBUGS
 versions, 3.0.8+, a batch BUGS script is once again available,
@@ -1362,8 +1528,13 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Informati
 <!--  -->
 <li><!-- @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen} -->
 <a href="mailto:stephen@gnu.org">Stephen Eglen</a>
+<!--  -->
 <li><!-- @uref{http://www.ucs.mun.ca/~sluque,Sebastian P. Luque} -->
 <a href="mailto:spluque@gmail.com">Sebastian P. Luque</a>
+<!--  -->
+<li><!-- @uref{http://www.google.com/, Vitalie Spinu} -->
+<a href="mailto:spinuvit@gmail.com">Vitalie Spinu</a>
+<!--  -->
 <li><!-- @uref{http://www.google.com,Henning Redestig} -->
 <a href="mailto:henning.red@googlemail.com">Henning Redestig</a>
 </ul>
