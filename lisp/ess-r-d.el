@@ -195,6 +195,7 @@ to R, put them in the variable `inferior-R-args'."
   (setq ess-customize-alist R-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
+  (add-to-list 'comint-dynamic-complete-functions 'ess-complete-object-name t)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)

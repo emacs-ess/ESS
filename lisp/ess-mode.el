@@ -120,9 +120,7 @@
   (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
 
 
-(if ess-mode-map
-    nil
-
+(unless ess-mode-map
   (if (featurep 'xemacs)
       (progn ;; Code for XEmacs
 	(setq ess-mode-map (make-keymap))
@@ -157,11 +155,11 @@
   (define-key ess-mode-map "\C-c\C-l"	'ess-load-file)
   (define-key ess-mode-map "\C-c\C-v"	'ess-display-help-on-object)
   (define-key ess-mode-map "\C-c\C-d"	'ess-dump-object-into-edit-buffer)
-;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
+  ;;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
   (define-key ess-mode-map "\C-c\C-s"	'ess-switch-process) ; use a
-					; different process for the buffer.
+  ;; different process for the buffer.
   (define-key ess-mode-map "\C-c\C-t"	'ess-execute-in-tb)
-  (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name)
+  (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name-deprecated)
   (define-key ess-mode-map "\M-\t"	'comint-replace-by-expanded-filename)
   (define-key ess-mode-map "\M-?"	'ess-list-object-completions)
   ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
@@ -174,8 +172,8 @@
   (define-key ess-mode-map "\C-\M-h"	'ess-mark-function)
   (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
       (define-key ess-mode-map [(meta backspace)] 'backward-kill-word))
-  ;(define-key ess-mode-map [delete]	'backward-delete-char-untabify)
-  (define-key ess-mode-map "\t"		'ess-indent-command)
+  ;;(define-key ess-mode-map [delete]	'backward-delete-char-untabify)
+  (define-key ess-mode-map "\t"		'ess-indent-or-complete)
   (define-key ess-mode-map "\C-c\C-q"	'ess-quit)
   ;; smart operators; most likely will go in the future into a separate local map
   (define-key ess-mode-map ","		'ess-smart-comma)
@@ -234,7 +232,7 @@
     )
    ("ESS Edit"
     ["Complete Filename" comint-replace-by-expanded-filename	t]
-    ["Complete Object"	 ess-complete-object-name		t]
+    ["Complete File or Object"	 ess-indent-or-complete		t]
     ["Kill sexp"	 kill-sexp				t]
     ["Mark function"	 ess-mark-function			t]
     ["Indent expression" ess-indent-exp				t]
@@ -436,7 +434,11 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
             '(" [" ess-local-process-name  "]")) ;; xemacs does not support :eval
     (setq mode-line-process
           '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
-
+  ;; completion
+  (set (make-local-variable 'comint-dynamic-complete-functions)
+       '(comint-dynamic-complete-filename)) ;; add to this in derived modes.
+  (set (make-local-variable 'comint-completion-addsuffix)
+       (cons "/" ""))
   ;;; extras
   (ess-load-extras)
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
@@ -839,6 +841,15 @@ of the expression are preserved."
 	       (not (bolp))))
 	(insert-tab)
       (ess-indent-line))))
+
+(defun ess-indent-or-complete ()
+  "Try to indent first, if code is already properly indented, complete instead."
+  (interactive)
+  (let ((shift (ess-indent-command)))
+    (when (and (numberp shift) ;; can be nil if ess-tab-always-indent is nil
+	       (equal shift 0))
+      (comint-dynamic-complete))))
+
 
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."

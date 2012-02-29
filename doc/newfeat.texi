@@ -7,12 +7,21 @@ completed with several new chapters and sections to reflect newly added
 features (``Completion'', ``Developing with ESS'', ``ESS tracebug'',
 ``ESS developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
 Code'')
+@item @code{RefCard}: Reference card was updated to include new features.
 @item @code{Eldoc}: Eldoc was rewritten and is now activated by
 default. See @code{ess-use-eldoc} and @code{ess-eldoc-show-on-symbol}
 variables for how to change the default behavior. @emph{Note:}
 @code{skeleton-pair-insert-maybe} prohibits eldoc display, on @kbd{(}
 insertion.
 @item @ESS{[R]}: Eldoc shows arguments of a generic function whenever found.
+@item @ESS{}: @kbd{TAB} in @code{ess-mode} now indents and completes
+if there was nothing to indent. Completion mechanism is similar to the
+completion in the @code{inferior-ess-mode} -- a filename expansion is
+tried, if not found ESS completes the symbol by querying the
+process. This also makes `comint-replace-by-expanded-filename'
+@kbd{M-TAB}(or @kbd{C-M-i}) redundant and user might consider binding it
+to something more useful. @kbd{C-c TAB} is deprecated and will be
+replaces in the future.
 @item @ESS{[R]}: Out of the box integration with @code{Auto
 Completion} mode (http://cx4a.org/software/auto-complete/). Three AC
 sources @code{ac-source-R-args}, @code{ac-source-R-objects} and
@@ -48,6 +57,7 @@ ignored.
 temporary org source editing buffer (@kbd{C-c '}) and jumps through this
 buffers if still alive, or in original org buffer otherwise.
 @item New keys in watch mode: @kbd{?} and @kbd{d}
+@item Two new hooks: ess-tracebug-enter-hook and ess-tracebug-exit-hook
 @end itemize
 
 @item @ESS{[R]}: New package @code{ess-developer} to evaluate @code{R}

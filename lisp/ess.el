@@ -235,8 +235,8 @@ See also `ess-use-ido'.
     (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
     (when (or (and (not inferior) ess-use-eldoc)
 	      (and inferior (eq ess-use-eldoc t)))
-      (when (> eldoc-idle-delay 0.2)
-	(set (make-local-variable 'eldoc-idle-delay) 0.05))
+      (when (> eldoc-idle-delay 0.4) ;; default is too slow
+	(set (make-local-variable 'eldoc-idle-delay) 0.1))
       (turn-on-eldoc-mode))
 
     ;; tracebug

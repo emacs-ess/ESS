@@ -139,6 +139,7 @@ Use `add-hook' to insert append your functions to this list.
     (define-key map "i" 'ess-dbg-goto-input-event-marker)
     (define-key map "I" 'ess-dbg-goto-input-event-marker)
     (define-key map "d" 'ess-dbg-flag-for-debugging)
+    (define-key map "D" 'ess-dbg-unflag-for-debugging)
     (define-key map "u" 'ess-dbg-unflag-for-debugging)
     (define-key map "b" 'ess-bp-set)
     (define-key map "B" 'ess-bp-set-conditional)

@@ -1,3 +1,11 @@
+2012-02-29  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-mode): use comint-dynamic-completion.
+
+	* ess-r-d.el (R-mode): use comint-dynamic-completion.
+
+	* ess-mode.el (ess-mode-map): TAB is bound to ess-indent-or-complete.
+
 2012-02-27  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-function-arguments): works with current instead

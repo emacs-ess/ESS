@@ -1538,7 +1538,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort) ; mask comint map
   (define-key inferior-ess-mode-map "\C-d"     'delete-char)   ; EOF no good in S
   (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
-  (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name)
+  (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
   (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
   (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
@@ -2220,6 +2220,14 @@ or \\[ess-internal-complete-object-name] otherwise."
   (if ess-use-R-completion
       (ess-R-complete-object-name)
     (ess-internal-complete-object-name listcomp)))
+
+(defun ess-complete-object-name-deprecated ()
+  "Gives a deprecated message "
+  (interactive)
+  (ess-complete-object-name)
+  (message "C-c TAB is deprecated, completions has been moved to [TAB]")
+  (sit-for 2 t)
+  )
 
 (defun ess-internal-complete-object-name (&optional listcomp)
   "Perform completion on `ess-language' object preceding point.

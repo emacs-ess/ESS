@@ -1,6 +1,7 @@
 \documentclass[a4paper]{article}
 \usepackage{multicol}
 \usepackage{parskip}
+\usepackage{verbatim}
 \usepackage{fullpage}% +- ok for paper 'A4' as well
 \usepackage{svn}% and {fullpage} are both in debian/ubuntu pkg 'texlive-latex-extra'
 
@@ -23,7 +24,7 @@
 \pagestyle{empty}
 
 \begin{document}
-\SVN $Date$
+% \SVN $Date$
 %\begin{multicols}{1}
 \begin{center}
   {\LARGE ESS \ \ \ \ {\large
@@ -32,18 +33,19 @@
 
   \smallskip
 
-  {\small updated for ESS 5.3.x}% {\footnotesize --- needs \em{more} updating!}}
-  \\[1ex] {\tiny \SVNDate}
+  {\small updated for ESS 5.15.x}% {\footnotesize --- needs \em{more} updating!}}
+  % \\[1ex] {\tiny \SVNDate}
            \footnotesize --- as of \today
 \end{center}
-\begin{enumerate}
-\item  \textsc{Nota Bene:} S is the \emph{language},
-  R is one \emph{dialect}!
-\item This is a list of the more widely used \textbf{key - shortcuts}.
-  Many more are available, and most are accessible from the Emacs
-  \textbf{Menus} such as \texttt{iESS}, \texttt{ESS}, etc.
-%NN  \vspace*{-3ex}
-\end{enumerate}
+% takes a lot of space
+% \begin{enumerate}
+% \item  \textsc{Nota Bene:} S is the \emph{language},
+%   R is one \emph{dialect}!
+% \item This is a list of the more widely used \textbf{key - shortcuts}.
+%   Many more are available, and most are accessible from the Emacs
+%   \textbf{Menus} such as \texttt{iESS}, \texttt{ESS}, etc.
+% %NN  \vspace*{-3ex}
+% \end{enumerate}
 %\end{multicols}
 %NN \rule{\textwidth}{.2pt}%----------------------------------------------------
 
@@ -56,7 +58,7 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 
 \begin{tabI}
   \texttt{\RET   }& Send a command \\
-  \texttt{\TAB   }& Complete S object name \\
+  \texttt{\TAB   }& Complete filename or  S object name \\
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
   %% SfS-only (others need C-u C-a for comint-bol !
@@ -129,9 +131,9 @@ Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
 For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabI}
-  \texttt{\TAB} & Indent this line \\
-  \texttt{C-c\TAB}& Complete S object name \\
-  \texttt{M-\TAB} & Complete file- / path- name \\
+  \texttt{\TAB} & Indent this line, or complete filename/object \\
+  % \texttt{C-c\TAB}& Complete S object name \\
+  % \texttt{M-\TAB} & Complete file- / path- name \\
   \texttt{M-C-a} & Beginning of function \\
   \texttt{M-C-e} & End of function \\
   \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
@@ -184,11 +186,67 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
   \texttt{r}   & Evaluate current \textbf{r}egion \\
   \texttt{h}   &\textbf{H}elp on another object \\
-  \texttt{?}   & Help for this mode \\
-  \texttt{q}   & Return to S process (`\textbf{q}uit) \\
+  \texttt{q}   & `\textbf{Q}uit window \\
   \texttt{x}   & Kill this buffer and return (`e\textbf{x}it) \\
+  \\
+  \texttt{?}   & Help for this mode \\
+  \texttt{i}   & Display \textbf{i}ndex\\
+  \texttt{v}   & Display \textbf{v}ignettes\\
+  \texttt{w}   & Display current page in bro\textbf{w}ser\\
 \end{tabI}
 
 \end{multicols}
+
+\pagebreak
+
+\begin{multicols}{2}
+  \Sect{ESS tracebug}
+  %% ~~~~~~~~~~~~~~~~
+  Activate and set the prefix key (a suggestion):
+
+  \begin{verbatim}
+  (setq ess-use-tracebug t)
+  (setq ess-tracebug-prefix "\M-t")
+  \end{verbatim}
+
+  Basic commands (prefix not included):
+
+  \begin{tabular}{p{20mm}l}
+    \texttt{?}& Show key help \\
+    \texttt{b}& Set BP (repeat to cycle)\\
+    \texttt{k}& Kill BP\\
+    \texttt{C-n, C-p}& Goto next/previous BP\\
+    \texttt{`} &Show R Traceback                     \\
+    \texttt{e}& Toggle error action (cycle)\\
+    \texttt{d, D}& Flag/unflag for debugging\\
+    \texttt{w} & Watch window\\
+    \texttt{c, n, p, q}& Debugging commands\\
+    \texttt{0..9, q}& Recover commands\\
+  \end{tabular}
+
+  Other commands:
+
+  \begin{tabular}{p{20mm}l}
+  \texttt{C-x `, M-g n} & `next-error' (emacs)\\
+  \texttt{M-g p} & `previous-error'(emacs)\\
+  \end{tabular}
+
+\columnbreak
+%% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\Sect{ESS developer}
+%% ~~~~~~~~~~~~~~~~
+Evaluate your code into the package:
+
+\begin{tabI}
+  \texttt{C-c d t} & Toggle developer on/off\\
+  \texttt{C-c d a} & Add package to the dev list\\
+  \texttt{C-c d r} & Remove package from dev list\\
+\end{tabI}
+
+
+
+\end{multicols}
+
 
 \end{document}
