@@ -526,7 +526,7 @@ to look up any doc strings."
 	args<-if(!special){
 		fundef<-paste(funname, '.default',sep='')
 		if(exists(fundef, mode = 'function')) args(fundef) else args(fun)
-	}
+	}else args(fun)
         args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse = ''))
         args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ',args), fixed = TRUE)
 	allargs <-
