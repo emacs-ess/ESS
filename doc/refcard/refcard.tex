@@ -24,7 +24,7 @@
 \pagestyle{empty}
 
 \begin{document}
-% \SVN $Date$
+\SVN $Date$
 %\begin{multicols}{1}
 \begin{center}
   {\LARGE ESS \ \ \ \ {\large
@@ -33,9 +33,9 @@
 
   \smallskip
 
-  {\small updated for ESS 5.15.x}% {\footnotesize --- needs \em{more} updating!}}
-  % \\[1ex] {\tiny \SVNDate}
-           \footnotesize --- as of \today
+  {\small updated for ESS 12.03}% {\footnotesize --- needs \em{more} updating!}}
+  \\[1ex] {\tiny \SVNDate}
+           % \footnotesize --- as of \today
 \end{center}
 % takes a lot of space
 % \begin{enumerate}
@@ -122,6 +122,15 @@ Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
   \texttt{C-c C-w}& Clean Region ($\mapsto$ input only)
 \end{tabI}
 
+\Sect{Sweave}
+
+\begin{tabI}
+  \texttt{M-n s} & Sweave the file\\
+  \texttt{M-n l} & run latex\\
+  \texttt{M-n p} & postscript file\\
+  \texttt{M-n P} & PDF file\\
+\end{tabI}
+
 \columnbreak
 %%%%%%%%%%================================================================
 
@@ -137,7 +146,8 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{M-C-a} & Beginning of function \\
   \texttt{M-C-e} & End of function \\
   \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
-  \texttt{M-C-h} & Mark this function
+  \texttt{M-C-h} & Mark this function\\
+  \texttt{\scriptsize C-u C-u} \texttt{C-y}& Yank striped commands\\
 \end{tabI}
 
 \begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{in/visibly})}
