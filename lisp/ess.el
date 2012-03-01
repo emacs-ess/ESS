@@ -164,6 +164,32 @@
 ;;;
 ;;;  --> is done in ess-mode.el, ess-inf.el, etc
 
+ ; ESS yank
+(defun ess-yank-cleaned-commands ()
+  "Yank and strip the code, leaving only (R/S/Lsp/..) commands.
+Deletes any lines not beginning with a prompt, and then removes
+the prompt from those lines that remain.
+
+Invoke this command with C-u C-u C-y."
+  (setq yank-window-start (window-start))
+  (let ((beg (point)))
+    (push-mark beg)
+    (setq this-command t)
+    (insert-for-yank (current-kill 0))
+    (ess-transcript-clean-region beg (point) nil)
+    (if (eq (point) beg)
+	(message "No commands found"))
+    (if (eq this-command t)
+	(setq this-command 'yank))
+  ))
+
+(defun ess-yank (&optional ARG)
+  "With double prefix (C-u C-u) call `ess-yank-cleaned-commands"
+  (interactive "*P")
+  (if (equal '(16) ARG)
+      (ess-yank-cleaned-commands)
+    (yank ARG))
+  )
 
  ; ESS Completion
 (defun ess-completing-read (prompt collection &optional predicate

@@ -130,6 +130,7 @@
 
   ;; By popular demand:
   (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
+  (define-key ess-mode-map "\C-y"	'ess-yank)
 
   (define-key ess-mode-map "\C-c\C-r"	'ess-eval-region)
   (define-key ess-mode-map "\C-c\M-r"	'ess-eval-region-and-go)

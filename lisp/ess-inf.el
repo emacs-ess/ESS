@@ -1503,9 +1503,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 
 ;;*;; Major mode definition
 
-(if inferior-ess-mode-map
-    nil
-
+(unless inferior-ess-mode-map
   (cond ((featurep 'xemacs)
 	 ;; Code for XEmacs
 	 (setq inferior-ess-mode-map (make-keymap))
@@ -1514,6 +1512,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 	 ;; Code for GNU Emacs
 	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
 
+  (define-key inferior-ess-mode-map "\C-y"		'ess-yank)
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
