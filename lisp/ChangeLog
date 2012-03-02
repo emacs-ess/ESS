@@ -1,3 +1,7 @@
+2012-03-02  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-l.el (ess-bugs-hot-arrow): add a space before arrow
+
 2012-03-01  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess.el (ess-yank-cleaned-commands, ess-yank): C-u C-u C-y yanks

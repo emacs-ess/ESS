@@ -179,7 +179,7 @@ and `ess-bugs-file-dir'."
 (defun ess-bugs-hot-arrow ()
     "*ESS[BUGS]: Substitute <- for = key press"
     (interactive)
-    (insert "<- "))
+    (insert " <- "))
 
 (defun ess-bugs-next-action ()
    "ESS[BUGS/JAGS]: Perform the appropriate next action."
