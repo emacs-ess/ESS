@@ -1228,24 +1228,16 @@ or if STYLE argument is given, use that.  It makes the ESS indentation
 style variables buffer local."
 
   (interactive)
-  (let ((ess-styles (mapcar 'car ess-style-alist)))
+  (let ((ess-styles (mapcar 'symbol-name (mapcar 'car ess-style-alist))))
     (if (interactive-p)
 	(setq style
-	      (let ((style-string ; get style name with completion
-		     (completing-read
-		      (format
-		       "Set ESS mode indentation style (default %s): "
-		       ess-default-style)
-		      (vconcat ess-styles)
-		      (function (lambda (arg) (memq arg ess-styles))))))
-		(if (string-equal "" style-string)
-		    ess-default-style
-		  (intern style-string)))))
-    (setq style (or style ess-style)) ; use ess-style if style is nil
+	      (intern (ess-completing-read "Set ESS mode indentation style"
+				   ess-styles nil t nil nil ess-default-style))))
+    (setq style (or style ess-style))
     (make-local-variable 'ess-style)
-    (if (memq style ess-styles)
+    (if (memq (symbol-name style) ess-styles)
 	(setq ess-style style)
-      (error (concat "Bad ESS style: " style)))
+      (error (format "Bad ESS style: %s" style)))
     (if (not quiet)
 	(message "ESS-style: %s" ess-style))
     ; finally, set the indentation style variables making each one local
