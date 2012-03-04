@@ -1086,7 +1086,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 	       ;; modified by shiba@isac 7.3.1992
 	       (cond ((and (numberp ess-expression-offset)
-		   (re-search-backward "[ \t]*expression[ \t]*" bol t))
+			   (re-search-backward "[ \t]*expression[ \t]*" bol t))
 		      ;; This regexp match every "expression".
 		      ;; modified by shiba
 		      ;;(forward-sexp -1)
@@ -1095,10 +1095,37 @@ Returns nil if line starts inside a string, t if in a comment."
 		      ;; End
 		      (+ (current-column) ess-expression-offset))
 		     ((and (numberp ess-arg-function-offset)
-			   (re-search-backward
-			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*"
-			    bol t))
-		      (forward-sexp -1)
+			   (save-excursion
+			     ;; We need the whole line to distinguish
+			     ;; between
+			     ;;   a <- some.function(arg1,
+			     ;;                      arg2)
+			     ;; and
+			     ;;   a <- some.function(
+			     ;;     arg1,
+			     ;;     arg2)
+			     (end-of-line)
+			     (re-search-backward
+			      ;; The regular expression we need consists
+			      ;; of:
+			      (mapconcat
+			       (lambda (x) x)
+			       '(
+				 ;; an assignment operator,
+				 "\\(<-\\|=\\)"
+				 ;; a function name,
+				 "\\s\"*\\(\\w\\|\\s_\\)+\\s\"*"
+				 ;; an open paren with no argument,
+				 "("
+				 ;; and the end of the line,
+				 "$")
+			       ;; separated by spaces.
+			       "[[:blank:]]*")
+			      bol t)))
+		      ;; We want to go back to the indent for
+		      ;; 'destination <- ...' and add
+		      ;; ess-arg-function-offset.
+		      (forward-sexp -2)
 		      (+ (current-column) ess-arg-function-offset))
 		     ;; "expression" is searched before "=".
 		     ;; End
