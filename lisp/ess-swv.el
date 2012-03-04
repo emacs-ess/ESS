@@ -163,10 +163,10 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
   (interactive
    (list
     (let ((def (elt ess-swv-pdflatex-commands 0)))
-      (completing-read (format "pdf latex command (%s): " def)
-		       ess-swv-pdflatex-commands ; <- collection to choose from
-		       nil 'confirm ; or 'confirm-after-completion
-		       nil nil def))))
+      (ess-completing-read  "pdf latex command"
+			    ess-swv-pdflatex-commands ; <- collection to choose from
+			    nil 'confirm ; or 'confirm-after-completion
+			    nil nil def))))
   (let* ((buf (buffer-name))
 	 (namestem (file-name-sans-extension (buffer-file-name)))
 	 (latex-filename (concat namestem ".tex"))

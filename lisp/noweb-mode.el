@@ -1059,10 +1059,9 @@ chunk from point, else goto to the -Nth code chunk from point."
   (widen)
   (let* ((completion-ignore-case t)
          (alist (noweb-build-chunk-alist))
-         (chunk (completing-read
-                 "Chunk: " alist nil t
-                 (noweb-goto-chunk-default)
-                 noweb-chunk-history)))
+         (chunk (ess-completing-read
+                 "Chunk" (delete "" (mapcar 'car alist)) nil t nil
+                 noweb-chunk-history (noweb-goto-chunk-default))))
     (goto-char (cdr (assoc chunk alist))))
   (if noweb-narrowing
       (noweb-narrow-to-chunk-pair)))

@@ -684,16 +684,11 @@ Returns the name of the selected process."
 		 (message "using process '%s'" rr)
 		 rr)
 	     ;; else
-	     (completing-read message
-			      ess-process-name-list
-			      nil	; predicate
-			      'require-match
-			      ;; If in S buffer, don't offer current process
-			      (if (eq major-mode 'inferior-ess-mode)
-				  ess-dialect
-				ess-current-process-name
-				;; maybe ess-local-process-name IF exists?
-				)))))
+	     (when message
+	       (setq message (replace-regexp-in-string ": +\\'" "" message)))
+	     (ess-completing-read message (mapcar 'car ess-process-name-list)
+				  nil t nil nil ess-current-process-name)
+	     )))
       (save-excursion
 	(set-buffer (process-buffer (get-process proc)))
 	(ess-make-buffer-current))
@@ -2655,7 +2650,7 @@ The result is stored in `ess-sl-modtime-alist'."
 (defun ess-search-path-tracker (str)
   "Check if input STR changed the search path.
 This function monitors user input to the inferior ESS process so that
-Emacs can keep the variable `ess-search-list' up to date. `completing-read' in
+Emacs can keep the variable `ess-search-list' up to date. `ess-completing-read' in
 \\[ess-read-object-name] uses this list indirectly when it prompts for help or
 for an object to dump."
   (if (string-match ess-change-sp-regexp str)
@@ -2669,11 +2664,8 @@ for an object to dump."
   "Read an S object name from the minibuffer with completion, and return it.
 P-STRING is the prompt string."
   (let* ((default (ess-read-object-name-dump))
-	 (prompt-string (if default
-			    (format "%s(default %s) " p-string default)
-			  p-string))
-	 (object-list (mapcar 'list (ess-get-object-list ess-local-process-name)))
-	 (spec (completing-read prompt-string object-list)))
+	 (object-list (ess-get-object-list ess-local-process-name))
+	 (spec (ess-completing-read p-string object-list nil nil nil nil default)))
     (list (cond
 	   ((string= spec "") default)
 	   (t spec)))))

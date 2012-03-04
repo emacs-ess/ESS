@@ -404,7 +404,7 @@ following lines to your `.emacs' file:
 
 (defun Rd-mode-insert-section ()
   (interactive)
-  (let ((s (completing-read
+  (let ((s (ess-completing-read
 	    "Insert section: "
 	    (mapcar '(lambda (x) (cons x x)) Rd-section-names)
 	    nil t)))

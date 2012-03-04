@@ -148,7 +148,7 @@ an inferior emacs buffer) the GUI help window is used."
          (setq ess-sp-change t)))
      (if (ess-ddeclient-p)
          (list (read-string "Help on: "))
-       (ess-find-help-file "Help on: "))))
+       (ess-find-help-file "Help on"))))
 
   (if (or (ess-ddeclient-p)
 	  (equal inferior-ess-help-filetype "chm"))
@@ -342,7 +342,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (setq all-packs (ess-get-words-from-vector com-packages))
       (unless pack ;try symbol at point
         (setq pack  (car (member (ess-read-object-name-default) all-packs))))
-      (setq pack (ess-completing-read "Index of: " ;; for xemacs must be an alist:(
+      (setq pack (ess-completing-read "Index of"
                                       all-packs nil nil nil nil pack))
       (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
       (with-current-buffer buff

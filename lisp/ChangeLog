@@ -1,3 +1,18 @@
+2012-03-04  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-swv.el (ess-swv-PDF): ess-completing-read
+
+	* noweb-mode.el (noweb-goto-chunk): ess-completing-read
+
+	* ess-inf.el (ess-request-a-process, ess-request-a-process)
+	(ess-read-object-name): ess-completing-read
+
+	* ess-tracebug.el (ess-dbg-command-digit): ess-completing-read
+
+	* ess-rd.el (Rd-mode-insert-section): ess-completing-read
+
+	* ess-mode.el (ess-set-style): ess-completing-read
+
 2012-03-02  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-l.el (ess-bugs-hot-arrow): add a space before arrow
