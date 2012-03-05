@@ -28,7 +28,7 @@
 (defun ess-inside-string-or-comment-p (pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
  (according to syntax). NOT OKAY for multi-line comments!!"
-  ;;FIXME (defun S-calculate-indent ..) in ./ess-s-l.el can do that ...
+  ;;FIXME (defun ess-calculate-indent ..)  can do that ...
   (interactive "d");point by default
   (let ((pps (save-excursion
 	       (parse-partial-sexp
