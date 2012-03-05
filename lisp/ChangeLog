@@ -1,3 +1,9 @@
+2012-03-05  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-s-l.el: removed S-calculate-indent and S-indent-line (these
+	are ess-indent-line and ess-calculate-indent from 2004 already,
+	and created confusion)
+
 2012-03-04  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-swv.el (ess-swv-PDF): ess-completing-read

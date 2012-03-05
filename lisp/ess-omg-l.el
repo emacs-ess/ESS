@@ -43,7 +43,7 @@
   (if (looking-at "////")
       (current-column)
     (if (looking-at "///")
-	(let ((tem (S-calculate-indent)))
+	(let ((tem (ess-calculate-indent)))
 	  (if (listp tem) (car tem) tem))
       (skip-chars-backward " \t")
       (max (if (bolp) 0 (1+ (current-column)))
@@ -52,7 +52,7 @@
 (defun OMG-indent-line ()
   "Indent current line as Omega code.
 Return the amount the indentation changed by."
-  (let ((indent (S-calculate-indent nil))
+  (let ((indent (ess-calculate-indent nil))
 	beg shift-amt
 	(case-fold-search nil)
 	(pos (- (point-max) (point))))
@@ -262,8 +262,8 @@ Returns nil if line starts inside a string, t if in a comment."
     ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line                      . 'S-indent-line)
-    ;;(ess-calculate-indent           . 'S-calculate-indent)
-    (indent-line-function            . 'S-indent-line)
+    ;;(ess-calculate-indent           . 'ess-calculate-indent)
+    (indent-line-function            . 'ess-indent-line)
     (parse-sexp-ignore-comments   . t)
     (ess-style                . ess-default-style)
     (ess-local-process-name       . nil)
