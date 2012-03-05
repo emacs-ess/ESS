@@ -26,10 +26,12 @@ such as debugging and/or during R development.  Thanks to Ross Boylan for
 making the suggestion, Sam Steingold for reminding us of this variable and
 Martin Maechler for the warning.
 @item @ESS{[R]}: Eldoc shows arguments of a generic function whenever found.
-@item @ESS{}: @kbd{TAB} in @code{ess-mode} now indents and completes
-if there was nothing to indent. Completion mechanism is similar to the
-completion in the @code{inferior-ess-mode} -- a filename expansion is
-tried, if not found ESS completes the symbol by querying the
+@item @ESS{}: @kbd{TAB} in @code{ess-mode} now indents and completes,
+if there is nothing to indent. Set
+@code{ess-first-tab-never-completes-p} to @code{t} to make @kbd{TAB}
+never complete on first invocation. Completion mechanism is similar to
+the completion in the @code{inferior-ess-mode} -- a filename expansion
+is tried, if not found ESS completes the symbol by querying the
 process. This also makes `comint-replace-by-expanded-filename'
 @kbd{M-TAB}(or @kbd{C-M-i}) redundant and user might consider binding it
 to something more useful. @kbd{C-c TAB} is deprecated and will be

@@ -316,6 +316,11 @@ Some useful keys for IDO completion:
   :group 'ess
   :type 'boolean)
 
+(defcustom ess-first-tab-never-completes-p nil
+  "If non-nil, first TAB never tries to complete in ess-mode."
+  :group 'ess
+  :type 'boolean)
+
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
 If 'script-only activate in ess-mode buffers only.
@@ -323,6 +328,7 @@ If 'script-only activate in ess-mode buffers only.
 See also `ess-eldoc-show-on-symbol'."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
+
 
 (defcustom ess-eldoc-show-on-symbol nil
   "If non-nil, show help string whenever the point is on a symbol.

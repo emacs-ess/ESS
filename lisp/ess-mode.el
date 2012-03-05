@@ -845,14 +845,21 @@ of the expression are preserved."
 	(insert-tab)
       (ess-indent-line))))
 
+
 (defun ess-indent-or-complete ()
   "Try to indent first, if code is already properly indented, complete instead."
   (interactive)
   (let ((shift (ess-indent-command)))
     (when (and (numberp shift) ;; can be nil if ess-tab-always-indent is nil
 	       (equal shift 0))
-      (comint-dynamic-complete))))
-
+      (if (eq last-command 'ess-indent-or-complete)
+	  (if (not  ess-local-process-name)
+	      (message "No process associated with the current buffer")
+	    (comint-dynamic-complete))
+	(when (and (not ess-first-tab-never-completes-p)
+		   ess-local-process-name) ;; don't give message on first invocation
+	  (comint-dynamic-complete))
+	))))
 
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."

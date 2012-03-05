@@ -1,5 +1,11 @@
 2012-03-05  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-custom.el (ess-first-tab-never-completes-p): if t never
+	complete on first TAB in ess-mode.
+
+	* ess-mode.el (ess-indent-or-complete): improved handling of the
+	nil process
+
 	* ess-s-l.el: removed S-calculate-indent and S-indent-line (these
 	are ess-indent-line and ess-calculate-indent from 2004 already,
 	and created confusion)
