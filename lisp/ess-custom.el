@@ -129,7 +129,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.15"
+(defvar ess-version "12.03"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -742,6 +742,11 @@ If nil, ESS will try finding one from a list."
   :group 'ess)
 
 ;; ---- ./ess-roxy.el : ------------
+
+(defcustom ess-roxy-package "roxygen" ;; FIXME: "roxygen2"
+  "The name of the R package to use for Roxygen."
+  :group 'ess-roxy
+  :type 'string)
 
 (defcustom ess-roxy-tags-noparam '("export" "nord")
   "The tags used in roxygen fields that can be used alone.  Used

@@ -13,6 +13,13 @@
 
 	* ess-mode.el (ess-set-style): ess-completing-read
 
+2012-03-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (ess-roxy-package): new variable, (FIXME potentially)
+	with new default "roxygen2". %% FIXME, 'roxygen2' fails
+	* ess-roxy.el (ess-roxy-preview): now using ess-roxy-package
+	instead of "roxygen".
+
 2012-03-02  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-bugs-l.el (ess-bugs-hot-arrow): add a space before arrow

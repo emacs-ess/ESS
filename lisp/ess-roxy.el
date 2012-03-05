@@ -68,13 +68,13 @@
   (if ess-roxy-hide-show-p
       (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
   ;; short version (*first*: -> key binding shown in menu):
-  (define-key ess-roxy-mode-map (kbd "C-c C-o") 'ess-roxy-update-entry)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o")     'ess-roxy-update-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
   (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
   ;; For consistency (e.g. C-c C-e C-h !): kept here *in* addition to above
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-r")   'ess-roxy-preview-Rd)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-t")   'ess-roxy-preview-HTML)
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-r") 'ess-roxy-preview-Rd)
+  (define-key ess-roxy-mode-map (kbd "C-c C-e C-t") 'ess-roxy-preview-HTML)
   (define-key ess-roxy-mode-map (kbd "C-c C-e t")   'ess-roxy-preview-text)
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
   )
@@ -465,31 +465,41 @@ string. Convenient for editing example fields."
       (widen))))
 
 (defun ess-roxy-preview ()
-  "Use the connected R session and the roxygen package to
-generate the Rd code for entry at point, place it in a temporary
-buffer and return that buffer."
+  "Use the connected R session and the roxygen package `ess-roxy-package'
+to generate the Rd code for entry at point, place it in
+a temporary buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
-	(roxy-tmp (make-temp-file "ess-roxy"))
-	(roxy-buf (get-buffer-create " *RoxygenPreview*")))
+	(tmpf (make-temp-file "ess-roxy"))
+	(roxy-buf (get-buffer-create " *RoxygenPreview*"))
+	(out-rd-roclet
+	 (cond ((string= "roxygen" ess-roxy-package)
+		"make.Rd2.roclet()$parse")
+	       ((string= "roxygen2" ess-roxy-package)
+		"(function(P) { ..td <- tempdir(); dir.create(file.path(..td,\"man\"), show=FALSE);
+ roc_out(rd_roclet(), P, ..td) })")
+	       (t (error "need to hard code the roclet output call for roxygen package '%s'"
+			 ess-roxy-package))))
+	)
     (if (= beg 0)
 	(error "Point is not in a Roxygen entry"))
     (save-excursion
       (goto-char (ess-roxy-end-of-entry))
       (forward-line 1)
       (if (ess-end-of-function nil t)
-	  (append-to-file beg (point) roxy-tmp)
+	  (append-to-file beg (point) tmpf)
 	(while (and (forward-line 1) (not (looking-at "^$"))
 		    (not (looking-at ess-roxy-str))))
-	(append-to-file beg (point) roxy-tmp))
-      (ess-command "print(suppressWarnings(require(roxygen, quietly=TRUE)))\n"
+	(append-to-file beg (point) tmpf))
+      (ess-command (concat "print(suppressWarnings(require(" ess-roxy-package
+			   ", quietly=TRUE)))\n")
 		   roxy-buf)
       (with-current-buffer roxy-buf
 	(goto-char 1)
 	(if (search-forward-regexp "FALSE" nil t)
-	    (error (concat "Failed to load the roxygen package; "
-			   "in R, try  install.packages(\"roxygen\")"))))
-      (ess-command (concat "make.Rd.roclet()$parse(\"" roxy-tmp "\")\n") roxy-buf))
-    (delete-file roxy-tmp)
+	    (error (concat "Failed to load the " ess-roxy-package " package; "
+			   "in R, try  install.packages(\"" ess-roxy-package "\")"))))
+      (ess-command (concat out-rd-roclet "(\"" tmpf "\")\n") roxy-buf))
+    ;;(delete-file tmpf)
     roxy-buf))
 
 (defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
@@ -498,22 +508,22 @@ generate a HTML page for the roxygen entry at point and open that
 buffer in a browser. Visit the HTML file instead of showing it in
 a browser if `visit-instead-of-open' is non-nil"
   (interactive "P")
-  (let ((roxy-buf (ess-roxy-preview))
-	(rd-tmp-file (make-temp-file "ess-roxy-" nil ".Rd"))
-	(html-tmp-file (make-temp-file "ess-roxy-" nil ".html")))
+  (let* ((roxy-buf (ess-roxy-preview))
+	 (rd-tmp-file (make-temp-file "ess-roxy-" nil ".Rd"))
+	 (html-tmp-file (make-temp-file "ess-roxy-" nil ".html"))
+	 (rd-to-html (concat "Rd2HTML(\"" rd-tmp-file "\",\""
+			     html-tmp-file "\", stages=c(\"render\"))"))
+	 )
     (with-current-buffer roxy-buf
       (set-visited-file-name rd-tmp-file)
       (save-buffer)
       (kill-buffer roxy-buf))
     (ess-command "print(suppressWarnings(require(tools, quietly=TRUE)))\n")
-    (if (not visit-instead-of-open)
-	(ess-command
-	 (concat "browseURL(Rd2HTML(\"" rd-tmp-file "\",\""
-		 html-tmp-file "\", stages=c(\"render\")))\n"))
-      (ess-command
-       (concat "Rd2HTML(\"" rd-tmp-file "\",\""
-	       html-tmp-file "\", stages=c(\"render\"))\n"))
-      (find-file html-tmp-file))))
+    (ess-command
+     (if visit-instead-of-open
+	 (concat rd-to-html "\n")
+       (concat "browseURL(" rd-to-html ")\n")))
+    (find-file html-tmp-file)))
 
 
 (defun ess-roxy-preview-text ()
