@@ -1056,18 +1056,20 @@ Returns nil if line starts inside a string, t if in a comment."
     (beginning-of-line)
     (let ((indent-point (point))
 	  (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
+	  (setq open-paren-in-column-0-is-defun-start nil) ;; stop at the outermost (
 	  (case-fold-search nil)
 	  state
 	  containing-sexp)
       (if parse-start
 	  (goto-char parse-start)
+	;; this one is awfull with open-paren-in-column-0-is-defun-start t, it always goes to point-min
 	(beginning-of-defun))
       (while (< (point) indent-point)
 	(setq parse-start (point))
 	(setq state (parse-partial-sexp (point) indent-point 0))
 	(setq containing-sexp (car (cdr state))))
       (cond ((or (nth 3 state) (nth 4 state))
-	     ;; return nil or t if should not change this line
+	     ;; return nil (in string) or t (in comment)
 	     (nth 4 state))
 	    ((null containing-sexp)
 	     ;; Line is at top level.  May be data or function definition,
