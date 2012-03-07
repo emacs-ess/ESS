@@ -660,7 +660,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (requires   . 0)
     (candidates . ess-ac-candidates)
     (document   . ess-ac-help)
-    (action	. ess-ac-action-args))
+    ;; (action	. ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
+    )
   "Auto-completion source for R function arguments"
   )
 
