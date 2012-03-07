@@ -1006,7 +1006,7 @@ Completion is available for supplying options."
     (let ((ess-eval-visibly-p t)
 	  (packs (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(.packages(T));options(oo)})\n"))
           pack)
-      (setq pack (ess-completing-read "Load package: " packs))
+      (setq pack (ess-completing-read "Load package" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))
       (ess-set-process-variable ess-current-process-name 'ess-sp-change t)
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
