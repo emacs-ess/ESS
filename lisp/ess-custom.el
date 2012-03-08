@@ -513,8 +513,8 @@ If not number, the statements are indented at open-parenthesis following foo.
 If a number, the statement will be indented as
 
   a <- some.function(
-    arg1,
-    arg2)
+         arg1,
+         arg2)
 
 instead of
 
@@ -524,21 +524,21 @@ instead of
 For inner function arguments the behavior is unchanged:
 
 some.function(arg1,
-              arg2 = foo(a,
-                b
+              arg2 = other.function(a,
+                       b,
 
 Set `ess-arg-function-offset' to nil if you want:
 
 some.function(arg1,
-              arg2 = foo(a,
-                         b
+              arg2 = other.function(a,
+                                    b,
 
 but
 
 some.function(arg1,
-              arg2 = foo(
-                a,
-                b
+              arg2 = other.function(
+                       a,
+                       b,
 
 ")
 
