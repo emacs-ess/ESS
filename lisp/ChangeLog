@@ -1,3 +1,8 @@
+2012-03-08  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (ess-arg-function-offset-new-line): new
+	indentation offset, better handling of long funargs. See the doc.
+
 2012-03-05  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (ess-first-tab-never-completes-p): if t never

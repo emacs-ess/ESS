@@ -356,6 +356,8 @@ Variables controlling indentation style:
     in `arg=foo(...)' form.
    If not number, the statements are indented at open-parenthesis following
    `foo'.
+ `ess-arg-function-offset-new-line'
+   Extra indent for function arguments when ( is folowed by new line.
  `ess-expression-offset'
     Extra indent for internal substatements of `expression' that specified
     in `obj <- expression(...)' form.
@@ -1056,7 +1058,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (beginning-of-line)
     (let ((indent-point (point))
 	  (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
-	  (setq open-paren-in-column-0-is-defun-start nil) ;; stop at the outermost (
+	  (open-paren-in-column-0-is-defun-start nil) ;; stop at the outermost (
 	  (case-fold-search nil)
 	  state
 	  containing-sexp)
@@ -1084,51 +1086,33 @@ Returns nil if line starts inside a string, t if in a comment."
 	     ;; line is expression, not statement:
 	     ;; indent to just after the surrounding open.
 	     (goto-char containing-sexp)
-	     (let ((bol (save-excursion (beginning-of-line) (point))))
+	     (let ((bol (line-beginning-position)))
 
-	       ;; modified by shiba@isac 7.3.1992
 	       (cond ((and (numberp ess-expression-offset)
 			   (re-search-backward "[ \t]*expression[ \t]*" bol t))
-		      ;; This regexp match every "expression".
-		      ;; modified by shiba
-		      ;;(forward-sexp -1)
+		      ;; obj <- expression(...
+		      ;; modified by shiba (forward-sexp -1)
 		      (beginning-of-line)
 		      (skip-chars-forward " \t")
 		      ;; End
 		      (+ (current-column) ess-expression-offset))
 		     ((and (numberp ess-arg-function-offset)
-			   (save-excursion
-			     ;; We need the whole line to distinguish
-			     ;; between
-			     ;;   a <- some.function(arg1,
-			     ;;                      arg2)
-			     ;; and
-			     ;;   a <- some.function(
-			     ;;     arg1,
-			     ;;     arg2)
-			     (end-of-line)
-			     (re-search-backward
-			      ;; The regular expression we need consists
-			      ;; of:
-			      (mapconcat
-			       (lambda (x) x)
-			       '(
-				 ;; an assignment operator,
-				 "\\(<-\\|=\\)"
-				 ;; a function name,
-				 "\\s\"*\\(\\w\\|\\s_\\)+\\s\"*"
-				 ;; an open paren with no argument,
-				 "("
-				 ;; and the end of the line,
-				 "$")
-			       ;; separated by spaces.
-			       "[[:blank:]]*")
-			      bol t)))
-		      ;; We want to go back to the indent for
-		      ;; 'destination <- ...' and add
-		      ;; ess-arg-function-offset.
-		      (forward-sexp -2)
+			   (re-search-backward
+			    "=[ \t]*\\s\"*\\(\\w\\|\\s_\\)+\\s\"*[ \t]*"
+			    bol t))
+		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset))
+		     ((and (numberp ess-arg-function-offset-new-line)
+			   (looking-at-p "[ \t]*([ \t]*$"))
+		      ;; distinguish between
+		      ;;   a <- some.function(arg1,
+		      ;;                      arg2)
+		      ;; and
+		      ;;   a <- some.function(
+		      ;;     arg1,
+		      ;;     arg2)
+		      (forward-sexp -1)
+		      (+ (current-column) ess-arg-function-offset-new-line))
 		     ;; "expression" is searched before "=".
 		     ;; End
 		     (t
