@@ -499,7 +499,7 @@ ess-mode."
 	      "\\(" ;;--------outer Either-------
 	      "\\(\\("		; EITHER
 	      ;; Q xSymb repl Sym-0 "*" Q  ; quote ([) (replacement) symbol quote
-	      Q ".+" Q
+	      Q "[^ \t\n\"']+" Q ;; any function name between quotes
 	      _or_
 	      "\\(^\\|[ ]\\)" Symb 	; (beginning of name) + Symb
 	      "\\)\\)"))	; END EITHER OR
