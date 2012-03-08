@@ -1058,7 +1058,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (beginning-of-line)
     (let ((indent-point (point))
 	  (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
-	  (open-paren-in-column-0-is-defun-start nil) ;; stop at the outermost (
+	  (open-paren-in-column-0-is-defun-start t) ;; basically go to point-min (no better solution aparently)
 	  (case-fold-search nil)
 	  state
 	  containing-sexp)
