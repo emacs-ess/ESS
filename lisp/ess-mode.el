@@ -1064,7 +1064,7 @@ Returns nil if line starts inside a string, t if in a comment."
 	  containing-sexp)
       (if parse-start
 	  (goto-char parse-start)
-	;; this one is awfull with open-paren-in-column-0-is-defun-start t, it always goes to point-min
+	;; this one is awful with open-paren-in-column-0-is-defun-start t, it always goes to point-min
 	(beginning-of-defun))
       (while (< (point) indent-point)
 	(setq parse-start (point))
@@ -1189,12 +1189,17 @@ Returns nil if line starts inside a string, t if in a comment."
 	     nil)
 	    ;; ((bolp))
 	    ((= (preceding-char) ?\))
-	     (forward-sexp -2)
-	     (looking-at "if\\b[ \t]*(\\|function\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*("))
+	     (ignore-errors
+	       ;; if throws an error clearly not a continuation
+	       ;; can happen if the parenthetical statement starts a new line
+	       ;; (foo)  ## or
+	       ;; !(foo)
+	       (forward-sexp -2)
+	       (looking-at "if\\b[ \t]*(\\|function\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")))
 	    ((progn (forward-sexp -1)
 		    (and (looking-at "else\\b\\|repeat\\b")
 			 (not (looking-at "else\\s_\\|repeat\\s_"))))
-	     (skip-chars-backward " \t")
+	     (skip-chars-backward " \t}")
 	     (or (bolp)
 		 (= (preceding-char) ?\;)))
 	    (t
