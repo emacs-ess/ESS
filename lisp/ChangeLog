@@ -1,3 +1,9 @@
+2012-03-09  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-help.el (ess-help-kill, ess-help-quit): smarter quit and
+	kill behavior.
+	(ess-display-help-on-object): fixed the help display bug.
+
 2012-03-05  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (ess-first-tab-never-completes-p): if t never

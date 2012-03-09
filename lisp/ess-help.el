@@ -193,65 +193,66 @@ an inferior emacs buffer) the GUI help window is used."
 
               (goto-char (point-min))))
 
-        (save-excursion
-          (let ((PM (point-min))
-                (nodocs
-                 (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
-            (goto-char PM)
-            (if (and nodocs
-                     ess-help-kill-bogus-buffers)
-                (progn
-                  (if (not (listp nodocs))
-                      (setq nodocs (list PM (point-max))))
-                  (ess-write-to-dribble-buffer
-                   (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
-                           (buffer-name) (car nodocs) (cadr nodocs)))
-                  ;; Avoid using 'message here -- may be %'s in string
-                  ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
-                  ;; MM [3/2000]: why avoid?  Yes, I *do* want message:
-                  (message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
-                  ;; ^^^ fixme : remove new lines from the above {and abbrev.}
-                  (ding)
-                  (kill-buffer tbuffer))
+	(let ((PM (point-min))
+	      (nodocs
+	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
+	  (goto-char PM)
+	  (if (and nodocs
+		   ess-help-kill-bogus-buffers)
+	      (progn
+		(if (not (listp nodocs))
+		    (setq nodocs (list PM (point-max))))
+		(ess-write-to-dribble-buffer
+		 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
+			 (buffer-name) (car nodocs) (cadr nodocs)))
+		;; Avoid using 'message here -- may be %'s in string
+		;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
+		;; MM [3/2000]: why avoid?  Yes, I *do* want message:
+		(message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
+		;; ^^^ fixme : remove new lines from the above {and abbrev.}
+		(ding)
+		(kill-buffer tbuffer))
 
-              ;; else : show the help buffer.
+	    ;; else : show the help buffer.
 
-              ;; Check if this buffer describes where help can be found in
-              ;; various packages. (R only).  This is a kind of bogus help
-              ;; buffer, but it should not be killed immediately even if
-              ;; ess-help-kill-bogus-buffers is t.
+	    ;; Check if this buffer describes where help can be found in
+	    ;; various packages. (R only).  This is a kind of bogus help
+	    ;; buffer, but it should not be killed immediately even if
+	    ;; ess-help-kill-bogus-buffers is t.
 
-              ;; e.g. if within R, the user does:
+	    ;; e.g. if within R, the user does:
 
-              ;; > options("help.try.all.packages" = TRUE)
+	    ;; > options("help.try.all.packages" = TRUE)
 
-              ;; > ?rlm
+	    ;; > ?rlm
 
-              ;; then a list of packages for where ?rlm is defined is
-              ;; shown.  (In this case, rlm is in package MASS).  This
-              ;; help buffer is then renamed *help[R](rlm in packages)* so
-              ;; that after MASS is loaded, ?rlm will then show
-              ;; *help[R](rlm)*
+	    ;; then a list of packages for where ?rlm is defined is
+	    ;; shown.  (In this case, rlm is in package MASS).  This
+	    ;; help buffer is then renamed *help[R](rlm in packages)* so
+	    ;; that after MASS is loaded, ?rlm will then show
+	    ;; *help[R](rlm)*
 
-              (if (equal inferior-ess-program inferior-R-program-name)
-                  ;; this code should be used only for R processes.
-                  (save-excursion
-                    (goto-char (point-min))
-                    (if (looking-at "Help for topic")
-                        (let
-                            ( (newbuf
-                               (concat "*help[" ess-current-process-name
-                                       "](" object " in packages)*")))
-                          ;; if NEWBUF already exists, remove it.
-                          (if (get-buffer newbuf)
-                              (kill-buffer newbuf))
-                          (rename-buffer  newbuf)))))
+	    (if (equal inferior-ess-program inferior-R-program-name)
+		;; this code should be used only for R processes.
+		(save-excursion
+		  (goto-char (point-min))
+		  (if (looking-at "Help for topic")
+		      (let
+			  ( (newbuf
+			     (concat "*help[" ess-current-process-name
+				     "](" object " in packages)*")))
+			;; if NEWBUF already exists, remove it.
+			(if (get-buffer newbuf)
+			    (kill-buffer newbuf))
+			(rename-buffer  newbuf)))))
 
-              ;;dbg (ess-write-to-dribble-buffer
-              ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
-              (set-buffer-modified-p 'nil)
-              (toggle-read-only t)
-              (ess--switch-to-help-buffer tbuffer))))))))
+	    ;;dbg (ess-write-to-dribble-buffer
+	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
+	    (set-buffer-modified-p 'nil)
+	    (toggle-read-only t))))
+      (when (buffer-live-p tbuffer)
+	(ess--switch-to-help-buffer tbuffer))
+      )))
 
 
 (defun ess-display-help-in-browser ()
@@ -461,6 +462,22 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                        (get-text-property pos 'vignette)
                        (get-text-property pos 'package))))
 
+(defun ess-help-quit (&optional kill)
+  "Quit help."
+;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
+  (interactive "P")
+  (let* ((buffer (window-buffer))
+	 (obuffer (other-buffer buffer t)))
+    (bury-buffer)
+    (pop-to-buffer obuffer)
+    (if kill
+	(kill-buffer buffer))))
+
+(defun ess-help-kill ()
+  "Quit and kill the help buffer"
+  (interactive)
+  (ess-help-quit t))
+
 (defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
@@ -481,6 +498,8 @@ For internal use. Used in `ess-display-help-on-object',
           (pop-to-buffer buff)
         (ess-display-temp-buffer buff))
       )))
+
+
 
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
@@ -530,9 +549,9 @@ For internal use. Used in `ess-display-help-on-object',
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
   (if (fboundp 'set-keymap-parent)
       (set-keymap-parent ess-help-mode-map special-mode-map)
-    (define-key ess-help-mode-map "q" 'quit-window)  ;was 'ess-switch-to-end-of-ESS)
     (define-key ess-help-mode-map ">" 'end-of-buffer)
     (define-key ess-help-mode-map "<" 'beginning-of-buffer))
+  (define-key ess-help-mode-map "q" 'ess-help-quit)  ;was 'ess-switch-to-end-of-ESS)
   (define-key ess-help-mode-map " " 'scroll-up)
   (define-key ess-help-mode-map "b" 'scroll-down)
   (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
@@ -551,7 +570,7 @@ For internal use. Used in `ess-display-help-on-object',
   (define-key ess-help-mode-map "p" 'ess-skip-to-previous-section)
   (define-key ess-help-mode-map "/" 'isearch-forward)
   (define-key ess-help-mode-map "x" 'ess-kill-buffer-and-go)
-  (define-key ess-help-mode-map "k" 'kill-this-buffer)
+  (define-key ess-help-mode-map "k" 'ess-help-kill)
   (define-key ess-help-mode-map "?" 'ess-describe-help-mode)
   ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
   (define-key ess-help-mode-map "\C-c\C-s" 'ess-switch-process)
