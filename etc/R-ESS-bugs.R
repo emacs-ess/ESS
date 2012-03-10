@@ -353,3 +353,17 @@ fn <- function(x, ...){
 ## Martin M: I can NOT reproduce it, neither with 'emacs -Q';
 ##	tried both ESS 5.14 and ESS from svn
 ## VS[03-2012|12.03]: Cannot reproduce it either, solved?
+
+
+### --- 14 ---------------------------------------------------------------
+## check the behavior of ess-arg-function-offset-new-line
+
+a <- some.function(
+###  ^--- with ess-arg-function-offset-new-line 0 should indent here
+     arg1,
+     arg2)
+
+a <- some.function(arg1,
+                   arg2)
+
+
