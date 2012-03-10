@@ -356,6 +356,8 @@ Variables controlling indentation style:
     in `arg=foo(...)' form.
    If not number, the statements are indented at open-parenthesis following
    `foo'.
+ `ess-arg-function-offset-new-line'
+   Extra indent for function arguments when ( is folowed by new line.
  `ess-expression-offset'
     Extra indent for internal substatements of `expression' that specified
     in `obj <- expression(...)' form.
@@ -497,7 +499,7 @@ ess-mode."
 	      "\\(" ;;--------outer Either-------
 	      "\\(\\("		; EITHER
 	      ;; Q xSymb repl Sym-0 "*" Q  ; quote ([) (replacement) symbol quote
-	      Q ".+" Q
+	      Q "[^ \t\n\"']+" Q ;; any function name between quotes
 	      _or_
 	      "\\(^\\|[ ]\\)" Symb 	; (beginning of name) + Symb
 	      "\\)\\)"))	; END EITHER OR
@@ -1056,18 +1058,20 @@ Returns nil if line starts inside a string, t if in a comment."
     (beginning-of-line)
     (let ((indent-point (point))
 	  (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
+	  (open-paren-in-column-0-is-defun-start t) ;; basically go to point-min (no better solution aparently)
 	  (case-fold-search nil)
 	  state
 	  containing-sexp)
       (if parse-start
 	  (goto-char parse-start)
+	;; this one is awful with open-paren-in-column-0-is-defun-start t, it always goes to point-min
 	(beginning-of-defun))
       (while (< (point) indent-point)
 	(setq parse-start (point))
 	(setq state (parse-partial-sexp (point) indent-point 0))
 	(setq containing-sexp (car (cdr state))))
       (cond ((or (nth 3 state) (nth 4 state))
-	     ;; return nil or t if should not change this line
+	     ;; return nil (in string) or t (in comment)
 	     (nth 4 state))
 	    ((null containing-sexp)
 	     ;; Line is at top level.  May be data or function definition,
@@ -1082,14 +1086,12 @@ Returns nil if line starts inside a string, t if in a comment."
 	     ;; line is expression, not statement:
 	     ;; indent to just after the surrounding open.
 	     (goto-char containing-sexp)
-	     (let ((bol (save-excursion (beginning-of-line) (point))))
+	     (let ((bol (line-beginning-position)))
 
-	       ;; modified by shiba@isac 7.3.1992
 	       (cond ((and (numberp ess-expression-offset)
-		   (re-search-backward "[ \t]*expression[ \t]*" bol t))
-		      ;; This regexp match every "expression".
-		      ;; modified by shiba
-		      ;;(forward-sexp -1)
+			   (re-search-backward "[ \t]*expression[ \t]*" bol t))
+		      ;; obj <- expression(...
+		      ;; modified by shiba (forward-sexp -1)
 		      (beginning-of-line)
 		      (skip-chars-forward " \t")
 		      ;; End
@@ -1100,6 +1102,17 @@ Returns nil if line starts inside a string, t if in a comment."
 			    bol t))
 		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset))
+		     ((and (numberp ess-arg-function-offset-new-line)
+			   (looking-at-p "[ \t]*([ \t]*$"))
+		      ;; distinguish between
+		      ;;   a <- some.function(arg1,
+		      ;;                      arg2)
+		      ;; and
+		      ;;   a <- some.function(
+		      ;;     arg1,
+		      ;;     arg2)
+		      (forward-sexp -1)
+		      (+ (current-column) ess-arg-function-offset-new-line))
 		     ;; "expression" is searched before "=".
 		     ;; End
 		     (t
@@ -1176,12 +1189,17 @@ Returns nil if line starts inside a string, t if in a comment."
 	     nil)
 	    ;; ((bolp))
 	    ((= (preceding-char) ?\))
-	     (forward-sexp -2)
-	     (looking-at "if\\b[ \t]*(\\|function\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*("))
+	     (ignore-errors
+	       ;; if throws an error clearly not a continuation
+	       ;; can happen if the parenthetical statement starts a new line
+	       ;; (foo)  ## or
+	       ;; !(foo)
+	       (forward-sexp -2)
+	       (looking-at "if\\b[ \t]*(\\|function\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")))
 	    ((progn (forward-sexp -1)
 		    (and (looking-at "else\\b\\|repeat\\b")
 			 (not (looking-at "else\\s_\\|repeat\\s_"))))
-	     (skip-chars-backward " \t")
+	     (skip-chars-backward " \t}")
 	     (or (bolp)
 		 (= (preceding-char) ?\;)))
 	    (t

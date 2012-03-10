@@ -4,6 +4,11 @@
 	kill behavior.
 	(ess-display-help-on-object): fixed the help display bug.
 
+2012-03-08  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (ess-arg-function-offset-new-line): new
+	indentation offset, better handling of long funargs. See the doc.
+
 2012-03-05  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (ess-first-tab-never-completes-p): if t never
@@ -3399,7 +3404,7 @@
 
 2002-01-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* essddr.el (Rd-font): new function, put on C-c C-f à la TeX-font
+	* essddr.el (Rd-font): new function, put on C-c C-f Ã  la TeX-font
 	(Rd-font-list): e.g. `C-c C-f l' now surrounds word by \code{\link{.}}!
 
 2002-01-16  Martin Maechler  <maechler@stat.math.ethz.ch>

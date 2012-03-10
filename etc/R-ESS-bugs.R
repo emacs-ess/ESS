@@ -51,6 +51,7 @@ mindiff <- function(df) df[which.min(df$diff),
 ## Two functions in one line - can I "send" just one of them? {no, not "simply"}
 f1 <- function(x) be.friendly(x, force=TRUE); f2 <- function(x,y) x*sin(pi*x)
 
+### --- 2 ----------------------------------------------------------------
 ### --- Suggestion (Jenny Brian): --> Create a (defun ess-eval-multiline .)
 ## Here is useful valid R "test code":
 
@@ -68,7 +69,7 @@ plot(Speed, Distance,
 
 ## Note: We now at least C-c C-c {ess-eval-function-or-paragraph-and-step}
 
-
+### --- 3 ----------------------------------------------------------------
 ###--- This one (from the Matrix package) is for testing ess-roxy...,
 ## i.e.,  C-c C-o
 
@@ -86,6 +87,7 @@ dimnamesGets <- function (x, value) {
 }
 
 
+### --- 4 ----------------------------------------------------------------
 ### Here, the indentation is wrong ... rather an Emacs buglet ?
 
 a <- function(ch) {
@@ -107,18 +109,19 @@ a <- function(ch) {
 }
 
 
+### --- 5 ----------------------------------------------------------------
 ### Here, the beginning of function is not found correctly, and hence
 ###       all "ess-*-function" (C-M-a, C-M-e, ...) fail:
 
 setMeneric <-
-  ## It is clearly allowed to have comments here.
-  ## S version 4, and John Chambers in particular like it.
-  ##
-  ## BUG: M-C-e or M-C-a fails from ``here'' --
-  ## ---  effectively because of ess-beginning-of-function fails
-  ## and that really relies on finding  ess-function-pattern;
-  ## i.e., ess-R-function-pattern in ~/emacs/ess/lisp/ess-cust.el
-  ##
+    ## It is clearly allowed to have comments here.
+    ## S version 4, and John Chambers in particular like it.
+    ##
+    ## BUG: M-C-e or M-C-a fails from ``here'' --
+    ## ---  effectively because of ess-beginning-of-function fails
+    ## and that really relies on finding  ess-function-pattern;
+    ## i.e., ess-R-function-pattern in ~/emacs/ess/lisp/ess-cust.el
+    ##
     function(name, def = NULL, group = list(), valueClass = character(),
              where = topenv(parent.frame()), genericFunction = NULL)
 {
@@ -130,11 +133,13 @@ setMeneric <-
     "ABC"
 }
 
+### --- 6 ----------------------------------------------------------------
 ## In one-liners without "{ ... }" body, the end-of-function is also
 ## not correctly found:
 ## Use C-M-e to see:  In these two, the "end-of-function" is after
 ## 'class' :
 ## ---- these all work now (ESS version 5.3.8) :
+## no it doesn't VS[10-03-2012|ESS 12.03]:
 onelinerFails <- function(x, ...) class(x)
 
 onelinerFailsToo <-
@@ -148,10 +153,11 @@ onelinerWorksToo <-
         class(x)
     }
 
-
+### --- 7 ----------------------------------------------------------------
+## idem:
 ## this has one line more before 'function' than "typically:"
 setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
-			 drop = "logical"),
+                         drop = "logical"),
 	  function (x, i, j, ..., drop) { ## select rows
 	      storage.mode(i) <- "integer"
               xi <- x@i + 1:1 # 1-indexing
@@ -159,6 +165,9 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 	      if (drop && any(nd == 1)) drop(as(x,"matrix")) else x
 	  })
 
+### --- 8 ----------------------------------------------------------------
+## idem:
+## all bellow are ok VS[10-03-2012|ESS 12.03]:
 "dimnames<-.data.frame" <- function(x, value) {
     d <- dim(x)
     if(!is.list(value) || length(value) != 2
@@ -233,8 +242,6 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 
 ## swanky functions:
 
-
-
 `swank:quit-inspector` <- function(slimeConnection, sldbState) {
     resetInspector(slimeConnection)
     FALSE
@@ -245,12 +252,16 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     FALSE
 }
 
+
+### --- 9 ----------------------------------------------------------------
 ## From: "Sebastian P. Luque" <spluque@gmail.com>
 ## To: ess-bugs@stat.math.ethz.ch
 ## Subject: [ESS-bugs] ess-mode 5.12; `ess-indent-line' error
 ## Date: Tue, 17 Aug 2010 13:08:25 -0500
 
 ## With the following input, and point on the line with "Table 8.3":
+## VS[03-2012|12.03]:  solved
+## it was the paranthetical expression at the beg of line
 
 if (require(lme4)) {
     ## Model in p. 213
@@ -263,7 +274,7 @@ if (require(lme4)) {
     (fm2 <- update(fm1, . ~ . - (age | id) + (log(height) | id)))
 }
 
-### --------------------
+### -----
 ## hitting TAB (`ess-indent-command'), which calls `ess-indent-line' I get
 ## the following trace:
 
@@ -272,7 +283,7 @@ if (require(lme4)) {
 ##   forward-sexp(-2)
 ##   ...
 ##   ess-continued-statement-p()
-## .............
+## ......
 
 ## Interestingly, if the lines 2-4 are absent, then the problem is gone.
 ## The problem is also there in ESS 5.11.
@@ -285,10 +296,22 @@ if (require(lme4)) {
 .essDev_differs <- function(f1, f2){
     if (is.function(f1) && is.function(f2)){
         !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
-     }else
-         !identical(f1, f2)
+    }else
+        !identical(f1, f2)
 }
 
+
+
+### --- 10 ---------------------------------------------------------------
+## indent at 0 after }else:
+## VS:[03-2012|12.03]: solved:
+if (is.function(f1) && is.function(f2)){
+    !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
+}else
+    !identical(f1, f2)
+
+
+### --- 11 ---------------------------------------------------------------
 ### --------------- C-c C-c  was finding the wrong "beginning of function"
 ##				[fixed, 2011-05-28]
 foobar <- function(...) {}
@@ -300,24 +323,25 @@ rm(list=ls())
 ## psiInv = function(t,theta)
 ##     -log1p(exp(-theta)*expm1((1-t)*theta)/expm1(-theta))
 
+### --- 12 ---------------------------------------------------------------
 ##--- In the following block, in the first line, C-c C-c does *NOT* behave
-
+## VS[10-03-2012|ESS 12.03]: works fine for me:
 th <- 48 # now do ls() and see what happened ... the horror !!!
 d <- 3
 cpF <- list("Frank", list(th, 1:d))
 cop <- acF <- cpF$copula
 
-
+### --- 13 ---------------------------------------------------------------
 ## From: Aleksandar Blagotic <aca.blagotic@gmail.com>
 ## To: <ess-help@stat.math.ethz.ch>
 ## Subject: [ESS] R-mode: forward-sexp: Scan error: "Unbalanced parentheses"
 ## Date: Tue, 6 Dec 2011 01:24:11 +0100
-#
+                                        #
 ## Let's presuppose that I have a function like this:
-#
+                                        #
 fn <- function(x, ...){
-  re <- "^#{1,6} [[:print:]]+$"
-  grepl(re, x, ...)
+    re <- "^#{1,6} [[:print:]]+$"
+    grepl(re, x, ...)
 }
 ## As soon as I put my cursor at the end of the line with regexp, and
 ## press RET, I get this error:
@@ -328,3 +352,18 @@ fn <- function(x, ...){
 ## Rodney S: I can reproduce it ...
 ## Martin M: I can NOT reproduce it, neither with 'emacs -Q';
 ##	tried both ESS 5.14 and ESS from svn
+## VS[03-2012|12.03]: Cannot reproduce it either, solved?
+
+
+### --- 14 ---------------------------------------------------------------
+## check the behavior of ess-arg-function-offset-new-line
+
+a <- some.function(
+###  ^--- with ess-arg-function-offset-new-line 0 should indent here
+     arg1,
+     arg2)
+
+a <- some.function(arg1,
+                   arg2)
+
+
