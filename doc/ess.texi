@@ -1889,7 +1889,7 @@ Sexps, Emacs, The GNU Emacs Reference Manual}.
 Completion is provided in the edit buffer in a similar fashion to the
 process buffer: @key{TAB} first indents, and if there is nothing to
 indent, completes the object or file name; @kbd{M-?} lists file
-completions. See @xref{Completion} for more.
+completions. See @xref{Completion}, for more.
 
 Finally, two commands are provided for returning to the ESS process buffer:
 
@@ -2249,7 +2249,6 @@ Return to previously selected buffer, and kills the help buffer.
 @item
 @kbd{x} (@code{ess-kill-buffer-and-go}) @*
 Return to the ESS process, killing this help buffer.
-@end itemize
 
 Miscellaneous:
 
@@ -2268,6 +2267,7 @@ Display current help page with the web browser.
 @item
 @kbd{/} (@code{isearch-forward}) @*
 Same as @kbd{C-s}.
+@end itemize
 
 In addition, all of the ESS commands available in the edit buffers are
 also available in @Sl{} help mode (@pxref{Edit buffer}).  Of course, the
