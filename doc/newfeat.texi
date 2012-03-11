@@ -1,19 +1,52 @@
 @itemize @w{}
 
-Changes/New Features in 5.15:
+Changes/New Features in 12.03:
 @itemize @bullet
+@c this is not a feature actually, move out somehow?
+@item @ESS{} GitHub branch is now available at @uref{https://github.com/emacs-ess/ESS}
+
+@item @ESS{} indentation: new offset variable @code{ess-arg-function-offset-new-line}
+controlling for the indentation of lines immediately following open
+'('. This is useful to shift backwards function arguments after a long
+function call expression:
+
+@verbatim
+  a <- some.function(
+         arg1,
+         arg2)
+@end verbatim
+
+
+instead of the old
+
+@verbatim
+  a <- some.function(
+                     arg1,
+                     arg2)
+@end verbatim
+
+If '(' is not followed by new line the behavior is unchanged:
+
+@verbatim
+  a <- some.function(arg1,
+                     arg2)
+@end verbatim
+
+This variable should be set as part of indentation style lists, or in
+ess-mode hook.
+@item @ESS{[R]}: @kbd{C-c .} sets (indentation) style.
 @item @ESS{}: In ESS buffers @code{yank}(@kbd{C-y}) command accepts
  double argument @kbd{C-u C-u} to paste commands only. It deletes any
 lines not beginning with a prompt, and then removes the prompt from
 those lines that remain. Useful to paste code from emails,
 documentation, inferior ESS buffers or transcript files.
-@item @code{Documentation}: ESS user manual has been rearranged and
+@item Documentation: ESS user manual has been rearranged and
 completed with several new chapters and sections to reflect newly added
 features (``Completion'', ``Developing with ESS'', ``ESS tracebug'',
 ``ESS developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
 Code'')
-@item @code{RefCard}: Reference card was updated to include new features.
-@item @code{Eldoc}: Eldoc was rewritten and is now activated by
+@item RefCard: Reference card was updated to include new features.
+@item Eldoc: Eldoc was rewritten and is now activated by
 default. See @code{ess-use-eldoc} and @code{ess-eldoc-show-on-symbol}
 variables for how to change the default behavior. @emph{Note:}
 @code{skeleton-pair-insert-maybe} prohibits eldoc display, on @kbd{(}
@@ -104,8 +137,7 @@ This is consistent with emacs behavior help and other special buffers.
 @kbd{w} in help mode map. It depends on @code{R}'s @code{browser}
 option.
 @item New custom variable @code{ess-help-pop-to-buffer}: if non-nil
-@ESS{} help buffers are given focus on display. The default is
-@code{nil} - normal emacs and @ESS{} behavior.
+@ESS{} help buffers are given focus on display. The default is @code{t}.
 @item New menu entries for the above functions.
 @end itemize
 @item @ESS{} now uses @code{IDO} completing read functionality
@@ -200,7 +232,6 @@ in @code{> }. This could be overwritten by setting
  anymore.  @var{ess-history-directory} now allows to have the history
  all saved in one ``central'' file.
 @item @ESS{[R]}: more Roxygen improvements.
-@item @ESS{[R]}: @kbd{C-c .} to set (indentation) style.
 
 @item @ESS{[R]}: Functions with non-standard names (for example 'aaa-bbb:cc') are
 properly handled by font-lock and evaluation routines.
