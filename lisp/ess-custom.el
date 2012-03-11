@@ -1921,9 +1921,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 ;;*;; Variables relating to ess-help-mode
 
 
-(defcustom ess-help-pop-to-buffer nil
+(defcustom ess-help-pop-to-buffer t
   "If non-nil ess-help buffers are given focus during the display.
-For consistency with emacs help system, the default is nil.
+The default is t.
 "
   :group 'ess-help
   :type 'boolean)
