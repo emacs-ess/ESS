@@ -1826,12 +1826,14 @@ common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
 variable @code{ess-style-alist} lists the value of each indentation
 variable per style.
 
-If you wish to change from one predefined style to another, change the
-variable @code{ess-default-style}, for example:
+You can change the current style interactively with @kbd{C-c .}. If you
+wish to set the style for the future use, change the variable
+@code{ess-default-style}, for example:
 
 @example
 (setq ess-default-style 'C++)
 @end example
+
 
 The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
 you wish to edit some of the default values, set
@@ -1885,12 +1887,9 @@ Sexps, Emacs, The GNU Emacs Reference Manual}.
 
 @cindex completion in edit buffer
 Completion is provided in the edit buffer in a similar fashion to the
-process buffer: @kbd{M-TAB} completes file names and @kbd{M-?} lists
-file completions.  Since @key{TAB} is used for indentation in the edit
-buffer, object completion is now performed with @kbd{C-c TAB}.  Note
-however that completion is only provided over globally known S objects
-(such as system functions) --- it will @emph{not} work for arguments to
-functions or other variables local to the function you are editing.
+process buffer: @key{TAB} first indents, and if there is nothing to
+indent, completes the object or file name; @kbd{M-?} lists file
+completions. See @xref{Completion} for more.
 
 Finally, two commands are provided for returning to the ESS process buffer:
 
@@ -2221,7 +2220,7 @@ Jumps to end of file
 Pops up a help buffer with a list of the defined section motion keys.
 @end table
 
-Miscellaneous:
+Evaluation:
 
 @item
 @kbd{l} (@code{ess-eval-line-and-step}) @*
@@ -2235,26 +2234,40 @@ line.  Useful for running examples in help files.
 Send the contents of the current region to the ESS process.  Useful
 for running examples in help files.
 
-@item
-@kbd{/} (@code{isearch-forward}) @*
-Same as @kbd{C-s}.
 
 Quit commands:
 
 @item
-@kbd{q} (@code{ess-switch-to-end-of-ESS}) @*
+@kbd{q} (@code{ess-help-quit}) @*
 @pindex ess-switch-to-end-of-ESS
-Returns to the ESS process buffer in another window, leaving the
-help window visible.
+Return to previously selected buffer, and bury the help buffer.
 
 @item
 @kbd{k} (@code{kill-buffer}) @*
-Kills the help buffer.
+Return to previously selected buffer, and kills the help buffer.
 
 @item
 @kbd{x} (@code{ess-kill-buffer-and-go}) @*
 Return to the ESS process, killing this help buffer.
 @end itemize
+
+Miscellaneous:
+
+@item
+@kbd{i} (@code{ess-display-index}) @*
+Prompt for a package and display it's help index.
+
+@item
+@kbd{v} (@code{ess-display-vignettes}) @*
+Display all available vignettes.
+
+@item
+@kbd{w} (@code{ess-display-help-in-browser}) @*
+Display current help page with the web browser.
+
+@item
+@kbd{/} (@code{isearch-forward}) @*
+Same as @kbd{C-s}.
 
 In addition, all of the ESS commands available in the edit buffers are
 also available in @Sl{} help mode (@pxref{Edit buffer}).  Of course, the
@@ -2294,11 +2307,9 @@ variable @code{ess-help-own-frame}.
 @cindex completion of object names
 @cindex command-line completion
 
-In the process buffer, the @key{TAB} key is for completion, similar to
-that provided by Shell Mode for filenames.  In Inferior @Sl{} mode,
-pressing the @key{TAB} key when the cursor is following the first few
-characters of an object name @emph{completes} the object name; if the
-cursor is following a file name @kbd{TAB} completes the file name.
+The @key{TAB} key is for completion. In @code{ess-mode} @key{TAB} first
+tries to indent, and if there is nothing to indent, complete the object
+name instead.
 
 @itemize @bullet
 @item
@@ -2340,26 +2351,30 @@ adding any extra characters, type @kbd{M-?}.
 List all possible completions of the object name at point.
 @end itemize
 
-ESS also provides completion over the components of named lists accessed
-using the @samp{$} notation, to any level of nested lists.  This feature
-is particularly useful for checking what components of a list object
-exist while partway through entering a command: simply type the object
-name and @samp{$} and press @kbd{TAB} to see the names of existing list
-components for that object.
+ESS also provides completion over the components of named lists and
+environments (after @samp{$}), S4 classes slots (after @@), package and
+namespace objects (after :: and :::).  @c This feature is particularly
+@c useful for checking what components of a list object exist while partway
+@c through entering a command: simply type the object name and @samp{$} and
+@c press @kbd{TAB} to see the names of existing list components for that
+@c object.
 @cindex lists, completion on
 @cindex completion on lists
 
 @cindex completion on file names
 Completion is also provided over file names, which is particularly
 useful when using @Sl{} functions such as @code{get()} or @code{scan()}
-which require fully expanded file names.  Whenever the cursor is within
-an @Sl{} string, pressing @kbd{TAB} completes the file name before
-point.  Since ESS 5.11, it no longer also expands any @samp{~} or
-environment variable references.
+which require fully expanded file names.
 
-If the cursor is not in a string and does not follow a (partial) object
-name, the @key{TAB} key has a third use: it expands history references.
-@xref{History expansion}.
+@c VS[11-03-2012|ESS 12.03]: this is not true in ess-mode
+@c Whenever the cursor is within
+@c an @Sl{} string, pressing @kbd{TAB} completes the file name before
+@c point.  Since ESS 5.11, it no longer also expands any @samp{~} or
+@c environment variable references.
+
+In the Inferior ESS buffer, if the cursor is not in a string and does
+not follow a (partial) object name, the @key{TAB} key has a third use:
+it expands history references.  @xref{History expansion}.
 
 @c @comment  node-name,  next,  previous,  up
 @c @node Completion details, Transcript, Completion, Entering commands
@@ -2416,7 +2431,7 @@ completion will provide all the arguments of @code{S3} methods known to
 @code{R}.
 
 A related functionality is @xref{ESS ElDoc}, which displays function
-arguments in the echo area whenever point is inside a function call.
+arguments in the echo area whenever the point is inside a function call.
 
 @node Minibufer completion, Auto-complete, Function arguments, Completion
 @section Minibufer completion
@@ -2424,10 +2439,10 @@ arguments in the echo area whenever point is inside a function call.
 
 @cindex IDO completions
 @pindex ess-use-ido, ess-completing-read
-From version ????, ESS uses @code{IDO} mechanism (part of default emacs)
-for minibufer completion if @code{ido.el} package is available and the
-value of @code{ess-use-ido} it @code{t} (the default). The completion
-command @code{ess-completing-read} falls back on classic
+From version 12.03, ESS uses @code{IDO} mechanism (part of default
+emacs) for minibufer completion if @code{ido.el} package is available
+and the value of @code{ess-use-ido} it @code{t} (the default). The
+completion command @code{ess-completing-read} falls back on classic
 @code{completion-read} interface if this feature is not available for
 whatever reason.
 
@@ -2440,13 +2455,14 @@ whatever reason.
 ESS provides three sources for @code{Auto Completion} mode
 (@uref{http://cx4a.org/software/auto-complete/}) -
 @code{ac-source-R-args}, @code{ac-source-R-objects} and
-@code{ac-source-R}.  Last one combines the previous two and makes them
+@code{ac-source-R}.  The last one combines the previous two and makes them
 play nicely together.  See auto-complete package documentation
 (@uref{http://cx4a.org/software/auto-complete/}) for how to modify and
-install completion sources.
+install your own completion sources.
 
-To start using it, install the latest version of @code{auto-complete}
-package and place the following into your init file:
+For the default auto-complete ESS configuration, install the latest
+version of @code{auto-complete} package and place the following into
+your init file:
 
 @example
 (setq ess-use-auto-complete t)
@@ -2494,12 +2510,12 @@ packages:
 @section ESS tracebug
 @cindex ESS tracebug
 @pindex ess-tracebug
-@emph{Note:} The official ess-tracebug documentation is at
+@emph{Note:} The official ess-tracebug documentation is still at
 @uref{http://code.google.com/p/ess-tracebug/}, and is currently being
-moved into ESS user manual.
+moved into this manual.
 
 ESS @code{tracebug} package offers visual debugging, interactive error
-navigation, interactive backtrace, breakpoints manipulation, control over R error
+navigation, interactive backtrace, breakpoint manipulation, control over R error
 actions, watch window and interactive flagging/unflagging functions for
 debugging.
 
@@ -2512,11 +2528,14 @@ very often, do something like this:
 (setq ess-use-tracebug t)
 @end example
 
-This will automatically set @code{transpose-words} to be triggered by
-@kbd{M-t M-t}.
+This will automatically set the shadowed command @code{transpose-words}
+to be triggered by @kbd{M-t M-t}. Another alternative key, you might
+consider is @kbd{M-c}. In this case, the hijacked command
+@code{capitalize-word} is automatically re-bound to @kbd{M-c M-c}.
 
 Assuming that the prefix key is @kbd{M-t}, you can always call @kbd{M-t
-?} to display the following menu:
+?} to display the following menu with all the tracebug keys (prefix not
+included):
 
 @verbatim
 
@@ -2622,7 +2641,7 @@ Reindent the current line, insert a newline and indent the new line
 expanded if @code{abbrev-mode} is non-@code{nil}.
 
 @item TAB
-Indent current line based on its contents and on previous lines
+Indent current line based on its contents and on previous lines.
 (@code{indent-according-to-mode}).
 
 @item C-c C-e
@@ -2782,10 +2801,11 @@ defined.
 ESS also advices the following standard editing functions in order to make
 Roxygen editing more intuitive:
 
+@c not very precise, TAB calls it indirectly
 @item
-@kbd{C-c TAB} (@code{ess-R-complete-object-name}) @*
+@kbd{TAB} (@code{ess-R-complete-object-name}) @*
 @pindex ess-R-complete-object-name
-Complete Roxygen tag at point. E.g. doing @kbd{C-c TAB} when the point
+Complete Roxygen tag at point. E.g. doing @kbd{TAB} when the point
 is at the end of @code{@@par} completes to @code{@@param}.
 
 @item
@@ -2824,7 +2844,7 @@ Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
 the current buffer to the process for the evaluation in
 @code{R_GlobalEnv} environment. Often, in process of the developing
 packages with namespaces, it is necessary to evaluate code directly in
-the package's environment of namespace. The @code{ess-developer} utility
+the package's environment or it's namespace. The @code{ess-developer} utility
 provides such a functionality with minimal distortions of the usual ESS
 work-flow.
 
@@ -2849,10 +2869,10 @@ and functions defined in .GlobalEnv can see the objects in
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
 In order to use ess-developer mode you should add names of the packages
-you are developing to @code{ess-developer-packages}. You can add
-packages to this list, interactively, with @kbd{C-d a}, and remove with
-@kbd{C-d r}. When developer mode is on, the name of the process in the
-mode line is highlighted with @code{ess-developer-indicator-face}.
+you are developing to @code{ess-developer-packages}. You can dot it
+interactively with @kbd{C-d a}, and remove packages with @kbd{C-d
+r}. When developer mode is on, the name of the process in the mode line
+is highlighted with @code{ess-developer-indicator-face}.
 
 @itemize @bullet
 @item @kbd{C-c d t}(@code{ess-developer}) @*
@@ -2897,7 +2917,7 @@ definition with the slot @@package pointing to package "foo".
        metadata object found to revise subclass information---not exported?
 }
 
-   In my experience you can safely ignore this warnings.
+     You can safely ignore this warnings.
 
 @item METHODS: @*
 Similarly to function definitions modified methods are assigned in the
@@ -2947,21 +2967,23 @@ ESS has a few extra features, which didn't fit anywhere else.
 @node ESS ElDoc, Handy commands, Extras, Extras
 @section ElDoc
 @cindex ElDoc
-In ElDoc mode, the echo area displays function's arguments at
-point. From version ??? of @ESS{}, ElDoc is active by default in
-@code{ess-mode} and @code{inferior-ess-mode} buffers. To activate only
-in @code{ess-mode} buffers place the following into your init file:
+In @code{ElDoc} mode, the echo area displays function's arguments at
+point. From @ESS{} version 12.03, ElDoc is active by default in
+@code{ess-mode} and @code{inferior-ess-mode} buffers. To activate it
+only in @code{ess-mode} buffers, place the following into your init
+file:
 
 @example
 (setq ess-use-eldoc 'script-only)
 @end example
 
-Set @code{ess-use-eldoc} to nil if you don't want @code{ElDoc} altogether.
+Set @code{ess-use-eldoc} to @code{nil} to stop using @code{ElDoc}
+altogether.
 
 Variable @code{ess-eldoc-show-on-symbol} controls how ``aggressive'' the
 completion is. If set to @code{t}, @code{ElDoc} shows help string
-whenever the point is on a symbol, otherwise, show only when the point
-is in a function call, i.e. after @code{'(')}.
+whenever the point is on a symbol, otherwise (the default), shows only
+when the point is in a function call, i.e. after @code{'('}.
 
 @node Handy commands, Highlighting, ESS ElDoc, Extras
 @section Handy commands
@@ -2970,15 +2992,12 @@ is in a function call, i.e. after @code{'(')}.
 @pindex ess-smart-comma
 
 If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
-line of an ESS inferior buffer (i.e. process marker), ESS request and
-execute a command from @code{`ess-handy-commands'} list. If
+line of an ESS inferior buffer (i.e. at process marker), ESS requests and
+executes a command from @code{`ess-handy-commands'} list. If
 @code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
 `` `` after comma.
 
-Variable @code{`ess-handy-commands'} stores an alist of useful commands
-which are called by @code{ess-smart-comma} in the inferior buffer.
-
-Currently containing:
+Variable @code{`ess-handy-commands'} stores an alist of useful commands. Currently containing:
 
 @table @asis
 @item change-directory
