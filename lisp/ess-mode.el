@@ -100,8 +100,7 @@
 
 ;;*;; Major mode definition
 
-(if ess-eval-map
-    nil
+(unless ess-eval-map
   (if (featurep 'xemacs)
       ;; Code for XEmacs
       (setq ess-eval-map (make-keymap))
@@ -440,6 +439,10 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     (setq mode-line-process
           '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
   ;; completion
+  (when (and (featurep 'emacs)
+	   (>= emacs-major-version 24))
+    ;; this use is sort of depricated
+    (add-hook 'completion-at-point-functions 'comint-completion-at-point nil t))
   (set (make-local-variable 'comint-dynamic-complete-functions)
        '(comint-dynamic-complete-filename)) ;; add to this in derived modes.
   (set (make-local-variable 'comint-completion-addsuffix)
