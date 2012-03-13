@@ -2205,6 +2205,14 @@ before you quit.  It is run automatically by \\[ess-quit]."
 ;;*;; Object name completion
 
 ;;;*;;; The user completion command
+(defun ess-object-completion ()
+  "Return completions at point in a format required by `completion-at-point-functions'. "
+  (let* ((funstart (cdr (ess-funname.start)))
+	 (completions (ess-R-get-rcompletions funstart))
+	 (token (pop completions)))
+    (when completions
+      (list (- (point) (length token)) (point) completions))))
+
 (defun ess-complete-object-name (&optional listcomp)
   "Perform completion on `ess-language' object preceding point.
 Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
@@ -2527,28 +2535,22 @@ form completions."
  (setq ess-sp-change t)
  (ess-get-modtime-list))
 
+(defun ess-filename-completion ()
+  ;; > emacs 24
+  "Return completion only within string or comment."
+  (when (ess-inside-string-or-comment-p (point))
+    (comint-filename-completion)
+    ))
+
 
 (defun ess-complete-filename ()
-  "Do file completion only within strings, or when ! call is being used."
-  (if (comint-within-quotes
-       (1- (process-mark (get-buffer-process (current-buffer)))) (point))
-      ;; (- comint-last-input-start 1) (point))	 <- from S4 modeadds.
-      ;; changed on 4/12/96 (dxsun)
-      ;; This is sensible, but makes it hard to use history refs
-      ;; (or
-      ;;  (save-excursion
-      ;;    (goto-char comint-last-input-start)
-      ;;    (looking-at "\\s-*!"))
-      ;;  (comint-within-quotes comint-last-input-start (point)))
-      (progn
-	;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
-	(if (featurep 'xemacs) ;; work around Xemacs bug
-	    (comint-dynamic-complete-filename)
-	  ;; GNU emacs and correctly working Xemacs:
-	  ;;(comint-replace-by-expanded-filename))
-	  (comint-dynamic-complete-filename))
-	;; always return t if in a string
-	t)))
+  "Do file completion only within strings."
+  (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
+	  ;; (and (eq major-mode 'inferior-ess-mode)
+	  ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
+    ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
+    (comint-dynamic-complete-filename)
+    t))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a
