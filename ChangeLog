@@ -1,3 +1,7 @@
+2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* doc/newfeat.texi: New emacs 24 completion. M-TAB and breaking change emphasis.
+
 2012-02-29  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* doc/refcard/refcard.tex: added new features and removed

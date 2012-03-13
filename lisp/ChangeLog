@@ -1,5 +1,7 @@
 2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-inf.el (inferior-ess-mode-map): don't bind M-TAB in emacs 24.
+
 	* ess-mode.el (ess-mode-map): Don't bind M-TAB  in emacs 24, it's
 	the emacs standard to call completion-at-point or comlete-symbol
 	which do the same thing.
