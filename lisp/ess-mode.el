@@ -439,12 +439,11 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     (setq mode-line-process
           '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
   ;; completion
-  (when (and (featurep 'emacs)
+  (if (and (featurep 'emacs)
 	   (>= emacs-major-version 24))
-    ;; this use is sort of depricated
-    (add-hook 'completion-at-point-functions 'comint-completion-at-point nil t))
-  (set (make-local-variable 'comint-dynamic-complete-functions)
-       '(comint-dynamic-complete-filename)) ;; add to this in derived modes.
+      (add-hook 'completion-at-point-functions 'ess-filename-completion nil t)
+    (set (make-local-variable 'comint-dynamic-complete-functions)
+	 '(ess-complete-filename)))
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
   ;;; extras
@@ -852,18 +851,25 @@ of the expression are preserved."
 
 
 (defun ess-indent-or-complete ()
-  "Try to indent first, if code is already properly indented, complete instead."
+  "Try to indent first, if code is already properly indented, complete instead.
+It calls `comint-dynamic-complete' for emacs < 24 and `completion-at-point' otherwise.
+
+See also `ess-first-tab-never-completes-p'. "
   (interactive)
-  (let ((shift (ess-indent-command)))
+  (let ((shift (ess-indent-command))
+	(comp-func (symbol-function
+		    (if (and (featurep 'emacs) (>= emacs-major-version 24))
+			'completion-at-point
+		      'comint-dynamic-complete))))
     (when (and (numberp shift) ;; can be nil if ess-tab-always-indent is nil
 	       (equal shift 0))
       (if (eq last-command 'ess-indent-or-complete)
 	  (if (not  ess-local-process-name)
 	      (message "No process associated with the current buffer")
-	    (comint-dynamic-complete))
+	    (funcall comp-func))
 	(when (and (not ess-first-tab-never-completes-p)
 		   ess-local-process-name) ;; don't give message on first invocation
-	  (comint-dynamic-complete))
+	  (funcall comp-func))
 	))))
 
 (defun ess-indent-exp ()

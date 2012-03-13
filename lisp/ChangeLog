@@ -1,3 +1,19 @@
+2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-mode-map): Don't bind M-TAB  in emacs 24, it's
+	the emacs standard to call completion-at-point or comlete-symbol
+	which do the same thing.
+
+	* ess-r-d.el (ess-R-get-rcompletions): return a token as a first
+	element of a list.
+	(R-mode): init emacs 24 completions.
+
+2012-03-12  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-filename-completion): filename completion to
+	comply with emacs 24 standard.
+	(ess-complete-filename): modified quote detection.
+
 2012-03-09  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-help.el (ess-help-kill, ess-help-quit): smarter quit and

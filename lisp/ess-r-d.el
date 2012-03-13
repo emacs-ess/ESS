@@ -195,7 +195,13 @@ to R, put them in the variable `inferior-R-args'."
   (setq ess-customize-alist R-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
+  ;; for emacs < 24
   (add-to-list 'comint-dynamic-complete-functions 'ess-complete-object-name t)
+  ;; for emacs >= 24
+  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)

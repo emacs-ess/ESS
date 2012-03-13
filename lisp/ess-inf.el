@@ -1755,18 +1755,27 @@ to continue it."
   ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
   ;; than a regular variable.  Note order of completion (thanks David Brahm):
 
-  (add-hook 'comint-dynamic-complete-functions
-	    'ess-complete-filename 'append 'local)
-  (add-hook 'comint-dynamic-complete-functions
-	    'ess-complete-object-name 'append 'local)
-  (add-hook 'comint-dynamic-complete-functions
-	    'comint-replace-by-expanded-history 'append 'local)
+  (if (and (featurep 'emacs ) (>= emacs-major-version 24))
+      (progn
+	(add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
+	(add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+	;; follows comint-completion-at-point, calling
+	;; comint-dynamic-complete-functions
+	;; then global completion-at-point-functions are called (it's actually never gets to
+	;; this, since comint-filename-completion doesn't pass the hook over)
+	)
+    (add-hook 'comint-dynamic-complete-functions
+	      'ess-complete-filename 'append 'local)
+    (add-hook 'comint-dynamic-complete-functions
+	      'ess-complete-object-name 'append 'local)
+    (add-hook 'comint-dynamic-complete-functions
+	      'comint-replace-by-expanded-history 'append 'local)
 
-  ;; When a hook is buffer-local, the dummy function `t' is added to
-  ;; indicate that the functions in the global value of the hook
-  ;; should also be run.  SJE: I have removed this, as I think it
-  ;; interferes with our normal completion.
-  (remove-hook 'comint-dynamic-complete-functions 't 'local)
+    ;; When a hook is buffer-local, the dummy function `t' is added to
+    ;; indicate that the functions in the global value of the hook
+    ;; should also be run.  SJE: I have removed this, as I think it
+    ;; interferes with our normal completion.
+    (remove-hook 'comint-dynamic-complete-functions 't 'local))
 
   ;; MM: in *R* in GNU emacs and in Xemacs, the c*-dyn*-compl*-fun* are now
   ;; (ess-complete-filename
