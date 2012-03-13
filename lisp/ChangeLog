@@ -1,3 +1,8 @@
+2012-03-13  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-preview): put all R-code on one line to
+	get rid f the +s
+
 2012-03-11  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-preview): semi-working version for

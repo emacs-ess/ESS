@@ -528,10 +528,12 @@ such as debugging and/or during R development.  Thanks to Ross Boylan for
 making the suggestion, Sam Steingold for reminding us of this variable and
 Martin Maechler for the warning. 
 <li><acronym>ESS[R]</acronym>: Eldoc shows arguments of a generic function whenever found. 
-<li><acronym>ESS</acronym>: <kbd>TAB</kbd> in <code>ess-mode</code> now indents and completes
-if there was nothing to indent. Completion mechanism is similar to the
-completion in the <code>inferior-ess-mode</code> &ndash; a filename expansion is
-tried, if not found ESS completes the symbol by querying the
+<li><acronym>ESS</acronym>: <kbd>TAB</kbd> in <code>ess-mode</code> now indents and completes,
+if there is nothing to indent. Set
+<code>ess-first-tab-never-completes-p</code> to <code>t</code> to make <kbd>TAB</kbd>
+never complete on first invocation. Completion mechanism is similar to
+the completion in the <code>inferior-ess-mode</code> &ndash; a filename expansion
+is tried, if not found ESS completes the symbol by querying the
 process. This also makes `comint-replace-by-expanded-filename'
 <kbd>M-TAB</kbd>(or <kbd>C-M-i</kbd>) redundant and user might consider binding it
 to something more useful. <kbd>C-c TAB</kbd> is deprecated and will be
