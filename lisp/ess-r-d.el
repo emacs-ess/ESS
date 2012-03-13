@@ -608,33 +608,36 @@ Also store the cons in 'ess--funname.start for potential use later."
 		  ))
 	    (error nil)))))
 
-(defun ess-R-get-rcompletions (&optional no-args)
-  "Calls R internal completion utilities (rcomp) for possible completions.
+(defun ess-R-get-rcompletions (&optional start end)
+  "Call R internal completion utilities (rcomp) for possible completions.
 Needs version of R>2.7.0
 
-If NO-ARGS is non-nil don't ask for argument completions.
-  (doesn't work in current 14.1 R)
+Optional START and END delimit the entity to complete, default to bol and point.
+
+First element of a returned list is the completion token.
 "
-  (let* ((bol (save-excursion (comint-bol nil) (point)))
-	 (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
-	 (opts2 (if no-args "rc.options(op)" ""))
+  (let* ((start (or start
+		    (save-excursion (comint-bol nil) (point))))
+	 (end (or end (point)))
+	 ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
+	 ;; (opts2 (if no-args "rc.options(op)" ""))
 	 (comm (format
-	       "local({%s
+	       "local({
 utils:::.assignLinebuffer('%s')
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
 utils:::.completeToken()
-utils:::.retrieveCompletions()
-%s})\n"
-	       opts1 (buffer-substring bol (point-at-eol))
-	       (- (point) bol) opts2)))
-     (ess-get-words-from-vector comm)
+c(get('token', envir = utils:::.CompletionEnv),
+  utils:::.retrieveCompletions())
+})\n"
+	       (buffer-substring start end)
+	       (- end start)))
+	 )
+    (ess-get-words-from-vector comm)
     ))
 
 
 
-;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
-;; originally named  'alt-ess-complete-object-name'.
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
@@ -646,10 +649,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; that when this function is called from
     ;; comint-dynamic-complete-functions, other functions can then be
     ;; tried.
-    (if (null possible-completions)
-	nil
-      (setq token-string ;; token is set in ess-R-get-rcompletions
-	    (car (ess-get-words-from-vector "get('token', envir = utils:::.CompletionEnv)\n")))
+    (when possible-completions
+      (setq token-string (pop possible-completions))
       (or (comint-dynamic-simple-complete token-string
 					  possible-completions)
 	  'none))))
@@ -697,7 +698,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (unless no-kill ;; workaround
     (kill-local-variable 'ac-use-comphist))
   (if (string-match-p "[:$@]" ac-prefix)
-      (ess-R-get-rcompletions) ;; no-args doesn complete anything :(
+      (cdr (ess-R-get-rcompletions))
     (with-current-ess-process-buffer 'no-error
       (unless (process-get *proc* 'busy)
 	(let ((le (process-get *proc* 'last-eval))
