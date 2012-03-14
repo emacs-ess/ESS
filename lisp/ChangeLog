@@ -1,3 +1,11 @@
+2012-03-14  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-complete-tag): removed function advice for
+	(ess-internal-complete-object-name) to reflect the new tab
+	behavior and also made tab not hide roxy entry unless point is at
+	the beginning of the line (so similar to org-mode's visibility
+	cycling)
+
 2012-03-13  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-preview): put all R-code on one line to
