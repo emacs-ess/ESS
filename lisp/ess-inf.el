@@ -1530,9 +1530,11 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
   (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort) ; mask comint map
   (define-key inferior-ess-mode-map "\C-d"     'delete-char)   ; EOF no good in S
-  (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
+  (if (and (featurep 'emacs) (>= emacs-major-version 24))
+      (define-key inferior-ess-mode-map "\t"       'completion-at-point)
+    (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
+    (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename))
   (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
-  (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
   (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
   (define-key inferior-ess-mode-map ","        'ess-smart-comma)
@@ -1755,18 +1757,27 @@ to continue it."
   ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
   ;; than a regular variable.  Note order of completion (thanks David Brahm):
 
-  (add-hook 'comint-dynamic-complete-functions
-	    'ess-complete-filename 'append 'local)
-  (add-hook 'comint-dynamic-complete-functions
-	    'ess-complete-object-name 'append 'local)
-  (add-hook 'comint-dynamic-complete-functions
-	    'comint-replace-by-expanded-history 'append 'local)
+  (if (and (featurep 'emacs ) (>= emacs-major-version 24))
+      (progn
+	(add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
+	(add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+	;; follows comint-completion-at-point, calling
+	;; comint-dynamic-complete-functions
+	;; then global completion-at-point-functions are called (it's actually never gets to
+	;; this, since comint-filename-completion doesn't pass the hook over)
+	)
+    (add-hook 'comint-dynamic-complete-functions
+	      'ess-complete-filename 'append 'local)
+    (add-hook 'comint-dynamic-complete-functions
+	      'ess-complete-object-name 'append 'local)
+    (add-hook 'comint-dynamic-complete-functions
+	      'comint-replace-by-expanded-history 'append 'local)
 
-  ;; When a hook is buffer-local, the dummy function `t' is added to
-  ;; indicate that the functions in the global value of the hook
-  ;; should also be run.  SJE: I have removed this, as I think it
-  ;; interferes with our normal completion.
-  (remove-hook 'comint-dynamic-complete-functions 't 'local)
+    ;; When a hook is buffer-local, the dummy function `t' is added to
+    ;; indicate that the functions in the global value of the hook
+    ;; should also be run.  SJE: I have removed this, as I think it
+    ;; interferes with our normal completion.
+    (remove-hook 'comint-dynamic-complete-functions 't 'local))
 
   ;; MM: in *R* in GNU emacs and in Xemacs, the c*-dyn*-compl*-fun* are now
   ;; (ess-complete-filename
@@ -2205,6 +2216,14 @@ before you quit.  It is run automatically by \\[ess-quit]."
 ;;*;; Object name completion
 
 ;;;*;;; The user completion command
+(defun ess-object-completion ()
+  "Return completions at point in a format required by `completion-at-point-functions'. "
+  (let* ((funstart (cdr (ess-funname.start)))
+	 (completions (ess-R-get-rcompletions funstart))
+	 (token (pop completions)))
+    (when completions
+      (list (- (point) (length token)) (point) completions))))
+
 (defun ess-complete-object-name (&optional listcomp)
   "Perform completion on `ess-language' object preceding point.
 Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
@@ -2527,28 +2546,22 @@ form completions."
  (setq ess-sp-change t)
  (ess-get-modtime-list))
 
+(defun ess-filename-completion ()
+  ;; > emacs 24
+  "Return completion only within string or comment."
+  (when (ess-inside-string-or-comment-p (point))
+    (comint-filename-completion)
+    ))
+
 
 (defun ess-complete-filename ()
-  "Do file completion only within strings, or when ! call is being used."
-  (if (comint-within-quotes
-       (1- (process-mark (get-buffer-process (current-buffer)))) (point))
-      ;; (- comint-last-input-start 1) (point))	 <- from S4 modeadds.
-      ;; changed on 4/12/96 (dxsun)
-      ;; This is sensible, but makes it hard to use history refs
-      ;; (or
-      ;;  (save-excursion
-      ;;    (goto-char comint-last-input-start)
-      ;;    (looking-at "\\s-*!"))
-      ;;  (comint-within-quotes comint-last-input-start (point)))
-      (progn
-	;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
-	(if (featurep 'xemacs) ;; work around Xemacs bug
-	    (comint-dynamic-complete-filename)
-	  ;; GNU emacs and correctly working Xemacs:
-	  ;;(comint-replace-by-expanded-filename))
-	  (comint-dynamic-complete-filename))
-	;; always return t if in a string
-	t)))
+  "Do file completion only within strings."
+  (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
+	  ;; (and (eq major-mode 'inferior-ess-mode)
+	  ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
+    ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
+    (comint-dynamic-complete-filename)
+    t))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a
