@@ -623,11 +623,6 @@ list of strings."
   (if (ess-roxy-entry-p)
       (ess-roxy-complete-tag)
     ad-do-it))
-(defadvice ess-internal-complete-object-name (around ess-roxy-complete-tag)
-  (if (ess-roxy-entry-p)
-      (ess-roxy-complete-tag)
-    ad-do-it))
-(ad-activate 'ess-internal-complete-object-name)
 (ad-activate 'ess-R-complete-object-name)
 
 (defadvice mark-paragraph (around ess-roxy-mark-field)
@@ -642,7 +637,7 @@ list of strings."
 
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
-  (if (and (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
+  (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
       (progn (hs-toggle-hiding))
     ad-do-it))
 (if ess-roxy-hide-show-p
