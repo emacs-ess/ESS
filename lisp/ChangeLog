@@ -5,6 +5,9 @@
 	behavior and also made tab not hide roxy entry unless point is at
 	the beginning of the line (so similar to org-mode's visibility
 	cycling)
+	(comint-dynamic-complete-functions): and dropped the advice
+	to (ess-R-complete-object-name) as well.
+
 
 2012-03-13  Henning Redestig  <henning@psc.riken.jp>
 

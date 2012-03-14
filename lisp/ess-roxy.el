@@ -619,11 +619,7 @@ list of strings."
 	   (append ess-roxy-tags-noparam ess-roxy-tags-param))))))
 
 ;; advices
-(defadvice ess-R-complete-object-name (around ess-roxy-complete-tag)
-  (if (ess-roxy-entry-p)
-      (ess-roxy-complete-tag)
-    ad-do-it))
-(ad-activate 'ess-R-complete-object-name)
+(add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag)
 
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
