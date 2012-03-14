@@ -1,3 +1,10 @@
+2012-03-11  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* doc/ess.texi (Styles): added C-c . to the docs.
+	(Help): added description of i, v, w, q, k keys.
+	(Object names): added TAB completion in ess-mode.
+	(Other edit buffer commands): TAB completion adjusted.
+
 2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* doc/newfeat.texi: New emacs 24 completion. M-TAB and breaking change emphasis.
@@ -1446,7 +1453,7 @@
 
 	* lisp/ess-iw32.el:
 	The repair of the C-c C-l problem reported by S.McClatchie
-	<s.mcclatchie@niwa.cri.nz> and Bj”©Ìrn-Helge Mevik <bhm@math.uio.no>
+	<s.mcclatchie@niwa.cri.nz> and BjÂ”Â©ÃŒrn-Helge Mevik <bhm@math.uio.no>
 	required a change to ess-command in ess-iw32.el.  I believe the problem
 	was limited to Windows machines and first appeared in 5.1.19 when I added
 	ess-command to ess-iw32.el.

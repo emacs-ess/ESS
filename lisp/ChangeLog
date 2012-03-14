@@ -1,3 +1,9 @@
+2012-03-13  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-preview): put all R-code on one line to
+	get rid f the +s
+
+
 2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-inf.el (inferior-ess-mode-map): don't bind M-TAB in emacs 24.
@@ -15,6 +21,12 @@
 	* ess-inf.el (ess-filename-completion): filename completion to
 	comply with emacs 24 standard.
 	(ess-complete-filename): modified quote detection.
+
+2012-03-11  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-preview): semi-working version for
+	roxygen2 without creating directories. Unfortunately appends lots
+	'+'s at the created Rd file.
 
 2012-03-09  Vitalie Spinu  <spinuvit@gmail.com>
 

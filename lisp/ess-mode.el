@@ -1030,7 +1030,7 @@ Return the amount the indentation changed by."
 		  (setq indent 0))
 		 ;; Single # comment
 		 ((and ess-fancy-comments
-		       (looking-at "#") (not (looking-at "##")))
+		       (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
 		  (setq indent comment-column))
 		 (t
 		  (if (eq indent t) (setq indent 0))

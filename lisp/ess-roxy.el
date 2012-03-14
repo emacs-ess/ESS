@@ -85,7 +85,7 @@
 	      "\\)\\>")
      (1 'font-lock-keyword-face prepend))
     (,(concat "^" ess-roxy-str " *\\([@\\]"
-	      (regexp-opt '("param") t)
+	      (regexp-opt '("param" "importFrom") t)
 	      "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
@@ -475,8 +475,7 @@ a temporary buffer and return that buffer."
 	 (cond ((string= "roxygen" ess-roxy-package)
 		"make.Rd2.roclet()$parse")
 	       ((string= "roxygen2" ess-roxy-package)
-		"(function(P) { ..td <- tempdir(); dir.create(file.path(..td,\"man\"), show=FALSE);
- roc_out(rd_roclet(), P, ..td) })")
+		"(function(P) {..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE = character(1), function(x) {roxygen2:::rd_out_cache$compute(x, format(x))}))})")
 	       (t (error "need to hard code the roclet output call for roxygen package '%s'"
 			 ess-roxy-package))))
 	)
@@ -491,8 +490,7 @@ a temporary buffer and return that buffer."
 		    (not (looking-at ess-roxy-str))))
 	(append-to-file beg (point) tmpf))
       (ess-command (concat "print(suppressWarnings(require(" ess-roxy-package
-			   ", quietly=TRUE)))\n")
-		   roxy-buf)
+			   ", quietly=TRUE)))\n") roxy-buf)
       (with-current-buffer roxy-buf
 	(goto-char 1)
 	(if (search-forward-regexp "FALSE" nil t)

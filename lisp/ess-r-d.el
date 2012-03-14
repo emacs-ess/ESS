@@ -701,24 +701,25 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-objects (&optional no-kill)
   "Get all cached objects"
-  (unless no-kill ;; workaround
-    (kill-local-variable 'ac-use-comphist))
-  (if (string-match-p "[:$@]" ac-prefix)
-      (cdr (ess-R-get-rcompletions))
-    (with-current-ess-process-buffer 'no-error
-      (unless (process-get *proc* 'busy)
-	(let ((le (process-get *proc* 'last-eval))
-	      (lobu (process-get *proc* 'last-objlist-update)))
-	  (process-put *proc* 'last-objlist-update (float-time))
-	  (when (and le (> le lobu)) ;;re-read .GlobalEnv
-	    (if (and ess-sl-modtime-alist
-		     (not  ess-sp-change))
-		(ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-	      (ess-get-modtime-list)
-	      (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-	      ))
-	  (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-	  )))))
+  (when ac-prefix
+    (unless no-kill ;; workaround
+      (kill-local-variable 'ac-use-comphist))
+    (if (string-match-p "[:$@]" ac-prefix)
+	(cdr (ess-R-get-rcompletions))
+      (with-current-ess-process-buffer 'no-error
+	(unless (process-get *proc* 'busy)
+	  (let ((le (process-get *proc* 'last-eval))
+		(lobu (process-get *proc* 'last-objlist-update)))
+	    (process-put *proc* 'last-objlist-update (float-time))
+	    (when (or  (null lobu) (null le) (> le lobu)) ;;re-read .GlobalEnv
+	      (if (and ess-sl-modtime-alist
+		       (not  ess-sp-change))
+		  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+		(ess-get-modtime-list)
+		(setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
+		))
+	    (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+	    ))))))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
