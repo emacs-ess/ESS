@@ -511,7 +511,7 @@ to look up any doc strings."
 	     (not (ess-process-get 'busy)))
     (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
 			     (ess-get-object-at-point))
-			(car (ess-funname.start))))
+			(car (ess--funname.start))))
 	   (doc (cadr (ess-function-arguments funname))))
       ;; (comint-preinput-scroll-to-bottom)
       (when doc
@@ -561,7 +561,7 @@ then update the entry.
 Package_name is \"\" if funname was not found or is a special name,
 i.e. contains :,$ or @.
 "
-  (when funname ;; might be nil as returned by ess-funname.start
+  (when funname ;; might be nil as returned by ess--funname.start
     (let* ((args (gethash funname ess--funargs-cache))
 	   (pack (caar args))
 	   (ts   (cdar args)))
@@ -758,7 +758,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "Get initial position for args completion"
   (when (and ess-local-process-name
 	     (not (eq (get-text-property (point) 'face) 'font-lock-string-face)))
-    (when (ess-funname.start)
+    (when (ess--funname.start)
       (if (looking-back "[(,]+[ \t\n]*")
 	  (point)
 	(ess-ac-start-objects)))))
