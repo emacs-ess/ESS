@@ -648,18 +648,18 @@ c(get('token', envir = utils:::.CompletionEnv),
   "Completion in R via R's completion utilities (formerly 'rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive)
-  (ess-make-buffer-current)
   (let ((possible-completions (ess-R-get-rcompletions))
 	token-string)
-    ;; If there are no possible-completions, should return nil, so
-    ;; that when this function is called from
-    ;; comint-dynamic-complete-functions, other functions can then be
-    ;; tried.
-    (when possible-completions
-      (setq token-string (pop possible-completions))
-      (or (comint-dynamic-simple-complete token-string
-					  possible-completions)
-	  'none))))
+      ;; If there are no possible-completions, should return nil, so
+      ;; that when this function is called from
+      ;; comint-dynamic-complete-functions, other functions can then be
+      ;; tried.
+      (when possible-completions
+	(setq token-string (pop possible-completions))
+	(or (comint-dynamic-simple-complete token-string
+					    possible-completions)
+	    'none)))
+  )
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
 (defvar  ac-source-R

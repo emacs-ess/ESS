@@ -857,20 +857,14 @@ It calls `comint-dynamic-complete' for emacs < 24 and `completion-at-point' othe
 
 See also `ess-first-tab-never-completes-p'. "
   (interactive)
-  (let ((shift (ess-indent-command))
-	(comp-func (symbol-function
-		    (if (and (featurep 'emacs) (>= emacs-major-version 24))
-			'completion-at-point
-		      'comint-dynamic-complete))))
+  (let ((shift (ess-indent-command)))
     (when (and (numberp shift) ;; can be nil if ess-tab-always-indent is nil
-	       (equal shift 0))
-      (if (eq last-command 'ess-indent-or-complete)
-	  (if (not  ess-local-process-name)
-	      (message "No process associated with the current buffer")
-	    (funcall comp-func))
-	(when (and (not ess-first-tab-never-completes-p)
-		   ess-local-process-name) ;; don't give message on first invocation
-	  (funcall comp-func))
+	       (equal shift 0)
+	       (or (eq last-command 'ess-indent-or-complete)
+		   (not ess-first-tab-never-completes-p)))
+      (if (and (featurep 'emacs) (>= emacs-major-version 24))
+	  (completion-at-point)
+	(comint-dynamic-complete)
 	))))
 
 (defun ess-indent-exp ()

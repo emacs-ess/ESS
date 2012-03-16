@@ -1759,12 +1759,10 @@ to continue it."
 
   (if (and (featurep 'emacs ) (>= emacs-major-version 24))
       (progn
+	(remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the thook
+	(add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
 	(add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
 	(add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-	;; follows comint-completion-at-point, calling
-	;; comint-dynamic-complete-functions
-	;; then global completion-at-point-functions are called (it's actually never gets to
-	;; this, since comint-filename-completion doesn't pass the hook over)
 	)
     (add-hook 'comint-dynamic-complete-functions
 	      'ess-complete-filename 'append 'local)
@@ -2218,20 +2216,31 @@ before you quit.  It is run automatically by \\[ess-quit]."
 ;;;*;;; The user completion command
 (defun ess-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'. "
-  (let* ((funstart (cdr (ess-funname.start)))
-	 (completions (ess-R-get-rcompletions funstart))
-	 (token (pop completions)))
-    (when completions
-      (list (- (point) (length token)) (point) completions))))
+  (if (ess-make-buffer-current)
+      (let* ((funstart (cdr (ess--funname.start)))
+	     (completions (ess-R-get-rcompletions funstart))
+	     (token (pop completions)))
+	(when completions
+	  (list (- (point) (length token)) (point) completions)))
+    (when (string-match-p "complete" (symbol-name last-command))
+      (message "No ESS process associated with current buffer")
+      nil)
+    ))
 
 (defun ess-complete-object-name (&optional listcomp)
   "Perform completion on `ess-language' object preceding point.
 Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
 or \\[ess-internal-complete-object-name] otherwise."
   (interactive "P");; FIXME : the `listcomp' argument is NOT used
-  (if ess-use-R-completion
-      (ess-R-complete-object-name)
-    (ess-internal-complete-object-name listcomp)))
+  (if (ess-make-buffer-current)
+      (if ess-use-R-completion
+	  (ess-R-complete-object-name)
+	(ess-internal-complete-object-name listcomp))
+    ;; else give a message on second invocation
+    (when (string-match-p "complete" (symbol-name last-command))
+      (message "No ESS process associated with current buffer")
+      nil)
+    ))
 
 (defun ess-complete-object-name-deprecated ()
   "Gives a deprecated message "
@@ -2550,7 +2559,7 @@ form completions."
   ;; > emacs 24
   "Return completion only within string or comment."
   (when (ess-inside-string-or-comment-p (point))
-    (comint-filename-completion)
+    (append (comint-filename-completion) '(:exclusive no))
     ))
 
 
