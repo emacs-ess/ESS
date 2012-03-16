@@ -599,19 +599,27 @@ Suitable for R object's names."
 
 
 (defvar ess--funname.start nil)
-(defun ess--funname.start ()
+(defun ess--funname.start (&optional look-back)
   "If inside a function call, return (FUNNAMME . BEG) where
 FUNNAME is a function name found before ( and beg is where
 FUNNAME starts.
 
-Also store the cons in 'ess--funname.start for potential use later."
+LOOK-BACK is a number of characters to look back; defaults to
+2000. As the search might get quite slow for files with thousands
+of lines.
+
+Also store the cons in 'ess--funname.start for potential use
+later."
   (when (not (ess-inside-string-p))
     (setq ess--funname.start
 	  (save-restriction
 	    (let* ((proc (get-buffer-process (current-buffer)))
 		   (mark (and proc (process-mark proc))))
-	      (when (and mark (>= (point) mark))
-		(narrow-to-region mark (point))))
+	      (if (and mark (>= (point) mark))
+		  (narrow-to-region mark (point))
+		(narrow-to-region (max (- (point) (or look-back 2000)) (point-min))
+				  (point))
+		))
 	    (condition-case nil ;; check if it is inside a functon call
 		(save-excursion
 		  (up-list -1)
@@ -637,14 +645,14 @@ First element of a returned list is the completion token.
 	 ;; (opts2 (if no-args "rc.options(op)" ""))
 	 (comm (format
 	       "local({
-utils:::.assignLinebuffer('%s')
+utils:::.assignLinebuffer(\"%s\")
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
 utils:::.completeToken()
 c(get('token', envir = utils:::.CompletionEnv),
   utils:::.retrieveCompletions())
 })\n"
-	       (buffer-substring start end)
+	       (ess-quote-special-chars (buffer-substring start end))
 	       (- end start)))
 	 )
     (ess-get-words-from-vector comm)
