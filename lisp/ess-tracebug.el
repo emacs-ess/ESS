@@ -661,7 +661,7 @@ This is the value of `next-error-function' in iESS buffers."
 	      ess-tb-last-input
 	    (point)))
 	 (at-error t)
-         (loc
+         (msg
 	  (condition-case err
 		    (compilation-next-error n  nil beg-pos)
                 (error
@@ -672,23 +672,28 @@ This is the value of `next-error-function' in iESS buffers."
 		   (message "Beyond last reference"));(error-message-string err))
 		 (setq at-error nil)
                  )))
-         (loc (if (or (not pbuff-p)
+         (msg (if (or (not pbuff-p)
 		      (eq n 0)
                       (> (point) ess-tb-last-input))
-                  loc
+                  msg
 		(ess-tb-next-error-goto-process-marker)
                 (message "Beyond last-input marker")
 		(setq at-error nil)
 		))
-         (end-loc (nth 2 loc))
          (marker (point-marker))
+	 loc end-loc
          )
     (when at-error
       (setq compilation-current-error (point-marker)
 	    overlay-arrow-position (if (bolp)
 				       compilation-current-error
 				     (copy-marker (line-beginning-position)))
-	    loc (car loc))
+	    loc (if (fboundp 'compilation--message->loc)
+		    (compilation--message->loc msg)
+		  (car msg))
+	    end-loc (if (fboundp  'compilation--message->end-loc) ;; emacs 24
+			 (compilation--message->end-loc msg)
+		      (nth 2 msg)))
       (let* ((file (caar (nth 2 loc)))
 	     (col (car loc))
 	     (line (cadr loc))
