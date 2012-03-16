@@ -1,3 +1,23 @@
+2012-03-16  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (ess--funname.start): is limiting the search from the
+	process marker only (bug reported by Sam Steingold on Mon Mar 12
+	19:40:22 CET 2012)
+
+	* ess-inf.el (ess-object-completion, ess-complete-object-name):
+	give suggestive info if proc is not associated.
+	(ess-filename-completion): :exclusive 'no
+	(inferior-ess-mode): completely removed dependence on
+	comint-dynamic-complete.
+
+	* ess-r-d.el (ess-R-complete-object-name): added info message on
+	missing proc.
+
+	* ess-roxy.el: (ess-roxy-tag-completion): new completion function
+	for emacs 24
+	(ess-roxy-mode): adjusted roxy tag completion to new ESS and emacs
+	24 system.
+
 2012-03-14  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-complete-tag): removed function advice for
