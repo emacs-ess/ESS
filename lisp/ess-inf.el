@@ -1761,13 +1761,13 @@ to continue it."
       (progn
 	(remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the thook
 	(add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
-	(add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
+	(add-hook 'completion-at-point-functions 'ess-object-completion nil 'local) ;;only for R, is it ok?
 	(add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
 	)
     (add-hook 'comint-dynamic-complete-functions
 	      'ess-complete-filename 'append 'local)
-    (add-hook 'comint-dynamic-complete-functions
-	      'ess-complete-object-name 'append 'local)
+    (add-hook 'comint-dynamic-complete-functions ;; only for R, is it ok?
+    	      'ess-complete-object-name 'append 'local)
     (add-hook 'comint-dynamic-complete-functions
 	      'comint-replace-by-expanded-history 'append 'local)
 
