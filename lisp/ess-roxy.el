@@ -102,6 +102,9 @@
       (progn
 	(unless (featurep 'xemacs) ;; does not exist in xemacs:
 	  (font-lock-add-keywords nil ess-roxy-font-lock-keywords))
+	(if (and (featurep 'emacs) (>= emacs-major-version 24))
+	    (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
+	  (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
 	(if ess-roxy-hide-show-p
 	    (progn
 	      ;(setq hs-c-start-regexp "s")
@@ -618,9 +621,17 @@ list of strings."
 	   (replace-regexp-in-string "^@" "" token-string)
 	   (append ess-roxy-tags-noparam ess-roxy-tags-param))))))
 
-;; advices
-(add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag)
+(defun ess-roxy-tag-completion ()
+  "Completion data for emacs >= 24"
+  (when (save-excursion (re-search-backward "\\ @\\(\\w*\\)" (point-at-bol) t))
+    (let ((token (match-string-no-properties 1))
+	  (beg (match-beginning 1))
+	  (end (match-end 1)))
+      (dbg token)
+      (when (= end (point))
+	(list beg end (append ess-roxy-tags-noparam ess-roxy-tags-param) :exclusive 'no)))))
 
+;; advices
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
   (if (and (ess-roxy-entry-p) (not mark-active))
@@ -636,6 +647,7 @@ list of strings."
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
       (progn (hs-toggle-hiding))
     ad-do-it))
+
 (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 
