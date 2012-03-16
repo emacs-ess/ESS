@@ -196,7 +196,7 @@ to R, put them in the variable `inferior-R-args'."
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;; for emacs < 24
-  (add-to-list 'comint-dynamic-complete-functions 'ess-complete-object-name t)
+  (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
@@ -589,10 +589,13 @@ Suitable for R object's names."
     (unless (and (looking-back delim)
 		 (looking-at   delim))
       (save-excursion
-	(re-search-backward delim nil t)
-	(let ((beg (goto-char (1+ (point)))))
-	  (re-search-forward delim nil t)
-	  (buffer-substring-no-properties beg (1- (point))))))))
+	(let ((beg (re-search-backward delim nil t)))
+	  (setq beg (or (and beg (goto-char (1+ beg)))
+			(goto-char (point-min))))
+	  (unless (re-search-forward delim nil t)
+	    (goto-char (point-max)))
+	  (buffer-substring-no-properties beg (1- (point))))
+	))))
 
 
 (defvar ess--funname.start nil)
