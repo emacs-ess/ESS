@@ -2570,7 +2570,7 @@ form completions."
 	  ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
     ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
     (comint-dynamic-complete-filename)
-    t))
+    ))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a

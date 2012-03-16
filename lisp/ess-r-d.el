@@ -596,23 +596,28 @@ Suitable for R object's names."
 
 
 (defvar ess--funname.start nil)
-(defun ess-funname.start ()
-  "If inside a function call, return (cons FUNNAMME BEG) where
+(defun ess--funname.start ()
+  "If inside a function call, return (FUNNAMME . BEG) where
 FUNNAME is a function name found before ( and beg is where
 FUNNAME starts.
 
 Also store the cons in 'ess--funname.start for potential use later."
   (when (not (ess-inside-string-p))
     (setq ess--funname.start
-	  (condition-case nil ;; check if it is inside a functon call
-	      (save-excursion
-		(up-list -1)
-		(let ((funname (ess-get-object-at-point)))
-		  (when (and funname
-			     (not (member funname ess-S-non-functions)))
-		    (cons funname (- (point) (length funname))))
-		  ))
-	    (error nil)))))
+	  (save-restriction
+	    (let* ((proc (get-buffer-process (current-buffer)))
+		   (mark (and proc (process-mark proc))))
+	      (when (and mark (>= (point) mark))
+		(narrow-to-region mark (point))))
+	    (condition-case nil ;; check if it is inside a functon call
+		(save-excursion
+		  (up-list -1)
+		  (let ((funname (ess-get-object-at-point)))
+		    (when (and funname
+			       (not (member funname ess-S-non-functions)))
+		      (cons funname (- (point) (length funname))))
+		    ))
+	      (error nil))))))
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.
