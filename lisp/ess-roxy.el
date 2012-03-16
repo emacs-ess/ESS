@@ -615,20 +615,18 @@ list of strings."
 (defun ess-roxy-complete-tag ()
   "complete the tag at point"
   (let ((token-string (thing-at-point 'symbol)))
-    (if (string-match "@.+" token-string)
-	(progn
-	  (comint-dynamic-simple-complete
-	   (replace-regexp-in-string "^@" "" token-string)
-	   (append ess-roxy-tags-noparam ess-roxy-tags-param))))))
+    (when (and token-string (string-match "@.+" token-string))
+      (comint-dynamic-simple-complete
+       (replace-regexp-in-string "^@" "" token-string)
+       (append ess-roxy-tags-noparam ess-roxy-tags-param)))))
 
 (defun ess-roxy-tag-completion ()
   "Completion data for emacs >= 24"
-  (when (save-excursion (re-search-backward "\\ @\\(\\w*\\)" (point-at-bol) t))
+  (when (save-excursion (re-search-backward "@\\<\\(\\w*\\)" (point-at-bol) t))
     (let ((token (match-string-no-properties 1))
 	  (beg (match-beginning 1))
 	  (end (match-end 1)))
-      (dbg token)
-      (when (= end (point))
+      (when (and end (= end (point)))
 	(list beg end (append ess-roxy-tags-noparam ess-roxy-tags-param) :exclusive 'no)))))
 
 ;; advices
