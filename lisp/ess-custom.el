@@ -791,7 +791,7 @@ If nil, ESS will try finding one from a list."
 
 ;; ---- ./ess-roxy.el : ------------
 
-(defcustom ess-roxy-package "roxygen" ;; FIXME: "roxygen2"
+(defcustom ess-roxy-package "roxygen2"
   "The name of the R package to use for Roxygen."
   :group 'ess-roxy
   :type 'string)
