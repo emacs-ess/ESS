@@ -1,3 +1,11 @@
+2012-03-19  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (ess-eldoc-docstring-format): smart for-mating of a
+	doc string in minibuffer.
+
+	* ess-custom.el (ess-eldoc-filter-level): level to filter/truncate
+	the doc string.
+
 2012-03-16  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess--funname.start): is limiting the search from the

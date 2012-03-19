@@ -336,6 +336,28 @@ If nil show only when the point is in a function call, i.e. after (."
   :group 'ess-extras
   :type  'boolean)
 
+
+(defcustom ess-eldoc-filter-level 'strong
+  "How ess-eldoc string should be abbreviated when it doesn't fit into one line
+A symbol which can be
+nil: do nothing
+mild:  Replace TRUE, FALSE with T,F
+normal: Try mild + shorten the default values longer than 10 characters.
+strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
+agressive: Try strong + truncate the doc string to fit into minibuffer.
+
+The default filter is 'strong.
+
+Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
+which if set to nil, will cause the truncation of doc string
+indifferent of the value of `ess-eldoc-filter-level'. This way
+you can combine different filter levels with the truncation.
+"
+  :group 'ess
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const agressive))
+  )
+
+
 (defcustom ess-use-auto-complete nil
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
 If 'script-only activate in ess-mode buffers only.
