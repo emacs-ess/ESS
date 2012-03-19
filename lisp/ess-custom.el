@@ -337,7 +337,7 @@ If nil show only when the point is in a function call, i.e. after (."
   :type  'boolean)
 
 
-(defcustom ess-eldoc-filter-level 'strong
+(defcustom ess-eldoc-filter-level 'normal
   "How ess-eldoc string should be abbreviated when it doesn't fit into one line
 A symbol which can be
 nil: do nothing
@@ -346,7 +346,7 @@ normal: Try mild + shorten the default values longer than 10 characters.
 strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
 agressive: Try strong + truncate the doc string to fit into minibuffer.
 
-The default filter is 'strong.
+The default filter is 'normal.
 
 Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
 which if set to nil, will cause the truncation of doc string

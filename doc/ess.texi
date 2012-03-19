@@ -2988,7 +2988,7 @@ shows only when the point is in a function call, i.e. after @code{'('}.
 The variable @code{ess-eldoc-filter-level} determines how the doc string
 should be abbreviated to fit into minibuffer. Posible values are nil,
 'mild, 'normal, 'strong and 'aggressive. Please see the documentation of
-the variable for more details. The default filter is 'strong.
+the variable for more details. The default filter is 'normal.
 
 Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
 which if set to nil, will cause the truncation of doc string indifferent

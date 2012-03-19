@@ -535,13 +535,11 @@ to look up any doc strings."
 		    (eq 'none ess-eldoc-filter-level))
 		doc
 	      ;;MILD filter
-	      (dbg "mild")
 	      (setq doc (replace-regexp-in-string "TRUE" "T" doc))
 	      (setq doc (replace-regexp-in-string "FALSE" "F" doc))
 	      (if (or (<= (length doc) W)
 		      (eq 'mild ess-eldoc-filter-level))
 		  doc
-		(dbg "normal")
 		;;NORMAL filter (deal with long defaults)
 		(setq doc (replace-regexp-in-string
 			   ;; function calls inside default docs foo(xxxx{..})
@@ -560,7 +558,6 @@ to look up any doc strings."
 		    (if (or (<= (length doc) W)
 			    (eq 'normal ess-eldoc-filter-level))
 			doc
-		      (dbg "strong")
 		      ;;STRONG filter (replace defaults)
 		      (setq doc (replace-regexp-in-string
 				 " *[^ \t=,\"\\]* = \\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
@@ -576,7 +573,6 @@ to look up any doc strings."
 			(if (or (<= (length doc) W)
 				(eq 'strong ess-eldoc-filter-level))
 			    doc
-			  (dbg "aggressive")
 			  ;;AGGRESSIVE filter (truncate what is left)
 			  (concat (substring doc 0 (- W 4)) "{--}")
 			  ))))))))
