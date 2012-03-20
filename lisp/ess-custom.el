@@ -346,12 +346,12 @@ normal: Try mild + shorten the default values longer than 10 characters.
 strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
 agressive: Try strong + truncate the doc string to fit into minibuffer.
 
-The default filter is 'normal.
+The default style is 'normal.
 
 Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
 which if set to nil, will cause the truncation of doc string
 indifferent of the value of `ess-eldoc-abbreviation-style'. This way
-you can combine different filter levels with the truncation.
+you can combine different abbreviation styles with the truncation.
 "
   :group 'ess
   :type '(choice (const nil) (const mild) (const normal) (const strong) (const agressive))
