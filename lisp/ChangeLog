@@ -1,3 +1,8 @@
+2012-03-20  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* noweb-mode.el (noweb-minor-mode-map): adjusted [tab] and
+	[return] keys not to interfere with ac-mode
+
 2012-03-19  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-eldoc-docstring-format): smart for-mating of a
