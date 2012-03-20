@@ -1510,6 +1510,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (define-key inferior-ess-mode-map "\C-y"		'ess-yank)
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
+  (define-key inferior-ess-mode-map [return]   'inferior-ess-send-input) ;; ac-mode somehow distingueshes this
   (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
 
   ;; 2010-06-03 SJE

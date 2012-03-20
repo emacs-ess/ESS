@@ -268,8 +268,10 @@ replaced by sequences of '*'.")
           (define-key map "<" 'noweb-electric-<)))
     (define-key map "\M-q" 'noweb-fill-paragraph-chunk)
     ;;(define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
-    (define-key map [tab] 'noweb-indent-line)
-    (define-key map [return] 'noweb-newline)
+    (define-key map "\t" 'noweb-indent-line)
+    ;; (define-key map [tab] 'noweb-indent-line) ;; interferes with ac
+    (define-key map "\r" 'noweb-newline)
+    ;; (define-key map [return] 'noweb-newline) ;; interferes with ac
     (define-key map [mouse-1] 'noweb-mouse-first-button)
     (define-key map noweb-mode-prefix noweb-mode-prefix-map)
     map)
