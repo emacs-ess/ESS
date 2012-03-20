@@ -337,7 +337,7 @@ If nil show only when the point is in a function call, i.e. after (."
   :type  'boolean)
 
 
-(defcustom ess-eldoc-filter-level 'normal
+(defcustom ess-eldoc-abbreviation-style 'normal
   "How ess-eldoc string should be abbreviated when it doesn't fit into one line
 A symbol which can be
 nil: do nothing
@@ -350,7 +350,7 @@ The default filter is 'normal.
 
 Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
 which if set to nil, will cause the truncation of doc string
-indifferent of the value of `ess-eldoc-filter-level'. This way
+indifferent of the value of `ess-eldoc-abbreviation-style'. This way
 you can combine different filter levels with the truncation.
 "
   :group 'ess

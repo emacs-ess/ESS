@@ -48,7 +48,7 @@ Code'')
 @item RefCard: Reference card was updated to include new features.
 @item Eldoc: Eldoc was rewritten and is activated by default.
 See @code{ess-use-eldoc}, @code{ess-eldoc-show-on-symbol},
-@code{ess-eldoc-filter-level} variables for how to change the default
+@code{ess-eldoc-abbreviation-style} variables for how to change the default
 behavior. @emph{Note:} @code{skeleton-pair-insert-maybe} prohibits eldoc
 display, on @kbd{(} insertion.
 @item @ESS{[R]}: Eldoc shows arguments of a generic function whenever found.

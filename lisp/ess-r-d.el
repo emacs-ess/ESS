@@ -522,7 +522,7 @@ to look up any doc strings."
   (save-match-data
     (let* (;; (name (symbol-name sym))
            (truncate (or (null eldoc-echo-area-use-multiline-p)
-			 (eq ess-eldoc-filter-level 'agressive)))
+			 (eq ess-eldoc-abbreviation-style 'agressive)))
            ;; Subtract 1 from window width since will cause a wraparound and
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
@@ -531,14 +531,14 @@ to look up any doc strings."
 	   )
       (setq doc
 	    (if (or (<= (length doc) W)
-		    (null ess-eldoc-filter-level)
-		    (eq 'none ess-eldoc-filter-level))
+		    (null ess-eldoc-abbreviation-style)
+		    (eq 'none ess-eldoc-abbreviation-style))
 		doc
 	      ;;MILD filter
 	      (setq doc (replace-regexp-in-string "TRUE" "T" doc))
 	      (setq doc (replace-regexp-in-string "FALSE" "F" doc))
 	      (if (or (<= (length doc) W)
-		      (eq 'mild ess-eldoc-filter-level))
+		      (eq 'mild ess-eldoc-abbreviation-style))
 		  doc
 		;;NORMAL filter (deal with long defaults)
 		(setq doc (replace-regexp-in-string
@@ -556,7 +556,7 @@ to look up any doc strings."
 			       " +[^ \t=,\"]+=\\([^ \t]\\{10,\\}\\)\\(,\\|\\'\\)"
 			       "{.}," doc nil nil 1))
 		    (if (or (<= (length doc) W)
-			    (eq 'normal ess-eldoc-filter-level))
+			    (eq 'normal ess-eldoc-abbreviation-style))
 			doc
 		      ;;STRONG filter (replace defaults)
 		      (setq doc (replace-regexp-in-string
@@ -571,7 +571,7 @@ to look up any doc strings."
 				   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+,\\|\\'\\)"
 				   "" doc nil nil 1))
 			(if (or (<= (length doc) W)
-				(eq 'strong ess-eldoc-filter-level))
+				(eq 'strong ess-eldoc-abbreviation-style))
 			    doc
 			  ;;AGGRESSIVE filter (truncate what is left)
 			  (concat (substring doc 0 (- W 4)) "{--}")
