@@ -1158,11 +1158,12 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess-dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess-dbg-regexp-jump "debug at ")
-(defvar ess-dbg-regexp-active
+(defvar ess-dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
-  (concat "^\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:recover()\\)\\)\\|"
-	  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)\\|"
-	  "\\(Selection: \\'\\)"))
+   "\\(\\(?:^Called from: \\)\\|\\(?:^debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+(defvar ess-dbg-regexp-input
+   (concat  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)\\|"
+	    "\\(Selection: \\'\\)"))
 
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
@@ -1179,11 +1180,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (was-in-recover (process-get proc 'is-recover))
          (input-point (point-marker))
          (match-jump (string-match ess-dbg-regexp-jump string))
-         (match-active (string-match ess-dbg-regexp-active string))
-         (match-skip (and match-active
-                          (match-string 1 string)))
-         (match-recover (and match-active
-                             (match-string 3 string))) ;; Selection:
+	 (match-input (string-match ess-dbg-regexp-input string))
+	 (match-skip (string-match ess-dbg-regexp-skip string))
+         (match-recover (and match-input
+                             (match-string 2 string))) ;; Selection:
+	 (match-active (or match-skip match-input))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
          (prompt-replace-regexp "^>\\( [>+]\\)*\\( \\)[^>+\n]") ;; works only with the default prompt
@@ -1220,19 +1221,18 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
             (ess-dbg-goto-last-ref-and-mark dbuff t))
         (ess-dbg-goto-last-ref-and-mark dbuff)
         ))
+    ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
+    ;;   (let ((inhibit-read-only t))
+    ;;     (goto-char (point-max))
+    ;;     (insert (concat " ---\n " string "\n ---"))
+    ;;     ))
     ;; SKIP if needed
-    (when (and match-skip (not was-in-recover))
-      (process-send-string proc  "n\n")
-      )
+    (when (and match-skip  (not was-in-recover))
+      (process-send-string proc  "n\n"))
     ;; EXIT the debuger
     (when (and was-active
                (not (or match-jump match-active))
                is-ready)
-      ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
-      ;;   (let ((inhibit-read-only t))
-      ;;     (goto-char (point-max))
-      ;;     (insert (concat " ---\n " string "\n ---"))
-      ;;     ))
       (ess-dbg-deactivate-overlays)
       (process-put proc 'dbg-active nil)
       ;; (message "|<-- exited debugging -->|")
@@ -1562,7 +1562,7 @@ debug history."
         (message "Debugging is not active")
       (when (ess-dbg-is-recover)
 	(process-send-string proc "0\n")
-        (ess-wait-for-process proc nil t 0.5))
+        (ess-wait-for-process proc nil 0.05))
       (if (and (process-get proc 'dbg-active)
 	       (not (process-get proc 'is-recover))); still in debug mode
           (process-send-string proc "Q\n"))
@@ -1577,7 +1577,7 @@ debug history."
         (message "Debugging is not active")
       (when (ess-dbg-is-recover)
 	(process-send-string proc "0\n")
-        (ess-wait-for-process proc nil t 0.5)) ;; get out of recover mode
+        (ess-wait-for-process proc nil 0.05)) ;; get out of recover mode
       (if (and (process-get proc 'dbg-active) ; still in debug mode
 	       (not (process-get proc 'is-recover))); still in debug mode
           (process-send-string proc "c\n"))
