@@ -744,11 +744,12 @@ See `ess-dbg-error-action-alist' for more."
     ( "r" "RECOVER"    "utils::recover")
     ( "t" "TRACEBACK"  "base::traceback"))
   "Alist of 'on-error' actions.
-  Each element must have the form (SYMB DISP ACTION) where DISP
-  is the string to be displayed in the mode line when the action
-  is in place. SYMB is the symbolic name of an action. ACTION
-  is the string giving the actual expression to be assigned to
-  'error' user option. See R's help ?options for more details."
+Toggled with `ess-dbg-toggle-error-action'.  Each element must
+have the form (DISP SYMB ACTION) where DISP is the string to be
+displayed in the mode line when the action is in place. SYMB is
+the symbolic name of an action. ACTION is the string giving the
+actual expression to be assigned to 'error' user option. See R's
+help ?options for more details."
   :type '(alist :key-type string
                 :value-type (string string))
   :group 'ess-debug)
@@ -926,7 +927,7 @@ of components of `ess-dbg-error-action-alist' (a cons!)."
 
 (defun ess-dbg-toggle-error-action ()
   "Toggle the 'on-error' action.
-The list of actions are specified in `ess-dbg-error-action-alist'. "
+The action list is in `ess-dbg-error-action-alist'. "
   (interactive)
   (let* ( (alist ess-dbg-error-action-alist)
           (ev last-command-event)
@@ -1158,9 +1159,10 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess-dbg-regexp-jump "debug at ")
 (defvar ess-dbg-regexp-active
-      (concat "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:recover()\\)\\)\\|"
-              "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)\\|"
-              "\\(^Selection: \\'\\)"))
+  ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
+  (concat "^\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:recover()\\)\\)\\|"
+	  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)\\|"
+	  "\\(Selection: \\'\\)"))
 
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
