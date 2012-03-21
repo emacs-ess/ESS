@@ -587,6 +587,8 @@ to look up any doc strings."
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
+    olderr <- options(error = NULL)
+    on.exit(options(olderr))
     fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
     funname<- '%s'
     if(is.null(fun) || !is.function(fun)){
@@ -709,6 +711,8 @@ First element of a returned list is the completion token.
 	 ;; (opts2 (if no-args "rc.options(op)" ""))
 	 (comm (format
 	       "local({
+olderr <- options(error = NULL)
+on.exit(options(olderr))
 utils:::.assignLinebuffer(\"%s\")
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
@@ -875,6 +879,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defvar ess--ac-help-arg-command
   "
 getArgHelp <- function(arg, func = NULL){
+    olderr <- options(error = NULL)
+    on.exit(options(olderr))
     fguess <-
         if(is.null(func)) get('fguess', envir = utils:::.CompletionEnv)
         else func
