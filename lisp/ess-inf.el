@@ -386,15 +386,17 @@ there is no process NAME)."
 	  (switch-to-buffer (process-buffer (get-process proc-name)))
 	(pop-to-buffer (process-buffer (get-process proc-name)))))))
 
-(defun inferior-ess-set-status (proc string)
+(defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC
+If no-timestamp, don't set the last-eval timestamp.
 Return the 'busy state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((busy (not (string-match (concat inferior-ess-primary-prompt "\\'") string))))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
 		 (string-match (concat inferior-ess-secondary-prompt "\\'") string))
-    (process-put proc 'last-eval (float-time))
+    (unless no-timestamp
+      (process-put proc 'last-eval (float-time)))
     busy
     ))
 
@@ -928,7 +930,7 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
 ;;       (set-buffer old-buffer))))
 
 (defun ordinary-insertion-filter (proc string)
-  (inferior-ess-set-status proc string)
+  (inferior-ess-set-status proc string t)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
     (insert string)))
