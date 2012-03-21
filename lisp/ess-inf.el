@@ -975,7 +975,18 @@ COM should have a terminating newline.  Guarantees that the value
 of .Last.value will be preserved.  When optional third arg SLEEP
 is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
 places where `a' is proportional to `ess-cmd-delay'.  WAIT is
-passed to `ess-wait-for-process' with the default of 0.02sec."
+passed to `ess-wait-for-process' with the default of 0.02sec.
+ess-command doesn't set 'last-eval process stamp.
+
+Note: for critical, or error prone code you should consider
+wrapping the code into:
+
+local({
+    olderr <- options(error = NULL)
+    on.exit(options(olderr))
+    ...
+})
+"
   ;; Use this function when you need to evaluate some S code, and the
   ;; result is needed immediately. Waits until the output is ready
 
