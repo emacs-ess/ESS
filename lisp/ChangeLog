@@ -1,5 +1,8 @@
 2012-03-21  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-r-d.el (ess--funargs-command): "error" option is reset to
+	NULL in critical completion and eldoc actions.
+
 	* ess-inf.el (inferior-ess-set-status): new argument no-timestamp
 	to allow ess-command not to set the timestamp.
 
