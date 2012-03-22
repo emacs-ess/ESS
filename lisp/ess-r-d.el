@@ -634,13 +634,13 @@ i.e. contains :,$ or @.
       (when (and args
 		 (and (or (null pack)
 			  (equal pack "R_GlobalEnv"))
-		      (< ts (ess-process-get 'last-eval))))
+		      (time-less-p ts (ess-process-get 'last-eval))))
 	(setq args nil))
       (or args
 	  (when (and ess-current-process-name (get-process ess-current-process-name))
 	    (let ((args (ess-get-words-from-vector
 			 (format ess--funargs-command funname funname) nil .01)))
-	      (setq args (list (cons (car args) (float-time))
+	      (setq args (list (cons (car args) (current-time))
 			       (when (stringp (cadr args)) ;; error occured
 					      (replace-regexp-in-string  "\\\\" "" (cadr args)))
 			       (cddr args)))
@@ -794,7 +794,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 	(unless (process-get *proc* 'busy)
 	  (let ((le (process-get *proc* 'last-eval))
 		(lobu (process-get *proc* 'last-objlist-update)))
-	    (when (or  (null lobu) (null le) (> le lobu))
+	    (when (or  (null lobu) (null le) (time-less-p lobu le))
 	      ;;re-read .GlobalEnv
 	      (if (and ess-sl-modtime-alist
 		       (not  ess-sp-change))
@@ -802,7 +802,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 		(ess-get-modtime-list)
 		(setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
 		))
-	    (process-put *proc* 'last-objlist-update (float-time))
+	    (process-put *proc* 'last-objlist-update (current-time))
 	    (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
 	    ))))))
 

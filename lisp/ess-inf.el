@@ -396,7 +396,7 @@ Return the 'busy state."
     (process-put proc 'sec-prompt
 		 (string-match (concat inferior-ess-secondary-prompt "\\'") string))
     (unless no-timestamp
-      (process-put proc 'last-eval (float-time)))
+      (process-put proc 'last-eval (current-time)))
     busy
     ))
 
@@ -2236,7 +2236,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
 	     (token (pop completions)))
 	(when completions
 	  (list (- (point) (length token)) (point) completions)))
-    (when (string-match-p "complete" (symbol-name last-command))
+    (when (string-match "complete" (symbol-name last-command))
       (message "No ESS process associated with current buffer")
       nil)
     ))
@@ -2251,7 +2251,7 @@ or \\[ess-internal-complete-object-name] otherwise."
 	  (ess-R-complete-object-name)
 	(ess-internal-complete-object-name listcomp))
     ;; else give a message on second invocation
-    (when (string-match-p "complete" (symbol-name last-command))
+    (when (string-match "complete" (symbol-name last-command))
       (message "No ESS process associated with current buffer")
       nil)
     ))
