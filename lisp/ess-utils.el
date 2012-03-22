@@ -42,6 +42,12 @@
   (save-excursion
     (nth 3 (parse-partial-sexp (ess-line-beginning-position) (point)))))
 
+(defun ess-quote-special-chars (string)
+  (replace-regexp-in-string
+   "\"" "\\\\\\&"
+   (replace-regexp-in-string ;; replace backslashes
+    "\\\\" "\\\\" string nil t)))
+
 ;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
 ;; is "wrongly" returning   "p1"  for word "p1.part2" :
 (defun ess-extract-word-name ()

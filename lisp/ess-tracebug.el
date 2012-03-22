@@ -183,11 +183,6 @@ this reference number. Ess-debug finds this number in the
 referenced buffer.
 ")
 
-(defun ess-quote-special-chars (string)
-  (replace-regexp-in-string
-   "\"" "\\\\\\&"
-   (replace-regexp-in-string ;; replace backslashes
-    "\\\\" "\\\\" string nil t)))
 
 (defvar ess--tb-buffer-sym nil)
 (make-variable-buffer-local 'ess--tb-buffer-sym)

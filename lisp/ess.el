@@ -242,7 +242,7 @@ See also `ess-use-ido'.
   "Load all the extra features depending on custom settings."
 
   (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
-	(Rp (string-match-p "^R" ess-dialect))
+	(Rp (string-match "^R" ess-dialect))
 	(emacsp (featurep 'emacs)))
 
     ;; auto-complete
@@ -256,17 +256,19 @@ See also `ess-use-ido'.
 	      '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
       (setq ac-sources '(ac-source-R ac-source-filename)))
 
-    ;; eldoc
+    ;; eldoc)
     (require 'eldoc)
     (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
     (when (or (and (not inferior) ess-use-eldoc)
 	      (and inferior (eq ess-use-eldoc t)))
-      (when (> eldoc-idle-delay 0.4) ;; default is too slow
+      (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
 	(set (make-local-variable 'eldoc-idle-delay) 0.1))
-      (turn-on-eldoc-mode))
+      (when emacsp
+	(turn-on-eldoc-mode)
+	))
 
     ;; tracebug
-    (when (and  ess-use-tracebug emacsp inferior Rp)
+    (when (and ess-use-tracebug emacsp inferior Rp)
       (ess-tracebug 1))
     ))
 
