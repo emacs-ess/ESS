@@ -547,7 +547,7 @@ For internal use. Used in `ess-display-help-on-object',
 (unless ess-help-mode-map
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
-  (if (fboundp 'set-keymap-parent)
+  (if (and (featurep 'emacs) (fboundp 'set-keymap-parent))
       (set-keymap-parent ess-help-mode-map special-mode-map)
     (define-key ess-help-mode-map ">" 'end-of-buffer)
     (define-key ess-help-mode-map "<" 'beginning-of-buffer))
