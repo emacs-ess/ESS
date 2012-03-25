@@ -2719,7 +2719,7 @@ P-STRING is the prompt string."
 	  (let*
 	      ((end (progn (forward-sexp 1) (point)))
 	       (beg (progn (backward-sexp 1) (point))))
-	    (buffer-substring beg end))))
+	    (buffer-substring-no-properties beg end))))
     (error nil)))
 
 (defun ess-read-object-name-dump ()
