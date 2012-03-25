@@ -1,3 +1,8 @@
+2012-03-25  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-inf.el (ess-get-object-list): new arg exclude-first to allow
+	exclusion of objects from .GlobalEnv in help completion.
+
 2012-03-21  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess--funargs-command): "error" option is reset to

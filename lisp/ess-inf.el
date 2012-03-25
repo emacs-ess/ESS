@@ -2377,9 +2377,10 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 	   (and (= (car mod1) (car mod2))
 		(> (car (cdr mod1)) (car (cdr mod2)))))))
 
-(defun ess-get-object-list (name)
+(defun ess-get-object-list (name &optional exclude-first)
   "Return a list of current S object names associated with process NAME,
-using `ess-object-list' if that is non-nil."
+using `ess-object-list' if that is non-nil.
+If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv)."
   (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
       (save-excursion
 	(set-buffer (process-buffer (get-ess-process name)))
@@ -2396,8 +2397,9 @@ using `ess-object-list' if that is non-nil."
 	       (n (length alist))
 	       result)
 	  (ess-write-to-dribble-buffer (format " (length alist) : %d\n" n))
-	  ;; Always force a re-read of position 1 :
-	  (setq result (ess-extract-onames-from-alist alist 1 'force))
+	  (unless exclude-first
+	    ;; re-read of position 1 :
+	    (setq result (ess-extract-onames-from-alist alist 1 'force)))
 	  (ess-write-to-dribble-buffer
 	   (format " have re-read pos=1: -> length %d\n" (length result)))
 	  ;; Re-read remaining directories if necessary.
@@ -2405,7 +2407,7 @@ using `ess-object-list' if that is non-nil."
 	    (setq result
 		  (append result
 			  (ess-extract-onames-from-alist alist i)))
-	    (setq i (1+ i)))
+ 	    (setq i (1+ i)))
 	  (setq ess-object-list (ess-uniq-list result))))))
 
 (defun ess-get-words-from-vector (command &optional no-prompt-check wait)
