@@ -148,7 +148,7 @@ an inferior emacs buffer) the GUI help window is used."
          (setq ess-sp-change t)))
      (if (ess-ddeclient-p)
          (list (read-string "Help on: "))
-       (ess-find-help-file "Help on"))))
+       (list (ess-find-help-file "Help on")))))
 
   (if (or (ess-ddeclient-p)
 	  (equal inferior-ess-help-filetype "chm"))
@@ -727,23 +727,30 @@ Keystroke    Section
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))
 
-(defun ess-helpobj-at-point (slist)
-  ;;; Returns the object name at point, or else the name of the
-  ;;; function call point is in if that has a help file. A name has a
-  ;;; help file if it is a member of slist (string-list).
-  (or (car (member (ess-read-object-name-default) slist))
-      (condition-case ()
-	  (save-excursion
-	    (save-restriction
-	      (narrow-to-region (max (point-min) (- (point) 1000))
-				(point-max))
-	      (backward-up-list 1)
-	      (backward-char 1)
-	      (car (member (ess-read-object-name-default) slist))))
-	(error nil))))
+(defun ess-helpobjs-at-point (&optional slist)
+  ;;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
+  ;;; the function call point is in. DEF is either OBJ or FUN (in that order)
+  ;;; which has a a help file, i.e. it is a member of slist (string-list). nil
+  ;;; otherwise
+  (unless slist
+    (setq slist (ess-get-help-topics-list ess-current-process-name)))
+  (let ((obj (ess-read-object-name-default))
+	(fun (condition-case ()
+		 (save-excursion
+		   (save-restriction
+		     (narrow-to-region (max (point-min) (- (point) 1000))
+				       (point-max))
+		     (backward-up-list 1)
+		     (backward-char 1)
+		     (ess-read-object-name-default)))
+	       (error nil))))
+    (list (or (car (member obj slist))
+	      (car (member fun slist)))
+	  obj fun)))
 
-;; defalias for old name:
-(defalias 'ess-read-helpobj-name-default 'ess-helpobj-at-point)
+;; defunct old name:
+(defun ess-read-helpobj-name-default (slist)
+  (car (delq nil (ess-helpobjs-at-point slist))))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
@@ -752,10 +759,10 @@ Stata or XLispStat for additional information."
   (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
       (list (read-string p-string))
     (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
-           (default (ess-helpobj-at-point help-files-list)))
-      (list (ess-completing-read p-string help-files-list
-                                 nil nil nil nil default))
-      )))
+           (hlpobjs (delq nil (ess-helpobjs-at-point help-files-list))))
+      (ess-completing-read p-string (append hlpobjs help-files-list)
+			   nil nil nil nil (car hlpobjs)))
+    ))
 
 ;;*;; Utility functions
 

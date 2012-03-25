@@ -57,7 +57,7 @@
   (require 'overlay)
   (require 'cl))
 
-(autoload 'ess-helpobj-at-point	"ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
+(autoload 'ess-helpobjs-at-point	"ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
@@ -2626,7 +2626,7 @@ for signature and trace it with browser tracer."
         (all-functions (ess-get-words-from-vector "apropos(\".\", mode = \"function\")\n"))
         obj-at-point ufunc signature default-string out-message
         )
-    (setq obj-at-point (ess-helpobj-at-point all-functions))
+    (setq obj-at-point (car (ess-helpobjs-at-point all-functions)))
     (setq ufunc (ess-completing-read "Debug"
 				     all-functions nil t nil nil obj-at-point))
     ;; check if is generic
