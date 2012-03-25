@@ -778,7 +778,7 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
     (if (or (not ess-help-topics-list) ess-sp-change)
 	(setq ess-help-topics-list
               (ess-uniq-list
-               (append (ess-get-object-list name)
+               (append (ess-get-object-list name 'exclude-1st)
                        (ess-get-help-files-list)
                        (ess-get-help-aliases-list)
                        )))

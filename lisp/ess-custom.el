@@ -182,7 +182,7 @@ as `ess-imenu-use-S'."
 				("sos"			. ess-sos)
 				("vignettes"		. ess-display-vignettes)
 				)
-  "An alyst  of custom ess commands available for call by `ess-smart-comma' function."
+  "An alist of custom ESS commands available for call by `ess-smart-comma' function."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
 
