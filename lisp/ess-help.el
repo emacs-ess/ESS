@@ -744,6 +744,8 @@ Keystroke    Section
 		     (backward-char 1)
 		     (ess-read-object-name-default)))
 	       (error nil))))
+    (unless (string-match "[[:alpha:]]" obj) ;;exclude numbers
+      (setq obj nil))
     (list (or (car (member obj slist))
 	      (car (member fun slist)))
 	  obj fun)))
@@ -759,13 +761,12 @@ Stata or XLispStat for additional information."
   (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
       (list (read-string p-string))
     (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
-           (hlpobjs (delq nil (ess-helpobjs-at-point help-files-list))))
-      (ess-completing-read p-string (append hlpobjs help-files-list)
+           (hlpobjs (ess-helpobjs-at-point help-files-list)))
+      (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
 			   nil nil nil nil (car hlpobjs)))
     ))
 
 ;;*;; Utility functions
-
 (defun ess-get-help-topics-list (name)
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
