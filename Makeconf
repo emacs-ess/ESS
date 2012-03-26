@@ -15,13 +15,13 @@
 ## ETCDIR          Destination of script and icon files
 ## PREFIX(DESTDIR) Directory prepended to LISPDIR, INFODIR, DOCDIR & ETCDIR
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr/local
-DESTDIR=/usr/local
+DESTDIR=/opt/local
 PREFIX=$(DESTDIR)
 #
 ##__ GNU Emacs __
 EMACS=emacs
 LISPDIR=$(PREFIX)/share/emacs/site-lisp/ess
-INFODIR=$(PREFIX)/info
+INFODIR=$(PREFIX)/share/info
 ETCDIR =$(PREFIX)/share/emacs/etc/ess
 
 ##__ XEmacs __
@@ -84,9 +84,11 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ## UPLOAD_DIR      Martin's upload directory
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
-ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+#ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+#ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
+ESSVERSION=$(shell echo "`date +%y-%m`-r`svnversion`")
+ESSVERSIONTAG=$(ESSVERSION)
 ESSDIR=ess-$(ESSVERSION)
-ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 GNUTAR=gtar
 SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
