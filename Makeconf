@@ -15,7 +15,7 @@
 ## ETCDIR          Destination of script and icon files
 ## PREFIX(DESTDIR) Directory prepended to LISPDIR, INFODIR, DOCDIR & ETCDIR
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr/local
-DESTDIR=/opt/local
+DESTDIR=/usr/local
 PREFIX=$(DESTDIR)
 #
 ##__ GNU Emacs __
