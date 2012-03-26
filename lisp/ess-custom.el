@@ -986,7 +986,7 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
-(defcustom inferior-R-objects-command "local({opts<-options(max.print=100000);on.exit(options(opts));objects(pos=%d, all.names=TRUE)})\n"
+(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE, max = 1e6))\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command

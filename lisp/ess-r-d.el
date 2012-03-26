@@ -1046,7 +1046,7 @@ Completion is available for supplying options."
               (not ess--packages-cache))
       (message "Fetching R packages ... ")
       (setq ess--packages-cache
-            (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(rownames(available.packages()));options(oo)})\n")))
+            (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
     (let ((ess-eval-visibly-p t)
           pack)
       (setq pack (ess-completing-read "Package to install" ess--packages-cache))
@@ -1099,7 +1099,7 @@ Completion is available for supplying options."
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
     (let ((ess-eval-visibly-p t)
-	  (packs (ess-get-words-from-vector "local({oo<-options(max.print=100000);print(.packages(T));options(oo)})\n"))
+	  (packs (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
           pack)
       (setq pack (ess-completing-read "Load package" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))

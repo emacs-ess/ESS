@@ -2415,11 +2415,10 @@ Return the elements of the result of COMMAND as an alist of
 strings.  COMMAND should have a terminating newline. WAIT is
 passed to `ess-command'.
 
-To avoid max.print to truncate long vectors, wrap your
-command (%s) like this:
+To avoid truncation of long vectors, wrap your
+command (%s) like this, or a version with explicit options(max.print=1e6):
 
-local({oo<-options(max.print=100000);
-out<-try({%s});print(out);options(oo)\n}))
+local({ out <- try({%s}); print(out, max=1e6) })\n
 "
   (let ((tbuffer (get-buffer-create
 		  " *ess-get-words*")); initial space: disable-undo
