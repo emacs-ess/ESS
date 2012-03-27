@@ -36,7 +36,7 @@ downloads:
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	chmod a-w $(ESSDIR)/lisp/*.el
-	cat "$(ESSVERSION)" > $(ESSDIR)/VERSION
+	@echo "$(ESSVERSION)" > $(ESSDIR)/VERSION
 #      should be newer than 'VERSION' :
 	touch $(ESSDIR)/lisp/ess-custom.el
 # Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):

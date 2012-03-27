@@ -86,10 +86,10 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ##
 #ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-ESSVERSION=$(shell echo "`date +%y-%m`-r`svnversion`")
-ESSVERSIONTAG=$(ESSVERSION)
+ESSVERSION=$(shell echo "`date +%y.%m`")
+ESSVERSIONTAG=$(shell echo "`date +%y-%m`-r`svnversion`")
 ESSDIR=ess-$(ESSVERSION)
-GNUTAR=gtar
+GNUTAR=tar
 SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
