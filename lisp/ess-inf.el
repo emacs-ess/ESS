@@ -2492,9 +2492,9 @@ In all cases, the value is an list of object names."
 		 t)
 	     (ess-get-words-from-vector
 	      (format inferior-ess-safe-names-command obj)))
-	(and nil; must return nil
-	     (ess-write-to-dribble-buffer
-	      (format "(ess-object-names obj=%s): no dir.; -> objects()\n" obj)))
+	(and (ess-write-to-dribble-buffer
+	      (format "(ess-object-names obj=%s): no dir.; -> objects()\n" obj))
+	     nil); must return nil
 	;; get objects(pos)
 	(ess-get-words-from-vector
 	 (format inferior-ess-objects-command pos))))) ; had 2nd arg ".*"

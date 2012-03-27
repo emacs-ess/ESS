@@ -1600,15 +1600,15 @@ when it searches for objects.
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 ;; and hence made buffer-local via that scheme...
 
-;; FIXME: this is nowhere used :
-(defcustom inferior-ess-names-command "names(%s)\n"
-  "Format string for ESS command to extract names from an object.
+;; ;; FIXME: this is nowhere used :
+;; (defcustom inferior-ess-names-command "names(%s)\n"
+;;   "Format string for ESS command to extract names from an object.
 
-%s is replaced by the object name -- usually a list or data frame."
-  :group 'ess-command
-  :type 'string)
+;; %s is replaced by the object name -- usually a list or data frame."
+;;   :group 'ess-command
+;;   :type 'string)
 
-(defcustom inferior-ess-safe-names-command "try(names(%s), silent=TRUE)\n"
+(defcustom inferior-ess-safe-names-command "try(print(names(%s), max=1e6), silent=TRUE)\n"
   "Format string for ESS command to extract names from an object *safely*.
 
 %s is replaced by an \"object name\" -- usually a list or data frame, but in R also
