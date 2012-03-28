@@ -24,7 +24,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	help-s.texi help-sas.texi inst_svn.texi unixlike.texi windows.texi \
 	license.texi mailing.texi onewfeat.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
-        help-jags.texi ../VERSION Makefile ../Makeconf
+        help-jags.texi Makefile ../Makeconf
 
 ESSINFONODE1='* ESS: (ess).'
 ESSINFONODE2='	        Emacs Speaks Statistics'
@@ -78,10 +78,10 @@ README.Microsoft : README.Microsoft.texi
 	| perl -pe 'last if /^Concept Index/;' > README.Microsoft
 
 ../NEWS: Makefile ess-defs.texi newfeat.texi news.texi
-	$(MAKETXT) news.texi > ../NEWS 
+	$(MAKETXT) news.texi > ../NEWS
 
 ../ONEWS: Makefile ess-defs.texi onewfeat.texi onews.texi
-	$(MAKETXT) onews.texi > ../ONEWS 
+	$(MAKETXT) onews.texi > ../ONEWS
 
 ### File Dependencies
 

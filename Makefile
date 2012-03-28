@@ -5,7 +5,7 @@ include ./Makeconf
 
 ## This is the default target, i.e. 'make' and 'make all' are the same.
 
-all install clean distclean:
+all install clean distclean: VERSION
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
@@ -13,13 +13,19 @@ all install clean distclean:
 
 ## the rest of the targets are for ESS developer's use only :
 
+VERSION:
+	@echo "$(ESSVERSION)" > $@
+#      should be newer than 'VERSION' :
+	touch $(ESSDIR)/lisp/ess-custom.el
+
+
 ## --- PRE-release ---
 
 # new target to create .tgz and .zip files only
 # run in the foreground so you can accept the certificate
 # for real men
 # GNUTAR=gtar make downloads
-downloads:
+downloads: all
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
@@ -36,9 +42,6 @@ downloads:
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	chmod a-w $(ESSDIR)/lisp/*.el
-	@echo "$(ESSVERSION)" > $(ESSDIR)/VERSION
-#      should be newer than 'VERSION' :
-	touch $(ESSDIR)/lisp/ess-custom.el
 # Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):
 #	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	@echo "** Creating .tgz file **"
@@ -57,14 +60,14 @@ downloads:
 #	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
 #	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
 
-dist: VERSION RPM.spec downloads
+dist: RPM.spec downloads
 	cd doc;  $(MAKE) docs; cd ..
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-custom.el; cd ..
 	$(MAKE) cleanup-dist
 	svn cleanup
-	@echo "** Committing VERSION, README, ANNOUNCE, info etc **"
+	@echo "** Committing README, ANNOUNCE, info etc **"
 	svn commit -m "Updating toplevel files for new version" \
-		VERSION README ANNOUNCE RPM.spec
+		README ANNOUNCE RPM.spec
 	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-custom.el doc/info doc/html
 	$(MAKE) downloads
 	$(MAKE) cleanup-dist
@@ -79,16 +82,13 @@ cleanup-dist:
 cleanup-rel:
 	@rm -f dist lisp/dist $(ESSDIR)*
 
-%.spec: %.spec.in VERSION
+%.spec: %.spec.in
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 
 ## --- RELEASE ---
 
-## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'
-##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
-## 	ChangeLog often ends up newer than VERSION
-ChangeLog: VERSION
+ChangeLog:
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
