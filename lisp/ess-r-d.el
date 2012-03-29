@@ -587,6 +587,10 @@ to look up any doc strings."
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
+    if(version$minor > '14.1'){
+        comp <- compiler::enableJIT(0L)
+        on.exit(compiler::enableJIT(comp))
+    }
     olderr <- options(error = NULL)
     on.exit(options(olderr))
     fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
