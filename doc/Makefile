@@ -57,11 +57,11 @@ cleanaux:
 	        *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
 clean: cleanaux
-	-@rm -f $(PDFs) $(DVIs) info/*.info*
+	-@rm -f $(DVIs) info/*.info*
 
-## this removes also things in VC (when they are remade by "make"):
+## this removes also things in VC (svn, when they are remade by "make"):
 distclean : clean
-	-@rm -f $(TXTs) ../NEWS ../ONEWS html/*
+	-@rm -f $(PDFs) $(TXTs) ../NEWS ../ONEWS html/*
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
@@ -85,10 +85,13 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-info/ess.info: $(TEXISRC)
+../VERSION:
+	cd .. ; $(MAKE) VERSION
+
+info/ess.info: $(TEXISRC) ../VERSION
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
-	mv -f ess.info info
+	mv -f ess.info info/
 
 install: install-info install-other-docs
 
