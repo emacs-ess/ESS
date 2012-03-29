@@ -36,7 +36,7 @@ downloads: all
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-svn; $(GNUTAR) cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
-	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* Why_* README.*"; \
+	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 make all cleanaux ; cd ../..
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
