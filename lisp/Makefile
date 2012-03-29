@@ -60,27 +60,18 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 
 all: $(ELC)
 
-install: $(ELC)
+dist: ess-custom.el all
+	@touch dist
+## svn committing happens in ../Makefile
+
+install: dist
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) ChangeLog *.elc $(LISPDIR)
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
-dist: ess-custom.el
-	@touch dist
-## svn committing happens in ../Makefile
-
 clean:
-	rm -f $(ELC) \
-	ess-cust.elc ess-emcs.elc essl-bug.elc \
-	essl-sas.elc essd-sas.elc essa-sas.elc \
-	essl-bugs.elc essd-bugs.elc essd-jags.elc \
-	essl-sta.elc essd-sta.elc \
-	essl-s.elc essd-s3.elc essd-s4.elc \
-	essd-sp3.elc essd-sp4.elc essd-sp5.elc essd-sp6.elc \
-	essd-r.elc essd-r-args.elc essa-r.elc essddr.elc \
-	essd-sp6w.elc \
-	essd-arc.elc essd-omg.elc essd-vst.elc essd-xls.elc essl-lsp.elc essl-omg.elc ess-mous.elc
+	rm -f $(ELC) dist
 
 distclean: clean
 # and potentially more
