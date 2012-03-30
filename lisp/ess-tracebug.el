@@ -1,5 +1,8 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
 ;;
+;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;
 ;; Filename: ess-tracebug.el
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu

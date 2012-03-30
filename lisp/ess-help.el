@@ -4,8 +4,11 @@
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
 ;; Copyright (C) 1998--2001 A.J. Rossini, Martin Maechler, Kurt Hornik and
 ;;	Richard M. Heiberger <rmh@temple.edu>.
-;; Copyright (C) 2001--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2001--2010 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
