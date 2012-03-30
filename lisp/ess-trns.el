@@ -1,8 +1,10 @@
 ;;; ess-trns.el --- Support for manipulating S transcript files
 
 ;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainers: ESS-core <ESS-core@r-project.org>
@@ -185,7 +187,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (setq ess-local-process-name nil)
   (unless inferior-ess-prompt ;; For S languages it is set in custom-alist
     (setq inferior-ess-prompt
-	  ;; Do not anchor to bol with `^'       
+	  ;; Do not anchor to bol with `^'
 	  (concat "\\("
 		  inferior-ess-primary-prompt
 		  "\\|"
@@ -194,7 +196,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (make-local-variable 'paragraph-start)
   (setq paragraph-start (concat "^" inferior-ess-prompt "\\|^\^L"))
   (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate "^\^L") 
+  (setq paragraph-separate "^\^L")
   (make-local-variable 'comint-use-prompt-regexp)
   (setq comint-use-prompt-regexp t)
   (make-local-variable 'comint-prompt-regexp)
