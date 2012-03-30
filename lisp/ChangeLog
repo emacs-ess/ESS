@@ -1,3 +1,8 @@
+2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-r-d.el (ess-R-get-rcompletions, ess--funargs-command):
+	workaround for enableJIT warnings for R > 2.14.2
+
 2012-03-26  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-help.el (ess-skip-to-help-section): this issue is documented in 2 places
