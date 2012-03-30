@@ -549,7 +549,7 @@ For inner function arguments the behavior is unchanged:
 
 some.function(arg1,
               arg2 = other.function(a,
-                       b,
+                b,
 
 Set `ess-arg-function-offset' to nil if you want:
 
