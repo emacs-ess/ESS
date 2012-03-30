@@ -1,5 +1,8 @@
 2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-custom.el (ess-arg-function-offset-new-line): If a list of
+	the form '(N), indent at the indentation + N
+
 	* ess-r-d.el (ess-R-get-rcompletions, ess--funargs-command):
 	workaround for enableJIT warnings for R > 2.14.2
 
