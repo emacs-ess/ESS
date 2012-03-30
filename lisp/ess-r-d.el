@@ -719,6 +719,10 @@ First element of a returned list is the completion token.
 	       "local({
 olderr <- options(error = NULL)
 on.exit(options(olderr))
+if(version$minor > '14.1'){
+    comp <- compiler::enableJIT(0L)
+    on.exit(compiler::enableJIT(comp))
+}
 utils:::.assignLinebuffer(\"%s\")
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
