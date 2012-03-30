@@ -533,17 +533,29 @@ If not number, the statements are indented at open-parenthesis following foo.")
 
 (defvar ess-arg-function-offset-new-line 2
   "Extra indent for function arguments when ( is folowed by new line.
-If not number, the statements are indented at open-parenthesis following foo.
+
+If nil, the statements are indented at open-parenthesis following foo:
+
+a <- some.function(other.function(
+                                  arg1,
+                                  arg2)
+
+If a list of the form '(N) where N is a number, the statement
+will be indented at the previous line indentation + N
+characters. With '(2):
+
+  a <- some.function(other.function(
+     arg1,
+     arg2)
+
+
 If a number, the statement will be indented as
 
-  a <- some.function(
-         arg1,
-         arg2)
 
-instead of
-
-  a <- some.function(arg1,
+a <- some.function(other.function(
+                     arg1,
                      arg2)
+
 
 For inner function arguments the behavior is unchanged:
 
@@ -557,7 +569,7 @@ some.function(arg1,
               arg2 = other.function(a,
                                     b,
 
-but
+and
 
 some.function(arg1,
               arg2 = other.function(
