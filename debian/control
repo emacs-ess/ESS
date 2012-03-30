@@ -3,7 +3,7 @@ Section: gnu-r
 Priority: optional
 Maintainer: ESS Debian Maintainers <ess-debian@r-project.org>
 Uploaders: Dirk Eddelbuettel <edd@debian.org>
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 Build-Depends: debhelper (>= 7.0.0)
 Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texinfo, texi2html
 Homepage: http://ess.r-project.org

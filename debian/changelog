@@ -1,3 +1,11 @@
+ess (12.03-1) unstable; urgency=low
+
+  * New upstream version released today (with new numbering scheme)
+
+  * debian/control: Increased Standards-Version: to current version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 30 Mar 2012 08:46:40 -0500
+
 ess (5.14-1) unstable; urgency=low
 
   * New upstream version released today

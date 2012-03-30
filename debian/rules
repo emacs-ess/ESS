@@ -28,7 +28,9 @@ tarball:
 			--exclude=.git \
 			--exclude=debian )
 
-build: build-stamp
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 build-stamp:
 	dh_testdir
 
@@ -87,7 +89,8 @@ binary-indep: build install
 	dh_installdocs
 	dh_installemacsen
 	dh_installinfo $$(find doc -type f -name "*.info*")
-	dh_installchangelogs ChangeLog
+	dh_installchangelogs 
+	rm -fv debian/ess/usr/share/doc/ess/ChangeLog
 	dh_compress
 	dh_fixperms
 	dh_installdeb
