@@ -365,7 +365,7 @@ you can combine different abbreviation styles with the truncation.
 If 'script-only activate in ess-mode buffers only.
 
 If non-nil add `ac-source-R' and `ac-source-filename' to the
-`ac-sources buffer local variable.
+`ac-sources' buffer local variable.
 
 ESS defines three AC sources `ac-source-R',`ac-source-R-objects'
 and `ac-source-R-args'. See auto-complete package
@@ -376,7 +376,7 @@ to install your custom sources.
   :type '(choice (const t) (const script-only) (const nil)))
 
 (defcustom ess-use-tracebug nil
-  "If t, load `ess-tracebug when R process starts."
+  "If t, load ess-tracebug when R process starts."
   :group 'ess-extras
   :type  'boolean)
 
@@ -1063,8 +1063,8 @@ file."
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example, `M-x
-splus70', that will start the corresponding version Sqpe inside an
+`ess-sqpe-versions-create' will create a function, for example,
+\\[splus70], that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
@@ -1084,8 +1084,8 @@ menu."
 releases of 64-bit S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example, `M-x
-splus70', that will start the corresponding version Sqpe inside an
+`ess-sqpe-versions-create' will create a function, for example,
+\\[splus70], that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of 64-bit S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
