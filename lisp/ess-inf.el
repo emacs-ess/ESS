@@ -2692,8 +2692,9 @@ This function monitors user input to the inferior ESS process so that
 Emacs can keep the variable `ess-search-list' up to date. `ess-completing-read' in
 \\[ess-read-object-name] uses this list indirectly when it prompts for help or
 for an object to dump."
-  (if (string-match ess-change-sp-regexp str)
-      (setq ess-sp-change t)))
+  (when ess-change-sp-regexp
+    (if (string-match ess-change-sp-regexp str)
+	(setq ess-sp-change t))))
 
  ; Miscellaneous routines
 
