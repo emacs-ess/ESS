@@ -770,16 +770,12 @@ made current."
 (defun update-ess-process-name-list ()
   "Remove names with no process."
   (let (defunct)
-    (mapc
-     '(lambda (conselt)
-	(let ((proc (get-process (car conselt))))
-	  (if (and proc (eq (process-status proc) 'run)) nil
-	    (setq defunct (cons conselt defunct)))))
-     ess-process-name-list)
-    (mapc
-     '(lambda (pointer)
-	(setq ess-process-name-list (delq pointer ess-process-name-list)))
-     defunct))
+    (dolist (conselt ess-process-name-list)
+      (let ((proc (get-process (car conselt))))
+        (unless (and proc (eq (process-status proc) 'run))
+          (push conselt defunct))))
+    (dolist (pointer defunct)
+      (setq ess-process-name-list (delq pointer ess-process-name-list))))
   (if (eq (length ess-process-name-list) 0)
       (setq ess-current-process-name nil)))
 
@@ -2198,29 +2194,26 @@ Leaves you in the ESS process buffer.  It's a good idea to run this
 before you quit.  It is run automatically by \\[ess-quit]."
   (interactive)
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
-    (if the-procname nil
+    (unless the-procname
       (error "I don't know which ESS process to clean up after!"))
-    (if
+    (when
 	(or (eq ess-S-quit-kill-buffers-p t)
 	    (and
 	     (eq ess-S-quit-kill-buffers-p 'ask)
 	     (y-or-n-p
 	      (format
 	       "Delete all buffers associated with process %s? " the-procname))))
-	(save-excursion
-	  (mapc '(lambda (buf)
-		   (set-buffer buf)
-		   ;; Consider buffers for which
-		   ;; ess-local-process-name is the same as
-		   ;; the-procname
-		   (if (and (not (get-buffer-process buf))
-			    ess-local-process-name
-			    (equal ess-local-process-name the-procname))
-		       (kill-buffer buf)))
-		(buffer-list))))
+        (dolist (buf (buffer-list))
+          (with-current-buffer buf
+            ;; Consider buffers for which ess-local-process-name is
+            ;; the same as the-procname
+            (when (and (not (get-buffer-process buf))
+                       ess-local-process-name
+                       (equal ess-local-process-name the-procname))
+              (kill-buffer buf)))))
     (ess-switch-to-ESS nil)))
 
-(defun ess-kill-buffer-function nil
+(defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."
   ;; This simply deletes the buffers process to avoid an Emacs bug
   ;; where the sentinel is run *after* the buffer is deleted

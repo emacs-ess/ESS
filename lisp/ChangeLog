@@ -1,5 +1,12 @@
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
+	* ess-inf.el (update-ess-process-name-list, ess-cleanup):
+	Use `dolist' instead of `mapc'+`lambda' for clarity and speed.
+	* ess-help.el (ess-help-mode, ess-describe-sec-map)
+	(ess-get-help-files-list, ess-get-help-aliases-list): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
 	* ess-custom.el, ess-custom.el, ess-mous.el, ess-mouse.el:
 	* ess-r-args.el, ess-r-d.el, ess-rd.el, ess-s-l.el, ess-s4-d.el:
 	* ess-site.el, ess-sp5-d.el, ess-sp6-d.el, ess-swv.el:
