@@ -800,7 +800,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (kill-local-variable 'ac-use-comphist))
     (if (string-match-p "[]:$@[]" ac-prefix)
 	(cdr (ess-R-get-rcompletions ac-point))
-      (with-current-ess-process-buffer 'no-error
+      (with-ess-process-buffer 'no-error
 	(unless (process-get *proc* 'busy)
 	  (let ((le (process-get *proc* 'last-eval))
 		(lobu (process-get *proc* 'last-objlist-update)))
