@@ -161,25 +161,25 @@
       nil)))
 
 ; get indent for last open block
-(defun last-open-block (min)
-  (let ((pos (last-open-block-pos min)))
+(defun julia-last-open-block (min)
+  (let ((pos (julia-last-open-block-pos min)))
     (and pos
 	 (progn
 	   (goto-char pos)
 	   (+ julia-basic-offset (current-indentation))))))
 
 ; return indent implied by a special form opening on the previous line, if any
-(defun form-indent ()
+(defun julia-form-indent ()
   (forward-line -1)
   (end-of-line)
   (backward-sexp)
-  (if (at-keyword julia-block-other-keywords)
+  (if (julia-at-keyword julia-block-other-keywords)
       (+ julia-basic-offset (current-indentation))
     (if (char-equal (char-after (point)) ?\()
         (progn
           (backward-word 1)
           (let ((cur (current-indentation)))
-            (if (at-keyword julia-block-start-keywords)
+            (if (julia-at-keyword julia-block-start-keywords)
                 (+ julia-basic-offset cur)
               nil)))
       nil)))
@@ -189,12 +189,12 @@
 
 (defmacro error2nil (body) `(condition-case nil ,body (error nil)))
 
-(defun paren-indent ()
+(defun julia-paren-indent ()
   (let* ((p (parse-partial-sexp (save-excursion
 				  ;; only indent by paren if the last open
 				  ;; paren is closer than the last open
 				  ;; block
-				  (or (last-open-block-pos (point-min))
+				  (or (julia-last-open-block-pos (point-min))
 				      (point-min)))
 				(progn (beginning-of-line)
 				       (point))))
@@ -239,7 +239,7 @@
 	 (save-excursion (forward-line -1)
 			 (current-indentation))
          0))
-    (when (at-keyword julia-block-end-keywords)
+    (when (julia-at-keyword julia-block-end-keywords)
       (forward-word 1)))
 
 ;; (defun julia-mode ()
@@ -455,6 +455,6 @@ to R, put them in the variable `inferior-julia-args'."
 ;; (fset 'ess-imenu-R 'ess-imenu-S)
 
 
-(setq inferior-julia-program-name "~/VC/julia/julia-release-basic")
+;; (setq inferior-julia-program-name "~/VC/julia/julia-release-basic")
 
 (provide 'ess-julia)
