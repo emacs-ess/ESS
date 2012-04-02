@@ -196,6 +196,8 @@ an inferior emacs buffer) the GUI help window is used."
 
               (goto-char (point-min))))
 
+	(when (featurep 'emacs)
+	  (visual-line-mode t))
 	(let ((PM (point-min))
 	      (nodocs
 	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
