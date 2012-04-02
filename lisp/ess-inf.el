@@ -1584,16 +1584,9 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
 
-(if ess-mode-minibuffer-map  nil
-
-  (cond ((featurep 'xemacs)
-	 ;; Code for XEmacs
-	 (setq ess-mode-minibuffer-map (make-keymap))
-	 (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)))
-
-  (cond ((not (featurep 'xemacs))
-	 ;; Code for Emacs
-	 (setq ess-mode-minibuffer-map (cons 'keymap minibuffer-local-map))))
+(unless ess-mode-minibuffer-map
+  (setq ess-mode-minibuffer-map (make-keymap))
+  (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)
 
   (define-key ess-mode-minibuffer-map "\t" 'ess-complete-object-name)
   (define-key ess-mode-minibuffer-map "\C-c\C-s" 'ess-execute-search)

@@ -9,7 +9,7 @@
 
 	* ess-help.el (ess-help-mode-map): All supported emacsen have
 	`set-keymap-parent'.
-	* ess-inf.el (inferior-ess-mode-map): Likewise.
+	* ess-inf.el (inferior-ess-mode-map, ess-mode-minibuffer-map): Likewise.
 	* ess-tracebug.el (ess-watch-mode-map): Likewise.
 	* ess-trns.el (ess-transcript-mode-map): Likewise.
 	* ess-mode.el (ess-mode-map): Likewise.
