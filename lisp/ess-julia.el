@@ -89,11 +89,11 @@
 (defconst julia-block-end-keywords
   (list "end" "else" "elseif" "catch"))
 
-(defun member (item lst)
-  (if (null lst)
-      nil
-    (or (equal item (car lst))
-	(member item (cdr lst)))))
+;; (defun member (item lst)
+;;   (if (null lst)
+;;       nil
+;;     (or (equal item (car lst))
+;; 	(member item (cdr lst)))))
 
 ; TODO: skip keywords and # characters inside strings
 
@@ -261,8 +261,10 @@
   ;; (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
   ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (set (make-local-variable 'end-of-defun-function)
-       'ess-end-of-function)
+  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
+  (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
+  ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
+  (set (make-local-variable 'julia-basic-offset) 4)
   (ess-imenu-julia)
   (run-hooks 'julia-mode-hook))
 
@@ -299,6 +301,19 @@
 (defvar inferior-julia-program-name nil
   "Path to julia-release-basic executable")
 
+(defun julia-send-string-function (process string visibly)
+  (let ((file (concat temporary-file-directory "julia_eval_region")))
+    (with-temp-file file
+      (insert string))
+    (process-send-string process (format inferior-ess-load-command file))))
+
+(defun julia-get-help-topics-list-function ()
+  (let ((com "print(\" [1] \"); _jl_init_help();for (topic, _) = _jl_helpdb show(topic); println(); for (func,_) = _jl_helpdb[topic] show(func); print(\" \");   end;  end\n\n"))
+    (ess-get-words-from-vector com)))
+    ;; (ess-command com)))
+
+(defvar julia-help-command " _tpc = \"%s\"; _jl_init_help(); if !has(_jl_helpdb, _tpc); help_for(_tpc) else for (func, _) = _jl_helpdb[_tpc] help_for(func); println(); end end\n")
+
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
     (inferior-ess-primary-prompt	. "> ")
@@ -307,10 +322,15 @@
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-keywords	. julia-font-lock-keywords)
+    (ess-get-help-topics-list-function	. 'julia-get-help-topics-list-function)
     (inferior-ess-load-command		. "load(\"%s\")\n")
+    (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
+    (ess-error-regexp			. "\\(at \\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
+    (ess-send-string-function		. 'julia-send-string-function)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
-    (inferior-ess-help-command		. "help(%s)\n")
+    (inferior-ess-help-command		. julia-help-command)
+    ;; (inferior-ess-help-command		. "help(\"%s\")\n")
     (ess-language			. "julia")
     (ess-dialect			. "julia")
     (ess-suffix				. "jl")
