@@ -1,5 +1,9 @@
 2012-04-02  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-utils.el (ess-inside-string-or-comment-p)
+	(ess-inside-string-p): rewrote this facilities to take advantage
+	of font-lock
+
 	* ess-julia.el (julia-customize-alist)
 	(julia-get-help-topics-list-function)
 	(julia-send-string-function, julia)
