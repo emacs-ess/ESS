@@ -2441,7 +2441,7 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
 	  (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
 		 (setq words nil)
                  )
-	(while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"" nil t);match \"
+	(while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
 	  (setq words (cons (buffer-substring (match-beginning 1)
 					      (match-end 1)) words))))
       )
