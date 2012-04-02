@@ -5,3 +5,5 @@ doc/readme.*
 doc/refcard/refcard.*
 .Rhistory
 *NEWS
+VERSION
+lisp/*.elc
