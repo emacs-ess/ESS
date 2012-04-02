@@ -1,5 +1,13 @@
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
+	* ess-custom.el, ess-custom.el, ess-mous.el, ess-mouse.el:
+	* ess-r-args.el, ess-r-d.el, ess-rd.el, ess-s-l.el, ess-s4-d.el:
+	* ess-site.el, ess-sp5-d.el, ess-sp6-d.el, ess-swv.el:
+	* ess-tracebug.el, ess-utils.el, ess.el, make-regexp.el, mouseme.el:
+	* noweb-mode.el: Do not quote lambda forms, this is never needed.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
 	* ess-site.el: Rise up to the challenge: use `locate-file'
 	instead of horrible adhockery to check if info can find ess.info.
 

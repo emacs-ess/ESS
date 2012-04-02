@@ -636,8 +636,8 @@ toggle between the new and the previous assignment."
   (require 'ess-mode)
   (require 'ess-inf)
   (let ((current-action (lookup-key ess-mode-map ess-S-assign-key))
-	(insert-S-assign #'(lambda() (interactive)
-			     (delete-horizontal-space) (insert ess-S-assign))))
+	(insert-S-assign (lambda() (interactive)
+			   (delete-horizontal-space) (insert ess-S-assign))))
     (if (and (stringp ess-S-assign-key)
 	     (string= ess-S-assign-key "_"))
 	(ess-toggle-underscore force)
@@ -785,4 +785,3 @@ and I need to relearn emacs lisp (but I had to, anyway."
 ;;; End:
 
 ;;; ess-s-l.el ends here
-

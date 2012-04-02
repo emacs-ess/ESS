@@ -406,7 +406,7 @@ following lines to your `.emacs' file:
   (interactive)
   (let ((s (ess-completing-read
 	    "Insert section: "
-	    (mapcar '(lambda (x) (cons x x)) Rd-section-names)
+	    (mapcar (lambda (x) (cons x x)) Rd-section-names)
 	    nil t)))
     (if (string= s "")
 	(progn (insert "\\section{}{") (backward-char 2))
@@ -447,13 +447,13 @@ following lines to your `.emacs' file:
 		   "Rd Markup (available from C-c C-f):\n\n\t"
 		   "KEY          Rd-Markup\n\n"
 		   (mapconcat
-		    '(lambda (entry)
-		       ;; A textual description of an ENTRY in TeX-font-list.
-		       (concat (format "%11s  "
-				       (key-description
-					(char-to-string (nth 0 entry))))
-			       (format "%14s %-3s"
-				       (nth 1 entry) (nth 2 entry))))
+		    (lambda (entry)
+                      ;; A textual description of an ENTRY in TeX-font-list.
+                      (concat (format "%11s  "
+                                      (key-description
+                                       (char-to-string (nth 0 entry))))
+                              (format "%14s %-3s"
+                                      (nth 1 entry) (nth 2 entry))))
 		    Rd-font-list "\n"))))
 	     (with-output-to-temp-buffer "*Help*"
 	       (set-buffer "*Help*")

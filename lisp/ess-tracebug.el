@@ -435,9 +435,8 @@ Local in iESS buffers.")
 
 (unless (boundp 'ess--busy-slash)
   (defvar ess--busy-slash '(32 ?\u2014 92 47))
-  (setq ess--busy-slash (mapcar '(lambda (el) (format " %c " el))
-                                ess--busy-slash ))
-  )
+  (setq ess--busy-slash (mapcar (lambda (el) (format " %c " el))
+                                ess--busy-slash)))
 
 (defvar ess--busy-B '("   " " B " "   "))
 (defvar ess--busy-stars '("      " "      " " *    " " **   " " ***  " " **** "))
@@ -515,7 +514,7 @@ in inferior buffers.  ")
     (make-local-variable 'ess--busy-timer)
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
-    (add-hook 'kill-buffer-hook '(lambda () (cancel-timer ess--busy-timer)))
+    (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
     ;; redefine
     (unless (fboundp 'orig-inferior-R-input-sender)
       (defalias 'orig-inferior-R-input-sender (symbol-function 'inferior-R-input-sender))
@@ -1273,10 +1272,8 @@ is non nil, attempt to open the location in a different window."
                 (progn ;; highlights the overlay for ess-dbg-blink-interval seconds
                   (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-blink-same-ref-face)
                   (run-with-timer ess-dbg-blink-interval nil
-                                  '(lambda ()
-                                     (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)
-                                     )
-                                  )
+                                  (lambda ()
+                                    (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)))
                   )
                                         ;else
               (ess-dbg-activate-overlays)
@@ -1285,10 +1282,8 @@ is non nil, attempt to open the location in a different window."
         ;;else, buffer is not found: highlight and give the corresponding message
         (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-blink-ref-not-found-face)
         (run-with-timer ess-dbg-blink-interval nil
-                        '(lambda ()
-                           (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)
-                           )
-                        )
+                        (lambda ()
+                          (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)))
         (message "Referenced file %s is not found" (car ref))
         ))))
 
@@ -2298,10 +2293,10 @@ string giving the actual R expression."
   "Return a string of the form 'assign(\".ess_watch_expressions\", list(a = parse(expr_a), b= parse(expr_b)), envir = .GlobalEnv)'
 ready to be send to R process. AL is an association list as return by `ess-watch-make-alist'"
   (concat "assign(\".ess_watch_expressions\", list("
-          (mapconcat '(lambda (el)
-                        (if (> (length  (cadr el) ) 0)
-                            (concat "`" (cadr el) "` = parse(text = '" (caddr el) "')")
-                          (concat "parse(text = '" (caddr el) "')")))
+          (mapconcat (lambda (el)
+                       (if (> (length  (cadr el) ) 0)
+                           (concat "`" (cadr el) "` = parse(text = '" (caddr el) "')")
+                         (concat "parse(text = '" (caddr el) "')")))
                      al ", ")
           "), envir = .GlobalEnv)\n"))
 
@@ -2684,7 +2679,7 @@ for signature and trace it with browser tracer."
 		      "*ALL*"))
       (setq fun (ess-completing-read "Un-debug: " debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
-	  (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat '(lambda (x) x) debugged "\", \"") "\"))\n") tbuffer)
+	  (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
 	(ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer)
 	)
       (with-current-buffer  tbuffer

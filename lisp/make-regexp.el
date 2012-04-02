@@ -72,7 +72,7 @@
 ;; as this is 10% faster than the mapconcat equivalent.
 
 ;; Installation:
-;; 
+;;
 ;; (autoload 'make-regexp "make-regexp"
 ;;   "Return a regexp to match a string item in STRINGS.")
 ;;
@@ -151,7 +151,7 @@ Merges keywords to avoid backtracking in Emacs' regexp matcher."
 	(if (> (length prefix) 0)
 	    ;; Common prefix!  Squirrel it out and recurse with the suffixes.
 	    (let* ((len (length prefix))
-		   (sufs (mapcar '(lambda (str) (substring str len)) strings)))
+		   (sufs (mapcar (lambda (str) (substring str len)) strings)))
 	      (concat open-paren prefix (make-regexp sufs t t) close-paren))
 	  ;; No common prefix.  Is there a one-character sequence?
 	  (let ((letters (let ((completion-regexp-list '("^.$")))

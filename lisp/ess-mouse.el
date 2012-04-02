@@ -47,11 +47,11 @@
   "Popup a menu of functions to run on selected string or region."
   (interactive)
   (ess-mouse-me-helper
-   #'(lambda ()
-       (or (x-popup-menu (list '(0 0)
-			       (get-buffer-window (get-buffer (buffer-name))))
-			 (funcall mouse-me-build-menu-function name))
-	   (error "No command to run")))))
+   (lambda ()
+     (or (x-popup-menu (list '(0 0)
+                             (get-buffer-window (get-buffer (buffer-name))))
+                       (funcall mouse-me-build-menu-function name))
+         (error "No command to run")))))
 
 
 

@@ -145,7 +145,7 @@ from the beginning of the buffer."
 ;; (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
 ;;or at least
 ;; (add-hook 'ess-mode-hook
-;; 	  '(lambda ()
+;; 	   (lambda ()
 ;; 	     (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
 
 (defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask

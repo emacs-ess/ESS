@@ -572,7 +572,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (when ess-versions-created
   ;; new-menu will be a list of 3-vectors, of the form:
   ;; ["R-1.8.1" R-1.8.1 t]
-  (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+  (let ((new-menu (mapcar '(lambda(x) (vector x (intern x) t))
 			  ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
 			(cons "Other" new-menu))))
@@ -678,10 +678,10 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (if ess-microsoft-p
     (add-hook 'ess-post-run-hook
-	      (lambda()
-                (if (string= ess-dialect "R")
-                    (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
-                                       nil nil nil 'wait)))))
+	      '(lambda()
+		 (if (string= ess-dialect "R")
+		     (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
+					nil nil nil 'wait)))))
 
 
 ;;; 3.6 Example of formatting changes
