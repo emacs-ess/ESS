@@ -948,6 +948,9 @@ If MESSAGE is supplied, display it at the end."
     (ess-send-string process (buffer-substring-no-properties start end) visibly message)
     ))
 
+(defvar ess-send-string-function  nil)
+(make-variable-buffer-local 'ess-send-string-function)
+
 (defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
 Removes empty lines during the debugging.
@@ -958,9 +961,11 @@ STRING  need not end with \\n."
   ;; (setq string
   ;;       (replace-regexp-in-string  "^[^#]+\\()\\)[^)]*\\'" "\n)" string nil nil 1)) ;;needed for busy prompt
   (inferior-ess-mark-as-busy process)
-  (if visibly
-      (ess-eval-linewise string)
-    (process-send-string process (concat string "\n")))
+  (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
+      (funcall ess-send-string-function process string visibly)
+    (if visibly
+	(ess-eval-linewise string)
+      (process-send-string process (concat string "\n"))))
   (if message (message message)))
 
 (defvar ess--dbg-del-empty-p t
