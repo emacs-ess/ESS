@@ -12,6 +12,7 @@
 	* ess-inf.el (inferior-ess-mode-map): Likewise.
 	* ess-tracebug.el (ess-watch-mode-map): Likewise.
 	* ess-trns.el (ess-transcript-mode-map): Likewise.
+	* ess-mode.el (ess-mode-map): Likewise.
 
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
