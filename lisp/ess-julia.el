@@ -214,17 +214,18 @@
 (defun julia-indent-line ()
   "Indent current line of julia code"
   (interactive)
-;  (save-excursion
+					;  (save-excursion
     (end-of-line)
     (indent-line-to
-     (or (save-excursion (error2nil (form-indent)))
-         (save-excursion (error2nil (paren-indent)))
+     (or (and (ess-inside-string-p (point-at-bol)) 0)
+	 (save-excursion (error2nil (julia-form-indent)))
+         (save-excursion (error2nil (julia-paren-indent)))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
                            (forward-to-indentation 0)
-                           (at-keyword julia-block-end-keywords))))
-             (error2nil (+ (last-open-block (point-min))
+                           (julia-at-keyword julia-block-end-keywords))))
+             (error2nil (+ (julia-last-open-block (point-min))
                            (if endtok (- julia-basic-offset) 0)))))
 	 ;; previous line ends in =
 	 (save-excursion
