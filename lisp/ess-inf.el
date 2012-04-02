@@ -507,13 +507,14 @@ This was rewritten by KH in April 1996."
 
 ;;*;; General process handling code
 
-(defmacro with-current-ess-process-buffer (no-error &rest body)
+(defmacro with-ess-process-buffer (no-error &rest body)
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
-If NO-ERROR is t don't trigger the error when there is not current process.
+If NO-ERROR is t don't trigger an error when there is not current process.
 
 Symbol *proc* is bound to the current process during the evaluation of BODY."
   (declare (indent 1))
-  `(let ((*proc* (and ess-current-process-name (get-process ess-current-process-name))))
+  `(let ((*proc* (or (and ess-local-process-name (get-process ess-local-process-name))
+		     (and ess-current-process-name (get-process ess-current-process-name)))))
      (if *proc*
 	 (with-current-buffer (process-buffer *proc*)
 	   ,@body)

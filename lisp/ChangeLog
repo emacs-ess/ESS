@@ -1,5 +1,7 @@
 2012-04-02  Vitalie Spinu  <spinuvit@gmail.com>
 
+	* ess-mode.el (ess-mode): try hard to find an alist if not suplied
+
 	* ess-utils.el (ess-inside-string-or-comment-p)
 	(ess-inside-string-p): rewrote this facilities to take advantage
 	of font-lock
