@@ -2137,10 +2137,10 @@ for more information.
 \\{ess-watch-mode-map}
 ")
 
-(if ess-watch-mode-map
-    ()
+(unless ess-watch-mode-map
   (setq ess-watch-mode-map (make-sparse-keymap))
-  (set-keymap-parent ess-watch-mode-map special-mode-map)
+  (when (boundp 'special-mode-map)
+    (set-keymap-parent ess-watch-mode-map special-mode-map))
   (define-key ess-watch-mode-map "?" 'ess-watch-help)
   (define-key ess-watch-mode-map "k" 'ess-watch-kill)
   ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)

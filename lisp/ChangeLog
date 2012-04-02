@@ -1,5 +1,11 @@
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
+	* ess-help.el (ess-help-mode-map): Older XEmacs misses
+	`special-mode-map', check for that.
+	* ess-tracebug.el (ess-watch-mode-map): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
 	* ess-tracebug.el (ess-bp-kill): Bug fix: `called-interactively-p'
 	requires an argument; fix it as recommended in the doc for
 	`called-interactively-p' by avoiding it altogether; this also
