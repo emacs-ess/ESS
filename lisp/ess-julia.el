@@ -434,7 +434,10 @@ to R, put them in the variable `inferior-julia-args'."
     ))
 
 (defvar julia-imenu-generic-expression
-  '(("Functions" "^\\s-*function\\s-*\\([^ \t\n(]*\\)(" 1)
+  '(("Function (_)" "^\\s-*function\\s-+\\(_[^ \t\n]*\\)" 1)
+    ("Function" "^\\s-*function\\s-+\\([^_][^ \t\n]*\\)" 1)
+    ("Const" "^\\s-*const \\([^ \t\n]*\\)" 1)
+    ("Load"      " *\\(load\\)(\\([^ \t\n)]*\\)" 2)
     ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
     ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
     ;; ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
