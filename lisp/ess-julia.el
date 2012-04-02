@@ -128,48 +128,29 @@
 (defconst julia-block-end-keywords
   (list "end" "else" "elseif" "catch"))
 
-;; (defun member (item lst)
-;;   (if (null lst)
-;;       nil
-;;     (or (equal item (car lst))
-;; 	(member item (cdr lst)))))
+(defun ess-inside-brackets-p (&optional pos)
+  (save-excursion
+    (let* ((pos (or pos (point)))
+	   (beg (re-search-backward "\\[" (max (point-min) (- pos 1000)) t))
+	   (end (re-search-forward "\\]" (min (point-max) (+ pos 1000)) t)))
+    (and beg end (> pos beg) (> end pos)))))
 
-; TODO: skip keywords and # characters inside strings
-
-(defun in-comment ()
-  (member ?# (string-to-list (buffer-substring (line-beginning-position)
-					       (point)))))
-
-(defun strcount (str chr)
-  (let ((i 0)
-	(c 0))
-    (while (< i (length str))
-      (if (equal (elt str i) chr)
-	  (setq c (+ c 1)))
-      (setq i (+ i 1)))
-    c))
-
-(defun in-brackets ()
-  (let ((before (buffer-substring (line-beginning-position) (point))))
-    (> (strcount before ?[)
-       (strcount before ?]))))
-
-(defun at-keyword (kw-list)
+(defun julia-at-keyword (kw-list)
   ; not a keyword if used as a field name, X.word, or quoted, :word
   (and (or (= (point) 1)
 	   (and (not (equal (char-before (point)) ?.))
 		(not (equal (char-before (point)) ?:))))
-       (not (in-comment))
-       (not (in-brackets))
+       (not (ess-inside-string-or-comment-p (point)))
+       (not (ess-inside-brackets-p (point)))
        (member (current-word) kw-list)))
 
 ; get the position of the last open block
-(defun last-open-block-pos (min)
+(defun julia-last-open-block-pos (min)
   (let ((count 0))
     (while (not (or (> count 0) (<= (point) min)))
       (backward-word 1)
       (setq count
-	    (cond ((at-keyword julia-block-start-keywords)
+	    (cond ((julia-at-keyword julia-block-start-keywords)
 		   (+ count 1))
 		  ((and (equal (current-word) "end")
 			(not (in-comment)) (not (in-brackets)))
