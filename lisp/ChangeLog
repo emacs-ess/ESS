@@ -1,3 +1,14 @@
+2012-04-02  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-julia.el (julia-customize-alist)
+	(julia-get-help-topics-list-function)
+	(julia-send-string-function, julia)
+	(julia-imenu-generic-expression): ess-julia.el
+
+2012-04-01  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-error-regexp): custom error messages for dialects
+
 2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-r-d.el (ess-R-get-rcompletions, ess--funargs-command):

@@ -149,7 +149,7 @@ Alternatively, it can appear in its own frame if
       ;;(make-variable-buffer-local 'comint-use-prompt-regexp)
       (make-local-variable 'comint-use-prompt-regexp)
       ;; now the abomination:
-      (ess-setq-vars-default ess-customize-alist)
+      ;; (ess-setq-vars-default ess-customize-alist)
 
       (setq-default comint-use-prompt-regexp nil) ; re set HACK!
       ;;>> Doesn't set ess-language,
