@@ -743,6 +743,9 @@ Returns t if the buffer existed and was modified, but was not saved."
 		  (save-buffer))))
 	  (buffer-modified-p buff)))))
 
+(defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
+  "Regexp to search for errors.")
+
 (defun ess-parse-errors (showerr)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported."
@@ -752,13 +755,13 @@ With prefix argument, only shows the errors ESS reported."
     (if (not errbuff)
 	(error "You need to do a load first!")
       (set-buffer errbuff)
-      (goto-char (point-max))
+      (goto-char (point-min))
       (if
-	  (re-search-backward
+	  (re-search-forward
 	   ;; FIXME: R does not give "useful" error messages -
 	   ;; -----  by default: We (ESS) could try to use a more useful one, via
 	   ;;   options(error = essErrorHandler)
-	   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
+	   ess-error-regexp
 	   nil
 	   t)
 	  (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
