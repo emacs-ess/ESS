@@ -596,27 +596,28 @@ to look up any doc strings."
     olderr <- options(error = NULL)
     on.exit(options(olderr))
     fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
-    funname<- '%s'
+    .ess_funname<- '%s'
     if(is.null(fun) || !is.function(fun)){
         NULL
     }else{
-	special <- grepl('[:$@[]', funname)
+	special <- grepl('[:$@[]', .ess_funname)
 	args<-if(!special){
-		fundef<-paste(funname, '.default',sep='')
+		fundef<-paste(.ess_funname, '.default',sep='')
 		if(exists(fundef, mode = 'function')) args(fundef) else args(fun)
 	}else args(fun)
         args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse = ''))
         args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ',args), fixed = TRUE)
 	allargs <-
 	        if(special) paste(names(formals(fun)), '=', sep='')
-		else tryCatch(utils:::functionArgs(funname, ''), error = function(e) NULL)
+		else tryCatch(utils:::functionArgs(.ess_funname, ''), error = function(e) NULL)
         envname <- environmentName(environment(fun))
         c(envname,args,allargs)
      }
 })
 ")
 
-(defconst ess-funname-ignore '("function" "for" ))
+;; (defconst ess--funname-ignore '("else"))
+
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
@@ -695,6 +696,9 @@ later."
 	    (condition-case nil ;; check if it is inside a functon call
 		(save-excursion
 		  (up-list -1)
+		  (while (not (looking-at "("))
+		    (up-list -1))
+		  ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
 		  (let ((funname (ess-get-object-at-point)))
 		    (when (and funname
 			       (not (member funname ess-S-non-functions)))
