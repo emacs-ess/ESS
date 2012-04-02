@@ -798,19 +798,19 @@ value of the original strings."
 (defun noweb-restore-code-quotes (quote-list)
   "Reinsert the strings modified by `noweb-hide-code-quotes'."
   (save-excursion
-    (mapcar '(lambda (q)
-               (let* ((e (marker-position (car q)))
-                      ;; Slightly inefficient, but correct way to find
-                      ;; the beginning of the word to be replaced.
-                      ;; Using the marker at the beginning will loose
-                      ;; if whitespace has been rearranged
-                      (b (save-excursion
-                           (goto-char e)
-                           (skip-chars-backward "*")
-                           (point))))
-                 (delete-region b e)
-                 (goto-char b)
-                 (insert (cdr q))))
+    (mapcar (lambda (q)
+              (let* ((e (marker-position (car q)))
+                     ;; Slightly inefficient, but correct way to find
+                     ;; the beginning of the word to be replaced.
+                     ;; Using the marker at the beginning will loose
+                     ;; if whitespace has been rearranged
+                     (b (save-excursion
+                          (goto-char e)
+                          (skip-chars-backward "*")
+                          (point))))
+                (delete-region b e)
+                (goto-char b)
+                (insert (cdr q))))
             quote-list)))
 
 (defun noweb-fill-chunk ()

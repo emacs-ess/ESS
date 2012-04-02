@@ -122,12 +122,8 @@
 
 
 (unless ess-mode-map
-  (if (featurep 'xemacs)
-      (progn ;; Code for XEmacs
-	(setq ess-mode-map (make-keymap))
-	(set-keymap-parent ess-mode-map text-mode-map)) ;; was comint?!?
-    ;; else code for GNU Emacs
-    (setq ess-mode-map (make-sparse-keymap)))
+  (setq ess-mode-map (make-keymap))
+  (set-keymap-parent ess-mode-map text-mode-map)
 
   ;; By popular demand:
   (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
@@ -1442,4 +1438,3 @@ generate the source buffer."
 ;;; End:
 
 ;;; ess-mode.el ends here
-

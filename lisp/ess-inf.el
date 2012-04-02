@@ -770,16 +770,12 @@ made current."
 (defun update-ess-process-name-list ()
   "Remove names with no process."
   (let (defunct)
-    (mapc
-     '(lambda (conselt)
-	(let ((proc (get-process (car conselt))))
-	  (if (and proc (eq (process-status proc) 'run)) nil
-	    (setq defunct (cons conselt defunct)))))
-     ess-process-name-list)
-    (mapc
-     '(lambda (pointer)
-	(setq ess-process-name-list (delq pointer ess-process-name-list)))
-     defunct))
+    (dolist (conselt ess-process-name-list)
+      (let ((proc (get-process (car conselt))))
+        (unless (and proc (eq (process-status proc) 'run))
+          (push conselt defunct))))
+    (dolist (pointer defunct)
+      (setq ess-process-name-list (delq pointer ess-process-name-list))))
   (if (eq (length ess-process-name-list) 0)
       (setq ess-current-process-name nil)))
 
@@ -1515,13 +1511,8 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 ;;*;; Major mode definition
 
 (unless inferior-ess-mode-map
-  (cond ((featurep 'xemacs)
-	 ;; Code for XEmacs
-	 (setq inferior-ess-mode-map (make-keymap))
-	 (set-keymap-parent inferior-ess-mode-map comint-mode-map))
-	((not (featurep 'xemacs))
-	 ;; Code for GNU Emacs
-	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
+  (setq inferior-ess-mode-map (make-keymap))
+  (set-keymap-parent inferior-ess-mode-map comint-mode-map)
 
   (define-key inferior-ess-mode-map "\C-y"		'ess-yank)
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
@@ -1593,16 +1584,9 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
 
-(if ess-mode-minibuffer-map  nil
-
-  (cond ((featurep 'xemacs)
-	 ;; Code for XEmacs
-	 (setq ess-mode-minibuffer-map (make-keymap))
-	 (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)))
-
-  (cond ((not (featurep 'xemacs))
-	 ;; Code for Emacs
-	 (setq ess-mode-minibuffer-map (cons 'keymap minibuffer-local-map))))
+(unless ess-mode-minibuffer-map
+  (setq ess-mode-minibuffer-map (make-keymap))
+  (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)
 
   (define-key ess-mode-minibuffer-map "\t" 'ess-complete-object-name)
   (define-key ess-mode-minibuffer-map "\C-c\C-s" 'ess-execute-search)
@@ -2198,29 +2182,26 @@ Leaves you in the ESS process buffer.  It's a good idea to run this
 before you quit.  It is run automatically by \\[ess-quit]."
   (interactive)
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
-    (if the-procname nil
+    (unless the-procname
       (error "I don't know which ESS process to clean up after!"))
-    (if
+    (when
 	(or (eq ess-S-quit-kill-buffers-p t)
 	    (and
 	     (eq ess-S-quit-kill-buffers-p 'ask)
 	     (y-or-n-p
 	      (format
 	       "Delete all buffers associated with process %s? " the-procname))))
-	(save-excursion
-	  (mapc '(lambda (buf)
-		   (set-buffer buf)
-		   ;; Consider buffers for which
-		   ;; ess-local-process-name is the same as
-		   ;; the-procname
-		   (if (and (not (get-buffer-process buf))
-			    ess-local-process-name
-			    (equal ess-local-process-name the-procname))
-		       (kill-buffer buf)))
-		(buffer-list))))
+        (dolist (buf (buffer-list))
+          (with-current-buffer buf
+            ;; Consider buffers for which ess-local-process-name is
+            ;; the same as the-procname
+            (when (and (not (get-buffer-process buf))
+                       ess-local-process-name
+                       (equal ess-local-process-name the-procname))
+              (kill-buffer buf)))))
     (ess-switch-to-ESS nil)))
 
-(defun ess-kill-buffer-function nil
+(defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."
   ;; This simply deletes the buffers process to avoid an Emacs bug
   ;; where the sentinel is run *after* the buffer is deleted

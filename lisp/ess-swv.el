@@ -309,13 +309,13 @@ file and latex the result."
 
 (if (featurep 'xemacs)
     (add-hook 'Rnw-mode-hook
-	      '(lambda ()
-		 ;; This adds to top menu:
-		 ;; (easy-menu-add ess-swv-menu noweb-minor-mode-map)
-		 ;; But that's using an unnecessary extra level -- FIXME
-		 (easy-menu-add-item noweb-minor-mode-menu
-				     '("Sweave");; 'nil' adds to top
-				     ess-swv-menu)))
+	      (lambda ()
+                ;; This adds to top menu:
+                ;; (easy-menu-add ess-swv-menu noweb-minor-mode-map)
+                ;; But that's using an unnecessary extra level -- FIXME
+                (easy-menu-add-item noweb-minor-mode-menu
+                                    '("Sweave");; 'nil' adds to top
+                                    ess-swv-menu)))
   ;; normal GNU Emacs:
   (easy-menu-add-item noweb-minor-mode-menu
 		      nil ;; <= path

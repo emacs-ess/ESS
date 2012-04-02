@@ -56,21 +56,19 @@
        (file-directory-p (concat directory ".Data/__Meta"))))
 
 (defvar S+6-directory-function
-  #'(lambda ()
-      (if (S+6-directory-p default-directory)
-	  default-directory
-	(or ess-directory default-directory))))
+  (lambda ()
+    (if (S+6-directory-p default-directory)
+        default-directory
+      (or ess-directory default-directory))))
 
 (defvar S+6-setup-directory-function
-  #'(lambda (startdir)
-      (if (and startdir (S+6-directory-p startdir))
-          (progn
-	    (setenv "S_WORK"
-		    (if (getenv "S_WORK")
-			(concat startdir ":" (getenv "S_WORK"))
-		      ;;(message "adding %s to S_WORK" startdir)
-		      startdir))
-            ))))
+  (lambda (startdir)
+    (when (and startdir (S+6-directory-p startdir))
+      (setenv "S_WORK"
+              (if (getenv "S_WORK")
+                  (concat startdir ":" (getenv "S_WORK"))
+                  ;;(message "adding %s to S_WORK" startdir)
+                startdir)))))
 
 (defvar S+6-customize-alist
   (append
@@ -143,7 +141,7 @@ If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
 ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions
-of S using this method.  
+of S using this method.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.
 

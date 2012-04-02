@@ -68,16 +68,9 @@
 
 ;;*;; Major mode definition
 (defvar ess-transcript-mode-map nil "Keymap for `ess-transcript-mode'.")
-(if ess-transcript-mode-map
-    nil
-
-  (cond ((featurep 'xemacs)
-	 ;; Code for XEmacs
-	 (setq ess-transcript-mode-map (make-keymap))
-	 (set-keymap-parent ess-transcript-mode-map text-mode-map))
-	((not (featurep 'xemacs))
-	 ;; Code for GNU Emacs
-	 (setq ess-transcript-mode-map (make-sparse-keymap))))
+(unless ess-transcript-mode-map
+  (setq ess-transcript-mode-map (make-keymap))
+  (set-keymap-parent ess-transcript-mode-map text-mode-map)
 
   (define-key ess-transcript-mode-map "\C-c\C-s" 'ess-switch-process)
   (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)

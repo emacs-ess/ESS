@@ -550,14 +550,9 @@ For internal use. Used in `ess-display-help-on-object',
 (unless ess-help-mode-map
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
-  (if (and (featurep 'emacs) (fboundp 'set-keymap-parent))
-      (set-keymap-parent ess-help-mode-map special-mode-map)
-    (define-key ess-help-mode-map ">" 'end-of-buffer)
-    (define-key ess-help-mode-map "<" 'beginning-of-buffer))
+  (when (boundp 'special-mode-map)
+    (set-keymap-parent ess-help-mode-map special-mode-map))
   (define-key ess-help-mode-map "q" 'ess-help-quit)  ;was 'ess-switch-to-end-of-ESS)
-  (define-key ess-help-mode-map " " 'scroll-up)
-  (define-key ess-help-mode-map "b" 'scroll-down)
-  (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "\C-m" 'next-line)
   ;; (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)
@@ -653,10 +648,9 @@ Other keybindings are as follows:
   ;; section headings.
 
   (setq ess-help-sec-map (make-sparse-keymap))
-  (mapc '(lambda (key)
-	   (define-key ess-help-sec-map (char-to-string key)
-	     'ess-skip-to-help-section))
-	(mapcar 'car ess-help-sec-keys-alist))
+  (dolist (pair ess-help-sec-keys-alist)
+    (define-key ess-help-sec-map (char-to-string (car pair))
+      'ess-skip-to-help-section))
   (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
   (define-key ess-help-sec-map ">" 'end-of-buffer)
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
@@ -721,11 +715,11 @@ to see which keystrokes find which sections."
 
 Keystroke    Section
 ---------    -------\n")
-      (mapc '(lambda (cs) (insert "    "
-				  (car cs)
-				  "      "
-				  (cdr cs) "\n"))
-	    keys-alist)
+      (dolist (cs keys-alist)
+        (insert "    "
+                (car cs)
+                "      "
+                (cdr cs) "\n"))
       (insert "\nFull list of key definitions:\n"
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))
@@ -791,28 +785,25 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."
-  (apply 'append
-	 (mapcar '(lambda (dirname)
-		    (if (file-directory-p dirname)
-			(directory-files dirname)))
-		 (mapcar '(lambda (str) (concat str "/.Help"))
-			 (ess-search-list)))))
+  (apply 'nconc
+	 (mapcar (lambda (str)
+                   (let ((dirname (concat str "/.Help")))
+                     (and (file-directory-p dirname)
+                          (directory-files dirname))))
+                 (ess-search-list))))
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
   (let ((readrds (if (ess-current-R-at-least "2.13.0")
 		     "readRDS"
 		   ".readRDS")))
-    (apply 'append
-	   (mapcar '(lambda (a-file)
-		      (if (file-exists-p a-file)
-			  (ess-get-words-from-vector
-			   (format
-			    "names(%s(\"%s\"))\n" readrds a-file))))
-		   (mapcar '(lambda (str)
-			      (concat str "/help/aliases.rds"))
-			   (ess-get-words-from-vector
-			    "searchpaths()\n"))))))
+    (apply 'nconc
+	   (mapcar (lambda (str)
+                     (let ((a-file (concat str "/help/aliases.rds")))
+                       (and (file-exists-p a-file)
+                            (ess-get-words-from-vector
+                             (format "names(%s(\"%s\"))\n" readrds a-file)))))
+                   (ess-get-words-from-vector "searchpaths()\n")))))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."

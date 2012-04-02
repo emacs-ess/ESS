@@ -70,7 +70,7 @@
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
-;;	  '(lambda ()
+;;	   (lambda ()
 ;;	     (ess-command
 ;;	      (concat
 ;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""

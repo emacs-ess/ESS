@@ -57,7 +57,7 @@
 ;; into Emacs by including something like the following in your
 ;; ~/.emacs file (adapt "/PATH/TO"!).
 ;;
-;; (add-hook 'ess-mode-hook '(lambda () (load "/PATH/TO/ess-r-args.el")))
+;; (add-hook 'ess-mode-hook (lambda () (load "/PATH/TO/ess-r-args.el")))
 ;;
 ;; This file is included with ESS; if you are reading this file as
 ;; part of the ESS distribution, then you do not need to add the above

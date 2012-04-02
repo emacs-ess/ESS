@@ -722,8 +722,8 @@ current buffer.
 
 Possible value:
 
- '(lambda () (file-name-as-directory
-	      (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
+ (lambda () (file-name-as-directory
+	     (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
 
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
@@ -1039,7 +1039,7 @@ file."
 (defcustom ess-SHOME-versions
     ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
     (mapcar
-     '(lambda (ch) (concat ess-program-files ch))
+     (lambda (ch) (concat ess-program-files ch))
      '("/Insightful/splus62"
        "/Insightful/splus61"
        "/MathSoft/splus6"
@@ -1077,7 +1077,7 @@ menu."
 (defcustom ess-SHOME-versions-64
     ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
     (mapcar
-     '(lambda (ch) (concat ess-program-files-64 ch))
+     (lambda (ch) (concat ess-program-files-64 ch))
      '("/TIBCO/splus82"
 ))
   "List of possible values of the environment variable SHOME for recent
