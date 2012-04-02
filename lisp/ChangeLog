@@ -1,3 +1,8 @@
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Rise up to the challenge: use `locate-file'
+	instead of horrible adhockery to check if info can find ess.info.
+
 2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (ess-arg-function-offset-new-line): If a list of
