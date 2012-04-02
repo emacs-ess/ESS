@@ -1,5 +1,12 @@
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
+	* ess-tracebug.el (ess-bp-kill): Bug fix: `called-interactively-p'
+	requires an argument; fix it as recommended in the doc for
+	`called-interactively-p' by avoiding it altogether; this also
+	takes care of compatibility.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
 	* ess-help.el (ess-help-mode-map): All supported emacsen have
 	`set-keymap-parent'.
 	* ess-inf.el (inferior-ess-mode-map): Likewise.

@@ -1897,13 +1897,13 @@ to the current position, nil if not found. "
   (indent-for-tab-command)
   )
 
-(defun ess-bp-kill ()
+(defun ess-bp-kill (&optional interactive?)
   "Remove the breakpoint nearby"
-  (interactive)
+  (interactive "p")
   (let ((pos (ess-bp-get-bp-position-nearby))
         (init-pos (make-marker)))
     (if (null pos)
-        (if (called-interactively-p) (message "No breakpoints nearby"))
+        (if interactive? (message "No breakpoints nearby"))
       (if (eq (point) (point-at-eol))
 	  (goto-char (1- (point)))) ;; work-arround for issue  3
       (set-marker init-pos  (point))
