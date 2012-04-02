@@ -404,35 +404,36 @@ If you have certain command line arguments that should always be passed
 to R, put them in the variable `inferior-julia-args'."
   (interactive "P")
   ;; get settings, notably inferior-R-program-name :
-  (setq ess-customize-alist julia-customize-alist)
-  (ess-write-to-dribble-buffer   ;; for debugging only
-   (format
-    "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
-    ess-dialect (current-buffer) start-args current-prefix-arg))
-  (let* ((r-start-args
-	   (concat inferior-julia-args " " ; add space just in case
-		   (if start-args
-		       (read-string
-			(concat "Starting Args [other than `"
-				inferior-julia-args
-				"'] ? "))
-		     nil))))
-
-    (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
-    ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-    ;;        (list
-    ;; 	(list julia-char-regex 2
-    ;; 	      julia-mode-char-syntax-table)
-    ;; ;        (list julia-string-regex 0
-    ;; ;              julia-mode-string-syntax-table)
-    ;; ))
-    (set (make-local-variable 'indent-line-function) 'julia-indent-line)
-    (set (make-local-variable 'julia-basic-offset) 4)
-    (setq indent-tabs-mode nil)
-    ;; (if inferior-ess-language-start
-    ;; 	(ess-eval-linewise inferior-ess-language-start
-    ;; 			   nil nil nil 'wait-prompt)))
-    ))
+  (if (null inferior-julia-program-name)
+      (error "'inferior-julia-program-name' is not set 'julia-release-basic' executable")
+    (setq ess-customize-alist julia-customize-alist)
+    (ess-write-to-dribble-buffer   ;; for debugging only
+     (format
+      "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
+      ess-dialect (current-buffer) start-args current-prefix-arg))
+    (let* ((r-start-args
+	    (concat inferior-julia-args " " ; add space just in case
+		    (if start-args
+			(read-string
+			 (concat "Starting Args [other than `"
+				 inferior-julia-args
+				 "'] ? "))
+		      nil))))
+      (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
+      ;;        (list
+      ;; 	(list julia-char-regex 2
+      ;; 	      julia-mode-char-syntax-table)
+      ;; ;        (list julia-string-regex 0
+      ;; ;              julia-mode-string-syntax-table)
+      ;; ))
+      (set (make-local-variable 'indent-line-function) 'julia-indent-line)
+      (set (make-local-variable 'julia-basic-offset) 4)
+      (setq indent-tabs-mode nil)
+      ;; (if inferior-ess-language-start
+      ;; 	(ess-eval-linewise inferior-ess-language-start
+      ;; 			   nil nil nil 'wait-prompt)))
+      )))
 
 (defvar julia-imenu-generic-expression
   '(("Function (_)" "^\\s-*function\\s-+\\(_[^ \t\n]*\\)" 1)
