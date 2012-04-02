@@ -153,7 +153,7 @@
 	    (cond ((julia-at-keyword julia-block-start-keywords)
 		   (+ count 1))
 		  ((and (equal (current-word) "end")
-			(not (in-comment)) (not (in-brackets)))
+			(not (ess-inside-comment-p)) (not (ess-inside-brackets-p)))
 		   (- count 1))
 		  (t count))))
     (if (> count 0)
@@ -457,8 +457,5 @@ to R, put them in the variable `inferior-julia-args'."
   (imenu-add-to-menubar "Imenu-jl"))
 
 ;; (fset 'ess-imenu-R 'ess-imenu-S)
-
-
-;; (setq inferior-julia-program-name "~/VC/julia/julia-release-basic")
 
 (provide 'ess-julia)
