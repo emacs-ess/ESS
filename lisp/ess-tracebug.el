@@ -2140,9 +2140,10 @@ for more information.
 (if ess-watch-mode-map
     ()
   (setq ess-watch-mode-map (make-sparse-keymap))
+  (set-keymap-parent ess-watch-mode-map special-mode-map)
   (define-key ess-watch-mode-map "?" 'ess-watch-help)
   (define-key ess-watch-mode-map "k" 'ess-watch-kill)
-                                        ;  (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
+  ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
   ;; editing requires a little more work.
   (define-key ess-watch-mode-map "a" 'ess-watch-add)
   (define-key ess-watch-mode-map "i" 'ess-watch-insert)
@@ -2158,7 +2159,6 @@ for more information.
   (define-key ess-watch-mode-map "\C-c\C-s" 'ess-watch-switch-process)
   (define-key ess-watch-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
   (define-key ess-watch-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-  (define-key ess-watch-mode-map "g" 'revert-buffer)
   ;; Debug keys:
   )
 

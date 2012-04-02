@@ -550,14 +550,8 @@ For internal use. Used in `ess-display-help-on-object',
 (unless ess-help-mode-map
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
   (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
-  (if (and (featurep 'emacs) (fboundp 'set-keymap-parent))
-      (set-keymap-parent ess-help-mode-map special-mode-map)
-    (define-key ess-help-mode-map ">" 'end-of-buffer)
-    (define-key ess-help-mode-map "<" 'beginning-of-buffer))
+  (set-keymap-parent ess-help-mode-map special-mode-map)
   (define-key ess-help-mode-map "q" 'ess-help-quit)  ;was 'ess-switch-to-end-of-ESS)
-  (define-key ess-help-mode-map " " 'scroll-up)
-  (define-key ess-help-mode-map "b" 'scroll-down)
-  (define-key ess-help-mode-map "\177" 'scroll-down) ; DEL
   (define-key ess-help-mode-map "\C-m" 'next-line)
   ;; (define-key ess-help-mode-map "s" ess-help-sec-map)
   (define-key ess-help-mode-map "h" 'ess-display-help-on-object)

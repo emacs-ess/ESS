@@ -1,5 +1,13 @@
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
+	* ess-help.el (ess-help-mode-map): All supported emacsen have
+	`set-keymap-parent'.
+	* ess-inf.el (inferior-ess-mode-map): Likewise.
+	* ess-tracebug.el (ess-watch-mode-map): Likewise.
+	* ess-trns.el (ess-transcript-mode-map): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
 	* ess-inf.el (update-ess-process-name-list, ess-cleanup):
 	Use `dolist' instead of `mapc'+`lambda' for clarity and speed.
 	* ess-help.el (ess-help-mode, ess-describe-sec-map)

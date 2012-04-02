@@ -1511,13 +1511,8 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 ;;*;; Major mode definition
 
 (unless inferior-ess-mode-map
-  (cond ((featurep 'xemacs)
-	 ;; Code for XEmacs
-	 (setq inferior-ess-mode-map (make-keymap))
-	 (set-keymap-parent inferior-ess-mode-map comint-mode-map))
-	((not (featurep 'xemacs))
-	 ;; Code for GNU Emacs
-	 (setq inferior-ess-mode-map (cons 'keymap comint-mode-map))))
+  (setq inferior-ess-mode-map (make-keymap))
+  (set-keymap-parent inferior-ess-mode-map comint-mode-map)
 
   (define-key inferior-ess-mode-map "\C-y"		'ess-yank)
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
