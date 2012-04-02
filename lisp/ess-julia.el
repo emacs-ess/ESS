@@ -346,7 +346,7 @@
     (ess-get-help-topics-list-function	. 'julia-get-help-topics-list-function)
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
-    (ess-error-regexp			. "\\(at \\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
+    (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-send-string-function		. 'julia-send-string-function)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
