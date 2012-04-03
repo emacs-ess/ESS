@@ -146,6 +146,7 @@ except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
 an inferior emacs buffer) the GUI help window is used."
   (interactive
    (progn
+     (ess-force-buffer-current nil nil t)
      (when current-prefix-arg ;update cache if prefix
        (with-current-buffer (process-buffer (get-ess-process ess-current-process-name))
          (setq ess-sp-change t)))
