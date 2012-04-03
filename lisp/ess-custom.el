@@ -339,12 +339,12 @@ If nil first TAB always tries to complete (this might be too
 aggressive and dangerous).
 "
   :group 'ess
-  :type '(coice (const nil)
-		(const 'symbol)
-		(const 'symbol-or-paren)
-		(const 'symbol-or-paren-or-punct)
-		(const 'unless-eol)
-		(const t)))
+  :type '(choice (const nil)
+		 (const symbol)
+		 (const symbol-or-paren)
+		 (const symbol-or-paren-or-punct)
+		 (const unless-eol)
+		 (const t)))
 
 (defalias 'ess-first-tab-never-completes-p  ess-first-tab-never-complete)
 
