@@ -746,7 +746,7 @@ This function should follow the description in `ess-show-buffer'
 for showing the iESS buffer, except that the iESS buffer is also
 made current."
   (interactive "P")
-  (ess-force-buffer-current nil nil nil)
+  (ess-force-buffer-current)
   (if (and ess-current-process-name (get-process ess-current-process-name))
       (progn
 	;; Display the buffer, but don't select it yet.
@@ -2123,6 +2123,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive)
   (if (string-equal ess-dialect "R")
       (ess-quit-r)
+    ;; else:  non-R
     (ess-force-buffer-current "Process to quit: " nil nil 'no-autostart)
     (ess-make-buffer-current)
     (let ((sprocess (get-ess-process ess-current-process-name)))
