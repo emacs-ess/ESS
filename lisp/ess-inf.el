@@ -1540,7 +1540,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (if (and (featurep 'emacs) (>= emacs-major-version 24))
       (define-key inferior-ess-mode-map "\t"       'completion-at-point)
     (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
-    (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename))
+    (define-key inferior-ess-mode-map "\M-\t"    'comint-dynamic-complete))
   (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
   (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
