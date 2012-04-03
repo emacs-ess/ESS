@@ -318,10 +318,35 @@ Some useful keys for IDO completion:
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-first-tab-never-completes-p nil
-  "If non-nil, first TAB never tries to complete in ess-mode."
+(defcustom ess-tab-complete-in-script t
+  "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
+See also `ess-first-tab-never-complete' and `ess-first-tab-never-complete-in-word'")
+
+(defcustom ess-first-tab-never-complete 'symbol
+  "If t, first TAB never tries to complete in ess-mode.
+If 'symbol first TAB doesn't try to complete if next char is a
+valid symbol constituent.
+
+If 'symbol-or-paren  don't complete if next char is closed paren
+)}] or symbol character.
+
+If 'symbol-or-paren-or-punct don't complete if next char is
+punctuation +-=% etc, or closed paren or symbol.
+
+If 'unless-eol - first TAB completes only at end of line.
+
+If nil first TAB always tries to complete (this might be too
+aggressive and dangerous).
+"
   :group 'ess
-  :type 'boolean)
+  :type '(coice (const nil)
+		(const 'symbol)
+		(const 'symbol-or-paren)
+		(const 'symbol-or-paren-or-punct)
+		(const 'unless-eol)
+		(const t)))
+
+(defalias 'ess-first-tab-never-completes-p  ess-first-tab-never-complete)
 
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
@@ -346,7 +371,7 @@ nil: do nothing
 mild:  Replace TRUE, FALSE with T,F
 normal: Try mild + shorten the default values longer than 10 characters.
 strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
-agressive: Try strong + truncate the doc string to fit into minibuffer.
+aggressive: Try strong + truncate the doc string to fit into minibuffer.
 
 The default style is 'normal.
 
@@ -356,7 +381,7 @@ indifferent of the value of `ess-eldoc-abbreviation-style'. This way
 you can combine different abbreviation styles with the truncation.
 "
   :group 'ess
-  :type '(choice (const nil) (const mild) (const normal) (const strong) (const agressive))
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive))
   )
 
 

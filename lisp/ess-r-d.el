@@ -524,7 +524,7 @@ to look up any doc strings."
   (save-match-data
     (let* (;; (name (symbol-name sym))
            (truncate (or (null eldoc-echo-area-use-multiline-p)
-			 (eq ess-eldoc-abbreviation-style 'agressive)))
+			 (eq ess-eldoc-abbreviation-style 'aggressive)))
            ;; Subtract 1 from window width since will cause a wraparound and
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
