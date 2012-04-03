@@ -122,8 +122,7 @@
 
 
 (unless ess-mode-map
-  (setq ess-mode-map (make-keymap))
-  (set-keymap-parent ess-mode-map text-mode-map)
+  (setq ess-mode-map (make-sparse-keymap))
 
   ;; By popular demand:
   (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
