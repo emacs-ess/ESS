@@ -1,3 +1,9 @@
+2012-04-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-force-buffer-current): use no-autostart, instead
+	of autostart (each with the emacs default of nil).  This
+	re-instantiates ESS 5.x behavior.
+
 2012-04-03  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (ess-first-tab-never-completes-p): defalias for
