@@ -159,7 +159,7 @@
   (define-key ess-mode-map "\C-c\C-t"	'ess-execute-in-tb)
   (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name-deprecated)
   (unless (and (featurep 'emacs) (>= emacs-major-version 24))
-    (define-key ess-mode-map "\M-\t"	'comint-replace-by-expanded-filename))
+    (define-key ess-mode-map "\M-\t"	'comint-dynamic-complete))
   (define-key ess-mode-map "\M-?"	'ess-list-object-completions)
   ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
   (define-key ess-mode-map "\C-c\C-k"	'ess-force-buffer-current)
