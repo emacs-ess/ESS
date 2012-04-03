@@ -380,8 +380,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (setq alist (or alist
 		  (buffer-local-value 'ess-local-customize-alist (current-buffer))
-		  (with-ess-process-buffer nil
-		    ess-local-customize-alist)))
+		  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
   (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
