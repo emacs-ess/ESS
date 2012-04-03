@@ -15,6 +15,19 @@
 
 	* ess-mode.el (ess-error-regexp): custom error messages for dialects
 
+2012-04-03  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-force-buffer-current): use no-autostart, instead
+	of autostart (each with the emacs default of nil).  This
+	re-instantiates ESS 5.x behavior.
+
+2012-04-03  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (ess-first-tab-never-completes-p): defalias for
+	ess-first-tab-never-complete
+	(ess-first-tab-never-complete): plenty of options for every taste.
+	(ess-tab-complete-in-script): new option.
+
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
 	* ess-help.el (ess-help-mode-map): Older XEmacs misses

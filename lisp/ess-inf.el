@@ -704,22 +704,21 @@ Returns the name of the selected process."
       proc)))
 
 
-(defun ess-force-buffer-current (&optional prompt force autostart)
+(defun ess-force-buffer-current (&optional prompt force no-autostart)
   "Make sure the current buffer is attached to an ESS process.
 If not, or FORCE (prefix argument) is non-nil, prompt for a
-process name with PROMPT. If AUTOSTART is non-nil starts the new
+process name with PROMPT. If NO-AUTOSTART is nil starts the new
 process if process associated with current buffer has died.
 `ess-local-process-name' is set to the name of the process
 selected.  `ess-dialect' is set to the dialect associated with
 the process selected."
-  (interactive)
-   (setq prompt (or prompt
-		    (concat ess-dialect " process to use: ") current-prefix-arg))
+  (interactive
+   (list (concat ess-dialect " process to use: ") current-prefix-arg nil))
   (let ((proc-name (ess-make-buffer-current)))
     (if (and (not force) proc-name (get-process proc-name))
 	nil ; do nothing
       ;; Make sure the source buffer is attached to a process
-      (if (and ess-local-process-name (not force) (not autostart))
+      (if (and ess-local-process-name (not force) no-autostart)
 	  (error "Process %s has died" ess-local-process-name)
 	;; ess-local-process-name is nil -- which process to attach to
 	(save-excursion
@@ -748,7 +747,7 @@ This function should follow the description in `ess-show-buffer'
 for showing the iESS buffer, except that the iESS buffer is also
 made current."
   (interactive "P")
-  (ess-force-buffer-current nil nil t)
+  (ess-force-buffer-current nil nil nil)
   (if (and ess-current-process-name (get-process ess-current-process-name))
       (progn
 	;; Display the buffer, but don't select it yet.
@@ -1216,7 +1215,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
-  (ess-force-buffer-current "Process to load into: ")
+  (ess-force-buffer-current "Process to load into: " nil nil)
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
@@ -1259,7 +1258,7 @@ non-nil and the function was successfully evaluated, return '(beg
 end) representing the beginning and end of the function under
 cursor, nil otherwise."
   (interactive "P")
-  (ess-force-buffer-current "Process to use: ")
+  (ess-force-buffer-current "Process to use: " nil nil)
   (save-excursion
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
@@ -1361,7 +1360,7 @@ both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
   (save-excursion
-    (ess-force-buffer-current "Process to load into: ")
+    (ess-force-buffer-current "Process to load into: " nil nil)
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
@@ -1464,7 +1463,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 	  (if source-buffer
 	      (save-excursion
 		(set-buffer source-buffer)
-		(ess-force-buffer-current "Process to load into: ")
+		(ess-force-buffer-current "Process to load into: " nil nil)
 		(ess-check-modifications)))
 	  (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
 		(filename (if (and (fboundp 'tramp-tramp-file-p)
@@ -1546,7 +1545,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (if (and (featurep 'emacs) (>= emacs-major-version 24))
       (define-key inferior-ess-mode-map "\t"       'completion-at-point)
     (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
-    (define-key inferior-ess-mode-map "\M-\t"    'comint-replace-by-expanded-filename))
+    (define-key inferior-ess-mode-map "\M-\t"    'comint-dynamic-complete))
   (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
   (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
   (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
@@ -2563,7 +2562,7 @@ form completions."
   ;; > emacs 24
   "Return completion only within string or comment."
   (when (ess-inside-string-or-comment-p (point))
-    (append (comint-filename-completion) '(:exclusive no))
+      (append (comint-filename-completion) '(:exclusive no))
     ))
 
 

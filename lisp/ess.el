@@ -160,8 +160,13 @@
 ;;==> ess-inf.el  has its OWN autoload's !
 
 
- ; Set up for menus, if necessary
-;;;
+ ; Miscellaneous "ESS globals"
+
+(defun ess-version ()
+  (interactive)
+  (message (format "ess-version : %s" ess-version)))
+
+;;; Set up for menus, if necessary
 ;;;  --> is done in ess-mode.el, ess-inf.el, etc
 
  ; ESS yank
