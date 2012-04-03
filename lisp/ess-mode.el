@@ -122,12 +122,8 @@
 
 
 (unless ess-mode-map
-  (if (featurep 'xemacs)
-      (progn ;; Code for XEmacs
-	(setq ess-mode-map (make-keymap))
-	(set-keymap-parent ess-mode-map text-mode-map)) ;; was comint?!?
-    ;; else code for GNU Emacs
-    (setq ess-mode-map (make-sparse-keymap)))
+  (setq ess-mode-map (make-keymap))
+  (set-keymap-parent ess-mode-map text-mode-map)
 
   ;; By popular demand:
   (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
@@ -1115,17 +1111,26 @@ Returns nil if line starts inside a string, t if in a comment."
 			    bol t))
 		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset))
+		     ;; now distinguish between
+		     ;;   a <- some.function(arg1,
+		     ;;                      arg2)
+		     ;; and
+		     ;;   a <- some.function(
+		     ;;     arg1,
+		     ;;     arg2)
+		     ;; case 1:
 		     ((and (numberp ess-arg-function-offset-new-line)
 			   (looking-at-p "[ \t]*([ \t]*$"))
-		      ;; distinguish between
-		      ;;   a <- some.function(arg1,
-		      ;;                      arg2)
-		      ;; and
-		      ;;   a <- some.function(
-		      ;;     arg1,
-		      ;;     arg2)
 		      (forward-sexp -1)
 		      (+ (current-column) ess-arg-function-offset-new-line))
+		     ;; case 2:
+		     ((and (listp ess-arg-function-offset-new-line)
+			   (numberp (car ess-arg-function-offset-new-line))
+			   (looking-at-p "[ \t]*([ \t]*$"))
+		      ;; flush args to the begining of
+		      (beginning-of-line)
+		      (skip-chars-forward " \t")
+		      (+ (current-column) (car ess-arg-function-offset-new-line)))
 		     ;; "expression" is searched before "=".
 		     ;; End
 		     (t
@@ -1441,4 +1446,3 @@ generate the source buffer."
 ;;; End:
 
 ;;; ess-mode.el ends here
-

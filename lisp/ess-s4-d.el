@@ -69,7 +69,7 @@
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
-;;	  '(lambda ()
+;;	   (lambda ()
 ;;	     (ess-command
 ;;	      (concat
 ;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
@@ -120,10 +120,10 @@
 ;;(defun S-get-help-files-list nil
 ;;  (mapcar 'list
 ;;	  (apply 'append
-;;		 (mapcar '(lambda (dirname)
-;;			    (if (file-directory-p dirname)
-;;				(directory-files dirname)))
-;;			 (mapcar '(lambda (str) (concat str "/__Help"))
+;;		 (mapcar (lambda (dirname)
+;;			   (if (file-directory-p dirname)
+;;			       (directory-files dirname)))
+;;			 (mapcar (lambda (str) (concat str "/__Help"))
 ;;				 (S-search-list))))))
 ;;
 ;;

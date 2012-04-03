@@ -252,7 +252,7 @@ See also `ess-use-ido'.
 		   (eq ess-use-auto-complete t)
 		 ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
-      (mapcar '(lambda (el) (add-to-list 'ac-trigger-commands el))
+      (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
 	      '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
       (setq ac-sources '(ac-source-R ac-source-filename)))
 
@@ -456,7 +456,7 @@ Otherwise try a list of fixed known viewers."
 ;;	  R-customize-alist)
 
 ;; jsa@alexandria.organon.com (Jon S Anthony)
-;;(mapcar #'(lambda (x)
+;;(mapcar (lambda (x)
 ;;	    (set-variable (car x) (cdr x)))
 ;;	R-customize-alist)
 

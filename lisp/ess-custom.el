@@ -365,7 +365,7 @@ you can combine different abbreviation styles with the truncation.
 If 'script-only activate in ess-mode buffers only.
 
 If non-nil add `ac-source-R' and `ac-source-filename' to the
-`ac-sources buffer local variable.
+`ac-sources' buffer local variable.
 
 ESS defines three AC sources `ac-source-R',`ac-source-R-objects'
 and `ac-source-R-args'. See auto-complete package
@@ -376,7 +376,7 @@ to install your custom sources.
   :type '(choice (const t) (const script-only) (const nil)))
 
 (defcustom ess-use-tracebug nil
-  "If t, load `ess-tracebug when R process starts."
+  "If t, load ess-tracebug when R process starts."
   :group 'ess-extras
   :type  'boolean)
 
@@ -533,31 +533,42 @@ If not number, the statements are indented at open-parenthesis following foo.")
 
 (defvar ess-arg-function-offset-new-line 2
   "Extra indent for function arguments when ( is folowed by new line.
-If not number, the statements are indented at open-parenthesis following foo.
-If a number, the statement will be indented as
 
-  a <- some.function(
-         arg1,
-         arg2)
+If nil, the statements are indented at open-parenthesis following foo:
 
-instead of
+  a <- some.function(other.function(
+                                    arg1,
+                                    arg2)
 
-  a <- some.function(arg1,
-                     arg2)
+If a list of the form '(N) where N is a number, the statements
+are indented at the previous line indentation + N characters:
+
+  a <- some.function(other.function(
+     arg1,
+     arg2)
+
+
+If a number N, the statement are alligned at the beggining of
+function call + N characters:
+
+  a <- some.function(other.function(
+                       arg1,
+                       arg2)
+
 
 For inner function arguments the behavior is unchanged:
 
-some.function(arg1,
-              arg2 = other.function(a,
-                       b,
+  some.function(arg1,
+                arg2 = other.function(a,
+                  b,
 
 Set `ess-arg-function-offset' to nil if you want:
 
-some.function(arg1,
-              arg2 = other.function(a,
-                                    b,
+  some.function(arg1,
+                arg2 = other.function(a,
+                                      b,
 
-but
+and
 
 some.function(arg1,
               arg2 = other.function(
@@ -711,8 +722,8 @@ current buffer.
 
 Possible value:
 
- '(lambda () (file-name-as-directory
-	      (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
+ (lambda () (file-name-as-directory
+	     (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
 
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
@@ -1028,7 +1039,7 @@ file."
 (defcustom ess-SHOME-versions
     ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
     (mapcar
-     '(lambda (ch) (concat ess-program-files ch))
+     (lambda (ch) (concat ess-program-files ch))
      '("/Insightful/splus62"
        "/Insightful/splus61"
        "/MathSoft/splus6"
@@ -1052,8 +1063,8 @@ file."
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example, `M-x
-splus70', that will start the corresponding version Sqpe inside an
+`ess-sqpe-versions-create' will create a function, for example,
+\\[splus70], that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs
@@ -1066,15 +1077,15 @@ menu."
 (defcustom ess-SHOME-versions-64
     ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
     (mapcar
-     '(lambda (ch) (concat ess-program-files-64 ch))
+     (lambda (ch) (concat ess-program-files-64 ch))
      '("/TIBCO/splus82"
 ))
   "List of possible values of the environment variable SHOME for recent
 releases of 64-bit S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
 correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example, `M-x
-splus70', that will start the corresponding version Sqpe inside an
+`ess-sqpe-versions-create' will create a function, for example,
+\\[splus70], that will start the corresponding version Sqpe inside an
 emacs buffer in iESS[S] mode.  If you have versions of 64-bit S-Plus in
 locations other than these default values, redefine this variable with
 a `custom-set-variables' statement in your site-start.el or .emacs

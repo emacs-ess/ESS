@@ -15,7 +15,53 @@
 
 	* ess-mode.el (ess-error-regexp): custom error messages for dialects
 
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-help.el (ess-help-mode-map): Older XEmacs misses
+	`special-mode-map', check for that.
+	* ess-tracebug.el (ess-watch-mode-map): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-tracebug.el (ess-bp-kill): Bug fix: `called-interactively-p'
+	requires an argument; fix it as recommended in the doc for
+	`called-interactively-p' by avoiding it altogether; this also
+	takes care of compatibility.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-help.el (ess-help-mode-map): All supported emacsen have
+	`set-keymap-parent'.
+	* ess-inf.el (inferior-ess-mode-map, ess-mode-minibuffer-map): Likewise.
+	* ess-tracebug.el (ess-watch-mode-map): Likewise.
+	* ess-trns.el (ess-transcript-mode-map): Likewise.
+	* ess-mode.el (ess-mode-map): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-inf.el (update-ess-process-name-list, ess-cleanup):
+	Use `dolist' instead of `mapc'+`lambda' for clarity and speed.
+	* ess-help.el (ess-help-mode, ess-describe-sec-map)
+	(ess-get-help-files-list, ess-get-help-aliases-list): Likewise.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-custom.el, ess-custom.el, ess-mous.el, ess-mouse.el:
+	* ess-r-args.el, ess-r-d.el, ess-rd.el, ess-s-l.el, ess-s4-d.el:
+	* ess-site.el, ess-sp5-d.el, ess-sp6-d.el, ess-swv.el:
+	* ess-tracebug.el, ess-utils.el, ess.el, make-regexp.el, mouseme.el:
+	* noweb-mode.el: Do not quote lambda forms, this is never needed.
+
+2012-04-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Rise up to the challenge: use `locate-file'
+	instead of horrible adhockery to check if info can find ess.info.
+
+
 2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (ess-arg-function-offset-new-line): If a list of
+	the form '(N), indent at the indentation + N
 
 	* ess-r-d.el (ess-R-get-rcompletions, ess--funargs-command):
 	workaround for enableJIT warnings for R > 2.14.2
