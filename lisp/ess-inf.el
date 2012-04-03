@@ -2123,7 +2123,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive)
   (if (string-equal ess-dialect "R")
       (ess-quit-r)
-    (ess-force-buffer-current "Process to quit: ")
+    (ess-force-buffer-current "Process to quit: " nil nil 'no-autostart)
     (ess-make-buffer-current)
     (let ((sprocess (get-ess-process ess-current-process-name)))
       (if (not sprocess) (error "No ESS process running"))
@@ -2140,7 +2140,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   "Issue an exiting command to an inferior R process, and optionally clean up.
 This version is for killing *R* processes; it asks the extra question
 regarding whether the workspace image should be saved."
-  (ess-force-buffer-current "Process to quit: ")
+  (ess-force-buffer-current "Process to quit: " nil nil 'no-autostart)
   (ess-make-buffer-current)
   (let (cmd
 ;;Q	response
