@@ -2557,7 +2557,7 @@ form completions."
   ;; > emacs 24
   "Return completion only within string or comment."
   (when (ess-inside-string-or-comment-p (point))
-    (append (comint-filename-completion) '(:exclusive no))
+      (append (comint-filename-completion) '(:exclusive no))
     ))
 
 

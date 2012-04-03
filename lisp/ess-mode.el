@@ -854,13 +854,23 @@ of the expression are preserved."
   "Try to indent first, if code is already properly indented, complete instead.
 It calls `comint-dynamic-complete' for emacs < 24 and `completion-at-point' otherwise.
 
-See also `ess-first-tab-never-completes-p'. "
+See also `ess-tab-complete-in-script' and `ess-first-tab-never-complete'."
   (interactive)
   (let ((shift (ess-indent-command)))
-    (when (and (numberp shift) ;; can be nil if ess-tab-always-indent is nil
+    (when (and ess-tab-complete-in-script
+	       (numberp shift) ;; can be nil if ess-tab-always-indent is nil
 	       (equal shift 0)
 	       (or (eq last-command 'ess-indent-or-complete)
-		   (not ess-first-tab-never-completes-p)))
+		   (null ess-first-tab-never-complete)
+		   (and (eq ess-first-tab-never-complete 'unless-eol)
+			(looking-at "\\s-*$"))
+		   (and (eq ess-first-tab-never-complete 'symbol)
+			(not (looking-at "\\w\\|\\s_")))
+		   (and (eq ess-first-tab-never-complete 'symbol-or-paren)
+			(not (looking-at "\\w\\|\\s_\\|\\s)")))
+		   (and (eq ess-first-tab-never-complete 'symbol-or-paren-or-punct)
+			(not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))
+		   ))
       (if (and (featurep 'emacs) (>= emacs-major-version 24))
 	  (completion-at-point)
 	(comint-dynamic-complete)
