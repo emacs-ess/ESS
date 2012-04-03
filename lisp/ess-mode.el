@@ -441,7 +441,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (if (and (featurep 'emacs)
 	   (>= emacs-major-version 24))
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-    (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local))
+    (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
+    (delq t comint-dynamic-complete-functions)
+    )
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
   ;;; extras
