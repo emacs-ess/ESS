@@ -2870,7 +2870,7 @@ and functions defined in .GlobalEnv can see the objects in
 
 In order to use ess-developer mode you should add names of the packages
 you are developing to @code{ess-developer-packages}. You can dot it
-interactively with @kbd{C-d a}, and remove packages with @kbd{C-d
+interactively with @kbd{C-c d a}, and remove packages with @kbd{C-c d
 r}. When developer mode is on, the name of the process in the mode line
 is highlighted with @code{ess-developer-indicator-face}.
 
