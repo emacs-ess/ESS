@@ -131,8 +131,11 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.04"
-  "Version of ESS currently loaded.")
+(defvar ess-version "YY.MM"
+  "Version of ESS currently loaded (populated by make).")
+
+(defvar ess-revision "YY-MM-rNNNN"
+  "SVN revision of ESS currently loaded (populated by make).")
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.
