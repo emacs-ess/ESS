@@ -2243,7 +2243,7 @@ or \\[ess-internal-complete-object-name] otherwise."
   "Gives a deprecated message "
   (interactive)
   (ess-complete-object-name)
-  (message "C-c TAB is deprecated, completions has been moved to [TAB]")
+  (message "C-c TAB is deprecated, completions has been moved to [M-TAB] (aka C-M-i)")
   (sit-for 2 t)
   )
 
