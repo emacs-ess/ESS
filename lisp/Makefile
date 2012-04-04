@@ -58,9 +58,9 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 
 ### Targets
 
-all: $(ELC)
+all: $(ELC) ess-custom.el
 
-dist: ess-custom.el all
+dist: all
 	@touch dist
 ## svn committing happens in ../Makefile
 
@@ -80,7 +80,8 @@ distclean: clean
 ### Targets below here are only for developers - and these must have perl
 
 ### Replace Version numbers (as in ../doc/Makefile !):
-ess-custom.el: # ../VERSION
+## "../VERSION" if that changes, *definitely* need to update ess-custom.el
+ess-custom.el: ../VERSION
 	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
 
 

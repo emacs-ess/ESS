@@ -14,6 +14,9 @@ all install: VERSION
 
 VERSION:
 	@echo "$(ESSVERSION)" > $@
+## manually
+VERSION+:
+	echo "$(ESSVERSIONsvn)" > VERSION
 
 
 ## --- PRE-release ---
