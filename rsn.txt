@@ -300,7 +300,7 @@ I wish that ?foo, where foo is a non-existent
 command, didn't leave a *help[R](foo)* buffer lying around.
 ACTUALLY, IT HAS ALREADY BEEN IMPLEMENTED: JUST CUSTOMISE
 ess-help-kill-bogus-buffers TO t (thanks to Sam Steingold)
-t IS NOW THE DEFAULT IN ESS 5.15 (Rodney)
+t IS NOW THE DEFAULT IN ESS 12.03 (Rodney)
 
 Johan Sandblom:
 
