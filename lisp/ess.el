@@ -164,7 +164,7 @@
 
 (defun ess-version ()
   (interactive)
-  (message (format "ess-version : %s" ess-version)))
+  (message (format "ess-version : %s (%s)" ess-version ess-revision)))
 
 ;;; Set up for menus, if necessary
 ;;;  --> is done in ess-mode.el, ess-inf.el, etc
