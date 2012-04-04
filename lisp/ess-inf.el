@@ -556,7 +556,7 @@ there is one."
 	     (format "Process %s is not running, but others are. Switch? " name))
 	    (progn
 	      (ess-force-buffer-current
-	       (concat ess-dialect " process to use: ") t)
+	       (concat ess-dialect " process to use: ") 'force)
 	      (get-ess-process ess-current-process-name))
 	  (error "Process %s is not running" name))))))
 
@@ -735,7 +735,7 @@ the process selected."
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
   (interactive)
-  (ess-force-buffer-current "Process to use: " t))
+  (ess-force-buffer-current "Process to use: " 'force))
 
 ;;*;;; Commands for switching to the process buffer
 
@@ -1209,7 +1209,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
-  (ess-force-buffer-current "Process to load into: " nil nil)
+  (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
@@ -1252,7 +1252,7 @@ non-nil and the function was successfully evaluated, return '(beg
 end) representing the beginning and end of the function under
 cursor, nil otherwise."
   (interactive "P")
-  (ess-force-buffer-current "Process to use: " nil nil)
+  (ess-force-buffer-current "Process to use: ")
   (save-excursion
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
@@ -1354,7 +1354,7 @@ both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
   (save-excursion
-    (ess-force-buffer-current "Process to load into: " nil nil)
+    (ess-force-buffer-current "Process to load into: ")
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
@@ -1457,7 +1457,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 	  (if source-buffer
 	      (save-excursion
 		(set-buffer source-buffer)
-		(ess-force-buffer-current "Process to load into: " nil nil)
+		(ess-force-buffer-current "Process to load into: ")
 		(ess-check-modifications)))
 	  (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
 		(filename (if (and (fboundp 'tramp-tramp-file-p)
@@ -2124,7 +2124,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (if (string-equal ess-dialect "R")
       (ess-quit-r)
     ;; else:  non-R
-    (ess-force-buffer-current "Process to quit: " nil nil 'no-autostart)
+    (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
     (ess-make-buffer-current)
     (let ((sprocess (get-ess-process ess-current-process-name)))
       (if (not sprocess) (error "No ESS process running"))
