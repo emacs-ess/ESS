@@ -271,7 +271,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
 <h2 class="unnumbered">ESS: Emacs Speaks Statistics</h2>
 
 <p>ESS version
-12.03
+12-04-r4761M
 
 <pre class="display">     by  A.J. Rossini,
          R.M. Heiberger,
@@ -502,12 +502,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <h3 class="section">1.2 New features in ESS</h3>
 
      <ul>
-Changes/New Features in 12.03:
+Changes/New Features in 12.04:
           <ul>
-<!-- this is not a feature actually, move out somehow? -->
-<li><acronym>ESS</acronym> GitHub branch is now available at <a href="https://github.com/emacs-ess/ESS">https://github.com/emacs-ess/ESS</a>
+<li><acronym>ESS</acronym>: Reverting new behavior of 12.03, <kbd>TAB</kbd> in <code>ess-mode</code>
+      no longer auto-completes by default.  If you want smart auto
+      completion in R and S functions and scripts, similarly to i<acronym>ESS</acronym><!-- /@w -->
+      behavior, set the variable <code>ess-tab-complete-in-script</code> to
+      <code>t</code>. 
+</ul>
 
-          <li><acronym>ESS</acronym> indentation: new offset variable <code>ess-arg-function-offset-new-line</code>
+     <p>Changes/New Features in 12.03:
+          <ul>
+<li><acronym>ESS</acronym> indentation: new offset variable <code>ess-arg-function-offset-new-line</code>
 controlling for the indentation of lines immediately following open
 '('. This is useful to shift backwards function arguments after a long
 function call expression:
@@ -1669,10 +1675,12 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Introduction">Introduction</a>
 <a href="http://ess.r-project.org">ESS web page</a> or
 <a href="http://lib.stat.cmu.edu/general/ESS/">StatLib</a>
 
+<h4 class="subsection">1.4.1 ESS subversion repository</h4>
+
 <!-- There no longer is an anonymous CVS repository for ESS, due to lack of -->
 <!-- interest, little demand, and problems with security. -->
 <!-- text below modified from R-admin.texi (thanks to Kurt for the tip). -->
-   <p>The latest development version of ESS is available via
+<p>The latest development version of ESS is available via
 <a href="https://svn.R-project.org/ESS/">https://svn.R-project.org/ESS/</a>, the ESS Subversion repository.  If
 you have a Subversion client (see <a href="http://subversion.tigris.org/">http://subversion.tigris.org/</a>),
 you can download the sources using:
@@ -1701,6 +1709,11 @@ Subversion server of the R project is
 </pre>
    <p class="noindent">(currently, there is no &ldquo;trusted certificate&rdquo;).  You can accept this
 certificate permanently and will not be asked about it anymore.
+
+<h4 class="subsection">1.4.2 Git for development</h4>
+
+<p>For development and experimentation on new features, there is now a
+GitHub branch for <acronym>ESS</acronym>, available at <a href="https://github.com/emacs-ess/ESS">https://github.com/emacs-ess/ESS</a>.
 
 <!-- node-name,  next,  previous,  up -->
 <div class="node">
@@ -5044,7 +5057,7 @@ and functions defined in .GlobalEnv can see the objects in
 
    <p>In order to use ess-developer mode you should add names of the packages
 you are developing to <code>ess-developer-packages</code>. You can dot it
-interactively with <kbd>C-d a</kbd>, and remove packages with <kbd>C-d
+interactively with <kbd>C-c d a</kbd>, and remove packages with <kbd>C-c d
 r</kbd>. When developer mode is on, the name of the process in the mode line
 is highlighted with <code>ess-developer-indicator-face</code>.
 

@@ -131,7 +131,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.03"
+(defvar ess-version "12.04"
   "Version of ESS currently loaded.")
 
 (defvar no-doc

@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   12.03
+   12-04-r4761M
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -28,7 +28,10 @@ The latest released version of ESS is always available on the web at:
 ESS web page (http://ess.r-project.org) or StatLib
 (http://lib.stat.cmu.edu/general/ESS/)
 
-   The latest development version of ESS is available via
+1.1.1 ESS subversion repository
+-------------------------------
+
+The latest development version of ESS is available via
 `https://svn.R-project.org/ESS/', the ESS Subversion repository.  If
 you have a Subversion client (see `http://subversion.tigris.org/'), you
 can download the sources using:
@@ -57,6 +60,12 @@ Subversion server of the R project is
 
 (currently, there is no "trusted certificate").  You can accept this
 certificate permanently and will not be asked about it anymore.
+
+1.1.2 Git for development
+-------------------------
+
+For development and experimentation on new features, there is now a
+GitHub branch for ESS, available at `https://github.com/emacs-ess/ESS'.
 
 1.2 Current Features
 ====================
@@ -218,10 +227,14 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
-     Changes/New Features in 12.03:
-        * ESS GitHub branch is now available at
-          `https://github.com/emacs-ess/ESS'
+     Changes/New Features in 12.04:
+        * ESS: Reverting new behavior of 12.03, `TAB' in `ess-mode'
+           no longer auto-completes by default.  If you want smart auto
+               completion in R and S functions and scripts, similarly
+          to iESS       behavior, set the variable
+          `ess-tab-complete-in-script' to       `t'.
 
+     Changes/New Features in 12.03:
         * ESS indentation: new offset variable
           `ess-arg-function-offset-new-line' controlling for the
           indentation of lines immediately following open '('. This is
