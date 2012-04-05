@@ -57,11 +57,11 @@ cleanaux:
 	        *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
 clean: cleanaux
-	-@rm -f $(DVIs) $(TXTs) info/*.info* html/*
+	-@rm -f $(DVIs) $(TXTs) $(PDFs) info/*.info* html/*
 
 ## this removes also things in VC (svn, when they are remade by "make"):
 distclean : clean
-	-@rm -f $(PDFs)
+#	-@rm -f $(PDFs)
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
