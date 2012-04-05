@@ -35,6 +35,7 @@
 ;;; Code:
 
 (require 'custom)
+(require 'executable)
 
 ;; Customization Groups
 
@@ -131,11 +132,17 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "YY.MM"
-  "Version of ESS currently loaded (populated by make).")
+(defvar ess-version "12.04"
+  "Version of ESS currently loaded.")
 
-(defvar ess-revision "YY-MM-rNNNN"
-  "SVN revision of ESS currently loaded (populated by make).")
+(defvar ess-revision "rNNNN"
+  "SVN revision of ESS currently loaded.")
+
+(if (equal ess-revision "rNNNN") (progn
+  (if (executable-find "svnversion") (progn
+      (setq ess-revision (shell-command-to-string "svnversion"))
+      (if (equal ess-revision "exported") (setq ess-revision "$Rev$")))
+    (setq ess-revision "$Rev$"))))
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.

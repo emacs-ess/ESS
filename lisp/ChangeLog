@@ -1,3 +1,8 @@
+2012-04-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-custom.el (ess-revision): extraordinary attempts
+	to get revision number
+
 2012-04-03  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-force-buffer-current): use no-autostart, instead
