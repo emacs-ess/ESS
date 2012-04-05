@@ -33,12 +33,12 @@ ESSINFONODE3='                        (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).'
 ### Targets --
 PDFs = ess.pdf readme.pdf refcard/refcard.pdf
 DVIs = ess.dvi readme.dvi
-TXTs = ../README ../ANNOUNCE
+TXTs = ../README ../ANNOUNCE ../NEWS ../ONEWS
 
 all  : info text html dvi pdf
 docs : info text html
 info : info/ess.info
-text : $(TXTs) ../NEWS ../ONEWS
+text : $(TXTs)
 html : html/ess.html html/readme.html
 dvi  : $(DVIs)
 pdf  : $(PDFs)
@@ -57,11 +57,11 @@ cleanaux:
 	        *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
 clean: cleanaux
-	-@rm -f $(DVIs) info/*.info*
+	-@rm -f $(DVIs) $(TXTs) info/*.info* html/*
 
 ## this removes also things in VC (svn, when they are remade by "make"):
 distclean : clean
-	-@rm -f $(PDFs) $(TXTs) ../NEWS ../ONEWS html/*
+	-@rm -f $(PDFs)
 
 ../README: $(TEXISRC)
 	$(MAKETXT) readme.texi \
