@@ -132,10 +132,10 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.04" ;; updated by 'make'
+(defvar ess-version "YY.MM" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
-(defvar ess-revision "12-04-r4786M" ;; updated by 'make'
+(defvar ess-revision "YY-MM-rNNNN" ;; updated by 'make'
   "SVN revision of ESS currently loaded.")
 
 (defvar no-doc
