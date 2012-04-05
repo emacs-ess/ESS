@@ -33,7 +33,7 @@
 
   \smallskip
 
-  {\small updated for ESS 12.03}% {\footnotesize --- needs \em{more} updating!}}
+  {\small updated for ESS 12.04}% {\footnotesize --- needs \em{more} updating!}}
   \\[1ex] {\tiny \SVNDate}
            % \footnotesize --- as of \today
 \end{center}
@@ -58,7 +58,8 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 
 \begin{tabI}
   \texttt{\RET   }& Send a command \\
-  \texttt{\TAB   }& Complete filename or  S object name \\
+  \texttt{\TAB}& Complete filename or  S object name.\\
+  & Also bound to \texttt{M-\TAB}  (aka \texttt{M-C-i}).\\
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
   %% SfS-only (others need C-u C-a for comint-bol !
@@ -140,12 +141,14 @@ Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
 For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabI}
-  \texttt{\TAB} & Indent this line, or complete filename/object \\
+  \texttt{\TAB} & Indent this line \\
+  \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
+  \texttt{M-C-/} & Indent region\\
+  \texttt{M-\TAB} & Complete filename/object\\
   % \texttt{C-c\TAB}& Complete S object name \\
   % \texttt{M-\TAB} & Complete file- / path- name \\
   \texttt{M-C-a} & Beginning of function \\
   \texttt{M-C-e} & End of function \\
-  \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
   \texttt{M-C-h} & Mark this function\\
   \texttt{\scriptsize C-u C-u} \texttt{C-y}& Yank striped commands\\
 \end{tabI}
@@ -175,9 +178,11 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{C-c C-z} & Return to S process (at prompt)
 \end{tabTit}
 
-\begin{tabTit}{At SfS, or activated by \texttt{M-x ess-add-MM-keys}}%-SfS-added
-  \texttt{C-c f}   & insert function() definition outline%-SfS-added
-\end{tabTit}\\[-1mm]%\\[0.5cm]                           %-SfS-added
+%% Is it worth putting here for one line? Autoyas is a much more general snippet
+%% generator.
+% \begin{tabTit}{At SfS, or activated by \texttt{M-x ess-add-MM-keys}}%-SfS-added
+%   \texttt{C-c f}   & insert function() definition outline%-SfS-added
+% \end{tabTit}\\[-1mm]%\\[0.5cm]                           %-SfS-added
 
 \Sect{Reading help files}
 %%    ~~~~~~~~~~~~~~~~~~
