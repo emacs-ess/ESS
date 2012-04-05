@@ -135,7 +135,7 @@
 (defvar ess-version "12.04"
   "Version of ESS currently loaded.")
 
-(defvar ess-revision "rNNNN"
+(defvar ess-revision "12-04-r4780:4781"
   "SVN revision of ESS currently loaded.")
 
 (if (string-equal ess-revision "rNNNN") (progn
