@@ -38,12 +38,11 @@ downloads: all cleanup-dist
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
-	 make all cleanaux ; cd ../..
+	 $(MAKE) all cleanaux ; cd ../..
+	cd $(ESSDIR)/lisp; $(MAKE) all; cd ../..
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
 	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
 	chmod a-w $(ESSDIR)/lisp/*.el
-# Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):
-#	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
