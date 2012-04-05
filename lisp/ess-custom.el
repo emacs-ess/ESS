@@ -138,10 +138,10 @@
 (defvar ess-revision "rNNNN"
   "SVN revision of ESS currently loaded.")
 
-(if (equal ess-revision "rNNNN") (progn
+(if (string-equal ess-revision "rNNNN") (progn
   (if (executable-find "svnversion") (progn
       (setq ess-revision (shell-command-to-string "svnversion"))
-      (if (equal ess-revision "exported") (setq ess-revision "$Rev$")))
+      (if (string-equal ess-revision "exported\n") (setq ess-revision "$Rev$")))
     (setq ess-revision "$Rev$"))))
 
 (defvar no-doc
