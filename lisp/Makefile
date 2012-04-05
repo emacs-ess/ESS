@@ -82,8 +82,9 @@ distclean: clean
 ### Replace Version numbers (as in ../doc/Makefile !):
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
-	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' \
-	 -e 's/".*"/"$(ESSVERSIONsvn)"/ if /defvar ess-revision/' $@
+	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
+	perl -pi -e 's/".*"/"$(ESSVERSIONsvn)"/ if /defvar ess-revision/' $@
+## FIXME ^^^^ *one* perl call with several '-e'  .. -> perl error: why???
 
 
 ### File Dependencies
