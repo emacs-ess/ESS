@@ -64,9 +64,8 @@ dist: RPM.spec
 	cd doc;  $(MAKE) docs
 	cd lisp; $(MAKE) dist; grep 'ess-version' ess-custom.el
 	svn cleanup
-	@echo "** Committing README, ANNOUNCE, info etc **"
-	svn commit -m "Updating toplevel files for new version" \
-		README ANNOUNCE RPM.spec
+	@echo "** Committing info etc **"
+	svn commit -m "Updating toplevel files for new version" RPM.spec
 	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-custom.el doc/info doc/html
 	$(MAKE) downloads
 	touch $@
