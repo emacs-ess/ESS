@@ -13,9 +13,11 @@ all install: VERSION
 ## the rest of the targets are for ESS developer's use only :
 
 VERSION:
+	svn up
 	@echo "$(ESSVERSION)" > $@
 ## manually
 VERSION+:
+	svn up
 	echo "$(ESSVERSIONsvn)" > VERSION
 
 
@@ -25,7 +27,7 @@ VERSION+:
 # run in the foreground so you can accept the certificate
 # for real men
 # GNUTAR=gtar make downloads
-downloads: all cleanup-dist
+downloads: all RPM.spec cleanup-dist
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
@@ -39,10 +41,10 @@ downloads: all cleanup-dist
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
-	cd $(ESSDIR)/lisp; $(MAKE) all; cd ../..
-	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
-	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
+	cd $(ESSDIR)/lisp; $(MAKE) all; fgrep ess-revision ess-custom.el; cd ../..
+	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
+	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
@@ -59,9 +61,9 @@ downloads: all cleanup-dist
 #	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
 #	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
 
-dist: RPM.spec
+dist:
 	cd doc;  $(MAKE) docs
-	cd lisp; $(MAKE) dist; grep 'ess-version' ess-custom.el
+	cd lisp; $(MAKE) dist; grep -E 'defvar ess-(version|revision)' ess-custom.el
 	svn cleanup
 	$(MAKE) downloads
 	touch $@
