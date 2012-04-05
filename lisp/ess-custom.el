@@ -132,19 +132,11 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "YY.MM"
+(defvar ess-version "YY.MM" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
-(defvar ess-revision "12-04-r4780:4781"
+(defvar ess-revision "YY-MM-rNNNN" ;; updated by 'make'
   "SVN revision of ESS currently loaded.")
-
-(if (string= ess-revision "rNNNN")
-    (if (executable-find "svnversion")
-	(progn
-	  (setq ess-revision (shell-command-to-string "svnversion"))
-	  (if (string-equal ess-revision "exported\n")
-	      (setq ess-revision "$Rev$")))
-      (setq ess-revision "$Rev$"))))
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.
