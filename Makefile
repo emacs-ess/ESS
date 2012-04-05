@@ -41,6 +41,8 @@ downloads: all RPM.spec cleanup-dist
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
+## ugly hack; otherwise get ess-revision "12-04-rexported":
+	cp -p lisp/ess-custom.el $(ESSDIR)/lisp/
 	cd $(ESSDIR)/lisp; $(MAKE) all; fgrep ess-revision ess-custom.el; cd ../..
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
