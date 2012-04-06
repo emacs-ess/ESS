@@ -13,11 +13,9 @@ all install: VERSION
 ## the rest of the targets are for ESS developer's use only :
 
 VERSION:
-	svn up
 	@echo "$(ESSVERSION)" > $@
 ## manually
 VERSION+:
-	svn up
 	echo "$(ESSVERSIONsvn)" > VERSION
 
 
@@ -28,6 +26,7 @@ VERSION+:
 # for real men
 # GNUTAR=gtar make downloads
 downloads: all RPM.spec cleanup-dist
+	[ x$(ESSfromSVN) = xyes ] || (echo 'ESS must be "from SVN"'; exit 1 )
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
@@ -41,9 +40,10 @@ downloads: all RPM.spec cleanup-dist
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
+	svn cleanup
 ## ugly hack; otherwise get ess-revision "12-04-rexported":
 	cd lisp; $(MAKE) -W ../VERSION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	cd $(ESSDIR)/lisp; $(MAKE) all; fgrep ess-revision ess-custom.el; cd ../..
+	cd $(ESSDIR)/lisp; $(MAKE) ess-custom.el; fgrep ess-revision ess-custom.el; cd ../..
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
@@ -53,21 +53,10 @@ downloads: all RPM.spec cleanup-dist
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
-# Change of plans:  no longer think this is a good idea
-# Rather, the improved installation docs for xemacs will serve us better
-#	@echo "** Creating .tgz and .zip files for the XEmacs Package System **"
-#	test -f $(ESSDIR)-xemacs-pkg.tgz && rm -rf $(ESSDIR)-xemacs-pkg.tgz || true
-#	test -f $(ESSDIR)-xemacs-pkg.zip && rm -rf $(ESSDIR)-xemacs-pkg.zip || true
-#	cd $(ESSDIR); mv etc ess; mkdir etc; mv ess etc; mkdir info; \
-#	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
-#	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
-#	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
 
-dist:
-	cd doc;  $(MAKE) docs
-	cd lisp; $(MAKE) dist; grep -E 'defvar ess-(version|revision)' ess-custom.el
-	svn cleanup
-	$(MAKE) downloads
+dist: downloads
+	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
+	  $(ESSDIR)/lisp/ess-custom.el
 	touch $@
 
 .PHONY: cleanup-dist cleanup-rel
