@@ -87,7 +87,12 @@ DOCDIR=$(PREFIX)/share/doc/ess
 #ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 ESSVERSION=$(shell echo "`date +%y.%m`")
-ESSVERSIONsvn=$(shell echo "`date +%y-%m`-r`svnversion`")
+ESSfromSVN=$(shell test -d .svn && echo 'yes')
+ifeq ($(ESSfromSVN),yes)
+  ESSVERSIONsvn=$(shell echo "`date +%y-%m`-r`svnversion`")
+else
+  ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
+endif
 ESSVERSIONTAG=$(ESSVERSIONsvn)
 ESSDIR=ess-$(ESSVERSION)
 GNUTAR=tar
