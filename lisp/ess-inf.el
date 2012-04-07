@@ -1656,6 +1656,9 @@ to continue it."
   (comint-mode)
   ;;
 
+  ;; first initialize all custom values:
+  (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
+
   ;; SJE: is this the proper place for setting inferior-ess-prompt,
   ;; rather than within ess-multi?  Tony - have you remembered yet
   ;; about the setq-default, as I changed it back to setq.
@@ -1751,7 +1754,6 @@ to continue it."
   (when font-lock-keywords-only
     (setq font-lock-keywords-only nil))
 
-  (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 3): curr-buf=%s, comint..echo=%s, comint..sender=%s,\n"
