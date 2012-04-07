@@ -384,6 +384,7 @@
     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
     (inferior-ess-start-args		. "")
     (inferior-ess-language-start	. nil)
+    (inferior-ess-prompt		. "^\\w*> ")
     (ess-STERM		. "iESS")
     (ess-editor	. R-editor)
     (ess-pager		. R-pager)
@@ -414,7 +415,7 @@ to R, put them in the variable `inferior-julia-args'."
   (interactive "P")
   ;; get settings, notably inferior-R-program-name :
   (if (null inferior-julia-program-name)
-      (error "'inferior-julia-program-name' is not set 'julia-release-basic' executable")
+      (error "'inferior-julia-program-name' does not point to 'julia-release-basic' executable")
     (setq ess-customize-alist julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
