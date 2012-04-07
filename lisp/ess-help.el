@@ -103,9 +103,10 @@ Utility used in \\[ess-display-help-on-object]."
 		(let
 		    ((PM (point-min))
 		     (case-fold-search t) )
+		  (setq searching t)
 		  (or  ;; evaluate up to first non-nil (or end):
-		   (< (- (point-max) PM) 80); buffer less than 80 chars
-		   (not (setq searching t))
+		   ;; (< (- (point-max) PM) 80); buffer less than 80 chars
+		   ;; VS[07-04-2012|ESS]: julia's help is lees...p
 		   (progn (goto-char PM) ;; R:
 			  (re-search-forward "Error in help"	nr-first t))
 		   (progn (goto-char PM) ;; S-plus 5.1 :

@@ -124,7 +124,7 @@
     (list julia-char-regex 2 'font-lock-string-face)
     (list julia-forloop-in-regex 1 'font-lock-keyword-face)
     ;; (cons ess-subset-regexp 'font-lock-constant-face)
-    (cons ess-R-function-call-regexp '(1 font-lock-function-name-face keep))
+    (cons ess-function-call-regexp '(1 font-lock-function-name-face keep))
     ;(list julia-string-regex 0 'font-lock-string-face)
 ))
 
