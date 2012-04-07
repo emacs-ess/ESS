@@ -1,77 +1,77 @@
-@ESS{[BUGS]} was originally designed for use with BUGS software. 
-Later, it evolved to support JAGS as a dialect of the
-BUGS language via @ESS{[JAGS]}, however, @ESS{[JAGS]} is documented in
-the section Help for JAGS.  
-@ESS{[BUGS]} provides 5 features.  First, BUGS syntax is described to
-allow for proper fontification of statements, distributions,
-functions, commands and comments in BUGS model files, command files
-and log files.  Second, @ESS{} creates templates for the command file
-from the model file so that a BUGS batch process can be defined by a
-single file.  Third, @ESS{} provides a BUGS batch script that allows @ESS{}
-to set BUGS batch parameters.  Fourth, key sequences are defined to
-create a command file and submit a BUGS batch process.  Lastly,
-interactive submission of BUGS commands is also supported.
+@ESS{[BUGS]} was originally designed for use with BUGS software.  Later,
+it evolved to support JAGS as a dialect of the BUGS language via
+@ESS{[JAGS]}, however, @ESS{[JAGS]} is documented in the section Help
+for JAGS.  @ESS{[BUGS]} provides 5 features.  First, BUGS syntax is
+described to allow for proper fontification of statements,
+distributions, functions, commands and comments in BUGS model files,
+command files and log files.  Second, @ESS{} creates templates for the
+command file from the model file so that a BUGS batch process can be
+defined by a single file.  Third, @ESS{} provides a BUGS batch script
+that allows @ESS{} to set BUGS batch parameters.  Fourth, key sequences
+are defined to create a command file and submit a BUGS batch process.
+Lastly, interactive submission of BUGS commands is also supported.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(BUGS)--Model files, ESS(BUGS)--Command files, ESS for BUGS, ESS for BUGS
 @section ESS[BUGS]--Model files
 
-Model files with the @file{.bug} extension are edited in @ESS{[BUGS]} mode
-if @code{(require 'ess-bugs-d)} was performed or edited in @ESS{[JAGS]} mode
-if @code{(require 'ess-jags-d)}.
-Three keys are bound for your use in @ESS{[BUGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.  
-@kbd{F2} performs the same action as it does in @ESS{[SAS]},
-@xref{ESS(SAS)--Function keys for batch processing}.  @kbd{C-c C-c} performs the
-function @code{ess-bugs-next-action} which you will use a lot.  Pressing it
-in an empty buffer for a model file will produce a template for you.  @kbd{=}
-inserts the set operator, @code{<-}.
+Model files with the @file{.bug} extension are edited in @ESS{[BUGS]}
+mode if @code{(require 'ess-bugs-d)} was performed.  Model files with
+the @file{.jag} extension are edited in @ESS{[JAGS]} mode if
+@code{(require 'ess-jags-d)} was performed.  Three keys are bound for
+your use in @ESS{[BUGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.  @kbd{F2}
+performs the same action as it does in @ESS{[SAS]},
+@xref{ESS(SAS)--Function keys for batch processing}.  @kbd{C-c C-c}
+performs the function @code{ess-bugs-next-action} which you will use a
+lot.  Pressing it in an empty buffer for a model file will produce a
+template for you.  @kbd{=} inserts the set operator, @code{<-}.
 
-@ESS{[BUGS]} supports "replacement" variables.  These variables are
-created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
-in an empty buffer.  They are named by all capitals and start
-with @code{%}: @code{%N}, @code{%DATA}, @code{%INIT}, @code{%MONITOR} and 
-@code{%STATS}.  When you are
-finished editing your model file, pressing @kbd{C-c C-c} will perform
-the necessary replacements and build your command file for you. 
-
-The @code{%DATA} variable appears in the line @code{data in "%DATA";}.  On the
-second press of @kbd{C-c C-c}, @code{%DATA} will be replaced by the model file name
-except it will have the @file{.dat} extension.  If your data file is named
-something else, then change @code{%DATA} in the template to the appropriate
-file name and no replacement will occur.
-
-The @code{%INIT} variable appears in the line @code{inits in "%INIT";}.  
-On the second press of @kbd{C-c C-c}, @code{%INIT} will be
-replaced by the model file name except it will have the .in extension.
-If your model will be generating it's own initial values, place a
-comment character, @code{#}, at the beginning of the line.  Or, if your init
-file is named something else, then change @code{%INIT} in the template to the
-appropriate file name.
-
-The @code{%N} variable appears in the line @code{const N = 0;#%N}.
-Although it is commented, it is still active.  Notice that later on in
-the template you have the line @code{for (i in 1:N)}.  The BUGS
-constant @code{N} is the number of rows in your data file.  When you
-press @kbd{C-c C-c}, the data file is read and the number of lines are
-counted (after @code{%DATA} is resolved, if necessary).  The number of
-lines replace the zero in the @code{const N = 0;} statement.
-
-The @code{%MONITOR} variable appears on a line by itself.  Although it
-is commented, it is still active.  This line is a list of variables
-that you want monitored.  When you press @kbd{C-c C-c}, the
-appropriate statements are created in the command file to monitor the
-list of variables.  If the line is blank, then the list is populated
-with the variables from the @code{var} statement.
-
-The @code{%STATS} variable is similar to the @code{%MONITOR} variable.
-It is a list of variables for which summary statistics will be
-calculated.  When you press @kbd{C-c C-c}, the appropriate statements
-will be generated in your command file.
-
-Please note that the @code{%DATA} and @code{%INIT} variables are only
-replaced on the second press of @kbd{C-c C-c}, but the actions for
-@code{%N}, @code{%MONITOR} and @code{%STATS} are performed on each
-press of @kbd{C-c C-c} if you re-visit the model file.
+@comment @ESS{[BUGS]} supports "replacement" variables.  These variables are
+@comment created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
+@comment in an empty buffer.  They are named by all capitals and start
+@comment with @code{%}: @code{%N}, @code{%DATA}, @code{%INIT}, @code{%MONITOR} and 
+@comment @code{%STATS}.  When you are
+@comment finished editing your model file, pressing @kbd{C-c C-c} will perform
+@comment the necessary replacements and build your command file for you. 
+@comment 
+@comment The @code{%DATA} variable appears in the line @code{data in "%DATA";}.  On the
+@comment second press of @kbd{C-c C-c}, @code{%DATA} will be replaced by the model file name
+@comment except it will have the @file{.dat} extension.  If your data file is named
+@comment something else, then change @code{%DATA} in the template to the appropriate
+@comment file name and no replacement will occur.
+@comment 
+@comment The @code{%INIT} variable appears in the line @code{inits in "%INIT";}.  
+@comment On the second press of @kbd{C-c C-c}, @code{%INIT} will be
+@comment replaced by the model file name except it will have the .in extension.
+@comment If your model will be generating it's own initial values, place a
+@comment comment character, @code{#}, at the beginning of the line.  Or, if your init
+@comment file is named something else, then change @code{%INIT} in the template to the
+@comment appropriate file name.
+@comment 
+@comment The @code{%N} variable appears in the line @code{const N = 0;#%N}.
+@comment Although it is commented, it is still active.  Notice that later on in
+@comment the template you have the line @code{for (i in 1:N)}.  The BUGS
+@comment constant @code{N} is the number of rows in your data file.  When you
+@comment press @kbd{C-c C-c}, the data file is read and the number of lines are
+@comment counted (after @code{%DATA} is resolved, if necessary).  The number of
+@comment lines replace the zero in the @code{const N = 0;} statement.
+@comment 
+@comment The @code{%MONITOR} variable appears on a line by itself.  Although it
+@comment is commented, it is still active.  This line is a list of variables
+@comment that you want monitored.  When you press @kbd{C-c C-c}, the
+@comment appropriate statements are created in the command file to monitor the
+@comment list of variables.  If the line is blank, then the list is populated
+@comment with the variables from the @code{var} statement.
+@comment 
+@comment The @code{%STATS} variable is similar to the @code{%MONITOR} variable.
+@comment It is a list of variables for which summary statistics will be
+@comment calculated.  When you press @kbd{C-c C-c}, the appropriate statements
+@comment will be generated in your command file.
+@comment 
+@comment Please note that the @code{%DATA} and @code{%INIT} variables are only
+@comment replaced on the second press of @kbd{C-c C-c}, but the actions for
+@comment @code{%N}, @code{%MONITOR} and @code{%STATS} are performed on each
+@comment press of @kbd{C-c C-c} if you re-visit the model file.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(BUGS)--Command files, ESS(BUGS)--Log files, ESS(BUGS)--Model files, ESS for BUGS
@@ -80,34 +80,38 @@ press of @kbd{C-c C-c} if you re-visit the model file.
 To avoid extension name collision, @file{.bmd} is used for BUGS
 command files and @file{.jmd} for JAGS command files.  When you have
 finished editing your model file and press @kbd{C-c C-c}, a command
-file is created if one does not already exist.  However, the command
-file was created, it recognizes two "replacement" variables:
-@code{%MONITOR} and @code{%STATS}.
-
-Two @code{%MONITOR} variables appears on lines by themselves.
-Although they are commented, they are still active.  Between them
-appears the necessary statements to monitor the list of variables
-specified in the model file.  The behavior of the @code{%STATS}
-variable is similar.
-
+file is created if one does not already exist.  
+@comment However, the command
+@comment file was created, it recognizes two "replacement" variables:
+@comment @code{%MONITOR} and @code{%STATS}.
+@comment 
+@comment Two @code{%MONITOR} variables appears on lines by themselves.
+@comment Although they are commented, they are still active.  Between them
+@comment appears the necessary statements to monitor the list of variables
+@comment specified in the model file.  The behavior of the @code{%STATS}
+@comment variable is similar.
+@comment 
 When you are finished editing your command file, pressing @kbd{C-c C-c} 
-again will submit your command file as a batch job.  BUGS batch
-scripts are provided for both Unix and DOS in the @file{etc}
-sub-directory of the @ESS{} distribution.  The Unix script is
-@file{backbugs} for BUGS major version 0.6 and @file{backbug5} for
-0.5. The DOS script is @file{BACKBUGS.BAT} for BUGS major version 0.6
-only.  These scripts allows @ESS{} access to BUGS batch features that
-are not readily available with the batch scripts that come with BUGS.
+again will submit your command file as a batch job.  
+@comment BUGS batch
+@comment scripts are provided for both Unix and DOS in the @file{etc}
+@comment sub-directory of the @ESS{} distribution.  The Unix script is
+@comment @file{backbugs} for BUGS major version 0.6 and @file{backbug5} for
+@comment 0.5. The DOS script is @file{BACKBUGS.BAT} for BUGS major version 0.6
+@comment only.  These scripts allows @ESS{} access to BUGS batch features that
+@comment are not readily available with the batch scripts that come with BUGS.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(BUGS)--Log files, , ESS(BUGS)--Command files, ESS for BUGS
 @section ESS[BUGS]--Log files
 
 To avoid extension name collision, @file{.bog} is used for BUGS log
-files.  The BUGS batch script provided with @ESS{} creates the
-@file{.bog} file from the @file{.log} file when the batch process
-completes.  If you need to look at the @file{.log} file while the
-batch process is running, it will not appear in @ESS{[BUGS]} mode.
-You may find @kbd{F2} useful to refresh the @file{.log} if the batch
-process over-writes or appends it.
+files.  The command line generated by @ESS{} creates the
+@file{.bog} transcript file.
+@comment from the @file{.log} file when the batch process
+@comment completes.  If you need to look at the @file{.log} file while the batch
+@comment process is running, it will not appear in @ESS{[BUGS]} mode.  You may
+@comment find @kbd{F2} useful to refresh the @file{.log} if the batch process
+@comment over-writes or appends it.  
+Similarly, @file{.jog} is used for JAGS log files.
 

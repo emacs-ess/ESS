@@ -279,3 +279,5 @@ John Dedman Mathematical Sciences Building (Building 27)
 Australian National University, Canberra ACT 0200.
 http://www.maths.anu.edu.au/~johnm
 
+* Toolbar is missing from file.Rt transcript buffers
+Add toolbar?

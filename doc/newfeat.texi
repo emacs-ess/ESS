@@ -1,10 +1,31 @@
 @itemize @w{}
 
+Changes/New Features in 12.04:
+@itemize @bullet
+@item @ESS{}: Reverting new behavior of 12.03, @kbd{TAB} in @code{ess-mode}
+no longer completes by default.  If you want smart @kbd{TAB} completion
+in R and S scripts, similarly to @iESS{} behavior, set the variable
+@code{ess-tab-complete-in-script} to @code{t}. Also see
+@code{ess-first-tab-never-complete} for how to customize where first
+@kbd{TAB} is allowed to complete.
+@item @ESS{}: completion is consistently bound to @kbd{M-TAB} (aka @kbd{C-M-i})
+in both Emacs23 and Emacs24.
+@item @ESS{}: The variable @code{ess-arg-function-offset-new-line}
+introduced in @ESS{(12.03)} now accepts a list with the first element a
+number to indicate that the offset should be computed from the indent of
+the previous line. For example setting it to '(2) results in:
+
+@verbatim
+  a <- some.function(
+    arg1,
+    arg2)
+@end verbatim
+
+
+@end itemize
+
 Changes/New Features in 12.03:
 @itemize @bullet
-@c this is not a feature actually, move out somehow?
-@item @ESS{} GitHub branch is now available at @uref{https://github.com/emacs-ess/ESS}
-
 @item @ESS{} indentation: new offset variable @code{ess-arg-function-offset-new-line}
 controlling for the indentation of lines immediately following open
 '('. This is useful to shift backwards function arguments after a long

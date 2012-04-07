@@ -13,7 +13,12 @@ all install: VERSION
 ## the rest of the targets are for ESS developer's use only :
 
 VERSION:
+	svn up
 	@echo "$(ESSVERSION)" > $@
+## manually
+VERSION+:
+	svn up
+	echo "$(ESSVERSIONsvn)" > VERSION
 
 
 ## --- PRE-release ---
@@ -22,7 +27,7 @@ VERSION:
 # run in the foreground so you can accept the certificate
 # for real men
 # GNUTAR=gtar make downloads
-downloads: all cleanup-dist
+downloads: all RPM.spec cleanup-dist
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
@@ -35,12 +40,13 @@ downloads: all cleanup-dist
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
 	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
-	 make all cleanaux ; cd ../..
-	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make*
-	chmod u+w $(ESSDIR)/doc/Makefile $(ESSDIR)/lisp/Makefile
+	 $(MAKE) all cleanaux ; cd ../..
+## ugly hack; otherwise get ess-revision "12-04-rexported":
+	cd lisp; $(MAKE) -W ../VERSION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+	cd $(ESSDIR)/lisp; $(MAKE) all; fgrep ess-revision ess-custom.el; cd ../..
+	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
-# Not really desirable in many cases -- commented 2008-11-24 (for ESS 5.3.9):
-#	chmod a-w $(ESSDIR)/ChangeLog $(ESSDIR)/doc/*
+	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
@@ -57,14 +63,10 @@ downloads: all cleanup-dist
 #	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
 #	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
 
-dist: RPM.spec
+dist:
 	cd doc;  $(MAKE) docs
-	cd lisp; $(MAKE) dist; grep 'ess-version' ess-custom.el
+	cd lisp; $(MAKE) dist; grep -E 'defvar ess-(version|revision)' ess-custom.el
 	svn cleanup
-	@echo "** Committing README, ANNOUNCE, info etc **"
-	svn commit -m "Updating toplevel files for new version" \
-		README ANNOUNCE RPM.spec
-	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-custom.el doc/info doc/html
 	$(MAKE) downloads
 	touch $@
 

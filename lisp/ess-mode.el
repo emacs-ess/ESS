@@ -861,7 +861,8 @@ of the expression are preserved."
   "Try to indent first, if code is already properly indented, complete instead.
 It calls `comint-dynamic-complete' for emacs < 24 and `completion-at-point' otherwise.
 
-See also `ess-tab-complete-in-script' and `ess-first-tab-never-complete'."
+In ess-mode, only tries completion if `ess-tab-complete-in-script' is non-nil.
+See also `ess-first-tab-never-complete'."
   (interactive)
   (let ((shift (ess-indent-command)))
     (when (and ess-tab-complete-in-script

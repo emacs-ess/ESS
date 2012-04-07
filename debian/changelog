@@ -1,3 +1,9 @@
+ess (12.04-1) unstable; urgency=low
+
+  * New upstream version released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 05 Apr 2012 18:26:34 -0500
+
 ess (12.03-1) unstable; urgency=low
 
   * New upstream version released today (with new numbering scheme)

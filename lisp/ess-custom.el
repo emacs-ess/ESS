@@ -35,6 +35,7 @@
 ;;; Code:
 
 (require 'custom)
+(require 'executable)
 
 ;; Customization Groups
 
@@ -131,8 +132,11 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.03"
+(defvar ess-version "YY.MM" ;; updated by 'make'
   "Version of ESS currently loaded.")
+
+(defvar ess-revision "YY-MM-rNNNN" ;; updated by 'make'
+  "SVN revision of ESS currently loaded.")
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.
@@ -318,7 +322,7 @@ Some useful keys for IDO completion:
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-tab-complete-in-script t
+(defcustom ess-tab-complete-in-script nil
   "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
 See also `ess-first-tab-never-complete' and `ess-first-tab-never-complete-in-word'")
 
@@ -339,12 +343,12 @@ If nil first TAB always tries to complete (this might be too
 aggressive and dangerous).
 "
   :group 'ess
-  :type '(coice (const nil)
-		(const 'symbol)
-		(const 'symbol-or-paren)
-		(const 'symbol-or-paren-or-punct)
-		(const 'unless-eol)
-		(const t)))
+  :type '(choice (const nil)
+		 (const symbol)
+		 (const symbol-or-paren)
+		 (const symbol-or-paren-or-punct)
+		 (const unless-eol)
+		 (const t)))
 
 (defalias 'ess-first-tab-never-completes-p  ess-first-tab-never-complete)
 
