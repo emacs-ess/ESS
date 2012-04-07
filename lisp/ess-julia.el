@@ -348,7 +348,7 @@
   '((comint-use-prompt-regexp		. t)
     (inferior-ess-primary-prompt	. "> ")
     (inferior-ess-secondary-prompt	. "+ ")
-    (inferior-ess-prompt	        . inferior-ess-S-prompt)
+    (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-keywords	. julia-font-lock-keywords)
@@ -384,7 +384,6 @@
     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
     (inferior-ess-start-args		. "")
     (inferior-ess-language-start	. nil)
-    (inferior-ess-prompt		. "^\\w*> ")
     (ess-STERM		. "iESS")
     (ess-editor	. R-editor)
     (ess-pager		. R-pager)
