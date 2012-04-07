@@ -98,6 +98,14 @@
 (defconst julia-forloop-in-regex
   "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
 
+(defconst ess-function-call-regexp
+  "\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*("
+  "Regexp for function names")
+
+(defconst ess-subset-regexp
+      "\\[[0-9:, ]*\\]" )
+
+
 (defconst julia-font-lock-keywords
   (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\)\\|Int\\(8\\|16\\|32\\|64\\)\\|Integer\\|Float\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexNum\\|Bool\\|Char\\|Number\\|Scalar\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Buffer\\|Size\\|Index\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|PtrInt\\|Long\\|Ulong\\)\\>" .
       font-lock-type-face)
@@ -115,6 +123,8 @@
     (list julia-unquote-regex 2 'font-lock-constant-face)
     (list julia-char-regex 2 'font-lock-string-face)
     (list julia-forloop-in-regex 1 'font-lock-keyword-face)
+    ;; (cons ess-subset-regexp 'font-lock-constant-face)
+    (cons ess-R-function-call-regexp '(1 font-lock-function-name-face keep))
     ;(list julia-string-regex 0 'font-lock-string-face)
 ))
 
@@ -311,8 +321,7 @@
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     ;; (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+=[ \t\n]*function")
     (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(ess-R-mode-font-lock-keywords
-				      nil nil ((?\. . "w") (?\_ . "w"))))
+    (font-lock-defaults		  . '(julia-font-lock-keywords))
     )
   "General options for R source files.")
 
