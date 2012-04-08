@@ -1654,25 +1654,27 @@ to continue it."
   ;;(message " at very beg. of (inferior-ess-mode): inf.-ess-prompt= %s"
   ;;	   inferior-ess-prompt)
   (comint-mode)
-  ;;
 
-  ;; first initialize all custom values:
+  ;; If comint-process-echoes is t  inferior-ess-input-sender
+  ;; recopies the input, otherwise not.
+  (set (make-local-variable 'comint-process-echoes) (not (member ess-language '("SAS" "XLS" "OMG"))))
+  (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
+  (set (make-local-variable 'process-connection-type) t)
+  ;; initialize all custom vars:
   (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
 
-  ;; SJE: is this the proper place for setting inferior-ess-prompt,
-  ;; rather than within ess-multi?  Tony - have you remembered yet
-  ;; about the setq-default, as I changed it back to setq.
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
-	  ;; shouldn't be setq-default!  And I've
-	  ;; forgotten why!   (AJR)
-	  ;; Do not anchor to bol with `^'
 	  (concat "\\("
 		  inferior-ess-primary-prompt
 		  "\\|"
 		  inferior-ess-secondary-prompt
 		  "\\)")))
+
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
+  (setq comint-get-old-input 'inferior-ess-get-old-input) ;; todo: this is R specific
+  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker) ;; R and S specific
+
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")		;(concat "iESS:" ess-dialect))
   (setq mode-line-process
@@ -1682,62 +1684,15 @@ to continue it."
       (set-syntax-table ess-mode-syntax-table)
     ;; FIXME: need to do something if not set!	Get from the proper place!
     )
-  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker)
-  (setq comint-get-old-input 'inferior-ess-get-old-input)
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
 	   (current-buffer) ess-language
 	   comint-process-echoes comint-input-sender))
 
-  (make-local-variable 'comint-process-echoes)
-  (make-local-variable 'comint-input-sender)
-  (set (make-local-variable 'process-connection-type) t)
-
-  ;; Configuration for SAS/XLispStat input handling
-  ;; We set comint-process-echoes to t because inferior-ess-input-sender
-  ;; recopies the input. If comint-process-echoes was *meant* to be t ...
-  ;;
-  ;; except that XLS doesn't like it.  This is an ugly hack that ought
-  ;; to go into the dialect configuration...
-  (setq comint-process-echoes (not (member ess-language '("SAS" "XLS"))))
-
-  ;; Configuration for S/R input handling
-  ;; AJR: add KH's fix.	 This is ugly, change to do it right.
-  ;; i.e. put it as a buffer local var, in S or R defuns...
-  ;;
-  ;; SJE: Do you mean that we should put this code into (R) and the S
-  ;; dialects?  I agree that would be cleaner. e.g. in ess-r-d.el, for
-  ;; the R defun we could have:
-  ;; (inferior-ess r-start-args) ;; (R)
-  ;; (setq comint-input-sender 'inferior-R-input-sender) ;; <<- add this.
-  (if (or (string= ess-language "S"))
-      (cond
-       ((string= ess-dialect "R")
-	(setq comint-input-sender 'inferior-R-input-sender))
-       ( (member ess-dialect '("S3" "S4" "S+3" "S+4" "S+5" "S+6" "S"))
-	(setq comint-input-sender 'inferior-ess-input-sender))))
-
-  (when (string= ess-language "S")
+  (when (string= ess-language "S") ;; todo: what is this doing here?
     (local-set-key "\M-\r"    'ess-dirs))
 
-  ;; Configuration for Stata input handling
-  ;; AJR: Stata is hell.   This is the primary configuration point.
-  (when (string= ess-language "STA")
-    (setq comint-input-sender 'inferior-ess-input-sender) ; was STA
-    (setq comint-process-echoes t))
-
-  ;; Configuration for Omegahat input handling
-  ;; SJE: cleanup
-  (when (string= ess-language "OMG")
-    ;; the following doesn't exist (until needed?)
-    ;;(setq comint-input-sender 'inferior-OMG-input-sender)
-    (setq comint-process-echoes nil))
-
-  (ess-write-to-dribble-buffer
-   (format "(i-ess 2): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language
-	   comint-process-echoes comint-input-sender))
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
@@ -1753,11 +1708,6 @@ to continue it."
   ;; local var.
   (when font-lock-keywords-only
     (setq font-lock-keywords-only nil))
-
-
-  (ess-write-to-dribble-buffer
-   (format "(i-ess 3): curr-buf=%s, comint..echo=%s, comint..sender=%s,\n"
-	   (current-buffer) comint-process-echoes comint-input-sender))
 
   ;;; Completion support ----------------
 
@@ -1783,18 +1733,6 @@ to continue it."
     ;; should also be run.  SJE: I have removed this, as I think it
     ;; interferes with our normal completion.
     (remove-hook 'comint-dynamic-complete-functions 't 'local))
-
-  ;; MM: in *R* in GNU emacs and in Xemacs, the c*-dyn*-compl*-fun* are now
-  ;; (ess-complete-filename
-  ;;  ess-complete-object-name
-  ;;  comint-replace-by-expanded-history)
-
-  ;; However this fails in Xemacs 21.4.17 where the value in *shell* is
-  ;; -- the same as in GNU emacs *shell* :
-  ;; (comint-replace-by-expanded-history shell-dynamic-complete-environment-variable shell-dynamic-complete-command shell-replace-by-expanded-directory comint-dynamic-complete-filename)
-
-  ;; and the (Xemacs) global  'Default-value' is
-  ;; (comint-replace-by-expanded-history comint-dynamic-complete-filename)
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.
