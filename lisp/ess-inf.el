@@ -1786,31 +1786,33 @@ to continue it."
 ;; FIXME: Note that  '??' nicely works in *R*, but
 ;;	  'type ? topic' doesn't use ess-help {but display in *R*}
 (defconst inferior-R-1-input-help (format "^ *help *(%s)" ess-help-arg-regexp))
-(defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
+;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
+(defconst inferior-R-2-input-help "^ *\\(\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R-page	  (format "^ *page *(%s)" ess-help-arg-regexp))
 
+
 (defun inferior-R-input-sender (proc string)
-  ;; next line only for debugging: this S_L_O_W_S D_O_W_N [here AND below]
-  ;;(ess-write-to-dribble-buffer (format "(inf..-R-..): string='%s'; " string))
-  ;; rmh: 2002-01-12 catch page() in R
   (save-current-buffer
     (let ((help-string (or (string-match inferior-R-1-input-help string)
                            (string-match inferior-R-2-input-help string)))
           (page-string	 (string-match inferior-R-page	       string)))
       (if (or help-string page-string)
-          (let* ((string2 (match-string 2 string)))
+          (let ((string1 (match-string 1 string))
+                (string2 (match-string 2 string)))
             ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
             (beginning-of-line)
-            (if (looking-at inferior-ess-primary-prompt)
-                (progn
-                  (end-of-line)
-                  (insert-before-markers string)) ;; emacs 21.0.105 and older
-              (delete-backward-char 1)) ;; emacs 21.0.106 and newer
+            ;; (if (looking-at inferior-ess-primary-prompt)
+            ;;     (progn
+            ;;       (end-of-line)
+            ;;       (insert-before-markers string)) ;; emacs 21.0.105 and older
+            ;;   (delete-backward-char 1)) ;; emacs 21.0.106 and newer
             (if help-string ; more frequently
-		(progn
-		  (ess-display-help-on-object
-		   (if (string= string2 "") "help" string2))
-		  (ess-eval-linewise "\n"))
+                (let ((inferior-ess-help-command
+                       (if (string= string1 "?") inferior-ess-help-command "help.search(\"%s\")\n")))
+                  (progn
+                    (ess-display-help-on-object
+                     (if (string= string2 "") "help" string2))
+                    (ess-eval-linewise "\n")))
 
 	      ;; else  page-string
 	      (let ((str2-buf (concat string2 ".rt")))
