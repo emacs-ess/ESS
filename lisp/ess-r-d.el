@@ -164,6 +164,7 @@ to R, put them in the variable `inferior-R-args'."
 	   (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
+    (setq comint-input-sender 'inferior-R-input-sender)
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
 	     inferior-ess-language-start))

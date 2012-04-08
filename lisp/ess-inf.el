@@ -1824,8 +1824,12 @@ to continue it."
 
 ;;;*;;; Main user commands
 
+
 (defun inferior-ess-input-sender (proc string)
-  (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty))
+  (if comint-process-echoes
+      (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty)
+    (inferior-ess-mark-as-busy proc)
+    (process-send-string proc (concat string "\n"))))
 
 (defun inferior-STA-input-sender (proc string)
   (ess-eval-linewise (concat string "\n") t t))
@@ -1877,9 +1881,9 @@ to continue it."
 		(ess-eval-linewise "\n")
 		(switch-to-buffer-other-window str2-buf)
 		(R-transcript-mode))))
-        ;; else:	normal command
-        (inferior-ess-input-sender proc string)))))
-
+        ;; else:        normal command
+	(inferior-ess-input-sender proc string)
+        ))))
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
@@ -2214,7 +2218,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
   ;; This simply deletes the buffers process to avoid an Emacs bug
   ;; where the sentinel is run *after* the buffer is deleted
   (let ((proc (get-buffer-process (current-buffer))))
-    (if proc (delete-process proc))))
+    (if (processp proc) (delete-process proc))))
 
 ;;*;; Object name completion
 

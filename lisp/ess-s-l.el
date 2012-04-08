@@ -65,6 +65,8 @@
   (modify-syntax-entry ?>  "."	S-syntax-table)
   (modify-syntax-entry ?/  "."	S-syntax-table))
 
+
+;; what is R doing here?
 (defvar R-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
@@ -114,6 +116,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
     (comint-use-prompt-regexp      . t)  ;;use fields if nil
+    (comint-process-echoes	   . t)
     ;; these prompt are the same for all S-languages As long as custom prompt
     ;; ends in inferior-ess-primary-prompt everything should work as expected.
     (inferior-ess-primary-prompt   . "> ")

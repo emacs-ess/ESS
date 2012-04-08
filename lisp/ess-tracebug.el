@@ -486,20 +486,19 @@ in inferior buffers.  ")
 (defvar ess-tracebug-enhance-ess-command t)
 (defun ess-tb-start ()
   "Start traceback session "
-  (with-current-buffer (process-buffer (get-process ess-current-process-name))
-    (unless (equal ess-dialect "R")
+  (with-current-buffer (process-buffer (get-process ess-local-process-name))
+    (unless (member ess-dialect '("R" "julia"))
         (error "Can not activate the debuger for %s dialect" ess-dialect))
     (setq comint-process-echoes nil) ;; makes the display wiggly :(
-    (setq inferior-R-2-input-help "^ *\\(\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;; ?? bug
     (make-local-variable 'compilation-error-regexp-alist)
-    (setq compilation-error-regexp-alist ess-R-tb-regexp-alist)
+    (setq compilation-error-regexp-alist ess-error-regexp-alist)
     (compilation-setup t)
     (setq next-error-function 'ess-tb-next-error-function)
     ;; new locals
     (make-local-variable 'ess-tb-last-input)
     (make-local-variable 'ess-tb-last-input-overlay)
     (make-local-variable 'compilation-search-path)
-    (setq compilation-search-path ess-dbg-search-path)
+    (setq compilation-search-path ess-dbg-search-path) ;; todo: make this dialect specific
     (ess-tracebug--set-left-margin)
     (save-excursion
       (goto-char comint-last-input-start)
@@ -516,17 +515,14 @@ in inferior buffers.  ")
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
     (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
     ;; redefine
-    (unless (fboundp 'orig-inferior-R-input-sender)
-      (defalias 'orig-inferior-R-input-sender (symbol-function 'inferior-R-input-sender))
-      (defalias 'inferior-R-input-sender (symbol-function 'inferior-R-input-sender2))
-      )
+    ;; todo: all this part should go
+    (when (equal ess-dialect "R")
+      (process-put (get-buffer-process (current-buffer))
+		   'source-file-function
+		   'ess-tb-R-source-current-file))
     (unless (fboundp 'orig-ess-parse-errors)
       (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
       (defalias 'ess-parse-errors (symbol-function 'next-error))
-      )
-    (unless (fboundp 'orig-ess-load-file)
-      (defalias 'orig-ess-load-file (symbol-function 'ess-load-file))
-      (defalias 'ess-load-file (symbol-function 'ess-tracebug-source-current-file))
       )
     ;; hooks
     (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t t)
@@ -537,23 +533,12 @@ in inferior buffers.  ")
   "Stop ess traceback session in the current ess process"
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
     ;; restore original definitions
-    (when (fboundp 'orig-inferior-R-input-sender)
-      (defalias 'inferior-R-input-sender (symbol-function 'orig-inferior-R-input-sender))
-      (fmakunbound 'orig-inferior-R-input-sender))
-    (when (fboundp 'orig-ess-eval-region)
-      (defalias 'ess-eval-region (symbol-function 'orig-ess-eval-region))
-      (fmakunbound 'orig-ess-eval-region))
-    ;; (when (fboundp 'orig-ess-eval-function)
-    ;;   (defalias 'ess-eval-function (symbol-function 'orig-ess-eval-function))
-    ;;   (fmakunbound 'orig-ess-eval-function))
-    (when (fboundp 'orig-ess-parse-errors)
-      (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
-      (fmakunbound 'orig-ess-parse-errors))
-    (when (fboundp 'orig-ess-load-file)
-      (defalias 'ess-load-file (symbol-function 'orig-ess-load-file))
-      (fmakunbound 'orig-ess-load-file))
-    (setq comint-process-echoes t) ;; back to kludge
-    (setq inferior-R-2-input-help "^ *\\? *\\(['\"]?\\)\\([^,=)'\"]*\\)\\1") ;;   original: ?? bug
+    (when (equal ess-dialect "R")
+      (when (fboundp 'orig-ess-parse-errors)
+	(defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
+	(fmakunbound 'orig-ess-parse-errors))
+      )
+    (setq comint-process-echoes t) ;; back to kludge (R only, todo: make proc independent)
     (remove-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t)
     (if (local-variable-p 'ess-tb-last-input-overlay)
         (delete-overlay ess-tb-last-input-overlay))
@@ -2721,41 +2706,42 @@ intanbible, step char backward first"
   )
 
 
-(defun inferior-R-input-sender2 (proc string)
-  (save-current-buffer
-    (let ((help-string (or (string-match inferior-R-1-input-help string)
-                           (string-match inferior-R-2-input-help string)))
-          (page-string	 (string-match inferior-R-page	       string)))
-      (if (or help-string page-string)
-          (let ((string1 (match-string 1 string))
-                (string2 (match-string 2 string)))
-            ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
-            (beginning-of-line)
-            ;; (if (looking-at inferior-ess-primary-prompt)
-            ;;     (progn
-            ;;       (end-of-line)
-            ;;       (insert-before-markers string)) ;; emacs 21.0.105 and older
-            ;;   (delete-backward-char 1)) ;; emacs 21.0.106 and newer
-            (if help-string ; more frequently
-                (let ((inferior-ess-help-command
-                       (if (string= string1 "?") inferior-ess-help-command "help.search(\"%s\")\n")))
-                  (progn
-                    (ess-display-help-on-object
-                     (if (string= string2 "") "help" string2))
-                    (ess-eval-linewise "\n")))
+;; (defun inferior-R-input-sender2 (proc string)
+;;   (save-current-buffer
+;;     (let ((help-string (or (string-match inferior-R-1-input-help string)
+;;                            (string-match inferior-R-2-input-help string)))
+;;           (page-string	 (string-match inferior-R-page	       string)))
+;;       (if (or help-string page-string)
+;;           (let ((string1 (match-string 1 string))
+;;                 (string2 (match-string 2 string)))
+;;             ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
+;;             (beginning-of-line)
+;;             ;; (if (looking-at inferior-ess-primary-prompt)
+;;             ;;     (progn
+;;             ;;       (end-of-line)
+;;             ;;       (insert-before-markers string)) ;; emacs 21.0.105 and older
+;;             ;;   (delete-backward-char 1)) ;; emacs 21.0.106 and newer
+;;             (if help-string ; more frequently
+;;                 (let ((inferior-ess-help-command
+;;                        (if (string= string1 "?") inferior-ess-help-command "help.search(\"%s\")\n")))
+;;                   (progn
+;;                     (ess-display-help-on-object
+;;                      (if (string= string2 "") "help" string2))
+;;                     (ess-eval-linewise "\n")))
 
-	      ;; else  page-string
-	      (let ((str2-buf (concat string2 ".rt")))
-		(ess-command (concat string2 "\n")
-			     (get-buffer-create str2-buf))
-		(ess-eval-linewise "\n")
-		(switch-to-buffer-other-window str2-buf)
-		(R-transcript-mode))))
-        ;; else:        normal command
-        ;; (inferior-ess-input-sender proc string t)
-	(inferior-ess-mark-as-busy proc)
-        (process-send-string proc (concat string "\n"))
-        ))))
+;; 	      ;; else  page-string
+;; 	      (let ((str2-buf (concat string2 ".rt")))
+;; 		(ess-command (concat string2 "\n")
+;; 			     (get-buffer-create str2-buf))
+;; 		(ess-eval-linewise "\n")
+;; 		(switch-to-buffer-other-window str2-buf)
+;; 		(R-transcript-mode))))
+;;         ;; else:        normal command
+;; 	(if (not (ess-process-get 'tracebug))
+;; 	     (inferior-ess-input-sender proc string t)
+;; 	  (inferior-ess-mark-as-busy proc)
+;; 	  (process-send-string proc (concat string "\n")))
+;;         ))))
 
 
 
