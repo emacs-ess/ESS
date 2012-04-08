@@ -567,17 +567,6 @@ in inferior buffers.  ")
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))
     ))
 
-(defvar ess-R-tb-regexp-alist '(R R3 R-recover)
-  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
-
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
-;; (add-to-list 'compilation-error-regexp-alist-alist
-;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:Error .*: *\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
 ;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
@@ -694,7 +683,7 @@ This is the value of `next-error-function' in iESS buffers."
       (let* ((file (caar (nth 2 loc)))
 	     (col (car loc))
 	     (line (cadr loc))
-	     (mkrs (ess-dbg-get-ref-rarker file line col))
+	     (mkrs (ess-dbg-get-ref-marker file line col))
 	     )
 	(if mkrs
 	    (compilation-goto-locus marker (car mkrs) (cadr mkrs))

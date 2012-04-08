@@ -2107,6 +2107,9 @@ Created for each process."
   :group 'ess-proc
   :type 'string)
 
+(defvar ess-error-regexp-alist nil
+  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
+
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
   :group 'ess-proc
