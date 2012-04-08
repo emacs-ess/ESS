@@ -1269,20 +1269,21 @@ the buffer if found, or nil otherwise be found.
 associated buffer. If FILE is nil or TB-INDEX is not found
 returns nil.
 "
-  (let ((mrk (car (ess-dbg-get-ref-rarker file line col tb-index))))
+  (let ((mrk (car (ess-dbg-get-ref-marker file line col tb-index))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
-(defun ess-dbg-get-ref-rarker (file line &optional col tb-index)
-  "Return the marker to the reference given by FILE, LINE and COL.
+(defun ess-dbg-get-ref-marker (file line &optional col tb-index)
+  "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
- position of error. Mk-end is the begging of the line where error
- occurred (passed to `compilation-goto-locus' for highlighting).
- If buffer associated with FILE is not found, or line is nil, or
- TB-INDEX is not found return nil.
+position of error. Mk-end is the begging of the line where error
+occurred.
+
+If buffer associated with FILE is not found, or line is nil, or
+TB-INDEX is not found return nil.
 "
   (if (stringp line) (setq line (string-to-number line)))
   (if (stringp col) (setq col (string-to-number col)))
@@ -1306,7 +1307,7 @@ Return list of two markers MK-start and MK-end. MK-start is the
 	    (forward-line (1- line))
 	    (if col
 		(goto-char (+ (point-at-bol) col))
-	      (back-to-indentation))
+	      (end-of-line))
 	    (list (point-marker) (copy-marker (point-at-bol))))
 	  )))))
 
