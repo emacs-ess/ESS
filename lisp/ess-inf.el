@@ -1753,6 +1753,12 @@ to continue it."
   (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
   (run-hooks 'inferior-ess-mode-hook)
+
+  (ess-write-to-dribble-buffer
+   (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
+	   (current-buffer) ess-language
+	   comint-process-echoes comint-input-sender))
+
   (message
    (concat (substitute-command-keys
 	    "Type \\[describe-mode] for help on ESS version ")
