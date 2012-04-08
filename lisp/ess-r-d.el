@@ -193,7 +193,6 @@ to R, put them in the variable `inferior-R-args'."
 	  ))
 
       ;; else R version <= 2.4.1
-
       ;; for R <= 2.1.x : define baseenv() :
       (ess-eval-linewise
        "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"

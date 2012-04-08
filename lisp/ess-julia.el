@@ -278,26 +278,6 @@
 ;;   (setq mode-name "julia")
 ;;   (run-hooks 'julia-mode-hook))
 
-;;;### autoload
-(defun julia-mode  (&optional proc-name)
-  "Major mode for editing R source.  See `ess-mode' for more help."
-  (interactive "P")
-  ;; (setq ess-customize-alist julia-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
-  (ess-mode julia-customize-alist proc-name)
-  ;; for emacs < 24
-  ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
-  ;; for emacs >= 24
-  ;; (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  ;; (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
-  ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-  (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
-  ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
-  (set (make-local-variable 'julia-basic-offset) 4)
-  (ess-imenu-julia)
-  (run-hooks 'julia-mode-hook))
 
 (defvar julia-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
@@ -414,7 +394,28 @@ been created using the variable `ess-r-versions'."
   :group 'ess-julia
   :type 'string)
 
-;;;### autoload
+;;;###autoload
+(defun julia-mode  (&optional proc-name)
+  "Major mode for editing R source.  See `ess-mode' for more help."
+  (interactive "P")
+  ;; (setq ess-customize-alist julia-customize-alist)
+  ;;(setq imenu-generic-expression R-imenu-generic-expression)
+  (ess-mode julia-customize-alist proc-name)
+  ;; for emacs < 24
+  ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
+  ;; for emacs >= 24
+  ;; (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  ;; (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
+  ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
+  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
+  (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
+  ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
+  (set (make-local-variable 'julia-basic-offset) 4)
+  (ess-imenu-julia)
+  (run-hooks 'julia-mode-hook))
+
+;;;###autoload
 (defun julia (&optional start-args)
   "Call 'julia',
 Optional prefix (C-u) allows to set command line arguments, such as
@@ -455,10 +456,13 @@ to R, put them in the variable `inferior-julia-args'."
       ;; 			   nil nil nil 'wait-prompt)))
       )))
 
+
+;;;; IMENU
 (defvar julia-imenu-generic-expression
   '(("Function (_)" "^\\s-*function\\s-+\\(_[^ \t\n]*\\)" 1)
     ("Function" "^\\s-*function\\s-+\\([^_][^ \t\n]*\\)" 1)
     ("Const" "^\\s-*const \\([^ \t\n]*\\)" 1)
+    ("Type"  "^\\s-*\\w*type\\w* \\([^ \t\n]*\\)" 1)
     ("Load"      " *\\(load\\)(\\([^ \t\n)]*\\)" 2)
     ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
     ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
