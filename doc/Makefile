@@ -113,6 +113,7 @@ install-other-docs: pdf html
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
 	@echo "making HTML documentation..."
+	mkdir -p html
 	$(MAKEHTML) ess.texi > html/ess.html
 #MM	$(TEXI2HTML) $(SPLITCHAP) ess.texi
 #MM	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
