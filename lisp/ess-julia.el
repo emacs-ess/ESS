@@ -312,7 +312,7 @@
   "Path to julia-release-basic executable")
 
 (defun julia-send-string-function (process string visibly)
-  (let ((file (concat temporary-file-directory "julia_eval_region")))
+  (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
     (with-temp-file file
       (insert string))
     (process-send-string process (format inferior-ess-load-command file))))
