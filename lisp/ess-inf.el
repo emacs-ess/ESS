@@ -1444,8 +1444,8 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 		  (read-file-name "Load S file: " nil nil t)))))
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
-    (if (ess-process-get 'tracebug)
-	(ess-tracebug-source-current-file filename)
+    (if (fboundp (ess-process-get 'source-file-function))
+	(funcall (ess-process-get 'source-file-function))
 
       (ess-make-buffer-current)
       (if ess-microsoft-p

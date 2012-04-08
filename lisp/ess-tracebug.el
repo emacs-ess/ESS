@@ -167,7 +167,7 @@ Use `add-hook' to insert append your functions to this list.
     (define-key map "7" 'ess-dbg-singlekey-command)
     (define-key map "8" 'ess-dbg-singlekey-command)
     (define-key map "9" 'ess-dbg-singlekey-command)
-    (define-key map "s" 'ess-tracebug-source-current-file)
+    (define-key map "s" 'ess-load-file)
     (define-key map "?" 'ess-tracebug-show-help)
     map)
   "Keymap used as a binding for `ess-tracebug-prefix' key
@@ -276,7 +276,7 @@ Default ess-tracebug key bindings:
  I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
 
 * Misc:
- s   . Source current file	. `ess-tracebug-source-current-file'
+ s   . Source current file	. `ess-load-file'
  ?   . Show this help		. `ess-tracebug-show-help'
 ")
 
@@ -1565,7 +1565,7 @@ debug history."
     )
   )
 
-(defun ess-tracebug-source-current-file (&optional filename)
+(defun ess-tb-R-source-current-file (&optional filename)
   "Save current file and source it in the .R_GlobalEnv environment."
   ;; make it more elaborate :todo:
   (interactive)
