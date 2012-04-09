@@ -1332,7 +1332,6 @@ Arg has same meaning as for `ess-eval-region'."
 
 
 
-;; Contributed by  Stephen Eglen <stephen@anc.ed.ac.uk> {idea from octave int.}
 (defun ess-next-code-line (&optional arg)
   "Move ARG lines of code forward (backward if ARG is negative).
 Skips past all empty and comment lines.	 Default for ARG is 1.

@@ -583,7 +583,7 @@ You can bind 'no-select' versions of this commands:
       (goto-char (point-min))
                                         ;(setq font-lock-defaults '(ess-R-mode-font-lock-keywords)) :todo: solve font-lock
       (make-local-variable 'compilation-error-regexp-alist)
-      (setq compilation-error-regexp-alist ess-R-tb-regexp-alist)
+      (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
       (make-local-variable 'compilation-search-path)
       (setq compilation-search-path ess-dbg-search-path)
       (compilation-minor-mode 1)
