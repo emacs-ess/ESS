@@ -260,7 +260,7 @@ See also `ess-use-ido'.
       (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
 	      '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
       (if isR
-	  (setq ac-sources '(ac-source-R ac-source-filename ac-source-words-in-buffer))
+	  (setq ac-sources '(ac-source-R ac-source-filename)) ;; ac-source-words-in-buffer
 	(setq ac-sources '(ac-source-filename ac-source-words-in-same-mode-buffers)))
       )
 
