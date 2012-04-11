@@ -263,11 +263,12 @@ See also `ess-use-ido'.
 
     ;; eldoc)
     (require 'eldoc)
-    (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
-    (when (or (and (not inferior) ess-use-eldoc)
-	      (and inferior (eq ess-use-eldoc t)))
+    (when (and Rp
+	       (or (and (not inferior) ess-use-eldoc)
+		   (and inferior (eq ess-use-eldoc t))))
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
 	(set (make-local-variable 'eldoc-idle-delay) 0.1))
+      (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
       (when emacsp
 	(turn-on-eldoc-mode)
 	))
