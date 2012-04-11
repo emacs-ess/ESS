@@ -1,3 +1,9 @@
+2012-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-mode): 
+	* ess-jags-d.el (ess-jags-mode): 
+	   (setq ess-language "S") ; mimic S for ess-smart-underscore
+
 2012-04-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-custom.el (ess-revision): extraordinary attempts
