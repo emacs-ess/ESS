@@ -251,6 +251,7 @@
    (setq font-lock-auto-fontify t)
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-jags-font-lock-keywords nil t))
+   (setq ess-language "S") ; mimic S for ess-smart-underscore
    (run-hooks 'ess-bugs-mode-hook)
 
    (if (not (w32-shell-dos-semantics))
