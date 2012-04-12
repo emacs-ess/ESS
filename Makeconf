@@ -89,7 +89,7 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ESSVERSION=$(shell echo "`date +%y.%m`")
 ESSfromSVN=$(shell test -d .svn && echo 'yes')
 ifeq ($(ESSfromSVN),yes)
-  ESSVERSIONsvn=$(shell echo "`date +%y-%m`-r`svnversion`")
+  ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
 else
   ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
 endif

@@ -520,10 +520,11 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
        (unless ,no-error
 	 (error "No current ESS process")))))
 
-(defun get-ess-process (name &optional try-another)
-  "Return the ESS process named by NAME.  If TRY-ANOTHER is non-nil,
+(defun get-ess-process (name &optional use-another)
+  "Return the ESS process named by NAME.  If USE-ANOTHER is non-nil,
 and the process NAME is not running (anymore), try to connect to another if
-there is one."
+there is one.  By default (USE-ANOTHER is nil), the connection to another
+process happens interactively (when possible)."
   (if (null name)	    ; should almost never happen at this point
       (error "No ESS process is associated with this buffer now"))
   (update-ess-process-name-list)
@@ -545,7 +546,7 @@ there is one."
 	  (get-ess-process name))
 
       ;; else: there are other running processes
-      (if try-another ; connect to another running process : the first one
+      (if use-another ; connect to another running process : the first one
 	  (let ((other-name (car (elt ess-process-name-list 0))))
 	    ;; "FIXME": try to find the process name that matches *closest*
 	    (message "associating with *other* process '%s'" other-name)
