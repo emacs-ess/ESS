@@ -458,10 +458,13 @@ Uses the file given by the variable `ess-function-outline-file'."
     (goto-char (1+ oldpos))))
 
 
-(defun ess-use-this-dir ()
+;; typically bound to M-Enter
+(defun ess-use-this-dir (&optional no-force-current)
   "Synchronise the current directory of the S or R process to the one of the current
-buffer. If that buffer has no associated *R* process, provide a message."
-  (interactive)
+buffer. If that buffer has no associated *R* process, use \\[ess-force-buffer-current],
+unless prefix argument NO-FORCE-CURRENT is non-nil."
+  (interactive "P")
+  (unless no-force-current (ess-force-buffer-current "R process to use: "))
   (if ess-local-process-name
       (let ((cmd (format "setwd('%s')\n" default-directory))
 	    )
