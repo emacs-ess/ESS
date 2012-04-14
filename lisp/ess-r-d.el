@@ -558,7 +558,7 @@ to look up any doc strings."
 		;;NORMAL filter (deal with long defaults)
 		(setq doc (replace-regexp-in-string
 			   ;; function calls inside default docs foo(xxxx{..})
-			   "(.\\{8\\}\\(.\\{4,\\}\\))"
+			   "([^)]\\{8\\}\\([^)]\\{4,\\}\\))"
 			   "{.}" doc nil nil 1))
 		(if (<= (length doc) W)
 		    doc
