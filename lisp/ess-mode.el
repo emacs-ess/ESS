@@ -1025,51 +1025,54 @@ See also `ess-first-tab-never-complete'."
 (defun ess-indent-line ()
   "Indent current line as ESS code.
 Return the amount the indentation changed by."
-  (let ((indent (ess-calculate-indent nil))
-	beg shift-amt
-	(case-fold-search nil)
-	(pos (- (point-max) (point))))
-    (beginning-of-line)
-    (setq beg (point))
-    (cond ((eq indent nil)
-	   (setq indent (current-indentation)))
-	  (t
-	   (skip-chars-forward " \t")
-	   (cond ((and ess-fancy-comments ;; ### or #!
-		       (or (looking-at "###")
-			   (and (looking-at "#!") (= 1 (line-number-at-pos)))))
-		  (setq indent 0))
-		 ;; Single # comment
-		 ((and ess-fancy-comments
-		       (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
-		  (setq indent comment-column))
-		 (t
-		  (if (eq indent t) (setq indent 0))
-		  (if (listp indent) (setq indent (car indent)))
-		  (cond ((and (looking-at "else\\b")
-			      (not (looking-at "else\\s_")))
-			 (setq indent (save-excursion
-					(ess-backward-to-start-of-if)
-					(+ ess-else-offset (current-indentation)))))
-			((= (following-char) ?})
-			 (setq indent
-			       (+ indent
-				  (- ess-close-brace-offset ess-indent-level))))
-			((= (following-char) ?{)
-			 (setq indent (+ indent ess-brace-offset))))))))
-    (skip-chars-forward " \t")
-    (setq shift-amt (- indent (current-column)))
-    (if (zerop shift-amt)
+  (if (fboundp ess-indent-line-function)
+      (funcall ess-indent-line-function)
+    ;; else S and R default behavior
+    (let ((indent (ess-calculate-indent nil))
+	  beg shift-amt
+	  (case-fold-search nil)
+	  (pos (- (point-max) (point))))
+      (beginning-of-line)
+      (setq beg (point))
+      (cond ((eq indent nil)
+	     (setq indent (current-indentation)))
+	    (t
+	     (skip-chars-forward " \t")
+	     (cond ((and ess-fancy-comments ;; ### or #!
+			 (or (looking-at "###")
+			     (and (looking-at "#!") (= 1 (line-number-at-pos)))))
+		    (setq indent 0))
+		   ;; Single # comment
+		   ((and ess-fancy-comments
+			 (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
+		    (setq indent comment-column))
+		   (t
+		    (if (eq indent t) (setq indent 0))
+		    (if (listp indent) (setq indent (car indent)))
+		    (cond ((and (looking-at "else\\b")
+				(not (looking-at "else\\s_")))
+			   (setq indent (save-excursion
+					  (ess-backward-to-start-of-if)
+					  (+ ess-else-offset (current-indentation)))))
+			  ((= (following-char) ?})
+			   (setq indent
+				 (+ indent
+				    (- ess-close-brace-offset ess-indent-level))))
+			  ((= (following-char) ?{)
+			   (setq indent (+ indent ess-brace-offset))))))))
+      (skip-chars-forward " \t")
+      (setq shift-amt (- indent (current-column)))
+      (if (zerop shift-amt)
+	  (if (> (- (point-max) pos) (point))
+	      (goto-char (- (point-max) pos)))
+	(delete-region beg (point))
+	(indent-to indent)
+	;; If initial point was within line's indentation,
+	;; position after the indentation.
+	;; Else stay at same point in text.
 	(if (> (- (point-max) pos) (point))
-	    (goto-char (- (point-max) pos)))
-      (delete-region beg (point))
-      (indent-to indent)
-      ;; If initial point was within line's indentation,
-      ;; position after the indentation.
-      ;; Else stay at same point in text.
-      (if (> (- (point-max) pos) (point))
-	  (goto-char (- (point-max) pos))))
-    shift-amt))
+	    (goto-char (- (point-max) pos))))
+      shift-amt)))
 
 (defun ess-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as ESS code.

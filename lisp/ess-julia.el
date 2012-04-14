@@ -292,7 +292,7 @@
     ;;(ess-comment-indent	    . 'S-comment-indent)
     ;; (ess-indent-line			    . 'S-indent-line)
     ;;(ess-calculate-indent	      . 'ess-calculate-indent)
-    (indent-line-function	  . 'julia-indent-line)
+    (ess-indent-line-function	  . 'julia-indent-line)
     (parse-sexp-ignore-comments	  . t)
     (ess-style		  	  . ess-default-style) ;; ignored
     (ess-local-process-name	  . nil)
@@ -409,7 +409,7 @@ been created using the variable `ess-r-versions'."
   ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-  (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
+  ;; (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
   ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
   (set (make-local-variable 'julia-basic-offset) 4)
   (ess-imenu-julia)

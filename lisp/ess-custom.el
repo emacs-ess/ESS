@@ -538,6 +538,11 @@ regardless of where in the line point is when the TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
+(defvar ess-indent-line-function nil
+  "Function to be used for the current dialect
+nil means to use R/S indentation.")
+(make-variable-buffer-local 'ess-indent-line-function)
+
 (defvar ess-indent-level 2
   "Indentation of S statements with respect to containing block.")
 
