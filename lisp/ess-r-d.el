@@ -617,6 +617,8 @@ to look up any doc strings."
 ")
 
 ;; (defconst ess--funname-ignore '("else"))
+(defvar ess-objects-never-recache '("print" "plot")
+  "List of functions of whose arguments to be cashed only once per session.")
 
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
@@ -631,7 +633,7 @@ If package_name is R_GlobalEnv or \"\", and time_stamp is less
 recent than the time of the last user interaction to the process,
 then update the entry.
 
-Package_name is \"\" if funname was not found or is a special name,
+Package_name is \"\" if funname was not found or is a special name,n
 i.e. contains :,$ or @.
 "
   (when funname ;; might be nil as returned by ess--funname.start
@@ -640,7 +642,8 @@ i.e. contains :,$ or @.
 	   (ts   (cdar args)))
       (when (and args
 		 (and (or (null pack)
-			  (equal pack "")
+			  (and (equal pack "")
+			       (not (member funname ess-objects-never-recache)))
 			  (equal pack "R_GlobalEnv"))
 		      (time-less-p ts (ess-process-get 'last-eval))))
 	(setq args nil))
