@@ -640,6 +640,7 @@ i.e. contains :,$ or @.
 	   (ts   (cdar args)))
       (when (and args
 		 (and (or (null pack)
+			  (equal pack "")
 			  (equal pack "R_GlobalEnv"))
 		      (time-less-p ts (ess-process-get 'last-eval))))
 	(setq args nil))
