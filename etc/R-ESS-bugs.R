@@ -367,3 +367,17 @@ a <- some.function(arg1,
                    arg2)
 
 
+### --- 15 --------------------------------------------------------------
+## indentation of the 3rd line is wrong
+for(s in seq(10, 50, len = 5))
+    for(a in seq(.5, 1, len = 5))
+    pt_dif_plot(s, a)
+
+
+### --- 16 ----
+## unbalanced para at else lines, indentation is wrong
+getOrCreateForm <- function(bindName, whereEnv)
+    if(exists(bindName, envir = get(".forms", envir = whereEnv)))
+    get(bindName, envir = whereEnv)
+    else
+    new("protoForm")
