@@ -4,11 +4,11 @@
 ;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,15 +27,14 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S 3 customizations for ess-mode.
 
-;;; Requires and Autoloads:
+;; This file defines all the S 3 customizations for ess-mode.
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 (defvar S3-customize-alist
   (append

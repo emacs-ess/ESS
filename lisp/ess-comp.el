@@ -4,11 +4,11 @@
 ;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 25 July 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -28,11 +28,11 @@
 
 ;;; Commentary:
 
-;;; This file sets up all compilation needs.
-
-(provide 'ess-comp)
+;; This file sets up all compilation needs.
 
 ;;; Code:
+
+(provide 'ess-comp)
 
 ;; Emacs doesn't include '.' in the emacs lisp load path.
 (add-to-list 'load-path nil)

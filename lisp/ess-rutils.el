@@ -1,11 +1,14 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
+
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
 ;; Last-Updated: Wed Mar  2 21:08:11 2011 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
-;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sebastian P. Luque
+
+;; Copyright (c) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sebastian P. Luque
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
@@ -18,9 +21,9 @@
 ;; along with GNU Emacs; see the file COPYING. If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
-;; ------------------------------------------------------------------------
+
 ;;; Commentary:
-;;
+
 ;; This library provides key bindings for performing basic R functions,
 ;; such as loading and managing packages, as well as object manipulation
 ;; (listing, viewing, and deleting), and an alternative to RSiteSearch()
@@ -43,7 +46,7 @@
 ;; object management comforts and came across Stephen Eglen's
 ;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
-;; ------------------------------------------------------------------------
+
 ;;; Code:
 
 ;; Autoloads and requires

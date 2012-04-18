@@ -4,7 +4,7 @@
 ;; Copyright (C) 2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen
+;; Author: Stephen Eglen
 
 ;; This file is part of ESS
 
@@ -26,7 +26,6 @@
 ;; don't charge more than a distribution fee for it, do distribute the
 ;; source with any binaries, remove this notice, or hold anyone liable
 ;; for its results.
-
 
 ;;; Commentary:
 
@@ -91,6 +90,8 @@
 
 ;; TODO: possibly add a call to (byte-recompile-directory ess-lisp-dir
 ;; 0) so that lisp files are byte compiled.
+
+;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Location where the new lisp files are stored.
@@ -231,3 +232,5 @@ ignored."
       (ess-install-byte-compile)
       (message (concat "ESS version "ess-new-version" installed."))
       )))
+
+;;; ess-install.el ends here

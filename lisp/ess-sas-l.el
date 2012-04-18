@@ -3,13 +3,13 @@
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Richard M. Heiberger,
-;;          A.J. Rossini,
+;; Authors: Richard M. Heiberger
+;;          A.J. Rossini
 ;;          Rodney Sparapani
 ;; Created: 20 Aug 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -28,7 +28,8 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This is based upon Version 1.4 of SAS mode:
+
+;; This is based upon Version 1.4 of SAS mode:
 
 
 ;;;    sas-mode:  indent, run etc, SAS programs.
@@ -45,6 +46,8 @@
 ;;;
 ;;; Last change: 2/1/95
 ;;; Last change: 01/15/02
+
+;;; Code:
 
 (ess-message "[ess-sas-l:] (require 'ess) ...")
 (require 'ess)

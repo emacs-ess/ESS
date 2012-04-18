@@ -6,8 +6,8 @@
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Author: David Smith <dsmith@stats.adelaide.edu.au>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -339,4 +339,4 @@ Use point-min/max to obey narrow-to-region."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-trans.el ends here
+;;; ess-trns.el ends here

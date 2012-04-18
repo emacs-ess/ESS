@@ -4,11 +4,11 @@
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,21 +27,20 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; AJR copied S4 to be S+5.
-;;; DB contributed the changes from ess-sp3-d.el to
-;;; ess-s4-d.el. (removed the old ugly approach).
-;;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
-;;; to RMH and JMC for code and suggestions
-;;; Thanks to MM for making this sensible.
 
-;;; Requires and Autoloads:
+;; AJR copied S4 to be S+5.
+;; DB contributed the changes from ess-sp3-d.el to
+;; ess-s4-d.el. (removed the old ugly approach).
+;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
+;; to RMH and JMC for code and suggestions
+;; Thanks to MM for making this sensible.
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...

@@ -1,4 +1,4 @@
-;; noweb-font-lock-mode.el - edit noweb files with GNU Emacs
+;;; noweb-font-lock-mode.el --- edit noweb files with GNU Emacs
 
 ;; Copyright (C) 1999 by  Adnan Yaqub (AYaqub@orga.com)
 ;;                    and Mark Lunt (mark.lunt@mrc-bsu.cam.ac.uk
@@ -6,7 +6,7 @@
 ;; Copyright (C) 2003--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,8 +23,10 @@
 ;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 ;;
-;;; Code-dependent highlighting
 
+;;; Commentary:
+
+;; Code-dependent highlighting
 ;;  *****
 ;;
 ;;  Adding highlighting to noweb-mode.el
@@ -97,6 +99,8 @@
 ;;  command or through changing to a different chunk and back again
 ;;  (unless they lie on a single line, in which case they are
 ;;  fontified correctly once they are completed).
+
+;;; Code:
 
 (require 'noweb-mode)
 (require 'font-lock)
@@ -397,3 +401,4 @@ For other purposes, use noweb-font-lock-fontify-chunks."
 ;; mode:emacs-lisp
 ;; End:
 
+;;; noweb-font-lock-mode.el ends here

@@ -4,11 +4,11 @@
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,7 +27,10 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+
+;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+
+;;; Code:
 
 ;;; Requires and Autoloads:
 
@@ -35,8 +38,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-; Code:
 
 (defvar OMG-dialect-name "OMG"
   "Name of 'dialect' for Omega.") ;easily changeable in a user's .emacs

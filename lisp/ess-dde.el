@@ -4,9 +4,9 @@
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
+;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Created: 9 Dec 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -28,7 +28,6 @@
 
 ;; Code for dealing with running external processes on Windows 9x/NT
 ;; through ddeclient.
-;;         =========
 
 ;;; Code:
 

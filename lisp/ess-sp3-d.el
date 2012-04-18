@@ -3,11 +3,11 @@
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@u.washington.edu>
+;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -26,16 +26,15 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
-;;; Requires and Autoloads:
+;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 (defvar S+3-dialect-name "S+3"
   "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs

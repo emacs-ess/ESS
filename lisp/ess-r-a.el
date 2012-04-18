@@ -3,11 +3,11 @@
 ;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 17 November 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: editing and process modes.
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -29,15 +29,14 @@
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
 
+;;; Commentary:
+
+;; The purpose of this file is to demonstrate some of the extras that
+;; have been constructed for the ESS R mode; if they prove
+;; interesting, then they might be migrated to ess-r-d, the primary
+;; ESS R mode tools.
+
 ;;; Code:
-
-;;; The purpose of this file is to demonstrate some of the extras that
-;;; have been constructed for the ESS R mode; if they prove
-;;; interesting, then they might be migrated to ess-r-d, the primary
-;;; ESS R mode tools.
-
-
-
 
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr

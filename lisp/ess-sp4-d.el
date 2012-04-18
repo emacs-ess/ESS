@@ -4,11 +4,11 @@
 ;; Copyright (C) 2003--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@temple.edu>
+;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: December 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,8 +27,11 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 4.x customizations for ess-mode
-;;; with ddeclient.
+
+;; This file defines all the S-PLUS 4.x customizations for ess-mode
+;; with ddeclient.
+
+;;; Code:
 
 ;;; Requires and Autoloads:
 
@@ -37,8 +40,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode	"ess-mode" "Edit an ESS process.")
-
-;;; Code:
 
 (defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
