@@ -157,6 +157,7 @@
   ;; different process for the buffer.
   (define-key ess-mode-map "\C-c\C-t"	'ess-execute-in-tb)
   (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name-deprecated)
+;;M  (define-key ess-mode-map "\C-c\t"	'comint-dynamic-complete-filename)
   (unless (and (featurep 'emacs) (>= emacs-major-version 24))
     (define-key ess-mode-map "\M-\t"	'comint-dynamic-complete))
   (define-key ess-mode-map "\M-?"	'ess-list-object-completions)
