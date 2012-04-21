@@ -198,7 +198,7 @@ to R, put them in the variable `inferior-R-args'."
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;; for emacs < 24
-  (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
+  (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name t 'local)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
