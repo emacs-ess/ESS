@@ -162,9 +162,37 @@
 
  ; Miscellaneous "ESS globals"
 
+(defun ess-version-string ()
+  (let* ((fname (concat ess-etc-directory "../SVN-REVISION"))
+	 (buffer (and (file-exists-p fname)
+		      (find-file-noselect fname)))
+	 c1 c2)
+    ;; set the "global" ess-revision
+    (setq ess-revision
+	  (if buffer
+	      ;; has two lines that look like
+	      ;; Revision: 4803
+	      ;; Last Changed Date: 2012-04-16
+	      (save-excursion
+		(set-buffer buffer)
+		(ess-write-to-dribble-buffer
+		 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
+		(goto-char (point-min))
+		(re-search-forward "Revision: \\(.*\\)")
+		(setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
+		;; line 2
+		(forward-line 1)
+		(re-search-forward ".*: \\(.*\\)")
+		(setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
+
+		(concat "rev. " c1 " (" c2 ")"))
+	    ))
+    (concat ess-version " [" ess-revision "]")))
+
+
 (defun ess-version ()
   (interactive)
-  (message (format "ess-version : %s %s" ess-version ess-revision)))
+  (message (concat "ess-version : " (ess-version-string))))
 
 ;;; Set up for menus, if necessary
 ;;;  --> is done in ess-mode.el, ess-inf.el, etc

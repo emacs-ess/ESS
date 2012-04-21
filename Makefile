@@ -4,7 +4,7 @@
 include ./Makeconf
 
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install: VERSION
+all install: SVN-REVISION
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
@@ -14,9 +14,10 @@ all install: VERSION
 
 VERSION:
 	@echo "$(ESSVERSION)" > $@
-## manually
-VERSION+:
-	echo "$(ESSVERSIONsvn)" > VERSION
+SVN-REVISION: VERSION
+	  (LC_ALL=C TZ=GMT svn info || $(ECHO) "Revision: unknown") 2> /dev/null \
+	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
+	    | cut -d' ' -f1,2,3,4 > $@
 
 
 ## --- PRE-release ---
@@ -42,7 +43,7 @@ downloads: all RPM.spec cleanup-dist
 	 $(MAKE) all cleanaux ; cd ../..
 	svn cleanup
 ## ugly hack; otherwise get ess-revision "12-04-rexported":
-	cd lisp; $(MAKE) -W ../VERSION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+	cd lisp; $(MAKE) -W ../SVN-REVISION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
 	cd $(ESSDIR)/lisp; $(MAKE) ess-custom.el; fgrep ess-revision ess-custom.el; cd ../..
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
@@ -116,4 +117,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f VERSION dist
+	rm -f VERSION SVN-REVISION dist

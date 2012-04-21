@@ -83,8 +83,6 @@ distclean: clean
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
 	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
-	if [ x$(ESSfromSVN) = xyes ] ; then \
-         perl -pi -e 's/".*"/"$(ESSVERSIONsvn)"/ if /defvar ess-revision/' $@ ;fi
 
 ### File Dependencies
 

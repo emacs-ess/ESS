@@ -1,3 +1,7 @@
+2012-04-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess.el (ess-version-string): new, and (ess-version) uses it.
+
 2012-04-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-s-l.el (ess-use-this-dir): add 'no-force-current, and switch
