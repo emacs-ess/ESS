@@ -14,7 +14,8 @@ all install: SVN-REVISION
 
 VERSION:
 	@echo "$(ESSVERSION)" > $@
-SVN-REVISION: VERSION
+## Hmm, this is a bit brittle ... but for distribution, there's no problem
+SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
 	  (LC_ALL=C TZ=GMT svn info || $(ECHO) "Revision: unknown") 2> /dev/null \
 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
 	    | cut -d' ' -f1,2,3,4 > $@
