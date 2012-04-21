@@ -860,7 +860,7 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report
      "ess-bugs@r-project.org"
-     (concat "ess-mode " ess-version " " ess-revision)
+     (concat "ess-mode " (ess-version-string))
      (list 'ess-language
 	   'ess-dialect
 	   'ess-ask-for-ess-directory

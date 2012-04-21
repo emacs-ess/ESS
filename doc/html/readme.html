@@ -1,0 +1,1613 @@
+<html lang="en">
+<head>
+<title>ESS --- Emacs Speaks Statistics</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="ESS --- Emacs Speaks Statistics">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+html {
+	margin: 0px;
+	padding: 0px;
+	border-top: 1.4em #000033 solid;
+	font-size: 12px;
+
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: top left;
+
+	background-color: white;
+}
+
+body { 
+	margin: 0px;
+	padding: 0px;
+	font-family: "Trebuchet MS", Arial, sans-serif; 
+	
+	color: #171717;
+	
+	line-height: 1.45; /* something smart Eric Meyer said: no unit here */
+	text-align: justify;
+
+	width: 40em;
+	padding-left: 15em;
+	padding-right: 2em;
+	border-right: 1px #000033 dotted;
+}
+
+h1 { 
+	padding: 2em 1em 2em 1em;
+
+	font-size: 2em;
+	color: white;
+
+	text-align: right;
+
+	margin-left: -10em;
+	margin-top: 0em; 
+	margin-right: -1em;
+	
+	background-image: url(../images/logoESS.gif);
+	background-position: left 25%;
+	
+	-o-background-size: 100% auto;
+	background-size: 100% auto;
+	background-origin: content;
+
+	border-bottom: 0.4em #000033 solid;
+	border-left: 0.1em #000033 solid;
+	
+	text-transform: uppercase;
+	
+	text-shadow: white 0px 0px 10px, black 3px 3px 5px;
+}
+	
+
+h2 { 
+	font-size: 1.4em;
+	border-left: 0.6em black solid; 
+	padding-left: 0.3em; 
+	border-bottom: 1px black solid; 
+	padding-bottom: 0.1em; 
+	margin-top: 1.5em;
+	letter-spacing: 0.1em;
+}
+
+h3 {  margin-bottom: 0em; }
+
+h2,h3 { clear: both; }
+h1 span { font-size: 0.7em; color: #EFEFEF; }
+h2 span { font-size: 0.7em; color: gray; }
+
+h2[id]:hover::after, h3[id]:hover::after { content: "#" attr(id); float:right; font-size:0.7em; /*line-height:2em;*/ color: maroon; padding-left: 1em;} 
+
+p { margin-top: 0px; margin-bottom: 0.5em;}
+
+dt {
+	font-weight: bold;
+	margin: 10px 0px 2px 0px;
+	padding: 2px 0px;
+	border-top: 1px black solid;
+	border-bottom: 1px black solid;
+	text-indent: 1em;
+	letter-spacing: 0.1em;
+	position: relative;
+}
+dd + dd { margin-top: 0.7em; }
+
+table { font-size: inherit; } /* so that the font-size is inherited into table */
+
+small { margin-top: 2em; display:block; clear: both; }
+
+pre { padding: 0.5em; border: 1px gray solid; overflow:auto; background-color: #EFEFEF; }
+
+kbd { border: 2px gray outset; padding: 0em 0.1em; background-color: white; }
+kbd:active { border: 2px gray inset;}
+
+img.left { float: left; clear: both; margin-right: 1em; margin-bottom: 0.5em; margin-top: 0.3em; max-width: 45%; }
+img.right { float: right; clear: both; margin-left: 1em; margin-bottom: 0.5em; margin-top: 0.3em; max-width: 45%; }
+
+/* link styles */
+a:link, a:visited {color: navy; text-decoration: none; font-weight: bold;} 
+p:hover a, p:hover + p a, ul:hover a, dl:hover a, table:hover a { text-decoration: underline; } 
+a:hover { text-decoration: none !important; border-width: 1px 0px; border-style: none; color: green; background-color: #efefef;} 
+
+
+/* navigation menu */
+#navmenu {
+	width: 150px;
+	position: fixed; /* f*ck, Opera 8 'loses' abs positioned content within fixed */
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	margin: 0px;
+	display: none; /* the TOC script will make it appear */
+	text-align: left;
+}
+
+#navmenu > li:first-child { font-weight: bold; color: white; background-color: #000033; }
+
+#navmenu li {
+	line-height: 1.4em; 
+	padding-left: 3px;
+	list-style-type: none; 
+	background-color: #2E2E58;
+	color: white;
+	margin: 0px 0px 1px 0px;
+	position: relative;
+}
+
+#navmenu li:hover {  background-color: maroon; color: white; }
+
+#navmenu > li:first-child:hover { width: auto; right: 0px; }
+#navmenu > li:hover { width: 298px; position: relative; right: 151px; font-weight: bold; }
+
+#navmenu li:hover > ul { display: block; }
+
+#navmenu li ul { 
+	margin: 0px; 
+	padding: 0px;
+
+	position: absolute;
+	top: 1.4em;
+	right: 141px;
+	width: 150px;
+	margin-top: -9px; /* 1px between list, but with 10px padding */
+	padding-top: 10px;
+	padding-right: 10px; /* so that the box still overlap; helps with hovering */
+	font-weight: normal; 
+	display:none; 
+}
+
+#navmenu li ul li { padding-left: 0px; } /*the links should fill to full size of list item  */
+
+#navmenu li a { display: block;  text-decoration:none !important; color:white; padding-left: 3px; }
+#navmenu li a:hover { border-style: none !important; background-color: inherit !important;}
+
+#navmenu #toc li.h2 a { padding-left: 0.3em; font-size: 0.9em; font-weight:bold;}
+#navmenu #toc li.h3 a { padding-left: 0.8em; font-size: 0.8em;}
+#navmenu #toc li.h4 a { padding-left: 1.2em; font-size: 0.8em; font-style: italic; }
+
+/* for IE: with some scripting and these styles the menus also work in IE  */
+/* Do not put complex selectors IE does not understand in same style declaration!! */
+#navmenu li.first { color: white; background-color: #000033; }
+#navmenu li.expand ul { display: block; }
+#navmenu li.expand { width: 299px; position: relative; margin-left: -152px; font-weight: bold; background-color: maroon; color: white; }
+#navmenu li.expand a:hover { background-color: maroon; } 
+#navmenu ul.ulhover { display:block; background-color: #CDD5DD; /* background-color so there's a background so hovering works... */ padding-top: 1px; margin-top: 0px; margin-right: 0em;}
+
+/* -------- Requires CSS3 Selectors (O9, IE7, FF, SF) -------- */
+/* well implemented by http://www.askthecssguy.com/2006/12/showing_hyperlink_cues_with_cs_1.html */
+
+a[href$='.pdf'], a[rel='pdf'], a[rel*='pdf'], a[rel~='pdf'] { padding-right: 18px; background: transparent url(../images/icons/icon_pdf.png) no-repeat center right; }
+a[href^="mailto:"] { padding-right: 18px; background: transparent url(../images/icons/icon_mailto.png) no-repeat center right; }
+a[class ="popup"] { padding-right: 18px; background: transparent url(../images/icons/icon_popup.png) no-repeat center right; }
+a[href$='.doc'] { padding-right: 18px; background: transparent url(../images/icons/icon_doc.png) no-repeat center right; }
+a[href$='.xls'] { padding-right: 18px; background: transparent url(../images/icons/icon_xls.png) no-repeat center right; }
+a[href$='.ppt'] { padding-right: 18px; background: transparent url(../images/icons/icon_ppt.png) no-repeat center right; }
+a[rel ~='external'] { padding-right: 18px; background: transparent url(../images/icons/icon_external.png) no-repeat center right; }
+
+/* faviconize script needs some styling */
+img.faviconimg {
+	max-width: 1.1em;
+	margin: 0;
+	padding: 0;
+	margin-left: 2px;
+	border-width: 0px;
+	vertical-align: top;
+	opacity: 0.5;
+}
+
+a:hover img.faviconimg { opacity:1; }
+
+p:hover a img, p:hover + p a img, ul:hover a img, dl:hover a img, table:hover a img{ opacity:1; } 
+
+
+/* -------- page specific stuff -------- */
+
+/* Sortable tables */
+table.sortable span.sortarrow { color: black; padding-left: 0.5em; font-family: sans-serif; }
+table.sortable th { vertical-align: middle; cursor: pointer; }
+
+/* CSS Exp style */
+dt span.expdate { font-size: 0.7em; line-height: 2em; color:gray; position:absolute;right:0em;}
+
+
+/* -------- various media styles -------- */
+
+@media print {
+	html, body { border-style:none; margin: 0px; padding: 0px; font-size: 10pt; width: 100%; background-color: transparent;}
+	h1 { border-style: none; }
+	h1:first-letter { margin: 0px; border-style: none; }
+	#navmenu { display:none !important; }
+	h1, h2, h3 { page-break-after: avoid; }
+	img { width: auto; max-width: 100%; }
+}
+
+@media projection {
+	html { font-size: 1.2em; }
+	body { width: auto; padding-left: 3em; }
+	}
+
+/* voice styles */
+@media speech {
+title { display:block; speak:normal; }
+
+h1, h2, h3 { voice-family: female; }
+p, dl, ul, ol { voice-family: male; }
+
+acronym { speak:spell-out; voice-family: female; }
+abbr[title]::after { content: "This abbreviation means" attr(title); speak:normal; }
+acronym[title]::after { content: "This acronym means" attr(title); speak:normal; }
+}
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="General-Information"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">1 General Information: README</h2>
+
+<p><a name="index-README-1"></a>
+This is the README file for the distribution of ESS version
+
+   <p>12-04-r4761M
+
+   <p>ESS is a GNU Emacs and XEmacs mode for interactive statistical
+programming and data analysis.  Languages supported: the S family (S,
+S-PLUS and R), SAS, BUGS/JAGS, Stata and XLispStat.  ESS grew out of the
+desire for bug fixes and extensions to S-mode and SAS-mode as well as a
+consistent union of their features in one package.
+
+   <p>Installation instructions are provided in sections for both Unix and
+Windows; see below.
+
+   <p>The current development team is led by Martin Maechler since August
+2004. Former project leader A.J. (Tony) Rossini
+(<a href="mailto:rossini@blindglobe.net">rossini@blindglobe.net</a>) did the initial port to XEmacs and has
+been the primary coder.  Martin Maechler
+(<a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a>) and Kurt Hornik
+(<a href="mailto:Kurt.Hornik@R-project.org">Kurt.Hornik@R-project.org</a>) have assisted with the S family and
+XLispStat.  Stephen Eglen (<a href="mailto:stephen@gnu.org">stephen@gnu.org</a>) has worked mostly
+on R support.  Richard M. Heiberger (<a href="mailto:rmh@temple.edu">rmh@temple.edu</a>) has
+assisted with S/S-PLUS development for Windows.  Richard and Rodney
+A. Sparapani (<a href="mailto:rsparapa@mcw.edu">rsparapa@mcw.edu</a>) have done much of the work
+improving SAS batch and interactive support.  Rodney has also
+extended ESS to support BUGS/JAGS and has an interest in improving
+Stata support.
+
+   <p>We are grateful to the previous developers of S-mode (Doug Bates, Ed Kademan,
+Frank Ritter, David M. Smith), SAS-mode (Tom Cook) and Stata-mode (Thomas
+Lumley). 
+<!-- The name is ESS.  Not ESS-mode. -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#License">License</a>
+<li><a accesskey="2" href="#Stability">Stability</a>
+<li><a accesskey="3" href="#Requirements">Requirements</a>
+<li><a accesskey="4" href="#Latest-Version">Latest Version</a>
+<li><a accesskey="5" href="#Installation">Installation</a>
+<li><a accesskey="6" href="#Starting-an-ESS-Process">Starting an ESS Process</a>
+<li><a accesskey="7" href="#New-Features">New Features</a>
+<li><a accesskey="8" href="#Current-Features">Current Features</a>
+<li><a accesskey="9" href="#Reporting-Bugs">Reporting Bugs</a>
+<li><a href="#Mailing-Lists">Mailing Lists</a>
+<li><a href="#Authors">Authors</a>
+</ul>
+
+<div class="node">
+<a name="License"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Stability">Stability</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#General-Information">General Information</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.1 License</h3>
+
+<!-- ESS is free software; you can redistribute it and/or modify it under -->
+<p>The source and documentation of ESS is free software. 
+You can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+
+   <p>ESS is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+in the file COPYING in the same directory as this file for more
+details.
+
+<div class="node">
+<a name="Stability"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#License">License</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.2 Stability</h3>
+
+<p>All recent released versions are meant to be release-quality versions. 
+While some new features are being introduced, we are cleaning up and
+improving the interface.  We know that there are many remaining
+opportunities for documentation improvements, but all contributors are
+volunteers and time is precious. Patches or suggested fixes with bug
+reports are much appreciated!
+
+<div class="node">
+<a name="Requirements"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Latest-Version">Latest Version</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Stability">Stability</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.3 Requirements</h3>
+
+<p>ESS is most likely to work with current/recent versions of the following
+statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
+
+   <p>ESS supports current, and recent, stable versions of GNU Emacs
+(specifically, the 22.x and 23.x series; alpha/beta/pre-release versions
+are NOT SUPPORTED).  XEmacs is currently NOT SUPPORTED, but ESS v. 5.14
+should still work (XEmacs stable 21.4.14 or higher).
+
+   <p>To build the PDF documentation, you will need a version of TeX Live or
+texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
+texinfo RPMs, do NOT include texi2dvi).
+
+<!-- ESS has been tested with -->
+<!-- @itemize @bullet -->
+<!-- @item R >=0.49 -->
+<!-- @item S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0 -->
+<!-- @item S4 -->
+<!-- @item SAS >=9.1 -->
+<!-- @item BUGS 0.5, 0.6 -->
+<!-- @item JAGS 1.0 -->
+<!-- @item Stata >=10.0 (command line only) -->
+<!-- @c is anyone still using this? @item XLispStat >=3.50 -->
+<!-- @end itemize -->
+<!-- on the following platforms -->
+<!-- @itemize @bullet -->
+<!-- @item Linux/x86 (all but BUGS) -->
+<!-- @item Solaris/x86 (all but BUGS and S-PLUS) -->
+<!-- @c cannot confirm this right now @item SGI (all) -->
+<!-- @item MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS) -->
+<!-- @item Apple Mac OS X 10.4-5 (R, JAGS, Stata) -->
+<!-- @end itemize -->
+<!-- with the following versions of emacs -->
+<!-- @itemize @bullet -->
+<!-- @item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1 -->
+<!-- @item XEmacs 21.4.0-8, 21.4.9-13@footnote{ -->
+<!-- require the files.el patch to revert-buffer for the Local Variables -->
+<!-- updating problem}, 21.4.14-15, 21.4.17-22 (betas not supported, but 21.5.23+ may work) -->
+<!-- @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no -->
+<!-- @c longer supported, so an upgrade is recommended if you plan to use ESS. -->
+<!-- @c If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note -->
+<!-- @c that the `custom' library bundled with Emacs 19.34 is too _old_, its API is -->
+<!-- @c incompatible with the `new custom' bundled with recent Emacsen. -->
+<!-- @c The `new custom' for Emacs 19.34 is available for download -->
+<!-- @c @uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.} -->
+<!-- @end itemize -->
+<div class="node">
+<a name="Latest-Version"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Requirements">Requirements</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.4 Getting the Latest Version</h3>
+
+<p>The latest released version of ESS is always available on the web at:
+<a href="http://ess.r-project.org">ESS web page</a> or
+<a href="http://lib.stat.cmu.edu/general/ESS/">StatLib</a>
+
+<h4 class="subsection">1.4.1 ESS subversion repository</h4>
+
+<!-- There no longer is an anonymous CVS repository for ESS, due to lack of -->
+<!-- interest, little demand, and problems with security. -->
+<!-- text below modified from R-admin.texi (thanks to Kurt for the tip). -->
+<p>The latest development version of ESS is available via
+<a href="https://svn.R-project.org/ESS/">https://svn.R-project.org/ESS/</a>, the ESS Subversion repository.  If
+you have a Subversion client (see <a href="http://subversion.tigris.org/">http://subversion.tigris.org/</a>),
+you can download the sources using:
+<pre class="smallexample">     % svn checkout https://svn.r-project.org/ESS/trunk <var>path</var>
+</pre>
+   <p class="noindent">which will put the ESS files into directory <var>path</var>.  Later,
+within that directory, `svn update' will bring that directory up to
+date.  Windows-based tools such as TortoiseSVN are also available for
+downloading the files.  Alternatively, you can browse the sources with a
+web browser at: <a href="https://svn.r-project.org/ESS/trunk">ESS SVN site</a>.  However, please use a subversion client instead to minimize the
+load when retrieving.
+
+   <p>If you remove other versions of ESS from your emacs load-path, you can
+then use the development version by adding the following to .emacs:
+
+<pre class="example">     (load "/path/to/ess-svn/lisp/ess-site.el")
+</pre>
+   <p>Note that https is required, and that the SSL certificate for the
+Subversion server of the R project is
+
+<pre class="smallexample">     Certificate information:
+      - Hostname: svn.r-project.org
+      - Valid: from Jul 16 08:10:01 2004 GMT until Jul 14 08:10:01 2014 GMT
+      - Issuer: Department of Mathematics, ETH Zurich, Zurich, Switzerland, CH
+      - Fingerprint: c9:5d:eb:f9:f2:56:d1:04:ba:44:61:f8:64:6b:d9:33:3f:93:6e:ad
+</pre>
+   <p class="noindent">(currently, there is no &ldquo;trusted certificate&rdquo;).  You can accept this
+certificate permanently and will not be asked about it anymore.
+
+<h4 class="subsection">1.4.2 Git for development</h4>
+
+<p>For development and experimentation on new features, there is now a
+GitHub branch for <acronym>ESS</acronym>, available at <a href="https://github.com/emacs-ess/ESS">https://github.com/emacs-ess/ESS</a>.
+
+<!-- NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation) -->
+<!-- vvvvvvvvvvvv node name  *must* match the one in ./ess.texi ! -->
+<div class="node">
+<a name="Installation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Starting-up">Starting up</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Latest-Version">Latest Version</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.5 Installation</h3>
+
+<div class="node">
+<a name="Unix-installation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Microsoft-Windows-installation">Microsoft Windows installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.6 Unix installation</h3>
+
+<!-- THIS IS A REPLACEMENT FOR THE UNIX PORTION OF inst_tar.texi -->
+<p>For a <b>Unix or Unix-like installation</b>, please follow the next steps. 
+Retrieve the latest tgz file (<samp><span class="file">ess-VERSION.tgz</span></samp>) from
+<a href="http://ess.r-project.org/index.php?Section=download">ESS downloads area</a>.
+
+   <p><em>GNU Emacs Simple Instructions:</em> for recent versions of Emacs (22.x or higher)
+and ESS, the installation process is simple.
+
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> into
+the directory <samp><span class="file">PREFIX/site-lisp</span></samp>
+where <samp><span class="file">PREFIX</span></samp> is appropriate for GNU Emacs on your system;
+<samp><span class="file">PREFIX</span></samp> will most likely be either
+<samp><span class="file">/usr/share/emacs</span></samp> or <samp><span class="file">/usr/local/share/emacs</span></samp>
+<!-- which exists for packages like @ESS{} -->
+(on Mac OS X, <samp><span class="file">PREFIX</span></samp> will most likely be something like
+<samp><span class="file">/Applications/Emacs.app/Contents/Resources</span></samp>):
+     <pre class="example">          GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp
+          Unix tar % gunzip &lt; ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp
+</pre>
+     <li>Then, add the line
+     <pre class="example">          (require 'ess-site)
+</pre>
+     <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be that you have an older version of Emacs, some other problem
+with your installation or you are not a sysadmin.  Whatever the case,
+you may need to edit <samp><span class="file">ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">~/ess</span></samp>
+or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">ess-site.el</span></samp> will not be lost if you update Emacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
+</pre>
+     <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help@r-project.org">ess-help@r-project.org</a>
+explicitly describing your problem and your environment
+including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+   <p><em>XEmacs Simple Instructions:</em> for recent versions of XEmacs (21.x or higher)
+and ESS, the installation process is simple.
+
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.tgz</span></samp> when you are in
+the current working directory of <samp><span class="file">/usr/local/LOCATION/xemacs/site-packages</span></samp>
+which exists for packages like <acronym>ESS</acronym>
+where <samp><span class="file">LOCATION</span></samp> is <samp><span class="file">lib</span></samp> for legacy installations and <samp><span class="file">share</span></samp>
+now (and for Mac OS X create a link to it from the directory
+<samp><span class="file">/Applications/XEmacs.app/Contents/Resources/site-lisp</span></samp>):
+     <pre class="example">          %prompt gtar zxf ess-VERSION.tgz            # for GNU tar
+          %prompt gunzip &lt; ess-VERSION.tgz | tar xf - # for Unix tar
+</pre>
+     <li>Then, add the line
+     <pre class="example">          (require 'ess-site)
+</pre>
+     <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be that you have an older version of XEmacs, some other problem
+with your installation or you are not a sysadmin.  Whatever the case,
+you may need to edit <samp><span class="file">ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">~/ess</span></samp>
+or <samp><span class="file">/usr/local/ess</span></samp> and unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">ess-site.el</span></samp> will not be lost if you update XEmacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "~/ess/ess-VERSION/lisp/ess-site")
+</pre>
+     <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help@r-project.org">ess-help@r-project.org</a>
+explicitly describing your problem and your environment
+including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+     <ol type=1 start=1>
+
+     <li><b>(OPTIONAL) COMPILING E-LISP</b>:
+
+     <p>Edit the default locations of <code>LISPDIR</code>, <code>INFODIR</code> and
+<code>ETCDIR</code> in Section 1 of <samp><span class="file">Makeconf</span></samp> (if you are
+using XEmacs, then edit the XEmacs subsection in Section 1).
+
+     <p>You can compile those files by:
+     <pre class="example">          make all
+</pre>
+     <p>When that completes successfully, install the compiled files:
+     <pre class="example">          make install
+</pre>
+        </ol>
+
+<!-- @node Microsoft Windows installation, , Unix installation, Installation -->
+<div class="node">
+<a name="Microsoft-Windows-installation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Requirements">Requirements</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Unix-installation">Unix installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Installation">Installation</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.7 Microsoft Windows installation</h3>
+
+<!-- THIS IS A REPLACEMENT FOR THE WINDOWS PORTION OF inst_tar.texi -->
+<p>For <b>Microsoft Windows installation</b>, please follow the next steps. 
+Retrieve the latest zip file (<samp><span class="file">ess-VERSION.zip</span></samp>) from
+<a href="http://ess.r-project.org/index.php?Section=download">ESS downloads area</a>.
+
+   <p><em>GNU Emacs Simple Instructions:</em> for recent versions of Emacs (22.x or higher)
+and ESS, the installation process is simple.
+
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> (by
+double clicking on it and selecting &ldquo;Extract all files&rdquo;
+which launches the Folders Extraction Wizard)
+into an <samp><span class="file">ESS</span></samp> sub-directory of the <samp><span class="file">site-lisp</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
+If GNU Emacs was installed in the default location, then this
+directory can be found somewhere like
+<samp><span class="file">C:\Program Files\GNU Emacs\emacs-22.x\site-lisp</span></samp>
+
+     <li>Add the line
+     <pre class="example">          (require 'ess-site)
+</pre>
+     <p>to <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be you have an older version of Emacs or some other problem
+with your installation.  Either way, you may need to edit
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">C:\ess</span></samp> and
+unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp>
+will not be lost if you update Emacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
+</pre>
+     <p>in <samp><span class="file">~/.emacs</span></samp> and restart Emacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help@r-project.org">ess-help@r-project.org</a>
+explicitly describing your problem and your environment
+including operating system, Emacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+   <p><em>XEmacs Simple Instructions:</em> for recent versions of XEmacs (21.x or higher),
+the installation process is much simpler.  Hopefully, these
+simple instructions will work for you.  If not, then more
+detailed, manual instructions follow.
+
+     <ol type=1 start=1>
+<li>Extract all the files from <samp><span class="file">ess-VERSION.zip</span></samp> (by
+double clicking on it and selecting &ldquo;Extract all files&rdquo;
+which launches the Folders Extraction Wizard)
+into the <samp><span class="file">site-packages</span></samp> directory that exists for packages like <acronym>ESS</acronym>. 
+If XEmacs was installed in the default location, then this
+directory can be found at
+<samp><span class="file">C:\Program Files\XEmacs\site-packages</span></samp>.
+
+     <li>XEmacs requires the <code>HOME</code> environment variable to be defined.  You can
+create it by visiting the following dialog:
+<code>My Computer-&gt;Control Panel-&gt;System-&gt;Advanced-&gt;Environment Variables</code>
+In the User variables window, press New.  And create a variable
+named <code>HOME</code> with a value something like (you must
+use forward slashes <code>/</code> rather than backslashes <code>\</code>)
+<code>c:/Documents and Settings/%USERNAME%/Application Data</code>.  Then press OK for that
+window and press OK for the main window.  <em>If you also have GNU Emacs
+installed, GNU Emacs will recognize </em><code>HOME</code><em> and expand </em><code>~</code><em> accordingly.</em>
+
+     <li>Now launch XEmacs and do a <code>C-x C-f</code> followed by a <code>~</code>. 
+From the Subdir menu, select Create Directory, and enter <code>.xemacs</code>
+
+     <li>Add the line
+     <pre class="example">          (require 'ess-site)
+</pre>
+     <p>to <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the simple instructions
+were most likely successful.  If not, then read further.
+
+     <li>It could be you have an older version of XEmacs or some other problem
+with your installation.  Either way, you may need to edit
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp> manually.  If that is the case,
+then you should create a directory just for <acronym>ESS</acronym> like <samp><span class="file">C:\ess</span></samp> and
+unpack <acronym>ESS</acronym> there.  That way, your changes to
+<samp><span class="file">C:\ess\ess-VERSION\lisp\ess-site.el</span></samp>
+will not be lost if you update XEmacs later.
+
+     <li>Replace the line above with
+     <pre class="example">          (load "C:/ess/ess-VERSION/lisp/ess-site")
+</pre>
+     <p>in <samp><span class="file">~/.xemacs/init.el</span></samp> and restart XEmacs.
+
+     <li>If you see a buffer named <samp><span class="file">*ESS*</span></samp>, then the manual instructions
+were most likely successful.  If not, then send a query to
+<a href="mailto:ess-help@r-project.org">ess-help@r-project.org</a>
+explicitly describing your problem and your environment
+including operating system, XEmacs version, <acronym>ESS</acronym> version, etc.
+        </ol>
+
+   <p>Now, you should be ready to use <acronym>ESS</acronym>.  For example, to edit
+statistical programs, load the files with the requisite extensions
+(".sas" for SAS, ".S" or "s" or "q" or "Q" for S-PLUS, ".r" or ".R" for
+R, and ".lsp" for XLispStat).  One further step is needed if you wish to
+run statistical processes, see below.
+
+   <p>To run statistical processes under <acronym>ESS</acronym>, Windows users will need to make
+sure that the directories for the software they will be using is in the
+PATH environment variable.
+
+   <p>On Windows NT/2000/XP, add the directories to the PATH using the
+<code>My Computer-&gt;Control Panel-&gt;System-&gt;Advanced-&gt;Environment Variables</code> menu. 
+Note that the directory containing the program is
+added to the PATH, not the program itself.  One such line is needed
+for each software program.  Be sure to use the abbreviation
+<code>progra~1</code> and not the long version with embedded blanks as
+this may cause problems.  Also, make sure to use backslashes <code>\</code>
+since Windows requires them.
+
+   <p>An alternative, for R users, is that rather than adjusting the PATH
+variable, you can add the following to your emacs initialization file
+(and restart emacs):
+<pre class="example">     (setq inferior-R-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+</pre>
+   <p>This assumes that you have installed R-2.2.1 in the default location. 
+Change the path otherwise to point to other locations.
+
+   <p>Windows users who place S-PLUS anywhere other than the default
+location will also need to add the following three lines (properly
+adjusted for their location):
+<pre class="example">     (setq-default inferior-S+6-program-name
+         "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
+     (setq-default inferior-Sqpe+6-SHOME-name
+         "c:/progra~1/Insightful/SPLUS70")
+     (setq-default inferior-Sqpe+6-program-name
+         "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
+</pre>
+   <p>The above example uses the default location of S-PLUS in
+<code>c:\progra~1\Insightful</code>.  Please note that <acronym>ESS</acronym>
+considers S-PLUS 6, 7, and 8 to be variants of S+6.
+
+   <p>These users may also need to modify the emacs variable <code>ess-SHOME-versions</code>
+to match their installation in order to get the full set of S-PLUS versions
+on their machine into the <acronym>ESS</acronym> menu.
+
+   <p>To start the S-PLUS [678].x GUI from ESS under emacs:
+     <ol type=1 start=1>
+<li>If you use Cygwin bash as your primary shell, then
+     <pre class="example">          M-x S
+          (or <code>M-x S+6</code>).
+</pre>
+     <li>If you use the MSDOS prompt window as your primary shell, then
+     <pre class="example">          M-x S+6-msdos
+</pre>
+     </ol>
+You will then be
+asked for a pathname ("S starting data directory?"), from which to
+start the process.  The prompt will propose your current directory
+as the default.  ESS will start the S-PLUS GUI.  There will be
+slight delay during which emacs is temporarily frozen.  ESS will arrange for
+communication with the S-PLUS GUI using the DDE protocol. 
+Send lines or regions
+from the emacs buffer containing your S program (for example,
+<samp><span class="file">myfile.s</span></samp>) to the S-PLUS Commands Window with the
+<code>C-c C-n</code> or <code>C-c C-r</code> keys. 
+(If you are still using S-PLUS 4.x or 2000,\
+then use <code>M-x S+4</code> or <code>M-x S+4-msdos</code>.)
+
+   <p>To start an S-PLUS [678].x session inside an emacs buffer&mdash;and
+without the S-PLUS GUI:
+<pre class="example">     M-x Sqpe
+     (or <code>M-x Sqpe+6</code>).
+</pre>
+   <p>This works with both the bash and msdos shells. 
+You will then be asked for a pathname ("S starting data
+directory?"), from which to start the process.  The prompt will
+propose your current directory as the default. 
+You get Unix-like behavior, in particular the entire
+transcript is available for emacs-style search commands. 
+Send lines or regions from the emacs buffer containing your S
+program (for example, <samp><span class="file">myfile.s</span></samp>) to the *S+6* buffer with the
+<code>C-c C-n</code> or <code>C-c C-r</code> keys. 
+Interactive graphics are available with Sqpe by using the java
+library supplied with S-PLUS 6.1 and newer releases. 
+Enter the commands:
+<pre class="example">     library(winjava)
+     java.graph()
+</pre>
+   <p>Graphs can be saved from the <code>java.graph</code> device
+in several formats, but not PostScript.   If you
+need a PostScript file you will need to open a separate
+<code>postscript</code> device. 
+(If you are still using S-PLUS 4.x or 2000, then use <code>M-x Sqpe+4</code>.)
+
+   <p>To connect to an already running S-PLUS GUI (started, for example,
+from the S-PLUS icon):
+<pre class="example">     M-x S+6-existing
+</pre>
+   <p>or
+<pre class="example">     M-x S+6-msdos-existing
+</pre>
+   <p>You will then be
+asked for a pathname ("S starting data directory?"), from which to
+start the process.  The prompt will propose your current directory
+as the default.  ESS will arrange for
+communication with the already running S-PLUS GUI using the DDE protocol. 
+Send lines or regions
+from the emacs buffer containing your S program (for example,
+<samp><span class="file">myfile.s</span></samp>) to the S-PLUS Commands Window with the
+<code>C-c C-n</code> or <code>C-c C-r</code> keys. 
+(If you are still using S-PLUS 4.x or 2000,
+ then use <code>M-x S+4-existing</code> or <code>M-x S+4-msdos-existing</code>.)
+
+   <p>If you wish to run R, you can start it with:
+<pre class="example">     M-x R
+</pre>
+   <p>XLispStat can not currently be run with
+<pre class="example">     M-x XLS
+</pre>
+   <p>Hopefully, this will change.  However, you can still edit with
+emacs, and cut and paste the results into the XLispStat
+*Listener* Window under Microsoft Windows.
+
+<div class="node">
+<a name="Starting-up"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Current-Features">Current Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.8 Starting an ESS process</h3>
+
+<p>To start an S session on Unix or on Windows when you
+use the Cygwin bash shell, simply type <kbd>M-x S RET</kbd>.
+
+   <p>To start an S session on Windows when you
+use the MSDOS prompt shell, simply type <kbd>M-x S+6-msdos RET</kbd>.
+
+<div class="node">
+<a name="Current-Features"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#New-Features">New Features</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Starting-up">Starting up</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.9 Current Features</h3>
+
+     <ul>
+<li>Languages Supported:
+          <ul>
+  <li>S family (S 3/4, S-PLUS and R)
+  <li>SAS
+  <li>BUGS/JAGS
+  <li>Stata
+  <li>XLispStat including Arc and ViSta
+  </ul>
+     <li>Editing source code (S family, SAS, BUGS/JAGS, Stata)
+          <ul>
+  <li>Syntactic indentation and highlighting of source code
+  <li>Partial evaluation of code
+  <li>Loading and error-checking of code
+  <li>Source code revision maintenance
+  <li>Batch execution (SAS, BUGS/JAGS)
+  <li>Use of imenu to provide links to appropriate functions
+  </ul>
+     <li>Interacting with the process (S family, SAS, Stata)
+          <ul>
+  <li>Command-line editing
+  <li>Searchable Command history
+  <li>Command-line completion of S family object names and file names
+  <li>Quick access to object lists and search lists
+  <li>Transcript recording
+  <li>Interface to the help system
+  </ul>
+     <li>Transcript manipulation (S family, Stata)
+          <ul>
+  <li>Recording and saving transcript files
+  <li>Manipulating and editing saved transcripts
+  <li>Re-evaluating commands from transcript files
+  </ul>
+     <li>Help File Editing (R)
+          <ul>
+  <li>Syntactic indentation and highlighting of source code. 
+  <li>Sending Examples to running ESS process. 
+  <li>Previewing
+  </ul>
+     </ul>
+
+<div class="node">
+<a name="New-Features"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Reporting-Bugs">Reporting Bugs</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Current-Features">Current Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.10 New Features</h3>
+
+     <ul>
+Changes/New Features in 12.04:
+          <ul>
+<li><acronym>ESS</acronym>: Reverting new behavior of 12.03, <kbd>TAB</kbd> in <code>ess-mode</code>
+      no longer auto-completes by default.  If you want smart auto
+      completion in R and S functions and scripts, similarly to i<acronym>ESS</acronym><!-- /@w -->
+      behavior, set the variable <code>ess-tab-complete-in-script</code> to
+      <code>t</code>. 
+</ul>
+
+     <p>Changes/New Features in 12.03:
+          <ul>
+<li><acronym>ESS</acronym> indentation: new offset variable <code>ess-arg-function-offset-new-line</code>
+controlling for the indentation of lines immediately following open
+'('. This is useful to shift backwards function arguments after a long
+function call expression:
+
+          <pre class="verbatim">            a &lt;- some.function(
+                   arg1,
+                   arg2)
+     </pre>
+
+          <p>instead of the old
+
+          <pre class="verbatim">            a &lt;- some.function(
+                               arg1,
+                               arg2)
+     </pre>
+
+          <p>If '(' is not followed by new line the behavior is unchanged:
+
+          <pre class="verbatim">            a &lt;- some.function(arg1,
+                               arg2)
+     </pre>
+
+          <p>This variable should be set as part of indentation style lists, or in
+ess-mode hook. 
+<li><acronym>ESS[R]</acronym>: <kbd>C-c .</kbd> sets (indentation) style. 
+<li><acronym>ESS</acronym>: In ESS buffers <code>yank</code>(<kbd>C-y</kbd>) command accepts
+ double argument <kbd>C-u C-u</kbd> to paste commands only. It deletes any
+lines not beginning with a prompt, and then removes the prompt from
+those lines that remain. Useful to paste code from emails,
+documentation, inferior ESS buffers or transcript files. 
+<li>Documentation: ESS user manual has been rearranged and
+completed with several new chapters and sections to reflect newly added
+features (&ldquo;Completion&rdquo;, &ldquo;Developing with ESS&rdquo;, &ldquo;ESS tracebug&rdquo;,
+&ldquo;ESS developer&rdquo;, &ldquo;ESS ElDoc&rdquo;, &ldquo;IDO Comppletion&rdquo; and &ldquo;Evaluating
+Code&rdquo;)
+<li>RefCard: Reference card was updated to include new features. 
+<li>Eldoc: Eldoc was rewritten and is activated by default. 
+See <code>ess-use-eldoc</code>, <code>ess-eldoc-show-on-symbol</code>,
+<code>ess-eldoc-abbreviation-style</code> variables for how to change the default
+behavior. <em>Note:</em> <code>skeleton-pair-insert-maybe</code> prohibits eldoc
+display, on <kbd>(</kbd> insertion. 
+<li><acronym>ESS[R]</acronym>: Eldoc shows arguments of a generic function whenever found. 
+<li><acronym>ESS</acronym>: <kbd>TAB</kbd> in <code>ess-mode</code> now indents and completes,
+if there is nothing to indent. Set
+<code>ess-first-tab-never-completes-p</code> to <code>t</code> to make <kbd>TAB</kbd>
+never complete on first invocation. Completion mechanism is similar to
+the completion in the <code>inferior-ess-mode</code> &ndash; a filename expansion
+is tried, if not found ESS completes the symbol by querying the
+process. 
+<li><acronym>ESS</acronym> for emacs version 24 or higher: ESS is  fully compatible with
+the emacs 24 completion scheme, i.e. all the completion is done by
+<code>completion-at-point</code>. Also in accordance with emacs conventions,
+ESS doesn't bind <kbd>M-TAB</kbd> for emacs 24 or higher. <kbd>M-TAB</kbd> calls the
+default <code>complete-symbol</code>.
+
+          <li><acronym>ESS[R]</acronym>: Out of the box integration with <code>Auto
+Completion</code> mode (http://cx4a.org/software/auto-complete/). Three AC
+sources <code>ac-source-R-args</code>, <code>ac-source-R-objects</code> and
+<code>ac-source-R</code> are provided. The last one combines the previous two
+and makes them play nicely together. Set <code>ess-use-auto-complete</code> to
+<code>t</code> to start using it.  Refer to documentation string of
+<code>ac-use-auto-complete</code> for further information. 
+<li><acronym>ESS[R]</acronym>: New unified and fast argument completion system,
+comprised of <code>ess-funname.start</code>, <code>ess-function-arguments</code>,
+<code>ess-get-object-at-point</code>. Eldoc and auto-completion integration
+are using this system. 
+<li><acronym>ESS</acronym>: <code>ess-switch-to-end-of-ESS</code>(<kbd>C-c C-z</kbd>),
+and <code>ess-switch-to-ESS</code>(<kbd>C-c C-y</kbd>): Automatically start the
+process whenever needed. 
+<li><acronym>ESS[R]</acronym>: <code>roxy</code> knows about previewing text version of the
+documentation. Bound to <kbd>C-c C-e t</kbd>. 
+<li><acronym>ESS[R]</acronym>: Solved the &ldquo;nil filename&rdquo; bug in roxygen support. 
+<li><acronym>ESS[R]</acronym>: <code>ess-tracebug</code> is now part of <acronym>ESS</acronym>:
+
+          <p>New Features:
+
+               <ul>
+<li>Source injection: Tracebug now can inject source references on the
+fly during code evaluation, i.e. you don't have to source your file, but
+just evaluate your code in normal fashion. Variable
+<code>ess-tracebug-inject-source-p</code> controls this behavior - if t,
+always inject source reference, if <code>'function</code>, inject only for
+functions (this is the default), if <code>nil</code>, never inject.
+
+               <p>During the source injection the value of `ess-eval-visibly-p' is
+ignored. 
+<li>Org-mode support: Visual debugger is now aware of the
+temporary org source editing buffer (<kbd>C-c '</kbd>) and jumps through this
+buffers if still alive, or in original org buffer otherwise. 
+<li>New keys in watch mode: <kbd>?</kbd> and <kbd>d</kbd>
+<li>Two new hooks: ess-tracebug-enter-hook and ess-tracebug-exit-hook
+</ul>
+
+          <li><acronym>ESS[R]</acronym>: New package <code>ess-developer</code> to evaluate <code>R</code>
+code directly in the package environment and namespace. It can be
+toggled on and off with <kbd>C-c d t</kbd>. When <code>ess-developer</code> is on
+all ESS evaluation commands are redefined to evaluate code in
+appropriate environments. Add package names to the list of your
+development packages with <kbd>C-d a</kbd>, and remove with <kbd>C-d
+r</kbd>. Source the current file with <kbd>C-d s</kbd>.Evaluation function which
+depend on <code>`ess-eval-region'</code> ask for the package to source the
+code into, <code>ess-eval-function</code> and alternatives search for the
+function name in the development packages' environment and namespace and
+insert the definition accordingly. See the documentation section
+&ldquo;Developing with ESS/ESS developer&rdquo; for more details.
+
+          <li><acronym>ESS[R]</acronym> help system:
+
+          <p>New Features:
+
+               <ul>
+<li><kbd>q</kbd> quits window instead of calling <code>ess-switch-to-end-of-ESS</code>. 
+This is consistent with emacs behavior help and other special buffers (<em>breaking change</em>). 
+<li><kbd>k</kbd> kills window without asking for the name (pointed by Sam Steingold)
+<li>Help map inherits from <code>special-mode-map</code> as sugested by Sam Steingold. 
+<li>Package index: new function <code>ess-display-index</code> bound to
+<kbd>i</kbd> in help mode map. 
+<li>Package vignettes: new function <code>ess-display-vignettes</code> bound to
+<kbd>v</kbd> in help mode map. 
+<li>Display help in HTML browser: new function <code>ess-display-help-in-browser</code> bound to
+<kbd>w</kbd> in help mode map. It depends on <code>R</code>'s <code>browser</code>
+option. 
+<li>New custom variable <code>ess-help-pop-to-buffer</code>: if non-nil
+<acronym>ESS</acronym> help buffers are given focus on display. The default is
+<code>t</code> (<em>breaking change</em>). 
+<li>New menu entries for the above functions. 
+<li>Bogus help buffers are no longer generated by default, i.e. 
+buffers of the form &ldquo;No documentation for 'foo' in specified packages and libraries:
+you could try '??foo' &rdquo;.  <code>ess-help-kill-bogus-buffers</code> now defaults to
+<code>t</code>.  Beware, there may be instances where the default is unsatisfactory
+such as debugging and/or during R development.  Thanks to Ross Boylan for
+making the suggestion, Sam Steingold for reminding us of this variable and
+Martin Maechler for the warning. 
+</ul>
+          <li><acronym>ESS</acronym> now uses <code>IDO</code> completing read functionality
+for all the interactive requests. It uses ido completion
+mechanism whenever available, and falls back on classical
+completing-read otherwise. You can set <code>ess-use-ido</code> to nil if you
+don't want the IDO completion. See the documentation string of
+<code>ess-use-ido</code> for more information about <code>IDO</code> and <acronym>ESS</acronym>
+configuration.
+
+          <li><acronym>ESS[S]</acronym>: &ldquo;<kbd>,</kbd>&ldquo; is bound to ess-smart-comma:
+If comma is invoked at the process marker of an ESS inferior
+buffer, request and execute a command from <code>`ess-handy-commands'</code>
+list. If <code>ess-R-smart-operators</code> is t <code>`ess-smart-comma</code>
+also inserts &ldquo; &ldquo; after comma. 
+<li><acronym>ESS[S]</acronym>, notably <code>R</code>: Variable <code>`ess-handy-commands'</code>
+stores an alist of useful commands which are called by <code>ess-smart-comma</code> in
+the inferior buffer.
+
+          <p>Currently containing:
+
+               <dl>
+<dt>change-directory<dd>    <code>ess-change-directory</code>
+<br><dt>help-index<dd>          <code>ess-display-index</code>
+<br><dt>help-object<dd>         <code>ess-display-help-on-object</code>
+<br><dt>vignettes<dd>           <code>ess-display-vignettes</code>
+<br><dt>objects[ls]<dd>         <code>ess-execute-objects</code>
+<br><dt>search<dd>              <code>ess-execute-search</code>
+<br><dt>set-width<dd>           <code>ess-execute-screen-options</code>
+<br><dt>install.packages<dd>    <code>ess-install.packages</code>
+<br><dt>library<dd>             <code>ess-library</code>
+<br><dt>setRepos<dd>            <code>ess-setRepositories</code>
+<br><dt>sos<dd>                 <code>ess-sos</code>
+</dl>
+
+          <p>Handy commands: <code>ess-library</code>, <code>ess-install.packages</code>, etc -
+ask for item with completion and execute the correspond
+command. <code>ess-sos</code> is a interface to <code>findFn</code> function in
+package <code>sos</code>. If package <code>sos</code> is not found, ask user for
+interactive install.
+
+          <li><acronym>ESS</acronym>: New dynamic mode line indicator: Process status is automatically
+reflected in all mode-lines of associated with the process
+buffers. Particularly useful for displaying debug status of
+<code>ess-tracebug</code> and developer status of <code>ess-developer</code> in all
+associated buffers.
+
+          <li><acronym>ESS</acronym>: New <code>ess-completing-read</code> mechanism: <acronym>ESS</acronym> uses
+<code>ido</code> completions whenever possible. Variable <code>ess-use-ido</code>
+controls whether to use ido completion or not. Active by default.
+
+          <li><acronym>ESS</acronym> now supports comint fields for output and input
+detection. This feature is not used by default, but might be useful in
+the future.
+
+          <li><acronym>ESS[S]</acronym>: New custom variable <code>inferior-ess-S-prompt</code> to
+customize prompt detection regular expression in the inferior ESS
+buffers. You can customize this variable to enhance comint navigation
+(<code>comint-previous-prompt</code> and <code>comint-next-prompt</code>) the
+inferior buffers.
+
+          <li><acronym>ESS[R]</acronym>: Internal <code>R</code> completion retrieval
+(<code>ess-R-complete-object-name</code>)  was rewritten and is faster now.
+
+          <li><acronym>ESS</acronym> is using process plist to store process specific variables,
+as opposed to buffer local variables as it was using before. The use of
+buffer local variables to store process variables is discouraged.
+
+          <li><acronym>ESS</acronym>: new functions to manipulate process plists:
+<code>ess-process-get</code> and <code>ess-process-set</code>.
+
+          <li><acronym>ESS</acronym>: Internal process waiting mechanism was completely rewritten. ESS
+no more relies on prompt regular expressions for the prompt
+detection. The only requirement on the primary process prompt is to end
+in <code>&gt; </code>. This could be overwritten by setting
+<code>inferor-ess-primary-prompt</code>.
+
+          <li><acronym>ESS[S]</acronym>, notably <code>R</code>: Saved command history:
+ <var>ess-history-file</var> now accepts <code>t</code> (default), <code>nil</code>, or a
+ file name. By setting it to <code>nil</code> no command line history is saved
+ anymore.  <var>ess-history-directory</var> now allows to have the history
+ all saved in one &ldquo;central&rdquo; file. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+<li><acronym>ESS[R]</acronym>: <kbd>C-c .</kbd> to set (indentation) style.
+
+          <li><acronym>ESS[R]</acronym>: Functions with non-standard names (for example 'aaa-bbb:cc') are
+properly handled by font-lock and evaluation routines. 
+<li><acronym>ESS[R]</acronym>:Several regexp bugs (described in etc/R-ESS-bugs.el) were
+fixed in <code>ess-get-words-from-vector</code> and <code>ess-command</code>. 
+</ul>
+
+     <p>Changes/New Features in 5.14:
+          <ul>
+<li><acronym>ESS[BUGS/JAGS]</acronym>:  Batch BUGS is back!  For recent OpenBUGS
+versions, 3.0.8+, a batch BUGS script is once again available,
+but for Linux only.  Therefore, since it seems that BUGS and JAGS must
+co-exist (rather than a transition from BUGS to JAGS), .bug files are
+now in <acronym>ESS[BUGS]</acronym> mode and .jag files are in <acronym>ESS[JAGS]</acronym> mode.  <acronym>ESS[BUGS]</acronym> now
+works like <acronym>ESS[JAGS]</acronym> rather than the original mode <acronym>ESS[BUGS]</acronym> mode which
+was difficult to maintain.  Although, <acronym>ESS[BUGS]</acronym> appears to work,
+there still may be some features missing as well as bugs.
+
+          <li><acronym>ESS[R]</acronym>: New customizable variable <code>ess-swv-plug-into-AUCTeX-p</code>
+Commands to Sweave current file and LaTeX the result are now available
+to AUCTeX users, if this variable is set to <code>t</code>.
+
+          <li><acronym>ESS[S]</acronym>: <kbd>C-c C-c</kbd>
+(<code>ess-eval-function-or-paragraph-and-step</code>) is now skipping over
+comments as the other paragraph functions do. 
+It (and similar functions) should no longer wrongly find
+&lsquo;<samp><span class="samp">function()</span></samp>&rsquo; beginnings inside comments or strings.
+
+          <li><acronym>ESS[SAS]</acronym>: improved by better support for GNU Emacs
+</ul>
+
+     <p>Changes/New Features in 5.13:
+          <ul>
+<li><acronym>ESS[R]</acronym>: On Windows, for R 2.12.0 and later, the Rterm executables
+ (in subdirectories i386 / x64) now are found as well as for earlier R versions. 
+<li><acronym>ESS[S+]</acronym>: on Windows, both 32- and 64-bit versions of S+ (&ldquo;S-PLUS&rdquo;)
+ are found now and made available on the menu. 
+<li><acronym>ESS[R]</acronym>: When prompting for a starting directory, the R version is
+ (always?) correct now. 
+<li><acronym>ESS[R]</acronym>: on non-Windows platforms, the <code>use-dialog-box</code>
+ variable is no longer temporarily changed (to <code>nil</code> for R-x.y.z version
+ functions and to <code>t</code> for <samp><span class="command">R</span></samp> itself), but rather the user
+ customization is obeyed. 
+<li><acronym>ESS[R]</acronym>: more Roxygen improvements. 
+<li>`Rd-preview-help' now generates preview buffers with navigation
+facilities the same as regular help buffers. 
+<li><acronym>ESS</acronym>: New functions and keys C-c [up] / [down]
+ for evaluating the buffer &ldquo;from beginning till here&rdquo;. 
+</ul>
+
+     <p>Changes/New Features in 5.12:
+          <ul>
+<li><acronym>ESS[SAS]</acronym> Font-locking:
+ update of PROCs keywords (up to SAS 9.22); error/warnings. 
+<li><acronym>ESS[R]</acronym>: Roxygen improvements: S4 classes;
+ also optionally keep spaces when filling arguments
+<li><acronym>ESS[Rd]</acronym>: support new keywords:
+ section-name \subsection plus a dozen &ldquo;new&rdquo; keywords; should match R
+ 2.12.x now. 
+<li><samp><span class="command">ess-display-help-on-object</span></samp> (<kbd>C-c C-v</kbd>)
+ now <em>caches</em> the list of topics, thus speeding up the improvement
+ feature introduced in 5.9. 
+</ul>
+
+     <p>Changes/New Features in 5.11:
+          <ul>
+<li>Filename completion within buffers now adds only trailing
+characters to complete the filename, rather than expanding to an
+absolute file path.  This filename completion is bound to the TAB key.
+
+          <li><kbd>M-n P</kbd> in Sweave buffers now prompts for the command to run
+instead of using <samp><span class="command">pdflatex</span></samp> unconditionally, offering completion from
+customizable collection <code>ess-swv-pdflatex-commands</code>, the first of
+which is taken as default and that defaults to <samp><span class="command">texi2pdf</span></samp>. 
+<li><kbd>M-RET</kbd> is now also bound in S language (R and S+) buffers
+to <samp><span class="command">ess-use-this-dir</span></samp>. It sends <code>setwd(..)</code> to the S process
+to set the working directory to the one of the source file. 
+</ul>
+
+     <p>Changes/New Features in 5.10:
+          <ul>
+<li><kbd>M-RET</kbd> in *S* buffers is now bound to
+<code>ess-dirs</code>.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+<code>setwd()</code> within a *S* process. 
+</ul>
+
+     <p>Changes/New Features in 5.9:
+          <ul>
+<li>Toolbar:  The toolbar now has an icon for starting Splus. 
+<li>Indentation: New documentation and code has been added to make it
+easier to change how ESS indents code.  In particular, see
+<code>ess-default-style</code>, <code>ess-own-style-list</code> and the documention
+subsection &ldquo;Changing indentation styles&rdquo;. 
+<li><samp><span class="command">ess-display-help-on-object</span></samp> (<kbd>C-c C-v</kbd>) now offers
+ completion candidates for help file aliases, in addition to object
+ names. 
+<li>Font locking: is now turned on
+ even without <samp><span class="command">window-system</span></samp> is <code>nil</code>, whenever
+ <var>ess-font-lock-mode</var> is non-nil, i.e., by default. 
+<li><acronym>ESS</acronym> script editing: ess-eval-deactivate-mark default is now t,
+ as suggested by Leo Alekseyev and subsequent &ldquo;unanimous&rdquo; ESS-help
+ discussion. 
+<li><acronym>ESS[R]</acronym>: Editing support for &ldquo;#!&rdquo; (Rscript / littler) editing,
+ thanks to Jeffrey Arnold. 
+<li><acronym>ESS[R]</acronym>: Now finds all R versions, both 64-bit and 32-bit, on some
+ 64-bit Windows machines.  Please report back to ess-core success or failure
+ on your 64-bit Windows machine. 
+<li>ESS Manual now more visually pleasing; <a href="http://ess.r-project.org/Manual/ess.html">http://ess.r-project.org/Manual/ess.html</a>
+<li><acronym>ESS[R]</acronym>: Roxygen on XEmacs no longer font locks for now
+ (as it required missing features and hence broke ESS startup, there). 
+<li><acronym>ESS[R]</acronym>: Roxygen has a sub-menu on the [ESS] menu. 
+<li><acronym>ESS[R]</acronym>: Function <samp><span class="command">ess-rutils-htmldocs</span></samp> in
+ <samp><span class="file">ess-rutils.el</span></samp> offers an alternative to <code>help.start()</code> for
+ navigating R documentation, using the <samp><span class="command">browse-url</span></samp> Emacs
+ function. 
+</ul>
+
+     <p>Changes/New Features in 5.8:
+          <ul>
+<li><acronym>ESS[R]</acronym>: New <samp><span class="file">ess-rutils.el</span></samp> with utilities for listing, loading,
+installing, and updating packages, as well as object manipulation
+(listing, viewing, and deleting).  It also provides an alternative to
+<code>RSiteSearch()</code> that uses the <samp><span class="command">browse-url</span></samp> function, so
+results can be viewed in an Emacs web browser. 
+<li><acronym>ESS[R]</acronym>: much more extensive Roxygen interface, via ess-roxy.el
+ from Henning Redestig. Ess-roxy supports filling of roxygen fields,
+ generation and updating roxygen templates, completion of roxygen tags,
+ basic navigation (marking and moving between entries), folding using
+ hs-minor-mode and preview of the Rd file. 
+<li>Emacs lisp files have got better names (partly, for now). 
+</ul>
+
+     <p>Changes/New Features in 5.7:
+          <ul>
+<li><acronym>ESS[R]</acronym>: loading a source file (<kbd>C-c C-l</kbd>) now works in
+ Windows, similarly to other platforms;
+ (further; it had accidentally been broken in ESS 5.6 on all platforms)
+</ul>
+
+     <p>Changes/New Features in 5.6:
+          <ul>
+<li><acronym>ESS[R]</acronym>: help() calls have to differ from old default, with newer
+ versions of R; currently via .help.ESS &lt;- function(...) hack. 
+</ul>
+
+     <p>Changes/New Features in 5.4:
+          <ul>
+<li><acronym>ESS[SAS]</acronym>: The long overdue change
+from <code>make-regexp</code> to <code>regexp-opt</code> for font-locking is
+complete.  The new <code>regexp-opt</code> is now the default since
+it is better than the old code in many ways (and especially more
+maintainable).  However, there are certainly some special
+cases missed (bug reports and patches welcome!). 
+Setting <code>ess-sas-run-regexp-opt</code> to <code>nil</code> will result
+in the old code being used. 
+<li><acronym>ESS[BUGS]</acronym> and <acronym>ESS[JAGS]</acronym>: typing <code>=</code> now results in
+ <code>&lt;-</code>. 
+<li><acronym>ESS[R]</acronym> function arguments &ldquo;show&rdquo; <code>(ess-r-args-show)</code> now
+ uses the new <code>(tooltip-show-at-point)</code> contributed by Erik Iverson. 
+<li>Toolbar icons now also work in (beta) Emacs 23. 
+<li><acronym>ESS[S]</acronym>: New function <code>ess-change-directory</code> for setting both
+ emacs' current directory and the directory of an *R* or *S* buffer. 
+<li><acronym>ESS[S]</acronym> when transient-mark-mode is true, the mark is now kept,
+ rather than deactivated, thanks to a patch from David Reitter. 
+</ul>
+
+     <p>Changes/New Features in 5.3.11:
+          <ul>
+<li><acronym>ESS[SAS]</acronym>: work around bug in Emacs 22.2 &amp; 22.3 which fails to
+ set case-fold fontification automatically. 
+<li>Rd mode: support new keyword 'Rdversion'
+<li><acronym>ESS[R]</acronym>: now again works with Emacs 21.x
+</ul>
+
+     <p>Changes/New Features in 5.3.10:
+          <ul>
+<li>Fixed noweb-mode bug accidentally introduced into 5.3.9
+<li>In noweb-mode, e.g., Rnw-mode, electric &ldquo;&lt;&rdquo; also inserts closing &ldquo;@". 
+ Further, the code chunk boundaries are better kept up-to-date, such that
+ code[R] &lt;-&gt; text[LaTeX] minor mode switching should happen more reliably. 
+<li>In noweb-mode, fix a buglet in rare [Enter] or [Tab] behavior; further,
+ by default disable the former `[[' .. `]]'  code-protection-when-filling
+ behavior which has been found to be buggy. 
+</ul>
+
+     <p>Changes/New Features in 5.3.9:
+          <ul>
+<li><acronym>ESS[SAS]</acronym>: evince PDF viewer now supported as well; search order:
+evince, Xpdf, Adobe/Acrobat Reader
+<li><acronym>ESS[R]</acronym>: added support for Roxygen, potentially to be extended. 
+<li><acronym>ESS[S]</acronym> (and R): inferior (<code>*R*</code>) and transcript modes no longer
+fontify language keywords (such as <code>for</code>, <code>in</code>, etc). 
+<li>i<acronym>ESS[Stata]</acronym><!-- /@w -->: Customize the <code>ess-sta-delimiter-friendly</code> setting
+to <code>t</code> to convert embedded semi-colons to newlines for Stata processing. 
+<li>Sweave fix for embedded blanks in PDF reader and PDF files
+<li>Several fixes for Major Mode Convention violations in <code>ess-mode</code>
+and <code>noweb-mode</code>. 
+<li><acronym>ESS[JAGS]</acronym>: <code>M-x comment-region</code> now available! 
+<li><acronym>ESS[S]</acronym> The <code>ess-swv-*</code> commands (and keybindings) are now in
+a submenu of the &ldquo;Noweb&rdquo; menu, when editing Sweave files. 
+</ul>
+
+     <p>Changes/New Features in 5.3.8:
+          <ul>
+<li><acronym>ESS[JAGS]</acronym>: more separation from <acronym>ESS[BUGS]</acronym> (as much as is currently planned);
+now <kbd>C-c C-c</kbd> on an empty <samp><span class="file">.jmd</span></samp> creates a template as it should;
+symbolic links are created for CODA output so BOA is happy:
+from <samp><span class="file">index.txt</span></samp> to <samp><span class="file">.ind</span></samp> and <samp><span class="file">chain#.txt</span></samp> to <samp><span class="file">#.out</span></samp>
+<li><acronym>ESS[SAS]</acronym>: buffer-local <code>ess-sas-submit-command</code> and
+<code>ess-sas-submit-command-options</code> now recognized by <code>ess-sas-submit-region</code>
+<li><acronym>ESS[S]</acronym>: When trying to evaluate code in an S language buffer and
+ there is no associated process, now start R automatically instead of
+ signalling an error.  Also, restart R if there is an associated process
+ which is not running.  However, do not start R just via the &ldquo;electric&rdquo;
+ <kbd>(</kbd> (<code>ess-r-args-auto-show</code>). 
+<li><acronym>ESS[S]</acronym>: For (one-line) functions withOUT '{ .. }' bodys, the end
+ of function is now correctly found more often.  This notably improves
+ <kbd>C-c C-c</kbd> (<code>ess-eval-function-or-paragraph-and-step</code>). 
+<li><acronym>ESS[JAGS]</acronym>: cleanup/re-organization of elisp code;
+symbolic links for CODA output are now only created by the new
+JAGS <code>system</code> command in version 1.0.3; specify whether
+this command is available via <code>ess-jags-system</code>; if not
+present, then no links are created so that the <code>*shell*</code>
+buffer does not become unresponsive during the batch run
+</ul>
+
+     <p>Changes/New Features in 5.3.7:
+          <ul>
+<li><acronym>ESS</acronym>: <code>ess-default-style</code> now *is* customizable, i.e.,
+  changing its value in <samp><span class="file">~/.emacs</span></samp> now does have the desired effect. 
+<li><acronym>ESS</acronym>: <code>ess-font-lock-mode</code> is a new variable (default: t)
+which controls whether font-locking is enabled in ESS buffers. 
+<li><acronym>ESS[R]</acronym>: for XEmacs on Windows; another tweak to find R versions
+<li><acronym>ESS[SAS]</acronym>: font-locking updated for ODS and SAS Bayesian Procedures;
+a more consistent handling of SAS options by
+<code>ess-sas-submit-command-options</code> which is buffer-local; portable
+snooze for MS Windows via customize-able <code>ess-sleep-for</code> (floats welcome);
+Xpdf now supported as a PDF viewer
+<li><acronym>ESS[Rnw]</acronym>: now also works with &ldquo;emacs -nw&rdquo; and Emacs 22. 
+<li><acronym>ESS[JAGS]</acronym>: now requires JAGS 1.0 (see the new ESS for JAGS help
+section for more information): both need work; suggestions welcome
+<li><acronym>ESS[R]</acronym>: [TAB] completion now uses the R-internal completion
+mechanism (for R &gt;= 2.5.0). 
+<li><acronym title="[S]">ESS[R]</acronym> ([S]): interpretation of &ldquo;_&rdquo; as assignment has
+been removed in <code>ess-continued-statement-p</code> for R and S. 
+<li>several internal code cleanups. 
+<li><acronym title="[S]">ESS[R]</acronym>: An experimental version of a new command <code>Rgui</code>
+on MS Windows to send lines directly from emacs
+to <code>Rgui</code> is available in file <code>lisp/essd-rgui.el</code>. 
+Preliminary documentation is in file <code>doc/rgui-doc.txt</code>. 
+</ul>
+
+     <p>Changes/New Features in 5.3.6:
+          <ul>
+<li><acronym>ESS</acronym>: for XEmacs, using &ldquo;gnuclient&rdquo; (without a &ldquo;-q&rdquo;) works for
+ things like fix() after M-x gnuserv-start has been done. 
+<li><acronym title="[S]">ESS[R]</acronym>: M-x R-newest should now work in more situations on MS
+ Windows, e.g., when R has been installed in a non-default "ProgramFiles"
+ directory tree.  In these cases, there's no need to specify the name (and
+ full path) of the R program anymore. 
+<li><acronym title="[S]">ESS[R]</acronym>: For XEmacs, startup (with new tooltip code) works again. 
+</ul>
+
+     <p>Changes/New Features in 5.3.5:
+          <ul>
+<li><acronym title="[S]">ESS[R]</acronym> a new defun is available, <kbd>M-x R-newest</kbd>, which will start
+the newest version of R that it can find on your system. 
+<li><acronym title="[S]">ESS[R]</acronym> add Sven Hartenstein's &ldquo;R function arguments tips&rdquo;
+ functionality, via new file <samp><span class="file">../lisp/essd-r-args.el</span></samp>. 
+ Note that this includes an &ldquo;electric "("&rdquo; behavior inside <code>R-mode</code>
+ which is <em>active by default</em> and can be customized via
+ <code>ess-r-args-electric-paren</code>; i.e., use <code>(setq
+ ess-r-args-electric-paren nil)</code> to turn it off.  Further,
+ <code>ess-r-args-show-as</code> allows to switch to the &ldquo;tooltip&rdquo; mode. 
+<li><acronym>ESS</acronym>: functions <code>ess-get-pdf-viewer</code> and *-ps-viewer; built on new
+ customizable variables <code>ess-pdf-viewer-pref</code> and
+ <code>ess-ps-viewer-pref</code>; currently used in <code>ess-swv-PDF</code> and
+ <code>*-PS</code>. 
+<li><acronym title="[S]">ESS[R]</acronym> Improved <code>ess-swv-PDF</code> to run pdf viewer only if
+ pdflatex was ok
+<li><acronym title="[S]">ESS[R]</acronym> Improved <code>ess-swv-weave</code> to start R automatically if
+ none is running. 
+<li><acronym>ESS</acronym>: Do no longer ask <em>which</em> ESS process to use if there
+ is only one. 
+</ul>
+
+     <p>Changes/New Features in 5.3.4:
+          <ul>
+<li><acronym title="[S]">ESS[R]</acronym> now better work with options(error=recover); and the
+new default of CHM help files on windows. 
+<li><acronym title="[S]">ESS[R]</acronym> some more cleanup in the &ldquo;sweave&rdquo; functions
+<li>miscellaneous fixes
+</ul>
+
+     <p>Changes/New Features in 5.3.3:
+          <ul>
+<li><acronym>ESS[S]</acronym> fix buglet (5.3.2 only) which left command prompt in
+&ldquo;execute buffer&rdquo; and hence help files. 
+<li>new customizable variable <code>ess-display-buffer-reuse-frames</code>
+set to true (which changes default behavior) such that execution or
+help *frames* are reused. 
+</ul>
+
+     <p>Changes/New Features in 5.3.2:
+          <ul>
+<li>Classic BUGS now supported by <code>(require 'essd-bugs)</code> with <acronym>ESS[BUGS]</acronym>
+      and JAGS by <code>(require 'essd-jags)</code> with <acronym>ESS[JAGS]</acronym>.  But, only one
+      of them can be used at a time since they don't play nice together.  Also,
+      <kbd>C-c C-c</kbd> is now bound to the function <code>ess-bugs-next-action</code>
+      (<kbd>F12</kbd> has been retired).  And finally, note that <samp><span class="file">essl-bug.el</span></samp>
+      is deprecated and the replacement is <samp><span class="file">essl-bugs.el</span></samp>. 
+<li><acronym title="[S]">ESS[R]</acronym> Improved some of the &ldquo;Sweave-make&rdquo;
+ functions (yet scarcely documented) in <samp><span class="file">ess-swv.el</span></samp>. 
+<li><acronym>ESS[S]</acronym> No longer mess with .Last.value (nor in other &ldquo;languages&rdquo;). 
+</ul>
+
+     <p>Changes/New Features in 5.3.1:
+          <ul>
+<li>See the docs for 2 ways to install <acronym>ESS</acronym> for XEmacs
+               <ol type=1 start=1>
+      <li>by uncommenting the XEmacs part of
+            Section 1 of <samp><span class="file">Makeconf</span></samp> and performing <code>make install</code>
+      <li>by unpacking either
+            <samp><span class="file">ess-5.3.1.tgz</span></samp> or <samp><span class="file">ess-5.3.1.zip</span></samp> into
+            <samp><span class="file">PREFIX/lib/xemacs/site-packages</span></samp> on unix or
+            <samp><span class="file">PREFIX\XEmacs\site-packages</span></samp> on windows
+               </ol>
+<li><acronym title="[S]">ESS[R]</acronym>: fixed bugs so that Rterm.exe can be found by XEmacs
+<li><acronym>ESS[S]</acronym>: <kbd>ess-toggle-S-assign-key</kbd> is slightly changed; in
+ particular, the default <code>ess-assign-key</code> is now <kbd>C-x =</kbd>. 
+<li><acronym title="[S]">ESS[R]</acronym>: <kbd>M-x R-site-search</kbd> is a new (slightly experimental)
+ utility similar to R's <code>RSiteSearch(..)</code> but with the advantage of
+ using Emacs' preferred browser, see <code>browse-url-browser-function</code>
+</ul>
+
+     <p>Changes/New Features in 5.3.0:
+          <ul>
+<li><acronym>ESS[BUGS]</acronym>: sanely re-format statistical output, <samp><span class="file">.bog</span></samp>,
+from scientific notation to numbers rounded with 4 decimal places
+with <kbd>M-x ess-bugs-sci-round-to-4-dp</kbd>. 
+<li>The keys for navigating among section headings in help buffers
+worked, but only for one language per session; they should now work for
+multiple languages.  (They were also broken on Windows machines.) 
+<li><acronym>ESS[S]</acronym> long standing buglets in the internal logic for loading
+lisp code on Windows.  Particularly fixed behavior in help mode with S-plus
+GUI. 
+<li>New variable, <code>ess-use-inferior-program-name-in-buffer-name</code>,
+which enables using the executable name instead of the dialect name for
+R. Feature request. 
+<li><acronym>ESS[S]</acronym> <kbd>ess-execute-screen-options</kbd>
+now also works correctly when there is more than one window *side-by-side*
+in the same frame and runs in the correct buffer also when there is more
+than one S buffer. 
+<li>i<acronym>ESS[S]</acronym><!-- /@w --> new functions <code>ess-eval-paragraph-and-step</code> and
+ <code>ess-eval-function-or-paragraph-and-step</code> are bound to keys
+ <kbd>C-c C-p</kbd> and <kbd>C-c C-c</kbd> respectively and to the menu in
+ <acronym>ESS</acronym>-mode; also bound in the help mode (for evaluating examples). 
+<li><acronym>ESS[S]</acronym> new function <code>ess-toggle-S-assign-key</code> allows to
+assign the &ldquo; &lt;- &rdquo; insertion to an arbitrary key. 
+</ul>
+
+</ul>
+
+<div class="node">
+<a name="Reporting-Bugs"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Mailing-Lists">Mailing Lists</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#New-Features">New Features</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.11 Reporting Bugs</h3>
+
+<p>Please send bug reports, suggestions etc. to
+<a href="mailto:ESS-bugs@stat.math.ethz.ch">ESS-bugs@stat.math.ethz.ch</a>
+
+   <p>The easiest way to do this is within Emacs by typing
+
+   <p><kbd>M-x ess-submit-bug-report</kbd>
+
+   <p>This also gives the maintainers valuable information about your
+installation which may help us to identify or even fix the bug.
+
+   <p>If Emacs reports an error, backtraces can help us debug the problem. 
+Type "M-x set-variable RET debug-on-error RET t RET".  Then run the
+command that causes the error and you should see a *Backtrace* buffer
+containing debug information; send us that buffer.
+
+   <p>Note that comments, suggestions, words of praise and large cash
+donations are also more than welcome.
+
+<div class="node">
+<a name="Mailing-Lists"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Authors">Authors</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reporting-Bugs">Reporting Bugs</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.12 Mailing Lists</h3>
+
+<p>There is a mailing list for discussions and announcements relating to
+ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
+"help") in the body to <a href="mailto:ess-help-request@stat.math.ethz.ch">ess-help-request@stat.math.ethz.ch</a>;
+contributions to the list may be mailed to
+<a href="mailto:ess-help@stat.math.ethz.ch">ess-help@stat.math.ethz.ch</a>.  Rest assured, this is a fairly
+low-volume mailing list.
+
+   <p>The purposes of the mailing list include
+
+     <ul>
+<li> helping users of ESS to get along with it. 
+<li> discussing aspects of using ESS on Emacs and XEmacs. 
+<li> suggestions for improvements. 
+<li> announcements of new releases of ESS. 
+<li> posting small patches to ESS. 
+</ul>
+
+<div class="node">
+<a name="Authors"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Mailing-Lists">Mailing Lists</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#General-Information">General Information</a>
+
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">1.13 Authors</h3>
+
+     <ul>
+<li><!-- @uref{http://www.google.com/,A.J. Rossini} -->
+<a href="mailto:blindglobe@gmail.com">A.J. Rossini</a>
+<!--  -->
+<li><!-- @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger} -->
+<a href="mailto:rmh@temple.edu">Richard M. Heiberger</a>
+<!--  -->
+<li><!-- @uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik} -->
+<a href="mailto:Kurt.Hornik@R-project.org">Kurt Hornik</a>
+<!--  -->
+<li><!-- @uref{http://stat.ethz.ch/people/maechler/,Martin Maechler} -->
+<a href="mailto:maechler@stat.math.ethz.ch">Martin Maechler</a>
+<!--  -->
+<li><!-- @uref{http://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani} -->
+<a href="mailto:rsparapa@mcw.edu">Rodney A. Sparapani</a>
+<!--  -->
+<li><!-- @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen} -->
+<a href="mailto:stephen@gnu.org">Stephen Eglen</a>
+<!--  -->
+<li><!-- @uref{http://www.ucs.mun.ca/~sluque,Sebastian P. Luque} -->
+<a href="mailto:spluque@gmail.com">Sebastian P. Luque</a>
+<!--  -->
+<li><!-- @uref{http://www.google.com/, Vitalie Spinu} -->
+<a href="mailto:spinuvit@gmail.com">Vitalie Spinu</a>
+<!--  -->
+<li><!-- @uref{http://www.google.com,Henning Redestig} -->
+<a href="mailto:henning.red@googlemail.com">Henning Redestig</a>
+</ul>
+
+</body></html>
+
