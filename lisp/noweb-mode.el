@@ -1,4 +1,4 @@
-;; noweb-mode.el - edit noweb files with GNU Emacs
+;;; noweb-mode.el --- edit noweb files with GNU Emacs
 
 ;; Copyright (C) 1995 by Thorsten.Ohl @ Physik.TH-Darmstadt.de
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
@@ -11,7 +11,7 @@
 
 ;; ESS-related Changes first added by Mark Lunt and A.J. Rossini, March, 1999.
 
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@
 ;; (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
 ;;                            auto-mode-alist))
 
-;; NEWS:
-;;
+;;; NEWS:
+
 ;;   * [tho] M-n q, aka: M-x noweb-fill-chunk
 ;;
 ;;   * [tho] `M-n TAB', aka: `M-x noweb-complete-chunk'
@@ -68,8 +68,9 @@
 ;;   * commands for tangling, weaving,.. for Sweave: --> ./ess-swv.el
 ;;
 
-;; TODO:
-;;
+
+;;; TODO:
+
 ;;   * _maybe_ replace our `noweb-chunk-vector' by text properties.  We
 ;;     could then use highlighting to jazz up the visual appearance.
 ;;     (Highlighting is sorted: `noweb-chunk-vector' can be
@@ -84,6 +85,8 @@
 ;;     be removed. For ESS 5.3.10, we disable these, using the new variable
 ;;     noweb-code-quote-handling.  If nobody misses that code-protecting
 ;;     behavior, all that should be removed entirely.
+
+;;; Code:
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
 (eval-and-compile
@@ -1899,3 +1902,5 @@ thread."
 ;; same name (which I refer to as a thread) into a separate
 ;; buffer. This buffer can then be saved to a file, sent to an
 ;; interpreter, whatever. I haven't tested using line-numbers as yet.
+
+;;; noweb-mode.el ends here

@@ -1,12 +1,12 @@
-;;; ess-font-lock.el -- font-lock color options
+;;; ess-font-lock.el --- font-lock color options
 
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@temple.edu>
+;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 06 Feb 2000
 
-;; Keywords: ESS, font-lock
+;; Keywords: languages, faces
 
 ;; This file is part of ESS
 

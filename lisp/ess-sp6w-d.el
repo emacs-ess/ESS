@@ -6,11 +6,11 @@
 ;; Copyright (C) 2002--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -29,9 +29,11 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;;
-;;; This file defines all the S-PLUS 6.x for Windows customizations
-;;; for ess-mode with ddeclient.
+
+;; This file defines all the S-PLUS 6.x for Windows customizations
+;; for ess-mode with ddeclient.
+
+;;; Code:
 
 ;;; Requires and Autoloads:
 
@@ -40,8 +42,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-;;; Code:
 
 (defcustom S+6-dialect-name "S"
   "Name of 'dialect' for S-PLUS 6.x and later.

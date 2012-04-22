@@ -3,11 +3,11 @@
 ;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 07 June 2000
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS
 

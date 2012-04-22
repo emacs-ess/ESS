@@ -5,7 +5,7 @@
 ;;	Eglen and Vitalie Spinu.
 ;;
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
-;; Keywords: convenience tools
+;; Keywords: convenience, tools
 ;;
 ;; This file is part of ESS
 ;;
@@ -22,8 +22,10 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see
 ;; <http://www.gnu.org/licenses/>.
-;;
+
+
 ;;; Commentary:
+
 ;; Lots of inspiration from doc-mode,
 ;; http://nschum.de/src/emacs/doc-mode/
 ;;
@@ -56,6 +58,8 @@
 ;; - only limited functionality for S4 documentation.
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
+
+;;; Code:
 
 (require 'ess-custom)
 (require 'hideshow)
@@ -679,3 +683,5 @@ list of strings."
 (ad-activate 'newline-and-indent)
 
 (provide 'ess-roxy)
+
+;;; ess-roxy.el ends here

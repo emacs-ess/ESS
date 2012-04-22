@@ -4,11 +4,10 @@
 ;; Copyright (C) 1997--2011 A.J. Rossini, Richard M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: David Smith <D.M.Smith@lancaster.ac.uk>
+;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
-;; Maintainers: ESS-core <ESS-core@r-project.org>
-
-;; Keywords: start up, configuration.
+;; Maintainer: ESS-core <ESS-core@r-project.org>
+;; Keywords: local
 
 ;; This file is part of ESS
 
@@ -19,7 +18,7 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
@@ -28,32 +27,37 @@
 
 ;;; Commentary:
 
-;;; This file defines all the site-specific customizations for ESS.
-;;; It should be edited on a per-site basis.  Read the comments (1.1
-;;; in Section 1 to see if ess-site.el must be edited.	The final
-;;; directory location of this file must be supplied in
-;;; ess-lisp-directory.	 The editing of remaining sections is
-;;; optional.  It should then be byte-compiled, and users who wish to
-;;; use ESS should add the line:
-;;;    (load "/PATH/TO/THIS/FILE/ess-site")
-;;; (where /PATH/TO/THIS/FILE is the path to ess-site.elc: i.e. the
-;;; value of ess-lisp-directory, below) to their .emacs file.
-;;;
-;;; Alternatively, if the file is already in a directory specified by
-;;; the load-path variable:
-;;;    (require 'ess-site)
-;;; will work.
-;;;
-;;; with XEmacs, this is simply:
-;;;	 (add-path "/path/to/ess/lisp-directory")
-;;; with Emacs (and in general):
-;;;	 (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
-;;;
+;; This file defines all the site-specific customizations for ESS. It should be
+;; edited on a per-site basis. Read the comments (1.1 in Section 1 to see if
+;; ess-site.el must be edited. The final directory location of this file must be
+;; supplied in ess-lisp-directory. The editing of remaining sections is
+;; optional. It should then be byte-compiled, and users who wish to use ESS
+;; should add the line:
+;;
+;;    (load "/PATH/TO/THIS/FILE/ess-site")
+;;
+;; (where /PATH/TO/THIS/FILE is the path to ess-site.elc: i.e. the value of
+;; `ess-lisp-directory', below) to their .emacs file.
+;;
+;; Alternatively, if the file is already in a directory specified by
+;; the load-path variable:
+;;
+;;    (require 'ess-site)
+;;
+;; will work.
+;;
+;; with XEmacs, this is simply:
+;;
+;;      (add-path "/path/to/ess/lisp-directory")
+;;
+;; with Emacs (and in general):
+;;
+;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
+
+;;; Code:
 
 ;; provide here; otherwise we'll get infinite loops of (require ..):
 (provide 'ess-site)
-
-;;; Code:
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -75,7 +79,7 @@
   ;; =======  MUST USE ONE OF THE NON-DEFAULT SETTINGS BELOW
 
   ;; NOTE again: MOST people should NOT change anything here !!!
-  ;; ====	 ====	     ================
+  ;; ====        ====        ================
 
   ;; A nice default
   (defvar ess-lisp-directory
@@ -741,11 +745,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:	  ^L ;
-;;; Sections:	 ;;*;;
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:	 defuns, defvars, defconsts
-;;;		 Random code beginning with a ;;;;* comment
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
 ;;; Local variables:
 ;;; mode: emacs-lisp
 ;;; mode: outline-minor

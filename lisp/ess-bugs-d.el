@@ -1,10 +1,10 @@
-;;; ess-bugs-d.el -- ESS[BUGS] dialect
+;;; ess-bugs-d.el --- ESS[BUGS] dialect
 
 ;; Copyright (C) 2008-2011 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani
+;; Author: Rodney Sparapani
 ;; Created: 13 March 2008
-;; Maintainers: ESS-help <ess-help@r-project.org>
+;; Maintainer: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 
@@ -26,7 +26,7 @@
 ;; don't charge money for it, remove this notice, or hold anyone liable
 ;; for its results.
 
-;; Code:
+;;; Code:
 
 (require 'ess-bugs-l)
 (require 'ess-utils)
@@ -266,3 +266,5 @@
 
 (setq features (delete 'ess-bugs-d features))
 (provide 'ess-bugs-d)
+
+;;; ess-bugs-d.el ends here

@@ -5,9 +5,9 @@
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-;; Original Author: Martin Maechler <maechler@stat.math.ethz.ch>
+;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -25,7 +25,7 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;;-- Emacs Utilities --- Generally useful --- used by (but not requiring) ESS
+;;; Code:
 
 (defun ess-inside-string-or-comment-p (pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
@@ -672,3 +672,5 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
     (setq default-directory (file-name-as-directory path))))
 
 (provide 'ess-utils)
+
+;;; ess-utils.el ends here

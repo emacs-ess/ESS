@@ -1,13 +1,15 @@
+;;; ess-swv.el --- Some simple functions for ESS and Sweave
+
 ;; Copyright (C) 2005 David Whiting, A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;     Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2006-2008 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;     Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: David Whiting <david.whiting@ncl.ac.uk>
+;; Author: David Whiting <david.whiting@ncl.ac.uk>
 ;; Created: 15 April 2005
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: Noweb, Literate Statistical Practice, Sweave
+;; Keywords: statistics, tools
 
 ;; This file is part of ESS.
 
@@ -74,6 +76,8 @@
 ;;;
 ;;; 4. ADD to the ../doc/ess.texi !!
 
+
+;;; Code:
 
 ;;; Autoloads and Requires
 

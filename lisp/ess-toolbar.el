@@ -3,10 +3,10 @@
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen
+;; Author: Stephen Eglen
 ;; Created: 2004-05-06
 ;; Revised: 2009-03-16
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -26,25 +26,26 @@
 
 ;;; Commentary:
 
-;;; This code adds a toolbar to ESS modes for editing R and S code.
-;;; Support can be added for other modes (e.g. STATA), just ask!
-;;;
-;;; This code is experimental, and runs best on Emacs 21 and XEmacs
-;;; 21.  It has been tested only on Linux machines.  All feedback
-;;; appreciated.
-;;;
-;;; If your emacs can support images, the ESS toolbar should be loaded.
-;;; 
-;;; If you see a toolbar, but no icons, check out the value of
-;;; ess-icon-directory.
-;;;
-;;; The toolbar can be customized in several ways.  To see options, do:
-;;; M-x customize-group RET ess-toolbar RET
-;;; If you change any of the variables, you _may_ need to restart Emacs
-;;; to see any effect.  See also the documentation for ess-toolbar-items
-;;; if you wish to change its value.
-;;;
+;; This code adds a toolbar to ESS modes for editing R and S code.
+;; Support can be added for other modes (e.g. STATA), just ask!
+;;
+;; This code is experimental, and runs best on Emacs 21 and XEmacs
+;; 21.  It has been tested only on Linux machines.  All feedback
+;; appreciated.
+;;
+;; If your emacs can support images, the ESS toolbar should be loaded.
+;;
+;; If you see a toolbar, but no icons, check out the value of
+;; ess-icon-directory.
+;;
+;; The toolbar can be customized in several ways.  To see options, do:
+;; M-x customize-group RET ess-toolbar RET
+;; If you change any of the variables, you _may_ need to restart Emacs
+;; to see any effect.  See also the documentation for ess-toolbar-items
+;; if you wish to change its value.
+
 ;;; Technical issues.
+
 ;; Emacs vs XEmacs.
 ;; Of course, Emacs and XEmacs have different interfaces and handle
 ;; the toolbars in different ways.  The code here is rough, but
@@ -55,6 +56,8 @@
 ;; 2009-03-16: toolbar code in Emacs 23 has changed slightly to 22,
 ;; and presumably once Emacs 22 is no longer supported, this code can
 ;; be cleaned up a bit (i.e. no need to set load-path.)
+
+;;; Code:
 
 (defgroup ess-toolbar nil
   "ESS: toolbar support."
@@ -247,3 +250,5 @@ is added globally when ess-toolbar.el is loaded."
     (add-to-list 'image-load-path ess-icon-directory))
 
 (provide 'ess-toolbar)
+
+;;; ess-toolbar.el ends here

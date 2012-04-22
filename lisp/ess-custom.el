@@ -5,11 +5,11 @@
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 05 June 2000
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: editing and process modes.
+;; Keywords: languages
 
 ;; This file is part of ESS
 

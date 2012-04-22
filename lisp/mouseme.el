@@ -3,7 +3,7 @@
 ;; Copyright (C) 1997 by Free Software Foundation, Inc.
 
 ;; Author: Howard Melman <howard@silverstream.com>
-;; Keywords: mouse menu
+;; Keywords: mouse, menu
 
 ;; This file is part of GNU Emacs.
 

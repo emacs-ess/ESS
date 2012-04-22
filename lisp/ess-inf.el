@@ -8,10 +8,9 @@
 ;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
 ;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-
-;; Original Author: David Smith <dsmith@stats.adelaide.edu.au>
+;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 

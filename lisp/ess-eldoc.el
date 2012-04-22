@@ -3,9 +3,9 @@
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen
+;; Author: Stephen Eglen
 ;; Created: 2007-06-30
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -173,3 +173,5 @@
 ;; (add-hook 'R-mode-hook 'ess-use-eldoc)
 
 (provide 'ess-eldoc)
+
+;;; ess-eldoc.el ends here

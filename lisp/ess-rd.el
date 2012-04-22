@@ -3,9 +3,9 @@
 ;; Copyright (C) 1997--2005  A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
+;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -46,7 +46,6 @@
   (defun Rd-active-mark ()
     (and transient-mark-mode mark-active))
 )
-
 
 (autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
@@ -473,7 +472,6 @@ following lines to your `.emacs' file:
 	   (insert before)
 	   (save-excursion
 	     (insert after))))))
-
 
 (defun Rd-preview-help ()
   "Preview the current buffer contents using `Rd-to-help-command'.

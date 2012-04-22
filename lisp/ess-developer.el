@@ -5,9 +5,9 @@
 
 ;; Author: Vitalie Spinu
 ;; Created: 12-11-2011
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: development, interaction.
+;; Keywords: languages, tools
 
 ;; This file is part of ESS.
 
@@ -26,8 +26,10 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;;
-;;; see apropriate documentation section of ESS user manual
+
+;; see apropriate documentation section of ESS user manual
+
+;;; Code:
 
 (require 'ess-site) ;; need to assigne the keys in the map
 
@@ -320,3 +322,5 @@ here eventually. todo:
     ))
 
 (provide 'ess-developer)
+
+;;; ess-developer.el ends here
