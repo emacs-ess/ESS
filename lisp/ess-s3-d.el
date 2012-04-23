@@ -39,18 +39,18 @@
 
 (defvar S3-customize-alist
   (append
-   '((ess-local-customize-alist    	. 'S3-customize-alist)
-     (ess-dialect                  	. "S3")
-     (ess-loop-timeout	           	. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-change-sp-regexp	   	. ess-S-change-sp-regexp)
-     (ess-help-sec-keys-alist       	. ess-help-S3-sec-keys-alist)
-     (ess-object-name-db-file       	. "ess-s3-namedb.el" )
-     (inferior-ess-program          	. inferior-S3-program-name) ;        "S")
-     (inferior-ess-help-command     	. "help(\"%s\")\n")
+   '((ess-local-customize-alist         . 'S3-customize-alist)
+     (ess-dialect                       . "S3")
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-change-sp-regexp              . ess-S-change-sp-regexp)
+     (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
+     (ess-object-name-db-file           . "ess-s3-namedb.el" )
+     (inferior-ess-program              . inferior-S3-program-name) ;        "S")
+     (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. "search()\n")
-     (inferior-ess-objects-command  	. "objects(%d)\n")
-     (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (inferior-ess-objects-command      . "objects(%d)\n")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S3")
      (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )

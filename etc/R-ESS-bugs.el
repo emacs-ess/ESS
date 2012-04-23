@@ -89,7 +89,3 @@ str(iris)
 
 ;;;; 5 double prompt > > used to stall emacs; SOLVED
 (ess-command "\n\n\n")
-
-
-
-

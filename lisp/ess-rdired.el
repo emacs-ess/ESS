@@ -92,7 +92,7 @@
   length <- sapply(objs, function(my.x) {
     eval( parse( text=sprintf('length(get(\"%s\"))', my.x))) })
   d <- data.frame(mode, length)
-  
+
   var.names <- row.names(d)
 
   ## If any names contain spaces, we need to quote around them.
@@ -172,13 +172,13 @@ for more information!"
   (interactive)
   (if (get-buffer ess-rdired-buffer)
       (progn
-	(set-buffer ess-rdired-buffer)
-	(setq buffer-read-only nil)))
+        (set-buffer ess-rdired-buffer)
+        (setq buffer-read-only nil)))
 
    (ess-execute ess-rdired-objects
-		nil
-		(substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
-		)
+                nil
+                (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
+                )
 
   (pop-to-buffer ess-rdired-buffer)
   ;; When definiting the function .rdired.objects(), a "+ " is printed
@@ -191,10 +191,10 @@ for more information!"
   ;;(make-variable-buffer-local 'ess-rdired-sort-num)
   (setq ess-rdired-sort-num 1)
   (ess-rdired-insert-set-properties (save-excursion
-				  (goto-char (point-min))
-				  (forward-line 1)
-				  (point))
-				(point-max))
+                                  (goto-char (point-min))
+                                  (forward-line 1)
+                                  (point))
+                                (point-max))
   (setq buffer-read-only t)
   (ess-rdired-mode)
   )
@@ -207,18 +207,18 @@ Handle special case when object contains spaces."
     (forward-char 2)
 
     (cond ((looking-at " ")		; First line?
-	   nil)
-	  ((looking-at "\"")		; Object name contains spaces?
-	   (let (beg)
-	     (setq beg (point))
-	     (forward-char 1)
-	     (search-forward "\"")
-	     (buffer-substring-no-properties beg (point))))
-	   (t				;should be a regular object.
-	    (let (beg)
-	      (setq beg (point))
-	      (search-forward " ") ;assume space follows object name.
-	      (buffer-substring-no-properties beg (1- (point))))))))
+           nil)
+          ((looking-at "\"")		; Object name contains spaces?
+           (let (beg)
+             (setq beg (point))
+             (forward-char 1)
+             (search-forward "\"")
+             (buffer-substring-no-properties beg (point))))
+           (t				;should be a regular object.
+            (let (beg)
+              (setq beg (point))
+              (search-forward " ") ;assume space follows object name.
+              (buffer-substring-no-properties beg (1- (point))))))))
 
 (defun ess-rdired-edit ()
   "Edit (fix) the object at point."
@@ -231,7 +231,7 @@ Handle special case when object contains spaces."
   (interactive)
   (let ((objname (ess-rdired-object)))
     (ess-execute (ess-rdired-get objname)
-		 nil "R view" )))
+                 nil "R view" )))
 
 (defun ess-rdired-get (name)
   "Generate R code to get the value of the variable name.
@@ -268,17 +268,17 @@ Named type because of similarity with the dired command bound to
 y key."
   (interactive)
   (let ((objname (ess-rdired-object))
-	;; create a temp buffer, and then show output in echo area
-	(tmpbuf (get-buffer-create "**ess-rdired-mode**")))
+        ;; create a temp buffer, and then show output in echo area
+        (tmpbuf (get-buffer-create "**ess-rdired-mode**")))
     (if objname
-	(progn
-	  (ess-command (concat "mode(" (ess-rdired-get objname) ")\n")
-		       tmpbuf )
-	  (set-buffer tmpbuf)
-	  (message (concat
-		    objname ": "
-		    (buffer-substring (+ 4 (point-min)) (1- (point-max)))))
-	  (kill-buffer tmpbuf)))))
+        (progn
+          (ess-command (concat "mode(" (ess-rdired-get objname) ")\n")
+                       tmpbuf )
+          (set-buffer tmpbuf)
+          (message (concat
+                    objname ": "
+                    (buffer-substring (+ 4 (point-min)) (1- (point-max)))))
+          (kill-buffer tmpbuf)))))
 
 (defun ess-rdired-delete (arg)
   "Mark the current (or next ARG) objects for deletion.
@@ -296,25 +296,25 @@ If point is on first line, all objects will be unmarked."
   "Mark the object, using MARK-CHAR,  on current line (or next ARG lines)."
   ;; If we are on first line, mark all lines.
   (let ((buffer-read-only nil)
-	move)
+        move)
     (if (eq (point-min)
-	    (save-excursion (beginning-of-line) (point)))
-	(progn
-	  ;; we are on first line, so make a note of point, and count
-	  ;; how many objects we want to delete.  Then at end of defun,
-	  ;; restore point.
-	  (setq move (point))
-	  (forward-line 1)
-	  (setq arg (count-lines (point) (point-max)))))
+            (save-excursion (beginning-of-line) (point)))
+        (progn
+          ;; we are on first line, so make a note of point, and count
+          ;; how many objects we want to delete.  Then at end of defun,
+          ;; restore point.
+          (setq move (point))
+          (forward-line 1)
+          (setq arg (count-lines (point) (point-max)))))
     (while (and (> arg 0) (not (eobp)))
       (setq arg (1- arg))
       (beginning-of-line)
       (progn
-	(insert mark-char)
-	(delete-char 1)
-	(forward-line 1)))
+        (insert mark-char)
+        (delete-char 1)
+        (forward-line 1)))
     (if move
-	(goto-char move))))
+        (goto-char move))))
 
 
 (defun ess-rdired-expunge ()
@@ -322,29 +322,29 @@ If point is on first line, all objects will be unmarked."
 User is queried first to check that objects should really be deleted."
   (interactive)
   (let ((objs "rm(")
-	(count 0))
+        (count 0))
     (save-excursion
       (goto-char (point-min)) (forward-line 1)
       (while (< (count-lines (point-min) (point))
-		(count-lines (point-min) (point-max)))
-	(beginning-of-line)
-	(if (looking-at "^D ")
-	    (setq count (1+ count)
-		  objs (concat objs (ess-rdired-object) ", " )))
-	(forward-line 1)
-	))
+                (count-lines (point-min) (point-max)))
+        (beginning-of-line)
+        (if (looking-at "^D ")
+            (setq count (1+ count)
+                  objs (concat objs (ess-rdired-object) ", " )))
+        (forward-line 1)
+        ))
     (if (> count 0)
-	;; found objects to delete
-	(progn
-	  (setq objs (concat
-		      (substring objs 0 (- (length objs) 2))
-		      ")\n"))
-	  (if (yes-or-no-p (format "Delete %d %s " count
-				   (if (> count 1) "objects" "object")))
-	      (progn
-		(ess-command objs)
-		(ess-rdired)
-		)))
+        ;; found objects to delete
+        (progn
+          (setq objs (concat
+                      (substring objs 0 (- (length objs) 2))
+                      ")\n"))
+          (if (yes-or-no-p (format "Delete %d %s " count
+                                   (if (> count 1) "objects" "object")))
+              (progn
+                (ess-command objs)
+                (ess-rdired)
+                )))
       ;; else nothing to delete
       (message "no objects set to delete")
       )))
@@ -362,25 +362,25 @@ User is queried first to check that objects should really be deleted."
 ;;		(count-lines (point-min) (point-max)))
 ;;	(beginning-of-line)
 ;;	(if (looking-at "^D ")
-;;	    (progn
-;;	      (setq objs (cons (ess-rdired-object) objs ))
-;;	      (setq cmd (concat cmd (ess-rdired-object) ", "))
-;;	      ))
+;;          (progn
+;;            (setq objs (cons (ess-rdired-object) objs ))
+;;            (setq cmd (concat cmd (ess-rdired-object) ", "))
+;;            ))
 ;;	(forward-line 1)
 ;;	))
 ;;     (if (> (length objs) 0)
 ;;	;; found objects to delete
 ;;	(if
-;;	    (dired-mark-pop-up "*RDired deletions*" 'delete
-;;			       objs dired-deletion-confirmer
-;;			       (format "delete %s "
-;;				       (dired-mark-prompt nil objs)))
-;;	    ;; should delete the objects.
-;;	    (progn
-;;	      (setq cmd (concat (substring cmd 0 (- (length cmd) 2))
+;;          (dired-mark-pop-up "*RDired deletions*" 'delete
+;;                             objs dired-deletion-confirmer
+;;                             (format "delete %s "
+;;                                     (dired-mark-prompt nil objs)))
+;;          ;; should delete the objects.
+;;          (progn
+;;            (setq cmd (concat (substring cmd 0 (- (length cmd) 2))
 ;;				")\n"))
-;;	      (ess-command cmd)
-;;	      (ess-rdired)))
+;;            (ess-command cmd)
+;;            (ess-rdired)))
 ;;       ;; else nothing to delete
 ;;       (message "no objects set to delete")
 ;;       )))
@@ -406,19 +406,19 @@ Rotate between the alternative sorting methods."
   (interactive)
   (setq ess-rdired-sort-num (1+ ess-rdired-sort-num))
   (let ((buffer-read-only nil)
-	(beg (save-excursion
-	       (goto-char (point-min))
-	       (forward-line 1)
-	       (point)))
-	(end (point-max)))
+        (beg (save-excursion
+               (goto-char (point-min))
+               (forward-line 1)
+               (point)))
+        (end (point-max)))
   (if (> ess-rdired-sort-num 3)
       (setq ess-rdired-sort-num 1))
   (cond ((eq ess-rdired-sort-num 1)
-	 (sort-fields 1 beg end))
-	((eq ess-rdired-sort-num 2)
-	 (sort-fields 2 beg end))
-	((eq ess-rdired-sort-num 3)
-	 (sort-numeric-fields 3 beg end)))))
+         (sort-fields 1 beg end))
+        ((eq ess-rdired-sort-num 2)
+         (sort-fields 2 beg end))
+        ((eq ess-rdired-sort-num 3)
+         (sort-numeric-fields 3 beg end)))))
 
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.
@@ -446,14 +446,14 @@ Optional prefix ARG says how many lines to move; default is one line."
   (let (window pos)
     (save-excursion
       (if (featurep 'xemacs)
-	  ;; XEmacs
-	  (setq window (event-window event)
-		pos (event-point event))
-	;; Emacs
-	(setq window (posn-window (event-end event))
-	      pos (posn-point (event-end event))))
+          ;; XEmacs
+          (setq window (event-window event)
+                pos (event-point event))
+        ;; Emacs
+        (setq window (posn-window (event-end event))
+              pos (posn-point (event-end event))))
       (if (not (windowp window))
-	  (error "No file chosen"))
+          (error "No file chosen"))
       (set-buffer (window-buffer window))
       (goto-char pos)
       (ess-rdired-view))))
@@ -467,10 +467,10 @@ Optional prefix ARG says how many lines to move; default is one line."
       (add-text-properties
        (point)
        (save-excursion
-	 (search-forward " ")
-	 (1- (point)))
+         (search-forward " ")
+         (1- (point)))
        '(mouse-face highlight
-		    help-echo "mouse-2: view object in other window"))
+                    help-echo "mouse-2: view object in other window"))
       (forward-line 1))))
 
 (defun ess-rdired-switch-process ()

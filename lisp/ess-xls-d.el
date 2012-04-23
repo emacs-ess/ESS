@@ -82,7 +82,7 @@
   (setq ess-customize-alist XLS-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(XLS): ess-dialect=%s , buf=%s\n"
-  	   ess-dialect (current-buffer)))
+           ess-dialect (current-buffer)))
   (inferior-ess))
 
 (defun xls-transcript-mode ()

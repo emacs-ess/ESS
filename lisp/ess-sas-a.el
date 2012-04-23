@@ -100,15 +100,15 @@ or `ess-sas-data-view-insight'."
 
     (if (not ess-tmp-pdf) (setq ess-tmp-pdf (executable-find "xpdf")))
 
-    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread"))) 
+    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread")))
 
     (if (and ess-tmp-ps ess-tmp-pdf)
-	(setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-	    (cons "[pP][dD][fF]" ess-tmp-pdf)))
+        (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
+            (cons "[pP][dD][fF]" ess-tmp-pdf)))
 
-	(if ess-tmp-ps
-	    (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-		(cons "[pP][dD][fF]" ess-tmp-ps))))))
+        (if ess-tmp-ps
+            (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
+                (cons "[pP][dD][fF]" ess-tmp-ps))))))
 
   "*Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
@@ -176,8 +176,8 @@ Virtual PC emulator on your Mac; buffer-local."
   (if ess-microsoft-p
     (if (w32-shell-dos-semantics) 'ms-dos 'sh)
     (if (or (equal system-type 'Apple-Macintosh)
-	    (and ess-sas-submit-mac-virtual-pc (equal system-type 'darwin)))
-	'apple-script 'sh))
+            (and ess-sas-submit-mac-virtual-pc (equal system-type 'darwin)))
+        'apple-script 'sh))
 "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
@@ -230,18 +230,18 @@ should set this variable to 'sh regardless of their local shell
       ;; an environment where all shells are treated equally
 
       (let* ((temp-shell (getenv "SHELL"))
-	     ;; AJR: old CYGWIN versions return nil for (getenv
-	     ;; "SHELL"), so we need to deal with it 'cause I have to
-	     (temp-char (if temp-shell
-			    (string-match "/" temp-shell)
-			  nil)))
-	(while temp-char
-	  (setq temp-shell (substring temp-shell (+ 1 temp-char)))
-	  (setq temp-char (string-match "/" temp-shell)))
+             ;; AJR: old CYGWIN versions return nil for (getenv
+             ;; "SHELL"), so we need to deal with it 'cause I have to
+             (temp-char (if temp-shell
+                            (string-match "/" temp-shell)
+                          nil)))
+        (while temp-char
+          (setq temp-shell (substring temp-shell (+ 1 temp-char)))
+          (setq temp-char (string-match "/" temp-shell)))
 
-	(cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh"))
-	       "nohup nice +6")
-	      (t "nohup nice")))
+        (cond ((or (equal temp-shell "csh") (equal temp-shell "tcsh"))
+               "nohup nice +6")
+              (t "nohup nice")))
     (if ess-microsoft-p "start"))
   "*Command-line statement to precede SAS invocation, e.g. start or nohup"
   :group 'ess-sas
@@ -259,11 +259,11 @@ should set this variable to 'sh regardless of their local shell
 
 (defcustom ess-sas-suffix-regexp
   (concat "[.]\\([sS][aA][sS]\\|[lL][oO][gG]\\|[lL][sS][tT]"
-	  (if ess-sas-suffix-1 (concat
-				"\\|" (downcase ess-sas-suffix-1) "\\|" (upcase ess-sas-suffix-1)))
-	  (if ess-sas-suffix-2 (concat
-				"\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
-	  "\\)")
+          (if ess-sas-suffix-1 (concat
+                                "\\|" (downcase ess-sas-suffix-1) "\\|" (upcase ess-sas-suffix-1)))
+          (if ess-sas-suffix-2 (concat
+                                "\\|" (downcase ess-sas-suffix-2) "\\|" (upcase ess-sas-suffix-2)))
+          "\\)")
   "*Regular expression for SAS suffixes."
   :group 'ess-sas
   :type  'string)
@@ -300,28 +300,28 @@ before ess-site is loaded) for it to take effect.")
     "*Search and replace EBCDIC text with ASCII equivalents."
     (interactive)
     (let ((ess-tmp-dd (executable-find "dd")) (ess-tmp-recode (executable-find "recode"))
-	  (ess-tmp-util nil) (ess-tmp-util-args nil))
+          (ess-tmp-util nil) (ess-tmp-util-args nil))
 
     (if ess-tmp-dd (progn
-	(setq ess-tmp-util ess-tmp-dd)
-	(setq ess-tmp-util-args "conv=ascii"))
+        (setq ess-tmp-util ess-tmp-dd)
+        (setq ess-tmp-util-args "conv=ascii"))
 
-	(setq ess-tmp-util ess-tmp-recode)
-	(setq ess-tmp-util-args "EBCDIC..ISO-8859-1"))
+        (setq ess-tmp-util ess-tmp-recode)
+        (setq ess-tmp-util-args "EBCDIC..ISO-8859-1"))
 
     (if ess-tmp-util
-	(while (search-forward-regexp "[^\f\t\n -~][^\f\t\n -?A-JQ-Yb-jp-y]*[^\f\t\n -~]?" nil t)
-	    (call-process-region (match-beginning 0) (match-end 0)
-		    ess-tmp-util t (list t nil) t ess-tmp-util-args)))))
+        (while (search-forward-regexp "[^\f\t\n -~][^\f\t\n -?A-JQ-Yb-jp-y]*[^\f\t\n -~]?" nil t)
+            (call-process-region (match-beginning 0) (match-end 0)
+                    ess-tmp-util t (list t nil) t ess-tmp-util-args)))))
 
 
 (defun ess-exit-notify-sh (string)
 "Detect completion or failure of submitted job and notify the user."
   ;(let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*") ; GNU Emacs needs this
-	 (beg (string-match exit-done string)))
+         (beg (string-match exit-done string)))
     (if beg
-	(message (substring string beg (match-end 0))))))
+        (message (substring string beg (match-end 0))))))
 
 
 (defun ess-sas-append-log ()
@@ -346,22 +346,22 @@ on the way."
   (interactive)
 
   (let* (;; point of search
-	 ;;(ess-sas-search-point nil)
-	 ;; column of search
-	 ;;(ess-sas-search-column nil)
-	 ;; limit of search
-	 ;;(ess-sas-search-limit nil)
-	 ;; text to be inserted after a back-tab, if any
-	 ;;(ess-sas-end-text "end;")
-	 ;; current-column
-	 (ess-sas-column (current-column))
-	 ;; remainder of current-column and sas-indent-width
-	 (ess-sas-remainder (% ess-sas-column sas-indent-width)))
+         ;;(ess-sas-search-point nil)
+         ;; column of search
+         ;;(ess-sas-search-column nil)
+         ;; limit of search
+         ;;(ess-sas-search-limit nil)
+         ;; text to be inserted after a back-tab, if any
+         ;;(ess-sas-end-text "end;")
+         ;; current-column
+         (ess-sas-column (current-column))
+         ;; remainder of current-column and sas-indent-width
+         (ess-sas-remainder (% ess-sas-column sas-indent-width)))
 
     (if (not (= ess-sas-column 0))
-	(progn
-	  (if (= ess-sas-remainder 0)
-	      (setq ess-sas-remainder sas-indent-width))
+        (progn
+          (if (= ess-sas-remainder 0)
+              (setq ess-sas-remainder sas-indent-width))
 
          (let ((backward-delete-char-untabify-method 'nil))
               (backward-delete-char-untabify ess-sas-remainder t)
@@ -373,48 +373,48 @@ on the way."
 
 ;; this feature was far too complicated to perfect
 ;;      (if ess-sas-smart-back-tab (progn
-;;	  (save-excursion
-;;	    (setq ess-sas-search-point
+;;        (save-excursion
+;;          (setq ess-sas-search-point
 ;;		(search-backward-regexp "end" nil t))
 
-;;	    (if (and ess-sas-search-point
+;;          (if (and ess-sas-search-point
 ;;		(search-backward-regexp "%" (+ ess-sas-search-point -1) t))
 ;;		(setq ess-sas-search-point (+ ess-sas-search-point -1))
-;;	    )
+;;          )
 
-;;	    (if (and ess-sas-search-point
+;;          (if (and ess-sas-search-point
 ;;		(not (equal ess-sas-column (current-column))))
 ;;		(setq ess-sas-search-point nil))
-;;	    )
+;;          )
 
-;;	  (save-excursion
-;;	    (setq ess-sas-search-point
+;;        (save-excursion
+;;          (setq ess-sas-search-point
 ;;		(search-backward-regexp "do\\|select"
-;;		    ess-sas-search-point t))
+;;                  ess-sas-search-point t))
 
-;;	    (setq ess-sas-search-column (current-column))
+;;          (setq ess-sas-search-column (current-column))
 
-;;	    (if ess-sas-search-point (progn
+;;          (if ess-sas-search-point (progn
 ;;		(save-excursion
-;;		 (search-backward-regexp "^" nil t)
-;;		 (setq ess-sas-search-limit (point))
+;;               (search-backward-regexp "^" nil t)
+;;               (setq ess-sas-search-limit (point))
 ;;		)
 
-;;	        (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
-;;		    (setq ess-sas-search-point (point)))
+;;              (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
+;;                  (setq ess-sas-search-point (point)))
 
-;;	        (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
-;;		    (setq ess-sas-end-text "%end;")
-;;		    (setq ess-sas-search-point (point))
+;;              (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
+;;                  (setq ess-sas-end-text "%end;")
+;;                  (setq ess-sas-search-point (point))
 ;;		))
 
 ;;		(setq ess-sas-search-column (current-column))
 
-;;	        (if (not (equal ess-sas-column ess-sas-search-column))
-;;		   (setq ess-sas-search-point nil))
-;;	  )))
+;;              (if (not (equal ess-sas-column ess-sas-search-column))
+;;                 (setq ess-sas-search-point nil))
+;;        )))
 
-;;	  (if ess-sas-search-point (insert ess-sas-end-text))
+;;        (if ess-sas-search-point (insert ess-sas-end-text))
 ;;         ))
 
 (defun ess-sas-cd ()
@@ -426,13 +426,13 @@ on the way."
     (comint-send-input)
     (if (equal ess-sas-submit-method 'sh)
       (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
-	"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
-	(if (equal ess-sas-submit-method 'ms-dos) (progn
-	    (if (string-equal ":" (substring ess-sas-file-path 1 2)) (progn
-		(insert (substring ess-sas-file-path 0 2))
-		(comint-send-input)))
-	    (insert "cd \"" (convert-standard-filename
-		(file-name-directory ess-sas-file-path)) "\""))))
+        "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
+        (if (equal ess-sas-submit-method 'ms-dos) (progn
+            (if (string-equal ":" (substring ess-sas-file-path 1 2)) (progn
+                (insert (substring ess-sas-file-path 0 2))
+                (comint-send-input)))
+            (insert "cd \"" (convert-standard-filename
+                (file-name-directory ess-sas-file-path)) "\""))))
     (comint-send-input))
 
 (defun ess-sas-create-local-variables-alist (&optional file-or-buffer)
@@ -456,26 +456,26 @@ current buffer if nil."
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
     (if ess-sas-data nil (save-match-data
-	(search-backward-regexp "[ \t=]" nil t)
+        (search-backward-regexp "[ \t=]" nil t)
 
         (save-excursion
-	    (setq ess-tmp-sas-data
-		(ess-search-except ess-search-regexp ess-search-except)))
+            (setq ess-tmp-sas-data
+                (ess-search-except ess-search-regexp ess-search-except)))
 
         (if (not ess-tmp-sas-data)
-	    (setq ess-tmp-sas-data
-		(ess-search-except ess-search-regexp ess-search-except t)))
+            (setq ess-tmp-sas-data
+                (ess-search-except ess-search-regexp ess-search-except t)))
 
-	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
+        (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
         (ess-sas-goto-shell t)
-	(ess-sas-cd)
+        (ess-sas-cd)
 
-	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
-	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command
-	    ess-sas-data ";" ess-tmp-sas-data-view-fsview-statement "; run;\" "
-	    ess-sas-submit-command-options " "
-	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
+        (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
+            " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-fsview-command
+            ess-sas-data ";" ess-tmp-sas-data-view-fsview-statement "; run;\" "
+            ess-sas-submit-command-options " "
+            ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
     (comint-send-input)
 )))))
 
@@ -492,25 +492,25 @@ current buffer if nil."
     "^\\([wW][oO][rR][kK]\\|[fF][iI][rR][sS][tT]\\|[lL][aA][sS][tT]\\)[.]"))
 
     (if ess-sas-data nil (save-match-data
-	(search-backward-regexp "[ \t=]" nil t)
+        (search-backward-regexp "[ \t=]" nil t)
 
         (save-excursion
-	    (setq ess-tmp-sas-data
-		(ess-search-except ess-search-regexp ess-search-except)))
+            (setq ess-tmp-sas-data
+                (ess-search-except ess-search-regexp ess-search-except)))
 
         (if (not ess-tmp-sas-data)
-	    (setq ess-tmp-sas-data
-		(ess-search-except ess-search-regexp ess-search-except t)))
+            (setq ess-tmp-sas-data
+                (ess-search-except ess-search-regexp ess-search-except t)))
 
-	(setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
+        (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
         (ess-sas-goto-shell t)
-	(ess-sas-cd)
+        (ess-sas-cd)
 
-	(insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
-	    " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-insight-command
-	    ess-sas-data ";" ess-tmp-sas-data-view-insight-statement "; run;\" "
-	    ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
+        (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
+            " -initstmt \"" ess-sas-data-view-libname ess-sas-data-view-insight-command
+            ess-sas-data ";" ess-tmp-sas-data-view-insight-statement "; run;\" "
+            ess-sas-data-view-submit-options " " ess-sas-submit-post-command))
     (comint-send-input)
 )))))
 
@@ -521,74 +521,74 @@ current buffer if nil."
   (ess-sas-goto-log 'no-error-check)
 
   (save-excursion (let (
-	(ess-tmp-length (length ess-sas-graph-view-viewer-alist))
-	(ess-tmp-counter 0)
-	(ess-tmp-graph nil)
-	(ess-tmp-graph-alist nil)
+        (ess-tmp-length (length ess-sas-graph-view-viewer-alist))
+        (ess-tmp-counter 0)
+        (ess-tmp-graph nil)
+        (ess-tmp-graph-alist nil)
         (ess-tmp-glyph nil)
         (ess-tmp-graph-regexp
-	   ; (concat "[ ]RECORDS[ ]WRITTEN[ ]+TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
-	    (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
-		ess-sas-graph-view-suffix-regexp "\\)")))
-;	    (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+           ; (concat "[ ]RECORDS[ ]WRITTEN[ ]+TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
+            (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                ess-sas-graph-view-suffix-regexp "\\)")))
+;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
     (save-match-data
        (search-backward-regexp "[ \t=]" nil t)
 
        (save-excursion
-	    (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp)))
+            (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp)))
 
         (if (not ess-tmp-graph)
-	    (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp nil t)))
+            (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp nil t)))
 
-	(setq ess-tmp-graph (read-string "GSASFILE: "
-	    (or ess-tmp-graph ess-sas-file-path)))
+        (setq ess-tmp-graph (read-string "GSASFILE: "
+            (or ess-tmp-graph ess-sas-file-path)))
 
-	  (if (fboundp 'ess-xemacs-insert-glyph) (progn
-	      (if (string-match "[.][gG][iI][fF]" ess-tmp-graph)
-		 (setq ess-tmp-glyph 'gif)
-	      ;;else
-	      (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph)
-		 (setq ess-tmp-glyph 'jpeg)))))
+          (if (fboundp 'ess-xemacs-insert-glyph) (progn
+              (if (string-match "[.][gG][iI][fF]" ess-tmp-graph)
+                 (setq ess-tmp-glyph 'gif)
+              ;;else
+              (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph)
+                 (setq ess-tmp-glyph 'jpeg)))))
 
-	  ;;GNU Emacs graphics file image viewing mode loaded?
-	  (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
-	      (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
-	      (find-file ess-tmp-graph)
-	  ;;else XEmacs graphics file image viewing mode loaded?
-	  (if (and (fboundp 'image-mode)
-		(string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
-		    ess-tmp-graph))
-	      (find-file ess-tmp-graph)
-	  ;;else XEmacs graphics file image viewing primitives loaded?
-	  (if ess-tmp-glyph (progn
-		(switch-to-buffer (file-name-nondirectory ess-tmp-graph))
-		(ess-xemacs-insert-glyph
-		    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
+          ;;GNU Emacs graphics file image viewing mode loaded?
+          (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
+              (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
+              (find-file ess-tmp-graph)
+          ;;else XEmacs graphics file image viewing mode loaded?
+          (if (and (fboundp 'image-mode)
+                (string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
+                    ess-tmp-graph))
+              (find-file ess-tmp-graph)
+          ;;else XEmacs graphics file image viewing primitives loaded?
+          (if ess-tmp-glyph (progn
+                (switch-to-buffer (file-name-nondirectory ess-tmp-graph))
+                (ess-xemacs-insert-glyph
+                    (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
 
           ;;else use the appropriate graphics file image viewer
-	    (while (< ess-tmp-counter ess-tmp-length)
-		(setq ess-tmp-graph-alist
-		    (nth ess-tmp-counter ess-sas-graph-view-viewer-alist))
-		(setq ess-tmp-graph-regexp (car ess-tmp-graph-alist))
+            (while (< ess-tmp-counter ess-tmp-length)
+                (setq ess-tmp-graph-alist
+                    (nth ess-tmp-counter ess-sas-graph-view-viewer-alist))
+                (setq ess-tmp-graph-regexp (car ess-tmp-graph-alist))
 
-		(if (string-match
-			(concat "[.]" ess-tmp-graph-regexp) ess-tmp-graph)
-		    (progn
-			(ess-sas-goto-shell t)
-			(insert ess-sas-submit-pre-command " "
-			    (cdr ess-tmp-graph-alist) " " ess-tmp-graph
-			    (if (equal ess-sas-submit-method 'sh) " &"))
-			(setq ess-tmp-glyph 'alist)
-			(setq ess-tmp-counter ess-tmp-length))
-		    ;;else
-		    (setq ess-tmp-counter (+ ess-tmp-counter 1))))
+                (if (string-match
+                        (concat "[.]" ess-tmp-graph-regexp) ess-tmp-graph)
+                    (progn
+                        (ess-sas-goto-shell t)
+                        (insert ess-sas-submit-pre-command " "
+                            (cdr ess-tmp-graph-alist) " " ess-tmp-graph
+                            (if (equal ess-sas-submit-method 'sh) " &"))
+                        (setq ess-tmp-glyph 'alist)
+                        (setq ess-tmp-counter ess-tmp-length))
+                    ;;else
+                    (setq ess-tmp-counter (+ ess-tmp-counter 1))))
 
-	    (if (not ess-tmp-glyph) (progn
+            (if (not ess-tmp-glyph) (progn
                 (ess-sas-goto-shell t)
-		(insert ess-sas-submit-pre-command " "
-		    ess-sas-graph-view-viewer-default " " ess-tmp-graph
-		    (if (equal ess-sas-submit-method 'sh) " &"))))
+                (insert ess-sas-submit-pre-command " "
+                    ess-sas-graph-view-viewer-default " " ess-tmp-graph
+                    (if (equal ess-sas-submit-method 'sh) " &"))))
 
             (comint-send-input))))))))
 
@@ -598,9 +598,9 @@ current buffer if nil."
 
   (save-match-data (let ((ess-sas-temp-file (expand-file-name (buffer-name))))
     (if (or force (string-match ess-sas-suffix-regexp ess-sas-temp-file)) ;;(progn
-	(setq ess-sas-file-path
-	   (nth 0 (split-string ess-sas-temp-file "[<]")))))))
-	;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
+        (setq ess-sas-file-path
+           (nth 0 (split-string ess-sas-temp-file "[<]")))))))
+        ;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
 
 (defun ess-sas-file-path-remote-host ()
 "Return the remote host, if any, associated with `ess-sas-file-path'."
@@ -608,18 +608,18 @@ current buffer if nil."
 
 (let* ((temp-colon-pos (string-match ":" ess-sas-file-path))
        (temp-list
-	(if (or (not temp-colon-pos) (> temp-colon-pos 2))
-		(if (equal ess-sas-file-path ".") nil
-		    (split-string (file-name-directory ess-sas-file-path)
-			"\\(@\\|:\\|]\\)"))
-	(list ess-sas-file-path)))
+        (if (or (not temp-colon-pos) (> temp-colon-pos 2))
+                (if (equal ess-sas-file-path ".") nil
+                    (split-string (file-name-directory ess-sas-file-path)
+                        "\\(@\\|:\\|]\\)"))
+        (list ess-sas-file-path)))
        (temp-list-length (length temp-list)))
     (if (= temp-list-length 1) (setq temp-list nil)
-	(if (= temp-list-length 2) (setq temp-list (car temp-list))
-	    (setq temp-list (nth 1 temp-list))))
+        (if (= temp-list-length 2) (setq temp-list (car temp-list))
+            (setq temp-list (nth 1 temp-list))))
 
     (if temp-list (setq temp-list
-		(car (last (split-string temp-list "/")))))
+                (car (last (split-string temp-list "/")))))
     temp-list))
 
 (defun ess-sas-goto (suffix &optional revert no-create)
@@ -627,69 +627,69 @@ current buffer if nil."
   (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
     (save-match-data
       (if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
-	      (string-match ess-temp-regexp ess-sas-file-path))
-	  (progn
-	    (ess-sas-file-path)
-	    (let* (
-		   (ess-sas-temp-file (replace-match (concat "." suffix) t t
-						     ess-sas-file-path))
-		   (ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file))
-		   (ess-temp-kermit-remote-directory ess-kermit-remote-directory))
+              (string-match ess-temp-regexp ess-sas-file-path))
+          (progn
+            (ess-sas-file-path)
+            (let* (
+                   (ess-sas-temp-file (replace-match (concat "." suffix) t t
+                                                     ess-sas-file-path))
+                   (ess-sas-temp-buff (find-buffer-visiting ess-sas-temp-file))
+                   (ess-temp-kermit-remote-directory ess-kermit-remote-directory))
 
-	      (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
-	        ;; else
-		(if no-create (setq revert nil)
-		    (if (file-exists-p ess-sas-temp-file)
-			(find-file ess-sas-temp-file))))
-		    ;; else
-		    ;;	(let* ((ess-sas-buffer-list (buffer-list))
-		    ;;	       (ess-sas-buffer-list-index 0)
-		    ;;	       (ess-sas-buffer-list-file nil)
-		    ;;	       (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
-		    ;;	    (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
-		    ;;		(setq ess-sas-buffer-list-file
-		    ;;		    (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
-		    ;;		(if (and ess-sas-buffer-list-file
-		    ;;		    (string-match (concat "." suffix) ess-sas-buffer-list-file))
-		    ;;		    (switch-to-buffer (nth ess-sas-buffer-list-index ess-sas-buffer-list))
-		    ;;		    (setq ess-sas-buffer-list-index ess-sas-buffer-list-length)
-		    ;;		)
-		    ;;		(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
-		    ;;    )))
+              (if ess-sas-temp-buff (switch-to-buffer ess-sas-temp-buff)
+                ;; else
+                (if no-create (setq revert nil)
+                    (if (file-exists-p ess-sas-temp-file)
+                        (find-file ess-sas-temp-file))))
+                    ;; else
+                    ;;	(let* ((ess-sas-buffer-list (buffer-list))
+                    ;;         (ess-sas-buffer-list-index 0)
+                    ;;         (ess-sas-buffer-list-file nil)
+                    ;;         (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
+                    ;;      (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
+                    ;;		(setq ess-sas-buffer-list-file
+                    ;;              (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
+                    ;;		(if (and ess-sas-buffer-list-file
+                    ;;              (string-match (concat "." suffix) ess-sas-buffer-list-file))
+                    ;;              (switch-to-buffer (nth ess-sas-buffer-list-index ess-sas-buffer-list))
+                    ;;              (setq ess-sas-buffer-list-index ess-sas-buffer-list-length)
+                    ;;		)
+                    ;;		(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
+                    ;;    )))
 
-	      (if (and (not no-create)
-		       (or (string-equal suffix "log")
-			   (string-equal suffix "lst")))
-		  (ess-kermit-get (file-name-nondirectory ess-sas-temp-file)
-				  ess-temp-kermit-remote-directory))
+              (if (and (not no-create)
+                       (or (string-equal suffix "log")
+                           (string-equal suffix "lst")))
+                  (ess-kermit-get (file-name-nondirectory ess-sas-temp-file)
+                                  ess-temp-kermit-remote-directory))
 
-	      (if revert
-		  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
-			   (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file)))
-			      ess-sas-log-max))
-		      (progn
-			(insert-file-contents ess-sas-temp-file nil 0
-					      ess-sas-log-max t)
-			t)
+              (if revert
+                  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
+                           (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file)))
+                              ess-sas-log-max))
+                      (progn
+                        (insert-file-contents ess-sas-temp-file nil 0
+                                              ess-sas-log-max t)
+                        t)
 
-		    (ess-revert-wisely)) nil)))))))
+                    (ess-revert-wisely)) nil)))))))
 
 ;;(defun ess-sas-file (suffix &optional revert)
 ;;  "Please use `ess-sas-goto' instead."
 ;;  (let* ((tail (downcase (car (split-string
-;;	    (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
-	;;(if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
-	;;		 (substring (buffer-name) -3)))
-;;	 (tail-in-tail-list (member tail (list "sas" "log" "lst"
-;;			     ess-sas-suffix-1 ess-sas-suffix-2)))
-;;	 (root (if tail-in-tail-list (expand-file-name (buffer-name))
-;;		 ess-sas-file-path))
-;;	 (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
-;;	 (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
+;;          (car (last (split-string (buffer-name) "[.]"))) "[<]"))))
+        ;;(if (fboundp 'file-name-extension) (file-name-extension (buffer-name))
+        ;;               (substring (buffer-name) -3)))
+;;       (tail-in-tail-list (member tail (list "sas" "log" "lst"
+;;                           ess-sas-suffix-1 ess-sas-suffix-2)))
+;;       (root (if tail-in-tail-list (expand-file-name (buffer-name))
+;;               ess-sas-file-path))
+;;       (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
+;;       (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
 ;;    (if (equal tail suffix) (if revert (ess-revert-wisely))
 ;;	(if (not ess-sas-buf) (find-file ess-sas-arg)
-;;	    (switch-to-buffer ess-sas-buf)
-;;	    (if revert (ess-revert-wisely))))))
+;;          (switch-to-buffer ess-sas-buf)
+;;          (if revert (ess-revert-wisely))))))
 
 
 (defun ess-sas-goto-file-1 ()
@@ -721,30 +721,30 @@ current buffer if nil."
     "\\|WARNING: RUN statement ignored due to previous errors."
     "\\|WARNING: Values exist outside the axis range"
     "\\|Bus Error In Task\\|Segmentation Violation In Task"))
-	(ess-sas-save-point nil)); (ess-sas-pop-mark nil))
+        (ess-sas-save-point nil)); (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
-	(setq ess-sas-save-point (point))
-	(goto-char (point-min)))
+        (setq ess-sas-save-point (point))
+        (goto-char (point-min)))
     (setq ess-sas-save-point (point)))
 
 ;(if (number-char-or-marker-p ess-sas-save-point) (progn
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (or (search-forward-regexp ess-sas-error nil t)
-	(and (goto-char (point-min))
-	    (search-forward-regexp ess-sas-error nil t)))
-		t
+        (and (goto-char (point-min))
+            (search-forward-regexp ess-sas-error nil t)))
+                t
 ; this feature never worked quite right (and was XEmacs only to boot)
 ; after highlighting an error message, moving point would cause an unwanted
 ; highlighting between point and mark; why god, why?!?
 ;
 ;	(if (and (boundp 'zmacs-regions) zmacs-regions)
-;	    (progn
+;           (progn
 ;		(if ess-sas-pop-mark (pop-mark)
-;		    (setq ess-sas-pop-mark t))
+;                   (setq ess-sas-pop-mark t))
 ;		(push-mark (match-beginning 0) t)
 ;		(zmacs-activate-region)))
-	(goto-char ess-sas-save-point)))))
+        (goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()
   "Switch to the .lst file and revert from disk."
@@ -764,29 +764,29 @@ optional argument is non-nil, then set-buffer rather than switch."
 
 ; The following let* block is an attempt to deal with remote directories.
     (let* ((temp-shell-buffer-remote-host
-	    (or ess-sas-shell-buffer-remote-host (ess-sas-file-path-remote-host)))
-	(temp-shell-buffer-remote-init ess-sas-shell-buffer-remote-init)
-	(temp-shell-buffer
-	    (if temp-shell-buffer-remote-host
-		(concat "*" temp-shell-buffer-remote-host "*")
-		ess-sas-shell-buffer))
+            (or ess-sas-shell-buffer-remote-host (ess-sas-file-path-remote-host)))
+        (temp-shell-buffer-remote-init ess-sas-shell-buffer-remote-init)
+        (temp-shell-buffer
+            (if temp-shell-buffer-remote-host
+                (concat "*" temp-shell-buffer-remote-host "*")
+                ess-sas-shell-buffer))
 )
 
   (if (get-buffer temp-shell-buffer)
     (if set-buffer (set-buffer temp-shell-buffer)
-		   (switch-to-buffer temp-shell-buffer))
+                   (switch-to-buffer temp-shell-buffer))
     (shell)
     (rename-buffer temp-shell-buffer)
     (ess-sleep) ; GNU Emacs needs this
 
     (if temp-shell-buffer-remote-host (progn
-	(insert (concat
-	    temp-shell-buffer-remote-init " " temp-shell-buffer-remote-host))
-	(comint-send-input))
+        (insert (concat
+            temp-shell-buffer-remote-init " " temp-shell-buffer-remote-host))
+        (comint-send-input))
     )
 
     (if (eq ess-sas-submit-method 'sh)
-	(add-hook 'comint-output-filter-functions 'ess-exit-notify-sh)) ;; 19.28
+        (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh)) ;; 19.28
                                           ;; nil t) works for newer emacsen
     )
   )
@@ -809,7 +809,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (ess-sas-goto-shell)
     (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options
         " -altlog " ess-temp-sas-file ".log -altprint "
-	    ess-temp-sas-file ".lst -stdio < /dev/tty"))
+            ess-temp-sas-file ".lst -stdio < /dev/tty"))
     (comint-send-input)
     (ess-add-ess-process)
     (ess-sas-goto-sas)
@@ -891,33 +891,33 @@ optional argument is non-nil, then set-buffer rather than switch."
 ;	(setq ess-tmp-font-size "21"))
 
     (let
-	((ess-temp-rtf-file 
-	  (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
-	;(rtf-export ess-temp-rtf-file)
+        ((ess-temp-rtf-file
+          (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
+        ;(rtf-export ess-temp-rtf-file)
         (copy-file ess-sas-file-path ess-temp-rtf-file t)
-	(ess-sas-goto "rtf" t)
-	(ess-rtf-replace-chars)
-	;(goto-char (point-min))
-	;;(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
-	;(if (re-search-forward "\\\\fmodern .*;" nil t)
-	;    (replace-match (concat "\\\\fmodern " ess-sas-rtf-font-name ";") nil nil))
-	;(goto-line 2)
-	(goto-char (point-min)) 
-	(insert (concat
-		 "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
-		 "\\margl720\\margr720\\margt720\\margb720\n"
-		 "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
-		 "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
-		 "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))        
+        (ess-sas-goto "rtf" t)
+        (ess-rtf-replace-chars)
+        ;(goto-char (point-min))
+        ;;(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
+        ;(if (re-search-forward "\\\\fmodern .*;" nil t)
+        ;    (replace-match (concat "\\\\fmodern " ess-sas-rtf-font-name ";") nil nil))
+        ;(goto-line 2)
+        (goto-char (point-min))
+        (insert (concat
+                 "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
+                 "\\margl720\\margr720\\margt720\\margb720\n"
+                 "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
+                 "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
+                 "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))
 
-	(goto-char (point-max))
-	(insert "}}}}\n")
-	;(goto-char (point-min))
+        (goto-char (point-max))
+        (insert "}}}}\n")
+        ;(goto-char (point-min))
         ;;(while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
-	;(while (re-search-forward "\\\\fs[0-9]+" nil t)
-	;  (replace-match (concat "\\\\fs" ess-tmp-font-size) nil nil))
+        ;(while (re-search-forward "\\\\fs[0-9]+" nil t)
+        ;  (replace-match (concat "\\\\fs" ess-tmp-font-size) nil nil))
         (save-buffer)
-	(kill-buffer (current-buffer))))
+        (kill-buffer (current-buffer))))
 
 (defun ess-sas-rtf-us-landscape ()
 "Creates an MS RTF US landscape file from the current buffer."
@@ -945,7 +945,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (save-buffer)
     (kill-buffer (current-buffer)))
 ;))
-;    (error nil)) 
+;    (error nil))
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
@@ -959,19 +959,19 @@ depends on the value of  `ess-sas-submit-method'"
 
   (cond
    ((eq ess-sas-submit-method 'apple-script)
-	(ess-sas-submit-mac ess-sas-submit-command
-	    ess-sas-submit-command-options))
+        (ess-sas-submit-mac ess-sas-submit-command
+            ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'ms-dos)
-	(ess-sas-submit-windows ess-sas-submit-command
-	    ess-sas-submit-command-options))
+        (ess-sas-submit-windows ess-sas-submit-command
+            ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'iESS)
-	(ess-sas-submit-iESS ess-sas-submit-command
-	    ess-sas-submit-command-options))
+        (ess-sas-submit-iESS ess-sas-submit-command
+            ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'sh)
-	(ess-sas-submit-sh ess-sas-submit-command
-	    ess-sas-submit-command-options))
+        (ess-sas-submit-sh ess-sas-submit-command
+            ess-sas-submit-command-options))
    (t (ess-sas-submit-sh ess-sas-submit-command
-	ess-sas-submit-command-options)))
+        ess-sas-submit-command-options)))
 ;  (ess-sas-goto-sas)
 )
 
@@ -994,7 +994,7 @@ their files from the remote computer.  Local copies of the .sas .lst
   (ess-force-buffer-current "Process to load into: ")
   (ess-eval-linewise
     (concat "cd " (car (last
-	(split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
+        (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
   (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
 
 (defun ess-sas-submit-mac (arg1 arg2)
@@ -1008,8 +1008,8 @@ should be ..."
 
   (do-applescript (concat arg1 " \""
      (if (not ess-sas-submit-mac-virtual-pc)
-	    (unix-filename-to-mac default-directory))
-	(buffer-name) "\"" arg2)))
+            (unix-filename-to-mac default-directory))
+        (buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
     "Write region to temporary file, and submit to SAS."
@@ -1017,26 +1017,26 @@ should be ..."
     (ess-sas-file-path)
     (hack-local-variables t)
     (write-region (region-beginning) (region-end)
-	(concat (ess-sas-temp-root) ".sas"))
+        (concat (ess-sas-temp-root) ".sas"))
 
     (let ((arg1 ess-sas-submit-command)
-	  (arg2 ess-sas-submit-command-options))
+          (arg2 ess-sas-submit-command-options))
     (save-excursion
       (ess-sas-goto-shell t)
 
     (if (and (w32-shell-dos-semantics)
-	(string-equal ":" (substring ess-sas-file-path 1 2)))
-	(progn
-		(insert (substring ess-sas-file-path 0 2))
-		(comint-send-input)
+        (string-equal ":" (substring ess-sas-file-path 1 2)))
+        (progn
+                (insert (substring ess-sas-file-path 0 2))
+                (comint-send-input)
     ))
 
     (insert "cd \"" (convert-standard-filename
-	(file-name-directory ess-sas-file-path)) "\"")
+        (file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
 
     (insert (concat ess-sas-submit-pre-command " " arg1
-	  " " arg2
+          " " arg2
           " " (ess-sas-temp-root) " " ess-sas-submit-post-command))
     (comint-send-input)
     ))
@@ -1050,15 +1050,15 @@ SAS or you can specify the PATHNAME (PATHNAME can NOT contain spaces),
 i.e. let arg1 be your local equivalent of
 \"/usr/local/sas612/sas\"."
     (if (string-equal (substring
-	    (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
+            (file-name-nondirectory ess-sas-file-path) 0 1) ess-kermit-prefix)
       (progn
        (ess-kermit-send)
        (ess-sas-goto-shell t)
        (insert ess-sas-submit-pre-command " " arg1 " "
-	 (substring (file-name-sans-extension
-	    (file-name-nondirectory ess-sas-file-path)) 1)
-	 " " arg2 " " ess-sas-submit-post-command)
-	(comint-send-input))
+         (substring (file-name-sans-extension
+            (file-name-nondirectory ess-sas-file-path)) 1)
+         " " arg2 " " ess-sas-submit-post-command)
+        (comint-send-input))
     ;;else
       (ess-sas-goto-shell t)
       (ess-sas-cd)
@@ -1066,8 +1066,8 @@ i.e. let arg1 be your local equivalent of
 ;"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
 ;      (comint-send-input)
       (insert ess-sas-submit-pre-command " " arg1 " "
-	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
-	" " arg2 " " ess-sas-submit-post-command))
+        (file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
+        " " arg2 " " ess-sas-submit-post-command))
 ;    (ess-sleep)
     (comint-send-input))
 
@@ -1087,17 +1087,17 @@ Keep in mind that the maximum command line length in MS-DOS is
     ;(ess-save-and-set-local-variables)
     (ess-sas-goto-shell t)
     (if (string-equal ":" (substring ess-sas-file-path 1 2))
-	(progn
-		(insert (substring ess-sas-file-path 0 2))
-		(comint-send-input)
-	)
+        (progn
+                (insert (substring ess-sas-file-path 0 2))
+                (comint-send-input)
+        )
     )
     (insert "cd \"" (convert-standard-filename
-	(file-name-directory ess-sas-file-path)) "\"")
+        (file-name-directory ess-sas-file-path)) "\"")
     (comint-send-input)
     (insert ess-sas-submit-pre-command " " arg1 " -sysin \""
-	(file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\" "
-	arg2 " " ess-sas-submit-post-command)
+        (file-name-sans-extension (file-name-nondirectory ess-sas-file-path)) "\" "
+        arg2 " " ess-sas-submit-post-command)
     (comint-send-input))
 
 (defun ess-sas-tab-to-tab-stop ()
@@ -1120,15 +1120,15 @@ Keep in mind that the maximum command line length in MS-DOS is
     (while (search-forward-regexp (concat
            "^\\(\\(1[ \t]+The SAS System\\|\\|NOTE\\|WARNING\\|ERROR\\|"
            "[ \t]+\\(\\(real\\|cpu\\) time\\|Licensed to\\|Engine:\\|"
-	   "Physical Name:\\|File Name=\\|Owner Name=\\|Group Name=\\|"
-	   "Access Permission=\\|File Size (bytes)=\\|Pipe command=\\|"
-	   "RECFM=[DFNPV],LRECL=\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\|"
-	   "[1-9][0-9]* at [0-9]+:[0-9]+[ /t]+[1-9][0-9]* at [0-9]+:[0-9]+\\)\\).*$"
+           "Physical Name:\\|File Name=\\|Owner Name=\\|Group Name=\\|"
+           "Access Permission=\\|File Size (bytes)=\\|Pipe command=\\|"
+           "RECFM=[DFNPV],LRECL=\\|[0-9]+:[0-9]+[ /t]+[0-9]+:[0-9]+\\|"
+           "[1-9][0-9]* at [0-9]+:[0-9]+[ /t]+[1-9][0-9]* at [0-9]+:[0-9]+\\)\\).*$"
            "\\|[0-9]+\\([ \t]+!\\)?\\|MPRINT([_A-Z]+):\\|"
-	   "[ \t]+\\(values at the places given by: (Line):(Column).\\|"
+           "[ \t]+\\(values at the places given by: (Line):(Column).\\|"
            "The m\\(in\\|ax\\)imum record length was [1-9][0-9]*.\\|"
-	   "One or more lines were truncated.\\|"
-	   "Each place is given by: (Number of times) at (Line):(Column).\\|"
+           "One or more lines were truncated.\\|"
+           "Each place is given by: (Number of times) at (Line):(Column).\\|"
            "[0-9][0-9]:[0-9][0-9] [MTWFS][aeioudhnrst]+day, [JFMASOND]"
            "[aeiouybcghlmnprstv]+ [1-9][0-9]?, 20[0-9][0-9]\\)\\)")
            nil t) (replace-match (if strip " " "/*\\&*/") t))
@@ -1181,12 +1181,12 @@ be placed on the menubar upon ESS initialisation."
   ;; This works by creating a temp buffer where the template function is
   ;; edited so that V is replaced by the version number
   (let ((template "")
-	(beg)
-	(versions)
-	(version)
-	(eval-buf (get-buffer-create "*ess-temp-sas-evals*"))
-	(ess-sas-versions-created)
-	)
+        (beg)
+        (versions)
+        (version)
+        (eval-buf (get-buffer-create "*ess-temp-sas-evals*"))
+        (ess-sas-versions-created)
+        )
     ;;
     ;; This is the template function used for creating M-x SASV.
     (setq template "(defun SASV (&optional start-args)
@@ -1205,26 +1205,26 @@ This function was generated by `ess-sas-versions-create'.\"
       ;; Find which versions of SAS we want.  Remove the pathname, leaving just
       ;; the name of the executable.
       (setq versions
-	    (ess-uniq-list
-	     (mapcar 'file-name-nondirectory
-		     (apply 'nconc
-			    (mapcar 'ess-find-exec-completions
-				    ess-sas-versions)))))
+            (ess-uniq-list
+             (mapcar 'file-name-nondirectory
+                     (apply 'nconc
+                            (mapcar 'ess-find-exec-completions
+                                    ess-sas-versions)))))
       (ess-write-to-dribble-buffer
        (format "(SAS): ess-sas-versions-create making M-x defuns for %s"
-	       (mapconcat 'identity versions " ")))
+               (mapconcat 'identity versions " ")))
       (setq ess-sas-versions-created versions) ;keep copy for returning at end.
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (while versions
-	(setq version (car versions)
-	      versions (cdr versions))
-	(setq beg (point))
-	(insert template)
-	(goto-char beg)
-	(while (search-forward "SASV" nil t)
-	  (replace-match version t t))
-	(goto-char (point-max))
-	)
+        (setq version (car versions)
+              versions (cdr versions))
+        (setq beg (point))
+        (insert template)
+        (goto-char beg)
+        (while (search-forward "SASV" nil t)
+          (replace-match version t t))
+        (goto-char (point-max))
+        )
       ;; buffer has now been created with defuns, so eval them!
       (eval-buffer)
       (kill-buffer eval-buf)
@@ -1248,12 +1248,12 @@ Else
 
   (if arg
       (progn
-	(if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-	    (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
-	  ;;else
-	  (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
-	(define-key sas-mode-local-map [return] 'newline)
-	(define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
+        (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
+            (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
+          ;;else
+          (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
+        (define-key sas-mode-local-map [return] 'newline)
+        (define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
     ;;else
     (define-key sas-mode-local-map [return] 'newline-and-indent)
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
@@ -1300,9 +1300,9 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
   (if (and ess-sas-edit-keys-toggle
-	   (equal emacs-major-version 19) (equal emacs-minor-version 28))
+           (equal emacs-major-version 19) (equal emacs-minor-version 28))
       (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
-					;else
+                                        ;else
     (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
   ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (setq ess-sas-global-pc-keys t)
@@ -1337,11 +1337,11 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
-	(if (and ess-sas-edit-keys-toggle
-	    (equal emacs-major-version 19) (equal emacs-minor-version 28))
-	    (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
-	    ;else
-	    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
+        (if (and ess-sas-edit-keys-toggle
+            (equal emacs-major-version 19) (equal emacs-minor-version 28))
+            (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
+            ;else
+            (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
   ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys t)

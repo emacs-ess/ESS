@@ -48,8 +48,8 @@
     (ess-suffix                    . "omg")
     (ess-loop-timeout              . 5000)
     (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
+                                      "S$" ess-suffix ; in the one from custom:
+                                      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . OMG-editing-alist)
     (ess-mode-syntax-table         . OMG-syntax-table)
     (ess-change-sp-regexp          . "");fixme (if omegahat ever ..)
@@ -74,13 +74,13 @@
   (setq ess-customize-alist OMG-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(OMG): ess-dialect=%s, buf=%s\n"
-	   ess-dialect
-	   (current-buffer)))
+           ess-dialect
+           (current-buffer)))
   (let ((omg-start-args
-	 (concat inferior-ess-start-args
-		 (if start-args (read-string
-				 "Starting Args [possibly -CORBA] ? ")
-		   nil))))
+         (concat inferior-ess-start-args
+                 (if start-args (read-string
+                                 "Starting Args [possibly -CORBA] ? ")
+                   nil))))
     (inferior-ess omg-start-args)))
 
 
