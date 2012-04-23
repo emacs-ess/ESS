@@ -48,13 +48,13 @@
   (message "Starting evaluation...")
   (do-applescript (concat
     "try\n"
-	"tell application \"R\"\n"
-		"activate\n"
-		"with timeout of 0 seconds\n"
-			"cmd \"" (buffer-substring start end)
-			"\"\n"
-		"end timeout\n"
-	"end tell\n"
+        "tell application \"R\"\n"
+                "activate\n"
+                "with timeout of 0 seconds\n"
+                        "cmd \"" (buffer-substring start end)
+                        "\"\n"
+                "end timeout\n"
+        "end tell\n"
     "end try\n"))
   (message "Finished evaluation"))
 
@@ -67,13 +67,13 @@
   (move-to-column 0)
   (do-applescript (concat
     "try\n"
-	"tell application \"R\"\n"
-		"activate\n"
-		"with timeout of 0 seconds\n"
-			"cmd \"" (buffer-substring (point) end)
-			"\"\n"
-		"end timeout\n"
-	"end tell\n"
+        "tell application \"R\"\n"
+                "activate\n"
+                "with timeout of 0 seconds\n"
+                        "cmd \"" (buffer-substring (point) end)
+                        "\"\n"
+                "end timeout\n"
+        "end tell\n"
     "end try\n"))))
   (message "Finished evaluation"))
 
@@ -84,20 +84,20 @@ e.  BEG and END denote the region in the current buffer to be sent."
   (interactive "r")
   (save-window-excursion
     (let ((tmp-file (make-temp-file "ess-r-var"))
-	  cmd
-	  var)
+          cmd
+          var)
       (write-region beg end tmp-file)
 
       ;; Decide on the variable name to use in R; could use completion.
       (setq var (read-string "R Variable name (default e): "))
       (if (equal var "")
-	  (setq var "e"))
+          (setq var "e"))
 
       ;; Command to send to the R process.  Get R to delete the file
       ;; rather than Emacs in case it takes R a long time to run the
       ;; scan command.
       (setq cmd (concat var " <- scan(\""  tmp-file "\"); "
-			"unlink(\"" tmp-file "\")" ))
+                        "unlink(\"" tmp-file "\")" ))
 
       ;; Put the output from the scan command into the process buffer so
       ;; the user has a record of it.
@@ -124,7 +124,7 @@ is)."
     (interactive)
     (other-buffer 1)
     (if (= emacs "emacs")
-	(setq scroll-up-aggressively t)
+        (setq scroll-up-aggressively t)
       (setq scroll-conservatively -4)) ;; <- change this
     (other-buffer -1))
 

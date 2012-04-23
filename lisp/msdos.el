@@ -102,35 +102,35 @@ its value is used as a list of arguments when invoking the shell.
   (interactive)
   (if (not (comint-check-proc "*msdos*"))
       (let* ((prog explicit-msdos-shell-file-name)
-	     (name (file-name-nondirectory prog))
-	     (startfile (concat "~/.emacs_" name))
-	     (xargs-name (intern-soft (concat "explicit-" name "-args")))
-	     shell-buffer
-	     (comspec (getenv "COMSPEC"))
-	     (shell (getenv "SHELL"))
-	     )
-	(save-excursion
-	  (setenv "COMSPEC" explicit-msdos-comspec-file-name)
-	  (setenv "SHELL" explicit-msdos-shell-file-name)
-	  (set-buffer (apply 'make-comint "msdos" prog
-			     (if (and xargs-name (boundp xargs-name))
-				 (symbol-value xargs-name))
-			     (if (file-exists-p startfile)
-				 (concat "/k " startfile))))
-	  (setenv "COMSPEC" comspec)
-	  (setenv "SHELL" shell)
-	  (setq shell-buffer (current-buffer))
-	  (shell-mode)
-	  (msdos-minor-mode)
-	  (sleep-for 4) ; need to wait, else working too fast!
-		      ;;; The `exit' warning should precede the "c:\" prompt.
-		      ;;; If not, then increase the sleep-for time!
-	  (goto-char (point-min))
-	  (insert
-	   "Remember to exit this buffer with `exit'.  If you kill the
+             (name (file-name-nondirectory prog))
+             (startfile (concat "~/.emacs_" name))
+             (xargs-name (intern-soft (concat "explicit-" name "-args")))
+             shell-buffer
+             (comspec (getenv "COMSPEC"))
+             (shell (getenv "SHELL"))
+             )
+        (save-excursion
+          (setenv "COMSPEC" explicit-msdos-comspec-file-name)
+          (setenv "SHELL" explicit-msdos-shell-file-name)
+          (set-buffer (apply 'make-comint "msdos" prog
+                             (if (and xargs-name (boundp xargs-name))
+                                 (symbol-value xargs-name))
+                             (if (file-exists-p startfile)
+                                 (concat "/k " startfile))))
+          (setenv "COMSPEC" comspec)
+          (setenv "SHELL" shell)
+          (setq shell-buffer (current-buffer))
+          (shell-mode)
+          (msdos-minor-mode)
+          (sleep-for 4) ; need to wait, else working too fast!
+                      ;;; The `exit' warning should precede the "c:\" prompt.
+                      ;;; If not, then increase the sleep-for time!
+          (goto-char (point-min))
+          (insert
+           "Remember to exit this buffer with `exit'.  If you kill the
 buffer without exiting, you may not be able to shut down Windows cleanly.")
-	  (goto-char (point-max)))
-	(pop-to-buffer shell-buffer))
+          (goto-char (point-max)))
+        (pop-to-buffer shell-buffer))
     (pop-to-buffer "*msdos*")))
 
 
@@ -162,8 +162,8 @@ d. strips ctrl-m from output.
 (put 'msdos-minor-mode 'permanent-local t)
 (or (assq 'msdos-minor-mode minor-mode-alist)
     (setq minor-mode-alist
-	  (append minor-mode-alist
-		  (list '(msdos-minor-mode " msdos")))))
+          (append minor-mode-alist
+                  (list '(msdos-minor-mode " msdos")))))
 
 ;; Provide ourselves:
 

@@ -17,7 +17,7 @@
 ;;
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
@@ -121,31 +121,31 @@
   ;; modify-face is an interactive compiled Lisp function in `faces'.
   ;; Sample usage:
 
-  ;;(modify-face FACE			     FOREGROUND BACKGROUND STIPPLE BOLD-P ITALIC-P UNDERLINE-P &optional INVERSE-P FRAME)
+  ;;(modify-face FACE                        FOREGROUND BACKGROUND STIPPLE BOLD-P ITALIC-P UNDERLINE-P &optional INVERSE-P FRAME)
 
-  (modify-face 'modeline		     "gray10"	"gray90"   nil	   nil	  t	   nil	     )
-  (modify-face 'font-lock-comment-face	     "black"	"white"	   nil	   nil	  t	   nil	     )
-  (modify-face 'font-lock-function-name-face "black"	"white"	   nil	   t	  nil	   nil	     )
-  (modify-face 'font-lock-keyword-face	     "black"	"white"	   nil	   nil	  nil	   t	     )
+  (modify-face 'modeline                     "gray10"	"gray90"   nil     nil    t        nil       )
+  (modify-face 'font-lock-comment-face       "black"	"white"    nil     nil    t        nil       )
+  (modify-face 'font-lock-function-name-face "black"	"white"    nil     t      nil      nil       )
+  (modify-face 'font-lock-keyword-face       "black"	"white"    nil     nil    nil      t         )
   (modify-face 'font-lock-constant-face      "black"    "white"    nil     t      nil      nil       )
-  (modify-face 'font-lock-string-face	     "black"	"white"	   nil	   nil	  t	   t	     )
-  (modify-face 'font-lock-type-face	     "black"	"white"	   nil	   t	  t	   nil	     )
-  (modify-face 'font-lock-variable-name-face "black"	"white"	   nil	   nil	  nil	   nil	     )
-  (modify-face 'font-lock-builtin-face	     "black"	"white"	   nil	   t	  nil	   nil	     )
-  (modify-face 'font-lock-warning-face	     "black"	"white"	   nil	   t	  nil	   nil	     )
-  (modify-face 'show-paren-match-face	     "gray20"	"gray80"   nil	   t	  nil	   nil	     )
-  (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil	   t	  t	   nil	     ))
+  (modify-face 'font-lock-string-face        "black"	"white"    nil     nil    t        t         )
+  (modify-face 'font-lock-type-face          "black"	"white"    nil     t      t        nil       )
+  (modify-face 'font-lock-variable-name-face "black"	"white"    nil     nil    nil      nil       )
+  (modify-face 'font-lock-builtin-face       "black"	"white"    nil     t      nil      nil       )
+  (modify-face 'font-lock-warning-face       "black"	"white"    nil     t      nil      nil       )
+  (modify-face 'show-paren-match-face        "gray20"	"gray80"   nil     t      nil      nil       )
+  (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil     t      t        nil       ))
 
 (defun ess-font-lock-db ()
   "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>"
   (interactive)
-  (set-face-foreground 'font-lock-comment-face	     "Firebrick")  ; #...    %...
-  (set-face-foreground 'font-lock-string-face	     "SeaGreen")   ; "..."   "..."
-  (set-face-foreground 'font-lock-keyword-face	     "MediumBlue") ; if	     \end
+  (set-face-foreground 'font-lock-comment-face       "Firebrick")  ; #...    %...
+  (set-face-foreground 'font-lock-string-face        "SeaGreen")   ; "..."   "..."
+  (set-face-foreground 'font-lock-keyword-face       "MediumBlue") ; if      \end
   (set-face-foreground 'font-lock-function-name-face "VioletRed")  ; talk<-  {center}
-  (set-face-foreground 'font-lock-variable-name-face "Blue")	   ; xv
-  (set-face-foreground 'font-lock-type-face	     "Goldenrod")  ; T,F       ?
-  (set-face-foreground 'font-lock-constant-face      "Magenta")    ; <-	     {eq1}
+  (set-face-foreground 'font-lock-variable-name-face "Blue")       ; xv
+  (set-face-foreground 'font-lock-type-face          "Goldenrod")  ; T,F       ?
+  (set-face-foreground 'font-lock-constant-face      "Magenta")    ; <-      {eq1}
 )
 
 (provide 'ess-font-lock)
@@ -154,11 +154,11 @@
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:	  ^L ;
-;;; Sections:	 ;;*;;
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:	 defuns, defvars, defconsts
-;;;		 Random code beginning with a ;;;;* comment
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
 ;;; Local variables:
 ;;; mode: emacs-lisp
 ;;; mode: outline-minor

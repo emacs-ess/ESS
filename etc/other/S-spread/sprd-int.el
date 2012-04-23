@@ -48,7 +48,7 @@
  (set-buffer S-buffer)
  (spread-insert
   (format "emacs.cell('%s', %s, %s, %s)"
-	  spread-name r c result-type 
+          spread-name r c result-type
   )
  )
  (save-excursion
@@ -58,10 +58,10 @@
    (setq beg (point)) (end-of-line)
    (if (equal result-type "4")
        (progn
-	 (setq command (buffer-substring beg (point)))
+         (setq command (buffer-substring beg (point)))
          (set-buffer S-buffer)
-	 (spread-insert command)
-       ) 
+         (spread-insert command)
+       )
      (setq command (read-string "> " (buffer-substring beg (point))))
      (set-buffer S-buffer)
      (spread-insert command)
@@ -147,11 +147,11 @@
 
 
 ;; from dired.el L547
-;	  (put-text-property (point)
-;			     (save-excursion
-;			       (dired-move-to-end-of-filename)
-;			       (point))
-;			     'mouse-face 'highlight)
+;         (put-text-property (point)
+;                            (save-excursion
+;                              (dired-move-to-end-of-filename)
+;                              (point))
+;                            'mouse-face 'highlight)
 ;
 ;; (put-text-property (point) (mark) 'mouse-face 'highlight)
 
@@ -162,12 +162,12 @@
  (save-excursion
    (goto-char (point-min))
    (search-forward "**macro**")(forward-char)
-   
+
    (toggle-read-only -1)
    (while (progn
-	    (setq beg (point))(end-of-line)
-	    (not (= beg (point)))
-	   )
+            (setq beg (point))(end-of-line)
+            (not (= beg (point)))
+           )
      (put-text-property beg (1-(point)) 'mouse-face 'highlight)
      (forward-char)
    )
@@ -186,7 +186,7 @@
 
 
 
-(defun find-spread-frame-directory nil 
+(defun find-spread-frame-directory nil
 "Locate directory in which spread.frame functions are stored."
   (list-command-history)
   (set-buffer "*Command History*")
@@ -196,7 +196,7 @@
   (end-of-line)(search-backward "/")
   (goto-char (match-end 0))
   (setq spread-frame-directory
-	(expand-file-name (buffer-substring beg (point))))
+        (expand-file-name (buffer-substring beg (point))))
 )
 
 (defun inferior-spread-mode ()
@@ -214,9 +214,9 @@
     )
   (set-variable 'comint-scroll-to-bottom-on-output "this")
   (set-variable 'comint-scroll-show-maximum-output t)
-  (if (not(file-writable-p ".Data/.Audit")) 
+  (if (not(file-writable-p ".Data/.Audit"))
       (accept-process-output spread-process))
-  (accept-process-output spread-process) 
+  (accept-process-output spread-process)
 )
 
 
@@ -227,9 +227,9 @@
        (string-match "Error" str)
       )
       (progn
-	(switch-to-buffer-other-window S-buffer)
-	(comint-show-maximum-output)
-	(set-variable 'quit-flag t); beeps and writes "quit" in the message area
+        (switch-to-buffer-other-window S-buffer)
+        (comint-show-maximum-output)
+        (set-variable 'quit-flag t); beeps and writes "quit" in the message area
       )
   )
 )
@@ -279,7 +279,7 @@ to /tmp/spr***** directory, and find or revert all views into emacs buffers."
      (setq beg (point)) (end-of-line)
      (setq spread-name-i (buffer-substring beg (point)))
      (save-excursion (spread-find-file spread-name-i))
-     (forward-line))) 
+     (forward-line)))
 )
 
 (defun spread-find-file (spread-name) "Display one view of spread.frame"
@@ -313,20 +313,20 @@ to /tmp/spr***** directory, and find or revert all views into emacs buffers."
   (setq spread-home-directory (dired-current-directory))
   (find-spread-frame-directory)
   (kill-buffer "*Command History*")
-  (if (not spread-directory-p) 
+  (if (not spread-directory-p)
       (progn (make-directory spread-directory)
-	     (setq spread-directory-p t)))
+             (setq spread-directory-p t)))
   (setq S-program (read-string "Splus or S? " "Splus"))
   (setq S-buffer (concat "*" S-program "*"))
   (if (not (get-buffer S-buffer))
-	(get-buffer-create S-buffer))
+        (get-buffer-create S-buffer))
   (if (get-buffer-process S-buffer) (set-variable 'quit-flag t))
   (set-buffer S-buffer)
   (cd spread-home-directory)
   (inferior-spread-mode)
   (spread-insert
    (format "attach('%s.Data')" spread-frame-directory))
-  (spread-insert 
+  (spread-insert
    (format "emacs.start('%s')" spread-directory))
   (find-file spread-command-file)
   (spread-find-file ".Registry")

@@ -47,7 +47,7 @@
 ;; These are required by every other file.
 (ess-message "loading 'ess-compat ..")  (require 'ess-compat) ;set Emacsen diffs
 (ess-message "loading 'ess-custom ..")  (require 'ess-custom) ;set variables
-(ess-message "loading 'ess ..")	      (require 'ess)      ;configure
+(ess-message "loading 'ess ..")       (require 'ess)      ;configure
 (ess-message "loading 'ess-site ..")  (require 'ess-site) ;overload defaults
 
  ; Local variables section

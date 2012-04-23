@@ -43,22 +43,22 @@
 
 (defvar S4-customize-alist
   (append
-   '((ess-local-customize-alist     	. 'S4-customize-alist)
-     (ess-dialect                   	. "S4")
-     (ess-loop-timeout	           	. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-change-sp-regexp	   	. ess-S-change-sp-regexp)
-     (ess-help-sec-keys-alist       	. ess-help-S3-sec-keys-alist)
-     (ess-object-name-db-file       	. "ess-s4-namedb.el")
-     (inferior-ess-program          	. inferior-S4-program-name)
-     (inferior-ess-objects-command  	. ".SmodeObs(%d, pattern=\"%s\")\n")
+   '((ess-local-customize-alist         . 'S4-customize-alist)
+     (ess-dialect                       . "S4")
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-change-sp-regexp              . ess-S-change-sp-regexp)
+     (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
+     (ess-object-name-db-file           . "ess-s4-namedb.el")
+     (inferior-ess-program              . inferior-S4-program-name)
+     (inferior-ess-objects-command      . ".SmodeObs(%d, pattern=\"%s\")\n")
      ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
-     (inferior-ess-help-command     	. "help(\"%s\")\n")
+     (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. ".SmodePaths()\n")
-     (inferior-ess-load-command     	. ".SmodeLoad(\"%s\")\n")
-     (inferior-ess-dump-command     	. ".SmodeDump(\"%s\", \"%s\")\n")
+     (inferior-ess-load-command         . ".SmodeLoad(\"%s\")\n")
+     (inferior-ess-dump-command         . ".SmodeDump(\"%s\", \"%s\")\n")
 
-     (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S3")
      (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )
@@ -68,15 +68,15 @@
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
-;;	   (lambda ()
-;;	     (ess-command
-;;	      (concat
-;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
-;;	       ess-mode-run-file
-;;	       "\")\n"))
-;;	     (if ess-mode-run-file2
-;;		 (ess-command
-;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
+;;         (lambda ()
+;;           (ess-command
+;;            (concat
+;;             "if(exists(\"Sversion\")) library(emacs) else source(\""
+;;             ess-mode-run-file
+;;             "\")\n"))
+;;           (if ess-mode-run-file2
+;;               (ess-command
+;;                (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
 (defun S4 ()
@@ -118,19 +118,19 @@
 ;;; S-help.file line 270
 ;;(defun S-get-help-files-list nil
 ;;  (mapcar 'list
-;;	  (apply 'append
-;;		 (mapcar (lambda (dirname)
-;;			   (if (file-directory-p dirname)
-;;			       (directory-files dirname)))
-;;			 (mapcar (lambda (str) (concat str "/__Help"))
-;;				 (S-search-list))))))
+;;        (apply 'append
+;;               (mapcar (lambda (dirname)
+;;                         (if (file-directory-p dirname)
+;;                             (directory-files dirname)))
+;;                       (mapcar (lambda (str) (concat str "/__Help"))
+;;                               (S-search-list))))))
 ;;
 ;;
 ;;;;; additional font-lock-keywords for S4
 ;;
 ;;;;*;; based on S-inf.el line 107
 ;;;;(add-to-list 'S-inf-font-lock-keywords
-;;;;	     '("\\<\\(^Problem\\|^Warning\\|^Error\\|Debug ?\\|Browsing in frame of\\|Local Variables\\)\\>" . font-lock-reference-face) ; S-inf problems
+;;;;         '("\\<\\(^Problem\\|^Warning\\|^Error\\|Debug ?\\|Browsing in frame of\\|Local Variables\\)\\>" . font-lock-reference-face) ; S-inf problems
 ;;;;)
 ;;;;(add-to-list 'S-inf-font-lock-keywords
 ;;;; '("^R>" . font-lock-keyword-face)	; debug prompt
@@ -148,7 +148,7 @@
 ;;                                             ;; Must follow S-mode
 ;;;;*;; based on S-mode.el line 219
 ;;(add-to-list 'S-mode-font-lock-keywords
-;;	     '("\\<\\(setGeneric\\|removeGeneric\\|setMethod\\|unsetMethod\\|setReplaceGeneric\\|setReplaceMethod\\|standardGeneric\\|setIs\\|setClass\\|representation\\)\\>" . font-lock-function-name-face)  ; S4 method functions
+;;           '("\\<\\(setGeneric\\|removeGeneric\\|setMethod\\|unsetMethod\\|setReplaceGeneric\\|setReplaceMethod\\|standardGeneric\\|setIs\\|setClass\\|representation\\)\\>" . font-lock-function-name-face)  ; S4 method functions
 ;;)
 ;;
 ;;
@@ -177,22 +177,22 @@
 ;;         (sprocess (get-S-process S-current-process-name))
 ;;         (sbuffer (process-buffer sprocess))
 ;;         r
-;;	 (timeout 0))
+;;       (timeout 0))
 ;;    (set-buffer sbuffer)
 ;;    (while (progn
-;;	     (if (not (eq (process-status sprocess) 'run))
-;;		 (S-error "S process has died unexpectedly.")
-;;	       (if (> (setq timeout (1+ timeout)) S-loop-timeout)
-;;		   (S-error "Timeout waiting for prompt. Check inferior-S-prompt or S-loop-timeout."))
-;;	       (accept-process-output)
-;;	       (goto-char (point-max))
+;;           (if (not (eq (process-status sprocess) 'run))
+;;               (S-error "S process has died unexpectedly.")
+;;             (if (> (setq timeout (1+ timeout)) S-loop-timeout)
+;;                 (S-error "Timeout waiting for prompt. Check inferior-S-prompt or S-loop-timeout."))
+;;             (accept-process-output)
+;;             (goto-char (point-max))
 ;;(setq end (point))
-;;	       (beginning-of-line)
+;;             (beginning-of-line)
 ;;(setq e (buffer-substring (point) end))
 ;;(if (equal e inferior-S-debug-prompt)
 ;;    (S-error "Debug prompt"))
-;;	       (setq r (looking-at inferior-S-prompt))
-;;	       (not (or r (looking-at ".*\\?\\s *"))))))
+;;             (setq r (looking-at inferior-S-prompt))
+;;             (not (or r (looking-at ".*\\?\\s *"))))))
 ;;    (goto-char (point-max))
 ;;    (set-buffer cbuffer)
 ;;    (symbol-value r)))
@@ -215,19 +215,19 @@
 ;;      (goto-char (point-max))
 ;;      (if
 ;;          (re-search-backward ", file \"" nil t)
-;;	  (let* ((beg-pos (progn (re-search-forward "\"" nil t) (point)))
-;;		 (end-pos (progn (re-search-forward "\"" nil t) (- (point) 1)))
-;;		 (filename (buffer-substring beg-pos end-pos))
+;;        (let* ((beg-pos (progn (re-search-forward "\"" nil t) (point)))
+;;               (end-pos (progn (re-search-forward "\"" nil t) (- (point) 1)))
+;;               (filename (buffer-substring beg-pos end-pos))
 ;;                 (fbuffer (get-file-buffer filename))
 ;;                 (linenum (string-to-number
-;;			   (progn (re-search-backward "," nil t)
-;;				  (current-word))))
-;;		 (end-pos (point))
+;;                         (progn (re-search-backward "," nil t)
+;;                                (current-word))))
+;;               (end-pos (point))
 ;;                 (beg-pos (progn (goto-char (point-min))
-;;				 (re-search-forward ":" nil t)
-;;				 (1+ (point))))
+;;                               (re-search-forward ":" nil t)
+;;                               (1+ (point))))
 ;;                 (errmess (buffer-substring beg-pos end-pos))
-;;		 )
+;;               )
 ;;            (if showerr
 ;;                  (S-display-temp-buffer errbuff)
 ;;              (if fbuffer nil
@@ -250,25 +250,25 @@
 ;;  (if start-of-output nil (setq start-of-output (point-min)))
 ;;  (save-excursion
 ;;    (while (progn
-;;	     ;; get output if there is some ready
-;;	     (accept-process-output proc 0 500)
-;;	     (goto-char (marker-position (process-mark proc)))
-;;	     (beginning-of-line)
+;;           ;; get output if there is some ready
+;;           (accept-process-output proc 0 500)
+;;           (goto-char (marker-position (process-mark proc)))
+;;           (beginning-of-line)
 ;;
-;;	     (if (re-search-forward inferior-S-debug-prompt nil t)
-;;		 (if (equal (get-buffer S-error-buffer-name)
-;;			    (get-buffer S-error-buffer-name))
-;;		     (let* ((sprocess (get-S-process S-current-process-name))
-;;			    (sbuffer (process-buffer sprocess)))
-;;		       (set-buffer sbuffer)
-;;		       (process-send-string sprocess "n\n")
-;;		       (accept-process-output sprocess)
-;;		       (beginning-of-line); delete inferior-S-debug-prompt
-;;		       (kill-line)
-;;		       (insert "> ")))
+;;           (if (re-search-forward inferior-S-debug-prompt nil t)
+;;               (if (equal (get-buffer S-error-buffer-name)
+;;                          (get-buffer S-error-buffer-name))
+;;                   (let* ((sprocess (get-S-process S-current-process-name))
+;;                          (sbuffer (process-buffer sprocess)))
+;;                     (set-buffer sbuffer)
+;;                     (process-send-string sprocess "n\n")
+;;                     (accept-process-output sprocess)
+;;                     (beginning-of-line); delete inferior-S-debug-prompt
+;;                     (kill-line)
+;;                     (insert "> ")))
 ;;
-;;	     (if (< (point) start-of-output) (goto-char start-of-output))
-;;	     (not (looking-at inferior-S-primary-prompt)))))))
+;;           (if (< (point) start-of-output) (goto-char start-of-output))
+;;           (not (looking-at inferior-S-primary-prompt)))))))
 ;;
 
 

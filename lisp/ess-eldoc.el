@@ -138,16 +138,16 @@
 
 ;;   (if ess-current-process-name
 ;;       (progn
-;; 	(setq name (ess-guess-fun))		;guess the word at point.
-;; 	(if (equal (length name) 0)
-;; 	    nil
-;; 	  ;; else
-;; 	  (unless (equal name ess-eldoc-last-name)
-;; 	    ;; name is different to the last name we lookedup, so get
-;; 	    ;; new args from R and store them.
-;; 	    (setq ess-eldoc-last-args (ess-r-args-get name)
-;; 		  ess-eldoc-last-name name))
-;; 	  ess-eldoc-last-args))
+;;      (setq name (ess-guess-fun))		;guess the word at point.
+;;      (if (equal (length name) 0)
+;;          nil
+;;        ;; else
+;;        (unless (equal name ess-eldoc-last-name)
+;;          ;; name is different to the last name we lookedup, so get
+;;          ;; new args from R and store them.
+;;          (setq ess-eldoc-last-args (ess-r-args-get name)
+;;                ess-eldoc-last-name name))
+;;        ess-eldoc-last-args))
 ;;     ;; no ESS process current.
 ;;     nil)
 ;; )
@@ -160,8 +160,8 @@
 ;;     (save-excursion
 ;;       (skip-chars-backward "-a-zA-Z0-9._+:")
 ;;       (let ((start (point)))
-;; 	(skip-chars-forward "-a-zA-Z0-9._+:")
-;; 	(setq word (buffer-substring-no-properties start (point)))))
+;;      (skip-chars-forward "-a-zA-Z0-9._+:")
+;;      (setq word (buffer-substring-no-properties start (point)))))
 ;;       word))
 
 (defun ess-use-eldoc ()

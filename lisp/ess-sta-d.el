@@ -81,14 +81,14 @@
   (setq ess-customize-alist STA-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(STA): ess-dialect=%s , buf=%s \n"
-	   ess-dialect
-	   (current-buffer)))
+           ess-dialect
+           (current-buffer)))
   (let ((sta-start-args
-	 (concat "TERM=emacs stata "
-	         inferior-ess-start-args
-		 (if start-args (read-string
-				 "Starting Args [possibly -k####] ? ")
-		   nil))))
+         (concat "TERM=emacs stata "
+                 inferior-ess-start-args
+                 (if start-args (read-string
+                                 "Starting Args [possibly -k####] ? ")
+                   nil))))
     (inferior-ess sta-start-args)))
 
 

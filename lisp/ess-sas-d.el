@@ -61,45 +61,45 @@ Better logic needed!  (see 2 uses, in this file).")
   "Set up log and list files for interactive SAS."
 
   (let* ((ess-shell-buffer-name-flag (get-buffer "*shell*"))
-	 ess-shell-buffer-name
-	 ;; isn't pretty yet.
-	 ;;  ess-local-process-name is defined after this function.
-	 ;;  it needs to be defined prior to this function.
-	 (tmp-procname (let ((ntry 0)
-			     (done nil))
-			 ;; find a non-existent process
-			 (while (not done)
-			   (setq ntry (1+ ntry)
-				 done (not
-				       (get-process (ess-proc-name
-						     ntry
-						     temp-ess-dialect)))))
-			 (ess-proc-name ntry temp-ess-dialect)))
-	 ;; Following was tmp-local-process-name.  Stolen from inferior-ess
-	 (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
-	 (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
-	 (explicit-shell-file-name "/bin/sh")
-	 inferior-SAS-redirect-args
-	 ess-sas-lst
-	 ess-sas-log)
+         ess-shell-buffer-name
+         ;; isn't pretty yet.
+         ;;  ess-local-process-name is defined after this function.
+         ;;  it needs to be defined prior to this function.
+         (tmp-procname (let ((ntry 0)
+                             (done nil))
+                         ;; find a non-existent process
+                         (while (not done)
+                           (setq ntry (1+ ntry)
+                                 done (not
+                                       (get-process (ess-proc-name
+                                                     ntry
+                                                     temp-ess-dialect)))))
+                         (ess-proc-name ntry temp-ess-dialect)))
+         ;; Following was tmp-local-process-name.  Stolen from inferior-ess
+         (ess-sas-lst-bufname (concat "*" tmp-procname ".lst*"))
+         (ess-sas-log-bufname (concat "*" tmp-procname ".log*"))
+         (explicit-shell-file-name "/bin/sh")
+         inferior-SAS-redirect-args
+         ess-sas-lst
+         ess-sas-log)
 
     (ess-write-to-dribble-buffer
      (format "(ess-SAS-pre-run-hook 1): ess-lang=%s, ess-dialect=%s, temp-dialect=%s, buf=%s \n"
-	     ess-language
-	     ess-dialect
-	     temp-ess-dialect
-	     (current-buffer)))
+             ess-language
+             ess-dialect
+             temp-ess-dialect
+             (current-buffer)))
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
     (if ess-shell-buffer-name-flag
-	(save-excursion
-	  (set-buffer "*shell*")
-	  (setq ess-shell-buffer-name
-		(rename-buffer "*ess-shell-regular*" t))))
+        (save-excursion
+          (set-buffer "*shell*")
+          (setq ess-shell-buffer-name
+                (rename-buffer "*ess-shell-regular*" t))))
 
     ;; Construct the LST buffer for output
     (if (get-buffer ess-sas-lst-bufname)
-	nil
+        nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
       (sleep-for 2) ; need to wait, else working too fast!
@@ -111,7 +111,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
      ;; Construct the LOG buffer for output
     (if (get-buffer  ess-sas-log-bufname)
-	nil
+        nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
       (sleep-for 2) ; need to wait, else working too fast!
@@ -122,18 +122,18 @@ Better logic needed!  (see 2 uses, in this file).")
       (rename-buffer ess-sas-log-bufname t))
 
     (setq inferior-SAS-redirect-args (concat " "
-					     ess-sas-lst
-					     " "
-					     ess-sas-log
-					     " ")
-	  inferior-SAS-args-temp (concat inferior-SAS-redirect-args
-					 inferior-SAS-args))
+                                             ess-sas-lst
+                                             " "
+                                             ess-sas-log
+                                             " ")
+          inferior-SAS-args-temp (concat inferior-SAS-redirect-args
+                                         inferior-SAS-args))
 
     ;; Restore the *shell* buffer
     (if ess-shell-buffer-name-flag
-	(save-excursion
-	  (set-buffer ess-shell-buffer-name)
-	  (rename-buffer "*shell*")))
+        (save-excursion
+          (set-buffer ess-shell-buffer-name)
+          (rename-buffer "*shell*")))
 
     (delete-other-windows)
     (split-window-vertically)
@@ -148,8 +148,8 @@ Better logic needed!  (see 2 uses, in this file).")
 
     ;;workaround
     (setq inferior-SAS-program-name
-	  (concat (file-name-as-directory ess-etc-directory)
-		  "ess-sas-sh-command"))
+          (concat (file-name-as-directory ess-etc-directory)
+                  "ess-sas-sh-command"))
     (setq inferior-ess-program inferior-SAS-program-name)))
 
 (defun ess-insert-accept (command)
@@ -161,7 +161,7 @@ Better logic needed!  (see 2 uses, in this file).")
   (accept-process-output (get-buffer-process (current-buffer)))
   (forward-line -1)
   (let* ((beg (point))
-	 (ess-tty-name (progn (end-of-line) (buffer-substring beg (point)))))
+         (ess-tty-name (progn (end-of-line) (buffer-substring beg (point)))))
     (goto-char (point-max))
     ess-tty-name))
 
@@ -248,24 +248,24 @@ Better logic needed!  (see 2 uses, in this file).")
   (interactive "P")
   (if ess-sas-edit-keys-toggle (insert ";") (let (insertpos)
     (if (and (not arg)
-	     (eolp)
-	     (save-excursion
-		   (skip-chars-backward " \t")
-		   (backward-word 1)
-		   (and (looking-at "run")
-			(progn
-			      (skip-chars-backward " \t")
-			  (bolp)))))
-	(progn
-	  (insert last-command-event)
-	  (ess-indent-line)
-	  (save-excursion
-	    (if insertpos (goto-char (1+ insertpos)))
-	    (delete-char -1))))
+             (eolp)
+             (save-excursion
+                   (skip-chars-backward " \t")
+                   (backward-word 1)
+                   (and (looking-at "run")
+                        (progn
+                              (skip-chars-backward " \t")
+                          (bolp)))))
+        (progn
+          (insert last-command-event)
+          (ess-indent-line)
+          (save-excursion
+            (if insertpos (goto-char (1+ insertpos)))
+            (delete-char -1))))
     (if insertpos
-	(save-excursion
-	  (goto-char insertpos)
-	  (self-insert-command (prefix-numeric-value arg)))
+        (save-excursion
+          (goto-char insertpos)
+          (self-insert-command (prefix-numeric-value arg)))
       (self-insert-command (prefix-numeric-value arg))))))
 
 (defun SAS ()
@@ -275,8 +275,8 @@ Better logic needed!  (see 2 uses, in this file).")
   (let* ((temp-dialect "SAS")) ;(cdr (rassoc ess-dialect SAS-customize-alist))))
     (ess-write-to-dribble-buffer
      (format "(SAS): ess-dial=%s, temp-dial=%s\n"
-	     ess-dialect
-	     temp-dialect))
+             ess-dialect
+             temp-dialect))
     (ess-SAS-pre-run-hook temp-dialect)
     (inferior-ess)
     (save-excursion
