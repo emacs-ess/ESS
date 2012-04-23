@@ -24,10 +24,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;
-;; In short: you may use this code any way you like, as long as you
-;; don't charge money for it, remove this notice, or hold anyone liable
-;; for its results.
 
 ;;; Code:
 
