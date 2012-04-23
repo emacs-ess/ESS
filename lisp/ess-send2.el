@@ -20,11 +20,11 @@ active, the function uses the word-at-point"
   (if (not head) (setq head "summary("))
   (if (not tail) (setq tail ")"))
   (if (not commands-buffer) (setq commands-buffer
-				  (get-buffer-create "tmp-buffer")))
+                                  (get-buffer-create "tmp-buffer")))
   (ess-command (concat head
-		       (ess-region-or-word-at-point)
-		       tail)
-	       commands-buffer))
+                       (ess-region-or-word-at-point)
+                       tail)
+               commands-buffer))
 (define-key ess-mode-map "\C-c\C-w" 'ess-eval-expanded)
 
 ;; (defun ess-expand-string (string &optional head tail)
@@ -38,7 +38,7 @@ active, the function uses the word-at-point"
 
 ;; Write a popup Edit-data-menubar that will allow attributes and components
 ;; to be displayed.
-;; 
+;;
 ;; popup menu items:
 ;; summary
 ;; print
@@ -52,4 +52,3 @@ active, the function uses the word-at-point"
 ;; browser off
 ;; browser popup menu
 ;; add your own item to this menu
-

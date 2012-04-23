@@ -1,4 +1,4 @@
-;; noweb-mode.el - edit noweb files with GNU Emacs
+;;; noweb-mode.el --- edit noweb files with GNU Emacs
 
 ;; Copyright (C) 1995 by Thorsten.Ohl @ Physik.TH-Darmstadt.de
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
@@ -11,7 +11,7 @@
 
 ;; ESS-related Changes first added by Mark Lunt and A.J. Rossini, March, 1999.
 
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@
 ;; (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
 ;;                            auto-mode-alist))
 
-;; NEWS:
-;;
+;;; NEWS:
+
 ;;   * [tho] M-n q, aka: M-x noweb-fill-chunk
 ;;
 ;;   * [tho] `M-n TAB', aka: `M-x noweb-complete-chunk'
@@ -68,8 +68,9 @@
 ;;   * commands for tangling, weaving,.. for Sweave: --> ./ess-swv.el
 ;;
 
-;; TODO:
-;;
+
+;;; TODO:
+
 ;;   * _maybe_ replace our `noweb-chunk-vector' by text properties.  We
 ;;     could then use highlighting to jazz up the visual appearance.
 ;;     (Highlighting is sorted: `noweb-chunk-vector' can be
@@ -84,6 +85,8 @@
 ;;     be removed. For ESS 5.3.10, we disable these, using the new variable
 ;;     noweb-code-quote-handling.  If nobody misses that code-protecting
 ;;     behavior, all that should be removed entirely.
+
+;;; Code:
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
 (eval-and-compile
@@ -194,15 +197,15 @@ replaced by sequences of '*'.")
   (interactive)
   (let ((buffer (get-buffer-create "Weave Buffer")))
     (if (not name)
-	(progn
-	  ;; Assume latex documentation, but set to html if appropriate
-	  (if (eq noweb-doc-mode html-mode)
-	      (setq name (concat (substring (buffer-file-name) 0
-					    (string-match ".nw" name))
-				 ".html"))
-	    (setq name (concat (substring (buffer-file-name) 0
-					  (string-match ".nw" name))
-			       ".tex")))))
+        (progn
+          ;; Assume latex documentation, but set to html if appropriate
+          (if (eq noweb-doc-mode html-mode)
+              (setq name (concat (substring (buffer-file-name) 0
+                                            (string-match ".nw" name))
+                                 ".html"))
+            (setq name (concat (substring (buffer-file-name) 0
+                                          (string-match ".nw" name))
+                               ".tex")))))
     (setq name (concat "> " name))
     (setq noweb-weave-options (concat noweb-weave-options name))
     (start-process weave-process buffer "noweave" noweb-weave-options)))
@@ -229,8 +232,8 @@ replaced by sequences of '*'.")
 
 (defvar noweb-mode-prefix-map
   (let ((map (if (featurep 'xemacs)
-		 (make-keymap) ;; XEmacs/Emacs problems...
-	       (make-sparse-keymap))))
+                 (make-keymap) ;; XEmacs/Emacs problems...
+               (make-sparse-keymap))))
     (define-key map "\C-n" 'noweb-next-chunk)
     (define-key map "\C-p" 'noweb-previous-chunk)
     (define-key map "\M-n" 'noweb-goto-next)
@@ -445,7 +448,7 @@ Misc:
     (if font-lock-mode
         (progn
           (font-lock-mode -1)
-	  (require 'noweb-font-lock-mode); which requires noweb-mode .. hmm..
+          (require 'noweb-font-lock-mode); which requires noweb-mode .. hmm..
           (noweb-font-lock-mode 1)))
     (add-hook 'post-command-hook 'noweb-post-command-function)
 
@@ -481,7 +484,7 @@ Misc:
     (remove-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
     (remove-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
     (if (and (boundp 'noweb-font-lock-mode)
-	     noweb-font-lock-mode)
+             noweb-font-lock-mode)
         (progn
           (noweb-font-lock-mode -1)
           (message "Noweb and Noweb-Font-Lock Modes Removed"))
@@ -598,22 +601,22 @@ otherwise."
     (save-excursion
       (beginning-of-line 1)
       (and (progn
-	     (ess-write-to-dribble-buffer
-	      (format "(n-i-m-l: 1)"))
-	     (search-forward "-*-"
-			     (save-excursion (end-of-line) (point))
-			     t))
-	   (progn
-	     (ess-write-to-dribble-buffer
-	      (format "(n-i-m-l: 2)"))
+             (ess-write-to-dribble-buffer
+              (format "(n-i-m-l: 1)"))
+             (search-forward "-*-"
+                             (save-excursion (end-of-line) (point))
+                             t))
+           (progn
+             (ess-write-to-dribble-buffer
+              (format "(n-i-m-l: 2)"))
              (skip-chars-forward " \t")
              (setq beg (point))
              (search-forward "-*-"
                              (save-excursion (end-of-line) (point))
                              t))
            (progn
-	     (ess-write-to-dribble-buffer
-	      (format "(n-i-m-l: 3)"))
+             (ess-write-to-dribble-buffer
+              (format "(n-i-m-l: 3)"))
              (forward-char -3)
              (skip-chars-backward " \t")
              (setq end (point))
@@ -629,10 +632,10 @@ otherwise."
                         (if
                             (equal (substring mode 0 5) "mode:")
                             (setq mode (substring mode 6))))))
-	   (progn
-	     (ess-write-to-dribble-buffer
-	      (format "(n-i-m-l: 3) mode=%s" mode))
-	     (intern mode))))))
+           (progn
+             (ess-write-to-dribble-buffer
+              (format "(n-i-m-l: 3) mode=%s" mode))
+             (intern mode))))))
 
 (defun noweb-find-chunk-index-buffer ()
   "Return the index of the current chunk in NOWEB-CHUNK-VECTOR."
@@ -728,14 +731,14 @@ documentation and code chunks."
   (interactive)
   (if (noweb-in-code-chunk)
       (let ((end (point))
-	    (beg (save-excursion
-		   (if (re-search-backward "<<"
-					   (save-excursion
-					     (beginning-of-line)
-					     (point))
-					   t)
-		       (match-end 0)
-		     nil))))
+            (beg (save-excursion
+                   (if (re-search-backward "<<"
+                                           (save-excursion
+                                             (beginning-of-line)
+                                             (point))
+                                           t)
+                       (match-end 0)
+                     nil))))
         (if beg
             (let* ((pattern (buffer-substring beg end))
                    (alist (noweb-build-chunk-alist))
@@ -839,11 +842,11 @@ chunks."
             (if (or indent-region-function indent-line-function)
                 (indent-region (point-min) (point-max) nil)
               (error "No indentation functions defined in %s!" major-mode)))
-	(if noweb-code-quotes-handling
-	    (let ((quote-list (noweb-hide-code-quotes)))
-	      (fill-region (point-min) (point-max))
-	      (noweb-restore-code-quotes quote-list))
-	  (fill-region (point-min) (point-max)))))))
+        (if noweb-code-quotes-handling
+            (let ((quote-list (noweb-hide-code-quotes)))
+              (fill-region (point-min) (point-max))
+              (noweb-restore-code-quotes quote-list))
+          (fill-region (point-min) (point-max)))))))
 
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
@@ -892,10 +895,10 @@ chunks."
                                 (forward-line 1)
                                 (point)))
             (fill-paragraph justify))
-	(if noweb-code-quotes-handling
-	    (let ((quote-list (noweb-hide-code-quotes)))
-	      (fill-paragraph justify)
-	      (noweb-restore-code-quotes quote-list))
+        (if noweb-code-quotes-handling
+            (let ((quote-list (noweb-hide-code-quotes)))
+              (fill-paragraph justify)
+              (noweb-restore-code-quotes quote-list))
           (fill-paragraph justify))))))
 
 (defun noweb-auto-fill-doc-chunk ()
@@ -906,9 +909,9 @@ chunks."
                         (end-of-line)
                         (point)))
     (if noweb-code-quotes-handling
-	(let ((quote-list (noweb-hide-code-quotes)))
-	  (do-auto-fill)
-	  (noweb-restore-code-quotes quote-list))
+        (let ((quote-list (noweb-hide-code-quotes)))
+          (do-auto-fill)
+          (noweb-restore-code-quotes quote-list))
       (do-auto-fill))))
 
 (defun noweb-auto-fill-doc-mode ()
@@ -1218,8 +1221,8 @@ in the middle and and update the chunk vector."
         ;; Reset code-mode to default and then check for a mode comment.
         (setq noweb-code-mode noweb-default-code-mode)
         (let (mode chunk-name)
-	  (save-excursion
-	    (save-restriction
+          (save-excursion
+            (save-restriction
               (end-of-line)
               (re-search-backward "^[ \t]*<<\\(.*\\)>>=" nil t)
               (setq chunk-name (match-string 1))
@@ -1314,8 +1317,8 @@ The only sensible way to do this is to add a mode line to the chunk"
   (if (noweb-in-code-chunk)
       (progn
         (setq noweb-code-mode mode)
-	(save-excursion
-	  (save-restriction
+        (save-excursion
+          (save-restriction
             (let (chunk-name)
               (widen)
               (end-of-line)
@@ -1335,8 +1338,8 @@ The only sensible way to do this is to add a mode line to the chunk"
                   ;; Need to set major mode so that we can comment out
                   ;; the mode line
                   (funcall noweb-code-mode)
-		  (if (not (boundp 'comment-start))
-		      (setq comment-start "#"))
+                  (if (not (boundp 'comment-start))
+                      (setq comment-start "#"))
                   (insert comment-start
                           " -*- " mode
                           " -*- " comment-end "\n")))
@@ -1581,31 +1584,31 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (if (string-match
                  "mode:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-code-mode
-		      (if (featurep 'xemacs)
-			  (match-string 1 this-line)
-			(match-string-no-properties 1 this-line))
-		      ))
+                      (if (featurep 'xemacs)
+                          (match-string 1 this-line)
+                        (match-string-no-properties 1 this-line))
+                      ))
             (if (string-match
                  "noweb-line-number-format:[ \t]*\"\\([^\"]*\\)\"" this-line)
                 (setq noweb-line-number-format
-		      (if (featurep 'xemacs)
-			  (match-string 1 this-line)
-			(match-string-no-properties 1 this-line))
-		      ))
+                      (if (featurep 'xemacs)
+                          (match-string 1 this-line)
+                        (match-string-no-properties 1 this-line))
+                      ))
             (if (string-match
                  "noweb-line-number-skip-lines:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-line-number-skip-lines
                       (string-to-number
-		       (if (featurep 'xemacs)
-			   (match-string 1 this-line)
-			 (match-string-no-properties 1 this-line)))))
+                       (if (featurep 'xemacs)
+                           (match-string 1 this-line)
+                         (match-string-no-properties 1 this-line)))))
             (if (string-match
                  "noweb-tab-width:[ \t]*\\([^\t ]*\\)" this-line)
                 (setq noweb-tab-width
                       (string-to-number
-		       (if (featurep 'xemacs)
-			   (match-string 1 this-line)
-			 (match-string-no-properties 1 this-line)))))
+                       (if (featurep 'xemacs)
+                           (match-string 1 this-line)
+                         (match-string-no-properties 1 this-line)))))
             (beginning-of-line 2)))))))
 
 (defun noweb-reset-thread-local-variables ()
@@ -1675,9 +1678,9 @@ This may be useful in shell scripts, where the first line (or two) must have a
                 (append-to-buffer tangle-buffer
                                   (point)
                                   (save-excursion
-				    (progn
-				      (end-of-line)
-				      (point))))
+                                    (progn
+                                      (end-of-line)
+                                      (point))))
                 (beginning-of-line 2)
                 (1- noweb-line-number-skip-lines))
             (noweb-write-line-number line-number-format buffer))
@@ -1689,18 +1692,18 @@ This may be useful in shell scripts, where the first line (or two) must have a
             ;; recognised itself and so could not copy itself
             ;; correctly.
             (if (looking-at
-		 "\\([^\n\"@]*\\)<<\\(.*\\)\\(>>\\)\\([^\n\"]*\\)$")
+                 "\\([^\n\"@]*\\)<<\\(.*\\)\\(>>\\)\\([^\n\"]*\\)$")
                 (progn
-		  (save-excursion
-		    (save-restriction
+                  (save-excursion
+                    (save-restriction
                       (setq thread-name-re
-			    (concat "<<"
-				    (regexp-quote (match-string 2))
-				    ">>="))
+                            (concat "<<"
+                                    (regexp-quote (match-string 2))
+                                    ">>="))
                       (setq pre-chunk (match-string 1))
                       (if prefix-string
-			  (setq pre-chunk (concat prefix-string
-						  pre-chunk)))
+                          (setq pre-chunk (concat prefix-string
+                                                  pre-chunk)))
                       (setq post-chunk (match-string 4))
                       (widen)
                       (goto-char (point-min))
@@ -1725,7 +1728,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                 (if (and prefix-string
                          (> (length pre-chunk) 1))
                     (setq pre-chunk (concat prefix-string
-					    pre-chunk)))
+                                            pre-chunk)))
                 ;; And copy it to the buffer
                 (save-excursion
                   (set-buffer tangle-buffer)
@@ -1736,7 +1739,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                      prefix-string)
                 (progn
                   (setq prefix-string
-			(make-string (length prefix-string) ?\  ))
+                        (make-string (length prefix-string) ?\  ))
                   (setq first-line nil)))
             ;; Either way, go to the next line
             (beginning-of-line 2))
@@ -1787,11 +1790,11 @@ thread."
   (interactive)
   (save-excursion
     (let* ((chunk-start
-	    (progn
-	      (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$"
-				  nil t)
-	      (beginning-of-line 2)
-	      (point)))
+            (progn
+              (re-search-backward "^<<\\([^>]*\\)>>=[\t ]*$"
+                                  nil t)
+              (beginning-of-line 2)
+              (point)))
            (chunk-name (buffer-substring-no-properties
                         (match-end 1)
                         (match-beginning 1))))
@@ -1899,3 +1902,5 @@ thread."
 ;; same name (which I refer to as a thread) into a separate
 ;; buffer. This buffer can then be saved to a file, sent to an
 ;; interpreter, whatever. I haven't tested using line-numbers as yet.
+
+;;; noweb-mode.el ends here

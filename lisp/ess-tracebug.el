@@ -8,15 +8,10 @@
 ;; Maintainer: Vitalie Spinu
 ;; Copyright (C) 2010-2012, Vitalie Spinu, all rights reserved.
 ;; Created: Oct 14 14:15:22 2010
-;; Version: 0.4ESS
 ;; URL: http://code.google.com/p/ess-tracebug/
-;; Keywords: debug, watch, traceback, ESS, R
+;; Keywords: language, tools
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-
 ;; This file is *NOT* part of GNU Emacs.
-;; This file is part of ESS
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -36,10 +31,9 @@
 ;;
 ;;   ESS - required
 ;;   ido, face-remap, cl -  desirable and are part of default emacs
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+
 ;;; Commentary:
+
 ;;  Ess-tracebug is a package for interactive debugging of R code from
 ;;  ESS and provides such features as:
 ;;  - visual debugging
@@ -2772,5 +2766,5 @@ intanbible, step char backward first"
 
 (ess-if-verbose-write "\n<- debug done")
 (provide 'ess-tracebug)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; ess-tracebug.el ends here
