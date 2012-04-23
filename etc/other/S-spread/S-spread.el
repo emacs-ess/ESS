@@ -48,7 +48,7 @@
  (set-buffer S-buffer)
  (spread-insert
   (format "emacs.cell('%s', %s, %s, %s)"
-	  spread-name r c result-type 
+          spread-name r c result-type
   )
  )
  (save-excursion
@@ -58,10 +58,10 @@
    (setq beg (point)) (end-of-line)
    (if (equal result-type "4")
        (progn
-	 (setq command (buffer-substring beg (point)))
+         (setq command (buffer-substring beg (point)))
          (set-buffer S-buffer)
-	 (spread-insert command)
-       ) 
+         (spread-insert command)
+       )
      (setq command (read-string "> " (buffer-substring beg (point))))
      (set-buffer S-buffer)
      (spread-insert command)
@@ -131,11 +131,11 @@
 
 
 ;; from dired.el L547
-;	  (put-text-property (point)
-;			     (save-excursion
-;			       (dired-move-to-end-of-filename)
-;			       (point))
-;			     'mouse-face 'highlight)
+;         (put-text-property (point)
+;                            (save-excursion
+;                              (dired-move-to-end-of-filename)
+;                              (point))
+;                            'mouse-face 'highlight)
 ;
 ;; (put-text-property (point) (mark) 'mouse-face 'highlight)
 
@@ -146,12 +146,12 @@
  (save-excursion
    (goto-char (point-min))
    (search-forward "**macro**")(forward-char)
-   
+
    (toggle-read-only -1)
    (while (progn
-	    (setq beg (point))(end-of-line)
-	    (not (= beg (point)))
-	   )
+            (setq beg (point))(end-of-line)
+            (not (= beg (point)))
+           )
      (put-text-property beg (1-(point)) 'mouse-face 'highlight)
      (forward-char)
    )
@@ -170,7 +170,7 @@
 
 
 
-(defun find-spread-frame-directory nil 
+(defun find-spread-frame-directory nil
 "Locate directory in which spread.frame functions are stored."
   (list-command-history)
   (set-buffer "*Command History*")
@@ -180,7 +180,7 @@
   (end-of-line)(search-backward "/")
   (goto-char (match-end 0))
   (setq spread-frame-directory
-	(expand-file-name (buffer-substring beg (point))))
+        (expand-file-name (buffer-substring beg (point))))
   (kill-buffer "*Command History*")
 )
 
@@ -190,7 +190,7 @@
 (put 'inferior-spread-mode 'permanent-local t)
 (or (assq 'inferior-spread-mode minor-mode-alist)
     (setq minor-mode-alist (append minor-mode-alist
-				   (list '(inferior-spread-mode " spread")))))
+                                   (list '(inferior-spread-mode " spread")))))
 
 (defvar inferior-spread-mode-map nil)
 (if inferior-spread-mode-map
@@ -202,25 +202,25 @@
 
 (or (assq 'inferior-spread-mode minor-mode-map-alist)
     (setq minor-mode-map-alist
-	  (cons (cons 'inferior-spread-mode inferior-spread-mode-map)
-		minor-mode-map-alist)))
+          (cons (cons 'inferior-spread-mode inferior-spread-mode-map)
+                minor-mode-map-alist)))
 
 (defun inferior-spread-mode (&optional arg)
   "Toggle Inferior Spread mode.
 With arg, turn Inferior Spread mode on if arg is positive, off otherwise."
   (interactive "P")
   (setq inferior-spread-mode
-	(if (null arg) (not inferior-spread-mode)
-	  (> (prefix-numeric-value arg) 0)))
+        (if (null arg) (not inferior-spread-mode)
+          (> (prefix-numeric-value arg) 0)))
   (if inferior-spread-mode
       (progn
-	(set-process-filter spread-process 'comint-output-filter)
-	(set-variable 'comint-output-filter-functions
-		      '(spread-output-filter
-			comint-postoutput-scroll-to-bottom))
-	(set-variable 'comint-scroll-to-bottom-on-output "this")
-	(set-variable 'comint-scroll-show-maximum-output t)
-	(force-mode-line-update))
+        (set-process-filter spread-process 'comint-output-filter)
+        (set-variable 'comint-output-filter-functions
+                      '(spread-output-filter
+                        comint-postoutput-scroll-to-bottom))
+        (set-variable 'comint-scroll-to-bottom-on-output "this")
+        (set-variable 'comint-scroll-show-maximum-output t)
+        (force-mode-line-update))
     (message "Don't know how to turn off Inferior Spread mode")))
 
 
@@ -229,9 +229,9 @@ With arg, turn Inferior Spread mode on if arg is positive, off otherwise."
   (comint-run S-program)
   (setq spread-process (get-buffer-process (current-buffer)))
   (setq comint-prompt-regexp shell-prompt-pattern)
-  (if (not(file-writable-p ".Data/.Audit")) 
+  (if (not(file-writable-p ".Data/.Audit"))
       (accept-process-output spread-process))
-  (accept-process-output spread-process) 
+  (accept-process-output spread-process)
   spread-process
 )
 
@@ -242,9 +242,9 @@ With arg, turn Inferior Spread mode on if arg is positive, off otherwise."
        (string-match "Error" str)
       )
       (progn
-	(switch-to-buffer-other-window S-buffer)
-	(comint-show-maximum-output)
-	(set-variable 'quit-flag t); beeps and writes "quit" in the message area
+        (switch-to-buffer-other-window S-buffer)
+        (comint-show-maximum-output)
+        (set-variable 'quit-flag t); beeps and writes "quit" in the message area
       )
   )
 )
@@ -281,7 +281,7 @@ to /tmp/spr***** directory, and find or revert all views into emacs buffers."
      (setq beg (point)) (end-of-line)
      (setq spread-name-i (buffer-substring beg (point)))
      (save-excursion (spread-find-file spread-name-i))
-     (forward-line))) 
+     (forward-line)))
 )
 
 (defun spread-find-file (spread-name) "Display one view of spread.frame"
@@ -300,34 +300,34 @@ to /tmp/spr***** directory, and find or revert all views into emacs buffers."
 
   (if (equal major-mode 'inferior-S-mode)
       (progn
-	(setq spread-mode "S-mode")
-	(setq S-buffer (current-buffer)))
+        (setq spread-mode "S-mode")
+        (setq S-buffer (current-buffer)))
     (if (equal major-mode 'dired-mode)
-	(progn
-	  (setq spread-mode "stand-alone")
-	  (setq S-program (read-string "Splus or S? " "Splus"))
-	  (setq S-buffer (concat "*" (file-name-nondirectory S-program) "*"))
-	  (if (not (get-buffer S-buffer))
-	      (get-buffer-create S-buffer))
-	  (if (get-buffer-process S-buffer) (set-variable 'quit-flag t)))
+        (progn
+          (setq spread-mode "stand-alone")
+          (setq S-program (read-string "Splus or S? " "Splus"))
+          (setq S-buffer (concat "*" (file-name-nondirectory S-program) "*"))
+          (if (not (get-buffer S-buffer))
+              (get-buffer-create S-buffer))
+          (if (get-buffer-process S-buffer) (set-variable 'quit-flag t)))
       (set-variable 'quit-flag t)))
 
   (setq spread-home-directory default-directory)
   (find-spread-frame-directory)
-  (if (not spread-directory-p) 
+  (if (not spread-directory-p)
       (progn (make-directory spread-directory)
-	     (setq spread-directory-p t)))
+             (setq spread-directory-p t)))
   (set-buffer S-buffer)
   (cd spread-home-directory)
   (setq spread-process
-	(if (equal spread-mode "stand-alone")
-	    (spread-process)
-	  (get-buffer-process (current-buffer))))
+        (if (equal spread-mode "stand-alone")
+            (spread-process)
+          (get-buffer-process (current-buffer))))
   (inferior-spread-mode 1)
   (spread-insert
    (format "assign('.spread.Data',attach('%s.Data'),frame=0)"
-	   spread-frame-directory))
-  (spread-insert 
+           spread-frame-directory))
+  (spread-insert
    (format "emacs.start('%s')" spread-directory))
   (find-file spread-command-file)
   (spread-find-file ".Registry")

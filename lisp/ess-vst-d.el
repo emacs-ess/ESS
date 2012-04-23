@@ -72,7 +72,7 @@
   (setq ess-customize-alist VST-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(ViSta): ess-dialect=%s , buf=%s\n"
-  	   ess-dialect (current-buffer)))
+           ess-dialect (current-buffer)))
   (inferior-ess))
 
  ; Provide package

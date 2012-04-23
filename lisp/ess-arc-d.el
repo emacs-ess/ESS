@@ -73,7 +73,7 @@
   (setq ess-customize-alist ARC-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(ARC): ess-dialect=%s , buf=%s\n"
-  	   ess-dialect (current-buffer)))
+           ess-dialect (current-buffer)))
   (inferior-ess))
 
 (fset 'arc 'ARC)

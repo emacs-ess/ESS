@@ -121,7 +121,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 (if Rd-mode-parse-syntax-table
     ()
   (setq Rd-mode-parse-syntax-table
-	(copy-syntax-table Rd-mode-syntax-table))
+        (copy-syntax-table Rd-mode-syntax-table))
   ;; To make parse-partial-sexps do the thing we want for computing
   ;; indentations
   (modify-syntax-entry ?\( "_" Rd-mode-parse-syntax-table)
@@ -165,13 +165,13 @@ All Rd mode abbrevs start with a grave accent (`).")
   (list
    (cons
     (concat "\\\\\\("
-	    (mapconcat 'identity Rd-section-names "\\|")
-	    "\\>\\)")
+            (mapconcat 'identity Rd-section-names "\\|")
+            "\\>\\)")
     'font-lock-reference-face) ; Rd-bold-face
    (cons
     (concat "\\\\\\("
-	    (mapconcat 'identity Rd-keywords "\\|")
-	    "\\>\\)")
+            (mapconcat 'identity Rd-keywords "\\|")
+            "\\>\\)")
     'font-lock-keyword-face)
    '("^#\\(ifn?def\\)\\s-+\\(\\sw+\\)"
     (1 font-lock-builtin-face)
@@ -210,25 +210,25 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-mode-menu
   (list "Rd"
-	["Markup [word]"		Rd-font t]
-	["Insert Item"			Rd-mode-insert-item t]
-	["Insert Section"		Rd-mode-insert-section t]
-	["Insert Skeleton"		Rd-mode-insert-skeleton t]
-	"-"
-	["Preview"			Rd-preview-help t]
-	"-"
-	["Eval Line"			ess-eval-line-and-step t]
-	["Eval Region"			ess-eval-region t]
-	["Switch to ESS Process"	ess-switch-to-ESS t]
-	["Switch the ESS Process"	ess-switch-process t]
-	["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
-	"-"
-	["Toggle Abbrev Mode"		abbrev-mode t]
-	["Toggle Auto-Fill Mode"	auto-fill-mode t]
-	"-"
-	["Submit Bug Report"		Rd-submit-bug-report t]
-	"-"
-	["Describe Rd Mode"		Rd-describe-major-mode t])
+        ["Markup [word]"		Rd-font t]
+        ["Insert Item"			Rd-mode-insert-item t]
+        ["Insert Section"		Rd-mode-insert-section t]
+        ["Insert Skeleton"		Rd-mode-insert-skeleton t]
+        "-"
+        ["Preview"			Rd-preview-help t]
+        "-"
+        ["Eval Line"			ess-eval-line-and-step t]
+        ["Eval Region"			ess-eval-region t]
+        ["Switch to ESS Process"	ess-switch-to-ESS t]
+        ["Switch the ESS Process"	ess-switch-process t]
+        ["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
+        "-"
+        ["Toggle Abbrev Mode"		abbrev-mode t]
+        ["Toggle Auto-Fill Mode"	auto-fill-mode t]
+        "-"
+        ["Submit Bug Report"		Rd-submit-bug-report t]
+        "-"
+        ["Describe Rd Mode"		Rd-describe-major-mode t])
   "Menu used in Rd mode.")
 
 (defvar Rd-mode-hook nil
@@ -286,8 +286,8 @@ To automatically turn on the abbrev(iate) features, add the
 following lines to your `.emacs' file:
 
   (add-hook 'Rd-mode-hook
-	    (lambda ()
-	      (abbrev-mode 1)))
+            (lambda ()
+              (abbrev-mode 1)))
 "
 
   (interactive)
@@ -310,7 +310,7 @@ following lines to your `.emacs' file:
 
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
-		    "Menu keymap for Rd mode." Rd-mode-menu)
+                    "Menu keymap for Rd mode." Rd-mode-menu)
   (easy-menu-add Rd-mode-menu-map Rd-mode-map)
 
   (turn-on-auto-fill)
@@ -339,14 +339,14 @@ following lines to your `.emacs' file:
   (let ((pos (point)))
     (save-excursion
       (if (and (re-search-backward
-		"\\\\\\(usage\\|examples\\|synopsis\\)" nil t)
-	       (re-search-forward "\\s(" nil t))
-	  (condition-case ()
-	      (progn
-		(up-list 1)
-		(< pos (point)))
-	    (error t))
-	nil))))
+                "\\\\\\(usage\\|examples\\|synopsis\\)" nil t)
+               (re-search-forward "\\s(" nil t))
+          (condition-case ()
+              (progn
+                (up-list 1)
+                (< pos (point)))
+            (error t))
+        nil))))
 
 (defun Rd-mode-in-preprocessor-line-p ()
   (save-excursion
@@ -367,34 +367,34 @@ following lines to your `.emacs' file:
       0)
      (t
       (let ((p (progn
-		 (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
-		 (point))))
-	(if (or (< (forward-line -1) 0)
-		(Rd-mode-in-verbatim-p))
-	    0
-	  (set-syntax-table Rd-mode-parse-syntax-table)
-	  (while (and (or (looking-at "[ \t]*$")
-			  (Rd-mode-in-preprocessor-line-p))
-		      (not (bobp)))
-	    (forward-line -1))
-	  (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
-	  (prog1
-	      (+ (current-indentation)
-		 (* (car (parse-partial-sexp (point) p))
-		    Rd-indent-level))
-	    (set-syntax-table Rd-mode-syntax-table))))))))
+                 (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
+                 (point))))
+        (if (or (< (forward-line -1) 0)
+                (Rd-mode-in-verbatim-p))
+            0
+          (set-syntax-table Rd-mode-parse-syntax-table)
+          (while (and (or (looking-at "[ \t]*$")
+                          (Rd-mode-in-preprocessor-line-p))
+                      (not (bobp)))
+            (forward-line -1))
+          (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
+          (prog1
+              (+ (current-indentation)
+                 (* (car (parse-partial-sexp (point) p))
+                    Rd-indent-level))
+            (set-syntax-table Rd-mode-syntax-table))))))))
 
 (defun Rd-mode-indent-line ()
   "Indent current line as Rd source."
   (interactive)
   (let ((ic (Rd-mode-calculate-indent))
-	(rp (- (current-column) (current-indentation))))
+        (rp (- (current-column) (current-indentation))))
     (if ic				; Not inside a verbatim
-	(if (< ic 0)
-	    (error "Unmatched parenthesis")
-	  (indent-line-to ic)
-	  (if (> rp 0)
-	      (move-to-column (+ ic rp)))))))
+        (if (< ic 0)
+            (error "Unmatched parenthesis")
+          (indent-line-to ic)
+          (if (> rp 0)
+              (move-to-column (+ ic rp)))))))
 
 (defun Rd-mode-insert-item ()
   (interactive)
@@ -405,11 +405,11 @@ following lines to your `.emacs' file:
 (defun Rd-mode-insert-section ()
   (interactive)
   (let ((s (ess-completing-read
-	    "Insert section: "
-	    (mapcar (lambda (x) (cons x x)) Rd-section-names)
-	    nil t)))
+            "Insert section: "
+            (mapcar (lambda (x) (cons x x)) Rd-section-names)
+            nil t)))
     (if (string= s "")
-	(progn (insert "\\section{}{") (backward-char 2))
+        (progn (insert "\\section{}{") (backward-char 2))
       (insert (format "\\%s{" s)))))
 
 (defun Rd-mode-insert-skeleton ()
@@ -439,40 +439,40 @@ following lines to your `.emacs' file:
   (interactive "c")
   ;;TeX had : (Rd-update-style)
   (let* ((entry (assoc what Rd-font-list))
-	 (before (nth 1 entry))
-	 (after (nth 2 entry)))
+         (before (nth 1 entry))
+         (after (nth 2 entry)))
     (cond ((null entry) ;; help on possibilities :
-	   (let ((help
-		  (concat
-		   "Rd Markup (available from C-c C-f):\n\n\t"
-		   "KEY          Rd-Markup\n\n"
-		   (mapconcat
-		    (lambda (entry)
+           (let ((help
+                  (concat
+                   "Rd Markup (available from C-c C-f):\n\n\t"
+                   "KEY          Rd-Markup\n\n"
+                   (mapconcat
+                    (lambda (entry)
                       ;; A textual description of an ENTRY in TeX-font-list.
                       (concat (format "%11s  "
                                       (key-description
                                        (char-to-string (nth 0 entry))))
                               (format "%14s %-3s"
                                       (nth 1 entry) (nth 2 entry))))
-		    Rd-font-list "\n"))))
-	     (with-output-to-temp-buffer "*Help*"
-	       (set-buffer "*Help*")
-	       (insert help))))
+                    Rd-font-list "\n"))))
+             (with-output-to-temp-buffer "*Help*"
+               (set-buffer "*Help*")
+               (insert help))))
 
-	  ((Rd-active-mark)
-	   (save-excursion
-	     (cond ((> (mark) (point))
-		    (insert before)
-		    (goto-char (mark))
-		    (insert after))
-		   (t
-		    (insert after)
-		    (goto-char (mark))
-		    (insert before)))))
-	  (t
-	   (insert before)
-	   (save-excursion
-	     (insert after))))))
+          ((Rd-active-mark)
+           (save-excursion
+             (cond ((> (mark) (point))
+                    (insert before)
+                    (goto-char (mark))
+                    (insert after))
+                   (t
+                    (insert after)
+                    (goto-char (mark))
+                    (insert before)))))
+          (t
+           (insert before)
+           (save-excursion
+             (insert after))))))
 
 
 (defun Rd-preview-help ()
@@ -483,8 +483,8 @@ temporary one in `temporary-file-directory'.
   (interactive)
   (require 'ess-help)
   (let ((file  buffer-file-name)
-	(pbuf (get-buffer-create "R Help Preview"))
-	 del-p shcmd)
+        (pbuf (get-buffer-create "R Help Preview"))
+         del-p shcmd)
     (unless file
       (setq file  (make-temp-file "RD_" nil ".Rd"))
       (write-region (point-min) (point-max) file)
@@ -496,7 +496,7 @@ temporary one in `temporary-file-directory'.
      (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
     (shell-command shcmd t)
     (setq ess-help-sec-regex ess-help-R-sec-regex
-	  ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
+          ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
     (ess-nuke-help-bs)
     (ess-help-mode)
     (when del-p (delete-file file))

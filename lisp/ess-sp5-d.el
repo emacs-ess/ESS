@@ -57,11 +57,11 @@
      (ess-object-name-db-file		. "ess-sp5-namedb.el")
      (inferior-ess-program		. inferior-S+5-program-name)
      ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
-     (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+     (inferior-ess-help-command   . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command	. "searchPaths()\n")
      (inferior-ess-start-args      . inferior-Splus-args)
-     (ess-STERM	 . "iESS")
+     (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
 
@@ -70,15 +70,15 @@
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
-;;	   (lambda ()
-;;	     (ess-command
-;;	      (concat
-;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
-;;	       ess-mode-run-file
-;;	       "\")\n"))
-;;	     (if ess-mode-run-file2
-;;		 (ess-command
-;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
+;;         (lambda ()
+;;           (ess-command
+;;            (concat
+;;             "if(exists(\"Sversion\")) library(emacs) else source(\""
+;;             ess-mode-run-file
+;;             "\")\n"))
+;;           (if ess-mode-run-file2
+;;               (ess-command
+;;                (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
 (defun S+5 (&optional proc-name)

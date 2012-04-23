@@ -82,8 +82,8 @@
     (directory-file-name
      (file-name-directory
       (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
-	  (file-truename load-file-name)
-	(locate-library "ess-site") )))
+          (file-truename load-file-name)
+        (locate-library "ess-site") )))
     "Directory containing ess-site.el(c) and other ESS lisp files.")
 
 
@@ -104,29 +104,29 @@
   (if (not (fboundp 'file-name-sans-extension))
       ;; take the definition from emacs-20.6/lisp/files.el:
       (defun file-name-sans-extension (filename)
-	"Return FILENAME sans final \"extension\".
+        "Return FILENAME sans final \"extension\".
 The extension, in a file name, is the part that follows the last `.'."
-	(save-match-data
-	  (let ((file (file-name-sans-versions
-		       (file-name-nondirectory filename)))
-		directory)
-	    (if (string-match "\\.[^.]*\\'" file)
-		(if (setq directory (file-name-directory filename))
-		    (expand-file-name (substring file 0 (match-beginning 0))
-				      directory)
-		  (substring file 0 (match-beginning 0)))
-	      filename)))))
+        (save-match-data
+          (let ((file (file-name-sans-versions
+                       (file-name-nondirectory filename)))
+                directory)
+            (if (string-match "\\.[^.]*\\'" file)
+                (if (setq directory (file-name-directory filename))
+                    (expand-file-name (substring file 0 (match-beginning 0))
+                                      directory)
+                  (substring file 0 (match-beginning 0)))
+              filename)))))
 
   (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 
   ;; Need these as early as here [also in ./ess-comp.el] :
   (if (not (boundp 'ess-show-load-messages))
       (defvar ess-show-load-messages nil
-	"If t, show many more \"loading ..\" messages."))
+        "If t, show many more \"loading ..\" messages."))
   (if (not (fboundp 'ess-message))
       (defun ess-message (format-string &rest args)
-	"Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
-	(if ess-show-load-messages (message format-string args)))
+        "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
+        (if ess-show-load-messages (message format-string args)))
     )); eval-*-compile
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
@@ -160,8 +160,8 @@ for ESS, such as icons.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
   (setq ess-etc-directory
-	(expand-file-name (concat ess-lisp-directory "/"
-				  (car ess-etc-directory-list))))
+        (expand-file-name (concat ess-lisp-directory "/"
+                                  (car ess-etc-directory-list))))
   (if (file-directory-p ess-etc-directory)
       (setq ess-etc-directory-list nil)
     (setq ess-etc-directory nil)
@@ -169,9 +169,9 @@ for ESS, such as icons.")
     (when (null ess-etc-directory-list)
       (beep 0) (beep 0)
       (message (concat
-		"ERROR:ess-site.el:ess-etc-directory\n"
-		"Relative to ess-lisp-directory, one of the following must exist:\n"
-		"../etc/ess, ../etc, ../../etc/ess or ./etc"))
+                "ERROR:ess-site.el:ess-etc-directory\n"
+                "Relative to ess-lisp-directory, one of the following must exist:\n"
+                "../etc/ess, ../etc, ../../etc/ess or ./etc"))
       (sit-for 4))))
 
 ;;-- no longer used thanks to the (unless ...) clause below --
@@ -182,12 +182,12 @@ for ESS, such as icons.")
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (unless (locate-file "ess.info"
-		     (if (featurep 'xemacs)
+                     (if (featurep 'xemacs)
                          Info-directory-list
                          Info-default-directory-list))
   (add-to-list (if (featurep 'xemacs)
-		   'Info-directory-list 'Info-default-directory-list)
-	       (expand-file-name "../doc/info/" ess-lisp-directory)))
+                   'Info-directory-list 'Info-default-directory-list)
+               (expand-file-name "../doc/info/" ess-lisp-directory)))
 
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
@@ -214,7 +214,7 @@ between .s or .S files and assembly mode.
   (interactive)
   (when (assoc "\\.[qsS]\\'" auto-mode-alist)
     (setq auto-mode-alist
-	  (remassoc "\\.[qsS]\\'" auto-mode-alist))
+          (remassoc "\\.[qsS]\\'" auto-mode-alist))
     ;; put .q extention back
     ;; (add-to-list is in xemacs and GNU emacs)
     (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))))
@@ -224,30 +224,30 @@ between .s or .S files and assembly mode.
 
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
-	(append
-	 '(("\\.sp\\'"		. S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-	   ("\\.[qsS]\\'"	. S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
-	   ("\\.ssc\\'"		. S-mode) ;; Splus (>= 4.x) script files.
-	   ("\\.SSC\\'"		. S-mode) ;; ditto for windoze
-	   ("\\.[rR]\\'"	. R-mode)
-	   ("\\.[rR]nw\\'"	. Rnw-mode)
-	   ("\\.[sS]nw\\'"	. Snw-mode); currently identical to Rnw-mode
-	   ("\\.[rR]profile\\'" . R-mode)
-	   ("NAMESPACE\\'"	. R-mode)
-	   ("\\.omg\\'"         . omegahat-mode)
-	   ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
-	   ("\\.lsp\\'"		. XLS-mode)
-	   ("\\.do\\'"		. STA-mode)
-	   ("\\.ado\\'"		. STA-mode)
-	   ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
-	   ;; Many .log/.lst files, not just SAS
-	   ;;("\\.log\\'"	. SAS-log-mode)
-	   ;;("\\.[Ll][Ss][Tt]\\'"	. SAS-listing-mode)
-	   ("\\.[Ss]t\\'"	. S-transcript-mode)
-	   ("\\.[Ss]out"	. S-transcript-mode)
-	   ("\\.[Rr]t\\'"	. R-transcript-mode)
-	   ("\\.[Rr]out"	. R-transcript-mode)
-	   ("\\.Rd\\'"		. Rd-mode)
+        (append
+         '(("\\.sp\\'"		. S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+           ("\\.[qsS]\\'"	. S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
+           ("\\.ssc\\'"		. S-mode) ;; Splus (>= 4.x) script files.
+           ("\\.SSC\\'"		. S-mode) ;; ditto for windoze
+           ("\\.[rR]\\'"	. R-mode)
+           ("\\.[rR]nw\\'"	. Rnw-mode)
+           ("\\.[sS]nw\\'"	. Snw-mode); currently identical to Rnw-mode
+           ("\\.[rR]profile\\'" . R-mode)
+           ("NAMESPACE\\'"	. R-mode)
+           ("\\.omg\\'"         . omegahat-mode)
+           ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
+           ("\\.lsp\\'"		. XLS-mode)
+           ("\\.do\\'"		. STA-mode)
+           ("\\.ado\\'"		. STA-mode)
+           ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
+           ;; Many .log/.lst files, not just SAS
+           ;;("\\.log\\'"	. SAS-log-mode)
+           ;;("\\.[Ll][Ss][Tt]\\'"	. SAS-listing-mode)
+           ("\\.[Ss]t\\'"	. S-transcript-mode)
+           ("\\.[Ss]out"	. S-transcript-mode)
+           ("\\.[Rr]t\\'"	. R-transcript-mode)
+           ("\\.[Rr]out"	. R-transcript-mode)
+           ("\\.Rd\\'"		. Rd-mode)
            ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
@@ -255,14 +255,14 @@ between .s or .S files and assembly mode.
            ("\\.[Jj][Oo][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
           )
-	 auto-mode-alist)))
+         auto-mode-alist)))
 
 ;; Rscript and littler interpreters recognized.  XEmacs entries can
 ;; be regexps, which complicates matters as "r" on its own matches
 ;; other interpeters like "perl".
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
 (add-to-list 'interpreter-mode-alist
-	     (cons (if (featurep 'xemacs) "r$" "r")    'r-mode))
+             (cons (if (featurep 'xemacs) "r$" "r")    'r-mode))
 
 
 ;; (1.4) Customize the dialects for your setup.
@@ -293,7 +293,7 @@ between .s or .S files and assembly mode.
 ;; variable `ess-r-versions' as described in its docstring.  Consider
 ;; changing that variable rather than changing inferior-R-program-name
 ;; if your version of R is not already auto-detected.
-;;(setq-default inferior-R-program-name "R")	    ; unix systems
+;;(setq-default inferior-R-program-name "R")        ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well
 ;;(setq-default inferior-R-program-name "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
 ;;(setq-default inferior-XLS-program-name "xlispstat")
@@ -311,12 +311,12 @@ between .s or .S files and assembly mode.
 
 ;;; The editor and pager output from S+4 and Sqpe+4 are sent by
 ;;; StatSci default to notepad, effectively using the definition:
-;;(setq-default	 inferior-S+4-editor-pager-command
+;;(setq-default  inferior-S+4-editor-pager-command
 ;;   "options(editor='notepad', pager='notepad')")
 ;;;
 ;;; ESS sends the output from both commands to an emacs buffer using
 ;;; the definition:
-;;(setq-default	 inferior-S+4-editor-pager-command
+;;(setq-default  inferior-S+4-editor-pager-command
 ;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
 
 ;;; These commands are for running the PC version of Sqpe of S+4 and
@@ -329,8 +329,8 @@ between .s or .S files and assembly mode.
 ;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
 
 ;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
-(setq-default inferior-ess-ddeclient	     "Initial")
-(setq-default inferior-ess-client-name	     "Initial")
+(setq-default inferior-ess-ddeclient         "Initial")
+(setq-default inferior-ess-client-name       "Initial")
 (setq-default inferior-ess-client-command    "Initial")
 
 ;;; S-Plus 6 for Windows startup time depends on the amount of RAM and
@@ -339,7 +339,7 @@ between .s or .S files and assembly mode.
 ;;; We then send several lines to the Commands window before returning
 ;;; control to the user.  On a 300 MHz machine with 96MB of RAM the
 ;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
-;;; 10 seconds.	 The user may need to adjust this number.
+;;; 10 seconds.  The user may need to adjust this number.
 (defvar ess-S+6-startup-delay 15 ;; <- 2005-01-03; MM
 "*Number of seconds to wait for the Commands window to appear before
 sending `inferior-ess-language-start' to S-Plus.")
@@ -361,7 +361,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 
 ;; (1.5) Require the needed dialects for your setup.
-(if (< max-specpdl-size 700)	 ;;; ESS won't load at the default of 600
+(if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
     (setq max-specpdl-size 700))
 
 (ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
@@ -408,7 +408,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"
-	   ess-customize-alist))
+           ess-customize-alist))
 
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
@@ -421,7 +421,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
-	   ess-customize-alist))
+           ess-customize-alist))
 
 ;; (1.8) Speedbar and mouse
 
@@ -465,31 +465,31 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
 (cond  (ess-microsoft-p
-	;; MS-Windows-------------------------------------------------
+        ;; MS-Windows-------------------------------------------------
 
-	;;        (fset 'S
-	;; 	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-	;; 		 'S+6-msdos
-	;; 	       'S+6))
-	(defun S-by-icon (&rest x)
-	  (interactive)
-	  (message "Please start S+ from the icon.
+        ;;        (fset 'S
+        ;;           (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+        ;;               'S+6-msdos
+        ;;             'S+6))
+        (defun S-by-icon (&rest x)
+          (interactive)
+          (message "Please start S+ from the icon.
  Then you can connect emacs to it with `M-x S-existing'.")
-	  )
-	(fset 'S 'S-by-icon)
-	(fset 'S-existing
-	      (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-		  'S+6-msdos-existing
-		'S+6-existing))
-	(fset 'Sqpe 'Sqpe+6)
-	(fset 's-mode 'S+6-mode)
-	(fset 's-transcript-mode 'S+6-transcript-mode))
+          )
+        (fset 'S 'S-by-icon)
+        (fset 'S-existing
+              (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+                  'S+6-msdos-existing
+                'S+6-existing))
+        (fset 'Sqpe 'Sqpe+6)
+        (fset 's-mode 'S+6-mode)
+        (fset 's-transcript-mode 'S+6-transcript-mode))
 
        (t ;;((eq system-type 'gnu/linux)
-	;; Linux etc (including Mac OSX !?) --------------------------
-	(fset 'S 'S+6)
-	(fset 's-mode 'S+6-mode)
-	(fset 's-transcript-mode 'S+6-transcript-mode)))
+        ;; Linux etc (including Mac OSX !?) --------------------------
+        (fset 'S 'S+6)
+        (fset 's-mode 'S+6-mode)
+        (fset 's-transcript-mode 'S+6-transcript-mode)))
 
 
 ;;;;* Alias S-mode to s-mode
@@ -521,61 +521,61 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; and on Windows, ess-rterm-version-paths -----------------------------------------
 (let ((R-newest-list '("R-newest"))
       (ess-s-versions-created (if ess-microsoft-p
-				  (nconc
-				   (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
-				   (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
-				(ess-s-versions-create)))) ;; use ess-s-versions
+                                  (nconc
+                                   (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
+                                   (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+                                (ess-s-versions-create)))) ;; use ess-s-versions
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
-	    (ess-flatten-list
-	     (ess-uniq-list
-	      (if (getenv "ProgramW6432")
-		  (let ((P-1 (getenv "ProgramFiles(x86)"))
-			(P-2 (getenv "ProgramW6432")))
-		    (nconc
-		     ;; always 32 on 64 bit OS, nil on 32 bit OS
-		     (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-		     (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-		     ;; keep this both for symmetry and because it can happen:
-		     (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+            (ess-flatten-list
+             (ess-uniq-list
+              (if (getenv "ProgramW6432")
+                  (let ((P-1 (getenv "ProgramFiles(x86)"))
+                        (P-2 (getenv "ProgramW6432")))
+                    (nconc
+                     ;; always 32 on 64 bit OS, nil on 32 bit OS
+                     (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                     (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+                     ;; keep this both for symmetry and because it can happen:
+                     (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
 
-		     ;; always 64 on 64 bit OS, nil on 32 bit OS
-		     (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-		     (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-		     (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
-		     ))
-		(let ((PF (getenv "ProgramFiles")))
-		  (nconc
-		   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-		   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-		   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-		   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
-		   ))
-		)))))
+                     ;; always 64 on 64 bit OS, nil on 32 bit OS
+                     (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                     (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                     (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                     ))
+                (let ((PF (getenv "ProgramFiles")))
+                  (nconc
+                   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                   ))
+                )))))
   (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
 
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
-	(ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
+        (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
 
   ;; Add the new defuns, if any, to the menu.
   ;; Check that each variable exists, before adding.
   ;; e.g. ess-sqpe-versions-created will not be created on Unix.
   (setq ess-versions-created
-	(ess-flatten-list
-	 (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
-		 '(R-newest-list
-		   ess-r-versions-created
-		   ess-s-versions-created)))))
+        (ess-flatten-list
+         (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
+                 '(R-newest-list
+                   ess-r-versions-created
+                   ess-s-versions-created)))))
 
 
 (when ess-versions-created
   ;; new-menu will be a list of 3-vectors, of the form:
   ;; ["R-1.8.1" R-1.8.1 t]
   (let ((new-menu (mapcar '(lambda(x) (vector x (intern x) t))
-			  ess-versions-created)))
+                          ess-versions-created)))
     (easy-menu-add-item ess-mode-menu '("Start Process")
-			(cons "Other" new-menu))))
+                        (cons "Other" new-menu))))
 
 (ess-message "[ess-site:] after ess-versions-created ...")
 
@@ -617,11 +617,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; often unnecessarily large. The framepop package makes such
 ;;; windows appear in a separate, shrink-wrapped frame. This will
 ;;; also affect other "temporary" windows such as those produced by
-;;; C-h k, etc.	 To enable:
+;;; C-h k, etc.  To enable:
 ;;;
 ;;; Works only with Emacs at this time.
 ;; (cond (window-system
-;;	 (require 'framepop)))
+;;       (require 'framepop)))
 
 ;;; (3.3) ess-keep-dump-files.
 ;;; Documentation:
@@ -648,11 +648,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; default (usually, the users home directory...).
 ;;now rather in ./ess-custom.el : (setq ess-ask-for-ess-directory t)
 
-;;; (3.5) ess-directory default	 (correlated with above)
+;;; (3.5) ess-directory default  (correlated with above)
 ;;; The default location for running the subprocess is configurable.
 ;;; By default, that is the default-directory (a lisp variable which
 ;;; initially contains the directory from which the inferior ESS
-;;; statistical package/process	 is started).
+;;; statistical package/process  is started).
 ;;; For example, the following function (added to the pre-run-hook, by
 ;;; the line following it) will set the default directory to be your
 ;;; home directory:
@@ -665,7 +665,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; If you replace the setq-default line with:
 ;;;
 ;; (setq-default ess-directory (file-name-as-directory
-;;			    (concat (getenv "HOME") "/ess/")))
+;;                          (concat (getenv "HOME") "/ess/")))
 ;;;
 ;;; then it will always start up in the directory "ess" in your home
 ;;; directory.
@@ -678,10 +678,10 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (if ess-microsoft-p
     (add-hook 'ess-post-run-hook
-	      '(lambda()
-		 (if (string= ess-dialect "R")
-		     (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
-					nil nil nil 'wait)))))
+              '(lambda()
+                 (if (string= ess-dialect "R")
+                     (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
+                                        nil nil nil 'wait)))))
 
 
 ;;; 3.6 Example of formatting changes
@@ -702,12 +702,12 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; There are two sets of alternatives.
 ;;;   1. Editing SAS-mode files.
 ;;;   1a. Default: TAB is bound to sas-indent-line.
-;;;	  Current line is correctly indented as SAS code.  Equivalent to
+;;;       Current line is correctly indented as SAS code.  Equivalent to
 ;;;(setq ess-sas-edit-keys-toggle nil) ;; default TAB in sas-mode
 ;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
-;;;	  columns at a time.  C-TAB moves backwards and deletes characters
-;;;	  up to 4 columns at a time.
-;;;	  The following line is for the optional behavior.
+;;;       columns at a time.  C-TAB moves backwards and deletes characters
+;;;       up to 4 columns at a time.
+;;;       The following line is for the optional behavior.
 ;;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
 ;;;   Use the function call (ess-sas-edit-keys-toggle)
 ;;;   to change the setting after the first SAS-mode buffer has been created.
@@ -725,7 +725,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;;(setq ess-sas-global-pc-keys t)   ;; F2-F12 bound in all modes
 ;;;
 ;;;   3. If it is more convenient to have "*Async Shell Command*"
-;;;	 in same-window-buffer-names, then:
+;;;      in same-window-buffer-names, then:
 ;;;(ess-same-window-async)
 ;;;
 ;;;(defvar sas-program "sas" "*Name of program which runs sas.")

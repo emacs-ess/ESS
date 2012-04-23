@@ -42,15 +42,15 @@
 
 (defvar S+3-customize-alist
   (append
-   '((ess-local-customize-alist     	. 'S+3-customize-alist)
-     (ess-dialect                   	. S+3-dialect-name)
+   '((ess-local-customize-alist         . 'S+3-customize-alist)
+     (ess-dialect                       . S+3-dialect-name)
      (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file       	. "ess-s+3-namedb.el" )
-     (inferior-ess-program          	. inferior-S+3-program-name)
-     (inferior-ess-help-command     	. "help(\"%s\",pager=\"cat\",window=F)\n")
+     (ess-object-name-db-file           . "ess-s+3-namedb.el" )
+     (inferior-ess-program              . inferior-S+3-program-name)
+     (inferior-ess-help-command         . "help(\"%s\",pager=\"cat\",window=F)\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command  . "search()\n")
-     (inferior-ess-start-file       	. nil) ;"~/.ess-S+3")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
      (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )

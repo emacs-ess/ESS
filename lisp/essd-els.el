@@ -41,7 +41,7 @@
 
 (defvar S+elsewhere-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS at another location.")
-					;easily changeable in a user's .emacs
+                                        ;easily changeable in a user's .emacs
 
 (defvar S+elsewhere-customize-alist
   (append
@@ -54,7 +54,7 @@
 
      (inferior-ess-start-file		. nil) ;"~/.ess-S+3")
      (inferior-ess-start-args		. "-i")
-     (ess-STERM	 . "iESS")
+     (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
   "Variables to customize for S+elsewhere")
@@ -67,7 +67,7 @@ This command is obsolete; please use `ess-remote' instead."
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-	   (current-buffer)))
+           (current-buffer)))
   (inferior-ess)
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start)))
@@ -95,9 +95,9 @@ return new alist whose car is the new pair and cdr is ALIST.
 \[tomo's ELIS like function]"
   (let ((pair (assoc item alist)))
     (if pair
-	(progn
-	  (setcdr pair value)
-	  alist)
+        (progn
+          (setcdr pair value)
+          alist)
       (cons (cons item value) alist))))
 
 
@@ -105,8 +105,8 @@ return new alist whose car is the new pair and cdr is ALIST.
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
   (let* ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4"
-		    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
-	 (dialect (ess-completing-read "Dialect" dialects nil t)))
+                    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
+         (dialect (ess-completing-read "Dialect" dialects nil t)))
     (cond
      ((string= dialect "arc")	ARC-customize-alist)
      ((string= dialect "vst")	VST-customize-alist)
@@ -134,16 +134,16 @@ This command is obsolete; please use `ess-remote' instead."
   ;; Need to select a elsewhere-customize-alist
   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
     (ess-change-alist 'inferior-ess-program
-		      inferior-ESS-elsewhere-program-name
-		      elsewhere-customize-alist)
+                      inferior-ESS-elsewhere-program-name
+                      elsewhere-customize-alist)
     (setq ess-customize-alist elsewhere-customize-alist)
     (ess-write-to-dribble-buffer
      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
+             (current-buffer)))
     (inferior-ess)
     (if (equal ess-language "S")
-	(if inferior-ess-language-start
-	    (ess-eval-linewise inferior-ess-language-start)))))
+        (if inferior-ess-language-start
+            (ess-eval-linewise inferior-ess-language-start)))))
 
 
 (defun ess-add-ess-process ()
@@ -155,10 +155,10 @@ buffer on the local computer."
   (interactive)
   (let ((proc (get-buffer-process (buffer-name))))
     (if (not proc)
-	(error "No process is associated with this buffer.")
+        (error "No process is associated with this buffer.")
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
-		   (list ess-current-process-name)))))
+                   (list ess-current-process-name)))))
 
 
 ;;; ess-remote is constructed by looking at ess-add-process and
@@ -187,25 +187,25 @@ C-n to send lines over.  With SAS, use C-c i
   (let ((ess-customize-alist (ess-select-alist-dialect)))
     (ess-write-to-dribble-buffer
      (format "\n(ESS-remote): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
+             (current-buffer)))
     (ess-setq-vars-local ess-customize-alist)
     (inferior-ess-mode)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
     (goto-char (point-max))
     (if (equal ess-language "S")
-	(if inferior-ess-language-start
-	    (progn
-	      ;; FIXME hack (not in line with using ess-customize-alist)
-	      (setq ess-editor nil)
-	      (setq ess-pager nil)
-	      (setq inferior-ess-language-start (eval inferior-S-language-start))
-	      (ess-eval-linewise inferior-ess-language-start))))
+        (if inferior-ess-language-start
+            (progn
+              ;; FIXME hack (not in line with using ess-customize-alist)
+              (setq ess-editor nil)
+              (setq ess-pager nil)
+              (setq inferior-ess-language-start (eval inferior-S-language-start))
+              (ess-eval-linewise inferior-ess-language-start))))
     (if (equal ess-language "SAS")
-	(progn (font-lock-mode 0)
-	       (SAS-log-mode)
-	       (shell-mode)
-	       (toggle-read-only nil)
-	       (font-lock-mode 1)))))
+        (progn (font-lock-mode 0)
+               (SAS-log-mode)
+               (shell-mode)
+               (toggle-read-only nil)
+               (font-lock-mode 1)))))
 
 
  ; Provide package
