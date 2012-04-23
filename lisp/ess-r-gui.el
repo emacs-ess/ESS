@@ -1,12 +1,11 @@
-;;; ess-r-gui.el --- Support for running Rgui on Windows as an
-;;; inferior Emacs process
+;;; ess-r-gui.el --- Run Rgui on Windows as an inferior Emacs process
 
 ;; Copyright (C) 2008 A.J. Rossini, Richard M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author:  Richard M. Heiberger <rmh@temple.edu>
+;; Author:  Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 10 Mar 2008
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -26,12 +25,13 @@
 
 ;;; Commentary:
 
-
 ;In Rgui:
 ;> library(tcltk2)  ## >= 1.0-6
 ;> .ess.command <- function() source("c:/temp/ess-tempfile.R", echo=TRUE)
 ;> tclFun(.ess.command)
 ;[1] "R_call 0203A04C"
+
+;;; Code:
 
 (require 'ess-dde) ;; needed here because we override several definitions
 
@@ -198,3 +198,5 @@ You may ignore the 'options' error in this buffer.\n\n")
    (call-process-shell-command
     (concat inferior-ess-execdde ess-rgui-command))
    ))
+
+;;; ess-r-gui.el ends here

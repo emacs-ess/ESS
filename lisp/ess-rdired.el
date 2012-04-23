@@ -3,9 +3,9 @@
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen <stephen@anc.ed.ac.uk>
+;; Author: Stephen Eglen <stephen@anc.ed.ac.uk>
 ;; Created: Thu 24 Oct 2002
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -30,6 +30,8 @@
 ;; operating on files, we operate on R objects in the current
 ;; environment.  Objects can be viewed, edited, deleted, plotted and
 ;; so on.
+
+;;; Commentary:
 
 ;; Installation and usage.
 ;;
@@ -82,6 +84,7 @@
 ;; `my.x', its value is replaced by the value of my.x used in the
 ;; sapply() calls within .rdired.objects().
 
+;;; Code:
 
 (defvar ess-rdired-objects ".rdired.objects <- function(objs) {
   if (length(objs)==0) {

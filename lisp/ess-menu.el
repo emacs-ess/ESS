@@ -4,11 +4,11 @@
 ;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini
+;; Author: A.J. Rossini
 ;; Created: September 4, 2000
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 
-;; Keywords: statistical support
+;; Keywords: statistics, languages
 
 ;; Summary: general functions for ESS
 

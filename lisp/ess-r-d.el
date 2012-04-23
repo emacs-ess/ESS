@@ -5,11 +5,11 @@
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-;; Original Author: A.J. Rossini
+;; Author: A.J. Rossini
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages, statistics
 
 ;; This file is part of ESS.
 
@@ -28,8 +28,11 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the R customizations for ESS.  See ess-s-l.el
-;;; for general S language customizations.
+
+;; This file defines all the R customizations for ESS.  See ess-s-l.el
+;; for general S language customizations.
+
+;;; Code:
 
 ;;; Autoloads and Requires
 
@@ -57,8 +60,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-;;; Code:
 
 (defvar R-customize-alist
   (append

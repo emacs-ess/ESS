@@ -3,7 +3,7 @@
 ;; Copyright (C) 1994, 1995 Simon Marshall.
 
 ;; Author: Simon Marshall <simon@gnu.ai.mit.edu>
-;; Keywords: strings, regexps
+;; Keywords: lisp, matching
 ;; Version: 1.02
 
 ;; LCD Archive Entry:
@@ -121,6 +121,8 @@
 ;; (until we're sure we need them), and (b) try to squirrel out one-character
 ;; sequences (so we can use [] rather than ()).
 
+;;; Code:
+
 (defun make-regexp (strings &optional paren lax)
   "Return a regexp to match a string item in STRINGS.
 If optional PAREN non-nil, output regexp parentheses around returned regexp.
@@ -233,4 +235,5 @@ Uses `make-regexp' to make efficient regexps."
 ;; timing functions removed due to name collisions with Gnus
 
 (provide 'make-regexp)
+
 ;;; make-regexp.el ends here

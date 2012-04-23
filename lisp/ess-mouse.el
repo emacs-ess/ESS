@@ -4,9 +4,9 @@
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 

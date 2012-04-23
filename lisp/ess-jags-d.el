@@ -1,10 +1,10 @@
-;;; ess-jags-d.el -- ESS[JAGS] dialect
+;;; ess-jags-d.el --- ESS[JAGS] dialect
 
 ;; Copyright (C) 2008-2011 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani
+;; Author: Rodney Sparapani
 ;; Created: 13 March 2008
-;; Maintainers: ESS-help <ess-help@r-project.org>
+;; Maintainer: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 
@@ -22,7 +22,7 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; Code:
+;;; Code:
 
 (require 'ess-bugs-l)
 (require 'ess-utils)
@@ -256,3 +256,5 @@
 
 (setq features (delete 'ess-bugs-d features))
 (provide 'ess-jags-d)
+
+;;; ess-jags-d.el ends here

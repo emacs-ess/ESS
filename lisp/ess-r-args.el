@@ -1,6 +1,6 @@
-;; Copyright (C) 2007 Sven Hartenstein
-;; e-mail: mail at svenhartenstein dot de
+;;; ess-r-args.el --- Insert R function's arguments
 
+;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
 ;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
@@ -21,9 +21,9 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;; ==================================================
-
 ;; Last update: 2012-02-27
+
+;;; Commentary:
 
 ;; == DOCUMENTATION ==
 
@@ -179,7 +179,7 @@
 ;;   I would prefer the information to be shown, say, five seconds or
 ;;   so.
 
-;; ==================================================
+;;; Code:
 
 (eval-and-compile
   (require 'ess-custom))
@@ -366,3 +366,5 @@ and y-offsets for the toolbar from point."
     ))
 
 (provide 'ess-r-args)
+
+;;; ess-r-args.el ends here

@@ -1,10 +1,10 @@
-;;; ess-bugs-l.el -- ESS[BUGS] languages
+;;; ess-bugs-l.el --- ESS[BUGS] languages
 
 ;; Copyright (C) 2006-2011 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani
+;; Author: Rodney Sparapani
 ;; Created: 16 August 2006
-;; Maintainers: ESS-help <ess-help@r-project.org>
+;; Maintainer: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 
@@ -22,7 +22,7 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; Code:
+;;; Code:
 
 (require 'font-lock)
 (require 'comint)
@@ -273,3 +273,5 @@ add path to the command name."
   )
 
 (provide 'ess-bugs-l)
+
+;;; ess-bugs-l.el ends here

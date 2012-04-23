@@ -1,12 +1,12 @@
-;;; ess-sas-a.el -- clean-room implementation of many SAS-mode features
+;;; ess-sas-a.el --- clean-room implementation of many SAS-mode features
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Rodney A. Sparapani
+;; Author: Rodney A. Sparapani
 ;; Maintainer: ESS-core@r-project.org
 ;; Created: 17 November 1999
-;; Keywords: SAS
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -24,7 +24,7 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;; Code:
+;;; Code:
 
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions

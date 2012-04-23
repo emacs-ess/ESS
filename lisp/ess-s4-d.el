@@ -3,11 +3,11 @@
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -26,18 +26,17 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; DB contributed the changes from ess-s3-d.el to
-;;; ess-s4-d.el (removed the old ugly approach).
-;;; This file defines S4 customizations for ess-mode.  Lots of thanks
-;;; to RMH and JMC for code and suggestions
 
-;;; Autoloads:
+;; DB contributed the changes from ess-s3-d.el to
+;; ess-s4-d.el (removed the old ugly approach).
+;; This file defines S4 customizations for ess-mode.  Lots of thanks
+;; to RMH and JMC for code and suggestions
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 ;; Some of this is based on files from:
 ;;     Copyright (C) 1996, John M. Chambers.

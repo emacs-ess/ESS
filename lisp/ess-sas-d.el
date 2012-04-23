@@ -4,11 +4,11 @@
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
+;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Created: 20 Aug 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,9 +27,11 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
+
 ;; This file defines all the SAS customizations for ESS behaviors.  See
 ;; ess-sas-l and ess-sas-a for the underlying general modifications.
 
+;;; Code:
 
 ;;; Autoloads:
 
@@ -44,7 +46,6 @@
 (require 'ess-sas-l)
 (ess-message "[ess-sas-d:] (autoload ..) (def** ..) ...")
 
-
 (autoload 'inferior-ess "ess-inf" no-doc t)
 (autoload 'ess-mode "ess-mode" no-doc t)
 (autoload 'ess-proc-name "ess-inf" no-doc nil)
@@ -55,8 +56,6 @@
 (defvar inferior-SAS-args-temp nil
   "Hack variable, needed for args preprocessing.
 Better logic needed!  (see 2 uses, in this file).")
-
-;;; Code:
 
 (defun ess-SAS-pre-run-hook (temp-ess-dialect)
   "Set up log and list files for interactive SAS."

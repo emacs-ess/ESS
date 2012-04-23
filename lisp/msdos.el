@@ -4,9 +4,9 @@
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: February 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: processes
 
@@ -26,7 +26,7 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
-;;; Comments on file:
+;;; Commentary:
 
 ;; The file msdos.el in the next mail message opens an *msdos* buffer
 ;; in shell-mode and msdos-minor-mode.  When cmdproxy.exe/command.com

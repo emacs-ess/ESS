@@ -1,17 +1,16 @@
-;;; ess-noweb.el : support for Literate Data Analysis
+;;; ess-noweb.el --- support for Literate Data Analysis
 
 ;; Copyright (C) 1999 Mark Lunt
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
+;; Author: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;          A.J. Rossini <rossini@u.washington.edu>
 ;; Created: April 18, 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: statistical support
+;; Keywords: statistics, languages
 ;; Summary: Noweb support for ESS
-
 
 ;; This file is part of ESS
 
@@ -32,6 +31,8 @@
 ;;; Commentary:
 
 ;; Code for ESS and Literate Data Analysis.
+
+;;; Code:
 
  ; Requires and autoloads
 
