@@ -102,7 +102,7 @@
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
 
-;;)
+  ;;)
 
   ;; emacs 19.28 and 19.29 don't have functions we need.
   (if (not (fboundp 'file-name-sans-extension))
@@ -188,7 +188,7 @@ for ESS, such as icons.")
 (unless (locate-file "ess.info"
                      (if (featurep 'xemacs)
                          Info-directory-list
-                         Info-default-directory-list))
+                       Info-default-directory-list))
   (add-to-list (if (featurep 'xemacs)
                    'Info-directory-list 'Info-default-directory-list)
                (expand-file-name "../doc/info/" ess-lisp-directory)))
@@ -258,7 +258,7 @@ between .s or .S files and assembly mode.
            ("\\.[Jj][Aa][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Oo][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
-          )
+           )
          auto-mode-alist)))
 
 ;; Rscript and littler interpreters recognized.  XEmacs entries can
@@ -345,7 +345,7 @@ between .s or .S files and assembly mode.
 ;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
 ;;; 10 seconds.  The user may need to adjust this number.
 (defvar ess-S+6-startup-delay 15 ;; <- 2005-01-03; MM
-"*Number of seconds to wait for the Commands window to appear before
+  "*Number of seconds to wait for the Commands window to appear before
 sending `inferior-ess-language-start' to S-Plus.")
 
 
@@ -411,8 +411,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-bugs-l)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
-   (format "[ess-site.el]: ess-customize-alist=%s \n"
-           ess-customize-alist))
+ (format "[ess-site.el]: ess-customize-alist=%s \n"
+         ess-customize-alist))
 
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
@@ -424,8 +424,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (ess-message "[ess-site:] .. after requiring 'ess ...")
 
 (ess-write-to-dribble-buffer
-   (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
-           ess-customize-alist))
+ (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
+         ess-customize-alist))
 
 ;; (1.8) Speedbar and mouse
 

@@ -49,7 +49,7 @@
 ;; but is *NOT* okay to do *globally*: (setq global-font-lock-mode t)
 
 (if ess-noweb-use-font-lock
-     (require 'noweb-font-lock-mode))
+    (require 'noweb-font-lock-mode))
 
  ; Functions
 

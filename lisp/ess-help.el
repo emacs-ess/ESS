@@ -467,7 +467,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 (defun ess-help-quit (&optional kill)
   "Quit help."
-;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
+  ;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
   (interactive "P")
   (let* ((buffer (window-buffer))
          (obuffer (other-buffer buffer t)))
@@ -528,15 +528,15 @@ For internal use. Used in `ess-display-help-on-object',
 
 ;;; THIS WORKS!
 ;;(require 'w3)
-;(defun ess-display-w3-help-on-object-other-window (object)
-;  "Display R-documentation for OBJECT using W3"
-;  (interactive "s Help on :")
-;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
-;                              ess-help-w3-url-funs
-;                              object
-;                              ".html")))
-    ;;(w3-fetch-other-window ess-help-url)
-;    ))
+                                        ;(defun ess-display-w3-help-on-object-other-window (object)
+                                        ;  "Display R-documentation for OBJECT using W3"
+                                        ;  (interactive "s Help on :")
+                                        ;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
+                                        ;                              ess-help-w3-url-funs
+                                        ;                              object
+                                        ;                              ".html")))
+;;(w3-fetch-other-window ess-help-url)
+                                        ;    ))
 
 
 ;;*;; Major mode definition
@@ -639,7 +639,7 @@ Other keybindings are as follows:
 
   (require 'easymenu)
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
-                    "Menu keymap for ess-help mode." ess-help-mode-menu)
+    "Menu keymap for ess-help mode." ess-help-mode-menu)
   (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
 
   ;; Add the keys for navigating among sections; this is done
@@ -673,8 +673,8 @@ to see which keystrokes find which sections."
       (if (not the-sec) (error "Invalid section key: %c"
                                last-command-event)
         (if (re-search-forward (concat "^" the-sec) nil t) nil
-            (message "No %s section in this help. Sorry." the-sec)
-            (goto-char old-point))))))
+          (message "No %s section in this help. Sorry." the-sec)
+          (goto-char old-point))))))
 
 (defun ess-skip-to-next-section nil
   "Jump to next section in ESS help buffer."

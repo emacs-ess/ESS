@@ -109,14 +109,14 @@ Better logic needed!  (see 2 uses, in this file).")
       (ess-listing-minor-mode t)
       (rename-buffer ess-sas-lst-bufname t))
 
-     ;; Construct the LOG buffer for output
+    ;; Construct the LOG buffer for output
     (if (get-buffer  ess-sas-log-bufname)
         nil
       (shell)
       (accept-process-output (get-buffer-process (current-buffer)))
       (sleep-for 2) ; need to wait, else working too fast!
       (setq ess-sas-log (ess-insert-accept "tty"))
-      ;(SAS-log-mode)
+                                        ;(SAS-log-mode)
       (shell-mode)
       (ess-transcript-minor-mode t)
       (rename-buffer ess-sas-log-bufname t))
@@ -212,22 +212,22 @@ Better logic needed!  (see 2 uses, in this file).")
   (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
 
-; this is a mess
-; interactive and batch commands share sas-mode-local-map,
-; but the associated commands are very different
-; what would be better is two maps like
-; sas-batch-mode-local-map and sas-interactive-mode-local-map
-; or smart function definitions that would do the appropriate
-; thing for either batch or interactive sessions
-; however, neither of these solutions are planned
-; therefore, no key definitions can be shared between
-; batch and interactive at this time, hence the lines that
-; are commented below:  uncomment at your own risk
-;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
-;  (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
-;  (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)
-;  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
-;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
+                                        ; this is a mess
+                                        ; interactive and batch commands share sas-mode-local-map,
+                                        ; but the associated commands are very different
+                                        ; what would be better is two maps like
+                                        ; sas-batch-mode-local-map and sas-interactive-mode-local-map
+                                        ; or smart function definitions that would do the appropriate
+                                        ; thing for either batch or interactive sessions
+                                        ; however, neither of these solutions are planned
+                                        ; therefore, no key definitions can be shared between
+                                        ; batch and interactive at this time, hence the lines that
+                                        ; are commented below:  uncomment at your own risk
+                                        ;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+                                        ;  (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
+                                        ;  (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)
+                                        ;  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
+                                        ;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
 
   (use-local-map sas-mode-local-map)
 
@@ -238,7 +238,7 @@ Better logic needed!  (see 2 uses, in this file).")
   ;; font-lock-keywords-case-fold-search, but it fails for Emacs 22.[23]
   ;; hence :
   (setq font-lock-keywords-case-fold-search t)
-)
+  )
 
 
 
@@ -247,26 +247,26 @@ Better logic needed!  (see 2 uses, in this file).")
   "Insert character.  If the line contains \"run;\" and nothing else then indent line."
   (interactive "P")
   (if ess-sas-edit-keys-toggle (insert ";") (let (insertpos)
-    (if (and (not arg)
-             (eolp)
-             (save-excursion
-                   (skip-chars-backward " \t")
-                   (backward-word 1)
-                   (and (looking-at "run")
-                        (progn
-                              (skip-chars-backward " \t")
-                          (bolp)))))
-        (progn
-          (insert last-command-event)
-          (ess-indent-line)
-          (save-excursion
-            (if insertpos (goto-char (1+ insertpos)))
-            (delete-char -1))))
-    (if insertpos
-        (save-excursion
-          (goto-char insertpos)
-          (self-insert-command (prefix-numeric-value arg)))
-      (self-insert-command (prefix-numeric-value arg))))))
+                                              (if (and (not arg)
+                                                       (eolp)
+                                                       (save-excursion
+                                                         (skip-chars-backward " \t")
+                                                         (backward-word 1)
+                                                         (and (looking-at "run")
+                                                              (progn
+                                                                (skip-chars-backward " \t")
+                                                                (bolp)))))
+                                                  (progn
+                                                    (insert last-command-event)
+                                                    (ess-indent-line)
+                                                    (save-excursion
+                                                      (if insertpos (goto-char (1+ insertpos)))
+                                                      (delete-char -1))))
+                                              (if insertpos
+                                                  (save-excursion
+                                                    (goto-char insertpos)
+                                                    (self-insert-command (prefix-numeric-value arg)))
+                                                (self-insert-command (prefix-numeric-value arg))))))
 
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
@@ -296,12 +296,12 @@ their own frames."
   (interactive)
   (delete-other-windows)
   (save-excursion
-      (set-buffer "*SAS*")
-      (make-frame)
-      (set-buffer "*SAS.log*")
-      (make-frame)
-      (set-buffer "*SAS.lst*")
-      (make-frame)))
+    (set-buffer "*SAS*")
+    (make-frame)
+    (set-buffer "*SAS.log*")
+    (make-frame)
+    (set-buffer "*SAS.lst*")
+    (make-frame)))
 
 
 (define-key ess-mode-map "\C-c\C-w"        'ess-multi-frame-SAS)

@@ -97,7 +97,7 @@ For beginners, this is probably better set to a non-nil value."
      (ess-eval-line-and-step   "rline" "Eval line & step")
      (ess-eval-region   "rregion" "Eval region")
      (ess-eval-function-or-paragraph-and-step "rregion"
-        "Eval function or paragraph and step")
+                                              "Eval function or paragraph and step")
      (ess-load-file   "rbuffer" "Load file")
      (ess-eval-function   "rfunction" "Eval function")
      (ess-switch-to-ESS   "switch_ess" "Switch to ESS buffer"))
@@ -132,9 +132,9 @@ Icons should be found in ESS/etc/icons/ directory.
 If `ess-icon-directory' is invalid, please report a bug.")
 
 (unless (file-directory-p ess-icon-directory)
-    (ess-write-to-dribble-buffer
-        "`ess-icon-directory' does not exist; using `ess-etc-directory'.\n")
-    (setq ess-icon-directory ess-etc-directory))
+  (ess-write-to-dribble-buffer
+   "`ess-icon-directory' does not exist; using `ess-etc-directory'.\n")
+  (setq ess-icon-directory ess-etc-directory))
 
 (defvar ess-toolbar nil
   "Toolbar items to be added to ESS editing buffers.")
@@ -228,7 +228,7 @@ is added globally when ess-toolbar.el is loaded."
             ;; Emacs
             (setq tool-bar-map ess-toolbar)
             (ess-write-to-dribble-buffer "Creating global Emacs toolbar"))
-            )
+        )
 
       ;; Check for toolbar support - needed iff ess-use-toolbar is non-nil.
       (or
@@ -247,7 +247,7 @@ is added globally when ess-toolbar.el is loaded."
 
 ;; Following needed for Emacs 23, not Emacs 22 (nor XEmacs).
 (when (boundp 'image-load-path)
-    (add-to-list 'image-load-path ess-icon-directory))
+  (add-to-list 'image-load-path ess-icon-directory))
 
 (provide 'ess-toolbar)
 

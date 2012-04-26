@@ -147,9 +147,9 @@ to R, put them in the variable `inferior-R-args'."
 
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
-       (setq use-dialog-box nil)
-       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
-           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
+      (setq use-dialog-box nil)
+      (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
+          (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
     (ess-write-to-dribble-buffer
@@ -177,7 +177,7 @@ to R, put them in the variable `inferior-R-args'."
              (concat "assignInNamespace(\".help.ESS\","
                      my-R-help-cmd ", ns = asNamespace(\"base\"))")
              nil nil nil 'wait-prompt)
-          ))
+            ))
 
       ;; else R version <= 2.4.1
 
@@ -247,7 +247,7 @@ to R, put them in the variable `inferior-R-args'."
          (v-1up (file-name-nondirectory dir));; one level up
          (v-2up (file-name-nondirectory dir2));; two levels up; don't want "bin" ...
          (v-3up (file-name-nondirectory ;; three levels up; no "bin" for i386, x64 ...
-                      (directory-file-name (file-name-directory dir2))))
+                 (directory-file-name (file-name-directory dir2))))
          (val (if (string= v-2up "bin")
                   (concat v-3up "-" (ess-R-arch-2-bit v-1up) "bit")
                 ;; pre R-2.12.x, or when there's no extra arch-specific sub directory:
@@ -453,7 +453,7 @@ could not be found.
 
 If the value returned is nil, no valid newest version of R could be found."
   (let (new-r this-r
-        (new-time "0"))
+              (new-time "0"))
     (while rvers
       (setq this-r (car rvers)
             rvers (cdr rvers))
@@ -470,35 +470,35 @@ in the exec-path.  If there are no occurences of Rterm.exe in the exec-path,
 then use `ess-program-files' (which evaluates to something like \"c:/progra~1/R/\"
 in English locales) which is the default location for the R distribution.
 If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
-    (if (not ess-R-root-dir)
-        (let ((Rpath (executable-find "Rterm")))
-          (setq ess-R-root-dir
-                (expand-file-name
-                 (if Rpath
-                     (concat (file-name-directory Rpath) "../../")
-                   (concat ess-program-files "/R/"))))
-          (ess-write-to-dribble-buffer
-           (format "(ess-find-rterm): ess-R-root-dir = '%s'\n" ess-R-root-dir))
-          ))
+  (if (not ess-R-root-dir)
+      (let ((Rpath (executable-find "Rterm")))
+        (setq ess-R-root-dir
+              (expand-file-name
+               (if Rpath
+                   (concat (file-name-directory Rpath) "../../")
+                 (concat ess-program-files "/R/"))))
+        (ess-write-to-dribble-buffer
+         (format "(ess-find-rterm): ess-R-root-dir = '%s'\n" ess-R-root-dir))
+        ))
 
-    (if (not bin-Rterm-exe) (setq bin-Rterm-exe "bin/Rterm.exe"))
+  (if (not bin-Rterm-exe) (setq bin-Rterm-exe "bin/Rterm.exe"))
 
-    (when (file-directory-p ess-R-root-dir) ; otherwise file-name-all-.. errors
-      (setq ess-R-root-dir
-            (ess-replace-regexp-in-string "[\\]" "/" ess-R-root-dir))
-      (let ((R-ver
-             (ess-drop-non-directories
-              (ess-flatten-list
-               (mapcar (lambda (r-prefix)
-                         (file-name-all-completions r-prefix ess-R-root-dir))
-                       (append '("rw") ess-r-versions))))))
-        (mapcar (lambda (dir)
-                  (let ((R-path
-                         (concat ess-R-root-dir
-                                 (ess-replace-regexp-in-string "[\\]" "/" dir)
-                                 bin-Rterm-exe)))
-                    (if (file-exists-p R-path) R-path)))
-                R-ver))))
+  (when (file-directory-p ess-R-root-dir) ; otherwise file-name-all-.. errors
+    (setq ess-R-root-dir
+          (ess-replace-regexp-in-string "[\\]" "/" ess-R-root-dir))
+    (let ((R-ver
+           (ess-drop-non-directories
+            (ess-flatten-list
+             (mapcar (lambda (r-prefix)
+                       (file-name-all-completions r-prefix ess-R-root-dir))
+                     (append '("rw") ess-r-versions))))))
+      (mapcar (lambda (dir)
+                (let ((R-path
+                       (concat ess-R-root-dir
+                               (ess-replace-regexp-in-string "[\\]" "/" dir)
+                               bin-Rterm-exe)))
+                  (if (file-exists-p R-path) R-path)))
+              R-ver))))
 
 
 ;;; eldoc
@@ -654,7 +654,7 @@ i.e. contains :,$ or @.
                          (format ess--funargs-command funname funname) nil .01)))
               (setq args (list (cons (car args) (current-time))
                                (when (stringp (cadr args)) ;; error occured
-                                              (replace-regexp-in-string  "\\\\" "" (cadr args)))
+                                 (replace-regexp-in-string  "\\\\" "" (cadr args)))
                                (cddr args)))
               ;; push even if nil
               (puthash funname args ess--funargs-cache))
@@ -725,7 +725,7 @@ First element of a returned list is the completion token.
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
          (comm (format
-               "local({
+                "local({
 olderr <- options(error = NULL)
 on.exit(options(olderr))
 if(version$minor > '14.1'){
@@ -739,8 +739,8 @@ utils:::.completeToken()
 c(get('token', envir = utils:::.CompletionEnv),
   utils:::.retrieveCompletions())
 })\n"
-               (ess-quote-special-chars (buffer-substring start end))
-               (- end start)))
+                (ess-quote-special-chars (buffer-substring start end))
+                (- end start)))
          )
     (ess-get-words-from-vector comm)
     ))
@@ -753,15 +753,15 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive)
   (let ((possible-completions (ess-R-get-rcompletions))
         token-string)
-      ;; If there are no possible-completions, should return nil, so
-      ;; that when this function is called from
-      ;; comint-dynamic-complete-functions, other functions can then be
-      ;; tried.
-      (when possible-completions
-        (setq token-string (pop possible-completions))
-        (or (comint-dynamic-simple-complete token-string
-                                            possible-completions)
-            'none)))
+    ;; If there are no possible-completions, should return nil, so
+    ;; that when this function is called from
+    ;; comint-dynamic-complete-functions, other functions can then be
+    ;; tried.
+    (when possible-completions
+      (setq token-string (pop possible-completions))
+      (or (comint-dynamic-simple-complete token-string
+                                          possible-completions)
+          'none)))
   )
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
@@ -810,20 +810,20 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (if (string-match-p "[]:$@[]" ac-prefix)
         (cdr (ess-R-get-rcompletions ac-point))
       (with-current-ess-process-buffer 'no-error
-        (unless (process-get *proc* 'busy)
-          (let ((le (process-get *proc* 'last-eval))
-                (lobu (process-get *proc* 'last-objlist-update)))
-            (when (or  (null lobu) (null le) (time-less-p lobu le))
-              ;;re-read .GlobalEnv
-              (if (and ess-sl-modtime-alist
-                       (not  ess-sp-change))
-                  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-                (ess-get-modtime-list)
-                (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-                ))
-            (process-put *proc* 'last-objlist-update (current-time))
-            (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-            ))))))
+                                       (unless (process-get *proc* 'busy)
+                                         (let ((le (process-get *proc* 'last-eval))
+                                               (lobu (process-get *proc* 'last-objlist-update)))
+                                           (when (or  (null lobu) (null le) (time-less-p lobu le))
+                                             ;;re-read .GlobalEnv
+                                             (if (and ess-sl-modtime-alist
+                                                      (not  ess-sp-change))
+                                                 (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+                                               (ess-get-modtime-list)
+                                               (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
+                                               ))
+                                           (process-put *proc* 'last-objlist-update (current-time))
+                                           (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+                                           ))))))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
@@ -1137,7 +1137,7 @@ Currently this function has been tested only for *R*, but should also work for
   (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
     (message "new (ESS / default) directory: %s" dir)
     (setq ess-directory (file-name-as-directory dir)))
-    (setq default-directory ess-directory))
+  (setq default-directory ess-directory))
 
 
  ; provides

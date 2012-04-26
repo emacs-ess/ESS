@@ -45,7 +45,7 @@
   ;; else:  special support for GNU Emacs
   (defun Rd-active-mark ()
     (and transient-mark-mode mark-active))
-)
+  )
 
 (autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
@@ -156,9 +156,9 @@ All Rd mode abbrevs start with a grave accent (`).")
 ;; Need to fix Rd-bold-face problem.
 ;;
 ;; (defvar Rd-bold-face 'bold)
-;(defvar Rd-bold-face nil)
-;(make-face Rd-bold-face "R documentation bold face")
-;(make-face-bold Rd-bold-face
+                                        ;(defvar Rd-bold-face nil)
+                                        ;(make-face Rd-bold-face "R documentation bold face")
+                                        ;(make-face-bold Rd-bold-face
 
 (defvar Rd-font-lock-keywords
   (list
@@ -173,8 +173,8 @@ All Rd mode abbrevs start with a grave accent (`).")
             "\\>\\)")
     'font-lock-keyword-face)
    '("^#\\(ifn?def\\)\\s-+\\(\\sw+\\)"
-    (1 font-lock-builtin-face)
-    (2 font-lock-variable-name-face nil t))
+     (1 font-lock-builtin-face)
+     (2 font-lock-variable-name-face nil t))
    '("^#\\(endif\\)" 1 font-lock-builtin-face))
   "Additional Rd expressions to highlight.")
 
@@ -253,7 +253,7 @@ Each entry is a list.
 The first element is the key to activate the font.
 The second element is the string to insert before point, and the third
 element is the string to insert after point."
-)
+  )
 
 
 ;;;###autoload
@@ -309,7 +309,7 @@ following lines to your `.emacs' file:
 
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
-                    "Menu keymap for Rd mode." Rd-mode-menu)
+    "Menu keymap for Rd mode." Rd-mode-menu)
   (easy-menu-add Rd-mode-menu-map Rd-mode-map)
 
   (turn-on-auto-fill)
@@ -482,7 +482,7 @@ temporary one in `temporary-file-directory'.
   (require 'ess-help)
   (let ((file  buffer-file-name)
         (pbuf (get-buffer-create "R Help Preview"))
-         del-p shcmd)
+        del-p shcmd)
     (unless file
       (setq file  (make-temp-file "RD_" nil ".Rd"))
       (write-region (point-min) (point-max) file)

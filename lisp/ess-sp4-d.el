@@ -159,8 +159,8 @@ is here to allow slow disks to start the Splus program."
       (setenv "MANPATH" (getenv "PATH"))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-                    ; command in '(ddeESS [S+4])' should follow the "$"
-                    ; prompt.  If not, then increase the sleep-for time!
+                                        ; command in '(ddeESS [S+4])' should follow the "$"
+                                        ; prompt.  If not, then increase the sleep-for time!
       (setenv "MANPATH" manpath)
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+4-customize-alist)
@@ -180,8 +180,8 @@ is here to allow slow disks to start the Splus program."
     ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for 30) ; Need to wait, else working too fast!
-                   ; If the ess-current-process-name doesn't appear in the
-                   ; Splus Commands window increase the sleep-for time!
+                                        ; If the ess-current-process-name doesn't appear in the
+                                        ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
     (goto-char (point-min))
@@ -196,11 +196,11 @@ Splus/Window/Commands Window).\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window appear in this buffer.\n\n")
     (goto-char (point-max))		; comint-mode-map makes '(ddeESS [S+4])'
-;;  (use-local-map comint-mode-map)	;a shell buffer after Splus is finished.
+    ;;  (use-local-map comint-mode-map)	;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
     (toggle-read-only t)		; force buffer to be read-only
     (setq mode-name "ddeESS")
-;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start))
     ))
@@ -266,14 +266,14 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
                   inferior-ess-secondary-prompt
                   "\\)"))
     (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-                                                ; define with correct i-e-p-p
+                                        ; define with correct i-e-p-p
     (setq comint-input-sender 'inferior-ess-input-sender)
     (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
     (goto-char (point-max))
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
     (setq mode-name "iESS(Sqpe)")
-;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start))
     (if shome-nil-p (setenv "SHOME" nil))))
@@ -322,8 +322,8 @@ is here to allow slow disks to start the Splus program."
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-                    ; command in '(ddeESS [S+4])' should follow the "$"
-                    ; prompt.  If not, then increase the sleep-for time!
+                                        ; command in '(ddeESS [S+4])' should follow the "$"
+                                        ; prompt.  If not, then increase the sleep-for time!
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+4-customize-alist)
     (ess-setq-vars-local ess-customize-alist)
@@ -339,15 +339,15 @@ is here to allow slow disks to start the Splus program."
     (goto-char (point-max))
     (insert (concat inferior-S+4-program-name " "
                     inferior-ess-start-args)) ; Note: there is no final "&".
-; Without the "&", the results of  !system.command  come to '(ddeESS [S+4])'
-; With the "&", the results of	!system.command  in S get lost.
+                                        ; Without the "&", the results of  !system.command  come to '(ddeESS [S+4])'
+                                        ; With the "&", the results of	!system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for 30) ; Need to wait, else working too fast!
-                   ; If the ess-current-process-name doesn't appear in the
-                   ; Splus Commands window increase the sleep-for time!
+                                        ; If the ess-current-process-name doesn't appear in the
+                                        ; Splus Commands window increase the sleep-for time!
 ;;; from msdos-minor-mode
-  (setq comint-process-echoes t)
-  (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
+    (setq comint-process-echoes t)
+    (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 ;;; end from msdos-minor-mode
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
@@ -364,7 +364,7 @@ There is a 30 second delay when this program starts during which the
 emacs screen will be partially blank.\n
 Remember to
 `q()' from S-Plus and
- then C-x C-q exit from the `'(ddeESS [S+4])'' buffer,
+then C-x C-q exit from the `'(ddeESS [S+4])'' buffer,
 or take the risk of not being able to shut down your computer
 and suffering through scandisk.\n
 Any results of the   !system.command   typed at the S prompt in the

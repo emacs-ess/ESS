@@ -161,29 +161,29 @@
 
 (defun ess-version-string ()
   (let* ((fname (concat ess-etc-directory "../SVN-REVISION"))
-	 (buffer (and (file-exists-p fname)
-		      (find-file-noselect fname)))
-	 c1 c2)
+         (buffer (and (file-exists-p fname)
+                      (find-file-noselect fname)))
+         c1 c2)
     ;; set the "global" ess-revision
     (setq ess-revision
-	  (if buffer
-	      ;; has two lines that look like
-	      ;; Revision: 4803
-	      ;; Last Changed Date: 2012-04-16
-	      (save-excursion
-		(set-buffer buffer)
-		(ess-write-to-dribble-buffer
-		 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
-		(goto-char (point-min))
-		(re-search-forward "Revision: \\(.*\\)")
-		(setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
-		;; line 2
-		(forward-line 1)
-		(re-search-forward ".*: \\(.*\\)")
-		(setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
+          (if buffer
+              ;; has two lines that look like
+              ;; Revision: 4803
+              ;; Last Changed Date: 2012-04-16
+              (save-excursion
+                (set-buffer buffer)
+                (ess-write-to-dribble-buffer
+                 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
+                (goto-char (point-min))
+                (re-search-forward "Revision: \\(.*\\)")
+                (setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
+                ;; line 2
+                (forward-line 1)
+                (re-search-forward ".*: \\(.*\\)")
+                (setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
 
-		(concat "rev. " c1 " (" c2 ")"))
-	    ))
+                (concat "rev. " c1 " (" c2 ")"))
+            ))
     (concat ess-version " [" ess-revision "]")))
 
 
@@ -211,7 +211,7 @@ Invoke this command with C-u C-u C-y."
         (message "No commands found"))
     (if (eq this-command t)
         (setq this-command 'yank))
-  ))
+    ))
 
 (defun ess-yank (&optional ARG)
   "With double prefix (C-u C-u) call `ess-yank-cleaned-commands"
@@ -349,7 +349,7 @@ This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
 It can be retrieved with `(process-get PROCESS PROPNAME)'."
     (set-process-plist process
                        (plist-put (process-plist process) propname value)))
-)
+  )
 
 ;;; Running these must be done "every time" before use, since
 ;;; they depend on a customizable variable.
@@ -391,7 +391,7 @@ Otherwise try a list of fixed known viewers."
 (defun ess-line-to-list-of-words (line)
   (let ((list nil)
         (posn 0))
-        ;; (match-data (match-data)))
+    ;; (match-data (match-data)))
     (while (string-match "[^ \t\n]+" line posn)
       (setq list (cons (substring line (match-beginning 0) (match-end 0))
                        list))
@@ -438,7 +438,7 @@ Otherwise try a list of fixed known viewers."
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
            ess-language ess-dialect buf comint-process-echoes comint-input-sender))
-)
+  )
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;; unfortunately, requires 'cl.  Whoops.
@@ -492,7 +492,7 @@ Otherwise try a list of fixed known viewers."
 
 
 
-; Run load hook and provide package
+                                        ; Run load hook and provide package
 
 (run-hooks 'ess-mode-load-hook)
 
