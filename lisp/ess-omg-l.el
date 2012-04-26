@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1999--2001 A.J. Rossini.
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 15 Aug 1999
@@ -183,40 +183,40 @@ Returns nil if line starts inside a string, t if in a comment."
                (goto-char containing-sexp)
                ;; Is line first statement after an open-brace?
                (or
-                 ;; If no, find that first statement and indent like it.
-                 (save-excursion
-                   (forward-char 1)
-                   (while (progn (skip-chars-forward " \t\n")
-                                 (looking-at "//"))
-                     ;; Skip over comments following openbrace.
-                     (forward-line 1))
-                   ;; The first following code counts
-                   ;; if it is before the line we want to indent.
-                   (and (< (point) indent-point)
-                        (current-column)))
-                 ;; If no previous statement,
-                 ;; indent it relative to line brace is on.
-                 ;; For open brace in column zero, don't let statement
-                 ;; start there too.  If ess-indent-level is zero,
-                 ;; use ess-brace-offset + ess-continued-statement-offset instead.
-                 ;; For open-braces not the first thing in a line,
-                 ;; add in ess-brace-imaginary-offset.
-                 (+ (if (and (bolp) (zerop ess-indent-level))
-                        (+ ess-brace-offset ess-continued-statement-offset)
-                      ess-indent-level)
-                    ;; Move back over whitespace before the openbrace.
-                    ;; If openbrace is not first nonwhite thing on the line,
-                    ;; add the ess-brace-imaginary-offset.
-                    (progn (skip-chars-backward " \t")
-                           (if (bolp) 0 ess-brace-imaginary-offset))
-                    ;; If the openbrace is preceded by a parenthesized exp,
-                    ;; move to the beginning of that;
-                    ;; possibly a different line
-                    (progn
-                      (if (eq (preceding-char) ?\))
-                          (forward-sexp -1))
-                      ;; Get initial indentation of the line we are on.
-                      (current-indentation))))))))))
+                ;; If no, find that first statement and indent like it.
+                (save-excursion
+                  (forward-char 1)
+                  (while (progn (skip-chars-forward " \t\n")
+                                (looking-at "//"))
+                    ;; Skip over comments following openbrace.
+                    (forward-line 1))
+                  ;; The first following code counts
+                  ;; if it is before the line we want to indent.
+                  (and (< (point) indent-point)
+                       (current-column)))
+                ;; If no previous statement,
+                ;; indent it relative to line brace is on.
+                ;; For open brace in column zero, don't let statement
+                ;; start there too.  If ess-indent-level is zero,
+                ;; use ess-brace-offset + ess-continued-statement-offset instead.
+                ;; For open-braces not the first thing in a line,
+                ;; add in ess-brace-imaginary-offset.
+                (+ (if (and (bolp) (zerop ess-indent-level))
+                       (+ ess-brace-offset ess-continued-statement-offset)
+                     ess-indent-level)
+                   ;; Move back over whitespace before the openbrace.
+                   ;; If openbrace is not first nonwhite thing on the line,
+                   ;; add the ess-brace-imaginary-offset.
+                   (progn (skip-chars-backward " \t")
+                          (if (bolp) 0 ess-brace-imaginary-offset))
+                   ;; If the openbrace is preceded by a parenthesized exp,
+                   ;; move to the beginning of that;
+                   ;; possibly a different line
+                   (progn
+                     (if (eq (preceding-char) ?\))
+                         (forward-sexp -1))
+                     ;; Get initial indentation of the line we are on.
+                     (current-indentation))))))))))
 
 
 

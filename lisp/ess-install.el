@@ -2,7 +2,7 @@
 ;; Auto-install procedure.  EXPERIMENTAL!
 
 ;; Copyright (C) 2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen
 
@@ -217,7 +217,7 @@ ignored."
                 (yes-or-no-p
                  (concat "Replace ESS version " ess-installed
                          " with version "
-                     ess-new-version "? ")))
+                         ess-new-version "? ")))
           (when new-install
             (kill-region beg (point))
             (insert ess-commands)

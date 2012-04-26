@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Created: 9 Dec 1998
@@ -55,7 +55,7 @@
       ;; We go outside the loop to create a 1-character line " " in the
       ;; *ESS-temporary* buffer
       (if (= beg (point))  ;; do empty line outside loop
-            (ess-eval-linewise-ddeclient " " nil 'eob t)
+          (ess-eval-linewise-ddeclient " " nil 'eob t)
         ;;(call-process-region start end
         ;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
         (call-process-region

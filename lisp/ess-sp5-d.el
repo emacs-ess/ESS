@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1998 A.J. Rossini
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
@@ -50,15 +50,15 @@
 
 (defvar S+5-customize-alist
   (append
-   '((ess-local-customize-alist		. 'S+5-customize-alist)
-     (ess-dialect			. S+5-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file		. "ess-sp5-namedb.el")
-     (inferior-ess-program		. inferior-S+5-program-name)
-     ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
+   '((ess-local-customize-alist         . 'S+5-customize-alist)
+     (ess-dialect                       . S+5-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file           . "ess-sp5-namedb.el")
+     (inferior-ess-program              . inferior-S+5-program-name)
+     ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff
      (inferior-ess-help-command   . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. "searchPaths()\n")
+     (inferior-ess-search-list-command  . "searchPaths()\n")
      (inferior-ess-start-args      . inferior-Splus-args)
      (ess-STERM  . "iESS")
      )

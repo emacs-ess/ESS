@@ -58,9 +58,9 @@ If the region is not active, the function uses the word-at-point"
 ;;first concating the head and tail."
 ;;    (let (kill-ring
 ;;          expanded-region)
-;;	(copy-region-as-kill start end)
-;;	(setq expanded-region (concat head (current-kill 1) tail))
-;;	(ess-eval-linewise expanded-region))
+;;      (copy-region-as-kill start end)
+;;      (setq expanded-region (concat head (current-kill 1) tail))
+;;      (ess-eval-linewise expanded-region))
 ;;)
 
 ;; (setq debug-on-error t)
@@ -69,6 +69,6 @@ If the region is not active, the function uses the word-at-point"
 ;;  "Send the expanded word-at-point to the inferior ESS process after
 ;;first concating the head and tail."
 ;;    (let (expanded-region)
-;;	(setq expanded-region (concat head (word-at-point) tail))
-;;	(ess-eval-linewise expanded-region))
+;;      (setq expanded-region (concat head (word-at-point) tail))
+;;      (ess-eval-linewise expanded-region))
 ;;)

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: February 1999

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1993 David M. Smith
 ;; Copyright (C) 1997--2011 A.J. Rossini, Richard M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -66,7 +66,7 @@
 ;;; automatically be set correctly.  If you are working with an old
 ;;; emacs, one in which file-truename is not defined, then you might
 ;;; need to change the value of ess-lisp-directory to the directory
-;;; which is to contain the file ess-site.elc.	This is probably the
+;;; which is to contain the file ess-site.elc.  This is probably the
 ;;; current directory, or the value of LISPDIR if it was set in the
 ;;; Makefile.
 
@@ -102,7 +102,7 @@
   ;;(defvar ess-lisp-directory
   ;;(directory-file-name "/stat2/faculty/rossini/ESS/lisp"))
 
-;;)
+  ;;)
 
   ;; emacs 19.28 and 19.29 don't have functions we need.
   (if (not (fboundp 'file-name-sans-extension))
@@ -188,7 +188,7 @@ for ESS, such as icons.")
 (unless (locate-file "ess.info"
                      (if (featurep 'xemacs)
                          Info-directory-list
-                         Info-default-directory-list))
+                       Info-default-directory-list))
   (add-to-list (if (featurep 'xemacs)
                    'Info-directory-list 'Info-default-directory-list)
                (expand-file-name "../doc/info/" ess-lisp-directory)))
@@ -229,36 +229,36 @@ between .s or .S files and assembly mode.
 (if (assoc "\\.[rR]\\'" auto-mode-alist) nil
   (setq auto-mode-alist
         (append
-         '(("\\.sp\\'"		. S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-           ("\\.[qsS]\\'"	. S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
-           ("\\.ssc\\'"		. S-mode) ;; Splus (>= 4.x) script files.
-           ("\\.SSC\\'"		. S-mode) ;; ditto for windoze
-           ("\\.[rR]\\'"	. R-mode)
-           ("\\.[rR]nw\\'"	. Rnw-mode)
-           ("\\.[sS]nw\\'"	. Snw-mode); currently identical to Rnw-mode
+         '(("\\.sp\\'"          . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
+           ("\\.[qsS]\\'"       . S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
+           ("\\.ssc\\'"         . S-mode) ;; Splus (>= 4.x) script files.
+           ("\\.SSC\\'"         . S-mode) ;; ditto for windoze
+           ("\\.[rR]\\'"        . R-mode)
+           ("\\.[rR]nw\\'"      . Rnw-mode)
+           ("\\.[sS]nw\\'"      . Snw-mode); currently identical to Rnw-mode
            ("\\.[rR]profile\\'" . R-mode)
-           ("NAMESPACE\\'"	. R-mode)
+           ("NAMESPACE\\'"      . R-mode)
            ("\\.omg\\'"         . omegahat-mode)
            ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
-           ("\\.lsp\\'"		. XLS-mode)
-           ("\\.do\\'"		. STA-mode)
-           ("\\.ado\\'"		. STA-mode)
-           ("\\.[Ss][Aa][Ss]\\'"	. SAS-mode)
+           ("\\.lsp\\'"         . XLS-mode)
+           ("\\.do\\'"          . STA-mode)
+           ("\\.ado\\'"         . STA-mode)
+           ("\\.[Ss][Aa][Ss]\\'"        . SAS-mode)
            ;; Many .log/.lst files, not just SAS
-           ;;("\\.log\\'"	. SAS-log-mode)
-           ;;("\\.[Ll][Ss][Tt]\\'"	. SAS-listing-mode)
-           ("\\.[Ss]t\\'"	. S-transcript-mode)
-           ("\\.[Ss]out"	. S-transcript-mode)
-           ("\\.[Rr]t\\'"	. R-transcript-mode)
-           ("\\.[Rr]out"	. R-transcript-mode)
-           ("\\.Rd\\'"		. Rd-mode)
+           ;;("\\.log\\'"       . SAS-log-mode)
+           ;;("\\.[Ll][Ss][Tt]\\'"      . SAS-listing-mode)
+           ("\\.[Ss]t\\'"       . S-transcript-mode)
+           ("\\.[Ss]out"        . S-transcript-mode)
+           ("\\.[Rr]t\\'"       . R-transcript-mode)
+           ("\\.[Rr]out"        . R-transcript-mode)
+           ("\\.Rd\\'"          . Rd-mode)
            ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
            ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
            ("\\.[Jj][Aa][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Oo][Gg]\\'"         . ess-jags-mode)
            ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
-          )
+           )
          auto-mode-alist)))
 
 ;; Rscript and littler interpreters recognized.  XEmacs entries can
@@ -345,7 +345,7 @@ between .s or .S files and assembly mode.
 ;;; delay is 60 seconds.  On a ???? MHz machine with 523MB the delay is
 ;;; 10 seconds.  The user may need to adjust this number.
 (defvar ess-S+6-startup-delay 15 ;; <- 2005-01-03; MM
-"*Number of seconds to wait for the Commands window to appear before
+  "*Number of seconds to wait for the Commands window to appear before
 sending `inferior-ess-language-start' to S-Plus.")
 
 
@@ -411,8 +411,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (require 'ess-bugs-l)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
-   (format "[ess-site.el]: ess-customize-alist=%s \n"
-           ess-customize-alist))
+ (format "[ess-site.el]: ess-customize-alist=%s \n"
+         ess-customize-alist))
 
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
@@ -424,8 +424,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 (ess-message "[ess-site:] .. after requiring 'ess ...")
 
 (ess-write-to-dribble-buffer
-   (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
-           ess-customize-alist))
+ (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
+         ess-customize-alist))
 
 ;; (1.8) Speedbar and mouse
 
@@ -637,7 +637,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; of ess-load-file.  Dump files are never deleted if an error occurs
 ;;; during the load.
 ;;;
-;;; RH sez: I find the default `always' keep to be imperative.	The previous
+;;; RH sez: I find the default `always' keep to be imperative.  The previous
 ;;; default was to throw away
 ;;; files at the wrong time (I think it was something like, if you M-x
 ;;; ess-load a file twice, while you are working on it, the file is

@@ -216,7 +216,7 @@ User is asked for confirmation."
             (setq count (1+ count)
                   inst (concat inst (ess-rutils-namepkg) ", " )))
         (forward-line 1)))
-    (if (> count 0)			;found packages to install
+    (if (> count 0)                     ;found packages to install
         (progn
           ;; Fix the install function created before and close it.
           (setq inst (concat
@@ -413,19 +413,19 @@ Options should be separated by value of `crm-default-separator'."
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
   "Submenu of `inferior-ess-mode' to use with RUtils."
   '("RUtils"
-    ["Manage objects"          ess-rutils-objs		t]
-    ["Remove objects"          ess-rutils-rm-all	t]
+    ["Manage objects"          ess-rutils-objs          t]
+    ["Remove objects"          ess-rutils-rm-all        t]
     "------"
-    ["Local packages"           ess-rutils-local-pkgs	t]
-    ["Packages in repositories" ess-rutils-repos-pkgs	t]
-    ["Update packages"          ess-rutils-update-pkgs	t]
+    ["Local packages"           ess-rutils-local-pkgs   t]
+    ["Packages in repositories" ess-rutils-repos-pkgs   t]
+    ["Update packages"          ess-rutils-update-pkgs  t]
     "------"
-    ["Load workspace"           ess-rutils-load-wkspc	t]
-    ["Save workspace"           ess-rutils-save-wkspc	t]
-    ["Change directory"        ess-change-directory	t]
+    ["Load workspace"           ess-rutils-load-wkspc   t]
+    ["Save workspace"           ess-rutils-save-wkspc   t]
+    ["Change directory"        ess-change-directory     t]
     "------"
-    ["Browse HTML"             ess-rutils-html-docs	t]
-    ["Apropos"                 ess-rutils-apropos	t]))
+    ["Browse HTML"             ess-rutils-html-docs     t]
+    ["Apropos"                 ess-rutils-apropos       t]))
 
 (when (featurep 'xemacs)
   (defun ess-rutils-mode-xemacs-menu ()

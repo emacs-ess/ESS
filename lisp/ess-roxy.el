@@ -1,8 +1,8 @@
 ;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
 ;; Copyright (C) 2009--2012 Henning Redestig, A.J. Rossini, Richard
-;;	M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
-;;	Eglen and Vitalie Spinu.
+;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
+;;      Eglen and Vitalie Spinu.
 ;;
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 ;; Keywords: convenience, tools
@@ -113,7 +113,7 @@
           (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
         (if ess-roxy-hide-show-p
             (progn
-              ;(setq hs-c-start-regexp "s")
+                                        ;(setq hs-c-start-regexp "s")
               (if (condition-case nil
                       (if (and (symbolp hs-minor-mode)
                                (symbol-value hs-minor-mode))
@@ -286,15 +286,15 @@ function at point. if here is supplied start inputting
     (while (stringp (car (car args)))
       (setq arg-des (pop args))
       (unless (string= (car arg-des) "")
-          (progn
-            (insert (concat "\n"
-                            ess-roxy-str " @param " (car arg-des) " "))
-            (insert
-             (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
-                                    (concat "\n" ess-roxy-str)))
-            (if ess-roxy-fill-param-p
-                (ess-roxy-fill-field))
-            )))))
+        (progn
+          (insert (concat "\n"
+                          ess-roxy-str " @param " (car arg-des) " "))
+          (insert
+           (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
+                                  (concat "\n" ess-roxy-str)))
+          (if ess-roxy-fill-param-p
+              (ess-roxy-fill-field))
+          )))))
 
 (defun ess-roxy-merge-args (fun ent)
   "Take two args lists (alists) and return their union. Result
@@ -355,7 +355,7 @@ non-nil."
                   (insert (concat line-break ess-roxy-str " " (cdr tag-def)))
                 (insert (concat line-break ess-roxy-str " @"
                                 (car tag-def) " " (cdr tag-def))))
-                ))
+              ))
           (setq line-break "\n")
           )))))
 
@@ -418,7 +418,7 @@ at where the last deletion ended"
 point is"
   (save-excursion
     (let* (args entry-beg field-beg field-end args-text arg-name
-           desc)
+                desc)
       (if (ess-roxy-goto-end-of-entry)
           (progn
             (beginning-of-line)
@@ -567,11 +567,11 @@ facilitate saving that file."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-      (while (re-search-forward (concat "^" ess-roxy-str) (point-max) t 1)
-        (if (not (hs-already-hidden-p))
-            (hs-hide-block))
-        (goto-char (ess-roxy-end-of-entry))
-        (forward-line 1))))
+    (while (re-search-forward (concat "^" ess-roxy-str) (point-max) t 1)
+      (if (not (hs-already-hidden-p))
+          (hs-hide-block))
+      (goto-char (ess-roxy-end-of-entry))
+      (forward-line 1))))
 
 (defun ess-roxy-previous-entry ()
   "Go to beginning of previous Roxygen entry. "
