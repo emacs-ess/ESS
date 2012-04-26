@@ -102,11 +102,11 @@
 
 (defvar inferior-S-language-start
   '(concat "options("
-             "STERM='"	ess-STERM  "'"
-             ", str.dendrogram.last =\"'\""
-             (if ess-editor (concat ", editor='" ess-editor "'"))
-             (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
-             ")")
+           "STERM='"	ess-STERM  "'"
+           ", str.dendrogram.last =\"'\""
+           (if ess-editor (concat ", editor='" ess-editor "'"))
+           (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
+           ")")
   "S language expression for startup -- default for all S dialects.")
 
 (defconst S-common-cust-alist
@@ -121,9 +121,9 @@
     ;; inferior-ess-prompt is used by comint for navigation only if
     ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
     (inferior-ess-prompt           . inferior-ess-S-prompt) ;customizable
-  )
+    )
   "S-language common settings for all <dialect>-customize-alist s"
-)
+  )
 
 (defconst S+common-cust-alist
   (append
@@ -154,7 +154,7 @@
      )
    S-common-cust-alist)
   "Common settings for all S+<*>-customize-alist s"
-)
+  )
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l!).
 
@@ -259,7 +259,7 @@ when \\[ess-toggle-S-assign-key] is called.")
 (defun S-comment-indent ()
   "Indentation for S comments."
   (if (or (looking-at "###")
-      (and (looking-at "#!") (= 1 (line-number-at-pos))))
+          (and (looking-at "#!") (= 1 (line-number-at-pos))))
       (current-column)
     (if (looking-at "##")
         (let ((tem (ess-calculate-indent)))
@@ -476,7 +476,7 @@ unless prefix argument NO-FORCE-CURRENT is non-nil."
         (ess-command cmd)
         (message "Directory of *%s* process set to %s"
                  ess-local-process-name default-directory))
-        ;; no local process
+    ;; no local process
     (message "No *%s* process associated with this buffer." ess-dialect)))
 
 
@@ -585,8 +585,8 @@ and one that is well formatted in emacs ess-mode."
 
     (if (string= ess-dialect "R")
         (progn
-         (require 'ess-r-d)
-         (R-fix-T-F from (not verbose))))
+          (require 'ess-r-d)
+          (R-fix-T-F from (not verbose))))
 
     ;; former C and matlab programmers leave trailing  ";" :
     (goto-char from) (ess-rep-regexp "; *$" "" nil 'literal verbose)
@@ -626,7 +626,7 @@ and one that is well formatted in emacs ess-mode."
     ;;D (if verbose (message "\t R-fix-misc..: Hard.. '}'"))
     (goto-char from)
     (ess-rep-regexp "^\\([^#{\n]*[^#{ \t\n]+[ \t]*\\)}[ \t]*$"
-                     "\\1\n}" 'fix nil verbose)
+                    "\\1\n}" 'fix nil verbose)
     ))
 
 ;; This is by Seth Falcon, modeled after ess-toggle-underscore (see below).
@@ -685,17 +685,17 @@ In that case, the it is removed and replaced by the underscore.
   ;; Rather than trying to count a second _ keypress, just check whether
   ;; the current point is preceded by ess-S-assign.
   (let ((assign-len (length ess-S-assign)))
-      (if (and
-           (>= (point) (+ assign-len (point-min))) ;check that we can move back
-           (save-excursion
-             (backward-char assign-len)
-             (looking-at ess-S-assign)))
-          ;; If we are currently looking at ess-S-assign, replace it with _
-          (progn
-            (delete-char (- assign-len))
-            (insert "_"))
-        (delete-horizontal-space)
-        (insert ess-S-assign))))
+    (if (and
+         (>= (point) (+ assign-len (point-min))) ;check that we can move back
+         (save-excursion
+           (backward-char assign-len)
+           (looking-at ess-S-assign)))
+        ;; If we are currently looking at ess-S-assign, replace it with _
+        (progn
+          (delete-char (- assign-len))
+          (insert "_"))
+      (delete-horizontal-space)
+      (insert ess-S-assign))))
 
 (defun ess-toggle-underscore (force)
   "Set the \"_\" (underscore) key to \\[ess-smart-underscore] or back to \"_\".
@@ -711,8 +711,8 @@ In that case, the it is removed and replaced by the underscore.
              ;; (stringp current-key) (string= current-key ess-S-assign)
              (not force))
         (progn
-         (define-key ess-mode-map          "_" nil); 'self-insert-command
-         (define-key inferior-ess-mode-map "_" nil))
+          (define-key ess-mode-map          "_" nil); 'self-insert-command
+          (define-key inferior-ess-mode-map "_" nil))
       ;; else : "force" or current-key is "nil", i.e. default
       (define-key ess-mode-map		"_" 'ess-smart-underscore)
       (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))))

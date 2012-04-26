@@ -329,12 +329,12 @@ there is no process NAME)."
              (buf-name-str (buffer-name buffer)))
         (ess-write-to-dribble-buffer
          (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
-               inf-ess-start-args comint-process-echoes))
+                 inf-ess-start-args comint-process-echoes))
         (set-buffer buffer)
         (inferior-ess-mode)
         (ess-write-to-dribble-buffer
          (format "(ess-multi post inf-ess: start-args=%s, comint-echoes=%s\n"
-               inf-ess-start-args comint-process-echoes))
+                 inf-ess-start-args comint-process-echoes))
         (setq ess-local-process-name proc-name)
         (goto-char (point-max))
         ;; load past history
@@ -346,7 +346,7 @@ there is no process NAME)."
         ;; create and run process.
         (ess-write-to-dribble-buffer
          (format "(ess-multi 1):  start-args=%s \n"
-               inf-ess-start-args))
+                 inf-ess-start-args))
         (set-buffer
          (if switches
              (inferior-ess-make-comint buf-name-str
@@ -485,10 +485,10 @@ This was rewritten by KH in April 1996."
   (let ((prog-version (if (string= ess-dialect "R")
                           inferior-R-version ; notably for the R-X.Y versions
                         inferior-ess-program)))
-  (ess-prompt-for-directory
-        default
-        (format "ESS [%s(%s): %s] starting data directory? "
-                ess-language ess-dialect prog-version))))
+    (ess-prompt-for-directory
+     default
+     (format "ESS [%s(%s): %s] starting data directory? "
+             ess-language ess-dialect prog-version))))
 
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
@@ -847,23 +847,23 @@ as the current buffer."
               (cons buf ess-bufs-in-frame)))))
 
 (defun ess-get-buffers-in-frames (&optional current)
- "Return the list of buffers that are visible in the current frame.
+  "Return the list of buffers that are visible in the current frame.
 If optional argument CURRENT is given, restrict searching to the
 current frame, rather than all frames."
- (let ((ess-bufs-in-frame nil))
-   (walk-windows 'ess-get-bufname nil (if current nil 0))
-   ess-bufs-in-frame))
+  (let ((ess-bufs-in-frame nil))
+    (walk-windows 'ess-get-bufname nil (if current nil 0))
+    ess-bufs-in-frame))
 
 (defun ess-buffer-visible-this-frame (buf)
- "Return t if BUF is visible in current frame."
- (member buf (ess-get-buffers-in-frames t)))
+  "Return t if BUF is visible in current frame."
+  (member buf (ess-get-buffers-in-frames t)))
 
 (defun ess-buffer-visible-other-frame (buf)
- "Return t if BUF is visible in another frame.
+  "Return t if BUF is visible in another frame.
 Assumes that buffer has not already been in found in current frame."
- (if (member buf (ess-get-buffers-in-frames))
-     (window-frame (get-buffer-window buf 0))
-   nil))
+  (if (member buf (ess-get-buffers-in-frames))
+      (window-frame (get-buffer-window buf 0))
+    nil))
 
 
  ; Functions for evaluating code
@@ -1070,33 +1070,33 @@ Otherwise treat \\ in NEWTEXT string as special:
             start (match-end 0)
             rtn-str
             (concat
-              rtn-str
-              (substring str prev-start match)
-              (cond (literal newtext)
-                    (t (mapconcat
-                         (function
-                           (lambda (c)
-                             (if special
-                                 (progn
-                                   (setq special nil)
-                                   (cond ((eq c ?\\) "\\")
-                                         ((eq c ?&)
-                                          (substring str
-                                                     (match-beginning 0)
-                                                     (match-end 0)))
-                                         ((and (>= c ?0) (<= c ?9))
-                                          (if (> c (+ ?0 (length
-                                                           (match-data))))
-                                              ;; Invalid match num
-                                              (error "(replace-in-string) Invalid match num: %c" c)
-                                            (setq c (- c ?0))
-                                            (substring str
-                                                       (match-beginning c)
-                                                       (match-end c))))
-                                         (t (char-to-string c))))
-                               (if (eq c ?\\) (progn (setq special t) nil)
-                                 (char-to-string c)))))
-                         newtext ""))))))
+             rtn-str
+             (substring str prev-start match)
+             (cond (literal newtext)
+                   (t (mapconcat
+                       (function
+                        (lambda (c)
+                          (if special
+                              (progn
+                                (setq special nil)
+                                (cond ((eq c ?\\) "\\")
+                                      ((eq c ?&)
+                                       (substring str
+                                                  (match-beginning 0)
+                                                  (match-end 0)))
+                                      ((and (>= c ?0) (<= c ?9))
+                                       (if (> c (+ ?0 (length
+                                                       (match-data))))
+                                           ;; Invalid match num
+                                           (error "(replace-in-string) Invalid match num: %c" c)
+                                         (setq c (- c ?0))
+                                         (substring str
+                                                    (match-beginning c)
+                                                    (match-end c))))
+                                      (t (char-to-string c))))
+                            (if (eq c ?\\) (progn (setq special t) nil)
+                              (char-to-string c)))))
+                       newtext ""))))))
     (concat rtn-str (substring str start))))
 
 
@@ -1129,7 +1129,7 @@ SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
 at the end of this function.  If the 7th arg WAIT-SEC is set, it
 will be used instead of the default .001s and be passed to
 \\[ess-wait-for-process]."
-;; but the effect is unclear
+  ;; but the effect is unclear
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text-withtabs
                                    invisibly eob even-empty
@@ -1179,8 +1179,8 @@ will be used instead of the default .001s and be passed to
           (setq com "\n"))
         (goto-char (marker-position (process-mark sprocess)))
         (when (not invisibly)
-              (insert com)
-              (set-marker (process-mark sprocess) (point)))
+          (insert com)
+          (set-marker (process-mark sprocess) (point)))
         (setq start-of-output (marker-position (process-mark sprocess)))
         (inferior-ess-mark-as-busy sprocess)
         (process-send-string sprocess com)
@@ -1366,7 +1366,7 @@ both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
     (ess-next-code-line 1)))
 
 (defun ess-eval-line-and-step-invisibly ()
-   "Evaluate the current line invisibly and step to the next line.
+  "Evaluate the current line invisibly and step to the next line.
 Evaluate all comments and empty lines."
   (interactive)
   (ess-eval-line-and-step t t t))
@@ -1422,7 +1422,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
     (ess-next-code-line))
-)
+  )
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.	Need to add appropriate stuff...
@@ -1547,37 +1547,37 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   )
 
 (easy-menu-define
- inferior-ess-mode-menu inferior-ess-mode-map
- "Menu for use in Inferior S mode"
- '("iESS"
-   ["What is this? (beta)"   ess-mouse-me                  t]
-   ["Resynch S completions"  ess-resynch                   t]
-   ["Quit S"                 ess-quit                      t]
-   ["Display search list"    ess-execute-search            t]
-   ["Display object list"    ess-execute-objects           t]
-   ["Get help on S object"   ess-display-help-on-object    t]
-   ["Enter S command"        ess-execute                   t]
-   ["Attach directory"       ess-execute-attach            t]
-   "------"
-   ["Send and move"  ess-transcript-send-command-and-move  t]
-   ["Copy command"   comint-copy-old-input                 t]
-   ["Send command"   inferior-ess-send-input               t]
-   "------"
-   ["Jump to Error"  ess-parse-errors                      t]
-   ;; need a toggle switch for above, AJR.
-   ["Load source file"	ess-load-file                      t]
-   ["Edit S Object"	ess-dump-object-into-edit-buffer   t]
-   "------"
-   ["Describe"         describe-mode                       t]
-   ["About"            (ess-goto-info "Entering Commands") t]
-   ["Send bug report"  ess-submit-bug-report               t]
-   ))
+  inferior-ess-mode-menu inferior-ess-mode-map
+  "Menu for use in Inferior S mode"
+  '("iESS"
+    ["What is this? (beta)"   ess-mouse-me                  t]
+    ["Resynch S completions"  ess-resynch                   t]
+    ["Quit S"                 ess-quit                      t]
+    ["Display search list"    ess-execute-search            t]
+    ["Display object list"    ess-execute-objects           t]
+    ["Get help on S object"   ess-display-help-on-object    t]
+    ["Enter S command"        ess-execute                   t]
+    ["Attach directory"       ess-execute-attach            t]
+    "------"
+    ["Send and move"  ess-transcript-send-command-and-move  t]
+    ["Copy command"   comint-copy-old-input                 t]
+    ["Send command"   inferior-ess-send-input               t]
+    "------"
+    ["Jump to Error"  ess-parse-errors                      t]
+    ;; need a toggle switch for above, AJR.
+    ["Load source file"	ess-load-file                      t]
+    ["Edit S Object"	ess-dump-object-into-edit-buffer   t]
+    "------"
+    ["Describe"         describe-mode                       t]
+    ["About"            (ess-goto-info "Entering Commands") t]
+    ["Send bug report"  ess-submit-bug-report               t]
+    ))
 
 
 (defun inferior-ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
   (if 'inferior-ess-mode
-        (easy-menu-add inferior-ess-mode-menu)
+      (easy-menu-add inferior-ess-mode-menu)
     (easy-menu-remove inferior-ess-mode-menu)))
 
 (if (string-match "XEmacs" emacs-version)
@@ -1707,7 +1707,7 @@ to continue it."
        ((string= ess-dialect "R")
         (setq comint-input-sender 'inferior-R-input-sender))
        ( (member ess-dialect '("S3" "S4" "S+3" "S+4" "S+5" "S+6" "S"))
-        (setq comint-input-sender 'inferior-ess-input-sender))))
+         (setq comint-input-sender 'inferior-ess-input-sender))))
 
   (when (string= ess-language "S")
     (local-set-key "\M-\r"    'ess-dirs))
@@ -2005,14 +2005,14 @@ A negative prefix argument gets the objects for that position
   (let* ((num-arg (if (listp posn)
                       (if posn -1 1)
                     (prefix-numeric-value posn)))
-        (the-posn (if (< num-arg 0) (- num-arg) num-arg))
-        (invert (< num-arg 0))
-        (the-command (format inferior-ess-objects-command the-posn ".*"))
-        (the-message (concat ">>> Position "
-                             (number-to-string the-posn)
-                             " ("
-                             (nth (1- the-posn) (ess-search-list))
-                             ")\n")))
+         (the-posn (if (< num-arg 0) (- num-arg) num-arg))
+         (invert (< num-arg 0))
+         (the-command (format inferior-ess-objects-command the-posn ".*"))
+         (the-message (concat ">>> Position "
+                              (number-to-string the-posn)
+                              " ("
+                              (nth (1- the-posn) (ess-search-list))
+                              ")\n")))
     (ess-execute the-command invert "S objects" the-message)))
 
 ;;;; S4 Version
@@ -2057,11 +2057,11 @@ prefix argument is used for POSN (or 2, if absent.)
 Doesn't work for data frames."
   (interactive "Attach directory: \nP")
   (ess-execute (concat "attach(\""
-                     (directory-file-name (expand-file-name dir))
-                     "\""
-                     (if posn (concat "," (number-to-string
-                                           (prefix-numeric-value posn))))
-                     ")") 'buffer)
+                       (directory-file-name (expand-file-name dir))
+                       "\""
+                       (if posn (concat "," (number-to-string
+                                             (prefix-numeric-value posn))))
+                       ")") 'buffer)
   (setq ess-sp-change t))
 
 (defun ess-execute-screen-options ()
@@ -2144,23 +2144,23 @@ regarding whether the workspace image should be saved."
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-make-buffer-current)
   (let (cmd
-;;Q	response
+        ;;Q	response
         (sprocess (get-ess-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running"))
-;;Q	(setq response (completing-read "Save workspace image? "
-;;Q                                 '( ( "yes".1) ("no" . 1) ("cancel" . 1))
-;;Q                                 nil t))
-;;Q	(if (string-equal response "")
-;;Q	(setq response "default")); which will ask again (in most situations)
-;;Q	(unless (string-equal response "cancel")
-      (ess-cleanup)
-;;Q   (setq cmd (format "q(\"%s\")\n" response))
-      (setq cmd "q()\n")
-      (goto-char (marker-position (process-mark sprocess)))
-      (process-send-string sprocess cmd)
-      ;;(rename-buffer (concat (buffer-name) "-exited") t)
-;;Q      )
-  ))
+    ;;Q	(setq response (completing-read "Save workspace image? "
+    ;;Q                                 '( ( "yes".1) ("no" . 1) ("cancel" . 1))
+    ;;Q                                 nil t))
+    ;;Q	(if (string-equal response "")
+    ;;Q	(setq response "default")); which will ask again (in most situations)
+    ;;Q	(unless (string-equal response "cancel")
+    (ess-cleanup)
+    ;;Q   (setq cmd (format "q(\"%s\")\n" response))
+    (setq cmd "q()\n")
+    (goto-char (marker-position (process-mark sprocess)))
+    (process-send-string sprocess cmd)
+    ;;(rename-buffer (concat (buffer-name) "-exited") t)
+    ;;Q      )
+    ))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
@@ -2191,14 +2191,14 @@ before you quit.  It is run automatically by \\[ess-quit]."
              (y-or-n-p
               (format
                "Delete all buffers associated with process %s? " the-procname))))
-        (dolist (buf (buffer-list))
-          (with-current-buffer buf
-            ;; Consider buffers for which ess-local-process-name is
-            ;; the same as the-procname
-            (when (and (not (get-buffer-process buf))
-                       ess-local-process-name
-                       (equal ess-local-process-name the-procname))
-              (kill-buffer buf)))))
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          ;; Consider buffers for which ess-local-process-name is
+          ;; the same as the-procname
+          (when (and (not (get-buffer-process buf))
+                     ess-local-process-name
+                     (equal ess-local-process-name the-procname))
+            (kill-buffer buf)))))
     (ess-switch-to-ESS nil)))
 
 (defun ess-kill-buffer-function ()
@@ -2291,18 +2291,18 @@ completions are listed [__UNIMPLEMENTED__]."
                                         (match-end 1)))))
              ;; are we trying to get a slot via `@' ?
              (classname (if (string-match "\\(.+\\)@\\(\\(\\sw\\|\\s_\\)*\\)$"
-                                         full-prefix)
-                           (progn
-                             (setq pattern
-                                   (if (not (match-beginning 2)) ""
-                                     (substring full-prefix
-                                                (match-beginning 2)
-                                                (match-end 2))))
-                             (ess-write-to-dribble-buffer
-                              (format "(ess-C-O-Name : slots..) : patt=%s"
-                                      pattern))
-                             (substring full-prefix (match-beginning 1)
-                                        (match-end 1)))))
+                                          full-prefix)
+                            (progn
+                              (setq pattern
+                                    (if (not (match-beginning 2)) ""
+                                      (substring full-prefix
+                                                 (match-beginning 2)
+                                                 (match-end 2))))
+                              (ess-write-to-dribble-buffer
+                               (format "(ess-C-O-Name : slots..) : patt=%s"
+                                       pattern))
+                              (substring full-prefix (match-beginning 1)
+                                         (match-end 1)))))
              (components (if listname
                              (ess-object-names listname)
                            (if classname
@@ -2442,7 +2442,7 @@ If OBJ is an object name, returns result of S command names(OBJ).
 If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
 In all cases, the value is an list of object names."
 
-;; FIXME: in both cases below, use the same fallback "objects(POS)" -- merge!
+  ;; FIXME: in both cases below, use the same fallback "objects(POS)" -- merge!
   (if (and obj (file-accessible-directory-p obj))
       ;; Check the pre-compiled object list in ess-object-name-db first
 
@@ -2465,8 +2465,8 @@ In all cases, the value is an list of object names."
                pos
                (ess-get-words-from-vector
                 (format inferior-ess-objects-command pos))))
-          ;; "else" should really give an error!
-          ;; would need  pos = which(obj = search())
+    ;; "else" should really give an error!
+    ;; would need  pos = which(obj = search())
 
     ;; else
     (or (and obj  ;; want names(obj)
@@ -2544,28 +2544,28 @@ the `load-path'."
 (defun ess-resynch nil
   "Reread all directories/objects in variable `ess-search-list' to
 form completions."
- (interactive)
- (if (ess-make-buffer-current) nil
-   (error "Not an ESS process buffer"))
- (setq ess-sl-modtime-alist nil)
- (setq ess-object-list nil)
- (setq ess-object-name-db nil)		; perhaps it would be better to reload?
- (setq ess-sp-change t)
- (ess-get-modtime-list))
+  (interactive)
+  (if (ess-make-buffer-current) nil
+    (error "Not an ESS process buffer"))
+  (setq ess-sl-modtime-alist nil)
+  (setq ess-object-list nil)
+  (setq ess-object-name-db nil)		; perhaps it would be better to reload?
+  (setq ess-sp-change t)
+  (ess-get-modtime-list))
 
 (defun ess-filename-completion ()
   ;; > emacs 24
   "Return completion only within string or comment."
   (when (ess-inside-string-or-comment-p (point))
-      (append (comint-filename-completion) '(:exclusive no))
+    (append (comint-filename-completion) '(:exclusive no))
     ))
 
 
 (defun ess-complete-filename ()
   "Do file completion only within strings."
   (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
-          ;; (and (eq major-mode 'inferior-ess-mode)
-          ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
+    ;; (and (eq major-mode 'inferior-ess-mode)
+    ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
     ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
     (comint-dynamic-complete-filename)
     ))
@@ -2742,38 +2742,38 @@ list."
             (delete-horizontal-space)
             (insert ", "))
         (insert ","))
-    )))
+      )))
 
 ;;*;; Temporary buffer handling
 
-;(defun ess-create-temp-buffer (name)
-;  "Create an empty buffer called NAME, but doesn't display it."
-;  (let ((buff (get-buffer-create name)))
-;    (save-excursion
-;      (set-buffer buff)
-;      (erase-buffer))
-;    buff))
+                                        ;(defun ess-create-temp-buffer (name)
+                                        ;  "Create an empty buffer called NAME, but doesn't display it."
+                                        ;  (let ((buff (get-buffer-create name)))
+                                        ;    (save-excursion
+                                        ;      (set-buffer buff)
+                                        ;      (erase-buffer))
+                                        ;    buff))
 
 
 ;; Ed Kademan's version:
-;From: Ed Kademan <kademan@phz.com>
-;Subject: Re: ess-mode 5.1.16; search list
-;To: rossini@biostat.washington.edu (A.J. Rossini)
-;Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
-;Date: 26 Jul 2000 16:12:12 -0400
-;
-;Dear Tony Rossini,
-;
-;I was having trouble looking at the search list under ess.  When I
-;started up multiple inferior processes---each for a different
-;dialect---ess-mode would issue the wrong variant of the "search"
-;command when I typed C-c C-s.	In case it is useful let me tell you
-;what I did to get it to work for me.
-;
-;I added the component:
-;  (inferior-ess-search-list-command . "search()\n")
-;to S+3-customize-alist and R-customize-alist, and then I redefined the
-;ess-create-temp-buffer function as follows:
+                                        ;From: Ed Kademan <kademan@phz.com>
+                                        ;Subject: Re: ess-mode 5.1.16; search list
+                                        ;To: rossini@biostat.washington.edu (A.J. Rossini)
+                                        ;Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
+                                        ;Date: 26 Jul 2000 16:12:12 -0400
+                                        ;
+                                        ;Dear Tony Rossini,
+                                        ;
+                                        ;I was having trouble looking at the search list under ess.  When I
+                                        ;started up multiple inferior processes---each for a different
+                                        ;dialect---ess-mode would issue the wrong variant of the "search"
+                                        ;command when I typed C-c C-s.	In case it is useful let me tell you
+                                        ;what I did to get it to work for me.
+                                        ;
+                                        ;I added the component:
+                                        ;  (inferior-ess-search-list-command . "search()\n")
+                                        ;to S+3-customize-alist and R-customize-alist, and then I redefined the
+                                        ;ess-create-temp-buffer function as follows:
 (defun ess-create-temp-buffer (name)
   "Create an empty buffer called NAME."
   (let ((buff (get-buffer-create name))

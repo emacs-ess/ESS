@@ -54,7 +54,7 @@
 (autoload 'ess-eval-function		"ess-inf" "" nil)
 (autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
 (autoload 'ess-eval-function-or-paragraph-and-step
-                                        "ess-inf" "" nil)
+  "ess-inf" "" nil)
 (autoload 'ess-eval-line		"ess-inf" "" nil)
 (autoload 'ess-eval-line-and-go		"ess-inf" "" nil)
 (autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
@@ -157,7 +157,7 @@
   ;; different process for the buffer.
   (define-key ess-mode-map "\C-c\C-t"	'ess-execute-in-tb)
   (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name-deprecated)
-;;M  (define-key ess-mode-map "\C-c\t"	'comint-dynamic-complete-filename)
+  ;;M  (define-key ess-mode-map "\C-c\t"	'comint-dynamic-complete-filename)
   (unless (and (featurep 'emacs) (>= emacs-major-version 24))
     (define-key ess-mode-map "\M-\t"	'comint-dynamic-complete))
   (define-key ess-mode-map "\M-?"	'ess-list-object-completions)
@@ -180,97 +180,97 @@
 
 (require 'noweb-mode)
 (easy-menu-define
- ess-mode-menu ess-mode-map
- "Menu for use in `ess-mode'."
- '("ESS" ; ESS-mode
-   ["What is this? (beta)"    ess-mouse-me			t]
-   ["Load file"		ess-load-file t]
-   ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
-   ["Enter expression"	ess-execute-in-tb                 t]
-   ;; sub menus
-   ("Eval and Go"
-    ["Eval buffer"	ess-eval-buffer-and-go            t]
-    ["Eval region"	ess-eval-region-and-go            t]
-    ["Eval function"	ess-eval-function-and-go          t]
-    ["Eval line"	ess-eval-line-and-go              t]
-    ["Eval paragraph"   ess-eval-paragraph-and-go         t]
-    ["Eval chunk"	ess-eval-chunk-and-go    noweb-mode]
-    ["Eval thread"	ess-eval-thread-and-go   noweb-mode]
-    ["About"		(ess-goto-info "Evaluating code") t]
-    )
-   ("ESS Eval"
-    ["Eval buffer"	ess-eval-buffer                   t]
-    ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
-    ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
-    ["Eval region"	ess-eval-region                   t]
-    ["Eval function"	ess-eval-function                 t]
+  ess-mode-menu ess-mode-map
+  "Menu for use in `ess-mode'."
+  '("ESS" ; ESS-mode
+    ["What is this? (beta)"    ess-mouse-me			t]
+    ["Load file"		ess-load-file t]
     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
-    ["Eval line"	ess-eval-line                     t]
-    ["Eval line & step" ess-eval-line-and-step            t]
-    ["Eval paragraph"   ess-eval-paragraph                t]
-    ["Eval para. & step" ess-eval-paragraph-and-step      t]
-    ["Eval chunk"	ess-eval-chunk           noweb-mode]
-    ["Eval thread"	ess-eval-thread          noweb-mode]
-    ["About"		(ess-goto-info "Evaluating code") t]
-    )
-   ("Motion..."
-    ["Edit new object"		ess-dump-object-into-edit-buffer t]
-    ["Goto end of ESS buffer"	ess-switch-to-end-of-ESS	t]
-    ["Switch to ESS buffer"	ess-switch-to-ESS		t]
-    ["Beginning of function"	ess-beginning-of-function	t]
-    ["End of function"		ess-end-of-function		t]
-    )
-   ("ESS list..."
-    ["Backward list"		backward-list			t]
-    ["Forward list"		forward-list			t]
-    ["Next parenthesis"		down-list			t]
-    ["Enclosing parenthesis"	backward-up-list		t]
-    ["Backward sexp"		backward-sexp			t]
-    ["Forward sexp"		forward-sexp			t]
-    ["About"			(Info-goto-node "(Emacs)Lists") t]
-    )
-   ("ESS Edit"
-    ["Complete Filename" comint-replace-by-expanded-filename	t]
-    ["Complete File or Object"   ess-indent-or-complete		t]
-    ["Kill sexp"         kill-sexp				t]
-    ["Mark function"     ess-mark-function			t]
-    ["Indent expression" ess-indent-exp				t]
-    ["Indent line"       ess-indent-command			t]
-    ["Toggle Auto-Fill Mode" auto-fill-mode			t]
-    ["Undo"              undo					t]
-    ["About"             (ess-goto-info "Edit buffer")		t]
-    )
-   ("Roxygen"
-    ["Update/Generate Template" ess-roxy-update-entry           t]
-    ["Preview Rd"        ess-roxy-preview-Rd                    t]
-    ["Preview HTML"      ess-roxy-preview-HTML                  t]
-    ["Preview text"      ess-roxy-preview-text                  t]
-    ["Hide all"          ess-roxy-hide-all			t]
-    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
-    )
-   ("Start Process"
-    ;; SJE - :help not yet recognised in XEmacs.
-    ["R"     R   t] ;; :help "Start a new R process" :active t
-    ["S"     S   t] ;; :help "Start a new S process" :active t
-    ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
-    ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
-    ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
-    ;; The following menu item "Other" is a place-holder that will
-    ;; be replaced with the other versions of R and Sqpe that can be run.
-    ;; See `ess-r-versions-create' and ess-site.el
-    ("Other"
-     ["No other R or Sqpe versions" nil nil])
-    ["About"
-     (ess-goto-info "Starting up") t]
+    ["Enter expression"	ess-execute-in-tb                 t]
+    ;; sub menus
+    ("Eval and Go"
+     ["Eval buffer"	ess-eval-buffer-and-go            t]
+     ["Eval region"	ess-eval-region-and-go            t]
+     ["Eval function"	ess-eval-function-and-go          t]
+     ["Eval line"	ess-eval-line-and-go              t]
+     ["Eval paragraph"   ess-eval-paragraph-and-go         t]
+     ["Eval chunk"	ess-eval-chunk-and-go    noweb-mode]
+     ["Eval thread"	ess-eval-thread-and-go   noweb-mode]
+     ["About"		(ess-goto-info "Evaluating code") t]
+     )
+    ("ESS Eval"
+     ["Eval buffer"	ess-eval-buffer                   t]
+     ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
+     ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
+     ["Eval region"	ess-eval-region                   t]
+     ["Eval function"	ess-eval-function                 t]
+     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
+     ["Eval line"	ess-eval-line                     t]
+     ["Eval line & step" ess-eval-line-and-step            t]
+     ["Eval paragraph"   ess-eval-paragraph                t]
+     ["Eval para. & step" ess-eval-paragraph-and-step      t]
+     ["Eval chunk"	ess-eval-chunk           noweb-mode]
+     ["Eval thread"	ess-eval-thread          noweb-mode]
+     ["About"		(ess-goto-info "Evaluating code") t]
+     )
+    ("Motion..."
+     ["Edit new object"		ess-dump-object-into-edit-buffer t]
+     ["Goto end of ESS buffer"	ess-switch-to-end-of-ESS	t]
+     ["Switch to ESS buffer"	ess-switch-to-ESS		t]
+     ["Beginning of function"	ess-beginning-of-function	t]
+     ["End of function"		ess-end-of-function		t]
+     )
+    ("ESS list..."
+     ["Backward list"		backward-list			t]
+     ["Forward list"		forward-list			t]
+     ["Next parenthesis"		down-list			t]
+     ["Enclosing parenthesis"	backward-up-list		t]
+     ["Backward sexp"		backward-sexp			t]
+     ["Forward sexp"		forward-sexp			t]
+     ["About"			(Info-goto-node "(Emacs)Lists") t]
+     )
+    ("ESS Edit"
+     ["Complete Filename" comint-replace-by-expanded-filename	t]
+     ["Complete File or Object"   ess-indent-or-complete		t]
+     ["Kill sexp"         kill-sexp				t]
+     ["Mark function"     ess-mark-function			t]
+     ["Indent expression" ess-indent-exp				t]
+     ["Indent line"       ess-indent-command			t]
+     ["Toggle Auto-Fill Mode" auto-fill-mode			t]
+     ["Undo"              undo					t]
+     ["About"             (ess-goto-info "Edit buffer")		t]
+     )
+    ("Roxygen"
+     ["Update/Generate Template" ess-roxy-update-entry           t]
+     ["Preview Rd"        ess-roxy-preview-Rd                    t]
+     ["Preview HTML"      ess-roxy-preview-HTML                  t]
+     ["Preview text"      ess-roxy-preview-text                  t]
+     ["Hide all"          ess-roxy-hide-all			t]
+     ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
+     )
+    ("Start Process"
+     ;; SJE - :help not yet recognised in XEmacs.
+     ["R"     R   t] ;; :help "Start a new R process" :active t
+     ["S"     S   t] ;; :help "Start a new S process" :active t
+     ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
+     ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
+     ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
+     ;; The following menu item "Other" is a place-holder that will
+     ;; be replaced with the other versions of R and Sqpe that can be run.
+     ;; See `ess-r-versions-create' and ess-site.el
+     ("Other"
+      ["No other R or Sqpe versions" nil nil])
+     ["About"
+      (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
-    )
-   ["Switch Process"	ess-switch-process		t]
-   "------"
-   ["Describe"		describe-mode			t]
-   ["About editing" (ess-goto-info "Editing")	t]
-   ["Read ESS info" (ess-goto-info "") t]
-   ["Send bug report"	ess-submit-bug-report		t]
-   ))
+     )
+    ["Switch Process"	ess-switch-process		t]
+    "------"
+    ["Describe"		describe-mode			t]
+    ["About editing" (ess-goto-info "Editing")	t]
+    ["Read ESS info" (ess-goto-info "") t]
+    ["Send bug report"	ess-submit-bug-report		t]
+    ))
 
 (defun SAS-menu ()
   "Start SAS from the menu."
@@ -283,7 +283,7 @@
 (defun ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
   (if 'ess-mode
-        (easy-menu-add ess-mode-menu)
+      (easy-menu-add ess-mode-menu)
     (easy-menu-remove ess-mode-menu)))
 
 (if (featurep 'xemacs)
@@ -377,9 +377,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
-;;this is bass-ackwards
-;;  (define-key ess-mode-map "("  ;; allow to toggle after customization:
-;;    (if ess-r-args-electric-paren 'ess-r-args-auto-show 'self-insert-command))
+  ;;this is bass-ackwards
+  ;;  (define-key ess-mode-map "("  ;; allow to toggle after customization:
+  ;;    (if ess-r-args-electric-paren 'ess-r-args-auto-show 'self-insert-command))
   (if ess-r-args-electric-paren (define-key ess-mode-map "(" 'ess-r-args-auto-show))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
@@ -463,10 +463,10 @@ Internal function to be used for dynamic mode-line dysplay in
 ess-mode."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))
-              (buff (if proc (process-buffer proc))))
-         (if (and proc (buffer-live-p buff))
-             (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
-           "none"))
+             (buff (if proc (process-buffer proc))))
+        (if (and proc (buffer-live-p buff))
+            (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
+          "none"))
     "none"))
 
 ;;*;; User commands in ess-mode
@@ -484,7 +484,7 @@ ess-mode."
 (defvar ess-set-function-start
   ;; setAs, setGeneric;  setMethod, setReplaceMethod, setGroupMethod
   "^set[MGAR][Ma-z]+\\s-?("
-)
+  )
 
 ;; common R and S
 (let*
@@ -539,7 +539,7 @@ ess-mode."
             part-2)
     "The regular expression for matching the beginning of an S function.")
 
-); {end let}
+  ); {end let}
 
 (defun ess-beginning-of-function (&optional no-error)
   "Leave (and return) the point at the beginning of the current ESS function.
@@ -577,15 +577,15 @@ it cannot find a function beginning."
           (ess-write-to-dribble-buffer
            (format " set*() function start at position %d" beg))
           ;; often need to move even further to have 'function(' to our left
-;;        (if (search-forward "function" end t)
-;;            (ess-write-to-dribble-buffer
-;;             (format " -> 'function' already at pos %d\n" (point)))
-;;          ;; else need to move further
-            (goto-char end)
-            ;; search 4 lines, we are pretty sure now:
-            (search-forward
-             "function" (ess-line-end-position 4) t)
-;;        )
+          ;;        (if (search-forward "function" end t)
+          ;;            (ess-write-to-dribble-buffer
+          ;;             (format " -> 'function' already at pos %d\n" (point)))
+          ;;          ;; else need to move further
+          (goto-char end)
+          ;; search 4 lines, we are pretty sure now:
+          (search-forward
+           "function" (ess-line-end-position 4) t)
+          ;;        )
           (search-forward "(" (ess-line-end-position) t)
           )
       ;; else: regular function; no set*Method(..)
@@ -671,7 +671,7 @@ Optional argument for location of beginning.  Return '(beg end)."
 If text is already narrowed, this is removed before narrowing to the
 current function."
   (interactive)
-   ;; if point is not in a function, ess-end-of-function catches the error.
+  ;; if point is not in a function, ess-end-of-function catches the error.
   (save-excursion
     (widen)
     (let* ((beg-end (ess-end-of-function)))
@@ -766,7 +766,7 @@ With prefix argument, only shows the errors ESS reported."
                    (buffer-substring (match-beginning 2) (match-end 2))))
                  (errmess (buffer-substring (match-beginning 1) (match-end 1))))
             (if showerr
-                  (ess-display-temp-buffer errbuff)
+                (ess-display-temp-buffer errbuff)
               (if fbuffer nil
                 (setq fbuffer (find-file-noselect filename))
                 (save-excursion
@@ -977,8 +977,8 @@ See also `ess-first-tab-never-complete'."
               ;; Just started a new nesting level.
               ;; Compute the standard indent for this level.
               (let ((val (ess-calculate-indent
-                           (if (car indent-stack)
-                               (- (car indent-stack))))))
+                          (if (car indent-stack)
+                              (- (car indent-stack))))))
                 (setcar indent-stack
                         (setq this-indent val))))
             ;; Adjust line indentation according to its contents
@@ -1006,7 +1006,7 @@ See also `ess-first-tab-never-complete'."
 
 (defun ess-comment-indent ()
   (if (or (looking-at "###")
-      (and (looking-at "#!") (= 1 (line-number-at-pos))))
+          (and (looking-at "#!") (= 1 (line-number-at-pos))))
       (current-column)
     (if (looking-at "##")
         (let ((tem (ess-calculate-indent)))
@@ -1169,41 +1169,41 @@ Returns nil if line starts inside a string, t if in a comment."
                (goto-char containing-sexp)
                ;; Is line first statement after an open-brace?
                (or
-                 ;; If no, find that first statement and indent like it.
-                 (save-excursion
-                   (forward-char 1)
-                   (while (progn (skip-chars-forward " \t\n")
-                                 (looking-at "#"))
-                     ;; Skip over comments following openbrace.
-                     (forward-line 1))
-                   ;; The first following code counts
-                   ;; if it is before the line we want to indent.
-                   (and (< (point) indent-point)
-                        (current-column)))
-                 ;; If no previous statement,
-                 ;; indent it relative to line brace is on.
-                 ;; For open brace in column zero, don't let statement
-                 ;; start there too.  If ess-indent-level is zero,
-                 ;; use ess-brace-offset +
-                 ;; ess-continued-statement-offset instead.
-                 ;; For open-braces not the first thing in a line,
-                 ;; add in ess-brace-imaginary-offset.
-                 (+ (if (and (bolp) (zerop ess-indent-level))
-                        (+ ess-brace-offset ess-continued-statement-offset)
-                      ess-indent-level)
-                    ;; Move back over whitespace before the openbrace.
-                    ;; If openbrace is not first nonwhite thing on the line,
-                    ;; add the ess-brace-imaginary-offset.
-                    (progn (skip-chars-backward " \t")
-                           (if (bolp) 0 ess-brace-imaginary-offset))
-                    ;; If the openbrace is preceded by a parenthesized exp,
-                    ;; move to the beginning of that;
-                    ;; possibly a different line
-                    (progn
-                      (if (eq (preceding-char) ?\))
-                          (forward-sexp -1))
-                      ;; Get initial indentation of the line we are on.
-                      (current-indentation))))))))))
+                ;; If no, find that first statement and indent like it.
+                (save-excursion
+                  (forward-char 1)
+                  (while (progn (skip-chars-forward " \t\n")
+                                (looking-at "#"))
+                    ;; Skip over comments following openbrace.
+                    (forward-line 1))
+                  ;; The first following code counts
+                  ;; if it is before the line we want to indent.
+                  (and (< (point) indent-point)
+                       (current-column)))
+                ;; If no previous statement,
+                ;; indent it relative to line brace is on.
+                ;; For open brace in column zero, don't let statement
+                ;; start there too.  If ess-indent-level is zero,
+                ;; use ess-brace-offset +
+                ;; ess-continued-statement-offset instead.
+                ;; For open-braces not the first thing in a line,
+                ;; add in ess-brace-imaginary-offset.
+                (+ (if (and (bolp) (zerop ess-indent-level))
+                       (+ ess-brace-offset ess-continued-statement-offset)
+                     ess-indent-level)
+                   ;; Move back over whitespace before the openbrace.
+                   ;; If openbrace is not first nonwhite thing on the line,
+                   ;; add the ess-brace-imaginary-offset.
+                   (progn (skip-chars-backward " \t")
+                          (if (bolp) 0 ess-brace-imaginary-offset))
+                   ;; If the openbrace is preceded by a parenthesized exp,
+                   ;; move to the beginning of that;
+                   ;; possibly a different line
+                   (progn
+                     (if (eq (preceding-char) ?\))
+                         (forward-sexp -1))
+                     ;; Get initial indentation of the line we are on.
+                     (current-indentation))))))))))
 
 (defun ess-continued-statement-p ()
   (let ((eol (point)))
@@ -1244,8 +1244,8 @@ Returns nil if line starts inside a string, t if in a comment."
       (search-forward "#" opoint 'move)
       (skip-chars-backward " \t#")
       (setq stop (or (/= (preceding-char) ?\n) (<= (point) lim)))
-        (if stop (point)
-          (beginning-of-line)))))
+      (if stop (point)
+        (beginning-of-line)))))
 
 (defun ess-backward-to-start-of-continued-exp (lim)
   (if (= (preceding-char) ?\))
@@ -1282,7 +1282,7 @@ style variables buffer local."
     (if (interactive-p)
         (setq style
               (intern (ess-completing-read "Set ESS mode indentation style"
-                                   ess-styles nil t nil nil ess-default-style))))
+                                           ess-styles nil t nil nil ess-default-style))))
     (setq style (or style ess-style))
     (make-local-variable 'ess-style)
     (if (memq (symbol-name style) ess-styles)
@@ -1290,7 +1290,7 @@ style variables buffer local."
       (error (format "Bad ESS style: %s" style)))
     (if (not quiet)
         (message "ESS-style: %s" ess-style))
-    ; finally, set the indentation style variables making each one local
+                                        ; finally, set the indentation style variables making each one local
     (mapc (function (lambda (ess-style-pair)
                       (make-local-variable (car ess-style-pair))
                       (set (car ess-style-pair)

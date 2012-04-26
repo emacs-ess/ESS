@@ -66,7 +66,7 @@
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-omg")
     (inferior-ess-start-args       . ""))
- "Variables to customize for OMG (Omegahat)")
+  "Variables to customize for OMG (Omegahat)")
 
 
 (defun OMG (&optional start-args) ; proc-name)

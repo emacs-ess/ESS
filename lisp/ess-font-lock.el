@@ -30,7 +30,7 @@
 
 ;;; Code:
 
-; Requires and autoloads
+                                        ; Requires and autoloads
 
 (require 'font-lock)
 (require 'paren)
@@ -111,9 +111,9 @@
   "Set font-lock colors to Richard Heiberger's black and white color scheme."
   (interactive)
 
-(if (featurep 'xemacs) nil
-  (set-foreground-color "Black")
-  (set-background-color "white"))
+  (if (featurep 'xemacs) nil
+    (set-foreground-color "Black")
+    (set-background-color "white"))
 
   (set-face-foreground 'modeline "gray10")
   (set-face-background 'modeline "gray90")
@@ -146,7 +146,7 @@
   (set-face-foreground 'font-lock-variable-name-face "Blue")       ; xv
   (set-face-foreground 'font-lock-type-face          "Goldenrod")  ; T,F       ?
   (set-face-foreground 'font-lock-constant-face      "Magenta")    ; <-      {eq1}
-)
+  )
 
 (provide 'ess-font-lock)
 

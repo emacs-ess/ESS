@@ -63,7 +63,7 @@
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
     (inferior-ess-start-args       . "")) ; "-q"
- "Variables to customize for Stata.")
+  "Variables to customize for Stata.")
 
 
 (defun STA-mode (&optional proc-name)

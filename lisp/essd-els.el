@@ -103,7 +103,7 @@ return new alist whose car is the new pair and cdr is ALIST.
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
   (let* ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4"
-                    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
+                     "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
          (dialect (ess-completing-read "Dialect" dialects nil t)))
     (cond
      ((string= dialect "arc")	ARC-customize-alist)

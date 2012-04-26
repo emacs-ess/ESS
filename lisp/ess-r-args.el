@@ -186,7 +186,7 @@
 
 (eval-when-compile
   (if ess-has-tooltip
-    (require 'tooltip))); for tooltip-show
+      (require 'tooltip))); for tooltip-show
 
 (require 'ess)
 
@@ -241,7 +241,7 @@ buffer readjustments for multiline string)."
 ;;            (replace-regexp-in-string " = " "="
 ;;                                      (replace-regexp-in-string "[\n \t]+" " " args))
 ;;          args)
-          ;; )))))
+;; )))))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -288,10 +288,10 @@ ess-r-args-current-function if no argument given."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (if function
-    (let ((args (ess-r-args-get function))
-          (pointpos (point)))
-      (insert args)
-      (goto-char pointpos))))
+      (let ((args (ess-r-args-get function))
+            (pointpos (point)))
+        (insert args)
+        (goto-char pointpos))))
 
 ;; ;; call ess-r-args-show automatically --- this should be optional
 ;; now in ess-mode.el :

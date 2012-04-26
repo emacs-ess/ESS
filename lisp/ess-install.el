@@ -217,7 +217,7 @@ ignored."
                 (yes-or-no-p
                  (concat "Replace ESS version " ess-installed
                          " with version "
-                     ess-new-version "? ")))
+                         ess-new-version "? ")))
           (when new-install
             (kill-region beg (point))
             (insert ess-commands)

@@ -768,10 +768,10 @@ other users if you are using a shared directory. Other alternatives:
 \"dumpdir\"; Always dump to a specific filename. This makes it impossible
 to edit more than one object at a time, though.
 (make-temp-name \"scr.\") ; Another way to uniquify"
-  ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
+;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
 
-  :group 'ess-edit
-  :type 'string)
+:group 'ess-edit
+:type 'string)
 
 
 ;;*;; Hooks
@@ -1063,28 +1063,28 @@ file."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions
-    ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
-    (mapcar
-     (lambda (ch) (concat ess-program-files ch))
-     '("/Insightful/splus62"
-       "/Insightful/splus61"
-       "/MathSoft/splus6"
-       "/spls45se"
-       "/Insightful/splus62netclient"
-       "/Insightful/splus62net/server"
-       "/Insightful/splus61netclient"
-       "/Insightful/splus61net/server"
-       "/Insightful/splus6se"
-       "/Insightful/splus61se"
-       "/Insightful/splus62se"
-       "/Insightful/splus70"
-       "/Insightful/splus71"
-       "/Insightful/splus8.0.1"
-       "/Insightful/splus8.0.4"
-       "/Insightful/splus80"
-       "/TIBCO/splus81"
-       "/TIBCO/splus82"
-))
+  ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
+  (mapcar
+   (lambda (ch) (concat ess-program-files ch))
+   '("/Insightful/splus62"
+     "/Insightful/splus61"
+     "/MathSoft/splus6"
+     "/spls45se"
+     "/Insightful/splus62netclient"
+     "/Insightful/splus62net/server"
+     "/Insightful/splus61netclient"
+     "/Insightful/splus61net/server"
+     "/Insightful/splus6se"
+     "/Insightful/splus61se"
+     "/Insightful/splus62se"
+     "/Insightful/splus70"
+     "/Insightful/splus71"
+     "/Insightful/splus8.0.1"
+     "/Insightful/splus8.0.4"
+     "/Insightful/splus80"
+     "/TIBCO/splus81"
+     "/TIBCO/splus82"
+     ))
   "List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -1101,11 +1101,11 @@ menu."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions-64
-    ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
-    (mapcar
-     (lambda (ch) (concat ess-program-files-64 ch))
-     '("/TIBCO/splus82"
-))
+  ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
+  (mapcar
+   (lambda (ch) (concat ess-program-files-64 ch))
+   '("/TIBCO/splus82"
+     ))
   "List of possible values of the environment variable SHOME for recent
 releases of 64-bit S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -1476,8 +1476,8 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 (defvar inferior-ess-secondary-prompt "+ "
   "Regular expression used by ess-mode to detect the secondary prompt.
  (This is issued by S to continue an incomplete expression).")
-  ;; :group 'ess-proc
-  ;; :type 'string)
+;; :group 'ess-proc
+;; :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 (setq-default inferior-ess-secondary-prompt "+ ")
@@ -1543,7 +1543,7 @@ of Emacs until the code has been successfully evaluated."
 (defcustom ess-eval-ddeclient-sleep 0.06
   "If non-nil, a number specifying *seconds* to wait after certain
 \\[ess-eval-linewise-ddeclient] calls, such as those at startup."
-;; i.e this currently only applies to (if microsoft-p ...) !
+  ;; i.e this currently only applies to (if microsoft-p ...) !
   :group 'ess-proc
   :type '(choice (const nil) number))
 
@@ -1756,7 +1756,7 @@ session.")
 ;;*;; Miscellaneous system variables
 
 (defvar ess-temp-point nil
- "Variable used to retain a buffer position past let or let*.")
+  "Variable used to retain a buffer position past let or let*.")
 
 (defvar ess-mode-map nil
   "Keymap for `ess-mode'.")
@@ -1867,10 +1867,10 @@ If nil, input is in the `font-lock-variable-name-face'."
 ;;
 (defvar ess-R-assign-ops
   '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
-)
+  )
 (defvar ess-S-assign-ops
   '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
-)
+  )
 
 ;; Note: \\s\" is really \s" which means match a char belonging to the
 ;; "quote character" syntax class.
@@ -1878,10 +1878,10 @@ If nil, input is in the `font-lock-variable-name-face'."
   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
           "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
           "\\(\\s-\\|\n\\)*function")
-)
+  )
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
-)
+  )
 
 (defvar ess-R-common-font-lock-keywords
   (list
@@ -1922,7 +1922,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-mode-font-lock-keywords
   (append ess-S-common-font-lock-keywords
           (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-                'font-lock-keyword-face)))	; keywords
+                      'font-lock-keyword-face)))	; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
 

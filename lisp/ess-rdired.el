@@ -178,10 +178,10 @@ for more information!"
         (set-buffer ess-rdired-buffer)
         (setq buffer-read-only nil)))
 
-   (ess-execute ess-rdired-objects
-                nil
-                (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
-                )
+  (ess-execute ess-rdired-objects
+               nil
+               (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
+               )
 
   (pop-to-buffer ess-rdired-buffer)
   ;; When definiting the function .rdired.objects(), a "+ " is printed
@@ -194,10 +194,10 @@ for more information!"
   ;;(make-variable-buffer-local 'ess-rdired-sort-num)
   (setq ess-rdired-sort-num 1)
   (ess-rdired-insert-set-properties (save-excursion
-                                  (goto-char (point-min))
-                                  (forward-line 1)
-                                  (point))
-                                (point-max))
+                                      (goto-char (point-min))
+                                      (forward-line 1)
+                                      (point))
+                                    (point-max))
   (setq buffer-read-only t)
   (ess-rdired-mode)
   )
@@ -217,11 +217,11 @@ Handle special case when object contains spaces."
              (forward-char 1)
              (search-forward "\"")
              (buffer-substring-no-properties beg (point))))
-           (t				;should be a regular object.
-            (let (beg)
-              (setq beg (point))
-              (search-forward " ") ;assume space follows object name.
-              (buffer-substring-no-properties beg (1- (point))))))))
+          (t				;should be a regular object.
+           (let (beg)
+             (setq beg (point))
+             (search-forward " ") ;assume space follows object name.
+             (buffer-substring-no-properties beg (1- (point))))))))
 
 (defun ess-rdired-edit ()
   "Edit (fix) the object at point."
@@ -414,14 +414,14 @@ Rotate between the alternative sorting methods."
                (forward-line 1)
                (point)))
         (end (point-max)))
-  (if (> ess-rdired-sort-num 3)
-      (setq ess-rdired-sort-num 1))
-  (cond ((eq ess-rdired-sort-num 1)
-         (sort-fields 1 beg end))
-        ((eq ess-rdired-sort-num 2)
-         (sort-fields 2 beg end))
-        ((eq ess-rdired-sort-num 3)
-         (sort-numeric-fields 3 beg end)))))
+    (if (> ess-rdired-sort-num 3)
+        (setq ess-rdired-sort-num 1))
+    (cond ((eq ess-rdired-sort-num 1)
+           (sort-fields 1 beg end))
+          ((eq ess-rdired-sort-num 2)
+           (sort-fields 2 beg end))
+          ((eq ess-rdired-sort-num 3)
+           (sort-numeric-fields 3 beg end)))))
 
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.

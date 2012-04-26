@@ -119,10 +119,10 @@ Old version."
         (re-search-forward "[ \t]")
         (add-text-properties beg (1- (point))
                              '(     face underline
-                                       mouse-face highlight
-                                       help-xref function))
-      (end-of-line)
-      ))
+                                         mouse-face highlight
+                                         help-xref function))
+        (end-of-line)
+        ))
 
     ;; end of mark up
     (goto-char (point-min))
@@ -158,8 +158,8 @@ Old version."
                                '(face underline
                                       mouse-face highlight
                                       help-xref library))))
-          (end-of-line)
-          ))
+    (end-of-line)
+    ))
 
 
 ;;; Set up the major mode for viewing.

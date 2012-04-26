@@ -39,7 +39,7 @@
 ;; with vsize set to (for example) 40M, and nsize set to 600000.
 (defalias 'essr
   (read-kbd-macro
-     "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
+   "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
 ;; "SPC" must be "=" in future versions of R (works from 0.99 on)
 
 (defun ess-r-do-region (start end &optional message)
@@ -47,15 +47,15 @@
   (interactive "r\nP")
   (message "Starting evaluation...")
   (do-applescript (concat
-    "try\n"
-        "tell application \"R\"\n"
-                "activate\n"
-                "with timeout of 0 seconds\n"
-                        "cmd \"" (buffer-substring start end)
-                        "\"\n"
-                "end timeout\n"
-        "end tell\n"
-    "end try\n"))
+                   "try\n"
+                   "tell application \"R\"\n"
+                   "activate\n"
+                   "with timeout of 0 seconds\n"
+                   "cmd \"" (buffer-substring start end)
+                   "\"\n"
+                   "end timeout\n"
+                   "end tell\n"
+                   "end try\n"))
   (message "Finished evaluation"))
 
 (defun ess-r-do-line ()
@@ -63,18 +63,18 @@
   (interactive) ;; "r\nP")
   (message "Starting evaluation...")
   (save-excursion
-  (let ((end (point)))
-  (move-to-column 0)
-  (do-applescript (concat
-    "try\n"
-        "tell application \"R\"\n"
-                "activate\n"
-                "with timeout of 0 seconds\n"
-                        "cmd \"" (buffer-substring (point) end)
-                        "\"\n"
-                "end timeout\n"
-        "end tell\n"
-    "end try\n"))))
+    (let ((end (point)))
+      (move-to-column 0)
+      (do-applescript (concat
+                       "try\n"
+                       "tell application \"R\"\n"
+                       "activate\n"
+                       "with timeout of 0 seconds\n"
+                       "cmd \"" (buffer-substring (point) end)
+                       "\"\n"
+                       "end timeout\n"
+                       "end tell\n"
+                       "end try\n"))))
   (message "Finished evaluation"))
 
 (defun ess-r-var (beg end)

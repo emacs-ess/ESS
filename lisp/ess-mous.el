@@ -116,7 +116,7 @@
     "----"
     ("Browser on"  . ess-mouse-me-browser-on)
     ("Browser off" . ess-mouse-me-browser-off))
-    "*Command menu used by `mouse-me-build-menu'.
+  "*Command menu used by `mouse-me-build-menu'.
 A alist of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals
@@ -149,13 +149,13 @@ the symbol `string' it will be called with one string argument."
 
 (defun ess-mouse-me-browser-on (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "debug(" string ")"))
-   (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
+      (ess-eval-linewise (concat "debug(" string ")"))
+    (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
 
 (defun ess-mouse-me-browser-off  (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "undebug(" string ")"))
-   (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
+      (ess-eval-linewise (concat "undebug(" string ")"))
+    (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
 
 
 

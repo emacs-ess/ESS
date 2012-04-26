@@ -199,7 +199,7 @@ otherwise call devSource."
                       (not assigned-p))
             (when (and (member ns nms)
                        (equal "TRUE" (car (ess-get-words-from-vector
-                                    (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
+                                           (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
               (let ((comm (if tracebug
                               (ess--tb-get-source-refd-string beg end)
                             (buffer-substring beg end))))
@@ -208,7 +208,7 @@ otherwise call devSource."
                 )))
           (unless assigned-p
             (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-      )))))
+          )))))
 
 (defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
   "Ask for for the package and devSource region into it."
@@ -218,11 +218,11 @@ otherwise call devSource."
         (message  (if message (format "dev%s ..." message))))
     (if (equal package "*current*")
         (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-      ;; else, (ignore VISIBLY here)
-      (let ((comm  (if tracebug
-                      (ess--tb-get-source-refd-string beg end)
-                     (buffer-substring-no-properties beg end))))
-        (ess-developer-devSource-string proc comm package message))))
+    ;; else, (ignore VISIBLY here)
+    (let ((comm  (if tracebug
+                     (ess--tb-get-source-refd-string beg end)
+                   (buffer-substring-no-properties beg end))))
+      (ess-developer-devSource-string proc comm package message))))
 
 (defun ess-developer-devSource-string (proc command package &optional mess)
   "devSource COMMAND into the PACKAGE.
