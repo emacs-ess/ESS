@@ -1,7 +1,7 @@
 ;;; ess-sas-a.el --- clean-room implementation of many SAS-mode features
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Rodney A. Sparapani
 ;; Maintainer: ESS-core@r-project.org
@@ -371,30 +371,30 @@ on the way."
 ;;      (if ess-sas-smart-back-tab (progn
 ;;        (save-excursion
 ;;          (setq ess-sas-search-point
-;;		(search-backward-regexp "end" nil t))
+;;              (search-backward-regexp "end" nil t))
 
 ;;          (if (and ess-sas-search-point
-;;		(search-backward-regexp "%" (+ ess-sas-search-point -1) t))
-;;		(setq ess-sas-search-point (+ ess-sas-search-point -1))
+;;              (search-backward-regexp "%" (+ ess-sas-search-point -1) t))
+;;              (setq ess-sas-search-point (+ ess-sas-search-point -1))
 ;;          )
 
 ;;          (if (and ess-sas-search-point
-;;		(not (equal ess-sas-column (current-column))))
-;;		(setq ess-sas-search-point nil))
+;;              (not (equal ess-sas-column (current-column))))
+;;              (setq ess-sas-search-point nil))
 ;;          )
 
 ;;        (save-excursion
 ;;          (setq ess-sas-search-point
-;;		(search-backward-regexp "do\\|select"
+;;              (search-backward-regexp "do\\|select"
 ;;                  ess-sas-search-point t))
 
 ;;          (setq ess-sas-search-column (current-column))
 
 ;;          (if ess-sas-search-point (progn
-;;		(save-excursion
+;;              (save-excursion
 ;;               (search-backward-regexp "^" nil t)
 ;;               (setq ess-sas-search-limit (point))
-;;		)
+;;              )
 
 ;;              (if (search-backward-regexp "if.*then\\|else" ess-sas-search-limit t)
 ;;                  (setq ess-sas-search-point (point)))
@@ -402,9 +402,9 @@ on the way."
 ;;              (if (search-backward-regexp "%" ess-sas-search-limit t) (progn
 ;;                  (setq ess-sas-end-text "%end;")
 ;;                  (setq ess-sas-search-point (point))
-;;		))
+;;              ))
 
-;;		(setq ess-sas-search-column (current-column))
+;;              (setq ess-sas-search-column (current-column))
 
 ;;              (if (not (equal ess-sas-column ess-sas-search-column))
 ;;                 (setq ess-sas-search-point nil))
@@ -638,19 +638,19 @@ current buffer if nil."
                   (if (file-exists-p ess-sas-temp-file)
                       (find-file ess-sas-temp-file))))
               ;; else
-              ;;	(let* ((ess-sas-buffer-list (buffer-list))
+              ;;        (let* ((ess-sas-buffer-list (buffer-list))
               ;;         (ess-sas-buffer-list-index 0)
               ;;         (ess-sas-buffer-list-file nil)
               ;;         (ess-sas-buffer-list-length (length ess-sas-buffer-list)))
               ;;      (while (< ess-sas-buffer-list-index ess-sas-buffer-list-length)
-              ;;		(setq ess-sas-buffer-list-file
+              ;;                (setq ess-sas-buffer-list-file
               ;;              (buffer-file-name (nth ess-sas-buffer-list-index ess-sas-buffer-list)))
-              ;;		(if (and ess-sas-buffer-list-file
+              ;;                (if (and ess-sas-buffer-list-file
               ;;              (string-match (concat "." suffix) ess-sas-buffer-list-file))
               ;;              (switch-to-buffer (nth ess-sas-buffer-list-index ess-sas-buffer-list))
               ;;              (setq ess-sas-buffer-list-index ess-sas-buffer-list-length)
-              ;;		)
-              ;;		(setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
+              ;;                )
+              ;;                (setq ess-sas-buffer-list-index (+ 1 ess-sas-buffer-list-index))
               ;;    )))
 
               (if (and (not no-create)
@@ -683,7 +683,7 @@ current buffer if nil."
 ;;       (ess-sas-arg (concat (file-name-sans-extension root) "." suffix))
 ;;       (ess-sas-buf (find-buffer-visiting ess-sas-arg)))
 ;;    (if (equal tail suffix) (if revert (ess-revert-wisely))
-;;	(if (not ess-sas-buf) (find-file ess-sas-arg)
+;;      (if (not ess-sas-buf) (find-file ess-sas-arg)
 ;;          (switch-to-buffer ess-sas-buf)
 ;;          (if revert (ess-revert-wisely))))))
 
@@ -734,12 +734,12 @@ current buffer if nil."
                                         ; after highlighting an error message, moving point would cause an unwanted
                                         ; highlighting between point and mark; why god, why?!?
                                         ;
-                                        ;	(if (and (boundp 'zmacs-regions) zmacs-regions)
+                                        ;       (if (and (boundp 'zmacs-regions) zmacs-regions)
                                         ;           (progn
-                                        ;		(if ess-sas-pop-mark (pop-mark)
+                                        ;               (if ess-sas-pop-mark (pop-mark)
                                         ;                   (setq ess-sas-pop-mark t))
-                                        ;		(push-mark (match-beginning 0) t)
-                                        ;		(zmacs-activate-region)))
+                                        ;               (push-mark (match-beginning 0) t)
+                                        ;               (zmacs-activate-region)))
         (goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()
@@ -840,7 +840,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 ;;    (sleep-for ess-sleep-for)
 ;;    (save-excursion (setq ess-temp-stdin (ess-search-except "\\(/dev/[a-z0-9/]+\\)" nil t)))
 ;;    (insert (concat ess-sas-submit-command " " ess-sas-submit-command-options " -stdio <"
-;;	ess-temp-stdin " >1 " ess-temp-stdout " >2 " ess-temp-stderr))
+;;      ess-temp-stdin " >1 " ess-temp-stdout " >2 " ess-temp-stderr))
 ;;    (comint-send-input)
 ;;    (ess-add-ess-process)
 ;;    (ess-sas-goto-sas)
@@ -884,7 +884,7 @@ optional argument is non-nil, then set-buffer rather than switch."
   (ess-revert-wisely)
 
                                         ;    (if (equal ess-tmp-font-size nil)
-                                        ;	(setq ess-tmp-font-size "21"))
+                                        ;       (setq ess-tmp-font-size "21"))
 
   (let
       ((ess-temp-rtf-file

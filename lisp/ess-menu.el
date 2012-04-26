@@ -2,7 +2,7 @@
 ;;;                 programming and analysis
 
 ;; Copyright (C) 2000--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini
 ;; Created: September 4, 2000
@@ -92,7 +92,7 @@
                                         ;  "XLispStat Language Imenu support for ESS."
                                         ;  (interactive)
                                         ;  (setq imenu-generic-expression
-                                        ;	'( (nil "New one needed" 1)))
+                                        ;       '( (nil "New one needed" 1)))
                                         ;  (imenu-add-to-menubar "XLS-fcts"))
 
                                         ;(defun imenu-example--XLS-extract-index-name ()
@@ -113,29 +113,29 @@
                                         ;  ;; Example of a candidate for `imenu-create-index-function'.
                                         ;  ;; It will generate a nested index of definitions.
                                         ;  (let ((index-alist '())
-                                        ;	(index-var-alist '())
-                                        ;	(index-type-alist '())
-                                        ;	(index-unknown-alist '())
-                                        ;	prev-pos)
+                                        ;       (index-var-alist '())
+                                        ;       (index-type-alist '())
+                                        ;       (index-unknown-alist '())
+                                        ;       prev-pos)
                                         ;    (goto-char (point-max))
                                         ;    (imenu-progress-message prev-pos 0)
                                         ;    ;; Search for the function
                                         ;    (while (beginning-of-defun)
                                         ;      (imenu-progress-message prev-pos nil t)
                                         ;      (save-match-data
-                                        ;	(and (looking-at "(def")
+                                        ;       (and (looking-at "(def")
                                         ;            (save-excursion
                                         ;              (down-list 1)
                                         ;              (cond
-                                        ;		((looking-at "def\\(var\\|const\\)")
+                                        ;               ((looking-at "def\\(var\\|const\\)")
                                         ;                (forward-sexp 2)
                                         ;                (push (imenu-example--name-and-position)
                                         ;                      index-var-alist))
-                                        ;		((looking-at "def\\(un\\|subst\\|macro\\|advice\\)")
+                                        ;               ((looking-at "def\\(un\\|subst\\|macro\\|advice\\)")
                                         ;                (forward-sexp 2)
                                         ;                (push (imenu-example--name-and-position)
                                         ;                      index-alist))
-                                        ;		((looking-at "def\\(type\\|struct\\|class\\|ine-condition\\)")
+                                        ;               ((looking-at "def\\(type\\|struct\\|class\\|ine-condition\\)")
                                         ;                (forward-sexp 2)
                                         ;                (if (= (char-after (1- (point))) ?\))
                                         ;                    (progn
@@ -144,7 +144,7 @@
                                         ;                      (forward-sexp 1)))
                                         ;                (push (imenu-example--name-and-position)
                                         ;                      index-type-alist))
-                                        ;		(t
+                                        ;               (t
                                         ;                (forward-sexp 2)
                                         ;                (push (imenu-example--name-and-position)
                                         ;                      index-unknown-alist)))))))
@@ -164,7 +164,7 @@
                                         ;  "Stata Language Imenu support for ESS."
                                         ;  (interactive)
                                         ;  (setq imenu-generic-expression
-                                        ;	'( (nil "New one needed" 1)))
+                                        ;       '( (nil "New one needed" 1)))
                                         ;  (imenu-add-to-menubar "Stata-fcts"))
 
 (defun ess-imenu-SAS (&optional arg)

@@ -54,7 +54,7 @@
 (defvar ess-jags-font-lock-keywords
   (list
    ;; .jag files
-   (cons "#.*\n"			font-lock-comment-face)
+   (cons "#.*\n"                        font-lock-comment-face)
 
    (cons "^[ \t]*\\(model\\|var\\)\\>"
          font-lock-keyword-face)
@@ -198,9 +198,9 @@
 
                                         ;    (let ((ess-jags-temp-chains ""))
                                         ;
-                                        ;	(while (< 0 jags-chains)
+                                        ;       (while (< 0 jags-chains)
                                         ;           (setq ess-jags-temp-chains
-                                        ;		(concat (format "%d " jags-chains) ess-jags-temp-chains))
+                                        ;               (concat (format "%d " jags-chains) ess-jags-temp-chains))
                                         ;           (setq jags-chains (- jags-chains 1)))
 
     (insert ess-bugs-batch-pre-command " " jags-command " "
@@ -214,12 +214,12 @@
                                         ;else
               "> " ess-bugs-file-root ".jog 2>&1 ")
 
-                                        ;		;.txt not recognized by BOA and impractical to over-ride
-                                        ;		"&& (rm -f " ess-bugs-file-root ".ind; "
-                                        ;		"ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
-                                        ;		"for i in " ess-jags-temp-chains "; do; "
-                                        ;		"rm -f " ess-bugs-file-root "$i.out; "
-                                        ;		"ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
+                                        ;               ;.txt not recognized by BOA and impractical to over-ride
+                                        ;               "&& (rm -f " ess-bugs-file-root ".ind; "
+                                        ;               "ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind; "
+                                        ;               "for i in " ess-jags-temp-chains "; do; "
+                                        ;               "rm -f " ess-bugs-file-root "$i.out; "
+                                        ;               "ln -s " ess-bugs-file-root "chain$i.txt " ess-bugs-file-root "$i.out; done) "
 
             ess-bugs-batch-post-command)
 

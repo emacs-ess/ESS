@@ -1,7 +1,7 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
 ;;
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 ;;
 ;; Filename: ess-tracebug.el
 ;; Author: Vitalie Spinu
@@ -54,7 +54,7 @@
   (require 'overlay)
   (require 'cl))
 
-(autoload 'ess-helpobjs-at-point	"ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
+(autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
@@ -270,8 +270,8 @@ Default ess-tracebug key bindings:
  I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
 
 * Misc:
- s   . Source current file	. `ess-tracebug-source-current-file'
- ?   . Show this help		. `ess-tracebug-show-help'
+ s   . Source current file      . `ess-tracebug-source-current-file'
+ ?   . Show this help           . `ess-tracebug-show-help'
 ")
 
 (defun ess-tracebug-show-help (&optional ev)

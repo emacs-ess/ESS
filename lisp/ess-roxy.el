@@ -1,8 +1,8 @@
 ;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
 ;; Copyright (C) 2009--2012 Henning Redestig, A.J. Rossini, Richard
-;;	M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
-;;	Eglen and Vitalie Spinu.
+;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
+;;      Eglen and Vitalie Spinu.
 ;;
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 ;; Keywords: convenience, tools

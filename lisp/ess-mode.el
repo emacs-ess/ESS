@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -23,7 +23,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -45,43 +45,43 @@
 ;;; functions which are interactive in nature.   We don't want to load
 ;;; it when we are only editing.
 
-(autoload 'ess-mode-minibuffer-map	"ess-inf" "" nil 'keymap)
-(autoload 'ess-read-object-name		"ess-inf" "" nil)
-(autoload 'ess-list-object-completions	"ess-inf" "" nil)
+(autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
+(autoload 'ess-read-object-name         "ess-inf" "" nil)
+(autoload 'ess-list-object-completions  "ess-inf" "" nil)
 
-(autoload 'ess-eval-buffer		"ess-inf" "" nil)
-(autoload 'ess-eval-buffer-and-go	"ess-inf" "" nil)
-(autoload 'ess-eval-function		"ess-inf" "" nil)
-(autoload 'ess-eval-function-and-go	"ess-inf" "" nil)
+(autoload 'ess-eval-buffer              "ess-inf" "" nil)
+(autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
+(autoload 'ess-eval-function            "ess-inf" "" nil)
+(autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
 (autoload 'ess-eval-function-or-paragraph-and-step
   "ess-inf" "" nil)
-(autoload 'ess-eval-line		"ess-inf" "" nil)
-(autoload 'ess-eval-line-and-go		"ess-inf" "" nil)
-(autoload 'ess-eval-line-and-step	"ess-inf" "" nil)
-(autoload 'ess-eval-linewise		"ess-inf" "" nil)
-(autoload 'ess-eval-paragraph		"ess-inf" "" nil)
+(autoload 'ess-eval-line                "ess-inf" "" nil)
+(autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
+(autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
+(autoload 'ess-eval-linewise            "ess-inf" "" nil)
+(autoload 'ess-eval-paragraph           "ess-inf" "" nil)
 (autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
 (autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
-(autoload 'ess-eval-region		"ess-inf" "" nil)
-(autoload 'ess-eval-region-and-go	"ess-inf" "" nil)
+(autoload 'ess-eval-region              "ess-inf" "" nil)
+(autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
 
-(autoload 'ess-load-file		"ess-inf" "" nil)
-(autoload 'ess-switch-process		"ess-inf" "" nil)
-(autoload 'ess-switch-to-ESS		"ess-inf" "" nil)
-(autoload 'ess-request-a-process	"ess-inf" "" nil)
-(autoload 'get-ess-process		"ess-inf" "" nil)
-(autoload 'ess-command			"ess-inf" "" nil)
-(autoload 'ess-create-temp-buffer	"ess-inf" "" nil)
-(autoload 'ess-display-temp-buffer	"ess-inf" "" nil)
-(autoload 'ess-force-buffer-current	"ess-inf" "" nil)
-(autoload 'ess-make-buffer-current	"ess-inf" "" nil)
-(autoload 'ess-modtime-gt		"ess-inf" "" nil)
-(autoload 'ess-object-modtime		"ess-inf" "" nil)
-(autoload 'ess-quit			"ess-inf" "" nil)
+(autoload 'ess-load-file                "ess-inf" "" nil)
+(autoload 'ess-switch-process           "ess-inf" "" nil)
+(autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
+(autoload 'ess-request-a-process        "ess-inf" "" nil)
+(autoload 'get-ess-process              "ess-inf" "" nil)
+(autoload 'ess-command                  "ess-inf" "" nil)
+(autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
+(autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
+(autoload 'ess-force-buffer-current     "ess-inf" "" nil)
+(autoload 'ess-make-buffer-current      "ess-inf" "" nil)
+(autoload 'ess-modtime-gt               "ess-inf" "" nil)
+(autoload 'ess-object-modtime           "ess-inf" "" nil)
+(autoload 'ess-quit                     "ess-inf" "" nil)
 
-(autoload 'ess-turn-on-eldoc		"ess-r-d" "" nil)
-(autoload 'ess-ddeclient-p		"ess-inf" "(autoload)" nil)
-(autoload 'ess-dump-object-ddeclient	"ess-dde" "(autoload)" nil)
+(autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
+(autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
+(autoload 'ess-dump-object-ddeclient    "ess-dde" "(autoload)" nil)
 
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
@@ -125,127 +125,127 @@
   (setq ess-mode-map (make-sparse-keymap))
 
   ;; By popular demand:
-  (define-key ess-mode-map "\C-m"	'newline-and-indent); = [RETURN]
-  (define-key ess-mode-map "\C-y"	'ess-yank)
+  (define-key ess-mode-map "\C-m"       'newline-and-indent); = [RETURN]
+  (define-key ess-mode-map "\C-y"       'ess-yank)
 
-  (define-key ess-mode-map "\C-c\C-r"	'ess-eval-region)
-  (define-key ess-mode-map "\C-c\M-r"	'ess-eval-region-and-go)
-  (define-key ess-mode-map "\C-c\C-b"	'ess-eval-buffer)
-  (define-key ess-mode-map "\C-c\M-b"	'ess-eval-buffer-and-go)
+  (define-key ess-mode-map "\C-c\C-r"   'ess-eval-region)
+  (define-key ess-mode-map "\C-c\M-r"   'ess-eval-region-and-go)
+  (define-key ess-mode-map "\C-c\C-b"   'ess-eval-buffer)
+  (define-key ess-mode-map "\C-c\M-b"   'ess-eval-buffer-and-go)
   (define-key ess-mode-map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
   (define-key ess-mode-map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
-  (define-key ess-mode-map "\C-c\C-f"	'ess-eval-function)
-  (define-key ess-mode-map "\C-c\M-f"	'ess-eval-function-and-go)
-  (define-key ess-mode-map "\C-c\C-c"	'ess-eval-function-or-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\C-p"	'ess-eval-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\M-p"	'ess-eval-paragraph-and-go)
-  (define-key ess-mode-map "\C-\M-x"	'ess-eval-function)
-  (define-key ess-mode-map "\C-c\C-n"	'ess-eval-line-and-step)
-  (define-key ess-mode-map "\C-c\C-j"	'ess-eval-line)
-  (define-key ess-mode-map "\C-c\M-j"	'ess-eval-line-and-go)
+  (define-key ess-mode-map "\C-c\C-f"   'ess-eval-function)
+  (define-key ess-mode-map "\C-c\M-f"   'ess-eval-function-and-go)
+  (define-key ess-mode-map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
+  (define-key ess-mode-map "\C-c\C-p"   'ess-eval-paragraph-and-step)
+  (define-key ess-mode-map "\C-c\M-p"   'ess-eval-paragraph-and-go)
+  (define-key ess-mode-map "\C-\M-x"    'ess-eval-function)
+  (define-key ess-mode-map "\C-c\C-n"   'ess-eval-line-and-step)
+  (define-key ess-mode-map "\C-c\C-j"   'ess-eval-line)
+  (define-key ess-mode-map "\C-c\M-j"   'ess-eval-line-and-go)
   ;; the next three can only work in S/R - mode {FIXME}
-  (define-key ess-mode-map "\C-\M-a"	'ess-beginning-of-function)
-  (define-key ess-mode-map "\C-\M-e"	'ess-end-of-function)
-  (define-key ess-mode-map "\C-xnd"	'ess-narrow-to-defun)
-  (define-key ess-mode-map "\C-c\C-y"	'ess-switch-to-ESS)
-  (define-key ess-mode-map "\C-c\C-z"	'ess-switch-to-end-of-ESS)
-  (define-key ess-mode-map "\C-c\C-l"	'ess-load-file)
-  (define-key ess-mode-map "\C-c\C-v"	'ess-display-help-on-object)
-  (define-key ess-mode-map "\C-c\C-d"	'ess-dump-object-into-edit-buffer)
+  (define-key ess-mode-map "\C-\M-a"    'ess-beginning-of-function)
+  (define-key ess-mode-map "\C-\M-e"    'ess-end-of-function)
+  (define-key ess-mode-map "\C-xnd"     'ess-narrow-to-defun)
+  (define-key ess-mode-map "\C-c\C-y"   'ess-switch-to-ESS)
+  (define-key ess-mode-map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
+  (define-key ess-mode-map "\C-c\C-l"   'ess-load-file)
+  (define-key ess-mode-map "\C-c\C-v"   'ess-display-help-on-object)
+  (define-key ess-mode-map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
   ;;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
-  (define-key ess-mode-map "\C-c\C-s"	'ess-switch-process) ; use a
+  (define-key ess-mode-map "\C-c\C-s"   'ess-switch-process) ; use a
   ;; different process for the buffer.
-  (define-key ess-mode-map "\C-c\C-t"	'ess-execute-in-tb)
-  (define-key ess-mode-map "\C-c\t"	'ess-complete-object-name-deprecated)
-  ;;M  (define-key ess-mode-map "\C-c\t"	'comint-dynamic-complete-filename)
+  (define-key ess-mode-map "\C-c\C-t"   'ess-execute-in-tb)
+  (define-key ess-mode-map "\C-c\t"     'ess-complete-object-name-deprecated)
+  ;;M  (define-key ess-mode-map "\C-c\t"        'comint-dynamic-complete-filename)
   (unless (and (featurep 'emacs) (>= emacs-major-version 24))
-    (define-key ess-mode-map "\M-\t"	'comint-dynamic-complete))
-  (define-key ess-mode-map "\M-?"	'ess-list-object-completions)
+    (define-key ess-mode-map "\M-\t"    'comint-dynamic-complete))
+  (define-key ess-mode-map "\M-?"       'ess-list-object-completions)
   ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
-  (define-key ess-mode-map "\C-c\C-k"	'ess-force-buffer-current)
-  (define-key ess-mode-map "\C-c`"	'ess-parse-errors) ; \C-x reserved!
-  (define-key ess-mode-map "\C-c."	'ess-set-style); analogous to binding in C-mode
-  (define-key ess-mode-map "{"		'ess-electric-brace)
-  (define-key ess-mode-map "}"		'ess-electric-brace)
-  (define-key ess-mode-map "\C-\M-q"	'ess-indent-exp)
-  (define-key ess-mode-map "\C-\M-h"	'ess-mark-function)
+  (define-key ess-mode-map "\C-c\C-k"   'ess-force-buffer-current)
+  (define-key ess-mode-map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
+  (define-key ess-mode-map "\C-c."      'ess-set-style); analogous to binding in C-mode
+  (define-key ess-mode-map "{"          'ess-electric-brace)
+  (define-key ess-mode-map "}"          'ess-electric-brace)
+  (define-key ess-mode-map "\C-\M-q"    'ess-indent-exp)
+  (define-key ess-mode-map "\C-\M-h"    'ess-mark-function)
   (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
       (define-key ess-mode-map [(meta backspace)] 'backward-kill-word))
-  ;;(define-key ess-mode-map [delete]	'backward-delete-char-untabify)
-  (define-key ess-mode-map "\t"		'ess-indent-or-complete)
-  (define-key ess-mode-map "\C-c\C-q"	'ess-quit)
+  ;;(define-key ess-mode-map [delete]   'backward-delete-char-untabify)
+  (define-key ess-mode-map "\t"         'ess-indent-or-complete)
+  (define-key ess-mode-map "\C-c\C-q"   'ess-quit)
   ;; smart operators; most likely will go in the future into a separate local map
-  (define-key ess-mode-map ","		'ess-smart-comma)
-  (define-key ess-mode-map "\C-c\C-e"	ess-eval-map))
+  (define-key ess-mode-map ","          'ess-smart-comma)
+  (define-key ess-mode-map "\C-c\C-e"   ess-eval-map))
 
 (require 'noweb-mode)
 (easy-menu-define
   ess-mode-menu ess-mode-map
   "Menu for use in `ess-mode'."
   '("ESS" ; ESS-mode
-    ["What is this? (beta)"    ess-mouse-me			t]
-    ["Load file"		ess-load-file t]
+    ["What is this? (beta)"    ess-mouse-me                     t]
+    ["Load file"                ess-load-file t]
     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
-    ["Enter expression"	ess-execute-in-tb                 t]
+    ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
     ("Eval and Go"
-     ["Eval buffer"	ess-eval-buffer-and-go            t]
-     ["Eval region"	ess-eval-region-and-go            t]
-     ["Eval function"	ess-eval-function-and-go          t]
-     ["Eval line"	ess-eval-line-and-go              t]
+     ["Eval buffer"     ess-eval-buffer-and-go            t]
+     ["Eval region"     ess-eval-region-and-go            t]
+     ["Eval function"   ess-eval-function-and-go          t]
+     ["Eval line"       ess-eval-line-and-go              t]
      ["Eval paragraph"   ess-eval-paragraph-and-go         t]
-     ["Eval chunk"	ess-eval-chunk-and-go    noweb-mode]
-     ["Eval thread"	ess-eval-thread-and-go   noweb-mode]
-     ["About"		(ess-goto-info "Evaluating code") t]
+     ["Eval chunk"      ess-eval-chunk-and-go    noweb-mode]
+     ["Eval thread"     ess-eval-thread-and-go   noweb-mode]
+     ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("ESS Eval"
-     ["Eval buffer"	ess-eval-buffer                   t]
+     ["Eval buffer"     ess-eval-buffer                   t]
      ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
      ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
-     ["Eval region"	ess-eval-region                   t]
-     ["Eval function"	ess-eval-function                 t]
+     ["Eval region"     ess-eval-region                   t]
+     ["Eval function"   ess-eval-function                 t]
      ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
-     ["Eval line"	ess-eval-line                     t]
+     ["Eval line"       ess-eval-line                     t]
      ["Eval line & step" ess-eval-line-and-step            t]
      ["Eval paragraph"   ess-eval-paragraph                t]
      ["Eval para. & step" ess-eval-paragraph-and-step      t]
-     ["Eval chunk"	ess-eval-chunk           noweb-mode]
-     ["Eval thread"	ess-eval-thread          noweb-mode]
-     ["About"		(ess-goto-info "Evaluating code") t]
+     ["Eval chunk"      ess-eval-chunk           noweb-mode]
+     ["Eval thread"     ess-eval-thread          noweb-mode]
+     ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("Motion..."
-     ["Edit new object"		ess-dump-object-into-edit-buffer t]
-     ["Goto end of ESS buffer"	ess-switch-to-end-of-ESS	t]
-     ["Switch to ESS buffer"	ess-switch-to-ESS		t]
-     ["Beginning of function"	ess-beginning-of-function	t]
-     ["End of function"		ess-end-of-function		t]
+     ["Edit new object"         ess-dump-object-into-edit-buffer t]
+     ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
+     ["Switch to ESS buffer"    ess-switch-to-ESS               t]
+     ["Beginning of function"   ess-beginning-of-function       t]
+     ["End of function"         ess-end-of-function             t]
      )
     ("ESS list..."
-     ["Backward list"		backward-list			t]
-     ["Forward list"		forward-list			t]
-     ["Next parenthesis"		down-list			t]
-     ["Enclosing parenthesis"	backward-up-list		t]
-     ["Backward sexp"		backward-sexp			t]
-     ["Forward sexp"		forward-sexp			t]
-     ["About"			(Info-goto-node "(Emacs)Lists") t]
+     ["Backward list"           backward-list                   t]
+     ["Forward list"            forward-list                    t]
+     ["Next parenthesis"                down-list                       t]
+     ["Enclosing parenthesis"   backward-up-list                t]
+     ["Backward sexp"           backward-sexp                   t]
+     ["Forward sexp"            forward-sexp                    t]
+     ["About"                   (Info-goto-node "(Emacs)Lists") t]
      )
     ("ESS Edit"
-     ["Complete Filename" comint-replace-by-expanded-filename	t]
-     ["Complete File or Object"   ess-indent-or-complete		t]
-     ["Kill sexp"         kill-sexp				t]
-     ["Mark function"     ess-mark-function			t]
-     ["Indent expression" ess-indent-exp				t]
-     ["Indent line"       ess-indent-command			t]
-     ["Toggle Auto-Fill Mode" auto-fill-mode			t]
-     ["Undo"              undo					t]
-     ["About"             (ess-goto-info "Edit buffer")		t]
+     ["Complete Filename" comint-replace-by-expanded-filename   t]
+     ["Complete File or Object"   ess-indent-or-complete                t]
+     ["Kill sexp"         kill-sexp                             t]
+     ["Mark function"     ess-mark-function                     t]
+     ["Indent expression" ess-indent-exp                                t]
+     ["Indent line"       ess-indent-command                    t]
+     ["Toggle Auto-Fill Mode" auto-fill-mode                    t]
+     ["Undo"              undo                                  t]
+     ["About"             (ess-goto-info "Edit buffer")         t]
      )
     ("Roxygen"
      ["Update/Generate Template" ess-roxy-update-entry           t]
      ["Preview Rd"        ess-roxy-preview-Rd                    t]
      ["Preview HTML"      ess-roxy-preview-HTML                  t]
      ["Preview text"      ess-roxy-preview-text                  t]
-     ["Hide all"          ess-roxy-hide-all			t]
+     ["Hide all"          ess-roxy-hide-all                     t]
      ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
      )
     ("Start Process"
@@ -264,12 +264,12 @@
       (ess-goto-info "Starting up") t]
      ;; :help "Read about starting a new ESS process" :active t]
      )
-    ["Switch Process"	ess-switch-process		t]
+    ["Switch Process"   ess-switch-process              t]
     "------"
-    ["Describe"		describe-mode			t]
-    ["About editing" (ess-goto-info "Editing")	t]
+    ["Describe"         describe-mode                   t]
+    ["About editing" (ess-goto-info "Editing")  t]
     ["Read ESS info" (ess-goto-info "") t]
-    ["Send bug report"	ess-submit-bug-report		t]
+    ["Send bug report"  ess-submit-bug-report           t]
     ))
 
 (defun SAS-menu ()
@@ -296,7 +296,7 @@ Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
 
-Extra binding to note:	'ESC C-\\' indent-region.
+Extra binding to note:  'ESC C-\\' indent-region.
 
 Entry to this mode runs the hooks in ess-mode-hook.
 
@@ -488,23 +488,23 @@ ess-mode."
 
 ;; common R and S
 (let*
-    ((Q     "\\s\"")			; quote
+    ((Q     "\\s\"")                    ; quote
      (repl "\\(<-\\)?")                 ; replacement (function)
-     (Sym-0 "\\(\\sw\\|\\s_\\)")	; symbol
+     (Sym-0 "\\(\\sw\\|\\s_\\)")        ; symbol
      (Symb  (concat Sym-0 "+"))
      (xSymb (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
      ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
-     (_or_  "\\)\\|\\(")		; OR
+     (_or_  "\\)\\|\\(")                ; OR
      (space "\\(\\s-\\|\n\\)*")         ; white space
 
      (part-1 (concat
               "\\(" ;;--------outer Either-------
-              "\\(\\("		; EITHER
+              "\\(\\("          ; EITHER
               ;; Q xSymb repl Sym-0 "*" Q  ; quote ([) (replacement) symbol quote
               Q "[^ \t\n\"']+" Q ;; any function name between quotes
               _or_
               "\\(^\\|[ ]\\)" Symb      ; (beginning of name) + Symb
-              "\\)\\)"))	; END EITHER OR
+              "\\)\\)"))        ; END EITHER OR
 
      (set-S4-exp
       (concat
@@ -519,7 +519,7 @@ ess-mode."
               set-S4-exp
               "\\)" ;;--------end outer Either/Or-------
 
-              "\\(" space "\\s<.*\\s>\\)*"	; whitespace, comment
+              "\\(" space "\\s<.*\\s>\\)*"      ; whitespace, comment
               ;; FIXME: in principle we should skip 'definition *= *' here
               space "function\\s-*(" ; whitespace, function keyword, parenthesis
               ))
@@ -529,7 +529,7 @@ ess-mode."
     "Regexp to match the beginning of a function in S buffers.")
   (defvar ess-R-function-pattern
     (concat part-1
-            "\\s-*\\(<-\\|=\\)"	; whitespace, assign
+            "\\s-*\\(<-\\|=\\)" ; whitespace, assign
             part-2)
     "The regular expression for matching the beginning of an R function.")
 
@@ -612,7 +612,7 @@ it cannot find a function beginning."
          (format "\tMatch,Pt:(%d,%d),%d\n"
                  (match-beginning 0) (match-end 0) beg))
         (setq in-set-S4 (looking-at ess-set-function-start))
-        (forward-list 1)		; get over arguments
+        (forward-list 1)                ; get over arguments
 
         ;; The following used to bomb  "Unbalanced parentheses", n1, n2
         ;; when the above (search-forward "(" ..) wasn't delimited :
@@ -637,7 +637,7 @@ Optional argument for location of beginning.  Return '(beg end)."
             (end-pos) (npos))
         (ess-write-to-dribble-buffer
          (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
-        (forward-list 1)	; get over arguments || whole set*(..)
+        (forward-list 1)        ; get over arguments || whole set*(..)
         (unless in-set-S4 (forward-sexp 1)) ; move over braces
         (ess-write-to-dribble-buffer
          (format "ess-END-of-fun: found #1 : %d\n" (point)))
@@ -700,8 +700,8 @@ if this is the case."
                   (buffer-substring (match-beginning 1)
                                     (match-end 1)))))
          (and
-          sourcemod			; the file may have been deleted
-          objname			; may not have been able to
+          sourcemod                     ; the file may have been deleted
+          objname                       ; may not have been able to
                                         ; find name
           (ess-modtime-gt (ess-object-modtime objname) sourcemod)
           (not (y-or-n-p
@@ -884,7 +884,7 @@ See also `ess-first-tab-never-complete'."
         (contain-stack (list (point)))
         (case-fold-search nil)
         ;; restart
-        outer-loop-done	innerloop-done state ostate
+        outer-loop-done innerloop-done state ostate
         this-indent
         last-sexp
         last-depth
@@ -1330,15 +1330,15 @@ generate the source buffer."
 
     ;; If the directory doesn't exist, offer to create it
     (if (file-exists-p (directory-file-name dirname)) nil
-      (if (y-or-n-p			; Approved
+      (if (y-or-n-p                     ; Approved
            (format "Directory %s does not exist. Create it? " dirname))
           (make-directory (directory-file-name dirname))
         (error "Directory %s does not exist." dirname)))
 
     ;; Three options:
-    ;;	(1) Pop to an existing buffer containing the file in question
-    ;;	(2) Find an existing file
-    ;;	(3) Create a new file by issuing a dump() command to S
+    ;;  (1) Pop to an existing buffer containing the file in question
+    ;;  (2) Find an existing file
+    ;;  (3) Create a new file by issuing a dump() command to S
     ;; Force option (3) if there is a prefix arg
 
     (if current-prefix-arg
@@ -1410,7 +1410,7 @@ generate the source buffer."
   (find-file-other-window filename)
   (ess-mode ess-customize-alist)
 
-  (auto-save-mode 1)		; Auto save in this buffer
+  (auto-save-mode 1)            ; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)
 
   (if ess-function-template

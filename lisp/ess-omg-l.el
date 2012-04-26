@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1999--2001 A.J. Rossini.
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 15 Aug 1999

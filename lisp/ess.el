@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Doug Bates
 ;;     Ed Kademan
@@ -27,7 +27,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -36,7 +36,7 @@
 ;;
 ;; Interface to the S, SAS, and XLisp dialects of statistical
 ;; programming languages, with potential extensions to other
-;; languages.	Designed to be extendable to most other interactive
+;; languages.   Designed to be extendable to most other interactive
 ;; statistical programming situations.
 
 ;; BRIEF OVERVIEW
@@ -361,7 +361,7 @@ It can be retrieved with `(process-get PROCESS PROPNAME)'."
 Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-ps-viewer-pref		; -> ./ess-custom.el
+   (or (and ess-ps-viewer-pref          ; -> ./ess-custom.el
             (executable-find ess-ps-viewer-pref))
        (executable-find "gv")
        (executable-find "evince")
@@ -372,7 +372,7 @@ Otherwise try a list of fixed known viewers."
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-pdf-viewer-pref		; -> ./ess-custom.el
+   (or (and ess-pdf-viewer-pref         ; -> ./ess-custom.el
             (executable-find ess-pdf-viewer-pref))
        (car (ess-get-words-from-vector
              "getOption(\"pdfviewer\")\n"))
@@ -463,14 +463,14 @@ Otherwise try a list of fixed known viewers."
 ;;> ;; untested
 ;;> (let ((l R-customize-alist))            ; or whatever
 ;;>   (while l
-;;>	(set (car (car l)) (cdr (car l)))   ; set, not setq!
-;;>	(setq l (cdr l))))
+;;>     (set (car (car l)) (cdr (car l)))   ; set, not setq!
+;;>     (setq l (cdr l))))
 ;;
 ;;
 ;;If they are to be buffer-local, you may need to
 ;;
-;;>	;; untested
-;;>	(set (make-local-variable (car (car l))) (cdr (car l)))
+;;>     ;; untested
+;;>     (set (make-local-variable (car (car l))) (cdr (car l)))
 ;;
 
 
@@ -488,7 +488,7 @@ Otherwise try a list of fixed known viewers."
 ;; jsa@alexandria.organon.com (Jon S Anthony)
 ;;(mapcar (lambda (x)
 ;;          (set-variable (car x) (cdr x)))
-;;	R-customize-alist)
+;;      R-customize-alist)
 
 
 

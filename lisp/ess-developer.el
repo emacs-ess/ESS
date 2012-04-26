@@ -74,8 +74,8 @@
     map)
   "Ess-developer keymap.")
 
-(define-key ess-mode-map "\C-cd"		ess-developer-map)
-(define-key inferior-ess-mode-map "\C-cd"	ess-developer-map)
+(define-key ess-mode-map "\C-cd"                ess-developer-map)
+(define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
 
 
 ;; (defun ess-developer-install-prefix-key ()

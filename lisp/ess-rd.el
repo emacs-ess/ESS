@@ -1,7 +1,7 @@
 ;; ess-rd.el --- Support for editing R documentation (Rd) source
 
 ;; Copyright (C) 1997--2005  A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
@@ -36,7 +36,7 @@
   "ESS Core Team <ess-core@r-project.org>"
   "Current maintainer of ess-rd.el.")
 
-(defun Rd-active-mark () nil)		;silence compiler.
+(defun Rd-active-mark () nil)           ;silence compiler.
 (if (featurep 'xemacs)
     ;; Special support for XEmacs (curtesy of auctex):
     (defun Rd-active-mark ()
@@ -47,14 +47,14 @@
     (and transient-mark-mode mark-active))
   )
 
-(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
-(autoload 'ess-switch-process		"ess-inf" "[autoload]" t)
-(autoload 'ess-switch-to-ESS		"ess-inf" "[autoload]" t)
-(autoload 'ess-switch-to-end-of-ESS	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
+(autoload 'ess-switch-process           "ess-inf" "[autoload]" t)
+(autoload 'ess-switch-to-ESS            "ess-inf" "[autoload]" t)
+(autoload 'ess-switch-to-end-of-ESS     "ess-inf" "[autoload]" t)
 
-(autoload 'ess-help-mode		"ess-help" "[autoload]" t)
-(autoload 'ess-nuke-help-bs		"ess-help" "[autoload]" t)
+(autoload 'ess-help-mode                "ess-help" "[autoload]" t)
+(autoload 'ess-nuke-help-bs             "ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -209,25 +209,25 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-mode-menu
   (list "Rd"
-        ["Markup [word]"		Rd-font t]
-        ["Insert Item"			Rd-mode-insert-item t]
-        ["Insert Section"		Rd-mode-insert-section t]
-        ["Insert Skeleton"		Rd-mode-insert-skeleton t]
+        ["Markup [word]"                Rd-font t]
+        ["Insert Item"                  Rd-mode-insert-item t]
+        ["Insert Section"               Rd-mode-insert-section t]
+        ["Insert Skeleton"              Rd-mode-insert-skeleton t]
         "-"
-        ["Preview"			Rd-preview-help t]
+        ["Preview"                      Rd-preview-help t]
         "-"
-        ["Eval Line"			ess-eval-line-and-step t]
-        ["Eval Region"			ess-eval-region t]
-        ["Switch to ESS Process"	ess-switch-to-ESS t]
-        ["Switch the ESS Process"	ess-switch-process t]
-        ["Switch to end{ESS Pr}"	ess-switch-to-end-of-ESS t]
+        ["Eval Line"                    ess-eval-line-and-step t]
+        ["Eval Region"                  ess-eval-region t]
+        ["Switch to ESS Process"        ess-switch-to-ESS t]
+        ["Switch the ESS Process"       ess-switch-process t]
+        ["Switch to end{ESS Pr}"        ess-switch-to-end-of-ESS t]
         "-"
-        ["Toggle Abbrev Mode"		abbrev-mode t]
-        ["Toggle Auto-Fill Mode"	auto-fill-mode t]
+        ["Toggle Abbrev Mode"           abbrev-mode t]
+        ["Toggle Auto-Fill Mode"        auto-fill-mode t]
         "-"
-        ["Submit Bug Report"		Rd-submit-bug-report t]
+        ["Submit Bug Report"            Rd-submit-bug-report t]
         "-"
-        ["Describe Rd Mode"		Rd-describe-major-mode t])
+        ["Describe Rd Mode"             Rd-describe-major-mode t])
   "Menu used in Rd mode.")
 
 (defvar Rd-mode-hook nil
@@ -238,14 +238,14 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 
 (defvar Rd-font-list
-  '((?\C-b "\\bold{"	"}")
-    (?\C-c "\\code{"	"}")
-    (?\C-e "\\emph{"	"}")
-    (?\C-l "\\link{"	"}")
+  '((?\C-b "\\bold{"    "}")
+    (?\C-c "\\code{"    "}")
+    (?\C-e "\\emph{"    "}")
+    (?\C-l "\\link{"    "}")
     (?l "\\code{\\link{" "}}")
-    (?\C-m "\\email{"	"}")
-    (?\C-q "\\eqn{"	"}")
-    (?\C-u "\\url{"	"}")
+    (?\C-m "\\email{"   "}")
+    (?\C-q "\\eqn{"     "}")
+    (?\C-u "\\url{"     "}")
     )
   "List of ``fonts'' used by Rd-font.
 
@@ -388,7 +388,7 @@ following lines to your `.emacs' file:
   (interactive)
   (let ((ic (Rd-mode-calculate-indent))
         (rp (- (current-column) (current-indentation))))
-    (if ic				; Not inside a verbatim
+    (if ic                              ; Not inside a verbatim
         (if (< ic 0)
             (error "Unmatched parenthesis")
           (indent-line-to ic)

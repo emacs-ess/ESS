@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -39,24 +39,24 @@
   (require 'comint)
   (require 'ess-inf))
 
-(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-region-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region-and-go       "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function            "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function-and-go     "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
 
-(autoload 'comint-previous-prompt	"comint" "[autoload]" t)
-(autoload 'comint-next-prompt		"comint" "[autoload]" t)
+(autoload 'comint-previous-prompt       "comint" "[autoload]" t)
+(autoload 'comint-next-prompt           "comint" "[autoload]" t)
 
-(autoload 'ess-load-file		"ess-inf" "[autoload]" t)
-(autoload 'ess-request-a-process	"ess-inf" "(autoload)" nil)
-(autoload 'get-ess-buffer		"ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS		"ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-end-of-ESS	"ess-inf" "(autoload)" nil)
-(autoload 'ess-eval-linewise		"ess-inf" "(autoload)" nil)
-(autoload 'inferior-ess-get-old-input	"ess-inf" "(autoload)" nil)
+(autoload 'ess-load-file                "ess-inf" "[autoload]" t)
+(autoload 'ess-request-a-process        "ess-inf" "(autoload)" nil)
+(autoload 'get-ess-buffer               "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-end-of-ESS     "ess-inf" "(autoload)" nil)
+(autoload 'ess-eval-linewise            "ess-inf" "(autoload)" nil)
+(autoload 'inferior-ess-get-old-input   "ess-inf" "(autoload)" nil)
 
  ; ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -116,20 +116,20 @@
   ess-transcript-mode-menu ess-transcript-mode-map
   "Menu for use in S transcript mode."
   '("ESS-trans"
-    ["What is this? (beta)" ess-mouse-me			t]
-    ["Describe"         describe-mode			t]
+    ["What is this? (beta)" ess-mouse-me                        t]
+    ["Describe"         describe-mode                   t]
     ["About"           (ess-goto-info "Transcript Mode") t]
-    ["Send bug report"  ess-submit-bug-report		t]
+    ["Send bug report"  ess-submit-bug-report           t]
     "------"
-    ["Mark cmd group"   mark-paragraph		t]
-    ["Previous prompt"  comint-previous-prompt	t]
-    ["Next prompt"      comint-next-prompt	t]
+    ["Mark cmd group"   mark-paragraph          t]
+    ["Previous prompt"  comint-previous-prompt  t]
+    ["Next prompt"      comint-next-prompt      t]
     "------"
     ["Send and move" ess-transcript-send-command-and-move t]
-    ["Copy command"  ess-transcript-copy-command		t]
-    ["Send command"  ess-transcript-send-command		t]
-    ["Clean Region"  ess-transcript-DO-clean-region	t]
-    ["Switch S process" ess-switch-process		t]
+    ["Copy command"  ess-transcript-copy-command                t]
+    ["Send command"  ess-transcript-send-command                t]
+    ["Clean Region"  ess-transcript-DO-clean-region     t]
+    ["Switch S process" ess-switch-process              t]
     ))
 
 (unless (featurep 'xemacs)

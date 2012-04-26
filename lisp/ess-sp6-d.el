@@ -1,7 +1,7 @@
 ;;; ess-sp6-d.el --- S-Plus 6 & 7 & 8  customization
 
 ;; Copyright (C) 2001--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 2001/02/06
@@ -71,19 +71,19 @@
 
 (defvar S+6-customize-alist
   (append
-   '((ess-local-customize-alist		. 'S+6-customize-alist)
-     (ess-dialect			. S+6-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+   '((ess-local-customize-alist         . 'S+6-customize-alist)
+     (ess-dialect                       . S+6-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-function-pattern              . ess-R-function-pattern)
 
-     (ess-object-name-db-file		. "ess-sp6-namedb.el")
-     (inferior-ess-program		. inferior-S+6-program-name)
+     (ess-object-name-db-file           . "ess-sp6-namedb.el")
+     (inferior-ess-program              . inferior-S+6-program-name)
      (inferior-ess-help-command   . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. "searchPaths()\n")
+     (inferior-ess-search-list-command  . "searchPaths()\n")
 
-     (ess-directory-function		. S+6-directory-function)
-     (ess-setup-directory-function	. S+6-setup-directory-function)
+     (ess-directory-function            . S+6-directory-function)
+     (ess-setup-directory-function      . S+6-setup-directory-function)
      (inferior-ess-start-args       . inferior-Splus-args)
      (ess-STERM  . "iESS")
      )

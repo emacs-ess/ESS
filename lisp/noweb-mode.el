@@ -5,9 +5,9 @@
 ;;                         and Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;                         and A.J. Rossini <rossini@biostat.washington.edu>
 ;; Copyright (C) 1999--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; ESS-related Changes first added by Mark Lunt and A.J. Rossini, March, 1999.
 
@@ -427,7 +427,7 @@ Misc:
 ;; Now, if noweb-mode is true, we want to turn
 ;; noweb-mode on
 (cond
- (noweb-mode				;Setup the minor-mode
+ (noweb-mode                            ;Setup the minor-mode
   (mapcar 'noweb-make-variable-permanent-local
           '(noweb-mode
             after-change-functions

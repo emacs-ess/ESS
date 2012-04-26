@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1998 Richard M. Heiberger
 ;; Copyright (C) 1999--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: December 1998
@@ -43,15 +43,15 @@
 
 (defvar S+elsewhere-customize-alist
   (append
-   '((ess-local-customize-alist		. 'S+elsewhere-customize-alist)
-     (ess-dialect			. S+elsewhere-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file		. "ess-spelsewhere-namedb.el" )
-     (inferior-ess-program		. inferior-S-elsewhere-program-name)
-     (inferior-ess-help-command		. "help(\"%s\",pager=\"cat\",window=F)\n")
+   '((ess-local-customize-alist         . 'S+elsewhere-customize-alist)
+     (ess-dialect                       . S+elsewhere-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
+     (inferior-ess-program              . inferior-S-elsewhere-program-name)
+     (inferior-ess-help-command         . "help(\"%s\",pager=\"cat\",window=F)\n")
 
-     (inferior-ess-start-file		. nil) ;"~/.ess-S+3")
-     (inferior-ess-start-args		. "-i")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
+     (inferior-ess-start-args           . "-i")
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
@@ -106,12 +106,12 @@ return new alist whose car is the new pair and cdr is ALIST.
                      "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
          (dialect (ess-completing-read "Dialect" dialects nil t)))
     (cond
-     ((string= dialect "arc")	ARC-customize-alist)
-     ((string= dialect "vst")	VST-customize-alist)
-     ((string= dialect "omg")	OMG-customize-alist)
-     ((string= dialect "s3")	S3-customize-alist)
-     ((string= dialect "s4")	S4-customize-alist)
-     ((string= dialect "stata")	STA-customize-alist)
+     ((string= dialect "arc")   ARC-customize-alist)
+     ((string= dialect "vst")   VST-customize-alist)
+     ((string= dialect "omg")   OMG-customize-alist)
+     ((string= dialect "s3")    S3-customize-alist)
+     ((string= dialect "s4")    S4-customize-alist)
+     ((string= dialect "stata") STA-customize-alist)
      ((string= dialect "r")     R-customize-alist )
      ((string= dialect "sp3")   S+3-customize-alist)
      ((string= dialect "sp4")   S+4-customize-alist)

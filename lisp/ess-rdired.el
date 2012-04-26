@@ -1,7 +1,7 @@
 ;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.
 
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen <stephen@anc.ed.ac.uk>
 ;; Created: Thu 24 Oct 2002
@@ -133,7 +133,7 @@ function which prints the output for rdired.")
   (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
   (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
   (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
-  (define-key ess-rdired-mode-map "y" 'ess-rdired-type)	;what type?
+  (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
   (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
   (define-key ess-rdired-mode-map [backspace] 'ess-rdired-previous-line)
   (define-key ess-rdired-mode-map "\C-n" 'ess-rdired-next-line)
@@ -165,7 +165,7 @@ can then examine these objects, plot them, and so on.
   (setq major-mode 'ess-rdired-mode)
   (setq mode-name (concat "RDired " ess-local-process-name)))
 
-(defvar ess-rdired-sort-num nil)	;silence the compiler.
+(defvar ess-rdired-sort-num nil)        ;silence the compiler.
 ;; but see following defun -- maybe it should be buffer local.
 
 (defun ess-rdired ()
@@ -209,15 +209,15 @@ Handle special case when object contains spaces."
     (beginning-of-line)
     (forward-char 2)
 
-    (cond ((looking-at " ")		; First line?
+    (cond ((looking-at " ")             ; First line?
            nil)
-          ((looking-at "\"")		; Object name contains spaces?
+          ((looking-at "\"")            ; Object name contains spaces?
            (let (beg)
              (setq beg (point))
              (forward-char 1)
              (search-forward "\"")
              (buffer-substring-no-properties beg (point))))
-          (t				;should be a regular object.
+          (t                            ;should be a regular object.
            (let (beg)
              (setq beg (point))
              (search-forward " ") ;assume space follows object name.
@@ -358,22 +358,22 @@ User is queried first to check that objects should really be deleted."
 ;; User is queried first to check that objects should really be deleted."
 ;;   (interactive)
 ;;   (let ((objs)
-;;	(cmd "rm("))
+;;      (cmd "rm("))
 ;;     (save-excursion
 ;;       (goto-line 2)
 ;;       (while (< (count-lines (point-min) (point))
-;;		(count-lines (point-min) (point-max)))
-;;	(beginning-of-line)
-;;	(if (looking-at "^D ")
+;;              (count-lines (point-min) (point-max)))
+;;      (beginning-of-line)
+;;      (if (looking-at "^D ")
 ;;          (progn
 ;;            (setq objs (cons (ess-rdired-object) objs ))
 ;;            (setq cmd (concat cmd (ess-rdired-object) ", "))
 ;;            ))
-;;	(forward-line 1)
-;;	))
+;;      (forward-line 1)
+;;      ))
 ;;     (if (> (length objs) 0)
-;;	;; found objects to delete
-;;	(if
+;;      ;; found objects to delete
+;;      (if
 ;;          (dired-mark-pop-up "*RDired deletions*" 'delete
 ;;                             objs dired-deletion-confirmer
 ;;                             (format "delete %s "
@@ -381,7 +381,7 @@ User is queried first to check that objects should really be deleted."
 ;;          ;; should delete the objects.
 ;;          (progn
 ;;            (setq cmd (concat (substring cmd 0 (- (length cmd) 2))
-;;				")\n"))
+;;                              ")\n"))
 ;;            (ess-command cmd)
 ;;            (ess-rdired)))
 ;;       ;; else nothing to delete

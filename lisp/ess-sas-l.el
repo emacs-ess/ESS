@@ -1,7 +1,7 @@
 ;;; ess-sas-l.el --- SAS customization
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Authors: Richard M. Heiberger
 ;;          A.J. Rossini
@@ -1190,19 +1190,19 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
 ;;  (let* ((sfile sas-file-name)
 ;;       (buf (get-file-buffer (concat sfile "." suff))))
 ;;    (if (or sas-require-confirmation (string-equal suff "sas") (not buf))
-;;	(find-file-other-window (concat sfile "." suff))
+;;      (find-file-other-window (concat sfile "." suff))
 ;;      (progn (switch-to-buffer-other-window buf)
 ;;           (if (not (verify-visited-file-modtime (current-buffer)))
 ;;               (progn (revert-buffer t t)
-;;			(message "File has changed on disk.  Buffer automatically updated.")))))
+;;                      (message "File has changed on disk.  Buffer automatically updated.")))))
 ;;    (setq sas-file-name sfile))
 ;;  (if (string-equal suff "sas")
 ;;      (if (not (string-equal major-mode "sas-mode"))
 ;;        ;;(sas-mode)
 ;;        )
 ;;    (if (not (string-equal major-mode "sasl-mode"))
-;;	;;(sasl-mode)
-;;	)))
+;;      ;;(sasl-mode)
+;;      )))
 
 (defun switch-to-sas-file (suff)
   "Switches to sas \"SUFF\" file associated with the current file."
@@ -1337,7 +1337,7 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
       (bury-buffer (get-buffer sbuf))
       ;;(if (and sas-notify-popup window-system)
       ;;    (x-popup-dialog t
-      ;;		(list "SAS Menu" (cons msg  nil) )))
+      ;;                (list "SAS Menu" (cons msg  nil) )))
       ;;(if (not (minibuffer-window-active-p)) (princ msg))
       (princ msg))))
 

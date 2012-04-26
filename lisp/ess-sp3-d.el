@@ -1,7 +1,7 @@
 ;;; ess-sp3-d.el --- S-PLUS 3.x customization
 
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 12 Jun 1997
@@ -43,7 +43,7 @@
   (append
    '((ess-local-customize-alist         . 'S+3-customize-alist)
      (ess-dialect                       . S+3-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-s+3-namedb.el" )
      (inferior-ess-program              . inferior-S+3-program-name)
      (inferior-ess-help-command         . "help(\"%s\",pager=\"cat\",window=F)\n")

@@ -1,9 +1,9 @@
 ;;; ess-r-d.el --- R customization
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini
 ;; Created: 12 Jun 1997
@@ -63,38 +63,38 @@
 
 (defvar R-customize-alist
   (append
-   '((ess-local-customize-alist		. 'R-customize-alist)
-     (ess-dialect			. "R")
-     (ess-suffix			. "R")
-     (ess-dump-filename-template	. (ess-replace-regexp-in-string
+   '((ess-local-customize-alist         . 'R-customize-alist)
+     (ess-dialect                       . "R")
+     (ess-suffix                        . "R")
+     (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
-     (ess-mode-syntax-table		. R-syntax-table)
+     (ess-mode-syntax-table             . R-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
-     (ess-change-sp-regexp		. ess-R-change-sp-regexp)
-     (ess-help-sec-regex		. ess-help-R-sec-regex)
-     (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-cmd-delay			. ess-R-cmd-delay)
+     (ess-change-sp-regexp              . ess-R-change-sp-regexp)
+     (ess-help-sec-regex                . ess-help-R-sec-regex)
+     (ess-help-sec-keys-alist           . ess-help-R-sec-keys-alist)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-cmd-delay                     . ess-R-cmd-delay)
      (ess-function-pattern              . ess-R-function-pattern)
-     (ess-object-name-db-file		. "ess-r-namedb.el" )
-     (ess-imenu-mode-function		. 'ess-imenu-R)
-     (ess-smart-operators		. ess-R-smart-operators)
-     (inferior-ess-program		. inferior-R-program-name)
-     (inferior-ess-objects-command	. inferior-R-objects-command)
+     (ess-object-name-db-file           . "ess-r-namedb.el" )
+     (ess-imenu-mode-function           . 'ess-imenu-R)
+     (ess-smart-operators               . ess-R-smart-operators)
+     (inferior-ess-program              . inferior-R-program-name)
+     (inferior-ess-objects-command      . inferior-R-objects-command)
      (inferior-ess-font-lock-keywords   . inferior-ess-R-font-lock-keywords)
-     (inferior-ess-search-list-command	. "search()\n")
-     ;;(inferior-ess-help-command		. "help(\"%s\", htmlhelp=FALSE)\n")
-     (inferior-ess-help-command		. inferior-ess-r-help-command)
+     (inferior-ess-search-list-command  . "search()\n")
+     ;;(inferior-ess-help-command               . "help(\"%s\", htmlhelp=FALSE)\n")
+     (inferior-ess-help-command         . inferior-ess-r-help-command)
      (inferior-ess-help-filetype        . nil)
-     (inferior-ess-exit-command		. "q()")
-     (inferior-ess-exit-prompt		. "Save workspace image? [y/n/c]: ")
+     (inferior-ess-exit-command         . "q()")
+     (inferior-ess-exit-prompt          . "Save workspace image? [y/n/c]: ")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
-     (inferior-ess-start-args		. "")
-     (ess-STERM		. "iESS")
-     (ess-editor	. R-editor)
-     (ess-pager		. R-pager)
+     (inferior-ess-start-file           . nil) ;; "~/.ess-R"
+     (inferior-ess-start-args           . "")
+     (ess-STERM         . "iESS")
+     (ess-editor        . R-editor)
+     (ess-pager         . R-pager)
      )
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
@@ -267,7 +267,7 @@ defuns will normally be placed on the menubar and stored as
 `ess-r-versions-created' upon ESS initialisation."
 
   (if (not ess-r-versions)
-      nil				;nothing to return
+      nil                               ;nothing to return
     ;; else, if ess-r-versions is non-nil, let's try to find those R versions.
     ;; This works by creating a temp buffer where the template function is
     ;; edited so that X.Y is replaced by the version name
@@ -770,7 +770,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (requires   . 0)
     (candidates . ess-ac-candidates)
     (document   . ess-ac-help)
-    ;; (action	. ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
+    ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     )
   "Auto-completion source for R function arguments"
   )
@@ -854,7 +854,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (requires   . 0)
     (candidates . ess-ac-args)
     (document   . ess-ac-help-arg)
-    (action	. ess-ac-action-args))
+    (action     . ess-ac-action-args))
   "Auto-completion source for R function arguments"
   )
 

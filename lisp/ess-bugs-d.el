@@ -54,7 +54,7 @@
 (defvar ess-bugs-font-lock-keywords
   (list
    ;; .bug files
-   (cons "#.*\n"			font-lock-comment-face)
+   (cons "#.*\n"                        font-lock-comment-face)
 
    (cons "^[ \t]*\\(model\\|var\\)\\>"
          font-lock-keyword-face)
@@ -160,7 +160,7 @@
                                                             (insert ess-bugs-temp-monitor)
                                                             (insert "modelUpdate(" (format "%d" (* bugs-thin bugs-update)) ")\n")
                                         ;           (insert (ess-replace-in-string
-                                        ;		(ess-replace-in-string ess-bugs-temp-chains
+                                        ;               (ess-replace-in-string ess-bugs-temp-chains
                                         ;                   "modelCompile([0-9]+)" "#") "##" "to"))
 
                                                             (if (< 1 bugs-thin) (insert "samplesThin(" (format "%d" bugs-thin) ")\n"))
@@ -168,18 +168,18 @@
                                                             (insert "samplesCoda('*', '" ess-bugs-file-root "')\n")
 
                                         ;           (if ess-bugs-system (progn
-                                        ;		(insert "system rm -f " ess-bugs-file-root ".ind\n")
-                                        ;		(insert "system ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind\n")
+                                        ;               (insert "system rm -f " ess-bugs-file-root ".ind\n")
+                                        ;               (insert "system ln -s " ess-bugs-file-root "index.txt " ess-bugs-file-root ".ind\n")
 
-                                        ;		(setq bugs-chains ess-bugs-chains)
+                                        ;               (setq bugs-chains ess-bugs-chains)
 
-                                        ;		(while (< 0 bugs-chains)
+                                        ;               (while (< 0 bugs-chains)
                                         ;                   (setq ess-bugs-temp-chain (format "%d" bugs-chains))
 
                                         ;                   ;.txt not recognized by BOA and impractical to over-ride
                                         ;                   (insert "system rm -f " ess-bugs-file-root ess-bugs-temp-chain ".out\n")
                                         ;                   (insert "system ln -s " ess-bugs-file-root "chain" ess-bugs-temp-chain ".txt "
-                                        ;			ess-bugs-file-root ess-bugs-temp-chain ".out\n")
+                                        ;                       ess-bugs-file-root ess-bugs-temp-chain ".out\n")
                                         ;                   (setq bugs-chains (- bugs-chains 1)))))
 
                                                             (insert "modelQuit()\n")
@@ -209,9 +209,9 @@
 
                                         ;    (let ((ess-bugs-temp-chains ""))
                                         ;
-                                        ;	(while (< 0 bugs-chains)
+                                        ;       (while (< 0 bugs-chains)
                                         ;           (setq ess-bugs-temp-chains
-                                        ;		(concat (format "%d " bugs-chains) ess-bugs-temp-chains))
+                                        ;               (concat (format "%d " bugs-chains) ess-bugs-temp-chains))
                                         ;           (setq bugs-chains (- bugs-chains 1)))
 
     ;; (insert "echo '"

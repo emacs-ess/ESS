@@ -4,7 +4,7 @@
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Copyright (C) 2002--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
@@ -71,7 +71,7 @@ connects it to the '(ddeESS [S+6])' window.")
   (append
    '((ess-local-customize-alist  . 'S+6-customize-alist)
      (ess-dialect                . S+6-dialect-name)
-     (ess-loop-timeout		. ess-S-loop-timeout);fixme: dialect spec.
+     (ess-loop-timeout          . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file    . "ess-sp6-namedb.el" )
      (inferior-ess-program       . inferior-S+6-program-name)
      (inferior-ess-help-command  . "help(\"%s\")\n")
@@ -193,11 +193,11 @@ to start the Splus program."
     (ess-write-to-dribble-buffer
      (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-program
+    (setq ess-customize-alist           ; change inferior-ess-program
           (append ess-customize-alist '((inferior-ess-program   . "sh"))))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (setq ess-customize-alist		; change inferior-ess-start-args
+    (setq ess-customize-alist           ; change inferior-ess-start-args
           (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
     (let ((s-proj (getenv "S_PROJ"))
           (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
@@ -241,10 +241,10 @@ You may need to open the S-Plus Commands window manually (by clicking on
 Splus/Window/Commands Window).\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window appear in this buffer.\n\n")
-    (goto-char (point-max))		; comint-mode-map makes '(ddeESS [S+6])'
+    (goto-char (point-max))             ; comint-mode-map makes '(ddeESS [S+6])'
     ;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
-    (toggle-read-only t)		; force buffer to be read-only
+    (toggle-read-only t)                ; force buffer to be read-only
     (setq mode-name "ddeESS")
     ;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
     (if inferior-ess-language-start
@@ -275,7 +275,7 @@ If you have a HOME environment variable, it will open it there."
     (S+6-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)		; permit writing in ESS buffer
+    (toggle-read-only nil)              ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -283,7 +283,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+6-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)		; restore ESS buffer to be read-only
+    (toggle-read-only t)                ; restore ESS buffer to be read-only
     ))
 
 
@@ -306,7 +306,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
     (ess-write-to-dribble-buffer
      (format "\n(Sqpe+6): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (inferior-ess)
     (setq ess-customize-alist Sqpe+6-customize-alist) ; restore i-e-p-p in alist
@@ -397,12 +397,12 @@ to start the Splus program."
     (ess-write-to-dribble-buffer
      (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-program
+    (setq ess-customize-alist           ; change inferior-ess-program
           (append ess-customize-alist '((inferior-ess-program
                                          . (getenv "COMSPEC")))))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (setq ess-customize-alist		; change inferior-ess-start-args
+    (setq ess-customize-alist           ; change inferior-ess-start-args
           (append ess-customize-alist '((inferior-ess-start-args   . ""))))
     (let ((s-proj (getenv "S_PROJ"))
           (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
@@ -483,7 +483,7 @@ If you have a HOME environment variable, it will open it there."
     (S+6-msdos-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)		; permit writing in ESS buffer
+    (toggle-read-only nil)              ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -491,7 +491,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+6-msdos-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)		; restore ESS buffer to be read-only
+    (toggle-read-only t)                ; restore ESS buffer to be read-only
     ))
 
 (defun ess-sqpe-versions-create (ess-SHOME-versions &optional x64)
@@ -574,7 +574,7 @@ This function was generated by `ess-sqpe-versions-create'."
     (inferior-ess)
     (setq ess-customize-alist Sqpe+6-customize-alist) ; restore i-e-p-p in alist
     (ess-setq-vars-local ess-customize-alist) ; restore i-e-p-p in buffer
-    (setq inferior-ess-prompt		; define with correct i-e-p-p
+    (setq inferior-ess-prompt           ; define with correct i-e-p-p
           ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
           (concat "\\("
                   inferior-ess-primary-prompt

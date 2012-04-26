@@ -1,7 +1,7 @@
 ;;; ess-toolbar.el --- Support for a toolbar in ESS.
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen
 ;; Created: 2004-05-06
@@ -173,9 +173,9 @@ If `ess-icon-directory' is invalid, please report a bug.")
   (vector
    (toolbar-make-button-list
     (expand-file-name (concat (cadr x) ".xpm") ess-icon-directory))
-   (car x)				;function
+   (car x)                              ;function
    t
-   (nth 2 x)				;doc string
+   (nth 2 x)                            ;doc string
    ))
 
 (defvar ess-toolbar-xemacs-general

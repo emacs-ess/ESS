@@ -1,7 +1,7 @@
 ;;; ess-font-lock.el --- font-lock color options
 
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 06 Feb 2000
@@ -21,7 +21,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -123,18 +123,18 @@
 
   ;;(modify-face FACE                        FOREGROUND BACKGROUND STIPPLE BOLD-P ITALIC-P UNDERLINE-P &optional INVERSE-P FRAME)
 
-  (modify-face 'modeline                     "gray10"	"gray90"   nil     nil    t        nil       )
-  (modify-face 'font-lock-comment-face       "black"	"white"    nil     nil    t        nil       )
-  (modify-face 'font-lock-function-name-face "black"	"white"    nil     t      nil      nil       )
-  (modify-face 'font-lock-keyword-face       "black"	"white"    nil     nil    nil      t         )
+  (modify-face 'modeline                     "gray10"   "gray90"   nil     nil    t        nil       )
+  (modify-face 'font-lock-comment-face       "black"    "white"    nil     nil    t        nil       )
+  (modify-face 'font-lock-function-name-face "black"    "white"    nil     t      nil      nil       )
+  (modify-face 'font-lock-keyword-face       "black"    "white"    nil     nil    nil      t         )
   (modify-face 'font-lock-constant-face      "black"    "white"    nil     t      nil      nil       )
-  (modify-face 'font-lock-string-face        "black"	"white"    nil     nil    t        t         )
-  (modify-face 'font-lock-type-face          "black"	"white"    nil     t      t        nil       )
-  (modify-face 'font-lock-variable-name-face "black"	"white"    nil     nil    nil      nil       )
-  (modify-face 'font-lock-builtin-face       "black"	"white"    nil     t      nil      nil       )
-  (modify-face 'font-lock-warning-face       "black"	"white"    nil     t      nil      nil       )
-  (modify-face 'show-paren-match-face        "gray20"	"gray80"   nil     t      nil      nil       )
-  (modify-face 'show-paren-mismatch-face     "white"	"gray40"   nil     t      t        nil       ))
+  (modify-face 'font-lock-string-face        "black"    "white"    nil     nil    t        t         )
+  (modify-face 'font-lock-type-face          "black"    "white"    nil     t      t        nil       )
+  (modify-face 'font-lock-variable-name-face "black"    "white"    nil     nil    nil      nil       )
+  (modify-face 'font-lock-builtin-face       "black"    "white"    nil     t      nil      nil       )
+  (modify-face 'font-lock-warning-face       "black"    "white"    nil     t      nil      nil       )
+  (modify-face 'show-paren-match-face        "gray20"   "gray80"   nil     t      nil      nil       )
+  (modify-face 'show-paren-mismatch-face     "white"    "gray40"   nil     t      t        nil       ))
 
 (defun ess-font-lock-db ()
   "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>"

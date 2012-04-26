@@ -1,9 +1,9 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 05 June 2000
@@ -173,17 +173,17 @@ as `ess-imenu-use-S'."
 
 ;;
 
-(defcustom ess-handy-commands '(("change-directory"	. ess-change-directory)
-                                ("install.packages"	. ess-install.packages)
-                                ("library"		. ess-library)
-                                ("objects[ls]"		. ess-execute-objects)
-                                ("help-index"		. ess-display-index)
-                                ("help-object"		. ess-display-help-on-object)
-                                ("search"		. ess-execute-search)
-                                ("set-width"		. ess-execute-screen-options)
-                                ("setRepos"		. ess-setRepositories)
-                                ("sos"			. ess-sos)
-                                ("vignettes"		. ess-display-vignettes)
+(defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
+                                ("install.packages"     . ess-install.packages)
+                                ("library"              . ess-library)
+                                ("objects[ls]"          . ess-execute-objects)
+                                ("help-index"           . ess-display-index)
+                                ("help-object"          . ess-display-help-on-object)
+                                ("search"               . ess-execute-search)
+                                ("set-width"            . ess-execute-screen-options)
+                                ("setRepos"             . ess-setRepositories)
+                                ("sos"                  . ess-sos)
+                                ("vignettes"            . ess-display-vignettes)
                                 )
   "An alist of custom ESS commands available for call by `ess-smart-comma' function."
   :group 'ess
@@ -1179,10 +1179,10 @@ version of the pathname."
 ;;        (while (< num (length split-PATH))
 ;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
 ;;          (if (not (file-exists-p pathname))
-;;		(setq num (1+ num))
+;;              (setq num (1+ num))
 ;;            (progn
-;;		(setq num (length split-PATH))
-;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;              (setq num (length split-PATH))
+;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
 ;;      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
 
 
@@ -1272,10 +1272,10 @@ version of the pathname."
 ;;        (while (< num (length split-PATH))
 ;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
 ;;          (if (not (file-exists-p pathname))
-;;		(setq num (1+ num))
+;;              (setq num (1+ num))
 ;;            (progn
-;;		(setq num (length split-PATH))
-;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;              (setq num (length split-PATH))
+;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
 ;;      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
 (defcustom ess-S-quit-kill-buffers-p nil
@@ -1347,7 +1347,7 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess
   :type 'string)
 
-(defcustom R-pager 'nil	; Usually nil is correct as ESS and page() cooperate.
+(defcustom R-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
   "Pager called by R process with 'page()' command."
   :group 'ess
   :type '(choice (const nil) string))
@@ -1886,11 +1886,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-R-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-R-assign-ops)
-         'font-lock-reference-face)	; assign
+         'font-lock-reference-face)     ; assign
    (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
-         'font-lock-type-face)		; constants
+         'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
-         'font-lock-reference-face)	; modify search list or source
+         'font-lock-reference-face)     ; modify search list or source
                                         ; new definitions
    (cons ess-R-function-name-regexp
          '(1 font-lock-function-name-face t))
@@ -1907,11 +1907,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-S-assign-ops)
-         'font-lock-reference-face)	; assign
+         'font-lock-reference-face)     ; assign
    (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
-         'font-lock-type-face)		; constants
+         'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
-         'font-lock-reference-face)	; modify search list or source
+         'font-lock-reference-face)     ; modify search list or source
                                         ; new definitions
    (cons ess-S-function-name-regexp
          '(1 font-lock-function-name-face t))
@@ -1922,7 +1922,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-mode-font-lock-keywords
   (append ess-S-common-font-lock-keywords
           (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-                      'font-lock-keyword-face)))	; keywords
+                      'font-lock-keyword-face)))        ; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
 
@@ -1962,7 +1962,7 @@ If nil, input is in the `font-lock-variable-name-face'."
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
     (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
           'font-lock-reference-face) ; inferior-ess problems or errors
-    (cons "#" 'font-lock-comment-face)	; comment
+    (cons "#" 'font-lock-comment-face)  ; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
     ))
   "Font-lock patterns used in inferior-S-mode buffers.")

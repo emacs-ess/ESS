@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Sep 1998

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
 ;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; This file is part of ESS
 
@@ -303,7 +303,7 @@ ess-r-args-current-function if no argument given."
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
-(require 'assoc)			;needed for aput, below.
+(require 'assoc)                        ;needed for aput, below.
 (defun tooltip-show-at-point (text xo yo)
   "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
 and y-offsets for the toolbar from point."

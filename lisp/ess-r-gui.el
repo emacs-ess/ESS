@@ -1,7 +1,7 @@
 ;;; ess-r-gui.el --- Run Rgui on Windows as an inferior Emacs process
 
 ;; Copyright (C) 2008 A.J. Rossini, Richard M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author:  Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 10 Mar 2008
@@ -20,7 +20,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -161,7 +161,7 @@ independent Rgui R Console."
     (ess-write-to-dribble-buffer
      (format "\n(Rgui): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (let ((default-ddeclient (default-value 'inferior-ess-ddeclient)))
       (cd (w32-short-file-name (directory-file-name default-directory)))

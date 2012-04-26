@@ -1,9 +1,9 @@
 ;;; ess-s-l.el --- Support for editing S source code
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
-;;	R.M. Heiberger, M. Maechler, and A.J. Rossini.
+;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
 ;; Copyright (C) 1998-2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -42,28 +42,28 @@
     nil
   (setq S-syntax-table (make-syntax-table))
   (modify-syntax-entry ?\\ "\\" S-syntax-table)
-  (modify-syntax-entry ?+  "."	S-syntax-table)
-  (modify-syntax-entry ?-  "."	S-syntax-table)
-  (modify-syntax-entry ?=  "."	S-syntax-table)
-  (modify-syntax-entry ?%  "."	S-syntax-table)
-  (modify-syntax-entry ?<  "."	S-syntax-table)
-  (modify-syntax-entry ?>  "."	S-syntax-table)
-  (modify-syntax-entry ?&  "."	S-syntax-table)
-  (modify-syntax-entry ?|  "."	S-syntax-table)
+  (modify-syntax-entry ?+  "."  S-syntax-table)
+  (modify-syntax-entry ?-  "."  S-syntax-table)
+  (modify-syntax-entry ?=  "."  S-syntax-table)
+  (modify-syntax-entry ?%  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?&  "."  S-syntax-table)
+  (modify-syntax-entry ?|  "."  S-syntax-table)
   (modify-syntax-entry ?\' "\"" S-syntax-table)
   (modify-syntax-entry ?\" "\"" S-syntax-table)
-  (modify-syntax-entry ?#  "<"	S-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"	S-syntax-table) ; close comment
+  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
+  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
   ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
-  (modify-syntax-entry ?.  "_"	S-syntax-table) ; see above/below,
+  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
                                         ; plus consider separation.
-  (modify-syntax-entry ?$  "_"	S-syntax-table); foo$comp = 1 symbol(completion)
-  (modify-syntax-entry ?@  "_"	S-syntax-table); foo@slot = 1 symbol(completion)
-  (modify-syntax-entry ?_  "."	S-syntax-table)
-  (modify-syntax-entry ?*  "."	S-syntax-table)
-  (modify-syntax-entry ?<  "."	S-syntax-table)
-  (modify-syntax-entry ?>  "."	S-syntax-table)
-  (modify-syntax-entry ?/  "."	S-syntax-table))
+  (modify-syntax-entry ?$  "_"  S-syntax-table); foo$comp = 1 symbol(completion)
+  (modify-syntax-entry ?@  "_"  S-syntax-table); foo@slot = 1 symbol(completion)
+  (modify-syntax-entry ?_  "."  S-syntax-table)
+  (modify-syntax-entry ?*  "."  S-syntax-table)
+  (modify-syntax-entry ?<  "."  S-syntax-table)
+  (modify-syntax-entry ?>  "."  S-syntax-table)
+  (modify-syntax-entry ?/  "."  S-syntax-table))
 
 (defvar R-editing-alist
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
@@ -74,7 +74,7 @@
     (comment-add                  . 1)
     (comment-start-skip           . "#+ *")
     (comment-column               . 40)
-    ;;(comment-indent-function	. 'S-comment-indent)
+    ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line                      . 'S-indent-line)
     ;;(ess-calculate-indent           . 'ess-calculate-indent)
@@ -102,7 +102,7 @@
 
 (defvar inferior-S-language-start
   '(concat "options("
-           "STERM='"	ess-STERM  "'"
+           "STERM='"    ess-STERM  "'"
            ", str.dendrogram.last =\"'\""
            (if ess-editor (concat ", editor='" ess-editor "'"))
            (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
@@ -129,19 +129,19 @@
   (append
    '((ess-suffix                . "S")
      (ess-mode-syntax-table     . S-syntax-table)
-     (ess-help-sec-regex	. ess-help-S+-sec-regex)
-     (ess-help-sec-keys-alist	. ess-help-S+sec-keys-alist)
-     (ess-change-sp-regexp	. ess-S+-change-sp-regexp)
-     (ess-cmd-delay		. (if (featurep 'xemacs); needs much less delay
+     (ess-help-sec-regex        . ess-help-S+-sec-regex)
+     (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
+     (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
+     (ess-cmd-delay             . (if (featurep 'xemacs); needs much less delay
                                       (* 0.1 ess-S+-cmd-delay)
                                     ess-S+-cmd-delay))
      (ess-function-pattern      . ess-S-function-pattern)
-     (ess-function-template	. " <- \n#\nfunction()\n{\n\n}\n")
+     (ess-function-template     . " <- \n#\nfunction()\n{\n\n}\n")
      (ess-dump-filename-template . (ess-replace-regexp-in-string
                                     "S$" ess-suffix ; in the one from custom:
                                     ess-dump-filename-template-proto))
 
-     (ess-mode-editing-alist	. S-editing-alist)
+     (ess-mode-editing-alist    . S-editing-alist)
 
      (ess-dumped-missing-re
       . "\\(\\(<-\\|=\\)\nDumped\n\\'\\)\\|\\(\\(<-\\|=\\)\\(\\s \\|\n\\)*\\'\\)")
@@ -220,7 +220,7 @@
     (?r . "\\s *References:")
     (?s . "\\s *See Also:")
     (?u . "\\s *Usage:")
-    (?v . "\\s *Value[s]?")	;
+    (?v . "\\s *Value[s]?")     ;
     )
   "Alist of (key . string) pairs for use in help section searching.")
 
@@ -497,7 +497,7 @@ unless prefix argument NO-FORCE-CURRENT is non-nil."
 
 (defun ess-num-var-round (&optional dont-query verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
-  replacing  endings of 000000*.. and 999999*.	Martin Maechler"
+  replacing  endings of 000000*.. and 999999*.  Martin Maechler"
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
@@ -505,7 +505,7 @@ unless prefix argument NO-FORCE-CURRENT is non-nil."
     (let ((num 0)
           (str "")
           (rgxp "000000+[1-9]?[1-9]?\\>")
-          (to	""))
+          (to   ""))
       (if dont-query
           (ess-rep-regexp     rgxp to nil nil verbose)
         (query-replace-regexp rgxp to nil))
@@ -521,15 +521,15 @@ unless prefix argument NO-FORCE-CURRENT is non-nil."
 
 (defun ess-fix-dot (before-chars &optional dont-query verbose)
   "Remove trailing decimal '.' (\"dot\"), before BEFORE; typically from S-plus"
-  ;; typically, before-chars =	"]:" or more
+  ;; typically, before-chars =  "]:" or more
   (ess-replace-regexp-dump-to-src
    (concat "\\([0-9]\\)\\.\\( *[" before-chars "]\\)")
-   ;;		111      ^
+   ;;           111      ^
    "\\1\\2" dont-query verbose))
 
 (defun ess-fix-dot-1 (&optional do-query verbose)
   "Remove trailing decimal '.' (\"dot\"), before ':' or ']', i.e.,
-in cases where it's ugly and nonsense.	DO-QUERY(prefix) asks before replacing."
+in cases where it's ugly and nonsense.  DO-QUERY(prefix) asks before replacing."
   (interactive "P")
   (ess-fix-dot "]:" (not do-query) verbose))
 
@@ -663,7 +663,7 @@ toggle between the new and the previous assignment."
   "Smart \"_\" key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized.	In ESS modes other than R/S,
+typically \" <- \", can be customized.  In ESS modes other than R/S,
 an underscore is always inserted. "
   (interactive)
   ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
@@ -714,7 +714,7 @@ In that case, the it is removed and replaced by the underscore.
           (define-key ess-mode-map          "_" nil); 'self-insert-command
           (define-key inferior-ess-mode-map "_" nil))
       ;; else : "force" or current-key is "nil", i.e. default
-      (define-key ess-mode-map		"_" 'ess-smart-underscore)
+      (define-key ess-mode-map          "_" 'ess-smart-underscore)
       (define-key inferior-ess-mode-map "_" 'ess-smart-underscore))))
 
 ;; NOTA BENE: "_" is smart *by default* :

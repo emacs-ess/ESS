@@ -651,7 +651,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "cor" "corc" "corr" "corre" "correl" "correla" "correlat" "correlate"
          "corrgram"
          "cou" "coun" "count"
-         "cox"	"cprplot" "_crcswxx" "cs" "csi"
+         "cox"  "cprplot" "_crcswxx" "cs" "csi"
          "ct" "ctset" "cttost"
          "cumul" "cusum")
         font-lock-reference-face)
@@ -1018,7 +1018,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "`+"
-      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"	;has glitch interior ` is highlighted
+      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"    ;has glitch interior ` is highlighted
          ) font-lock-variable-name-face t)
       "'+"
       ))
@@ -1162,7 +1162,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;
 ;;(if (assoc "\\.do$" auto-mode-alist) nil
 ;;  (setq auto-mode-alist
-;;	(append
+;;      (append
 ;;       '(("\\.do$" . stata-mode)
 ;;         ("\\.ado$" . stata-mode))
 ;;       auto-mode-alist)))
@@ -1432,14 +1432,14 @@ PROC is the stata process. Does not change point."
 ;;  (make-comint "stata" "stata"
 ;;             (and stata-profile
 ;;                  (or (file-exists-p stata-profile)
-;;			(null (message "Startup file %s not found."
+;;                      (null (message "Startup file %s not found."
 ;;                                     stata-profile))) stata-profile)
 ;;             stata-switches)
 ;;  (switch-to-buffer "*stata*" )
 ;;  (setq comint-process-echoes t)
 ;;  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
 ;;  (setq comint-input-filter-functions
-;;	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
+;;      (cons 'stata-add-to-review-buffer comint-input-filter-functions))
 ;;  (save-excursion
 ;;    (set-buffer (get-buffer-create "*stata review*"))
 ;;    (stata-mode))
@@ -1542,12 +1542,12 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;  (interactive "P")
 ;;  (let (stata-process (get-process "stata"))
 ;;    (if stata-process
-;;	(progn
+;;      (progn
 ;;        (switch-to-buffer (process-buffer stata-process))
 ;;        (if eob-p (goto-char (point-max))))
 ;;      (progn
-;;	(message "No inferior stata process")
-;;	(ding)))))
+;;      (message "No inferior stata process")
+;;      (ding)))))
 
 ;;(defun stata-switch-to-end-of-stata nil
 ;;  "Switch to the end of the inferior stata process buffer."

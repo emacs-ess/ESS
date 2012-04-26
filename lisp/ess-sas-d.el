@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2001 Richard M. Heiberger and A. J. Rossini
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@astro.ocis.temple.edu>
 ;; Created: 20 Aug 1997

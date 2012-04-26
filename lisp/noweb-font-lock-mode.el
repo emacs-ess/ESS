@@ -4,7 +4,7 @@
 ;;                    and Mark Lunt (mark.lunt@mrc-bsu.cam.ac.uk
 ;; Copyright (C) 2002 by A.J. Rossini <rossini@u.washington.edu>
 ;; Copyright (C) 2003--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 

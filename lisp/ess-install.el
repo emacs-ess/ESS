@@ -2,7 +2,7 @@
 ;; Auto-install procedure.  EXPERIMENTAL!
 
 ;; Copyright (C) 2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen
 
