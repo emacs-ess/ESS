@@ -84,7 +84,7 @@
 (eval-when-compile
   (require 'ess-custom)
   (require 'ess)
-)
+  )
 (require 'noweb-mode)
 (require 'ess-r-d); for Rnw-mode
 (require 'easymenu)
@@ -104,7 +104,7 @@
              )
             ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
              (ess-force-buffer-current "R process to load into: "))
-       ))
+            ))
 
     (save-excursion
       (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
@@ -124,28 +124,28 @@
         (ess-show-buffer (buffer-name sbuffer) nil)))))
 
 (defun ess-swv-tangle ()
-   "Run Stangle on the current .Rnw file."
-   (interactive)
-   (ess-swv-run-in-R "Stangle"))
+  "Run Stangle on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "Stangle"))
 
 (defun ess-swv-weave ()
-   "Run Sweave on the current .Rnw file."
-   (interactive)
-   (ess-swv-run-in-R "Sweave"))
+  "Run Sweave on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "Sweave"))
 
 (defun ess-swv-latex ()
-   "Run LaTeX on the product of Sweave()ing the current file."
-   (interactive)
-   (save-excursion
-     (let* ((namestem (file-name-sans-extension (buffer-file-name)))
-            (latex-filename (concat namestem ".tex"))
-            (tex-buf (get-buffer-create " *ESS-tex-output*")))
-       (message "Running LaTeX on '%s' ..." latex-filename)
-       (switch-to-buffer tex-buf)
-       (call-process "latex" nil tex-buf 1 latex-filename)
-       (switch-to-buffer (buffer-name))
-       (display-buffer tex-buf)
-       (message "Finished running LaTeX" ))))
+  "Run LaTeX on the product of Sweave()ing the current file."
+  (interactive)
+  (save-excursion
+    (let* ((namestem (file-name-sans-extension (buffer-file-name)))
+           (latex-filename (concat namestem ".tex"))
+           (tex-buf (get-buffer-create " *ESS-tex-output*")))
+      (message "Running LaTeX on '%s' ..." latex-filename)
+      (switch-to-buffer tex-buf)
+      (call-process "latex" nil tex-buf 1 latex-filename)
+      (switch-to-buffer (buffer-name))
+      (display-buffer tex-buf)
+      (message "Finished running LaTeX" ))))
 
 
 (defun ess-swv-PS ()
@@ -201,36 +201,36 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
 
 
 (defun ess-insert-Sexpr ()
- "Insert Sexpr{} into the buffer at point."
- (interactive)
- (insert "\\Sexpr{}")
- (backward-char))
+  "Insert Sexpr{} into the buffer at point."
+  (interactive)
+  (insert "\\Sexpr{}")
+  (backward-char))
 
 
 ;;; back-compatible wrappers:
 (defun ess-makeSweave () "old *DEPRECATED* version of \\[ess-swv-weave]."
- (interactive) (ding)
- (message
-  "** warning: ess-makeSweave is deprecated. Do use (ess-swv-weave) instead!")
- (ess-swv-weave))
+  (interactive) (ding)
+  (message
+   "** warning: ess-makeSweave is deprecated. Do use (ess-swv-weave) instead!")
+  (ess-swv-weave))
 
 (defun ess-makeLatex () "old *DEPRECATED* version of \\[ess-swv-latex]."
- (interactive) (ding)
- (message
-  "** warning: ess-makeLatex is deprecated. Do use (ess-swv-latex) instead!")
- (ess-swv-latex))
+  (interactive) (ding)
+  (message
+   "** warning: ess-makeLatex is deprecated. Do use (ess-swv-latex) instead!")
+  (ess-swv-latex))
 
 (defun ess-makePS () "old *DEPRECATED* version of \\[ess-swv-PS]."
- (interactive) (ding)
- (message
-  "** warning: ess-makePS is deprecated. Do use (ess-swv-PS) instead!")
- (ess-swv-PS))
+  (interactive) (ding)
+  (message
+   "** warning: ess-makePS is deprecated. Do use (ess-swv-PS) instead!")
+  (ess-swv-PS))
 
 (defun ess-makePDF () "old *DEPRECATED* version of \\[ess-swv-PDF]."
- (interactive) (ding)
- (message
-  "** warning: ess-makePDF is deprecated. Do use (ess-swv-PDF) instead!")
- (ess-swv-PDF))
+  (interactive) (ding)
+  (message
+   "** warning: ess-makePDF is deprecated. Do use (ess-swv-PDF) instead!")
+  (ess-swv-PDF))
 
 
 ;; AUCTeX integration.  This is independent of this library, but it fits
@@ -301,15 +301,15 @@ file and latex the result."
   "Submenu for use in `Rnw-mode'."
 
   '("Sweaving, Tangling, ..."
-     ["Sweave" ess-swv-weave   t]
-     ["Tangle" ess-swv-tangle  t]
-     ["LaTeX"  ess-swv-latex   t]
-     ["PDF(LaTeX)" ess-swv-PDF t]
-     ["PS (dvips)" ess-swv-PS  t]
-     ["Insert Sexpr" ess-insert-Sexpr t]
-     ["AUCTeX Interface" ess-swv-toggle-plug-into-AUCTeX
+    ["Sweave" ess-swv-weave   t]
+    ["Tangle" ess-swv-tangle  t]
+    ["LaTeX"  ess-swv-latex   t]
+    ["PDF(LaTeX)" ess-swv-PDF t]
+    ["PS (dvips)" ess-swv-PS  t]
+    ["Insert Sexpr" ess-insert-Sexpr t]
+    ["AUCTeX Interface" ess-swv-toggle-plug-into-AUCTeX
      :style toggle :selected ess-swv-plug-into-AUCTeX-p]
-     ))
+    ))
 
 (if (featurep 'xemacs)
     (add-hook 'Rnw-mode-hook

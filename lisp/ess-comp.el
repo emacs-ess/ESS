@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2006 A. J. Rossini
 ;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 25 July 1997

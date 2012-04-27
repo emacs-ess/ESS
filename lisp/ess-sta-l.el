@@ -56,12 +56,12 @@
 
 (require 'make-regexp)  ; it's now local to the directory.
 ;;(load-library "make-regexp") ;; this is necessary for
-                             ;; ado-set-font-lock-keywords
+;; ado-set-font-lock-keywords
 ;; only needed in Emacs >= 22.x and newish Xemacsen:
 (unless (boundp 'c-emacs-features)
   (require 'cc-vars));; for syntax-table
 
-;(setq max-lisp-eval-depth 500)
+                                        ;(setq max-lisp-eval-depth 500)
 (eval-when-compile
   (setq max-lisp-eval-depth (max 600 max-lisp-eval-depth)))
 
@@ -651,7 +651,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "cor" "corc" "corr" "corre" "correl" "correla" "correlat" "correlate"
          "corrgram"
          "cou" "coun" "count"
-         "cox"	"cprplot" "_crcswxx" "cs" "csi"
+         "cox"  "cprplot" "_crcswxx" "cs" "csi"
          "ct" "ctset" "cttost"
          "cumul" "cusum")
         font-lock-reference-face)
@@ -1018,7 +1018,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "`+"
-      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"	;has glitch interior ` is highlighted
+      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"    ;has glitch interior ` is highlighted
          ) font-lock-variable-name-face t)
       "'+"
       ))
@@ -1162,7 +1162,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;
 ;;(if (assoc "\\.do$" auto-mode-alist) nil
 ;;  (setq auto-mode-alist
-;;	(append
+;;      (append
 ;;       '(("\\.do$" . stata-mode)
 ;;         ("\\.ado$" . stata-mode))
 ;;       auto-mode-alist)))
@@ -1269,7 +1269,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (if stata-process nil (error "Stata is not running."))
       (beginning-of-line)
       (if (looking-at ". ") nil  (error "Stata not ready."))
-       (save-excursion
+      (save-excursion
         (set-process-buffer stata-process
                             (get-buffer-create "*stata variables*"))
         (set-process-filter stata-process 'ordinary-insertion-filter)
@@ -1304,7 +1304,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (comint-output-filter proc string)))
 
 (defun stata-handle-menu-code (proc string)
-   (let ((old-buffer (current-buffer)))
+  (let ((old-buffer (current-buffer)))
     (unwind-protect
         (let (moving)
           (set-buffer (process-buffer proc))
@@ -1408,17 +1408,17 @@ PROC is the stata process. Does not change point."
 ;;
 ;;
 
-;(defvar stata-help-mode-map nil)
-;(setq stata-help-mode-map (cons 'keymap help-mode-map))
-;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-;(define-key stata-help-mode-map [menu-bar stata]
-;  (cons "Stata" (make-sparse-keymap "Stata")))
-;(define-key stata-help-mode-map [menu-bar stata statahelp]
-;  '("Help on..." . stata-help))
-;(define-key stata-help-mode-map [menu-bar stata rehelp]
-;  '("rehelp (hyperlink)" . stata-rehelp))
+                                        ;(defvar stata-help-mode-map nil)
+                                        ;(setq stata-help-mode-map (cons 'keymap help-mode-map))
+                                        ;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
+                                        ;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
+                                        ;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
+                                        ;(define-key stata-help-mode-map [menu-bar stata]
+                                        ;  (cons "Stata" (make-sparse-keymap "Stata")))
+                                        ;(define-key stata-help-mode-map [menu-bar stata statahelp]
+                                        ;  '("Help on..." . stata-help))
+                                        ;(define-key stata-help-mode-map [menu-bar stata rehelp]
+                                        ;  '("rehelp (hyperlink)" . stata-rehelp))
 ;;
 
 
@@ -1432,14 +1432,14 @@ PROC is the stata process. Does not change point."
 ;;  (make-comint "stata" "stata"
 ;;             (and stata-profile
 ;;                  (or (file-exists-p stata-profile)
-;;			(null (message "Startup file %s not found."
+;;                      (null (message "Startup file %s not found."
 ;;                                     stata-profile))) stata-profile)
 ;;             stata-switches)
 ;;  (switch-to-buffer "*stata*" )
 ;;  (setq comint-process-echoes t)
 ;;  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
 ;;  (setq comint-input-filter-functions
-;;	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
+;;      (cons 'stata-add-to-review-buffer comint-input-filter-functions))
 ;;  (save-excursion
 ;;    (set-buffer (get-buffer-create "*stata review*"))
 ;;    (stata-mode))
@@ -1542,12 +1542,12 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;  (interactive "P")
 ;;  (let (stata-process (get-process "stata"))
 ;;    (if stata-process
-;;	(progn
+;;      (progn
 ;;        (switch-to-buffer (process-buffer stata-process))
 ;;        (if eob-p (goto-char (point-max))))
 ;;      (progn
-;;	(message "No inferior stata process")
-;;	(ding)))))
+;;      (message "No inferior stata process")
+;;      (ding)))))
 
 ;;(defun stata-switch-to-end-of-stata nil
 ;;  "Switch to the end of the inferior stata process buffer."

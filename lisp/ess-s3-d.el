@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997 A. J. Rossini
 ;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
@@ -47,7 +47,7 @@
      (inferior-ess-program              . inferior-S3-program-name) ;        "S")
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. "search()\n")
+     (inferior-ess-search-list-command  . "search()\n")
      (inferior-ess-objects-command      . "objects(%d)\n")
      (inferior-ess-start-file           . nil) ;"~/.ess-S3")
      (inferior-ess-start-args       . "")

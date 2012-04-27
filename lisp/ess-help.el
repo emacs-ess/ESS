@@ -3,11 +3,11 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
 ;; Copyright (C) 1998--2001 A.J. Rossini, Martin Maechler, Kurt Hornik and
-;;	Richard M. Heiberger <rmh@temple.edu>.
+;;      Richard M. Heiberger <rmh@temple.edu>.
 ;; Copyright (C) 2001--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -26,7 +26,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -45,27 +45,27 @@
 
 (require 'ess)
 
-(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-region-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region-and-go       "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function            "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function-and-go     "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
 
-(autoload 'ess-beginning-of-function	"ess-mode" "[autoload]" t)
-(autoload 'ess-end-of-function		"ess-mode" "[autoload]" t)
+(autoload 'ess-beginning-of-function    "ess-mode" "[autoload]" t)
+(autoload 'ess-end-of-function          "ess-mode" "[autoload]" t)
 
-(autoload 'ess-load-file		"ess-inf" "[autoload]" t)
-(autoload 'ess-command			"ess-inf" "(autoload)" nil)
-(autoload 'ess-display-temp-buffer	"ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS		"ess-inf" "(autoload)" nil)
+(autoload 'ess-load-file                "ess-inf" "[autoload]" t)
+(autoload 'ess-command                  "ess-inf" "(autoload)" nil)
+(autoload 'ess-display-temp-buffer      "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
 (autoload 'ess-read-object-name-default "ess-inf" "(autoload)" nil)
-(autoload 'ess-make-buffer-current	"ess-inf" "(autoload)" nil)
-(autoload 'ess-search-list		"ess-inf" "(autoload)" nil)
-(autoload 'ess-get-object-list		"ess-inf" "(autoload)" nil)
+(autoload 'ess-make-buffer-current      "ess-inf" "(autoload)" nil)
+(autoload 'ess-search-list              "ess-inf" "(autoload)" nil)
+(autoload 'ess-get-object-list          "ess-inf" "(autoload)" nil)
 
-(autoload 'ess-ddeclient-p		"ess-inf" "(autoload)" nil)
+(autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
 
 (autoload 'ess-display-help-on-object-ddeclient "ess-dde" "(autoload)" nil)
 
@@ -106,9 +106,9 @@ Utility used in \\[ess-display-help-on-object]."
                    (< (- (point-max) PM) 80); buffer less than 80 chars
                    (not (setq searching t))
                    (progn (goto-char PM) ;; R:
-                          (re-search-forward "Error in help"	nr-first t))
+                          (re-search-forward "Error in help"    nr-first t))
                    (progn (goto-char PM) ;; S-plus 5.1 :
-                          (re-search-forward "^cat: .*--"	nr-first t))
+                          (re-search-forward "^cat: .*--"       nr-first t))
                    (progn (goto-char PM) ;; S version 3 ; R :
                           (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
                    )))
@@ -163,14 +163,14 @@ an inferior emacs buffer) the GUI help window is used."
     (let* ((hb-name (concat "*help["
                             ess-current-process-name
                             "](" object ")*"))
-           (old-hb-p	(get-buffer hb-name))
-           (tbuffer	(get-buffer-create hb-name))
+           (old-hb-p    (get-buffer hb-name))
+           (tbuffer     (get-buffer-create hb-name))
            ;;VS: this curr-* kludge is not needed here,
            ;;everything should be set by ess-setq-vars-local latter
            ;; (curr-help-sec-regex              ess-help-sec-regex)
            ;; (curr-help-sec-keys-alist ess-help-sec-keys-alist)
            ;; ....
-           (alist		ess-local-customize-alist))
+           (alist               ess-local-customize-alist))
       (with-current-buffer tbuffer
         (ess-setq-vars-local (eval alist))
         (set-syntax-table ess-mode-syntax-table)
@@ -317,7 +317,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Prompt for package name and display its index."
   (interactive)
   (let ((object (buffer-name))
-        (alist		ess-local-customize-alist)
+        (alist          ess-local-customize-alist)
         pack buff all-packs  not-implemented
         ;; Available customization for ess languages/dialects:
         com-package-for-object ;command to get the package of current help object
@@ -394,7 +394,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (if (featurep 'xemacs)
       (ess-eval-linewise "browseVignettes()\n") ;VS:cannot make regexp bellow work in xemacs
     (let ((buff (get-buffer-create " *ess-command-output*"))
-          (alist		ess-local-customize-alist)
+          (alist                ess-local-customize-alist)
           packs details
           p row)
       (ess-command "local({oo <- options(width = 1000);print.default(browseVignettes());options(oo)})\n" buff)
@@ -467,7 +467,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 (defun ess-help-quit (&optional kill)
   "Quit help."
-;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
+  ;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
   (interactive "P")
   (let* ((buffer (window-buffer))
          (obuffer (other-buffer buffer t)))
@@ -507,7 +507,7 @@ For internal use. Used in `ess-display-help-on-object',
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
 
-(defun	ess-help-own-frame (buffer &rest ignore)
+(defun  ess-help-own-frame (buffer &rest ignore)
   "Put all ESS help buffers into `ess-help-frame'."
   ;; SJE: Code adapted from Kevin Rodgers.
   (if (frame-live-p ess-help-frame)
@@ -528,15 +528,15 @@ For internal use. Used in `ess-display-help-on-object',
 
 ;;; THIS WORKS!
 ;;(require 'w3)
-;(defun ess-display-w3-help-on-object-other-window (object)
-;  "Display R-documentation for OBJECT using W3"
-;  (interactive "s Help on :")
-;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
-;                              ess-help-w3-url-funs
-;                              object
-;                              ".html")))
-    ;;(w3-fetch-other-window ess-help-url)
-;    ))
+                                        ;(defun ess-display-w3-help-on-object-other-window (object)
+                                        ;  "Display R-documentation for OBJECT using W3"
+                                        ;  (interactive "s Help on :")
+                                        ;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
+                                        ;                              ess-help-w3-url-funs
+                                        ;                              object
+                                        ;                              ".html")))
+;;(w3-fetch-other-window ess-help-url)
+                                        ;    ))
 
 
 ;;*;; Major mode definition
@@ -549,7 +549,7 @@ For internal use. Used in `ess-display-help-on-object',
 (defvar ess-help-mode-map nil "Keymap for ESS help mode.")
 (unless ess-help-mode-map
   (setq ess-help-mode-map (make-keymap)); Full keymap, in order to
-  (suppress-keymap ess-help-mode-map)	; suppress all usual "printing" characters
+  (suppress-keymap ess-help-mode-map)   ; suppress all usual "printing" characters
   (when (boundp 'special-mode-map)
     (set-keymap-parent ess-help-mode-map special-mode-map))
   (define-key ess-help-mode-map "q" 'ess-help-quit)  ;was 'ess-switch-to-end-of-ESS)
@@ -591,29 +591,29 @@ For internal use. Used in `ess-display-help-on-object',
 ;; One reason for the following menu is to <TEACH> the user about key strokes
 (defvar ess-help-mode-menu
   (list "ESS-help"
-        ["Search Forward"		isearch-forward t]
-        ["Next Section"			ess-skip-to-next-section t]
-        ["Previous Section"		ess-skip-to-previous-section t]
-        ["Help on Section Skipping"	ess-describe-sec-map t]
-        ["Beginning of Buffer"		beginning-of-buffer t]
-        ["End of Buffer"		end-of-buffer t]
+        ["Search Forward"               isearch-forward t]
+        ["Next Section"                 ess-skip-to-next-section t]
+        ["Previous Section"             ess-skip-to-previous-section t]
+        ["Help on Section Skipping"     ess-describe-sec-map t]
+        ["Beginning of Buffer"          beginning-of-buffer t]
+        ["End of Buffer"                end-of-buffer t]
         "-"
-        ["Help on ..."			ess-display-help-on-object t]
+        ["Help on ..."                  ess-display-help-on-object t]
         ["Index of ..."                 ess-display-index t]
         ["Vignettes"                    ess-display-vignettes t]
         ["Open in Browser"              ess-display-help-in-browser t]
         "-"
-        ["Eval Line"			ess-eval-line-and-step t]
+        ["Eval Line"                    ess-eval-line-and-step t]
         ["Eval Paragraph & step"        ess-eval-paragraph-and-step t]
-        ["Eval Region & Go"		ess-eval-region-and-go t]
-        ["Switch to ESS Process"	ess-switch-to-ESS t]
-        ["Switch to End of ESS Proc."	ess-switch-to-end-of-ESS t]
-        ["Switch _the_ Process"		ess-switch-process t]
+        ["Eval Region & Go"             ess-eval-region-and-go t]
+        ["Switch to ESS Process"        ess-switch-to-ESS t]
+        ["Switch to End of ESS Proc."   ess-switch-to-end-of-ESS t]
+        ["Switch _the_ Process"         ess-switch-process t]
         "-"
-        ["Describe ESS-help Mode"	ess-describe-help-mode t]
+        ["Describe ESS-help Mode"       ess-describe-help-mode t]
         "-"
-        ["Kill Buffer"			kill-this-buffer t]
-        ["Kill Buffer & Go"		ess-kill-buffer-and-go t]
+        ["Kill Buffer"                  kill-this-buffer t]
+        ["Kill Buffer & Go"             ess-kill-buffer-and-go t]
         )
   "Menu used in ess-help mode.")
 
@@ -639,7 +639,7 @@ Other keybindings are as follows:
 
   (require 'easymenu)
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
-                    "Menu keymap for ess-help mode." ess-help-mode-menu)
+    "Menu keymap for ess-help mode." ess-help-mode-menu)
   (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
 
   ;; Add the keys for navigating among sections; this is done
@@ -660,7 +660,7 @@ Other keybindings are as follows:
 ;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
-  "Jump to a section heading of a help buffer.	The section selected
+  "Jump to a section heading of a help buffer.  The section selected
 is determined by the command letter used to invoke the command, as
 indicated by `ess-help-sec-keys-alist'.  Use \\[ess-describe-sec-map]
 to see which keystrokes find which sections."
@@ -673,8 +673,8 @@ to see which keystrokes find which sections."
       (if (not the-sec) (error "Invalid section key: %c"
                                last-command-event)
         (if (re-search-forward (concat "^" the-sec) nil t) nil
-            (message "No %s section in this help. Sorry." the-sec)
-            (goto-char old-point))))))
+          (message "No %s section in this help. Sorry." the-sec)
+          (goto-char old-point))))))
 
 (defun ess-skip-to-next-section nil
   "Jump to next section in ESS help buffer."

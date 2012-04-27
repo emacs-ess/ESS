@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
@@ -21,7 +21,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -39,8 +39,8 @@
 ;;*;; Requires
 (require 'mouseme)
 ;;(if (or (equal window-system 'w32)
-;;	(equal window-system 'win32)
-;;	(equal window-system 'mswindows))
+;;      (equal window-system 'win32)
+;;      (equal window-system 'mswindows))
 ;;    (require 'essiw32b))
 
 (defun ess-mouse-me ()
@@ -116,7 +116,7 @@
     "----"
     ("Browser on"  . ess-mouse-me-browser-on)
     ("Browser off" . ess-mouse-me-browser-off))
-    "*Command menu used by `mouse-me-build-menu'.
+  "*Command menu used by `mouse-me-build-menu'.
 A alist of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals
@@ -149,13 +149,13 @@ the symbol `string' it will be called with one string argument."
 
 (defun ess-mouse-me-browser-on (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "debug(" string ")"))
-   (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
+      (ess-eval-linewise (concat "debug(" string ")"))
+    (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
 
 (defun ess-mouse-me-browser-off  (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "undebug(" string ")"))
-   (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
+      (ess-eval-linewise (concat "undebug(" string ")"))
+    (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
 
 
 

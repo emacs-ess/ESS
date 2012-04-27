@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2001 A.J. Rossini
 ;; Copyright (C) 2001--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: November 1997
@@ -48,9 +48,9 @@ You can use following PATH styles:
         absolute path: \"/HOO/BAR/BAZ/\"
 
 You can specify following OPTIONS:
-        'all-paths	search from `load-path'
+        'all-paths      search from `load-path'
                         instead of `default-load-path'
-        'append		add PATH to the last of `load-path'.
+        'append         add PATH to the last of `load-path'.
 
 For ESS, ONLY use load-path, since Emacs doesn't have
 default-load-path."

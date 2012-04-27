@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
 ;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; This file is part of ESS
 
@@ -186,7 +186,7 @@
 
 (eval-when-compile
   (if ess-has-tooltip
-    (require 'tooltip))); for tooltip-show
+      (require 'tooltip))); for tooltip-show
 
 (require 'ess)
 
@@ -241,7 +241,7 @@ buffer readjustments for multiline string)."
 ;;            (replace-regexp-in-string " = " "="
 ;;                                      (replace-regexp-in-string "[\n \t]+" " " args))
 ;;          args)
-          ;; )))))
+;; )))))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -288,10 +288,10 @@ ess-r-args-current-function if no argument given."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (if function
-    (let ((args (ess-r-args-get function))
-          (pointpos (point)))
-      (insert args)
-      (goto-char pointpos))))
+      (let ((args (ess-r-args-get function))
+            (pointpos (point)))
+        (insert args)
+        (goto-char pointpos))))
 
 ;; ;; call ess-r-args-show automatically --- this should be optional
 ;; now in ess-mode.el :
@@ -303,7 +303,7 @@ ess-r-args-current-function if no argument given."
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
-(require 'assoc)			;needed for aput, below.
+(require 'assoc)                        ;needed for aput, below.
 (defun tooltip-show-at-point (text xo yo)
   "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
 and y-offsets for the toolbar from point."

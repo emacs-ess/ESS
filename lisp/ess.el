@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Doug Bates
 ;;     Ed Kademan
@@ -27,7 +27,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -36,7 +36,7 @@
 ;;
 ;; Interface to the S, SAS, and XLisp dialects of statistical
 ;; programming languages, with potential extensions to other
-;; languages.	Designed to be extendable to most other interactive
+;; languages.   Designed to be extendable to most other interactive
 ;; statistical programming situations.
 
 ;; BRIEF OVERVIEW
@@ -161,29 +161,29 @@
 
 (defun ess-version-string ()
   (let* ((fname (concat ess-etc-directory "../SVN-REVISION"))
-	 (buffer (and (file-exists-p fname)
-		      (find-file-noselect fname)))
-	 c1 c2)
+         (buffer (and (file-exists-p fname)
+                      (find-file-noselect fname)))
+         c1 c2)
     ;; set the "global" ess-revision
     (setq ess-revision
-	  (if buffer
-	      ;; has two lines that look like
-	      ;; Revision: 4803
-	      ;; Last Changed Date: 2012-04-16
-	      (save-excursion
-		(set-buffer buffer)
-		(ess-write-to-dribble-buffer
-		 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
-		(goto-char (point-min))
-		(re-search-forward "Revision: \\(.*\\)")
-		(setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
-		;; line 2
-		(forward-line 1)
-		(re-search-forward ".*: \\(.*\\)")
-		(setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
+          (if buffer
+              ;; has two lines that look like
+              ;; Revision: 4803
+              ;; Last Changed Date: 2012-04-16
+              (save-excursion
+                (set-buffer buffer)
+                (ess-write-to-dribble-buffer
+                 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
+                (goto-char (point-min))
+                (re-search-forward "Revision: \\(.*\\)")
+                (setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
+                ;; line 2
+                (forward-line 1)
+                (re-search-forward ".*: \\(.*\\)")
+                (setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
 
-		(concat "rev. " c1 " (" c2 ")"))
-	    ))
+                (concat "rev. " c1 " (" c2 ")"))
+            ))
     (concat ess-version " [" ess-revision "]")))
 
 
@@ -211,7 +211,7 @@ Invoke this command with C-u C-u C-y."
         (message "No commands found"))
     (if (eq this-command t)
         (setq this-command 'yank))
-  ))
+    ))
 
 (defun ess-yank (&optional ARG)
   "With double prefix (C-u C-u) call `ess-yank-cleaned-commands"
@@ -349,7 +349,7 @@ This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
 It can be retrieved with `(process-get PROCESS PROPNAME)'."
     (set-process-plist process
                        (plist-put (process-plist process) propname value)))
-)
+  )
 
 ;;; Running these must be done "every time" before use, since
 ;;; they depend on a customizable variable.
@@ -361,7 +361,7 @@ It can be retrieved with `(process-get PROCESS PROPNAME)'."
 Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-ps-viewer-pref		; -> ./ess-custom.el
+   (or (and ess-ps-viewer-pref          ; -> ./ess-custom.el
             (executable-find ess-ps-viewer-pref))
        (executable-find "gv")
        (executable-find "evince")
@@ -372,7 +372,7 @@ Otherwise try a list of fixed known viewers."
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-pdf-viewer-pref		; -> ./ess-custom.el
+   (or (and ess-pdf-viewer-pref         ; -> ./ess-custom.el
             (executable-find ess-pdf-viewer-pref))
        (car (ess-get-words-from-vector
              "getOption(\"pdfviewer\")\n"))
@@ -391,7 +391,7 @@ Otherwise try a list of fixed known viewers."
 (defun ess-line-to-list-of-words (line)
   (let ((list nil)
         (posn 0))
-        ;; (match-data (match-data)))
+    ;; (match-data (match-data)))
     (while (string-match "[^ \t\n]+" line posn)
       (setq list (cons (substring line (match-beginning 0) (match-end 0))
                        list))
@@ -438,7 +438,7 @@ Otherwise try a list of fixed known viewers."
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
            ess-language ess-dialect buf comint-process-echoes comint-input-sender))
-)
+  )
 
 ;;; versions thanks to Barry Margolin <barmar@bbnplanet.com>.
 ;;; unfortunately, requires 'cl.  Whoops.
@@ -463,14 +463,14 @@ Otherwise try a list of fixed known viewers."
 ;;> ;; untested
 ;;> (let ((l R-customize-alist))            ; or whatever
 ;;>   (while l
-;;>	(set (car (car l)) (cdr (car l)))   ; set, not setq!
-;;>	(setq l (cdr l))))
+;;>     (set (car (car l)) (cdr (car l)))   ; set, not setq!
+;;>     (setq l (cdr l))))
 ;;
 ;;
 ;;If they are to be buffer-local, you may need to
 ;;
-;;>	;; untested
-;;>	(set (make-local-variable (car (car l))) (cdr (car l)))
+;;>     ;; untested
+;;>     (set (make-local-variable (car (car l))) (cdr (car l)))
 ;;
 
 
@@ -488,11 +488,11 @@ Otherwise try a list of fixed known viewers."
 ;; jsa@alexandria.organon.com (Jon S Anthony)
 ;;(mapcar (lambda (x)
 ;;          (set-variable (car x) (cdr x)))
-;;	R-customize-alist)
+;;      R-customize-alist)
 
 
 
-; Run load hook and provide package
+                                        ; Run load hook and provide package
 
 (run-hooks 'ess-mode-load-hook)
 

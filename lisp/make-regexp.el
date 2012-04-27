@@ -129,7 +129,7 @@ If optional PAREN non-nil, output regexp parentheses around returned regexp.
 If optional LAX non-nil, don't output parentheses if it doesn't require them.
 Merges keywords to avoid backtracking in Emacs' regexp matcher."
   (let* ((max-lisp-eval-depth (* 1024 1024))
-         (strings (let ((l strings))	; Paranoia---make strings unique!
+         (strings (let ((l strings))    ; Paranoia---make strings unique!
                     (while l (setq l (setcdr l (delete (car l) (cdr l)))))
                     (sort strings 'string-lessp)))
          (open-paren (if paren "\\(" "")) (close-paren (if paren "\\)" ""))

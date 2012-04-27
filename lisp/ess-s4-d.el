@@ -1,7 +1,7 @@
 ;;; ess-s4-d.el --- S4 customization
 
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
@@ -51,10 +51,10 @@
      (ess-object-name-db-file           . "ess-s4-namedb.el")
      (inferior-ess-program              . inferior-S4-program-name)
      (inferior-ess-objects-command      . ".SmodeObs(%d, pattern=\"%s\")\n")
-     ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
+     ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. ".SmodePaths()\n")
+     (inferior-ess-search-list-command  . ".SmodePaths()\n")
      (inferior-ess-load-command         . ".SmodeLoad(\"%s\")\n")
      (inferior-ess-dump-command         . ".SmodeDump(\"%s\", \"%s\")\n")
 
@@ -133,7 +133,7 @@
 ;;;;         '("\\<\\(^Problem\\|^Warning\\|^Error\\|Debug ?\\|Browsing in frame of\\|Local Variables\\)\\>" . font-lock-reference-face) ; S-inf problems
 ;;;;)
 ;;;;(add-to-list 'S-inf-font-lock-keywords
-;;;; '("^R>" . font-lock-keyword-face)	; debug prompt
+;;;; '("^R>" . font-lock-keyword-face)  ; debug prompt
 ;;;;)
 ;;(inferior-S-mode)
 ;;

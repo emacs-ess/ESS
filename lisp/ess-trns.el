@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -39,24 +39,24 @@
   (require 'comint)
   (require 'ess-inf))
 
-(autoload 'ess-eval-region		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-region-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function-and-go	"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-go		"ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step	"ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-region-and-go       "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function            "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-function-and-go     "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
+(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
 
-(autoload 'comint-previous-prompt	"comint" "[autoload]" t)
-(autoload 'comint-next-prompt		"comint" "[autoload]" t)
+(autoload 'comint-previous-prompt       "comint" "[autoload]" t)
+(autoload 'comint-next-prompt           "comint" "[autoload]" t)
 
-(autoload 'ess-load-file		"ess-inf" "[autoload]" t)
-(autoload 'ess-request-a-process	"ess-inf" "(autoload)" nil)
-(autoload 'get-ess-buffer		"ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS		"ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-end-of-ESS	"ess-inf" "(autoload)" nil)
-(autoload 'ess-eval-linewise		"ess-inf" "(autoload)" nil)
-(autoload 'inferior-ess-get-old-input	"ess-inf" "(autoload)" nil)
+(autoload 'ess-load-file                "ess-inf" "[autoload]" t)
+(autoload 'ess-request-a-process        "ess-inf" "(autoload)" nil)
+(autoload 'get-ess-buffer               "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
+(autoload 'ess-switch-to-end-of-ESS     "ess-inf" "(autoload)" nil)
+(autoload 'ess-eval-linewise            "ess-inf" "(autoload)" nil)
+(autoload 'inferior-ess-get-old-input   "ess-inf" "(autoload)" nil)
 
  ; ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,10 +74,10 @@
   (define-key ess-transcript-mode-map "\C-c\C-s" 'ess-switch-process)
   (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
   (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
-;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
-;;  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
-;;  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
-;;  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
+  ;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
+  ;;  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
+  ;;  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
+  ;;  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
 
   (define-key ess-transcript-mode-map "\C-c\C-k"    'ess-force-buffer-current)
   (define-key ess-transcript-mode-map "\C-c\C-q"    'ess-quit)
@@ -100,7 +100,7 @@
   (define-key ess-transcript-mode-map "}"        'ess-electric-brace)
   (define-key ess-transcript-mode-map "\e\C-h"   'ess-mark-function)
   (define-key ess-transcript-mode-map "\e\C-q"   'ess-indent-exp)
-  ;(define-key ess-transcript-mode-map "\177"    'backward-delete-char-untabify)
+                                        ;(define-key ess-transcript-mode-map "\177"    'backward-delete-char-untabify)
   (define-key ess-transcript-mode-map "\t"       'ess-indent-command)
 
   (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
@@ -113,24 +113,24 @@
   (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-clean-region))
 
 (easy-menu-define
- ess-transcript-mode-menu ess-transcript-mode-map
- "Menu for use in S transcript mode."
- '("ESS-trans"
-   ["What is this? (beta)" ess-mouse-me			t]
-   ["Describe"         describe-mode			t]
-   ["About"           (ess-goto-info "Transcript Mode") t]
-   ["Send bug report"  ess-submit-bug-report		t]
-   "------"
-   ["Mark cmd group"   mark-paragraph		t]
-   ["Previous prompt"  comint-previous-prompt	t]
-   ["Next prompt"      comint-next-prompt	t]
-   "------"
-   ["Send and move" ess-transcript-send-command-and-move t]
-   ["Copy command"  ess-transcript-copy-command		t]
-   ["Send command"  ess-transcript-send-command		t]
-   ["Clean Region"  ess-transcript-DO-clean-region	t]
-   ["Switch S process" ess-switch-process		t]
-))
+  ess-transcript-mode-menu ess-transcript-mode-map
+  "Menu for use in S transcript mode."
+  '("ESS-trans"
+    ["What is this? (beta)" ess-mouse-me                        t]
+    ["Describe"         describe-mode                   t]
+    ["About"           (ess-goto-info "Transcript Mode") t]
+    ["Send bug report"  ess-submit-bug-report           t]
+    "------"
+    ["Mark cmd group"   mark-paragraph          t]
+    ["Previous prompt"  comint-previous-prompt  t]
+    ["Next prompt"      comint-next-prompt      t]
+    "------"
+    ["Send and move" ess-transcript-send-command-and-move t]
+    ["Copy command"  ess-transcript-copy-command                t]
+    ["Send command"  ess-transcript-send-command                t]
+    ["Clean Region"  ess-transcript-DO-clean-region     t]
+    ["Switch S process" ess-switch-process              t]
+    ))
 
 (unless (featurep 'xemacs)
   (if (featurep 'ess-trans)
@@ -144,10 +144,10 @@
 
 (when (featurep 'xemacs)
   (defun ess-transcript-mode-xemacs-menu ()
-  "Hook to install `ess-transcript-mode' menu for XEmacs (w/ easymenu)."
-  (if 'ess-transcript-mode
+    "Hook to install `ess-transcript-mode' menu for XEmacs (w/ easymenu)."
+    (if 'ess-transcript-mode
         (easy-menu-add ess-transcript-mode-menu)
-    (easy-menu-remove ess-transcript-mode-menu)))
+      (easy-menu-remove ess-transcript-mode-menu)))
 
   (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
 
@@ -227,20 +227,20 @@ is not already."
 (defun ess-transcript-send-command-and-move ()
   "Send the command on this line, and move point to the next command."
   (interactive)
-;; (ess-transcript-send-command) ;; This doesn't work properly
-;; replacement code begins
-   (let* ((proc (or ess-local-process-name
+  ;; (ess-transcript-send-command) ;; This doesn't work properly
+  ;; replacement code begins
+  (let* ((proc (or ess-local-process-name
                    (ess-request-a-process "Evaluate into which process? " t)))
          (ess-buf (get-ess-buffer proc)))
-     (setq ess-local-process-name proc)
-     (if (get-buffer-window ess-buf) nil
-       (display-buffer ess-buf t))
-     (let ((input (inferior-ess-get-old-input)))
-       (save-excursion
+    (setq ess-local-process-name proc)
+    (if (get-buffer-window ess-buf) nil
+      (display-buffer ess-buf t))
+    (let ((input (inferior-ess-get-old-input)))
+      (save-excursion
         (set-buffer ess-buf)
         (goto-char (point-max))
         (ess-eval-linewise input nil nil nil 1))))
-;; replacement code ends
+  ;; replacement code ends
   (goto-char ess-temp-point)
   (comint-next-prompt 1))
 

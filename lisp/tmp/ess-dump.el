@@ -1,7 +1,7 @@
 ;;; ess-dump.el --- Getting objects into text files for editing
 
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 3 Sept 2000
@@ -91,7 +91,7 @@ generate the source buffer."
 
     ;; If the directory doesn't exist, offer to create it
     (if (file-exists-p (directory-file-name dirname)) nil
-      (if (y-or-n-p	; Approved
+      (if (y-or-n-p     ; Approved
            (format "Directory %s does not exist. Create it? " dirname))
           (make-directory (directory-file-name dirname))
         (error "Directory %s does not exist." dirname)))
@@ -166,7 +166,7 @@ generate the source buffer."
   (find-file-other-window filename)
   (ess-mode ess-customize-alist)
 
-  (auto-save-mode 1)		; Auto save in this buffer
+  (auto-save-mode 1)            ; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)
 
   (if ess-function-template
