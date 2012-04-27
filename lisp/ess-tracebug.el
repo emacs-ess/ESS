@@ -9,7 +9,7 @@
 ;; Copyright (C) 2010-2012, Vitalie Spinu, all rights reserved.
 ;; Created: Oct 14 14:15:22 2010
 ;; URL: http://code.google.com/p/ess-tracebug/
-;; Keywords: language, tools
+;; Keywords: tools, languages
 ;;
 ;; This file is *NOT* part of GNU Emacs.
 ;;
