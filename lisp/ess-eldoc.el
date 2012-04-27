@@ -1,7 +1,7 @@
 ;;; ess-eldoc.el --- Use eldoc to report R function names.
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen
 ;; Created: 2007-06-30
@@ -138,7 +138,7 @@
 
 ;;   (if ess-current-process-name
 ;;       (progn
-;;      (setq name (ess-guess-fun))		;guess the word at point.
+;;      (setq name (ess-guess-fun))             ;guess the word at point.
 ;;      (if (equal (length name) 0)
 ;;          nil
 ;;        ;; else
