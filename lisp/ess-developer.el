@@ -137,7 +137,7 @@ With prefix argument removes the packages, defaults to *ALL*."
                                         (append ess-developer-packages (list "*ALL*"))
                                         nil t nil nil "*ALL*")
                  (ess-completing-read "Add package"
-                                      (ess-get-words-from-vector ".packages(TRUE)\n") nil t)
+                                      (ess-get-words-from-vector "print(.packages(TRUE),max=1e6)\n") nil t)
                  )))
       (if remove
           (if (equal "*ALL*" sel)
@@ -197,7 +197,7 @@ otherwise call devSource."
           (if tracebug (ess-tb-set-last-input proc))
           (while (and (setq ns (pop dev-packs))
                       (not assigned-p))
-            (when (and (member ns nms)
+            (when (and (member ns nms) ;;todo: try to load the package if not loaded
                        (equal "TRUE" (car (ess-get-words-from-vector
                                            (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
               (let ((comm (if tracebug
@@ -290,7 +290,7 @@ here eventually. todo:
 "
   (interactive)
   (when (eq val t) (setq val 1))
-  (ess-force-buffer-current "Process to load into: " t)
+  (ess-force-buffer-current "Process to load into: " nil t)
   (let* ((proc (get-process ess-local-process-name))
          (developer-p (process-get proc 'developer))
          (ess-dev  (if (numberp val)
