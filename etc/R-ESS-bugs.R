@@ -376,8 +376,13 @@ for(s in seq(10, 50, len = 5))
 
 ### --- 16 ----
 ## unbalanced para at else lines, indentation is wrong
+## error: Point is not in a function according to 'ess-function-pattern'.
 getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv)))
     get(bindName, envir = whereEnv)
     else
     new("protoForm")
+
+parentContainer <- 
+    if(is.null(.getPrototype(.Object@host))) emptyenv()
+                  else  sdf
