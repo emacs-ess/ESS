@@ -569,7 +569,7 @@ in inferior buffers.  ")
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:Error .*: *\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
