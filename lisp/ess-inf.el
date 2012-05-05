@@ -464,12 +464,12 @@ This was rewritten by KH in April 1996."
                    process-environment)))
              (ess-write-to-dribble-buffer "Making Process...")
              (ess-write-to-dribble-buffer
-              (format "Buf %s, Proc %s, Prog %s\n Start File=%s, Args= %s.\n"
+              (format "Buf %s, :Proc %s, :Prog %s\n :Args= %s\nStart File=%s\n"
                       buffer
                       procname
                       inferior-ess-program
-                      inferior-ess-start-file
-                      inferior-ess-start-args))
+                      inferior-ess-start-args
+                      inferior-ess-start-file))
              (comint-exec buffer
                           procname
                           inferior-ess-program

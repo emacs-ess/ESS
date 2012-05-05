@@ -1025,6 +1025,14 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+
+(defcustom inferior-STA-args ""
+  "String of arguments used when starting stata.
+Due to technical limitations this list should include the program name
+See `inferior-STA-program-name'" 
+  :group 'ess-Stata
+  :type 'string)
+
 (defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max = 1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
@@ -1308,7 +1316,7 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-sas
   :type 'string)
 
-(defcustom inferior-STA-program-name "env"
+(defcustom inferior-STA-program-name "stata"
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
