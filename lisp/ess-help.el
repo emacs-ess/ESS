@@ -112,6 +112,8 @@ Utility used in \\[ess-display-help-on-object]."
                    (progn (goto-char PM) ;; S version 3 ; R :
                           (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
                    )))
+                   (progn (goto-char PM) ;; stata
+                          (re-search-forward "help for .* not found" nr-first t))
               )))
     (if debug
         (ess-write-to-dribble-buffer
@@ -754,12 +756,14 @@ Keystroke    Section
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
 Stata or XLispStat for additional information."
   (ess-make-buffer-current)
-  (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
-      (list (read-string p-string))
-    (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
-           (hlpobjs (ess-helpobjs-at-point help-files-list)))
-      (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
-                           nil nil nil nil (car hlpobjs)))
+  (if ess-get-help-topics-function
+      (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
+             (hlpobjs (ess-helpobjs-at-point help-files-list)))
+        (dbg hlpobjs)
+        (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+                             nil nil nil nil (car hlpobjs)))
+    ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
+    (read-string (format "%s: " p-string))
     ))
 
 ;;*;; Utility functions
