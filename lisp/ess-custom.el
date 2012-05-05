@@ -681,7 +681,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . 4)
+               (ess-arg-function-offset-new-line . 2)
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))

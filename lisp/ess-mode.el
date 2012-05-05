@@ -1257,18 +1257,19 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-backward-to-start-of-if (&optional limit)
   "Move to the start of the last ``unbalanced'' if."
-  (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
-  (let ((if-level 1)
-        (case-fold-search nil))
-    (while (not (zerop if-level))
-      (backward-sexp 1)
-      (cond ((looking-at "else\\b")
-             (setq if-level (1+ if-level)))
-            ((looking-at "if\\b")
-             (setq if-level (1- if-level)))
-            ((< (point) limit)
-             (setq if-level 0)
-             (goto-char limit))))))
+  (let ((beginning-of-defun-function nil))
+    (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
+    (let ((if-level 1)
+          (case-fold-search nil))
+      (while (not (zerop if-level))
+        (backward-sexp 1)
+        (cond ((looking-at "else\\b")
+               (setq if-level (1+ if-level)))
+              ((looking-at "if\\b")
+               (setq if-level (1- if-level)))
+              ((< (point) limit)
+               (setq if-level 0)
+               (goto-char limit)))))))
 
 ;;;*;;; Predefined indentation styles
 
