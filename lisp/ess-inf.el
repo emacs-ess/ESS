@@ -1046,6 +1046,7 @@ local({
           (set-process-buffer sprocess oldpb)
           (set-process-filter sprocess oldpf)
           (set-marker (process-mark sprocess) oldpm))))
+    buf
     ))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
