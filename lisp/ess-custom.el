@@ -1479,16 +1479,17 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
-(setq-default inferior-ess-primary-prompt "> ")
+;; (setq-default inferior-ess-primary-prompt "> ")
 
-(defvar inferior-ess-secondary-prompt "+ "
+(defvar inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
- (This is issued by S to continue an incomplete expression).")
+(This is issued by S to continue an incomplete expression).
+Set to nil if language doesn't support secondary prompt.")
 ;; :group 'ess-proc
 ;; :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
-(setq-default inferior-ess-secondary-prompt "+ ")
+;; (setq-default inferior-ess-secondary-prompt "+ ")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
@@ -1620,6 +1621,7 @@ This format string should use %s to substitute an object name."
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
+
 (defcustom inferior-ess-r-help-command ".help.ESS(\"%s\", help_type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
@@ -1628,6 +1630,10 @@ If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
+(defvar ess-get-help-topics-function nil
+  "Dialect specific help topics retrival"
+  )
+(make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
@@ -1645,6 +1651,8 @@ i.e. the list of directories and (recursive) objects that `ess-language' uses
 when it searches for objects.
 
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
+(make-variable-buffer-local 'inferior-ess-search-list-command)
+
 ;; and hence made buffer-local via that scheme...
 
 ;; ;; FIXME: this is nowhere used :
@@ -1686,16 +1694,15 @@ prevent timeouts in certain processes, such as completion.")
   :type '(choice (const nil) number))
 
 ;;*;; Regular expressions
-
 (defvar inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
 
 It is always used in transcript mode.  In inferior ess mode it is
 used only if `comint-use-prompt-regexp' is t.
 
-If not set in language cust-alist it is constructed at run time
+If not set in language's customise-alist it is constructed at run time
 from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt' within \\[ess-multi].")
+`inferior-ess-secondary-prompt' within `ess-multi'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 

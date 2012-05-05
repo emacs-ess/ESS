@@ -102,6 +102,7 @@ Utility used in \\[ess-display-help-on-object]."
                 (let
                     ((PM (point-min))
                      (case-fold-search t) )
+                  ;; todo: move to customize-alist
                   (or  ;; evaluate up to first non-nil (or end):
                    (< (- (point-max) PM) 80); buffer less than 80 chars
                    (not (setq searching t))
@@ -111,9 +112,9 @@ Utility used in \\[ess-display-help-on-object]."
                           (re-search-forward "^cat: .*--"       nr-first t))
                    (progn (goto-char PM) ;; S version 3 ; R :
                           (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
-                   )))
                    (progn (goto-char PM) ;; stata
                           (re-search-forward "help for .* not found" nr-first t))
+                   )))
               )))
     (if debug
         (ess-write-to-dribble-buffer
@@ -767,11 +768,12 @@ Stata or XLispStat for additional information."
     ))
 
 ;;*;; Utility functions
-(defun ess-get-help-topics-list (name)
+(defun ess-get-S-help-topics (&optional name)
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
 the latter and return it.  Otherwise, return `ess-help-topics-list'."
   (save-excursion
+    (setq name (or name ess-local-process-name))
     (set-buffer (process-buffer (get-ess-process name)))
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer
