@@ -102,6 +102,7 @@ Utility used in \\[ess-display-help-on-object]."
                 (let
                     ((PM (point-min))
                      (case-fold-search t) )
+                  ;; todo: move to customize-alist
                   (or  ;; evaluate up to first non-nil (or end):
                    (< (- (point-max) PM) 80); buffer less than 80 chars
                    (not (setq searching t))
@@ -111,6 +112,8 @@ Utility used in \\[ess-display-help-on-object]."
                           (re-search-forward "^cat: .*--"       nr-first t))
                    (progn (goto-char PM) ;; S version 3 ; R :
                           (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
+                   (progn (goto-char PM) ;; stata
+                          (re-search-forward "help for .* not found" nr-first t))
                    )))
               )))
     (if debug
@@ -754,20 +757,23 @@ Keystroke    Section
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
 Stata or XLispStat for additional information."
   (ess-make-buffer-current)
-  (if (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
-      (list (read-string p-string))
-    (let* ((help-files-list (ess-get-help-topics-list ess-current-process-name))
-           (hlpobjs (ess-helpobjs-at-point help-files-list)))
-      (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
-                           nil nil nil nil (car hlpobjs)))
+  (if ess-get-help-topics-function
+      (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
+             (hlpobjs (ess-helpobjs-at-point help-files-list)))
+        (dbg hlpobjs)
+        (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+                             nil nil nil nil (car hlpobjs)))
+    ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
+    (read-string (format "%s: " p-string))
     ))
 
 ;;*;; Utility functions
-(defun ess-get-help-topics-list (name)
+(defun ess-get-S-help-topics (&optional name)
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
 the latter and return it.  Otherwise, return `ess-help-topics-list'."
   (save-excursion
+    (setq name (or name ess-local-process-name))
     (set-buffer (process-buffer (get-ess-process name)))
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer

@@ -681,7 +681,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . 4)
+               (ess-arg-function-offset-new-line . 2)
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -1025,6 +1025,14 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+
+(defcustom inferior-STA-args ""
+  "String of arguments used when starting stata.
+Due to technical limitations this list should include the program name
+See `inferior-STA-program-name'" 
+  :group 'ess-Stata
+  :type 'string)
+
 (defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max = 1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
@@ -1308,7 +1316,7 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-sas
   :type 'string)
 
-(defcustom inferior-STA-program-name "env"
+(defcustom inferior-STA-program-name "stata"
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
@@ -1471,16 +1479,17 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
-(setq-default inferior-ess-primary-prompt "> ")
+;; (setq-default inferior-ess-primary-prompt "> ")
 
-(defvar inferior-ess-secondary-prompt "+ "
+(defvar inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
- (This is issued by S to continue an incomplete expression).")
+(This is issued by S to continue an incomplete expression).
+Set to nil if language doesn't support secondary prompt.")
 ;; :group 'ess-proc
 ;; :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
-(setq-default inferior-ess-secondary-prompt "+ ")
+;; (setq-default inferior-ess-secondary-prompt "+ ")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
@@ -1612,6 +1621,7 @@ This format string should use %s to substitute an object name."
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
+
 (defcustom inferior-ess-r-help-command ".help.ESS(\"%s\", help_type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
@@ -1620,6 +1630,10 @@ If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
+(defvar ess-get-help-topics-function nil
+  "Dialect specific help topics retrival"
+  )
+(make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
@@ -1637,6 +1651,8 @@ i.e. the list of directories and (recursive) objects that `ess-language' uses
 when it searches for objects.
 
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
+(make-variable-buffer-local 'inferior-ess-search-list-command)
+
 ;; and hence made buffer-local via that scheme...
 
 ;; ;; FIXME: this is nowhere used :
@@ -1678,16 +1694,15 @@ prevent timeouts in certain processes, such as completion.")
   :type '(choice (const nil) number))
 
 ;;*;; Regular expressions
-
 (defvar inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
 
 It is always used in transcript mode.  In inferior ess mode it is
 used only if `comint-use-prompt-regexp' is t.
 
-If not set in language cust-alist it is constructed at run time
+If not set in language's customise-alist it is constructed at run time
 from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt' within \\[ess-multi].")
+`inferior-ess-secondary-prompt' within `ess-multi'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 

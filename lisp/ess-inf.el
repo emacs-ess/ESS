@@ -464,12 +464,12 @@ This was rewritten by KH in April 1996."
                    process-environment)))
              (ess-write-to-dribble-buffer "Making Process...")
              (ess-write-to-dribble-buffer
-              (format "Buf %s, Proc %s, Prog %s\n Start File=%s, Args= %s.\n"
+              (format "Buf %s, :Proc %s, :Prog %s\n :Args= %s\nStart File=%s\n"
                       buffer
                       procname
                       inferior-ess-program
-                      inferior-ess-start-file
-                      inferior-ess-start-args))
+                      inferior-ess-start-args
+                      inferior-ess-start-file))
              (comint-exec buffer
                           procname
                           inferior-ess-program
@@ -1046,6 +1046,7 @@ local({
           (set-process-buffer sprocess oldpb)
           (set-process-filter sprocess oldpf)
           (set-marker (process-mark sprocess) oldpm))))
+    buf
     ))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
@@ -1950,9 +1951,10 @@ If in the output field, goes to the begining of previous input.
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
     (re-search-backward (concat "^" inferior-ess-prompt)))
-  (while (and (looking-at inferior-ess-secondary-prompt)
-              (not (eq (point) (point-min))))
-    (forward-line -1))
+  (when inferior-ess-secondary-prompt
+    (while (and (looking-at inferior-ess-secondary-prompt)
+                (not (eq (point) (point-min))))
+      (forward-line -1)))
   (if (looking-at inferior-ess-prompt)
       (comint-skip-prompt)
     (ess-error "Beggining of input not found"))
@@ -1965,21 +1967,24 @@ If in the output field, goes to the begining of previous input.
           command)
       (goto-char (point-at-bol));    (beginning-of-line) does not work in comint
       (unless (or (looking-at inferior-ess-prompt); cust.var, might not include sec-prompt
-                  (looking-at inferior-ess-secondary-prompt))
+                  (and inferior-ess-secondary-prompt
+                       (looking-at inferior-ess-secondary-prompt)))
         (ess-error "No command on this line."))
       (comint-skip-prompt)
       (inferior-ess--goto-input-start:regexp)
       (setq command (buffer-substring-no-properties (point) (point-at-eol)))
-      (forward-line 1)
-      (let ((comint-prompt-regexp inferior-ess-secondary-prompt)
-            beg)
-        (while (looking-at inferior-ess-secondary-prompt)
-          (comint-skip-prompt)
-          (setq beg (point))
-          (end-of-line)
-          (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
-          (forward-line 1)))
-      (forward-line -1)
+      (when inferior-ess-secondary-prompt
+        (forward-line 1)
+        (let ((comint-prompt-regexp inferior-ess-secondary-prompt)
+              beg)
+          (while (looking-at inferior-ess-secondary-prompt)
+            (comint-skip-prompt)
+            (setq beg (point))
+            (end-of-line)
+            (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
+            (forward-line 1)))
+        (forward-line -1)
+        )
       (setq ess-temp-point (point))
       command)
     ))

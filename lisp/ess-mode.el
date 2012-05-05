@@ -1088,14 +1088,15 @@ Returns nil if line starts inside a string, t if in a comment."
              ;; return nil (in string) or t (in comment)
              (nth 4 state))
             ((null containing-sexp)
-             ;; Line is at top level.  May be data or function definition,
+             ;; Line is at top level.  May be data or function definition
+             ;; or continuation of if,for,else not folowed by {
              (beginning-of-line)
-             (if (and (/= (following-char) ?\{)
-                      (save-excursion
-                        (ess-backward-to-noncomment (point-min))
-                        (ess-continued-statement-p)))
-                 ess-continued-statement-offset
-               0))   ; Unless it starts a function body
+             (let (orig-indent)
+               (if (and (/= (following-char) ?\{)
+                        (progn  (ess-backward-to-noncomment (point-min))
+                                (setq  orig-indent (ess-continued-statement-p))))
+                   (+ orig-indent ess-continued-statement-offset)
+                 0)))   ; Unless it starts a function body
             ((/= (char-after containing-sexp) ?{)
              ;; line is expression, not statement:
              ;; indent to just after the surrounding open.
@@ -1123,12 +1124,12 @@ Returns nil if line starts inside a string, t if in a comment."
                      ;;   a <- some.function(
                      ;;     arg1,
                      ;;     arg2)
-                     ;; case 1:
+                     ;; case 1: numeric
                      ((and (numberp ess-arg-function-offset-new-line)
                            (looking-at-p "[ \t]*([ \t]*$"))
                       (forward-sexp -1)
                       (+ (current-column) ess-arg-function-offset-new-line))
-                     ;; case 2:
+                     ;; case 2: list
                      ((and (listp ess-arg-function-offset-new-line)
                            (numberp (car ess-arg-function-offset-new-line))
                            (looking-at-p "[ \t]*([ \t]*$"))
@@ -1206,6 +1207,7 @@ Returns nil if line starts inside a string, t if in a comment."
                      (current-indentation))))))))))
 
 (defun ess-continued-statement-p ()
+  "If a continuatieon of a statement, return an indent to add to continuation."
   (let ((eol (point)))
     (save-excursion
       (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\]))
@@ -1218,22 +1220,32 @@ Returns nil if line starts inside a string, t if in a comment."
                ;; (foo)  ## or
                ;; !(foo)
                (forward-sexp -2)
-               (looking-at "if\\b[ \t]*(\\|function\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")))
+               (if (looking-at "if\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")
+                   (- (point) (point-at-bol))
+                 (when (looking-at "function\\b[ \t]*(")
+                   0))))
             ((progn (forward-sexp -1)
                     (and (looking-at "else\\b\\|repeat\\b")
                          (not (looking-at "else\\s_\\|repeat\\s_"))))
-             (skip-chars-backward " \t}")
-             (or (bolp)
-                 (= (preceding-char) ?\;)))
+             (let ((pt (point)))
+               (skip-chars-backward " \t")
+               (if (or (bolp)
+                       (eq (preceding-char) ?\;))
+                   (- pt (point))
+                 (when (eq ?} (preceding-char))
+                   (- (point) (point-at-bol) 1)))))
             (t
-             (progn (goto-char eol)
-                    (skip-chars-backward " \t")
-                    (or (and (> (current-column) 1)
-                             (save-excursion (backward-char 1)
-                                             (looking-at "[-:+*/><=]")))
-                        (and (> (current-column) 3)
-                             (progn (backward-char 3)
-                                    (looking-at "%[^ \t]%"))))))))))
+             (when 
+                 (progn (goto-char eol)
+                        (skip-chars-backward " \t")
+                        (or (and (> (current-column) 1)
+                                 (save-excursion (backward-char 1)
+                                                 (looking-at "[-:+*/><=]")))
+                            (and (> (current-column) 3)
+                                 (progn (backward-char 3)
+                                        (looking-at "%[^ \t]%")))))
+               0)
+             )))))
 
 (defun ess-backward-to-noncomment (lim)
   (let (opoint stop)
@@ -1257,18 +1269,19 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-backward-to-start-of-if (&optional limit)
   "Move to the start of the last ``unbalanced'' if."
-  (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
-  (let ((if-level 1)
-        (case-fold-search nil))
-    (while (not (zerop if-level))
-      (backward-sexp 1)
-      (cond ((looking-at "else\\b")
-             (setq if-level (1+ if-level)))
-            ((looking-at "if\\b")
-             (setq if-level (1- if-level)))
-            ((< (point) limit)
-             (setq if-level 0)
-             (goto-char limit))))))
+  (let ((beginning-of-defun-function nil))
+    (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
+    (let ((if-level 1)
+          (case-fold-search nil))
+      (while (not (zerop if-level))
+        (backward-sexp 1)
+        (cond ((looking-at "else\\b")
+               (setq if-level (1+ if-level)))
+              ((looking-at "if\\b")
+               (setq if-level (1- if-level)))
+              ((< (point) limit)
+               (setq if-level 0)
+               (goto-char limit)))))))
 
 ;;;*;;; Predefined indentation styles
 

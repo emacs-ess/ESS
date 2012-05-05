@@ -1,8 +1,26 @@
+2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (inferior-STA-program-name): is now "stata" as it
+	should be and not "env" + all the support modifications.
+
+	* ess-sta-l.el (ess-help-STA-sec-keys-alist): corrections and
+	additions to sections keys and regular expressions for STATA.
+
+	* ess-s-l.el (S-common-cust-alist)
+	* ess-sta-d.el (ess--STA-retrive-topics-from-search)
+	(ess-get-STA-help-topics): customizable topic retrieval. Stata has
+	same interactive facilities as R.
+
+	* ess-custom.el (inferior-STA-args): customizable stata arguments.
+	(inferior-STA-program-name): program name is "stat" as it should
+	be (and not "env").
+
 2012-05-02  Sam Steingold  <sds@gnu.org>
 
 	* ess-r-args.el (tooltip-show-at-point): Do not use the assoc
 	package (which is obsoleted by Emacs 24.2 anyway), use let
 	instead, it is cleaner and more reliable.
+
 
 2012-04-23  Vitalie Spinu  <spinuvit@gmail.com>
 

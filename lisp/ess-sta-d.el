@@ -58,11 +58,14 @@
     (inferior-ess-objects-command  . "description\n")
     (inferior-ess-help-command     . "set more off\n help %s\n")
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . "^.") ;; "^. ?")
-    (inferior-ess-secondary-prompt . "^.") ;; "^. ?")
+    (inferior-ess-primary-prompt   . ". ")
+    (inferior-ess-secondary-prompt . nil)
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-stata")
-    (inferior-ess-start-args       . "")) ; "-q"
+    (inferior-ess-start-args       . inferior-STA-args)
+    (ess-get-help-topics-function  . 'ess-get-STA-help-topics)
+    (inferior-ess-search-list-command   . "set more off\n search()\n")
+    )
   "Variables to customize for Stata.")
 
 
@@ -84,11 +87,8 @@
            ess-dialect
            (current-buffer)))
   (let ((sta-start-args
-         (concat "TERM=emacs stata "
-                 inferior-ess-start-args
-                 (if start-args (read-string
-                                 "Starting Args [possibly -k####] ? ")
-                   nil))))
+         (concat inferior-STA-args
+                 (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
     (inferior-ess sta-start-args)))
 
 
@@ -97,7 +97,26 @@
   (interactive)
   (ess-transcript-mode STA-customize-alist))
 
+(defun ess--STA-retrive-topics-from-search ()
+  (with-current-buffer (ess-command inferior-ess-search-list-command)
+    (goto-char (point-min))
+    (let (topics)
+      (while (re-search-forward "(help \\(.+?\\)\\( if installed\\| for replacement.*\\)?)$" nil t)
+        (setq topics
+              (nconc (split-string (match-string-no-properties 1) ",\\|; +")
+                     topics)))
+      (delete-dups topics)
+      )))
 
+(defun ess-get-STA-help-topics (&optional name)
+  "Return a list of current STA help topics associated with process NAME.
+If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
+the latter and return it.  Otherwise, return `ess-help-topics-list'."
+  (or (ess-process-get 'help-topics)
+      (progn
+        (ess-process-put 'help-topics (ess--STA-retrive-topics-from-search))
+        (ess-process-get 'help-topics))
+      ))
 
  ; Provide package
 

@@ -69,14 +69,17 @@
   '((?d . "Description")
     (?e . "Examples")
     (?o . "Options")
-    (?s . "Also see"))
-  "Help section keys for S4.
+    (?s . "Also see")
+    (?S . "Syntax")
+    (?r . "Remarks")
+    (?t . "Title"))
+  "Help section keys.
 `key' indicates the keystroke to use to search for the section heading
 `string' in an Stata help file. `string' is used as part of a
 regexp-search, and so specials should be quoted.
 ")
 
-(defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n^[-]+$"
+(defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n-+\\|http:"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
 (defvar STA-syntax-table nil "Syntax table for Stata code.")
