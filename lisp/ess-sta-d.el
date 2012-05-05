@@ -101,9 +101,9 @@
   (with-current-buffer (ess-command inferior-ess-search-list-command)
     (goto-char (point-min))
     (let (topics)
-      (while (re-search-forward "(help \\(.+?\\)\\( if installed\\)?)$" nil t)
+      (while (re-search-forward "(help \\(.+?\\)\\( if installed\\| for replacement.*\\)?)$" nil t)
         (setq topics
-              (nconc (split-string (match-string-no-properties 1) ", +")
+              (nconc (split-string (match-string-no-properties 1) ",\\|; +")
                      topics)))
       (delete-dups topics)
       )))
