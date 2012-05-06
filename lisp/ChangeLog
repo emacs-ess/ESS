@@ -1,6 +1,8 @@
 2012-05-06  Sam Steingold  <sds@gnu.org>
 
 	* ess-site.el: Do not quote lambda expressions.
+	* noweb-font-lock-mode.el: Avoid `progn' in `cond' and some other
+	minor code cleanup.
 
 2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
 
