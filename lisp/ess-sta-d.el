@@ -86,10 +86,12 @@
    (format "(STA): ess-dialect=%s , buf=%s \n"
            ess-dialect
            (current-buffer)))
-  (let ((sta-start-args
-         (concat inferior-STA-args
+  (let ((sta-start-args 
+         (concat inferior-STA-start-args
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
-    (inferior-ess sta-start-args)))
+    (inferior-ess sta-start-args)
+    ;; in the proc buffer
+    (process-send-string (get-buffer-process (current-buffer)) "set more off\n")))
 
 
 (defun STA-transcript-mode ()
@@ -105,7 +107,7 @@
         (setq topics
               (nconc (split-string (match-string-no-properties 1) ",\\|; +")
                      topics)))
-      (delete-dups topics)
+      (nreverse (delete-dups topics))
       )))
 
 (defun ess-get-STA-help-topics (&optional name)
