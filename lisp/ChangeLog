@@ -1,3 +1,7 @@
+2012-05-06  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Do not quote lambda expressions.
+
 2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (inferior-STA-program-name): is now "stata" as it
