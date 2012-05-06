@@ -55,7 +55,7 @@
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (inferior-ess-font-lock-keywords . ess-STA-mode-font-lock-keywords)
     (inferior-ess-program          . inferior-STA-program-name)
-    (inferior-ess-objects-command  . "description\n")
+    (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
     (inferior-ess-exit-command     . "exit\n")
     (inferior-ess-primary-prompt   . "\\. ")
