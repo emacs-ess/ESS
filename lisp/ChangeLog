@@ -1,3 +1,11 @@
+2012-05-06  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Do not quote lambda expressions.
+	* noweb-font-lock-mode.el (noweb-font-lock-fontify-chunk-by-number):
+	Use `syntax-begin-function' when available instead of
+	`font-lock-beginning-of-syntax-function' (obsolete in Emacs 23.3).
+	Avoid `progn' in `cond' and some other minor code cleanup.
+
 2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* ess-custom.el (inferior-STA-program-name): is now "stata" as it
