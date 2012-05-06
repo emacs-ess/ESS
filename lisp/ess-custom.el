@@ -1025,11 +1025,15 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+(defcustom inferior-STA-start-file nil
+  "Initialization file for Stata."
+  :group 'ess-Stata)
 
-(defcustom inferior-STA-args ""
-  "String of arguments used when starting stata.
-Due to technical limitations this list should include the program name
-See `inferior-STA-program-name'" 
+(defcustom inferior-STA-start-args ""
+  "String of switches used when starting stata.
+Don't use this to send initialization command to stata, use
+`inferior-STA-start-file' instead. Also see
+`inferior-STA-program-name'."
   :group 'ess-Stata
   :type 'string)
 
