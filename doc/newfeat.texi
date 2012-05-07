@@ -2,12 +2,12 @@
 
 Changes/New Features in 12.04-1:
 @itemize @bullet
-@item iESS{[Stata]} has, ido based, help system.
-@item iESS{[Stata]}: New custom variable inferior-STA-start-file.
-@item iESS{[Stata]}: @code{inferior-STA-program-name} is now ``stata''
+@item @iESS{[Stata]} has, ido based, help system.
+@item @iESS{[Stata]}: New custom variable inferior-STA-start-file.
+@item @iESS{[Stata]}: @code{inferior-STA-program-name} is now ``stata''
 and can be  customized.
-@item ESS{[Stata]} New sections in stata help files
-Syntax(@kbd{s-S}), Remarks(@kbd{r}), Title(@kbd{t)).
+@item @ESS{[Stata]} New sections in stata help files
+Syntax(@kbd{s-S}), Remarks(@kbd{r}), Title(@kbd{t}).
 @end itemize
 
 Bug Fixes in 12.04-1:
@@ -15,7 +15,7 @@ Bug Fixes in 12.04-1:
 @item @ESS{[R]} better @code{ess-tracebug} error handling.
 @item @ESS{[R]} corrected @code{ess-eldoc} help string filtering
 and improved argument caching.
-@item @ESS{[R]}: Indentation of non-block{} if/else/for/while lines fixed
+@item @ESS{[R]}: Indentation of non-block if/else/for/while lines fixed
 @item @code{M-x ess-version} should work better.
 @item @ESS{}: Filename completion now again works inside strings.
 @item @iESS{[Stata]}: Fixed prompt detection issue.
