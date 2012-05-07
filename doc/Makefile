@@ -108,9 +108,9 @@ install-other-docs: pdf html
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
 
 uninstall :
-	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE
-	-cd $(DOCDIR) && $(UNINSTALL) html/ess.html html/readme.html 
-	-cd $(DOCDIR) && $(UNINSTALL) refcard/refcard.pdf 
+	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf README ANNOUNCE
+	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html 
+	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf 
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)

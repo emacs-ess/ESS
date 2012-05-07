@@ -21,4 +21,4 @@ install :
 
 uninstall : 
 	-cd $(ETCDIR) && $(UNINSTALL) $(ETCFILES) 
-	-cd $(ETCDIR)/icons && $(UNINSTALL) $(ICONS) 
+	-cd $(ETCDIR) && $(UNINSTALL) $(ICONS) 
