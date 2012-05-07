@@ -651,9 +651,11 @@ LANGUAGE (and DIALECT)."
            ;; (save-excursion <the above>) fails, but this "works":
            (switch-to-buffer cur-buf)
            )
-          (t
-           ;; else: ess-language is not S
-           ;; FIXME find a better solution than this, at least in some cases:
+          (t ;; else: ess-language is not S
+
+           ;; Typically triggered from
+           ;; ess-force-buffer-current("Process to load into: ")
+           ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
            (error "No ESS processes running; not yet implemented to start (%s,%s)"
                   language dialect)))))
 
