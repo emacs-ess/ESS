@@ -760,7 +760,6 @@ Stata or XLispStat for additional information."
   (if ess-get-help-topics-function
       (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
              (hlpobjs (ess-helpobjs-at-point help-files-list)))
-        (dbg hlpobjs)
         (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
                              nil nil nil nil (car hlpobjs)))
     ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
