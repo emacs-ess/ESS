@@ -726,13 +726,11 @@ Keystroke    Section
               (substitute-command-keys
                "\\{ess-help-sec-map}")))))
 
-(defun ess-helpobjs-at-point (&optional slist)
+(defun ess-helpobjs-at-point (slist)
   ;;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
   ;;; the function call point is in. DEF is either OBJ or FUN (in that order)
   ;;; which has a a help file, i.e. it is a member of slist (string-list). nil
   ;;; otherwise
-  (unless slist
-    (setq slist (ess-get-help-topics-list ess-current-process-name)))
   (let ((obj (ess-read-object-name-default))
         (fun (condition-case ()
                  (save-excursion
@@ -776,7 +774,7 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
     (set-buffer (process-buffer (get-ess-process name)))
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer
-     (format "(ess-get-help-topics-list %s) .." name))
+     (format "(ess-get-S-help-topics %s) .." name))
     (if (or (not ess-help-topics-list) ess-sp-change)
         (setq ess-help-topics-list
               (ess-uniq-list
