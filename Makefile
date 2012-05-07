@@ -12,8 +12,8 @@ all install: SVN-REVISION
 
 ## the rest of the targets are for ESS developer's use only :
 
-VERSION:
-	@echo "$(ESSVERSION)" > $@
+# VERSION:
+# 	@echo "$(ESSVERSION)" > $@
 ## Hmm, this is a bit brittle ... but for distribution, there's no problem
 SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
 	  (LC_ALL=C TZ=GMT svn info || $(ECHO) "Revision: unknown") 2> /dev/null \
@@ -118,4 +118,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f VERSION SVN-REVISION dist
+	rm -f SVN-REVISION dist

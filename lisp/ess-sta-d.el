@@ -55,14 +55,14 @@
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (inferior-ess-font-lock-keywords . ess-STA-mode-font-lock-keywords)
     (inferior-ess-program          . inferior-STA-program-name)
-    (inferior-ess-objects-command  . "description\n")
-    (inferior-ess-help-command     . "set more off\n help %s\n")
+    (inferior-ess-objects-command  . "describe\n")
+    (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . ". ")
+    (inferior-ess-primary-prompt   . "\\. ")
     (inferior-ess-secondary-prompt . nil)
     (comint-use-prompt-regexp      . t)
-    (inferior-ess-start-file       . nil) ;"~/.ess-stata")
-    (inferior-ess-start-args       . inferior-STA-args)
+    (inferior-ess-start-file       . inferior-STA-start-file) ;"~/.ess-stata")
+    (inferior-ess-start-args       . inferior-STA-start-args)
     (ess-get-help-topics-function  . 'ess-get-STA-help-topics)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
     )
@@ -86,10 +86,12 @@
    (format "(STA): ess-dialect=%s , buf=%s \n"
            ess-dialect
            (current-buffer)))
-  (let ((sta-start-args
-         (concat inferior-STA-args
+  (let ((sta-start-args 
+         (concat inferior-STA-start-args
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
-    (inferior-ess sta-start-args)))
+    (inferior-ess sta-start-args)
+    ;; in the proc buffer
+    (process-send-string (get-buffer-process (current-buffer)) "set more off\n")))
 
 
 (defun STA-transcript-mode ()
@@ -105,7 +107,7 @@
         (setq topics
               (nconc (split-string (match-string-no-properties 1) ",\\|; +")
                      topics)))
-      (delete-dups topics)
+      (nreverse (delete-dups topics))
       )))
 
 (defun ess-get-STA-help-topics (&optional name)

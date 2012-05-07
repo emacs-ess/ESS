@@ -1,5 +1,13 @@
 @itemize @w{}
 
+Bug Fixes in 12.04-1:
+@itemize @bullet
+@item @code{M-x ess-version} should work better.
+@item @ESS{}: Filename completion now again works inside strings.
+@item @iESS{[Stata]}: works again, including help.
+@item @ESS{[Rd]}: R is autostarted also from here, when needed.
+@end itemize
+
 Changes/New Features in 12.04:
 @itemize @bullet
 @item @ESS{}: Reverting new behavior of 12.03, @kbd{TAB} in @code{ess-mode}

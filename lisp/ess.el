@@ -389,15 +389,17 @@ Otherwise try a list of fixed known viewers."
 ;; whitespace).    Return a list of the words.
 ;; Taken from rlogin.el, from the comint package, from XEmacs 20.3.
 (defun ess-line-to-list-of-words (line)
-  (let ((list nil)
-        (posn 0))
-    ;; (match-data (match-data)))
-    (while (string-match "[^ \t\n]+" line posn)
-      (setq list (cons (substring line (match-beginning 0) (match-end 0))
-                       list))
-      (setq posn (match-end 0)))
-    (store-match-data (match-data))
-    (nreverse list)))
+  (if (listp line)
+      line
+    (let ((list nil)
+          (posn 0))
+      ;; (match-data (match-data)))
+      (while (string-match "[^ \t\n]+" line posn)
+        (setq list (cons (substring line (match-beginning 0) (match-end 0))
+                         list))
+        (setq posn (match-end 0)))
+      (store-match-data (match-data))
+      (nreverse list))))
 
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to dribble ('*ESS*') buffer."

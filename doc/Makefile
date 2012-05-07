@@ -85,9 +85,6 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-../VERSION:
-	cd .. ; $(MAKE) VERSION
-
 info/ess.info: $(TEXISRC) ../VERSION
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi

@@ -1,3 +1,8 @@
+2012-05-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-rd.el (Rd-mode): set ess-language "S" and ess-dialect "R", so
+	R may be autostarted, when desired.
+
 2012-05-06  Sam Steingold  <sds@gnu.org>
 
 	* ess-site.el: Do not quote lambda expressions.
