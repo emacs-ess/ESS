@@ -18,3 +18,7 @@ install :
 	$(INSTALL) $(ETCFILES) $(ETCDIR)
 	$(INSTALL) $(ICONS) $(ETCDIR)/icons
 	chmod +x $(ETCDIR)/ess-sas-sh-command $(ETCDIR)/backbug? $(ETCDIR)/config.guess
+
+uninstall : 
+	-cd $(ETCDIR) && $(UNINSTALL) $(ETCFILES) 
+	-cd $(ETCDIR)/icons && $(UNINSTALL) $(ICONS) 
