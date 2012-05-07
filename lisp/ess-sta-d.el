@@ -91,7 +91,7 @@
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
     (inferior-ess sta-start-args)
     ;; in the proc buffer
-    (process-send-string (get-buffer-process (current-buffer)) "set more off\n")))
+    (process-send-string (get-buffer-process (current-buffer)) "q\nset more off\n")))
 
 
 (defun STA-transcript-mode ()
