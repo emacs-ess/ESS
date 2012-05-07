@@ -393,10 +393,11 @@ there is no process NAME)."
 If no-timestamp, don't set the last-eval timestamp.
 Return the 'busy state."
   ;; todo: do it in one search, use starting position, use prog1
-  (let ((busy (not (string-match (concat inferior-ess-primary-prompt "\\'") string))))
+  (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
-                 (string-match (concat inferior-ess-secondary-prompt "\\'") string))
+                 (when inferior-ess-secondary-prompt
+                   (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
     (unless no-timestamp
       (process-put proc 'last-eval (current-time)))
     busy
@@ -1663,7 +1664,7 @@ to continue it."
           ;; Do not anchor to bol with `^'
           (concat "\\("
                   inferior-ess-primary-prompt
-                  "\\|"
+                  (when inferior-ess-secondary-prompt "\\|")
                   inferior-ess-secondary-prompt
                   "\\)")))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
