@@ -93,9 +93,12 @@
     (inferior-ess sta-start-args)
     (let ((proc (get-process ess-local-process-name)))
       (while (process-get proc 'sec-prompt)
+        ;; get read of all --more-- if stata.msg is too long.
         (ess-send-string proc "q")
         (ess-wait-for-process proc t))
-      (ess-send-string proc "set more off"))))
+      (ess-send-string proc "set more off")
+      (goto-char (point-max))
+      )))
 
 
 (defun STA-transcript-mode ()
