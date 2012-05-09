@@ -4,7 +4,7 @@
 include ./Makeconf
 
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install: SVN-REVISION
+all install uninstall: SVN-REVISION
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@

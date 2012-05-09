@@ -70,6 +70,9 @@ install: dist
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
+uninstall: 
+	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
+
 clean:
 	rm -f $(ELC) dist
 

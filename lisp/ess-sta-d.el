@@ -58,8 +58,9 @@
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
     (inferior-ess-exit-command     . "exit\n")
-    (inferior-ess-primary-prompt   . "\\. ")
-    (inferior-ess-secondary-prompt . nil)
+    ;; --more-- is necessary here (hangs otherwise if startup stata.msg is big)
+    (inferior-ess-primary-prompt   . "\\. \\|--more--") 
+    (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . inferior-STA-start-file) ;"~/.ess-stata")
     (inferior-ess-start-args       . inferior-STA-start-args)
@@ -90,8 +91,14 @@
          (concat inferior-STA-start-args
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
     (inferior-ess sta-start-args)
-    ;; in the proc buffer
-    (process-send-string (get-buffer-process (current-buffer)) "set more off\n")))
+    (let ((proc (get-process ess-local-process-name)))
+      (while (process-get proc 'sec-prompt)
+        ;; get read of all --more-- if stata.msg is too long.
+        (ess-send-string proc "q")
+        (ess-wait-for-process proc t))
+      (ess-send-string proc "set more off")
+      (goto-char (point-max))
+      )))
 
 
 (defun STA-transcript-mode ()
