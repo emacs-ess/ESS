@@ -28,10 +28,10 @@
 @uref{mailto:spluque@@gmail.com, Sebastian P. Luque}
 @c --------
 @item
-@c @uref{http://www.google.com/, Vitalie Spinu}
-@uref{mailto:spinuvit@@gmail.com, Vitalie Spinu}
-@c --------
-@item
 @c @uref{http://www.google.com,Henning Redestig}
 @uref{mailto:henning.red@@googlemail.com, Henning Redestig}
+@c --------
+@item
+@c @uref{http://www.google.com/, Vitalie Spinu}
+@uref{mailto:spinuvit@@gmail.com, Vitalie Spinu}
 @end itemize
