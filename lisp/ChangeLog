@@ -1,3 +1,7 @@
+2012-05-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess.el (ess-version-string): make robust against wrong/empty SVN-REVISION
+
 2012-05-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-rd.el (Rd-mode): set ess-language "S" and ess-dialect "R", so
