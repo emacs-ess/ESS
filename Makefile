@@ -97,7 +97,7 @@ rel: ChangeLog dist tag homepage
 
 tag:
 	@echo "** Tagging the release **"
-	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSIONTAG)
+	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 homepage:
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
