@@ -45,7 +45,7 @@ downloads: all RPM.spec cleanup-dist
 	svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
 	fgrep ess-revision $(ESSDIR)/lisp/ess-custom.el
-	cp -p RPM.spec $(ESSDIR)/
+	cp -p RPM.spec SVN-REVISION $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	@echo "** Creating .tgz file **"
