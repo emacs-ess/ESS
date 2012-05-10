@@ -43,9 +43,8 @@ downloads: all RPM.spec cleanup-dist
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
 	svn cleanup
-## ugly hack; otherwise get ess-revision "12-04-rexported":
-	cd lisp; $(MAKE) -W ../SVN-REVISION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	cd $(ESSDIR)/lisp; $(MAKE) ess-custom.el; fgrep ess-revision ess-custom.el; cd ../..
+	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+	fgrep ess-revision $(ESSDIR)/lisp/ess-custom.el
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
