@@ -19,7 +19,7 @@ SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
 	(LC_ALL=C TZ=GMT svn info -r HEAD || $(ECHO) "Revision: unknown") 2> /dev/null \
 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
 	    | cut -d' ' -f1,2,3,4 > $@-tmp
-	if [ -s $@-tmp ]; then mv $@-tmp $@ ; else echo 'not available' > $@ ; fi
+	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -e $@ ]; then echo 'not available' > $@ ; fi
 
 
 ## --- PRE-release ---
@@ -40,12 +40,13 @@ downloads: all RPM.spec cleanup-dist
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-svn; $(GNUTAR) cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
-	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
+	CLEANUP="user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
 	svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	fgrep ess-revision $(ESSDIR)/lisp/ess-custom.el
+         # make it newer than VERSION in the tarball:
+	touch SVN-REVISION
 	cp -p RPM.spec SVN-REVISION $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
