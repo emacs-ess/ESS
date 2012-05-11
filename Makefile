@@ -57,7 +57,7 @@ downloads: all RPM.spec cleanup-dist
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 
-dist: downloads
+dist: VERSION downloads
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
 	touch $@
@@ -71,13 +71,16 @@ cleanup-dist:
 cleanup-rel:
 	@rm -f dist lisp/dist $(ESSDIR)*
 
-%.spec: %.spec.in
+%.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 
 ## --- RELEASE ---
 
-ChangeLog:
+## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'
+##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
+## 	ChangeLog often ends up newer than VERSION
+ChangeLog: VERSION
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
