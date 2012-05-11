@@ -45,9 +45,9 @@ downloads: all RPM.spec cleanup-dist
 	 $(MAKE) all cleanaux ; cd ../..
 	svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-         # make it newer than VERSION in the tarball:
-	touch etc/SVN-REVISION
-	cp -p RPM.spec etc/SVN-REVISION $(ESSDIR)/
+         # touch: make it newer than VERSION in the tarball:
+	sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
+	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	@echo "** Creating .tgz file **"
