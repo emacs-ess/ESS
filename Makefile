@@ -4,7 +4,7 @@
 include ./Makeconf
 
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install uninstall: SVN-REVISION
+all install uninstall: etc/SVN-REVISION
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
@@ -15,7 +15,7 @@ all install uninstall: SVN-REVISION
 # VERSION:
 # 	@echo "$(ESSVERSION)" > $@
 ## Hmm, this is a bit brittle ... but for distribution, there's no problem
-SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
+etc/SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
 	(LC_ALL=C TZ=GMT svn info -r HEAD || $(ECHO) "Revision: unknown") 2> /dev/null \
 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
 	    | cut -d' ' -f1,2,3,4 > $@-tmp
@@ -46,8 +46,8 @@ downloads: all RPM.spec cleanup-dist
 	svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
          # make it newer than VERSION in the tarball:
-	touch SVN-REVISION
-	cp -p RPM.spec SVN-REVISION $(ESSDIR)/
+	touch etc/SVN-REVISION
+	cp -p RPM.spec etc/SVN-REVISION $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	@echo "** Creating .tgz file **"
@@ -122,4 +122,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f SVN-REVISION* dist
+	rm -f etc/SVN-REVISION* dist

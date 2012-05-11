@@ -160,7 +160,7 @@
  ; Miscellaneous "ESS globals"
 
 (defun ess-version-string ()
-  (let* ((fname (concat ess-etc-directory "../SVN-REVISION"))
+  (let* ((fname (concat ess-etc-directory "SVN-REVISION"))
          (buffer (and (file-exists-p fname)
                       (find-file-noselect fname)))
          c1 c2
