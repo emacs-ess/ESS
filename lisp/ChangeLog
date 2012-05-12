@@ -1,8 +1,12 @@
+2012-05-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-sas-d.el: Set C-c C-w only in SAS (e.g. *not* in R).
+
 2012-05-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-rtf-*): XEmacs support returns!
 	5.13 era functions are used if (featurep 'xemacs)
-	otherwise, 5.14+ Emacs variants 
+	otherwise, 5.14+ Emacs variants
 
 2012-05-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 

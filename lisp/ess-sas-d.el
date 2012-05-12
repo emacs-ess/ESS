@@ -304,7 +304,10 @@ their own frames."
     (make-frame)))
 
 
-(define-key ess-mode-map "\C-c\C-w"        'ess-multi-frame-SAS)
+(add-hook 'ess-mode-hook
+          (lambda ()
+            (when (string= ess-language "SAS") ;; e.g. not for R-only users
+              (local-set-key "\C-c\C-w" 'ess-multi-frame-SAS))))
 
  ; Provide package
 
