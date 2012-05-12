@@ -1498,7 +1498,7 @@ Set to nil if language doesn't support secondary prompt.")
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt (but not '^Deg. ' !)
 ;; FIXME: The tracebug part makes things brittle --> add it only for tracebug!!
-(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*[>+] \\( [>+.] ?\\)?"
+(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*[>+] \\([>+.] \\)?"
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 
 You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
