@@ -59,7 +59,7 @@
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
     (inferior-ess-exit-command     . "exit\n")
     ;; --more-- is necessary here (hangs otherwise if startup stata.msg is big)
-    (inferior-ess-primary-prompt   . "\\. \\|--more--") 
+    (inferior-ess-primary-prompt   . "[.:] \\|--more--") 
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . inferior-STA-start-file) ;"~/.ess-stata")
