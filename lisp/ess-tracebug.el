@@ -457,7 +457,7 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
   "Replacement used for long + prompt.
 Customization of this variable is not recommended. You can set it
 to '. '. If you set it to anything else you will have to change
-`inferior-ess-S-prompt' to assure the correct prompt navigation
+`inferior-S-prompt' to assure the correct prompt navigation
 in inferior buffers.  ")
 
 (defmacro ess-copy-key (from-map to-map fun)

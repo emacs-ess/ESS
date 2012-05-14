@@ -127,7 +127,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.04-1" ;; updated by 'make'
+(defvar ess-version "12.04-3" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -347,7 +347,7 @@ aggressive and dangerous).
                  (const unless-eol)
                  (const t)))
 
-(defalias 'ess-first-tab-never-completes-p  ess-first-tab-never-complete)
+(defvaralias 'ess-first-tab-never-completes-p  'ess-first-tab-never-complete)
 
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
@@ -1478,7 +1478,7 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 ;; does it make sense to customize here, as we currently set this *directly*
 ;; in the FOO-BAR-cust-alist's ???
 ;; VS: Right. It only confuses users. It should be set in post-run-hook if
-;; desired;  inferior-ess-S-prompt should be customized instead.
+;; desired;  inferior-S-prompt should be customized instead.
 (defvar inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
@@ -1497,15 +1497,16 @@ Set to nil if language doesn't support secondary prompt.")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
-(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)+"
+(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*[+>] "
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 
 You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
-skip secondary prompt during navigation.
+skip secondary prompt when invoking `comint-previous-prompt'.
  "
   :group 'ess-proc
   :type 'string)
 
+(defvaralias 'inferior-ess-S-prompt 'inferior-S-prompt)
 ;;*;; Variables controlling interaction with the ESS process
 
 (defcustom ess-execute-in-process-buffer nil

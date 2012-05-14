@@ -160,30 +160,32 @@
  ; Miscellaneous "ESS globals"
 
 (defun ess-version-string ()
-  (let* ((fname (concat ess-etc-directory "../SVN-REVISION"))
+  (let* ((fname (concat ess-etc-directory "SVN-REVISION"))
          (buffer (and (file-exists-p fname)
                       (find-file-noselect fname)))
-         c1 c2)
-    ;; set the "global" ess-revision
-    (setq ess-revision
+         c1 c2
+         (rev
           (if buffer
-              ;; has two lines that look like
-              ;; Revision: 4803
-              ;; Last Changed Date: 2012-04-16
+              ;; then it has two lines that look like
+              ;; |Revision: 4803
+              ;; |Last Changed Date: 2012-04-16
               (save-excursion
                 (set-buffer buffer)
                 (ess-write-to-dribble-buffer
                  (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
                 (goto-char (point-min))
-                (re-search-forward "Revision: \\(.*\\)")
-                (setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
-                ;; line 2
-                (forward-line 1)
-                (re-search-forward ".*: \\(.*\\)")
-                (setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
+                (when (re-search-forward "Revision: \\(.*\\)" nil t)
+                  (setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
+                  (ess-write-to-dribble-buffer (format "  (ess-version-string): c1=%s\n" c1))
+                  ;; line 2
+                  (forward-line 1)
+                  (when (re-search-forward ".*: \\(.*\\)" nil t)
+                    (setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
+                    (concat "rev. " c1 " (" c2 ")")))))))
 
-                (concat "rev. " c1 " (" c2 ")"))
-            ))
+    (if (not rev) (setq rev "<unknown>"))
+    ;; set the "global" ess-revision:
+    (setq ess-revision rev)
     (concat ess-version " [" ess-revision "]")))
 
 

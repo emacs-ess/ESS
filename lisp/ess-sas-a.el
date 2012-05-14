@@ -121,6 +121,7 @@ or `ess-sas-data-view-insight'."
   :type  'integer)
 
 (defcustom ess-sas-rtf-font-name "Bitstream Vera Sans Mono"
+;    (if (featurep 'xemacs) "Lucida Sans Typewriter" "Bitstream Vera Sans Mono")
   "*Name of font to create MS RTF with"
   :group 'ess-sas
   :type  'string)
@@ -862,10 +863,66 @@ optional argument is non-nil, then set-buffer rather than switch."
   (kill-buffer nil)
   )
 
-                                        ;  (condition-case nil
-                                        ;      (progn
-                                        ;        (require 'rtf-support)
-                                        ;        (when (featurep 'rtf-support)
+(if (featurep 'xemacs) (condition-case nil
+      (progn
+        (require 'rtf-support)
+        (when (featurep 'rtf-support)
+
+(defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
+"Creates an MS RTF portrait file from the current buffer."
+    (interactive)
+    (ess-sas-file-path t)
+    (ess-revert-wisely)
+
+    (if (equal ess-tmp-font-size nil)
+	(setq ess-tmp-font-size "21"))
+
+    (let
+	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
+	    ;(expand-file-name (buffer-name)) "[.][^.]*$" ".rtf")))
+	(rtf-export ess-temp-rtf-file)
+	(ess-sas-goto "rtf" t)
+	(goto-char (point-min))
+	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
+	(goto-line 2)
+	(if (string-match ess-sas-suffix-regexp ess-sas-file-path)
+	    (insert "\\margl720\\margr720\\margt720\\margb720\n"))
+        (goto-char (point-min))
+
+        (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
+
+        (save-buffer)
+	(kill-buffer (current-buffer))))
+
+(defun ess-sas-rtf-us-landscape ()
+"Creates an MS RTF US landscape file from the current buffer."
+    (interactive)
+    (ess-sas-rtf-portrait "16")
+    (ess-sas-goto "rtf" t)
+    (goto-char (point-min))
+    (forward-line 3)
+    (insert (concat "{\\*\\pgdsctbl\n"
+"{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
+"\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
+
+(defun ess-sas-rtf-a4-landscape ()
+"Creates an MS RTF A4 landscape file from the current buffer."
+    (interactive)
+    (ess-sas-rtf-portrait "16")
+    (ess-sas-goto "rtf" t)
+    (goto-char (point-min))
+    (forward-line 3)
+    (insert (concat "{\\*\\pgdsctbl\n"
+"{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
+"\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
+))
+    (error nil)))
+
+(if (not (featurep 'xemacs)) (progn
 
 (defun ess-rtf-replace-chars ()
   "Convert a text file to an MS RTF file."
@@ -940,8 +997,7 @@ optional argument is non-nil, then set-buffer rather than switch."
                   "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
   (save-buffer)
   (kill-buffer (current-buffer)))
-                                        ;))
-                                        ;    (error nil))
+))   
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
@@ -1275,7 +1331,7 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
-  (when (featurep 'rtf-support)
+  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
     (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
     (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape))
   (global-set-key (quote [f2]) 'ess-revert-wisely)
@@ -1313,7 +1369,7 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (when (featurep 'rtf-support)
+  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
     (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
     (global-set-key [(control f2)] 'ess-sas-rtf-us-landscape))
   (global-set-key (quote [f2]) 'ess-revert-wisely)
@@ -1352,7 +1408,7 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
-  (when (featurep 'rtf-support)
+  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
     (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
     (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape))
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
@@ -1386,7 +1442,7 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (when (featurep 'rtf-support)
+  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
     (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
     (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-us-landscape))
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
