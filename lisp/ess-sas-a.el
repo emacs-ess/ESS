@@ -893,37 +893,9 @@ optional argument is non-nil, then set-buffer rather than switch."
 
         (save-buffer)
 	(kill-buffer (current-buffer))))
-
-(defun ess-sas-rtf-us-landscape ()
-"Creates an MS RTF US landscape file from the current buffer."
-    (interactive)
-    (ess-sas-rtf-portrait "16")
-    (ess-sas-goto "rtf" t)
-    (goto-char (point-min))
-    (forward-line 3)
-    (insert (concat "{\\*\\pgdsctbl\n"
-"{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
-"\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer)
-    (kill-buffer (current-buffer)))
-
-(defun ess-sas-rtf-a4-landscape ()
-"Creates an MS RTF A4 landscape file from the current buffer."
-    (interactive)
-    (ess-sas-rtf-portrait "16")
-    (ess-sas-goto "rtf" t)
-    (goto-char (point-min))
-    (forward-line 3)
-    (insert (concat "{\\*\\pgdsctbl\n"
-"{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
-"\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer)
-    (kill-buffer (current-buffer)))
 ))
-    (error nil)))
-
-(if (not (featurep 'xemacs)) (progn
-
+    (error nil)) 
+; else
 (defun ess-rtf-replace-chars ()
   "Convert a text file to an MS RTF file."
   (interactive)
@@ -940,21 +912,13 @@ optional argument is non-nil, then set-buffer rather than switch."
   (ess-sas-file-path t)
   (ess-revert-wisely)
 
-                                        ;    (if (equal ess-tmp-font-size nil)
-                                        ;       (setq ess-tmp-font-size "21"))
-
   (let
       ((ess-temp-rtf-file
         (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
-                                        ;(rtf-export ess-temp-rtf-file)
     (copy-file ess-sas-file-path ess-temp-rtf-file t)
     (ess-sas-goto "rtf" t)
     (ess-rtf-replace-chars)
-                                        ;(goto-char (point-min))
-    ;;(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
-                                        ;(if (re-search-forward "\\\\fmodern .*;" nil t)
-                                        ;    (replace-match (concat "\\\\fmodern " ess-sas-rtf-font-name ";") nil nil))
-                                        ;(goto-line 2)
+
     (goto-char (point-min))
     (insert (concat
              "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
@@ -965,12 +929,10 @@ optional argument is non-nil, then set-buffer rather than switch."
 
     (goto-char (point-max))
     (insert "}}}}\n")
-                                        ;(goto-char (point-min))
-    ;;(while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
-                                        ;(while (re-search-forward "\\\\fs[0-9]+" nil t)
-                                        ;  (replace-match (concat "\\\\fs" ess-tmp-font-size) nil nil))
+
     (save-buffer)
     (kill-buffer (current-buffer))))
+)   
 
 (defun ess-sas-rtf-us-landscape ()
   "Creates an MS RTF US landscape file from the current buffer."
@@ -997,7 +959,6 @@ optional argument is non-nil, then set-buffer rather than switch."
                   "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
   (save-buffer)
   (kill-buffer (current-buffer)))
-))   
 
 (defun ess-sas-submit ()
   "Save the .sas file and submit to shell using a function that
