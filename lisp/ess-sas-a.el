@@ -621,7 +621,7 @@ current buffer if nil."
 
 (defun ess-sas-goto (suffix &optional revert no-create)
   "Find a file associated with a SAS file by suffix and revert if necessary."
-  (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?")))
+  (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?\\'")))
     (save-match-data
       (if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
               (string-match ess-temp-regexp ess-sas-file-path))
