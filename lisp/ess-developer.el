@@ -65,13 +65,13 @@
 ;;   :type 'string)
 
 (defvar ess-developer-map
-  (let ((map (make-sparse-keymap)))
-    (define-prefix-command 'map)
-    (define-key map "t" 'ess-developer)
-    (define-key map "a" 'ess-developer-add-package)
-    (define-key map "r" 'ess-developer-remove-package)
-    (define-key map "s" 'ess-developer-source-current-file)
-    map)
+  (let (ess-developer-map)
+    (define-prefix-command 'ess-developer-map)
+    (define-key ess-developer-map "t" 'ess-developer)
+    (define-key ess-developer-map "a" 'ess-developer-add-package)
+    (define-key ess-developer-map "r" 'ess-developer-remove-package)
+    (define-key ess-developer-map "s" 'ess-developer-source-current-file)
+    ess-developer-map)
   "Ess-developer keymap.")
 
 (define-key ess-mode-map "\C-cd"                ess-developer-map)
