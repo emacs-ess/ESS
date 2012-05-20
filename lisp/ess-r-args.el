@@ -264,7 +264,7 @@ buffer readjustments for multiline string)."
           ;; should really be based
           ;; on something like pixel height of 1-2 vertical
           ;; lines of text
-          (tooltip-show-at-point args 0 30))
+          (ess-tooltip-show-at-point args 0 30))
         ))))
 
 (defun ess-r-args-auto-show ()
@@ -304,7 +304,7 @@ ess-r-args-current-function if no argument given."
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
 (require 'assoc)                        ;needed for aput, below.
-(defun tooltip-show-at-point (text xo yo)
+(defun ess-tooltip-show-at-point (text xo yo)
   "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
 and y-offsets for the toolbar from point."
   (let (
