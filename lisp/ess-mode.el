@@ -1126,13 +1126,13 @@ Returns nil if line starts inside a string, t if in a comment."
                      ;;     arg2)
                      ;; case 1: numeric
                      ((and (numberp ess-arg-function-offset-new-line)
-                           (looking-at-p "[ \t]*([ \t]*$"))
+                           (looking-at "[ \t]*([ \t]*$"))
                       (forward-sexp -1)
                       (+ (current-column) ess-arg-function-offset-new-line))
                      ;; case 2: list
                      ((and (listp ess-arg-function-offset-new-line)
                            (numberp (car ess-arg-function-offset-new-line))
-                           (looking-at-p "[ \t]*([ \t]*$"))
+                           (looking-at "[ \t]*([ \t]*$"))
                       ;; flush args to the begining of
                       (beginning-of-line)
                       (skip-chars-forward " \t")
