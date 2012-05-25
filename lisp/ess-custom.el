@@ -321,7 +321,7 @@ Some useful keys for IDO completion:
 
 (defcustom ess-tab-complete-in-script nil
   "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
-See also `ess-first-tab-never-complete' and `ess-first-tab-never-complete-in-word'")
+See also `ess-first-tab-never-complete'.")
 
 (defcustom ess-first-tab-never-complete 'symbol
   "If t, first TAB never tries to complete in ess-mode.
