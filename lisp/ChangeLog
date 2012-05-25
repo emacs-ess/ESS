@@ -1,3 +1,8 @@
+2012-05-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): add an annoying 9.3
+	note/news to the comment category
+
 2012-05-15  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-goto): bug-fix; if the root of file name

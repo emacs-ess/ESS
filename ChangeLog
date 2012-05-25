@@ -4,8 +4,16 @@
 
 2012-05-07  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* Makeconf;Makefile;*/Makefile (uninstall): 
+	* Makeconf;Makefile;*/Makefile (uninstall):
 	first attempt at uninstall target; please test
+
+2012-04-05  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.04 released.
+
+2012-03-30  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.03 released.  New numbering scheme.
 
 2012-03-11  Vitalie Spinu  <spinuvit@gmail.com>
 

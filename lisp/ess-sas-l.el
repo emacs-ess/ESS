@@ -296,6 +296,8 @@ number."
              font-lock-comment-face)
        (cons "For further information on ANNOTATE macros, enter,"
              font-lock-comment-face)
+       (cons "^SAS/STAT 9.3_M1, SAS/ETS 9.3_M1, SAS/OR 9.3_M1"
+             font-lock-comment-face)
        (cons "\\(or \\)?%HELPANO.*$"
              font-lock-comment-face)
        (cons "^Local Variables:$"                  font-lock-comment-face)
