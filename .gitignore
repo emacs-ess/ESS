@@ -8,5 +8,10 @@ doc/readme.*
 doc/refcard/refcard.*
 *history
 *NEWS
-VERSION
+*VERSION
+*REVISION
+*BACKUP*
+*REMOTE*
+*LOCAL*
+*BASE*
 lisp/*.elc
