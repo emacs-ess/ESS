@@ -8,7 +8,7 @@
 @item
 
 @code{cd} to a directory where you keep emacs lisp files, or create a
-new directory (for example, @file{$HOME/emacs}) to hold the distribution.
+new directory (for example, @file{$HOME/ess}) to hold the distribution.
 This directory will be referred to below as "the ESS distribution
 directory".  
 
@@ -158,7 +158,7 @@ For @b{Microsoft Windows installation}, please follow the next steps.
 
 @item
 @code{cd} to a directory where you keep emacs lisp files, or create a
-new directory (for example, @file{c:\emacs\}) to hold the distribution.
+new directory (for example, @file{c:\ess\}) to hold the distribution.
 This directory will be referred to below as "the ESS distribution
 directory".  
 
@@ -180,7 +180,7 @@ other punctuation.  Please change the names back to their original form.
 
 @item
 Extract all the files from @file{ess-VERSION.zip} into the ESS
-distribution directory as @file{c:\emacs\ess-VERSION\}.  (It is possible
+distribution directory as @file{c:\ess\ess-VERSION\}.  (It is possible
 to unpack the zip archive in Windows Explorer by double clicking on the
 folder; you should then see a new folder called @file{ess-VERSION}.
 Drag that folder into your ESS distribution directory.)
@@ -204,16 +204,16 @@ If you are using GNU Emacs add the line
 @example
 (load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
-to @file{%HOME%/.emacs}.  For XEmacs, if you followed the XEmacs package system
+to @file{%HOME%\.emacs}.  For XEmacs, if you followed the XEmacs package system
 installation advice, add the line
 @example
 (require 'ess-site)
 @end example
-to @file{%HOME%/.xemacs/init.el}.  Otherwise, for XEmacs, add the line
+to @file{%HOME%\.xemacs\init.el}.  Otherwise, for XEmacs, add the line
 @example
 (load "ESSDIR/ess-VERSION/lisp/ess-site")
 @end example
-to @file{%HOME%/.xemacs/init.el}.  
+to @file{%HOME%\.xemacs\init.el}.  
 @emph{Note:} Both GNU Emacs and XEmacs require that the HOME environment
 variable be set on your system, otherwise, your initialization file will
 not be utilized, and therefore, ESS will not work.
@@ -245,15 +245,15 @@ An alternative, for R users, is that rather than adjusting the PATH
 variable, you can add the following to your emacs initialization file
 (and restart emacs):
 @example
-(setq inferior-R-program-name "C:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+(setq inferior-R-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
 @end example
 This assumes that you have installed R-2.2.1 in the default location.
 Change the path otherwise to point to other locations.
 
 Windows users who place S-PLUS anywhere other than the default
 location will also need to add the following three lines (properly
-adjusted for their location) to their @file{%HOME%/.emacs} or
-@file{%HOME%/.xemacs/init.el} file:
+adjusted for their location) to their @file{%HOME%\.emacs} or
+@file{%HOME%\.xemacs\init.el} file:
 @example
 (setq-default inferior-S+6-program-name
     "c:/progra~1/Insightful/SPLUS70/cmd/Splus")
@@ -263,7 +263,7 @@ adjusted for their location) to their @file{%HOME%/.emacs} or
     "c:/progra~1/Insightful/SPLUS70/cmd/Sqpe.exe")
 @end example
 The above example uses the default location of S-PLUS in
-@code{c:/progra~1/Insightful}.  Please note that ESS
+@code{c:\progra~1\Insightful}.  Please note that ESS
 considers S-PLUS 6, 7, and 8 to be variants of S+6.
 
 These users may also need to modify the emacs variable @code{ess-SHOME-versions}
