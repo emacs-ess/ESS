@@ -28,6 +28,13 @@
 	* ess-rd.el (Rd-mode): set ess-language "S" and ess-dialect "R", so
 	R may be autostarted, when desired.
 
+2012-05-06  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Do not quote lambda expressions.
+	* noweb-font-lock-mode.el (noweb-font-lock-fontify-chunk-by-number):
+	Use `syntax-begin-function' when available instead of
+	`font-lock-beginning-of-syntax-function' (obsolete in Emacs 23.3).
+	Avoid `progn' in `cond' and some other minor code cleanup.
 
 2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
 
@@ -45,6 +52,13 @@
 	* ess-custom.el (inferior-STA-args): customizable stata arguments.
 	(inferior-STA-program-name): program name is "stat" as it should
 	be (and not "env").
+
+2012-05-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-r-args.el (tooltip-show-at-point): Do not use the assoc
+	package (which is obsoleted by Emacs 24.2 anyway), use let
+	instead, it is cleaner and more reliable.
+
 
 2012-04-23  Vitalie Spinu  <spinuvit@gmail.com>
 

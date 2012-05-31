@@ -175,14 +175,14 @@ Each chunk is fontified in accordance with its own mode"
   (interactive "P")
   (if (or noweb-mode noweb-font-lock-mode)
       (progn
-                                        ; This bit is tricky: copied almost verbatim from bib-cite-mode.el
-                                        ; It seems to ensure that the variable noweb-font-lock-mode is made
-                                        ; local to this buffer. It then sets noweb-font-lock-mode to `t' if
-                                        ;     1) It was called with a prefix argument greater than 0
-                                        ; or  2) It was called with no argument, and noweb-font-lock-mode is
-                                        ;        currently nil
-                                        ; noweb-font-lock-mode is nil if the prefix argument was <= 0 or there
-                                        ; was no prefix argument and noweb-font-lock-mode is currently `t'
+        ;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
+        ;; It seems to ensure that the variable noweb-font-lock-mode is made
+        ;; local to this buffer. It then sets noweb-font-lock-mode to `t' if
+        ;;     1) It was called with a prefix argument greater than 0
+        ;; or  2) It was called with no argument, and noweb-font-lock-mode is
+        ;;        currently nil
+        ;; noweb-font-lock-mode is nil if the prefix argument was <= 0 or there
+        ;; was no prefix argument and noweb-font-lock-mode is currently `t'
         (set (make-local-variable 'noweb-font-lock-mode)
              (if arg
                  (> (prefix-numeric-value arg) 0)
@@ -190,49 +190,45 @@ Each chunk is fontified in accordance with its own mode"
         ;; Now, if noweb-font-lock-mode is true, we want to turn
         ;; noweb-font-lock-mode on
         (cond
-         (noweb-font-lock-mode                 ;Setup the minor-mode
-          (progn
-            (if (and (boundp 'global-font-lock-mode) global-font-lock-mode)
-                (progn
-                  (mapcar 'noweb-make-variable-permanent-local
-                          '(font-lock-fontify-buffer-function
-                            font-lock-unfontify-buffer-function))
-                  (setq font-lock-fontify-buffer-function 'nwfl-donowt)
-                  (setq font-lock-unfontify-buffer-function 'nwfl-donowt)))
-            (mapcar 'noweb-make-variable-permanent-local
-                    '(noweb-font-lock-mode
-                      font-lock-beginning-of-syntax-function
-                      noweb-use-font-lock-mode
-                      after-change-functions))
-            (setq noweb-font-lock-mode t)
-            (if (< emacs-major-version 21) ;; needed for emacs < 21.1 only :
-                (make-local-hook 'after-change-functions))
-            (add-hook 'after-change-functions
-                      'font-lock-after-change-function nil t)
-            (add-hook 'noweb-font-lock-mode-hook 'noweb-font-lock-mode-fn)
-            (add-hook 'noweb-changed-chunk-hook
-                      'noweb-font-lock-fontify-this-chunk)
-            (run-hooks 'noweb-font-lock-mode-hook)
-            (message "noweb-font-lock mode: use `M-x noweb-font-lock-describe-mode' for more info")))
+          (noweb-font-lock-mode                 ;Setup the minor-mode
+           (when (and (boundp 'global-font-lock-mode) global-font-lock-mode)
+             (mapcar 'noweb-make-variable-permanent-local
+                     '(font-lock-fontify-buffer-function
+                       font-lock-unfontify-buffer-function))
+             (setq font-lock-fontify-buffer-function 'nwfl-donowt)
+             (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
+           (mapcar 'noweb-make-variable-permanent-local
+                   '(noweb-font-lock-mode
+                     font-lock-beginning-of-syntax-function
+                     noweb-use-font-lock-mode
+                     after-change-functions))
+           (setq noweb-font-lock-mode t)
+           (when (< emacs-major-version 21) ; needed for emacs < 21.1 only :
+             (make-local-hook 'after-change-functions))
+           (add-hook 'after-change-functions
+             'font-lock-after-change-function nil t)
+           (add-hook 'noweb-font-lock-mode-hook 'noweb-font-lock-mode-fn)
+           (add-hook 'noweb-changed-chunk-hook
+             'noweb-font-lock-fontify-this-chunk)
+           (run-hooks 'noweb-font-lock-mode-hook)
+           (message "noweb-font-lock mode: use `M-x noweb-font-lock-describe-mode' for more info"))
          ;; If we didn't do the above, then we want to turn noweb-font-lock-mode
          ;; off, no matter what (hence the condition `t')
-         (t
-          (progn
-            (if (and (boundp 'global-font-lock-mode) global-font-lock-mode)
-                (progn
-                  ;; (setq font-lock-fontify-buffer-function
-                  ;;       'font-lock-default-fontify-buffer)
-                  ;; Get back our unfontify buffer function
-                  (setq font-lock-unfontify-buffer-function
-                        'font-lock-default-unfontify-buffer)))
-            (remove-hook 'noweb-font-lock-mode-hook 'noweb-font-lock-mode-fn)
-            (remove-hook 'noweb-changed-chunk-hook
-                         'noweb-font-lock-fontify-this-chunk)
-            (remove-hook 'after-change-functions
-                         'font-lock-after-change-function )
-            (font-lock-default-unfontify-buffer)
-            (setq noweb-use-font-lock-mode nil)
-            (message "noweb-font-lock-mode removed")))))
+          (t
+           (when (and (boundp 'global-font-lock-mode) global-font-lock-mode)
+             ;; (setq font-lock-fontify-buffer-function
+             ;;       'font-lock-default-fontify-buffer)
+             ;; Get back our unfontify buffer function
+             (setq font-lock-unfontify-buffer-function
+                   'font-lock-default-unfontify-buffer))
+           (remove-hook 'noweb-font-lock-mode-hook 'noweb-font-lock-mode-fn)
+           (remove-hook 'noweb-changed-chunk-hook
+                        'noweb-font-lock-fontify-this-chunk)
+           (remove-hook 'after-change-functions
+                        'font-lock-after-change-function )
+           (font-lock-default-unfontify-buffer)
+           (setq noweb-use-font-lock-mode nil)
+           (message "noweb-font-lock-mode removed"))))
     (message "noweb-font-lock-mode can only be used with noweb-mode")))
 
 (defun noweb-start-of-syntax ()
@@ -245,19 +241,22 @@ Each chunk is fontified in accordance with its own mode"
   (save-excursion
     (font-lock-set-defaults)
     (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax)
+    (if (boundp 'syntax-begin-function)
+        (setq syntax-begin-function 'noweb-start-of-syntax)
+        ;; obsolete since Emacs 23.3
+        (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax))
     (setq font-lock-keywords
-                                        ;         (append font-lock-keywords
-                                        ;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
-                                        ;                    (1 noweb-font-lock-brackets-face prepend )
-                                        ;                    (2 noweb-font-lock-code-quote-face prepend)
-                                        ;                    (3 noweb-font-lock-brackets-face prepend))
-                                        ;                   ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
-                                        ;                    (1 noweb-font-lock-brackets-face  prepend )
-                                        ;                    (2 noweb-font-lock-chunk-name-face prepend)
-                                        ;                    (3 noweb-font-lock-brackets-face prepend))
-                                        ;                   ("^@[ \t\n]+"
-                                        ;                    (0 noweb-font-lock-doc-start-face prepend )))))
+          ;;         (append font-lock-keywords
+          ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
+          ;;                    (1 noweb-font-lock-brackets-face prepend )
+          ;;                    (2 noweb-font-lock-code-quote-face prepend)
+          ;;                    (3 noweb-font-lock-brackets-face prepend))
+          ;;                   ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
+          ;;                    (1 noweb-font-lock-brackets-face  prepend )
+          ;;                    (2 noweb-font-lock-chunk-name-face prepend)
+          ;;                    (3 noweb-font-lock-brackets-face prepend))
+          ;;                   ("^@[ \t\n]+"
+          ;;                    (0 noweb-font-lock-doc-start-face prepend )))))
           (append font-lock-keywords
                   '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
                      (1 font-lock-reference-face prepend )
@@ -349,14 +348,13 @@ For other purposes, use noweb-font-lock-fontify-chunks."
       (setq chunk-counter start-chunk)
       (message "About to do code chunks")
       (while (<= chunk-counter end-chunk)
-        (if (stringp (car (aref noweb-chunk-vector chunk-counter)))
-            (progn
-              ;; It's a code chunk: goto it to set the correct code mode, then
-              ;; fontify it.
-              (message "Fontifying code chunks: chunk %d" chunk-counter)
-              (goto-char (cdr (aref noweb-chunk-vector chunk-counter)))
-              (noweb-select-mode)
-              (noweb-font-lock-fontify-this-chunk)))
+        (when (stringp (car (aref noweb-chunk-vector chunk-counter)))
+          ;; It's a code chunk: goto it to set the correct code mode, then
+          ;; fontify it.
+          (message "Fontifying code chunks: chunk %d" chunk-counter)
+          (goto-char (cdr (aref noweb-chunk-vector chunk-counter)))
+          (noweb-select-mode)
+          (noweb-font-lock-fontify-this-chunk))
         (setq chunk-counter (1+ chunk-counter))))
     (noweb-select-mode)))
 
@@ -382,11 +380,9 @@ For other purposes, use noweb-font-lock-fontify-chunks."
     (if (and (not noweb-font-lock-mode) noweb-use-font-lock-mode)
         (noweb-font-lock-mode ))))
 
-(if (functionp 'noweb-old-turn-on-font-lock)
-    nil
-  (progn
-    (fset 'noweb-old-turn-on-font-lock (symbol-function 'turn-on-font-lock))
-    (fset 'turn-on-font-lock (symbol-function 'nw-turn-on-font-lock))))
+(unless (functionp 'noweb-old-turn-on-font-lock)
+  (fset 'noweb-old-turn-on-font-lock (symbol-function 'turn-on-font-lock))
+  (fset 'turn-on-font-lock (symbol-function 'nw-turn-on-font-lock)))
 
 (provide 'noweb-font-lock-mode)
 ;;  *****

@@ -303,7 +303,7 @@ ess-r-args-current-function if no argument given."
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
-(require 'assoc)                        ;needed for aput, below.
+
 (defun ess-tooltip-show-at-point (text xo yo)
   "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
 and y-offsets for the toolbar from point."
@@ -348,21 +348,11 @@ and y-offsets for the toolbar from point."
                          (cdr(posn-x-y (posn-at-point)))
                          frame-top yo))
 
-    ;; this clobbers current tooltip-frame-parameters 'top' and 'left',
-    ;; which are not set by default.  use push/pop instead of aput/adelete?
-    ;; the problem with using aput again is that if top/left were nil, aput'ing
-    ;; nil will have no effect.
-
-    (aput 'tooltip-frame-parameters 'top my-y-offset)
-    (aput 'tooltip-frame-parameters 'left my-x-offset)
-
-    (tooltip-show text)
-
-    ;; remove parameters so that further tooltip-show calls aren't shown in
-    ;; odd place (i.e., wherever point happened to be the last time this was
-    ;; called
-    (adelete 'tooltip-frame-parameters 'top)
-    (adelete 'tooltip-frame-parameters 'left)
+    (let ((tooltip-frame-parameters
+           (cons (cons 'top my-y-offset)
+                 (cons (cons 'left my-x-offset)
+                       tooltip-frame-parameters))))
+      (tooltip-show text))
     ))
 
 (provide 'ess-r-args)
