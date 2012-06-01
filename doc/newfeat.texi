@@ -8,8 +8,9 @@ Changes/Bug Fixes in 12.04-3:
 @item @ESS{[SAS]}: improved XEmacs support
 @item @iESS{[R]}: better finding of previous prompt
 @item @ESS{[Stata]}: adjusted prompt for mata mode
-@item @ESS{[R]}: resolved name clashes with cl.el 
+@item @ESS{[R]}: resolved name clashes with cl.el
 @item @ESS{[R]}: removed dependence on obsolete package assoc
+@item New @code{make} target  @code{lisp}, to build the lisp-only part, i.e., not building the docs.
 @end itemize
 
 Changes/New Features in 12.04-1:

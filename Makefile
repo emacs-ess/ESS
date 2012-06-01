@@ -9,6 +9,8 @@ all install uninstall: etc/SVN-REVISION
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 
+lisp: etc/SVN-REVISION
+	cd lisp; $(MAKE)
 
 ## the rest of the targets are for ESS developer's use only :
 
