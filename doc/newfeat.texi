@@ -1,11 +1,11 @@
 @itemize @w{}
 
-Bug Fixes in 12.04-3:
+Changes/Bug Fixes in 12.04-3:
 @itemize @bullet
 @item @ESS{}: basic support for package.el compatibility
 @item @ESS{[R]}: correct indentation of & and | continuation lines
 @item @code{M-x ess-version} shows the svn revision even after @code{make install}
-@item @ESS{[SAS]}: improved XEmacs support.
+@item @ESS{[SAS]}: improved XEmacs support
 @item @iESS{[R]}: better finding of previous prompt
 @item @ESS{[Stata]}: adjusted prompt for mata mode
 @item @ESS{[R]}: resolved name clashes with cl.el 
