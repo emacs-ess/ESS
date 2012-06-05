@@ -266,9 +266,7 @@ a workspace."
 (defcustom ess-directory nil
   "The directory ESS is run from.  It must end in a slash.
 Provided as a default if `ess-ask-for-ess-directory' is non-nil.
-A nil value means use the current buffer's default directory.
-Buffer-local: in process buffers, this contains the directory ESS was
-run from."
+A nil value means use the current buffer's default directory."
   :group 'ess
   :type '(choice (const nil) directory))
 
