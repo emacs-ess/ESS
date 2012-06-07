@@ -241,10 +241,7 @@ Each chunk is fontified in accordance with its own mode"
   (save-excursion
     (font-lock-set-defaults)
     (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (if (boundp 'syntax-begin-function)
-        (setq syntax-begin-function 'noweb-start-of-syntax)
-        ;; obsolete since Emacs 23.3
-        (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax))
+    (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords
           ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
