@@ -1,3 +1,9 @@
+ess (12.04-4-1) unstable; urgency=low
+
+  * New upstream patch version released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 07 Jun 2012 11:52:04 -0500
+
 ess (12.04-3-1) unstable; urgency=low
 
   * New upstream patch version released today
