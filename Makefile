@@ -79,7 +79,7 @@ cleanup-rel:
 
 ## --- RELEASE ---
 
-## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'
+## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'   <<---- MUST ---
 ##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
 ## 	ChangeLog often ends up newer than VERSION
 ChangeLog: VERSION
