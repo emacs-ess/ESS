@@ -303,13 +303,13 @@ This mode adds to ESS the interactive debugging, breakpoint and
 error navigation functionality.  Strictly speaking ess-tracebug
 is not a minor mode. It integrates globally into ESS and iESS.
 
-See `ess-tracebug-help' for the overview of ess-tracebug functionality.
+See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
-Note: The functionality in ess-tracebug is divided on conceptual
-grounds in tracing and debugging and could be
-activated/deactivate separately with `ess-traceback' and
-`ess-debug' respectively.
-"
+;; Note: The functionality in ess-tracebug is divided on conceptual
+;; grounds in tracing and debugging and could be
+;; activated/deactivate separately with `ess-tb-start' and
+;; `ess-dbg-start' respectively.
+
   (interactive "P")
   (ess-force-buffer-current "R process to activate the tracebug mode: ")
   (with-current-buffer (process-buffer (get-process ess-local-process-name))

@@ -1136,8 +1136,7 @@ Currently this function has been tested only for *R*, but should also work for
   (interactive)
   (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
     (message "new (ESS / default) directory: %s" dir)
-    (setq ess-directory (file-name-as-directory dir)))
-  (setq default-directory ess-directory))
+    (setq default-directory (file-name-as-directory dir))))
 
 
  ; provides
