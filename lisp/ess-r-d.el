@@ -772,7 +772,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     )
-  "Auto-completion source for R function arguments"
+  "Combidned ad-completion source for R function arguments and R objects"
   )
 
 (defun ess-ac-start ()
@@ -782,6 +782,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS"
   (let ((args (ess-ac-args)))
+    ;; sort of intrusive but right, otherwise it's a nightmare.
     (if (< (length ac-prefix) 2)
         args
       (if args
@@ -796,7 +797,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;; OBJECTS
 (defvar  ac-source-R-objects
   '((prefix     . ess-ac-start-objects)
-    (requires   . 2)
+    ;; (requires   . 2)
     (candidates . ess-ac-objects)
     (document   . ess-ac-help-object))
   "Auto-completion source for R objects"
@@ -851,7 +852,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;; ARGS
 (defvar  ac-source-R-args
   '((prefix     . ess-ac-start-args)
-    (requires   . 0)
+    ;; (requires   . 0)
     (candidates . ess-ac-args)
     (document   . ess-ac-help-arg)
     (action     . ess-ac-action-args))
