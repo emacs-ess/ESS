@@ -767,7 +767,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
 (defvar  ac-source-R
   '((prefix     . ess-ac-start)
-    ;; (requires   . 0)
+    (requires   . 0)
     (candidates . ess-ac-candidates)
     (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
