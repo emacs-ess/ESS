@@ -2869,7 +2869,7 @@ and functions defined in .GlobalEnv can see the objects in
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
 In order to use ess-developer mode you should add names of the packages
-you are developing to @code{ess-developer-packages}. You can dot it
+you are developing to @code{ess-developer-packages}. You can do it
 interactively with @kbd{C-c d a}, and remove packages with @kbd{C-c d
 r}. When developer mode is on, the name of the process in the mode line
 is highlighted with @code{ess-developer-indicator-face}.
@@ -2878,7 +2878,7 @@ is highlighted with @code{ess-developer-indicator-face}.
 @item @kbd{C-c d t}(@code{ess-developer}) @*
       Toggle developer mode on and off.
 @item @kbd{C-c d a}(@code{ess-developer-add-package}) @*
-      Add  a package to your development list
+      Add  a package to your development list.
 @item @kbd{C-c d r}(@code{ess-developer-remove-package}) @*
       Remove a package from your development list.
 @item @kbd{C-c d s}(@code{ess-developer-source-current-file}) @*
