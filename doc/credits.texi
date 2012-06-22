@@ -72,6 +72,6 @@ Last, but definitely not least, thanks to the many ESS users and
 contributors to the ESS mailing lists.
 @end itemize
 
-@emph{ESS} version 5 is being developed and currently maintained by
+@emph{ESS} is being developed and currently maintained by
 
 @include authors.texi
