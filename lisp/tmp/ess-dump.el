@@ -1,7 +1,7 @@
 ;;; ess-dump.el --- Getting objects into text files for editing
 
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author:  A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 3 Sept 2000
@@ -48,22 +48,22 @@ Returns t if the buffer existed and was modified, but was not saved."
     ;; (let ((deleted (not (file-exists-p (buffer-file-name)))))
     ;; Next 2 lines are RMH's solution:
     (if (not(not buff))
-	(let ((deleted (not (file-exists-p fname))))
-	  (if (and deleted (not (buffer-modified-p buff)))
-	      ;; Buffer has been silently deleted, so silently save
-	      (save-excursion
-		(set-buffer buff)
-		(set-buffer-modified-p t)
-		(save-buffer))
-	    (if (and (buffer-modified-p buff)
-		     (or ess-mode-silently-save
-			 (y-or-n-p
-			  (format "Save buffer %s first? "
-				  (buffer-name buff)))))
-		(save-excursion
-		  (set-buffer buff)
-		  (save-buffer))))
-	  (buffer-modified-p buff)))))
+        (let ((deleted (not (file-exists-p fname))))
+          (if (and deleted (not (buffer-modified-p buff)))
+              ;; Buffer has been silently deleted, so silently save
+              (save-excursion
+                (set-buffer buff)
+                (set-buffer-modified-p t)
+                (save-buffer))
+            (if (and (buffer-modified-p buff)
+                     (or ess-mode-silently-save
+                         (y-or-n-p
+                          (format "Save buffer %s first? "
+                                  (buffer-name buff)))))
+                (save-excursion
+                  (set-buffer buff)
+                  (save-buffer))))
+          (buffer-modified-p buff)))))
 
 
 (defun ess-dump-object-into-edit-buffer (object)
@@ -78,23 +78,23 @@ generate the source buffer."
      (ess-force-buffer-current "Process to dump from: ")
      (ess-read-object-name "Object to edit: ")))
   (let* ((dirname (file-name-as-directory
-		   (if (stringp ess-source-directory)
-		       ess-source-directory
-		     (save-excursion
-		       (set-buffer
-			(process-buffer (get-ess-process
-					 ess-local-process-name)))
-		       (ess-setq-vars-local ess-customize-alist)
-		       (apply ess-source-directory nil)))))
-	 (filename (concat dirname (format ess-dump-filename-template object)))
-	 (old-buff (get-file-buffer filename)))
+                   (if (stringp ess-source-directory)
+                       ess-source-directory
+                     (save-excursion
+                       (set-buffer
+                        (process-buffer (get-ess-process
+                                         ess-local-process-name)))
+                       (ess-setq-vars-local ess-customize-alist)
+                       (apply ess-source-directory nil)))))
+         (filename (concat dirname (format ess-dump-filename-template object)))
+         (old-buff (get-file-buffer filename)))
 
     ;; If the directory doesn't exist, offer to create it
     (if (file-exists-p (directory-file-name dirname)) nil
-      (if (y-or-n-p	; Approved
-	   (format "Directory %s does not exist. Create it? " dirname))
-	  (make-directory (directory-file-name dirname))
-	(error "Directory %s does not exist." dirname)))
+      (if (y-or-n-p     ; Approved
+           (format "Directory %s does not exist. Create it? " dirname))
+          (make-directory (directory-file-name dirname))
+        (error "Directory %s does not exist." dirname)))
 
     ;; Three options:
     ;;  (1) Pop to an existing buffer containing the file in question
@@ -103,30 +103,30 @@ generate the source buffer."
     ;; Force option (3) if there is a prefix arg
 
     (if current-prefix-arg
-	(ess-dump-object object filename)
+        (ess-dump-object object filename)
       (if old-buff
-	  (progn
-	    (pop-to-buffer old-buff)
-	    (message "Popped to edit buffer."))
-	;; No current buffer containing desired file
-	(if (file-exists-p filename)
-	    (progn
-	      (ess-find-dump-file-other-window filename)
-	      (message "Read %s" filename))
-	  ;; No buffer and no file
-	  (ess-dump-object object filename))))))
+          (progn
+            (pop-to-buffer old-buff)
+            (message "Popped to edit buffer."))
+        ;; No current buffer containing desired file
+        (if (file-exists-p filename)
+            (progn
+              (ess-find-dump-file-other-window filename)
+              (message "Read %s" filename))
+          ;; No buffer and no file
+          (ess-dump-object object filename))))))
 
 (defun ess-dump-object (object filename)
   "Dump the ESS object OBJECT into file FILENAME."
   (let ((complete-dump-command (format inferior-ess-dump-command
-				       object filename)))
+                                       object filename)))
     (if (file-writable-p filename) nil
       (error "Can't dump %s as %f is not writeable." object filename))
 
     ;; Make sure we start fresh
     (if (get-file-buffer filename)
-	(or (kill-buffer (get-file-buffer filename))
-	    (error "Aborted.")))
+        (or (kill-buffer (get-file-buffer filename))
+            (error "Aborted.")))
 
     (ess-command complete-dump-command)
     (message "Dumped in %s" filename)
@@ -149,11 +149,11 @@ generate the source buffer."
 
     ;; Don't get confirmation to delete dumped files when loading
     (if (eq ess-keep-dump-files 'check)
-	(setq ess-keep-dump-files nil))
+        (setq ess-keep-dump-files nil))
 
     ;; Delete the file if necessary
     (if ess-delete-dump-files
-	(delete-file (buffer-file-name)))))
+        (delete-file (buffer-file-name)))))
 
 (defun ess-find-dump-file-other-window (filename)
   "Find ESS source file FILENAME in another window."
@@ -166,21 +166,21 @@ generate the source buffer."
   (find-file-other-window filename)
   (ess-mode ess-customize-alist)
 
-  (auto-save-mode 1)		; Auto save in this buffer
+  (auto-save-mode 1)            ; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)
 
   (if ess-function-template
       (progn
-	(goto-char (point-max))
-	(if (re-search-backward ess-dumped-missing-re nil t)
-	    (progn
-	      (replace-match ess-function-template t t)
-	      (set-buffer-modified-p nil) ; Don't offer to save if killed now
-	      (goto-char (point-min))
-	      (condition-case nil
-		  ;; This may fail if there are no opens
-		  (down-list 1)
-		(error nil)))))))
+        (goto-char (point-max))
+        (if (re-search-backward ess-dumped-missing-re nil t)
+            (progn
+              (replace-match ess-function-template t t)
+              (set-buffer-modified-p nil) ; Don't offer to save if killed now
+              (goto-char (point-min))
+              (condition-case nil
+                  ;; This may fail if there are no opens
+                  (down-list 1)
+                (error nil)))))))
 
 
 ;; AJR: XEmacs, makes sense to dump into "other frame".
@@ -213,4 +213,3 @@ generate the source buffer."
 ;;; End:
 
 ;;; ess-dump.el ends here
-

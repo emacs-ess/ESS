@@ -2,9 +2,9 @@
 ;; Auto-install procedure.  EXPERIMENTAL!
 
 ;; Copyright (C) 2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen
+;; Author: Stephen Eglen
 
 ;; This file is part of ESS
 
@@ -27,7 +27,6 @@
 ;; source with any binaries, remove this notice, or hold anyone liable
 ;; for its results.
 
-
 ;;; Commentary:
 
 ;; Although installing ESS is relatively simple, sometimes people get
@@ -37,46 +36,46 @@
 ;; (The instructions below assume you have downloaded ess as a zip
 ;; package, but it will work also for the .tar.gz version of ESS as
 ;; long as you know how to unpack a .tar.gz in step 3.)
-;; 
+;;
 ;; Installing ESS for the first time.
-;; 
+;;
 ;; 1. Create a folder (e.g C:/emacs) where you will store ESS.  We will
 ;;   assume that you are installing ESS into C:/emacs (unix users can use
 ;;   ~/emacs).
-;; 
+;;
 ;; 2. Download ess-5.2.12.zip and store it in the folder you created.
-;; 
+;;
 ;; 3. Unpack the files from the zip archive, e.g. by right-clicking on it
 ;;    within Windows explorer and selecting "Extract all".  On unix, use
 ;;    "unzip ess-5.2.12.zip".
-;; 
+;;
 ;; 4. Start a new emacs (or xemacs).
-;; 
+;;
 ;; 5. In the new emacs, you need to open the file "ess-install.el" which
 ;;    is part of ESS.  To do this, type:
-;; 
+;;
 ;;    C-x C-f c:/emacs/ess-5.2.12/lisp/ess-install.el RET
-;; 
+;;
 ;; You should now see a lisp file with the top line:
 ;;   ;;; ess-install.el --- Automatic installation of ESS.
-;; 
+;;
 ;; 6. Type M-x eval-buffer RET
-;; 
+;;
 ;; What does this do?  This will find your emacs initialisation file, and
 ;; it will add the following two lines to the end of the file:
-;; 
+;;
 ;;   ;;; ESS setup for version 5.2.12
 ;;   (load "c:/emacs/ess-5.2.12/lisp/ess-site")
-;; 
+;;
 ;; Do not edit those two lines!  They are useful if later you come to
 ;; upgrade ESS.
-;; 
+;;
 ;; 7. Start a new Emacs and you should find then that ESS is loaded.  For
 ;;    example, create a new file called "foo.R" and check that it opens
 ;;    in R mode by looking at the mode line and menubar.
-;; 
+;;
 ;; Upgrading your version of ESS.
-;; 
+;;
 ;; If (and only if) you use the above instructions for installing ESS,
 ;; when a new version of ESS is released, you can use the same method to
 ;; install the new version.  Repeat steps 2-7 for the new release of ESS,
@@ -84,7 +83,7 @@
 ;; special line ";;; ESS setup for version 5.2.12", it will highlight
 ;; those lines, and query whether you want to replace those two lines
 ;; with the new setup code.
-;; 
+;;
 ;; If you do upgrade ESS this way, bear in mind that your old version
 ;; will not be deleted from your filespace -- you will have to delete it
 ;; yourself.
@@ -92,14 +91,16 @@
 ;; TODO: possibly add a call to (byte-recompile-directory ess-lisp-dir
 ;; 0) so that lisp files are byte compiled.
 
+;;; Code:
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Location where the new lisp files are stored.
-(defvar ess-lisp-dir (file-name-directory 
-		      (abbreviate-file-name buffer-file-name))
+(defvar ess-lisp-dir (file-name-directory
+                      (abbreviate-file-name buffer-file-name))
   "Location where the new lisp files are stored.")
 
 (defvar ess-site-file (concat ess-lisp-dir "ess-site")
-  "Full path to the new ess-site file.  
+  "Full path to the new ess-site file.
 Do not include .el extension in case there is also a .elc around.")
 
 (defvar ess-new-version nil
@@ -118,7 +119,7 @@ ignored."
   (byte-recompile-directory ess-lisp-dir 0))
 
 ;; Check that ess-site-file is written using unix directory separators.
-;; i.e. need to change c:\\some\\dir\\ess-site.el to 
+;; i.e. need to change c:\\some\\dir\\ess-site.el to
 ;; c:/some/dir/ess-site.el
 ;; To do this, we have to load in ess-replace-in-string, from
 ;; the file ess-inf.el
@@ -128,14 +129,14 @@ ignored."
   (goto-char (point-min))
   (search-forward-regexp "^(defun ess-replace-in-string " nil t)
   (eval-defun nil)
-  (setq ess-site-file 
-	(ess-replace-in-string ess-site-file "\\\\" "/" t))
+  (setq ess-site-file
+        (ess-replace-in-string ess-site-file "\\\\" "/" t))
   )
 
 
 ;; Get the version number of the new software.  Open the file
 ;; ess-custom.el and then find the definition of the variable
-;; ess-version.  
+;; ess-version.
 (save-window-excursion
   (let ((beg))
     (find-file (concat ess-lisp-dir "ess-custom.el"))
@@ -156,7 +157,7 @@ ignored."
 (and (not (fboundp 'make-overlay))
      (condition-case nil
          (require 'overlay)
-       ('error 
+       ('error
         (error "Fm needs overlay emulation (available in XEmacs 19.15)"))))
 
 ;; We keep a vector with several different overlays to do our highlighting.
@@ -178,12 +179,12 @@ ignored."
   (delete-overlay (aref ess-highlight-overlays index)))
 
 ;;; End of highlighting code.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Try to find the .emacs init file and edit it.
 (save-window-excursion
 
-  ;; Try to find the init file if one already exists, 
+  ;; Try to find the init file if one already exists,
   ;; or create a new one if we can't find any.
   (if (stringp user-init-file)
       (find-file user-init-file)
@@ -193,37 +194,37 @@ ignored."
   (goto-char (point-min))
 
   (let ((ess-commands
-	 (concat "\n;;; ESS setup for version " ess-new-version "\n"
-		 "(load \"" ess-site-file "\")\n"))
-	(new-install)
-	(beg))
+         (concat "\n;;; ESS setup for version " ess-new-version "\n"
+                 "(load \"" ess-site-file "\")\n"))
+        (new-install)
+        (beg))
     (if (search-forward ";;; ESS setup for version " nil t)
-	(progn
-	  (message "You already have ESS installed.")
-	  (setq ess-installed 
-		(buffer-substring (point)
-				  (save-excursion (end-of-line) (point))))
-	  
-	  (beginning-of-line)
-	  (setq beg (point))
-	  ;; We assume the next line contains a sexp that loads the
-	  ;; the ess-site; this sexp can be multiple lines.
-	  (forward-line 1) 
-	  (forward-list 1)
-	  (ess-highlight 0 beg (point))
-	  
-	  (setq new-install 
-		(yes-or-no-p 
-		 (concat "Replace ESS version " ess-installed 
-			 " with version " 
-		     ess-new-version "? ")))
-	  (when new-install
-	    (kill-region beg (point))
-	    (insert ess-commands)
-	    (save-buffer)
-	    (ess-install-byte-compile)
-	    (message (concat "ESS updated to version "  ess-new-version))
-	    ))
+        (progn
+          (message "You already have ESS installed.")
+          (setq ess-installed
+                (buffer-substring (point)
+                                  (save-excursion (end-of-line) (point))))
+
+          (beginning-of-line)
+          (setq beg (point))
+          ;; We assume the next line contains a sexp that loads the
+          ;; the ess-site; this sexp can be multiple lines.
+          (forward-line 1)
+          (forward-list 1)
+          (ess-highlight 0 beg (point))
+
+          (setq new-install
+                (yes-or-no-p
+                 (concat "Replace ESS version " ess-installed
+                         " with version "
+                         ess-new-version "? ")))
+          (when new-install
+            (kill-region beg (point))
+            (insert ess-commands)
+            (save-buffer)
+            (ess-install-byte-compile)
+            (message (concat "ESS updated to version "  ess-new-version))
+            ))
       ;; else, just insert commands at end.
       (goto-char (point-max))
       (insert ess-commands)
@@ -231,3 +232,5 @@ ignored."
       (ess-install-byte-compile)
       (message (concat "ESS version "ess-new-version" installed."))
       )))
+
+;;; ess-install.el ends here

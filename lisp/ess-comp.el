@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1997--2006 A. J. Rossini
 ;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 25 July 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -28,11 +28,11 @@
 
 ;;; Commentary:
 
-;;; This file sets up all compilation needs.
-
-(provide 'ess-comp)
+;; This file sets up all compilation needs.
 
 ;;; Code:
+
+(provide 'ess-comp)
 
 ;; Emacs doesn't include '.' in the emacs lisp load path.
 (add-to-list 'load-path nil)
@@ -47,7 +47,7 @@
 ;; These are required by every other file.
 (ess-message "loading 'ess-compat ..")  (require 'ess-compat) ;set Emacsen diffs
 (ess-message "loading 'ess-custom ..")  (require 'ess-custom) ;set variables
-(ess-message "loading 'ess ..")	      (require 'ess)      ;configure
+(ess-message "loading 'ess ..")       (require 'ess)      ;configure
 (ess-message "loading 'ess-site ..")  (require 'ess-site) ;overload defaults
 
  ; Local variables section

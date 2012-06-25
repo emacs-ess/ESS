@@ -85,9 +85,6 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-../VERSION:
-	cd .. ; $(MAKE) VERSION
-
 info/ess.info: $(TEXISRC) ../VERSION
 	@echo "making Info documentation..."
 	$(MAKEINFO) ess.texi
@@ -109,6 +106,11 @@ install-other-docs: pdf html
 	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
 	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
+
+uninstall :
+	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf README ANNOUNCE
+	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html 
+	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf 
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)

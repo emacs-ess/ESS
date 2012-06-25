@@ -1,6 +1,9 @@
 #### File showing off  things that go wrong or *went* wrong in the past
 #### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
 
+#### NOTE!!! this file is indeted with RRR style !!!!!
+
+
 
 
 ### -------- 1 ---------  extraneous comment chars :  This seems fixed
@@ -78,11 +81,11 @@ plot(Speed, Distance,
 dimnamesGets <- function (x, value) {
     d <- dim(x)
     if (!is.list(value) || length(value) != 2 ||
-	!(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
-	!(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
-	stop(gettextf("invalid dimnames given for '%s' object", class(x)))
+        !(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
+        !(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
+        stop(gettextf("invalid dimnames given for '%s' object", class(x)))
     x@Dimnames <- list(if(!is.null(v1)) as.character(v1),
-		       if(!is.null(v2)) as.character(v2))
+                       if(!is.null(v2)) as.character(v2))
     x
 }
 
@@ -92,18 +95,18 @@ dimnamesGets <- function (x, value) {
 
 a <- function(ch) {
     if(ch == Inf) {
-	E.cond <- numeric(nb)
+        E.cond <- numeric(nb)
     }
     else {
-	indic  <- ifelse(jinf+1 <= 1 & jsup >= 1,1,0)
-	E.cond <- ch*(-pbinom(jinf,ni,prb) + 1-pbinom(js.n,ni,prb)) +
-	    ifelse(ni == 1, prb*indic,
-		   mu*(pbinom(js.n-1,pmax(ni-1,1),prb)-
-		       pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
+        indic  <- ifelse(jinf+1 <= 1 & jsup >= 1,1,0)
+        E.cond <- ch*(-pbinom(jinf,ni,prb) + 1-pbinom(js.n,ni,prb)) +
+            ifelse(ni == 1, prb*indic,
+                   mu*(pbinom(js.n-1,pmax(ni-1,1),prb)-
+                       pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
 ### why is the following line wrongly indented by Emacs/ESS ?
                            mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
 
-	indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
+        indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
 
     }
 }
@@ -159,10 +162,10 @@ onelinerWorksToo <-
 setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
                          drop = "logical"),
 	  function (x, i, j, ..., drop) { ## select rows
-	      storage.mode(i) <- "integer"
+              storage.mode(i) <- "integer"
               xi <- x@i + 1:1 # 1-indexing
               ## ...................
-	      if (drop && any(nd == 1)) drop(as(x,"matrix")) else x
+              if (drop && any(nd == 1)) drop(as(x,"matrix")) else x
 	  })
 
 ### --- 8 ----------------------------------------------------------------
@@ -173,7 +176,7 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
     if(!is.list(value) || length(value) != 2
        || d[[1]] != length(value[[1]])
        || d[[2]] != length(value[[2]]))
-	stop("invalid 'dimnames' given for data frame")
+        stop("invalid 'dimnames' given for data frame")
     row.names(x) <- as.character(value[[1]]) # checks validity
     names(x) <- as.character(value[[2]])
     x
@@ -241,7 +244,6 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 }
 
 ## swanky functions:
-
 `swank:quit-inspector` <- function(slimeConnection, sldbState) {
     resetInspector(slimeConnection)
     FALSE
@@ -254,13 +256,14 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 
 
 ### --- 9 ----------------------------------------------------------------
+## VS[03-2012|12.03]:FIXED:
+
 ## From: "Sebastian P. Luque" <spluque@gmail.com>
 ## To: ess-bugs@stat.math.ethz.ch
 ## Subject: [ESS-bugs] ess-mode 5.12; `ess-indent-line' error
 ## Date: Tue, 17 Aug 2010 13:08:25 -0500
 
 ## With the following input, and point on the line with "Table 8.3":
-## VS[03-2012|12.03]:  solved
 ## it was the paranthetical expression at the beg of line
 
 if (require(lme4)) {
@@ -304,7 +307,7 @@ if (require(lme4)) {
 
 ### --- 10 ---------------------------------------------------------------
 ## indent at 0 after }else:
-## VS:[03-2012|12.03]: solved:
+## VS:[03-2012|12.03]:FIXED:
 if (is.function(f1) && is.function(f2)){
     !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
 }else
@@ -313,7 +316,7 @@ if (is.function(f1) && is.function(f2)){
 
 ### --- 11 ---------------------------------------------------------------
 ### --------------- C-c C-c  was finding the wrong "beginning of function"
-##				[fixed, 2011-05-28]
+##				[:FIXED:, 2011-05-28]
 foobar <- function(...) {}
 rm(list=ls())
 
@@ -332,6 +335,8 @@ cpF <- list("Frank", list(th, 1:d))
 cop <- acF <- cpF$copula
 
 ### --- 13 ---------------------------------------------------------------
+## VS[05-05-2012|ESS 12.04]: looks like :FIXED:
+
 ## From: Aleksandar Blagotic <aca.blagotic@gmail.com>
 ## To: <ess-help@stat.math.ethz.ch>
 ## Subject: [ESS] R-mode: forward-sexp: Scan error: "Unbalanced parentheses"
@@ -359,11 +364,44 @@ fn <- function(x, ...){
 ## check the behavior of ess-arg-function-offset-new-line
 
 a <- some.function(
-###  ^--- with ess-arg-function-offset-new-line 0 should indent here
-     arg1,
-     arg2)
+       arg1,
+       arg2)
+###    ^--- with ess-arg-function-offset-new-line set to 2 should indent here
 
 a <- some.function(arg1,
                    arg2)
+###                ^--- indent here
 
 
+### --- 15 --------------------------------------------------------------
+## VS[05-05-2012|ESS 12.04]:FIXED:
+## indentation of the 3rd line is wrong
+for(s in seq(10, 50, len = 5))
+    for(a in seq(.5, 1, len = 5))
+        pt_dif_plot(s, a)
+##      ^-- here
+
+### --- 16 ----
+## VS[05-05-2012|ESS 12.04]:FIXED:
+## Givesn error unbalanced para at else lines and indentation is wrong
+## error: Point is not in a function according to 'ess-function-pattern'.
+getOrCreateForm <- function(bindName, whereEnv)
+    if(exists(bindName, envir = get(".forms", envir = whereEnv)))
+        get(bindName, envir = whereEnv)
+##      ^-- here
+    else
+        new("protoForm")
+##      ^-- here
+
+parentContainer <-
+    if(is.null(.getPrototype(.Object@host))) emptyenv()
+    else sdf
+
+### --- 17 ---   (but *not* in ESS 5.14 !)
+## Evaluate these, then  C-c C-z (end of *R*), use  C-c C-p ("previous-prompt"):
+N <- c(0,1,0,1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,1,0,0)
+P <- c(1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0)
+yield <- c(49.5,62.8,46.8,57.0,59.8,58.5,55.5,56.0,62.8,55.8,69.5,55.0,
+           62.0,48.8,45.5,44.2,52.0,51.5,49.8,48.8,57.2,59.0,53.2,56.0)
+np <- data.frame(block=gl(6,4), N=factor(N), P=factor(P), yield=yield)
+(np.aovE <- aov(yield ~  N*P + Error(block), np))

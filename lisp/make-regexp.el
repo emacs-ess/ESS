@@ -3,7 +3,7 @@
 ;; Copyright (C) 1994, 1995 Simon Marshall.
 
 ;; Author: Simon Marshall <simon@gnu.ai.mit.edu>
-;; Keywords: strings, regexps
+;; Keywords: lisp, matching
 ;; Version: 1.02
 
 ;; LCD Archive Entry:
@@ -121,18 +121,20 @@
 ;; (until we're sure we need them), and (b) try to squirrel out one-character
 ;; sequences (so we can use [] rather than ()).
 
+;;; Code:
+
 (defun make-regexp (strings &optional paren lax)
   "Return a regexp to match a string item in STRINGS.
 If optional PAREN non-nil, output regexp parentheses around returned regexp.
 If optional LAX non-nil, don't output parentheses if it doesn't require them.
 Merges keywords to avoid backtracking in Emacs' regexp matcher."
   (let* ((max-lisp-eval-depth (* 1024 1024))
-	 (strings (let ((l strings))	; Paranoia---make strings unique!
-		    (while l (setq l (setcdr l (delete (car l) (cdr l)))))
-		    (sort strings 'string-lessp)))
-	 (open-paren (if paren "\\(" "")) (close-paren (if paren "\\)" ""))
-	 (open-lax (if lax "" open-paren)) (close-lax (if lax "" close-paren))
-	 (completion-ignore-case nil))
+         (strings (let ((l strings))    ; Paranoia---make strings unique!
+                    (while l (setq l (setcdr l (delete (car l) (cdr l)))))
+                    (sort strings 'string-lessp)))
+         (open-paren (if paren "\\(" "")) (close-paren (if paren "\\)" ""))
+         (open-lax (if lax "" open-paren)) (close-lax (if lax "" close-paren))
+         (completion-ignore-case nil))
     (cond
      ;; If there's only one string, just return it.
      ((= (length strings) 1)
@@ -140,38 +142,38 @@ Merges keywords to avoid backtracking in Emacs' regexp matcher."
      ;; If there's an empty string, pull it out.
      ((string= (car strings) "")
       (if (and (= (length strings) 2) (= (length (nth 1 strings)) 1))
-	  (concat open-lax (nth 1 strings) "?" close-lax)
-	(concat open-paren "\\|" (make-regexp (cdr strings)) close-paren)))
+          (concat open-lax (nth 1 strings) "?" close-lax)
+        (concat open-paren "\\|" (make-regexp (cdr strings)) close-paren)))
      ;; If there are only one-character strings, make a [] list instead.
      ((= (length strings) (apply '+ (mapcar 'length strings)))
       (concat open-lax "[" (mapconcat 'identity strings "") "]" close-lax))
      (t
       ;; We have a list of strings.  Is there a common prefix?
       (let ((prefix (try-completion "" (mapcar 'list strings))))
-	(if (> (length prefix) 0)
-	    ;; Common prefix!  Squirrel it out and recurse with the suffixes.
-	    (let* ((len (length prefix))
-		   (sufs (mapcar (lambda (str) (substring str len)) strings)))
-	      (concat open-paren prefix (make-regexp sufs t t) close-paren))
-	  ;; No common prefix.  Is there a one-character sequence?
-	  (let ((letters (let ((completion-regexp-list '("^.$")))
-			   (all-completions "" (mapcar 'list strings)))))
-	    (if (> (length letters) 1)
-		;; Do the one-character sequences, then recurse on the rest.
-		(let ((rest (let ((completion-regexp-list '("^..+$")))
-			      (all-completions "" (mapcar 'list strings)))))
-		  (concat open-paren
-			  (make-regexp letters) "\\|" (make-regexp rest)
-			  close-paren))
-	      ;; No one-character sequence, so divide the list into two by
-	      ;; dividing into those that start with a particular letter, and
-	      ;; those that do not.
-	      (let* ((char (substring (car strings) 0 1))
-		     (half1 (all-completions char (mapcar 'list strings)))
-		     (half2 (nthcdr (length half1) strings)))
-		(concat open-paren
-			(make-regexp half1) "\\|" (make-regexp half2)
-			close-paren))))))))))
+        (if (> (length prefix) 0)
+            ;; Common prefix!  Squirrel it out and recurse with the suffixes.
+            (let* ((len (length prefix))
+                   (sufs (mapcar (lambda (str) (substring str len)) strings)))
+              (concat open-paren prefix (make-regexp sufs t t) close-paren))
+          ;; No common prefix.  Is there a one-character sequence?
+          (let ((letters (let ((completion-regexp-list '("^.$")))
+                           (all-completions "" (mapcar 'list strings)))))
+            (if (> (length letters) 1)
+                ;; Do the one-character sequences, then recurse on the rest.
+                (let ((rest (let ((completion-regexp-list '("^..+$")))
+                              (all-completions "" (mapcar 'list strings)))))
+                  (concat open-paren
+                          (make-regexp letters) "\\|" (make-regexp rest)
+                          close-paren))
+              ;; No one-character sequence, so divide the list into two by
+              ;; dividing into those that start with a particular letter, and
+              ;; those that do not.
+              (let* ((char (substring (car strings) 0 1))
+                     (half1 (all-completions char (mapcar 'list strings)))
+                     (half2 (nthcdr (length half1) strings)))
+                (concat open-paren
+                        (make-regexp half1) "\\|" (make-regexp half2)
+                        close-paren))))))))))
 
 ;; This stuff is realy for font-lock...
 
@@ -207,30 +209,31 @@ For example:
 
      =>
 
- (\"^(\\\\(def\\\\(a\\\\(dvice\\\\|lias\\\\)\\\\|subst\\\\|un\\\\)\\\\)[ 	]*\\\\([a-zA-Z-]+\\\\)?\"
+ (\"^(\\\\(def\\\\(a\\\\(dvice\\\\|lias\\\\)\\\\|subst\\\\|un\\\\)\\\\)[        ]*\\\\([a-zA-Z-]+\\\\)?\"
   (1 keyword) (4 function-name nil t))
 
 Uses `make-regexp' to make efficient regexps."
   (let ((regexp "") (data ()))
     (while regexps
       (cond ((stringp (car regexps))
-	     (setq regexp (concat regexp (car regexps))))
-	    ((stringp (nth 0 (car regexps)))
-	     (setq data (cons (cons (+ (regexp-span regexp)
-				       (nth 1 (car regexps)))
-				    (nthcdr 2 (car regexps)))
-			      data)
-		   regexp (concat regexp (nth 0 (car regexps)))))
-	    (t
-	     (setq data (cons (cons (1+ (regexp-span regexp))
-				    (cdr (car regexps)))
-			      data)
-		   regexp (concat regexp (make-regexp (nth 0 (car regexps))
-						      t)))))
+             (setq regexp (concat regexp (car regexps))))
+            ((stringp (nth 0 (car regexps)))
+             (setq data (cons (cons (+ (regexp-span regexp)
+                                       (nth 1 (car regexps)))
+                                    (nthcdr 2 (car regexps)))
+                              data)
+                   regexp (concat regexp (nth 0 (car regexps)))))
+            (t
+             (setq data (cons (cons (1+ (regexp-span regexp))
+                                    (cdr (car regexps)))
+                              data)
+                   regexp (concat regexp (make-regexp (nth 0 (car regexps))
+                                                      t)))))
       (setq regexps (cdr regexps)))
     (cons regexp (nreverse data))))
 
 ;; timing functions removed due to name collisions with Gnus
 
 (provide 'make-regexp)
+
 ;;; make-regexp.el ends here

@@ -1,3 +1,205 @@
+2012-06-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-dirs): Do not set ess-directory.
+
+2012-05-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): add an annoying 9.3
+	note/news to the comment category
+
+2012-05-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-goto): bug-fix; if the root of file name
+	contains a suffix, then still goto correctly, e.g. logit.sas
+	has log in it
+
+2012-05-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-sas-d.el: Set C-c C-w only in SAS (e.g. *not* in R).
+
+2012-05-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-rtf-*): XEmacs support returns!
+	5.13 era functions are used if (featurep 'xemacs)
+	otherwise, 5.14+ Emacs variants
+
+2012-05-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess.el (ess-version-string): make robust against wrong/empty SVN-REVISION
+
+2012-05-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-rd.el (Rd-mode): set ess-language "S" and ess-dialect "R", so
+	R may be autostarted, when desired.
+
+2012-05-06  Sam Steingold  <sds@gnu.org>
+
+	* ess-site.el: Do not quote lambda expressions.
+	* noweb-font-lock-mode.el (noweb-font-lock-fontify-chunk-by-number):
+	Use `syntax-begin-function' when available instead of
+	`font-lock-beginning-of-syntax-function' (obsolete in Emacs 23.3).
+	Avoid `progn' in `cond' and some other minor code cleanup.
+
+2012-05-05  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-custom.el (inferior-STA-program-name): is now "stata" as it
+	should be and not "env" + all the support modifications.
+
+	* ess-sta-l.el (ess-help-STA-sec-keys-alist): corrections and
+	additions to sections keys and regular expressions for STATA.
+
+	* ess-s-l.el (S-common-cust-alist)
+	* ess-sta-d.el (ess--STA-retrive-topics-from-search)
+	(ess-get-STA-help-topics): customizable topic retrieval. Stata has
+	same interactive facilities as R.
+
+	* ess-custom.el (inferior-STA-args): customizable stata arguments.
+	(inferior-STA-program-name): program name is "stat" as it should
+	be (and not "env").
+
+2012-05-02  Sam Steingold  <sds@gnu.org>
+
+	* ess-r-args.el (tooltip-show-at-point): Do not use the assoc
+	package (which is obsoleted by Emacs 24.2 anyway), use let
+	instead, it is cleaner and more reliable.
+
+
+2012-04-23  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* merged Daniel Hackney's changes
+	Squashed commit of the following:
+
+	commit 708101bef3e5c1f20f53736a9e93799eddaf4f0c
+	Author: Daniel Hackney <dan@haxney.org>
+	Date:   Mon Apr 23 00:28:53 2012 -0400
+
+        Remove incorrect description of the GPL
+
+        A couple files had the following in their header:
+
+        In short: you may use this code any way you like, as long as you
+        don't charge money for it, remove this notice, or hold anyone liable
+        for its results.
+
+        This is not an accurate description of the GPL, and should therefore not appear
+        in the headers.
+
+	commit c93848d930783f0c38fec1ff07af40fb623799d1
+	Author: Daniel Hackney <dan@haxney.org>
+	Date:   Sun Apr 22 23:03:42 2012 -0400
+
+        Clean up all whitespace according to settings from ".dir-locals.el"
+
+        Uses `whitespace-cleanup' to set a consistent style for whitespace throughout
+        the project. This can be applied with:
+
+
+        (defun recursive-files (dir func)
+          (loop with before-save-hook
+                for (file is-dir)
+                in (directory-files-and-attributes dir t ".*\.el$")
+                if is-dir
+                do (recursive-files file form)
+                else
+                do (with-current-buffer (find-file-noselect file)
+        	     (apply func)
+        	     (basic-save-buffer)
+        	     (kill-buffer))))
+
+        (recursive-files 'whitespace-cleanup)
+
+        Again, this can be run from "emacs -Q" after "(require 'cl)"
+
+	commit 3c9c0857d67bda1e9161e37ed426e97a8c61223c
+	Author: Daniel Hackney <dan@haxney.org>
+	Date:   Sun Apr 22 22:51:54 2012 -0400
+
+        Directory-local variables for whitespace cleanup.
+
+        Use the `whitespace' library for the cleaning.
+
+	commit 8dc3d6db1d40956ab96c33b18a80a95a047b46b3
+	Author: Daniel Hackney <dan@haxney.org>
+	Date:   Sun Apr 22 22:40:28 2012 -0400
+
+        Convert files to `utf-8-unix' coding system.
+
+        The default coding system to use going forward, `utf-8-unix', is set as a
+        directory-local variable in ".dir-locals.el".
+
+        To force all elisp files to use the `utf-8-unix' coding system, the following
+        code will recursively walk through all elisp files in the specified directory
+        set the encoding system, and save the file.
+
+        (require 'cl)
+
+        (defun recursive-files (dir func)
+        (loop with before-save-hook
+        for (file is-dir)
+        in (directory-files-and-attributes dir t ".*\.el$")
+        if is-dir
+        do (recursive-files file form)
+        else
+        do (with-current-buffer (find-file-noselect file)
+        (apply func)
+        (basic-save-buffer)
+        (kill-buffer))))
+
+        This can be invoked as follows:
+
+        (recursive-files "/path/to/ess" '(lambda () (set-buffer-file-coding-system 'utf-8-unix)))
+
+        To ensure no other variables from the user environment impact the process, this
+        code can be run in "emacs -Q", which doesn't load any startup files (outside of
+        the emacs core).
+
+        This function could perhaps be split out, named better, and put in its own file.
+
+	commit 6352290fe13ce9048abaa0e401679a67bbcafe43
+	Author: Daniel Hackney <dan@haxney.org>
+	Date:   Tue Apr 17 21:01:36 2012 -0400
+
+        Reformat all headers to be consistent.
+
+        Summary of changes made:
+
+        * Correct first- and last-line format. Preferred is three semicolons, file name,
+        either three dashes and the description (first line) or the string "ends
+        here" (last line).
+
+        * Changed header comment lines to match conventions. "Author" and "Maintainer"
+        headers are singular, even when there are multiple authors or maintainers.
+
+        * Use the correct number of semicolons for each header section. Regular comments
+        should have two semicolons; section headers, such as "Commentary" or "Code"
+        should have three.
+
+        * Fixed "Keywords" header comments. There is a standard-ish set of keywords used
+        in Emacs, available through `finder-by-keyword'; this commit uses those
+        conventions. Also, keywords are now separated by comma then space and do not
+        have a trailing period.
+
+        * Trailing newline at end of file. A few files lacked this, which makes
+        subsequent diffs which modify the last line unnecessarily noisy.
+
+        * Moved "Code" section marker before any and all code in a file.
+
+
+2012-04-21  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess.el (ess-version-string): new, and (ess-version) uses it.
+
+2012-04-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (ess-use-this-dir): add 'no-force-current, and switch
+	default to *try* finding a current *R* buffer.
+
+2012-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-bugs-d.el (ess-bugs-mode):
+	* ess-jags-d.el (ess-jags-mode):
+	   (setq ess-language "S") ; mimic S for ess-smart-underscore
+
 2012-04-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-custom.el (ess-revision): extraordinary attempts

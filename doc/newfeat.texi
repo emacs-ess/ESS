@@ -1,5 +1,40 @@
 @itemize @w{}
 
+Changes/Bug Fixes in 12.04-3:
+@itemize @bullet
+@item @ESS{}: basic support for package.el compatibility
+@item @ESS{[R]}: correct indentation of & and | continuation lines
+@item @code{M-x ess-version} shows the svn revision even after @code{make install}
+@item @ESS{[SAS]}: improved XEmacs support
+@item @iESS{[R]}: better finding of previous prompt
+@item @ESS{[Stata]}: adjusted prompt for mata mode
+@item @ESS{[R]}: resolved name clashes with cl.el
+@item @ESS{[R]}: removed dependence on obsolete package assoc
+@item New @code{make} target  @code{lisp}, to build the lisp-only part, i.e., not building the docs.
+@end itemize
+
+Changes/New Features in 12.04-1:
+@itemize @bullet
+@item @iESS{[Stata]}: New interactive help invocation.
+@item @iESS{[Stata]}: New custom variable @code{inferior-STA-start-file}.
+@item @iESS{[Stata]}: @code{inferior-STA-program-name} is now ``stata''
+and can be  customized.
+@item @ESS{[Stata]} New sections in stata help files
+Syntax(@kbd{s-S}), Remarks(@kbd{r}), Title(@kbd{t}).
+@end itemize
+
+Bug Fixes in 12.04-1:
+@itemize @bullet
+@item @ESS{[R]}: Better @code{ess-tracebug} error handling.
+@item @ESS{[R]}: Corrected @code{ess-eldoc} help string filtering
+and improved argument caching.
+@item @ESS{[R]}: Indentation of non-block if/else/for/while lines fixed.
+@item @code{M-x ess-version} should work better.
+@item @ESS{}: Filename completion now again works inside strings.
+@item @iESS{[Stata]}: Fixed prompt detection issue.
+@item @ESS{[Rd]}: R is autostarted also from here, when needed.
+@end itemize
+
 Changes/New Features in 12.04:
 @itemize @bullet
 @item @ESS{}: Reverting new behavior of 12.03, @kbd{TAB} in @code{ess-mode}
@@ -8,7 +43,7 @@ in R and S scripts, similarly to @iESS{} behavior, set the variable
 @code{ess-tab-complete-in-script} to @code{t}. Also see
 @code{ess-first-tab-never-complete} for how to customize where first
 @kbd{TAB} is allowed to complete.
-@item @ESS{}: completion is consistently bound to @kbd{M-TAB} (aka @kbd{C-M-i})
+@item @ESS{}: completion is consistently bound to @kbd{M-TAB} (aka @kbd{M-C-i})
 in both Emacs23 and Emacs24.
 @item @ESS{}: The variable @code{ess-arg-function-offset-new-line}
 introduced in @ESS{(12.03)} now accepts a list with the first element a

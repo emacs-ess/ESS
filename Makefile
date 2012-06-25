@@ -4,19 +4,24 @@
 include ./Makeconf
 
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install: VERSION
+all install uninstall: etc/SVN-REVISION
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 
+lisp: etc/SVN-REVISION
+	cd lisp; $(MAKE)
 
 ## the rest of the targets are for ESS developer's use only :
 
-VERSION:
-	@echo "$(ESSVERSION)" > $@
-## manually
-VERSION+:
-	echo "$(ESSVERSIONsvn)" > VERSION
+# VERSION:
+# 	@echo "$(ESSVERSION)" > $@
+## Hmm, this is a bit brittle ... but for distribution, there's no problem
+etc/SVN-REVISION: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
+	(LC_ALL=C TZ=GMT svn info -r HEAD || $(ECHO) "Revision: unknown") 2> /dev/null \
+	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
+	    | cut -d' ' -f1,2,3,4 > $@-tmp
+	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -e $@ ]; then echo 'not available' > $@ ; fi
 
 
 ## --- PRE-release ---
@@ -37,13 +42,13 @@ downloads: all RPM.spec cleanup-dist
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-svn; $(GNUTAR) cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
-	CLEANUP="jcgs techrep dsc2001-rmh philasug user-* useR-* Why_* README.*"; \
+	CLEANUP="user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
 	svn cleanup
-## ugly hack; otherwise get ess-revision "12-04-rexported":
-	cd lisp; $(MAKE) -W ../VERSION ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	cd $(ESSDIR)/lisp; $(MAKE) ess-custom.el; fgrep ess-revision ess-custom.el; cd ../..
+	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+         # touch: make it newer than VERSION in the tarball:
+	sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
@@ -54,7 +59,7 @@ downloads: all RPM.spec cleanup-dist
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 
-dist: downloads
+dist: VERSION downloads
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
 	touch $@
@@ -68,13 +73,16 @@ cleanup-dist:
 cleanup-rel:
 	@rm -f dist lisp/dist $(ESSDIR)*
 
-%.spec: %.spec.in
+%.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 
 ## --- RELEASE ---
 
-ChangeLog:
+## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel'   <<---- MUST ---
+##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
+## 	ChangeLog often ends up newer than VERSION
+ChangeLog: VERSION
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
@@ -95,7 +103,7 @@ rel: ChangeLog dist tag homepage
 
 tag:
 	@echo "** Tagging the release **"
-	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSIONTAG)
+	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 homepage:
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
@@ -116,4 +124,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f VERSION dist
+	rm -f etc/SVN-REVISION* dist

@@ -1,8 +1,8 @@
-;; Copyright (C) 2007 Sven Hartenstein
-;; e-mail: mail at svenhartenstein dot de
+;;; ess-r-args.el --- Insert R function's arguments
 
+;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
 ;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; This file is part of ESS
 
@@ -21,9 +21,9 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;; ==================================================
-
 ;; Last update: 2012-02-27
+
+;;; Commentary:
 
 ;; == DOCUMENTATION ==
 
@@ -179,14 +179,14 @@
 ;;   I would prefer the information to be shown, say, five seconds or
 ;;   so.
 
-;; ==================================================
+;;; Code:
 
 (eval-and-compile
   (require 'ess-custom))
 
 (eval-when-compile
   (if ess-has-tooltip
-    (require 'tooltip))); for tooltip-show
+      (require 'tooltip))); for tooltip-show
 
 (require 'ess)
 
@@ -200,8 +200,8 @@ found."
     (let ((posend (point)))
       (backward-sexp 1)
       (let ((rfunname (buffer-substring-no-properties posend (point))))
-	(if (posix-string-match "^[a-zA-Z0-9_\.]+$" rfunname)
-	    rfunname nil)))))
+        (if (posix-string-match "^[a-zA-Z0-9_\.]+$" rfunname)
+            rfunname nil)))))
 
 (defun ess-r-args-get (&optional function trim)
   "Returns string of arguments and their default values of R
@@ -213,35 +213,35 @@ buffer readjustments for multiline string)."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (when (and function
-	     (or ess-current-process-name
-		 (interactive-p)))
+             (or ess-current-process-name
+                 (interactive-p)))
     (ess-force-buffer-current "R process to use: ")
     ;; ^^^^^^^^^^^^^^^ has own error handler
     (cadr (ess-function-arguments function))
     ))
 
 ;;     (let ((ess-nuke-trailing-whitespace-p t)
-;; 	  (args))
+;;        (args))
 ;;       (ess-command (format "try({fun<-\"%s\"; fundef<-paste(fun, '.default',sep='')
 ;; if(exists(fundef, mode = \"function\")) args(fundef) else args(fun)}, silent=F)\n" function)
-;; 		   (get-buffer-create "*ess-r-args-tmp*"))
+;;                 (get-buffer-create "*ess-r-args-tmp*"))
 ;;       (with-current-buffer "*ess-r-args-tmp*"
-;; 	(goto-char (point-min))
-;; 	(if (null (search-forward "function" 20 t))
-;; 	    (message ess-r-args-noargsmsg)
-;; 	  (goto-char (point-min))
-;; 	  (search-forward "(" nil t)
-;; 	  (delete-region (point-min) (point))
-;; 	  (goto-char (point-max))
-;; 	  (search-backward ")" nil t)
-;; 	  (delete-region (point) (point-max))
-;; 	  (ess-nuke-trailing-whitespace); should also work in Xemacs
-;; 	  (setq args (buffer-string))
-;; 	  (if trim
-;; 	      (replace-regexp-in-string " = " "="
-;; 					(replace-regexp-in-string "[\n \t]+" " " args))
-;; 	    args)
-	  ;; )))))
+;;      (goto-char (point-min))
+;;      (if (null (search-forward "function" 20 t))
+;;          (message ess-r-args-noargsmsg)
+;;        (goto-char (point-min))
+;;        (search-forward "(" nil t)
+;;        (delete-region (point-min) (point))
+;;        (goto-char (point-max))
+;;        (search-backward ")" nil t)
+;;        (delete-region (point) (point-max))
+;;        (ess-nuke-trailing-whitespace); should also work in Xemacs
+;;        (setq args (buffer-string))
+;;        (if trim
+;;            (replace-regexp-in-string " = " "="
+;;                                      (replace-regexp-in-string "[\n \t]+" " " args))
+;;          args)
+;; )))))
 
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -253,19 +253,19 @@ buffer readjustments for multiline string)."
   (ess-message ".... function='%s'" function)
   (when function
     (let* ((tt (and (equal ess-r-args-show-as 'tooltip)
-		    ess-has-tooltip))
-	   (args (concat ess-r-args-show-prefix (ess-r-args-get function (not tt)))))
+                    ess-has-tooltip))
+           (args (concat ess-r-args-show-prefix (ess-r-args-get function (not tt)))))
       (ess-message "(ess-r-args-show): args='%s'" args)
       (when  args
-	(if (not tt)
-	    (message args)
-	  (require 'tooltip)
-	  ;; value of 30 in next call is just a guess,
-	  ;; should really be based
-	  ;; on something like pixel height of 1-2 vertical
-	  ;; lines of text
-	  (tooltip-show-at-point args 0 30))
-	))))
+        (if (not tt)
+            (message args)
+          (require 'tooltip)
+          ;; value of 30 in next call is just a guess,
+          ;; should really be based
+          ;; on something like pixel height of 1-2 vertical
+          ;; lines of text
+          (ess-tooltip-show-at-point args 0 30))
+        ))))
 
 (defun ess-r-args-auto-show ()
   "Typically assigned to \"(\": If there's an ess-process, automatically show arguments
@@ -273,8 +273,8 @@ and their default values of an R function. Built on \\[ess-r-args-show]."
   (interactive)
   (insert "("); (skeleton-pair-insert-maybe nil)
   (if (and (not eldoc-mode)
-	   ess-local-process-name ; has a process and it must still be running
-	   (get-ess-process ess-local-process-name))
+           ess-local-process-name ; has a process and it must still be running
+           (get-ess-process ess-local-process-name))
       (ess-r-args-show)))
 
 ;; MM: I would strongly discourage use of the following:
@@ -288,31 +288,31 @@ ess-r-args-current-function if no argument given."
   (if (null function)
       (setq function (ess-r-args-current-function)))
   (if function
-    (let ((args (ess-r-args-get function))
-	  (pointpos (point)))
-      (insert args)
-      (goto-char pointpos))))
+      (let ((args (ess-r-args-get function))
+            (pointpos (point)))
+        (insert args)
+        (goto-char pointpos))))
 
 ;; ;; call ess-r-args-show automatically --- this should be optional
 ;; now in ess-mode.el :
 ;; (if ess-r-args-electric-paren ; <<- in ./ess-custom.el -- default nil
 ;;     (add-hook 'ess-mode-hook
-;; 	      (lambda ()
-;; 		(define-key ess-mode-map "(" 'ess-r-args-auto-show))))
+;;            (lambda ()
+;;              (define-key ess-mode-map "(" 'ess-r-args-auto-show))))
 
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
-(require 'assoc)			;needed for aput, below.
-(defun tooltip-show-at-point (text xo yo)
+
+(defun ess-tooltip-show-at-point (text xo yo)
   "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
 and y-offsets for the toolbar from point."
   (let (
-	(fx (frame-parameter nil 'left))
-	(fy (frame-parameter nil 'top))
-	(fw (frame-pixel-width))
-	(fh (frame-pixel-height))
-	frame-left frame-top my-x-offset my-y-offset)
+        (fx (frame-parameter nil 'left))
+        (fy (frame-parameter nil 'top))
+        (fw (frame-pixel-width))
+        (fh (frame-pixel-height))
+        frame-left frame-top my-x-offset my-y-offset)
 
     ;; The following comment was found before code looking much like that
     ;; of frame-left and frame-top below in the file
@@ -328,41 +328,33 @@ and y-offsets for the toolbar from point."
     ;; (contributed by Andrey Grigoriev)
 
     (setq frame-left (if (not (consp fx))
-			 fx
-		       (if (eq (car fx) '-)
-			   (- (x-display-pixel-width) (car (cdr fx)) fw)
-			 (car (cdr fx)))))
+                         fx
+                       (if (eq (car fx) '-)
+                           (- (x-display-pixel-width) (car (cdr fx)) fw)
+                         (car (cdr fx)))))
 
     (setq frame-top (if (not (consp fy))
-			fy
-		      (if (eq (car fy) '-)
-			  (- (x-display-pixel-height) (car (cdr fy)) fh)
-			(car (cdr fy)))))
+                        fy
+                      (if (eq (car fy) '-)
+                          (- (x-display-pixel-height) (car (cdr fy)) fh)
+                        (car (cdr fy)))))
 
     ;; calculate the offset from point, use xo and yo to adjust to preference
     (setq my-x-offset (+ (car(window-inside-pixel-edges))
-			 (car(posn-x-y (posn-at-point)))
-			 frame-left xo))
+                         (car(posn-x-y (posn-at-point)))
+                         frame-left xo))
 
     (setq my-y-offset (+ (cadr(window-inside-pixel-edges))
-			 (cdr(posn-x-y (posn-at-point)))
-			 frame-top yo))
+                         (cdr(posn-x-y (posn-at-point)))
+                         frame-top yo))
 
-    ;; this clobbers current tooltip-frame-parameters 'top' and 'left',
-    ;; which are not set by default.  use push/pop instead of aput/adelete?
-    ;; the problem with using aput again is that if top/left were nil, aput'ing
-    ;; nil will have no effect.
-
-    (aput 'tooltip-frame-parameters 'top my-y-offset)
-    (aput 'tooltip-frame-parameters 'left my-x-offset)
-
-    (tooltip-show text)
-
-    ;; remove parameters so that further tooltip-show calls aren't shown in
-    ;; odd place (i.e., wherever point happened to be the last time this was
-    ;; called
-    (adelete 'tooltip-frame-parameters 'top)
-    (adelete 'tooltip-frame-parameters 'left)
+    (let ((tooltip-frame-parameters
+           (cons (cons 'top my-y-offset)
+                 (cons (cons 'left my-x-offset)
+                       tooltip-frame-parameters))))
+      (tooltip-show text))
     ))
 
 (provide 'ess-r-args)
+
+;;; ess-r-args.el ends here

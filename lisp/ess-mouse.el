@@ -2,11 +2,11 @@
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: 25 Mar 2001
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -17,11 +17,11 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
@@ -39,8 +39,8 @@
 ;;*;; Requires
 (require 'mouseme)
 ;;(if (or (equal window-system 'w32)
-;;	(equal window-system 'win32)
-;;	(equal window-system 'mswindows))
+;;      (equal window-system 'win32)
+;;      (equal window-system 'mswindows))
 ;;    (require 'essiw32b))
 
 (defun ess-mouse-me ()
@@ -66,7 +66,7 @@
         (setq sm (mark t))              ; saved mark
 ;;;     (set-buffer (window-buffer (posn-window (event-start event))))
 ;;;     (setq mouse (goto-char (posn-point (event-start event))))
-	(setq mouse (point))  ;; ess-mouse-me-helper
+        (setq mouse (point))  ;; ess-mouse-me-helper
         ;; if there is a region and point is inside it
         ;; check for sm first incase (null (mark t))
         ;; set name to either the thing they clicked on or region
@@ -116,7 +116,7 @@
     "----"
     ("Browser on"  . ess-mouse-me-browser-on)
     ("Browser off" . ess-mouse-me-browser-off))
-    "*Command menu used by `mouse-me-build-menu'.
+  "*Command menu used by `mouse-me-build-menu'.
 A alist of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals
@@ -149,18 +149,18 @@ the symbol `string' it will be called with one string argument."
 
 (defun ess-mouse-me-browser-on (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "debug(" string ")"))
-   (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
+      (ess-eval-linewise (concat "debug(" string ")"))
+    (ess-mouse-me-eval-expanded string "trace(" ", exit=browser)") nil nil nil))
 
 (defun ess-mouse-me-browser-off  (string)
   (if (equal (substring ess-dialect 0 1) "R")
-       (ess-eval-linewise (concat "undebug(" string ")"))
-   (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
+      (ess-eval-linewise (concat "undebug(" string ")"))
+    (ess-mouse-me-eval-expanded string "untrace(" ")") nil nil nil))
 
 
 
 (defun ess-mouse-me-eval-expanded (string &optional head tail commands-buffer
-					  page value-returned)
+                                          page value-returned)
   "Send the expanded STRING to the inferior-ess process using `ess-command'
 after first concating the HEAD and TAIL.  Put answer in COMMANDS-BUFFER if
 specified and not using ddeclient, otherwise in \"tmp-buffer\".  In either
@@ -169,25 +169,25 @@ constructed command.  If PAGE is non-nil and using ddeclient, expand
 the string one more time by embedding it in a \"page()\" command."
   (interactive)
   (let* (scommand
-	 page-scommand
-	 (ess-mouse-customize-alist ess-local-customize-alist))
+         page-scommand
+         (ess-mouse-customize-alist ess-local-customize-alist))
     (if (not head) (setq head "summary("))
     (if (not tail) (setq tail ")"))
     (if (not commands-buffer) (setq commands-buffer
-				    (get-buffer-create "tmp-buffer")))
+                                    (get-buffer-create "tmp-buffer")))
     (setq scommand (concat head string tail))
 
     (if (ess-ddeclient-p)
-	(progn
-	  (setq page-scommand (if page
-				  (concat "page(" scommand ")")
-				scommand))
-	  (set-buffer-file-coding-system 'undecided-dos)
-	  (ess-command page-scommand commands-buffer)
-	  (if (not value-returned)
-	      nil
-	    (sleep-for 2)
-	    (switch-to-buffer (car (buffer-list)))))
+        (progn
+          (setq page-scommand (if page
+                                  (concat "page(" scommand ")")
+                                scommand))
+          (set-buffer-file-coding-system 'undecided-dos)
+          (ess-command page-scommand commands-buffer)
+          (if (not value-returned)
+              nil
+            (sleep-for 2)
+            (switch-to-buffer (car (buffer-list)))))
       (ess-make-buffer-current)
       (switch-to-buffer commands-buffer)
       (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
@@ -195,10 +195,10 @@ the string one more time by embedding it in a \"page()\" command."
       (ess-command (concat scommand "\n") commands-buffer)
       (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
     (if (not value-returned)
-	nil
+        nil
       (if ess-microsoft-p                      ;; there ought to be a filter
-	  (while (search-forward "\r" nil t)   ;; function to keep the ^M
-	    (replace-match "" nil t)))         ;; from showing up at all
+          (while (search-forward "\r" nil t)   ;; function to keep the ^M
+            (replace-match "" nil t)))         ;; from showing up at all
       (ess-transcript-mode (eval ess-mouse-customize-alist))
       (setq ess-local-process-name ess-current-process-name)
       (rename-buffer scommand))))
@@ -224,7 +224,7 @@ the string one more time by embedding it in a \"page()\" command."
 ;;       (define-key ess-mode-map              [S-mouse-3] 'ess-mouse-me)
 ;;       (define-key inferior-ess-mode-map     [S-mouse-3] 'ess-mouse-me)
 ;;       (defun ess-S-mouse-me-ess-transcript-mode ()
-;; 	(define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me)))
+;;      (define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me)))
 ;;   ;; xemacs
 ;;   (define-key ess-mode-map              [(shift button3)] 'ess-mouse-me)
 ;;   (define-key inferior-ess-mode-map     [(shift button3)] 'ess-mouse-me)

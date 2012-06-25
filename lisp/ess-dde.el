@@ -2,11 +2,11 @@
 
 ;; Copyright (C) 1998--1999 Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Copyright (C) 2000--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
+;; Author: Richard M. Heiberger  <rmh@fisher.stat.temple.edu>
 ;; Created: 9 Dec 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -28,7 +28,6 @@
 
 ;; Code for dealing with running external processes on Windows 9x/NT
 ;; through ddeclient.
-;;         =========
 
 ;;; Code:
 
@@ -40,36 +39,36 @@
   "Loop through lines in region and send them to ESS via ddeclient."
   (setq ;; set the following variables for the current ddeESS process.
    inferior-ess-ddeclient (ess-get-process-variable
-			   ess-current-process-name 'inferior-ess-ddeclient)
+                           ess-current-process-name 'inferior-ess-ddeclient)
    inferior-ess-client-name (ess-get-process-variable
-			     ess-current-process-name 'inferior-ess-client-name)
+                             ess-current-process-name 'inferior-ess-client-name)
    inferior-ess-client-command (ess-get-process-variable
-				ess-current-process-name 'inferior-ess-client-command))
+                                ess-current-process-name 'inferior-ess-client-command))
   (narrow-to-region start end)
   (goto-char (point-min))
   (let ((beg))
     (while (or (< (point) (point-max))
-	       (and (= 1 (point-max)) even-empty))
+               (and (= 1 (point-max)) even-empty))
       (setq beg (point))
       (end-of-line)
       ;; call-process-region won't send over a 0-character line.
       ;; We go outside the loop to create a 1-character line " " in the
       ;; *ESS-temporary* buffer
       (if (= beg (point))  ;; do empty line outside loop
-	    (ess-eval-linewise-ddeclient " " nil 'eob t)
-	;;(call-process-region start end
-	;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
-	(call-process-region
-	 beg (point)
-	 inferior-ess-ddeclient nil nil nil
-	 inferior-ess-client-name inferior-ess-client-command))
+          (ess-eval-linewise-ddeclient " " nil 'eob t)
+        ;;(call-process-region start end
+        ;;                     "ddeclient" nil nil nil "S-PLUS" "SCommand")
+        (call-process-region
+         beg (point)
+         inferior-ess-ddeclient nil nil nil
+         inferior-ess-client-name inferior-ess-client-command))
       (forward-line 1))
     (widen)))
 
 ;; C-c C-n
 (defun ess-eval-linewise-ddeclient (text-withtabs &optional
-						  invisibly eob even-empty
-						  sleep-sec)
+                                                  invisibly eob even-empty
+                                                  sleep-sec)
   (save-excursion
     (set-buffer (get-buffer-create "*ESS-temporary*"))
     (ess-setq-vars-local ess-customize-alist (current-buffer))
@@ -96,16 +95,16 @@ source(\"filename\") to S.  This version does not guarantee to save .Last.value,
 nor offer alternate buffers or editing capability."
   (let ((source-buffer (get-file-buffer filename)))
     (if (ess-check-source filename)
-	(error "Buffer %s has not been saved" (buffer-name source-buffer))
+        (error "Buffer %s has not been saved" (buffer-name source-buffer))
       ;; Find the process to load into
       (if source-buffer
-	  (save-excursion
-	    (set-buffer source-buffer)
-	    (ess-force-buffer-current "Process to load into: ")
-	    ;; (ess-check-modifications) ;;; not possible with ddeclient
-	    ;; it calls ess-command which requires two-way communication
-	    ;; with the S-Plus process
-	    )))
+          (save-excursion
+            (set-buffer source-buffer)
+            (ess-force-buffer-current "Process to load into: ")
+            ;; (ess-check-modifications) ;;; not possible with ddeclient
+            ;; it calls ess-command which requires two-way communication
+            ;; with the S-Plus process
+            )))
     (ess-eval-linewise-ddeclient (format inferior-ess-load-command filename)))
   (widen))
 
@@ -141,14 +140,14 @@ file into an emacs buffer and displays it."
     (setq filename (concat (file-name-as-directory (getenv "TEMP")) buf))
     (ess-eval-linewise-ddeclient
      (concat ".old.Last.value <- .Last.value; sink('"
-	     filename
-	     "'); print("
-	     com
-	     "); sink(); .Last.value <- .old.Last.value"))
+             filename
+             "'); print("
+             com
+             "); sink(); .Last.value <- .old.Last.value"))
     (setq bufname (ess-get-file-or-buffer filename)) ;; must follow the eval
     (sleep-for sleep)
     (if (not bufname)
-	(find-file filename)
+        (find-file filename)
       (switch-to-buffer bufname))
     (revert-buffer t t) ;; this allows the user to reuse the BUF name
     ))

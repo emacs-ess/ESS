@@ -2,14 +2,14 @@
 
 ;; Copyright (C) 1998 Richard M. Heiberger
 ;; Copyright (C) 1999--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
 ;; Created: December 1998
 
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -28,33 +28,31 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
-;;; Requires and Autoloads:
+;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+
+;;; Code:
 
 (require 'ess-s-l)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-; Code:
-
 (defvar S+elsewhere-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS at another location.")
-					;easily changeable in a user's .emacs
+                                        ;easily changeable in a user's .emacs
 
 (defvar S+elsewhere-customize-alist
   (append
-   '((ess-local-customize-alist		. 'S+elsewhere-customize-alist)
-     (ess-dialect			. S+elsewhere-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file		. "ess-spelsewhere-namedb.el" )
-     (inferior-ess-program		. inferior-S-elsewhere-program-name)
-     (inferior-ess-help-command		. "help(\"%s\",pager=\"cat\",window=F)\n")
+   '((ess-local-customize-alist         . 'S+elsewhere-customize-alist)
+     (ess-dialect                       . S+elsewhere-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
+     (inferior-ess-program              . inferior-S-elsewhere-program-name)
+     (inferior-ess-help-command         . "help(\"%s\",pager=\"cat\",window=F)\n")
 
-     (inferior-ess-start-file		. nil) ;"~/.ess-S+3")
-     (inferior-ess-start-args		. "-i")
-     (ess-STERM	 . "iESS")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
+     (inferior-ess-start-args           . "-i")
+     (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
   "Variables to customize for S+elsewhere")
@@ -67,7 +65,7 @@ This command is obsolete; please use `ess-remote' instead."
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-	   (current-buffer)))
+           (current-buffer)))
   (inferior-ess)
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start)))
@@ -95,9 +93,9 @@ return new alist whose car is the new pair and cdr is ALIST.
 \[tomo's ELIS like function]"
   (let ((pair (assoc item alist)))
     (if pair
-	(progn
-	  (setcdr pair value)
-	  alist)
+        (progn
+          (setcdr pair value)
+          alist)
       (cons (cons item value) alist))))
 
 
@@ -105,15 +103,15 @@ return new alist whose car is the new pair and cdr is ALIST.
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
   (let* ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4"
-		    "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
-	 (dialect (ess-completing-read "Dialect" dialects nil t)))
+                     "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
+         (dialect (ess-completing-read "Dialect" dialects nil t)))
     (cond
-     ((string= dialect "arc")	ARC-customize-alist)
-     ((string= dialect "vst")	VST-customize-alist)
-     ((string= dialect "omg")	OMG-customize-alist)
-     ((string= dialect "s3")	S3-customize-alist)
-     ((string= dialect "s4")	S4-customize-alist)
-     ((string= dialect "stata")	STA-customize-alist)
+     ((string= dialect "arc")   ARC-customize-alist)
+     ((string= dialect "vst")   VST-customize-alist)
+     ((string= dialect "omg")   OMG-customize-alist)
+     ((string= dialect "s3")    S3-customize-alist)
+     ((string= dialect "s4")    S4-customize-alist)
+     ((string= dialect "stata") STA-customize-alist)
      ((string= dialect "r")     R-customize-alist )
      ((string= dialect "sp3")   S+3-customize-alist)
      ((string= dialect "sp4")   S+4-customize-alist)
@@ -134,16 +132,16 @@ This command is obsolete; please use `ess-remote' instead."
   ;; Need to select a elsewhere-customize-alist
   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
     (ess-change-alist 'inferior-ess-program
-		      inferior-ESS-elsewhere-program-name
-		      elsewhere-customize-alist)
+                      inferior-ESS-elsewhere-program-name
+                      elsewhere-customize-alist)
     (setq ess-customize-alist elsewhere-customize-alist)
     (ess-write-to-dribble-buffer
      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
+             (current-buffer)))
     (inferior-ess)
     (if (equal ess-language "S")
-	(if inferior-ess-language-start
-	    (ess-eval-linewise inferior-ess-language-start)))))
+        (if inferior-ess-language-start
+            (ess-eval-linewise inferior-ess-language-start)))))
 
 
 (defun ess-add-ess-process ()
@@ -155,10 +153,10 @@ buffer on the local computer."
   (interactive)
   (let ((proc (get-buffer-process (buffer-name))))
     (if (not proc)
-	(error "No process is associated with this buffer.")
+        (error "No process is associated with this buffer.")
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
-		   (list ess-current-process-name)))))
+                   (list ess-current-process-name)))))
 
 
 ;;; ess-remote is constructed by looking at ess-add-process and
@@ -187,25 +185,25 @@ C-n to send lines over.  With SAS, use C-c i
   (let ((ess-customize-alist (ess-select-alist-dialect)))
     (ess-write-to-dribble-buffer
      (format "\n(ESS-remote): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
+             (current-buffer)))
     (ess-setq-vars-local ess-customize-alist)
     (inferior-ess-mode)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
     (goto-char (point-max))
     (if (equal ess-language "S")
-	(if inferior-ess-language-start
-	    (progn
-	      ;; FIXME hack (not in line with using ess-customize-alist)
-	      (setq ess-editor nil)
-	      (setq ess-pager nil)
-	      (setq inferior-ess-language-start (eval inferior-S-language-start))
-	      (ess-eval-linewise inferior-ess-language-start))))
+        (if inferior-ess-language-start
+            (progn
+              ;; FIXME hack (not in line with using ess-customize-alist)
+              (setq ess-editor nil)
+              (setq ess-pager nil)
+              (setq inferior-ess-language-start (eval inferior-S-language-start))
+              (ess-eval-linewise inferior-ess-language-start))))
     (if (equal ess-language "SAS")
-	(progn (font-lock-mode 0)
-	       (SAS-log-mode)
-	       (shell-mode)
-	       (toggle-read-only nil)
-	       (font-lock-mode 1)))))
+        (progn (font-lock-mode 0)
+               (SAS-log-mode)
+               (shell-mode)
+               (toggle-read-only nil)
+               (font-lock-mode 1)))))
 
 
  ; Provide package

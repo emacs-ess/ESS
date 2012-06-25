@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1999 A. J. Rossini
 ;; Copyright (C) 2000--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 15 August 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,7 +27,10 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+
+;; This file defines all the S-PLUS 3.x customizations for ess-mode.
+
+;;; Code:
 
 ;;; Requires and Autoloads:
 
@@ -35,8 +38,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-; Code:
 
 (defvar OMG-dialect-name "OMG"
   "Name of 'dialect' for Omega.") ;easily changeable in a user's .emacs
@@ -48,8 +49,8 @@
     (ess-suffix                    . "omg")
     (ess-loop-timeout              . 5000)
     (ess-dump-filename-template    . (ess-replace-regexp-in-string
-				      "S$" ess-suffix ; in the one from custom:
-				      ess-dump-filename-template-proto))
+                                      "S$" ess-suffix ; in the one from custom:
+                                      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . OMG-editing-alist)
     (ess-mode-syntax-table         . OMG-syntax-table)
     (ess-change-sp-regexp          . "");fixme (if omegahat ever ..)
@@ -65,7 +66,7 @@
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-omg")
     (inferior-ess-start-args       . ""))
- "Variables to customize for OMG (Omegahat)")
+  "Variables to customize for OMG (Omegahat)")
 
 
 (defun OMG (&optional start-args) ; proc-name)
@@ -74,13 +75,13 @@
   (setq ess-customize-alist OMG-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(OMG): ess-dialect=%s, buf=%s\n"
-	   ess-dialect
-	   (current-buffer)))
+           ess-dialect
+           (current-buffer)))
   (let ((omg-start-args
-	 (concat inferior-ess-start-args
-		 (if start-args (read-string
-				 "Starting Args [possibly -CORBA] ? ")
-		   nil))))
+         (concat inferior-ess-start-args
+                 (if start-args (read-string
+                                 "Starting Args [possibly -CORBA] ? ")
+                   nil))))
     (inferior-ess omg-start-args)))
 
 

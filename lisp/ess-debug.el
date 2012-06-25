@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1997--2001 A.J. Rossini
 ;; Copyright (C) 2001--2006 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: November 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages, tools
 
 ;; This file is part of ESS.
 
@@ -42,32 +42,32 @@
 directories and it does not exist in `load-path'.
 
 You can use following PATH styles:
-	load-path relative: \"PATH/\"
-			(it is searched from `default-load-path')
-	home directory relative: \"~/PATH/\" \"~USER/PATH/\"
-	absolute path: \"/HOO/BAR/BAZ/\"
+        load-path relative: \"PATH/\"
+                        (it is searched from `default-load-path')
+        home directory relative: \"~/PATH/\" \"~USER/PATH/\"
+        absolute path: \"/HOO/BAR/BAZ/\"
 
 You can specify following OPTIONS:
-	'all-paths	search from `load-path'
-			instead of `default-load-path'
-	'append		add PATH to the last of `load-path'.
+        'all-paths      search from `load-path'
+                        instead of `default-load-path'
+        'append         add PATH to the last of `load-path'.
 
 For ESS, ONLY use load-path, since Emacs doesn't have
 default-load-path."
 
   (let ((rest load-path)
-	p)
+        p)
     (if (and (catch 'tag
-	       (while rest
-		 (setq p (expand-file-name path (car rest)))
-		 (if (file-directory-p p)
-		     (throw 'tag p))
-		 (setq rest (cdr rest))))
-	     (not (member p load-path)))
-	(setq load-path
-	      (if (memq 'append options)
-		  (append load-path (list p))
-		(cons p load-path))))))
+               (while rest
+                 (setq p (expand-file-name path (car rest)))
+                 (if (file-directory-p p)
+                     (throw 'tag p))
+                 (setq rest (cdr rest))))
+             (not (member p load-path)))
+        (setq load-path
+              (if (memq 'append options)
+                  (append load-path (list p))
+                (cons p load-path))))))
 
 (setq-default debug-on-error t)
 (ess-add-path "~rossini/Repos/repos-svn/ess/lisp")
@@ -90,4 +90,3 @@ default-load-path."
 ;;; End:
 
 ;;; ess-debug.el ends here
-

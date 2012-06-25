@@ -496,7 +496,7 @@ ssh buffer and then connect ESS to that buffer.
 @enumerate
 @item Start a new telnet or ssh buffer and connect to the remote computer
 (e.g. use @samp{M-x telnet} or @samp{M-x ssh}; ssh.el is available at
-@uref{ftp://ftp.splode.com/pub/users/friedman/emacs-lisp/ssh.el}).
+@uref{http://www.splode.com/~friedman/software/emacs-lisp/src/ssh.el}).
 
 @item Start the ESS process on the remote machine, for example with one of
 the commands @samp{Splus}, or @samp{R}, or @samp{sas -stdio}.

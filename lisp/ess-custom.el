@@ -1,15 +1,15 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;	Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 05 June 2000
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: editing and process modes.
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -26,11 +26,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;
-;; In short: you may use this code any way you like, as long as you
-;; don't charge more than a distribution fee for it, do distribute the
-;; source with any binaries, remove this notice, or hold anyone liable
-;; for its results.
 
 ;;; Code:
 
@@ -132,11 +127,13 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.04" ;; updated by 'make'
+(defvar ess-version "12.04-4" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
-(defvar ess-revision "YY-MM-rNNNN" ;; updated by 'make'
-  "SVN revision of ESS currently loaded.")
+(defvar ess-revision nil ;; set
+  "The subversion revision and date of ESS.
+Is set  by \\[ess-version-string].")
+
 
 (defvar no-doc
   "This function is part of ESS, but has not yet been loaded.
@@ -176,18 +173,18 @@ as `ess-imenu-use-S'."
 
 ;;
 
-(defcustom ess-handy-commands '(("change-directory"	. ess-change-directory)
-				("install.packages"	. ess-install.packages)
-				("library"		. ess-library)
-				("objects[ls]"		. ess-execute-objects)
-				("help-index"		. ess-display-index)
-				("help-object"		. ess-display-help-on-object)
-				("search"		. ess-execute-search)
-				("set-width"		. ess-execute-screen-options)
-				("setRepos"		. ess-setRepositories)
-				("sos"			. ess-sos)
-				("vignettes"		. ess-display-vignettes)
-				)
+(defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
+                                ("install.packages"     . ess-install.packages)
+                                ("library"              . ess-library)
+                                ("objects[ls]"          . ess-execute-objects)
+                                ("help-index"           . ess-display-index)
+                                ("help-object"          . ess-display-help-on-object)
+                                ("search"               . ess-execute-search)
+                                ("set-width"            . ess-execute-screen-options)
+                                ("setRepos"             . ess-setRepositories)
+                                ("sos"                  . ess-sos)
+                                ("vignettes"            . ess-display-vignettes)
+                                )
   "An alist of custom ESS commands available for call by `ess-smart-comma' function."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
@@ -220,10 +217,10 @@ Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 .emacs (also see ess-site.el)."
   :group 'ess
   :type '(choice (const :tag "Initial" :value "Initial")
-		 (const :tag "S"       :value "S")
-		 (const :tag "XLS"     :value "XLS")
-		 (const :tag "SAS"     :value "SAS")
-		 (const :tag "R"       :value "R")))
+                 (const :tag "S"       :value "S")
+                 (const :tag "XLS"     :value "XLS")
+                 (const :tag "SAS"     :value "SAS")
+                 (const :tag "R"       :value "R")))
 
 (make-variable-buffer-local 'ess-language)
 (setq-default ess-language "Initial")
@@ -269,9 +266,7 @@ a workspace."
 (defcustom ess-directory nil
   "The directory ESS is run from.  It must end in a slash.
 Provided as a default if `ess-ask-for-ess-directory' is non-nil.
-A nil value means use the current buffer's default directory.
-Buffer-local: in process buffers, this contains the directory ESS was
-run from."
+A nil value means use the current buffer's default directory."
   :group 'ess
   :type '(choice (const nil) directory))
 
@@ -290,7 +285,7 @@ for all projects."
   :group 'ess
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)
-		 file))
+                 file))
 
 (defcustom ess-plain-first-buffername t
   "No fancy process buffname for the first process of each type (novice mode)."
@@ -324,7 +319,7 @@ Some useful keys for IDO completion:
 
 (defcustom ess-tab-complete-in-script nil
   "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
-See also `ess-first-tab-never-complete' and `ess-first-tab-never-complete-in-word'")
+See also `ess-first-tab-never-complete'.")
 
 (defcustom ess-first-tab-never-complete 'symbol
   "If t, first TAB never tries to complete in ess-mode.
@@ -344,13 +339,13 @@ aggressive and dangerous).
 "
   :group 'ess
   :type '(choice (const nil)
-		 (const symbol)
-		 (const symbol-or-paren)
-		 (const symbol-or-paren-or-punct)
-		 (const unless-eol)
-		 (const t)))
+                 (const symbol)
+                 (const symbol-or-paren)
+                 (const symbol-or-paren-or-punct)
+                 (const unless-eol)
+                 (const t)))
 
-(defalias 'ess-first-tab-never-completes-p  ess-first-tab-never-complete)
+(defvaralias 'ess-first-tab-never-completes-p  'ess-first-tab-never-complete)
 
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
@@ -468,10 +463,10 @@ of `ess-load-file'.  Dump files are never deleted if an error occurs
 during the load. "
   :group 'ess-edit
   :type '(choice (const :tag "Check" :value  'check)
-		 (const :tag "Ask"   :value  'ask)
-		 (const :tag "Always keep"   :value "always")
-		 (const :tag "Always delete"   :value nil)
-		 ))
+                 (const :tag "Ask"   :value  'ask)
+                 (const :tag "Always keep"   :value "always")
+                 (const :tag "Always delete"   :value nil)
+                 ))
 
 
 (defcustom ess-delete-dump-files nil
@@ -482,12 +477,12 @@ This applies to dump files created with
 Boolean flag which determines what to do with the dump files
 generated by \\[ess-dump-object-into-edit-buffer], as follows:
 
-	If nil: dump files are deleted after each use, and so appear
+        If nil: dump files are deleted after each use, and so appear
 only transiently. The one exception to this is when a loading error
 occurs, in which case the file is retained until the error is
 corrected and the file re-loaded.
 
-	If non-nil: dump files are not deleted, and backups are kept
+        If non-nil: dump files are not deleted, and backups are kept
 as usual.  This provides a simple method for keeping an archive of S
 functions in text-file form.
 
@@ -638,70 +633,70 @@ If not number, the statements are indented at open-parenthesis following
 
 (defvar ess-default-style-list
   (list 'DEFAULT
-	(cons 'ess-indent-level ess-indent-level)
-	(cons 'ess-continued-statement-offset ess-continued-statement-offset)
-	(cons 'ess-brace-offset ess-brace-offset)
-	(cons 'ess-expression-offset ess-expression-offset)
-	(cons 'ess-else-offset ess-else-offset)
-	(cons 'ess-brace-imaginary-offset ess-brace-imaginary-offset)
-	(cons 'ess-continued-brace-offset ess-continued-brace-offset)
-	(cons 'ess-arg-function-offset ess-arg-function-offset)
-	(cons 'ess-arg-function-offset-new-line ess-arg-function-offset-new-line)
-	(cons 'ess-close-brace-offset ess-close-brace-offset))
+        (cons 'ess-indent-level ess-indent-level)
+        (cons 'ess-continued-statement-offset ess-continued-statement-offset)
+        (cons 'ess-brace-offset ess-brace-offset)
+        (cons 'ess-expression-offset ess-expression-offset)
+        (cons 'ess-else-offset ess-else-offset)
+        (cons 'ess-brace-imaginary-offset ess-brace-imaginary-offset)
+        (cons 'ess-continued-brace-offset ess-continued-brace-offset)
+        (cons 'ess-arg-function-offset ess-arg-function-offset)
+        (cons 'ess-arg-function-offset-new-line ess-arg-function-offset-new-line)
+        (cons 'ess-close-brace-offset ess-close-brace-offset))
   "Default style constructed from initial values of indentation variables.")
 
 (defvar ess-style-alist
   (cons ess-default-style-list
-	'((GNU (ess-indent-level . 2)
-	       (ess-continued-statement-offset . 2)
-	       (ess-brace-offset . 0)
-	       (ess-arg-function-offset . 4)
-	       (ess-arg-function-offset-new-line . 4)
-	       (ess-expression-offset . 2)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 0))
-	  (BSD (ess-indent-level . 8)
-	       (ess-continued-statement-offset . 8)
-	       (ess-brace-offset . -8)
-	       (ess-arg-function-offset . 0)
-	       (ess-arg-function-offset-new-line . 0)
-	       (ess-expression-offset . 8)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 0))
-	  (K&R (ess-indent-level . 5)
-	       (ess-continued-statement-offset . 5)
-	       (ess-brace-offset . -5)
-	       (ess-arg-function-offset . 0)
-	       (ess-arg-function-offset-new-line . 0)
-	       (ess-expression-offset . 5)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 0))
-	  (C++ (ess-indent-level . 4)
-	       (ess-continued-statement-offset . 4)
-	       (ess-brace-offset . -4)
-	       (ess-arg-function-offset . 0)
-	       (ess-arg-function-offset-new-line . 0)
-	       (ess-expression-offset . 4)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 0))
-	  ;; R added ajr 17Feb04 to match "common R" use
-	  (RRR (ess-indent-level . 4)
-	       (ess-continued-statement-offset . 4)
-	       (ess-brace-offset . 0)
-	       (ess-arg-function-offset . 4)
-	       (ess-arg-function-offset-new-line . 4)
-	       (ess-expression-offset . 4)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 0))
-	  ;; CLB added rmh 2Nov97 at request of Terry Therneau
-	  (CLB (ess-indent-level . 2)
-	       (ess-continued-statement-offset . 4)
-	       (ess-brace-offset . 0)
-	       (ess-arg-function-offset . 0)
-	       (ess-arg-function-offset-new-line . 0)
-	       (ess-expression-offset . 4)
-	       (ess-else-offset . 0)
-	       (ess-close-brace-offset . 2))))
+        '((GNU (ess-indent-level . 2)
+               (ess-continued-statement-offset . 2)
+               (ess-brace-offset . 0)
+               (ess-arg-function-offset . 4)
+               (ess-arg-function-offset-new-line . 4)
+               (ess-expression-offset . 2)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 0))
+          (BSD (ess-indent-level . 8)
+               (ess-continued-statement-offset . 8)
+               (ess-brace-offset . -8)
+               (ess-arg-function-offset . 0)
+               (ess-arg-function-offset-new-line . 0)
+               (ess-expression-offset . 8)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 0))
+          (K&R (ess-indent-level . 5)
+               (ess-continued-statement-offset . 5)
+               (ess-brace-offset . -5)
+               (ess-arg-function-offset . 0)
+               (ess-arg-function-offset-new-line . 0)
+               (ess-expression-offset . 5)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 0))
+          (C++ (ess-indent-level . 4)
+               (ess-continued-statement-offset . 4)
+               (ess-brace-offset . -4)
+               (ess-arg-function-offset . 0)
+               (ess-arg-function-offset-new-line . 0)
+               (ess-expression-offset . 4)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 0))
+          ;; R added ajr 17Feb04 to match "common R" use
+          (RRR (ess-indent-level . 4)
+               (ess-continued-statement-offset . 4)
+               (ess-brace-offset . 0)
+               (ess-arg-function-offset . 4)
+               (ess-arg-function-offset-new-line . 2)
+               (ess-expression-offset . 4)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 0))
+          ;; CLB added rmh 2Nov97 at request of Terry Therneau
+          (CLB (ess-indent-level . 2)
+               (ess-continued-statement-offset . 4)
+               (ess-brace-offset . 0)
+               (ess-arg-function-offset . 0)
+               (ess-arg-function-offset-new-line . 0)
+               (ess-expression-offset . 4)
+               (ess-else-offset . 0)
+               (ess-close-brace-offset . 2))))
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
@@ -723,21 +718,21 @@ these values, use the customize interface."
   :type '(repeat (cons symbol integer))
   :initialize 'custom-initialize-set
   :set (lambda (symbol value)
-	 (set symbol value)
-	 (ess-add-style 'OWN value)))
+         (set symbol value)
+         (ess-add-style 'OWN value)))
 
 (defcustom ess-default-style 'DEFAULT
   "The default value of `ess-style'.
 See the variable `ess-style-alist' for how these groups (DEFAULT,
 OWN, GNU, BSD, ...) map onto different settings for variables."
   :type '(choice (const DEFAULT)
-		 (const OWN)
-		 (const GNU)
-		 (const BSD)
-		 (const K&R)
-		 (const C++)
-		 (const :tag "Common R" :value RRR)
-		 (const CLB))
+                 (const OWN)
+                 (const GNU)
+                 (const BSD)
+                 (const K&R)
+                 (const C++)
+                 (const :tag "Common R" :value RRR)
+                 (const CLB))
   :group 'ess-edit)
 
 ;; the real setting of this happens via <foo>-editing-alist:
@@ -757,7 +752,7 @@ current buffer.
 Possible value:
 
  (lambda () (file-name-as-directory
-	     (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
+             (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
 
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
@@ -776,10 +771,10 @@ other users if you are using a shared directory. Other alternatives:
 \"dumpdir\"; Always dump to a specific filename. This makes it impossible
 to edit more than one object at a time, though.
 (make-temp-name \"scr.\") ; Another way to uniquify"
-  ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
+;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
 
-  :group 'ess-edit
-  :type 'string)
+:group 'ess-edit
+:type 'string)
 
 
 ;;*;; Hooks
@@ -816,7 +811,7 @@ Good for evaluating ESS code."
 ;;; the connection to the running ESS process.
 (put 'inferior-ess-mode 'mode-class 'special)
 ;; FIXME AJR: Should the above be there?  I don't think so!
-;;	 MM : the functionality should be, right? Move statement to ./ess.el ?
+;;       MM : the functionality should be, right? Move statement to ./ess.el ?
 ;;       AJR: No, we should move the statement to ./ess-inf.el
 
 (defcustom ess-help-mode-hook nil
@@ -872,12 +867,12 @@ to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-tags-param '("author" "aliases" "concept"
-				 "examples" "format" "keywords"
-				 "method" "exportMethod"
-				 "name" "note" "param"
-				 "include" "references" "return"
-				 "seealso" "source" "docType"
-				 "title" "TODO" "usage" "import"
+                                 "examples" "format" "keywords"
+                                 "method" "exportMethod"
+                                 "name" "note" "param"
+                                 "include" "references" "return"
+                                 "seealso" "source" "docType"
+                                 "title" "TODO" "usage" "import"
                                  "exportClass" "exportPattern" "S3method"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
@@ -889,11 +884,11 @@ Used to decide highlighting and tag completion."
 
 (defcustom ess-roxy-template-alist
   (list (cons "description"  ".. content for \\description{} (no empty lines) ..")
-	(cons "details" ".. content for \\details{} ..")
-	(cons "title" "")
-	(cons "param"  "")
-	(cons "return" "")
-	(cons "author" ess-user-full-name))
+        (cons "details" ".. content for \\details{} ..")
+        (cons "title" "")
+        (cons "param"  "")
+        (cons "return" "")
+        (cons "author" ess-user-full-name))
   "The tags and defaults to insert when creating empty templates.
 Param is a place holder for where to enter
 parameters. Description and details do not use @ tags, but are
@@ -1033,6 +1028,18 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+(defcustom inferior-STA-start-file nil
+  "Initialization file for Stata."
+  :group 'ess-Stata)
+
+(defcustom inferior-STA-start-args ""
+  "String of switches used when starting stata.
+Don't use this to send initialization command to stata, use
+`inferior-STA-start-file' instead. Also see
+`inferior-STA-program-name'."
+  :group 'ess-Stata
+  :type 'string)
+
 (defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max = 1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
@@ -1044,8 +1051,8 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
 (defcustom ess-program-files ;; 32 bit version
   (if ess-microsoft-p
       (if (getenv "ProgramW6432")
-	  (w32-short-file-name (getenv "ProgramFiles(x86)"));; always 32 on 64 bit OS
-	(w32-short-file-name (getenv "ProgramFiles")))      ;; always 32 on 32 bit OS
+          (w32-short-file-name (getenv "ProgramFiles(x86)"));; always 32 on 64 bit OS
+        (w32-short-file-name (getenv "ProgramFiles")))      ;; always 32 on 32 bit OS
     nil)
   "Safe (no embedded blanks) 8.3 name for 32-bit programs that works across internationalization."
   :group 'ess
@@ -1071,28 +1078,28 @@ file."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions
-    ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
-    (mapcar
-     (lambda (ch) (concat ess-program-files ch))
-     '("/Insightful/splus62"
-       "/Insightful/splus61"
-       "/MathSoft/splus6"
-       "/spls45se"
-       "/Insightful/splus62netclient"
-       "/Insightful/splus62net/server"
-       "/Insightful/splus61netclient"
-       "/Insightful/splus61net/server"
-       "/Insightful/splus6se"
-       "/Insightful/splus61se"
-       "/Insightful/splus62se"
-       "/Insightful/splus70"
-       "/Insightful/splus71"
-       "/Insightful/splus8.0.1"
-       "/Insightful/splus8.0.4"
-       "/Insightful/splus80"
-       "/TIBCO/splus81"
-       "/TIBCO/splus82"
-))
+  ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
+  (mapcar
+   (lambda (ch) (concat ess-program-files ch))
+   '("/Insightful/splus62"
+     "/Insightful/splus61"
+     "/MathSoft/splus6"
+     "/spls45se"
+     "/Insightful/splus62netclient"
+     "/Insightful/splus62net/server"
+     "/Insightful/splus61netclient"
+     "/Insightful/splus61net/server"
+     "/Insightful/splus6se"
+     "/Insightful/splus61se"
+     "/Insightful/splus62se"
+     "/Insightful/splus70"
+     "/Insightful/splus71"
+     "/Insightful/splus8.0.1"
+     "/Insightful/splus8.0.4"
+     "/Insightful/splus80"
+     "/TIBCO/splus81"
+     "/TIBCO/splus82"
+     ))
   "List of possible values of the environment variable SHOME for recent
 releases of S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -1109,11 +1116,11 @@ menu."
   :type '(repeat string))
 
 (defcustom ess-SHOME-versions-64
-    ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
-    (mapcar
-     (lambda (ch) (concat ess-program-files-64 ch))
-     '("/TIBCO/splus82"
-))
+  ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
+  (mapcar
+   (lambda (ch) (concat ess-program-files-64 ch))
+   '("/TIBCO/splus82"
+     ))
   "List of possible values of the environment variable SHOME for recent
 releases of 64-bit S-Plus.  These are the default locations for several
 current and recent releases of S-Plus.  If any of these pathnames
@@ -1179,18 +1186,18 @@ version of the pathname."
   :type 'string)
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
-;;	   (PATH (getenv "PATH"))
-;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-;;	   (num 0)
-;;	   pathname)
+;;         (PATH (getenv "PATH"))
+;;         (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+;;         (num 0)
+;;         pathname)
 ;;      (if (not SHOME)
-;;	  (while (< num (length split-PATH))
-;;	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-;;	    (if (not (file-exists-p pathname))
-;;		(setq num (1+ num))
-;;	      (progn
-;;		(setq num (length split-PATH))
-;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;        (while (< num (length split-PATH))
+;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+;;          (if (not (file-exists-p pathname))
+;;              (setq num (1+ num))
+;;            (progn
+;;              (setq num (length split-PATH))
+;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
 ;;      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
 
 
@@ -1272,18 +1279,18 @@ version of the pathname."
   :type 'string)
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
-;;	   (PATH (getenv "PATH"))
-;;	   (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-;;	   (num 0)
-;;	   pathname)
+;;         (PATH (getenv "PATH"))
+;;         (split-PATH (split-string PATH ";")) ;; Unix uses ":"
+;;         (num 0)
+;;         pathname)
 ;;      (if (not SHOME)
-;;	  (while (< num (length split-PATH))
-;;	    (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-;;	    (if (not (file-exists-p pathname))
-;;		(setq num (1+ num))
-;;	      (progn
-;;		(setq num (length split-PATH))
-;;		(setq SHOME (expand-file-name (concat pathname "/../..")))))))
+;;        (while (< num (length split-PATH))
+;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
+;;          (if (not (file-exists-p pathname))
+;;              (setq num (1+ num))
+;;            (progn
+;;              (setq num (length split-PATH))
+;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
 ;;      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
 (defcustom ess-S-quit-kill-buffers-p nil
@@ -1316,7 +1323,7 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-sas
   :type 'string)
 
-(defcustom inferior-STA-program-name "env"
+(defcustom inferior-STA-program-name "stata"
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
@@ -1355,7 +1362,7 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess
   :type 'string)
 
-(defcustom R-pager 'nil	; Usually nil is correct as ESS and page() cooperate.
+(defcustom R-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
   "Pager called by R process with 'page()' command."
   :group 'ess
   :type '(choice (const nil) string))
@@ -1439,9 +1446,9 @@ for help files.  The default value is nil for other systems."
   "*Program name for invoking an inferior ESS with S().")
 ;;- (setq inferior-S-program
 ;;-       (cond ((string= S-proc-prefix "S") "Splus")
-;;- 	    ((string= S-proc-prefix "R") "R")
-;;- 	    (t "S")
-;;- 	    ))
+;;-         ((string= S-proc-prefix "R") "R")
+;;-         (t "S")
+;;-         ))
 ;;(make-local-variable 'inferior-S-program)
 
 (defvar inferior-ess-program nil ;inferior-S-program-name
@@ -1474,33 +1481,35 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 ;; does it make sense to customize here, as we currently set this *directly*
 ;; in the FOO-BAR-cust-alist's ???
 ;; VS: Right. It only confuses users. It should be set in post-run-hook if
-;; desired;  inferior-ess-S-prompt should be customized instead.
+;; desired;  inferior-S-prompt should be customized instead.
 (defvar inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
-(setq-default inferior-ess-primary-prompt "> ")
+;; (setq-default inferior-ess-primary-prompt "> ")
 
-(defvar inferior-ess-secondary-prompt "+ "
+(defvar inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
- (This is issued by S to continue an incomplete expression).")
-  ;; :group 'ess-proc
-  ;; :type 'string)
+(This is issued by S to continue an incomplete expression).
+Set to nil if language doesn't support secondary prompt.")
+;; :group 'ess-proc
+;; :type 'string)
 
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
-(setq-default inferior-ess-secondary-prompt "+ ")
+;; (setq-default inferior-ess-secondary-prompt "+ ")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
-(defcustom inferior-ess-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)+"
+(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*[+>] "
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 
 You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
-skip secondary prompt during navigation.
+skip secondary prompt when invoking `comint-previous-prompt'.
  "
   :group 'ess-proc
   :type 'string)
 
+(defvaralias 'inferior-ess-S-prompt 'inferior-S-prompt)
 ;;*;; Variables controlling interaction with the ESS process
 
 (defcustom ess-execute-in-process-buffer nil
@@ -1551,7 +1560,7 @@ of Emacs until the code has been successfully evaluated."
 (defcustom ess-eval-ddeclient-sleep 0.06
   "If non-nil, a number specifying *seconds* to wait after certain
 \\[ess-eval-linewise-ddeclient] calls, such as those at startup."
-;; i.e this currently only applies to (if microsoft-p ...) !
+  ;; i.e this currently only applies to (if microsoft-p ...) !
   :group 'ess-proc
   :type '(choice (const nil) number))
 
@@ -1620,6 +1629,7 @@ This format string should use %s to substitute an object name."
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
+
 (defcustom inferior-ess-r-help-command ".help.ESS(\"%s\", help_type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
@@ -1628,6 +1638,10 @@ If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
+(defvar ess-get-help-topics-function nil
+  "Dialect specific help topics retrival"
+  )
+(make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
@@ -1645,6 +1659,8 @@ i.e. the list of directories and (recursive) objects that `ess-language' uses
 when it searches for objects.
 
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
+(make-variable-buffer-local 'inferior-ess-search-list-command)
+
 ;; and hence made buffer-local via that scheme...
 
 ;; ;; FIXME: this is nowhere used :
@@ -1686,16 +1702,15 @@ prevent timeouts in certain processes, such as completion.")
   :type '(choice (const nil) number))
 
 ;;*;; Regular expressions
-
 (defvar inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
 
 It is always used in transcript mode.  In inferior ess mode it is
 used only if `comint-use-prompt-regexp' is t.
 
-If not set in language cust-alist it is constructed at run time
+If not set in language's customise-alist it is constructed at run time
 from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt' within \\[ess-multi].")
+`inferior-ess-secondary-prompt' within `ess-multi'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 
@@ -1764,7 +1779,7 @@ session.")
 ;;*;; Miscellaneous system variables
 
 (defvar ess-temp-point nil
- "Variable used to retain a buffer position past let or let*.")
+  "Variable used to retain a buffer position past let or let*.")
 
 (defvar ess-mode-map nil
   "Keymap for `ess-mode'.")
@@ -1843,7 +1858,7 @@ If nil, input is in the `font-lock-variable-name-face'."
           '("NA_integer_" "NA_real_" "NA_complex_" "NA_character_")))
 (defvar ess-S-constants
   (append ess-RS-constants
-	  '("T" "F")))
+          '("T" "F")))
 
 (defvar ess-R-keywords
   ;; "Reserved Words" -- part 2 --
@@ -1870,67 +1885,67 @@ If nil, input is in the `font-lock-variable-name-face'."
     "Warning messages"))
 (defvar ess-S-message-prefixes
   (append ess-R-message-prefixes
-	  '("Syntax error:" "Dumped")))
+          '("Syntax error:" "Dumped")))
 
 ;;
 (defvar ess-R-assign-ops
   '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
-)
+  )
 (defvar ess-S-assign-ops
   '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
-)
+  )
 
 ;; Note: \\s\" is really \s" which means match a char belonging to the
 ;; "quote character" syntax class.
 (defvar ess-R-function-name-regexp
   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
-	  "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
-	  "\\(\\s-\\|\n\\)*function")
-)
+          "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
+          "\\(\\s-\\|\n\\)*function")
+  )
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
-)
+  )
 
 (defvar ess-R-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-R-assign-ops)
-	 'font-lock-reference-face)	; assign
+         'font-lock-reference-face)     ; assign
    (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
-	 'font-lock-type-face)		; constants
+         'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
-	 'font-lock-reference-face)	; modify search list or source
-					; new definitions
+         'font-lock-reference-face)     ; modify search list or source
+                                        ; new definitions
    (cons ess-R-function-name-regexp
-	 '(1 font-lock-function-name-face t))
-					; function name
+         '(1 font-lock-function-name-face t))
+                                        ; function name
    )
   "Font-lock patterns used in `R-mode' and R-output buffers.")
 
 (defvar ess-R-mode-font-lock-keywords
   (append ess-R-common-font-lock-keywords
-	  (list (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-		      'font-lock-keyword-face))) ; keywords
+          (list (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+                      'font-lock-keyword-face))) ; keywords
   "Font-lock patterns used in `R-mode' buffers.")
 
 (defvar ess-S-common-font-lock-keywords
   (list
    (cons (regexp-opt ess-S-assign-ops)
-	 'font-lock-reference-face)	; assign
+         'font-lock-reference-face)     ; assign
    (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
-	 'font-lock-type-face)		; constants
+         'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
-	 'font-lock-reference-face)	; modify search list or source
-					; new definitions
+         'font-lock-reference-face)     ; modify search list or source
+                                        ; new definitions
    (cons ess-S-function-name-regexp
-	 '(1 font-lock-function-name-face t))
-					; function name
+         '(1 font-lock-function-name-face t))
+                                        ; function name
    )
   "Font-lock patterns used in `S-mode' and S-output buffers.")
 
 (defvar ess-S-mode-font-lock-keywords
   (append ess-S-common-font-lock-keywords
-	  (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-		'font-lock-keyword-face)))	; keywords
+          (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
+                      'font-lock-keyword-face)))        ; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
 
@@ -1941,7 +1956,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
    (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-		   '(1 font-lock-variable-name-face keep t))) )
+                   '(1 font-lock-variable-name-face keep t))) )
 
    ess-R-common-font-lock-keywords
 
@@ -1949,7 +1964,7 @@ If nil, input is in the `font-lock-variable-name-face'."
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
     (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
-	  'font-lock-reference-face) ; inferior-ess problems or errors
+          'font-lock-reference-face) ; inferior-ess problems or errors
     (cons "#" 'font-lock-comment-face) ; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
     ))
@@ -1961,7 +1976,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
    (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-		   '(1 font-lock-variable-name-face keep t))) )
+                   '(1 font-lock-variable-name-face keep t))) )
 
    ess-S-common-font-lock-keywords
 
@@ -1969,8 +1984,8 @@ If nil, input is in the `font-lock-variable-name-face'."
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-reference-face);Vector/matrix labels
     (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
-	  'font-lock-reference-face) ; inferior-ess problems or errors
-    (cons "#" 'font-lock-comment-face)	; comment
+          'font-lock-reference-face) ; inferior-ess problems or errors
+    (cons "#" 'font-lock-comment-face)  ; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
     ))
   "Font-lock patterns used in inferior-S-mode buffers.")
@@ -2056,8 +2071,8 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 are: 'message' (the default) or 'tooltip'."
   :group 'ess-R
   :type '(choice
-	  (const :tag "message" :value 'message)
-	  (const :tag "tooltip" :value 'tooltip)))
+          (const :tag "message" :value 'message)
+          (const :tag "tooltip" :value 'tooltip)))
 
 (defcustom ess-r-args-keep-silent ess-S-non-functions
   "List of functions names which should *not* trigger \\[ess-r-args-show];

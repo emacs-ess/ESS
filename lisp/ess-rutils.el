@@ -1,11 +1,14 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
+
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
 ;; Last-Updated: Wed Mar  2 21:08:11 2011 (UTC)
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
 ;; Compatibility: GNU Emacs >= 22.0.50.1
-;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sebastian P. Luque
+
+;; Copyright (c) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sebastian P. Luque
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
@@ -18,9 +21,9 @@
 ;; along with GNU Emacs; see the file COPYING. If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
-;; ------------------------------------------------------------------------
+
 ;;; Commentary:
-;;
+
 ;; This library provides key bindings for performing basic R functions,
 ;; such as loading and managing packages, as well as object manipulation
 ;; (listing, viewing, and deleting), and an alternative to RSiteSearch()
@@ -43,7 +46,7 @@
 ;; object management comforts and came across Stephen Eglen's
 ;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
-;; ------------------------------------------------------------------------
+
 ;;; Code:
 
 ;; Autoloads and requires
@@ -86,8 +89,8 @@ Useful bindings to handle package loading and installing.
   (interactive)
   (if (get-buffer ess-rutils-buf)
       (progn
-	(set-buffer ess-rutils-buf)
-	(setq buffer-read-only nil)))
+        (set-buffer ess-rutils-buf)
+        (setq buffer-read-only nil)))
   (ess-execute
    "writeLines(paste('  ', sort(.packages(all.available=TRUE)), sep=''))"
    nil
@@ -106,12 +109,12 @@ Useful bindings to handle package loading and installing.
   (save-excursion
     (beginning-of-line)
     (if (looking-at "*")
-	nil
+        nil
       (forward-char 2)
       (let (beg)
-	(setq beg (point))
-	(end-of-line) ;assume package names are separated by newlines.
-	(buffer-substring-no-properties beg (point))))))
+        (setq beg (point))
+        (end-of-line) ;assume package names are separated by newlines.
+        (buffer-substring-no-properties beg (point))))))
 
 (defun ess-rutils-loadpkg ()
   "Load package from a library."
@@ -120,12 +123,12 @@ Useful bindings to handle package loading and installing.
     (save-excursion
       (goto-char (point-min))
       (if (search-forward "libraries**" nil t)
-	  (setq oklocal t)))
+          (setq oklocal t)))
     (if oklocal
-	(progn
-	  (setq pkg (ess-rutils-namepkg))
-	  (ess-execute (concat "library('" pkg "', character.only=TRUE)")
-		       'buffer))
+        (progn
+          (setq pkg (ess-rutils-namepkg))
+          (ess-execute (concat "library('" pkg "', character.only=TRUE)")
+                       'buffer))
       nil)))
 
 (defun ess-rutils-repos-pkgs ()
@@ -134,12 +137,12 @@ getOptions(\"repos\") in the current R session."
   (interactive)
   (if (get-buffer ess-rutils-buf)
       (progn
-	(set-buffer ess-rutils-buf)
-	(setq buffer-read-only nil)))
+        (set-buffer ess-rutils-buf)
+        (setq buffer-read-only nil)))
   (ess-execute (concat "writeLines(paste('  \"', "
-		       "rownames(available.packages()), '\"', sep=''))")
-	       nil
-	       (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
+                       "rownames(available.packages()), '\"', sep=''))")
+               nil
+               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
   (save-excursion
     (kill-line 5)
@@ -158,9 +161,9 @@ ARG lines to mark is passed to `ess-rutils-mark'."
     (save-excursion
       (goto-char (point-min))
       (if (search-forward "install**" nil t)
-	  (setq okmark t)))
+          (setq okmark t)))
     (if okmark
-	(ess-rutils-mark "I" arg)
+        (ess-rutils-mark "I" arg)
       nil)))
 
 (defun ess-rutils-unmark (arg)
@@ -173,32 +176,32 @@ ARG lines to mark is passed to `ess-rutils-mark'."
   "Use MARK-CHAR to mark package on current line, or next ARG lines."
   ;; If we are on first line, mark all lines.
   (let ((buffer-read-only nil)
-	move)
+        move)
     (if (eq (point-min)
-	    (save-excursion (beginning-of-line) (point)))
-	(progn
-	  ;; we are on first line, so make a note of point, and count
-	  ;; how many objects we want to delete.  Then at end of defun,
-	  ;; restore point.
-	  (setq move (point))
-	  (forward-line 1)
-	  (setq arg (count-lines (point) (point-max)))))
+            (save-excursion (beginning-of-line) (point)))
+        (progn
+          ;; we are on first line, so make a note of point, and count
+          ;; how many objects we want to delete.  Then at end of defun,
+          ;; restore point.
+          (setq move (point))
+          (forward-line 1)
+          (setq arg (count-lines (point) (point-max)))))
     (while (and (> arg 0) (not (eobp)))
       (setq arg (1- arg))
       (beginning-of-line)
       (progn
-	(insert mark-char)
-	(delete-char 1)
-	(forward-line 1)))
+        (insert mark-char)
+        (delete-char 1)
+        (forward-line 1)))
     (if move
-	(goto-char move))))
+        (goto-char move))))
 
 (defun ess-rutils-install ()
   "Install all packages flagged for installation, and return to the iESS buffer.
 User is asked for confirmation."
   (interactive)
   (let ((inst "install.packages(c(")
-	(count 0))
+        (count 0))
     (save-excursion
       (goto-line 2)
       ;; as long as number of lines between buffer start and point is smaller
@@ -207,23 +210,23 @@ User is asked for confirmation."
       ;; one, create the root of install function, add the package name,
       ;; insert a comma, and move forward a line.
       (while (< (count-lines (point-min) (point))
-		(count-lines (point-min) (point-max)))
-	(beginning-of-line)
-	(if (looking-at "^I ")
-	    (setq count (1+ count)
-		  inst (concat inst (ess-rutils-namepkg) ", " )))
-	(forward-line 1)))
-    (if (> count 0)			;found packages to install
-	(progn
-	  ;; Fix the install function created before and close it.
-	  (setq inst (concat
-		      (substring inst 0 (- (length inst) 2)) "))"))
-	  ;;
-	  (if (yes-or-no-p (format "Install %d %s " count
-				   (if (> count 1) "packages" "package")))
-	      (progn
-		(ess-execute inst 'buffer)
-		(ess-rutils-quit))))
+                (count-lines (point-min) (point-max)))
+        (beginning-of-line)
+        (if (looking-at "^I ")
+            (setq count (1+ count)
+                  inst (concat inst (ess-rutils-namepkg) ", " )))
+        (forward-line 1)))
+    (if (> count 0)                     ;found packages to install
+        (progn
+          ;; Fix the install function created before and close it.
+          (setq inst (concat
+                      (substring inst 0 (- (length inst) 2)) "))"))
+          ;;
+          (if (yes-or-no-p (format "Install %d %s " count
+                                   (if (> count 1) "packages" "package")))
+              (progn
+                (ess-execute inst 'buffer)
+                (ess-rutils-quit))))
       ;; else nothing to install
       (message "no packages flagged to install"))))
 
@@ -235,26 +238,26 @@ to rebuild installed packages if needed."
   (interactive "DPath to library to update: \nsrepos: ")
   (if (string= "" lib)
       (setq lib
-	    (car (ess-get-words-from-vector
-		  "as.character(.libPaths())\n"))))
+            (car (ess-get-words-from-vector
+                  "as.character(.libPaths())\n"))))
   (if (string= "" repos)
       (setq repos
-	    (car (ess-get-words-from-vector
-		  "as.character(getOption(\"repos\")[\"CRAN\"])\n"))))
+            (car (ess-get-words-from-vector
+                  "as.character(getOption(\"repos\")[\"CRAN\"])\n"))))
   (ess-execute (concat "update.packages(lib.loc='"
-		       lib "', repos='" repos
-		       "', ask=FALSE, checkBuilt=TRUE)") 'buffer))
+                       lib "', repos='" repos
+                       "', ask=FALSE, checkBuilt=TRUE)") 'buffer))
 
 (defun ess-rutils-apropos (string)
   "Search for STRING using apropos."
   (interactive "sApropos search for? ")
   (if (get-buffer ess-rutils-buf)
       (progn
-	(set-buffer ess-rutils-buf)
-	(setq buffer-read-only nil)))
+        (set-buffer ess-rutils-buf)
+        (setq buffer-read-only nil)))
   (ess-execute (concat "apropos('" string "')")
-	       nil
-	       (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
+               nil
+               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
   (setq buffer-read-only t)
   (ess-rutils-mode))
@@ -299,15 +302,15 @@ argument should be a string with a valid URL for the 'R_HOME' directory on
 a remote server (defaults to NULL)."
   (interactive)
   (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
-	 (remote (if (or (and remote (not (string= "" remote))))
-		     (concat "remote=" remote) "remote=NULL"))
-	 (rhtml (format ".rutils.help.start(%s, %s)\n" update remote))
-	 (tmpbuf (get-buffer-create "**ess-rutils-mode**")))
+         (remote (if (or (and remote (not (string= "" remote))))
+                     (concat "remote=" remote) "remote=NULL"))
+         (rhtml (format ".rutils.help.start(%s, %s)\n" update remote))
+         (tmpbuf (get-buffer-create "**ess-rutils-mode**")))
     (ess-command rhtml tmpbuf)
     (set-buffer tmpbuf)
     (let* ((begurl (search-backward "http://"))
-	   (endurl (search-forward "index.html"))
-	   (url (buffer-substring-no-properties begurl endurl)))
+           (endurl (search-forward "index.html"))
+           (url (buffer-substring-no-properties begurl endurl)))
       (browse-url url))
     (kill-buffer tmpbuf)))
 
@@ -319,41 +322,41 @@ displaying results in long or short formats, and sorting by any given field.
 Options should be separated by value of `crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
-	(okstring (ess-replace-regexp-in-string " +" "+" string)))
+        (okstring (ess-replace-regexp-in-string " +" "+" string)))
     (if current-prefix-arg
-	(let ((mpp (concat
-		    "&max="
-		    (completing-read
-		     "Matches per page: "
-		     '(("20" 1) ("30" 2) ("40" 3) ("50" 4) ("100" 5)))))
-	      (format (concat
-		       "&result="
-		       (completing-read
-			"Format: " '(("normal" 1) ("short" 2))
-			nil t "normal" nil "normal")))
-	      (sortby (concat
-		       "&sort="
-		       (completing-read
-			"Sort by: "
-			'(("score" 1) ("date:late" 2) ("date:early" 3)
-			  ("field:subject:ascending" 4)
-			  ("field:subject:decending" 5)
-			  ("field:from:ascending" 6) ("field:from:decending" 7)
-			  ("field:size:ascending" 8) ("field:size:decending" 9))
-			nil t "score" nil "score")))
-	      (restrict (concat
-			 "&idxname="
-			 (mapconcat
-			  'identity
-			  (completing-read-multiple
-			   "Limit search to: "
-			   '(("Rhelp02a" 1) ("functions" 2)
-			     ("docs" 3) ("Rhelp01" 4))
-			   nil t "Rhelp02a,functions,docs" nil
-			   "Rhelp02a,functions,docs") "&idxname="))))
-	  (browse-url (concat site okstring mpp format sortby restrict)))
+        (let ((mpp (concat
+                    "&max="
+                    (completing-read
+                     "Matches per page: "
+                     '(("20" 1) ("30" 2) ("40" 3) ("50" 4) ("100" 5)))))
+              (format (concat
+                       "&result="
+                       (completing-read
+                        "Format: " '(("normal" 1) ("short" 2))
+                        nil t "normal" nil "normal")))
+              (sortby (concat
+                       "&sort="
+                       (completing-read
+                        "Sort by: "
+                        '(("score" 1) ("date:late" 2) ("date:early" 3)
+                          ("field:subject:ascending" 4)
+                          ("field:subject:decending" 5)
+                          ("field:from:ascending" 6) ("field:from:decending" 7)
+                          ("field:size:ascending" 8) ("field:size:decending" 9))
+                        nil t "score" nil "score")))
+              (restrict (concat
+                         "&idxname="
+                         (mapconcat
+                          'identity
+                          (completing-read-multiple
+                           "Limit search to: "
+                           '(("Rhelp02a" 1) ("functions" 2)
+                             ("docs" 3) ("Rhelp01" 4))
+                           nil t "Rhelp02a,functions,docs" nil
+                           "Rhelp02a,functions,docs") "&idxname="))))
+          (browse-url (concat site okstring mpp format sortby restrict)))
       (browse-url (concat site okstring "&max=20&result=normal&sort=score"
-			  "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
+                          "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
 
 (defun ess-rutils-help ()
   "Show help on `ess-rutils-mode'."
@@ -365,11 +368,11 @@ Options should be separated by value of `crm-default-separator'."
   (interactive "sString to search for? ")
   (if (get-buffer ess-rutils-buf)
       (progn
-	(set-buffer ess-rutils-buf)
-	(setq buffer-read-only nil)))
+        (set-buffer ess-rutils-buf)
+        (setq buffer-read-only nil)))
   (ess-execute (concat "help.search('" string "')")
-	       nil
-	       (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
+               nil
+               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
   (setq buffer-read-only t)
   (ess-rutils-mode))
@@ -410,40 +413,40 @@ Options should be separated by value of `crm-default-separator'."
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
   "Submenu of `inferior-ess-mode' to use with RUtils."
   '("RUtils"
-    ["Manage objects" 	       ess-rutils-objs		t]
-    ["Remove objects"  	       ess-rutils-rm-all	t]
+    ["Manage objects"          ess-rutils-objs          t]
+    ["Remove objects"          ess-rutils-rm-all        t]
     "------"
-    ["Local packages"           ess-rutils-local-pkgs	t]
-    ["Packages in repositories" ess-rutils-repos-pkgs	t]
-    ["Update packages"          ess-rutils-update-pkgs	t]
+    ["Local packages"           ess-rutils-local-pkgs   t]
+    ["Packages in repositories" ess-rutils-repos-pkgs   t]
+    ["Update packages"          ess-rutils-update-pkgs  t]
     "------"
-    ["Load workspace"           ess-rutils-load-wkspc	t]
-    ["Save workspace"           ess-rutils-save-wkspc	t]
-    ["Change directory"	       ess-change-directory	t]
+    ["Load workspace"           ess-rutils-load-wkspc   t]
+    ["Save workspace"           ess-rutils-save-wkspc   t]
+    ["Change directory"        ess-change-directory     t]
     "------"
-    ["Browse HTML" 	       ess-rutils-html-docs	t]
-    ["Apropos"	  	       ess-rutils-apropos	t]))
+    ["Browse HTML"             ess-rutils-html-docs     t]
+    ["Apropos"                 ess-rutils-apropos       t]))
 
 (when (featurep 'xemacs)
   (defun ess-rutils-mode-xemacs-menu ()
     "Hook to install `ess-rutils-mode' menu for XEmacs (with easymenu)."
     (if 'inferior-ess-mode
-	;; Why does using nil for 2nd arg put menu at top level?
-	(easy-menu-add-item inferior-ess-mode-menu nil
-			    ess-rutils-mode-menu)
+        ;; Why does using nil for 2nd arg put menu at top level?
+        (easy-menu-add-item inferior-ess-mode-menu nil
+                            ess-rutils-mode-menu)
       (easy-menu-remove-item inferior-ess-mode-menu nil
-			     ess-rutils-mode-menu)))
+                             ess-rutils-mode-menu)))
   (add-hook 'inferior-ess-mode-hook 'ess-rutils-mode-xemacs-menu t))
 
 (unless (featurep 'xemacs)
   (easy-menu-add-item inferior-ess-mode-menu nil
-		      ess-rutils-mode-menu))
+                      ess-rutils-mode-menu))
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 
 (add-hook 'ess-post-run-hook
-	  (lambda ()
-	    (ess-load-file ess-rutils-rhtml-fn)) t)
+          (lambda ()
+            (ess-load-file ess-rutils-rhtml-fn)) t)
 
 
 (provide 'ess-rutils)

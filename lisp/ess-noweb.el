@@ -1,17 +1,16 @@
-;;; ess-noweb.el : support for Literate Data Analysis
+;;; ess-noweb.el --- support for Literate Data Analysis
 
 ;; Copyright (C) 1999 Mark Lunt
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
+;; Author: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;          A.J. Rossini <rossini@u.washington.edu>
 ;; Created: April 18, 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: statistical support
+;; Keywords: statistics, languages
 ;; Summary: Noweb support for ESS
-
 
 ;; This file is part of ESS
 
@@ -22,16 +21,18 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
 
 ;; Code for ESS and Literate Data Analysis.
+
+;;; Code:
 
  ; Requires and autoloads
 
@@ -48,7 +49,7 @@
 ;; but is *NOT* okay to do *globally*: (setq global-font-lock-mode t)
 
 (if ess-noweb-use-font-lock
-     (require 'noweb-font-lock-mode))
+    (require 'noweb-font-lock-mode))
 
  ; Functions
 
@@ -59,9 +60,9 @@
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let ( (process-name ess-local-process-name)
-	 new-process-name
-	 (cbuf (current-buffer))
-	 (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+         new-process-name
+         (cbuf (current-buffer))
+         (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
     (noweb-tangle-chunk temp-buffer)
     (set-buffer temp-buffer)
     ;; When the temp buffer is created, it does not inherit any value
@@ -71,7 +72,7 @@ Arg has same meaning as for `ess-eval-region'."
     (set (make-local-variable 'ess-local-process-name) process-name)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
     (if process-name
-	(kill-buffer temp-buffer)
+        (kill-buffer temp-buffer)
       ;; if process-name was nil, source buffer did not have a local process
       ;; so keep value from temp buffer before killing it.
       (setq new-process-name ess-local-process-name)
@@ -125,11 +126,11 @@ and go there.  Arg has same meaning as for `ess-eval-region'."
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
-;;; Chapters:	  ^L ;
-;;; Sections:	 ;;*;;
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
 ;;; Subsections: ;;;*;;;
-;;; Components:	 defuns, defvars, defconsts
-;;;		 Random code beginning with a ;;;;* comment
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
 
 ;;; Local variables:
 ;;; mode: emacs-lisp

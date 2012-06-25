@@ -2,14 +2,14 @@
 
 ;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;     Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Thomas Lumley <thomas@biostat.washington.edu>,
-;;         	     Brendan Halpin <brendan@essex.ac.uk>
+;; Author: Thomas Lumley <thomas@biostat.washington.edu>,
+;;     Brendan Halpin <brendan@essex.ac.uk>
 ;; Created: 2 Nov 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS (Emacs Speaks Statistics).
 
@@ -28,12 +28,9 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This is based upon Version 0.4 of Stata mode.
 
+;; This is based upon Version 0.4 of Stata mode.
 
-
-
-;;
 ;; Stata modes.  Emacs modes for using the Stata statistical package
 ;; Modified from S-mode, comint-mode
 ;;
@@ -54,17 +51,17 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;
 
+;;; Code:
 
 (require 'make-regexp)  ; it's now local to the directory.
 ;;(load-library "make-regexp") ;; this is necessary for
-			     ;; ado-set-font-lock-keywords
+;; ado-set-font-lock-keywords
 ;; only needed in Emacs >= 22.x and newish Xemacsen:
 (unless (boundp 'c-emacs-features)
   (require 'cc-vars));; for syntax-table
 
-;(setq max-lisp-eval-depth 500)
+                                        ;(setq max-lisp-eval-depth 500)
 (eval-when-compile
   (setq max-lisp-eval-depth (max 600 max-lisp-eval-depth)))
 
@@ -72,14 +69,17 @@
   '((?d . "Description")
     (?e . "Examples")
     (?o . "Options")
-    (?s . "Also see"))
-  "Help section keys for S4.
+    (?s . "Also see")
+    (?S . "Syntax")
+    (?r . "Remarks")
+    (?t . "Title"))
+  "Help section keys.
 `key' indicates the keystroke to use to search for the section heading
 `string' in an Stata help file. `string' is used as part of a
 regexp-search, and so specials should be quoted.
 ")
 
-(defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n^[-]+$"
+(defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n-+\\|http:"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
 (defvar STA-syntax-table nil "Syntax table for Stata code.")
@@ -134,15 +134,15 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
      (make-regexps
       "^"
       '((
-	 "pr" "pro" "prog" "progr" "progra" "program"
-	 ) font-lock-keyword-face)
+         "pr" "pro" "prog" "progr" "progra" "program"
+         ) font-lock-keyword-face)
       "[ \t]+"
       '((
-	 "de" "def" "defi" "defin" "define"
-	 "di" "dir"
-	 "drop"
-	 "l" "li" "lis" "list"
-	 ) font-lock-type-face nil)
+         "de" "def" "defi" "defin" "define"
+         "di" "dir"
+         "drop"
+         "l" "li" "lis" "list"
+         ) font-lock-type-face nil)
       "[ \t]+"
       '(("[_a-z]+[_a-z0-9]*") font-lock-keyword-face nil)
       ))
@@ -490,10 +490,10 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       '(("sw") font-lock-reference-face)
       "[ \t]+"
       '((
-	 "cloglog" "cnreg" "cox" "ereg" "gamma" "glm" "gompertz" "hetprob"
-	 "llogist" "lnormal" "logistic" "logit" "ologit" "oprobit"
-	 "poisson" "probit" "qreg" "reg" "regr" "regre" "regres" "regress"
-	 "scobit" "tobit" "weibull"
+         "cloglog" "cnreg" "cox" "ereg" "gamma" "glm" "gompertz" "hetprob"
+         "llogist" "lnormal" "logistic" "logit" "ologit" "oprobit"
+         "poisson" "probit" "qreg" "reg" "regr" "regre" "regres" "regress"
+         "scobit" "tobit" "weibull"
          )
         font-lock-type-face)
       "\\b"
@@ -654,7 +654,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
          "cor" "corc" "corr" "corre" "correl" "correla" "correlat" "correlate"
          "corrgram"
          "cou" "coun" "count"
-         "cox"	"cprplot" "_crcswxx" "cs" "csi"
+         "cox"  "cprplot" "_crcswxx" "cs" "csi"
          "ct" "ctset" "cttost"
          "cumul" "cusum")
         font-lock-reference-face)
@@ -1021,7 +1021,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    (eval-when-compile
      (make-regexps
       "`+"
-      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"	;has glitch interior ` is highlighted
+      '(("[a-zA-Z_`*]+[a-zA-Z_0-9]*"    ;has glitch interior ` is highlighted
          ) font-lock-variable-name-face t)
       "'+"
       ))
@@ -1153,7 +1153,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . STA-syntax-table)
     (font-lock-defaults           . '(ess-STA-mode-font-lock-keywords
-				      nil nil ((?\. . "w")))))
+                                      nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
 
 ;; YOU USED TO HAVE TO (with Thomas's version):
@@ -1165,10 +1165,10 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;
 ;;(if (assoc "\\.do$" auto-mode-alist) nil
 ;;  (setq auto-mode-alist
-;;	(append
-;;	 '(("\\.do$" . stata-mode)
-;;	   ("\\.ado$" . stata-mode))
-;;	 auto-mode-alist)))
+;;      (append
+;;       '(("\\.do$" . stata-mode)
+;;         ("\\.ado$" . stata-mode))
+;;       auto-mode-alist)))
 ;;
 
 
@@ -1199,8 +1199,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   "Stata help in other buffer."
   (interactive "sHelp on: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process))
-	 oldpf oldpb oldpm)
+         (stata-buffer (process-buffer stata-process))
+         oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -1210,27 +1210,27 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (beginning-of-line)
       (if (looking-at ". ") nil  (error "Stata not ready."))
       (save-excursion
-	(set-process-buffer stata-process (get-buffer-create "*stata help*"))
-	(set-buffer "*stata help*")
-	(setq buffer-read-only nil)
-	(set-process-filter stata-process 'ordinary-insertion-filter)
-	(erase-buffer)
-	(process-send-string stata-process "help ")
-	(process-send-string stata-process the-subject)
-	(process-send-string stata-process "\n")
-	(stata-prompt-wait stata-process)
-	;;(stata-help-mode)
-	(set-buffer stata-buffer)
-	(set-process-buffer stata-process oldpb)
-	(set-process-filter stata-process oldpf)
-	(set-marker (process-mark stata-process) oldpm)))
+        (set-process-buffer stata-process (get-buffer-create "*stata help*"))
+        (set-buffer "*stata help*")
+        (setq buffer-read-only nil)
+        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (erase-buffer)
+        (process-send-string stata-process "help ")
+        (process-send-string stata-process the-subject)
+        (process-send-string stata-process "\n")
+        (stata-prompt-wait stata-process)
+        ;;(stata-help-mode)
+        (set-buffer stata-buffer)
+        (set-process-buffer stata-process oldpb)
+        (set-process-filter stata-process oldpf)
+        (set-marker (process-mark stata-process) oldpm)))
     (display-buffer "*stata help*")))
 
 (defun stata-lookup (the-subject) "Stata lookup in other buffer"
   (interactive "sLook up: ")
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (process-buffer stata-process))
-	 oldpf oldpb oldpm)
+         (stata-buffer (process-buffer stata-process))
+         oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -1240,30 +1240,30 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (beginning-of-line)
       (if (looking-at ". ") nil  (error "Stata not ready."))
       (save-excursion
-	(set-process-buffer stata-process (get-buffer-create "*stata help*"))
-	(set-buffer "*stata help*")
-	(setq buffer-read-only nil)
-	(set-process-filter stata-process 'ordinary-insertion-filter)
-	(erase-buffer)
-	(process-send-string stata-process "lookup ")
-	(process-send-string stata-process the-subject)
-	(process-send-string stata-process "\n")
-	(stata-prompt-wait stata-process)
-	(stata-help-mode)
-	(set-buffer stata-buffer)
-	(set-process-buffer stata-process oldpb)
-	(set-process-filter stata-process oldpf)
-	(set-marker (process-mark stata-process) oldpm)))
+        (set-process-buffer stata-process (get-buffer-create "*stata help*"))
+        (set-buffer "*stata help*")
+        (setq buffer-read-only nil)
+        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (erase-buffer)
+        (process-send-string stata-process "lookup ")
+        (process-send-string stata-process the-subject)
+        (process-send-string stata-process "\n")
+        (stata-prompt-wait stata-process)
+        (stata-help-mode)
+        (set-buffer stata-buffer)
+        (set-process-buffer stata-process oldpb)
+        (set-process-filter stata-process oldpf)
+        (set-marker (process-mark stata-process) oldpm)))
     (display-buffer "*stata help*")))
 
 (defun stata-variables ()
   "Stata variable list in other buffer."
   (interactive)
   (let* ((stata-process (get-process "stata"))
-	 (stata-buffer (if stata-process
-			   (process-buffer stata-process)
-			 (error "Stata is not running.")))
-	 oldpf oldpb oldpm)
+         (stata-buffer (if stata-process
+                           (process-buffer stata-process)
+                         (error "Stata is not running.")))
+         oldpf oldpb oldpm)
     (set-buffer stata-buffer)
     (setq oldpf (process-filter stata-process))
     (setq oldpb (process-buffer stata-process))
@@ -1272,20 +1272,20 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (if stata-process nil (error "Stata is not running."))
       (beginning-of-line)
       (if (looking-at ". ") nil  (error "Stata not ready."))
-       (save-excursion
-	(set-process-buffer stata-process
-			    (get-buffer-create "*stata variables*"))
-	(set-process-filter stata-process 'ordinary-insertion-filter)
-	(set-buffer "*stata variables*")
-	(setq buffer-read-only nil)
-	(erase-buffer)
-	(process-send-string stata-process "desc \n ")
-	(stata-prompt-wait stata-process)
-	(setq buffer-read-only t)
-	(set-buffer stata-buffer)
-	(set-process-buffer stata-process oldpb)
-	(set-marker (process-mark stata-process) oldpm)
-	(set-process-filter stata-process oldpf)))
+      (save-excursion
+        (set-process-buffer stata-process
+                            (get-buffer-create "*stata variables*"))
+        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (set-buffer "*stata variables*")
+        (setq buffer-read-only nil)
+        (erase-buffer)
+        (process-send-string stata-process "desc \n ")
+        (stata-prompt-wait stata-process)
+        (setq buffer-read-only t)
+        (set-buffer stata-buffer)
+        (set-process-buffer stata-process oldpb)
+        (set-marker (process-mark stata-process) oldpm)
+        (set-process-filter stata-process oldpf)))
     (display-buffer "*stata variables*")
     (goto-char (point-max))))
 
@@ -1307,18 +1307,18 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (comint-output-filter proc string)))
 
 (defun stata-handle-menu-code (proc string)
-   (let ((old-buffer (current-buffer)))
+  (let ((old-buffer (current-buffer)))
     (unwind-protect
-	(let (moving)
-	  (set-buffer (process-buffer proc))
-	  (setq moving (= (point)
-			  (process-mark proc)))
-	  (save-excursion
-	    ;; Insert the text, moving the process-marker.
-	    (goto-char (process-mark proc))
-	    (insert "Handling menu code\n")
-	    (set-marker (process-mark proc) (point)))
-	  (if moving (goto-char (process-mark proc))))
+        (let (moving)
+          (set-buffer (process-buffer proc))
+          (setq moving (= (point)
+                          (process-mark proc)))
+          (save-excursion
+            ;; Insert the text, moving the process-marker.
+            (goto-char (process-mark proc))
+            (insert "Handling menu code\n")
+            (set-marker (process-mark proc) (point)))
+          (if moving (goto-char (process-mark proc))))
       (set-buffer old-buffer))))
 
 ;;;; </IGNORE>
@@ -1336,12 +1336,12 @@ PROC is the stata process. Does not change point."
   (if start-of-output nil (setq start-of-output (point-min)))
   (save-excursion
     (while (progn
-	     ;; get output if there is some ready
-	     (accept-process-output proc 0 50)
-	     (goto-char (marker-position (process-mark proc)))
-	     (beginning-of-line)
-	     (if (< (point) start-of-output) (goto-char start-of-output))
-	     (not (looking-at "^. "))))))
+             ;; get output if there is some ready
+             (accept-process-output proc 0 50)
+             (goto-char (marker-position (process-mark proc)))
+             (beginning-of-line)
+             (if (< (point) start-of-output) (goto-char start-of-output))
+             (not (looking-at "^. "))))))
 
 ;;(defvar inferior-stata-mode-map nil
 ;;  "Keymap for Stata mode")
@@ -1411,17 +1411,17 @@ PROC is the stata process. Does not change point."
 ;;
 ;;
 
-;(defvar stata-help-mode-map nil)
-;(setq stata-help-mode-map (cons 'keymap help-mode-map))
-;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-;(define-key stata-help-mode-map [menu-bar stata]
-;  (cons "Stata" (make-sparse-keymap "Stata")))
-;(define-key stata-help-mode-map [menu-bar stata statahelp]
-;  '("Help on..." . stata-help))
-;(define-key stata-help-mode-map [menu-bar stata rehelp]
-;  '("rehelp (hyperlink)" . stata-rehelp))
+                                        ;(defvar stata-help-mode-map nil)
+                                        ;(setq stata-help-mode-map (cons 'keymap help-mode-map))
+                                        ;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
+                                        ;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
+                                        ;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
+                                        ;(define-key stata-help-mode-map [menu-bar stata]
+                                        ;  (cons "Stata" (make-sparse-keymap "Stata")))
+                                        ;(define-key stata-help-mode-map [menu-bar stata statahelp]
+                                        ;  '("Help on..." . stata-help))
+                                        ;(define-key stata-help-mode-map [menu-bar stata rehelp]
+                                        ;  '("rehelp (hyperlink)" . stata-rehelp))
 ;;
 
 
@@ -1433,16 +1433,16 @@ PROC is the stata process. Does not change point."
 ;;\\{inferior-stata-mode-map}"
 ;;  (interactive)
 ;;  (make-comint "stata" "stata"
-;;	       (and stata-profile
-;;		    (or (file-exists-p stata-profile)
-;;			(null (message "Startup file %s not found."
-;;				       stata-profile))) stata-profile)
-;;	       stata-switches)
+;;             (and stata-profile
+;;                  (or (file-exists-p stata-profile)
+;;                      (null (message "Startup file %s not found."
+;;                                     stata-profile))) stata-profile)
+;;             stata-switches)
 ;;  (switch-to-buffer "*stata*" )
 ;;  (setq comint-process-echoes t)
 ;;  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
 ;;  (setq comint-input-filter-functions
-;;	(cons 'stata-add-to-review-buffer comint-input-filter-functions))
+;;      (cons 'stata-add-to-review-buffer comint-input-filter-functions))
 ;;  (save-excursion
 ;;    (set-buffer (get-buffer-create "*stata review*"))
 ;;    (stata-mode))
@@ -1545,12 +1545,12 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;  (interactive "P")
 ;;  (let (stata-process (get-process "stata"))
 ;;    (if stata-process
-;;	(progn
-;;	  (switch-to-buffer (process-buffer stata-process))
-;;	  (if eob-p (goto-char (point-max))))
 ;;      (progn
-;;	(message "No inferior stata process")
-;;	(ding)))))
+;;        (switch-to-buffer (process-buffer stata-process))
+;;        (if eob-p (goto-char (point-max))))
+;;      (progn
+;;      (message "No inferior stata process")
+;;      (ding)))))
 
 ;;(defun stata-switch-to-end-of-stata nil
 ;;  "Switch to the end of the inferior stata process buffer."
@@ -1571,7 +1571,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
               "\n#delimit cr\n")
       (write-file ess-STA-delimit-do-file nil)
       (comint-send-string "Stata"
-			  (format "do %s \n" ess-STA-delimit-do-file)))))
+                          (format "do %s \n" ess-STA-delimit-do-file)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -1595,6 +1595,3 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;; End:
 
 ;;; ess-sta-l.el ends here
-
-
-

@@ -1,10 +1,10 @@
-;;; ess-bugs-l.el -- ESS[BUGS] languages
+;;; ess-bugs-l.el --- ESS[BUGS] languages
 
 ;; Copyright (C) 2006-2011 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani
+;; Author: Rodney Sparapani
 ;; Created: 16 August 2006
-;; Maintainers: ESS-help <ess-help@r-project.org>
+;; Maintainer: ESS-help <ess-help@r-project.org>
 
 ;; This file is part of ESS
 
@@ -21,12 +21,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;
-;; In short: you may use this code any way you like, as long as you
-;; don't charge money for it, remove this notice, or hold anyone liable
-;; for its results.
 
-;; Code:
+;;; Code:
 
 (require 'font-lock)
 (require 'comint)
@@ -53,181 +49,181 @@ while those running a Unix-like *shell* will get 'sh by default.
 Users whose default is not 'sh, but are accessing a remote machine with
 `telnet' or `ssh', should have the following in their init file:
    (setq-default ess-bugs-batch-method 'sh)"
-    :group 'ess-bugs
-)
+  :group 'ess-bugs
+  )
 
 (defcustom ess-bugs-batch-post-command
-    (if (equal ess-bugs-batch-method 'sh) "&" " ")
-    "*ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
-    :group 'ess-bugs
-    :type  'string
-)
+  (if (equal ess-bugs-batch-method 'sh) "&" " ")
+  "*ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 (defcustom ess-bugs-batch-pre-command
-    (if (equal ess-bugs-batch-method 'sh) "nohup nice time"
-	(if ess-microsoft-p "start"))
-    "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
-    :group 'ess-bugs
-    :type  'string
-)
+  (if (equal ess-bugs-batch-method 'sh) "nohup nice time"
+    (if ess-microsoft-p "start"))
+  "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 
 (defcustom ess-bugs-default-burn-in "500"
-    "ESS[BUGS]: Burn-in iterations to discard."
-    :group 'ess-bugs
-    :type  'string
-)
+  "ESS[BUGS]: Burn-in iterations to discard."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 (defcustom ess-bugs-default-update "1000"
-    "ESS[BUGS]: Iterations to store."
-    :group 'ess-bugs
-    :type  'string
-)
+  "ESS[BUGS]: Iterations to store."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 (defvar ess-bugs-batch-command ";"
   "*ESS[BUGS]: The name of the command to run BUGS in batch mode."
-)
+  )
 
 (defvar ess-bugs-file "."
-   "ESS[BUGS]: BUGS file with PATH.")
+  "ESS[BUGS]: BUGS file with PATH.")
 
 (defvar ess-bugs-file-root "."
-   "ESS[BUGS]: Root of BUGS file.")
+  "ESS[BUGS]: Root of BUGS file.")
 
 (defvar ess-bugs-file-suffix "."
-   "ESS[BUGS]: Suffix of BUGS file.")
+  "ESS[BUGS]: Suffix of BUGS file.")
 
 (defvar ess-bugs-file-dir "."
-   "ESS[BUGS]: Directory of BUGS file.")
+  "ESS[BUGS]: Directory of BUGS file.")
 
 (defvar ess-bugs-file-data "..."
-   "ESS[BUGS]: BUGS data file.")
+  "ESS[BUGS]: BUGS data file.")
 
 (defcustom ess-bugs-inits-suffix ".in"
-   "ESS[BUGS]: BUGS init file suffix."
-    :group 'ess-bugs
-    :type  'string
-)
+  "ESS[BUGS]: BUGS init file suffix."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 (defcustom ess-bugs-data-suffix ".dat"
-   "ESS[BUGS]: BUGS data file suffix."
-    :group 'ess-bugs
-    :type  'string
-)
+  "ESS[BUGS]: BUGS data file suffix."
+  :group 'ess-bugs
+  :type  'string
+  )
 
 (defcustom ess-bugs-mode-hook nil
-    "*ESS[BUGS]: List of functions to call upon entering mode."
-    :group 'ess-bugs
-    :type 'hook)
+  "*ESS[BUGS]: List of functions to call upon entering mode."
+  :group 'ess-bugs
+  :type 'hook)
 
 (defvar ess-bugs-monitor-vars " "
-    "ESS[BUGS]: List of BUGS variables to be written out to a file.")
+  "ESS[BUGS]: List of BUGS variables to be written out to a file.")
 
 (defvar ess-bugs-stats-vars " "
-    "ESS[BUGS]: List of BUGS variables to be summarized with statistics.")
+  "ESS[BUGS]: List of BUGS variables to be summarized with statistics.")
 
 (defvar ess-bugs-mode-map nil
-   "ESS[BUGS]: Keymap for mode.")
+  "ESS[BUGS]: Keymap for mode.")
 
 (if ess-bugs-mode-map nil (setq ess-bugs-mode-map (make-keymap)))
 (define-key ess-bugs-mode-map (quote [f2])  'ess-revert-wisely)
-;(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
+                                        ;(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
 (define-key ess-bugs-mode-map "\C-c\C-c" 'ess-bugs-next-action)
 (define-key ess-bugs-mode-map "=" 'ess-bugs-hot-arrow)
 (define-key ess-bugs-mode-map "_" 'ess-bugs-hot-arrow)
 
 (defvar ess-bugs-syntax-table nil
-   "ESS[BUGS]: Syntax table for mode.")
+  "ESS[BUGS]: Syntax table for mode.")
 
 (if ess-bugs-syntax-table nil (setq ess-bugs-syntax-table (make-syntax-table)))
 (modify-syntax-entry ?\\ "."  ess-bugs-syntax-table)
 (modify-syntax-entry ?#  "<"  ess-bugs-syntax-table)
 (modify-syntax-entry ?\n ">"  ess-bugs-syntax-table)
 (modify-syntax-entry ?(  "()" ess-bugs-syntax-table)
-(modify-syntax-entry ?)  ")(" ess-bugs-syntax-table)
+                     (modify-syntax-entry ?)  ")(" ess-bugs-syntax-table)
 (modify-syntax-entry ?.  "w"  ess-bugs-syntax-table)
 
 (defun ess-bugs-file ()
-"ESS[BUGS]: Set internal variables dealing with BUGS files.
+  "ESS[BUGS]: Set internal variables dealing with BUGS files.
 Set `ess-bugs-file', `ess-bugs-file-root', `ess-bugs-file-suffix'
 and `ess-bugs-file-dir'."
-   (let ((ess-bugs-temp-string (buffer-name)))
-        (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
-        (setq ess-bugs-file-dir
-	    (convert-standard-filename (file-name-directory ess-bugs-file)))
-        (setq ess-bugs-file-root
-	    (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
+  (let ((ess-bugs-temp-string (buffer-name)))
+    (setq ess-bugs-file (expand-file-name ess-bugs-temp-string))
+    (setq ess-bugs-file-dir
+          (convert-standard-filename (file-name-directory ess-bugs-file)))
+    (setq ess-bugs-file-root
+          (file-name-nondirectory (file-name-sans-extension ess-bugs-file)))
 
-        (if (fboundp 'file-name-extension)
-	    (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
-	    ;;else
-	    (setq ess-bugs-file-suffix (car (last (split-string ess-bugs-temp-string "[.]")))))
+    (if (fboundp 'file-name-extension)
+        (setq ess-bugs-file-suffix (file-name-extension ess-bugs-temp-string))
+      ;;else
+      (setq ess-bugs-file-suffix (car (last (split-string ess-bugs-temp-string "[.]")))))
 
-	(setq ess-bugs-file-suffix
-	    (downcase (car (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
+    (setq ess-bugs-file-suffix
+          (downcase (car (split-string (concat "." ess-bugs-file-suffix) "[<]"))))
 
-	(setq ess-bugs-file (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
-   )
-)
+    (setq ess-bugs-file (concat ess-bugs-file-dir ess-bugs-file-root ess-bugs-file-suffix))
+    )
+  )
 
 (defun ess-bugs-exit-notify-sh (string)
   "ESS[BUGS]: Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*")
-	 (beg (string-match exit-done string)))
+         (beg (string-match exit-done string)))
     (if beg (message (substring string beg (match-end 0))))))
 
 (defun ess-bugs-hot-arrow ()
-    "*ESS[BUGS]: Substitute <- for = key press"
-    (interactive)
-    (insert " <- "))
+  "*ESS[BUGS]: Substitute <- for = key press"
+  (interactive)
+  (insert " <- "))
 
 (defun ess-bugs-next-action ()
-   "ESS[BUGS/JAGS]: Perform the appropriate next action."
-   (interactive)
-   (ess-bugs-file)
+  "ESS[BUGS/JAGS]: Perform the appropriate next action."
+  (interactive)
+  (ess-bugs-file)
 
-   (cond ((equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
-	 ((equal ".jag" ess-bugs-file-suffix) (ess-jags-na-bug))
-	 ((equal ".bmd" ess-bugs-file-suffix) 
-	  (ess-save-and-set-local-variables)
-	  (ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))
-	 ((equal ".jmd" ess-bugs-file-suffix) 
-	  (ess-save-and-set-local-variables)
-	  (ess-jags-na-jmd ess-jags-command ess-jags-chains)))
-)
+  (cond ((equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+        ((equal ".jag" ess-bugs-file-suffix) (ess-jags-na-bug))
+        ((equal ".bmd" ess-bugs-file-suffix)
+         (ess-save-and-set-local-variables)
+         (ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))
+        ((equal ".jmd" ess-bugs-file-suffix)
+         (ess-save-and-set-local-variables)
+         (ess-jags-na-jmd ess-jags-command ess-jags-chains)))
+  )
 
-(defun ess-bugs-sci-to-round-4-dp () 
-    "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
-    (interactive)
-    (setq buffer-read-only nil)
-    (save-excursion (goto-char 0)
-    (save-match-data (let ((ess-bugs-replacement-string nil)                            
-			    (ess-bugs-replacement-9 0)
-			    (ess-bugs-replacement-diff 0))
-     (while (search-forward-regexp "-?[0-9][.][0-9][0-9][0-9]E[+-][0-9]" nil t)
-	    (setq ess-bugs-replacement-string
-		  (int-to-string (string-to-number (match-string 0))))
-	    (setq ess-bugs-replacement-diff (- (match-end 0) (match-beginning 0)))
-	    (save-match-data
-	        (setq ess-bugs-replacement-9
-		    (string-match "99999999999$" ess-bugs-replacement-string))
+(defun ess-bugs-sci-to-round-4-dp ()
+  "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
+  (interactive)
+  (setq buffer-read-only nil)
+  (save-excursion (goto-char 0)
+                  (save-match-data (let ((ess-bugs-replacement-string nil)
+                                         (ess-bugs-replacement-9 0)
+                                         (ess-bugs-replacement-diff 0))
+                                     (while (search-forward-regexp "-?[0-9][.][0-9][0-9][0-9]E[+-][0-9]" nil t)
+                                       (setq ess-bugs-replacement-string
+                                             (int-to-string (string-to-number (match-string 0))))
+                                       (setq ess-bugs-replacement-diff (- (match-end 0) (match-beginning 0)))
+                                       (save-match-data
+                                         (setq ess-bugs-replacement-9
+                                               (string-match "99999999999$" ess-bugs-replacement-string))
 
-		(if (not ess-bugs-replacement-9)
-		    (setq ess-bugs-replacement-9
-			(string-match "000000000001$" ess-bugs-replacement-string))))
+                                         (if (not ess-bugs-replacement-9)
+                                             (setq ess-bugs-replacement-9
+                                                   (string-match "000000000001$" ess-bugs-replacement-string))))
 
-	    (if ess-bugs-replacement-9
-		(setq ess-bugs-replacement-string
-		    (substring ess-bugs-replacement-string 0 ess-bugs-replacement-9)))
+                                       (if ess-bugs-replacement-9
+                                           (setq ess-bugs-replacement-string
+                                                 (substring ess-bugs-replacement-string 0 ess-bugs-replacement-9)))
 
-	    (setq ess-bugs-replacement-diff
-		(- ess-bugs-replacement-diff (string-width ess-bugs-replacement-string)))
+                                       (setq ess-bugs-replacement-diff
+                                             (- ess-bugs-replacement-diff (string-width ess-bugs-replacement-string)))
 
-	   (while (> ess-bugs-replacement-diff 0)
-		(setq ess-bugs-replacement-string (concat ess-bugs-replacement-string " "))
-		(setq ess-bugs-replacement-diff (- ess-bugs-replacement-diff 1)))
+                                       (while (> ess-bugs-replacement-diff 0)
+                                         (setq ess-bugs-replacement-string (concat ess-bugs-replacement-string " "))
+                                         (setq ess-bugs-replacement-diff (- ess-bugs-replacement-diff 1)))
 
-           (replace-match ess-bugs-replacement-string))))))
+                                       (replace-match ess-bugs-replacement-string))))))
 
 ;;; ESS[BUGS-Shell] for running BUGS interactively
 (defgroup ess-bugs-shell nil
@@ -265,15 +261,17 @@ add path to the command name."
   (require 'shell)
   (switch-to-buffer (concat "*" ess-bugs-shell-buffer-name "*"))
   (make-comint ess-bugs-shell-buffer-name ess-bugs-shell-command nil
-	       ess-bugs-default-bins ess-bugs-shell-default-output-file-root)
+               ess-bugs-default-bins ess-bugs-shell-default-output-file-root)
   (comint-mode)
   (setq shell-dirtrackp t
-	major-mode 'bugs-shell-mode
-	mode-name "ESS[BUGS-Shell]"
-	comint-prompt-regexp "^Bugs> *")
-   (make-local-variable 'font-lock-defaults)
-   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
-   (run-hooks 'ess-bugs-shell-mode-hook)
+        major-mode 'bugs-shell-mode
+        mode-name "ESS[BUGS-Shell]"
+        comint-prompt-regexp "^Bugs> *")
+  (make-local-variable 'font-lock-defaults)
+  (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
+  (run-hooks 'ess-bugs-shell-mode-hook)
   )
 
 (provide 'ess-bugs-l)
+
+;;; ess-bugs-l.el ends here

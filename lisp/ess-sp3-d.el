@@ -1,13 +1,13 @@
 ;;; ess-sp3-d.el --- S-PLUS 3.x customization
 
 ;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@u.washington.edu>
+;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -26,31 +26,30 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
-;;; Requires and Autoloads:
+;; This file defines all the S-PLUS 3.x customizations for ess-mode.
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 (defvar S+3-dialect-name "S+3"
   "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs
 
 (defvar S+3-customize-alist
   (append
-   '((ess-local-customize-alist     	. 'S+3-customize-alist)
-     (ess-dialect                   	. S+3-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file       	. "ess-s+3-namedb.el" )
-     (inferior-ess-program          	. inferior-S+3-program-name)
-     (inferior-ess-help-command     	. "help(\"%s\",pager=\"cat\",window=F)\n")
+   '((ess-local-customize-alist         . 'S+3-customize-alist)
+     (ess-dialect                       . S+3-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file           . "ess-s+3-namedb.el" )
+     (inferior-ess-program              . inferior-S+3-program-name)
+     (inferior-ess-help-command         . "help(\"%s\",pager=\"cat\",window=F)\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command  . "search()\n")
-     (inferior-ess-start-file       	. nil) ;"~/.ess-S+3")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
      (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )

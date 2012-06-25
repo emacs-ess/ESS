@@ -1,13 +1,13 @@
 ;;; ess-r-a.el -- Possible local customizations for R with ESS.
 
 ;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <blindglobe@gmail.com>
+;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 17 November 1999
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: editing and process modes.
+;; Keywords: languages
 
 ;; This file is part of ESS
 
@@ -24,27 +24,22 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;
-;; In short: you may use this code any way you like, as long as you
-;; don't charge money for it, remove this notice, or hold anyone liable
-;; for its results.
+
+;;; Commentary:
+
+;; The purpose of this file is to demonstrate some of the extras that
+;; have been constructed for the ESS R mode; if they prove
+;; interesting, then they might be migrated to ess-r-d, the primary
+;; ESS R mode tools.
 
 ;;; Code:
-
-;;; The purpose of this file is to demonstrate some of the extras that
-;;; have been constructed for the ESS R mode; if they prove
-;;; interesting, then they might be migrated to ess-r-d, the primary
-;;; ESS R mode tools.
-
-
-
 
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr
 ;; with vsize set to (for example) 40M, and nsize set to 600000.
 (defalias 'essr
   (read-kbd-macro
-     "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
+   "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
 ;; "SPC" must be "=" in future versions of R (works from 0.99 on)
 
 (defun ess-r-do-region (start end &optional message)
@@ -52,15 +47,15 @@
   (interactive "r\nP")
   (message "Starting evaluation...")
   (do-applescript (concat
-    "try\n"
-	"tell application \"R\"\n"
-		"activate\n"
-		"with timeout of 0 seconds\n"
-			"cmd \"" (buffer-substring start end)
-			"\"\n"
-		"end timeout\n"
-	"end tell\n"
-    "end try\n"))
+                   "try\n"
+                   "tell application \"R\"\n"
+                   "activate\n"
+                   "with timeout of 0 seconds\n"
+                   "cmd \"" (buffer-substring start end)
+                   "\"\n"
+                   "end timeout\n"
+                   "end tell\n"
+                   "end try\n"))
   (message "Finished evaluation"))
 
 (defun ess-r-do-line ()
@@ -68,18 +63,18 @@
   (interactive) ;; "r\nP")
   (message "Starting evaluation...")
   (save-excursion
-  (let ((end (point)))
-  (move-to-column 0)
-  (do-applescript (concat
-    "try\n"
-	"tell application \"R\"\n"
-		"activate\n"
-		"with timeout of 0 seconds\n"
-			"cmd \"" (buffer-substring (point) end)
-			"\"\n"
-		"end timeout\n"
-	"end tell\n"
-    "end try\n"))))
+    (let ((end (point)))
+      (move-to-column 0)
+      (do-applescript (concat
+                       "try\n"
+                       "tell application \"R\"\n"
+                       "activate\n"
+                       "with timeout of 0 seconds\n"
+                       "cmd \"" (buffer-substring (point) end)
+                       "\"\n"
+                       "end timeout\n"
+                       "end tell\n"
+                       "end try\n"))))
   (message "Finished evaluation"))
 
 (defun ess-r-var (beg end)
@@ -89,20 +84,20 @@ e.  BEG and END denote the region in the current buffer to be sent."
   (interactive "r")
   (save-window-excursion
     (let ((tmp-file (make-temp-file "ess-r-var"))
-	  cmd
-	  var)
+          cmd
+          var)
       (write-region beg end tmp-file)
 
       ;; Decide on the variable name to use in R; could use completion.
       (setq var (read-string "R Variable name (default e): "))
       (if (equal var "")
-	  (setq var "e"))
+          (setq var "e"))
 
       ;; Command to send to the R process.  Get R to delete the file
       ;; rather than Emacs in case it takes R a long time to run the
       ;; scan command.
       (setq cmd (concat var " <- scan(\""  tmp-file "\"); "
-			"unlink(\"" tmp-file "\")" ))
+                        "unlink(\"" tmp-file "\")" ))
 
       ;; Put the output from the scan command into the process buffer so
       ;; the user has a record of it.
@@ -129,7 +124,7 @@ is)."
     (interactive)
     (other-buffer 1)
     (if (= emacs "emacs")
-	(setq scroll-up-aggressively t)
+        (setq scroll-up-aggressively t)
       (setq scroll-conservatively -4)) ;; <- change this
     (other-buffer -1))
 

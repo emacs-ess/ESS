@@ -4,13 +4,13 @@
 
 ;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Copyright (C) 2002--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
 ;; Created: April 2001
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -29,9 +29,11 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;;
-;;; This file defines all the S-PLUS 6.x for Windows customizations
-;;; for ess-mode with ddeclient.
+
+;; This file defines all the S-PLUS 6.x for Windows customizations
+;; for ess-mode with ddeclient.
+
+;;; Code:
 
 ;;; Requires and Autoloads:
 
@@ -40,8 +42,6 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-;;; Code:
 
 (defcustom S+6-dialect-name "S"
   "Name of 'dialect' for S-PLUS 6.x and later.
@@ -52,14 +52,14 @@ Easily changeable in a user's `.emacs'."
 (defvar inferior-S+6-start-args " "
   "Default is empty.  Can be used for license manager information, for example
 `(setq inferior-S+6-start-args \" S_ELMHOST=\\\\\\\\@123.456.789.012  ELMTIMEOUT=60 \")'."
-;; (setq inferior-S+6-start-args " S_ELMHOST=\\\\@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
-)
+  ;; (setq inferior-S+6-start-args " S_ELMHOST=\\\\@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+  )
 
 (defvar inferior-Sqpe-start-args " "
   "Default is empty.  Can be used for license manager information, for example
 `(setq inferior-Sqpe-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
-;; (setq inferior-Sqpe-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
-)
+  ;; (setq inferior-Sqpe-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+  )
 
 (defvar inferior-S+6-multipleinstances "/MULTIPLEINSTANCES"
   "Default \"/MULTIPLEINSTANCES\" opens up a new instance of S+[678] in a
@@ -69,52 +69,52 @@ connects it to the '(ddeESS [S+6])' window.")
 
 (defvar S+6-customize-alist
   (append
-  '((ess-local-customize-alist  . 'S+6-customize-alist)
-    (ess-dialect                . S+6-dialect-name)
-    (ess-loop-timeout		. ess-S-loop-timeout);fixme: dialect spec.
-    (ess-object-name-db-file    . "ess-sp6-namedb.el" )
-    (inferior-ess-program       . inferior-S+6-program-name)
-    (inferior-ess-help-command  . "help(\"%s\")\n")
-    (inferior-ess-help-filetype . "chm")
-    (inferior-ess-search-list-command . "searchPaths()\n")
-    (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args    . (concat
-				   inferior-S+6-multipleinstances
-				   " "
-				   inferior-S+6-start-args
-				   " "
-				   inferior-S+6-print-command
-				   " S_PROJ="
-				   (w32-short-file-name (directory-file-name default-directory))))
-;;    (inferior-ess-ddeclient      . "ddeclient")
-;;    (inferior-ess-client-name    . "S-PLUS")
-;;    (inferior-ess-client-command . "SCommand")
-    (ess-STERM  . "ddeESS")
-    )
-  S+common-cust-alist)
+   '((ess-local-customize-alist  . 'S+6-customize-alist)
+     (ess-dialect                . S+6-dialect-name)
+     (ess-loop-timeout          . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file    . "ess-sp6-namedb.el" )
+     (inferior-ess-program       . inferior-S+6-program-name)
+     (inferior-ess-help-command  . "help(\"%s\")\n")
+     (inferior-ess-help-filetype . "chm")
+     (inferior-ess-search-list-command . "searchPaths()\n")
+     (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
+     (inferior-ess-start-args    . (concat
+                                    inferior-S+6-multipleinstances
+                                    " "
+                                    inferior-S+6-start-args
+                                    " "
+                                    inferior-S+6-print-command
+                                    " S_PROJ="
+                                    (w32-short-file-name (directory-file-name default-directory))))
+     ;;    (inferior-ess-ddeclient      . "ddeclient")
+     ;;    (inferior-ess-client-name    . "S-PLUS")
+     ;;    (inferior-ess-client-command . "SCommand")
+     (ess-STERM  . "ddeESS")
+     )
+   S+common-cust-alist)
   "Variables to customize for S+6")
 
 (defvar Sqpe+6-customize-alist
   (append
-  '((ess-local-customize-alist  . 'Sqpe+6-customize-alist)
-    (ess-dialect                . S+6-dialect-name)
-    (ess-loop-timeout           . 500000 );fixme: dialect specific custom.var
-    (ess-object-name-db-file    . "ess-sp6-namedb.el" )
-    (inferior-ess-program       . inferior-Sqpe+6-program-name)
-    (inferior-ess-help-command  . "help(\"%s\")\n")
-    (inferior-ess-help-filetype . "chm")
-    (inferior-ess-search-list-command . "searchPaths()\n")
-    (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
-    (inferior-ess-start-args    . (concat
-				   ;; workaround for bug in S-Plus 6 for Windows:
-				   "ALWAYS_PROMPT=X"
-				   " "
-				   inferior-Sqpe-start-args ;; e.g. license manager
-				   ))
-    (ess-STERM  . "iESS")
-    )
-  S+common-cust-alist)
- "Variables to customize for Sqpe+6.")
+   '((ess-local-customize-alist  . 'Sqpe+6-customize-alist)
+     (ess-dialect                . S+6-dialect-name)
+     (ess-loop-timeout           . 500000 );fixme: dialect specific custom.var
+     (ess-object-name-db-file    . "ess-sp6-namedb.el" )
+     (inferior-ess-program       . inferior-Sqpe+6-program-name)
+     (inferior-ess-help-command  . "help(\"%s\")\n")
+     (inferior-ess-help-filetype . "chm")
+     (inferior-ess-search-list-command . "searchPaths()\n")
+     (inferior-ess-start-file    . nil) ;"~/.ess-S+6")
+     (inferior-ess-start-args    . (concat
+                                    ;; workaround for bug in S-Plus 6 for Windows:
+                                    "ALWAYS_PROMPT=X"
+                                    " "
+                                    inferior-Sqpe-start-args ;; e.g. license manager
+                                    ))
+     (ess-STERM  . "iESS")
+     )
+   S+common-cust-alist)
+  "Variables to customize for Sqpe+6.")
 
 
 
@@ -155,19 +155,19 @@ or S-Plus 8."
   (interactive)
   (save-excursion
     (set-buffer (find-file-noselect
-		 (concat (executable-find inferior-S+6-program-name)
-			 "/../../versions") t))
+                 (concat (executable-find inferior-S+6-program-name)
+                         "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
-	(error "The emacs variable `inferior-S+6-program-name' does
+        (error "The emacs variable `inferior-S+6-program-name' does
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd' (expand the
 `[678]?' to match your setup) to your `exec-path' or specify the complete
 path to `Splus.exe' in the variable `inferior-S+6-program-name' in your
 `.emacs' file.")
       (forward-line)
       (if (search-backward "splus\t6.0" (point-min) t)
-	  (error "S-Plus 6.0 for Microsoft Windows has a bug that
+          (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
 `S+6-existing'.  You should consider upgrading to a newer
@@ -192,22 +192,22 @@ to start the Splus program."
     (setq ess-customize-alist S+6-customize-alist)
     (ess-write-to-dribble-buffer
      (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-program
-	  (append ess-customize-alist '((inferior-ess-program   . "sh"))))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
-	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (setq ess-customize-alist		; change inferior-ess-start-args
-	  (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
+             (current-buffer)))
+    (setq ess-customize-alist           ; change inferior-ess-program
+          (append ess-customize-alist '((inferior-ess-program   . "sh"))))
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
+          (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
+    (setq ess-customize-alist           ; change inferior-ess-start-args
+          (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
     (let ((s-proj (getenv "S_PROJ"))
-	  (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
-	  )
+          (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+          )
       (cd (w32-short-file-name (directory-file-name default-directory)))
       (setenv "S_PROJ" (w32-short-file-name default-directory))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-		    ; command in '(ddeESS [S+6])' should follow the "$"
-		    ; prompt.  If not, then increase the sleep-for time!
+                                        ; command in '(ddeESS [S+6])' should follow the "$"
+                                        ; prompt.  If not, then increase the sleep-for time!
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+6-customize-alist)
     (ess-setq-vars-local ess-customize-alist)
@@ -221,13 +221,13 @@ to start the Splus program."
     (setq comint-input-sender 'comint-simple-send)
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
-		    inferior-ess-start-args)) ; Note: there is no final "&".
+                    inferior-ess-start-args)) ; Note: there is no final "&".
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
     ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for ess-S+6-startup-delay) ; Need to wait, else working too fast!
-                   ; If the ess-current-process-name doesn't appear in the
-       		   ; Splus Commands window increase the sleep-for time!
+                                        ; If the ess-current-process-name doesn't appear in the
+                                        ; Splus Commands window increase the sleep-for time!
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
     (goto-char (point-min))
@@ -241,14 +241,14 @@ You may need to open the S-Plus Commands window manually (by clicking on
 Splus/Window/Commands Window).\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window appear in this buffer.\n\n")
-    (goto-char (point-max))		; comint-mode-map makes '(ddeESS [S+6])'
-;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
+    (goto-char (point-max))             ; comint-mode-map makes '(ddeESS [S+6])'
+    ;;  (use-local-map comint-mode-map)     ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
-    (toggle-read-only t)		; force buffer to be read-only
+    (toggle-read-only t)                ; force buffer to be read-only
     (setq mode-name "ddeESS")
-;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
     (if inferior-ess-language-start
-	(ess-eval-linewise inferior-ess-language-start))
+        (ess-eval-linewise inferior-ess-language-start))
     ))
 
 
@@ -267,7 +267,7 @@ directory is 'c:/DOCUME~1/yourname/MYDOCU~1/SPOTFI~1/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances " & # ") ; Note: there is a final "&".
-	 (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
+         (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
     ;; Without the "&", there is a core dump.
     ;; With the "&", the results of  !system.command  in S get lost.
     ;; We are picking up an existing S-Plus process for sending to.
@@ -275,7 +275,7 @@ If you have a HOME environment variable, it will open it there."
     (S+6-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)		; permit writing in ESS buffer
+    (toggle-read-only nil)              ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -283,7 +283,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+6-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)		; restore ESS buffer to be read-only
+    (toggle-read-only t)                ; restore ESS buffer to be read-only
     ))
 
 
@@ -300,35 +300,35 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (interactive)
   (setq ess-customize-alist Sqpe+6-customize-alist)
   (let* ((shome-nil-p (equal (getenv "SHOME") nil))
-	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
-	 )
+         (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+         )
     (if shome-nil-p (setenv "SHOME" inferior-Sqpe+6-SHOME-name))
     (ess-write-to-dribble-buffer
      (format "\n(Sqpe+6): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
-	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
+             (current-buffer)))
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
+          (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
     (inferior-ess)
     (setq ess-customize-alist Sqpe+6-customize-alist) ; restore i-e-p-p in alist
     (ess-setq-vars-local ess-customize-alist)    ; restore i-e-p-p in buffer
     (setq inferior-ess-prompt                    ; define with correct i-e-p-p
-	  ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
-	  (concat "\\("
-		  inferior-ess-primary-prompt
-		  "\\|"
-		  inferior-ess-secondary-prompt
-		  "\\)"))
+          ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
+          (concat "\\("
+                  inferior-ess-primary-prompt
+                  "\\|"
+                  inferior-ess-secondary-prompt
+                  "\\)"))
     (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-                                                ; define with correct i-e-p-p
+                                        ; define with correct i-e-p-p
     (setq comint-input-sender 'inferior-ess-input-sender)
     (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
     (goto-char (point-max))
     (insert "options(interactive=T)")
     (inferior-ess-send-input)
     (setq mode-name "iESS(Sqpe)")
-;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
     (if inferior-ess-language-start
-	(ess-eval-linewise inferior-ess-language-start))
+        (ess-eval-linewise inferior-ess-language-start))
     (if shome-nil-p (setenv "SHOME" nil))))
 
 
@@ -357,26 +357,26 @@ S-Plus 7 or S-Plus 8."
   (interactive)
   (save-excursion
     (set-buffer (find-file-noselect
-		 (concat (executable-find inferior-S+6-program-name)
-			 "/../../versions") t))
+                 (concat (executable-find inferior-S+6-program-name)
+                         "/../../versions") t))
     (toggle-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
-	(error "The emacs variable `inferior-S+6-program-name' does
+        (error "The emacs variable `inferior-S+6-program-name' does
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
 (expand the `[678]?' to match your setup) to your `exec-path' or
 specify the complete path to `Splus.exe' in the variable
 `inferior-S+6-program-name' in your `.emacs' file.")  ;;; " This comment keeps emacs font-lock from getting out of phase.
-      (progn
-    (forward-line)
-      (if (search-backward "splus\t6.0" (point-min) t)
-	    (error "S-Plus 6.0 for Microsoft Windows has a bug that
+(progn
+  (forward-line)
+  (if (search-backward "splus\t6.0" (point-min) t)
+      (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
 `S+6-msdos-existing'.  You should consider upgrading to a newer
 release of S-Plus.")
-  (S+6-msdos-initiate proc-name))) ;; normal start ;
-      )))
+    (S+6-msdos-initiate proc-name))) ;; normal start ;
+)))
 
 
 (defun S+6-msdos-initiate (&optional proc-name)
@@ -396,23 +396,23 @@ to start the Splus program."
     (setq ess-customize-alist S+6-customize-alist)
     (ess-write-to-dribble-buffer
      (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
-    (setq ess-customize-alist		; change inferior-ess-program
-	  (append ess-customize-alist '((inferior-ess-program
-					 . (getenv "COMSPEC")))))
-    (setq ess-customize-alist		; change inferior-ess-primary-prompt
-	  (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (setq ess-customize-alist		; change inferior-ess-start-args
-	  (append ess-customize-alist '((inferior-ess-start-args   . ""))))
+             (current-buffer)))
+    (setq ess-customize-alist           ; change inferior-ess-program
+          (append ess-customize-alist '((inferior-ess-program
+                                         . (getenv "COMSPEC")))))
+    (setq ess-customize-alist           ; change inferior-ess-primary-prompt
+          (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
+    (setq ess-customize-alist           ; change inferior-ess-start-args
+          (append ess-customize-alist '((inferior-ess-start-args   . ""))))
     (let ((s-proj (getenv "S_PROJ"))
-	 (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
-	  )
+          (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
+          )
       (cd (w32-short-file-name (directory-file-name default-directory)))
       (setenv "S_PROJ" (w32-short-file-name default-directory))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
-		    ; command in '(ddeESS [S+6])' should follow the "$"
-		    ; prompt.  If not, then increase the sleep-for time!
+                                        ; command in '(ddeESS [S+6])' should follow the "$"
+                                        ; prompt.  If not, then increase the sleep-for time!
       (setenv "S_PROJ" s-proj))
     (setq ess-customize-alist S+6-customize-alist)
     (ess-setq-vars-local ess-customize-alist)
@@ -427,16 +427,16 @@ to start the Splus program."
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
     (insert (concat inferior-S+6-program-name " "
-		    inferior-ess-start-args)) ; Note: there is no final "&".
+                    inferior-ess-start-args)) ; Note: there is no final "&".
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+6])'
     ;; With the "&", the results of  !system.command  in S get lost.
     (inferior-ess-send-input)
     (sleep-for ess-S+6-startup-delay) ; Need to wait, else working too fast!
-                   ; If the ess-current-process-name doesn't appear in the
-       		   ; Splus Commands window increase the sleep-for time!
+                                        ; If the ess-current-process-name doesn't appear in the
+                                        ; Splus Commands window increase the sleep-for time!
 ;;; from msdos-minor-mode
-  (setq comint-process-echoes t)
-  (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
+    (setq comint-process-echoes t)
+    (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
 ;;; end from msdos-minor-mode
     (setq ess-local-process-name ess-current-process-name)
     (ess-eval-linewise (concat "#" ess-current-process-name))
@@ -457,9 +457,9 @@ or take the risk of not being able to shut down your computer
 and suffering through scandisk.\n
 Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window (are supposed to) appear in this buffer.\n\n")
-    (goto-char (point-max))	       ; comint-mode-map makes '(ddeESS [S+6])'
+    (goto-char (point-max))            ; comint-mode-map makes '(ddeESS [S+6])'
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
-    (toggle-read-only t)	       ; force buffer to be read-only
+    (toggle-read-only t)               ; force buffer to be read-only
     (setq mode-name "ddeESS")
 ;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
     (if inferior-ess-language-start
@@ -479,11 +479,11 @@ directory is 'c:/DOCUME~1/yourname/MYDOCU~1/SPOTFI~1/Project1'.
 If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+6-multipleinstances "")
-	 (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
+         (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
     (S+6-msdos-initiate proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)		; permit writing in ESS buffer
+    (toggle-read-only nil)              ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -491,7 +491,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+6-msdos-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)		; restore ESS buffer to be read-only
+    (toggle-read-only t)                ; restore ESS buffer to be read-only
     ))
 
 (defun ess-sqpe-versions-create (ess-SHOME-versions &optional x64)
@@ -508,11 +508,11 @@ The result `ess-sqpe-versions-created' will store a list of the new
 Sqpe defuns, if any, that were created.  The defuns will normally be
 placed on the menubar upon ESS initialisation."
   (let ((beg)
-	(versions)
-	(version)
-	(eval-buf (get-buffer-create "*ess-temp-sqpe-evals*"))
-	(ess-sqpe-versions-created)
-	)
+        (versions)
+        (version)
+        (eval-buf (get-buffer-create "*ess-temp-sqpe-evals*"))
+        (ess-sqpe-versions-created)
+        )
     ;;
     (save-excursion
       (set-buffer eval-buf)
@@ -524,30 +524,30 @@ placed on the menubar upon ESS initialisation."
       (setq versions (ess-uniq-list ess-SHOME-versions))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (while versions
-	(setq version (car versions)
-	      versions (cdr versions))
-	(if (file-executable-p version)
-	    (progn
-	      (setq beg (point))
-	      (setq version-function-name (concat (file-name-nondirectory version) x64))
-	      (prin1 (symbol-function 'Sqpe+template) eval-buf)
-	      (insert "\n\n")
-	      (goto-char beg)
-	      (while (search-forward "lambda" nil t 1)
-		(replace-match
-		 (concat "defun " version-function-name)
-		 t t))
-	      (while (search-forward "ess-SHOME" nil t)
-		(replace-match version t t))
-	      (goto-char (point-max))
-	      (setq ess-sqpe-versions-created
-		    (cons version-function-name
-			  ess-sqpe-versions-created))
-	      (ess-write-to-dribble-buffer
-	       (format
-		"(Sqpe): ess-sqpe-versions-create making M-x defun %s for %s \n"
-		 version-function-name version))
-	      )))
+        (setq version (car versions)
+              versions (cdr versions))
+        (if (file-executable-p version)
+            (progn
+              (setq beg (point))
+              (setq version-function-name (concat (file-name-nondirectory version) x64))
+              (prin1 (symbol-function 'Sqpe+template) eval-buf)
+              (insert "\n\n")
+              (goto-char beg)
+              (while (search-forward "lambda" nil t 1)
+                (replace-match
+                 (concat "defun " version-function-name)
+                 t t))
+              (while (search-forward "ess-SHOME" nil t)
+                (replace-match version t t))
+              (goto-char (point-max))
+              (setq ess-sqpe-versions-created
+                    (cons version-function-name
+                          ess-sqpe-versions-created))
+              (ess-write-to-dribble-buffer
+               (format
+                "(Sqpe): ess-sqpe-versions-create making M-x defun %s for %s \n"
+                version-function-name version))
+              )))
       ;; buffer has now been created with defuns, so eval them!
       (eval-buffer)
       (kill-buffer eval-buf))
@@ -561,28 +561,28 @@ This function was generated by `ess-sqpe-versions-create'."
   (interactive)
   (setq ess-customize-alist Sqpe+6-customize-alist)
   (let* ((use-dialog-box) ;; MS dialog box won't return a directory
-	 (shome-old (getenv "SHOME"))
-	 (inferior-Sqpe+6-SHOME-name "ess-SHOME")
-	 (inferior-Sqpe+6-program-name (concat "ess-SHOME" "/cmd/sqpe.exe")))
+         (shome-old (getenv "SHOME"))
+         (inferior-Sqpe+6-SHOME-name "ess-SHOME")
+         (inferior-Sqpe+6-program-name (concat "ess-SHOME" "/cmd/sqpe.exe")))
     (setenv "SHOME" "ess-SHOME")
     (ess-write-to-dribble-buffer
      (format "\n(Sqpe+template): ess-dialect=%s, buf=%s\n" ess-dialect
-	     (current-buffer)))
-    (setq ess-customize-alist	 ; change inferior-ess-primary-prompt
-	  (append ess-customize-alist
-		  '((inferior-ess-primary-prompt   . "^"))))
+             (current-buffer)))
+    (setq ess-customize-alist    ; change inferior-ess-primary-prompt
+          (append ess-customize-alist
+                  '((inferior-ess-primary-prompt   . "^"))))
     (inferior-ess)
     (setq ess-customize-alist Sqpe+6-customize-alist) ; restore i-e-p-p in alist
     (ess-setq-vars-local ess-customize-alist) ; restore i-e-p-p in buffer
-    (setq inferior-ess-prompt		; define with correct i-e-p-p
-	  ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
-	  (concat "\\("
-		  inferior-ess-primary-prompt
-		  "\\|"
-		  inferior-ess-secondary-prompt
-		  "\\)"))
+    (setq inferior-ess-prompt           ; define with correct i-e-p-p
+          ;; Do not anchor to bol with `^'       ; (copied from ess-inf.el)
+          (concat "\\("
+                  inferior-ess-primary-prompt
+                  "\\|"
+                  inferior-ess-secondary-prompt
+                  "\\)"))
     (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-					; define with correct i-e-p-p
+                                        ; define with correct i-e-p-p
     (setq comint-input-sender 'inferior-ess-input-sender)
     (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
     (goto-char (point-max))
@@ -591,7 +591,7 @@ This function was generated by `ess-sqpe-versions-create'."
     (setq mode-name "iESS(Sqpe)")
     ;;  (ess-eval-linewise inferior-S+6-editor-pager-command)
     (if inferior-ess-language-start
-	(ess-eval-linewise inferior-ess-language-start))
+        (ess-eval-linewise inferior-ess-language-start))
     (setenv "SHOME" shome-old)))
 
 

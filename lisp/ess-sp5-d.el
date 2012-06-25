@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1998 A.J. Rossini
 ;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@biostat.washington.edu>
+;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 9 Nov 1998
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,21 +27,20 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; AJR copied S4 to be S+5.
-;;; DB contributed the changes from ess-sp3-d.el to
-;;; ess-s4-d.el. (removed the old ugly approach).
-;;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
-;;; to RMH and JMC for code and suggestions
-;;; Thanks to MM for making this sensible.
 
-;;; Requires and Autoloads:
+;; AJR copied S4 to be S+5.
+;; DB contributed the changes from ess-sp3-d.el to
+;; ess-s4-d.el. (removed the old ugly approach).
+;; This file defines Sp5 customizations for ess-mode.  Lots of thanks
+;; to RMH and JMC for code and suggestions
+;; Thanks to MM for making this sensible.
 
-(require 'ess-s-l)
+;;; Code:
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-;;; Code:
+(require 'ess-s-l)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...
@@ -51,17 +50,17 @@
 
 (defvar S+5-customize-alist
   (append
-   '((ess-local-customize-alist		. 'S+5-customize-alist)
-     (ess-dialect			. S+5-dialect-name)
-     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-object-name-db-file		. "ess-sp5-namedb.el")
-     (inferior-ess-program		. inferior-S+5-program-name)
-     ;;(inferior-ess-objects-pattern	. ".*") ; for new s4 stuff
-     (inferior-ess-help-command	  . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
+   '((ess-local-customize-alist         . 'S+5-customize-alist)
+     (ess-dialect                       . S+5-dialect-name)
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-object-name-db-file           . "ess-sp5-namedb.el")
+     (inferior-ess-program              . inferior-S+5-program-name)
+     ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff
+     (inferior-ess-help-command   . "help(\"%s\",pager=\"slynx -dump\",window=F)\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. "searchPaths()\n")
+     (inferior-ess-search-list-command  . "searchPaths()\n")
      (inferior-ess-start-args      . inferior-Splus-args)
-     (ess-STERM	 . "iESS")
+     (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
 
@@ -70,15 +69,15 @@
 
 ;; For loading up the S code required for the above.
 ;;(add-hook 'ess-post-run-hook
-;;	   (lambda ()
-;;	     (ess-command
-;;	      (concat
-;;	       "if(exists(\"Sversion\")) library(emacs) else source(\""
-;;	       ess-mode-run-file
-;;	       "\")\n"))
-;;	     (if ess-mode-run-file2
-;;		 (ess-command
-;;		  (concat "source(\"" ess-mode-run-file2 "\")\n")))))
+;;         (lambda ()
+;;           (ess-command
+;;            (concat
+;;             "if(exists(\"Sversion\")) library(emacs) else source(\""
+;;             ess-mode-run-file
+;;             "\")\n"))
+;;           (if ess-mode-run-file2
+;;               (ess-command
+;;                (concat "source(\"" ess-mode-run-file2 "\")\n")))))
 
 
 (defun S+5 (&optional proc-name)

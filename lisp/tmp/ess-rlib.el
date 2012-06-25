@@ -5,8 +5,8 @@
 ;; the functions within a package.  Use RET or mouse-2 to click on a
 ;; link and see either contents of a package or the function.
 ;;
-;; To use, simply start a R session, eval this buffer, 
-;; then, in the R buffer, do 
+;; To use, simply start a R session, eval this buffer,
+;; then, in the R buffer, do
 ;; source("ess-rlib.R")
 ;; to load the changes to the data() and print.libraryIQR() functions.
 ;;
@@ -20,7 +20,7 @@
 ;; okay, but fails on "S3 read functions"
 ;;
 ;; (ess-rpackage "eda")
-;; shows help for lib, but won't show individual files unless package 
+;; shows help for lib, but won't show individual files unless package
 ;; has been loaded.  How to show help without loading the package first?
 
 ;; (ess-rpackage "ts")
@@ -31,7 +31,7 @@
 ;; one problem, near end of buffer.
 
 ;; Presumably, adding link markup to the output from library() command
-;; would help here so that only functions will get converted into 
+;; would help here so that only functions will get converted into
 ;; links.  This would be more robust than using regexps.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -55,14 +55,14 @@ viewed.  This function is therefore currently restricted to show
 contents for loaded packages only.  This calls an extra R funcition named
 funs.for.package()."
   (interactive (let ()
-		 (list 
-		  (completing-read "Package name: "  
-				   (mapcar 'list
-					   (ess-rpackage-list))))))
+                 (list
+                  (completing-read "Package name: "
+                                   (mapcar 'list
+                                           (ess-rpackage-list))))))
   (let (beg str (all t))
     (setq str (concat "funs.for.package('"
-		      package
-		      "')\n"))
+                      package
+                      "')\n"))
     (ess-execute str nil "ess-rlib")
     (pop-to-buffer "*ess-rlib*")
     (goto-char (point-min))
@@ -70,12 +70,12 @@ funs.for.package()."
       (beginning-of-line)
       (setq beg (point))
       (re-search-forward "\\s-")
-      (add-text-properties beg (1- (point)) 
-			   '(face underline
-				  mouse-face highlight
-				  help-xref function))
+      (add-text-properties beg (1- (point))
+                           '(face underline
+                                  mouse-face highlight
+                                  help-xref function))
       ))
-  
+
   ;; End of mark up, so add some text to the top of buffer.
   (goto-char (point-min))
   (insert "Functions in package " package ":\n\n")
@@ -89,7 +89,7 @@ funs.for.package()."
     (ess-execute "cat(.packages(), '\\n')")
     (pop-to-buffer "*ess-output*")
     (cdr (reverse
-	  (split-string (buffer-substring (point-min) (point-max)) " ")))))
+          (split-string (buffer-substring (point-min) (point-max)) " ")))))
 
 
 (defun ess-rpackage-1 (lib)
@@ -102,27 +102,27 @@ Old version."
   ;; todo: would it be worth getting completion for package list?
   (let (beg str (all t))
     (setq str
-	  (if (equal lib "")
-	      "library()"
-	    (setq all nil)
-	    (concat "library(help="
-		    lib
-		    ")\n")))
+          (if (equal lib "")
+              "library()"
+            (setq all nil)
+            (concat "library(help="
+                    lib
+                    ")\n")))
     (ess-execute str nil "ess-rlib")
     (pop-to-buffer "*ess-rlib*")
-    (if all 
-	(ess-markup-libnames)
+    (if all
+        (ess-markup-libnames)
       (re-search-forward "^Index:")
       (while (re-search-forward "^[^ ]+ " nil t)
-	(beginning-of-line)
-	(setq beg (point))
-	(re-search-forward "[ \t]")
-	(add-text-properties beg (1- (point)) 
-			     '(     face underline
-				       mouse-face highlight
-				       help-xref function))
-      (end-of-line)
-      ))
+        (beginning-of-line)
+        (setq beg (point))
+        (re-search-forward "[ \t]")
+        (add-text-properties beg (1- (point))
+                             '(     face underline
+                                         mouse-face highlight
+                                         help-xref function))
+        (end-of-line)
+        ))
 
     ;; end of mark up
     (goto-char (point-min))
@@ -139,9 +139,9 @@ Old version."
     (search-forward "}")
     (delete-backward-char 1)
     (add-text-properties beg (point)
-			 '(face underline
-				mouse-face highlight
-				help-xref library))
+                         '(face underline
+                                mouse-face highlight
+                                help-xref library))
     (end-of-line)))
 
 
@@ -151,15 +151,15 @@ Old version."
   (while (re-search-forward "^[^ ]+ " nil t)
     (beginning-of-line)
     (if (not (looking-at "Packages in library"))
-	(progn
-	  (setq beg (point))
-	  (re-search-forward "[ \t]")
-	  (add-text-properties beg (1- (point)) 
-			       '(face underline
-				      mouse-face highlight
-				      help-xref library))))
-	  (end-of-line)
-	  ))
+        (progn
+          (setq beg (point))
+          (re-search-forward "[ \t]")
+          (add-text-properties beg (1- (point))
+                               '(face underline
+                                      mouse-face highlight
+                                      help-xref library))))
+    (end-of-line)
+    ))
 
 
 ;;; Set up the major mode for viewing.
@@ -186,19 +186,19 @@ Old version."
 (defun ess-rpackage-show-help ()
   "Show ESS help  for item on current line."
   (interactive)
-  (let 
+  (let
       (beg fn type)
     (save-excursion
       (beginning-of-line)
       (setq beg (point))
       (if (looking-at "[ \t\n]")
-	  (message "No function on this line.")
-	(setq type (get-text-property (point) 'help-xref))
-	(re-search-forward "\\s-")
-	(setq fn (buffer-substring-no-properties beg (1- (point))))
-	(if (equal type 'function)
-	    (ess-display-help-on-object fn)
-	  (ess-rpackage fn))))))
+          (message "No function on this line.")
+        (setq type (get-text-property (point) 'help-xref))
+        (re-search-forward "\\s-")
+        (setq fn (buffer-substring-no-properties beg (1- (point))))
+        (if (equal type 'function)
+            (ess-display-help-on-object fn)
+          (ess-rpackage fn))))))
 
 (defun ess-rpackage-mouse-view (event)
   "In rdired, visit the object on the line you click on."
@@ -207,14 +207,14 @@ Old version."
   (let (window pos)
     (save-excursion
       (if (featurep 'xemacs)
-	  ;; XEmacs
-	  (setq window (event-window event)
-		pos (event-point event))
-	;; Emacs
-	(setq window (posn-window (event-end event))
-	      pos (posn-point (event-end event))))
+          ;; XEmacs
+          (setq window (event-window event)
+                pos (event-point event))
+        ;; Emacs
+        (setq window (posn-window (event-end event))
+              pos (posn-point (event-end event))))
       (if (not (windowp window))
-	  (error "No file chosen"))
+          (error "No file chosen"))
       (set-buffer (window-buffer window))
       (goto-char pos)
       (ess-rpackage-show-help))))
@@ -238,9 +238,9 @@ help, and RET to load the data set?"
       (search-forward "}")
       (delete-backward-char 1)
       (add-text-properties beg (point)
-			   '(face underline
-				  mouse-face highlight
-				  help-xref library))
+                           '(face underline
+                                  mouse-face highlight
+                                  help-xref library))
       (end-of-line)))
   (goto-char (point-min))
   )

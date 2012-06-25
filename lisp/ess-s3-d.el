@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1997 A. J. Rossini
 ;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: A.J. Rossini <rossini@stat.sc.edu>
+;; Author: A.J. Rossini <rossini@stat.sc.edu>
 ;; Created: 12 Jun 1997
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: start up, configuration.
+;; Keywords: languages
 
 ;; This file is part of ESS.
 
@@ -27,30 +27,29 @@
 ;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;; Commentary:
-;;; This file defines all the S 3 customizations for ess-mode.
 
-;;; Requires and Autoloads:
-
-(require 'ess-s-l)
-
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+;; This file defines all the S 3 customizations for ess-mode.
 
 ;;; Code:
 
+(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
+
+(require 'ess-s-l)
+
 (defvar S3-customize-alist
   (append
-   '((ess-local-customize-alist    	. 'S3-customize-alist)
-     (ess-dialect                  	. "S3")
-     (ess-loop-timeout	           	. ess-S-loop-timeout);fixme: dialect spec.
-     (ess-change-sp-regexp	   	. ess-S-change-sp-regexp)
-     (ess-help-sec-keys-alist       	. ess-help-S3-sec-keys-alist)
-     (ess-object-name-db-file       	. "ess-s3-namedb.el" )
-     (inferior-ess-program          	. inferior-S3-program-name) ;        "S")
-     (inferior-ess-help-command     	. "help(\"%s\")\n")
+   '((ess-local-customize-alist         . 'S3-customize-alist)
+     (ess-dialect                       . "S3")
+     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-change-sp-regexp              . ess-S-change-sp-regexp)
+     (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
+     (ess-object-name-db-file           . "ess-s3-namedb.el" )
+     (inferior-ess-program              . inferior-S3-program-name) ;        "S")
+     (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command	. "search()\n")
-     (inferior-ess-objects-command  	. "objects(%d)\n")
-     (inferior-ess-start-file       	. nil) ;"~/.ess-S3")
+     (inferior-ess-search-list-command  . "search()\n")
+     (inferior-ess-objects-command      . "objects(%d)\n")
+     (inferior-ess-start-file           . nil) ;"~/.ess-S3")
      (inferior-ess-start-args       . "")
      (ess-STERM  . "iESS")
      )

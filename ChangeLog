@@ -1,3 +1,28 @@
+2012-06-07  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.04-4 released.
+
+2012-06-01  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.04-3 released.
+
+2012-05-11  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.04-2 released.
+
+2012-05-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makeconf;Makefile;*/Makefile (uninstall):
+	first attempt at uninstall target; please test
+
+2012-04-05  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.04 released.
+
+2012-03-30  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 12.03 released.  New numbering scheme.
+
 2012-03-11  Vitalie Spinu  <spinuvit@gmail.com>
 
 	* doc/ess.texi (Styles): added C-c . to the docs.

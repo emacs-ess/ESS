@@ -15,7 +15,7 @@
 ## ETCDIR          Destination of script and icon files
 ## PREFIX(DESTDIR) Directory prepended to LISPDIR, INFODIR, DOCDIR & ETCDIR
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr/local
-DESTDIR=/usr/local
+DESTDIR=/opt/local
 PREFIX=$(DESTDIR)
 #
 ##__ GNU Emacs __
@@ -53,6 +53,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 ## INSTALLDIR      to create directories, if necessary
 ## INSTALL         to copy files, file copying commands expect 2 args:
 ##                 1st) source-file & 2nd) target-directory
+## UNINSTALL       deletes all arguments
 ## DOCDIR          Destination of other doc files
 #
 SHELL = /bin/sh
@@ -69,6 +70,8 @@ INSTALLDIR = install -d
 INSTALL = cp -p
 #INSTALL = install
 #
+UNINSTALL = rm -f
+#
 DOCDIR=$(PREFIX)/share/doc/ess
 
 ## Section 3
@@ -84,12 +87,13 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ## UPLOAD_DIR      Martin's upload directory
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
-#ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+# Would be ok, iff all releases were "YY-MM" -- but we have patch releases:
+#ESSVERSION=$(shell echo "`date +%y.%m`")
+ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-ESSVERSION=$(shell echo "`date +%y.%m`")
 ESSfromSVN=$(shell test -d .svn && echo 'yes')
 ifeq ($(ESSfromSVN),yes)
-  ESSVERSIONsvn=$(shell echo "`date +%y-%m`-r`svnversion`")
+  ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
 else
   ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
 endif

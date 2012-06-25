@@ -1,12 +1,12 @@
 ;;; ess-toolbar.el --- Support for a toolbar in ESS.
 
 ;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
-;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Stephen Eglen
+;; Author: Stephen Eglen
 ;; Created: 2004-05-06
 ;; Revised: 2009-03-16
-;; Maintainers: ESS-core <ESS-core@r-project.org>
+;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of ESS
 
@@ -26,25 +26,26 @@
 
 ;;; Commentary:
 
-;;; This code adds a toolbar to ESS modes for editing R and S code.
-;;; Support can be added for other modes (e.g. STATA), just ask!
-;;;
-;;; This code is experimental, and runs best on Emacs 21 and XEmacs
-;;; 21.  It has been tested only on Linux machines.  All feedback
-;;; appreciated.
-;;;
-;;; If your emacs can support images, the ESS toolbar should be loaded.
-;;; 
-;;; If you see a toolbar, but no icons, check out the value of
-;;; ess-icon-directory.
-;;;
-;;; The toolbar can be customized in several ways.  To see options, do:
-;;; M-x customize-group RET ess-toolbar RET
-;;; If you change any of the variables, you _may_ need to restart Emacs
-;;; to see any effect.  See also the documentation for ess-toolbar-items
-;;; if you wish to change its value.
-;;;
+;; This code adds a toolbar to ESS modes for editing R and S code.
+;; Support can be added for other modes (e.g. STATA), just ask!
+;;
+;; This code is experimental, and runs best on Emacs 21 and XEmacs
+;; 21.  It has been tested only on Linux machines.  All feedback
+;; appreciated.
+;;
+;; If your emacs can support images, the ESS toolbar should be loaded.
+;;
+;; If you see a toolbar, but no icons, check out the value of
+;; ess-icon-directory.
+;;
+;; The toolbar can be customized in several ways.  To see options, do:
+;; M-x customize-group RET ess-toolbar RET
+;; If you change any of the variables, you _may_ need to restart Emacs
+;; to see any effect.  See also the documentation for ess-toolbar-items
+;; if you wish to change its value.
+
 ;;; Technical issues.
+
 ;; Emacs vs XEmacs.
 ;; Of course, Emacs and XEmacs have different interfaces and handle
 ;; the toolbars in different ways.  The code here is rough, but
@@ -55,6 +56,8 @@
 ;; 2009-03-16: toolbar code in Emacs 23 has changed slightly to 22,
 ;; and presumably once Emacs 22 is no longer supported, this code can
 ;; be cleaned up a bit (i.e. no need to set load-path.)
+
+;;; Code:
 
 (defgroup ess-toolbar nil
   "ESS: toolbar support."
@@ -94,7 +97,7 @@ For beginners, this is probably better set to a non-nil value."
      (ess-eval-line-and-step   "rline" "Eval line & step")
      (ess-eval-region   "rregion" "Eval region")
      (ess-eval-function-or-paragraph-and-step "rregion"
-        "Eval function or paragraph and step")
+                                              "Eval function or paragraph and step")
      (ess-load-file   "rbuffer" "Load file")
      (ess-eval-function   "rfunction" "Eval function")
      (ess-switch-to-ESS   "switch_ess" "Switch to ESS buffer"))
@@ -114,12 +117,12 @@ Custom, and then on all new ESS buffers you should see the
 toolbar has changed."
   :group 'ess-toolbar
   :set (lambda (symbol value)
-	 (set-default symbol value)
-	 (if (fboundp 'ess-make-toolbar)
-	     (ess-make-toolbar)))
+         (set-default symbol value)
+         (if (fboundp 'ess-make-toolbar)
+             (ess-make-toolbar)))
   :type '(repeat (list (function :tag "Function to run")
-		       (string  :tag "Icon")
-		       (string  :tag "Tooltip"))))
+                       (string  :tag "Icon")
+                       (string  :tag "Tooltip"))))
 
 (defvar ess-icon-directory
   (expand-file-name (concat (file-name-as-directory ess-etc-directory) "icons"))
@@ -129,9 +132,9 @@ Icons should be found in ESS/etc/icons/ directory.
 If `ess-icon-directory' is invalid, please report a bug.")
 
 (unless (file-directory-p ess-icon-directory)
-    (ess-write-to-dribble-buffer
-	"`ess-icon-directory' does not exist; using `ess-etc-directory'.\n")
-    (setq ess-icon-directory ess-etc-directory))
+  (ess-write-to-dribble-buffer
+   "`ess-icon-directory' does not exist; using `ess-etc-directory'.\n")
+  (setq ess-icon-directory ess-etc-directory))
 
 (defvar ess-toolbar nil
   "Toolbar items to be added to ESS editing buffers.")
@@ -140,20 +143,20 @@ If `ess-icon-directory' is invalid, please report a bug.")
   "Make the ESS toolbar."
   (if (featurep 'xemacs)
       (ess-make-toolbar-xemacs)
-    ;; Under Emacs, only worth building the toolbar if tool-bar-map is 
+    ;; Under Emacs, only worth building the toolbar if tool-bar-map is
     ;; available.  e.g. when running Emacs within a terminal, tool-bar-map
     ;; is not available, so no need to make the tool-bar.
     (if (boundp 'tool-bar-map)
-	(ess-make-toolbar-emacs))))
+        (ess-make-toolbar-emacs))))
 
 (defun ess-make-toolbar-emacs ()
   "Make the ESS toolbar under Emacs."
   (setq ess-toolbar
-	(if (or ess-toolbar-own-icons (null tool-bar-map))
-	    (make-sparse-keymap)
-	  (copy-keymap tool-bar-map)))
+        (if (or ess-toolbar-own-icons (null tool-bar-map))
+            (make-sparse-keymap)
+          (copy-keymap tool-bar-map)))
   (let ((tool-bar-map ess-toolbar)
-	(load-path (list ess-icon-directory)))
+        (load-path (list ess-icon-directory)))
     ;; in Emacs 22, icons are found by examining load-path, bound here
     ;; whereas Emacs 23 seems to want them in image-load-path, set at the
     ;; bottom of this file.
@@ -170,9 +173,9 @@ If `ess-icon-directory' is invalid, please report a bug.")
   (vector
    (toolbar-make-button-list
     (expand-file-name (concat (cadr x) ".xpm") ess-icon-directory))
-   (car x)				;function
+   (car x)                              ;function
    t
-   (nth 2 x)				;doc string
+   (nth 2 x)                            ;doc string
    ))
 
 (defvar ess-toolbar-xemacs-general
@@ -195,8 +198,8 @@ Each vector is of length four specifying: 1 - icon; 2 - function to call;
 (defun ess-make-toolbar-xemacs ()
   "Set up the ESS toolbar for XEmacs."
   (setq ess-toolbar
-	(append (if ess-toolbar-own-icons nil ess-toolbar-xemacs-general)
-		(mapcar 'ess-add-icon-xemacs ess-toolbar-items)))
+        (append (if ess-toolbar-own-icons nil ess-toolbar-xemacs-general)
+                (mapcar 'ess-add-icon-xemacs ess-toolbar-items)))
   )
 
 (defun ess-add-toolbar ()
@@ -205,9 +208,9 @@ The toolbar is added iff `ess-toolbar-global' is nil, else the toolbar
 is added globally when ess-toolbar.el is loaded."
   (if (and ess-toolbar (not ess-toolbar-global))
       (if (featurep 'xemacs)
-	  (set-specifier  default-toolbar ess-toolbar (current-buffer))
-	;; Support for Emacs
-	(set (make-local-variable 'tool-bar-map) ess-toolbar))))
+          (set-specifier  default-toolbar ess-toolbar (current-buffer))
+        ;; Support for Emacs
+        (set (make-local-variable 'tool-bar-map) ess-toolbar))))
 
 ;; Make the toolbars.  Each toolbar is hopefully made only when this file
 ;; is loaded; we don't need it to be remade every time.
@@ -217,15 +220,15 @@ is added globally when ess-toolbar.el is loaded."
       ;; After making the toolbar, if ESS toolbar is needed globally,
       ;; add it here.
       (if ess-toolbar-global
-	  (if (featurep 'xemacs)
-	      ;; Xemacs
-	      (progn
-		(set-specifier  default-toolbar ess-toolbar)
-		(ess-write-to-dribble-buffer "Creating global XEmacs toolbar"))
-	    ;; Emacs
-	    (setq tool-bar-map ess-toolbar)
-	    (ess-write-to-dribble-buffer "Creating global Emacs toolbar"))
-	    )
+          (if (featurep 'xemacs)
+              ;; Xemacs
+              (progn
+                (set-specifier  default-toolbar ess-toolbar)
+                (ess-write-to-dribble-buffer "Creating global XEmacs toolbar"))
+            ;; Emacs
+            (setq tool-bar-map ess-toolbar)
+            (ess-write-to-dribble-buffer "Creating global Emacs toolbar"))
+        )
 
       ;; Check for toolbar support - needed iff ess-use-toolbar is non-nil.
       (or
@@ -236,14 +239,16 @@ is added globally when ess-toolbar.el is loaded."
        (and (fboundp 'display-images-p) (display-images-p))
        ;; if above tests failed, give a warning.
        (progn
-	 (message "Toolbar support for ESS not available in this emacs.")
-	 ;; Not sure if we want to delay startup of ESS.
-	 ;;(sit-for 2)
-	 ))
+         (message "Toolbar support for ESS not available in this emacs.")
+         ;; Not sure if we want to delay startup of ESS.
+         ;;(sit-for 2)
+         ))
       ))
 
 ;; Following needed for Emacs 23, not Emacs 22 (nor XEmacs).
 (when (boundp 'image-load-path)
-    (add-to-list 'image-load-path ess-icon-directory))
+  (add-to-list 'image-load-path ess-icon-directory))
 
 (provide 'ess-toolbar)
+
+;;; ess-toolbar.el ends here
