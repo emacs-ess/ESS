@@ -663,7 +663,7 @@ This is the value of `next-error-function' in iESS buffers."
       (let* ((file (caar (nth 2 loc)))
              (col (car loc))
              (line (cadr loc))
-             (mkrs (ess-dbg-get-ref-rarker file line col))
+             (mkrs (ess-dbg-get-ref-marker file line col))
              )
         (if mkrs
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
@@ -1264,7 +1264,7 @@ the buffer if found, or nil otherwise be found.
 associated buffer. If FILE is nil or TB-INDEX is not found
 returns nil.
 "
-  (let ((mrk (car (ess-dbg-get-ref-rarker file line col tb-index))))
+  (let ((mrk (car (ess-dbg-get-ref-marker file line col tb-index))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
