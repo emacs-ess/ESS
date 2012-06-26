@@ -743,7 +743,8 @@ Keystroke    Section
                      (backward-char 1)
                      (ess-read-object-name-default)))
                (error nil))))
-    (unless (string-match "[[:alpha:]]" obj) ;;exclude numbers
+    (when  (and obj
+                (not (string-match "[[:alpha:]]" obj))) ;;exclude numbers
       (setq obj nil))
     (list (or (car (member obj slist))
               (car (member fun slist)))
