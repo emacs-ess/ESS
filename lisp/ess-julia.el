@@ -317,7 +317,7 @@
       (insert string))
     (process-send-string process (format inferior-ess-load-command file))))
 
-(defun julia-get-help-topics-list-function ()
+(defun julia-get-help-topics-function ()
   (let ((com "print(\" [1] \"); _jl_init_help();for (topic, _) = _jl_helpdb show(topic); println(); for (func,_) = _jl_helpdb[topic] show(func); print(\" \");   end;  end\n\n"))
     (ess-get-words-from-vector com)))
     ;; (ess-command com)))
@@ -341,7 +341,7 @@
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-keywords	. julia-font-lock-keywords)
-    (ess-get-help-topics-list-function	. 'julia-get-help-topics-list-function)
+    (ess-get-help-topics-function	. 'julia-get-help-topics-function)
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")

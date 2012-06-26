@@ -768,10 +768,10 @@ Stata or XLispStat for additional information."
     ))
 
 ;;*;; Utility functions
-(defvar ess-get-help-topics-list-function nil)
-(make-variable-buffer-local 'ess-get-help-topics-list-function)
+;; (defvar ess-get-help-topics-function nil)
+;; (make-variable-buffer-local 'ess-get-help-topics-function)
 
-(defun ess-get-help-topics-list (name)
+(defun ess-get-S-help-topics-function (name)
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
 the latter and return it.  Otherwise, return `ess-help-topics-list'."
@@ -781,8 +781,8 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
-    (if (fboundp (buffer-local-value 'ess-get-help-topics-list-function (current-buffer)))
-	(funcall ess-get-help-topics-list-function)
+    (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
+	(funcall ess-get-help-topics-function)
       (if (or (not ess-help-topics-list) ess-sp-change)
 	  (setq ess-help-topics-list
 		(ess-uniq-list
