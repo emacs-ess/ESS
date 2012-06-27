@@ -767,12 +767,12 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
 (defvar  ac-source-R
   '((prefix     . ess-ac-start)
-    (requires   . 0)
+    ;; (requires   . 0) ::)
     (candidates . ess-ac-candidates)
     (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     )
-  "Auto-completion source for R function arguments"
+  "Combidned ad-completion source for R function arguments and R objects"
   )
 
 (defun ess-ac-start ()
@@ -782,7 +782,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS"
   (let ((args (ess-ac-args)))
-    (if (< (length ac-prefix) 2)
+    ;; sort of intrusive but right
+    (if (< (length ac-prefix) ac-auto-start)
         args
       (if args
           (append args (ess-ac-objects t))
@@ -796,7 +797,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;; OBJECTS
 (defvar  ac-source-R-objects
   '((prefix     . ess-ac-start-objects)
-    (requires   . 2)
+    ;; (requires   . 2)
     (candidates . ess-ac-objects)
     (document   . ess-ac-help-object))
   "Auto-completion source for R objects"
@@ -810,20 +811,20 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (if (string-match-p "[]:$@[]" ac-prefix)
         (cdr (ess-R-get-rcompletions ac-point))
       (with-current-ess-process-buffer 'no-error
-                                       (unless (process-get *proc* 'busy)
-                                         (let ((le (process-get *proc* 'last-eval))
-                                               (lobu (process-get *proc* 'last-objlist-update)))
-                                           (when (or  (null lobu) (null le) (time-less-p lobu le))
-                                             ;;re-read .GlobalEnv
-                                             (if (and ess-sl-modtime-alist
-                                                      (not  ess-sp-change))
-                                                 (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-                                               (ess-get-modtime-list)
-                                               (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-                                               ))
-                                           (process-put *proc* 'last-objlist-update (current-time))
-                                           (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-                                           ))))))
+        (unless (process-get *proc* 'busy)
+          (let ((le (process-get *proc* 'last-eval))
+                (lobu (process-get *proc* 'last-objlist-update)))
+            (when (or  (null lobu) (null le) (time-less-p lobu le))
+              ;;re-read .GlobalEnv
+              (if (and ess-sl-modtime-alist
+                       (not  ess-sp-change))
+                  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+                (ess-get-modtime-list)
+                (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
+                ))
+            (process-put *proc* 'last-objlist-update (current-time))
+            (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+            ))))))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
@@ -851,7 +852,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;; ARGS
 (defvar  ac-source-R-args
   '((prefix     . ess-ac-start-args)
-    (requires   . 0)
+    ;; (requires   . 0)
     (candidates . ess-ac-args)
     (document   . ess-ac-help-arg)
     (action     . ess-ac-action-args))
