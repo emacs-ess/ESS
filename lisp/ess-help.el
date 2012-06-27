@@ -781,17 +781,17 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
-    (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
-	(funcall ess-get-help-topics-function)
-      (if (or (not ess-help-topics-list) ess-sp-change)
-	  (setq ess-help-topics-list
-		(ess-uniq-list
-		 (append (ess-get-object-list name 'exclude-1st)
-			 (ess-get-help-files-list)
-			 (ess-get-help-aliases-list)
-			 )))
-	;; else return the existing list
-	ess-help-topics-list))))
+    ;; (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
+    ;;     (funcall ess-get-help-topics-function)
+    (if (or (not ess-help-topics-list) ess-sp-change)
+        (setq ess-help-topics-list
+              (ess-uniq-list
+               (append (ess-get-object-list name 'exclude-1st)
+                       (ess-get-help-files-list)
+                       (ess-get-help-aliases-list)
+                       )))
+      ;; else return the existing list
+      ess-help-topics-list)))
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."
