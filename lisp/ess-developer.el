@@ -126,35 +126,40 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'hook)
 
-(defun ess-developer-add-package (&optional remove)
+(defun ess-developer-add-package (&optional from-attached remove)
   "Add a package to `ess-developer-packages' list.
-With prefix argument removes the packages, defaults to *ALL*."
-  (interactive "P")
+With prefix argument only choose from among attached packages."
+  (interactive "P\ni")
   (if (and remove (null ess-developer-packages))
-      (message "Nothing to remove, 'ess-developer-packages' is empty")
-    (let ((sel (if remove
-                   (ess-completing-read "Remove pakage(s)"
-                                        (append ess-developer-packages (list "*ALL*"))
-                                        nil t nil nil "*ALL*")
-                 (ess-completing-read "Add package"
-                                      (ess-get-words-from-vector "print(.packages(TRUE),max=1e6)\n") nil t)
-                 )))
-      (if remove
-          (if (equal "*ALL*" sel)
-              (progn
-                (setq ess-developer-packages nil)
-                (message "Removed *ALL* packages from the `ess-developer-packages' list."))
-            (setq ess-developer-packages (delete sel ess-developer-packages))
-            (message "Removed package '%s' from the  ess-`developer-packages' list" (propertize sel 'face 'font-lock-function-name-face)))
-        (setq ess-developer-packages (ess-uniq-list (append  ess-developer-packages (list sel))))
-        (ess-eval-linewise (format "library('%s')" sel))
-        (message "You are developing: %s" ess-developer-packages)
-        ))))
+      (error "Nothing to remove, 'ess-developer-packages' is empty"))
+  (let ((sel (if remove
+                 (ess-completing-read "Remove package(s)"
+                                      (append ess-developer-packages (list "*ALL*"))
+                                      nil t nil nil "*ALL*")
+               (ess-completing-read
+                "Add package"
+                (ess-get-words-from-vector
+                 (concat "print( .packages(" (if from-attached "FALSE" "TRUE")
+                         "), max=1e6)\n")) nil t)
+               )))
+    (if remove
+        (if (equal "*ALL*" sel)
+            (progn
+              (setq ess-developer-packages nil)
+              (message "Removed *ALL* packages from the `ess-developer-packages' list."))
+          (setq ess-developer-packages (delete sel ess-developer-packages))
+          (message "Removed package '%s' from the `ess-developer-packages' list"
+                   (propertize sel 'face 'font-lock-function-name-face)))
+      (setq ess-developer-packages (ess-uniq-list (append ess-developer-packages
+                                                          (list sel))))
+      (ess-eval-linewise (format "library('%s')" sel))
+      (message "You are developing: %s" ess-developer-packages)
+      )))
 
 (defun ess-developer-remove-package ()
-  "Remove a package from `ess-developer-packages' list."
+  "Remove packages from `ess-developer-packages' list; defaults to *ALL*."
   (interactive)
-  (ess-developer-add-package t))
+  (ess-developer-add-package nil 'remove))
 
 (defun ess-developer-send-region-fallback (proc beg end visibly &optional message tracebug func)
   (if tracebug
