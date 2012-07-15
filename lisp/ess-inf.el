@@ -1545,6 +1545,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
     (define-key map "\C-ch"        'ess-handy-commands)
+    (define-key map "\C-cd"        'ess-dev-map)
     map)
   "Keymap for `inferior-ess' mode.")
 
