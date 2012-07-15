@@ -34,8 +34,6 @@
 
  ; Requires and autoloads
 
-(require 'ess); includes ess-custom.el
-
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:  and I had to add all other 'ess-eval-*** ...
 ;;; >>> why not just do the obvious instead of all these ? Namely,
@@ -185,6 +183,7 @@
     (define-key map ","          'ess-smart-comma)
     (define-key map "\C-c\C-e"   ess-eval-map)
     (define-key map "\C-ch"        'ess-handy-commands)
+    (define-key map "\C-cd"        'ess-dev-map)
     map)
   "Keymap for `ess-mode'.")
 
@@ -738,8 +737,7 @@ Returns t if the buffer existed and was modified, but was not saved."
         (let ((deleted (not (file-exists-p fname))))
           (if (and deleted (not (buffer-modified-p buff)))
               ;; Buffer has been silently deleted, so silently save
-              (save-excursion
-                (set-buffer buff)
+              (with-current-buffer buff
                 (set-buffer-modified-p t)
                 (save-buffer))
             (if (and (buffer-modified-p buff)
@@ -747,14 +745,15 @@ Returns t if the buffer existed and was modified, but was not saved."
                          (y-or-n-p
                           (format "Save buffer %s first? "
                                   (buffer-name buff)))))
-                (save-excursion
-                  (set-buffer buff)
+                (with-current-buffer buff
                   (save-buffer))))
           (buffer-modified-p buff)))))
 
-(defun ess-parse-errors (showerr)
+(defun ess-parse-errors (&optional showerr reset)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported."
+  ;; reset argument is for compatibility with emacs next-error (tracebug
+  ;; rebinds ess-parse-errors to next-error), This silences the compiler.
   (interactive "P")
   (ess-make-buffer-current)
   (let ((errbuff (get-buffer ess-error-buffer-name)))
@@ -780,8 +779,7 @@ With prefix argument, only shows the errors ESS reported."
                 (ess-display-temp-buffer errbuff)
               (if fbuffer nil
                 (setq fbuffer (find-file-noselect filename))
-                (save-excursion
-                  (set-buffer fbuffer)
+                (with-current-buffer fbuffer
                   (ess-mode)))
               (pop-to-buffer fbuffer)
               ;;(goto-line linenum) gives warning: is said to be replaced by
@@ -1343,10 +1341,8 @@ generate the source buffer."
   (let* ((dirname (file-name-as-directory
                    (if (stringp ess-source-directory)
                        ess-source-directory
-                     (save-excursion
-                       (set-buffer
-                        (process-buffer (get-ess-process
-                                         ess-local-process-name)))
+                     (with-current-buffer (process-buffer (get-ess-process
+                                                           ess-local-process-name))
                        (ess-setq-vars-local ess-customize-alist)
                        (apply ess-source-directory nil)))))
          (filename (concat dirname (format ess-dump-filename-template object)))

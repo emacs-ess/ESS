@@ -457,8 +457,7 @@ This was rewritten by KH in April 1996."
     ;; If no process, or nuked process, crank up a new one and put buffer in
     ;; comint mode. Otherwise, leave buffer and existing process alone.
     (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
-           (save-excursion
-             (set-buffer buffer)
+           (with-current-buffer  buffer
              (if ess-directory (setq default-directory ess-directory))
              (if (eq (buffer-size) 0) nil
                (goto-char (point-max))
@@ -616,15 +615,13 @@ Returns the name of the process, or nil if the current buffer has none."
 
 (defun ess-get-process-variable (name var)
   "Return the variable VAR (symbol) local to ESS process called NAME (string)."
-  (save-excursion
-    (set-buffer (process-buffer (get-ess-process name)))
+  (with-current-buffer (process-buffer (get-ess-process name))
     (if (boundp var)
         (symbol-value var))))
 
 (defun ess-set-process-variable (name var val)
   "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
-  (save-excursion
-    (set-buffer (process-buffer (get-ess-process name)))
+  (with-current-buffer (process-buffer (get-ess-process name))
     (set var val)))
 
 (defun ess-process-get (propname)
@@ -702,8 +699,7 @@ Returns the name of the selected process."
              (ess-completing-read message (mapcar 'car ess-process-name-list)
                                   nil t nil nil ess-current-process-name)
              )))
-      (save-excursion
-        (set-buffer (process-buffer (get-process proc)))
+      (with-current-buffer (process-buffer (get-process proc))
         (ess-make-buffer-current))
       (if noswitch
           nil
@@ -732,8 +728,7 @@ the process selected."
           (let ((proc (ess-request-a-process prompt 'no-switch))
                 temp-ess-help-filetype
                 dialect)
-            (save-excursion
-              (set-buffer (process-buffer (get-process proc)))
+            (with-current-buffer (process-buffer (get-process proc))
               (setq temp-ess-help-filetype inferior-ess-help-filetype)
               (setq dialect ess-dialect))
             (setq ess-local-process-name proc)
@@ -1015,8 +1010,7 @@ local({
         ;; should hardly happen, since (get-ess-process *)  already checked:
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
-      (save-excursion
-        (set-buffer sbuffer)
+      (with-current-buffer sbuffer
         (setq primary-prompt  inferior-ess-primary-prompt)
         (ess-if-verbose-write (format "(ess-command %s ..)" com))
         (unless no-prompt-check
@@ -1032,8 +1026,7 @@ local({
               (set-process-buffer sprocess buf)
               (set-process-filter sprocess 'ordinary-insertion-filter)
               ;; Output is now going to BUF:
-              (save-excursion
-                (set-buffer buf)
+              (with-current-buffer buf
                 (setq inferior-ess-primary-prompt primary-prompt) ;; set local value
                 (erase-buffer)
                 (set-marker (process-mark sprocess) (point-min))
@@ -1277,7 +1270,7 @@ cursor, nil otherwise."
                  (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
-             (tb-p      (ess-tracebug-send-region proc beg end visibly mess t))
+             (tb-p      (ess-tracebug-send-region proc beg end visibly mess 'func))
              (t         (ess-send-region proc beg end visibly mess)))
             beg-end)
         nil))))
@@ -1437,7 +1430,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 ;;; commands.   Need to add appropriate stuff...
 
 
-(defun ess-load-file (filename)
+(defun ess-load-file (&optional filename)
   "Load an S source file into an inferior ESS process."
   (interactive (list
                 (or
@@ -1464,8 +1457,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 
           ;; Find the process to load into
           (if source-buffer
-              (save-excursion
-                (set-buffer source-buffer)
+              (with-current-buffer source-buffer
                 (ess-force-buffer-current "Process to load into: ")
                 (ess-check-modifications)))
           (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
@@ -1475,8 +1467,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
                             filename))
                 error-occurred nomessage)
             (ess-command (format inferior-ess-load-command filename) errbuffer) ;sleep ?
-            (save-excursion
-              (set-buffer errbuffer)
+            (with-current-buffer errbuffer
               (goto-char (point-max))
               (setq error-occurred (re-search-backward ess-dump-error-re nil t))
               (setq nomessage (= (buffer-size) 0)))
@@ -1490,8 +1481,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
                 (ess-display-temp-buffer errbuffer))
               ;; Consider deleting the file
               (let ((skdf (if source-buffer
-                              (save-excursion
-                                (set-buffer source-buffer)
+                              (with-current-buffer source-buffer
                                 ess-keep-dump-files)
                             ess-keep-dump-files))) ;; global value
                 (cond
@@ -1502,8 +1492,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
                     (if doit (delete-file filename))
                     (and source-buffer
                          (local-variable-p 'ess-keep-dump-files source-buffer)
-                         (save-excursion
-                           (set-buffer source-buffer)
+                         (with-current-buffer source-buffer
                            (setq ess-keep-dump-files doit)))))))
               (ess-switch-to-ESS t))))))))
 
@@ -1871,7 +1860,7 @@ to continue it."
                 (progn
                   (end-of-line)
                   (insert-before-markers string)) ;; emacs 21.0.105 and older
-              (delete-backward-char 1)) ;; emacs 21.0.106 and newer
+              (delete-char -1)) ;; emacs 21.0.106 and newer
             (if help-string ; more frequently
                 (progn
                   (ess-display-help-on-object
@@ -2123,8 +2112,7 @@ to the command if BUFF is not given.)"
     (if in-pbuff
         (ess-eval-linewise the-command)
       (let ((buff (ess-create-temp-buffer buff-name)))
-        (save-excursion
-          (set-buffer buff)
+        (with-current-buffer buff
           (ess-command the-command (get-buffer buff-name));; sleep?
           (goto-char (point-min))
           (if message (insert message)
@@ -2385,8 +2373,7 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 using `ess-object-list' if that is non-nil.
 If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv)."
   (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
-      (save-excursion
-        (set-buffer (process-buffer (get-ess-process name)))
+      (with-current-buffer (process-buffer (get-ess-process name))
         (ess-make-buffer-current)
         (ess-write-to-dribble-buffer (format "(get-object-list %s) .." name))
         (if (or (not ess-sl-modtime-alist) ess-sp-change)
@@ -2427,8 +2414,7 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
   (let ((tbuffer (get-buffer-create
                   " *ess-get-words*")); initial space: disable-undo
         words)
-    (save-excursion
-      (set-buffer tbuffer)
+    (with-current-buffer tbuffer
       (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
       (ess-command command tbuffer 'sleep no-prompt-check wait)
       (ess-if-verbose-write " [ok] ..")
@@ -2549,8 +2535,7 @@ the `load-path'."
                temp-object-name-db pos))
       (setq pos (1+ pos)))
 
-    (save-excursion
-      (set-buffer buffer)
+    (with-current-buffer buffer
       (erase-buffer)
       (insert "(setq ess-object-name-db '")
       (prin1 temp-object-name-db (current-buffer))
@@ -2622,8 +2607,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
               (homedir ess-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
               elt)
-          (save-excursion
-            (set-buffer tbuffer)
+          (with-current-buffer tbuffer
             ;; guaranteed by the initial space in its name: (buffer-disable-undo)
             (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
             (goto-char (point-min))
@@ -2803,8 +2787,7 @@ list."
   "Create an empty buffer called NAME."
   (let ((buff (get-buffer-create name))
         (elca (eval ess-local-customize-alist)))
-    (save-excursion
-      (set-buffer buff)
+    (with-current-buffer buff
       (erase-buffer)
       (ess-setq-vars-local elca buff))
     buff))
