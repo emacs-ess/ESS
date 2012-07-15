@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(require 'ess-site) ;; need to assigne the keys in the map
+;; (require 'ess-site) ;; need to assigne the keys in the map
 
 (defgroup ess-developer nil
   "ESS: developer."

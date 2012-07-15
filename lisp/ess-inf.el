@@ -37,33 +37,39 @@
  ; Requires and autoloads
 
 ;;*;; Requires
-(require 'ess-site)
+;; (require 'ess-site)
 
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
   (require 'comint)
   (require 'ess-utils))
 
+;;; VS: These autoloads are not needed. See coments in ess-mode.el.
 ;;*;; Autoloads
-(autoload 'ess-parse-errors                 "ess-mode"  "(autoload).")
-(autoload 'ess-dump-object-into-edit-buffer "ess-mode"  "(autoload).")
-(autoload 'ess-beginning-of-function        "ess-mode"  "(autoload).")
-(autoload 'ess-end-of-function              "ess-mode"  "(autoload).")
-(autoload 'ess-display-help-on-object       "ess-help"  "(autoload).")
+;; (autoload 'ess-parse-errors                 "ess-mode"  "(autoload).")
+;; (autoload 'ess-dump-object-into-edit-buffer "ess-mode"  "(autoload).")
+;; (autoload 'ess-beginning-of-function        "ess-mode"  "(autoload).")
+;; (autoload 'ess-end-of-function              "ess-mode"  "(autoload).")
+;; (autoload 'ess-display-help-on-object       "ess-help"  "(autoload).")
 
-(autoload 'ess-extract-word-name            "ess-utils" "(autoload).")
-(autoload 'ess-uniq-list                    "ess-utils" "(autoload).")
+;; (autoload 'ess-extract-word-name            "ess-utils" "(autoload).")
+;; (autoload 'ess-uniq-list                    "ess-utils" "(autoload).")
 
-(autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload).")
+;; (autoload 'ess-transcript-send-command-and-move "ess-trns" "(autoload).")
 
-(autoload 'ess-R-complete-object-name       "ess-r-d"   "(autoload).")
+;; (autoload 'ess-R-complete-object-name       "ess-r-d"   "(autoload).")
 
 (autoload 'ess-eval-region-ddeclient        "ess-dde"   "(autoload).")
 (autoload 'ess-eval-linewise-ddeclient      "ess-dde"   "(autoload).")
 (autoload 'ess-load-file-ddeclient          "ess-dde"   "(autoload).")
 (autoload 'ess-command-ddeclient            "ess-dde"   "(autoload).")
 
-(autoload 'ess-tracebug-send-function       "ess-tracebug"      "(autoload).")
+(autoload 'tramp-tramp-file-p           "tramp" "(autoload).")
+(autoload 'tramp-file-name-localname    "tramp" "(autoload).")
+(autoload 'tramp-dissect-file-name      "tramp" "(autoload).")
+
+;; not really needed as tracebug and developer are loaded in r-d.el
+(autoload 'ess-tracebug-send-region       "ess-tracebug"      "(autoload).")
 (autoload 'ess-developer-send-function      "ess-developer"     "(autoload).")
 
  ;;*;; Process handling
@@ -140,9 +146,8 @@ Alternatively, it can appear in its own frame if
                                             ess-customize-alist))))
         (temp-ess-lang (eval (cdr (assoc 'ess-language
                                          ess-customize-alist)))))
-    (save-excursion
+    (with-current-buffer ess-dribble-buffer
       ;;- Is this needed? (no, but it's useful to see them there [MM])
-      (set-buffer ess-dribble-buffer)
       ;; Hack to work around the following "default" (global) setting of vars:
       ;; make sure our comint-... hack doesn't affect anything else
       ;;(make-variable-buffer-local 'comint-use-prompt-regexp)

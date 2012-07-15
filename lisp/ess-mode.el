@@ -45,43 +45,52 @@
 ;;; functions which are interactive in nature.   We don't want to load
 ;;; it when we are only editing.
 
-(autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
-(autoload 'ess-read-object-name         "ess-inf" "" nil)
-(autoload 'ess-list-object-completions  "ess-inf" "" nil)
+;;; VS: ess-inf is always loaded form ess-toggle-underscore in ess-s-l.el. I am
+;;; placing require ess-inf and ess-mode in ess. This cross autoloads are
+;;; useless. It's time to clean up a bit.
 
-(autoload 'ess-eval-buffer              "ess-inf" "" nil)
-(autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
-(autoload 'ess-eval-function            "ess-inf" "" nil)
-(autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
-(autoload 'ess-eval-function-or-paragraph-and-step
-  "ess-inf" "" nil)
-(autoload 'ess-eval-line                "ess-inf" "" nil)
-(autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
-(autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
-(autoload 'ess-eval-linewise            "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph           "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
-(autoload 'ess-eval-region              "ess-inf" "" nil)
-(autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
+;;; VS: I also don't really get why all of these? Compiler is silent without
+;;; them. These funcs are used in mode-map only as symbols. 
 
-(autoload 'ess-load-file                "ess-inf" "" nil)
-(autoload 'ess-switch-process           "ess-inf" "" nil)
-(autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
-(autoload 'ess-request-a-process        "ess-inf" "" nil)
-(autoload 'get-ess-process              "ess-inf" "" nil)
-(autoload 'ess-command                  "ess-inf" "" nil)
-(autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
-(autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
-(autoload 'ess-force-buffer-current     "ess-inf" "" nil)
-(autoload 'ess-make-buffer-current      "ess-inf" "" nil)
-(autoload 'ess-modtime-gt               "ess-inf" "" nil)
-(autoload 'ess-object-modtime           "ess-inf" "" nil)
-(autoload 'ess-quit                     "ess-inf" "" nil)
+;; (autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
+;; (autoload 'ess-read-object-name         "ess-inf" "" nil)
+;; (autoload 'ess-list-object-completions  "ess-inf" "" nil)
+
+;; (autoload 'ess-eval-buffer              "ess-inf" "" nil)
+;; (autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
+;; (autoload 'ess-eval-function            "ess-inf" "" nil)
+;; (autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
+;; (autoload 'ess-eval-function-or-paragraph-and-step
+;;   "ess-inf" "" nil)
+;; (autoload 'ess-eval-line                "ess-inf" "" nil)
+;; (autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
+;; (autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
+;; (autoload 'ess-eval-linewise            "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph           "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
+;; (autoload 'ess-eval-region              "ess-inf" "" nil)
+;; (autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
+
+;; (autoload 'ess-load-file                "ess-inf" "" nil)
+;; (autoload 'ess-switch-process           "ess-inf" "" nil)
+;; (autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
+;; (autoload 'ess-request-a-process        "ess-inf" "" nil)
+;; (autoload 'get-ess-process              "ess-inf" "" nil)
+;; (autoload 'ess-command                  "ess-inf" "" nil)
+;; (autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
+;; (autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
+;; (autoload 'ess-force-buffer-current     "ess-inf" "" nil)
+;; (autoload 'ess-make-buffer-current      "ess-inf" "" nil)
+;; (autoload 'ess-modtime-gt               "ess-inf" "" nil)
+;; (autoload 'ess-object-modtime           "ess-inf" "" nil)
+;; (autoload 'ess-quit                     "ess-inf" "" nil)
 
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
-(autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
-(autoload 'ess-dump-object-ddeclient    "ess-dde" "(autoload)" nil)
+;; (autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
+(autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)" nil)
+(autoload 'SAS                              "ess-sas-d.el" "(autoload)" t)
+
 
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
@@ -117,6 +126,7 @@
     (define-key map "\M-j"    'ess-eval-line-and-go)
     map)
   "Keymap for ess-eval functions.")
+
 
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
@@ -487,6 +497,10 @@ ess-mode."
   )
 
 ;; common R and S
+;; SJE: 2007-07-16 add to quieten byte-compiler.
+(defvar ess-function-pattern nil
+  "Regexp to match the beginning of a function in S buffers.")
+
 (let*
     ((Q     "\\s\"")                    ; quote
      (repl "\\(<-\\)?")                 ; replacement (function)
@@ -524,9 +538,6 @@ ess-mode."
               space "function\\s-*(" ; whitespace, function keyword, parenthesis
               ))
      )
-  ;; SJE: 2007-07-16 add to quieten byte-compiler.
-  (defvar ess-function-pattern nil
-    "Regexp to match the beginning of a function in S buffers.")
   (defvar ess-R-function-pattern
     (concat part-1
             "\\s-*\\(<-\\|=\\)" ; whitespace, assign
