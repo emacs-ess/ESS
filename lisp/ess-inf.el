@@ -1550,6 +1550,7 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
+    (define-key map "\C-ch"        'ess-handy-commands)
     map)
   "Keymap for `inferior-ess' mode.")
 
@@ -2740,6 +2741,13 @@ P-STRING is the prompt string."
 ;;;; start of ess-smart-operators
 ;;;; inspired by slime repl shortcuts
 
+(defun ess-handy-commands ()
+  "Request and execute a command from `ess-handy-commands' list."
+  (interactive)
+  (call-interactively
+   (cdr (assoc (ess-completing-read "Execute" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
+               ess-handy-commands))))
+
 (defun ess-smart-comma ()
   "If comma is invoked at the process marker of an ESS inferior
 buffer, request and execute a command from `ess-handy-commands'
@@ -2748,9 +2756,7 @@ list."
   (let ((proc (get-buffer-process (current-buffer))))
     (if (and proc
              (eq (point) (marker-position (process-mark proc))))
-        (call-interactively
-         (cdr (assoc (ess-completing-read "Execute" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
-                     ess-handy-commands)))
+        (ess-handy-commands)
       (if ess-smart-operators
           (progn
             (delete-horizontal-space)

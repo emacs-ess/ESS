@@ -174,6 +174,7 @@
     ;; smart operators; most likely will go in the future into a separate local map
     (define-key map ","          'ess-smart-comma)
     (define-key map "\C-c\C-e"   ess-eval-map)
+    (define-key map "\C-ch"        'ess-handy-commands)
     map)
   "Keymap for `ess-mode'.")
 
