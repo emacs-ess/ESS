@@ -1513,42 +1513,45 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 
 ;;*;; Major mode definition
 
-(unless inferior-ess-mode-map
-  (setq inferior-ess-mode-map (make-keymap))
-  (set-keymap-parent inferior-ess-mode-map comint-mode-map)
 
-  (define-key inferior-ess-mode-map "\C-y"              'ess-yank)
-  ;; Use syntax valid *both* for GNU emacs and XEmacs :
-  (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
-  (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
 
-  ;; 2010-06-03 SJE
-  ;; disabled this in favour of ess-dirs.  Martin was not sure why this
-  ;; key was defined anyway in this mode.
-  ;;(define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
-  (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
-  ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
-  (define-key inferior-ess-mode-map "\C-c\M-l" 'comint-dynamic-list-input-ring)
-  (define-key inferior-ess-mode-map "\C-c`"    'ess-parse-errors)
-  (define-key inferior-ess-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
-  (define-key inferior-ess-mode-map "\C-c\C-v" 'ess-display-help-on-object)
-  (define-key inferior-ess-mode-map "\C-c\C-q" 'ess-quit)
-  (define-key inferior-ess-mode-map "\C-c\C-t" 'ess-execute)
-  (define-key inferior-ess-mode-map "\C-c\C-s" 'ess-execute-search)
-  (define-key inferior-ess-mode-map "\C-c\C-x" 'ess-execute-objects)
-  ;;(define-key inferior-ess-mode-map "\C-c\C-a" 'ess-execute-attach)
-  (define-key inferior-ess-mode-map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
-  (define-key inferior-ess-mode-map "\C-c\C-z" 'ess-abort) ; mask comint map
-  (define-key inferior-ess-mode-map "\C-d"     'delete-char)   ; EOF no good in S
-  (if (and (featurep 'emacs) (>= emacs-major-version 24))
-      (define-key inferior-ess-mode-map "\t"       'completion-at-point)
-    (define-key inferior-ess-mode-map "\t"       'comint-dynamic-complete)
-    (define-key inferior-ess-mode-map "\M-\t"    'comint-dynamic-complete))
-  (define-key inferior-ess-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
-  (define-key inferior-ess-mode-map "\M-?"     'ess-list-object-completions)
-  (define-key inferior-ess-mode-map "\C-c\C-k" 'ess-request-a-process)
-  (define-key inferior-ess-mode-map ","        'ess-smart-comma)
-  )
+(defvar inferior-ess-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map comint-mode-map)
+
+    (define-key map "\C-y"              'ess-yank)
+    ;; Use syntax valid *both* for GNU emacs and XEmacs :
+    (define-key map "\r"       'inferior-ess-send-input)
+    (define-key map "\C-a"     'comint-bol)
+
+    ;; 2010-06-03 SJE
+    ;; disabled this in favour of ess-dirs.  Martin was not sure why this
+    ;; key was defined anyway in this mode.
+    ;;(define-key map "\M-\r"    'ess-transcript-send-command-and-move)
+    (define-key map "\C-c\C-l" 'ess-load-file)
+    ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
+    (define-key map "\C-c\M-l" 'comint-dynamic-list-input-ring)
+    (define-key map "\C-c`"    'ess-parse-errors)
+    (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
+    (define-key map "\C-c\C-v" 'ess-display-help-on-object)
+    (define-key map "\C-c\C-q" 'ess-quit)
+    (define-key map "\C-c\C-t" 'ess-execute)
+    (define-key map "\C-c\C-s" 'ess-execute-search)
+    (define-key map "\C-c\C-x" 'ess-execute-objects)
+    ;;(define-key map "\C-c\C-a" 'ess-execute-attach)
+    (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
+    (define-key map "\C-c\C-z" 'ess-abort) ; mask comint map
+    (define-key map "\C-d"     'delete-char)   ; EOF no good in S
+    (if (and (featurep 'emacs) (>= emacs-major-version 24))
+        (define-key map "\t"       'completion-at-point)
+      (define-key map "\t"       'comint-dynamic-complete)
+      (define-key map "\M-\t"    'comint-dynamic-complete))
+    (define-key map "\C-c\t"   'ess-complete-object-name-deprecated)
+    (define-key map "\M-?"     'ess-list-object-completions)
+    (define-key map "\C-c\C-k" 'ess-request-a-process)
+    (define-key map ","        'ess-smart-comma)
+    map)
+  "Keymap for `inferior-ess' mode.")
 
 (easy-menu-define
   inferior-ess-mode-menu inferior-ess-mode-map
@@ -1587,13 +1590,16 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
 (if (string-match "XEmacs" emacs-version)
     (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
 
-(unless ess-mode-minibuffer-map
-  (setq ess-mode-minibuffer-map (make-keymap))
-  (set-keymap-parent ess-mode-minibuffer-map minibuffer-local-map)
+(defvar ess-mode-minibuffer-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map minibuffer-local-map)
 
-  (define-key ess-mode-minibuffer-map "\t" 'ess-complete-object-name)
-  (define-key ess-mode-minibuffer-map "\C-c\C-s" 'ess-execute-search)
-  (define-key ess-mode-minibuffer-map "\C-c\C-x" 'ess-execute-objects))
+    (define-key map "\t" 'ess-complete-object-name)
+    (define-key map "\C-c\C-s" 'ess-execute-search)
+    (define-key map "\C-c\C-x" 'ess-execute-objects)
+    map)
+  "Keymap used in `ess-execute'"
+  )
 
 (defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.

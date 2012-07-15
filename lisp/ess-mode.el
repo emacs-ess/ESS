@@ -102,81 +102,80 @@
 
 ;;*;; Major mode definition
 
-(unless ess-eval-map
-  (if (featurep 'xemacs)
-      ;; Code for XEmacs
-      (setq ess-eval-map (make-keymap))
-    ;; else code for GNU Emacs
-    (setq ess-eval-map (make-sparse-keymap)))
+  
+(defvar ess-eval-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\C-r"    'ess-eval-region)
+    (define-key map "\M-r"    'ess-eval-region-and-go)
+    (define-key map "\C-b"    'ess-eval-buffer)
+    (define-key map "\M-b"    'ess-eval-buffer-and-go)
+    (define-key map "\C-f"    'ess-eval-function)
+    (define-key map "\M-f"    'ess-eval-function-and-go)
+    (define-key map "\C-x"    'ess-eval-function)
+    (define-key map "\C-n"    'ess-eval-line-and-step)
+    (define-key map "\C-j"    'ess-eval-line)
+    (define-key map "\M-j"    'ess-eval-line-and-go)
+    map)
+  "Keymap for ess-eval functions.")
 
-  (define-key ess-eval-map "\C-r"    'ess-eval-region)
-  (define-key ess-eval-map "\M-r"    'ess-eval-region-and-go)
-  (define-key ess-eval-map "\C-b"    'ess-eval-buffer)
-  (define-key ess-eval-map "\M-b"    'ess-eval-buffer-and-go)
-  (define-key ess-eval-map "\C-f"    'ess-eval-function)
-  (define-key ess-eval-map "\M-f"    'ess-eval-function-and-go)
-  (define-key ess-eval-map "\C-x"    'ess-eval-function)
-  (define-key ess-eval-map "\C-n"    'ess-eval-line-and-step)
-  (define-key ess-eval-map "\C-j"    'ess-eval-line)
-  (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
+(defvar ess-mode-map
+  (let ((map (make-sparse-keymap)))
 
+    ;; By popular demand:
+    (define-key map "\C-m"       'newline-and-indent); = [RETURN]
+    (define-key map "\C-y"       'ess-yank)
 
-(unless ess-mode-map
-  (setq ess-mode-map (make-sparse-keymap))
-
-  ;; By popular demand:
-  (define-key ess-mode-map "\C-m"       'newline-and-indent); = [RETURN]
-  (define-key ess-mode-map "\C-y"       'ess-yank)
-
-  (define-key ess-mode-map "\C-c\C-r"   'ess-eval-region)
-  (define-key ess-mode-map "\C-c\M-r"   'ess-eval-region-and-go)
-  (define-key ess-mode-map "\C-c\C-b"   'ess-eval-buffer)
-  (define-key ess-mode-map "\C-c\M-b"   'ess-eval-buffer-and-go)
-  (define-key ess-mode-map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
-  (define-key ess-mode-map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
-  (define-key ess-mode-map "\C-c\C-f"   'ess-eval-function)
-  (define-key ess-mode-map "\C-c\M-f"   'ess-eval-function-and-go)
-  (define-key ess-mode-map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\C-p"   'ess-eval-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\M-p"   'ess-eval-paragraph-and-go)
-  (define-key ess-mode-map "\C-\M-x"    'ess-eval-function)
-  (define-key ess-mode-map "\C-c\C-n"   'ess-eval-line-and-step)
-  (define-key ess-mode-map "\C-c\C-j"   'ess-eval-line)
-  (define-key ess-mode-map "\C-c\M-j"   'ess-eval-line-and-go)
-  ;; the next three can only work in S/R - mode {FIXME}
-  (define-key ess-mode-map "\C-\M-a"    'ess-beginning-of-function)
-  (define-key ess-mode-map "\C-\M-e"    'ess-end-of-function)
-  (define-key ess-mode-map "\C-xnd"     'ess-narrow-to-defun)
-  (define-key ess-mode-map "\C-c\C-y"   'ess-switch-to-ESS)
-  (define-key ess-mode-map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
-  (define-key ess-mode-map "\C-c\C-l"   'ess-load-file)
-  (define-key ess-mode-map "\C-c\C-v"   'ess-display-help-on-object)
-  (define-key ess-mode-map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
-  ;;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
-  (define-key ess-mode-map "\C-c\C-s"   'ess-switch-process) ; use a
-  ;; different process for the buffer.
-  (define-key ess-mode-map "\C-c\C-t"   'ess-execute-in-tb)
-  (define-key ess-mode-map "\C-c\t"     'ess-complete-object-name-deprecated)
-  ;;M  (define-key ess-mode-map "\C-c\t"        'comint-dynamic-complete-filename)
-  (unless (and (featurep 'emacs) (>= emacs-major-version 24))
-    (define-key ess-mode-map "\M-\t"    'comint-dynamic-complete))
-  (define-key ess-mode-map "\M-?"       'ess-list-object-completions)
-  ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
-  (define-key ess-mode-map "\C-c\C-k"   'ess-force-buffer-current)
-  (define-key ess-mode-map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
-  (define-key ess-mode-map "\C-c."      'ess-set-style); analogous to binding in C-mode
-  (define-key ess-mode-map "{"          'ess-electric-brace)
-  (define-key ess-mode-map "}"          'ess-electric-brace)
-  (define-key ess-mode-map "\C-\M-q"    'ess-indent-exp)
-  (define-key ess-mode-map "\C-\M-h"    'ess-mark-function)
-  (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
-      (define-key ess-mode-map [(meta backspace)] 'backward-kill-word))
-  ;;(define-key ess-mode-map [delete]   'backward-delete-char-untabify)
-  (define-key ess-mode-map "\t"         'ess-indent-or-complete)
-  (define-key ess-mode-map "\C-c\C-q"   'ess-quit)
-  ;; smart operators; most likely will go in the future into a separate local map
-  (define-key ess-mode-map ","          'ess-smart-comma)
-  (define-key ess-mode-map "\C-c\C-e"   ess-eval-map))
+    (define-key map "\C-c\C-r"   'ess-eval-region)
+    (define-key map "\C-c\M-r"   'ess-eval-region-and-go)
+    (define-key map "\C-c\C-b"   'ess-eval-buffer)
+    (define-key map "\C-c\M-b"   'ess-eval-buffer-and-go)
+    (define-key map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
+    (define-key map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
+    (define-key map "\C-c\C-f"   'ess-eval-function)
+    (define-key map "\C-c\M-f"   'ess-eval-function-and-go)
+    (define-key map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
+    (define-key map "\C-c\C-p"   'ess-eval-paragraph-and-step)
+    (define-key map "\C-c\M-p"   'ess-eval-paragraph-and-go)
+    (define-key map "\C-\M-x"    'ess-eval-function)
+    (define-key map "\C-c\C-n"   'ess-eval-line-and-step)
+    (define-key map "\C-c\C-j"   'ess-eval-line)
+    (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
+    ;; the next three can only work in S/R - mode {FIXME}
+    (define-key map "\C-\M-a"    'ess-beginning-of-function)
+    (define-key map "\C-\M-e"    'ess-end-of-function)
+    (define-key map "\C-xnd"     'ess-narrow-to-defun)
+    (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
+    (define-key map "\C-c\C-l"   'ess-load-file)
+    (define-key map "\C-c\C-v"   'ess-display-help-on-object)
+    (define-key map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
+    ;;(define-key map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
+    (define-key map "\C-c\C-s"   'ess-switch-process) ; use a
+    ;; different process for the buffer.
+    (define-key map "\C-c\C-t"   'ess-execute-in-tb)
+    (define-key map "\C-c\t"     'ess-complete-object-name-deprecated)
+    ;;M  (define-key map "\C-c\t"        'comint-dynamic-complete-filename)
+    (unless (and (featurep 'emacs) (>= emacs-major-version 24))
+      (define-key map "\M-\t"    'comint-dynamic-complete))
+    (define-key map "\M-?"       'ess-list-object-completions)
+    ;; wrong here (define-key map "\C-c\C-k" 'ess-request-a-process)
+    (define-key map "\C-c\C-k"   'ess-force-buffer-current)
+    (define-key map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
+    (define-key map "\C-c."      'ess-set-style); analogous to binding in C-mode
+    (define-key map "{"          'ess-electric-brace)
+    (define-key map "}"          'ess-electric-brace)
+    (define-key map "\C-\M-q"    'ess-indent-exp)
+    (define-key map "\C-\M-h"    'ess-mark-function)
+    (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
+        (define-key map [(meta backspace)] 'backward-kill-word))
+    ;;(define-key map [delete]   'backward-delete-char-untabify)
+    (define-key map "\t"         'ess-indent-or-complete)
+    (define-key map "\C-c\C-q"   'ess-quit)
+    ;; smart operators; most likely will go in the future into a separate local map
+    (define-key map ","          'ess-smart-comma)
+    (define-key map "\C-c\C-e"   ess-eval-map)
+    map)
+  "Keymap for `ess-mode'.")
 
 (require 'noweb-mode)
 (easy-menu-define

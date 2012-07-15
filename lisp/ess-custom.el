@@ -1776,16 +1776,6 @@ session.")
 (defvar ess-temp-point nil
   "Variable used to retain a buffer position past let or let*.")
 
-(defvar ess-mode-map nil
-  "Keymap for `ess-mode'.")
-
-(defvar ess-eval-map nil
-  "Keymap for ess-eval functions.")
-
-(defvar inferior-ess-mode-map nil
-  "Keymap for `inferior-ess' mode.")
-
-(defvar ess-mode-minibuffer-map nil)
 
 ;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed
 ;; soon if no-one needs the completion code.
