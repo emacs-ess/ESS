@@ -1349,23 +1349,25 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
 
 (defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
   "Evaluate the current line visibly and step to the \"next\" line.
-\"next\" = the next line with non-comment code _unless_ SIMPLE-NEXT is non-nil,
-possibly via prefix arg.  If 2nd arg EVEN-EMPTY [prefix as well],
-also send empty lines.  When the variable `ess-eval-empty' is non-nil
-both SIMPLE-NEXT and EVEN-EMPTY are interpreted as true."
+If SIMPLE-NEXT is non-nil, possibly via prefix arg, first skip
+empty and commented lines. If 2nd arg EVEN-EMPTY [prefix as
+well], also send empty lines.  When the variable `ess-eval-empty'
+is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
+true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
+  (ess-force-buffer-current "Process to load into: ")
+  (unless (or simple-next ess-eval-empty even-empty)
+    (previous-line)
+    (ess-next-code-line 1))
   (save-excursion
-    (ess-force-buffer-current "Process to load into: ")
     (end-of-line)
     (let ((end (point)))
       (beginning-of-line)
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
                          invisibly 'eob (or even-empty ess-eval-empty))))
-  (if (or simple-next ess-eval-empty)
-      (forward-line 1)
-    (ess-next-code-line 1)))
+  (forward-line 1))
 
 (defun ess-eval-line-and-step-invisibly ()
   "Evaluate the current line invisibly and step to the next line.

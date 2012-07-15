@@ -588,8 +588,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\C-l" 'ess-load-file)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
-    map
-    )
+    map)
   "Keymap for ESS help mode.")
 
 ;; One reason for the following menu is to <TEACH> the user about key strokes

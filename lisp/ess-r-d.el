@@ -41,6 +41,7 @@
 (require 'eldoc)
 (require 'ess-r-args); some. ~/.emacs rely ess-r-args-show .. replace by autoload !?
 (require 'ess-developer)
+(require 'ess-help)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
 
@@ -842,7 +843,6 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-ac-help-object (sym)
   "Help string for ac."
   (with-current-buffer (get-buffer-create " *ess-command-output*")
-    (require 'ess-help)
     (when (string-match ":+\\(.*\\)" sym)
       (setq sym (match-string 1 sym)))
     (ess-command (format inferior-ess-help-command sym) (current-buffer))
