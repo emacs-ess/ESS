@@ -64,18 +64,29 @@
 ;;   :group 'ess-developer
 ;;   :type 'string)
 
-(defvar ess-developer-map
-  (let (ess-developer-map)
-    (define-prefix-command 'ess-developer-map)
-    (define-key ess-developer-map "t" 'ess-developer)
-    (define-key ess-developer-map "a" 'ess-developer-add-package)
-    (define-key ess-developer-map "r" 'ess-developer-remove-package)
-    (define-key ess-developer-map "s" 'ess-developer-source-current-file)
-    ess-developer-map)
-  "Ess-developer keymap.")
+;; (defvar ess-developer-map
+;;   (let (ess-developer-map)
+;;     (define-prefix-command 'ess-developer-map)
+;;     (define-key ess-developer-map "t" 'ess-developer)
+;;     (define-key ess-developer-map "a" 'ess-developer-add-package)
+;;     (define-key ess-developer-map "r" 'ess-developer-remove-package)
+;;     ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
+;;     ess-developer-map)
+;;   "Ess-developer keymap.")
 
-(define-key ess-mode-map "\C-cd"                ess-developer-map)
-(define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
+;; (define-key ess-mode-map "\C-cd"                ess-developer-map)
+;; (define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
+
+
+(defvar ess-dev-map
+  (let (ess-dev-map)
+    (define-prefix-command 'ess-dev-map)
+    (define-key ess-dev-map "t" 'ess-developer)
+    (define-key ess-dev-map "a" 'ess-developer-add-package)
+    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
+    ess-dev-map)
+  "Keymap for commands related to code development and debuging.")
 
 
 ;; (defun ess-developer-install-prefix-key ()
