@@ -233,12 +233,12 @@ otherwise call devSource."
                               (append ess-developer-packages (list "*current*" )) nil t))
         (message  (if message (format "dev%s ..." message))))
     (if (equal package "*current*")
-        (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-    ;; else, (ignore VISIBLY here)
-    (let ((comm  (if tracebug
-                     (ess--tb-get-source-refd-string beg end)
-                   (buffer-substring-no-properties beg end))))
-      (ess-developer-devSource-string proc comm package message))))
+        (ess-developer-send-region-fallback proc beg end visibly message tracebug)
+      ;; else, (ignore VISIBLY here)
+      (let ((comm  (if tracebug
+                       (ess--tb-get-source-refd-string beg end)
+                     (buffer-substring-no-properties beg end))))
+        (ess-developer-devSource-string proc comm package message)))))
 
 (defun ess-developer-devSource-string (proc command package &optional mess)
   "devSource COMMAND into the PACKAGE.
