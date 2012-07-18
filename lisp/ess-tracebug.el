@@ -1516,7 +1516,7 @@ If suplied ev must be a proper key event or a string representing the digit."
                                                    nil t ev-char nil)))))
           (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
           (insert (concat  prompt ev-char "\n"))
-          (process-send-string proc (concat ev-char "\n"))
+          (ess-send-string proc ev-char)
           (move-marker (process-mark proc) (max-char))
           )
       (message "Recover is not active")
@@ -1530,8 +1530,8 @@ Equivalent to 'n' at the R prompt."
   (if (not (ess-dbg-is-active))
       (message "Debugging is not active")
     (if (ess-dbg-is-recover)
-        (process-send-string (get-process ess-current-process-name) "0\n")
-      (process-send-string (get-process ess-current-process-name) "\n")
+        (ess-send-string (get-process ess-current-process-name) "0")
+      (ess-send-string (get-process ess-current-process-name) "")
       )))
 
 (defun ess-dbg-previous-error (&optional ev)
@@ -1549,11 +1549,11 @@ debug history."
     (if (not (process-get proc 'dbg-active))
         (message "Debugging is not active")
       (when (ess-dbg-is-recover)
-        (process-send-string proc "0\n")
+        (ess-send-string proc "0")
         (ess-wait-for-process proc nil 0.05))
       (if (and (process-get proc 'dbg-active)
                (not (process-get proc 'is-recover))); still in debug mode
-          (process-send-string proc "Q\n"))
+          (ess-send-string proc "Q"))
       )))
 
 (defun ess-dbg-command-c (&optional ev)
@@ -1564,11 +1564,11 @@ debug history."
     (if (not (process-get proc 'dbg-active))
         (message "Debugging is not active")
       (when (ess-dbg-is-recover)
-        (process-send-string proc "0\n")
+        (ess-send-string proc "0")
         (ess-wait-for-process proc nil 0.05)) ;; get out of recover mode
       (if (and (process-get proc 'dbg-active) ; still in debug mode
                (not (process-get proc 'is-recover))); still in debug mode
-          (process-send-string proc "c\n"))
+          (ess-send-string proc "c"))
       )))
 
 (defun ess-tb-set-last-input (&optional proc)
@@ -1604,9 +1604,9 @@ debug history."
         (save-selected-window
           (ess-switch-to-ESS t))
         (ess-tb-set-last-input)
-        (process-send-string (get-process ess-current-process-name)
-                             (concat "\ninvisible(eval({source(file=\"" buffer-file-name
-                                     "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))\n"))
+        (ess-send-string (get-process ess-current-process-name)
+                         (concat "\ninvisible(eval({source(file=\"" buffer-file-name
+                                     "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))"))
         ))))
 
 ;;;_ + BREAKPOINTS
