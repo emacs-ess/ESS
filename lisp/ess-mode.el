@@ -34,8 +34,6 @@
 
  ; Requires and autoloads
 
-(require 'ess); includes ess-custom.el
-
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:  and I had to add all other 'ess-eval-*** ...
 ;;; >>> why not just do the obvious instead of all these ? Namely,
@@ -45,43 +43,52 @@
 ;;; functions which are interactive in nature.   We don't want to load
 ;;; it when we are only editing.
 
-(autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
-(autoload 'ess-read-object-name         "ess-inf" "" nil)
-(autoload 'ess-list-object-completions  "ess-inf" "" nil)
+;;; VS: ess-inf is always loaded form ess-toggle-underscore in ess-s-l.el. I am
+;;; placing require ess-inf and ess-mode in ess. This cross autoloads are
+;;; useless. It's time to clean up a bit.
 
-(autoload 'ess-eval-buffer              "ess-inf" "" nil)
-(autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
-(autoload 'ess-eval-function            "ess-inf" "" nil)
-(autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
-(autoload 'ess-eval-function-or-paragraph-and-step
-  "ess-inf" "" nil)
-(autoload 'ess-eval-line                "ess-inf" "" nil)
-(autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
-(autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
-(autoload 'ess-eval-linewise            "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph           "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
-(autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
-(autoload 'ess-eval-region              "ess-inf" "" nil)
-(autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
+;;; VS: I also don't really get why all of these? Compiler is silent without
+;;; them. These funcs are used in mode-map only as symbols. 
 
-(autoload 'ess-load-file                "ess-inf" "" nil)
-(autoload 'ess-switch-process           "ess-inf" "" nil)
-(autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
-(autoload 'ess-request-a-process        "ess-inf" "" nil)
-(autoload 'get-ess-process              "ess-inf" "" nil)
-(autoload 'ess-command                  "ess-inf" "" nil)
-(autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
-(autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
-(autoload 'ess-force-buffer-current     "ess-inf" "" nil)
-(autoload 'ess-make-buffer-current      "ess-inf" "" nil)
-(autoload 'ess-modtime-gt               "ess-inf" "" nil)
-(autoload 'ess-object-modtime           "ess-inf" "" nil)
-(autoload 'ess-quit                     "ess-inf" "" nil)
+;; (autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
+;; (autoload 'ess-read-object-name         "ess-inf" "" nil)
+;; (autoload 'ess-list-object-completions  "ess-inf" "" nil)
+
+;; (autoload 'ess-eval-buffer              "ess-inf" "" nil)
+;; (autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
+;; (autoload 'ess-eval-function            "ess-inf" "" nil)
+;; (autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
+;; (autoload 'ess-eval-function-or-paragraph-and-step
+;;   "ess-inf" "" nil)
+;; (autoload 'ess-eval-line                "ess-inf" "" nil)
+;; (autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
+;; (autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
+;; (autoload 'ess-eval-linewise            "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph           "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
+;; (autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
+;; (autoload 'ess-eval-region              "ess-inf" "" nil)
+;; (autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
+
+;; (autoload 'ess-load-file                "ess-inf" "" nil)
+;; (autoload 'ess-switch-process           "ess-inf" "" nil)
+;; (autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
+;; (autoload 'ess-request-a-process        "ess-inf" "" nil)
+;; (autoload 'get-ess-process              "ess-inf" "" nil)
+;; (autoload 'ess-command                  "ess-inf" "" nil)
+;; (autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
+;; (autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
+;; (autoload 'ess-force-buffer-current     "ess-inf" "" nil)
+;; (autoload 'ess-make-buffer-current      "ess-inf" "" nil)
+;; (autoload 'ess-modtime-gt               "ess-inf" "" nil)
+;; (autoload 'ess-object-modtime           "ess-inf" "" nil)
+;; (autoload 'ess-quit                     "ess-inf" "" nil)
 
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
-(autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
-(autoload 'ess-dump-object-ddeclient    "ess-dde" "(autoload)" nil)
+;; (autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
+(autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)" nil)
+(autoload 'SAS                              "ess-sas-d.el" "(autoload)" t)
+
 
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
@@ -102,81 +109,83 @@
 
 ;;*;; Major mode definition
 
-(unless ess-eval-map
-  (if (featurep 'xemacs)
-      ;; Code for XEmacs
-      (setq ess-eval-map (make-keymap))
-    ;; else code for GNU Emacs
-    (setq ess-eval-map (make-sparse-keymap)))
-
-  (define-key ess-eval-map "\C-r"    'ess-eval-region)
-  (define-key ess-eval-map "\M-r"    'ess-eval-region-and-go)
-  (define-key ess-eval-map "\C-b"    'ess-eval-buffer)
-  (define-key ess-eval-map "\M-b"    'ess-eval-buffer-and-go)
-  (define-key ess-eval-map "\C-f"    'ess-eval-function)
-  (define-key ess-eval-map "\M-f"    'ess-eval-function-and-go)
-  (define-key ess-eval-map "\C-x"    'ess-eval-function)
-  (define-key ess-eval-map "\C-n"    'ess-eval-line-and-step)
-  (define-key ess-eval-map "\C-j"    'ess-eval-line)
-  (define-key ess-eval-map "\M-j"    'ess-eval-line-and-go))
+  
+(defvar ess-eval-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\C-r"    'ess-eval-region)
+    (define-key map "\M-r"    'ess-eval-region-and-go)
+    (define-key map "\C-b"    'ess-eval-buffer)
+    (define-key map "\M-b"    'ess-eval-buffer-and-go)
+    (define-key map "\C-f"    'ess-eval-function)
+    (define-key map "\M-f"    'ess-eval-function-and-go)
+    (define-key map "\C-x"    'ess-eval-function)
+    (define-key map "\C-n"    'ess-eval-line-and-step)
+    (define-key map "\C-j"    'ess-eval-line)
+    (define-key map "\M-j"    'ess-eval-line-and-go)
+    map)
+  "Keymap for ess-eval functions.")
 
 
-(unless ess-mode-map
-  (setq ess-mode-map (make-sparse-keymap))
+(defvar ess-mode-map
+  (let ((map (make-sparse-keymap)))
 
-  ;; By popular demand:
-  (define-key ess-mode-map "\C-m"       'newline-and-indent); = [RETURN]
-  (define-key ess-mode-map "\C-y"       'ess-yank)
+    ;; By popular demand:
+    (define-key map "\C-m"       'newline-and-indent); = [RETURN]
+    (define-key map "\C-y"       'ess-yank)
 
-  (define-key ess-mode-map "\C-c\C-r"   'ess-eval-region)
-  (define-key ess-mode-map "\C-c\M-r"   'ess-eval-region-and-go)
-  (define-key ess-mode-map "\C-c\C-b"   'ess-eval-buffer)
-  (define-key ess-mode-map "\C-c\M-b"   'ess-eval-buffer-and-go)
-  (define-key ess-mode-map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
-  (define-key ess-mode-map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
-  (define-key ess-mode-map "\C-c\C-f"   'ess-eval-function)
-  (define-key ess-mode-map "\C-c\M-f"   'ess-eval-function-and-go)
-  (define-key ess-mode-map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\C-p"   'ess-eval-paragraph-and-step)
-  (define-key ess-mode-map "\C-c\M-p"   'ess-eval-paragraph-and-go)
-  (define-key ess-mode-map "\C-\M-x"    'ess-eval-function)
-  (define-key ess-mode-map "\C-c\C-n"   'ess-eval-line-and-step)
-  (define-key ess-mode-map "\C-c\C-j"   'ess-eval-line)
-  (define-key ess-mode-map "\C-c\M-j"   'ess-eval-line-and-go)
-  ;; the next three can only work in S/R - mode {FIXME}
-  (define-key ess-mode-map "\C-\M-a"    'ess-beginning-of-function)
-  (define-key ess-mode-map "\C-\M-e"    'ess-end-of-function)
-  (define-key ess-mode-map "\C-xnd"     'ess-narrow-to-defun)
-  (define-key ess-mode-map "\C-c\C-y"   'ess-switch-to-ESS)
-  (define-key ess-mode-map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
-  (define-key ess-mode-map "\C-c\C-l"   'ess-load-file)
-  (define-key ess-mode-map "\C-c\C-v"   'ess-display-help-on-object)
-  (define-key ess-mode-map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
-  ;;(define-key ess-mode-map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
-  (define-key ess-mode-map "\C-c\C-s"   'ess-switch-process) ; use a
-  ;; different process for the buffer.
-  (define-key ess-mode-map "\C-c\C-t"   'ess-execute-in-tb)
-  (define-key ess-mode-map "\C-c\t"     'ess-complete-object-name-deprecated)
-  ;;M  (define-key ess-mode-map "\C-c\t"        'comint-dynamic-complete-filename)
-  (unless (and (featurep 'emacs) (>= emacs-major-version 24))
-    (define-key ess-mode-map "\M-\t"    'comint-dynamic-complete))
-  (define-key ess-mode-map "\M-?"       'ess-list-object-completions)
-  ;; wrong here (define-key ess-mode-map "\C-c\C-k" 'ess-request-a-process)
-  (define-key ess-mode-map "\C-c\C-k"   'ess-force-buffer-current)
-  (define-key ess-mode-map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
-  (define-key ess-mode-map "\C-c."      'ess-set-style); analogous to binding in C-mode
-  (define-key ess-mode-map "{"          'ess-electric-brace)
-  (define-key ess-mode-map "}"          'ess-electric-brace)
-  (define-key ess-mode-map "\C-\M-q"    'ess-indent-exp)
-  (define-key ess-mode-map "\C-\M-h"    'ess-mark-function)
-  (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
-      (define-key ess-mode-map [(meta backspace)] 'backward-kill-word))
-  ;;(define-key ess-mode-map [delete]   'backward-delete-char-untabify)
-  (define-key ess-mode-map "\t"         'ess-indent-or-complete)
-  (define-key ess-mode-map "\C-c\C-q"   'ess-quit)
-  ;; smart operators; most likely will go in the future into a separate local map
-  (define-key ess-mode-map ","          'ess-smart-comma)
-  (define-key ess-mode-map "\C-c\C-e"   ess-eval-map))
+    (define-key map "\C-c\C-r"   'ess-eval-region)
+    (define-key map "\C-c\M-r"   'ess-eval-region-and-go)
+    (define-key map "\C-c\C-b"   'ess-eval-buffer)
+    (define-key map "\C-c\M-b"   'ess-eval-buffer-and-go)
+    (define-key map (kbd "C-c C-<up>")   'ess-eval-buffer-from-beg-to-here)
+    (define-key map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
+    (define-key map "\C-c\C-f"   'ess-eval-function)
+    (define-key map "\C-c\M-f"   'ess-eval-function-and-go)
+    (define-key map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
+    (define-key map "\C-c\C-p"   'ess-eval-paragraph-and-step)
+    (define-key map "\C-c\M-p"   'ess-eval-paragraph-and-go)
+    (define-key map "\C-\M-x"    'ess-eval-function)
+    (define-key map "\C-c\C-n"   'ess-eval-line-and-step)
+    (define-key map "\C-c\C-j"   'ess-eval-line)
+    (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
+    ;; the next three can only work in S/R - mode {FIXME}
+    (define-key map "\C-\M-a"    'ess-beginning-of-function)
+    (define-key map "\C-\M-e"    'ess-end-of-function)
+    (define-key map "\C-xnd"     'ess-narrow-to-defun)
+    (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
+    (define-key map "\C-c\C-l"   'ess-load-file)
+    (define-key map "\C-c\C-v"   'ess-display-help-on-object)
+    (define-key map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
+    ;;(define-key map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
+    (define-key map "\C-c\C-s"   'ess-switch-process) ; use a
+    ;; different process for the buffer.
+    (define-key map "\C-c\C-t"   'ess-execute-in-tb)
+    (define-key map "\C-c\t"     'ess-complete-object-name-deprecated)
+    ;;M  (define-key map "\C-c\t"        'comint-dynamic-complete-filename)
+    (unless (and (featurep 'emacs) (>= emacs-major-version 24))
+      (define-key map "\M-\t"    'comint-dynamic-complete))
+    (define-key map "\M-?"       'ess-list-object-completions)
+    ;; wrong here (define-key map "\C-c\C-k" 'ess-request-a-process)
+    (define-key map "\C-c\C-k"   'ess-force-buffer-current)
+    (define-key map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
+    (define-key map "\C-c."      'ess-set-style); analogous to binding in C-mode
+    (define-key map "{"          'ess-electric-brace)
+    (define-key map "}"          'ess-electric-brace)
+    (define-key map "\C-\M-q"    'ess-indent-exp)
+    (define-key map "\C-\M-h"    'ess-mark-function)
+    (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
+        (define-key map [(meta backspace)] 'backward-kill-word))
+    ;;(define-key map [delete]   'backward-delete-char-untabify)
+    (define-key map "\t"         'ess-indent-or-complete)
+    (define-key map "\C-c\C-q"   'ess-quit)
+    ;; smart operators; most likely will go in the future into a separate local map
+    (define-key map ","          'ess-smart-comma)
+    (define-key map "\C-c\C-e"   ess-eval-map)
+    (define-key map "\C-ch"        'ess-handy-commands)
+    (define-key map "\C-cd"        'ess-dev-map)
+    map)
+  "Keymap for `ess-mode'.")
 
 (require 'noweb-mode)
 (easy-menu-define
@@ -487,6 +496,10 @@ ess-mode."
   )
 
 ;; common R and S
+;; SJE: 2007-07-16 add to quieten byte-compiler.
+(defvar ess-function-pattern nil
+  "Regexp to match the beginning of a function in S buffers.")
+
 (let*
     ((Q     "\\s\"")                    ; quote
      (repl "\\(<-\\)?")                 ; replacement (function)
@@ -524,9 +537,6 @@ ess-mode."
               space "function\\s-*(" ; whitespace, function keyword, parenthesis
               ))
      )
-  ;; SJE: 2007-07-16 add to quieten byte-compiler.
-  (defvar ess-function-pattern nil
-    "Regexp to match the beginning of a function in S buffers.")
   (defvar ess-R-function-pattern
     (concat part-1
             "\\s-*\\(<-\\|=\\)" ; whitespace, assign
@@ -727,8 +737,7 @@ Returns t if the buffer existed and was modified, but was not saved."
         (let ((deleted (not (file-exists-p fname))))
           (if (and deleted (not (buffer-modified-p buff)))
               ;; Buffer has been silently deleted, so silently save
-              (save-excursion
-                (set-buffer buff)
+              (with-current-buffer buff
                 (set-buffer-modified-p t)
                 (save-buffer))
             (if (and (buffer-modified-p buff)
@@ -736,14 +745,15 @@ Returns t if the buffer existed and was modified, but was not saved."
                          (y-or-n-p
                           (format "Save buffer %s first? "
                                   (buffer-name buff)))))
-                (save-excursion
-                  (set-buffer buff)
+                (with-current-buffer buff
                   (save-buffer))))
           (buffer-modified-p buff)))))
 
-(defun ess-parse-errors (showerr)
+(defun ess-parse-errors (&optional showerr reset)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported."
+  ;; reset argument is for compatibility with emacs next-error (tracebug
+  ;; rebinds ess-parse-errors to next-error), This silences the compiler.
   (interactive "P")
   (ess-make-buffer-current)
   (let ((errbuff (get-buffer ess-error-buffer-name)))
@@ -769,8 +779,7 @@ With prefix argument, only shows the errors ESS reported."
                 (ess-display-temp-buffer errbuff)
               (if fbuffer nil
                 (setq fbuffer (find-file-noselect filename))
-                (save-excursion
-                  (set-buffer fbuffer)
+                (with-current-buffer fbuffer
                   (ess-mode)))
               (pop-to-buffer fbuffer)
               ;;(goto-line linenum) gives warning: is said to be replaced by
@@ -1332,10 +1341,8 @@ generate the source buffer."
   (let* ((dirname (file-name-as-directory
                    (if (stringp ess-source-directory)
                        ess-source-directory
-                     (save-excursion
-                       (set-buffer
-                        (process-buffer (get-ess-process
-                                         ess-local-process-name)))
+                     (with-current-buffer (process-buffer (get-ess-process
+                                                           ess-local-process-name))
                        (ess-setq-vars-local ess-customize-alist)
                        (apply ess-source-directory nil)))))
          (filename (concat dirname (format ess-dump-filename-template object)))

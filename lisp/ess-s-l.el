@@ -705,8 +705,6 @@ In that case, the it is removed and replaced by the underscore.
 
  Using \"C-q _\" will always just insert the underscore character."
   (interactive "P")
-  (require 'ess-mode)
-  (require 'ess-inf)
   (let ((current-key (lookup-key ess-mode-map "_")))
     (if (and current-key
              ;; (stringp current-key) (string= current-key ess-S-assign)

@@ -754,11 +754,13 @@ working directory (i.e. first elt of search list)."
   :group 'ess-edit
   :type 'directory)
 
+(defvar ess-dump-filename-template nil
+  "Internal. Initialized by dialects")
 
 (defcustom ess-dump-filename-template-proto (concat (user-login-name) ".%s.S")
   "Prototype template for filenames of dumped objects.
 The ending `S' is replaced by the current \\[ess-suffix], to give
-\\[ess-dump-filename-template] when an inferior ESS process starts.
+`ess-dump-filename-template' when an inferior ESS process starts.
 
 By default, gives filenames like `user.foofun.S', so as not to clash with
 other users if you are using a shared directory. Other alternatives:
@@ -1776,16 +1778,6 @@ session.")
 (defvar ess-temp-point nil
   "Variable used to retain a buffer position past let or let*.")
 
-(defvar ess-mode-map nil
-  "Keymap for `ess-mode'.")
-
-(defvar ess-eval-map nil
-  "Keymap for ess-eval functions.")
-
-(defvar inferior-ess-mode-map nil
-  "Keymap for `inferior-ess' mode.")
-
-(defvar ess-mode-minibuffer-map nil)
 
 ;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed
 ;; soon if no-one needs the completion code.

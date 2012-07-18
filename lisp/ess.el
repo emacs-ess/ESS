@@ -109,8 +109,11 @@
 
 (require 'ess-compat)
 
-(eval-and-compile
-  (require 'ess-custom))
+(eval-and-compile 
+  (require 'ess-custom)
+  (require 'ess-mode)
+  (require 'ess-inf)
+)
 
  ; ess-mode: editing S/R/XLS/SAS source
 

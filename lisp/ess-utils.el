@@ -664,7 +664,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 
 (defun ess-change-directory (path)
   "Set the current working directory to PATH for both *R* and Emacs."
-  (interactive "DDirectory to change to: ")
+  (interactive "DChange working directory to: ")
 
   (when (file-exists-p path)
     (ess-command (concat "setwd(\"" path "\")\n"))
