@@ -1214,7 +1214,11 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
-
+  (save-excursion
+    ;; don't send new lines at the end (avoid screwing the debugger)
+    (goto-char end)
+    (skip-chars-backward "\n\t ")
+    (setq end (point)))
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
          (dev-p (process-get proc 'developer))
