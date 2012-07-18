@@ -1253,12 +1253,16 @@ the end of the buffer"))
 
 (defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'.  If NO-ERROR is
-non-nil and the function was successfully evaluated, return '(beg
-end) representing the beginning and end of the function under
-cursor, nil otherwise."
+Arg has same meaning as for `ess-eval-region'.   
+
+If NO-ERROR is non-nil and the function was successfully
+evaluated, return '(beg end) representing the beginning and end
+of the current function, otherwise (in case of an error) return
+nil."
   (interactive "P")
   (ess-force-buffer-current "Process to use: ")
+  (ignore-errors (previous-line))
+  (ess-next-code-line 1)
   (save-excursion
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
@@ -1313,10 +1317,11 @@ paragraph other to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
   (let ((beg-end (ess-eval-function vis 'no-error)))
-    (if (null beg-end)
+    (if (null beg-end) ; not a function
         (ess-eval-paragraph-and-step vis)
       (goto-char (cadr beg-end))
-      (ess-next-code-line))))
+      (forward-line 1)
+      )))
 
 
 (defun ess-eval-line (vis)
@@ -1362,7 +1367,7 @@ true."
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
   (unless (or simple-next ess-eval-empty even-empty)
-    (previous-line)
+    (ignore-errors (previous-line))
     (ess-next-code-line 1))
   (save-excursion
     (end-of-line)
@@ -1424,13 +1429,16 @@ process buffer. Arg has same meaning as for `ess-eval-region'."
   (ess-switch-to-ESS t))
 
 (defun ess-eval-paragraph-and-step (vis)
-  "Send the current paragraph to the inferior ESS process and move forward to
-the next paragraph.  Arg has same meaning as for `ess-eval-region'."
+  "Send the current paragraph to the inferior ESS process and
+move forward to the first line after the paragraph.  If not
+inside a paragraph, evaluate next one. Arg has same meaning as
+for `ess-eval-region'."
   (interactive "P")
+  (ignore-errors (previous-line))
+  (ess-next-code-line 1)
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
-    (ess-next-code-line))
-  )
+    (forward-line 1)))
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.   Need to add appropriate stuff...
