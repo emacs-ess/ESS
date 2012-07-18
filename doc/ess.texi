@@ -2537,18 +2537,35 @@ Assuming that the prefix key is @kbd{M-t}, you can always call @kbd{M-t
 ?} to display the following menu with all the tracebug keys (prefix not
 included):
 
-@verbatim
+@comment @verbatim
+@comment testing nicer look and feel
+@comment
+@comment * Breakpoints:
+@comment
+@comment  b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
+@comment  B   . Set conditional BP               . `ess-bp-set-conditional'
+@comment  k   . Kill BP                          . `ess-bp-kil'
+@comment  K   . Kill all BPs                     . `ess-bp-kill-all'
+@comment  t   . Toggle BP state                  . `ess-bp-toggle-state'
+@comment  l   . Set logger BP                    . `ess-bp-set-logger'
+@comment  C-n . Goto next BP                     . `ess-bp-next'
+@comment  C-p . Goto previous BP                 . `ess-bp-previous'
 
 * Breakpoints:
 
- b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
- B   . Set conditional BP               . `ess-bp-set-conditional'
- k   . Kill BP                          . `ess-bp-kil'
- K   . Kill all BPs                     . `ess-bp-kill-all'
- t   . Toggle BP state                  . `ess-bp-toggle-state'
- l   . Set logger BP                    . `ess-bp-set-logger'
- C-n . Goto next BP                     . `ess-bp-next'
- C-p . Goto previous BP                 . `ess-bp-previous'
+@multitable {123} {123} {really-really-really-really-really-long}
+@item Key @tab Description                      @tab Function
+@item b   @tab Set BP (repeat to cycle BP type) @tab `ess-bp-set'
+@item B   @tab Set conditional BP               @tab `ess-bp-set-conditional'
+@item k   @tab Kill BP                          @tab `ess-bp-kil'
+@item K   @tab Kill all BPs                     @tab `ess-bp-kill-all'
+@item t   @tab Toggle BP state                  @tab `ess-bp-toggle-state'
+@item l   @tab Set logger BP                    @tab `ess-bp-set-logger'
+@item C-n @tab Goto next BP                     @tab `ess-bp-next'
+@item C-p @tab Goto previous BP                 @tab `ess-bp-previous'
+@end multitable
+
+@verbatim
 
 * General Debugging:
 
@@ -2869,7 +2886,7 @@ and functions defined in .GlobalEnv can see the objects in
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
 In order to use ess-developer mode you should add names of the packages
-you are developing to @code{ess-developer-packages}. You can dot it
+you are developing to @code{ess-developer-packages}. You can do it
 interactively with @kbd{C-c d a}, and remove packages with @kbd{C-c d
 r}. When developer mode is on, the name of the process in the mode line
 is highlighted with @code{ess-developer-indicator-face}.
@@ -2878,7 +2895,7 @@ is highlighted with @code{ess-developer-indicator-face}.
 @item @kbd{C-c d t}(@code{ess-developer}) @*
       Toggle developer mode on and off.
 @item @kbd{C-c d a}(@code{ess-developer-add-package}) @*
-      Add  a package to your development list
+      Add  a package to your development list.
 @item @kbd{C-c d r}(@code{ess-developer-remove-package}) @*
       Remove a package from your development list.
 @item @kbd{C-c d s}(@code{ess-developer-source-current-file}) @*

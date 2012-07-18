@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(require 'ess-site) ;; need to assigne the keys in the map
+;; (require 'ess-site) ;; need to assigne the keys in the map
 
 (defgroup ess-developer nil
   "ESS: developer."
@@ -64,18 +64,29 @@
 ;;   :group 'ess-developer
 ;;   :type 'string)
 
-(defvar ess-developer-map
-  (let (ess-developer-map)
-    (define-prefix-command 'ess-developer-map)
-    (define-key ess-developer-map "t" 'ess-developer)
-    (define-key ess-developer-map "a" 'ess-developer-add-package)
-    (define-key ess-developer-map "r" 'ess-developer-remove-package)
-    (define-key ess-developer-map "s" 'ess-developer-source-current-file)
-    ess-developer-map)
-  "Ess-developer keymap.")
+;; (defvar ess-developer-map
+;;   (let (ess-developer-map)
+;;     (define-prefix-command 'ess-developer-map)
+;;     (define-key ess-developer-map "t" 'ess-developer)
+;;     (define-key ess-developer-map "a" 'ess-developer-add-package)
+;;     (define-key ess-developer-map "r" 'ess-developer-remove-package)
+;;     ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
+;;     ess-developer-map)
+;;   "Ess-developer keymap.")
 
-(define-key ess-mode-map "\C-cd"                ess-developer-map)
-(define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
+;; (define-key ess-mode-map "\C-cd"                ess-developer-map)
+;; (define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
+
+
+(defvar ess-dev-map
+  (let (ess-dev-map)
+    (define-prefix-command 'ess-dev-map)
+    (define-key ess-dev-map "t" 'ess-developer)
+    (define-key ess-dev-map "a" 'ess-developer-add-package)
+    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
+    ess-dev-map)
+  "Keymap for commands related to code development and debuging.")
 
 
 ;; (defun ess-developer-install-prefix-key ()
@@ -126,35 +137,40 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'hook)
 
-(defun ess-developer-add-package (&optional remove)
+(defun ess-developer-add-package (&optional from-attached remove)
   "Add a package to `ess-developer-packages' list.
-With prefix argument removes the packages, defaults to *ALL*."
-  (interactive "P")
+With prefix argument only choose from among attached packages."
+  (interactive "P\ni")
   (if (and remove (null ess-developer-packages))
-      (message "Nothing to remove, 'ess-developer-packages' is empty")
-    (let ((sel (if remove
-                   (ess-completing-read "Remove pakage(s)"
-                                        (append ess-developer-packages (list "*ALL*"))
-                                        nil t nil nil "*ALL*")
-                 (ess-completing-read "Add package"
-                                      (ess-get-words-from-vector "print(.packages(TRUE),max=1e6)\n") nil t)
-                 )))
-      (if remove
-          (if (equal "*ALL*" sel)
-              (progn
-                (setq ess-developer-packages nil)
-                (message "Removed *ALL* packages from the `ess-developer-packages' list."))
-            (setq ess-developer-packages (delete sel ess-developer-packages))
-            (message "Removed package '%s' from the  ess-`developer-packages' list" (propertize sel 'face 'font-lock-function-name-face)))
-        (setq ess-developer-packages (ess-uniq-list (append  ess-developer-packages (list sel))))
-        (ess-eval-linewise (format "library('%s')" sel))
-        (message "You are developing: %s" ess-developer-packages)
-        ))))
+      (error "Nothing to remove, 'ess-developer-packages' is empty"))
+  (let ((sel (if remove
+                 (ess-completing-read "Remove package(s)"
+                                      (append ess-developer-packages (list "*ALL*"))
+                                      nil t nil nil "*ALL*")
+               (ess-completing-read
+                "Add package"
+                (ess-get-words-from-vector
+                 (concat "print( .packages(" (if from-attached "FALSE" "TRUE")
+                         "), max=1e6)\n")) nil t)
+               )))
+    (if remove
+        (if (equal "*ALL*" sel)
+            (progn
+              (setq ess-developer-packages nil)
+              (message "Removed *ALL* packages from the `ess-developer-packages' list."))
+          (setq ess-developer-packages (delete sel ess-developer-packages))
+          (message "Removed package '%s' from the `ess-developer-packages' list"
+                   (propertize sel 'face 'font-lock-function-name-face)))
+      (setq ess-developer-packages (ess-uniq-list (append ess-developer-packages
+                                                          (list sel))))
+      (ess-eval-linewise (format "library('%s')" sel))
+      (message "You are developing: %s" ess-developer-packages)
+      )))
 
 (defun ess-developer-remove-package ()
-  "Remove a package from `ess-developer-packages' list."
+  "Remove packages from `ess-developer-packages' list; defaults to *ALL*."
   (interactive)
-  (ess-developer-add-package t))
+  (ess-developer-add-package nil 'remove))
 
 (defun ess-developer-send-region-fallback (proc beg end visibly &optional message tracebug func)
   (if tracebug
@@ -217,12 +233,12 @@ otherwise call devSource."
                               (append ess-developer-packages (list "*current*" )) nil t))
         (message  (if message (format "dev%s ..." message))))
     (if (equal package "*current*")
-        (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-    ;; else, (ignore VISIBLY here)
-    (let ((comm  (if tracebug
-                     (ess--tb-get-source-refd-string beg end)
-                   (buffer-substring-no-properties beg end))))
-      (ess-developer-devSource-string proc comm package message))))
+        (ess-developer-send-region-fallback proc beg end visibly message tracebug)
+      ;; else, (ignore VISIBLY here)
+      (let ((comm  (if tracebug
+                       (ess--tb-get-source-refd-string beg end)
+                     (buffer-substring-no-properties beg end))))
+        (ess-developer-devSource-string proc comm package message)))))
 
 (defun ess-developer-devSource-string (proc command package &optional mess)
   "devSource COMMAND into the PACKAGE.

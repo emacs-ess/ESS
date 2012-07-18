@@ -193,6 +193,13 @@ for ESS, such as icons.")
                    'Info-directory-list 'Info-default-directory-list)
                (expand-file-name "../doc/info/" ess-lisp-directory)))
 
+
+;; ALWAYS:
+(ess-message "[ess-site:] require 'ess   *ITSELF* ...")
+(require 'ess); -> loads ess-custom.el and more
+(ess-message "[ess-site:] .. after requiring 'ess ...")
+
+
 ;;; (1.3) Files ending in .q and .S are considered to be S source files
 ;;; Files ending in .St are considered to be S transcript files
 ;;;
@@ -418,11 +425,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; (1.7) Literate Data Analysis
 (require 'ess-noweb)
 (require 'ess-swv); for Sweave
-
-;; ALWAYS:
-(ess-message "[ess-site:] require 'ess   *ITSELF* ...")
-(require 'ess); -> loads ess-custom.el and more
-(ess-message "[ess-site:] .. after requiring 'ess ...")
 
 (ess-write-to-dribble-buffer
  (format "[ess-site.el _2_]: ess-customize-alist=%s \n"

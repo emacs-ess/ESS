@@ -1,3 +1,9 @@
+2012-07-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-developer.el (ess-developer-add-package): new first
+	argument (prefix!) 'from-attached'.  Essential for large list of
+	packages on slow (e.g., NFS mounted) file systems.
+
 2012-06-05  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-r-d.el (ess-dirs): Do not set ess-directory.
