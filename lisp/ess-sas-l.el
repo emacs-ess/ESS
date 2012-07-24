@@ -103,7 +103,7 @@ the mode line."
   (SAS-mode)
   (setq mode-name "ESS[LOG]")
   (ess-transcript-minor-mode 1)
-  (toggle-read-only t)) ;; to protect the buffer.
+  (setq buffer-read-only t)) ;; to protect the buffer.
 
 (defun SAS-listing-mode()
   "Fundamental mode with `ess-listing-minor-mode' and read-only."
@@ -112,7 +112,7 @@ the mode line."
   (setq mode-name "ESS[LST]")
   (ess-listing-minor-mode 1)
   (use-local-map sas-mode-local-map)
-  (toggle-read-only t)) ;; to protect the buffer.
+  (setq buffer-read-only t)) ;; to protect the buffer.
 
 (fset 'sas-log-mode        'SAS-log-mode)
 (fset 'SAS-transcript-mode 'SAS-log-mode)
@@ -991,7 +991,7 @@ opening /* appears.  returns 0 otherwise."
 Proc Lifetest.  Operates on current region.  A major space saver if there is
 heavy censoring."
   (interactive)
-  (if buffer-read-only (toggle-read-only))
+  (if buffer-read-only (setq buffer-read-only nil))
   (goto-char (point-min))
   (while (re-search-forward "^.*[ ]+[.][ ]+[.][ ]+[.][ ]+.*$" nil t)
     (replace-match "" nil nil)))
@@ -1555,7 +1555,7 @@ page ;
   (setq major-mode 'sas-dir-mode)
   (setq mode-name "SAS")
   (setq sas-directory-name (expand-file-name default-directory))
-  (toggle-read-only 1))
+  (setq buffer-read-only 1))
 
 
 ;;(defun sas-make-library (directory &optional update)

@@ -167,7 +167,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (interactive)
   (require 'ess-inf)
   (kill-all-local-variables)
-  (toggle-read-only t) ;; to protect the buffer.
+  (setq buffer-read-only t) ;; to protect the buffer.
   (ess-setq-vars-local alist); (current-buffer))
   (setq major-mode 'ess-transcript-mode)
   (setq mode-name "ESS Transcript")
@@ -263,8 +263,8 @@ is not already."
 (defun ess-transcript-clean-region (beg end even-if-read-only)
   "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes the
-prompt from those lines that remain.  Prefix argument means to use
-\\[toggle-read-only] to clean even if the buffer is \\[read-only]."
+prompt from those lines that remain.  Prefix argument means to 
+clean even if the buffer is \\[read-only]."
   (interactive "r\nP")
   (unless inferior-ess-prompt
     (error "Cannot clean ESS transcript region in this mode!
@@ -274,7 +274,7 @@ prompt from those lines that remain.  Prefix argument means to use
   (let ((do-toggle (and buffer-read-only even-if-read-only))
         (ess-prompt-rx (concat "^" inferior-ess-prompt)))
     (save-excursion
-      (if do-toggle (toggle-read-only 0))
+      (if do-toggle (setq buffer-read-only 0))
       (save-restriction
         (unless (featurep 'xemacs) ;; does not exist in xemacs:
           (deactivate-mark))
@@ -286,7 +286,7 @@ prompt from those lines that remain.  Prefix argument means to use
         (while (re-search-forward ess-prompt-rx nil t)
           (replace-match "" nil nil)))
 
-      (if do-toggle (toggle-read-only 1)))))
+      (if do-toggle (setq buffer-read-only 1)))))
 
 
 ;; unfinished idea :-----------------------

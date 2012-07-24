@@ -1,3 +1,9 @@
+2012-07-23  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-help.el, ess-r-gui.el, ess-sas.el, ess-sp4-d.el,
+	ess-sp6w-d.el, ess-trns.el, essd-els.el: Set `buffer-read-only'
+	rather than using toggle-read-only (recommended by byte compiler).
+
 2012-07-02  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-developer.el (ess-developer-add-package): new first
