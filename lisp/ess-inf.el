@@ -1261,8 +1261,9 @@ of the current function, otherwise (in case of an error) return
 nil."
   (interactive "P")
   (ess-force-buffer-current "Process to use: ")
-  (ignore-errors (previous-line))
-  (ess-next-code-line 1)
+  (ignore-errors
+    (previous-line)
+    (ess-next-code-line 1))
   (save-excursion
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
@@ -1367,8 +1368,9 @@ true."
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
   (unless (or simple-next ess-eval-empty even-empty)
-    (ignore-errors (previous-line))
-    (ess-next-code-line 1))
+    (ignore-errors
+      (previous-line)
+      (ess-next-code-line 1)))
   (save-excursion
     (end-of-line)
     (let ((end (point)))
@@ -1434,8 +1436,9 @@ move forward to the first line after the paragraph.  If not
 inside a paragraph, evaluate next one. Arg has same meaning as
 for `ess-eval-region'."
   (interactive "P")
-  (ignore-errors (previous-line))
-  (ess-next-code-line 1)
+  (ignore-errors
+    (previous-line)
+    (ess-next-code-line 1))
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
     (forward-line 1)))
