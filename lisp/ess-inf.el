@@ -673,8 +673,12 @@ Returns the name of the selected process."
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
+
   (let ((num-processes (length ess-process-name-list)))
-    (if (= 0 num-processes)
+    (if (or (= 0 num-processes)
+            (and (= 1 num-processes) 
+                 (not (equal ess-dialect ;; don't auto connect if from different dialect
+                             (buffer-local-value 'ess-dialect (process-buffer (get-process (caar ess-process-name-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
