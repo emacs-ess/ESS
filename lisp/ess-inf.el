@@ -1332,7 +1332,7 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 paragraph other to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
-  (let ((beg-end (ess-eval-function vis 'no-error)))
+  (let ((beg-end (ignore-errors (ess-eval-function vis 'no-error)))) ;; ignore-errors is a hack, ess-eval-function gives stupid errors sometimes
     (if (null beg-end) ; not a function
         (ess-eval-paragraph-and-step vis)
       (goto-char (cadr beg-end))
