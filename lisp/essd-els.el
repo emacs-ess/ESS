@@ -202,7 +202,7 @@ C-n to send lines over.  With SAS, use C-c i
         (progn (font-lock-mode 0)
                (SAS-log-mode)
                (shell-mode)
-               (toggle-read-only nil)
+               (setq buffer-read-only nil)
                (font-lock-mode 1)))))
 
 

@@ -198,7 +198,7 @@ Splus Commands window appear in this buffer.\n\n")
     (goto-char (point-max))             ; comint-mode-map makes '(ddeESS [S+4])'
     ;;  (use-local-map comint-mode-map) ;a shell buffer after Splus is finished.
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
-    (toggle-read-only t)                ; force buffer to be read-only
+    (setq buffer-read-only t)           ; force buffer to be read-only
     (setq mode-name "ddeESS")
     ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if inferior-ess-language-start
@@ -224,7 +224,7 @@ If you have a HOME environment variable, it will open it there."
     (S+4 proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)              ; permit writing in ESS buffer
+    (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -232,7 +232,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+4-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)                ; restore ESS buffer to be read-only
+    (setq buffer-read-only t)           ; restore ESS buffer to be read-only
     ))
 
 
@@ -371,7 +371,7 @@ Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (goto-char (point-max))            ; comint-mode-map makes '(ddeESS [S+4])'
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
-    (toggle-read-only t)               ; force buffer to be read-only
+    (setq buffer-read-only t)          ; force buffer to be read-only
     (setq mode-name "ddeESS")
 ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if inferior-ess-language-start
@@ -390,7 +390,7 @@ If you have a HOME environment variable, it will open it there."
     (S+4-msdos proc-name))
   (save-excursion
     (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
-    (toggle-read-only nil)              ; permit writing in ESS buffer
+    (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
     (forward-line -1)
@@ -398,7 +398,7 @@ If you have a HOME environment variable, it will open it there."
      "This is S+4-msdos-existing.
 Results of the   !system.command   typed at the S prompt in the
 Splus Commands window blink a DOS window and you won't see them.\n\n")
-    (toggle-read-only t)                ; restore ESS buffer to be read-only
+    (setq buffer-read-only t)           ; restore ESS buffer to be read-only
     ))
 
  ; Provide package

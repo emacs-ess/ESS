@@ -555,7 +555,7 @@ This is in addition to ess-continued-statement-offset.")
 in `arg=foo(...)' form.
 If not number, the statements are indented at open-parenthesis following foo.")
 
-(defvar ess-arg-function-offset-new-line 2
+(defvar ess-arg-function-offset-new-line '(2)
   "Extra indent for function arguments when ( is folowed by new line.
 
 If nil, the statements are indented at open-parenthesis following foo:
@@ -628,16 +628,16 @@ If not number, the statements are indented at open-parenthesis following
 
 (defvar ess-default-style-list
   (list 'DEFAULT
-        (cons 'ess-indent-level ess-indent-level)
-        (cons 'ess-continued-statement-offset ess-continued-statement-offset)
-        (cons 'ess-brace-offset ess-brace-offset)
-        (cons 'ess-expression-offset ess-expression-offset)
-        (cons 'ess-else-offset ess-else-offset)
-        (cons 'ess-brace-imaginary-offset ess-brace-imaginary-offset)
-        (cons 'ess-continued-brace-offset ess-continued-brace-offset)
-        (cons 'ess-arg-function-offset ess-arg-function-offset)
-        (cons 'ess-arg-function-offset-new-line ess-arg-function-offset-new-line)
-        (cons 'ess-close-brace-offset ess-close-brace-offset))
+        (cons 'ess-indent-level '(default-value 'ess-indent-level))
+        (cons 'ess-continued-statement-offset '(default-value 'ess-continued-statement-offset))
+        (cons 'ess-brace-offset '(default-value 'ess-brace-offset))
+        (cons 'ess-expression-offset '(default-value 'ess-expression-offset))
+        (cons 'ess-else-offset '(default-value 'ess-else-offset))
+        (cons 'ess-brace-imaginary-offset '(default-value 'ess-brace-imaginary-offset))
+        (cons 'ess-continued-brace-offset '(default-value 'ess-continued-brace-offset))
+        (cons 'ess-arg-function-offset '(default-value 'ess-arg-function-offset))
+        (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
+        (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset)))
   "Default style constructed from initial values of indentation variables.")
 
 (defvar ess-style-alist
@@ -646,7 +646,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 2)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . 4)
+               (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 2)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -654,7 +654,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 8)
                (ess-brace-offset . -8)
                (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . 0)
+               (ess-arg-function-offset-new-line . '(8))
                (ess-expression-offset . 8)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -662,7 +662,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 5)
                (ess-brace-offset . -5)
                (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . 0)
+               (ess-arg-function-offset-new-line . '(5))
                (ess-expression-offset . 5)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -670,7 +670,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . -4)
                (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . 0)
+               (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -679,7 +679,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . 2)
+               (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0))
@@ -688,7 +688,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . 0)
+               (ess-arg-function-offset-new-line . '(2))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 2))))
