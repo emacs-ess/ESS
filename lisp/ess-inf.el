@@ -1372,9 +1372,14 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
-      (while (and (= n 0)
-                  (looking-at "\\s-*\\($\\|\\s<\\)"))
-        (setq n (forward-line inc)))
+      (if (featurep 'xemacs)
+          (while (and (= n 0)
+                      (looking-at "\\s-*\\($\\|\\s<\\)"))
+            (setq n (forward-line inc)))
+        (require 'newcomment)
+        (comment-beginning)
+        (beginning-of-line)
+        (forward-comment (* inc (buffer-size)))) ;; as sugested in info file
       (setq arg (- arg inc)))
     n))
 
