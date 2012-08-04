@@ -1208,6 +1208,12 @@ will be used instead of the default .001s and be passed to
 
 ;;;*;;; Evaluate only
 
+(defvar  ess-current-region-overlay
+  (let ((overlay (make-overlay (point) (point))))
+    (overlay-put overlay 'face  'highlight) ;; todo use highlight??
+    overlay)
+  "The overlay for highlighting currently evaluated region or line.")
+
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
 With prefix argument toggle the meaning of `ess-eval-visibly-p';
@@ -1223,6 +1229,11 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point)))
+  
+  (move-overlay ess-current-region-overlay start end)
+  (run-with-timer .6 nil (lambda ()
+                           (delete-overlay ess-current-region-overlay)))
+
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
          (dev-p (process-get proc 'developer))
