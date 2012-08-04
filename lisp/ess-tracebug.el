@@ -1068,6 +1068,17 @@ of the ring."
 (make-variable-buffer-local 'ess-dbg-mode-line-indicator)
 (put 'ess-dbg-mode-line-indicator 'risky-local-variable t)
 
+
+(defun ess-dbg-remove-empty-lines (string)
+  "Remove empty lines (which interfere with evals) during debug.
+
+This function is used placed in `ess-presend-filter-functions'.
+"
+  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
+      (replace-regexp-in-string "\n\\s *$" "" string)
+    string))
+
+
 (defun ess-dbg-start ()
   "Start the debug session.
 Add to ESS the interactive debugging functionality, breakpoints,
@@ -1087,6 +1098,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
+      (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
       (buffer-disable-undo)
