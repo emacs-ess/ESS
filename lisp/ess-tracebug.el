@@ -205,7 +205,10 @@ block (used for source references insertion)"
     (when (looking-back "\\s +") ;drop the end empty lines
       (re-search-backward "[^ \t\n]" nil t)
       (setq end (point-at-eol)))
-    (put-text-property beg end 'tb-index ess--tracebug-eval-index)
+    (let ((buffer-undo-list t)
+          (mod? (buffer-modified-p)))
+      (put-text-property beg end 'tb-index ess--tracebug-eval-index)
+      (if (not mod?) (set-buffer-modified-p nil))) ;; put-text-property markes buffer as modified
     (format "eval(parse(text=\"%s\",srcfile=srcfile(\"%s@%d\")))\n"
             (ess-quote-special-chars (buffer-substring-no-properties beg end))
             filename ess--tracebug-eval-index)))
