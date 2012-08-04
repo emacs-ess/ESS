@@ -940,10 +940,30 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
     ;; (princ (format "%s:" string))
     (insert string)))
 
+
+(defvar ess-presend-filter-functions nil
+  "List of functions to call before sending the input string to the process.
+Each function gets one argument, a string containing the text to
+be send to the subprocess.  It should return the string send,
+perhaps the same string that was received, or perhaps a modified
+or transformed string.
+
+The functions on the list are called sequentially, and each one is
+given the string returned by the previous one.  The string returned by
+the last function is the text that is actually sent to the process.
+
+You can use `add-hook' to add functions to this list
+either globally or locally.")
+
 (defun ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call `ess-send-string'.
-If MESSAGE is supplied, display it at the end."
+If MESSAGE is supplied, display it at the end.
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+region.
+"
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
@@ -953,12 +973,27 @@ If MESSAGE is supplied, display it at the end."
 (defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
 Removes empty lines during the debugging.
-STRING  need not end with \\n."
-  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
-      (setq string (replace-regexp-in-string
-                    "\n\\s *$" "" string))) ; remove empty lines (which interfere with evals) in debug state
-  ;; (setq string
-  ;;       (replace-regexp-in-string  "^[^#]+\\()\\)[^)]*\\'" "\n)" string nil nil 1)) ;;needed for busy prompt
+STRING  need not end with \\n.
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+input STRING.
+"
+  
+  (with-current-buffer (process-buffer process)
+    (run-hook-with-args 'comint-input-filter-functions string)
+    
+    (let ((functions ess-presend-filter-functions))
+      (while (and functions string)
+        (if (eq (car functions) t)
+            (let ((functions
+                   (default-value 'ess-presend-filter-functions)))
+              (while (and functions string)
+                (setq string (funcall (car functions) string))
+                (setq functions (cdr functions))))
+          (setq string (funcall (car functions) string)))
+        (setq functions (cdr functions)))))
+
   (inferior-ess-mark-as-busy process)
   (if visibly
       (ess-eval-linewise string)
