@@ -82,41 +82,41 @@ regexp-search, and so specials should be quoted.
 (defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n-+\\|http:"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
-(defvar STA-syntax-table nil "Syntax table for Stata code.")
-(if STA-syntax-table
-    nil
-  (setq STA-syntax-table (make-syntax-table))
-  (modify-syntax-entry ?\\ "." STA-syntax-table) ;nullify escape meaning
-  (modify-syntax-entry ?\$ "." STA-syntax-table)
-  (modify-syntax-entry ?` "(\'" STA-syntax-table)
-  (modify-syntax-entry ?\' ")`" STA-syntax-table)
-  ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
-  (cond
-   ;; XEmacs 19, 20, 21
-   ((memq '8-bit c-emacs-features)
-    (modify-syntax-entry ?/  ". 1456" STA-syntax-table)
-    (modify-syntax-entry ?*  ". 23"   STA-syntax-table))
-   ;; Emacs 19, 20, 21
-   ((memq '1-bit c-emacs-features)
-    (modify-syntax-entry ?/  ". 124b" STA-syntax-table)
-    (modify-syntax-entry ?*  ". 23"   STA-syntax-table))
-   ;; incompatible
-   (t (error "CC Mode is incompatible with this version of Emacs"))
-   )
-  (modify-syntax-entry ?\n "> b"  STA-syntax-table)
-  ;; Give CR the same syntax as newline, for selective-display
-  (modify-syntax-entry ?\^m "> b" STA-syntax-table)
-  ;;--------- end cut-and-paste ------------------
-  (modify-syntax-entry ?+ "." STA-syntax-table)
-  (modify-syntax-entry ?- "." STA-syntax-table)
-  (modify-syntax-entry ?= "." STA-syntax-table)
-  (modify-syntax-entry ?% "." STA-syntax-table)
-  (modify-syntax-entry ?< "." STA-syntax-table)
-  (modify-syntax-entry ?> "." STA-syntax-table)
-  (modify-syntax-entry ?& "." STA-syntax-table)
-  (modify-syntax-entry ?| "." STA-syntax-table)
-  (modify-syntax-entry ?~ "." STA-syntax-table))
+(defvar STA-syntax-table
+  (let ((tbl (make-syntax-table)))
+    (modify-syntax-entry ?\\ "." tbl) ;nullify escape meaning
+    (modify-syntax-entry ?\$ "." tbl)
+    (modify-syntax-entry ?` "(\'" tbl)
+    (modify-syntax-entry ?\' ")`" tbl)
+    ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
+    (cond
+     ;; XEmacs 19, 20, 21
+     ((memq '8-bit c-emacs-features)
+      (modify-syntax-entry ?/  ". 1456" tbl)
+      (modify-syntax-entry ?*  ". 23"   tbl))
+     ;; Emacs 19, 20, 21
+     ((memq '1-bit c-emacs-features)
+      (modify-syntax-entry ?/  ". 124b" tbl)
+      (modify-syntax-entry ?*  ". 23"   tbl))
+     ;; incompatible
+     (t (error "CC Mode is incompatible with this version of Emacs"))
+     )
+    (modify-syntax-entry ?\n "> b"  tbl)
+    ;; Give CR the same syntax as newline, for selective-display
+    (modify-syntax-entry ?\^m "> b" tbl)
+    ;;--------- end cut-and-paste ------------------
+    (modify-syntax-entry ?+ "." tbl)
+    (modify-syntax-entry ?- "." tbl)
+    (modify-syntax-entry ?= "." tbl)
+    (modify-syntax-entry ?% "." tbl)
+    (modify-syntax-entry ?< "." tbl)
+    (modify-syntax-entry ?> "." tbl)
+    (modify-syntax-entry ?& "." tbl)
+    (modify-syntax-entry ?| "." tbl)
+    (modify-syntax-entry ?~ "." tbl)
 
+    tbl)
+   "Syntax table for Stata code.")
 
 (defun ado-set-font-lock-keywords ()
   "Create font lock keywords for Stata syntax. This is from the
@@ -1134,8 +1134,8 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords.")
 
 (defvar STA-editing-alist
-  '((paragraph-start              . (concat "^$\\|" page-delimiter))
-    (paragraph-separate           . (concat "^$\\|" page-delimiter))
+  '((paragraph-start              . (concat "[ \t\f]*$\\|" page-delimiter))
+    (paragraph-separate           . (concat  "[ \t\f]*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline        . t)
     (comment-start                . "/\* ")
