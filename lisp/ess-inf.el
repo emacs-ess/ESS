@@ -1249,9 +1249,9 @@ will be used instead of the default .001s and be passed to
     overlay)
   "The overlay for highlighting currently evaluated region or line.")
 
-(defun ess-highlight-region (start end)
+(defun ess-region-blink (start end)
   (move-overlay ess-current-region-overlay start end)
-  (run-with-timer .4 nil (lambda ()
+  (run-with-timer .5 nil (lambda ()
                            (delete-overlay ess-current-region-overlay))))
 
 
@@ -1265,13 +1265,13 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
+  
+  (ess-region-blink start end)
   (save-excursion
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point)))
-  
-  (ess-highlight-region start end)
   
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
@@ -1332,7 +1332,7 @@ nil."
                  (mess (format "Eval function %s" (or name "???")))
                  (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
 
-            (ess-highlight-region beg end)
+            (ess-region-blink beg end)
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
              (tb-p      (ess-tracebug-send-region proc beg end visibly mess 'func))
