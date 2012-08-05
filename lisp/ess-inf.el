@@ -41,8 +41,10 @@
 
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
-  (require 'comint)
   (require 'ess-utils))
+
+(require 'comint)
+(require 'overlay)
 
 ;;; VS: These autoloads are not needed. See coments in ess-mode.el.
 ;;*;; Autoloads
