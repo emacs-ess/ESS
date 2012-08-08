@@ -1910,16 +1910,16 @@ If nil, input is in the `font-lock-variable-name-face'."
    (cons ess-R-function-name-regexp
          '(1 font-lock-function-name-face keep))
                                         ; function name
-   (cons ess-R-function-call-regexp '(1 font-lock-function-name-face keep))
+   (cons ess-R-function-call-regexp '(1 ess-function-call-face keep))
                                         ; function calls
-   (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-function-name-face)
+   ;; (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-builtin-face)
                                         ;punctuation and parents  (same as function not to cause vidual disturbance)
    )
   "Font-lock patterns used in `R-mode' and R-output buffers.")
 
 (defvar ess-R-mode-font-lock-keywords
   (append (list
-           (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
+           (cons "\\b[0-9]*\\.?[0-9]+\\b" 'ess-numbers-face) ; numbers
            (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
                       'font-lock-keyword-face))
           ess-R-common-font-lock-keywords
@@ -1967,7 +1967,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
-    ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VC: this causes havoc
+    ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
     (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
           'font-lock-constant-face) ; inferior-ess problems or errors
     (cons "#" 'font-lock-comment-face) ; comment
@@ -2043,6 +2043,18 @@ the variable `ess-help-own-frame' is non-nil."
 ;;; Users note: Variables with document strings starting
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
+
+(defvar ess-function-call-face 'ess-function-call-face)
+(defface ess-function-call-face 
+  '((default (:weight normal :width normal :inherit font-lock-function-name-face)))
+  "Font Lock mode face used to highlight function calls."
+  :group 'ess)
+
+(defvar ess-numbers-face 'ess-numbers-face)
+(defface ess-numbers-face 
+  '((default (:weight normal :width normal :inherit font-lock-type-face)))
+  "Font Lock mode face used to highlight function calls."
+  :group 'ess)
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."
