@@ -1908,7 +1908,7 @@ If nil, input is in the `font-lock-variable-name-face'."
          'font-lock-constant-face)     ; modify search list or source
                                         ; new definitions
    (cons ess-R-function-name-regexp
-         '(1 font-lock-function-name-face t))
+         '(1 font-lock-function-name-face keep))
                                         ; function name
    (cons ess-R-function-call-regexp '(1 font-lock-function-name-face keep))
                                         ; function calls
@@ -1918,11 +1918,12 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font-lock patterns used in `R-mode' and R-output buffers.")
 
 (defvar ess-R-mode-font-lock-keywords
-  (append ess-R-common-font-lock-keywords
-          (list
+  (append (list
            (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
            (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-                      '(0 font-lock-keyword-face t)))) ; keywords
+                      'font-lock-keyword-face))
+          ess-R-common-font-lock-keywords
+          ) ; keywords
   "Font-lock patterns used in `R-mode' buffers.")
 
 (defvar ess-S-common-font-lock-keywords
@@ -1935,7 +1936,7 @@ If nil, input is in the `font-lock-variable-name-face'."
          'font-lock-constant-face)     ; modify search list or source
    
    (cons ess-S-function-name-regexp
-         '(1 font-lock-function-name-face t))
+         '(1 font-lock-function-name-face keep))
                                         ; function name
    (cons ess-R-function-call-regexp '(1 font-lock-function-name-face keep))
                                         ; function calls
@@ -1945,11 +1946,11 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font-lock patterns used in `S-mode' and S-output buffers.")
 
 (defvar ess-S-mode-font-lock-keywords
-  (append ess-S-common-font-lock-keywords
-          (list
+  (append (list
            (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
            (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-                      '(0 font-lock-keyword-face t))))        ; keywords
+                 'font-lock-keyword-face))
+          ess-S-common-font-lock-keywords)        ; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
 
