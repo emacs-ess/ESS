@@ -37,33 +37,34 @@
 
  ; Configuration variables
 
-(defvar S-syntax-table nil "Syntax table for S code.")
-(if S-syntax-table
-    nil
-  (setq S-syntax-table (make-syntax-table))
-  (modify-syntax-entry ?\\ "\\" S-syntax-table)
-  (modify-syntax-entry ?+  "."  S-syntax-table)
-  (modify-syntax-entry ?-  "."  S-syntax-table)
-  (modify-syntax-entry ?=  "."  S-syntax-table)
-  (modify-syntax-entry ?%  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?&  "."  S-syntax-table)
-  (modify-syntax-entry ?|  "."  S-syntax-table)
-  (modify-syntax-entry ?\' "\"" S-syntax-table)
-  (modify-syntax-entry ?\" "\"" S-syntax-table)
-  (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
-  (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
-  ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
-  (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
+(defvar S-syntax-table
+  (let ((S-syntax-table (make-syntax-table)))
+    (modify-syntax-entry ?\\ "\\" S-syntax-table)
+    (modify-syntax-entry ?+  "."  S-syntax-table)
+    (modify-syntax-entry ?-  "."  S-syntax-table)
+    (modify-syntax-entry ?=  "."  S-syntax-table)
+    (modify-syntax-entry ?%  "."  S-syntax-table)
+    (modify-syntax-entry ?<  "."  S-syntax-table)
+    (modify-syntax-entry ?>  "."  S-syntax-table)
+    (modify-syntax-entry ?&  "."  S-syntax-table)
+    (modify-syntax-entry ?|  "."  S-syntax-table)
+    (modify-syntax-entry ?\' "\"" S-syntax-table)
+    (modify-syntax-entry ?\" "\"" S-syntax-table)
+    (modify-syntax-entry ?#  "<"  S-syntax-table) ; open comment
+    (modify-syntax-entry ?\n ">"  S-syntax-table) ; close comment
+    ;;(modify-syntax-entry ?.  "w"  S-syntax-table) ; "." used in S obj names
+    (modify-syntax-entry ?.  "_"  S-syntax-table) ; see above/below,
                                         ; plus consider separation.
-  (modify-syntax-entry ?$  "_"  S-syntax-table); foo$comp = 1 symbol(completion)
-  (modify-syntax-entry ?@  "_"  S-syntax-table); foo@slot = 1 symbol(completion)
-  (modify-syntax-entry ?_  "."  S-syntax-table)
-  (modify-syntax-entry ?*  "."  S-syntax-table)
-  (modify-syntax-entry ?<  "."  S-syntax-table)
-  (modify-syntax-entry ?>  "."  S-syntax-table)
-  (modify-syntax-entry ?/  "."  S-syntax-table))
+    (modify-syntax-entry ?$  "_"  S-syntax-table); foo$comp = 1 symbol(completion)
+    (modify-syntax-entry ?@  "_"  S-syntax-table); foo@slot = 1 symbol(completion)
+    (modify-syntax-entry ?_  "_"  S-syntax-table)
+    (modify-syntax-entry ?*  "."  S-syntax-table)
+    (modify-syntax-entry ?<  "."  S-syntax-table)
+    (modify-syntax-entry ?>  "."  S-syntax-table)
+    (modify-syntax-entry ?/  "."  S-syntax-table)
+    S-syntax-table)
+  "Syntax table for S code."
+  )
 
 (defvar R-editing-alist
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
