@@ -1904,8 +1904,6 @@ If nil, input is in the `font-lock-variable-name-face'."
          'font-lock-constant-face)     ; assign
    (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
          'font-lock-type-face)          ; constants
-   (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
-   
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
          'font-lock-constant-face)     ; modify search list or source
                                         ; new definitions
@@ -1921,7 +1919,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-R-mode-font-lock-keywords
   (append ess-R-common-font-lock-keywords
-          (list (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+          (list
+           (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
+           (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
                       '(0 font-lock-keyword-face t)))) ; keywords
   "Font-lock patterns used in `R-mode' buffers.")
 
@@ -1933,7 +1933,6 @@ If nil, input is in the `font-lock-variable-name-face'."
          'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
          'font-lock-constant-face)     ; modify search list or source
-   (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
    
    (cons ess-S-function-name-regexp
          '(1 font-lock-function-name-face t))
@@ -1947,7 +1946,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-S-mode-font-lock-keywords
   (append ess-S-common-font-lock-keywords
-          (list (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
+          (list
+           (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
+           (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
                       '(0 font-lock-keyword-face t))))        ; keywords
   "Font-lock patterns used in `S-mode' buffers.")
 
