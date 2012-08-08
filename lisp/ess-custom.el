@@ -1876,7 +1876,9 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 ;;
 (defvar ess-R-assign-ops
-  '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
+  '("<<-" "<-" "->" "=") ; don't want "=" here which is not only for assign
+  ;; VS??: it's good to have different colour for = anyhow,
+  ;; very helpfull to read code like foo(x=xa, p=pa, x_not_na) 
   )
 
 (defvar ess-S-assign-ops ess-R-assign-ops) ; since "_" is deprecated for S-plus as well
