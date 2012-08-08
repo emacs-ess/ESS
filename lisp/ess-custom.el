@@ -2046,16 +2046,18 @@ the variable `ess-help-own-frame' is non-nil."
 ;;; with a * are the ones you can generally change safely, and
 ;;; may have to upon occasion.
 
-(defvar ess-function-call-face 'ess-function-call-face)
+(defvar ess-function-call-face 'ess-function-call-face
+  "Face name to use for highlighting function calls.")
 (defface ess-function-call-face 
   '((default (:weight normal :width normal :inherit font-lock-function-name-face)))
-  "Font Lock mode face used to highlight function calls."
+  "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
-(defvar ess-numbers-face 'ess-numbers-face)
+(defvar ess-numbers-face 'ess-numbers-face
+  "Face name to use for highlighting numbers.")
 (defface ess-numbers-face 
   '((default (:weight normal :width normal :inherit font-lock-type-face)))
-  "Font Lock mode face used to highlight function calls."
+  "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
 
 (defcustom ess-help-kill-bogus-buffers t
