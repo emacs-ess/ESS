@@ -1377,11 +1377,13 @@ If FILENAME is not found at all, ask the user where to find it if
                                   buffsym)
                        (return bf)))))
     (unless buffer
-      ;; 1. first search already open buffers for match (associate file might not even exist yet)
+      ;; 1. first search already open buffers for match (associated file might not even exist yet)
       (dolist (bf (buffer-list))
         (with-current-buffer  bf
           (when (and buffer-file-name
-                     (string-match (format "%s\\'" filename) buffer-file-name))
+                     (or (and (file-name-absolute-p filename)
+                              (string-match (format "%s\\'" filename) buffer-file-name))
+                         (equal filename (file-name-nondirectory buffer-file-name))))
             (setq buffer bf)
             (return))))
       ;; 2. The file name is absolute.  Use its explicit directory as
