@@ -1317,10 +1317,10 @@ of the current function, otherwise (in case of an error) return
 nil."
   (interactive "P")
   (ess-force-buffer-current "Process to use: ")
-  (ignore-errors
-    (previous-line)
-    (ess-next-code-line 1))
   (save-excursion
+    (ignore-errors
+      (previous-line)
+      (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
           (let* ((beg (nth 0 beg-end))
