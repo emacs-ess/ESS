@@ -1921,7 +1921,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 (defvar ess-R-mode-font-lock-keywords
   (append (list
-           (cons "\\b[0-9]*\\.?[0-9]+\\b" 'ess-numbers-face) ; numbers
+           (cons "\\b[0-9]*\\.?[0-9]+L?\\b" 'ess-numbers-face) ; numbers
            (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
                       'font-lock-keyword-face))
           ess-R-common-font-lock-keywords
