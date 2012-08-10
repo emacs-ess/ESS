@@ -700,6 +700,9 @@ Returns the name of the selected process."
                  (message "using process '%s'" rr)
                  rr)
              ;; else
+             (unless (and ess-current-process-name
+                          (get-process ess-current-process-name))
+               (setq ess-current-process-name nil))
              (when message
                (setq message (replace-regexp-in-string ": +\\'" "" message)))
              (ess-completing-read message (mapcar 'car ess-process-name-list)
