@@ -678,9 +678,12 @@ Returns the name of the selected process."
 
   (let ((num-processes (length ess-process-name-list)))
     (if (or (= 0 num-processes)
-            (and (= 1 num-processes) 
+            (and (= 1 num-processes)
                  (not (equal ess-dialect ;; don't auto connect if from different dialect
-                             (buffer-local-value 'ess-dialect (process-buffer (get-process (caar ess-process-name-list))))))))
+                             (buffer-local-value
+                              'ess-dialect
+                              (process-buffer (get-process
+                                               (caar ess-process-name-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -984,10 +987,10 @@ Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
 input STRING.
 "
-  
+
   (with-current-buffer (process-buffer process)
     (run-hook-with-args 'comint-input-filter-functions string)
-    
+
     (let ((functions ess-presend-filter-functions))
       (while (and functions string)
         (if (eq (car functions) t)
@@ -1270,14 +1273,14 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
-  
+
   (ess-region-blink start end)
   (save-excursion
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point)))
-  
+
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
          (dev-p (process-get proc 'developer))
@@ -1312,7 +1315,7 @@ the end of the buffer"))
 
 (defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'.   
+Arg has same meaning as for `ess-eval-region'.
 
 If NO-ERROR is non-nil and the function was successfully
 evaluated, return '(beg end) representing the beginning and end
