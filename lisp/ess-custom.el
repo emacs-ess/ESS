@@ -1937,7 +1937,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-R-font-lock-defaults '((ess-R-font-lock-keywords
                                     ess-R-font-lock-keywords:1
                                     ess-R-font-lock-keywords:2)
-                                   nil nil  ((?\. . "w") (?\_ . "w"))))
+                                   nil nil  ((?\. . "w") (?\_ . "w")))
   "Font lock defaults for R mode.")
 
 
