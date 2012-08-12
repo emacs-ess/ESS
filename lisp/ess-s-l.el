@@ -87,10 +87,15 @@
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (font-lock-defaults           . '(ess-R-mode-font-lock-keywords
-                                      nil nil ((?\. . "w") (?\_ . "w"))))
+    (font-lock-defaults           . ess-R-font-lock-defaults)
+                                      ;; nil nil ((?\. . "w") (?\_ . "w"))))
     )
   "General options for R source files.")
+
+(defvar ess-R-font-lock-defaults (list '(ess-R-font-lock-keywords
+                                         ess-R-font-lock-keywords:1
+                                         ess-R-font-lock-keywords:2)))
+
 
 (defvar S-editing-alist
   ;; copy the R-list and modify :

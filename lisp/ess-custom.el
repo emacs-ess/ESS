@@ -1900,33 +1900,66 @@ If nil, input is in the `font-lock-variable-name-face'."
   "\\(\\(\\sw\\|\\s_\\)+\\)\\s-*("
   "Regexp for function names")
 
-(defvar ess-R-common-font-lock-keywords
+(defvar ess-R-font-lock-keywords
   (list
-   (cons (regexp-opt ess-R-assign-ops)
-         'font-lock-constant-face)     ; assign
-   (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
-         'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
-         'font-lock-constant-face)     ; modify search list or source
-                                        ; new definitions
+         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
    (cons ess-R-function-name-regexp
          '(1 font-lock-function-name-face keep))
+   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+         'font-lock-keyword-face)
                                         ; function name
-   (cons ess-R-function-call-regexp '(1 ess-function-call-face keep))
-                                        ; function calls
-   ;; (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-builtin-face)
-                                        ;punctuation and parents  (same as function not to cause vidual disturbance)
    )
-  "Font-lock patterns used in `R-mode' and R-output buffers.")
+  "Font-lock patterns level 0.")
 
-(defvar ess-R-mode-font-lock-keywords
-  (append (list
+(defvar ess-R-font-lock-keywords:1
+  (append ess-R-font-lock-keywords:1 
+          (list
+           (cons (regexp-opt ess-R-assign-ops)
+                 'font-lock-constant-face)     ; assign
+           (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
+                 'font-lock-type-face)          ; constants
+           ))
+  
+  "Font-lock patterns level 1.")
+
+
+(defvar ess-R-font-lock-keywords:2
+  (append ess-R-font-lock-keywords:2
+          (list
            (cons "[0-9]*\\.?[0-9]+[LeE]?" 'ess-numbers-face) ; numbers
-           (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-                      'font-lock-keyword-face))
-          ess-R-common-font-lock-keywords
-          ) ; keywords
-  "Font-lock patterns used in `R-mode' buffers.")
+           (cons ess-R-function-call-regexp
+                 '(1 ess-function-call-face keep)) ; function calls
+           ))
+  "Font-lock patterns level 2.")
+
+
+(defvar ess-R-font-lock-defaults (list '(ess-R-font-lock-keywords
+                                         ess-R-font-lock-keywords:1
+                                         ess-R-font-lock-keywords:2))
+  "Font lock defaults for R mode.")
+
+
+(defvar inferior-ess-R-font-lock-keywords
+  (append
+   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
+
+   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
+       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
+                   '(1 font-lock-variable-name-face keep t))) 
+
+     ess-R-font-lock-keywords:2
+
+     (list
+    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
+    ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
+    (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
+          'font-lock-constant-face) ; inferior-ess problems or errors
+    (cons "#" 'font-lock-comment-face) ; comment
+    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
+    ))
+  "Font-lock patterns used in inferior-R-mode buffers."))
+
 
 (defvar ess-S-common-font-lock-keywords
   (list
@@ -1956,26 +1989,6 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font-lock patterns used in `S-mode' buffers.")
 
 
-
-(defvar inferior-ess-R-font-lock-keywords
-  (append
-   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
-
-   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
-       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-                   '(1 font-lock-variable-name-face keep t))) )
-
-   ess-R-common-font-lock-keywords
-
-   (list
-    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
-    ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
-    (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
-          'font-lock-constant-face) ; inferior-ess problems or errors
-    (cons "#" 'font-lock-comment-face) ; comment
-    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
-    ))
-  "Font-lock patterns used in inferior-R-mode buffers.")
 
 (defvar inferior-ess-S-font-lock-keywords
   (append
