@@ -1913,7 +1913,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font-lock patterns level 0.")
 
 (defvar ess-R-font-lock-keywords:1
-  (append ess-R-font-lock-keywords:1 
+  (append ess-R-font-lock-keywords
           (list
            (cons (regexp-opt ess-R-assign-ops)
                  'font-lock-constant-face)     ; assign
@@ -1925,7 +1925,7 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 
 (defvar ess-R-font-lock-keywords:2
-  (append ess-R-font-lock-keywords:2
+  (append ess-R-font-lock-keywords:1
           (list
            (cons "[0-9]*\\.?[0-9]+[LeE]?" 'ess-numbers-face) ; numbers
            (cons ess-R-function-call-regexp

@@ -92,10 +92,6 @@
     )
   "General options for R source files.")
 
-(defvar ess-R-font-lock-defaults (list '(ess-R-font-lock-keywords
-                                         ess-R-font-lock-keywords:1
-                                         ess-R-font-lock-keywords:2)))
-
 
 (defvar S-editing-alist
   ;; copy the R-list and modify :
