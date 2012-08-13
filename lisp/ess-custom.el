@@ -1947,11 +1947,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 
    (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-                   '(1 font-lock-variable-name-face keep t))) 
+                   '(1 font-lock-variable-name-face keep t))))
 
-     ess-R-font-lock-keywords:2
-
-     (list
+   ess-R-font-lock-keywords:2
+     
+   (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
     ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
     (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
