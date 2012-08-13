@@ -1959,7 +1959,7 @@ If nil, input is in the `font-lock-variable-name-face'."
     (cons "#" 'font-lock-comment-face) ; comment
     (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
     ))
-  "Font-lock patterns used in inferior-R-mode buffers."))
+  "Font-lock patterns used in inferior-R-mode buffers.")
 
 
 (defvar ess-S-common-font-lock-keywords
