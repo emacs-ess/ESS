@@ -1902,10 +1902,8 @@ If nil, input is in the `font-lock-variable-name-face'."
   (list
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
          'font-lock-constant-face)     ; modify search list or source (i.e. directives)
-   (cons ess-R-function-name-regexp
-         '(1 font-lock-function-name-face keep))
-   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
-         'font-lock-keyword-face)
+   (cons ess-R-function-name-regexp 
+         '(1 font-lock-function-name-face t))  ; override
                                         ; function name
    )
   "Font-lock patterns level 0.")
@@ -1913,19 +1911,20 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-R-font-lock-keywords:1
   (append ess-R-font-lock-keywords
           (list
+           (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+                 'font-lock-keyword-face)
            (cons (regexp-opt ess-R-assign-ops)
                  'font-lock-constant-face)     ; assign
            (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
                  'font-lock-type-face)          ; constants
            ))
-
   "Font-lock patterns level 1.")
 
 
 (defvar ess-R-font-lock-keywords:2
   (append ess-R-font-lock-keywords:1
           (list
-           (cons "\\b[0-9]*[.eEL]?[0-9]*\\b" 'ess-numbers-face) ; numbers
+           (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face) ; numbers
            (cons ess-R-function-call-regexp
                  '(1 ess-function-call-face keep)) ; function calls
            ))
