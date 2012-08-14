@@ -1524,12 +1524,12 @@ for `ess-eval-region'."
                       (buffer-file-name))
                  (expand-file-name
                   (read-file-name "Load S file: " nil nil t)))))
+  (ess-force-buffer-current "Process to load into: ")
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
     (if (ess-process-get 'tracebug)
         (ess-tracebug-source-current-file filename)
 
-      (ess-make-buffer-current)
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
       (let ((source-buffer (get-file-buffer filename)))
@@ -2637,6 +2637,7 @@ the `load-path'."
   "Reread all directories/objects in variable `ess-search-list' to
 form completions."
   (interactive)
+
   (if (ess-make-buffer-current) nil
     (error "Not an ESS process buffer"))
   (setq ess-sl-modtime-alist nil)
