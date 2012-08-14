@@ -1876,14 +1876,12 @@ If nil, input is in the `font-lock-variable-name-face'."
 
 ;;
 (defvar ess-R-assign-ops
-  '("<<-" "<-" "->" "=") ; don't want "=" here which is not only for assign
+  '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
   ;; VS??: it's good to have different colour for = anyhow,
-  ;; very helpfull to read code like foo(x=xa, p=pa, x_not_na) 
+  ;; very helpful to read code like foo(x=xa, p=pa, x_not_na)
   )
-
 (defvar ess-S-assign-ops ess-R-assign-ops) ; since "_" is deprecated for S-plus as well
-;; '("<<-" "<-" "_" "->") ; don't want "=" here which is not only for assign
-;; )
+
 
 ;; Note: \\s\" is really \s" which means match a char belonging to the
 ;; "quote character" syntax class.
@@ -1920,7 +1918,7 @@ If nil, input is in the `font-lock-variable-name-face'."
            (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
                  'font-lock-type-face)          ; constants
            ))
-  
+
   "Font-lock patterns level 1.")
 
 
@@ -1950,7 +1948,7 @@ If nil, input is in the `font-lock-variable-name-face'."
                    '(1 font-lock-variable-name-face keep t))))
 
    ess-R-font-lock-keywords:1
-     
+
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
     (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
@@ -1970,7 +1968,7 @@ If nil, input is in the `font-lock-variable-name-face'."
          'font-lock-type-face)          ; constants
    (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
          'font-lock-constant-face)     ; modify search list or source
-   
+
    (cons ess-S-function-name-regexp
          '(1 font-lock-function-name-face keep))
                                         ; function name
@@ -2062,14 +2060,14 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
-(defface ess-function-call-face 
+(defface ess-function-call-face
   '((default (:weight normal :width normal :inherit font-lock-function-name-face)))
   "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
-(defface ess-numbers-face 
+(defface ess-numbers-face
   '((default (:weight normal :width normal :inherit font-lock-type-face)))
   "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
