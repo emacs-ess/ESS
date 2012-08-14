@@ -1883,19 +1883,28 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-S-assign-ops ess-R-assign-ops) ; since "_" is deprecated for S-plus as well
 
 
-;; Note: \\s\" is really \s" which means match a char belonging to the
-;; "quote character" syntax class.
+;; ;; Note: \\s\" is really \s" which means match a char belonging to the
+;; ;; "quote character" syntax class.
+;; (defvar ess-R-function-name-regexp
+;;   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
+;;           "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
+;;           "\\(\\s-\\|\n\\)*function")
+;;   )
+
+
+;; VS: simpler and more general:
 (defvar ess-R-function-name-regexp
-  (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
-          "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
-          "\\(\\s-\\|\n\\)*function")
-  )
+  (concat "\\(\\(?2:\\s\"\\).+\\2\\|\\sw+\\)"
+          "\\s-*\\(<-\\)"
+          "[ \t\n]*function"))
+
+
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
   )
 
 (defvar ess-R-function-call-regexp
-  "\\(\\(\\sw\\|\\s_\\)+\\)\\s-*("
+  "\\(\\sw+\\)("
   "Regexp for function names")
 
 (defvar ess-R-font-lock-keywords
