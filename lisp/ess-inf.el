@@ -148,24 +148,23 @@ Alternatively, it can appear in its own frame if
                                             ess-customize-alist))))
         (temp-ess-lang (eval (cdr (assoc 'ess-language
                                          ess-customize-alist)))))
-    (with-current-buffer ess-dribble-buffer
-      ;;- Is this needed? (no, but it's useful to see them there [MM])
-      ;; Hack to work around the following "default" (global) setting of vars:
-      ;; make sure our comint-... hack doesn't affect anything else
-      ;;(make-variable-buffer-local 'comint-use-prompt-regexp)
-      (make-local-variable 'comint-use-prompt-regexp)
-      ;; now the abomination:
-      ;; (ess-setq-vars-default ess-customize-alist)
+    ;; (with-current-buffer ess-dribble-buffer
+    ;;   ;;- Is this needed? (no, but it's useful to see them there [MM])
+    ;;   ;; Hack to work around the following "default" (global) setting of vars:
+    ;;   ;; make sure our comint-... hack doesn't affect anything else
+    ;;   ;;(make-variable-buffer-local 'comint-use-prompt-regexp)
+    ;;   (make-local-variable 'comint-use-prompt-regexp)
+    ;;   ;; now the abomination:
+    ;;   ;; (ess-setq-vars-default ess-customize-alist)
 
-      (setq-default comint-use-prompt-regexp nil) ; re set HACK!
-      ;;>> Doesn't set ess-language,
-      ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
-      ;;>> => that's why things fail:
-      ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
-      ;;                 ======
-      )
+    ;;   (setq-default comint-use-prompt-regexp nil) ; re set HACK!
+    ;;   ;;>> Doesn't set ess-language,
+    ;;   ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
+    ;;   ;;>> => that's why things fail:
+    ;;   ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
+    ;;   ;;                 ======
+    ;;   )
 
-    ;; run hooks now, to overwrite the above!
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
      (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
@@ -181,7 +180,7 @@ Alternatively, it can appear in its own frame if
                                         ; otherwise.
                            temp-ess-dialect))
            (temp-lang temp-ess-lang)
-           (procname (let ((ntry 0) ;; find a non-existent process
+           (procname (let ((ntry 0) ;; find the next non-existent process N (*R:N*)
                            (done nil))
                        (while (not done)
                          (setq ntry (1+ ntry)
@@ -190,55 +189,44 @@ Alternatively, it can appear in its own frame if
                                                    ntry
                                                    temp-dialect)))))
                        (ess-proc-name ntry temp-dialect)))
-           (startdir nil)
-           (buf nil)
-           (buf-name-str  (concat "*" procname "*")))
+           (buf-name-str  (concat "*" procname "*"))
+           startdir buf method)
 
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
-               procname
-               temp-dialect
-               buf-name-str))
+               procname temp-dialect buf-name-str))
+      
       (cond
-       ;; Since it's a new or terminated process, try to use current buffer
-       ((and (not buf)
-             (not (comint-check-proc (current-buffer)))
+       ;; 1) try to use current buffer, if inferior-ess-mode but no process
+       ((and (not (comint-check-proc (current-buffer)))
              (memq major-mode '(inferior-ess-mode)))
-        (setq startdir
-              (if ess-ask-for-ess-directory
-                  (ess-get-directory (directory-file-name defdir))
-                defdir))
-        (setq buf (current-buffer))
-        (ess-write-to-dribble-buffer
-         (format "(inferior-ess) Method #1 start=%s buf=%s\n" startdir buf)))
+        (setq startdir  (if ess-ask-for-ess-directory
+                            (ess-get-directory (directory-file-name defdir))
+                          defdir)
+              buf       (current-buffer)
+              method    1))
 
-       ;;  Not an ESS buffer yet
-       ((and (not buf)
-             (get-buffer buf-name-str))
-        (setq buf (get-buffer buf-name-str))
-        (ess-write-to-dribble-buffer
-         (format "(inferior-ess) Method #2 buf=%s\n" buf)))
+       ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
+       ((get-buffer buf-name-str)
+        (setq buf       (get-buffer buf-name-str)
+              method    2))
 
-       ;; Ask for transcript file and startdir
-       ;; FIXME -- this should be in ess-get-transfile
-       ;; AJR: Why?  I'm not clear about the logic, i.e. when would it
-       ;;      be used again, to justify?
-       ((not buf)
-        (setq startdir
-              (if ess-ask-for-ess-directory
-                  (ess-get-directory (directory-file-name defdir))
-                defdir))
-        (if ess-ask-about-transfile
-            (let ((transfilename (read-file-name
-                                  "Use transcript file (default none):"
-                                  startdir "")))
-              (setq buf (if (string= transfilename "")
-                            (get-buffer-create buf-name-str)
-                          (find-file-noselect (expand-file-name
-                                               transfilename)))))
-          (setq buf (get-buffer-create buf-name-str)))
-        (ess-write-to-dribble-buffer
-         (format "(inferior-ess) Method #3 start=%s buf=%s\n" startdir buf))))
+       ;; 3)  Pick up a transfcript file or create a new buffer
+       (t
+        (setq startdir  (if ess-ask-for-ess-directory
+                            (ess-get-directory (directory-file-name defdir))
+                          defdir)
+              buf       (if ess-ask-about-transfile
+                            (let ((transfilename (read-file-name "Use transcript file (default none):"
+                                                                 startdir "")))
+                              (if (string= transfilename "")
+                                  (get-buffer-create buf-name-str)
+                                (find-file-noselect (expand-file-name  transfilename))))
+                          (get-buffer-create buf-name-str))
+              method    3)))
+      
+      (ess-write-to-dribble-buffer
+       (format "(inferior-ess) Method #%d start=%s buf=%s\n" method startdir buf))
 
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
@@ -251,31 +239,26 @@ Alternatively, it can appear in its own frame if
       ;; Write out debug info
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
-               ess-language
-               ess-dialect
-               (current-buffer)))
+               ess-language  ess-dialect (current-buffer)))
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
-               ess-start-args
-               inferior-ess-start-args))
+               ess-start-args inferior-ess-start-args))
       (ess-write-to-dribble-buffer
-       (format "(inf-ess finish [%s(%s), %s(%s,%s)]\n"
-               ess-language
-               ess-dialect
-               inferior-ess-program
-               ess-current-process-name
-               ess-local-process-name))
+       (format "(inf-ess finish [%s(%s), %s(%s)]\n"
+               ess-language ess-dialect inferior-ess-program ess-local-process-name))
 
-      ;; Start from the "right" directory
-      (if startdir (setq default-directory startdir))
-      (if ess-history-file ;; Set up history
+      ;; Set up history file
+      (if ess-history-file 
           (if (eq t ess-history-file)
               (setq ess-history-file (concat "." ess-dialect "history"))
             ;; otherwise must be a string "..."
             (unless (stringp ess-history-file)
               (error "`ess-history-file' must be nil, t, or a string"))))
+
       ;; initialize.
-      (let ((ess-directory (if startdir default-directory ess-directory)))
+      (if startdir (setq default-directory startdir))
+      (let ((ess-directory (or startdir
+                               ess-directory)))
         (ess-multi procname buf inferior-ess-start-args)))))
 
 
