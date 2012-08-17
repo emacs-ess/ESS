@@ -31,7 +31,7 @@
 
 (require 'custom)
 (require 'executable)
-
+(require 'font-lock)
 ;; Customization Groups
 
 (defgroup ess nil
@@ -2069,7 +2069,7 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
 (defface ess-function-call-face
-  '((default (:weight normal :width normal :inherit font-lock-function-name-face)))
+  '((default (:weight normal :width normal :inherit font-lock-builtin-face)))
   "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
