@@ -549,21 +549,6 @@ in inferior buffers.  ")
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))
     ))
 
-(defvar ess-R-tb-regexp-alist '(R R2 R3 R-recover)
-  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
-
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
-
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(from \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
-
-;; (add-to-list 'compilation-error-regexp-alist-alist
-;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
 ;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
