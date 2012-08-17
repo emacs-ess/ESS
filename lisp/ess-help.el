@@ -257,7 +257,7 @@ an inferior emacs buffer) the GUI help window is used."
 	    ;;dbg (ess-write-to-dribble-buffer
 	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
 	    (set-buffer-modified-p 'nil)
-	    (toggle-read-only t))))
+            (setq buffer-read-only t))))
       (when (buffer-live-p tbuffer)
         (ess--switch-to-help-buffer tbuffer))
       )))
@@ -381,7 +381,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                                 'follow-link t
                                 'help-echo "help on object")))
           )
-        (toggle-read-only t))
+        (setq buffer-read-only t))
       (ess--switch-to-help-buffer buff)
       )))
 
@@ -459,7 +459,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (goto-char (point-min))
         (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
         (delete-char 1)
-        (toggle-read-only t))
+        (setq buffer-read-only t))
       (ess--switch-to-help-buffer buff)
       )))
 
@@ -713,7 +713,7 @@ to see which keystrokes find which sections."
     (describe-function 'ess-skip-to-help-section)
 
     (with-current-buffer "*Help*"
-      (toggle-read-only nil)
+      (setq buffer-read-only nil)
       (goto-char (point-max))
       (insert "\n\nCurrently defined keys are:
 

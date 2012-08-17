@@ -21,8 +21,10 @@ library('methods')
     allClassDefs <- function() allObjects[grepl(CPattern, allObjects)]
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
-    if(is.null(envpkg))
+    if(is.null(envpkg)){
         library(package, character.only = TRUE)
+        envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
+    }
     if (is.null(envpkg))
         stop(gettextf("Can't find an environment corresponding to package name '%s'",
                       package), domain = NA)
@@ -51,13 +53,21 @@ library('methods')
                     if(.essDev_differs(thisEnv, thisNs)){
                         environment(thisEnv) <- environment(thisNs)
                         .essDev_assign(this, thisEnv, envns)
-                        funcNs <- c(funcNs, this)}
+                        funcNs <- c(funcNs, this)
+                        if(exists(".__S3MethodsTable__.", envir = envns, inherits = FALSE)){
+                            S3_table <- get(".__S3MethodsTable__.", envir = envns)
+                            if(exists(this, envir = S3_table, inherits = FALSE))
+                                .essDev_assign(this, thisEnv, S3_table)
+                        }
+                    }
                 }else{
-                    newNs <- c(newNs, this)}
+                    newNs <- c(newNs, this)
+                }
             }else{
                 if(!identical(thisEnv, thisNs)){
                     .essDev_assign(this, thisEnv, envns)
-                    objectsNs <- c(objectsNs, this)}}
+                    objectsNs <- c(objectsNs, this)}
+            }
         }else{
             newNs <- c(newNs, this)}
         ## PKG
@@ -148,16 +158,15 @@ library('methods')
     if(length(newClasses))
         newObjects <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(newClasses, collapse = ", ")))
 
-
     ## METHODS:
     ## Method internals: For efficiency reasons setMethod() caches
     ## method definition into a global table which you can get with
     ## 'getMethodsForDispatch' function, and when a method is dispatched that
     ## table is used. When ess-developer is used to source method definitions the
     ## two copies of the functions are identical up to the environment. The
-    ## environment of cached object has namespace:foo as it's parent but the
+    ## environment of the cached object has namespace:foo as it's parent but the
     ## environment of the object in local table is precisely namspace:foo. This
-    ## does not cause any practical difference in evaluation.
+    ## does not cause any difference in evaluation.
     methodNames <- allMethodTables()
     methods <- sub(methods:::.TableMetaPrefix(), "", methodNames)
     methods <- sub(":.*", "", methods)

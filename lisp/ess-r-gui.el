@@ -180,7 +180,7 @@ independent Rgui R Console."
 You may ignore the 'options' error in this buffer.\n\n")
     (goto-char (point-max))
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
-    (toggle-read-only t) ; force buffer to be read-only
+    (setq buffer-read-only t) ; force buffer to be read-only
     (setq mode-name "ddeESS")
 
     ;; initialization

@@ -85,6 +85,8 @@
   (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
   )
 
+;; (defvar ess-roxy-font-lock-keywords nil)
+
 (defvar ess-roxy-font-lock-keywords
   `((,(concat "^" ess-roxy-str " *\\([@\\]"
               (regexp-opt ess-roxy-tags-param t)

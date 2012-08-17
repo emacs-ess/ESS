@@ -41,8 +41,10 @@
 
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
-  (require 'comint)
   (require 'ess-utils))
+
+(require 'comint)
+(require 'overlay)
 
 ;;; VS: These autoloads are not needed. See coments in ess-mode.el.
 ;;*;; Autoloads
@@ -674,8 +676,15 @@ Returns the name of the selected process."
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
+
   (let ((num-processes (length ess-process-name-list)))
-    (if (= 0 num-processes)
+    (if (or (= 0 num-processes)
+            (and (= 1 num-processes)
+                 (not (equal ess-dialect ;; don't auto connect if from different dialect
+                             (buffer-local-value
+                              'ess-dialect
+                              (process-buffer (get-process
+                                               (caar ess-process-name-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -695,6 +704,9 @@ Returns the name of the selected process."
                  (message "using process '%s'" rr)
                  rr)
              ;; else
+             (unless (and ess-current-process-name
+                          (get-process ess-current-process-name))
+               (setq ess-current-process-name nil))
              (when message
                (setq message (replace-regexp-in-string ": +\\'" "" message)))
              (ess-completing-read message (mapcar 'car ess-process-name-list)
@@ -937,10 +949,30 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
     ;; (princ (format "%s:" string))
     (insert string)))
 
+
+(defvar ess-presend-filter-functions nil
+  "List of functions to call before sending the input string to the process.
+Each function gets one argument, a string containing the text to
+be send to the subprocess.  It should return the string send,
+perhaps the same string that was received, or perhaps a modified
+or transformed string.
+
+The functions on the list are called sequentially, and each one is
+given the string returned by the previous one.  The string returned by
+the last function is the text that is actually sent to the process.
+
+You can use `add-hook' to add functions to this list
+either globally or locally.")
+
 (defun ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call `ess-send-string'.
-If MESSAGE is supplied, display it at the end."
+If MESSAGE is supplied, display it at the end.
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+region.
+"
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
@@ -953,12 +985,27 @@ If MESSAGE is supplied, display it at the end."
 (defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
 Removes empty lines during the debugging.
-STRING  need not end with \\n."
-  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
-      (setq string (replace-regexp-in-string
-                    "\n\\s *$" "" string))) ; remove empty lines (which interfere with evals) in debug state
-  ;; (setq string
-  ;;       (replace-regexp-in-string  "^[^#]+\\()\\)[^)]*\\'" "\n)" string nil nil 1)) ;;needed for busy prompt
+STRING  need not end with \\n.
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+input STRING.
+"
+
+  (with-current-buffer (process-buffer process)
+    (run-hook-with-args 'comint-input-filter-functions string)
+
+    (let ((functions ess-presend-filter-functions))
+      (while (and functions string)
+        (if (eq (car functions) t)
+            (let ((functions
+                   (default-value 'ess-presend-filter-functions)))
+              (while (and functions string)
+                (setq string (funcall (car functions) string))
+                (setq functions (cdr functions))))
+          (setq string (funcall (car functions) string)))
+        (setq functions (cdr functions)))))
+
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
       (funcall ess-send-string-function process string visibly)
@@ -1210,6 +1257,18 @@ will be used instead of the default .001s and be passed to
 
 ;;;*;;; Evaluate only
 
+(defvar  ess-current-region-overlay
+  (let ((overlay (make-overlay (point) (point))))
+    (overlay-put overlay 'face  'highlight) ;; todo use highlight??
+    overlay)
+  "The overlay for highlighting currently evaluated region or line.")
+
+(defun ess-region-blink (start end)
+  (move-overlay ess-current-region-overlay start end)
+  (run-with-timer .3 nil (lambda ()
+                           (delete-overlay ess-current-region-overlay))))
+
+
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
 With prefix argument toggle the meaning of `ess-eval-visibly-p';
@@ -1220,11 +1279,14 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
+
+  (ess-region-blink start end)
   (save-excursion
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point)))
+
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
          (dev-p (process-get proc 'developer))
@@ -1259,7 +1321,7 @@ the end of the buffer"))
 
 (defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'.   
+Arg has same meaning as for `ess-eval-region'.
 
 If NO-ERROR is non-nil and the function was successfully
 evaluated, return '(beg end) representing the beginning and end
@@ -1267,9 +1329,10 @@ of the current function, otherwise (in case of an error) return
 nil."
   (interactive "P")
   (ess-force-buffer-current "Process to use: ")
-  (ignore-errors (previous-line))
-  (ess-next-code-line 1)
   (save-excursion
+    (ignore-errors
+      (previous-line)
+      (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
           (let* ((beg (nth 0 beg-end))
@@ -1282,6 +1345,8 @@ nil."
                               (ess-read-object-name-default)))
                  (mess (format "Eval function %s" (or name "???")))
                  (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
+
+            (ess-region-blink beg end)
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
              (tb-p      (ess-tracebug-send-region proc beg end visibly mess 'func))
@@ -1322,7 +1387,7 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 paragraph other to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
-  (let ((beg-end (ess-eval-function vis 'no-error)))
+  (let ((beg-end (ignore-errors (ess-eval-function vis 'no-error)))) ;; ignore-errors is a hack, ess-eval-function gives stupid errors sometimes
     (if (null beg-end) ; not a function
         (ess-eval-paragraph-and-step vis)
       (goto-char (cadr beg-end))
@@ -1355,9 +1420,14 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
-      (while (and (= n 0)
-                  (looking-at "\\s-*\\($\\|\\s<\\)"))
-        (setq n (forward-line inc)))
+      (if (featurep 'xemacs)
+          (while (and (= n 0)
+                      (looking-at "\\s-*\\($\\|\\s<\\)"))
+            (setq n (forward-line inc)))
+        (require 'newcomment)
+        (comment-beginning)
+        (beginning-of-line)
+        (forward-comment (* inc (buffer-size)))) ;; as sugested in info file
       (setq arg (- arg inc)))
     n))
 
@@ -1372,8 +1442,9 @@ true."
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
   (unless (or simple-next ess-eval-empty even-empty)
-    (ignore-errors (previous-line))
-    (ess-next-code-line 1))
+    (ignore-errors
+      (previous-line)
+      (ess-next-code-line 1)))
   (save-excursion
     (end-of-line)
     (let ((end (point)))
@@ -1439,8 +1510,9 @@ move forward to the first line after the paragraph.  If not
 inside a paragraph, evaluate next one. Arg has same meaning as
 for `ess-eval-region'."
   (interactive "P")
-  (ignore-errors (previous-line))
-  (ess-next-code-line 1)
+  (ignore-errors
+    (previous-line)
+    (ess-next-code-line 1))
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
     (forward-line 1)))
@@ -1457,12 +1529,12 @@ for `ess-eval-region'."
                       (buffer-file-name))
                  (expand-file-name
                   (read-file-name "Load S file: " nil nil t)))))
+  (ess-force-buffer-current "Process to load into: ")
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
     (if (fboundp (ess-process-get 'source-file-function))
 	(funcall (ess-process-get 'source-file-function))
 
-      (ess-make-buffer-current)
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
       (let ((source-buffer (get-file-buffer filename)))
@@ -2524,6 +2596,7 @@ the `load-path'."
   "Reread all directories/objects in variable `ess-search-list' to
 form completions."
   (interactive)
+
   (if (ess-make-buffer-current) nil
     (error "Not an ESS process buffer"))
   (setq ess-sl-modtime-alist nil)

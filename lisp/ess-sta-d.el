@@ -79,6 +79,23 @@
 (fset 'stata-mode 'STA-mode)
 (fset 'Stata-mode 'STA-mode)
 
+
+(defun ess-sta-remove-comments (string)
+  "Remove one-line comments before sending the STRING to process.
+
+This function is used placed in `ess-presend-filter-functions'.
+"
+  (replace-regexp-in-string "/\\*.*\\*/\\|//.*$" "" string)
+  )
+
+;; (ess-sta-remove-comments "aaa /* sdfdsf */ bbb
+;; sdfsd
+;;  ccc // sdfsf
+;; sdf /* sdfdsf */
+;; sdfsf
+;; " )
+
+
 (defun stata (&optional start-args)
   "Call Stata."
   (interactive "P")
@@ -92,6 +109,8 @@
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
     (inferior-ess sta-start-args)
     (let ((proc (get-process ess-local-process-name)))
+      (with-current-buffer (process-buffer proc)
+        (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local))
       (while (process-get proc 'sec-prompt)
         ;; get read of all --more-- if stata.msg is too long.
         (ess-send-string proc "q")

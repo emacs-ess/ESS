@@ -1324,10 +1324,10 @@ style variables buffer local."
     (if (not quiet)
         (message "ESS-style: %s" ess-style))
                                         ; finally, set the indentation style variables making each one local
-    (mapc (function (lambda (ess-style-pair)
-                      (make-local-variable (car ess-style-pair))
-                      (set (car ess-style-pair)
-                           (cdr ess-style-pair))))
+    (mapc (lambda (ess-style-pair)
+            (make-local-variable (car ess-style-pair))
+            (set (car ess-style-pair)
+                 (eval (cdr ess-style-pair))))
           (cdr (assq ess-style ess-style-alist)))
     ess-style))
 

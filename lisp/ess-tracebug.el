@@ -206,7 +206,10 @@ block (used for source references insertion)"
     (when (looking-back "\\s +") ;drop the end empty lines
       (re-search-backward "[^ \t\n]" nil t)
       (setq end (point-at-eol)))
-    (put-text-property beg end 'tb-index ess--tracebug-eval-index)
+    (let ((buffer-undo-list t)
+          (mod? (buffer-modified-p)))
+      (put-text-property beg end 'tb-index ess--tracebug-eval-index)
+      (if (not mod?) (set-buffer-modified-p nil))) ;; put-text-property markes buffer as modified
     (format "eval(parse(text=\"%s\",srcfile=srcfile(\"%s@%d\")))\n"
             (ess-quote-special-chars (buffer-substring-no-properties beg end))
             filename ess--tracebug-eval-index)))
@@ -477,8 +480,7 @@ in inferior buffers.  ")
     (overlay-put ove 'evaporate t)
     ove))
 
-;; (ess-tb-make-last-input-overlay (point-at-bol) (point-at-eol))
-(defvar ess-tracebug-enhance-ess-command t)
+
 (defun ess-tb-start ()
   "Start traceback session "
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
@@ -547,6 +549,21 @@ in inferior buffers.  ")
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))
     ))
 
+(defvar ess-R-tb-regexp-alist '(R R2 R3 R-recover)
+  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R2 "(\\(from \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
 ;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
@@ -729,6 +746,7 @@ help ?options for more details."
 
 (defvar ess-dbg-last-ref-marker (make-marker)
   "Last debug reference in *ess.dbg* buffer (a marker).")
+(make-variable-buffer-local 'ess-dbg-last-ref-marker)
 
 (defcustom ess-dbg-search-path '(nil)
   "List of directories to search for source files.
@@ -1036,6 +1054,17 @@ of the ring."
 (make-variable-buffer-local 'ess-dbg-mode-line-indicator)
 (put 'ess-dbg-mode-line-indicator 'risky-local-variable t)
 
+
+(defun ess-dbg-remove-empty-lines (string)
+  "Remove empty lines (which interfere with evals) during debug.
+
+This function is used placed in `ess-presend-filter-functions'.
+"
+  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
+      (replace-regexp-in-string "\n\\s *$" "" string)
+    string))
+
+
 (defun ess-dbg-start ()
   "Start the debug session.
 Add to ESS the interactive debugging functionality, breakpoints,
@@ -1055,6 +1084,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
+      (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
       (buffer-disable-undo)
@@ -1178,7 +1208,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))
-    ;; JUMP to line if debug expression was matched
+
+    ;; JUMP to line if debug expression was matched    
     (when match-jump
       (with-current-buffer dbuff              ;; insert string in *ess.dbg* buffer
         (goto-char (point-max))
@@ -1193,6 +1224,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     ;;     (goto-char (point-max))
     ;;     (insert (concat " ---\n " string "\n ---"))
     ;;     ))
+
     ;; SKIP if needed
     (when (and match-skip  (not was-in-recover))
       (process-send-string proc  "n\n"))
@@ -1206,6 +1238,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when wbuff
         (ess-watch-refresh-buffer-visibly wbuff ))
       )
+
     ;; ACTIVATE the debugger and trigger singlekey COMMAND if entered for the first time
     (when (and (not was-active)
                (or match-jump match-active))
@@ -1228,7 +1261,8 @@ is non nil, attempt to open the location in a different window."
   (interactive)
   (let (t-debug-position ref)
     (with-current-buffer  dbuff
-      (setq ref  (ess-dbg-get-next-ref -1 (point-max) ess-dbg-last-ref-marker ess-dbg-regexp-reference)) ; sets point at the end of found ref
+      (setq ref  (ess-dbg-get-next-ref -1 (point-max) ess-dbg-last-ref-marker
+                                       ess-dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
         (move-marker ess-dbg-last-ref-marker (point-at-eol))
         (move-marker ess-dbg-current-ref ess-dbg-last-ref-marker) ;; each new step repositions the current-ref!
@@ -1330,11 +1364,13 @@ If FILENAME is not found at all, ask the user where to find it if
                                   buffsym)
                        (return bf)))))
     (unless buffer
-      ;; 1. first search already open buffers for match (associate file might not even exist yet)
+      ;; 1. first search already open buffers for match (associated file might not even exist yet)
       (dolist (bf (buffer-list))
         (with-current-buffer  bf
           (when (and buffer-file-name
-                     (string-match (format "%s\\'" filename) buffer-file-name))
+                     (or (and (file-name-absolute-p filename)
+                              (string-match (format "%s\\'" filename) buffer-file-name))
+                         (equal filename (file-name-nondirectory buffer-file-name))))
             (setq buffer bf)
             (return))))
       ;; 2. The file name is absolute.  Use its explicit directory as
