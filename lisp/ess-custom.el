@@ -1575,9 +1575,9 @@ of Emacs until the code has been successfully evaluated."
 
 ;;*;; Variables relating to multiple processes
 
-;; SJE -- this shouldn't be customixed by user.
-(defvar ess-current-process-name nil
-  "Name of the current S process.")
+;; VS[17-08-2012]: all of the occurrences in the code should should eventually
+;; go away, (once we are sure this doesn't break anything)
+(defvaralias 'ess-current-process-name 'ess-local-process-name)
 
 (defvar ess-mode-line-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
