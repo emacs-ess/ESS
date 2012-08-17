@@ -678,9 +678,12 @@ Returns the name of the selected process."
 
   (let ((num-processes (length ess-process-name-list)))
     (if (or (= 0 num-processes)
-            (and (= 1 num-processes) 
+            (and (= 1 num-processes)
                  (not (equal ess-dialect ;; don't auto connect if from different dialect
-                             (buffer-local-value 'ess-dialect (process-buffer (get-process (caar ess-process-name-list))))))))
+                             (buffer-local-value
+                              'ess-dialect
+                              (process-buffer (get-process
+                                               (caar ess-process-name-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -700,6 +703,9 @@ Returns the name of the selected process."
                  (message "using process '%s'" rr)
                  rr)
              ;; else
+             (unless (and ess-current-process-name
+                          (get-process ess-current-process-name))
+               (setq ess-current-process-name nil))
              (when message
                (setq message (replace-regexp-in-string ": +\\'" "" message)))
              (ess-completing-read message (mapcar 'car ess-process-name-list)
@@ -981,10 +987,10 @@ Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
 input STRING.
 "
-  
+
   (with-current-buffer (process-buffer process)
     (run-hook-with-args 'comint-input-filter-functions string)
-    
+
     (let ((functions ess-presend-filter-functions))
       (while (and functions string)
         (if (eq (car functions) t)
@@ -1267,14 +1273,14 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (ess-force-buffer-current "Process to load into: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
-  
+
   (ess-region-blink start end)
   (save-excursion
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point)))
-  
+
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
          (dev-p (process-get proc 'developer))
@@ -1309,7 +1315,7 @@ the end of the buffer"))
 
 (defun ess-eval-function (vis &optional no-error)
   "Send the current function to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'.   
+Arg has same meaning as for `ess-eval-region'.
 
 If NO-ERROR is non-nil and the function was successfully
 evaluated, return '(beg end) representing the beginning and end
@@ -1317,10 +1323,10 @@ of the current function, otherwise (in case of an error) return
 nil."
   (interactive "P")
   (ess-force-buffer-current "Process to use: ")
-  (ignore-errors
-    (previous-line)
-    (ess-next-code-line 1))
   (save-excursion
+    (ignore-errors
+      (previous-line)
+      (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
           (let* ((beg (nth 0 beg-end))
@@ -1518,12 +1524,12 @@ for `ess-eval-region'."
                       (buffer-file-name))
                  (expand-file-name
                   (read-file-name "Load S file: " nil nil t)))))
+  (ess-force-buffer-current "Process to load into: ")
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
     (if (ess-process-get 'tracebug)
         (ess-tracebug-source-current-file filename)
 
-      (ess-make-buffer-current)
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
       (let ((source-buffer (get-file-buffer filename)))
@@ -2631,6 +2637,7 @@ the `load-path'."
   "Reread all directories/objects in variable `ess-search-list' to
 form completions."
   (interactive)
+
   (if (ess-make-buffer-current) nil
     (error "Not an ESS process buffer"))
   (setq ess-sl-modtime-alist nil)

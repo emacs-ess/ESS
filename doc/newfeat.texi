@@ -99,7 +99,7 @@ documentation, inferior ESS buffers or transcript files.
 @item Documentation: ESS user manual has been rearranged and
 completed with several new chapters and sections to reflect newly added
 features (``Completion'', ``Developing with ESS'', ``ESS tracebug'',
-``ESS developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
+``ESS developer'', ``ESS ElDoc'', ``IDO Completion'' and ``Evaluating
 Code'')
 @item RefCard: Reference card was updated to include new features.
 @item Eldoc: Eldoc was rewritten and is activated by default.
