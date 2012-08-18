@@ -595,8 +595,8 @@ process happens interactively (when possible)."
   "Make the process associated with the current buffer the current ESS process.
 Returns the name of the process, or nil if the current buffer has none."
   (update-ess-process-name-list)
-  (if ess-local-process-name
-      (setq ess-current-process-name ess-local-process-name))
+  ;; (if ess-local-process-name
+  ;;     (setq ess-current-process-name ess-local-process-name))
   ess-local-process-name)
 
 (defun ess-get-process-variable (name var)
@@ -1040,7 +1040,7 @@ local({
     ;; else: "normal", non-DDE behavior:
 
     (let* ((sprocess (or proc
-                         (get-ess-process ess-current-process-name)))
+                         (get-ess-process ess-local-process-name)))
            sbuffer primary-prompt end-of-output oldpb oldpf oldpm
            )
 
@@ -1049,8 +1049,9 @@ local({
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (with-current-buffer sbuffer
+        (setq ess-local-process-name (name sprocess)) ;; let it be here (calling functions need not set it explicitly)
         (setq primary-prompt  inferior-ess-primary-prompt)
-        (ess-if-verbose-write (format "(ess-command %s ..)" com))
+        (ess-if-verbose-write (format "n(ess-command %s ..)" com))
         (unless no-prompt-check
           (when (process-get sprocess 'busy) ;;(looking-at inferior-ess-primary-prompt)
             (ess-error
@@ -2137,8 +2138,8 @@ to the command if BUFF is not given.)"
     (if in-pbuff
         (ess-eval-linewise the-command)
       (let ((buff (ess-create-temp-buffer buff-name)))
+        (ess-command the-command buff);; sleep?
         (with-current-buffer buff
-          (ess-command the-command (get-buffer buff-name));; sleep?
           (goto-char (point-min))
           (if message (insert message)
             (if buff nil

@@ -320,6 +320,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (let ((object (buffer-name))
         (alist          ess-local-customize-alist)
+        (pname ess-local-process-name)
         pack buff all-packs  not-implemented
         ;; Available customization for ess languages/dialects:
         com-package-for-object ;command to get the package of current help object
@@ -357,7 +358,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
               ess-help-type 'index
               ess-help-object pack
-              ess-local-process-name ess-current-process-name)
+              ess-local-process-name pname)
         (setq buffer-read-only nil)
         (delete-region (point-min) (point-max))
         (ess-help-mode)

@@ -859,13 +859,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-help-object (sym)
   "Help string for ac."
-  (with-current-buffer (get-buffer-create " *ess-command-output*")
+  (let ((buf (get-buffer-create " *ess-command-output*")))
     (when (string-match ":+\\(.*\\)" sym)
       (setq sym (match-string 1 sym)))
-    (ess-command (format inferior-ess-help-command sym) (current-buffer))
-    (ess-help-underline)
-    (goto-char (point-min))
-    (buffer-string)))
+    (ess-command (format inferior-ess-help-command sym) buf)
+    (with-current-buffer buf
+      (ess-help-underline)
+      (goto-char (point-min))
+      (buffer-string))))
 
 ;; ARGS
 (defvar  ac-source-R-args

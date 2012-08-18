@@ -566,13 +566,16 @@ You can bind 'no-select' versions of this commands:
   (interactive)
   (ring-insert ess-dbg-forward-ring (point-marker))
   (ess-force-buffer-current "R process to use: ")
-  (let ((trbuf  (get-buffer-create "*ess-traceback*")))
+  (let ((trbuf  (get-buffer-create "*ess-traceback*"))
+        (lproc-name ess-local-process-name)
+        )
     (setq next-error-last-buffer trbuf)
     (with-current-buffer trbuf
       (setq buffer-read-only nil)
       )
     (ess-command  "try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)\n" trbuf)
-    (set-buffer trbuf) ;; don't move this before ess-command! mess up multiple processes'
+    (set-buffer trbuf) 
+    (setq ess-local-process-name lproc-name)    
     (if (string= "No traceback available" (buffer-substring 1 23))
         (message "No traceback available")
       (ess-dirs)
@@ -2321,17 +2324,19 @@ the debugging."
   ;; particularly ess-watch-current-block-overlay is installed
   (interactive)
   (ess-watch-buffer-show wbuf) ;; if visible do nothing
-  (with-current-buffer wbuf
-    (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
-      (setq buffer-read-only nil)
-      (ess-command  ess-watch-command wbuf sleep no-prompt-check)
-      ;; delete the ++++++> line  ;; not very reliable but works fine so far.
-      (goto-char (point-min))
-      (delete-region (point-at-bol) (+ 1 (point-at-eol)))
-      (ess-watch-set-current curr-block)
-      (set-window-point (get-buffer-window wbuf) (point))
-      (setq buffer-read-only t)
-      )))
+  (let ((pname ess-local-process-name))
+    (with-current-buffer wbuf
+      (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
+        (setq buffer-read-only nil)
+        (setq ess-local-process-name pname)
+        (ess-command  ess-watch-command wbuf sleep no-prompt-check)
+        ;; delete the ++++++> line  ;; not very reliable but works fine so far.
+        (goto-char (point-min))
+        (delete-region (point-at-bol) (+ 1 (point-at-eol)))
+        (ess-watch-set-current curr-block)
+        (set-window-point (get-buffer-window wbuf) (point))
+        (setq buffer-read-only t)
+        ))))
 
 (defun ess-watch-buffer-show (buffer-or-name)
   "Make watch buffer BUFFER-OR-NAME visible, and position acordingly.
