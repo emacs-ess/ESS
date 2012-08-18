@@ -673,9 +673,8 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (concat " ... request-a-process:\n  "
                    (format
-                    "major mode is %s; ess-language: %s, ess-dialect: %s\n"
-                    major-mode ; 'ess-mode; how can we guess R?
-                    ess-language ess-dialect)))
+                    "major mode %s; current buff: %s; ess-language: %s, ess-dialect: %s\n"
+                    major-mode (current-buffer) ess-language ess-dialect)))
           (ess-start-process-specific ess-language ess-dialect)
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
