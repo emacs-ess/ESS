@@ -1113,12 +1113,12 @@ Returns nil if line starts inside a string, t if in a comment."
              (let ((bol (line-beginning-position)))
 
                (cond ((and (numberp ess-expression-offset)
-                           (re-search-backward "[ \t]*expression[ \t]*" bol t))
+                           (re-search-backward "[ \t]*expression[ \t]*(" bol t))
                       ;; obj <- expression(...
                       ;; modified by shiba (forward-sexp -1)
                       (beginning-of-line)
                       (skip-chars-forward " \t")
-                      ;; End
+                      ;; end{modified}
                       (+ (current-column) ess-expression-offset))
                      ((and (numberp ess-arg-function-offset)
                            (re-search-backward
