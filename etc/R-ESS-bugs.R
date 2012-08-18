@@ -407,13 +407,22 @@ np <- data.frame(block=gl(6,4), N=factor(N), P=factor(P), yield=yield)
 (np.aovE <- aov(yield ~  N*P + Error(block), np))
 
 ### Indentation -----  "expression"
-list <- c(1, 345, 456,
-          55)
-data.frame <- list(a=345, b=345,
-                   foo = "sdf")
 expremmion <- c(1, 3,
-                23874, 239487)
-## Wrong indentation here:
+                9876)# was always ok
+## Had wrong indentation here:
 expression <- c(2343,
-    23874, 239487)
-
+                23874, 239487)
+## or here
+foo <- function(x) {
+    expression <- c(2343,
+                    23874, 239487)
+    10 + expression
+}
+## Where as here, we *do* want the indentation to
+## *NOT* go all the way to the right:
+{
+    my.long.Expression <- expression(
+        x[a[j]] == exp(theta[1] + theta[2]^2),
+        x[b[i]] == sin(theta[3] ~~ theta[4])
+        )
+}
