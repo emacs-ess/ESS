@@ -1951,6 +1951,8 @@ If nil, input is in the `font-lock-variable-name-face'."
                                    nil nil  ((?\. . "w") (?\_ . "w")))
   "Font lock defaults for R mode.")
 
+;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case
+(defvar inferior-ess-font-lock-keywords nil) 
 
 (defvar inferior-ess-R-font-lock-keywords
   (append
