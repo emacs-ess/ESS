@@ -168,17 +168,14 @@ an inferior emacs buffer) the GUI help window is used."
                             "](" object ")*"))
            (old-hb-p    (get-buffer hb-name))
            (tbuffer     (get-buffer-create hb-name))
-           ;;VS: this curr-* kludge is not needed here,
-           ;;everything should be set by ess-setq-vars-local latter
-           ;; (curr-help-sec-regex              ess-help-sec-regex)
-           ;; (curr-help-sec-keys-alist ess-help-sec-keys-alist)
-           ;; ....
+           (lproc-name  ess-local-process-name)
            (alist               ess-local-customize-alist))
       (with-current-buffer tbuffer
         (ess-setq-vars-local (eval alist))
         (set-syntax-table ess-mode-syntax-table)
         (setq ess-help-object object
-              ess-help-type 'help)
+              ess-help-type 'help
+              ess-local-process-name lproc-name)
 
         (if (or (not old-hb-p)
                 current-prefix-arg

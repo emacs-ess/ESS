@@ -2633,9 +2633,9 @@ and (indirectly) by \\[ess-get-help-files-list]."
               (homedir ess-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
               elt)
+          (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
           (with-current-buffer tbuffer
             ;; guaranteed by the initial space in its name: (buffer-disable-undo)
-            (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
             (goto-char (point-min))
             (ess-write-to-dribble-buffer
              (format "after '%s', point-max=%d\n" my-search-cmd (point-max)))
