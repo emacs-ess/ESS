@@ -52,6 +52,7 @@
 
 (require 'ess)
 (eval-when-compile
+  (require 'compile)
   (require 'overlay)
   (require 'cl))
 
@@ -66,7 +67,7 @@ Currently only R is supported."
 
 (defvar ess-tracebug-indicator " TB"
   "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-traceback-mode is turned on. "
+  name. Indicates that ess-tracebug-mode is turned on. "
   )
 
 ;; (defvar ess--tracebug-p nil
@@ -367,14 +368,6 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
 ;;;_* TRACEBACK
 
-(require 'compile)
-(defgroup ess-traceback nil
-  "Tracing for ESS."
-  :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
-  :group 'ess-tracebug
-  :prefix "ess-tb-"
-  )
-
 ;; (defface ess-tb-last-input-face
 ;;   '((((class grayscale)
 ;;       (background light)) (:background "DimGray"))
@@ -388,7 +381,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 ;;     (((background dark)) (:weight bold))
 ;;     )
 ;;   "Face to highlight currently debugged line."
-;;   :group 'ess-traceback )
+;;   :group 'ess-tracebug )
 
 (defface ess-tb-last-input-fringe-face
   '((((background light) (min-colors 88)) (:foreground "medium blue" :overline "medium blue"))
@@ -397,7 +390,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
     (((background dark) (min-colors 8))  (:foreground "syan"))
     )
   "Face for fringe bitmap for last-input position."
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (if (fboundp 'define-fringe-bitmap)
     (define-fringe-bitmap 'last-input-arrow
@@ -421,7 +414,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 (defvar ess-tb-last-input (make-marker)
   "Marker pointing to the last user input position in iESS buffer.
 This is the place where `ess-tb-last-input-overlay' is moved.
-Local in iESS buffers with `ess-traceback' mode enabled.")
+Local in iESS buffers with `ess-tracebug' mode enabled.")
 
 (defvar ess-tb-last-input-overlay nil
   "Overlay to highlight the position of last input in iESS buffer.
@@ -451,11 +444,11 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
 
 (defcustom inferior-ess-split-long-prompt t
   "If non-nil, long prompt '> > > > > + + + + > ' is split."
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (defcustom inferior-ess-replace-long+ t
   "If non-nil,  '+ + + + ' containing more than 4 + is replaced by `ess-long+replacement'"
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (defvar ess-long+replacement "+ . + "
   "Replacement used for long + prompt.
