@@ -397,32 +397,29 @@ parentContainer <-
     if(is.null(.getPrototype(.Object@host))) emptyenv()
     else sdf
 
-### --- 17 ---   (but *not* in ESS 5.14 !)
-## Evaluate these, then  C-c C-z (end of *R*), use  C-c C-p ("previous-prompt"):
-N <- c(0,1,0,1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,1,0,0)
-P <- c(1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0)
-yield <- c(49.5,62.8,46.8,57.0,59.8,58.5,55.5,56.0,62.8,55.8,69.5,55.0,
-           62.0,48.8,45.5,44.2,52.0,51.5,49.8,48.8,57.2,59.0,53.2,56.0)
-np <- data.frame(block=gl(6,4), N=factor(N), P=factor(P), yield=yield)
-(np.aovE <- aov(yield ~  N*P + Error(block), np))
-
+### --- 17 ---
 ### Indentation -----  "expression"
 expremmion <- c(1, 3,
                 9876)# was always ok
 ## Had wrong indentation here:
-expression <- c(2343,
-                23874, 239487)
-## or here
-foo <- function(x) {
-    expression <- c(2343,
-                    23874, 239487)
-    10 + expression
-}
+## expression <- c(2343,
+##    23874, 239487) 
+
+#### or here:
+## foo <- function(x) {
+##     expression <- c(2343,
+##         23874, 239487)
+##     10 + expression
+## }
+
 ## Where as here, we *do* want the indentation to
 ## *NOT* go all the way to the right:
+
 {
     my.long.Expression <- expression(
         x[a[j]] == exp(theta[1] + theta[2]^2),
         x[b[i]] == sin(theta[3] ~~ theta[4])
         )
 }
+## VS[18-08-2012]: why? this is a feature for long subexpressions imidiately
+## folowing new line. Documented in ess-arg-function-offset-new-line
