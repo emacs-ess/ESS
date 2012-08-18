@@ -92,14 +92,31 @@
      (inferior-ess-exit-command         . "q()")
      (inferior-ess-exit-prompt          . "Save workspace image? [y/n/c]: ")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file           . nil) ;; "~/.ess-R"
-     (inferior-ess-start-args           . "")
-     (ess-STERM         . "iESS")
-     (ess-editor        . R-editor)
-     (ess-pager         . R-pager)
+     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
+     (inferior-ess-start-args		. "")
+     (ess-error-regexp-alist		. ess-R-error-regexp-alist)
+     (ess-STERM		. "iESS")
+     (ess-editor	. R-editor)
+     (ess-pager		. R-pager)
      )
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
+
+(defvar ess-R-error-regexp-alist '(R R2 R3 R-recover)
+  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R2 "(\\(from \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
 (defvar ess-r-versions (if (eq system-type 'darwin)
                            '("R-1" "R-2" "R-devel" "R-patched" "R32" "R64")
@@ -154,6 +171,7 @@ to R, put them in the variable `inferior-R-args'."
           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
     ;;-------------------------
+    (setq comint-input-sender 'inferior-R-input-sender)
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))
@@ -182,7 +200,6 @@ to R, put them in the variable `inferior-R-args'."
             ))
 
       ;; else R version <= 2.4.1
-
       ;; for R <= 2.1.x : define baseenv() :
       (ess-eval-linewise
        "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
@@ -535,52 +552,52 @@ to look up any doc strings."
            newdoc
            )
       (setq doc
-            (if (or (<= (length doc) W)
-                    (null ess-eldoc-abbreviation-style)
-                    (eq 'none ess-eldoc-abbreviation-style))
-                doc
-              ;;MILD filter
-              (setq doc (replace-regexp-in-string "TRUE" "T" doc))
-              (setq doc (replace-regexp-in-string "FALSE" "F" doc))
-              (if (or (<= (length doc) W)
-                      (eq 'mild ess-eldoc-abbreviation-style))
-                  doc
-                ;;NORMAL filter (deal with long defaults)
-                (setq doc (replace-regexp-in-string
-                           ;; function calls inside default docs foo(xxxx{..})
-                           "(.\\{8\\}\\(.\\{4,\\}\\))"
-                           "{.}" doc nil nil 1))
-                (if (<= (length doc) W)
-                    doc
-                  (setq doc (replace-regexp-in-string
-                             " +[^ \t=,\"\]+=[^ \t]\\{10\\}\\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
-                             "{.}," doc nil nil 1))
-                  (if (<= (length doc) W)
-                      doc
-                    (setq doc (replace-regexp-in-string
-                               " +[^ \t=,\"]+=\\([^ \t]\\{10,\\}\\)\\(,\\|\\'\\)"
-                               "{.}," doc nil nil 1))
-                    (if (or (<= (length doc) W)
-                            (eq 'normal ess-eldoc-abbreviation-style))
-                        doc
-                      ;;STRONG filter (replace defaults)
-                      (setq doc (replace-regexp-in-string
-                                 " *[^ \t=,\"\\]* = \\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
-                                 "{.}," doc nil nil 1))
-                      (if (<= (length doc) W)
-                          doc
-                        (setq doc (replace-regexp-in-string
-                                   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+=\\|\\'\\)"
-                                   "" doc nil nil 1))
-                        (setq doc (replace-regexp-in-string
-                                   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+,\\|\\'\\)"
-                                   "" doc nil nil 1))
-                        (if (or (<= (length doc) W)
-                                (eq 'strong ess-eldoc-abbreviation-style))
-                            doc
-                          ;;AGGRESSIVE filter (truncate what is left)
-                          (concat (substring doc 0 (- W 4)) "{--}")
-                          ))))))))
+	    (if (or (<= (length doc) W)
+		    (null ess-eldoc-abbreviation-style)
+		    (eq 'none ess-eldoc-abbreviation-style))
+		doc
+	      ;;MILD filter
+	      (setq doc (replace-regexp-in-string "TRUE" "T" doc))
+	      (setq doc (replace-regexp-in-string "FALSE" "F" doc))
+	      (if (or (<= (length doc) W)
+		      (eq 'mild ess-eldoc-abbreviation-style))
+		  doc
+		;;NORMAL filter (deal with long defaults)
+		(setq doc (replace-regexp-in-string
+			   ;; function calls inside default docs foo(xxxx{..})
+			   "([^)]\\{8\\}\\([^)]\\{4,\\}\\))"
+			   "{.}" doc nil nil 1))
+		(if (<= (length doc) W)
+		    doc
+		  (setq doc (replace-regexp-in-string
+			     " +[^ \t=,\"\]+=[^ \t]\\{10\\}\\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
+			     "{.}," doc nil nil 1))
+		  (if (<= (length doc) W)
+		      doc
+		    (setq doc (replace-regexp-in-string
+			       " +[^ \t=,\"]+=\\([^ \t]\\{10,\\}\\)\\(,\\|\\'\\)"
+			       "{.}," doc nil nil 1))
+		    (if (or (<= (length doc) W)
+			    (eq 'normal ess-eldoc-abbreviation-style))
+			doc
+		      ;;STRONG filter (replace defaults)
+		      (setq doc (replace-regexp-in-string
+				 " *[^ \t=,\"\\]* = \\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
+				 "{.}," doc nil nil 1))
+		      (if (<= (length doc) W)
+			  doc
+			(setq doc (replace-regexp-in-string
+				   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+=\\|\\'\\)"
+				   "" doc nil nil 1))
+			(setq doc (replace-regexp-in-string
+				   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+,\\|\\'\\)"
+				   "" doc nil nil 1))
+			(if (or (<= (length doc) W)
+				(eq 'strong ess-eldoc-abbreviation-style))
+			    doc
+			  ;;AGGRESSIVE filter (truncate what is left)
+			  (concat (substring doc 0 (- W 4)) "{--}")
+			  ))))))))
       (when (and (null eldoc-echo-area-use-multiline-p)
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
@@ -811,22 +828,22 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (unless no-kill ;; workaround
       (kill-local-variable 'ac-use-comphist))
     (if (string-match-p "[]:$@[]" ac-prefix)
-        (cdr (ess-R-get-rcompletions ac-point))
-      (with-current-ess-process-buffer 'no-error
-        (unless (process-get *proc* 'busy)
-          (let ((le (process-get *proc* 'last-eval))
-                (lobu (process-get *proc* 'last-objlist-update)))
-            (when (or  (null lobu) (null le) (time-less-p lobu le))
-              ;;re-read .GlobalEnv
-              (if (and ess-sl-modtime-alist
-                       (not  ess-sp-change))
-                  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-                (ess-get-modtime-list)
-                (setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-                ))
-            (process-put *proc* 'last-objlist-update (current-time))
-            (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-            ))))))
+	(cdr (ess-R-get-rcompletions ac-point))
+      (with-ess-process-buffer 'no-error
+	(unless (process-get *proc* 'busy)
+	  (let ((le (process-get *proc* 'last-eval))
+		(lobu (process-get *proc* 'last-objlist-update)))
+	    (when (or  (null lobu) (null le) (time-less-p lobu le))
+	      ;;re-read .GlobalEnv
+	      (if (and ess-sl-modtime-alist
+		       (not  ess-sp-change))
+		  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+		(ess-get-modtime-list)
+		(setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
+		))
+	    (process-put *proc* 'last-objlist-update (current-time))
+	    (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+	    ))))))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
@@ -842,13 +859,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-help-object (sym)
   "Help string for ac."
-  (with-current-buffer (get-buffer-create " *ess-command-output*")
+  (let ((buf (get-buffer-create " *ess-command-output*")))
     (when (string-match ":+\\(.*\\)" sym)
       (setq sym (match-string 1 sym)))
-    (ess-command (format inferior-ess-help-command sym) (current-buffer))
-    (ess-help-underline)
-    (goto-char (point-min))
-    (buffer-string)))
+    (ess-command (format inferior-ess-help-command sym) buf)
+    (with-current-buffer buf
+      (ess-help-underline)
+      (goto-char (point-min))
+      (buffer-string))))
 
 ;; ARGS
 (defvar  ac-source-R-args

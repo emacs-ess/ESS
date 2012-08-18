@@ -230,6 +230,23 @@
 	(ess-first-tab-never-complete): plenty of options for every taste.
 	(ess-tab-complete-in-script): new option.
 
+2012-04-02  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-mode): try hard to find an alist if not suplied
+
+	* ess-utils.el (ess-inside-string-or-comment-p)
+	(ess-inside-string-p): rewrote this facilities to take advantage
+	of font-lock
+
+	* ess-julia.el (julia-customize-alist)
+	(julia-get-help-topics-list-function)
+	(julia-send-string-function, julia)
+	(julia-imenu-generic-expression): ess-julia.el
+
+2012-04-01  Vitalie Spinu  <spinuvit@gmail.com>
+
+	* ess-mode.el (ess-error-regexp): custom error messages for dialects
+
 2012-04-02  Sam Steingold  <sds@gnu.org>
 
 	* ess-help.el (ess-help-mode-map): Older XEmacs misses
@@ -271,6 +288,7 @@
 
 	* ess-site.el: Rise up to the challenge: use `locate-file'
 	instead of horrible adhockery to check if info can find ess.info.
+
 
 2012-03-30  Vitalie Spinu  <spinuvit@gmail.com>
 

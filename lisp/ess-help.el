@@ -168,17 +168,14 @@ an inferior emacs buffer) the GUI help window is used."
                             "](" object ")*"))
            (old-hb-p    (get-buffer hb-name))
            (tbuffer     (get-buffer-create hb-name))
-           ;;VS: this curr-* kludge is not needed here,
-           ;;everything should be set by ess-setq-vars-local latter
-           ;; (curr-help-sec-regex              ess-help-sec-regex)
-           ;; (curr-help-sec-keys-alist ess-help-sec-keys-alist)
-           ;; ....
+           (lproc-name  ess-local-process-name)
            (alist               ess-local-customize-alist))
       (with-current-buffer tbuffer
         (ess-setq-vars-local (eval alist))
         (set-syntax-table ess-mode-syntax-table)
         (setq ess-help-object object
-              ess-help-type 'help)
+              ess-help-type 'help
+              ess-local-process-name lproc-name)
 
         (if (or (not old-hb-p)
                 current-prefix-arg
@@ -199,62 +196,64 @@ an inferior emacs buffer) the GUI help window is used."
 
               (goto-char (point-min))))
 
-        (let ((PM (point-min))
-              (nodocs
-               (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
-          (goto-char PM)
-          (if (and nodocs
-                   ess-help-kill-bogus-buffers)
-              (progn
-                (if (not (listp nodocs))
-                    (setq nodocs (list PM (point-max))))
-                (ess-write-to-dribble-buffer
-                 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
-                         (buffer-name) (car nodocs) (cadr nodocs)))
-                ;; Avoid using 'message here -- may be %'s in string
-                ;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
-                ;; MM [3/2000]: why avoid?  Yes, I *do* want message:
-                (message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
-                ;; ^^^ fixme : remove new lines from the above {and abbrev.}
-                (ding)
-                (kill-buffer tbuffer))
+	(when (featurep 'emacs)
+	  (visual-line-mode t))
+	(let ((PM (point-min))
+	      (nodocs
+	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
+	  (goto-char PM)
+	  (if (and nodocs
+		   ess-help-kill-bogus-buffers)
+	      (progn
+		(if (not (listp nodocs))
+		    (setq nodocs (list PM (point-max))))
+		(ess-write-to-dribble-buffer
+		 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
+			 (buffer-name) (car nodocs) (cadr nodocs)))
+		;; Avoid using 'message here -- may be %'s in string
+		;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
+		;; MM [3/2000]: why avoid?  Yes, I *do* want message:
+		(message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
+		;; ^^^ fixme : remove new lines from the above {and abbrev.}
+		(ding)
+		(kill-buffer tbuffer))
 
-            ;; else : show the help buffer.
+	    ;; else : show the help buffer.
 
-            ;; Check if this buffer describes where help can be found in
-            ;; various packages. (R only).  This is a kind of bogus help
-            ;; buffer, but it should not be killed immediately even if
-            ;; ess-help-kill-bogus-buffers is t.
+	    ;; Check if this buffer describes where help can be found in
+	    ;; various packages. (R only).  This is a kind of bogus help
+	    ;; buffer, but it should not be killed immediately even if
+	    ;; ess-help-kill-bogus-buffers is t.
 
-            ;; e.g. if within R, the user does:
+	    ;; e.g. if within R, the user does:
 
-            ;; > options("help.try.all.packages" = TRUE)
+	    ;; > options("help.try.all.packages" = TRUE)
 
-            ;; > ?rlm
+	    ;; > ?rlm
 
-            ;; then a list of packages for where ?rlm is defined is
-            ;; shown.  (In this case, rlm is in package MASS).  This
-            ;; help buffer is then renamed *help[R](rlm in packages)* so
-            ;; that after MASS is loaded, ?rlm will then show
-            ;; *help[R](rlm)*
+	    ;; then a list of packages for where ?rlm is defined is
+	    ;; shown.  (In this case, rlm is in package MASS).  This
+	    ;; help buffer is then renamed *help[R](rlm in packages)* so
+	    ;; that after MASS is loaded, ?rlm will then show
+	    ;; *help[R](rlm)*
 
-            (if (equal inferior-ess-program inferior-R-program-name)
-                ;; this code should be used only for R processes.
-                (save-excursion
-                  (goto-char (point-min))
-                  (if (looking-at "Help for topic")
-                      (let
-                          ( (newbuf
-                             (concat "*help[" ess-current-process-name
-                                     "](" object " in packages)*")))
-                        ;; if NEWBUF already exists, remove it.
-                        (if (get-buffer newbuf)
-                            (kill-buffer newbuf))
-                        (rename-buffer  newbuf)))))
+	    (if (equal inferior-ess-program inferior-R-program-name)
+		;; this code should be used only for R processes.
+		(save-excursion
+		  (goto-char (point-min))
+		  (if (looking-at "Help for topic")
+		      (let
+			  ( (newbuf
+			     (concat "*help[" ess-current-process-name
+				     "](" object " in packages)*")))
+			;; if NEWBUF already exists, remove it.
+			(if (get-buffer newbuf)
+			    (kill-buffer newbuf))
+			(rename-buffer  newbuf)))))
 
-            ;;dbg (ess-write-to-dribble-buffer
-            ;;dbg        (format "(ess-help '%s' before switch-to..\n" hb-name)
-            (set-buffer-modified-p 'nil)
+	    ;;dbg (ess-write-to-dribble-buffer
+	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
+	    (set-buffer-modified-p 'nil)
             (setq buffer-read-only t))))
       (when (buffer-live-p tbuffer)
         (ess--switch-to-help-buffer tbuffer))
@@ -321,6 +320,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (let ((object (buffer-name))
         (alist          ess-local-customize-alist)
+        (pname ess-local-process-name)
         pack buff all-packs  not-implemented
         ;; Available customization for ess languages/dialects:
         com-package-for-object ;command to get the package of current help object
@@ -358,7 +358,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
               ess-help-type 'index
               ess-help-object pack
-              ess-local-process-name ess-current-process-name)
+              ess-local-process-name pname)
         (setq buffer-read-only nil)
         (delete-region (point-min) (point-max))
         (ess-help-mode)
@@ -765,7 +765,10 @@ Stata or XLispStat for additional information."
     ))
 
 ;;*;; Utility functions
-(defun ess-get-S-help-topics (&optional name)
+;; (defvar ess-get-help-topics-function nil)
+;; (make-variable-buffer-local 'ess-get-help-topics-function)
+
+(defun ess-get-S-help-topics-function (name)
   "Return a list of current S help topics associated with process NAME.
 If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
 the latter and return it.  Otherwise, return `ess-help-topics-list'."
@@ -774,7 +777,9 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
     (set-buffer (process-buffer (get-ess-process name)))
     (ess-make-buffer-current)
     (ess-write-to-dribble-buffer
-     (format "(ess-get-S-help-topics %s) .." name))
+     (format "(ess-get-help-topics-list %s) .." name))
+    ;; (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
+    ;;     (funcall ess-get-help-topics-function)
     (if (or (not ess-help-topics-list) ess-sp-change)
         (setq ess-help-topics-list
               (ess-uniq-list

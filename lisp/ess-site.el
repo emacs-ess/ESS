@@ -378,6 +378,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 (ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
 (ess-message "[ess-site:] require 'ess-r-d ...")
 (require 'ess-r-d)    ;; R
+(require 'ess-julia)
 ;; (ess-message "[ess-site:] require 'ess-s4-d ...")
 ;; (require 'ess-s4-d) ; has become VERY RARE ..
 

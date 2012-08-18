@@ -533,6 +533,11 @@ regardless of where in the line point is when the TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
+(defvar ess-indent-line-function nil
+  "Function to be used for the current dialect
+nil means to use R/S indentation.")
+(make-variable-buffer-local 'ess-indent-line-function)
+
 (defvar ess-indent-level 2
   "Indentation of S statements with respect to containing block.")
 
@@ -1570,9 +1575,9 @@ of Emacs until the code has been successfully evaluated."
 
 ;;*;; Variables relating to multiple processes
 
-;; SJE -- this shouldn't be customixed by user.
-(defvar ess-current-process-name nil
-  "Name of the current S process.")
+;; VS[17-08-2012]: all of the occurrences in the code should should eventually
+;; go away, (once we are sure this doesn't break anything)
+(defvaralias 'ess-current-process-name 'ess-local-process-name)
 
 (defvar ess-mode-line-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
@@ -2069,7 +2074,7 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
 (defface ess-function-call-face
-  '((default (:weight normal :width normal :inherit font-lock-builtin-face)))
+  '((default (:weight normal :width normal :slant normal :inherit font-lock-builtin-face)))
   "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
@@ -2167,6 +2172,9 @@ Defaults to `ess-S-non-functions'."
 Created for each process."
   :group 'ess-proc
   :type 'string)
+
+(defvar ess-error-regexp-alist nil
+  "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."

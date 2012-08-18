@@ -383,6 +383,9 @@ Variables controlling indentation style:
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
+  (setq alist (or alist
+		  (buffer-local-value 'ess-local-customize-alist (current-buffer))
+		  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
   (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
@@ -695,31 +698,33 @@ which have been modified more recently than this file, and confirm
 if this is the case."
   ;; FIXME: this should really cycle through all top-level assignments in
   ;; the buffer
-  (and (buffer-file-name) ess-filenames-map
-       (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
-             (objname))
-         (save-excursion
-           (goto-char (point-min))
-           ;; Get name of assigned object, if we can find it
-           (setq objname
-                 (and
-                  (re-search-forward
-                   "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
-                   nil
-                   t)
-                  (buffer-substring (match-beginning 1)
-                                    (match-end 1)))))
-         (and
-          sourcemod                     ; the file may have been deleted
-          objname                       ; may not have been able to
-                                        ; find name
-          (ess-modtime-gt (ess-object-modtime objname) sourcemod)
-          (not (y-or-n-p
+  ;;VS[02-04-2012|ESS 12.03]: this is sooo ugly
+  (when (> (length ess-change-sp-regexp) 0)
+    (and (buffer-file-name) ess-filenames-map
+	 (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
+	       (objname))
+	   (save-excursion
+	     (goto-char (point-min))
+	     ;; Get name of assigned object, if we can find it
+	     (setq objname
+		   (and
+		    (re-search-forward
+		     "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
+		     nil
+		     t)
+		    (buffer-substring (match-beginning 1)
+				      (match-end 1)))))
+	   (and
+	    sourcemod			; the file may have been deleted
+	    objname			; may not have been able to
+					; find name
+	    (ess-modtime-gt (ess-object-modtime objname) sourcemod)
+	    (not (y-or-n-p
 
-                (format
-                 "The ESS object %s is newer than this file. Continue?"
-                 objname)))
-          (error "Aborted")))))
+		  (format
+		   "The ESS object %s is newer than this file. Continue?"
+		   objname)))
+	    (error "Aborted"))))))
 
 (defun ess-check-source (fname)
   "If file FNAME has an unsaved buffer, offer to save it.
@@ -749,6 +754,9 @@ Returns t if the buffer existed and was modified, but was not saved."
                   (save-buffer))))
           (buffer-modified-p buff)))))
 
+(defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
+  "Regexp to search for errors.")
+
 (defun ess-parse-errors (&optional showerr reset)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported."
@@ -762,31 +770,31 @@ With prefix argument, only shows the errors ESS reported."
       (set-buffer errbuff)
       (goto-char (point-max))
       (if
-          (re-search-backward
-           ;; FIXME: R does not give "useful" error messages -
-           ;; -----  by default: We (ESS) could try to use a more useful one, via
-           ;;   options(error = essErrorHandler)
-           "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
-           nil
-           t)
-          (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
-                 (fbuffer (get-file-buffer filename))
-                 (linenum
-                  (string-to-number
-                   (buffer-substring (match-beginning 2) (match-end 2))))
-                 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
-            (if showerr
-                (ess-display-temp-buffer errbuff)
-              (if fbuffer nil
-                (setq fbuffer (find-file-noselect filename))
-                (with-current-buffer fbuffer
-                  (ess-mode)))
-              (pop-to-buffer fbuffer)
-              ;;(goto-line linenum) gives warning: is said to be replaced by
-              (goto-char (point-min)) (forward-line (1- linenum)))
-            (princ errmess t))
-        (message "Not a syntax error.")
-        (ess-display-temp-buffer errbuff)))))
+	  (re-search-backward
+	   ;; FIXME: R does not give "useful" error messages -
+	   ;; -----  by default: We (ESS) could try to use a more useful one, via
+	   ;;   options(error = essErrorHandler)
+	   ess-error-regexp
+	   nil
+	   t)
+	  (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
+		 (fbuffer (get-file-buffer filename))
+		 (linenum
+		  (string-to-number
+		   (buffer-substring (match-beginning 2) (match-end 2))))
+		 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
+	    (if showerr
+		  (ess-display-temp-buffer errbuff)
+	      (if fbuffer nil
+		(setq fbuffer (find-file-noselect filename))
+		(with-current-buffer fbuffer
+		  (ess-mode)))
+	      (pop-to-buffer fbuffer)
+	      ;;(goto-line linenum) gives warning: is said to be replaced by
+	      (goto-char (point-min)) (forward-line (1- linenum)))
+	    (princ errmess t))
+	(message "Not a syntax error.")
+	(ess-display-temp-buffer errbuff)))))
 
 ;;*;; ESS code formatting/indentation
 
@@ -1027,51 +1035,54 @@ See also `ess-first-tab-never-complete'."
 (defun ess-indent-line ()
   "Indent current line as ESS code.
 Return the amount the indentation changed by."
-  (let ((indent (ess-calculate-indent nil))
-        beg shift-amt
-        (case-fold-search nil)
-        (pos (- (point-max) (point))))
-    (beginning-of-line)
-    (setq beg (point))
-    (cond ((eq indent nil)
-           (setq indent (current-indentation)))
-          (t
-           (skip-chars-forward " \t")
-           (cond ((and ess-fancy-comments ;; ### or #!
-                       (or (looking-at "###")
-                           (and (looking-at "#!") (= 1 (line-number-at-pos)))))
-                  (setq indent 0))
-                 ;; Single # comment
-                 ((and ess-fancy-comments
-                       (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
-                  (setq indent comment-column))
-                 (t
-                  (if (eq indent t) (setq indent 0))
-                  (if (listp indent) (setq indent (car indent)))
-                  (cond ((and (looking-at "else\\b")
-                              (not (looking-at "else\\s_")))
-                         (setq indent (save-excursion
-                                        (ess-backward-to-start-of-if)
-                                        (+ ess-else-offset (current-indentation)))))
-                        ((= (following-char) ?})
-                         (setq indent
-                               (+ indent
-                                  (- ess-close-brace-offset ess-indent-level))))
-                        ((= (following-char) ?{)
-                         (setq indent (+ indent ess-brace-offset))))))))
-    (skip-chars-forward " \t")
-    (setq shift-amt (- indent (current-column)))
-    (if (zerop shift-amt)
-        (if (> (- (point-max) pos) (point))
-            (goto-char (- (point-max) pos)))
-      (delete-region beg (point))
-      (indent-to indent)
-      ;; If initial point was within line's indentation,
-      ;; position after the indentation.
-      ;; Else stay at same point in text.
-      (if (> (- (point-max) pos) (point))
-          (goto-char (- (point-max) pos))))
-    shift-amt))
+  (if (fboundp ess-indent-line-function)
+      (funcall ess-indent-line-function)
+    ;; else S and R default behavior
+    (let ((indent (ess-calculate-indent nil))
+	  beg shift-amt
+	  (case-fold-search nil)
+	  (pos (- (point-max) (point))))
+      (beginning-of-line)
+      (setq beg (point))
+      (cond ((eq indent nil)
+	     (setq indent (current-indentation)))
+	    (t
+	     (skip-chars-forward " \t")
+	     (cond ((and ess-fancy-comments ;; ### or #!
+			 (or (looking-at "###")
+			     (and (looking-at "#!") (= 1 (line-number-at-pos)))))
+		    (setq indent 0))
+		   ;; Single # comment
+		   ((and ess-fancy-comments
+			 (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
+		    (setq indent comment-column))
+		   (t
+		    (if (eq indent t) (setq indent 0))
+		    (if (listp indent) (setq indent (car indent)))
+		    (cond ((and (looking-at "else\\b")
+				(not (looking-at "else\\s_")))
+			   (setq indent (save-excursion
+					  (ess-backward-to-start-of-if)
+					  (+ ess-else-offset (current-indentation)))))
+			  ((= (following-char) ?})
+			   (setq indent
+				 (+ indent
+				    (- ess-close-brace-offset ess-indent-level))))
+			  ((= (following-char) ?{)
+			   (setq indent (+ indent ess-brace-offset))))))))
+      (skip-chars-forward " \t")
+      (setq shift-amt (- indent (current-column)))
+      (if (zerop shift-amt)
+	  (if (> (- (point-max) pos) (point))
+	      (goto-char (- (point-max) pos)))
+	(delete-region beg (point))
+	(indent-to indent)
+	;; If initial point was within line's indentation,
+	;; position after the indentation.
+	;; Else stay at same point in text.
+	(if (> (- (point-max) pos) (point))
+	    (goto-char (- (point-max) pos))))
+      shift-amt)))
 
 (defun ess-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as ESS code.

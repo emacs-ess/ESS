@@ -66,6 +66,8 @@
   "Syntax table for S code."
   )
 
+
+;; what is R doing here?
 (defvar R-editing-alist
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
@@ -117,6 +119,7 @@
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
     (comint-use-prompt-regexp      . t)  ;;use fields if nil
+    (comint-process-echoes	   . t)
     ;; these prompt are the same for all S-languages As long as custom prompt
     ;; ends in inferior-ess-primary-prompt everything should work as expected.
     (inferior-ess-primary-prompt   . "> ")
@@ -124,7 +127,7 @@
     ;; inferior-ess-prompt is used by comint for navigation only if
     ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
-    (ess-get-help-topics-function  . 'ess-get-S-help-topics)
+    (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
     )
   "S-language common settings for all <dialect>-customize-alist s"
   )

@@ -27,22 +27,43 @@
 
 ;;; Code:
 
-(defun ess-inside-string-or-comment-p (pos)
+(defun ess-inside-string-or-comment-p (&optional pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
  (according to syntax). NOT OKAY for multi-line comments!!"
   ;;FIXME (defun ess-calculate-indent ..)  can do that ...
-  (interactive "d");point by default
-  (let ((pps (save-excursion
-               (parse-partial-sexp
-                (save-excursion (beginning-of-line) (point))
-                pos))))
-    (or (nth 3 pps) (nth 4 pps)))); 3: string,  4: comment
-
-(defsubst ess-inside-string-p ()
-  "Return non-nil if point is inside string (according to syntax)."
   (interactive)
   (save-excursion
-    (nth 3 (parse-partial-sexp (ess-line-beginning-position) (point)))))
+    (setq pos (or pos (point)))
+    (or (when font-lock-mode
+	  (let ((face (get-char-property pos 'face)))
+	    (or (eq 'font-lock-string-face face)
+		(eq 'font-lock-comment-face face)
+		(eq 'font-lock-doc-face face))))
+	(let ((pps (parse-partial-sexp (point-min) pos)))
+	  ;; 3: string,  4: comment
+	  (or (nth 3 pps) (nth 4 pps))))))
+
+
+(defun ess-inside-string-p (&optional pos)
+  "Return non-nil if point is inside string (according to syntax)."
+  (interactive)
+  (setq pos (or pos (point)))
+  (save-excursion
+    (or (when font-lock-mode ;; this is a shortcut (works well usually)
+	  (let ((face (get-char-property pos 'face)))
+	    (or (eq 'font-lock-string-face face)
+		(eq 'font-lock-doc-face face))))
+	(nth 3 (parse-partial-sexp (point-min) pos)))))
+
+(defun ess-inside-comment-p (&optional pos)
+  "Return non-nil if point is inside string (according to syntax)."
+  (interactive)
+  (setq pos (or pos (point)))
+  (save-excursion
+    (or (when font-lock-mode ;; this is a shortcut (works well usually)
+	  (let ((face (get-char-property pos 'face)))
+	    (eq 'font-lock-comment-face face)))
+	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
 
 (defun ess-quote-special-chars (string)
   (replace-regexp-in-string

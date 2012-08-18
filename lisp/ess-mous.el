@@ -170,6 +170,7 @@ the string one more time by embedding it in a \"page()\" command."
   (interactive)
   (let* (scommand
          page-scommand
+         (pname ess-local-process-name)
          (ess-mouse-customize-alist ess-local-customize-alist))
     (if (not head) (setq head "summary("))
     (if (not tail) (setq tail ")"))
@@ -191,7 +192,7 @@ the string one more time by embedding it in a \"page()\" command."
       (ess-make-buffer-current)
       (switch-to-buffer commands-buffer)
       (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
-      (setq ess-local-process-name ess-current-process-name)
+      (setq ess-local-process-name pname)
       (ess-command (concat scommand "\n") commands-buffer)
       (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
     (if (not value-returned)
@@ -200,7 +201,7 @@ the string one more time by embedding it in a \"page()\" command."
           (while (search-forward "\r" nil t)   ;; function to keep the ^M
             (replace-match "" nil t)))         ;; from showing up at all
       (ess-transcript-mode (eval ess-mouse-customize-alist))
-      (setq ess-local-process-name ess-current-process-name)
+      (setq ess-local-process-name pname)
       (rename-buffer scommand))))
 
 
