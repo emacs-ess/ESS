@@ -365,13 +365,13 @@ there is no process NAME)."
         ;; (inferior-ess-wait-for-prompt)
         (inferior-ess-mark-as-busy (get-process proc-name))
         (process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
-        (ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)")
+        (ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)\n")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
         ;; EXTRAS
         (ess-load-extras t)
         (run-hooks 'ess-post-run-hook)
         ;; user initialization can take some time ...
-        (ess-write-to-dribble-buffer "(ess-multi 2): waiting for process after hook")
+        (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
         )
       (if (and inferior-ess-same-window (not inferior-ess-own-frame))
@@ -1004,7 +1004,7 @@ debugging.  Let-bind it to nil before calling
 removal is necessary.")
 
 
-(defun ess-command (com &optional buf sleep no-prompt-check wait)
+(defun ess-command (com &optional buf sleep no-prompt-check wait proc)
   "Send the ESS process command COM and delete the output from
 the ESS process buffer.  If an optional second argument BUF
 exists save the output in that buffer. BUF is erased before use.
@@ -1014,6 +1014,9 @@ is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
 places where `a' is proportional to `ess-cmd-delay'.  WAIT is
 passed to `ess-wait-for-process' with the default of 0.02sec.
 ess-command doesn't set 'last-eval process stamp.
+
+PROC should be a process, if nil the process name is taken from
+`ess-local-process-name'.
 
 Note: for critical, or error prone code you should consider
 wrapping the code into:
@@ -1030,15 +1033,14 @@ local({
   ;; the ddeclient-p checks needs to use the local-process-name
   (unless buf
     (setq buf (get-buffer-create " *ess-command-output*")))
-  (with-current-buffer buf
-    (unless ess-local-process-name
-      (setq ess-local-process-name ess-current-process-name)))
+  
   (if (ess-ddeclient-p)
       (ess-command-ddeclient com buf sleep)
 
     ;; else: "normal", non-DDE behavior:
 
-    (let* ((sprocess (get-ess-process ess-current-process-name))
+    (let* ((sprocess (or proc
+                         (get-ess-process ess-current-process-name)))
            sbuffer primary-prompt end-of-output oldpb oldpf oldpm
            )
 
@@ -2108,15 +2110,9 @@ Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
-      (let ((ess-current-process-name)); local, used as S-process buffer below
-        ;; when run inside an ESS process buffer, use that one
-        (if (and (comint-check-proc (current-buffer)); has running proc
-                 (memq major-mode '(inferior-ess-mode)))
-            (setq ess-current-process-name ess-local-process-name))
-
-        (ess-eval-linewise (format "options(width=%d,length=99999)"
-                                   (1- (window-width)))
-                           nil nil nil 'wait-prompt))))
+      (ess-eval-linewise (format "options(width=%d,length=99999)"
+                                 (1- (window-width)))
+                         nil nil nil 'wait-prompt)))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
@@ -2443,10 +2439,10 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
   (let ((tbuffer (get-buffer-create
                   " *ess-get-words*")); initial space: disable-undo
         words)
+    (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
+    (ess-command command tbuffer 'sleep no-prompt-check wait)
+    (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
-      (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
-      (ess-command command tbuffer 'sleep no-prompt-check wait)
-      (ess-if-verbose-write " [ok] ..")
       (goto-char (point-min))
       (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
           (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
