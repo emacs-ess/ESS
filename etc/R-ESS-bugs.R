@@ -406,3 +406,14 @@ yield <- c(49.5,62.8,46.8,57.0,59.8,58.5,55.5,56.0,62.8,55.8,69.5,55.0,
 np <- data.frame(block=gl(6,4), N=factor(N), P=factor(P), yield=yield)
 (np.aovE <- aov(yield ~  N*P + Error(block), np))
 
+### Indentation -----  "expression"
+list <- c(1, 345, 456,
+          55)
+data.frame <- list(a=345, b=345,
+                   foo = "sdf")
+expremmion <- c(1, 3,
+                23874, 239487)
+## Wrong indentation here:
+expression <- c(2343,
+    23874, 239487)
+
