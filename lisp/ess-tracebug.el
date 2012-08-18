@@ -2087,8 +2087,7 @@ environment(.ess_log_eval) <- .GlobalEnv
     (use-local-map ess-watch-mode-map)
     (setq major-mode 'ess-watch-mode)
     (setq mode-name (concat "watch " ess-current-process-name))
-    (setq font-lock-defaults
-          '(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
+    (setq font-lock-defaults ess-R-font-lock-defaults)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
@@ -2152,14 +2151,7 @@ for more information.
 
 
 (defface ess-watch-current-block-face
-  '(
-    ;; (((class grayscale)
-    ;;   (background light)) (:background "DimGray"))
-    ;; (((class grayscale)
-    ;;   (background dark) (min-colors 88))  (:background "LightGray"))
-    (((class color) (background light)) (min-colors 88) (:background "tan"))
-    (((class color) (background dark) (min-colors 88))  (:background "gray10"))
-    )
+  '((default (:inherit highlight)))
   "Face used to highlight current watch block."
   :group 'ess-debug
   )
