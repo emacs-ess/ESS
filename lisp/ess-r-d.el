@@ -44,6 +44,7 @@
 (require 'ess-help)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
+(require 'compile); for compilation-* below
 
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
 
