@@ -183,6 +183,7 @@ for ESS, such as icons.")
 ;;   "*Location of the ESS info/ directory.
 ;; The ESS info directory stores the ESS info files.")
 
+(require 'files)
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (unless (locate-file "ess.info"
