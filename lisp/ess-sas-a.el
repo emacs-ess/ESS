@@ -621,6 +621,9 @@ current buffer if nil."
 
 (defun ess-sas-goto (suffix &optional revert no-create)
   "Find a file associated with a SAS file by suffix and revert if necessary."
+; (interactive)
+;  (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "[.]?[1-9]?\\'")))
+; can we identify common nonsense extensions like .log.1 or .sas.2?
   (let ((ess-temp-regexp (concat ess-sas-suffix-regexp "\\(@.+\\)?\\'")))
     (save-match-data
       (if (or (string-match ess-temp-regexp (expand-file-name (buffer-name)))
@@ -915,7 +918,8 @@ optional argument is non-nil, then set-buffer rather than switch."
   (let
       ((ess-temp-rtf-file
         (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
-    (copy-file ess-sas-file-path ess-temp-rtf-file t)
+;    (copy-file ess-sas-file-path ess-temp-rtf-file t)
+    (copy-file (buffer-name) ess-temp-rtf-file t)
     (ess-sas-goto "rtf" t)
     (ess-rtf-replace-chars)
 

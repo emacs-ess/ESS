@@ -1,3 +1,10 @@
+2012-08-22  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-rtf-portrait): bug-fix: copy
+	current buffer rather than ess-sas-file-path to an RTF file
+	(maybe this doesn't actually fix the bug, but it eliminates
+	a possibility and makes the code easier to follow)
+
 2012-07-23  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el, ess-r-gui.el, ess-sas.el, ess-sp4-d.el,
