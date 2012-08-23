@@ -899,16 +899,6 @@ optional argument is non-nil, then set-buffer rather than switch."
 ))
     (error nil)) 
 ; else
-(defun ess-rtf-replace-chars ()
-  "Convert a text file to an MS RTF file."
-  (interactive)
-  (goto-char (point-min))
-  (while (re-search-forward "\n" nil t) (replace-match "\\par\n" nil t))
-  (goto-char (point-min))
-  (while (re-search-forward "\f" nil t) (replace-match "\\page\n" nil t))
-  (goto-char (point-min))
-  (while (re-search-forward "\t" nil t) (replace-match "\\tab" nil t)))
-
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
   "Creates an MS RTF portrait file from the current buffer."
   (interactive)
@@ -934,6 +924,16 @@ optional argument is non-nil, then set-buffer rather than switch."
     (save-buffer)
     (kill-buffer (current-buffer))) 
 )   
+
+(defun ess-rtf-replace-chars ()
+  "Convert a text file to an MS RTF file."
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\n" nil t) (replace-match "\\par\n" nil t))
+  (goto-char (point-min))
+  (while (re-search-forward "\f" nil t) (replace-match "\\page\n" nil t))
+  (goto-char (point-min))
+  (while (re-search-forward "\t" nil t) (replace-match "\\tab" nil t)))
 
 (defun ess-sas-rtf-landscape (&optional ess-tmp-font-size)
   "Creates an MS RTF landscape file from the current buffer."
