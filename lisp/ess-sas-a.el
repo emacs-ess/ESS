@@ -912,15 +912,11 @@ optional argument is non-nil, then set-buffer rather than switch."
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
   "Creates an MS RTF portrait file from the current buffer."
   (interactive)
-  (ess-sas-file-path t)
+;  (ess-sas-file-path t)
   (ess-revert-wisely)
 
-  (let
-      ((ess-temp-rtf-file
-        (replace-regexp-in-string "[.][^.]*$" ".rtf" ess-sas-file-path)))
-;    (copy-file ess-sas-file-path ess-temp-rtf-file t)
-    (copy-file (buffer-name) ess-temp-rtf-file t)
-    (ess-sas-goto "rtf" t)
+  (set-visited-file-name (concat (buffer-name) ".rtf"))
+;    (ess-sas-goto "rtf" t)
     (ess-rtf-replace-chars)
 
     (goto-char (point-min))
@@ -935,7 +931,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert "}}}}\n")
 
     (save-buffer)
-    (kill-buffer (current-buffer))))
+    (kill-buffer (current-buffer))) 
 )   
 
 (defun ess-sas-rtf-us-landscape ()

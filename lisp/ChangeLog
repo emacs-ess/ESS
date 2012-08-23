@@ -1,9 +1,9 @@
 2012-08-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el (ess-sas-rtf-portrait): bug-fix: copy
-	current buffer rather than ess-sas-file-path to an RTF file
-	(maybe this doesn't actually fix the bug, but it eliminates
-	a possibility and makes the code easier to follow)
+	* ess-sas-a.el (ess-sas-rtf-portrait): bug-fix: make new
+	file buffer by adding .rtf; this fixes it, but
+	ess-sas-xx-landscape still broken; also notice that
+	Emacs and XEmacs implementations have diverged
 
 2012-07-23  Stephen Eglen  <stephen@gnu.org>
 
