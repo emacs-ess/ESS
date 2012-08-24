@@ -311,9 +311,6 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(defvar inferior-julia-program-name nil
-  "Path to julia-release-basic executable")
-
 (defun julia-send-string-function (process string visibly)
   (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
     (with-temp-file file

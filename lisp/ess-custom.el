@@ -2153,6 +2153,13 @@ Defaults to `ess-S-non-functions'."
 (make-variable-buffer-local 'ess-help-sec-regex)
 
 
+ ; julia-mode
+(defvar inferior-julia-program-name "julia-release-basic"
+  ;; the default assumes it is on the PATH ... which is typically the case after 
+  ;; a "typical unix-alike installation"
+  "Path to julia-release-basic executable")
+
+
  ; ess-mode: editing S source
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
