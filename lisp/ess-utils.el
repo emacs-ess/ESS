@@ -29,31 +29,27 @@
 
 (defun ess-inside-string-or-comment-p (&optional pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
- (according to syntax). NOT OKAY for multi-line comments!!"
+ (according to syntax)."
   ;;FIXME (defun ess-calculate-indent ..)  can do that ...
   (interactive)
   (save-excursion
     (setq pos (or pos (point)))
-    (or (when font-lock-mode
-	  (let ((face (get-char-property pos 'face)))
-	    (or (eq 'font-lock-string-face face)
-		(eq 'font-lock-comment-face face)
-		(eq 'font-lock-doc-face face))))
-	(let ((pps (parse-partial-sexp (point-min) pos)))
-	  ;; 3: string,  4: comment
-	  (or (nth 3 pps) (nth 4 pps))))))
+    (let ((pps (if (featurep 'xemacs)
+                   (parse-partial-sexp (point-min) pos)
+                 (syntax-ppss pos))))
+      ;; 3: string,  4: comment
+      (or (nth 3 pps) (nth 4 pps)))))
 
 
 (defun ess-inside-string-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
   (interactive)
-  (setq pos (or pos (point)))
   (save-excursion
-    (or (when font-lock-mode ;; this is a shortcut (works well usually)
-	  (let ((face (get-char-property pos 'face)))
-	    (or (eq 'font-lock-string-face face)
-		(eq 'font-lock-doc-face face))))
-	(nth 3 (parse-partial-sexp (point-min) pos)))))
+    (setq pos (or pos (point)))
+    (let ((pps (if (featurep 'xemacs)
+                   (parse-partial-sexp (point-min) pos)
+                 (syntax-ppss pos))))
+      (nth 3 pps))))
 
 (defun ess-inside-comment-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
