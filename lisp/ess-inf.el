@@ -510,11 +510,12 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
        (unless ,no-error
          (error "No current ESS process")))))
 
-(defun get-ess-process (name &optional use-another)
+(defun get-ess-process (&optional name use-another)
   "Return the ESS process named by NAME.  If USE-ANOTHER is non-nil,
 and the process NAME is not running (anymore), try to connect to another if
 there is one.  By default (USE-ANOTHER is nil), the connection to another
 process happens interactively (when possible)."
+  (setq name (or name ess-local-process-name))
   (if (null name)           ; should almost never happen at this point
       (error "No ESS process is associated with this buffer now"))
   (update-ess-process-name-list)
