@@ -2588,19 +2588,28 @@ form completions."
 (defun ess-filename-completion ()
   ;; > emacs 24
   "Return completion only within string or comment."
-  (when (ess-inside-string-or-comment-p (point))
-    (append (comint-filename-completion) '(:exclusive no))
-    ))
+  (save-restriction ;; explicitely handle inferior-ess
+    (ignore-errors
+      (when (and (eq major-mode 'inferior-ess-mode)
+                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
+        (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
+                          (point-max))))
+    (when (ess-inside-string-or-comment-p (point))
+      (append (comint-filename-completion) '(:exclusive no))
+      )))
 
 
 (defun ess-complete-filename ()
   "Do file completion only within strings."
-  (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
-    ;; (and (eq major-mode 'inferior-ess-mode)
-    ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
-    ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
-    (comint-dynamic-complete-filename)
-    ))
+  (save-restriction ;; explicitely handle inferior-ess
+    (ignore-errors
+      (when (and (eq major-mode 'inferior-ess-mode)
+                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
+        (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
+                          (point-max))))
+    (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
+      (comint-dynamic-complete-filename)
+      )))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a
