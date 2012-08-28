@@ -708,28 +708,26 @@ of lines.
 
 Also store the cons in 'ess--funname.start for potential use
 later."
-  (when (not (ess-inside-string-p))
-    (setq ess--funname.start
-          (save-restriction
-            (let* ((proc (get-buffer-process (current-buffer)))
-                   (mark (and proc (process-mark proc))))
-              (if (and mark (>= (point) mark))
-                  (narrow-to-region mark (point))
-                (narrow-to-region (max (- (point) (or look-back 2000)) (point-min))
-                                  (point))
-                ))
-            (condition-case nil ;; check if it is inside a functon call
-                (save-excursion
-                  (up-list -1)
-                  (while (not (looking-at "("))
-                    (up-list -1))
-                  ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
-                  (let ((funname (ess-get-object-at-point)))
-                    (when (and funname
-                               (not (member funname ess-S-non-functions)))
-                      (cons funname (- (point) (length funname))))
-                    ))
-              (error nil))))))
+  (save-restriction
+    (let* ((proc (get-buffer-process (current-buffer)))
+           (mark (and proc (process-mark proc))))
+      (if (and mark (>= (point) mark))
+          (narrow-to-region mark (point)))
+      
+      (when (not (ess-inside-string-p))
+        (setq ess--funname.start
+              (condition-case nil ;; check if it is inside a functon call
+                  (save-excursion
+                    (up-list -1)
+                    (while (not (looking-at "("))
+                      (up-list -1))
+                    ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
+                    (let ((funname (ess-get-object-at-point)))
+                      (when (and funname
+                                 (not (member funname ess-S-non-functions)))
+                        (cons funname (- (point) (length funname))))
+                      ))
+                (error nil)))))))
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.
