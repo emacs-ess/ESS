@@ -195,8 +195,8 @@ to R, put them in the variable `inferior-R-args'."
 
             (ess-eval-linewise
              ;; not just into .GlobalEnv where it's too easily removed..
-             (concat "assignInNamespace(\".help.ESS\","
-                     my-R-help-cmd ", ns = asNamespace(\"base\"))")
+             (concat "assignInNamespace(\".help.ESS\", "
+                     my-R-help-cmd ", ns=asNamespace(\"base\"))")
              nil nil nil 'wait-prompt)
             ))
 
@@ -614,9 +614,9 @@ to look up any doc strings."
         comp <- compiler::enableJIT(0L)
         on.exit(compiler::enableJIT(comp))
     }
-    olderr <- options(error = NULL)
+    olderr <- options(error=NULL)
     on.exit(options(olderr))
-    fun <- tryCatch(%s, error = function(e) NULL) ## works for special objects also
+    fun <- tryCatch(%s, error=function(e) NULL) ## works for special objects also
     .ess_funname<- '%s'
     if(is.null(fun) || !is.function(fun)){
         NULL
@@ -624,15 +624,15 @@ to look up any doc strings."
         special <- grepl('[:$@[]', .ess_funname)
         args<-if(!special){
                 fundef<-paste(.ess_funname, '.default',sep='')
-                if(exists(fundef, mode = 'function')) args(fundef) else args(fun)
+                if(exists(fundef, mode='function')) args(fundef) else args(fun)
         }else args(fun)
-        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse = ''))
-        args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ',args), fixed = TRUE)
+        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse=''))
+        args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ', args), fixed=TRUE)
         allargs <-
                 if(special) paste(names(formals(fun)), '=', sep='')
-                else tryCatch(utils:::functionArgs(.ess_funname, ''), error = function(e) NULL)
+                else tryCatch(utils:::functionArgs(.ess_funname, ''), error=function(e) NULL)
         envname <- environmentName(environment(fun))
-        c(envname,args,allargs)
+        c(envname, args, allargs)
      }
 })
 ")
@@ -746,7 +746,7 @@ First element of a returned list is the completion token.
          ;; (opts2 (if no-args "rc.options(op)" ""))
          (comm (format
                 "local({
-olderr <- options(error = NULL)
+olderr <- options(error=NULL)
 on.exit(options(olderr))
 if(version$minor > '14.1'){
     comp <- compiler::enableJIT(0L)
@@ -756,7 +756,7 @@ utils:::.assignLinebuffer(\"%s\")
 utils:::.assignEnd(%d)
 utils:::.guessTokenFromLine()
 utils:::.completeToken()
-c(get('token', envir = utils:::.CompletionEnv),
+c(get('token', envir=utils:::.CompletionEnv),
   utils:::.retrieveCompletions())
 })\n"
                 (ess-quote-special-chars (buffer-substring start end))
@@ -919,11 +919,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defvar ess--ac-help-arg-command
   "
-getArgHelp <- function(arg, func = NULL){
-    olderr <- options(error = NULL)
+getArgHelp <- function(arg, func=NULL){
+    olderr <- options(error=NULL)
     on.exit(options(olderr))
     fguess <-
-        if(is.null(func)) get('fguess', envir = utils:::.CompletionEnv)
+        if(is.null(func)) get('fguess', envir=utils:::.CompletionEnv)
         else func
     findArgHelp <- function(fun, arg){
         file <- help(fun, try.all.packages=FALSE)[[1]]
@@ -932,21 +932,21 @@ getArgHelp <- function(arg, func = NULL){
         if(length(id)){
             arg_section <- hlp[[id[[1L]]]]
             items <- grep('item', tools:::RdTags(arg_section), fixed=TRUE)
-            ## cat('items:', items,fill = T)
+            ## cat('items:', items, fill=TRUE)
             if(length(items)){
                 arg_section <- arg_section[items]
                 args <- unlist(lapply(arg_section,
-                                      function(el) paste(unlist(el[[1]][[1]], T,F),collapse='')))
-                fits <- grep(arg, args, fixed= T)
-                ## cat('args', args, 'fits',fill=T)
+                                      function(el) paste(unlist(el[[1]][[1]], TRUE, FALSE), collapse='')))
+                fits <- grep(arg, args, fixed=TRUE)
+                ## cat('args', args, 'fits', fill=TRUE)
                 if(length(fits))
-                    paste(unlist(arg_section[[fits[1L]]][[2]],T,F),collapse='')
+                    paste(unlist(arg_section[[fits[1L]]][[2]], TRUE, FALSE), collapse='')
              }
         }
     }
     funcs <- c(fguess, tryCatch(methods(fguess),
-                                warning = function(w) {NULL},
-                                error = function(e) {NULL}))
+                                warning=function(w) {NULL},
+                                error=function(e) {NULL}))
     if(length(funcs) > 1 && length(pos <- grep('default', funcs))){
         funcs <- c(funcs[[pos[[1L]]]], funcs[-pos[[1L]]])
     }
@@ -954,8 +954,8 @@ getArgHelp <- function(arg, func = NULL){
     out <- 'No help found'
     while(i <= length(funcs) && is.null(out <-
             tryCatch(findArgHelp(funcs[[i]], arg),
-                     warning = function(w) {NULL},
-                     error = function(e) {NULL})
+                     warning=function(w) {NULL},
+                     error=function(e) {NULL})
             ))
         i <- i + 1L
     cat(' \n\n', as.character(out), '\n\n')
@@ -1107,7 +1107,7 @@ Completion is available for supplying options."
 (defun ess-setCRANMiror ()
   "Set cran mirror"
   (interactive)
-  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors();print(paste(out$Name,'[',out$URL,']',sep = ''))})\n"))
+  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
          (M2 (mapcar (lambda (el)
                        (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
                        (propertize (match-string 1 el) 'URL (match-string 2 el)))

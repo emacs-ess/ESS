@@ -107,10 +107,10 @@
 (defvar inferior-S-language-start
   '(concat "options("
            "STERM='"    ess-STERM  "'"
-           ", str.dendrogram.last =\"'\""
+           ", str.dendrogram.last=\"'\""
            (if ess-editor (concat ", editor='" ess-editor "'"))
            (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
-           ", show.error.locations = TRUE"
+           ", show.error.locations=TRUE"
            ")")
   "S language expression for startup -- default for all S dialects.")
 

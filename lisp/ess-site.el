@@ -688,7 +688,7 @@ sending `inferior-ess-language-start' to S-Plus.")
   (add-hook 'ess-post-run-hook
     (lambda()
       (when (string= ess-dialect "R")
-        (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
+        (ess-eval-linewise "options(chmhelp=FALSE, help_type=\"text\")"
                            nil nil nil 'wait)))))
 
 

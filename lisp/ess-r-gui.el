@@ -71,7 +71,7 @@ nil on Unix machines."
 (defvar ess-rgui-command " -s TclEval -t R -c .ess.command > NUL"
   "command to inferior-ess-execdde that will make Rgui read the command file")
 (defvar inferior-ess-language-start-rgui
-  "options(chmhelp=FALSE, htmlhelp=FALSE, help_type = 'text'); require(tcltk2)"
+  "options(chmhelp=FALSE, htmlhelp=FALSE, help_type='text'); require(tcltk2)"
   "additional arguments to rgui")
 
 (defun ess-eval-region-ddeclient (start end even-empty)

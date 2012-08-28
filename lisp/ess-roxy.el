@@ -486,7 +486,7 @@ a temporary buffer and return that buffer."
          (cond ((string= "roxygen" ess-roxy-package)
                 "make.Rd2.roclet()$parse")
                ((string= "roxygen2" ess-roxy-package)
-                "(function(P) {..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE = character(1), function(x) {roxygen2:::rd_out_cache$compute(x, format(x))}))})")
+                "(function(P) {..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) {roxygen2:::rd_out_cache$compute(x, format(x))}))})")
                (t (error "need to hard code the roclet output call for roxygen package '%s'"
                          ess-roxy-package))))
         )

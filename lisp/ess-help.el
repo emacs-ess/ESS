@@ -227,7 +227,7 @@ an inferior emacs buffer) the GUI help window is used."
 
 	    ;; e.g. if within R, the user does:
 
-	    ;; > options("help.try.all.packages" = TRUE)
+            ;; > options("help.try.all.packages"=TRUE)
 
 	    ;; > ?rlm
 
@@ -333,8 +333,8 @@ if necessary.  It is bound to RET and C-m in R-index pages."
     (cond
      ((string-match "R" ess-dialect)
       (setq com-package-for-object "sub('package:', '', utils::find('%s'))\n"
-            com-packages           ".packages(all.available = TRUE)\n"
-            com-package-index      "help(package='%s', help_type = 'text')\n"
+            com-packages           ".packages(all.available=TRUE)\n"
+            com-package-index      "help(package='%s', help_type='text')\n"
             reg-keyword             "^\\([-a-zA-Z0-9._@$]+\\)[^:\n]*$"
             reg-start              "^Index:"))
      (t (setq not-implemented t)))
@@ -400,7 +400,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
           (alist                ess-local-customize-alist)
           packs details
           p row)
-      (ess-command "local({oo <- options(width = 1000);print.default(browseVignettes());options(oo)})\n" buff)
+      (ess-command "local({oo <- options(width=1000);print.default(browseVignettes());options(oo)})\n" buff)
       (with-current-buffer buff
         (save-excursion
           (goto-char (point-max))

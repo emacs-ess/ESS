@@ -399,7 +399,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
            ess-dialect
            (current-buffer)))
   ;; (ess-write-to-dribble-buffer
-  ;;  (format "(ess-mode-1.2): ess-process= %s \n"
+  ;;  (format "(ess-mode-1.2): ess-process=%s \n"
   ;;   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.5): alist=%s \n" alist))
@@ -773,7 +773,7 @@ With prefix argument, only shows the errors ESS reported."
 	  (re-search-backward
 	   ;; FIXME: R does not give "useful" error messages -
 	   ;; -----  by default: We (ESS) could try to use a more useful one, via
-	   ;;   options(error = essErrorHandler)
+	   ;;   options(error=essErrorHandler)
 	   ess-error-regexp
 	   nil
 	   t)

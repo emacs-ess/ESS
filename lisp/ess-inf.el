@@ -1022,7 +1022,7 @@ Note: for critical, or error prone code you should consider
 wrapping the code into:
 
 local({
-    olderr <- options(error = NULL)
+    olderr <- options(error=NULL)
     on.exit(options(olderr))
     ...
 })
@@ -2111,7 +2111,7 @@ Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
-      (ess-eval-linewise (format "options(width=%d,length=99999)"
+      (ess-eval-linewise (format "options(width=%d, length=99999)"
                                  (1- (window-width)))
                          nil nil nil 'wait-prompt)))
 

@@ -588,21 +588,21 @@ function call + N characters:
 For inner function arguments the behavior is unchanged:
 
   some.function(arg1,
-                arg2 = other.function(a,
+                arg2=other.function(a,
                   b,
 
 Set `ess-arg-function-offset' to nil if you want:
 
   some.function(arg1,
-                arg2 = other.function(a,
-                                      b,
+                arg2=other.function(a,
+                                    b,
 
 and
 
 some.function(arg1,
-              arg2 = other.function(
-                       a,
-                       b,
+              arg2=other.function(
+                     a,
+                     b,
 
 ")
 
@@ -1042,7 +1042,7 @@ Don't use this to send initialization command to stata, use
   :group 'ess-Stata
   :type 'string)
 
-(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max = 1e6)\n"
+(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max=1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
