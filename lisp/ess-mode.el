@@ -667,6 +667,21 @@ Optional argument for location of beginning.  Return '(beg end)."
     ;; else: 'no-error': we are not in a function
     nil))
 
+
+(defun ess-goto-beginning-of-function-or-para ()
+  "If inside a function go to end of it, overwise go to the end
+  of paragraph."
+  (interactive)
+  (unless (ignore-errors (ess-beginning-of-function t))
+    (backward-paragraph)))
+
+(defun ess-goto-end-of-function-or-para ()
+  "If inside a function go to end of it, overwise go to the end
+  of paragraph."
+  (interactive)
+  (unless (ignore-errors (ess-end-of-function nil t))
+    (forward-paragraph)))
+
 ;;; Kurt's version, suggested 1997-03-06.
 (defun ess-mark-function ()
   "Put mark at end of ESS function, point at beginning."
