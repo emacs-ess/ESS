@@ -1317,6 +1317,7 @@ nil."
   (ess-force-buffer-current "Process to use: ")
   (save-excursion
     (ignore-errors
+      ;; evaluation is forward oriented
       (previous-line)
       (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
@@ -1368,6 +1369,16 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 ;;       (ess-eval-region (point) end vis "Eval sexp"))))
 
 
+(defun ess-eval-function-or-paragraph (vis)
+  "Send the current function if \\[point] is inside one, otherwise the current
+paragraph other to the inferior ESS process.
+Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
+  (interactive "P")
+  (let ((beg-end (ignore-errors (ess-eval-function vis 'no-error)))) ;; ignore-errors is a hack, ess-eval-function gives stupid errors sometimes
+    (if (null beg-end) ; not a function
+        (ess-eval-paragraph vis)
+      )))
+
 (defun ess-eval-function-or-paragraph-and-step (vis)
   "Send the current function if \\[point] is inside one, otherwise the current
 paragraph other to the inferior ESS process.
@@ -1379,6 +1390,36 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
       (goto-char (cadr beg-end))
       (forward-line 1)
       )))
+
+(defun ess-eval-region-or-function-or-paragraph (vis)
+  "Send the current region if mark is active, if not, send
+function if \\[point] is inside one, otherwise the current
+paragraph.
+
+ Prefix arg VIS toggles visibility of ess-code as for
+`ess-eval-region'."
+  (interactive "P")
+  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
+           (> (region-end) (region-beginning)))
+      (ess-eval-region (region-beginning) (region-end) vis)
+    (ess-eval-function-or-paragraph vis)))
+
+
+(defun ess-eval-region-or-function-or-paragraph-and-step (vis)
+  "Send the current region if mark is active, if not, send
+function if \\[point] is inside one, otherwise the current
+paragraph. After evaluation step to the next code line or to the
+end of region if region was active.
+
+ Prefix arg VIS toggles visibility of ess-code as for
+`ess-eval-region'."
+  (interactive "P")
+  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
+           (> (region-end) (region-beginning)))
+      (let ((end (region-end)))
+        (ess-eval-region (region-beginning) end vis)
+        (goto-char end))
+    (ess-eval-function-or-paragraph-and-step vis)))
 
 
 (defun ess-eval-line (vis)
