@@ -1394,15 +1394,18 @@ Arg has same meaning as for `ess-eval-region'."
 
 
 
-(defun ess-next-code-line (&optional arg)
+(defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
 Skips past all empty and comment lines.  Default for ARG is 1.
+Don't skip the last empty and comment lines in the buffer unless
+SKIP-TO-EOB is non-nil.
 
 On success, return 0.  Otherwise, go as far as possible and return -1."
   (interactive "p")
   (or arg (setq arg 1))
   (beginning-of-line)
-  (let ((n 0)
+  (let ((pos (point))
+        (n 0)
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
@@ -1413,8 +1416,14 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (require 'newcomment)
         (comment-beginning)
         (beginning-of-line)
-        (forward-comment (* inc (buffer-size)))) ;; as sugested in info file
-      (setq arg (- arg inc)))
+        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
+        )
+      (if (and (not skip-to-eob)
+               (looking-at "[ \t\n]*\\'")) ;; don't go to eob
+          (setq arg 0)
+        (setq pos (point))
+        (setq arg (- arg inc))))
+    (goto-char pos)
     n))
 
 (defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
@@ -1438,6 +1447,10 @@ true."
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
                          invisibly 'eob (or even-empty ess-eval-empty))))
+Don't skip the last empty and comment lines in the buffer unless
+SKIP-TO-EOB is non-nil.
+Don't skip the last empty and comment lines in the buffer unless
+SKIP-TO-EOB is non-nil.
   (forward-line 1))
 
 (defun ess-eval-line-and-step-invisibly ()
