@@ -183,6 +183,7 @@ for ESS, such as icons.")
 ;;   "*Location of the ESS info/ directory.
 ;; The ESS info directory stores the ESS info files.")
 
+(require 'files)
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (unless (locate-file "ess.info"
@@ -687,7 +688,7 @@ sending `inferior-ess-language-start' to S-Plus.")
   (add-hook 'ess-post-run-hook
     (lambda()
       (when (string= ess-dialect "R")
-        (ess-eval-linewise "options(chmhelp = FALSE, help_type = \"text\")"
+        (ess-eval-linewise "options(chmhelp=FALSE, help_type=\"text\")"
                            nil nil nil 'wait)))))
 
 

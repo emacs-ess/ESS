@@ -107,10 +107,10 @@
 (defvar inferior-S-language-start
   '(concat "options("
            "STERM='"    ess-STERM  "'"
-           ", str.dendrogram.last =\"'\""
+           ", str.dendrogram.last=\"'\""
            (if ess-editor (concat ", editor='" ess-editor "'"))
            (if ess-pager  (concat ", pager='"  ess-pager  "', help.pager='"  ess-pager  "'"))
-           ", show.error.locations = TRUE"
+           ", show.error.locations=TRUE"
            ")")
   "S language expression for startup -- default for all S dialects.")
 
@@ -674,12 +674,17 @@ typically \" <- \", can be customized.  In ESS modes other than R/S,
 an underscore is always inserted. "
   (interactive)
   ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
-  (if (or
-       (ess-inside-string-or-comment-p (point))
-       (not (equal ess-language "S")))
-      (insert "_")
-    ;; else:
-    (ess-insert-S-assign)))
+  (save-restriction
+    (ignore-errors
+      (when (and (eq major-mode 'inferior-ess-mode)
+                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
+        (narrow-to-region (process-mark (get-ess-process)) (point-max))))
+    (if (or
+         (ess-inside-string-or-comment-p (point))
+         (not (equal ess-language "S")))
+        (insert "_")
+      ;; else:
+      (ess-insert-S-assign))))
 
 
 (defun ess-insert-S-assign ()

@@ -127,7 +127,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.04-4" ;; updated by 'make'
+(defvar ess-version "12.09" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -588,21 +588,21 @@ function call + N characters:
 For inner function arguments the behavior is unchanged:
 
   some.function(arg1,
-                arg2 = other.function(a,
+                arg2=other.function(a,
                   b,
 
 Set `ess-arg-function-offset' to nil if you want:
 
   some.function(arg1,
-                arg2 = other.function(a,
-                                      b,
+                arg2=other.function(a,
+                                    b,
 
 and
 
 some.function(arg1,
-              arg2 = other.function(
-                       a,
-                       b,
+              arg2=other.function(
+                     a,
+                     b,
 
 ")
 
@@ -1042,7 +1042,7 @@ Don't use this to send initialization command to stata, use
   :group 'ess-Stata
   :type 'string)
 
-(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max = 1e6)\n"
+(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max=1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
@@ -1951,6 +1951,8 @@ If nil, input is in the `font-lock-variable-name-face'."
                                    nil nil  ((?\. . "w") (?\_ . "w")))
   "Font lock defaults for R mode.")
 
+;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case
+(defvar inferior-ess-font-lock-keywords nil) 
 
 (defvar inferior-ess-R-font-lock-keywords
   (append
@@ -2149,6 +2151,13 @@ Defaults to `ess-S-non-functions'."
 
 (make-variable-buffer-local 'ess-help-sec-keys-alist)
 (make-variable-buffer-local 'ess-help-sec-regex)
+
+
+ ; julia-mode
+(defvar inferior-julia-program-name "julia-release-basic"
+  ;; the default assumes it is on the PATH ... which is typically the case after 
+  ;; a "typical unix-alike installation"
+  "Path to julia-release-basic executable")
 
 
  ; ess-mode: editing S source

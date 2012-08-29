@@ -1,3 +1,11 @@
+2012-08-22  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-rtf-portrait/landscape): bug-fix: 
+	make new file buffer by adding .rtf; this fixes nagging issue;
+	also ess-sas-rtf-*-landscape replaced by ess-sas-rtf-landscape
+	on Emacs; but Emacs and XEmacs implementations have diverged;
+	XEmacs currently untested, continue using ess-sas-rtf-*-landscape
+
 2012-07-23  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-help.el, ess-r-gui.el, ess-sas.el, ess-sp4-d.el,

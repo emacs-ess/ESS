@@ -52,6 +52,7 @@
 
 (require 'ess)
 (eval-when-compile
+  (require 'compile)
   (require 'overlay)
   (require 'cl))
 
@@ -66,7 +67,7 @@ Currently only R is supported."
 
 (defvar ess-tracebug-indicator " TB"
   "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-traceback-mode is turned on. "
+  name. Indicates that ess-tracebug-mode is turned on. "
   )
 
 ;; (defvar ess--tracebug-p nil
@@ -367,14 +368,6 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
 ;;;_* TRACEBACK
 
-(require 'compile)
-(defgroup ess-traceback nil
-  "Tracing for ESS."
-  :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
-  :group 'ess-tracebug
-  :prefix "ess-tb-"
-  )
-
 ;; (defface ess-tb-last-input-face
 ;;   '((((class grayscale)
 ;;       (background light)) (:background "DimGray"))
@@ -388,7 +381,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 ;;     (((background dark)) (:weight bold))
 ;;     )
 ;;   "Face to highlight currently debugged line."
-;;   :group 'ess-traceback )
+;;   :group 'ess-tracebug )
 
 (defface ess-tb-last-input-fringe-face
   '((((background light) (min-colors 88)) (:foreground "medium blue" :overline "medium blue"))
@@ -397,7 +390,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
     (((background dark) (min-colors 8))  (:foreground "syan"))
     )
   "Face for fringe bitmap for last-input position."
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (if (fboundp 'define-fringe-bitmap)
     (define-fringe-bitmap 'last-input-arrow
@@ -421,7 +414,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 (defvar ess-tb-last-input (make-marker)
   "Marker pointing to the last user input position in iESS buffer.
 This is the place where `ess-tb-last-input-overlay' is moved.
-Local in iESS buffers with `ess-traceback' mode enabled.")
+Local in iESS buffers with `ess-tracebug' mode enabled.")
 
 (defvar ess-tb-last-input-overlay nil
   "Overlay to highlight the position of last input in iESS buffer.
@@ -451,11 +444,11 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
 
 (defcustom inferior-ess-split-long-prompt t
   "If non-nil, long prompt '> > > > > + + + + > ' is split."
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (defcustom inferior-ess-replace-long+ t
   "If non-nil,  '+ + + + ' containing more than 4 + is replaced by `ess-long+replacement'"
-  :group 'ess-traceback)
+  :group 'ess-tracebug)
 
 (defvar ess-long+replacement "+ . + "
   "Replacement used for long + prompt.
@@ -2094,8 +2087,7 @@ environment(.ess_log_eval) <- .GlobalEnv
     (use-local-map ess-watch-mode-map)
     (setq major-mode 'ess-watch-mode)
     (setq mode-name (concat "watch " ess-current-process-name))
-    (setq font-lock-defaults
-          '(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
+    (setq font-lock-defaults ess-R-font-lock-defaults)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
@@ -2117,14 +2109,73 @@ for more information.
 \\{ess-watch-mode-map}
 "
   (interactive)
-  (let ((wbuf (get-buffer-create ess-watch-buffer)))
+  (ess-force-buffer-current)
+  (let ((wbuf (get-buffer-create ess-watch-buffer))
+        (pname ess-local-process-name))
     (set-buffer wbuf)
+    (setq ess-local-process-name pname)
     (ess-watch-mode)
     (ess-watch-refresh-buffer-visibly wbuf) ;; evals the ess-command and displays the buffer if not visible
     (pop-to-buffer wbuf)
     (set-window-dedicated-p (selected-window) 1) ;; not strongly dedicated
-    )
-  )
+    ))
+
+
+(defun ess-watch-refresh-buffer-visibly (wbuf &optional sleep no-prompt-check)
+  "Eval `ess-watch-command' and direct the output into the WBUF.
+Call `ess-watch-buffer-show' to make the buffer visible, without
+selecting it.
+
+This function is used for refreshing the watch window after each step during
+the debugging."
+  ;; assumes that the ess-watch-mode is on!!
+  ;; particularly ess-watch-current-block-overlay is installed
+  (interactive)
+  (ess-watch-buffer-show wbuf) ;; if visible do nothing
+  (let ((pname ess-local-process-name)) ;; watch might be used from different dialects, need to reset
+    (with-current-buffer wbuf
+      (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
+        (setq buffer-read-only nil)
+        (when pname 
+          (setq ess-local-process-name pname))
+        (ess-command  ess-watch-command wbuf sleep no-prompt-check)
+        ;; delete the ++++++> line  ;; not very reliable but works fine so far.
+        (goto-char (point-min))
+        (delete-region (point-at-bol) (+ 1 (point-at-eol)))
+        (ess-watch-set-current curr-block)
+        (set-window-point (get-buffer-window wbuf) (point))
+        (setq buffer-read-only t)
+        ))))
+
+(defun ess-watch-buffer-show (buffer-or-name)
+  "Make watch buffer BUFFER-OR-NAME visible, and position acordingly.
+If already visible, do nothing.
+
+Currently the only positioning rule implemented is to split the R
+process window in half.  The behavior is controlled by
+`split-window-sensibly' with parameters `split-height-threshold'
+and `split-width-threshold' replaced by
+`ess-watch-height-threshold' and `ess-watch-width-threshold'
+respectively."
+  (interactive)
+  (unless (get-buffer-window ess-watch-buffer 'visible)
+    (save-selected-window
+      (ess-switch-to-ESS t)
+      (let* ((split-width-threshold ess-watch-width-threshold)
+             (split-height-threshold ess-watch-height-threshold)
+             (win (split-window-sensibly (selected-window))))
+        (if win
+            (set-window-buffer win buffer-or-name)
+          (display-buffer buffer-or-name) ;; resort to usual mechanism if could not split
+          ))
+      )))
+
+
+(defun ess-watch-revert-buffer (ignore noconfirm)
+  "Update the watch buffer
+Arguments IGNORE and NOCONFIRM currently not used."
+  (ess-watch)
+  (message "Watch reverted"))
 
 (defvar ess-watch-mode-map nil
   "Keymap for the *R watch* buffer.
@@ -2159,14 +2210,7 @@ for more information.
 
 
 (defface ess-watch-current-block-face
-  '(
-    ;; (((class grayscale)
-    ;;   (background light)) (:background "DimGray"))
-    ;; (((class grayscale)
-    ;;   (background dark) (min-colors 88))  (:background "LightGray"))
-    (((class color) (background light)) (min-colors 88) (:background "tan"))
-    (((class color) (background dark) (min-colors 88))  (:background "gray10"))
-    )
+  '((default (:inherit highlight)))
   "Face used to highlight current watch block."
   :group 'ess-debug
   )
@@ -2306,60 +2350,6 @@ ready to be send to R process. AL is an association list as return by `ess-watch
   ;;todo: delete the prompt at the end of proc buffer todo: defun ess-send-string!!
   (sleep-for 0.05)  ;; need here, if ess-command is used immediately after,  for some weird reason the process buffer will not be changed
   )
-
-(defun ess-watch-revert-buffer (ignore noconfirm)
-  "Update the watch buffer
-Arguments IGNORE and NOCONFIRM currently not used."
-  (ess-watch)
-  (message "Watch reverted"))
-
-(defun ess-watch-refresh-buffer-visibly (wbuf &optional sleep no-prompt-check)
-  "Eval `ess-watch-command' and direct the output into the WBUF.
-Call `ess-watch-buffer-show' to make the buffer visible, without
-selecting it.
-
-This function is used for refreshing the watch window after each step during
-the debugging."
-  ;; assumes that the ess-watch-mode is on!!
-  ;; particularly ess-watch-current-block-overlay is installed
-  (interactive)
-  (ess-watch-buffer-show wbuf) ;; if visible do nothing
-  (let ((pname ess-local-process-name))
-    (with-current-buffer wbuf
-      (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
-        (setq buffer-read-only nil)
-        (setq ess-local-process-name pname)
-        (ess-command  ess-watch-command wbuf sleep no-prompt-check)
-        ;; delete the ++++++> line  ;; not very reliable but works fine so far.
-        (goto-char (point-min))
-        (delete-region (point-at-bol) (+ 1 (point-at-eol)))
-        (ess-watch-set-current curr-block)
-        (set-window-point (get-buffer-window wbuf) (point))
-        (setq buffer-read-only t)
-        ))))
-
-(defun ess-watch-buffer-show (buffer-or-name)
-  "Make watch buffer BUFFER-OR-NAME visible, and position acordingly.
-If already visible, do nothing.
-
-Currently the only positioning rule implemented is to split the R
-process window in half.  The behavior is controlled by
-`split-window-sensibly' with parameters `split-height-threshold'
-and `split-width-threshold' replaced by
-`ess-watch-height-threshold' and `ess-watch-width-threshold'
-respectively."
-  (interactive)
-  (unless (get-buffer-window ess-watch-buffer 'visible)
-    (save-selected-window
-      (ess-switch-to-ESS t)
-      (let* ((split-width-threshold ess-watch-width-threshold)
-             (split-height-threshold ess-watch-height-threshold)
-             (win (split-window-sensibly (selected-window))))
-        (if win
-            (set-window-buffer win buffer-or-name)
-          (display-buffer buffer-or-name) ;; resort to usual mechanism if could not split
-          ))
-      )))
 
 
 (defun ess-watch-quit ()

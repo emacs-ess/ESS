@@ -141,16 +141,16 @@
     (define-key map (kbd "C-c C-<down>") 'ess-eval-buffer-from-here-to-end)
     (define-key map "\C-c\C-f"   'ess-eval-function)
     (define-key map "\C-c\M-f"   'ess-eval-function-and-go)
-    (define-key map "\C-c\C-c"   'ess-eval-function-or-paragraph-and-step)
+    (define-key map "\C-c\C-c"   'ess-eval-region-or-function-or-paragraph-and-step)
     (define-key map "\C-c\C-p"   'ess-eval-paragraph-and-step)
     (define-key map "\C-c\M-p"   'ess-eval-paragraph-and-go)
-    (define-key map "\C-\M-x"    'ess-eval-function)
+    (define-key map "\C-\M-x"    'ess-eval-region-or-function-or-paragraph)
     (define-key map "\C-c\C-n"   'ess-eval-line-and-step)
     (define-key map "\C-c\C-j"   'ess-eval-line)
     (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
     ;; the next three can only work in S/R - mode {FIXME}
-    (define-key map "\C-\M-a"    'ess-beginning-of-function)
-    (define-key map "\C-\M-e"    'ess-end-of-function)
+    (define-key map "\C-\M-a"    'ess-goto-end-of-function-or-para)
+    (define-key map "\C-\M-e"    'ess-goto-end-of-function-or-para)
     (define-key map "\C-xnd"     'ess-narrow-to-defun)
     (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
     (define-key map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
@@ -194,7 +194,8 @@
   '("ESS" ; ESS-mode
     ["What is this? (beta)"    ess-mouse-me                     t]
     ["Load file"                ess-load-file t]
-    ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
+    ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+    ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
     ("Eval and Go"
@@ -213,11 +214,12 @@
      ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
      ["Eval region"     ess-eval-region                   t]
      ["Eval function"   ess-eval-function                 t]
-     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
      ["Eval line"       ess-eval-line                     t]
      ["Eval line & step" ess-eval-line-and-step            t]
      ["Eval paragraph"   ess-eval-paragraph                t]
-     ["Eval para. & step" ess-eval-paragraph-and-step      t]
+     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
+     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
      ["Eval chunk"      ess-eval-chunk           noweb-mode]
      ["Eval thread"     ess-eval-thread          noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
@@ -226,8 +228,8 @@
      ["Edit new object"         ess-dump-object-into-edit-buffer t]
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
-     ["Beginning of function"   ess-beginning-of-function       t]
-     ["End of function"         ess-end-of-function             t]
+     ["Beginning of function or  para"   ess-goto-beginning-of-function-or-para       t]
+     ["End of function or para"         ess-goto-end-of-function-or-para             t]
      )
     ("ESS list..."
      ["Backward list"           backward-list                   t]
@@ -399,7 +401,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
            ess-dialect
            (current-buffer)))
   ;; (ess-write-to-dribble-buffer
-  ;;  (format "(ess-mode-1.2): ess-process= %s \n"
+  ;;  (format "(ess-mode-1.2): ess-process=%s \n"
   ;;   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.5): alist=%s \n" alist))
@@ -667,6 +669,21 @@ Optional argument for location of beginning.  Return '(beg end)."
     ;; else: 'no-error': we are not in a function
     nil))
 
+
+(defun ess-goto-beginning-of-function-or-para ()
+  "If inside a function go to end of it, overwise go to the end
+  of paragraph."
+  (interactive)
+  (unless (ignore-errors (ess-beginning-of-function t))
+    (backward-paragraph)))
+
+(defun ess-goto-end-of-function-or-para ()
+  "If inside a function go to end of it, overwise go to the end
+  of paragraph."
+  (interactive)
+  (unless (ignore-errors (ess-end-of-function nil t))
+    (forward-paragraph)))
+
 ;;; Kurt's version, suggested 1997-03-06.
 (defun ess-mark-function ()
   "Put mark at end of ESS function, point at beginning."
@@ -773,7 +790,7 @@ With prefix argument, only shows the errors ESS reported."
 	  (re-search-backward
 	   ;; FIXME: R does not give "useful" error messages -
 	   ;; -----  by default: We (ESS) could try to use a more useful one, via
-	   ;;   options(error = essErrorHandler)
+	   ;;   options(error=essErrorHandler)
 	   ess-error-regexp
 	   nil
 	   t)
@@ -1124,12 +1141,12 @@ Returns nil if line starts inside a string, t if in a comment."
              (let ((bol (line-beginning-position)))
 
                (cond ((and (numberp ess-expression-offset)
-                           (re-search-backward "[ \t]*expression[ \t]*" bol t))
+                           (re-search-backward "[ \t]*expression[ \t]*(" bol t))
                       ;; obj <- expression(...
                       ;; modified by shiba (forward-sexp -1)
                       (beginning-of-line)
                       (skip-chars-forward " \t")
-                      ;; End
+                      ;; end{modified}
                       (+ (current-column) ess-expression-offset))
                      ((and (numberp ess-arg-function-offset)
                            (re-search-backward

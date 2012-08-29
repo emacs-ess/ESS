@@ -510,11 +510,12 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
        (unless ,no-error
          (error "No current ESS process")))))
 
-(defun get-ess-process (name &optional use-another)
+(defun get-ess-process (&optional name use-another)
   "Return the ESS process named by NAME.  If USE-ANOTHER is non-nil,
 and the process NAME is not running (anymore), try to connect to another if
 there is one.  By default (USE-ANOTHER is nil), the connection to another
 process happens interactively (when possible)."
+  (setq name (or name ess-local-process-name))
   (if (null name)           ; should almost never happen at this point
       (error "No ESS process is associated with this buffer now"))
   (update-ess-process-name-list)
@@ -673,9 +674,8 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (concat " ... request-a-process:\n  "
                    (format
-                    "major mode is %s; ess-language: %s, ess-dialect: %s\n"
-                    major-mode ; 'ess-mode; how can we guess R?
-                    ess-language ess-dialect)))
+                    "major mode %s; current buff: %s; ess-language: %s, ess-dialect: %s\n"
+                    major-mode (current-buffer) ess-language ess-dialect)))
           (ess-start-process-specific ess-language ess-dialect)
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
@@ -1022,7 +1022,7 @@ Note: for critical, or error prone code you should consider
 wrapping the code into:
 
 local({
-    olderr <- options(error = NULL)
+    olderr <- options(error=NULL)
     on.exit(options(olderr))
     ...
 })
@@ -1317,6 +1317,7 @@ nil."
   (ess-force-buffer-current "Process to use: ")
   (save-excursion
     (ignore-errors
+      ;; evaluation is forward oriented
       (previous-line)
       (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
@@ -1368,6 +1369,16 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
 ;;       (ess-eval-region (point) end vis "Eval sexp"))))
 
 
+(defun ess-eval-function-or-paragraph (vis)
+  "Send the current function if \\[point] is inside one, otherwise the current
+paragraph other to the inferior ESS process.
+Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
+  (interactive "P")
+  (let ((beg-end (ignore-errors (ess-eval-function vis 'no-error)))) ;; ignore-errors is a hack, ess-eval-function gives stupid errors sometimes
+    (if (null beg-end) ; not a function
+        (ess-eval-paragraph vis)
+      )))
+
 (defun ess-eval-function-or-paragraph-and-step (vis)
   "Send the current function if \\[point] is inside one, otherwise the current
 paragraph other to the inferior ESS process.
@@ -1379,6 +1390,36 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
       (goto-char (cadr beg-end))
       (forward-line 1)
       )))
+
+(defun ess-eval-region-or-function-or-paragraph (vis)
+  "Send the current region if mark is active, if not, send
+function if \\[point] is inside one, otherwise the current
+paragraph.
+
+ Prefix arg VIS toggles visibility of ess-code as for
+`ess-eval-region'."
+  (interactive "P")
+  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
+           (> (region-end) (region-beginning)))
+      (ess-eval-region (region-beginning) (region-end) vis)
+    (ess-eval-function-or-paragraph vis)))
+
+
+(defun ess-eval-region-or-function-or-paragraph-and-step (vis)
+  "Send the current region if mark is active, if not, send
+function if \\[point] is inside one, otherwise the current
+paragraph. After evaluation step to the next code line or to the
+end of region if region was active.
+
+ Prefix arg VIS toggles visibility of ess-code as for
+`ess-eval-region'."
+  (interactive "P")
+  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
+           (> (region-end) (region-beginning)))
+      (let ((end (region-end)))
+        (ess-eval-region (region-beginning) end vis)
+        (goto-char end))
+    (ess-eval-function-or-paragraph-and-step vis)))
 
 
 (defun ess-eval-line (vis)
@@ -1394,15 +1435,18 @@ Arg has same meaning as for `ess-eval-region'."
 
 
 
-(defun ess-next-code-line (&optional arg)
+(defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
 Skips past all empty and comment lines.  Default for ARG is 1.
+Don't skip the last empty and comment lines in the buffer unless
+SKIP-TO-EOB is non-nil.
 
 On success, return 0.  Otherwise, go as far as possible and return -1."
   (interactive "p")
   (or arg (setq arg 1))
   (beginning-of-line)
-  (let ((n 0)
+  (let ((pos (point))
+        (n 0)
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
@@ -1413,8 +1457,14 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (require 'newcomment)
         (comment-beginning)
         (beginning-of-line)
-        (forward-comment (* inc (buffer-size)))) ;; as sugested in info file
-      (setq arg (- arg inc)))
+        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
+        )
+      (if (and (not skip-to-eob)
+               (looking-at "[ \t\n]*\\'")) ;; don't go to eob
+          (setq arg 0)
+        (setq pos (point))
+        (setq arg (- arg inc))))
+    (goto-char pos)
     n))
 
 (defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
@@ -1427,10 +1477,6 @@ true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
-  (unless (or simple-next ess-eval-empty even-empty)
-    (ignore-errors
-      (previous-line)
-      (ess-next-code-line 1)))
   (save-excursion
     (end-of-line)
     (let ((end (point)))
@@ -1438,7 +1484,9 @@ true."
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
                          invisibly 'eob (or even-empty ess-eval-empty))))
-  (forward-line 1))
+  (if (or simple-next ess-eval-empty even-empty)
+      (forward-line 1)
+    (ess-next-code-line 1)))
 
 (defun ess-eval-line-and-step-invisibly ()
   "Evaluate the current line invisibly and step to the next line.
@@ -1496,12 +1544,12 @@ move forward to the first line after the paragraph.  If not
 inside a paragraph, evaluate next one. Arg has same meaning as
 for `ess-eval-region'."
   (interactive "P")
-  (ignore-errors
-    (previous-line)
-    (ess-next-code-line 1))
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
-    (forward-line 1)))
+    (if ess-eval-empty
+        (forward-line 1)
+      (ess-next-code-line 1)))
+  )
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.   Need to add appropriate stuff...
@@ -2111,7 +2159,7 @@ Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
-      (ess-eval-linewise (format "options(width=%d,length=99999)"
+      (ess-eval-linewise (format "options(width=%d, length=99999)"
                                  (1- (window-width)))
                          nil nil nil 'wait-prompt)))
 
@@ -2588,19 +2636,28 @@ form completions."
 (defun ess-filename-completion ()
   ;; > emacs 24
   "Return completion only within string or comment."
-  (when (ess-inside-string-or-comment-p (point))
-    (append (comint-filename-completion) '(:exclusive no))
-    ))
+  (save-restriction ;; explicitely handle inferior-ess
+    (ignore-errors
+      (when (and (eq major-mode 'inferior-ess-mode)
+                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
+        (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
+                          (point-max))))
+    (when (ess-inside-string-or-comment-p (point))
+      (append (comint-filename-completion) '(:exclusive no))
+      )))
 
 
 (defun ess-complete-filename ()
   "Do file completion only within strings."
-  (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
-    ;; (and (eq major-mode 'inferior-ess-mode)
-    ;;      (comint-within-quotes (1- (process-mark (get-buffer-process (current-buffer)))) (point))))
-    ;;DBG (ess-write-to-dribble-buffer "ess-complete-f.name: within-quotes")
-    (comint-dynamic-complete-filename)
-    ))
+  (save-restriction ;; explicitely handle inferior-ess
+    (ignore-errors
+      (when (and (eq major-mode 'inferior-ess-mode)
+                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
+        (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
+                          (point-max))))
+    (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
+      (comint-dynamic-complete-filename)
+      )))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a
