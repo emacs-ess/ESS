@@ -194,7 +194,8 @@
   '("ESS" ; ESS-mode
     ["What is this? (beta)"    ess-mouse-me                     t]
     ["Load file"                ess-load-file t]
-    ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
+    ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+    ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
     ("Eval and Go"
@@ -213,11 +214,12 @@
      ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
      ["Eval region"     ess-eval-region                   t]
      ["Eval function"   ess-eval-function                 t]
-     ["Eval func/para & step" ess-eval-function-or-paragraph-and-step t]
      ["Eval line"       ess-eval-line                     t]
      ["Eval line & step" ess-eval-line-and-step            t]
      ["Eval paragraph"   ess-eval-paragraph                t]
-     ["Eval para. & step" ess-eval-paragraph-and-step      t]
+     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
+     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
      ["Eval chunk"      ess-eval-chunk           noweb-mode]
      ["Eval thread"     ess-eval-thread          noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
@@ -226,8 +228,8 @@
      ["Edit new object"         ess-dump-object-into-edit-buffer t]
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
-     ["Beginning of function"   ess-beginning-of-function       t]
-     ["End of function"         ess-end-of-function             t]
+     ["Beginning of function or  para"   ess-goto-beginning-of-function-or-para       t]
+     ["End of function or para"         ess-goto-end-of-function-or-para             t]
      )
     ("ESS list..."
      ["Backward list"           backward-list                   t]
