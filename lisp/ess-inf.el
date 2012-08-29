@@ -1436,10 +1436,6 @@ true."
   ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
   (interactive "P\nP"); prefix sets BOTH !
   (ess-force-buffer-current "Process to load into: ")
-  (unless (or simple-next ess-eval-empty even-empty)
-    (ignore-errors
-      (previous-line)
-      (ess-next-code-line 1)))
   (save-excursion
     (end-of-line)
     (let ((end (point)))
@@ -1447,11 +1443,9 @@ true."
       ;; go to end of process buffer so user can see result
       (ess-eval-linewise (buffer-substring (point) end)
                          invisibly 'eob (or even-empty ess-eval-empty))))
-Don't skip the last empty and comment lines in the buffer unless
-SKIP-TO-EOB is non-nil.
-Don't skip the last empty and comment lines in the buffer unless
-SKIP-TO-EOB is non-nil.
-  (forward-line 1))
+  (if (or simple-next ess-eval-empty even-empty)
+      (forward-line 1)
+    (ess-next-code-line 1)))
 
 (defun ess-eval-line-and-step-invisibly ()
   "Evaluate the current line invisibly and step to the next line.
@@ -1509,12 +1503,12 @@ move forward to the first line after the paragraph.  If not
 inside a paragraph, evaluate next one. Arg has same meaning as
 for `ess-eval-region'."
   (interactive "P")
-  (ignore-errors
-    (previous-line)
-    (ess-next-code-line 1))
   (let ((beg-end (ess-eval-paragraph vis)))
     (goto-char (cadr beg-end))
-    (forward-line 1)))
+    (if ess-eval-empty
+        (forward-line 1)
+      (ess-next-code-line 1)))
+  )
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.   Need to add appropriate stuff...
