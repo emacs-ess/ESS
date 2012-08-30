@@ -1249,10 +1249,11 @@ will be used instead of the default .001s and be passed to
     overlay)
   "The overlay for highlighting currently evaluated region or line.")
 
-(defun ess-region-blink (start end)
-  (move-overlay ess-current-region-overlay start end)
-  (run-with-timer .3 nil (lambda ()
-                           (delete-overlay ess-current-region-overlay))))
+(defun ess-blink-region (start end)
+  (when ess-blink-region-p
+    (move-overlay ess-current-region-overlay start end)
+    (run-with-timer .3 nil (lambda ()
+                             (delete-overlay ess-current-region-overlay)))))
 
 
 (defun ess-eval-region (start end toggle &optional message)
@@ -1266,7 +1267,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
-  (ess-region-blink start end)
+  (ess-blink-region start end)
   (save-excursion
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)

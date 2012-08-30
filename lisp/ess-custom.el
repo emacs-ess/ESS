@@ -194,6 +194,11 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type 'string)
 
+(defcustom ess-blink-region-p t
+  "If t evaluated region is highlighted for a shortwhile."
+  :group 'ess
+  :type 'boolean)
+
 (defcustom ess-ask-for-ess-directory t
   "Non-nil means request the process directory each time S is run."
   :group 'ess
