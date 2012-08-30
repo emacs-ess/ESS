@@ -402,15 +402,15 @@ parentContainer <-
 expremmion <- c(1, 3,
                 9876)# was always ok
 ## Had wrong indentation here:
-## expression <- c(2343,
-##    23874, 239487) 
+expression <- c(2343,
+   23874, 239487)
 
 #### or here:
-## foo <- function(x) {
-##     expression <- c(2343,
-##         23874, 239487)
-##     10 + expression
-## }
+foo <- function(x) {
+    expression <- c(2343,
+        23874, 239487)
+    10 + expression
+}
 
 ## Where as here, we *do* want the indentation to
 ## *NOT* go all the way to the right:
@@ -423,3 +423,95 @@ expremmion <- c(1, 3,
 }
 ## VS[18-08-2012]: why? this is a feature for long subexpressions imidiately
 ## folowing new line. Documented in ess-arg-function-offset-new-line
+
+### --- 18 ---
+### M-C-a (beginning of function)
+### -----   anywhere inside the following function, M-C-a must go to beginning
+Ops.x.x <- function(e1, e2)
+{
+    d <- dimCheck(e1,e2)
+    if((dens1 <- extends(c1 <- class(e1), "denseMatrix")))
+	gen1 <- extends(c1, "generalMatrix")
+    if((dens2 <- extends(c2 <- class(e2), "denseMatrix")))
+	gen2 <- extends(c2, "generalMatrix")
+    if(dens1 && dens2) { ## both inherit from ddense*
+	geM <- TRUE
+	if(!gen1) {
+	    if(!gen2) { ## consider preserving "triangular" / "symmetric"
+		geM <- FALSE
+		le <- prod(d)
+		isPacked <- function(x) length(x@x) < le
+		Mclass <-
+		    if(sym <- extends(c1, "symmetricMatrix") &&
+			      extends(c2, "symmetricMatrix")) {
+			if(e1@uplo != e2@uplo)
+			    ## one is upper, one is lower
+			    e2 <- t(e2)
+			if((p1 <- isPacked(e1)) | (p2 <- isPacked(e2))) { ## at least one is packed
+			    if(p1 != p2) { # one is not packed --> *do* pack it:
+				pack.sy <- function(x)
+				    if(is.numeric(x@x))
+					 .Call(dsyMatrix_as_dspMatrix, x)
+				    else .Call(lsyMatrix_as_lspMatrix, x, 0L)
+				if(p1) e2 <- pack.sy(e2)
+				else   e1 <- pack.sy(e1)
+			    }
+			    "spMatrix"
+			} else
+			    "syMatrix"
+		    }
+		    else if(tri <- extends(c1, "triangularMatrix") &&
+				   extends(c2, "triangularMatrix")) {
+			if(!(geM <- e1@uplo != e2@uplo || isN0(callGeneric(0,0)))) {
+			    p1 <- isPacked(e1)
+			    p2 <- isPacked(e2)
+			    if(e1@diag == "U") e1 <- .dense.diagU2N(e1, isPacked=p1)
+			    if(e2@diag == "U") e2 <- .dense.diagU2N(e2, isPacked=p2)
+			    if(p1 | p2) { ## at least one is packed
+				if(p1 != p2) { # one is not packed --> *do* pack it:
+				    pack.tr <- function(x)
+					if(is.numeric(x@x)) .Call(dtrMatrix_as_dtpMatrix, x)
+					else .Call(ltrMatrix_as_ltpMatrix, x, 0L)
+				    if(p1) e2 <- pack.tr(e2)
+				    else   e1 <- pack.tr(e1)
+				}
+				"tpMatrix"
+			    } else
+				"trMatrix"
+			}
+		    }
+		    else {
+			geM <- TRUE
+		    }
+		if(geM)
+		    e2 <- as(e2, "generalMatrix")
+	    }
+	    if(geM)
+		e1 <- as(e1, "generalMatrix") # was "dgeMatrix"
+	} else { ## gen1
+	    if(!gen2) e2 <- as(e2, "generalMatrix")
+	}
+	## now, in all cases @x should be matching & correct {only "uplo" part is used}
+	r <- callGeneric(e1@x, e2@x)
+	if(geM)
+	    new(paste0(.M.kind(r), "geMatrix"), x = r, Dim = d, Dimnames = dimnames(e1))
+	else
+	    new(paste0(.M.kind(r), Mclass), x = r, Dim = d, Dimnames = dimnames(e1), uplo = e1@uplo)
+    }
+    else {
+	r <- if(!dens1 && !dens2)
+	    ## both e1 _and_ e2 are sparse.
+	    ## Now (new method dispatch, 2009-01) *does* happen
+	    ## even though we have <sparse> o <sparse> methods
+	    callGeneric(as(e1, "CsparseMatrix"), as(e2, "CsparseMatrix"))
+	else if(dens1 && !dens2) ## go to dense
+	    callGeneric(e1, as(e2, "denseMatrix"))
+	else ## if(!dens1 && dens2)
+	    callGeneric(as(e1, "denseMatrix"), e2)
+
+	## criterion "2 * nnz(.) < ." as in sparseDefault() in Matrix()	 [./Matrix.R] :
+	if(2 * nnzero(r, na.counted = TRUE) < prod(d))
+	    as(r, "sparseMatrix") else r
+    }
+}
+
