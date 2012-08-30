@@ -149,7 +149,7 @@
     (define-key map "\C-c\C-j"   'ess-eval-line)
     (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
     ;; the next three can only work in S/R - mode {FIXME}
-    (define-key map "\C-\M-a"    'ess-goto-end-of-function-or-para)
+    (define-key map "\C-\M-a"    'ess-goto-beginning-of-function-or-para)
     (define-key map "\C-\M-e"    'ess-goto-end-of-function-or-para)
     (define-key map "\C-xnd"     'ess-narrow-to-defun)
     (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
