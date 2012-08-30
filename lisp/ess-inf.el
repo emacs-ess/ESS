@@ -1331,10 +1331,11 @@ nil."
                  (name (progn (goto-char beg)
                               (forward-word) ;;func names starting with . are not recognized??
                               (ess-read-object-name-default)))
-                 (mess (format "Eval function %s" (or name "???")))
+                 (mess (format "Eval function %s" (propertize (or name "???")
+                                                              'face 'font-lock-function-name-face)))
                  (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
 
-            (ess-region-blink beg end)
+            (ess-blink-region beg end)
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
              (tb-p      (ess-tracebug-send-region proc beg end visibly mess 'func))
