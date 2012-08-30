@@ -1252,7 +1252,7 @@ will be used instead of the default .001s and be passed to
 (defun ess-blink-region (start end)
   (when ess-blink-region-p
     (move-overlay ess-current-region-overlay start end)
-    (run-with-timer .3 nil (lambda ()
+    (run-with-timer .25 nil (lambda ()
                              (delete-overlay ess-current-region-overlay)))))
 
 
