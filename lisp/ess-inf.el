@@ -1267,8 +1267,16 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
-  (ess-blink-region start end)
   (save-excursion
+    ;; don't send new lines (avoid screwing the debugger)
+    (goto-char start)
+    (skip-chars-forward "\n\t ")
+    (setq start (point))
+    
+    (unless mark-active
+        (ess-blink-region start end)
+        )
+    
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
