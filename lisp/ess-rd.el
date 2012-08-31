@@ -181,10 +181,7 @@ All Rd mode abbrevs start with a grave accent (`).")
 (defvar Rd-indent-level 2
   "*Indentation of Rd code with respect to containing blocks.")
 
-(defvar Rd-mode-map nil
-  "Keymap used in Rd mode.")
-(if Rd-mode-map
-    ()
+(defvar Rd-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "\t" 'indent-according-to-mode)
     (define-key map "\C-j" 'reindent-then-newline-and-indent)
@@ -198,14 +195,17 @@ All Rd mode abbrevs start with a grave accent (`).")
     ;;  ^C^F ^L : \link{ . }
     ;;  ^C^F  L : \code{\link{ . }}  etc
     (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
+    (define-key map "\C-ch" 'ess-handy-commands)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
     (define-key map "\C-c\C-r" 'ess-eval-region)
-    (define-key map "\C-c\C-c" 'ess-eval-function-or-paragraph-and-step)
+    (define-key map "\C-c\C-c" 'ess-eval-region-or-function-or-paragraph-and-step)
+    (define-key map "\C-\M-x"  'ess-eval-region-or-function-or-paragraph)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-    (setq Rd-mode-map map)))
+    map)
+  "Keymap used in Rd mode.")
 
 (defvar Rd-mode-menu
   (list "Rd"
@@ -292,6 +292,7 @@ following lines to your `.emacs' file:
   (interactive)
   (text-mode)
   (kill-all-local-variables)
+  (ess-setq-vars-local R-customize-alist) ;same functionality is availabe as in R buffers
   (use-local-map Rd-mode-map)
   (setq mode-name "Rd")
   (setq major-mode 'Rd-mode)

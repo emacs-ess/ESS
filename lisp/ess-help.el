@@ -169,7 +169,7 @@ an inferior emacs buffer) the GUI help window is used."
            (old-hb-p    (get-buffer hb-name))
            (tbuffer     (get-buffer-create hb-name))
            (lproc-name  ess-local-process-name)
-           (alist               ess-local-customize-alist))
+           (alist       ess-local-customize-alist))
       (with-current-buffer tbuffer
         (ess-setq-vars-local (eval alist))
         (set-syntax-table ess-mode-syntax-table)
