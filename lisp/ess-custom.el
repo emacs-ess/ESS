@@ -2199,9 +2199,13 @@ Created for each process."
   "Buffer for temporary use for setting default variable values.
 Used for recording status of the program, mainly for debugging.")
 
+;; VS[31-08-2012]: No global exchange please. This var should be local. If you
+;; need it in a new buffer, import it from the parent buffer.
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
 Not buffer local!")
+;; (make-variable-buffer-local 'ess-customize-alist)
+;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
 (defvar ess-local-customize-alist nil
   "Buffer local settings for proper behavior.
