@@ -195,13 +195,13 @@ Alternatively, it can appear in its own frame if
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
                procname temp-dialect buf-name-str))
-      
+
       (cond
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
              (memq major-mode '(inferior-ess-mode)))
         (setq startdir  (if ess-ask-for-ess-directory
-                            (ess-get-directory (directory-file-name defdir))
+                            (ess-get-directory defdir temp-dialect procname)
                           defdir)
               buf       (current-buffer)
               method    1))
@@ -211,10 +211,10 @@ Alternatively, it can appear in its own frame if
         (setq buf       (get-buffer buf-name-str)
               method    2))
 
-       ;; 3)  Pick up a transfcript file or create a new buffer
+       ;; 3)  Pick up a transcript file or create a new buffer
        (t
         (setq startdir  (if ess-ask-for-ess-directory
-                            (ess-get-directory (directory-file-name defdir))
+                            (ess-get-directory defdir temp-dialect procname)
                           defdir)
               buf       (if ess-ask-about-transfile
                             (let ((transfilename (read-file-name "Use transcript file (default none):"
@@ -224,7 +224,7 @@ Alternatively, it can appear in its own frame if
                                 (find-file-noselect (expand-file-name  transfilename))))
                           (get-buffer-create buf-name-str))
               method    3)))
-      
+
       (ess-write-to-dribble-buffer
        (format "(inferior-ess) Method #%d start=%s buf=%s\n" method startdir buf))
 
@@ -248,7 +248,7 @@ Alternatively, it can appear in its own frame if
                ess-language ess-dialect inferior-ess-program ess-local-process-name))
 
       ;; Set up history file
-      (if ess-history-file 
+      (if ess-history-file
           (if (eq t ess-history-file)
               (setq ess-history-file (concat "." ess-dialect "history"))
             ;; otherwise must be a string "..."
@@ -471,14 +471,20 @@ This was rewritten by KH in April 1996."
 
 ;;*;; Requester functions called at startup
 
-(defun ess-get-directory (default)
-  (let ((prog-version (if (string= ess-dialect "R")
+(defun ess-get-directory (default dialect procname)
+  (let ((prog-version (if (string= dialect "R")
                           inferior-R-version ; notably for the R-X.Y versions
+                        ;; should rather use procname ?
                         inferior-ess-program)))
     (ess-prompt-for-directory
-     default
-     (format "ESS [%s(%s): %s] starting data directory? "
-             ess-language ess-dialect prog-version))))
+     (directory-file-name default)
+     (format "ESS (*%s* '%s') starting data directory? "
+             procname prog-version)
+     ;; (format "ESS [%s {%s(%s)}: '%s'] starting data directory? "
+     ;;         ;;FIXME: maybe rather tmp-dialect (+ evt drop ess-language?)?
+     ;;         procname ess-language ess-dialect prog-version)
+     )))
+
 
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
@@ -1033,7 +1039,7 @@ local({
   ;; the ddeclient-p checks needs to use the local-process-name
   (unless buf
     (setq buf (get-buffer-create " *ess-command-output*")))
-  
+
   (if (ess-ddeclient-p)
       (ess-command-ddeclient com buf sleep)
 
@@ -1272,11 +1278,11 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (goto-char start)
     (skip-chars-forward "\n\t ")
     (setq start (point))
-    
+
     (unless mark-active
         (ess-blink-region start end)
         )
-    
+
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
     (skip-chars-backward "\n\t ")
