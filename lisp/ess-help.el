@@ -78,52 +78,42 @@
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun ess-help-bogus-buffer-p (buffer &optional nr-first return-match debug)
+(defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
   "Return non-nil if  BUFFER  looks like a bogus ESS help buffer.
+Return the pair (match-beg. match-end) which can be used in error message.
 NR-FIRST is the number of characters at the start of the buffer
 to examine when deciding if the buffer if bogus.  If nil, the
-first 120 characters of the buffer are searched.  Return pair
-of (match-beg. match-end) when optional RETURN-MATCH is non-nil.
-Utility used in \\[ess-display-help-on-object]."
+first 150 characters of the buffer are searched."
 
   ;; search in first nr-first (default 120) chars only
   (if (not nr-first) (setq nr-first 150))
 
-  (let* ((searching nil)
-         (buffer-ok (bufferp buffer))
-         (res
-          (or (not buffer-ok)
-              (save-excursion;; ask for new buffer if old one looks bogus ..
-                (set-buffer buffer)
-                (if debug
-                    (ess-write-to-dribble-buffer
-                     (format "(ess-help-bogus-buffer-p %s)" (buffer-name))))
+  (with-current-buffer buffer
+    (let ((PM (point-min))
+          (case-fold-search t)
+          searching res)
 
-                (let
-                    ((PM (point-min))
-                     (case-fold-search t) )
-                  ;; todo: move to customize-alist
-                  (or  ;; evaluate up to first non-nil (or end):
-                   (< (- (point-max) PM) 80); buffer less than 80 chars
-                   (not (setq searching t))
-                   (progn (goto-char PM) ;; R:
-                          (re-search-forward "Error in help"    nr-first t))
-                   (progn (goto-char PM) ;; S-plus 5.1 :
-                          (re-search-forward "^cat: .*--"       nr-first t))
-                   (progn (goto-char PM) ;; S version 3 ; R :
-                          (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
-                   (progn (goto-char PM) ;; stata
-                          (re-search-forward "^help for.*not found" nr-first t))
-                   )))
-              )))
-    (if debug
-        (ess-write-to-dribble-buffer
-         (format " |--> %s [searching %s]\n" res searching)))
+      (setq res
+            (or  ;; evaluate up to first non-nil (or end):
+             (< (- (point-max) PM) 80); buffer less than 80 chars
+             (not (setq searching t))
+             ;; todo: move to customize-alist
+             (progn (goto-char PM) ;; R:
+                    (re-search-forward "Error in help"    nr-first t))
+             (progn (goto-char PM) ;; S-plus 5.1 :
+                    (re-search-forward "^cat: .*--"       nr-first t))
+             (progn (goto-char PM) ;; S version 3 ; R :
+                    (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
+             (progn (goto-char PM) ;; stata
+                    (re-search-forward "^help for.*not found" nr-first t))
+             ))
+      (ess-write-to-dribble-buffer
+       (format " |--> %s [searching %s]\n" res searching))
 
-    (if (and res return-match searching)
-        (list (match-beginning 0) (match-end 0))
-      ;; else
-      res)))
+      (when res
+        (if searching
+            (buffer-substring (match-beginning 0) (match-end 0))
+          (buffer-string))))))
 
 (defvar ess-help-type nil
   "Type of help file, help, index, vingettes etc.
