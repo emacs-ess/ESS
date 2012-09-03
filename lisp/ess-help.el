@@ -383,6 +383,63 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (ess--switch-to-help-buffer buff)
       )))
 
+(make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
+
+(defun ess--display-indexed-help-page (command item-regexp title help-type
+                                               &optional action help-echo reg-start)
+  "Internal function to display help pages with linked actions
+  ;; COMMAND which produces the help page
+  ;; ITEM-REGEXP -- first subexpression is highlighted
+  ;; TITLE of the help page
+  ;; HELP-TYPE to be stored in `ess-help-type' local variable
+  ;; ACTION is a function with no argument (default is `ess--action-help-on-object')
+  ;; HELP-ECHO
+  ;; REG-START gives the start location from where to search linkifying"
+  (interactive)
+  (let ((object (buffer-name))
+        (alist          ess-local-customize-alist)
+        (pname ess-local-process-name)
+        (buff (get-buffer-create title))
+        )
+    (with-current-buffer buff
+      (ess-setq-vars-local (eval alist))
+      (set-syntax-table ess-mode-syntax-table)
+      (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
+            ess-local-process-name pname)
+      (setq buffer-read-only nil)
+      (delete-region (point-min) (point-max))
+      (ess-help-mode)
+      (ess-command command buff)
+      (ess-help-underline)
+      (set-buffer-modified-p 'nil)
+      (goto-char (point-min))
+      (when reg-start  ;; go to the beginning of listing
+        (re-search-forward  reg-start  nil t))
+      (when (and item-regexp (featurep 'emacs))
+        ;;linkify the buffer
+        (save-excursion
+          (while (re-search-forward item-regexp nil t)
+            (make-text-button (match-beginning 1) (match-end 1)
+                              'mouse-face 'highlight
+                              'action (or action #'ess--action-help-on-object)
+                              'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
+                              'follow-link t
+                              'help-echo (or help-echo "help on object")))
+          ))
+      (setq buffer-read-only t)
+      (setq ess-help-type help-type)
+      )
+    (unless (ess--help-kill-bogus-buffer-maybe buff)
+      (ess--switch-to-help-buffer buff))
+    ))
+
+
+(defun ess-display-help-apropos (&optional pattern)
+  (interactive "sPattern: ")
+  (ess--display-indexed-help-page (format "help.search('%s')\n" pattern)
+                                  "^\\([^ \t\n]+\\)[ \t\n]+"
+                                  (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
+                                  'appropos))
 
 (defun ess-display-vignettes ()
   (interactive)
