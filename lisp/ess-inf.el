@@ -280,9 +280,7 @@ Default depends on the ESS language/dialect and hence made buffer local")
 
 ;;; A note on multiple processes: the following variables
 ;;;     ess-local-process-name
-;;;     ess-search-list
 ;;;     ess-sl-modtime-alist
-;;;     ess-sp-change
 ;;;     ess-prev-load-dir/file
 ;;;     ess-directory
 ;;;     ess-object-list
@@ -356,8 +354,6 @@ there is no process NAME)."
         (ess-make-buffer-current)
         (goto-char (point-max))
         (setq ess-sl-modtime-alist nil)
-        ;; Get search list when needed
-        (setq ess-sp-change t)
 
         ;; Add the process filter to catch certain output.
         (set-process-filter (get-process proc-name)
@@ -2169,7 +2165,7 @@ Doesn't work for data frames."
                        (if posn (concat "," (number-to-string
                                              (prefix-numeric-value posn))))
                        ")") 'buffer)
-  (setq ess-sp-change t))
+  (ess-process-put 'sp-for-help-changed? t))
 
 (defun ess-execute-screen-options ()
   "Cause S to set the \"width\" option to 1 less than the frame width.
@@ -2468,7 +2464,8 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
       (with-current-buffer (process-buffer (get-ess-process name))
         (ess-make-buffer-current)
         (ess-write-to-dribble-buffer (format "(get-object-list %s) .." name))
-        (if (or (not ess-sl-modtime-alist) ess-sp-change)
+        (if (or (not ess-sl-modtime-alist)
+                (ess-process-get 'sp-for-help-changed?))
             (progn (ess-write-to-dribble-buffer "--> (ess-get-modtime-list)\n")
                    (ess-get-modtime-list))
           ;;else
@@ -2648,7 +2645,7 @@ form completions."
   (setq ess-sl-modtime-alist nil)
   (setq ess-object-list nil)
   (setq ess-object-name-db nil)         ; perhaps it would be better to reload?
-  (setq ess-sp-change t)
+  (ess-process-put 'sp-for-help-changed? t)
   (ess-get-modtime-list))
 
 (defun ess-filename-completion ()
@@ -2690,26 +2687,31 @@ form completions."
 
 ;;*;; Functions handling the search list
 
-(defun ess-search-list ()
+(defun ess-search-list (&optional force-update)
   "Return the current search list as a list of strings.
 Elements which are apparently directories are expanded to full dirnames.
+Don't try to use cache if FORCE-UPDATE is non-nil.
+
 Is *NOT* used by \\[ess-execute-search],
 but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
   (save-excursion
-    (let ((result nil))
-      (set-buffer (get-ess-buffer ess-current-process-name));to get *its* local vars
-      (if (and ess-search-list (not ess-sp-change))
-          ;; use cache:
-          ess-search-list
+    (set-buffer (get-ess-buffer ess-current-process-name));to get *its* local vars
+    (let ((result nil)
+          (slist (ess-process-get 'search-list))
+          (tramp-mode nil)) ;; hack for bogus file-directory-p below
+      (if (and slist
+               (not force-update)
+               (not (ess-process-get 'sp-for-help-changed?)))
+          slist
         ;; else, re-compute:
         (ess-write-to-dribble-buffer " (ess-search-list: re-computing..) ")
         (let ((tbuffer (get-buffer-create " *search-list*"))
               (homedir ess-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
               elt)
-          (ess-command my-search-cmd tbuffer 0.2); <- sleep; does (erase-buffer)
+          (ess-command my-search-cmd tbuffer 0.05); <- sleep for dde only; does (erase-buffer)
           (with-current-buffer tbuffer
             ;; guaranteed by the initial space in its name: (buffer-disable-undo)
             (goto-char (point-min))
@@ -2729,8 +2731,6 @@ and (indirectly) by \\[ess-get-help-files-list]."
                 )
               (setq result (append result (list elt))))
             (kill-buffer tbuffer)))
-        (setq ess-search-list result)
-        (setq ess-sp-change nil)
         result))))
 
 ;;; ess-sl-modtime-alist is a list with elements as follows:
@@ -2775,13 +2775,18 @@ The result is stored in `ess-sl-modtime-alist'."
 
 (defun ess-search-path-tracker (str)
   "Check if input STR changed the search path.
-This function monitors user input to the inferior ESS process so that
-Emacs can keep the variable `ess-search-list' up to date. `ess-completing-read' in
-\\[ess-read-object-name] uses this list indirectly when it prompts for help or
-for an object to dump."
+This function monitors user input to the inferior ESS process so
+that Emacs can keep the process variable 'search-list' up to
+date. `ess-completing-read' in \\[ess-read-object-name] uses this
+list indirectly when it prompts for help or for an object to
+dump.
+
+From ESS 12.09 this is not necessary anymore, as the search path
+is checked on idle time. It is kept for robustness and backward
+compatibility only."
   (when ess-change-sp-regexp
     (if (string-match ess-change-sp-regexp str)
-	(setq ess-sp-change t))))
+	(ess-process-put 'sp-for-help-changed? t))))
 
  ; Miscellaneous routines
 

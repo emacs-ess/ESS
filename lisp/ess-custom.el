@@ -1751,9 +1751,8 @@ from `inferior-ess-primary-prompt' and
 ;;*;; Process-dependent variables
 
 (defvar ess-search-list nil
-  "Cache of list of directories and objects to search for ESS objects.")
-
-(make-variable-buffer-local 'ess-search-list)
+  "Deprecated. Use (ess-search-list) or (ess-process-get 'search-list) instead.")
+(make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
 
 (defvar ess-sl-modtime-alist nil
   "Alist of modification times for all ess directories accessed this
@@ -1762,9 +1761,9 @@ session.")
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil
-  "This symbol flags a change in the ess search path.")
-
-(make-variable-buffer-local 'ess-sp-change)
+  "Variable not used. Use (ess-process-get 'sp-for-help-changed?) instead.")
+(make-obsolete-variable 'ess-sp-change nil "ESS 12.09")
+;; (make-variable-buffer-local 'ess-sp-change)
 
 (defvar ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last

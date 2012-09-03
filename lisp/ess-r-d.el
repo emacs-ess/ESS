@@ -1147,7 +1147,7 @@ Completion is available for supplying options."
           pack)
       (setq pack (ess-completing-read "Load package" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))
-      (ess-set-process-variable ess-current-process-name 'ess-sp-change t)
+      (ess--mark-search-list-as-changed)
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
 

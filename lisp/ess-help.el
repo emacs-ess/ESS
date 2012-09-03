@@ -141,7 +141,7 @@ an inferior emacs buffer) the GUI help window is used."
      (ess-force-buffer-current)
      (when current-prefix-arg ;update cache if prefix
        (with-current-buffer (process-buffer (get-ess-process ess-current-process-name))
-         (setq ess-sp-change t)))
+         (ess-process-put 'sp-for-help-changed? t)))
      (if (ess-ddeclient-p)
          (list (read-string "Help on: "))
        (list (ess-find-help-file "Help on")))))
@@ -770,8 +770,9 @@ Stata or XLispStat for additional information."
 
 (defun ess-get-S-help-topics-function (name)
   "Return a list of current S help topics associated with process NAME.
-If `ess-sp-change' is non-nil or `ess-help-topics-list' is nil, (re)-populate
-the latter and return it.  Otherwise, return `ess-help-topics-list'."
+If 'sp-for-help-changed?' process variable is non-nil or
+`ess-help-topics-list' is nil, (re)-populate the latter and
+return it.  Otherwise, return `ess-help-topics-list'."
   (save-excursion
     (setq name (or name ess-local-process-name))
     (set-buffer (process-buffer (get-ess-process name)))
@@ -780,7 +781,8 @@ the latter and return it.  Otherwise, return `ess-help-topics-list'."
      (format "(ess-get-help-topics-list %s) .." name))
     ;; (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
     ;;     (funcall ess-get-help-topics-function)
-    (if (or (not ess-help-topics-list) ess-sp-change)
+    (if (or (not ess-help-topics-list)
+            (ess-process-get 'sp-for-help-changed?))
         (setq ess-help-topics-list
               (ess-uniq-list
                (append (ess-get-object-list name 'exclude-1st)
