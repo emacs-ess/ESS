@@ -1881,6 +1881,11 @@ to continue it."
        (cons "/" ""))
 
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
+
+  ;; timers
+  (add-hook 'ess-idle-timer-functions 'ess-cache-search-list nil 'local)
+  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
+
   ;;; Keep <tabs> out of the code.
   (set (make-local-variable 'indent-tabs-mode) nil)
 

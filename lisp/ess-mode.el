@@ -460,6 +460,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     )
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
+  ;; timer
+  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
   ;;; extras
   (ess-load-extras)
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
