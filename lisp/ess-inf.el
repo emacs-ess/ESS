@@ -381,7 +381,7 @@ Return the 'busy state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
     (process-put proc 'busy-end? (and (not busy)
-                                      (not (eq busy (process-get proc 'busy)))))
+                                      (process-get proc 'busy)))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
@@ -400,7 +400,9 @@ Return the 'busy state."
     (let ((cb (car (process-get proc 'callbacks))))
       (when cb
         (process-put proc 'callbacks nil)
-        (funcall cb proc)
+        (condition-case err
+            (funcall cb proc)
+          (error (message "%s" (error-message-string err))))
         ))))
 
 (defun inferior-ess-output-filter (proc string)
@@ -409,7 +411,7 @@ Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
-  (inferior-ess-run-callback proc)
+  (inferior-ess-run-callback proc) ;; protected
   (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
 
 (defun inferior-ess-strip-ctrl-g (string)

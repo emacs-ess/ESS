@@ -1166,6 +1166,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (prompt-replace-regexp "^>\\( [>+]\\)*\\( \\)[^>+\n]") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          ) ; current-buffer is still the user's input buffer here
+    (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-recover)
     ;; insert \n after the prompt when necessary
     ;; todo: this should be in comint filters? no much difference
