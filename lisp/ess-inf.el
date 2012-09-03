@@ -1279,8 +1279,10 @@ will be used instead of the default .001s and be passed to
 
     ;; else: "normal", non-DDE behavior:
     (unless (numberp wait-sec)
-      (setq wait-sec 0.001))  ;;don't make it lower 0. xemacs is stuck
+      (setq wait-sec 0.001))  ;;don't make it lower (0.); xemacs is stuck
 
+    (ess-force-buffer-current "Process to use: ")    
+    
     ;; Use this to evaluate some code, but don't wait for output.
     (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
            (cbuffer (current-buffer))
@@ -1363,7 +1365,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
-  (ess-force-buffer-current "Process to load into: ")
+  (ess-force-buffer-current "Process to use: ")
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
