@@ -479,7 +479,6 @@ in inferior buffers.  ")
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
     (unless (member ess-dialect '("R" "julia"))
       (error "Can not activate the debuger for %s dialect" ess-dialect))
-    (setq comint-process-echoes nil) ;; makes the display wiggly :(
     (make-local-variable 'compilation-error-regexp-alist)
     (setq compilation-error-regexp-alist ess-error-regexp-alist)
     (compilation-setup t)
@@ -528,7 +527,6 @@ in inferior buffers.  ")
         (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
         (fmakunbound 'orig-ess-parse-errors))
       )
-    (setq comint-process-echoes t) ;; back to kludge (R only, todo: make proc independent)
     (remove-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t)
     (if (local-variable-p 'ess-tb-last-input-overlay)
         (delete-overlay ess-tb-last-input-overlay))
@@ -2570,7 +2568,6 @@ local({
     assign('.ess_dbg_UndebugALL', .ess_dbg_UndebugALL, envir= inject_env)
 })
 "))
-
 
 
 (defun ess-dbg-get-signatures (method)
