@@ -178,6 +178,7 @@ as `ess-imenu-use-S'."
                                 ("install.packages"     . ess-install.packages)
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
+                                ("help-apropos"         . ess-display-help-apropos)
                                 ("help-index"           . ess-display-index)
                                 ("help-object"          . ess-display-help-on-object)
                                 ("search"               . ess-execute-search)
