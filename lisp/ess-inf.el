@@ -2023,20 +2023,23 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
   "Return the ESS command surrounding point (use with fields)."
   (save-excursion
     (if (eq (field-at-pos (point)) 'output)
-        (ess-error "No command on this line."))
-    (inferior-ess--goto-input-start:field)
-    (let ((command (field-string-no-properties (point)))
-          (pos (next-single-property-change (point) 'field ))
-          (secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
-      (while (and pos
-                  (cond
-                   ((eq (get-text-property pos 'field) 'input)
-                    (setq command (concat command "\n" (field-string-no-properties pos))))
-                   ((eq (get-text-property pos 'field) 'output)
-                    (string-match secondary-prompt (field-string-no-properties pos)))
-                   (t)));; just skip if unknown
-        (setq pos (next-single-property-change pos 'field)))
-      command)))
+        (if (called-interactively-p 'any)
+            (error "No command on this line")
+          ;; else, just return ""
+          "")
+      (inferior-ess--goto-input-start:field)
+      (let ((command (field-string-no-properties (point)))
+            (pos (next-single-property-change (point) 'field ))
+            (secondary-prompt (concat "^" inferior-ess-secondary-prompt)))
+        (while (and pos
+                    (cond
+                     ((eq (get-text-property pos 'field) 'input)
+                      (setq command (concat command "\n" (field-string-no-properties pos))))
+                     ((eq (get-text-property pos 'field) 'output)
+                      (string-match secondary-prompt (field-string-no-properties pos)))
+                     (t)));; just skip if unknown
+          (setq pos (next-single-property-change pos 'field)))
+        command))))
 
 ;; todo: error when entering a multiline function
 ;; check.integer <- function(N){
@@ -2059,33 +2062,38 @@ If in the output field, goes to the begining of previous input.
   )
 
 (defun inferior-ess--get-old-input:regexp ()
-  "Return the ESS command surrounding point (use with regexp)."
+  "Return the ESS command surrounding point (use regexp)."
+  ;;VS[03-09-2012]: This should not rise errors!! Troubles comint-interrupt-subjob
   (save-excursion
     (let ((inhibit-field-text-motion t)
           command)
       (goto-char (point-at-bol));    (beginning-of-line) does not work in comint
-      (unless (or (looking-at inferior-ess-prompt); cust.var, might not include sec-prompt
-                  (and inferior-ess-secondary-prompt
-                       (looking-at inferior-ess-secondary-prompt)))
-        (ess-error "No command on this line."))
-      (comint-skip-prompt)
-      (inferior-ess--goto-input-start:regexp)
-      (setq command (buffer-substring-no-properties (point) (point-at-eol)))
-      (when inferior-ess-secondary-prompt
-        (forward-line 1)
-        (let ((comint-prompt-regexp inferior-ess-secondary-prompt)
-              beg)
-          (while (looking-at inferior-ess-secondary-prompt)
+      (if (or (looking-at inferior-ess-prompt); cust.var, might not include sec-prompt
+              (and inferior-ess-secondary-prompt
+                   (looking-at inferior-ess-secondary-prompt)))
+          (progn 
             (comint-skip-prompt)
-            (setq beg (point))
-            (end-of-line)
-            (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
-            (forward-line 1)))
-        (forward-line -1)
-        )
-      (setq ess-temp-point (point))
-      command)
-    ))
+            (inferior-ess--goto-input-start:regexp)
+            (setq command (buffer-substring-no-properties (point) (point-at-eol)))
+            (when inferior-ess-secondary-prompt
+              (forward-line 1)
+              (let ((comint-prompt-regexp inferior-ess-secondary-prompt)
+                    beg)
+                (while (looking-at inferior-ess-secondary-prompt)
+                  (comint-skip-prompt)
+                  (setq beg (point))
+                  (end-of-line)
+                  (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
+                  (forward-line 1)))
+              (forward-line -1)
+              )
+            (setq ess-temp-point (point))
+            command)
+        (if (called-interactively-p 'any)
+            (error "No command at this point")
+          ;; else, just return ""
+          ""))
+      )))
 
 (defun inferior-ess-get-old-input ()
   "Return the ESS command surrounding point."
@@ -2791,7 +2799,6 @@ compatibility only."
  ; Miscellaneous routines
 
 ;;;*;;; Routines for reading object names
-
 (defun ess-read-object-name (p-string)
   "Read an S object name from the minibuffer with completion, and return it.
 P-STRING is the prompt string."
