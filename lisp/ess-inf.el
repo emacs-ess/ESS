@@ -918,7 +918,7 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
                    nil
                  (process-get proc 'busy))))))
 
-;; (defun ordinary-insertion-filter (proc string)
+;; (defun inferior-ess-ordinary-filter (proc string)
 ;;   (let ((old-buffer (current-buffer)))
 ;;     (unwind-protect
 ;;      (let (moving)
@@ -932,7 +932,7 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
 ;;        (if moving (goto-char (process-mark proc))))
 ;;       (set-buffer old-buffer))))
 
-(defun ordinary-insertion-filter (proc string)
+(defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
@@ -1069,7 +1069,7 @@ local({
         (unwind-protect
             (progn
               (set-process-buffer sprocess buf)
-              (set-process-filter sprocess 'ordinary-insertion-filter)
+              (set-process-filter sprocess 'inferior-ess-ordinary-filter)
               ;; Output is now going to BUF:
               (with-current-buffer buf
                 (setq inferior-ess-primary-prompt primary-prompt) ;; set local value
