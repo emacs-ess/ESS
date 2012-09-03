@@ -89,6 +89,7 @@
 (autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)" nil)
 (autoload 'SAS                              "ess-sas-d.el" "(autoload)" t)
 
+(require 'ess-utils)
 
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
@@ -484,6 +485,7 @@ ess-mode."
             (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
           "none"))
     "none"))
+
 
 ;;*;; User commands in ess-mode
 

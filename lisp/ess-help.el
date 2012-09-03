@@ -135,7 +135,10 @@ existing buffer if it exists.  Uses the variable
 `inferior-ess-help-command' for the actual help command.  Prompts
 for the object name based on the cursor location for all cases
 except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
-an inferior emacs buffer) the GUI help window is used."
+an inferior emacs buffer) the GUI help window is used.
+
+If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
+"
   (interactive
    (progn
      (ess-force-buffer-current)

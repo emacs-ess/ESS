@@ -217,6 +217,17 @@ to R, put them in the variable `inferior-R-args'."
       (run-mode-hooks 'ess-R-post-run-hook))))
 
 
+
+
+
+;; (defun ess--R-cache-installed-packages ()
+;;   "Run by `ess-delayed-init' in R process buffer.
+;; Useses internal R caching of installed packages."
+;;   (ess-command "invisible(installed.packages())\n"
+;;                nil nil nil .2 nil 'redisplay)
+;;   (ess-process-put 'packages-cached? t)
+;;   )
+
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."

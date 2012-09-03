@@ -380,6 +380,8 @@ If no-timestamp, don't set the last-eval timestamp.
 Return the 'busy state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
+    (process-put proc 'busy-end? (and (not busy)
+                                      (not (eq busy (process-get proc 'busy)))))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
@@ -393,12 +395,21 @@ Return the 'busy state."
   (process-put proc 'busy t)
   (process-put proc 'sec-prompt nil))
 
+(defun inferior-ess-run-callback (proc)
+  (when (process-get proc 'busy-end?)
+    (let ((cb (car (process-get proc 'callbacks))))
+      (when cb
+        (process-put proc 'callbacks nil)
+        (funcall cb proc)
+        ))))
+
 (defun inferior-ess-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
+  (inferior-ess-run-callback proc)
   (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
 
 (defun inferior-ess-strip-ctrl-g (string)
@@ -904,7 +915,9 @@ ordinary inferior process.  Alway nil on Unix machines."
 If SEC-PROMPT is non-nil return if secondary prompt is detected
 regardless of whether primary prompt was detected or not.  If
 WAIT is non-nil wait for WAIT seconds for process output before
-the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
+the prompt check, default 0.001s. When FORCE-REDISPLAY is non-nil
+force redisplay. You better use WAIT >= 0.1 if you need
+FORCE-REDISPLAY to avoid excesive redisplay."
   (unless (eq (process-status proc) 'run)
     (ess-error "ESS process has died unexpectedly."))
   (setq wait (or wait 0.001)) ;;xemacs is stuck if it's 0 here
@@ -912,6 +925,7 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
     (while (or (accept-process-output proc wait)
                (if (and sec-prompt (process-get proc 'sec-prompt))
                    nil
+                 (if force-redisplay (redisplay 'force))
                  (process-get proc 'busy))))))
 
 ;; (defun inferior-ess-ordinary-filter (proc string)
@@ -930,6 +944,7 @@ the prompt check, default 0.001s. FORCE-REDISPLAY is non implemented yet."
 
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
+  (inferior-ess-run-callback proc)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
     (insert string)))
@@ -979,7 +994,8 @@ input STRING.
 
   (with-current-buffer (process-buffer process)
     (run-hook-with-args 'comint-input-filter-functions string)
-
+    ;; cannot use run-hook-with-args here because string must be passed from one
+    ;; function to another
     (let ((functions ess-presend-filter-functions))
       (while (and functions string)
         (if (eq (car functions) t)
@@ -990,9 +1006,10 @@ input STRING.
                 (setq functions (cdr functions))))
           (setq string (funcall (car functions) string)))
         (setq functions (cdr functions)))))
-
+  (inferior-ess--interrupt-subjob-maybe process) 
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
+      ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
     (if visibly
 	(ess-eval-linewise string)
@@ -1006,19 +1023,101 @@ debugging.  Let-bind it to nil before calling
 removal is necessary.")
 
 
-(defun ess-command (com &optional buf sleep no-prompt-check wait proc)
+;; (defun ess-run-delayed-init (process &rest functions)
+;;   "Run the delayed initialization FUNCTIONS on emacs idle time
+;; and while there is no user input. On user input cancel the
+;; execution and restart again after `ess-idle-timer-interval'
+;; seconds. Continue this process until all the initialization
+;; FUNCTIONS are run.
+
+;; Because on cancellation the unfinished output is printed into the
+;; process buffer, the executed tasks should not print anything to
+;; cause minimal disruption to the user.
+
+;; Functions are run in the PROCESS buffer."
+;;   (let ((tsym (gentemp "deltimer")) ;; unintended gensym doesn't work in process-get later
+;;         (timer (run-with-idle-timer ess-idle-timer-interval 'repeat (lambda ()))))
+;;     (process-put process tsym timer)
+;;     (timer-set-function timer
+;;                         `(lambda ()
+;;                            (while-no-input 
+;;                              (let ((pb ,process))
+;;                                (if (eq (process-status pb) 'run)
+;;                                    (unless (process-get pb 'busy)
+;;                                      (with-current-buffer (process-buffer pb)
+;;                                        (mapcar 'funcall ',functions)
+;;                                        ;; if managed to run all the functions
+;;                                        (cancel-timer (process-get ,process ',tsym))
+;;                                        (process-put ,process ',tsym nil)
+;;                                        (unintern ,tsym)
+;;                                        ))
+;;                                  ;; cancel if dead
+;;                                  (cancel-timer (process-get ,process ',tsym))))))
+;;                         )))
+
+
+;; (defun ess-async-command-delayed (com &optional buf resume-p)
+;;   "todo")
+
+(defun inferior-ess--interrupt-subjob-maybe (proc)
+  "Internal. Interrupt the process if interruptable? process variable is non-nil.
+Hide all the junk output in temporary buffer."
+  (when (process-get proc 'interruptable?)
+    (let ((cb (cadr (process-get proc 'callbacks)))
+          (buf (get-buffer-create " *ess-temp-buff*"))
+          (old-filter (process-filter proc))
+          (old-buff (process-buffer proc)))
+      (unwind-protect
+          (progn
+            (process-put proc 'interruptable? nil)
+            ;; this is primarily to avoid putting junk in user's buffer on
+            ;; process interruption
+            (set-process-buffer proc buf)
+            (set-process-filter proc 'inferior-ess-ordinary-filter)
+            (process-put proc 'callbacks nil)
+            (interrupt-process proc)
+            (when cb
+              (funcall cb proc))
+            ;; should be very fast as it inputs only the prompt
+            (ess-wait-for-process proc))
+        (set-process-buffer proc old-buff)
+        (set-process-filter proc old-filter)
+        ))))
+  
+(defun ess-async-command (com &optional buf proc callback interruptable? interupt-callback)
+  "Asynchronous version of ess-command.
+COM, BUF, WAIT and PROC are as in `ess-command'.
+
+CALLBACK is a function to run after the successful
+execution. DELAY is a number of seconds to delay execution. When
+CAN-INTERRUPT is non-nil, user evaluation can interrupt the
+job. In this case the job will be resumed again on
+`ess-idle-time-interval' seconds."
+  (let ((proc (or proc (get-process ess-local-process-name))))
+    (if (not (and proc
+                  (eq (process-status proc) 'run)))
+        (error "Process %s is dead" ess-local-process-name)
+      (if (process-get proc 'busy)
+          (error "Process %s is busy, finish your command." ess-local-process-name)
+        (process-put proc 'callbacks (cons callback interupt-callback))
+        (process-put proc 'interruptable? interruptable?)
+        (ess-command com buf nil 'no-prompt-check nil proc)
+        ))))
+
+
+(defun ess-command (com &optional buf sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process command COM and delete the output from
 the ESS process buffer.  If an optional second argument BUF
-exists save the output in that buffer. BUF is erased before use.
-COM should have a terminating newline.  Guarantees that the value
-of .Last.value will be preserved.  When optional third arg SLEEP
-is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
-places where `a' is proportional to `ess-cmd-delay'.  WAIT is
-passed to `ess-wait-for-process' with the default of 0.02sec.
-ess-command doesn't set 'last-eval process stamp.
+exists save the output in that buffer. BUF is erased before
+use. COM should have a terminating newline.  Guarantees that the
+value of .Last.value will be preserved.  When optional third arg
+SLEEP is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
+places where `a' is proportional to `ess-cmd-delay'.  WAIT and
+FORCE-REDISPLAY are passed to `ess-wait-for-process'.
 
 PROC should be a process, if nil the process name is taken from
-`ess-local-process-name'.
+`ess-local-process-name'. This command doesn't set 'last-eval
+process variable.
 
 Note: for critical, or error prone code you should consider
 wrapping the code into:
@@ -1041,12 +1140,11 @@ local({
 
     ;; else: "normal", non-DDE behavior:
 
-    (let* ((sprocess (or proc
-                         (get-ess-process ess-local-process-name)))
+    (let* ((sprocess (or proc (get-ess-process ess-local-process-name)))
            sbuffer primary-prompt end-of-output oldpb oldpf oldpm
            )
 
-      (unless  sprocess
+      (unless sprocess
         ;; should hardly happen, since (get-ess-process *)  already checked:
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
@@ -1077,19 +1175,19 @@ local({
                 (if no-prompt-check
                     (sleep-for 0.020); 0.1 is noticeable!
                   ;; else: default
-                  (ess-wait-for-process sprocess nil (or wait .02)))
-                (goto-char (point-max))
-                (delete-region (point-at-bol) (point-max))
-                )
+                  (ess-wait-for-process sprocess nil wait force-redisplay)
+                  (goto-char (point-max))
+                  (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
-              )
+              ))
+          
           (ess-if-verbose-write " .. exiting{ess-command}\n")
           ;; Restore old values for process filter
           (set-process-buffer sprocess oldpb)
           (set-process-filter sprocess oldpf)
           (set-marker (process-mark sprocess) oldpm))))
-    buf
-    ))
+    buf))
+
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
   "Replace all matches in STR for REGEXP with NEWTEXT string.
@@ -1804,9 +1902,6 @@ to continue it."
 
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
-          ;; shouldn't be setq-default!  And I've
-          ;; forgotten why!   (AJR)
-          ;; Do not anchor to bol with `^'
           (concat "\\("
                   inferior-ess-primary-prompt
                   (when inferior-ess-secondary-prompt "\\|")
@@ -1916,6 +2011,7 @@ to continue it."
 
 
 (defun inferior-ess-input-sender (proc string)
+  (inferior-ess--interrupt-subjob-maybe proc)
   (if comint-process-echoes
       (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty)
     (inferior-ess-mark-as-busy proc)
