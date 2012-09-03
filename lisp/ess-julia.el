@@ -415,6 +415,11 @@ been created using the variable `ess-r-versions'."
   (ess-imenu-julia)
   (run-hooks 'julia-mode-hook))
 
+
+(defvar ess-julia-post-run-hook nil
+  "Functions run in process buffer after the initialization of
+  julia process.")
+
 ;;;###autoload
 (defun julia (&optional start-args)
   "Call 'julia',
@@ -454,6 +459,8 @@ to R, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
+      (with-ess-process-buffer nil
+        (run-mode-hooks 'ess-julia-post-run-hook))
       )))
 
 

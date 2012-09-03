@@ -136,6 +136,10 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
+(defvar ess-R-post-run-hook nil
+  "Functions run in process buffer after the initialization of R
+  process.")
+
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
@@ -208,7 +212,9 @@ to R, put them in the variable `inferior-R-args'."
       )
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
-                           nil nil nil 'wait-prompt))))
+                           nil nil nil 'wait-prompt))
+    (with-ess-process-buffer nil
+      (run-mode-hooks 'ess-R-post-run-hook))))
 
 
 ;;;### autoload

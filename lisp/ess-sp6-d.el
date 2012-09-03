@@ -91,6 +91,9 @@
 
   "Variables to customize for S+6.")
 
+(defvar ess-S+-post-run-hook nil
+  "Functions run in process buffer after the initialization of S+
+  process.")
 
 (defun S+6 (&optional proc-name)
   "Call 'Splus6', based on S version 4, from Bell Labs.
@@ -101,7 +104,9 @@ New way to do it."
    (format "\n(S+6): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess)
   (if inferior-ess-language-start
-      (ess-eval-linewise inferior-ess-language-start)))
+      (ess-eval-linewise inferior-ess-language-start))
+  (with-ess-process-buffer nil
+    (run-mode-hooks 'ess-S+-post-run-hook)))
 
 
 (defun S+6-mode (&optional proc-name)

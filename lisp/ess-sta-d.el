@@ -96,6 +96,10 @@ This function is used placed in `ess-presend-filter-functions'.
 ;; " )
 
 
+(defvar ess-stata-post-run-hook nil
+  "Functions run in process buffer after the initialization of
+  stata process.")
+
 (defun stata (&optional start-args)
   "Call Stata."
   (interactive "P")
@@ -109,15 +113,17 @@ This function is used placed in `ess-presend-filter-functions'.
                  (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
     (inferior-ess sta-start-args)
     (let ((proc (get-process ess-local-process-name)))
-      (with-current-buffer (process-buffer proc)
-        (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local))
       (while (process-get proc 'sec-prompt)
         ;; get read of all --more-- if stata.msg is too long.
         (ess-send-string proc "q")
         (ess-wait-for-process proc t))
       (ess-send-string proc "set more off")
       (goto-char (point-max))
-      )))
+      (with-current-buffer (process-buffer proc)
+        (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
+        (run-mode-hooks 'ess-stata-post-run-hook))
+      )
+    ))
 
 
 (defun STA-transcript-mode ()
