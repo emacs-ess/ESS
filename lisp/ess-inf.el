@@ -640,27 +640,27 @@ the current ESS process."
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
 LANGUAGE (and DIALECT)."
-  (let ((cur-buf (current-buffer)))
+  (let ((cur-buf (current-buffer))
+        (dsymb (intern dialect)))
     (ess-write-to-dribble-buffer
      (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
              language dialect cur-buf))
-    (cond ((string= language "S")
-           (if (string= dialect "R")
-               (R)
-             ;; else S, but not R
-             (message
-              "ESS process not running, trying to start R, since language = 'S")
-             (R))
-           ;; (save-excursion <the above>) fails, but this "works":
-           (switch-to-buffer cur-buf)
-           )
+    (cond ((string= dialect "R") (R))
+          ((string= language "S") ;VS[03-09-2012]: cannot start s+?
+           (message "ESS process not running, trying to start R, since language = 'S")
+           (R))
+          ((string= dialect "Stata") (stata))
+          ;;general case
+          ((fboundp dsymb)
+           (funcall dsymb))
           (t ;; else: ess-language is not S
 
            ;; Typically triggered from
            ;; ess-force-buffer-current("Process to load into: ")
            ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
            (error "No ESS processes running; not yet implemented to start (%s,%s)"
-                  language dialect)))))
+                  language dialect)))
+    (switch-to-buffer cur-buf)))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
