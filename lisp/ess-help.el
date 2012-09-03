@@ -127,7 +127,7 @@ Local in ess-help buffers.")
 (make-variable-buffer-local 'ess-help-object)
 
 
-(defun ess-display-help-on-object (object)
+(defun ess-display-help-on-object (object &optional command)
   "Display documentation for OBJECT in another window.
 If prefix arg is given, force an update of the cached help topics
 and query the ESS process for the help file instead of reusing an
@@ -160,95 +160,49 @@ an inferior emacs buffer) the GUI help window is used."
            (tbuffer     (get-buffer-create hb-name))
            (lproc-name  ess-local-process-name)
            (alist       ess-local-customize-alist))
-      (with-current-buffer tbuffer
-        (ess-setq-vars-local (eval alist))
-        (set-syntax-table ess-mode-syntax-table)
-        (setq ess-help-object object
-              ess-help-type 'help
-              ess-local-process-name lproc-name)
-
-        (if (or (not old-hb-p)
+      
+      (when (or (not old-hb-p)
                 current-prefix-arg
-                (ess-help-bogus-buffer-p old-hb-p nil nil 'debug)
-                )
+                (ess--help-get-bogus-buffer-substring old-hb-p))
 
-            ;; Ask the corresponding ESS process for the help file:
-            (progn
-              (if buffer-read-only (setq buffer-read-only nil))
-              (delete-region (point-min) (point-max))
-              (ess-help-mode)
-              (setq ess-local-process-name ess-current-process-name)
-              (ess-command (format inferior-ess-help-command object) tbuffer)
-              (ess-help-underline)
-              ;; Stata is clean, so we get a big BARF from this.
-              (if (not (string= ess-language "STA"))
-                  (ess-nuke-help-bs))
+        (with-current-buffer tbuffer
+          (ess-setq-vars-local (eval alist))
+          (set-syntax-table ess-mode-syntax-table)
+          (setq ess-help-object object
+                ess-help-type 'help
+                ess-local-process-name lproc-name)
 
-              (goto-char (point-min))))
-
-	(when (featurep 'emacs)
-	  (visual-line-mode t))
-	(let ((PM (point-min))
-	      (nodocs
-	       (ess-help-bogus-buffer-p (current-buffer) nil 'give-match )))
-	  (goto-char PM)
-	  (if (and nodocs
-		   ess-help-kill-bogus-buffers)
-	      (progn
-		(if (not (listp nodocs))
-		    (setq nodocs (list PM (point-max))))
-		(ess-write-to-dribble-buffer
-		 (format "(ess-help: error-buffer '%s' nodocs (%d %d)\n"
-			 (buffer-name) (car nodocs) (cadr nodocs)))
-		;; Avoid using 'message here -- may be %'s in string
-		;;(princ (buffer-substring (car nodocs) (cadr nodocs)) t)
-		;; MM [3/2000]: why avoid?  Yes, I *do* want message:
-		(message "%s" (buffer-substring (car nodocs) (cadr nodocs)))
-		;; ^^^ fixme : remove new lines from the above {and abbrev.}
-		(ding)
-		(kill-buffer tbuffer))
-
-	    ;; else : show the help buffer.
-
-	    ;; Check if this buffer describes where help can be found in
-	    ;; various packages. (R only).  This is a kind of bogus help
-	    ;; buffer, but it should not be killed immediately even if
-	    ;; ess-help-kill-bogus-buffers is t.
-
-	    ;; e.g. if within R, the user does:
-
-            ;; > options("help.try.all.packages"=TRUE)
-
-	    ;; > ?rlm
-
-	    ;; then a list of packages for where ?rlm is defined is
-	    ;; shown.  (In this case, rlm is in package MASS).  This
-	    ;; help buffer is then renamed *help[R](rlm in packages)* so
-	    ;; that after MASS is loaded, ?rlm will then show
-	    ;; *help[R](rlm)*
-
-	    (if (equal inferior-ess-program inferior-R-program-name)
-		;; this code should be used only for R processes.
-		(save-excursion
-		  (goto-char (point-min))
-		  (if (looking-at "Help for topic")
-		      (let
-			  ( (newbuf
-			     (concat "*help[" ess-current-process-name
-				     "](" object " in packages)*")))
-			;; if NEWBUF already exists, remove it.
-			(if (get-buffer newbuf)
-			    (kill-buffer newbuf))
-			(rename-buffer  newbuf)))))
-
-	    ;;dbg (ess-write-to-dribble-buffer
-	    ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
-	    (set-buffer-modified-p 'nil)
-            (setq buffer-read-only t))))
-      (when (buffer-live-p tbuffer)
+          ;; Ask the corresponding ESS process for the help file:
+          (if buffer-read-only (setq buffer-read-only nil))
+          (delete-region (point-min) (point-max))
+          (ess-help-mode)
+          (setq ess-local-process-name ess-current-process-name)
+          (ess-command (format (or command inferior-ess-help-command)
+                               object) tbuffer)
+          (ess-help-underline)
+          ;;VS[03-09-2012]: todo this should not be here
+          ;; Stata is clean, so we get a big BARF from this.
+          (unless (string= ess-language "STA")
+            (ess-nuke-help-bs))
+          (goto-char (point-min))
+          ;;dbg (ess-write-to-dribble-buffer
+          ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
+          (set-buffer-modified-p 'nil)
+          (setq buffer-read-only t)
+          (when (fboundp 'visual-line-mode)
+            (visual-line-mode t))))
+      
+      (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer))
       )))
 
+(defun ess--help-kill-bogus-buffer-maybe (buffer)
+  "Internal, try to kill bogus buffer with message. Return t if killed."
+  (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
+    (when bog-mes
+      (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
+      (ding)
+      (kill-buffer buffer))))
 
 (defun ess-display-help-in-browser ()
   (interactive)
