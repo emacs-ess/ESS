@@ -1024,43 +1024,6 @@ debugging.  Let-bind it to nil before calling
 `ess-send-string' or `ess-send-region' if no
 removal is necessary.")
 
-
-;; (defun ess-run-delayed-init (process &rest functions)
-;;   "Run the delayed initialization FUNCTIONS on emacs idle time
-;; and while there is no user input. On user input cancel the
-;; execution and restart again after `ess-idle-timer-interval'
-;; seconds. Continue this process until all the initialization
-;; FUNCTIONS are run.
-
-;; Because on cancellation the unfinished output is printed into the
-;; process buffer, the executed tasks should not print anything to
-;; cause minimal disruption to the user.
-
-;; Functions are run in the PROCESS buffer."
-;;   (let ((tsym (gentemp "deltimer")) ;; unintended gensym doesn't work in process-get later
-;;         (timer (run-with-idle-timer ess-idle-timer-interval 'repeat (lambda ()))))
-;;     (process-put process tsym timer)
-;;     (timer-set-function timer
-;;                         `(lambda ()
-;;                            (while-no-input 
-;;                              (let ((pb ,process))
-;;                                (if (eq (process-status pb) 'run)
-;;                                    (unless (process-get pb 'busy)
-;;                                      (with-current-buffer (process-buffer pb)
-;;                                        (mapcar 'funcall ',functions)
-;;                                        ;; if managed to run all the functions
-;;                                        (cancel-timer (process-get ,process ',tsym))
-;;                                        (process-put ,process ',tsym nil)
-;;                                        (unintern ,tsym)
-;;                                        ))
-;;                                  ;; cancel if dead
-;;                                  (cancel-timer (process-get ,process ',tsym))))))
-;;                         )))
-
-
-;; (defun ess-async-command-delayed (com &optional buf resume-p)
-;;   "todo")
-
 (defun inferior-ess--interrupt-subjob-maybe (proc)
   "Internal. Interrupt the process if interruptable? process variable is non-nil.
 Hide all the junk output in temporary buffer."
@@ -1085,8 +1048,56 @@ Hide all the junk output in temporary buffer."
         (set-process-buffer proc old-buff)
         (set-process-filter proc old-filter)
         ))))
-  
-(defun ess-async-command (com &optional buf proc callback interruptable? interupt-callback)
+
+(defun ess-async-command-delayed (com &optional buf proc resume-p callback delay)
+  "Delayed asynchronous ess-command.
+COM and BUF are as in `ess-command'. DELAY is a number of idle
+seconds to wait before starting the execution of the COM. If
+RESUME-P is non-nil, then on interruption (by user evaluation)
+ESS will try to rerun the job after next
+`ess-idle-timer-interval' seconds, and the process repeats itself
+till command manages to run completely. If RESUME-P is nil, the
+COM is tried only once.
+
+DELAY defaults to `ess-idle-timer-interval'
+
+You should always provide PROC for delayed evaluation, as the
+current process might change, leading to unpredictable
+consequences. 
+
+This function is a wrapper to a lower level `ess-async-command'
+with interrupt-callback argument set to t.
+"
+  (unless proc
+    (error "You must provide PROC argument"))
+  (let* ((timer (make-symbol "timer"))
+         (int-cb (and resume-p
+                      `(lambda (proc)
+                         (ess-async-command-delayed ,com ,buf proc
+                                                    ,resume-p  ,callback ,delay))))
+         (com-fun `(lambda () 
+                     (ess-async-command ,com ,buf ,proc ,callback ',int-cb))))
+    (run-with-idle-timer (or delay ess-idle-timer-interval) nil com-fun)
+    ))
+
+;;; VS[03-09-2012]: do not delete, this are the test cases.
+;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+;;                    (lambda (proc) (message "done")))
+
+;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+;;                    (lambda (proc) (message "done"))
+;;                    t)
+
+;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+;;                    (lambda (proc) (message "done"))
+;;                    (lambda (proc2) (message "name: %s" (process-name proc2))))
+
+;; (ess-async-command-delayed "Sys.sleep(5);cat(1:10)\n" nil
+;;                            (get-process "R") t
+;;                            (lambda (proc) (message "done")))
+
+
+(defun ess-async-command (com &optional buf proc callback interrupt-callback)
   "Asynchronous version of ess-command.
 COM, BUF, WAIT and PROC are as in `ess-command'.
 
@@ -1101,8 +1112,10 @@ job. In this case the job will be resumed again on
         (error "Process %s is dead" ess-local-process-name)
       (if (process-get proc 'busy)
           (error "Process %s is busy, finish your command." ess-local-process-name)
-        (process-put proc 'callbacks (cons callback interupt-callback))
-        (process-put proc 'interruptable? interruptable?)
+        (when (eq interrupt-callback t)
+          (setq interrupt-callback (lambda (proc))))
+        (process-put proc 'callbacks (list callback interrupt-callback))
+        (process-put proc 'interruptable? (and interrupt-callback t))
         (ess-command com buf nil 'no-prompt-check nil proc)
         ))))
 
