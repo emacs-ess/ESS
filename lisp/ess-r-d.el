@@ -674,23 +674,24 @@ then update the entry.
 Package_name is \"\" if funname was not found or is a special name,n
 i.e. contains :,$ or @.
 "
-  (when funname ;; might be nil as returned by ess--funname.start
+  (when funname ;; usually returned by ess--funname.start (might be nil)
     (let* ((args (gethash funname ess--funargs-cache))
            (pack (caar args))
            (ts   (cdar args)))
       (when (and args
-                 (and (or (null pack)
+                 (and (time-less-p ts (ess-process-get 'last-eval))
+                      (or (null pack)
                           (and (equal pack "")
                                (not (member funname ess-objects-never-recache)))
                           (equal pack "R_GlobalEnv"))
-                      (time-less-p ts (ess-process-get 'last-eval))))
+                      ))
         (setq args nil))
       (or args
           (when (and ess-current-process-name (get-process ess-current-process-name))
             (let ((args (ess-get-words-from-vector
                          (format ess--funargs-command funname funname) nil .01)))
               (setq args (list (cons (car args) (current-time))
-                               (when (stringp (cadr args)) ;; error occured
+                               (when (stringp (cadr args)) ;; error occurred
                                  (replace-regexp-in-string  "\\\\" "" (cadr args)))
                                (cddr args)))
               ;; push even if nil
@@ -715,8 +716,8 @@ Suitable for R object's names."
 
 (defvar ess--funname.start nil)
 (defun ess--funname.start (&optional look-back)
-  "If inside a function call, return (FUNNAMME . BEG) where
-FUNNAME is a function name found before ( and beg is where
+  "If inside a function call, return (FUNNAMME . START) where
+FUNNAME is a function name found before ( and START is where
 FUNNAME starts.
 
 LOOK-BACK is a number of characters to look back; defaults to
