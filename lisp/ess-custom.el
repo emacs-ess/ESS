@@ -32,6 +32,7 @@
 (require 'custom)
 (require 'executable)
 (require 'font-lock)
+
 ;; Customization Groups
 
 (defgroup ess nil
@@ -185,7 +186,8 @@ as `ess-imenu-use-S'."
                                 ("sos"                  . ess-sos)
                                 ("vignettes"            . ess-display-vignettes)
                                 )
-  "An alist of custom ESS commands available for call by `ess-smart-comma' function."
+  "An alist of custom ESS commands available for call by
+`ess-handy-commands' and `ess-smart-comma' function."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
 
@@ -753,11 +755,6 @@ This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
 value.  The lambda expression is evaluated with the process buffer as the
 current buffer.
-
-Possible value:
-
- (lambda () (file-name-as-directory
-             (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
 
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
