@@ -1919,58 +1919,47 @@ to continue it."
 (defun inferior-STA-input-sender (proc string)
   (ess-eval-linewise (concat string "\n") t t))
 
-;;> <PD writes>:
-;;> Also, invoking help() from the command line may lead to confusing
-;;> output, somewhat worse with R than with S. You're not really supposed
-;;> to do that (use C-c C-v to invoke ess-display-help-on-object), but it's
-;;> an obvious newcomer's mistake.
-;;>
-;;> (I wonder: could the elisp-code not quite easily recognize help
-;;> calls (at least in the ?xxx form) and do the right thing automagically?)
-;;>
-;;> As promised, here is a quick hack:
-;;  ___hack much improved by MM___ , both help(.) and ?... now work
-;; FIXME: Note that  '??' nicely works in *R*, but
-;;        'type ? topic' doesn't use ess-help {but display in *R*}
-(defconst inferior-R-1-input-help (format "^ *help *(%s)" ess-help-arg-regexp))
-;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
-(defconst inferior-R-2-input-help "^ *\\(\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
-(defconst inferior-R-page	  (format "^ *page *(%s)" ess-help-arg-regexp))
 
+(defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
+;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
+(defconst inferior-R--input-?-help-regexp
+  "^ *\\(\\(?:[a-zA-Z]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+(defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
   (save-current-buffer
-    (let ((help-string (or (string-match inferior-R-1-input-help string)
-                           (string-match inferior-R-2-input-help string)))
-          (page-string   (string-match inferior-R-page         string)))
-      (if (or help-string page-string)
-          (let ((string1 (match-string 1 string))
-                (string2 (match-string 2 string)))
-            ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
-            (beginning-of-line)
-            ;; (if (looking-at inferior-ess-primary-prompt)
-            ;;     (progn
-            ;;       (end-of-line)
-            ;;       (insert-before-markers string)) ;; emacs 21.0.105 and older
-            ;;   (delete-backward-char 1)) ;; emacs 21.0.106 and newer
-            (if help-string ; more frequently
-                (let ((inferior-ess-help-command
-                       (if (string= string1 "?") inferior-ess-help-command "help.search(\"%s\")\n")))
-                  (progn
-                    (ess-display-help-on-object
-                     (if (string= string2 "") "help" string2))
-                    (ess-eval-linewise "\n")))
-
-	      ;; else  page-string
-	      (let ((str2-buf (concat string2 ".rt")))
-		(ess-command (concat string2 "\n")
-			     (get-buffer-create str2-buf))
-		(ess-eval-linewise "\n")
-		(switch-to-buffer-other-window str2-buf)
-		(R-transcript-mode))))
-        ;; else:        normal command
-	(inferior-ess-input-sender proc string)
-        ))))
+    (let ((help-match (and (string-match inferior-R--input-help string)
+                           (match-string 2 string)))
+          (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
+                             (match-string 0 string)))
+          (page-match   (and (string-match inferior-R--page-regexp string)
+                             (match-string 2 string))))
+      ;; (dbg string help-match help-?-match page-match)
+      (cond (help-match
+             (ess-display-help-on-object help-match))
+            
+            (help-?-match
+             (if (string-match "\\?\\?\\(.+\\)" help-?-match)
+                 (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
+                                                 (format "*ess-apropos[%s](%s)*"
+                                                         ess-current-process-name (match-string 1 help-?-match))
+                                                 'appropos)
+               (ess--display-indexed-help-page (concat help-?-match "\n")  nil 
+                                               (format "*ess-help[%s](%s)*"
+                                                       ess-current-process-name help-?-match)
+                                               'help))
+             (process-send-string proc "\n"))
+            
+            (page-match
+             (switch-to-buffer-other-window 
+              (ess-command (concat string2 "\n")
+                           (get-buffer-create (concat string2 ".rt"))))
+             (R-transcript-mode)
+             (process-send-string proc "\n"))
+            
+            (t ;; normal command
+             (inferior-ess-input-sender proc string)
+             )))))
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
