@@ -845,22 +845,20 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (unless no-kill ;; workaround
       (kill-local-variable 'ac-use-comphist))
     (if (string-match-p "[]:$@[]" ac-prefix)
+        ;; call proc for objects
 	(cdr (ess-R-get-rcompletions ac-point))
-      (with-ess-process-buffer 'no-error
-	(unless (process-get *proc* 'busy)
-	  (let ((le (process-get *proc* 'last-eval))
-		(lobu (process-get *proc* 'last-objlist-update)))
-	    (when (or  (null lobu) (null le) (time-less-p lobu le))
-	      ;;re-read .GlobalEnv
-	      (if (and ess-sl-modtime-alist
-		       (not  ess-sp-change))
-		  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-		(ess-get-modtime-list)
-		(setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-		))
-	    (process-put *proc* 'last-objlist-update (current-time))
-	    (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-	    ))))))
+      ;; else, get the (maybe cached) list of objects
+      (ess-when-new-input last-objlist-update
+        (if (and ess-sl-modtime-alist
+                 (not  (process-get *proc* 'sp-for-ac-changed?)))
+            ;; not changes, re-read .GlobalEnv
+            (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+          ;; reread all objects, but not rda, much faster and not needed anyways
+          (ess-get-modtime-list) 
+          (process-put *proc* 'sp-for-ac-changed? nil)
+          ))
+      (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+      )))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
