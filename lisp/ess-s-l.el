@@ -128,6 +128,8 @@
     ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
+    (ess-getwd-command          . "getwd()\n")
+    (ess-setwd-command          . "setwd(%s)\n")
     )
   "S-language common settings for all <dialect>-customize-alist s"
   )

@@ -2945,3 +2945,76 @@ Display the S buffer, and cause an error displaying MSG."
 ;;; End:
 
 ;;; ess-inf.el ends here
+
+
+ ; directories
+
+(defun ess-set-working-directory (path &optional no-error)
+  "Set the current working directory to PATH for both ESS
+subprocess and Emacs buffer `default-directory'."
+  (interactive "DChange working directory to: ")
+  (if ess-setwd-command
+      (when (and (file-exists-p path) 
+                 (ess-command (format ess-setwd-command path))
+                 ;; use file-name-as-directory to ensure it has trailing /
+                 (setq default-directory (file-name-as-directory path))))
+    (unless no-error
+      (error "Not implemented for dialect " ess-dialect))))
+
+(defalias 'ess-change-directory 'ess-set-working-directory)
+
+(defun ess-get-working-directory (&optional no-error)
+  "Retrive the current working directory from the current ess process."
+  (if ess-getwd-command
+      (car (ess-get-words-from-vector ess-getwd-command))
+    (unless no-error
+      (error "Not implemented for dialect " ess-dialect))))
+
+(defun ess-synchronize-dirs ()
+  "Set Emacs' current directory to be the same as the subprocess directory.
+This function is used in `ess-idle-timer-functions'."
+  (when ess-getwd-command
+    (ess-when-new-input last-sync-dirs
+      (setq default-directory
+            (car (ess-get-words-from-vector ess-getwd-command)))
+      default-directory
+      )))
+
+(defun ess-dirs ()
+  "Set Emacs' current directory to be the same as the *R* process.
+
+Note: This function is not necessary anymore. The Emacs
+default-directory and subprocess working directory are
+synchronized automatically.
+"
+  (interactive)
+  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
+    (message "new (ESS / default) directory: %s" dir)
+    (setq default-directory (file-name-as-directory dir))
+    (message "No need for this function, paths are synchronized automatically")))
+
+(make-obsolete 'ess-dirs 'ess-synchronize-dirs)
+
+;; search path
+(defun ess--mark-search-list-as-changed ()
+  "Internal. Marks all the search-list related variables as
+changed."
+  ;; other guys might track their own 
+  (ess-process-put 'sp-for-help-changed? t)
+  (ess-process-put 'sp-for-ac-changed? t)
+  )
+
+(defun ess-cache-search-list ()
+  "Used in `ess-idle-timer-functions', to set
+search path related variables."
+  (when inferior-ess-search-list-command
+    (ess-when-new-input last-cache-search-list
+      (let ((path (ess-search-list 'force))
+            (old-path (process-get *proc* 'search-list)))
+        (when (not (equal path old-path))
+          (process-put *proc* 'search-list path)
+          (ess--mark-search-list-as-changed)
+          path
+          )))))
+
+

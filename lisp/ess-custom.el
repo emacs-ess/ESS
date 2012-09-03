@@ -1051,7 +1051,13 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
+(defcustom ess-getwd-command nil
+  "Command string retriving the working directory from the process.")
 
+(defcustom ess-setwd-command nil
+  "Command string to set working directory.
+Should contain a formating %s to be replaced by a
+path (as in 'setwd(%s)\\n'.")
 
 (defcustom ess-program-files ;; 32 bit version
   (if ess-microsoft-p

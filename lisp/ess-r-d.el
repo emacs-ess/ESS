@@ -1151,18 +1151,6 @@ Completion is available for supplying options."
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
 
-(defun ess-dirs ()
-  "Set Emacs' current directory to be the same as the *R* process.
-If you change directory within *R* using setwd(), run this command so that
-Emacs can update its `default-directory' variable for the *R* buffer.
-
-Currently this function has been tested only for *R*, but should also work for
-*S* buffers."
-  (interactive)
-  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
-    (message "new (ESS / default) directory: %s" dir)
-    (setq default-directory (file-name-as-directory dir))))
-
 
  ; provides
 
