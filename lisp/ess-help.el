@@ -298,24 +298,22 @@ an inferior emacs buffer) the GUI help window is used."
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
-  (save-excursion
-    (let ((package (buffer-name))
-          (link-beg (previous-single-property-change pos 'button))
-          (link-end (next-single-property-change pos 'button))
-          pre-commands ;command to send to process, %s is replaced by ess-help-object
-          obj)
-      (cond
-       ((string-match "^R" ess-dialect)
-        (setq pre-commands "require('%s')\n"))  ;;might not be loaded
-       )
-      (when (and  pre-commands
-                  ess-help-object)
-        (ess-command (format pre-commands ess-help-object)))
-      (ess-display-help-on-object (get-text-property pos 'help-object))
-      ))
-  )
+  (let* ((link-beg (previous-single-property-change pos 'button
+                                                    nil (point-at-bol)))
+         (link-end (next-single-property-change pos 'button
+                                                nil (point-at-eol)))
+         (string (buffer-substring link-beg link-end))
+         (command
+          (cond ((string-match"::" string)
+                 "?%s\n")
+                ((eq ess-help-type 'index)
+                 (concat "?" ess-help-object "::%s\n"))
+                )))
+    ;; (dbg command string)
+    (ess-display-help-on-object string command)
+    ))
 
-(defun ess-display-index ()
+(defun ess-display-package-index ()
   "Prompt for package name and display its index."
   (interactive)
   (let ((object (buffer-name))
@@ -616,7 +614,8 @@ For internal use. Used in `ess-display-help-on-object',
     ;; (define-key map "s" ess-help-sec-map)
     (define-key map "h" 'ess-display-help-on-object)
     (define-key map "w" 'ess-display-help-in-browser)
-    (define-key map "i" 'ess-display-index)
+    (define-key map "i" 'ess-display-package-index)
+    (define-key map "a" 'ess-display-help-apropos)
     (define-key map "v" 'ess-display-vignettes)
     ;; TODO: `electric mouse-2'
     ;; (define-key map [mouse-2] 'ess-display-help-on-object)
