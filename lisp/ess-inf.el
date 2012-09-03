@@ -2861,95 +2861,6 @@ list."
         (insert ","))
       )))
 
-;;*;; Temporary buffer handling
-
-                                        ;(defun ess-create-temp-buffer (name)
-                                        ;  "Create an empty buffer called NAME, but doesn't display it."
-                                        ;  (let ((buff (get-buffer-create name)))
-                                        ;    (save-excursion
-                                        ;      (set-buffer buff)
-                                        ;      (erase-buffer))
-                                        ;    buff))
-
-
-;; Ed Kademan's version:
-                                        ;From: Ed Kademan <kademan@phz.com>
-                                        ;Subject: Re: ess-mode 5.1.16; search list
-                                        ;To: rossini@biostat.washington.edu (A.J. Rossini)
-                                        ;Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
-                                        ;Date: 26 Jul 2000 16:12:12 -0400
-                                        ;
-                                        ;Dear Tony Rossini,
-                                        ;
-                                        ;I was having trouble looking at the search list under ess.  When I
-                                        ;started up multiple inferior processes---each for a different
-                                        ;dialect---ess-mode would issue the wrong variant of the "search"
-                                        ;command when I typed C-c C-s.  In case it is useful let me tell you
-                                        ;what I did to get it to work for me.
-                                        ;
-                                        ;I added the component:
-                                        ;  (inferior-ess-search-list-command . "search()\n")
-                                        ;to S+3-customize-alist and R-customize-alist, and then I redefined the
-                                        ;ess-create-temp-buffer function as follows:
-(defun ess-create-temp-buffer (name)
-  "Create an empty buffer called NAME."
-  (let ((buff (get-buffer-create name))
-        (elca (eval ess-local-customize-alist)))
-    (with-current-buffer buff
-      (erase-buffer)
-      (ess-setq-vars-local elca buff))
-    buff))
-;;These two steps seem to insure that the temporary buffer in which the
-;;search results appear has the correct version of the local variables.
-;;I am not that well acquainted with the ess code and don't know whether
-;;this is a good fundamental way of fixing the problem, or even whether
-;;or not this breaks some other feature of ess-mode that I never use.
-;;Thanks for listening.
-;;Ed K.
-;;--
-;;Ed Kademan              508.651.3700
-;;PHZ Capital Partners    508.653.1745 (fax)
-;;321 Commonwealth Road   <kademan@phz.com>
-;;Wayland, MA 01778
-
-
-
-(defun ess-display-temp-buffer (buff)
-  "Display the buffer BUFF using `temp-buffer-show-function' and respecting
-`ess-display-buffer-reuse-frames'."
-  (let ((display-buffer-reuse-frames ess-display-buffer-reuse-frames))
-    (funcall (or temp-buffer-show-function 'display-buffer) buff)))
-
-;;*;; Error messages
-
-(defun ess-error (msg)
-  "Something bad has happened.
-Display the S buffer, and cause an error displaying MSG."
-  (display-buffer (process-buffer (get-ess-process ess-current-process-name)))
-  (error msg))
-
- ; Provide package
-
-(provide 'ess-inf)
-
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
-;;; ess-inf.el ends here
 
 
  ; directories
@@ -3023,3 +2934,92 @@ search path related variables."
           )))))
 
 
+;;*;; Temporary buffer handling
+
+;; (defun ess-create-temp-buffer (name)
+;;  "Create an empty buffer called NAME, but doesn't display it."
+;;  (let ((buff (get-buffer-create name)))
+;;    (save-excursion
+;;      (set-buffer buff)
+;;      (erase-buffer))
+;;    buff))
+
+
+;; Ed Kademan's version:
+;; From: Ed Kademan <kademan@phz.com>
+;; Subject: Re: ess-mode 5.1.16; search list
+;; To: rossini@biostat.washington.edu (A.J. Rossini)
+;; Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
+;; Date: 26 Jul 2000 16:12:12 -0400
+
+;; Dear Tony Rossini,
+
+;; I was having trouble looking at the search list under ess.  When I
+;; started up multiple inferior processes---each for a different
+;; dialect---ess-mode would issue the wrong variant of the "search"
+;; command when I typed C-c C-s.  In case it is useful let me tell you
+;; what I did to get it to work for me.
+
+;; I added the component:
+;;  (inferior-ess-search-list-command . "search()\n")
+;; to S+3-customize-alist and R-customize-alist, and then I redefined the
+;; ess-create-temp-buffer function as follows:
+(defun ess-create-temp-buffer (name)
+  "Create an empty buffer called NAME."
+  (let ((buff (get-buffer-create name))
+        (elca (eval ess-local-customize-alist)))
+    (with-current-buffer buff
+      (erase-buffer)
+      (ess-setq-vars-local elca buff))
+    buff))
+;;These two steps seem to insure that the temporary buffer in which the
+;;search results appear has the correct version of the local variables.
+;;I am not that well acquainted with the ess code and don't know whether
+;;this is a good fundamental way of fixing the problem, or even whether
+;;or not this breaks some other feature of ess-mode that I never use.
+;;Thanks for listening.
+;;Ed K.
+;;--
+;;Ed Kademan              508.651.3700
+;;PHZ Capital Partners    508.653.1745 (fax)
+;;321 Commonwealth Road   <kademan@phz.com>
+;;Wayland, MA 01778
+
+
+
+(defun ess-display-temp-buffer (buff)
+  "Display the buffer BUFF using `temp-buffer-show-function' and respecting
+`ess-display-buffer-reuse-frames'."
+  (let ((display-buffer-reuse-frames ess-display-buffer-reuse-frames))
+    (funcall (or temp-buffer-show-function 'display-buffer) buff)))
+
+;;*;; Error messages
+
+(defun ess-error (msg)
+  "Something bad has happened.
+Display the S buffer, and cause an error displaying MSG."
+  (display-buffer (process-buffer (get-ess-process ess-current-process-name)))
+  (error msg))
+
+ ; Provide package
+
+(provide 'ess-inf)
+
+ ; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
+;;; ess-inf.el ends here
