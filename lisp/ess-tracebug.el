@@ -1023,13 +1023,15 @@ of the ring."
   (ring-insert ess-dbg-forward-ring (point-marker))
   (message "Point inserted into the forward-ring"))
 
-(defvar ess-dbg-mode-line-indicator '(:eval (if (process-get (get-process ess-local-process-name) 'dbg-active)
-                                                (let ((str (upcase ess-dbg-indicator)))
-                                                  (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
-                                                                     str)
-                                                  str)
-                                              ess-dbg-indicator)
-                                            ))
+(defvar ess-dbg-mode-line-indicator
+  '(:eval (let ((proc (get-process ess-local-process-name)))
+            (if (and proc (process-get proc 'dbg-active))
+                (let ((str (upcase ess-dbg-indicator)))
+                  (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
+                                     str)
+                  str)
+              ess-dbg-indicator))
+            ))
 (make-variable-buffer-local 'ess-dbg-mode-line-indicator)
 (put 'ess-dbg-mode-line-indicator 'risky-local-variable t)
 
