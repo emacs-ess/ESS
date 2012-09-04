@@ -425,8 +425,9 @@ foo <- function(x) {
         x[a[j]] == exp(theta[1] + theta[2]^2),
         )
 }
-## VS[18-08-2012]: why? this is a feature for long subexpressions immediately
-## following new line. Documented in ess-arg-function-offset-new-line
+
+## VS[18-08-2012]: redundant feature. This is a feature for long subexpressions
+## imidiately folowing new line. Documented in ess-arg-function-offset-new-line
 
 ### --- 18 ---
 ##  M-C-a (beginning of function)
@@ -463,3 +464,10 @@ Ops.x.x <- function(e1, e2)
     }
 }
 
+
+### --- 19 ---
+## wrong indentation because of the regexp
+parse_roc <- function(lines, match = "^\\s*#+\' ?") {
+                                                       lines <- lines[str_detect(lines, match)]
+                                                       if (length(lines) == 0) return(NULL)
+}
