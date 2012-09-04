@@ -382,7 +382,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess-display-help-apropos (&optional pattern)
   (interactive "sPattern: ")
   (ess--display-indexed-help-page (format "help.search('%s')\n" pattern)
-                                  "^\\([^ \t\n]+\\)[ \t\n]+"
+                                  "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"
                                   (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
                                   'appropos))
 
