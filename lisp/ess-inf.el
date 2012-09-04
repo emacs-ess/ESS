@@ -729,6 +729,8 @@ selected.  `ess-dialect' is set to the dialect associated with
 the process selected."
   (interactive
    (list (concat ess-dialect " process to use: ") current-prefix-arg nil))
+  ;; todo: why the above interactive is not working in emacs 24?
+  (setq prompt (or prompt "Process to use: "))
   (let ((proc-name (ess-make-buffer-current)))
     (if (and (not force) proc-name (get-process proc-name))
         nil ; do nothing
