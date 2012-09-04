@@ -1924,16 +1924,17 @@ to continue it."
   ;;       inferior-ess-prompt)
   (comint-mode)
 
-  ;; If comint-process-echoes is t  inferior-ess-input-sender
-  ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
-  (set (make-local-variable 'comint-process-echoes)
-       (not (or (member ess-language '("SAS" "XLS" "OMG"))
-                (member ess-dialect '("R")))))
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
   (set (make-local-variable 'process-connection-type) t)
   ;; initialize all custom vars:
   (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
 
+  ;; If comint-process-echoes is t  inferior-ess-input-sender
+  ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
+  (set (make-local-variable 'comint-process-echoes)
+       (not (or (member ess-language '("SAS" "XLS" "OMG" "julia"))
+                (member ess-dialect '("R"))))) ;; does S work?
+  
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
           (concat "\\("
@@ -2043,16 +2044,12 @@ to continue it."
 
 ;;;*;;; Main user commands
 
-
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
   (if comint-process-echoes
       (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty)
     (inferior-ess-mark-as-busy proc)
     (process-send-string proc (concat string "\n"))))
-
-(defun inferior-STA-input-sender (proc string)
-  (ess-eval-linewise (concat string "\n") t t))
 
 
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
