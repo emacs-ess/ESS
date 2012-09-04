@@ -851,16 +851,17 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         ;; call proc for objects
 	(cdr (ess-R-get-rcompletions ac-point))
       ;; else, get the (maybe cached) list of objects
-      (ess-when-new-input last-objlist-update
-        (if (and ess-sl-modtime-alist
-                 (not  (process-get *proc* 'sp-for-ac-changed?)))
-            ;; not changes, re-read .GlobalEnv
-            (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
+      (with-ess-process-buffer nil ;; use proc buf alist
+        (ess-when-new-input last-objlist-update
+          (if (and ess-sl-modtime-alist
+                   (not  (process-get *proc* 'sp-for-ac-changed?)))
+              ;; not changes, re-read .GlobalEnv
+              (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
           ;; reread all objects, but not rda, much faster and not needed anyways
-          (ess-get-modtime-list) 
+          (with-ess-process-buffer (ess-get-modtime-list))
           (process-put *proc* 'sp-for-ac-changed? nil)
-          ))
-      (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
+          )
+        (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))
       )))
 
 (defun ess-ac-start-objects ()
