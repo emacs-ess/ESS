@@ -1114,7 +1114,12 @@ CALLBACK is a function to run after the successful
 execution. DELAY is a number of seconds to delay execution. When
 CAN-INTERRUPT is non-nil, user evaluation can interrupt the
 job. In this case the job will be resumed again on
-`ess-idle-time-interval' seconds."
+`ess-idle-time-interval' seconds.
+
+NOTE: Currently this function should be used only for background
+jobs like caching. The printed output of COM will most likely end
+up in user's main buffer.
+"
   (let ((proc (or proc (get-process ess-local-process-name))))
     (if (not (and proc
                   (eq (process-status proc) 'run)))
