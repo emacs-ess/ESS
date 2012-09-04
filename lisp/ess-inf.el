@@ -1943,7 +1943,7 @@ to continue it."
                   "\\)")))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq comint-get-old-input 'inferior-ess-get-old-input) ;; todo: this is R specific
-  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker) ;; R and S specific
+  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local) ;; R and S specific
 
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")               ;(concat "iESS:" ess-dialect))
