@@ -382,6 +382,7 @@ Return the 'busy state."
   (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
     (process-put proc 'busy-end? (and (not busy)
                                       (process-get proc 'busy)))
+    (if (not busy) (process-put proc 'running-async? nil))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
@@ -1040,6 +1041,7 @@ Hide all the junk output in temporary buffer."
             (set-process-buffer proc buf)
             (set-process-filter proc 'inferior-ess-ordinary-filter)
             (process-put proc 'callbacks nil)
+            (process-put proc 'running-async? nil)
             (interrupt-process proc)
             (when cb
               (funcall cb proc))
@@ -1065,8 +1067,8 @@ You should always provide PROC for delayed evaluation, as the
 current process might change, leading to unpredictable
 consequences. 
 
-This function is a wrapper to a lower level `ess-async-command'
-with interrupt-callback argument set to t.
+This function is a wrapper of `ess-async-command' with an
+explicit interrupt-callback.
 "
   (unless proc
     (error "You must provide PROC argument"))
@@ -1075,26 +1077,33 @@ with interrupt-callback argument set to t.
                       `(lambda (proc)
                          (ess-async-command-delayed ,com ,buf proc
                                                     ,resume-p  ,callback ,delay))))
-         (com-fun `(lambda () 
-                     (ess-async-command ,com ,buf ,proc ,callback ',int-cb))))
+         (com-fun `(lambda ()
+                     (when (eq (process-status ,proc)  'run) ; do nothing if not running 
+                       (if (or (process-get ,proc 'busy) ; if busy, try later
+                               (process-get ,proc 'running-async?))
+                           ;; idle timer doesn't work here
+                           (run-with-timer (or ,delay ess-idle-timer-interval) nil 'ess-async-command-delayed
+                                           ,com ,buf ,proc ,resume-p  ,callback ,delay))
+                         (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
     (run-with-idle-timer (or delay ess-idle-timer-interval) nil com-fun)
     ))
 
-;;; VS[03-09-2012]: do not delete, this are the test cases.
+;; ;;; VS[03-09-2012]: Test Cases:
+;; (ess-command "a<-0\n" nil nil nil nil (get-process "R"))
+;; (ess-async-command-delayed "Sys.sleep(5);a<-a+1;cat(1:10)\n" nil
+;;                            (get-process "R") t
+;;                            (lambda (proc) (message "done")))
+
+;; (process-get (get-process "R") 'running-async?)
+
 ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
 ;;                    (lambda (proc) (message "done")))
-
 ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
 ;;                    (lambda (proc) (message "done"))
 ;;                    t)
-
 ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
 ;;                    (lambda (proc) (message "done"))
 ;;                    (lambda (proc2) (message "name: %s" (process-name proc2))))
-
-;; (ess-async-command-delayed "Sys.sleep(5);cat(1:10)\n" nil
-;;                            (get-process "R") t
-;;                            (lambda (proc) (message "done")))
 
 
 (defun ess-async-command (com &optional buf proc callback interrupt-callback)
@@ -1110,12 +1119,15 @@ job. In this case the job will be resumed again on
     (if (not (and proc
                   (eq (process-status proc) 'run)))
         (error "Process %s is dead" ess-local-process-name)
-      (if (process-get proc 'busy)
-          (error "Process %s is busy, finish your command." ess-local-process-name)
+      (if (or (process-get proc 'busy)
+              (process-get proc 'running-async?))
+          (error "Process %s is busy or already running an async command." ess-local-process-name)
         (when (eq interrupt-callback t)
           (setq interrupt-callback (lambda (proc))))
         (process-put proc 'callbacks (list callback interrupt-callback))
         (process-put proc 'interruptable? (and interrupt-callback t))
+        (process-put proc 'interruptable? (and interrupt-callback t))
+        (process-put proc 'running-async? t)
         (ess-command com buf nil 'no-prompt-check nil proc)
         ))))
 
