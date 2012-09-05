@@ -282,7 +282,7 @@ See also `ess-use-ido'.
 
     ;; auto-complete
     (when (and emacsp isR
-               (require 'auto-complete nil t)
+               (require 'auto-complete nil 'no-error)
                (if inferior
                    (eq ess-use-auto-complete t)
                  ess-use-auto-complete))

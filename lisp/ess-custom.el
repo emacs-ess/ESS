@@ -392,7 +392,7 @@ you can combine different abbreviation styles with the truncation.
   )
 
 
-(defcustom ess-use-auto-complete nil
+(defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
 If 'script-only activate in ess-mode buffers only.
 
