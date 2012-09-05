@@ -27,6 +27,9 @@
 
 ;;; Code:
 
+(eval-and-compile
+  (require 'cl))
+
 (defun ess-inside-string-or-comment-p (&optional pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
  (according to syntax)."
@@ -679,14 +682,74 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
   "*If a number, then return that number, otherwise return 0."
   (or (and (numberp arg) arg) 0))
 
-(defun ess-change-directory (path)
-  "Set the current working directory to PATH for both *R* and Emacs."
-  (interactive "DChange working directory to: ")
 
-  (when (file-exists-p path)
-    (ess-command (concat "setwd(\"" path "\")\n"))
-    ;; use file-name-as-directory to ensure it has trailing /
-    (setq default-directory (file-name-as-directory path))))
+ ; Timer management
+
+(defcustom ess-idle-timer-interval 2
+  "Number of idle seconds to wait before running function in
+  `ess-idle-timer-functions'."
+  :group 'ess)
+
+(defvar ess-idle-timer-functions nil
+  "A list of functions to run each `ess-idle-timer-interval' idle seconds.
+
+These functions are run with `run-hooks'. Use `add-hook' to add
+symbols to this variable.
+
+Most likely you will need a local hook. Then you should specify
+the LOCAL argument to `add-hook' and initialise it in
+`ess-mode-hook' or `ess-post-run-hook', or one of the more
+specialised hooks `ess-R-post-run-hook',`ess-stata-post-run-hook'
+etc.
+")
+
+(defun ess--idle-timer-function nil
+  "Internal function executed by `ess--idle-timer'.
+Wraped in `while-no-input' in order not to cause disruption for
+the user. If your function calls the process, you better
+use (process-get *proc* 'last-eval) to get the time of last
+evaluation withing this process."
+  (while-no-input
+    ;; (dbg (current-time))
+    (run-hooks 'ess-idle-timer-functions)))
+
+
+(require 'timer)
+(defvar ess--idle-timer
+  (run-with-idle-timer ess-idle-timer-interval 'repeat 'ess--idle-timer-function)
+  "Timer used to run `ess-idle-timer-functions'.")
+
+
+(defmacro ess-when-new-input (time-var &rest body)
+  "BODY is evaluate only if the value of TIME-VAR is bigger than
+the time of the last user input (stored in 'last-eval' process
+variable). TIME-VAR is the name of the process variable which
+holds the access time. See the code for `ess-synchronize-dirs'
+and `ess-cache-search-list'.
+
+Returns nil when no current process, or process is busy, or
+time-var > last-eval. Otherwise, execute BODY and return the last
+value.
+
+If BODY is executed, set process variable TIME-VAR
+to (current-time).
+
+Variable  *proc*  is bound  to  the  current process  during  the
+evaluation of BODY.
+
+Should be used in `ess-idle-timer-functions' which call the
+process to avoid excessive requests.
+"
+  (declare (indent 1))
+  `(with-ess-process-buffer 'no-error
+     (let ((le (process-get *proc* 'last-eval))
+           (tv (process-get *proc* ',time-var)))
+       (when (and (or (null tv) (null le) (time-less-p tv le))
+                  (not (process-get *proc* 'busy)))
+         (let ((out (progn ,@body)))
+           (process-put *proc* ',time-var (current-time))
+           out)))))
+
 
 (provide 'ess-utils)
 

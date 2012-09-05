@@ -1213,7 +1213,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
         (set-process-buffer stata-process (get-buffer-create "*stata help*"))
         (set-buffer "*stata help*")
         (setq buffer-read-only nil)
-        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (set-process-filter stata-process 'inferior-ess-ordinary-filter)
         (erase-buffer)
         (process-send-string stata-process "help ")
         (process-send-string stata-process the-subject)
@@ -1243,7 +1243,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
         (set-process-buffer stata-process (get-buffer-create "*stata help*"))
         (set-buffer "*stata help*")
         (setq buffer-read-only nil)
-        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (set-process-filter stata-process 'inferior-ess-ordinary-filter)
         (erase-buffer)
         (process-send-string stata-process "lookup ")
         (process-send-string stata-process the-subject)
@@ -1275,7 +1275,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
       (save-excursion
         (set-process-buffer stata-process
                             (get-buffer-create "*stata variables*"))
-        (set-process-filter stata-process 'ordinary-insertion-filter)
+        (set-process-filter stata-process 'inferior-ess-ordinary-filter)
         (set-buffer "*stata variables*")
         (setq buffer-read-only nil)
         (erase-buffer)

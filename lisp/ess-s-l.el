@@ -73,10 +73,6 @@
     (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
     (require-final-newline        . t)
-    (comment-start                . "#")
-    (comment-add                  . 1)
-    (comment-start-skip           . "#+ *")
-    (comment-column               . 40)
     ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line                      . 'S-indent-line)
@@ -124,10 +120,16 @@
     ;; ends in inferior-ess-primary-prompt everything should work as expected.
     (inferior-ess-primary-prompt   . "> ")
     (inferior-ess-secondary-prompt . "+ ")
+    (comment-start                . "#")
+    (comment-add                  . 1)
+    (comment-start-skip           . "#+ *") 
+    (comment-column               . 40)
     ;; inferior-ess-prompt is used by comint for navigation only if
     ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
+    (ess-getwd-command          . "getwd()\n")
+    (ess-setwd-command          . "setwd(%s)\n")
     )
   "S-language common settings for all <dialect>-customize-alist s"
   )

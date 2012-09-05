@@ -136,6 +136,10 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
+(defvar ess-R-post-run-hook nil
+  "Functions run in process buffer after the initialization of R
+  process.")
+
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
@@ -206,10 +210,26 @@ to R, put them in the variable `inferior-R-args'."
        "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
        nil nil nil 'wait-prompt);; solving "lines running together"
       )
+    
+    (ess-async-command-delayed
+     "invisible(installed.packages())\n" nil (get-process ess-local-process-name) 'resume
+     (lambda (proc) (process-put proc 'packages-cached? t)) 5)
+    
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
-                           nil nil nil 'wait-prompt))))
+                           nil nil nil 'wait-prompt))
+    (with-ess-process-buffer nil
+      (run-mode-hooks 'ess-R-post-run-hook))))
 
+
+
+;; (defun ess--R-cache-installed-packages ()
+;;   "Run by `ess-delayed-init' in R process buffer.
+;; Useses internal R caching of installed packages."
+;;   (ess-command "invisible(installed.packages())\n"
+;;                nil nil nil .2 nil 'redisplay)
+;;   (ess-process-put 'packages-cached? t)
+;;   )
 
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
@@ -239,7 +259,7 @@ to R, put them in the variable `inferior-R-args'."
   (set (make-local-variable 'beginning-of-defun-function)
        (lambda (&optional arg)
          (skip-chars-backward " \t\n")
-         (ess-beginning-of-function)))
+         (ess-beginning-of-function 'no-error)))
   (set (make-local-variable 'end-of-defun-function)
        'ess-end-of-function)
 
@@ -657,23 +677,24 @@ then update the entry.
 Package_name is \"\" if funname was not found or is a special name,n
 i.e. contains :,$ or @.
 "
-  (when funname ;; might be nil as returned by ess--funname.start
+  (when funname ;; usually returned by ess--funname.start (might be nil)
     (let* ((args (gethash funname ess--funargs-cache))
            (pack (caar args))
            (ts   (cdar args)))
       (when (and args
-                 (and (or (null pack)
+                 (and (time-less-p ts (ess-process-get 'last-eval))
+                      (or (null pack)
                           (and (equal pack "")
                                (not (member funname ess-objects-never-recache)))
                           (equal pack "R_GlobalEnv"))
-                      (time-less-p ts (ess-process-get 'last-eval))))
+                      ))
         (setq args nil))
       (or args
           (when (and ess-current-process-name (get-process ess-current-process-name))
             (let ((args (ess-get-words-from-vector
                          (format ess--funargs-command funname funname) nil .01)))
               (setq args (list (cons (car args) (current-time))
-                               (when (stringp (cadr args)) ;; error occured
+                               (when (stringp (cadr args)) ;; error occurred
                                  (replace-regexp-in-string  "\\\\" "" (cadr args)))
                                (cddr args)))
               ;; push even if nil
@@ -698,8 +719,8 @@ Suitable for R object's names."
 
 (defvar ess--funname.start nil)
 (defun ess--funname.start (&optional look-back)
-  "If inside a function call, return (FUNNAMME . BEG) where
-FUNNAME is a function name found before ( and beg is where
+  "If inside a function call, return (FUNNAMME . START) where
+FUNNAME is a function name found before ( and START is where
 FUNNAME starts.
 
 LOOK-BACK is a number of characters to look back; defaults to
@@ -794,8 +815,10 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   )
 
 (defun ess-ac-start ()
-  (or (ess-ac-start-args)
-      (ess-ac-start-objects)))
+  (when (and ess-local-process-name
+             (get-process ess-local-process-name))
+    (or (ess-ac-start-args)
+        (ess-ac-start-objects))))
 
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS"
@@ -827,22 +850,21 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (unless no-kill ;; workaround
       (kill-local-variable 'ac-use-comphist))
     (if (string-match-p "[]:$@[]" ac-prefix)
+        ;; call proc for objects
 	(cdr (ess-R-get-rcompletions ac-point))
-      (with-ess-process-buffer 'no-error
-	(unless (process-get *proc* 'busy)
-	  (let ((le (process-get *proc* 'last-eval))
-		(lobu (process-get *proc* 'last-objlist-update)))
-	    (when (or  (null lobu) (null le) (time-less-p lobu le))
-	      ;;re-read .GlobalEnv
-	      (if (and ess-sl-modtime-alist
-		       (not  ess-sp-change))
-		  (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)
-		(ess-get-modtime-list)
-		(setq ess-sp-change nil) ;; not treated exactly, rdas are not treated
-		))
-	    (process-put *proc* 'last-objlist-update (current-time))
-	    (apply 'append (mapcar 'cddr ess-sl-modtime-alist))
-	    ))))))
+      ;; else, get the (maybe cached) list of objects
+      (with-ess-process-buffer nil ;; use proc buf alist
+        (ess-when-new-input last-objlist-update
+          (if (and ess-sl-modtime-alist
+                   (not  (process-get *proc* 'sp-for-ac-changed?)))
+              ;; not changes, re-read .GlobalEnv
+              (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
+          ;; reread all objects, but not rda, much faster and not needed anyways
+          (ess-get-modtime-list)
+          (process-put *proc* 'sp-for-ac-changed? nil)
+          )
+        (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))
+      )))
 
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
@@ -1141,21 +1163,9 @@ Completion is available for supplying options."
           pack)
       (setq pack (ess-completing-read "Load package" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))
-      (ess-set-process-variable ess-current-process-name 'ess-sp-change t)
+      (ess--mark-search-list-as-changed)
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
-
-(defun ess-dirs ()
-  "Set Emacs' current directory to be the same as the *R* process.
-If you change directory within *R* using setwd(), run this command so that
-Emacs can update its `default-directory' variable for the *R* buffer.
-
-Currently this function has been tested only for *R*, but should also work for
-*S* buffers."
-  (interactive)
-  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
-    (message "new (ESS / default) directory: %s" dir)
-    (setq default-directory (file-name-as-directory dir))))
 
 
  ; provides

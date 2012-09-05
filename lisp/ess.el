@@ -282,14 +282,15 @@ See also `ess-use-ido'.
 
     ;; auto-complete
     (when (and emacsp isR
-               (require 'auto-complete nil t)
+               (require 'auto-complete nil 'no-error)
                (if inferior
                    (eq ess-use-auto-complete t)
                  ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
-      (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
-              '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
-      (setq ac-sources '(ac-source-R ac-source-filename)))
+      ;; (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
+      ;;         '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
+      (add-to-list 'ac-sources 'ac-source-filename)
+      (add-to-list 'ac-sources 'ac-source-R))
 
     ;; eldoc)
     (require 'eldoc)

@@ -89,6 +89,7 @@
 (autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)" nil)
 (autoload 'SAS                              "ess-sas-d.el" "(autoload)" t)
 
+(require 'ess-utils)
 
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
@@ -147,9 +148,10 @@
     (define-key map "\C-\M-x"    'ess-eval-region-or-function-or-paragraph)
     (define-key map "\C-c\C-n"   'ess-eval-line-and-step)
     (define-key map "\C-c\C-j"   'ess-eval-line)
+    (define-key map [(control return)] 'ess-eval-region-or-line-and-step)
     (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
     ;; the next three can only work in S/R - mode {FIXME}
-    (define-key map "\C-\M-a"    'ess-goto-end-of-function-or-para)
+    (define-key map "\C-\M-a"    'ess-goto-beginning-of-function-or-para)
     (define-key map "\C-\M-e"    'ess-goto-end-of-function-or-para)
     (define-key map "\C-xnd"     'ess-narrow-to-defun)
     (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
@@ -460,6 +462,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     )
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
+  ;; timer
+  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
   ;;; extras
   (ess-load-extras)
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
@@ -482,6 +486,7 @@ ess-mode."
             (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
           "none"))
     "none"))
+
 
 ;;*;; User commands in ess-mode
 
@@ -560,11 +565,14 @@ ess-mode."
   "Leave (and return) the point at the beginning of the current ESS function.
 If the optional argument NO-ERROR is non-nil, the function returns nil when
 it cannot find a function beginning."
+
+  ;; FIXME: should not throw error in accordance with beginning-of-defun and
+  ;; beginning-of-defun-function specification
+  
   (interactive)
   (let ((init-point (point))
         (in-set-S4 nil)
         beg end done)
-
 
     ;; Note that we must be sure that we are past the 'function (' text,
     ;; such that ess-function-pattern is found in BACKwards later.
@@ -674,14 +682,14 @@ Optional argument for location of beginning.  Return '(beg end)."
   "If inside a function go to end of it, overwise go to the end
   of paragraph."
   (interactive)
-  (unless (ignore-errors (ess-beginning-of-function t))
+  (unless (ess-beginning-of-function 'no-error)
     (backward-paragraph)))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it, overwise go to the end
   of paragraph."
   (interactive)
-  (unless (ignore-errors (ess-end-of-function nil t))
+  (unless (ess-end-of-function nil 'no-error)
     (forward-paragraph)))
 
 ;;; Kurt's version, suggested 1997-03-06.

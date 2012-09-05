@@ -1,7 +1,7 @@
 #### File showing off  things that go wrong or *went* wrong in the past
 #### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
 
-#### NOTE!!! this file is indeted with RRR style !!!!!
+#### NOTE!!! this file is indented with RRR style !!!!!
 
 
 
@@ -30,7 +30,7 @@ foo <- function(x=a, abc = list("def", a=1,3,3), more.args, and, bla,
 
 ##-   when the line before a function def is a comment, and adding args,
 ##- then new lines, when generated have a comment char at the beginning of
-##- the line. It is slighly annoying as I have to remove the comment char.
+##- the line. It is slightly annoying as I have to remove the comment char.
 ##-
 ##- If I add a blank line after the comment line, then the problem does not
 ##- occur.
@@ -91,7 +91,7 @@ dimnamesGets <- function (x, value) {
 
 
 ### --- 4 ----------------------------------------------------------------
-### Here, the indentation is wrong ... rather an Emacs buglet ?
+##  Here, the indentation is wrong ... rather an Emacs buglet ?
 
 a <- function(ch) {
     if(ch == Inf) {
@@ -264,7 +264,7 @@ setMethod("[", signature(x = "dgTMatrix", i = "numeric", j = "missing",
 ## Date: Tue, 17 Aug 2010 13:08:25 -0500
 
 ## With the following input, and point on the line with "Table 8.3":
-## it was the paranthetical expression at the beg of line
+## it was the parenthetical expression at the beg of line
 
 if (require(lme4)) {
     ## Model in p. 213
@@ -315,7 +315,7 @@ if (is.function(f1) && is.function(f2)){
 
 
 ### --- 11 ---------------------------------------------------------------
-### --------------- C-c C-c  was finding the wrong "beginning of function"
+##  --------------- C-c C-c  was finding the wrong "beginning of function"
 ##				[:FIXED:, 2011-05-28]
 foobar <- function(...) {}
 rm(list=ls())
@@ -364,13 +364,13 @@ fn <- function(x, ...){
 ## check the behavior of ess-arg-function-offset-new-line
 
 a <- some.function(
-       arg1,
-       arg2)
-###    ^--- with ess-arg-function-offset-new-line set to 2 should indent here
+    arg1,
+    arg2)
+##  ^--- RRR has ess-arg-function-offset-new-line (4)  ==> should indent here
 
 a <- some.function(arg1,
                    arg2)
-###                ^--- indent here
+##                 ^--- indent here
 
 
 ### --- 15 --------------------------------------------------------------
@@ -383,7 +383,7 @@ for(s in seq(10, 50, len = 5))
 
 ### --- 16 ----
 ## VS[05-05-2012|ESS 12.04]:FIXED:
-## Givesn error unbalanced para at else lines and indentation is wrong
+## Gives error unbalanced para at else lines and indentation is wrong
 ## error: Point is not in a function according to 'ess-function-pattern'.
 getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv)))
@@ -398,19 +398,19 @@ parentContainer <-
     else sdf
 
 ### --- 17 ---
-### Indentation -----  "expression"
+## Indentation -----  "expression" is special
 expremmion <- c(1, 3,
                 9876)# was always ok
 ## Had wrong indentation here:
-## expression <- c(2343,
-##    23874, 239487) 
+expression <- c(2343,
+                23874, 239487)
 
-#### or here:
-## foo <- function(x) {
-##     expression <- c(2343,
-##         23874, 239487)
-##     10 + expression
-## }
+## or here:
+foo <- function(x) {
+    expression <- c(2343,
+                    23874, 239487)
+    10 + expression
+}
 
 ## Where as here, we *do* want the indentation to
 ## *NOT* go all the way to the right:
@@ -420,6 +420,54 @@ expremmion <- c(1, 3,
         x[a[j]] == exp(theta[1] + theta[2]^2),
         x[b[i]] == sin(theta[3] ~~ theta[4])
         )
+    ausdruck <- expression
+    my.long.Expr...... <- ausdruck(
+        x[a[j]] == exp(theta[1] + theta[2]^2),
+        )
 }
-## VS[18-08-2012]: why? this is a feature for long subexpressions imidiately
-## folowing new line. Documented in ess-arg-function-offset-new-line
+
+## VS[18-08-2012]: redundant feature. This is a feature for long subexpressions
+## imidiately folowing new line. Documented in ess-arg-function-offset-new-line
+
+### --- 18 ---
+##  M-C-a (beginning of function)
+##  -----   anywhere inside the following function, M-C-a must go to beginning
+Ops.x.x <- function(e1, e2)
+{
+    d <- dimCheck(e1,e2)
+    if((dens1 <- extends(c1 <- class(e1), "denseMatrix")))
+	gen1 <- extends(c1, "generalMatrix")
+    if((dens2 <- extends(c2 <- class(e2), "denseMatrix")))
+	gen2 <- extends(c2, "generalMatrix")
+    if(dens1 && dens2) { ## both inherit from ddense*
+	geM <- TRUE
+	if(!gen1) {
+	    if(!gen2) { ## consider preserving "triangular" / "symmetric"
+		geM <- FALSE
+		le <- prod(d)
+		isPacked <- function(x) length(x@x) < le
+            }
+        }
+	## now, in all cases @x should be matching & correct {only "uplo" part is used}
+	r <- callGeneric(e1@x, e2@x)
+	if(geM)
+	    new(paste0(.M.kind(r), "geMatrix"), x = r, Dim = d, Dimnames = dimnames(e1))
+	else
+	    new(paste0(.M.kind(r), Mclass), x = r, Dim = d, .....)
+    }
+    else {
+	r <- ....
+
+	## criterion "2 * nnz(.) < ." as in sparseDefault() in Matrix()	 [./Matrix.R] :
+	if(2 * nnzero(r, na.counted = TRUE) < prod(d))
+	    as(r, "sparseMatrix") else r
+    }
+}
+
+
+### --- 19 ---
+## wrong indentation because of the regexp
+parse_roc <- function(lines, match = "^\\s*#+\' ?") {
+                                                       lines <- lines[str_detect(lines, match)]
+                                                       if (length(lines) == 0) return(NULL)
+}

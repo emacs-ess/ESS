@@ -32,6 +32,7 @@
 (require 'custom)
 (require 'executable)
 (require 'font-lock)
+
 ;; Customization Groups
 
 (defgroup ess nil
@@ -177,6 +178,7 @@ as `ess-imenu-use-S'."
                                 ("install.packages"     . ess-install.packages)
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
+                                ("help-apropos"         . ess-display-help-apropos)
                                 ("help-index"           . ess-display-index)
                                 ("help-object"          . ess-display-help-on-object)
                                 ("search"               . ess-execute-search)
@@ -185,7 +187,8 @@ as `ess-imenu-use-S'."
                                 ("sos"                  . ess-sos)
                                 ("vignettes"            . ess-display-vignettes)
                                 )
-  "An alist of custom ESS commands available for call by `ess-smart-comma' function."
+  "An alist of custom ESS commands available for call by
+`ess-handy-commands' and `ess-smart-comma' function."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
 
@@ -193,6 +196,11 @@ as `ess-imenu-use-S'."
   "The full name of the user."
   :group 'ess
   :type 'string)
+
+(defcustom ess-blink-region-p t
+  "If t evaluated region is highlighted for a shortwhile."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-ask-for-ess-directory t
   "Non-nil means request the process directory each time S is run."
@@ -384,7 +392,7 @@ you can combine different abbreviation styles with the truncation.
   )
 
 
-(defcustom ess-use-auto-complete nil
+(defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
 If 'script-only activate in ess-mode buffers only.
 
@@ -749,11 +757,6 @@ a lambda expression of no arguments which will return a suitable string
 value.  The lambda expression is evaluated with the process buffer as the
 current buffer.
 
-Possible value:
-
- (lambda () (file-name-as-directory
-             (expand-file-name (concat (car ess-search-list) \"/.Src\"))))
-
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
   :group 'ess-edit
@@ -1048,7 +1051,13 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
+(defcustom ess-getwd-command nil
+  "Command string retriving the working directory from the process.")
 
+(defcustom ess-setwd-command nil
+  "Command string to set working directory.
+Should contain a formating %s to be replaced by a
+path (as in 'setwd(%s)\\n'.")
 
 (defcustom ess-program-files ;; 32 bit version
   (if ess-microsoft-p
@@ -1742,9 +1751,8 @@ from `inferior-ess-primary-prompt' and
 ;;*;; Process-dependent variables
 
 (defvar ess-search-list nil
-  "Cache of list of directories and objects to search for ESS objects.")
-
-(make-variable-buffer-local 'ess-search-list)
+  "Deprecated. Use (ess-search-list) or (ess-process-get 'search-list) instead.")
+(make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
 
 (defvar ess-sl-modtime-alist nil
   "Alist of modification times for all ess directories accessed this
@@ -1753,9 +1761,9 @@ session.")
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil
-  "This symbol flags a change in the ess search path.")
-
-(make-variable-buffer-local 'ess-sp-change)
+  "Variable not used. Use (ess-process-get 'sp-for-help-changed?) instead.")
+(make-obsolete-variable 'ess-sp-change nil "ESS 12.09")
+;; (make-variable-buffer-local 'ess-sp-change)
 
 (defvar ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last
@@ -2076,14 +2084,14 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
 (defface ess-function-call-face
-  '((default (:weight normal :width normal :slant normal :inherit font-lock-builtin-face)))
+  '((default (:inherit font-lock-builtin-face)))
   "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
 (defface ess-numbers-face
-  '((default (:weight normal :width normal :inherit font-lock-type-face)))
+  '((default (:inherit font-lock-type-face)))
   "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
 
@@ -2194,9 +2202,13 @@ Created for each process."
   "Buffer for temporary use for setting default variable values.
 Used for recording status of the program, mainly for debugging.")
 
+;; VS[31-08-2012]: No global exchange please. This var should be local. If you
+;; need it in a new buffer, import it from the parent buffer.
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
 Not buffer local!")
+;; (make-variable-buffer-local 'ess-customize-alist)
+;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
 (defvar ess-local-customize-alist nil
   "Buffer local settings for proper behavior.
