@@ -2084,14 +2084,14 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
 (defface ess-function-call-face
-  '((default (:weight normal :width normal :slant normal :inherit font-lock-builtin-face)))
+  '((default (:inherit font-lock-builtin-face)))
   "Font Lock face used to highlight function calls in ess buffers."
   :group 'ess)
 
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
 (defface ess-numbers-face
-  '((default (:weight normal :width normal :inherit font-lock-type-face)))
+  '((default (:inherit font-lock-type-face)))
   "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
 
