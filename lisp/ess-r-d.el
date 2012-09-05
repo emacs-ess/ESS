@@ -259,7 +259,7 @@ to R, put them in the variable `inferior-R-args'."
   (set (make-local-variable 'beginning-of-defun-function)
        (lambda (&optional arg)
          (skip-chars-backward " \t\n")
-         (ess-beginning-of-function)))
+         (ess-beginning-of-function 'no-error)))
   (set (make-local-variable 'end-of-defun-function)
        'ess-end-of-function)
 
