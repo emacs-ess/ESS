@@ -1534,8 +1534,10 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
     (if (null beg-end) ; not a function
         (ess-eval-paragraph-and-step vis)
       (goto-char (cadr beg-end))
-      (forward-line 1)
-      )))
+      (if ess-eval-empty
+          (forward-line 1)
+        (ess-next-code-line 1)      
+      ))))
 
 (defun ess-eval-region-or-function-or-paragraph (vis)
   "Send the current region if mark is active, if not, send
