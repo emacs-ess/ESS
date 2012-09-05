@@ -815,8 +815,10 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   )
 
 (defun ess-ac-start ()
-  (or (ess-ac-start-args)
-      (ess-ac-start-objects)))
+  (when (and ess-local-process-name
+             (get-process ess-local-process-name))
+    (or (ess-ac-start-args)
+        (ess-ac-start-objects))))
 
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS"
@@ -858,7 +860,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
               ;; not changes, re-read .GlobalEnv
               (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
           ;; reread all objects, but not rda, much faster and not needed anyways
-          (with-ess-process-buffer (ess-get-modtime-list))
+          (ess-get-modtime-list)
           (process-put *proc* 'sp-for-ac-changed? nil)
           )
         (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))
