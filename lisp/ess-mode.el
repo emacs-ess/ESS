@@ -564,11 +564,14 @@ ess-mode."
   "Leave (and return) the point at the beginning of the current ESS function.
 If the optional argument NO-ERROR is non-nil, the function returns nil when
 it cannot find a function beginning."
+
+  ;; FIXME: should not throw error in accordance with beginning-of-defun and
+  ;; beginning-of-defun-function specification
+  
   (interactive)
   (let ((init-point (point))
         (in-set-S4 nil)
         beg end done)
-
 
     ;; Note that we must be sure that we are past the 'function (' text,
     ;; such that ess-function-pattern is found in BACKwards later.
@@ -678,14 +681,14 @@ Optional argument for location of beginning.  Return '(beg end)."
   "If inside a function go to end of it, overwise go to the end
   of paragraph."
   (interactive)
-  (unless (ignore-errors (ess-beginning-of-function t))
+  (unless (ess-beginning-of-function 'no-error)
     (backward-paragraph)))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it, overwise go to the end
   of paragraph."
   (interactive)
-  (unless (ignore-errors (ess-end-of-function nil t))
+  (unless (ess-end-of-function nil 'no-error)
     (forward-paragraph)))
 
 ;;; Kurt's version, suggested 1997-03-06.

@@ -53,8 +53,8 @@
 (autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
 
-(autoload 'ess-beginning-of-function    "ess-mode" "[autoload]" t)
-(autoload 'ess-end-of-function          "ess-mode" "[autoload]" t)
+(autoload 'ess-goto-beginning-of-function-or-para    "ess-mode" "[autoload]" t)
+(autoload 'ess-goto-end-of-function-or-para          "ess-mode" "[autoload]" t)
 
 (autoload 'ess-load-file                "ess-inf" "[autoload]" t)
 (autoload 'ess-command                  "ess-inf" "(autoload)" nil)
@@ -584,8 +584,8 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\M-f" 'ess-eval-function-and-go)
     (define-key map "\C-c\C-j" 'ess-eval-line)
     (define-key map "\C-c\M-j" 'ess-eval-line-and-go)
-    (define-key map "\M-\C-a"  'ess-beginning-of-function)
-    (define-key map "\M-\C-e"  'ess-end-of-function)
+    (define-key map "\M-\C-a"  'ess-goto-beginning-of-function-or-para)
+    (define-key map "\M-\C-e"  'ess-goto-end-of-function-or-para)
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (define-key map "\C-c\C-l" 'ess-load-file)

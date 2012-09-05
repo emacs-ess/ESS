@@ -84,8 +84,8 @@
 
   (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-transcript-send-command)
   (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-transcript-send-command-and-move)
-  (define-key ess-transcript-mode-map "\M-\C-a"  'ess-beginning-of-function)
-  (define-key ess-transcript-mode-map "\M-\C-e"  'ess-end-of-function)
+  (define-key ess-transcript-mode-map "\M-\C-a"  'ess-goto-end-of-function-or-para)
+  (define-key ess-transcript-mode-map "\M-\C-e"  'ess-goto-end-of-function-or-para)
   (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
   (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
