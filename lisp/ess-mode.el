@@ -148,6 +148,7 @@
     (define-key map "\C-\M-x"    'ess-eval-region-or-function-or-paragraph)
     (define-key map "\C-c\C-n"   'ess-eval-line-and-step)
     (define-key map "\C-c\C-j"   'ess-eval-line)
+    (define-key map [(control return)] 'ess-eval-region-or-line-and-step)
     (define-key map "\C-c\M-j"   'ess-eval-line-and-go)
     ;; the next three can only work in S/R - mode {FIXME}
     (define-key map "\C-\M-a"    'ess-goto-beginning-of-function-or-para)

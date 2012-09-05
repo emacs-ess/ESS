@@ -1636,6 +1636,20 @@ true."
       (forward-line 1)
     (ess-next-code-line 1)))
 
+(defun ess-eval-region-or-line-and-step (&optional vis)
+  "Evaluate region if there is an active one, otherwise the current line.
+
+ Prefix arg VIS toggles visibility of ess-code when evaluating
+ the region (as for `ess-eval-region') and has no effect for
+ evaluation of the line.
+"
+  (interactive "P")
+  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
+           (> (region-end) (region-beginning)))
+      (ess-eval-region (region-beginning) (region-end) vis)
+    (ess-eval-line-and-step)
+  ))
+
 (defun ess-eval-line-and-step-invisibly ()
   "Evaluate the current line invisibly and step to the next line.
 Evaluate all comments and empty lines."
