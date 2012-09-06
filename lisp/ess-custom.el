@@ -750,7 +750,7 @@ OWN, GNU, BSD, ...) map onto different settings for variables."
 ;;*;; Variables controlling behaviour of dump files
 
 (defcustom ess-source-directory
-  (if ess-microsoft-p (getenv "TEMP")  "/tmp/")
+  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp")
   "Directory in which to place dump files.
 This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
@@ -1924,7 +1924,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   (list
    (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
          'font-lock-constant-face)     ; modify search list or source (i.e. directives)
-   (cons ess-R-function-name-regexp 
+   (cons ess-R-function-name-regexp
          '(1 font-lock-function-name-face t))  ; override
                                         ; function name
    )
@@ -1960,7 +1960,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font lock defaults for R mode.")
 
 ;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case
-(defvar inferior-ess-font-lock-keywords nil) 
+(defvar inferior-ess-font-lock-keywords nil)
 
 (defvar inferior-ess-R-font-lock-keywords
   (append
@@ -2163,7 +2163,7 @@ Defaults to `ess-S-non-functions'."
 
  ; julia-mode
 (defvar inferior-julia-program-name "julia-release-basic"
-  ;; the default assumes it is on the PATH ... which is typically the case after 
+  ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
   "Path to julia-release-basic executable")
 
