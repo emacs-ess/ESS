@@ -201,11 +201,12 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus buffer with message. Return t if killed."
-  (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
-    (when bog-mes
-      (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
-      (ding)
-      (kill-buffer buffer))))
+  (when ess-help-kill-bogus-buffers
+    (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
+      (when bog-mes
+        (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
+        (ding)
+        (kill-buffer buffer)))))
 
 (defun ess-display-help-in-browser ()
   (interactive)
