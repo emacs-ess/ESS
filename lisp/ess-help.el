@@ -169,6 +169,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
                 (ess--help-get-bogus-buffer-substring old-hb-p))
 
         (with-current-buffer tbuffer
+          (ess-write-to-dribble-buffer
+           (format "(ess-help '%s' start  ..\n" hb-name))
           (ess-setq-vars-local (eval alist))
           (set-syntax-table ess-mode-syntax-table)
           (setq ess-help-object object
@@ -188,13 +190,14 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (unless (string= ess-language "STA")
             (ess-nuke-help-bs))
           (goto-char (point-min))
-          ;;dbg (ess-write-to-dribble-buffer
-          ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
           (set-buffer-modified-p 'nil)
           (setq buffer-read-only t)
           (when (fboundp 'visual-line-mode)
-            (visual-line-mode t))))
-      
+            (visual-line-mode t))
+          (ess-write-to-dribble-buffer
+           (format "(ess-help '%s' done  ..\n" hb-name))
+           ))
+
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer))
       )))
@@ -204,6 +207,10 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
   (when ess-help-kill-bogus-buffers
     (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
       (when bog-mes
+        (when (< (length bog-mes) 10) ;;no message at all, how to treat this properly?
+          (setq bog-mes (format "No documentation found; %s" bog-mes)))
+        (ess-write-to-dribble-buffer
+         (format "(ess-help: kill bogus buffer %s ..\n" (buffer-name buffer)))
         (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
         (ding)
         (kill-buffer buffer)))))
