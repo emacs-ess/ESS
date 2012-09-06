@@ -329,6 +329,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (ess--switch-to-help-buffer buff)
       )))
 
+(defalias 'ess-display-index 'ess-display-package-index)
 (make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
@@ -490,7 +491,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
-`ess-display-index', and `ess-display-vignettes'.
+`ess-display-package-index', and `ess-display-vignettes'.
  CURR-MAJOR-MODE default to current major mode.
 "
   (setq curr-major-mode (or curr-major-mode major-mode))
@@ -606,7 +607,8 @@ For internal use. Used in `ess-display-help-on-object',
         ["End of Buffer"                end-of-buffer t]
         "-"
         ["Help on ..."                  ess-display-help-on-object t]
-        ["Index of ..."                 ess-display-index t]
+        ["Apropos of ..."               ess-display-help-apropos t]
+        ["Index of ..."                 ess-display-package-index t]
         ["Vignettes"                    ess-display-vignettes t]
         ["Open in Browser"              ess-display-help-in-browser t]
         "-"

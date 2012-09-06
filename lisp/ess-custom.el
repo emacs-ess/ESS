@@ -179,7 +179,7 @@ as `ess-imenu-use-S'."
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
                                 ("help-apropos"         . ess-display-help-apropos)
-                                ("help-index"           . ess-display-index)
+                                ("help-index"           . ess-display-package-index)
                                 ("help-object"          . ess-display-help-on-object)
                                 ("search"               . ess-execute-search)
                                 ("set-width"            . ess-execute-screen-options)
