@@ -1146,8 +1146,9 @@ exists save the output in that buffer. BUF is erased before
 use. COM should have a terminating newline.  Guarantees that the
 value of .Last.value will be preserved.  When optional third arg
 SLEEP is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
-places where `a' is proportional to `ess-cmd-delay'.  WAIT and
-FORCE-REDISPLAY are passed to `ess-wait-for-process'.
+places where `a' is proportional to `ess-cmd-delay'.  WAIT is as
+in `ess-wait-for-process' and defaults to .02. FORCE-REDISPLAY is
+passed to `ess-wait-for-process'.
 
 PROC should be a process, if nil the process name is taken from
 `ess-local-process-name'. This command doesn't set 'last-eval
@@ -1209,8 +1210,9 @@ local({
                 (if no-prompt-check
                     (sleep-for 0.020); 0.1 is noticeable!
                   ;; else: default
-                  (ess-wait-for-process sprocess nil wait force-redisplay)
+                  (ess-wait-for-process sprocess nil (or wait .02) force-redisplay)
                   (goto-char (point-max))
+                  ;; remove prompt
                   (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
               ))
