@@ -1,3 +1,7 @@
+2012-09-06  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): added PROC SETINIT
+
 2012-08-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-rtf-portrait/landscape): bug-fix: 
