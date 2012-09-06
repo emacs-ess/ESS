@@ -853,7 +853,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         ;; call proc for objects
 	(cdr (ess-R-get-rcompletions ac-point))
       ;; else, get the (maybe cached) list of objects
-      (with-ess-process-buffer nil ;; use proc buf alist
+      (with-ess-process-buffer 'no-error ;; use proc buf alist
         (ess-when-new-input last-objlist-update
           (if (and ess-sl-modtime-alist
                    (not  (process-get *proc* 'sp-for-ac-changed?)))
