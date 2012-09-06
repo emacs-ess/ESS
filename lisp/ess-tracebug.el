@@ -1304,7 +1304,7 @@ TB-INDEX is not found return nil.
     (setq tb-index (string-to-number (match-string 2 file)))
     (setq file (match-string 1 file)))
   (let ((buffer (ess-dbg-find-buffer  file))
-        pos )
+        pos)
     (when (and buffer  line)
       (with-current-buffer buffer
         (save-restriction
@@ -1324,7 +1324,7 @@ TB-INDEX is not found return nil.
           )))))
 
 
-(defun ess-dbg-find-buffer (filename )
+(defun ess-dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess-dbg-ask-for-file' is non-nil.  Search the directories in

@@ -709,9 +709,9 @@ Wraped in `while-no-input' in order not to cause disruption for
 the user. If your function calls the process, you better
 use (process-get *proc* 'last-eval) to get the time of last
 evaluation withing this process."
-  (while-no-input
+  ;; (while-no-input
     ;; (dbg (current-time))
-    (run-hooks 'ess-idle-timer-functions)))
+    (run-hooks 'ess-idle-timer-functions))
 
 
 (require 'timer)
