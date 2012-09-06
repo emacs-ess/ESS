@@ -786,22 +786,19 @@ Stata or XLispStat for additional information."
 If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
-  (save-excursion
-    (setq name (or name ess-local-process-name))
-    (set-buffer (process-buffer (get-ess-process name)))
-    (ess-make-buffer-current)
+  (with-ess-process-buffer nil
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
-    ;; (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
-    ;;     (funcall ess-get-help-topics-function)
     (if (or (not ess-help-topics-list)
             (ess-process-get 'sp-for-help-changed?))
-        (setq ess-help-topics-list
-              (ess-uniq-list
-               (append (ess-get-object-list name 'exclude-1st)
-                       (ess-get-help-files-list)
-                       (ess-get-help-aliases-list)
-                       )))
+        (progn 
+          (ess-process-put 'sp-for-help-changed? nil)
+          (setq ess-help-topics-list
+                (ess-uniq-list
+                 (append (ess-get-object-list name 'exclude-1st)
+                         (ess-get-help-files-list)
+                         (ess-get-help-aliases-list)
+                         ))))
       ;; else return the existing list
       ess-help-topics-list)))
 
