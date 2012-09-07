@@ -2077,7 +2077,7 @@ keywords (also availble from ESS menu)."
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
                    '(1 font-lock-variable-name-face keep t))))
 
-   ess-R-font-lock-keywords:1
+   (eval `(list ,@ess-R-font-lock-default-keywords))
 
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
@@ -2127,7 +2127,7 @@ keywords (also availble from ESS menu)."
        (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
                    '(1 font-lock-variable-name-face keep t))) )
 
-   ess-S-common-font-lock-keywords
+   (eval `(list ,@ess-S-font-lock-default-keywords))
 
    (list
     (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg

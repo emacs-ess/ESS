@@ -87,7 +87,7 @@
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
     (ess-font-lock-available-keywords    . ess-R-font-lock-available-keywords)
     (ess-font-lock-default-keywords      . ess-R-font-lock-default-keywords)
-    (font-lock-defaults           . `(,(eval `(list ,@ess-R-fl-default-keywords))
+    (font-lock-defaults           . `(,(eval `(list ,@ess-R-font-lock-default-keywords))
                                       nil nil ((?\. . "w") (?\_ . "w"))))
     )
   "General options for R source files.")
