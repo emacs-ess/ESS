@@ -400,8 +400,10 @@ Return the 'busy state."
   (when (process-get proc 'busy-end?)
     (let ((cb (car (process-get proc 'callbacks))))
       (when cb
+        (if ess-verbose
+            (ess-write-to-dribble-buffer "executing callback ...\n")
+          (process-put proc 'suppress-next-output? t))
         (process-put proc 'callbacks nil)
-        (process-put proc 'suppress-next-output? t)
         (condition-case err
             (funcall cb proc)
           (error (message "%s" (error-message-string err))))
@@ -1049,6 +1051,7 @@ Hide all the junk output in temporary buffer."
           (old-buff (process-buffer proc)))
       (unwind-protect
           (progn
+            (ess-if-verbose-write "interrupting subjob ... start")
             (process-put proc 'interruptable? nil)
             (process-put proc 'callbacks nil)
             (process-put proc 'running-async? nil)
@@ -1058,9 +1061,12 @@ Hide all the junk output in temporary buffer."
             (set-process-filter proc 'inferior-ess-ordinary-filter)
             (interrupt-process proc)
             (when cb
+              (ess-if-verbose-write "executing interruption callback ... ")
               (funcall cb proc))
             ;; should be very fast as it inputs only the prompt
-            (ess-wait-for-process proc))
+            (ess-wait-for-process proc)
+            (ess-if-verbose-write "interrupting subjob ... finished")
+            )
         (set-process-buffer proc old-buff)
         (set-process-filter proc old-filter)
         ))))
