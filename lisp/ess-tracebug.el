@@ -2095,7 +2095,6 @@ environment(.ess_log_eval) <- .GlobalEnv
     (use-local-map ess-watch-mode-map)
     (setq major-mode 'ess-watch-mode)
     (setq mode-name (concat "watch " ess-current-process-name))
-    (setq font-lock-defaults ess-R-font-lock-defaults)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
@@ -2111,16 +2110,18 @@ environment(.ess_log_eval) <- .GlobalEnv
 
 (defun ess-watch ()
   "Run ess-watch mode on R objects.
-This is the main function.  See documentation for `ess-watch-mode' though
-for more information.
+This is the trigger function.  See documentation of
+`ess-watch-mode' for more information.
 
 \\{ess-watch-mode-map}
 "
   (interactive)
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
-        (pname ess-local-process-name))
+        (pname ess-local-process-name)
+        (alist (ess-local-customize-alist)))
     (set-buffer wbuf)
+    (ess-setq-vars-local alist)
     (setq ess-local-process-name pname)
     (ess-watch-mode)
     (ess-watch-refresh-buffer-visibly wbuf) ;; evals the ess-command and displays the buffer if not visible
