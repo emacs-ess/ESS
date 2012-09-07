@@ -224,14 +224,13 @@ Currently acceptable values are `S',  `XLS', `SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 .emacs (also see ess-site.el)."
   :group 'ess
-  :type '(choice (const :tag "Initial" :value "Initial")
+  :type '(choice (const :tag "Initial" :value nil)
                  (const :tag "S"       :value "S")
                  (const :tag "XLS"     :value "XLS")
                  (const :tag "SAS"     :value "SAS")
                  (const :tag "R"       :value "R")))
 
 (make-variable-buffer-local 'ess-language)
-(setq-default ess-language "Initial")
 
 (defvar ess-dialect nil
   "String version of the dialect being run for the inferior process.
