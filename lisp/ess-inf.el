@@ -647,8 +647,13 @@ the current ESS process."
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
 LANGUAGE (and DIALECT)."
+  
+  (unless dialect
+    (error "The value of `dialect' is nil"))
+
   (let ((cur-buf (current-buffer))
         (dsymb (intern dialect)))
+    
     (ess-write-to-dribble-buffer
      (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
              language dialect cur-buf))
@@ -680,6 +685,9 @@ Returns the name of the selected process."
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
+  
+  (unless ess-dialect
+    (error "Local value of `ess-dialect' is nil"))
 
   (let ((num-processes (length ess-process-name-list)))
     (if (or (= 0 num-processes)
