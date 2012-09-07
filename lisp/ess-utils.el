@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-(eval-and-compile
+(eval-when-compile
   (require 'cl))
 
 (defun ess-inside-string-or-comment-p (&optional pos)

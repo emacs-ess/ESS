@@ -153,10 +153,9 @@ connect to it with `S+6-existing'.  Give an error message if
 `inferior-S+6-program-name' doesn't point to S-Plus 6 or S-Plus 7
 or S-Plus 8."
   (interactive)
-  (save-excursion
-    (set-buffer (find-file-noselect
-                 (concat (executable-find inferior-S+6-program-name)
-                         "/../../versions") t))
+  (with-current-buffer (find-file-noselect
+                        (concat (executable-find inferior-S+6-program-name)
+                                "/../../versions") t)
     (setq buffer-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
@@ -273,8 +272,7 @@ If you have a HOME environment variable, it will open it there."
     ;; We are picking up an existing S-Plus process for sending to.
     ;; It doesn't know about us, so nothing comes back.
     (S+6-initiate proc-name))
-  (save-excursion
-    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+  (with-current-buffer (car (buffer-list))    ; get the ESS buffer just created
     (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
@@ -355,28 +353,28 @@ connect to it with `S+6-msdos-existing'.  Give an error message
 if `inferior-S+6-program-name' doesn't point to S-Plus 6 or
 S-Plus 7 or S-Plus 8."
   (interactive)
-  (save-excursion
-    (set-buffer (find-file-noselect
+  (with-current-buffer  (find-file-noselect
                  (concat (executable-find inferior-S+6-program-name)
-                         "/../../versions") t))
+                         "/../../versions") t)
     (setq buffer-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
         (error "The emacs variable `inferior-S+6-program-name' does
-not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
-(expand the `[678]?' to match your setup) to your `exec-path' or
-specify the complete path to `Splus.exe' in the variable
+ not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
+ (expand the `[678]?' to match your setup) to your `exec-path' or
+ specify the complete path to `Splus.exe' in the variable
 `inferior-S+6-program-name' in your `.emacs' file.")  ;;; " This comment keeps emacs font-lock from getting out of phase.
-(progn
-  (forward-line)
-  (if (search-backward "splus\t6.0" (point-min) t)
-      (error "S-Plus 6.0 for Microsoft Windows has a bug that
+
+      (progn
+        (forward-line)
+        (if (search-backward "splus\t6.0" (point-min) t)
+            (error "S-Plus 6.0 for Microsoft Windows has a bug that
 prevents it from being started by emacs.  Instead, you must start it
 by double-clicking an icon.  Then you can connect to it with
 `S+6-msdos-existing'.  You should consider upgrading to a newer
 release of S-Plus.")
-    (S+6-msdos-initiate proc-name))) ;; normal start ;
-)))
+          (S+6-msdos-initiate proc-name))) ;; normal start ;
+      )))
 
 
 (defun S+6-msdos-initiate (&optional proc-name)
@@ -448,7 +446,7 @@ Anything sent to this process from an S-mode buffer goes
 directly to the associated Splus Commands window.\n
 The S-Plus Commands window must be visible.
 You may need to open the S-Plus Commands window manually
-(by clicking on Splus/Window/Commands Window).\n
+ (by clicking on Splus/Window/Commands Window).\n
 There is a `ess-S+6-startup-delay' second delay when this program starts
 during which the emacs screen will be partially blank.\n
 Remember to 'q()' from S-Plus and
@@ -481,8 +479,7 @@ If you have a HOME environment variable, it will open it there."
   (let* ((inferior-S+6-multipleinstances "")
          (ess-S+6-startup-delay 0)) ;; No delay for existing S-Plus
     (S+6-msdos-initiate proc-name))
-  (save-excursion
-    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+  (with-current-buffer (car (buffer-list))    ; get the ESS buffer just created
     (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
@@ -514,8 +511,7 @@ placed on the menubar upon ESS initialisation."
         (ess-sqpe-versions-created)
         )
     ;;
-    (save-excursion
-      (set-buffer eval-buf)
+    (with-current-buffer eval-buf
       ;; clear the buffer.
       (delete-region (point-min) (point-max))
 
