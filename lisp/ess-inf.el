@@ -2104,8 +2104,8 @@ to continue it."
             
             (page-match
              (switch-to-buffer-other-window 
-              (ess-command (concat string2 "\n")
-                           (get-buffer-create (concat string2 ".rt"))))
+              (ess-command (concat page-match "\n")
+                           (get-buffer-create (concat page-match ".rt"))))
              (R-transcript-mode)
              (process-send-string proc "\n"))
             
