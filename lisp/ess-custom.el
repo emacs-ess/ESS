@@ -1993,7 +1993,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Available font-lock keywords for R mode")
 
 
-(defvar ess-S-font-lock-default-keywords
+(defcustom ess-S-font-lock-default-keywords
   '(ess-S-fl-keyword:modifiers
     ess-S-fl-keyword:fun-decl
     ess-S-fl-keyword:keywords
@@ -2002,7 +2002,9 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Default font-lock keywords for R mode
   Default font-lock keywords for R mode. See
 `ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu).")
+keywords (also availble from ESS menu)."
+  :group 'ess
+  :type '(repeat symbol))
 
 
 ;;; fl-keywords R
@@ -2056,10 +2058,12 @@ keywords (also availble from ESS menu).")
     ess-R-fl-keyword:keywords
     ess-R-fl-keyword:assign-ops
     ess-R-fl-keyword:constants)
-  
+
   "Default font-lock keywords for R mode. See
 `ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu).")
+keywords (also availble from ESS menu)."
+  :group 'ess
+  :type '(repeat symbol))
 
 
 ;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case
