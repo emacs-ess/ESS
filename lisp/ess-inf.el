@@ -2087,7 +2087,7 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(\\(?:[a-zA-Z]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(\\(?:[a-zA-Z ]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
