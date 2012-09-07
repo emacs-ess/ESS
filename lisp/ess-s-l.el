@@ -85,18 +85,27 @@
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (font-lock-defaults           . ess-R-font-lock-defaults)
-                                      ;; nil nil ((?\. . "w") (?\_ . "w"))))
+    (ess-font-lock-available-keywords    . ess-R-font-lock-available-keywords)
+    (ess-font-lock-default-keywords      . ess-R-font-lock-default-keywords)
+    (font-lock-defaults           . `(,(eval `(list ,@ess-R-fl-default-keywords))
+                                      nil nil ((?\. . "w") (?\_ . "w"))))
     )
   "General options for R source files.")
 
 
-(defvar S-editing-alist
+(defvar S-editing-alist 
   ;; copy the R-list and modify :
   (let ((S-alist (copy-alist R-editing-alist)))
     (setcdr (assoc 'font-lock-defaults S-alist)
-            (quote '(ess-S-mode-font-lock-keywords nil nil ((?\. . "w")))))
+            (quote `(,(eval `(list ,@ess-S-font-lock-default-keywords))
+                     nil nil ((?\. . "w") (?\_ . "w")))))
+            ;; (quote '(ess-S-mode-font-lock-keywords nil nil ((?\. . "w")))))
     ;;      ^^ extra quote is needed - why?
+    ;; VS: because setcdr is a function and evaluates it's argument ;)
+    (setcdr (assoc 'ess-font-lock-available-keywords S-alist)
+            (quote ess-S-font-lock-available-keywords))
+    (setcdr (assoc 'ess-font-lock-default-keywords S-alist)
+            (quote ess-S-font-lock-default-keywords))
     S-alist)
   "General options for editing S and S+ source files.")
 
