@@ -1050,12 +1050,12 @@ Hide all the junk output in temporary buffer."
       (unwind-protect
           (progn
             (process-put proc 'interruptable? nil)
-            ;; this is primarily to avoid putting junk in user's buffer on
-            ;; process interruption
-            (set-process-buffer proc buf)
-            (set-process-filter proc 'inferior-ess-ordinary-filter)
             (process-put proc 'callbacks nil)
             (process-put proc 'running-async? nil)
+            ;; this is to avoid putting junk in user's buffer on process
+            ;; interruption
+            (set-process-buffer proc buf)
+            (set-process-filter proc 'inferior-ess-ordinary-filter)
             (interrupt-process proc)
             (when cb
               (funcall cb proc))
@@ -1145,7 +1145,6 @@ up in user's main buffer.
         (when (eq interrupt-callback t)
           (setq interrupt-callback (lambda (proc))))
         (process-put proc 'callbacks (list callback interrupt-callback))
-        (process-put proc 'interruptable? (and interrupt-callback t))
         (process-put proc 'interruptable? (and interrupt-callback t))
         (process-put proc 'running-async? t)
         (ess-command com buf nil 'no-prompt-check nil proc)
