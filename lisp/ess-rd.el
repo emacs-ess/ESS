@@ -495,6 +495,7 @@ temporary one in `temporary-file-directory'.
     (ess-write-to-dribble-buffer
      (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
     (shell-command shcmd t)
+    (ess-setq-vars-local R-customize-alist)
     (setq ess-help-sec-regex ess-help-R-sec-regex
           ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
     (ess-nuke-help-bs)
