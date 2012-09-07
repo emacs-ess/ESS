@@ -85,7 +85,6 @@ NR-FIRST is the number of characters at the start of the buffer
 to examine when deciding if the buffer if bogus.  If nil, the
 first 150 characters of the buffer are searched."
 
-  ;; search in first nr-first (default 120) chars only
   (if (not nr-first) (setq nr-first 150))
 
   (with-current-buffer buffer
@@ -103,9 +102,9 @@ first 150 characters of the buffer are searched."
              (progn (goto-char PM) ;; S-plus 5.1 :
                     (re-search-forward "^cat: .*--"       nr-first t))
              (progn (goto-char PM) ;; S version 3 ; R :
-                    (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
+                    (re-search-forward "no documentation .+" nr-first t))
              (progn (goto-char PM) ;; stata
-                    (re-search-forward "^help for.*not found" nr-first t))
+                    (re-search-forward "^help .*not found" nr-first t))
              ))
       (ess-write-to-dribble-buffer
        (format " |--> %s [searching %s]\n" res searching))
