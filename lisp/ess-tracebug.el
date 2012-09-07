@@ -1170,23 +1170,30 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          ) ; current-buffer is still the user's input buffer here
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-recover)
-    ;; insert \n after the prompt when necessary
-    ;; todo: this should be in comint filters? no much difference
-    (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
-    (with-current-buffer pbuf
-      (let ((pmark (process-mark proc)))
-        (goto-char pmark)
-        (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
-        (when (looking-at prompt-regexp)
+
+    (if (process-get proc 'suppress-next-output?)
+        ;; works only for surpressing short output, for time being is enough (for callbacks)
+        (process-put proc 'suppress-next-output? nil) 
+
+      ;; FIXME: this should be in comint filters!!
+      ;; insert \n after the prompt when necessary
+      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
+      (with-current-buffer pbuf
+        (let ((pmark (process-mark proc)))
           (goto-char pmark)
-          (insert "\n")
-          (set-marker pmark (point)))
-        ))
-    ;; replace long prompts
-    (when inferior-ess-replace-long+
-      (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
-    ;; COMINT
-    (comint-output-filter proc string)
+          (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
+          (when (looking-at prompt-regexp)
+            (goto-char pmark)
+            (insert "\n")
+            (set-marker pmark (point)))
+          ))
+      ;; replace long prompts
+      (when inferior-ess-replace-long+
+        (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
+      ;; COMINT
+      
+      (comint-output-filter proc string)
+      )
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))

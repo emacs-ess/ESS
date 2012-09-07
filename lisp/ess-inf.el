@@ -401,6 +401,7 @@ Return the 'busy state."
     (let ((cb (car (process-get proc 'callbacks))))
       (when cb
         (process-put proc 'callbacks nil)
+        (process-put proc 'suppress-next-output? t)
         (condition-case err
             (funcall cb proc)
           (error (message "%s" (error-message-string err))))
@@ -413,7 +414,10 @@ the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
   (inferior-ess-run-callback proc) ;; protected
-  (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
+  (if (process-get proc 'suppress-next-output?)
+      ;; works only for surpressing short output, for time being is enough (for callbacks)
+      (process-put proc 'suppress-next-output? nil) 
+    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -1053,47 +1057,47 @@ Hide all the junk output in temporary buffer."
         (set-process-filter proc old-filter)
         ))))
 
-(defun ess-async-command-delayed (com &optional buf proc resume-p callback delay)
+(defun ess-async-command-delayed (com &optional buf proc callback delay)
   "Delayed asynchronous ess-command.
 COM and BUF are as in `ess-command'. DELAY is a number of idle
-seconds to wait before starting the execution of the COM. If
-RESUME-P is non-nil, then on interruption (by user evaluation)
-ESS will try to rerun the job after next
-`ess-idle-timer-interval' seconds, and the process repeats itself
-till command manages to run completely. If RESUME-P is nil, the
-COM is tried only once.
+seconds to wait before starting the execution of the COM. On
+interruption (by user's evaluation) ESS tries to rerun the job
+after next DELAY seconds, and the whole process repeats itself
+untill the command manages to run completely. 
 
-DELAY defaults to `ess-idle-timer-interval'
+DELAY defaults to `ess-idle-timer-interval' + 3 seconds
 
 You should always provide PROC for delayed evaluation, as the
 current process might change, leading to unpredictable
-consequences. 
+consequences.
 
 This function is a wrapper of `ess-async-command' with an
 explicit interrupt-callback.
 "
   (unless proc
-    (error "You must provide PROC argument"))
+    (error "You must provide PROC argument to ess-async-command-delayed"))
   (let* ((timer (make-symbol "timer"))
-         (int-cb (and resume-p
-                      `(lambda (proc)
-                         (ess-async-command-delayed ,com ,buf proc
-                                                    ,resume-p  ,callback ,delay))))
+         (delay (or delay
+                    (+ ess-idle-timer-interval 3)))
+         (int-cb  `(lambda (proc)
+                     (ess-async-command-delayed ,com ,buf proc ,callback ,delay)))
          (com-fun `(lambda ()
                      (when (eq (process-status ,proc)  'run) ; do nothing if not running 
                        (if (or (process-get ,proc 'busy) ; if busy, try later
                                (process-get ,proc 'running-async?))
                            ;; idle timer doesn't work here
-                           (run-with-timer (or ,delay ess-idle-timer-interval) nil 'ess-async-command-delayed
-                                           ,com ,buf ,proc ,resume-p  ,callback ,delay))
+                           (run-with-timer ,delay nil 'ess-async-command-delayed
+                                           ,com ,buf ,proc ,callback ,delay))
                          (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
-    (run-with-idle-timer (or delay ess-idle-timer-interval) nil com-fun)
+    (run-with-idle-timer delay nil com-fun)
     ))
 
 ;; ;;; VS[03-09-2012]: Test Cases:
 ;; (ess-command "a<-0\n" nil nil nil nil (get-process "R"))
 ;; (ess-async-command-delayed "Sys.sleep(5);a<-a+1;cat(1:10)\n" nil
-;;                            (get-process "R") t
+;;                            (get-process "R") (lambda (proc) (message "done")))
+
+;; (ess-async-command-delayed "Sys.sleep(5)\n" nil (get-process "R")
 ;;                            (lambda (proc) (message "done")))
 
 ;; (process-get (get-process "R") 'running-async?)
@@ -1116,10 +1120,11 @@ CALLBACK is a function to run after the successful
 execution. DELAY is a number of seconds to delay execution. When
 CAN-INTERRUPT is non-nil, user evaluation can interrupt the
 job. In this case the job will be resumed again on
-`ess-idle-time-interval' seconds.
+`ess-idle-timer-interval' seconds.
 
 NOTE: Currently this function should be used only for background
-jobs like caching. The printed output of COM will most likely end
+jobs like caching. ESS tries to surpress any output from the
+asynchronous command, but long output of COM will most likely end
 up in user's main buffer.
 "
   (let ((proc (or proc (get-process ess-local-process-name))))
@@ -1465,7 +1470,7 @@ nil."
   (save-excursion
     (ignore-errors
       ;; evaluation is forward oriented
-      (previous-line)
+      (forward-line -1)
       (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
