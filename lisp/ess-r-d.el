@@ -212,8 +212,9 @@ to R, put them in the variable `inferior-R-args'."
       )
     
     (ess-async-command-delayed
-     "invisible(installed.packages())\n" nil (get-process ess-local-process-name) 'resume
-     (lambda (proc) (process-put proc 'packages-cached? t)) 5)
+     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+     (lambda (proc) (process-put proc 'packages-cached? t)))
     
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
