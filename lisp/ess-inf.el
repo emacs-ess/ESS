@@ -2845,8 +2845,8 @@ Is *NOT* used by \\[ess-execute-search],
 but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
-  (save-excursion
-    (set-buffer (get-ess-buffer ess-current-process-name));to get *its* local vars
+  (with-current-buffer 
+      (get-ess-buffer ess-current-process-name);to get *its* local vars
     (let ((result nil)
           (slist (ess-process-get 'search-list))
           (tramp-mode nil)) ;; hack for bogus file-directory-p below
@@ -3023,7 +3023,7 @@ subprocess and Emacs buffer `default-directory'."
                  ;; use file-name-as-directory to ensure it has trailing /
                  (setq default-directory (file-name-as-directory path))))
     (unless no-error
-      (error "Not implemented for dialect " ess-dialect))))
+      (error "Not implemented for dialect %s" ess-dialect))))
 
 (defalias 'ess-change-directory 'ess-set-working-directory)
 
@@ -3032,7 +3032,7 @@ subprocess and Emacs buffer `default-directory'."
   (if ess-getwd-command
       (car (ess-get-words-from-vector ess-getwd-command))
     (unless no-error
-      (error "Not implemented for dialect " ess-dialect))))
+      (error "Not implemented for dialect %s" ess-dialect))))
 
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
@@ -3057,7 +3057,7 @@ synchronized automatically.
     (setq default-directory (file-name-as-directory dir))
     (message "No need for this function, paths are synchronized automatically")))
 
-(make-obsolete 'ess-dirs 'ess-synchronize-dirs)
+(make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()

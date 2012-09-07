@@ -219,8 +219,7 @@ is not already."
     (if (get-buffer-window ess-buf) nil
       (display-buffer ess-buf t))
     (let ((input (inferior-ess-get-old-input)))
-      (save-excursion
-        (set-buffer ess-buf)
+      (with-current-buffer ess-buf
         (goto-char (point-max))
         (ess-eval-linewise input)))))
 
@@ -236,8 +235,7 @@ is not already."
     (if (get-buffer-window ess-buf) nil
       (display-buffer ess-buf t))
     (let ((input (inferior-ess-get-old-input)))
-      (save-excursion
-        (set-buffer ess-buf)
+      (with-current-buffer ess-buf
         (goto-char (point-max))
         (ess-eval-linewise input nil nil nil 1))))
   ;; replacement code ends
@@ -254,8 +252,7 @@ is not already."
     (setq ess-local-process-name proc)
     (if (get-buffer-window ess-buf) nil
       (display-buffer ess-buf t))
-    (save-excursion
-      (set-buffer ess-buf)
+    (with-current-buffer ess-buf
       (goto-char (point-max))
       (insert input)))
   (ess-switch-to-end-of-ESS))
