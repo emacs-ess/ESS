@@ -409,12 +409,34 @@ Return the 'busy state."
           (error (message "%s" (error-message-string err))))
         ))))
 
+(defun ess--if-verbose-write-process-state (proc string &optional filter)
+  (ess-if-verbose-write
+   (format "\n%s:
+    --> busy:%s busy-end:%s sec-prompt:%s interruptable:%s <--
+    --> running-async:%s callback:%s suppress-next-output:%s <--
+    --> dbg-active:%s is-recover:%s <--
+    --> string:%s\n"
+           (or filter "NORMAL-FILTER")
+           (process-get proc 'busy)
+           (process-get proc 'busy-end?)
+           (process-get proc 'sec-prompt)
+           (process-get proc 'interruptable?)
+           (process-get proc 'running-async?)
+           (if (process-get proc 'callbacks) "yes")
+           (process-get proc 'suppress-next-output?)
+           (process-get proc 'dbg-active)
+           (process-get proc 'is-recover)
+           (if (> (length string) 150)
+               (format "%s .... %s" (substring string 0 50) (substring string -50))
+             string))))
+    
 (defun inferior-ess-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
+  (ess--if-verbose-write-process-state proc string)
   (inferior-ess-run-callback proc) ;; protected
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
@@ -963,6 +985,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
 
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
+  (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (inferior-ess-run-callback proc)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
@@ -1137,7 +1160,7 @@ job. In this case the job will be resumed again on
 `ess-idle-timer-interval' seconds.
 
 NOTE: Currently this function should be used only for background
-jobs like caching. ESS tries to surpress any output from the
+jobs like caching. ESS tries to suppress any output from the
 asynchronous command, but long output of COM will most likely end
 up in user's main buffer.
 "
@@ -1430,8 +1453,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (setq start (point))
 
     (unless mark-active
-        (ess-blink-region start end)
-        )
+      (ess-blink-region start end))
 
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)

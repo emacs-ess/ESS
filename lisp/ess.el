@@ -414,7 +414,7 @@ Otherwise try a list of fixed known viewers."
   (let (deactivate-mark)
     (with-current-buffer ess-dribble-buffer
       (goto-char (point-max))
-      (insert text))))
+      (insert-before-markers text))))
 
 ;; Shortcut to render "dribbling" statements less cluttering:
 (defun ess-if-verbose-write (text)
