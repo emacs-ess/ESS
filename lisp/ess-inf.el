@@ -1176,7 +1176,7 @@ up in user's main buffer.
         (process-put proc 'callbacks (list callback interrupt-callback))
         (process-put proc 'interruptable? (and interrupt-callback t))
         (process-put proc 'running-async? t)
-        (ess-command com buf nil 'no-prompt-check nil proc)
+        (ess-command com buf nil 'no-prompt-check .02 proc)
         ))))
 
 

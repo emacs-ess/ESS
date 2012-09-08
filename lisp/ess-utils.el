@@ -688,7 +688,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 
  ; Timer management
 
-(defcustom ess-idle-timer-interval 2
+(defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
   `ess-idle-timer-functions'."
   :group 'ess)
