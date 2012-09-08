@@ -138,7 +138,7 @@
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
     (ess-getwd-command          . "getwd()\n")
-    (ess-setwd-command          . "setwd(%s)\n")
+    (ess-setwd-command          . "setwd('%s')\n")
     )
   "S-language common settings for all <dialect>-customize-alist s"
   )
