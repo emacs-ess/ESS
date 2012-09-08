@@ -639,7 +639,7 @@ to look up any doc strings."
     on.exit(options(olderr))
     fun <- tryCatch(%s, error=function(e) NULL) ## works for special objects also
     if(is.null(fun)) NULL # fast
-    } else if(is.function(fun)) {
+    else if(is.function(fun)) {
        .ess_funname <- '%s'
         special <- grepl('[:$@[]', .ess_funname)
         args<-if(!special){
