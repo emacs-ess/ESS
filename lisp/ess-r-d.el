@@ -916,7 +916,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
-      (delete "...=" args))))
+      (delete "...=" args)
+      (mapcar (lambda (a) (if (equal (substring a -1) "=")
+                              (concat (substring a 0 -1) " = ")
+                            a))
+              args))))
 
 (defun ess-ac-action-args ()
   (when (looking-back "=")
