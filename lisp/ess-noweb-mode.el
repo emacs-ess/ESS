@@ -1,4 +1,4 @@
-;;; noweb-mode.el --- edit noweb files with GNU Emacs
+;;; ess-noweb-mode.el --- edit noweb files with GNU Emacs
 
 ;; Copyright (C) 1995 by Thorsten.Ohl @ Physik.TH-Darmstadt.de
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
@@ -32,13 +32,13 @@
 ;;
 
 ;; BASED ON: (from Mark Lunt).
-;; -- Id: noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
+;; -- Id: ess-noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
 
 ;; Put this into your ~/.emacs to use this mode automagically.
 ;;
-;; (autoload 'noweb-mode "noweb-mode" "Editing noweb files." t)
-;; (setq auto-mode-alist (append (list (cons "\\.nw$" 'noweb-mode))
+;; (autoload 'ess-noweb-mode "ess-noweb-mode" "Editing noweb files." t)
+;; (setq auto-mode-alist (append (list (cons "\\.nw$" 'ess-noweb-mode))
 ;;                            auto-mode-alist))
 
 ;;; NEWS:
@@ -96,21 +96,21 @@
 
 ;;; Variables
 
-(defconst noweb-mode-RCS-Id
+(defconst ess-noweb-mode-RCS-Id
   "Imported to ESS Subversion repository and RCS ids not maintained.")
 
-(defconst noweb-mode-RCS-Name
+(defconst ess-noweb-mode-RCS-Name
   " ")
 
-(defvar noweb-mode-prefix "\M-n"
+(defvar ess-noweb-mode-prefix "\M-n"
   "*Prefix key to use for noweb mode commands.
 The value of this variable is checked as part of loading noweb mode.
 After that, changing the prefix key requires manipulating keymaps.")
 
-(defvar noweb-mode-load-hook nil
+(defvar ess-noweb-mode-load-hook nil
   "Hook that is run after noweb mode is loaded.")
 
-(defvar noweb-mode-hook nil
+(defvar ess-noweb-mode-hook nil
   "Hook that is run after entering noweb mode.")
 
 (defvar noweb-select-code-mode-hook nil
@@ -213,7 +213,7 @@ replaced by sequences of '*'.")
 
 
 ;;; Setup
-(defvar noweb-mode nil
+(defvar ess-noweb-mode nil
   "Buffer local variable, T iff this buffer is edited in noweb mode.")
 
 ;; For some reason that I do not understand, `newline' does not do the
@@ -230,7 +230,7 @@ replaced by sequences of '*'.")
   (if arg (newline arg) (newline 1))
   (noweb-indent-line))
 
-(defvar noweb-mode-prefix-map
+(defvar ess-noweb-mode-prefix-map
   (let ((map (if (featurep 'xemacs)
                  (make-keymap) ;; XEmacs/Emacs problems...
                (make-sparse-keymap))))
@@ -259,7 +259,7 @@ replaced by sequences of '*'.")
     (define-key map "q" 'noweb-fill-chunk)
     (define-key map "i" 'noweb-new-chunk)
     (define-key map "o" 'noweb-occur)
-    (define-key map "v" 'noweb-mode-version)
+    (define-key map "v" 'ess-noweb-mode-version)
     (define-key map "h" 'noweb-describe-mode)
     ;; do *NOT* override C-h (give all keybindings startings with M-n!
     map)
@@ -278,9 +278,9 @@ replaced by sequences of '*'.")
     (define-key map "\r" 'noweb-newline)
     ;; (define-key map [return] 'noweb-newline) ;; interferes with ac
     (define-key map [mouse-1] 'noweb-mouse-first-button)
-    (define-key map noweb-mode-prefix noweb-mode-prefix-map)
+    (define-key map ess-noweb-mode-prefix ess-noweb-mode-prefix-map)
     map)
-  "Noweb minor mode keymap")
+  "ESS Noweb minor mode keymap")
 
 (easy-menu-define
   noweb-minor-mode-menu noweb-minor-mode-map
@@ -325,40 +325,40 @@ replaced by sequences of '*'.")
      ["Chunk occurrences" noweb-occur t])
     "--"
     ["Help" noweb-describe-mode t]
-    ["Version" noweb-mode-version t]))
+    ["Version" ess-noweb-mode-version t]))
 
-;; Add noweb-mode to the list of minor modes
-(if (not (assq 'noweb-mode minor-mode-alist))
+;; Add ess-noweb-mode to the list of minor modes
+(if (not (assq 'ess-noweb-mode minor-mode-alist))
     (setq minor-mode-alist (append minor-mode-alist
-                                   (list '(noweb-mode " Noweb")))))
+                                   (list '(ess-noweb-mode " Noweb")))))
 ;; Add noweb-minor-mode-map to the list of minor-mode keymaps
-;; available. Then, whenever noweb-mode is activated, the keymap is
+;; available. Then, whenever ess-noweb-mode is activated, the keymap is
 ;; automatically activated
-(if (not (assq 'noweb-mode minor-mode-map-alist))
+(if (not (assq 'ess-noweb-mode minor-mode-map-alist))
     (setq minor-mode-map-alist
-          (cons (cons 'noweb-mode noweb-minor-mode-map)
+          (cons (cons 'ess-noweb-mode noweb-minor-mode-map)
                 minor-mode-map-alist)))
 
 ;; Old XEmacs hacks.
-(defun noweb-mode-xemacs-menu ()
-  "Hook to install noweb-mode menu for XEmacs (w/ easymenu)."
-  (if 'noweb-mode
+(defun ess-noweb-mode-xemacs-menu ()
+  "Hook to install ess-noweb-mode menu for XEmacs (w/ easymenu)."
+  (if 'ess-noweb-mode
       (easy-menu-add noweb-minor-mode-menu)
     (easy-menu-remove noweb-minor-mode-menu)
     ))
 
 (if (string-match "XEmacs" emacs-version)
     (progn
-      (add-hook 'noweb-select-mode-hook 'noweb-mode-xemacs-menu)
+      (add-hook 'noweb-select-mode-hook 'ess-noweb-mode-xemacs-menu)
       ;; Next line handles some random problems...
       (easy-menu-add noweb-minor-mode-menu)))
 
 (defun noweb-minor-mode (&optional arg)
-  "Minor meta mode for editing noweb files. See NOWEB-MODE."
+  "Minor meta mode for editing noweb files. See ess-noweb-mode."
   (interactive)
-  (noweb-mode arg)) ; this was noweb-minor-mode???  (truly recursive)
+  (ess-noweb-mode arg)) ; this was noweb-minor-mode???  (truly recursive)
 
-(defun noweb-mode ( &optional arg )
+(defun ess-noweb-mode ( &optional arg )
   "Minor meta mode for editing noweb files.
 `Meta' refers to the fact that this minor mode is switching major
 modes depending on the location of point.
@@ -408,28 +408,28 @@ Modes:
 Misc:
 \\[noweb-occur] \t\tfind all occurrences of the current chunk
 \\[noweb-update-chunk-vector] \tupdate the markers for chunks
-\\[noweb-describe-mode] \tdescribe noweb-mode
-\\[noweb-mode-version] \t\tshow noweb-mode's version in the minibuffer
+\\[noweb-describe-mode] \tdescribe ess-noweb-mode
+\\[ess-noweb-mode-version] \t\tshow ess-noweb-mode's version in the minibuffer
 "  (interactive "P")
 ;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
-;; It seems to ensure that the variable noweb-mode is made
-;; local to this buffer. It then sets noweb-mode to `t' if
+;; It seems to ensure that the variable ess-noweb-mode is made
+;; local to this buffer. It then sets ess-noweb-mode to `t' if
 ;;     1) It was called with an argument greater than 0
-;; or  2) It was called with no argument, and noweb-mode is
+;; or  2) It was called with no argument, and ess-noweb-mode is
 ;;        currently nil
-;; noweb-mode is nil if the argument was <= 0 or there
-;; was no argument and noweb-mode is currently `t'
+;; ess-noweb-mode is nil if the argument was <= 0 or there
+;; was no argument and ess-noweb-mode is currently `t'
 (kill-all-local-variables)
-(set (make-local-variable 'noweb-mode)
+(set (make-local-variable 'ess-noweb-mode)
      (if arg
          (> (prefix-numeric-value arg) 0)
-       (not noweb-mode)))
-;; Now, if noweb-mode is true, we want to turn
-;; noweb-mode on
+       (not ess-noweb-mode)))
+;; Now, if ess-noweb-mode is true, we want to turn
+;; ess-noweb-mode on
 (cond
- (noweb-mode                            ;Setup the minor-mode
+ (ess-noweb-mode                            ;Setup the minor-mode
   (mapcar 'noweb-make-variable-permanent-local
-          '(noweb-mode
+          '(ess-noweb-mode
             after-change-functions
             before-change-functions
             noweb-narrowing
@@ -448,8 +448,8 @@ Misc:
   (if font-lock-mode
       (progn
         (font-lock-mode -1)
-        (require 'noweb-font-lock-mode); which requires noweb-mode .. hmm..
-        (noweb-font-lock-mode 1)))
+        (require 'ess-noweb-font-lock-mode); which requires ess-noweb-mode .. hmm..
+        (ess-noweb-font-lock-mode 1)))
   (add-hook 'post-command-hook 'noweb-post-command-function)
 
   (when (or (<= emacs-major-version 20)
@@ -464,10 +464,10 @@ Misc:
   (add-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
   (add-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
   (setq noweb-doc-mode-syntax-table nil)
-  (run-hooks 'noweb-mode-hook)
+  (run-hooks 'ess-noweb-mode-hook)
   (message
    "noweb mode: use `M-x noweb-describe-mode' for further information"))
- ;; If we didn't do the above, then we want to turn noweb-mode
+ ;; If we didn't do the above, then we want to turn ess-noweb-mode
  ;; off, no matter what (hence the condition `t')
  (t
   (remove-hook 'post-command-hook 'noweb-post-command-function)
@@ -483,12 +483,12 @@ Misc:
   (remove-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
   (remove-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
   (remove-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
-  (if (and (boundp 'noweb-font-lock-mode)
-           noweb-font-lock-mode)
+  (if (and (boundp 'ess-noweb-font-lock-mode)
+           ess-noweb-font-lock-mode)
       (progn
-        (noweb-font-lock-mode -1)
-        (message "Noweb and Noweb-Font-Lock Modes Removed"))
-    (message "Noweb mode removed")))))
+        (ess-noweb-font-lock-mode -1)
+        (message "ESS-Noweb and ESS-Noweb-Font-Lock Modes Removed"))
+    (message "ESS-Noweb mode removed")))))
 
 (defun noweb-make-variable-permanent-local (var)
   "Declare VAR buffer local, but protect it from beeing killed
@@ -1348,16 +1348,16 @@ The only sensible way to do this is to add a mode line to the chunk"
 
 ;;; Misc
 
-(defun noweb-mode-version ()
+(defun ess-noweb-mode-version ()
   "Echo the RCS identification of noweb mode."
   (interactive)
-  (message "Thorsten's noweb-mode (PRERELEASE). RCS: %s"
-           noweb-mode-RCS-Id))
+  (message "Thorsten's ess-noweb-mode (PRERELEASE). RCS: %s"
+           ess-noweb-mode-RCS-Id))
 
 (defun noweb-describe-mode ()
   "Describe noweb mode."
   (interactive)
-  (describe-function 'noweb-mode))
+  (describe-function 'ess-noweb-mode))
 
 (defun noweb-insert-default-mode-line ()
   "Insert line that will set the noweb mode of this file in emacs.
@@ -1804,8 +1804,8 @@ thread."
 
 ;;; Finale
 
-(run-hooks 'noweb-mode-load-hook)
-(provide 'noweb-mode)
+(run-hooks 'ess-noweb-mode-load-hook)
+(provide 'ess-noweb-mode)
 
 ;; Changes made by Mark Lunt (mark.lunt@mrc-bsu.cam.ac.uk) 22/03/1999
 
@@ -1815,7 +1815,7 @@ thread."
 ;; highlighting may like to maintain their Makefile with their code,
 ;; or test-scripts with their programs, or even user documentation as
 ;; latex-mode code chunks.
-;; This required quite a few changes to noweb-mode:
+;; This required quite a few changes to ess-noweb-mode:
 ;; 1) A new variable `noweb-default-code-mode' was create to do the job
 ;;    `noweb-code-mode' used to.
 ;; 2) noweb-code-mode now contains the code-mode of the current chunk
@@ -1835,7 +1835,7 @@ thread."
 ;; The keymap and menu-map handling was changed. Easymenu was used to
 ;; define the menu, and it the keymap was attached to the 'official'
 ;; minor-modes-keymaps list. This means that
-;; 1) It was automatically loaded when noweb-mode was active and
+;; 1) It was automatically loaded when ess-noweb-mode was active and
 ;;    unloaded when it was inactive.
 ;; 2) There was no need to worry about the major mode map clobbering
 ;;    it , since it takes precedence over the major mode
@@ -1872,9 +1872,9 @@ thread."
 ;; though, since `indent-region' and `fill-region' have completely
 ;; different meanings in LaTeX-mode (and both are useful))
 
-;; noweb-mode and noweb-minor-mode were given an optional argument, so
-;; that (noweb-mode -1) turns it off, (noweb-mode 1) turns it on, and
-;; (noweb-mode) toggles it. This is considered normal for minor modes.
+;; ess-noweb-mode and noweb-minor-mode were given an optional argument, so
+;; that (ess-noweb-mode -1) turns it off, (ess-noweb-mode 1) turns it on, and
+;; (ess-noweb-mode) toggles it. This is considered normal for minor modes.
 
 ;; buffer-substring changed to buffer-substring-no-properties:
 ;; comparisons with buffer-substring can be unreliable if highlighting
@@ -1895,7 +1895,7 @@ thread."
 ;; `noweb-post-command-function', since it is a function.
 
 ;; All the highlighting code moved to a separate file:
-;; (noweb-font-lock-mode.el)
+;; (ess-noweb-font-lock-mode.el)
 
 ;; Menu driven tangling is in the process of being added. It can
 ;; currently tangle a single chunk or a series of  chunks with the
@@ -1903,4 +1903,4 @@ thread."
 ;; buffer. This buffer can then be saved to a file, sent to an
 ;; interpreter, whatever. I haven't tested using line-numbers as yet.
 
-;;; noweb-mode.el ends here
+;;; ess-noweb-mode.el ends here

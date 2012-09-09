@@ -212,8 +212,9 @@ to R, put them in the variable `inferior-R-args'."
       )
     
     (ess-async-command-delayed
-     "invisible(installed.packages())\n" nil (get-process ess-local-process-name) 'resume
-     (lambda (proc) (process-put proc 'packages-cached? t)) 5)
+     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+     (lambda (proc) (process-put proc 'packages-cached? t)))
     
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
@@ -630,17 +631,16 @@ to look up any doc strings."
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
-    if(version$minor > '14.1'){
+    if(getRversion() > '2.14.1'){
         comp <- compiler::enableJIT(0L)
         on.exit(compiler::enableJIT(comp))
     }
     olderr <- options(error=NULL)
     on.exit(options(olderr))
     fun <- tryCatch(%s, error=function(e) NULL) ## works for special objects also
-    .ess_funname<- '%s'
-    if(is.null(fun) || !is.function(fun)){
-        NULL
-    }else{
+    if(is.null(fun)) NULL # fast
+    else if(is.function(fun)) {
+       .ess_funname <- '%s'
         special <- grepl('[:$@[]', .ess_funname)
         args<-if(!special){
                 fundef<-paste(.ess_funname, '.default',sep='')
@@ -767,7 +767,7 @@ First element of a returned list is the completion token.
                 "local({
 olderr <- options(error=NULL)
 on.exit(options(olderr))
-if(version$minor > '14.1'){
+if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
     on.exit(compiler::enableJIT(comp))
 }
@@ -804,14 +804,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   )
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
-(defvar  ac-source-R
+(defvar ac-source-R
   '((prefix     . ess-ac-start)
     ;; (requires   . 0) ::)
     (candidates . ess-ac-candidates)
     (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     )
-  "Combidned ad-completion source for R function arguments and R objects"
+  "Combined ad-completion source for R function arguments and R objects"
   )
 
 (defun ess-ac-start ()
@@ -853,7 +853,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         ;; call proc for objects
 	(cdr (ess-R-get-rcompletions ac-point))
       ;; else, get the (maybe cached) list of objects
-      (with-ess-process-buffer nil ;; use proc buf alist
+      (with-ess-process-buffer 'no-error ;; use proc buf alist
         (ess-when-new-input last-objlist-update
           (if (and ess-sl-modtime-alist
                    (not  (process-get *proc* 'sp-for-ac-changed?)))
@@ -986,10 +986,10 @@ getArgHelp <- function(arg, func=NULL){
 ;;;### autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
-See `noweb-mode' and `R-mode' for more help."
+See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
-  (noweb-mode 1); turn it on
+  (ess-noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
   (noweb-set-code-mode 'R-mode)
   (run-hooks 'Rnw-mode-hook))

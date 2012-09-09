@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-(eval-and-compile
+(eval-when-compile
   (require 'cl))
 
 (defun ess-inside-string-or-comment-p (&optional pos)
@@ -35,24 +35,27 @@
  (according to syntax)."
   ;;FIXME (defun ess-calculate-indent ..)  can do that ...
   (interactive)
-  (save-excursion
-    (setq pos (or pos (point)))
-    (let ((pps (if (featurep 'xemacs)
-                   (parse-partial-sexp (point-min) pos)
-                 (syntax-ppss pos))))
-      ;; 3: string,  4: comment
-      (or (nth 3 pps) (nth 4 pps)))))
+  (setq pos (or pos (point)))
+  (let ((pps (parse-partial-sexp (point-min) pos)))
+         ;; (if (featurep 'xemacs)
+                 ;;   (parse-partial-sexp (point-min) pos)
+                 ;; (syntax-ppss pos))))
+    ;; 3: string,  4: comment
+    (or (nth 3 pps) (nth 4 pps))))
 
 
 (defun ess-inside-string-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
   (interactive)
-  (save-excursion
-    (setq pos (or pos (point)))
-    (let ((pps (if (featurep 'xemacs)
-                   (parse-partial-sexp (point-min) pos)
-                 (syntax-ppss pos))))
-      (nth 3 pps))))
+  (setq pos (or pos (point)))
+  ;; next doesn't work reliably, when narrowing the buffer in iESS the ppss
+  ;; cahce is screwd :(  
+  ;; (let ((pps (if (featurep 'xemacs)
+  ;;                (parse-partial-sexp (point-min) pos)
+  ;;              (syntax-ppss pos)))) 
+  ;;   (nth 3 pps))
+  (nth 3 (parse-partial-sexp (point-min) pos))
+  )
 
 (defun ess-inside-comment-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
@@ -685,7 +688,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 
  ; Timer management
 
-(defcustom ess-idle-timer-interval 2
+(defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
   `ess-idle-timer-functions'."
   :group 'ess)
@@ -709,9 +712,9 @@ Wraped in `while-no-input' in order not to cause disruption for
 the user. If your function calls the process, you better
 use (process-get *proc* 'last-eval) to get the time of last
 evaluation withing this process."
-  (while-no-input
+  ;; (while-no-input
     ;; (dbg (current-time))
-    (run-hooks 'ess-idle-timer-functions)))
+    (run-hooks 'ess-idle-timer-functions))
 
 
 (require 'timer)

@@ -1168,25 +1168,35 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (prompt-replace-regexp "^>\\( [>+]\\)*\\( \\)[^>+\n]") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          ) ; current-buffer is still the user's input buffer here
+
+    (ess--if-verbose-write-process-state proc string)
+    
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-recover)
-    ;; insert \n after the prompt when necessary
-    ;; todo: this should be in comint filters? no much difference
-    (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
-    (with-current-buffer pbuf
-      (let ((pmark (process-mark proc)))
-        (goto-char pmark)
-        (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
-        (when (looking-at prompt-regexp)
+
+    (if (process-get proc 'suppress-next-output?)
+        ;; works only for surpressing short output, for time being is enough (for callbacks)
+        (process-put proc 'suppress-next-output? nil) 
+
+      ;; FIXME: this should be in comint filters!!
+      ;; insert \n after the prompt when necessary
+      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
+      (with-current-buffer pbuf
+        (let ((pmark (process-mark proc)))
           (goto-char pmark)
-          (insert "\n")
-          (set-marker pmark (point)))
-        ))
-    ;; replace long prompts
-    (when inferior-ess-replace-long+
-      (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
-    ;; COMINT
-    (comint-output-filter proc string)
+          (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
+          (when (looking-at prompt-regexp)
+            (goto-char pmark)
+            (insert "\n")
+            (set-marker pmark (point)))
+          ))
+      ;; replace long prompts
+      (when inferior-ess-replace-long+
+        (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
+      ;; COMINT
+      
+      (comint-output-filter proc string)
+      )
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))
@@ -1304,7 +1314,7 @@ TB-INDEX is not found return nil.
     (setq tb-index (string-to-number (match-string 2 file)))
     (setq file (match-string 1 file)))
   (let ((buffer (ess-dbg-find-buffer  file))
-        pos )
+        pos)
     (when (and buffer  line)
       (with-current-buffer buffer
         (save-restriction
@@ -1324,7 +1334,7 @@ TB-INDEX is not found return nil.
           )))))
 
 
-(defun ess-dbg-find-buffer (filename )
+(defun ess-dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess-dbg-ask-for-file' is non-nil.  Search the directories in
@@ -2088,7 +2098,6 @@ environment(.ess_log_eval) <- .GlobalEnv
     (use-local-map ess-watch-mode-map)
     (setq major-mode 'ess-watch-mode)
     (setq mode-name (concat "watch " ess-current-process-name))
-    (setq font-lock-defaults ess-R-font-lock-defaults)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
@@ -2104,16 +2113,18 @@ environment(.ess_log_eval) <- .GlobalEnv
 
 (defun ess-watch ()
   "Run ess-watch mode on R objects.
-This is the main function.  See documentation for `ess-watch-mode' though
-for more information.
+This is the trigger function.  See documentation of
+`ess-watch-mode' for more information.
 
 \\{ess-watch-mode-map}
 "
   (interactive)
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
-        (pname ess-local-process-name))
+        (pname ess-local-process-name)
+        (alist (ess-local-customize-alist)))
     (set-buffer wbuf)
+    (ess-setq-vars-local alist)
     (setq ess-local-process-name pname)
     (ess-watch-mode)
     (ess-watch-refresh-buffer-visibly wbuf) ;; evals the ess-command and displays the buffer if not visible

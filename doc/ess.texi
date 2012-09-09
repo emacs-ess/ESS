@@ -3422,7 +3422,7 @@ R process.  (This section contributed by Dan Davison and Eric Schulte.)
 
 ESS provides support for writing and processing Sweave
 (@uref{http://www.statistik.lmu.de/~leisch/Sweave}), building up on
-Emacs' noweb-mode for literate programming.  When working on an Sweave
+Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
 document, the following key bindings are available:
 
 @itemize @bullet

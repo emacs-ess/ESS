@@ -189,7 +189,8 @@
     map)
   "Keymap for `ess-mode'.")
 
-(require 'noweb-mode)
+(require 'ess-noweb-mode)
+
 (easy-menu-define
   ess-mode-menu ess-mode-map
   "Menu for use in `ess-mode'."
@@ -200,14 +201,19 @@
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
+    "------"
+    ("Font Lock..."
+     :active ess-font-lock-available-keywords
+     :filter ess-generate-font-lock-submenu)
+    "------"
     ("Eval and Go"
      ["Eval buffer"     ess-eval-buffer-and-go            t]
      ["Eval region"     ess-eval-region-and-go            t]
      ["Eval function"   ess-eval-function-and-go          t]
      ["Eval line"       ess-eval-line-and-go              t]
      ["Eval paragraph"   ess-eval-paragraph-and-go         t]
-     ["Eval chunk"      ess-eval-chunk-and-go    noweb-mode]
-     ["Eval thread"     ess-eval-thread-and-go   noweb-mode]
+     ["Eval chunk"      ess-eval-chunk-and-go    ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread-and-go   ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("ESS Eval"
@@ -222,12 +228,11 @@
      ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
      ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-     ["Eval chunk"      ess-eval-chunk           noweb-mode]
-     ["Eval thread"     ess-eval-thread          noweb-mode]
+     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("Motion..."
-     ["Edit new object"         ess-dump-object-into-edit-buffer t]
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
      ["Beginning of function or  para"   ess-goto-beginning-of-function-or-para       t]
@@ -243,11 +248,12 @@
      ["About"                   (Info-goto-node "(Emacs)Lists") t]
      )
     ("ESS Edit"
+     ["Edit new object"         ess-dump-object-into-edit-buffer t]
      ["Complete Filename" comint-replace-by-expanded-filename   t]
-     ["Complete File or Object"   ess-indent-or-complete                t]
+     ["Complete File or Object"   ess-indent-or-complete        t]
      ["Kill sexp"         kill-sexp                             t]
      ["Mark function"     ess-mark-function                     t]
-     ["Indent expression" ess-indent-exp                                t]
+     ["Indent expression" ess-indent-exp                        t]
      ["Indent line"       ess-indent-command                    t]
      ["Toggle Auto-Fill Mode" auto-fill-mode                    t]
      ["Undo"              undo                                  t]
@@ -258,7 +264,7 @@
      ["Preview Rd"        ess-roxy-preview-Rd                    t]
      ["Preview HTML"      ess-roxy-preview-HTML                  t]
      ["Preview text"      ess-roxy-preview-text                  t]
-     ["Hide all"          ess-roxy-hide-all                     t]
+     ["Hide all"          ess-roxy-hide-all                      t]
      ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
      )
     ("Start Process"
@@ -284,6 +290,49 @@
     ["Read ESS info" (ess-goto-info "") t]
     ["Send bug report"  ess-submit-bug-report           t]
     ))
+
+
+(defun ess-font-lock-toggle-keyword (keyword)
+  (interactive
+   (list (intern (ess-completing-read
+                  "Keyword to toggle: "
+                  (mapcar 'symbol-name ess-font-lock-available-keywords)
+                  nil t))))
+  (if (memq keyword ess-font-lock-default-keywords)
+      (progn
+        (setq ess-font-lock-default-keywords
+              (delq keyword ess-font-lock-default-keywords))
+        (setcar font-lock-defaults
+                (eval `(list ,@ess-font-lock-default-keywords))))
+    (setq ess-font-lock-default-keywords
+          (push keyword ess-font-lock-default-keywords))
+    (setq ess-font-lock-default-keywords
+          ;; keep the same order as in available keyword
+          (delq nil (mapcar (lambda (el)
+                              (and (memq  el ess-font-lock-default-keywords)
+                                   el))
+                            ess-font-lock-available-keywords)))
+    (setcar font-lock-defaults
+            (eval `(list ,@ess-font-lock-default-keywords))))
+  (font-lock-refresh-defaults))
+        
+  
+(defun ess-generate-font-lock-submenu (menu)
+  "Internal, used to generate ESS font-lock submenu"
+  (mapcar (lambda (el)
+            `[,(symbol-name el)
+              (lambda () (interactive)
+                (ess-font-lock-toggle-keyword ',el))
+              :style toggle
+              :enable t
+              :selected ,(car (memq el ess-font-lock-default-keywords))])
+          ess-font-lock-available-keywords))
+
+(defun test-gen-menu (men)
+  '(
+    ["About editing" (ess-goto-info "Editing")  t]
+    ["Read ESS info" (ess-goto-info "") t]
+    ["Send bug report"  ess-submit-bug-report           t]))
 
 (defun SAS-menu ()
   "Start SAS from the menu."

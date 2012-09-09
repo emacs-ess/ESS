@@ -85,7 +85,6 @@ NR-FIRST is the number of characters at the start of the buffer
 to examine when deciding if the buffer if bogus.  If nil, the
 first 150 characters of the buffer are searched."
 
-  ;; search in first nr-first (default 120) chars only
   (if (not nr-first) (setq nr-first 150))
 
   (with-current-buffer buffer
@@ -103,9 +102,9 @@ first 150 characters of the buffer are searched."
              (progn (goto-char PM) ;; S-plus 5.1 :
                     (re-search-forward "^cat: .*--"       nr-first t))
              (progn (goto-char PM) ;; S version 3 ; R :
-                    (re-search-forward "no documentation for [^ \t\n]+" nr-first t))
+                    (re-search-forward "no documentation .+" nr-first t))
              (progn (goto-char PM) ;; stata
-                    (re-search-forward "^help for.*not found" nr-first t))
+                    (re-search-forward "^help .*not found" nr-first t))
              ))
       (ess-write-to-dribble-buffer
        (format " |--> %s [searching %s]\n" res searching))
@@ -169,6 +168,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
                 (ess--help-get-bogus-buffer-substring old-hb-p))
 
         (with-current-buffer tbuffer
+          (ess-write-to-dribble-buffer
+           (format "(ess-help '%s' start  ..\n" hb-name))
           (ess-setq-vars-local (eval alist))
           (set-syntax-table ess-mode-syntax-table)
           (setq ess-help-object object
@@ -188,13 +189,14 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (unless (string= ess-language "STA")
             (ess-nuke-help-bs))
           (goto-char (point-min))
-          ;;dbg (ess-write-to-dribble-buffer
-          ;;dbg	 (format "(ess-help '%s' before switch-to..\n" hb-name)
           (set-buffer-modified-p 'nil)
           (setq buffer-read-only t)
           (when (fboundp 'visual-line-mode)
-            (visual-line-mode t))))
-      
+            (visual-line-mode t))
+          (ess-write-to-dribble-buffer
+           (format "(ess-help '%s' done  ..\n" hb-name))
+           ))
+
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer))
       )))
@@ -204,6 +206,10 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
   (when ess-help-kill-bogus-buffers
     (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
       (when bog-mes
+        (when (< (length bog-mes) 10) ;;no message at all, how to treat this properly?
+          (setq bog-mes (format "No documentation found; %s" bog-mes)))
+        (ess-write-to-dribble-buffer
+         (format "(ess-help: kill bogus buffer %s ..\n" (buffer-name buffer)))
         (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
         (ding)
         (kill-buffer buffer)))))
@@ -329,6 +335,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (ess--switch-to-help-buffer buff)
       )))
 
+(defalias 'ess-display-index 'ess-display-package-index)
 (make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
@@ -490,7 +497,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
-`ess-display-index', and `ess-display-vignettes'.
+`ess-display-package-index', and `ess-display-vignettes'.
  CURR-MAJOR-MODE default to current major mode.
 "
   (setq curr-major-mode (or curr-major-mode major-mode))
@@ -606,7 +613,8 @@ For internal use. Used in `ess-display-help-on-object',
         ["End of Buffer"                end-of-buffer t]
         "-"
         ["Help on ..."                  ess-display-help-on-object t]
-        ["Index of ..."                 ess-display-index t]
+        ["Apropos of ..."               ess-display-help-apropos t]
+        ["Index of ..."                 ess-display-package-index t]
         ["Vignettes"                    ess-display-vignettes t]
         ["Open in Browser"              ess-display-help-in-browser t]
         "-"
@@ -777,22 +785,19 @@ Stata or XLispStat for additional information."
 If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
-  (save-excursion
-    (setq name (or name ess-local-process-name))
-    (set-buffer (process-buffer (get-ess-process name)))
-    (ess-make-buffer-current)
+  (with-ess-process-buffer nil
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
-    ;; (if (fboundp (buffer-local-value 'ess-get-help-topics-function (current-buffer)))
-    ;;     (funcall ess-get-help-topics-function)
     (if (or (not ess-help-topics-list)
             (ess-process-get 'sp-for-help-changed?))
-        (setq ess-help-topics-list
-              (ess-uniq-list
-               (append (ess-get-object-list name 'exclude-1st)
-                       (ess-get-help-files-list)
-                       (ess-get-help-aliases-list)
-                       )))
+        (progn 
+          (ess-process-put 'sp-for-help-changed? nil)
+          (setq ess-help-topics-list
+                (ess-uniq-list
+                 (append (ess-get-object-list name 'exclude-1st)
+                         (ess-get-help-files-list)
+                         (ess-get-help-aliases-list)
+                         ))))
       ;; else return the existing list
       ess-help-topics-list)))
 

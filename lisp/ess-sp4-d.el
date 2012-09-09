@@ -222,8 +222,7 @@ If you have a HOME environment variable, it will open it there."
     ;; We are picking up an existing S-Plus process for sending to.
     ;; It doesn't know about us, so nothing comes back.
     (S+4 proc-name))
-  (save-excursion
-    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+  (with-current-buffer (car (buffer-list))    ; get the ESS buffer just created
     (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
@@ -359,16 +358,14 @@ Anything sent to this process from an S-mode buffer goes
 directly to the associated Splus Commands window.\n
 The S-Plus Commands window must be visible.
 You may need to open the S-Plus Commands window manually
-(by clicking on Splus/Window/Commands Window).\n
-There is a 30 second delay when this program starts during which the
-emacs screen will be partially blank.\n
-Remember to
-`q()' from S-Plus and
-then C-x C-q exit from the `'(ddeESS [S+4])'' buffer,
-or take the risk of not being able to shut down your computer
-and suffering through scandisk.\n
-Any results of the   !system.command   typed at the S prompt in the
-Splus Commands window (are supposed to) appear in this buffer.\n\n")
+  (by clicking on Splus/Window/Commands Window).\n There is a 30
+second delay when this program starts during which the emacs
+screen will be partially blank.\n Remember to `q()' from S-Plus
+and then C-x C-q exit from the `'(ddeESS [S+4])'' buffer, or take
+the risk of not being able to shut down your computer and
+suffering through scandisk.\n Any results of the !system.command
+typed at the S prompt in the Splus Commands window (are supposed
+to) appear in this buffer.\n\n")
     (goto-char (point-max))            ; comint-mode-map makes '(ddeESS [S+4])'
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (setq buffer-read-only t)          ; force buffer to be read-only

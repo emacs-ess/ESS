@@ -69,8 +69,7 @@
 (defun ess-eval-linewise-ddeclient (text-withtabs &optional
                                                   invisibly eob even-empty
                                                   sleep-sec)
-  (save-excursion
-    (set-buffer (get-buffer-create "*ESS-temporary*"))
+  (with-current-buffer (get-buffer-create "*ESS-temporary*")
     (ess-setq-vars-local ess-customize-alist (current-buffer))
     (erase-buffer)
     (insert text-withtabs)
@@ -98,8 +97,7 @@ nor offer alternate buffers or editing capability."
         (error "Buffer %s has not been saved" (buffer-name source-buffer))
       ;; Find the process to load into
       (if source-buffer
-          (save-excursion
-            (set-buffer source-buffer)
+          (with-current-buffer source-buffer
             (ess-force-buffer-current "Process to load into: ")
             ;; (ess-check-modifications) ;;; not possible with ddeclient
             ;; it calls ess-command which requires two-way communication

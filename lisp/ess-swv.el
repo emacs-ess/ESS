@@ -85,7 +85,7 @@
   (require 'ess-custom)
   (require 'ess)
   )
-(require 'noweb-mode)
+(require 'ess-noweb-mode)
 (require 'ess-r-d); for Rnw-mode
 (require 'easymenu)
 

@@ -172,8 +172,7 @@
               ;; then it has two lines that look like
               ;; |Revision: 4803
               ;; |Last Changed Date: 2012-04-16
-              (save-excursion
-                (set-buffer buffer)
+              (with-current-buffer buffer
                 (ess-write-to-dribble-buffer
                  (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
                 (goto-char (point-min))
@@ -415,7 +414,7 @@ Otherwise try a list of fixed known viewers."
   (let (deactivate-mark)
     (with-current-buffer ess-dribble-buffer
       (goto-char (point-max))
-      (insert text))))
+      (insert-before-markers text))))
 
 ;; Shortcut to render "dribbling" statements less cluttering:
 (defun ess-if-verbose-write (text)

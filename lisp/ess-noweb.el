@@ -36,9 +36,9 @@
 
  ; Requires and autoloads
 
-(require 'noweb-mode)
+(require 'ess-noweb-mode)
 ;; still needed when user turns font-lock-mode *on* (from initial off):
-(autoload 'noweb-font-lock-mode "noweb-font-lock-mode")
+(autoload 'ess-noweb-font-lock-mode "ess-noweb-font-lock-mode")
 
  ; Variables
 
@@ -49,7 +49,7 @@
 ;; but is *NOT* okay to do *globally*: (setq global-font-lock-mode t)
 
 (if ess-noweb-use-font-lock
-    (require 'noweb-font-lock-mode))
+    (require 'ess-noweb-font-lock-mode))
 
  ; Functions
 

@@ -400,20 +400,48 @@ Return the 'busy state."
   (when (process-get proc 'busy-end?)
     (let ((cb (car (process-get proc 'callbacks))))
       (when cb
+        (if ess-verbose
+            (ess-write-to-dribble-buffer "executing callback ...\n")
+          (process-put proc 'suppress-next-output? t))
         (process-put proc 'callbacks nil)
         (condition-case err
             (funcall cb proc)
           (error (message "%s" (error-message-string err))))
         ))))
 
+(defun ess--if-verbose-write-process-state (proc string &optional filter)
+  (ess-if-verbose-write
+   (format "\n%s:
+    --> busy:%s busy-end:%s sec-prompt:%s interruptable:%s <--
+    --> running-async:%s callback:%s suppress-next-output:%s <--
+    --> dbg-active:%s is-recover:%s <--
+    --> string:%s\n"
+           (or filter "NORMAL-FILTER")
+           (process-get proc 'busy)
+           (process-get proc 'busy-end?)
+           (process-get proc 'sec-prompt)
+           (process-get proc 'interruptable?)
+           (process-get proc 'running-async?)
+           (if (process-get proc 'callbacks) "yes")
+           (process-get proc 'suppress-next-output?)
+           (process-get proc 'dbg-active)
+           (process-get proc 'is-recover)
+           (if (> (length string) 150)
+               (format "%s .... %s" (substring string 0 50) (substring string -50))
+             string))))
+    
 (defun inferior-ess-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
+  (ess--if-verbose-write-process-state proc string)
   (inferior-ess-run-callback proc) ;; protected
-  (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))
+  (if (process-get proc 'suppress-next-output?)
+      ;; works only for surpressing short output, for time being is enough (for callbacks)
+      (process-put proc 'suppress-next-output? nil) 
+    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -643,8 +671,13 @@ the current ESS process."
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
 LANGUAGE (and DIALECT)."
+  
+  (unless dialect
+    (error "The value of `dialect' is nil"))
+
   (let ((cur-buf (current-buffer))
         (dsymb (intern dialect)))
+    
     (ess-write-to-dribble-buffer
      (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
              language dialect cur-buf))
@@ -676,6 +709,9 @@ Returns the name of the selected process."
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
+  
+  (unless ess-dialect
+    (error "Local value of `ess-dialect' is nil"))
 
   (let ((num-processes (length ess-process-name-list)))
     (if (or (= 0 num-processes)
@@ -949,6 +985,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
 
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
+  (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (inferior-ess-run-callback proc)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
@@ -1037,63 +1074,67 @@ Hide all the junk output in temporary buffer."
           (old-buff (process-buffer proc)))
       (unwind-protect
           (progn
+            (ess-if-verbose-write "interrupting subjob ... start")
             (process-put proc 'interruptable? nil)
-            ;; this is primarily to avoid putting junk in user's buffer on
-            ;; process interruption
-            (set-process-buffer proc buf)
-            (set-process-filter proc 'inferior-ess-ordinary-filter)
             (process-put proc 'callbacks nil)
             (process-put proc 'running-async? nil)
+            ;; this is to avoid putting junk in user's buffer on process
+            ;; interruption
+            (set-process-buffer proc buf)
+            (set-process-filter proc 'inferior-ess-ordinary-filter)
             (interrupt-process proc)
             (when cb
+              (ess-if-verbose-write "executing interruption callback ... ")
               (funcall cb proc))
             ;; should be very fast as it inputs only the prompt
-            (ess-wait-for-process proc))
+            (ess-wait-for-process proc)
+            (ess-if-verbose-write "interrupting subjob ... finished")
+            )
         (set-process-buffer proc old-buff)
         (set-process-filter proc old-filter)
         ))))
 
-(defun ess-async-command-delayed (com &optional buf proc resume-p callback delay)
+(defun ess-async-command-delayed (com &optional buf proc callback delay)
   "Delayed asynchronous ess-command.
 COM and BUF are as in `ess-command'. DELAY is a number of idle
-seconds to wait before starting the execution of the COM. If
-RESUME-P is non-nil, then on interruption (by user evaluation)
-ESS will try to rerun the job after next
-`ess-idle-timer-interval' seconds, and the process repeats itself
-till command manages to run completely. If RESUME-P is nil, the
-COM is tried only once.
+seconds to wait before starting the execution of the COM. On
+interruption (by user's evaluation) ESS tries to rerun the job
+after next DELAY seconds, and the whole process repeats itself
+untill the command manages to run completely. 
 
-DELAY defaults to `ess-idle-timer-interval'
+DELAY defaults to `ess-idle-timer-interval' + 3 seconds
 
 You should always provide PROC for delayed evaluation, as the
 current process might change, leading to unpredictable
-consequences. 
+consequences.
 
 This function is a wrapper of `ess-async-command' with an
 explicit interrupt-callback.
 "
   (unless proc
-    (error "You must provide PROC argument"))
+    (error "You must provide PROC argument to ess-async-command-delayed"))
   (let* ((timer (make-symbol "timer"))
-         (int-cb (and resume-p
-                      `(lambda (proc)
-                         (ess-async-command-delayed ,com ,buf proc
-                                                    ,resume-p  ,callback ,delay))))
+         (delay (or delay
+                    (+ ess-idle-timer-interval 3)))
+         (int-cb  `(lambda (proc)
+                     (ess-async-command-delayed ,com ,buf proc ,callback ,delay)))
          (com-fun `(lambda ()
                      (when (eq (process-status ,proc)  'run) ; do nothing if not running 
                        (if (or (process-get ,proc 'busy) ; if busy, try later
                                (process-get ,proc 'running-async?))
                            ;; idle timer doesn't work here
-                           (run-with-timer (or ,delay ess-idle-timer-interval) nil 'ess-async-command-delayed
-                                           ,com ,buf ,proc ,resume-p  ,callback ,delay))
+                           (run-with-timer ,delay nil 'ess-async-command-delayed
+                                           ,com ,buf ,proc ,callback ,delay))
                          (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
-    (run-with-idle-timer (or delay ess-idle-timer-interval) nil com-fun)
+    (run-with-idle-timer delay nil com-fun)
     ))
 
 ;; ;;; VS[03-09-2012]: Test Cases:
 ;; (ess-command "a<-0\n" nil nil nil nil (get-process "R"))
 ;; (ess-async-command-delayed "Sys.sleep(5);a<-a+1;cat(1:10)\n" nil
-;;                            (get-process "R") t
+;;                            (get-process "R") (lambda (proc) (message "done")))
+
+;; (ess-async-command-delayed "Sys.sleep(5)\n" nil (get-process "R")
 ;;                            (lambda (proc) (message "done")))
 
 ;; (process-get (get-process "R") 'running-async?)
@@ -1116,10 +1157,11 @@ CALLBACK is a function to run after the successful
 execution. DELAY is a number of seconds to delay execution. When
 CAN-INTERRUPT is non-nil, user evaluation can interrupt the
 job. In this case the job will be resumed again on
-`ess-idle-time-interval' seconds.
+`ess-idle-timer-interval' seconds.
 
 NOTE: Currently this function should be used only for background
-jobs like caching. The printed output of COM will most likely end
+jobs like caching. ESS tries to suppress any output from the
+asynchronous command, but long output of COM will most likely end
 up in user's main buffer.
 "
   (let ((proc (or proc (get-process ess-local-process-name))))
@@ -1133,9 +1175,8 @@ up in user's main buffer.
           (setq interrupt-callback (lambda (proc))))
         (process-put proc 'callbacks (list callback interrupt-callback))
         (process-put proc 'interruptable? (and interrupt-callback t))
-        (process-put proc 'interruptable? (and interrupt-callback t))
         (process-put proc 'running-async? t)
-        (ess-command com buf nil 'no-prompt-check nil proc)
+        (ess-command com buf nil 'no-prompt-check .02 proc)
         ))))
 
 
@@ -1147,7 +1188,8 @@ use. COM should have a terminating newline.  Guarantees that the
 value of .Last.value will be preserved.  When optional third arg
 SLEEP is non-nil, `(sleep-for (* a SLEEP))' will be used in a few
 places where `a' is proportional to `ess-cmd-delay'.  WAIT and
-FORCE-REDISPLAY are passed to `ess-wait-for-process'.
+FORCE-REDISPLAY are as in `ess-wait-for-process' and are passed
+to `ess-wait-for-process'.
 
 PROC should be a process, if nil the process name is taken from
 `ess-local-process-name'. This command doesn't set 'last-eval
@@ -1211,6 +1253,7 @@ local({
                   ;; else: default
                   (ess-wait-for-process sprocess nil wait force-redisplay)
                   (goto-char (point-max))
+                  ;; remove prompt
                   (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
               ))
@@ -1410,8 +1453,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (setq start (point))
 
     (unless mark-active
-        (ess-blink-region start end)
-        )
+      (ess-blink-region start end))
 
     ;; don't send new lines at the end (avoid screwing the debugger)
     (goto-char end)
@@ -1463,7 +1505,7 @@ nil."
   (save-excursion
     (ignore-errors
       ;; evaluation is forward oriented
-      (previous-line)
+      (forward-line -1)
       (ess-next-code-line 1))
     (let ((beg-end (ess-end-of-function nil no-error)))
       (if beg-end
@@ -1986,7 +2028,7 @@ to continue it."
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
   (set (make-local-variable 'font-lock-defaults)
-       '(inferior-ess-font-lock-keywords nil nil ((?' . "."))))
+       '(inferior-ess-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
 
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22
@@ -2073,7 +2115,7 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(\\(?:[a-zA-Z]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(\\(?:[a-zA-Z ]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
@@ -2102,8 +2144,8 @@ to continue it."
             
             (page-match
              (switch-to-buffer-other-window 
-              (ess-command (concat string2 "\n")
-                           (get-buffer-create (concat string2 ".rt"))))
+              (ess-command (concat page-match "\n")
+                           (get-buffer-create (concat page-match ".rt"))))
              (R-transcript-mode)
              (process-send-string proc "\n"))
             
@@ -2843,8 +2885,8 @@ Is *NOT* used by \\[ess-execute-search],
 but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
-  (save-excursion
-    (set-buffer (get-ess-buffer ess-current-process-name));to get *its* local vars
+  (with-current-buffer 
+      (get-ess-buffer ess-current-process-name);to get *its* local vars
     (let ((result nil)
           (slist (ess-process-get 'search-list))
           (tramp-mode nil)) ;; hack for bogus file-directory-p below
@@ -3016,12 +3058,12 @@ list."
 subprocess and Emacs buffer `default-directory'."
   (interactive "DChange working directory to: ")
   (if ess-setwd-command
-      (when (and (file-exists-p path) 
+      (when (and (file-exists-p path)
                  (ess-command (format ess-setwd-command path))
                  ;; use file-name-as-directory to ensure it has trailing /
                  (setq default-directory (file-name-as-directory path))))
     (unless no-error
-      (error "Not implemented for dialect " ess-dialect))))
+      (error "Not implemented for dialect %s" ess-dialect))))
 
 (defalias 'ess-change-directory 'ess-set-working-directory)
 
@@ -3030,7 +3072,7 @@ subprocess and Emacs buffer `default-directory'."
   (if ess-getwd-command
       (car (ess-get-words-from-vector ess-getwd-command))
     (unless no-error
-      (error "Not implemented for dialect " ess-dialect))))
+      (error "Not implemented for dialect %s" ess-dialect))))
 
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
@@ -3055,7 +3097,7 @@ synchronized automatically.
     (setq default-directory (file-name-as-directory dir))
     (message "No need for this function, paths are synchronized automatically")))
 
-(make-obsolete 'ess-dirs 'ess-synchronize-dirs)
+(make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
