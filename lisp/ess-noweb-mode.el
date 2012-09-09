@@ -280,7 +280,7 @@ replaced by sequences of '*'.")
     (define-key map [mouse-1] 'noweb-mouse-first-button)
     (define-key map ess-noweb-mode-prefix ess-noweb-mode-prefix-map)
     map)
-  "Noweb minor mode keymap")
+  "ESS Noweb minor mode keymap")
 
 (easy-menu-define
   noweb-minor-mode-menu noweb-minor-mode-map
@@ -487,8 +487,8 @@ Misc:
            ess-noweb-font-lock-mode)
       (progn
         (ess-noweb-font-lock-mode -1)
-        (message "Noweb and Noweb-Font-Lock Modes Removed"))
-    (message "Noweb mode removed")))))
+        (message "ESS-Noweb and ESS-Noweb-Font-Lock Modes Removed"))
+    (message "ESS-Noweb mode removed")))))
 
 (defun noweb-make-variable-permanent-local (var)
   "Declare VAR buffer local, but protect it from beeing killed
