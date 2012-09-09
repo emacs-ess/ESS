@@ -1,6 +1,6 @@
  -*- mode: text -*-
 
-o Improve on "Sweave mode" aka  "working with '*.Rnw'"  aka noweb-mode.el
+o Improve on "Sweave mode" aka  "working with '*.Rnw'"  aka ess-noweb-mode.el
 
   - Latex <-> Pdflatex: should be `switchable' like in AUCtex
   - more things "to be like AUCtex:

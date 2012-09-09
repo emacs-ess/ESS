@@ -189,7 +189,7 @@
     map)
   "Keymap for `ess-mode'.")
 
-(require 'noweb-mode)
+(require 'ess-noweb-mode)
 
 (easy-menu-define
   ess-mode-menu ess-mode-map
@@ -212,8 +212,8 @@
      ["Eval function"   ess-eval-function-and-go          t]
      ["Eval line"       ess-eval-line-and-go              t]
      ["Eval paragraph"   ess-eval-paragraph-and-go         t]
-     ["Eval chunk"      ess-eval-chunk-and-go    noweb-mode]
-     ["Eval thread"     ess-eval-thread-and-go   noweb-mode]
+     ["Eval chunk"      ess-eval-chunk-and-go    ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread-and-go   ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("ESS Eval"
@@ -228,8 +228,8 @@
      ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
      ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-     ["Eval chunk"      ess-eval-chunk           noweb-mode]
-     ["Eval thread"     ess-eval-thread          noweb-mode]
+     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("Motion..."

@@ -986,10 +986,10 @@ getArgHelp <- function(arg, func=NULL){
 ;;;### autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
-See `noweb-mode' and `R-mode' for more help."
+See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
-  (noweb-mode 1); turn it on
+  (ess-noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
   (noweb-set-code-mode 'R-mode)
   (run-hooks 'Rnw-mode-hook))
