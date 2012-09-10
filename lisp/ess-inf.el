@@ -1431,8 +1431,9 @@ will be used instead of the default .001s and be passed to
 (defun ess-blink-region (start end)
   (when ess-blink-region-p
     (move-overlay ess-current-region-overlay start end)
-    (run-with-timer .25 nil (lambda ()
-                             (delete-overlay ess-current-region-overlay)))))
+    (run-with-timer ess-blink-delay nil
+                    (lambda ()
+                      (delete-overlay ess-current-region-overlay)))))
 
 
 (defun ess-eval-region (start end toggle &optional message)
@@ -2895,7 +2896,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
                (not (ess-process-get 'sp-for-help-changed?)))
           slist
         ;; else, re-compute:
-        (ess-write-to-dribble-buffer " (ess-search-list: re-computing..) ")
+        (ess-write-to-dribble-buffer " (ess-search-list ... ) ")
         (let ((tbuffer (get-buffer-create " *search-list*"))
               (homedir ess-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
