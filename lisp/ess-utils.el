@@ -696,6 +696,10 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 (defvar ess-idle-timer-functions nil
   "A list of functions to run each `ess-idle-timer-interval' idle seconds.
 
+If your function calls the process, you better use
+`ess-when-new-input' to wrap your call. If you call the
+subprocess please respect `ess-can-eval-in-background' variable.
+
 These functions are run with `run-hooks'. Use `add-hook' to add
 symbols to this variable.
 
@@ -707,14 +711,10 @@ etc.
 ")
 
 (defun ess--idle-timer-function nil
-  "Internal function executed by `ess--idle-timer'.
-Wraped in `while-no-input' in order not to cause disruption for
-the user. If your function calls the process, you better
-use (process-get *proc* 'last-eval) to get the time of last
-evaluation withing this process."
+  "Internal function executed by `ess--idle-timer'"
   ;; (while-no-input
-    ;; (dbg (current-time))
-    (run-hooks 'ess-idle-timer-functions))
+  ;; (dbg (current-time))
+  (run-hooks 'ess-idle-timer-functions))
 
 
 (require 'timer)
