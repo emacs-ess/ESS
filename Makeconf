@@ -19,7 +19,7 @@ DESTDIR=/usr/local
 PREFIX=$(DESTDIR)
 #
 ##__ GNU Emacs __
-EMACS=$(PREFIX)/bin/emacs
+EMACS=emacs
 LISPDIR=$(PREFIX)/share/emacs/site-lisp/ess
 INFODIR=$(PREFIX)/share/info
 ETCDIR =$(PREFIX)/share/emacs/etc/ess
