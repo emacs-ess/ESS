@@ -210,11 +210,12 @@ to R, put them in the variable `inferior-R-args'."
        "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
        nil nil nil 'wait-prompt);; solving "lines running together"
       )
-    
-    (ess-async-command-delayed
-     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-     (lambda (proc) (process-put proc 'packages-cached? t)))
+
+    (when ess-can-eval-in-background
+      (ess-async-command-delayed
+       "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+       ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+       (lambda (proc) (process-put proc 'packages-cached? t))))
     
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start

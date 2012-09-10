@@ -192,6 +192,10 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
 
+(defcustom ess-can-eval-in-background nil
+  "If non-nil ESS can perform caching and other background
+ activities by calling the subprocess on idle time.")
+
 (defcustom ess-user-full-name (user-full-name)
   "The full name of the user."
   :group 'ess
