@@ -74,7 +74,7 @@ uninstall:
 	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
 
 clean:
-	rm -f $(ELC) dist
+	rm -f $(ELC) noweb-font-lock-mode.elc noweb-mode.elc dist
 
 distclean: clean
 # and potentially more
