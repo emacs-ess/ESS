@@ -1429,10 +1429,11 @@ will be used instead of the default .001s and be passed to
   "The overlay for highlighting currently evaluated region or line.")
 
 (defun ess-blink-region (start end)
-  (when ess-blink-region-p
+  (when ess-blink-region
     (move-overlay ess-current-region-overlay start end)
-    (run-with-timer .25 nil (lambda ()
-                             (delete-overlay ess-current-region-overlay)))))
+    (run-with-timer ess-blink-delay nil
+                    (lambda ()
+                      (delete-overlay ess-current-region-overlay)))))
 
 
 (defun ess-eval-region (start end toggle &optional message)
@@ -2895,7 +2896,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
                (not (ess-process-get 'sp-for-help-changed?)))
           slist
         ;; else, re-compute:
-        (ess-write-to-dribble-buffer " (ess-search-list: re-computing..) ")
+        (ess-write-to-dribble-buffer " (ess-search-list ... ) ")
         (let ((tbuffer (get-buffer-create " *search-list*"))
               (homedir ess-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
@@ -3074,11 +3075,14 @@ subprocess and Emacs buffer `default-directory'."
     (unless no-error
       (error "Not implemented for dialect %s" ess-dialect))))
 
+
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
-This function is used in `ess-idle-timer-functions'."
-  (when ess-getwd-command
+Used in `ess-idle-timer-functions'."
+  (when (and ess-can-eval-in-background
+             ess-getwd-command)
     (ess-when-new-input last-sync-dirs
+      (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
       (setq default-directory
             (car (ess-get-words-from-vector ess-getwd-command)))
       default-directory
@@ -3086,18 +3090,16 @@ This function is used in `ess-idle-timer-functions'."
 
 (defun ess-dirs ()
   "Set Emacs' current directory to be the same as the *R* process.
-
-Note: This function is not necessary anymore. The Emacs
-default-directory and subprocess working directory are
-synchronized automatically.
 "
+  ;; Note: This function is not necessary anymore. The Emacs
+  ;; default-directory and subprocess working directory are
+  ;; synchronized automatically.
   (interactive)
   (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
     (message "new (ESS / default) directory: %s" dir)
-    (setq default-directory (file-name-as-directory dir))
-    (message "No need for this function, paths are synchronized automatically")))
+    (setq default-directory (file-name-as-directory dir))))
 
-(make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")
+;; (make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
@@ -3111,7 +3113,8 @@ changed."
 (defun ess-cache-search-list ()
   "Used in `ess-idle-timer-functions', to set
 search path related variables."
-  (when inferior-ess-search-list-command
+  (when (and ess-can-eval-in-background
+             inferior-ess-search-list-command)
     (ess-when-new-input last-cache-search-list
       (let ((path (ess-search-list 'force))
             (old-path (process-get *proc* 'search-list)))

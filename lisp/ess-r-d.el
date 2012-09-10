@@ -210,11 +210,12 @@ to R, put them in the variable `inferior-R-args'."
        "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
        nil nil nil 'wait-prompt);; solving "lines running together"
       )
-    
-    (ess-async-command-delayed
-     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-     (lambda (proc) (process-put proc 'packages-cached? t)))
+
+    (when ess-can-eval-in-background
+      (ess-async-command-delayed
+       "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+       ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+       (lambda (proc) (process-put proc 'packages-cached? t))))
     
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
@@ -916,7 +917,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
-      (delete "...=" args))))
+      (delete "...=" args)
+      (mapcar (lambda (a) (if (equal (substring a -1) "=")
+                              (concat (substring a 0 -1) " = ")
+                            a))
+              args))))
 
 (defun ess-ac-action-args ()
   (when (looking-back "=")
@@ -1144,7 +1149,7 @@ Completion is available for supplying options."
   "Interface to findFn in the library sos."
                                         ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
   (interactive  "sfindFn: ")
-  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(require(sos))\n")))
+  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(suppressPackageStartupMessages(require(sos)))\n")))
     (if (y-or-n-p "Library 'sos' is not installed. Install? ")
         (progn (ess-eval-linewise "install.packages('sos')\n")
                (ess-eval-linewise "library(sos)\n"))

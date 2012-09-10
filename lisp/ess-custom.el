@@ -192,15 +192,25 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type (if (featurep 'emacs) 'alist 'list))
 
+(defcustom ess-can-eval-in-background nil
+  "If non-nil ESS can perform caching and other background
+ activities by calling the subprocess on idle time.")
+
 (defcustom ess-user-full-name (user-full-name)
   "The full name of the user."
   :group 'ess
   :type 'string)
 
-(defcustom ess-blink-region-p t
-  "If t evaluated region is highlighted for a shortwhile."
+(defcustom ess-blink-region t
+  "If t evaluated region is highlighted for a shortwhile.
+See also `ess-blink-delay'"
   :group 'ess
   :type 'boolean)
+
+(defcustom ess-blink-delay .3
+  "Number of secons to highlight the evaluated region."
+  :group 'ess
+  :type 'number)
 
 (defcustom ess-ask-for-ess-directory t
   "Non-nil means request the process directory each time S is run."
