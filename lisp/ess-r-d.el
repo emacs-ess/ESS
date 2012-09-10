@@ -1149,7 +1149,7 @@ Completion is available for supplying options."
   "Interface to findFn in the library sos."
                                         ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
   (interactive  "sfindFn: ")
-  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(require(sos))\n")))
+  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(suppressPackageStartupMessages(require(sos)))\n")))
     (if (y-or-n-p "Library 'sos' is not installed. Install? ")
         (progn (ess-eval-linewise "install.packages('sos')\n")
                (ess-eval-linewise "library(sos)\n"))
