@@ -1429,7 +1429,7 @@ will be used instead of the default .001s and be passed to
   "The overlay for highlighting currently evaluated region or line.")
 
 (defun ess-blink-region (start end)
-  (when ess-blink-region-p
+  (when ess-blink-region
     (move-overlay ess-current-region-overlay start end)
     (run-with-timer ess-blink-delay nil
                     (lambda ()
