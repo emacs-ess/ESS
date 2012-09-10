@@ -374,14 +374,60 @@ there is no process NAME)."
           (switch-to-buffer (process-buffer (get-process proc-name)))
         (pop-to-buffer (process-buffer (get-process proc-name)))))))
 
+(defvar ess--request-commands '(eval))
+
+(defun inferior-ess-eval-process-request (proc)
+  (let ((body (process-get proc 'request-body))
+        (command (process-get proc 'request-command)))
+    (process-put proc 'request-body nil)
+    (process-put proc 'request-command nil)
+    (dbg command body)))
+        
+(defun inferior-ess-filter-request (proc string)
+  (if (process-get proc 'request-command)
+      ;;head was in the previous batch
+      (if (string-match "\x4>?" string) ;; end of transmition
+          (let ((end (match-end 1))
+                (beg (match-beginning 1)))
+            (process-put proc 'request-body
+                         (concat (process-get proc 'request-body)
+                                 (substring string 0 beg)))
+            (inferior-ess-eval-process-request proc)
+            (substring string end))
+        ;; else, append to body and return empty string
+        (process-put proc 'request-body
+                     (concat (process-get proc 'request-body) string))
+        "")
+    ;; else, check for new head
+    (if (string-match "\x1\\([a-zA-Z]+\\)\x2" string) ;; transmition header
+        (let* ((hbeg (match-beginning 0))
+               (hend (match-end 0)))
+          (process-put proc 'request-body nil)
+          (process-put proc 'request-command (match-string 1 string))
+          (if (string-match "\x4>?" string hend)
+              ;; tail is in the same batch
+              (let ((tbeg (match-beginning 0))
+                    (tend (match-end 0)))
+                (process-put proc 'request-body
+                             (substring string hend tbeg))
+                (inferior-ess-eval-process-request proc)
+                (concat (substring string 0 hbeg)
+                        (substring string tend)))
+            (process-put proc 'request-body
+                         (substring string hend))
+            (substring string 0 hbeg)))
+      ;; else, do nothing 
+      string)))
+    
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC
 If no-timestamp, don't set the last-eval timestamp.
 Return the 'busy state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
+    (inferior-ess-decode-request proc string)
     (process-put proc 'busy-end? (and (not busy)
-                                      (process-get proc 'busy)))
+                                      (process-get proc 'busy))) ;;this line is redundant
     (if (not busy) (process-put proc 'running-async? nil))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
@@ -400,9 +446,8 @@ Return the 'busy state."
   (when (process-get proc 'busy-end?)
     (let ((cb (car (process-get proc 'callbacks))))
       (when cb
-        (if ess-verbose
-            (ess-write-to-dribble-buffer "executing callback ...\n")
-          (process-put proc 'suppress-next-output? t))
+        (ess-if-verbose-write "executing callback ...\n")
+        (process-put proc 'suppress-next-output? t)
         (process-put proc 'callbacks nil)
         (condition-case err
             (funcall cb proc)
@@ -437,6 +482,7 @@ the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
   (ess--if-verbose-write-process-state proc string)
+  (setq string (inferior-ess-filter-request proc string))
   (inferior-ess-run-callback proc) ;; protected
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
