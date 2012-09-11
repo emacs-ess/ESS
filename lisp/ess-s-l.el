@@ -120,7 +120,7 @@
   "S language expression for startup -- default for all S dialects.")
 
 (defconst S-common-cust-alist
-  `((ess-language                  . "S")
+  '((ess-language                  . "S")
     (inferior-ess-exit-command     . "q()\n")
     (inferior-ess-language-start   . (eval inferior-S-language-start))
     (comint-use-prompt-regexp      . t)  ;;use fields if nil
