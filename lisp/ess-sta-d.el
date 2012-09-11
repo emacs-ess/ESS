@@ -66,6 +66,10 @@
     (inferior-ess-start-args       . inferior-STA-start-args)
     (ess-get-help-topics-function  . 'ess-get-STA-help-topics)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
+    (comment-start                . "/\* ")
+    (comment-end                  . " \*/")
+    (comment-start-skip           . "/\\*+ *")
+    (comment-use-syntax           . t) ;; needed for multiline
     )
   "Variables to customize for Stata.")
 
