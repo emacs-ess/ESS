@@ -131,8 +131,10 @@
     (inferior-ess-secondary-prompt . "+ ")
     (comment-start                . "#")
     (comment-add                  . 1)
-    (comment-start-skip           . "#+ *") 
+    (comment-start-skip           . "#+ *")
+    (comment-use-syntax           . nil) ;; regexp based, probably faster than syntax based 
     (comment-column               . 40)
+    (ess-no-skip-regexp           . (concat "^ *@\\|" (default-value 'ess-no-skip-regexp)))
     ;; inferior-ess-prompt is used by comint for navigation only if
     ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable

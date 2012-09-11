@@ -450,6 +450,12 @@ In current verion of ESS, it controls the behavior of
 ess-smart-comma only, but will be enriched in the near future.
 ")
 
+(defvar ess-no-skip-regexp "[ \t\n]*\\'"
+  "If `ess-next-code-line' sees this line, it doesn't jump over.
+
+Used to avoid annoying jumping by ess-eval.*-and-step to end of
+buffer or end chunks etc.
+ ")
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
