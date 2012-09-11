@@ -171,7 +171,6 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (ess-write-to-dribble-buffer
            (format "(ess-help '%s' start  ..\n" hb-name))
           (ess-setq-vars-local (eval alist))
-          (set-syntax-table ess-mode-syntax-table)
           (setq ess-help-object object
                 ess-help-type 'help
                 ess-local-process-name lproc-name)
@@ -306,7 +305,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
       (with-current-buffer buff
         (ess-setq-vars-local (eval alist))
-        (set-syntax-table ess-mode-syntax-table)
         (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
               ess-help-type 'index
               ess-help-object pack
@@ -356,7 +354,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         )
     (with-current-buffer buff
       (ess-setq-vars-local (eval alist))
-      (set-syntax-table ess-mode-syntax-table)
       (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
             ess-local-process-name pname)
       (setq buffer-read-only nil)
@@ -429,7 +426,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (setq buffer-read-only nil)
         (delete-region (point-min) (point-max))
         (ess-setq-vars-local (eval alist))
-        (set-syntax-table ess-mode-syntax-table)
         (setq ess-help-sec-regex "^\\w+:$"
               ess-help-type 'vignettes
               ess-local-process-name ess-current-process-name)
@@ -651,6 +647,9 @@ Other keybindings are as follows:
   ;;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
+
+  (if ess-mode-syntax-table ;;set in advance by ess-setq-local
+      (set-syntax-table ess-mode-syntax-table))
 
   (require 'easymenu)
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
