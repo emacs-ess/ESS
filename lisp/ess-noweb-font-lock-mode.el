@@ -115,7 +115,7 @@ off again, it would come back on again of its own accord when you
 changed major-mode. This variable is used internally to stop it.")
 
 (defvar ess-noweb-font-lock-mode-hook nil
-  "Hook that is run after entering noweb-font-lock mode.")
+  "Hook that is run after entering ess-noweb-font-lock mode.")
 
 (defvar noweb-font-lock-max-initial-chunks 2
   "Maximum number of chunks to fontify initially.
@@ -199,10 +199,13 @@ Each chunk is fontified in accordance with its own mode"
              (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
            (mapcar 'noweb-make-variable-permanent-local
                    '(ess-noweb-font-lock-mode
+                     font-lock-dont-widen
                      font-lock-beginning-of-syntax-function
+                     syntax-begin-function
                      noweb-use-font-lock-mode
                      after-change-functions))
-           (setq ess-noweb-font-lock-mode t)
+           (setq ess-noweb-font-lock-mode t
+                 font-lock-dont-widen t)
            (when (< emacs-major-version 21) ; needed for emacs < 21.1 only :
              (make-local-hook 'after-change-functions))
            (add-hook 'after-change-functions
@@ -242,6 +245,7 @@ Each chunk is fontified in accordance with its own mode"
     (font-lock-set-defaults)
     (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
     (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax)
+    (setq syntax-begin-function 'noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords
           ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
@@ -270,8 +274,14 @@ Each chunk is fontified in accordance with its own mode"
     (let ((r (cons (marker-position (cdr (aref noweb-chunk-vector
                                                chunk-num)))
                    (marker-position (cdr (aref noweb-chunk-vector
-                                               (1+ chunk-num)))))))
-      (font-lock-fontify-region (car r) (cdr r))
+                                               (1+ chunk-num))))))
+          (font-latex-extend-region-functions nil);; don't extend anything
+          (font-lock-extend-region-functions nil)) ;; this infloops :( 
+      ;; (dbg "here" (car r) (cdr r))
+      (save-restriction      
+        (narrow-to-region (car r) (cdr r))
+        ;; (sit-for 3)
+        (font-lock-fontify-region (car r) (cdr r)))
       t)))
 
 (defun noweb-font-lock-fontify-this-chunk ()
