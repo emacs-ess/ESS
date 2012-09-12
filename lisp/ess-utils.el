@@ -49,10 +49,10 @@
   (interactive)
   (setq pos (or pos (point)))
   ;; next doesn't work reliably, when narrowing the buffer in iESS the ppss
-  ;; cahce is screwd :(  
+  ;; cahce is screwd :(
   ;; (let ((pps (if (featurep 'xemacs)
   ;;                (parse-partial-sexp (point-min) pos)
-  ;;              (syntax-ppss pos)))) 
+  ;;              (syntax-ppss pos))))
   ;;   (nth 3 pps))
   (nth 3 (parse-partial-sexp (point-min) pos))
   )
@@ -437,21 +437,21 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
 ;; Functions and commands to uniquify lists or buffer text (cf. sort).
 ;; 23-Apr-1994|1.00|~/packages/unique.el.Z|
 ;;
-;; MM: renamed from 'unique' to
-(defun ess-unique (list predicate)
+;; MM: renamed from 'unique' to 'ess-unique', then
+(defun ess-uniq (list predicate)
   "Uniquify LIST, stably, deleting elements using PREDICATE.
 Return the list with subsequent duplicate items removed by side effects.
 PREDICATE is called with an element of LIST and a list of elements from LIST,
 and should return the list of elements with occurrences of the element removed.
-This function will work even if LIST is unsorted.  See also `uniq'."
+This function will work even if LIST is unsorted.  See also `ess-uniq-list'."
   (let ((list list))
     (while list
       (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
   list)
 
 (defun ess-uniq-list (items)
-  "Delete all duplicate entries in ITEMS list, calling `ess-unique'."
-  (ess-unique items 'delete))
+  "Delete all duplicate entries in ITEMS list, calling `ess-uniq'."
+  (ess-uniq items 'delete))
 
 (defun ess-drop-non-directories (file-strings)
   "Drop all entries that do not \"look like\" directories."
