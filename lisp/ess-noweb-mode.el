@@ -430,6 +430,7 @@ Misc:
  (ess-noweb-mode                            ;Setup the minor-mode
   (mapcar 'noweb-make-variable-permanent-local
           '(ess-noweb-mode
+            ess-local-process-name
             after-change-functions
             before-change-functions
             noweb-narrowing
