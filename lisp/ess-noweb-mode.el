@@ -272,6 +272,7 @@ replaced by sequences of '*'.")
           (define-key map "@" 'noweb-electric-@)
           (define-key map "<" 'noweb-electric-<)))
     (define-key map "\M-q" 'noweb-fill-paragraph-chunk)
+    (define-key map [(control meta ?\\)] 'ess-noweb-indent-region)
     ;;(define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
     (define-key map "\t" 'noweb-indent-line)
     ;; (define-key map [tab] 'noweb-indent-line) ;; interferes with ac
@@ -849,6 +850,28 @@ chunks."
               (noweb-restore-code-quotes quote-list))
           (fill-region (point-min) (point-max)))))))
 
+(defun ess-noweb-indent-region (beg end)
+  "If region fits inside current chunk, narrow to chunk and then
+indent according to mode."
+  (interactive "r")
+  (let* ((inx (noweb-find-chunk-index-buffer))
+         (ch-beg (marker-position (cdr (aref noweb-chunk-vector inx))))
+         (ch-end (marker-position (cdr (aref noweb-chunk-vector (1+ inx))))))
+
+    (if (and (< ch-beg beg) (> ch-end end))
+        (save-excursion
+          (save-restriction
+            (setq beg  (max beg (progn (goto-char ch-beg)
+                                       (forward-line 1)
+                                       (point))))
+            (setq end (min end (progn (goto-char ch-end)
+                                      (forward-line -1)
+                                      (point))))
+            (narrow-to-region beg end)
+            (indent-region beg end)))
+      (indent-region beg end))))
+
+  
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
   (interactive)
