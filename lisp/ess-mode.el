@@ -48,7 +48,7 @@
 ;;; useless. It's time to clean up a bit.
 
 ;;; VS: I also don't really get why all of these? Compiler is silent without
-;;; them. These funcs are used in mode-map only as symbols. 
+;;; them. These funcs are used in mode-map only as symbols.
 
 ;; (autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
 ;; (autoload 'ess-read-object-name         "ess-inf" "" nil)
@@ -110,7 +110,7 @@
 
 ;;*;; Major mode definition
 
-  
+
 (defvar ess-eval-map
   (let ((map (make-sparse-keymap)))
     (define-key map "\C-r"    'ess-eval-region)
@@ -235,7 +235,7 @@
     ("Motion..."
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
-     ["Beginning of function or  para"   ess-goto-beginning-of-function-or-para       t]
+     ["Beginning of function or para"   ess-goto-beginning-of-function-or-para       t]
      ["End of function or para"         ess-goto-end-of-function-or-para             t]
      )
     ("ESS list..."
@@ -728,14 +728,14 @@ Optional argument for location of beginning.  Return '(beg end)."
 
 
 (defun ess-goto-beginning-of-function-or-para ()
-  "If inside a function go to end of it, overwise go to the end
+  "If inside a function go to the beginning of it, otherwise go to the beginning
   of paragraph."
   (interactive)
   (unless (ess-beginning-of-function 'no-error)
     (backward-paragraph)))
 
 (defun ess-goto-end-of-function-or-para ()
-  "If inside a function go to end of it, overwise go to the end
+  "If inside a function go to end of it, otherwise go to the end
   of paragraph."
   (interactive)
   (unless (ess-end-of-function nil 'no-error)
@@ -1329,7 +1329,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (when (eq ?} (preceding-char))
                    (- (point) (point-at-bol) 1)))))
             (t
-             (when 
+             (when
                  (progn (goto-char eol)
                         (skip-chars-backward " \t")
                         (or (and (> (current-column) 1)

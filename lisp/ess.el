@@ -426,8 +426,7 @@ Otherwise try a list of fixed known viewers."
   (if buf (set-buffer buf))
   (mapc (lambda (pair)
           (make-local-variable (car pair))
-          (if (cdr pair)
-              (set (car pair) (eval (cdr pair)))))
+          (set (car pair) (eval (cdr pair))))
         alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"

@@ -42,7 +42,8 @@
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
   (require 'ess-utils))
-
+(unless (featurep 'xemacs)
+  (require 'newcomment nil t))
 (require 'comint)
 (require 'overlay)
 
@@ -1641,20 +1642,20 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
-      (if (featurep 'xemacs)
+      (if (not (fboundp 'comment-beginning))
           (while (and (= n 0)
                       (looking-at "\\s-*\\($\\|\\s<\\)"))
             (setq n (forward-line inc)))
-        (require 'newcomment)
         (comment-beginning)
         (beginning-of-line)
         (forward-comment (* inc (buffer-size))) ;; as suggested in info file
         )
       (if (and (not skip-to-eob)
-               (looking-at "[ \t\n]*\\'")) ;; don't go to eob
+               (looking-at ess-no-skip-regexp)) ;; don't go to eob or whatever
           (setq arg 0)
         (setq pos (point))
-        (setq arg (- arg inc))))
+        (setq arg (- arg inc)))
+      )
     (goto-char pos)
     n))
 
