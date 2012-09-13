@@ -628,8 +628,6 @@ to look up any doc strings."
       )))
 
 ;;; function argument completions
-(defvar ess--funargs-cache (make-hash-table :test 'equal)
-  "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
     if(getRversion() > '2.14.1'){
@@ -662,6 +660,22 @@ to look up any doc strings."
 (defvar ess-objects-never-recache '("print" "plot")
   "List of functions of whose arguments to be cashed only once per session.")
 
+(defvar ess--funargs-cache (make-hash-table :test 'equal)
+  "Chache for R functions' arguments")
+
+(defvar ess--funargs-pre-cache
+  '(("print"
+     (("base" nil)
+      "x, digits=NULL, quote=TRUE, na.print=NULL, print.gap=NULL, right=FALSE, max=NULL, useSource=TRUE, ..."
+      ("x=" "digits=" "signif.stars=" "intercept=" "tol=" "se=" "sort=" "verbose=" "indent=" "style=" ".bibstyle=" "prefix=" "vsep=" "minlevel=" "quote=" "right=" "row.names=" "max=" "na.print=" "print.gap=" "useSource=" "diag=" "upper=" "justify=" "title=" "max.levels=" "width=" "steps=" "showEnv=" "cutoff=" "max.level=" "give.attr=" "units=" "abbrCollate=" "print.x=" "deparse=" "locale=" "symbolic.cor=" "loadings=" "zero.print=" "calendar=")))
+    ("plot"
+     (("graphics" nil)
+      "x, y=NULL, type=\"p\", xlim=NULL, ylim=NULL, log=\"\", main=NULL, sub=NULL, xlab=NULL, ylab=NULL, ann=par(\"ann\"), axes=TRUE, frame.plot=axes, panel.first=NULL, panel.last=NULL, asp=NA, ..."
+      ("x=" "y=" "...=" "ci=" "type=" "xlab=" "ylab=" "ylim=" "main=" "ci.col=" "ci.type=" "max.mfrow=" "ask=" "mar=" "oma=" "mgp=" "xpd=" "cex.main=" "verbose=" "xlim=" "log=" "sub=" "ann=" "axes=" "frame.plot=" "panel.first=" "panel.last=" "asp=" "center=" "edge.root=" "nodePar=" "edgePar=" "leaflab=" "dLeaf=" "xaxt=" "yaxt=" "horiz=" "zero.line=" "verticals=" "col.01line=" "pch=" "legend.text=" "formula=" "data=" "subset=" "to=" "from=" "labels=" "hang=" "freq=" "density=" "angle=" "col=" "border=" "lty=" "add=" "predicted.values=" "intervals=" "separator=" "col.predicted=" "col.intervals=" "col.separator=" "lty.predicted=" "lty.intervals=" "lty.separator=" "plot.type=" "main2=" "par.fit=" "grid=" "which=" "caption=" "panel=" "sub.caption=" "id.n=" "labels.id=" "cex.id=" "qqline=" "cook.levels=" "add.smooth=" "label.pos=" "cex.caption=" "levels=" "conf=" "absVal=" "ci.lty=" "xval=" "do.points=" "col.points=" "cex.points=" "col.hor=" "col.vert=" "lwd=" "set.pars=" "range.bars=" "col.range=" "xy.labels=" "xy.lines=" "nc=" "yax.flip=" "mar.multi=" "oma.multi=")))
+    )
+  "Alist of cached arguments for very time consuming functions.")
+
+
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
@@ -685,12 +699,13 @@ i.e. contains :,$ or @.
       (when (and args
                  (and (time-less-p ts (ess-process-get 'last-eval))
                       (or (null pack)
-                          (and (equal pack "")
-                               (not (member funname ess-objects-never-recache)))
+                          (equal pack "")
                           (equal pack "R_GlobalEnv"))
                       ))
+        ;; reset cache
         (setq args nil))
       (or args
+          (cadr (assoc funname ess--funargs-pre-cache))
           (when (and ess-current-process-name (get-process ess-current-process-name))
             (let ((args (ess-get-words-from-vector
                          (format ess--funargs-command funname funname) nil .01)))
