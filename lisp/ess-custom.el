@@ -765,7 +765,7 @@ OWN, GNU, BSD, ...) map onto different settings for variables."
 ;;*;; Variables controlling behaviour of dump files
 
 (defcustom ess-source-directory
-  (if ess-microsoft-p (getenv "TEMP")  "/tmp/")
+  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp")
   "Directory in which to place dump files.
 This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
