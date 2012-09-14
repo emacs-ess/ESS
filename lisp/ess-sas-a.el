@@ -1,6 +1,6 @@
 ;;; ess-sas-a.el --- clean-room implementation of many SAS-mode features
 
-;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Rodney A. Sparapani

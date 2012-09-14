@@ -1,6 +1,6 @@
 ;;; ess-sp6-d.el --- S-Plus 6 & 7 & 8  customization
 
-;; Copyright (C) 2001--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2001--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>

@@ -1,7 +1,7 @@
 ;;; ess-sp5-d.el --- S-plus 5  customization
 
 ;; Copyright (C) 1998 A.J. Rossini
-;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1999--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>

@@ -58,6 +58,7 @@
 
 ;; provide here; otherwise we'll get infinite loops of (require ..):
 (provide 'ess-site)
+;;(require 'ess-sp6-d)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -534,35 +535,57 @@ sending `inferior-ess-language-start' to S-Plus.")
                                    (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
                                 (ess-s-versions-create)))) ;; use ess-s-versions
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
+
+  (if ess-microsoft-p
+      (defcustom ess-user-specified-directory-containing-R nil ;; rmh
+        "nil (the default) means the search for all occurences of R
+on the machine will use the default location of the R directory
+(inside \"c:/Program Files\" in English locale Windows systems).
+Non-nil values mean use the specified location as the
+directory in which \"R/\" is located.  For example, setting
+`ess-user-specified-directory-containing-R' to \"c:\" will tell ESS to search
+for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
+        :group 'ess
+        :type 'directory)
+    )
+
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
             (ess-flatten-list
              (ess-uniq-list
-              (if (getenv "ProgramW6432")
-                  (let ((P-1 (getenv "ProgramFiles(x86)"))
-                        (P-2 (getenv "ProgramW6432")))
-                    (nconc
-                     ;; always 32 on 64 bit OS, nil on 32 bit OS
-                     (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-                     (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-                     ;; keep this both for symmetry and because it can happen:
-                     (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
-
-                     ;; always 64 on 64 bit OS, nil on 32 bit OS
-                     (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-                     (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-                     (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
-                     ))
-                (let ((PF (getenv "ProgramFiles")))
-                  (nconc
-                   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+              (if (not ess-user-specified-directory-containing-R)                      ;; rmh
+                  (if (getenv "ProgramW6432")
+                      (let ((P-1 (getenv "ProgramFiles(x86)"))
+                            (P-2 (getenv "ProgramW6432")))
+                        (nconc
+                         ;; always 32 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+                         ;; keep this both for symmetry and because it can happen:
+                         (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+                         
+                         ;; always 64 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                         ))
+                    (let ((PF (getenv "ProgramFiles")))
+                      (nconc
+                       ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                       (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                       ))
+                    )                                                      ;; rmh
+                (let ((PF ess-user-specified-directory-containing-R))                  ;; rmh
+                  (nconc                                                   ;; rmh
+                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")      ;; rmh
+                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe") ;; rmh
+                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")  ;; rmh
                    ))
                 )))))
   (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
-
+  
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
         (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
 

@@ -1,7 +1,7 @@
 ;;; ess-s3-d.el ---  S 3 (AT&T version) customization
 
 ;; Copyright (C) 1997 A. J. Rossini
-;; Copyright (C) 1998--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>

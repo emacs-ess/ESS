@@ -1,10 +1,10 @@
 ;;; essd-els.el --- S-PLUS 3.x at another location customization
 
 ;; Copyright (C) 1998 Richard M. Heiberger
-;; Copyright (C) 1999--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1999--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@fisher.stat.temple.edu>
+;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: December 1998
 
 ;; Maintainer: ESS-core <ESS-core@r-project.org>

@@ -1,6 +1,6 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS
 
-;; Copyright (C) 1998--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.

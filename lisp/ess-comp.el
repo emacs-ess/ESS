@@ -1,7 +1,7 @@
 ;;; ess-comp.el --- setting for compiling, only.
 
 ;; Copyright (C) 1997--2006 A. J. Rossini
-;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2006 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>

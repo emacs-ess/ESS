@@ -1,6 +1,6 @@
 ;;; ess-toolbar.el --- Support for a toolbar in ESS.
 
-;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen
