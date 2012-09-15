@@ -192,9 +192,9 @@ Each chunk is fontified in accordance with its own mode"
         (cond
           (ess-noweb-font-lock-mode                 ;Setup the minor-mode
            (when (and (boundp 'global-font-lock-mode) global-font-lock-mode)
-             (mapcar 'noweb-make-variable-permanent-local
-                     '(font-lock-fontify-buffer-function
-                       font-lock-unfontify-buffer-function))
+             (mapc 'noweb-make-variable-permanent-local
+                   '(font-lock-fontify-buffer-function
+                     font-lock-unfontify-buffer-function))
              (setq font-lock-fontify-buffer-function 'nwfl-donowt)
              (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
            (mapcar 'noweb-make-variable-permanent-local
