@@ -391,11 +391,12 @@ aggressive: Try strong + truncate the doc string to fit into minibuffer.
 
 The default style is 'normal.
 
-Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
-which if set to nil, will cause the truncation of doc string
-indifferent of the value of `ess-eldoc-abbreviation-style'. This way
-you can combine different abbreviation styles with the truncation.
-"
+Ess-eldoc also honors the value of
+`eldoc-echo-area-use-multiline-p'. If this variable is not t (the
+default), doc strings are truncated to fit into minibufer
+indifferent of the value of `ess-eldoc-abbreviation-style'. This
+allows a combination of different abbreviation styles with the
+truncation."
   :group 'ess
   :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive))
   )
