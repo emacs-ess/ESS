@@ -8,6 +8,12 @@
 	* *.el files: uniformly changed my name to "Richard M. Heiberger"
 	and uniformly changed my email address to "rmh@temple.edu"
 
+2012-09-06  Sam Steingold  <sds@gnu.org>
+
+	* ess-custom.el (ess-source-directory): Init as per
+	http://stat.ethz.ch/R-manual/R-patched/library/base/html/tempfile.html
+	from $TMPDIR, $TMP, $TEMP on all platforms.
+
 2012-09-06  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): added PROC SETINIT

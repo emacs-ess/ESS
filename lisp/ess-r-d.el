@@ -566,8 +566,8 @@ to look up any doc strings."
 (defun ess-eldoc-docstring-format (funname doc)
   (save-match-data
     (let* (;; (name (symbol-name sym))
-           (truncate (or (null eldoc-echo-area-use-multiline-p)
-                         (eq ess-eldoc-abbreviation-style 'aggressive)))
+           (truncate (or  (not (eq t eldoc-echo-area-use-multiline-p))
+                          (eq ess-eldoc-abbreviation-style 'aggressive)))
            ;; Subtract 1 from window width since will cause a wraparound and
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
@@ -621,7 +621,7 @@ to look up any doc strings."
 			  ;;AGGRESSIVE filter (truncate what is left)
 			  (concat (substring doc 0 (- W 4)) "{--}")
 			  ))))))))
-      (when (and (null eldoc-echo-area-use-multiline-p)
+      (when (and truncate
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
       (format "%s: %s" funname doc)
