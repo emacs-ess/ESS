@@ -2030,7 +2030,11 @@ to continue it."
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
   (set (make-local-variable 'font-lock-defaults)
-       '(inferior-ess-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
+       (cond (inferior-ess-font-lock-defaults
+              '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
+             (inferior-ess-font-lock-keywords
+              `(,(ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)
+                nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))))
 
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22
