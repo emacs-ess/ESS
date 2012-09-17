@@ -387,18 +387,17 @@ nil: do nothing
 mild:  Replace TRUE, FALSE with T,F
 normal: Try mild + shorten the default values longer than 10 characters.
 strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
-aggressive: Try strong + truncate the doc string to fit into minibuffer.
+aggressive (or t): Try strong + truncate the doc string to fit into minibuffer.
 
 The default style is 'normal.
 
 Ess-eldoc also honors the value of
 `eldoc-echo-area-use-multiline-p'. If this variable is not t (the
-default), doc strings are truncated to fit into minibufer
-indifferent of the value of `ess-eldoc-abbreviation-style'. This
-allows a combination of different abbreviation styles with the
+default), doc strings are truncated to fit into minibufer. This
+allows the use of different abbreviation styles with the
 truncation."
   :group 'ess
-  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive))
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t))
   )
 
 
@@ -1934,16 +1933,21 @@ If nil, input is in the `font-lock-variable-name-face'."
   )
 
 
-(defvar ess-font-lock-available-keywords nil
-  "A list of available font-lock keywords in the current buffer")
-(make-variable-buffer-local 'ess-font-lock-available-keywords)
+(defvar ess-font-lock-keywords nil
+  "Internal. Holds a name of the dialect sepcific font-lock
+keywords in the current buffer. See `ess-R-font-lock-keywords'
+for example.")
+(make-variable-buffer-local 'ess-font-lock-keywords)
 
-(defvar ess-font-lock-default-keywords nil
-  "A list of default font-lock keywords in the current buffer")
-(make-variable-buffer-local 'ess-font-lock-default-keywords)
+(defun ess--extract-default-fl-keywords (keywords)
+  "Extract the t-keywords from `ess-font-lock-keywords'."
+  (delq nil (mapcar (lambda (c)
+                      (when (cdr c) (symbol-value (car c))))
+                    (if (symbolp keywords)
+                        (symbol-value keywords)
+                      keywords))))
 
 ;;; fl-keywords general
-
 (defvar ess-function-call-regexp
   "\\(\\sw+\\)("
   "Regexp for function names for R")
