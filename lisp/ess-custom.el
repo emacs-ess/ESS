@@ -1952,7 +1952,7 @@ for an example.")
   "Font lock for function calls.")
 
 (defvar ess-fl-keyword:numbers
-  (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
+  (cons "\\b\\.?[0-9]+[.eEL]?[0-9]*\\b" 'ess-numbers-face)
   "Numbers")
 
 (defvar ess-fl-keyword:parentheses
