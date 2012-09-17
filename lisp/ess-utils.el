@@ -106,17 +106,24 @@
 
 (defun ess-generate-font-lock-submenu (menu)
   "Internal, used to generate ESS font-lock submenu"
-  (mapcar (lambda (el)
-            `[,(symbol-name (car el))
-              (lambda () (interactive)
-                (ess-font-lock-toggle-keyword ',(car el)))
-              :style toggle
-              :enable t
-              :selected ,(cdr el)])
-          (cond ((eq major-mode 'ess-mode)
-                 (symbol-value ess-font-lock-keywords))
-                ((eq major-mode 'inferior-ess-mode)
-                 (symbol-value inferior-ess-font-lock-keywords)))))
+  (append (mapcar (lambda (el)
+                    `[,(symbol-name (car el))
+                      (lambda () (interactive)
+                        (ess-font-lock-toggle-keyword ',(car el)))
+                      :style toggle
+                      :enable t
+                      :selected ,(cdr el)])
+                  (cond ((eq major-mode 'ess-mode)
+                         (symbol-value ess-font-lock-keywords))
+                        ((eq major-mode 'inferior-ess-mode)
+                         (symbol-value inferior-ess-font-lock-keywords))))
+          (list "-----"
+                ["Save to custom" (lambda () (interactive)
+                                    (let ((kwd (if (eq major-mode 'ess-mode)
+                                                   ess-font-lock-keywords
+                                                 inferior-ess-font-lock-keywords)))
+                                      (customize-save-variable kwd (symbol-value kwd)))) t])))
+
 
 
 (defun ess-quote-special-chars (string)
