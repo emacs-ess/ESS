@@ -53,7 +53,7 @@
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
-    (inferior-ess-font-lock-keywords . ess-STA-mode-font-lock-keywords)
+    (inferior-ess-font-lock-defaults . ess-STA-mode-font-lock-defaults)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 

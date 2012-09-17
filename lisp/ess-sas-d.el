@@ -185,7 +185,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-file       . nil) ;"~/.ess-SAS")
     (inferior-ess-start-args       . inferior-SAS-args-temp)
-    (inferior-ess-font-lock-keywords . SAS-mode-font-lock-keywords)
+    (inferior-ess-font-lock-defaults . SAS-mode-font-lock-defaults)
     ;; (ess-pre-run-hook              . 'ess-SAS-pre-run-hook)
     (ess-local-process-name        . nil))
   "Variables to customize for SAS")
@@ -233,7 +233,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
   (set (make-local-variable 'font-lock-defaults)
        ;; KEYWORDS KEYWORDS-ONLY CASE-FOLD .....
-       '(SAS-mode-font-lock-keywords nil t))
+       '(SAS-mode-font-lock-defaults nil t))
   ;;                                    ^^ this  *should* set
   ;; font-lock-keywords-case-fold-search, but it fails for Emacs 22.[23]
   ;; hence :

@@ -1130,7 +1130,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ))
 
 
-(defvar ess-STA-mode-font-lock-keywords (ado-set-font-lock-keywords)
+(defvar ess-STA-mode-font-lock-defaults (ado-set-font-lock-keywords)
   "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords.")
 
 (defvar STA-editing-alist
@@ -1149,7 +1149,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . STA-syntax-table)
-    (font-lock-defaults           . '(ess-STA-mode-font-lock-keywords
+    (font-lock-defaults           . '(ess-STA-mode-font-lock-defaults
                                       nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
 
