@@ -104,7 +104,7 @@
 
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing in-code documentation."
-  :lighter " Rox"
+  ;; :lighter " Rox"
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
