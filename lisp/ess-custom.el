@@ -2082,8 +2082,12 @@ current buffer. Old system. From ESS[12.09] switched to new
 system described in `inferior-ess-font-lock-keywords'.")
 (make-variable-buffer-local 'inferior-ess-font-lock-defaults)
 
-;; (defvar ess-S-fl-keyword:prompt
-;;   (cons "^[a-zA-Z0-9 ]*[>+]" 'font-lock-keyword-face))
+(defvar comint-highlight-prompt 'comint-highlight-prompt)
+;; needed for proper font-lock
+
+(defvar ess-S-fl-keyword:prompt
+  (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
+  "Highlith prompts missed by comint.")
 
 ;; (defvar ess-S-fl-keyword:input-line
 ;;   (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
@@ -2099,8 +2103,8 @@ system described in `inferior-ess-font-lock-keywords'.")
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-R-font-lock-keywords
-  '(;; (ess-S-fl-keyword:prompt   . t) ;; comint does that
-    ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props :(
+  '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts 
+    ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
     (ess-R-fl-keyword:keywords  . t)
@@ -2141,7 +2145,8 @@ NOT used. See `inferior-S-font-lock-keywords'")
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-S-font-lock-keywords
-  '((ess-S-fl-keyword:modifiers . t)
+  '((ess-S-fl-keyword:prompt    . t)
+    (ess-S-fl-keyword:modifiers . t)
     (ess-S-fl-keyword:fun-defs  . t)
     (ess-S-fl-keyword:keywords  . t)
     (ess-S-fl-keyword:assign-ops        . t)
