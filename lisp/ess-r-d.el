@@ -85,7 +85,7 @@
      (ess-smart-operators               . ess-R-smart-operators)
      (inferior-ess-program              . inferior-R-program-name)
      (inferior-ess-objects-command      . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords   . 'inferior-ess-R-font-lock-keywords)
+     (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
      (inferior-ess-search-list-command  . "search()\n")
      ;;(inferior-ess-help-command               . "help(\"%s\", htmlhelp=FALSE)\n")
      (inferior-ess-help-command         . inferior-ess-r-help-command)

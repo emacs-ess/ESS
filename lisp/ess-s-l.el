@@ -164,7 +164,7 @@
      (ess-syntax-error-re
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
-     (inferior-ess-font-lock-keywords . 'inferior-ess-S-font-lock-keywords)
+     (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
      (ess-editor . S-editor)
      (ess-pager  . S-pager)
      )

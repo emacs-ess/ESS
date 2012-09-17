@@ -200,7 +200,7 @@ in the region, leaving only the S commands.  Other keybindings are:
        (cond (inferior-ess-font-lock-defaults
               '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
              (inferior-ess-font-lock-keywords
-              `(,(ess--extract-default-fl-keywords inferior-ess-font-lock-defaults)
+              `(,(ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)
                 nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))))
 
   ;;; Keep <tabs> out of the code.

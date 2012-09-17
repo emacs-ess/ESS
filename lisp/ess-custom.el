@@ -2072,14 +2072,20 @@ default."
 (defvar inferior-ess-font-lock-keywords nil
   "Internal. Holds a name of the dialect sepcific font-lock
 keywords in the current buffer. See
-`inferior-ess-R-font-lock-keywords' for an example.")
+`inferior-R-font-lock-keywords' for an example.")
 (make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
-(defvar ess-S-fl-keyword:prompt
-  (cons "^[a-zA-Z0-9 ]*[>+]" 'font-lock-keyword-face))
+(defvar inferior-ess-font-lock-defaults nil
+  "Internal. Holds dialect sepcific font-lock defaults in the
+current buffer. Old system. From ESS[12.09] switched to new
+system described in `inferior-ess-font-lock-keywords'.")
+(make-variable-buffer-local 'inferior-ess-font-lock-defaults)
 
-(defvar ess-S-fl-keyword:input-line
-  (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
+;; (defvar ess-S-fl-keyword:prompt
+;;   (cons "^[a-zA-Z0-9 ]*[>+]" 'font-lock-keyword-face))
+
+;; (defvar ess-S-fl-keyword:input-line
+;;   (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
 
 (defvar ess-fl-keyword:matrix-labels
   (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face)
@@ -2091,9 +2097,9 @@ keywords in the current buffer. See
         'font-lock-constant-face)
   "Inferior-ess problems or errors.")
 
-(defvar inferior-ess-R-font-lock-keywords
-  '((ess-S-fl-keyword:prompt   . t)
-    (ess-S-fl-keyword:input-line)
+(defvar inferior-R-font-lock-keywords
+  '(;; (ess-S-fl-keyword:prompt   . t) ;; comint does that
+    ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props :(
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
     (ess-R-fl-keyword:keywords  . t)
@@ -2120,7 +2126,7 @@ default.")
 
 (defvar ess-S-common-font-lock-keywords nil
   "
-NOT used. See `inferior-ess-S-font-lock-keywords'")
+NOT used. See `inferior-S-font-lock-keywords'")
 (make-obsolete-variable 'ess-S-common-font-lock-keywords nil "ESS[12.09]")
 
 
@@ -2129,10 +2135,8 @@ NOT used. See `inferior-ess-S-font-lock-keywords'")
         'font-lock-constant-face)
   "Inferior-ess problems or errors.")
 
-(defvar inferior-ess-S-font-lock-keywords
-  '((ess-S-fl-keyword:prompt   . t)
-    (ess-S-fl-keyword:input-line)
-    (ess-S-fl-keyword:modifiers . t)
+(defvar inferior-S-font-lock-keywords
+  '((ess-S-fl-keyword:modifiers . t)
     (ess-S-fl-keyword:fun-defs  . t)
     (ess-S-fl-keyword:keywords  . t)
     (ess-S-fl-keyword:assign-ops        . t)
