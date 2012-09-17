@@ -67,6 +67,58 @@
 	    (eq 'font-lock-comment-face face)))
 	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
 
+
+(defun ess--extract-default-fl-keywords (keywords)
+  "Extract the t-keywords from `ess-font-lock-keywords'."
+  (delq nil (mapcar (lambda (c)
+                      (when (cdr c) (symbol-value (car c))))
+                    (if (symbolp keywords)
+                        (symbol-value keywords)
+                      keywords))))
+
+(defun ess-font-lock-toggle-keyword (keyword)
+  (interactive
+   (list (intern (ess-completing-read
+                  "Keyword to toggle"
+                  (mapcar (lambda (el) (symbol-name (car el)))
+                          (symbol-value ess-font-lock-keywords))
+                  nil t))))
+  (let* ((kwds (symbol-value (if (eq major-mode 'ess-mode)
+                                 ess-font-lock-keywords
+                               inferior-ess-font-lock-keywords)))
+         (kwd (assoc keyword kwds)))
+    (unless kwd (error "Keyword %s was not found in (inferior-)ess-font-lock-keywords list" keyword))
+    (if (cdr kwd)
+        (setcdr kwd nil)
+      (setcdr kwd t))
+    (let ((mode major-mode)
+          (dialect ess-dialect)
+          (fld (ess--extract-default-fl-keywords kwds)))
+      ;; refresh font-lock defaults in all necessary buffers
+      (mapc (lambda (b)
+              (with-current-buffer b
+                (when (and (eq major-mode mode)
+                           (eq ess-dialect dialect))
+                  (setcar font-lock-defaults fld)
+                  (font-lock-refresh-defaults))))
+            (buffer-list)))))
+
+
+(defun ess-generate-font-lock-submenu (menu)
+  "Internal, used to generate ESS font-lock submenu"
+  (mapcar (lambda (el)
+            `[,(symbol-name (car el))
+              (lambda () (interactive)
+                (ess-font-lock-toggle-keyword ',(car el)))
+              :style toggle
+              :enable t
+              :selected ,(cdr el)])
+          (cond ((eq major-mode 'ess-mode)
+                 (symbol-value ess-font-lock-keywords))
+                ((eq major-mode 'inferior-ess-mode)
+                 (symbol-value inferior-ess-font-lock-keywords)))))
+
+
 (defun ess-quote-special-chars (string)
   (replace-regexp-in-string
    "\"" "\\\\\\&"

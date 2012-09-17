@@ -292,39 +292,6 @@
     ))
 
 
-(defun ess-font-lock-toggle-keyword (keyword)
-  (interactive
-   (list (intern (ess-completing-read
-                  "Keyword to toggle"
-                  (mapcar (lambda (el) (symbol-name (car el)))
-                            (symbol-value ess-font-lock-keywords))
-                  nil t))))
-  
-  (let* ((kwds (symbol-value (if (eq major-mode 'ess-mode)
-                                 ess-font-lock-keywords
-                               inferior-ess-font-lock-keywords)))
-         (kwd (assoc keyword kwds)))
-    (unless kwd (error "Keyword %s was not found in (inferior-)ess-font-lock-keywords list" keyword))
-    (if (cdr kwd)
-        (setcdr kwd nil)
-      (setcdr kwd t))
-    (setcar font-lock-defaults (ess--extract-default-fl-keywords kwds))
-    (font-lock-refresh-defaults)))
-        
-  
-(defun ess-generate-font-lock-submenu (menu)
-  "Internal, used to generate ESS font-lock submenu"
-  (mapcar (lambda (el)
-            `[,(symbol-name (car el))
-              (lambda () (interactive)
-                (ess-font-lock-toggle-keyword ',(car el)))
-              :style toggle
-              :enable t
-              :selected ,(cdr el)])
-          (cond ((eq major-mode 'ess-mode)
-                 (symbol-value ess-font-lock-keywords))
-                ((eq major-mode 'inferior-ess-mode)
-                 (symbol-value inferior-ess-font-lock-keywords)))))
 
 ;; (defun test-gen-menu (men)
 ;;   '(
