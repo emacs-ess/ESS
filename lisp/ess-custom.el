@@ -1965,8 +1965,8 @@ for an example.")
 
 
 (defvar ess-fl-keyword:operators
-  (cons "[=+-></%]" 'font-lock-constant-face)
-  "Operators")
+  (cons "[-=+></%]+" 'font-lock-constant-face)
+  "Operators.")
 
 
 ;;; fl-keywords S
