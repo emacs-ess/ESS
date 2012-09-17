@@ -300,13 +300,15 @@
                             (symbol-value ess-font-lock-keywords))
                   nil t))))
   
-  (let* ((kwds (symbol-value ess-font-lock-keywords))
+  (let* ((kwds (symbol-value (if (eq major-mode 'ess-mode)
+                                 ess-font-lock-keywords
+                               inferior-ess-font-lock-keywords)))
          (kwd (assoc keyword kwds)))
-    (unless kwd (error "Keyword %s was not found in ess-font-lock-keywords" keyword))
+    (unless kwd (error "Keyword %s was not found in (inferior-)ess-font-lock-keywords list" keyword))
     (if (cdr kwd)
         (setcdr kwd nil)
       (setcdr kwd t))
-    (setcar font-lock-defaults (ess--extract-default-fl-keywords ess-font-lock-keywords))
+    (setcar font-lock-defaults (ess--extract-default-fl-keywords kwds))
     (font-lock-refresh-defaults)))
         
   
@@ -319,13 +321,16 @@
               :style toggle
               :enable t
               :selected ,(cdr el)])
-          (symbol-value ess-font-lock-keywords)))
+          (cond ((eq major-mode 'ess-mode)
+                 (symbol-value ess-font-lock-keywords))
+                ((eq major-mode 'inferior-ess-mode)
+                 (symbol-value inferior-ess-font-lock-keywords)))))
 
-(defun test-gen-menu (men)
-  '(
-    ["About editing" (ess-goto-info "Editing")  t]
-    ["Read ESS info" (ess-goto-info "") t]
-    ["Send bug report"  ess-submit-bug-report           t]))
+;; (defun test-gen-menu (men)
+;;   '(
+;;     ["About editing" (ess-goto-info "Editing")  t]
+;;     ["Read ESS info" (ess-goto-info "") t]
+;;     ["Send bug report"  ess-submit-bug-report           t]))
 
 (defun SAS-menu ()
   "Start SAS from the menu."

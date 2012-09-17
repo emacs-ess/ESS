@@ -1893,6 +1893,10 @@ for `ess-eval-region'."
     ["Enter S command"        ess-execute                   t]
     ["Attach directory"       ess-execute-attach            t]
     "------"
+    ("Font Lock..."
+     :active inferior-ess-font-lock-keywords
+     :filter ess-generate-font-lock-submenu)
+    "------"
     ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
