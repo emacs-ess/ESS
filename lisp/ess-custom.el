@@ -1967,6 +1967,7 @@ for example.")
 (defvar ess-fl-keyword:=
   (cons "=" 'font-lock-constant-face)
   "=")
+
 (defvar ess-fl-keyword:operators
   (cons "[=+-></%]" 'font-lock-constant-face)
   "Operators")
@@ -1978,11 +1979,11 @@ for example.")
         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers")
 
-(defvar ess-S-fl-keyword:fun-decl
+(defvar ess-S-fl-keyword:fun-defs
   (cons ess-S-function-name-regexp 
         '(1 font-lock-function-name-face t)  ; override
         )
-  "Font-lock fun-name keyword.")
+  "Font-lock function deffinitions keyword.")
 
 (defvar ess-S-fl-keyword:keywords
   (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
@@ -1998,33 +1999,23 @@ for example.")
   "Font-lock constants keyword.")
 
 
-(defvar ess-S-font-lock-available-keywords
-  '(ess-S-fl-keyword:modifiers
-    ess-S-fl-keyword:fun-decl
-    ess-S-fl-keyword:keywords
-    ess-S-fl-keyword:assign-ops
-    ess-S-fl-keyword:constants
-    ess-fl-keyword:fun-calls
-    ess-fl-keyword:numbers
-    ess-fl-keyword:operators
-    ess-fl-keyword:parentheses
-    ess-fl-keyword:=
+(defvar ess-S-font-lock-keywords
+  '((ess-S-fl-keyword:modifiers . t)
+    (ess-S-fl-keyword:fun-defs  . t)
+    (ess-S-fl-keyword:keywords  . t)
+    (ess-S-fl-keyword:assign-ops        . t)
+    (ess-S-fl-keyword:constants . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=)
     )
-  "Available font-lock keywords for R mode")
+  "An alist of available font-lock keywords for the S mode.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is activated by
+default or not.")
 
-
-(defcustom ess-S-font-lock-default-keywords
-  '(ess-S-fl-keyword:modifiers
-    ess-S-fl-keyword:fun-decl
-    ess-S-fl-keyword:keywords
-    ess-S-fl-keyword:assign-ops
-    ess-S-fl-keyword:constants)
-  "Default font-lock keywords for R mode
-  Default font-lock keywords for R mode. See
-`ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu)."
-  :group 'ess
-  :type '(repeat symbol))
 
 
 ;;; fl-keywords R
@@ -2033,11 +2024,11 @@ keywords (also availble from ESS menu)."
          'font-lock-constant-face)     ; modify search list or source (i.e. directives)
    "Font-lock keyword R modifiers")
 
-(defvar ess-R-fl-keyword:fun-decl
+(defvar ess-R-fl-keyword:fun-defs
    (cons ess-R-function-name-regexp 
          '(1 font-lock-function-name-face t)  ; override
          )
-   "Font-lock fun-name keyword.")
+   "Font-lock keyword - function defintions for R.")
 
 (defvar ess-R-fl-keyword:keywords
   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
@@ -2057,33 +2048,23 @@ keywords (also availble from ESS menu)."
   "Font-lock numbers")
 
 
-(defvar ess-R-font-lock-available-keywords
-  '(ess-R-fl-keyword:modifiers
-    ess-R-fl-keyword:fun-decl
-    ess-R-fl-keyword:keywords
-    ess-R-fl-keyword:assign-ops
-    ess-R-fl-keyword:constants
-    ess-fl-keyword:fun-calls
-    ess-fl-keyword:numbers
-    ess-fl-keyword:operators
-    ess-fl-keyword:parentheses
-    ess-fl-keyword:=
-    )
-  "Available font-lock keywords for R mode"
-  )
-
-(defcustom ess-R-font-lock-default-keywords
-  '(ess-R-fl-keyword:modifiers
-    ess-R-fl-keyword:fun-decl
-    ess-R-fl-keyword:keywords
-    ess-R-fl-keyword:assign-ops
-    ess-R-fl-keyword:constants)
-
-  "Default font-lock keywords for R mode. See
-`ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu)."
-  :group 'ess
-  :type '(repeat symbol))
+(defcustom ess-R-font-lock-keywords
+  '((ess-R-fl-keyword:modifiers  . t)
+    (ess-R-fl-keyword:fun-defs   . t)
+    (ess-R-fl-keyword:keywords   . t)
+    (ess-R-fl-keyword:assign-ops . t)
+    (ess-R-fl-keyword:constants  . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=))
+  "An alist of available font-lock keywords for the R mode.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is active by
+default."
+  :group 'R
+  :type 'alist)
 
 
 ;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case

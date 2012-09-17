@@ -203,7 +203,7 @@
     ;; sub menus
     "------"
     ("Font Lock..."
-     :active ess-font-lock-available-keywords
+     :active ess-font-lock-keywords
      :filter ess-generate-font-lock-submenu)
     "------"
     ("Eval and Go"
@@ -295,38 +295,31 @@
 (defun ess-font-lock-toggle-keyword (keyword)
   (interactive
    (list (intern (ess-completing-read
-                  "Keyword to toggle: "
-                  (mapcar 'symbol-name ess-font-lock-available-keywords)
+                  "Keyword to toggle"
+                  (mapcar (lambda (el) (symbol-name (car el)))
+                            (symbol-value ess-font-lock-keywords))
                   nil t))))
-  (if (memq keyword ess-font-lock-default-keywords)
-      (progn
-        (setq ess-font-lock-default-keywords
-              (delq keyword ess-font-lock-default-keywords))
-        (setcar font-lock-defaults
-                (eval `(list ,@ess-font-lock-default-keywords))))
-    (setq ess-font-lock-default-keywords
-          (push keyword ess-font-lock-default-keywords))
-    (setq ess-font-lock-default-keywords
-          ;; keep the same order as in available keyword
-          (delq nil (mapcar (lambda (el)
-                              (and (memq  el ess-font-lock-default-keywords)
-                                   el))
-                            ess-font-lock-available-keywords)))
-    (setcar font-lock-defaults
-            (eval `(list ,@ess-font-lock-default-keywords))))
-  (font-lock-refresh-defaults))
+  
+  (let* ((kwds (symbol-value ess-font-lock-keywords))
+         (kwd (assoc keyword kwds)))
+    (unless kwd (error "Keyword %s was not found in ess-font-lock-keywords" keyword))
+    (if (cdr kwd)
+        (setcdr kwd nil)
+      (setcdr kwd t))
+    (setcar font-lock-defaults (ess--extract-default-fl-keywords ess-font-lock-keywords))
+    (font-lock-refresh-defaults)))
         
   
 (defun ess-generate-font-lock-submenu (menu)
   "Internal, used to generate ESS font-lock submenu"
   (mapcar (lambda (el)
-            `[,(symbol-name el)
+            `[,(symbol-name (car el))
               (lambda () (interactive)
-                (ess-font-lock-toggle-keyword ',el))
+                (ess-font-lock-toggle-keyword ',(car el)))
               :style toggle
               :enable t
-              :selected ,(car (memq el ess-font-lock-default-keywords))])
-          ess-font-lock-available-keywords))
+              :selected ,(cdr el)])
+          (symbol-value ess-font-lock-keywords)))
 
 (defun test-gen-menu (men)
   '(
