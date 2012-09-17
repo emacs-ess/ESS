@@ -98,7 +98,6 @@
     (setcdr (assoc 'font-lock-defaults S-alist)
             (quote `(,(ess--extract-default-fl-keywords ess-S-font-lock-keywords)
                      nil nil ((?\. . "w") (?\_ . "w")))))
-            ;; (quote '(ess-S-mode-font-lock-keywords nil nil ((?\. . "w")))))
     ;;      ^^ extra quote is needed - why?
     ;; VS: because setcdr is a function and evaluates it's argument ;)
     (setcdr (assoc 'ess-font-lock-keywords S-alist)
@@ -165,7 +164,7 @@
      (ess-syntax-error-re
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
-     (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
+     (inferior-ess-font-lock-keywords . 'inferior-ess-S-font-lock-keywords)
      (ess-editor . S-editor)
      (ess-pager  . S-pager)
      )

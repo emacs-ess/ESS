@@ -640,9 +640,6 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
   (add-hook 'Rd-mode-hook 'turn-on-font-lock t)
   (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t))
 
-;; If nil, then don't font-lock the input
-;; if t, font-lock (default).
-(setq inferior-ess-font-lock-input t) ; from RMH
 
 ;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are
 ;;; often unnecessarily large. The framepop package makes such
