@@ -1,6 +1,6 @@
 ;;; ess-sp3-d.el --- S-PLUS 3.x customization
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>

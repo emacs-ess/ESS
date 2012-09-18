@@ -1,9 +1,9 @@
 ;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
-;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Doug Bates
@@ -280,7 +280,7 @@ See also `ess-use-ido'.
         (emacsp (featurep 'emacs)))
 
     ;; auto-complete
-    (when (and emacsp isR
+    (when (and emacsp 
                (require 'auto-complete nil 'no-error)
                (if inferior
                    (eq ess-use-auto-complete t)
@@ -289,7 +289,8 @@ See also `ess-use-ido'.
       ;; (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
       ;;         '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
       (add-to-list 'ac-sources 'ac-source-filename)
-      (add-to-list 'ac-sources 'ac-source-R))
+      (when isR 
+        (add-to-list 'ac-sources 'ac-source-R)))
 
     ;; eldoc)
     (require 'eldoc)

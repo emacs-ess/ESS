@@ -1,7 +1,7 @@
 ;;; ess-omg-l.el --- Support for editing Omega source code
 
 ;; Copyright (C) 1999--2001 A.J. Rossini.
-;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2002--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
@@ -269,9 +269,32 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
-    (font-lock-defaults           . '(ess-S-mode-font-lock-keywords
+    (font-lock-defaults           . '(ess-OMG-font-lock-defaults
                                       nil nil ((?\. . "w")))))
   "General options for Omegahat source files.")
+
+(defvar ess-OMG-font-lock-defaults
+  (append (list
+           (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
+           (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
+                 'font-lock-keyword-face))
+          (list
+           (cons (regexp-opt ess-S-assign-ops)
+                 'font-lock-constant-face)     ; assign
+           (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
+                 'font-lock-type-face)          ; constants
+           (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
+                 'font-lock-constant-face)     ; modify search list or source
+
+           (cons ess-S-function-name-regexp
+                 '(1 font-lock-function-name-face keep))
+                                        ; function name
+           (cons ess-function-call-regexp '(1 font-lock-function-name-face keep))
+                                        ; function calls
+           (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-function-name-face)
+                                        ;punctuation and parents  (same as function not to cause vidual disturbance)
+           ))        ; keywords
+  "Font-lock patterns used in `OMG' buffers.")
 
 
 ;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l.el !).

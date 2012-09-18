@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
-;; Copyright (C) 1998-2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998-2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -85,9 +85,8 @@
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (ess-font-lock-available-keywords    . ess-R-font-lock-available-keywords)
-    (ess-font-lock-default-keywords      . ess-R-font-lock-default-keywords)
-    (font-lock-defaults           . `(,(eval `(list ,@ess-R-font-lock-default-keywords))
+    (ess-font-lock-keywords       . 'ess-R-font-lock-keywords)
+    (font-lock-defaults           . `(,(ess--extract-default-fl-keywords ess-R-font-lock-keywords)
                                       nil nil ((?\. . "w") (?\_ . "w"))))
     )
   "General options for R source files.")
@@ -97,15 +96,12 @@
   ;; copy the R-list and modify :
   (let ((S-alist (copy-alist R-editing-alist)))
     (setcdr (assoc 'font-lock-defaults S-alist)
-            (quote `(,(eval `(list ,@ess-S-font-lock-default-keywords))
+            (quote `(,(ess--extract-default-fl-keywords ess-S-font-lock-keywords)
                      nil nil ((?\. . "w") (?\_ . "w")))))
-            ;; (quote '(ess-S-mode-font-lock-keywords nil nil ((?\. . "w")))))
     ;;      ^^ extra quote is needed - why?
     ;; VS: because setcdr is a function and evaluates it's argument ;)
-    (setcdr (assoc 'ess-font-lock-available-keywords S-alist)
-            (quote ess-S-font-lock-available-keywords))
-    (setcdr (assoc 'ess-font-lock-default-keywords S-alist)
-            (quote ess-S-font-lock-default-keywords))
+    (setcdr (assoc 'ess-font-lock-keywords S-alist)
+            (quote 'ess-S-font-lock-keywords))
     S-alist)
   "General options for editing S and S+ source files.")
 
@@ -168,7 +164,7 @@
      (ess-syntax-error-re
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
-     (inferior-ess-font-lock-keywords . inferior-ess-S-font-lock-keywords)
+     (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
      (ess-editor . S-editor)
      (ess-pager  . S-pager)
      )

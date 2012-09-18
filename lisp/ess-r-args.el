@@ -1,7 +1,7 @@
 ;;; ess-r-args.el --- Insert R function's arguments
 
 ;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
-;; Copyright (C) 2007 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2007 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; This file is part of ESS

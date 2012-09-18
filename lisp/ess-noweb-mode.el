@@ -4,7 +4,7 @@
 ;;     with a little help from Norman Ramsey <norman@bellcore.com>
 ;;                         and Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>
 ;;                         and A.J. Rossini <rossini@biostat.washington.edu>
-;; Copyright (C) 1999--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1999--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.

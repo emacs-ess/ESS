@@ -378,7 +378,7 @@ Options should be separated by value of `crm-default-separator'."
   (ess-rutils-mode))
 
 ;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
-;; Suggested by Rich Heiberger.
+;; Suggested by Richard M. Heiberger.
 (defcustom ess-rutils-keys t
   "Non-nil means activate ess-rutils keybindings and menu."
   :group 'ess-R

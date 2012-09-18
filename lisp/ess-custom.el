@@ -1,6 +1,6 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
@@ -387,18 +387,17 @@ nil: do nothing
 mild:  Replace TRUE, FALSE with T,F
 normal: Try mild + shorten the default values longer than 10 characters.
 strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
-aggressive: Try strong + truncate the doc string to fit into minibuffer.
+aggressive (or t): Try strong + truncate the doc string to fit into minibuffer.
 
 The default style is 'normal.
 
 Ess-eldoc also honors the value of
 `eldoc-echo-area-use-multiline-p'. If this variable is not t (the
-default), doc strings are truncated to fit into minibufer
-indifferent of the value of `ess-eldoc-abbreviation-style'. This
-allows a combination of different abbreviation styles with the
+default), doc strings are truncated to fit into minibufer. This
+allows the use of different abbreviation styles with the
 truncation."
   :group 'ess
-  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive))
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t))
   )
 
 
@@ -1860,11 +1859,13 @@ If you change the value of this variable, restart Emacs for it to take effect."
   :group 'ess
   :type 'boolean)
 
-(defcustom inferior-ess-font-lock-input t
-  "Non-nil means input is syntactically font-locked.
-If nil, input is in the `font-lock-variable-name-face'."
-  :group 'ess
-  :type 'boolean)
+(defvar inferior-ess-font-lock-input t
+  "
+
+This variable has no effect. Customize
+`inferior-ess-font-lock-keywords' directly.
+")
+(make-obsolete-variable 'inferior-ess-font-lock-input nil "ESS[12.09]")
 
 ;; "Reserved Words" -- part 1 --
 (defvar ess-RS-constants
@@ -1934,16 +1935,14 @@ If nil, input is in the `font-lock-variable-name-face'."
   )
 
 
-(defvar ess-font-lock-available-keywords nil
-  "A list of available font-lock keywords in the current buffer")
-(make-variable-buffer-local 'ess-font-lock-available-keywords)
+(defvar ess-font-lock-keywords nil
+  "Internal. Holds a name of the dialect sepcific font-lock
+keywords in the current buffer. See `ess-R-font-lock-keywords'
+for an example.")
+(make-variable-buffer-local 'ess-font-lock-keywords)
 
-(defvar ess-font-lock-default-keywords nil
-  "A list of default font-lock keywords in the current buffer")
-(make-variable-buffer-local 'ess-font-lock-default-keywords)
 
 ;;; fl-keywords general
-
 (defvar ess-function-call-regexp
   "\\(\\sw+\\)("
   "Regexp for function names for R")
@@ -1953,7 +1952,7 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font lock for function calls.")
 
 (defvar ess-fl-keyword:numbers
-  (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
+  (cons "\\b\\.?[0-9]+[.eEL]?[0-9]*\\b" 'ess-numbers-face)
   "Numbers")
 
 (defvar ess-fl-keyword:parentheses
@@ -1963,9 +1962,11 @@ If nil, input is in the `font-lock-variable-name-face'."
 (defvar ess-fl-keyword:=
   (cons "=" 'font-lock-constant-face)
   "=")
+
+
 (defvar ess-fl-keyword:operators
-  (cons "[=+-></%]" 'font-lock-constant-face)
-  "Operators")
+  (cons "[-=+></%]+" 'font-lock-constant-face)
+  "Operators.")
 
 
 ;;; fl-keywords S
@@ -1974,11 +1975,11 @@ If nil, input is in the `font-lock-variable-name-face'."
         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers")
 
-(defvar ess-S-fl-keyword:fun-decl
+(defvar ess-S-fl-keyword:fun-defs
   (cons ess-S-function-name-regexp 
         '(1 font-lock-function-name-face t)  ; override
         )
-  "Font-lock fun-name keyword.")
+  "Font-lock function deffinitions keyword.")
 
 (defvar ess-S-fl-keyword:keywords
   (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
@@ -1994,33 +1995,25 @@ If nil, input is in the `font-lock-variable-name-face'."
   "Font-lock constants keyword.")
 
 
-(defvar ess-S-font-lock-available-keywords
-  '(ess-S-fl-keyword:modifiers
-    ess-S-fl-keyword:fun-decl
-    ess-S-fl-keyword:keywords
-    ess-S-fl-keyword:assign-ops
-    ess-S-fl-keyword:constants
-    ess-fl-keyword:fun-calls
-    ess-fl-keyword:numbers
-    ess-fl-keyword:operators
-    ess-fl-keyword:parentheses
-    ess-fl-keyword:=
+(defcustom ess-S-font-lock-keywords
+  '((ess-S-fl-keyword:modifiers . t)
+    (ess-S-fl-keyword:fun-defs  . t)
+    (ess-S-fl-keyword:keywords  . t)
+    (ess-S-fl-keyword:assign-ops        . t)
+    (ess-S-fl-keyword:constants . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=)
     )
-  "Available font-lock keywords for R mode")
+  "An alist of available font-lock keywords for the S mode.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is activated by
+default or not."
+  :group 'ess-S
+  :type 'alist)
 
-
-(defcustom ess-S-font-lock-default-keywords
-  '(ess-S-fl-keyword:modifiers
-    ess-S-fl-keyword:fun-decl
-    ess-S-fl-keyword:keywords
-    ess-S-fl-keyword:assign-ops
-    ess-S-fl-keyword:constants)
-  "Default font-lock keywords for R mode
-  Default font-lock keywords for R mode. See
-`ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu)."
-  :group 'ess
-  :type '(repeat symbol))
 
 
 ;;; fl-keywords R
@@ -2029,11 +2022,11 @@ keywords (also availble from ESS menu)."
          'font-lock-constant-face)     ; modify search list or source (i.e. directives)
    "Font-lock keyword R modifiers")
 
-(defvar ess-R-fl-keyword:fun-decl
+(defvar ess-R-fl-keyword:fun-defs
    (cons ess-R-function-name-regexp 
          '(1 font-lock-function-name-face t)  ; override
          )
-   "Font-lock fun-name keyword.")
+   "Font-lock keyword - function defintions for R.")
 
 (defvar ess-R-fl-keyword:keywords
   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
@@ -2052,108 +2045,124 @@ keywords (also availble from ESS menu)."
   (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
   "Font-lock numbers")
 
+(defvar ess-R-fl-keyword:F&T
+  (cons "\\b[FT]\\b" 'font-lock-type-face)
+  "Highlith T and F in addition to TRUE and FALSE in R.")
 
-(defvar ess-R-font-lock-available-keywords
-  '(ess-R-fl-keyword:modifiers
-    ess-R-fl-keyword:fun-decl
-    ess-R-fl-keyword:keywords
-    ess-R-fl-keyword:assign-ops
-    ess-R-fl-keyword:constants
-    ess-fl-keyword:fun-calls
-    ess-fl-keyword:numbers
-    ess-fl-keyword:operators
-    ess-fl-keyword:parentheses
-    ess-fl-keyword:=
+
+(defcustom ess-R-font-lock-keywords
+  '((ess-R-fl-keyword:modifiers  . t)
+    (ess-R-fl-keyword:fun-defs   . t)
+    (ess-R-fl-keyword:keywords   . t)
+    (ess-R-fl-keyword:assign-ops . t)
+    (ess-R-fl-keyword:constants  . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=)
+    (ess-R-fl-keyword:F&T))
+  "An alist of available font-lock keywords for the R mode.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is active by
+default."
+  :group 'ess-R
+  :type 'alist)
+
+
+(defvar inferior-ess-font-lock-keywords nil
+  "Internal. Holds a name of the dialect sepcific font-lock
+keywords in the current buffer. See
+`inferior-R-font-lock-keywords' for an example.")
+(make-variable-buffer-local 'inferior-ess-font-lock-keywords)
+
+(defvar inferior-ess-font-lock-defaults nil
+  "Internal. Holds dialect sepcific font-lock defaults in the
+current buffer. Old system. From ESS[12.09] switched to new
+system described in `inferior-ess-font-lock-keywords'.")
+(make-variable-buffer-local 'inferior-ess-font-lock-defaults)
+
+(defvar comint-highlight-prompt 'comint-highlight-prompt)
+;; needed for proper font-lock
+
+(defvar ess-S-fl-keyword:prompt
+  (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
+  "Highlith prompts missed by comint.")
+
+;; (defvar ess-S-fl-keyword:input-line
+;;   (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
+
+(defvar ess-fl-keyword:matrix-labels
+  (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face)
+  "Matrix and vector numeric labels.
+") ;; also matches subsetting
+
+(defvar ess-R-fl-keyword:messages 
+  (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
+        'font-lock-constant-face)
+  "Inferior-ess problems or errors.")
+
+(defcustom inferior-R-font-lock-keywords
+  '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts 
+    ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
+    (ess-R-fl-keyword:modifiers . t)
+    (ess-R-fl-keyword:fun-defs  . t)
+    (ess-R-fl-keyword:keywords  . t)
+    (ess-R-fl-keyword:assign-ops        . t)
+    (ess-R-fl-keyword:constants . t)
+    (ess-R-fl-keyword:messages  . t)
+    (ess-fl-keyword:matrix-labels        . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=)
+    (ess-R-fl-keyword:F&T)
+    ;;VS[17-09-2012]: what is this matching?
+    ;; (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
+
+    ;; (cons "#" 'font-lock-comment-face) ; comment
+    ;; (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
     )
-  "Available font-lock keywords for R mode"
+  "Font-lock patterns (alist) used in inferior-R-mode buffers.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is active by
+default."
+  :group 'ess-R
+  :type 'alist
   )
 
-(defcustom ess-R-font-lock-default-keywords
-  '(ess-R-fl-keyword:modifiers
-    ess-R-fl-keyword:fun-decl
-    ess-R-fl-keyword:keywords
-    ess-R-fl-keyword:assign-ops
-    ess-R-fl-keyword:constants)
 
-  "Default font-lock keywords for R mode. See
-`ess-R-font-lock-available-keywords' for all available
-keywords (also availble from ESS menu)."
-  :group 'ess
-  :type '(repeat symbol))
+(defvar ess-S-common-font-lock-keywords nil
+  "
+NOT used. See `inferior-S-font-lock-keywords'")
+(make-obsolete-variable 'ess-S-common-font-lock-keywords nil "ESS[12.09]")
 
 
-;; VS[18-08-2012]: adding temporarly, remove and make -defaults as in R case
-(defvar inferior-ess-font-lock-keywords nil) 
+(defvar ess-S-fl-keyword:messages 
+  (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
+        'font-lock-constant-face)
+  "Inferior-ess problems or errors.")
 
-(defvar inferior-ess-R-font-lock-keywords
-  (append
-   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
-
-   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
-       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-                   '(1 font-lock-variable-name-face keep t))))
-
-   (eval `(list ,@ess-R-font-lock-default-keywords))
-
-   (list
-    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
-    (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels VS: this causes havoc
-    (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
-          'font-lock-constant-face) ; inferior-ess problems or errors
-    (cons "#" 'font-lock-comment-face) ; comment
-    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
-    ))
-  "Font-lock patterns used in inferior-R-mode buffers.")
-
-
-(defvar ess-S-common-font-lock-keywords
-  (list
-   (cons (regexp-opt ess-S-assign-ops)
-         'font-lock-constant-face)     ; assign
-   (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
-         'font-lock-type-face)          ; constants
-   (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
-         'font-lock-constant-face)     ; modify search list or source
-
-   (cons ess-S-function-name-regexp
-         '(1 font-lock-function-name-face keep))
-                                        ; function name
-   (cons ess-function-call-regexp '(1 font-lock-function-name-face keep))
-                                        ; function calls
-   (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-function-name-face)
-                                        ;punctuation and parents  (same as function not to cause vidual disturbance)
-   )
-  "Font-lock patterns used in `S-mode' and S-output buffers.")
-
-(defvar ess-S-mode-font-lock-keywords
-  (append (list
-           (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
-           (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-                 'font-lock-keyword-face))
-          ess-S-common-font-lock-keywords)        ; keywords
-  "Font-lock patterns used in `S-mode' buffers.")
-
-
-
-(defvar inferior-ess-S-font-lock-keywords
-  (append
-   '(("^[a-zA-Z0-9 ]*[>+]" . font-lock-keyword-face)) ; "prompt" must be first
-
-   (if (not inferior-ess-font-lock-input) ;; don't font-lock input :
-       (list (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)"
-                   '(1 font-lock-variable-name-face keep t))) )
-
-   (eval `(list ,@ess-S-font-lock-default-keywords))
-
-   (list
-    (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face) ; ess-mode msg
-    ;; (cons "\\[,?[1-9][0-9]*,?\\]" 'font-lock-constant-face);Vector/matrix labels
-    (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
-          'font-lock-constant-face) ; inferior-ess problems or errors
-    (cons "#" 'font-lock-comment-face)  ; comment
-    (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
-    ))
-  "Font-lock patterns used in inferior-S-mode buffers.")
+(defcustom inferior-S-font-lock-keywords
+  '((ess-S-fl-keyword:prompt    . t)
+    (ess-S-fl-keyword:modifiers . t)
+    (ess-S-fl-keyword:fun-defs  . t)
+    (ess-S-fl-keyword:keywords  . t)
+    (ess-S-fl-keyword:assign-ops        . t)
+    (ess-S-fl-keyword:constants . t)
+    (ess-S-fl-keyword:messages  . t)
+    (ess-fl-keyword:fun-calls)
+    (ess-fl-keyword:numbers)
+    (ess-fl-keyword:operators)
+    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:=))
+  "Font-lock patterns used in inferior-S-mode buffers.
+The key of each cons cell is a name of the keyword. The value
+should be t or nil to indicate if the keyword is active by
+default."
+  :group 'ess-S
+  :type 'alist)
 
 ;; use the inferior-* ones directly in ess-trns.el
 ;; (defvar ess-trans-font-lock-keywords

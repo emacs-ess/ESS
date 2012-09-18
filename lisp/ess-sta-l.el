@@ -1,7 +1,7 @@
 ;;; ess-sta-l.el --- Stata customization
 
 ;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;     Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Thomas Lumley <thomas@biostat.washington.edu>,
@@ -1130,7 +1130,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ))
 
 
-(defvar ess-STA-mode-font-lock-keywords (ado-set-font-lock-keywords)
+(defvar ess-STA-mode-font-lock-defaults (ado-set-font-lock-keywords)
   "Set the Stata mode font-lock keywords to Bill Rising's ado-mode keywords.")
 
 (defvar STA-editing-alist
@@ -1149,7 +1149,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . STA-syntax-table)
-    (font-lock-defaults           . '(ess-STA-mode-font-lock-keywords
+    (font-lock-defaults           . '(ess-STA-mode-font-lock-defaults
                                       nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
 

@@ -1,7 +1,7 @@
 ;;; ess-mode.el --- Support for editing ESS source code
 
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
-;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 ;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
@@ -199,13 +199,32 @@
     ["Load file"                ess-load-file t]
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
+    ["Eval region | line" ess-eval-region-or-line-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
     "------"
-    ("Font Lock..."
-     :active ess-font-lock-available-keywords
+    ("Font Lock"
+     :active ess-font-lock-keywords
      :filter ess-generate-font-lock-submenu)
     "------"
+    ("ESS Eval"
+     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
+     ["Eval region | line" ess-eval-region-or-line-and-step t]
+     "-----"
+     ["Eval buffer"     ess-eval-buffer                   t]
+     ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
+     ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
+     ["Eval region"     ess-eval-region                   t]
+     ["Eval function"   ess-eval-function                 t]
+     ["Eval line"       ess-eval-line                     t]
+     ["Eval line & step" ess-eval-line-and-step            t]
+     ["Eval paragraph"   ess-eval-paragraph                t]
+     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
+     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
+     ["About"           (ess-goto-info "Evaluating code") t]
+     )
     ("Eval and Go"
      ["Eval buffer"     ess-eval-buffer-and-go            t]
      ["Eval region"     ess-eval-region-and-go            t]
@@ -216,29 +235,12 @@
      ["Eval thread"     ess-eval-thread-and-go   ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
-    ("ESS Eval"
-     ["Eval buffer"     ess-eval-buffer                   t]
-     ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
-     ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
-     ["Eval region"     ess-eval-region                   t]
-     ["Eval function"   ess-eval-function                 t]
-     ["Eval line"       ess-eval-line                     t]
-     ["Eval line & step" ess-eval-line-and-step            t]
-     ["Eval paragraph"   ess-eval-paragraph                t]
-     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
-     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
-     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
-     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
-     ["About"           (ess-goto-info "Evaluating code") t]
-     )
-    ("Motion..."
+    ("Motion"
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
      ["Beginning of function or para"   ess-goto-beginning-of-function-or-para       t]
      ["End of function or para"         ess-goto-end-of-function-or-para             t]
-     )
-    ("ESS list..."
+     "-----"
      ["Backward list"           backward-list                   t]
      ["Forward list"            forward-list                    t]
      ["Next parenthesis"                down-list                       t]
@@ -259,14 +261,6 @@
      ["Undo"              undo                                  t]
      ["About"             (ess-goto-info "Edit buffer")         t]
      )
-    ("Roxygen"
-     ["Update/Generate Template" ess-roxy-update-entry           t]
-     ["Preview Rd"        ess-roxy-preview-Rd                    t]
-     ["Preview HTML"      ess-roxy-preview-HTML                  t]
-     ["Preview text"      ess-roxy-preview-text                  t]
-     ["Hide all"          ess-roxy-hide-all                      t]
-     ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
-     )
     ("Start Process"
      ;; SJE - :help not yet recognised in XEmacs.
      ["R"     R   t] ;; :help "Start a new R process" :active t
@@ -285,6 +279,9 @@
      )
     ["Switch Process"   ess-switch-process              t]
     "------"
+    ("start-dev" :visible nil)
+    ("end-dev" :visible nil)
+    "------"
     ["Describe"         describe-mode                   t]
     ["About editing" (ess-goto-info "Editing")  t]
     ["Read ESS info" (ess-goto-info "") t]
@@ -292,47 +289,12 @@
     ))
 
 
-(defun ess-font-lock-toggle-keyword (keyword)
-  (interactive
-   (list (intern (ess-completing-read
-                  "Keyword to toggle: "
-                  (mapcar 'symbol-name ess-font-lock-available-keywords)
-                  nil t))))
-  (if (memq keyword ess-font-lock-default-keywords)
-      (progn
-        (setq ess-font-lock-default-keywords
-              (delq keyword ess-font-lock-default-keywords))
-        (setcar font-lock-defaults
-                (eval `(list ,@ess-font-lock-default-keywords))))
-    (setq ess-font-lock-default-keywords
-          (push keyword ess-font-lock-default-keywords))
-    (setq ess-font-lock-default-keywords
-          ;; keep the same order as in available keyword
-          (delq nil (mapcar (lambda (el)
-                              (and (memq  el ess-font-lock-default-keywords)
-                                   el))
-                            ess-font-lock-available-keywords)))
-    (setcar font-lock-defaults
-            (eval `(list ,@ess-font-lock-default-keywords))))
-  (font-lock-refresh-defaults))
-        
-  
-(defun ess-generate-font-lock-submenu (menu)
-  "Internal, used to generate ESS font-lock submenu"
-  (mapcar (lambda (el)
-            `[,(symbol-name el)
-              (lambda () (interactive)
-                (ess-font-lock-toggle-keyword ',el))
-              :style toggle
-              :enable t
-              :selected ,(car (memq el ess-font-lock-default-keywords))])
-          ess-font-lock-available-keywords))
 
-(defun test-gen-menu (men)
-  '(
-    ["About editing" (ess-goto-info "Editing")  t]
-    ["Read ESS info" (ess-goto-info "") t]
-    ["Send bug report"  ess-submit-bug-report           t]))
+;; (defun test-gen-menu (men)
+;;   '(
+;;     ["About editing" (ess-goto-info "Editing")  t]
+;;     ["Read ESS info" (ess-goto-info "") t]
+;;     ["Send bug report"  ess-submit-bug-report           t]))
 
 (defun SAS-menu ()
   "Start SAS from the menu."

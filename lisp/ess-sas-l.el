@@ -1,6 +1,6 @@
 ;;; ess-sas-l.el --- SAS customization
 
-;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Authors: Richard M. Heiberger
@@ -250,7 +250,7 @@ number."
 ;;; ...
 
 
-(defvar SAS-mode-font-lock-keywords
+(defvar SAS-mode-font-lock-defaults
   (if ess-sas-run-regexp-opt
       (list
        ;; .log NOTE: messages
@@ -777,7 +777,7 @@ number."
     (tab-stop-list                . ess-sas-tab-stop-list)
     (ess-mode-syntax-table        . SAS-syntax-table)
     (font-lock-keywords-case-fold-search . t)
-    (font-lock-defaults           . '(SAS-mode-font-lock-keywords)))
+    (font-lock-defaults           . '(SAS-mode-font-lock-defaults)))
   "General options for editing SAS source files.")
 
 (defun beginning-of-sas-statement (arg &optional comment-start)

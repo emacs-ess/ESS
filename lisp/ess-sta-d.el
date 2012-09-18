@@ -1,7 +1,7 @@
 ;;; ess-sta-d.el --- Stata customization
 
 ;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -53,7 +53,7 @@
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
-    (inferior-ess-font-lock-keywords . ess-STA-mode-font-lock-keywords)
+    (inferior-ess-font-lock-defaults . ess-STA-mode-font-lock-defaults)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 

@@ -163,7 +163,6 @@ Use `add-hook' to insert append your functions to this list.
     (define-key ess-tracebug-map "7" 'ess-dbg-singlekey-command)
     (define-key ess-tracebug-map "8" 'ess-dbg-singlekey-command)
     (define-key ess-tracebug-map "9" 'ess-dbg-singlekey-command)
-    (define-key ess-tracebug-map "s" 'ess-tracebug-source-current-file)
     (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
     ess-tracebug-map)
   "Keymap used as a binding for `ess-tracebug-prefix' key
@@ -247,15 +246,15 @@ Default ess-tracebug key bindings:
  C-n . Goto next BP                     . `ess-bp-next'
  C-p . Goto previous BP                 . `ess-bp-previous'
 
-* General Debugging:
+* Debugging:
 
  `   . Show R Traceback                     . `ess-show-R-traceback'
  e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
  d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
 
-* Navigation to errors (emacs general functionality):
+* Navigation to errors (general emacs functionality):
 
  C-x `, M-g n   . `next-error'
  M-g p          . `previous-error'
@@ -269,15 +268,16 @@ Default ess-tracebug key bindings:
  1..9. Enter recover frame       . `ess-dbg-command-digit'
  0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
 
-* Input Ring:
-
- i   . Goto input event marker forwards     . `ess-dbg-goto-input-event-marker'
- I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
-
 * Misc:
- s   . Source current file      . `ess-tracebug-source-current-file'
  ?   . Show this help           . `ess-tracebug-show-help'
 ")
+
+
+;; * Input Ring:
+
+;; i   . Goto input event marker forwards     . `ess-dbg-goto-input-event-marker'
+;; I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
+
 
 (defun ess-tracebug-show-help (&optional ev)
   (interactive)
@@ -316,7 +316,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
   ;; `ess-dbg-start' respectively.
 
   (interactive "P")
-  (ess-force-buffer-current "R process to activate the tracebug mode: ")
+  (ess-force-buffer-current "R process to activate tracebug in: ")
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
     (when (equal ess-dialect "R")
       (setq arg
@@ -347,7 +347,8 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
                   (define-key inferior-ess-mode-map ess-tracebug-prefix ess-tracebug-map)
                   (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map)
                   )
-              (message "`ess-tracebug-prefix' is not defined, tracebug bindings are not active ..."))
+              ;; (message "`ess-tracebug-prefix' is not defined, tracebug bindings are not active ..."))
+              )
             (run-hooks 'ess-tracebug-enter-hook)
             (ess-process-put 'tracebug t)
             (message "ess-tracebug mode enabled"))
@@ -364,6 +365,8 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
           (message "ess-tracebug mode disabled")
           ))
       )))
+
+(defalias 'ess-toggle-tracebug 'ess-tracebug)
 
 
 ;;;_* TRACEBACK
@@ -477,17 +480,17 @@ in inferior buffers.  ")
 (defun ess-tb-start ()
   "Start traceback session "
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
-    (unless (member ess-dialect '("R" "julia"))
-      (error "Can not activate the debuger for %s dialect" ess-dialect))
-    (make-local-variable 'compilation-error-regexp-alist)
-    (setq compilation-error-regexp-alist ess-error-regexp-alist)
+    (unless ess-error-regexp-alist
+      (error "Can not activate the traceback for %s dialect" ess-dialect))
+    (set (make-local-variable 'compilation-error-regexp-alist)
+         ess-error-regexp-alist)
     (compilation-setup t)
     (setq next-error-function 'ess-tb-next-error-function)
     ;; new locals
     (make-local-variable 'ess-tb-last-input)
     (make-local-variable 'ess-tb-last-input-overlay)
     (make-local-variable 'compilation-search-path)
-    (setq compilation-search-path ess-dbg-search-path) ;; todo: make this dialect specific
+    (setq compilation-search-path ess-tracebug-search-path) ;; todo: make this dialect specific
     (ess-tracebug--set-left-margin)
     (save-excursion
       (goto-char comint-last-input-start)
@@ -576,7 +579,7 @@ You can bind 'no-select' versions of this commands:
       (make-local-variable 'compilation-error-regexp-alist)
       (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
       (make-local-variable 'compilation-search-path)
-      (setq compilation-search-path ess-dbg-search-path)
+      (setq compilation-search-path ess-tracebug-search-path)
       (compilation-minor-mode 1)
       (setq next-error-function 'ess-tb-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
@@ -727,14 +730,15 @@ help ?options for more details."
   "Last debug reference in *ess.dbg* buffer (a marker).")
 (make-variable-buffer-local 'ess-dbg-last-ref-marker)
 
-(defcustom ess-dbg-search-path '(nil)
+(defcustom ess-tracebug-search-path '(nil)
   "List of directories to search for source files.
 Elements should be directory names, not file names of directories.
 "
   :type '(repeat (choice (const :tag "Default" nil)
                          (string :tag "Directory")))
   :group 'ess-debug)
-
+(defalias 'ess-dbg-search-path 'ess-tracebug-search-path)
+(make-obsolete 'ess-dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")
 
 (defvar ess-dbg-buf-p nil
   "This is t in ess.dbg buffers.")
@@ -1338,8 +1342,8 @@ TB-INDEX is not found return nil.
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess-dbg-ask-for-file' is non-nil.  Search the directories in
-`ess-dbg-search-path'."
-  (let ((dirs ess-dbg-search-path)
+`ess-tracebug-search-path'."
+  (let ((dirs ess-tracebug-search-path)
         (spec-dir default-directory)
         (is-org)
         ;; add current dir of ess here :TODO:
@@ -2122,7 +2126,7 @@ This is the trigger function.  See documentation of
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
         (pname ess-local-process-name)
-        (alist (ess-local-customize-alist)))
+        (alist (symbol-value ess-local-customize-alist)))
     (set-buffer wbuf)
     (ess-setq-vars-local alist)
     (setq ess-local-process-name pname)

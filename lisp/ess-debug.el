@@ -1,7 +1,7 @@
 ;;; ess-debug.el --- debugging start up for ESS
 
 ;; Copyright (C) 1997--2001 A.J. Rossini
-;; Copyright (C) 2001--2006 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2001--2006 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>

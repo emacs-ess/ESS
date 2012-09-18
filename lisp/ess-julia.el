@@ -46,7 +46,7 @@
 
 (defvar julia-mode-hook nil)
 
-(add-to-list 'auto-mode-alist '("\\.j\\'\\|\\.jl\\'" . julia-mode))
+(add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
 
 (defvar julia-syntax-table
   (let ((table (make-syntax-table)))
@@ -109,7 +109,7 @@
       "\\[[0-9:, ]*\\]" )
 
 
-(defconst julia-font-lock-keywords
+(defconst julia-font-lock-defaults
   (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\)\\|Int\\(8\\|16\\|32\\|64\\)\\|Integer\\|Float\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexNum\\|Bool\\|Char\\|Number\\|Scalar\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Buffer\\|Size\\|Index\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|PtrInt\\|Long\\|Ulong\\)\\>" .
       font-lock-type-face)
     (cons
@@ -263,7 +263,7 @@
 ;;   (set-syntax-table julia-mode-syntax-table)
 ;;   (set (make-local-variable 'comment-start) "# ")
 ;;   (set (make-local-variable 'comment-start-skip) "#+\\s-*")
-;;   (set (make-local-variable 'font-lock-defaults) '(julia-font-lock-keywords))
+;;   (set (make-local-variable 'font-lock-defaults) '(julia-font-lock-defaults))
 ;; ;  (set (make-local-variable 'font-lock-syntactic-keywords)
 ;; ;      (list
 ;; ;       (list "\\(\\\\\\)\\s-*\".*?\"" 1 julia-mode-char-syntax-table)))
@@ -304,7 +304,7 @@
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     ;; (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+=[ \t\n]*function")
     (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(julia-font-lock-keywords))
+    (font-lock-defaults		  . '(julia-font-lock-defaults))
     )
   "General options for R source files.")
 
@@ -340,7 +340,7 @@
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
-    (inferior-ess-font-lock-keywords	. julia-font-lock-keywords)
+    (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
     (ess-get-help-topics-function	. 'julia-get-help-topics-function)
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")

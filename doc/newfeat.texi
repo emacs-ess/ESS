@@ -1,5 +1,28 @@
 @itemize @w{}
 
+Changes/New Features in 12.09:
+@itemize @bullet
+@item @ESS{[julia]}: @emph{new} mode
+ for editing julia code (@file{*.jl}); @kbd{M-x julia} and interacting with it.
+@item @ESS{[S]}: @kbd{C-c C-c}
+ (@code{ess-eval-function-or-paragraph-and-step}) is now smarter, e.g.,
+ stopping after the last line.
+@item @ESS{[R]}: new @code{ess-blink-region} feature denoting the region
+ which is evaluated when that region is ``computed'', e.g., when a function
+ or a paragraph is evaluated.
+
+@item @ESS{[R]} help: new @kbd{a} for ``apropos()''.
+@item @ESS{[R]}: ...
+@item @ESS{[R]}: ...
+@item @ESS{[R]}: @code{ess-developer} ....
+@item @ESS{[R]}: @code{ess-tracebug} ....
+@item @ESS{[R]}: updated menu entries
+
+@item @ESS{[SAS]}: ....
+  @code{ess-sas-rtf-portrait}
+
+@end itemize
+
 Changes/Bug Fixes in 12.04-3:
 @itemize @bullet
 @item @ESS{}: basic support for package.el compatibility

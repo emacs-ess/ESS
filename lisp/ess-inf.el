@@ -3,9 +3,9 @@
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997-1999 A.J. Rossini <rossini@u.washington.edu>,
 ;;      Martin Maechler <maechler@stat.math.ethz.ch>.
-;; Copyright (C) 2000--2010 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2000--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -659,15 +659,13 @@ Returns the name of the process, or nil if the current buffer has none."
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
 current ESS process."
-  (process-get (get-process (or ess-local-process-name
-                                ess-current-process-name)) propname))
+  (process-get (get-process ess-local-process-name) propname))
 
 
 (defun ess-process-put (propname value)
   "Set the variable PROPNAME (symbol) to VALUE in the plist of
 the current ESS process."
-  (process-put (get-process (or ess-local-process-name
-                                ess-current-process-name)) propname value))
+  (process-put (get-process ess-local-process-name) propname value))
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
@@ -1885,26 +1883,34 @@ for `ess-eval-region'."
   "Menu for use in Inferior S mode"
   '("iESS"
     ["What is this? (beta)"   ess-mouse-me                  t]
+    ["Quit"                 ess-quit                        t]
     ["Resynch S completions"  ess-resynch                   t]
-    ["Quit S"                 ess-quit                      t]
-    ["Display search list"    ess-execute-search            t]
-    ["Display object list"    ess-execute-objects           t]
-    ["Get help on S object"   ess-display-help-on-object    t]
-    ["Enter S command"        ess-execute                   t]
-    ["Attach directory"       ess-execute-attach            t]
-    "------"
-    ["Send and move"  ess-transcript-send-command-and-move  t]
+    ;; ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
-    "------"
     ["Jump to Error"  ess-parse-errors                      t]
-    ;; need a toggle switch for above, AJR.
-    ["Load source file" ess-load-file                      t]
-    ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+    ["Get help on S object"   ess-display-help-on-object    t]
+    "------"
+    ("Font Lock"
+     :active inferior-ess-font-lock-keywords
+     :filter ess-generate-font-lock-submenu)
+    "------"
+    ("Utils"
+     ["Enter S command"        ess-execute                   t]
+     ["Attach directory"       ess-execute-attach            t]
+     ["Display search list"    ess-execute-search            t]
+     ["Display object list"    ess-execute-objects           t]
+     ;; need a toggle switch for above, AJR.
+     ["Load source file" ess-load-file                      t]
+     ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+     )
+    "------"
+    ("start-dev" :visible nil)
+    ("end-dev" :visible nil)
     "------"
     ["Describe"         describe-mode                       t]
-    ["About"            (ess-goto-info "Entering Commands") t]
     ["Send bug report"  ess-submit-bug-report               t]
+    ["About"            (ess-goto-info "Entering Commands") t]
     ))
 
 
@@ -2030,7 +2036,11 @@ to continue it."
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
   (set (make-local-variable 'font-lock-defaults)
-       '(inferior-ess-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
+       (cond (inferior-ess-font-lock-defaults
+              '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
+             (inferior-ess-font-lock-keywords
+              `(,(ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)
+                nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))))
 
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22

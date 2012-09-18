@@ -1,7 +1,7 @@
 ;;; ess-sp4-d.el --- S-PLUS 4.x customization
 
 ;; Copyright (C) 1998--2002 Richard M. Heiberger <rmh@temple.edu>
-;; Copyright (C) 2003--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2003--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Richard M. Heiberger <rmh@temple.edu>

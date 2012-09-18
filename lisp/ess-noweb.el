@@ -1,7 +1,7 @@
 ;;; ess-noweb.el --- support for Literate Data Analysis
 
 ;; Copyright (C) 1999 Mark Lunt
-;; Copyright (C) 1999--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1999--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Mark Lunt <mark.lunt@mrc-bsu.cam.ac.uk>

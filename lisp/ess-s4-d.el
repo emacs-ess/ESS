@@ -1,6 +1,6 @@
 ;;; ess-s4-d.el --- S4 customization
 
-;; Copyright (C) 1997--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
@@ -102,7 +102,7 @@
 
 ;;; s4.el startup file
 ;;; Richard M. Heiberger
-;;; rmh@astro.ocis.temple.edu
+;;; rmh@temple.edu
 ;;
 ;;(load "S")
 ;;(setq inferior-S-program "/disk05/s4/betaJun96/S")

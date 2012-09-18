@@ -1,3 +1,13 @@
+2012-09-13  Richard M. Heiberger <rmh@temple.edu>
+	* ess-site.el add new customizable variable
+	(ess-directory-containing-R) to allow ess-r-versions-created to
+	find R exectuables on Windows in directories other than the
+	default install location.
+
+2012-09-13  Richard M. Heiberger <rmh@temple.edu>
+	* *.el files: uniformly changed my name to "Richard M. Heiberger"
+	and uniformly changed my email address to "rmh@temple.edu"
+
 2012-09-06  Sam Steingold  <sds@gnu.org>
 
 	* ess-custom.el (ess-source-directory): Init as per

@@ -2,11 +2,11 @@
 
 ;;; copied and edited from ess-s4-d.el - Richard M. Heiberger, April 2001
 
-;; Copyright (C) 2001 Richard M. Heiberger <rmh@sbm.temple.edu>
-;; Copyright (C) 2002--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2001 Richard M. Heiberger <rmh@temple.edu>
+;; Copyright (C) 2002--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Author: Richard M. Heiberger <rmh@sbm.temple.edu>
+;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: April 2001
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 

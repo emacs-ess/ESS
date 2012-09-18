@@ -1,6 +1,6 @@
 ;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.
 
-;; Copyright (C) 2002--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2002--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Stephen Eglen <stephen@anc.ed.ac.uk>

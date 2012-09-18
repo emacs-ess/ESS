@@ -1,8 +1,8 @@
 ;;; ess-swv.el --- Some simple functions for ESS and Sweave
 
-;; Copyright (C) 2005 David Whiting, A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 2005 David Whiting, A.J. Rossini, Richard M. Heiberger, Martin
 ;;     Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2006-2008 A.J. Rossini, Rich M. Heiberger, Martin Maechler,
+;; Copyright (C) 2006-2008 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;     Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: David Whiting <david.whiting@ncl.ac.uk>

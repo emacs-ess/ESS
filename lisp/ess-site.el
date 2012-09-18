@@ -1,7 +1,7 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2011 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1997--2012 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
@@ -58,6 +58,7 @@
 
 ;; provide here; otherwise we'll get infinite loops of (require ..):
 (provide 'ess-site)
+;;(require 'ess-sp6-d)
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
@@ -373,8 +374,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 
 ;; (1.5) Require the needed dialects for your setup.
-(if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
-    (setq max-specpdl-size 700))
 
 (ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
 (ess-message "[ess-site:] require 'ess-r-d ...")
@@ -463,12 +462,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
-(autoload 'ess-roxy-mode "ess-roxy"
-  "Insert and edit Roxygen tags for function definitions." t)
-;; if ever ess-roxy works for non- R ess modes, we will have
-;; (add-hook 'ess-mode-hook 'ess-roxy-mode)
-(add-hook 'R-mode-hook 'ess-roxy-mode)
-
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
@@ -534,28 +527,50 @@ sending `inferior-ess-language-start' to S-Plus.")
                                    (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
                                 (ess-s-versions-create)))) ;; use ess-s-versions
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
+
+  (if ess-microsoft-p
+      (defcustom ess-directory-containing-R nil
+        "nil (the default) means the search for all occurences of R
+on the machine will use the default location of the R directory
+ (inside \"c:/Program Files\" in English locale Windows systems).
+Non-nil values mean use the specified location as the
+directory in which \"R/\" is located.  For example, setting
+`ess-directory-containing-R' to \"c:\" will tell ESS to search
+for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
+        :group 'ess
+        :type 'directory)
+    )
+
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
             (ess-flatten-list
              (ess-uniq-list
-              (if (getenv "ProgramW6432")
-                  (let ((P-1 (getenv "ProgramFiles(x86)"))
-                        (P-2 (getenv "ProgramW6432")))
-                    (nconc
-                     ;; always 32 on 64 bit OS, nil on 32 bit OS
-                     (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-                     (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-                     ;; keep this both for symmetry and because it can happen:
-                     (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+              (if (not ess-directory-containing-R)
+                  (if (getenv "ProgramW6432")
+                      (let ((P-1 (getenv "ProgramFiles(x86)"))
+                            (P-2 (getenv "ProgramW6432")))
+                        (nconc
+                         ;; always 32 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+                         ;; keep this both for symmetry and because it can happen:
+                         (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
 
-                     ;; always 64 on 64 bit OS, nil on 32 bit OS
-                     (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-                     (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-                     (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
-                     ))
-                (let ((PF (getenv "ProgramFiles")))
+                         ;; always 64 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                         ))
+                    (let ((PF (getenv "ProgramFiles")))
+                      (nconc
+                       ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                       (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                       ))
+                    )
+                (let ((PF ess-directory-containing-R))
                   (nconc
-                   ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
                    (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
                    (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
                    (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
@@ -617,9 +632,6 @@ sending `inferior-ess-language-start' to S-Plus.")
   (add-hook 'Rd-mode-hook 'turn-on-font-lock t)
   (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t))
 
-;; If nil, then don't font-lock the input
-;; if t, font-lock (default).
-(setq inferior-ess-font-lock-input t) ; from RMH
 
 ;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are
 ;;; often unnecessarily large. The framepop package makes such

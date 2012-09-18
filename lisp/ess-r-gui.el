@@ -128,7 +128,7 @@ nil on Unix machines."
      (ess-imenu-mode-function . 'ess-imenu-R)
      (inferior-ess-program . inferior-Rgui-program-name)
      (inferior-ess-objects-command . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords   . inferior-ess-R-font-lock-keywords)
+     (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")
      (inferior-ess-help-command . "help(\"%s\")\n")
      (inferior-ess-help-filetype        . nil) ;; "chm") ;;?

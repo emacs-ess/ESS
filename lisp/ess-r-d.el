@@ -42,11 +42,112 @@
 (require 'ess-r-args); some. ~/.emacs rely ess-r-args-show .. replace by autoload !?
 (require 'ess-developer)
 (require 'ess-help)
+(require 'ess-roxy)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
 (require 'compile); for compilation-* below
+(require 'easymenu)
 
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
+
+(defvar ess-dev-map
+  (let (ess-dev-map)
+    (define-prefix-command 'ess-dev-map)
+    (define-key ess-dev-map "t" 'ess-toggle-developer)
+    (define-key ess-dev-map "T" 'ess-toggle-tracebug)
+    (define-key ess-dev-map "a" 'ess-developer-add-package)
+    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    (define-key ess-dev-map "`" 'ess-show-R-traceback)
+    (define-key ess-dev-map "w" 'ess-watch)
+    (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
+    (define-key ess-dev-map "D" 'ess-dbg-unflag-for-debugging)
+    (define-key ess-dev-map "b" 'ess-bp-set)
+    (define-key ess-dev-map "B" 'ess-bp-set-conditional)
+    (define-key ess-dev-map "l" 'ess-bp-set-logger)
+    ;; (define-key ess-dev-map "t" 'ess-bp-toggle-state)
+    (define-key ess-dev-map "k" 'ess-bp-kill)
+    (define-key ess-dev-map "K" 'ess-bp-kill-all)
+    (define-key ess-dev-map "\C-n" 'ess-bp-next)
+    (define-key ess-dev-map "\C-p" 'ess-bp-previous)
+    (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
+    (define-key ess-dev-map "c" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "n" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "p" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "q" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "0" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "1" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "2" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "3" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "4" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "5" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "6" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "7" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "8" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "9" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "?" 'ess-tracebug-show-help)
+    ess-dev-map)
+  "Keymap for commands related to development and debugging.")
+
+
+(easy-menu-define ess-roxygen-menu nil
+  "Roxygen submenu."
+  '("Roxygen"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ["Update/Generate Template" ess-roxy-update-entry           t]
+    ["Preview Rd"        ess-roxy-preview-Rd                    t]
+    ["Preview HTML"      ess-roxy-preview-HTML                  t]
+    ["Preview text"      ess-roxy-preview-text                  t]
+    ["Hide all"          ess-roxy-hide-all                      t]
+    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
+    ))
+
+(easy-menu-define ess-tracebug-menu nil
+  "Tracebug submenu."
+  '("Tracebug"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ;; :enable ess-local-process-name
+    ["Active?"          ess-toggle-tracebug
+     :style toggle
+     :selected (and ess-local-process-name (ess-process-get 'tracebug))]
+    ["Show traceback" ess-show-R-traceback ess-local-process-name]
+    ["Watch" ess-watch  (and ess-local-process-name
+                             (ess-process-get 'tracebug))]
+    ["Error action cycle" ess-dbg-toggle-error-action (and ess-local-process-name
+                                                           (ess-process-get 'tracebug))]
+    "----"
+    ["Flag for debugging" ess-dbg-flag-for-debugging ess-local-process-name]
+    ["Unflag for debugging" ess-dbg-unflag-for-debugging ess-local-process-name]
+    "----"
+    ["Set BP" ess-bp-set t]
+    ["Set conditional BP" ess-bp-set-conditional t]
+    ["Set logger BP" ess-bp-set-logger t]
+    ["Kill BP" ess-bp-kill t]
+    ["Kill all BPs" ess-bp-kill-all t]
+    ["Next BP" ess-bp-next t]
+    ["Previous BP" ess-bp-previous t]
+    "-----"
+    ["About" ess-tracebug-show-help t]
+    ))
+
+(easy-menu-define ess-developer-menu nil
+  "Developer submenu."
+  '("Developer"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ["Active?"          ess-toggle-developer
+     :style toggle
+     :selected (and ess-local-process-name
+                    (ess-process-get 'developer))]
+    ["Add package" ess-developer-add-package t]
+    ["Remove package" ess-developer-remove-package t]
+    ))
+
+(easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-tracebug-menu "end-dev")
+
+(easy-menu-add-item inferior-ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
+
 
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
@@ -85,7 +186,7 @@
      (ess-smart-operators               . ess-R-smart-operators)
      (inferior-ess-program              . inferior-R-program-name)
      (inferior-ess-objects-command      . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords   . inferior-ess-R-font-lock-keywords)
+     (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
      (inferior-ess-search-list-command  . "search()\n")
      ;;(inferior-ess-help-command               . "help(\"%s\", htmlhelp=FALSE)\n")
      (inferior-ess-help-command         . inferior-ess-r-help-command)
@@ -265,6 +366,8 @@ to R, put them in the variable `inferior-R-args'."
   (set (make-local-variable 'end-of-defun-function)
        'ess-end-of-function)
 
+  (ess-roxy-mode t)
+  
   (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
@@ -628,8 +731,6 @@ to look up any doc strings."
       )))
 
 ;;; function argument completions
-(defvar ess--funargs-cache (make-hash-table :test 'equal)
-  "Chache for R functions' arguments")
 
 (defvar ess--funargs-command  "local({
     if(getRversion() > '2.14.1'){
@@ -662,6 +763,22 @@ to look up any doc strings."
 (defvar ess-objects-never-recache '("print" "plot")
   "List of functions of whose arguments to be cashed only once per session.")
 
+(defvar ess--funargs-cache (make-hash-table :test 'equal)
+  "Chache for R functions' arguments")
+
+(defvar ess--funargs-pre-cache
+  '(("print"
+     (("base" nil)
+      "x, digits=NULL, quote=TRUE, na.print=NULL, print.gap=NULL, right=FALSE, max=NULL, useSource=TRUE, ..."
+      ("x=" "digits=" "signif.stars=" "intercept=" "tol=" "se=" "sort=" "verbose=" "indent=" "style=" ".bibstyle=" "prefix=" "vsep=" "minlevel=" "quote=" "right=" "row.names=" "max=" "na.print=" "print.gap=" "useSource=" "diag=" "upper=" "justify=" "title=" "max.levels=" "width=" "steps=" "showEnv=" "cutoff=" "max.level=" "give.attr=" "units=" "abbrCollate=" "print.x=" "deparse=" "locale=" "symbolic.cor=" "loadings=" "zero.print=" "calendar=")))
+    ("plot"
+     (("graphics" nil)
+      "x, y=NULL, type=\"p\", xlim=NULL, ylim=NULL, log=\"\", main=NULL, sub=NULL, xlab=NULL, ylab=NULL, ann=par(\"ann\"), axes=TRUE, frame.plot=axes, panel.first=NULL, panel.last=NULL, asp=NA, ..."
+      ("x=" "y=" "...=" "ci=" "type=" "xlab=" "ylab=" "ylim=" "main=" "ci.col=" "ci.type=" "max.mfrow=" "ask=" "mar=" "oma=" "mgp=" "xpd=" "cex.main=" "verbose=" "xlim=" "log=" "sub=" "ann=" "axes=" "frame.plot=" "panel.first=" "panel.last=" "asp=" "center=" "edge.root=" "nodePar=" "edgePar=" "leaflab=" "dLeaf=" "xaxt=" "yaxt=" "horiz=" "zero.line=" "verticals=" "col.01line=" "pch=" "legend.text=" "formula=" "data=" "subset=" "to=" "from=" "labels=" "hang=" "freq=" "density=" "angle=" "col=" "border=" "lty=" "add=" "predicted.values=" "intervals=" "separator=" "col.predicted=" "col.intervals=" "col.separator=" "lty.predicted=" "lty.intervals=" "lty.separator=" "plot.type=" "main2=" "par.fit=" "grid=" "which=" "caption=" "panel=" "sub.caption=" "id.n=" "labels.id=" "cex.id=" "qqline=" "cook.levels=" "add.smooth=" "label.pos=" "cex.caption=" "levels=" "conf=" "absVal=" "ci.lty=" "xval=" "do.points=" "col.points=" "cex.points=" "col.hor=" "col.vert=" "lwd=" "set.pars=" "range.bars=" "col.range=" "xy.labels=" "xy.lines=" "nc=" "yax.flip=" "mar.multi=" "oma.multi=")))
+    )
+  "Alist of cached arguments for very time consuming functions.")
+
+
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask R for it.
 
@@ -685,12 +802,13 @@ i.e. contains :,$ or @.
       (when (and args
                  (and (time-less-p ts (ess-process-get 'last-eval))
                       (or (null pack)
-                          (and (equal pack "")
-                               (not (member funname ess-objects-never-recache)))
+                          (equal pack "")
                           (equal pack "R_GlobalEnv"))
                       ))
+        ;; reset cache
         (setq args nil))
       (or args
+          (cadr (assoc funname ess--funargs-pre-cache))
           (when (and ess-current-process-name (get-process ess-current-process-name))
             (let ((args (ess-get-words-from-vector
                          (format ess--funargs-command funname funname) nil .01)))

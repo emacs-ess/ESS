@@ -1,6 +1,6 @@
 ;;; ess-r-a.el -- Possible local customizations for R with ESS.
 
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>

@@ -1,7 +1,7 @@
 ;;; ess-lsp-l.el --- Support for editing Lisp source code
 
 ;; Copyright (C) 1997 A.J. Rossini.
-;; Copyright (C) 1998--2004 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1998--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@stat.sc.edu>
