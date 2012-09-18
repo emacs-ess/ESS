@@ -162,7 +162,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
            (tbuffer     (get-buffer-create hb-name))
            (lproc-name  ess-local-process-name)
            (alist       ess-local-customize-alist))
-      
+
       (when (or (not old-hb-p)
                 current-prefix-arg
                 (ess--help-get-bogus-buffer-substring old-hb-p))
@@ -214,6 +214,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
         (kill-buffer buffer)))))
 
 (defun ess-display-help-in-browser ()
+  "Displaying html help where available, using \\[browse-url]."
   (interactive)
   ;; Three ways to find html help, 1) ask sub-process 2) get url/file from subproces
   ;; 3) call elisp function to get the file path
@@ -385,13 +386,16 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 
 (defun ess-display-help-apropos (&optional pattern)
+  "Create an ess-apropos buffer with a *linked* list of help.search() results."
   (interactive "sPattern: ")
-  (ess--display-indexed-help-page (format "help.search('%s')\n" pattern)
-                                  "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"
-                                  (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
-                                  'appropos))
+  (ess--display-indexed-help-page
+   (format "help.search('%s')\n" pattern)
+   "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"
+   (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
+   'appropos))
 
 (defun ess-display-vignettes ()
+  "Display vignettes if available for the current dialect."
   (interactive)
   (cond
    ((string-match "^R" ess-dialect) (ess-R-display-vignettes))
@@ -789,7 +793,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
      (format "(ess-get-help-topics-list %s) .." name))
     (if (or (not ess-help-topics-list)
             (ess-process-get 'sp-for-help-changed?))
-        (progn 
+        (progn
           (ess-process-put 'sp-for-help-changed? nil)
           (setq ess-help-topics-list
                 (ess-uniq-list
