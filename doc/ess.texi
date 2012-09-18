@@ -44,6 +44,8 @@ ESS @w{version @ESSVER}
 
 @end titlepage
 
+@contents
+
 @ifnottex
 @majorheading ESS --- Emacs Speaks Statistics
 
@@ -3599,8 +3601,6 @@ to make it easy to find related variables.
 @node Variable and command index,  , Concept Index, Top
 @unnumbered Variable and command index
 @printindex vr
-
-@contents
 
 @bye
 @c Remember to delete these lines before creating the info file.
