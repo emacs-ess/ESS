@@ -265,6 +265,8 @@ to R, put them in the variable `inferior-R-args'."
   (set (make-local-variable 'end-of-defun-function)
        'ess-end-of-function)
 
+  (ess-roxy-mode t)
+  
   (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)

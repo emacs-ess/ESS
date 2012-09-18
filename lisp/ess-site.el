@@ -462,12 +462,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
-(autoload 'ess-roxy-mode "ess-roxy"
-  "Insert and edit Roxygen tags for function definitions." t)
-;; if ever ess-roxy works for non- R ess modes, we will have
-;; (add-hook 'ess-mode-hook 'ess-roxy-mode)
-(add-hook 'R-mode-hook 'ess-roxy-mode)
-
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6

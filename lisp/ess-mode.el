@@ -259,14 +259,6 @@
      ["Undo"              undo                                  t]
      ["About"             (ess-goto-info "Edit buffer")         t]
      )
-    ("Roxygen"
-     ["Update/Generate Template" ess-roxy-update-entry           t]
-     ["Preview Rd"        ess-roxy-preview-Rd                    t]
-     ["Preview HTML"      ess-roxy-preview-HTML                  t]
-     ["Preview text"      ess-roxy-preview-text                  t]
-     ["Hide all"          ess-roxy-hide-all                      t]
-     ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
-     )
     ("Start Process"
      ;; SJE - :help not yet recognised in XEmacs.
      ["R"     R   t] ;; :help "Start a new R process" :active t

@@ -78,17 +78,6 @@
 ;; (define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
 
 
-(defvar ess-dev-map
-  (let (ess-dev-map)
-    (define-prefix-command 'ess-dev-map)
-    (define-key ess-dev-map "t" 'ess-developer)
-    (define-key ess-dev-map "a" 'ess-developer-add-package)
-    (define-key ess-dev-map "r" 'ess-developer-remove-package)
-    ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
-    ess-dev-map)
-  "Keymap for commands related to code development and debuging.")
-
-
 ;; (defun ess-developer-install-prefix-key ()
 ;;   "Install the prefix key `ess-developer-prefix' into ess-mode-map."
 ;;   (when (and ess-developer-prefix
@@ -336,6 +325,8 @@ here eventually. todo:
                 (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
               (propertize  ess-local-process-name 'face nil))))
     ))
+
+(defalias 'ess-toggle-developer 'ess-developer)
 
 (provide 'ess-developer)
 
