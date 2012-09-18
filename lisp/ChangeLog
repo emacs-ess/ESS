@@ -1,8 +1,8 @@
 2012-09-13  Richard M. Heiberger <rmh@temple.edu>
 	* ess-site.el add new customizable variable
-	(ess-user-specified-directory-containing-R) to allow
-	ess-r-versions-created to find R exectuables on Windows in
-	directories other than the default install location.
+	(ess-directory-containing-R) to allow ess-r-versions-created to
+	find R exectuables on Windows in directories other than the
+	default install location.
 
 2012-09-13  Richard M. Heiberger <rmh@temple.edu>
 	* *.el files: uniformly changed my name to "Richard M. Heiberger"

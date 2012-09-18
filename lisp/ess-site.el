@@ -529,13 +529,13 @@ sending `inferior-ess-language-start' to S-Plus.")
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
 
   (if ess-microsoft-p
-      (defcustom ess-user-specified-directory-containing-R nil
+      (defcustom ess-directory-containing-R nil
         "nil (the default) means the search for all occurences of R
 on the machine will use the default location of the R directory
  (inside \"c:/Program Files\" in English locale Windows systems).
 Non-nil values mean use the specified location as the
 directory in which \"R/\" is located.  For example, setting
-`ess-user-specified-directory-containing-R' to \"c:\" will tell ESS to search
+`ess-directory-containing-R' to \"c:\" will tell ESS to search
 for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
         :group 'ess
         :type 'directory)
@@ -545,7 +545,7 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
             (ess-flatten-list
              (ess-uniq-list
-              (if (not ess-user-specified-directory-containing-R)
+              (if (not ess-directory-containing-R)
                   (if (getenv "ProgramW6432")
                       (let ((P-1 (getenv "ProgramFiles(x86)"))
                             (P-2 (getenv "ProgramW6432")))
@@ -569,7 +569,7 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
                        (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
                        ))
                     )
-                (let ((PF ess-user-specified-directory-containing-R))
+                (let ((PF ess-directory-containing-R))
                   (nconc
                    (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
                    (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
