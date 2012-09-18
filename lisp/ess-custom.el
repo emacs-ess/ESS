@@ -2064,8 +2064,7 @@ default or not."
     (ess-R-fl-keyword:F&T))
   "An alist of available font-lock keywords for the R mode.
 The key of each cons cell is a name of the keyword. The value
-should be t or nil to indicate if the keyword is active by
-default."
+should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :type 'alist)
 
@@ -2126,8 +2125,7 @@ system described in `inferior-ess-font-lock-keywords'.")
     )
   "Font-lock patterns (alist) used in inferior-R-mode buffers.
 The key of each cons cell is a name of the keyword. The value
-should be t or nil to indicate if the keyword is active by
-default."
+should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :type 'alist
   )

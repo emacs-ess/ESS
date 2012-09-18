@@ -1,15 +1,12 @@
 @itemize @w{}
 
 Changes/New Features in 12.09:
+
 @itemize @bullet
-
 @item @ESS{[julia]}: @emph{new} mode
- for editing julia code (@file{*.jl}); To start using set
- @code{inferior-julia-program-name} to point to julia-release-basic
- executable (unless already in exec path). Start with @kbd{M-x julia}.
+for editing julia code (@file{*.jl}). Start with @kbd{M-x julia}.
 
- Process auto-start, full interaction interface, imenu and basic error
- referencing are also implemented.
+Full interaction interface, imenu and basic error referencing are available.
 
 
 @item @ESS{[R]} noweb: @code{noweb-mode} and @code{noweb-font-lock-mode} have 
@@ -21,18 +18,22 @@ in @code{ess-noweb} interface.
 
 
 @item @ESS{}: Basic evaluation keys are now bound to @code{ess-eval-region-*-} functions: 
+
 @itemize @minus
 @item @kbd{C-M-x} is bound to @code{ess-eval-region-or-function-or-paragraph}
 @item @kbd{C-c C-c} is bound to @code{ess-eval-region-or-function-or-paragraph-and-step}
 @item @kbd{C-RET} is bound to @code{ess-eval-region-or-line-and-step}
 @end itemize
-Each of this function evaluates the highlighted region if any.
 
-@item @ESS{}: @kbd{C-M-a} and @kbd{C-M-e} now step to beginning/end of
-paragraph if no function has been detected under the point.
+Each of these functions first evaluates the region whenever the region
+is active.
+
+@item @ESS{}: @kbd{C-M-a}/@kbd{C-M-e} now step to beginning/end of
+paragraph if no function has been detected.
 
 @item @ESS{}: @code{ess-eval-*-and-step} family of functions are now smarter, 
-and don't step to end of buffer or end of chunk code (@code{@@}) on last paragraph.
+and don't step to end of buffer or end of chunk code (@code{@@}) when at
+the end of the code.
 
 @item @ESS{}: @code{ess-handy-commands} function is bound to @kbd{C-c h}
 
@@ -48,6 +49,7 @@ through @kbd{C-c h}.
 and redirected into appropriate *ESS-help* buffers.
 
 @item @ESS{[R]}: New customization interface for @emph{font-lock}. 
+
 ESS font-lock operates with predefined keywords. Default keywords are
 listed in @code{ess-R-font-lock-keywords} and
 @code{inferior-R-font-lock-keywords}, which see. The user can easily
@@ -55,16 +57,15 @@ customize those by adding new keywords. These variables can also be
 interactively accessed and saved through @kbd{ESS/Font-lock} submenu.
 
 Several new fontification keywords have been added. Most notably the
-highlighting of function calls, numbers and operators can be easily
-activated by the user.
+keywords for highlighting of function calls, numbers and operators.
 
 @item @ESS{[R]}: auto-complete is now activated by default whenever 
 auto-complete package is detected. Set @code{ess-use-auto-complete} to
 nil to deactivate.
-@item @ESS{[R]}: ESS auto-complete R sources are no longer auto-starting at 0 characters
+@item @ESS{[R]}: R AC sources are no longer auto-starting at 0 characters
 but at the default @code{ac-auto-start} characters. 
-@item @ESS{}: ESS auto-complete no longer redefines user defined default sources, 
-but just appends @code{ac-source-filename}.
+@item @ESS{} no longer redefines default ac-sources, 
+but only appends @code{ac-source-filename} to it.
 @item @ESS{}: @code{ac-source-R} now concatenates `` = `` to function arguments.
 
 @item @ESS{}: Menus for ESS and iESS have been reorganized and enriched with 
@@ -77,9 +78,9 @@ in @code{ess-dev-map} which is bound to @kbd{C-c d} in ESS and iESS maps.
 is non-nil (the default). Set this variable to t if you insist on multiline eldoc.
 See also @code{ess-eldoc-abbreviation-style}.
 
-@item @ESS{[R]}: @code{eldoc} and other completion code pre-caches arguments 
+@item @ESS{[R]}: completion code pre-caches arguments 
 of heavy generics such as @code{plot} and @code{print} to eliminated the
-undesirable delay on the first request.
+undesirable delay on first request.
 
 @item @iESS{}: Prompts in inferior buffers are now highlighted uniformly with 
 @code{comint-highlight-prompt} face.
@@ -87,7 +88,7 @@ undesirable delay on the first request.
 @item @ESS{[R]}: R process no longer wait for the completion of input in inferior buffer.
 Thus, long running commands like @code{Sys.sleep(5)} no longer stall emacs.
 
-@item @ESS{[R, S, Stata, Julia]} have specialized @code{ess-X-post-run-hook}, which 
+@item @ESS{}: [R, S, Stata, Julia] have specialized @code{ess-X-post-run-hook}s, which 
 are run at the end of subprocess initialization.
 
 @item @ESS{[Stata]}: All interactive evaluation commands work as expected.
@@ -97,8 +98,10 @@ comments are skipped on @kbd{C-c C-c} and other interactive commands.
 @item @ESS{} no longer auto-connects to a subprocess with a different dialect than 
 the current buffer's one.
 
-@item @ESS{}: @code{ess-arg-function-offset-new-line} is now a list by default.
-That results in the following indentation after the open ``('':
+@item @ESS{}: @code{ess-arg-function-offset-new-line} is now a list for all 
+the ESS indentation styles, which results in the following indentation
+after an open ``('':
+
 @verbatim
   a <- some.function(other.function(
      arg1,
@@ -107,7 +110,6 @@ That results in the following indentation after the open ``('':
 
 @item @ESS{[SAS]}: ....
   @code{ess-sas-rtf-portrait}
-
 @end itemize
 
 Changes/Bug Fixes in 12.04-3:
