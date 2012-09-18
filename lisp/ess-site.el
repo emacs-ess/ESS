@@ -1,7 +1,7 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2011 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1997--2012 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
@@ -374,8 +374,6 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 
 ;; (1.5) Require the needed dialects for your setup.
-(if (< max-specpdl-size 700)     ;;; ESS won't load at the default of 600
-    (setq max-specpdl-size 700))
 
 (ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
 (ess-message "[ess-site:] require 'ess-r-d ...")
@@ -537,10 +535,10 @@ sending `inferior-ess-language-start' to S-Plus.")
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
 
   (if ess-microsoft-p
-      (defcustom ess-user-specified-directory-containing-R nil ;; rmh
+      (defcustom ess-user-specified-directory-containing-R nil
         "nil (the default) means the search for all occurences of R
 on the machine will use the default location of the R directory
-(inside \"c:/Program Files\" in English locale Windows systems).
+ (inside \"c:/Program Files\" in English locale Windows systems).
 Non-nil values mean use the specified location as the
 directory in which \"R/\" is located.  For example, setting
 `ess-user-specified-directory-containing-R' to \"c:\" will tell ESS to search
@@ -553,7 +551,7 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
             (ess-flatten-list
              (ess-uniq-list
-              (if (not ess-user-specified-directory-containing-R)                      ;; rmh
+              (if (not ess-user-specified-directory-containing-R)
                   (if (getenv "ProgramW6432")
                       (let ((P-1 (getenv "ProgramFiles(x86)"))
                             (P-2 (getenv "ProgramW6432")))
@@ -563,7 +561,7 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
                          (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
                          ;; keep this both for symmetry and because it can happen:
                          (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
-                         
+
                          ;; always 64 on 64 bit OS, nil on 32 bit OS
                          (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
                          (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
@@ -576,16 +574,16 @@ for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
                        (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
                        (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
                        ))
-                    )                                                      ;; rmh
-                (let ((PF ess-user-specified-directory-containing-R))                  ;; rmh
-                  (nconc                                                   ;; rmh
-                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")      ;; rmh
-                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe") ;; rmh
-                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")  ;; rmh
+                    )
+                (let ((PF ess-user-specified-directory-containing-R))
+                  (nconc
+                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
                    ))
                 )))))
   (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
-  
+
   (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
         (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
 
