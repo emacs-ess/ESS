@@ -480,17 +480,17 @@ in inferior buffers.  ")
 (defun ess-tb-start ()
   "Start traceback session "
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
-    (unless (member ess-dialect '("R" "julia"))
-      (error "Can not activate the debuger for %s dialect" ess-dialect))
-    (make-local-variable 'compilation-error-regexp-alist)
-    (setq compilation-error-regexp-alist ess-error-regexp-alist)
+    (unless ess-error-regexp-alist
+      (error "Can not activate the traceback for %s dialect" ess-dialect))
+    (set (make-local-variable 'compilation-error-regexp-alist)
+         ess-error-regexp-alist)
     (compilation-setup t)
     (setq next-error-function 'ess-tb-next-error-function)
     ;; new locals
     (make-local-variable 'ess-tb-last-input)
     (make-local-variable 'ess-tb-last-input-overlay)
     (make-local-variable 'compilation-search-path)
-    (setq compilation-search-path ess-dbg-search-path) ;; todo: make this dialect specific
+    (setq compilation-search-path ess-tracebug-search-path) ;; todo: make this dialect specific
     (ess-tracebug--set-left-margin)
     (save-excursion
       (goto-char comint-last-input-start)
@@ -579,7 +579,7 @@ You can bind 'no-select' versions of this commands:
       (make-local-variable 'compilation-error-regexp-alist)
       (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
       (make-local-variable 'compilation-search-path)
-      (setq compilation-search-path ess-dbg-search-path)
+      (setq compilation-search-path ess-tracebug-search-path)
       (compilation-minor-mode 1)
       (setq next-error-function 'ess-tb-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
@@ -2126,7 +2126,7 @@ This is the trigger function.  See documentation of
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
         (pname ess-local-process-name)
-        (alist (ess-local-customize-alist)))
+        (alist (symbol-value ess-local-customize-alist)))
     (set-buffer wbuf)
     (ess-setq-vars-local alist)
     (setq ess-local-process-name pname)
