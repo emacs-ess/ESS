@@ -659,15 +659,13 @@ Returns the name of the process, or nil if the current buffer has none."
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
 current ESS process."
-  (process-get (get-process (or ess-local-process-name
-                                ess-current-process-name)) propname))
+  (process-get (get-process ess-local-process-name) propname))
 
 
 (defun ess-process-put (propname value)
   "Set the variable PROPNAME (symbol) to VALUE in the plist of
 the current ESS process."
-  (process-put (get-process (or ess-local-process-name
-                                ess-current-process-name)) propname value))
+  (process-put (get-process ess-local-process-name) propname value))
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
