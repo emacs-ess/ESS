@@ -1885,30 +1885,34 @@ for `ess-eval-region'."
   "Menu for use in Inferior S mode"
   '("iESS"
     ["What is this? (beta)"   ess-mouse-me                  t]
+    ["Quit"                 ess-quit                        t]
     ["Resynch S completions"  ess-resynch                   t]
-    ["Quit S"                 ess-quit                      t]
-    ["Display search list"    ess-execute-search            t]
-    ["Display object list"    ess-execute-objects           t]
+    ;; ["Send and move"  ess-transcript-send-command-and-move  t]
+    ["Copy command"   comint-copy-old-input                 t]
+    ["Send command"   inferior-ess-send-input               t]
+    ["Jump to Error"  ess-parse-errors                      t]
     ["Get help on S object"   ess-display-help-on-object    t]
-    ["Enter S command"        ess-execute                   t]
-    ["Attach directory"       ess-execute-attach            t]
     "------"
-    ("Font Lock..."
+    ("Font Lock"
      :active inferior-ess-font-lock-keywords
      :filter ess-generate-font-lock-submenu)
     "------"
-    ["Send and move"  ess-transcript-send-command-and-move  t]
-    ["Copy command"   comint-copy-old-input                 t]
-    ["Send command"   inferior-ess-send-input               t]
+    ("Utils"
+     ["Enter S command"        ess-execute                   t]
+     ["Attach directory"       ess-execute-attach            t]
+     ["Display search list"    ess-execute-search            t]
+     ["Display object list"    ess-execute-objects           t]
+     ;; need a toggle switch for above, AJR.
+     ["Load source file" ess-load-file                      t]
+     ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+     )
     "------"
-    ["Jump to Error"  ess-parse-errors                      t]
-    ;; need a toggle switch for above, AJR.
-    ["Load source file" ess-load-file                      t]
-    ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+    ("start-dev" :visible nil)
+    ("end-dev" :visible nil)
     "------"
     ["Describe"         describe-mode                       t]
-    ["About"            (ess-goto-info "Entering Commands") t]
     ["Send bug report"  ess-submit-bug-report               t]
+    ["About"            (ess-goto-info "Entering Commands") t]
     ))
 
 

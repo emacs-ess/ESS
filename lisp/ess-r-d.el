@@ -42,11 +42,112 @@
 (require 'ess-r-args); some. ~/.emacs rely ess-r-args-show .. replace by autoload !?
 (require 'ess-developer)
 (require 'ess-help)
+(require 'ess-roxy)
 (when (featurep 'emacs)
   (require 'ess-tracebug))
 (require 'compile); for compilation-* below
+(require 'easymenu)
 
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
+
+(defvar ess-dev-map
+  (let (ess-dev-map)
+    (define-prefix-command 'ess-dev-map)
+    (define-key ess-dev-map "t" 'ess-toggle-developer)
+    (define-key ess-dev-map "T" 'ess-toggle-tracebug)
+    (define-key ess-dev-map "a" 'ess-developer-add-package)
+    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    (define-key ess-dev-map "`" 'ess-show-R-traceback)
+    (define-key ess-dev-map "w" 'ess-watch)
+    (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
+    (define-key ess-dev-map "D" 'ess-dbg-unflag-for-debugging)
+    (define-key ess-dev-map "b" 'ess-bp-set)
+    (define-key ess-dev-map "B" 'ess-bp-set-conditional)
+    (define-key ess-dev-map "l" 'ess-bp-set-logger)
+    ;; (define-key ess-dev-map "t" 'ess-bp-toggle-state)
+    (define-key ess-dev-map "k" 'ess-bp-kill)
+    (define-key ess-dev-map "K" 'ess-bp-kill-all)
+    (define-key ess-dev-map "\C-n" 'ess-bp-next)
+    (define-key ess-dev-map "\C-p" 'ess-bp-previous)
+    (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
+    (define-key ess-dev-map "c" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "n" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "p" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "q" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "0" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "1" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "2" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "3" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "4" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "5" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "6" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "7" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "8" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "9" 'ess-dbg-singlekey-command)
+    (define-key ess-dev-map "?" 'ess-tracebug-show-help)
+    ess-dev-map)
+  "Keymap for commands related to development and debugging.")
+
+
+(easy-menu-define ess-roxygen-menu nil
+  "Roxygen submenu."
+  '("Roxygen"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ["Update/Generate Template" ess-roxy-update-entry           t]
+    ["Preview Rd"        ess-roxy-preview-Rd                    t]
+    ["Preview HTML"      ess-roxy-preview-HTML                  t]
+    ["Preview text"      ess-roxy-preview-text                  t]
+    ["Hide all"          ess-roxy-hide-all                      t]
+    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
+    ))
+
+(easy-menu-define ess-tracebug-menu nil
+  "Tracebug submenu."
+  '("Tracebug"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ;; :enable ess-local-process-name
+    ["Active?"          ess-toggle-tracebug
+     :style toggle
+     :selected (and ess-local-process-name (ess-process-get 'tracebug))]
+    ["Show traceback" ess-show-R-traceback ess-local-process-name]
+    ["Watch" ess-watch  (and ess-local-process-name
+                             (ess-process-get 'tracebug))]
+    ["Error action cycle" ess-dbg-toggle-error-action (and ess-local-process-name
+                                                           (ess-process-get 'tracebug))]
+    "----"
+    ["Flag for debugging" ess-dbg-flag-for-debugging ess-local-process-name]
+    ["Unflag for debugging" ess-dbg-unflag-for-debugging ess-local-process-name]
+    "----"
+    ["Set BP" ess-bp-set t]
+    ["Set conditional BP" ess-bp-set-conditional t]
+    ["Set logger BP" ess-bp-set-logger t]
+    ["Kill BP" ess-bp-kill t]
+    ["Kill all BPs" ess-bp-kill-all t]
+    ["Next BP" ess-bp-next t]
+    ["Previous BP" ess-bp-previous t]
+    "-----"
+    ["About" ess-tracebug-show-help t]
+    ))
+
+(easy-menu-define ess-developer-menu nil
+  "Developer submenu."
+  '("Developer"
+    :visible (and ess-dialect (string-match "^R" ess-dialect))
+    ["Active?"          ess-toggle-developer
+     :style toggle
+     :selected (and ess-local-process-name
+                    (ess-process-get 'developer))]
+    ["Add package" ess-developer-add-package t]
+    ["Remove package" ess-developer-remove-package t]
+    ))
+
+(easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-tracebug-menu "end-dev")
+
+(easy-menu-add-item inferior-ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
+
 
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)

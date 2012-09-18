@@ -199,13 +199,32 @@
     ["Load file"                ess-load-file t]
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
+    ["Eval region | line" ess-eval-region-or-line-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
     ;; sub menus
     "------"
-    ("Font Lock..."
+    ("Font Lock"
      :active ess-font-lock-keywords
      :filter ess-generate-font-lock-submenu)
     "------"
+    ("ESS Eval"
+     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
+     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
+     ["Eval region | line" ess-eval-region-or-line-and-step t]
+     "-----"
+     ["Eval buffer"     ess-eval-buffer                   t]
+     ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
+     ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
+     ["Eval region"     ess-eval-region                   t]
+     ["Eval function"   ess-eval-function                 t]
+     ["Eval line"       ess-eval-line                     t]
+     ["Eval line & step" ess-eval-line-and-step            t]
+     ["Eval paragraph"   ess-eval-paragraph                t]
+     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
+     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
+     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
+     ["About"           (ess-goto-info "Evaluating code") t]
+     )
     ("Eval and Go"
      ["Eval buffer"     ess-eval-buffer-and-go            t]
      ["Eval region"     ess-eval-region-and-go            t]
@@ -216,29 +235,12 @@
      ["Eval thread"     ess-eval-thread-and-go   ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
-    ("ESS Eval"
-     ["Eval buffer"     ess-eval-buffer                   t]
-     ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
-     ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
-     ["Eval region"     ess-eval-region                   t]
-     ["Eval function"   ess-eval-function                 t]
-     ["Eval line"       ess-eval-line                     t]
-     ["Eval line & step" ess-eval-line-and-step            t]
-     ["Eval paragraph"   ess-eval-paragraph                t]
-     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
-     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
-     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
-     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
-     ["About"           (ess-goto-info "Evaluating code") t]
-     )
-    ("Motion..."
+    ("Motion"
      ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to ESS buffer"    ess-switch-to-ESS               t]
      ["Beginning of function or para"   ess-goto-beginning-of-function-or-para       t]
      ["End of function or para"         ess-goto-end-of-function-or-para             t]
-     )
-    ("ESS list..."
+     "-----"
      ["Backward list"           backward-list                   t]
      ["Forward list"            forward-list                    t]
      ["Next parenthesis"                down-list                       t]
@@ -276,6 +278,9 @@
      ;; :help "Read about starting a new ESS process" :active t]
      )
     ["Switch Process"   ess-switch-process              t]
+    "------"
+    ("start-dev" :visible nil)
+    ("end-dev" :visible nil)
     "------"
     ["Describe"         describe-mode                   t]
     ["About editing" (ess-goto-info "Editing")  t]

@@ -727,14 +727,15 @@ help ?options for more details."
   "Last debug reference in *ess.dbg* buffer (a marker).")
 (make-variable-buffer-local 'ess-dbg-last-ref-marker)
 
-(defcustom ess-dbg-search-path '(nil)
+(defcustom ess-tracebug-search-path '(nil)
   "List of directories to search for source files.
 Elements should be directory names, not file names of directories.
 "
   :type '(repeat (choice (const :tag "Default" nil)
                          (string :tag "Directory")))
   :group 'ess-debug)
-
+(defalias 'ess-dbg-search-path 'ess-tracebug-search-path)
+(make-obsolete 'ess-dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")
 
 (defvar ess-dbg-buf-p nil
   "This is t in ess.dbg buffers.")
@@ -1338,8 +1339,8 @@ TB-INDEX is not found return nil.
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess-dbg-ask-for-file' is non-nil.  Search the directories in
-`ess-dbg-search-path'."
-  (let ((dirs ess-dbg-search-path)
+`ess-tracebug-search-path'."
+  (let ((dirs ess-tracebug-search-path)
         (spec-dir default-directory)
         (is-org)
         ;; add current dir of ess here :TODO:
