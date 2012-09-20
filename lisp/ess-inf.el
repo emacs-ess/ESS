@@ -1889,6 +1889,7 @@ for `ess-eval-region'."
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
     ["Jump to Error"  ess-parse-errors                      t]
+    ["Handy commands"  ess-handy-commands                   t]
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
     ("Font Lock"

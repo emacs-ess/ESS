@@ -584,6 +584,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "k" 'ess-help-kill)
     (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
+    (define-key map "\C-c h"   'ess-handy-commands)
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\M-r" 'ess-eval-region-and-go)
@@ -625,10 +626,11 @@ For internal use. Used in `ess-display-help-on-object',
         ["Switch to End of ESS Proc."   ess-switch-to-end-of-ESS t]
         ["Switch _the_ Process"         ess-switch-process t]
         "-"
-        ["Describe ESS-help Mode"       ess-describe-help-mode t]
-        "-"
         ["Kill Buffer"                  kill-this-buffer t]
         ["Kill Buffer & Go"             ess-kill-buffer-and-go t]
+        "-"
+        ["Handy comomands"              ess-handy-commands t]
+        ["Describe ESS-help Mode"       ess-describe-help-mode t]
         )
   "Menu used in ess-help mode.")
 
