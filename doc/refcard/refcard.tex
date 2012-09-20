@@ -33,7 +33,7 @@
 
   \smallskip
 
-  {\small updated for ESS 12.04}% {\footnotesize --- needs \em{more} updating!}}
+  {\small updated for ESS 12.09}% {\footnotesize --- needs \em{more} updating!}}
   \\[1ex] {\tiny \SVNDate}
            % \footnotesize --- as of \today
 \end{center}
@@ -57,7 +57,8 @@
 For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 
 \begin{tabI}
-  \texttt{\RET   }& Send a command \\
+  \texttt{\RET   }& Send a command\\
+  \texttt{C-c \RET}& Copy old input\\
   \texttt{\TAB}& Complete filename or  S object name.\\
   & Also bound to \texttt{M-\TAB}  (aka \texttt{M-C-i}).\\
   \texttt{C-c C-c }& Break \\
@@ -65,7 +66,10 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
   %% SfS-only (others need C-u C-a for comint-bol !
   \texttt{C-a} / \texttt{C-e} & Beginning / End of command \\
   \texttt{C-c C-u }& Delete this command \\
-  \texttt{C-c C-w }& Delete last word
+  \texttt{C-c C-w }& Delete last word \\
+  % \texttt{M-C-r }& String search
+  \texttt{C-c C-r }& Top of last output \\
+  \texttt{C-c C-o }& Delete last output
 \end{tabI}
 
 \begin{tabTit}{Command history (part of Menu `\texttt{In/Out}')}
@@ -80,10 +84,6 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 %%-               & Previous            similar command \\
 %%-   \texttt{\hbox{$\downarrow$ / \sEcmd{down}}}
 %%-               & Next \hspace{1.4em} similar command \\
-  \texttt{C-c\RET}& Copy current input \\
-%  \texttt{M-C-r }& String search
-  \texttt{C-c C-r }& Top of last output \\
-  \texttt{C-c C-o }& Delete last output
 \end{tabTit}
 
 %% == ESS-transcript mode ?? ---
@@ -94,8 +94,9 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 %  \texttt{C-c C-v }& Prompt at bottom of screen \\
 %\end{tabTit}
 
-\begin{tabTit}{Hot keys}
-  \texttt{C-c C-v }& Help for S object \\
+\begin{tabTit}{General Hot Keys}
+  \texttt{C-c C-v }& Help for object \\
+  \texttt{C-c h }& Handy commands \\
   \texttt{C-c C-l }& \textbf{L}oad source file {\small ($+$ error check!)}\\
   \texttt{C-c C-x }& List objects \\
   \texttt{C-c C-s }& Display \texttt{\textbf{s}earch} list \\
@@ -142,9 +143,9 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabI}
   \texttt{\TAB} & Indent this line \\
-  \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
-  \texttt{M-C-/} & Indent region\\
   \texttt{M-\TAB} & Complete filename/object\\
+  \texttt{M-C-/} & Indent region\\
+  \texttt{M-C-q} & Indent this expression (use at `\texttt{\{}')\\
   % \texttt{C-c\TAB}& Complete S object name \\
   % \texttt{M-\TAB} & Complete file- / path- name \\
   \texttt{M-C-a} & Beginning of function \\
@@ -154,17 +155,18 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 \end{tabI}
 
 \begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{in/visibly})}
+  \texttt{M-C-x}   & \underline{Evaluate region or function or para} \\
+  \texttt{C-c C-c} & \underline{Evaluate region or para.\ or function \emph{\& step}}\\
+  \texttt{C-\RET} & \underline{Evaluate region or line \emph{\& step}}\\
   \texttt{C-c C-l} & Load this buffer -- detect errors !\\
-  \texttt{C-c C-n} & \underline{Step through code -- line by line} \\
+  \texttt{C-c C-n} & Step through code -- line by line \\
   \texttt{C-c C-e} & Evaluate an expression \\
   \texttt{C-c C-j} & Evaluate this line \\
   \texttt{C-c M-j} & Evaluate this line and go \\
-  \texttt{M-C-x}   & Evaluate this function \\
-  \texttt{C-c C-f} & \underline{Evaluate this function} \\
+  \texttt{C-c C-f} & Evaluate this function \\
   \texttt{C-c M-f} & Evaluate this function and go \\
   \texttt{C-c C-p} & Evaluate this paragraph and step \\
-  \texttt{C-c C-c} & \underline{Evaluate this para.\ or function \emph{\& step}}\\
-  \texttt{C-c C-r} & \underline{Evaluate this region} \\
+  \texttt{C-c C-r} & Evaluate this region \\
   \texttt{C-c M-r} & Evaluate this region and go \\
   \texttt{C-c C-b} & Evaluate this buffer \\
   \texttt{C-c M-b} & Evaluate this buffer and go \\
@@ -172,10 +174,11 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabTit}{Others}
   %%-SfS-deleted:  \texttt{M-\TAB} & Complete S object name \\
-  \texttt{C-c C-v }& Help for S object \\
+  \texttt{C-c C-v }& Help for object \\
+  \texttt{C-c h }& Handy commands \\
   \texttt{C-c C-d }& ``\texttt{dump}'' -- Edit another object \\
   %%\texttt{C-c C-y} & Return to S process \\
-  \texttt{C-c C-z} & Return to S process (at prompt)
+  \texttt{C-c C-z} & Return to process (at prompt)
 \end{tabTit}
 
 %% Is it worth putting here for one line? Autoyas is a much more general snippet
@@ -205,6 +208,7 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   \\
   \texttt{h}   &\textbf{H}elp on another object \\
   \texttt{?}   & Help for this mode \\
+  \texttt{i}   & Display \textbf{a}propos\\
   \texttt{i}   & Display \textbf{i}ndex\\
   \texttt{v}   & Display \textbf{v}ignettes\\
   \texttt{w}   & Display current page in bro\textbf{w}ser\\
@@ -217,14 +221,13 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
 \begin{multicols}{2}
   \Sect{ESS tracebug}
   %% ~~~~~~~~~~~~~~~~
-  Activate and set the prefix key (a suggestion):
+  Activate 
 
   \begin{verbatim}
-  (setq ess-use-tracebug t)
-  (setq ess-tracebug-prefix "\M-t")
+    (setq ess-use-tracebug t)
   \end{verbatim}
 
-  Basic commands (prefix not included):
+  Basic commands (default prefix \texttt{C-c d}):
 
   \begin{tabular}{p{20mm}l}
     \texttt{?}& Show key help \\
@@ -242,22 +245,31 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   Other commands:
 
   \begin{tabular}{p{20mm}l}
-  \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
-  \texttt{M-g p} & `previous-error'(emacs)\\
+    \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
+    \texttt{M-g p} & `previous-error'(emacs)\\
   \end{tabular}
 
-\columnbreak
+  Use a custom prefix key (a suggestion): 
+
+  \begin{verbatim}
+    (setq ess-use-tracebug t)
+    (setq ess-tracebug-prefix "\M-t")
+  \end{verbatim}
+
+
+
+  \columnbreak
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-\Sect{ESS developer}
+  \Sect{ESS developer}
 %% ~~~~~~~~~~~~~~~~
-Evaluate your code into the package:
+  Evaluate your code into the package:
 
-\begin{tabI}
-  \texttt{C-c d t} & Toggle developer on/off\\
-  \texttt{C-c d a} & Add package to the dev list\\
-  \texttt{C-c d r} & Remove package from dev list\\
-\end{tabI}
+  \begin{tabI}
+    \texttt{C-c d t} & Toggle developer on/off\\
+    \texttt{C-c d a} & Add package to the dev list\\
+    \texttt{C-c d r} & Remove package from dev list\\
+  \end{tabI}
 
 
 
