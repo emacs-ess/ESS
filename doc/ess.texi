@@ -2517,17 +2517,25 @@ packages:
 moved into this manual.
 
 ESS @code{tracebug} package offers visual debugging, interactive error
-navigation, interactive backtrace, breakpoint manipulation, control over R error
-actions, watch window and interactive flagging/unflagging functions for
-debugging.
+navigation, interactive backtrace, breakpoint manipulation, control over
+R error actions, watch window and interactive flagging/unflagging of
+functions for debugging.
 
-To use these features you have to set the tracebug prefix to a
-@emph{fast} key. If you don't use @kbd{M-t} (@code{transpose-words})
-very often, do something like this:
+To use these features you have to first activate the tracebug:
+
+@example
+(setq ess-use-tracebug t)
+@end example
+
+You can also toggle it from the menu or simply by typing @kbd{M-x}
+@code{ess-tracebug} @kbd{RET}.
+
+Almost all of the tracebug functionality can be found in
+@code{ess-dev-map}, which is bound to @kbd{C-c d}. Optionally you can
+assign the full tracebug map to a shorter prefix:
 
 @example
 (setq ess-tracebug-prefix "\M-t")
-(setq ess-use-tracebug t)
 @end example
 
 This will automatically set the shadowed command @code{transpose-words}
@@ -2535,46 +2543,42 @@ to be triggered by @kbd{M-t M-t}. Another alternative key, you might
 consider is @kbd{M-c}. In this case, the hijacked command
 @code{capitalize-word} is automatically re-bound to @kbd{M-c M-c}.
 
-Assuming that the prefix key is @kbd{M-t}, you can always call @kbd{M-t
-?} to display the following menu with all the tracebug keys (prefix not
+You can always call @kbd{C-c d ?} (or @kbd{M-t ?} if prefix is set) to
+display the following menu with all the tracebug keys (prefix not
 included):
 
-@comment @verbatim
-@comment testing nicer look and feel
-@comment
-@comment * Breakpoints:
-@comment
-@comment  b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
-@comment  B   . Set conditional BP               . `ess-bp-set-conditional'
-@comment  k   . Kill BP                          . `ess-bp-kil'
-@comment  K   . Kill all BPs                     . `ess-bp-kill-all'
-@comment  t   . Toggle BP state                  . `ess-bp-toggle-state'
-@comment  l   . Set logger BP                    . `ess-bp-set-logger'
-@comment  C-n . Goto next BP                     . `ess-bp-next'
-@comment  C-p . Goto previous BP                 . `ess-bp-previous'
 
-* Breakpoints:
-
-@multitable {123} {123} {really-really-really-really-really-long}
-@item Key @tab Description                      @tab Function
-@item b   @tab Set BP (repeat to cycle BP type) @tab `ess-bp-set'
-@item B   @tab Set conditional BP               @tab `ess-bp-set-conditional'
-@item k   @tab Kill BP                          @tab `ess-bp-kil'
-@item K   @tab Kill all BPs                     @tab `ess-bp-kill-all'
-@item t   @tab Toggle BP state                  @tab `ess-bp-toggle-state'
-@item l   @tab Set logger BP                    @tab `ess-bp-set-logger'
-@item C-n @tab Goto next BP                     @tab `ess-bp-next'
-@item C-p @tab Goto previous BP                 @tab `ess-bp-previous'
-@end multitable
+@c @multitable {123} {123} {really-really-really-really-really-long}
+@c @item Key @tab Description                      @tab Function
+@c @item b   @tab Set BP (repeat to cycle)         @tab `ess-bp-set'
+@c @item B   @tab Set conditional BP               @tab `ess-bp-set-conditional'
+@c @item k   @tab Kill BP                          @tab `ess-bp-kil'
+@c @item K   @tab Kill all BPs                     @tab `ess-bp-kill-all'
+@c @item t   @tab Toggle BP state                  @tab `ess-bp-toggle-state'
+@c @item l   @tab Set logger BP                    @tab `ess-bp-set-logger'
+@c @item C-n @tab Goto next BP                     @tab `ess-bp-next'
+@c @item C-p @tab Goto previous BP                 @tab `ess-bp-previous'
+@c @end multitable
 
 @verbatim
+* Breakpoints:
+
+b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
+B   . Set conditional BP               . `ess-bp-set-conditional'
+k   . Kill BP                          . `ess-bp-kil'
+K   . Kill all BPs                     . `ess-bp-kill-all'
+t   . Toggle BP state                  . `ess-bp-toggle-state'
+l   . Set logger BP                    . `ess-bp-set-logger'
+C-n . Goto next BP                     . `ess-bp-next'
+C-p . Goto previous BP                 . `ess-bp-previous'
+
 
 * General Debugging:
 
  `   . Show R Traceback                     . `ess-show-R-traceback'
  e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
  d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
 
 * Navigation to errors (emacs general functionality):
@@ -2597,9 +2601,7 @@ included):
  I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
 
 * Misc:
- s   . Source current file	. `ess-tracebug-source-current-file'
  ?   . Show this help		. `ess-tracebug-show-help'
- C-c				. `capitalize-word'
 
 @end verbatim
 
@@ -2860,12 +2862,11 @@ Insert a new line and the Roxygen prefix string.
 @cindex ess developer
 
 Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
-the current buffer to the process for the evaluation in
-@code{R_GlobalEnv} environment. Often, in process of the developing
-packages with namespaces, it is necessary to evaluate code directly in
-the package's environment or it's namespace. The @code{ess-developer} utility
-provides such a functionality with minimal distortions of the usual ESS
-work-flow.
+the current buffer for the evaluation in current environment
+(@code{R_GlobalEnv}). Often, in process of the developing packages with
+namespaces, it is necessary to evaluate code directly in the package's
+environment or it's namespace. The @code{ess-developer} utility provides
+such a functionality with minimal disruption of the usual ESS work-flow.
 
 To understand how ess-developer works you must be familiar with namespace
 system in R.
@@ -2887,11 +2888,11 @@ and functions defined in .GlobalEnv can see the objects in
 'package:foo'. See also
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
-In order to use ess-developer mode you should add names of the packages
-you are developing to @code{ess-developer-packages}. You can do it
-interactively with @kbd{C-c d a}, and remove packages with @kbd{C-c d
-r}. When developer mode is on, the name of the process in the mode line
-is highlighted with @code{ess-developer-indicator-face}.
+In order to use ess-developer mode add names of the packages you are
+developing to @code{ess-developer-packages}. You can do taht interactively
+with @kbd{C-c d a}, and remove packages with @kbd{C-c d r}. When
+developer mode is on, the name of the process in the mode line is
+highlighted with @code{ess-developer-indicator-face}.
 
 @itemize @bullet
 @item @kbd{C-c d t}(@code{ess-developer}) @*
@@ -2900,16 +2901,12 @@ is highlighted with @code{ess-developer-indicator-face}.
       Add  a package to your development list.
 @item @kbd{C-c d r}(@code{ess-developer-remove-package}) @*
       Remove a package from your development list.
-@item @kbd{C-c d s}(@code{ess-developer-source-current-file}) @*
- Source current file into the namespace (ask for the package). When
- developer mode is on, @kbd{C-c C-l}(@code{ess-load-file}) calls
- @code{ess-developer-source-current-file} instead.
 @end itemize
 
 When developer mode is on, ESS evaluation commands behave differently:
 @itemize @bullet
 
-@item @kbd{C-c l} (@code{ess-load-file}) asks for the package to source
+@item @kbd{C-c C-l} (@code{ess-load-file}) asks for the package to source
 into and inserts all redefined objects into the package:foo or
 name space:foo accordingly:
 
@@ -2952,7 +2949,7 @@ more detailed comments.
 
 @item @kbd{C-c C-r}(@code{ess-eval-region}  and functions that depend on
 it (@code{ess-eval-paragraph}, @code{ess-eval-buffer} etc., behave as
-ess-load-file', but restrict the evaluation to the co responding region
+ess-load-file', but restrict the evaluation to the corresponding region.
 
 @item @kbd{C-c C-f} (@code{ess-eval-function}) and friends check if the
 current function's name can be found in a namespace:foo or package:foo
@@ -3020,13 +3017,15 @@ different filter levels with the truncation.
 @pindex ess-handy-commands
 @pindex ess-smart-comma
 
-If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
-line of an ESS inferior buffer (i.e. at process marker), ESS requests and
-executes a command from @code{`ess-handy-commands'} list. If
-@code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
-`` `` after comma.
+@kbd{C-c h} is bound to @code{ess-handy-commands} and executes commands listed in 
+the variable @code{`ess-handy-commands'}. Currently containing:
 
-Variable @code{`ess-handy-commands'} stores an alist of useful commands. Currently containing:
+
+@c If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
+@c line of an ESS inferior buffer (i.e. at process marker), ESS requests and
+@c executes a command from @code{`ess-handy-commands'} list. If
+@c @code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
+@c `` `` after comma.
 
 @table @asis
 @item change-directory
