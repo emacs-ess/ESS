@@ -2463,11 +2463,14 @@ play nicely together.  See auto-complete package documentation
 install your own completion sources.
 
 For the default auto-complete ESS configuration, install the latest
-version of @code{auto-complete} package and place the following into
-your init file:
+version of @code{auto-complete} package. ESS automatically detect the
+package and activates auto-complete in ESS buffers. 
+
+
+To deactivate AC, place the following into your init file:
 
 @example
-(setq ess-use-auto-complete t)
+(setq ess-use-auto-complete nil)
 @end example
 
 Or, to activate auto-completion only in the @code{ess-mode} buffers:
