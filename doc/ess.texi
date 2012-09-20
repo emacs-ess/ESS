@@ -1445,10 +1445,34 @@ alternative to S's @code{source()} function
 when you want the input as well as the output to be displayed.  (You can
 sort of do this with @code{source()} when the option @code{echo=T} is
 set, except that prompts do not get displayed.  ESS puts prompts in the
-right places.) The commands for evaluating code are:
+right places.) 
+
+Primary commands for evaluating code are:
 
 @itemize @bullet
 @cindex evaluating S expressions
+
+@item
+@kbd{C-RET} (@code{ess-eval-region-or-line-and-step}) @*
+@pindex ess-eval-region-or-line-and-step
+Send the highlighted region or current line and step to next line of
+code.
+
+@item
+@kbd{M-C-x} (@code{ess-eval-region-or-function-or-paragraph}) @*
+@pindex ess-eval-region-or-function-or-paragraph
+Send the highlighted region or function or paragraph.
+
+@item
+@kbd{C-c C-c} (@code{ess-eval-region-or-function-or-paragraph-and-step}) @*
+@pindex ess-eval-region-or-function-or-paragraph-and-step
+Send the highlighted region or function or paragraph and step to next
+line of code.
+
+@end itemize
+
+Other, not so often used, evaluation commands are:
+@itemize @bullet
 @item
 @kbd{C-c C-j} (@code{ess-eval-line}) @*
 @pindex ess-eval-line
@@ -1459,8 +1483,9 @@ Send the line containing point to the ESS process.
 @pindex ess-eval-line-and-go
 As above, but returns you to the ESS process buffer as well.
 
+
 @item
-@kbd{C-c C-f} or @kbd{ESC C-x} (aka @kbd{M-C-x}) (@code{ess-eval-function}) @*
+@kbd{C-c C-f} (@code{ess-eval-function}) @*
 @pindex ess-eval-function
 Send the @Sl{} function containing point to the ESS process.
 
