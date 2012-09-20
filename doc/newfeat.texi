@@ -108,8 +108,8 @@ after an open ``('':
      arg2)
 @end verbatim
 
-@item @ESS{[SAS]}: ....
-  @code{ess-sas-rtf-portrait}
+@item @ESS{[SAS]}: Improved MS RTF support for GNU Emacs; try
+  @code{ess-sas-rtf-portrait} and @code{ess-sas-rtf-landscape}.
 @end itemize
 
 Changes/Bug Fixes in 12.04-3:
