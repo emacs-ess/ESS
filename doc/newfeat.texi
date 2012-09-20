@@ -3,6 +3,14 @@
 Changes/New Features in 12.09:
 
 @itemize @bullet
+@item @ESS{[R]}: On Windows, there is now a new customizable variable
+(currently called @code{ess-directory-containing-R}) to tell ESS where
+to look for the Rterm.exe executables.  The name of the variable and
+the values it can take are both in beta and subject to change.  Prior
+to this variable, ESS searched only in the default installation
+directory.  Setting this variable now tells ESS how to find Rterm.exe
+executables when they are installed somewhere else.
+
 @item @ESS{[julia]}: @emph{new} mode
 for editing julia code (@file{*.jl}). Start with @kbd{M-x julia}.
 
