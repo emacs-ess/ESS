@@ -2372,7 +2372,7 @@ Doesn't work for data frames."
   (ess-process-put 'sp-for-help-changed? t))
 
 (defun ess-execute-screen-options ()
-  "Cause S to set the \"width\" option to 1 less than the frame width.
+  "Cause S to set the \"width\" option to 1 less than the window width.
 Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
