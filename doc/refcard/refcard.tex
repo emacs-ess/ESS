@@ -94,21 +94,19 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 %  \texttt{C-c C-v }& Prompt at bottom of screen \\
 %\end{tabTit}
 
-\begin{tabTit}{General Hot Keys}
+\begin{tabTit}{Others}
   \texttt{C-c C-v }& Help for object \\
   \texttt{C-c h }& Handy commands \\
   \texttt{C-c C-l }& \textbf{L}oad source file {\small ($+$ error check!)}\\
   \texttt{C-c C-x }& List objects \\
   \texttt{C-c C-s }& Display \texttt{\textbf{s}earch} list \\
   \texttt{C-c C-a }& \textbf{A}ttach a directory \\
-  \texttt{C-c C-d }& Edit an object {\small (\textbf{d}ump to file)}
-\end{tabTit}
-
-\begin{tabTit}{Others}
+  \texttt{C-c C-d }& Edit an object {\small (\textbf{d}ump to file)}\\
   \texttt{C-c `   }& Jump to error after \texttt{C-c C-l}\\
+  &\hspace{-1.5cm}In tracebug works for all errors (aka \texttt{C-x `})\\
 %  \texttt{C-c C-t }& Toggle Tek mode \\
   \texttt{C-c C-q }& Quit from S \\
-  \texttt{C-c C-z }& Kill the S process
+  % \texttt{C-c C-z }& Kill the S process
 \end{tabTit}\\[0.5cm]
 
 
@@ -155,11 +153,11 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 \end{tabI}
 
 \begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{in/visibly})}
-  \texttt{M-C-x}   & \underline{Evaluate region or function or para} \\
-  \texttt{C-c C-c} & \underline{Evaluate region or para.\ or function \emph{\& step}}\\
-  \texttt{C-\RET} & \underline{Evaluate region or line \emph{\& step}}\\
-  \texttt{C-c C-l} & Load this buffer -- detect errors !\\
-  \texttt{C-c C-n} & Step through code -- line by line \\
+  \texttt{M-C-x}   & Evaluate region or function or para \\
+  \texttt{C-c C-c} & Evaluate region or para.\ or function \&\emph{ step}\\
+  \texttt{C-\RET} & Evaluate region or line \&\emph{ step}  \\
+  \texttt{C-c C-l} & Load this buffer\\
+  \texttt{C-c C-n} & Step through code -- line by line \rule{0pt}{3ex} \\
   \texttt{C-c C-e} & Evaluate an expression \\
   \texttt{C-c C-j} & Evaluate this line \\
   \texttt{C-c M-j} & Evaluate this line and go \\
@@ -196,7 +194,6 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   \texttt{SPC} & Next page \\
   \texttt{DEL} & Previous page \\
   \texttt{b}   & Previous page (`\textbf{b}ack')\\
-  \texttt{/}   & Search forwards \\
   \texttt{n}   & \textbf{N}ext section \\
   \texttt{p}   & \textbf{P}revious section \\
   \texttt{s}   & \textbf{S}kip (`jump') to a named section \\
@@ -204,9 +201,9 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
   \texttt{r}   & Evaluate current \textbf{r}egion \\
   \texttt{q}   & `\textbf{Q}uit window \\
-  \texttt{x}   & Kill this buffer and return (`e\textbf{x}it) \\
-  \\
-  \texttt{h}   &\textbf{H}elp on another object \\
+  \texttt{k}   & Kill this buffer\\
+  \texttt{x}   & Kill this buffer and return (`e\textbf{x}it)\\
+  \texttt{h}   &\textbf{H}elp on another object \rule{0pt}{3ex}\\
   \texttt{?}   & Help for this mode \\
   \texttt{i}   & Display \textbf{a}propos\\
   \texttt{i}   & Display \textbf{i}ndex\\
@@ -252,7 +249,6 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
   Use a custom prefix key (a suggestion): 
 
   \begin{verbatim}
-    (setq ess-use-tracebug t)
     (setq ess-tracebug-prefix "\M-t")
   \end{verbatim}
 
