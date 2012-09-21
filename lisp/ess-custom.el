@@ -1955,7 +1955,7 @@ for an example.")
   (cons "\\b\\.?[0-9]+[.eEL]?[0-9]*\\b" 'ess-numbers-face)
   "Numbers")
 
-(defvar ess-fl-keyword:parentheses
+(defvar ess-fl-keyword:delimiters
   (cons "\\s(\\|\\s)" 'font-lock-builtin-face)
   "Parenthesis")
 
@@ -2004,7 +2004,7 @@ for an example.")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     )
   "An alist of available font-lock keywords for the S mode.
@@ -2059,7 +2059,7 @@ default or not."
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T))
   "An alist of available font-lock keywords for the R mode.
@@ -2114,7 +2114,7 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T)
     ;;VS[17-09-2012]: what is this matching?
@@ -2153,7 +2153,7 @@ NOT used. See `inferior-S-font-lock-keywords'")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=))
   "Font-lock patterns used in inferior-S-mode buffers.
 The key of each cons cell is a name of the keyword. The value
