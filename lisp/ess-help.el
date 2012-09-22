@@ -888,7 +888,14 @@ return it.  Otherwise, return `ess-help-topics-list'."
            'ess-ask-about-transfile
            'ess-directory
            'ess-keep-dump-files
-           'ess-source-directory)
+           'ess-source-directory
+           'ess-use-ido
+           'ess-use-eldoc
+           'ess-use-tracebug
+           'ess-use-auto-complete
+           'ess-eval-visibly-p
+           'ess-can-eval-in-background
+           'ess-local-process-name)
      nil
      (lambda ()
        ;;(goto-char (point-max))
@@ -897,7 +904,11 @@ return it.  Otherwise, return `ess-help-topics-list'."
        (insert "\nThis bug report will be sent to the ESS bugs email list\n")
        (insert "Press C-c C-c when you are ready to send your message.\n\n")
        (insert "\n\n\n")
-       (insert-buffer-substring "*ESS*")))))
+       (insert (with-current-buffer "*ESS*"
+                 (goto-char (point-max))
+                 (forward-line -100)
+                 (buffer-substring-no-properties (poin) (point-max))))
+       ))))
 
 
 ;;; Provide
