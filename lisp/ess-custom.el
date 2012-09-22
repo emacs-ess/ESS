@@ -2213,17 +2213,29 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
-(defface ess-function-call-face
-  '((default (:slant normal :inherit font-lock-builtin-face)))
-  "Font Lock face used to highlight function calls in ess buffers."
-  :group 'ess)
+
+(defvar ess-function-call-face 'ess-function-call-face
+  "Face name to use for highlighting function calls.")
 
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
-(defface ess-numbers-face
-  '((default (:slant normal :inherit font-lock-type-face)))
-  "Font Lock face used to highlight numbers in ess-mode buffers."
-  :group 'ess)
+
+(if (featurep 'xemacs)
+    ;; just to make xemacs not to choke on ESS 
+    (setq ess-function-call-face 'font-lock-builtin-face
+          ess-numbers-face 'font-lock-type-face)
+  
+  (defface ess-function-call-face
+    '((default (:slant normal :inherit font-lock-builtin-face)))
+    "Font Lock face used to highlight function calls in ess buffers."
+    :group 'ess)
+  
+  (defface ess-numbers-face
+    '((default (:slant normal :inherit font-lock-type-face)))
+    "Font Lock face used to highlight numbers in ess-mode buffers."
+    :group 'ess)
+  )
+  
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."
