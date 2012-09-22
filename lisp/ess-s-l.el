@@ -80,7 +80,6 @@
     (indent-line-function         . 'ess-indent-line)
     (parse-sexp-ignore-comments   . t)
     (ess-style                    . ess-default-style)
-    (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :

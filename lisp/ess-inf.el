@@ -2139,7 +2139,6 @@ to continue it."
                              (match-string 0 string)))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
-      ;; (dbg string help-match help-?-match page-match)
       (cond (help-match
              (ess-display-help-on-object help-match))
             

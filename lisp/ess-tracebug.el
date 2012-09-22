@@ -564,7 +564,6 @@ You can bind 'no-select' versions of this commands:
         (lproc-name ess-local-process-name)
         (alist ess-mode-editing-alist)
         )
-    (dbg alist)
     (setq next-error-last-buffer trbuf)
     (with-current-buffer trbuf
       (setq buffer-read-only nil)

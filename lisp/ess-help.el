@@ -263,7 +263,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                 ((eq ess-help-type 'index)
                  (concat "?" ess-help-object "::%s\n"))
                 )))
-    ;; (dbg command string)
     (ess-display-help-on-object string command)
     ))
 

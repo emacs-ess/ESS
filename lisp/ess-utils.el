@@ -772,7 +772,6 @@ etc.
 (defun ess--idle-timer-function nil
   "Internal function executed by `ess--idle-timer'"
   ;; (while-no-input
-  ;; (dbg (current-time))
   (run-hooks 'ess-idle-timer-functions))
 
 

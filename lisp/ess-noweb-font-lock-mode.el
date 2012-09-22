@@ -277,7 +277,6 @@ Each chunk is fontified in accordance with its own mode"
                                                (1+ chunk-num))))))
           (font-latex-extend-region-functions nil);; don't extend anything
           (font-lock-extend-region-functions nil)) ;; this infloops :( 
-      ;; (dbg "here" (car r) (cdr r))
       (save-restriction      
         (narrow-to-region (car r) (cdr r))
         ;; (sit-for 3)
