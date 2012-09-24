@@ -1941,6 +1941,12 @@ keywords in the current buffer. See `ess-R-font-lock-keywords'
 for an example.")
 (make-variable-buffer-local 'ess-font-lock-keywords)
 
+(defvar ess-font-lock-defaults nil
+  "Internal. Holds dialect sepcific font-lock defaults in the
+current buffer. Old system. From ESS[12.09] switched to new
+system described in `ess-font-lock-keywords'.")
+(make-variable-buffer-local 'ess-font-lock-defaults)
+
 
 ;;; fl-keywords general
 (defvar ess-function-call-regexp
@@ -2080,6 +2086,7 @@ keywords in the current buffer. See
 current buffer. Old system. From ESS[12.09] switched to new
 system described in `inferior-ess-font-lock-keywords'.")
 (make-variable-buffer-local 'inferior-ess-font-lock-defaults)
+
 
 (defvar comint-highlight-prompt 'comint-highlight-prompt)
 ;; needed for proper font-lock
@@ -2222,8 +2229,8 @@ the variable `ess-help-own-frame' is non-nil."
 
 (if (featurep 'xemacs)
     ;; just to make xemacs not to choke on ESS 
-    (setq ess-function-call-face 'font-lock-builtin-face
-          ess-numbers-face 'font-lock-type-face)
+    (setq ess-function-call-face font-lock-builtin-face
+          ess-numbers-face font-lock-type-face)
   
   (defface ess-function-call-face
     '((default (:slant normal :inherit font-lock-builtin-face)))
