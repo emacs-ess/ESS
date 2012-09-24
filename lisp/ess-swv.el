@@ -89,6 +89,7 @@
 (require 'ess-r-d); for Rnw-mode
 (require 'easymenu)
 
+;; currently use exactly for "Sweave" and "Stangle"
 (defun ess-swv-run-in-R (cmd &optional choose-process)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
   (let* ((rnw-buf (current-buffer)))
@@ -113,10 +114,15 @@
              (sbuffer (process-buffer sprocess))
              (rnw-file (buffer-file-name))
              (Rnw-dir (file-name-directory rnw-file))
+             (buf-coding (symbol-name buffer-file-coding-system))
+             ;; could consider other encodings, but utf-8 is "R standard" for non-ASCII:
+             (cmd-args (concat "\"" rnw-file "\""
+                               (if (string-match "^utf-8" buf-coding)
+                                   ", encoding = \"utf-8\"")))
              (Sw-cmd
               (format
-               "local({..od <- getwd(); setwd(%S); %s(%S); setwd(..od) })"
-               Rnw-dir cmd rnw-file))
+               "local({..od <- getwd(); setwd(%S); %s(%s); setwd(..od) })"
+               Rnw-dir cmd cmd-args))
              )
         (message "%s()ing %S" cmd rnw-file)
         (ess-execute Sw-cmd 'buffer nil nil)

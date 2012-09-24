@@ -431,7 +431,7 @@ Misc:
  (ess-noweb-mode                            ;Setup the minor-mode
   (mapcar 'noweb-make-variable-permanent-local
           '(ess-noweb-mode
-            ess-local-process-name
+            ess-local-process-name ;; also made permanent in ess-mode, but let it be
             after-change-functions
             before-change-functions
             noweb-narrowing

@@ -45,10 +45,8 @@
 
 ;;; VS: ess-inf is always loaded form ess-toggle-underscore in ess-s-l.el. I am
 ;;; placing require ess-inf and ess-mode in ess. This cross autoloads are
-;;; useless. It's time to clean up a bit.
-
-;;; VS: I also don't really get why all of these? Compiler is silent without
-;;; them. These funcs are used in mode-map only as symbols.
+;;; useless. Compiler is also silent without them. These funcs are used in mode-map
+;;; only as symbols.
 
 ;; (autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
 ;; (autoload 'ess-read-object-name         "ess-inf" "" nil)
@@ -201,6 +199,7 @@
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Eval region | line" ess-eval-region-or-line-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
+    ["Handy commands" ess-handy-commands                  t]
     ;; sub menus
     "------"
     ("Font Lock"

@@ -317,7 +317,7 @@
       (insert string))
     (process-send-string process (format inferior-ess-load-command file))))
 
-(defun julia-get-help-topics-function ()
+(defun julia-get-help-topics-function (name)
   (let ((com "print(\" [1] \"); _jl_init_help();for (topic, _) = _jl_helpdb show(topic); println(); for (func,_) = _jl_helpdb[topic] show(func); print(\" \");   end;  end\n\n"))
     (ess-get-words-from-vector com)))
     ;; (ess-command com)))

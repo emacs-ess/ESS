@@ -184,7 +184,7 @@ for ESS, such as icons.")
 ;;   "*Location of the ESS info/ directory.
 ;; The ESS info directory stores the ESS info files.")
 
-(require 'files)
+
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (unless (locate-file "ess.info"
@@ -527,19 +527,6 @@ sending `inferior-ess-language-start' to S-Plus.")
                                    (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
                                 (ess-s-versions-create)))) ;; use ess-s-versions
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
-
-  (if ess-microsoft-p
-      (defcustom ess-directory-containing-R nil
-        "nil (the default) means the search for all occurences of R
-on the machine will use the default location of the R directory
- (inside \"c:/Program Files\" in English locale Windows systems).
-Non-nil values mean use the specified location as the
-directory in which \"R/\" is located.  For example, setting
-`ess-directory-containing-R' to \"c:\" will tell ESS to search
-for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
-        :group 'ess
-        :type 'directory)
-    )
 
   (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))

@@ -1889,6 +1889,7 @@ for `ess-eval-region'."
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
     ["Jump to Error"  ess-parse-errors                      t]
+    ["Handy commands"  ess-handy-commands                   t]
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
     ("Font Lock"
@@ -2035,12 +2036,12 @@ to continue it."
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
   ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
+  (when inferior-ess-font-lock-keywords ;; new system
+    (setq inferior-ess-font-lock-defaults
+          (ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)))
+  
   (set (make-local-variable 'font-lock-defaults)
-       (cond (inferior-ess-font-lock-defaults
-              '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
-             (inferior-ess-font-lock-keywords
-              `(,(ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)
-                nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))))
+       '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
 
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22
@@ -2138,7 +2139,6 @@ to continue it."
                              (match-string 0 string)))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
-      ;; (dbg string help-match help-?-match page-match)
       (cond (help-match
              (ess-display-help-on-object help-match))
             
@@ -2168,8 +2168,13 @@ to continue it."
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
   (interactive)
-  (ess-make-buffer-current)
   (run-hooks 'ess-send-input-hook)
+  ;; (let ((proc (get-buffer-process (current-buffer))))
+  ;;   (if (not proc)
+  ;;       (user-error "Current buffer has no process")
+  ;;     (let ((comint-process-echoes (or comint-process-echoes
+  ;;                                      (< (point) (marker-position (process-mark proc))))))
+  ;;       (comint-send-input))))
   (comint-send-input)
   (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
 
@@ -2245,12 +2250,13 @@ If in the output field, goes to the begining of previous input.
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
     (re-search-backward (concat "^" inferior-ess-prompt)))
+  (comint-skip-prompt)
   (when inferior-ess-secondary-prompt
-    (while (and (looking-at inferior-ess-secondary-prompt)
-                (not (eq (point) (point-min))))
-      (forward-line -1)))
-  (if (looking-at inferior-ess-prompt)
-      (comint-skip-prompt)
+    (while (and (> (forward-line -1) -1)
+                (let ((beg (point)))
+                  (when (comint-skip-prompt)
+                    (looking-back inferior-ess-secondary-prompt beg))))))
+  (unless (looking-back inferior-ess-prompt (point-at-bol))
     (ess-error "Beggining of input not found"))
   )
 
@@ -2258,34 +2264,30 @@ If in the output field, goes to the begining of previous input.
   "Return the ESS command surrounding point (use regexp)."
   ;;VS[03-09-2012]: This should not rise errors!! Troubles comint-interrupt-subjob
   (save-excursion
-    (let ((inhibit-field-text-motion t)
-          command)
-      (goto-char (point-at-bol));    (beginning-of-line) does not work in comint
-      (if (or (looking-at inferior-ess-prompt); cust.var, might not include sec-prompt
-              (and inferior-ess-secondary-prompt
-                   (looking-at inferior-ess-secondary-prompt)))
-          (progn 
-            (comint-skip-prompt)
-            (inferior-ess--goto-input-start:regexp)
+    (let* ((inhibit-field-text-motion t)
+           (bol (point-at-bol))
+           command)
+      (goto-char bol)   ;(beginning-of-line) does not work in comint
+      (comint-skip-prompt)
+      (when  (and inferior-ess-secondary-prompt
+                  (looking-back inferior-ess-secondary-prompt bol))
+        (inferior-ess--goto-input-start:regexp)
+        (setq bol (point-at-bol)))
+      (if (looking-back inferior-ess-prompt bol) ; cust.var, might not include sec-prompt
+          (progn
             (setq command (buffer-substring-no-properties (point) (point-at-eol)))
             (when inferior-ess-secondary-prompt
-              (forward-line 1)
-              (let ((comint-prompt-regexp inferior-ess-secondary-prompt)
-                    beg)
-                (while (looking-at inferior-ess-secondary-prompt)
-                  (comint-skip-prompt)
-                  (setq beg (point))
-                  (end-of-line)
-                  (setq command (concat command "\n" (buffer-substring-no-properties beg (point))))
-                  (forward-line 1)))
-              (forward-line -1)
-              )
-            (setq ess-temp-point (point))
+              (while (progn (forward-line 1)
+                            (comint-skip-prompt)
+                            (looking-back inferior-ess-secondary-prompt))
+                (setq command (concat command "\n"
+                                      (buffer-substring-no-properties (point) (point-at-eol))))
+                ))
+            (forward-line -1)
+            (setq ess-temp-point (point)) ;; this is ugly, used by transcript 
             command)
-        (if (called-interactively-p 'any)
-            (error "No command at this point")
-          ;; else, just return ""
-          ""))
+        (message "No command at this point")
+        "")
       )))
 
 (defun inferior-ess-get-old-input ()
@@ -2369,7 +2371,7 @@ Doesn't work for data frames."
   (ess-process-put 'sp-for-help-changed? t))
 
 (defun ess-execute-screen-options ()
-  "Cause S to set the \"width\" option to 1 less than the frame width.
+  "Cause S to set the \"width\" option to 1 less than the window width.
 Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)

@@ -823,7 +823,7 @@ i.e. contains :,$ or @.
 (defun ess-get-object-at-point ()
   "A very permissive version of symbol-at-point.
 Suitable for R object's names."
-  (let ((delim "[-+ ,\"\t\n\\*/()%{}]"))
+  (let ((delim "[-+ ,\"\t\n\\*/()%{}:]"))
     (unless (and (looking-back delim)
                  (looking-at   delim))
       (save-excursion

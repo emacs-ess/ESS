@@ -1092,6 +1092,19 @@ path (as in 'setwd(%s)\\n'.")
   :group 'ess
   :type 'string)
 
+(defcustom ess-directory-containing-R nil
+  "nil (the default) means the search for all occurences of R
+on the machine will use the default location of the R directory
+ (inside \"c:/Program Files\" in English locale Windows systems).
+Non-nil values mean use the specified location as the
+directory in which \"R/\" is located.  For example, setting
+`ess-directory-containing-R' to \"c:\" will tell ESS to search
+for R versions with pathnames of the form \"c:/R/R-x.y.z\".
+
+Currently only used when `ess-microsoft-p'."
+  :group 'ess
+  :type 'directory)
+
 (defcustom ess-rterm-version-paths nil
   "Stores the full path file names of Rterm versions, computed via
 \\[ess-find-rterm].  If you have versions of R in locations other than
@@ -1941,6 +1954,12 @@ keywords in the current buffer. See `ess-R-font-lock-keywords'
 for an example.")
 (make-variable-buffer-local 'ess-font-lock-keywords)
 
+(defvar ess-font-lock-defaults nil
+  "Internal. Holds dialect sepcific font-lock defaults in the
+current buffer. Old system. From ESS[12.09] switched to new
+system described in `ess-font-lock-keywords'.")
+(make-variable-buffer-local 'ess-font-lock-defaults)
+
 
 ;;; fl-keywords general
 (defvar ess-function-call-regexp
@@ -1955,7 +1974,7 @@ for an example.")
   (cons "\\b\\.?[0-9]+[.eEL]?[0-9]*\\b" 'ess-numbers-face)
   "Numbers")
 
-(defvar ess-fl-keyword:parentheses
+(defvar ess-fl-keyword:delimiters
   (cons "\\s(\\|\\s)" 'font-lock-builtin-face)
   "Parenthesis")
 
@@ -2004,7 +2023,7 @@ for an example.")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     )
   "An alist of available font-lock keywords for the S mode.
@@ -2059,13 +2078,12 @@ default or not."
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T))
   "An alist of available font-lock keywords for the R mode.
 The key of each cons cell is a name of the keyword. The value
-should be t or nil to indicate if the keyword is active by
-default."
+should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :type 'alist)
 
@@ -2081,6 +2099,7 @@ keywords in the current buffer. See
 current buffer. Old system. From ESS[12.09] switched to new
 system described in `inferior-ess-font-lock-keywords'.")
 (make-variable-buffer-local 'inferior-ess-font-lock-defaults)
+
 
 (defvar comint-highlight-prompt 'comint-highlight-prompt)
 ;; needed for proper font-lock
@@ -2115,7 +2134,7 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T)
     ;;VS[17-09-2012]: what is this matching?
@@ -2126,8 +2145,7 @@ system described in `inferior-ess-font-lock-keywords'.")
     )
   "Font-lock patterns (alist) used in inferior-R-mode buffers.
 The key of each cons cell is a name of the keyword. The value
-should be t or nil to indicate if the keyword is active by
-default."
+should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :type 'alist
   )
@@ -2155,7 +2173,7 @@ NOT used. See `inferior-S-font-lock-keywords'")
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
-    (ess-fl-keyword:parentheses)
+    (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=))
   "Font-lock patterns used in inferior-S-mode buffers.
 The key of each cons cell is a name of the keyword. The value
@@ -2215,17 +2233,29 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
-(defface ess-function-call-face
-  '((default (:slant normal :inherit font-lock-builtin-face)))
-  "Font Lock face used to highlight function calls in ess buffers."
-  :group 'ess)
+
+(defvar ess-function-call-face 'ess-function-call-face
+  "Face name to use for highlighting function calls.")
 
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
-(defface ess-numbers-face
-  '((default (:slant normal :inherit font-lock-type-face)))
-  "Font Lock face used to highlight numbers in ess-mode buffers."
-  :group 'ess)
+
+(if (featurep 'xemacs)
+    ;; just to make xemacs not to choke on ESS 
+    (setq ess-function-call-face font-lock-builtin-face
+          ess-numbers-face font-lock-type-face)
+  
+  (defface ess-function-call-face
+    '((default (:slant normal :inherit font-lock-builtin-face)))
+    "Font Lock face used to highlight function calls in ess buffers."
+    :group 'ess)
+  
+  (defface ess-numbers-face
+    '((default (:slant normal :inherit font-lock-type-face)))
+    "Font Lock face used to highlight numbers in ess-mode buffers."
+    :group 'ess)
+  )
+  
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."

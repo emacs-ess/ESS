@@ -263,7 +263,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                 ((eq ess-help-type 'index)
                  (concat "?" ess-help-object "::%s\n"))
                 )))
-    ;; (dbg command string)
     (ess-display-help-on-object string command)
     ))
 
@@ -283,7 +282,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         reg-start ;regexp from where to start searching for keywords in index listing
         )
     (cond
-     ((string-match "R" ess-dialect)
+     ((string-match "^R" ess-dialect)
       (setq com-package-for-object "sub('package:', '', utils::find('%s'))\n"
             com-packages           ".packages(all.available=TRUE)\n"
             com-package-index      "help(package='%s', help_type='text')\n"
@@ -581,9 +580,10 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "p" 'ess-skip-to-previous-section)
     (define-key map "/" 'isearch-forward)
     (define-key map "x" 'ess-kill-buffer-and-go)
-    (define-key map "k" 'ess-help-kill)
+    (define-key map "k" 'kill-this-buffer)
     (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
+    (define-key map "\C-c h"   'ess-handy-commands)
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\M-r" 'ess-eval-region-and-go)
@@ -625,10 +625,11 @@ For internal use. Used in `ess-display-help-on-object',
         ["Switch to End of ESS Proc."   ess-switch-to-end-of-ESS t]
         ["Switch _the_ Process"         ess-switch-process t]
         "-"
-        ["Describe ESS-help Mode"       ess-describe-help-mode t]
-        "-"
         ["Kill Buffer"                  kill-this-buffer t]
         ["Kill Buffer & Go"             ess-kill-buffer-and-go t]
+        "-"
+        ["Handy comomands"              ess-handy-commands t]
+        ["Describe ESS-help Mode"       ess-describe-help-mode t]
         )
   "Menu used in ess-help mode.")
 
@@ -887,16 +888,28 @@ return it.  Otherwise, return `ess-help-topics-list'."
            'ess-ask-about-transfile
            'ess-directory
            'ess-keep-dump-files
-           'ess-source-directory)
+           'ess-source-directory
+           'ess-use-ido
+           'ess-use-eldoc
+           'ess-use-tracebug
+           'ess-use-auto-complete
+           'ess-eval-visibly-p
+           'ess-can-eval-in-background
+           'ess-local-process-name)
      nil
      (lambda ()
        ;;(goto-char (point-max))
        (rfc822-goto-eoh)
        (forward-line 1)
-       (insert "\nThis bug report will be sent to the ESS bugs email list\n")
-       (insert "Press C-c C-c when you are ready to send your message.\n\n")
-       (insert "\n\n\n")
-       (insert-buffer-substring "*ESS*")))))
+       (insert "\n\n-------------------------------------------------------\n")
+       (insert "This bug report will be sent to the ESS bugs email list\n")
+       (insert "Press C-c C-c when you are ready to send your message.\n")
+       (insert "-------------------------------------------------------\n\n")
+       (insert (with-current-buffer "*ESS*"
+                 (goto-char (point-max))
+                 (forward-line -100)
+                 (buffer-substring-no-properties (point) (point-max))))
+       ))))
 
 
 ;;; Provide
