@@ -580,7 +580,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "p" 'ess-skip-to-previous-section)
     (define-key map "/" 'isearch-forward)
     (define-key map "x" 'ess-kill-buffer-and-go)
-    (define-key map "k" 'ess-help-kill)
+    (define-key map "k" 'kill-this-buffer)
     (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
     (define-key map "\C-c h"   'ess-handy-commands)
