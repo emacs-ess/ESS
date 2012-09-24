@@ -529,19 +529,6 @@ sending `inferior-ess-language-start' to S-Plus.")
   (ess-message "[ess-site:] (let ... after (ess-s-versions-create) ...")
 
   (if ess-microsoft-p
-      (defcustom ess-directory-containing-R nil
-        "nil (the default) means the search for all occurences of R
-on the machine will use the default location of the R directory
- (inside \"c:/Program Files\" in English locale Windows systems).
-Non-nil values mean use the specified location as the
-directory in which \"R/\" is located.  For example, setting
-`ess-directory-containing-R' to \"c:\" will tell ESS to search
-for R versions with pathnames of the form \"c:/R/R-x.y.z\"."
-        :group 'ess
-        :type 'directory)
-    )
-
-  (if ess-microsoft-p
       (setq ess-rterm-version-paths ;; (ess-find-rterm))
             (ess-flatten-list
              (ess-uniq-list

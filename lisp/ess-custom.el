@@ -1092,6 +1092,19 @@ path (as in 'setwd(%s)\\n'.")
   :group 'ess
   :type 'string)
 
+(defcustom ess-directory-containing-R nil
+  "nil (the default) means the search for all occurences of R
+on the machine will use the default location of the R directory
+ (inside \"c:/Program Files\" in English locale Windows systems).
+Non-nil values mean use the specified location as the
+directory in which \"R/\" is located.  For example, setting
+`ess-directory-containing-R' to \"c:\" will tell ESS to search
+for R versions with pathnames of the form \"c:/R/R-x.y.z\".
+
+Currently only used when `ess-microsoft-p'."
+  :group 'ess
+  :type 'directory)
+
 (defcustom ess-rterm-version-paths nil
   "Stores the full path file names of Rterm versions, computed via
 \\[ess-find-rterm].  If you have versions of R in locations other than
