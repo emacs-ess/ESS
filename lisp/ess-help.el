@@ -282,7 +282,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         reg-start ;regexp from where to start searching for keywords in index listing
         )
     (cond
-     ((string-match "R" ess-dialect)
+     ((string-match "^R" ess-dialect)
       (setq com-package-for-object "sub('package:', '', utils::find('%s'))\n"
             com-packages           ".packages(all.available=TRUE)\n"
             com-package-index      "help(package='%s', help_type='text')\n"
