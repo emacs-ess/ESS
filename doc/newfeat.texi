@@ -3,6 +3,10 @@
 Changes/New Features in 12.09:
 
 @itemize @bullet
+@item @b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs 
+ends with ESS 12.04-4.  This decision will be re-visited in the future as 
+XEmacs continues to sync with GNU Emacs.}
+
 @item @ESS{[R]}: On Windows, there is now a new customizable variable
 (currently called @code{ess-directory-containing-R}) to tell ESS where
 to look for the @file{Rterm.exe} executables.  The name of the variable
