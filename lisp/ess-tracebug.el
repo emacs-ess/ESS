@@ -578,10 +578,11 @@ You can bind 'no-select' versions of this commands:
         (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
         (make-local-variable 'compilation-search-path)
         (setq compilation-search-path ess-tracebug-search-path)
+        (ess-setq-vars-local alist)
+        (font-lock-refresh-defaults)
         (compilation-minor-mode 1)
         (setq next-error-function 'ess-tb-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
-        (ess-setq-vars-local alist)
         ;; tracebug keys
         (when ess-tracebug-prefix
           (local-set-key ess-tracebug-prefix ess-tracebug-map))
@@ -589,7 +590,7 @@ You can bind 'no-select' versions of this commands:
         (local-set-key "\C-c\C-s" 'ess-watch-switch-process)
         (local-set-key "\C-c\C-y" 'ess-switch-to-ESS)
         (local-set-key "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-        (font-lock-refresh-defaults)
+
         (setq buffer-read-only t)
         (pop-to-buffer trbuf)
         ))))
