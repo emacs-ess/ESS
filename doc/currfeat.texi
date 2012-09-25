@@ -4,10 +4,11 @@
   @item S family (S 3/4, S-PLUS and R)
   @item SAS
   @item BUGS/JAGS
-  @item Stata 
+  @item Stata
   @item XLispStat including Arc and ViSta
+  @item Julia
   @end itemize
-@item Editing source code (S family, SAS, BUGS/JAGS, Stata)
+@item Editing source code (S family, SAS, BUGS/JAGS, Stata, Julia)
   @itemize @bullet
   @item Syntactic indentation and highlighting of source code
   @item Partial evaluation of code
@@ -16,7 +17,7 @@
   @item Batch execution (SAS, BUGS/JAGS)
   @item Use of imenu to provide links to appropriate functions
   @end itemize
-@item Interacting with the process (S family, SAS, Stata)
+@item Interacting with the process (S family, SAS, Stata, Julia)
   @itemize @bullet
   @item Command-line editing
   @item Searchable Command history
