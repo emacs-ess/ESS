@@ -259,11 +259,7 @@ Each chunk is fontified in accordance with its own mode"
           ;;                   ("^@[ \t\n]+"
           ;;                    (0 noweb-font-lock-doc-start-face prepend )))))
           (append font-lock-keywords
-                  '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
-                     (1 font-lock-reference-face prepend )
-                     (2 font-lock-keyword-face prepend)
-                     (3 font-lock-reference-face prepend))
-                    ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
+                  '(("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
                      (1 font-lock-reference-face  prepend )
                      (2 font-lock-keyword-face prepend)
                      (3 font-lock-reference-face prepend))
