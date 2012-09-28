@@ -583,7 +583,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "k" 'kill-this-buffer)
     (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
-    (define-key map "\C-c h"   'ess-handy-commands)
+    (define-key map "\C-ch"   'ess-handy-commands)
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\M-r" 'ess-eval-region-and-go)
