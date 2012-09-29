@@ -128,7 +128,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.09" ;; updated by 'make'
+(defvar ess-version "12.09-mod" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -1838,7 +1838,7 @@ See also function `ess-create-object-name-db'.")
 
 ;; SJE: 2007-07-16 -- add to quieten byte compile.
 (defvar ess-loop-timeout nil
-  "Number ofloops ess-mode will wait for prompt before signalling an error.")
+  "Number of loops ess-mode will wait for prompt before signalling an error.")
 
 (defcustom ess-S-loop-timeout 2000000
   "Integer specifying how many loops ess-mode will wait for the prompt
@@ -1995,7 +1995,7 @@ system described in `ess-font-lock-keywords'.")
   "Font-lock keyword R modifiers")
 
 (defvar ess-S-fl-keyword:fun-defs
-  (cons ess-S-function-name-regexp 
+  (cons ess-S-function-name-regexp
         '(1 font-lock-function-name-face t)  ; override
         )
   "Font-lock function deffinitions keyword.")
@@ -2042,7 +2042,7 @@ default or not."
    "Font-lock keyword R modifiers")
 
 (defvar ess-R-fl-keyword:fun-defs
-   (cons ess-R-function-name-regexp 
+   (cons ess-R-function-name-regexp
          '(1 font-lock-function-name-face t)  ; override
          )
    "Font-lock keyword - function defintions for R.")
@@ -2116,13 +2116,13 @@ system described in `inferior-ess-font-lock-keywords'.")
   "Matrix and vector numeric labels.
 ") ;; also matches subsetting
 
-(defvar ess-R-fl-keyword:messages 
+(defvar ess-R-fl-keyword:messages
   (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
         'font-lock-constant-face)
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-R-font-lock-keywords
-  '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts 
+  '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts
     ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
@@ -2157,7 +2157,7 @@ NOT used. See `inferior-S-font-lock-keywords'")
 (make-obsolete-variable 'ess-S-common-font-lock-keywords nil "ESS[12.09]")
 
 
-(defvar ess-S-fl-keyword:messages 
+(defvar ess-S-fl-keyword:messages
   (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
         'font-lock-constant-face)
   "Inferior-ess problems or errors.")
@@ -2241,21 +2241,21 @@ the variable `ess-help-own-frame' is non-nil."
   "Face name to use for highlighting numbers.")
 
 (if (featurep 'xemacs)
-    ;; just to make xemacs not to choke on ESS 
+    ;; just to make xemacs not to choke on ESS
     (setq ess-function-call-face font-lock-builtin-face
           ess-numbers-face font-lock-type-face)
-  
+
   (defface ess-function-call-face
     '((default (:slant normal :inherit font-lock-builtin-face)))
     "Font Lock face used to highlight function calls in ess buffers."
     :group 'ess)
-  
+
   (defface ess-numbers-face
     '((default (:slant normal :inherit font-lock-type-face)))
     "Font Lock face used to highlight numbers in ess-mode buffers."
     :group 'ess)
   )
-  
+
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."
@@ -2273,6 +2273,19 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 
 (defvar ess-help-w3-url-funs "funs/"
   "Place to find functions.")
+
+(defvar ess-r-object-tooltip-alist
+  '((numeric    . "summary")
+    (integer    . "summary")
+    (factor     . "table")
+    (lm         . "summary")
+    (other      . "str"))
+  "List of (<class> . <R-function>) to be used in \\[ess-r-object-tooltip].
+ For example, when called while point is on a factor object, a table of that
+ factor will be shown in the tooltip.
+ The special key \"other\" in the alist defines which function to call when
+ the class is not mached in the alist.  The default, str(), is a fairly useful
+ default for many, including data.frame and function objects.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
@@ -2325,7 +2338,7 @@ Defaults to `ess-S-non-functions'."
 
  ; julia-mode
 (defvar inferior-julia-program-name "julia-release-basic"
-  ;; the default assumes it is on the PATH ... which is typically the case after 
+  ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
   "Path to julia-release-basic executable")
 
