@@ -70,11 +70,11 @@ install: dist
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
-uninstall: 
+uninstall:
 	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
 
 clean:
-	rm -f $(ELC) noweb-font-lock-mode.elc noweb-mode.elc dist
+	rm -f $(ELC) dist
 
 distclean: clean
 # and potentially more

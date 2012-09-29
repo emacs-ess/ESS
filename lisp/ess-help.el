@@ -270,7 +270,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Prompt for package name and display its index."
   (interactive)
   (let ((object (buffer-name))
-        (alist          ess-local-customize-alist)
+        (alist ess-local-customize-alist)
         (pname ess-local-process-name)
         pack buff all-packs  not-implemented
         ;; Available customization for ess languages/dialects:
@@ -407,7 +407,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (if (featurep 'xemacs)
       (ess-eval-linewise "browseVignettes()\n") ;VS:cannot make regexp bellow work in xemacs
     (let ((buff (get-buffer-create " *ess-command-output*"))
-          (alist                ess-local-customize-alist)
+          (alist ess-local-customize-alist)
           packs details
           p row)
       (ess-command "local({oo <- options(width=1000);print.default(browseVignettes());options(oo)})\n" buff)

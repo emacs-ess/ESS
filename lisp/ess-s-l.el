@@ -125,7 +125,7 @@
     (comment-start                . "#")
     (comment-add                  . 1)
     (comment-start-skip           . "#+ *")
-    (comment-use-syntax           . nil) ;; regexp based, probably faster than syntax based 
+    (comment-use-syntax           . nil) ;; regexp based, probably faster than syntax based
     (comment-column               . 40)
     (ess-no-skip-regexp           . (concat "^ *@\\|" (default-value 'ess-no-skip-regexp)))
     ;; inferior-ess-prompt is used by comint for navigation only if
@@ -746,9 +746,10 @@ In that case, the it is removed and replaced by the underscore.
   (define-key ess-mode-map          "\C-cf" 'ess-insert-function-outline)
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
 
-  ;; Make A-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
-  (define-key ess-mode-map          [?\A--] 'ess-insert-S-assign)
-  (define-key inferior-ess-mode-map [?\A--] 'ess-insert-S-assign)
+  ;; Make M-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
+  ;; Note this overwrites 'M--' as "negative argument" (still on 'C--'):
+  (define-key ess-mode-map          [?\M--] 'ess-insert-S-assign)
+  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-S-assign)
   )
 
 
