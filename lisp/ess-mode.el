@@ -403,9 +403,6 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
-  ;;this is bass-ackwards
-  ;;  (define-key ess-mode-map "("  ;; allow to toggle after customization:
-  ;;    (if ess-r-args-electric-paren 'ess-r-args-auto-show 'self-insert-command))
   (if ess-r-args-electric-paren (define-key ess-mode-map "(" 'ess-r-args-auto-show))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
@@ -578,7 +575,7 @@ it cannot find a function beginning."
 
   ;; FIXME: should not throw error in accordance with beginning-of-defun and
   ;; beginning-of-defun-function specification
-  
+
   (interactive)
   (let ((init-point (point))
         (in-set-S4 nil)
