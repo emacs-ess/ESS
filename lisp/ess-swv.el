@@ -137,22 +137,35 @@ Currently 'sweave or 'knitr"
 
 
 (defun ess-swv-tangle ()
-  "Run Stangle on the current .Rnw file."
+  "Run Stangle/purl on the current .Rnw file.
+Depending on the `ess-swv-processor' used."
   (interactive)
   (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
                            "Stangle")
                           ((eq ess-swv-processor 'knitr)
-                           "purl")
+                           "require(knitr); purl")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
 (defun ess-swv-weave ()
-  "Run Sweave on the current .Rnw file."
+  "Run Sweave/knit on the current .Rnw file.
+Depending on the `ess-swv-processor' used."
   (interactive)
   (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
                            "Sweave")
                           ((eq ess-swv-processor 'knitr)
-                           "knit")
+                           "require(knitr); knit")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
+
+
+(defun ess-swv-knit ()
+  "Run knit on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "require(knitr) ; knit"))
+
+(defun ess-swv-purl ()
+  "Run purl on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "require(knitr) ; purl"))
 
 (defun ess-swv-latex ()
   "Run LaTeX on the product of Sweave()ing the current file."
@@ -313,6 +326,8 @@ file and latex the result."
 (define-key noweb-minor-mode-map "\M-nl" 'ess-swv-latex)
 (define-key noweb-minor-mode-map "\M-np" 'ess-swv-PS)
 (define-key noweb-minor-mode-map "\M-nP" 'ess-swv-PDF)
+(define-key noweb-minor-mode-map "\M-nr" 'ess-swv-knit)
+(define-key noweb-minor-mode-map "\M-nu" 'ess-swv-purl)
 
 (define-key noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
 
