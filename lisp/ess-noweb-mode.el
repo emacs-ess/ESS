@@ -432,6 +432,8 @@ Misc:
   (mapcar 'noweb-make-variable-permanent-local
           '(ess-noweb-mode
             ess-local-process-name ;; also made permanent in ess-mode, but let it be
+            ess-dialect
+            ess-language
             after-change-functions
             before-change-functions
             noweb-narrowing
@@ -465,7 +467,9 @@ Misc:
   (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
   (add-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
   (add-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
-  (setq noweb-doc-mode-syntax-table nil)
+  (setq noweb-doc-mode-syntax-table nil
+        ess-dialect "R"
+        ess-language "R")
   (run-hooks 'ess-noweb-mode-hook)
   (message
    "noweb mode: use `M-x noweb-describe-mode' for further information"))
@@ -871,7 +875,7 @@ indent according to mode."
             (indent-region beg end)))
       (indent-region beg end))))
 
-  
+
 (defun noweb-indent-line ()
   "Indent the current line according to mode, after narrowing to this chunk."
   (interactive)
