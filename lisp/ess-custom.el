@@ -1196,13 +1196,13 @@ Use double backslashes if you use the msdos shell."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe"
+(defcustom inferior-S+4-print-command "S_PRINT_COMMAND=emacsclientw.exe"
   "Destination of print icon in S+4 Commands window."
   :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+4-editor-pager-command
-  "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
+  "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
   "Programs called by the editor() and pager() functions
 in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
@@ -1289,13 +1289,13 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-S+6-print-command "S_PRINT_COMMAND=gnuclientw.exe"
+(defcustom inferior-S+6-print-command "S_PRINT_COMMAND=emacsclientw.exe"
   "Destination of print icon in S+6 for Windows Commands window."
   :group 'ess-SPLUS
   :type 'string)
 
 (defcustom inferior-S+6-editor-pager-command
-  "options(editor='gnuclient.exe', pager='gnuclientw.exe')"
+  "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
   "Programs called by the editor() and pager() functions
 in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-SPLUS
@@ -1394,7 +1394,7 @@ order for it to work right.  And Emacs is too smart for it."
 ;;; S S-Plus R.
 
 (defcustom R-editor
-  (if ess-microsoft-p "gnuclient.exe"
+  (if ess-microsoft-p "emacsclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
       (if (featurep 'xemacs) "gnuclient" "emacsclient"))) ;; unix
   "Editor called by R process with 'edit()' command."
@@ -1410,7 +1410,7 @@ order for it to work right.  And Emacs is too smart for it."
 ;; FIXME:  For GNU emacs, "emacsclient" (without ".exe") also works on Windoze
 ;;   (if (>= emacs-major-version 22) "emacsclient" ; for all platforms
 (defcustom S-editor
-  (if ess-microsoft-p "gnuclient.exe"
+  (if ess-microsoft-p "emacsclient.exe"
     (if (equal system-type 'Apple-Macintosh) nil
       ;; unix:
       (if (featurep 'xemacs) "gnuclient" "emacsclient")))
@@ -1419,7 +1419,7 @@ order for it to work right.  And Emacs is too smart for it."
   :type 'string)
 
 (defcustom S-pager
-  (if ess-microsoft-p "gnuclientw.exe"
+  (if ess-microsoft-p "emacsclientw.exe"
     (if (equal system-type 'Apple-Macintosh) nil
       (if (featurep 'xemacs) "gnuclient" "emacsclient")))
   "Pager called by S process with 'page()' command."
