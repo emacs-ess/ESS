@@ -1115,6 +1115,8 @@ See `ess-noweb-mode' and `R-mode' for more help."
   (ess-noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
   (noweb-set-code-mode 'R-mode)
+  (setq ess-dialect "R"
+        ess-language "R")
   (run-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)

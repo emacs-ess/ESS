@@ -467,9 +467,7 @@ Misc:
   (add-hook 'noweb-select-code-mode-hook 'noweb-auto-fill-code-mode)
   (add-hook 'isearch-mode-hook 'noweb-note-isearch-mode)
   (add-hook 'isearch-mode-end-hook 'noweb-note-isearch-mode-end)
-  (setq noweb-doc-mode-syntax-table nil
-        ess-dialect "R"
-        ess-language "R")
+  (setq noweb-doc-mode-syntax-table nil)
   (run-hooks 'ess-noweb-mode-hook)
   (message
    "noweb mode: use `M-x noweb-describe-mode' for further information"))
