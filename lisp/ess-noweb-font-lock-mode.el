@@ -117,7 +117,7 @@ changed major-mode. This variable is used internally to stop it.")
 (defvar ess-noweb-font-lock-mode-hook nil
   "Hook that is run after entering ess-noweb-font-lock mode.")
 
-(defvar noweb-font-lock-max-initial-chunks 2
+(defvar noweb-font-lock-max-initial-chunks 30
   "Maximum number of chunks to fontify initially.
 If nil, will fontify the entire buffer when
 noweb-font-lock-initial-fontify-buffer is called" )
