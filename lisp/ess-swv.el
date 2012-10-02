@@ -129,15 +129,30 @@
         (switch-to-buffer rnw-buf)
         (ess-show-buffer (buffer-name sbuffer) nil)))))
 
+(defcustom ess-swv-processor 'sweave
+  "Processor to use for weaving and tangling.
+Currently 'sweave or 'knitr"
+  :group 'ess-R
+  :type '(choice (const sweave) (const knitr)))
+
+
 (defun ess-swv-tangle ()
   "Run Stangle on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "Stangle"))
+  (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
+                           "Stangle")
+                          ((eq ess-swv-processor 'knitr)
+                           "purl")
+                          (t (error "Not a valid processor %s" ess-swv-processor)))))
 
 (defun ess-swv-weave ()
   "Run Sweave on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "Sweave"))
+  (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
+                           "Sweave")
+                          ((eq ess-swv-processor 'knitr)
+                           "knit")
+                          (t (error "Not a valid processor %s" ess-swv-processor)))))
 
 (defun ess-swv-latex ()
   "Run LaTeX on the product of Sweave()ing the current file."
