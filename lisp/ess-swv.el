@@ -156,6 +156,15 @@ Depending on the `ess-swv-processor' used."
                            "require(knitr); knit")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
+(defun ess-swv-sweave ()
+  "Run Sweave on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "Sweave"))
+
+(defun ess-swv-stangle ()
+  "Run Stangle on the current .Rnw file."
+  (interactive)
+  (ess-swv-run-in-R "Stangle"))
 
 (defun ess-swv-knit ()
   "Run knit on the current .Rnw file."
