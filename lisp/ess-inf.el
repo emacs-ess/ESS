@@ -3040,11 +3040,17 @@ P-STRING is the prompt string."
 ;;;; start of ess-smart-operators
 ;;;; inspired by slime repl shortcuts
 
+(defvar ess--handy-history nil)
+
 (defun ess-handy-commands ()
   "Request and execute a command from `ess-handy-commands' list."
   (interactive)
   (call-interactively
-   (cdr (assoc (ess-completing-read "Execute" (sort (mapcar 'car ess-handy-commands) 'string-lessp) nil t)
+   (cdr (assoc (ess-completing-read "Execute"
+                                    (sort (mapcar 'car (or ess--local-handy-commands
+                                                           ess-handy-commands))
+                                          'string-lessp) nil t nil
+                                          'ess--handy-history (car ess--handy-history))
                ess-handy-commands))))
 
 (defun ess-smart-comma ()
