@@ -272,6 +272,7 @@ replaced by sequences of '*'.")
           (define-key map "@" 'noweb-electric-@)
           (define-key map "<" 'noweb-electric-<)))
     (define-key map "\M-q" 'noweb-fill-paragraph-chunk)
+    (define-key map "\C-ch" 'ess-handy-commands)
     (define-key map [(control meta ?\\)] 'ess-noweb-indent-region)
     ;;(define-key map "\C-c\C-n" 'noweb-indent-line) ; Override TeX-normal!
     (define-key map "\t" 'noweb-indent-line)

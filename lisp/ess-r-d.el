@@ -1122,6 +1122,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
                 ess-handy-commands)
         ess-dialect "R"
         ess-language "S")
+  (put 'ess--local-handy-commands 'permanent-local t)
   (run-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
