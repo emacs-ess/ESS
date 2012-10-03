@@ -422,12 +422,22 @@ Otherwise try a list of fixed known viewers."
   "Write TEXT to dribble buffer ('*ESS*') only *if* `ess-verbose'."
   (if ess-verbose (ess-write-to-dribble-buffer text)))
 
+
+(defvar ess--make-local-vars-permenent nil
+  "If this varialbe is non-nil in a buffer make all variable permannet.
+Used in noweb modes.")
+(make-variable-buffer-local 'ess--make-local-vars-permenent)
+(put 'ess--make-local-vars-permenent 'permanent-local t)
+
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
   (mapc (lambda (pair)
           (make-local-variable (car pair))
-          (set (car pair) (eval (cdr pair))))
+          (set (car pair) (eval (cdr pair)))
+          (when ess--make-local-vars-permenent
+            (put (car pair) 'permanent-local t)) ;; hack for Rnw
+          )
         alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"

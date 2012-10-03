@@ -1112,15 +1112,19 @@ getArgHelp <- function(arg, func=NULL){
 See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
+  (setq ess--make-local-vars-permenent t)
   (ess-noweb-mode 1); turn it on
   (noweb-set-doc-mode 'latex-mode)
   (noweb-set-code-mode 'R-mode)
-  (setq ess-dialect "R"
-        ess-language "R")
+  (setq ess--local-handy-commands
+        (append '(("weave"      . ess-swv-weave)
+                  ("tangle"     . ess-swv-tangle))
+                ess-handy-commands)
+        ess-dialect "R"
+        ess-language "S")
   (run-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
-
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
