@@ -330,19 +330,19 @@ file and latex the result."
 
 
 ;;; Now bind some keys.
-(define-key noweb-minor-mode-map "\M-ns" 'ess-swv-weave)
-(define-key noweb-minor-mode-map "\M-nT" 'ess-swv-tangle)
-(define-key noweb-minor-mode-map "\M-nl" 'ess-swv-latex)
-(define-key noweb-minor-mode-map "\M-np" 'ess-swv-PS)
-(define-key noweb-minor-mode-map "\M-nP" 'ess-swv-PDF)
-(define-key noweb-minor-mode-map "\M-nr" 'ess-swv-knit)
-(define-key noweb-minor-mode-map "\M-nu" 'ess-swv-purl)
+(define-key ess-noweb-minor-mode-map "\M-ns" 'ess-swv-weave)
+(define-key ess-noweb-minor-mode-map "\M-nT" 'ess-swv-tangle)
+(define-key ess-noweb-minor-mode-map "\M-nl" 'ess-swv-latex)
+(define-key ess-noweb-minor-mode-map "\M-np" 'ess-swv-PS)
+(define-key ess-noweb-minor-mode-map "\M-nP" 'ess-swv-PDF)
+(define-key ess-noweb-minor-mode-map "\M-nr" 'ess-swv-knit)
+(define-key ess-noweb-minor-mode-map "\M-nu" 'ess-swv-purl)
 
-(define-key noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
+(define-key ess-noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
 
 ;; AND add these to the noweb menu we have anyway ! :
 (easy-menu-define ess-swv-menu
-  noweb-minor-mode-menu
+  ess-noweb-minor-mode-menu
   "Submenu for use in `Rnw-mode'."
 
   '("Sweaving, Tangling, ..."
@@ -360,13 +360,13 @@ file and latex the result."
     (add-hook 'Rnw-mode-hook
               (lambda ()
                 ;; This adds to top menu:
-                ;; (easy-menu-add ess-swv-menu noweb-minor-mode-map)
+                ;; (easy-menu-add ess-swv-menu ess-noweb-minor-mode-map)
                 ;; But that's using an unnecessary extra level -- FIXME
-                (easy-menu-add-item noweb-minor-mode-menu
+                (easy-menu-add-item ess-noweb-minor-mode-menu
                                     '("Sweave");; 'nil' adds to top
                                     ess-swv-menu)))
   ;; normal GNU Emacs:
-  (easy-menu-add-item noweb-minor-mode-menu
+  (easy-menu-add-item ess-noweb-minor-mode-menu
                       nil ;; <= path
                       ess-swv-menu))
 

@@ -1114,8 +1114,8 @@ See `ess-noweb-mode' and `R-mode' for more help."
   (require 'ess-noweb);; << probably someplace else
   (setq ess--make-local-vars-permenent t)
   (ess-noweb-mode 1); turn it on
-  (noweb-set-doc-mode 'latex-mode)
-  (noweb-set-code-mode 'R-mode)
+  (ess-noweb-set-doc-mode 'latex-mode)
+  (ess-noweb-set-code-mode 'R-mode)
   (setq ess--local-handy-commands
         (append '(("weave"      . ess-swv-weave)
                   ("tangle"     . ess-swv-tangle))

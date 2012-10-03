@@ -34,17 +34,17 @@
 ;;  Here is a description of how one can add highlighting via the
 ;;  font-lock package to noweb buffers.  It uses the hooks provided by
 ;;  ess-noweb-mode.el.  The solution provides the following features:
-;;  1) The documentation chunks are highlighted in the noweb-doc-mode
+;;  1) The documentation chunks are highlighted in the ess-noweb-doc-mode
 ;;  (e.g., LaTeX).
 ;;  2) The code chunks without mode comments (-*- mode -*-) are
-;;  highlighted in the noweb-code-mode.
+;;  highlighted in the ess-noweb-code-mode.
 ;;  3) The code chunks with mode comments (-*- mode -*-) on the first
 ;;  line of the first chunk with this name are highlighted in the mode
 ;;  in the comment.
 ;;
 ;;  For example, given the file:
 ;;
-;;    % -*- mode: Noweb; noweb-code-mode: c-mode -*-
+;;    % -*- mode: Noweb; ess-noweb-code-mode: c-mode -*-
 ;;
 ;;    \begin{itemize}
 ;;    \item a main routine written in C,
@@ -95,7 +95,7 @@
 ;;  verbatim environment with throw the font-locking out.
 ;;  One slight blemish is that code-quotes are highlighted as comments
 ;;  as they are being entered. They are only highlighted correctly
-;;  after `noweb-font-lock-fontify-chunk' has been run, either as a
+;;  after `ess-noweb-font-lock-fontify-chunk' has been run, either as a
 ;;  command or through changing to a different chunk and back again
 ;;  (unless they lie on a single line, in which case they are
 ;;  fontified correctly once they are completed).
@@ -108,7 +108,7 @@
 (defvar ess-noweb-font-lock-mode nil
   "Buffer local variable, t iff this buffer is using ess-noweb-font-lock-mode.")
 
-(defvar noweb-use-font-lock-mode t
+(defvar ess-noweb-use-font-lock-mode t
   "DO NOT CHANGE THIS VARIABLE
 If you use nw-turn-on-font-lock to turn on font-locking, then turn it
 off again, it would come back on again of its own accord when you
@@ -117,10 +117,10 @@ changed major-mode. This variable is used internally to stop it.")
 (defvar ess-noweb-font-lock-mode-hook nil
   "Hook that is run after entering ess-noweb-font-lock mode.")
 
-(defvar noweb-font-lock-max-initial-chunks 30
+(defvar ess-noweb-font-lock-max-initial-chunks 30
   "Maximum number of chunks to fontify initially.
 If nil, will fontify the entire buffer when
-noweb-font-lock-initial-fontify-buffer is called" )
+ess-noweb-font-lock-initial-fontify-buffer is called" )
 
 (defvar old-beginning-of-syntax nil
   "Stores the function used to find the beginning of syntax in the
@@ -129,16 +129,16 @@ current major mode. ess-noweb-font-lock-mode needs a different one." )
 ;; (AJR) the next two lines were originally font-lock-warning-face
 ;; methods; XEmacs 20.4 doesn't define this, sigh...  -- KLUDGE --.
 
-(defvar noweb-font-lock-doc-start-face font-lock-reference-face
+(defvar ess-noweb-font-lock-doc-start-face font-lock-reference-face
   "Face to use to highlight the `@' at the start of each doc chunk")
 
-(defvar noweb-font-lock-brackets-face font-lock-reference-face
+(defvar ess-noweb-font-lock-brackets-face font-lock-reference-face
   "Face to use to highlight `<<', `>>' `[[' and `]]' ")
 
-(defvar noweb-font-lock-chunk-name-face font-lock-keyword-face
+(defvar ess-noweb-font-lock-chunk-name-face font-lock-keyword-face
   "Face to use to highlight the between `<<' and `>>'")
 
-(defvar noweb-font-lock-code-quote-face font-lock-keyword-face
+(defvar ess-noweb-font-lock-code-quote-face font-lock-keyword-face
   "Face to use to highlight the between `[[' and `]]'")
 
 ;; Now we add [[ess-noweb-font-lock-mode]] to the list of existing minor
@@ -159,9 +159,9 @@ current major mode. ess-noweb-font-lock-mode needs a different one." )
   "This function does nothing at all")
 
 ;; The following function is just a wrapper for ess-noweb-font-lock-mode,
-;; enabling it to be called as noweb-font-lock-minor-mode instead.
+;; enabling it to be called as ess-noweb-font-lock-minor-mode instead.
 
-(defun noweb-font-lock-minor-mode ( &optional arg)
+(defun ess-noweb-font-lock-minor-mode ( &optional arg)
   "Minor meta mode for managing syntax highlighting in noweb files.
 See ess-noweb-font-lock-mode."
   (interactive)
@@ -192,17 +192,17 @@ Each chunk is fontified in accordance with its own mode"
         (cond
           (ess-noweb-font-lock-mode                 ;Setup the minor-mode
            (when (and (boundp 'global-font-lock-mode) global-font-lock-mode)
-             (mapc 'noweb-make-variable-permanent-local
+             (mapc 'ess-noweb-make-variable-permanent-local
                    '(font-lock-fontify-buffer-function
                      font-lock-unfontify-buffer-function))
              (setq font-lock-fontify-buffer-function 'nwfl-donowt)
              (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
-           (mapcar 'noweb-make-variable-permanent-local
+           (mapcar 'ess-noweb-make-variable-permanent-local
                    '(ess-noweb-font-lock-mode
                      font-lock-dont-widen
                      font-lock-beginning-of-syntax-function
                      syntax-begin-function
-                     noweb-use-font-lock-mode
+                     ess-noweb-use-font-lock-mode
                      after-change-functions))
            (setq ess-noweb-font-lock-mode t
                  font-lock-dont-widen t)
@@ -211,10 +211,10 @@ Each chunk is fontified in accordance with its own mode"
            (add-hook 'after-change-functions
              'font-lock-after-change-function nil t)
            (add-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)
-           (add-hook 'noweb-changed-chunk-hook
-             'noweb-font-lock-fontify-this-chunk)
+           (add-hook 'ess-noweb-changed-chunk-hook
+             'ess-noweb-font-lock-fontify-this-chunk)
            (run-hooks 'ess-noweb-font-lock-mode-hook)
-           (message "noweb-font-lock mode: use `M-x noweb-font-lock-describe-mode' for more info"))
+           (message "ess-noweb-font-lock mode: use `M-x ess-noweb-font-lock-describe-mode' for more info"))
          ;; If we didn't do the above, then we want to turn ess-noweb-font-lock-mode
          ;; off, no matter what (hence the condition `t')
           (t
@@ -225,39 +225,39 @@ Each chunk is fontified in accordance with its own mode"
              (setq font-lock-unfontify-buffer-function
                    'font-lock-default-unfontify-buffer))
            (remove-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)
-           (remove-hook 'noweb-changed-chunk-hook
-                        'noweb-font-lock-fontify-this-chunk)
+           (remove-hook 'ess-noweb-changed-chunk-hook
+                        'ess-noweb-font-lock-fontify-this-chunk)
            (remove-hook 'after-change-functions
                         'font-lock-after-change-function )
            (font-lock-default-unfontify-buffer)
-           (setq noweb-use-font-lock-mode nil)
+           (setq ess-noweb-use-font-lock-mode nil)
            (message "ess-noweb-font-lock-mode removed"))))
     (message "ess-noweb-font-lock-mode can only be used with ess-noweb-mode")))
 
-(defun noweb-start-of-syntax ()
+(defun ess-noweb-start-of-syntax ()
   "Go to the place to start fontifying from"
   (interactive)
-  (goto-char (car (noweb-chunk-region))))
+  (goto-char (car (ess-noweb-chunk-region))))
 
-(defun noweb-font-lock-fontify-chunk-by-number ( chunk-num )
+(defun ess-noweb-font-lock-fontify-chunk-by-number ( chunk-num )
   "Fontify chunk chunk-num based on the current major mode."
   (save-excursion
     (font-lock-set-defaults)
     (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (setq font-lock-beginning-of-syntax-function 'noweb-start-of-syntax)
-    (setq syntax-begin-function 'noweb-start-of-syntax)
+    (setq font-lock-beginning-of-syntax-function 'ess-noweb-start-of-syntax)
+    (setq syntax-begin-function 'ess-noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords
           ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
-          ;;                    (1 noweb-font-lock-brackets-face prepend )
-          ;;                    (2 noweb-font-lock-code-quote-face prepend)
-          ;;                    (3 noweb-font-lock-brackets-face prepend))
+          ;;                    (1 ess-noweb-font-lock-brackets-face prepend )
+          ;;                    (2 ess-noweb-font-lock-code-quote-face prepend)
+          ;;                    (3 ess-noweb-font-lock-brackets-face prepend))
           ;;                   ("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
-          ;;                    (1 noweb-font-lock-brackets-face  prepend )
-          ;;                    (2 noweb-font-lock-chunk-name-face prepend)
-          ;;                    (3 noweb-font-lock-brackets-face prepend))
+          ;;                    (1 ess-noweb-font-lock-brackets-face  prepend )
+          ;;                    (2 ess-noweb-font-lock-chunk-name-face prepend)
+          ;;                    (3 ess-noweb-font-lock-brackets-face prepend))
           ;;                   ("^@[ \t\n]+"
-          ;;                    (0 noweb-font-lock-doc-start-face prepend )))))
+          ;;                    (0 ess-noweb-font-lock-doc-start-face prepend )))))
           (append font-lock-keywords
                   '(("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
                      (1 font-lock-reference-face  prepend )
@@ -267,9 +267,9 @@ Each chunk is fontified in accordance with its own mode"
                      (0 font-lock-reference-face prepend )))))
 
 
-    (let ((r (cons (marker-position (cdr (aref noweb-chunk-vector
+    (let ((r (cons (marker-position (cdr (aref ess-noweb-chunk-vector
                                                chunk-num)))
-                   (marker-position (cdr (aref noweb-chunk-vector
+                   (marker-position (cdr (aref ess-noweb-chunk-vector
                                                (1+ chunk-num))))))
           (font-latex-extend-region-functions nil);; don't extend anything
           (font-lock-extend-region-functions nil)) ;; this infloops :( 
@@ -279,19 +279,19 @@ Each chunk is fontified in accordance with its own mode"
         (font-lock-fontify-region (car r) (cdr r)))
       t)))
 
-(defun noweb-font-lock-fontify-this-chunk ()
+(defun ess-noweb-font-lock-fontify-this-chunk ()
   "Fontify this chunk according to its own major mode.
 Since we are in the chunk, the major mode will already have been set
 by ess-noweb-mode.el"
   (interactive)
-  (noweb-font-lock-fontify-chunk-by-number (noweb-find-chunk-index-buffer)))
+  (ess-noweb-font-lock-fontify-chunk-by-number (ess-noweb-find-chunk-index-buffer)))
 
-(defun noweb-font-lock-initial-fontify-buffer ()
+(defun ess-noweb-font-lock-initial-fontify-buffer ()
   "Applies syntax highlighting to some or all chunks in a noweb buffer.
-The number of chunks is set by noweb-font-lock-max-initial-chunks: if
+The number of chunks is set by ess-noweb-font-lock-max-initial-chunks: if
 this is nil, the entire buffer is fontified.
 It is intended to be called when first entering ess-noweb-font-lock-mode.
-For other purposes, use noweb-font-lock-fontify-chunks."
+For other purposes, use ess-noweb-font-lock-fontify-chunks."
   (interactive)
   ;; This will be tricky. It will be very slow to go throught the chunks
   ;; in order, switching major modes all the time.
@@ -301,34 +301,34 @@ For other purposes, use noweb-font-lock-fontify-chunks."
   ;; only happen when the file is first read in, anyway
   (save-excursion
     (let (start-chunk end-chunk this-chunk chunk-counter)
-      (setq this-chunk (noweb-find-chunk-index-buffer))
-      (if noweb-font-lock-max-initial-chunks
+      (setq this-chunk (ess-noweb-find-chunk-index-buffer))
+      (if ess-noweb-font-lock-max-initial-chunks
           (progn
             (setq start-chunk
                   (max 0
                        (- this-chunk
-                          (/ noweb-font-lock-max-initial-chunks 2))))
+                          (/ ess-noweb-font-lock-max-initial-chunks 2))))
             ;; Don't you just love hairy lisp syntax ? The above means set the
             ;; starting chunk to the current chunk minus half of
-            ;; noweb-font-lock-max-initial-chunks, unless that is negative in
+            ;; ess-noweb-font-lock-max-initial-chunks, unless that is negative in
             ;; which case set it to 0
-            (setq end-chunk (+ start-chunk noweb-font-lock-max-initial-chunks))
-            (if (> end-chunk (- (length noweb-chunk-vector) 2))
-                (setq end-chunk (- (length noweb-chunk-vector) 2))))
-        ;; If noweb-font-lock-max-initial-chunks is nil, do the whole buffer
+            (setq end-chunk (+ start-chunk ess-noweb-font-lock-max-initial-chunks))
+            (if (> end-chunk (- (length ess-noweb-chunk-vector) 2))
+                (setq end-chunk (- (length ess-noweb-chunk-vector) 2))))
+        ;; If ess-noweb-font-lock-max-initial-chunks is nil, do the whole buffer
         (progn
           (setq start-chunk 0)
-          (setq end-chunk (- (length noweb-chunk-vector) 2))))
-      (noweb-font-lock-fontify-chunks start-chunk end-chunk))))
+          (setq end-chunk (- (length ess-noweb-chunk-vector) 2))))
+      (ess-noweb-font-lock-fontify-chunks start-chunk end-chunk))))
 
-(defun noweb-font-lock-fontify-buffer ()
+(defun ess-noweb-font-lock-fontify-buffer ()
   "This function will fontify each chunk in the buffer appropriately."
   (interactive)
   (let ((start-chunk 0)
-        (end-chunk (- (length noweb-chunk-vector) 2)))
-    (noweb-font-lock-fontify-chunks start-chunk end-chunk)))
+        (end-chunk (- (length ess-noweb-chunk-vector) 2)))
+    (ess-noweb-font-lock-fontify-chunks start-chunk end-chunk)))
 
-(defun noweb-font-lock-fontify-chunks (start-chunk end-chunk)
+(defun ess-noweb-font-lock-fontify-chunks (start-chunk end-chunk)
   "Fontify a noweb file from start-chunk to end-chunk"
   (interactive)
   (let (chunk-counter)
@@ -336,33 +336,33 @@ For other purposes, use noweb-font-lock-fontify-chunks."
       (message "Fontifying from %d to %d" start-chunk end-chunk)
       ;; Want to set DOC mode for the first Doc chunk, not for the others
       (setq chunk-counter start-chunk)
-      (while  (stringp (car (aref noweb-chunk-vector chunk-counter)))
+      (while  (stringp (car (aref ess-noweb-chunk-vector chunk-counter)))
         (setq chunk-counter (+ chunk-counter 1)))
-      (goto-char (cdr (aref noweb-chunk-vector chunk-counter)))
-      (noweb-select-mode)
+      (goto-char (cdr (aref ess-noweb-chunk-vector chunk-counter)))
+      (ess-noweb-select-mode)
       ;; Now go through the chunks, fontifying the documentation ones.
       (while (<= chunk-counter end-chunk)
-        (if  (not (stringp (car (aref noweb-chunk-vector chunk-counter))))
-            (noweb-font-lock-fontify-chunk-by-number chunk-counter))
+        (if  (not (stringp (car (aref ess-noweb-chunk-vector chunk-counter))))
+            (ess-noweb-font-lock-fontify-chunk-by-number chunk-counter))
         (message "Fontifying documentation chunks: chunk %d" chunk-counter)
         (setq chunk-counter (+ 1 chunk-counter)))
       ;; Go back to the start and go through the chunks, fontifying the code ones.
       (setq chunk-counter start-chunk)
       (message "About to do code chunks")
       (while (<= chunk-counter end-chunk)
-        (when (stringp (car (aref noweb-chunk-vector chunk-counter)))
+        (when (stringp (car (aref ess-noweb-chunk-vector chunk-counter)))
           ;; It's a code chunk: goto it to set the correct code mode, then
           ;; fontify it.
           (message "Fontifying code chunks: chunk %d" chunk-counter)
-          (goto-char (cdr (aref noweb-chunk-vector chunk-counter)))
-          (noweb-select-mode)
-          (noweb-font-lock-fontify-this-chunk))
+          (goto-char (cdr (aref ess-noweb-chunk-vector chunk-counter)))
+          (ess-noweb-select-mode)
+          (ess-noweb-font-lock-fontify-this-chunk))
         (setq chunk-counter (1+ chunk-counter))))
-    (noweb-select-mode)))
+    (ess-noweb-select-mode)))
 
 (defun ess-noweb-font-lock-mode-fn()
   "Function that is intended to be attached to ess-noweb-font-lock-mode-hook."
-  (noweb-font-lock-initial-fontify-buffer))
+  (ess-noweb-font-lock-initial-fontify-buffer))
 
 ;; This is a wee bit of a hack. If people attach `turn-on-font-lock'
 ;; to their major mode hook, it will play hell with
@@ -373,17 +373,17 @@ For other purposes, use noweb-font-lock-fontify-chunks."
 ;; turn-on-lock was around, I redefined turn-on-font-lock to do the
 ;; right thing.
 
-(defvar noweb-old-turn-on-font-lock nil)
+(defvar ess-noweb-old-turn-on-font-lock nil)
 
 (defun nw-turn-on-font-lock ()
   "Turn on font-lock mode, with due regard to whether we are in ess-noweb-mode"
   (if (not ess-noweb-mode)
-      (noweb-old-turn-on-font-lock)
-    (if (and (not ess-noweb-font-lock-mode) noweb-use-font-lock-mode)
+      (ess-noweb-old-turn-on-font-lock)
+    (if (and (not ess-noweb-font-lock-mode) ess-noweb-use-font-lock-mode)
         (ess-noweb-font-lock-mode ))))
 
-(unless (functionp 'noweb-old-turn-on-font-lock)
-  (fset 'noweb-old-turn-on-font-lock (symbol-function 'turn-on-font-lock))
+(unless (functionp 'ess-noweb-old-turn-on-font-lock)
+  (fset 'ess-noweb-old-turn-on-font-lock (symbol-function 'turn-on-font-lock))
   (fset 'turn-on-font-lock (symbol-function 'nw-turn-on-font-lock)))
 
 (provide 'ess-noweb-font-lock-mode)
