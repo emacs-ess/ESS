@@ -3045,13 +3045,18 @@ P-STRING is the prompt string."
 (defun ess-handy-commands ()
   "Request and execute a command from `ess-handy-commands' list."
   (interactive)
-  (call-interactively
-   (cdr (assoc (ess-completing-read "Execute"
-                                    (sort (mapcar 'car (or ess--local-handy-commands
-                                                           ess-handy-commands))
-                                          'string-lessp) nil t nil
-                                          'ess--handy-history (car ess--handy-history))
-               ess-handy-commands))))
+  (let* ((commands (or ess--local-handy-commands
+                       ess-handy-commands))
+         (hist (and (assoc (car ess--handy-history)
+                           commands)
+                    (car ess--handy-history))))
+    (dbg hist)
+    (call-interactively
+     (cdr (assoc (ess-completing-read "Execute"
+                                      (sort (mapcar 'car commands)
+                                            'string-lessp) nil t nil
+                                            'ess--handy-history hist)
+                 commands)))))
 
 (defun ess-smart-comma ()
   "If comma is invoked at the process marker of an ESS inferior
