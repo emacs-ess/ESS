@@ -3050,7 +3050,6 @@ P-STRING is the prompt string."
          (hist (and (assoc (car ess--handy-history)
                            commands)
                     (car ess--handy-history))))
-    (dbg hist)
     (call-interactively
      (cdr (assoc (ess-completing-read "Execute"
                                       (sort (mapcar 'car commands)
