@@ -993,7 +993,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         (ess-ac-objects)))))
 
 (defun ess-ac-help (sym)
-  (if (string-match-p "=\\'" sym)
+  (if (string-match-p "= *\\'" sym)
       (ess-ac-help-arg sym)
     (ess-ac-help-object sym)))
 
@@ -1065,7 +1065,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; (requires   . 0)
     (candidates . ess-ac-args)
     (document   . ess-ac-help-arg)
-    (action     . ess-ac-action-args))
+    ;; (action     . ess-ac-action-args)
+    )
   "Auto-completion source for R function arguments"
   )
 
@@ -1086,21 +1087,19 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
-      (delete "...=" args)
-      (mapcar (lambda (a) (if (equal (substring a -1) "=")
-                              (concat (substring a 0 -1) " = ")
-                            a))
+      (delete "..." args)
+      (mapcar (lambda (a) (concat a " = "))
               args))))
 
-(defun ess-ac-action-args ()
-  (when (looking-back "=")
-    (delete-char -1)
-    (insert " = ")))
+;; (defun ess-ac-action-args ()
+;;   (when (looking-back "=")
+;;     (delete-char -1)
+;;     (insert " = ")))
 
 
 (defun ess-ac-help-arg (sym)
   "Help string for ac."
-  (setq sym (substring sym 0 -1)) ;; get rid of =
+  (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
   (let ((buff (get-buffer-create " *ess-command-output*"))
         (fun (car ess--funname.start))
         doc)
