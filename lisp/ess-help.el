@@ -270,7 +270,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Prompt for package name and display its index."
   (interactive)
   (let ((object (buffer-name))
-        (alist          ess-local-customize-alist)
+        (alist ess-local-customize-alist)
         (pname ess-local-process-name)
         pack buff all-packs  not-implemented
         ;; Available customization for ess languages/dialects:
@@ -407,7 +407,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (if (featurep 'xemacs)
       (ess-eval-linewise "browseVignettes()\n") ;VS:cannot make regexp bellow work in xemacs
     (let ((buff (get-buffer-create " *ess-command-output*"))
-          (alist                ess-local-customize-alist)
+          (alist ess-local-customize-alist)
           packs details
           p row)
       (ess-command "local({oo <- options(width=1000);print.default(browseVignettes());options(oo)})\n" buff)
@@ -583,7 +583,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "k" 'kill-this-buffer)
     (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
-    (define-key map "\C-c h"   'ess-handy-commands)
+    (define-key map "\C-ch"   'ess-handy-commands)
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\M-r" 'ess-eval-region-and-go)

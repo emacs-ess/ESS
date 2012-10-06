@@ -1,5 +1,14 @@
 @itemize @w{}
 
+Changes/New Features in 12.09-mod:
+@itemize @bullet
+@item @iESS{[R]} and @iESS{(Sqpe) [S]} on Windows:
+The @code{options("editor")} is now initialized to @code{emacsclient}
+instead of the previous @code{gnuclient}.  The user may need to add the
+line @code{(server-start)} to the emacs initialization file.
+ @code{emacsclient} has been included with emacs since GnuEmacs 22.1.
+@end itemize
+
 Changes/New Features in 12.09:
 
 @itemize @bullet

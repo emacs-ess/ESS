@@ -293,13 +293,6 @@ ess-r-args-current-function if no argument given."
         (insert args)
         (goto-char pointpos))))
 
-;; ;; call ess-r-args-show automatically --- this should be optional
-;; now in ess-mode.el :
-;; (if ess-r-args-electric-paren ; <<- in ./ess-custom.el -- default nil
-;;     (add-hook 'ess-mode-hook
-;;            (lambda ()
-;;              (define-key ess-mode-map "(" 'ess-r-args-auto-show))))
-
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>
@@ -354,6 +347,48 @@ and y-offsets for the toolbar from point."
                        tooltip-frame-parameters))))
       (tooltip-show text))
     ))
+
+;; From Erik Iversion, slightly modified,
+;; http://www.sigmafield.org/2009/10/01/r-object-tooltips-in-ess/
+(defun ess-r-object-tooltip ()
+  "Get info for object at point, and display it in a tooltip."
+  (interactive)
+  (let ((proc (get-ess-process))
+        (objname (current-word))
+        (curbuf (current-buffer))
+        (tmpbuf (get-buffer-create " *ess-r-object-tooltip*"))
+        bs)
+    (when objname
+      (ess-write-to-dribble-buffer
+       (format "ess-r-object-tooltip: objname='%s'\n" objname))
+      (ess-command (concat "class(" objname ")\n") tmpbuf nil nil nil proc)
+      (with-current-buffer tmpbuf
+        (goto-char (point-min))
+        ;; CARE: The following can only work in an English language locale!
+        ;; .lang. <- Sys.getenv("LANGUAGE"); Sys.setenv(LANGUAGE="en")
+        ;; .lc. <- Sys.getlocale("LC_MESSAGES"); Sys.setlocale("LC_MESSAGES","en_US.utf-8")
+        ;; and *afterward*  Sys.setenv(LANGUAGE=.lang.); Sys.setlocale("LC_MESSAGES", .lc.)
+        ;; but that fails sometimes, e.g., on Windows
+        (unless (re-search-forward "\(object .* not found\)\|unexpected" nil t)
+          (re-search-forward "\"\\(.*\\)\"" nil t)
+          (let* ((objcls (match-string 1))
+                 (myfun (or (cdr (assoc-string objcls ess-r-object-tooltip-alist))
+                            (cdr (assoc 'other ess-r-object-tooltip-alist)))))
+            (ess-command (concat myfun "(" objname ")\n") tmpbuf nil nil nil proc))
+          (setq bs (buffer-string)))))
+    (if bs
+      (ess-tooltip-show-at-point bs 0 30))))
+
+;; Erik: my default key map
+;;(define-key ess-mode-map "\C-c\C-g" 'ess-r-object-tooltip)
+
+;; On http://www.sigmafield.org/2009/10/01/r-object-tooltips-in-ess/
+;; in the comments, "Charlie" recommended
+
+;; (custom-set-faces
+;; '(tooltip ((t (:background "white" :foreground "blue" :foundry "fixed")))))
+
+
 
 (provide 'ess-r-args)
 

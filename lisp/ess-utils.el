@@ -811,6 +811,13 @@ process to avoid excessive requests.
            (process-put *proc* ',time-var (current-time))
            out)))))
 
+;; debug util:
+(defmacro dbg (&rest args)
+  `(progn
+     ,@(mapcar (lambda (el)
+		 `(princ (format "%s:%s\n" ',el ,el)))
+	       args)))
+
 
 (provide 'ess-utils)
 

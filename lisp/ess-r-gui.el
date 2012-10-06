@@ -62,7 +62,7 @@ nil on Unix machines."
 (if (not (getenv "R_HOME")) (setenv "R_HOME" "c:/progra~1/R/R-2.6.1"))
 ;;                                                         ^^^^^^^^^ FIXME! do something better
 (defvar inferior-Rgui-program-name "cmd" "Rgui program name")
-(defvar Rgui-pager "gnuclientw.exe" "Rgui pager program")
+(defvar Rgui-pager "emacsclientw.exe" "Rgui pager program")
 (defvar ess-command-file "c:/temp/ess-tempfile.R"
   "file name for communication with Rgui")
 (defvar inferior-ess-execdde

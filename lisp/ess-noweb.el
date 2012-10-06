@@ -63,7 +63,7 @@ Arg has same meaning as for `ess-eval-region'."
          new-process-name
          (cbuf (current-buffer))
          (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
-    (noweb-tangle-chunk temp-buffer)
+    (ess-noweb-tangle-chunk temp-buffer)
     (set-buffer temp-buffer)
     ;; When the temp buffer is created, it does not inherit any value
     ;; of ess-local-process-name from the .Rnw buffer, so we have to set it
@@ -106,7 +106,7 @@ Arg has same meaning as for `ess-eval-region'."
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
   (let ((temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
-    (noweb-tangle-current-thread temp-buffer)
+    (ess-noweb-tangle-current-thread temp-buffer)
     (set-buffer temp-buffer)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
     (kill-buffer temp-buffer)))

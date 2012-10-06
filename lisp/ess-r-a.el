@@ -39,8 +39,7 @@
 ;; with vsize set to (for example) 40M, and nsize set to 600000.
 (defalias 'essr
   (read-kbd-macro
-   "C-u M-x R RET - - vsize SPC 40M SPC - - nsize SPC 600000 2*RET"))
-;; "SPC" must be "=" in future versions of R (works from 0.99 on)
+   "C-u M-x R RET - - vsize = 40M SPC - - nsize = 600000 2*RET"))
 
 (defun ess-r-do-region (start end &optional message)
   "Send the current region to R via AppleScript."

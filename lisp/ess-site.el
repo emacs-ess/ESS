@@ -320,7 +320,7 @@ between .s or .S files and assembly mode.
 ;;; to emacs, giving the user the opportunity to
 ;;; (1) edit the output into a clean ess-transcript file before printing, or
 ;;; (2) print a region of the file.
-;;(setq-default inferior-S+4-print-command "S_PRINT_COMMAND=gnuclientw.exe")
+;;(setq-default inferior-S+4-print-command "S_PRINT_COMMAND=emacsclientw.exe")
 
 ;;; The editor and pager output from S+4 and Sqpe+4 are sent by
 ;;; StatSci default to notepad, effectively using the definition:
@@ -330,7 +330,7 @@ between .s or .S files and assembly mode.
 ;;; ESS sends the output from both commands to an emacs buffer using
 ;;; the definition:
 ;;(setq-default  inferior-S+4-editor-pager-command
-;;   "options(editor='gnuclient.exe', pager='gnuclientw.exe')")
+;;   "options(editor='emacsclient.exe', pager='emacsclientw.exe')")
 
 ;;; These commands are for running the PC version of Sqpe of S+4 and
 ;;; S+6 in an emacs buffer, using the same technology as ESS uses for

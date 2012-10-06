@@ -367,6 +367,8 @@ to R, put them in the variable `inferior-R-args'."
        'ess-end-of-function)
 
   (ess-roxy-mode t)
+  (if ess-roxy-hide-show-p
+    (ad-activate 'ess-indent-command))
   
   (run-hooks 'R-mode-hook))
 
@@ -658,10 +660,11 @@ to look up any doc strings."
              (get-process ess-current-process-name)
              (not (ess-process-get 'busy)))
     (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-                             (ess-get-object-at-point))
+                             (symbol-at-point))
                         (car (ess--funname.start))))
            (doc (cadr (ess-function-arguments funname))))
       ;; (comint-preinput-scroll-to-bottom)
+
       (when doc
         (ess-eldoc-docstring-format funname doc))
       )))
@@ -820,20 +823,20 @@ i.e. contains :,$ or @.
               (puthash funname args ess--funargs-cache))
             )))))
 
-(defun ess-get-object-at-point ()
-  "A very permissive version of symbol-at-point.
-Suitable for R object's names."
-  (let ((delim "[-+ ,\"\t\n\\*/()%{}:]"))
-    (unless (and (looking-back delim)
-                 (looking-at   delim))
-      (save-excursion
-        (let ((beg (re-search-backward delim nil t)))
-          (setq beg (or (and beg (goto-char (1+ beg)))
-                        (goto-char (point-min))))
-          (unless (re-search-forward delim nil t)
-            (goto-char (point-max)))
-          (buffer-substring-no-properties beg (1- (point))))
-        ))))
+;; (defun ess-get-object-at-point ()
+;;   "A very permissive version of symbol-at-point.
+;; Suitable for R object's names."
+;;   (let ((delim "[-+ ,\"\t\n\\*/()%{}:]"))
+;;     (unless (and (looking-back delim)
+;;                  (looking-at   delim))
+;;       (save-excursion
+;;         (let ((beg (re-search-backward delim nil t)))
+;;           (setq beg (or (and beg (goto-char (1+ beg)))
+;;                         (goto-char (point-min))))
+;;           (unless (re-search-forward delim nil t)
+;;             (goto-char (point-max)))
+;;           (buffer-substring-no-properties beg (1- (point))))
+;;         ))))
 
 
 (defvar ess--funname.start nil)
@@ -862,7 +865,7 @@ later."
                     (while (not (looking-at "("))
                       (up-list -1))
                     ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
-                    (let ((funname (ess-get-object-at-point)))
+                    (let ((funname (symbol-name (symbol-at-point))))
                       (when (and funname
                                  (not (member funname ess-S-non-functions)))
                         (cons funname (- (point) (length funname))))
@@ -913,7 +916,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         token-string)
     ;; If there are no possible-completions, should return nil, so
     ;; that when this function is called from
-    ;; comint-dynamic-complete-functions, other functions can then be
+    ;; comint-dynamic-complete-functions, other functions can also be
     ;; tried.
     (when possible-completions
       (setq token-string (pop possible-completions))
@@ -985,17 +988,25 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))
       )))
 
+
 (defun ess-ac-start-objects ()
   "Get initial position for objects completion."
-  (let ((chars "]A-Za-z0-9.$@_:[")
-        (bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
-        )
-    (when (string-match-p  (format "[%s]" chars) (char-to-string (char-before)))
-      (save-excursion
-        (when (re-search-backward (format "[^%s]" chars) nil t)
-          (unless (looking-at bad-start-regexp)
-            (1+ (point)))
-          )))))
+  (let ((beg (car (bounds-of-thing-at-point 'symbol))))
+    (when (and beg (not (save-excursion (goto-char beg)
+                                        (looking-at "/\\|.[0-9]"))))
+      beg)))
+
+;; (defun ess-ac-start-objects ()
+;;   "Get initial position for objects completion."
+;;   (let ((chars "A-Za-z0-9.$@_:")
+;;         (bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
+;;         )
+;;     (when (string-match-p  (format "[%s]" chars) (char-to-string (char-before)))
+;;       (save-excursion
+;;         (when (re-search-backward (format "[^%s]" chars) nil t)
+;;           (unless (looking-at bad-start-regexp)
+;;             (1+ (point)))
+;;           )))))
 
 (defun ess-ac-help-object (sym)
   "Help string for ac."
@@ -1112,13 +1123,20 @@ getArgHelp <- function(arg, func=NULL){
 See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
+  (setq ess--make-local-vars-permenent t)
   (ess-noweb-mode 1); turn it on
-  (noweb-set-doc-mode 'latex-mode)
-  (noweb-set-code-mode 'R-mode)
+  (ess-noweb-set-doc-mode 'latex-mode)
+  (ess-noweb-set-code-mode 'R-mode)
+  (setq ess--local-handy-commands
+        (append '(("weave"      . ess-swv-weave)
+                  ("tangle"     . ess-swv-tangle))
+                ess-handy-commands)
+        ess-dialect "R"
+        ess-language "S")
+  (put 'ess--local-handy-commands 'permanent-local t)
   (run-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
-
 
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)

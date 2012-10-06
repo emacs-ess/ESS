@@ -1,3 +1,13 @@
+2012-10-06  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-hide-all): introduce new ess-roxy-re to
+	fontify roxygen blocks that are done with different prefix than
+	the actually used prefix
+
+2012-09-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-r-args.el (ess-r-object-tooltip): new
+
 2012-09-13  Richard M. Heiberger <rmh@temple.edu>
 	* ess-site.el add new customizable variable
 	(ess-directory-containing-R) to allow ess-r-versions-created to
@@ -20,7 +30,7 @@
 
 2012-08-22  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el (ess-sas-rtf-portrait/landscape): bug-fix: 
+	* ess-sas-a.el (ess-sas-rtf-portrait/landscape): bug-fix:
 	make new file buffer by adding .rtf; this fixes nagging issue;
 	also ess-sas-rtf-*-landscape replaced by ess-sas-rtf-landscape
 	on Emacs; but Emacs and XEmacs implementations have diverged;
