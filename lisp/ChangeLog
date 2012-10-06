@@ -1,3 +1,9 @@
+2012-10-06  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-hide-all): introduce new ess-roxy-re to
+	fontify roxygen blocks that are done with different prefix than
+	the actually used prefix
+
 2012-09-29  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-r-args.el (ess-r-object-tooltip): new

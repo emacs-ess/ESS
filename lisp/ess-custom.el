@@ -945,6 +945,11 @@ syntactically correct roxygen entries)"
   :group 'ess-roxy
   :type 'string)
 
+(defcustom ess-roxy-re "^#+'"
+  "Regular expression to recognize roxygen blocks."
+  :group 'ess-roxy
+  :type 'string)
+
 (defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
   "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
 the first entry is the default command."

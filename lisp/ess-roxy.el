@@ -88,18 +88,18 @@
 ;; (defvar ess-roxy-font-lock-keywords nil)
 
 (defvar ess-roxy-font-lock-keywords
-  `((,(concat "^" ess-roxy-str " *\\([@\\]"
+  `((,(concat ess-roxy-re " *\\([@\\]"
               (regexp-opt ess-roxy-tags-param t)
               "\\)\\>")
      (1 'font-lock-keyword-face prepend))
-    (,(concat "^" ess-roxy-str " *\\([@\\]"
+    (,(concat ess-roxy-re " *\\([@\\]"
               (regexp-opt '("param" "importFrom") t)
               "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
     (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
      (0 'font-lock-variable-name-face prepend))
-    (,(concat "^" ess-roxy-str)
+    (,(concat ess-roxy-re)
      (0 'bold prepend))))
 
 (define-minor-mode ess-roxy-mode
@@ -159,7 +159,7 @@
           (cont (ess-roxy-entry-p)))
       (beginning-of-line)
       (while cont
-        (if (looking-at (concat "^" ess-roxy-str " *[@].+"))
+        (if (looking-at (concat ess-roxy-re " *[@].+"))
             (progn (setq res nil)
                    (setq cont nil)))
         (setq cont (and (= (forward-line -1) 0) (ess-roxy-entry-p)))
@@ -174,10 +174,10 @@
       (setq cont t)
       (while (and (ess-roxy-entry-p) cont)
         (setq beg (point))
-        (if (looking-at (concat "^" ess-roxy-str " *[@].+"))
+        (if (looking-at (concat ess-roxy-re " *[@].+"))
             (setq cont nil))
         (if (ess-roxy-in-header-p)
-            (if (looking-at (concat "^" ess-roxy-str " *$"))
+            (if (looking-at (concat ess-roxy-re " *$"))
                 (progn
                   (forward-line 1)
                   (setq beg (point))
@@ -214,8 +214,8 @@
           (end-of-line)
           (setq end (point)))
         (if (or (and (ess-roxy-in-header-p)
-                     (looking-at (concat "^" ess-roxy-str " *$")))
-                (looking-at (concat "^" ess-roxy-str " *[@].+")))
+                     (looking-at (concat ess-roxy-re " *$")))
+                (looking-at (concat ess-roxy-re " *[@].+")))
             (progn
               (forward-line -1)
               (end-of-line)
@@ -228,7 +228,7 @@
   "True if point is in a roxy entry"
   (save-excursion
     (beginning-of-line)
-    (looking-at (concat "^" ess-roxy-str))))
+    (looking-at (concat ess-roxy-re))))
 
 (defun ess-roxy-narrow-to-field ()
   "Go to to the start of current field"
@@ -248,10 +248,10 @@
               (beg-par (point-min))
               (end-par (point-max)))
           (save-excursion
-            (if (re-search-backward (concat "^" ess-roxy-str " *$") beg t)
+            (if (re-search-backward (concat ess-roxy-re " *$") beg t)
                 (setq beg-par (match-end 0))))
           (save-excursion
-            (if (re-search-forward (concat "^" ess-roxy-str " *$") end t)
+            (if (re-search-forward (concat ess-roxy-re " *$") end t)
                 (setq end-par (- (match-beginning 0) 1))))
           (fill-region (max beg beg-par) (min end end-par))))))
 
@@ -405,7 +405,7 @@ at where the last deletion ended"
       (beginning-of-line)
       (while (and (<= entry-beg (point)) (> entry-beg 0) cont)
         (if (looking-at
-             (concat "^" ess-roxy-str " *@param"))
+             (concat ess-roxy-re " *@param"))
             (progn
               (setq field-beg (ess-roxy-beg-of-field))
               (setq field-end (ess-roxy-end-of-field))
@@ -427,7 +427,7 @@ point is"
             (setq entry-beg (ess-roxy-beg-of-entry))
             (while (and (< entry-beg (point)) (> entry-beg 0))
               (if (looking-at
-                   (concat "^" ess-roxy-str " *@param"))
+                   (concat ess-roxy-re " *@param"))
                   (progn
                     (setq field-beg (ess-roxy-beg-of-field))
                     (setq field-end (ess-roxy-end-of-field))
@@ -466,7 +466,7 @@ string. Convenient for editing example fields."
     (let (RE to-string)
       (narrow-to-region beg (- end 1))
       (if on
-          (progn (setq RE (concat "^" ess-roxy-str " *"))
+          (progn (setq RE (concat ess-roxy-re " *"))
                  (setq to-string ""))
         (setq RE "^")
         (setq to-string (concat ess-roxy-str " ")))
@@ -508,7 +508,7 @@ a temporary buffer and return that buffer."
             (error (concat "Failed to load the " ess-roxy-package " package; "
                            "in R, try  install.packages(\"" ess-roxy-package "\")"))))
       (ess-command (concat out-rd-roclet "(\"" tmpf "\")\n") roxy-buf))
-    ;;(delete-file tmpf)
+    (delete-file tmpf)
     roxy-buf))
 
 (defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
@@ -569,7 +569,7 @@ facilitate saving that file."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward (concat "^" ess-roxy-str) (point-max) t 1)
+    (while (re-search-forward (concat ess-roxy-re) (point-max) t 1)
       (if (not (hs-already-hidden-p))
           (hs-hide-block))
       (goto-char (ess-roxy-end-of-entry))
@@ -667,10 +667,10 @@ list of strings."
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
   (if (and (ess-roxy-entry-p)
-           (not (looking-back (concat ess-roxy-str " *\\="))))
+           (not (looking-back (concat ess-roxy-re " *\\="))))
       (progn
         (end-of-line)
-        (re-search-backward (concat ess-roxy-str " *") (point-at-bol))
+        (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
         (goto-char (match-end 0)))
     ad-do-it))
 (ad-activate 'move-beginning-of-line)

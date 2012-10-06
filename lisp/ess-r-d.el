@@ -367,6 +367,8 @@ to R, put them in the variable `inferior-R-args'."
        'ess-end-of-function)
 
   (ess-roxy-mode t)
+  (if ess-roxy-hide-show-p
+    (ad-activate 'ess-indent-command))
   
   (run-hooks 'R-mode-hook))
 
