@@ -278,6 +278,23 @@ before ess-site is loaded) for it to take effect.")
     cat(sprintf('(list \\\"%s\\\" %s %s)\\n', envname, args_alist, allargs))
   }
 }
+
+.ess_get_completions <- function(string, end){
+  if(getRversion() > '2.14.1'){
+    comp <- compiler::enableJIT(0L)
+    olderr <- options(error=NULL)
+    on.exit({
+      on.exit({options(olderr)
+               compiler::enableJIT(comp)})
+    })
+  }
+  utils:::.assignLinebuffer(string)
+  utils:::.assignEnd(end)
+  utils:::.guessTokenFromLine()
+  utils:::.completeToken()
+  c(get('token', envir=utils:::.CompletionEnv),
+    utils:::.retrieveCompletions())
+}
 ")
     
 
@@ -925,24 +942,9 @@ First element of a returned list is the completion token.
          (end (or end (point)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (comm (format
-                "local({
-olderr <- options(error=NULL)
-on.exit(options(olderr))
-if(getRversion() > '2.14.1'){
-    comp <- compiler::enableJIT(0L)
-    on.exit(compiler::enableJIT(comp))
-}
-utils:::.assignLinebuffer(\"%s\")
-utils:::.assignEnd(%d)
-utils:::.guessTokenFromLine()
-utils:::.completeToken()
-c(get('token', envir=utils:::.CompletionEnv),
-  utils:::.retrieveCompletions())
-})\n"
+         (comm (format ".ess_get_completions(\"%s\", %d)\n"
                 (ess-quote-special-chars (buffer-substring start end))
-                (- end start)))
-         )
+                (- end start))))
     (ess-get-words-from-vector comm)
     ))
 
