@@ -698,19 +698,39 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (ess-make-buffer-current)
   (when (and ess-current-process-name
              (get-process ess-current-process-name)
              (not (ess-process-get 'busy)))
-    (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-                             (symbol-at-point))
-                        (car (ess--funname.start))))
-           (doc (cadr (ess-function-arguments funname))))
-      ;; (comint-preinput-scroll-to-bottom)
-
-      (when doc
-        (ess-eldoc-docstring-format funname doc))
-      )))
+    (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
+                            (symbol-at-point))
+                       (car (ess--funname.start)))))
+      (when funname
+        (let* ((args (ess-function-arguments funname))
+               (bargs (cadr args))
+               (doc (mapconcat (lambda (el)
+                                 (if (equal (car el) "...")
+                                     "..."
+                                   (concat (car el) "=" (cdr el))))
+                               bargs ", "))
+               (margs (nth 2 args))
+               (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+               doc1)
+          (when doc
+            (setq doc (ess-eldoc-docstring-format funname doc))
+            (when (and margs (< (length doc1) W))
+              (setq doc1 (concat doc (propertize "    || " 'face font-lock-function-name-face)))
+              (while (and margs (< (length doc1) W))
+                (let ((head (pop margs)))
+                  (unless (assoc head bargs)
+                    (setq doc doc1
+                          doc1 (concat doc1 head  "=, ")))))
+              (when (equal (substring doc -2) ", ")
+                (setq doc (substring doc 0 -2)))
+              (when (and margs (< (length doc) W))
+                (setq doc (concat doc " {--}")))
+              )
+            doc
+            ))))))
 
 (defun ess-eldoc-docstring-format (funname doc)
   (save-match-data
@@ -773,54 +793,30 @@ to look up any doc strings."
       (when (and truncate
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
-      (format "%s: %s" funname doc)
+      (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc)
       )))
 
 ;;; function argument completions
 
-(defvar ess--funargs-command  "local({
-    if(getRversion() > '2.14.1'){
-        comp <- compiler::enableJIT(0L)
-        on.exit(compiler::enableJIT(comp))
-    }
-    olderr <- options(error=NULL)
-    on.exit(options(olderr))
-    fun <- tryCatch(%s, error=function(e) NULL) ## works for special objects also
-    if(is.null(fun)) NULL # fast
-    else if(is.function(fun)) {
-       .ess_funname <- '%s'
-        special <- grepl('[:$@[]', .ess_funname)
-        args<-if(!special){
-                fundef<-paste(.ess_funname, '.default',sep='')
-                if(exists(fundef, mode='function')) args(fundef) else args(fun)
-        }else args(fun)
-        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse=''))
-        args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ', args), fixed=TRUE)
-        allargs <-
-                if(special) paste(names(formals(fun)), '=', sep='')
-                else tryCatch(utils:::functionArgs(.ess_funname, ''), error=function(e) NULL)
-        envname <- environmentName(environment(fun))
-        c(envname, args, allargs)
-     }
-})
-")
+(defvar ess--funargs-command  ".ess_funnargs(%s)\n")
 
 ;; (defconst ess--funname-ignore '("else"))
-(defvar ess-objects-never-recache '("print" "plot")
-  "List of functions of whose arguments to be cashed only once per session.")
+;; (defvar ess-objects-never-recache '("print" "plot")
+;;   "List of functions of whose arguments to be cashed only once per session.")
 
 (defvar ess--funargs-cache (make-hash-table :test 'equal)
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-pre-cache
-  '(("print"
-     (("base" nil)
-      "x, digits=NULL, quote=TRUE, na.print=NULL, print.gap=NULL, right=FALSE, max=NULL, useSource=TRUE, ..."
-      ("x=" "digits=" "signif.stars=" "intercept=" "tol=" "se=" "sort=" "verbose=" "indent=" "style=" ".bibstyle=" "prefix=" "vsep=" "minlevel=" "quote=" "right=" "row.names=" "max=" "na.print=" "print.gap=" "useSource=" "diag=" "upper=" "justify=" "title=" "max.levels=" "width=" "steps=" "showEnv=" "cutoff=" "max.level=" "give.attr=" "units=" "abbrCollate=" "print.x=" "deparse=" "locale=" "symbolic.cor=" "loadings=" "zero.print=" "calendar=")))
-    ("plot"
-     (("graphics" nil)
-      "x, y=NULL, type=\"p\", xlim=NULL, ylim=NULL, log=\"\", main=NULL, sub=NULL, xlab=NULL, ylab=NULL, ann=par(\"ann\"), axes=TRUE, frame.plot=axes, panel.first=NULL, panel.last=NULL, asp=NA, ..."
-      ("x=" "y=" "...=" "ci=" "type=" "xlab=" "ylab=" "ylim=" "main=" "ci.col=" "ci.type=" "max.mfrow=" "ask=" "mar=" "oma=" "mgp=" "xpd=" "cex.main=" "verbose=" "xlim=" "log=" "sub=" "ann=" "axes=" "frame.plot=" "panel.first=" "panel.last=" "asp=" "center=" "edge.root=" "nodePar=" "edgePar=" "leaflab=" "dLeaf=" "xaxt=" "yaxt=" "horiz=" "zero.line=" "verticals=" "col.01line=" "pch=" "legend.text=" "formula=" "data=" "subset=" "to=" "from=" "labels=" "hang=" "freq=" "density=" "angle=" "col=" "border=" "lty=" "add=" "predicted.values=" "intervals=" "separator=" "col.predicted=" "col.intervals=" "col.separator=" "lty.predicted=" "lty.intervals=" "lty.separator=" "plot.type=" "main2=" "par.fit=" "grid=" "which=" "caption=" "panel=" "sub.caption=" "id.n=" "labels.id=" "cex.id=" "qqline=" "cook.levels=" "add.smooth=" "label.pos=" "cex.caption=" "levels=" "conf=" "absVal=" "ci.lty=" "xval=" "do.points=" "col.points=" "cex.points=" "col.hor=" "col.vert=" "lwd=" "set.pars=" "range.bars=" "col.range=" "xy.labels=" "xy.lines=" "nc=" "yax.flip=" "mar.multi=" "oma.multi=")))
+  '(("plot"
+     (("graphics")
+      (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
+       ("ann" . "par(\"ann\")")     ("axes" . "TRUE")    ("frame.plot" . "axes")    ("panel.first" . "NULL")    ("panel.last" . "NULL")    ("asp" . "NA")    ("..." . ""))
+      ("x" "y" "..." "ci" "type" "xlab" "ylab" "ylim" "main" "ci.col" "ci.type" "max.mfrow" "ask" "mar" "oma" "mgp" "xpd" "cex.main" "verbose" "scale" "xlim" "log" "sub" "ann" "axes" "frame.plot" "panel.first" "panel.last" "asp" "center" "edge.root" "nodePar" "edgePar" "leaflab" "dLeaf" "xaxt" "yaxt" "horiz" "zero.line" "verticals" "col.01line" "pch" "legend.text" "formula" "data" "subset" "to" "from" "newpage" "vp" "labels" "hang" "freq" "density" "angle" "col" "border" "lty" "add" "predicted.values" "intervals" "separator" "col.predicted" "col.intervals" "col.separator" "lty.predicted" "lty.intervals" "lty.separator" "plot.type" "main2" "par.fit" "grid" "panel" "cex" "dimen" "abbrev" "which" "caption" "sub.caption" "id.n" "labels.id" "cex.id" "qqline" "cook.levels" "add.smooth" "label.pos" "cex.caption" "rows" "levels" "conf" "absVal" "ci.lty" "xval" "do.points" "col.points" "cex.points" "col.hor" "col.vert" "lwd" "set.pars" "range.bars" "col.range" "xy.labels" "xy.lines" "nc" "yax.flip" "mar.multi" "oma.multi")))
+    ("print"
+     (("base")
+      (("x" . "")    ("digits" . "NULL")    ("quote" . "TRUE")    ("na.print" . "NULL")    ("print.gap" . "NULL")    ("right" . "FALSE")    ("max" . "NULL")    ("useSource" . "TRUE")    ("..." . ""))
+      ("x" "..." "digits" "signif.stars" "intercept" "tol" "se" "sort" "verbose" "indent" "style" ".bibstyle" "prefix" "vsep" "minlevel" "quote" "right" "row.names" "max" "na.print" "print.gap" "useSource" "diag" "upper" "justify" "title" "max.levels" "width" "steps" "showEnv" "newpage" "vp" "cutoff" "max.level" "give.attr" "units" "abbrCollate" "print.x" "deparse" "locale" "symbolic.cor" "loadings" "zero.print" "calendar")))
     )
   "Alist of cached arguments for very time consuming functions.")
 
@@ -856,14 +852,15 @@ i.e. contains :,$ or @.
       (or args
           (cadr (assoc funname ess--funargs-pre-cache))
           (when (and ess-current-process-name (get-process ess-current-process-name))
-            (let ((args (ess-get-words-from-vector
-                         (format ess--funargs-command funname funname) nil .01)))
-              (setq args (list (cons (car args) (current-time))
-                               (when (stringp (cadr args)) ;; error occurred
-                                 (replace-regexp-in-string  "\\\\" "" (cadr args)))
-                               (cddr args)))
+            (with-current-buffer (ess-command (format ess--funargs-command funname))
+              (goto-char (point-min))
+              (when (re-search-forward "(list" nil t)
+                (goto-char (match-beginning 0))
+                (setq args (ignore-errors (eval (read (current-buffer)))))
+                (if args
+                      (setcar args (cons (car args) (current-time)))))
               ;; push even if nil
-              (puthash funname args ess--funargs-cache))
+              (puthash (substring-no-properties funname) args ess--funargs-cache))
             )))))
 
 ;; (defun ess-get-object-at-point ()
