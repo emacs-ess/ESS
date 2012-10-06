@@ -241,6 +241,46 @@ before ess-site is loaded) for it to take effect.")
   "Functions run in process buffer after the initialization of R
   process.")
 
+(defvar ess--R-injected-code  
+  ".ess_funnargs <- function(object){
+  funname <- as.character(substitute(object))
+  if(getRversion() > '2.14.1'){
+    comp <- compiler::enableJIT(0L)
+    oldopts <- options(error=NULL)
+    on.exit({
+      compiler::enableJIT(comp)
+      options(oldopts)
+    })
+  }
+  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  if(is.null(fun)) NULL 
+  else if(is.function(fun)) {
+    special <- grepl('[:$@[]', funname)
+    args <- if(!special){
+      fundef <- paste(funname, '.default',sep='')
+      do.call('argsAnywhere', list(fundef))
+    }
+
+    if(is.null(args))
+      args <- args(fun)
+    if(is.null(args))
+      args <- do.call('argsAnywhere', list(funname))
+     
+    fmls <- formals(args)
+    fmls_names <- names(fmls)
+    fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed=TRUE)
+    args_alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls_names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
+    allargs <-
+      if(special) fmls_names
+      else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = T), error=function(e) NULL)
+    allargs <- sprintf(\"'(\\\"%s\\\")\", paste(allargs, collapse = '\\\" \\\"'))
+    envname <- environmentName(environment(fun))
+    cat(sprintf('(list \\\"%s\\\" %s %s)\\n', envname, args_alist, allargs))
+  }
+}
+")
+    
+
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
@@ -298,11 +338,14 @@ to R, put them in the variable `inferior-R-args'."
                    ;; else R version <= 2.9.2
                    "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
 
+            (ess-command ess--R-injected-code)
+            
             (ess-eval-linewise
              ;; not just into .GlobalEnv where it's too easily removed..
              (concat "assignInNamespace(\".help.ESS\", "
                      my-R-help-cmd ", ns=asNamespace(\"base\"))")
              nil nil nil 'wait-prompt)
+            
             ))
 
       ;; else R version <= 2.4.1

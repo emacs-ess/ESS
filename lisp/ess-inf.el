@@ -3119,7 +3119,7 @@ Used in `ess-idle-timer-functions'."
   ;; synchronized automatically.
   (interactive)
   (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
-    (message "new (ESS / default) directory: %s" dir)
+    (message "(ESS / default) directory: %s" dir)
     (setq default-directory (file-name-as-directory dir))))
 
 ;; (make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")
