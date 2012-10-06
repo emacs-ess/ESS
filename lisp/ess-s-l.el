@@ -58,6 +58,7 @@
     (modify-syntax-entry ?$  "_"  S-syntax-table); foo$comp = 1 symbol(completion)
     (modify-syntax-entry ?@  "_"  S-syntax-table); foo@slot = 1 symbol(completion)
     (modify-syntax-entry ?_  "_"  S-syntax-table)
+    (modify-syntax-entry ?:  "_"  S-syntax-table)
     (modify-syntax-entry ?*  "."  S-syntax-table)
     (modify-syntax-entry ?<  "."  S-syntax-table)
     (modify-syntax-entry ?>  "."  S-syntax-table)

@@ -1975,6 +1975,11 @@ system described in `ess-font-lock-keywords'.")
   "\\(\\sw+\\)("
   "Regexp for function names for R")
 
+;; (defvar ess-function-call-regexp
+;;   "\\(\\(\\sw\\|\\s_\\)+\\)("
+;;   "Regexp for function names for R")
+
+
 (defvar ess-fl-keyword:fun-calls
   (cons ess-function-call-regexp '(1 ess-function-call-face keep))
   "Font lock for function calls.")
