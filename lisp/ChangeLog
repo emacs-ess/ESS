@@ -1,3 +1,9 @@
+2012-10-07  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-previous-entry): new behavior, ess-roxy
+	uses the prefix string of the current block instead of only the
+	prefix specified in ess-roxy-str
+
 2012-10-06  Henning Redestig  <henning@psc.riken.jp>
 
 	* ess-roxy.el (ess-roxy-hide-all): introduce new ess-roxy-re to

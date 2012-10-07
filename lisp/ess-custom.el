@@ -907,8 +907,8 @@ Used to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-template-alist
-  (list (cons "description"  ".. content for \\description{} (no empty lines) ..")
-        (cons "details" ".. content for \\details{} ..")
+  (list (cons "description"  ".. content for \\\description{} (no empty lines) ..")
+        (cons "details" ".. content for \\\details{} ..")
         (cons "title" "")
         (cons "param"  "")
         (cons "return" "")
@@ -941,7 +941,9 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-str "##'"
-  "Prefix string to insert before each line in a roxygen block."
+  "Prefix string to insert before each line in new roxygen
+blocks. In existing roxygen blocks, the prefix is taken from
+the line at point"
   :group 'ess-roxy
   :type 'string)
 
