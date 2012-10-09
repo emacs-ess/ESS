@@ -289,8 +289,6 @@ Returns nil if line starts inside a string, t if in a comment."
            (cons ess-S-function-name-regexp
                  '(1 font-lock-function-name-face keep))
                                         ; function name
-           (cons ess-function-call-regexp '(1 font-lock-function-name-face keep))
-                                        ; function calls
            (cons "\\s.\\|\\s(\\|\\s)" 'font-lock-function-name-face)
                                         ;punctuation and parents  (same as function not to cause vidual disturbance)
            ))        ; keywords

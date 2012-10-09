@@ -1972,18 +1972,9 @@ system described in `ess-font-lock-keywords'.")
 (make-variable-buffer-local 'ess-font-lock-defaults)
 
 
-;;; fl-keywords general
-(defvar ess-function-call-regexp
-  "\\(\\sw+\\)("
-  "Regexp for function names for R")
-
-;; (defvar ess-function-call-regexp
-;;   "\\(\\(\\sw\\|\\s_\\)+\\)("
-;;   "Regexp for function names for R")
-
 
 (defvar ess-fl-keyword:fun-calls
-  (cons ess-function-call-regexp '(1 ess-function-call-face keep))
+  (cons "\\(\\sw+\\) ?(" '(1 ess-function-call-face keep))
   "Font lock for function calls.")
 
 (defvar ess-fl-keyword:numbers
