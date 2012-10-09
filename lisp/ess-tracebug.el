@@ -226,7 +226,6 @@ FUNC must be non-nil if the region contains a function definition. "
          (string (if inject-p
                      (ess--tb-get-source-refd-string start end)
                    (buffer-substring start end))))
-    (ess-tb-set-last-input proc)
     (ess-send-string proc string visibly message))
   )
 
@@ -1044,7 +1043,7 @@ of the ring."
 (defun ess-dbg-remove-empty-lines (string)
   "Remove empty lines (which interfere with evals) during debug.
 
-This function is used placed in `ess-presend-filter-functions'.
+This function is placed in `ess-presend-filter-functions'.
 "
   (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
@@ -1070,6 +1069,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
+      (add-hook 'comint-input-filter-functions  'ess-tb-set-last-input nil 'local)
       (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
@@ -1097,6 +1097,8 @@ Kill the *ess.dbg.[R_name]* buffer."
           (error "Can not deactivate the debuger for %s dialect" ess-dialect))
       (delq 'ess-dbg-mode-line-indicator ess-mode-line-indicator)
       (delq 'ess-dbg-error-action ess-mode-line-indicator)
+      (remove-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines 'local)
+      (remove-hook 'comint-input-filter-functions  'ess-tb-set-last-input 'local)
       )
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
@@ -1580,20 +1582,18 @@ debug history."
           (ess-send-string proc "c"))
       )))
 
-(defun ess-tb-set-last-input (&optional proc)
-  "Move `ess-tb-last-input' marker to the process mark."
-  (let* ((last-input-process (or proc (get-process ess-local-process-name)))
+(defun ess-tb-set-last-input (&rest ARGS)
+  "Move `ess-tb-last-input' marker to the process mark.
+ARGS are ignored to allow using this function in process hooks."
+  (let* ((last-input-process (get-process ess-local-process-name))
          (last-input-mark (copy-marker (process-mark last-input-process))))
     (with-current-buffer (process-buffer last-input-process)
       (when (local-variable-p 'ess-tb-last-input) ;; TB might not be active in all processes
-        (setq ess-tb-last-input last-input-mark)
-        (goto-char last-input-mark)
-        (inferior-ess-move-last-input-overlay)
-        (comint-goto-process-mark)
-        )
-      )
-    )
-  )
+        (save-excursion 
+          (setq ess-tb-last-input last-input-mark)
+          (goto-char last-input-mark)
+          (inferior-ess-move-last-input-overlay)
+          )))))
 
 (defun ess-tb-R-source-current-file (&optional filename)
   "Save current file and source it in the .R_GlobalEnv environment."
@@ -1612,7 +1612,6 @@ debug history."
         (when (buffer-modified-p) (save-buffer))
         (save-selected-window
           (ess-switch-to-ESS t))
-        (ess-tb-set-last-input)
         (ess-send-string (get-process ess-current-process-name)
                          (concat "\ninvisible(eval({source(file=\"" buffer-file-name
                                      "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))"))

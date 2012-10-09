@@ -1033,6 +1033,20 @@ Run `comint-input-filter-functions' and
 input STRING.
 "
 
+  (setq string (ess--run-presend-hooks process string))  
+  (inferior-ess--interrupt-subjob-maybe process) 
+  (inferior-ess-mark-as-busy process)
+  (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
+      ;; overloading of the sending function
+      (funcall ess-send-string-function process string visibly)
+    (if visibly
+	(ess-eval-linewise string)
+      (process-send-string process (concat string "\n"))))
+  (if message (message message)))
+
+
+(defun ess--run-presend-hooks (process string)
+  ;;return modified string
   (with-current-buffer (process-buffer process)
     (run-hook-with-args 'comint-input-filter-functions string)
     ;; cannot use run-hook-with-args here because string must be passed from one
@@ -1046,17 +1060,10 @@ input STRING.
                 (setq string (funcall (car functions) string))
                 (setq functions (cdr functions))))
           (setq string (funcall (car functions) string)))
-        (setq functions (cdr functions)))))
-  (inferior-ess--interrupt-subjob-maybe process) 
-  (inferior-ess-mark-as-busy process)
-  (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
-      ;; overloading of the sending function
-      (funcall ess-send-string-function process string visibly)
-    (if visibly
-	(ess-eval-linewise string)
-      (process-send-string process (concat string "\n"))))
-  (if message (message message)))
-
+        (setq functions (cdr functions))))
+    string
+    ))
+  
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
 debugging.  Let-bind it to nil before calling
@@ -1345,8 +1352,13 @@ non-nil, also wait for the prompt after the last line; if 6th arg
 SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
 at the end of this function.  If the 7th arg WAIT-SEC is set, it
 will be used instead of the default .001s and be passed to
-\\[ess-wait-for-process]."
-  ;; but the effect is unclear
+\\[ess-wait-for-process].
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+TEXT-WITHTABS.
+"
+  
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text-withtabs
                                    invisibly eob even-empty
@@ -1367,6 +1379,9 @@ will be used instead of the default .001s and be passed to
            (text (ess-replace-in-string text-withtabs "\t" " "))
            start-of-output
            com pos txt-gt-0)
+
+      (setq text-withtabs (ess--run-presend-hooks sprocess text-withtabs))
+
       (set-buffer sbuffer)
 
       ;; the following is required to make sure things work!
