@@ -1040,29 +1040,35 @@ input STRING.
       ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
     (if visibly
-	(ess-eval-linewise string)
+        (let ((ess--inhibit-presend-hooks t))
+          (ess-eval-linewise string))
       (process-send-string process (concat string "\n"))))
   (if message (message message)))
 
 
+(defvar ess--inhibit-presend-hooks nil
+  "If non-nil don't run presend hooks.")
+
 (defun ess--run-presend-hooks (process string)
-  ;;return modified string
-  (with-current-buffer (process-buffer process)
-    (run-hook-with-args 'comint-input-filter-functions string)
-    ;; cannot use run-hook-with-args here because string must be passed from one
-    ;; function to another
-    (let ((functions ess-presend-filter-functions))
-      (while (and functions string)
-        (if (eq (car functions) t)
-            (let ((functions
-                   (default-value 'ess-presend-filter-functions)))
-              (while (and functions string)
-                (setq string (funcall (car functions) string))
-                (setq functions (cdr functions))))
-          (setq string (funcall (car functions) string)))
-        (setq functions (cdr functions))))
-    string
-    ))
+  (if ess--inhibit-presend-hooks
+      string
+    ;;return modified string
+    (with-current-buffer (process-buffer process)
+      (run-hook-with-args 'comint-input-filter-functions string)
+      ;; cannot use run-hook-with-args here because string must be passed from one
+      ;; function to another
+      (let ((functions ess-presend-filter-functions))
+        (while (and functions string)
+          (if (eq (car functions) t)
+              (let ((functions
+                     (default-value 'ess-presend-filter-functions)))
+                (while (and functions string)
+                  (setq string (funcall (car functions) string))
+                  (setq functions (cdr functions))))
+            (setq string (funcall (car functions) string)))
+          (setq functions (cdr functions))))
+      string
+      )))
   
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
