@@ -1090,7 +1090,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
       (delete "..." args)
-      (mapcar (lambda (a) (concat a " = "))
+      (mapcar (lambda (a) (concat a ess-ac-R-argument-suffix))
               args))))
 
 ;; (defun ess-ac-action-args ()

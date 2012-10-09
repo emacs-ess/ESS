@@ -420,6 +420,12 @@ to install your custom sources.
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
 
+
+(defcustom ess-ac-R-argument-suffix " = "
+  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
+  :group 'R
+  :type 'string)
+
 (defcustom ess-use-tracebug nil
   "If t, load ess-tracebug when R process starts."
   :group 'ess-extras
