@@ -234,7 +234,7 @@ replaced by sequences of '*'.")
   (let ((map (if (featurep 'xemacs)
                  (make-keymap) ;; XEmacs/Emacs problems...
                (make-sparse-keymap))))
-    (define-key map "\C-x" 'ess-eval-chunk)
+    (define-key map "\C-\M-x" 'ess-eval-chunk)
     (define-key map "\C-c" 'ess-eval-chunk-and-step)
     (define-key map "\C-n" 'ess-noweb-next-chunk)
     (define-key map "\C-p" 'ess-noweb-previous-chunk)
