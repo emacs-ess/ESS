@@ -86,8 +86,8 @@ Arg has same meaning as for `ess-eval-region'."
   "Tangle the current chunk and send it to the inferior ESS process and
 step to the next chunk"
   (interactive)
-  (funcall 'ess-eval-chunk vis)
-  (funcall 'ess-noweb-next-code-chunk 1))
+  (ess-eval-chunk vis)
+  (ess-noweb-next-code-chunk 1))
 
 (defun ess-eval-chunk-and-go (vis)
   "Tangle the current chunk, send to the ESS process, and go there.
