@@ -221,6 +221,7 @@
      ["Eval paragraph"   ess-eval-paragraph                t]
      ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
      ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
+     ["Eval chunk and step"      ess-eval-chunk-and-step  ess-noweb-mode]
      ["Eval thread"     ess-eval-thread          ess-noweb-mode]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
