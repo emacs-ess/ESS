@@ -471,3 +471,21 @@ parse_roc <- function(lines, match = "^\\s*#+\' ?") {
                                                        lines <- lines[str_detect(lines, match)]
                                                        if (length(lines) == 0) return(NULL)
 }
+
+
+### --- 20 ---
+## wrong continuation indentation
+
+
+{
+  a <- ggplot(data = overtime.by.month,
+              aes(x="",
+                  y=Percent,
+                  fill = Overtime)) +
+                    geom_bar(width = 1) +
+                      xlab('') +
+                        ylab(sub.txt) +
+                          labs(title = title.txt) +
+                            facet_wrap(~Year.Month)
+}
+
