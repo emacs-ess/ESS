@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (C) 2012 Vitalie Spinu.
 ;;
-;; Filename: ess-tracebug.el
+;; Filename: ess-julia.el
 ;; Author: Vitalie Spinu (based on julia-mode.el form julia-lang project)
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
