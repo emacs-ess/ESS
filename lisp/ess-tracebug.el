@@ -1487,19 +1487,7 @@ and `ess-dbg-command-c' once. Any other input not defined in
 input mode.  If WAIT is t, wait for next input and ignore the
 keystroke which triggered the command."
   (interactive)
-  (let* ((ev last-command-event)
-         (command (lookup-key ess-debug-singlekey-map (vector ev))))
-    (unless wait
-      (call-interactively command))
-    (while (setq command
-                 (lookup-key ess-debug-singlekey-map
-                             (vector (setq ev (read-event)))))
-      (funcall command ev)
-      )
-    (push ev unread-command-events)
-    )
-  )
-
+  (ess--execute-singlekey-command ess-debug-singlekey-map wait))
 
 
 (defun ess-dbg-command-digit (&optional ev)
