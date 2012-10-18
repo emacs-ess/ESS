@@ -111,7 +111,6 @@
 (require 'ess-custom)
 (require 'ess-mode)
 (require 'ess-inf)
-(require 'ess-help)
 
 
  ; ess-mode: editing S/R/XLS/SAS source

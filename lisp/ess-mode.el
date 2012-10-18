@@ -126,11 +126,14 @@
 (make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
 
 (defvar ess-extra-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "C-d" 'ess-dump-object-into-edit-buffer)
+  (let (ess-extra-map)
+    (define-prefix-command 'ess-extra-map)
+    (define-key ess-extra-map "\C-d" 'ess-dump-object-into-edit-buffer)
+    (define-key ess-extra-map "\C-e" 'ess-describe-object-at-point)
     ;; (define-key map "C-t" 
-    ))
-
+    ess-extra-map)
+  "ESS extra map"
+  )
 
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))

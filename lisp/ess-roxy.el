@@ -66,22 +66,20 @@
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 
 ;; ------------------
-(defvar ess-roxy-mode-map nil
-  "Keymap for `ess-roxy' mode.")
-(if ess-roxy-mode-map
-    nil
-  (setq ess-roxy-mode-map (make-sparse-keymap))
-  (if ess-roxy-hide-show-p
-      (define-key ess-roxy-mode-map (kbd "C-c C-o C-h") 'ess-roxy-hide-all))
-  ;; short version (*first*: -> key binding shown in menu):
-  (define-key ess-roxy-mode-map (kbd "C-c C-o n")   'ess-roxy-next-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o p")   'ess-roxy-previous-entry)
-  ;; For consistency (e.g. C-c C-o C-h !): kept here *in* addition to above
-  (define-key ess-roxy-mode-map (kbd "C-c C-o C-o") 'ess-roxy-update-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o C-r") 'ess-roxy-preview-Rd)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o C-t") 'ess-roxy-preview-HTML)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o t")   'ess-roxy-preview-text)
-  (define-key ess-roxy-mode-map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
+(defvar ess-roxy-mode-map 
+  (let ((map (make-sparse-keymap)))
+    (if ess-roxy-hide-show-p
+        (define-key map (kbd "C-c C-o h") 'ess-roxy-hide-all)) ;; dont bind C-h!!!!
+    ;; short version (*first*: -> key binding shown in menu):
+    (define-key map (kbd "C-c C-o n")   'ess-roxy-next-entry)
+    (define-key map (kbd "C-c C-o p")   'ess-roxy-previous-entry)
+    ;; For consistency (e.g. C-c C-o C-h !): kept here *in* addition to above
+    (define-key map (kbd "C-c C-o C-o") 'ess-roxy-update-entry)
+    (define-key map (kbd "C-c C-o C-r") 'ess-roxy-preview-Rd)
+    (define-key map (kbd "C-c C-o C-t") 'ess-roxy-preview-HTML)
+    (define-key map (kbd "C-c C-o t")   'ess-roxy-preview-text)
+    (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
+    map)
   )
 
 ;; (defvar ess-roxy-font-lock-keywords nil)

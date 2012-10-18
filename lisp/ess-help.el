@@ -561,16 +561,17 @@ For internal use. Used in `ess-display-help-on-object',
 
 
 (defvar ess-doc-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "\C-d" 'ess-display-help-on-object)
-    (define-key map "d" 'ess-display-help-on-object)
-    (define-key map "\C-i" 'ess-display-package-index)
-    (define-key map "i" 'ess-display-package-index)
-    (define-key map "\C-a" 'ess-display-help-apropos)
-    (define-key map "a" 'ess-display-help-apropos)
-    (define-key map "\C-v" 'ess-display-vignettes)
-    (define-key map "v" 'ess-display-vignettes)
-    ;; (define-key map "C-t" 
+  (let (ess-doc-map)
+    (define-prefix-command 'ess-doc-map)
+    (define-key ess-doc-map "\C-d" 'ess-display-help-on-object)
+    (define-key ess-doc-map "d" 'ess-display-help-on-object)
+    (define-key ess-doc-map "\C-i" 'ess-display-package-index)
+    (define-key ess-doc-map "i" 'ess-display-package-index)
+    (define-key ess-doc-map "\C-a" 'ess-display-help-apropos)
+    (define-key ess-doc-map "a" 'ess-display-help-apropos)
+    (define-key ess-doc-map "\C-v" 'ess-display-vignettes)
+    (define-key ess-doc-map "v" 'ess-display-vignettes)
+    ess-doc-map
     )
   "ESS documentaion map.")
 
