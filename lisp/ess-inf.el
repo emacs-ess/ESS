@@ -1894,8 +1894,10 @@ for `ess-eval-region'."
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
-    (define-key map "\C-ch"        'ess-handy-commands)
-    (define-key map "\C-cd"        'ess-dev-map)
+    (define-key map "\C-c\C-a"   'ess-handy-commands)
+    (define-key map "\C-c\C-d"   'ess-doc-map)
+    (define-key map "\C-c\C-e"   'ess-extra-map)
+    (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for `inferior-ess' mode.")
 

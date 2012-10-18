@@ -111,18 +111,25 @@
 
 (defvar ess-eval-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "\C-r"    'ess-eval-region)
-    (define-key map "\M-r"    'ess-eval-region-and-go)
-    (define-key map "\C-b"    'ess-eval-buffer)
-    (define-key map "\M-b"    'ess-eval-buffer-and-go)
-    (define-key map "\C-f"    'ess-eval-function)
-    (define-key map "\M-f"    'ess-eval-function-and-go)
-    (define-key map "\C-x"    'ess-eval-function)
-    (define-key map "\C-n"    'ess-eval-line-and-step)
-    (define-key map "\C-j"    'ess-eval-line)
-    (define-key map "\M-j"    'ess-eval-line-and-go)
+    ;; (define-key map "\C-r"    'ess-eval-region)
+    ;; (define-key map "\M-r"    'ess-eval-region-and-go)
+    ;; (define-key map "\C-b"    'ess-eval-buffer)
+    ;; (define-key map "\M-b"    'ess-eval-buffer-and-go)
+    ;; (define-key map "\C-f"    'ess-eval-function)
+    ;; (define-key map "\M-f"    'ess-eval-function-and-go)
+    ;; (define-key map "\C-x"    'ess-eval-function)
+    ;; (define-key map "\C-n"    'ess-eval-line-and-step)
+    ;; (define-key map "\C-j"    'ess-eval-line)
+    ;; (define-key map "\M-j"    'ess-eval-line-and-go)
     map)
   "Keymap for ess-eval functions.")
+(make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
+
+(defvar ess-extra-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "C-d" 'ess-dump-object-into-edit-buffer)
+    ;; (define-key map "C-t" 
+    ))
 
 
 (defvar ess-mode-map
@@ -156,11 +163,10 @@
     (define-key map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
     (define-key map "\C-c\C-l"   'ess-load-file)
     (define-key map "\C-c\C-v"   'ess-display-help-on-object)
-    (define-key map "\C-c\C-d"   'ess-dump-object-into-edit-buffer)
     ;;(define-key map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
     (define-key map "\C-c\C-s"   'ess-switch-process) ; use a
     ;; different process for the buffer.
-    (define-key map "\C-c\C-t"   'ess-execute-in-tb)
+    ;; (define-key map "\C-c\C-t"   'ess-execute-in-tb)
     (define-key map "\C-c\t"     'ess-complete-object-name-deprecated)
     ;;M  (define-key map "\C-c\t"        'comint-dynamic-complete-filename)
     (unless (and (featurep 'emacs) (>= emacs-major-version 24))
@@ -181,9 +187,11 @@
     (define-key map "\C-c\C-q"   'ess-quit)
     ;; smart operators; most likely will go in the future into a separate local map
     (define-key map ","          'ess-smart-comma)
-    (define-key map "\C-c\C-e"   ess-eval-map)
-    (define-key map "\C-ch"        'ess-handy-commands)
-    (define-key map "\C-cd"        'ess-dev-map)
+    (define-key map "\C-c\C-a"   'ess-handy-commands)
+
+    (define-key map "\C-c\C-d"   'ess-doc-map)
+    (define-key map "\C-c\C-e"   'ess-extra-map)
+    (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for `ess-mode'.")
 
