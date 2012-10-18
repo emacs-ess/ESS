@@ -933,8 +933,8 @@ Used to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-template-alist
-  (list (cons "description"  ".. content for \\\description{} (no empty lines) ..")
-        (cons "details" ".. content for \\\details{} ..")
+  (list (cons "description"  ".. content for \\description{} (no empty lines) ..")
+        (cons "details" ".. content for \\details{} ..")
         (cons "title" "")
         (cons "param"  "")
         (cons "return" "")
