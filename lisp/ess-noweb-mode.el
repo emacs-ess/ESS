@@ -234,6 +234,8 @@ replaced by sequences of '*'.")
   (let ((map (if (featurep 'xemacs)
                  (make-keymap) ;; XEmacs/Emacs problems...
                (make-sparse-keymap))))
+    (define-key map "\C-\M-x" 'ess-eval-chunk)
+    (define-key map "\C-c" 'ess-eval-chunk-and-step)
     (define-key map "\C-n" 'ess-noweb-next-chunk)
     (define-key map "\C-p" 'ess-noweb-previous-chunk)
     (define-key map "\M-n" 'ess-noweb-goto-next)
@@ -1074,6 +1076,7 @@ switch narrowing on."
   "If in a documentation chunk, goto to the Nth documentation
 chunk from point, else goto to the Nth code chunk from point."
   (interactive "p")
+  (dbg (current-buffer))
   (if (ess-noweb-in-code-chunk)
       (ess-noweb-next-code-chunk n)
     (ess-noweb-next-doc-chunk n)))

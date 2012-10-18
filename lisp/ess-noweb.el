@@ -59,26 +59,35 @@
   "Tangle the current chunk and send it to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (let ( (process-name ess-local-process-name)
-         new-process-name
-         (cbuf (current-buffer))
-         (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
-    (ess-noweb-tangle-chunk temp-buffer)
-    (set-buffer temp-buffer)
-    ;; When the temp buffer is created, it does not inherit any value
-    ;; of ess-local-process-name from the .Rnw buffer, so we have to set it
-    ;; here.  If ess-local-process-name is not set in the .Rnw buffer,
-    ;; it will inherit the value that is chosen here.
-    (set (make-local-variable 'ess-local-process-name) process-name)
-    (ess-eval-region (point-min) (point-max) vis "Eval buffer")
-    (if process-name
+  (let ((process-name ess-local-process-name)
+        new-process-name
+        (cbuf (current-buffer))
+        (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+    (save-excursion
+      (ess-noweb-tangle-chunk temp-buffer)
+      (set-buffer temp-buffer)
+      ;; When the temp buffer is created, it does not inherit any value
+      ;; of ess-local-process-name from the .Rnw buffer, so we have to set it
+      ;; here.  If ess-local-process-name is not set in the .Rnw buffer,
+      ;; it will inherit the value that is chosen here.
+      (set (make-local-variable 'ess-local-process-name) process-name)
+      (ess-eval-region (point-min) (point-max) vis "Eval Chunk")
+      (if process-name
+          (kill-buffer temp-buffer)
+        ;; if process-name was nil, source buffer did not have a local process
+        ;; so keep value from temp buffer before killing it.
+        (setq new-process-name ess-local-process-name)
         (kill-buffer temp-buffer)
-      ;; if process-name was nil, source buffer did not have a local process
-      ;; so keep value from temp buffer before killing it.
-      (setq new-process-name ess-local-process-name)
-      (kill-buffer temp-buffer)
-      (set-buffer cbuf)
-      (set (make-local-variable 'ess-local-process-name) new-process-name))))
+        (set-buffer cbuf)
+        (set (make-local-variable 'ess-local-process-name) new-process-name)))))
+
+
+(defun ess-eval-chunk-and-step (&optional vis)
+  "Tangle the current chunk and send it to the inferior ESS process and
+step to the next chunk"
+  (interactive)
+  (ess-eval-chunk vis)
+  (ess-noweb-next-code-chunk 1))
 
 (defun ess-eval-chunk-and-go (vis)
   "Tangle the current chunk, send to the ESS process, and go there.

@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (C) 2012 Vitalie Spinu.
 ;;
-;; Filename: ess-tracebug.el
+;; Filename: ess-julia.el
 ;; Author: Vitalie Spinu (based on julia-mode.el form julia-lang project)
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
@@ -101,9 +101,6 @@
 (defconst julia-forloop-in-regex
   "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
 
-(defconst ess-function-call-regexp
-  "\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*("
-  "Regexp for function names")
 
 (defconst ess-subset-regexp
       "\\[[0-9:, ]*\\]" )
@@ -127,7 +124,7 @@
     (list julia-char-regex 2 'font-lock-string-face)
     (list julia-forloop-in-regex 1 'font-lock-keyword-face)
     ;; (cons ess-subset-regexp 'font-lock-constant-face)
-    (cons ess-function-call-regexp '(1 font-lock-function-name-face keep))
+    (cons "\\(\\sw+\\) ?(" '(1 font-lock-function-name-face keep))
     ;(list julia-string-regex 0 'font-lock-string-face)
 ))
 
@@ -304,7 +301,8 @@
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     ;; (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+=[ \t\n]*function")
     (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(julia-font-lock-defaults))
+    (font-lock-defaults		  . '(julia-font-lock-defaults
+                                      nil nil ((?\_ . "w"))))
     )
   "General options for R source files.")
 

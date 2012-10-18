@@ -442,7 +442,14 @@ Taken from octave-mod.el."
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil) 
-    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
+    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
+    (ess--show-process-buffer-on-error string proc)
+    ))
+
+
+(defun ess--show-process-buffer-on-error (string proc)
+  (when (string-match "Error\\(:\\| +in\\)" string)
+    (ess-show-buffer (process-buffer proc))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -540,7 +547,6 @@ This was rewritten by KH in April 1996."
 
 
 ;;*;; General process handling code
-
 (defmacro with-ess-process-buffer (no-error &rest body)
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
 If NO-ERROR is t don't trigger an error when there is not current process.
@@ -1017,7 +1023,7 @@ region.
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
-    (ess-send-string process (buffer-substring-no-properties start end) visibly message)
+    (ess-send-string process (buffer-substring start end) visibly message)
     ))
 
 (defvar ess-send-string-function  nil)
@@ -1033,30 +1039,53 @@ Run `comint-input-filter-functions' and
 input STRING.
 "
 
-  (with-current-buffer (process-buffer process)
-    (run-hook-with-args 'comint-input-filter-functions string)
-    ;; cannot use run-hook-with-args here because string must be passed from one
-    ;; function to another
-    (let ((functions ess-presend-filter-functions))
-      (while (and functions string)
-        (if (eq (car functions) t)
-            (let ((functions
-                   (default-value 'ess-presend-filter-functions)))
-              (while (and functions string)
-                (setq string (funcall (car functions) string))
-                (setq functions (cdr functions))))
-          (setq string (funcall (car functions) string)))
-        (setq functions (cdr functions)))))
+  (setq string (ess--run-presend-hooks process string))  
   (inferior-ess--interrupt-subjob-maybe process) 
   (inferior-ess-mark-as-busy process)
-  (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
+  (if (fboundp (buffer-local-value 'ess-send-string-function
+                                   (current-buffer)))
       ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
-    (if visibly
-	(ess-eval-linewise string)
-      (process-send-string process (concat string "\n"))))
+    (setq string (concat string "\n"))
+    (cond ((eq visibly t) ;; wait after each line
+           (let ((ess--inhibit-presend-hooks t))
+             (ess-eval-linewise string)))
+          ((eq visibly 'nowait) ;; insert command and eval invisibly .
+           (with-current-buffer (process-buffer proc)
+             (save-excursion
+               (goto-char (process-mark proc))
+               (insert-before-markers
+                (propertize string 'font-lock-face 'comint-highlight-input))
+               (set-marker (process-mark proc) (point)))
+             (process-send-string process string)))
+          (t
+           (process-send-string process string))))
   (if message (message message)))
 
+(defvar ess--inhibit-presend-hooks nil
+  "If non-nil don't run presend hooks.")
+
+(defun ess--run-presend-hooks (process string)
+  (if ess--inhibit-presend-hooks
+      string
+    ;;return modified string
+    (with-current-buffer (process-buffer process)
+      (run-hook-with-args 'comint-input-filter-functions string)
+      ;; cannot use run-hook-with-args here because string must be passed from one
+      ;; function to another
+      (let ((functions ess-presend-filter-functions))
+        (while (and functions string)
+          (if (eq (car functions) t)
+              (let ((functions
+                     (default-value 'ess-presend-filter-functions)))
+                (while (and functions string)
+                  (setq string (funcall (car functions) string))
+                  (setq functions (cdr functions))))
+            (setq string (funcall (car functions) string)))
+          (setq functions (cdr functions))))
+      string
+      )))
+  
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
 debugging.  Let-bind it to nil before calling
@@ -1345,8 +1374,13 @@ non-nil, also wait for the prompt after the last line; if 6th arg
 SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
 at the end of this function.  If the 7th arg WAIT-SEC is set, it
 will be used instead of the default .001s and be passed to
-\\[ess-wait-for-process]."
-  ;; but the effect is unclear
+\\[ess-wait-for-process].
+
+Run `comint-input-filter-functions' and
+`ess-presend-filter-functions' of the associated PROCESS on the
+TEXT-WITHTABS.
+"
+  
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text-withtabs
                                    invisibly eob even-empty
@@ -1367,6 +1401,9 @@ will be used instead of the default .001s and be passed to
            (text (ess-replace-in-string text-withtabs "\t" " "))
            start-of-output
            com pos txt-gt-0)
+
+      (setq text-withtabs (ess--run-presend-hooks sprocess text-withtabs))
+
       (set-buffer sbuffer)
 
       ;; the following is required to make sure things work!
@@ -1873,8 +1910,10 @@ for `ess-eval-region'."
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
-    (define-key map "\C-ch"        'ess-handy-commands)
-    (define-key map "\C-cd"        'ess-dev-map)
+    (define-key map "\C-c\C-a"   'ess-handy-commands)
+    (define-key map "\C-c\C-d"   'ess-doc-map)
+    (define-key map "\C-c\C-e"   'ess-extra-map)
+    (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for `inferior-ess' mode.")
 
@@ -2001,8 +2040,13 @@ to continue it."
   ;; If comint-process-echoes is t  inferior-ess-input-sender
   ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
   (set (make-local-variable 'comint-process-echoes)
-       (not (or (member ess-language '("SAS" "XLS" "OMG" "julia"))
-                (member ess-dialect '("R"))))) ;; does S work?
+       (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
+  
+  (when (and (member ess-dialect '("R")) ;; S+ echoes!!
+             (not (eq ess-eval-visibly-p t)))
+    ;; when 'nowait or nil, don't wait for process
+    (setq comint-process-echoes nil))
+    
   
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
@@ -3119,7 +3163,7 @@ Used in `ess-idle-timer-functions'."
   ;; synchronized automatically.
   (interactive)
   (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
-    (message "new (ESS / default) directory: %s" dir)
+    (message "(ESS / default) directory: %s" dir)
     (setq default-directory (file-name-as-directory dir))))
 
 ;; (make-obsolete 'ess-dirs 'ess-synchronize-dirs "ESS 12.09")

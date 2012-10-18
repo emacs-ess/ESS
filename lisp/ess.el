@@ -108,12 +108,10 @@
     (require 'font-lock))
 
 (require 'ess-compat)
+(require 'ess-custom)
+(require 'ess-mode)
+(require 'ess-inf)
 
-(eval-and-compile 
-  (require 'ess-custom)
-  (require 'ess-mode)
-  (require 'ess-inf)
-  )
 
  ; ess-mode: editing S/R/XLS/SAS source
 

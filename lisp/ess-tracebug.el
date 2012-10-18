@@ -226,7 +226,6 @@ FUNC must be non-nil if the region contains a function definition. "
          (string (if inject-p
                      (ess--tb-get-source-refd-string start end)
                    (buffer-substring start end))))
-    (ess-tb-set-last-input proc)
     (ess-send-string proc string visibly message))
   )
 
@@ -1044,7 +1043,7 @@ of the ring."
 (defun ess-dbg-remove-empty-lines (string)
   "Remove empty lines (which interfere with evals) during debug.
 
-This function is used placed in `ess-presend-filter-functions'.
+This function is placed in `ess-presend-filter-functions'.
 "
   (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
@@ -1070,6 +1069,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
+      (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
+      
       (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
@@ -1097,6 +1098,8 @@ Kill the *ess.dbg.[R_name]* buffer."
           (error "Can not deactivate the debuger for %s dialect" ess-dialect))
       (delq 'ess-dbg-mode-line-indicator ess-mode-line-indicator)
       (delq 'ess-dbg-error-action ess-mode-line-indicator)
+      (remove-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines 'local)
+      (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local)
       )
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
@@ -1169,8 +1172,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
                              (match-string 2 string))) ;; Selection:
          (match-active (or match-skip match-input))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
-         (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
-         (prompt-replace-regexp "^>\\( [>+]\\)*\\( \\)[^>+\n]") ;; works only with the default prompt
+         ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
+         (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          ) ; current-buffer is still the user's input buffer here
 
@@ -1185,23 +1188,26 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
       ;; FIXME: this should be in comint filters!!
       ;; insert \n after the prompt when necessary
-      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
+      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
       (with-current-buffer pbuf
-        (let ((pmark (process-mark proc)))
-          (goto-char pmark)
-          (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
-          (when (looking-at prompt-regexp)
+        (save-excursion
+          (let ((pmark (process-mark proc)))
             (goto-char pmark)
-            (insert "\n")
-            (set-marker pmark (point)))
-          ))
+            ;; (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
+            (when (looking-back inferior-ess-primary-prompt)
+              ;; (goto-char pmark)
+              (insert-before-markers "\n")
+              (set-marker pmark (point)))
+            )))
       ;; replace long prompts
       (when inferior-ess-replace-long+
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
       ;; COMINT
       
       (comint-output-filter proc string)
+      (ess--show-process-buffer-on-error string proc)
       )
+    
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))
@@ -1485,19 +1491,7 @@ and `ess-dbg-command-c' once. Any other input not defined in
 input mode.  If WAIT is t, wait for next input and ignore the
 keystroke which triggered the command."
   (interactive)
-  (let* ((ev last-command-event)
-         (command (lookup-key ess-debug-singlekey-map (vector ev))))
-    (unless wait
-      (call-interactively command))
-    (while (setq command
-                 (lookup-key ess-debug-singlekey-map
-                             (vector (setq ev (read-event)))))
-      (funcall command ev)
-      )
-    (push ev unread-command-events)
-    )
-  )
-
+  (ess--execute-singlekey-command ess-debug-singlekey-map wait))
 
 
 (defun ess-dbg-command-digit (&optional ev)
@@ -1580,20 +1574,18 @@ debug history."
           (ess-send-string proc "c"))
       )))
 
-(defun ess-tb-set-last-input (&optional proc)
-  "Move `ess-tb-last-input' marker to the process mark."
-  (let* ((last-input-process (or proc (get-process ess-local-process-name)))
+(defun ess-tracebug-set-last-input (&rest ARGS)
+  "Move `ess-tb-last-input' marker to the process mark.
+ARGS are ignored to allow using this function in process hooks."
+  (let* ((last-input-process (get-process ess-local-process-name))
          (last-input-mark (copy-marker (process-mark last-input-process))))
     (with-current-buffer (process-buffer last-input-process)
       (when (local-variable-p 'ess-tb-last-input) ;; TB might not be active in all processes
-        (setq ess-tb-last-input last-input-mark)
-        (goto-char last-input-mark)
-        (inferior-ess-move-last-input-overlay)
-        (comint-goto-process-mark)
-        )
-      )
-    )
-  )
+        (save-excursion 
+          (setq ess-tb-last-input last-input-mark)
+          (goto-char last-input-mark)
+          (inferior-ess-move-last-input-overlay)
+          )))))
 
 (defun ess-tb-R-source-current-file (&optional filename)
   "Save current file and source it in the .R_GlobalEnv environment."
@@ -1612,7 +1604,6 @@ debug history."
         (when (buffer-modified-p) (save-buffer))
         (save-selected-window
           (ess-switch-to-ESS t))
-        (ess-tb-set-last-input)
         (ess-send-string (get-process ess-current-process-name)
                          (concat "\ninvisible(eval({source(file=\"" buffer-file-name
                                      "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))"))

@@ -197,6 +197,7 @@
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
      (inferior-ess-start-args		. "")
      (ess-error-regexp-alist		. ess-R-error-regexp-alist)
+     (ess-describe-object-at-point-commands . ess-R-describe-object-at-point-commands)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
      (ess-pager		. R-pager)
@@ -240,6 +241,63 @@ before ess-site is loaded) for it to take effect.")
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
   process.")
+
+(defvar ess--R-injected-code  
+  ".ess_funnargs <- function(object){
+  funname <- as.character(substitute(object))
+  if(getRversion() > '2.14.1'){
+    comp <- compiler::enableJIT(0L)
+    oldopts <- options(error=NULL)
+    on.exit({
+      compiler::enableJIT(comp)
+      options(oldopts)
+    })
+  }
+  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  if(is.null(fun)) NULL 
+  else if(is.function(fun)) {
+    special <- grepl('[:$@[]', funname)
+    args <- if(!special){
+      fundef <- paste(funname, '.default',sep='')
+      do.call('argsAnywhere', list(fundef))
+    }
+
+    if(is.null(args))
+      args <- args(fun)
+    if(is.null(args))
+      args <- do.call('argsAnywhere', list(funname))
+     
+    fmls <- formals(args)
+    fmls_names <- names(fmls)
+    fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed=TRUE)
+    args_alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls_names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
+    allargs <-
+      if(special) fmls_names
+      else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = T), error=function(e) NULL)
+    allargs <- sprintf(\"'(\\\"%s\\\")\", paste(allargs, collapse = '\\\" \\\"'))
+    envname <- environmentName(environment(fun))
+    cat(sprintf('(list \\\"%s\\\" %s %s)\\n', envname, args_alist, allargs))
+  }
+}
+
+.ess_get_completions <- function(string, end){
+  if(getRversion() > '2.14.1'){
+    comp <- compiler::enableJIT(0L)
+    olderr <- options(error=NULL)
+    on.exit({
+      on.exit({options(olderr)
+               compiler::enableJIT(comp)})
+    })
+  }
+  utils:::.assignLinebuffer(string)
+  utils:::.assignEnd(end)
+  utils:::.guessTokenFromLine()
+  utils:::.completeToken()
+  c(get('token', envir=utils:::.CompletionEnv),
+    utils:::.retrieveCompletions())
+}
+")
+    
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -298,11 +356,14 @@ to R, put them in the variable `inferior-R-args'."
                    ;; else R version <= 2.9.2
                    "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
 
+            (ess-command ess--R-injected-code)
+            
             (ess-eval-linewise
              ;; not just into .GlobalEnv where it's too easily removed..
              (concat "assignInNamespace(\".help.ESS\", "
                      my-R-help-cmd ", ns=asNamespace(\"base\"))")
              nil nil nil 'wait-prompt)
+            
             ))
 
       ;; else R version <= 2.4.1
@@ -655,19 +716,39 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (ess-make-buffer-current)
   (when (and ess-current-process-name
              (get-process ess-current-process-name)
              (not (ess-process-get 'busy)))
-    (let* ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-                             (symbol-at-point))
-                        (car (ess--funname.start))))
-           (doc (cadr (ess-function-arguments funname))))
-      ;; (comint-preinput-scroll-to-bottom)
-
-      (when doc
-        (ess-eldoc-docstring-format funname doc))
-      )))
+    (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
+                            (symbol-at-point))
+                       (car (ess--funname.start)))))
+      (when funname
+        (let* ((args (ess-function-arguments funname))
+               (bargs (cadr args))
+               (doc (mapconcat (lambda (el)
+                                 (if (equal (car el) "...")
+                                     "..."
+                                   (concat (car el) "=" (cdr el))))
+                               bargs ", "))
+               (margs (nth 2 args))
+               (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+               doc1)
+          (when doc
+            (setq doc (ess-eldoc-docstring-format funname doc))
+            (when (and margs (< (length doc1) W))
+              (setq doc1 (concat doc (propertize "    || " 'face font-lock-function-name-face)))
+              (while (and margs (< (length doc1) W))
+                (let ((head (pop margs)))
+                  (unless (assoc head bargs)
+                    (setq doc doc1
+                          doc1 (concat doc1 head  "=, ")))))
+              (when (equal (substring doc -2) ", ")
+                (setq doc (substring doc 0 -2)))
+              (when (and margs (< (length doc) W))
+                (setq doc (concat doc " {--}")))
+              )
+            doc
+            ))))))
 
 (defun ess-eldoc-docstring-format (funname doc)
   (save-match-data
@@ -730,54 +811,30 @@ to look up any doc strings."
       (when (and truncate
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
-      (format "%s: %s" funname doc)
+      (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc)
       )))
 
 ;;; function argument completions
 
-(defvar ess--funargs-command  "local({
-    if(getRversion() > '2.14.1'){
-        comp <- compiler::enableJIT(0L)
-        on.exit(compiler::enableJIT(comp))
-    }
-    olderr <- options(error=NULL)
-    on.exit(options(olderr))
-    fun <- tryCatch(%s, error=function(e) NULL) ## works for special objects also
-    if(is.null(fun)) NULL # fast
-    else if(is.function(fun)) {
-       .ess_funname <- '%s'
-        special <- grepl('[:$@[]', .ess_funname)
-        args<-if(!special){
-                fundef<-paste(.ess_funname, '.default',sep='')
-                if(exists(fundef, mode='function')) args(fundef) else args(fun)
-        }else args(fun)
-        args <- gsub('^function \\\\(|\\\\) +NULL$','', paste(format(args), collapse=''))
-        args <- gsub(' = ', '=', gsub('[ \\t]{2,}', ' ', args), fixed=TRUE)
-        allargs <-
-                if(special) paste(names(formals(fun)), '=', sep='')
-                else tryCatch(utils:::functionArgs(.ess_funname, ''), error=function(e) NULL)
-        envname <- environmentName(environment(fun))
-        c(envname, args, allargs)
-     }
-})
-")
+(defvar ess--funargs-command  ".ess_funnargs(%s)\n")
 
 ;; (defconst ess--funname-ignore '("else"))
-(defvar ess-objects-never-recache '("print" "plot")
-  "List of functions of whose arguments to be cashed only once per session.")
+;; (defvar ess-objects-never-recache '("print" "plot")
+;;   "List of functions of whose arguments to be cashed only once per session.")
 
 (defvar ess--funargs-cache (make-hash-table :test 'equal)
   "Chache for R functions' arguments")
 
 (defvar ess--funargs-pre-cache
-  '(("print"
-     (("base" nil)
-      "x, digits=NULL, quote=TRUE, na.print=NULL, print.gap=NULL, right=FALSE, max=NULL, useSource=TRUE, ..."
-      ("x=" "digits=" "signif.stars=" "intercept=" "tol=" "se=" "sort=" "verbose=" "indent=" "style=" ".bibstyle=" "prefix=" "vsep=" "minlevel=" "quote=" "right=" "row.names=" "max=" "na.print=" "print.gap=" "useSource=" "diag=" "upper=" "justify=" "title=" "max.levels=" "width=" "steps=" "showEnv=" "cutoff=" "max.level=" "give.attr=" "units=" "abbrCollate=" "print.x=" "deparse=" "locale=" "symbolic.cor=" "loadings=" "zero.print=" "calendar=")))
-    ("plot"
-     (("graphics" nil)
-      "x, y=NULL, type=\"p\", xlim=NULL, ylim=NULL, log=\"\", main=NULL, sub=NULL, xlab=NULL, ylab=NULL, ann=par(\"ann\"), axes=TRUE, frame.plot=axes, panel.first=NULL, panel.last=NULL, asp=NA, ..."
-      ("x=" "y=" "...=" "ci=" "type=" "xlab=" "ylab=" "ylim=" "main=" "ci.col=" "ci.type=" "max.mfrow=" "ask=" "mar=" "oma=" "mgp=" "xpd=" "cex.main=" "verbose=" "xlim=" "log=" "sub=" "ann=" "axes=" "frame.plot=" "panel.first=" "panel.last=" "asp=" "center=" "edge.root=" "nodePar=" "edgePar=" "leaflab=" "dLeaf=" "xaxt=" "yaxt=" "horiz=" "zero.line=" "verticals=" "col.01line=" "pch=" "legend.text=" "formula=" "data=" "subset=" "to=" "from=" "labels=" "hang=" "freq=" "density=" "angle=" "col=" "border=" "lty=" "add=" "predicted.values=" "intervals=" "separator=" "col.predicted=" "col.intervals=" "col.separator=" "lty.predicted=" "lty.intervals=" "lty.separator=" "plot.type=" "main2=" "par.fit=" "grid=" "which=" "caption=" "panel=" "sub.caption=" "id.n=" "labels.id=" "cex.id=" "qqline=" "cook.levels=" "add.smooth=" "label.pos=" "cex.caption=" "levels=" "conf=" "absVal=" "ci.lty=" "xval=" "do.points=" "col.points=" "cex.points=" "col.hor=" "col.vert=" "lwd=" "set.pars=" "range.bars=" "col.range=" "xy.labels=" "xy.lines=" "nc=" "yax.flip=" "mar.multi=" "oma.multi=")))
+  '(("plot"
+     (("graphics")
+      (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
+       ("ann" . "par(\"ann\")")     ("axes" . "TRUE")    ("frame.plot" . "axes")    ("panel.first" . "NULL")    ("panel.last" . "NULL")    ("asp" . "NA")    ("..." . ""))
+      ("x" "y" "..." "ci" "type" "xlab" "ylab" "ylim" "main" "ci.col" "ci.type" "max.mfrow" "ask" "mar" "oma" "mgp" "xpd" "cex.main" "verbose" "scale" "xlim" "log" "sub" "ann" "axes" "frame.plot" "panel.first" "panel.last" "asp" "center" "edge.root" "nodePar" "edgePar" "leaflab" "dLeaf" "xaxt" "yaxt" "horiz" "zero.line" "verticals" "col.01line" "pch" "legend.text" "formula" "data" "subset" "to" "from" "newpage" "vp" "labels" "hang" "freq" "density" "angle" "col" "border" "lty" "add" "predicted.values" "intervals" "separator" "col.predicted" "col.intervals" "col.separator" "lty.predicted" "lty.intervals" "lty.separator" "plot.type" "main2" "par.fit" "grid" "panel" "cex" "dimen" "abbrev" "which" "caption" "sub.caption" "id.n" "labels.id" "cex.id" "qqline" "cook.levels" "add.smooth" "label.pos" "cex.caption" "rows" "levels" "conf" "absVal" "ci.lty" "xval" "do.points" "col.points" "cex.points" "col.hor" "col.vert" "lwd" "set.pars" "range.bars" "col.range" "xy.labels" "xy.lines" "nc" "yax.flip" "mar.multi" "oma.multi")))
+    ("print"
+     (("base")
+      (("x" . "")    ("digits" . "NULL")    ("quote" . "TRUE")    ("na.print" . "NULL")    ("print.gap" . "NULL")    ("right" . "FALSE")    ("max" . "NULL")    ("useSource" . "TRUE")    ("..." . ""))
+      ("x" "..." "digits" "signif.stars" "intercept" "tol" "se" "sort" "verbose" "indent" "style" ".bibstyle" "prefix" "vsep" "minlevel" "quote" "right" "row.names" "max" "na.print" "print.gap" "useSource" "diag" "upper" "justify" "title" "max.levels" "width" "steps" "showEnv" "newpage" "vp" "cutoff" "max.level" "give.attr" "units" "abbrCollate" "print.x" "deparse" "locale" "symbolic.cor" "loadings" "zero.print" "calendar")))
     )
   "Alist of cached arguments for very time consuming functions.")
 
@@ -813,14 +870,15 @@ i.e. contains :,$ or @.
       (or args
           (cadr (assoc funname ess--funargs-pre-cache))
           (when (and ess-current-process-name (get-process ess-current-process-name))
-            (let ((args (ess-get-words-from-vector
-                         (format ess--funargs-command funname funname) nil .01)))
-              (setq args (list (cons (car args) (current-time))
-                               (when (stringp (cadr args)) ;; error occurred
-                                 (replace-regexp-in-string  "\\\\" "" (cadr args)))
-                               (cddr args)))
+            (with-current-buffer (ess-command (format ess--funargs-command funname))
+              (goto-char (point-min))
+              (when (re-search-forward "(list" nil t)
+                (goto-char (match-beginning 0))
+                (setq args (ignore-errors (eval (read (current-buffer)))))
+                (if args
+                      (setcar args (cons (car args) (current-time)))))
               ;; push even if nil
-              (puthash funname args ess--funargs-cache))
+              (puthash (substring-no-properties funname) args ess--funargs-cache))
             )))))
 
 ;; (defun ess-get-object-at-point ()
@@ -885,24 +943,9 @@ First element of a returned list is the completion token.
          (end (or end (point)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (comm (format
-                "local({
-olderr <- options(error=NULL)
-on.exit(options(olderr))
-if(getRversion() > '2.14.1'){
-    comp <- compiler::enableJIT(0L)
-    on.exit(compiler::enableJIT(comp))
-}
-utils:::.assignLinebuffer(\"%s\")
-utils:::.assignEnd(%d)
-utils:::.guessTokenFromLine()
-utils:::.completeToken()
-c(get('token', envir=utils:::.CompletionEnv),
-  utils:::.retrieveCompletions())
-})\n"
+         (comm (format ".ess_get_completions(\"%s\", %d)\n"
                 (ess-quote-special-chars (buffer-substring start end))
-                (- end start)))
-         )
+                (- end start))))
     (ess-get-words-from-vector comm)
     ))
 
@@ -953,7 +996,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         (ess-ac-objects)))))
 
 (defun ess-ac-help (sym)
-  (if (string-match-p "=\\'" sym)
+  (if (string-match-p "= *\\'" sym)
       (ess-ac-help-arg sym)
     (ess-ac-help-object sym)))
 
@@ -1025,7 +1068,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; (requires   . 0)
     (candidates . ess-ac-args)
     (document   . ess-ac-help-arg)
-    (action     . ess-ac-action-args))
+    ;; (action     . ess-ac-action-args)
+    )
   "Auto-completion source for R function arguments"
   )
 
@@ -1046,21 +1090,19 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
-      (delete "...=" args)
-      (mapcar (lambda (a) (if (equal (substring a -1) "=")
-                              (concat (substring a 0 -1) " = ")
-                            a))
+      (delete "..." args)
+      (mapcar (lambda (a) (concat a ess-ac-R-argument-suffix))
               args))))
 
-(defun ess-ac-action-args ()
-  (when (looking-back "=")
-    (delete-char -1)
-    (insert " = ")))
+;; (defun ess-ac-action-args ()
+;;   (when (looking-back "=")
+;;     (delete-char -1)
+;;     (insert " = ")))
 
 
 (defun ess-ac-help-arg (sym)
   "Help string for ac."
-  (setq sym (substring sym 0 -1)) ;; get rid of =
+  (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
   (let ((buff (get-buffer-create " *ess-command-output*"))
         (fun (car ess--funname.start))
         doc)

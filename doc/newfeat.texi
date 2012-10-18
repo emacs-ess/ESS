@@ -1,19 +1,31 @@
 @itemize @w{}
 
-Changes/New Features in 12.09-mod:
+Bug Fixes/Changes/New Features in 12.09-1:
 @itemize @bullet
 @item @iESS{[R]} and @iESS{(Sqpe) [S]} on Windows:
 The @code{options("editor")} is now initialized to @code{emacsclient}
 instead of the previous @code{gnuclient}.  The user may need to add the
 line @code{(server-start)} to the emacs initialization file.
- @code{emacsclient} has been included with emacs since GnuEmacs 22.1.
+ @code{emacsclient} has been included with emacs since GNU Emacs 22.1.
+@item @ESS{[Rnw]} fixed ``connection to R'' bug (in 12.09 only).
+@item @ESS{[Rnw]} New @code{ess-eval-chunk-and-step} function
+functions.
+@item @ESS{[Rnw]} Explicit @code{ess-swv-stangle} and @code{ess-swv-sweave}
+functions.
+@item @ESS{[Rnw]} ess-noweb: more thorough renaming of remaining
+@code{noweb-*} to @code{ess-noweb-*}.
+
+@item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
+of cases where the number of leading @kbd{#} differs from @code{ess-roxy-str}.
+@item @ESS{[R]} @file{eldoc} rewritten.
+
 @end itemize
 
 Changes/New Features in 12.09:
 
 @itemize @bullet
-@item @b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs 
-ends with ESS 12.04-4.  This decision will be re-visited in the future as 
+@item @b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs
+ends with ESS 12.04-4.  This decision will be re-visited in the future as
 XEmacs continues to sync with GNU Emacs.}
 
 @item @ESS{[R]}: On Windows, there is now a new customizable variable

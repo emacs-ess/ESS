@@ -558,6 +558,24 @@ For internal use. Used in `ess-display-help-on-object',
 ;; this breaks "s ?" rather than to fix any (unbroken !) thing:
 ;; (make-variable-buffer-local 'ess-help-sec-map)
 
+
+
+(defvar ess-doc-map
+  (let (ess-doc-map)
+    (define-prefix-command 'ess-doc-map)
+    (define-key ess-doc-map "\C-d" 'ess-display-help-on-object)
+    (define-key ess-doc-map "d" 'ess-display-help-on-object)
+    (define-key ess-doc-map "\C-i" 'ess-display-package-index)
+    (define-key ess-doc-map "i" 'ess-display-package-index)
+    (define-key ess-doc-map "\C-a" 'ess-display-help-apropos)
+    (define-key ess-doc-map "a" 'ess-display-help-apropos)
+    (define-key ess-doc-map "\C-v" 'ess-display-vignettes)
+    (define-key ess-doc-map "v" 'ess-display-vignettes)
+    ess-doc-map
+    )
+  "ESS documentaion map.")
+
+
 (defvar ess-help-mode-map
   (let ((map (make-keymap))); Full keymap, in order to
     (suppress-keymap map)   ; suppress all usual "printing" characters

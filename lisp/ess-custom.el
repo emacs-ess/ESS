@@ -128,7 +128,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.09-mod" ;; updated by 'make'
+(defvar ess-version "12.09-1" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -195,6 +195,26 @@ as `ess-imenu-use-S'."
 (defvar ess--local-handy-commands nil
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
+
+
+(defcustom ess-R-describe-object-at-point-commands
+  '(("str(%s)")
+    ("summary(%s)"))
+  "A list of commands cycled by `ess-describe-object-at-point'.
+%s is substituted with the name at point. The value of the
+ aliment is not used as yet and has no effect."
+  :group 'R
+  :type 'alist)
+
+
+(defcustom ess-S-describe-object-at-point-commands
+  ess-R-describe-object-at-point-commands
+  "An alist of commands cycled by `ess-describe-object-at-point'.
+%s is substitute with the name at point. The value is not used as
+ yet."
+  :group 'S+
+  :type 'alist)
+
 
 (defcustom ess-can-eval-in-background nil
   "If non-nil ESS can perform caching and other background
@@ -419,6 +439,12 @@ to install your custom sources.
 "
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
+
+
+(defcustom ess-ac-R-argument-suffix " = "
+  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
+  :group 'R
+  :type 'string)
 
 (defcustom ess-use-tracebug nil
   "If t, load ess-tracebug when R process starts."
@@ -794,8 +820,8 @@ other users if you are using a shared directory. Other alternatives:
 \"%s.S\" ; Don't bother uniquifying if using your own directory(ies)
 \"dumpdir\"; Always dump to a specific filename. This makes it impossible
 to edit more than one object at a time, though.
-(make-temp-name \"scr.\") ; Another way to uniquify"
-;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
+ (make-temp-name \"scr.\") ; Another way to uniquify"
+  ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
 
 :group 'ess-edit
 :type 'string)
@@ -941,7 +967,9 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-str "##'"
-  "Prefix string to insert before each line in a roxygen block."
+  "Prefix string to insert before each line in new roxygen
+blocks. In existing roxygen blocks, the prefix is taken from
+the line at point"
   :group 'ess-roxy
   :type 'string)
 
@@ -1573,9 +1601,22 @@ Otherwise, they get their own temporary buffer."
 
 (defcustom ess-eval-visibly-p t
   "Non-nil means ess-eval- commands display commands in the process buffer.
-Experienced users often change / customize it to 'nil'."
+If t, ESS waits after each line of the command for the process
+output. This results in a nice sequence of input and output but
+stalls emacs on long output (like Sys.sleep(5) in R).
+
+If 'nowait, ESS still shows the input commands, but don't wait
+for the process. Thus all the output is printed after the input
+lines.
+
+If nil, ESS doesn't print input commands and doesn't wait for the process.
+
+This variable also affect the evaluation of input code in
+iESS. The effect is similar to the above. If t then ess waits for
+the process output, otherwise not.
+"  
   :group 'ess-proc
-  :type 'boolean)
+  :type '(choice (const t) (const nowait) (const nil)))
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
@@ -1970,18 +2011,9 @@ system described in `ess-font-lock-keywords'.")
 (make-variable-buffer-local 'ess-font-lock-defaults)
 
 
-;;; fl-keywords general
-(defvar ess-function-call-regexp
-  "\\(\\sw+\\)("
-  "Regexp for function names for R")
-
-;; (defvar ess-function-call-regexp
-;;   "\\(\\(\\sw\\|\\s_\\)+\\)("
-;;   "Regexp for function names for R")
-
 
 (defvar ess-fl-keyword:fun-calls
-  (cons ess-function-call-regexp '(1 ess-function-call-face keep))
+  (cons "\\(\\sw+\\) ?(" '(1 ess-function-call-face keep))
   "Font lock for function calls.")
 
 (defvar ess-fl-keyword:numbers
@@ -2288,18 +2320,6 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 (defvar ess-help-w3-url-funs "funs/"
   "Place to find functions.")
 
-(defvar ess-r-object-tooltip-alist
-  '((numeric    . "summary")
-    (integer    . "summary")
-    (factor     . "table")
-    (lm         . "summary")
-    (other      . "str"))
-  "List of (<class> . <R-function>) to be used in \\[ess-r-object-tooltip].
- For example, when called while point is on a factor object, a table of that
- factor will be shown in the tooltip.
- The special key \"other\" in the alist defines which function to call when
- the class is not mached in the alist.  The default, str(), is a fairly useful
- default for many, including data.frame and function objects.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
