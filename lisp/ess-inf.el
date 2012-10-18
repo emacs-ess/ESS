@@ -443,9 +443,13 @@ Taken from octave-mod.el."
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil) 
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
-    (when (string-match "^ *Error" string)
-      (ess-show-buffer (process-buffer proc)))
+    (ess--show-process-buffer-on-error string proc)
     ))
+
+
+(defun ess--show-process-buffer-on-error (string proc)
+  (when (string-match "Error\\(:\\| +in\\)" string)
+    (ess-show-buffer (process-buffer proc))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.

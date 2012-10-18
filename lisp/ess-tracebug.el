@@ -1205,8 +1205,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; COMINT
       
       (comint-output-filter proc string)
-      (when (string-match "^ *Error" string)
-        (ess-show-buffer pbuf))
+      (ess--show-process-buffer-on-error string proc)
       )
     
     ;; WATCH
