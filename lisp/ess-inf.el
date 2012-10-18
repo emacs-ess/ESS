@@ -2040,8 +2040,13 @@ to continue it."
   ;; If comint-process-echoes is t  inferior-ess-input-sender
   ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
   (set (make-local-variable 'comint-process-echoes)
-       (not (or (member ess-language '("SAS" "XLS" "OMG" "julia"))
-                (member ess-dialect '("R"))))) ;; does S work?
+       (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
+  
+  (when (and (member ess-dialect '("R")) ;; S+ echoes!!
+             (not (eq ess-eval-visibly-p t)))
+    ;; when 'nowait or nil, don't wait for process
+    (setq comint-process-echoes nil))
+    
   
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
