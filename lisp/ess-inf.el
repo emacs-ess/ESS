@@ -1054,7 +1054,7 @@ input STRING.
            (with-current-buffer (process-buffer proc)
              (save-excursion
                (goto-char (process-mark proc))
-               (insert
+               (insert-before-markers
                 (propertize string 'font-lock-face 'comint-highlight-input))
                (set-marker (process-mark proc) (point)))
              (process-send-string process string)))

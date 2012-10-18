@@ -1196,7 +1196,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
             ;; (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
             (when (looking-back inferior-ess-primary-prompt)
               ;; (goto-char pmark)
-              (insert "\n")
+              (insert-before-markers "\n")
               (set-marker pmark (point)))
             )))
       ;; replace long prompts
