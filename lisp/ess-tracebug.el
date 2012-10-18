@@ -1171,8 +1171,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
                              (match-string 2 string))) ;; Selection:
          (match-active (or match-skip match-input))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
-         (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
-         (prompt-replace-regexp "^>\\( [>+]\\)*\\( \\)[^>+\n]") ;; works only with the default prompt
+         ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
+         (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          ) ; current-buffer is still the user's input buffer here
 
@@ -1187,16 +1187,17 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
       ;; FIXME: this should be in comint filters!!
       ;; insert \n after the prompt when necessary
-      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 2))
+      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
       (with-current-buffer pbuf
-        (let ((pmark (process-mark proc)))
-          (goto-char pmark)
-          (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
-          (when (looking-at prompt-regexp)
+        (save-excursion
+          (let ((pmark (process-mark proc)))
             (goto-char pmark)
-            (insert "\n")
-            (set-marker pmark (point)))
-          ))
+            ;; (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
+            (when (looking-back inferior-ess-primary-prompt)
+              ;; (goto-char pmark)
+              (insert "\n")
+              (set-marker pmark (point)))
+            )))
       ;; replace long prompts
       (when inferior-ess-replace-long+
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
