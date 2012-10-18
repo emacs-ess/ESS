@@ -1042,15 +1042,25 @@ input STRING.
   (setq string (ess--run-presend-hooks process string))  
   (inferior-ess--interrupt-subjob-maybe process) 
   (inferior-ess-mark-as-busy process)
-  (if (fboundp (buffer-local-value 'ess-send-string-function (current-buffer)))
+  (if (fboundp (buffer-local-value 'ess-send-string-function
+                                   (current-buffer)))
       ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
-    (if visibly
-        (let ((ess--inhibit-presend-hooks t))
-          (ess-eval-linewise string))
-      (process-send-string process (concat string "\n"))))
+    (setq string (concat string "\n"))
+    (cond ((eq visibly t) ;; wait after each line
+           (let ((ess--inhibit-presend-hooks t))
+             (ess-eval-linewise string)))
+          ((eq visibly 'nowait) ;; insert command and eval invisibly .
+           (with-current-buffer (process-buffer proc)
+             (save-excursion
+               (goto-char (process-mark proc))
+               (insert
+                (propertize string 'font-lock-face 'comint-highlight-input))
+               (set-marker (process-mark proc) (point)))
+             (process-send-string process string)))
+          (t
+           (process-send-string process string))))
   (if message (message message)))
-
 
 (defvar ess--inhibit-presend-hooks nil
   "If non-nil don't run presend hooks.")

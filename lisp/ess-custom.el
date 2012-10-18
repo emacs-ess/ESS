@@ -1601,9 +1601,22 @@ Otherwise, they get their own temporary buffer."
 
 (defcustom ess-eval-visibly-p t
   "Non-nil means ess-eval- commands display commands in the process buffer.
-Experienced users often change / customize it to 'nil'."
+If t, ESS waits after each line of the command for the process
+output. This results in a nice sequence of input and output but
+stalls emacs on long output (like Sys.sleep(5) in R).
+
+If 'nowait, ESS still shows the input commands, but don't wait
+for the process. Thus all the output is printed after the input
+lines.
+
+If nil, ESS doesn't print input commands and doesn't wait for the process.
+
+This variable also affect the evaluation of input code in
+iESS. The effect is similar to the above. If t then ess waits for
+the process output, otherwise not.
+"  
   :group 'ess-proc
-  :type 'boolean)
+  :type '(choice (const t) (const nowait) (const nil)))
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
