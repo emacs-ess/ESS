@@ -33,20 +33,20 @@
 ;;
 ;; - basic highlighting
 ;; - generating and updating templates from function definition and customized default template
-;;   - C-c C-e C-o :: update template
+;;   - C-c C-o C-o :: update template
 ;; - navigating and filling roxygen fields
 ;;   - C-c TAB, M-q, C-a, ENTER, M-h :: advised tag completion, fill-paragraph,
 ;;        move-beginning-of-line, newline-and-indent, mark-paragraph
-;;   - C-c C-e n,p :: next, previous roxygen entry
-;;   - C-c C-e C-c :: Unroxygen region. Convenient for editing examples.
+;;   - C-c C-o n,p :: next, previous roxygen entry
+;;   - C-c C-o C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
 ;;   - TAB :: advised ess-ident-command, hide entry if in roxygen doc.
 ;; - preview
-;;   - C-c C-e C-r :: create a preview of the Rd file as generated
+;;   - C-c C-o C-r :: create a preview of the Rd file as generated
 ;;     using roxygen
-;;   - C-c C-e C-t :: create a preview of the Rd HTML file as generated
+;;   - C-c C-o C-t :: create a preview of the Rd HTML file as generated
 ;;     using roxygen and the tools package
-;;   - C-c C-e t :: create a preview of the Rd text file
+;;   - C-c C-o t :: create a preview of the Rd text file
 ;;
 ;; Known issues:
 ;;
@@ -72,17 +72,16 @@
     nil
   (setq ess-roxy-mode-map (make-sparse-keymap))
   (if ess-roxy-hide-show-p
-      (define-key ess-roxy-mode-map (kbd "C-c C-e C-h") 'ess-roxy-hide-all))
+      (define-key ess-roxy-mode-map (kbd "C-c C-o C-h") 'ess-roxy-hide-all))
   ;; short version (*first*: -> key binding shown in menu):
-  (define-key ess-roxy-mode-map (kbd "C-c C-o")     'ess-roxy-update-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e n")   'ess-roxy-next-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e p")   'ess-roxy-previous-entry)
-  ;; For consistency (e.g. C-c C-e C-h !): kept here *in* addition to above
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-o") 'ess-roxy-update-entry)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-r") 'ess-roxy-preview-Rd)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-t") 'ess-roxy-preview-HTML)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e t")   'ess-roxy-preview-text)
-  (define-key ess-roxy-mode-map (kbd "C-c C-e C-c") 'ess-roxy-toggle-roxy-region)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o n")   'ess-roxy-next-entry)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o p")   'ess-roxy-previous-entry)
+  ;; For consistency (e.g. C-c C-o C-h !): kept here *in* addition to above
+  (define-key ess-roxy-mode-map (kbd "C-c C-o C-o") 'ess-roxy-update-entry)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o C-r") 'ess-roxy-preview-Rd)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o C-t") 'ess-roxy-preview-HTML)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o t")   'ess-roxy-preview-text)
+  (define-key ess-roxy-mode-map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
   )
 
 ;; (defvar ess-roxy-font-lock-keywords nil)
