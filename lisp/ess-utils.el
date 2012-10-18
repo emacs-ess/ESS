@@ -819,6 +819,67 @@ process to avoid excessive requests.
 	       args)))
 
 
+
+(defmacro ess--execute-singlekey-command (map &optional wait &rest args)
+  "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
+
+Single-key input commands are those, which once executed do not
+requre the prefix command for subsequent invocation.
+
+If WAIT is t, wait for next input and ignore the keystroke which
+triggered the command."
+
+  `(let* ((ev last-command-event)
+          (command (lookup-key ,map (vector ev))))
+     (unless ,wait
+       (funcall command ,@args))
+     (while (setq command
+                  (lookup-key ,map
+                              (vector (setq ev (read-event)))))
+       (funcall command ,@args))
+     (push ev unread-command-events)))
+
+
+
+(defvar ess-describe-object-at-point-commands nil
+  "Commands cycled by `ess-describe-object-at-point'. Dialect
+specific.")
+(make-variable-buffer-local 'ess-describe-at-point-commands)
+
+(defvar ess--descr-o-a-p-commands nil)
+  
+(defun ess-describe-object-at-point ()
+  "Get info for object at point, and display it in a tooltip or
+electric buffer (not implemented yet)."
+  (interactive)
+  (if (not ess-describe-object-at-point-commands)
+      (message "Not implemented for dialect %s" ess-dialect)
+    (ess-force-buffer-current)
+    (let ((map (make-sparse-keymap))
+          (objname (word-at-point))
+          bs ess--descr-o-a-p-commands)
+      (unless objname (error "No object at point "))
+      (define-key map (vector last-command-event) 'ess--describe-object-at-point)
+      ;; todo: put digits into the map
+      (ess--execute-singlekey-command map nil objname)
+      )))
+
+(defun ess--describe-object-at-point (objname)
+  (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
+                                      ess-describe-object-at-point-commands))
+  (let ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
+        bs)
+    (with-current-buffer (ess-command (concat com "\n"))
+      (goto-char (point-min))
+      (insert (format "%s:\n" com))
+      (setq bs (buffer-string)))
+    (when (length bs)
+      (ess-tooltip-show-at-point bs 0 30)))
+  "Get info for object at point, and display it in a tooltip, or
+electric buffer." )
+
+
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here

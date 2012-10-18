@@ -348,36 +348,50 @@ and y-offsets for the toolbar from point."
       (tooltip-show text))
     ))
 
+
+;; (defvar ess-r-object-tooltip-alist
+;;   '((numeric    . "summary")
+;;     (integer    . "summary")
+;;     (factor     . "table")
+;;     (lm         . "summary")
+;;     (other      . "str"))
+;;   "List of (<class> . <R-function>) to be used in \\[ess-r-object-tooltip].
+;;  For example, when called while point is on a factor object, a table of that
+;;  factor will be shown in the tooltip.
+;;  The special key \"other\" in the alist defines which function to call when
+;;  the class is not mached in the alist.  The default, str(), is a fairly useful
+;;  default for many, including data.frame and function objects.")
+
 ;; From Erik Iversion, slightly modified,
 ;; http://www.sigmafield.org/2009/10/01/r-object-tooltips-in-ess/
-(defun ess-r-object-tooltip ()
-  "Get info for object at point, and display it in a tooltip."
-  (interactive)
-  (let ((proc (get-ess-process))
-        (objname (current-word))
-        (curbuf (current-buffer))
-        (tmpbuf (get-buffer-create " *ess-r-object-tooltip*"))
-        bs)
-    (when objname
-      (ess-write-to-dribble-buffer
-       (format "ess-r-object-tooltip: objname='%s'\n" objname))
-      (ess-command (concat "class(" objname ")\n") tmpbuf nil nil nil proc)
-      (with-current-buffer tmpbuf
-        (goto-char (point-min))
-        ;; CARE: The following can only work in an English language locale!
-        ;; .lang. <- Sys.getenv("LANGUAGE"); Sys.setenv(LANGUAGE="en")
-        ;; .lc. <- Sys.getlocale("LC_MESSAGES"); Sys.setlocale("LC_MESSAGES","en_US.utf-8")
-        ;; and *afterward*  Sys.setenv(LANGUAGE=.lang.); Sys.setlocale("LC_MESSAGES", .lc.)
-        ;; but that fails sometimes, e.g., on Windows
-        (unless (re-search-forward "\(object .* not found\)\|unexpected" nil t)
-          (re-search-forward "\"\\(.*\\)\"" nil t)
-          (let* ((objcls (match-string 1))
-                 (myfun (or (cdr (assoc-string objcls ess-r-object-tooltip-alist))
-                            (cdr (assoc 'other ess-r-object-tooltip-alist)))))
-            (ess-command (concat myfun "(" objname ")\n") tmpbuf nil nil nil proc))
-          (setq bs (buffer-string)))))
-    (if bs
-      (ess-tooltip-show-at-point bs 0 30))))
+;; (defun ess-r-object-tooltip ()
+;;   "Get info for object at point, and display it in a tooltip."
+;;   (interactive)
+;;   (let ((proc (get-ess-process))
+;;         (objname (current-word))
+;;         (curbuf (current-buffer))
+;;         (tmpbuf (get-buffer-create " *ess-r-object-tooltip*"))
+;;         bs)
+;;     (when objname
+;;       (ess-write-to-dribble-buffer
+;;        (format "ess-r-object-tooltip: objname='%s'\n" objname))
+;;       (ess-command (concat "class(" objname ")\n") tmpbuf nil nil nil proc)
+;;       (with-current-buffer tmpbuf
+;;         (goto-char (point-min))
+;;         ;; CARE: The following can only work in an English language locale!
+;;         ;; .lang. <- Sys.getenv("LANGUAGE"); Sys.setenv(LANGUAGE="en")
+;;         ;; .lc. <- Sys.getlocale("LC_MESSAGES"); Sys.setlocale("LC_MESSAGES","en_US.utf-8")
+;;         ;; and *afterward*  Sys.setenv(LANGUAGE=.lang.); Sys.setlocale("LC_MESSAGES", .lc.)
+;;         ;; but that fails sometimes, e.g., on Windows
+;;         (unless (re-search-forward "\(object .* not found\)\|unexpected" nil t)
+;;           (re-search-forward "\"\\(.*\\)\"" nil t)
+;;           (let* ((objcls (match-string 1))
+;;                  (myfun (or (cdr (assoc-string objcls ess-r-object-tooltip-alist))
+;;                             (cdr (assoc 'other ess-r-object-tooltip-alist)))))
+;;             (ess-command (concat myfun "(" objname ")\n") tmpbuf nil nil nil proc))
+;;           (setq bs (buffer-string)))))
+;;     (if bs
+;;       (ess-tooltip-show-at-point bs 0 30))))
 
 ;; Erik: my default key map
 ;;(define-key ess-mode-map "\C-c\C-g" 'ess-r-object-tooltip)

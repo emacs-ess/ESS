@@ -196,6 +196,26 @@ as `ess-imenu-use-S'."
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
 
+
+(defcustom ess-R-describe-object-at-point-commands
+  '(("str(%s)")
+    ("summary(%s)"))
+  "A list of commands cycled by `ess-describe-object-at-point'.
+%s is substituted with the name at point. The value of the
+ aliment is not used as yet and has no effect."
+  :group 'R
+  :type 'alist)
+
+
+(defcustom ess-S-describe-object-at-point-commands
+  ess-R-describe-object-at-point-commands
+  "An alist of commands cycled by `ess-describe-object-at-point'.
+%s is substitute with the name at point. The value is not used as
+ yet."
+  :group 'S+
+  :type 'alist)
+
+
 (defcustom ess-can-eval-in-background nil
   "If non-nil ESS can perform caching and other background
  activities by calling the subprocess on idle time.")
@@ -800,8 +820,8 @@ other users if you are using a shared directory. Other alternatives:
 \"%s.S\" ; Don't bother uniquifying if using your own directory(ies)
 \"dumpdir\"; Always dump to a specific filename. This makes it impossible
 to edit more than one object at a time, though.
-(make-temp-name \"scr.\") ; Another way to uniquify"
-;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
+ (make-temp-name \"scr.\") ; Another way to uniquify"
+  ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
 
 :group 'ess-edit
 :type 'string)
@@ -2287,18 +2307,6 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 (defvar ess-help-w3-url-funs "funs/"
   "Place to find functions.")
 
-(defvar ess-r-object-tooltip-alist
-  '((numeric    . "summary")
-    (integer    . "summary")
-    (factor     . "table")
-    (lm         . "summary")
-    (other      . "str"))
-  "List of (<class> . <R-function>) to be used in \\[ess-r-object-tooltip].
- For example, when called while point is on a factor object, a table of that
- factor will be shown in the tooltip.
- The special key \"other\" in the alist defines which function to call when
- the class is not mached in the alist.  The default, str(), is a fairly useful
- default for many, including data.frame and function objects.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
