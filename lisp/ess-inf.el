@@ -442,7 +442,10 @@ Taken from octave-mod.el."
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil) 
-    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
+    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
+    (when (string-match "^ *Error" string)
+      (ess-show-buffer (process-buffer proc)))
+    ))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -540,7 +543,6 @@ This was rewritten by KH in April 1996."
 
 
 ;;*;; General process handling code
-
 (defmacro with-ess-process-buffer (no-error &rest body)
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
 If NO-ERROR is t don't trigger an error when there is not current process.
@@ -1017,7 +1019,7 @@ region.
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
-    (ess-send-string process (buffer-substring-no-properties start end) visibly message)
+    (ess-send-string process (buffer-substring start end) visibly message)
     ))
 
 (defvar ess-send-string-function  nil)

@@ -1069,7 +1069,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debuger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
-      (add-hook 'comint-input-filter-functions  'ess-tb-set-last-input nil 'local)
+      (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
+      
       (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
@@ -1098,7 +1099,7 @@ Kill the *ess.dbg.[R_name]* buffer."
       (delq 'ess-dbg-mode-line-indicator ess-mode-line-indicator)
       (delq 'ess-dbg-error-action ess-mode-line-indicator)
       (remove-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines 'local)
-      (remove-hook 'comint-input-filter-functions  'ess-tb-set-last-input 'local)
+      (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local)
       )
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
@@ -1204,7 +1205,10 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; COMINT
       
       (comint-output-filter proc string)
+      (when (string-match "^ *Error" string)
+        (ess-show-buffer pbuf))
       )
+    
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))
@@ -1571,7 +1575,7 @@ debug history."
           (ess-send-string proc "c"))
       )))
 
-(defun ess-tb-set-last-input (&rest ARGS)
+(defun ess-tracebug-set-last-input (&rest ARGS)
   "Move `ess-tb-last-input' marker to the process mark.
 ARGS are ignored to allow using this function in process hooks."
   (let* ((last-input-process (get-process ess-local-process-name))
