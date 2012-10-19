@@ -374,16 +374,27 @@ Otherwise try a list of fixed known viewers."
 (defun ess-get-pdf-viewer ()
   "Get external PDF viewer to be used from ESS.
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
-Otherwise try a list of fixed known viewers."
-  (file-name-nondirectory
-   (or (and ess-pdf-viewer-pref         ; -> ./ess-custom.el
-            (executable-find ess-pdf-viewer-pref))
-       (car (ess-get-words-from-vector
-             "getOption(\"pdfviewer\")\n"))
-       (executable-find "evince")
-       (executable-find "kpdf")
-       (executable-find "xpdf")
-       (executable-find "acroread"))))
+Otherwise try a list of fixed known viewers.
+"
+  (let ((viewer (or ess-pdf-viewer-pref
+                    ;; (and (stringp ess-pdf-viewer-pref)         ; -> ./ess-custom.el
+                    ;;      (executable-find ess-pdf-viewer-pref))
+                    (executable-find "evince")
+                    (executable-find "kpdf")
+                    (and (executable-find "okular")
+                         (list "okular" "--unique"))
+                    (executable-find "xpdf")
+                    (executable-find "acroread")
+                    (executable-find "xdg-open")
+                    ;; this one is wrongly wrong, (ok for time being as it is use donly in swv)
+                    (car (ess-get-words-from-vector
+                          "getOption(\"pdfviewer\")\n"))
+                    )))
+    (when (stringp viewer)
+      (setq viewer (file-name-nondirectory viewer)))
+    viewer))
+
+        
 
 
 

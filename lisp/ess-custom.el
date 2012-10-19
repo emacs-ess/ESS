@@ -892,9 +892,10 @@ Good for evaluating ESS code."
 
 (defcustom ess-pdf-viewer-pref nil
   "External pdf viewer you like to use from ESS.
-If nil, will use  getOption(\"pdfviewer\") in R, and try finding one
-from a list."
-  :type '(choice (const nil) string)
+Can be a string giving a name of the program or a list with car
+giving heprogram and the tail giving the arguments. For example
+'(\"okular\" \"--unique\")."
+  :type '(choice (const nil) (repeat :tag "Command with arguments" string) (string :tag "Command"))
   :group 'ess)
 
 (defcustom ess-ps-viewer-pref nil
