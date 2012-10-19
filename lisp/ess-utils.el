@@ -856,7 +856,7 @@ electric buffer (not implemented yet)."
       (message "Not implemented for dialect %s" ess-dialect)
     (ess-force-buffer-current)
     (let ((map (make-sparse-keymap))
-          (objname (word-at-point))
+          (objname (symbolp-at-point))
           bs ess--descr-o-a-p-commands)
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
