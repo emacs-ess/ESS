@@ -430,7 +430,7 @@ Return the 'busy state."
            (if (> (length string) 150)
                (format "%s .... %s" (substring string 0 50) (substring string -50))
              string))))
-    
+
 (defun inferior-ess-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
 Ring Emacs bell if process output starts with an ASCII bell, and pass
@@ -441,7 +441,7 @@ Taken from octave-mod.el."
   (inferior-ess-run-callback proc) ;; protected
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
-      (process-put proc 'suppress-next-output? nil) 
+      (process-put proc 'suppress-next-output? nil)
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
     (ess--show-process-buffer-on-error string proc)
     ))
@@ -676,13 +676,13 @@ the current ESS process."
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process typically from a language-specific buffer, using
 LANGUAGE (and DIALECT)."
-  
+
   (unless dialect
     (error "The value of `dialect' is nil"))
 
   (let ((cur-buf (current-buffer))
         (dsymb (intern dialect)))
-    
+
     (ess-write-to-dribble-buffer
      (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
              language dialect cur-buf))
@@ -714,7 +714,7 @@ Returns the name of the selected process."
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
-  
+
   (unless ess-dialect
     (error "Local value of `ess-dialect' is nil"))
 
@@ -1039,8 +1039,8 @@ Run `comint-input-filter-functions' and
 input STRING.
 "
 
-  (setq string (ess--run-presend-hooks process string))  
-  (inferior-ess--interrupt-subjob-maybe process) 
+  (setq string (ess--run-presend-hooks process string))
+  (inferior-ess--interrupt-subjob-maybe process)
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function
                                    (current-buffer)))
@@ -1085,7 +1085,7 @@ input STRING.
           (setq functions (cdr functions))))
       string
       )))
-  
+
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
 debugging.  Let-bind it to nil before calling
@@ -1128,7 +1128,7 @@ COM and BUF are as in `ess-command'. DELAY is a number of idle
 seconds to wait before starting the execution of the COM. On
 interruption (by user's evaluation) ESS tries to rerun the job
 after next DELAY seconds, and the whole process repeats itself
-untill the command manages to run completely. 
+until the command manages to run completely.
 
 DELAY defaults to `ess-idle-timer-interval' + 3 seconds
 
@@ -1147,7 +1147,7 @@ explicit interrupt-callback.
          (int-cb  `(lambda (proc)
                      (ess-async-command-delayed ,com ,buf proc ,callback ,delay)))
          (com-fun `(lambda ()
-                     (when (eq (process-status ,proc)  'run) ; do nothing if not running 
+                     (when (eq (process-status ,proc)  'run) ; do nothing if not running
                        (if (or (process-get ,proc 'busy) ; if busy, try later
                                (process-get ,proc 'running-async?))
                            ;; idle timer doesn't work here
@@ -1285,7 +1285,7 @@ local({
                   (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
               ))
-          
+
           (ess-if-verbose-write " .. exiting{ess-command}\n")
           ;; Restore old values for process filter
           (set-process-buffer sprocess oldpb)
@@ -1380,7 +1380,7 @@ Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
 TEXT-WITHTABS.
 "
-  
+
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text-withtabs
                                    invisibly eob even-empty
@@ -1391,8 +1391,8 @@ TEXT-WITHTABS.
     (unless (numberp wait-sec)
       (setq wait-sec 0.001))  ;;don't make it lower (0.); xemacs is stuck
 
-    (ess-force-buffer-current "Process to use: ")    
-    
+    (ess-force-buffer-current "Process to use: ")
+
     ;; Use this to evaluate some code, but don't wait for output.
     (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
            (cbuffer (current-buffer))
@@ -1554,15 +1554,16 @@ nil."
                  (name (progn (goto-char beg)
                               (forward-word) ;;func names starting with . are not recognized??
                               (ess-read-object-name-default)))
-                 (mess (format "Eval function %s" (propertize (or name "???")
-                                                              'face 'font-lock-function-name-face)))
+                 (mess (format "Eval function %s"
+                               (propertize (or name "???")
+                                           'face 'font-lock-function-name-face)))
                  (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
 
             (ess-blink-region beg end)
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
-             (tb-p      (ess-tracebug-send-region proc beg end visibly mess 'func))
-             (t         (ess-send-region proc beg end visibly mess)))
+             (tb-p      (ess-tracebug-send-region    proc beg end      visibly mess 'func))
+             (t         (ess-send-region             proc beg end      visibly mess)))
             beg-end)
         nil))))
 
@@ -1615,7 +1616,7 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
       (goto-char (cadr beg-end))
       (if ess-eval-empty
           (forward-line 1)
-        (ess-next-code-line 1)      
+        (ess-next-code-line 1)
       ))))
 
 (defun ess-eval-region-or-function-or-paragraph (vis)
@@ -2041,13 +2042,13 @@ to continue it."
   ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
   (set (make-local-variable 'comint-process-echoes)
        (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
-  
+
   (when (and (member ess-dialect '("R")) ;; S+ echoes!!
              (not (eq ess-eval-visibly-p t)))
     ;; when 'nowait or nil, don't wait for process
     (setq comint-process-echoes nil))
-    
-  
+
+
   (unless inferior-ess-prompt ;; construct only if unset
     (setq inferior-ess-prompt
           (concat "\\("
@@ -2083,7 +2084,7 @@ to continue it."
   (when inferior-ess-font-lock-keywords ;; new system
     (setq inferior-ess-font-lock-defaults
           (ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)))
-  
+
   (set (make-local-variable 'font-lock-defaults)
        '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
 
@@ -2185,26 +2186,26 @@ to continue it."
                              (match-string 2 string))))
       (cond (help-match
              (ess-display-help-on-object help-match))
-            
+
             (help-?-match
              (if (string-match "\\?\\?\\(.+\\)" help-?-match)
                  (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess--display-indexed-help-page (concat help-?-match "\n")  nil 
+               (ess--display-indexed-help-page (concat help-?-match "\n")  nil
                                                (format "*ess-help[%s](%s)*"
                                                        ess-current-process-name help-?-match)
                                                'help))
              (process-send-string proc "\n"))
-            
+
             (page-match
-             (switch-to-buffer-other-window 
+             (switch-to-buffer-other-window
               (ess-command (concat page-match "\n")
                            (get-buffer-create (concat page-match ".rt"))))
              (R-transcript-mode)
              (process-send-string proc "\n"))
-            
+
             (t ;; normal command
              (inferior-ess-input-sender proc string)
              )))))
@@ -2328,7 +2329,7 @@ If in the output field, goes to the begining of previous input.
                                       (buffer-substring-no-properties (point) (point-at-eol))))
                 ))
             (forward-line -1)
-            (setq ess-temp-point (point)) ;; this is ugly, used by transcript 
+            (setq ess-temp-point (point)) ;; this is ugly, used by transcript
             command)
         (message "No command at this point")
         "")
@@ -2943,7 +2944,7 @@ Is *NOT* used by \\[ess-execute-search],
 but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
-  (with-current-buffer 
+  (with-current-buffer
       (get-ess-buffer ess-current-process-name);to get *its* local vars
     (let ((result nil)
           (slist (ess-process-get 'search-list))
@@ -3172,7 +3173,7 @@ Used in `ess-idle-timer-functions'."
 (defun ess--mark-search-list-as-changed ()
   "Internal. Marks all the search-list related variables as
 changed."
-  ;; other guys might track their own 
+  ;; other guys might track their own
   (ess-process-put 'sp-for-help-changed? t)
   (ess-process-put 'sp-for-ac-changed? t)
   )

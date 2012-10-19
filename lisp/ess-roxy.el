@@ -66,7 +66,7 @@
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 
 ;; ------------------
-(defvar ess-roxy-mode-map 
+(defvar ess-roxy-mode-map
   (let ((map (make-sparse-keymap)))
     (if ess-roxy-hide-show-p
         (define-key map (kbd "C-c C-o h") 'ess-roxy-hide-all)) ;; dont bind C-h!!!!
@@ -475,9 +475,9 @@ string. Convenient for editing example fields."
       (widen))))
 
 (defun ess-roxy-preview ()
-  "Use the connected R session and the roxygen package `ess-roxy-package'
-to generate the Rd code for entry at point, place it in
-a temporary buffer and return that buffer."
+  "Use a (possibly newly) connected R session and the roxygen package
+`ess-roxy-package' to generate the Rd code for entry at point, place it
+in a temporary buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
         (tmpf (make-temp-file "ess-roxy"))
         (roxy-buf (get-buffer-create " *RoxygenPreview*"))
@@ -499,6 +499,7 @@ a temporary buffer and return that buffer."
         (while (and (forward-line 1) (not (looking-at "^$"))
                     (not (looking-at ess-roxy-re))))
         (append-to-file beg (point) tmpf))
+      (ess-force-buffer-current)
       (ess-command (concat "print(suppressWarnings(require(" ess-roxy-package
                            ", quietly=TRUE)))\n") roxy-buf)
       (with-current-buffer roxy-buf
@@ -511,10 +512,10 @@ a temporary buffer and return that buffer."
     roxy-buf))
 
 (defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
-  "Use the connected R session and the roxygen package to
+  "Use a (possibly newly) connected R session and the roxygen package to
 generate a HTML page for the roxygen entry at point and open that
-buffer in a browser. Visit the HTML file instead of showing it in
-a browser if `visit-instead-of-open' is non-nil"
+buffer in a browser.  Visit the HTML file instead of showing it in
+a browser if `visit-instead-of-open' is non-nil."
   (interactive "P")
   (let* ((roxy-buf (ess-roxy-preview))
          (rd-tmp-file (make-temp-file "ess-roxy-" nil ".Rd"))
@@ -526,6 +527,7 @@ a browser if `visit-instead-of-open' is non-nil"
       (set-visited-file-name rd-tmp-file)
       (save-buffer)
       (kill-buffer roxy-buf))
+    (ess-force-buffer-current)
     (ess-command "print(suppressWarnings(require(tools, quietly=TRUE)))\n")
     (ess-command
      (if visit-instead-of-open
@@ -563,7 +565,7 @@ facilitate saving that file."
 block before the point"
   (save-excursion
     (if (ess-roxy-entry-p)
-        (progn 
+        (progn
           (goto-char (point-at-bol))
           (search-forward-regexp ess-roxy-re))
       (if not-here
@@ -571,7 +573,7 @@ block before the point"
     (if (or not-here (ess-roxy-entry-p))
         (match-string 0)
       ess-roxy-str)))
-        
+
 (defun ess-roxy-mark-active ()
   "True if region is active and transient mark mode activated"
   (if (fboundp 'region-active-p)
