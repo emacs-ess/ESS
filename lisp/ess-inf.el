@@ -815,10 +815,47 @@ made current."
     (message "No inferior ESS process")
     (ding)))
 
+(defun ess-switch-to-ESS-deprecated (eob-p)
+  (interactive "P")
+  (ess-switch-to-ESS eob-p)
+  (message "C-c C-y is deprecated, use C-c C-z instead (ess-switch-to-inferior-or-script-buffer)"))
+
+
 (defun ess-switch-to-end-of-ESS ()
   "Switch to the end of the inferior ESS process buffer."
   (interactive)
   (ess-switch-to-ESS t))
+
+(defun ess-switch-to-inferior-or-script-buffer (eob-p)
+  "If in script, switch to the iESS. If in iESS switch to most recent script buffer.
+
+This is a single-key command. Assuming that it is bound to C-c C-z,
+you can navigate back and forth between iESS and script buffer
+with C-c C-z C-z C-z ...
+"
+  (interactive "P")
+  (let ((map (make-sparse-keymap)))
+    (define-key map (vector last-command-event)
+      (lambda (eob) (interactive)
+        (if (not (eq major-mode 'inferior-ess-mode))
+            (ess-switch-to-ESS eob)
+          (let ((dialect ess-dialect)
+                (loc-proc-name ess-local-process-name)
+                (blist (buffer-list)))
+            (while (and (pop blist)
+                        (with-current-buffer (car blist)
+                          (not (or (and (eq major-mode 'ess-mode)
+                                        (equal dialect ess-dialect)
+                                        (null ess-local-process-name))
+                                   (and (eq major-mode 'ess-mode)
+                                        (equal loc-proc-name ess-local-process-name))
+                                   )))))
+            (if blist
+                (pop-to-buffer (car blist))
+              (message "No buffers with dialect %s or associated with process %s found" dialect loc-proc-name)))
+          )))
+    (ess--execute-singlekey-command map nil eob-p)))
+  
 
 (defun get-ess-buffer (name)
   "Return the buffer associated with the ESS process named by NAME."
@@ -1899,9 +1936,8 @@ for `ess-eval-region'."
     (define-key map "\C-c\C-t" 'ess-execute)
     (define-key map "\C-c\C-s" 'ess-execute-search)
     (define-key map "\C-c\C-x" 'ess-execute-objects)
-    ;;(define-key map "\C-c\C-a" 'ess-execute-attach)
     (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
-    (define-key map "\C-c\C-z" 'ess-abort) ; mask comint map
+    (define-key map "\C-c\C-z" 'ess-switch-to-inferior-or-script-buffer) ; mask comint map
     (define-key map "\C-d"     'delete-char)   ; EOF no good in S
     (if (and (featurep 'emacs) (>= emacs-major-version 24))
         (define-key map "\t"       'completion-at-point)
