@@ -948,6 +948,49 @@ See also `tooltip-hide-delay' and `tooltip-delay'."
   "Get info for object at point, and display it in a tooltip, or
 electric buffer." )
 
+(defvar ess-build-tags-command nil
+  "Command passed to generate tags.
+
+If nil, `ess-build-tags-for-directory' uses the mode's imenu
+regexpresion. Othersiwe, it should be a string with two %s
+formats: one for directory and another for the output file.")
+
+  
+(defun ess-build-tags-for-directory (dir tagfile)
+  "Ask for directory and tag file and build tags for current dialect.
+
+If the current language defines `ess-build-tags-command' use it
+and ask the subprocess to build the tags. Otherwise use imenu
+regexp and call find .. | etags .. in a shell command. You must
+have 'find' and 'etags' programs installed.
+
+Use M-. to navigate to a tag. M-x `visit-tags-table' to
+append/replace the currently used tag table.
+"
+  (interactive "DDirectory to tag: 
+FTags file (default TAGS): ")
+  (when (eq (length (file-name-nondirectory tagfile)) 0)
+    (setq tagfile (concat tagfile "TAGS")))
+  (if ess-build-tags-command
+      (ess-eval-linewise (format ess-build-tags-command dir tagfile))
+    ;; else generate from imenu
+    (unless imenu-generic-expression
+      (error "No ess-tag-command found, and no imenu-generic-expression defined"))
+    (let* ((find-cmd
+            (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSc]\\(nw\\)?\\)$\" \\)" dir))
+           (regs (delq nil (mapcar (lambda (l)
+                                     (if (string-match "'" (cadr l))
+                                         nil ;; remove for time being
+                                       (format "/%s/\\%d/"
+                                               (replace-regexp-in-string "/" "\\/" (nth 1 l) t)
+                                               (nth 2 l))))
+                                   imenu-generic-expression)))
+           (tags-cmd (format "etags -I -o %s --regex='%s' -" tagfile
+                             (mapconcat 'identity regs "' --regex='"))))
+      (message "Building tags: %s" tagfile)
+      (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
+        (message "Building tags .. ok!")))))
+      
 
 
 (provide 'ess-utils)
