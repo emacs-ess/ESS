@@ -1064,7 +1064,7 @@ the variable `inferior-ess-own-frame' is non-nil."
   :group 'ess-proc
   :type 'alist)
 
-(defcustom inferior-ess-same-window t
+(defcustom inferior-ess-same-window nil
   "Non-nil indicates new inferior ESS process appears in current window.
 Otherwise, the new inferior ESS buffer is shown in another window in the
 current frame.  This variable is ignored if `inferior-ess-own-frame' is
