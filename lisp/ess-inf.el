@@ -1099,10 +1099,10 @@ input STRING.
           ((eq visibly 'nowait) ;; insert command and eval invisibly .
            (with-current-buffer (process-buffer proc)
              (save-excursion
-               (goto-char (process-mark proc))
-               (insert-before-markers
-                (propertize string 'font-lock-face 'comint-highlight-input))
-               (set-marker (process-mark proc) (point)))
+                 (goto-char (process-mark proc))
+                 (insert-before-markers
+                  (propertize (replace-regexp-in-string  "\n" "\n+ " string)
+                              'font-lock-face 'comint-highlight-input)))
              (process-send-string process string)))
           (t
            (process-send-string process string))))
