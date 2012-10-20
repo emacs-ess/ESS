@@ -310,13 +310,11 @@
       (insert string))
     (process-send-string process (format inferior-ess-load-command file))))
 
-(defun julia-get-help-topics-function (name)
-  (let ((com "print(\" [1] \"); _jl_init_help();for (topic, _) = _jl_helpdb show(topic); println(); for (func,_) = _jl_helpdb[topic] show(func); print(\" \");   end;  end\n\n"))
-    (ess-get-words-from-vector com)))
+(defun julia-get-help-topics (&optional proc)
+  (ess-get-words-from-vector "_ess_list_topics()\n"))
     ;; (ess-command com)))
 
-(defvar julia-help-command " _tpc = \"%s\"; _jl_init_help(); if !has(_jl_helpdb, _tpc); help_for(_tpc) else for (func, _) = _jl_helpdb[_tpc] help_for(func); println(); end end\n")
-
+(defvar julia-help-command "help(\"%s\")\n")
 
 (defvar ess-julia-error-regexp-alist '(julia-in julia-at)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
@@ -334,7 +332,7 @@
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
-    (ess-get-help-topics-function	. 'julia-get-help-topics-function)
+    (ess-get-help-topics-function	. 'julia-get-help-topics)
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
@@ -404,7 +402,8 @@ been created using the variable `ess-r-versions'."
   ;; (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
   ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
   (set (make-local-variable 'julia-basic-offset) 4)
-  (ess-imenu-julia)
+  (setq imenu-generic-expression julia-imenu-generic-expression)
+  (imenu-add-to-menubar "Imenu-jl")
   (run-hooks 'julia-mode-hook))
 
 
@@ -428,7 +427,7 @@ to R, put them in the variable `inferior-julia-args'."
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
-    (let* ((r-start-args
+    (let* ((jl-start-args
 	    (concat inferior-julia-args " " ; add space just in case
 		    (if start-args
 			(read-string
@@ -436,21 +435,14 @@ to R, put them in the variable `inferior-julia-args'."
 				 inferior-julia-args
 				 "'] ? "))
 		      nil))))
-      (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
       (ess-tb-start)
-      ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-      ;;        (list
-      ;; 	(list julia-char-regex 2
-      ;; 	      julia-mode-char-syntax-table)
-      ;; ;        (list julia-string-regex 0
-      ;; ;              julia-mode-string-syntax-table)
-      ;; ))
-      (set (make-local-variable 'indent-line-function) 'julia-indent-line)
       (set (make-local-variable 'julia-basic-offset) 4)
-      (setq indent-tabs-mode nil)
+      ;; (setq indent-tabs-mode nil)
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
+      (ess-eval-linewise (format "load(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
