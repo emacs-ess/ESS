@@ -863,7 +863,7 @@ with C-c C-z C-z C-z ...
               (message "No buffers with dialect %s or associated with process %s found" dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
-  
+
 
 (defun get-ess-buffer (name)
   "Return the buffer associated with the ESS process named by NAME."
@@ -1519,7 +1519,7 @@ TEXT-WITHTABS.
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
-With prefix argument toggle the meaning of `ess-eval-visibly-p';
+With prefix argument toggle the meaning of `ess-eval-visibly';
 this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
@@ -1543,7 +1543,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (setq end (point)))
 
   (let* ((proc (get-process ess-local-process-name))
-         (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
+         (visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
          (dev-p (process-get proc 'developer))
          (tb-p  (process-get proc 'tracebug)))
     (cond
@@ -1602,7 +1602,7 @@ nil."
                  (mess (format "Eval function %s"
                                (propertize (or name "???")
                                            'face 'font-lock-function-name-face)))
-                 (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
+                 (visibly (if vis (not ess-eval-visibly) ess-eval-visibly)))
 
             (ess-blink-region beg end)
             (cond
@@ -2088,7 +2088,7 @@ to continue it."
        (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
 
   (when (and (member ess-dialect '("R")) ;; S+ echoes!!
-             (not (eq ess-eval-visibly-p t)))
+             (not (eq ess-eval-visibly t)))
     ;; when 'nowait or nil, don't wait for process
     (setq comint-process-echoes nil))
 
