@@ -2800,14 +2800,14 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
-      (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
-          (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
-                 (setq words nil)
-                 )
-	(while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
-	  (setq words (cons (buffer-substring (match-beginning 1)
-					      (match-end 1)) words))))
-      )
+      ;; this is bad, only R specific test
+      ;; (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
+      ;;     (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
+      ;;            (setq words nil)
+      ;;            )
+      (while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
+        (setq words (cons (buffer-substring (match-beginning 1)
+                                            (match-end 1)) words))))
     (ess-if-verbose-write
      (if (> (length words) 5)
          (format " |-> (length words)= %d\n" (length words))
