@@ -226,6 +226,12 @@
      (or (and (ess-inside-string-p (point-at-bol)) 0)
 	 (save-excursion (ignore-errors (julia-form-indent)))
          (save-excursion (ignore-errors (julia-paren-indent)))
+         ;; previous line ends in =
+	 (save-excursion
+           (beginning-of-line)
+           (skip-chars-backward " \t\n")
+           (when (eql (char-before) ?=)
+             (+ julia-basic-offset (current-indentation))))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
@@ -233,12 +239,6 @@
                            (julia-at-keyword julia-block-end-keywords))))
              (ignore-errors (+ (julia-last-open-block (point-min))
                                (if endtok (- julia-basic-offset) 0)))))
-	 ;; previous line ends in =
-	 (save-excursion
-           (beginning-of-line)
-           (skip-chars-backward " \t\n")
-           (when (equal (char-before) ?=)
-             (+ julia-basic-offset (current-indentation))))
 	 ;; take same indentation as previous line
 	 (save-excursion (forward-line -1)
 			 (current-indentation))
