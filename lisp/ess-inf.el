@@ -793,11 +793,10 @@ there is only one process running."
           (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
                 temp-ess-help-filetype  dialect)
             (with-current-buffer (process-buffer (get-process proc))
-              (setq temp-ess-help-filetype inferior-ess-help-filetype)
-              (setq dialect ess-dialect))
+              (setq temp-ess-help-filetype inferior-ess-help-filetype))
             (setq ess-local-process-name proc)
             (setq inferior-ess-help-filetype temp-ess-help-filetype)
-            (setq ess-dialect dialect)))))))
+            ))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
