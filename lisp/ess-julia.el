@@ -194,10 +194,6 @@
               nil)))
       nil)))
 
-;(defun far-back ()
-;  (max (point-min) (- (point) 2000)))
-
-(defmacro error2nil (body) `(condition-case nil ,body (error nil)))
 
 (defun julia-paren-indent ()
   (let* ((p (parse-partial-sexp (save-excursion
@@ -228,24 +224,21 @@
     (end-of-line)
     (indent-line-to
      (or (and (ess-inside-string-p (point-at-bol)) 0)
-	 (save-excursion (error2nil (julia-form-indent)))
-         (save-excursion (error2nil (julia-paren-indent)))
+	 (save-excursion (ignore-errors (julia-form-indent)))
+         (save-excursion (ignore-errors (julia-paren-indent)))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
                            (forward-to-indentation 0)
                            (julia-at-keyword julia-block-end-keywords))))
-             (error2nil (+ (julia-last-open-block (point-min))
-                           (if endtok (- julia-basic-offset) 0)))))
+             (ignore-errors (+ (julia-last-open-block (point-min))
+                               (if endtok (- julia-basic-offset) 0)))))
 	 ;; previous line ends in =
 	 (save-excursion
-	   (if (and (not (equal (point-min) (line-beginning-position)))
-		    (progn
-		      (forward-line -1)
-		      (end-of-line) (backward-char 1)
-		      (equal (char-after (point)) ?=)))
-	       (+ julia-basic-offset (current-indentation))
-	     nil))
+           (beginning-of-line)
+           (skip-chars-backward " \t\n")
+           (when (equal (char-before) ?=)
+             (+ julia-basic-offset (current-indentation))))
 	 ;; take same indentation as previous line
 	 (save-excursion (forward-line -1)
 			 (current-indentation))
@@ -293,6 +286,7 @@
     ;; (ess-indent-line			    . 'S-indent-line)
     ;;(ess-calculate-indent	      . 'ess-calculate-indent)
     (ess-indent-line-function	  . 'julia-indent-line)
+    (indent-line-function	  . 'julia-indent-line)
     (parse-sexp-ignore-comments	  . t)
     (ess-style		  	  . ess-default-style) ;; ignored
     (ess-local-process-name	  . nil)
