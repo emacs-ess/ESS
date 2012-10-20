@@ -340,6 +340,7 @@
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
     (ess-send-string-function		. 'julia-send-string-function)
+    (ess-imenu-generic-expression       . julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
     (inferior-ess-help-command		. julia-help-command)
@@ -359,7 +360,6 @@
     (ess-cmd-delay			. ess-R-cmd-delay)
     (ess-function-pattern		. ess-R-function-pattern)
     (ess-object-name-db-file		. "ess-r-namedb.el" )
-    (ess-imenu-mode-function		. 'ess-imenu-R)
     (ess-smart-operators		. ess-R-smart-operators)
     (inferior-ess-help-filetype        . nil)
     (inferior-ess-exit-command		. "exit()\n")
@@ -392,7 +392,6 @@ been created using the variable `ess-r-versions'."
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive "P")
   ;; (setq ess-customize-alist julia-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode julia-customize-alist proc-name)
   ;; for emacs < 24
   ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
@@ -476,12 +475,6 @@ to R, put them in the variable `inferior-julia-args'."
     ;; ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
     ))
 
-(defun ess-imenu-julia (&optional arg)
-  "Julia Language Imenu support for ESS."
-  (interactive)
-  (setq imenu-generic-expression julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl"))
 
-;; (fset 'ess-imenu-R 'ess-imenu-S)
 
 (provide 'ess-julia)

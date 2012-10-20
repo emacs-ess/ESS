@@ -974,7 +974,7 @@ FTags file (default TAGS): ")
   (if ess-build-tags-command
       (ess-eval-linewise (format ess-build-tags-command dir tagfile))
     ;; else generate from imenu
-    (unless imenu-generic-expression
+    (unless (or imenu-generic-expression ess-imenu-generic-expression) ;; need both!!
       (error "No ess-tag-command found, and no imenu-generic-expression defined"))
     (let* ((find-cmd
             (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSc]\\(nw\\)?\\)$\" \\)" dir))

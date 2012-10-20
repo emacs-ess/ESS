@@ -780,6 +780,7 @@ number."
     (font-lock-defaults           . '(SAS-mode-font-lock-defaults)))
   "General options for editing SAS source files.")
 
+
 (defun beginning-of-sas-statement (arg &optional comment-start)
   "Move point to beginning of current sas statement."
   (interactive "P")
@@ -1827,6 +1828,14 @@ whose beginning matches the regexp `page-delimiter'."
            (setq str (concat str " " (buffer-substring (match-beginning 2)
                                                        (match-end 2)))))
          str)))
+
+
+(defun ess-imenu-SAS (&optional arg)
+  "SAS language Imenu support for ESS."
+  (interactive)
+  (setq imenu-generic-expression
+        '( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t\n;]" 1)))
+  (imenu-add-to-menubar "SAS Datasets"))
 
 ;;(defun sas-revert-library ()
 ;;  "Update current library."

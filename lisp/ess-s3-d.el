@@ -73,7 +73,7 @@
   (interactive)
   (setq ess-customize-alist S3-customize-alist)
   (ess-mode S3-customize-alist proc-name)
-  (if ess-imenu-use-S (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 
  ; Provide package

@@ -192,7 +192,6 @@
      (ess-cmd-delay                     . ess-R-cmd-delay)
      (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file           . "ess-r-namedb.el" )
-     (ess-imenu-mode-function           . 'ess-imenu-R)
      (ess-smart-operators               . ess-R-smart-operators)
      (inferior-ess-program              . inferior-R-program-name)
      (inferior-ess-objects-command      . inferior-R-objects-command)
@@ -423,11 +422,9 @@ to R, put them in the variable `inferior-R-args'."
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
-  (if ess-imenu-use-S
-      (progn (require 'ess-menu)
-             (ess-imenu-R)))
-  ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
-  ;;     alist above!
+  (when (and ess-imenu-use-S (require 'ess-menu))
+    (setq imenu-generic-expression ess-imenu-generic-expression)
+    (imenu-add-to-menubar "Imenu-R"))
 
   ;; useful for swankr/slime:
   (set (make-local-variable 'beginning-of-defun-function)

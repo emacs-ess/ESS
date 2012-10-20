@@ -172,6 +172,16 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type  'boolean)
 
+(defcustom ess-imenu-use-S ess-imenu-use-p
+  "*Non-nil means include an Imenu menu item in S buffers."
+  :group 'ess
+  :type  'boolean)
+
+(defvar ess-imenu-generic-expression nil
+  "Placeholder for imenu-generic-expression. Dialect specific.")
+
+
+
 ;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)

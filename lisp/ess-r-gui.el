@@ -125,7 +125,6 @@ nil on Unix machines."
      (ess-cmd-delay . ess-R-cmd-delay)
      (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file . "ess-r-namedb.el" )
-     (ess-imenu-mode-function . 'ess-imenu-R)
      (inferior-ess-program . inferior-Rgui-program-name)
      (inferior-ess-objects-command . inferior-R-objects-command)
      (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
