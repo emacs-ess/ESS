@@ -183,7 +183,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (ess-command (format (or command inferior-ess-help-command)
                                object) tbuffer)
           (ess-help-underline)
-          ;;VS[03-09-2012]: todo this should not be here
+          ;;VS[03-09-2012]: todo this should not be here:
           ;; Stata is clean, so we get a big BARF from this.
           (unless (string= ess-language "STA")
             (ess-nuke-help-bs))
@@ -210,7 +210,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
         (ess-write-to-dribble-buffer
          (format "(ess-help: kill bogus buffer %s ..\n" (buffer-name buffer)))
         (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
-        (ding)
+        ;; (ding) ;; don't ding, in julia a lot of doc strings are very short
         (kill-buffer buffer)))))
 
 (defun ess-display-help-in-browser ()
