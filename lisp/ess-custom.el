@@ -1726,12 +1726,10 @@ Use second %s to substitute the dump file name."
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-ess-help-command "help(\"%s\")\n"
+(defvar inferior-ess-help-command "help(\"%s\")\n"
   "Format-string for building the ESS command to ask for help on an object.
 
-This format string should use %s to substitute an object name."
-  :group 'ess-command
-  :type 'string)
+This format string should use %s to substitute an object name.")
 
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
@@ -1746,8 +1744,7 @@ If set, changes will take effect when next R session is started."
   :type 'string)
 
 (defvar ess-get-help-topics-function nil
-  "Dialect specific help topics retrival"
-  )
+  "Dialect specific help topics retrieval")
 (make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
