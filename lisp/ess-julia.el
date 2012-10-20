@@ -464,10 +464,11 @@ to R, put them in the variable `inferior-julia-args'."
 
 ;;;; IMENU
 (defvar julia-imenu-generic-expression
-  '(("Function (_)" "^\\s-*function\\s-+\\(_[^ \t\n]*\\)" 1)
-    ("Function" "^\\s-*function\\s-+\\([^_][^ \t\n]*\\)" 1)
-    ("Const" "^\\s-*const \\([^ \t\n]*\\)" 1)
-    ("Type"  "^\\s-*\\w*type\\w* \\([^ \t\n]*\\)" 1)
+  ;; don't use syntax classes, screws egrep
+  '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
+    ("Function" "[ \t]*function[ \t]+\\([^_][^ \t\n]*\\)" 1)
+    ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
+    ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1) 
     ("Load"      " *\\(load\\)(\\([^ \t\n)]*\\)" 2)
     ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
     ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to

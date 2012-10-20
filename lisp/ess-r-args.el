@@ -294,61 +294,6 @@ ess-r-args-current-function if no argument given."
         (goto-char pointpos))))
 
 
-;; SJE: 2009-01-30 -- this contribution from
-;; Erik Iverson <iverson@biostat.wisc.edu>
-
-(defun ess-tooltip-show-at-point (text xo yo)
-  "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
-and y-offsets for the toolbar from point."
-  (let (
-        (fx (frame-parameter nil 'left))
-        (fy (frame-parameter nil 'top))
-        (fw (frame-pixel-width))
-        (fh (frame-pixel-height))
-        frame-left frame-top my-x-offset my-y-offset)
-
-    ;; The following comment was found before code looking much like that
-    ;; of frame-left and frame-top below in the file
-    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe
-    ;; the same behavior with the Emacs window maximized under Windows XP.
-
-    ;; -----original comment--------
-    ;; handles the case where (frame-parameter nil 'top) or
-    ;; (frame-parameter nil 'left) return something like (+ -4).
-    ;; This was the case where e.g. Emacs window is maximized, at
-    ;; least on Windows XP. The handling code is "shamelessly
-    ;; stolen" from cedet/speedbar/dframe.el
-    ;; (contributed by Andrey Grigoriev)
-
-    (setq frame-left (if (not (consp fx))
-                         fx
-                       (if (eq (car fx) '-)
-                           (- (x-display-pixel-width) (car (cdr fx)) fw)
-                         (car (cdr fx)))))
-
-    (setq frame-top (if (not (consp fy))
-                        fy
-                      (if (eq (car fy) '-)
-                          (- (x-display-pixel-height) (car (cdr fy)) fh)
-                        (car (cdr fy)))))
-
-    ;; calculate the offset from point, use xo and yo to adjust to preference
-    (setq my-x-offset (+ (car(window-inside-pixel-edges))
-                         (car(posn-x-y (posn-at-point)))
-                         frame-left xo))
-
-    (setq my-y-offset (+ (cadr(window-inside-pixel-edges))
-                         (cdr(posn-x-y (posn-at-point)))
-                         frame-top yo))
-
-    (let ((tooltip-frame-parameters
-           (cons (cons 'top my-y-offset)
-                 (cons (cons 'left my-x-offset)
-                       tooltip-frame-parameters))))
-      (tooltip-show text))
-    ))
-
-
 ;; (defvar ess-r-object-tooltip-alist
 ;;   '((numeric    . "summary")
 ;;     (integer    . "summary")

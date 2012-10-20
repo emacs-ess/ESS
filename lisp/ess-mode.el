@@ -130,6 +130,7 @@
     (define-prefix-command 'ess-extra-map)
     (define-key ess-extra-map "\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key ess-extra-map "\C-e" 'ess-describe-object-at-point)
+    (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
     ;; (define-key map "C-t" 
     ess-extra-map)
   "ESS extra map"
@@ -162,8 +163,8 @@
     (define-key map "\C-\M-a"    'ess-goto-beginning-of-function-or-para)
     (define-key map "\C-\M-e"    'ess-goto-end-of-function-or-para)
     (define-key map "\C-xnd"     'ess-narrow-to-defun)
-    (define-key map "\C-c\C-y"   'ess-switch-to-ESS)
-    (define-key map "\C-c\C-z"   'ess-switch-to-end-of-ESS)
+    (define-key map "\C-c\C-y"   'ess-switch-to-ESS-deprecated)
+    (define-key map "\C-c\C-z"   'ess-switch-to-inferior-or-script-buffer)
     (define-key map "\C-c\C-l"   'ess-load-file)
     (define-key map "\C-c\C-v"   'ess-display-help-on-object)
     ;;(define-key map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)

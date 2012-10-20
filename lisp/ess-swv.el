@@ -217,17 +217,20 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
   (let* ((buf (buffer-name))
          (namestem (file-name-sans-extension (buffer-file-name)))
          (latex-filename (concat namestem ".tex"))
-         (tex-buf (get-buffer-create " *ESS-tex-output*"))
+         (tex-buf (get-buffer-create "*ESS-tex-output*"))
          (pdfviewer (ess-get-pdf-viewer))
          (pdf-status)
-         (cmdstr-win (format "start \"%s\" \"%s.pdf\""
-                             pdfviewer namestem))
-         (cmdstr (format "\"%s\" \"%s.pdf\" &" pdfviewer namestem)))
+         (cmdstr-win (format "start \"%s\" \"%s.pdf\"" pdfviewer namestem))
+         (pdffile (format "%s.pdf" namestem))
+         (cmd (if (stringp pdfviewer)
+                  (list pdfviewer pdffile)
+                (append pdfviewer  (list pdffile)))))
+                           
     ;;(shell-command (concat "pdflatex " latex-filename))
     (message "Running '%s' on '%s' ..." pdflatex-cmd latex-filename)
-    (switch-to-buffer tex-buf)
+    (with-current-buffer tex-buf (erase-buffer))
     (setq pdf-status
-          (call-process pdflatex-cmd nil tex-buf 1
+          (call-process pdflatex-cmd nil tex-buf t
                         (if (string= "texi2" (substring pdflatex-cmd 0 5))
                             ;; workaround (bug?): texi2pdf or texi2dvi *fail* to work with full path:
                             (file-name-nondirectory latex-filename)
@@ -235,12 +238,13 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
     (if (not (= 0 pdf-status))
         (message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
       ;; else: pdflatex probably ok
-      (shell-command
-       (concat (if (and ess-microsoft-p (w32-shell-dos-semantics))
-                   cmdstr-win
-                 cmdstr))))
-    (switch-to-buffer buf)
-    (display-buffer tex-buf)))
+      ;; (set-process-sentinel proc 'shell-command-sentinel)
+      (if (and ess-microsoft-p (w32-shell-dos-semantics))
+          (shell-command cmdstr-win)
+        (message (mapconcat 'identity cmd " "))
+        (apply 'start-process  (car cmd) nil cmd)))
+    (display-buffer tex-buf)
+  ))
 
 
 (defun ess-insert-Sexpr ()

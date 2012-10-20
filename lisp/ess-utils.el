@@ -841,22 +841,92 @@ triggered the command."
 
 
 
+
+;; SJE: 2009-01-30 -- this contribution from
+;; Erik Iverson <iverson@biostat.wisc.edu>
+
+(defun ess-tooltip-show-at-point (text xo yo)
+  "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
+and y-offsets for the toolbar from point."
+  (let (
+        (fx (frame-parameter nil 'left))
+        (fy (frame-parameter nil 'top))
+        (fw (frame-pixel-width))
+        (fh (frame-pixel-height))
+        frame-left frame-top my-x-offset my-y-offset)
+
+    ;; The following comment was found before code looking much like that
+    ;; of frame-left and frame-top below in the file
+    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe
+    ;; the same behavior with the Emacs window maximized under Windows XP.
+
+    ;; -----original comment--------
+    ;; handles the case where (frame-parameter nil 'top) or
+    ;; (frame-parameter nil 'left) return something like (+ -4).
+    ;; This was the case where e.g. Emacs window is maximized, at
+    ;; least on Windows XP. The handling code is "shamelessly
+    ;; stolen" from cedet/speedbar/dframe.el
+    ;; (contributed by Andrey Grigoriev)
+
+    (setq frame-left (if (not (consp fx))
+                         fx
+                       (if (eq (car fx) '-)
+                           (- (x-display-pixel-width) (car (cdr fx)) fw)
+                         (car (cdr fx)))))
+
+    (setq frame-top (if (not (consp fy))
+                        fy
+                      (if (eq (car fy) '-)
+                          (- (x-display-pixel-height) (car (cdr fy)) fh)
+                        (car (cdr fy)))))
+
+    ;; calculate the offset from point, use xo and yo to adjust to preference
+    (setq my-x-offset (+ (car(window-inside-pixel-edges))
+                         (car(posn-x-y (posn-at-point)))
+                         frame-left xo))
+
+    (setq my-y-offset (+ (cadr(window-inside-pixel-edges))
+                         (cdr(posn-x-y (posn-at-point)))
+                         frame-top yo))
+
+    (let ((tooltip-frame-parameters
+           (cons (cons 'top my-y-offset)
+                 (cons (cons 'left my-x-offset)
+                       tooltip-frame-parameters))))
+      (tooltip-show text))
+    ))
+
+
+;; (defun ess-tooltip-show-at-point (text xo yo)
+;;   (with-no-warnings
+;;     (pos-tip-show text
+;;                   'popup-tip-face 
+;;                   (point)
+;;                   nil tooltip-hide-delay
+;;                   popup-tip-max-width
+;;                   nil xo yo)))
+
+
+
 (defvar ess-describe-object-at-point-commands nil
   "Commands cycled by `ess-describe-object-at-point'. Dialect
 specific.")
 (make-variable-buffer-local 'ess-describe-at-point-commands)
 
 (defvar ess--descr-o-a-p-commands nil)
-  
+
+
 (defun ess-describe-object-at-point ()
   "Get info for object at point, and display it in a tooltip or
-electric buffer (not implemented yet)."
+electric buffer (not implemented yet).
+
+See also `tooltip-hide-delay' and `tooltip-delay'."
   (interactive)
   (if (not ess-describe-object-at-point-commands)
       (message "Not implemented for dialect %s" ess-dialect)
     (ess-force-buffer-current)
     (let ((map (make-sparse-keymap))
-          (objname (word-at-point))
+          (objname (symbol-at-point))
           bs ess--descr-o-a-p-commands)
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
@@ -878,6 +948,49 @@ electric buffer (not implemented yet)."
   "Get info for object at point, and display it in a tooltip, or
 electric buffer." )
 
+(defvar ess-build-tags-command nil
+  "Command passed to generate tags.
+
+If nil, `ess-build-tags-for-directory' uses the mode's imenu
+regexpresion. Othersiwe, it should be a string with two %s
+formats: one for directory and another for the output file.")
+
+  
+(defun ess-build-tags-for-directory (dir tagfile)
+  "Ask for directory and tag file and build tags for current dialect.
+
+If the current language defines `ess-build-tags-command' use it
+and ask the subprocess to build the tags. Otherwise use imenu
+regexp and call find .. | etags .. in a shell command. You must
+have 'find' and 'etags' programs installed.
+
+Use M-. to navigate to a tag. M-x `visit-tags-table' to
+append/replace the currently used tag table.
+"
+  (interactive "DDirectory to tag: 
+FTags file (default TAGS): ")
+  (when (eq (length (file-name-nondirectory tagfile)) 0)
+    (setq tagfile (concat tagfile "TAGS")))
+  (if ess-build-tags-command
+      (ess-eval-linewise (format ess-build-tags-command dir tagfile))
+    ;; else generate from imenu
+    (unless imenu-generic-expression
+      (error "No ess-tag-command found, and no imenu-generic-expression defined"))
+    (let* ((find-cmd
+            (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSc]\\(nw\\)?\\)$\" \\)" dir))
+           (regs (delq nil (mapcar (lambda (l)
+                                     (if (string-match "'" (cadr l))
+                                         nil ;; remove for time being
+                                       (format "/%s/\\%d/"
+                                               (replace-regexp-in-string "/" "\\/" (nth 1 l) t)
+                                               (nth 2 l))))
+                                   imenu-generic-expression)))
+           (tags-cmd (format "etags -I -o %s --regex='%s' -" tagfile
+                             (mapconcat 'identity regs "' --regex='"))))
+      (message "Building tags: %s" tagfile)
+      (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
+        (message "Building tags .. ok!")))))
+      
 
 
 (provide 'ess-utils)

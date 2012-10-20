@@ -892,9 +892,10 @@ Good for evaluating ESS code."
 
 (defcustom ess-pdf-viewer-pref nil
   "External pdf viewer you like to use from ESS.
-If nil, will use  getOption(\"pdfviewer\") in R, and try finding one
-from a list."
-  :type '(choice (const nil) string)
+Can be a string giving a name of the program or a list with car
+giving heprogram and the tail giving the arguments. For example
+'(\"okular\" \"--unique\")."
+  :type '(choice (const nil) (repeat :tag "Command with arguments" string) (string :tag "Command"))
   :group 'ess)
 
 (defcustom ess-ps-viewer-pref nil
@@ -1063,7 +1064,7 @@ the variable `inferior-ess-own-frame' is non-nil."
   :group 'ess-proc
   :type 'alist)
 
-(defcustom inferior-ess-same-window t
+(defcustom inferior-ess-same-window nil
   "Non-nil indicates new inferior ESS process appears in current window.
 Otherwise, the new inferior ESS buffer is shown in another window in the
 current frame.  This variable is ignored if `inferior-ess-own-frame' is
@@ -1599,7 +1600,7 @@ Otherwise, they get their own temporary buffer."
   :group 'ess-proc
   :type 'boolean)
 
-(defcustom ess-eval-visibly-p t
+(defcustom ess-eval-visibly t
   "Non-nil means ess-eval- commands display commands in the process buffer.
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
@@ -1617,6 +1618,8 @@ the process output, otherwise not.
 "  
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
+
+(defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
