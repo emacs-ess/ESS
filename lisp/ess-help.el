@@ -612,6 +612,10 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\C-l" 'ess-load-file)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
+    
+    (define-key map "\C-c\C-d"   'ess-doc-map)
+    (define-key map "\C-c\C-e"   'ess-extra-map)
+    (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for ESS help mode.")
 
