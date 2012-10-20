@@ -1600,7 +1600,7 @@ Otherwise, they get their own temporary buffer."
   :group 'ess-proc
   :type 'boolean)
 
-(defcustom ess-eval-visibly-p t
+(defcustom ess-eval-visibly t
   "Non-nil means ess-eval- commands display commands in the process buffer.
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
@@ -1618,6 +1618,8 @@ the process output, otherwise not.
 "  
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
+
+(defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
