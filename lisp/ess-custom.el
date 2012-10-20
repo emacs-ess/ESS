@@ -1619,6 +1619,9 @@ the process output, otherwise not.
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 
+(when (boundp 'ess-eval-visibly-p)
+  (setq ess-eval-visibly ess-eval-visibly-p))
+
 (defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
