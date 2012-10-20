@@ -1481,7 +1481,7 @@ TEXT-WITHTABS.
           (setq com "\n"))
         (goto-char (marker-position (process-mark sprocess)))
         (when (not invisibly)
-          (insert com)
+          (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
           (set-marker (process-mark sprocess) (point)))
         (setq start-of-output (marker-position (process-mark sprocess)))
         (inferior-ess-mark-as-busy sprocess)
