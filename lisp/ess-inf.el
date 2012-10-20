@@ -701,7 +701,9 @@ LANGUAGE (and DIALECT)."
            ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
            (error "No ESS processes running; not yet implemented to start (%s,%s)"
                   language dialect)))
-    (switch-to-buffer cur-buf)))
+    ;; fixme: save excursion is not working here !!! bad bad bad !!
+    (pop-to-buffer cur-buf)
+    ))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
@@ -718,7 +720,8 @@ Returns the name of the selected process."
   (unless ess-dialect
     (error "Local value of `ess-dialect' is nil"))
 
-  (let ((num-processes (length ess-process-name-list)))
+  (let ((num-processes (length ess-process-name-list))
+        (auto-started?))
     (if (or (= 0 num-processes)
             (and (= 1 num-processes)
                  (not (equal ess-dialect ;; don't auto connect if from different dialect
@@ -736,10 +739,12 @@ Returns the name of the selected process."
           (ess-start-process-specific ess-language ess-dialect)
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
-          (setq num-processes 1)))
+          (setq num-processes 1
+                auto-started? t)))
     ;; now num-processes >= 1 :
     (let ((proc
-           (if (and (not ask-if-1) (= 1 num-processes))
+           (if (or auto-started?
+                   (and (not ask-if-1) (= 1 num-processes)))
                (let ((rr (car (car ess-process-name-list))))
                  (message "using process '%s'" rr)
                  rr)
@@ -749,28 +754,33 @@ Returns the name of the selected process."
                (setq ess-current-process-name nil))
              (when message
                (setq message (replace-regexp-in-string ": +\\'" "" message)))
-             (ess-completing-read message (mapcar 'car ess-process-name-list)
+             (ess-completing-read message (append (mapcar 'car ess-process-name-list)
+                                                  (list "*new*"))
                                   nil t nil nil ess-current-process-name)
              )))
-      (with-current-buffer (process-buffer (get-process proc))
-        (ess-make-buffer-current))
+      (when (equal proc "*new*")
+        (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
+        (setq proc (caar ess-process-name-list)))
+      ;; (with-current-buffer (process-buffer (get-process proc))
+      ;;   (ess-make-buffer-current))
       (if noswitch
           nil
         (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
 
-(defun ess-force-buffer-current (&optional prompt force no-autostart)
+(defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
   "Make sure the current buffer is attached to an ESS process.
 If not, or FORCE (prefix argument) is non-nil, prompt for a
 process name with PROMPT. If NO-AUTOSTART is nil starts the new
-process if process associated with current buffer has died.
-`ess-local-process-name' is set to the name of the process
+process if process associated with current buffer has
+died. `ess-local-process-name' is set to the name of the process
 selected.  `ess-dialect' is set to the dialect associated with
-the process selected."
+the process selected. ASK-IF-1 asks user for the process, even if
+there is only one process running."
   (interactive
    (list (concat ess-dialect " process to use: ") current-prefix-arg nil))
-  ;; todo: why the above interactive is not working in emacs 24?
+  ;; fixme: why the above interactive is not working in emacs 24?
   (setq prompt (or prompt "Process to use: "))
   (let ((proc-name (ess-make-buffer-current)))
     (if (and (not force) proc-name (get-process proc-name))
@@ -780,9 +790,8 @@ the process selected."
           (error "Process %s has died" ess-local-process-name)
         ;; ess-local-process-name is nil -- which process to attach to
         (save-excursion
-          (let ((proc (ess-request-a-process prompt 'no-switch))
-                temp-ess-help-filetype
-                dialect)
+          (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
+                temp-ess-help-filetype  dialect)
             (with-current-buffer (process-buffer (get-process proc))
               (setq temp-ess-help-filetype inferior-ess-help-filetype)
               (setq dialect ess-dialect))
@@ -793,7 +802,7 @@ the process selected."
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
   (interactive)
-  (ess-force-buffer-current "Process to use: " 'force))
+  (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
 
 ;;*;;; Commands for switching to the process buffer
 
