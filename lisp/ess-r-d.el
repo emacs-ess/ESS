@@ -435,6 +435,10 @@ to R, put them in the variable `inferior-R-args'."
        'ess-end-of-function)
 
   (ess-roxy-mode t)
+  (ad-activate 'mark-paragraph)
+  (ad-activate 'fill-paragraph)
+  (ad-activate 'move-beginning-of-line)
+  (ad-activate 'newline-and-indent)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
   

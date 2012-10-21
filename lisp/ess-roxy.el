@@ -662,7 +662,6 @@ list of strings."
         (push-mark (1+ (ess-roxy-end-of-field)) nil t)
         (goto-char (ess-roxy-beg-of-field)))
     ad-do-it))
-(ad-activate 'mark-paragraph)
 
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
@@ -670,15 +669,11 @@ list of strings."
       (progn (hs-toggle-hiding))
     ad-do-it))
 
-(if ess-roxy-hide-show-p
-    (ad-activate 'ess-indent-command))
-
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
   "Fill the current roxygen field."
   (if (ess-roxy-entry-p)
       (ess-roxy-fill-field)
     ad-do-it))
-(ad-activate 'fill-paragraph)
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
@@ -689,7 +684,6 @@ list of strings."
         (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
         (goto-char (match-end 0)))
     ad-do-it))
-(ad-activate 'move-beginning-of-line)
 
 (defadvice newline-and-indent (around ess-roxy-newline)
   "Insert a newline in a roxygen field."
@@ -698,7 +692,6 @@ list of strings."
         ad-do-it
         (insert (concat (ess-roxy-guess-str t) " ")))
     ad-do-it))
-(ad-activate 'newline-and-indent)
 
 (provide 'ess-roxy)
 
