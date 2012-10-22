@@ -1791,18 +1791,22 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 (defvar ess-cmd-delay nil
   "*Set to a positive number if ESS will include delays proportional to
 `ess-cmd-delay'  in some places. These delays are introduced to
-prevent timeouts in certain processes, such as completion.")
+prevent timeouts in certain processes, such as completion.
+
+This variable has no effect from ESS12.03
+")
 (make-variable-buffer-local 'ess-cmd-delay)
 
-(defcustom ess-R-cmd-delay nil
-  "Used to initialize `ess-cmd-delay'."
-  :group 'ess-command
-  :type '(choice (const nil) number))
+(defvar ess-R-cmd-delay nil
+  "Used to initialize `ess-cmd-delay'.
 
-(defcustom ess-S+-cmd-delay 1.0
-  "Used to initialize `ess-cmd-delay'."
-  :group 'ess-command
-  :type '(choice (const nil) number))
+This variable has no effect from ESS12.03
+")
+
+(defvar ess-S+-cmd-delay 1.0
+  "Used to initialize `ess-cmd-delay'.
+This variable has no effect from ESS12.03
+")
 
 ;;*;; Regular expressions
 (defvar inferior-ess-prompt nil
@@ -1821,24 +1825,17 @@ from `inferior-ess-primary-prompt' and
   "The regexp for matching the S/R/.. commands that change the search path.")
 (make-variable-buffer-local 'ess-change-sp-regexp)
 
-(defcustom ess-S+-change-sp-regexp
+(defvar ess-S+-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|module(\\|source(\\)"
-  "The regexp for matching the S-plus commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
+  "The regexp for matching the S-plus commands that change the search path.")
 
-(defcustom ess-S-change-sp-regexp
+(defvar ess-S-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|source(\\)"
-  "The regexp for matching the S commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
+  "The regexp for matching the S commands that change the search path.")
 
-(defcustom ess-R-change-sp-regexp
+(defvar ess-R-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|require(\\|source(\\)"
-  "The regexp for matching the R commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
-
+  "The regexp for matching the R commands that change the search path.")
 
 ;;*;; Process-dependent variables
 
