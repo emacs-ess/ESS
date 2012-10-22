@@ -2073,8 +2073,7 @@ Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
   (interactive)
-  ;;(message " at very beg. of (inferior-ess-mode): inf.-ess-prompt= %s"
-  ;;       inferior-ess-prompt)
+
   (comint-mode)
 
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
@@ -2093,7 +2092,7 @@ to continue it."
     (setq comint-process-echoes nil))
 
 
-  (unless inferior-ess-prompt ;; construct only if unset
+  (unless inferior-ess-prompt ;; build when unset
     (setq inferior-ess-prompt
           (concat "\\("
                   inferior-ess-primary-prompt
@@ -2339,14 +2338,14 @@ If in the output field, goes to the begining of previous input.
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
     (re-search-backward (concat "^" inferior-ess-prompt)))
-  (comint-skip-prompt)
-  (when inferior-ess-secondary-prompt
+  ;; at bol
+  (when (and inferior-ess-secondary-prompt
+             (looking-at inferior-ess-secondary-prompt))
     (while (and (> (forward-line -1) -1)
-                (let ((beg (point)))
-                  (when (comint-skip-prompt)
-                    (looking-back inferior-ess-secondary-prompt beg))))))
-  (unless (looking-back inferior-ess-prompt (point-at-bol))
+                (looking-at inferior-ess-secondary-prompt))))
+  (unless (looking-at inferior-ess-prompt)
     (ess-error "Beggining of input not found"))
+  (comint-skip-prompt)
   )
 
 (defun inferior-ess--get-old-input:regexp ()
@@ -2357,9 +2356,8 @@ If in the output field, goes to the begining of previous input.
            (bol (point-at-bol))
            command)
       (goto-char bol)   ;(beginning-of-line) does not work in comint
-      (comint-skip-prompt)
       (when  (and inferior-ess-secondary-prompt
-                  (looking-back inferior-ess-secondary-prompt bol))
+                  (looking-at inferior-ess-secondary-prompt))
         (inferior-ess--goto-input-start:regexp)
         (setq bol (point-at-bol)))
       (if (looking-back inferior-ess-prompt bol) ; cust.var, might not include sec-prompt
@@ -2367,8 +2365,8 @@ If in the output field, goes to the begining of previous input.
             (setq command (buffer-substring-no-properties (point) (point-at-eol)))
             (when inferior-ess-secondary-prompt
               (while (progn (forward-line 1)
-                            (comint-skip-prompt)
-                            (looking-back inferior-ess-secondary-prompt))
+                            (looking-at inferior-ess-secondary-prompt))
+                (re-search-forward inferior-ess-secondary-prompt (point-at-eol))
                 (setq command (concat command "\n"
                                       (buffer-substring-no-properties (point) (point-at-eol))))
                 ))
