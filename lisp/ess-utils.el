@@ -966,18 +966,22 @@ have 'find' and 'etags' programs installed.
 
 Use M-. to navigate to a tag. M-x `visit-tags-table' to
 append/replace the currently used tag table.
+
+If prefix is given, force tag generation based on imenu. Might be
+useful when different languages are also present in the
+directory (.cpp, .c etc).
 "
   (interactive "DDirectory to tag: 
 FTags file (default TAGS): ")
   (when (eq (length (file-name-nondirectory tagfile)) 0)
     (setq tagfile (concat tagfile "TAGS")))
-  (if ess-build-tags-command
+  (if (and ess-build-tags-command (null current-prefix-arg))
       (ess-eval-linewise (format ess-build-tags-command dir tagfile))
     ;; else generate from imenu
     (unless (or imenu-generic-expression ess-imenu-generic-expression) ;; need both!!
       (error "No ess-tag-command found, and no imenu-generic-expression defined"))
     (let* ((find-cmd
-            (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSc]\\(nw\\)?\\)$\" \\)" dir))
+            (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSch]\\(nw\\)?\\)$\" \\)" dir))
            (regs (delq nil (mapcar (lambda (l)
                                      (if (string-match "'" (cadr l))
                                          nil ;; remove for time being
