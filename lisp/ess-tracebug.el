@@ -516,7 +516,7 @@ in inferior buffers.  ")
       (defalias 'ess-parse-errors (symbol-function 'next-error))
       )
     ;; hooks
-    (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t t)
+    (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input nil t)
     )
   )
 
@@ -672,13 +672,15 @@ This is the value of `next-error-function' in iESS buffers."
 
 (defun inferior-ess-move-last-input-overlay ()
   "Move the overlay to the point."
-  (let ((pbol (point-at-bol))
+  (let ((pbol (if comint-process-echoes
+                  (1- (point-at-bol))
+                (point-at-bol))) ;; such a kludge
         (pt (point)) )
     (move-overlay ess-tb-last-input-overlay pbol (max (- pt 2) (+ pbol 2)))
     ))
 
 (defun move-last-input-overlay-on-send-input ()
-  (setq ess-tb-last-input (point))
+  (setq ess-tb-last-input (point-at-bol))
   (inferior-ess-move-last-input-overlay)
   )
 
