@@ -190,8 +190,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (goto-char (point-min))
           (set-buffer-modified-p 'nil)
           (setq buffer-read-only t)
-          (when (fboundp 'visual-line-mode)
-            (visual-line-mode t))
+          (toggle-truncate-lines -1)
           (ess-write-to-dribble-buffer
            (format "(ess-help '%s' done  ..\n" hb-name))
            ))
@@ -364,8 +363,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
           ))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
-      (when (fboundp 'visual-line-mode)
-        (visual-line-mode t))
+      (toggle-truncate-lines -1)
       )
     (unless (ess--help-kill-bogus-buffer-maybe buff)
       (ess--switch-to-help-buffer buff))
@@ -404,21 +402,21 @@ if necessary.  It is bound to RET and C-m in R-index pages."
      'demos #'ess--action-demo)))
 
   
-  (defun ess--action-demo (&optional pos)
-    "Provide help on object at the beginning of line.
+(defun ess--action-demo (&optional pos)
+  "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
-    (interactive)
-    (let* ((link-beg (previous-single-property-change pos 'button
-                                                      nil (point-at-bol)))
-           (link-end (next-single-property-change pos 'button
-                                                  nil (point-at-eol)))
-           (string (buffer-substring link-beg link-end))
-           (command (cond ((equal ess-dialect "R")
-                           (format "demo('%s', ask=FALSE)\n" string))
-                          (t (error "Not implemented for dialect %s" ess-dialect))
-                          )))
-      (ess-eval-linewise command)))
+  (interactive)
+  (let* ((link-beg (previous-single-property-change pos 'button
+                                                    nil (point-at-bol)))
+         (link-end (next-single-property-change pos 'button
+                                                nil (point-at-eol)))
+         (string (buffer-substring link-beg link-end))
+         (command (cond ((equal ess-dialect "R")
+                         (format "demo('%s', ask=FALSE)\n" string))
+                        (t (error "Not implemented for dialect %s" ess-dialect))
+                        )))
+    (ess-eval-linewise command)))
 
 (defun ess-display-vignettes ()
   "Display vignettes if available for the current dialect."
