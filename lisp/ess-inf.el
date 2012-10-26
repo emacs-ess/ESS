@@ -1298,7 +1298,8 @@ local({
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (with-current-buffer sbuffer
-        (setq ess-local-process-name (process-name sprocess)) ; let it be here (calling functions need not set it explicitly)
+        (unless ess-local-process-name
+          (setq ess-local-process-name (process-name sprocess))) ; let it be here (calling functions need not set it explicitly)
         (setq primary-prompt  inferior-ess-primary-prompt)
         (ess-if-verbose-write (format "n(ess-command %s ..)" com))
         (unless no-prompt-check
