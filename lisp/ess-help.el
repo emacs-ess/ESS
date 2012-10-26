@@ -267,6 +267,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
     (ess-display-help-on-object string command)
     ))
 
+
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
   (interactive)
@@ -372,7 +373,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 
 (defun ess-display-help-apropos (&optional pattern)
-  "Create an ess-apropos buffer with a *linked* list of help.search() results."
+  "Create an ess-apropos buffer with a *linked* list of apropos topics."
   (interactive "sPattern: ")
   (let (com regexp)
     (cond ((equal ess-dialect "R")
@@ -387,6 +388,37 @@ if necessary.  It is bound to RET and C-m in R-index pages."
      (format com pattern) regexp
      (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
      'appropos)))
+
+(defun ess-display-demos ()
+  "Create an ess-demos buffer with a *linked* list of available demos."
+  (interactive)
+  (let (com regexp)
+    (cond ((equal ess-dialect "R")
+           (setq com "demo()\n"
+                 regexp "^\\([^ \n:]+\\)  +"))
+          (t (error "Not implemented for dialect %s" ess-dialect)))
+    
+    (ess--display-indexed-help-page
+     com regexp
+     (format "*ess-demos[%s]*" ess-current-process-name)
+     'demos #'ess--action-demo)))
+
+  
+  (defun ess--action-demo (&optional pos)
+    "Provide help on object at the beginning of line.
+It's intended to be used in R-index help pages. Load the package
+if necessary.  It is bound to RET and C-m in R-index pages."
+    (interactive)
+    (let* ((link-beg (previous-single-property-change pos 'button
+                                                      nil (point-at-bol)))
+           (link-end (next-single-property-change pos 'button
+                                                  nil (point-at-eol)))
+           (string (buffer-substring link-beg link-end))
+           (command (cond ((equal ess-dialect "R")
+                           (format "demo('%s', ask=FALSE)\n" string))
+                          (t (error "Not implemented for dialect %s" ess-dialect))
+                          )))
+      (ess-eval-linewise command)))
 
 (defun ess-display-vignettes ()
   "Display vignettes if available for the current dialect."
@@ -566,6 +598,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key ess-doc-map "a" 'ess-display-help-apropos)
     (define-key ess-doc-map "\C-v" 'ess-display-vignettes)
     (define-key ess-doc-map "v" 'ess-display-vignettes)
+    (define-key ess-doc-map "o" 'ess-display-demos)
     ess-doc-map
     )
   "ESS documentaion map.")
