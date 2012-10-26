@@ -263,6 +263,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                   ((eq ess-help-type 'index)
                    (concat "?" ess-help-object "::%s\n"))
                   ))))
+    (dbg string command)
     (ess-display-help-on-object string command)
     ))
 
@@ -308,13 +309,15 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (setq pack  (car (member (ess-read-object-name-default) all-packs))))
     (setq pack (ess-completing-read "Index of"
                                     all-packs nil nil nil nil pack))
-    (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
+    ;; (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
 
+    
     (ess--display-indexed-help-page
      (format com-package-index pack)
      reg-keyword
      (format "*help[%s](index:%s)*"  ess-dialect pack)
-     'index nil nil reg-start)
+     'index nil nil reg-start pack)
+    
     ))
 
 
@@ -322,7 +325,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
-                                               &optional action help-echo reg-start)
+                                               &optional action help-echo reg-start help-object)
   "Internal function to display help pages with linked actions
   ;; COMMAND which produces the help page
   ;; ITEM-REGEXP -- first subexpression is highlighted
@@ -338,6 +341,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (buff (get-buffer-create title))
         )
     (with-current-buffer buff
+      (setq ess-help-object help-object)
       (ess-setq-vars-local (eval alist))
       (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
             ess-local-process-name pname)
@@ -413,7 +417,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                                                 nil (point-at-eol)))
          (string (buffer-substring link-beg link-end))
          (command (cond ((equal ess-dialect "R")
-                         (format "demo('%s', ask=FALSE)\n" string))
+                         (format "demo('%s')\n" string))
                         (t (error "Not implemented for dialect %s" ess-dialect))
                         )))
     (ess-eval-linewise command)))
