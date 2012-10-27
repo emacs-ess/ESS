@@ -1516,8 +1516,8 @@ If suplied ev must be a proper key event or a string representing the digit."
             (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess-tb-last-input t)
               (setq depth (string-to-number (match-string 1)))
               (when (> depth 9)
-                (setq ev-char (ess-completing-read "Recover frame" (mapcar 'number-to-string
-                                                                           (number-sequence depth 0 -1))
+                (setq ev-char (ess-completing-read "Selection: " (mapcar 'number-to-string
+                                                                         (number-sequence depth 0 -1))
                                                    nil t ev-char nil)))))
           (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
           (insert (concat  prompt ev-char "\n"))
