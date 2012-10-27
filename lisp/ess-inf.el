@@ -2092,6 +2092,8 @@ to continue it."
     ;; when 'nowait or nil, don't wait for process
     (setq comint-process-echoes nil))
 
+  (when comint-use-prompt-regexp ;; why comint is not setting this? bug?
+    (set (make-local-variable 'inhibit-field-text-motion) t))
 
   (unless inferior-ess-prompt ;; build when unset
     (setq inferior-ess-prompt
