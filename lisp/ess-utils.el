@@ -823,7 +823,7 @@ process to avoid excessive requests.
 (defmacro ess--execute-singlekey-command (map &optional wait &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
 
-Single-key input commands are those, which once executed do not
+Single-key input commands are those that once executed do not
 requre the prefix command for subsequent invocation.
 
 If WAIT is t, wait for next input and ignore the keystroke which
@@ -836,7 +836,7 @@ triggered the command."
      (while (setq command
                   (lookup-key ,map
                               (vector (setq ev (read-event)))))
-       (funcall command ,@args))
+       (funcall command ,@args ev))
      (push ev unread-command-events)))
 
 
