@@ -207,6 +207,18 @@ as `ess-imenu-use-S'."
 (make-variable-buffer-local 'ess--local-handy-commands)
 
 
+
+(defcustom ess-describe-at-point-method nil
+  "Whehter `ess-describe-object-at-point' should use tooltip or
+not. If nil display in an electric buffer. If 'tooltip display in
+an tooltip.
+
+See also `tooltip-hide-delay' and `tooltip-delay'.
+ "
+  :group 'ess-utils
+  :type '(choice (const nil) (const tooltip))
+  )
+
 (defcustom ess-R-describe-object-at-point-commands
   '(("str(%s)")
     ("summary(%s)"))

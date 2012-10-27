@@ -823,21 +823,30 @@ process to avoid excessive requests.
 (defmacro ess--execute-singlekey-command (map &optional wait &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
 
+Return the value of the lastly executed command.
+
 Single-key input commands are those that once executed do not
 requre the prefix command for subsequent invocation.
 
 If WAIT is t, wait for next input and ignore the keystroke which
-triggered the command."
+triggered the command.
+
+Each command in map should accept one argument, the most recent
+event (as read by `read-event'). ARGS are the supplementary
+arguments passed to commands in MAP.
+"
 
   `(let* ((ev last-command-event)
-          (command (lookup-key ,map (vector ev))))
+          (command (lookup-key ,map (vector ev)))
+          out)
      (unless ,wait
-       (funcall command ,@args))
+       (funcall command ev ,@args))
      (while (setq command
                   (lookup-key ,map
                               (vector (setq ev (read-event)))))
-       (funcall command ,@args ev))
-     (push ev unread-command-events)))
+       (setq out (funcall command ev ,@args)))
+     (push ev unread-command-events)
+     out))
 
 
 
@@ -915,12 +924,15 @@ specific.")
 
 (defvar ess--descr-o-a-p-commands nil)
 
-
 (defun ess-describe-object-at-point ()
-  "Get info for object at point, and display it in a tooltip or
-electric buffer (not implemented yet).
+  "Get info for object at point, and display it in an electric buffer or tooltip.
 
-See also `tooltip-hide-delay' and `tooltip-delay'."
+Customize `ess-describe-at-point-method' if you wan to display
+the description in a tooltip.
+
+See also `ess-R-describe-object-at-point-commands' (and similar
+option for other dialects).
+"
   (interactive)
   (if (not ess-describe-object-at-point-commands)
       (message "Not implemented for dialect %s" ess-dialect)
@@ -931,22 +943,31 @@ See also `tooltip-hide-delay' and `tooltip-delay'."
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
       ;; todo: put digits into the map
-      (ess--execute-singlekey-command map nil objname)
+      (let ((buf (ess--execute-singlekey-command map nil objname)))
+        (when (bufferp buf)
+          (kill-buffer buf))) ;; bury does not work here :( (emacs bug?)
       )))
 
-(defun ess--describe-object-at-point (objname)
+(defun ess--describe-object-at-point (ev objname)
   (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
                                       ess-describe-object-at-point-commands))
-  (let ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
-        bs)
-    (with-current-buffer (ess-command (concat com "\n"))
+  (let* ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
+         (buf (get-buffer-create "*ess-describe*"))
+         pos)
+    (ess-command (concat com "\n") buf)
+    (with-current-buffer buf
       (goto-char (point-min))
-      (insert (format "%s:\n" com))
-      (setq bs (buffer-string)))
-    (when (length bs)
-      (ess-tooltip-show-at-point bs 0 30)))
-  "Get info for object at point, and display it in a tooltip, or
-electric buffer." )
+      (insert (propertize (format "%s:\n\n" com) 'face 'font-lock-string-face))
+      (forward-line -1)
+      (setq pos (point))
+      (setq buffer-read-only t))
+    (if (eq ess-describe-at-point-method 'tooltip)
+        (ess-tooltip-show-at-point
+         (with-current-buffer buf (buffer-string))  0 30)
+      (display-buffer buf)
+      (set-window-point (get-buffer-window buf) pos) ;; don't move the visible point
+      buf)))
+      
 
 (defvar ess-build-tags-command nil
   "Command passed to generate tags.

@@ -1317,6 +1317,7 @@ local({
               ;; Output is now going to BUF:
               (with-current-buffer buf
                 (setq inferior-ess-primary-prompt primary-prompt) ;; set local value
+                (setq buffer-read-only nil)
                 (erase-buffer)
                 (set-marker (process-mark sprocess) (point-min))
                 (inferior-ess-mark-as-busy sprocess)
