@@ -295,7 +295,7 @@ just evaluate your code in normal fashion. Variable
 always inject source reference, if @code{'function}, inject only for
 functions (this is the default), if @code{nil}, never inject.
 
-During the source injection the value of `ess-eval-visibly-p' is
+During the source injection the value of @code{ess-eval-visibly} is
 ignored.
 @item Org-mode support: Visual debugger is now aware of the
 temporary org source editing buffer (@kbd{C-c '}) and jumps through this

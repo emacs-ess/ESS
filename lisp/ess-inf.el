@@ -793,11 +793,10 @@ there is only one process running."
           (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
                 temp-ess-help-filetype  dialect)
             (with-current-buffer (process-buffer (get-process proc))
-              (setq temp-ess-help-filetype inferior-ess-help-filetype)
-              (setq dialect ess-dialect))
+              (setq temp-ess-help-filetype inferior-ess-help-filetype))
             (setq ess-local-process-name proc)
             (setq inferior-ess-help-filetype temp-ess-help-filetype)
-            (setq ess-dialect dialect)))))))
+            ))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
@@ -864,7 +863,7 @@ with C-c C-z C-z C-z ...
               (message "No buffers with dialect %s or associated with process %s found" dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
-  
+
 
 (defun get-ess-buffer (name)
   "Return the buffer associated with the ESS process named by NAME."
@@ -1299,7 +1298,8 @@ local({
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (with-current-buffer sbuffer
-        (setq ess-local-process-name (process-name sprocess)) ; let it be here (calling functions need not set it explicitly)
+        (unless ess-local-process-name
+          (setq ess-local-process-name (process-name sprocess))) ; let it be here (calling functions need not set it explicitly)
         (setq primary-prompt  inferior-ess-primary-prompt)
         (ess-if-verbose-write (format "n(ess-command %s ..)" com))
         (unless no-prompt-check
@@ -1317,6 +1317,7 @@ local({
               ;; Output is now going to BUF:
               (with-current-buffer buf
                 (setq inferior-ess-primary-prompt primary-prompt) ;; set local value
+                (setq buffer-read-only nil)
                 (erase-buffer)
                 (set-marker (process-mark sprocess) (point-min))
                 (inferior-ess-mark-as-busy sprocess)
@@ -1520,7 +1521,7 @@ TEXT-WITHTABS.
 
 (defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
-With prefix argument toggle the meaning of `ess-eval-visibly-p';
+With prefix argument toggle the meaning of `ess-eval-visibly';
 this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
@@ -1544,7 +1545,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
     (setq end (point)))
 
   (let* ((proc (get-process ess-local-process-name))
-         (visibly (if toggle (not ess-eval-visibly-p) ess-eval-visibly-p))
+         (visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
          (dev-p (process-get proc 'developer))
          (tb-p  (process-get proc 'tracebug)))
     (cond
@@ -1603,7 +1604,7 @@ nil."
                  (mess (format "Eval function %s"
                                (propertize (or name "???")
                                            'face 'font-lock-function-name-face)))
-                 (visibly (if vis (not ess-eval-visibly-p) ess-eval-visibly-p)))
+                 (visibly (if vis (not ess-eval-visibly) ess-eval-visibly)))
 
             (ess-blink-region beg end)
             (cond
@@ -2074,8 +2075,7 @@ Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
   (interactive)
-  ;;(message " at very beg. of (inferior-ess-mode): inf.-ess-prompt= %s"
-  ;;       inferior-ess-prompt)
+
   (comint-mode)
 
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
@@ -2089,12 +2089,14 @@ to continue it."
        (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
 
   (when (and (member ess-dialect '("R")) ;; S+ echoes!!
-             (not (eq ess-eval-visibly-p t)))
+             (not (eq ess-eval-visibly t)))
     ;; when 'nowait or nil, don't wait for process
     (setq comint-process-echoes nil))
 
+  (when comint-use-prompt-regexp ;; why comint is not setting this? bug?
+    (set (make-local-variable 'inhibit-field-text-motion) t))
 
-  (unless inferior-ess-prompt ;; construct only if unset
+  (unless inferior-ess-prompt ;; build when unset
     (setq inferior-ess-prompt
           (concat "\\("
                   inferior-ess-primary-prompt
@@ -2230,8 +2232,8 @@ to continue it."
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
-             (ess-display-help-on-object help-match))
-
+             (ess-display-help-on-object help-match)
+             (process-send-string proc "\n"))
             (help-?-match
              (if (string-match "\\?\\?\\(.+\\)" help-?-match)
                  (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
@@ -2340,14 +2342,14 @@ If in the output field, goes to the begining of previous input.
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
     (re-search-backward (concat "^" inferior-ess-prompt)))
-  (comint-skip-prompt)
-  (when inferior-ess-secondary-prompt
+  ;; at bol
+  (when (and inferior-ess-secondary-prompt
+             (looking-at inferior-ess-secondary-prompt))
     (while (and (> (forward-line -1) -1)
-                (let ((beg (point)))
-                  (when (comint-skip-prompt)
-                    (looking-back inferior-ess-secondary-prompt beg))))))
-  (unless (looking-back inferior-ess-prompt (point-at-bol))
+                (looking-at inferior-ess-secondary-prompt))))
+  (unless (looking-at inferior-ess-prompt)
     (ess-error "Beggining of input not found"))
+  (comint-skip-prompt)
   )
 
 (defun inferior-ess--get-old-input:regexp ()
@@ -2355,21 +2357,20 @@ If in the output field, goes to the begining of previous input.
   ;;VS[03-09-2012]: This should not rise errors!! Troubles comint-interrupt-subjob
   (save-excursion
     (let* ((inhibit-field-text-motion t)
-           (bol (point-at-bol))
            command)
-      (goto-char bol)   ;(beginning-of-line) does not work in comint
-      (comint-skip-prompt)
+      (beginning-of-line)
       (when  (and inferior-ess-secondary-prompt
-                  (looking-back inferior-ess-secondary-prompt bol))
-        (inferior-ess--goto-input-start:regexp)
-        (setq bol (point-at-bol)))
-      (if (looking-back inferior-ess-prompt bol) ; cust.var, might not include sec-prompt
+                  (looking-at inferior-ess-secondary-prompt))
+        (inferior-ess--goto-input-start:regexp))
+      (beginning-of-line)
+      (if (looking-at inferior-ess-prompt) ; cust.var, might not include sec-prompt
           (progn
+            (comint-skip-prompt)
             (setq command (buffer-substring-no-properties (point) (point-at-eol)))
             (when inferior-ess-secondary-prompt
               (while (progn (forward-line 1)
-                            (comint-skip-prompt)
-                            (looking-back inferior-ess-secondary-prompt))
+                            (looking-at inferior-ess-secondary-prompt))
+                (re-search-forward inferior-ess-secondary-prompt (point-at-eol))
                 (setq command (concat command "\n"
                                       (buffer-substring-no-properties (point) (point-at-eol))))
                 ))
@@ -2801,14 +2802,14 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
-      (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
-          (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
-                 (setq words nil)
-                 )
-	(while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
-	  (setq words (cons (buffer-substring (match-beginning 1)
-					      (match-end 1)) words))))
-      )
+      ;; this is bad, only R specific test
+      ;; (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
+      ;;     (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
+      ;;            (setq words nil)
+      ;;            )
+      (while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
+        (setq words (cons (buffer-substring (match-beginning 1)
+                                            (match-end 1)) words))))
     (ess-if-verbose-write
      (if (> (length words) 5)
          (format " |-> (length words)= %d\n" (length words))

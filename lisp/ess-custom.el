@@ -172,6 +172,16 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type  'boolean)
 
+(defcustom ess-imenu-use-S ess-imenu-use-p
+  "*Non-nil means include an Imenu menu item in S buffers."
+  :group 'ess
+  :type  'boolean)
+
+(defvar ess-imenu-generic-expression nil
+  "Placeholder for imenu-generic-expression. Dialect specific.")
+
+
+
 ;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
@@ -197,9 +207,23 @@ as `ess-imenu-use-S'."
 (make-variable-buffer-local 'ess--local-handy-commands)
 
 
+
+(defcustom ess-describe-at-point-method nil
+  "Whehter `ess-describe-object-at-point' should use tooltip or
+not. If nil display in an electric buffer. If 'tooltip display in
+an tooltip.
+
+See also `tooltip-hide-delay' and `tooltip-delay'.
+ "
+  :group 'ess-utils
+  :type '(choice (const nil) (const tooltip))
+  )
+
 (defcustom ess-R-describe-object-at-point-commands
   '(("str(%s)")
-    ("summary(%s)"))
+    ("summary(%s)")
+    ("head(%s, n = 100)")
+    ("tail(%s, n = 100)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point. The value of the
  aliment is not used as yet and has no effect."
@@ -1064,7 +1088,7 @@ the variable `inferior-ess-own-frame' is non-nil."
   :group 'ess-proc
   :type 'alist)
 
-(defcustom inferior-ess-same-window nil
+(defcustom inferior-ess-same-window t
   "Non-nil indicates new inferior ESS process appears in current window.
 Otherwise, the new inferior ESS buffer is shown in another window in the
 current frame.  This variable is ignored if `inferior-ess-own-frame' is
@@ -1577,11 +1601,10 @@ Set to nil if language doesn't support secondary prompt.")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
-(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*[+>] "
+(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*> "
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
-
-You can set it to \"[]a-zA-Z0-9.[]*\\(> \\)+\" if you want to
-skip secondary prompt when invoking `comint-previous-prompt'.
+Customise it to make `comint-previous-prompt' quiqly navigate to
+interesting portions of the buffer.
  "
   :group 'ess-proc
   :type 'string)
@@ -1599,6 +1622,8 @@ Otherwise, they get their own temporary buffer."
   "Non-nil means `ess-eval-line*' will send empty lines to the ESS process."
   :group 'ess-proc
   :type 'boolean)
+
+(defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
 (defcustom ess-eval-visibly t
   "Non-nil means ess-eval- commands display commands in the process buffer.
@@ -1619,7 +1644,10 @@ the process output, otherwise not.
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 
-(defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
+;; (when (boundp 'ess-eval-visibly-p)
+;;   (setq ess-eval-visibly ess-eval-visibly-p))
+
+
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
@@ -1711,12 +1739,10 @@ Use second %s to substitute the dump file name."
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-ess-help-command "help(\"%s\")\n"
+(defvar inferior-ess-help-command "help(\"%s\")\n"
   "Format-string for building the ESS command to ask for help on an object.
 
-This format string should use %s to substitute an object name."
-  :group 'ess-command
-  :type 'string)
+This format string should use %s to substitute an object name.")
 
 (make-variable-buffer-local 'inferior-ess-help-command)
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
@@ -1731,8 +1757,7 @@ If set, changes will take effect when next R session is started."
   :type 'string)
 
 (defvar ess-get-help-topics-function nil
-  "Dialect specific help topics retrival"
-  )
+  "Dialect specific help topics retrieval")
 (make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
@@ -1780,18 +1805,22 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 (defvar ess-cmd-delay nil
   "*Set to a positive number if ESS will include delays proportional to
 `ess-cmd-delay'  in some places. These delays are introduced to
-prevent timeouts in certain processes, such as completion.")
+prevent timeouts in certain processes, such as completion.
+
+This variable has no effect from ESS12.03
+")
 (make-variable-buffer-local 'ess-cmd-delay)
 
-(defcustom ess-R-cmd-delay nil
-  "Used to initialize `ess-cmd-delay'."
-  :group 'ess-command
-  :type '(choice (const nil) number))
+(defvar ess-R-cmd-delay nil
+  "Used to initialize `ess-cmd-delay'.
 
-(defcustom ess-S+-cmd-delay 1.0
-  "Used to initialize `ess-cmd-delay'."
-  :group 'ess-command
-  :type '(choice (const nil) number))
+This variable has no effect from ESS12.03
+")
+
+(defvar ess-S+-cmd-delay 1.0
+  "Used to initialize `ess-cmd-delay'.
+This variable has no effect from ESS12.03
+")
 
 ;;*;; Regular expressions
 (defvar inferior-ess-prompt nil
@@ -1810,24 +1839,17 @@ from `inferior-ess-primary-prompt' and
   "The regexp for matching the S/R/.. commands that change the search path.")
 (make-variable-buffer-local 'ess-change-sp-regexp)
 
-(defcustom ess-S+-change-sp-regexp
+(defvar ess-S+-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|module(\\|source(\\)"
-  "The regexp for matching the S-plus commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
+  "The regexp for matching the S-plus commands that change the search path.")
 
-(defcustom ess-S-change-sp-regexp
+(defvar ess-S-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|source(\\)"
-  "The regexp for matching the S commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
+  "The regexp for matching the S commands that change the search path.")
 
-(defcustom ess-R-change-sp-regexp
+(defvar ess-R-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|require(\\|source(\\)"
-  "The regexp for matching the R commands that change the search path."
-  :group 'ess-proc
-  :type 'regexp)
-
+  "The regexp for matching the R commands that change the search path.")
 
 ;;*;; Process-dependent variables
 

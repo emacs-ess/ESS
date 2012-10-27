@@ -192,7 +192,6 @@
      (ess-cmd-delay                     . ess-R-cmd-delay)
      (ess-function-pattern              . ess-R-function-pattern)
      (ess-object-name-db-file           . "ess-r-namedb.el" )
-     (ess-imenu-mode-function           . 'ess-imenu-R)
      (ess-smart-operators               . ess-R-smart-operators)
      (inferior-ess-program              . inferior-R-program-name)
      (inferior-ess-objects-command      . inferior-R-objects-command)
@@ -207,7 +206,7 @@
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
      (inferior-ess-start-args		. "")
      (ess-error-regexp-alist		. ess-R-error-regexp-alist)
-     (ess-describe-object-at-point-commands . ess-R-describe-object-at-point-commands)
+     (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
      (ess-pager		. R-pager)
@@ -423,11 +422,9 @@ to R, put them in the variable `inferior-R-args'."
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
-  (if ess-imenu-use-S
-      (progn (require 'ess-menu)
-             (ess-imenu-R)))
-  ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
-  ;;     alist above!
+  (when (and ess-imenu-use-S (require 'ess-menu))
+    (setq imenu-generic-expression ess-imenu-generic-expression)
+    (imenu-add-to-menubar "Imenu-R"))
 
   ;; useful for swankr/slime:
   (set (make-local-variable 'beginning-of-defun-function)
@@ -438,6 +435,10 @@ to R, put them in the variable `inferior-R-args'."
        'ess-end-of-function)
 
   (ess-roxy-mode t)
+  (ad-activate 'mark-paragraph)
+  (ad-activate 'fill-paragraph)
+  (ad-activate 'move-beginning-of-line)
+  (ad-activate 'newline-and-indent)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
   

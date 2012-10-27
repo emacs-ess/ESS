@@ -50,8 +50,9 @@
 
 (defvar julia-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?_ "w" table)   ; underscores in words
-    (modify-syntax-entry ?@ "w" table)
+    (modify-syntax-entry ?_ "_" table)   ; underscores in words
+    (modify-syntax-entry ?@ "_" table)
+    (modify-syntax-entry ?. "_" table)
     (modify-syntax-entry ?# "<" table)   ; #  single-line comment start
     (modify-syntax-entry ?\n ">" table)  ; \n single-line comment end
     (modify-syntax-entry ?\{ "(} " table)
@@ -194,10 +195,6 @@
               nil)))
       nil)))
 
-;(defun far-back ()
-;  (max (point-min) (- (point) 2000)))
-
-(defmacro error2nil (body) `(condition-case nil ,body (error nil)))
 
 (defun julia-paren-indent ()
   (let* ((p (parse-partial-sexp (save-excursion
@@ -228,24 +225,21 @@
     (end-of-line)
     (indent-line-to
      (or (and (ess-inside-string-p (point-at-bol)) 0)
-	 (save-excursion (error2nil (julia-form-indent)))
-         (save-excursion (error2nil (julia-paren-indent)))
+	 (save-excursion (ignore-errors (julia-form-indent)))
+         (save-excursion (ignore-errors (julia-paren-indent)))
+         ;; previous line ends in =
+	 (save-excursion
+           (beginning-of-line)
+           (skip-chars-backward " \t\n")
+           (when (eql (char-before) ?=)
+             (+ julia-basic-offset (current-indentation))))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
                            (forward-to-indentation 0)
                            (julia-at-keyword julia-block-end-keywords))))
-             (error2nil (+ (julia-last-open-block (point-min))
-                           (if endtok (- julia-basic-offset) 0)))))
-	 ;; previous line ends in =
-	 (save-excursion
-	   (if (and (not (equal (point-min) (line-beginning-position)))
-		    (progn
-		      (forward-line -1)
-		      (end-of-line) (backward-char 1)
-		      (equal (char-after (point)) ?=)))
-	       (+ julia-basic-offset (current-indentation))
-	     nil))
+             (ignore-errors (+ (julia-last-open-block (point-min))
+                               (if endtok (- julia-basic-offset) 0)))))
 	 ;; take same indentation as previous line
 	 (save-excursion (forward-line -1)
 			 (current-indentation))
@@ -293,6 +287,7 @@
     ;; (ess-indent-line			    . 'S-indent-line)
     ;;(ess-calculate-indent	      . 'ess-calculate-indent)
     (ess-indent-line-function	  . 'julia-indent-line)
+    (indent-line-function	  . 'julia-indent-line)
     (parse-sexp-ignore-comments	  . t)
     (ess-style		  	  . ess-default-style) ;; ignored
     (ess-local-process-name	  . nil)
@@ -315,13 +310,11 @@
       (insert string))
     (process-send-string process (format inferior-ess-load-command file))))
 
-(defun julia-get-help-topics-function (name)
-  (let ((com "print(\" [1] \"); _jl_init_help();for (topic, _) = _jl_helpdb show(topic); println(); for (func,_) = _jl_helpdb[topic] show(func); print(\" \");   end;  end\n\n"))
-    (ess-get-words-from-vector com)))
+(defun julia-get-help-topics (&optional proc)
+  (ess-get-words-from-vector "_ess_list_topics()\n"))
     ;; (ess-command com)))
 
-(defvar julia-help-command " _tpc = \"%s\"; _jl_init_help(); if !has(_jl_helpdb, _tpc); help_for(_tpc) else for (func, _) = _jl_helpdb[_tpc] help_for(func); println(); end end\n")
-
+(defvar julia-help-command "help(\"%s\")\n")
 
 (defvar ess-julia-error-regexp-alist '(julia-in julia-at)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
@@ -339,12 +332,13 @@
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
-    (ess-get-help-topics-function	. 'julia-get-help-topics-function)
+    (ess-get-help-topics-function	. 'julia-get-help-topics)
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
     (ess-send-string-function		. 'julia-send-string-function)
+    (ess-imenu-generic-expression       . julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
     (inferior-ess-help-command		. julia-help-command)
@@ -364,7 +358,6 @@
     (ess-cmd-delay			. ess-R-cmd-delay)
     (ess-function-pattern		. ess-R-function-pattern)
     (ess-object-name-db-file		. "ess-r-namedb.el" )
-    (ess-imenu-mode-function		. 'ess-imenu-R)
     (ess-smart-operators		. ess-R-smart-operators)
     (inferior-ess-help-filetype        . nil)
     (inferior-ess-exit-command		. "exit()\n")
@@ -397,7 +390,6 @@ been created using the variable `ess-r-versions'."
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive "P")
   ;; (setq ess-customize-alist julia-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode julia-customize-alist proc-name)
   ;; for emacs < 24
   ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
@@ -410,7 +402,8 @@ been created using the variable `ess-r-versions'."
   ;; (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
   ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
   (set (make-local-variable 'julia-basic-offset) 4)
-  (ess-imenu-julia)
+  (setq imenu-generic-expression julia-imenu-generic-expression)
+  (imenu-add-to-menubar "Imenu-jl")
   (run-hooks 'julia-mode-hook))
 
 
@@ -434,7 +427,7 @@ to R, put them in the variable `inferior-julia-args'."
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
-    (let* ((r-start-args
+    (let* ((jl-start-args
 	    (concat inferior-julia-args " " ; add space just in case
 		    (if start-args
 			(read-string
@@ -442,21 +435,14 @@ to R, put them in the variable `inferior-julia-args'."
 				 inferior-julia-args
 				 "'] ? "))
 		      nil))))
-      (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
       (ess-tb-start)
-      ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-      ;;        (list
-      ;; 	(list julia-char-regex 2
-      ;; 	      julia-mode-char-syntax-table)
-      ;; ;        (list julia-string-regex 0
-      ;; ;              julia-mode-string-syntax-table)
-      ;; ))
-      (set (make-local-variable 'indent-line-function) 'julia-indent-line)
       (set (make-local-variable 'julia-basic-offset) 4)
-      (setq indent-tabs-mode nil)
+      ;; (setq indent-tabs-mode nil)
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
+      (ess-eval-linewise (format "load(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
@@ -481,12 +467,6 @@ to R, put them in the variable `inferior-julia-args'."
     ;; ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
     ))
 
-(defun ess-imenu-julia (&optional arg)
-  "Julia Language Imenu support for ESS."
-  (interactive)
-  (setq imenu-generic-expression julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl"))
 
-;; (fset 'ess-imenu-R 'ess-imenu-S)
 
 (provide 'ess-julia)

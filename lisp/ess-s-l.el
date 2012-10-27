@@ -124,16 +124,17 @@
     (inferior-ess-primary-prompt   . "> ")
     (inferior-ess-secondary-prompt . "+ ")
     (comment-start                . "#")
+    (ess-imenu-generic-expression  . ess-imenu-S-generic-expression)
     (comment-add                  . 1)
     (comment-start-skip           . "#+ *")
     (comment-use-syntax           . nil) ;; regexp based, probably faster than syntax based
     (comment-column               . 40)
     (ess-no-skip-regexp           . (concat "^ *@\\|" (default-value 'ess-no-skip-regexp)))
-    ;; inferior-ess-prompt is used by comint for navigation only if
-    ;; comint-use-prompt-regexp is t transcript-mode also relies on this regexp
+    ;; inferior-ess-prompt is used by comint for navigation, only if
+    ;; comint-use-prompt-regexp is t; (transcript-mode also relies on this regexp)
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
-    (ess-describe-object-at-point-commands . ess-S-describe-object-at-point-commands)
+    (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     )
@@ -786,6 +787,68 @@ and I need to relearn emacs lisp (but I had to, anyway."
             (when (string= ess-language "S");; <- is this needed at all here?
               (local-set-key "\M-\r" 'ess-use-this-dir))
             ))
+
+
+
+;;; S imenu support
+
+;; don't use syntax classes, bad for etags
+(defvar ess-imenu-S-generic-expression
+  '(("Functions" "^\\(.+\\)[ \t\n]*<-[ \t\n]*function[ ]*(" 1)
+    ("Classes" "^.*setClass(\\(.*\\)," 1)
+    ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
+    ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
+    ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\"\\(.+\\)\"," 2)
+    ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
+    ;;
+    ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
+    ("Package" "^.*\\(library\\|require\\)(\\(.*\\)" 2)
+    ("Data" "^\\(.+\\)[ \t\n]-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
+
+(defun ess-imenu-S (&optional arg)
+  "S Language Imenu support for ESS."
+  (interactive)
+  (setq imenu-generic-expression ess-imenu-generic-expression)
+  (imenu-add-to-menubar "Imenu-S"))
+
+(defalias 'ess-imenu-R 'ess-imenu-S)
+
+
+ ;;; Speedbar stuff.
+(defun ess-S-initialize-speedbar ()
+  "Extend to all extensions; see initialization, and edit."
+  (speedbar-add-supported-extension ".R")
+  (speedbar-add-supported-extension ".S")
+  (speedbar-add-supported-extension ".s")
+  (speedbar-add-supported-extension ".q"))
+
+                                        ;(if (featurep 'speedbar)
+                                        ;    (progn
+                                        ;      (message "enabling speedbar support")
+                                        ;      (require 'speedbar)
+                                        ;      (ess-S-initialize-speedbar)))
+
+(eval-when-compile
+  (condition-case nil
+      (progn
+        (require 'speedbar)
+        (when (featurep 'speedbar)
+          (message "enabling speedbar support")
+
+          (defun S-speedbar-buttons (buffer)
+            "attempted hack."
+
+            ;;(speedbar-make-tag-line)
+            ;;(speedbar-insert-button)
+            (speedbar-with-writable))
+
+          (fset 'R-speedbar-buttons 'S-speedbar-buttons)
+
+          (defun S-speedbar-menu-items  ( )
+            "Need to write.")
+
+          (ess-S-initialize-speedbar)))
+    (error nil)))
 
 (provide 'ess-s-l)
 

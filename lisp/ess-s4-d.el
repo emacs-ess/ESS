@@ -95,7 +95,7 @@
   (interactive)
   (setq ess-customize-alist S4-customize-alist)
   (ess-mode S4-customize-alist proc-name)
-  (if ess-imenu-use-S (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 
 ;; From RMH:    ALL THIS SHOULD BE INCORPORATED BY 5.0!

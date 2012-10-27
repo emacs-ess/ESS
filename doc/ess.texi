@@ -1428,11 +1428,11 @@ command line; the @code{source()} function is not used.  You may choose
 whether both the commands and their output appear in the process buffer
 (as if you had typed in the commands yourself) or if the output alone is
 echoed.  The behavior is controlled by the variable
-@code{ess-eval-visibly-p} whose default is @code{t}
-@vindex ess-eval-visibly-p
+@code{ess-eval-visibly} whose default is @code{t}
+@vindex ess-eval-visibly
 (display commands and output).  Passing a prefix argument (@kbd{C-u}) to any of
 the following commands, however, reverses the meaning of
-@code{ess-eval-visibly-p} for that command only --- for example @kbd{C-u C-c C-j}
+@code{ess-eval-visibly} for that command only --- for example @kbd{C-u C-c C-j}
 @comment these remarks only make sense IF the default is nil (which it is NOT)
 @comment echoes the current line of S (or other) code in the ESS process
 @comment buffer, followed by its output.  This method of evaluation is an
@@ -1445,7 +1445,7 @@ alternative to S's @code{source()} function
 when you want the input as well as the output to be displayed.  (You can
 sort of do this with @code{source()} when the option @code{echo=T} is
 set, except that prompts do not get displayed.  ESS puts prompts in the
-right places.) 
+right places.)
 
 Primary commands for evaluating code are:
 
@@ -2489,7 +2489,7 @@ install your own completion sources.
 
 For the default auto-complete ESS configuration, install the latest
 version of @code{auto-complete} package. ESS automatically detect the
-package and activates auto-complete in ESS buffers. 
+package and activates auto-complete in ESS buffers.
 
 
 To deactivate AC, place the following into your init file:
@@ -3045,7 +3045,7 @@ different filter levels with the truncation.
 @pindex ess-handy-commands
 @pindex ess-smart-comma
 
-@kbd{C-c h} is bound to @code{ess-handy-commands} and executes commands listed in 
+@kbd{C-c h} is bound to @code{ess-handy-commands} and executes commands listed in
 the variable @code{`ess-handy-commands'}. Currently containing:
 
 

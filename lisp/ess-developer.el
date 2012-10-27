@@ -199,7 +199,7 @@ otherwise call devSource."
         (let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
               (dev-packs ess-developer-packages)
               assigned-p ns)
-          (if tracebug (ess-tb-set-last-input proc))
+          (if tracebug (ess-tracebug-set-last-input proc))
           (while (and (setq ns (pop dev-packs))
                       (not assigned-p))
             (when (and (member ns nms) ;;todo: try to load the package if not loaded
@@ -264,15 +264,16 @@ usually used to manipulate the output, for example insert some text properties.
               (save-excursion (funcall propertize-func)))
             (message "%s" (buffer-substring (point-min) (max (point-min)
                                                              (1- (point))))))
-        (setq out (buffer-substring-no-properties (point-min) (point-max)))
-        (save-selected-window
-          ;; if error show it in inferior-ess buffer
-          (ess-switch-to-ESS t)
-          (let ((proc (get-process ess-local-process-name)))
-            (goto-char (process-mark proc))
-            (insert (format "%s\n> " out))
-            (set-marker (process-mark proc) (point))))
-        (error "Error occurred; dumped into process buffer")
+        (message (buffer-substring-no-properties (point-min) (point-max)))
+
+        ;; (save-selected-window
+        ;;   ;; if error show it in inferior-ess buffer
+        ;;   (ess-switch-to-ESS t)
+        ;;   (let ((proc (get-process ess-local-process-name)))
+        ;;     (goto-char (process-mark proc))
+        ;;     (insert (format "%s\n> " out))
+        ;;     (set-marker (process-mark proc) (point))))
+        ;; (error "Error occurred; dumped into process buffer")
         )
       )))
 

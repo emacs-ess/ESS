@@ -183,15 +183,14 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (ess-command (format (or command inferior-ess-help-command)
                                object) tbuffer)
           (ess-help-underline)
-          ;;VS[03-09-2012]: todo this should not be here
+          ;;VS[03-09-2012]: todo this should not be here:
           ;; Stata is clean, so we get a big BARF from this.
           (unless (string= ess-language "STA")
             (ess-nuke-help-bs))
           (goto-char (point-min))
           (set-buffer-modified-p 'nil)
           (setq buffer-read-only t)
-          (when (fboundp 'visual-line-mode)
-            (visual-line-mode t))
+          (toggle-truncate-lines -1)
           (ess-write-to-dribble-buffer
            (format "(ess-help '%s' done  ..\n" hb-name))
            ))
@@ -210,7 +209,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
         (ess-write-to-dribble-buffer
          (format "(ess-help: kill bogus buffer %s ..\n" (buffer-name buffer)))
         (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
-        (ding)
+        ;; (ding) ;; don't ding, in julia a lot of doc strings are very short
         (kill-buffer buffer)))))
 
 (defun ess-display-help-in-browser ()
@@ -258,13 +257,16 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                                                 nil (point-at-eol)))
          (string (buffer-substring link-beg link-end))
          (command
-          (cond ((string-match"::" string)
-                 "?%s\n")
-                ((eq ess-help-type 'index)
-                 (concat "?" ess-help-object "::%s\n"))
-                )))
+          (when (equal ess-dialect "R")
+            (cond ((string-match"::" string)
+                   "?%s\n")
+                  ((eq ess-help-type 'index)
+                   (concat "?" ess-help-object "::%s\n"))
+                  ))))
+    (dbg string command)
     (ess-display-help-on-object string command)
     ))
+
 
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
@@ -288,56 +290,42 @@ if necessary.  It is bound to RET and C-m in R-index pages."
             com-package-index      "help(package='%s', help_type='text')\n"
             reg-keyword             "^\\([-a-zA-Z0-9._@$]+\\)[^:\n]*$"
             reg-start              "^Index:"))
-     (t (setq not-implemented t)))
-    (if not-implemented
-        (message "Sorry, not implemented for %s " ess-dialect)
-      (when (and com-package-for-object
-                 ess-help-object
-                 (eq ess-help-type 'help))
-        (setq pack (car (ess-get-words-from-vector
-                         (format com-package-for-object ess-help-object))))
-        )
-      (setq all-packs (ess-get-words-from-vector com-packages))
-      (unless pack ;try symbol at point
-        (setq pack  (car (member (ess-read-object-name-default) all-packs))))
-      (setq pack (ess-completing-read "Index of"
-                                      all-packs nil nil nil nil pack))
-      (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
-      (with-current-buffer buff
-        (ess-setq-vars-local (eval alist))
-        (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
-              ess-help-type 'index
-              ess-help-object pack
-              ess-local-process-name pname)
-        (setq buffer-read-only nil)
-        (delete-region (point-min) (point-max))
-        (ess-help-mode)
-        (ess-command (format com-package-index pack) buff)
-        (ess-help-underline)
-        (set-buffer-modified-p 'nil)
-        (goto-char (point-min))
-        (when reg-start  ;; go to the beginning of listing
-          (re-search-forward  reg-start  nil t))
-        (when (and reg-keyword (featurep 'emacs))
-          ;;linkify the buffer
-          (save-excursion
-            (while (re-search-forward reg-keyword nil t)
-              (make-text-button (match-beginning 1) (match-end 1)
-                                'mouse-face 'highlight
-                                'action #'ess--action-help-on-object
-                                'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
-                                'follow-link t
-                                'help-echo "help on object")))
-          )
-        (setq buffer-read-only t))
-      (ess--switch-to-help-buffer buff)
-      )))
+     ((string-match "julia" ess-dialect)
+      (setq  com-packages           "_ess_list_categories()\n"
+             com-package-index      "_ess_print_index(\"%s\")\n"
+             reg-keyword             "^\\(.*+\\):$*"
+             reg-start              ":"
+             ))
+     (t (error "Sorry, not implemented for %s " ess-dialect)))
+    
+    (when (and com-package-for-object
+               ess-help-object
+               (eq ess-help-type 'help))
+      (setq pack (car (ess-get-words-from-vector
+                       (format com-package-for-object ess-help-object)))))
+    
+    (setq all-packs (ess-get-words-from-vector com-packages))
+    (unless pack ;try symbol at point
+      (setq pack  (car (member (ess-read-object-name-default) all-packs))))
+    (setq pack (ess-completing-read "Index of"
+                                    all-packs nil nil nil nil pack))
+    ;; (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
+
+    
+    (ess--display-indexed-help-page
+     (format com-package-index pack)
+     reg-keyword
+     (format "*help[%s](index:%s)*"  ess-dialect pack)
+     'index nil nil reg-start pack)
+    
+    ))
+
 
 (defalias 'ess-display-index 'ess-display-package-index)
 (make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
-                                               &optional action help-echo reg-start)
+                                               &optional action help-echo reg-start help-object)
   "Internal function to display help pages with linked actions
   ;; COMMAND which produces the help page
   ;; ITEM-REGEXP -- first subexpression is highlighted
@@ -353,6 +341,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (buff (get-buffer-create title))
         )
     (with-current-buffer buff
+      (setq ess-help-object help-object)
       (ess-setq-vars-local (eval alist))
       (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
             ess-local-process-name pname)
@@ -378,6 +367,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
           ))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
+      (toggle-truncate-lines -1)
       )
     (unless (ess--help-kill-bogus-buffer-maybe buff)
       (ess--switch-to-help-buffer buff))
@@ -385,13 +375,52 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 
 (defun ess-display-help-apropos (&optional pattern)
-  "Create an ess-apropos buffer with a *linked* list of help.search() results."
+  "Create an ess-apropos buffer with a *linked* list of apropos topics."
   (interactive "sPattern: ")
-  (ess--display-indexed-help-page
-   (format "help.search('%s')\n" pattern)
-   "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"
-   (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
-   'appropos))
+  (let (com regexp)
+    (cond ((equal ess-dialect "R")
+           (setq com "help.search('%s')\n"
+                 regexp "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"))
+          ((equal ess-dialect "julia")
+           (setq com "apropos(\"%s\")\n"
+                 regexp "^\\(\\(\\w\\|\\s_\\)+\\)("))
+          (t (error "Not implemented for dialect %s" ess-dialect)))
+    
+    (ess--display-indexed-help-page
+     (format com pattern) regexp
+     (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
+     'appropos)))
+
+(defun ess-display-demos ()
+  "Create an ess-demos buffer with a *linked* list of available demos."
+  (interactive)
+  (let (com regexp)
+    (cond ((equal ess-dialect "R")
+           (setq com "demo()\n"
+                 regexp "^\\([^ \n:]+\\)  +"))
+          (t (error "Not implemented for dialect %s" ess-dialect)))
+    
+    (ess--display-indexed-help-page
+     com regexp
+     (format "*ess-demos[%s]*" ess-current-process-name)
+     'demos #'ess--action-demo)))
+
+  
+(defun ess--action-demo (&optional pos)
+  "Provide help on object at the beginning of line.
+It's intended to be used in R-index help pages. Load the package
+if necessary.  It is bound to RET and C-m in R-index pages."
+  (interactive)
+  (let* ((link-beg (previous-single-property-change pos 'button
+                                                    nil (point-at-bol)))
+         (link-end (next-single-property-change pos 'button
+                                                nil (point-at-eol)))
+         (string (buffer-substring link-beg link-end))
+         (command (cond ((equal ess-dialect "R")
+                         (format "demo('%s')\n" string))
+                        (t (error "Not implemented for dialect %s" ess-dialect))
+                        )))
+    (ess-eval-linewise command)))
 
 (defun ess-display-vignettes ()
   "Display vignettes if available for the current dialect."
@@ -571,6 +600,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key ess-doc-map "a" 'ess-display-help-apropos)
     (define-key ess-doc-map "\C-v" 'ess-display-vignettes)
     (define-key ess-doc-map "v" 'ess-display-vignettes)
+    (define-key ess-doc-map "o" 'ess-display-demos)
     ess-doc-map
     )
   "ESS documentaion map.")
@@ -609,6 +639,10 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\M-\C-x"  'ess-eval-function)
     (define-key map "\C-c\M-f" 'ess-eval-function-and-go)
     (define-key map "\C-c\C-j" 'ess-eval-line)
+    (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
+    (define-key map "\C-c\M-f"   'ess-eval-function-and-go)
+    (define-key map "\C-c\C-c"   'ess-eval-region-or-function-or-paragraph-and-step)
+    (define-key map [(control return)] 'ess-eval-region-or-line-and-step)
     (define-key map "\C-c\M-j" 'ess-eval-line-and-go)
     (define-key map "\M-\C-a"  'ess-goto-beginning-of-function-or-para)
     (define-key map "\M-\C-e"  'ess-goto-end-of-function-or-para)
@@ -617,6 +651,10 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\C-l" 'ess-load-file)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
+    
+    (define-key map "\C-c\C-d"   'ess-doc-map)
+    (define-key map "\C-c\C-e"   'ess-extra-map)
+    (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for ESS help mode.")
 
@@ -799,8 +837,6 @@ Stata or XLispStat for additional information."
     ))
 
 ;;*;; Utility functions
-;; (defvar ess-get-help-topics-function nil)
-;; (make-variable-buffer-local 'ess-get-help-topics-function)
 
 (defun ess-get-S-help-topics-function (name)
   "Return a list of current S help topics associated with process NAME.

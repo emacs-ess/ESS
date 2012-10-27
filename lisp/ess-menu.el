@@ -59,34 +59,6 @@
 
  ;;; Imenu for Emacs/XEmacs...
 
-;;; S imenu support
-
-(defcustom ess-imenu-use-S ess-imenu-use-p
-  "*Non-nil means include an Imenu menu item in S buffers."
-  :group 'ess
-  :type  'boolean)
-
-;; don't use syntax classes, bad for etags
-(defvar ess-imenu-S-generic-expression
-  '(("Functions" "^\\(.+\\)[ \t\n]*<-[ \t\n]*function[ ]*(" 1)
-    ("Classes" "^.*setClass(\\(.*\\)," 1)
-    ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
-    ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
-    ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\"\\(.+\\)\"," 2)
-    ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
-    ;;
-    ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
-    ("Package" "^.*\\(library\\|require\\)(\\(.*\\)" 2)
-    ("Data" "^\\(.+\\)[ \t\n]-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
-
-(defun ess-imenu-S (&optional arg)
-  "S Language Imenu support for ESS."
-  (interactive)
-  (setq imenu-generic-expression ess-imenu-S-generic-expression)
-  (imenu-add-to-menubar "Imenu-S"))
-
-(fset 'ess-imenu-R 'ess-imenu-S)
-
 ;;; XLS imenu support
 
 ;; (defun ess-imenu-XLS (&optional arg)
@@ -167,50 +139,6 @@
 ;;  (setq imenu-generic-expression
 ;;       '( (nil "New one needed" 1)))
 ;;  (imenu-add-to-menubar "Stata-fcts"))
-
-(defun ess-imenu-SAS (&optional arg)
-  "SAS language Imenu support for ESS."
-  (interactive)
-  (setq imenu-generic-expression
-        '( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t\n;]" 1)))
-  (imenu-add-to-menubar "SAS Datasets"))
-
- ;;; Speedbar stuff.
-
-(defun ess-S-initialize-speedbar ()
-  "Extend to all extensions; see initialization, and edit."
-  (speedbar-add-supported-extension ".R")
-  (speedbar-add-supported-extension ".S")
-  (speedbar-add-supported-extension ".s")
-  (speedbar-add-supported-extension ".q"))
-
-                                        ;(if (featurep 'speedbar)
-                                        ;    (progn
-                                        ;      (message "enabling speedbar support")
-                                        ;      (require 'speedbar)
-                                        ;      (ess-S-initialize-speedbar)))
-
-(eval-when-compile
-  (condition-case nil
-      (progn
-        (require 'speedbar)
-        (when (featurep 'speedbar)
-          (message "enabling speedbar support")
-
-          (defun S-speedbar-buttons (buffer)
-            "attempted hack."
-
-            ;;(speedbar-make-tag-line)
-            ;;(speedbar-insert-button)
-            (speedbar-with-writable))
-
-          (fset 'R-speedbar-buttons 'S-speedbar-buttons)
-
-          (defun S-speedbar-menu-items  ( )
-            "Need to write.")
-
-          (ess-S-initialize-speedbar)))
-    (error nil)))
 
  ; Run load hook and provide package
 

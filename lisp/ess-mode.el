@@ -109,33 +109,6 @@
 ;;*;; Major mode definition
 
 
-(defvar ess-eval-map
-  (let ((map (make-sparse-keymap)))
-    ;; (define-key map "\C-r"    'ess-eval-region)
-    ;; (define-key map "\M-r"    'ess-eval-region-and-go)
-    ;; (define-key map "\C-b"    'ess-eval-buffer)
-    ;; (define-key map "\M-b"    'ess-eval-buffer-and-go)
-    ;; (define-key map "\C-f"    'ess-eval-function)
-    ;; (define-key map "\M-f"    'ess-eval-function-and-go)
-    ;; (define-key map "\C-x"    'ess-eval-function)
-    ;; (define-key map "\C-n"    'ess-eval-line-and-step)
-    ;; (define-key map "\C-j"    'ess-eval-line)
-    ;; (define-key map "\M-j"    'ess-eval-line-and-go)
-    map)
-  "Keymap for ess-eval functions.")
-(make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
-
-(defvar ess-extra-map
-  (let (ess-extra-map)
-    (define-prefix-command 'ess-extra-map)
-    (define-key ess-extra-map "\C-d" 'ess-dump-object-into-edit-buffer)
-    (define-key ess-extra-map "\C-e" 'ess-describe-object-at-point)
-    (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
-    ;; (define-key map "C-t" 
-    ess-extra-map)
-  "ESS extra map"
-  )
-
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
 
@@ -198,6 +171,35 @@
     (define-key map "\C-c\C-t"   'ess-dev-map)
     map)
   "Keymap for `ess-mode'.")
+
+
+(defvar ess-eval-map
+  (let ((map (make-sparse-keymap)))
+    ;; (define-key map "\C-r"    'ess-eval-region)
+    ;; (define-key map "\M-r"    'ess-eval-region-and-go)
+    ;; (define-key map "\C-b"    'ess-eval-buffer)
+    ;; (define-key map "\M-b"    'ess-eval-buffer-and-go)
+    ;; (define-key map "\C-f"    'ess-eval-function)
+    ;; (define-key map "\M-f"    'ess-eval-function-and-go)
+    ;; (define-key map "\C-x"    'ess-eval-function)
+    ;; (define-key map "\C-n"    'ess-eval-line-and-step)
+    ;; (define-key map "\C-j"    'ess-eval-line)
+    ;; (define-key map "\M-j"    'ess-eval-line-and-go)
+    map)
+  "Keymap for ess-eval functions.")
+(make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
+
+(defvar ess-extra-map
+  (let (ess-extra-map)
+    (define-prefix-command 'ess-extra-map)
+    (define-key ess-extra-map "\C-d" 'ess-dump-object-into-edit-buffer)
+    (define-key ess-extra-map "\C-e" 'ess-describe-object-at-point)
+    (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
+    ;; (define-key map "C-t" 
+    ess-extra-map)
+  "ESS extra map"
+  )
+
 
 (require 'ess-noweb-mode)
 

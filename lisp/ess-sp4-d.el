@@ -284,7 +284,7 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (interactive)
   (setq ess-customize-alist S+4-customize-alist)
   (ess-mode S+4-customize-alist proc-name)
-  (if ess-imenu-use-S (ess-imenu-R)))
+  (if ess-imenu-use-S (ess-imenu-S)))
 
 (defun S+4-transcript-mode ()
   "S-PLUS 4.x transcript mode."

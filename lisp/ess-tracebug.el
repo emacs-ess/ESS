@@ -456,7 +456,7 @@ Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--
   "Replacement used for long + prompt.
 Customization of this variable is not recommended. You can set it
 to '. '. If you set it to anything else you will have to change
-`inferior-ess-S-prompt' to assure the correct prompt navigation
+`inferior-S-prompt' to assure the correct prompt navigation
 in inferior buffers.  ")
 
 (defmacro ess-copy-key (from-map to-map fun)
@@ -516,7 +516,7 @@ in inferior buffers.  ")
       (defalias 'ess-parse-errors (symbol-function 'next-error))
       )
     ;; hooks
-    (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t t)
+    (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input nil t)
     )
   )
 
@@ -672,13 +672,15 @@ This is the value of `next-error-function' in iESS buffers."
 
 (defun inferior-ess-move-last-input-overlay ()
   "Move the overlay to the point."
-  (let ((pbol (point-at-bol))
+  (let ((pbol (if comint-process-echoes
+                  (1- (point-at-bol))
+                (point-at-bol))) ;; such a kludge
         (pt (point)) )
     (move-overlay ess-tb-last-input-overlay pbol (max (- pt 2) (+ pbol 2)))
     ))
 
 (defun move-last-input-overlay-on-send-input ()
-  (setq ess-tb-last-input (point))
+  (setq ess-tb-last-input (point-at-bol))
   (inferior-ess-move-last-input-overlay)
   )
 
@@ -908,7 +910,7 @@ The action list is in `ess-dbg-error-action-alist'. "
     (setq act (pop actions))
     (ess-dbg-set-error-action act)
     (message "On-error action set to: %s" (propertize (cadr act) 'face 'font-lock-function-name-face))
-    (while  (eq (setq ev (read-event)) com-char)
+    (while  (eq (setq ev (event-basic-type (read-event))) com-char)
       (unless actions
         (setq actions ess-dbg-error-action-alist))
       (setq act (pop actions))
@@ -963,7 +965,7 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
       (when (marker-position input-point)
         (goto-char (marker-position input-point))
         ))
-    (while  (eq (event-basic-type (setq ev (read-event))) com-char)
+    (while  (eq (event-basic-type (setq ev (event-basic-type (read-event)))) com-char)
       (if (memq 'shift (event-modifiers ev))
           (setq ring-el (1- ring-el))
         (setq ring-el (1+ ring-el))
@@ -1514,8 +1516,8 @@ If suplied ev must be a proper key event or a string representing the digit."
             (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess-tb-last-input t)
               (setq depth (string-to-number (match-string 1)))
               (when (> depth 9)
-                (setq ev-char (ess-completing-read "Recover frame" (mapcar 'number-to-string
-                                                                           (number-sequence depth 0 -1))
+                (setq ev-char (ess-completing-read "Selection: " (mapcar 'number-to-string
+                                                                         (number-sequence depth 0 -1))
                                                    nil t ev-char nil)))))
           (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
           (insert (concat  prompt ev-char "\n"))
@@ -1869,7 +1871,7 @@ to the current position, nil if not found. "
       )
     (setq bp-type (pop types))
     (ess-bp-create (car bp-type))
-    (while  (eq (setq ev (read-event)) com-char)
+    (while  (eq (setq ev (event-basic-type (read-event))) com-char)
       (if (null types) (setq types ess-bp-type-spec-alist))
       (setq bp-type (pop types))
       (ess-bp-kill)
