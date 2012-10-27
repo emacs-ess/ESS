@@ -2229,8 +2229,8 @@ to continue it."
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
-             (ess-display-help-on-object help-match))
-
+             (ess-display-help-on-object help-match)
+             (process-send-string proc "\n"))
             (help-?-match
              (if (string-match "\\?\\?\\(.+\\)" help-?-match)
                  (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
