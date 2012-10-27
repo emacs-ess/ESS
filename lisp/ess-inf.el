@@ -2354,15 +2354,15 @@ If in the output field, goes to the begining of previous input.
   ;;VS[03-09-2012]: This should not rise errors!! Troubles comint-interrupt-subjob
   (save-excursion
     (let* ((inhibit-field-text-motion t)
-           (bol (point-at-bol))
            command)
-      (goto-char bol)   ;(beginning-of-line) does not work in comint
+      (beginning-of-line)
       (when  (and inferior-ess-secondary-prompt
                   (looking-at inferior-ess-secondary-prompt))
-        (inferior-ess--goto-input-start:regexp)
-        (setq bol (point-at-bol)))
-      (if (looking-back inferior-ess-prompt bol) ; cust.var, might not include sec-prompt
+        (inferior-ess--goto-input-start:regexp))
+      (beginning-of-line)
+      (if (looking-at inferior-ess-prompt) ; cust.var, might not include sec-prompt
           (progn
+            (comint-skip-prompt)
             (setq command (buffer-substring-no-properties (point) (point-at-eol)))
             (when inferior-ess-secondary-prompt
               (while (progn (forward-line 1)
