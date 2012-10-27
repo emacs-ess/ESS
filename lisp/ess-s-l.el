@@ -134,7 +134,7 @@
     ;; comint-use-prompt-regexp is t; (transcript-mode also relies on this regexp)
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
-    (ess-describe-object-at-point-commands . ess-S-describe-object-at-point-commands)
+    (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     )

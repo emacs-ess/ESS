@@ -206,7 +206,7 @@
      (inferior-ess-start-file		. nil) ;; "~/.ess-R"
      (inferior-ess-start-args		. "")
      (ess-error-regexp-alist		. ess-R-error-regexp-alist)
-     (ess-describe-object-at-point-commands . ess-R-describe-object-at-point-commands)
+     (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
      (ess-pager		. R-pager)
