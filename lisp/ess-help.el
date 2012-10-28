@@ -246,16 +246,12 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
               (browse-url (funcall fun-get-file-path ess-help-object))))))
       )))
 
-(defun ess--action-help-on-object (&optional pos)
+(defun ess--action-help-on-object (&optional button)
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
-  (let* ((link-beg (previous-single-property-change pos 'button
-                                                    nil (point-at-bol)))
-         (link-end (next-single-property-change pos 'button
-                                                nil (point-at-eol)))
-         (string (buffer-substring link-beg link-end))
+  (let* ((string (button-label button))
          (command
           (when (equal ess-dialect "R")
             (cond ((string-match"::" string)
@@ -406,21 +402,18 @@ if necessary.  It is bound to RET and C-m in R-index pages."
      'demos #'ess--action-demo)))
 
   
-(defun ess--action-demo (&optional pos)
+(defun ess--action-demo (&optional button)
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
-  (let* ((link-beg (previous-single-property-change pos 'button
-                                                    nil (point-at-bol)))
-         (link-end (next-single-property-change pos 'button
-                                                nil (point-at-eol)))
-         (string (buffer-substring link-beg link-end))
-         (command (cond ((equal ess-dialect "R")
-                         (format "demo('%s')\n" string))
-                        (t (error "Not implemented for dialect %s" ess-dialect))
-                        )))
-    (ess-eval-linewise command)))
+  (let* ((string (button-label button))
+         (command
+          (cond ((equal ess-dialect "R")
+                 (format "demo('%s')\n" string))
+                (t (error "Not implemented for dialect %s" ess-dialect)))))
+    (ess-eval-linewise command)
+    (ess-switch-to-end-of-ESS)))
 
 (defun ess-display-vignettes ()
   "Display vignettes if available for the current dialect."
