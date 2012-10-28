@@ -96,11 +96,11 @@
 
 ;;; Variables
 
-(defconst ess-noweb-mode-RCS-Id
-  "Imported to ESS Subversion repository and RCS ids not maintained.")
+;; (defconst ess-noweb-mode-RCS-Id
+;;   "Imported to ESS Subversion repository and RCS ids not maintained.")
 
-(defconst ess-noweb-mode-RCS-Name
-  " ")
+;; (defconst ess-noweb-mode-RCS-Name
+;;   " ")
 
 (defvar ess-noweb-mode-prefix "\M-n"
   "*Prefix key to use for noweb mode commands.
@@ -261,7 +261,7 @@ replaced by sequences of '*'.")
     (define-key map "q" 'ess-noweb-fill-chunk)
     (define-key map "i" 'ess-noweb-new-chunk)
     (define-key map "o" 'ess-noweb-occur)
-    (define-key map "v" 'ess-noweb-mode-version)
+    ;;(define-key map "v" 'ess-noweb-mode-version)
     (define-key map "h" 'ess-noweb-describe-mode)
     ;; do *NOT* override C-h (give all keybindings startings with M-n!
     map)
@@ -329,7 +329,8 @@ replaced by sequences of '*'.")
      ["Chunk occurrences" ess-noweb-occur t])
     "--"
     ["Help" ess-noweb-describe-mode t]
-    ["Version" ess-noweb-mode-version t]))
+    ;;["Version" ess-noweb-mode-version t]
+    ))
 
 ;; Add ess-noweb-mode to the list of minor modes
 (if (not (assq 'ess-noweb-mode minor-mode-alist))
@@ -413,7 +414,6 @@ Misc:
 \\[ess-noweb-occur] \t\tfind all occurrences of the current chunk
 \\[ess-noweb-update-chunk-vector] \tupdate the markers for chunks
 \\[ess-noweb-describe-mode] \tdescribe ess-noweb-mode
-\\[ess-noweb-mode-version] \t\tshow ess-noweb-mode's version in the minibuffer
 "  (interactive "P")
 ;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
 ;; It seems to ensure that the variable ess-noweb-mode is made
@@ -1381,8 +1381,7 @@ The only sensible way to do this is to add a mode line to the chunk"
 (defun ess-noweb-mode-version ()
   "Echo the RCS identification of noweb mode."
   (interactive)
-  (message "Thorsten's ess-noweb-mode (PRERELEASE). RCS: %s"
-           ess-noweb-mode-RCS-Id))
+  (message "Thorsten's ess-noweb-mode, now part of ESS version %s" ess-version))
 
 (defun ess-noweb-describe-mode ()
   "Describe noweb mode."
