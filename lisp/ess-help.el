@@ -585,6 +585,8 @@ For internal use. Used in `ess-display-help-on-object',
 (defvar ess-doc-map
   (let (ess-doc-map)
     (define-prefix-command 'ess-doc-map)
+    (define-key ess-doc-map "\C-e" 'ess-describe-object-at-point)
+    (define-key ess-doc-map "e" 'ess-describe-object-at-point)
     (define-key ess-doc-map "\C-d" 'ess-display-help-on-object)
     (define-key ess-doc-map "d" 'ess-display-help-on-object)
     (define-key ess-doc-map "\C-i" 'ess-display-package-index)
@@ -593,6 +595,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key ess-doc-map "a" 'ess-display-help-apropos)
     (define-key ess-doc-map "\C-v" 'ess-display-vignettes)
     (define-key ess-doc-map "v" 'ess-display-vignettes)
+    (define-key ess-doc-map "\C-o" 'ess-display-demos)
     (define-key ess-doc-map "o" 'ess-display-demos)
     ess-doc-map
     )
@@ -918,6 +921,61 @@ return it.  Otherwise, return `ess-help-topics-list'."
   ;;(other-window 1)
   (Info-goto-node (concat "(ess)" node)))
 
+
+ ;; describe object at point
+
+(defvar ess-describe-object-at-point-commands nil
+  "Commands cycled by `ess-describe-object-at-point'. Dialect
+specific.")
+(make-variable-buffer-local 'ess-describe-at-point-commands)
+
+(defvar ess--descr-o-a-p-commands nil)
+
+(defun ess-describe-object-at-point ()
+  "Get info for object at point, and display it in an electric buffer or tooltip.
+
+Customize `ess-describe-at-point-method' if you wan to display
+the description in a tooltip.
+
+See also `ess-R-describe-object-at-point-commands' (and similar
+option for other dialects).
+"
+  (interactive)
+  (if (not ess-describe-object-at-point-commands)
+      (message "Not implemented for dialect %s" ess-dialect)
+    (ess-force-buffer-current)
+    (let ((map (make-sparse-keymap))
+          (objname (symbol-at-point))
+          bs ess--descr-o-a-p-commands)
+      (unless objname (error "No object at point "))
+      (define-key map (vector last-command-event) 'ess--describe-object-at-point)
+      ;; todo: put digits into the map
+      (let ((buf (ess--execute-singlekey-command map nil objname)))
+        (when (bufferp buf)
+          (kill-buffer buf))) ;; bury does not work here :( (emacs bug?)
+      )))
+
+(defun ess--describe-object-at-point (ev objname)
+  (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
+                                      ess-describe-object-at-point-commands))
+  (let* ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
+         (buf (get-buffer-create "*ess-describe*"))
+         pos)
+    (ess-command (concat com "\n") buf)
+    (with-current-buffer buf
+      (goto-char (point-min))
+      (insert (propertize (format "%s:\n\n" com) 'face 'font-lock-string-face))
+      (forward-line -1)
+      (setq pos (point))
+      (setq buffer-read-only t))
+    (if (eq ess-describe-at-point-method 'tooltip)
+        (ess-tooltip-show-at-point
+         (with-current-buffer buf (buffer-string))  0 30)
+      (display-buffer buf)
+      (set-window-point (get-buffer-window buf) pos) ;; don't move the visible point
+      buf)))
+
+
  ; Bug Reporting
 
 (defun ess-submit-bug-report ()
@@ -957,6 +1015,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
                  (forward-line -100)
                  (buffer-substring-no-properties (point) (point-max))))
        ))))
+
 
 
 ;;; Provide
