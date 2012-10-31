@@ -831,9 +831,9 @@ requre the prefix command for subsequent invocation.
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command.
 
-Each command in map should accept one argument, the most recent
-event (as read by `read-event'). ARGS are the supplementary
-arguments passed to commands in MAP.
+Each command in map should accept one at least one argument, the
+most recent event (as read by `read-event'). ARGS are the
+supplementary arguments passed to the commands.
 "
 
   `(let* ((ev last-command-event)

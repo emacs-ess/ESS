@@ -844,7 +844,7 @@ with C-c C-z C-z C-z ...
   (interactive "P")
   (let ((map (make-sparse-keymap)))
     (define-key map (vector last-command-event)
-      (lambda (eob) (interactive)
+      (lambda (ev eob) (interactive)
         (if (not (eq major-mode 'inferior-ess-mode))
             (ess-switch-to-ESS eob)
           (let ((dialect ess-dialect)
