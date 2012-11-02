@@ -2220,7 +2220,7 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(\\(?:[a-zA-Z ]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(?:\\(?1:[a-zA-Z ]*\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
@@ -2228,7 +2228,7 @@ to continue it."
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (match-string 0 string)))
+                             (format "%s'%s'" (match-string 1 string) (match-string 2 string))))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
@@ -2240,10 +2240,10 @@ to continue it."
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess--display-indexed-help-page (concat help-?-match "\n")  nil
-                                               (format "*ess-help[%s](%s)*"
-                                                       ess-current-process-name help-?-match)
-                                               'help))
+               (ess--display-indexed-help-page  (concat help-?-match "\n")  nil
+                                                (format "*ess-help[%s](%s)*"
+                                                        ess-current-process-name help-?-match)
+                                                'help))
              (process-send-string proc "\n"))
 
             (page-match

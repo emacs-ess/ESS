@@ -323,7 +323,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess--display-indexed-help-page (command item-regexp title help-type
                                                &optional action help-echo reg-start help-object)
   "Internal function to display help pages with linked actions
-  ;; COMMAND which produces the help page
+  ;; COMMAND to produce the indexed help page
   ;; ITEM-REGEXP -- first subexpression is highlighted
   ;; TITLE of the help page
   ;; HELP-TYPE to be stored in `ess-help-type' local variable
