@@ -1287,28 +1287,38 @@ Completion is available for supplying options."
   "Cache var to store package names. Used by
   `ess-install.packages'.")
 
-(defun ess-install.packages (&optional update)
+
+
+(defun ess-R-install.packages (&optional update)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
+  (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
+    (ess-setCRANMiror)
+    (ess-wait-for-process (get-process ess-current-process-name))
+    (setq update t))
+  (when (or update
+            (not ess--packages-cache))
+    (message "Fetching R packages ... ")
+    (setq ess--packages-cache
+          (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
+  (let ((ess-eval-visibly-p t)
+        pack)
+    (setq pack (ess-completing-read "Package to install" ess--packages-cache))
+    (process-send-string (get-process ess-current-process-name)
+                         (format "install.packages('%s')\n" pack))
+    (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+    ))
+
+(define-obsolete-function-alias 'ess-install.packages 'ess-R-install.packages "ESS[12.09-1]")
+
+(defun ess-install-library ()
+  "Install library/package for current dialect.
+Currently works only for R."
+  (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
-    (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
-      (ess-setCRANMiror)
-      (ess-wait-for-process (get-process ess-current-process-name))
-      (setq update t))
-    (when (or update
-              (not ess--packages-cache))
-      (message "Fetching R packages ... ")
-      (setq ess--packages-cache
-            (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
-    (let ((ess-eval-visibly-p t)
-          pack)
-      (setq pack (ess-completing-read "Package to install" ess--packages-cache))
-      (process-send-string (get-process ess-current-process-name)
-                           (format "install.packages('%s')\n" pack))
-      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
-      )))
-
+    (ess-R-install.packages)))
+  
 
 (defun ess-setRepositories ()
   "Call setRepositories()"
@@ -1347,8 +1357,8 @@ Completion is available for supplying options."
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd))
   )
 
-(defun ess-library ()
-  "Prompt and install R package. With argument, update cached packages list."
+(defun ess-load-library ()
+  "Prompt and load ess-dialect library/package."
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
@@ -1361,6 +1371,7 @@ Completion is available for supplying options."
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
 
+(define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
 
  ; provides
 
