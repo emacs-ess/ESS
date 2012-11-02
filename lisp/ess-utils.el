@@ -848,6 +848,19 @@ supplementary arguments passed to the commands.
      (push ev unread-command-events)
      out))
 
+(defmacro ess--execute-dialect-specific (command &optional args)
+  "Execute dialect specific command.
+
+-- If command is not defined issue warning 'Not availabe for dialect X'
+-- if a function, execute it with ARGS
+-- If a string strarting with 'http' or 'www' browse with `browse-url',
+   otherwise execute the command in inferior process.
+
+When command is a string ARGS are substituted as in (format
+command ,@args).
+"
+  (error "not implemente yet")
+  )
 
 
 
