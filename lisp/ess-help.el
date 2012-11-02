@@ -957,7 +957,7 @@ option for other dialects).
 
 (defun ess--describe-object-at-point (ev objname)
   (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
-                                      ess-describe-object-at-point-commands))
+                                      (symbol-value ess-describe-object-at-point-commands)))
   (let* ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
          (buf (get-buffer-create "*ess-describe*"))
          pos)
@@ -972,7 +972,7 @@ option for other dialects).
         (ess-tooltip-show-at-point
          (with-current-buffer buf (buffer-string))  0 30)
       (display-buffer buf)
-      (set-window-point (get-buffer-window buf) pos) ;; don't move the visible point
+      (set-window-point (get-buffer-window buf) pos) ;; don't move window point
       buf)))
 
 

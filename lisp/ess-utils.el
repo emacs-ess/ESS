@@ -840,7 +840,7 @@ supplementary arguments passed to the commands.
           (command (lookup-key ,map (vector ev)))
           out)
      (unless ,wait
-       (funcall command ev ,@args))
+       (setq out (funcall command ev ,@args)))
      (while (setq command
                   (lookup-key ,map
                               (vector (setq ev (read-event)))))
