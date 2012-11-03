@@ -700,8 +700,7 @@ LANGUAGE (and DIALECT)."
              ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
              (error "No ESS processes running; not yet implemented to start (%s,%s)"
                     language dialect)))
-      ;; fixme: save excursion is not working here !!! bad bad bad !!
-      ;; (pop-to-buffer cur-buf)
+      ;; save excursion is not working here !!! bad bad bad !!
       )))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
@@ -763,7 +762,8 @@ Returns the name of the selected process."
         (setq proc (caar ess-process-name-list)))
       ;; (with-current-buffer (process-buffer (get-process proc))
       ;;   (ess-make-buffer-current))
-      (unless noswitch
+      (if noswitch
+          (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
         (ess-pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
