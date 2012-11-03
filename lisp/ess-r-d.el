@@ -117,9 +117,12 @@
     ;; :enable ess-local-process-name
     ["Active?"          ess-toggle-tracebug
      :style toggle
-     :selected (and ess-local-process-name (ess-process-get 'tracebug))]
+     :selected (and ess-local-process-name
+                    (get-process ess-local-process-name)
+                    (ess-process-get 'tracebug))]
     ["Show traceback" ess-show-R-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
+                             (get-process ess-local-process-name)
                              (ess-process-get 'tracebug))]
     ["Error action cycle" ess-dbg-toggle-error-action (and ess-local-process-name
                                                            (ess-process-get 'tracebug))]
@@ -145,6 +148,7 @@
     ["Active?"          ess-toggle-developer
      :style toggle
      :selected (and ess-local-process-name
+                    (get-process ess-local-process-name)
                     (ess-process-get 'developer))]
     ["Add package" ess-developer-add-package t]
     ["Remove package" ess-developer-remove-package t]

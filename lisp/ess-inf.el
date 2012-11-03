@@ -679,31 +679,30 @@ LANGUAGE (and DIALECT)."
 
   (unless dialect
     (error "The value of `dialect' is nil"))
+  
+  (save-current-buffer
+    (let ((dsymb (intern dialect)))
+      (ess-write-to-dribble-buffer
+       (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
+               language dialect (current-buffer)))
+      (cond ((string= dialect "R") (R))
+            ((string= language "S") ;VS[03-09-2012]: cannot start s+?
+             (message "ESS process not running, trying to start R, since language = 'S")
+             (R))
+            ((string= dialect "Stata") (stata))
+            ;;general case
+            ((fboundp dsymb)
+             (funcall dsymb))
+            (t ;; else: ess-language is not S
 
-  (let ((cur-buf (current-buffer))
-        (dsymb (intern dialect)))
-
-    (ess-write-to-dribble-buffer
-     (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
-             language dialect cur-buf))
-    (cond ((string= dialect "R") (R))
-          ((string= language "S") ;VS[03-09-2012]: cannot start s+?
-           (message "ESS process not running, trying to start R, since language = 'S")
-           (R))
-          ((string= dialect "Stata") (stata))
-          ;;general case
-          ((fboundp dsymb)
-           (funcall dsymb))
-          (t ;; else: ess-language is not S
-
-           ;; Typically triggered from
-           ;; ess-force-buffer-current("Process to load into: ")
-           ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
-           (error "No ESS processes running; not yet implemented to start (%s,%s)"
-                  language dialect)))
-    ;; fixme: save excursion is not working here !!! bad bad bad !!
-    (pop-to-buffer cur-buf)
-    ))
+             ;; Typically triggered from
+             ;; ess-force-buffer-current("Process to load into: ")
+             ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
+             (error "No ESS processes running; not yet implemented to start (%s,%s)"
+                    language dialect)))
+      ;; fixme: save excursion is not working here !!! bad bad bad !!
+      ;; (pop-to-buffer cur-buf)
+      )))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
@@ -721,6 +720,7 @@ Returns the name of the selected process."
     (error "Local value of `ess-dialect' is nil"))
 
   (let ((num-processes (length ess-process-name-list))
+        (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
         (auto-started?))
     (if (or (= 0 num-processes)
             (and (= 1 num-processes)
@@ -763,9 +763,8 @@ Returns the name of the selected process."
         (setq proc (caar ess-process-name-list)))
       ;; (with-current-buffer (process-buffer (get-process proc))
       ;;   (ess-make-buffer-current))
-      (if noswitch
-          nil
-        (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
+      (unless noswitch
+        (ess-pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
 
@@ -789,14 +788,13 @@ there is only one process running."
       (if (and ess-local-process-name (not force) no-autostart)
           (error "Process %s has died" ess-local-process-name)
         ;; ess-local-process-name is nil -- which process to attach to
-        (save-excursion
-          (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
-                temp-ess-help-filetype  dialect)
-            (with-current-buffer (process-buffer (get-process proc))
-              (setq temp-ess-help-filetype inferior-ess-help-filetype))
-            (setq ess-local-process-name proc)
-            (setq inferior-ess-help-filetype temp-ess-help-filetype)
-            ))))))
+        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
+              temp-ess-help-filetype  dialect)
+          (with-current-buffer (process-buffer (get-process proc))
+            (setq temp-ess-help-filetype inferior-ess-help-filetype))
+          (setq ess-local-process-name proc)
+          (setq inferior-ess-help-filetype temp-ess-help-filetype)
+          )))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
