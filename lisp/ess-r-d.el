@@ -927,8 +927,12 @@ later."
   (save-restriction
     (let* ((proc (get-buffer-process (current-buffer)))
            (mark (and proc (process-mark proc))))
-      (if (and mark (>= (point) mark))
+      
+      (if (and mark (>= (point) mark)) 
           (narrow-to-region mark (point)))
+
+      (and ess-noweb-mode 
+           (ess-noweb-narrow-to-chunk))
       
       (when (not (ess-inside-string-p))
         (setq ess--funname.start
