@@ -333,6 +333,7 @@
     (inferior-ess-program		. inferior-julia-program-name)
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
+    (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (inferior-ess-load-command		. "load(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
