@@ -880,6 +880,7 @@ to `ess-completing-read'.
              ((and (stringp com)
                    (string-match "^\\(http\\|www\\)" com))
               (setq com (apply 'format com args))
+              (require 'browse-url)
               (browse-url com))
              ((stringp com)
               (unless (string-match "\n$" com)
