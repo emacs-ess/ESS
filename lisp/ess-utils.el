@@ -848,7 +848,7 @@ supplementary arguments passed to the commands.
      (push ev unread-command-events)
      out))
 
-(defmacro ess--execute-dialect-specific (command &optional args)
+(defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
   "Execute dialect specific command.
 
 -- If command is not defined issue warning 'Not availabe for dialect X'
@@ -856,10 +856,38 @@ supplementary arguments passed to the commands.
 -- If a string strarting with 'http' or 'www' browse with `browse-url',
    otherwise execute the command in inferior process.
 
-When command is a string ARGS are substituted as in (format
-command ,@args).
+When command is a string ARGS are substituted by (format ,command ,@args).
+
+When PROMPT is non-nil ask the user for a string value and
+prepend the response to ARGS.
+
+If prompt is a string just pass it to `read-string'. If a list, pass it
+to `ess-completing-read'.
 "
-  (error "not implemente yet")
+  `(if (null ,command)
+       (message "Sorry, not implemented for dialect %s" ess-dialect)
+     (let* ((com  (if (symbolp ,command)
+                     (symbol-value ,command)
+                   ,command))
+            (prompt ',prompt)
+            (resp (and prompt
+                       (if (stringp  prompt)
+                           (read-string  prompt)
+                         (apply 'ess-completing-read prompt))))
+            (args (append (list resp) ',args)))
+       (cond ((functionp com)
+              (apply com args))
+             ((and (stringp com)
+                   (string-match "^\\(http\\|www\\)" com))
+              (setq com (apply 'format com args))
+              (browse-url com))
+             ((stringp com)
+              (unless (string-match "\n$" com)
+                (setq com (concat com "\n")))
+              (setq com (apply 'format com args))
+              (ess-eval-linewise com))
+             (t
+              (error "arcument COMMAND must be either a function or a string")))))
   )
 
 
