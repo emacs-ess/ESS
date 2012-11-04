@@ -441,6 +441,7 @@ Used in noweb modes.")
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
+  ;; (setq alist (reverse alist)) ;; It should really be in reverse order; 
   (mapc (lambda (pair)
           (make-local-variable (car pair))
           (set (car pair) (eval (cdr pair)))

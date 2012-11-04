@@ -1,24 +1,77 @@
 @itemize @w{}
 
-Bug Fixes/Changes/New Features in 12.09-1:
+Changes/New Features in 12.09-1:
+@itemize @bullet
+@item @ESS{} @emph{Breaking Changes}: Key changes.
+
+@itemize @minus
+@item New keymaps: 
+@code{ess-doc-map} bound to @kbd{C-c C-d}; @code{ess-extra-map} bound
+to @kbd{C-c C-e}; @code{ess-dump-object-into-edit-buffer} was moved on
+@kbd{C-c C-e C-d}.
+@item roxygen map was moved on @kbd{C-c C-o} and
+@kbd{ess-roxy-update-entry} now resides on @kbd{C-c C-o C-o}.
+@item handy commands moved to @kbd{C-c C-a}.
+@item @code{ess-dev-map} (including @code{ess-tracebug} and @code{ess-developer})
+moved on @kbd{C-c C-t}. 
+@end itemize
+@item @ESS{[R]} new command @code{ess-describe-object-at-point} 
+bound to @kbd{C-c C-d C-e} (repeat @kbd{C-e} or @kbd{e} to cycle). It
+was inspired by Erik Iverson's @code{ess-R-object-tooltip} which was
+floating around for long time. Customize
+@code{ess-describe-at-point-method} to use tooltip instead of an
+electric buffer.
+@item @ESS{}: new command @code{ess-build-tags-for-directory} 
+bound to @kbd{C-c C-e C-t} for building dialect specific tag
+tables. After building tags you can use @kbd{M-.} to navigate to
+function and objects definitions. By default @kbd{C-c C-e C-t} builds
+tags based on imenu regular expressions and also include other common
+languages @code{.c, .o, .cpp} etc. But it relies on external @code{find}
+and @code{etags} commands. If @code{ess-build-tags-command} is defined
+(default for R), the inferior process is asked to build the tags. See
+@code{ess-build-tags-for-directory} for more details.
+@item @ESS{[R]}: new evaluation patter @code{nowait}. 
+In addition to old @code{nil} and @code{t} values,
+@code{ess-eval-visibly} accepts @code{nowait} for a visible evaluation
+but with now express waiting for the process. See
+@code{ess-eval-visibly} for details on evaluation patterns.
+@item @iESS{} process buffer now pops up on errors
+@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative 
+to start a new process instead of switching to one of the currently
+running processes.
+@item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
+of cases where the number of leading @kbd{#} differs from
+@code{ess-roxy-str}.
+@item @ESS{[R]} Eldoc was considerably enhanced. 
+It now find even hidden default S3 methods and displays other methods'
+arguments.
+@item @ESS{[Rnw]} Add knitr support.
+Customize @code{ess-swv-processor} for the default processor.
+@item @ESS{[Rnw]} more thorough renaming of remaining
+@code{noweb-*} to @code{ess-noweb-*}.
+@item @ESS{[Rnw]} new commands @code{ess-eval-chunk-and-step} and @code{ess-eval-chunk}
+bound to @kbd{M-n C-c} and @kbd{M-n C-M-x} to mirror standard ess
+commands in C-c map.
+@item @ESS{[R]} Auto-completion integration: new variable
+@code{ess-ac-R-argument-suffix} to customize the insertion of trailing
+"=". Defaults to `` = ``.
+@end itemize
+
+Bug Fixes in 12.09-1:
 @itemize @bullet
 @item @iESS{[R]} and @iESS{(Sqpe) [S]} on Windows:
 The @code{options("editor")} is now initialized to @code{emacsclient}
 instead of the previous @code{gnuclient}.  The user may need to add the
 line @code{(server-start)} to the emacs initialization file.
  @code{emacsclient} has been included with emacs since GNU Emacs 22.1.
-@item @ESS{[Rnw]} fixed ``connection to R'' bug (in 12.09 only).
+@item @ESS{[Rnw]} Fixed ``connection to R'' bug (in 12.09 only).
 @item @ESS{[Rnw]} New @code{ess-eval-chunk-and-step} function
 functions.
 @item @ESS{[Rnw]} Explicit @code{ess-swv-stangle} and @code{ess-swv-sweave}
 functions.
-@item @ESS{[Rnw]} ess-noweb: more thorough renaming of remaining
-@code{noweb-*} to @code{ess-noweb-*}.
-
-@item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
-of cases where the number of leading @kbd{#} differs from @code{ess-roxy-str}.
-@item @ESS{[R]} @file{eldoc} rewritten.
-
+@item @ESS{[R]} is more careful with the @code{R} code injection. 
+It now happens only once at the start of the session. 
+@item @ESS{[R]}: Fixed auto-scrolling the comint buffer on evaluation.
 @end itemize
 
 Changes/New Features in 12.09:

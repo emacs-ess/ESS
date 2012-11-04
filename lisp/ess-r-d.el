@@ -117,9 +117,12 @@
     ;; :enable ess-local-process-name
     ["Active?"          ess-toggle-tracebug
      :style toggle
-     :selected (and ess-local-process-name (ess-process-get 'tracebug))]
+     :selected (and ess-local-process-name
+                    (get-process ess-local-process-name)
+                    (ess-process-get 'tracebug))]
     ["Show traceback" ess-show-R-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
+                             (get-process ess-local-process-name)
                              (ess-process-get 'tracebug))]
     ["Error action cycle" ess-dbg-toggle-error-action (and ess-local-process-name
                                                            (ess-process-get 'tracebug))]
@@ -145,6 +148,7 @@
     ["Active?"          ess-toggle-developer
      :style toggle
      :selected (and ess-local-process-name
+                    (get-process ess-local-process-name)
                     (ess-process-get 'developer))]
     ["Add package" ess-developer-add-package t]
     ["Remove package" ess-developer-remove-package t]
@@ -183,6 +187,7 @@
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
+     (ess-help-web-search-command       . 'ess-R-sos)
      (ess-mode-syntax-table             . R-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
      (ess-change-sp-regexp              . ess-R-change-sp-regexp)
@@ -923,8 +928,12 @@ later."
   (save-restriction
     (let* ((proc (get-buffer-process (current-buffer)))
            (mark (and proc (process-mark proc))))
-      (if (and mark (>= (point) mark))
+      
+      (if (and mark (>= (point) mark)) 
           (narrow-to-region mark (point)))
+
+      (and ess-noweb-mode 
+           (ess-noweb-narrow-to-chunk))
       
       (when (not (ess-inside-string-p))
         (setq ess--funname.start
@@ -1287,28 +1296,38 @@ Completion is available for supplying options."
   "Cache var to store package names. Used by
   `ess-install.packages'.")
 
-(defun ess-install.packages (&optional update)
+
+
+(defun ess-R-install.packages (&optional update)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
+  (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
+    (ess-setCRANMiror)
+    (ess-wait-for-process (get-process ess-current-process-name))
+    (setq update t))
+  (when (or update
+            (not ess--packages-cache))
+    (message "Fetching R packages ... ")
+    (setq ess--packages-cache
+          (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
+  (let ((ess-eval-visibly-p t)
+        pack)
+    (setq pack (ess-completing-read "Package to install" ess--packages-cache))
+    (process-send-string (get-process ess-current-process-name)
+                         (format "install.packages('%s')\n" pack))
+    (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+    ))
+
+(define-obsolete-function-alias 'ess-install.packages 'ess-R-install.packages "ESS[12.09-1]")
+
+(defun ess-install-library ()
+  "Install library/package for current dialect.
+Currently works only for R."
+  (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
-    (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
-      (ess-setCRANMiror)
-      (ess-wait-for-process (get-process ess-current-process-name))
-      (setq update t))
-    (when (or update
-              (not ess--packages-cache))
-      (message "Fetching R packages ... ")
-      (setq ess--packages-cache
-            (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
-    (let ((ess-eval-visibly-p t)
-          pack)
-      (setq pack (ess-completing-read "Package to install" ess--packages-cache))
-      (process-send-string (get-process ess-current-process-name)
-                           (format "install.packages('%s')\n" pack))
-      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
-      )))
-
+    (ess-R-install.packages)))
+  
 
 (defun ess-setRepositories ()
   "Call setRepositories()"
@@ -1334,7 +1353,7 @@ Completion is available for supplying options."
       (message "New CHRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
       )))
 
-(defun ess-sos (cmd)
+(defun ess-R-sos (cmd)
   "Interface to findFn in the library sos."
                                         ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
   (interactive  "sfindFn: ")
@@ -1347,8 +1366,17 @@ Completion is available for supplying options."
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd))
   )
 
-(defun ess-library ()
-  "Prompt and install R package. With argument, update cached packages list."
+(define-obsolete-function-alias 'ess-sos 'ess-R-sos "ESS[12.09-1]")
+
+
+(defun ess-load-library ()
+  "Prompt and load dialect specific library/package/module.
+
+Note that add-on code in R are called 'packages' and the name of
+this function has nothing to do with R package mechanism, but it
+rather serves a generic, dialect independent purpose. It is also
+similar to `load-library' emacs function.
+"
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
@@ -1361,6 +1389,7 @@ Completion is available for supplying options."
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
       )))
 
+(define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
 
  ; provides
 

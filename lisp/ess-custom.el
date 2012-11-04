@@ -209,14 +209,14 @@ as `ess-imenu-use-S'."
 
 
 (defcustom ess-describe-at-point-method nil
-  "Whehter `ess-describe-object-at-point' should use tooltip or
-not. If nil display in an electric buffer. If 'tooltip display in
-an tooltip.
+  "Whehter `ess-describe-object-at-point' should use a tooltip.
+If nil display in an electric buffer. If 'tooltip display in
+a tooltip.
 
 See also `tooltip-hide-delay' and `tooltip-delay'.
  "
   :group 'ess-utils
-  :type '(choice (const nil) (const tooltip))
+  :type '(choice (const :tag "buffer" :value nil ) (const tooltip))
   )
 
 (defcustom ess-R-describe-object-at-point-commands
@@ -1062,9 +1062,6 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-;;;; This is tested for S dialects (actually only for R) -- be careful with it!
-(defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
-  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
  ; ess-inf: variables for inferior-ess.
 
@@ -2338,13 +2335,10 @@ the variable `ess-help-own-frame' is non-nil."
 Choices are `separate-buffer', `s-process', `www'.  The latter uses
 `browse-url' to find the location.")
 
-;; WWW Help NOT included yet.  Be patient.
-(defvar ess-help-w3-url-prefix "http://pyrite.cfas.washington.edu/ESS/R/"
-  "*Head URL for finding function help.")
-
-(defvar ess-help-w3-url-funs "funs/"
-  "Place to find functions.")
-
+(defvar ess-help-web-search-command nil
+  "Dialect specific command web help search.
+Passed to `ess-execute-dialect-specific' which see. ")
+(make-variable-buffer-local 'ess-help-web-search-command)
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."

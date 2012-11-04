@@ -193,8 +193,11 @@
   (let (ess-extra-map)
     (define-prefix-command 'ess-extra-map)
     (define-key ess-extra-map "\C-d" 'ess-dump-object-into-edit-buffer)
-    (define-key ess-extra-map "\C-e" 'ess-describe-object-at-point)
     (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
+    (define-key ess-extra-map "\C-l" 'ess-load-library)
+    (define-key ess-extra-map "l" 'ess-load-library)
+    (define-key ess-extra-map "\C-i" 'ess-install-library)
+    (define-key ess-extra-map "i" 'ess-install-library)
     ;; (define-key map "C-t" 
     ess-extra-map)
   "ESS extra map"

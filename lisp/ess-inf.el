@@ -679,31 +679,29 @@ LANGUAGE (and DIALECT)."
 
   (unless dialect
     (error "The value of `dialect' is nil"))
+  
+  (save-current-buffer
+    (let ((dsymb (intern dialect)))
+      (ess-write-to-dribble-buffer
+       (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
+               language dialect (current-buffer)))
+      (cond ((string= dialect "R") (R))
+            ((string= language "S") ;VS[03-09-2012]: cannot start s+?
+             (message "ESS process not running, trying to start R, since language = 'S")
+             (R))
+            ((string= dialect "Stata") (stata))
+            ;;general case
+            ((fboundp dsymb)
+             (funcall dsymb))
+            (t ;; else: ess-language is not S
 
-  (let ((cur-buf (current-buffer))
-        (dsymb (intern dialect)))
-
-    (ess-write-to-dribble-buffer
-     (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
-             language dialect cur-buf))
-    (cond ((string= dialect "R") (R))
-          ((string= language "S") ;VS[03-09-2012]: cannot start s+?
-           (message "ESS process not running, trying to start R, since language = 'S")
-           (R))
-          ((string= dialect "Stata") (stata))
-          ;;general case
-          ((fboundp dsymb)
-           (funcall dsymb))
-          (t ;; else: ess-language is not S
-
-           ;; Typically triggered from
-           ;; ess-force-buffer-current("Process to load into: ")
-           ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
-           (error "No ESS processes running; not yet implemented to start (%s,%s)"
-                  language dialect)))
-    ;; fixme: save excursion is not working here !!! bad bad bad !!
-    (pop-to-buffer cur-buf)
-    ))
+             ;; Typically triggered from
+             ;; ess-force-buffer-current("Process to load into: ")
+             ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
+             (error "No ESS processes running; not yet implemented to start (%s,%s)"
+                    language dialect)))
+      ;; save excursion is not working here !!! bad bad bad !!
+      )))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
@@ -721,6 +719,7 @@ Returns the name of the selected process."
     (error "Local value of `ess-dialect' is nil"))
 
   (let ((num-processes (length ess-process-name-list))
+        (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
         (auto-started?))
     (if (or (= 0 num-processes)
             (and (= 1 num-processes)
@@ -764,8 +763,8 @@ Returns the name of the selected process."
       ;; (with-current-buffer (process-buffer (get-process proc))
       ;;   (ess-make-buffer-current))
       (if noswitch
-          nil
-        (ess-show-buffer (buffer-name (process-buffer (get-process proc))) t))
+          (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
+        (ess-pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
 
@@ -789,14 +788,13 @@ there is only one process running."
       (if (and ess-local-process-name (not force) no-autostart)
           (error "Process %s has died" ess-local-process-name)
         ;; ess-local-process-name is nil -- which process to attach to
-        (save-excursion
-          (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
-                temp-ess-help-filetype  dialect)
-            (with-current-buffer (process-buffer (get-process proc))
-              (setq temp-ess-help-filetype inferior-ess-help-filetype))
-            (setq ess-local-process-name proc)
-            (setq inferior-ess-help-filetype temp-ess-help-filetype)
-            ))))))
+        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
+              temp-ess-help-filetype  dialect)
+          (with-current-buffer (process-buffer (get-process proc))
+            (setq temp-ess-help-filetype inferior-ess-help-filetype))
+          (setq ess-local-process-name proc)
+          (setq inferior-ess-help-filetype temp-ess-help-filetype)
+          )))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
@@ -844,7 +842,7 @@ with C-c C-z C-z C-z ...
   (interactive "P")
   (let ((map (make-sparse-keymap)))
     (define-key map (vector last-command-event)
-      (lambda (eob) (interactive)
+      (lambda (ev eob) (interactive)
         (if (not (eq major-mode 'inferior-ess-mode))
             (ess-switch-to-ESS eob)
           (let ((dialect ess-dialect)
@@ -2217,10 +2215,12 @@ to continue it."
     (process-send-string proc (concat string "\n"))))
 
 
+(defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
+  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(\\(?:[a-zA-Z ]*\\)\\?\\{1,2\\}.+\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(?:\\(?1:[a-zA-Z ]*\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
@@ -2228,7 +2228,7 @@ to continue it."
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (match-string 0 string)))
+                             (format "%s'%s'" (match-string 1 string) (match-string 2 string))))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
@@ -2240,10 +2240,10 @@ to continue it."
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess--display-indexed-help-page (concat help-?-match "\n")  nil
-                                               (format "*ess-help[%s](%s)*"
-                                                       ess-current-process-name help-?-match)
-                                               'help))
+               (ess--display-indexed-help-page  (concat help-?-match "\n")  nil
+                                                (format "*ess-help[%s](%s)*"
+                                                        ess-current-process-name help-?-match)
+                                                'help))
              (process-send-string proc "\n"))
 
             (page-match

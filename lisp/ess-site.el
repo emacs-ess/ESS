@@ -247,6 +247,7 @@ between .s or .S files and assembly mode.
            ("\\.[sS]nw\\'"      . Snw-mode); currently identical to Rnw-mode
            ("\\.[rR]profile\\'" . R-mode)
            ("NAMESPACE\\'"      . R-mode)
+           ("CITATION\\'"       . R-mode)
            ("\\.omg\\'"         . omegahat-mode)
            ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
            ("\\.lsp\\'"         . XLS-mode)
