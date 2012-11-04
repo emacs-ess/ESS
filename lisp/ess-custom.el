@@ -1062,9 +1062,6 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-;;;; This is tested for S dialects (actually only for R) -- be careful with it!
-(defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
-  "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
 
  ; ess-inf: variables for inferior-ess.
 
@@ -2338,13 +2335,10 @@ the variable `ess-help-own-frame' is non-nil."
 Choices are `separate-buffer', `s-process', `www'.  The latter uses
 `browse-url' to find the location.")
 
-;; WWW Help NOT included yet.  Be patient.
-(defvar ess-help-w3-url-prefix "http://pyrite.cfas.washington.edu/ESS/R/"
-  "*Head URL for finding function help.")
-
-(defvar ess-help-w3-url-funs "funs/"
-  "Place to find functions.")
-
+(defvar ess-help-web-search-command nil
+  "Dialect specific command web help search.
+Passed to `ess-execute-dialect-specific' which see. ")
+(make-variable-buffer-local 'ess-help-web-search-command)
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
