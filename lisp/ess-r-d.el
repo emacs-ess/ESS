@@ -1365,8 +1365,16 @@ Currently works only for R."
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd))
   )
 
+
+
 (defun ess-load-library ()
-  "Prompt and load ess-dialect library/package."
+  "Prompt and load dialect specific library/package/module.
+
+Note that add-on code in R are called 'packages' and the name of
+this function has nothing to do with R package mechanism, but it
+rather serves a generic, dialect independent purpose. It is also
+similar to `load-library' emacs function.
+"
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
