@@ -560,18 +560,10 @@ For internal use. Used in `ess-display-help-on-object',
 
 
 
-;;; THIS WORKS!
-;;(require 'w3)
-                                        ;(defun ess-display-w3-help-on-object-other-window (object)
-                                        ;  "Display R-documentation for OBJECT using W3"
-                                        ;  (interactive "s Help on :")
-                                        ;  (let* ((ess-help-url (concat ess-help-w3-url-prefix
-                                        ;                              ess-help-w3-url-funs
-                                        ;                              object
-                                        ;                              ".html")))
-;;(w3-fetch-other-window ess-help-url)
-                                        ;    ))
-
+(defun ess-help-web-search ()
+  "Search the web for documentation"
+  (interactive)
+  (ess-execute-dialect-specific ess-help-web-search-command "Search for: "))
 
 ;;*;; Major mode definition
 
@@ -597,6 +589,8 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key ess-doc-map "v" 'ess-display-vignettes)
     (define-key ess-doc-map "\C-o" 'ess-display-demos)
     (define-key ess-doc-map "o" 'ess-display-demos)
+    (define-key ess-doc-map "\C-w" 'ess-help-web-search)
+    (define-key ess-doc-map "w" 'ess-help-web-search)
     ess-doc-map
     )
   "ESS documentaion map.")

@@ -867,7 +867,7 @@ to `ess-completing-read'.
   `(if (null ,command)
        (message "Sorry, not implemented for dialect %s" ess-dialect)
      (let* ((com  (if (symbolp ,command)
-                     (symbol-value ,command)
+                     (symbol-function ,command)
                    ,command))
             (prompt ',prompt)
             (resp (and prompt
@@ -887,7 +887,7 @@ to `ess-completing-read'.
               (setq com (apply 'format com args))
               (ess-eval-linewise com))
              (t
-              (error "arcument COMMAND must be either a function or a string")))))
+              (error "Argument COMMAND must be either a function or a string")))))
   )
 
 

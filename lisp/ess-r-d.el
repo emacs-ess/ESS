@@ -187,6 +187,7 @@
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
+     (ess-help-web-search-command       . 'ess-R-sos)
      (ess-mode-syntax-table             . R-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
      (ess-change-sp-regexp              . ess-R-change-sp-regexp)
@@ -1352,7 +1353,7 @@ Currently works only for R."
       (message "New CHRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
       )))
 
-(defun ess-sos (cmd)
+(defun ess-R-sos (cmd)
   "Interface to findFn in the library sos."
                                         ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
   (interactive  "sfindFn: ")
@@ -1365,6 +1366,7 @@ Currently works only for R."
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd))
   )
 
+(define-obsolete-function-alias 'ess-sos 'ess-R-sos "ESS[12.09-1]")
 
 
 (defun ess-load-library ()
