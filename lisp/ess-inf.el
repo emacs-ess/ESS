@@ -2220,7 +2220,7 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(?:\\(?1:[a-zA-Z ]*\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
@@ -2240,12 +2240,8 @@ to continue it."
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess--display-indexed-help-page  (concat help-?-match "\n")  nil
-                                                (format "*ess-help[%s](%s)*"
-                                                        ess-current-process-name help-?-match)
-                                                'help))
+               (ess-display-help-on-object help-?-match "%s\n"))
              (process-send-string proc "\n"))
-
             (page-match
              (switch-to-buffer-other-window
               (ess-command (concat page-match "\n")
