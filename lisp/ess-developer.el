@@ -43,7 +43,7 @@
     (((class color))
      (:background "deep sky blue" :foreground "red4"  :bold t ))
     )
-  "Face to highlight currently debugged line."
+  "Face to highlight mode line process name when developer mode is on."
   :group 'ess-developer
   )
 
