@@ -261,10 +261,11 @@ before ess-site is loaded) for it to take effect.")
   funname <- as.character(substitute(object))
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
-    oldopts <- options(error=NULL)
+    olderr <- getOption('error')
+    options(error=NULL)
     on.exit({
       compiler::enableJIT(comp)
-      options(oldopts)
+      options(error = olderr)
     })
   }
   fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
@@ -297,10 +298,10 @@ before ess-site is loaded) for it to take effect.")
 .ess_get_completions <- function(string, end){
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
-    olderr <- options(error=NULL)
-    on.exit({
-      on.exit({options(olderr)
-               compiler::enableJIT(comp)})
+    olderr <- getOption('error')
+    options(error=NULL)
+    on.exit({options(error = olderr)
+             compiler::enableJIT(comp)})
     })
   }
   utils:::.assignLinebuffer(string)
@@ -1136,8 +1137,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defvar ess--ac-help-arg-command
   "
 getArgHelp <- function(arg, func=NULL){
-    olderr <- options(error=NULL)
-    on.exit(options(olderr))
+    olderr <- getOption('error')
+    options(error=NULL)
+    on.exit(options(error=olderr))
     fguess <-
         if(is.null(func)) get('fguess', envir=utils:::.CompletionEnv)
         else func
