@@ -1,4 +1,4 @@
-If you look in [[file:Makefile]], you see that we currently (2012-11) have 6 (six!)
+If you look in [[file:Makefile][Makefile]], you see that we currently (2012-11) have 6 (six!)
 master files which '@include' other .texi modules, of course the main one
 being our manual, [[file:ess.texi][ESS Manual]] (ess.texi).
 The "shocking" observation was that e.g., currfeat.texi has *not* been
@@ -20,8 +20,10 @@ reporting).
 | unixlike.texi  |  372 |     106 | -         |               |       |        |
 | windows.texi   |  373 |     107 | -         |               |       |        |
 | currfeat.texi  |    - |     122 | 42        |               |       |        |
+|----------------+------+---------+-----------+---------------+-------+--------|
 | newfeat.texi   |  290 |     128 | 70        |               |     3 |        |
 | onewfeat.texi  |  291 |       - | -         |               |       |      3 |
+|----------------+------+---------+-----------+---------------+-------+--------|
 | bugrept.texi   | 3561 |     134 | 58        |               |       |        |
 | mailing.texi   | 3567 |     140 | 54        |               |       |        |
 | authors.texi   |    - |     146 | 62        |               |       |        |
