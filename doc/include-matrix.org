@@ -39,3 +39,4 @@ reporting).
 | bugs-sas.texi  |    - |       - | -         |            46 |       |        |
 |----------------+------+---------+-----------+---------------+-------+--------|
 
+(Numbers in table are *line numbers* of "@include .." in respective .texi file.)
