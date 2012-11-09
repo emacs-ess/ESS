@@ -302,7 +302,6 @@ before ess-site is loaded) for it to take effect.")
     options(error=NULL)
     on.exit({options(error = olderr)
              compiler::enableJIT(comp)})
-    })
   }
   utils:::.assignLinebuffer(string)
   utils:::.assignEnd(end)
