@@ -716,7 +716,9 @@ Returns the name of the selected process."
   (update-ess-process-name-list)
 
   (unless ess-dialect
-    (error "Local value of `ess-dialect' is nil"))
+    (setq ess-dialect
+          (ess-completing-read "Set `ess-dialect'"
+                               (list "R" S+6-dialect-name STA-dialect-name "julia" "SAS" "XLS"  "ViSta"))))
 
   (let ((num-processes (length ess-process-name-list))
         (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
