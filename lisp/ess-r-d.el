@@ -256,7 +256,7 @@ before ess-site is loaded) for it to take effect.")
   "Functions run in process buffer after the initialization of R
   process.")
 
-(defvar ess--R-injected-code  
+(defvar ess--R-injected-code
   ".ess_funnargs <- function(object){
   funname <- as.character(substitute(object))
   if(getRversion() > '2.14.1'){
@@ -269,7 +269,7 @@ before ess-site is loaded) for it to take effect.")
     })
   }
   fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
-  if(is.null(fun)) NULL 
+  if(is.null(fun)) NULL
   else if(is.function(fun)) {
     special <- grepl('[:$@[]', funname)
     args <- if(!special){
@@ -281,7 +281,7 @@ before ess-site is loaded) for it to take effect.")
       args <- args(fun)
     if(is.null(args))
       args <- do.call('argsAnywhere', list(funname))
-     
+
     fmls <- formals(args)
     fmls_names <- names(fmls)
     fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed=TRUE)
@@ -311,7 +311,7 @@ before ess-site is loaded) for it to take effect.")
     utils:::.retrieveCompletions())
 }
 ")
-    
+
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -330,7 +330,8 @@ to R, put them in the variable `inferior-R-args'."
   (let* ((r-always-arg
           (if (or ess-microsoft-p (eq system-type 'cygwin))
               "--ess "
-            "--no-readline "))
+            ;; else: "unix alike"
+            (if ess-R-no-readline "--no-readline ")))
          (r-start-args
           (concat r-always-arg
                   inferior-R-args " " ; add space just in case
@@ -371,13 +372,13 @@ to R, put them in the variable `inferior-R-args'."
                    "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
 
             (ess-command ess--R-injected-code)
-            
+
             (ess-eval-linewise
              ;; not just into .GlobalEnv where it's too easily removed..
              (concat "assignInNamespace(\".help.ESS\", "
                      my-R-help-cmd ", ns=asNamespace(\"base\"))")
              nil nil nil 'wait-prompt)
-            
+
             ))
 
       ;; else R version <= 2.4.1
@@ -392,7 +393,7 @@ to R, put them in the variable `inferior-R-args'."
        "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
        ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
        (lambda (proc) (process-put proc 'packages-cached? t))))
-    
+
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
                            nil nil nil 'wait-prompt))
@@ -446,7 +447,7 @@ to R, put them in the variable `inferior-R-args'."
   (ad-activate 'newline-and-indent)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
-  
+
   (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
@@ -928,13 +929,13 @@ later."
   (save-restriction
     (let* ((proc (get-buffer-process (current-buffer)))
            (mark (and proc (process-mark proc))))
-      
-      (if (and mark (>= (point) mark)) 
+
+      (if (and mark (>= (point) mark))
           (narrow-to-region mark (point)))
 
-      (and ess-noweb-mode 
+      (and ess-noweb-mode
            (ess-noweb-narrow-to-chunk))
-      
+
       (when (not (ess-inside-string-p))
         (setq ess--funname.start
               (condition-case nil ;; check if it is inside a functon call
@@ -1328,7 +1329,7 @@ Currently works only for R."
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
     (ess-R-install.packages)))
-  
+
 
 (defun ess-setRepositories ()
   "Call setRepositories()"

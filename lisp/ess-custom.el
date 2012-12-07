@@ -1107,6 +1107,13 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
+(defcustom ess-R-no-readline nil
+  "Non-nil indicates that \"--no-readline \" should be used as argument when starting R.
+This used to be the default from 1998 to 2012, and may very slightly speedup interaction.
+On the other hand, readline is necessary for expansion of \"~username/\" in paths."
+  :group 'ess-R
+  :type 'boolean)
+
 (defcustom inferior-STA-start-file nil
   "Initialization file for Stata."
   :group 'ess-Stata)
@@ -1637,7 +1644,7 @@ If nil, ESS doesn't print input commands and doesn't wait for the process.
 This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
 the process output, otherwise not.
-"  
+"
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 
