@@ -337,9 +337,10 @@ to R, put them in the variable `inferior-R-args'."
                   inferior-R-args " " ; add space just in case
                   (if start-args
                       (read-string
-                       (concat "Starting Args [other than `"
-                               r-always-arg
-                               "'] ? "))
+                       (concat "Starting Args"
+                               (if r-always-arg
+                                   (concat " [other than '" r-always-arg "']"))
+                               " ? "))
                     nil)))
          use-dialog-box)
 
