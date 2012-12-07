@@ -1,7 +1,5 @@
 
-@node Unix installation, Microsoft Windows installation, , Installation
-@comment  node-name,  next,  previous,  up
-@section Unix installation
+@c @section Unix (Linux / MacOS / Solaris / ...) Installation
 @comment THIS IS A REPLACEMENT FOR THE UNIX PORTION OF inst_tar.texi
 
 For a @b{Unix or Unix-like installation}, please follow the next steps.
@@ -16,14 +14,14 @@ and ESS, the installation process is simple.
 Extract all the files from @file{ess-VERSION.tgz} into
 the directory @file{PREFIX/site-lisp}
 where @file{PREFIX} is appropriate for GNU Emacs on your system;
-@file{PREFIX} will most likely be either 
+@file{PREFIX} will most likely be either
 @file{/usr/share/emacs} or @file{/usr/local/share/emacs}
 @comment which exists for packages like @ESS{}
 (on Mac OS X, @file{PREFIX} will most likely be something like
 @file{/Applications/Emacs.app/Contents/Resources}):
 @example
-GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp             
-Unix tar % gunzip < ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp 
+GNU tar  % gtar zxf ess-VERSION.tgz -C PREFIX/site-lisp
+Unix tar % gunzip < ess-VERSION.tgz | tar xf - -C PREFIX/site-lisp
 @end example
 
 @item
@@ -33,16 +31,16 @@ Then, add the line
 @end example
 to @file{~/.emacs} and restart Emacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the simple instructions
 were most likely successful.  If not, then read further.
 
 @item
 It could be that you have an older version of Emacs, some other problem
 with your installation or you are not a sysadmin.  Whatever the case,
-you may need to edit @file{ess-site.el} manually.  If that is the case, 
+you may need to edit @file{ess-site.el} manually.  If that is the case,
 then you should create a directory just for @ESS{} like @file{~/ess}
-or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to 
+or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to
 @file{ess-site.el} will not be lost if you update Emacs later.
 
 @item
@@ -52,16 +50,16 @@ Replace the line above with
 @end example
 in @file{~/.emacs} and restart Emacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the manual instructions
-were most likely successful.  If not, then send a query to 
+were most likely successful.  If not, then send a query to
 @email{ess-help@@r-project.org}
 explicitly describing your problem and your environment
 including operating system, Emacs version, @ESS{} version, etc.
 @end enumerate
 
-@b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs 
-ends with ESS 12.04-4.  This decision will be re-visited in the future as 
+@b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs
+ends with ESS 12.04-4.  This decision will be re-visited in the future as
 XEmacs continues to sync with GNU Emacs.}
 
 @emph{XEmacs Simple Instructions:} for recent versions of XEmacs (21.4.x or higher)
@@ -87,16 +85,16 @@ Then, add the line
 @end example
 to @file{~/.xemacs/init.el} and restart XEmacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the simple instructions
 were most likely successful.  If not, then read further.
 
 @item
 It could be that you have an older version of XEmacs, some other problem
 with your installation or you are not a sysadmin.  Whatever the case,
-you may need to edit @file{ess-site.el} manually.  If that is the case, 
+you may need to edit @file{ess-site.el} manually.  If that is the case,
 then you should create a directory just for @ESS{} like @file{~/ess}
-or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to 
+or @file{/usr/local/ess} and unpack @ESS{} there.  That way, your changes to
 @file{ess-site.el} will not be lost if you update XEmacs later.
 
 @item
@@ -106,9 +104,9 @@ Replace the line above with
 @end example
 in @file{~/.xemacs/init.el} and restart XEmacs.
 
-@item 
+@item
 If you see a buffer named @file{*ESS*}, then the manual instructions
-were most likely successful.  If not, then send a query to 
+were most likely successful.  If not, then send a query to
 @email{ess-help@@r-project.org}
 explicitly describing your problem and your environment
 including operating system, XEmacs version, @ESS{} version, etc.
@@ -119,7 +117,7 @@ including operating system, XEmacs version, @ESS{} version, etc.
 @item
 @b{(OPTIONAL) COMPILING E-LISP}:
 
-Edit the default locations of @code{LISPDIR}, @code{INFODIR} and 
+Edit the default locations of @code{LISPDIR}, @code{INFODIR} and
 @code{ETCDIR} in Section 1 of @file{Makeconf} (if you are
 using XEmacs, then edit the XEmacs subsection in Section 1).
 

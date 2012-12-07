@@ -1,7 +1,4 @@
-@c @node Microsoft Windows installation, , Unix installation, Installation
-@node Microsoft Windows installation, Requirements, Unix installation, Installation
-@comment  node-name,  next,  previous,  up
-@section Microsoft Windows installation
+@c @section Microsoft Windows installation
 @comment THIS IS A REPLACEMENT FOR THE WINDOWS PORTION OF inst_tar.texi
 
 For @b{Microsoft Windows installation}, please follow the next steps.
@@ -56,8 +53,8 @@ explicitly describing your problem and your environment
 including operating system, Emacs version, @ESS{} version, etc.
 @end enumerate
 
-@b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs 
-ends with ESS 12.04-4.  This decision will be re-visited in the future as 
+@b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs
+ends with ESS 12.04-4.  This decision will be re-visited in the future as
 XEmacs continues to sync with GNU Emacs.}
 
 @emph{XEmacs Simple Instructions:} for recent versions of XEmacs (21.x or higher),

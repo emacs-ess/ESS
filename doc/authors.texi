@@ -1,3 +1,6 @@
+@c ---- KEEP this synchronized with the @author entries in
+@c ./ess.texi
+@c ~~~~~~~~~~
 @itemize @bullet
 @item
 @c @uref{http://www.google.com/,A.J. Rossini}
