@@ -1045,7 +1045,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
 Each function gets one argument, a string containing the text to
-be send to the subprocess.  It should return the string send,
+be send to the subprocess.  It should return the string sent,
 perhaps the same string that was received, or perhaps a modified
 or transformed string.
 
