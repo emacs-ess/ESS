@@ -566,7 +566,7 @@ You can bind 'no-select' versions of this commands:
     (setq next-error-last-buffer trbuf)
     (with-current-buffer trbuf
       (setq buffer-read-only nil)
-      (setq ess-local-process-name lproc-name)    
+      (setq ess-local-process-name lproc-name)
       (ess-command  "try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)\n" trbuf)
       (if (string= "No traceback available" (buffer-substring 1 23))
           (message "No traceback available")
@@ -1072,7 +1072,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-dbg-error-action t)
       (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
-      
+
       (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local)
       )
     (with-current-buffer dbuff
@@ -1180,13 +1180,13 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          ) ; current-buffer is still the user's input buffer here
 
     (ess--if-verbose-write-process-state proc string)
-    
+
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-recover)
 
     (if (process-get proc 'suppress-next-output?)
         ;; works only for surpressing short output, for time being is enough (for callbacks)
-        (process-put proc 'suppress-next-output? nil) 
+        (process-put proc 'suppress-next-output? nil)
 
       ;; FIXME: this should be in comint filters!!
       ;; insert \n after the prompt when necessary
@@ -1205,16 +1205,16 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when inferior-ess-replace-long+
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
       ;; COMINT
-      
+
       (comint-output-filter proc string)
       (ess--show-process-buffer-on-error string proc)
       )
-    
+
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
       (ess-watch-refresh-buffer-visibly wbuff))
 
-    ;; JUMP to line if debug expression was matched    
+    ;; JUMP to line if debug expression was matched
     (when match-jump
       (with-current-buffer dbuff              ;; insert string in *ess.dbg* buffer
         (goto-char (point-max))
@@ -1583,7 +1583,7 @@ ARGS are ignored to allow using this function in process hooks."
          (last-input-mark (copy-marker (process-mark last-input-process))))
     (with-current-buffer (process-buffer last-input-process)
       (when (local-variable-p 'ess-tb-last-input) ;; TB might not be active in all processes
-        (save-excursion 
+        (save-excursion
           (setq ess-tb-last-input last-input-mark)
           (goto-char last-input-mark)
           (inferior-ess-move-last-input-overlay)
@@ -1652,7 +1652,7 @@ ARGS are ignored to allow using this function in process hooks."
 
 (defcustom ess-bp-type-spec-alist
   '((browser "browser()" "B>\n"   filled-square  ess-bp-fringe-browser-face)
-    (recover "browser();recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face)
+    (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face)
     )
   "List of lists of breakpoint types.
 Each sublist  has five elements:
@@ -2146,7 +2146,7 @@ the debugging."
     (with-current-buffer wbuf
       (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
         (setq buffer-read-only nil)
-        (when pname 
+        (when pname
           (setq ess-local-process-name pname))
         (ess-command  ess-watch-command wbuf sleep no-prompt-check)
         ;; delete the ++++++> line  ;; not very reliable but works fine so far.
