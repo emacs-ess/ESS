@@ -299,8 +299,8 @@ between .s or .S files and assembly mode.
 ;;(setq-default inferior-S4-program-name "/disk05/s4/S")
 ;;(setq-default inferior-S+4-program-name "Splus")
 ;;(setq-default inferior-S+5-program-name "Splus5")
-;;(setq-default inferior-S+6-program-name "Splus7") ; unix systems
-;;(setq-default inferior-S+6-program-name "Splus8") ; unix systems
+;;(setq-default inferior-S+-program-name "Splus7") ; unix systems ; or
+;;(setq-default inferior-S+-program-name "Splus") ; unix systems
 ;;
 ;; If you wish to call other versions of R on a Unix system, ESS
 ;; should auto-detect other versions of R, according to matches to the
@@ -464,15 +464,15 @@ sending `inferior-ess-language-start' to S-Plus.")
   "View *R* objects in a dired-like buffer." t)
 
 
-;;; On a PC, the default is S+6.
-;; Elsewhere (unix and linux) the default is S+6
+;;; On a PC, the default is S+.
+;; Elsewhere (unix and linux) the default is S+
 (cond  (ess-microsoft-p
         ;; MS-Windows-------------------------------------------------
 
         ;;        (fset 'S
         ;;           (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-        ;;               'S+6-msdos
-        ;;             'S+6))
+        ;;               'S+-msdos
+        ;;             'S+))
         (defun S-by-icon (&rest x)
           (interactive)
           (message "Please start S+ from the icon.
@@ -481,17 +481,17 @@ sending `inferior-ess-language-start' to S-Plus.")
         (fset 'S 'S-by-icon)
         (fset 'S-existing
               (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
-                  'S+6-msdos-existing
-                'S+6-existing))
-        (fset 'Sqpe 'Sqpe+6)
-        (fset 's-mode 'S+6-mode)
-        (fset 's-transcript-mode 'S+6-transcript-mode))
+                  'S+-msdos-existing
+                'S+-existing))
+        (fset 'Sqpe 'Sqpe+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode))
 
        (t ;;((eq system-type 'gnu/linux)
         ;; Linux etc (including Mac OSX !?) --------------------------
-        (fset 'S 'S+6)
-        (fset 's-mode 'S+6-mode)
-        (fset 's-transcript-mode 'S+6-transcript-mode)))
+        (fset 'S 'S+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode)))
 
 
 ;;;;* Alias S-mode to s-mode
