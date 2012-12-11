@@ -686,9 +686,9 @@ LANGUAGE (and DIALECT)."
        (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
                language dialect (current-buffer)))
       (cond ((string= dialect "R") (R))
-            ((string= language "S") ;VS[03-09-2012]: cannot start s+?
-             (message "ESS process not running, trying to start R, since language = 'S")
-             (R))
+            ;; ((string= language "S") ;
+            ;;  (message "ESS process not running, trying to start R, since language = 'S")
+            ;;  (R))
             ((string= dialect "Stata") (stata))
             ;;general case
             ((fboundp dsymb)
