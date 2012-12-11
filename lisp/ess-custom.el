@@ -1328,7 +1328,6 @@ different computer."
   :type 'string)
 
 (defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
-
 (if ess-microsoft-p
     (defcustom inferior-S+-program-name
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
@@ -1365,7 +1364,6 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :type 'string)
 
 (defvaralias 'inferior-S+6-editor-pager-command 'inferior-S+-editor-pager-command)
-
 (defcustom inferior-S+-editor-pager-command
   "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
   "Programs called by the editor() and pager() functions in S+
@@ -1373,15 +1371,17 @@ for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-Sqpe+6-program-name
+(defvaralias 'inferior-Sqpe+6-program-name 'inferior-Sqpe+-program-name)
+(defcustom inferior-Sqpe+-program-name
   (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+6-SHOME-name
+(defvaralias 'inferior-Sqpe+6-SHOME-name 'inferior-Sqpe+-SHOME-name)
+(defcustom inferior-Sqpe+-SHOME-name
   (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus82" ""))
-  "SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
+  "SHOME name for invoking an inferior ESS with Sqpe+6 and higher for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
