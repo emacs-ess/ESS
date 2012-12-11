@@ -43,25 +43,6 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(defvaralias 'S+6-dialect-name 'S+-dialect-name)
-(defcustom S+-dialect-name "S+"
-  "Name of 'dialect' for S-PLUS 6.x and later.
-Easily changeable in a user's `.emacs'."
-  :group 'ess-SPLUS
-  :type 'string)
-
-(defvaralias 'inferior-S+6-start-args 'inferior-S+-start-args)
-(defvar inferior-S+-start-args " "
-  "Default is empty.  Can be used for license manager information, for example
-`(setq inferior-S+-start-args \" S_ELMHOST=\\\\\\\\@123.456.789.012  ELMTIMEOUT=60 \")'."
-  ;; (setq inferior-S+-start-args " S_ELMHOST=\\\\@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
-  )
-
-(defvar inferior-Sqpe-start-args " "
-  "Default is empty.  Can be used for license manager information, for example
-`(setq inferior-Sqpe-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
-  ;; (setq inferior-Sqpe-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
-  )
 
 (defvaralias 'inferior-S+6-multipleinstances 'inferior-S+-multipleinstances)
 (defvar inferior-S+-multipleinstances "/MULTIPLEINSTANCES"
@@ -114,7 +95,7 @@ connects it to the '(ddeESS [S+])' window.")
                                     ;; workaround for bug in S-Plus 6 for Windows:
                                     "ALWAYS_PROMPT=X"
                                     " "
-                                    inferior-Sqpe-start-args ;; e.g. license manager
+                                    inferior-Sqpe+-start-args ;; e.g. license manager
                                     ))
      (ess-STERM  . "iESS")
      )

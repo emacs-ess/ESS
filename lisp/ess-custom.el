@@ -1327,6 +1327,13 @@ different computer."
   :group 'ess-SPLUS
   :type 'string)
 
+(defvaralias 'S+6-dialect-name 'S+-dialect-name)
+(defcustom S+-dialect-name "S+"
+  "Name of 'dialect' for S-PLUS 6.x and later.
+Easily changeable in a user's `.emacs'."
+  :group 'ess-SPLUS
+  :type 'string)
+
 (defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
 (if ess-microsoft-p
     (defcustom inferior-S+-program-name
@@ -1344,11 +1351,24 @@ Use double backslashes if you use the msdos shell."
     :group 'ess-SPLUS
     :type 'string))
 
-(defcustom inferior-Splus-args ""
+(defvaralias 'inferior-S+6-start-args 'inferior-S+-start-args)
+(defvaralias 'inferior-Splus-args 'inferior-S+-start-args)
+(defcustom inferior-S+-start-args ""
   "String of arguments used when starting S.
-These arguments are currently passed only to S+6."
+These arguments are currently passed only to S+6 and higher."
   :group 'ess-SPLUS
   :type 'string)
+
+
+(defvaralias 'inferior-Sqpe-start-args 'inferior-Sqpe+-start-args)
+(defcustom inferior-Sqpe+-start-args " "
+  "Default is empty.  Can be used for license manager information, for example
+`(setq inferior-Sqpe+-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
+  ;; (setq inferior-Sqpe+-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+  :group 'ess-SPLUS
+  :type 'string
+  )
+
 
 (defcustom inferior-Splus-objects-command "objects(where=%d)\n"
   "Format string for R command to get a list of objects at position %d.

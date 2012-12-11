@@ -59,7 +59,7 @@
      (inferior-ess-help-command   . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command  . "searchPaths()\n")
-     (inferior-ess-start-args      . inferior-Splus-args)
+     (inferior-ess-start-args      . inferior-S+-start-args)
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
