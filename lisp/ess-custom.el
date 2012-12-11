@@ -1327,10 +1327,12 @@ different computer."
   :group 'ess-SPLUS
   :type 'string)
 
+(defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
+
 (if ess-microsoft-p
-    (defcustom inferior-S+6-program-name
+    (defcustom inferior-S+-program-name
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
-      "Program name to invoke an external GUI S+6 for Windows.
+      "Program name to invoke an external GUI S+ for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1 and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
@@ -1338,8 +1340,8 @@ site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
       :group 'ess-SPLUS
       :type 'string)
-  (defcustom inferior-S+6-program-name "Splus8"
-    "Program name to invoke an inferior ESS with S+6() for Unix."
+  (defcustom inferior-S+-program-name "Splus"
+    "Program name to invoke an inferior ESS with S+ for Unix."
     :group 'ess-SPLUS
     :type 'string))
 
@@ -1355,15 +1357,19 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-S+6-print-command "S_PRINT_COMMAND=emacsclientw.exe"
-  "Destination of print icon in S+6 for Windows Commands window."
+(defvaralias 'inferior-S+6-print-command 'inferior-S+-print-command)
+
+(defcustom inferior-S+-print-command "S_PRINT_COMMAND=emacsclientw.exe"
+  "Destination of print icon in S+ for Windows Commands window."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-S+6-editor-pager-command
+(defvaralias 'inferior-S+6-editor-pager-command 'inferior-S+-editor-pager-command)
+
+(defcustom inferior-S+-editor-pager-command
   "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
-  "Programs called by the editor() and pager() functions
-in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
+  "Programs called by the editor() and pager() functions in S+
+for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-SPLUS
   :type 'string)
 
