@@ -276,17 +276,17 @@ See also `ess-blink-delay'"
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-language nil
+(defvar ess-language nil
   "Prefix of all ESS processes, and defines the dialect in use.
 Currently acceptable values are `S',  `XLS', `SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
-.emacs (also see ess-site.el)."
-  :group 'ess
-  :type '(choice (const :tag "Initial" :value nil)
-                 (const :tag "S"       :value "S")
-                 (const :tag "XLS"     :value "XLS")
-                 (const :tag "SAS"     :value "SAS")
-                 (const :tag "R"       :value "R")))
+.emacs (also see ess-site.el).")
+  ;; :group 'ess
+  ;; :type '(choice (const :tag "Initial" :value nil)
+  ;;                (const :tag "S"       :value "S")
+  ;;                (const :tag "XLS"     :value "XLS")
+  ;;                (const :tag "SAS"     :value "SAS")
+  ;;                (const :tag "R"       :value "R")))
 
 (make-variable-buffer-local 'ess-language)
 
@@ -297,7 +297,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, Sp6, R, XLS, SAS, STA
+for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, S+, R, XLS, SAS, Stata, Julia
 
 Used to adjust for changes in versions of the program.")
 
