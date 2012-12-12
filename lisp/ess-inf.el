@@ -385,13 +385,12 @@ there is no process NAME)."
 
 (defun ess-gen-proc-buffer-name:directory (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *dir-name:proc-name*"
-  (format "*%s:%s*" (file-name-nondirectory
-                     (directory-file-name default-directory))
-          proc-name))
+  (format "*%s:%s*" proc-name (file-name-nondirectory
+                               (directory-file-name default-directory))))
 
 (defun ess-gen-proc-buffer-name:full-directory (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *abbreviated-full-dir-name:proc-name*"
-  (format "*%s:%s*" (abbreviate-file-name default-directory) proc-name))
+  (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC

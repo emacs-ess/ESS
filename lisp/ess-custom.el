@@ -1034,13 +1034,13 @@ internal process name (R, R:2 etc).
 Provided options are:
 
   `ess-gen-proc-buffer-name:simple' -- *proc*  
-  `ess-gen-proc-buffer-name:directory' -- *dir:proc*
-  `ess-gen-proc-buffer-name:full-directory' -- *abbr-long-dir:proc*
+  `ess-gen-proc-buffer-name:directory' -- *proc:dir*
+  `ess-gen-proc-buffer-name:full-directory' -- *proc:abbr-long-dir*
 "
   :group 'ess
   :type '(choice (const :tag "*proc*" ess-gen-proc-buffer-name:simple)
-                 (const :tag "*dir:proc*" ess-gen-proc-buffer-name:directory)
-                 (const :tag "*abbr-long-dir:proc*" ess-gen-proc-buffer-name:full-directory)
+                 (const :tag "*proc:dir*" ess-gen-proc-buffer-name:directory)
+                 (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:full-directory)
                  function))
 
 
