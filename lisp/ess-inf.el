@@ -685,15 +685,15 @@ LANGUAGE (and DIALECT)."
       (ess-write-to-dribble-buffer
        (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
                language dialect (current-buffer)))
-      (cond ((string= dialect "R") (R))
+      (cond ;; ((string= dialect "R") (R))
             ;; ((string= language "S") ;
             ;;  (message "ESS process not running, trying to start R, since language = 'S")
             ;;  (R))
-            ((string= dialect "Stata") (stata))
+            ;; ((string= dialect STA-dialect-name) (stata))
             ;;general case
             ((fboundp dsymb)
              (funcall dsymb))
-            (t ;; else: ess-language is not S
+            (t ;; else: ess-dialect is not a function
 
              ;; Typically triggered from
              ;; ess-force-buffer-current("Process to load into: ")
@@ -715,10 +715,12 @@ Returns the name of the selected process."
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
 
-  (unless ess-dialect
-    (setq ess-dialect
-          (ess-completing-read "Set `ess-dialect'"
-                               (list "R" S+6-dialect-name STA-dialect-name "julia" "SAS" "XLS"  "ViSta"))))
+  (setq ess-dialect
+    (or ess-dialect (ess-completing-read
+                     "Set `ess-dialect'"
+                     (delete-dups (list "R" "S+" S+-dialect-name
+                                        "stata" STA-dialect-name
+                                        "julia" "SAS" "XLS"  "ViSta")))))
 
   (let ((num-processes (length ess-process-name-list))
         (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
