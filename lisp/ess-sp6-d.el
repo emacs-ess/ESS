@@ -67,6 +67,8 @@
                 ;;(message "adding %s to S_WORK" startdir)
                 startdir)))))
 
+
+
 (defvaralias 'S+6-customize-alist 'S+-customize-alist)
 (defvar S+-customize-alist
   (append
@@ -103,11 +105,27 @@ New way to do it."
   (ess-write-to-dribble-buffer
    (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
   (inferior-ess)
+  (ess-command ess-S+--injected-code)
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))
   (with-ess-process-buffer nil
     (run-mode-hooks 'ess-S+-post-run-hook)))
 
+(defvar ess-S+--injected-code
+  ".ess_funnargs <- function(object){
+  funname <- as.character(substitute(object))
+  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  if(is.function(fun)) {
+    args <- args(fun)
+    fmls <- formals(args)
+    fmls_names <- names(fmls)
+    fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed=TRUE)
+    args_alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls_names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
+    envname <- environmentName(environment(fun))
+    cat(sprintf('(list \\\"%s\\\" %s )\\n', envname, args_alist))
+  }
+}
+")
 
 
 (defalias 'S+6-mode 'S+-mode)
