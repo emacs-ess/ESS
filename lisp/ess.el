@@ -292,7 +292,7 @@ See also `ess-use-ido'.
 
     ;; eldoc)
     (require 'eldoc)
-    (when (and isR
+    (when (and ess-funargs-command ;; if mode provide this, it suports eldoc
                (or (and (not inferior) ess-use-eldoc)
                    (and inferior (eq ess-use-eldoc t))))
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
