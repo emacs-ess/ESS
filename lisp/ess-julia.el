@@ -432,9 +432,10 @@ to R, put them in the variable `inferior-julia-args'."
 	    (concat inferior-julia-args " " ; add space just in case
 		    (if start-args
 			(read-string
-			 (concat "Starting Args [other than `"
-				 inferior-julia-args
-				 "'] ? "))
+                         (concat "Starting Args"
+                                 (if inferior-julia-args
+                                     (concat " [other than '" inferior-julia-args "']"))
+                                 " ? "))
 		      nil))))
       (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
       (ess-tb-start)
@@ -455,7 +456,7 @@ to R, put them in the variable `inferior-julia-args'."
   '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
     ("Function" "[ \t]*function[ \t]+\\([^_][^ \t\n]*\\)" 1)
     ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
-    ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1) 
+    ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1)
     ("Load"      " *\\(load\\)(\\([^ \t\n)]*\\)" 2)
     ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
     ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to

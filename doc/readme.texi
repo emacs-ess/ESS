@@ -5,7 +5,7 @@
 @comment %**end of header
 
 @include ess-defs.texi
-@node General Information, , (dir), (dir)
+@node General Information
 @comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
@@ -20,7 +20,7 @@ desire for bug fixes and extensions to S-mode and SAS-mode as well as a
 consistent union of their features in one package.
 
 Installation instructions are provided in sections for both Unix and
-Windows; see below.  
+Windows; see below.
 
 The current development team is led by Martin Maechler since August
 2004. Former project leader A.J. (Tony) Rossini
@@ -56,7 +56,7 @@ Table of Contents
 @item Reporting Bugs
 @item Mailing Lists
 @item Authors
-@end itemize 
+@end itemize
 @end ifplaintext
 
 @menu
@@ -65,9 +65,11 @@ Table of Contents
 * Requirements::
 * Latest Version::
 * Installation::
-* Starting an ESS Process::
-* New Features::
+* Unix installation::
+* Microsoft Windows installation::
+* Starting up::
 * Current Features::
+* New Features::
 * Reporting Bugs::
 * Mailing Lists::
 * Authors::
@@ -99,14 +101,19 @@ Table of Contents
 @c NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation)
 
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
-@node Installation, Starting up, Latest Version, General Information
+@node Installation, Unix installation, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
 @section Installation
 
+@node Unix installation, Microsoft Windows installation, Installation, General Information
+@section Unix (Linux / MacOS / Solaris / ...) Installation
 @include unixlike.texi
+
+@node Microsoft Windows installation, Starting up, Unix installation, General Information
+@section Microsoft Windows installation
 @include windows.texi
 
-@node Starting up, Current Features, Installation, General Information
+@node Starting up, Current Features, Microsoft Windows installation, General Information
 @comment  node-name,  next,  previous,  up
 @section Starting an ESS process
 To start an @Sl{} session on Unix or on Windows when you

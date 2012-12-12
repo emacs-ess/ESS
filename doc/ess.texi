@@ -11,9 +11,11 @@
 @title ESS --- Emacs Speaks Statistics
 ESS @w{version @ESSVER}
 
+@c --- KEEP this synchronized with ./authors.texi :
+@c                                 ~~~~~~~~~~~~~~
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani, S.J. Eglen,
-@author S.P. Luque, V. Spinu and H. Redestig)
+@author S.P. Luque, H. Redestig and V. Spinu)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
@@ -23,9 +25,6 @@ ESS @w{version @ESSVER}
 @author Current Documentation by The ESS Developers
 @author Copyright @copyright{} 2002--2012 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
-@c (@email{rossini@@biostat.washington.edu})
-@c @author Department of Biostatistics
-@c @author University of Washington, USA.
 @author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
 @c (@email{D.M.Smith@@lancaster.ac.uk})
@@ -107,7 +106,6 @@ analysis languages.
 * ESS for SAS::
 * ESS for BUGS::
 * ESS for JAGS::
-
 * Mailing lists/bug reports::   How to get assistance with ESS
 * Customization::               Customizing ESS
 * Key Index::
@@ -193,6 +191,15 @@ among themselves so markedly that you have to re-learn how to do those
 things for each package.  ESS is a package which is designed to make
 editing and interacting with statistical packages more uniform,
 user-friendly and give you the power of emacs as well.
+
+
+@menu
+* Current Features::
+@end menu
+
+@node Current Features,  , Features, Features
+@subsection Features Overview
+@include currfeat.texi
 
 ESS provides several features which make it easier to interact with the
 ESS process (a connection between your buffer and the statistical
@@ -359,9 +366,11 @@ The following section details those steps necessary to get ESS running
 on your system.
 
 @menu
-* Unix installation::              Installing ESS on your Unix system
-* Microsoft Windows installation:: Installing ESS on your MS Windows system
-* Requirements::         emacs, Operating Systems and Statistical Packages
+* Unix installation::           Installing ESS on your Unix (Linux, MacOS, ...) system
+* Microsoft Windows installation::  Installing ESS on your MS Windows system
+* License::
+* Stability::
+* Requirements::                Emacs, Operating Systems and Statistical Packages
 @end menu
 
 @c FIXME: the following contains @node s  *and* is also included by readme.texi
@@ -369,11 +378,24 @@ on your system.
 @c         ==> *must* give node pointer problems!
 @c @include inst_tar.texi
 
+@comment  node-name,  next,  previous,  up
+@node Unix installation, Microsoft Windows installation, Installation, Installation
+@section Unix (Linux / MacOS / Solaris / ...) Installation
 @include unixlike.texi
+
+@node Microsoft Windows installation, License, Unix installation, Installation
+@section Microsoft Windows installation
 @include windows.texi
 
-@node Requirements,  ,Microsoft Windows installation, Installation
-@comment node-name,  next,  previous,  up
+@node License, Stability, Microsoft Windows installation, Installation
+@section License
+@include license.texi
+
+@node Stability, Requirements, License, Installation
+@section Stability
+@include stabilty.texi
+
+@node Requirements,  , Stability, Installation
 @section Requirements
 @include requires.texi
 

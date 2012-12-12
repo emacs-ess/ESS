@@ -190,7 +190,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (goto-char (point-min))
           (set-buffer-modified-p 'nil)
           (setq buffer-read-only t)
-          (toggle-truncate-lines -1)
+          (setq truncate-lines nil)
           (ess-write-to-dribble-buffer
            (format "(ess-help '%s' done  ..\n" hb-name))
            ))
@@ -259,7 +259,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                   ((eq ess-help-type 'index)
                    (concat "?" ess-help-object "::%s\n"))
                   ))))
-    (dbg string command)
     (ess-display-help-on-object string command)
     ))
 
@@ -363,7 +362,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
           ))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
-      (toggle-truncate-lines -1)
+      (setq truncate-lines nil)
       )
     (unless (ess--help-kill-bogus-buffer-maybe buff)
       (ess--switch-to-help-buffer buff))

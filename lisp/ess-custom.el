@@ -276,17 +276,17 @@ See also `ess-blink-delay'"
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-language nil
+(defvar ess-language nil
   "Prefix of all ESS processes, and defines the dialect in use.
 Currently acceptable values are `S',  `XLS', `SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
-.emacs (also see ess-site.el)."
-  :group 'ess
-  :type '(choice (const :tag "Initial" :value nil)
-                 (const :tag "S"       :value "S")
-                 (const :tag "XLS"     :value "XLS")
-                 (const :tag "SAS"     :value "SAS")
-                 (const :tag "R"       :value "R")))
+.emacs (also see ess-site.el).")
+  ;; :group 'ess
+  ;; :type '(choice (const :tag "Initial" :value nil)
+  ;;                (const :tag "S"       :value "S")
+  ;;                (const :tag "XLS"     :value "XLS")
+  ;;                (const :tag "SAS"     :value "SAS")
+  ;;                (const :tag "R"       :value "R")))
 
 (make-variable-buffer-local 'ess-language)
 
@@ -297,7 +297,7 @@ version of the statistical package being executed in the particular
 buffer.
 
 Current values could include:
-for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, Sp6, R, XLS, SAS, STA
+for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, S+, R, XLS, SAS, Stata, Julia
 
 Used to adjust for changes in versions of the program.")
 
@@ -1026,6 +1026,24 @@ to sweave the current noweb file and latex the result."
 (make-variable-buffer-local 'ess-local-process-name)
 
 
+(defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple
+  "Function used for generation of the buffer name of the newly created ess process.
+It should accept one argument PROC-NAME, a string specifying
+internal process name (R, R:2 etc).
+
+Provided options are:
+
+  `ess-gen-proc-buffer-name:simple' -- *proc*  
+  `ess-gen-proc-buffer-name:directory' -- *proc:dir*
+  `ess-gen-proc-buffer-name:full-directory' -- *proc:abbr-long-dir*
+"
+  :group 'ess
+  :type '(choice (const :tag "*proc*" ess-gen-proc-buffer-name:simple)
+                 (const :tag "*proc:dir*" ess-gen-proc-buffer-name:directory)
+                 (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:full-directory)
+                 function))
+
+
 (defcustom ess-kermit-command "gkermit -T"
   "Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
   :group 'ess
@@ -1106,6 +1124,13 @@ These arguments are currently not passed to other versions of R that have
 been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
+
+(defcustom ess-R-no-readline nil
+  "Non-nil indicates that \"--no-readline \" should be used as argument when starting R.
+This used to be the default from 1998 to 2012, and may very slightly speedup interaction.
+On the other hand, readline is necessary for expansion of \"~username/\" in paths."
+  :group 'ess-R
+  :type 'boolean)
 
 (defcustom inferior-STA-start-file nil
   "Initialization file for Stata."
@@ -1320,10 +1345,18 @@ different computer."
   :group 'ess-SPLUS
   :type 'string)
 
+(defvaralias 'S+6-dialect-name 'S+-dialect-name)
+(defcustom S+-dialect-name "S+"
+  "Name of 'dialect' for S-PLUS 6.x and later.
+Easily changeable in a user's `.emacs'."
+  :group 'ess-SPLUS
+  :type 'string)
+
+(defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
 (if ess-microsoft-p
-    (defcustom inferior-S+6-program-name
+    (defcustom inferior-S+-program-name
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
-      "Program name to invoke an external GUI S+6 for Windows.
+      "Program name to invoke an external GUI S+ for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1 and with bash as the shell.
 For any other version or location, change this value in ess-site.el or
@@ -1331,16 +1364,29 @@ site-start.el.  Use the 8.3 version of the pathname.
 Use double backslashes if you use the msdos shell."
       :group 'ess-SPLUS
       :type 'string)
-  (defcustom inferior-S+6-program-name "Splus8"
-    "Program name to invoke an inferior ESS with S+6() for Unix."
+  (defcustom inferior-S+-program-name "Splus"
+    "Program name to invoke an inferior ESS with S+ for Unix."
     :group 'ess-SPLUS
     :type 'string))
 
-(defcustom inferior-Splus-args ""
+(defvaralias 'inferior-S+6-start-args 'inferior-S+-start-args)
+(defvaralias 'inferior-Splus-args 'inferior-S+-start-args)
+(defcustom inferior-S+-start-args ""
   "String of arguments used when starting S.
-These arguments are currently passed only to S+6."
+These arguments are currently passed only to S+6 and higher."
   :group 'ess-SPLUS
   :type 'string)
+
+
+(defvaralias 'inferior-Sqpe-start-args 'inferior-Sqpe+-start-args)
+(defcustom inferior-Sqpe+-start-args " "
+  "Default is empty.  Can be used for license manager information, for example
+`(setq inferior-Sqpe+-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
+  ;; (setq inferior-Sqpe+-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
+  :group 'ess-SPLUS
+  :type 'string
+  )
+
 
 (defcustom inferior-Splus-objects-command "objects(where=%d)\n"
   "Format string for R command to get a list of objects at position %d.
@@ -1348,27 +1394,32 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-S+6-print-command "S_PRINT_COMMAND=emacsclientw.exe"
-  "Destination of print icon in S+6 for Windows Commands window."
+(defvaralias 'inferior-S+6-print-command 'inferior-S+-print-command)
+
+(defcustom inferior-S+-print-command "S_PRINT_COMMAND=emacsclientw.exe"
+  "Destination of print icon in S+ for Windows Commands window."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-S+6-editor-pager-command
+(defvaralias 'inferior-S+6-editor-pager-command 'inferior-S+-editor-pager-command)
+(defcustom inferior-S+-editor-pager-command
   "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
-  "Programs called by the editor() and pager() functions
-in S+6 for Windows Commands window and in Sqpe+6 for Windows buffer."
+  "Programs called by the editor() and pager() functions in S+
+for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-SPLUS
   :type 'string)
 
-(defcustom inferior-Sqpe+6-program-name
+(defvaralias 'inferior-Sqpe+6-program-name 'inferior-Sqpe+-program-name)
+(defcustom inferior-Sqpe+-program-name
   (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+6-SHOME-name
+(defvaralias 'inferior-Sqpe+6-SHOME-name 'inferior-Sqpe+-SHOME-name)
+(defcustom inferior-Sqpe+-SHOME-name
   (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus82" ""))
-  "SHOME name for invoking an inferior ESS with Sqpe+6() for Windows.
+  "SHOME name for invoking an inferior ESS with Sqpe+6 and higher for Windows.
 The default value is correct for a default installation of
 S-Plus 8.1.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
@@ -1637,7 +1688,7 @@ If nil, ESS doesn't print input commands and doesn't wait for the process.
 This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
 the process output, otherwise not.
-"  
+"
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 

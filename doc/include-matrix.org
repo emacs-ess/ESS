@@ -1,0 +1,46 @@
+If you look in [[file:Makefile][Makefile]], you see that we currently (2012-11) have 6 (six!)
+master files which '@include' other .texi modules, of course the main one
+being our manual, [[file:ess.texi][ESS Manual]] (ess.texi).
+The "shocking" observation was that e.g., currfeat.texi has *not* been
+included by the manual ess.txi.
+
+Another surprise, only when compiling this table:
+We have much too many "bugs**.texi" (and then  bugrept.texi for user bug
+reporting).
+
+|----------------+------+---------+-----------+---------------+-------+--------|
+| File / Master: | ess. | readme. | announce. | README.M..S.. | news. | onews. |
+|----------------+------+---------+-----------+---------------+-------+--------|
+| ess-defs.texi  |    9 |       7 | 7         |               |     2 |      2 |
+| ../VERSION     |   60 |      14 | 14        |               |       |        |
+| license.texi   |  392 |      80 | 66        |               |       |        |
+| stabilty.texi  |  396 |      86 | 50        |               |       |        |
+| requires.texi  |  400 |      92 | 46        |               |       |        |
+| getting.texi   |  310 |      98 | 38        |               |       |        |
+| unixlike.texi  |  384 |     106 | -         |               |       |        |
+| windows.texi   |  388 |     107 | -         |               |       |        |
+| currfeat.texi  |  202 |     122 | 42        |               |       |        |
+|----------------+------+---------+-----------+---------------+-------+--------|
+| newfeat.texi   |  297 |     128 | 70        |               |     3 |        |
+| onewfeat.texi  |  298 |       - | -         |               |       |      3 |
+|----------------+------+---------+-----------+---------------+-------+--------|
+| bugrept.texi   | 35.. |     134 | 58        |               |       |        |
+| mailing.texi   | 35.. |     140 | 54        |               |       |        |
+| authors.texi   |  *1) |     146 | 62        |               |       |        |
+| credits.texi   |  304 |       - | -         |               |       |        |
+| help-s.texi    |  413 |       - | -         |               |       |        |
+| help-sas.texi  | 35.. |       - | -         |            25 |       |        |
+| help-bugs.texi | 35.. |       - | -         |               |       |        |
+| help-jags.texi | 35.. |       - | -         |               |       |        |
+| help-sp.texi   |    - |       - | -         |            19 |       |        |
+| bugs.texi      | 35.. |       - | -         |               |       |        |
+|----------------+------+---------+-----------+---------------+-------+--------|
+| ms-inst.texi   |    - |       - | -         |            12 |       |        |
+| bugs-ms.texi   |    - |       - | -         |            32 |       |        |
+| bugs-s.texi    |    - |       - | -         |            39 |       |        |
+| bugs-sas.texi  |    - |       - | -         |            46 |       |        |
+|----------------+------+---------+-----------+---------------+-------+--------|
+
+*1): authors.texi is included *via* credits.texi
+
+(Numbers in table are *line numbers* of "@include .." in respective .texi file.)

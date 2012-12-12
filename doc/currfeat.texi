@@ -1,7 +1,7 @@
 @itemize @bullet
 @item Languages Supported:
   @itemize @bullet
-  @item S family (S 3/4, S-PLUS and R)
+  @item S family (i.e., R and S+ (aka S-PLUS), nowadays)
   @item SAS
   @item OpenBUGS/JAGS
   @item Stata
@@ -31,6 +31,12 @@
   @item Recording and saving transcript files
   @item Manipulating and editing saved transcripts
   @item Re-evaluating commands from transcript files
+  @end itemize
+@item Interaction with Help Pages and other Documenation (R)
+  @itemize @bullet
+  @item Fast Navigation
+  @item Sending Examples to running ESS process.
+  @item Fast Transfer to Further Help Pages
   @end itemize
 @item Help File Editing (R)
   @itemize @bullet

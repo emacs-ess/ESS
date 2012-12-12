@@ -117,7 +117,8 @@
              (buf-coding (symbol-name buffer-file-coding-system))
              ;; could consider other encodings, but utf-8 is "R standard" for non-ASCII:
              (cmd-args (concat "\"" rnw-file "\""
-                               (if (string-match "^utf-8" buf-coding)
+                               (if (and (eq ess-swv-processor 'sweave)
+                                        (string-match "^utf-8" buf-coding))
                                    ", encoding = \"utf-8\"")))
              (Sw-cmd
               (format

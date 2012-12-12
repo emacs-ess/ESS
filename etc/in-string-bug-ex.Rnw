@@ -14,7 +14,7 @@ i.can.haz.assginment <- TRUE
 Now, we will introduce an extraneous apostrophe, for no reason '
 
 <<test2>>=
-a_2 #ess-smart-underscore-no-longer-works
+aa <- _2 #ess-smart-underscore-no-longer-works
 @
 
 '

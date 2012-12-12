@@ -38,7 +38,7 @@
 
 (require 'ess-sta-l)
 
-(defvar STA-dialect-name "Stata"
+(defvar STA-dialect-name "stata"
   "Name of 'dialect' for Stata.");easily changeable in a user's .emacs
 
 (defvar STA-customize-alist

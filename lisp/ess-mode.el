@@ -164,7 +164,6 @@
     (define-key map "\C-c\C-q"   'ess-quit)
     ;; smart operators; most likely will go in the future into a separate local map
     (define-key map ","          'ess-smart-comma)
-    (define-key map "\C-c\C-a"   'ess-handy-commands)
 
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)

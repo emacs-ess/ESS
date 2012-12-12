@@ -371,9 +371,26 @@ there is no process NAME)."
         (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
         )
-      (if (and inferior-ess-same-window (not inferior-ess-own-frame))
-          (switch-to-buffer (process-buffer (get-process proc-name)))
-        (pop-to-buffer (process-buffer (get-process proc-name)))))))
+
+      (let ((buff (process-buffer (get-process proc-name))))
+        (with-current-buffer buff
+          (rename-buffer (funcall ess-gen-proc-buffer-name-function proc-name) t))
+        (if (and inferior-ess-same-window (not inferior-ess-own-frame))
+            (switch-to-buffer buff)
+          (pop-to-buffer buff))))))
+
+(defun ess-gen-proc-buffer-name:simple (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
+  (format "*%s*" proc-name))
+
+(defun ess-gen-proc-buffer-name:directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *dir-name:proc-name*"
+  (format "*%s:%s*" proc-name (file-name-nondirectory
+                               (directory-file-name default-directory))))
+
+(defun ess-gen-proc-buffer-name:full-directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *abbreviated-full-dir-name:proc-name*"
+  (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC
@@ -553,8 +570,7 @@ If NO-ERROR is t don't trigger an error when there is not current process.
 
 Symbol *proc* is bound to the current process during the evaluation of BODY."
   (declare (indent 1))
-  `(let ((*proc* (or (and ess-local-process-name (get-process ess-local-process-name))
-		     (and ess-current-process-name (get-process ess-current-process-name)))))
+  `(let ((*proc* (and ess-local-process-name (get-process ess-local-process-name))))
      (if *proc*
          (with-current-buffer (process-buffer *proc*)
            ,@body)
@@ -679,21 +695,21 @@ LANGUAGE (and DIALECT)."
 
   (unless dialect
     (error "The value of `dialect' is nil"))
-  
+
   (save-current-buffer
     (let ((dsymb (intern dialect)))
       (ess-write-to-dribble-buffer
        (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
                language dialect (current-buffer)))
-      (cond ((string= dialect "R") (R))
-            ((string= language "S") ;VS[03-09-2012]: cannot start s+?
-             (message "ESS process not running, trying to start R, since language = 'S")
-             (R))
-            ((string= dialect "Stata") (stata))
+      (cond ;; ((string= dialect "R") (R))
+            ;; ((string= language "S") ;
+            ;;  (message "ESS process not running, trying to start R, since language = 'S")
+            ;;  (R))
+            ;; ((string= dialect STA-dialect-name) (stata))
             ;;general case
             ((fboundp dsymb)
              (funcall dsymb))
-            (t ;; else: ess-language is not S
+            (t ;; else: ess-dialect is not a function
 
              ;; Typically triggered from
              ;; ess-force-buffer-current("Process to load into: ")
@@ -715,8 +731,12 @@ Returns the name of the selected process."
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
 
-  (unless ess-dialect
-    (error "Local value of `ess-dialect' is nil"))
+  (setq ess-dialect
+    (or ess-dialect (ess-completing-read
+                     "Set `ess-dialect'"
+                     (delete-dups (list "R" "S+" S+-dialect-name
+                                        "stata" STA-dialect-name
+                                        "julia" "SAS" "XLS"  "ViSta")))))
 
   (let ((num-processes (length ess-process-name-list))
         (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
@@ -741,22 +761,28 @@ Returns the name of the selected process."
           (setq num-processes 1
                 auto-started? t)))
     ;; now num-processes >= 1 :
-    (let ((proc
-           (if (or auto-started?
-                   (and (not ask-if-1) (= 1 num-processes)))
-               (let ((rr (car (car ess-process-name-list))))
-                 (message "using process '%s'" rr)
-                 rr)
-             ;; else
-             (unless (and ess-current-process-name
-                          (get-process ess-current-process-name))
-               (setq ess-current-process-name nil))
-             (when message
-               (setq message (replace-regexp-in-string ": +\\'" "" message)))
-             (ess-completing-read message (append (mapcar 'car ess-process-name-list)
-                                                  (list "*new*"))
-                                  nil t nil nil ess-current-process-name)
-             )))
+    (let* ((proc-buffers (mapcar (lambda (lproc)
+                                   (buffer-name (process-buffer (get-process (car lproc)))))
+                                 ess-process-name-list))
+           (proc
+            (if (or auto-started?
+                    (and (not ask-if-1) (= 1 num-processes)))
+                (progn
+                  (message "using process '%s'" (car proc-buffers))
+                  (caar ess-process-name-list))
+              ;; else
+              (unless (and ess-current-process-name
+                           (get-process ess-current-process-name))
+                (setq ess-current-process-name nil))
+              (when message
+                (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
+              ;; ask for buffer name not the *real* process name:
+              (process-name
+               (get-buffer-process
+                (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
+                                     (and ess-current-process-name
+                                          (buffer-name (process-buffer (get-process ess-current-process-name)))))))
+               )))
       (when (equal proc "*new*")
         (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
         (setq proc (caar ess-process-name-list)))
@@ -1043,7 +1069,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
 Each function gets one argument, a string containing the text to
-be send to the subprocess.  It should return the string send,
+be send to the subprocess.  It should return the string sent,
 perhaps the same string that was received, or perhaps a modified
 or transformed string.
 
@@ -1854,7 +1880,7 @@ for `ess-eval-region'."
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
     (if (fboundp (ess-process-get 'source-file-function))
-	(funcall (ess-process-get 'source-file-function))
+        (funcall (ess-process-get 'source-file-function))
 
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
@@ -1955,7 +1981,7 @@ for `ess-eval-region'."
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
-    (define-key map "\C-c\C-a"   'ess-handy-commands)
+
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
@@ -2195,8 +2221,8 @@ to continue it."
 
   (ess-write-to-dribble-buffer
    (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language
-	   comint-process-echoes comint-input-sender))
+           (current-buffer) ess-language
+           comint-process-echoes comint-input-sender))
 
   (message
    (concat (substitute-command-keys
@@ -2220,7 +2246,7 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(?:\\(?1:[a-zA-Z ]*\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun inferior-R-input-sender (proc string)
@@ -2240,12 +2266,8 @@ to continue it."
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess--display-indexed-help-page  (concat help-?-match "\n")  nil
-                                                (format "*ess-help[%s](%s)*"
-                                                        ess-current-process-name help-?-match)
-                                                'help))
+               (ess-display-help-on-object help-?-match "%s\n"))
              (process-send-string proc "\n"))
-
             (page-match
              (switch-to-buffer-other-window
               (ess-command (concat page-match "\n")
@@ -3080,7 +3102,7 @@ is checked on idle time. It is kept for robustness and backward
 compatibility only."
   (when ess-change-sp-regexp
     (if (string-match ess-change-sp-regexp str)
-	(ess-process-put 'sp-for-help-changed? t))))
+        (ess-process-put 'sp-for-help-changed? t))))
 
  ; Miscellaneous routines
 
