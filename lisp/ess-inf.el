@@ -571,8 +571,7 @@ If NO-ERROR is t don't trigger an error when there is not current process.
 
 Symbol *proc* is bound to the current process during the evaluation of BODY."
   (declare (indent 1))
-  `(let ((*proc* (or (and ess-local-process-name (get-process ess-local-process-name))
-		     (and ess-current-process-name (get-process ess-current-process-name)))))
+  `(let ((*proc* (and ess-local-process-name (get-process ess-local-process-name))))
      (if *proc*
          (with-current-buffer (process-buffer *proc*)
            ,@body)
@@ -697,7 +696,7 @@ LANGUAGE (and DIALECT)."
 
   (unless dialect
     (error "The value of `dialect' is nil"))
-  
+
   (save-current-buffer
     (let ((dsymb (intern dialect)))
       (ess-write-to-dribble-buffer
@@ -1882,7 +1881,7 @@ for `ess-eval-region'."
   (if (ess-process-get  'developer)
       (ess-developer-source-current-file filename)
     (if (fboundp (ess-process-get 'source-file-function))
-	(funcall (ess-process-get 'source-file-function))
+        (funcall (ess-process-get 'source-file-function))
 
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
@@ -2223,8 +2222,8 @@ to continue it."
 
   (ess-write-to-dribble-buffer
    (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-	   (current-buffer) ess-language
-	   comint-process-echoes comint-input-sender))
+           (current-buffer) ess-language
+           comint-process-echoes comint-input-sender))
 
   (message
    (concat (substitute-command-keys
@@ -3104,7 +3103,7 @@ is checked on idle time. It is kept for robustness and backward
 compatibility only."
   (when ess-change-sp-regexp
     (if (string-match ess-change-sp-regexp str)
-	(ess-process-put 'sp-for-help-changed? t))))
+        (ess-process-put 'sp-for-help-changed? t))))
 
  ; Miscellaneous routines
 
