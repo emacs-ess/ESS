@@ -763,22 +763,28 @@ Returns the name of the selected process."
           (setq num-processes 1
                 auto-started? t)))
     ;; now num-processes >= 1 :
-    (let ((proc
-           (if (or auto-started?
-                   (and (not ask-if-1) (= 1 num-processes)))
-               (let ((rr (car (car ess-process-name-list))))
-                 (message "using process '%s'" rr)
-                 rr)
-             ;; else
-             (unless (and ess-current-process-name
-                          (get-process ess-current-process-name))
-               (setq ess-current-process-name nil))
-             (when message
-               (setq message (replace-regexp-in-string ": +\\'" "" message)))
-             (ess-completing-read message (append (mapcar 'car ess-process-name-list)
-                                                  (list "*new*"))
-                                  nil t nil nil ess-current-process-name)
-             )))
+    (let* ((proc-buffers (mapcar (lambda (lproc)
+                                   (buffer-name (process-buffer (get-process (car lproc)))))
+                                 ess-process-name-list))
+           (proc
+            (if (or auto-started?
+                    (and (not ask-if-1) (= 1 num-processes)))
+                (progn
+                  (message "using process '%s'" (car proc-buffers))
+                  (caar ess-process-name-list))
+              ;; else
+              (unless (and ess-current-process-name
+                           (get-process ess-current-process-name))
+                (setq ess-current-process-name nil))
+              (when message
+                (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
+              ;; ask for buffer name not the *real* process name:
+              (process-name
+               (get-buffer-process
+                (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
+                                     (and ess-current-process-name
+                                          (buffer-name (process-buffer (get-process ess-current-process-name)))))))
+               )))
       (when (equal proc "*new*")
         (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
         (setq proc (caar ess-process-name-list)))
