@@ -371,9 +371,27 @@ there is no process NAME)."
         (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
         )
-      (if (and inferior-ess-same-window (not inferior-ess-own-frame))
-          (switch-to-buffer (process-buffer (get-process proc-name)))
-        (pop-to-buffer (process-buffer (get-process proc-name)))))))
+
+      (let ((buff (process-buffer (get-process proc-name))))
+        (with-current-buffer buff
+          (rename-buffer (funcall ess-gen-proc-buffer-name-function proc-name) t))
+        (if (and inferior-ess-same-window (not inferior-ess-own-frame))
+            (switch-to-buffer buff)
+          (pop-to-buffer buff))))))
+
+(defun ess-gen-proc-buffer-name:simple (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
+  (format "*%s*" proc-name))
+
+(defun ess-gen-proc-buffer-name:directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *dir-name:proc-name*"
+  (format "*%s:%s*" (file-name-nondirectory
+                     (directory-file-name default-directory))
+          proc-name))
+
+(defun ess-gen-proc-buffer-name:full-directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in *abbreviated-full-dir-name:proc-name*"
+  (format "*%s:%s*" (abbreviate-file-name default-directory) proc-name))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC

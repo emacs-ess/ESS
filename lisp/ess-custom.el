@@ -1026,6 +1026,24 @@ to sweave the current noweb file and latex the result."
 (make-variable-buffer-local 'ess-local-process-name)
 
 
+(defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple
+  "Function used for generation of the buffer name of the newly created ess process.
+It should accept one argument PROC-NAME, a string specifying
+internal process name (R, R:2 etc).
+
+Provided options are:
+
+  `ess-gen-proc-buffer-name:simple' -- *proc*  
+  `ess-gen-proc-buffer-name:directory' -- *dir:proc*
+  `ess-gen-proc-buffer-name:full-directory' -- *abbr-long-dir:proc*
+"
+  :group 'ess
+  :type '(choice (const :tag "*proc*" ess-gen-proc-buffer-name:simple)
+                 (const :tag "*dir:proc*" ess-gen-proc-buffer-name:directory)
+                 (const :tag "*abbr-long-dir:proc*" ess-gen-proc-buffer-name:full-directory)
+                 function))
+
+
 (defcustom ess-kermit-command "gkermit -T"
   "Kermit command invoked by `ess-kermit-get' and `ess-kermit-send'."
   :group 'ess
