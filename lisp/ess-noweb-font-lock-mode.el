@@ -287,7 +287,6 @@ On commenting the whole chunk, causes infloop in
         ;; (font-latex-extend-region-functions nil)
         )
     (delq 'font-lock-extend-region-multiline font-lock-extend-region-functions)
-    (dbg font-lock-extend-region-functions)
     ad-do-it))
 
 ;; (ad-remove-advice 'font-lock-after-change-function 'around 'test-font)
