@@ -255,9 +255,9 @@ if necessary.  It is bound to RET and C-m in R-index pages."
          (command
           (when (equal ess-dialect "R")
             (cond ((string-match"::" string)
-                   "?%s\n")
+                   (format "?%s\n" (ess-R--sanitize-help-topic string)))
                   ((eq ess-help-type 'index)
-                   (concat "?" ess-help-object "::%s\n"))
+                   (concat "?" ess-help-object "::`%s`\n"))
                   ))))
     (ess-display-help-on-object string command)
     ))

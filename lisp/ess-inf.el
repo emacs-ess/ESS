@@ -2249,12 +2249,18 @@ to continue it."
   "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
+(defun ess-R--sanitize-help-topic (string)
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string)
+      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
+    (format "`%s`" string)))
+
 (defun inferior-R-input-sender (proc string)
   (save-current-buffer
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (format "%s'%s'" (match-string 1 string) (match-string 2 string))))
+                             (format "%s%s" (match-string 1 string)
+                                     (ess-R--sanitize-help-topic (match-string 2 string)))))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
