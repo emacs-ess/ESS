@@ -92,7 +92,6 @@ analysis languages.
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
 
-* ESS for S::                   Overview of ESS features for the S family
 * Interactive ESS::             Interacting with statistical programs
 * Entering commands::           Interacting with the ESS process
 * Evaluating code::             Sending code to the ESS process
@@ -103,6 +102,7 @@ analysis languages.
 * Developing with ESS::         Tools for package development and debugging
 * Extras::                      Other ESS features for the S family
 
+* ESS for S::                   Overview of ESS features for the S family
 * ESS for SAS::
 * ESS for BUGS::
 * ESS for JAGS::
@@ -358,7 +358,7 @@ change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
-@node Installation, ESS for S, Introduction, Top
+@node Installation, Interactive ESS, Introduction, Top
 @chapter Installing ESS on your system
 @cindex installation
 
@@ -399,21 +399,9 @@ on your system.
 @section Requirements
 @include requires.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for S, Interactive ESS, Installation, Top
-@chapter Overview of ESS features for the S family
-@menu
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-@end menu
-@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Interactive ESS, Entering commands, ESS for S, Top
+@node Interactive ESS, Entering commands, Installation, Top
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
@@ -3010,8 +2998,8 @@ namespace. If not found, it is assigned into .GlobalEnv.
 
 
 @comment  node-name,  next,  previous,  up
-@node Extras, ESS for SAS, Developing with ESS, Top
-@chapter Other ESS features for the S family
+@node Extras, ESS for S, Developing with ESS, Top
+@chapter Other ESS features and tools
 
 ESS has a few extra features, which didn't fit anywhere else.
 @c todo: sort alphabetically
@@ -3518,9 +3506,21 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
 @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
 
+@comment  node-name,  next,  previous,  up
+@node ESS for S, ESS for SAS, Extras, Top
+@chapter Overview of ESS features for the S family
+@menu
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+@end menu
+@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node ESS for SAS, ESS for BUGS, Extras, Top
+@node ESS for SAS, ESS for BUGS, ESS for S, Top
 @chapter ESS for SAS
 
 @menu
