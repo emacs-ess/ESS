@@ -331,7 +331,7 @@ to R, put them in the variable `inferior-R-args'."
           (if (or ess-microsoft-p (eq system-type 'cygwin))
               "--ess "
             ;; else: "unix alike"
-            (if ess-R-no-readline "--no-readline ")))
+            (if (not ess-R-readline) "--no-readline ")))
          (r-start-args
           (concat r-always-arg
                   inferior-R-args " " ; add space just in case

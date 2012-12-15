@@ -1033,7 +1033,7 @@ internal process name (R, R:2 etc).
 
 Provided options are:
 
-  `ess-gen-proc-buffer-name:simple' -- *proc*  
+  `ess-gen-proc-buffer-name:simple' -- *proc*
   `ess-gen-proc-buffer-name:directory' -- *proc:dir*
   `ess-gen-proc-buffer-name:full-directory' -- *proc:abbr-long-dir*
 "
@@ -1125,10 +1125,12 @@ been created using the variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
-(defcustom ess-R-no-readline nil
-  "Non-nil indicates that \"--no-readline \" should be used as argument when starting R.
-This used to be the default from 1998 to 2012, and may very slightly speedup interaction.
-On the other hand, readline is necessary for expansion of \"~username/\" in paths."
+(defcustom ess-R-readline nil
+  "nil indicates that \"--no-readline \" should be used as argument when starting R.
+This has been the default since 1998 and may very slightly speedup interaction.
+On the other hand, readline is necessary for expansion of \"~username/\" in paths.
+Note that readline interprets tabs (tabular characters) in R source files as asking
+for file name completion.  This can mess up ess evaluation completely."
   :group 'ess-R
   :type 'boolean)
 
