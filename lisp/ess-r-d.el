@@ -1386,7 +1386,7 @@ similar to `load-library' emacs function.
     (let ((ess-eval-visibly-p t)
           (packs (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
           pack)
-      (setq pack (ess-completing-read "Load package" packs))
+      (setq pack (ess-completing-read "Load" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))
       (ess--mark-search-list-as-changed)
       (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
