@@ -518,6 +518,16 @@ temporary one in `temporary-file-directory'.
      'essddr-version
      'Rd-indent-level))))
 
+;; temp
+;; (defun my-substitute-% (str)
+;;   (dbg str)
+;;   (replace-regexp-in-string "\\\\%" "%" str))
+
+;; (defun my-add-%-hook ()
+;;   (add-hook 'ess-presend-filter-functions 'my-substitute-% nil t))
+
+;; (add-hook 'R-mode-hook 'my-add-%-hook)
+
 ;; Provide ourself
 (provide 'essddr)
 
