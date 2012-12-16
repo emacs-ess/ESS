@@ -113,15 +113,17 @@ New way to do it."
 
 (defvar ess-S+--injected-code
   ".ess_funnargs <- function(object){
-  funname <- as.character(substitute(object))
-  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  funname <- deparse(substitute(object))
+  fun <- try(object, silent = TRUE) ## works for special objects also
   if(is.function(fun)) {
+    special <- grepl('[:$@[]', funname)
     args <- args(fun)
     fmls <- formals(args)
     fmls_names <- names(fmls)
-    fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed=TRUE)
+    fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed = TRUE)
     args_alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls_names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
-    envname <- environmentName(environment(fun))
+    ## envname <- environmentName(environment(fun))
+    envname <-  if (special) '' else 'S+'
     cat(sprintf('(list \\\"%s\\\" %s )\\n', envname, args_alist))
   }
 }
