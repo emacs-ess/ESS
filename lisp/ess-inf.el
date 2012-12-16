@@ -1107,7 +1107,6 @@ Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
 input STRING.
 "
-
   (setq string (ess--run-presend-hooks process string))
   (inferior-ess--interrupt-subjob-maybe process)
   (inferior-ess-mark-as-busy process)
@@ -1425,15 +1424,14 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;      (ess-eval-region   ....)
 
-(defun ess-eval-linewise (text-withtabs &optional
+(defun ess-eval-linewise (text &optional
                                         invisibly eob even-empty
                                         wait-last-prompt sleep-sec wait-sec)
   ;; RDB 28/8/92 added optional arg eob
-  ;; AJR 971022: text-withtabs was text.
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
   ;; VS 2012-01-18 it was actually nil, replaced with wait-sec - 0.001 default
   ;; MM 2007-01-05: added 'sleep-sec' VS:? this one seems redundant to wait-last-prompt
-  "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
+  "Evaluate TEXT in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
 If optional second arg INVISIBLY is non-nil, don't echo commands.
@@ -1449,11 +1447,11 @@ will be used instead of the default .001s and be passed to
 
 Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
-TEXT-WITHTABS.
+TEXT.
 "
 
   (if (ess-ddeclient-p)
-      (ess-eval-linewise-ddeclient text-withtabs
+      (ess-eval-linewise-ddeclient text
                                    invisibly eob even-empty
                                    (if wait-last-prompt
                                        ess-eval-ddeclient-sleep))
@@ -1469,11 +1467,12 @@ TEXT-WITHTABS.
            (cbuffer (current-buffer))
            (sprocess (get-ess-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
-           (text (ess-replace-in-string text-withtabs "\t" " "))
+           ;; (text (ess-replace-in-string text "\t" " "))
            start-of-output
            com pos txt-gt-0)
 
-      (setq text-withtabs (ess--run-presend-hooks sprocess text-withtabs))
+      (setq text (with-ess-process-buffer nil
+                            (ess--run-presend-hooks sprocess text)))
 
       (set-buffer sbuffer)
 
