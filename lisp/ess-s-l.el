@@ -137,7 +137,7 @@
     (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
-    (ess-funargs-command        . ".ess_funnargs(%s)\n")
+    (ess-funargs-command        . ".ess.funargs(%s)\n")
     )
   "S-language common settings for all <dialect>-customize-alist s"
   )

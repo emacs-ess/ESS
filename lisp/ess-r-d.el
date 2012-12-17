@@ -257,7 +257,7 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 (defvar ess--R-injected-code
-  ".ess_funnargs <- function(object){
+  ".ess.funargs <- function(object){
   funname <- deparse(substitute(object))
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)

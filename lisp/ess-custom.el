@@ -2395,7 +2395,7 @@ Passed to `ess-execute-dialect-specific' which see. ")
 
 (defvar ess-funargs-command  nil
   "Dialect specific command to return a list of function arguments.
-See `ess-function-arguments' and .ess_funnargs command in R and
+See `ess-function-arguments' and .ess.funargs command in R and
 S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
 

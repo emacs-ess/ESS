@@ -112,19 +112,19 @@ New way to do it."
     (run-mode-hooks 'ess-S+-post-run-hook)))
 
 (defvar ess-S+--injected-code
-  ".ess_funnargs <- function(object){
+  ".ess.funargs <- function(object){
   funname <- deparse(substitute(object))
   fun <- try(object, silent = TRUE) ## works for special objects also
   if(is.function(fun)) {
     special <- grepl('[:$@[]', funname)
     args <- args(fun)
     fmls <- formals(args)
-    fmls_names <- names(fmls)
+    fmls.names <- names(fmls)
     fmls <- gsub('\\\"', '\\\\\\\"', as.character(fmls), fixed = TRUE)
-    args_alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls_names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
+    args.alist <- sprintf(\"'(%s)\", paste(\"(\\\"\", fmls.names, \"\\\" . \\\"\", fmls, \"\\\")\", sep = '', collapse = ' '))
     ## envname <- environmentName(environment(fun))
     envname <-  if (special) '' else 'S+'
-    cat(sprintf('(list \\\"%s\\\" %s )\\n', envname, args_alist))
+    cat(sprintf('(list \\\"%s\\\" %s )\\n', envname, args.alist))
   }
 }
 ")
