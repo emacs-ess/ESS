@@ -1077,17 +1077,21 @@ The functions on the list are called sequentially, and each one is
 given the string returned by the previous one.  The string returned by
 the last function is the text that is actually sent to the process.
 
-You can use `add-hook' to add functions to this list
-either globally or locally.")
+You can use `add-hook' to add functions to this list either
+globally or locally.
+
+The hook is executed in current buffer. Before execution, the
+local value of this hook in the process buffer is appended to the
+hook from the current buffer.
+")
 
 (defun ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call `ess-send-string'.
 If MESSAGE is supplied, display it at the end.
 
-Run `comint-input-filter-functions' and
-`ess-presend-filter-functions' of the associated PROCESS on the
-region.
+Run `comint-input-filter-functions' and curent buffer's and
+associated with PROCESS `ess-presend-filter-functions'  hooks.
 "
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
@@ -1103,9 +1107,9 @@ region.
 Removes empty lines during the debugging.
 STRING  need not end with \\n.
 
-Run `comint-input-filter-functions' and
-`ess-presend-filter-functions' of the associated PROCESS on the
-input STRING.
+Run `comint-input-filter-functions' and current buffer's and
+PROCESS' `ess-presend-filter-functions' hooks on the input
+STRING.
 "
   (setq string (ess--run-presend-hooks process string))
   (inferior-ess--interrupt-subjob-maybe process)
@@ -1137,22 +1141,28 @@ input STRING.
   (if ess--inhibit-presend-hooks
       string
     ;;return modified string
-    (with-current-buffer (process-buffer process)
-      (run-hook-with-args 'comint-input-filter-functions string)
-      ;; cannot use run-hook-with-args here because string must be passed from one
-      ;; function to another
-      (let ((functions ess-presend-filter-functions))
-        (while (and functions string)
-          (if (eq (car functions) t)
-              (let ((functions
-                     (default-value 'ess-presend-filter-functions)))
-                (while (and functions string)
-                  (setq string (funcall (car functions) string))
-                  (setq functions (cdr functions))))
-            (setq string (funcall (car functions) string)))
-          (setq functions (cdr functions))))
-      string
-      )))
+    (let* ((pbuf (process-buffer process))
+           ;; also run proc buffer local hooks
+           (functions (unless (eq pbuf (current-buffer))
+                        (buffer-local-value 'ess-presend-filter-functions pbuf))))
+      (setq functions (append  (delq t (copy-list functions)) ;; even in let, delq distructs
+                               ess-presend-filter-functions))
+      (while (and functions string)
+        ;; cannot use run-hook-with-args here because string must be passed from one
+        ;; function to another
+        (if (eq (car functions) t)
+            (let ((functions
+                   (default-value 'ess-presend-filter-functions)))
+              (while (and functions string)
+                (setq string (funcall (car functions) string))
+                (setq functions (cdr functions))))
+          (setq string (funcall (car functions) string)))
+        (setq functions (cdr functions)))
+
+      (with-current-buffer pbuf
+        (run-hook-with-args 'comint-input-filter-functions string))
+
+      string)))
 
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
@@ -1471,8 +1481,7 @@ TEXT.
            start-of-output
            com pos txt-gt-0)
 
-      (setq text (with-ess-process-buffer nil
-                            (ess--run-presend-hooks sprocess text)))
+      (setq text (ess--run-presend-hooks sprocess text))
 
       (set-buffer sbuffer)
 
