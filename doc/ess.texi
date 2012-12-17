@@ -1407,7 +1407,7 @@ aborting the current command.
 @kbd{C-c C-z} (@code{ess-switch-to-inferior-or-script-buffer}) @* When
 in process buffer, return to the most recent script buffer. When in a
 script buffer pop to the associated process buffer. This is a single key
-command, that is @dbd{C-c C-z C-z} from a script buffer returns to the
+command, that is @kbd{C-c C-z C-z} from a script buffer returns to the
 original buffer.
 @item
 @end itemize
