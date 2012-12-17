@@ -1145,7 +1145,7 @@ STRING.
            ;; also run proc buffer local hooks
            (functions (unless (eq pbuf (current-buffer))
                         (buffer-local-value 'ess-presend-filter-functions pbuf))))
-      (setq functions (append  (delq t (copy-list functions)) ;; even in let, delq distructs
+      (setq functions (append  (delq t (copy-sequence functions)) ;; even in let, delq distructs
                                ess-presend-filter-functions))
       (while (and functions string)
         ;; cannot use run-hook-with-args here because string must be passed from one
