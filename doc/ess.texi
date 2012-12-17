@@ -92,7 +92,6 @@ analysis languages.
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
 
-* ESS for S::                   Overview of ESS features for the S family
 * Interactive ESS::             Interacting with statistical programs
 * Entering commands::           Interacting with the ESS process
 * Evaluating code::             Sending code to the ESS process
@@ -103,6 +102,7 @@ analysis languages.
 * Developing with ESS::         Tools for package development and debugging
 * Extras::                      Other ESS features for the S family
 
+* ESS for S::                   Overview of ESS features for the S family
 * ESS for SAS::
 * ESS for BUGS::
 * ESS for JAGS::
@@ -358,7 +358,7 @@ change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
 
 @comment  node-name,  next,  previous,  up
-@node Installation, ESS for S, Introduction, Top
+@node Installation, Interactive ESS, Introduction, Top
 @chapter Installing ESS on your system
 @cindex installation
 
@@ -399,21 +399,9 @@ on your system.
 @section Requirements
 @include requires.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for S, Interactive ESS, Installation, Top
-@chapter Overview of ESS features for the S family
-@menu
-* ESS(S)--Editing files::
-* iESS(S)--Inferior ESS processes::
-* ESS-help--assistance with viewing help::
-* Philosophies for using ESS(S)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
-@end menu
-@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Interactive ESS, Entering commands, ESS for S, Top
+@node Interactive ESS, Entering commands, Installation, Top
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
@@ -830,13 +818,14 @@ top of the window, even though the entire output would fit in the window
 if the prompt were near the bottom of the window.  If this happens, you
 can use the command
 
-@itemize @bullet
-@item
-@kbd{C-c C-e} (@code{comint-show-maximum-output}) @*
-@pindex comint-show-maximum-output
-Move to the end of the buffer, and place cursor on bottom line of
-window.
-@end itemize
+@c should be an extra-map 
+@c @itemize @bullet
+@c @item
+@c @kbd{C-c C-e} (@code{comint-show-maximum-output}) @*
+@c @pindex comint-show-maximum-output
+@c Move to the end of the buffer, and place cursor on bottom line of
+@c window.
+@c @end itemize
 
 @noindent
 to make more of the last output visible.  (To make this happen
@@ -1281,10 +1270,6 @@ command to the ESS process.
 @cindex search list
 @pindex search()
 
-@item
-@kbd{C-c C-e} (@code{ess-execute}) @*
-@pindex ess-execute
-Prompt for an ESS expression, and evaluate it.
 @end itemize
 
 @code{ess-execute} may seem pointless when you could just type the
@@ -1419,22 +1404,12 @@ Sends a Control-C signal to the ESS process.  This has the effect of
 aborting the current command.
 
 @item
-@kbd{C-c C-z} (@code{ess-abort}) @*
-@pindex ess-abort
-@pindex comint-stop-subjob
-Sends a STOP signal to the ESS process, killing it immediately.
-It's not a good idea to use this, in general: Neither @code{q()} nor
-@code{.Last} will be executed and device drivers will not finish
-cleanly.  This command is provided as a safety to
-@code{comint-stop-subjob}, which is usually bound to @kbd{C-c C-z}.  If
-you want to quit from S, use @kbd{C-c C-q} (@code{ess-quit}) instead.
-@pindex ess-quit
-@cindex aborting the ESS process
-
+@kbd{C-c C-z} (@code{ess-switch-to-inferior-or-script-buffer}) @* When
+in process buffer, return to the most recent script buffer. When in a
+script buffer pop to the associated process buffer. This is a single key
+command, that is @dbd{C-c C-z C-z} from a script buffer returns to the
+original buffer.
 @item
-@kbd{C-c C-d} (@code{ess-dump-object-into-edit-buffer}) @*
-@pindex ess-dump-object-into-edit-buffer
-Prompts for an object to be edited in an edit buffer.  @xref{Editing objects}.
 @end itemize
 
 Other commands available in Inferior @Sl{} mode are discussed in
@@ -1552,15 +1527,6 @@ purposes, or for generating transcripts from source files.  When editing
 S functions, @kbd{C-c C-l} is the command to use to update the
 function's value.  In particular, @code{ess-eval-buffer} is now largely
 obsolete.
-
-One final command is provided for spot-evaluations of @Sl{} code:
-
-@itemize @bullet
-@kbd{C-c C-t} (@code{ess-execute-in-tb}) @*
-@pindex ess-execute-in-tb
-Prompt for an @Sl{} expression and evaluate it.  Displays result in a
-temporary buffer.
-@end itemize
 
 @noindent
 This is useful for quick calculations, etc.
@@ -1687,7 +1653,7 @@ To edit an @Sl{} object, type
 
 @itemize @bullet
 @item
-@kbd{C-c C-d} (@code{ess-dump-object-into-edit-buffer}) @*
+@kbd{C-c C-e C-d} (@code{ess-dump-object-into-edit-buffer}) @*
 @pindex ess-dump-object-into-edit-buffer
 Edit an @Sl{} object in its own edit buffer.
 @end itemize
@@ -1716,7 +1682,7 @@ constructs.
 
 @cindex dump files
 @cindex reverting function definitions
-Note: when you dump a file with @kbd{C-c C-d}, ESS first checks
+Note: when you dump a file with @kbd{C-c C-e C-d}, ESS first checks
 to see whether there already exists an edit buffer containing that
 object and, if so, pops you directly to that buffer.  If not, ESS next
 checks whether there is a file in the appropriate place with the
@@ -1729,7 +1695,7 @@ consulted and a @code{dump()} command issued.
 If you want to force ESS to ask the ESS process for the object's
 definition (say, to reformat an unmodified buffer or to revert back to
 S's idea of the object's definition) pass a prefix argument to
-@code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-d}.
+@code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-e C-d}.
 
 @comment  node-name,  next,  previous,  up
 @node Loading, Error Checking, Edit buffer, Editing objects
@@ -1738,7 +1704,7 @@ S's idea of the object's definition) pass a prefix argument to
 The best way to get information --- particularly function definitions
 --- into @Sl{} is to load them in as source file, using S's
 @code{source} function.  You have already seen how to create source
-files using @kbd{C-c C-d}; ESS provides a complementary command for
+files using @kbd{C-c C-e C-d}; ESS provides a complementary command for
 loading source files (even files not created with ESS!) into the ESS
 process:
 
@@ -1755,7 +1721,7 @@ After typing @kbd{C-c C-l} you will prompted for the name of the file to
 load into S; usually this is the current buffer's file which is the
 default value (selected by simply pressing @kbd{RET} at the prompt).
 You will be asked to save the buffer first if it has been modified (this
-happens automatically if the buffer was generated with @kbd{C-c C-d}).
+happens automatically if the buffer was generated with @kbd{C-c C-e C-d}).
 The file will then be loaded, and if it loads successfully you will be
 returned to the ESS process.
 
@@ -1957,7 +1923,7 @@ Also returns to to the ESS process buffer, but leaves point where it was.
 
 In addition some commands available in the process buffer are also
 available in the edit buffer.  You can still read help files with
-@kbd{C-c C-v}, edit another function with @kbd{C-c C-d} and of course
+@kbd{C-c C-v}, edit another function with @kbd{C-c C-e C-d} and of course
 @kbd{C-c C-l} can be used to load a source file into S.  @xref{Other},
 for more details on these commands.
 
@@ -1966,14 +1932,14 @@ for more details on these commands.
 @section Maintaining S source files
 
 Every edit buffer in ESS is associated with a @dfn{dump file} on disk.
-Dump files are created whenever you type @kbd{C-c C-d}
+Dump files are created whenever you type @kbd{C-c C-e C-d}
 (@code{ess-dump-object-into-edit-buffer}), and may either be deleted
 after use, or kept as a backup file or as a means of keeping several
 versions of an @Sl{} function.
 @cindex dump files
 
 @defvr {User Option} ess-delete-dump-files
-If non-@code{nil}, dump files created with C-c C-d are deleted
+If non-@code{nil}, dump files created with C-c C-e C-d are deleted
 immediately after they are created by the ess-process.
 @end defvr
 
@@ -1991,7 +1957,7 @@ exist.  The default value is @code{t}.
 Option controlling what to do with the dump file after an object has
 been successfully loaded into S.  Valid values are @code{nil} (always
 delete), @code{ask} (always ask whether to delete), @code{check} (delete
-files generated with @kbd{C-c C-d} in this Emacs session, otherwise ask
+files generated with @kbd{C-c C-e C-d} in this Emacs session, otherwise ask
 --- this is the default) and @code{t} (never delete).  This variable is
 buffer-local.
 @end defvr
@@ -2016,7 +1982,7 @@ record of function definitions.  Another possibility is to maintain the
 files with a version-control system such as RCS @xref{Version Control,
 Version Control, Version Control, emacs, The Gnu Emacs Reference
 Manual}.  As long as a dump file exists in the appropriate place for a
-particular object, editing that object with @kbd{C-c C-d} finds that
+particular object, editing that object with @kbd{C-c C-e C-d} finds that
 file for editing (unless a prefix argument is given) --- the ESS
 process is not consulted.  Thus you can keep comments @emph{outside} the
 function definition as a means of documentation that does not clutter
@@ -2027,7 +1993,7 @@ project-based work.
 
 If the value of @code{ess-keep-dump-files} is nil, the dump file is always
 silently deleted after a successful load with @kbd{C-c C-l}.  While this
-is useful for files that were created with @kbd{C-c C-d} it also applies
+is useful for files that were created with @kbd{C-c C-e C-d} it also applies
 to any other file you load (say, a source file of function
 definitions), and so can be dangerous to use unless you are careful.
 Note that since @code{ess-keep-dump-files} is buffer-local, you can make
@@ -2039,9 +2005,9 @@ Reference Manual}.
 A safer option is to set @code{ess-keep-dump-files} to @code{ask}; this
 means that ESS will always ask for confirmation before deleting the
 file.  Since this can get annoying if you always want to delete dump
-files created with @code{C-c C-d}, but not any other files, setting
+files created with @code{C-c C-e C-d}, but not any other files, setting
 @code{ess-keep-dump-files} to @code{check} (the default value) will
-silently delete dump files created with @kbd{C-c C-d} in the current
+silently delete dump files created with @kbd{C-c C-e C-d} in the current
 Emacs session, but query for any other file.  Note that in any case you
 will only be asked for confirmation once per file, and your answer is
 remembered for the rest of the Emacs session.
@@ -2577,11 +2543,11 @@ To use these features you have to first activate the tracebug:
 (setq ess-use-tracebug t)
 @end example
 
-You can also toggle it from the menu or simply by typing @kbd{M-x}
-@code{ess-tracebug} @kbd{RET}.
+You can also toggle it from the menu, with @kbd{C-c C-t T}, or simply by
+typing @kbd{M-x} @code{ess-tracebug} @kbd{RET}.
 
-Almost all of the tracebug functionality can be found in
-@code{ess-dev-map}, which is bound to @kbd{C-c d}. Optionally you can
+Almost all of the tracebug functionality can be found on
+@code{ess-dev-map}, which is bound to @kbd{C-c C-t}. Optionally you can
 assign the full tracebug map to a shorter prefix:
 
 @example
@@ -2593,9 +2559,8 @@ to be triggered by @kbd{M-t M-t}. Another alternative key, you might
 consider is @kbd{M-c}. In this case, the hijacked command
 @code{capitalize-word} is automatically re-bound to @kbd{M-c M-c}.
 
-You can always call @kbd{C-c d ?} (or @kbd{M-t ?} if prefix is set) to
-display the following menu with all the tracebug keys (prefix not
-included):
+You can always call @kbd{C-c C-t ?}  to display the following menu with
+all the tracebug keys (prefix not included):
 
 
 @c @multitable {123} {123} {really-really-really-really-really-long}
@@ -2819,7 +2784,7 @@ by default in ESS. The following special Emacs commands are provided.
 @itemize @bullet
 
 @item
-@kbd{C-c C-o} (@code{ess-roxy-update-entry}) @*
+@kbd{C-c C-o C-o} (@code{ess-roxy-update-entry}) @*
 @pindex ess-roxy-update-entry
 Generate a Roxygen template or update the parameter list in Roxygen
 entry at point (or above the function at the point). Documented
@@ -2829,14 +2794,14 @@ dropped. Parameter descriptions are filled if
 @code{ess-roxy-fill-param-p} is non-nil.
 
 @item
-@kbd{C-c C-e C-c} (@code{ess-roxy-toggle-roxy-region}) @*
+@kbd{C-c C-o C-c} (@code{ess-roxy-toggle-roxy-region}) @*
 @pindex ess-roxy-toggle-roxy-region
 Toggle the presence of the leading Roxygen string on all lines in the
 marked region. Convenient for transferring text to Roxygen entries and
 to evaluate example fields.
 
 @item
-@kbd{C-c C-e C-r} (@code{ess-roxy-preview-Rd}) @*
+@kbd{C-c C-o C-r} (@code{ess-roxy-preview-Rd}) @*
 @pindex ess-roxy-preview-Rd
 Use the attached R process to parse the entry at point to obtain the Rd
 code. Convenient for previewing and checking syntax. When used with the
@@ -2845,7 +2810,7 @@ buffer associated with a Rd file with the same name as the
 documentation. Requires the Roxygen package to be installed.
 
 @item
-@kbd{C-c C-e C-t} (@code{ess-roxy-preview-HTML}) @*
+@kbd{C-c C-o C-t} (@code{ess-roxy-preview-HTML}) @*
 @pindex ess-roxy-preview-Rd
 Use the attached R process to parse the entry at to generate HTML for
 the entry and open it in a browser. When used with the prefix argument,
@@ -2853,23 +2818,23 @@ i.e. @kbd{C-u C-c C-e C-t}, visit the generated HTML file instead.
 Requires the Roxygen and tools packages to be installed.
 
 @item
-@kbd{C-c C-e p} (@code{ess-roxy-previous-entry}) @*
+@kbd{C-c C-o p} (@code{ess-roxy-previous-entry}) @*
 @pindex ess-roxy-previous-entry
 Go to start of the Roxygen entry above point.
 
 @item
-@kbd{C-c C-e n}  (@code{ess-roxy-next-entry}) @*
+@kbd{C-c C-o n}  (@code{ess-roxy-next-entry}) @*
 @pindex ess-roxy-next-entry
 Go to end of the Roxygen entry above point.
 
 @item
-@kbd{C-c C-e C-h} (@code{ess-roxy-hide-all}) @*
+@kbd{C-c C-o C-h} (@code{ess-roxy-hide-all}) @*
 @pindex ess-roxy-hide-all
 Use the hideshow mode to fold away the visibility of all Roxygen
 entries. Hide-show support must be enabled for this binding to get
 defined.
 
-ESS also advices the following standard editing functions in order to make
+ESS also advises the following standard editing functions in order to make
 Roxygen editing more intuitive:
 
 @c not very precise, TAB calls it indirectly
@@ -2940,16 +2905,16 @@ and functions defined in .GlobalEnv can see the objects in
 
 In order to use ess-developer mode add names of the packages you are
 developing to @code{ess-developer-packages}. You can do taht interactively
-with @kbd{C-c d a}, and remove packages with @kbd{C-c d r}. When
+with @kbd{C-c C-t a}, and remove packages with @kbd{C-c C-t r}. When
 developer mode is on, the name of the process in the mode line is
 highlighted with @code{ess-developer-indicator-face}.
 
 @itemize @bullet
-@item @kbd{C-c d t}(@code{ess-developer}) @*
+@item @kbd{C-c C-t C-t}(@code{ess-developer}) @*
       Toggle developer mode on and off.
-@item @kbd{C-c d a}(@code{ess-developer-add-package}) @*
+@item @kbd{C-c C-t C-a}(@code{ess-developer-add-package}) @*
       Add  a package to your development list.
-@item @kbd{C-c d r}(@code{ess-developer-remove-package}) @*
+@item @kbd{C-c C-t C-r}(@code{ess-developer-remove-package}) @*
       Remove a package from your development list.
 @end itemize
 
@@ -3010,8 +2975,8 @@ namespace. If not found, it is assigned into .GlobalEnv.
 
 
 @comment  node-name,  next,  previous,  up
-@node Extras, ESS for SAS, Developing with ESS, Top
-@chapter Other ESS features for the S family
+@node Extras, ESS for S, Developing with ESS, Top
+@chapter Other ESS features and tools
 
 ESS has a few extra features, which didn't fit anywhere else.
 @c todo: sort alphabetically
@@ -3518,9 +3483,21 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
 @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
 
+@comment  node-name,  next,  previous,  up
+@node ESS for S, ESS for SAS, Extras, Top
+@chapter Overview of ESS features for the S family
+@menu
+* ESS(S)--Editing files::
+* iESS(S)--Inferior ESS processes::
+* ESS-help--assistance with viewing help::
+* Philosophies for using ESS(S)::
+* Scenarios for use (possibilities--based on actual usage)::
+* Customization Examples and Solutions to Problems::
+@end menu
+@include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node ESS for SAS, ESS for BUGS, Extras, Top
+@node ESS for SAS, ESS for BUGS, ESS for S, Top
 @chapter ESS for SAS
 
 @menu

@@ -180,6 +180,17 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
           (delete-region (point-min) (point-max))
           (ess-help-mode)
           (setq ess-local-process-name ess-current-process-name)
+          (when (and (null command)
+                   (string-match "^R" ess-dialect))
+            ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogs (should go away soon)
+            (let ((packs (ess-get-words-from-vector
+                          (format "as.character(help('%s'))\n" object))))
+              (when (> (length packs) 1)
+                (setq
+                 command (format ;; crippled S3 :(
+                          "do.call(structure, c('%s', attributes(help('%s'))))\n"
+                          (ess-completing-read "Choose location" packs nil t)
+                          object)))))
           (ess-command (format (or command inferior-ess-help-command)
                                object) tbuffer)
           (ess-help-underline)
@@ -255,9 +266,9 @@ if necessary.  It is bound to RET and C-m in R-index pages."
          (command
           (when (equal ess-dialect "R")
             (cond ((string-match"::" string)
-                   "?%s\n")
+                   (format "?%s\n" (ess-R--sanitize-help-topic string)))
                   ((eq ess-help-type 'index)
-                   (concat "?" ess-help-object "::%s\n"))
+                   (concat "?" ess-help-object "::`%s`\n"))
                   ))))
     (ess-display-help-on-object string command)
     ))

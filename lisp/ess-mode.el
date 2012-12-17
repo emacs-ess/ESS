@@ -1396,7 +1396,7 @@ generate the source buffer."
      (ess-force-buffer-current "Process to dump from: ")
      (if (ess-ddeclient-p)
          (list (read-string "Object to edit: "))
-       (ess-read-object-name "Object to edit: "))))
+       (ess-read-object-name "Object to edit"))))
 
   (let* ((dirname (file-name-as-directory
                    (if (stringp ess-source-directory)

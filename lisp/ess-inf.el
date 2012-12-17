@@ -1077,17 +1077,21 @@ The functions on the list are called sequentially, and each one is
 given the string returned by the previous one.  The string returned by
 the last function is the text that is actually sent to the process.
 
-You can use `add-hook' to add functions to this list
-either globally or locally.")
+You can use `add-hook' to add functions to this list either
+globally or locally.
+
+The hook is executed in current buffer. Before execution, the
+local value of this hook in the process buffer is appended to the
+hook from the current buffer.
+")
 
 (defun ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call `ess-send-string'.
 If MESSAGE is supplied, display it at the end.
 
-Run `comint-input-filter-functions' and
-`ess-presend-filter-functions' of the associated PROCESS on the
-region.
+Run `comint-input-filter-functions' and curent buffer's and
+associated with PROCESS `ess-presend-filter-functions'  hooks.
 "
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
@@ -1103,11 +1107,10 @@ region.
 Removes empty lines during the debugging.
 STRING  need not end with \\n.
 
-Run `comint-input-filter-functions' and
-`ess-presend-filter-functions' of the associated PROCESS on the
-input STRING.
+Run `comint-input-filter-functions' and current buffer's and
+PROCESS' `ess-presend-filter-functions' hooks on the input
+STRING.
 "
-
   (setq string (ess--run-presend-hooks process string))
   (inferior-ess--interrupt-subjob-maybe process)
   (inferior-ess-mark-as-busy process)
@@ -1138,22 +1141,28 @@ input STRING.
   (if ess--inhibit-presend-hooks
       string
     ;;return modified string
-    (with-current-buffer (process-buffer process)
-      (run-hook-with-args 'comint-input-filter-functions string)
-      ;; cannot use run-hook-with-args here because string must be passed from one
-      ;; function to another
-      (let ((functions ess-presend-filter-functions))
-        (while (and functions string)
-          (if (eq (car functions) t)
-              (let ((functions
-                     (default-value 'ess-presend-filter-functions)))
-                (while (and functions string)
-                  (setq string (funcall (car functions) string))
-                  (setq functions (cdr functions))))
-            (setq string (funcall (car functions) string)))
-          (setq functions (cdr functions))))
-      string
-      )))
+    (let* ((pbuf (process-buffer process))
+           ;; also run proc buffer local hooks
+           (functions (unless (eq pbuf (current-buffer))
+                        (buffer-local-value 'ess-presend-filter-functions pbuf))))
+      (setq functions (append  (delq t (copy-list functions)) ;; even in let, delq distructs
+                               ess-presend-filter-functions))
+      (while (and functions string)
+        ;; cannot use run-hook-with-args here because string must be passed from one
+        ;; function to another
+        (if (eq (car functions) t)
+            (let ((functions
+                   (default-value 'ess-presend-filter-functions)))
+              (while (and functions string)
+                (setq string (funcall (car functions) string))
+                (setq functions (cdr functions))))
+          (setq string (funcall (car functions) string)))
+        (setq functions (cdr functions)))
+
+      (with-current-buffer pbuf
+        (run-hook-with-args 'comint-input-filter-functions string))
+
+      string)))
 
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
@@ -1425,15 +1434,14 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;      (ess-eval-region   ....)
 
-(defun ess-eval-linewise (text-withtabs &optional
+(defun ess-eval-linewise (text &optional
                                         invisibly eob even-empty
                                         wait-last-prompt sleep-sec wait-sec)
   ;; RDB 28/8/92 added optional arg eob
-  ;; AJR 971022: text-withtabs was text.
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
   ;; VS 2012-01-18 it was actually nil, replaced with wait-sec - 0.001 default
   ;; MM 2007-01-05: added 'sleep-sec' VS:? this one seems redundant to wait-last-prompt
-  "Evaluate TEXT-WITHTABS in the ESS process buffer as if typed in w/o tabs.
+  "Evaluate TEXT in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
 If optional second arg INVISIBLY is non-nil, don't echo commands.
@@ -1449,11 +1457,11 @@ will be used instead of the default .001s and be passed to
 
 Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
-TEXT-WITHTABS.
+TEXT.
 "
 
   (if (ess-ddeclient-p)
-      (ess-eval-linewise-ddeclient text-withtabs
+      (ess-eval-linewise-ddeclient text
                                    invisibly eob even-empty
                                    (if wait-last-prompt
                                        ess-eval-ddeclient-sleep))
@@ -1469,11 +1477,11 @@ TEXT-WITHTABS.
            (cbuffer (current-buffer))
            (sprocess (get-ess-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
-           (text (ess-replace-in-string text-withtabs "\t" " "))
+           ;; (text (ess-replace-in-string text "\t" " "))
            start-of-output
            com pos txt-gt-0)
 
-      (setq text-withtabs (ess--run-presend-hooks sprocess text-withtabs))
+      (setq text (ess--run-presend-hooks sprocess text))
 
       (set-buffer sbuffer)
 
@@ -2249,12 +2257,18 @@ to continue it."
   "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
+(defun ess-R--sanitize-help-topic (string)
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string)
+      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
+    (format "`%s`" string)))
+
 (defun inferior-R-input-sender (proc string)
   (save-current-buffer
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (format "%s'%s'" (match-string 1 string) (match-string 2 string))))
+                             (format "%s%s" (match-string 1 string)
+                                     (ess-R--sanitize-help-topic (match-string 2 string)))))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
