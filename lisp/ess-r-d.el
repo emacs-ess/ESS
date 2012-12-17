@@ -257,8 +257,8 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 (defvar ess--R-injected-code
-  ".ess_funnargs <- function(object){
-  funname <- as.character(substitute(object))
+  ".ess.funargs <- function(object){
+  funname <- deparse(substitute(object))
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
     olderr <- getOption('error')
@@ -350,6 +350,7 @@ to R, put them in the variable `inferior-R-args'."
       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+    (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
     ;;-------------------------
     (setq comint-input-sender 'inferior-R-input-sender)
     (ess-write-to-dribble-buffer
@@ -359,6 +360,7 @@ to R, put them in the variable `inferior-R-args'."
     (ess-write-to-dribble-buffer
      (format "(R): version %s\n"
              (ess-get-words-from-vector "as.character(getRversion())\n")))
+
     (if (ess-current-R-at-least '2.7.0)
         (progn
           (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
@@ -834,16 +836,12 @@ to look up any doc strings."
 
 ;;; function argument completions
 
-(defvar ess--funargs-command  ".ess_funnargs(%s)\n")
-
 ;; (defconst ess--funname-ignore '("else"))
 ;; (defvar ess-objects-never-recache '("print" "plot")
 ;;   "List of functions of whose arguments to be cashed only once per session.")
 
-(defvar ess--funargs-cache (make-hash-table :test 'equal)
-  "Chache for R functions' arguments")
 
-(defvar ess--funargs-pre-cache
+(defvar ess-R--funargs-pre-cache
   '(("plot"
      (("graphics")
       (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
@@ -857,47 +855,6 @@ to look up any doc strings."
   "Alist of cached arguments for very time consuming functions.")
 
 
-(defun ess-function-arguments (funname)
-  "Get FUNARGS from cache or ask R for it.
-
-Return FUNARGS - a list with the first element being a
-cons (package_name . time_stamp_of_request), second element is a
-string giving arguments of the function as they appear in
-documentation, third element is a list of arguments of all S3
-methods as returned by utils:::functionArgs utility.
-
-If package_name is R_GlobalEnv or \"\", and time_stamp is less
-recent than the time of the last user interaction to the process,
-then update the entry.
-
-Package_name is \"\" if funname was not found or is a special name,n
-i.e. contains :,$ or @.
-"
-  (when funname ;; usually returned by ess--funname.start (might be nil)
-    (let* ((args (gethash funname ess--funargs-cache))
-           (pack (caar args))
-           (ts   (cdar args)))
-      (when (and args
-                 (and (time-less-p ts (ess-process-get 'last-eval))
-                      (or (null pack)
-                          (equal pack "")
-                          (equal pack "R_GlobalEnv"))
-                      ))
-        ;; reset cache
-        (setq args nil))
-      (or args
-          (cadr (assoc funname ess--funargs-pre-cache))
-          (when (and ess-current-process-name (get-process ess-current-process-name))
-            (with-current-buffer (ess-command (format ess--funargs-command funname))
-              (goto-char (point-min))
-              (when (re-search-forward "(list" nil t)
-                (goto-char (match-beginning 0))
-                (setq args (ignore-errors (eval (read (current-buffer)))))
-                (if args
-                      (setcar args (cons (car args) (current-time)))))
-              ;; push even if nil
-              (puthash (substring-no-properties funname) args ess--funargs-cache))
-            )))))
 
 ;; (defun ess-get-object-at-point ()
 ;;   "A very permissive version of symbol-at-point.
@@ -915,42 +872,6 @@ i.e. contains :,$ or @.
 ;;         ))))
 
 
-(defvar ess--funname.start nil)
-(defun ess--funname.start (&optional look-back)
-  "If inside a function call, return (FUNNAMME . START) where
-FUNNAME is a function name found before ( and START is where
-FUNNAME starts.
-
-LOOK-BACK is a number of characters to look back; defaults to
-2000. As the search might get quite slow for files with thousands
-of lines.
-
-Also store the cons in 'ess--funname.start for potential use
-later."
-  (save-restriction
-    (let* ((proc (get-buffer-process (current-buffer)))
-           (mark (and proc (process-mark proc))))
-
-      (if (and mark (>= (point) mark))
-          (narrow-to-region mark (point)))
-
-      (and ess-noweb-mode
-           (ess-noweb-narrow-to-chunk))
-
-      (when (not (ess-inside-string-p))
-        (setq ess--funname.start
-              (condition-case nil ;; check if it is inside a functon call
-                  (save-excursion
-                    (up-list -1)
-                    (while (not (looking-at "("))
-                      (up-list -1))
-                    ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
-                    (let ((funname (symbol-name (symbol-at-point))))
-                      (when (and funname
-                                 (not (member funname ess-S-non-functions)))
-                        (cons funname (- (point) (length funname))))
-                      ))
-                (error nil)))))))
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.

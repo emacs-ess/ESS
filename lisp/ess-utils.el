@@ -1011,6 +1011,89 @@ FTags file (default TAGS): ")
       
 
 
+(defun ess-function-arguments (funname)
+  "Get FUNARGS from cache or ask the process for it.
+
+Return FUNARGS - a list with the first element being a
+cons (package_name . time_stamp_of_request), second element is a
+string giving arguments of the function as they appear in
+documentation, third element is a list of arguments of all S3
+methods as returned by utils:::functionArgs utility.
+
+If package_name is R_GlobalEnv or \"\", and time_stamp is less
+recent than the time of the last user interaction to the process,
+then update the entry.
+
+Package_name is \"\" if funname was not found or is a special name,n
+i.e. contains :,$ or @.
+"
+  (when (and funname ;; usually returned by ess--funname.start (might be nil)
+             (and ess-local-process-name (get-process ess-local-process-name)))
+    (let* ((proc (get-process ess-local-process-name))
+           (args (gethash funname (process-get proc 'funargs-cache)))
+           (pack (caar args))
+           (ts   (cdar args)))
+      (when (and args
+                 (and (time-less-p ts (process-get proc 'last-eval))
+                      (or (null pack)
+                          (equal pack "")
+                          (equal pack "R_GlobalEnv"))
+                      ))
+        ;; reset cache
+        (setq args nil))
+      (or args
+          (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
+          (with-current-buffer (ess-command (format ess-funargs-command funname))
+            (goto-char (point-min))
+            (when (re-search-forward "(list" nil t)
+              (goto-char (match-beginning 0))
+              (setq args (ignore-errors (eval (read (current-buffer)))))
+              (if args
+                  (setcar args (cons (car args) (current-time)))))
+            ;; push even if nil
+            (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))
+            )))))
+
+
+(defvar ess--funname.start nil)
+
+(defun ess--funname.start (&optional look-back)
+  "If inside a function call, return (FUNNAMME . START) where
+FUNNAME is a function name found before ( and START is where
+FUNNAME starts.
+
+LOOK-BACK is a number of characters to look back; defaults to
+2000. As the search might get quite slow for files with thousands
+of lines.
+
+Also store the cons in 'ess--funname.start for potential use
+later."
+  (save-restriction
+    (let* ((proc (get-buffer-process (current-buffer)))
+           (mark (and proc (process-mark proc))))
+
+      (if (and mark (>= (point) mark))
+          (narrow-to-region mark (point)))
+
+      (and ess-noweb-mode
+           (ess-noweb-narrow-to-chunk))
+
+      (when (not (ess-inside-string-p))
+        (setq ess--funname.start
+              (condition-case nil ;; check if it is inside a functon call
+                  (save-excursion
+                    (up-list -1)
+                    (while (not (looking-at "("))
+                      (up-list -1))
+                    ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
+                    (let ((funname (symbol-name (symbol-at-point))))
+                      (when (and funname
+                                 (not (member funname ess-S-non-functions)))
+                        (cons funname (- (point) (length funname))))
+                      ))
+                (error nil)))))))
+
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here

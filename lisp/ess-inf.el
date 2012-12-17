@@ -233,9 +233,6 @@ Alternatively, it can appear in its own frame if
       ;; Now that we have the buffer, set buffer-local variables.
       (ess-setq-vars-local ess-customize-alist) ; buf)
       (if ess-start-args (setq inferior-ess-start-args ess-start-args))
-      ;; Was:  if not, set to null.
-      ;;(setq inferior-ess-start-args "")) ;; AJR: Errors with XLS?
-      ;; I think I might have solved this?
 
       ;; Write out debug info
       (ess-write-to-dribble-buffer
@@ -364,6 +361,12 @@ there is no process NAME)."
         (process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
         (ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)\n")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
+
+        ;; arguments cache
+        (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+        (ess-process-put 'funargs-pre-cache nil)
+
+
         ;; EXTRAS
         (ess-load-extras t)
         (run-hooks 'ess-post-run-hook)
@@ -682,7 +685,6 @@ Returns the name of the process, or nil if the current buffer has none."
   "Return the variable PROPNAME (symbol) from the plist of the
 current ESS process."
   (process-get (get-process ess-local-process-name) propname))
-
 
 (defun ess-process-put (propname value)
   "Set the variable PROPNAME (symbol) to VALUE in the plist of

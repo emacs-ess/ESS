@@ -2393,6 +2393,12 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 Passed to `ess-execute-dialect-specific' which see. ")
 (make-variable-buffer-local 'ess-help-web-search-command)
 
+(defvar ess-funargs-command  nil
+  "Dialect specific command to return a list of function arguments.
+See `ess-function-arguments' and .ess.funargs command in R and
+S+ for details of the format that should be returned.")
+(make-variable-buffer-local 'ess-funargs-command)
+
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
   :group 'ess-R
