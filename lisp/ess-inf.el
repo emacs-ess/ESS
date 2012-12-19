@@ -387,12 +387,17 @@ there is no process NAME)."
   (format "*%s*" proc-name))
 
 (defun ess-gen-proc-buffer-name:directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *dir-name:proc-name*"
+  "Function to generate buffer name by wrapping PROC-NAME in
+*proc-name:dir-name* where dir-name is a short directory name."
   (format "*%s:%s*" proc-name (file-name-nondirectory
                                (directory-file-name default-directory))))
 
-(defun ess-gen-proc-buffer-name:full-directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *abbreviated-full-dir-name:proc-name*"
+(defun ess-gen-proc-buffer-name:abbr-long-directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in
+*proc-name:abbreviated-long-dir-name*, where
+abbreviated-long-dir-name is an abbreviated full directory name.
+Abbreviation performed by `abbreviate-file-name'.
+"
   (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
