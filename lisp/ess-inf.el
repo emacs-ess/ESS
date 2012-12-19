@@ -880,18 +880,20 @@ with C-c C-z C-z C-z ...
             (ess-switch-to-ESS eob)
           (let ((dialect ess-dialect)
                 (loc-proc-name ess-local-process-name)
-                (blist (buffer-list)))
-            (while (and (pop blist)
+                (blist (cdr (buffer-list))))
+            (while (and blist
                         (with-current-buffer (car blist)
                           (not (or (and (eq major-mode 'ess-mode)
                                         (equal dialect ess-dialect)
                                         (null ess-local-process-name))
                                    (and (eq major-mode 'ess-mode)
                                         (equal loc-proc-name ess-local-process-name))
-                                   )))))
+                                   ))))
+              (pop blist))
             (if blist
                 (pop-to-buffer (car blist))
-              (message "No buffers with dialect %s or associated with process %s found" dialect loc-proc-name)))
+              (message "No buffers associated with process %s found"
+                       dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
 
