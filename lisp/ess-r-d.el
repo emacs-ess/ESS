@@ -257,7 +257,14 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 (defvar ess--R-injected-code
-  ".ess.funargs <- function(object){
+  "
+.help.ESS <-
+   if (getRversion() > '2.10'){ help
+   }else{ function(..., help_type) help(..., htmlhelp= (help_type=='html')) }
+
+assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
+
+.ess.funargs <- function(object){
   funname <- deparse(substitute(object))
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
@@ -362,34 +369,7 @@ to R, put them in the variable `inferior-R-args'."
              (ess-get-words-from-vector "as.character(getRversion())\n")))
 
     (if (ess-current-R-at-least '2.7.0)
-        (progn
-          (if ess-use-R-completion ;; use R's completion mechanism (pkg "rcompgen" or "utils")
-              (progn ; nothing to happen here -- is all in ess-complete-object-name
-                (ess-write-to-dribble-buffer "resetting completion to 'ess-R-complete-object-name")
-                ))
-          ;; problem with ess-help-command
-          (let ((my-R-help-cmd
-                 (if (ess-current-R-at-least '2.10.0)
-                     "help"
-                   ;; else R version <= 2.9.2
-                   "function(..., help_type) help(..., htmlhelp= (help_type==\"html\"))")))
-
-            (ess-command ess--R-injected-code)
-
-            (ess-eval-linewise
-             ;; not just into .GlobalEnv where it's too easily removed..
-             (concat "assignInNamespace(\".help.ESS\", "
-                     my-R-help-cmd ", ns=asNamespace(\"base\"))")
-             nil nil nil 'wait-prompt)
-
-            ))
-
-      ;; else R version <= 2.4.1
-      ;; for R <= 2.1.x : define baseenv() :
-      (ess-eval-linewise
-       "if(!exists(\"baseenv\", mode=\"function\")) baseenv <- function() NULL"
-       nil nil nil 'wait-prompt);; solving "lines running together"
-      )
+        (ess-command ess--R-injected-code))
 
     (when ess-can-eval-in-background
       (ess-async-command-delayed
