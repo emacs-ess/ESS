@@ -257,7 +257,7 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 (defvar ess--R-injected-code
-  "
+  "{
 .help.ESS <-
    if (getRversion() > '2.10'){ help
    }else{ function(..., help_type) help(..., htmlhelp= (help_type=='html')) }
@@ -316,6 +316,7 @@ assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
   utils:::.completeToken()
   c(get('token', envir=utils:::.CompletionEnv),
     utils:::.retrieveCompletions())
+  }
 }
 ")
 
