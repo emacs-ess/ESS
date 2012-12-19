@@ -215,7 +215,6 @@
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Eval region | line" ess-eval-region-or-line-and-step t]
     ["Enter expression" ess-execute-in-tb                 t]
-    ["Handy commands" ess-handy-commands                  t]
     ;; sub menus
     "------"
     ("Process"
