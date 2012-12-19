@@ -762,52 +762,52 @@ to look up any doc strings."
            newdoc
            )
       (setq doc
-	    (if (or (<= (length doc) W)
-		    (null ess-eldoc-abbreviation-style)
-		    (eq 'none ess-eldoc-abbreviation-style))
-		doc
-	      ;;MILD filter
-	      (setq doc (replace-regexp-in-string "TRUE" "T" doc))
-	      (setq doc (replace-regexp-in-string "FALSE" "F" doc))
-	      (if (or (<= (length doc) W)
-		      (eq 'mild ess-eldoc-abbreviation-style))
-		  doc
-		;;NORMAL filter (deal with long defaults)
-		(setq doc (replace-regexp-in-string
-			   ;; function calls inside default docs foo(xxxx{..})
-			   "([^)]\\{8\\}\\([^)]\\{4,\\}\\))"
-			   "{.}" doc nil nil 1))
-		(if (<= (length doc) W)
-		    doc
-		  (setq doc (replace-regexp-in-string
-			     " +[^ \t=,\"\]+=[^ \t]\\{10\\}\\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
-			     "{.}," doc nil nil 1))
-		  (if (<= (length doc) W)
-		      doc
-		    (setq doc (replace-regexp-in-string
-			       " +[^ \t=,\"]+=\\([^ \t]\\{10,\\}\\)\\(,\\|\\'\\)"
-			       "{.}," doc nil nil 1))
-		    (if (or (<= (length doc) W)
-			    (eq 'normal ess-eldoc-abbreviation-style))
-			doc
-		      ;;STRONG filter (replace defaults)
-		      (setq doc (replace-regexp-in-string
-				 " *[^ \t=,\"\\]* = \\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
-				 "{.}," doc nil nil 1))
-		      (if (<= (length doc) W)
-			  doc
-			(setq doc (replace-regexp-in-string
-				   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+=\\|\\'\\)"
-				   "" doc nil nil 1))
-			(setq doc (replace-regexp-in-string
-				   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+,\\|\\'\\)"
-				   "" doc nil nil 1))
-			(if (or (<= (length doc) W)
-				(eq 'strong ess-eldoc-abbreviation-style))
-			    doc
-			  ;;AGGRESSIVE filter (truncate what is left)
-			  (concat (substring doc 0 (- W 4)) "{--}")
-			  ))))))))
+            (if (or (<= (length doc) W)
+                    (null ess-eldoc-abbreviation-style)
+                    (eq 'none ess-eldoc-abbreviation-style))
+                doc
+              ;;MILD filter
+              (setq doc (replace-regexp-in-string "TRUE" "T" doc))
+              (setq doc (replace-regexp-in-string "FALSE" "F" doc))
+              (if (or (<= (length doc) W)
+                      (eq 'mild ess-eldoc-abbreviation-style))
+                  doc
+                ;;NORMAL filter (deal with long defaults)
+                (setq doc (replace-regexp-in-string
+                           ;; function calls inside default docs foo(xxxx{..})
+                           "([^)]\\{8\\}\\([^)]\\{4,\\}\\))"
+                           "{.}" doc nil nil 1))
+                (if (<= (length doc) W)
+                    doc
+                  (setq doc (replace-regexp-in-string
+                             " +[^ \t=,\"\]+=[^ \t]\\{10\\}\\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
+                             "{.}," doc nil nil 1))
+                  (if (<= (length doc) W)
+                      doc
+                    (setq doc (replace-regexp-in-string
+                               " +[^ \t=,\"]+=\\([^ \t]\\{10,\\}\\)\\(,\\|\\'\\)"
+                               "{.}," doc nil nil 1))
+                    (if (or (<= (length doc) W)
+                            (eq 'normal ess-eldoc-abbreviation-style))
+                        doc
+                      ;;STRONG filter (replace defaults)
+                      (setq doc (replace-regexp-in-string
+                                 " *[^ \t=,\"\\]* = \\([^ \t]\\{4,\\}\\)\\(,\\|\\'\\)"
+                                 "{.}," doc nil nil 1))
+                      (if (<= (length doc) W)
+                          doc
+                        (setq doc (replace-regexp-in-string
+                                   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+=\\|\\'\\)"
+                                   "" doc nil nil 1))
+                        (setq doc (replace-regexp-in-string
+                                   "\\(=[^FT0-9].+?\\)\\(, [^ =,\"\\]+,\\|\\'\\)"
+                                   "" doc nil nil 1))
+                        (if (or (<= (length doc) W)
+                                (eq 'strong ess-eldoc-abbreviation-style))
+                            doc
+                          ;;AGGRESSIVE filter (truncate what is left)
+                          (concat (substring doc 0 (- W 4)) "{--}")
+                          ))))))))
       (when (and truncate
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
@@ -939,7 +939,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (kill-local-variable 'ac-use-comphist))
     (if (string-match-p "[]:$@[]" ac-prefix)
         ;; call proc for objects
-	(cdr (ess-R-get-rcompletions ac-point))
+        (cdr (ess-R-get-rcompletions ac-point))
       ;; else, get the (maybe cached) list of objects
       (with-ess-process-buffer 'no-error ;; use proc buf alist
         (ess-when-new-input last-objlist-update
