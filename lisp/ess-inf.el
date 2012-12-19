@@ -2004,11 +2004,9 @@ for `ess-eval-region'."
   '("iESS"
     ["What is this? (beta)"   ess-mouse-me                  t]
     ["Quit"                 ess-quit                        t]
-    ["Resynch S completions"  ess-resynch                   t]
     ;; ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
-    ["Jump to Error"  ess-parse-errors                      t]
     ["Switch to Script Buffer" ess-switch-to-inferior-or-script-buffer t]
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
@@ -2019,13 +2017,15 @@ for `ess-eval-region'."
       :filter ess--generate-eval-visibly-submenu ))
     "------"
     ("Utils"
-     ["Enter S command"        ess-execute                   t]
-     ["Attach directory"       ess-execute-attach            t]
-     ["Display search list"    ess-execute-search            t]
-     ["Display object list"    ess-execute-objects           t]
      ;; need a toggle switch for above, AJR.
-     ["Load source file" ess-load-file                      t]
+     ["Attach directory"       ess-execute-attach            t]
+     ["Display object list"    ess-execute-objects           t]
+     ["Display search list"    ess-execute-search            t]
      ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+     ["Enter S command"        ess-execute                   t]
+     ["Jump to Error"  ess-parse-errors                      t]
+     ["Load source file" ess-load-file                      t]
+     ["Resynch S completions"  ess-resynch                   t]
      )
     "------"
     ("start-dev" :visible nil)
