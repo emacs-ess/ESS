@@ -1485,54 +1485,60 @@ TEXT.
 
       (setq text (ess--run-presend-hooks sprocess text))
 
-      (set-buffer sbuffer)
+      (with-current-buffer sbuffer
 
-      ;; the following is required to make sure things work!
-      (when (string= ess-language "STA")
-        (if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
-            (setq text (ess-replace-in-string text ";" "\n")))
-        (setq invisibly t))
-      (setq text (propertize text 'field 'input 'front-sticky t))
-      ;; dbg:
-      ;; dbg(ess-write-to-dribble-buffer
-      ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
-      ;; dbg     ess-language invisibly eob even-empty))
+        ;; the following is required to make sure things work!
+        (when (string= ess-language "STA")
+          (if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
+              (setq text (ess-replace-in-string text ";" "\n")))
+          (setq invisibly t))
+        (setq text (propertize text 'field 'input 'front-sticky t))
+        ;; dbg:
+        ;; dbg(ess-write-to-dribble-buffer
+        ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
+        ;; dbg     ess-language invisibly eob even-empty))
 
-      (goto-char (marker-position (process-mark sprocess)))
-      (if (stringp invisibly)
-          (insert-before-markers (concat "*** " invisibly " ***\n")))
-      ;; dbg:
-      ;; dbg (ess-write-to-dribble-buffer
-      ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
-      (while (or (setq txt-gt-0 (> (length text) 0))
-                 even-empty)
-        (if even-empty (setq even-empty nil))
-        (if txt-gt-0
-            (progn
-              (setq pos (string-match "\n\\|$" text))
-              (setq com (concat (substring text 0 pos) "\n"))
-              (setq text (substring text (min (length text) (1+ pos)))))
-          ;; else 0-length text
-          (setq com "\n"))
         (goto-char (marker-position (process-mark sprocess)))
-        (when (not invisibly)
-          (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
-          (set-marker (process-mark sprocess) (point)))
-        (setq start-of-output (marker-position (process-mark sprocess)))
-        (inferior-ess-mark-as-busy sprocess)
-        (process-send-string sprocess com)
-        (when (or wait-last-prompt
-                  (> (length text) 0))
-          (ess-wait-for-process sprocess t wait-sec)))
-      (goto-char (marker-position (process-mark sprocess)))
-      (if eob
-          (progn
-            (ess-show-buffer (buffer-name sbuffer) nil)
-            ;; Once SBUFFER is visible, we can then move the point in that
-            ;; window to the end of the buffer.
-            (set-window-point (get-buffer-window sbuffer t)
-                              (with-current-buffer sbuffer (point-max))))
-        (set-buffer cbuffer))
+        (if (stringp invisibly)
+            (insert-before-markers (concat "*** " invisibly " ***\n")))
+        ;; dbg:
+        ;; dbg (ess-write-to-dribble-buffer
+        ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
+        (while (or (setq txt-gt-0 (> (length text) 0))
+                   even-empty)
+          (if even-empty (setq even-empty nil))
+          (if txt-gt-0
+              (progn
+                (setq pos (string-match "\n\\|$" text))
+                (setq com (concat (substring text 0 pos) "\n"))
+                (setq text (substring text (min (length text) (1+ pos)))))
+            ;; else 0-length text
+            (setq com "\n"))
+          (goto-char (marker-position (process-mark sprocess)))
+          (when (not invisibly)
+            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
+            (set-marker (process-mark sprocess) (point)))
+          (setq start-of-output (marker-position (process-mark sprocess)))
+          (inferior-ess-mark-as-busy sprocess)
+          (process-send-string sprocess com)
+          (when (or wait-last-prompt
+                    (> (length text) 0))
+            (ess-wait-for-process sprocess t wait-sec)))
+        (goto-char (marker-position (process-mark sprocess)))
+        (if eob
+            (progn
+              (ess-show-buffer (buffer-name sbuffer) nil)
+              ;; Once SBUFFER is visible, we can then move the point in that
+              ;; window to the end of the buffer.
+              (set-window-point (get-buffer-window sbuffer t)
+                                (with-current-buffer sbuffer (point-max)))
+              ))
+        )
+      ;; (with-ess-process-buffer nil
+      ;;   (dbg (point))
+      ;;   (dbg (window-point (get-buffer-window)))
+      ;;   (dbg (process-mark (get-process ess-current-process-name))))
+
       (if (numberp sleep-sec)
           (sleep-for sleep-sec))))); in addition to timeout-ms
 
