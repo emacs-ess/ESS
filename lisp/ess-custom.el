@@ -1027,20 +1027,20 @@ to sweave the current noweb file and latex the result."
 
 
 (defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple
-  "Function used for generation of the buffer name of the newly created ess process.
+  "Function used for generation of the buffer name of the newly created ESS process.
 It should accept one argument PROC-NAME, a string specifying
-internal process name (R, R:2 etc).
+internal process name (R, R:2, etc).
 
-Provided options are:
+Provided default options are:
 
   `ess-gen-proc-buffer-name:simple' -- *proc*
   `ess-gen-proc-buffer-name:directory' -- *proc:dir*
-  `ess-gen-proc-buffer-name:full-directory' -- *proc:abbr-long-dir*
+  `ess-gen-proc-buffer-name:abbr-long-directory' -- *proc:abbr-long-dir*
 "
   :group 'ess
   :type '(choice (const :tag "*proc*" ess-gen-proc-buffer-name:simple)
                  (const :tag "*proc:dir*" ess-gen-proc-buffer-name:directory)
-                 (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:full-directory)
+                 (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:abbr-long-directory)
                  function))
 
 

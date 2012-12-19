@@ -387,12 +387,17 @@ there is no process NAME)."
   (format "*%s*" proc-name))
 
 (defun ess-gen-proc-buffer-name:directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *dir-name:proc-name*"
+  "Function to generate buffer name by wrapping PROC-NAME in
+*proc-name:dir-name* where dir-name is a short directory name."
   (format "*%s:%s*" proc-name (file-name-nondirectory
                                (directory-file-name default-directory))))
 
-(defun ess-gen-proc-buffer-name:full-directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *abbreviated-full-dir-name:proc-name*"
+(defun ess-gen-proc-buffer-name:abbr-long-directory (proc-name)
+  "Function to generate buffer name by wrapping PROC-NAME in
+*proc-name:abbreviated-long-dir-name*, where
+abbreviated-long-dir-name is an abbreviated full directory name.
+Abbreviation performed by `abbreviate-file-name'.
+"
   (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
@@ -875,18 +880,20 @@ with C-c C-z C-z C-z ...
             (ess-switch-to-ESS eob)
           (let ((dialect ess-dialect)
                 (loc-proc-name ess-local-process-name)
-                (blist (buffer-list)))
-            (while (and (pop blist)
+                (blist (cdr (buffer-list))))
+            (while (and blist
                         (with-current-buffer (car blist)
                           (not (or (and (eq major-mode 'ess-mode)
                                         (equal dialect ess-dialect)
                                         (null ess-local-process-name))
                                    (and (eq major-mode 'ess-mode)
                                         (equal loc-proc-name ess-local-process-name))
-                                   )))))
+                                   ))))
+              (pop blist))
             (if blist
                 (pop-to-buffer (car blist))
-              (message "No buffers with dialect %s or associated with process %s found" dialect loc-proc-name)))
+              (message "No buffers associated with process %s found"
+                       dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
 
@@ -2010,36 +2017,52 @@ for `ess-eval-region'."
   '("iESS"
     ["What is this? (beta)"   ess-mouse-me                  t]
     ["Quit"                 ess-quit                        t]
-    ["Resynch S completions"  ess-resynch                   t]
     ;; ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
-    ["Jump to Error"  ess-parse-errors                      t]
-    ["Handy commands"  ess-handy-commands                   t]
+    ["Switch to Script Buffer" ess-switch-to-inferior-or-script-buffer t]
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
-    ("Font Lock"
-     :active inferior-ess-font-lock-keywords
-     :filter ess-generate-font-lock-submenu)
+    ("Process"
+     ["Process Echoes" (lambda () (interactive) (setq comint-process-echoes (not comint-process-echoes)))
+                         :style toggle :selected comint-process-echoes]
+     ("Eval visibly "
+      :filter ess--generate-eval-visibly-submenu ))
     "------"
     ("Utils"
-     ["Enter S command"        ess-execute                   t]
-     ["Attach directory"       ess-execute-attach            t]
-     ["Display search list"    ess-execute-search            t]
-     ["Display object list"    ess-execute-objects           t]
      ;; need a toggle switch for above, AJR.
-     ["Load source file" ess-load-file                      t]
+     ["Attach directory"       ess-execute-attach            t]
+     ["Display object list"    ess-execute-objects           t]
+     ["Display search list"    ess-execute-search            t]
      ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
+     ["Enter S command"        ess-execute                   t]
+     ["Jump to Error"  ess-parse-errors                      t]
+     ["Load source file" ess-load-file                      t]
+     ["Resynch S completions"  ess-resynch                   t]
      )
     "------"
     ("start-dev" :visible nil)
     ("end-dev" :visible nil)
+    "------"
+    ("Font Lock"
+     :active inferior-ess-font-lock-keywords
+     :filter ess-generate-font-lock-submenu)
     "------"
     ["Describe"         describe-mode                       t]
     ["Send bug report"  ess-submit-bug-report               t]
     ["About"            (ess-goto-info "Entering Commands") t]
     ))
 
+
+;; (defun ess--toggle-visible-t ()
+;;   (interactive)
+;;   (dbg "here")
+;;   (setq ess-eval-visibly t))
+
+;; (defun ess--toggle-visible-nowait ()
+;;   (interactive)
+;;   (dbg "here")
+;;   (setq ess-eval-visibly 'nowait))
 
 (defun inferior-ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."

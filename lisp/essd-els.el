@@ -191,14 +191,19 @@ C-n to send lines over.  With SAS, use C-c i
     (inferior-ess-mode)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
     (goto-char (point-max))
-    (if (equal ess-language "S")
-        (if inferior-ess-language-start
-            (progn
-              ;; FIXME hack (not in line with using ess-customize-alist)
-              (setq ess-editor nil)
-              (setq ess-pager nil)
-              (setq inferior-ess-language-start (eval inferior-S-language-start))
-              (ess-eval-linewise inferior-ess-language-start))))
+    (if inferior-ess-language-start
+        (ess-eval-linewise inferior-ess-language-start
+                           nil nil nil 'wait-prompt))
+
+    ;; todo: this is ugly, add to customise alist
+    (if (and (equal ess-dialect "R") (ess-current-R-at-least '2.7.0))
+        (ess-command ess--R-injected-code))
+
+    ;; (ess-load-extras t) ;; not working
+
+    (if (equal ess-dialect "S+")
+        (ess-command ess-S+--injected-code))
+
     (if (equal ess-language "SAS")
         (progn (font-lock-mode 0)
                (SAS-log-mode)
