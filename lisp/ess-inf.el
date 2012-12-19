@@ -2012,9 +2012,11 @@ for `ess-eval-region'."
     ["Handy commands"  ess-handy-commands                   t]
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
-    ("Font Lock"
-     :active inferior-ess-font-lock-keywords
-     :filter ess-generate-font-lock-submenu)
+    ("Process"
+     ["Process Echoes" (lambda () (interactive) (setq comint-process-echoes (not comint-process-echoes)))
+                         :style toggle :selected comint-process-echoes]
+     ("Eval visibly "
+      :filter ess--generate-eval-visibly-submenu ))
     "------"
     ("Utils"
      ["Enter S command"        ess-execute                   t]
@@ -2029,11 +2031,25 @@ for `ess-eval-region'."
     ("start-dev" :visible nil)
     ("end-dev" :visible nil)
     "------"
+    ("Font Lock"
+     :active inferior-ess-font-lock-keywords
+     :filter ess-generate-font-lock-submenu)
+    "------"
     ["Describe"         describe-mode                       t]
     ["Send bug report"  ess-submit-bug-report               t]
     ["About"            (ess-goto-info "Entering Commands") t]
     ))
 
+
+;; (defun ess--toggle-visible-t ()
+;;   (interactive)
+;;   (dbg "here")
+;;   (setq ess-eval-visibly t))
+
+;; (defun ess--toggle-visible-nowait ()
+;;   (interactive)
+;;   (dbg "here")
+;;   (setq ess-eval-visibly 'nowait))
 
 (defun inferior-ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."

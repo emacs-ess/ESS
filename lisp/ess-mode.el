@@ -218,9 +218,28 @@
     ["Handy commands" ess-handy-commands                  t]
     ;; sub menus
     "------"
-    ("Font Lock"
-     :active ess-font-lock-keywords
-     :filter ess-generate-font-lock-submenu)
+    ("Process"
+     ["Goto end of process buffer"  ess-switch-to-end-of-ESS        t]
+     ["Switch to process buffer"    ess-switch-to-inferior-or-script-buffer t]
+     ["Switch Process"   ess-switch-process              t]
+     ("Start Process"
+      ;; SJE - :help not yet recognised in XEmacs.
+      ["R"     R   t] ;; :help "Start a new R process" :active t
+      ["S"     S   t] ;; :help "Start a new S process" :active t
+      ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
+      ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
+      ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
+      ;; The following menu item "Other" is a place-holder that will
+      ;; be replaced with the other versions of R and Sqpe that can be run.
+      ;; See `ess-r-versions-create' and ess-site.el
+      ("Other"
+       ["No other R or Sqpe versions" nil nil])
+      ["About"
+       (ess-goto-info "Starting up") t]
+      ;; :help "Read about starting a new ESS process" :active t]
+      )
+     ("Eval visibly "
+      :filter ess--generate-eval-visibly-submenu ))
     "------"
     ("ESS Eval"
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
@@ -252,8 +271,6 @@
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("Motion"
-     ["Goto end of ESS buffer"  ess-switch-to-end-of-ESS        t]
-     ["Switch to ESS buffer"    ess-switch-to-ESS               t]
      ["Beginning of function or para"   ess-goto-beginning-of-function-or-para       t]
      ["End of function or para"         ess-goto-end-of-function-or-para             t]
      "-----"
@@ -277,26 +294,13 @@
      ["Undo"              undo                                  t]
      ["About"             (ess-goto-info "Edit buffer")         t]
      )
-    ("Start Process"
-     ;; SJE - :help not yet recognised in XEmacs.
-     ["R"     R   t] ;; :help "Start a new R process" :active t
-     ["S"     S   t] ;; :help "Start a new S process" :active t
-     ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
-     ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
-     ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
-     ;; The following menu item "Other" is a place-holder that will
-     ;; be replaced with the other versions of R and Sqpe that can be run.
-     ;; See `ess-r-versions-create' and ess-site.el
-     ("Other"
-      ["No other R or Sqpe versions" nil nil])
-     ["About"
-      (ess-goto-info "Starting up") t]
-     ;; :help "Read about starting a new ESS process" :active t]
-     )
-    ["Switch Process"   ess-switch-process              t]
     "------"
     ("start-dev" :visible nil)
     ("end-dev" :visible nil)
+    "------"
+    ("Font Lock"
+     :active ess-font-lock-keywords
+     :filter ess-generate-font-lock-submenu)
     "------"
     ["Describe"         describe-mode                   t]
     ["About editing" (ess-goto-info "Editing")  t]
