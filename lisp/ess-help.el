@@ -937,6 +937,12 @@ specific.")
 
 (defun ess-describe-object-at-point ()
   "Get info for object at point, and display it in an electric buffer or tooltip.
+This is a single key command (see `ess--execute-singlekey-command').
+
+After invocation of this command, all standard emacs commands,
+except those containing 'window' in their names, remove the
+electric *ess-describe* buffer. Use `other-window' to switch to
+*ess-describe* window.
 
 Customize `ess-describe-at-point-method' if you wan to display
 the description in a tooltip.
@@ -950,13 +956,21 @@ option for other dialects).
     (ess-force-buffer-current)
     (let ((map (make-sparse-keymap))
           (objname (symbol-at-point))
-          bs ess--descr-o-a-p-commands)
+          bs ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
       ;; todo: put digits into the map
-      (let ((buf (ess--execute-singlekey-command map nil objname)))
-        (when (bufferp buf)
-          (kill-buffer buf))) ;; bury does not work here :( (emacs bug?)
+      (let* ((inhibit-quit t) ;; C-g removes the buffer
+             (buf (ess--execute-singlekey-command map nil objname))
+             ;; read full command
+             (keys (read-key-sequence-vector ""))
+             (command (and keys (key-binding keys))))
+        (when (and (commandp command)
+                   (bufferp buf)
+                   (not (string-match "window" (symbol-name command))))
+          (kill-buffer buf)) ;; bury does not work here :( (emacs bug?)
+        (setq unread-command-events
+              (append keys unread-command-events)))
       )))
 
 (defun ess--describe-object-at-point (ev objname)
