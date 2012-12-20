@@ -8,7 +8,7 @@
 \addtolength{\textheight}{20mm}
 \addtolength{\topmargin}{-16mm}
 
-\newenvironment{tabI}{\begin{tabular}{p{16mm}l}}{\end{tabular}}
+\newenvironment{tabI}{\begin{tabular}{p{18mm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\textbf{#1}}\\ \begin{tabI}}{\end{tabI}}
 %
 \newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\textbf{#1}}
@@ -57,10 +57,10 @@
 For use in a process buffers ({\small inferior-ess-mode}):
 
 \begin{tabI}
-  \texttt{\RET   }& Send a command\\
-  \texttt{C-c \RET}& Copy old input\\
-  \texttt{\TAB}& Complete filename or  S object name.\\
-  & Also bound to \texttt{M-\TAB}  (aka \texttt{M-C-i}).\\
+  \texttt{\RET   } & Send a command\\
+  \texttt{C-c \RET} & Copy old input\\
+  \texttt{\TAB}& Complete object or file name.\\
+  & Also bound to \texttt{M-\TAB}, \texttt{M-C-i}.\\
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
   %% SfS-only (others need C-u C-a for comint-bol !
@@ -155,7 +155,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 \begin{tabTit}{Evaluation commands (Prefix \texttt{C-u}: \emph{in/visibly})}
   \texttt{M-C-x}   & Evaluate region or function or para \\
   \texttt{C-c C-c} & Evaluate region or para.\ or function \&\emph{ step}\\
-  \texttt{C-\RET, C-c C-n} & Evaluate region or line \&\emph{ step}  \\
+  \texttt{C-\RET} & Evaluate region or line \&\emph{ step}  \\
   \texttt{C-c C-l} & Load this buffer\\
   \texttt{C-c C-j} & Evaluate this line \\
   \texttt{C-c M-j} & Evaluate this line and go \\
@@ -195,7 +195,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{C-e, e}   & D\textbf{e}scribe object at point (\texttt{C-e} or \texttt{e} to cycle) \\
   \texttt{C-i, i}   & \textbf{I}ndex\\
   \texttt{C-v, v}   & \textbf{V}ignettes \\
-  \texttt{C-w, o}   & Dem\textbf{o}s\\
+  \texttt{C-o, o}   & Dem\textbf{o}s\\
   \texttt{C-w, w}   & \textbf{W}eb search (dialect dependent) \\
 \end{tabI}
 
@@ -233,7 +233,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
     \texttt{s e} & e.g., \textbf{s}kip to ``\texttt{\textbf{E}xamples:}'' \\
     \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
     \texttt{r}   & Evaluate current \textbf{r}egion \\
-    \texttt{q}   & `\textbf{Q}uit window \\
+    \texttt{q}   & \textbf{Q}uit window \\
     \texttt{k}   & \textbf{K}ill this buffer\\
     \texttt{x}   & Kill this buffer and return (`e\textbf{x}it)\\
     \texttt{h}   &\textbf{H}elp on another object \rule{0pt}{3ex}\\
@@ -241,7 +241,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
     \texttt{a}   & Display \textbf{a}propos\\
     \texttt{i}   & Display \textbf{i}ndex\\
     \texttt{v}   & Display \textbf{v}ignettes\\
-    \texttt{w}   & Display current page in \textbf{w}eb bro\textbf{w}ser\\
+    \texttt{w}   & Display this help in \textbf{w}eb bro\textbf{w}ser\\
   \end{tabI}\\[0.5cm]
 
   \Sect{ESS tracebug}
@@ -256,7 +256,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
   \begin{tabular}{p{20mm}l}
     \texttt{T} & Toggle ess-tracebug\\
-    \texttt{?}& Show key help \\
+    \texttt{?} & Show key help \\
     \texttt{C-b, b}& Set BP (repeat to cycle)\\
     \texttt{C-k, k}& Kill BP\\
     \texttt{C-n, C-p}& Goto next/previous BP\\
