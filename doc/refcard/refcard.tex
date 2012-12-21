@@ -96,7 +96,7 @@ For use in a process buffers ({\small inferior-ess-mode}):
 
 \begin{tabTit}{Others}
   \texttt{C-c C-v }& Help for object \\
-  % \texttt{C-c C-l }& \textbf{L}oad source file {\small ($+$ error check!)}\\
+  \texttt{C-c M-l }& \textbf{L}oad source file \\%{\small ($+$ error check!)}
   \texttt{C-c C-x }& List objects \\
   \texttt{C-c C-s }& Display \texttt{\textbf{s}earch} list \\
   % \texttt{C-c C-a }& \textbf{A}ttach a directory \\
@@ -105,7 +105,7 @@ For use in a process buffers ({\small inferior-ess-mode}):
   % &\hspace{-1.5cm}In tracebug works for all errors (aka \texttt{C-x `})\\
 %  \texttt{C-c C-t }& Toggle Tek mode \\
   \texttt{C-c C-q }& Quit from S \\
-  \texttt{C-c C-z} & Switch to most recent script buffer
+  \texttt{C-c C-z }& Switch to most recent script buffer
   % \texttt{C-c C-z }& Kill the S process
 \end{tabTit}\\[0.5cm]
 
@@ -156,7 +156,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{M-C-x}   & Evaluate region or function or para \\
   \texttt{C-c C-c} & Evaluate region or para.\ or function \&\emph{ step}\\
   \texttt{C-\RET} & Evaluate region or line \&\emph{ step}  \\
-  \texttt{C-c C-l} & Load this buffer\\
+  \texttt{C-c C-l} & Load this buffer's source file\\
   \texttt{C-c C-j} & Evaluate this line \\
   \texttt{C-c M-j} & Evaluate this line and go \\
   \texttt{C-c C-f} & Evaluate this function \\
@@ -203,8 +203,8 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \begin{tabI}
   \texttt{C-d, d} & Dump object into edit buffer \\
-  \texttt{C-i, i} & Install package or library \\
-  \texttt{C-l, l} & Load package or library \\
+  \texttt{C-i, i} & Install package (in R) or library \\
+  \texttt{C-l, l} & Load package (in R) or library \\
   \texttt{C-t, t} & Build tags for directory \\
 \end{tabI}
 %% ~~~~~~~~~~~~~~~~~~

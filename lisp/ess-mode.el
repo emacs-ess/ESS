@@ -139,6 +139,7 @@
     (define-key map "\C-c\C-y"   'ess-switch-to-ESS-deprecated)
     (define-key map "\C-c\C-z"   'ess-switch-to-inferior-or-script-buffer)
     (define-key map "\C-c\C-l"   'ess-load-file)
+    (define-key map "\C-c\M-l"   'ess-load-file); alias, as in 'iESS' where C-c C-l is comint-list-*
     (define-key map "\C-c\C-v"   'ess-display-help-on-object)
     ;;(define-key map "\C-c5\C-d"'ess-dump-object-into-edit-buffer-other-frame)
     (define-key map "\C-c\C-s"   'ess-switch-process) ; use a

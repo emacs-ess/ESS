@@ -640,7 +640,6 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\M-f" 'ess-eval-function-and-go)
     (define-key map "\C-c\C-j" 'ess-eval-line)
     (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
-    (define-key map "\C-c\M-f"   'ess-eval-function-and-go)
     (define-key map "\C-c\C-c"   'ess-eval-region-or-function-or-paragraph-and-step)
     (define-key map [(control return)] 'ess-eval-region-or-line-and-step)
     (define-key map "\C-c\M-j" 'ess-eval-line-and-go)
@@ -649,6 +648,7 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     (define-key map "\C-c\C-l" 'ess-load-file)
+    (define-key map "\C-c\M-l" 'ess-load-file); alias, as in 'iESS' where C-c C-l is comint-list-*
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     

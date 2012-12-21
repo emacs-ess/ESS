@@ -797,7 +797,7 @@ Returns the name of the selected process."
       ;;   (ess-make-buffer-current))
       (if noswitch
           (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
-        (ess-pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
+        (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
 
@@ -892,7 +892,7 @@ with C-c C-z C-z C-z ...
               (pop blist))
             (if blist
                 (pop-to-buffer (car blist))
-              (message "No buffers associated with process %s found"
+              (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
@@ -1132,9 +1132,9 @@ STRING.
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
           ((eq visibly 'nowait) ;; insert command and eval invisibly .
-           (with-current-buffer (process-buffer proc)
+           (with-current-buffer (process-buffer process)
              (save-excursion
-                 (goto-char (process-mark proc))
+                 (goto-char (process-mark process))
                  (insert-before-markers
                   (propertize (replace-regexp-in-string  "\n" "\n+ " string)
                               'font-lock-face 'comint-highlight-input)))
@@ -1957,6 +1957,13 @@ for `ess-eval-region'."
                            (setq ess-keep-dump-files doit)))))))
               (ess-switch-to-ESS t))))))))
 
+;; C-c C-l  *used to* eval code:
+(defun ess-msg-and-comint-dynamic-list-input-ring ()
+ "Display a list of recent inputs entered into the current buffer."
+  (interactive)
+  (message "C-c C-l  no longer loads a source file in [iESS], rather use C-c M-l instead")
+  (comint-dynamic-list-input-ring))
+
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
@@ -1967,8 +1974,6 @@ for `ess-eval-region'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-
-
 
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
@@ -1983,9 +1988,9 @@ for `ess-eval-region'."
     ;; disabled this in favour of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
     ;;(define-key map "\M-\r"    'ess-transcript-send-command-and-move)
-    (define-key map "\C-c\C-l" 'ess-load-file)
-    ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
-    (define-key map "\C-c\M-l" 'comint-dynamic-list-input-ring)
+    (define-key map "\C-c\M-l" 'ess-load-file);; no longer overwrites C-c C-l;
+    ;; but for now the user deserves a message:
+    (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
     (define-key map "\C-c`"    'ess-parse-errors)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
