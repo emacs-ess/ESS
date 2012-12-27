@@ -5,7 +5,7 @@ For @b{Microsoft Windows installation}, please follow the next steps.
 Retrieve the latest zip file (@file{ess-VERSION.zip}) from
 @uref{http://ess.r-project.org/index.php?Section=download, ESS downloads area}.
 
-@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (22.x or higher)
+@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (23.x or higher)
 and ESS, the installation process is simple.
 
 @enumerate
@@ -16,7 +16,7 @@ which launches the Folders Extraction Wizard)
 into an @file{ESS} sub-directory of the @file{site-lisp} directory that exists for packages like @ESS{}.
 If GNU Emacs was installed in the default location, then this
 directory can be found somewhere like
-@file{C:\Program Files\GNU Emacs\emacs-22.x\site-lisp}
+@file{C:\Program Files\GNU Emacs\emacs-24.x\site-lisp}
 
 @item
 Add the line
@@ -145,9 +145,9 @@ An alternative, for R users, is that rather than adjusting the PATH
 variable, you can add the following to your emacs initialization file
 (and restart emacs):
 @example
-(setq inferior-R-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+(setq inferior-R-program-name "c:/progra~1/R/R-2.15.1/bin/Rterm.exe")
 @end example
-This assumes that you have installed R-2.2.1 in the default location.
+This assumes that you have installed R-2.15.1 in the default location.
 Change the path otherwise to point to other locations.
 
 Windows users who place S-PLUS anywhere other than the default

@@ -2,8 +2,8 @@ ESS is most likely to work with current/recent versions of the following
 statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
 ESS supports current, and recent, stable versions of GNU Emacs
-(specifically, the 22.x and 23.x series; alpha/beta/pre-release versions
-are NOT SUPPORTED).  
+(currently, specifically, the 23.x and 24.x series; alpha/beta/pre-release
+versions are NOT SUPPORTED).
 @c XEmacs currently does not allow all ESS
 @c features. Basic ESS functionality however is supported for the time being
 @c (XEmacs stable 21.4.14 or higher).

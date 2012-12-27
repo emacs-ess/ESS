@@ -6,7 +6,7 @@ For a @b{Unix or Unix-like installation}, please follow the next steps.
 Retrieve the latest tgz file (@file{ess-VERSION.tgz}) from
 @uref{http://ess.r-project.org/index.php?Section=download, ESS downloads area}.
 
-@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (22.x or higher)
+@emph{GNU Emacs Simple Instructions:} for recent versions of Emacs (23.x or higher)
 and ESS, the installation process is simple.
 
 @enumerate
