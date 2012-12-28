@@ -173,34 +173,36 @@ can then examine these objects, plot them, and so on.
 This is the main function.  See documentation for `ess-rdired-mode' though
 for more information!"
   (interactive)
-  (if (get-buffer ess-rdired-buffer)
-      (progn
-        (set-buffer ess-rdired-buffer)
+  (let 
+      ((proc ess-local-process-name))
+
+    (when (get-buffer ess-rdired-buffer)
+      ;; RDired buffer should be reset.
+      (with-current-buffer ess-rdired-buffer
         (setq buffer-read-only nil)))
+    
+    (ess-execute ess-rdired-objects nil
+                 (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1)))
+    
+    (pop-to-buffer ess-rdired-buffer)
+    (setq ess-local-process-name proc)
+    ;; When definiting the function .rdired.objects(), a "+ " is printed
+    ;; for every line of the function definition; these are deleted
+    ;; here.
+    (delete-char (* (1- (length (split-string ess-rdired-objects "\n"))) 2))
 
-  (ess-execute ess-rdired-objects
-               nil
-               (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
-               )
+    ;; todo: not sure how to make ess-rdired-sort-num buffer local?
+    ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
+    ;;(make-variable-buffer-local 'ess-rdired-sort-num)
+    (setq ess-rdired-sort-num 1)
+    (ess-rdired-insert-set-properties (save-excursion
+                                        (goto-char (point-min))
+                                        (forward-line 1)
+                                        (point))
+                                      (point-max))
+    (setq buffer-read-only t)
+    (ess-rdired-mode)))
 
-  (pop-to-buffer ess-rdired-buffer)
-  ;; When definiting the function .rdired.objects(), a "+ " is printed
-  ;; for every line of the function definition; these are deleted
-  ;; here.
-  (delete-char (* (1- (length (split-string ess-rdired-objects "\n"))) 2))
-
-  ;; todo: not sure how to make ess-rdired-sort-num buffer local?
-  ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
-  ;;(make-variable-buffer-local 'ess-rdired-sort-num)
-  (setq ess-rdired-sort-num 1)
-  (ess-rdired-insert-set-properties (save-excursion
-                                      (goto-char (point-min))
-                                      (forward-line 1)
-                                      (point))
-                                    (point-max))
-  (setq buffer-read-only t)
-  (ess-rdired-mode)
-  )
 
 (defun ess-rdired-object ()
   "Return name of object on current line.
