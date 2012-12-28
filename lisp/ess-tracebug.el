@@ -1545,7 +1545,7 @@ triggered the command."
   (interactive)
   (ess--execute-singlekey-command ess-singlekey-selection-map
                                   "Selection: " wait
-                                  (not 9ess-process-get 'is-recover)))
+                                  (not (ess-process-get 'is-recover))))
 
 
 (defun ess-dbg-command-digit (&optional ev)

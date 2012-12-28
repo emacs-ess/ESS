@@ -2286,9 +2286,8 @@ to continue it."
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
   (if comint-process-echoes
-      (ess-eval-linewise string) nil nil ess-eval-empty)
-    (inferior-ess-mark-as-busy proc)
-    (process-send-string proc string))
+      (ess-eval-linewise string nil nil ess-eval-empty)
+    (ess-send-string proc string)))
 
 
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
