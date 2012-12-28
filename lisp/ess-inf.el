@@ -1486,6 +1486,7 @@ TEXT.
            (cbuffer (current-buffer))
            (sprocess (get-ess-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
+           ;; (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
            start-of-output
            com pos txt-gt-0)
@@ -1493,6 +1494,13 @@ TEXT.
       (setq text (ess--run-presend-hooks sprocess text))
 
       (with-current-buffer sbuffer
+
+        ;; (when (and win
+        ;;            (null eob)
+        ;;            (<= (process-mark sprocess) (point)))
+        ;;   (setq eob t))
+        ;; (setq wait-last-prompt t)
+        ;; (dbg eob)
 
         ;; the following is required to make sure things work!
         (when (string= ess-language "STA")
@@ -1530,24 +1538,19 @@ TEXT.
           (process-send-string sprocess com)
           (when (or wait-last-prompt
                     (> (length text) 0))
-            (ess-wait-for-process sprocess t wait-sec)))
+            (ess-wait-for-process sprocess t wait-sec))
+          )
         (goto-char (marker-position (process-mark sprocess)))
-        (if eob
-            (progn
-              (ess-show-buffer (buffer-name sbuffer) nil)
-              ;; Once SBUFFER is visible, we can then move the point in that
-              ;; window to the end of the buffer.
-              (set-window-point (get-buffer-window sbuffer t)
-                                (with-current-buffer sbuffer (point-max)))
-              ))
-        )
-      ;; (with-ess-process-buffer nil
-      ;;   (dbg (point))
-      ;;   (dbg (window-point (get-buffer-window)))
-      ;;   (dbg (process-mark (get-process ess-current-process-name))))
+        (when eob
+          (ess-show-buffer (buffer-name sbuffer) nil)
+          ;; Once SBUFFER is visible, we can then move the point in that
+          ;; window to the end of the buffer.
+          (goto-char (point-max))
+          ))
+      )
 
-      (if (numberp sleep-sec)
-          (sleep-for sleep-sec))))); in addition to timeout-ms
+    (if (numberp sleep-sec)
+        (sleep-for sleep-sec)))); in addition to timeout-ms
 
 
 ;;;*;;; Evaluate only
