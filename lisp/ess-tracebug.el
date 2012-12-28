@@ -1576,7 +1576,7 @@ If suplied ev must be a proper key event or a string representing the digit."
           (ess-send-string proc ev-char)
           (move-marker (process-mark proc) (max-char))
           )
-      (message "Recover is not active")
+      (error "Recover is not active")
       ))
   )
 
@@ -1585,7 +1585,7 @@ If suplied ev must be a proper key event or a string representing the digit."
 Equivalent to 'n' at the R prompt."
   (interactive)
   (if (not (ess-dbg-is-active))
-      (message "Debugging is not active")
+      (error "Debugger is not active")
     (if (ess-dbg-is-recover)
         (ess-send-string (get-process ess-current-process-name) "0")
       (ess-send-string (get-process ess-current-process-name) "")
@@ -1603,11 +1603,14 @@ debug history."
  Equivalent to 'Q' at the R prompt."
   (interactive)
   (let ((proc (get-process ess-current-process-name) ))
-    (if (not (process-get proc 'dbg-active))
-        (message "Debugging is not active")
+    (if (not (or (process-get proc 'dbg-active)
+                 (process-get proc 'is-recover)))
+        (error "Debugger is not active")
       (when (ess-dbg-is-recover)
         (ess-send-string proc "0")
-        (ess-wait-for-process proc nil 0.05))
+        ;; if recover is called in a loop the following stalls emacs
+        ;; (ess-wait-for-process proc nil 0.05)
+        )
       (if (and (process-get proc 'dbg-active)
                (not (process-get proc 'is-recover))); still in debug mode
           (ess-send-string proc "Q"))
@@ -1619,10 +1622,11 @@ debug history."
   (interactive)
   (let ((proc (get-process ess-current-process-name) ))
     (if (not (process-get proc 'dbg-active))
-        (message "Debugging is not active")
+        (error "Debugger is not active")
       (when (ess-dbg-is-recover)
         (ess-send-string proc "0")
-        (ess-wait-for-process proc nil 0.05)) ;; get out of recover mode
+        ;; (ess-wait-for-process proc nil 0.05) <- when in a loop, gets stuck
+        ) ;; get out of recover mode
       (if (and (process-get proc 'dbg-active) ; still in debug mode
                (not (process-get proc 'is-recover))); still in debug mode
           (ess-send-string proc "c"))
@@ -1923,7 +1927,8 @@ to the current position, nil if not found. "
       )
     (setq bp-type (pop types))
     (ess-bp-create (car bp-type))
-    (while  (eq (event-basic-type (setq ev (read-event))) com-char)
+    (while  (eq (event-basic-type (setq ev (read-event (format "'%c' to cycle" com-char))))
+                com-char)
       (if (null types) (setq types ess-bp-type-spec-alist))
       (setq bp-type (pop types))
       (ess-bp-kill)
