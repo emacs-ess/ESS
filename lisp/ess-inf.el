@@ -1127,7 +1127,6 @@ STRING.
                                    (current-buffer)))
       ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
-    (setq string (concat string "\n"))
     (cond ((eq visibly t) ;; wait after each line
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
@@ -1138,15 +1137,17 @@ STRING.
                  (insert-before-markers
                   (propertize (replace-regexp-in-string  "\n[ \t]" "\n+ " string)
                               'font-lock-face 'comint-highlight-input)))
-             (process-send-string process string)))
+             (process-send-string process (ess--concat-new-line-maybe string))))
           (t
-           (process-send-string process string))))
+           (process-send-string process (ess--concat-new-line-maybe string)))))
   (if message (message message)))
 
 (defvar ess--inhibit-presend-hooks nil
   "If non-nil don't run presend hooks.")
 
+
 (defun ess--run-presend-hooks (process string)
+  ;; run ess-presend-filter-functions and comint-input-filter-functions
   (if ess--inhibit-presend-hooks
       string
     ;;return modified string
@@ -1172,6 +1173,13 @@ STRING.
         (run-hook-with-args 'comint-input-filter-functions string))
 
       string)))
+
+(defun ess--concat-new-line-maybe (string)
+  "Append \\n at the end of STRING if missing."
+  (if (string-match "\n\\'" string (max (- (length string) 2) 0))
+      string
+    (concat string "\n")))
+
 
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
@@ -1443,9 +1451,8 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;      (ess-eval-region   ....)
 
-(defun ess-eval-linewise (text &optional
-                                        invisibly eob even-empty
-                                        wait-last-prompt sleep-sec wait-sec)
+(defun ess-eval-linewise (text &optional invisibly eob even-empty
+                               wait-last-prompt sleep-sec wait-sec)
   ;; RDB 28/8/92 added optional arg eob
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
   ;; VS 2012-01-18 it was actually nil, replaced with wait-sec - 0.001 default
@@ -1491,7 +1498,7 @@ TEXT.
            start-of-output
            com pos txt-gt-0)
 
-      (setq text (ess--run-presend-hooks sprocess text))
+      (setq text (ess--concat-new-line-maybe (ess--run-presend-hooks sprocess text)))
 
       (with-current-buffer sbuffer
 
@@ -1508,11 +1515,7 @@ TEXT.
               (setq text (ess-replace-in-string text ";" "\n")))
           (setq invisibly t))
         (setq text (propertize text 'field 'input 'front-sticky t))
-        ;; dbg:
-        ;; dbg(ess-write-to-dribble-buffer
-        ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
-        ;; dbg     ess-language invisibly eob even-empty))
-
+ 
         (goto-char (marker-position (process-mark sprocess)))
         (if (stringp invisibly)
             (insert-before-markers (concat "*** " invisibly " ***\n")))
@@ -1531,7 +1534,7 @@ TEXT.
             (setq com "\n"))
           (goto-char (marker-position (process-mark sprocess)))
           (when (not invisibly)
-            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
+            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; for consistency with comint :(
             (set-marker (process-mark sprocess) (point)))
           (setq start-of-output (marker-position (process-mark sprocess)))
           (inferior-ess-mark-as-busy sprocess)
@@ -2283,9 +2286,9 @@ to continue it."
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
   (if comint-process-echoes
-      (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty)
+      (ess-eval-linewise string) nil nil ess-eval-empty)
     (inferior-ess-mark-as-busy proc)
-    (process-send-string proc (concat string "\n"))))
+    (process-send-string proc string))
 
 
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
