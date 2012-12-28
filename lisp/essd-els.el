@@ -102,8 +102,8 @@ return new alist whose car is the new pair and cdr is ALIST.
 (defun ess-select-alist-dialect ()
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)
-  (let* ((dialects '("arc" "vst" "omg" "s3"  "s4" "stata" "r" "sp3" "sp4"
-                     "sqpe4" "sp5" "sp6" "sqpe6" "xls" "sas"))
+  (let* ((dialects '("R" "S+" "julia" "arc" "vst" "omg" "s3" "s4" "stata" "sp3" "sp4"
+                     "sqpe4" "sp5" "sqpe" "XLS" "SAS"))
          (dialect (ess-completing-read "Dialect" dialects nil t)))
     (cond
      ((string= dialect "arc")   ARC-customize-alist)
@@ -112,36 +112,36 @@ return new alist whose car is the new pair and cdr is ALIST.
      ((string= dialect "s3")    S3-customize-alist)
      ((string= dialect "s4")    S4-customize-alist)
      ((string= dialect "stata") STA-customize-alist)
-     ((string= dialect "r")     R-customize-alist )
+     ((string= dialect "R")     R-customize-alist )
      ((string= dialect "sp3")   S+3-customize-alist)
      ((string= dialect "sp4")   S+4-customize-alist)
      ((string= dialect "sqpe4") Sqpe+4-customize-alist)
      ((string= dialect "sp5")   S+5-customize-alist)
-     ((string= dialect "sp6")   S+6-customize-alist)
-     ((string= dialect "sqpe6") Sqpe+6-customize-alist)
-     ((string= dialect "xls")   XLS-customize-alist)
-     ((string= dialect "sas")   SAS-customize-alist);was S+elsewhere-customize-alist?
+     ((string= dialect "S+")    S+-customize-alist)
+     ((string= dialect "sqpe") Sqpe+-customize-alist)
+     ((string= dialect "XLS")   XLS-customize-alist)
+     ((string= dialect "SAS")   SAS-customize-alist);was S+elsewhere-customize-alist?
      (t                         S+elsewhere-customize-alist)
      )))
 
 
-(defun ESS-elsewhere (&optional proc-name)
-  "Call an inferior process from ELSEWHERE.
-This command is obsolete; please use `ess-remote' instead."
-  (interactive)
-  ;; Need to select a elsewhere-customize-alist
-  (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
-    (ess-change-alist 'inferior-ess-program
-                      inferior-ESS-elsewhere-program-name
-                      elsewhere-customize-alist)
-    (setq ess-customize-alist elsewhere-customize-alist)
-    (ess-write-to-dribble-buffer
-     (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-             (current-buffer)))
-    (inferior-ess)
-    (if (equal ess-language "S")
-        (if inferior-ess-language-start
-            (ess-eval-linewise inferior-ess-language-start)))))
+;; (defun ESS-elsewhere (&optional proc-name)
+;;   "Call an inferior process from ELSEWHERE.
+;; This command is obsolete; please use `ess-remote' instead."
+;;   (interactive)
+;;   ;; Need to select a elsewhere-customize-alist
+;;   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
+;;     (ess-change-alist 'inferior-ess-program
+;;                       inferior-ESS-elsewhere-program-name
+;;                       elsewhere-customize-alist)
+;;     (setq ess-customize-alist elsewhere-customize-alist)
+;;     (ess-write-to-dribble-buffer
+;;      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
+;;              (current-buffer)))
+;;     (inferior-ess)
+;;     (if (equal ess-language "S")
+;;         (if inferior-ess-language-start
+;;             (ess-eval-linewise inferior-ess-language-start)))))
 
 
 (defun ess-add-ess-process ()
@@ -154,6 +154,7 @@ buffer on the local computer."
   (let ((proc (get-buffer-process (buffer-name))))
     (if (not proc)
         (error "No process is associated with this buffer.")
+      (set-process-filter proc 'inferior-ess-output-filter)
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))

@@ -29,35 +29,38 @@ tags based on imenu regular expressions and also include other common
 languages @code{.c, .o, .cpp} etc. But it relies on external @code{find}
 and @code{etags} commands. If @code{ess-build-tags-command} is defined
 (for @code{R}), the inferior process is asked to build tags instead. 
-@item @ESS{}: Switching between processes (@kbd{C-c C-s}) uses buffer name instead 
-of the internal process names. Use @code{rename-buffer} command to
+@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative 
+to start a new process instead of switching to one of the currently
+running processes.
+@item @ESS{}: Switching between processes (@kbd{C-c C-s}) uses buffer names instead 
+of the internal process names. Use @code{M-x rename-buffer} command to
 conveniently rename your process buffers.
 @item @ESS{}: Process buffers can be automatically named on process creation
 according to user specified scheme. Default schemes are *proc*,
-*proc:dir* and *proc:abrev-long-dir* where @code{proc} stands for the
+*proc:dir* and *proc:abbr-long-dir* where @code{proc} stands for the
 internal process name and @code{dir} stands for the directory where the
 process was started in. The default is *proc*. For customization see
 @code{ess-gen-proc-buffer-name-function}.
-@item @ESS{[R]}: @code{ess-eval-visibly-p} is deprecated in favor of @code{ess-eval-visibly}.
-@item @ESS{[R]}: New evaluation pattern @code{nowait}. 
+@item @ESS{}: @code{ess-eval-visibly-p} is deprecated in favor of @code{ess-eval-visibly}.
+@item @ESS{}: New evaluation pattern @code{nowait}. 
 In addition to old @code{nil} and @code{t} values,
 @code{ess-eval-visibly} accepts @code{nowait} for a visible evaluation
 with no waiting for the process. See @code{ess-eval-visibly} for details
 on evaluation patterns.
+@item @ESS{}: New ``Process'' menu entry with process related commands and configuration 
 @item @iESS{}: Process buffer is now automatically shown on errors
 @item @ESS{}: New @code{ess-switch-to-inferior-or-script-buffer} command bound to @kbd{C-c C-z} 
 in both script and process buffers. If invoked form process buffer it
 switches to the most recent buffer of the same dialect. It is a single
 key command.
-@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative 
-to start a new process instead of switching to one of the currently
-running processes.
+@item @ESS{R-help}:  On multiple help pages with the same name, @kbd{C-c C-v} 
+now asks for user resolution directly in emacs.
 @item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
 of cases where the number of leading @kbd{#} differs from
 @code{ess-roxy-str}.
 @item @ESS{[R]} Eldoc was considerably enhanced. 
 It now finds hidden default S3 methods and displays non-default methods'
-arguments (after trailing ||).
+arguments after trailing ||.
 @item @ESS{[R]}: New @code{ess-display-demos} command bound to @kbd{C-c C-d o} and @kbd{C-c C-d C-o}
 @item @ESS{}: New @code{ess-help-web-search} command bound to @kbd{C-c C-d w} and @kbd{C-c C-d C-w} 
 to facilitate interactive search of web resources. Implemented for @code{R},
@@ -79,6 +82,8 @@ commands in C-c map.
 
 Bug Fixes in 12.09-1:
 @itemize @bullet
+@item @iESS{help}: Multiple help pages with the same name are properly handled on @kbd{C-c C-v}
+@item @iESS{remote}: Evaluation with ESS remote no longer freezes emacs.
 @item @iESS{}: @code{comint-previous-prompt} @kbd{C-c C-p} no longer stops on secondary prompt ``+''.
 @item @iESS{[R]}, @iESS{(Sqpe) [S]} on Windows:
 The @code{options("editor")} is now initialized to @code{emacsclient}

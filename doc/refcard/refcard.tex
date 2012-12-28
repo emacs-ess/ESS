@@ -8,7 +8,7 @@
 \addtolength{\textheight}{20mm}
 \addtolength{\topmargin}{-16mm}
 
-\newenvironment{tabI}{\begin{tabular}{p{16mm}l}}{\end{tabular}}
+\newenvironment{tabI}{\begin{tabular}{p{18mm}l}}{\end{tabular}}
 \newenvironment{tabTit}[1]{\underline{\textbf{#1}}\\ \begin{tabI}}{\end{tabI}}
 %
 \newcommand{\Sect}[1]{\par\noindent\medskip\fbox{\large\textbf{#1}}
@@ -33,7 +33,7 @@
 
   \smallskip
 
-  {\small updated for ESS 12.09}% {\footnotesize --- needs \em{more} updating!}}
+  {\small updated for ESS 12.09-1}% {\footnotesize --- needs \em{more} updating!}}
   \\[1ex] {\tiny \SVNDate}
            % \footnotesize --- as of \today
 \end{center}
@@ -51,16 +51,16 @@
 
 \begin{multicols}{2}
 
-\Sect{Interacting with the S process}
+\Sect{Interacting with the process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
+For use in a process buffers ({\small inferior-ess-mode}):
 
 \begin{tabI}
-  \texttt{\RET   }& Send a command\\
-  \texttt{C-c \RET}& Copy old input\\
-  \texttt{\TAB}& Complete filename or  S object name.\\
-  & Also bound to \texttt{M-\TAB}  (aka \texttt{M-C-i}).\\
+  \texttt{\RET   } & Send a command\\
+  \texttt{C-c \RET} & Copy old input\\
+  \texttt{\TAB}& Complete object or file name.\\
+  & Also bound to \texttt{M-\TAB}, \texttt{M-C-i}.\\
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
   %% SfS-only (others need C-u C-a for comint-bol !
@@ -96,31 +96,31 @@ For use in a process buffer `\texttt{*R*}' ({\tiny inferior-ess-mode}):
 
 \begin{tabTit}{Others}
   \texttt{C-c C-v }& Help for object \\
-  \texttt{C-c h }& Handy commands \\
-  \texttt{C-c C-l }& \textbf{L}oad source file {\small ($+$ error check!)}\\
+  \texttt{C-c M-l }& \textbf{L}oad source file \\%{\small ($+$ error check!)}
   \texttt{C-c C-x }& List objects \\
   \texttt{C-c C-s }& Display \texttt{\textbf{s}earch} list \\
-  \texttt{C-c C-a }& \textbf{A}ttach a directory \\
-  \texttt{C-c C-d }& Edit an object {\small (\textbf{d}ump to file)}\\
-  \texttt{C-c `   }& Jump to error after \texttt{C-c C-l}\\
-  &\hspace{-1.5cm}In tracebug works for all errors (aka \texttt{C-x `})\\
+  % \texttt{C-c C-a }& \textbf{A}ttach a directory \\
+  % \texttt{C-c C-d }& Edit an object {\small (\textbf{d}ump to file)}\\
+  % \texttt{C-c `   }& Jump to error after \texttt{C-c C-l}\\
+  % &\hspace{-1.5cm}In tracebug works for all errors (aka \texttt{C-x `})\\
 %  \texttt{C-c C-t }& Toggle Tek mode \\
   \texttt{C-c C-q }& Quit from S \\
+  \texttt{C-c C-z }& Switch to most recent script buffer
   % \texttt{C-c C-z }& Kill the S process
 \end{tabTit}\\[0.5cm]
 
 
-\Sect{Inside S Transcripts (I + O)}
+\Sect{Inside ESS Transcripts (I + O)}
 %%    ~~~~~~~~~~~~~~~~
 
-Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
+Inside (\texttt{*.Rout} files):
 
 \begin{tabI}
   \texttt{\RET} & Send and Move \\
   \texttt{C-c C-n}& Next \hspace{1.4em} prompt \\
   \texttt{C-c C-p}& Previous            prompt \\
   \texttt{C-c C-w}& Clean Region ($\mapsto$ input only)
-\end{tabI}
+\end{tabI}\\[0.5cm]
 
 \Sect{Sweave}
 
@@ -135,7 +135,7 @@ Inside \texttt{ESS transcript} buffers, (\texttt{*.Rout} files):
 %%%%%%%%%%================================================================
 
 
-\Sect{Editing S source}
+\Sect{Editing source files}
 %%    ~~~~~~~~~~~~~~~~
 For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
@@ -156,9 +156,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{M-C-x}   & Evaluate region or function or para \\
   \texttt{C-c C-c} & Evaluate region or para.\ or function \&\emph{ step}\\
   \texttt{C-\RET} & Evaluate region or line \&\emph{ step}  \\
-  \texttt{C-c C-l} & Load this buffer\\
-  \texttt{C-c C-n} & Step through code -- line by line \rule{0pt}{3ex} \\
-  \texttt{C-c C-e} & Evaluate an expression \\
+  \texttt{C-c C-l} & Load this buffer's source file\\
   \texttt{C-c C-j} & Evaluate this line \\
   \texttt{C-c M-j} & Evaluate this line and go \\
   \texttt{C-c C-f} & Evaluate this function \\
@@ -173,11 +171,11 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 \begin{tabTit}{Others}
   %%-SfS-deleted:  \texttt{M-\TAB} & Complete S object name \\
   \texttt{C-c C-v }& Help for object \\
-  \texttt{C-c h }& Handy commands \\
-  \texttt{C-c C-d }& ``\texttt{dump}'' -- Edit another object \\
+  % \texttt{C-c h }& Handy commands \\
+  % \texttt{C-c C-d }& ``\texttt{dump}'' -- Edit another object \\
   %%\texttt{C-c C-y} & Return to S process \\
-  \texttt{C-c C-z} & Return to process (at prompt)
-\end{tabTit}
+  \texttt{C-c C-z} & Switch to process buffer
+\end{tabTit}\\[0.5cm]
 
 %% Is it worth putting here for one line? Autoyas is a much more general snippet
 %% generator.
@@ -185,72 +183,104 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 %   \texttt{C-c f}   & insert function() definition outline%-SfS-added
 % \end{tabTit}\\[-1mm]%\\[0.5cm]                           %-SfS-added
 
-\Sect{Reading help files}
-%%    ~~~~~~~~~~~~~~~~~~
 
-For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
+
+\Sect{General Commands}
+
+\textbf{ess-doc-map} (\textbf{C-c C-d}):
 
 \begin{tabI}
-  \texttt{SPC} & Next page \\
-  \texttt{DEL} & Previous page \\
-  \texttt{b}   & Previous page (`\textbf{b}ack')\\
-  \texttt{n}   & \textbf{N}ext section \\
-  \texttt{p}   & \textbf{P}revious section \\
-  \texttt{s}   & \textbf{S}kip (`jump') to a named section \\
-  \texttt{s e} & e.g., \textbf{s}kip to ``\texttt{\textbf{E}xamples:}'' \\
-  \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
-  \texttt{r}   & Evaluate current \textbf{r}egion \\
-  \texttt{q}   & `\textbf{Q}uit window \\
-  \texttt{k}   & \textbf{K}ill this buffer\\
-  \texttt{x}   & Kill this buffer and return (`e\textbf{x}it)\\
-  \texttt{h}   &\textbf{H}elp on another object \rule{0pt}{3ex}\\
-  \texttt{?}   & Help for this mode \\
-  \texttt{a}   & Display \textbf{a}propos\\
-  \texttt{i}   & Display \textbf{i}ndex\\
-  \texttt{v}   & Display \textbf{v}ignettes\\
-  \texttt{w}   & Display current page in \textsc{html} bro\textbf{w}ser\\
+  \texttt{C-a, a}   & \textbf{A}propos \\
+  \texttt{C-d, d}   & \textbf{D}oc on object\\
+  \texttt{C-e, e}   & D\textbf{e}scribe object at point (\texttt{C-e} or \texttt{e} to cycle) \\
+  \texttt{C-i, i}   & \textbf{I}ndex\\
+  \texttt{C-v, v}   & \textbf{V}ignettes \\
+  \texttt{C-o, o}   & Dem\textbf{o}s\\
+  \texttt{C-w, w}   & \textbf{W}eb search (dialect dependent) \\
 \end{tabI}
 
+\textbf{\underline{ess-extra-map}} (\textbf{C-c C-e}):
+
+\begin{tabI}
+  \texttt{C-d, d} & Dump object into edit buffer \\
+  \texttt{C-i, i} & Install package (in R) or library \\
+  \texttt{C-l, l} & Load package (in R) or library \\
+  \texttt{C-t, t} & Build tags for directory \\
+\end{tabI}
+%% ~~~~~~~~~~~~~~~~~~
+
+
+
 \end{multicols}
+
 
 \pagebreak
 
 \begin{multicols}{2}
+
+  \Sect{Reading help files}
+  %% ~~~~~~~~~~~~~~~~~~
+
+  For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
+
+
+  \begin{tabI}
+    \texttt{SPC} & Next page \\
+    \texttt{b, DEL}   & Previous page (`\textbf{b}ack')\\
+    \texttt{n}   & \textbf{N}ext section \\
+    \texttt{p}   & \textbf{P}revious section \\
+    \texttt{s}   & \textbf{S}kip (`jump') to a named section \\
+    \texttt{s e} & e.g., \textbf{s}kip to ``\texttt{\textbf{E}xamples:}'' \\
+    \texttt{l}   & \underline{Evaluate one `Example' \textbf{l}ine} \\
+    \texttt{r}   & Evaluate current \textbf{r}egion \\
+    \texttt{q}   & \textbf{Q}uit window \\
+    \texttt{k}   & \textbf{K}ill this buffer\\
+    \texttt{x}   & Kill this buffer and return (`e\textbf{x}it)\\
+    \texttt{h}   &\textbf{H}elp on another object \rule{0pt}{3ex}\\
+    \texttt{?}   & Help for this mode \\
+    \texttt{a}   & Display \textbf{a}propos\\
+    \texttt{i}   & Display \textbf{i}ndex\\
+    \texttt{v}   & Display \textbf{v}ignettes\\
+    \texttt{w}   & Display this help in \textbf{w}eb bro\textbf{w}ser\\
+  \end{tabI}\\[0.5cm]
+
   \Sect{ESS tracebug}
   %% ~~~~~~~~~~~~~~~~
-  Activate
+  Activate from the menu or
 
-  \begin{verbatim}
-    (setq ess-use-tracebug t)
-  \end{verbatim}
+\begin{verbatim}
+       (setq ess-use-tracebug t)
+\end{verbatim}
 
-  Basic commands (default prefix \texttt{C-c d}):
+  Commands in \textbf{\underline{ess-dev-map}} (\textbf{C-c C-t}):
 
   \begin{tabular}{p{20mm}l}
-    \texttt{?}& Show key help \\
-    \texttt{b}& Set BP (repeat to cycle)\\
-    \texttt{k}& Kill BP\\
+    \texttt{T} & Toggle ess-tracebug\\
+    \texttt{?} & Show key help \\
+    \texttt{C-b, b}& Set BP (repeat to cycle)\\
+    \texttt{C-k, k}& Kill BP\\
     \texttt{C-n, C-p}& Goto next/previous BP\\
     \texttt{`} &Show R Traceback                     \\
-    \texttt{e}& Toggle error action (cycle)\\
-    \texttt{d, D}& Flag/unflag for debugging\\
-    \texttt{w} & Watch window\\
+    \texttt{C-e, e}& Toggle error action (cycle)\\
+    \texttt{C-d, d}& Flag for debugging\\
+    \texttt{D}& Un-flag debugged objects\\
+    \texttt{C-w, w} & Watch window\\
     \texttt{c, n, p, q}& Debugging commands\\
     \texttt{0..9, q}& Recover commands\\
   \end{tabular}
 
-  Other commands:
+  \underline{\textbf{Others}}
 
-  \begin{tabular}{p{20mm}l}
-    \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
-    \texttt{M-g p} & `previous-error'(emacs)\\
-  \end{tabular}
+\begin{tabular}{p{20mm}l}
+  \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
+  \texttt{M-g p} & `previous-error'(emacs)\\
+\end{tabular}
 
-  Use a custom prefix key (a suggestion):
+To use a custom prefix key:
 
-  \begin{verbatim}
+\begin{verbatim}
     (setq ess-tracebug-prefix "\M-t")
-  \end{verbatim}
+\end{verbatim}
 
 
 
@@ -259,12 +289,13 @@ For use in `\texttt{*help[R]($\ldots$)*}' help buffers:
 
   \Sect{ESS developer}
 %% ~~~~~~~~~~~~~~~~
-  Evaluate your code into the package:
+  Evaluate your code into the package (in \textbf{\underline{ess-dev-map}}:
+  \textbf{C-c C-t}):
 
   \begin{tabI}
-    \texttt{C-c d t} & Toggle developer on/off\\
-    \texttt{C-c d a} & Add package to the dev list\\
-    \texttt{C-c d r} & Remove package from dev list\\
+    \texttt{C-t, t} & Toggle developer on/off\\
+    \texttt{C-a, a} & Add package to the dev list\\
+    \texttt{C-r, r} & Remove package from dev list\\
   \end{tabI}
 
 

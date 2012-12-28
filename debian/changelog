@@ -1,3 +1,11 @@
+ess (12.09-1-1) unstable; urgency=low
+
+  * New upstream version released twelve hours ago
+
+  * debian/control: Mention Julia in Description:	(Closes: #692468)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 22 Dec 2012 00:56:45 -0600
+
 ess (12.09-1) unstable; urgency=low
 
   * New upstream version released today

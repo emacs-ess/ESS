@@ -797,7 +797,7 @@ Returns the name of the selected process."
       ;;   (ess-make-buffer-current))
       (if noswitch
           (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
-        (ess-pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
+        (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
 
@@ -892,7 +892,7 @@ with C-c C-z C-z C-z ...
               (pop blist))
             (if blist
                 (pop-to-buffer (car blist))
-              (message "No buffers associated with process %s found"
+              (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
     (ess--execute-singlekey-command map nil eob-p)))
@@ -1132,9 +1132,9 @@ STRING.
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
           ((eq visibly 'nowait) ;; insert command and eval invisibly .
-           (with-current-buffer (process-buffer proc)
+           (with-current-buffer (process-buffer process)
              (save-excursion
-                 (goto-char (process-mark proc))
+                 (goto-char (process-mark process))
                  (insert-before-markers
                   (propertize (replace-regexp-in-string  "\n" "\n+ " string)
                               'font-lock-face 'comint-highlight-input)))
@@ -1492,54 +1492,60 @@ TEXT.
 
       (setq text (ess--run-presend-hooks sprocess text))
 
-      (set-buffer sbuffer)
+      (with-current-buffer sbuffer
 
-      ;; the following is required to make sure things work!
-      (when (string= ess-language "STA")
-        (if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
-            (setq text (ess-replace-in-string text ";" "\n")))
-        (setq invisibly t))
-      (setq text (propertize text 'field 'input 'front-sticky t))
-      ;; dbg:
-      ;; dbg(ess-write-to-dribble-buffer
-      ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
-      ;; dbg     ess-language invisibly eob even-empty))
+        ;; the following is required to make sure things work!
+        (when (string= ess-language "STA")
+          (if ess-sta-delimiter-friendly;; RAS: mindless replacement of semi-colons
+              (setq text (ess-replace-in-string text ";" "\n")))
+          (setq invisibly t))
+        (setq text (propertize text 'field 'input 'front-sticky t))
+        ;; dbg:
+        ;; dbg(ess-write-to-dribble-buffer
+        ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
+        ;; dbg     ess-language invisibly eob even-empty))
 
-      (goto-char (marker-position (process-mark sprocess)))
-      (if (stringp invisibly)
-          (insert-before-markers (concat "*** " invisibly " ***\n")))
-      ;; dbg:
-      ;; dbg (ess-write-to-dribble-buffer
-      ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
-      (while (or (setq txt-gt-0 (> (length text) 0))
-                 even-empty)
-        (if even-empty (setq even-empty nil))
-        (if txt-gt-0
-            (progn
-              (setq pos (string-match "\n\\|$" text))
-              (setq com (concat (substring text 0 pos) "\n"))
-              (setq text (substring text (min (length text) (1+ pos)))))
-          ;; else 0-length text
-          (setq com "\n"))
         (goto-char (marker-position (process-mark sprocess)))
-        (when (not invisibly)
-          (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
-          (set-marker (process-mark sprocess) (point)))
-        (setq start-of-output (marker-position (process-mark sprocess)))
-        (inferior-ess-mark-as-busy sprocess)
-        (process-send-string sprocess com)
-        (when (or wait-last-prompt
-                  (> (length text) 0))
-          (ess-wait-for-process sprocess t wait-sec)))
-      (goto-char (marker-position (process-mark sprocess)))
-      (if eob
-          (progn
-            (ess-show-buffer (buffer-name sbuffer) nil)
-            ;; Once SBUFFER is visible, we can then move the point in that
-            ;; window to the end of the buffer.
-            (set-window-point (get-buffer-window sbuffer t)
-                              (with-current-buffer sbuffer (point-max))))
-        (set-buffer cbuffer))
+        (if (stringp invisibly)
+            (insert-before-markers (concat "*** " invisibly " ***\n")))
+        ;; dbg:
+        ;; dbg (ess-write-to-dribble-buffer
+        ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
+        (while (or (setq txt-gt-0 (> (length text) 0))
+                   even-empty)
+          (if even-empty (setq even-empty nil))
+          (if txt-gt-0
+              (progn
+                (setq pos (string-match "\n\\|$" text))
+                (setq com (concat (substring text 0 pos) "\n"))
+                (setq text (substring text (min (length text) (1+ pos)))))
+            ;; else 0-length text
+            (setq com "\n"))
+          (goto-char (marker-position (process-mark sprocess)))
+          (when (not invisibly)
+            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
+            (set-marker (process-mark sprocess) (point)))
+          (setq start-of-output (marker-position (process-mark sprocess)))
+          (inferior-ess-mark-as-busy sprocess)
+          (process-send-string sprocess com)
+          (when (or wait-last-prompt
+                    (> (length text) 0))
+            (ess-wait-for-process sprocess t wait-sec)))
+        (goto-char (marker-position (process-mark sprocess)))
+        (if eob
+            (progn
+              (ess-show-buffer (buffer-name sbuffer) nil)
+              ;; Once SBUFFER is visible, we can then move the point in that
+              ;; window to the end of the buffer.
+              (set-window-point (get-buffer-window sbuffer t)
+                                (with-current-buffer sbuffer (point-max)))
+              ))
+        )
+      ;; (with-ess-process-buffer nil
+      ;;   (dbg (point))
+      ;;   (dbg (window-point (get-buffer-window)))
+      ;;   (dbg (process-mark (get-process ess-current-process-name))))
+
       (if (numberp sleep-sec)
           (sleep-for sleep-sec))))); in addition to timeout-ms
 
@@ -1951,6 +1957,13 @@ for `ess-eval-region'."
                            (setq ess-keep-dump-files doit)))))))
               (ess-switch-to-ESS t))))))))
 
+;; C-c C-l  *used to* eval code:
+(defun ess-msg-and-comint-dynamic-list-input-ring ()
+ "Display a list of recent inputs entered into the current buffer."
+  (interactive)
+  (message "C-c C-l  no longer loads a source file in [iESS], rather use C-c M-l instead")
+  (comint-dynamic-list-input-ring))
+
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
@@ -1961,8 +1974,6 @@ for `ess-eval-region'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-
-
 
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
@@ -1977,9 +1988,9 @@ for `ess-eval-region'."
     ;; disabled this in favour of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
     ;;(define-key map "\M-\r"    'ess-transcript-send-command-and-move)
-    (define-key map "\C-c\C-l" 'ess-load-file)
-    ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
-    (define-key map "\C-c\M-l" 'comint-dynamic-list-input-ring)
+    (define-key map "\C-c\M-l" 'ess-load-file);; no longer overwrites C-c C-l;
+    ;; but for now the user deserves a message:
+    (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
     (define-key map "\C-c`"    'ess-parse-errors)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
