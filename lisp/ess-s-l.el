@@ -122,7 +122,8 @@
     ;; these prompt are the same for all S-languages As long as custom prompt
     ;; ends in inferior-ess-primary-prompt everything should work as expected.
     (inferior-ess-primary-prompt   . "> ")
-    (inferior-ess-secondary-prompt . "+ ")
+    ;; (inferior-ess-secondary-prompt . "[+:] ") ;; catch Selection: and alike
+    (inferior-ess-secondary-prompt . "+ ") ;; catch Selection: and alike
     (comment-start                . "#")
     (ess-imenu-generic-expression  . ess-imenu-S-generic-expression)
     (comment-add                  . 1)
