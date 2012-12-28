@@ -1174,9 +1174,10 @@ Kill the *ess.dbg.[R_name]* buffer."
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)
   "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
-(defvar ess-dbg-regexp-input
-  (concat  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)\\|"
-           "\\(Selection: \\'\\)"))
+(defvar ess-dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
+(defvar ess-dbg-regexp-selection "\\(Selection: \\'\\)")
+(defvar ess-dbg-regexp-input (concat ess-dbg-regexp-debug "\\|"
+                                     ess-dbg-regexp-selection))
 
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
@@ -1189,15 +1190,15 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (pbuf (process-buffer proc))
          (dbuff (process-get proc 'dbg-buffer))
          (wbuff (get-buffer ess-watch-buffer))
-         (was-active (process-get proc 'dbg-active))
+         (was-in-dbg (process-get proc 'dbg-active))
          (was-in-recover (process-get proc 'is-recover))
          (input-point (point-marker))
          (match-jump (string-match ess-dbg-regexp-jump string))
          (match-input (string-match ess-dbg-regexp-input string))
+         (match-selection (and match-input
+                               (match-string 2 string))) ;; Selection:
          (match-skip (string-match ess-dbg-regexp-skip string))
-         (match-recover (and match-input
-                             (match-string 2 string))) ;; Selection:
-         (match-active (or match-skip match-input))
+         (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
          (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
@@ -1207,7 +1208,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     (ess--if-verbose-write-process-state proc string)
 
     (inferior-ess-run-callback proc) ;protected
-    (process-put proc 'is-recover match-recover)
+    (process-put proc 'is-recover match-selection)
 
     (if (process-get proc 'suppress-next-output?)
         ;; works only for surpressing short output, for time being is enough (for callbacks)
@@ -1259,10 +1260,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     ;; SKIP if needed
     (when (and match-skip  (not was-in-recover))
       (process-send-string proc  "n\n"))
-    ;; EXIT the debuger
-    (when (and was-active
-               (not (or match-jump match-active))
-               is-ready)
+
+    ;; EXIT the debugger
+    (when (and was-in-dbg
+               (not (or match-jump match-dbg))
+               (or is-ready match-selection))
       (ess-dbg-deactivate-overlays)
       (process-put proc 'dbg-active nil)
       ;; (message "|<-- exited debugging -->|")
@@ -1271,15 +1273,19 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       )
 
     ;; ACTIVATE the debugger and trigger singlekey COMMAND if entered for the first time
-    (when (and (not was-active)
-               (or match-jump match-active))
+    (when (and (not was-in-dbg)
+               (not match-selection)
+               (or match-jump match-dbg))
       (unless is-iess
         (ring-insert ess-dbg-forward-ring input-point))
       (process-put proc 'dbg-active t)
       (when ess-dbg-auto-single-key-p
-        (ess-dbg-singlekey-command t))
-      )
-    ))
+        (ess-singlekey-debug t)))
+
+    (when (and (not was-in-recover)
+               match-selection)
+      (ess-singlekey-selection t)
+      )))
 
 
 (defun ess-dbg-goto-last-ref-and-mark (dbuff &optional other-window)
