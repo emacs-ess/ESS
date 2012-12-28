@@ -895,7 +895,7 @@ with C-c C-z C-z C-z ...
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil eob-p)))
+    (ess--execute-singlekey-command map nil nil nil eob-p)))
 
 
 (defun get-ess-buffer (name)

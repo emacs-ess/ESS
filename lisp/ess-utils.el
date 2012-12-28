@@ -829,7 +829,7 @@ process to avoid excessive requests.
 
 
 
-(defmacro ess--execute-singlekey-command (map &optional wait &rest args)
+(defmacro ess--execute-singlekey-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
 
 Return the value of the lastly executed command.
@@ -837,25 +837,37 @@ Return the value of the lastly executed command.
 Single-key input commands are those that once executed do not
 requre the prefix command for subsequent invocation.
 
+PROMPT is passed to `read-event'.
+
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command.
 
 Each command in map should accept one at least one argument, the
 most recent event (as read by `read-event'). ARGS are the
 supplementary arguments passed to the commands.
-"
 
+EXIT-FORM should be supplied for a more refined control of the
+read-even loop. The loop is exited when EXIT-FORM evaluates to
+t. See examples in the tracebug code.
+"
+  
   `(let* ((ev last-command-event)
           (command (lookup-key ,map (vector ev)))
-          out)
-     (unless ,wait
-       (setq out (funcall command ev ,@args)))
-     (while (setq command
-                  (lookup-key ,map
-                              (vector (setq ev (read-event)))))
-       (setq out (funcall command ev ,@args)))
-     (push ev unread-command-events)
-     out))
+          out exit )
+     (if (not (or ,wait command))
+         (message "%s is undefined" (key-description (this-command-keys)))
+       (unless ,wait
+         (setq out (and command (funcall command ev ,@args))))
+       (while (and (not exit)
+                   (setq command
+                         (lookup-key ,map
+                                     (vector (setq ev (read-event ,prompt))))))
+         (setq out (funcall command ev ,@args))
+         (sleep-for .01)
+         (setq exit ,exit-form))
+       (unless exit ;; push only if an event triggered the exit
+         (push ev unread-command-events))
+       out)))
 
 (defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
   "Execute dialect specific command.
