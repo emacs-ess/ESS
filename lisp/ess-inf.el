@@ -1498,7 +1498,9 @@ TEXT.
            start-of-output
            com pos txt-gt-0)
 
-      (setq text (ess--concat-new-line-maybe (ess--run-presend-hooks sprocess text)))
+      (let ((comint-input-filter-functions nil)) ;; comint runs them, don't run twise.
+        (setq text (ess--concat-new-line-maybe
+                    (ess--run-presend-hooks sprocess text))))
 
       (with-current-buffer sbuffer
 
