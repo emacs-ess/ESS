@@ -1391,7 +1391,7 @@ If FILENAME is not found at all, ask the user where to find it if
         buffsym buffer  thisdir fmts name buffername )
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
     ;; 0. get the buffsym reference if discovered
-    (message filename)
+    ;; (message filename)
     (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
       (setq buffsym (match-string 2 filename)
             filename (match-string 1 filename))
