@@ -1493,7 +1493,7 @@ TEXT.
            (cbuffer (current-buffer))
            (sprocess (get-ess-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
-           ;; (win (get-buffer-window sbuffer t))
+           (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
            start-of-output
            com pos txt-gt-0)
@@ -1524,7 +1524,7 @@ TEXT.
         ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
         (while (or (setq txt-gt-0 (> (length text) 0))
                    even-empty)
-          (if even-empty (setq even-empty nil))
+          (setq even-empty nil)
           (if txt-gt-0
               (progn
                 (setq pos (string-match "\n\\|$" text))
@@ -1533,6 +1533,7 @@ TEXT.
             ;; else 0-length text
             (setq com "\n"))
           (goto-char (marker-position (process-mark sprocess)))
+          (if win (set-window-point win (process-mark sprocess)))
           (when (not invisibly)
             (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; for consistency with comint :(
             (set-marker (process-mark sprocess) (point)))
@@ -1543,14 +1544,10 @@ TEXT.
                     (> (length text) 0))
             (ess-wait-for-process sprocess t wait-sec))
           )
+        (if eob (ess-show-buffer (buffer-name sbuffer) nil))
         (goto-char (marker-position (process-mark sprocess)))
-        (when eob
-          (ess-show-buffer (buffer-name sbuffer) nil)
-          ;; Once SBUFFER is visible, we can then move the point in that
-          ;; window to the end of the buffer.
-          (goto-char (point-max))
-          ))
-      )
+        (if win (set-window-point win (point)))
+        ))
 
     (if (numberp sleep-sec)
         (sleep-for sleep-sec)))); in addition to timeout-ms
