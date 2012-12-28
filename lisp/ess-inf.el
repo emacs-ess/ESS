@@ -895,7 +895,7 @@ with C-c C-z C-z C-z ...
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil eob-p)))
+    (ess--execute-singlekey-command map nil nil nil eob-p)))
 
 
 (defun get-ess-buffer (name)
@@ -1127,7 +1127,6 @@ STRING.
                                    (current-buffer)))
       ;; overloading of the sending function
       (funcall ess-send-string-function process string visibly)
-    (setq string (concat string "\n"))
     (cond ((eq visibly t) ;; wait after each line
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
@@ -1136,17 +1135,19 @@ STRING.
              (save-excursion
                  (goto-char (process-mark process))
                  (insert-before-markers
-                  (propertize (replace-regexp-in-string  "\n" "\n+ " string)
+                  (propertize (replace-regexp-in-string  "\n[ \t]" "\n+ " string)
                               'font-lock-face 'comint-highlight-input)))
-             (process-send-string process string)))
+             (process-send-string process (ess--concat-new-line-maybe string))))
           (t
-           (process-send-string process string))))
+           (process-send-string process (ess--concat-new-line-maybe string)))))
   (if message (message message)))
 
 (defvar ess--inhibit-presend-hooks nil
   "If non-nil don't run presend hooks.")
 
+
 (defun ess--run-presend-hooks (process string)
+  ;; run ess-presend-filter-functions and comint-input-filter-functions
   (if ess--inhibit-presend-hooks
       string
     ;;return modified string
@@ -1172,6 +1173,13 @@ STRING.
         (run-hook-with-args 'comint-input-filter-functions string))
 
       string)))
+
+(defun ess--concat-new-line-maybe (string)
+  "Append \\n at the end of STRING if missing."
+  (if (string-match "\n\\'" string (max (- (length string) 2) 0))
+      string
+    (concat string "\n")))
+
 
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the
@@ -1443,9 +1451,8 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;; and
 ;;      (ess-eval-region   ....)
 
-(defun ess-eval-linewise (text &optional
-                                        invisibly eob even-empty
-                                        wait-last-prompt sleep-sec wait-sec)
+(defun ess-eval-linewise (text &optional invisibly eob even-empty
+                               wait-last-prompt sleep-sec wait-sec)
   ;; RDB 28/8/92 added optional arg eob
   ;; MM 2006-08-23: added 'timeout-ms' -- but the effect seems "nil"
   ;; VS 2012-01-18 it was actually nil, replaced with wait-sec - 0.001 default
@@ -1486,13 +1493,21 @@ TEXT.
            (cbuffer (current-buffer))
            (sprocess (get-ess-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
+           (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
            start-of-output
            com pos txt-gt-0)
 
-      (setq text (ess--run-presend-hooks sprocess text))
+      (setq text (ess--concat-new-line-maybe (ess--run-presend-hooks sprocess text)))
 
       (with-current-buffer sbuffer
+
+        ;; (when (and win
+        ;;            (null eob)
+        ;;            (<= (process-mark sprocess) (point)))
+        ;;   (setq eob t))
+        ;; (setq wait-last-prompt t)
+        ;; (dbg eob)
 
         ;; the following is required to make sure things work!
         (when (string= ess-language "STA")
@@ -1500,11 +1515,7 @@ TEXT.
               (setq text (ess-replace-in-string text ";" "\n")))
           (setq invisibly t))
         (setq text (propertize text 'field 'input 'front-sticky t))
-        ;; dbg:
-        ;; dbg(ess-write-to-dribble-buffer
-        ;; dbg (format "(eval-visibly 1): lang %s (invis=%s, eob=%s, even-empty=%s)\n"
-        ;; dbg     ess-language invisibly eob even-empty))
-
+ 
         (goto-char (marker-position (process-mark sprocess)))
         (if (stringp invisibly)
             (insert-before-markers (concat "*** " invisibly " ***\n")))
@@ -1513,7 +1524,7 @@ TEXT.
         ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
         (while (or (setq txt-gt-0 (> (length text) 0))
                    even-empty)
-          (if even-empty (setq even-empty nil))
+          (setq even-empty nil)
           (if txt-gt-0
               (progn
                 (setq pos (string-match "\n\\|$" text))
@@ -1522,32 +1533,24 @@ TEXT.
             ;; else 0-length text
             (setq com "\n"))
           (goto-char (marker-position (process-mark sprocess)))
+          (if win (set-window-point win (process-mark sprocess)))
           (when (not invisibly)
-            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; consistent, at least :(
+            (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; for consistency with comint :(
             (set-marker (process-mark sprocess) (point)))
           (setq start-of-output (marker-position (process-mark sprocess)))
           (inferior-ess-mark-as-busy sprocess)
           (process-send-string sprocess com)
           (when (or wait-last-prompt
                     (> (length text) 0))
-            (ess-wait-for-process sprocess t wait-sec)))
+            (ess-wait-for-process sprocess t wait-sec))
+          )
+        (if eob (ess-show-buffer (buffer-name sbuffer) nil))
         (goto-char (marker-position (process-mark sprocess)))
-        (if eob
-            (progn
-              (ess-show-buffer (buffer-name sbuffer) nil)
-              ;; Once SBUFFER is visible, we can then move the point in that
-              ;; window to the end of the buffer.
-              (set-window-point (get-buffer-window sbuffer t)
-                                (with-current-buffer sbuffer (point-max)))
-              ))
-        )
-      ;; (with-ess-process-buffer nil
-      ;;   (dbg (point))
-      ;;   (dbg (window-point (get-buffer-window)))
-      ;;   (dbg (process-mark (get-process ess-current-process-name))))
+        (if win (set-window-point win (point)))
+        ))
 
-      (if (numberp sleep-sec)
-          (sleep-for sleep-sec))))); in addition to timeout-ms
+    (if (numberp sleep-sec)
+        (sleep-for sleep-sec)))); in addition to timeout-ms
 
 
 ;;;*;;; Evaluate only
@@ -2280,9 +2283,8 @@ to continue it."
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
   (if comint-process-echoes
-      (ess-eval-linewise (concat string "\n") nil nil ess-eval-empty)
-    (inferior-ess-mark-as-busy proc)
-    (process-send-string proc (concat string "\n"))))
+      (ess-eval-linewise string nil nil ess-eval-empty)
+    (ess-send-string proc string)))
 
 
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"

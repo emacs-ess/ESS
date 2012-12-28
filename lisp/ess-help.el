@@ -961,7 +961,9 @@ option for other dialects).
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
       ;; todo: put digits into the map
       (let* ((inhibit-quit t) ;; C-g removes the buffer
-             (buf (ess--execute-singlekey-command map nil objname))
+             (buf (ess--execute-singlekey-command
+                   map (format "Press %c to cycle" (event-basic-type last-command-event))
+                   nil nil objname))
              ;; read full command
              (keys (read-key-sequence-vector ""))
              (command (and keys (key-binding keys))))
