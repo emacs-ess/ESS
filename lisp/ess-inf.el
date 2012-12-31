@@ -784,17 +784,17 @@ Returns the name of the selected process."
               (when message
                 (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
               ;; ask for buffer name not the *real* process name:
-              (process-name
-               (get-buffer-process
-                (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
-                                     (and ess-current-process-name
-                                          (buffer-name (process-buffer (get-process ess-current-process-name)))))))
+              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
+                                              (and ess-current-process-name
+                                                   (buffer-name (process-buffer
+                                                                 (get-process ess-current-process-name)))))))
+                (if (equal buf "*new*")
+                    (progn
+                      (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
+                      (caar ess-process-name-list))
+                  (process-name (get-buffer-process buf))
+                  ))
                )))
-      (when (equal proc "*new*")
-        (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
-        (setq proc (caar ess-process-name-list)))
-      ;; (with-current-buffer (process-buffer (get-process proc))
-      ;;   (ess-make-buffer-current))
       (if noswitch
           (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
         (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
