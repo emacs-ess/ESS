@@ -3288,13 +3288,6 @@ plotting objects in your current R session.  If you are used to using
 the dired (directory editor) facility in Emacs, this mode gives you
 similar functionality for R objects.
 
-To get started, first make sure you can load ess-rdired.  Add the
-following to your .emacs and then restart emacs.
-@example
-(autoload 'ess-rdired "ess-rdired"
-  "View *R* objects in a dired-like buffer." t)
-@end example
-
 Start an R session with @kbd{M-x R} and then store a few
 variables, such as:
 
