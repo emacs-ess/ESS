@@ -1136,7 +1136,7 @@ or will only want one global command history file and have
 @smallexample
   (setq ess-history-directory "~/.R/")
 @end smallexample
-in there @file{.emacs} file.
+in your @file{.emacs} file.
 
 @comment  node-name,  next,  previous,  up
 @node History expansion, Hot keys, Command History, Entering commands
@@ -1763,7 +1763,7 @@ the appropriate place as well.  Lines which continue an incomplete
 expression are indented relative to the first line of the expression.
 Function definitions, @code{if} statements, calls to @code{expression()}
 and loop constructs are all recognized and indented appropriately.  User
-variables are provided to control the amount if indentation in each
+variables are provided to control the amount of indentation in each
 case, and there are also a number of predefined indentation styles to
 choose from.
 
@@ -1799,7 +1799,7 @@ indented by the same amount (but relative indents are preserved).
 
 @item
 @kbd{RET} (@code{newline-and-indent}) @*
-@kbd{LFD} (@emph{newline-and-indent}) @*
+@kbd{LFD} (@code{newline-and-indent}) @*
 Insert a newline, and indent the next line.  (Note that most keyboards
 nowadays do not have a @key{LINEFEED} key, but @kbd{C-j} is equivalent.)
 
@@ -2467,8 +2467,8 @@ whatever reason.
 @pindex ac-source-R
 @pindex ac-source-R-args
 @pindex ac-source-R-objects
-ESS provides three sources for @code{Auto Completion} mode
-(@uref{http://cx4a.org/software/auto-complete/}) -
+ESS provides three sources for @code{Auto Completion} mode:
+@comment (@uref{http://cx4a.org/software/auto-complete/}) 
 @code{ac-source-R-args}, @code{ac-source-R-objects} and
 @code{ac-source-R}.  The last one combines the previous two and makes them
 play nicely together.  See auto-complete package documentation
@@ -2528,9 +2528,9 @@ packages:
 @section ESS tracebug
 @cindex ESS tracebug
 @pindex ess-tracebug
-@emph{Note:} The official ess-tracebug documentation is still at
-@uref{http://code.google.com/p/ess-tracebug/}, and is currently being
-moved into this manual.
+@emph{Note:} The official ess-tracebug documentation is at
+@uref{http://code.google.com/p/ess-tracebug/}, but it is in the process of
+being moved into this manual.
 
 ESS @code{tracebug} package offers visual debugging, interactive error
 navigation, interactive backtrace, breakpoint manipulation, control over
@@ -2612,8 +2612,8 @@ C-p . Goto previous BP                 . `ess-bp-previous'
 
 * Input Ring:
 
- i   . Goto input event marker forwards     . `ess-dbg-goto-input-event-marker'
- I   . Goto input event marker backwards    . `ess-dbg-goto-input-event-marker'
+ i   . Goto input event marker forwards  . `ess-dbg-goto-input-event-marker'
+ I   . Goto input event marker backwards . `ess-dbg-goto-input-event-marker'
 
 * Misc:
  ?   . Show this help		. `ess-tracebug-show-help'
@@ -2904,7 +2904,7 @@ and functions defined in .GlobalEnv can see the objects in
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
 In order to use ess-developer mode add names of the packages you are
-developing to @code{ess-developer-packages}. You can do taht interactively
+developing to @code{ess-developer-packages}. You can do that interactively
 with @kbd{C-c C-t a}, and remove packages with @kbd{C-c C-t r}. When
 developer mode is on, the name of the process in the mode line is
 highlighted with @code{ess-developer-indicator-face}.
@@ -2923,12 +2923,12 @@ When developer mode is on, ESS evaluation commands behave differently:
 
 @item @kbd{C-c C-l} (@code{ess-load-file}) asks for the package to source
 into and inserts all redefined objects into the package:foo or
-name space:foo accordingly:
+namespace:foo accordingly
 
 @itemize @minus
 
 @item PLAIN OBJECTS and FUNCTIONS: @*
- If the object is found in an environment (packag:foo or namespace:foo),
+ If the object is found in an environment (package:foo or namespace:foo),
   and differs from the old one it is assigned into the corresponding
   environment. If the object is not found it is assigned into
   .GlobalEnv. The environment of functions is set to namespace:foo.
