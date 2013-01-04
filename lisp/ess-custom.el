@@ -1023,6 +1023,7 @@ to sweave the current noweb file and latex the result."
 (defvar ess-local-process-name nil
   "The name of the ESS process associated with the current buffer.")
 (put 'ess-local-process-name 'risky-local-variable t)
+(put 'ess-local-process-name 'permanent-local t)
 (make-variable-buffer-local 'ess-local-process-name)
 
 
