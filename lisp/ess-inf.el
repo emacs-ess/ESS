@@ -1785,12 +1785,13 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (beginning-of-line)
         (forward-comment (* inc (buffer-size))) ;; as suggested in info file
         )
-      (if (and (not skip-to-eob)
-               (looking-at ess-no-skip-regexp)) ;; don't go to eob or whatever
-          (setq arg 0)
-        (setq pos (point))
-        (setq arg (- arg inc)))
-      )
+      (if (or skip-to-eob
+              (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
+          (setq arg (- arg inc))
+        (goto-char pos)
+        (setq arg 0)
+        (forward-line 1));; stop at next empty line
+      (setq pos (point)))
     (goto-char pos)
     n))
 
