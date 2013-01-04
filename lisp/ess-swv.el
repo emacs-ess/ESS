@@ -147,15 +147,21 @@ Depending on the `ess-swv-processor' used."
                            "require(knitr); purl")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
-(defun ess-swv-weave ()
+(defun ess-swv-weave (choose)
   "Run Sweave/knit on the current .Rnw file.
-Depending on the `ess-swv-processor' used."
-  (interactive)
-  (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
-                           "Sweave")
-                          ((eq ess-swv-processor 'knitr)
-                           "require(knitr); knit")
-                          (t (error "Not a valid processor %s" ess-swv-processor)))))
+Depending on the `ess-swv-processor' used.
+
+If CHOOSE is non-nil, offer a menu of available weavers. 
+"
+  (interactive "P")
+  (let ((processor (if choose
+                       (ess-completing-read "Weaver" '("sweave" "knitr") nil t)
+                     (symbol-name ess-swv-processor))))
+    (ess-swv-run-in-R (cond ((equal processor "sweave")
+                             "Sweave")
+                            ((equal processor "knitr")
+                             "require(knitr); knit")
+                            (t (error "Not a valid processor %s" ess-swv-processor))))))
 
 (defun ess-swv-sweave ()
   "Run Sweave on the current .Rnw file."
