@@ -208,13 +208,15 @@ Sweave file buffer name) and display it."
 (defun ess-swv-PDF (&optional pdflatex-cmd)
   "From LaTeX file, create a PDF (via 'texi2pdf' or 'pdflatex', ...), by
 default using the first entry of `ess-swv-pdflatex-commands' and display it."
-  (interactive
-   (list
-    (let ((def (elt ess-swv-pdflatex-commands 0)))
-      (ess-completing-read  "pdf latex command"
-                            ess-swv-pdflatex-commands ; <- collection to choose from
-                            nil 'confirm ; or 'confirm-after-completion
-                            nil nil def))))
+  (interactive)
+  (setq pdflatex-cmd
+        (or pdflatex-cmd
+            (and (eq (length ess-swv-pdflatex-commands) 1)
+                 (car ess-swv-pdflatex-commands))
+            (ess-completing-read  "pdf latex command"
+                                  ess-swv-pdflatex-commands ; <- collection to choose from
+                                  nil 'confirm ; or 'confirm-after-completion
+                                  nil nil (car ess-swv-pdflatex-commands))))
   (let* ((buf (buffer-name))
          (namestem (file-name-sans-extension (buffer-file-name)))
          (latex-filename (concat namestem ".tex"))
