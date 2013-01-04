@@ -86,7 +86,7 @@
 
 ;;; Code:
 
-(defvar ess-rdired-objects ".rdired.objects <- function(objs) {
+(defvar ess-rdired-objects "{.rdired.objects <- function(objs) {
   if (length(objs)==0) {
     \"No objects to view!\"
   } else {
@@ -107,7 +107,7 @@
   row.names(d) <- paste('  ', var.names, sep='')
   d
   }
-}; .rdired.objects(ls())"
+}; cat('\n'); print(.rdired.objects(ls()))}\n"
   "Function to call within R to print information on objects.  The last
 line of this string should be the instruction to call the
 function which prints the output for rdired.")
