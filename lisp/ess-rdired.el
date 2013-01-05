@@ -115,9 +115,6 @@ function which prints the output for rdired.")
 (defvar ess-rdired-buffer "*R dired*"
   "Name of buffer for displaying R objects.")
 
-(defvar ess-rdired-mode-map nil
-  "Keymap for the *R dired* buffer.")
-
 (defvar ess-rdired-mode-map
   (let ((ess-rdired-mode-map (make-sparse-keymap)))
 
