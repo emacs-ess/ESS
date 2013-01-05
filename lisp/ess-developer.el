@@ -325,6 +325,8 @@ here eventually. todo:
             (if ess-dev
                 (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
               (propertize  ess-local-process-name 'face nil))))
+    (force-window-update)
+    ;; (redisplay t)
     ))
 
 (defalias 'ess-toggle-developer 'ess-developer)
