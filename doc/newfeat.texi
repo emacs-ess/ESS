@@ -1,5 +1,26 @@
 @itemize @w{}
 
+Changes/Bug Fixes in 12.09-2:
+@itemize @bullet
+@item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs
+to hang during R debugging with @code{ess-eval-visibly} equal to @code{t}.
+@item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs to recenter
+the prompt in visible window
+@item @ESS{[tracebug]}: A better handling of ``Selection'' prompts
+and debug related singlekey commands.
+@item @ESS{}: fix a bug in @code{ess-switch-process} that was causing
+@code{*new*} selection to fail.
+@item @ESS{[R]}: Solve missing @code{ess-local-process-name} bug in R-dired.
+@item @ESS{[SWV]}: @code{ess-swv-PDF} doesn't ask for a command to run if
+there is only one command in @code{ess-swv-pdflatex-commands}.
+@item @ESS{[SWV]}: @code{ess-swv-weave} gained an universal argument to
+allow for an interactive choice between available weavers (sweave,
+knitr).
+@item @ESS{}: @code{ess-eval-*-and-step} functions go to next empty
+line at eob, instead of staying at the last line.
+@end itemize
+
+
 Changes/New Features in 12.09-1:
 @itemize @bullet
 @item @ESS{} @emph{Breaking Changes in Keys}:
