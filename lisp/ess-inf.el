@@ -1135,7 +1135,7 @@ STRING.
              (save-excursion
                  (goto-char (process-mark process))
                  (insert-before-markers
-                  (propertize (replace-regexp-in-string  "\n[ \t]" "\n+ " string)
+                  (propertize (format "%s\n" (replace-regexp-in-string  "\n[ \t]" "\n+ " string))
                               'font-lock-face 'comint-highlight-input)))
              (process-send-string process (ess--concat-new-line-maybe string))))
           (t
