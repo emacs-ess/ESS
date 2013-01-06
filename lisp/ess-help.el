@@ -981,6 +981,10 @@ option for other dialects).
   (let* ((com (format (car (pop ess--descr-o-a-p-commands)) objname))
          (buf (get-buffer-create "*ess-describe*"))
          pos)
+    (unless (eq ess-describe-at-point-method 'tooltip)
+      ;; can take some time for the command to execute
+      (display-buffer buf))
+    (sit-for .01)
     (ess-command (concat com "\n") buf)
     (with-current-buffer buf
       (goto-char (point-min))
