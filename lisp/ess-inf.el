@@ -1495,7 +1495,6 @@ TEXT.
            (sbuffer (process-buffer sprocess))
            (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
-           start-of-output
            com pos txt-gt-0)
 
       (let ((comint-input-filter-functions nil)) ;; comint runs them, don't run twise.
@@ -1539,7 +1538,6 @@ TEXT.
           (when (not invisibly)
             (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; for consistency with comint :(
             (set-marker (process-mark sprocess) (point)))
-          (setq start-of-output (marker-position (process-mark sprocess)))
           (inferior-ess-mark-as-busy sprocess)
           (process-send-string sprocess com)
           (when (or wait-last-prompt
@@ -1548,12 +1546,45 @@ TEXT.
           )
         (if eob (ess-show-buffer (buffer-name sbuffer) nil))
         (goto-char (marker-position (process-mark sprocess)))
-        (if win (set-window-point win (point)))
-        ))
+        (when win
+          (with-selected-window win
+            (goto-char (point))
+            (recenter (- -1 scroll-margin))) ;; this recenter is crucial to avoid reseting window-point
+          )))
 
     (if (numberp sleep-sec)
         (sleep-for sleep-sec)))); in addition to timeout-ms
 
+
+;; VS[06-01-2013]: this how far I got in investingating the emacs reseting of
+;; window-point. It really happens out of the blue :(
+
+;; (defun test ()
+;;   (let* ((cbuffer (get-buffer "*R*"))
+;;          (proc (get-buffer-process cbuffer))
+;;          (win (get-buffer-window cbuffer t)))
+;;     (with-current-buffer cbuffer
+;;       (proc-send-test proc win "ls()\n")
+;;       (ess-wait-for-process proc t 0.005)
+;;       ;; (goto-char (marker-position (process-mark proc)))
+;;       ;; (set-window-point win (point))
+;;       (proc-send-test proc win "NA\n")
+;;       ;; (when win
+;;       ;;   (dbg (point))
+;;       ;;   (set-window-point win (point-max)))
+;;       )))
+
+
+;; (defun proc-send-test (proc win com)
+;;   (with-current-buffer (process-buffer proc)
+;;     (goto-char (marker-position (process-mark proc)))
+;;     (inferior-ess-mark-as-busy proc)
+;;     (insert com)
+;;     (set-marker (process-mark proc) (point))
+;;     (set-window-point win (point))
+;;     (process-send-string proc com)
+;;     (dbg (window-point win) (window-end win))
+;;     ))
 
 ;;;*;;; Evaluate only
 
@@ -2065,15 +2096,6 @@ for `ess-eval-region'."
     ))
 
 
-;; (defun ess--toggle-visible-t ()
-;;   (interactive)
-;;   (dbg "here")
-;;   (setq ess-eval-visibly t))
-
-;; (defun ess--toggle-visible-nowait ()
-;;   (interactive)
-;;   (dbg "here")
-;;   (setq ess-eval-visibly 'nowait))
 
 (defun inferior-ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
