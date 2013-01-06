@@ -939,6 +939,9 @@ specific.")
   "Get info for object at point, and display it in an electric buffer or tooltip.
 This is a single key command (see `ess--execute-singlekey-command').
 
+If region is active (`region-active-p') use it instead of the
+object at point.
+
 After invocation of this command, all standard emacs commands,
 except those containing 'window' in their names, remove the
 electric *ess-describe* buffer. Use `other-window' to switch to
@@ -955,7 +958,9 @@ option for other dialects).
       (message "Not implemented for dialect %s" ess-dialect)
     (ess-force-buffer-current)
     (let ((map (make-sparse-keymap))
-          (objname (symbol-at-point))
+          (objname (or (and (region-active-p)
+                            (buffer-substring-no-properties (point) (mark)))
+                       (symbol-at-point)))
           bs ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
