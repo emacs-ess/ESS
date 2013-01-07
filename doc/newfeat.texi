@@ -2,8 +2,13 @@
 
 Changes/Bug Fixes in 12.09-2:
 @itemize @bullet
+@item @ESS{}: new @code{ess-switch-to-end-of-proc-buffer} variable that controls
+ whether @kbd{C-c C-z} switches to the end of process buffer. The
+ default is @code{t}. You can use prefix argument to @kbd{C-c C-z} to
+ toggle this variable.
 @item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs
-to hang during R debugging with @code{ess-eval-visibly} equal to @code{t}.
+to hang during R debugging with @code{ess-eval-visibly} equal to
+@code{t}.
 @item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs to recenter
 the prompt in visible window
 @item @ESS{[tracebug]}: A better handling of ``Selection'' prompts

@@ -1026,6 +1026,11 @@ to sweave the current noweb file and latex the result."
 (put 'ess-local-process-name 'permanent-local t)
 (make-variable-buffer-local 'ess-local-process-name)
 
+(defcustom ess-switch-to-end-of-proc-buffer t
+  "If t, `ess-switch-to-inferior-or-script-buffer goes to end of
+process buffer."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple
   "Function used for generation of the buffer name of the newly created ESS process.

@@ -865,15 +865,24 @@ made current."
   (interactive)
   (ess-switch-to-ESS t))
 
-(defun ess-switch-to-inferior-or-script-buffer (eob-p)
+(defun ess-switch-to-inferior-or-script-buffer (toggle-eob)
   "If in script, switch to the iESS. If in iESS switch to most recent script buffer.
 
 This is a single-key command. Assuming that it is bound to C-c C-z,
 you can navigate back and forth between iESS and script buffer
 with C-c C-z C-z C-z ...
+
+If variable `ess-switch-to-end-of-proc-buffer' is t (the default)
+ this function switches to the end of process buffer.
+
+If TOGGLE-EOB is given, the value of
+`ess-switch-to-end-of-proc-buffer' is toggled.
 "
   (interactive "P")
-  (let ((map (make-sparse-keymap)))
+  (let ((map (make-sparse-keymap))
+        (EOB (if toggle-eob
+                 (not ess-switch-to-end-of-proc-buffer)
+               ess-switch-to-end-of-proc-buffer)))
     (define-key map (vector last-command-event)
       (lambda (ev eob) (interactive)
         (if (not (eq major-mode 'inferior-ess-mode))
@@ -895,7 +904,7 @@ with C-c C-z C-z C-z ...
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil nil nil eob-p)))
+    (ess--execute-singlekey-command map nil nil nil EOB)))
 
 
 (defun get-ess-buffer (name)
