@@ -1006,7 +1006,7 @@ current frame, rather than all frames."
 (defun ess-buffer-visible-other-frame (buf)
   "Return t if BUF is visible in another frame.
 Assumes that buffer has not already been in found in current frame."
-  (if (member (buffer-name buf) (ess-get-buffers-in-frames))
+  (if (member buf (ess-get-buffers-in-frames))
       (window-frame (get-buffer-window buf 0))
     nil))
 
