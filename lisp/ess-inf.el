@@ -900,7 +900,7 @@ If TOGGLE-EOB is given, the value of
                                    ))))
               (pop blist))
             (if blist
-                (pop-to-buffer (car blist))
+                (ess-show-buffer (car blist) t)
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
