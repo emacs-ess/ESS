@@ -1023,7 +1023,7 @@ FTags file (default TAGS): ")
                                                (replace-regexp-in-string "/" "\\/" (nth 1 l) t)
                                                (nth 2 l))))
                                    imenu-generic-expression)))
-           (tags-cmd (format "etags -I -o %s --regex='%s' -" tagfile
+           (tags-cmd (format "etags -o %s --regex='%s' -" tagfile
                              (mapconcat 'identity regs "' --regex='"))))
       (message "Building tags: %s" tagfile)
       ;; (dbg (format "%s | %s" find-cmd tags-cmd))
