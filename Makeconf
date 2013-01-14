@@ -35,7 +35,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #PREFIX=/Applications/Emacs.app/Contents/Resources
 #EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 #LISPDIR=$(PREFIX)/site-lisp/ess
-#INFODIR=$(PREFIX)/info
+#INFODIR=/usr/local/info
 #ETCDIR =$(PREFIX)/etc/ess
 #
 
