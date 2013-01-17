@@ -50,7 +50,7 @@ ESS @w{version @ESSVER}
 
 @dircategory Emacs
 @direntry
-* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS/JAGS, Stata, XLisp-Stat).
+* ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS/JAGS and Stata).
 @end direntry
 @c node-name,  next,  previous,  up
 @node Top, Introduction, (dir), (dir)
@@ -128,7 +128,7 @@ S family and SAS respectively.  Later on, Stata-mode was also incorporated.
 
 ESS provides a common, generic, and useful interface, through emacs, to
 many statistical packages.  It currently supports the S family, SAS, BUGS/JAGS,
-Stata and XLisp-Stat with the level of support roughly in that order.
+and Stata with the level of support roughly in that order.
 
 A bit of notation before we begin.  @emph{emacs} refers to both
 @emph{GNU Emacs} by the Free Software Foundation, as well as
@@ -142,7 +142,7 @@ mode @code{ESS[language]}, where @code{language} can take values such as
 
 Currently, the documentation contains many references to @cite{`S'}
 where actually any supported (statistics) language is meant, i.e., `S'
-could also mean `XLisp-Stat' or `SAS'.
+could also mean `R' or `SAS'.
 
 @cindex interactive use of S
 
@@ -210,7 +210,7 @@ package which is waiting for you to input commands).  These include:
 @b{Command-line editing} for fixing mistakes in commands before they are
 entered.  The @samp{-e} flag for S-plus provides something similar to
 this, but here you have the full range of Emacs commands rather than a
-limited subset.  However, other packages such as XLisp-Stat and S3 do not
+limited subset.  However, other packages do not
 necessarily have features like this built-in.
 @xref{Command-line editing}.
 

@@ -250,11 +250,11 @@ If you wish to run R, you can start it with:
 M-x R
 @end example
 
-XLispStat can not currently be run with
-@example
-M-x XLS
-@end example
-Hopefully, this will change.  However, you can still edit with
-emacs, and cut and paste the results into the XLispStat
-*Listener* Window under Microsoft Windows.
+@c XLispStat can not currently be run with
+@c @example
+@c M-x XLS
+@c @end example
+@c Hopefully, this will change.  However, you can still edit with
+@c emacs, and cut and paste the results into the XLispStat
+@c *Listener* Window under Microsoft Windows.
 

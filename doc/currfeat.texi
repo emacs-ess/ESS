@@ -5,7 +5,7 @@
   @item SAS
   @item OpenBUGS/JAGS
   @item Stata
-  @item XLispStat including Arc and ViSta
+@c  @item XLispStat including Arc and ViSta
   @item Julia
   @end itemize
 @item Editing source code (S family, SAS, OpenBUGS/JAGS, Stata, Julia)
