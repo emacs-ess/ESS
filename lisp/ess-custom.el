@@ -128,7 +128,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.09-1" ;; updated by 'make'
+(defvar ess-version "12.09-2" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -221,9 +221,9 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
 
 (defcustom ess-R-describe-object-at-point-commands
   '(("str(%s)")
-    ("summary(%s)")
-    ("head(%s, n = 100)")
-    ("tail(%s, n = 100)"))
+    ("head(%s, n = 40)")
+    ("tail(%s, n = 40)")
+    ("summary(%s)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point. The value of the
  aliment is not used as yet and has no effect."
@@ -1023,8 +1023,14 @@ to sweave the current noweb file and latex the result."
 (defvar ess-local-process-name nil
   "The name of the ESS process associated with the current buffer.")
 (put 'ess-local-process-name 'risky-local-variable t)
+(put 'ess-local-process-name 'permanent-local t)
 (make-variable-buffer-local 'ess-local-process-name)
 
+(defcustom ess-switch-to-end-of-proc-buffer t
+  "If t, `ess-switch-to-inferior-or-script-buffer goes to end of
+process buffer."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple
   "Function used for generation of the buffer name of the newly created ESS process.

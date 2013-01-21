@@ -784,17 +784,17 @@ Returns the name of the selected process."
               (when message
                 (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
               ;; ask for buffer name not the *real* process name:
-              (process-name
-               (get-buffer-process
-                (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
-                                     (and ess-current-process-name
-                                          (buffer-name (process-buffer (get-process ess-current-process-name)))))))
+              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
+                                              (and ess-current-process-name
+                                                   (buffer-name (process-buffer
+                                                                 (get-process ess-current-process-name)))))))
+                (if (equal buf "*new*")
+                    (progn
+                      (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
+                      (caar ess-process-name-list))
+                  (process-name (get-buffer-process buf))
+                  ))
                )))
-      (when (equal proc "*new*")
-        (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
-        (setq proc (caar ess-process-name-list)))
-      ;; (with-current-buffer (process-buffer (get-process proc))
-      ;;   (ess-make-buffer-current))
       (if noswitch
           (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
         (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
@@ -865,15 +865,24 @@ made current."
   (interactive)
   (ess-switch-to-ESS t))
 
-(defun ess-switch-to-inferior-or-script-buffer (eob-p)
+(defun ess-switch-to-inferior-or-script-buffer (toggle-eob)
   "If in script, switch to the iESS. If in iESS switch to most recent script buffer.
 
 This is a single-key command. Assuming that it is bound to C-c C-z,
 you can navigate back and forth between iESS and script buffer
 with C-c C-z C-z C-z ...
+
+If variable `ess-switch-to-end-of-proc-buffer' is t (the default)
+ this function switches to the end of process buffer.
+
+If TOGGLE-EOB is given, the value of
+`ess-switch-to-end-of-proc-buffer' is toggled.
 "
   (interactive "P")
-  (let ((map (make-sparse-keymap)))
+  (let ((map (make-sparse-keymap))
+        (EOB (if toggle-eob
+                 (not ess-switch-to-end-of-proc-buffer)
+               ess-switch-to-end-of-proc-buffer)))
     (define-key map (vector last-command-event)
       (lambda (ev eob) (interactive)
         (if (not (eq major-mode 'inferior-ess-mode))
@@ -891,11 +900,11 @@ with C-c C-z C-z C-z ...
                                    ))))
               (pop blist))
             (if blist
-                (pop-to-buffer (car blist))
+                (ess-show-buffer (car blist) t)
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil nil nil eob-p)))
+    (ess--execute-singlekey-command map nil nil nil EOB)))
 
 
 (defun get-ess-buffer (name)
@@ -997,7 +1006,7 @@ current frame, rather than all frames."
 (defun ess-buffer-visible-other-frame (buf)
   "Return t if BUF is visible in another frame.
 Assumes that buffer has not already been in found in current frame."
-  (if (member buf (ess-get-buffers-in-frames))
+  (if (member (buffer-name (get-buffer buf)) (ess-get-buffers-in-frames))
       (window-frame (get-buffer-window buf 0))
     nil))
 
@@ -1135,7 +1144,7 @@ STRING.
              (save-excursion
                  (goto-char (process-mark process))
                  (insert-before-markers
-                  (propertize (replace-regexp-in-string  "\n[ \t]" "\n+ " string)
+                  (propertize (format "%s\n" (replace-regexp-in-string  "\n[ \t]" "\n+ " string))
                               'font-lock-face 'comint-highlight-input)))
              (process-send-string process (ess--concat-new-line-maybe string))))
           (t
@@ -1495,10 +1504,11 @@ TEXT.
            (sbuffer (process-buffer sprocess))
            (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
-           start-of-output
            com pos txt-gt-0)
 
-      (setq text (ess--concat-new-line-maybe (ess--run-presend-hooks sprocess text)))
+      (let ((comint-input-filter-functions nil)) ;; comint runs them, don't run twise.
+        (setq text (ess--concat-new-line-maybe
+                    (ess--run-presend-hooks sprocess text))))
 
       (with-current-buffer sbuffer
 
@@ -1537,7 +1547,6 @@ TEXT.
           (when (not invisibly)
             (insert (propertize com 'font-lock-face 'comint-highlight-input)) ;; for consistency with comint :(
             (set-marker (process-mark sprocess) (point)))
-          (setq start-of-output (marker-position (process-mark sprocess)))
           (inferior-ess-mark-as-busy sprocess)
           (process-send-string sprocess com)
           (when (or wait-last-prompt
@@ -1546,12 +1555,45 @@ TEXT.
           )
         (if eob (ess-show-buffer (buffer-name sbuffer) nil))
         (goto-char (marker-position (process-mark sprocess)))
-        (if win (set-window-point win (point)))
-        ))
+        (when win
+          (with-selected-window win
+            (goto-char (point))
+            (recenter (- -1 scroll-margin))) ;; this recenter is crucial to avoid reseting window-point
+          )))
 
     (if (numberp sleep-sec)
         (sleep-for sleep-sec)))); in addition to timeout-ms
 
+
+;; VS[06-01-2013]: this how far I got in investingating the emacs reseting of
+;; window-point. It really happens out of the blue :(
+
+;; (defun test ()
+;;   (let* ((cbuffer (get-buffer "*R*"))
+;;          (proc (get-buffer-process cbuffer))
+;;          (win (get-buffer-window cbuffer t)))
+;;     (with-current-buffer cbuffer
+;;       (proc-send-test proc win "ls()\n")
+;;       (ess-wait-for-process proc t 0.005)
+;;       ;; (goto-char (marker-position (process-mark proc)))
+;;       ;; (set-window-point win (point))
+;;       (proc-send-test proc win "NA\n")
+;;       ;; (when win
+;;       ;;   (dbg (point))
+;;       ;;   (set-window-point win (point-max)))
+;;       )))
+
+
+;; (defun proc-send-test (proc win com)
+;;   (with-current-buffer (process-buffer proc)
+;;     (goto-char (marker-position (process-mark proc)))
+;;     (inferior-ess-mark-as-busy proc)
+;;     (insert com)
+;;     (set-marker (process-mark proc) (point))
+;;     (set-window-point win (point))
+;;     (process-send-string proc com)
+;;     (dbg (window-point win) (window-end win))
+;;     ))
 
 ;;;*;;; Evaluate only
 
@@ -1783,12 +1825,13 @@ On success, return 0.  Otherwise, go as far as possible and return -1."
         (beginning-of-line)
         (forward-comment (* inc (buffer-size))) ;; as suggested in info file
         )
-      (if (and (not skip-to-eob)
-               (looking-at ess-no-skip-regexp)) ;; don't go to eob or whatever
-          (setq arg 0)
-        (setq pos (point))
-        (setq arg (- arg inc)))
-      )
+      (if (or skip-to-eob
+              (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
+          (setq arg (- arg inc))
+        (goto-char pos)
+        (setq arg 0)
+        (forward-line 1));; stop at next empty line
+      (setq pos (point)))
     (goto-char pos)
     n))
 
@@ -2062,15 +2105,6 @@ for `ess-eval-region'."
     ))
 
 
-;; (defun ess--toggle-visible-t ()
-;;   (interactive)
-;;   (dbg "here")
-;;   (setq ess-eval-visibly t))
-
-;; (defun ess--toggle-visible-nowait ()
-;;   (interactive)
-;;   (dbg "here")
-;;   (setq ess-eval-visibly 'nowait))
 
 (defun inferior-ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."

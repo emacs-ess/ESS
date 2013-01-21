@@ -86,7 +86,7 @@
 
 ;;; Code:
 
-(defvar ess-rdired-objects ".rdired.objects <- function(objs) {
+(defvar ess-rdired-objects "{.rdired.objects <- function(objs) {
   if (length(objs)==0) {
     \"No objects to view!\"
   } else {
@@ -107,7 +107,7 @@
   row.names(d) <- paste('  ', var.names, sep='')
   d
   }
-}; .rdired.objects(ls())"
+}; cat('\n'); print(.rdired.objects(ls()))}\n"
   "Function to call within R to print information on objects.  The last
 line of this string should be the instruction to call the
 function which prints the output for rdired.")
@@ -115,42 +115,41 @@ function which prints the output for rdired.")
 (defvar ess-rdired-buffer "*R dired*"
   "Name of buffer for displaying R objects.")
 
-(defvar ess-rdired-mode-map nil
-  "Keymap for the *R dired* buffer.")
+(defvar ess-rdired-mode-map
+  (let ((ess-rdired-mode-map (make-sparse-keymap)))
 
-(if ess-rdired-mode-map
-    ()
-  (setq ess-rdired-mode-map (make-sparse-keymap))
+    (define-key ess-rdired-mode-map "?" 'ess-rdired-help)
+    (define-key ess-rdired-mode-map "d" 'ess-rdired-delete)
+    (define-key ess-rdired-mode-map "u" 'ess-rdired-undelete)
+    (define-key ess-rdired-mode-map "x" 'ess-rdired-expunge)
+    ;; editing requires a little more work.
+    ;;(define-key ess-rdired-mode-map "e" 'ess-rdired-edit)
+    (define-key ess-rdired-mode-map "v" 'ess-rdired-view)
+    (define-key ess-rdired-mode-map "V" 'ess-rdired-View)
+    (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
+    (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
+    (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
+    (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
+    (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
+    (define-key ess-rdired-mode-map [backspace] 'ess-rdired-previous-line)
+    (define-key ess-rdired-mode-map "\C-n" 'ess-rdired-next-line)
+    (define-key ess-rdired-mode-map "\C-p" 'ess-rdired-previous-line)
+    ;; (define-key ess-rdired-mode-map "n" 'ess-rdired-next-line)
+    ;; (define-key ess-rdired-mode-map "p" 'ess-rdired-previous-line)
 
-  (define-key ess-rdired-mode-map "?" 'ess-rdired-help)
-  (define-key ess-rdired-mode-map "d" 'ess-rdired-delete)
-  (define-key ess-rdired-mode-map "u" 'ess-rdired-undelete)
-  (define-key ess-rdired-mode-map "x" 'ess-rdired-expunge)
-  ;; editing requires a little more work.
-  ;;(define-key ess-rdired-mode-map "e" 'ess-rdired-edit)
-  (define-key ess-rdired-mode-map "v" 'ess-rdired-view)
-  (define-key ess-rdired-mode-map "V" 'ess-rdired-View)
-  (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
-  (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
-  (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
-  (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
-  (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
-  (define-key ess-rdired-mode-map [backspace] 'ess-rdired-previous-line)
-  (define-key ess-rdired-mode-map "\C-n" 'ess-rdired-next-line)
-  (define-key ess-rdired-mode-map "\C-p" 'ess-rdired-previous-line)
+    ;; R mode keybindings.
+    (define-key ess-rdired-mode-map "\C-c\C-s" 'ess-rdired-switch-process)
+    (define-key ess-rdired-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
+    (define-key ess-rdired-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
 
-  ;; R mode keybindings.
-  (define-key ess-rdired-mode-map "\C-c\C-s" 'ess-rdired-switch-process)
-  (define-key ess-rdired-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
-  (define-key ess-rdired-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-
-  (define-key ess-rdired-mode-map [down] 'ess-rdired-next-line)
-  (define-key ess-rdired-mode-map [up] 'ess-rdired-previous-line)
-  (define-key ess-rdired-mode-map "g" 'revert-buffer)
-  (if (featurep 'xemacs)
-      (define-key ess-rdired-mode-map [button2] 'ess-rdired-mouse-view)
-    (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
-    ))
+    (define-key ess-rdired-mode-map [down] 'ess-rdired-next-line)
+    (define-key ess-rdired-mode-map [up] 'ess-rdired-previous-line)
+    (define-key ess-rdired-mode-map "g" 'revert-buffer)
+    (if (featurep 'xemacs)
+        (define-key ess-rdired-mode-map [button2] 'ess-rdired-mouse-view)
+      (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
+      )
+    ess-rdired-mode-map))
 
 (defun ess-rdired-mode ()
   "Major mode for output from `ess-rdired'.
@@ -158,7 +157,7 @@ function which prints the output for rdired.")
 list of current objects in the current environment, one-per-line.  You
 can then examine these objects, plot them, and so on.
 \\{ess-rdired-mode-map}"
-  (kill-all-local-variables)
+  ;; (kill-all-local-variables) 
   (make-local-variable 'revert-buffer-function)
   (setq revert-buffer-function 'ess-rdired-revert-buffer)
   (use-local-map ess-rdired-mode-map)
@@ -173,34 +172,37 @@ can then examine these objects, plot them, and so on.
 This is the main function.  See documentation for `ess-rdired-mode' though
 for more information!"
   (interactive)
-  (if (get-buffer ess-rdired-buffer)
-      (progn
-        (set-buffer ess-rdired-buffer)
-        (setq buffer-read-only nil)))
+  (let  ((proc ess-local-process-name)
+         (buff (get-buffer-create ess-rdired-buffer)))
 
-  (ess-execute ess-rdired-objects
-               nil
-               (substring ess-rdired-buffer 1 (- (length ess-rdired-buffer) 1))
-               )
+    (ess-command ess-rdired-objects buff)
+    (ess-setq-vars-local (symbol-value ess-local-customize-alist) buff)
+    
+    (with-current-buffer buff
+      (setq ess-local-process-name proc)
+      (ess-rdired-mode)
 
-  (pop-to-buffer ess-rdired-buffer)
-  ;; When definiting the function .rdired.objects(), a "+ " is printed
-  ;; for every line of the function definition; these are deleted
-  ;; here.
-  (delete-char (* (1- (length (split-string ess-rdired-objects "\n"))) 2))
+      ;; When definiting the function .rdired.objects(), a "+ " is printed
+      ;; for every line of the function definition; these are deleted
+      ;; here.
+      (goto-char (point-min))
+      (delete-region (point-min) (1+ (point-at-eol)))
 
-  ;; todo: not sure how to make ess-rdired-sort-num buffer local?
-  ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
-  ;;(make-variable-buffer-local 'ess-rdired-sort-num)
-  (setq ess-rdired-sort-num 1)
-  (ess-rdired-insert-set-properties (save-excursion
-                                      (goto-char (point-min))
-                                      (forward-line 1)
-                                      (point))
-                                    (point-max))
-  (setq buffer-read-only t)
-  (ess-rdired-mode)
-  )
+      ;; todo: not sure how to make ess-rdired-sort-num buffer local?
+      ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
+      ;;(make-variable-buffer-local 'ess-rdired-sort-num)
+      (setq ess-rdired-sort-num 1)
+      (ess-rdired-insert-set-properties (save-excursion
+                                          (goto-char (point-min))
+                                          (forward-line 1)
+                                          (point))
+                                        (point-max))
+      (setq buffer-read-only t)
+      )
+    
+    (pop-to-buffer buff)
+    ))
+
 
 (defun ess-rdired-object ()
   "Return name of object on current line.
@@ -255,15 +257,14 @@ Otherwise, we could just pass the variable name directly to *R*."
 Like `ess-rdired-view', but the object gets its own buffer name."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-execute
-     (ess-rdired-get objname)
+    (ess-execute (ess-rdired-get objname)
      nil (concat "R view " objname ))))
 
 (defun ess-rdired-plot ()
   "Plot the object on current line."
   (interactive)
   (let ((objname (ess-rdired-object)))
-    (ess-command (concat "plot(" (ess-rdired-get objname) ")\n"))))
+    (ess-eval-linewise (format "plot(%s)" (ess-rdired-get objname)))))
 
 (defun ess-rdired-type ()
   "Run the mode() on command at point.
@@ -345,7 +346,7 @@ User is queried first to check that objects should really be deleted."
           (if (yes-or-no-p (format "Delete %d %s " count
                                    (if (> count 1) "objects" "object")))
               (progn
-                (ess-command objs)
+                (ess-eval-linewise objs nil nil nil 'wait)
                 (ess-rdired)
                 )))
       ;; else nothing to delete

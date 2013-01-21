@@ -135,7 +135,6 @@
     ;; comint-use-prompt-regexp is t; (transcript-mode also relies on this regexp)
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
     (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
-    (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess.funargs(%s)\n")
@@ -166,6 +165,7 @@
      (ess-syntax-error-re
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
+     (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
      (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
      (ess-editor . S-editor)
      (ess-pager  . S-pager)
