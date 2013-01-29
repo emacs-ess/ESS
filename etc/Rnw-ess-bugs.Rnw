@@ -1,0 +1,31 @@
+
+
+
+<<coxph>>=
+
+## reported by Terry Therneau
+coxph <- function(formula, data, weights, subset, na.action,
+                  init, control, ties= c("efron", "breslow", "exact"),
+                  singular.ok =TRUE, robust=FALSE,
+                  model=FALSE, x=FALSE, y=TRUE,  tt, method=ties, ...) {
+
+  ties <- match.arg(ties)
+  Call <- match.call()
+
+  ... (20 lines omitted)
+
+  timetrans <- attr(Terms, "specials")$tt
+  if (length(timetrans)) {
+    <<coxph-transform>>
+  }
+
+  ## next lines should not be ofsetted
+  <<coxph-setup>>
+    <<coxph-penal>>
+      <<coxph-compute>>
+        <<coxph-finish>>
+}
+@
+
+
+
