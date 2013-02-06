@@ -1,5 +1,15 @@
 library('methods')
 
+## COMMENT ON S3 METHODS: It is not feasible, and bad practice, to check all the
+## assigned function names for "." separator. Thus, S3 methods are not
+## automatically registered. You can register them manually with
+##
+##    registerS3method("method_name", "my_class", my_package:::method_name.my_class)
+##
+## after method_name.my_class was inserted into your package environment with
+## ess-developer. Otherwise, R will called the registered (i.e. cached) S3
+## methods instead of the new methods residing in the package environment.
+
 .essDev_differs <- function(f1, f2){
     if (is.function(f1) && is.function(f2)){
         !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
