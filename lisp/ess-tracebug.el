@@ -438,19 +438,24 @@ Local in iESS buffers.")
   "Used to compute the busy indicator")
 (make-variable-buffer-local 'ess--busy-count)
 
-(unless (boundp 'ess--busy-slash)
-  (defvar ess--busy-slash '(32 ?\u2014 92 47))
-  (setq ess--busy-slash (mapcar (lambda (el) (format " %c " el))
-                                ess--busy-slash)))
+;; (unless (boundp 'ess--busy-slash)
+;; (defvar ess--busy-slash '(32 ?\u2014 92 47))
+;; (setq ess--busy-slash (mapcar (lambda (el) (format " %c " el))
+;;                               ess--busy-slash))
+;; )
 
+
+(defvar ess--busy-slash '("   " " - " " \\ " " / "))
 (defvar ess--busy-B '("   " " B " "   "))
 (defvar ess--busy-stars '("      " "      " " *    " " **   " " ***  " " **** "))
 (defvar ess--busy-vbars '("      " "      " " |    " " ||   " " |||  " " |||| "))
 
 (defcustom ess-busy-strings ess--busy-slash
   "List of strings to replace in turn for busy indication.
-The first element of the list is used as an indicator for process being ready (i.e. not busy)
-Implemented lists are `ess--busy-slash', `ess--busy-B',`ess--busy-stars', `ess--busy-vbars'"
+The first element of the list is used as an indicator of the
+process being ready (i.e. not busy). Implemented lists that you
+can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
+`ess--busy-vbars'"
   :group 'ess)
 
 (defvar ess--busy-timer nil
