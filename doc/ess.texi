@@ -950,7 +950,7 @@ instead, which leaves the cursor at the command line following the one
 you re-submitted.  Thus by using @kbd{M-RET} repeatedly, you can
 re-submit a whole series of commands.
 
-These commands work even if if the current line is a continuation line
+These commands work even if the current line is a continuation line
 (i.e. the prompt is @samp{+} instead of @samp{>}) --- in this case all
 the lines that form the multi-line command are concatenated together and
 the resulting command is sent to the ESS process (currently this is

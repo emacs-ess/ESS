@@ -1,7 +1,7 @@
 @itemize @bullet
 @item Languages Supported:
   @itemize @bullet
-  @item S family (i.e., R and S+ (aka S-PLUS), nowadays)
+  @item S family (R and S+ AKA S-PLUS)
   @item SAS
   @item OpenBUGS/JAGS
   @item Stata
