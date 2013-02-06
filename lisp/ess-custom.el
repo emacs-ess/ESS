@@ -470,7 +470,7 @@ to install your custom sources.
   :group 'R
   :type 'string)
 
-(defcustom ess-use-tracebug nil
+(defcustom ess-use-tracebug t
   "If t, load ess-tracebug when R process starts."
   :group 'ess-extras
   :type  'boolean)
