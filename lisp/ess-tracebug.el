@@ -207,9 +207,9 @@ block (used for source references insertion)"
       (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
     (unless filename ;; org, etc
       (setq filename (format "[%s]" ess--tb-buffer-sym))
-      (if org-src-mode ;;
-          (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
-                                 filename))))
+      (when (and (boundp 'org-src-mode) org-src-mode)
+        (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
+                               filename))))
     ;; next drops are not necesarry for function but will be for regions
     (goto-char beg)
     (when (looking-at "\\s +") ;drop trailing lines
