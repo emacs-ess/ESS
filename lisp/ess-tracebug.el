@@ -194,6 +194,8 @@ referenced buffer.
 (defvar ess--tb-buffer-sym nil)
 (make-variable-buffer-local 'ess--tb-buffer-sym)
 
+(defvar org-src-mode)
+
 (defun ess--tb-get-source-refd-string (beg end)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
