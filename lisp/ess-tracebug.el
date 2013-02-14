@@ -57,6 +57,8 @@
   (require 'cl))
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
+(defvar text-scale-mode-amount)
+(autoload 'text-scale-mode              "face-remap" "[autoload]" nil)
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
@@ -1079,6 +1081,7 @@ of the ring."
 
 This function is placed in `ess-presend-filter-functions'.
 "
+  ;; the process here is an ugly reliance on dynamic scope
   (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
     string))
