@@ -3,7 +3,7 @@
 ;; Copyright (C) 2012 Vitalie Spinu.
 ;;
 ;; Filename: ess-julia.el
-;; Author: Vitalie Spinu (based on julia-mode.el form julia-lang project)
+;; Author: Vitalie Spinu (based on julia-mode.el from julia-lang project)
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
 ;; Keywords: ESS, julia
@@ -41,8 +41,6 @@
 
 
 ;;; Code:
-;
-
 
 (defvar julia-mode-hook nil)
 
@@ -102,10 +100,8 @@
 (defconst julia-forloop-in-regex
   "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
 
-
 (defconst ess-subset-regexp
       "\\[[0-9:, ]*\\]" )
-
 
 (defconst julia-font-lock-defaults
   (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\)\\|Int\\(8\\|16\\|32\\|64\\)\\|Integer\\|Float\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexNum\\|Bool\\|Char\\|Number\\|Scalar\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Buffer\\|Size\\|Index\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|PtrInt\\|Long\\|Ulong\\)\\>" .
@@ -195,7 +191,6 @@
               nil)))
       nil)))
 
-
 (defun julia-paren-indent ()
   (let* ((p (parse-partial-sexp (save-excursion
 				  ;; only indent by paren if the last open
@@ -209,14 +204,14 @@
     (if (or (= 0 (car p)) (null pos))
         nil
       (progn (goto-char pos) (+ 1 (current-column))))))
-;  (forward-line -1)
-;  (end-of-line)
-;  (let ((pos (condition-case nil
-;                (scan-lists (point) -1 1)
-;              (error nil))))
-;   (if pos
-;       (progn (goto-char pos) (+ 1 (current-column)))
-;     nil)))
+					;  (forward-line -1)
+					;  (end-of-line)
+					;  (let ((pos (condition-case nil
+					;                (scan-lists (point) -1 1)
+					;              (error nil))))
+					;   (if pos
+					;       (progn (goto-char pos) (+ 1 (current-column)))
+					;     nil)))
 
 (defun julia-indent-line ()
   "Indent current line of julia code"
@@ -272,7 +267,6 @@
 ;;   (setq mode-name "julia")
 ;;   (run-hooks 'julia-mode-hook))
 
-
 (defvar julia-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
@@ -299,7 +293,7 @@
     (font-lock-defaults		  . '(julia-font-lock-defaults
                                       nil nil ((?\_ . "w"))))
     )
-  "General options for R source files.")
+  "General options for julia source files.")
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -343,7 +337,7 @@
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
     (inferior-ess-help-command		. julia-help-command)
-    ;; (inferior-ess-help-command		. "help(\"%s\")\n")
+    ;; (inferior-ess-help-command	. "help(\"%s\")\n")
     (ess-language			. "julia")
     (ess-dialect			. "julia")
     (ess-suffix				. "jl")
@@ -380,15 +374,15 @@ beginning with one of these strings is found on `exec-path', a M-x
 command for that version of Julia is made available.  ")
 
 (defcustom inferior-julia-args ""
-  "String of arguments (see 'R --help') used when starting R.
-These arguments are currently not passed to other versions of R that have
+  "String of arguments (see 'julia --help') used when starting julia.
+These arguments are currently not passed to other versions of julia that have
 been created using the variable `ess-r-versions'."
   :group 'ess-julia
   :type 'string)
 
 ;;;###autoload
 (defun julia-mode  (&optional proc-name)
-  "Major mode for editing R source.  See `ess-mode' for more help."
+  "Major mode for editing julia source.  See `ess-mode' for more help."
   (interactive "P")
   ;; (setq ess-customize-alist julia-customize-alist)
   (ess-mode julia-customize-alist proc-name)
@@ -468,7 +462,5 @@ to R, put them in the variable `inferior-julia-args'."
     ;; ("Package" "^.*\\(library\\|require\\)(\\(.*\\)," 2)
     ;; ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
     ))
-
-
 
 (provide 'ess-julia)
