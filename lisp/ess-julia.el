@@ -444,7 +444,7 @@ to R, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
-      (ess-eval-linewise (format "load(\"%sess-julia.jl\")\n" ess-etc-directory))
+      (ess-eval-linewise (format "require(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
