@@ -52,7 +52,7 @@
 ;;
 ;; with Emacs (and in general):
 ;;
-;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path)
+;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path))
 
 ;;; Code:
 

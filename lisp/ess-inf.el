@@ -366,10 +366,10 @@ there is no process NAME)."
         (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
         (ess-process-put 'funargs-pre-cache nil)
 
+        (run-hooks 'ess-post-run-hook)
 
         ;; EXTRAS
         (ess-load-extras t)
-        (run-hooks 'ess-post-run-hook)
         ;; user initialization can take some time ...
         (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
         (ess-wait-for-process (get-process proc-name) nil 0.01)
