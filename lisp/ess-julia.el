@@ -10,7 +10,6 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-
 ;; This file is *NOT* part of GNU Emacs.
 ;; This file is part of ESS
 ;;
@@ -60,8 +59,10 @@
     (modify-syntax-entry ?\( "() " table)
     (modify-syntax-entry ?\) ")( " table)
     ;(modify-syntax-entry ?\\ "." table)  ; \ is an operator outside quotes
-    (modify-syntax-entry ?'  "." table)  ; character quote or transpose
-    ;(modify-syntax-entry ?\" "." table)
+    ;; (modify-syntax-entry ?'  "." table)  ; character quote or transpose
+    (modify-syntax-entry ?\' "\"" table)
+    (modify-syntax-entry ?\" "\"" table)
+    ;; (modify-syntax-entry ?\" "." table)
     (modify-syntax-entry ?? "." table)
     (modify-syntax-entry ?$ "." table)
     (modify-syntax-entry ?& "." table)
@@ -88,8 +89,9 @@
     table)
   "Syntax table for julia-mode")
 
-(defconst julia-string-regex
-  "\"[^\"]*?\\(\\(\\\\\\\\\\)*\\\\\"[^\"]*?\\)*\"")
+;; not used
+;; (defconst julia-string-regex
+;;   "\"[^\"]*?\\(\\(\\\\\\\\\\)*\\\\\"[^\"]*?\\)*\"")
 
 (defconst julia-char-regex
   "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|$!\\^~\\\\;:]\\|^\\)\\('\\(\\([^']*?[^\\\\]\\)\\|\\(\\\\\\\\\\)\\)'\\)")
