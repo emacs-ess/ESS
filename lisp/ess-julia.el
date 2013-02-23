@@ -330,11 +330,11 @@
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
-    (inferior-ess-load-command		. "require(\"%s\")\n")
+    (inferior-ess-load-command		. "include(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
-    (ess-send-string-function		. 'julia-send-string-function)
+    (ess-send-string-function		. nil);'julia-send-string-function)
     (ess-imenu-generic-expression       . julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
@@ -440,7 +440,7 @@ to R, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
-      (ess-eval-linewise (format "require(\"%sess-julia.jl\")\n" ess-etc-directory))
+      (ess-eval-linewise (format "include(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
@@ -453,7 +453,8 @@ to R, put them in the variable `inferior-julia-args'."
     ("Function" "[ \t]*function[ \t]+\\([^_][^ \t\n]*\\)" 1)
     ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
     ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1)
-    ("Load"      " *\\(load\\)(\\([^ \t\n)]*\\)" 2)
+    ("Require"      " *\\(\\brequire\\)(\\([^ \t\n)]*\\)" 2)
+    ("Include"      " *\\(\\binclude\\)(\\([^ \t\n)]*\\)" 2)
     ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
     ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
     ;; ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
