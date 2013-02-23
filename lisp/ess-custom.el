@@ -1619,7 +1619,7 @@ The other variables ...-program-name should be changed, for the
 corresponding program.")
 
 (make-variable-buffer-local 'inferior-ess-program)
-(setq-default inferior-ess-program inferior-S-program-name)
+;; (setq-default inferior-ess-program inferior-S-program-name)
 
 
 (defvar inferior-R-version "R (newest)"
