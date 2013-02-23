@@ -2075,8 +2075,11 @@ for `ess-eval-region'."
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
     ("Process"
-     ["Process Echoes" (lambda () (interactive) (setq comint-process-echoes (not comint-process-echoes)))
-                         :style toggle :selected comint-process-echoes]
+     ["Process Echoes" (lambda () (interactive)
+                         (setq comint-process-echoes (not comint-process-echoes)))
+      :active inferior-ess-secondary-prompt ;; cannot evaluate visibly, so don't bother
+      :style toggle
+      :selected comint-process-echoes]
      ("Eval visibly "
       :filter ess--generate-eval-visibly-submenu ))
     "------"

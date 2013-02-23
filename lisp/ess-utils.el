@@ -128,7 +128,7 @@
 
 (defun ess--generate-eval-visibly-submenu (menu)
   '(["yes" (lambda () (interactive) (setq ess-eval-visibly t))
-     :style radio :enable t :selected (eq ess-eval-visibly t) ]
+     :style radio :enable inferior-ess-secondary-prompt :selected (eq ess-eval-visibly t)]
     ["nowait" (lambda () (interactive) (setq ess-eval-visibly 'nowait))
      :style radio :enable t :selected (eq ess-eval-visibly 'nowait) ]
     ["no" (lambda () (interactive) (setq ess-eval-visibly nil))
