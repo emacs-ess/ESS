@@ -173,7 +173,8 @@ Alternatively, it can appear in its own frame if
     (let* ((process-environment process-environment)
            (defdir (or (and ess-directory-function (funcall ess-directory-function))
                        ess-directory default-directory))
-           (temp-dialect (if ess-use-inferior-program-name-in-buffer-name
+
+           (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
                                  inferior-R-program-name
                                temp-ess-dialect) ; use temp-ess-dialect
@@ -238,12 +239,12 @@ Alternatively, it can appear in its own frame if
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
                ess-language  ess-dialect (current-buffer)))
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
-               ess-start-args inferior-ess-start-args))
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess finish [%s(%s), %s(%s)]\n"
-               ess-language ess-dialect inferior-ess-program ess-local-process-name))
+      ;; (ess-write-to-dribble-buffer
+      ;;  (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
+      ;;          ess-start-args inferior-ess-start-args))
+      ;; (ess-write-to-dribble-buffer
+      ;;  (format "(inf-ess finish [%s(%s), %s(%s)]\n"
+      ;;          ess-language ess-dialect inferior-ess-program ess-local-process-name))
 
       ;; Set up history file
       (if ess-history-file
