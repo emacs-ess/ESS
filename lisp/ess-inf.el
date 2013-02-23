@@ -1136,8 +1136,11 @@ STRING.
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function
                                    (current-buffer)))
-      ;; overloading of the sending function
+      ;; sending function is overloaded
       (funcall ess-send-string-function process string visibly)
+    (when (and (eq visibly t)
+               (null inferior-ess-secondary-prompt)) ; cannot evaluate visibly
+      (setq visibly 'nowait))
     (cond ((eq visibly t) ;; wait after each line
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
@@ -1527,7 +1530,7 @@ TEXT.
               (setq text (ess-replace-in-string text ";" "\n")))
           (setq invisibly t))
         (setq text (propertize text 'field 'input 'front-sticky t))
- 
+
         (goto-char (marker-position (process-mark sprocess)))
         (if (stringp invisibly)
             (insert-before-markers (concat "*** " invisibly " ***\n")))
@@ -2079,7 +2082,7 @@ for `ess-eval-region'."
     ("Process"
      ["Process Echoes" (lambda () (interactive)
                          (setq comint-process-echoes (not comint-process-echoes)))
-      :active inferior-ess-secondary-prompt ;; cannot evaluate visibly, so don't bother
+      :active t
       :style toggle
       :selected comint-process-echoes]
      ("Eval visibly "
