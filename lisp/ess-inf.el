@@ -544,13 +544,14 @@ This was rewritten by KH in April 1996."
 ;;*;; Requester functions called at startup
 
 (defun ess-get-directory (default dialect procname)
-  (let ((prog-version (if (string= dialect "R")
-                          inferior-R-version ; notably for the R-X.Y versions
-                        ;; should rather use procname ?
-                        inferior-ess-program)))
+  (let ((prog-version (cond ((string= dialect "R")
+                             (concat ", " inferior-R-version)) ; notably for the R-X.Y versions
+                            (inferior-ess-program
+                             (concat ", " inferior-ess-program ))
+                            (t ""))))
     (ess-prompt-for-directory
      (directory-file-name default)
-     (format "ESS (*%s* '%s') starting data directory? "
+     (format "ESS (*%s*%s) starting data directory? "
              procname prog-version)
      ;; (format "ESS [%s {%s(%s)}: '%s'] starting data directory? "
      ;;         ;;FIXME: maybe rather tmp-dialect (+ evt drop ess-language?)?
