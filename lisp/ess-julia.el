@@ -434,6 +434,8 @@ to R, put them in the variable `inferior-julia-args'."
                                  " ? "))
 		      nil))))
       (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      (set (make-local-variable ess-eval-visibly)
+           (when ess-eval-visibly 'no-wait)) ;; julia doesn't have secondary prompt, so no visible evaluation
       (ess-tb-start)
       (set (make-local-variable 'julia-basic-offset) 4)
       ;; (setq indent-tabs-mode nil)
