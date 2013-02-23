@@ -84,6 +84,11 @@
   :group 'ess-S
   :prefix "ess-")
 
+(defgroup ess-Julia nil
+  "ESS: Julia."
+  :group 'ess
+  :prefix "julia-")
+
 (defgroup ess-sas nil
   "ESS: SAS."
   :group 'ess
@@ -2455,10 +2460,11 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defvar inferior-julia-program-name "julia-release-basic"
+(defcustom inferior-julia-program-name "julia-release-basic"
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
-  "Path to julia-release-basic executable")
+  "Path to julia-release-basic executable"
+  :group 'ess-Julia)
 
 
  ; ess-mode: editing S source
