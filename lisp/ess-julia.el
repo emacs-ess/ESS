@@ -322,8 +322,8 @@
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
-    (inferior-ess-primary-prompt	. "> ")
-    (inferior-ess-secondary-prompt	. "+ ")
+    (inferior-ess-primary-prompt	. "a> ") ;; from julia> 
+    (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
