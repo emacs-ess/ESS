@@ -2307,15 +2307,15 @@ Arguments IGNORE and NOCONFIRM currently not used."
   ;; :type 'string
   )
 
-(defcustom ess-watch-height-threshold 40
+(defcustom ess-watch-height-threshold split-height-threshold
   "Minimum height for splitting *R* windwow sensibly to make space for watch window.
 Has exactly the same meaning and initial value as `split-height-threshold'."
   :group 'ess-debug
   :type 'integer)
 
-(defcustom ess-watch-width-threshold 70
+(defcustom ess-watch-width-threshold split-width-threshold
   "Minimum width for splitting *R* windwow sensibly to make space for watch window.
-Has exactly the same meaning and initial value as `split-width-threshold'."
+Has the same meaning and initial value as `split-width-threshold'."
   :group 'ess-debug
   :type 'integer)
 
