@@ -115,7 +115,7 @@
           '("if" "else" "elseif" "while" "for" "begin" "end" "quote"
             "try" "catch" "return" "local" "abstract" "function" "macro" "ccall"
 	    "typealias" "break" "continue" "type" "global" "@\\w+"
-	    "module" "import" "export" "const" "let" "bitstype")
+	    "module" "import" "export" "const" "let" "bitstype" "using")
           "\\|") "\\)\\>")
      'font-lock-keyword-face)
     '("\\<\\(true\\|false\\|C_NULL\\|Inf\\|NaN\\|Inf32\\|NaN32\\)\\>" . font-lock-constant-face)
