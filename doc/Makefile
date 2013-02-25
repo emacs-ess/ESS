@@ -64,13 +64,13 @@ distclean : clean
 #	-@rm -f $(PDFs)
 
 ../README: $(TEXISRC)
-	$(MAKETXT) readme.texi \
+	-$(MAKETXT) readme.texi \
 	| perl -pe 'last if /^Concept Index/;' \
 	> ../README
 #	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
 
 ../ANNOUNCE: $(TEXISRC)
-	$(MAKETXT) announc.texi \
+	-$(MAKETXT) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
 
 README.Microsoft : README.Microsoft.texi
@@ -78,16 +78,16 @@ README.Microsoft : README.Microsoft.texi
 	| perl -pe 'last if /^Concept Index/;' > README.Microsoft
 
 ../NEWS: Makefile ess-defs.texi newfeat.texi news.texi
-	$(MAKETXT) news.texi > ../NEWS
+	-$(MAKETXT) news.texi > ../NEWS
 
 ../ONEWS: Makefile ess-defs.texi onewfeat.texi onews.texi
-	$(MAKETXT) onews.texi > ../ONEWS
+	-$(MAKETXT) onews.texi > ../ONEWS
 
 ### File Dependencies
 
 info/ess.info: $(TEXISRC) ../VERSION
 	@echo "making Info documentation..."
-	$(MAKEINFO) ess.texi
+	-$(MAKEINFO) ess.texi
 	mv -f ess.info info/
 
 install: install-info install-other-docs
@@ -116,13 +116,13 @@ uninstall :
 html/ess.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	mkdir -p html
-	$(MAKEHTML) ess.texi > html/ess.html
+	-$(MAKEHTML) ess.texi > html/ess.html
 #MM	$(TEXI2HTML) $(SPLITCHAP) ess.texi
 #MM	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
 #MM	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
 html/readme.html: $(TEXISRC)
-	$(MAKEHTML)  --no-validate readme.texi > html/readme.html
+	-$(MAKEHTML)  --no-validate readme.texi > html/readme.html
 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
 #	mv -f readme.html html
