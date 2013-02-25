@@ -1330,7 +1330,7 @@ is non nil, attempt to open the location in a different window."
         (run-with-timer ess-dbg-blink-interval nil
                         (lambda ()
                           (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)))
-        (message "Referenced file %s is not found" (car ref))
+        (message "Referenced %s not found" (car ref))
         ))))
 
 (defun ess-dbg-goto-ref (other-window file line &optional col tb-index)
@@ -1366,22 +1366,23 @@ TB-INDEX is not found return nil.
   (let ((buffer (ess-dbg-find-buffer  file))
         pos)
     (when (and buffer  line)
-      (with-current-buffer buffer
-        (save-restriction
-          (widen) ;; need this tothink:
-          (goto-char 1)
-          (setq pos (point))
-          (when tb-index
-            (while (and (not (eq tb-index (get-text-property pos 'tb-index)))
-                        (setq pos (next-single-property-change pos 'tb-index)))))
-          (when pos ;; if tb-index is not found return nil
-            (goto-char pos)
-            (forward-line (1- line))
-            (if col
-                (goto-char (+ (point-at-bol) col))
-              (end-of-line))
-            (list (point-marker) (copy-marker (point-at-bol))))
-          )))))
+      (save-excursion
+        (with-current-buffer buffer
+          (save-restriction
+            (widen) ;; need this tothink:
+            (goto-char 1)
+            (setq pos (point))
+            (when tb-index
+              (while (and (not (eq tb-index (get-text-property pos 'tb-index)))
+                          (setq pos (next-single-property-change pos 'tb-index)))))
+            (when pos ;; if tb-index is not found return nil
+              (goto-char pos)
+              (forward-line (1- line))
+              (if col
+                  (goto-char (+ (point-at-bol) col))
+                (end-of-line))
+              (list (point-marker) (copy-marker (point-at-bol))))
+            ))))))
 
 
 (defun ess-dbg-find-buffer (filename)
