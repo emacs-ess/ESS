@@ -9,7 +9,7 @@
 @include ess-defs.texi
 @titlepage
 @title ESS --- Emacs Speaks Statistics
-ESS @w{version @ESSVER}
+ESS version @ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :
 @c                                 ~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ ESS @w{version @ESSVER}
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2012 The ESS Developers
+@author Copyright @copyright{} 2002--2013 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
@@ -818,7 +818,7 @@ top of the window, even though the entire output would fit in the window
 if the prompt were near the bottom of the window.  If this happens, you
 can use the command
 
-@c should be an extra-map 
+@c should be an extra-map
 @c @itemize @bullet
 @c @item
 @c @kbd{C-c C-e} (@code{comint-show-maximum-output}) @*
@@ -2468,7 +2468,7 @@ whatever reason.
 @pindex ac-source-R-args
 @pindex ac-source-R-objects
 ESS provides three sources for @code{Auto Completion} mode:
-@comment (@uref{http://cx4a.org/software/auto-complete/}) 
+@comment (@uref{http://cx4a.org/software/auto-complete/})
 @code{ac-source-R-args}, @code{ac-source-R-objects} and
 @code{ac-source-R}.  The last one combines the previous two and makes them
 play nicely together.  See auto-complete package documentation
