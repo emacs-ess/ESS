@@ -517,6 +517,21 @@ buffer or end chunks etc.
   :group 'ess-S
   :type 'string)
 
+(defcustom ess-smart-underscore-key "_"
+  "Key used by `ess-smart-underscore'. By default bound to
+underscore, hence the name, but can be set to any key. If this
+key is customized, you must add 
+
+ (ess-toggle-underscore nil)
+ (ess-toggle-underscore nil) 
+
+after the line that sets the customization and evaluate these
+lines or reboot emacs. The first call clears the default
+`ess-smart-underscore' assignment and the second line re-assigns
+it to the customized setting. "
+  :group 'ess-S
+  :type 'character)
+
 ;;*;; Variables concerning editing behaviour
 
 (defcustom ess-filenames-map t
