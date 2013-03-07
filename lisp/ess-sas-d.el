@@ -238,7 +238,7 @@ Better logic needed!  (see 2 uses, in this file).")
   ;; font-lock-keywords-case-fold-search, but it fails for Emacs 22.[23]
   ;; hence :
   (setq font-lock-keywords-case-fold-search t)
-  )
+  (run-hooks 'SAS-mode-hook))
 
 
 

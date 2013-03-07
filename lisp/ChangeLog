@@ -1,3 +1,7 @@
+2013-03-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-custom.el/ess-sas-d.el (SAS-mode-hook): creation
+
 2013-03-02  Henning Redestig  <henning.red@gmail.com>
 
 	* ess-s-l.el (ess-insert-S-assign): deleting horizontal space is

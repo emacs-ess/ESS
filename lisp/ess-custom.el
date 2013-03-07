@@ -928,6 +928,10 @@ Good for evaluating ESS code."
   :type 'hook
   :group 'ess-R)
 
+(defcustom SAS-mode-hook nil
+  "Hook to run when entering SAS mode."
+  :type 'hook
+  :group 'ess-sas)
 
 (defcustom ess-pdf-viewer-pref nil
   "External pdf viewer you like to use from ESS.
