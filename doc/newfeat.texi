@@ -1,6 +1,13 @@
 @itemize @w{}
 @item
 
+
+Changes/Bug Fixes in 13.03:
+@itemize @bullet
+@item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
+@end itemize
+
+
 Changes/Bug Fixes in 12.09-2:
 @itemize @bullet
 @item @ESS{}: new @code{ess-switch-to-end-of-proc-buffer} variable that controls
