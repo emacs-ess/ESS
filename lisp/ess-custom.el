@@ -517,7 +517,7 @@ buffer or end chunks etc.
   :group 'ess-S
   :type 'string)
 
-(defcustom ess-smart-underscore-key "_"
+(defcustom ess-smart-underscore-key "<"
   "Key used by `ess-smart-underscore'. By default bound to
 underscore, hence the name, but can be set to any key. If this
 key is customized, you must add 
