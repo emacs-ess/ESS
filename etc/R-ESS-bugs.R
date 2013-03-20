@@ -503,3 +503,7 @@ x <- 1:10
 
 ## I'll see 
 ## > + >  [1]  1  2  3  4  5  6  7  8  9 10
+
+foo <- function(x) x*x 
+bar <- function(y) y 
+## via C-c C-c leads to "Error: object 'bar' not found". 
