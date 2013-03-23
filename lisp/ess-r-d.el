@@ -235,10 +235,10 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
-(defvar ess-r-versions (if (eq system-type 'darwin)
-                           '("R-1" "R-2" "R-devel" "R-patched" "R32" "R64")
-                         '("R-1" "R-2" "R-devel" "R-patched"))
-  "List of partial strings for versions of R to access within ESS.
+(let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
+  (defvar ess-r-versions
+    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver)
+    "List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
 beginning with one of these strings is found on `exec-path', a M-x
 command for that version of R is made available.  For example, if the
@@ -251,6 +251,7 @@ ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
+  )
 
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
