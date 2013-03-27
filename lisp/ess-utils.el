@@ -1049,7 +1049,8 @@ Package_name is \"\" if funname was not found or is a special name,n
 i.e. contains :,$ or @.
 "
   (when (and funname ;; usually returned by ess--funname.start (might be nil)
-             (and ess-local-process-name (get-process ess-local-process-name)))
+             ess-local-process-name
+             (get-process ess-local-process-name))
     (let* ((proc (get-process ess-local-process-name))
            (args (gethash funname (process-get proc 'funargs-cache)))
            (pack (caar args))
@@ -1058,8 +1059,7 @@ i.e. contains :,$ or @.
                  (and (time-less-p ts (process-get proc 'last-eval))
                       (or (null pack)
                           (equal pack "")
-                          (equal pack "R_GlobalEnv"))
-                      ))
+                          (equal pack "R_GlobalEnv"))))
         ;; reset cache
         (setq args nil))
       (or args

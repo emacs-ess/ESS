@@ -1599,7 +1599,7 @@ TEXT.
 
 (defvar  ess-current-region-overlay
   (let ((overlay (make-overlay (point) (point))))
-    (overlay-put overlay 'face  'highlight) ;; todo use highlight??
+    (overlay-put overlay 'face  'highlight)
     overlay)
   "The overlay for highlighting currently evaluated region or line.")
 
