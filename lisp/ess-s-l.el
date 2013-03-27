@@ -677,6 +677,7 @@ toggle between the new and the previous assignment."
         (if (not (and force current-is-S-assign))
             (setq ess-S-assign-key-last current-action))))))
 
+(defvar polymode-mode)
 (defun ess-smart-underscore ()
   "Smart \\[ess-smart-underscore] key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
@@ -692,7 +693,10 @@ an underscore is always inserted. "
         (narrow-to-region (process-mark (get-ess-process)) (point-max)))
       (and ess-noweb-mode
            (ess-noweb-in-code-chunk)
-           (ess-noweb-narrow-to-chunk)))
+           (ess-noweb-narrow-to-chunk))
+      (and (fboundp 'pm/narrow-to-span)
+           polymode-mode
+           (pm/narrow-to-span)))
     (if (or
          (ess-inside-string-or-comment-p (point))
          (not (equal ess-language "S")))
