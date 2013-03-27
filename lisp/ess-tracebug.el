@@ -57,6 +57,8 @@
   (require 'cl))
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
+(defvar text-scale-mode-amount)
+(autoload 'text-scale-mode              "face-remap" "[autoload]" nil)
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
@@ -194,6 +196,8 @@ referenced buffer.
 (defvar ess--tb-buffer-sym nil)
 (make-variable-buffer-local 'ess--tb-buffer-sym)
 
+(defvar org-src-mode)
+
 (defun ess--tb-get-source-refd-string (beg end)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
@@ -203,9 +207,9 @@ block (used for source references insertion)"
       (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
     (unless filename ;; org, etc
       (setq filename (format "[%s]" ess--tb-buffer-sym))
-      (if org-src-mode ;;
-          (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
-                                 filename))))
+      (when (and (boundp 'org-src-mode) org-src-mode)
+        (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
+                               filename))))
     ;; next drops are not necesarry for function but will be for regions
     (goto-char beg)
     (when (looking-at "\\s +") ;drop trailing lines
@@ -1077,6 +1081,7 @@ of the ring."
 
 This function is placed in `ess-presend-filter-functions'.
 "
+  ;; the process here is an ugly reliance on dynamic scope
   (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
     string))

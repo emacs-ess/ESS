@@ -133,7 +133,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "12.09-2" ;; updated by 'make'
+(defvar ess-version "13.03" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -521,6 +521,21 @@ buffer or end chunks etc.
  Used by \\[ess-smart-underscore]."
   :group 'ess-S
   :type 'string)
+
+(defcustom ess-smart-underscore-key "_"
+  "Key used by `ess-smart-underscore'. By default bound to
+underscore, hence the name, but can be set to any key. If this
+key is customized, you must add 
+
+ (ess-toggle-underscore nil)
+ (ess-toggle-underscore nil) 
+
+after the line that sets the customization and evaluate these
+lines or reboot emacs. The first call clears the default
+`ess-smart-underscore' assignment and the second line re-assigns
+it to the customized setting. "
+  :group 'ess-S
+  :type 'character)
 
 ;;*;; Variables concerning editing behaviour
 
@@ -918,6 +933,10 @@ Good for evaluating ESS code."
   :type 'hook
   :group 'ess-R)
 
+(defcustom SAS-mode-hook nil
+  "Hook to run when entering SAS mode."
+  :type 'hook
+  :group 'ess-sas)
 
 (defcustom ess-pdf-viewer-pref nil
   "External pdf viewer you like to use from ESS.

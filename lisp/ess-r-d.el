@@ -235,10 +235,10 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
-(defvar ess-r-versions (if (eq system-type 'darwin)
-                           '("R-1" "R-2" "R-devel" "R-patched" "R32" "R64")
-                         '("R-1" "R-2" "R-devel" "R-patched"))
-  "List of partial strings for versions of R to access within ESS.
+(let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
+  (defvar ess-r-versions
+    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver)
+    "List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
 beginning with one of these strings is found on `exec-path', a M-x
 command for that version of R is made available.  For example, if the
@@ -251,6 +251,7 @@ ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
+  )
 
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
@@ -836,7 +837,6 @@ to look up any doc strings."
   "Alist of cached arguments for very time consuming functions.")
 
 
-
 ;; (defun ess-get-object-at-point ()
 ;;   "A very permissive version of symbol-at-point.
 ;; Suitable for R object's names."
@@ -870,8 +870,7 @@ First element of a returned list is the completion token.
          (comm (format ".ess_get_completions(\"%s\", %d)\n"
                 (ess-quote-special-chars (buffer-substring start end))
                 (- end start))))
-    (ess-get-words-from-vector comm)
-    ))
+    (ess-get-words-from-vector comm)))
 
 
 
@@ -889,8 +888,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (setq token-string (pop possible-completions))
       (or (comint-dynamic-simple-complete token-string
                                           possible-completions)
-          'none)))
-  )
+          'none))))
 
 ;;; auto-complete integration http://cx4a.org/software/auto-complete/index.html
 (defvar ac-source-R
@@ -900,8 +898,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     )
-  "Combined ad-completion source for R function arguments and R objects"
-  )
+  "Combined ad-completion source for R function arguments and R objects")
 
 (defun ess-ac-start ()
   (when (and ess-local-process-name
@@ -930,8 +927,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; (requires   . 2)
     (candidates . ess-ac-objects)
     (document   . ess-ac-help-object))
-  "Auto-completion source for R objects"
-  )
+  "Auto-completion source for R objects")
 
 (defun ess-ac-objects (&optional no-kill)
   "Get all cached objects"
@@ -952,8 +948,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (ess-get-modtime-list)
           (process-put *proc* 'sp-for-ac-changed? nil)
           )
-        (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))
-      )))
+        (apply 'append (mapcar 'cddr ess-sl-modtime-alist))))))
 
 
 (defun ess-ac-start-objects ()
@@ -994,8 +989,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (document   . ess-ac-help-arg)
     ;; (action     . ess-ac-action-args)
     )
-  "Auto-completion source for R function arguments"
-  )
+  "Auto-completion source for R function arguments")
 
 (defun ess-ac-start-args ()
   "Get initial position for args completion"

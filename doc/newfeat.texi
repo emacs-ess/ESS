@@ -1,4 +1,12 @@
 @itemize @w{}
+@item
+
+
+Changes/Bug Fixes in 13.03:
+@itemize @bullet
+@item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
+@end itemize
+
 
 Changes/Bug Fixes in 12.09-2:
 @itemize @bullet
@@ -31,7 +39,7 @@ Changes/New Features in 12.09-1:
 @item @ESS{} @emph{Breaking Changes in Keys}:
 
 @itemize @minus
-@item New keymaps: 
+@item New keymaps:
 @code{ess-doc-map} bound to @kbd{C-c C-d}; @code{ess-extra-map} bound
 to @kbd{C-c C-e}; @code{ess-dump-object-into-edit-buffer} was moved on
 @kbd{C-c C-e C-d}
@@ -42,23 +50,23 @@ to @kbd{C-c C-e}; @code{ess-dump-object-into-edit-buffer} was moved on
 moved on @kbd{C-c C-t}
 @item @code{C-c C-y} is deprecated in favor of @code{C-c C-z C-z}
 @end itemize
-@item @ESS{[R]} new command @code{ess-describe-object-at-point} 
+@item @ESS{[R]} new command @code{ess-describe-object-at-point}
 bound to @kbd{C-c C-d C-e} (repeat @kbd{C-e} or @kbd{e} to cycle). It
 was inspired by Erik Iverson's @code{ess-R-object-tooltip}. Customize
 @code{ess-describe-at-point-method} to use tooltip instead of an
 electric buffer.
-@item @ESS{}: New command @code{ess-build-tags-for-directory} 
+@item @ESS{}: New command @code{ess-build-tags-for-directory}
 bound to @kbd{C-c C-e C-t} for building dialect specific tag
 tables. After building tags use @kbd{M-.} to navigate to
 function and objects definitions. By default @kbd{C-c C-e C-t} builds
 tags based on imenu regular expressions and also include other common
 languages @code{.c, .o, .cpp} etc. But it relies on external @code{find}
 and @code{etags} commands. If @code{ess-build-tags-command} is defined
-(for @code{R}), the inferior process is asked to build tags instead. 
-@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative 
+(for @code{R}), the inferior process is asked to build tags instead.
+@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative
 to start a new process instead of switching to one of the currently
 running processes.
-@item @ESS{}: Switching between processes (@kbd{C-c C-s}) uses buffer names instead 
+@item @ESS{}: Switching between processes (@kbd{C-c C-s}) uses buffer names instead
 of the internal process names. Use @code{M-x rename-buffer} command to
 conveniently rename your process buffers.
 @item @ESS{}: Process buffers can be automatically named on process creation
@@ -68,27 +76,27 @@ internal process name and @code{dir} stands for the directory where the
 process was started in. The default is *proc*. For customization see
 @code{ess-gen-proc-buffer-name-function}.
 @item @ESS{}: @code{ess-eval-visibly-p} is deprecated in favor of @code{ess-eval-visibly}.
-@item @ESS{}: New evaluation pattern @code{nowait}. 
+@item @ESS{}: New evaluation pattern @code{nowait}.
 In addition to old @code{nil} and @code{t} values,
 @code{ess-eval-visibly} accepts @code{nowait} for a visible evaluation
 with no waiting for the process. See @code{ess-eval-visibly} for details
 on evaluation patterns.
-@item @ESS{}: New ``Process'' menu entry with process related commands and configuration 
+@item @ESS{}: New ``Process'' menu entry with process related commands and configuration
 @item @iESS{}: Process buffer is now automatically shown on errors
-@item @ESS{}: New @code{ess-switch-to-inferior-or-script-buffer} command bound to @kbd{C-c C-z} 
+@item @ESS{}: New @code{ess-switch-to-inferior-or-script-buffer} command bound to @kbd{C-c C-z}
 in both script and process buffers. If invoked form process buffer it
 switches to the most recent buffer of the same dialect. It is a single
 key command.
-@item @ESS{R-help}:  On multiple help pages with the same name, @kbd{C-c C-v} 
+@item @ESS{R-help}:  On multiple help pages with the same name, @kbd{C-c C-v}
 now asks for user resolution directly in emacs.
 @item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
 of cases where the number of leading @kbd{#} differs from
 @code{ess-roxy-str}.
-@item @ESS{[R]} Eldoc was considerably enhanced. 
+@item @ESS{[R]} Eldoc was considerably enhanced.
 It now finds hidden default S3 methods and displays non-default methods'
 arguments after trailing ||.
 @item @ESS{[R]}: New @code{ess-display-demos} command bound to @kbd{C-c C-d o} and @kbd{C-c C-d C-o}
-@item @ESS{}: New @code{ess-help-web-search} command bound to @kbd{C-c C-d w} and @kbd{C-c C-d C-w} 
+@item @ESS{}: New @code{ess-help-web-search} command bound to @kbd{C-c C-d w} and @kbd{C-c C-d C-w}
 to facilitate interactive search of web resources. Implemented for @code{R},
 @code{Stata} and @code{Julia}. See also @code{ess-help-web-search-command}.
 @item @ESS{}: ess-pdf-viewer-pref accepts now command line arguments
@@ -121,8 +129,8 @@ file. @code{emacsclient} has been included with emacs since GNU Emacs
 @item @ESS{[Rnw]} Explicit @code{ess-swv-stangle} and @code{ess-swv-sweave}
 functions.
 @item @ESS{[Rnw]} Fixed completion and smart underscore problems cause by unmatched ``\'''
-@item @ESS{[R]} is more careful with the @code{R} code injection. 
-It now happens only once at the start of the session. 
+@item @ESS{[R]} is more careful with the @code{R} code injection.
+It now happens only once at the start of the session.
 @item @ESS{[R]}: Fixed auto-scrolling the comint buffer on evaluation.
 @item @ESS{[Julia]}: Solve several indentation and word navigation problems.
 @item @ESS{[Julia]}: Help system works again.

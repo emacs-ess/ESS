@@ -489,3 +489,21 @@ parse_roc <- function(lines, match = "^\\s*#+\' ?") {
                             facet_wrap(~Year.Month)
 }
 
+### --- 21 ---
+
+## From: Marius Hofert <marius.hofert@math.ethz.ch>
+##     Date: Fri, 15 Mar 2013 21:00:45 +0100 (32 minutes, 1 second ago)
+## Hi,
+## The following bug happens in ESS 12.09-2 [rev. 5395 (2013-01-10)]. Put the
+## cursor in the line before the function head and hit C-c C-c. 
+
+foo <- function(x)
+    x # bar
+x <- 1:10
+
+## I'll see 
+## > + >  [1]  1  2  3  4  5  6  7  8  9 10
+
+foo <- function(x) x*x 
+bar <- function(y) y 
+## via C-c C-c leads to "Error: object 'bar' not found". 

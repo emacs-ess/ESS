@@ -1,3 +1,19 @@
+2013-03-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-custom.el/ess-sas-d.el (SAS-mode-hook): creation
+
+2013-03-02  Henning Redestig  <henning.red@gmail.com>
+
+	* ess-s-l.el (ess-insert-S-assign): deleting horizontal space is
+	not desirable when using alternative smart underscore like <
+	(ess-smart-underscore): customizable smart underscore
+	(ess-toggle-underscore): remove key assignments for both the
+	default underscore and the potentially modified
+	ess-smart-underscore-key
+
+	* ess-custom.el (ess-smart-underscore-key): customizable the smart
+	underscore
+
 2012-12-09  Richard Heiberger <rmh@temple.edu>
 
 	* ess-tracebug.el (ess-bp-type-spec-alist): remove unnecessary
