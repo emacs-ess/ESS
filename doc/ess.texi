@@ -2576,7 +2576,7 @@ all the tracebug keys (prefix not included):
 @c @end multitable
 
 @verbatim
-* Breakpoints:
+ * Breakpoints:
 
 b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
 B   . Set conditional BP               . `ess-bp-set-conditional'
@@ -2587,40 +2587,37 @@ l   . Set logger BP                    . `ess-bp-set-logger'
 C-n . Goto next BP                     . `ess-bp-next'
 C-p . Goto previous BP                 . `ess-bp-previous'
 
+ * General Debugging:
 
-* General Debugging:
+`   . Show R Traceback                     . `ess-show-R-traceback'
+e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
+d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
+D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+w   . Watch window                         . `ess-watch'
 
- `   . Show R Traceback                     . `ess-show-R-traceback'
- e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
- d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
- w   . Watch window                         . `ess-watch'
+ * Navigation to errors (emacs general functionality):
 
-* Navigation to errors (emacs general functionality):
+C-x `, M-g n   . `next-error'
+M-g p          . `previous-error'
 
- C-x `, M-g n   . `next-error'
- M-g p          . `previous-error'
+ * Interactive Debugging:
 
-* Interactive Debugging:
+c   . Continue                  . `ess-dbg-command-c'
+n   . Next step                 . `ess-dbg-command-n'
+p   . Previous step             . `previous-error'
+q   . Quit debugging            . `ess-dbg-command-Q'
+1..9. Enter recover frame       . `ess-dbg-command-digit'
+0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
 
- c   . Continue                  . `ess-dbg-command-c'
- n   . Next step                 . `ess-dbg-command-n'
- p   . Previous step             . `previous-error'
- q   . Quit debugging            . `ess-dbg-command-Q'
- 1..9. Enter recover frame       . `ess-dbg-command-digit'
- 0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+ * Input Ring:
 
-* Input Ring:
+i   . Goto input event marker forwards  . `ess-dbg-goto-input-event-marker'
+I   . Goto input event marker backwards . `ess-dbg-goto-input-event-marker'
 
- i   . Goto input event marker forwards  . `ess-dbg-goto-input-event-marker'
- I   . Goto input event marker backwards . `ess-dbg-goto-input-event-marker'
+ * Misc:
 
-* Misc:
- ?   . Show this help		. `ess-tracebug-show-help'
-
+?   . Show this help		. `ess-tracebug-show-help'
 @end verbatim
-
-
 
 
 @node Editing documentation, ESS developer, ESS tracebug, Developing with ESS
@@ -2752,7 +2749,7 @@ for Rd files as structured comments in the R source files. Roxygen can
 then parse R files and generate appropriate Rd files from these
 comments, fill the usage fields as well as updating @file{NAMESPACE}
 files. See the Roxygen documentation found via @uref{http://roxygen.org}
-for more information its usage. An example of an Roxygen entry for a
+for more information on its usage. An example of an Roxygen entry for a
 simple R function can look like this:
 
 @example
