@@ -2722,15 +2722,15 @@ before you quit.  It is run automatically by \\[ess-quit]."
       nil)
     ))
 
-(defun ess-complete-object-name (&optional listcomp)
+(defun ess-complete-object-name ()
   "Perform completion on `ess-language' object preceding point.
 Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
 or \\[ess-internal-complete-object-name] otherwise."
-  (interactive "P");; FIXME : the `listcomp' argument is NOT used
+  (interactive)
   (if (ess-make-buffer-current)
       (if ess-use-R-completion
           (ess-R-complete-object-name)
-        (ess-internal-complete-object-name listcomp))
+        (ess-internal-complete-object-name))
     ;; else give a message on second invocation
     (when (string-match "complete" (symbol-name last-command))
       (message "No ESS process associated with current buffer")
@@ -2745,7 +2745,7 @@ or \\[ess-internal-complete-object-name] otherwise."
   (sit-for 2 t)
   )
 
-(defun ess-internal-complete-object-name (&optional listcomp)
+(defun ess-internal-complete-object-name ()
   "Perform completion on `ess-language' object preceding point.
 The object is compared against those objects known by
 `ess-get-object-list' and any additional characters up to ambiguity are
@@ -2758,11 +2758,8 @@ Use \\[ess-resynch] to re-read the names of the attached directories.
 This is done automatically (and transparently) if a directory is
 modified (S only!), so the most up-to-date list of object names is always
 available.  However attached dataframes are *not* updated, so this
-command may be necessary if you modify an attached dataframe.
-
-If ARG is non-nil, no completion is attempted, but the available
-completions are listed [__UNIMPLEMENTED__]."
-  (interactive "P");; FIXME : the `listcomp' argument is NOT used
+command may be necessary if you modify an attached dataframe."
+  (interactive)
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
@@ -2814,7 +2811,7 @@ completions are listed [__UNIMPLEMENTED__]."
 (defun ess-list-object-completions nil
   "List all possible completions of the object name at point."
   (interactive)
-  (ess-complete-object-name t));; FIXME: NOT WORKING since argument is unused!
+  (ess-complete-object-name))
 
 ;;;*;;; Support functions
 (defun ess-extract-onames-from-alist (alist posn &optional force)
