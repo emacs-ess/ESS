@@ -2313,18 +2313,22 @@ variable @code{ess-help-own-frame}.
 @menu
 * Object names::
 * Function arguments::
-* Minibufer completion::
+* Minibuffer completion::
 * Auto-complete::
+* Icicles::
 @end menu
 
 @node  Object names, Function arguments, Completion, Completion
 @section Completion of object names
 @cindex completion of object names
 @cindex command-line completion
+@vindex ess-first-tab-never-complete
 
-The @key{TAB} key is for completion. In @code{ess-mode} @key{TAB} first
-tries to indent, and if there is nothing to indent, complete the object
-name instead.
+The @key{TAB} key is for completion. The value of the variable
+@code{ess-first-tab-never-complete} controls when completion is allowed
+controls when completion is allowed to occur.  In @code{ess-mode}
+@key{TAB} first tries to indent, and if there is nothing to indent,
+complete the object name instead.
 
 @itemize @bullet
 @item
@@ -2437,7 +2441,7 @@ ess-resynch}
 forces the @emph{entire} cache to be refreshed, which should fix the
 problem.
 
-@node Function arguments, Minibufer completion, Object names, Completion
+@node Function arguments, Minibuffer completion, Object names, Completion
 @section Completion of function arguments
 
 When inside a function call (i.e. following `@code{(}'), @kbd{TAB}
@@ -2448,20 +2452,20 @@ completion will provide all the arguments of @code{S3} methods known to
 A related functionality is @xref{ESS ElDoc}, which displays function
 arguments in the echo area whenever the point is inside a function call.
 
-@node Minibufer completion, Auto-complete, Function arguments, Completion
-@section Minibufer completion
+@node Minibuffer completion, Auto-complete, Function arguments, Completion
+@section Minibuffer completion
 @comment  node-name,  next,  previous,  up
 
 @cindex IDO completions
 @pindex ess-use-ido, ess-completing-read
 From version 12.03, ESS uses @code{IDO} mechanism (part of default
-emacs) for minibufer completion if @code{ido.el} package is available
+emacs) for minibuffer completion if @code{ido.el} package is available
 and the value of @code{ess-use-ido} it @code{t} (the default). The
 completion command @code{ess-completing-read} falls back on classic
 @code{completion-read} interface if this feature is not available for
 whatever reason.
 
-@node Auto-complete,  , Minibufer completion, Completion
+@node Auto-complete, Icicles, Minibuffer completion, Completion
 @section Integration with auto-complete package
 @cindex auto-complete
 @pindex ac-source-R
@@ -2510,6 +2514,37 @@ the inferior R. Bind it to something else:
 (define-key ac-completing-map "\M-," 'ac-next)
 (define-key ac-completing-map "\M-k" 'ac-previous)
 @end example
+
+@node Icicles,  , Auto-complete, Completion
+@section Icicles
+@cindex icicles
+Another option for comprehensively handling completion in Emacs is via
+Icicles (@uref{http://www.emacswiki.org/emacs/Icicles}).  It allows
+users to have completions shown temporarily in a special buffer and
+window from which completion candidates can be quickly chosen with the
+@kbd{up}/@kbd{down} keys or the mouse, with minimal disruption of
+work-flow.  As of version 2013.04.03, Icicles provides support for
+completion in ESS.  Please consult Icicles documentation for more
+details on installation and customization options.
+
+Once installed, Icicles can be activated by evaluating (maybe place in
+@file{~/.emacs}):
+
+@example
+(require 'icicles)
+(icy-mode 1)
+@end example
+
+Icicles can be toggled at any moment by typing @kbd{M-x icy}.
+
+It is necessary to set @code{ess-use-ido} to @code{nil} to ensure that
+Icicles can consistently provide completion whenever it is requested.
+@kbd{TAB} will then provide the appropriate Icicles completion, provided
+the conditions determined by @code{ess-first-tab-never-complete} allow
+it.  Typing @kbd{M-TAB} will attempt completion regardless.  Typing
+@kbd{M-?}  in @code{ESS} or @code{iESS} modes brings up the relevant
+completion candidates from which to choose at any point.
+
 
 @node Developing with ESS, Extras, Completion, Top
 @chapter Developing with ESS
