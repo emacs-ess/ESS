@@ -334,7 +334,7 @@
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
-    (inferior-ess-load-command		. "load(\"%s\")\n")
+    (inferior-ess-load-command		. "require(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
@@ -380,15 +380,15 @@ beginning with one of these strings is found on `exec-path', a M-x
 command for that version of Julia is made available.  ")
 
 (defcustom inferior-julia-args ""
-  "String of arguments (see 'R --help') used when starting R.
-These arguments are currently not passed to other versions of R that have
-been created using the variable `ess-r-versions'."
+  "String of arguments (see 'julia --help') used when starting julia."
+;; These arguments are currently not passed to other versions of julia that have
+;; been created using the variable `ess-r-versions'."
   :group 'ess-julia
   :type 'string)
 
 ;;;###autoload
 (defun julia-mode  (&optional proc-name)
-  "Major mode for editing R source.  See `ess-mode' for more help."
+  "Major mode for editing julia source.  See `ess-mode' for more help."
   (interactive "P")
   ;; (setq ess-customize-alist julia-customize-alist)
   (ess-mode julia-customize-alist proc-name)
@@ -418,9 +418,9 @@ been created using the variable `ess-r-versions'."
 Optional prefix (C-u) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
-to R, put them in the variable `inferior-julia-args'."
+to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
-  ;; get settings, notably inferior-R-program-name :
+  ;; get settings, notably inferior-julia-program-name :
   (if (null inferior-julia-program-name)
       (error "'inferior-julia-program-name' does not point to 'julia-release-basic' executable")
     (setq ess-customize-alist julia-customize-alist)
@@ -444,7 +444,9 @@ to R, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
-      (ess-eval-linewise (format "load(\"%sess-julia.jl\")\n" ess-etc-directory))
+      ;; (ess-eval-linewise (format "require(\"%sess-julia.jl\")\n" ess-etc-directory))
+      (ess-eval-linewise (format inferior-ess-load-command
+                                 (format "%sess-julia.jl" ess-etc-directory)))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))

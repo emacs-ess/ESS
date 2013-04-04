@@ -520,10 +520,10 @@ buffer or end chunks etc.
 (defcustom ess-smart-underscore-key "_"
   "Key used by `ess-smart-underscore'. By default bound to
 underscore, hence the name, but can be set to any key. If this
-key is customized, you must add 
+key is customized, you must add
 
  (ess-toggle-underscore nil)
- (ess-toggle-underscore nil) 
+ (ess-toggle-underscore nil)
 
 after the line that sets the customization and evaluate these
 lines or reboot emacs. The first call clears the default
@@ -2478,6 +2478,10 @@ Defaults to `ess-S-non-functions'."
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
   "Path to julia-release-basic executable")
+
+(defvar julia-basic-offset 4
+  "Offset for julia code editing")
+
 
 
  ; ess-mode: editing S source
