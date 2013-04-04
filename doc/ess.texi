@@ -2524,8 +2524,9 @@ users to have completions shown temporarily in a special buffer and
 window from which completion candidates can be quickly chosen with the
 @kbd{up}/@kbd{down} keys or the mouse, with minimal disruption of
 work-flow.  As of version 2013.04.03, Icicles provides support for
-completion in ESS.  Please consult Icicles documentation for more
-details on installation and customization options.
+completion in ESS.  Please consult Icicles documentation, which is
+easily accessible via @kbd{customize-group Icicles}, for more details on
+installation and customization options.
 
 Once installed, Icicles can be activated by evaluating (maybe place in
 @file{~/.emacs}):
