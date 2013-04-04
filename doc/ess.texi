@@ -2520,13 +2520,11 @@ the inferior R. Bind it to something else:
 @cindex icicles
 Another option for comprehensively handling completion in Emacs is via
 Icicles (@uref{http://www.emacswiki.org/emacs/Icicles}).  It allows
-users to have completions shown temporarily in a special buffer and
-window from which completion candidates can be quickly chosen with the
-@kbd{up}/@kbd{down} keys or the mouse, with minimal disruption of
-work-flow.  As of version 2013.04.03, Icicles provides support for
-completion in ESS.  Please consult Icicles documentation, which is
-easily accessible via @kbd{customize-group Icicles}, for more details on
-installation and customization options.
+users to have completions shown temporarily in the standard
+@samp{*Completions*} buffer.  As of version 2013.04.04, Icicles provides
+support for completion in ESS.  Please consult Icicles documentation,
+which is easily accessible via @kbd{customize-group Icicles}, for more
+details on installation and customization options.
 
 Once installed, Icicles can be activated by evaluating (maybe place in
 @file{~/.emacs}):
@@ -2538,13 +2536,15 @@ Once installed, Icicles can be activated by evaluating (maybe place in
 
 Icicles can be toggled at any moment by typing @kbd{M-x icy}.
 
-It is necessary to set @code{ess-use-ido} to @code{nil} to ensure that
-Icicles can consistently provide completion whenever it is requested.
-@kbd{TAB} will then provide the appropriate Icicles completion, provided
-the conditions determined by @code{ess-first-tab-never-complete} allow
-it.  Typing @kbd{M-TAB} will attempt completion regardless.  Typing
-@kbd{M-?}  in @code{ESS} or @code{iESS} modes brings up the relevant
-completion candidates from which to choose at any point.
+When Icicles is on, @kbd{TAB} offers completion, provided the conditions
+determined by @code{ess-first-tab-never-complete} allow it.  Typing
+@kbd{M-TAB} will attempt completion regardless.  Typing @kbd{M-?}  in
+@code{ESS} or @code{iESS} modes brings up the relevant completion
+candidates from which to choose.  Minibuffer input filters the available
+candidates.  Use @kbd{TAB} for prefix completion or @kbd{S-TAB} for
+substring or regexp completion.  Use @kbd{S-SPC} to match an additional
+pattern (repeatable).  You can cycle among the matching candidates,
+choosing with @kbd{RET} or @kbd{mouse-2}.
 
 
 @node Developing with ESS, Extras, Completion, Top
