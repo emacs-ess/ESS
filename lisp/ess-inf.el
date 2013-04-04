@@ -3068,8 +3068,7 @@ form completions."
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
     (when (ess-inside-string-or-comment-p (point))
-      (append (comint-filename-completion) '(:exclusive no))
-      )))
+      (append (comint-filename-completion) '(:exclusive no)))))
 
 
 (defun ess-complete-filename ()
@@ -3081,8 +3080,7 @@ form completions."
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
     (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
-      (comint-dynamic-complete-filename)
-      )))
+      (comint-dynamic-complete-filename))))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a
