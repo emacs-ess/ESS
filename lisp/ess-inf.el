@@ -173,7 +173,8 @@ Alternatively, it can appear in its own frame if
     (let* ((process-environment process-environment)
            (defdir (or (and ess-directory-function (funcall ess-directory-function))
                        ess-directory default-directory))
-           (temp-dialect (if ess-use-inferior-program-name-in-buffer-name
+
+           (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
                                  inferior-R-program-name
                                temp-ess-dialect) ; use temp-ess-dialect
@@ -238,12 +239,12 @@ Alternatively, it can appear in its own frame if
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
                ess-language  ess-dialect (current-buffer)))
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
-               ess-start-args inferior-ess-start-args))
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess finish [%s(%s), %s(%s)]\n"
-               ess-language ess-dialect inferior-ess-program ess-local-process-name))
+      ;; (ess-write-to-dribble-buffer
+      ;;  (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
+      ;;          ess-start-args inferior-ess-start-args))
+      ;; (ess-write-to-dribble-buffer
+      ;;  (format "(inf-ess finish [%s(%s), %s(%s)]\n"
+      ;;          ess-language ess-dialect inferior-ess-program ess-local-process-name))
 
       ;; Set up history file
       (if ess-history-file
@@ -543,13 +544,14 @@ This was rewritten by KH in April 1996."
 ;;*;; Requester functions called at startup
 
 (defun ess-get-directory (default dialect procname)
-  (let ((prog-version (if (string= dialect "R")
-                          inferior-R-version ; notably for the R-X.Y versions
-                        ;; should rather use procname ?
-                        inferior-ess-program)))
+  (let ((prog-version (cond ((string= dialect "R")
+                             (concat ", " inferior-R-version)) ; notably for the R-X.Y versions
+                            (inferior-ess-program
+                             (concat ", " inferior-ess-program ))
+                            (t ""))))
     (ess-prompt-for-directory
      (directory-file-name default)
-     (format "ESS (*%s* '%s') starting data directory? "
+     (format "ESS (*%s*%s) starting data directory? "
              procname prog-version)
      ;; (format "ESS [%s {%s(%s)}: '%s'] starting data directory? "
      ;;         ;;FIXME: maybe rather tmp-dialect (+ evt drop ess-language?)?
@@ -1134,8 +1136,11 @@ STRING.
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function
                                    (current-buffer)))
-      ;; overloading of the sending function
+      ;; sending function is overloaded
       (funcall ess-send-string-function process string visibly)
+    (when (and (eq visibly t)
+               (null inferior-ess-secondary-prompt)) ; cannot evaluate visibly
+      (setq visibly 'nowait))
     (cond ((eq visibly t) ;; wait after each line
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
@@ -1525,7 +1530,7 @@ TEXT.
               (setq text (ess-replace-in-string text ";" "\n")))
           (setq invisibly t))
         (setq text (propertize text 'field 'input 'front-sticky t))
- 
+
         (goto-char (marker-position (process-mark sprocess)))
         (if (stringp invisibly)
             (insert-before-markers (concat "*** " invisibly " ***\n")))
@@ -2075,8 +2080,11 @@ for `ess-eval-region'."
     ["Get help on S object"   ess-display-help-on-object    t]
     "------"
     ("Process"
-     ["Process Echoes" (lambda () (interactive) (setq comint-process-echoes (not comint-process-echoes)))
-                         :style toggle :selected comint-process-echoes]
+     ["Process Echoes" (lambda () (interactive)
+                         (setq comint-process-echoes (not comint-process-echoes)))
+      :active t
+      :style toggle
+      :selected comint-process-echoes]
      ("Eval visibly "
       :filter ess--generate-eval-visibly-submenu ))
     "------"
@@ -3057,8 +3065,7 @@ form completions."
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
     (when (ess-inside-string-or-comment-p (point))
-      (append (comint-filename-completion) '(:exclusive no))
-      )))
+      (append (comint-filename-completion) '(:exclusive no)))))
 
 
 (defun ess-complete-filename ()
@@ -3070,8 +3077,7 @@ form completions."
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
     (when (or (ess-inside-string-or-comment-p (point))) ;; usable within ess-mode as well
-      (comint-dynamic-complete-filename)
-      )))
+      (comint-dynamic-complete-filename))))
 
 (defun ess-after-pathname-p nil
   ;; Heuristic: after partial pathname if it looks like we're in a

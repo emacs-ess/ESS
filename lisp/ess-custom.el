@@ -84,6 +84,11 @@
   :group 'ess-S
   :prefix "ess-")
 
+(defgroup ess-Julia nil
+  "ESS: Julia."
+  :group 'ess
+  :prefix "julia-")
+
 (defgroup ess-sas nil
   "ESS: SAS."
   :group 'ess
@@ -1633,7 +1638,7 @@ The other variables ...-program-name should be changed, for the
 corresponding program.")
 
 (make-variable-buffer-local 'inferior-ess-program)
-(setq-default inferior-ess-program inferior-S-program-name)
+;; (setq-default inferior-ess-program inferior-S-program-name)
 
 
 (defvar inferior-R-version "R (newest)"
@@ -2474,10 +2479,11 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defvar inferior-julia-program-name "julia-release-basic"
+(defcustom inferior-julia-program-name "julia-release-basic"
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
-  "Path to julia-release-basic executable")
+  "Path to julia-release-basic executable"
+  :group 'ess-Julia)
 
 (defvar julia-basic-offset 4
   "Offset for julia code editing")

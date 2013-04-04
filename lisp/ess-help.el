@@ -323,7 +323,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
      reg-keyword
      (format "*help[%s](index:%s)*"  ess-dialect pack)
      'index nil nil reg-start pack)
-    
     ))
 
 
@@ -371,6 +370,11 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                               'follow-link t
                               'help-echo (or help-echo "help on object")))
           ))
+      
+      ;; (save-excursion ;; why R places all these spaces?
+      ;;   (goto-char (point-min))
+      ;;   (while (re-search-forward " \\{10,\\} *" nil t)
+      ;;     (replace-match "\t\t\t")))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
       (setq truncate-lines nil)
