@@ -322,7 +322,7 @@
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
-    (inferior-ess-primary-prompt	. "a> ") ;; from julia> 
+    (inferior-ess-primary-prompt	. "a> ") ;; from julia>
     (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
@@ -412,7 +412,7 @@ command for that version of Julia is made available.  ")
 (defun julia (&optional start-args)
   "Call 'julia',
 Optional prefix (C-u) allows to set command line arguments, such as
---vsize.  This should be OS agnostic.
+--load=<file>.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
 to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
