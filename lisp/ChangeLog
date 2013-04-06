@@ -1,3 +1,8 @@
+2013-04-06  Henning Redestig  <henning.red@gmail.com>
+
+	* ess-s-l.el (ess-smart-S-assign): rename (ess-smart-underscore-*)
+	to (ess-smart-S-assign-*) and create aliases to remain compatible.
+
 2013-03-07  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-custom.el/ess-sas-d.el (SAS-mode-hook): creation

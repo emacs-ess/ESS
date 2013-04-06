@@ -518,21 +518,21 @@ buffer or end chunks etc.
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
- Used by \\[ess-smart-underscore]."
+ Used by \\[ess-smart-S-assign]."
   :group 'ess-S
   :type 'string)
 
-(defcustom ess-smart-underscore-key "_"
-  "Key used by `ess-smart-underscore'. By default bound to
-underscore, hence the name, but can be set to any key. If this
-key is customized, you must add
+(defcustom ess-smart-S-assign-key "_"
+  "Key used by `ess-smart-S-assign'. By default bound to
+underscore, but can be set to any key. If this key is customized,
+you must add
 
- (ess-toggle-underscore nil)
- (ess-toggle-underscore nil)
+ (ess-toggle-S-assign nil)
+ (ess-toggle-S-assign nil)
 
 after the line that sets the customization and evaluate these
 lines or reboot emacs. The first call clears the default
-`ess-smart-underscore' assignment and the second line re-assigns
+`ess-smart-S-assign' assignment and the second line re-assigns
 it to the customized setting. "
   :group 'ess-S
   :type 'character)
