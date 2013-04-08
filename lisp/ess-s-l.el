@@ -683,7 +683,7 @@ toggle between the new and the previous assignment."
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
 typically \" <- \", can be customized.  In ESS modes other than R/S,
-an underscore is always inserted. "
+the  underscore is always inserted. "
   (interactive)
   ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
   (save-restriction
@@ -707,8 +707,8 @@ an underscore is always inserted. "
 
 (defun ess-insert-S-assign ()
   "Insert the assignment operator `ess-S-assign', unless it is already there.
-In that case, the it is removed and replaced by the `ess-smart-S-assign-key'
- (by default underscore, hence the name).
+In that case, the it is removed and replaced by
+  `ess-smart-S-assign-key', \\[ess-smart-S-assign-key].
   `ess-S-assign', typically \" <- \", can be customized."
   (interactive)
   ;; one keypress produces ess-S-assign; a second keypress will delete
@@ -725,16 +725,20 @@ In that case, the it is removed and replaced by the `ess-smart-S-assign-key'
         (progn
           (delete-char (- assign-len))
           (insert ess-smart-S-assign-key))
-      ;; (delete-horizontal-space)
+      (if (string= ess-smart-S-assign-key "_") 
+          (delete-horizontal-space))
       (insert ess-S-assign))))
 
 (defun ess-toggle-S-assign (force)
-  "Set the `ess-smart-S-assign-key' (by default \"_\" [underscore]) key 
-to \\[ess-smart-S-assign] or back to `ess-smart-S-assign-key'.
- Toggle the current definition, unless FORCE is non-nil, where
- \\[ess-smart-S-assign] is set unconditionally.
+  "Set the `ess-smart-S-assign-key' (by default \"_\"
+[underscore]) key to \\[ess-smart-S-assign] or back to
+`ess-smart-S-assign-key'.  Toggle the current definition, unless
+FORCE is non-nil, where \\[ess-smart-S-assign] is set
+unconditionally.
 
-  Using \"C-q _\" will always just insert the underscore character."
+  If you as per default have `ess-smart-S-assign-key' set to
+  underscore, note that using \"C-q _\" will always just insert the
+  underscore character."
   (interactive "P")
   (let ((current-key (lookup-key ess-mode-map ess-smart-S-assign-key))
         (default-key (lookup-key ess-mode-map "_"))
