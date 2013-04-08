@@ -776,6 +776,7 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
           (setq num-processes 1
+                pname-list (list (car ess-process-name-list))
                 auto-started? t)))
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
@@ -786,7 +787,7 @@ Returns the name of the selected process."
                     (and (not ask-if-1) (= 1 num-processes)))
                 (progn
                   (message "using process '%s'" (car proc-buffers))
-                  (caar ess-process-name-list))
+                  (caar pname-list))
               ;; else
               (unless (and ess-current-process-name
                            (get-process ess-current-process-name))
