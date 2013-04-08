@@ -747,16 +747,24 @@ Returns the name of the selected process."
                                         "stata" STA-dialect-name
                                         "julia" "SAS" "XLS"  "ViSta")))))
 
-  (let ((num-processes (length ess-process-name-list))
-        (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
-        (auto-started?))
+  (let* ((pname-list (delq nil ;; keep only those mathing dialect
+                           (mapcar (lambda (lproc)
+                                     (and (equal ess-dialect
+                                                 (buffer-local-value
+                                                  'ess-dialect
+                                                  (process-buffer (get-process (car lproc)))))
+                                          lproc))
+                                   ess-process-name-list)))
+         (num-processes (length pname-list))
+         (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
+         (auto-started?))
     (if (or (= 0 num-processes)
             (and (= 1 num-processes)
                  (not (equal ess-dialect ;; don't auto connect if from different dialect
                              (buffer-local-value
                               'ess-dialect
                               (process-buffer (get-process
-                                               (caar ess-process-name-list))))))))
+                                               (caar pname-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -772,7 +780,7 @@ Returns the name of the selected process."
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
                                    (buffer-name (process-buffer (get-process (car lproc)))))
-                                 ess-process-name-list))
+                                 pname-list))
            (proc
             (if (or auto-started?
                     (and (not ask-if-1) (= 1 num-processes)))
@@ -796,7 +804,7 @@ Returns the name of the selected process."
                       (caar ess-process-name-list))
                   (process-name (get-buffer-process buf))
                   ))
-               )))
+              )))
       (if noswitch
           (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
         (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
