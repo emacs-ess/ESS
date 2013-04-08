@@ -61,6 +61,7 @@
     ;(modify-syntax-entry ?\\ "." table)  ; \ is an operator outside quotes
     (modify-syntax-entry ?'  "." table)  ; character quote or transpose
     (modify-syntax-entry ?\" "\"" table)
+    (modify-syntax-entry ?` "\"" table)
     ;; (modify-syntax-entry ?\" "." table)
     (modify-syntax-entry ?? "." table)
     (modify-syntax-entry ?$ "." table)
