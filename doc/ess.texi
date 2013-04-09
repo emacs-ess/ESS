@@ -2521,10 +2521,11 @@ the inferior R. Bind it to something else:
 Another option for comprehensively handling completion in Emacs is via
 Icicles (@uref{http://www.emacswiki.org/emacs/Icicles}).  It allows
 users to have completions shown temporarily in the standard
-@samp{*Completions*} buffer.  As of version 2013.04.04, Icicles provides
-support for completion in ESS.  Please consult Icicles documentation,
-which is easily accessible via @kbd{customize-group Icicles}, for more
-details on installation and customization options.
+@samp{*Completions*} buffer, and interactively select completion
+candidates using several methods.  As of version 2013.04.04, Icicles
+provides support for completion in ESS.  Please consult Icicles
+documentation, which is easily accessible via @kbd{customize-group
+Icicles}, for more details on installation and customization options.
 
 Once installed, Icicles can be activated by evaluating (maybe place in
 @file{~/.emacs}):
