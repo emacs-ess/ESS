@@ -946,7 +946,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (ess-rtf-replace-chars)
 
     (goto-char (point-min))
-    (insert (concat
+            (insert (concat
              "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
              "\\margl720\\margr720\\margt720\\margb720\n"
 	     "{\\*\\pgdsctbl\n"
@@ -1299,7 +1299,7 @@ Else
     (define-key sas-mode-local-map [return] 'newline-and-indent)
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
-(defvar ess-sas-edit-keys-toggle nil
+(defvar ess-sas-edit-keys-toggle t
   "Toggle TAB/RET key in `SAS-mode'.
 nil binds TAB to `sas-indent-line' and RET to `newline-and-indent'.
 Non-nil binds TAB to `ess-sas-tab-to-tab-stop',
