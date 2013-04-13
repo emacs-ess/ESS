@@ -90,8 +90,7 @@
 
 This function is used placed in `ess-presend-filter-functions'.
 "
-  (replace-regexp-in-string "/\\*.*\\*/\\|//.*$" "" string)
-  )
+  (replace-regexp-in-string "/\\*.*\\*/\\|^//.*$" "" string))
 
 ;; (ess-sta-remove-comments "aaa /* sdfdsf */ bbb
 ;; sdfsd
