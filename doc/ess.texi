@@ -52,8 +52,7 @@ ESS version @ESSVER
 @direntry
 * ESS: (ess). Emacs Speaks Statistics (S/S+/R, SAS, BUGS/JAGS and Stata).
 @end direntry
-@c node-name,  next,  previous,  up
-@node Top, Introduction, (dir), (dir)
+@node Top
 @top ESS: Emacs Speaks Statistics
 
 ESS version
@@ -113,8 +112,7 @@ analysis languages.
 @c
 @end menu
 
-@comment node-name,  next,  previous,  up
-@node Introduction, Installation, Top, Top
+@node Introduction
 @chapter Introduction to ESS
 @cindex introduction
 
@@ -178,8 +176,7 @@ your @Sl{} functions in specified source directories.
 * Manual::                      How to read this manual
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Features, New features, Introduction, Introduction
+@node Features
 @section Why should I use ESS?
 
 Statistical packages are powerful software systems for manipulating and
@@ -195,7 +192,7 @@ user-friendly and give you the power of emacs as well.
 * Current Features::
 @end menu
 
-@node Current Features,  , Features, Features
+@node Current Features
 @subsection Features Overview
 @include currfeat.texi
 
@@ -288,27 +285,23 @@ unnecessary prompts.
 
 @end itemize
 
-@comment  node-name,  next,  previous,  up
-@node New features, Credits, Features, Introduction
+@node New features
 @section New features in ESS
 
 @include newfeat.texi
 @include onewfeat.texi
 
-@comment  node-name,  next,  previous,  up
-@node Credits, Latest version, New features, Introduction
+@node Credits
 @section Authors of and contributors to ESS
 
 @include credits.texi
 
-@comment  node-name,  next,  previous,  up
-@node Latest version, Manual, Credits, Introduction
+@node Latest version
 @section Getting the latest version of ESS
 
 @include getting.texi
 
-@comment  node-name,  next,  previous,  up
-@node Manual,  , Latest version, Introduction
+@node Manual
 @section How to read this manual
 
 If you need to install ESS, read @ref{Installation} for details on what
@@ -355,8 +348,7 @@ however is available by using the Custom facility within emacs.  (Type
 change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
 
-@comment  node-name,  next,  previous,  up
-@node Installation, Interactive ESS, Introduction, Top
+@node Installation
 @chapter Installing ESS on your system
 @cindex installation
 
@@ -376,30 +368,28 @@ on your system.
 @c         ==> *must* give node pointer problems!
 @c @include inst_tar.texi
 
-@comment  node-name,  next,  previous,  up
-@node Unix installation, Microsoft Windows installation, Installation, Installation
+@node Unix installation
 @section Unix (Linux / MacOS / Solaris / ...) Installation
 @include unixlike.texi
 
-@node Microsoft Windows installation, License, Unix installation, Installation
+@node Microsoft Windows installation
 @section Microsoft Windows installation
 @include windows.texi
 
-@node License, Stability, Microsoft Windows installation, Installation
+@node License
 @section License
 @include license.texi
 
-@node Stability, Requirements, License, Installation
+@node Stability
 @section Stability
 @include stabilty.texi
 
-@node Requirements,  , Stability, Installation
+@node Requirements
 @section Requirements
 @include requires.texi
 
 
-@comment  node-name,  next,  previous,  up
-@node Interactive ESS, Entering commands, Installation, Top
+@node Interactive ESS
 @chapter Interacting with statistical programs
 
 As well as using ESS to edit your source files for statistical programs,
@@ -412,7 +402,6 @@ way, we use the term `iESS' to refer to the Emacs mode used to interact
 with statistical programs.
 
 
-@comment  node-name,  next,  previous,  up
 @menu
 * Starting up::
 * Multiple ESS processes::
@@ -421,7 +410,7 @@ with statistical programs.
 * Customizing startup::
 @end menu
 
-@node Starting up, Multiple ESS processes, Interactive ESS, Interactive ESS
+@node Starting up
 @section Starting an ESS process
 @cindex starting ESS
 @cindex running S
@@ -455,8 +444,7 @@ with name @samp{*S*} which will be used
 for interacting with the ESS process, and you can start entering commands.
 
 
-@comment  node-name,  next,  previous,  up
-@node Multiple ESS processes, ESS processes on Remote Computers, Starting up, Interactive ESS
+@node Multiple ESS processes
 @section Running more than one ESS process
 @cindex multiple ESS processes
 
@@ -475,7 +463,7 @@ process, using the first available process number.  With a prefix
 argument (for R), @kbd{C-u M-x R} allows for the specification of
 command line options.
 
-@pindex ess-request-a-process
+@findex ess-request-a-process
 You can switch to any active ESS process with the command
 @samp{M-x ess-request-a-process}.  Just enter the name of the process
 you require; completion is provided over the names of all running S
@@ -490,13 +478,12 @@ processes.  This is a good command to consider binding to a global key.
 @c to @code{t}.  See @file{ess-site} for how to set this for all users.
 
 
-@comment  node-name,  next,  previous,  up
-@node ESS processes on Remote Computers, S+elsewhere and ESS-elsewhere, Multiple ESS processes, Interactive ESS
+@node ESS processes on Remote Computers
 @section ESS processes on Remote Computers
+@findex ess-remote
 @cindex remote Computers
-@pindex ess-remote
-@pindex ESS-elsewhere
-@pindex S+elsewhere
+@cindex ESS-elsewhere
+@cindex S+elsewhere
 
 ESS works with processes on remote computers as easily as with
 processes on the local machine.  The recommended way to access a
@@ -558,8 +545,7 @@ on remote computers.
 @xref{S+elsewhere and ESS-elsewhere}.
 
 
-@comment  node-name,  next,  previous,  up
-@node S+elsewhere and ESS-elsewhere, Customizing startup, ESS processes on Remote Computers, Interactive ESS
+@node S+elsewhere and ESS-elsewhere
 @section S+elsewhere and ESS-elsewhere
 
 These commands are now deprecated.  We recommend @samp{ess-remote}.  We
@@ -615,8 +601,7 @@ display it with ghostscript.
 @end enumerate
 
 
-@comment  node-name,  next,  previous,  up
-@node Customizing startup,  , S+elsewhere and ESS-elsewhere, Interactive ESS
+@node Customizing startup
 @section Changing the startup actions
 
 If you do not wish ESS to prompt for a starting directory when starting
@@ -681,8 +666,7 @@ variable, customize the variable @code{inferior-ess-own-frame}.
 Alternatively, change @code{inferior-ess-same-window} if you wish the
 process to appear within another window of the current frame.
 
-@comment  node-name,  next,  previous,  up
-@node Entering commands, Evaluating code, Interactive ESS, Top
+@node Entering commands
 @chapter Interacting with the ESS process
 @cindex entering commands
 @cindex commands
@@ -708,8 +692,7 @@ commonly-used @Sl{} commands are also provided for ease of typing.
 * Other::                       Other commands provided by inferior-ESS
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Command-line editing, Transcript, Entering commands, Entering commands
+@node Command-line editing
 @section Entering commands and fixing mistakes
 @cindex command-line editing
 
@@ -718,7 +701,6 @@ and pressing the @key{RETURN} key:
 
 @deffn Command inferior-ess-send-input
 @kindex RET
-@pindex inferior-ess-send-input
 @kbd{RET} Send the command on the current line to the ESS process.
 @end deffn
 
@@ -731,31 +713,28 @@ the ESS process.
 
 Emacs provides some other commands which are useful for fixing mistakes:
 
-@itemize @bullet
-@item
-@kbd{C-c C-w} (@code{backward-kill-word}) @*
-@pindex backward-kill-word
-Deletes the previous word (such as an object name) on the command line.
+@table @kbd
+@item C-c C-w
+@findex backward-kill-word
+@code{backward-kill-word} Deletes the previous word (such as an object
+name) on the command line.
 
-@item
-@kbd{C-c C-u} (@code{comint-kill-input}) @*
-@pindex comint-kill-input
-Deletes everything from the prompt to point.  Use this to abandon a
-command you have not yet sent to the ESS process.
+@item C-c C-u
+@findex comint-kill-input
+@code{comint-kill-input} Deletes everything from the prompt to point.
+Use this to abandon a command you have not yet sent to the ESS process.
 
-@item
-@kbd{C-c C-a} (@code{comint-bol}) @*
-@pindex comint-bol
-Move to the beginning of the line, and then skip forwards past the
-prompt, if any.
-@end itemize
+@item C-c C-a
+@findex comint-bol
+@code{comint-bol} Move to the beginning of the line, and then skip
+forwards past the prompt, if any.
+@end table
 
 @xref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}, for other
 commands relevant to entering input.
 
 
-@comment  node-name,  next,  previous,  up
-@node Transcript, Command History, Command-line editing, Entering commands
+@node Transcript
 @section Manipulating the transcript
 
 Most of the time, the cursor spends most of its time at the bottom of
@@ -795,8 +774,7 @@ Reference Manual}.
 * Saving transcripts::          Keeping a record of your S session
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Last command, Process buffer motion, Transcript, Transcript
+@node Last command
 @subsection Manipulating the output from the last command
 
 Viewing the output of the command you have just entered is a common
@@ -822,37 +800,36 @@ inputs, set the variable @code{comint-scroll-to-bottom-on-input} to
 visible, use
 @cindex reading long command outputs
 @kbd{C-c C-r} (@code{comint-show-output}),
-@pindex comint-show-output
+@findex comint-show-output
 which moves cursor to the previous command line and and places it at the
 top of the window.
 
 Finally, if you want to discard the last command output altogether, use
 @cindex deleting output
 @kbd{C-c C-o} (@code{comint-kill-output}),
-@pindex comint-kill-output
+@findex comint-kill-output
 which deletes everything from the last command to the current prompt.
 Use this command judiciously to keep your transcript to a more
 manageable size.
 
-@comment  node-name,  next,  previous,  up
-@node Process buffer motion, Transcript resubmit, Last command, Transcript
+@node Process buffer motion
 @subsection Viewing older commands
 
 If you want to view the output from more historic commands than the
 previous command, commands are also provided to move backwards and
 forwards through previously entered commands in the process buffer:
 
-@itemize @bullet
-@item
-@kbd{C-c C-p} (@code{comint-previous-input}) @*
-@pindex comint-previous-input
-Moves point to the preceding command in the process buffer.
+@table @kbd
+@item C-c C-p
+@findex comint-previous-input
+@code{comint-previous-input} Moves point to the preceding command in the
+process buffer.
 
-@item
-@kbd{C-c C-n} (@code{comint-next-input}) @*
-@pindex comint-next-input
-Moves point to the next command in the process buffer.
-@end itemize
+@item C-c C-n
+@findex comint-next-input
+@code{comint-next-input} Moves point to the next command in the process
+buffer.
+@end table
 
 @noindent
 Note that these two commands are analogous to @kbd{C-p} and @kbd{C-n}
@@ -868,19 +845,17 @@ for a regular expression (@pxref{Regexps,,Syntax of Regular
 Expression,emacs, The GNU Emacs Reference Manual}), and then moves to
 the next (previous) command matching the pattern.
 
-@itemize @bullet
-@item
-@code{(comint-backward-matching-input regexp arg)} @*
-@pindex comint-backward-matching-input
-@code{(comint-forward-matching-input regexp arg)} @*
-@pindex comint-forward-matching-input
+@table @code
+@item comint-backward-matching-input regexp arg
+@findex comint-backward-matching-input
+@itemx comint-forward-matching-input regexp arg
+@findex comint-forward-matching-input
 Search backward (forward) through the transcript buffer for the
 @var{arg}'th previous (next) command matching @var{regexp}.  @var{arg}
 is the prefix argument; @var{regexp} is prompted for in the minibuffer.
-@end itemize
+@end table
 
-@comment  node-name,  next,  previous,  up
-@node Transcript resubmit, Saving transcripts, Process buffer motion, Transcript
+@node Transcript resubmit
 @subsection Re-submitting commands from the transcript
 
 When moving through the transcript, you may wish to re-execute some of
@@ -890,18 +865,16 @@ in the transcript (if the cursor is within some command @emph{output},
 an error is signalled).  Note all three commands involve the @key{RETURN}
 key.
 
-@itemize @bullet
-@item
-@kbd{RET} (@code{inferior-ess-send-input}) @*
-@xref{Command-line editing}.
+@table @kbd
+@item RET
+@code{inferior-ess-send-input} @xref{Command-line editing}.
 
-@item
-@kbd{C-c RET} (@code{comint-copy-old-input}) @*
-@pindex comint-copy-old-input
-Copy the command under the cursor to the current command line, but don't
-execute it.  Leaves the cursor on the command line so that the copied
-command may be edited.
-@end itemize
+@item C-c RET
+@findex comint-copy-old-input
+@code{comint-copy-old-input} Copy the command under the cursor to the
+current command line, but don't execute it.  Leaves the cursor on the
+command line so that the copied command may be edited.
+@end table
 
 When the cursor is not after the current prompt, the @key{RETURN} key
 has a slightly different behavior than usual.  Pressing @kbd{RET} on any
@@ -923,8 +896,7 @@ with the command-based motion commands described above, could be used as
 a primitive history mechanism.  ESS provides a more sophisticated
 mechanism, however, which is described in @ref{Command History}.
 
-@comment  node-name,  next,  previous,  up
-@node Saving transcripts,  , Transcript resubmit, Transcript
+@node Saving transcripts
 @subsection Keeping a record of your S session
 
 To keep a record of your @Sl{} session in a disk file, use the Emacs
@@ -961,8 +933,7 @@ transcript, then the command @code{ess-transcript-clean-region} may be
 of use.  @pxref{Clean, Transcript Mode}
 
 
-@comment  node-name,  next,  previous,  up
-@node Command History, History expansion, Transcript, Entering commands
+@node Command History
 @section Command History
 @cindex command history
 @cindex editing commands
@@ -976,17 +947,16 @@ setting the variable @code{comint-input-ring-size} in
 @code{inferior-ess-mode-hook}.) The simplest history commands simply
 select the next and previous commands in the input history:
 
-@itemize @bullet
-@item
-@kbd{M-p} (@code{comint-previous-input}) @*
-@pindex comint-previous-input
-Select the previous command in the input history.
+@table @kbd
+@item M-p
+@findex comint-previous-input
+@code{comint-previous-input} Select the previous command in the input
+history.
 
-@item
-@kbd{M-n}  (@code{comint-next-input}) @*
-@pindex comint-next-input
-Select the next command in the input history.
-@end itemize
+@item M-n
+@findex comint-next-input
+@code{comint-next-input} Select the next command in the input history.
+@end table
 
 @noindent
 For example, pressing @kbd{M-p} once will re-enter the last command into
@@ -1000,38 +970,36 @@ it against a regular expression (@pxref{Regexps,,Syntax of Regular
 Expression,emacs, The GNU Emacs Reference Manual}), to search for a
 particular variable name for example, these commands are also available:
 
-@itemize @bullet
-@item
-@kbd{M-r} (@code{comint-history-isearch-backward-regexp}) @*
-@pindex comint-history-isearch-backward-regexp
-Prompt for a regular expression, and search backwards through the input
-history for a command matching the expression.
+@table @kbd
+@item M-r
+@findex comint-history-isearch-backward-regexp
+@code{comint-history-isearch-backward-regexp} Prompt for a regular
+expression, and search backwards through the input history for a command
+matching the expression.
 
-@c @item
-@c @kbd{M-s} (@code{comint-next-matching-input}) @*
-@c @pindex comint-next-matching-input
-@c Prompt for a regular expression, and search backwards through the input
-@c history for a command matching the expression.
-@end itemize
+@c @item M-s
+@c @findex comint-next-matching-input
+@c @code{comint-next-matching-input} Prompt for a regular expression, and
+@c search backwards through the input history for a command matching the
+@c expression.
+@end table
 
 @noindent
 A common type of search is to find the last command that began with a
 particular sequence of characters; the following two commands provide an
 easy way to do this:
 
-@itemize @bullet
-@item
-@kbd{C-c M-r} (@code{comint-previous-matching-input-from-input}) @*
-@pindex comint-previous-matching-input-from-input
-Select the previous command in the history which matches the string
-typed so far.
+@table @kbd
+@item C-c M-r
+@findex comint-previous-matching-input-from-input
+@code{comint-previous-matching-input-from-input} Select the previous
+command in the history which matches the string typed so far.
 
-@item
-@kbd{C-c M-s} (@code{comint-next-matching-input-from-input}) @*
-@pindex comint-next-matching-input-from-input
-Select the next command in the history which matches the string typed so
-far.
-@end itemize
+@item C-c M-s
+@findex comint-next-matching-input-from-input
+@code{comint-next-matching-input-from-input} Select the next command in
+the history which matches the string typed so far.
+@end table
 
 @noindent
 Instead of prompting for a regular expression to match against, as they
@@ -1073,7 +1041,7 @@ cannot be part of @code{ESS} itself.
 * Saving History::
 @end menu
 
-@node Saving History,  , Command History, Command History
+@node Saving History
 @subsection Saving the command history
 
 The @code{ess-history-file} variable, which is @code{t} by default,
@@ -1085,18 +1053,23 @@ history will be stored (as text file) in the @code{ess-directory}, e.g., as
 
 Experienced ESS users often work exclusively with script files rather than
 in a (e.g., @code{*R}) console session, and may not want to save any
-history files, and hence have
+history files, and hence have:
+
 @smallexample
   (setq ess-history-file nil)
 @end smallexample
-or will only want one global command history file and have
+
+@noindent
+or will only want one global command history file and have:
+
 @smallexample
   (setq ess-history-directory "~/.R/")
 @end smallexample
+
+@noindent
 in your @file{.emacs} file.
 
-@comment  node-name,  next,  previous,  up
-@node History expansion, Hot keys, Command History, Entering commands
+@node History expansion
 @section References to historical commands
 
 Instead of searching through the command history using the command
@@ -1185,8 +1158,7 @@ then edit or press @key{RET} to execute.
 For example, to execute the last command that referenced the variable
 @code{data}, type @kbd{!?data SPC TAB RET}.
 
-@comment  node-name,  next,  previous,  up
-@node Hot keys, Statistical Process running in ESS?, History expansion, Entering commands
+@node Hot keys
 @section Hot keys for common commands
 
 ESS provides a number of commands for executing the commonly used
@@ -1209,7 +1181,6 @@ hot keys that behave in this way:
 
 @deffn Command ess-execute-objects @var{posn}
 @kindex C-c C-x
-@pindex ess-execute-objects
 @pindex objects()
 @cindex objects
 @kbd{C-c C-x} Sends the @code{objects()} command to the ESS process.  A
@@ -1223,7 +1194,6 @@ as well as toggling @code{ess-execute-in-process-buffer}.
 
 @deffn Command ess-execute-search @var{invert}
 @kindex C-c C-s
-@pindex ess-execute-search
 @pindex search()
 @cindex search list
 @kbd{C-c C-s} Sends the @code{inferior-ess-search-list-command} command
@@ -1246,7 +1216,6 @@ to decide where to display the output --- they either always display in
 the process buffer or in a separate buffer, as indicated:
 
 @c @deffn Command ess-execute-attach @var{dir} @var{posn}
-@c @pindex ess-execute-attach
 @c @pindex attach()
 @c Prompts for a directory @var{dir} to attach to the ESS process with the
 @c @code{attach()} command.  If a numeric prefix argument @var{posn} is
@@ -1257,7 +1226,6 @@ the process buffer or in a separate buffer, as indicated:
 
 @deffn Command ess-load-file @var{filename}
 @kindex C-c C-l
-@pindex ess-load-file
 @kbd{C-c C-l} Prompts for a file (@var{filename}) to load into the ESS
 process using @code{source()}.  If there is an error during loading, you
 can jump to the error in the file with the following function.
@@ -1266,7 +1234,6 @@ can jump to the error in the file with the following function.
 @deffn Command ess-parse-errors @var{arg} @var{reset}
 @kindex C-x `
 @kindex C-c `
-@pindex ess-parse-errors
 @kbd{C-c `} or @kbd{C-x `} Visits next @code{next-error} message and
 corresponding source code.  If all the error messages parsed so far have
 been processed already, the message buffer is checked for new ones.  A
@@ -1280,7 +1247,6 @@ The @var{reset} argument specifies restarting from the beginning.
 
 @deffn Command ess-display-help-on-object @var{object} @var{command}
 @kindex C-c C-v
-@pindex ess-display-help-on-object
 @kbd{C-c C-v} Pops up a help buffer for an @Sl{} @var{object} or
 function.  If @var{command} is suplied, it is used instead of
 @code{inferior-ess-help-command}.  See @ref{Help} for more details.
@@ -1288,9 +1254,8 @@ function.  If @var{command} is suplied, it is used instead of
 
 @deffn Command ess-quit
 @kindex C-c C-q
-@pindex ess-quit
 @pindex q()
-@pindex ess-cleanup
+@findex ess-cleanup
 @cindex quitting from ESS
 @cindex killing the ESS process
 @cindex cleaning up
@@ -1307,8 +1272,7 @@ been saved, and that all the temporary buffers have been killed.
 @end deffn
 
 
-@comment  node-name,  next,  previous,  up
-@node Statistical Process running in ESS?, Emacsclient, Hot keys, Entering commands
+@node Statistical Process running in ESS?
 @section Is the Statistical Process running under ESS?
 
 @cindex STERM
@@ -1341,8 +1305,7 @@ protocols are created.  Unlike the values @code{iESS} and @code{ddeESS},
 ESS can't set these other values since the S language program is not
 under the control of ESS.
 
-@comment  node-name,  next,  previous,  up
-@node Emacsclient, Other, Statistical Process running in ESS?, Entering commands
+@node Emacsclient
 @section Using emacsclient
 @cindex emacsclient
 
@@ -1359,15 +1322,13 @@ also show a text representation of the object @code{x} in a temporary
 Emacs buffer.
 
 
-@comment  node-name,  next,  previous,  up
-@node Other,  , Emacsclient, Entering commands
+@node Other
 @section Other commands provided by inferior-ESS
 
 The following commands are also available in the process buffer:
 
 @deffn Command comint-interrupt-subjob
 @kindex C-c C-c
-@pindex comint-interrupt-subjob
 @cindex aborting S commands
 @cindex interrupting S commands
 @kbd{C-c C-c} Sends a Control-C signal to the ESS process.  This has the
@@ -1376,7 +1337,6 @@ effect of aborting the current command.
 
 @deffn Command ess-switch-to-inferior-or-script-buffer @var{toggle-eob}
 @kindex C-c C-z
-@pindex ess-switch-to-inferior-or-script-buffer
 @kbd{C-c C-z} When in process buffer, return to the most recent script
 buffer.  When in a script buffer pop to the associated process buffer.
 This is a single key command, that is @kbd{C-c C-z C-z} from a script
@@ -1395,7 +1355,7 @@ Other commands available in Inferior @Sl{} mode are discussed in
 @ref{Shell Mode,,, emacs, The Gnu Emacs Reference Manual}.
 
 
-@node Evaluating code, Transcript Mode, Entering commands, Top
+@node Evaluating code
 @chapter Sending code to the ESS process
 
 Other commands are also available for evaluating portions of code in the
@@ -1432,20 +1392,17 @@ Primary commands for evaluating code are:
 @cindex evaluating S expressions
 
 @deffn Command ess-eval-region-or-line-and-step @var{vis}
-@pindex ess-eval-region-or-line-and-step
 Send the highlighted region or current line and step to next line of
 code.
 @end deffn
 
 @deffn Command ess-eval-region-or-function-or-paragraph @var{vis}
 @kindex C-M-x
-@pindex ess-eval-region-or-function-or-paragraph
 @kbd{C-M-x} Sends the current selected region or function or paragraph.
 @end deffn
 
 @deffn Command ess-eval-region-or-function-or-paragraph-and-step @var{vis}
 @kindex C-C C-c
-@pindex ess-eval-region-or-function-or-paragraph-and-step
 @kbd{C-c C-c} Like @code{ess-eval-region-or-function-or-paragraph} but
 steps to next line of code.
 @end deffn
@@ -1454,53 +1411,45 @@ Other, not so often used, evaluation commands are:
 
 @deffn Command ess-eval-line @var{vis}
 @kindex C-C C-j
-@pindex ess-eval-line
 @kbd{C-c C-j} Sends the current line to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-line-and-go @var{vis}
 @kindex C-C M-j
-@pindex ess-eval-line-and-go
 @kbd{C-c M-j} Like @code{ess-eval-line} but additionally switches point
 to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-function @var{vis} @var{no-error}
 @kindex C-C C-f
-@pindex ess-eval-function
 @kbd{C-c C-f} Sends the @Sl{} function containing point to the ESS
 process.
 @end deffn
 
 @deffn Command ess-eval-function-and-go @var{vis}
 @kindex C-C M-f
-@pindex ess-eval-line-and-go
 @kbd{C-c M-f} Like @code{ess-eval-function} but additionally switches
 point to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-region @var{start} @var{end} @var{toggle} @var{message}
 @kindex C-C C-r
-@pindex ess-eval-region
 @kbd{C-c C-r} Sends the current region to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-region-and-go @var{start} @var{end} @var{vis}
 @kindex C-C M-r
-@pindex ess-eval-region-and-go
 @kbd{C-c M-r} Like @code{ess-eval-region} but additionally switches
 point to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-buffer @var{vis}
 @kindex C-C C-b
-@pindex ess-eval-buffer
 @kbd{C-c C-b} Sends the current buffer to the ESS process.
 @end deffn
 
 @deffn Command ess-eval-buffer-and-go @var{vis}
 @kindex C-C M-b
-@pindex ess-eval-buffer-and-go
 @kbd{C-c M-b} Like @code{ess-eval-buffer} but additionally switches
 point to the ESS process.
 @end deffn
@@ -1520,8 +1469,7 @@ variable @code{comint-scroll-to-bottom-on-output} to @code{'others} or
 @code{t}.
 
 
-@comment  node-name,  next,  previous,  up
-@node Transcript Mode, Editing objects, Evaluating code, Top
+@node Transcript Mode
 @chapter Manipulating saved transcript files
 
 Inferior @Sl{} mode records the transcript (the list of all commands
@@ -1547,8 +1495,7 @@ and @kbd{C-c C-n}.
 * Clean::                       Cleaning transcript files
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Resubmit, Clean, Transcript Mode, Transcript Mode
+@node Resubmit
 @section Resubmitting commands from the transcript file
 
 Three commands are provided to re-submit command lines from the
@@ -1556,21 +1503,18 @@ transcript file to a running ESS process.  They are:
 
 @deffn Command ess-transcript-send-command
 @kindex M-RET
-@pindex ess-transcript-send-command
 @kbd{M-RET} Sends the current command line to the ESS process, and
 execute it.
 @end deffn
 
 @deffn Command ess-transcript-copy-command
 @kindex C-c RET
-@pindex ess-transcript-copy-command
 @kbd{C-c RET} Copy the current command to the ESS process, and switch to
 it (ready to edit the copied command).
 @end deffn
 
 @deffn Command ess-transcript-send-command-and-move
 @kindex RET
-@pindex ess-transcript-send-command-and-move
 @kbd{RET} Sends the current command to the ESS process, and move to the
 next command line.  This command is useful for submitting a series of
 commands.
@@ -1582,8 +1526,7 @@ in inferior @Sl{} Mode.  In all three cases, the commands should be
 executed when the cursor is on a command line in the transcript; the
 prompt is automatically removed before the command is submitted.
 
-@comment  node-name,  next,  previous,  up
-@node Clean,  , Resubmit, Transcript Mode
+@node Clean
 @section Cleaning transcript files
 
 Yet another use for transcript files is to extract the command lines for
@@ -1592,7 +1535,6 @@ one command which does just this:
 
 @deffn Command ess-transcript-clean-region @var{beg} @var{end} @var{even-if-read-only}
 @kindex C-c C-w
-@pindex ess-transcript-clean-region
 @kbd{C-c C-w} Strip the transcript in the region (given by @var{beg} and
 @var{end}), leaving only commands.  Deletes any lines not beginning with
 a prompt, and then removes the prompt from those lines that remain.
@@ -1608,7 +1550,7 @@ directly (@pxref{Evaluating code}) using the code evaluation commands
 from @Sl{} mode, also available in @Sl{} Transcript Mode.
 
 
-@node Editing objects, Help, Transcript Mode, Top
+@node Editing objects
 @chapter Editing objects and functions
 
 @cindex editing functions
@@ -1631,8 +1573,7 @@ into the ESS process.
 * Source Directories::          Names and locations of dump files
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Edit buffer, Loading, Editing objects, Editing objects
+@node Edit buffer
 @section Creating or modifying S objects
 @cindex edit buffer
 
@@ -1640,7 +1581,6 @@ To edit an @Sl{} object, type
 
 @deffn Command ess-dump-object-into-edit-buffer @var{object}
 @kindex C-c C-e C-d
-@pindex ess-dump-object-into-edit-buffer
 @kbd{C-c C-e C-d} Edit an @Sl{} @var{object} in its own edit buffer.
 @end deffn
 
@@ -1683,8 +1623,7 @@ definition (say, to reformat an unmodified buffer or to revert back to
 S's idea of the object's definition) pass a prefix argument to
 @code{ess-dump-object-into-edit-buffer} by typing @kbd{C-u C-c C-e C-d}.
 
-@comment  node-name,  next,  previous,  up
-@node Loading, Error Checking, Edit buffer, Editing objects
+@node Loading
 @section Loading source files into the ESS process
 
 The best way to get information --- particularly function definitions
@@ -1693,7 +1632,7 @@ The best way to get information --- particularly function definitions
 files using @kbd{C-c C-e C-d}; ESS provides a complementary command for
 loading source files (even files not created with ESS!) into the ESS
 process, namely @code{ess-load-file} (@kbd{C-c C-l}).
-@pindex ess-load-file
+@findex ess-load-file
 @pindex source()
 @pxref{Hot keys}.
 
@@ -1706,8 +1645,7 @@ happens automatically if the buffer was generated with @kbd{C-c C-e
 C-d}).  The file will then be loaded, and if it loads successfully you
 will be returned to the ESS process.
 
-@comment  node-name,  next,  previous,  up
-@node Error Checking, Indenting, Loading, Editing objects
+@node Error Checking
 @section Detecting errors in source files
 @cindex errors
 @cindex parsing errors
@@ -1716,7 +1654,7 @@ inform you of this fact.  In this case, you can jump directly to the
 line in the source file which caused the error by typing @kbd{C-c `}
 (@code{ess-parse-errors}).
 @kindex C-c `
-@pindex ess-parse-errors
+@findex ess-parse-errors
 You will be returned to the offending file (loading it into a buffer if
 necessary) with point at the line @Sl{} reported as containing the
 error.  You may then correct the error, and reload the file.  Note that
@@ -1730,10 +1668,7 @@ this behavior (and avoid jumping to the file when there @emph{is} a
 syntax error) by passing a prefix argument to @code{ess-parse-errors}
 with @kbd{C-u C-c `}.
 
-@comment  node-name,  next,  previous,  up
-
-@comment  node-name,  next,  previous,  up
-@node Indenting, Other edit buffer commands, Error Checking, Editing objects
+@node Indenting
 @section Indenting and formatting S code
 
 ESS provides a sophisticated mechanism for indenting @Sl{} source
@@ -1774,7 +1709,6 @@ The indentation commands provided by ESS are:
 
 @deffn Command ess-indent-or-complete
 @kindex TAB
-@pindex ess-indent-or-complete
 @kbd{TAB} Indents the current line as @Sl{} code.
 
 Try to indent first, and if code is already properly indented, complete
@@ -1796,7 +1730,6 @@ If non-@code{nil}, @kbd{TAB} never tries to complete in ess-mode.
 @kindex C-M-q
 @kindex M-C-q
 @kindex ESC C-q
-@pindex ess-indent-exp
 @kbd{TAB} Indents each line in the @Sl{} (compound) expression which
 follows point.  Very useful for beautifying your @Sl{} code.
 @end deffn
@@ -1804,33 +1737,31 @@ follows point.  Very useful for beautifying your @Sl{} code.
 @deffn Command ess-electric-brace
 @kindex @{
 @kindex @}
-@pindex ess-electric-brace
 @kbd{@{} @kbd{@}} The braces automatically indent to the correct
 position when typed.
 @end deffn
 
 The following Emacs command are also helpful:
 
-@itemize
-@item
-@kbd{RET} (@code{newline-and-indent}) @*
-@kbd{LFD} (@code{newline-and-indent}) @*
-Insert a newline, and indent the next line.  (Note that most keyboards
-nowadays do not have a @key{LINEFEED} key, but @kbd{C-j} is equivalent.)
+@table @kbd
+@item RET
+@itemx LFD
+@kindex C-j
+@code{newline-and-indent} Insert a newline, and indent the next line.
+(Note that most keyboards nowadays do not have a @key{LINEFEED} key, but
+@key{RET} and @kbd{C-j} are equivalent.)
 
-@item
+@item M-;
 @kindex M-;
-@kbd{M-;} (@code{indent-for-comment}) @*
-Indents an existing comment line appropriately, or inserts an
-appropriate comment marker.
-@end itemize
+@code{indent-for-comment} Indents an existing comment line
+appropriately, or inserts an appropriate comment marker.
+@end table
 
 @menu
 * Styles::                      Changing indentation styles
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node Styles,  , Indenting, Indenting
+@node Styles
 @subsection Changing indentation styles
 
 The combined value of nine variables that control indentation are
@@ -1842,29 +1773,34 @@ variable per style.
 
 @deffn Command ess-set-style
 @kindex C-c .
-@pindex ess-set-style
 @kbd{C-c .} Sets the formatting style in this buffer to be one of the
 predefined styles, including @code{GNU}, @code{BSD}, @code{K&R},
 @code{CLB}, and @code{C++}. The @code{DEFAULT} style uses the default
 values for the indenting variables; The @code{OWN} style allows you to
 use your own private values of the indentation variable, see below.
-@end deffn
-
-@defvr {User Option} ess-default-style
-If non-@code{nil}, @kbd{TAB} never tries to complete in ess-mode.
-@end defvr
-
 @example
 (setq ess-default-style 'C++)
 @end example
+@end deffn
 
+@defvr {User Option} ess-default-style
+The default value of @code{ess-style}.  See the variable
+@code{ess-style-alist} for how these groups (DEFAULT, OWN, GNU, BSD,
+@dots{}) map onto different settings for variables.
+@end defvr
+
+@defvr {User Option} ess-style-alist
+Predefined formatting styles for ESS code.  Values for all groups,
+except OWN, are fixed.  To change the value of variables in the OWN
+group, customize the variable @code{ess-own-style-list}.  The default
+style in use is controlled by @code{ess-default-style}.
+@end defvr
 
 The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
 you wish to edit some of the default values, set
 @code{ess-default-style} to @code{'OWN} and change
 @code{ess-own-style-list}.
 @xref{Customization}, for convenient ways to set both these variables.
-
 
 If you prefer not to use the custom facility, you can change individual
 indentation variables within a hook, for example:
@@ -1882,32 +1818,33 @@ calls @code{ess-add-style} with a unique name for your style
 (e.g. @code{'MINE}).  Finally, add @code{(setq ess-default-style 'MINE)}
 to use your new style.
 
-@comment  node-name,  next,  previous,  up
-@node Other edit buffer commands, Source Files, Indenting, Editing objects
+@node Other edit buffer commands
 @section Commands for motion, completion and more
 
 A number of commands are provided to move across function definitions
 in the edit buffer:
-@itemize @bullet
-@item
-@kbd{ESC C-a} aka @kbd{C-M-a} (@code{ess-goto-beginning-of-function-or-para}) @*
+
+@deffn Command ess-goto-beginning-of-function-or-para
+@kindex ESC C-a
 @kindex C-M-a
-@pindex ess-goto-beginning-of-function-or-para
-Moves point to the beginning of the function containing point.
+@kbd{ESC C-a} aka @kbd{C-M-a} If inside a function go to the beginning
+of it, otherwise go to the beginning of paragraph.
+@end deffn
 
-@item
-@kbd{ESC C-e} aka @kbd{C-M-e} (@code{ess-goto-end-of-function-or-para}) @*
+@deffn Command ess-goto-end-of-function-or-para
+@kindex ESC C-e
 @kindex C-M-e
-@pindex ess-goto-end-of-function-or-para
-Moves point to the end of the function containing point.
+@kbd{ESC C-e} aka @kbd{C-M-e} Move point to the end of the function
+containing point.
+@end deffn
 
-@item
-@kbd{ESC C-h} aka @kbd{C-M-h} (@code{ess-mark-function}) @*
-Places point at the beginning of the @Sl{} function containing point, and
-mark at the end.
+@deffn Command ess-mark-function
+@kindex ESC C-h
 @kindex C-M-h
-@pindex ess-mark-function
-@end itemize
+@kbd{ESC C-h} aka @kbd{C-M-h} Place point at the beginning of the @Sl{}
+function containing point, and mark at the end.
+@end deffn
+
 @noindent
 Don't forget the usual Emacs commands for moving over balanced
 expressions and parentheses: @xref{Lists, Lists and Sexps, Lists and
@@ -1919,19 +1856,18 @@ process buffer: @key{TAB} first indents, and if there is nothing to
 indent, completes the object or file name; @kbd{M-?} lists file
 completions. See @xref{Completion}, for more.
 
-Finally, @kbd{C-c C-z} (@code{ess-switch-to-end-of-ESS}) returns you to
-the @code{iESS} process buffer, if done from a script buffer, placing
-point at the end of the buffer.  If this is done from the @code{iESS}
-process buffer, point is taken to the script buffer.
+Finally, @kbd{C-c C-z} (@code{ess-switch-to-inferior-or-script-buffer})
+returns you to the @code{iESS} process buffer, if done from a script
+buffer, placing point at the end of the buffer.  If this is done from
+the @code{iESS} process buffer, point is taken to the script buffer.
 
 In addition some commands available in the process buffer are also
 available in the script buffer.  You can still read help files with
 @kbd{C-c C-v}, edit another function with @kbd{C-c C-e C-d} and of
 course @kbd{C-c C-l} can be used to load a source file into S.
-@xref{Other}, for more details on these commands.
 
-@comment  node-name,  next,  previous,  up
-@node Source Files, Source Directories, Other edit buffer commands, Editing objects
+
+@node Source Files
 @section Maintaining S source files
 
 Every edit buffer in ESS is associated with a @dfn{dump file} on disk.
@@ -1957,12 +1893,12 @@ S's @code{dump} function; it doesn't apply to source files which already
 exist.  The default value is @code{t}.
 
 @defvr {User Option} ess-keep-dump-files
-Option controlling what to do with the dump file after an object has
-been successfully loaded into S.  Valid values are @code{nil} (always
-delete), @code{ask} (always ask whether to delete), @code{check} (delete
-files generated with @kbd{C-c C-e C-d} in this Emacs session, otherwise ask
---- this is the default) and @code{t} (never delete).  This variable is
-buffer-local.
+Variable controlling whether to delete dump files after a successful
+load.  If @samp{nil}: always delete.  If @samp{ask}, confirm to delete.
+If @samp{check}, confirm to delete, except for files created with
+@code{ess-dump-object-into-edit-buffer}.  Anything else, never delete.
+This variable only affects the behaviour of @code{ess-load-file}.  Dump
+files are never deleted if an error occurs during the load.
 @end defvr
 
 After an object has been successfully (i.e. without error) loaded
@@ -2024,8 +1960,7 @@ if you happen to quit Emacs before correcting the error.
 Dump buffers are always autosaved, regardless of the value of
 @code{ess-keep-dump-files}.
 
-@comment  node-name,  next,  previous,  up
-@node Source Directories,  , Source Files, Editing objects
+@node Source Directories
 @section Names and locations of dump files
 
 @cindex dump file names
@@ -2107,14 +2042,14 @@ be created, you will be asked whether you wish to create the directory.
 If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
-@node Help, Completion, Editing objects, Top
+@node Help
 @chapter Reading help files
 @cindex help files
 
 ESS provides an easy-to-use facility for reading @Sl{} help files from
 within Emacs.  From within the ESS process buffer or any ESS edit
 buffer, typing @kbd{C-c C-v} (@code{ess-display-help-on-object})
-@pindex ess-display-help-on-object
+@findex ess-display-help-on-object
 will prompt you for the name of an object for which you would like
 documentation.  Completion is provided over all objects which have help
 files.
@@ -2123,47 +2058,51 @@ If the requested object has documentation, you will be popped into a
 buffer (named @code{*help(@var{obj-name})*}) containing the help file.
 This buffer is placed in a special `S Help' mode which disables the
 usual editing commands but which provides a number of keys for paging
-through the help file:
+through the help file.
 
-@itemize @bullet
 Help commands:
 
-@item
-@kbd{?} (@code{ess-describe-help-mode}) @*
-@pindex ess-describe-help-mode
-Pops up a help buffer with a list of the commands available in @Sl{} help
-mode.
+@table @kbd
+@item ?
+@findex ess-describe-help-mode
+@code{ess-describe-help-mode} Pops up a help buffer with a list of the
+commands available in @Sl{} help mode.
 
-@item
-@kbd{h} (@code{ess-display-help-on-object}) @*
-@pindex ess-display-help-on-object
-Pop up a help buffer for a different object
+@item h
+@findex ess-display-help-on-object
+@code{ess-display-help-on-object} Pop up a help buffer for a different
+object.
+@end table
 
 Paging commands:
-
 @cindex paging commands in help buffers
-@item
-@kbd{b} or @kbd{DEL} (@code{scroll-down}) @*
-Move one page backwards through the help file.
 
-@item
-@kbd{SPC} (@code{scroll-up}) @*
-Move one page forwards through the help file.
+@table @kbd
+@item b
+@itemx DEL
+@code{scroll-down} Move one page backwards through the help file.
 
-@item
-@kbd{>} (@code{beginning-of-buffer}) and @kbd{<} (@code{end-of-buffer})
-@*
-Move to the beginning and end of the help file, respectively.
+@item SPC
+@code{scroll-up} Move one page forwards through the help file.
+
+@item >
+@itemx <
+@code{end-of-buffer} Move to the beginning and end of the help file,
+respectively.
+@end table
 
 Section-based motion commands:
 
-@item
-@kbd{n} (@code{ess-skip-to-next-section}) and @kbd{p}
-(@code{ess-skip-to-previous-section}) @* Move to the next and previous
-@pindex ess-skip-to-next-section
-@pindex ess-skip-to-previous-section
-section header in the help file, respectively.  A section header
-consists of a number of capitalized words, followed by a colon.
+@table @kbd
+@item n
+@itemx p
+@findex ess-skip-to-next-section
+@findex ess-skip-to-previous-section
+@code{ess-skip-to-previous-section} and @code{ess-skip-to-next-section}
+Move to the next and previous section header in the help file,
+respectively.  A section header consists of a number of capitalized
+words, followed by a colon.
+@end table
 
 In addition, the @kbd{s} key followed by one of the following letters
 will jump to a particular section in the help file.
@@ -2184,7 +2123,8 @@ sections @samp{BACKGROUND}, @samp{BUGS}, @samp{OPTIONAL ARGUMENTS},
 @c S and S-plus only:
 @c @item S			SIDE EFFECTS:
 Do use @kbd{s ?} to get the current list of active key bindings.
-@pindex ess-skip-to-help-section
+@findex ess-skip-to-help-section
+
 @table @samp
 @item a
 ARGUMENTS:
@@ -2240,52 +2180,53 @@ Pops up a help buffer with a list of the defined section motion keys.
 
 Evaluation:
 
-@item
-@kbd{l} (@code{ess-eval-line-and-step}) @*
-@pindex ess-eval-line-and-step
-Evaluates the current line in the ESS process, and moves to the next
-line.  Useful for running examples in help files.
+@table @kbd
+@item l
+@findex ess-eval-line-and-step
+@code{ess-eval-line-and-step} Evaluates the current line in the ESS
+process, and moves to the next line.  Useful for running examples in
+help files.
 
-@item
-@kbd{r} (@code{ess-eval-region}) @*
-@pindex ess-eval-region
-Send the contents of the current region to the ESS process.  Useful
-for running examples in help files.
-
+@item r
+@findex ess-eval-region
+@code{ess-eval-region} Send the contents of the current region to the
+ESS process.  Useful for running examples in help files.
+@end table
 
 Quit commands:
 
-@item
-@kbd{q} (@code{ess-help-quit}) @*
-@pindex ess-switch-to-end-of-ESS
-Return to previously selected buffer, and bury the help buffer.
+@table @kbd
+@item q
+@findex ess-switch-to-end-of-ESS
+@code{ess-help-quit} Return to previously selected buffer, and bury the
+help buffer.
 
-@item
-@kbd{k} (@code{kill-buffer}) @*
-Return to previously selected buffer, and kills the help buffer.
+@item k
+@code{kill-buffer} Return to previously selected buffer, and kills the
+help buffer.
 
-@item
-@kbd{x} (@code{ess-kill-buffer-and-go}) @*
-Return to the ESS process, killing this help buffer.
+@item x
+@code{ess-kill-buffer-and-go} Return to the ESS process, killing this
+help buffer.
+@end table
 
 Miscellaneous:
 
-@item
-@kbd{i} (@code{ess-display-index}) @*
-Prompt for a package and display it's help index.
+@table @kbd
+@item i
+@code{ess-display-index} Prompt for a package and display it's help
+index.
 
-@item
-@kbd{v} (@code{ess-display-vignettes}) @*
-Display all available vignettes.
+@item v
+@code{ess-display-vignettes} Display all available vignettes.
 
-@item
-@kbd{w} (@code{ess-display-help-in-browser}) @*
-Display current help page with the web browser.
+@item w
+@code{ess-display-help-in-browser} Display current help page with the
+web browser.
 
-@item
-@kbd{/} (@code{isearch-forward}) @*
-Same as @kbd{C-s}.
-@end itemize
+@item /
+@code{isearch-forward} Same as @kbd{C-s}.
+@end table
 
 In addition, all of the ESS commands available in the edit buffers are
 also available in @Sl{} help mode (@pxref{Edit buffer}).  Of course, the
@@ -2306,13 +2247,12 @@ frame.  If you wish help buffers to appear in their own frame (either
 one per help buffer, or one for all help buffers), you can customize the
 variable @code{ess-help-own-frame}.
 
-@pindex ess-quit
-@pindex ess-cleanup
+@findex ess-quit
+@findex ess-cleanup
 @cindex temporary buffers
 
-@node Completion, Developing with ESS, Help, Top
+@node Completion
 @chapter Completion
-@comment  node-name,  next,  previous,  up
 @menu
 * Object names::
 * Function arguments::
@@ -2321,7 +2261,7 @@ variable @code{ess-help-own-frame}.
 * Icicles::
 @end menu
 
-@node  Object names, Function arguments, Completion, Completion
+@node  Object names
 @section Completion of object names
 @cindex completion of object names
 @cindex command-line completion
@@ -2333,12 +2273,12 @@ controls when completion is allowed to occur.  In @code{ess-mode}
 @key{TAB} first tries to indent, and if there is nothing to indent,
 complete the object name instead.
 
-@itemize @bullet
-@item
-@kbd{TAB} (@code{comint-dynamic-complete}) @*
-@pindex comint-dynamic-complete
-Complete the @Sl{} object name or filename before point.
-@end itemize
+@table @kbd
+@item TAB
+@findex comint-dynamic-complete
+@code{comint-dynamic-complete} Complete the @Sl{} object name or
+filename before point.
+@end table
 
 When the cursor is just after a partially-completed object name,
 pressing @key{TAB} provides completion in a similar fashion to
@@ -2366,13 +2306,10 @@ pressing @kbd{TAB} yet again will complete the object name up to
 uniqueness, etc.  If you just wish to see what completions exist without
 adding any extra characters, type @kbd{M-?}.
 
-@itemize @bullet
-@item
-@kbd{M-?} (@code{ess-list-object-completions}) @*
+@deffn Command ess-list-object-completions
 @kindex M-?
-@pindex ess-list-object-completions
-List all possible completions of the object name at point.
-@end itemize
+@kbd{M-?} List all possible completions of the object name at point.
+@end deffn
 
 ESS also provides completion over the components of named lists and
 environments (after @samp{$}), S4 classes slots (after @@), package and
@@ -2399,7 +2336,6 @@ In the Inferior ESS buffer, if the cursor is not in a string and does
 not follow a (partial) object name, the @key{TAB} key has a third use:
 it expands history references.  @xref{History expansion}.
 
-@c @comment  node-name,  next,  previous,  up
 @c @node Completion details, Transcript, Completion, Entering commands
 
 @c ------ VS: this will change in the next release, thus commented out
@@ -2441,11 +2377,11 @@ directory needs to be refreshed.  If ESS ever becomes confused about
 what objects are available for completion (such as when if refuses to
 complete an object you @strong{know} is there), the command @kbd{M-x
 ess-resynch}
-@pindex ess-resynch
+@findex ess-resynch
 forces the @emph{entire} cache to be refreshed, which should fix the
 problem.
 
-@node Function arguments, Minibuffer completion, Object names, Completion
+@node Function arguments
 @section Completion of function arguments
 
 When inside a function call (i.e. following `@code{(}'), @kbd{TAB}
@@ -2456,12 +2392,11 @@ completion will provide all the arguments of @code{S3} methods known to
 A related functionality is @xref{ESS ElDoc}, which displays function
 arguments in the echo area whenever the point is inside a function call.
 
-@node Minibuffer completion, Auto-complete, Function arguments, Completion
+@node Minibuffer completion
 @section Minibuffer completion
-@comment  node-name,  next,  previous,  up
 
 @cindex IDO completions
-@pindex ess-use-ido, ess-completing-read
+@findex ess-use-ido, ess-completing-read
 From version 12.03, ESS uses @code{IDO} mechanism (part of default
 emacs) for minibuffer completion if @code{ido.el} package is available
 and the value of @code{ess-use-ido} it @code{t} (the default). The
@@ -2469,12 +2404,12 @@ completion command @code{ess-completing-read} falls back on classic
 @code{completion-read} interface if this feature is not available for
 whatever reason.
 
-@node Auto-complete, Icicles, Minibuffer completion, Completion
+@node Auto-complete
 @section Integration with auto-complete package
 @cindex auto-complete
-@pindex ac-source-R
-@pindex ac-source-R-args
-@pindex ac-source-R-objects
+@vindex ac-source-R
+@vindex ac-source-R-args
+@vindex ac-source-R-objects
 ESS provides three sources for @code{Auto Completion} mode:
 @comment (@uref{http://cx4a.org/software/auto-complete/})
 @code{ac-source-R-args}, @code{ac-source-R-objects} and
@@ -2519,7 +2454,7 @@ the inferior R. Bind it to something else:
 (define-key ac-completing-map "\M-k" 'ac-previous)
 @end example
 
-@node Icicles,  , Auto-complete, Completion
+@node Icicles
 @section Icicles
 @cindex icicles
 Another option for comprehensively handling completion in Emacs is via
@@ -2552,9 +2487,8 @@ pattern (repeatable).  You can cycle among the matching candidates,
 choosing with @kbd{RET} or @kbd{mouse-2}.
 
 
-@node Developing with ESS, Extras, Completion, Top
+@node Developing with ESS
 @chapter Developing with ESS
-@comment  node-name,  next,  previous,  up
 
 ESS provides several tools to help you with the development of your R
 packages:
@@ -2565,10 +2499,10 @@ packages:
 * ESS developer::               Develop your packages on the fly
 @end menu
 
-@node ESS tracebug, Editing documentation, Developing with ESS, Developing with ESS
+@node ESS tracebug
 @section ESS tracebug
 @cindex ESS tracebug
-@pindex ess-tracebug
+@findex ess-tracebug
 @emph{Note:} The official ess-tracebug documentation is at
 @uref{http://code.google.com/p/ess-tracebug/}, but it is in the process of
 being moved into this manual.
@@ -2661,7 +2595,7 @@ I   . Goto input event marker backwards . `ess-dbg-goto-input-event-marker'
 @end verbatim
 
 
-@node Editing documentation, ESS developer, ESS tracebug, Developing with ESS
+@node Editing documentation
 @section Editing documentation
 
 ESS provides two ways of writing documentation for R objects. Either
@@ -2674,7 +2608,7 @@ Roxygen package.
 * Roxygen::                     Loading source files into the ESS process
 @end menu
 
-@node R documentation files, Roxygen, Editing documentation, Editing documentation
+@node R documentation files
 @subsection Editing R documentation (Rd) files
 
 @R{} objects are documented in files written in the @dfn{R
@@ -2758,16 +2692,19 @@ accent.
 
 Rd mode can be customized via the following variables.
 
-@table @code
-@item Rd-mode-hook
+@defvr {User Option} Rd-mode-hook
 Hook to be run when Rd mode is entered.
-@item Rd-indent-level
+@end defvr
+
+@defvr {User Option} Rd-indent-level
 The indentation of Rd code with respect to containing blocks.  Default
 is 2.
-@item Rd-to-help-command
+@end defvr
+
+@defvr {User Option} Rd-to-help-command
 The shell command used for converting Rd source to help text.  Default
 is @samp{R CMD Rd2txt}.
-@end table
+@end defvr
 
 To automatically turn on the abbrev and font-lock features of Rd mode,
 add the following lines to one of your Emacs startup files:
@@ -2779,7 +2716,7 @@ add the following lines to one of your Emacs startup files:
            (font-lock-mode 1)))
 @end example
 
-@node Roxygen,  , R documentation files, Editing documentation
+@node Roxygen
 @subsection Editing Roxygen documentation
 @cindex Roxygen
 @cindex roxy
@@ -2819,105 +2756,97 @@ to toggle visibility of Roxygen entries and the Roxygen template.
 All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
 by default in ESS. The following special Emacs commands are provided.
 
-@itemize @bullet
-
-@item
-@kbd{C-c C-o C-o} (@code{ess-roxy-update-entry}) @*
+@deffn Command ess-roxy-update-entry
 @kindex C-c C-o C-o
-@pindex ess-roxy-update-entry
-Generate a Roxygen template or update the parameter list in Roxygen
-entry at point (or above the function at the point). Documented
-parameters that are not in the function are placed last in the list,
-parameters that are not documented and not in the definition are
-dropped. Parameter descriptions are filled if
+@kbd{C-c C-o C-o} Generate a Roxygen template or update the parameter
+list in Roxygen entry at point (or above the function at the
+point). Documented parameters that are not in the function are placed
+last in the list, parameters that are not documented and not in the
+definition are dropped. Parameter descriptions are filled if
 @code{ess-roxy-fill-param-p} is non-nil.
+@end deffn
 
-@item
-@kbd{C-c C-o C-c} (@code{ess-roxy-toggle-roxy-region}) @*
+@deffn Command ess-roxy-toggle-roxy-region @var{beg} @var{end}
 @kindex C-c C-o C-c
-@pindex ess-roxy-toggle-roxy-region
-Toggle the presence of the leading Roxygen string on all lines in the
-marked region. Convenient for transferring text to Roxygen entries and
-to evaluate example fields.
+@kbd{C-c C-o C-c} Toggle the presence of the leading Roxygen string on
+all lines in the marked region (between @var{beg} and
+@var{end}. Convenient for transferring text to Roxygen entries and to
+evaluate example fields.
+@end deffn
 
-@item
-@kbd{C-c C-o C-r} (@code{ess-roxy-preview-Rd}) @*
+@deffn Command ess-roxy-preview-Rd @var{name-file}
 @kindex C-c C-o C-r
-@pindex ess-roxy-preview-Rd
-Use the attached R process to parse the entry at point to obtain the Rd
-code. Convenient for previewing and checking syntax. When used with the
-prefix argument, i.e. @kbd{C-u C-c C-e C-r}, place the content in a
-buffer associated with a Rd file with the same name as the
-documentation. Requires the Roxygen package to be installed.
+@kbd{C-c C-o C-r} Use the attached R process to parse the entry at point
+to obtain the Rd code. Convenient for previewing and checking
+syntax. When used with the prefix argument @var{name-file},
+i.e. @kbd{C-u C-c C-e C-r}, place the content in a buffer associated
+with a Rd file with the same name as the documentation. Requires the
+Roxygen package to be installed.
+@end deffn
 
-@item
-@kbd{C-c C-o C-t} (@code{ess-roxy-preview-HTML}) @*
+@deffn Command ess-roxy-preview-HTML @var{visit-instead-of-open}
 @kindex C-c C-o C-t
-@pindex ess-roxy-preview-Rd
-Use the attached R process to parse the entry at to generate HTML for
-the entry and open it in a browser. When used with the prefix argument,
-i.e. @kbd{C-u C-c C-e C-t}, visit the generated HTML file instead.
-Requires the Roxygen and tools packages to be installed.
+@kbd{C-c C-o C-t} Use the attached R process to parse the entry at to
+generate HTML for the entry and open it in a browser. When used with the
+prefix argument @var{visit-instead-of-open}, i.e. @kbd{C-u C-c C-e C-t},
+visit the generated HTML file instead.  Requires the Roxygen and tools
+packages to be installed.
+@end deffn
 
-@item
-@kbd{C-c C-o p} (@code{ess-roxy-previous-entry}) @*
+@deffn Command ess-roxy-previous-entry
 @kindex C-c C-o p
-@pindex ess-roxy-previous-entry
-Go to start of the Roxygen entry above point.
+@kbd{C-c C-o p} Go to start of the Roxygen entry above point.
+@end deffn
 
-@item
-@kbd{C-c C-o n}  (@code{ess-roxy-next-entry}) @*
+@deffn Command ess-roxy-next-entry
 @kindex C-c C-o n
-@pindex ess-roxy-next-entry
-Go to end of the Roxygen entry above point.
+@kbd{C-c C-o n} Go to end of the Roxygen entry above point.
+@end deffn
 
-@item
-@kbd{C-c C-o C-h} (@code{ess-roxy-hide-all}) @*
+@deffn Command ess-roxy-hide-all
 @kindex C-c C-o C-h
-@pindex ess-roxy-hide-all
-Use the hideshow mode to fold away the visibility of all Roxygen
-entries. Hide-show support must be enabled for this binding to get
-defined.
+@kbd{C-c C-o C-h} Use the hideshow mode to fold away the visibility of
+all Roxygen entries. Hide-show support must be enabled for this binding
+to get defined.
+@end deffn
 
-ESS also advises the following standard editing functions in order to make
-Roxygen editing more intuitive:
+ESS also advises the following standard editing functions in order to
+make Roxygen editing more intuitive:
 
 @c not very precise, TAB calls it indirectly
-@item
-@kbd{TAB} (@code{ess-R-complete-object-name}) @*
-@pindex ess-R-complete-object-name
-Complete Roxygen tag at point. E.g. doing @kbd{TAB} when the point
-is at the end of @code{@@par} completes to @code{@@param}.
+@table @kbd
+@item TAB
+@findex ess-R-complete-object-name
+@code{ess-R-complete-object-name} Complete Roxygen tag at
+point. E.g. doing @kbd{TAB} when the point is at the end of @code{@@par}
+completes to @code{@@param}.
 
-@item
-@kbd{M-h} (@code{mark-paragraph}) @*
-@pindex mark-paragraph
-If the transient mark mode is active, place mark and point at start end
-end of the field at point and activate the mark.
+@item M-h
+@findex mark-paragraph
+@code{mark-paragraph} If the transient mark mode is active, place mark
+and point at start end end of the field at point and activate the mark.
 
-@item
-@kbd{TAB} (@code{ess-indent-command}) @*
-@pindex ess-indent-command
-If hide-show support is enabled, fold away the visibility of the Roxygen
-entry at point.
+@item TAB
+@findex ess-indent-command
+@code{ess-indent-command} If hide-show support is enabled, fold away the
+visibility of the Roxygen entry at point.
 
-@item
-@kbd{M-q} (@code{fill-paragraph}) @*
-@pindex fill-paragraph
-Fill the Roxygen field at point.
+@item M-q
+@findex fill-paragraph
+@code{fill-paragraph} Fill the Roxygen field at point.
 
-@item
-@kbd{C-a} (@code{move-beginning-of-line}) @*
-@pindex move-beginning-of-line
-Move to the point directly to the right of the Roxygen start string.
+@item C-a
+@findex move-beginning-of-line
+@code{move-beginning-of-line} Move to the point directly to the right of
+the Roxygen start string.
 
-@item
-@kbd{ENTER} (@code{newline-and-indent}) @*
-@pindex newline-and-indent
-Insert a new line and the Roxygen prefix string.
-@end itemize
+@item RET
+@findex newline-and-indent
+@code{newline-and-indent} Insert a new line and the Roxygen prefix
+string.
+@end table
 
-@node ESS developer,  , Editing documentation, Developing with ESS
+@node ESS developer
 @section ESS developer
 @cindex ess developer
 
@@ -2954,16 +2883,23 @@ with @kbd{C-c C-t a}, and remove packages with @kbd{C-c C-t r}. When
 developer mode is on, the name of the process in the mode line is
 highlighted with @code{ess-developer-indicator-face}.
 
-@itemize @bullet
-@item @kbd{C-c C-t C-t}(@code{ess-developer}) @*
-      Toggle developer mode on and off.
-@item @kbd{C-c C-t C-a}(@code{ess-developer-add-package}) @*
-      Add  a package to your development list.
-@item @kbd{C-c C-t C-r}(@code{ess-developer-remove-package}) @*
-      Remove a package from your development list.
-@end itemize
+@deffn Command ess-developer @var{val}
+@kindex C-c C-t C-t
+@kbd{C-c C-t C-t} Toggle developer mode on and off.
+@end deffn
+
+@deffn Command ess-developer-add-package @var{from-attached} @var{remove}
+@kindex C-c C-t C-a
+@kbd{C-c C-t C-a} Add a package to your development list.
+@end deffn
+
+@deffn Command ess-developer-remove-package
+@kindex C-c C-t C-r
+@kbd{C-c C-t C-r} Remove a package from your development list.
+@end deffn
 
 When developer mode is on, ESS evaluation commands behave differently:
+
 @itemize @bullet
 
 @item @kbd{C-c C-l} (@code{ess-load-file}) asks for the package to source
@@ -3019,8 +2955,7 @@ namespace. If not found, it is assigned into .GlobalEnv.
 @end itemize
 
 
-@comment  node-name,  next,  previous,  up
-@node Extras, ESS for S, Developing with ESS, Top
+@node Extras
 @chapter Other ESS features and tools
 
 ESS has a few extra features, which didn't fit anywhere else.
@@ -3040,7 +2975,7 @@ ESS has a few extra features, which didn't fit anywhere else.
 * Sweave and AUCTeX::           Support for Sweave in ESS and AUCTeX
 @end menu
 
-@node ESS ElDoc, Handy commands, Extras, Extras
+@node ESS ElDoc
 @section ElDoc
 @cindex ElDoc
 In @code{ElDoc} mode, the echo area displays function's arguments at
@@ -3053,40 +2988,51 @@ file:
 (setq ess-use-eldoc 'script-only)
 @end example
 
-Set @code{ess-use-eldoc} to @code{nil} to stop using @code{ElDoc}
+@defvr {User Option} ess-use-eldoc
+If @samp{t}, activate eldoc in ess-mode and inferior-ess-mode buffers.
+If @samp{'script-only} activate in ess-mode buffers only.  Set
+@code{ess-use-eldoc} to @code{nil} to stop using @code{ElDoc}
 altogether.
+@end defvr
 
-Variable @code{ess-eldoc-show-on-symbol} controls whether the help is
-shown only inside function calls. If set to @code{t}, @code{ElDoc} shows
-help string whenever the point is on a symbol, otherwise (the default),
-shows only when the point is in a function call, i.e. after @code{'('}.
+@defvr {User Option} ess-eldoc-show-on-symbol
+This variable controls whether the help is shown only inside function
+calls. If set to @samp{t}, @code{ElDoc} shows help string whenever the
+point is on a symbol, otherwise (the default), shows only when the point
+is in a function call, i.e. after @samp{'('}.
+@end defvr
 
-The variable @code{ess-eldoc-abbreviation-style} determines how the doc string
-should be abbreviated to fit into minibuffer. Posible values are nil,
-'mild, 'normal, 'strong and 'aggressive. Please see the documentation of
-the variable for more details. The default filter is 'normal.
+@defvr {User Option} ess-eldoc-abbreviation-style
+The variable determines how the doc string should be abbreviated to fit
+into minibuffer. Posible values are @samp{nil}, @samp{mild},
+@samp{normal}, @samp{strong} and @samp{aggressive}. Please see the
+documentation of the variable for more details. The default filter is
+@samp{normal}.
+@end defvr
 
-Ess-eldoc also honors the value of `eldoc-echo-area-use-multiline-p',
-which if set to nil, will cause the truncation of doc string indifferent
-of the value of `ess-eldoc-abbreviation-style'. This way you can combine
-different filter levels with the truncation.
+Ess-eldoc also honors the value of
+@code{eldoc-echo-area-use-multiline-p}, which if set to @samp{nil}, will
+cause the truncation of doc string indifferent of the value of
+@code{ess-eldoc-abbreviation-style}. This way you can combine different
+filter levels with the truncation.
 
-@node Handy commands, Highlighting, ESS ElDoc, Extras
+@node Handy commands
 @section Handy commands
 @cindex Handy commands
-@pindex ess-handy-commands
-@pindex ess-smart-comma
+@findex ess-handy-commands
+@vindex ess-handy-commands
+@findex ess-smart-comma
 @kindex ,
 
-@kbd{C-c h} is bound to @code{ess-handy-commands} and executes commands listed in
-the variable @code{`ess-handy-commands'}. Currently containing:
+@deffn Command ess-handy-commands
+Request and execute a command from @code{ess-handy-commands} list.
+@end deffn
 
+@defvr {User Option} ess-handy-commands
+An alist of custom ESS commands available for call by
+@code{ess-handy-commands} and @code{ess-smart-comma} function.
 
-@c If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
-@c line of an ESS inferior buffer (i.e. at process marker), ESS requests and
-@c executes a command from @code{`ess-handy-commands'} list. If
-@c @code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
-@c `` `` after comma.
+Currently contains:
 
 @table @asis
 @item change-directory
@@ -3112,6 +3058,13 @@ the variable @code{`ess-handy-commands'}. Currently containing:
 @item sos
                  @code{ess-sos}
 @end table
+@end defvr
+
+@c If ``@kbd{,}`` (@code{ess-smart-comma}) is invoked at the beginning of
+@c line of an ESS inferior buffer (i.e. at process marker), ESS requests and
+@c executes a command from @code{`ess-handy-commands'} list. If
+@c @code{ess-R-smart-operators} is t @code{`ess-smart-comma} also inserts
+@c `` `` after comma.
 
 Handy commands: @code{ess-library}, @code{ess-install.packages}, etc -
 ask for item with completion and execute the correspond
@@ -3120,8 +3073,7 @@ package @code{sos}. If package @code{sos} is not found, ask user for
 interactive install.
 
 
-@comment  node-name,  next,  previous,  up
-@node Highlighting, Parens, Handy commands, Extras
+@node Highlighting
 @section Syntactic highlighting of buffers
 
 ESS provides Font-Lock (@pxref{Faces,,Using Multiple Typefaces,
@@ -3130,12 +3082,13 @@ Mode, and @Sl{} Transcript Mode buffers.
 @cindex font-lock mode
 @cindex highlighting
 
-Syntax highlighting within ESS buffers is controlled by the variable
-@code{ess-font-lock-mode}, which by default is true.
-Input to inferior ESS processes is also highlighted syntactically if
-@code{inferior-ess-font-lock-input} is non-nil (the default).
-If you change the value of either of these varibles, you need to restart
-emacs for your changes to take effect.
+Syntax highlighting within ESS buffers is controlled by:
+
+@defvr {User Option} ess-font-lock-mode
+Non-@samp{nil} means we use font lock support for ESS buffers.  Default
+is @samp{t}, to use font lock support.  If you change the value of this
+variable, restart Emacs for it to take effect.
+@end defvr
 
 @c To activate highlighting, you need to turn on Font Lock mode in the
 @c appropriate buffers.  This can be done on a per-buffer basis with
@@ -3145,24 +3098,23 @@ emacs for your changes to take effect.
 @c administrator may have done this for you in @file{ess-site.el}
 @c (@pxref{Customization}).
 
-The font-lock patterns are defined in the following variables, which you
+The font-lock patterns are defined by the following variables, which you
 may modify if desired:
 
-@defvar inferior-ess-R-font-lock-keywords
+@defvr {User Option} inferior-R-font-lock-keywords
 Font-lock patterns for inferior *R* processes.  (There is a
-corresponding @code{inferior-ess-S-font-lock-keywords} for *S*
-processes.) The default value highlights prompts, inputs, assignments,
-output messages, vector and matrix labels, and literals such as
-@samp{NA} and @code{TRUE}.
-@end defvar
+corresponding @code{inferior-S-font-lock-keywords} for *S* processes.)
+The default value highlights prompts, inputs, assignments, output
+messages, vector and matrix labels, and literals such as @samp{NA} and
+@code{TRUE}.
+@end defvr
 
-@defvar ess-R-mode-font-lock-keywords
+@defvr {User Option} ess-R-font-lock-keywords
 Font-lock patterns for ESS R programming mode.  (There is a
-corresponding @code{ess-S-mode-font-lock-keywords} for S buffers.) The
+corresponding @code{ess-S-font-lock-keywords} for S buffers.) The
 default value highlights function names, literals, assignments, source
 functions and reserved words.
-@end defvar
-
+@end defvr
 
 @c 2007-11-08 - this var no longer exists.
 @c @defvar ess-trans-font-lock-keywords
@@ -3171,8 +3123,7 @@ functions and reserved words.
 @c @end defvar
 
 
-@comment  node-name,  next,  previous,  up
-@node Parens, Graphics, Highlighting, Extras
+@node Parens
 @section Parenthesis matching
 
 Emacs and XEmacs have facilities for highlighting the parenthesis
@@ -3188,11 +3139,7 @@ initialisation file:
 @end example
 
 
-
-
-
-@comment  node-name,  next,  previous,  up
-@node Graphics, Imenu, Parens, Extras
+@node Graphics
 @section Using graphics with ESS
 
 @cindex graphics
@@ -3206,8 +3153,7 @@ features for dealing with such plots.
 * winjava::                     Java Graphics Device
 @end menu
 
-@comment  node-name,  next,  previous,  up
-@node printer, X11, Graphics, Graphics
+@node printer
 @subsection Using ESS with the @code{printer()} driver
 
 This is the simplest (and least desirable) method of using graphics
@@ -3224,22 +3170,15 @@ a different number of columns.) Plotting commands do not generate
 graphics immediately, but are stored until the @code{show()} command
 is issued, which displays the current figure.
 
-@comment  node-name,  next,  previous,  up
-@node X11, winjava, printer, Graphics
+@node X11
 @subsection Using ESS with windowing devices
 
 @cindex X windows
 Of course, the ideal way to use graphics with ESS is to use a windowing
 system.  Under X11, this requires that the DISPLAY environment
-variable be appropriately set, which may not always be the case within
-your Emacs process.  ESS provides a facility for setting the value of
-DISPLAY before the ESS process is started if the variable
-@code{ess-ask-about-display}
-@pindex ess-ask-about-display
-is non-@code{nil}.
+variable be appropriately set.
 
-@comment  node-name,  next,  previous,  up
-@node winjava,  , X11, Graphics
+@node winjava
 @subsection Java Graphics Device
 
 @cindex winjava
@@ -3256,8 +3195,7 @@ java.graph()
 interaction and graphics within S-PLUS.  (Thanks to Tim Hesterberg for
 this information.)
 
-@comment  node-name,  next,  previous,  up
-@node Imenu, Toolbar, Graphics, Extras
+@node Imenu
 @section Imenu
 
 Imenu is an Emacs tool for providing mode-specific buffer indexes.  In
@@ -3273,8 +3211,7 @@ function definition.  To examine the regular expression that ESS uses,
 check the value of @code{imenu-generic-expression}.  This value is set
 by various ESS variables such as @code{ess-imenu-S-generic-expression}.
 
-@comment  node-name,  next,  previous,  up
-@node Toolbar, TAGS, Imenu, Extras
+@node Toolbar
 @section Toolbar
 
 The R and S editing modes have support for a toolbar.  This toolbar
@@ -3283,8 +3220,7 @@ for evaluating regions of your source buffers.  The toolbar should be
 present if your emacs can display images.  @xref{Customization}, for ways
 to change the toolbar.
 
-@comment  node-name,  next,  previous,  up
-@node TAGS, Rdired, Toolbar, Extras
+@node TAGS
 @section TAGS
 
 The Emacs tags facility can be used to navigate around your files
@@ -3325,8 +3261,7 @@ R CMD rtags --help
 
 For further details, see @uref{http://developer.r-project.org/rtags.html}
 
-@comment  node-name,  next,  previous,  up
-@node Rdired, Rutils, TAGS, Extras
+@node Rdired
 @section Rdired
 
 Ess-rdired provides a dired-like buffer for viewing, editing and
@@ -3360,8 +3295,7 @@ plot the object, `v' will view it, and `d' will mark the object for
 deletion (`x' will actually perform the deletion).
 
 
-@comment  node-name,  next,  previous,  up
-@node Rutils, Org, Rdired, Extras
+@node Rutils
 @section Rutils
 
 Ess-rutils builds up on ess-rdired, providing key bindings for
@@ -3380,59 +3314,59 @@ in your .emacs.  Once R is started with @kbd{M-x R}, and if the value of
 the customizable variable @code{ess-rutils-keys} is true, several key
 bindings become available in iESS process buffers:
 
-@itemize @bullet
-@item
-@kbd{C-c C-. l} (@command{ess-rutils-local-pkgs}) @*
-@pindex ess-rutils-localpkgs
-List all packages in all available libraries.
+@deffn Command ess-rutils-local-pkgs
+@kindex C-c C-. l
+@kindex C-c C-. l
+@kbd{C-c C-. l} List all packages in all available libraries.
+@end deffn
 
-@item
-@kbd{C-c C-. r} (@command{ess-rutils-repos-pkgs}) @*
-@pindex ess-rutils-repospkgs
-List available packages from repositories listed by
+@deffn Command ess-rutils-repos-pkgs
+@kindex C-c C-. r
+@kbd{C-c C-. r} List available packages from repositories listed by
 @command{getOptions(``repos'')} in the current R session.
+@end deffn
 
-@item
-@kbd{C-c C-. u} (@command{ess-rutils-update-pkgs}) @*
-@pindex ess-rutils-updatepkgs
-Update packages in a particular library and repository.
+@deffn Command ess-rutils-update-pkgs @var{lib} @var{repos}
+@kindex C-c C-. u
+@kbd{C-c C-. u} Update packages in a particular library @var{lib} and
+repository @var{repos}.
+@end deffn
 
-@item
-@kbd{C-c C-. a} (@command{ess-rutils-apropos}) @*
-@pindex ess-rutils-apropos
-Search for a string using apropos.
+@deffn Command ess-rutils-apropos
+@kindex C-c C-. a
+@kbd{C-c C-. a} Search for a string using apropos.
+@end deffn
 
-@item
-@kbd{C-c C-. m} (@command{ess-rutils-rm-all}) @*
-@pindex ess-rutils-rmall
-Remove all R objects.
+@deffn Command ess-rutils-rm-all
+@kindex C-c C-. m
+@kbd{C-c C-. m} Remove all R objects.
+@end deffn
 
-@item
-@kbd{C-c C-. o} (@command{ess-rutils-objs}) @*
-@pindex ess-rutils-objs
-Manipulate R objects; wrapper for @command{ess-rdired}.
+@deffn Command ess-rutils-objs
+@kindex C-c C-. o
+@kbd{C-c C-. o} Manipulate R objects; wrapper for @command{ess-rdired}.
+@end deffn
 
-@item
-@kbd{C-c C-. w} (@command{ess-rutils-load-wkspc}) @*
-@pindex ess-rutils-loadwkspc
-Load a workspace file into R.
+@deffn Command ess-rutils-load-wkspc
+@kindex C-c C-. w
+@kbd{C-c C-. w} Load a workspace file into R.
+@end deffn
 
-@item
-@kbd{C-c C-. s} (@command{ess-rutils-save-wkspc}) @*
-@pindex ess-rutils-savewkspc
-Save a workspace file.
+@deffn Command ess-rutils-save-wkspc
+@kindex C-c C-. s
+@kbd{C-c C-. s} Save a workspace file.
+@end deffn
 
-@item
-@kbd{C-c C-. d} (@command{ess-change-directory}) @*
-@pindex ess-change-directory
-Change the working directory for the current R session.
+@deffn Command ess-change-directory
+@kindex C-c C-. d
+@kbd{C-c C-. d} Change the working directory for the current R session.
+@end deffn
 
-@item
-@kbd{C-c C-. H} (@command{ess-rutils-html-docs}) @*
-@pindex ess-rutils-htmldocs
-Use @command{browse-url} to navigate R html documentation.
-
-@end itemize
+@deffn Command ess-rutils-html-docs
+@kindex C-c C-. H
+@kbd{C-c C-. H} Use @command{browse-url} to navigate R html
+documentation.
+@end deffn
 
 See the submenu @samp{Rutils} under the iESS menu for alternative access
 to these functions.  The function @command{ess-rutils-rsitesearch} is
@@ -3443,7 +3377,7 @@ any Emacs buffer, so can be bound to a user-defined key:
 (eval-after-load "ess-rutils"
   '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
 @end lisp
-@pindex ess-rutils-rsitesearch
+@findex ess-rutils-rsitesearch
 
 Functions for listing objects and packages
 (@command{ess-rutils-local-pkgs}, @command{ess-rutils-repos-pkgs}, and
@@ -3452,9 +3386,7 @@ in @code{ess-rutils-mode}, providing useful key bindings in this mode
 (type @kbd{?} in this buffer for a description).
 
 
-
-@comment  node-name,  next,  previous,  up
-@node Org, Sweave and AUCTeX, Rutils, Extras
+@node Org
 @section Interaction with Org mode
 
 Org-mode (@uref{http://orgmode.org}) now supports reproducible research
@@ -3471,8 +3403,7 @@ data can be passed from the Org document (e.g. from a table) to the ESS
 R process.  (This section contributed by Dan Davison and Eric Schulte.)
 
 
-@comment  node-name,  next,  previous,  up
-@node Sweave and AUCTeX,  , Org, Extras
+@node Sweave and AUCTeX
 @section Support for Sweave in ESS and AUCTeX
 
 ESS provides support for writing and processing Sweave
@@ -3480,34 +3411,33 @@ ESS provides support for writing and processing Sweave
 Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
 document, the following key bindings are available:
 
-@itemize @bullet
-@item
-@kbd{M-n s} (@command{ess-swv-weave}) @*
+@deffn Command ess-swv-weave @var{choose}
 @kindex M-n s
-@pindex ess-swv-weave
-Run Sweave on the current .Rnw file.
+@kbd{M-n s} Run Sweave on the current .Rnw file.  If @var{choose} is
+non-@samp{nil}, offer a menu of available weavers.
+@end deffn
 
-@item
-@kbd{M-n l} (@command{ess-swv-latex}) @*
+@deffn Command ess-swv-latex
 @kindex M-n l
-@pindex ess-swv-latex
-Run LaTeX after Sweave'ing.
+@kbd{M-n l} Run LaTeX after Sweave'ing.
+@end deffn
 
-@item
-@kbd{M-n p} (@command{ess-swv-PS}) @*
-@kindex M-n p
-@pindex ess-swv-PS
-Generate and display a postscript file after LaTeX'ing.
+@deffn Command ess-swv-PS
+@kbd{M-n p} Generate and display a postscript file after LaTeX'ing.
+@end deffn
 
-@item
-@kbd{M-n P} (@command{ess-swv-PDF}) @*
+@deffn Command ess-swv-PDF @var{pdflatex-cmd}
 @kindex M-n P
-@pindex ess-swv-PDF
-Generate and display a PDF file after LaTeX'ing.  The command used to
-generate the PDF file is the first element of
+@kbd{M-n P} Generate and display a PDF file after LaTeX'ing.  Optional
+argument @var{pdflatex-cmd} is the command to use, which by default, is
+the command used to generate the PDF file is the first element of
 @code{ess-swv-pdflatex-commands}.
+@end deffn
 
-@end itemize
+@defvr {User Option} ess-swv-pdflatex-commands
+Commands used by @code{ess-swv-PDF} to run a version of pdflatex; the
+first entry is the default command.
+@end defvr
 
 Sweave'ing with @code{ess-swv-weave} starts an inferior-ESS process, if
 one is not available.  Other commands are available from the
@@ -3526,8 +3456,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
 @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
 
-@comment  node-name,  next,  previous,  up
-@node ESS for S, ESS for SAS, Extras, Top
+@node ESS for S
 @chapter Overview of ESS features for the S family
 @menu
 * ESS(S)--Editing files::
@@ -3539,8 +3468,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @end menu
 @include help-s.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for SAS, ESS for BUGS, ESS for S, Top
+@node ESS for SAS
 @chapter ESS for SAS
 
 @menu
@@ -3556,8 +3484,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @end menu
 @include help-sas.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for BUGS, ESS for JAGS, ESS for SAS, Top
+@node ESS for BUGS
 @chapter ESS for BUGS
 
 @menu
@@ -3567,8 +3494,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @end menu
 @include help-bugs.texi
 
-@comment  node-name,  next,  previous,  up
-@node ESS for JAGS, Mailing lists/bug reports, ESS for BUGS, Top
+@node ESS for JAGS
 @chapter ESS for JAGS
 
 @menu
@@ -3579,8 +3505,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @include help-jags.texi
 
 
-@comment  node-name,  next,  previous,  up@chapter Using S4
-@node Mailing lists/bug reports, Customization, ESS for JAGS, Top
+@node Mailing lists/bug reports
 @chapter Bugs and Bug Reporting, Mailing Lists
 
 @menu
@@ -3590,26 +3515,23 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 * Help with emacs::
 @end menu
 
-@node Bugs, Reporting Bugs, Mailing lists/bug reports, Mailing lists/bug reports
+@node Bugs
 @section Bugs
 @cindex bugs
 @include bugs.texi
 
-@comment  node-name,  next,  previous,  up
-@node Reporting Bugs, Mailing Lists, Bugs, Mailing lists/bug reports
+@node Reporting Bugs
 @section Reporting Bugs
 @cindex bug reports
-@pindex ess-submit-bug-report
+@findex ess-submit-bug-report
 @include bugrept.texi
 
-@comment  node-name,  next,  previous,  up
-@node Mailing Lists, Help with emacs, Reporting Bugs, Mailing lists/bug reports
+@node Mailing Lists
 @section Mailing Lists
 
 @include mailing.texi
 
-@comment  node-name,  next,  previous,  up
-@node Help with emacs,  , Mailing Lists, Mailing lists/bug reports
+@node Help with emacs
 @section Help with emacs
 
 Emacs is a complex editor with many abilities that we do not have space
@@ -3632,9 +3554,7 @@ ESS.
 @c _not_yet_ @end menu
 
 
-
-@comment  node-name,  next,  previous,  up
-@node Customization, Indices, Mailing lists/bug reports, Top
+@node Customization
 @appendix Customizing ESS
 @cindex customization
 
@@ -3653,29 +3573,29 @@ to make it easy to find related variables.
 @c Stephen deleted incomplete variable list Wed 25 Aug 2004.
 
 
-@node Indices,  , Customization, Top
+@node Indices
 @unnumbered Indices
 
 @menu
 * Key index::
-* Variable and command index::
+* Function index::
+* Variable and program index::
 * Concept index::
 @end menu
 
-@node Key index, Variable and command index, Indices, Indices
+@node Key index
 @unnumberedsec Key index
 @printindex ky
 
-@c @node Command Index, Concept Index, Key Index, Indices
-@c @unnumbered Command and Function Index
-@c @printindex fn
+@node Function index
+@unnumberedsec Function index
+@printindex fn
 
-@node Variable and command index, Concept index, Key index, Indices
-@unnumberedsec Variable and command index
+@node Variable and program index
+@unnumberedsec Variable and program index
 @printindex vr
 
-@comment  node-name,  next,  previous,  up
-@node Concept index,  , Variable and command index, Indices
+@node Concept index
 @unnumberedsec Concept Index
 @printindex cp
 
