@@ -4,7 +4,7 @@
 @settitle ESS --- Emacs Speaks Statistics
 @comment %**end of header
 
-@synindex pg vr
+@synindex fn pg
 
 @include ess-defs.texi
 @titlepage
@@ -3578,8 +3578,8 @@ to make it easy to find related variables.
 
 @menu
 * Key index::
-* Function index::
-* Variable and program index::
+* Function and program index::
+* Variable index::
 * Concept index::
 @end menu
 
@@ -3587,12 +3587,12 @@ to make it easy to find related variables.
 @unnumberedsec Key index
 @printindex ky
 
-@node Function index
-@unnumberedsec Function index
-@printindex fn
+@node Function and program index
+@unnumberedsec Function and program index
+@printindex pg
 
-@node Variable and program index
-@unnumberedsec Variable and program index
+@node Variable index
+@unnumberedsec Variable index
 @printindex vr
 
 @node Concept index

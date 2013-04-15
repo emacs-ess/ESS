@@ -89,7 +89,6 @@
 *** Interaction with Org mode
 *** Support for Sweave in ESS and AUCTeX
 
-
 ** Bugs and Bug Reporting, Mailing Lists
 *** Bugs
 *** Reporting Bugs
