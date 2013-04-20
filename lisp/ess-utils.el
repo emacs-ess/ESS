@@ -1045,8 +1045,8 @@ If package_name is R_GlobalEnv or \"\", and time_stamp is less
 recent than the time of the last user interaction to the process,
 then update the entry.
 
-Package_name is \"\" if funname was not found or is a special name,n
-i.e. contains :,$ or @.
+Package_name is \"\" if funname was not found or is a special
+name i.e. contains :,$ or @.
 "
   (when (and funname ;; usually returned by ess--funname.start (might be nil)
              ess-local-process-name
@@ -1064,7 +1064,8 @@ i.e. contains :,$ or @.
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-          (with-current-buffer (ess-command (format ess-funargs-command funname))
+          (with-current-buffer (ess-command (format ess-funargs-command
+                                                    (ess-quote-special-chars funname)))
             (goto-char (point-min))
             (when (re-search-forward "(list" nil t)
               (goto-char (match-beginning 0))

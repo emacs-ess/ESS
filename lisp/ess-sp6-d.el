@@ -112,9 +112,9 @@ New way to do it."
     (run-mode-hooks 'ess-S+-post-run-hook)))
 
 (defvar ess-S+--injected-code
-  ".ess.funargs <- function(object){
-  funname <- deparse(substitute(object))
-  fun <- try(object, silent = TRUE) ## works for special objects also
+  ".ess.funargs <- function(funname){
+  ## funname <- deparse(substitute(object))
+  fun <- try(eval(parse(text=funname)), silent = TRUE)
   if(is.function(fun)) {
     special <- grepl('[:$@[]', funname)
     args <- args(fun)

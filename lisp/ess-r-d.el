@@ -265,8 +265,7 @@ before ess-site is loaded) for it to take effect.")
 
 assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
 
-.ess.funargs <- function(object){
-  funname <- deparse(substitute(object))
+.ess.funargs <- function(funname){
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
     olderr <- getOption('error')
@@ -276,7 +275,7 @@ assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
       options(error = olderr)
     })
   }
-  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  fun <- tryCatch(eval(parse(text=funname)), error=function(e) NULL) ## works for special objects also
   if(is.null(fun)) NULL
   else if(is.function(fun)) {
     special <- grepl('[:$@[]', funname)
