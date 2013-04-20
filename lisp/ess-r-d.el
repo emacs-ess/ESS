@@ -49,6 +49,7 @@
 (require 'easymenu)
 
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
+(autoload 'ess--flush-help-into-current-buffer "ess-help" "(Autoload)" t)
 
 (defvar ess-dev-map
   (let (ess-dev-map)
@@ -974,7 +975,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (let ((buf (get-buffer-create " *ess-command-output*")))
     (when (string-match ":+\\(.*\\)" sym)
       (setq sym (match-string 1 sym)))
-    (ess-command (format inferior-ess-help-command sym) buf)
+    (ess-with-current-buffer buf
+      (ess--flush-help-into-current-buffer sym))
     (with-current-buffer buf
       (ess-help-underline)
       (goto-char (point-min))
