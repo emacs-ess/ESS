@@ -587,6 +587,26 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
        (unless ,no-error
          (error "No current ESS process")))))
 
+(defmacro ess-with-current-buffer (buffer &rest body)
+  "Like `with-current-buffer' but with transfer of some essential
+local ESS vars like `ess-local-process-name'"
+  (declare (indent 1))
+  (let ((lpn (make-symbol "lpn"))
+        (alist (make-symbol "alist")))
+    `(let ((,lpn ess-local-process-name)
+            (,alist ess-local-customize-alist))
+       (with-current-buffer ,buffer
+         (ess-setq-vars-local (eval ,alist))
+         (setq ess-local-process-name ,lpn)
+         ,@body))))
+
+(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+  (font-lock-add-keywords
+   mode
+   '(("(\\(ess-with-current-buffer\\)\\s +\\(\\(\\w\\|\\s_\\)+\\)"
+      (1 font-lock-keyword-face)
+      (2 font-lock-variable-name-face)))))
+
 (defun get-ess-process (&optional name use-another)
   "Return the ESS process named by NAME.  If USE-ANOTHER is non-nil,
 and the process NAME is not running (anymore), try to connect to another if
