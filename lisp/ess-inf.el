@@ -1070,7 +1070,8 @@ FORCE-REDISPLAY to avoid excesive redisplay."
                (if (and sec-prompt (process-get proc 'sec-prompt))
                    nil
                  (if force-redisplay (redisplay 'force))
-                 (process-get proc 'busy))))))
+                 (process-get proc 'busy)))
+      (setq wait (min (* 2 wait) .5)))))
 
 ;; (defun inferior-ess-ordinary-filter (proc string)
 ;;   (let ((old-buffer (current-buffer)))
