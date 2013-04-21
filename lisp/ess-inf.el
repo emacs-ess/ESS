@@ -1166,7 +1166,7 @@ STRING.
   (inferior-ess-mark-as-busy process)
   (if (fboundp (buffer-local-value 'ess-send-string-function
                                    (current-buffer)))
-      ;; sending function is overloaded
+      ;; overloading
       (funcall ess-send-string-function process string visibly)
     (when (and (eq visibly t)
                (null inferior-ess-secondary-prompt)) ; cannot evaluate visibly
@@ -1541,9 +1541,8 @@ TEXT.
            ;; (text (ess-replace-in-string text "\t" " "))
            com pos txt-gt-0)
 
-      (let ((comint-input-filter-functions nil)) ;; comint runs them, don't run twise.
-        (setq text (ess--concat-new-line-maybe
-                    (ess--run-presend-hooks sprocess text))))
+      (setq text (ess--concat-new-line-maybe
+                    (ess--run-presend-hooks sprocess text)))
 
       (with-current-buffer sbuffer
 
@@ -2354,9 +2353,10 @@ to continue it."
 
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
-  (if comint-process-echoes
-      (ess-eval-linewise string nil nil ess-eval-empty)
-    (ess-send-string proc string)))
+  (let ((comint-input-filter-functions nil)) ; comint runs them, don't run twise.
+    (if comint-process-echoes
+        (ess-eval-linewise string nil nil ess-eval-empty)
+      (ess-send-string proc string))))
 
 
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"

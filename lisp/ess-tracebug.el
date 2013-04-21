@@ -521,9 +521,7 @@ in inferior buffers.  ")
                    'ess-tb-R-source-current-file))
     (unless (fboundp 'orig-ess-parse-errors)
       (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
-      (defalias 'ess-parse-errors (symbol-function 'next-error)))
-    ;; hooks
-    (add-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input nil t)))
+      (defalias 'ess-parse-errors (symbol-function 'next-error)))))
 
 (defun ess-tb-stop ()
   "Stop ess traceback session in the current ess process"
@@ -533,7 +531,6 @@ in inferior buffers.  ")
       (when (fboundp 'orig-ess-parse-errors)
         (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
         (fmakunbound 'orig-ess-parse-errors)))
-    (remove-hook 'ess-send-input-hook 'move-last-input-overlay-on-send-input t)
     (if (local-variable-p 'ess-tb-last-input-overlay)
         (delete-overlay ess-tb-last-input-overlay))
     (kill-local-variable 'ess-tb-last-input-overlay)
@@ -668,17 +665,9 @@ This is the value of `next-error-function' in iESS buffers."
 
 (defun inferior-ess-move-last-input-overlay ()
   "Move the overlay to the point."
-  (let ((pbol (if comint-process-echoes
-                  (1- (point-at-bol))
-                (point-at-bol))) ;; such a kludge
-        (pt (point)) )
-    (move-overlay ess-tb-last-input-overlay pbol (max (- pt 2) (+ pbol 2)))))
-
-(defun move-last-input-overlay-on-send-input ()
-  (setq ess-tb-last-input (point-at-bol))
-  (inferior-ess-move-last-input-overlay))
-
-(ess-if-verbose-write "\n<- traceback done")
+  (let ((pbol (point-at-bol)))
+    (move-overlay ess-tb-last-input-overlay
+                  pbol (max (- (point) 2) (+ pbol 2)))))
 
 
 ;;;_* DEBUGGER
