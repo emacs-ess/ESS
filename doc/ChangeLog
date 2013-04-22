@@ -1,6 +1,15 @@
+2013-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* onewfeat.texi/newfeat.texi: migrated pre-5.3.10 new
+	features to old new features in accordance with downloads/OLD;
+	but, I think we need to go further:  is "new" valid
+	more than 2 years, i.e. 5.14+ (07/11)?  However, currently
+	this migration has no practical effect since ess.texi includes
+	both newfeat.texi and onewfeat.texi; does that really make sense?
+
 2013-03-08  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* newfeat.texi: 
+	* newfeat.texi:
 @item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
 
 2013-02-25  Rodney Sparapani  <rsparapa@mcw.edu>

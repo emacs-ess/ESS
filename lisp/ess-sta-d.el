@@ -88,14 +88,14 @@
 (defun ess-sta-remove-comments (string)
   "Remove one-line comments before sending the STRING to process.
 
-This function is used placed in `ess-presend-filter-functions'.
+This function is placed in `ess-presend-filter-functions'.
 "
-  (replace-regexp-in-string "/\\*.*\\*/\\|//.*$" "" string)
-  )
+  (replace-regexp-in-string "/\\*.*\\*/\\|^//.*$" "" string))
 
 ;; (ess-sta-remove-comments "aaa /* sdfdsf */ bbb
 ;; sdfsd
-;;  ccc // sdfsf
+;;  ccc
+;; // sdfsf
 ;; sdf /* sdfdsf */
 ;; sdfsf
 ;; " )

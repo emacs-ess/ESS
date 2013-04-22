@@ -159,56 +159,48 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
                             ess-current-process-name
                             "](" object ")*"))
            (old-hb-p    (get-buffer hb-name))
-           (tbuffer     (get-buffer-create hb-name))
-           (lproc-name  ess-local-process-name)
-           (alist       ess-local-customize-alist))
-
+           (tbuffer     (get-buffer-create hb-name)))
       (when (or (not old-hb-p)
                 current-prefix-arg
                 (ess--help-get-bogus-buffer-substring old-hb-p))
-
-        (with-current-buffer tbuffer
-          (ess-write-to-dribble-buffer
-           (format "(ess-help '%s' start  ..\n" hb-name))
-          (ess-setq-vars-local (eval alist))
+        (ess-with-current-buffer tbuffer
           (setq ess-help-object object
-                ess-help-type 'help
-                ess-local-process-name lproc-name)
-
-          ;; Ask the corresponding ESS process for the help file:
-          (if buffer-read-only (setq buffer-read-only nil))
-          (delete-region (point-min) (point-max))
-          (ess-help-mode)
-          (setq ess-local-process-name ess-current-process-name)
-          (when (and (null command)
-                   (string-match "^R" ess-dialect))
-            ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogs (should go away soon)
-            (let ((packs (ess-get-words-from-vector
-                          (format "as.character(help('%s'))\n" object))))
-              (when (> (length packs) 1)
-                (setq
-                 command (format ;; crippled S3 :(
-                          "do.call(structure, c('%s', attributes(help('%s'))))\n"
-                          (ess-completing-read "Choose location" packs nil t)
-                          object)))))
-          (ess-command (format (or command inferior-ess-help-command)
-                               object) tbuffer)
-          (ess-help-underline)
-          ;;VS[03-09-2012]: todo this should not be here:
-          ;; Stata is clean, so we get a big BARF from this.
-          (unless (string= ess-language "STA")
-            (ess-nuke-help-bs))
-          (goto-char (point-min))
-          (set-buffer-modified-p 'nil)
-          (setq buffer-read-only t)
-          (setq truncate-lines nil)
-          (ess-write-to-dribble-buffer
-           (format "(ess-help '%s' done  ..\n" hb-name))
-           ))
-
+                ess-help-type 'help)
+          (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
-        (ess--switch-to-help-buffer tbuffer))
-      )))
+        (ess--switch-to-help-buffer tbuffer)))))
+
+(defun ess--flush-help-into-current-buffer (object &optional command)
+  (ess-write-to-dribble-buffer
+   (format "(ess-help '%s' start  ..\n" (buffer-name (current-buffer))))
+
+  ;; Ask the corresponding ESS process for the help file:
+  (if buffer-read-only (setq buffer-read-only nil))
+  (delete-region (point-min) (point-max))
+  (ess-help-mode)
+  (when (and (null command)
+             (string-match "^R" ess-dialect))
+    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogs (should go away soon)
+    (let ((packs (ess-get-words-from-vector
+                  (format "as.character(help('%s'))\n" object))))
+      (when (> (length packs) 1)
+        (setq
+         command (format ;; crippled S3 :(
+                  "do.call(structure, c('%s', attributes(help('%s'))))\n"
+                  (ess-completing-read "Choose location" packs nil t)
+                  object)))))
+  (ess-command (format (or command inferior-ess-help-command)
+                       object) (current-buffer))
+  (ess-help-underline)
+  ;;VS[03-09-2012]: todo: this should not be here:
+  ;; Stata is clean, so we get a big BARF from this.
+  (unless (string= ess-language "STA")
+    (ess-nuke-help-bs))
+  (goto-char (point-min))
+  (set-buffer-modified-p 'nil)
+  (setq buffer-read-only t)
+  (setq truncate-lines nil))
+
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus buffer with message. Return t if killed."

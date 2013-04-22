@@ -322,7 +322,7 @@
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
-    (inferior-ess-primary-prompt	. "a> ") ;; from julia> 
+    (inferior-ess-primary-prompt	. "a> ") ;; from julia>
     (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
@@ -376,9 +376,9 @@ beginning with one of these strings is found on `exec-path', a M-x
 command for that version of Julia is made available.  ")
 
 (defcustom inferior-julia-args ""
-  "String of arguments (see 'julia --help') used when starting julia.
-These arguments are currently not passed to other versions of julia that have
-been created using the variable `ess-r-versions'."
+  "String of arguments (see 'julia --help') used when starting julia."
+;; These arguments are currently not passed to other versions of julia that have
+;; been created using the variable `ess-r-versions'."
   :group 'ess-julia
   :type 'string)
 
@@ -412,11 +412,11 @@ been created using the variable `ess-r-versions'."
 (defun julia (&optional start-args)
   "Call 'julia',
 Optional prefix (C-u) allows to set command line arguments, such as
---vsize.  This should be OS agnostic.
+--load=<file>.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
-to R, put them in the variable `inferior-julia-args'."
+to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
-  ;; get settings, notably inferior-R-program-name :
+  ;; get settings, notably inferior-julia-program-name :
   (if (null inferior-julia-program-name)
       (error "'inferior-julia-program-name' does not point to 'julia-release-basic' executable")
     (setq ess-customize-alist julia-customize-alist)

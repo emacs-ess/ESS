@@ -49,6 +49,7 @@
 (require 'easymenu)
 
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
+(autoload 'ess--flush-help-into-current-buffer "ess-help" "(Autoload)" t)
 
 (defvar ess-dev-map
   (let (ess-dev-map)
@@ -265,8 +266,7 @@ before ess-site is loaded) for it to take effect.")
 
 assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
 
-.ess.funargs <- function(object){
-  funname <- deparse(substitute(object))
+.ess.funargs <- function(funname){
   if(getRversion() > '2.14.1'){
     comp <- compiler::enableJIT(0L)
     olderr <- getOption('error')
@@ -276,7 +276,7 @@ assignInNamespace(\".help.ESS\", .help.ESS, ns=asNamespace(\"base\"))
       options(error = olderr)
     })
   }
-  fun <- tryCatch(object, error=function(e) NULL) ## works for special objects also
+  fun <- tryCatch(eval(parse(text=funname)), error=function(e) NULL) ## works for special objects also
   if(is.null(fun)) NULL
   else if(is.function(fun)) {
     special <- grepl('[:$@[]', funname)
@@ -975,7 +975,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (let ((buf (get-buffer-create " *ess-command-output*")))
     (when (string-match ":+\\(.*\\)" sym)
       (setq sym (match-string 1 sym)))
-    (ess-command (format inferior-ess-help-command sym) buf)
+    (ess-with-current-buffer buf
+      (ess--flush-help-into-current-buffer sym))
     (with-current-buffer buf
       (ess-help-underline)
       (goto-char (point-min))

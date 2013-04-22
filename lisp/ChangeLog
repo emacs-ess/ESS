@@ -1,3 +1,15 @@
+2013-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-edit-keys-toggle): `sas-indent-line' still
+	broken (going on 15 years AFAIK) resulting in futile bug reports
+	(and precious little bug-fixing): changing the default to t so
+	TAB is bound to `ess-sas-tab-to-tab-stop' by default
+
+2013-04-06  Henning Redestig  <henning.red@gmail.com>
+
+	* ess-s-l.el (ess-smart-S-assign): rename (ess-smart-underscore-*)
+	to (ess-smart-S-assign-*) and create aliases to remain compatible.
+
 2013-03-07  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-custom.el/ess-sas-d.el (SAS-mode-hook): creation

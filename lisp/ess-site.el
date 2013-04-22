@@ -230,7 +230,10 @@ between .s or .S files and assembly mode.
           (remassoc "\\.[qsS]\\'" auto-mode-alist))
     ;; put .q extention back
     ;; (add-to-list is in xemacs and GNU emacs)
-    (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))))
+    ;; R-mode when in a R/ subdirectory, otherwise S-mode:
+    (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
+    (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))
+    ))
 
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
@@ -239,7 +242,8 @@ between .s or .S files and assembly mode.
   (setq auto-mode-alist
         (append
          '(("\\.sp\\'"          . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-           ("\\.[qsS]\\'"       . S-mode) ;; q,s,S [see ess-restore-asm-extns above!]
+           ("/R/.*\\.q\\'"      . R-mode) ;; R/*.q is R code (e.g., in package)
+           ("\\.[qsS]\\'"       . S-mode) ;; s,S [see ess-restore-asm-extns above!]
            ("\\.ssc\\'"         . S-mode) ;; Splus (>= 4.x) script files.
            ("\\.SSC\\'"         . S-mode) ;; ditto for windoze
            ("\\.[rR]\\'"        . R-mode)
