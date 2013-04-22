@@ -1295,8 +1295,7 @@ explicit interrupt-callback.
                            (run-with-timer ,delay nil 'ess-async-command-delayed
                                            ,com ,buf ,proc ,callback ,delay))
                          (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
-    (run-with-idle-timer delay nil com-fun)
-    ))
+    (run-with-idle-timer delay nil com-fun)))
 
 ;; ;;; VS[03-09-2012]: Test Cases:
 ;; (ess-command "a<-0\n" nil nil nil nil (get-process "R"))
@@ -1322,11 +1321,11 @@ explicit interrupt-callback.
   "Asynchronous version of ess-command.
 COM, BUF, WAIT and PROC are as in `ess-command'.
 
-CALLBACK is a function to run after the successful
-execution. DELAY is a number of seconds to delay execution. When
-CAN-INTERRUPT is non-nil, user evaluation can interrupt the
-job. In this case the job will be resumed again on
-`ess-idle-timer-interval' seconds.
+CALLBACK is a function of one argument (PROC) to run after the
+successful execution. When INTERRUPT-CALLBACK is non-nil, user
+evaluation can interrupt the job. INTERRUPT-CALLBACK should be
+either t or a function of one argument (PROC) to be called on
+interruption.
 
 NOTE: Currently this function should be used only for background
 jobs like caching. ESS tries to suppress any output from the
