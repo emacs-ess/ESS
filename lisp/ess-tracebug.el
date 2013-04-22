@@ -194,15 +194,19 @@ referenced buffer.
 (make-variable-buffer-local 'ess--tb-buffer-sym)
 
 (defvar org-src-mode)
+(defvar org-edit-src-beg-marker)
+;; hash to store soruce references of the form: tmpname -> (filename . src_start)
+(defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
 
-(defun ess--tb-get-source-refd-string (beg end)
+(defun ess--make-source-refd-command (beg end)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
   (let ((filename buffer-file-name))
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
+    ;; fixme: this is not needed I guess, hash does all the job
     (unless ess--tb-buffer-sym
       (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
-    (unless filename ;; org, etc
+    (unless filename ;; org
       (setq filename (format "[%s]" ess--tb-buffer-sym))
       (when (and (boundp 'org-src-mode) org-src-mode)
         (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
@@ -216,14 +220,17 @@ block (used for source references insertion)"
     (when (looking-back "\\s +") ;drop the end empty lines
       (re-search-backward "[^ \t\n]" nil t)
       (setq end (point-at-eol)))
-    (let ((buffer-undo-list t)
-          (mod? (buffer-modified-p)))
-      (put-text-property beg end 'tb-index ess--tracebug-eval-index)
-      (if (not mod?) (set-buffer-modified-p nil))) ;; put-text-property markes buffer as modified
-    (format "eval(parse(text=\"%s\",srcfile=srcfile(\"%s@%d\")))\n"
-            (ess-quote-special-chars (buffer-substring-no-properties beg end))
-            filename ess--tracebug-eval-index)))
-
+    (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
+           (tmpfile (concat dir (file-name-nondirectory filename) "@"
+                            (number-to-string ess--tracebug-eval-index))))
+      (unless (file-exists-p dir)
+        (make-directory dir))
+      ;; file is not deleted but overwriten between sessions
+      (write-region beg end tmpfile nil 'silent)
+      (puthash tmpfile (list filename ess--tracebug-eval-index beg) ess--srcrefs)
+      (with-silent-modifications
+        (put-text-property beg end 'tb-index ess--tracebug-eval-index))
+      (format inferior-ess-load-command tmpfile))))
 
 
 (defun ess-tracebug-send-region (proc start end &optional visibly message func)
@@ -236,7 +243,7 @@ FUNC must be non-nil if the region contains a function definition. "
                       (buffer-substring start end)
                     visibly))
          (string (if inject-p
-                     (ess--tb-get-source-refd-string start end)
+                     (ess--make-source-refd-command start end)
                    (buffer-substring start end))))
     (ess-send-string proc string visibly message)))
 
@@ -1253,22 +1260,21 @@ is non nil, attempt to open the location in a different window."
                           (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)))
         (message "Referenced %s not found" (car ref))))))
 
-(defun ess-dbg-goto-ref (other-window file line &optional col tb-index)
+(defun ess-dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
 Try to open in a different window if OTHER-WINDOW is nil.  Return
 the buffer if found, or nil otherwise be found.
 `ess-dbg-find-buffer' is used to find the FILE and open the
-associated buffer. If FILE is nil or TB-INDEX is not found
-returns nil.
+associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess-dbg-get-ref-marker file line col tb-index))))
+  (let ((mrk (car (ess-dbg-get-ref-marker file line col))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
-(defun ess-dbg-get-ref-marker (file line &optional col tb-index)
+(defun ess-dbg-get-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
 position of error. Mk-end is the begging of the line where error
@@ -1279,23 +1285,25 @@ TB-INDEX is not found return nil.
 "
   (if (stringp line) (setq line (string-to-number line)))
   (if (stringp col) (setq col (string-to-number col)))
-  (when (and (string-match "\\(.*\\)@\\([0-9]+\\)\\'" file ) ;get tb-index
-             (null tb-index))
-    (setq tb-index (string-to-number (match-string 2 file)))
-    (setq file (match-string 1 file)))
-  (let ((buffer (ess-dbg-find-buffer  file))
-        pos)
-    (when (and buffer  line)
+  (let* ((srcref (gethash file ess--srcrefs))
+         (file (or (car srcref) file))
+         (tb-index (cadr srcref))
+         (buffer (ess-dbg-find-buffer file))
+         pos)
+    (when (and buffer line)
       (save-excursion
         (with-current-buffer buffer
           (save-restriction
-            (widen) ;; need this tothink:
+            (widen) ;; how does this behave in narrowed buffers? tothink:
             (goto-char 1)
             (setq pos (point))
             (when tb-index
               (while (and (not (eq tb-index (get-text-property pos 'tb-index)))
                           (setq pos (next-single-property-change pos 'tb-index)))))
-            (when pos ;; if tb-index is not found return nil
+            (unless pos
+              ;; use beg position if index not found
+              (setq pos (nth 2 srcref)))
+            (when pos
               (goto-char pos)
               (forward-line (1- line))
               (if col
@@ -1316,7 +1324,8 @@ If FILENAME is not found at all, ask the user where to find it if
         buffsym buffer  thisdir fmts name buffername )
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
     ;; 0. get the buffsym reference if discovered
-    ;; (message filename)
+    ;; todo: this one is probably redundant, and if not it should be done with
+    ;; a ess--srcrefs hash
     (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
       (setq buffsym (match-string 2 filename)
             filename (match-string 1 filename))
@@ -1370,8 +1379,8 @@ If FILENAME is not found at all, ask the user where to find it if
                 (ding) (sit-for 2))
                (t
                 (setq buffer (find-file-noselect name))))))))
-    buffer);; nil if not found
-  )
+    ;; nil if not found
+    buffer))
 
 (defun ess-dbg-get-next-ref (n &optional pt BOUND REG nF nL nC)
   "Move point to the next reference in the *ess.dbg* buffer.
