@@ -1156,12 +1156,17 @@ associated with PROCESS `ess-presend-filter-functions'  hooks.
 
 (defun ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
-Removes empty lines during the debugging.
 STRING  need not end with \\n.
 
 Run `comint-input-filter-functions' and current buffer's and
 PROCESS' `ess-presend-filter-functions' hooks on the input
 STRING.
+
+VISIBLY can be nil, t, 'nowait or a string. If string the
+behavior is as with 'nowait with the differences that inserted
+string is VISIBLY instead of STRING (evaluated command is still
+STRING). In all other cases the behavior is as described in
+`ess-eval-visibly'.
 "
   (setq string (ess--run-presend-hooks process string))
   (inferior-ess--interrupt-subjob-maybe process)
@@ -1176,13 +1181,17 @@ STRING.
     (cond ((eq visibly t) ;; wait after each line
            (let ((ess--inhibit-presend-hooks t))
              (ess-eval-linewise string)))
-          ((eq visibly 'nowait) ;; insert command and eval invisibly .
+          ((or (stringp visibly)
+               (eq visibly 'nowait)) ;; insert command and eval invisibly .
            (with-current-buffer (process-buffer process)
              (save-excursion
-                 (goto-char (process-mark process))
-                 (insert-before-markers
-                  (propertize (format "%s\n" (replace-regexp-in-string  "\n[ \t]" "\n+ " string))
-                              'font-lock-face 'comint-highlight-input)))
+               (goto-char (process-mark process))
+               (insert-before-markers
+                (propertize (format "%s\n"
+                                    (replace-regexp-in-string
+                                     "\n[ \t]" "\n+ "
+                                     (if (stringp visibly) visibly string)))
+                            'font-lock-face 'comint-highlight-input)))
              (process-send-string process (ess--concat-new-line-maybe string))))
           (t
            (process-send-string process (ess--concat-new-line-maybe string)))))
