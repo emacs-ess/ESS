@@ -232,7 +232,9 @@ FUNC must be non-nil if the region contains a function definition. "
   (let* ((inject-p  (or (and ess-tracebug-inject-source-p func)
                         (eq ess-tracebug-inject-source-p t)))
          (ess--dbg-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
-         (visibly (if inject-p nil visibly))
+         (visibly (if (and visibly inject-p)
+                      (buffer-substring start end)
+                    visibly))
          (string (if inject-p
                      (ess--tb-get-source-refd-string start end)
                    (buffer-substring start end))))
