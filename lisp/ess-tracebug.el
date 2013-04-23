@@ -235,6 +235,8 @@ block (used for source references insertion)"
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
       (puthash tmpfile (list filename ess--tracebug-eval-index beg) ess--srcrefs)
+      (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+               (list filename ess--tracebug-eval-index beg) ess--srcrefs)
       (with-silent-modifications
         (put-text-property beg end 'tb-index ess--tracebug-eval-index))
       (format inferior-ess-load-command tmpfile))))
