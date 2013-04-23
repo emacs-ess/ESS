@@ -426,8 +426,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (cond
    ((string-match "^R" ess-dialect) (ess-R-display-vignettes))
-   (t (message "Sorry, not implemented for %s" ess-dialect))
-   ))
+   (t (message "Sorry, not implemented for %s" ess-dialect))))
 
 (defun ess-R-display-vignettes ()
   "Display R vignettes in ess-help-like buffer."
@@ -453,7 +452,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
               (setq details nil)))
           ))
       (setq buff  (get-buffer-create (format "*[%s]vignettes*"  ess-dialect)))
-      (with-current-buffer buff
+      (ess-with-current-buffer buff
         (setq buffer-read-only nil)
         (delete-region (point-min) (point-max))
         (ess-setq-vars-local (eval alist))
