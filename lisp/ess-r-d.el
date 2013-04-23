@@ -61,7 +61,7 @@
     (define-key ess-dev-map "\C-a" 'ess-developer-add-package)
     (define-key ess-dev-map "r" 'ess-developer-remove-package)
     (define-key ess-dev-map "\C-r" 'ess-developer-remove-package)
-    (define-key ess-dev-map "`" 'ess-show-R-traceback)
+    (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "w" 'ess-watch)
     (define-key ess-dev-map "\C-w" 'ess-watch)
     (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
@@ -118,11 +118,13 @@ This commands are triggered by `ess-singlekey-debug' .
 or nil."
   :group 'ess-debug
   :type '(choice (const control) (const meta) (const super) (const nil))
-  :set (lambda (sym value)
-         (set-default sym value)
-         (map-keymap (lambda (type key)
-                       (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
-                     ess-singlekey-debug-map)))
+  :set 'ess--set-dbg-prefix-key)
+
+(defun ess--set-dbg-prefix-key (sym value)
+  (set-default sym value)
+  (map-keymap (lambda (type key)
+                (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
+              ess-singlekey-debug-map))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -141,12 +143,22 @@ or nil."
   '("Tracebug"
     :visible (and ess-dialect (string-match "^R" ess-dialect))
     ;; :enable ess-local-process-name
-    ["Active?"          ess-toggle-tracebug
+    ["Active?"  ess-toggle-tracebug
      :style toggle
-     :selected (and ess-local-process-name
-                    (get-process ess-local-process-name)
-                    (ess-process-get 'tracebug))]
-    ["Show traceback" ess-show-R-traceback ess-local-process-name]
+     :selected (or (and ess-local-process-name
+                        (get-process ess-local-process-name)
+                        (ess-process-get 'tracebug))
+                   ess-use-tracebug)]
+    ("Prefix"
+     ["control" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'control))
+      :style radio :enable t :selected (eq ess-dbg-prefix-key 'control)]
+     ["meta" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'meta))
+      :style radio :enable t :selected (eq ess-dbg-prefix-key 'meta)]
+     ["super" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'super))
+      :style radio :enable t :selected (eq ess-dbg-prefix-key 'super)]
+     ["no prefix" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key nil))
+      :style radio :enable t :selected (eq ess-dbg-prefix-key 'nil)])
+    ["Show traceback" ess-show-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
                              (get-process ess-local-process-name)
                              (ess-process-get 'tracebug))]
@@ -164,8 +176,7 @@ or nil."
     ["Next BP" ess-bp-next t]
     ["Previous BP" ess-bp-previous t]
     "-----"
-    ["About" ess-tracebug-show-help t]
-    ))
+    ["About" ess-tracebug-show-help t]))
 
 (easy-menu-define ess-developer-menu nil
   "Developer submenu."
@@ -177,8 +188,7 @@ or nil."
                     (get-process ess-local-process-name)
                     (ess-process-get 'developer))]
     ["Add package" ess-developer-add-package t]
-    ["Remove package" ess-developer-remove-package t]
-    ))
+    ["Remove package" ess-developer-remove-package t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
