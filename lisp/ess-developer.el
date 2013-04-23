@@ -206,7 +206,7 @@ otherwise call devSource."
                        (equal "TRUE" (car (ess-get-words-from-vector
                                            (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
               (let ((comm (if tracebug
-                              (ess--tb-get-source-refd-string beg end)
+                              (ess--make-source-refd-command beg end)
                             (buffer-substring beg end))))
                 (ess-developer-devSource-string proc comm ns)
                 (setq assigned-p t)
@@ -225,7 +225,7 @@ otherwise call devSource."
         (ess-developer-send-region-fallback proc beg end visibly message tracebug)
       ;; else, (ignore VISIBLY here)
       (let ((comm  (if tracebug
-                       (ess--tb-get-source-refd-string beg end)
+                       (ess--make-source-refd-command beg end)
                      (buffer-substring-no-properties beg end))))
         (ess-developer-devSource-string proc comm package message)))))
 
