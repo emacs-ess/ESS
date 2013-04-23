@@ -670,7 +670,7 @@ This is the value of `next-error-function' in iESS buffers."
       (let* ((file (caar (nth 2 loc)))
              (col (car loc))
              (line (cadr loc))
-             (mkrs (ess-dbg-get-ref-marker file line col)))
+             (mkrs (ess-dbg-create-ref-marker file line col)))
         (if mkrs
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
           (message "Reference to '%s' not found" file))))))
@@ -1258,17 +1258,17 @@ the buffer if found, or nil otherwise be found.
 `ess-dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess-dbg-get-ref-marker file line col))))
+  (let ((mrk (car (ess-dbg-create-ref-marker file line col))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
-(defun ess-dbg-get-ref-marker (file line &optional col)
+(defun ess-dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
-position of error. Mk-end is the begging of the line where error
+position of error. Mk-end is the end of the line where error
 occurred.
 
 If buffer associated with FILE is not found, or line is nil, or
@@ -1299,8 +1299,8 @@ TB-INDEX is not found return nil.
               (forward-line (1- line))
               (if col
                   (goto-char (+ (point-at-bol) col))
-                (end-of-line))
-              (list (point-marker) (copy-marker (point-at-bol))))))))))
+                (back-to-indentation))
+              (list (point-marker) (copy-marker (point-at-eol))))))))))
 
 
 (defun ess-dbg-find-buffer (filename)
