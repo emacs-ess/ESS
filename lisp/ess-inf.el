@@ -474,8 +474,9 @@ Taken from octave-mod.el."
 
 
 (defun ess--show-process-buffer-on-error (string proc)
-  (when (string-match "Error\\(:\\| +in\\)" string)
-    (ess-show-buffer (process-buffer proc))))
+  (let ((case-fold-search nil))
+    (when (string-match "Error\\(:\\| +in\\)" string)
+      (ess-show-buffer (process-buffer proc)))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
