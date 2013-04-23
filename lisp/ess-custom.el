@@ -1679,6 +1679,9 @@ Set to nil if language doesn't support secondary prompt.")
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
 ;; (setq-default inferior-ess-secondary-prompt "+ ")
 
+(defvar ess-traceback-command nil
+  "Command to generate error traceback.")
+
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
 (defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*> "

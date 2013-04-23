@@ -2081,7 +2081,7 @@ for `ess-eval-region'."
     (define-key map "\C-c\M-l" 'ess-load-file);; no longer overwrites C-c C-l;
     ;; but for now the user deserves a message:
     (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
-    (define-key map "\C-c`"    'ess-parse-errors)
+    (define-key map "\C-c`"      'ess-show-traceback)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-q" 'ess-quit)

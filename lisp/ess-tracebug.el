@@ -556,7 +556,7 @@ in inferior buffers.  ")
 ;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
 
-(defun ess-show-R-traceback ()
+(defun ess-show-traceback ()
   "Display R traceback and last error message.
 Pop up a compilation/grep/occur like buffer. Usual global key
 bindings are available \(\\[next-error] and \\[previous-error]\)
@@ -576,7 +576,8 @@ You can bind 'no-select' versions of this commands:
     (with-current-buffer trbuf
       (setq buffer-read-only nil)
       (setq ess-local-process-name lproc-name)
-      (ess-command  "try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)\n" trbuf)
+      (ess-command ess-traceback-command trbuf)
+      ;; fixme: this is R specific check
       (if (string= "No traceback available" (buffer-substring 1 23))
           (message "No traceback available")
         (ess-dirs)
@@ -601,6 +602,8 @@ You can bind 'no-select' versions of this commands:
 
         (setq buffer-read-only t)
         (pop-to-buffer trbuf)))))
+
+(defalias 'ess-show-R-traceback 'ess-show-traceback)
 
 (defun ess-tb-next-error-goto-process-marker ()
   ;; assumes current buffer is the process buffer with compilation enabled

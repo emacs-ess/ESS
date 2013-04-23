@@ -152,7 +152,7 @@
     (define-key map "\M-?"       'ess-list-object-completions)
     ;; wrong here (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map "\C-c\C-k"   'ess-force-buffer-current)
-    (define-key map "\C-c`"      'ess-parse-errors) ; \C-x reserved!
+    (define-key map "\C-c`"      'ess-show-traceback)
     (define-key map "\C-c."      'ess-set-style); analogous to binding in C-mode
     (define-key map "{"          'ess-electric-brace)
     (define-key map "}"          'ess-electric-brace)
