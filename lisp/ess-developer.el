@@ -212,8 +212,7 @@ otherwise call devSource."
                 (setq assigned-p t)
                 )))
           (unless assigned-p
-            (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-          )))))
+            (ess-developer-send-region-fallback proc beg end visibly message tracebug)))))))
 
 (defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
   "Ask for for the package and devSource region into it."
