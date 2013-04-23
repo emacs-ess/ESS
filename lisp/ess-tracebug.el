@@ -90,8 +90,10 @@ The postfix keys are defined in `ess-tracebug-map':
 "
   :type 'string
   :group 'ess-tracebug)
-
 (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
+
+
+
 
 (defcustom ess-tracebug-inject-source-p 'function
   "Control the source injection into evaluated code.
@@ -130,64 +132,69 @@ Use `add-hook' to insert append your functions to this list.
   :group 'ess-tracebug
   :type 'hook)
 
-(defvar ess-tracebug-map
-  (let (ess-tracebug-map)
-    (define-prefix-command 'ess-tracebug-map)
-    (define-key ess-tracebug-map "`" 'ess-show-R-traceback)
-    (define-key ess-tracebug-map "w" 'ess-watch)
-    (define-key ess-tracebug-map "\C-w" 'ess-watch)
-    (define-key ess-tracebug-map "i" 'ess-dbg-goto-input-event-marker)
-    (define-key ess-tracebug-map "I" 'ess-dbg-goto-input-event-marker)
-    (define-key ess-tracebug-map "d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-tracebug-map "\C-d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-tracebug-map "D" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "\C-D" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "\C-u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "b" 'ess-bp-set)
-    (define-key ess-tracebug-map "\C-b" 'ess-bp-set)
-    (define-key ess-tracebug-map "B" 'ess-bp-set-conditional)
-    (define-key ess-tracebug-map "\C-B" 'ess-bp-set-conditional)
-    (define-key ess-tracebug-map "l" 'ess-bp-set-logger)
-    (define-key ess-tracebug-map "\C-l" 'ess-bp-set-logger)
-    (define-key ess-tracebug-map "t" 'ess-bp-toggle-state)
-    (define-key ess-tracebug-map "\C-t" 'ess-bp-toggle-state)
-    (define-key ess-tracebug-map "k" 'ess-bp-kill)
-    (define-key ess-tracebug-map "\C-k" 'ess-bp-kill)
-    (define-key ess-tracebug-map "K" 'ess-bp-kill-all)
-    (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
-    (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
-    (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
-    (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "q" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "0" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "1" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "2" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "3" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "4" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "5" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "6" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "7" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "8" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "9" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
-    ess-tracebug-map)
-  "Keymap used as a binding for `ess-tracebug-prefix' key
- in ESS and iESS mode.
+(autoload 'ess-dev-map "ess-r-d" "[autoload]" nil)
+(defvaralias 'ess-tracebug-map 'ess-dev-map)
 
-\\{ess-tracebug-map}
-")
 
+;; (defvar ess-tracebug-map
+;;   (let (ess-tracebug-map)
+;;     (define-prefix-command 'ess-tracebug-map)
+;;     (define-key ess-tracebug-map "`" 'ess-show-R-traceback)
+;;     (define-key ess-tracebug-map "w" 'ess-watch)
+;;     (define-key ess-tracebug-map "\C-w" 'ess-watch)
+;;     (define-key ess-tracebug-map "i" 'ess-dbg-goto-input-event-marker)
+;;     (define-key ess-tracebug-map "I" 'ess-dbg-goto-input-event-marker)
+;;     (define-key ess-tracebug-map "d" 'ess-dbg-flag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-d" 'ess-dbg-flag-for-debugging)
+;;     (define-key ess-tracebug-map "D" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-D" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "u" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-u" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "b" 'ess-bp-set)
+;;     (define-key ess-tracebug-map "\C-b" 'ess-bp-set)
+;;     (define-key ess-tracebug-map "B" 'ess-bp-set-conditional)
+;;     (define-key ess-tracebug-map "\C-B" 'ess-bp-set-conditional)
+;;     (define-key ess-tracebug-map "l" 'ess-bp-set-logger)
+;;     (define-key ess-tracebug-map "\C-l" 'ess-bp-set-logger)
+;;     (define-key ess-tracebug-map "t" 'ess-bp-toggle-state)
+;;     (define-key ess-tracebug-map "\C-t" 'ess-bp-toggle-state)
+;;     (define-key ess-tracebug-map "k" 'ess-bp-kill)
+;;     (define-key ess-tracebug-map "\C-k" 'ess-bp-kill)
+;;     (define-key ess-tracebug-map "K" 'ess-bp-kill-all)
+;;     (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
+;;     (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
+;;     (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
+;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?c)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?n)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?p)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?q)] 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "q" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "0" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "1" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "2" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "3" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "4" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "5" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "6" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "7" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "8" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "9" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
+;;     ess-tracebug-map)
+;;   "Keymap used as a binding for `ess-tracebug-prefix' key
+;;  in ESS and iESS mode.
+
+;; \\{ess-tracebug-map}")
 
 (defvar ess--tracebug-eval-index 0
   "This is used by to track source references in evaluation with source.
 For example, each time ess-eval-function is called the evaluated
 region is marked.  When debugger enteres the code it desplayes
 this reference number. Ess-debug finds this number in the
-referenced buffer.
-")
+referenced buffer.")
 
 
 (defvar ess--tb-buffer-sym nil)
@@ -827,19 +834,6 @@ If nil, the currently debugged line is highlighted for
   :group 'ess-debug
   :type 'boolean)
 
-(defvar ess-singlekey-debug-map
-  (let (ess-singlekey-debug-map)
-    (define-prefix-command 'ess-singlekey-debug-map)
-    (define-key ess-singlekey-debug-map "c" 'ess-dbg-command-c)
-    (define-key ess-singlekey-debug-map "n" 'ess-dbg-command-n)
-    (define-key ess-singlekey-debug-map "p" 'ess-dbg-previous-error)
-    (define-key ess-singlekey-debug-map "q" 'ess-dbg-command-Q)
-    ess-singlekey-debug-map)
-  "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-singlekey-debug' .
-
-\\{ess-singlekey-debug-map}
-")
 
 (defvar ess-singlekey-selection-map
   (let (ess-singlekey-selection-map)
@@ -1451,9 +1445,16 @@ If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
 
   (interactive)
-  (ess--execute-singlekey-command ess-singlekey-debug-map
-                                  "(c)ontinue  (n)ext  (q)uit  (?)help"
-                                  wait (not (ess-process-get 'dbg-active))))
+  (let ((map (make-sparse-keymap)))
+    (map-keymap (lambda (type key)
+                  (define-key map `[(,ess-dbg-prefix-key ,type)] key))
+                ess-singlekey-debug-map)
+    (ess--execute-singlekey-command
+     map (format "(%s)ontinue  (%s)ext  (%s)uit  (?)help"
+                 (key-description `[(,ess-dbg-prefix-key ?c)])
+                 (key-description `[(,ess-dbg-prefix-key ?n)])
+                 (key-description `[(,ess-dbg-prefix-key ?q)]))
+     wait (not (ess-process-get 'dbg-active)))))
 
 
 (defun ess-singlekey-selection (&optional wait)

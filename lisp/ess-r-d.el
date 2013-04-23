@@ -74,16 +74,17 @@
     ;; (define-key ess-dev-map "t" 'ess-bp-toggle-state)
     (define-key ess-dev-map "k" 'ess-bp-kill)
     (define-key ess-dev-map "K" 'ess-bp-kill-all)
-    (define-key ess-dev-map "\C-n" 'ess-bp-next)
-    (define-key ess-dev-map "\C-p" 'ess-bp-previous)
+    (define-key ess-dev-map "n" 'ess-bp-next)
+    (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
     (define-key ess-dev-map "\C-e" 'ess-dbg-toggle-error-action)
-    (define-key ess-dev-map "c" 'ess-singlekey-debug)
-    (define-key ess-dev-map "\C-c" 'ess-singlekey-debug)
-    (define-key ess-dev-map "n" 'ess-singlekey-debug)
-    (define-key ess-dev-map "p" 'ess-singlekey-debug)
-    (define-key ess-dev-map "q" 'ess-singlekey-debug)
-    (define-key ess-dev-map "\C-q" 'ess-singlekey-debug)
+    ;; all singlekey commands are installed by ess-dbg-prefix-key bellow 
+    ;; (define-key ess-dev-map "c" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "\C-c" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "n" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "p" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "q" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "\C-q" 'ess-singlekey-debug)
     (define-key ess-dev-map "0" 'ess-dbg-command-digit)
     (define-key ess-dev-map "1" 'ess-singlekey-selection)
     (define-key ess-dev-map "2" 'ess-singlekey-selection)
@@ -98,6 +99,30 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+
+(defvar ess-singlekey-debug-map
+  (let ((map (make-sparse-keymap)))
+    ;; (define-prefix-command 'ess-singlekey-debug-map)
+    (define-key map "c" 'ess-dbg-command-c)
+    (define-key map "n" 'ess-dbg-command-n)
+    (define-key map "p" 'ess-dbg-previous-error)
+    (define-key map "q" 'ess-dbg-command-Q)
+    map)
+  "Keymap used to define commands for single key input mode.
+This commands are triggered by `ess-singlekey-debug' .
+\\{ess-singlekey-debug-map}")
+
+(defcustom ess-dbg-prefix-key 'control
+  "Prefix to be used to activate commands in
+`ess-singlekey-debug-map'. Can be either 'meta, 'control, 'super
+or nil."
+  :group 'ess-debug
+  :type '(choice (const control) (const meta) (const super) (const nil))
+  :set (lambda (sym value)
+         (set-default sym value)
+         (map-keymap (lambda (type key)
+                       (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
+                     ess-singlekey-debug-map)))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
