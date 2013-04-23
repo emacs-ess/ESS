@@ -18,17 +18,16 @@ library('methods')
          !identical(f1, f2)
 }
 
-
 .essDev_source <- function (source, expr, package = "")
 {
+    require('methods')
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
     MPattern <- methods:::.TableMetaPattern()
     CPattern <- methods:::.ClassMetaPattern()
-    allPlainObjects <- function() allObjects[!(grepl(MPattern,
-                                                     allObjects) | grepl(CPattern, allObjects))]
-    allMethodTables <- function() allObjects[grepl(MPattern,
-                                                   allObjects)]
+    allPlainObjects <- function() allObjects[!(grepl(MPattern, allObjects) |
+                                               grepl(CPattern, allObjects))]
+    allMethodTables <- function() allObjects[grepl(MPattern, allObjects)]
     allClassDefs <- function() allObjects[grepl(CPattern, allObjects)]
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
@@ -52,7 +51,8 @@ library('methods')
     allObjects <- allObjects[!(allObjects %in% c(".cacheOnAssign", ".packageName"))]
 
     ## PLAIN OBJECTS and FUNCTIONS:
-    funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <- objectsNs <- objectsPkg <- character()
+    funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <-
+        objectsNs <- objectsPkg <- character()
     for (this in allPlainObjects()) {
         thisEnv <- get(this, envir = env)
         thisNs <- NULL
@@ -80,7 +80,8 @@ library('methods')
                     objectsNs <- c(objectsNs, this)}
             }
         }else{
-            newNs <- c(newNs, this)}
+            newNs <- c(newNs, this)
+        }
         ## PKG
         if (exists(this, envir = envpkg, inherits = FALSE)){
             thisPkg <- get(this, envir = envpkg)
@@ -244,7 +245,7 @@ library('methods')
     if (missing(source))
         eval(expr, envir = env)
     else  if (is(source, "character"))
-        for (text in source) sys.source(text, envir = env)
+        for (text in source) sys.source(text, envir = env, keep.source = TRUE)
     else stop(gettextf("Invalid source argument:  got an object of class \"%s\"",
                        class(source)[[1]]), domain = NA)
     env
