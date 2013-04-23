@@ -352,27 +352,22 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
           (unless (ess-process-get 'tracebug) ;; only if already not active
             (ess-tb-start)
             (ess-dbg-start)
-            (add-hook 'ess-mode-hook 'ess-bp-recreate-all)
-            (dolist (bf (buffer-list))
-              (with-current-buffer bf
-                (when (and (eq major-mode 'ess-mode)
-                           (equal ess-dialect "R"))
-                  (ess-bp-recreate-all))))
+            ;; (dolist (bf (buffer-list))
+            ;;   (with-current-buffer bf
+            ;;     (when (and (eq major-mode 'ess-mode)
+            ;;                (equal ess-dialect "R"))
+            ;;       (ess-bp-recreate-all))))
             ;; Un/Debug at point functionality
             (ess-dbg-inject-un/debug-commands)
-            (sleep-for 0.05) ;; not needed  but let it be
             ;; watch functionality
             (ess-watch-inject-commands)
-            (sleep-for 0.05)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
                   (when (commandp comm)
                     (define-key ess-tracebug-map ess-tracebug-prefix comm))
                   (define-key ess-mode-map ess-tracebug-prefix ess-tracebug-map)
                   (define-key inferior-ess-mode-map ess-tracebug-prefix ess-tracebug-map)
-                  (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map))
-              ;; (message "`ess-tracebug-prefix' is not defined, tracebug bindings are not active ..."))
-              )
+                  (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map)))
             (run-hooks 'ess-tracebug-enter-hook)
             (ess-process-put 'tracebug t)
             (message "ess-tracebug mode enabled"))
@@ -384,7 +379,6 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             (define-key inferior-ess-mode-map ess-tracebug-prefix nil))
           (ess-tb-stop)
           (ess-dbg-stop)
-          (remove-hook 'ess-mode-hook 'ess-bp-recreate-all)
           (run-hooks 'ess-tracebug-exit-hook)
           (message "ess-tracebug mode disabled"))))))
 
@@ -1724,47 +1718,51 @@ List format is identical to that of `ess-bp-type-spec-alist'."
   "internal function to recreate all bp"
   (save-excursion
     (save-restriction
-      (widen)
-      (goto-char (point-min))
-      (while (re-search-forward "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
-        (let ((dum-beg (match-beginning 1))
-              (dum-end (match-end 1))
-              (comm-beg (match-beginning 3))
-              (comm-end (match-end 3 ))
-              (type (match-string 2))
-              dum-props condition)
-          (when (string-match "^\\(\\w+\\)@\\(.*\\)\\'" type)
-            (setq condition (match-string 2 type))
-            (setq type (match-string 1 type)))
-          (setq type (intern type))
-          (let* ((bp-specs (ess-bp-get-bp-specs  type condition t))
-                 (displ-string (nth 2 bp-specs))
-                 (fringe-face (nth 4 bp-specs))
-                 (fringe-bitmap (nth 3 bp-specs)))
-            (when bp-specs
-              (setq displ-string (propertize displ-string
-                                             'face fringe-face
-                                             'font-lock-face fringe-face))
-              (add-text-properties comm-beg comm-end
-                                   (list 'ess-bp t
-                                         'intangible 'ess-bp
-                                         'rear-nonsticky '(intangible ess-bp bp-type)
-                                         'bp-type type
-                                         'bp-substring 'command
-                                         'display displ-string))
-              (setq dum-props
-                    (if window-system
-                        (list 'display (list 'left-fringe fringe-bitmap fringe-face))
-                      (list 'display (list '(margin left-margin)
-                                           (propertize "dummy"
-                                                       'font-lock-face fringe-face
-                                                       'face fringe-face)))))
-              (add-text-properties dum-beg dum-end
-                                   (append dum-props
-                                           (list 'ess-bp t
-                                                 'intangible 'ess-bp
-                                                 'bp-type type
-                                                 'bp-substring 'dummy))))))))))
+      (with-silent-modifications
+        (widen)
+        (goto-char (point-min))
+        (while (re-search-forward "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
+          (let ((dum-beg (match-beginning 1))
+                (dum-end (match-end 1))
+                (comm-beg (match-beginning 3))
+                (comm-end (match-end 3 ))
+                (type (match-string 2))
+                dum-props condition)
+            (when (string-match "^\\(\\w+\\)@\\(.*\\)\\'" type)
+              (setq condition (match-string 2 type))
+              (setq type (match-string 1 type)))
+            (setq type (intern type))
+            (let* ((bp-specs (ess-bp-get-bp-specs  type condition t))
+                   (displ-string (nth 2 bp-specs))
+                   (fringe-face (nth 4 bp-specs))
+                   (fringe-bitmap (nth 3 bp-specs)))
+              (when bp-specs
+                (setq displ-string (propertize displ-string
+                                               'face fringe-face
+                                               'font-lock-face fringe-face))
+                (add-text-properties comm-beg comm-end
+                                     (list 'ess-bp t
+                                           'intangible 'ess-bp
+                                           'rear-nonsticky '(intangible ess-bp bp-type)
+                                           'bp-type type
+                                           'bp-substring 'command
+                                           'display displ-string))
+                (setq dum-props
+                      (if window-system
+                          (list 'display (list 'left-fringe fringe-bitmap fringe-face))
+                        (list 'display (list '(margin left-margin)
+                                             (propertize "dummy"
+                                                         'font-lock-face fringe-face
+                                                         'face fringe-face)))))
+                (add-text-properties dum-beg dum-end
+                                     (append dum-props
+                                             (list 'ess-bp t
+                                                   'intangible 'ess-bp
+                                                   'bp-type type
+                                                   'bp-substring 'dummy)))))))))))
+
+(add-hook 'R-mode-hook 'ess-bp-recreate-all)
+
 
 (defun ess-bp-get-bp-position-nearby ()
   "Return the cons (beg . end) of breakpoint limit points
