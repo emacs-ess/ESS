@@ -118,13 +118,11 @@ This commands are triggered by `ess-singlekey-debug' .
 or nil."
   :group 'ess-debug
   :type '(choice (const control) (const meta) (const super) (const nil))
-  :set 'ess--set-dbg-prefix-key)
-
-(defun ess--set-dbg-prefix-key (sym value)
-  (set-default sym value)
-  (map-keymap (lambda (type key)
-                (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
-              ess-singlekey-debug-map))
+  :set (lambda (sym value)
+         (set-default sym value)
+         (map-keymap (lambda (type key)
+                       (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
+                     ess-singlekey-debug-map)))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -150,14 +148,17 @@ or nil."
                         (ess-process-get 'tracebug))
                    ess-use-tracebug)]
     ("Prefix"
-     ["control" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'control))
+     ["control" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'control))
       :style radio :enable t :selected (eq ess-dbg-prefix-key 'control)]
-     ["meta" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'meta))
+     ["meta" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'meta))
       :style radio :enable t :selected (eq ess-dbg-prefix-key 'meta)]
-     ["super" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key 'super))
+     ["super" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'super))
       :style radio :enable t :selected (eq ess-dbg-prefix-key 'super)]
-     ["no prefix" (lambda () (interactive) (ess--set-dbg-prefix-key 'ess-dbg-prefix-key nil))
-      :style radio :enable t :selected (eq ess-dbg-prefix-key 'nil)])
+     ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key nil))
+      :style radio :enable t :selected (eq ess-dbg-prefix-key 'nil)]
+     "-----"
+     ["Save to custom" (lambda () (interactive)
+                         (customize-save-variable 'ess-dbg-prefix-key ess-dbg-prefix-key))])
     ["Show traceback" ess-show-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
                              (get-process ess-local-process-name)
