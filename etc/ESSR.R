@@ -94,3 +94,4 @@
 ## assign('.ess_dbg_getTracedAndDebugged', .ess_dbg_getTracedAndDebugged, envir= inject_env)
 ## assign('.ess_dbg_UntraceOrUndebug', .ess_dbg_UntraceOrUndebug, envir= inject_env)
 ## assign('.ess_dbg_UndebugALL', .ess_dbg_UndebugALL, envir= inject_env)
+assign('.ESSBP.', new.env(parent = emptyenv()), envir= .BaseNamespaceEnv)

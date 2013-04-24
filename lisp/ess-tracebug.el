@@ -362,7 +362,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             ;;                (equal ess-dialect "R"))
             ;;       (ess-bp-recreate-all))))
             ;; Un/Debug at point functionality
-            (ess-dbg-inject-un/debug-commands)
+            (ess--inject-tracebug-commands)
             ;; watch functionality
             (ess-watch-inject-commands)
             (if ess-tracebug-prefix
@@ -1618,14 +1618,14 @@ ARGS are ignored to allow using this function in process hooks."
   "Face used to highlight 'recover' breakpoints fringe."
   :group 'ess-debug)
 
-
+(defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
-  '((browser "browser()" "B>\n"   filled-square  ess-bp-fringe-browser-face)
+  '((browser "browser(expr=is.null(.BaseNamespaceEnv[['.ESSBP.']][[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
 Each sublist  has five elements:
 1- symbol giving the name of specification
-2- R expression to be inserted
+2- R expression to be inserted (%s is substituted with unique identifier).
 3- string to be displayed instead of the expression
 4- fringe bitmap to use
 5- face for fringe and displayed string."
@@ -1655,7 +1655,6 @@ elements of the specifications."
   "List giving the loggers specifications.
 List format is identical to that of `ess-bp-type-spec-alist'."
   :group 'ess-debug)
-
 
 
 (defun ess-bp-get-bp-specs (type &optional condition no-error)
@@ -1689,7 +1688,10 @@ List format is identical to that of `ess-bp-type-spec-alist'."
          (fringe-bitmap (nth 3 bp-specs))
          (fringe-face (nth 4 bp-specs))
          (displ-string (nth 2 bp-specs))
-         (bp-command (concat  (nth 1 bp-specs) "##:ess-bp-end:##\n"))
+         (bp-id (format "\"@%s@\""
+                        (setq ess--bp-identifier (1+ ess--bp-identifier))))
+         (bp-command (concat  (format (nth 1 bp-specs) bp-id)
+                              "##:ess-bp-end:##\n"))
          (bp-length (length bp-command))
          (dummy-string (format "##:ess-bp-start::%s@%s:##\n"  (car bp-specs) condition))
          (dummy-length (length dummy-string))
@@ -1701,6 +1703,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
                                      'font-lock-face fringe-face))
       (setq bp-command (propertize bp-command
                                    'ess-bp t
+                                   'bp-id bp-id
                                    'intangible 'ess-bp
                                    'rear-nonsticky '(intangible ess-bp bp-type)
                                    'bp-type type
@@ -1728,7 +1731,8 @@ List format is identical to that of `ess-bp-type-spec-alist'."
       (with-silent-modifications
         (widen)
         (goto-char (point-min))
-        (while (re-search-forward "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
+        (while (re-search-forward
+                "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
           (let ((dum-beg (match-beginning 1))
                 (dum-end (match-end 1))
                 (comm-beg (match-beginning 3))
@@ -1811,8 +1815,9 @@ to the current position, nil if not found. "
 (defun ess-bp-set ()
   (interactive)
   (let* ((pos (ess-bp-get-bp-position-nearby))
-         (same-line (if pos
-                        (and (<=  (point-at-bol) (cdr pos)) (>= (point-at-eol) (car pos)))))
+         (same-line (and pos
+                         (<=  (point-at-bol) (cdr pos))
+                         (>= (point-at-eol) (car pos))))
          (types ess-bp-type-spec-alist)
          (ev last-command-event)
          (com-char  (event-basic-type ev))
@@ -1883,33 +1888,52 @@ to the current position, nil if not found. "
 
 
 (defun ess-bp-toggle-state ()
-  "Toggle the breakpoint between active and inactive states."
+  "Toggle the breakpoint between active and inactive states.
+
+For standard breakpoints, the effect of this command is
+immediate, that is you don't need to source your code and it
+works even in the process of debugging.
+
+For loggers, recover and conditional breakpoints this command
+just comments the breakpoint in the source file.
+
+If there is no active R session, this command triggers an error.
+"
   (interactive)
+  (unless (and ess-local-process-name
+               (get-process ess-local-process-name))
+    (error "No R session in this buffer"))
   (save-excursion
-    (let ((pos (ess-bp-get-bp-position-nearby))
-          (fringe-face (nth 3 ess-bp-inactive-spec))
-          (inhibit-point-motion-hooks t)  ;; deactivates intangible property
-          beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
-      (if (null pos)
-          (message "No breakpoints in the visible region")
-        (goto-char (car pos))
-        (setq beg-pos-command (previous-single-property-change (cdr pos) 'bp-substring nil (car pos)))
-        (goto-char beg-pos-command)
-        (if (equal (get-char-property (1- beg-pos-command) 'bp-substring) 'comment)
-            (progn
-              ;; not use beg-pos-command here ## is deleted
-              (delete-region (previous-single-property-change beg-pos-command 'bp-substring nil (car pos)) beg-pos-command)
-              (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
-              (put-text-property  (car pos) (point)
-                                  'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs))))
-          (put-text-property  (car pos) beg-pos-command   ;; dummy display change
-                              'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
-          (insert (propertize "##"
-                              'ess-bp t
-                              'intangible 'ess-bp
-                              'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
-                              'bp-type (get-char-property (point) 'bp-type)
-                              'bp-substring 'comment)))))))
+    (with-silent-modifications
+     (let ((pos (ess-bp-get-bp-position-nearby))
+           (fringe-face (nth 3 ess-bp-inactive-spec))
+           (inhibit-point-motion-hooks t) ;; deactivates intangible property
+           bp-id beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
+       (if (null pos)
+           (message "No breakpoints in the visible region")
+         (goto-char (car pos))
+         (setq beg-pos-command (previous-single-property-change
+                                (cdr pos) 'bp-substring nil (car pos))
+               bp-id (get-char-property beg-pos-command 'bp-id))
+         (goto-char beg-pos-command)
+         (if (equal (get-char-property (1- beg-pos-command) 'bp-substring) 'comment)
+             (progn
+               ;; not use beg-pos-command here ## is deleted
+               (delete-region (previous-single-property-change beg-pos-command 'bp-substring nil (car pos))
+                              beg-pos-command)
+               (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
+               (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
+               (put-text-property  (car pos) (point)
+                                   'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs))))
+           (put-text-property  (car pos) beg-pos-command ;; dummy display change
+                               'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
+           (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- TRUE\n" bp-id))
+           (insert (propertize "##"
+                               'ess-bp t
+                               'intangible 'ess-bp
+                               'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
+                               'bp-type (get-char-property (point) 'bp-type)
+                               'bp-substring 'comment))))))))
 
 
 (defun ess-bp-make-visible ()
@@ -2441,9 +2465,10 @@ Optional N if supplied gives the number of backward steps."
   (ess-watch-install-.ess_watch_expressions))
 
 ;;;_ + Debug/Undebug at point
-
-(defun ess-dbg-inject-un/debug-commands () ;; fixme: bug: if no starting new-line,ess-command hangs
+(defun ess--inject-tracebug-commands ()
   (ess-command (ess-quote-special-chars "{
+assign('.ESSBP.', new.env(parent = emptyenv()), envir= .BaseNamespaceEnv)
+
 .ess_find_funcs <- function(env){
     objs <- ls(envir = env, all.names = TRUE)
     objs[sapply(objs, exists, envir = env,
@@ -2637,13 +2662,13 @@ for signature and trace it with browser tracer."
       (setq def-val (if (eq (length debugged) 1)
                         (car debugged)
                       "*ALL*"))
-      (setq fun (ess-completing-read "Un-debug" debugged nil t nil nil def-val))
+      (setq fun (ess-completing-read "Undebug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
           (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
         (ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer))
       (with-current-buffer  tbuffer
         (if (= (point-max) 1) ;; not reliable todo:
-            (setq out-message (format  "Un-debugged '%s' " fun))
+            (setq out-message (format  "Undebugged '%s' " fun))
           (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
           )))
     (message out-message)))
