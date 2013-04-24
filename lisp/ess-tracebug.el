@@ -1453,12 +1453,17 @@ triggered the command."
     (map-keymap (lambda (type key)
                   (define-key map `[(,ess-debug-prefix-key ,type)] key))
                 ess-singlekey-debug-map)
-    (ess--execute-singlekey-command
-     map (format "(%s)ontinue  (%s)ext  (%s)uit  (?)help"
-                 (key-description `[(,ess-debug-prefix-key ?c)])
-                 (key-description `[(,ess-debug-prefix-key ?n)])
-                 (key-description `[(,ess-debug-prefix-key ?q)]))
-     wait (not (ess-process-get 'dbg-active)))))
+    (let ((help-mess (let ((overriding-local-map map))
+                       (substitute-command-keys
+                        (concat "(\\[ess-dbg-command-c])cont "
+                                "(\\[ess-dbg-command-C])cont-multi "
+                                "(\\[ess-dbg-command-n])next "
+                                "(\\[ess-dbg-command-N])next-multi "
+                                "(\\[ess-dbg-command-up])up "
+                                "(\\[ess-dbg-command-Q])quit")))))
+      (ess--execute-singlekey-command
+       map help-mess
+       wait (not (ess-process-get 'dbg-active))))))
 
 
 (defun ess-singlekey-selection (&optional wait)
@@ -1514,6 +1519,44 @@ Equivalent to 'n' at the R prompt."
     (if (ess-dbg-is-recover)
         (ess-send-string (get-process ess-current-process-name) "0")
       (ess-send-string (get-process ess-current-process-name) ""))))
+
+(defun ess-dbg-command-N (&optional ev N)
+  "Ask for N and step (n) N times in debug mode."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((N (or N (read-number "Number of steps: " 10)))
+          (proc (get-process ess-local-process-name))
+          (ess--suppress-next-output? t))
+      (while (and (ess-dbg-is-active) (> N 0))
+        (ess-dbg-command-n)
+        (ess-wait-for-process proc)
+        (setq N (1- N))))
+    (ess-dbg-command-n)))
+
+(defun ess-dbg-command-C (&optional ev N)
+  "Ask for N, and continue (c) N times in debug mode."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((N (or N (read-number "Number of continuations: " 10)))
+          (proc (get-process ess-local-process-name))
+          (ess--suppress-next-output? t))
+      (while (and (ess-dbg-is-active) (> N 1))
+        (ess-wait-for-process proc)
+        (setq N (1- N))))
+    (ess-dbg-command-c)))
+
+
+(defun ess-dbg-command-up (&optional ev)
+  "Step up one call frame.
+Equivalent to 'n' at the R prompt."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((proc (get-process ess-local-process-name)))
+      (ess-send-string proc
+                       "try(browserSetDebug(), silent=T)\nc\n"))))
 
 (defun ess-dbg-previous-error (&optional ev)
   "Go to previous reference during the debug process.

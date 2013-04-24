@@ -116,9 +116,11 @@
   (let ((map (make-sparse-keymap)))
     ;; (define-prefix-command 'ess-singlekey-debug-map)
     (define-key map "c" 'ess-dbg-command-c)
+    (define-key map "C" 'ess-dbg-command-C)
     (define-key map "n" 'ess-dbg-command-n)
-    (define-key map "p" 'ess-dbg-previous-error)
+    (define-key map "N" 'ess-dbg-command-N)
     (define-key map "q" 'ess-dbg-command-Q)
+    (define-key map "u" 'ess-dbg-command-up)
     map)
   "Keymap used to define commands for single key input mode.
 This commands are triggered by `ess-singlekey-debug' .
