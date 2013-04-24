@@ -815,8 +815,8 @@ Keystroke    Section
           obj fun)))
 
 ;; defunct old name:
-(defun ess-read-helpobj-name-default (slist)
-  (car (delq nil (ess-helpobjs-at-point slist))))
+;; (defun ess-read-helpobj-name-default (slist)
+;;   (car (delq nil (ess-helpobjs-at-point slist))))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
@@ -828,8 +828,7 @@ Stata or XLispStat for additional information."
         (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
                              nil nil nil nil (car hlpobjs)))
     ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
-    (read-string (format "%s: " p-string))
-    ))
+    (read-string (format "%s: " p-string))))
 
 ;;*;; Utility functions
 
