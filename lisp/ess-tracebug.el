@@ -2629,8 +2629,8 @@ for signature and trace it with browser tracer."
                    (if ess-developer-packages
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
-                     ".ess_dbg_getTracedAndDebugged()\n"))
-                  out-message fun def-val))
+                     ".ess_dbg_getTracedAndDebugged()\n")))
+        out-message fun def-val)
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)
         (setq out-message "No debugged or traced functions/methods found")
