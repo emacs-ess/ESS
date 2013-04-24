@@ -54,36 +54,50 @@
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
-    (define-key ess-dev-map "t" 'ess-toggle-developer)
+    ;; Note: some of these comand are automatically redefined by those in
+    ;; ess-singlekey-debug-map and prefix ess-debug-prefix-key,
+    ;; Given that all commands have \C- prefixed version, this is not a big deal.
     (define-key ess-dev-map "\C-t" 'ess-toggle-developer)
+    (define-key ess-dev-map "t" 'ess-toggle-developer)
+    (define-key ess-dev-map "\C-T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
-    (define-key ess-dev-map "a" 'ess-developer-add-package)
     (define-key ess-dev-map "\C-a" 'ess-developer-add-package)
-    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    (define-key ess-dev-map "a" 'ess-developer-add-package)
     (define-key ess-dev-map "\C-r" 'ess-developer-remove-package)
-    (define-key ess-dev-map "`" 'ess-show-R-traceback)
-    (define-key ess-dev-map "w" 'ess-watch)
+    (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    (define-key ess-dev-map "`" 'ess-show-traceback)
+    ;(define-key ess-dev-map "\C-`" 'ess-show-call-stack) ; not implemented yet
     (define-key ess-dev-map "\C-w" 'ess-watch)
-    (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
+    (define-key ess-dev-map "w" 'ess-watch)
     (define-key ess-dev-map "\C-d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-dev-map "D" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-dev-map "b" 'ess-bp-set)
+    (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
+    (define-key ess-dev-map "\C-u" 'ess-dbg-unflag-for-debugging)
+    (define-key ess-dev-map "u" 'ess-dbg-unflag-for-debugging)
     (define-key ess-dev-map "\C-b" 'ess-bp-set)
+    (define-key ess-dev-map "b" 'ess-bp-set)
+    (define-key ess-dev-map "\C-B" 'ess-bp-set-conditional)
     (define-key ess-dev-map "B" 'ess-bp-set-conditional)
+    (define-key ess-dev-map "\C-l" 'ess-bp-set-logger)
     (define-key ess-dev-map "l" 'ess-bp-set-logger)
-    ;; (define-key ess-dev-map "t" 'ess-bp-toggle-state)
+    (define-key ess-dev-map "\C-o" 'ess-bp-toggle-state)
+    (define-key ess-dev-map "o" 'ess-bp-toggle-state)
+    (define-key ess-dev-map "\C-k" 'ess-bp-kill)
     (define-key ess-dev-map "k" 'ess-bp-kill)
+    (define-key ess-dev-map "\C-K" 'ess-bp-kill-all)
     (define-key ess-dev-map "K" 'ess-bp-kill-all)
     (define-key ess-dev-map "\C-n" 'ess-bp-next)
+    (define-key ess-dev-map "n" 'ess-bp-next)
     (define-key ess-dev-map "\C-p" 'ess-bp-previous)
-    (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
+    (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "\C-e" 'ess-dbg-toggle-error-action)
-    (define-key ess-dev-map "c" 'ess-singlekey-debug)
-    (define-key ess-dev-map "\C-c" 'ess-singlekey-debug)
-    (define-key ess-dev-map "n" 'ess-singlekey-debug)
-    (define-key ess-dev-map "p" 'ess-singlekey-debug)
-    (define-key ess-dev-map "q" 'ess-singlekey-debug)
-    (define-key ess-dev-map "\C-q" 'ess-singlekey-debug)
+    (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
+    ;; all singlekey commands are installed by ess-debug-prefix-key bellow 
+    ;; (define-key ess-dev-map "c" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "\C-c" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "n" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "p" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "q" 'ess-singlekey-debug)
+    ;; (define-key ess-dev-map "\C-q" 'ess-singlekey-debug)
     (define-key ess-dev-map "0" 'ess-dbg-command-digit)
     (define-key ess-dev-map "1" 'ess-singlekey-selection)
     (define-key ess-dev-map "2" 'ess-singlekey-selection)
@@ -98,6 +112,31 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+(defvar ess-singlekey-debug-map
+  (let ((map (make-sparse-keymap)))
+    ;; (define-prefix-command 'ess-singlekey-debug-map)
+    (define-key map "c" 'ess-dbg-command-c)
+    (define-key map "C" 'ess-dbg-command-C)
+    (define-key map "n" 'ess-dbg-command-n)
+    (define-key map "N" 'ess-dbg-command-N)
+    (define-key map "q" 'ess-dbg-command-Q)
+    (define-key map "u" 'ess-dbg-command-up)
+    map)
+  "Keymap used to define commands for single key input mode.
+This commands are triggered by `ess-singlekey-debug' .
+\\{ess-singlekey-debug-map}")
+
+(defcustom ess-debug-prefix-key nil
+  "Prefix to be used to activate commands in
+`ess-singlekey-debug-map'. Can be either 'meta, 'control, 'super
+or nil."
+  :group 'ess-debug
+  :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
+  :set (lambda (sym value)
+         (set-default sym value)
+         (map-keymap (lambda (type key)
+                       (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
+                     ess-singlekey-debug-map)))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -108,20 +147,34 @@
     ["Preview HTML"      ess-roxy-preview-HTML                  t]
     ["Preview text"      ess-roxy-preview-text                  t]
     ["Hide all"          ess-roxy-hide-all                      t]
-    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
-    ))
+    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]))
 
 (easy-menu-define ess-tracebug-menu nil
   "Tracebug submenu."
   '("Tracebug"
     :visible (and ess-dialect (string-match "^R" ess-dialect))
     ;; :enable ess-local-process-name
-    ["Active?"          ess-toggle-tracebug
+    ["Active?"  ess-toggle-tracebug
      :style toggle
-     :selected (and ess-local-process-name
-                    (get-process ess-local-process-name)
-                    (ess-process-get 'tracebug))]
-    ["Show traceback" ess-show-R-traceback ess-local-process-name]
+     :selected (or (and ess-local-process-name
+                        (get-process ess-local-process-name)
+                        (ess-process-get 'tracebug))
+                   ess-use-tracebug)]
+    ("Prefix"
+     ["control" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'control))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'control)]
+     ["meta" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'meta))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
+     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
+     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'shift))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'shift)]
+     ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
+     "-----"
+     ["Save to custom" (lambda () (interactive)
+                         (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
+    ["Show traceback" ess-show-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
                              (get-process ess-local-process-name)
                              (ess-process-get 'tracebug))]
@@ -139,8 +192,7 @@
     ["Next BP" ess-bp-next t]
     ["Previous BP" ess-bp-previous t]
     "-----"
-    ["About" ess-tracebug-show-help t]
-    ))
+    ["About" ess-tracebug-show-help t]))
 
 (easy-menu-define ess-developer-menu nil
   "Developer submenu."
@@ -152,8 +204,7 @@
                     (get-process ess-local-process-name)
                     (ess-process-get 'developer))]
     ["Add package" ess-developer-add-package t]
-    ["Remove package" ess-developer-remove-package t]
-    ))
+    ["Remove package" ess-developer-remove-package t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
@@ -185,6 +236,7 @@
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
+     (ess-traceback-command             . "{try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)}\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))

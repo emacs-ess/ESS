@@ -139,8 +139,7 @@
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess.funargs(\"%s\")\n")
     )
-  "S-language common settings for all <dialect>-customize-alist s"
-  )
+  "S-language common settings for all <dialect>-customize-alist s")
 
 (defconst S+common-cust-alist
   (append
@@ -157,7 +156,7 @@
      (ess-dump-filename-template . (ess-replace-regexp-in-string
                                     "S$" ess-suffix ; in the one from custom:
                                     ess-dump-filename-template-proto))
-
+     (ess-traceback-command     . "traceback()\n")
      (ess-mode-editing-alist    . S-editing-alist)
 
      (ess-dumped-missing-re

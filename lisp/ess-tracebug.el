@@ -90,8 +90,10 @@ The postfix keys are defined in `ess-tracebug-map':
 "
   :type 'string
   :group 'ess-tracebug)
-
 (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
+
+
+
 
 (defcustom ess-tracebug-inject-source-p 'function
   "Control the source injection into evaluated code.
@@ -130,64 +132,69 @@ Use `add-hook' to insert append your functions to this list.
   :group 'ess-tracebug
   :type 'hook)
 
-(defvar ess-tracebug-map
-  (let (ess-tracebug-map)
-    (define-prefix-command 'ess-tracebug-map)
-    (define-key ess-tracebug-map "`" 'ess-show-R-traceback)
-    (define-key ess-tracebug-map "w" 'ess-watch)
-    (define-key ess-tracebug-map "\C-w" 'ess-watch)
-    (define-key ess-tracebug-map "i" 'ess-dbg-goto-input-event-marker)
-    (define-key ess-tracebug-map "I" 'ess-dbg-goto-input-event-marker)
-    (define-key ess-tracebug-map "d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-tracebug-map "\C-d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-tracebug-map "D" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "\C-D" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "\C-u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-tracebug-map "b" 'ess-bp-set)
-    (define-key ess-tracebug-map "\C-b" 'ess-bp-set)
-    (define-key ess-tracebug-map "B" 'ess-bp-set-conditional)
-    (define-key ess-tracebug-map "\C-B" 'ess-bp-set-conditional)
-    (define-key ess-tracebug-map "l" 'ess-bp-set-logger)
-    (define-key ess-tracebug-map "\C-l" 'ess-bp-set-logger)
-    (define-key ess-tracebug-map "t" 'ess-bp-toggle-state)
-    (define-key ess-tracebug-map "\C-t" 'ess-bp-toggle-state)
-    (define-key ess-tracebug-map "k" 'ess-bp-kill)
-    (define-key ess-tracebug-map "\C-k" 'ess-bp-kill)
-    (define-key ess-tracebug-map "K" 'ess-bp-kill-all)
-    (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
-    (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
-    (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
-    (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "q" 'ess-singlekey-debug)
-    (define-key ess-tracebug-map "0" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "1" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "2" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "3" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "4" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "5" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "6" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "7" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "8" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "9" 'ess-singlekey-selection)
-    (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
-    ess-tracebug-map)
-  "Keymap used as a binding for `ess-tracebug-prefix' key
- in ESS and iESS mode.
+(autoload 'ess-dev-map "ess-r-d" "[autoload]" nil)
+(defvaralias 'ess-tracebug-map 'ess-dev-map)
 
-\\{ess-tracebug-map}
-")
 
+;; (defvar ess-tracebug-map
+;;   (let (ess-tracebug-map)
+;;     (define-prefix-command 'ess-tracebug-map)
+;;     (define-key ess-tracebug-map "`" 'ess-show-R-traceback)
+;;     (define-key ess-tracebug-map "w" 'ess-watch)
+;;     (define-key ess-tracebug-map "\C-w" 'ess-watch)
+;;     (define-key ess-tracebug-map "i" 'ess-dbg-goto-input-event-marker)
+;;     (define-key ess-tracebug-map "I" 'ess-dbg-goto-input-event-marker)
+;;     (define-key ess-tracebug-map "d" 'ess-dbg-flag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-d" 'ess-dbg-flag-for-debugging)
+;;     (define-key ess-tracebug-map "D" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-D" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "u" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "\C-u" 'ess-dbg-unflag-for-debugging)
+;;     (define-key ess-tracebug-map "b" 'ess-bp-set)
+;;     (define-key ess-tracebug-map "\C-b" 'ess-bp-set)
+;;     (define-key ess-tracebug-map "B" 'ess-bp-set-conditional)
+;;     (define-key ess-tracebug-map "\C-B" 'ess-bp-set-conditional)
+;;     (define-key ess-tracebug-map "l" 'ess-bp-set-logger)
+;;     (define-key ess-tracebug-map "\C-l" 'ess-bp-set-logger)
+;;     (define-key ess-tracebug-map "t" 'ess-bp-toggle-state)
+;;     (define-key ess-tracebug-map "\C-t" 'ess-bp-toggle-state)
+;;     (define-key ess-tracebug-map "k" 'ess-bp-kill)
+;;     (define-key ess-tracebug-map "\C-k" 'ess-bp-kill)
+;;     (define-key ess-tracebug-map "K" 'ess-bp-kill-all)
+;;     (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
+;;     (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
+;;     (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?c)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?n)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?p)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?q)] 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "q" 'ess-singlekey-debug)
+;;     (define-key ess-tracebug-map "0" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "1" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "2" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "3" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "4" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "5" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "6" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "7" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "8" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "9" 'ess-singlekey-selection)
+;;     (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
+;;     ess-tracebug-map)
+;;   "Keymap used as a binding for `ess-tracebug-prefix' key
+;;  in ESS and iESS mode.
+
+;; \\{ess-tracebug-map}")
 
 (defvar ess--tracebug-eval-index 0
   "This is used by to track source references in evaluation with source.
 For example, each time ess-eval-function is called the evaluated
 region is marked.  When debugger enteres the code it desplayes
 this reference number. Ess-debug finds this number in the
-referenced buffer.
-")
+referenced buffer.")
 
 
 (defvar ess--tb-buffer-sym nil)
@@ -228,6 +235,8 @@ block (used for source references insertion)"
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
       (puthash tmpfile (list filename ess--tracebug-eval-index beg) ess--srcrefs)
+      (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+               (list filename ess--tracebug-eval-index beg) ess--srcrefs)
       (with-silent-modifications
         (put-text-property beg end 'tb-index ess--tracebug-eval-index))
       (format inferior-ess-load-command tmpfile))))
@@ -261,25 +270,33 @@ Default bindings in `ess-tracebug-map':
  K   . Kill all BPs                     . `ess-bp-kill-all'
  t   . Toggle BP state                  . `ess-bp-toggle-state'
  l   . Set logger BP                    . `ess-bp-set-logger'
- C-n . Goto next BP                     . `ess-bp-next'
- C-p . Goto previous BP                 . `ess-bp-previous'
+ n   . Goto next BP                     . `ess-bp-next'
+ p   . Goto previous BP                 . `ess-bp-previous'
+
+  (C- prefixed equivalents are also defined)
 
 * Debugging:
 
  `   . Show R Traceback                     . `ess-show-R-traceback'
  e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
  d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
+
+  (C- prefixed equivalents are also defined)
 
 * Interactive Debugging:
 
- c   . Continue                  . `ess-dbg-command-c'
- n   . Next step                 . `ess-dbg-command-n'
- p   . Previous step             . `previous-error'
- q   . Quit debugging            . `ess-dbg-command-Q'
- 1..9. Enter recover frame       . `ess-dbg-command-digit'
- 0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+ [C-]c   . Continue                  . `ess-dbg-command-c'
+ [C-]c   . Continue multi            . `ess-dbg-command-C'
+ [C-]n   . Next step                 . `ess-dbg-command-n'
+ [C-]n   . Next step multi           . `ess-dbg-command-N'
+ [C-]u   . Up frame                  . `ess-dbg-command-up'
+ [C-]q   . Quit debugging            . `ess-dbg-command-Q'
+ 1..9    . Enter recover frame       . `ess-dbg-command-digit'
+ 0       . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+
+ Note: [C-] is the optional prefix, see `ess-debug-prefix-key'.
 
 * Misc:
 
@@ -345,27 +362,22 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
           (unless (ess-process-get 'tracebug) ;; only if already not active
             (ess-tb-start)
             (ess-dbg-start)
-            (add-hook 'ess-mode-hook 'ess-bp-recreate-all)
-            (dolist (bf (buffer-list))
-              (with-current-buffer bf
-                (when (and (eq major-mode 'ess-mode)
-                           (equal ess-dialect "R"))
-                  (ess-bp-recreate-all))))
+            ;; (dolist (bf (buffer-list))
+            ;;   (with-current-buffer bf
+            ;;     (when (and (eq major-mode 'ess-mode)
+            ;;                (equal ess-dialect "R"))
+            ;;       (ess-bp-recreate-all))))
             ;; Un/Debug at point functionality
-            (ess-dbg-inject-un/debug-commands)
-            (sleep-for 0.05) ;; not needed  but let it be
+            (ess--inject-tracebug-commands)
             ;; watch functionality
             (ess-watch-inject-commands)
-            (sleep-for 0.05)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
                   (when (commandp comm)
                     (define-key ess-tracebug-map ess-tracebug-prefix comm))
                   (define-key ess-mode-map ess-tracebug-prefix ess-tracebug-map)
                   (define-key inferior-ess-mode-map ess-tracebug-prefix ess-tracebug-map)
-                  (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map))
-              ;; (message "`ess-tracebug-prefix' is not defined, tracebug bindings are not active ..."))
-              )
+                  (define-key ess-watch-mode-map ess-tracebug-prefix ess-tracebug-map)))
             (run-hooks 'ess-tracebug-enter-hook)
             (ess-process-put 'tracebug t)
             (message "ess-tracebug mode enabled"))
@@ -377,7 +389,6 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             (define-key inferior-ess-mode-map ess-tracebug-prefix nil))
           (ess-tb-stop)
           (ess-dbg-stop)
-          (remove-hook 'ess-mode-hook 'ess-bp-recreate-all)
           (run-hooks 'ess-tracebug-exit-hook)
           (message "ess-tracebug mode disabled"))))))
 
@@ -555,7 +566,7 @@ in inferior buffers.  ")
 ;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
 
-(defun ess-show-R-traceback ()
+(defun ess-show-traceback ()
   "Display R traceback and last error message.
 Pop up a compilation/grep/occur like buffer. Usual global key
 bindings are available \(\\[next-error] and \\[previous-error]\)
@@ -575,7 +586,8 @@ You can bind 'no-select' versions of this commands:
     (with-current-buffer trbuf
       (setq buffer-read-only nil)
       (setq ess-local-process-name lproc-name)
-      (ess-command  "try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)\n" trbuf)
+      (ess-command ess-traceback-command trbuf)
+      ;; fixme: this is R specific check
       (if (string= "No traceback available" (buffer-substring 1 23))
           (message "No traceback available")
         (ess-dirs)
@@ -600,6 +612,8 @@ You can bind 'no-select' versions of this commands:
 
         (setq buffer-read-only t)
         (pop-to-buffer trbuf)))))
+
+(defalias 'ess-show-R-traceback 'ess-show-traceback)
 
 (defun ess-tb-next-error-goto-process-marker ()
   ;; assumes current buffer is the process buffer with compilation enabled
@@ -666,7 +680,7 @@ This is the value of `next-error-function' in iESS buffers."
       (let* ((file (caar (nth 2 loc)))
              (col (car loc))
              (line (cadr loc))
-             (mkrs (ess-dbg-get-ref-marker file line col)))
+             (mkrs (ess-dbg-create-ref-marker file line col)))
         (if mkrs
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
           (message "Reference to '%s' not found" file))))))
@@ -827,19 +841,6 @@ If nil, the currently debugged line is highlighted for
   :group 'ess-debug
   :type 'boolean)
 
-(defvar ess-singlekey-debug-map
-  (let (ess-singlekey-debug-map)
-    (define-prefix-command 'ess-singlekey-debug-map)
-    (define-key ess-singlekey-debug-map "c" 'ess-dbg-command-c)
-    (define-key ess-singlekey-debug-map "n" 'ess-dbg-command-n)
-    (define-key ess-singlekey-debug-map "p" 'ess-dbg-previous-error)
-    (define-key ess-singlekey-debug-map "q" 'ess-dbg-command-Q)
-    ess-singlekey-debug-map)
-  "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-singlekey-debug' .
-
-\\{ess-singlekey-debug-map}
-")
 
 (defvar ess-singlekey-selection-map
   (let (ess-singlekey-selection-map)
@@ -1116,11 +1117,15 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)
-  "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+  ;; "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+  "\\(\\(?:Called from: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+
 (defvar ess-dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
 (defvar ess-dbg-regexp-selection "\\(Selection: \\'\\)")
 (defvar ess-dbg-regexp-input (concat ess-dbg-regexp-debug "\\|"
                                      ess-dbg-regexp-selection))
+
+(defvar ess--suppress-next-output? nil)
 
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
@@ -1152,7 +1157,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-selection)
 
-    (if (process-get proc 'suppress-next-output?)
+    (if (or (process-get proc 'suppress-next-output?)
+            ess--suppress-next-output?)
         ;; works only for surpressing short output, for time being is enough (for callbacks)
         (process-put proc 'suppress-next-output? nil)
 
@@ -1267,17 +1273,17 @@ the buffer if found, or nil otherwise be found.
 `ess-dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess-dbg-get-ref-marker file line col))))
+  (let ((mrk (car (ess-dbg-create-ref-marker file line col))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
-(defun ess-dbg-get-ref-marker (file line &optional col)
+(defun ess-dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
-position of error. Mk-end is the begging of the line where error
+position of error. Mk-end is the end of the line where error
 occurred.
 
 If buffer associated with FILE is not found, or line is nil, or
@@ -1308,8 +1314,8 @@ TB-INDEX is not found return nil.
               (forward-line (1- line))
               (if col
                   (goto-char (+ (point-at-bol) col))
-                (end-of-line))
-              (list (point-marker) (copy-marker (point-at-bol))))))))))
+                (back-to-indentation))
+              (list (point-marker) (copy-marker (point-at-eol))))))))))
 
 
 (defun ess-dbg-find-buffer (filename)
@@ -1451,9 +1457,21 @@ If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
 
   (interactive)
-  (ess--execute-singlekey-command ess-singlekey-debug-map
-                                  "(c)ontinue  (n)ext  (q)uit  (?)help"
-                                  wait (not (ess-process-get 'dbg-active))))
+  (let ((map (make-sparse-keymap)))
+    (map-keymap (lambda (type key)
+                  (define-key map `[(,ess-debug-prefix-key ,type)] key))
+                ess-singlekey-debug-map)
+    (let ((help-mess (let ((overriding-local-map map))
+                       (substitute-command-keys
+                        (concat "(\\[ess-dbg-command-c])cont "
+                                "(\\[ess-dbg-command-C])cont-multi "
+                                "(\\[ess-dbg-command-n])next "
+                                "(\\[ess-dbg-command-N])next-multi "
+                                "(\\[ess-dbg-command-up])up "
+                                "(\\[ess-dbg-command-Q])quit")))))
+      (ess--execute-singlekey-command
+       map help-mess
+       wait (not (ess-process-get 'dbg-active))))))
 
 
 (defun ess-singlekey-selection (&optional wait)
@@ -1509,6 +1527,44 @@ Equivalent to 'n' at the R prompt."
     (if (ess-dbg-is-recover)
         (ess-send-string (get-process ess-current-process-name) "0")
       (ess-send-string (get-process ess-current-process-name) ""))))
+
+(defun ess-dbg-command-N (&optional ev N)
+  "Ask for N and step (n) N times in debug mode."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((N (or N (read-number "Number of steps: " 10)))
+          (proc (get-process ess-local-process-name))
+          (ess--suppress-next-output? t))
+      (while (and (ess-dbg-is-active) (> N 0))
+        (ess-dbg-command-n)
+        (ess-wait-for-process proc)
+        (setq N (1- N))))
+    (ess-dbg-command-n)))
+
+(defun ess-dbg-command-C (&optional ev N)
+  "Ask for N, and continue (c) N times in debug mode."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((N (or N (read-number "Number of continuations: " 10)))
+          (proc (get-process ess-local-process-name))
+          (ess--suppress-next-output? t))
+      (while (and (ess-dbg-is-active) (> N 1))
+        (ess-wait-for-process proc)
+        (setq N (1- N))))
+    (ess-dbg-command-c)))
+
+
+(defun ess-dbg-command-up (&optional ev)
+  "Step up one call frame.
+Equivalent to 'n' at the R prompt."
+  (interactive)
+  (if (not (ess-dbg-is-active))
+      (error "Debugger is not active")
+    (let ((proc (get-process ess-local-process-name)))
+      (ess-send-string proc
+                       "try(browserSetDebug(), silent=T)\nc\n"))))
 
 (defun ess-dbg-previous-error (&optional ev)
   "Go to previous reference during the debug process.
@@ -1616,14 +1672,14 @@ ARGS are ignored to allow using this function in process hooks."
   "Face used to highlight 'recover' breakpoints fringe."
   :group 'ess-debug)
 
-
+(defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
-  '((browser "browser()" "B>\n"   filled-square  ess-bp-fringe-browser-face)
+  '((browser "browser(expr=is.null(.BaseNamespaceEnv[['.ESSBP.']][[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
 Each sublist  has five elements:
 1- symbol giving the name of specification
-2- R expression to be inserted
+2- R expression to be inserted (%s is substituted with unique identifier).
 3- string to be displayed instead of the expression
 4- fringe bitmap to use
 5- face for fringe and displayed string."
@@ -1653,7 +1709,6 @@ elements of the specifications."
   "List giving the loggers specifications.
 List format is identical to that of `ess-bp-type-spec-alist'."
   :group 'ess-debug)
-
 
 
 (defun ess-bp-get-bp-specs (type &optional condition no-error)
@@ -1687,7 +1742,10 @@ List format is identical to that of `ess-bp-type-spec-alist'."
          (fringe-bitmap (nth 3 bp-specs))
          (fringe-face (nth 4 bp-specs))
          (displ-string (nth 2 bp-specs))
-         (bp-command (concat  (nth 1 bp-specs) "##:ess-bp-end:##\n"))
+         (bp-id (format "\"@%s@\""
+                        (setq ess--bp-identifier (1+ ess--bp-identifier))))
+         (bp-command (concat  (format (nth 1 bp-specs) bp-id)
+                              "##:ess-bp-end:##\n"))
          (bp-length (length bp-command))
          (dummy-string (format "##:ess-bp-start::%s@%s:##\n"  (car bp-specs) condition))
          (dummy-length (length dummy-string))
@@ -1699,6 +1757,8 @@ List format is identical to that of `ess-bp-type-spec-alist'."
                                      'font-lock-face fringe-face))
       (setq bp-command (propertize bp-command
                                    'ess-bp t
+                                   'bp-id bp-id
+                                   'bp-active t
                                    'intangible 'ess-bp
                                    'rear-nonsticky '(intangible ess-bp bp-type)
                                    'bp-type type
@@ -1723,47 +1783,67 @@ List format is identical to that of `ess-bp-type-spec-alist'."
   "internal function to recreate all bp"
   (save-excursion
     (save-restriction
-      (widen)
-      (goto-char (point-min))
-      (while (re-search-forward "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
-        (let ((dum-beg (match-beginning 1))
-              (dum-end (match-end 1))
-              (comm-beg (match-beginning 3))
-              (comm-end (match-end 3 ))
-              (type (match-string 2))
-              dum-props condition)
-          (when (string-match "^\\(\\w+\\)@\\(.*\\)\\'" type)
-            (setq condition (match-string 2 type))
-            (setq type (match-string 1 type)))
-          (setq type (intern type))
-          (let* ((bp-specs (ess-bp-get-bp-specs  type condition t))
-                 (displ-string (nth 2 bp-specs))
-                 (fringe-face (nth 4 bp-specs))
-                 (fringe-bitmap (nth 3 bp-specs)))
-            (when bp-specs
-              (setq displ-string (propertize displ-string
-                                             'face fringe-face
-                                             'font-lock-face fringe-face))
-              (add-text-properties comm-beg comm-end
-                                   (list 'ess-bp t
-                                         'intangible 'ess-bp
-                                         'rear-nonsticky '(intangible ess-bp bp-type)
-                                         'bp-type type
-                                         'bp-substring 'command
-                                         'display displ-string))
-              (setq dum-props
-                    (if window-system
-                        (list 'display (list 'left-fringe fringe-bitmap fringe-face))
-                      (list 'display (list '(margin left-margin)
-                                           (propertize "dummy"
-                                                       'font-lock-face fringe-face
-                                                       'face fringe-face)))))
-              (add-text-properties dum-beg dum-end
-                                   (append dum-props
-                                           (list 'ess-bp t
-                                                 'intangible 'ess-bp
-                                                 'bp-type type
-                                                 'bp-substring 'dummy))))))))))
+      (with-silent-modifications
+        (widen)
+        (goto-char (point-min))
+        (while (re-search-forward
+                "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\(.+##:ess-bp-end:##\n\\)" nil t)
+          (let ((dum-beg (match-beginning 1))
+                (dum-end (match-end 1))
+                (comm-beg (match-beginning 3))
+                (comm-end (match-end 3))
+                (type (match-string 2))
+                (bp-command (match-string 3))
+                bp-id dum-props condition)
+            (when (string-match "^\\(\\w+\\)@\\(.*\\)\\'" type)
+              (setq condition (match-string 2 type))
+              (setq type (match-string 1 type)))
+            (setq bp-id
+                  (if (string-match "\"@[0-9]+@\"" bp-command)
+                      (match-string 0 bp-command)
+                    (setq ess--bp-identifier (1+ ess--bp-identifier))))
+            (setq type (intern type))
+            (let* ((bp-specs (ess-bp-get-bp-specs  type condition t))
+                   (displ-string (nth 2 bp-specs))
+                   (fringe-face (nth 4 bp-specs))
+                   (fringe-bitmap (nth 3 bp-specs)))
+              (when bp-specs
+                (setq displ-string (propertize displ-string
+                                               'face fringe-face
+                                               'font-lock-face fringe-face))
+                (add-text-properties comm-beg comm-end
+                                     (list 'ess-bp t
+                                           'bp-id bp-id
+                                           'intangible 'ess-bp
+                                           'rear-nonsticky '(intangible ess-bp bp-type)
+                                           'bp-type type
+                                           'bp-substring 'command
+                                           'display displ-string))
+                (setq dum-props
+                      (if window-system
+                          (list 'display (list 'left-fringe fringe-bitmap fringe-face))
+                        (list 'display (list '(margin left-margin)
+                                             (propertize "dummy"
+                                                         'font-lock-face fringe-face
+                                                         'face fringe-face)))))
+                (add-text-properties dum-beg dum-end
+                                     (append dum-props
+                                             (list 'ess-bp t
+                                                   'intangible 'ess-bp
+                                                   'bp-type type
+                                                   'bp-substring 'dummy)))
+                ;; (when comment-beg
+                ;;   (add-text-properties comment-beg comment-end
+                ;;                        (list 'ess-bp t
+                ;;                              'bp-id bp-id
+                ;;                              'intangible 'ess-bp
+                ;;                              'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
+                ;;                              'bp-type type
+                ;;                              'bp-substring 'comment)))
+                ))))))))
+
+(add-hook 'R-mode-hook 'ess-bp-recreate-all)
+
 
 (defun ess-bp-get-bp-position-nearby ()
   "Return the cons (beg . end) of breakpoint limit points
@@ -1805,8 +1885,9 @@ to the current position, nil if not found. "
 (defun ess-bp-set ()
   (interactive)
   (let* ((pos (ess-bp-get-bp-position-nearby))
-         (same-line (if pos
-                        (and (<=  (point-at-bol) (cdr pos)) (>= (point-at-eol) (car pos)))))
+         (same-line (and pos
+                         (<=  (point-at-bol) (cdr pos))
+                         (>= (point-at-eol) (car pos))))
          (types ess-bp-type-spec-alist)
          (ev last-command-event)
          (com-char  (event-basic-type ev))
@@ -1877,33 +1958,52 @@ to the current position, nil if not found. "
 
 
 (defun ess-bp-toggle-state ()
-  "Toggle the breakpoint between active and inactive states."
+  "Toggle the breakpoint between active and inactive states.
+
+For standard breakpoints, the effect of this command is
+immediate, that is you don't need to source your code and it
+works even in the process of debugging.
+
+For loggers, recover and conditional breakpoints this command
+just comments the breakpoint in the source file.
+
+If there is no active R session, this command triggers an error."
   (interactive)
+  (unless (and ess-local-process-name
+               (get-process ess-local-process-name))
+    (error "No R session in this buffer"))
   (save-excursion
     (let ((pos (ess-bp-get-bp-position-nearby))
           (fringe-face (nth 3 ess-bp-inactive-spec))
-          (inhibit-point-motion-hooks t)  ;; deactivates intangible property
-          beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
+          (inhibit-point-motion-hooks t) ;; deactivates intangible property
+          bp-id beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
       (if (null pos)
           (message "No breakpoints in the visible region")
         (goto-char (car pos))
-        (setq beg-pos-command (previous-single-property-change (cdr pos) 'bp-substring nil (car pos)))
+        (setq beg-pos-command (previous-single-property-change
+                               (cdr pos) 'bp-substring nil (car pos))
+              bp-id (get-char-property beg-pos-command 'bp-id))
         (goto-char beg-pos-command)
-        (if (equal (get-char-property (1- beg-pos-command) 'bp-substring) 'comment)
+        (if (get-char-property beg-pos-command 'bp-active)
             (progn
-              ;; not use beg-pos-command here ## is deleted
-              (delete-region (previous-single-property-change beg-pos-command 'bp-substring nil (car pos)) beg-pos-command)
-              (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
-              (put-text-property  (car pos) (point)
-                                  'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs))))
-          (put-text-property  (car pos) beg-pos-command   ;; dummy display change
-                              'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
-          (insert (propertize "##"
-                              'ess-bp t
-                              'intangible 'ess-bp
-                              'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
-                              'bp-type (get-char-property (point) 'bp-type)
-                              'bp-substring 'comment)))))))
+              (put-text-property  (car pos) beg-pos-command ;; dummy display change
+                                  'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
+              (put-text-property beg-pos-command (cdr pos)
+                                 'bp-active nil)
+              (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- TRUE\n" bp-id)))
+          (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
+          (put-text-property beg-pos-command (cdr pos)
+                             'bp-active t)
+          (put-text-property  (car pos) beg-pos-command
+                              'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs)))
+          (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
+          ;; (insert (propertize "##"
+          ;;                     'ess-bp t
+          ;;                     'intangible 'ess-bp
+          ;;                     'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
+          ;;                     'bp-type (get-char-property (point) 'bp-type)
+          ;;                     'bp-substring 'comment))
+          )))))
 
 
 (defun ess-bp-make-visible ()
@@ -2435,35 +2535,78 @@ Optional N if supplied gives the number of backward steps."
   (ess-watch-install-.ess_watch_expressions))
 
 ;;;_ + Debug/Undebug at point
+(defun ess--inject-tracebug-commands ()
+  (ess-command (ess-quote-special-chars "{
+assign('.ESSBP.', new.env(parent = emptyenv()), envir= .BaseNamespaceEnv)
 
-(defun ess-dbg-inject-un/debug-commands () ;; fixme: bug: if no starting new-line,ess-command hangs
-  (ess-command "
-local({
-    .ess_dbg_getTracedAndDebugged <-     function(){
-    tr_state <- tracingState(FALSE)
-    on.exit(tracingState(tr_state))
-    generics <- methods::getGenerics()
-    all_traced <- c()
-    for(i in seq_along(generics)){
-        genf <- methods::getGeneric(generics[[i]], package=generics@package[[i]])
-        if(!is.null(genf)){ ## might happen !! v.2.13
-            menv <- methods::getMethodsForDispatch(genf)
-            traced <- unlist(eapply(menv, is, 'traceable', all.names=TRUE))
-            if(length(traced) && any(traced))
-                all_traced <- c(paste(generics[[i]],':', names(traced)[traced],sep=''), all_traced)
-            if(!is.null(tfn<-getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv))&&is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
-                all_traced <- c(generics[[i]], all_traced)
+.ess_find_funcs <- function(env){
+    objs <- ls(envir = env, all.names = TRUE)
+    objs[sapply(objs, exists, envir = env,
+                mode = 'function', inherits = FALSE)]
+}
+
+.ess_all_functions <-
+    function(packages = c()){
+        env = parent.frame()
+        empty <- emptyenv()
+        coll <- list()
+        for(p in packages){
+            objNS <- .ess_find_funcs(asNamespace(p))
+            objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
+            coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
         }
+        while(!identical(empty, env)){
+            coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
+            env <- parent.env(env)
+        }
+        grep('^\\.ess|\\.help.ESS', unlist(coll, use.names = F),
+             invert = TRUE, value = TRUE)
     }
-    debugged <- apropos('.', mode = 'function')
-    ## traced function don't appear here. Not realy needed and would affect performance.
-    debugged <- debugged[which(unlist(lapply(debugged, isdebugged) , recursive=FALSE, use.names=FALSE))]
-    unique(c(debugged, all_traced))
-    }
-   .ess_dbg_UntraceOrUndebug <- function(name){
+
+.ess_dbg_getTracedAndDebugged <-
+    function(packages = c()){
         tr_state <- tracingState(FALSE)
         on.exit(tracingState(tr_state))
-        ## name is a name of a function to be undebugged or has a form name:Class1#Class2#Class3 for traced methods
+        generics <- methods::getGenerics()
+        all_traced <- c()
+        for(i in seq_along(generics)){
+            genf <- methods::getGeneric(generics[[i]], package=generics@package[[i]])
+            if(!is.null(genf)){ ## might happen !! v.2.13
+                menv <- methods::getMethodsForDispatch(genf)
+                traced <- unlist(eapply(menv, is, 'traceable', all.names=TRUE))
+                if(length(traced) && any(traced))
+                    all_traced <- c(paste(generics[[i]],':', names(traced)[traced],sep=''), all_traced)
+                if(!is.null(tfn<-getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv))&&is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
+                    all_traced <- c(generics[[i]], all_traced)
+            }
+        }
+        debugged_pkg <- unlist(lapply(packages, function(pkgname){
+            ns <- asNamespace(pkgname)
+            funcs <- .ess_find_funcs(ns)
+            dbged <- funcs[unlist(lapply(funcs, function(f) isdebugged(get(f, envir = ns, inherits = FALSE))))]
+            if(length(dbged))
+                paste0(pkgname, ':::`', dbged, '`')
+        }))
+        all <- .ess_all_functions()
+        ## traced function don't appear here. Not realy needed and would affect performance.
+        which_deb <- lapply(all, function(nm){
+            tryCatch(isdebugged(nm), error = function(e) FALSE)
+            ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
+        })
+        debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
+        unique(c(debugged_pkg, debugged, all_traced))
+    }
+
+
+.ess_dbg_UntraceOrUndebug <- function(name){
+    tr_state <- tracingState(FALSE)
+    on.exit(tracingState(tr_state))
+    if(grepl('::', name)){
+        ## foo:::bar name
+        eval(parse(text = sprintf('undebug(%s)', name)))
+    }else{
+        ## name is a name of a function to be undebugged or has a form
+        ## name:Class1#Class2#Class3 for traced methods
         name <- strsplit(name, ':', fixed = TRUE)[[1]]
         if(length(name)>1){
             ## a method
@@ -2476,22 +2619,16 @@ local({
                 untrace(name)
             else
                 undebug(name)
-        }
-    }
-    .ess_dbg_UndebugALL <- function(funcs){
-        tr_state <- tracingState(FALSE)
-        on.exit(tracingState(tr_state))
-        invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
-    }
-    inject_env <- .GlobalEnv ##.BaseNamespaceEnv
-    environment(.ess_dbg_UndebugALL) <-
-        environment(.ess_dbg_UntraceOrUndebug) <-
-            environment(.ess_dbg_getTracedAndDebugged) <- .GlobalEnv  ## to see all the funcs
-    assign('.ess_dbg_getTracedAndDebugged', .ess_dbg_getTracedAndDebugged, envir= inject_env)
-    assign('.ess_dbg_UntraceOrUndebug', .ess_dbg_UntraceOrUndebug, envir= inject_env)
-    assign('.ess_dbg_UndebugALL', .ess_dbg_UndebugALL, envir= inject_env)
-})
-"))
+        }}}
+
+
+.ess_dbg_UndebugALL <- function(funcs){
+    tr_state <- tracingState(FALSE)
+    on.exit(tracingState(tr_state))
+    invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
+}
+}
+")))
 
 
 (defun ess-dbg-get-signatures (method)
@@ -2527,45 +2664,55 @@ local({
 Ask the user for a function and if it turns to be generic, ask
 for signature and trace it with browser tracer."
   (interactive)
-  (let ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
-        (all-functions (ess-get-words-from-vector "apropos(\".\", mode = \"function\")\n"))
-        obj-at-point ufunc signature default-string out-message)
-    (setq obj-at-point (car (ess-helpobjs-at-point all-functions)))
-    (setq ufunc (ess-completing-read "Debug"
-                                     all-functions nil t nil nil obj-at-point))
-    ;; check if is generic
+  (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
+         (all-functions (ess-get-words-from-vector
+                         (if ess-developer-packages
+                             (format ".ess_all_functions(c('%s'))\n"
+                                     (mapconcat 'identity ess-developer-packages "', '"))
+                           ".ess_all_functions()\n")))
+         (obj-at-point (car (ess-helpobjs-at-point all-functions)))
+         (ufunc  (ess-completing-read "Debug" all-functions
+                                      nil nil nil nil obj-at-point))
+         signature default-string out-message)
+    ;; is it generic
     (if (equal "TRUE"
-               (car (ess-get-words-from-vector  (concat "as.character(isGeneric(\"" ufunc "\"))\n"))))
+               (car (ess-get-words-from-vector
+                     (format "as.character(isGeneric('%s'))\n" ufunc))))
         (save-excursion ;; if so, find the signature
           (setq signature
                 (ess-completing-read (concat "Method for generic '" ufunc "'")
-                                     (ess-dbg-get-signatures ufunc) ;;signal error if not found
+                                     (ess-dbg-get-signatures ufunc) ;signal an error if not found
                                      nil t nil nil "*default*"))
           (if (equal signature "*default*")
-              (progn
-                (ess-command (concat "trace(\"" ufunc "\", tracer = browser)\n") tbuffer) ;debug the default ufunc
-                )
-            (ess-command (concat "trace(\"" ufunc "\", tracer = browser, signature = c(" signature "))\n") tbuffer))
+              ;;debug, the default ufunc
+              (ess-command (format "trace('%s', tracer = browser)\n" ufunc) tbuffer)
+            (ess-command (format "trace('%s', tracer = browser, signature = c('%s'))\n" ufunc signature) tbuffer))
           (set-buffer tbuffer)
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; give appropriate message or error
-          )
-      ;;else, not S4 generic
-      (when (car (ess-get-words-from-vector  (concat "as.character(.knownS3Generics[\"" ufunc "\"])\n")))
-        (setq all-functions (ess-get-words-from-vector (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
-        (setq all-functions (delq nil (mapcar (lambda (el) (if (not (char-equal ?* (aref el (1- (length el))))) el))
-                                              all-functions)))
-        ;; cannot debug nonvisible functions,
+          ;; give appropriate message or error
+          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))
+      ;;else, not an S4 generic
+      (when (car (ess-get-words-from-vector
+                  (format "as.character(.knownS3Generics['%s'])\n" ufunc)))
+        ;; if S3 generic:
+        (setq all-functions
+              (ess-get-words-from-vector
+               (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
+        (setq all-functions
+              ;; cannot debug non-visible methods
+              (delq nil (mapcar (lambda (el)
+                                  (if (not (char-equal ?* (aref el (1- (length el))))) el))
+                                all-functions)))
         ;; tothink: ess-developer?
         (setq ufunc (ess-completing-read (format "Method for S3 generic '%s'" ufunc)
-                                         all-functions
-                                         nil t)))
+                                         all-functions nil t)))
       (save-excursion
-        (ess-command (concat "debug(\"" ufunc "\")\n") tbuffer)
+        ;; no quotes
+        (ess-command (format "debug(%s)\n" ufunc) tbuffer)
         (set-buffer tbuffer)
         (if (= (point-max) 1)
             (setq out-message (format "Flagged function '%s' for debugging" ufunc))
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; error occurred
-          )))
+          ;; error occurred
+          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))))
     (message out-message)))
 
 
@@ -2573,28 +2720,30 @@ for signature and trace it with browser tracer."
   "Prompt for the debugged/traced function or method and undebug/untrace it."
   (interactive)
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo\
-        (debugged (ess-get-words-from-vector ".ess_dbg_getTracedAndDebugged()\n"))
+        (debugged (ess-get-words-from-vector
+                   (if ess-developer-packages
+                       (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
+                               (mapconcat 'identity ess-developer-packages "', '"))
+                     ".ess_dbg_getTracedAndDebugged()\n")))
         out-message fun def-val)
-    (prin1 debugged)
+    ;; (prin1 debugged)
     (if (eq (length debugged) 0)
         (setq out-message "No debugged or traced functions/methods found")
       (setq def-val (if (eq (length debugged) 1)
                         (car debugged)
                       "*ALL*"))
-      (setq fun (ess-completing-read "Un-debug: " debugged nil t nil nil def-val))
+      (setq fun (ess-completing-read "Undebug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
           (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
         (ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer))
       (with-current-buffer  tbuffer
         (if (= (point-max) 1) ;; not reliable todo:
-            (setq out-message (format  "Un-debugged '%s' " fun))
+            (setq out-message (format  "Undebugged '%s' " fun))
           (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
           )))
     (message out-message)))
 
-
 ;;;_ * Kludges and Fixes
-
 ;;; delete-char and delete-backward-car do not delete whole intangible text
 (defadvice delete-char (around delete-backward-char-intangible activate)
   "When about to delete a char that's intangible, delete the whole intangible region

@@ -469,13 +469,13 @@ Taken from octave-mod.el."
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil)
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
-    (ess--show-process-buffer-on-error string proc)
-    ))
+    (ess--show-process-buffer-on-error string proc)))
 
 
 (defun ess--show-process-buffer-on-error (string proc)
-  (when (string-match "Error\\(:\\| +in\\)" string)
-    (ess-show-buffer (process-buffer proc))))
+  (let ((case-fold-search nil))
+    (when (string-match "Error\\(:\\| +in\\)" string)
+      (ess-show-buffer (process-buffer proc)))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -2081,7 +2081,7 @@ for `ess-eval-region'."
     (define-key map "\C-c\M-l" 'ess-load-file);; no longer overwrites C-c C-l;
     ;; but for now the user deserves a message:
     (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
-    (define-key map "\C-c`"    'ess-parse-errors)
+    (define-key map "\C-c`"      'ess-show-traceback)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-q" 'ess-quit)
@@ -3372,8 +3372,7 @@ Used in `ess-idle-timer-functions'."
 changed."
   ;; other guys might track their own
   (ess-process-put 'sp-for-help-changed? t)
-  (ess-process-put 'sp-for-ac-changed? t)
-  )
+  (ess-process-put 'sp-for-ac-changed? t))
 
 (defun ess-cache-search-list ()
   "Used in `ess-idle-timer-functions', to set
@@ -3460,7 +3459,6 @@ Display the S buffer, and cause an error displaying MSG."
  ; Provide package
 
 (provide 'ess-inf)
-
  ; Local variables section
 
 ;;; This file is automatically placed in Outline minor mode.

@@ -426,8 +426,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (cond
    ((string-match "^R" ess-dialect) (ess-R-display-vignettes))
-   (t (message "Sorry, not implemented for %s" ess-dialect))
-   ))
+   (t (message "Sorry, not implemented for %s" ess-dialect))))
 
 (defun ess-R-display-vignettes ()
   "Display R vignettes in ess-help-like buffer."
@@ -453,7 +452,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
               (setq details nil)))
           ))
       (setq buff  (get-buffer-create (format "*[%s]vignettes*"  ess-dialect)))
-      (with-current-buffer buff
+      (ess-with-current-buffer buff
         (setq buffer-read-only nil)
         (delete-region (point-min) (point-max))
         (ess-setq-vars-local (eval alist))
@@ -816,8 +815,8 @@ Keystroke    Section
           obj fun)))
 
 ;; defunct old name:
-(defun ess-read-helpobj-name-default (slist)
-  (car (delq nil (ess-helpobjs-at-point slist))))
+;; (defun ess-read-helpobj-name-default (slist)
+;;   (car (delq nil (ess-helpobjs-at-point slist))))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
@@ -829,8 +828,7 @@ Stata or XLispStat for additional information."
         (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
                              nil nil nil nil (car hlpobjs)))
     ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
-    (read-string (format "%s: " p-string))
-    ))
+    (read-string (format "%s: " p-string))))
 
 ;;*;; Utility functions
 

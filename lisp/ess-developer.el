@@ -126,46 +126,40 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'hook)
 
-(defun ess-developer-add-package (&optional from-attached remove)
+(defun ess-developer-add-package (&optional attached-only)
   "Add a package to `ess-developer-packages' list.
 With prefix argument only choose from among attached packages."
-  (interactive "P\ni")
-  (if (and remove (null ess-developer-packages))
-      (error "Nothing to remove, 'ess-developer-packages' is empty"))
-  (let ((sel (if remove
-                 (ess-completing-read "Remove package(s)"
-                                      (append ess-developer-packages (list "*ALL*"))
-                                      nil t nil nil "*ALL*")
-               (ess-completing-read
-                "Add package"
-                (ess-get-words-from-vector
-                 (concat "print( .packages(" (if from-attached "FALSE" "TRUE")
-                         "), max=1e6)\n")) nil t)
-               )))
-    (if remove
-        (if (equal "*ALL*" sel)
-            (progn
-              (setq ess-developer-packages nil)
-              (message "Removed *ALL* packages from the `ess-developer-packages' list."))
-          (setq ess-developer-packages (delete sel ess-developer-packages))
-          (message "Removed package '%s' from the `ess-developer-packages' list"
-                   (propertize sel 'face 'font-lock-function-name-face)))
-      (setq ess-developer-packages (ess-uniq-list (append ess-developer-packages
-                                                          (list sel))))
-      (ess-eval-linewise (format "library('%s')" sel))
-      (message "You are developing: %s" ess-developer-packages)
-      )))
+  (interactive "P")
+  (let ((sel (ess-completing-read
+              "Add package"
+              (ess-get-words-from-vector
+               (format "print(unique(c(.packages(), %s)), max=1e6)\n"
+                       (if attached-only "NULL" ".packages(TRUE)") nil t)))))
+    (setq ess-developer-packages
+          (ess-uniq-list (append ess-developer-packages (list sel))))
+    (ess-eval-linewise (format "library('%s')" sel))
+    (message "You are developing: %s" ess-developer-packages)))
 
 (defun ess-developer-remove-package ()
   "Remove packages from `ess-developer-packages' list; defaults to *ALL*."
   (interactive)
-  (ess-developer-add-package nil 'remove))
+  (unless ess-developer-packages
+    (error "Nothing to remove, 'ess-developer-packages' is empty"))
+  (let ((sel (ess-completing-read "Remove package(s)"
+                                  (append ess-developer-packages (list "*ALL*"))
+                                  nil t nil nil "*ALL*")))
+    (if (equal "*ALL*" sel)
+        (progn
+          (setq ess-developer-packages nil)
+          (message "Removed *ALL* packages from the `ess-developer-packages' list."))
+      (setq ess-developer-packages (delete sel ess-developer-packages))
+      (message "Removed package '%s' from the `ess-developer-packages' list"
+               (propertize sel 'face 'font-lock-function-name-face)))))
 
 (defun ess-developer-send-region-fallback (proc beg end visibly &optional message tracebug func)
   (if tracebug
       (ess-tracebug-send-region proc beg end visibly message t)
     (ess-send-region proc beg end visibly message)))
-
 
 (defun ess-developer-source-current-file (&optional filename)
   "Ask for namespace to source the current file into.
@@ -184,16 +178,15 @@ otherwise call devSource."
                                      (append ess-developer-packages (list "*current*" )) nil t))
            (comm  (if (equal env "*current*")
                       (format "source(file=\"%s\", local=F)\n cat(\"Sourced file '%s' into\", capture.output(environment()), '\n')" filename file)
-                    (format "require('methods');.essDev_source(source='%s',package='%s')" filename env))))
+                    (format ".essDev_source(source='%s',package='%s')" filename env))))
       (when (buffer-modified-p) (save-buffer))
       (message "devSourcing '%s' ..." file)
-      (ess--developer-command comm 'ess--developer-propertize-output)
-      )))
+      (ess--developer-command comm 'ess--developer-propertize-output))))
 
 (defun ess-developer-send-function (proc beg end name &optional visibly message tracebug)
   (save-excursion
     (if (null ess-developer-packages)
-        (error "Add packages to `ess-developer-packages' first! ")
+        (error "Add packages to `ess-developer-packages' first (C-c C-t C-a).")
       (if (null name)
           (error "Oops, could not find function name (probably a regexp bug)")
         (let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
@@ -203,17 +196,13 @@ otherwise call devSource."
           (while (and (setq ns (pop dev-packs))
                       (not assigned-p))
             (when (and (member ns nms) ;;todo: try to load the package if not loaded
-                       (equal "TRUE" (car (ess-get-words-from-vector
-                                           (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
-              (let ((comm (if tracebug
-                              (ess--tb-get-source-refd-string beg end)
-                            (buffer-substring beg end))))
-                (ess-developer-devSource-string proc comm ns)
-                (setq assigned-p t)
-                )))
+                       (equal "TRUE"
+                              (car (ess-get-words-from-vector
+                                    (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
+              (ess-developer-devSource beg end ns message)
+              (setq assigned-p t)))
           (unless assigned-p
-            (ess-developer-send-region-fallback proc beg end visibly message tracebug))
-          )))))
+            (ess-developer-send-region-fallback proc beg end visibly message tracebug)))))))
 
 (defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
   "Ask for for the package and devSource region into it."
@@ -224,22 +213,26 @@ otherwise call devSource."
     (if (equal package "*current*")
         (ess-developer-send-region-fallback proc beg end visibly message tracebug)
       ;; else, (ignore VISIBLY here)
-      (let ((comm  (if tracebug
-                       (ess--tb-get-source-refd-string beg end)
-                     (buffer-substring-no-properties beg end))))
-        (ess-developer-devSource-string proc comm package message)))))
+      (ess-developer-devSource beg end package message))))
 
-(defun ess-developer-devSource-string (proc command package &optional mess)
-  "devSource COMMAND into the PACKAGE.
-String must be quoted with `ess-quote-special-chars'."
-  ;; assumes a started process
-  (unless (process-get proc 'developer)
-    (error "Ess-developer mode is not active"))
-  (let ((comm  (format ".essDev_source(expr={%s}, package='%s')"
-                       command package)))
-    (if mess (message mess))
-    (ess--developer-command comm  'ess--developer-propertize-output)
-    ))
+(defun ess-developer-devSource (beg end package &optional message)
+  (let ((inferior-ess-load-command
+         (format ".essDev_source(source='%s',package='%s')" "%s" package)))
+    (if message (message message))
+    (ess--developer-command (ess--make-source-refd-command beg end)
+                            'ess--developer-propertize-output)))
+  
+;; (defun ess-developer-devSource-string (proc command package &optional mess)
+;;   "devSource COMMAND into the PACKAGE.
+;; String must be quoted with `ess-quote-special-chars'."
+;;   ;; assumes a started process
+;;   (unless (process-get proc 'developer)
+;;     (error "Ess-developer mode is not active"))
+;;   (let ((comm  (format ".essDev_source(expr={%s}, package='%s')"
+;;                        command package)))
+;;     (dbg comm)
+;;     (if mess (message mess))
+;;     (ess--developer-command comm  'ess--developer-propertize-output)))
 
 
 (defun ess--developer-command (comm &optional propertize-func)
@@ -264,18 +257,7 @@ usually used to manipulate the output, for example insert some text properties.
               (save-excursion (funcall propertize-func)))
             (message "%s" (buffer-substring (point-min) (max (point-min)
                                                              (1- (point))))))
-        (message (buffer-substring-no-properties (point-min) (point-max)))
-
-        ;; (save-selected-window
-        ;;   ;; if error show it in inferior-ess buffer
-        ;;   (ess-switch-to-ESS t)
-        ;;   (let ((proc (get-process ess-local-process-name)))
-        ;;     (goto-char (process-mark proc))
-        ;;     (insert (format "%s\n> " out))
-        ;;     (set-marker (process-mark proc) (point))))
-        ;; (error "Error occurred; dumped into process buffer")
-        )
-      )))
+        (message (buffer-substring-no-properties (point-min) (point-max)))))))
 
 (defun ess--developer-propertize-output ()
   (goto-char (point-min))
@@ -283,17 +265,12 @@ usually used to manipulate the output, for example insert some text properties.
     (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-function-name-face))
   (goto-char (point-min))
   (while (re-search-forward "^\\(\\w.+\\):" nil t)
-    (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)
-    ))
+    (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)))
 
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.
 If optional VAL is non-negative, turn on the developer mode. If
-VAL is negative turn it off.
-
-See the preamble of the source file for more info. It will get
-here eventually. todo:
-"
+VAL is negative turn it off."
   (interactive)
   (when (eq val t) (setq val 1))
   (ess-force-buffer-current "Process to load into: " nil t)
@@ -325,12 +302,9 @@ here eventually. todo:
             (if ess-dev
                 (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
               (propertize  ess-local-process-name 'face nil))))
-    (force-window-update)
-    ;; (redisplay t)
-    ))
+    (force-window-update)))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
 (provide 'ess-developer)
-
 ;;; ess-developer.el ends here

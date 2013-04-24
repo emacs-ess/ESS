@@ -1,14 +1,15 @@
 library('methods')
 
-## COMMENT ON S3 METHODS: It is not feasible, and bad practice, to check all the
-## assigned function names for "." separator. Thus, S3 methods are not
-## automatically registered. You can register them manually with
+## COMMENT ON S3 METHODS: It is not feasible and, quite frankly, a bad practice
+## to check all the assigned function names for "." separator. Thus, S3 methods
+## are not automatically registered. You can register them manually after you
+## have inserted method_name.my_class into your package environment using
+## ess-developer, like follows:
 ##
 ##    registerS3method("method_name", "my_class", my_package:::method_name.my_class)
 ##
-## after method_name.my_class was inserted into your package environment with
-## ess-developer. Otherwise, R will called the registered (i.e. cached) S3
-## methods instead of the new methods residing in the package environment.
+## Otherwise R will call the registered (i.e. cached) S3 method instead of the
+## new method that ess-developer inserted in the package environment.
 
 .essDev_differs <- function(f1, f2){
     if (is.function(f1) && is.function(f2)){
@@ -17,17 +18,16 @@ library('methods')
          !identical(f1, f2)
 }
 
-
 .essDev_source <- function (source, expr, package = "")
 {
+    require('methods')
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
     MPattern <- methods:::.TableMetaPattern()
     CPattern <- methods:::.ClassMetaPattern()
-    allPlainObjects <- function() allObjects[!(grepl(MPattern,
-                                                     allObjects) | grepl(CPattern, allObjects))]
-    allMethodTables <- function() allObjects[grepl(MPattern,
-                                                   allObjects)]
+    allPlainObjects <- function() allObjects[!(grepl(MPattern, allObjects) |
+                                               grepl(CPattern, allObjects))]
+    allMethodTables <- function() allObjects[grepl(MPattern, allObjects)]
     allClassDefs <- function() allObjects[grepl(CPattern, allObjects)]
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
@@ -51,7 +51,8 @@ library('methods')
     allObjects <- allObjects[!(allObjects %in% c(".cacheOnAssign", ".packageName"))]
 
     ## PLAIN OBJECTS and FUNCTIONS:
-    funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <- objectsNs <- objectsPkg <- character()
+    funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <-
+        objectsNs <- objectsPkg <- character()
     for (this in allPlainObjects()) {
         thisEnv <- get(this, envir = env)
         thisNs <- NULL
@@ -79,7 +80,8 @@ library('methods')
                     objectsNs <- c(objectsNs, this)}
             }
         }else{
-            newNs <- c(newNs, this)}
+            newNs <- c(newNs, this)
+        }
         ## PKG
         if (exists(this, envir = envpkg, inherits = FALSE)){
             thisPkg <- get(this, envir = envpkg)
@@ -243,7 +245,7 @@ library('methods')
     if (missing(source))
         eval(expr, envir = env)
     else  if (is(source, "character"))
-        for (text in source) sys.source(text, envir = env)
+        for (text in source) sys.source(text, envir = env, keep.source = TRUE)
     else stop(gettextf("Invalid source argument:  got an object of class \"%s\"",
                        class(source)[[1]]), domain = NA)
     env
