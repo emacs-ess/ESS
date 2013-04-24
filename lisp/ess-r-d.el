@@ -68,8 +68,8 @@
     (define-key ess-dev-map "\C-d" 'ess-dbg-flag-for-debugging)
     (define-key ess-dev-map "D" 'ess-dbg-unflag-for-debugging)
     (define-key ess-dev-map "u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-dev-map "b" 'ess-bp-set)
     (define-key ess-dev-map "\C-b" 'ess-bp-set)
+    (define-key ess-dev-map "b" 'ess-bp-set)
     (define-key ess-dev-map "B" 'ess-bp-set-conditional)
     (define-key ess-dev-map "l" 'ess-bp-set-logger)
     ;; (define-key ess-dev-map "t" 'ess-bp-toggle-state)
@@ -99,7 +99,6 @@
     (define-key ess-dev-map "?" 'ess-tracebug-show-help)
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
-
 
 (defvar ess-singlekey-debug-map
   (let ((map (make-sparse-keymap)))

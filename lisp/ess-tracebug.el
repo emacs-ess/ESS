@@ -270,25 +270,27 @@ Default bindings in `ess-tracebug-map':
  K   . Kill all BPs                     . `ess-bp-kill-all'
  t   . Toggle BP state                  . `ess-bp-toggle-state'
  l   . Set logger BP                    . `ess-bp-set-logger'
- C-n . Goto next BP                     . `ess-bp-next'
- C-p . Goto previous BP                 . `ess-bp-previous'
+ n   . Goto next BP                     . `ess-bp-next'
+ p   . Goto previous BP                 . `ess-bp-previous'
 
 * Debugging:
 
  `   . Show R Traceback                     . `ess-show-R-traceback'
  e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
  d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ u/D . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
 
 * Interactive Debugging:
 
- c   . Continue                  . `ess-dbg-command-c'
- n   . Next step                 . `ess-dbg-command-n'
- p   . Previous step             . `previous-error'
- q   . Quit debugging            . `ess-dbg-command-Q'
- 1..9. Enter recover frame       . `ess-dbg-command-digit'
- 0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+ [C-]c   . Continue                  . `ess-dbg-command-c'
+ [C-]n   . Next step                 . `ess-dbg-command-n'
+ [C-]p   . Previous step             . `previous-error'
+ [C-]q   . Quit debugging            . `ess-dbg-command-Q'
+ 1..9    . Enter recover frame       . `ess-dbg-command-digit'
+ 0       . Exit recover (also q,n,c) . `ess-dbg-command-digit'
+
+ Note: [C-] is the optional default prefix, see `ess-dbg-prefix-key'.
 
 * Misc:
 
