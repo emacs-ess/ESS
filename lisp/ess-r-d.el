@@ -67,6 +67,7 @@
     (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
     (define-key ess-dev-map "\C-d" 'ess-dbg-flag-for-debugging)
     (define-key ess-dev-map "D" 'ess-dbg-unflag-for-debugging)
+    (define-key ess-dev-map "u" 'ess-dbg-unflag-for-debugging)
     (define-key ess-dev-map "b" 'ess-bp-set)
     (define-key ess-dev-map "\C-b" 'ess-bp-set)
     (define-key ess-dev-map "B" 'ess-bp-set-conditional)
