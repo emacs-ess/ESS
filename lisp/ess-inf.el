@@ -469,8 +469,7 @@ Taken from octave-mod.el."
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil)
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
-    (ess--show-process-buffer-on-error string proc)
-    ))
+    (ess--show-process-buffer-on-error string proc)))
 
 
 (defun ess--show-process-buffer-on-error (string proc)
@@ -3373,8 +3372,7 @@ Used in `ess-idle-timer-functions'."
 changed."
   ;; other guys might track their own
   (ess-process-put 'sp-for-help-changed? t)
-  (ess-process-put 'sp-for-ac-changed? t)
-  )
+  (ess-process-put 'sp-for-ac-changed? t))
 
 (defun ess-cache-search-list ()
   "Used in `ess-idle-timer-functions', to set
@@ -3461,7 +3459,6 @@ Display the S buffer, and cause an error displaying MSG."
  ; Provide package
 
 (provide 'ess-inf)
-
  ; Local variables section
 
 ;;; This file is automatically placed in Outline minor mode.
