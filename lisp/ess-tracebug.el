@@ -273,24 +273,30 @@ Default bindings in `ess-tracebug-map':
  n   . Goto next BP                     . `ess-bp-next'
  p   . Goto previous BP                 . `ess-bp-previous'
 
+  (C- prefixed equivalents are also defined)
+
 * Debugging:
 
  `   . Show R Traceback                     . `ess-show-R-traceback'
  e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
  d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
- u/D . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
+ u   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
  w   . Watch window                         . `ess-watch'
+
+  (C- prefixed equivalents are also defined)
 
 * Interactive Debugging:
 
  [C-]c   . Continue                  . `ess-dbg-command-c'
+ [C-]c   . Continue multi            . `ess-dbg-command-C'
  [C-]n   . Next step                 . `ess-dbg-command-n'
- [C-]p   . Previous step             . `previous-error'
+ [C-]n   . Next step multi           . `ess-dbg-command-N'
+ [C-]u   . Up frame                  . `ess-dbg-command-up'
  [C-]q   . Quit debugging            . `ess-dbg-command-Q'
  1..9    . Enter recover frame       . `ess-dbg-command-digit'
  0       . Exit recover (also q,n,c) . `ess-dbg-command-digit'
 
- Note: [C-] is the optional default prefix, see `ess-debug-prefix-key'.
+ Note: [C-] is the optional prefix, see `ess-debug-prefix-key'.
 
 * Misc:
 
