@@ -133,7 +133,7 @@ With prefix argument only choose from among attached packages."
   (let ((sel (ess-completing-read
               "Add package"
               (ess-get-words-from-vector
-               (format "print(c(.packages(), %s), max=1e6)\n"
+               (format "print(unique(c(.packages(), %s)), max=1e6)\n"
                        (if attached-only "NULL" ".packages(TRUE)") nil t)))))
     (setq ess-developer-packages
           (ess-uniq-list (append ess-developer-packages (list sel))))
