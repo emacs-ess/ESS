@@ -126,12 +126,12 @@
 This commands are triggered by `ess-singlekey-debug' .
 \\{ess-singlekey-debug-map}")
 
-(defcustom ess-debug-prefix-key 'control
+(defcustom ess-debug-prefix-key nil
   "Prefix to be used to activate commands in
 `ess-singlekey-debug-map'. Can be either 'meta, 'control, 'super
 or nil."
   :group 'ess-debug
-  :type '(choice (const control) (const meta) (const super) (const nil))
+  :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
   :set (lambda (sym value)
          (set-default sym value)
          (map-keymap (lambda (type key)
@@ -147,8 +147,7 @@ or nil."
     ["Preview HTML"      ess-roxy-preview-HTML                  t]
     ["Preview text"      ess-roxy-preview-text                  t]
     ["Hide all"          ess-roxy-hide-all                      t]
-    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]
-    ))
+    ["Toggle Roxygen Prefix"     ess-roxy-toggle-roxy-region    t]))
 
 (easy-menu-define ess-tracebug-menu nil
   "Tracebug submenu."
@@ -168,6 +167,8 @@ or nil."
       :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
      ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
       :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
+     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'shift))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'shift)]
      ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
       :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
      "-----"
