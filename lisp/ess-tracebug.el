@@ -2630,7 +2630,7 @@ for signature and trace it with browser tracer."
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
                      ".ess_dbg_getTracedAndDebugged()\n"))
-        out-message fun def-val)
+                  out-message fun def-val))
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)
         (setq out-message "No debugged or traced functions/methods found")
@@ -2646,7 +2646,7 @@ for signature and trace it with browser tracer."
             (setq out-message (format  "Un-debugged '%s' " fun))
           (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
           )))
-    (message out-message))))
+    (message out-message)))
 
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text
