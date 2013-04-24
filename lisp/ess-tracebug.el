@@ -2646,7 +2646,7 @@ for signature and trace it with browser tracer."
             (setq out-message (format  "Un-debugged '%s' " fun))
           (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
           )))
-    (message out-message)))
+    (message out-message))))
 
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text
