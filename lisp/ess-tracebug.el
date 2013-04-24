@@ -1117,6 +1117,8 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-dbg-regexp-input (concat ess-dbg-regexp-debug "\\|"
                                      ess-dbg-regexp-selection))
 
+(defvar ess--suppress-next-output? nil)
+
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
 when `ess-debug' is active. Call `inferior-ess-output-filter'.
@@ -1147,7 +1149,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-selection)
 
-    (if (process-get proc 'suppress-next-output?)
+    (if (or (process-get proc 'suppress-next-output?)
+            ess--suppress-next-output?)
         ;; works only for surpressing short output, for time being is enough (for callbacks)
         (process-put proc 'suppress-next-output? nil)
 
