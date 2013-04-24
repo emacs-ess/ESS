@@ -1117,7 +1117,9 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)
-  "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+  ;; "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+  "\\(\\(?:Called from: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+
 (defvar ess-dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
 (defvar ess-dbg-regexp-selection "\\(Selection: \\'\\)")
 (defvar ess-dbg-regexp-input (concat ess-dbg-regexp-debug "\\|"
