@@ -2441,33 +2441,75 @@ Optional N if supplied gives the number of backward steps."
 ;;;_ + Debug/Undebug at point
 
 (defun ess-dbg-inject-un/debug-commands () ;; fixme: bug: if no starting new-line,ess-command hangs
-  (ess-command "
-local({
-    .ess_dbg_getTracedAndDebugged <-     function(){
-    tr_state <- tracingState(FALSE)
-    on.exit(tracingState(tr_state))
-    generics <- methods::getGenerics()
-    all_traced <- c()
-    for(i in seq_along(generics)){
-        genf <- methods::getGeneric(generics[[i]], package=generics@package[[i]])
-        if(!is.null(genf)){ ## might happen !! v.2.13
-            menv <- methods::getMethodsForDispatch(genf)
-            traced <- unlist(eapply(menv, is, 'traceable', all.names=TRUE))
-            if(length(traced) && any(traced))
-                all_traced <- c(paste(generics[[i]],':', names(traced)[traced],sep=''), all_traced)
-            if(!is.null(tfn<-getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv))&&is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
-                all_traced <- c(generics[[i]], all_traced)
+  (ess-command (ess-quote-special-chars "{
+.ess_find_funcs <- function(env){
+    objs <- ls(envir = env, all.names = TRUE)
+    objs[sapply(objs, exists, envir = env,
+                mode = 'function', inherits = FALSE)]
+}
+
+.ess_all_functions <-
+    function(packages = c()){
+        env = parent.frame()
+        empty <- emptyenv()
+        coll <- list()
+        for(p in packages){
+            objNS <- .ess_find_funcs(asNamespace(p))
+            objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
+            coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
         }
+        while(!identical(empty, env)){
+            coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
+            env <- parent.env(env)
+        }
+        grep('^\\.ess|\\.help.ESS', unlist(coll, use.names = F),
+             invert = TRUE, value = TRUE)
     }
-    debugged <- apropos('.', mode = 'function')
-    ## traced function don't appear here. Not realy needed and would affect performance.
-    debugged <- debugged[which(unlist(lapply(debugged, isdebugged) , recursive=FALSE, use.names=FALSE))]
-    unique(c(debugged, all_traced))
-    }
-   .ess_dbg_UntraceOrUndebug <- function(name){
+
+.ess_dbg_getTracedAndDebugged <-
+    function(packages = c()){
         tr_state <- tracingState(FALSE)
         on.exit(tracingState(tr_state))
-        ## name is a name of a function to be undebugged or has a form name:Class1#Class2#Class3 for traced methods
+        generics <- methods::getGenerics()
+        all_traced <- c()
+        for(i in seq_along(generics)){
+            genf <- methods::getGeneric(generics[[i]], package=generics@package[[i]])
+            if(!is.null(genf)){ ## might happen !! v.2.13
+                menv <- methods::getMethodsForDispatch(genf)
+                traced <- unlist(eapply(menv, is, 'traceable', all.names=TRUE))
+                if(length(traced) && any(traced))
+                    all_traced <- c(paste(generics[[i]],':', names(traced)[traced],sep=''), all_traced)
+                if(!is.null(tfn<-getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv))&&is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
+                    all_traced <- c(generics[[i]], all_traced)
+            }
+        }
+        debugged_pkg <- unlist(lapply(packages, function(pkgname){
+            ns <- asNamespace(pkgname)
+            funcs <- .ess_find_funcs(ns)
+            dbged <- funcs[unlist(lapply(funcs, function(f) isdebugged(get(f, envir = ns, inherits = FALSE))))]
+            if(length(dbged))
+                paste0(pkgname, ':::`', dbged, '`')
+        }))
+        all <- .ess_all_functions()
+        ## traced function don't appear here. Not realy needed and would affect performance.
+        which_deb <- lapply(all, function(nm){
+            tryCatch(isdebugged(nm), error = function(e) FALSE)
+            ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
+        })
+        debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
+        unique(c(debugged_pkg, debugged, all_traced))
+    }
+
+
+.ess_dbg_UntraceOrUndebug <- function(name){
+    tr_state <- tracingState(FALSE)
+    on.exit(tracingState(tr_state))
+    if(grepl('::', name)){
+        ## foo:::bar name
+        eval(parse(text = sprintf('undebug(%s)', name)))
+    }else{
+        ## name is a name of a function to be undebugged or has a form
+        ## name:Class1#Class2#Class3 for traced methods
         name <- strsplit(name, ':', fixed = TRUE)[[1]]
         if(length(name)>1){
             ## a method
@@ -2480,22 +2522,16 @@ local({
                 untrace(name)
             else
                 undebug(name)
-        }
-    }
-    .ess_dbg_UndebugALL <- function(funcs){
-        tr_state <- tracingState(FALSE)
-        on.exit(tracingState(tr_state))
-        invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
-    }
-    inject_env <- .GlobalEnv ##.BaseNamespaceEnv
-    environment(.ess_dbg_UndebugALL) <-
-        environment(.ess_dbg_UntraceOrUndebug) <-
-            environment(.ess_dbg_getTracedAndDebugged) <- .GlobalEnv  ## to see all the funcs
-    assign('.ess_dbg_getTracedAndDebugged', .ess_dbg_getTracedAndDebugged, envir= inject_env)
-    assign('.ess_dbg_UntraceOrUndebug', .ess_dbg_UntraceOrUndebug, envir= inject_env)
-    assign('.ess_dbg_UndebugALL', .ess_dbg_UndebugALL, envir= inject_env)
-})
-"))
+        }}}
+
+
+.ess_dbg_UndebugALL <- function(funcs){
+    tr_state <- tracingState(FALSE)
+    on.exit(tracingState(tr_state))
+    invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
+}
+}
+")))
 
 
 (defun ess-dbg-get-signatures (method)
@@ -2531,45 +2567,55 @@ local({
 Ask the user for a function and if it turns to be generic, ask
 for signature and trace it with browser tracer."
   (interactive)
-  (let ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
-        (all-functions (ess-get-words-from-vector "apropos(\".\", mode = \"function\")\n"))
-        obj-at-point ufunc signature default-string out-message)
-    (setq obj-at-point (car (ess-helpobjs-at-point all-functions)))
-    (setq ufunc (ess-completing-read "Debug"
-                                     all-functions nil t nil nil obj-at-point))
-    ;; check if is generic
+  (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
+         (all-functions (ess-get-words-from-vector
+                         (if ess-developer-packages
+                             (format ".ess_all_functions(c('%s'))\n"
+                                     (mapconcat 'identity ess-developer-packages "', '"))
+                           ".ess_all_functions()\n")))
+         (obj-at-point (car (ess-helpobjs-at-point all-functions)))
+         (ufunc  (ess-completing-read "Debug" all-functions
+                                      nil nil nil nil obj-at-point))
+         signature default-string out-message)
+    ;; is it generic
     (if (equal "TRUE"
-               (car (ess-get-words-from-vector  (concat "as.character(isGeneric(\"" ufunc "\"))\n"))))
+               (car (ess-get-words-from-vector
+                     (format "as.character(isGeneric('%s'))\n" ufunc))))
         (save-excursion ;; if so, find the signature
           (setq signature
                 (ess-completing-read (concat "Method for generic '" ufunc "'")
-                                     (ess-dbg-get-signatures ufunc) ;;signal error if not found
+                                     (ess-dbg-get-signatures ufunc) ;signal an error if not found
                                      nil t nil nil "*default*"))
           (if (equal signature "*default*")
-              (progn
-                (ess-command (concat "trace(\"" ufunc "\", tracer = browser)\n") tbuffer) ;debug the default ufunc
-                )
-            (ess-command (concat "trace(\"" ufunc "\", tracer = browser, signature = c(" signature "))\n") tbuffer))
+              ;;debug, the default ufunc
+              (ess-command (format "trace('%s', tracer = browser)\n" ufunc) tbuffer)
+            (ess-command (format "trace('%s', tracer = browser, signature = c('%s'))\n" ufunc signature) tbuffer))
           (set-buffer tbuffer)
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; give appropriate message or error
-          )
-      ;;else, not S4 generic
-      (when (car (ess-get-words-from-vector  (concat "as.character(.knownS3Generics[\"" ufunc "\"])\n")))
-        (setq all-functions (ess-get-words-from-vector (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
-        (setq all-functions (delq nil (mapcar (lambda (el) (if (not (char-equal ?* (aref el (1- (length el))))) el))
-                                              all-functions)))
-        ;; cannot debug nonvisible functions,
+          ;; give appropriate message or error
+          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))
+      ;;else, not an S4 generic
+      (when (car (ess-get-words-from-vector
+                  (format "as.character(.knownS3Generics['%s'])\n" ufunc)))
+        ;; if S3 generic:
+        (setq all-functions
+              (ess-get-words-from-vector
+               (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
+        (setq all-functions
+              ;; cannot debug non-visible methods
+              (delq nil (mapcar (lambda (el)
+                                  (if (not (char-equal ?* (aref el (1- (length el))))) el))
+                                all-functions)))
         ;; tothink: ess-developer?
         (setq ufunc (ess-completing-read (format "Method for S3 generic '%s'" ufunc)
-                                         all-functions
-                                         nil t)))
+                                         all-functions nil t)))
       (save-excursion
-        (ess-command (concat "debug(\"" ufunc "\")\n") tbuffer)
+        ;; no quotes
+        (ess-command (format "debug(%s)\n" ufunc) tbuffer)
         (set-buffer tbuffer)
         (if (= (point-max) 1)
             (setq out-message (format "Flagged function '%s' for debugging" ufunc))
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; error occurred
-          )))
+          ;; error occurred
+          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))))
     (message out-message)))
 
 
@@ -2577,15 +2623,19 @@ for signature and trace it with browser tracer."
   "Prompt for the debugged/traced function or method and undebug/untrace it."
   (interactive)
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo\
-        (debugged (ess-get-words-from-vector ".ess_dbg_getTracedAndDebugged()\n"))
+        (debugged (ess-get-words-from-vector
+                   (if ess-developer-packages
+                       (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
+                               (mapconcat 'identity ess-developer-packages "', '"))
+                     ".ess_dbg_getTracedAndDebugged()\n"))
         out-message fun def-val)
-    (prin1 debugged)
+    ;; (prin1 debugged)
     (if (eq (length debugged) 0)
         (setq out-message "No debugged or traced functions/methods found")
       (setq def-val (if (eq (length debugged) 1)
                         (car debugged)
                       "*ALL*"))
-      (setq fun (ess-completing-read "Un-debug: " debugged nil t nil nil def-val))
+      (setq fun (ess-completing-read "Un-debug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
           (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
         (ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer))
@@ -2596,9 +2646,7 @@ for signature and trace it with browser tracer."
           )))
     (message out-message)))
 
-
 ;;;_ * Kludges and Fixes
-
 ;;; delete-char and delete-backward-car do not delete whole intangible text
 (defadvice delete-char (around delete-backward-char-intangible activate)
   "When about to delete a char that's intangible, delete the whole intangible region
