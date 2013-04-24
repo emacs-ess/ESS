@@ -1750,6 +1750,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
       (setq bp-command (propertize bp-command
                                    'ess-bp t
                                    'bp-id bp-id
+                                   'bp-active t
                                    'intangible 'ess-bp
                                    'rear-nonsticky '(intangible ess-bp bp-type)
                                    'bp-type type
@@ -1778,16 +1779,21 @@ List format is identical to that of `ess-bp-type-spec-alist'."
         (widen)
         (goto-char (point-min))
         (while (re-search-forward
-                "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\([^#]*##:ess-bp-end:##\n\\)" nil t)
+                "\\(##:ess-bp-start::\\(.*\\):##\n\\)\\(.+##:ess-bp-end:##\n\\)" nil t)
           (let ((dum-beg (match-beginning 1))
                 (dum-end (match-end 1))
                 (comm-beg (match-beginning 3))
-                (comm-end (match-end 3 ))
+                (comm-end (match-end 3))
                 (type (match-string 2))
-                dum-props condition)
+                (bp-command (match-string 3))
+                bp-id dum-props condition)
             (when (string-match "^\\(\\w+\\)@\\(.*\\)\\'" type)
               (setq condition (match-string 2 type))
               (setq type (match-string 1 type)))
+            (setq bp-id
+                  (if (string-match "\"@[0-9]+@\"" bp-command)
+                      (match-string 0 bp-command)
+                    (setq ess--bp-identifier (1+ ess--bp-identifier))))
             (setq type (intern type))
             (let* ((bp-specs (ess-bp-get-bp-specs  type condition t))
                    (displ-string (nth 2 bp-specs))
@@ -1799,6 +1805,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
                                                'font-lock-face fringe-face))
                 (add-text-properties comm-beg comm-end
                                      (list 'ess-bp t
+                                           'bp-id bp-id
                                            'intangible 'ess-bp
                                            'rear-nonsticky '(intangible ess-bp bp-type)
                                            'bp-type type
@@ -1816,7 +1823,16 @@ List format is identical to that of `ess-bp-type-spec-alist'."
                                              (list 'ess-bp t
                                                    'intangible 'ess-bp
                                                    'bp-type type
-                                                   'bp-substring 'dummy)))))))))))
+                                                   'bp-substring 'dummy)))
+                ;; (when comment-beg
+                ;;   (add-text-properties comment-beg comment-end
+                ;;                        (list 'ess-bp t
+                ;;                              'bp-id bp-id
+                ;;                              'intangible 'ess-bp
+                ;;                              'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
+                ;;                              'bp-type type
+                ;;                              'bp-substring 'comment)))
+                ))))))))
 
 (add-hook 'R-mode-hook 'ess-bp-recreate-all)
 
@@ -1943,43 +1959,43 @@ works even in the process of debugging.
 For loggers, recover and conditional breakpoints this command
 just comments the breakpoint in the source file.
 
-If there is no active R session, this command triggers an error.
-"
+If there is no active R session, this command triggers an error."
   (interactive)
   (unless (and ess-local-process-name
                (get-process ess-local-process-name))
     (error "No R session in this buffer"))
   (save-excursion
-    (with-silent-modifications
-     (let ((pos (ess-bp-get-bp-position-nearby))
-           (fringe-face (nth 3 ess-bp-inactive-spec))
-           (inhibit-point-motion-hooks t) ;; deactivates intangible property
-           bp-id beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
-       (if (null pos)
-           (message "No breakpoints in the visible region")
-         (goto-char (car pos))
-         (setq beg-pos-command (previous-single-property-change
-                                (cdr pos) 'bp-substring nil (car pos))
-               bp-id (get-char-property beg-pos-command 'bp-id))
-         (goto-char beg-pos-command)
-         (if (equal (get-char-property (1- beg-pos-command) 'bp-substring) 'comment)
-             (progn
-               ;; not use beg-pos-command here ## is deleted
-               (delete-region (previous-single-property-change beg-pos-command 'bp-substring nil (car pos))
-                              beg-pos-command)
-               (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
-               (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
-               (put-text-property  (car pos) (point)
-                                   'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs))))
-           (put-text-property  (car pos) beg-pos-command ;; dummy display change
-                               'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
-           (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- TRUE\n" bp-id))
-           (insert (propertize "##"
-                               'ess-bp t
-                               'intangible 'ess-bp
-                               'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
-                               'bp-type (get-char-property (point) 'bp-type)
-                               'bp-substring 'comment))))))))
+    (let ((pos (ess-bp-get-bp-position-nearby))
+          (fringe-face (nth 3 ess-bp-inactive-spec))
+          (inhibit-point-motion-hooks t) ;; deactivates intangible property
+          bp-id beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
+      (if (null pos)
+          (message "No breakpoints in the visible region")
+        (goto-char (car pos))
+        (setq beg-pos-command (previous-single-property-change
+                               (cdr pos) 'bp-substring nil (car pos))
+              bp-id (get-char-property beg-pos-command 'bp-id))
+        (goto-char beg-pos-command)
+        (if (get-char-property beg-pos-command 'bp-active)
+            (progn
+              (put-text-property  (car pos) beg-pos-command ;; dummy display change
+                                  'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
+              (put-text-property beg-pos-command (cdr pos)
+                                 'bp-active nil)
+              (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- TRUE\n" bp-id)))
+          (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
+          (put-text-property beg-pos-command (cdr pos)
+                             'bp-active t)
+          (put-text-property  (car pos) beg-pos-command
+                              'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs)))
+          (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
+          ;; (insert (propertize "##"
+          ;;                     'ess-bp t
+          ;;                     'intangible 'ess-bp
+          ;;                     'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
+          ;;                     'bp-type (get-char-property (point) 'bp-type)
+          ;;                     'bp-substring 'comment))
+          )))))
 
 
 (defun ess-bp-make-visible ()
