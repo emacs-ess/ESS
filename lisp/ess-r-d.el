@@ -124,7 +124,7 @@
 This commands are triggered by `ess-singlekey-debug' .
 \\{ess-singlekey-debug-map}")
 
-(defcustom ess-dbg-prefix-key 'control
+(defcustom ess-debug-prefix-key 'control
   "Prefix to be used to activate commands in
 `ess-singlekey-debug-map'. Can be either 'meta, 'control, 'super
 or nil."
@@ -160,17 +160,17 @@ or nil."
                         (ess-process-get 'tracebug))
                    ess-use-tracebug)]
     ("Prefix"
-     ["control" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'control))
-      :style radio :enable t :selected (eq ess-dbg-prefix-key 'control)]
-     ["meta" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'meta))
-      :style radio :enable t :selected (eq ess-dbg-prefix-key 'meta)]
-     ["super" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key 'super))
-      :style radio :enable t :selected (eq ess-dbg-prefix-key 'super)]
-     ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-dbg-prefix-key nil))
-      :style radio :enable t :selected (eq ess-dbg-prefix-key 'nil)]
+     ["control" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'control))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'control)]
+     ["meta" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'meta))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
+     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
+     ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
+      :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
      "-----"
      ["Save to custom" (lambda () (interactive)
-                         (customize-save-variable 'ess-dbg-prefix-key ess-dbg-prefix-key))])
+                         (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
     ["Show traceback" ess-show-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
                              (get-process ess-local-process-name)

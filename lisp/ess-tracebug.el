@@ -164,10 +164,10 @@ Use `add-hook' to insert append your functions to this list.
 ;;     (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
 ;;     (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
 ;;     (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
-;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?c)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?n)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?p)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-dbg-prefix-key ?q)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?c)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?n)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?p)] 'ess-singlekey-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?q)] 'ess-singlekey-debug)
 ;;     (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
 ;;     (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
 ;;     (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
@@ -290,7 +290,7 @@ Default bindings in `ess-tracebug-map':
  1..9    . Enter recover frame       . `ess-dbg-command-digit'
  0       . Exit recover (also q,n,c) . `ess-dbg-command-digit'
 
- Note: [C-] is the optional default prefix, see `ess-dbg-prefix-key'.
+ Note: [C-] is the optional default prefix, see `ess-debug-prefix-key'.
 
 * Misc:
 
@@ -1448,13 +1448,13 @@ triggered the command."
   (interactive)
   (let ((map (make-sparse-keymap)))
     (map-keymap (lambda (type key)
-                  (define-key map `[(,ess-dbg-prefix-key ,type)] key))
+                  (define-key map `[(,ess-debug-prefix-key ,type)] key))
                 ess-singlekey-debug-map)
     (ess--execute-singlekey-command
      map (format "(%s)ontinue  (%s)ext  (%s)uit  (?)help"
-                 (key-description `[(,ess-dbg-prefix-key ?c)])
-                 (key-description `[(,ess-dbg-prefix-key ?n)])
-                 (key-description `[(,ess-dbg-prefix-key ?q)]))
+                 (key-description `[(,ess-debug-prefix-key ?c)])
+                 (key-description `[(,ess-debug-prefix-key ?n)])
+                 (key-description `[(,ess-debug-prefix-key ?q)]))
      wait (not (ess-process-get 'dbg-active)))))
 
 
