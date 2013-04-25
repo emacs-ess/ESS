@@ -374,8 +374,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             (ess-watch-inject-commands)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
-                  (message "ess-tracebug-prefix will be removed in future versions.
-                           Electric debug keys are now on C-c and ess-dev maps.")
+                  (message "ess-tracebug-prefix will be removed in future versions. Electric debug keys are now on [C-c] and [C-c C-t] maps.")
                   (sit-for 1)
                   (when (commandp comm)
                     (define-key ess-tracebug-map ess-tracebug-prefix comm))
