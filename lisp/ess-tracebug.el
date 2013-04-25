@@ -2745,7 +2745,7 @@ for signature and trace it with browser tracer."
                                 all-functions)))
         ;; tothink: ess-developer?
         (setq ufunc (ess-completing-read (format "Method for S3 generic '%s'" ufunc)
-                                         all-functions nil t)))
+                                         (cons ufunc all-functions) nil t)))
       (save-excursion
         ;; no quotes
         (ess-command (format "debug(%s)\n" ufunc) tbuffer)
