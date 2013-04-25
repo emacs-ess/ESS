@@ -105,6 +105,7 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+;; add electric debug keys to relevant maps
 (map-keymap (lambda (type key)
               (define-key ess-dev-map `[(meta ,type)] 'ess-electric-debug)
               (define-key ess-mode-map `[(control ?c) (meta ,type)] 'ess-electric-debug)
@@ -129,8 +130,7 @@
     ;; :enable ess-local-process-name
     ["Active?"  ess-toggle-tracebug
      :style toggle
-     :selected (or (and ess-local-process-name
-                        (get-process ess-local-process-name)
+     :selected (or (and (ess-process-live-p)
                         (ess-process-get 'tracebug))
                    ess-use-tracebug)]
     ;; ("Prefix"
@@ -147,11 +147,11 @@
     ;;  "-----"
     ;;  ["Save to custom" (lambda () (interactive)
     ;;                      (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
-    ["Show traceback" ess-show-traceback ess-local-process-name]
-    ["Watch" ess-watch  (and ess-local-process-name
-                             (get-process ess-local-process-name)
+    ["Show traceback" ess-show-traceback (ess-process-live-p)]
+    ["Show call stack" ess-show-call-stack (ess-process-live-p)]
+    ["Watch" ess-watch  (and (ess-process-live-p)
                              (ess-process-get 'tracebug))]
-    ["Error action cycle" ess-dbg-toggle-error-action (and ess-local-process-name
+    ["Error action cycle" ess-dbg-toggle-error-action (and (ess-process-live-p)
                                                            (ess-process-get 'tracebug))]
     "----"
     ["Flag for debugging" ess-dbg-flag-for-debugging ess-local-process-name]
@@ -173,8 +173,7 @@
     :visible (and ess-dialect (string-match "^R" ess-dialect))
     ["Active?"          ess-toggle-developer
      :style toggle
-     :selected (and ess-local-process-name
-                    (get-process ess-local-process-name)
+     :selected (and (ess-process-live-p)
                     (ess-process-get 'developer))]
     ["Add package" ess-developer-add-package t]
     ["Remove package" ess-developer-remove-package t]))
@@ -744,8 +743,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when (and ess-current-process-name
-             (get-process ess-current-process-name)
+  (when (and (ess-process-live-p)
              (not (ess-process-get 'busy)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-at-point))
