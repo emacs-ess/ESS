@@ -91,7 +91,9 @@ The postfix keys are defined in `ess-tracebug-map':
   :type 'string
   :group 'ess-tracebug)
 
-(define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
+(make-obsolete-variable 'ess-tracebug-prefix "ess-tracebug-prefix will be removed in future versions.
+Electric debug keys are now on C-c and ess-dev maps." "ESS 13.05")
+;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
 
 (defcustom ess-tracebug-inject-source-p 'function
@@ -372,6 +374,9 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             (ess-watch-inject-commands)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
+                  (message "ess-tracebug-prefix will be removed in future versions.
+                           Electric debug keys are now on C-c and ess-dev maps.")
+                  (sit-for 1)
                   (when (commandp comm)
                     (define-key ess-tracebug-map ess-tracebug-prefix comm))
                   (define-key ess-mode-map ess-tracebug-prefix ess-tracebug-map)
@@ -601,9 +606,6 @@ You can bind 'no-select' versions of this commands:
         (compilation-minor-mode 1)
         (setq next-error-function 'ess-tb-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
-        ;; tracebug keys
-        (when ess-tracebug-prefix
-          (local-set-key ess-tracebug-prefix ess-tracebug-map))
         ;; ess keys
         (local-set-key "\C-c\C-s" 'ess-watch-switch-process)
         (local-set-key "\C-c\C-y" 'ess-switch-to-ESS)
