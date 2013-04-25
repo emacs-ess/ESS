@@ -1152,10 +1152,12 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
          (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
-         (is-ready (not (inferior-ess-set-status proc string)))) ; current-buffer is still the user's input buffer here
-
+         (is-ready (not (inferior-ess-set-status proc string)))
+         (accum-buffer (get-buffer-create (process-get proc 'accum-buffer-name)))
+         (new-time (float-time))
+         (last-time (process-get proc 'last-flush-time)))
+    ;; current-buffer is still the user's input buffer here
     (ess--if-verbose-write-process-state proc string)
-
     (inferior-ess-run-callback proc) ;protected
     (process-put proc 'is-recover match-selection)
 
@@ -1181,8 +1183,19 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
 
       ;; COMINT
-      (comint-output-filter proc string)
-      (ess--show-process-buffer-on-error string proc))
+      (with-current-buffer accum-buffer
+        (goto-char (point-max))
+        (insert string))
+      (when (or is-ready ; flush cache every 1 second
+                (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
+                (null last-time)
+                (> (- new-time last-time) 1))
+        (let ((string (with-current-buffer accum-buffer
+                        (prog1 (buffer-string)
+                          (erase-buffer)))))
+          (process-put proc 'last-flush-time (unless is-ready new-time))
+          (comint-output-filter proc string)
+          (ess--show-process-buffer-on-error string proc))))
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)

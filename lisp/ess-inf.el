@@ -343,6 +343,8 @@ there is no process NAME)."
            (inferior-ess-make-comint buf-name-str
                                      proc-name
                                      inf-ess-start-args)))
+        (process-put (get-process proc-name) 'accum-buffer-name
+                     (format " *%s:accum*" proc-name))
         ;; Set the process sentinel to save the history
         (set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
         ;; Add this process to ess-process-name-list, if needed
@@ -373,8 +375,7 @@ there is no process NAME)."
         (ess-load-extras t)
         ;; user initialization can take some time ...
         (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
-        (ess-wait-for-process (get-process proc-name) nil 0.01)
-        )
+        (ess-wait-for-process (get-process proc-name)))
 
       (let ((buff (process-buffer (get-process proc-name))))
         (with-current-buffer buff
@@ -505,8 +506,7 @@ This marks the process with a message, at a particular time point."
                                  procname
                                  inferior-ess-start-args
                                  &rest switches)
-  "Make an S comint process in buffer BUFNAME with process PROCNAME.
-This was rewritten by KH in April 1996."
+  "Make an S comint process in buffer BUFNAME with process PROCNAME."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
   (let*  ((buffer (get-buffer-create bufname))
