@@ -288,16 +288,16 @@ Default bindings in `ess-tracebug-map':
 
 * Interactive Debugging:
 
- [C-]c   . Continue                  . `ess-dbg-command-c'
- [C-]c   . Continue multi            . `ess-dbg-command-C'
- [C-]n   . Next step                 . `ess-dbg-command-n'
- [C-]n   . Next step multi           . `ess-dbg-command-N'
- [C-]u   . Up frame                  . `ess-dbg-command-up'
- [C-]q   . Quit debugging            . `ess-dbg-command-Q'
+ M-c   . Continue                  . `ess-dbg-command-c'
+ M-C   . Continue multi            . `ess-dbg-command-C'
+ M-n   . Next step                 . `ess-dbg-command-n'
+ M-N   . Next step multi           . `ess-dbg-command-N'
+ M-u   . Up frame                  . `ess-dbg-command-up'
+ M-q   . Quit debugging            . `ess-dbg-command-Q'
  1..9    . Enter recover frame       . `ess-dbg-command-digit'
  0       . Exit recover (also q,n,c) . `ess-dbg-command-digit'
 
- Note: [C-] is the optional prefix, see `ess-debug-prefix-key'.
+ Note: These commands are electric and are also available in C-c map.
 
 * Misc:
 
