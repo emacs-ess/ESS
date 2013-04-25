@@ -2086,6 +2086,7 @@ for `ess-eval-region'."
     ;; but for now the user deserves a message:
     (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
     (define-key map "\C-c`"      'ess-show-traceback)
+    (define-key map [(control ?c) ?~] 'ess-show-call-stack)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-q" 'ess-quit)

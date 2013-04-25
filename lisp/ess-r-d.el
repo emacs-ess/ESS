@@ -66,7 +66,7 @@
     (define-key ess-dev-map "\C-r" 'ess-developer-remove-package)
     (define-key ess-dev-map "r" 'ess-developer-remove-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
-    ;(define-key ess-dev-map "\C-`" 'ess-show-call-stack) ; not implemented yet
+    (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
     (define-key ess-dev-map "w" 'ess-watch)
     (define-key ess-dev-map "\C-d" 'ess-dbg-flag-for-debugging)
@@ -209,7 +209,8 @@
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
-     (ess-traceback-command             . "{try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)}\n")
+     (ess-traceback-command             . "local({try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)})\n")
+     (ess-call-stack-command            . "traceback(1)\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
