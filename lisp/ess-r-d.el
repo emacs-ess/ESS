@@ -55,7 +55,7 @@
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
-    ;; ess-singlekey-debug-map and prefix ess-debug-prefix-key,
+    ;; ess-electric-debug-map and prefix ess-debug-prefix-key,
     ;; Given that all commands have \C- prefixed version, this is not a big deal.
     (define-key ess-dev-map "\C-t" 'ess-toggle-developer)
     (define-key ess-dev-map "t" 'ess-toggle-developer)
@@ -92,24 +92,24 @@
     (define-key ess-dev-map "\C-e" 'ess-dbg-toggle-error-action)
     (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
     (define-key ess-dev-map "0" 'ess-dbg-command-digit)
-    (define-key ess-dev-map "1" 'ess-singlekey-selection)
-    (define-key ess-dev-map "2" 'ess-singlekey-selection)
-    (define-key ess-dev-map "3" 'ess-singlekey-selection)
-    (define-key ess-dev-map "4" 'ess-singlekey-selection)
-    (define-key ess-dev-map "5" 'ess-singlekey-selection)
-    (define-key ess-dev-map "6" 'ess-singlekey-selection)
-    (define-key ess-dev-map "7" 'ess-singlekey-selection)
-    (define-key ess-dev-map "8" 'ess-singlekey-selection)
-    (define-key ess-dev-map "9" 'ess-singlekey-selection)
+    (define-key ess-dev-map "1" 'ess-electric-selection)
+    (define-key ess-dev-map "2" 'ess-electric-selection)
+    (define-key ess-dev-map "3" 'ess-electric-selection)
+    (define-key ess-dev-map "4" 'ess-electric-selection)
+    (define-key ess-dev-map "5" 'ess-electric-selection)
+    (define-key ess-dev-map "6" 'ess-electric-selection)
+    (define-key ess-dev-map "7" 'ess-electric-selection)
+    (define-key ess-dev-map "8" 'ess-electric-selection)
+    (define-key ess-dev-map "9" 'ess-electric-selection)
     (define-key ess-dev-map "?" 'ess-tracebug-show-help)
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
 (map-keymap (lambda (type key)
-              (define-key ess-dev-map `[(meta ,type)] 'ess-singlekey-debug)
-              (define-key ess-mode-map `[(control ?c) (meta ,type)] 'ess-singlekey-debug)
-              (define-key inferior-ess-mode-map `[(control ?c) (meta ,type)] 'ess-singlekey-debug))
-            ess-singlekey-debug-map)
+              (define-key ess-dev-map `[(meta ,type)] 'ess-electric-debug)
+              (define-key ess-mode-map `[(control ?c) (meta ,type)] 'ess-electric-debug)
+              (define-key inferior-ess-mode-map `[(control ?c) (meta ,type)] 'ess-electric-debug))
+            ess-electric-debug-map)
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."

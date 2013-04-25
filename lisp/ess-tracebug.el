@@ -165,24 +165,24 @@ Use `add-hook' to insert append your functions to this list.
 ;;     (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
 ;;     (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
 ;;     (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?c)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?n)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?p)] 'ess-singlekey-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?q)] 'ess-singlekey-debug)
-;;     (define-key ess-tracebug-map "c" 'ess-singlekey-debug)
-;;     (define-key ess-tracebug-map "n" 'ess-singlekey-debug)
-;;     (define-key ess-tracebug-map "p" 'ess-singlekey-debug)
-;;     (define-key ess-tracebug-map "q" 'ess-singlekey-debug)
-;;     (define-key ess-tracebug-map "0" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "1" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "2" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "3" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "4" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "5" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "6" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "7" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "8" 'ess-singlekey-selection)
-;;     (define-key ess-tracebug-map "9" 'ess-singlekey-selection)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?c)] 'ess-electric-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?n)] 'ess-electric-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?p)] 'ess-electric-debug)
+;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?q)] 'ess-electric-debug)
+;;     (define-key ess-tracebug-map "c" 'ess-electric-debug)
+;;     (define-key ess-tracebug-map "n" 'ess-electric-debug)
+;;     (define-key ess-tracebug-map "p" 'ess-electric-debug)
+;;     (define-key ess-tracebug-map "q" 'ess-electric-debug)
+;;     (define-key ess-tracebug-map "0" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "1" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "2" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "3" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "4" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "5" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "6" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "7" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "8" 'ess-electric-selection)
+;;     (define-key ess-tracebug-map "9" 'ess-electric-selection)
 ;;     (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
 ;;     ess-tracebug-map)
 ;;   "Keymap used as a binding for `ess-tracebug-prefix' key
@@ -843,27 +843,27 @@ If nil, the currently debugged line is highlighted for
   :type 'boolean)
 
 
-(defvar ess-singlekey-selection-map
-  (let (ess-singlekey-selection-map)
-    (define-prefix-command 'ess-singlekey-selection-map)
-    (define-key ess-singlekey-selection-map "c" 'ess-dbg-command-c)
-    (define-key ess-singlekey-selection-map "q" 'ess-dbg-command-Q)
-    (define-key ess-singlekey-selection-map "0" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "1" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "2" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "3" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "4" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "5" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "6" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "7" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "8" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "9" 'ess-dbg-command-digit)
-    (define-key ess-singlekey-selection-map "?" 'ess-tracebug-show-help)
-    ess-singlekey-selection-map)
+(defvar ess-electric-selection-map
+  (let (ess-electric-selection-map)
+    (define-prefix-command 'ess-electric-selection-map)
+    (define-key ess-electric-selection-map "c" 'ess-dbg-command-c)
+    (define-key ess-electric-selection-map "q" 'ess-dbg-command-Q)
+    (define-key ess-electric-selection-map "0" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "1" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "2" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "3" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "4" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "5" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "6" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "7" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "8" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "9" 'ess-dbg-command-digit)
+    (define-key ess-electric-selection-map "?" 'ess-tracebug-show-help)
+    ess-electric-selection-map)
   "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-singlekey-debug' .
+This commands are triggered by `ess-electric-debug' .
 
-\\{ess-singlekey-selection-map}
+\\{ess-electric-selection-map}
 ")
 
 (defvar ess-dbg-forward-ring (make-ring 10)
@@ -931,7 +931,7 @@ The action list is in `ess-dbg-error-action-alist'. "
 
    Mainly useful during/after debugging, to jump to the place
 from where the code was initialy executed.  This is an
-singlekey-command, which means that after the command is triggered a
+electric-command, which means that after the command is triggered a
 single key event is enough to navigate through the input-event-S-ring.
 If the key-event which triggered the command is Shift modified
 the input-event-S-ring is traversed backwards.
@@ -974,7 +974,7 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
 Jump to markers stored in `ess-dbg-backward-ring'. If debug
 session is active, first jump to current debug line.
 
-This is an singlekey-command. Shift triggers the opposite traverse
+This is an electric-command. Shift triggers the opposite traverse
 of the ring."
   (interactive)
   (let* ((debug-point (ring-ref ess-dbg-backward-ring 0))
@@ -1218,7 +1218,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when wbuff
         (ess-watch-refresh-buffer-visibly wbuff )))
 
-    ;; ACTIVATE the debugger and trigger singlekey COMMAND if entered for the first time
+    ;; ACTIVATE the debugger and trigger electric COMMAND if entered for the first time
     (when (and (not was-in-dbg)
                (not match-selection)
                (or match-jump match-dbg))
@@ -1226,11 +1226,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (ring-insert ess-dbg-forward-ring input-point))
       (process-put proc 'dbg-active t)
       (when ess-dbg-auto-single-key-p
-        (ess-singlekey-debug t)))
+        (ess-electric-debug t)))
 
     (when (and (not was-in-recover)
                match-selection)
-      (ess-singlekey-selection t))))
+      (ess-electric-selection t))))
 
 
 (defun ess-dbg-goto-last-ref-and-mark (dbuff &optional other-window)
@@ -1444,9 +1444,9 @@ given by the reference.  This is the value of
         (error "Moved past last debug line")))))
 
 
-(defvar ess-singlekey-debug-map
+(defvar ess-electric-debug-map
   (let ((map (make-sparse-keymap)))
-    ;; (define-prefix-command 'ess-singlekey-debug-map)
+    ;; (define-prefix-command 'ess-electric-debug-map)
     (define-key map "c" 'ess-dbg-command-c)
     (define-key map "C" 'ess-dbg-command-C)
     (define-key map "n" 'ess-dbg-command-n)
@@ -1455,11 +1455,11 @@ given by the reference.  This is the value of
     (define-key map "u" 'ess-dbg-command-up)
     map)
   "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-singlekey-debug' .
-\\{ess-singlekey-debug-map}")
+This commands are triggered by `ess-electric-debug' .
+\\{ess-electric-debug-map}")
 
 (defvar ess-debug-prefix-key 'meta
-  "Prefix to be used to activate commands in `ess-singlekey-debug-map'.
+  "Prefix to be used to activate commands in `ess-electric-debug-map'.
 Can be either 'meta, 'control, 'super, 'shift or nil (no prefix).
 
 You probably should not change this, the default of 'meta is the
@@ -1468,8 +1468,8 @@ coexist.")
 ;; :group 'ess-debug
 ;; :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
 
-(defun ess-singlekey-debug (&optional wait)
-  "Call commands defined in `ess-singlekey-debug-map'.
+(defun ess-electric-debug (&optional wait)
+  "Call commands defined in `ess-electric-debug-map'.
 Single-key input commands are those that once invoked do not
 requre the prefix command for subsequent invocation.
 
@@ -1477,7 +1477,7 @@ For example, if the prefix key is 'C-c C-t' and
 `ess-dbg-command-n' is bound to 'n' and `ess-dbg-command-c' is
 bound to 'c' then 'C-c C-t n n c' executes `ess-dbg-command-n'
 twice and `ess-dbg-command-c' once. Any other input not defined
-in `ess-singlekey-debug-map' will cause the exit from single-key
+in `ess-electric-debug-map' will cause the exit from single-key
 input mode.
 
 If WAIT is t, wait for next input and ignore the keystroke which
@@ -1486,7 +1486,7 @@ triggered the command."
   (let ((map (make-sparse-keymap)))
     (map-keymap (lambda (type key)
                   (define-key map `[(,ess-debug-prefix-key ,type)] key))
-                ess-singlekey-debug-map)
+                ess-electric-debug-map)
     (let ((help-mess (let ((overriding-local-map map))
                        (substitute-command-keys
                         (concat "(\\[ess-dbg-command-c])cont "
@@ -1495,23 +1495,27 @@ triggered the command."
                                 "(\\[ess-dbg-command-N])next-multi "
                                 "(\\[ess-dbg-command-up])up "
                                 "(\\[ess-dbg-command-Q])quit")))))
-      (ess--execute-singlekey-command map help-mess wait
+      (ess--execute-electric-command map help-mess wait
        (not (ess-process-get 'dbg-active))))))
 
+(make-obsolete 'ess-singlekey-debug 'ess-electric-debug "ESS 13.05")
 
-(defun ess-singlekey-selection (&optional wait)
-  "Call commands defined in `ess-singlekey-selection'.
+
+(defun ess-electric-selection (&optional wait)
+  "Call commands defined in `ess-electric-selection'.
 Single-key input commands are those, which once executed do not
 requre the prefix command for subsequent invocation. See
-`ess-singlekey-debug' for more.
+`ess-electric-debug' for more.
 
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
 
   (interactive)
-  (ess--execute-singlekey-command ess-singlekey-selection-map
+  (ess--execute-electric-command ess-electric-selection-map
                                   "Selection: " wait
                                   (not (ess-process-get 'is-recover))))
+
+(make-obsolete 'ess-singlekey-selection 'ess-electric-selection "ESS 13.05")
 
 
 (defun ess-dbg-command-digit (&optional ev)
