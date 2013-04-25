@@ -91,13 +91,6 @@
     (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "\C-e" 'ess-dbg-toggle-error-action)
     (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
-    ;; all singlekey commands are installed by ess-debug-prefix-key bellow 
-    ;; (define-key ess-dev-map "c" 'ess-singlekey-debug)
-    ;; (define-key ess-dev-map "\C-c" 'ess-singlekey-debug)
-    ;; (define-key ess-dev-map "n" 'ess-singlekey-debug)
-    ;; (define-key ess-dev-map "p" 'ess-singlekey-debug)
-    ;; (define-key ess-dev-map "q" 'ess-singlekey-debug)
-    ;; (define-key ess-dev-map "\C-q" 'ess-singlekey-debug)
     (define-key ess-dev-map "0" 'ess-dbg-command-digit)
     (define-key ess-dev-map "1" 'ess-singlekey-selection)
     (define-key ess-dev-map "2" 'ess-singlekey-selection)
@@ -112,31 +105,11 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
-(defvar ess-singlekey-debug-map
-  (let ((map (make-sparse-keymap)))
-    ;; (define-prefix-command 'ess-singlekey-debug-map)
-    (define-key map "c" 'ess-dbg-command-c)
-    (define-key map "C" 'ess-dbg-command-C)
-    (define-key map "n" 'ess-dbg-command-n)
-    (define-key map "N" 'ess-dbg-command-N)
-    (define-key map "q" 'ess-dbg-command-Q)
-    (define-key map "u" 'ess-dbg-command-up)
-    map)
-  "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-singlekey-debug' .
-\\{ess-singlekey-debug-map}")
-
-(defcustom ess-debug-prefix-key nil
-  "Prefix to be used to activate commands in
-`ess-singlekey-debug-map'. Can be either 'meta, 'control, 'super
-or nil."
-  :group 'ess-debug
-  :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
-  :set (lambda (sym value)
-         (set-default sym value)
-         (map-keymap (lambda (type key)
-                       (define-key ess-dev-map `[(,value ,type)] 'ess-singlekey-debug))
-                     ess-singlekey-debug-map)))
+(map-keymap (lambda (type key)
+              (define-key ess-dev-map `[(meta ,type)] 'ess-singlekey-debug)
+              (define-key ess-mode-map `[(control ?c) (meta ,type)] 'ess-singlekey-debug)
+              (define-key inferior-ess-mode-map `[(control ?c) (meta ,type)] 'ess-singlekey-debug))
+            ess-singlekey-debug-map)
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -160,20 +133,20 @@ or nil."
                         (get-process ess-local-process-name)
                         (ess-process-get 'tracebug))
                    ess-use-tracebug)]
-    ("Prefix"
-     ["control" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'control))
-      :style radio :enable t :selected (eq ess-debug-prefix-key 'control)]
-     ["meta" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'meta))
-      :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
-     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
-      :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
-     ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'shift))
-      :style radio :enable t :selected (eq ess-debug-prefix-key 'shift)]
-     ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
-      :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
-     "-----"
-     ["Save to custom" (lambda () (interactive)
-                         (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
+    ;; ("Prefix"
+    ;;  ["control" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'control))
+    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'control)]
+    ;;  ["meta" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'meta))
+    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
+    ;;  ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
+    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
+    ;;  ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'shift))
+    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'shift)]
+    ;;  ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
+    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
+    ;;  "-----"
+    ;;  ["Save to custom" (lambda () (interactive)
+    ;;                      (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
     ["Show traceback" ess-show-traceback ess-local-process-name]
     ["Watch" ess-watch  (and ess-local-process-name
                              (get-process ess-local-process-name)

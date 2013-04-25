@@ -90,9 +90,8 @@ The postfix keys are defined in `ess-tracebug-map':
 "
   :type 'string
   :group 'ess-tracebug)
+
 (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
-
-
 
 
 (defcustom ess-tracebug-inject-source-p 'function
@@ -1442,12 +1441,37 @@ given by the reference.  This is the value of
           (error "Moved past first debug line")
         (error "Moved past last debug line")))))
 
+
+(defvar ess-singlekey-debug-map
+  (let ((map (make-sparse-keymap)))
+    ;; (define-prefix-command 'ess-singlekey-debug-map)
+    (define-key map "c" 'ess-dbg-command-c)
+    (define-key map "C" 'ess-dbg-command-C)
+    (define-key map "n" 'ess-dbg-command-n)
+    (define-key map "N" 'ess-dbg-command-N)
+    (define-key map "q" 'ess-dbg-command-Q)
+    (define-key map "u" 'ess-dbg-command-up)
+    map)
+  "Keymap used to define commands for single key input mode.
+This commands are triggered by `ess-singlekey-debug' .
+\\{ess-singlekey-debug-map}")
+
+(defvar ess-debug-prefix-key 'meta
+  "Prefix to be used to activate commands in `ess-singlekey-debug-map'.
+Can be either 'meta, 'control, 'super, 'shift or nil (no prefix).
+
+You probably should not change this, the default of 'meta is the
+only prefix that allows both editing and electric debug keys to
+coexist.")
+;; :group 'ess-debug
+;; :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
+
 (defun ess-singlekey-debug (&optional wait)
   "Call commands defined in `ess-singlekey-debug-map'.
-Single-key input commands are those, which once executed do not requre
-the prefix command for subsequent invocation.
+Single-key input commands are those that once invoked do not
+requre the prefix command for subsequent invocation.
 
- For example, if the prefix key is 'C-c C-t' and
+For example, if the prefix key is 'C-c C-t' and
 `ess-dbg-command-n' is bound to 'n' and `ess-dbg-command-c' is
 bound to 'c' then 'C-c C-t n n c' executes `ess-dbg-command-n'
 twice and `ess-dbg-command-c' once. Any other input not defined
@@ -1456,7 +1480,6 @@ input mode.
 
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
-
   (interactive)
   (let ((map (make-sparse-keymap)))
     (map-keymap (lambda (type key)
@@ -1470,9 +1493,8 @@ triggered the command."
                                 "(\\[ess-dbg-command-N])next-multi "
                                 "(\\[ess-dbg-command-up])up "
                                 "(\\[ess-dbg-command-Q])quit")))))
-      (ess--execute-singlekey-command
-       map help-mess
-       wait (not (ess-process-get 'dbg-active))))))
+      (ess--execute-singlekey-command map help-mess wait
+       (not (ess-process-get 'dbg-active))))))
 
 
 (defun ess-singlekey-selection (&optional wait)
