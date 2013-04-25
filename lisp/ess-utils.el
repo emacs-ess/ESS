@@ -829,7 +829,7 @@ process to avoid excessive requests.
 
 
 
-(defmacro ess--execute-singlekey-command (map &optional prompt wait exit-form &rest args)
+(defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
 
 Return the value of the lastly executed command.

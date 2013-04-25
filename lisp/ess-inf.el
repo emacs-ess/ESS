@@ -939,7 +939,7 @@ If TOGGLE-EOB is given, the value of
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil nil nil EOB)))
+    (ess--execute-electric-command map nil nil nil EOB)))
 
 
 (defun get-ess-buffer (name)
