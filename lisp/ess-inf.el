@@ -708,6 +708,10 @@ Returns the name of the process, or nil if the current buffer has none."
   (with-current-buffer (process-buffer (get-ess-process name))
     (set var val)))
 
+(defun ess-process-live-p ()
+  (and ess-local-process-name
+       (process-live-p (get-process ess-local-process-name))))
+
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
 current ESS process."

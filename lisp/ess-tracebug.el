@@ -1103,14 +1103,15 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;; (ess--make-busy-prompt-function (get-process "R"))
 
-
 (defun ess-dbg-is-active ()
   "Return t if the current R process is in active debugging state."
-  (ess-process-get  'dbg-active))
+  (and (ess-process-live-p)
+       (ess-process-get  'dbg-active)))
 
 (defun ess-dbg-is-recover ()
   "Return t if the current R process is in active debugging state."
-  (ess-process-get  'is-recover))
+  (and (ess-process-live-p)
+       (ess-process-get  'is-recover)))
 
 (defvar ess-dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess-dbg-regexp-jump "debug at ")
