@@ -1138,6 +1138,17 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess--suppress-next-output? nil)
 
+(defun ess--flush-process-output-cache (proc)
+  (let ((string (with-current-buffer
+                    (get-buffer-create (process-get proc 'accum-buffer-name))
+                  (prog1 (buffer-string)
+                    (erase-buffer)))))
+    (when (> (length string) 0)
+      (process-put proc 'last-flush-time (and (process-get proc 'busy)
+                                              (float-time)))
+      (comint-output-filter proc string)
+      (ess--show-process-buffer-on-error string proc))))
+
 (defun inferior-ess-dbg-output-filter (proc string)
   "Standard output filter for the inferior ESS process
 when `ess-debug' is active. Call `inferior-ess-output-filter'.
@@ -1162,9 +1173,9 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
          (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
-         (accum-buffer (get-buffer-create (process-get proc 'accum-buffer-name)))
          (new-time (float-time))
-         (last-time (process-get proc 'last-flush-time)))
+         (last-time (process-get proc 'last-flush-time))
+         (flush-timer (process-get proc 'flush-timer)))
     ;; current-buffer is still the user's input buffer here
     (ess--if-verbose-write-process-state proc string)
     (inferior-ess-run-callback proc) ;protected
@@ -1192,20 +1203,24 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
 
       ;; COMINT
-      (with-current-buffer accum-buffer
+      (with-current-buffer (get-buffer-create (process-get proc 'accum-buffer-name))
         (goto-char (point-max))
         (insert string))
-      (when (or is-ready ; flush cache every 1 second
-                match-selection
+      ;; Need this timer here.  Process might be waiting for user output
+      (when (timerp flush-timer)
+        (cancel-timer flush-timer)
+        (process-put proc 'flush-timer nil))
+      (process-put proc 'flush-timer
+                   (run-at-time .2 nil 'ess--flush-process-output-cache proc))
+      (unless last-time ;; don't flush first time
+        (setq last-time new-time)
+        (process-put proc 'last-flush-time new-time))
+      (when (or is-ready
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
-                (null last-time)
-                (> (- new-time last-time) .5))
-        (let ((string (with-current-buffer accum-buffer
-                        (prog1 (buffer-string)
-                          (erase-buffer)))))
-          (process-put proc 'last-flush-time (unless is-ready new-time))
-          (comint-output-filter proc string)
-          (ess--show-process-buffer-on-error string proc))))
+                ;; (null last-time)
+                ;; flush periodically
+                (> (- new-time last-time) .6))
+        (ess--flush-process-output-cache proc)))
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
