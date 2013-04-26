@@ -1196,9 +1196,10 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (goto-char (point-max))
         (insert string))
       (when (or is-ready ; flush cache every 1 second
+                match-selection
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
                 (null last-time)
-                (> (- new-time last-time) 1))
+                (> (- new-time last-time) .5))
         (let ((string (with-current-buffer accum-buffer
                         (prog1 (buffer-string)
                           (erase-buffer)))))
