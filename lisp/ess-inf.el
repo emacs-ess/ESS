@@ -709,10 +709,14 @@ Returns the name of the process, or nil if the current buffer has none."
     (set var val)))
 
 (defun ess-process-live-p ()
+  "Check if the local ess process is alive.
+Return nil if current buffer has no associated process, or
+process was killed."
   (and ess-local-process-name
        (let ((proc (get-process ess-local-process-name)))
          (and (processp proc)
-              (process-live-p proc)))))
+              (memq (process-status process)
+                    '(run open listen connect stop))))))
 
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
