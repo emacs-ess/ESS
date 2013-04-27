@@ -715,7 +715,7 @@ process was killed."
   (and ess-local-process-name
        (let ((proc (get-process ess-local-process-name)))
          (and (processp proc)
-              (memq (process-status process)
+              (memq (process-status proc)
                     '(run open listen connect stop))))))
 
 (defun ess-process-get (propname)
