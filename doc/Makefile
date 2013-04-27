@@ -122,8 +122,8 @@ html/ess.html: $(TEXISRC)
 #MM	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
 html/readme.html: $(TEXISRC)
-	-$(MAKEHTML) --no-validate html/readme.html readme.texi
-##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
+	-$(MAKEHTML) html/readme.html --no-validate readme.texi
+		 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
 #	mv -f readme.html html
 
