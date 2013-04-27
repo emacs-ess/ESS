@@ -59,7 +59,7 @@
     ;; Given that all commands have \C- prefixed version, this is not a big deal.
     (define-key ess-dev-map "\C-t" 'ess-toggle-developer)
     (define-key ess-dev-map "t" 'ess-toggle-developer)
-    (define-key ess-dev-map "\C-T" 'ess-toggle-tracebug)
+    ;; (define-key ess-dev-map "\C-T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "\C-a" 'ess-developer-add-package)
     (define-key ess-dev-map "a" 'ess-developer-add-package)
