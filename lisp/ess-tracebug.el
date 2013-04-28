@@ -91,8 +91,8 @@ The postfix keys are defined in `ess-tracebug-map':
   :type 'string
   :group 'ess-tracebug)
 
-(make-obsolete-variable 'ess-tracebug-prefix "ess-tracebug-prefix will be removed in future versions.
-Electric debug keys are now on C-c and ess-dev maps." "ESS 13.05")
+;; (make-obsolete-variable 'ess-tracebug-prefix "ess-tracebug-prefix will be removed in future versions.
+;; Electric debug keys are now on C-c and ess-dev maps." "ESS 13.05")
 ;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
 
@@ -374,8 +374,8 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             (ess-watch-inject-commands)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
-                  (message "ess-tracebug-prefix will be removed in future versions. Electric debug keys are now on [C-c] and [C-c C-t] maps.")
-                  (sit-for 1)
+                  ;; (message "ess-tracebug-prefix will be removed in future versions. Electric debug keys are now on [C-c] and [C-c C-t] maps.")
+                  ;; (sit-for 1)
                   (when (commandp comm)
                     (define-key ess-tracebug-map ess-tracebug-prefix comm))
                   (define-key ess-mode-map ess-tracebug-prefix ess-tracebug-map)
@@ -1042,8 +1042,7 @@ This function is placed in `ess-presend-filter-functions'.
 Add to ESS the interactive debugging functionality, breakpoints,
 watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-tracebug-map' to `ess-tracebug-prefix' in
-`ess-mode-map' and `inferior-ess-mode-map' respectively.
-"
+`ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
   (let ((dbuff (get-buffer-create (concat ess-dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
         (proc (get-ess-process ess-current-process-name)))
