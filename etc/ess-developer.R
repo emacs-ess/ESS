@@ -1,15 +1,16 @@
-## COMMENT ON S3 METHODS: It is not feasible and, quite frankly, a bad practice
-## to check all the assigned function names for "." separator. Thus, S3 methods
-## are not automatically registered. You can register them manually after you
-## have inserted method_name.my_class into your package environment using
-## ess-developer, like follows:
-##
-##    registerS3method("method_name", "my_class", my_package:::method_name.my_class)
-##
-## Otherwise R will call the registered (i.e. cached) S3 method instead of the
-## new method that ess-developer inserted in the package environment.
-
 .ess_evalq({
+
+    ## COMMENT ON S3 METHODS: It is not feasible and, quite frankly, a bad practice
+    ## to check all the assigned function names for "." separator. Thus, S3 methods
+    ## are not automatically registered. You can register them manually after you
+    ## have inserted method_name.my_class into your package environment using
+    ## ess-developer, like follows:
+    ##
+    ##    registerS3method("method_name", "my_class", my_package:::method_name.my_class)
+    ##
+    ## Otherwise R will call the registered (i.e. cached) S3 method instead of the
+    ## new method that ess-developer inserted in the package environment.
+
 
     .essDev_differs <- function(f1, f2)
     {
