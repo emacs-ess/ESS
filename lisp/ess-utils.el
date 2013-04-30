@@ -1114,6 +1114,11 @@ later."
                       ))
                 (error nil)))))))
 
+(defun ess--inject-code-from-file (file)
+  ;; this is different from ess-load-file
+  (ess-command (with-temp-buffer
+                 (insert-file-contents file)
+                 (buffer-string))))
 
 (provide 'ess-utils)
 

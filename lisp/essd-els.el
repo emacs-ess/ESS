@@ -196,10 +196,10 @@ C-n to send lines over.  With SAS, use C-c i
                            nil nil nil 'wait-prompt))
 
     ;; todo: this is ugly, add to customise alist
-    (if (and (equal ess-dialect "R") (ess-current-R-at-least '2.7.0))
-        (ess-command ess--R-injected-code))
-
+    (if (equal ess-dialect "R")
+        (ess-inject-code-from-file (format "%sESSR.R" ess-etc-directory)))
     ;; (ess-load-extras t) ;; not working
+
 
     (if (equal ess-dialect "S+")
         (ess-command ess-S+--injected-code))

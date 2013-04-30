@@ -1443,6 +1443,7 @@ local({
                   (ess-wait-for-process sprocess nil wait force-redisplay)
                   (goto-char (point-max))
                   ;; remove prompt
+                  ;; if output is cat(..)ed this deletes the output ...
                   (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
               ))

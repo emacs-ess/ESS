@@ -283,11 +283,10 @@ VAL is negative turn it off."
                             "ess-developer.R")))
     (if ess-dev
         (progn
-          (unless (or (file-exists-p devR-file)
-                      ;; (setq ess-dev (locate-file "ess-developer.R" load-path))
-                      )
+          (unless (file-exists-p devR-file)
             (error "Cannot locate 'ess-developer.R' file"))
-          (ess-command  (format "source('%s')\n" devR-file))
+          ;; puting this into ESSR makes loading rather slow
+          (ess--inject-code-from-file devR-file)
           (run-hooks 'ess-developer-enter-hook)
           (when (file-readable-p ess-developer-enter-source)
             (ess-eval-linewise (format "source(%s)\n" ess-developer-enter-source)))

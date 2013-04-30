@@ -309,8 +309,7 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): version %s\n"
              (ess-get-words-from-vector "as.character(getRversion())\n")))
 
-    (if (ess-current-R-at-least '2.7.0)
-        (ess-command ess--R-injected-code))
+    (ess--inject-code-from-file (format "%sESSR.R" ess-etc-directory))
 
     (when ess-can-eval-in-background
       (ess-async-command-delayed
@@ -321,6 +320,7 @@ to R, put them in the variable `inferior-R-args'."
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
                            nil nil nil 'wait-prompt))
+
     (with-ess-process-buffer nil
       (run-mode-hooks 'ess-R-post-run-hook))))
 

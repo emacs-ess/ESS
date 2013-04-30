@@ -314,10 +314,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
             ;;     (when (and (eq major-mode 'ess-mode)
             ;;                (equal ess-dialect "R"))
             ;;       (ess-bp-recreate-all))))
-            ;; Un/Debug at point functionality
-            (ess--inject-tracebug-commands)
             ;; watch functionality
-            (ess-watch-inject-commands)
             (if ess-tracebug-prefix
                 (let ((comm (key-binding ess-tracebug-prefix)))
                   ;; (message "ess-tracebug-prefix will be removed in future versions. Electric debug keys are now on [C-c] and [C-c C-t] maps.")
