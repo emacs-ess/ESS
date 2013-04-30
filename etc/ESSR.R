@@ -10,9 +10,11 @@
         empty <- emptyenv()
         coll <- list()
         for(p in packages){
-            objNS <- .ess_find_funcs(asNamespace(p))
-            objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
-            coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+            ## package might not be attached
+            try({objNS <- .ess_find_funcs(asNamespace(p))
+                 objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
+                 coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+             }, silent = TRUE)
         }
         while(!identical(empty, env)){
             coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
@@ -55,7 +57,6 @@
         debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
         unique(c(debugged_pkg, debugged, all_traced))
     }
-
 
 .ess_dbg_UntraceOrUndebug <- function(name){
     tr_state <- tracingState(FALSE)

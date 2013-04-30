@@ -2617,9 +2617,11 @@ assign('.ESSBP.', new.env(parent = emptyenv()), envir= .BaseNamespaceEnv)
         empty <- emptyenv()
         coll <- list()
         for(p in packages){
-            objNS <- .ess_find_funcs(asNamespace(p))
-            objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
-            coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+            ## package might not be attached
+            try({objNS <- .ess_find_funcs(asNamespace(p))
+                 objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
+                 coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+             }, silent = TRUE)
         }
         while(!identical(empty, env)){
             coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
