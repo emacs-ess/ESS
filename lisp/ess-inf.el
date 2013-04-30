@@ -2996,51 +2996,37 @@ If OBJ is an object name, returns result of S command names(OBJ).
 If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
 In all cases, the value is an list of object names."
 
-  ;; FIXME: in both cases below, use the same fallback "objects(POS)" -- merge!
-  (if (and obj (file-accessible-directory-p obj))
-      ;; Check the pre-compiled object list in ess-object-name-db first
+  (cond ((and (stringp obj)
+              (string-match-p "ESSR" obj)))
+        ;; FIXME: in both cases below, the same fallback "objects(POS)" is used -- merge!
+        ((and obj (file-accessible-directory-p obj))
+         ;; Check the pre-compiled object list in ess-object-name-db first
 
-      ;; FIXME: If used at all, ess-object-name-db should not only
-      ;; -----  be used in the directory case !!
-      (or (cdr-safe (assoc obj ess-object-name-db))
-          ;; Take a directory listing
-          (and ess-filenames-map
-               ;; first try .Data subdirectory:
-               ;;FIXME: move ".Data" or ``this function'' to ess-sp6-d.el etc:
-               (let ((dir (concat (file-name-as-directory obj) ".Data")))
-                 (if (not (file-accessible-directory-p dir))
-                     (setq dir obj))
-                 (and (not (ess-compiled-dir dir))
-                      (directory-files dir))))
-          ;; Get objects(pos) instead
-          (and (or (ess-write-to-dribble-buffer
-                    (format "(ess-object-names ..): directory %s not used\n" obj))
-                   t)
-               pos
-               (ess-get-words-from-vector
-                (format inferior-ess-objects-command pos))))
-    ;; "else" should really give an error!
-    ;; would need  pos = which(obj = search())
-
-    ;; else
-    (or (and obj  ;; want names(obj)
-             (or (ess-write-to-dribble-buffer
-                  (format "(ess-object-names obj=%s): no directory - trying names\n"
-                          obj))
-                 t)
-             (ess-get-words-from-vector
-              (format inferior-ess-safe-names-command obj)))
-        (and (ess-write-to-dribble-buffer
-              (format "(ess-object-names obj=%s): no dir.; -> objects()\n" obj))
-             nil); must return nil
-        ;; get objects(pos)
-        (ess-get-words-from-vector
-         (format inferior-ess-objects-command pos))))) ; had 2nd arg ".*"
-                                        ; s4 needs 2
-                                        ; args, rest only need 1 ?
-                                        ; changes needed to allow for
-                                        ; pattern argument to
-                                        ; .SmodeObs
+         ;; FIXME: If used at all, ess-object-name-db should not only
+         ;; -----  be used in the directory case !!
+         (or (cdr-safe (assoc obj ess-object-name-db))
+             ;; Take a directory listing
+             (and ess-filenames-map
+                  ;; first try .Data subdirectory:
+                  ;;FIXME: move ".Data" or ``this function'' to ess-sp6-d.el etc:
+                  (let ((dir (concat (file-name-as-directory obj) ".Data")))
+                    (if (not (file-accessible-directory-p dir))
+                        (setq dir obj))
+                    (and (not (ess-compiled-dir dir))
+                         (directory-files dir))))
+             ;; Get objects(pos) instead
+             (and (or (ess-write-to-dribble-buffer
+                       (format "(ess-object-names ..): directory %s not used\n" obj))
+                      t)
+                  pos
+                  (ess-get-words-from-vector
+                   (format inferior-ess-objects-command pos)))))
+        (obj  ;; want names(obj)
+         (ess-get-words-from-vector
+          (format inferior-ess-safe-names-command obj)))
+        (t
+         (ess-get-words-from-vector
+          (format inferior-ess-objects-command pos)))))
 
 (defun ess-slot-names (obj)
   "Return alist of S4 slot names of S4 object OBJ."
