@@ -112,7 +112,7 @@ New way to do it."
     (run-mode-hooks 'ess-S+-post-run-hook)))
 
 (defvar ess-S+--injected-code
-  ".ess.funargs <- function(funname){
+  ".ess_funargs <- function(funname){
   ## funname <- deparse(substitute(object))
   fun <- try(eval(parse(text=funname)), silent = TRUE)
   if(is.function(fun)) {

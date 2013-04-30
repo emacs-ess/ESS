@@ -1831,7 +1831,7 @@ This format string should use %s to substitute an object name.")
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
 
-(defcustom inferior-ess-r-help-command ".help.ESS(\"%s\", help_type=\"text\")\n"
+(defcustom inferior-ess-r-help-command ".ess_help(\"%s\", help_type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
 This format string should use %s to substitute an object name.
@@ -2429,7 +2429,7 @@ Passed to `ess-execute-dialect-specific' which see. ")
 
 (defvar ess-funargs-command  nil
   "Dialect specific command to return a list of function arguments.
-See `ess-function-arguments' and .ess.funargs command in R and
+See `ess-function-arguments' and .ess_funargs command in R and
 S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
 
