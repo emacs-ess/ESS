@@ -55,8 +55,6 @@
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
-    ;; ess-electric-debug-map and prefix ess-debug-prefix-key,
-    ;; Given that all commands have \C- prefixed version, this is not a big deal.
     (define-key ess-dev-map "\C-t" 'ess-toggle-developer)
     (define-key ess-dev-map "t" 'ess-toggle-developer)
     ;; (define-key ess-dev-map "\C-T" 'ess-toggle-tracebug)
@@ -105,13 +103,6 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
-;; add electric debug keys to relevant maps
-(map-keymap (lambda (type key)
-              (define-key ess-dev-map `[(meta ,type)] 'ess-electric-debug)
-              (define-key ess-mode-map `[(control ?c) (meta ,type)] 'ess-electric-debug)
-              (define-key inferior-ess-mode-map `[(control ?c) (meta ,type)] 'ess-electric-debug))
-            ess-electric-debug-map)
-
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
   '("Roxygen"
@@ -133,20 +124,6 @@
      :selected (or (and (ess-process-live-p)
                         (ess-process-get 'tracebug))
                    ess-use-tracebug)]
-    ;; ("Prefix"
-    ;;  ["control" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'control))
-    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'control)]
-    ;;  ["meta" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'meta))
-    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'meta)]
-    ;;  ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'super))
-    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'super)]
-    ;;  ["super" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key 'shift))
-    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'shift)]
-    ;;  ["no prefix" (lambda () (interactive) (customize-set-variable 'ess-debug-prefix-key nil))
-    ;;   :style radio :enable t :selected (eq ess-debug-prefix-key 'nil)]
-    ;;  "-----"
-    ;;  ["Save to custom" (lambda () (interactive)
-    ;;                      (customize-save-variable 'ess-debug-prefix-key ess-debug-prefix-key))])
     ["Show traceback" ess-show-traceback (ess-process-live-p)]
     ["Show call stack" ess-show-call-stack (ess-process-live-p)]
     ["Watch" ess-watch  (and (ess-process-live-p)

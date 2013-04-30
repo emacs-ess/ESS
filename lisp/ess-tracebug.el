@@ -136,60 +136,6 @@ Use `add-hook' to insert append your functions to this list.
 (autoload 'ess-dev-map "ess-r-d" "[autoload]" nil)
 (defvaralias 'ess-tracebug-map 'ess-dev-map)
 
-
-;; (defvar ess-tracebug-map
-;;   (let (ess-tracebug-map)
-;;     (define-prefix-command 'ess-tracebug-map)
-;;     (define-key ess-tracebug-map "`" 'ess-show-R-traceback)
-;;     (define-key ess-tracebug-map "w" 'ess-watch)
-;;     (define-key ess-tracebug-map "\C-w" 'ess-watch)
-;;     (define-key ess-tracebug-map "i" 'ess-dbg-goto-input-event-marker)
-;;     (define-key ess-tracebug-map "I" 'ess-dbg-goto-input-event-marker)
-;;     (define-key ess-tracebug-map "d" 'ess-dbg-flag-for-debugging)
-;;     (define-key ess-tracebug-map "\C-d" 'ess-dbg-flag-for-debugging)
-;;     (define-key ess-tracebug-map "D" 'ess-dbg-unflag-for-debugging)
-;;     (define-key ess-tracebug-map "\C-D" 'ess-dbg-unflag-for-debugging)
-;;     (define-key ess-tracebug-map "u" 'ess-dbg-unflag-for-debugging)
-;;     (define-key ess-tracebug-map "\C-u" 'ess-dbg-unflag-for-debugging)
-;;     (define-key ess-tracebug-map "b" 'ess-bp-set)
-;;     (define-key ess-tracebug-map "\C-b" 'ess-bp-set)
-;;     (define-key ess-tracebug-map "B" 'ess-bp-set-conditional)
-;;     (define-key ess-tracebug-map "\C-B" 'ess-bp-set-conditional)
-;;     (define-key ess-tracebug-map "l" 'ess-bp-set-logger)
-;;     (define-key ess-tracebug-map "\C-l" 'ess-bp-set-logger)
-;;     (define-key ess-tracebug-map "t" 'ess-bp-toggle-state)
-;;     (define-key ess-tracebug-map "\C-t" 'ess-bp-toggle-state)
-;;     (define-key ess-tracebug-map "k" 'ess-bp-kill)
-;;     (define-key ess-tracebug-map "\C-k" 'ess-bp-kill)
-;;     (define-key ess-tracebug-map "K" 'ess-bp-kill-all)
-;;     (define-key ess-tracebug-map "\C-n" 'ess-bp-next)
-;;     (define-key ess-tracebug-map "\C-p" 'ess-bp-previous)
-;;     (define-key ess-tracebug-map "e" 'ess-dbg-toggle-error-action)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?c)] 'ess-electric-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?n)] 'ess-electric-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?p)] 'ess-electric-debug)
-;;     ;; (define-key ess-tracebug-map `[(,ess-debug-prefix-key ?q)] 'ess-electric-debug)
-;;     (define-key ess-tracebug-map "c" 'ess-electric-debug)
-;;     (define-key ess-tracebug-map "n" 'ess-electric-debug)
-;;     (define-key ess-tracebug-map "p" 'ess-electric-debug)
-;;     (define-key ess-tracebug-map "q" 'ess-electric-debug)
-;;     (define-key ess-tracebug-map "0" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "1" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "2" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "3" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "4" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "5" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "6" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "7" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "8" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "9" 'ess-electric-selection)
-;;     (define-key ess-tracebug-map "?" 'ess-tracebug-show-help)
-;;     ess-tracebug-map)
-;;   "Keymap used as a binding for `ess-tracebug-prefix' key
-;;  in ESS and iESS mode.
-
-;; \\{ess-tracebug-map}")
-
 (defvar ess--tracebug-eval-index 0
   "This is used by to track source references in evaluation with source.
 For example, each time ess-eval-function is called the evaluated
@@ -870,7 +816,7 @@ If nil, the currently debugged line is highlighted for
     (define-key ess-electric-selection-map "?" 'ess-tracebug-show-help)
     ess-electric-selection-map)
   "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-electric-debug' .
+This commands are triggered by `ess-electric-selection' .
 
 \\{ess-electric-selection-map}
 ")
