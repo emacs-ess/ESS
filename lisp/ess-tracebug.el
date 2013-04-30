@@ -801,7 +801,10 @@ If nil, the currently debugged line is highlighted for
 (defvar ess-electric-selection-map
   (let (ess-electric-selection-map)
     (define-prefix-command 'ess-electric-selection-map)
+    ;; command-c and command-Q are not always working reliably
+    (define-key ess-electric-selection-map "M-C" 'ess-dbg-command-c)
     (define-key ess-electric-selection-map "c" 'ess-dbg-command-c)
+    (define-key ess-electric-selection-map "M-Q" 'ess-dbg-command-Q)
     (define-key ess-electric-selection-map "q" 'ess-dbg-command-Q)
     (define-key ess-electric-selection-map "0" 'ess-dbg-command-digit)
     (define-key ess-electric-selection-map "1" 'ess-dbg-command-digit)
@@ -964,9 +967,11 @@ of the ring."
   '(:eval (let ((proc (get-process ess-local-process-name)))
             (if (and proc (process-get proc 'dbg-active))
                 (let ((str (upcase ess-dbg-indicator)))
+                  (setq ess-debug-minor-mode t) ; activate the keymap
                   (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
                                      str)
                   str)
+              (setq ess-debug-minor-mode nil)
               ess-dbg-indicator))))
 (make-variable-buffer-local 'ess-dbg-mode-line-indicator)
 (put 'ess-dbg-mode-line-indicator 'risky-local-variable t)
@@ -1199,7 +1204,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (process-put proc 'dbg-active nil)
       ;; (message "|<-- exited debugging -->|")
       (when wbuff
-        (ess-watch-refresh-buffer-visibly wbuff )))
+        (ess-watch-refresh-buffer-visibly wbuff)))
 
     ;; ACTIVATE the debugger and trigger electric COMMAND if entered for the first time
     (when (and (not was-in-dbg)
@@ -1208,13 +1213,32 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (unless is-iess
         (ring-insert ess-dbg-forward-ring input-point))
       (process-put proc 'dbg-active t)
-      (when ess-dbg-auto-single-key-p
-        (ess-electric-debug t)))
+      (message
+       (ess--debug-keys-message-string))
+      ;; (when ess-dbg-auto-single-key-p
+      ;;   (ess-electric-debug t))
+      )
 
-    (when (and (not was-in-recover)
-               match-selection)
+    (when match-selection ;(and (not was-in-recover) match-selection)
       (ess-electric-selection t))))
 
+
+(defvar ess-debug-minor-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "M-C") 'ess-dbg-command-c)
+    (define-key map (kbd "C-M-C") 'ess-dbg-command-C)
+    (define-key map (kbd "M-N") 'ess-dbg-command-n)
+    (define-key map (kbd "C-M-N") 'ess-dbg-command-N)
+    (define-key map (kbd "M-Q") 'ess-dbg-command-Q)
+    (define-key map (kbd "M-U") 'ess-dbg-command-up)
+    map)
+  "Keymap active when ESS process is in debugging state.
+\\{ess-debug-minor-mode-map}")
+
+
+(define-minor-mode ess-debug-minor-mode
+  "Minor mode activated when ESS process is in debugging state."
+  :lighter nil:keymap ess-debug-minor-mode-map)
 
 (defun ess-dbg-goto-last-ref-and-mark (dbuff &optional other-window)
   "Open the most recent debug reference, and set all the
@@ -1427,9 +1451,9 @@ given by the reference.  This is the value of
         (error "Moved past last debug line")))))
 
 
+;; not used; remove in 13.09
 (defvar ess-electric-debug-map
   (let ((map (make-sparse-keymap)))
-    ;; (define-prefix-command 'ess-electric-debug-map)
     (define-key map "c" 'ess-dbg-command-c)
     (define-key map "C" 'ess-dbg-command-C)
     (define-key map "n" 'ess-dbg-command-n)
@@ -1440,17 +1464,21 @@ given by the reference.  This is the value of
   "Keymap used to define commands for single key input mode.
 This commands are triggered by `ess-electric-debug' .
 \\{ess-electric-debug-map}")
+(make-obsolete-variable 'ess-electric-debug-map nil "ESS 13.05")
 
-(defvar ess-debug-prefix-key 'meta
-  "Prefix to be used to activate commands in `ess-electric-debug-map'.
-Can be either 'meta, 'control, 'super, 'shift or nil (no prefix).
+(defun ess--debug-keys-message-string (&optional map)
+  (let ((overriding-local-map (or map ess-debug-minor-mode-map)))
+    (substitute-command-keys
+     (mapconcat 'identity
+                '("(\\[ess-dbg-command-c])cont"
+                  "(\\[ess-dbg-command-C])cont-multi"
+                  "(\\[ess-dbg-command-n])next"
+                  "(\\[ess-dbg-command-N])next-multi"
+                  "(\\[ess-dbg-command-up])up"
+                  "(\\[ess-dbg-command-Q])quit")
+                " "))))
 
-You probably should not change this, the default of 'meta is the
-only prefix that allows both editing and electric debug keys to
-coexist.")
-;; :group 'ess-debug
-;; :type '(choice (const control) (const meta) (const super) (const shift) (const nil))
-
+;; not used anywhere remove in ESS 13.09
 (defun ess-electric-debug (&optional wait)
   "Call commands defined in `ess-electric-debug-map'.
 Single-key input commands are those that once invoked do not
@@ -1466,23 +1494,15 @@ input mode.
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
   (interactive)
-  (let ((map (make-sparse-keymap)))
-    (map-keymap (lambda (type key)
-                  (define-key map `[(,ess-debug-prefix-key ,type)] key))
-                ess-electric-debug-map)
-    (let ((help-mess (let ((overriding-local-map map))
-                       (substitute-command-keys
-                        (concat "(\\[ess-dbg-command-c])cont "
-                                "(\\[ess-dbg-command-C])cont-multi "
-                                "(\\[ess-dbg-command-n])next "
-                                "(\\[ess-dbg-command-N])next-multi "
-                                "(\\[ess-dbg-command-up])up "
-                                "(\\[ess-dbg-command-Q])quit")))))
-      (ess--execute-electric-command map help-mess wait
-       (not (ess-process-get 'dbg-active))))))
+  (let ((help-mess (ess--debug-keys-message-string
+                    ess-electric-debug-map)))
+    (ess--execute-electric-command
+     ess-electric-debug-map help-mess wait
+     (not (ess-process-get 'dbg-active)))))
 
-(make-obsolete 'ess-singlekey-debug 'ess-electric-debug "ESS 13.05")
-
+(define-obsolete-function-alias
+  'ess-singlekey-debug 'ess-electric-debug  "ESS 13.05")
+(make-obsolete 'ess-electric-debug nil "ESS 13.05")
 
 (defun ess-electric-selection (&optional wait)
   "Call commands defined in `ess-electric-selection'.
@@ -1495,8 +1515,8 @@ triggered the command."
 
   (interactive)
   (ess--execute-electric-command ess-electric-selection-map
-                                  "Selection: " wait
-                                  (not (ess-process-get 'is-recover))))
+                                 "Selection: " wait
+                                 (not (ess-process-get 'is-recover))))
 
 (make-obsolete 'ess-singlekey-selection 'ess-electric-selection "ESS 13.05")
 
@@ -1606,8 +1626,9 @@ debug history."
   "Continue the code execution.
  Equivalent of 'c' at the R prompt."
   (interactive)
-  (let ((proc (get-process ess-current-process-name) ))
-    (if (not (process-get proc 'dbg-active))
+  (let ((proc (get-process ess-current-process-name)))
+    (if (not (or (process-get proc 'dbg-active)
+                 (process-get proc 'is-recover)))
         (error "Debugger is not active")
       (when (ess-dbg-is-recover)
         (ess-send-string proc "0")
