@@ -720,7 +720,7 @@ In no-windowed emacs an `overlay-arrow' is displayed at this position.")
 (unless  window-system
   (add-to-list 'overlay-arrow-variable-list 'ess-dbg-current-debug-position))
 
-(defface ess-dbg-current-debug-line-face
+(defface ess-debug-current-debug-line-face
   '((((class grayscale)
       (background light)) (:background "DimGray"))
     (((class grayscale)
@@ -2612,7 +2612,7 @@ for signature and trace it with browser tracer."
       (setq fun (ess-completing-read "Undebug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
           (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
-        (ess-command (concat ".ess_dbg_UntraceOrUndebug(\"" fun "\")\n") tbuffer))
+        (ess-command (concat ".ess_debug_UntraceOrUndebug \"ESS 13.05(\"" fun "\")\n") tbuffer))
       (with-current-buffer  tbuffer
         (if (= (point-max) 1) ;; not reliable todo:
             (setq out-message (format  "Undebugged '%s' " fun))
@@ -2654,43 +2654,9 @@ intanbible, step char backward first"
   ad-do-it)
 
 
-;; (defun inferior-R-input-sender2 (proc string)
-;;   (save-current-buffer
-;;     (let ((help-string (or (string-match inferior-R-1-input-help string)
-;;                            (string-match inferior-R-2-input-help string)))
-;;           (page-string        (string-match inferior-R-page         string)))
-;;       (if (or help-string page-string)
-;;           (let ((string1 (match-string 1 string))
-;;                 (string2 (match-string 2 string)))
-;;             ;;(ess-write-to-dribble-buffer (format " new string='%s'\n" string2))
-;;             (beginning-of-line)
-;;             ;; (if (looking-at inferior-ess-primary-prompt)
-;;             ;;     (progn
-;;             ;;       (end-of-line)
-;;             ;;       (insert-before-markers string)) ;; emacs 21.0.105 and older
-;;             ;;   (delete-backward-char 1)) ;; emacs 21.0.106 and newer
-;;             (if help-string ; more frequently
-;;                 (let ((inferior-ess-help-command
-;;                        (if (string= string1 "?") inferior-ess-help-command "help.search(\"%s\")\n")))
-;;                   (progn
-;;                     (ess-display-help-on-object
-;;                      (if (string= string2 "") "help" string2))
-;;                     (ess-eval-linewise "\n")))
-
-;;            ;; else  page-string
-;;            (let ((str2-buf (concat string2 ".rt")))
-;;              (ess-command (concat string2 "\n")
-;;                           (get-buffer-create str2-buf))
-;;              (ess-eval-linewise "\n")
-;;              (switch-to-buffer-other-window str2-buf)
-;;              (R-transcript-mode))))
-;;         ;; else:        normal command
-;;      (if (not (ess-process-get 'tracebug))
-;;           (inferior-ess-input-sender proc string t)
-;;        (inferior-ess-mark-as-busy proc)
-;;        (process-send-string proc (concat string "\n")))
-;;         ))))
-
+(make-obsolete-variable 'ess-debug-blink-ref-not-found-face  'ess-dbg-blink-ref-not-found-face "ESS 13.05")
+(make-obsolete-variable 'ess-debug-blink-same-ref-face  'ess-dbg-blink-same-ref-face "ESS 13.05")
+(make-obsolete-variable 'ess-dbg-current-debug-line-face 'ess-debug-current-debug-line-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-error-action 'ess-debug-error-action "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-error-action-alist 'ess-debug-error-action-alist "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-interval 'ess-debug-blink-interval "ESS 13.05")
