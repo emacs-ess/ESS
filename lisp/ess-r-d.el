@@ -67,10 +67,10 @@
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
     (define-key ess-dev-map "w" 'ess-watch)
-    (define-key ess-dev-map "\C-d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-dev-map "d" 'ess-dbg-flag-for-debugging)
-    (define-key ess-dev-map "\C-u" 'ess-dbg-unflag-for-debugging)
-    (define-key ess-dev-map "u" 'ess-dbg-unflag-for-debugging)
+    (define-key ess-dev-map "\C-d" 'ess-debug-flag-for-debugging)
+    (define-key ess-dev-map "d" 'ess-debug-flag-for-debugging)
+    (define-key ess-dev-map "\C-u" 'ess-debug-unflag-for-debugging)
+    (define-key ess-dev-map "u" 'ess-debug-unflag-for-debugging)
     (define-key ess-dev-map "\C-b" 'ess-bp-set)
     (define-key ess-dev-map "b" 'ess-bp-set)
     (define-key ess-dev-map "\C-B" 'ess-bp-set-conditional)
@@ -87,9 +87,9 @@
     (define-key ess-dev-map "n" 'ess-bp-next)
     (define-key ess-dev-map "\C-p" 'ess-bp-previous)
     (define-key ess-dev-map "p" 'ess-bp-previous)
-    (define-key ess-dev-map "\C-e" 'ess-dbg-toggle-error-action)
-    (define-key ess-dev-map "e" 'ess-dbg-toggle-error-action)
-    (define-key ess-dev-map "0" 'ess-dbg-command-digit)
+    (define-key ess-dev-map "\C-e" 'ess-debug-toggle-error-action)
+    (define-key ess-dev-map "e" 'ess-debug-toggle-error-action)
+    (define-key ess-dev-map "0" 'ess-debug-command-digit)
     (define-key ess-dev-map "1" 'ess-electric-selection)
     (define-key ess-dev-map "2" 'ess-electric-selection)
     (define-key ess-dev-map "3" 'ess-electric-selection)
@@ -128,11 +128,11 @@
     ["Show call stack" ess-show-call-stack (ess-process-live-p)]
     ["Watch" ess-watch  (and (ess-process-live-p)
                              (ess-process-get 'tracebug))]
-    ["Error action cycle" ess-dbg-toggle-error-action (and (ess-process-live-p)
+    ["Error action cycle" ess-debug-toggle-error-action (and (ess-process-live-p)
                                                            (ess-process-get 'tracebug))]
     "----"
-    ["Flag for debugging" ess-dbg-flag-for-debugging ess-local-process-name]
-    ["Unflag for debugging" ess-dbg-unflag-for-debugging ess-local-process-name]
+    ["Flag for debugging" ess-debug-flag-for-debugging ess-local-process-name]
+    ["Unflag for debugging" ess-debug-unflag-for-debugging ess-local-process-name]
     "----"
     ["Set BP" ess-bp-set t]
     ["Set conditional BP" ess-bp-set-conditional t]
