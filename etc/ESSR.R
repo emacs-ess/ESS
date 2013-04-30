@@ -156,7 +156,7 @@
                  untrace(fun, signature = sig)
              }else{
                  ## function
-                 if( is(getFunction(name), 'traceable') )
+                 if( is(getFunction(name, where = parent.frame()), 'traceable') )
                      untrace(name)
                  else
                      undebug(name)
