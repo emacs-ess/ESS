@@ -1,3 +1,4 @@
+## -*- mode: poly-r+c++; -*-
 require(RcppEigen)
 
 # cxxfunction not supported
