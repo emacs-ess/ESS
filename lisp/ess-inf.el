@@ -2997,7 +2997,8 @@ If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is retu
 In all cases, the value is an list of object names."
 
   (cond ((and (stringp obj)
-              (string-match-p "ESSR" obj)))
+              (string-match-p "ESSR" obj))
+         nil)
         ;; FIXME: in both cases below, the same fallback "objects(POS)" is used -- merge!
         ((and obj (file-accessible-directory-p obj))
          ;; Check the pre-compiled object list in ess-object-name-db first
