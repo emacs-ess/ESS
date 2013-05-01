@@ -157,7 +157,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
     ;; else: "normal", non-DDE behavior:
     (let* ((hb-name (concat "*help["
                             ess-current-process-name
-                            "](" object ")*"))
+                            "](" (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
            (old-hb-p    (get-buffer hb-name))
            (tbuffer     (get-buffer-create hb-name)))
       (when (or (not old-hb-p)
