@@ -743,7 +743,7 @@ In no-windowed emacs an `overlay-arrow' is displayed at this position.")
 
 (defvar  ess--dbg-current-debug-overlay
   (let ((overlay (make-overlay (point) (point))))
-    (overlay-put overlay 'face  'ess--dbg-current-debug-line-face)
+    (overlay-put overlay 'face  'ess-debug-current-debug-line-face)
     (overlay-put overlay 'evaporate t)
     overlay)
   ;; should be global variable!!
@@ -961,13 +961,13 @@ of the ring."
 (defvar ess--dbg-mode-line-indicator
   '(:eval (let ((proc (get-process ess-local-process-name)))
             (if (and proc (process-get proc 'dbg-active))
-                (let ((str (upcase ess--dbg-indicator)))
+                (let ((str (upcase ess-debug-indicator)))
                   (setq ess-debug-minor-mode t) ; activate the keymap
                   (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
                                      str)
                   str)
               (setq ess-debug-minor-mode nil)
-              ess--dbg-indicator))))
+              ess-debug-indicator))))
 (make-variable-buffer-local 'ess--dbg-mode-line-indicator)
 (put 'ess--dbg-mode-line-indicator 'risky-local-variable t)
 
@@ -1260,14 +1260,14 @@ is non nil, attempt to open the location in a different window."
                   (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
                   (run-with-timer ess-debug-blink-interval nil
                                   (lambda ()
-                                    (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-current-debug-line-face))))
+                                    (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face))))
                                         ;else
               (ess--dbg-activate-overlays)))
         ;;else, buffer is not found: highlight and give the corresponding message
         (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
         (run-with-timer ess-debug-blink-interval nil
                         (lambda ()
-                          (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-current-debug-line-face)))
+                          (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
         (message "Referenced %s not found" (car ref))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
