@@ -2,7 +2,7 @@
 @comment @item
 
 
-Changes/Bug Fixes in 13.03:
+Changes/Bug Fixes in 13.05:
 @itemize @bullet
 @item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
 @item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} now defaults to @code{t}
