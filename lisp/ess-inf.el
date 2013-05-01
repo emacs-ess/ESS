@@ -2992,8 +2992,9 @@ I.e. if the filenames in DIR are not representative of the objects in DIR."
   "Return alist of S object names in directory (or object) OBJ.
 If OBJ is a directory name (begins with `/') returns a listing of that dir.
    This may use the search list position POS if necessary.
-If OBJ is an object name, returns result of S command names(OBJ).
-If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
+If OBJ is an object name, returns result of the command `inferior-ess-safe-names-command'.
+If POS is supplied return the result of the command in `inferior-ess-objects-command'
+If OBJ is nil or not a directory, POS must be supplied.
 In all cases, the value is an list of object names."
 
   (cond ((and (stringp obj)
@@ -3022,10 +3023,10 @@ In all cases, the value is an list of object names."
                   pos
                   (ess-get-words-from-vector
                    (format inferior-ess-objects-command pos)))))
-        (obj  ;; want names(obj)
-         (ess-get-words-from-vector
-          (format inferior-ess-safe-names-command obj)))
-        (t
+        ((and obj ;; want names(obj)
+              (ess-get-words-from-vector
+               (format inferior-ess-safe-names-command obj))))
+        (pos
          (ess-get-words-from-vector
           (format inferior-ess-objects-command pos)))))
 
