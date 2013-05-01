@@ -1,4 +1,4 @@
-{ESSR <- attach(NULL, pos = 4, name = "ESSR", warn.conflicts = FALSE)
+{ESSR <- attach(NULL, pos = 5, name = "ESSR", warn.conflicts = FALSE)
  ESSR$.ESSR_Env <- ESSR
  ESSR$.ess_evalq <- function(expr){
      ## like evalq but change the enclosure
