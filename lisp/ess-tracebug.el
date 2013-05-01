@@ -294,7 +294,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
   ;; Note: The functionality in ess-tracebug is divided on conceptual
   ;; grounds in tracing and debugging and could be
-  ;; activated/deactivate separately with `ess-tb-start' and
+  ;; activated/deactivate separately with `ess--tb-start' and
   ;; `ess-debug-start' respectively.
 
   (interactive "P")
@@ -307,7 +307,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
               (if (ess-process-get 'tracebug) -1 1)))
       (if (> arg 0)
           (unless (ess-process-get 'tracebug) ;; only if already not active
-            (ess-tb-start)
+            (ess--tb-start)
             (ess-debug-start)
             ;; (dolist (bf (buffer-list))
             ;;   (with-current-buffer bf
@@ -333,7 +333,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
           (when ess-tracebug-prefix
             (define-key ess-mode-map ess-tracebug-prefix nil)
             (define-key inferior-ess-mode-map ess-tracebug-prefix nil))
-          (ess-tb-stop)
+          (ess--tb-stop)
           (ess-debug-stop)
           (run-hooks 'ess-tracebug-exit-hook)
           (message "ess-tracebug mode disabled"))))))
@@ -343,7 +343,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
 ;;;_* TRACEBACK
 
-;; (defface ess-tb-last-input-face
+;; (defface ess--tb-last-input-face
 ;;   '((((class grayscale)
 ;;       (background light)) (:background "DimGray"))
 ;;     (((class grayscale)
@@ -358,7 +358,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 ;;   "Face to highlight currently debugged line."
 ;;   :group 'ess-tracebug )
 
-(defface ess-tb-last-input-fringe-face
+(defface ess-tracebug-last-input-fringe-face
   '((((background light) (min-colors 88)) (:foreground "medium blue" :overline "medium blue"))
     (((background dark) (min-colors 88))  (:foreground "deep sky blue" :overline "deep sky blue"))
     (((background light) (min-colors 8))  (:foreground "blue"))
@@ -384,12 +384,12 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
        #b00010000] nil nil 'top))
 
 
-(defvar ess-tb-last-input (make-marker)
+(defvar ess--tb-last-input (make-marker)
   "Marker pointing to the last user input position in iESS buffer.
-This is the place where `ess-tb-last-input-overlay' is moved.
+This is the place where `ess--tb-last-input-overlay' is moved.
 Local in iESS buffers with `ess-tracebug' mode enabled.")
 
-(defvar ess-tb-last-input-overlay nil
+(defvar ess--tb-last-input-overlay nil
   "Overlay to highlight the position of last input in iESS buffer.
 Local in iESS buffers.")
 
@@ -441,17 +441,17 @@ in inferior buffers.  ")
      ,fun))
 
 ;;;_ + traceback functions
-(defun ess-tb-make-last-input-overlay (beg end)
+(defun ess--tb-make-last-input-overlay (beg end)
   "Create an overlay to indicate the last input position."
   (let   ((ove (make-overlay beg end)))
     (overlay-put ove 'before-string
-                 (ess-tracebug--propertize "!"  'last-input-arrow 'ess-tb-last-input-fringe-face))
-    ;; (overlay-put ove 'face  'ess-tb-last-input-face)
+                 (ess-tracebug--propertize "!"  'last-input-arrow 'ess-tracebug-last-input-fringe-face))
+    ;; (overlay-put ove 'face  'ess--tb-last-input-face)
     (overlay-put ove 'evaporate t)
     ove))
 
 
-(defun ess-tb-start ()
+(defun ess--tb-start ()
   "Start traceback session "
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
     (unless ess-error-regexp-alist
@@ -459,17 +459,17 @@ in inferior buffers.  ")
     (set (make-local-variable 'compilation-error-regexp-alist)
          ess-error-regexp-alist)
     (compilation-setup t)
-    (setq next-error-function 'ess-tb-next-error-function)
+    (setq next-error-function 'ess-tracebug-next-error-function)
     ;; new locals
-    (make-local-variable 'ess-tb-last-input)
-    (make-local-variable 'ess-tb-last-input-overlay)
+    (make-local-variable 'ess--tb-last-input)
+    (make-local-variable 'ess--tb-last-input-overlay)
     (make-local-variable 'compilation-search-path)
     (setq compilation-search-path ess-tracebug-search-path) ;; todo: make this dialect specific
     (ess-tracebug--set-left-margin)
     (save-excursion
       (goto-char comint-last-input-start)
-      (setq ess-tb-last-input (point))
-      (setq ess-tb-last-input-overlay (ess-tb-make-last-input-overlay  (point-at-bol) (point-at-eol))))
+      (setq ess--tb-last-input (point))
+      (setq ess--tb-last-input-overlay (ess--tb-make-last-input-overlay  (point-at-bol) (point-at-eol))))
     ;; busy timer
     (make-local-variable 'ess--was-busy)
     (setq mode-line-buffer-identification
@@ -484,12 +484,12 @@ in inferior buffers.  ")
     (when (equal ess-dialect "R")
       (process-put (get-buffer-process (current-buffer))
                    'source-file-function
-                   'ess-tb-R-source-current-file))
+                   'ess--tb-R-source-current-file))
     (unless (fboundp 'orig-ess-parse-errors)
       (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
       (defalias 'ess-parse-errors (symbol-function 'next-error)))))
 
-(defun ess-tb-stop ()
+(defun ess--tb-stop ()
   "Stop ess traceback session in the current ess process"
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
     ;; restore original definitions
@@ -497,10 +497,10 @@ in inferior buffers.  ")
       (when (fboundp 'orig-ess-parse-errors)
         (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
         (fmakunbound 'orig-ess-parse-errors)))
-    (if (local-variable-p 'ess-tb-last-input-overlay)
-        (delete-overlay ess-tb-last-input-overlay))
-    (kill-local-variable 'ess-tb-last-input-overlay)
-    (kill-local-variable 'ess-tb-last-input)
+    (if (local-variable-p 'ess--tb-last-input-overlay)
+        (delete-overlay ess--tb-last-input-overlay))
+    (kill-local-variable 'ess--tb-last-input-overlay)
+    (kill-local-variable 'ess--tb-last-input)
     (font-lock-remove-keywords nil (compilation-mode-font-lock-keywords))
     (font-lock-fontify-buffer)
     (kill-local-variable 'compilation-error-regexp-alist)
@@ -508,8 +508,17 @@ in inferior buffers.  ")
     (cancel-timer ess--busy-timer)
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))))
 
+(defvar ess--dbg-forward-ring (make-ring 10)
+  "Ring of markers to the positions of the user inputs
+ when the  debugger or traceback events are initiated.  It is used in
+ `ess--dbg-goto-input-point'.")
 
-;; (setq ess-R-tb-regexp-alist '(R R2 R3 R-recover))
+(defvar ess--dbg-backward-ring (make-ring 10)
+  "Ring of markers to the positions from which `ess--dbg-goto-input-point' is called.
+ See the also `ess--dbg-goto-debug-point'")
+
+
+;; (setq ess-R--tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
 
 (defun ess-show-traceback ()
@@ -525,7 +534,7 @@ You can bind 'no-select' versions of this commands:
   (interactive)
   (if (null ess-traceback-command)
       (error "Not implemented for dialect %s" ess-dialect)
-    (ring-insert ess-dbg-forward-ring (point-marker))
+    (ring-insert ess--dbg-forward-ring (point-marker))
     (ess-force-buffer-current "R process to use: ")
     (let ((trbuf  (get-buffer-create "*ess-traceback*"))
           (lproc-name ess-local-process-name)
@@ -549,7 +558,7 @@ You can bind 'no-select' versions of this commands:
           (ess-setq-vars-local alist)
           (font-lock-refresh-defaults)
           (compilation-minor-mode 1)
-          (setq next-error-function 'ess-tb-next-error-function)
+          (setq next-error-function 'ess-tracebug-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
           ;; ess keys
           (local-set-key "\C-c\C-s" 'ess-watch-switch-process)
@@ -569,9 +578,9 @@ Also see `ess-show-traceback'"
 
 (defalias 'ess-show-R-traceback 'ess-show-traceback)
 
-(defun ess-tb-next-error-goto-process-marker ()
+(defun ess--tb-next-error-goto-process-marker ()
   ;; assumes current buffer is the process buffer with compilation enabled
-  ;; used in ess-tb-next-error-function
+  ;; used in ess-tracebug-next-error-function
                                         ;  (with-current-buffer (process-buffer (get-process ess-local-process-name)) ; already in comint buffer .. no need
   (comint-goto-process-mark)
   (set-window-point (get-buffer-window) (point))  ;moves the cursor
@@ -581,7 +590,7 @@ Also see `ess-show-traceback'"
   ;;   )
   )
 
-(defun ess-tb-next-error-function (n &optional reset)
+(defun ess-tracebug-next-error-function (n &optional reset)
   "Advance to the next error message and visits the file.
 This is the value of `next-error-function' in iESS buffers."
   ;; Modified version of `compilation-next-error-function'.
@@ -598,7 +607,7 @@ This is the value of `next-error-function' in iESS buffers."
           (if (and pbuff-p
                    (>= n 0)
                    (comint-after-pmark-p))
-              ess-tb-last-input
+              ess--tb-last-input
             (point)))
          (at-error t)
          (msg
@@ -606,16 +615,16 @@ This is the value of `next-error-function' in iESS buffers."
               (compilation-next-error n  nil beg-pos)
             (error
              (when pbuff-p
-               (ess-tb-next-error-goto-process-marker))
+               (ess--tb-next-error-goto-process-marker))
              (if (< n 0)
                  (message "Before first reference")
                (message "Beyond last reference"));(error-message-string err))
              (setq at-error nil))))
          (msg (if (or (not pbuff-p)
                       (eq n 0)
-                      (> (point) ess-tb-last-input))
+                      (> (point) ess--tb-last-input))
                   msg
-                (ess-tb-next-error-goto-process-marker)
+                (ess--tb-next-error-goto-process-marker)
                 (message "Beyond last-input marker")
                 (setq at-error nil)))
          (marker (point-marker))
@@ -634,7 +643,7 @@ This is the value of `next-error-function' in iESS buffers."
       (let* ((file (caar (nth 2 loc)))
              (col (car loc))
              (line (cadr loc))
-             (mkrs (ess-dbg-create-ref-marker file line col)))
+             (mkrs (ess--dbg-create-ref-marker file line col)))
         (if mkrs
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
           (message "Reference to '%s' not found" file))))))
@@ -643,7 +652,7 @@ This is the value of `next-error-function' in iESS buffers."
 (defun inferior-ess-move-last-input-overlay ()
   "Move the overlay to the point."
   (let ((pbol (point-at-bol)))
-    (move-overlay ess-tb-last-input-overlay
+    (move-overlay ess--tb-last-input-overlay
                   pbol (max (- (point) 2) (+ pbol 2)))))
 
 
@@ -658,11 +667,8 @@ This is the value of `next-error-function' in iESS buffers."
 
 (defvar ess-debug-error-action "-"
   "Mode line indicator of the current \"on error\" action.
-Customize this variable to change the default behavior.
-See `ess-debug-error-action-alist' for more."
-  ;; :type 'string
-  ;; :group 'ess-debug)
-  )
+Set this variable to change the default behavior.
+See `ess-debug-error-action-alist' for more.")
 (make-variable-buffer-local 'ess-debug-error-action)
 
 (defcustom  ess-debug-error-action-alist
@@ -680,16 +686,16 @@ help ?options for more details."
                 :value-type (string string))
   :group 'ess-debug)
 
-(defvar ess-dbg-output-buf-prefix " *ess.dbg"
+(defvar ess--dbg-output-buf-prefix " *ess.dbg"
   "The prefix of the buffer name the R debug output is directed to."  )
 
-(defvar ess-dbg-current-ref (make-marker)
+(defvar ess--dbg-current-ref (make-marker)
   "Current debug reference in *ess.dbg* buffers (a marker).")
-(make-variable-buffer-local 'ess-dbg-current-ref)
+(make-variable-buffer-local 'ess--dbg-current-ref)
 
-(defvar ess-dbg-last-ref-marker (make-marker)
+(defvar ess--dbg-last-ref-marker (make-marker)
   "Last debug reference in *ess.dbg* buffer (a marker).")
-(make-variable-buffer-local 'ess-dbg-last-ref-marker)
+(make-variable-buffer-local 'ess--dbg-last-ref-marker)
 
 (defcustom ess-tracebug-search-path '(nil)
   "List of directories to search for source files.
@@ -698,27 +704,27 @@ Elements should be directory names, not file names of directories.
   :type '(repeat (choice (const :tag "Default" nil)
                          (string :tag "Directory")))
   :group 'ess-debug)
-(defalias 'ess-dbg-search-path 'ess-tracebug-search-path)
-(make-obsolete 'ess-dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")
+(defalias 'ess--dbg-search-path 'ess-tracebug-search-path)
+(make-obsolete 'ess--dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")
 
-(defvar ess-dbg-buf-p nil
+(defvar ess--dbg-buf-p nil
   "This is t in ess.dbg buffers.")
-(make-variable-buffer-local 'ess-dbg-buf-p)
+(make-variable-buffer-local 'ess--dbg-buf-p)
 
-;; (defcustom ess-dbg-auto-single-key-p t
+;; (defcustom ess--dbg-auto-single-key-p t
 ;;   "If t entering the debug state triggers single-key mode.
 ;; Set it to nil if you want to trigger single-key mode manually
 ;; with the `ess-tracebug-prefix' key.
 ;; ")
 
-(defvar ess-dbg-current-debug-position (make-marker)
+(defvar ess--dbg-current-debug-position (make-marker)
   "Marker to the current debugged line.
  It always point to the beginning of the currently debugged line
 and is used by overlay-arrow.
 In no-windowed emacs an `overlay-arrow' is displayed at this position.")
 
 (unless  window-system
-  (add-to-list 'overlay-arrow-variable-list 'ess-dbg-current-debug-position))
+  (add-to-list 'overlay-arrow-variable-list 'ess--dbg-current-debug-position))
 
 (defface ess-debug-current-debug-line-face
   '((((class grayscale)
@@ -735,9 +741,9 @@ In no-windowed emacs an `overlay-arrow' is displayed at this position.")
   :group 'ess-debug)
 
 
-(defvar  ess-dbg-current-debug-overlay
+(defvar  ess--dbg-current-debug-overlay
   (let ((overlay (make-overlay (point) (point))))
-    (overlay-put overlay 'face  'ess-dbg-current-debug-line-face)
+    (overlay-put overlay 'face  'ess--dbg-current-debug-line-face)
     (overlay-put overlay 'evaporate t)
     overlay)
   ;; should be global variable!!
@@ -822,15 +828,6 @@ This commands are triggered by `ess-electric-selection' .
 \\{ess-electric-selection-map}
 ")
 
-(defvar ess-dbg-forward-ring (make-ring 10)
-  "Ring of markers to the positions of the user inputs
- when the  debugger or traceback events are initiated.  It is used in
- `ess-dbg-goto-input-point'.")
-
-(defvar ess-dbg-backward-ring (make-ring 10)
-  "Ring of markers to the positions from which `ess-dbg-goto-input-point' is called.
- See the also `ess-dbg-goto-debug-point'")
-
 (ess-if-verbose-write "\n<- debug-vars done")
 
 ;;;_ + debug functions
@@ -840,7 +837,7 @@ of components of `ess-debug-error-action-alist' (a cons!)."
   (let ((proc (get-process ess-current-process-name)))
     (if spec
         (with-current-buffer (process-buffer proc)
-          (setq ess-dbg-error-action (car spec))
+          (setq ess-debug-error-action (car spec))
           (ess-command (format "options(error= %s )\n" (nth 2 spec) )))
       (error "Unknown action."))))
 
@@ -854,7 +851,7 @@ The action list is in `ess-debug-error-action-alist'. "
           (ev last-command-event)
           (com-char  (event-basic-type ev))
           actions act)
-    (setq actions (cdr (member (assoc ess-dbg-error-action ess-debug-error-action-alist)
+    (setq actions (cdr (member (assoc ess-debug-error-action ess-debug-error-action-alist)
                                ess-debug-error-action-alist)))
     (unless actions
       (setq actions ess-debug-error-action-alist))
@@ -869,16 +866,16 @@ The action list is in `ess-debug-error-action-alist'. "
       (message "On-error action set to: %s" (propertize (cadr act) 'face 'font-lock-function-name-face)))
     (push ev unread-command-events)))
 
-(defun ess-dbg-activate-overlays ()
+(defun ess--dbg-activate-overlays ()
   "Initialize active debug line overlays."
-  (move-overlay ess-dbg-current-debug-overlay (point-at-bol) (1+ (point-at-eol)) (current-buffer))
+  (move-overlay ess--dbg-current-debug-overlay (point-at-bol) (1+ (point-at-eol)) (current-buffer))
   ;; used by overlay-arrow functionality on no-X,  should be bol
-  (move-marker ess-dbg-current-debug-position (point-at-bol)))
+  (move-marker ess--dbg-current-debug-position (point-at-bol)))
 
-(defun ess-dbg-deactivate-overlays ()
+(defun ess--dbg-deactivate-overlays ()
   "Deletes markers and overlays. Overlay arrow remains to indicate the last debug position."
-  (delete-overlay ess-dbg-current-debug-overlay)
-  (set-marker ess-dbg-current-debug-position nil))
+  (delete-overlay ess--dbg-current-debug-overlay)
+  (set-marker ess--dbg-current-debug-position nil))
 
 
 ;;;_ + Work Flow
@@ -893,7 +890,7 @@ If the key-event which triggered the command is Shift modified
 the input-event-S-ring is traversed backwards.
 
 The input-event-S-ring is a virtual object which consists of two
-rings `ess-dbg-forward-ring' and `ess-dbg-backward-ring' which
+rings `ess--dbg-forward-ring' and `ess--dbg-backward-ring' which
 are joint at their tops.
 
 See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
@@ -904,9 +901,9 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
          (ring-el 0)
          input-point)
     (if (memq 'shift (event-modifiers ev))
-        (setq input-point (ring-ref ess-dbg-backward-ring 0))
-      (ring-insert ess-dbg-backward-ring (point-marker)) ;; insert in backward ring ;;todo: check if the marker to this (close by?) position is already in the ring
-      (setq input-point (ring-ref ess-dbg-forward-ring 0)))
+        (setq input-point (ring-ref ess--dbg-backward-ring 0))
+      (ring-insert ess--dbg-backward-ring (point-marker)) ;; insert in backward ring ;;todo: check if the marker to this (close by?) position is already in the ring
+      (setq input-point (ring-ref ess--dbg-forward-ring 0)))
     (when (marker-buffer input-point) ;; todo: give a message here if buff is not found
       (switch-to-buffer (marker-buffer input-point))
       (when (marker-position input-point)
@@ -916,9 +913,9 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
           (setq ring-el (1- ring-el))
         (setq ring-el (1+ ring-el)))
       (if (< ring-el 0)
-          (setq input-point (ring-ref ess-dbg-backward-ring (- ring-el)))  ;; get it from backward-ring
+          (setq input-point (ring-ref ess--dbg-backward-ring (- ring-el)))  ;; get it from backward-ring
         ;; get it from forward-ring
-        (setq input-point (ring-ref ess-dbg-forward-ring ring-el)) )
+        (setq input-point (ring-ref ess--dbg-forward-ring ring-el)) )
       (when (marker-buffer input-point)
         (switch-to-buffer (marker-buffer input-point))
         (when (marker-position input-point)
@@ -927,20 +924,20 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
 
 (defun ess-debug-goto-debug-point ()
   "Returns to the debugging position.
-Jump to markers stored in `ess-dbg-backward-ring'. If debug
+Jump to markers stored in `ess--dbg-backward-ring'. If debug
 session is active, first jump to current debug line.
 
 This is an electric-command. Shift triggers the opposite traverse
 of the ring."
   (interactive)
-  (let* ((debug-point (ring-ref ess-dbg-backward-ring 0))
+  (let* ((debug-point (ring-ref ess--dbg-backward-ring 0))
          (ev last-command-event)
          (com-char  (event-basic-type ev))
          (ring-el 0))
-    (if (ess-dbg-is-active)
+    (if (ess--dbg-is-active-p)
         (progn
-          (switch-to-buffer (marker-buffer ess-dbg-current-debug-position))
-          (goto-char (marker-position ess-dbg-current-debug-position ))
+          (switch-to-buffer (marker-buffer ess--dbg-current-debug-position))
+          (goto-char (marker-position ess--dbg-current-debug-position ))
           (back-to-indentation))
       (switch-to-buffer (marker-buffer debug-point))
       (goto-char (marker-position debug-point)))
@@ -948,7 +945,7 @@ of the ring."
       (if (memq 'shift (event-modifiers ev))
           (setq ring-el (1- ring-el))
         (setq ring-el (1+ ring-el)))
-      (setq debug-point (ring-ref ess-dbg-backward-ring ring-el))
+      (setq debug-point (ring-ref ess--dbg-backward-ring ring-el))
       (when (marker-buffer debug-point)
         (switch-to-buffer (marker-buffer debug-point))
         (when (marker-position debug-point)
@@ -958,24 +955,24 @@ of the ring."
 (defun ess-debug-insert-in-forward-ring ()
   (interactive)
   "Inserts point-marker into the forward-ring."
-  (ring-insert ess-dbg-forward-ring (point-marker))
+  (ring-insert ess--dbg-forward-ring (point-marker))
   (message "Point inserted into the forward-ring"))
 
-(defvar ess-dbg-mode-line-indicator
+(defvar ess--dbg-mode-line-indicator
   '(:eval (let ((proc (get-process ess-local-process-name)))
             (if (and proc (process-get proc 'dbg-active))
-                (let ((str (upcase ess-dbg-indicator)))
+                (let ((str (upcase ess--dbg-indicator)))
                   (setq ess-debug-minor-mode t) ; activate the keymap
                   (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
                                      str)
                   str)
               (setq ess-debug-minor-mode nil)
-              ess-dbg-indicator))))
-(make-variable-buffer-local 'ess-dbg-mode-line-indicator)
-(put 'ess-dbg-mode-line-indicator 'risky-local-variable t)
+              ess--dbg-indicator))))
+(make-variable-buffer-local 'ess--dbg-mode-line-indicator)
+(put 'ess--dbg-mode-line-indicator 'risky-local-variable t)
 
 
-(defun ess-dbg-remove-empty-lines (string)
+(defun ess--dbg-remove-empty-lines (string)
   "Remove empty lines (which interfere with evals) during debug.
 
 This function is placed in `ess-presend-filter-functions'.
@@ -993,28 +990,28 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-tracebug-map' to `ess-tracebug-prefix' in
 `ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
-  (let ((dbuff (get-buffer-create (concat ess-dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
+  (let ((dbuff (get-buffer-create (concat ess--dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
         (proc (get-ess-process ess-current-process-name)))
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
                                         ; Active debug states are usually those, in which prompt start with Browser[d]>
-    (set-process-filter proc 'inferior-ess-dbg-output-filter)
+    (set-process-filter proc 'inferior-ess-tracebug-output-filter)
     (with-current-buffer (process-buffer proc)
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
-      (add-to-list 'ess-mode-line-indicator 'ess-debug-mode-line-indicator t)
+      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-debug-error-action t)
       (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
-      (add-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines nil 'local))
+      (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
       (buffer-disable-undo)
       ;; (setq buffer-read-only nil)
       (make-local-variable 'overlay-arrow-position) ;; indicator for next-error functionality in the *ess.dbg*,  useful??
       (goto-char (point-max))
-      (setq ess-dbg-buf-p t  ;; true if in  *ess.dbg* buffer
-            ess-dbg-current-ref (point-marker)  ;; used by goto-error functionality
-            ess-dbg-last-ref-marker (point-marker)  ;; gives marker to reference of the last debugged line
+      (setq ess--dbg-buf-p t  ;; true if in  *ess.dbg* buffer
+            ess--dbg-current-ref (point-marker)  ;; used by goto-error functionality
+            ess--dbg-last-ref-marker (point-marker)  ;; gives marker to reference of the last debugged line
             )
       ;;      (beginning-of-line)
       ;; (setq buffer-read-only t)
@@ -1029,19 +1026,19 @@ Kill the *ess.dbg.[R_name]* buffer."
     (with-current-buffer (process-buffer proc)
       (if (member ess-dialect '("XLS" "SAS" "STA"))
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
-      (delq 'ess-dbg-mode-line-indicator ess-mode-line-indicator)
+      (delq 'ess--dbg-mode-line-indicator ess-mode-line-indicator)
       (delq 'ess-debug-error-action ess-mode-line-indicator)
-      (remove-hook 'ess-presend-filter-functions 'ess-dbg-remove-empty-lines 'local)
+      (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local)
       (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
     (process-put proc 'dbg-buffer nil)
     (process-put proc 'dbg-active nil)
-    ;; (when (buffer-live-p ess-dbg-buffer)
-    ;;   ;; (with-current-buffer ess-dbg-buffer
+    ;; (when (buffer-live-p ess--dbg-buffer)
+    ;;   ;; (with-current-buffer ess--dbg-buffer
     ;;   ;;   (set-buffer-modified-p nil)
     ;;   ;;   )
-    ;;   (kill-buffer ess-dbg-buffer)
+    ;;   (kill-buffer ess--dbg-buffer)
     ;;   )
     ))
 
@@ -1061,28 +1058,28 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;; (ess--make-busy-prompt-function (get-process "R"))
 
-(defun ess-dbg-is-active ()
+(defun ess--dbg-is-active-p ()
   "Return t if the current R process is in active debugging state."
   (and (ess-process-live-p)
        (ess-process-get  'dbg-active)))
 
-(defun ess-dbg-is-recover ()
+(defun ess--dbg-is-recover-p ()
   "Return t if the current R process is in active debugging state."
   (and (ess-process-live-p)
        (ess-process-get  'is-recover)))
 
-(defvar ess-dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
-(defvar ess-dbg-regexp-jump "debug at ")
-(defvar ess-dbg-regexp-skip
+(defvar ess--dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
+(defvar ess--dbg-regexp-jump "debug at ")
+(defvar ess--dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)
   ;; "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
   "\\(\\(?:Called from: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
 
-(defvar ess-dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
-(defvar ess-dbg-regexp-selection "\\(Selection: \\'\\)")
-(defvar ess-dbg-regexp-input (concat ess-dbg-regexp-debug "\\|"
-                                     ess-dbg-regexp-selection))
+(defvar ess--dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
+(defvar ess--dbg-regexp-selection "\\(Selection: \\'\\)")
+(defvar ess--dbg-regexp-input (concat ess--dbg-regexp-debug "\\|"
+                                     ess--dbg-regexp-selection))
 
 (defvar ess--suppress-next-output? nil)
 
@@ -1097,12 +1094,12 @@ Kill the *ess.dbg.[R_name]* buffer."
       (comint-output-filter proc string)
       (ess--show-process-buffer-on-error string proc))))
 
-(defun inferior-ess-dbg-output-filter (proc string)
+(defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process
 when `ess-debug' is active. Call `inferior-ess-output-filter'.
 
 Check for activation expressions (defined in
-`ess-dbg-regexp-debug',...), when found puts iESS in the debugging state.
+`ess--dbg-regexp-debug',...), when found puts iESS in the debugging state.
 If in debugging state, mirrors the output into *ess.dbg* buffer."
   (let* ((is-iess (member major-mode (list 'inferior-ess-mode 'ess-watch-mode)))
          (pbuf (process-buffer proc))
@@ -1111,11 +1108,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (was-in-dbg (process-get proc 'dbg-active))
          (was-in-recover (process-get proc 'is-recover))
          (input-point (point-marker))
-         (match-jump (string-match ess-dbg-regexp-jump string))
-         (match-input (string-match ess-dbg-regexp-input string))
+         (match-jump (string-match ess--dbg-regexp-jump string))
+         (match-input (string-match ess--dbg-regexp-input string))
          (match-selection (and match-input
                                (match-string 2 string))) ;; Selection:
-         (match-skip (string-match ess-dbg-regexp-skip string))
+         (match-skip (string-match ess--dbg-regexp-skip string))
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
@@ -1181,8 +1178,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (insert (concat "|-" string "-|")))
       (if is-iess
           (save-selected-window  ;; do not pop to the debugging line if in iESS
-            (ess-dbg-goto-last-ref-and-mark dbuff t))
-        (ess-dbg-goto-last-ref-and-mark dbuff)))
+            (ess--dbg-goto-last-ref-and-mark dbuff t))
+        (ess--dbg-goto-last-ref-and-mark dbuff)))
 
     ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
     ;;   (let ((inhibit-read-only t))
@@ -1198,7 +1195,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     (when (and was-in-dbg
                (not (or match-jump match-dbg))
                (or is-ready match-selection))
-      (ess-dbg-deactivate-overlays)
+      (ess--dbg-deactivate-overlays)
       (process-put proc 'dbg-active nil)
       ;; (message "|<-- exited debugging -->|")
       (when wbuff
@@ -1209,11 +1206,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
                (not match-selection)
                (or match-jump match-dbg))
       (unless is-iess
-        (ring-insert ess-dbg-forward-ring input-point))
+        (ring-insert ess--dbg-forward-ring input-point))
       (process-put proc 'dbg-active t)
       (message
        (ess--debug-keys-message-string))
-      ;; (when ess-dbg-auto-single-key-p
+      ;; (when ess--dbg-auto-single-key-p
       ;;   (ess-electric-debug t))
       )
 
@@ -1238,56 +1235,56 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
   "Minor mode activated when ESS process is in debugging state."
   :lighter nil:keymap ess-debug-minor-mode-map)
 
-(defun ess-dbg-goto-last-ref-and-mark (dbuff &optional other-window)
+(defun ess--dbg-goto-last-ref-and-mark (dbuff &optional other-window)
   "Open the most recent debug reference, and set all the
 necessary marks and overlays.
 
-It's called from `inferior-ess-dbg-output-filter'.  DBUFF must be
+It's called from `inferior-ess-tracebug-output-filter'.  DBUFF must be
 the *ess.dbg* buffer associated with the process. If OTHER-WINDOW
 is non nil, attempt to open the location in a different window."
   (interactive)
   (let (t-debug-position ref)
     (with-current-buffer  dbuff
-      (setq ref  (ess-dbg-get-next-ref -1 (point-max) ess-dbg-last-ref-marker
-                                       ess-dbg-regexp-reference)) ; sets point at the end of found ref
+      (setq ref  (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
+                                       ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
-        (move-marker ess-dbg-last-ref-marker (point-at-eol))
-        (move-marker ess-dbg-current-ref ess-dbg-last-ref-marker) ;; each new step repositions the current-ref!
+        (move-marker ess--dbg-last-ref-marker (point-at-eol))
+        (move-marker ess--dbg-current-ref ess--dbg-last-ref-marker) ;; each new step repositions the current-ref!
         ))
     (when ref
-      (if (apply 'ess-dbg-goto-ref other-window ref)
+      (if (apply 'ess--dbg-goto-ref other-window ref)
           (progn ;; if referenced  buffer is found put overlays
             (setq t-debug-position (copy-marker (point-at-bol)))
-            (if (equal t-debug-position ess-dbg-current-debug-position)
-                (progn ;; highlights the overlay for ess-dbg-blink-interval seconds
-                  (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-blink-same-ref-face)
+            (if (equal t-debug-position ess--dbg-current-debug-position)
+                (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
+                  (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
                   (run-with-timer ess-debug-blink-interval nil
                                   (lambda ()
-                                    (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face))))
+                                    (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-current-debug-line-face))))
                                         ;else
-              (ess-dbg-activate-overlays)))
+              (ess--dbg-activate-overlays)))
         ;;else, buffer is not found: highlight and give the corresponding message
-        (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-blink-ref-not-found-face)
+        (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
         (run-with-timer ess-debug-blink-interval nil
                         (lambda ()
-                          (overlay-put ess-dbg-current-debug-overlay 'face 'ess-dbg-current-debug-line-face)))
+                          (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-current-debug-line-face)))
         (message "Referenced %s not found" (car ref))))))
 
-(defun ess-dbg-goto-ref (other-window file line &optional col)
+(defun ess--dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
 Try to open in a different window if OTHER-WINDOW is nil.  Return
 the buffer if found, or nil otherwise be found.
-`ess-dbg-find-buffer' is used to find the FILE and open the
+`ess--dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess-dbg-create-ref-marker file line col))))
+  (let ((mrk (car (ess--dbg-create-ref-marker file line col))))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
-(defun ess-dbg-create-ref-marker (file line &optional col)
+(defun ess--dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
 position of error. Mk-end is the end of the line where error
@@ -1301,7 +1298,7 @@ TB-INDEX is not found return nil.
   (let* ((srcref (gethash file ess--srcrefs))
          (file (or (car srcref) file))
          (tb-index (cadr srcref))
-         (buffer (ess-dbg-find-buffer file))
+         (buffer (ess--dbg-find-buffer file))
          pos)
     (when (and buffer line)
       (save-excursion
@@ -1325,10 +1322,10 @@ TB-INDEX is not found return nil.
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
 
-(defun ess-dbg-find-buffer (filename)
+(defun ess--dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
-`ess-dbg-ask-for-file' is non-nil.  Search the directories in
+`ess--dbg-ask-for-file' is non-nil.  Search the directories in
 `ess-tracebug-search-path'."
   (let ((dirs ess-tracebug-search-path)
         (spec-dir default-directory)
@@ -1395,7 +1392,7 @@ If FILENAME is not found at all, ask the user where to find it if
     ;; nil if not found
     buffer))
 
-(defun ess-dbg-get-next-ref (n &optional pt BOUND REG nF nL nC)
+(defun ess--dbg-get-next-ref (n &optional pt BOUND REG nF nL nC)
   "Move point to the next reference in the *ess.dbg* buffer.
 
 Must be called from *ess.dbg* buffer.
@@ -1410,39 +1407,39 @@ giving the 'line'; defaults to 2.  nC - sub-expr giving the
 'column'; defaults to 3.
 "
   (interactive "p")
-  (unless ess-dbg-buf-p
+  (unless ess--dbg-buf-p
     (error "Not in *ess.dbg* buffer."))
   (setq nF (or nF 1)
         nL (or nL 2)
         nC (or nC 3))
   (or pt (setq pt (point)))
-  ;; (message "ess-dbg-last-ref-marker%s vs  pt%s vs point-max%s" ess-dbg-last-ref-marker pt (point-max))
+  ;; (message "ess--dbg-last-ref-marker%s vs  pt%s vs point-max%s" ess--dbg-last-ref-marker pt (point-max))
   (goto-char pt)
   (if (search-forward-regexp REG BOUND t n)
       (list (match-string nF) (match-string-no-properties nL) (match-string-no-properties nC))
     nil))
 
-(defun ess-dbg-next-ref-function (n &optional reset)
+(defun ess--dbg-next-ref-function (n &optional reset)
   "Advance to the next reference and visit the location
 given by the reference.  This is the value of
 `next-error-function' in *ess.dbg* buffers."
   (interactive "p")
   (if reset
-      (set-marker ess-dbg-current-ref ess-dbg-last-ref-marker))
-  (let ((loc (ess-dbg-get-next-ref n nil ess-dbg-current-ref))  ;; moves point to next/prev ref if any
+      (set-marker ess--dbg-current-ref ess--dbg-last-ref-marker))
+  (let ((loc (ess--dbg-get-next-ref n nil ess--dbg-current-ref))  ;; moves point to next/prev ref if any
                                         ; loc is  (file . line_nr)
         dbuff)
     (if loc
         (progn
-          (set-marker ess-dbg-current-ref (line-end-position))
+          (set-marker ess--dbg-current-ref (line-end-position))
           (set-marker overlay-arrow-position (line-beginning-position))
-          (setq dbuff (ess-dbg-find-buffer  (car loc)))
+          (setq dbuff (ess--dbg-find-buffer  (car loc)))
           (switch-to-buffer dbuff)
           (save-restriction
             (widen)
             (goto-char 1)
             (forward-line (1- (cdr loc))))
-          (move-marker ess-dbg-current-debug-position (line-beginning-position)) ; move the overlay-arrow
+          (move-marker ess--dbg-current-debug-position (line-beginning-position)) ; move the overlay-arrow
           (back-to-indentation))
       (if (>= 0 (or n 1))
           (error "Moved past first debug line")
@@ -1535,7 +1532,7 @@ If suplied ev must be a proper key event or a string representing the digit."
         (with-current-buffer (process-buffer proc)
           (goto-char mark-pos)
           (save-excursion
-            (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess-tb-last-input t)
+            (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess--tb-last-input t)
               (setq depth (string-to-number (match-string 1)))
               (when (> depth 9)
                 (setq ev-char (ess-completing-read "Selection" (mapcar 'number-to-string
@@ -1551,21 +1548,21 @@ If suplied ev must be a proper key event or a string representing the digit."
   "Step next in debug mode.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (if (not (ess-dbg-is-active))
+  (if (not (ess--dbg-is-active-p))
       (error "Debugger is not active")
-    (if (ess-dbg-is-recover)
+    (if (ess--dbg-is-recover-p)
         (ess-send-string (get-process ess-current-process-name) "0")
       (ess-send-string (get-process ess-current-process-name) ""))))
 
 (defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
   (interactive)
-  (if (not (ess-dbg-is-active))
+  (if (not (ess--dbg-is-active-p))
       (error "Debugger is not active")
     (let ((N (or N (read-number "Number of steps: " 10)))
           (proc (get-process ess-local-process-name))
           (ess--suppress-next-output? t))
-      (while (and (ess-dbg-is-active) (> N 0))
+      (while (and (ess--dbg-is-active-p) (> N 0))
         (ess-debug-command-next)
         (ess-wait-for-process proc)
         (setq N (1- N))))
@@ -1574,12 +1571,12 @@ Equivalent to 'n' at the R prompt."
 (defun ess-debug-command-continue-multi (&optional ev N)
   "Ask for N, and continue (c) N times in debug mode."
   (interactive)
-  (if (not (ess-dbg-is-active))
+  (if (not (ess--dbg-is-active-p))
       (error "Debugger is not active")
     (let ((N (or N (read-number "Number of continuations: " 10)))
           (proc (get-process ess-local-process-name))
           (ess--suppress-next-output? t))
-      (while (and (ess-dbg-is-active) (> N 1))
+      (while (and (ess--dbg-is-active-p) (> N 1))
         (ess-debug-command-continue)
         (ess-wait-for-process proc)
         (setq N (1- N))))
@@ -1590,7 +1587,7 @@ Equivalent to 'n' at the R prompt."
   "Step up one call frame.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (if (not (ess-dbg-is-active))
+  (if (not (ess--dbg-is-active-p))
       (error "Debugger is not active")
     (let ((proc (get-process ess-local-process-name)))
       (ess-send-string proc
@@ -1611,7 +1608,7 @@ Equivalent to 'n' at the R prompt."
     (if (not (or (process-get proc 'dbg-active)
                  (process-get proc 'is-recover)))
         (error "Debugger is not active")
-      (when (ess-dbg-is-recover)
+      (when (ess--dbg-is-recover-p)
         (ess-send-string proc "0")
         ;; if recover is called in a loop the following stalls emacs
         ;; (ess-wait-for-process proc nil 0.05)
@@ -1628,7 +1625,7 @@ Equivalent to 'n' at the R prompt."
     (if (not (or (process-get proc 'dbg-active)
                  (process-get proc 'is-recover)))
         (error "Debugger is not active")
-      (when (ess-dbg-is-recover)
+      (when (ess--dbg-is-recover-p)
         (ess-send-string proc "0")
         ;; (ess-wait-for-process proc nil 0.05) <- when in a loop, gets stuck
         ) ;; get out of recover mode
@@ -1637,18 +1634,18 @@ Equivalent to 'n' at the R prompt."
           (ess-send-string proc "c")))))
 
 (defun ess-tracebug-set-last-input (&rest ARGS)
-  "Move `ess-tb-last-input' marker to the process mark.
+  "Move `ess--tb-last-input' marker to the process mark.
 ARGS are ignored to allow using this function in process hooks."
   (let* ((last-input-process (get-process ess-local-process-name))
          (last-input-mark (copy-marker (process-mark last-input-process))))
     (with-current-buffer (process-buffer last-input-process)
-      (when (local-variable-p 'ess-tb-last-input) ;; TB might not be active in all processes
+      (when (local-variable-p 'ess--tb-last-input) ;; TB might not be active in all processes
         (save-excursion
-          (setq ess-tb-last-input last-input-mark)
+          (setq ess--tb-last-input last-input-mark)
           (goto-char last-input-mark)
           (inferior-ess-move-last-input-overlay))))))
 
-(defun ess-tb-R-source-current-file (&optional filename)
+(defun ess--tb-R-source-current-file (&optional filename)
   "Save current file and source it in the .R_GlobalEnv environment."
   ;; make it more elaborate :todo:
   (interactive)
@@ -2507,7 +2504,7 @@ Optional N if supplied gives the number of backward steps."
   (ess-watch-install-.ess_watch_expressions))
 
 ;;;_ + Debug/Undebug at point
-(defun ess-dbg-get-signatures (method)
+(defun ess--dbg-get-signatures (method)
   "Get signatures for the method METHOD"
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo
         signatures curr-point)
@@ -2557,7 +2554,7 @@ for signature and trace it with browser tracer."
         (save-excursion ;; if so, find the signature
           (setq signature
                 (ess-completing-read (concat "Method for generic '" ufunc "'")
-                                     (ess-dbg-get-signatures ufunc) ;signal an error if not found
+                                     (ess--dbg-get-signatures ufunc) ;signal an error if not found
                                      nil t nil nil "*default*"))
           (if (equal signature "*default*")
               ;;debug, the default ufunc
@@ -2674,6 +2671,8 @@ intanbible, step char backward first"
 (make-obsolete 'ess-dbg-command-c 'ess-debug-command-continue "ESS 13.05")
 (make-obsolete 'ess-dbg-flag-for-debugging 'ess-debug-flag-for-debugging "ESS 13.05")
 (make-obsolete 'ess-dbg-unflag-for-debugging 'ess-debug-unflag-for-debugging "ESS 13.05")
+(make-obsolete-variable 'ess-tb-last-input-fringe-face 'ess-tracebug-last-input-fringe-face "ESS 13.05")
+(make-obsolete-variable 'ess-tb-next-error-function 'ess-tracebug-next-error-function "ESS 13.05")
 
 (ess-if-verbose-write "\n<- debug done")
 (provide 'ess-tracebug)
