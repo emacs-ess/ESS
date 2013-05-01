@@ -234,12 +234,12 @@ Default bindings in `ess-tracebug-map':
 
 * Interactive Debugging:
 
- M-c   . Continue                  . `ess-debug-command-c'
- M-C   . Continue multi            . `ess-debug-command-C'
- M-n   . Next step                 . `ess-debug-command-n'
- M-N   . Next step multi           . `ess-debug-command-N'
+ M-c   . Continue                  . `ess-debug-command-continue'
+ M-C   . Continue multi            . `ess-debug-command-continue-multi'
+ M-n   . Next step                 . `ess-debug-command-next'
+ M-N   . Next step multi           . `ess-debug-command-next-multi'
  M-u   . Up frame                  . `ess-debug-command-up'
- M-q   . Quit debugging            . `ess-debug-command-Q'
+ M-q   . Quit debugging            . `ess-debug-command-quit'
  1..9    . Enter recover frame       . `ess-debug-command-digit'
  0       . Exit recover (also q,n,c) . `ess-debug-command-digit'
 
@@ -800,10 +800,10 @@ If nil, the currently debugged line is highlighted for
   (let (ess-electric-selection-map)
     (define-prefix-command 'ess-electric-selection-map)
     ;; command-c and command-Q are not always working reliably
-    (define-key ess-electric-selection-map "M-C" 'ess-debug-command-c)
-    (define-key ess-electric-selection-map "c" 'ess-debug-command-c)
-    (define-key ess-electric-selection-map "M-Q" 'ess-debug-command-Q)
-    (define-key ess-electric-selection-map "q" 'ess-debug-command-Q)
+    (define-key ess-electric-selection-map "M-C" 'ess-debug-command-continue)
+    (define-key ess-electric-selection-map "c" 'ess-debug-command-continue)
+    (define-key ess-electric-selection-map "M-Q" 'ess-debug-command-quit)
+    (define-key ess-electric-selection-map "q" 'ess-debug-command-quit)
     (define-key ess-electric-selection-map "0" 'ess-debug-command-digit)
     (define-key ess-electric-selection-map "1" 'ess-debug-command-digit)
     (define-key ess-electric-selection-map "2" 'ess-debug-command-digit)
@@ -1223,11 +1223,11 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
 (defvar ess-debug-minor-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-C") 'ess-debug-command-c)
-    (define-key map [(control meta ?C)] 'ess-debug-command-C)
-    (define-key map (kbd "M-N") 'ess-debug-command-n)
-    (define-key map [(control meta ?N)] 'ess-debug-command-N)
-    (define-key map (kbd "M-Q") 'ess-debug-command-Q)
+    (define-key map (kbd "M-C") 'ess-debug-command-continue)
+    (define-key map [(control meta ?C)] 'ess-debug-command-continue-multi)
+    (define-key map (kbd "M-N") 'ess-debug-command-next)
+    (define-key map [(control meta ?N)] 'ess-debug-command-next-multi)
+    (define-key map (kbd "M-Q") 'ess-debug-command-quit)
     (define-key map (kbd "M-U") 'ess-debug-command-up)
     map)
   "Keymap active when ESS process is in debugging state.
@@ -1452,11 +1452,11 @@ given by the reference.  This is the value of
 ;; not used; remove in 13.09
 (defvar ess-electric-debug-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "c" 'ess-debug-command-c)
-    (define-key map "C" 'ess-debug-command-C)
-    (define-key map "n" 'ess-debug-command-n)
-    (define-key map "N" 'ess-debug-command-N)
-    (define-key map "q" 'ess-debug-command-Q)
+    (define-key map "c" 'ess-debug-command-continue)
+    (define-key map "C" 'ess-debug-command-continue-multi)
+    (define-key map "n" 'ess-debug-command-next)
+    (define-key map "N" 'ess-debug-command-next-multi)
+    (define-key map "q" 'ess-debug-command-quit)
     (define-key map "u" 'ess-debug-command-up)
     map)
   "Keymap used to define commands for single key input mode.
@@ -1468,12 +1468,12 @@ This commands are triggered by `ess-electric-debug' .
   (let ((overriding-local-map (or map ess-debug-minor-mode-map)))
     (substitute-command-keys
      (mapconcat 'identity
-                '("(\\[ess-debug-command-c])cont"
-                  "(\\[ess-debug-command-C])cont-multi"
-                  "(\\[ess-debug-command-n])next"
-                  "(\\[ess-debug-command-N])next-multi"
+                '("(\\[ess-debug-command-continue])cont"
+                  "(\\[ess-debug-command-continue-multi])cont-multi"
+                  "(\\[ess-debug-command-next])next"
+                  "(\\[ess-debug-command-next-multi])next-multi"
                   "(\\[ess-debug-command-up])up"
-                  "(\\[ess-debug-command-Q])quit")
+                  "(\\[ess-debug-command-quit])quit")
                 " "))))
 
 ;; not used anywhere remove in ESS 13.09
@@ -1483,9 +1483,9 @@ Single-key input commands are those that once invoked do not
 requre the prefix command for subsequent invocation.
 
 For example, if the prefix key is 'C-c C-t' and
-`ess-debug-command-n' is bound to 'n' and `ess-debug-command-c' is
-bound to 'c' then 'C-c C-t n n c' executes `ess-debug-command-n'
-twice and `ess-debug-command-c' once. Any other input not defined
+`ess-debug-command-next' is bound to 'n' and `ess-debug-command-continue' is
+bound to 'c' then 'C-c C-t n n c' executes `ess-debug-command-next'
+twice and `ess-debug-command-continue' once. Any other input not defined
 in `ess-electric-debug-map' will cause the exit from single-key
 input mode.
 
@@ -1503,7 +1503,7 @@ triggered the command."
 (make-obsolete 'ess-electric-debug nil "ESS 13.05")
 
 (defun ess-electric-selection (&optional wait)
-  "Call commands defined in `ess-electric-selection'.
+  "Call commands defined in `ess-electric-selection-map'.
 Single-key input commands are those, which once executed do not
 requre the prefix command for subsequent invocation. See
 `ess-electric-debug' for more.
@@ -1517,7 +1517,6 @@ triggered the command."
                                  (not (ess-process-get 'is-recover))))
 
 (make-obsolete 'ess-singlekey-selection 'ess-electric-selection "ESS 13.05")
-
 
 (defun ess-debug-command-digit (&optional ev)
   "Digit commands in selection mode.
@@ -1548,7 +1547,7 @@ If suplied ev must be a proper key event or a string representing the digit."
           (move-marker (process-mark proc) (max-char)))
       (error "Recover is not active"))))
 
-(defun ess-debug-command-n (&optional ev)
+(defun ess-debug-command-next (&optional ev)
   "Step next in debug mode.
 Equivalent to 'n' at the R prompt."
   (interactive)
@@ -1558,7 +1557,7 @@ Equivalent to 'n' at the R prompt."
         (ess-send-string (get-process ess-current-process-name) "0")
       (ess-send-string (get-process ess-current-process-name) ""))))
 
-(defun ess-debug-command-N (&optional ev N)
+(defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
   (interactive)
   (if (not (ess-dbg-is-active))
@@ -1567,12 +1566,12 @@ Equivalent to 'n' at the R prompt."
           (proc (get-process ess-local-process-name))
           (ess--suppress-next-output? t))
       (while (and (ess-dbg-is-active) (> N 0))
-        (ess-debug-command-n)
+        (ess-debug-command-next)
         (ess-wait-for-process proc)
         (setq N (1- N))))
-    (ess-debug-command-n)))
+    (ess-debug-command-next)))
 
-(defun ess-debug-command-C (&optional ev N)
+(defun ess-debug-command-continue-multi (&optional ev N)
   "Ask for N, and continue (c) N times in debug mode."
   (interactive)
   (if (not (ess-dbg-is-active))
@@ -1581,10 +1580,10 @@ Equivalent to 'n' at the R prompt."
           (proc (get-process ess-local-process-name))
           (ess--suppress-next-output? t))
       (while (and (ess-dbg-is-active) (> N 1))
-        (ess-debug-command-c)
+        (ess-debug-command-continue)
         (ess-wait-for-process proc)
         (setq N (1- N))))
-    (ess-debug-command-c)))
+    (ess-debug-command-continue)))
 
 
 (defun ess-debug-command-up (&optional ev)
@@ -1604,7 +1603,7 @@ Equivalent to 'n' at the R prompt."
 ;;   (interactive)
 ;;   (previous-error))
 
-(defun ess-debug-command-Q (&optional ev)
+(defun ess-debug-command-quit (&optional ev)
   "Quits the browser/debug in R process.
  Equivalent to 'Q' at the R prompt."
   (interactive)
@@ -1621,7 +1620,7 @@ Equivalent to 'n' at the R prompt."
                (not (process-get proc 'is-recover))); still in debug mode
           (ess-send-string proc "Q")))))
 
-(defun ess-debug-command-c (&optional ev)
+(defun ess-debug-command-continue (&optional ev)
   "Continue the code execution.
  Equivalent of 'c' at the R prompt."
   (interactive)
@@ -2654,30 +2653,27 @@ intanbible, step char backward first"
   ad-do-it)
 
 
-(make-obsolete-variable 'ess-debug-blink-ref-not-found-face  'ess-dbg-blink-ref-not-found-face "ESS 13.05")
-(make-obsolete-variable 'ess-debug-blink-same-ref-face  'ess-dbg-blink-same-ref-face "ESS 13.05")
+(make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
+(make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-current-debug-line-face 'ess-debug-current-debug-line-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-error-action 'ess-debug-error-action "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-error-action-alist 'ess-debug-error-action-alist "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-interval 'ess-debug-blink-interval "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-indicator 'ess-debug-indicator "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-ask-for-file 'ess-debug-ask-for-file "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-set-error-action 'ess-debug-set-error-action "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-toggle-error-action 'ess-debug-toggle-error-action "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-goto-input-event-marker 'ess-debug-goto-input-event-marker "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-goto-debug-point 'ess-debug-goto-debug-point "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-insert-in-forward-ring 'ess-debug-insert-in-forward-ring "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-start 'ess-debug-start "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-stop 'ess-debug-stop "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-digit 'ess-debug-command-digit "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-n 'ess-debug-command-n "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-N 'ess-debug-command-N "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-C 'ess-debug-command-C "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-up 'ess-debug-command-up "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-Q 'ess-debug-command-Q "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-command-c 'ess-debug-command-c "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-flag-for-debugging 'ess-debug-flag-for-debugging "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-unflag-for-debugging 'ess-debug-unflag-for-debugging "ESS 13.05")
+(make-obsolete 'ess-dbg-set-error-action 'ess-debug-set-error-action "ESS 13.05")
+(make-obsolete 'ess-dbg-toggle-error-action 'ess-debug-toggle-error-action "ESS 13.05")
+(make-obsolete 'ess-dbg-goto-input-event-marker 'ess-debug-goto-input-event-marker "ESS 13.05")
+(make-obsolete 'ess-dbg-goto-debug-point 'ess-debug-goto-debug-point "ESS 13.05")
+(make-obsolete 'ess-dbg-insert-in-forward-ring 'ess-debug-insert-in-forward-ring "ESS 13.05")
+(make-obsolete 'ess-dbg-start 'ess-debug-start "ESS 13.05")
+(make-obsolete 'ess-dbg-stop 'ess-debug-stop "ESS 13.05")
+(make-obsolete 'ess-dbg-command-digit 'ess-debug-command-digit "ESS 13.05")
+(make-obsolete 'ess-dbg-command-n 'ess-debug-command-next "ESS 13.05")
+(make-obsolete 'ess-dbg-command-Q 'ess-debug-command-quit "ESS 13.05")
+(make-obsolete 'ess-dbg-command-c 'ess-debug-command-continue "ESS 13.05")
+(make-obsolete 'ess-dbg-flag-for-debugging 'ess-debug-flag-for-debugging "ESS 13.05")
+(make-obsolete 'ess-dbg-unflag-for-debugging 'ess-debug-unflag-for-debugging "ESS 13.05")
 
 (ess-if-verbose-write "\n<- debug done")
 (provide 'ess-tracebug)

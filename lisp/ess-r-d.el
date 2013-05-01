@@ -89,7 +89,7 @@
     (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "\C-e" 'ess-debug-toggle-error-action)
     (define-key ess-dev-map "e" 'ess-debug-toggle-error-action)
-    (define-key ess-dev-map "0" 'ess-debug-command-digit)
+    (define-key ess-dev-map "0" 'ess-electric-selection)
     (define-key ess-dev-map "1" 'ess-electric-selection)
     (define-key ess-dev-map "2" 'ess-electric-selection)
     (define-key ess-dev-map "3" 'ess-electric-selection)
