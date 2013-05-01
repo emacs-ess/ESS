@@ -157,7 +157,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
     ;; else: "normal", non-DDE behavior:
     (let* ((hb-name (concat "*help["
                             ess-current-process-name
-                            "](" object ")*"))
+                            "](" (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
            (old-hb-p    (get-buffer hb-name))
            (tbuffer     (get-buffer-create hb-name)))
       (when (or (not old-hb-p)
@@ -931,7 +931,7 @@ specific.")
 
 (defun ess-describe-object-at-point ()
   "Get info for object at point, and display it in an electric buffer or tooltip.
-This is a single key command (see `ess--execute-singlekey-command').
+This is an electric command (see `ess--execute-electric-command').
 
 If region is active (`region-active-p') use it instead of the
 object at point.
@@ -960,7 +960,7 @@ option for other dialects).
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
       ;; todo: put digits into the map
       (let* ((inhibit-quit t) ;; C-g removes the buffer
-             (buf (ess--execute-singlekey-command
+             (buf (ess--execute-electric-command
                    map (format "Press %c to cycle" (event-basic-type last-command-event))
                    nil nil objname))
              ;; read full command

@@ -434,7 +434,7 @@ to julia, put them in the variable `inferior-julia-args'."
                                  " ? "))
 		      nil))))
       (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
-      (ess-tb-start)
+      (ess--tb-start)
       (set (make-local-variable 'julia-basic-offset) 4)
       ;; (setq indent-tabs-mode nil)
       ;; (if inferior-ess-language-start

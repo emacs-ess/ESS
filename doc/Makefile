@@ -109,21 +109,21 @@ install-other-docs: pdf html
 
 uninstall :
 	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf README ANNOUNCE
-	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html 
-	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf 
+	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html
+	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
 html/ess.html: $(TEXISRC)
 	@echo "making HTML documentation..."
 	mkdir -p html
-	-$(MAKEHTML) ess.texi > html/ess.html
+	-$(MAKEHTML) html/ess.html ess.texi
 #MM	$(TEXI2HTML) $(SPLITCHAP) ess.texi
 #MM	test -d ess && cp -p ess/ess_toc.html html/index.html || cp -p ess_toc.html html/index.html
 #MM	test -d ess && mv -f ess/*.html html || mv -f *.html html
 
 html/readme.html: $(TEXISRC)
-	-$(MAKEHTML)  --no-validate readme.texi > html/readme.html
-##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
+	-$(MAKEHTML) html/readme.html --no-validate readme.texi
+		 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
 #	mv -f readme.html html
 

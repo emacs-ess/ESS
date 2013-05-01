@@ -31,7 +31,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 #
 
-##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep) 
+##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
 #PREFIX=/Applications/Emacs.app/Contents/Resources
 #EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 #LISPDIR=$(PREFIX)/site-lisp/ess
@@ -67,7 +67,8 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 SHELL = /bin/sh
 #
 MAKEINFO = LC_ALL=C LANG=en makeinfo
-MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o -
+# new:  MAKEHTML <output>.html  <input>.texi  {necessary to build 'Index'}
+MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o
 ##                            ^^^^^^^^^^ today's bandwidth is fast
 #MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -

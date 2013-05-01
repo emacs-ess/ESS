@@ -829,7 +829,7 @@ process to avoid excessive requests.
 
 
 
-(defmacro ess--execute-singlekey-command (map &optional prompt wait exit-form &rest args)
+(defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
 
 Return the value of the lastly executed command.
@@ -1049,8 +1049,7 @@ Package_name is \"\" if funname was not found or is a special
 name i.e. contains :,$ or @.
 "
   (when (and funname ;; usually returned by ess--funname.start (might be nil)
-             ess-local-process-name
-             (get-process ess-local-process-name))
+             (ess-process-live-p))
     (let* ((proc (get-process ess-local-process-name))
            (args (gethash funname (process-get proc 'funargs-cache)))
            (pack (caar args))
@@ -1115,6 +1114,11 @@ later."
                       ))
                 (error nil)))))))
 
+(defun ess--inject-code-from-file (file)
+  ;; this is different from ess-load-file
+  (ess-command (with-temp-buffer
+                 (insert-file-contents file)
+                 (buffer-string))))
 
 (provide 'ess-utils)
 

@@ -343,6 +343,8 @@ there is no process NAME)."
            (inferior-ess-make-comint buf-name-str
                                      proc-name
                                      inf-ess-start-args)))
+        (process-put (get-process proc-name) 'accum-buffer-name
+                     (format " *%s:accum*" proc-name))
         ;; Set the process sentinel to save the history
         (set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
         ;; Add this process to ess-process-name-list, if needed
@@ -373,8 +375,7 @@ there is no process NAME)."
         (ess-load-extras t)
         ;; user initialization can take some time ...
         (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
-        (ess-wait-for-process (get-process proc-name) nil 0.01)
-        )
+        (ess-wait-for-process (get-process proc-name)))
 
       (let ((buff (process-buffer (get-process proc-name))))
         (with-current-buffer buff
@@ -505,8 +506,7 @@ This marks the process with a message, at a particular time point."
                                  procname
                                  inferior-ess-start-args
                                  &rest switches)
-  "Make an S comint process in buffer BUFNAME with process PROCNAME.
-This was rewritten by KH in April 1996."
+  "Make an S comint process in buffer BUFNAME with process PROCNAME."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
   (let*  ((buffer (get-buffer-create bufname))
@@ -707,6 +707,16 @@ Returns the name of the process, or nil if the current buffer has none."
   "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
   (with-current-buffer (process-buffer (get-ess-process name))
     (set var val)))
+
+(defun ess-process-live-p ()
+  "Check if the local ess process is alive.
+Return nil if current buffer has no associated process, or
+process was killed."
+  (and ess-local-process-name
+       (let ((proc (get-process ess-local-process-name)))
+         (and (processp proc)
+              (memq (process-status proc)
+                    '(run open listen connect stop))))))
 
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
@@ -935,7 +945,7 @@ If TOGGLE-EOB is given, the value of
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name)))
           )))
-    (ess--execute-singlekey-command map nil nil nil EOB)))
+    (ess--execute-electric-command map nil nil nil EOB)))
 
 
 (defun get-ess-buffer (name)
@@ -1433,6 +1443,7 @@ local({
                   (ess-wait-for-process sprocess nil wait force-redisplay)
                   (goto-char (point-max))
                   ;; remove prompt
+                  ;; if output is cat(..)ed this deletes the output ...
                   (delete-region (point-at-bol) (point-max)))
               (ess-if-verbose-write " .. ok{ess-command}")
               ))
@@ -2082,6 +2093,7 @@ for `ess-eval-region'."
     ;; but for now the user deserves a message:
     (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
     (define-key map "\C-c`"      'ess-show-traceback)
+    (define-key map [(control ?c) ?~] 'ess-show-call-stack)
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-q" 'ess-quit)
@@ -2980,55 +2992,43 @@ I.e. if the filenames in DIR are not representative of the objects in DIR."
   "Return alist of S object names in directory (or object) OBJ.
 If OBJ is a directory name (begins with `/') returns a listing of that dir.
    This may use the search list position POS if necessary.
-If OBJ is an object name, returns result of S command names(OBJ).
-If OBJ is nil or not a directory, POS must be supplied, and objects(POS) is returned.
+If OBJ is an object name, returns result of the command `inferior-ess-safe-names-command'.
+If POS is supplied return the result of the command in `inferior-ess-objects-command'
+If OBJ is nil or not a directory, POS must be supplied.
 In all cases, the value is an list of object names."
 
-  ;; FIXME: in both cases below, use the same fallback "objects(POS)" -- merge!
-  (if (and obj (file-accessible-directory-p obj))
-      ;; Check the pre-compiled object list in ess-object-name-db first
+  (cond ((and (stringp obj)
+              (string-match-p "ESSR" obj))
+         nil)
+        ;; FIXME: in both cases below, the same fallback "objects(POS)" is used -- merge!
+        ((and obj (file-accessible-directory-p obj))
+         ;; Check the pre-compiled object list in ess-object-name-db first
 
-      ;; FIXME: If used at all, ess-object-name-db should not only
-      ;; -----  be used in the directory case !!
-      (or (cdr-safe (assoc obj ess-object-name-db))
-          ;; Take a directory listing
-          (and ess-filenames-map
-               ;; first try .Data subdirectory:
-               ;;FIXME: move ".Data" or ``this function'' to ess-sp6-d.el etc:
-               (let ((dir (concat (file-name-as-directory obj) ".Data")))
-                 (if (not (file-accessible-directory-p dir))
-                     (setq dir obj))
-                 (and (not (ess-compiled-dir dir))
-                      (directory-files dir))))
-          ;; Get objects(pos) instead
-          (and (or (ess-write-to-dribble-buffer
-                    (format "(ess-object-names ..): directory %s not used\n" obj))
-                   t)
-               pos
-               (ess-get-words-from-vector
-                (format inferior-ess-objects-command pos))))
-    ;; "else" should really give an error!
-    ;; would need  pos = which(obj = search())
-
-    ;; else
-    (or (and obj  ;; want names(obj)
-             (or (ess-write-to-dribble-buffer
-                  (format "(ess-object-names obj=%s): no directory - trying names\n"
-                          obj))
-                 t)
-             (ess-get-words-from-vector
-              (format inferior-ess-safe-names-command obj)))
-        (and (ess-write-to-dribble-buffer
-              (format "(ess-object-names obj=%s): no dir.; -> objects()\n" obj))
-             nil); must return nil
-        ;; get objects(pos)
-        (ess-get-words-from-vector
-         (format inferior-ess-objects-command pos))))) ; had 2nd arg ".*"
-                                        ; s4 needs 2
-                                        ; args, rest only need 1 ?
-                                        ; changes needed to allow for
-                                        ; pattern argument to
-                                        ; .SmodeObs
+         ;; FIXME: If used at all, ess-object-name-db should not only
+         ;; -----  be used in the directory case !!
+         (or (cdr-safe (assoc obj ess-object-name-db))
+             ;; Take a directory listing
+             (and ess-filenames-map
+                  ;; first try .Data subdirectory:
+                  ;;FIXME: move ".Data" or ``this function'' to ess-sp6-d.el etc:
+                  (let ((dir (concat (file-name-as-directory obj) ".Data")))
+                    (if (not (file-accessible-directory-p dir))
+                        (setq dir obj))
+                    (and (not (ess-compiled-dir dir))
+                         (directory-files dir))))
+             ;; Get objects(pos) instead
+             (and (or (ess-write-to-dribble-buffer
+                       (format "(ess-object-names ..): directory %s not used\n" obj))
+                      t)
+                  pos
+                  (ess-get-words-from-vector
+                   (format inferior-ess-objects-command pos)))))
+        ((and obj ;; want names(obj)
+              (ess-get-words-from-vector
+               (format inferior-ess-safe-names-command obj))))
+        (pos
+         (ess-get-words-from-vector
+          (format inferior-ess-objects-command pos)))))
 
 (defun ess-slot-names (obj)
   "Return alist of S4 slot names of S4 object OBJ."
