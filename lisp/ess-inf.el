@@ -587,6 +587,7 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
        (unless ,no-error
          (error "No current ESS process")))))
 
+;;;###autoload
 (defmacro ess-with-current-buffer (buffer &rest body)
   "Like `with-current-buffer' but with transfer of some essential
 local ESS vars like `ess-local-process-name'"
