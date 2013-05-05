@@ -2608,7 +2608,7 @@ for signature and trace it with browser tracer."
       (setq fun (ess-completing-read "Undebug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
           (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
-        (ess-command (concat ".ess_debug_UntraceOrUndebug \"ESS 13.05(\"" fun "\")\n") tbuffer))
+        (ess-command (format ".ess_dbg_UntraceOrUndebug(\"%s\")\n" fun) tbuffer))
       (with-current-buffer  tbuffer
         (if (= (point-max) 1) ;; not reliable todo:
             (setq out-message (format  "Undebugged '%s' " fun))

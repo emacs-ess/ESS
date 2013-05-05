@@ -1,4 +1,5 @@
-{ESSR <- attach(NULL, pos = 4, name = "ESSR", warn.conflicts = FALSE)
+{if ("ESSR" %in% search()) detach("ESSR") # good for debugging ESSR
+ ESSR <- attach(NULL, pos = 5, name = "ESSR", warn.conflicts = FALSE)
  ESSR$.ESSR_Env <- ESSR
  ESSR$.ess_evalq <- function(expr){
      ## like evalq but change the enclosure
@@ -31,9 +32,9 @@
              })
          }
          ## don't remove; really need eval(parse(  here!!
-         fun <- tryCatch(eval(parse(text=funname)), error=function(e) NULL) ## works for special objects also
-         if(is.null(fun)) NULL
-         else if(is.function(fun)) {
+         fun <- tryCatch(eval(parse(text=funname)),
+                         error=function(e) NULL) ## works for special objects also
+         if(is.function(fun)) {
              special <- grepl('[:$@[]', funname)
              args <- if(!special){
                  fundef <- paste(funname, '.default',sep='')
@@ -48,13 +49,19 @@
              fmls <- formals(args)
              fmls_names <- names(fmls)
              fmls <- gsub('\"', '\\\"', as.character(fmls), fixed=TRUE)
-             args_alist <- sprintf("'(%s)", paste("(\"", fmls_names, "\" . \"", fmls, "\")", sep = '', collapse = ' '))
+             args_alist <-
+                 sprintf("'(%s)",
+                         paste("(\"", fmls_names, "\" . \"", fmls, "\")",
+                               sep = '', collapse = ' '))
              allargs <-
                  if(special) fmls_names
-                 else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = T), error=function(e) NULL)
-             allargs <- sprintf("'(\"%s\")", paste(allargs, collapse = '\" "'))
+                 else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = T),
+                               error=function(e) NULL)
+             allargs <- sprintf("'(\"%s\")",
+                                paste(allargs, collapse = '\" "'))
              envname <- environmentName(environment(fun))
-             cat(sprintf('(list \"%s\" %s %s)\n', envname, args_alist, allargs))
+             cat(sprintf('(list \"%s\" %s %s)\n',
+                         envname, args_alist, allargs))
          }
      }
 
@@ -83,16 +90,18 @@
                      mode = 'function', inherits = FALSE)]
      }
 
-     .ess_all_functions <- function(packages = c())
+     .ess_all_functions <- function(packages = c(), env = NULL)
      {
-         env = parent.frame()
+         if(is.null(env))
+             env <- parent.frame()
          empty <- emptyenv()
          coll <- list()
          for(p in packages){
              ## package might not be attached
              try({objNS <- .ess_find_funcs(asNamespace(p))
                   objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
-                  coll[[length(coll) + 1L]] <- paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+                  coll[[length(coll) + 1L]] <-
+                      paste0(p, ':::`', setdiff(objNS, objPKG), '`')
               }, silent = TRUE)
          }
          while(!identical(empty, env)){
@@ -110,35 +119,42 @@
          generics <- methods::getGenerics()
          all_traced <- c()
          for(i in seq_along(generics)){
-             genf <- methods::getGeneric(generics[[i]], package=generics@package[[i]])
+             genf <- methods::getGeneric(generics[[i]],
+                                         package=generics@package[[i]])
              if(!is.null(genf)){ ## might happen !! v.2.13
                  menv <- methods::getMethodsForDispatch(genf)
                  traced <- unlist(eapply(menv, is, 'traceable', all.names=TRUE))
                  if(length(traced) && any(traced))
-                     all_traced <- c(paste(generics[[i]],':', names(traced)[traced],sep=''), all_traced)
-                 if(!is.null(tfn <- getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv) )&&
-                    is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
+                     all_traced <- c(paste(generics[[i]],':',
+                                           names(traced)[traced],sep=''), all_traced)
+                 tfn <- getFunction(generics[[i]], mustFind=FALSE, where = .GlobalEnv)
+                 if(!is.null(tfn ) && is(tfn,  'traceable')) # if the default is traced,  it does not appear in the menv :()
                      all_traced <- c(generics[[i]], all_traced)
              }
          }
          debugged_pkg <- unlist(lapply(packages, function(pkgname){
              ns <- asNamespace(pkgname)
              funcs <- .ess_find_funcs(ns)
-             dbged <- funcs[unlist(lapply(funcs, function(f) isdebugged(get(f, envir = ns, inherits = FALSE))))]
+             dbged <- funcs[unlist(lapply(funcs,
+                                          function(f){
+                                              isdebugged(get(f, envir = ns, inherits = FALSE))
+                                          }))]
              if(length(dbged))
                  paste0(pkgname, ':::`', dbged, '`')
          }))
-         all <- .ess_all_functions()
+         env <- parent.frame()
          ## traced function don't appear here. Not realy needed and would affect performance.
+         all <- .ess_all_functions(packages = packages, env = env)
          which_deb <- lapply(all, function(nm){
-             tryCatch(isdebugged(nm), error = function(e) FALSE)
+             ## if isdebugged is called with string it doess find 
+             tryCatch(isdebugged(get(nm, envir = env)), error = function(e) FALSE)
              ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
          })
          debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
          unique(c(debugged_pkg, debugged, all_traced))
      }
 
-     .ess_dbg_UntraceOrUndebug <- function(name)
+     .ess_dbg_UntraceOrUndebug <- function(name, env = parent.frame())
      {
          tr_state <- tracingState(FALSE)
          on.exit(tracingState(tr_state))
@@ -158,15 +174,24 @@
                  ## function
                  if( is(getFunction(name, where = parent.frame()), 'traceable') )
                      untrace(name)
-                 else
+                 else if(grepl(":", name))
                      undebug(name)
+                 else
+                     undebug(get(name, envir = env))
              }}}
 
      .ess_dbg_UndebugALL <- function(funcs)
      {
          tr_state <- tracingState(FALSE)
          on.exit(tracingState(tr_state))
-         invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
+         env <- parent.frame()
+         invisible(lapply(funcs, function( nm ){
+             ## ugly tryCatch, but there might be several names pointing to the
+             ## same function, like foo:::bar and bar. An alternative would be
+             ## to call .ess_dbg_getTracedAndDebugged each time but that might
+             ## be ery slow
+             try(.ess_dbg_UntraceOrUndebug(nm, env = env), TRUE)
+         }))
      }
 
 ### WATCH
@@ -215,7 +240,8 @@
          for(i in seq_along(.ess_watch_expressions)){
              capture.output({
                  cur_log[[i]] <-
-                     tryCatch(eval(.ess_watch_expressions[[i]]), envir = .parent_frame,
+                     tryCatch(eval(.ess_watch_expressions[[i]]),
+                              envir = .parent_frame,
                               error = function(e) paste('Error:', e$message, '\n'),
                               warning = function(w) paste('warning: ', w$message, '\n'))
                  if(is.null(cur_log[i][[1]]))
@@ -227,3 +253,5 @@
          invisible(NULL)
      }
  })}
+
+## length(ls(.ESSR_Env, all = TRUE)) # VS[01-05-2013]: 13 functs 

@@ -818,7 +818,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
     ("Classes" "^.*setClass(\\(.*\\)," 1)
     ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
     ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
-    ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\"\\(.+\\)\"," 2)
+    ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\\([^,]+,[^,]*\\)" 2)
     ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
     ;;
     ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
