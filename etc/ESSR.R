@@ -1,4 +1,5 @@
-{ESSR <- attach(NULL, pos = 5, name = "ESSR", warn.conflicts = FALSE)
+{if ("ESSR" %in% search()) detach("ESSR") # good for debugging ESSR
+ ESSR <- attach(NULL, pos = 5, name = "ESSR", warn.conflicts = FALSE)
  ESSR$.ESSR_Env <- ESSR
  ESSR$.ess_evalq <- function(expr){
      ## like evalq but change the enclosure
