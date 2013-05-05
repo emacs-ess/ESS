@@ -186,7 +186,7 @@ otherwise call devSource."
 (defun ess-developer-send-function (proc beg end name &optional visibly message tracebug)
   (save-excursion
     (if (null ess-developer-packages)
-        (error "Add packages to `ess-developer-packages' first (C-c C-t C-a).")
+        (error "`ess-developer-packages' is empty (add packages with C-c C-t C-a).")
       (if (null name)
           (error "Oops, could not find function name (probably a regexp bug)")
         (let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
@@ -243,7 +243,7 @@ PROPERTIZE-FUNC is a function called with the output buffer being current.
 usually used to manipulate the output, for example insert some text properties.
 "
   (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
-  (let ((buff (get-buffer-create "*ess-command-output*"))
+  (let ((buff (get-buffer-create " *ess-command-output*"))
         out)
     (ess-command comm buff nil nil 0.1)
     (with-current-buffer buff
