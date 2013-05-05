@@ -90,9 +90,10 @@
                      mode = 'function', inherits = FALSE)]
      }
 
-     .ess_all_functions <- function(packages = c())
+     .ess_all_functions <- function(packages = c(), env = NULL)
      {
-         env = parent.frame()
+         if(is.null(env))
+             env <- parent.frame()
          empty <- emptyenv()
          coll <- list()
          for(p in packages){
@@ -141,17 +142,19 @@
              if(length(dbged))
                  paste0(pkgname, ':::`', dbged, '`')
          }))
-         all <- .ess_all_functions()
+         env <- parent.frame()
          ## traced function don't appear here. Not realy needed and would affect performance.
+         all <- .ess_all_functions(packages = packages, env = env)
          which_deb <- lapply(all, function(nm){
-             tryCatch(isdebugged(nm), error = function(e) FALSE)
+             ## if isdebugged is called with string it doess find 
+             tryCatch(isdebugged(get(nm, envir = env)), error = function(e) FALSE)
              ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
          })
          debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
          unique(c(debugged_pkg, debugged, all_traced))
      }
 
-     .ess_dbg_UntraceOrUndebug <- function(name)
+     .ess_dbg_UntraceOrUndebug <- function(name, env = parent.frame())
      {
          tr_state <- tracingState(FALSE)
          on.exit(tracingState(tr_state))
@@ -171,15 +174,24 @@
                  ## function
                  if( is(getFunction(name, where = parent.frame()), 'traceable') )
                      untrace(name)
-                 else
+                 else if(grepl(":", name))
                      undebug(name)
+                 else
+                     undebug(get(name, envir = env))
              }}}
 
      .ess_dbg_UndebugALL <- function(funcs)
      {
          tr_state <- tracingState(FALSE)
          on.exit(tracingState(tr_state))
-         invisible(lapply(funcs, .ess_dbg_UntraceOrUndebug))
+         env <- parent.frame()
+         invisible(lapply(funcs, function( nm ){
+             ## ugly tryCatch, but there might be several names pointing to the
+             ## same function, like foo:::bar and bar. An alternative would be
+             ## to call .ess_dbg_getTracedAndDebugged each time but that might
+             ## be ery slow
+             try(.ess_dbg_UntraceOrUndebug(nm, env = env), TRUE)
+         }))
      }
 
 ### WATCH
