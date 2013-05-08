@@ -383,8 +383,6 @@ end keywords as associated values.")
       nil)))
 
 
-(defmacro error2nil (body) `(condition-case nil ,body (error nil)))
-
 (defun gretl-indent-line ()
   "Indent current line of gretl code"
   (interactive)
@@ -392,15 +390,15 @@ end keywords as associated values.")
     (end-of-line)
     (indent-line-to
      (or (and (ess-inside-string-p (point-at-bol)) 0)
-	 (save-excursion (error2nil (gretl-form-indent)))
-         (save-excursion (error2nil (gretl-paren-indent)))
+	 (save-excursion (ignore-errors (gretl-form-indent)))
+         (save-excursion (ignore-errors (gretl-paren-indent)))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
                            (forward-to-indentation 0)
                            (gretl-at-keyword gretl-block-end-keywords))))
-             (error2nil (+ (gretl-last-open-block (point-min))
-                           (if endtok (- gretl-basic-offset) 0)))))
+             (ignore-errors (+ (gretl-last-open-block (point-min))
+                               (if endtok (- gretl-basic-offset) 0)))))
 	 ;; previous line ends in =
 	 (save-excursion
 	   (if (and (not (equal (point-min) (line-beginning-position)))
@@ -416,7 +414,6 @@ end keywords as associated values.")
          0))
     (when (gretl-at-keyword gretl-block-end-keywords)
       (forward-word 1)))
-
 
 
 (defvar gretl-editing-alist
@@ -441,11 +438,10 @@ end keywords as associated values.")
   ;;  (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
     (font-lock-defaults		  . '(gretl-font-lock-defaults))
     )
-  "General options for R source files.")
+  "General options for gretl source files.")
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
 
 
 ;; (defun gretl-send-string-function (process string visibly)
@@ -475,7 +471,6 @@ end keywords as associated values.")
 ;;              '(gretl-at "^\\s-*\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 
-
 (defvar gretl-customize-alist
   '((comint-use-prompt-regexp		. t)
     (inferior-ess-primary-prompt	. "\\? ")
@@ -484,13 +479,13 @@ end keywords as associated values.")
     (ess-local-customize-alist		. 'gretl-customize-alist)
     (inferior-ess-program		. "gretlcli")
     (inferior-ess-font-lock-defaults	. gretl-font-lock-defaults)
-    ;; (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
+    (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
     (inferior-ess-load-command		. "open \"%s\"\n")
     ;; (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     ;; (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     ;; (ess-error-regexp-alist		. ess-gretl-error-regexp-alist)
     (ess-send-string-function		. 'gretl-send-string-function)
-    ;; (inferior-ess-objects-command	. inferior-R-objects-command)
+    ;; (inferior-ess-objects-command	. inferior-gretl-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
     ;; inferior-ess-help-command		. gretl-help-command)
     (inferior-ess-help-command		. "help %s\n")
@@ -509,7 +504,7 @@ end keywords as associated values.")
     (ess-cmd-delay			. ess-R-cmd-delay)
     (ess-function-pattern		. ess-R-function-pattern)
     (ess-object-name-db-file		. "ess-r-namedb.el" )
-    (ess-imenu-mode-function		. 'ess-imenu-R)
+    ;; (ess-imenu-mode-function		. nil)
     (ess-smart-operators		. ess-R-smart-operators)
     (inferior-ess-help-filetype        . nil)
     (inferior-ess-exit-command		. "exit\n")
@@ -518,8 +513,6 @@ end keywords as associated values.")
     (inferior-ess-start-args		. "")
     (inferior-ess-language-start	. nil)
     (ess-STERM		. "iESS")
-    (ess-editor	. R-editor)
-    (ess-pager		. R-pager)
     )
   "Variables to customize for Gretl -- set up later than emacs initialization.")
 
@@ -535,8 +528,8 @@ end keywords as associated values.")
 ;; command for that version of Julia is made available.  ")
 
 (defcustom inferior-gretl-args ""
-  "String of arguments (see 'R --help') used when starting R.
-These arguments are currently not passed to other versions of R that have
+  "String of arguments used when starting gretl.
+These arguments are currently not passed to other versions of gretl that have
 been created using the variable `ess-r-versions'."
   :group 'ess-gretl
   :type 'string)
@@ -544,7 +537,7 @@ been created using the variable `ess-r-versions'."
 
 ;;;###autoload
 (defun gretl-mode  (&optional proc-name)
-  "Major mode for editing R source.  See `ess-mode' for more help."
+  "Major mode for editing gretl source.  See `ess-mode' for more help."
   (interactive "P")
   ;; (setq ess-customize-alist gretl-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
@@ -569,40 +562,6 @@ been created using the variable `ess-r-versions'."
   Gretl process.")
 
 
-;; (defun gretl (&optional start-args)
-;;   "Call Gretl."
-;;   (interactive "P")
-;;   (setq ess-customize-alist gretl-customize-alist)
-;;   (ess-write-to-dribble-buffer
-;;    (format "(Gretl): ess-dialect=%s , buf=%s \n"
-;;            ess-dialect
-;;            (current-buffer)))
-;;   (let ((gretl-start-args 
-;;          (concat inferior-gretl-args " "
-;;                  (when start-args (read-string "Starting Args ")))))
-;;     (inferior-ess gretl-start-args)
-
-;;       ;;(ess-tb-start)
-;;       ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-;;       ;;        (list
-;;       ;; 	(list gretl-char-regex 2
-;;       ;; 	      gretl-mode-char-syntax-table)
-;;       ;; ;        (list gretl-string-regex 0
-;;       ;; ;              gretl-mode-string-syntax-table)
-;;       ;; ))
-;;       (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
-;;       (set (make-local-variable 'gretl-basic-offset) 4)
-;;       (setq indent-tabs-mode nil)
-;;       ;; (if inferior-ess-language-start
-;;       ;; 	(ess-eval-linewise inferior-ess-language-start
-;;       ;; 			   nil nil nil 'wait-prompt)))
-;;       (with-ess-process-buffer nil
-;;         (run-mode-hooks 'ess-gretl-post-run-hook))
-;;       ))
-
-
-
-
 
 ;;;###autoload
 (defun gretl (&optional start-args)
@@ -610,7 +569,7 @@ been created using the variable `ess-r-versions'."
 Optional prefix (C-u) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
-to R, put them in the variable `inferior-gretl-args'."
+to gretl, put them in the variable `inferior-gretl-args'."
   (interactive "P")
   ;; get settings, notably inferior-R-program-name :
   ;; (if (null inferior-gretl-program-name)
@@ -640,6 +599,7 @@ to R, put them in the variable `inferior-gretl-args'."
       (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
       (set (make-local-variable 'gretl-basic-offset) 4)
       (setq indent-tabs-mode nil)
+      (goto-char (point-max))
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
@@ -668,7 +628,6 @@ to R, put them in the variable `inferior-gretl-args'."
 ;;     ))
 
 
-
 ;; (defun ess-imenu-gretl (&optional arg)
 ;;   "Gretl Language Imenu support for ESS."
 ;;   (interactive)
@@ -682,7 +641,6 @@ to R, put them in the variable `inferior-gretl-args'."
 ;;   (setq imenu-generic-expression gretl-imenu-generic-expression)
 ;;   (imenu-add-to-menubar "Imenu-jl"))
 
-;; (fset 'ess-imenu-R 'ess-imenu-S)
 
 (provide 'ess-gretl)
 ;; (provide 'ess-gretl)
