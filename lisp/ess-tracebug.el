@@ -234,14 +234,14 @@ Default bindings in `ess-tracebug-map':
 
 * Interactive Debugging:
 
- M-c   . Continue                  . `ess-debug-command-continue'
- M-C   . Continue multi            . `ess-debug-command-continue-multi'
- M-n   . Next step                 . `ess-debug-command-next'
- M-N   . Next step multi           . `ess-debug-command-next-multi'
- M-u   . Up frame                  . `ess-debug-command-up'
- M-q   . Quit debugging            . `ess-debug-command-quit'
- 1..9    . Enter recover frame       . `ess-debug-command-digit'
- 0       . Exit recover (also q,n,c) . `ess-debug-command-digit'
+ M-C   . Continue                  . `ess-debug-command-continue'
+ M-C-C . Continue multi            . `ess-debug-command-continue-multi'
+ M-N   . Next step                 . `ess-debug-command-next'
+ M-C-N . Next step multi           . `ess-debug-command-next-multi'
+ M-U   . Up frame                  . `ess-debug-command-up'
+ M-Q   . Quit debugging            . `ess-debug-command-quit'
+ 1..9  . Enter recover frame       . `ess-debug-command-digit'
+ 0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
 
  Note: These commands are electric and are also available in C-c map.
 
