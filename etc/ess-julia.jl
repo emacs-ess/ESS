@@ -1,42 +1,30 @@
+module ESS
 
-function _ess_list_categories()
-    Base._jl_init_help()
-    show("*ALL*"); print(" ")
-    for cat = Base._jl_help_category_list
-        show(cat)
-        print(" ")
+export ess_test
+
+import Base.CATEGORY_LIST
+import Base.CATEGORY_DICT
+import Base.clear_cache
+
+function ess_help_topics()
+    ## show all categories 
+    for cat = CATEGORY_LIST
+        if !isempty(CATEGORY_DICT[cat])
+            print("  ")
+            show(cat)
+        end
     end
-end
-
-function _ess_print_index(cat::ASCIIString)
-    Base._jl_init_help()
-    if cat == "*ALL*"
-        println("   All help items:\n\n")
-        for cat = Base._jl_help_category_list
-            print("\n", cat, ":\n")
-            for func =  Base._jl_help_category_dict[cat]
-                print(func, " ")
+    
+    println()
+    
+    for cat = CATEGORY_LIST
+        if !isempty(CATEGORY_DICT[cat])
+            for func = CATEGORY_DICT[cat]
+                print("  ")
+                show(func);
             end
-            println()
-        end
-    elseif has(Base._jl_help_category_dict, cat)
-        println("  Help is available for the following items:\n\n")
-        for func = Base._jl_help_category_dict[cat]
-            print(func, ":\n")
-        end
-    else 
-        error("Category $(cat) not found ")
-    end 
-end
-
-function _ess_list_topics()
-    Base._jl_init_help()
-    for cat = Base._jl_help_category_list
-        show(cat); println()
-        for el = Base._jl_help_category_dict[cat]
-            show(el); print(" ")
         end
     end
 end
 
-
+end 

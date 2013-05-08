@@ -234,14 +234,14 @@ Default bindings in `ess-tracebug-map':
 
 * Interactive Debugging:
 
- M-c   . Continue                  . `ess-debug-command-continue'
- M-C   . Continue multi            . `ess-debug-command-continue-multi'
- M-n   . Next step                 . `ess-debug-command-next'
- M-N   . Next step multi           . `ess-debug-command-next-multi'
- M-u   . Up frame                  . `ess-debug-command-up'
- M-q   . Quit debugging            . `ess-debug-command-quit'
- 1..9    . Enter recover frame       . `ess-debug-command-digit'
- 0       . Exit recover (also q,n,c) . `ess-debug-command-digit'
+ M-C   . Continue                  . `ess-debug-command-continue'
+ M-C-C . Continue multi            . `ess-debug-command-continue-multi'
+ M-N   . Next step                 . `ess-debug-command-next'
+ M-C-N . Next step multi           . `ess-debug-command-next-multi'
+ M-U   . Up frame                  . `ess-debug-command-up'
+ M-Q   . Quit debugging            . `ess-debug-command-quit'
+ 1..9  . Enter recover frame       . `ess-debug-command-digit'
+ 0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
 
  Note: These commands are electric and are also available in C-c map.
 
@@ -479,6 +479,8 @@ in inferior buffers.  ")
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
     (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
+    (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
+
     ;; redefine
     ;; todo: all this part should go
     (when (equal ess-dialect "R")
@@ -506,6 +508,7 @@ in inferior buffers.  ")
     (kill-local-variable 'compilation-error-regexp-alist)
     (kill-local-variable 'compilation-search-path)
     (cancel-timer ess--busy-timer)
+    (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local)
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))))
 
 (defvar ess--dbg-forward-ring (make-ring 10)
@@ -1001,7 +1004,6 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
         (error "Can not activate the debugger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-indicator t)
       (add-to-list 'ess-mode-line-indicator 'ess-debug-error-action t)
-      (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
@@ -1028,8 +1030,7 @@ Kill the *ess.dbg.[R_name]* buffer."
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
       (delq 'ess--dbg-mode-line-indicator ess-mode-line-indicator)
       (delq 'ess-debug-error-action ess-mode-line-indicator)
-      (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local)
-      (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local))
+      (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
     (process-put proc 'dbg-buffer nil)

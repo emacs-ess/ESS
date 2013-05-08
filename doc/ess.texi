@@ -2503,40 +2503,32 @@ packages:
 @section ESS tracebug
 @cindex ESS tracebug
 @findex ess-tracebug
-@emph{Note:} The official ess-tracebug documentation is at
-@uref{http://code.google.com/p/ess-tracebug/}, but it is in the process of
-being moved into this manual.
+@emph{Note:} The official ess-tracebug documentation is still at
+@uref{http://code.google.com/p/ess-tracebug/}.
 
 ESS @code{tracebug} package offers visual debugging, interactive error
 navigation, interactive backtrace, breakpoint manipulation, control over
 R error actions, watch window and interactive flagging/unflagging of
 functions for debugging.
 
-To use these features you have to first activate the tracebug:
+All of the tracebug functionality can be found on @code{ess-dev-map},
+bound to @kbd{C-c C-t}. 
 
-@example
-(setq ess-use-tracebug t)
-@end example
+Additionally when subprocess is in a debugging mode,
+@code{ess-debug-minor-mode} is active wich bounds
+@code{ess-debug-minor-mode-map}:
 
-You can also toggle it from the menu, with @kbd{C-c C-t T}, or simply by
-typing @kbd{M-x} @code{ess-tracebug} @kbd{RET}.
-
-Almost all of the tracebug functionality can be found on
-@code{ess-dev-map}, which is bound to @kbd{C-c C-t}. Optionally you can
-assign the full tracebug map to a shorter prefix:
-
-@example
-(setq ess-tracebug-prefix "\M-t")
-@end example
-
-This will automatically set the shadowed command @code{transpose-words}
-to be triggered by @kbd{M-t M-t}. Another alternative key, you might
-consider is @kbd{M-c}. In this case, the hijacked command
-@code{capitalize-word} is automatically re-bound to @kbd{M-c M-c}.
+@verbatim
+M-C             ess-debug-command-continue
+M-N             ess-debug-command-next
+M-Q             ess-debug-command-quit
+M-U             ess-debug-command-up
+C-M-S-c         ess-debug-command-continue-multi
+C-M-S-n         ess-debug-command-next-multi
+@end verbatim
 
 You can always call @kbd{C-c C-t ?}  to display the following menu with
 all the tracebug keys (prefix not included):
-
 
 @c @multitable {123} {123} {really-really-really-really-really-long}
 @c @item Key @tab Description                      @tab Function
@@ -2570,28 +2562,27 @@ d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
 D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
 w   . Watch window                         . `ess-watch'
 
+
+ * Interactive Debugging:
+
+M-C   . Continue                  . `ess-debug-command-continue'
+M-C-C . Continue multi            . `ess-debug-command-continue-multi'
+M-N   . Next step                 . `ess-debug-command-next'
+M-C-N . Next step multi           . `ess-debug-command-next-multi'
+M-U   . Up frame                  . `ess-debug-command-up'
+M-Q   . Quit debugging            . `ess-debug-command-quit'
+1..9  . Enter recover frame       . `ess-debug-command-digit'
+0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
+
+ * Misc:
+
+?   . Show this help		. `ess-tracebug-show-help'
+
  * Navigation to errors (emacs general functionality):
 
 C-x `, M-g n   . `next-error'
 M-g p          . `previous-error'
 
- * Interactive Debugging:
-
-c   . Continue                  . `ess-dbg-command-c'
-n   . Next step                 . `ess-dbg-command-n'
-p   . Previous step             . `previous-error'
-q   . Quit debugging            . `ess-dbg-command-Q'
-1..9. Enter recover frame       . `ess-dbg-command-digit'
-0   . Exit recover (also q,n,c) . `ess-dbg-command-digit'
-
- * Input Ring:
-
-i   . Goto input event marker forwards  . `ess-dbg-goto-input-event-marker'
-I   . Goto input event marker backwards . `ess-dbg-goto-input-event-marker'
-
- * Misc:
-
-?   . Show this help		. `ess-tracebug-show-help'
 @end verbatim
 
 

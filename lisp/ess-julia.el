@@ -244,31 +244,6 @@
     (when (julia-at-keyword julia-block-end-keywords)
       (forward-word 1)))
 
-;; (defun julia-mode ()
-;;   "Major mode for editing julia code"
-;;   (interactive)
-;;   (kill-all-local-variables)
-;;   (set-syntax-table julia-mode-syntax-table)
-;;   (set (make-local-variable 'comment-start) "# ")
-;;   (set (make-local-variable 'comment-start-skip) "#+\\s-*")
-;;   (set (make-local-variable 'font-lock-defaults) '(julia-font-lock-defaults))
-;; ;  (set (make-local-variable 'font-lock-syntactic-keywords)
-;; ;      (list
-;; ;       (list "\\(\\\\\\)\\s-*\".*?\"" 1 julia-mode-char-syntax-table)))
-;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-;;        (list
-;; 	(list julia-char-regex 2
-;; 	      julia-mode-char-syntax-table)
-;; ;        (list julia-string-regex 0
-;; ;              julia-mode-string-syntax-table)
-;; ))
-;;   (set (make-local-variable 'indent-line-function) 'julia-indent-line)
-;;   (set (make-local-variable 'julia-basic-offset) 4)
-;;   (setq indent-tabs-mode nil)
-;;   (setq major-mode 'julia-mode)
-;;   (setq mode-name "julia")
-;;   (run-hooks 'julia-mode-hook))
-
 (defvar julia-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
@@ -307,7 +282,7 @@
     (process-send-string process (format inferior-ess-load-command file))))
 
 (defun julia-get-help-topics (&optional proc)
-  (ess-get-words-from-vector "_ess_list_topics()\n"))
+  (ess-get-words-from-vector "help()\n"))
     ;; (ess-command com)))
 
 (defvar julia-help-command "help(\"%s\")\n")
@@ -318,7 +293,7 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(julia-at "^\\s-*\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
@@ -440,7 +415,8 @@ to julia, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
-      (ess-eval-linewise (format "include(\"%sess-julia.jl\")\n" ess-etc-directory))
+      (ess-eval-linewise "#`") ;; julia's logo screws indentation
+      ;; (ess-eval-linewise (format "include(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
