@@ -246,42 +246,41 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
   \Sect{ESS tracebug}
   %% ~~~~~~~~~~~~~~~~
-  Activate from the menu or
-
-\begin{verbatim}
-       (setq ess-use-tracebug t)
-\end{verbatim}
-
   Commands in \textbf{\underline{ess-dev-map}} (\textbf{C-c C-t}):
 
   \begin{tabular}{p{20mm}l}
-    \texttt{T} & Toggle ess-tracebug\\
     \texttt{?} & Show key help \\
     \texttt{C-b, b}& Set BP (repeat to cycle)\\
     \texttt{C-k, k}& Kill BP\\
-    \texttt{C-n, C-p}& Goto next/previous BP\\
-    \texttt{`} &Show R Traceback                     \\
+    \texttt{C-n, n}& Goto next BP\\
+    \texttt{C-p, p}& Goto previous BP\\
+    \texttt{`} &Show R Traceback (also on \texttt{C-c `}\\
+    \texttt{\~} &Show R call stack (also on \texttt{C-c ~}\\
     \texttt{C-e, e}& Toggle error action (cycle)\\
     \texttt{C-d, d}& Flag for debugging\\
-    \texttt{D}& Un-flag debugged objects\\
+    \texttt{C-u, u}& Un-flag debugged objects\\
     \texttt{C-w, w} & Watch window\\
-    \texttt{c, n, p, q}& Debugging commands\\
     \texttt{0..9, q}& Recover commands\\
+  \end{tabular}
+
+  Commands in \textbf{\underline{ess-debug-mode-map}}\\
+  (active during debugging):
+
+  \begin{tabular}{p{20mm}l}
+    \texttt{M-C}&  Continue \\
+    \texttt{M-N}&  Next line\\
+    \texttt{M-Q}&  Quit\\
+    \texttt{M-U}&  Up frame\\
+    \texttt{C-M-S-c }&  Continue Multiple\\
+    \texttt{C-M-S-n }&  Next Multiple\\
   \end{tabular}
 
   \underline{\textbf{Others}}
 
-\begin{tabular}{p{20mm}l}
-  \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
-  \texttt{M-g p} & `previous-error'(emacs)\\
-\end{tabular}
-
-To use a custom prefix key:
-
-\begin{verbatim}
-    (setq ess-tracebug-prefix "\M-t")
-\end{verbatim}
-
+  \begin{tabular}{p{20mm}l}
+    \texttt{\small{C-x `, M-g n}} & `next-error' (emacs)\\
+    \texttt{M-g p} & `previous-error'(emacs)\\
+  \end{tabular}
 
 
   \columnbreak
