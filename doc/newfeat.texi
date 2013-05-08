@@ -6,7 +6,6 @@ Changes/Bug Fixes in 13.05:
 @itemize @bullet
 @item @ESS{[gretl]}: Suport for @code{gretl} (both edditing and
 sub-process interaction). A contribution of Ahmadou Dicko.
-@item @ESS{[stan]}: Suport for @code{stan}. A contribution of Ahmadou Dicko.
 @item @ESS{[R]}: @code{ess-use-tracebug} is t by default.
 @item @ESS{}: process output display is 4-10 times faster due to caching
 of output and only occasional emacs re-display (for the moment this
