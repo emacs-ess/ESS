@@ -455,13 +455,31 @@ end keywords as associated values.")
 ;;       (insert string))
 ;;     (process-send-string process (format inferior-ess-load-command file))))
 
-;; (defun gretl-get-help-topics-function (name)
-;;   (let ((com "help"))
-;;     (ess-get-words-from-vector com)))
-    ;; (ess-command com)))
+(defun gretl--get-words-from-command (command start-reg end-reg)
+  (with-current-buffer (ess-command command)
+    (goto-char (point-min))
+    (let ((beg (or (re-search-forward start-reg nil t)
+                   (point-min)))
+          (end (progn (goto-char (point-max))
+                      (or (re-search-backward end-reg)
+                          (point-max))))
+          acum)
+      (goto-char beg)
+      (skip-chars-forward "\n")
+      (while (re-search-forward "[^ \t\n]+" end t)
+        (push (match-string-no-properties 0) acum))
+      acum)))
 
-;; (defvar gretl-help-command " help %s")
-
+(defun gretl-get-help-topics-function (name)
+  (delete-dups
+   (append gretl-command-words gretl-genr-functions
+           gretl-block-end-keywords gretl-block-other-keywords
+           gretl-block-start-keywords
+           (gretl--get-words-from-command "help\n" "are:" "^For")
+           (gretl--get-words-from-command "help functions\n" "Accessors:" "^Functions")
+           (gretl--get-words-from-command "help functions\n" "^Functions" "^For")
+           )))
+  
 ;; (defvar ess-gretl-error-regexp-alist '(gretl-in gretl-at)
 ;;   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
