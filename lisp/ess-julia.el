@@ -318,7 +318,7 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(julia-at "^\\s-*\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
