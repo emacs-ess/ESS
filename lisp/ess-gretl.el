@@ -1,8 +1,8 @@
 ;; ess-gretl.el --- ESS gretl mode and inferior interaction
 ;;
 ;; Copyright (C) 2012 Allin Cottrell
-;; Copyright (C) 2012 Ahmadou DICKO.
-;; Copyright (C) 2013 ESS core team.
+;; Copyright (C) 2012 Ahmadou DICKO
+;; Copyright (C) 2013 ESS core team
 ;;
 ;; Filename: ess-gretl.el
 ;; Author: Ahmadou DICKO, Spinu Vitalie and Allin Cottrell (based on ess-julia.el and gretl.el)
