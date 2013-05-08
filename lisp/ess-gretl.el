@@ -1,6 +1,8 @@
 ;; ess-gretl.el --- ESS gretl mode and inferior interaction
 ;;
+;; Copyright (C) 2012 Allin Cottrell
 ;; Copyright (C) 2012 Ahmadou DICKO.
+;; Copyright (C) 2013 ESS core team.
 ;;
 ;; Filename: ess-gretl.el
 ;; Author: Ahmadou DICKO, Spinu Vitalie and Allin Cottrell (based on ess-julia.el and gretl.el)
@@ -85,7 +87,6 @@
     table)
   "Syntax table for gretl-mode")
 
-
 (defcustom gretl-continuation-offset 4
   "*Extra indentation applied to Gretl continuation lines."
   :type 'integer
@@ -102,7 +103,6 @@
 ;; (defconst gretl-string-regex
 ;;   "\"[^\"]*?\\(\\(\\\\\\\\\\)*\\\\\"[^\"]*?\\)*\"")
 
-
 (defconst gretl-function-header-regexp
   (concat "^\\s-*\\<\\(function\\)\\>"
 	  "\\([^=;\n]*=[ \t]*\\|[ \t]*\\)\\(\\w+\\)\\>")
@@ -113,6 +113,7 @@ parenthetical grouping.")
 ;; (defconst ess-function-call-regexp
 ;;   "\\s\"?\\(\\(\\sw\\|\\s_\\)+\\(<-\\)?\\)\\s\"?*\\s-*("
 ;;   "Regexp for function names")
+
 (defvar gretl-command-words
  '("add" "adf" "anova" "append" "ar" "ar1" "arbond" "arch"
    "arima" "biprobit" "break" "boxplot" "chow" "clear" "coeffsum" "coint"
@@ -301,8 +302,6 @@ parenthetical grouping.")
   "Additional Gretl expressions to highlight.")
 
 
-
-
 (defvar gretl-block-begin-regexp
   (concat "\\<\\("
 	  (mapconcat 'identity gretl-block-start-keywords "\\|")
@@ -359,14 +358,12 @@ end keywords as associated values.")
       nil)))
 
 
-
 (defun gretl-last-open-block (min)
   (let ((pos (gretl-last-open-block-pos min)))
     (and pos
 	 (progn
 	   (goto-char pos)
 	   (+ gretl-basic-offset (current-indentation))))))
-
 
 
 ; return indent implied by a special form opening on the previous line, if any
