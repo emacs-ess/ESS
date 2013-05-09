@@ -415,7 +415,11 @@ to julia, put them in the variable `inferior-julia-args'."
       ;; (if inferior-ess-language-start
       ;; 	(ess-eval-linewise inferior-ess-language-start
       ;; 			   nil nil nil 'wait-prompt)))
-      (ess-eval-linewise "#`") ;; julia's logo screws indentation
+      ;; remove ` from julia's logo
+      (goto-char (point-min))
+      (while (re-search-forward "`" nil t)
+        (replace-match "'"))
+      (goto-char (point-max))
       ;; (ess-eval-linewise (format "include(\"%sess-julia.jl\")\n" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
