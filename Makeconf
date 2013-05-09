@@ -43,7 +43,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
 #EMACS=/Applications/Aquamacs.app/Contents/MacOS/Aquamacs
 #LISPDIR=$(PREFIX)/ess-mode/lisp
-#INFODIR=$(PREFIX)/info
+#INFODIR=/usr/local/info
 #ETCDIR=$(PREFIX)/ess-mode/etc
 #
 

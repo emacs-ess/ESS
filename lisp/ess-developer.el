@@ -192,17 +192,20 @@ otherwise call devSource."
         (let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
               (dev-packs ess-developer-packages)
               assigned-p ns)
-          (if tracebug (ess-tracebug-set-last-input proc))
-          (while (and (setq ns (pop dev-packs))
-                      (not assigned-p))
-            (when (and (member ns nms) ;;todo: try to load the package if not loaded
-                       (equal "TRUE"
-                              (car (ess-get-words-from-vector
-                                    (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
-              (ess-developer-devSource beg end ns message)
-              (setq assigned-p t)))
-          (unless assigned-p
-            (ess-developer-send-region-fallback proc beg end visibly message tracebug)))))))
+          ;; such a kludge
+          (if (string-match-p ess-set-function-start (concat name "("))
+              (ess-developer-send-region proc beg end visibly message tracebug)
+            (if tracebug (ess-tracebug-set-last-input proc))
+            (while (and (setq ns (pop dev-packs))
+                        (not assigned-p))
+              (when (and (member ns nms) ;;todo: try to load the package if not loaded
+                         (equal "TRUE"
+                                (car (ess-get-words-from-vector
+                                      (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
+                (ess-developer-devSource beg end ns message)
+                (setq assigned-p t)))
+            (unless assigned-p
+              (ess-developer-send-region-fallback proc beg end visibly message tracebug))))))))
 
 (defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
   "Ask for for the package and devSource region into it."
@@ -283,12 +286,15 @@ VAL is negative turn it off."
                             "ess-developer.R")))
     (if ess-dev
         (progn
-          (unless (file-exists-p devR-file)
-            (error "Cannot locate 'ess-developer.R' file"))
-          (unless (string= "TRUE"
-                           (car (ess-get-words-from-vector "as.character(exists('.essDev_source', envir = .BaseNamespaceEnv))\n")))
-            ;; puting this into ESSR makes loading rather slow
-            (ess--inject-code-from-file devR-file))
+          (unless (ess-boolean-command
+                   "exists('.essDev_source', envir = .ESSR_Env)\n") 
+            ;; puting this into ESSR.R makes loading rather slow
+            (unless (file-exists-p devR-file)
+              (error "Cannot locate 'ess-developer.R' file"))
+            (message "Injecting ess-developer code ...")
+            (ess--inject-code-from-file devR-file)
+            (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
+              (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))
           (run-hooks 'ess-developer-enter-hook)
           (when (file-readable-p ess-developer-enter-source)
             (ess-eval-linewise (format "source(%s)\n" ess-developer-enter-source)))
