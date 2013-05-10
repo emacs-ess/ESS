@@ -6,28 +6,29 @@ Changes/New Features in 13.05:
 @itemize @bullet
 @item @ESS{[gretl]}: Support for @code{gretl} (both editing and
 sub-process interaction). A contribution of Ahmadou Dicko.
+@item @ESS{}: process output display is 4-10 times faster due to new caching
+and only occasional emacs re-display (for the moment this functionality
+is available only when @code{ess-tracebug} is active).
+@item @ESS{}: @kbd{C-c `} is now bound to @code{ess-show-traceback} and
+@kbd{C-c ~} is bound to @code{ess-show-call-stack}.
+@item @ESS{[R]}: ESS stores function in 'ESSR' environment to
+avoid kludging users' global environment and accidental deletion.
+@item @ESS{[julia]}: ESS stores its functions in 'ESS' module.
+@item @ESS{[julia]}: Eldoc is now supported in julia modes
+@item @ESS{[julia]}: Adjusted error reference detection and interactive help
+to julia internal changes
 @item @ESS{[R]}: @code{ess-use-tracebug} is t by default.
-@item @ESS{}: process output display is 4-10 times faster due to caching
-of output and only occasional emacs re-display (for the moment this
-functionality is available only when @code{ess-tracebug} is active).
 @item @ESS{[tracebug]}: Electric debug keys have been removed [breaking change]
 The functionality was replaced with @code{ess-debug-minor-mode} and
 @code{ess-debug-minor-mode-map}.
-@item @ESS{}: @kbd{C-c `} is now bound to @code{ess-show-traceback} and
-@kbd{C-c ~} is bound to @code{ess-show-call-stack}.
-@item @ESS{[R]}: ESS stores ESS related function in ESSR environment to
-avoid kludging users' global environment and accidental deletion.
 @item @ESS{[tracebug]}: @code{ess-tracebug-map} is an alias to @code{ess-dev-map} @kbd{C-c C-t}.
 @item @ESS{[tracebug]}: @code{ess-bp-toggle-state} (@kbd{C-c C-t o}) can be now used during
 the debug session to toggle breakpoints on the fly (suggestion by Ross
 Boylan).
 @item @ESS{[tracebug]}: @code{ess-debug-flag-for-debugging} and
 @code{ess-debug-unflag-for-debugging} work correctly from the debugging
-contexts. They also recognize non-exported functions for those packages
-listed in @code{ess-developer-packages} (@kbd{C-c C-t C-a}).
-@item @ESS{[julia]}: Adjusted error reference detection and interactive help
-to julia internal changes
-@item @ESS{[julia]}: Eldoc is now supported in julia modes
+contexts. These commands also recognize non-exported functions for the
+packages listed in @code{ess-developer-packages} (@kbd{C-c C-t C-a}).
 @item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
 @item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} now defaults to @code{t}
 since @code{sas-indent-line} is still broken, i.e. @kbd{TAB} is now
