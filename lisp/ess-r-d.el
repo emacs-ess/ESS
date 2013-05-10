@@ -183,6 +183,7 @@
 (defvar R-customize-alist
   (append
    '((ess-local-customize-alist         . 'R-customize-alist)
+     (ess-eldoc-function                . 'ess-R-eldoc-function)
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
@@ -653,7 +654,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 
 ;;; eldoc
 
-(defun ess-eldoc-function ()
+(defun ess-R-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
@@ -677,7 +678,7 @@ to look up any doc strings."
           (when doc
             (setq doc (ess-eldoc-docstring-format funname doc))
             (when (and margs (< (length doc1) W))
-              (setq doc1 (concat doc (propertize "    || " 'face font-lock-function-name-face)))
+              (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
               (while (and margs (< (length doc1) W))
                 (let ((head (pop margs)))
                   (unless (assoc head bargs)
@@ -686,10 +687,8 @@ to look up any doc strings."
               (when (equal (substring doc -2) ", ")
                 (setq doc (substring doc 0 -2)))
               (when (and margs (< (length doc) W))
-                (setq doc (concat doc " {--}")))
-              )
-            doc
-            ))))))
+                (setq doc (concat doc " {--}"))))
+            doc))))))
 
 (defun ess-eldoc-docstring-format (funname doc)
   (save-match-data
@@ -747,13 +746,11 @@ to look up any doc strings."
                                 (eq 'strong ess-eldoc-abbreviation-style))
                             doc
                           ;;AGGRESSIVE filter (truncate what is left)
-                          (concat (substring doc 0 (- W 4)) "{--}")
-                          ))))))))
+                          (concat (substring doc 0 (- W 4)) "{--}")))))))))
       (when (and truncate
                  (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
-      (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc)
-      )))
+      (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc))))
 
 ;;; function argument completions
 

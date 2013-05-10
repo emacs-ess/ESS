@@ -356,6 +356,7 @@ for all projects."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)
                  file))
+(make-variable-buffer-local 'ess-history-file)
 
 (defcustom ess-plain-first-buffername t
   "No fancy process buffname for the first process of each type (novice mode)."
@@ -2432,6 +2433,10 @@ Passed to `ess-execute-dialect-specific' which see. ")
 See `ess-function-arguments' and .ess_funargs command in R and
 S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
+
+(defvar ess-eldoc-function nil
+  "Holds a dialect specific eldoc function,
+See `ess-R-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
