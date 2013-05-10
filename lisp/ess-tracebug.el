@@ -469,7 +469,9 @@ in inferior buffers.  ")
     (save-excursion
       (goto-char comint-last-input-start)
       (setq ess--tb-last-input (point))
-      (setq ess--tb-last-input-overlay (ess--tb-make-last-input-overlay  (point-at-bol) (point-at-eol))))
+      (setq ess--tb-last-input-overlay
+            (ess--tb-make-last-input-overlay
+             (point-at-bol) (point-at-eol))))
     ;; busy timer
     (make-local-variable 'ess--was-busy)
     (setq mode-line-buffer-identification
@@ -660,19 +662,11 @@ This is the value of `next-error-function' in iESS buffers."
 
 
 ;;;_* DEBUGGER
-
 (defgroup ess-debug nil
   "Debugging for ESS"
   :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
   :group 'ess-tracebug
   :prefix "ess-debug-")
-
-
-(defvar ess-debug-error-action "-"
-  "Mode line indicator of the current \"on error\" action.
-Set this variable to change the default behavior.
-See `ess-debug-error-action-alist' for more.")
-;; (make-variable-buffer-local 'ess-debug-error-action)
 
 (defcustom  ess-debug-error-action-alist
   '(( "-" "NONE"       "NULL" )
@@ -684,7 +678,8 @@ have the form (DISP SYMB ACTION) where DISP is the string to be
 displayed in the mode line when the action is in place. SYMB is
 the symbolic name of an action. ACTION is the string giving the
 actual expression to be assigned to 'error' user option. See R's
-help ?options for more details."
+help ?options for more details.
+"
   :type '(alist :key-type string
                 :value-type (string string))
   :group 'ess-debug)
@@ -853,7 +848,7 @@ The action list is in `ess-debug-error-action-alist'. "
          (ev last-command-event)
          (com-char  (event-basic-type ev))
          (cur-action (or (ess-process-get 'on-error-action)
-                         ess-debug-error-action))
+                         "-"))
          actions act)
     (setq actions
           (cdr (member (assoc cur-action ess-debug-error-action-alist)
@@ -979,6 +974,13 @@ of the ring."
 (make-variable-buffer-local 'ess--dbg-mode-line-indicator)
 (put 'ess--dbg-mode-line-indicator 'risky-local-variable t)
 
+(defvar ess--dbg-mode-line-error-action
+  '(:eval (or (and (ess-process-live-p)
+                   (ess-process-get 'on-error-action))
+              "-")))
+
+(make-variable-buffer-local 'ess--dbg-mode-line-error-action)
+(put 'ess--dbg-mode-line-error-action 'risky-local-variable t)
 
 (defun ess--dbg-remove-empty-lines (string)
   "Remove empty lines (which interfere with evals) during debug.
@@ -1008,7 +1010,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
       (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-indicator t)
-      (add-to-list 'ess-mode-line-indicator 'ess-debug-error-action t)
+      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-error-action t)
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
@@ -1034,7 +1036,7 @@ Kill the *ess.dbg.[R_name]* buffer."
       (if (member ess-dialect '("XLS" "SAS" "STA"))
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
       (delq 'ess--dbg-mode-line-indicator ess-mode-line-indicator)
-      (delq 'ess-debug-error-action ess-mode-line-indicator)
+      (delq 'ess--dbg-mode-line-error-action ess-mode-line-indicator)
       (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
@@ -2659,7 +2661,7 @@ intanbible, step char backward first"
 (make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-current-debug-line-face 'ess-debug-current-debug-line-face "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-error-action 'ess-debug-error-action "ESS 13.05")
+(make-obsolete-variable 'ess-dbg-error-action nil "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-error-action-alist 'ess-debug-error-action-alist "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-interval 'ess-debug-blink-interval "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-indicator 'ess-debug-indicator "ESS 13.05")
