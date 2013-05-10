@@ -426,7 +426,7 @@ to julia, put them in the variable `inferior-julia-args'."
 (defvar julia-imenu-generic-expression
   ;; don't use syntax classes, screws egrep
   '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
-    ("Function" "[ \t]*function[ \t]+\\([^_][^ \t\n]*\\)" 1)
+    ("Function" "[ \t]*function[ \t]+\\([^_][^\t\n]*\\)" 1)
     ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
     ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1)
     ("Require"      " *\\(\\brequire\\)(\\([^ \t\n)]*\\)" 2)
