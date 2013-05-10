@@ -38,7 +38,6 @@
 ;;
 (require 'compile); for compilation-* below
 
-
 ;;; Code:
 
 (defvar julia-mode-hook nil)
@@ -297,6 +296,7 @@
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
+    (ess-eldoc-function           . 'ess-julia-eldoc-function)
     (inferior-ess-primary-prompt	. "a> ") ;; from julia>
     (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
@@ -306,6 +306,7 @@
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (inferior-ess-load-command		. "include(\"%s\")\n")
+    (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
@@ -421,8 +422,35 @@ to julia, put them in the variable `inferior-julia-args'."
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))
 
+;;; ELDOC
 
-;;;; IMENU
+(defun ess-julia-eldoc-function ()
+  "Return the doc string, or nil.
+If an ESS process is not associated with the buffer, do not try
+to look up any doc strings."
+  (interactive)
+  (when (and (ess-process-live-p)
+             (not (ess-process-get 'busy)))
+    (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
+                            (symbol-at-point))
+                       (car (ess--funname.start)))))
+      (when funname
+        (let* ((args (copy-sequence (nth 2 (ess-function-arguments funname))))
+               (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+               (doc (concat (propertize funname 'face font-lock-function-name-face) ": ")))
+          (when args
+            (setq args (sort args (lambda (s1 s2)
+                                    (< (length s1) (length s2)))))
+            (setq doc (concat doc (pop args)))
+            (while (and args (< (length doc) W))
+              (setq doc (concat doc "  "
+                                (pop args))))
+            (when (and args (< (length doc) W))
+              (setq doc (concat doc " {--}"))))
+          doc)))))
+
+
+;;; IMENU
 (defvar julia-imenu-generic-expression
   ;; don't use syntax classes, screws egrep
   '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
