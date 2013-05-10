@@ -672,7 +672,7 @@ This is the value of `next-error-function' in iESS buffers."
   "Mode line indicator of the current \"on error\" action.
 Set this variable to change the default behavior.
 See `ess-debug-error-action-alist' for more.")
-(make-variable-buffer-local 'ess-debug-error-action)
+;; (make-variable-buffer-local 'ess-debug-error-action)
 
 (defcustom  ess-debug-error-action-alist
   '(( "-" "NONE"       "NULL" )
@@ -837,41 +837,46 @@ This commands are triggered by `ess-electric-selection' .
 (defun ess-debug-set-error-action (spec)
   "Set the on-error action. The ACTION should be  one
 of components of `ess-debug-error-action-alist' (a cons!)."
-  (let ((proc (get-process ess-current-process-name)))
+  (let ((proc (get-process ess-local-process-name)))
     (if spec
         (with-current-buffer (process-buffer proc)
-          (setq ess-debug-error-action (car spec))
-          (ess-command (format "options(error= %s )\n" (nth 2 spec) )))
+          (process-put proc 'on-error-action (car spec))
+          (ess-command (format "options(error= %s )\n" (nth 2 spec))))
       (error "Unknown action."))))
-
-
 
 (defun ess-debug-toggle-error-action ()
   "Toggle the 'on-error' action.
 The action list is in `ess-debug-error-action-alist'. "
   (interactive)
-  (let* ( (alist ess-debug-error-action-alist)
-          (ev last-command-event)
-          (com-char  (event-basic-type ev))
-          actions act)
-    (setq actions (cdr (member (assoc ess-debug-error-action ess-debug-error-action-alist)
-                               ess-debug-error-action-alist)))
+  (ess-force-buffer-current)
+  (let* ((alist ess-debug-error-action-alist)
+         (ev last-command-event)
+         (com-char  (event-basic-type ev))
+         (cur-action (or (ess-process-get 'on-error-action)
+                         ess-debug-error-action))
+         actions act)
+    (setq actions
+          (cdr (member (assoc cur-action ess-debug-error-action-alist)
+                       ess-debug-error-action-alist)))
     (unless actions
       (setq actions ess-debug-error-action-alist))
     (setq act (pop actions))
     (ess-debug-set-error-action act)
-    (message "On-error action set to: %s" (propertize (cadr act) 'face 'font-lock-function-name-face))
+    (message "On-error action set to: %s"
+             (propertize (cadr act) 'face 'font-lock-function-name-face))
     (while  (eq (event-basic-type (setq ev (read-event))) com-char)
       (unless actions
         (setq actions ess-debug-error-action-alist))
       (setq act (pop actions))
       (ess-debug-set-error-action act)
-      (message "On-error action set to: %s" (propertize (cadr act) 'face 'font-lock-function-name-face)))
+      (message "On-error action set to: %s"
+               (propertize (cadr act) 'face 'font-lock-function-name-face)))
     (push ev unread-command-events)))
 
 (defun ess--dbg-activate-overlays ()
   "Initialize active debug line overlays."
-  (move-overlay ess--dbg-current-debug-overlay (point-at-bol) (1+ (point-at-eol)) (current-buffer))
+  (move-overlay ess--dbg-current-debug-overlay
+                (point-at-bol) (1+ (point-at-eol)) (current-buffer))
   ;; used by overlay-arrow functionality on no-X,  should be bol
   (move-marker ess--dbg-current-debug-position (point-at-bol)))
 
