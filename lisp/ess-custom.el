@@ -356,6 +356,7 @@ for all projects."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)
                  file))
+(make-variable-buffer-local 'ess-history-file)
 
 (defcustom ess-plain-first-buffername t
   "No fancy process buffname for the first process of each type (novice mode)."
