@@ -292,20 +292,18 @@ See also `ess-use-ido'.
 
     ;; eldoc)
     (require 'eldoc)
-    (when (and ess-funargs-command ;; if mode provide this, it suports eldoc
+    (when (and ess-eldoc-function ;; if mode provide this, it suports eldoc
                (or (and (not inferior) ess-use-eldoc)
                    (and inferior (eq ess-use-eldoc t))))
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
         (set (make-local-variable 'eldoc-idle-delay) 0.1))
-      (set (make-local-variable 'eldoc-documentation-function) 'ess-eldoc-function)
+      (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
       (when emacsp
-        (turn-on-eldoc-mode)
-        ))
+        (turn-on-eldoc-mode)))
 
     ;; tracebug
     (when (and ess-use-tracebug emacsp inferior isR)
-      (ess-tracebug 1))
-    ))
+      (ess-tracebug 1))))
 
 
 
