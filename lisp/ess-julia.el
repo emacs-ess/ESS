@@ -282,7 +282,7 @@
     (process-send-string process (format inferior-ess-load-command file))))
 
 (defun julia-get-help-topics (&optional proc)
-  (ess-get-words-from-vector "help()\n"))
+  (ess-get-words-from-vector "ESS.all_help_topics()\n"))
     ;; (ess-command com)))
 
 (defvar julia-help-command "help(\"%s\")\n")
@@ -411,16 +411,12 @@ to julia, put them in the variable `inferior-julia-args'."
       (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
       (ess--tb-start)
       (set (make-local-variable 'julia-basic-offset) 4)
-      ;; (setq indent-tabs-mode nil)
-      ;; (if inferior-ess-language-start
-      ;; 	(ess-eval-linewise inferior-ess-language-start
-      ;; 			   nil nil nil 'wait-prompt)))
       ;; remove ` from julia's logo
       (goto-char (point-min))
       (while (re-search-forward "`" nil t)
         (replace-match "'"))
       (goto-char (point-max))
-      ;; (ess-eval-linewise (format "include(\"%sess-julia.jl\")\n" ess-etc-directory))
+      (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook))
       )))

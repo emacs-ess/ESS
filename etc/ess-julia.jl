@@ -1,27 +1,15 @@
 module ESS
 
-export ess_test
-
-import Base.CATEGORY_LIST
-import Base.CATEGORY_DICT
-import Base.clear_cache
-
-function ess_help_topics()
+function all_help_topics()
+    Base.Help.init_help()
     ## show all categories 
-    for cat = CATEGORY_LIST
-        if !isempty(CATEGORY_DICT[cat])
-            print("  ")
-            show(cat)
-        end
-    end
-    
-    println()
-    
-    for cat = CATEGORY_LIST
-        if !isempty(CATEGORY_DICT[cat])
-            for func = CATEGORY_DICT[cat]
+    for cat = Base.Help.CATEGORY_LIST
+        if !isempty(Base.Help.CATEGORY_DICT[cat])
+            println()
+            show(cat); println();
+            for func = Base.Help.CATEGORY_DICT[cat]
                 print("  ")
-                show(func);
+                show(func)
             end
         end
     end
