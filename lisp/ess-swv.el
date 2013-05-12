@@ -113,17 +113,14 @@
       (let* ((sprocess (get-ess-process ess-current-process-name))
              (sbuffer (process-buffer sprocess))
              (rnw-file (buffer-file-name))
-             (Rnw-dir (file-name-directory rnw-file))
+             ;; (Rnw-dir (file-name-directory rnw-file))
              (buf-coding (symbol-name buffer-file-coding-system))
              ;; could consider other encodings, but utf-8 is "R standard" for non-ASCII:
              (cmd-args (concat "\"" rnw-file "\""
                                (if (string-match "^utf-8" buf-coding)
                                    ", encoding = \"utf-8\"")))
              (Sw-cmd
-              (format
-               "local({..od <- getwd(); setwd(%S); %s(%s); setwd(..od) })"
-               Rnw-dir cmd cmd-args))
-             )
+              (format "%s(%s)" cmd cmd-args)))
         (message "%s()ing %S" cmd rnw-file)
         (ess-execute Sw-cmd 'buffer nil nil)
         (switch-to-buffer rnw-buf)
@@ -175,12 +172,12 @@ If CHOOSE is non-nil, offer a menu of available weavers.
 (defun ess-swv-knit ()
   "Run knit on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "require(knitr) ; knit"))
+  (ess-swv-run-in-R "require(knitr); knit"))
 
 (defun ess-swv-purl ()
   "Run purl on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "require(knitr) ; purl"))
+  (ess-swv-run-in-R "require(knitr); purl"))
 
 (defun ess-swv-latex ()
   "Run LaTeX on the product of Sweave()ing the current file."
