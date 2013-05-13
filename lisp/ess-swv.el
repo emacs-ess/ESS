@@ -129,12 +129,16 @@
 (defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
   "Command used by `ess-swv-run-in-R'.
 
-First %s is literally replaced by the processing command (like
-'Sweave') second %s is replaced with the processed file and
-possibly additional argument encoding (like \"'path/to/foo.Rnw', encoding='utf-8'\")
+First %s is literally replaced by the processing command (for
+example: Sweave) second %s is replaced with a string containing a
+processed file and possibly additional argument encoding (example:
+\"path/to/foo.Rnw\", encoding='utf-8')
 
-If you would like to simply call knitr or Sweave in global
-environment set this command to \"%s(%s)\"."
+.ess_weave changes the working directory to that of the supplied
+file.
+
+If you want to simply call knitr or Sweave in global environment
+set this command to \"%s(%s)\"."
   :group 'ess-R
   :type 'string)
 
