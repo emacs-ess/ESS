@@ -81,6 +81,19 @@
            utils:::.retrieveCompletions())
      }
 
+### WEAVING
+     .ess_weave <- function(command, file, encoding = NULL){
+         if(grepl('knit|purl', deparse(substitute(command))))
+             require(knitr)
+         od <- getwd()
+         on.exit(setwd(od))
+         setwd(dirname(file))
+         if(is.null(encoding))
+             command(file)
+         else
+             command(file, encoding = encoding)
+     }
+
 
 ### DEBUG/UNDEBUG
      .ess_find_funcs <- function(env)
