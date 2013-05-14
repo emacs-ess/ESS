@@ -13,6 +13,8 @@ is available only when @code{ess-tracebug} is active).
 @kbd{C-c ~} is bound to @code{ess-show-call-stack}.
 @item @ESS{[R]}: ESS stores function in 'ESSR' environment to
 avoid kludging users' global environment and accidental deletion.
+@item @ESS{[R]}: new variable @code{ess-swv-processing-command} to control 
+weaving and tangling. 
 @item @ESS{[julia]}: ESS stores its functions in 'ESS' module.
 @item @ESS{[julia]}: Eldoc is now supported in julia modes
 @item @ESS{[julia]}: Adjusted error reference detection and interactive help
