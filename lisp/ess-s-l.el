@@ -500,8 +500,10 @@ unless prefix argument NO-FORCE-CURRENT is non-nil."
 ;;*;; S/R  Pretty-Editing
 
 (defun ess-fix-comments (&optional dont-query verbose)
-  "Fix ess-mode buffer so that single-line comments start with at least `##'."
+  "Fix ess-mode buffer so that single-line comments start with at least '##',
+and ensure space before subsequent text."
   (interactive "P")
+  (ess-replace-regexp-dump-to-src "#\\([A-Za-z0-9]\\)" "# \\1" nil verbose)
   (ess-replace-regexp-dump-to-src "^\\([ \t]*#\\)\\([^#]\\)"
                                   "\\1#\\2" dont-query verbose))
 
@@ -638,6 +640,9 @@ and one that is well formatted in emacs ess-mode."
     (ess-rep-regexp "\\([A-Za-z0-9()]\\)}" "\\1 }" 'fix nil verbose)
     (ess-space-around "else" from verbose)
 
+    (goto-char from) ;; add a space inside "){"
+    (ess-rep-regexp "){" ") {" 'fix nil verbose)
+
     ;; add a newline and indent before a "}"
     ;; --- IFF there's NO "{" or "#" AND some NON-white text on the same line:
     ;;D (if verbose (message "\t R-fix-misc..: Hard.. '}'"))
@@ -724,7 +729,7 @@ In that case, the it is removed and replaced by
         (progn
           (delete-char (- assign-len))
           (insert ess-smart-S-assign-key))
-      (if (string= ess-smart-S-assign-key "_") 
+      (if (string= ess-smart-S-assign-key "_")
           (delete-horizontal-space))
       (insert ess-S-assign))))
 
@@ -751,9 +756,9 @@ unconditionally.
           (define-key ess-mode-map          ess-smart-S-assign-key nil); 'self-insert-command
           (define-key inferior-ess-mode-map ess-smart-S-assign-key nil))
       ;; else : "force" or current-key is "nil", i.e. default
-      (define-key ess-mode-map          ess-smart-S-assign-key 
+      (define-key ess-mode-map          ess-smart-S-assign-key
         'ess-smart-S-assign)
-      (define-key inferior-ess-mode-map ess-smart-S-assign-key 
+      (define-key inferior-ess-mode-map ess-smart-S-assign-key
         'ess-smart-S-assign))))
 (defalias 'ess-toggle-underscore 'ess-toggle-S-assign)
 ;; NOTA BENE: "_" is smart *by default* :

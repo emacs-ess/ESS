@@ -13,24 +13,40 @@ is available only when @code{ess-tracebug} is active).
 @kbd{C-c ~} is bound to @code{ess-show-call-stack}.
 @item @ESS{[R]}: ESS stores function in 'ESSR' environment to
 avoid kludging users' global environment and accidental deletion.
-@item @ESS{[R]}: new variable @code{ess-swv-processing-command} to control 
-weaving and tangling. 
+@item @ESS{[R]}: new variable @code{ess-swv-processing-command} to control
+weaving and tangling.
+@item @ESS{[R]}: @code{ess-default-style} has been changed
+ (from @code{DEFAULT}) to @code{RRR}.  Use something like
+ @code{(setq ess-default-style 'DEFAULT)} or
+ @code{(setq ess-indent-level 2)} in your @file{~/.emacs} equivalent
+ @emph{before} loading ESS, if you do not like this new ``incompatible''
+ default style.
 @item @ESS{[julia]}: ESS stores its functions in 'ESS' module.
 @item @ESS{[julia]}: Eldoc is now supported in julia modes
 @item @ESS{[julia]}: Adjusted error reference detection and interactive help
 to julia internal changes
-@item @ESS{[R]}: @code{ess-use-tracebug} is t by default.
+@item @ESS{[R]}: @code{ess-use-tracebug}'s default has been changed to
+ @code{t}. Set it to nil if you want to keep the previous behavior.
 @item @ESS{[tracebug]}: Electric debug keys have been removed [breaking change]
 The functionality was replaced with @code{ess-debug-minor-mode} and
 @code{ess-debug-minor-mode-map}.
-@item @ESS{[tracebug]}: @code{ess-tracebug-map} is an alias to @code{ess-dev-map} @kbd{C-c C-t}.
-@item @ESS{[tracebug]}: @code{ess-bp-toggle-state} (@kbd{C-c C-t o}) can be now used during
-the debug session to toggle breakpoints on the fly (suggestion by Ross
-Boylan).
+@item @ESS{[tracebug]}: @code{ess-tracebug-map} is an alias to
+ @code{ess-dev-map} @kbd{C-c C-t}.
+@item @ESS{[tracebug]}: @code{ess-bp-toggle-state} (@kbd{C-c C-t o})
+ can now be used during the debug session to toggle breakpoints on the fly
+ (suggestion by Ross Boylan).
 @item @ESS{[tracebug]}: @code{ess-debug-flag-for-debugging} and
 @code{ess-debug-unflag-for-debugging} work correctly from the debugging
-contexts. These commands also recognize non-exported functions for the
-packages listed in @code{ess-developer-packages} (@kbd{C-c C-t C-a}).
+ contexts. These commands also recognize non-exported functions for the
+ packages listed in @code{ess-developer-packages} (@kbd{C-c C-t C-a}).
+
+@item @ESS{[R]}: Eldoc (activated by @code{ess-use-eldoc}) has
+ become more sophisticated, and hence also more intruding in the interface
+ between the Statistics softare, e.g., @R{}, and the user.
+
+ Note that you can turn off ElDoc, by placing @code{(setq ess-use-eldoc nil)}
+ in your @file{~/.emacs} file, prior to loading ESS,
+
 @item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
 @item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} now defaults to @code{t}
 since @code{sas-indent-line} is still broken, i.e. @kbd{TAB} is now
