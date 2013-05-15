@@ -15,12 +15,12 @@ is available only when @code{ess-tracebug} is active).
 avoid kludging users' global environment and accidental deletion.
 @item @ESS{[R]}: new variable @code{ess-swv-processing-command} to control
 weaving and tangling.
-@item @ESS{[R]}: The global indentation variables (that form the @code{DEFAULT} style) have 
-been changed to coincide to @code{RRR} style.  Use something like
- @code{(setq ess-default-style 'GNU)} or @code{(setq
- ess-indent-level 2)} in your @file{~/.emacs} equivalent @emph{before}
- loading ESS, if you do not like this new ``incompatible'' default
- style.
+@item @ESS{[R]}: @code{ess-default-style} has been changed
+ (from @code{DEFAULT}) to @code{RRR}.  Use something like
+ @code{(setq ess-default-style 'DEFAULT)} or
+ @code{(setq ess-indent-level 2)} in your @file{~/.emacs} equivalent
+ @emph{before} loading ESS, if you do not like this new ``incompatible''
+ default style.
 @item @ESS{[julia]}: ESS stores its functions in 'ESS' module.
 @item @ESS{[julia]}: Eldoc is now supported in julia modes
 @item @ESS{[julia]}: Adjusted error reference detection and interactive help
