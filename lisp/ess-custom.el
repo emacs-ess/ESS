@@ -636,7 +636,7 @@ regardless of where in the line point is when the TAB command is used."
 nil means to use R/S indentation.")
 (make-variable-buffer-local 'ess-indent-line-function)
 
-(defvar ess-indent-level 2
+(defvar ess-indent-level 4
   "Indentation of S statements with respect to containing block.")
 
 (defvar ess-brace-imaginary-offset 0
@@ -646,19 +646,19 @@ nil means to use R/S indentation.")
   "Extra indentation for open braces.
 Compares with other text in same context.")
 
-(defvar ess-continued-statement-offset 2
+(defvar ess-continued-statement-offset 4
   "Extra indent for lines not starting new statements.")
 
 (defvar ess-continued-brace-offset 0
   "Extra indent for substatements that start with open-braces.
 This is in addition to ess-continued-statement-offset.")
 
-(defvar ess-arg-function-offset 2
+(defvar ess-arg-function-offset 4
   "Extra indent for internal substatements of function `foo' that called
 in `arg=foo(...)' form.
 If not number, the statements are indented at open-parenthesis following foo.")
 
-(defvar ess-arg-function-offset-new-line '(2)
+(defvar ess-arg-function-offset-new-line '(4)
   "Extra indent for function arguments when ( is folowed by new line.
 
 If nil, the statements are indented at open-parenthesis following foo:
@@ -819,7 +819,7 @@ these values, use the customize interface."
          (set symbol value)
          (ess-add-style 'OWN value)))
 
-(defcustom ess-default-style 'RRR
+(defcustom ess-default-style 'DEFAULT
   "The default value of `ess-style'.
 See the variable `ess-style-alist' for how these groups (RRR, DEFAULT,
 OWN, GNU, BSD, ...) map onto different settings for variables.
