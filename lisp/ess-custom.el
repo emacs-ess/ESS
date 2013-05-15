@@ -819,10 +819,11 @@ these values, use the customize interface."
          (set symbol value)
          (ess-add-style 'OWN value)))
 
-(defcustom ess-default-style 'DEFAULT
+(defcustom ess-default-style 'RRR
   "The default value of `ess-style'.
-See the variable `ess-style-alist' for how these groups (DEFAULT,
-OWN, GNU, BSD, ...) map onto different settings for variables."
+See the variable `ess-style-alist' for how these groups (RRR, DEFAULT,
+OWN, GNU, BSD, ...) map onto different settings for variables.
+Since ESS 13.05, the default is  RRR  rather than DEFAULT."
   :type '(choice (const DEFAULT)
                  (const OWN)
                  (const GNU)

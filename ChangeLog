@@ -1,3 +1,7 @@
+2013-05-14  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 13.05 released.
+
 2013-01-14  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* Makeconf (INFODIR): on Mac OS X, this

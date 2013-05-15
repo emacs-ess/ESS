@@ -55,7 +55,7 @@
                                sep = '', collapse = ' '))
              allargs <-
                  if(special) fmls_names
-                 else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = T),
+                 else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = TRUE),
                                error=function(e) NULL)
              allargs <- sprintf("'(\"%s\")",
                                 paste(allargs, collapse = '\" "'))
@@ -79,6 +79,19 @@
          utils:::.completeToken()
          c(get('token', envir=utils:::.CompletionEnv),
            utils:::.retrieveCompletions())
+     }
+
+### WEAVING
+     .ess_weave <- function(command, file, encoding = NULL){
+         if(grepl('knit|purl', deparse(substitute(command))))
+             require(knitr)
+         od <- getwd()
+         on.exit(setwd(od))
+         setwd(dirname(file))
+         if(is.null(encoding))
+             command(file)
+         else
+             command(file, encoding = encoding)
      }
 
 
@@ -108,7 +121,7 @@
              coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
              env <- parent.env(env)
          }
-         grep('^\\.ess', unlist(coll, use.names = F),
+         grep('^\\.ess', unlist(coll, use.names = FALSE),
               invert = TRUE, value = TRUE)
      }
 
@@ -146,8 +159,9 @@
          ## traced function don't appear here. Not realy needed and would affect performance.
          all <- .ess_all_functions(packages = packages, env = env)
          which_deb <- lapply(all, function(nm){
-             ## if isdebugged is called with string it doess find 
-             tryCatch(isdebugged(get(nm, envir = env)), error = function(e) FALSE)
+             ## if isdebugged is called with string it doess find
+	     tryCatch(isdebugged(get(nm, envir = env)),
+		      error = function(e) FALSE)
              ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
          })
          debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]
@@ -254,4 +268,4 @@
      }
  })}
 
-## length(ls(.ESSR_Env, all = TRUE)) # VS[01-05-2013]: 13 functs 
+## length(ls(.ESSR_Env, all = TRUE)) # VS[01-05-2013]: 13 functs

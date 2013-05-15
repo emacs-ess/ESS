@@ -108,7 +108,7 @@
             ))
 
     (save-excursion
-      (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
+      ;; (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
       (basic-save-buffer); do not Sweave/Stangle old version of file !
       (let* ((sprocess (get-ess-process ess-current-process-name))
              (sbuffer (process-buffer sprocess))
@@ -120,14 +120,27 @@
                                (if (string-match "^utf-8" buf-coding)
                                    ", encoding = \"utf-8\"")))
              (Sw-cmd
-              (format
-               "local({..od <- getwd(); setwd(%S); %s(%s); setwd(..od) })"
-               Rnw-dir cmd cmd-args))
-             )
+              (format ess-swv-processing-command cmd cmd-args)))
         (message "%s()ing %S" cmd rnw-file)
         (ess-execute Sw-cmd 'buffer nil nil)
         (switch-to-buffer rnw-buf)
         (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+(defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
+  "Command used by `ess-swv-run-in-R'.
+
+First %s is literally replaced by the processing command (for
+example: Sweave) second %s is replaced with a string containing a
+processed file and possibly additional argument encoding (example:
+\"path/to/foo.Rnw\", encoding='utf-8')
+
+.ess_weave changes the working directory to that of the supplied
+file.
+
+If you want to simply call knitr or Sweave in global environment
+set this command to \"%s(%s)\"."
+  :group 'ess-R
+  :type 'string)
 
 (defcustom ess-swv-processor 'sweave
   "Processor to use for weaving and tangling.
@@ -143,7 +156,7 @@ Depending on the `ess-swv-processor' used."
   (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
                            "Stangle")
                           ((eq ess-swv-processor 'knitr)
-                           "require(knitr); purl")
+                           "purl")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
 (defun ess-swv-weave (choose)
@@ -159,7 +172,7 @@ If CHOOSE is non-nil, offer a menu of available weavers.
     (ess-swv-run-in-R (cond ((equal processor "sweave")
                              "Sweave")
                             ((equal processor "knitr")
-                             "require(knitr); knit")
+                             "knit")
                             (t (error "Not a valid processor %s" ess-swv-processor))))))
 
 (defun ess-swv-sweave ()
@@ -175,12 +188,12 @@ If CHOOSE is non-nil, offer a menu of available weavers.
 (defun ess-swv-knit ()
   "Run knit on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "require(knitr) ; knit"))
+  (ess-swv-run-in-R "knit"))
 
 (defun ess-swv-purl ()
   "Run purl on the current .Rnw file."
   (interactive)
-  (ess-swv-run-in-R "require(knitr) ; purl"))
+  (ess-swv-run-in-R "purl"))
 
 (defun ess-swv-latex ()
   "Run LaTeX on the product of Sweave()ing the current file."
