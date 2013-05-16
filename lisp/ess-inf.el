@@ -1010,7 +1010,8 @@ as the current buffer."
               (raise-frame frame))
         ;; 3. else BUF not visible in any frame, so show it (but do
         ;; not select it) in another window in current frame.
-        (display-buffer buf)))
+        (switch-to-buffer buf)))
+        ;(display-buffer buf)))
     ;; At this stage, the buffer should now be visible on screen,
     ;; although it won't have been made current.
     (when visit
