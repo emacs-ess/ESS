@@ -391,7 +391,6 @@ end keywords as associated values.")
     (indent-line-to
      (or (and (ess-inside-string-p (point-at-bol)) 0)
 	 (save-excursion (ignore-errors (gretl-form-indent)))
-         (save-excursion (ignore-errors (gretl-paren-indent)))
          (save-excursion
            (let ((endtok (progn
                            (beginning-of-line)
@@ -552,6 +551,7 @@ been created using the variable `ess-r-versions'."
   :group 'ess-gretl
   :type 'string)
 
+(defvar gretl-basic-offset 4)
 
 ;;;###autoload
 (defun gretl-mode  (&optional proc-name)
@@ -570,7 +570,6 @@ been created using the variable `ess-r-versions'."
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   ;; (local-set-key  "\t" 'gretl-indent-line) ;; temp workaround
   ;; (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
-  (set (make-local-variable 'gretl-basic-offset) 4)
  ;; (ess-imenu-gretl)
   (run-hooks 'gretl-mode-hook))
 
@@ -596,7 +595,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
       "\n(Gretl): ess-dialect=%s, buf=%s"
-      ess-dialect (current-buffer) start-args current-prefix-arg))
+      ess-dialect (current-buffer)))
     (let* ((r-start-args
 	    (concat inferior-gretl-args " " ; add space just in case
 		    (if start-args
