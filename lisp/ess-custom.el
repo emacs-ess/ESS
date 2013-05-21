@@ -133,7 +133,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "13.05" ;; updated by 'make'
+(defvar ess-version "13.05-1" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -356,7 +356,6 @@ for all projects."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)
                  file))
-(make-variable-buffer-local 'ess-history-file)
 
 (defcustom ess-plain-first-buffername t
   "No fancy process buffname for the first process of each type (novice mode)."

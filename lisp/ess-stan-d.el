@@ -111,33 +111,30 @@
   '("for")
   "Keywords in Stan")
 
-(defvar ess-stan-font-lock-keywords
- (list
-     (cons "#.*\n"                        font-lock-comment-face)  
-     ;; Stan model blocks. Look for start of line before and open brace after.
-     (cons (concat "^[[:space:]]*\\(" (regexp-opt stan-blocks 'words) "\\)\\s-*{") 1 font-lock-keyword-face)
-     ;; Stan types. Look for it to come after the start of a line or semicolon.
-     (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words)) 2 font-lock-constant-face)
-     ;; Stan type bounds. Look for them after either '<' or ','
-     (cons (concat "\\(<\\|,\\)\\s-*" (regexp-opt stan-type-bounds 'words)) 2 font-lock-constant-face)
-     ;; Stan variables. Look for it to come after the types, anything, then '>'
-     (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words) "\\s-*\\(\\w*\\)") 3 font-lock-variable-name-face)
-     (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words) "<.*>\\s-*\\(\\w*\\)") 3 font-lock-variable-name-face)
-     ;; Stan functions.
-     (cons (regexp-opt stan-functions 'words) . font-lock-function-name-face)
-     ;; Stan distributions. Look for distribution after '~'
-     (cons (concat "~[[:space:]]*" (regexp-opt stan-distributions 'words)) 1 font-lock-function-constant-face)
-     ;; Stan distributions. Look for distribution_log after '<-'
-     (cons (concat "<-\\s-*\\(\\<" (regexp-opt stan-distributions) "_log\\>\\)") 1 font-lock-constant-face)
-     ;; Stan distributions. Look for cdfs after '<-'
-     (cons (concat "<-[[:space:]]*" (regexp-opt stan-cdfs 'words)) 1 font-lock-constant-face)
-     ;; Stan keywords.
-     (cons (regexp-opt stan-keywords 'words) . font-lock-keyword-face)
-     )
-  "Stan-mode font lock defaults"
-  )
-
-
+;; (defvar ess-stan-font-lock-keywords
+;;  (list
+;;      (cons "#.*\n"                        font-lock-comment-face)  
+;;      ;; Stan model blocks. Look for start of line before and open brace after.
+;;      (cons (concat "^[[:space:]]*\\(" (regexp-opt stan-blocks 'words) "\\)\\s-*{") 1 font-lock-keyword-face)
+;;      ;; Stan types. Look for it to come after the start of a line or semicolon.
+;;      (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words)) 2 font-lock-constant-face)
+;;      ;; Stan type bounds. Look for them after either '<' or ','
+;;      (cons (concat "\\(<\\|,\\)\\s-*" (regexp-opt stan-type-bounds 'words)) 2 font-lock-constant-face)
+;;      ;; Stan variables. Look for it to come after the types, anything, then '>'
+;;      (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words) "\\s-*\\(\\w*\\)") 3 font-lock-variable-name-face)
+;;      (cons (concat "\\(^\\|;\\)\\s-*" (regexp-opt stan-types 'words) "<.*>\\s-*\\(\\w*\\)") 3 font-lock-variable-name-face)
+;;      ;; Stan functions.
+;;      (cons (regexp-opt stan-functions 'words) . font-lock-function-name-face)
+;;      ;; Stan distributions. Look for distribution after '~'
+;;      (cons (concat "~[[:space:]]*" (regexp-opt stan-distributions 'words)) 1 font-lock-function-constant-face)
+;;      ;; Stan distributions. Look for distribution_log after '<-'
+;;      (cons (concat "<-\\s-*\\(\\<" (regexp-opt stan-distributions) "_log\\>\\)") 1 font-lock-constant-face)
+;;      ;; Stan distributions. Look for cdfs after '<-'
+;;      (cons (concat "<-[[:space:]]*" (regexp-opt stan-cdfs 'words)) 1 font-lock-constant-face)
+;;      ;; Stan keywords.
+;;      (cons (regexp-opt stan-keywords 'words) . font-lock-keyword-face)
+;;      )
+;;   "Stan-mode font lock defaults")
 
 (defun ess-stan-mode ()
   "ESS[STAN]: Major mode for STAN."
@@ -147,7 +144,7 @@
   (setq major-mode 'ess-stan-mode)
   (setq mode-name "ESS[STAN]")
   (use-local-map ess-bugs-mode-map)
-  (setq font-lock-auto-fontify t)
+  ;; (setq font-lock-auto-fontify t)
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ess-stan-font-lock-keywords nil t))
   (setq ess-language "S") ; mimic S for ess-smart-underscore
