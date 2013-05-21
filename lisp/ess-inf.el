@@ -322,7 +322,8 @@ there is no process NAME)."
         ;; Set up history file
         (if ess-history-file
             (if (eq t ess-history-file)
-                (setq ess-history-file (concat "." ess-dialect "history"))
+                (set (make-variable-buffer-local 'ess-history-file)
+                     (concat "." ess-dialect "history"))
               ;; otherwise must be a string "..."
               (unless (stringp ess-history-file)
                 (error "`ess-history-file' must be nil, t, or a string"))))
