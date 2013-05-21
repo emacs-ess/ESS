@@ -1466,7 +1466,8 @@ If TRUE (or true) is found return non-nil otherwise nil.
 Example: (ess-boolean-command \"2>1\n\")"
   (with-current-buffer (ess-command com buf)
     (goto-char (point-min))
-    (re-search-forward "true" nil t)))
+    (let ((case-fold-search t))
+      (re-search-forward "true" nil t))))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
   "Replace all matches in STR for REGEXP with NEWTEXT string.
