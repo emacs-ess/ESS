@@ -197,7 +197,7 @@ C-n to send lines over.  With SAS, use C-c i
 
     ;; todo: this is ugly, add to customise alist
     (if (equal ess-dialect "R")
-        (ess-inject-code-from-file (format "%sESSR.R" ess-etc-directory)))
+        (ess--inject-code-from-file (format "%sESSR.R" ess-etc-directory)))
     ;; (ess-load-extras t) ;; not working
 
 
