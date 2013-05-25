@@ -206,25 +206,24 @@ FUNC must be non-nil if the region contains a function definition. "
 
 (defvar ess-tracebug-help nil
   "
-Default prefix: \\[ess-dev-map]
-Default bindings in `ess-tracebug-map':
+ess-dev-map prefix: \\[ess-dev-map]
 
-* Breakpoints:
+* Breakpoints (`ess-dev-map'):
 
  b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
  B   . Set conditional BP               . `ess-bp-set-conditional'
  k   . Kill BP                          . `ess-bp-kil'
  K   . Kill all BPs                     . `ess-bp-kill-all'
- t   . Toggle BP state                  . `ess-bp-toggle-state'
+ o   . Toggle BP state                  . `ess-bp-toggle-state'
  l   . Set logger BP                    . `ess-bp-set-logger'
  n   . Goto next BP                     . `ess-bp-next'
  p   . Goto previous BP                 . `ess-bp-previous'
 
   (C- prefixed equivalents are also defined)
 
-* Debugging:
-
- `   . Show R Traceback                     . `ess-show-R-traceback'
+* Debugging (`ess-dev-map'):
+ `   . Show traceback                       . `ess-show-traceback' (also on C-c `)
+ ~   . Show callstack                       . `ess-show-call-stack' (also on C-c ~)
  e   . Toggle error action (repeat to cycle). `ess-debug-toggle-error-action'
  d   . Flag for debugging                   . `ess-debug-flag-for-debugging'
  u   . Unflag for debugging                 . `ess-debug-unflag-for-debugging'
@@ -232,7 +231,7 @@ Default bindings in `ess-tracebug-map':
 
   (C- prefixed equivalents are also defined)
 
-* Interactive Debugging:
+* Interactive Debugging (`ess-debug-minor-mode-map'):
 
  M-C   . Continue                  . `ess-debug-command-continue'
  M-C-C . Continue multi            . `ess-debug-command-continue-multi'
@@ -240,14 +239,6 @@ Default bindings in `ess-tracebug-map':
  M-C-N . Next step multi           . `ess-debug-command-next-multi'
  M-U   . Up frame                  . `ess-debug-command-up'
  M-Q   . Quit debugging            . `ess-debug-command-quit'
- 1..9  . Enter recover frame       . `ess-debug-command-digit'
- 0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
-
- Note: These commands are electric and are also available in C-c map.
-
-* Misc:
-
- ?   . Show this help           . `ess-tracebug-show-help'
 
 * Navigation to errors (general emacs functionality):
 
