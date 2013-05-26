@@ -1232,7 +1232,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
 (define-minor-mode ess-debug-minor-mode
   "Minor mode activated when ESS process is in debugging state."
-  :lighter nil:keymap ess-debug-minor-mode-map)
+  :lighter nil
+  :keymap ess-debug-minor-mode-map)
 
 (defun ess--dbg-goto-last-ref-and-mark (dbuff &optional other-window)
   "Open the most recent debug reference, and set all the
@@ -1472,7 +1473,7 @@ This commands are triggered by `ess-electric-debug' .
                   "(\\[ess-debug-command-quit])quit")
                 " "))))
 
-;; not used anywhere remove in ESS 13.09
+;; not used anywhere; remove in ESS 13.09
 (defun ess-electric-debug (&optional wait)
   "Call commands defined in `ess-electric-debug-map'.
 Single-key input commands are those that once invoked do not

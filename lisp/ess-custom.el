@@ -230,8 +230,10 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
     ("tail(%s, n = 40)")
     ("summary(%s)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
-%s is substituted with the name at point. The value of the
- aliment is not used as yet and has no effect."
+%s is substituted with the name at point.
+
+The value of each element is nil and is not used in current
+implementation."
   :group 'R
   :type 'alist)
 

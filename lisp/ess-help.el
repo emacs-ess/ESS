@@ -961,7 +961,7 @@ option for other dialects).
       ;; todo: put digits into the map
       (let* ((inhibit-quit t) ;; C-g removes the buffer
              (buf (ess--execute-electric-command
-                   map (format "Press %c to cycle" (event-basic-type last-command-event))
+                   map (format "Press %s to cycle" (single-key-description last-command-event))
                    nil nil objname))
              ;; read full command
              (keys (read-key-sequence-vector ""))
