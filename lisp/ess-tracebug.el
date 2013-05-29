@@ -1093,6 +1093,14 @@ Kill the *ess.dbg.[R_name]* buffer."
       (comint-output-filter proc string)
       (ess--show-process-buffer-on-error string proc))))
 
+(defcustom ess-debug-skip-first-call t
+  "If non-nil, skip first debugger call.
+
+In R first call doesn't contain source references and is skipped
+by default in the interest of proper visual debugger."
+  :group 'ess-debug
+  :type 'boolean)
+
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process
 when `ess-debug' is active. Call `inferior-ess-output-filter'.
@@ -1111,7 +1119,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (match-input (string-match ess--dbg-regexp-input string))
          (match-selection (and match-input
                                (match-string 2 string))) ;; Selection:
-         (match-skip (string-match ess--dbg-regexp-skip string))
+         (match-skip (and ess-debug-skip-first-call
+                          (string-match ess--dbg-regexp-skip string)))
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
@@ -1552,7 +1561,7 @@ Equivalent to 'n' at the R prompt."
       (error "Debugger is not active")
     (if (ess--dbg-is-recover-p)
         (ess-send-string (get-process ess-current-process-name) "0")
-      (ess-send-string (get-process ess-current-process-name) ""))))
+      (ess-send-string (get-process ess-current-process-name) "n"))))
 
 (defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
