@@ -94,7 +94,9 @@
              command(file, encoding = encoding)
      }
 
-
+### BREAKPOINTS     
+     .ESSBP. <- list()
+     
 ### DEBUG/UNDEBUG
      .ess_find_funcs <- function(env)
      {
