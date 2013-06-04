@@ -196,7 +196,7 @@ insert source references into evaluated code."
                           ((eq inject 'buffer)
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
-                          (t ess-inject-source)))
+                          (t (eq ess-inject-source t))))
          (ess--debug-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
          (vis (unless ess-load-visibly-command ; don't call ess-eval-linewise, process does the whole job
                 (if (and visibly inject-p)
