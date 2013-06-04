@@ -209,7 +209,7 @@ insert source references into evaluated code."
 
 (defun ess-tracebug-send-function (proc start end &optional visibly message)
   "Like `ess-tracebug-send-region' but with tweaks for functions."
-  (ess-tracebug-send-region proc start end visibly messes 'function))
+  (ess-tracebug-send-region proc start end visibly message 'function))
 
 (defvar ess-tracebug-help nil
   "
