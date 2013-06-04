@@ -166,7 +166,7 @@ block (used for source references insertion)"
                                filename))))
     (goto-char beg)
     (skip-chars-forward " \t\n")
-    (setq beg (point-at-bol))
+    (setq beg (point))
     (goto-char end)
     (skip-chars-backward " \t\n")
     (setq end (point))
