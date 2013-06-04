@@ -103,7 +103,7 @@ nor offer alternate buffers or editing capability."
             ;; it calls ess-command which requires two-way communication
             ;; with the S-Plus process
             )))
-    (ess-eval-linewise-ddeclient (format inferior-ess-load-command filename)))
+    (ess-eval-linewise-ddeclient (format ess-load-command filename)))
   (widen))
 
 

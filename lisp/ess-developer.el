@@ -219,7 +219,7 @@ otherwise call devSource."
       (ess-developer-devSource beg end package message))))
 
 (defun ess-developer-devSource (beg end package &optional message)
-  (let ((inferior-ess-load-command
+  (let ((ess-load-command
          (format ".essDev_source(source='%s',package='%s')" "%s" package)))
     (if message (message message))
     (ess--developer-command (ess--make-source-refd-command beg end)

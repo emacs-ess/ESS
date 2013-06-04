@@ -189,6 +189,8 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
+     (ess-load-command                  . "source(\"%s\", keep.source=TRUE)\n")
+     (ess-load-visibly-command          . "source('%s', echo=TRUE, keep.source=TRUE, max.deparse.length = 300)\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))

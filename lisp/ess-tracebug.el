@@ -96,15 +96,13 @@ The postfix keys are defined in `ess-tracebug-map':
 ;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
 
-(defcustom ess-tracebug-inject-source-p 'function
+(defcustom ess-inject-source 'function-and-buffer
   "Control the source injection into evaluated code.
 
 If t,  always inject source reference.
-If function  inject only for functions (the default).
+If function,  inject only for functions,
+If function-and-buffer, inject for functions and whole buffer (the default),
 If nil, never inject.
-
-During the source injection the value of `ess-eval-visibly-p' is
-ignored.
 
 Ess-tracebug injects the source reference by wrapping your source
 code in the statement 'eval(parse(text='%s'))'. The disadvantage
@@ -790,6 +788,13 @@ If nil, the currently debugged line is highlighted for
   :group 'ess-debug
   :type 'boolean)
 
+(defcustom ess-debug-skip-first-call t
+  "If non-nil, skip first debugger call.
+
+In R first call doesn't contain source references and is skipped
+by default."
+  :group 'ess-debug
+  :type 'boolean)
 
 (defvar ess-electric-selection-map
   (let (ess-electric-selection-map)
@@ -1093,13 +1098,6 @@ Kill the *ess.dbg.[R_name]* buffer."
       (comint-output-filter proc string)
       (ess--show-process-buffer-on-error string proc))))
 
-(defcustom ess-debug-skip-first-call t
-  "If non-nil, skip first debugger call.
-
-In R first call doesn't contain source references and is skipped
-by default in the interest of proper visual debugger."
-  :group 'ess-debug
-  :type 'boolean)
 
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process
@@ -1665,7 +1663,7 @@ ARGS are ignored to allow using this function in process hooks."
         (ess-developer-source-current-file filename)
       (if (not file)
           ;; source the buffer content, org-mode scratch for ex.
-          (let ((ess-tracebug-inject-source-p t))
+          (let ((ess-inject-source t))
             (ess-tracebug-send-region proc (point-min) (point-max) nil
                                       (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
         (when (buffer-modified-p) (save-buffer))

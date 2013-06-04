@@ -278,7 +278,7 @@
   (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
     (with-temp-file file
       (insert string))
-    (process-send-string process (format inferior-ess-load-command file))))
+    (process-send-string process (format ess-load-command file))))
 
 (defun julia-get-help-topics (&optional proc)
   (ess-get-words-from-vector "ESS.all_help_topics()\n"))
@@ -305,7 +305,7 @@
     (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
-    (inferior-ess-load-command		. "include(\"%s\")\n")
+    (ess-load-command   		. "include(\"%s\")\n")
     (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")

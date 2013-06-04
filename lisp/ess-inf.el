@@ -2039,7 +2039,7 @@ for `ess-eval-region'."
                               (tramp-file-name-localname (tramp-dissect-file-name filename))
                             filename))
                 error-occurred nomessage)
-            (ess-eval-linewise (format inferior-ess-load-command filename))
+            (ess-eval-linewise (format ess-load-command filename))
             ;; (with-current-buffer errbuffer
             ;;   (goto-char (point-max))
             ;;   (setq error-occurred (re-search-backward ess-dump-error-re nil t))
