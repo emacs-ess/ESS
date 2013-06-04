@@ -526,66 +526,66 @@ sending `inferior-ess-language-start' to S-Plus.")
 The extension, in a file name, is the part that follows the last `.'."
 
   (interactive)
-(ess-message "[ess-site:] before creating ess-versions-* ...")
-;; Create  ess-versions-created,
-;;         ess-r-versions-created,
-;; and on Windows, ess-rterm-version-paths -----------------------------------------
-(let ((R-newest-list '("R-newest"))
-      (ess-s-versions-created (if ess-microsoft-p
-                                  (nconc
-                                   (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
-                                   (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
-                                (ess-s-versions-create)))) ;; use ess-s-versions
-  (if ess-microsoft-p
-      (setq ess-rterm-version-paths ;; (ess-find-rterm))
-            (ess-flatten-list
-             (ess-uniq-list
-              (if (not ess-directory-containing-R)
-                  (if (getenv "ProgramW6432")
-                      (let ((P-1 (getenv "ProgramFiles(x86)"))
-                            (P-2 (getenv "ProgramW6432")))
+  (ess-message "[ess-site:] before creating ess-versions-* ...")
+  ;; Create  ess-versions-created,
+  ;;         ess-r-versions-created,
+  ;; and on Windows, ess-rterm-version-paths -----------------------------------------
+  (let ((R-newest-list '("R-newest"))
+        (ess-s-versions-created (if ess-microsoft-p
+                                    (nconc
+                                     (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
+                                     (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+                                  (ess-s-versions-create)))) ;; use ess-s-versions
+    (if ess-microsoft-p
+        (setq ess-rterm-version-paths ;; (ess-find-rterm))
+              (ess-flatten-list
+               (ess-uniq-list
+                (if (not ess-directory-containing-R)
+                    (if (getenv "ProgramW6432")
+                        (let ((P-1 (getenv "ProgramFiles(x86)"))
+                              (P-2 (getenv "ProgramW6432")))
+                          (nconc
+                           ;; always 32 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+                           ;; keep this both for symmetry and because it can happen:
+                           (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+
+                           ;; always 64 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                           ))
+                      (let ((PF (getenv "ProgramFiles")))
                         (nconc
-                         ;; always 32 on 64 bit OS, nil on 32 bit OS
-                         (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-                         (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-                         ;; keep this both for symmetry and because it can happen:
-                         (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
-
-                         ;; always 64 on 64 bit OS, nil on 32 bit OS
-                         (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-                         (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-                         (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                         ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                         (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
                          ))
-                    (let ((PF (getenv "ProgramFiles")))
-                      (nconc
-                       ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-                       (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                       (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                       (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
-                       ))
-                    )
-                (let ((PF ess-directory-containing-R))
-                  (nconc
-                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
-                   ))
-                )))))
-  (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
+                      )
+                  (let ((PF ess-directory-containing-R))
+                    (nconc
+                     (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                     ))
+                  )))))
+    (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
 
-  (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
-        (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
+    (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
+          (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
 
-  ;; Add the new defuns, if any, to the menu.
-  ;; Check that each variable exists, before adding.
-  ;; e.g. ess-sqpe-versions-created will not be created on Unix.
-  (setq ess-versions-created
-        (ess-flatten-list
-         (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
-                 '(R-newest-list
-                   ess-r-versions-created
-                   ess-s-versions-created)))))
-)
+    ;; Add the new defuns, if any, to the menu.
+    ;; Check that each variable exists, before adding.
+    ;; e.g. ess-sqpe-versions-created will not be created on Unix.
+    (setq ess-versions-created
+          (ess-flatten-list
+           (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
+                   '(R-newest-list
+                     ess-r-versions-created
+                     ess-s-versions-created)))))
+  )
 
 (ess-message "[ess-site:] before (ess-r-s-versions-creation) ...")
 (ess-r-s-versions-creation)
