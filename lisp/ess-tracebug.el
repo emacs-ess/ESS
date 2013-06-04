@@ -114,8 +114,9 @@ position. Use \\[next-error] or M-g n to navigate quickly to the
 error.
 "
   :group 'ess-tracebug
-  :type '(choice (const nil) (const function) (const t)))
+  :type '(choice (const nil) (const function) (const function-and-buffer) (const t)))
 
+(define-obsolete-variable-alias 'ess-tracebug-inject-source-p 'ess-inject-source "ESS v13.09")
 
 (defcustom ess-tracebug-enter-hook nil
   "List of functions to call on entry to ess-tracebug mode.
@@ -150,7 +151,7 @@ referenced buffer.")
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
 
-(defun ess--make-source-refd-command (beg end)
+(defun ess--make-source-refd-command (beg end visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
   (let ((filename buffer-file-name))
@@ -163,15 +164,12 @@ block (used for source references insertion)"
       (when (and (boundp 'org-src-mode) org-src-mode)
         (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
                                filename))))
-    ;; next drops are not necesarry for function but will be for regions
     (goto-char beg)
-    (when (looking-at "\\s +") ;drop trailing lines
-      (re-search-forward "[^ \t\n]" nil t)
-      (setq beg (point-at-bol)))
+    (skip-chars-forward " \t\n")
+    (setq beg (point-at-bol))
     (goto-char end)
-    (when (looking-back "\\s +") ;drop the end empty lines
-      (re-search-backward "[^ \t\n]" nil t)
-      (setq end (point-at-eol)))
+    (skip-chars-backward " \t\n")
+    (setq end (point))
     (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
            (tmpfile (concat dir (file-name-nondirectory filename) "@"
                             (number-to-string ess--tracebug-eval-index))))
@@ -184,23 +182,34 @@ block (used for source references insertion)"
                (list filename ess--tracebug-eval-index beg) ess--srcrefs)
       (with-silent-modifications
         (put-text-property beg end 'tb-index ess--tracebug-eval-index))
-      (format inferior-ess-load-command tmpfile))))
+      (if (and visibly ess-load-visibly-command)
+          (format ess-load-visibly-command tmpfile)
+        (format ess-load-command tmpfile)))))
 
 
-(defun ess-tracebug-send-region (proc start end &optional visibly message func)
+(defun ess-tracebug-send-region (proc start end &optional visibly message inject)
   "Send region to process. Source-ref region and wrap in eval(parse(...)) if needed.
-FUNC must be non-nil if the region contains a function definition. "
-  (let* ((inject-p  (or (and ess-tracebug-inject-source-p func)
-                        (eq ess-tracebug-inject-source-p t)))
+If INJECT is non-nil `ess--make-source-refd-command' is called to
+insert source references into evaluated code."
+  (let* ((inject-p  (cond ((eq inject 'function)
+                           ess-inject-source)
+                          ((eq inject 'buffer)
+                           (or (eq ess-inject-source t)
+                               (eq ess-inject-source 'function-and-buffer)))
+                          (t ess-inject-source)))
          (ess--debug-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
-         (visibly (if (and visibly inject-p)
-                      (buffer-substring start end)
-                    visibly))
+         (vis (unless ess-load-visibly-command ; don't call ess-eval-linewise, process does the whole job
+                (if (and visibly inject-p)
+                    (buffer-substring start end) ; used for 'no-wait value of ess-eval-visibly
+                  vis)))
          (string (if inject-p
-                     (ess--make-source-refd-command start end)
+                     (ess--make-source-refd-command start end visibly)
                    (buffer-substring start end))))
-    (ess-send-string proc string visibly message)))
+    (ess-send-string proc string vis message)))
 
+(defun ess-tracebug-send-function (proc start end &optional visibly message)
+  "Like `ess-tracebug-send-region' but with tweaks for functions."
+  (ess-tracebug-send-region proc start end visibly messes 'function))
 
 (defvar ess-tracebug-help nil
   "

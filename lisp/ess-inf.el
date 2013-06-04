@@ -1679,10 +1679,14 @@ TEXT.
                       (delete-overlay ess-current-region-overlay)))))
 
 
-(defun ess-eval-region (start end toggle &optional message)
+(defun ess-eval-region (start end toggle &optional message inject)
   "Send the current region to the inferior ESS process.
 With prefix argument toggle the meaning of `ess-eval-visibly';
-this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
+this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'.
+
+If INJECT is non-nil the region will be pre-processed in a
+dialect specific way to include source references"
+  
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
@@ -1710,7 +1714,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
          (tb-p  (process-get proc 'tracebug)))
     (cond
      (dev-p     (ess-developer-send-region proc start end visibly message tb-p))
-     (tb-p      (ess-tracebug-send-region proc start end visibly message))
+     (tb-p      (ess-tracebug-send-region proc start end visibly message inject))
      (t         (ess-send-region proc start end visibly message))
      ))
 
@@ -1723,7 +1727,7 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'."
   "Send the current buffer to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-eval-region (point-min) (point-max) vis "Eval buffer"))
+  (ess-eval-region (point-min) (point-max) vis "Eval buffer" 'buffer))
 
 (defun ess-eval-buffer-from-beg-to-here (vis)
   (interactive "P")
@@ -1769,7 +1773,7 @@ nil."
             (ess-blink-region beg end)
             (cond
              (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
-             (tb-p      (ess-tracebug-send-region    proc beg end      visibly mess 'func))
+             (tb-p      (ess-tracebug-send-function  proc beg end      visibly mess))
              (t         (ess-send-region             proc beg end      visibly mess)))
             beg-end)
         nil))))
