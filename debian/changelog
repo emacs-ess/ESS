@@ -1,3 +1,24 @@
+ess (13.05-3) unstable; urgency=low
+
+  * debian/emacsen-install (PACKAGE): Do not attempt installation for
+    either emacs22 or xemacs21 which are no longer supported upstream
+					(Closes: #708930, #710438)
+  
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 01 Jun 2013 13:35:06 -0500
+
+ess (13.05-2) unstable; urgency=low
+
+  * lisp/ess-stan-d.el: Comment-out the file which should not have been in
+    the release.
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 17 May 2013 13:54:28 -0500
+
+ess (13.05-1) unstable; urgency=low
+
+  * New upstream version released today 
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 15 May 2013 06:31:40 -0500
+
 ess (12.09-2-1) unstable; urgency=low
 
   * New upstream version released today

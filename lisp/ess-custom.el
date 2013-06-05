@@ -230,8 +230,10 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
     ("tail(%s, n = 40)")
     ("summary(%s)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
-%s is substituted with the name at point. The value of the
- aliment is not used as yet and has no effect."
+%s is substituted with the name at point.
+
+The value of each element is nil and is not used in current
+implementation."
   :group 'R
   :type 'alist)
 
@@ -1806,12 +1808,18 @@ status.
 
 ;;*;; Inferior ESS commands
 
-(defcustom inferior-ess-load-command "source(\"%s\")\n"
+(defcustom ess-load-command "source(\"%s\")\n"
   "Format-string for building the ess command to load a file.
 
 This format string should use %s to substitute a file name and should
 result in an ESS expression that will command the inferior ESS to load
 that file."
+  :group 'ess-command
+  :type 'string)
+(define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
+
+(defcustom ess-load-visibly-command nil 
+  "Format-string for building the ess command to load a file with echo."
   :group 'ess-command
   :type 'string)
 

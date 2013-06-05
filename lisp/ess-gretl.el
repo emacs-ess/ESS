@@ -445,14 +445,14 @@ end keywords as associated values.")
 
 ;; (defun gretl-send-string-function (process string visibly)
 ;;   (let ((gretl-process (get-process "gretlcli")))
-;;     (process-send-string process (format inferior-ess-load-command file)))
+;;     (process-send-string process (format ess-load-command file)))
 
 
 ;; (defun gretl-send-string-function (process string visibly)
 ;;   (let ((file (concat temporary-file-directory "gretl_eval_region.inp")))
 ;;     (with-temp-file file
 ;;       (insert string))
-;;     (process-send-string process (format inferior-ess-load-command file))))
+;;     (process-send-string process (format ess-load-command file))))
 
 (defun gretl--get-words-from-command (command start-reg end-reg)
   (with-current-buffer (ess-command command)
@@ -497,7 +497,7 @@ end keywords as associated values.")
     (inferior-ess-program		. "gretlcli")
     (inferior-ess-font-lock-defaults	. gretl-font-lock-defaults)
     (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
-    (inferior-ess-load-command		. "open \"%s\"\n")
+    (ess-load-command   		. "open \"%s\"\n")
     ;; (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     ;; (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     ;; (ess-error-regexp-alist		. ess-gretl-error-regexp-alist)

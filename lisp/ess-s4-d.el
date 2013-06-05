@@ -55,7 +55,7 @@
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command  . ".SmodePaths()\n")
-     (inferior-ess-load-command         . ".SmodeLoad(\"%s\")\n")
+     (ess-load-command         . ".SmodeLoad(\"%s\")\n")
      (inferior-ess-dump-command         . ".SmodeDump(\"%s\", \"%s\")\n")
 
      (inferior-ess-start-file           . nil) ;"~/.ess-S3")

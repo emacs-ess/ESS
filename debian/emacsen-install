@@ -10,6 +10,10 @@ PACKAGE=ess
 
 if [ ${FLAVOR} = emacs ]; then exit 0; fi
 
+if [ ${FLAVOR} = xemacs21 ]; then exit 0; fi
+
+if [ ${FLAVOR} = emacs22 ]; then exit 0; fi
+
 echo install/${PACKAGE}: Handling install for emacsen flavor ${FLAVOR}
 
 FLAVORTEST=`echo $FLAVOR | cut -c-6`

@@ -96,15 +96,13 @@ The postfix keys are defined in `ess-tracebug-map':
 ;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
 
-(defcustom ess-tracebug-inject-source-p 'function
+(defcustom ess-inject-source 'function-and-buffer
   "Control the source injection into evaluated code.
 
 If t,  always inject source reference.
-If function  inject only for functions (the default).
+If function,  inject only for functions,
+If function-and-buffer, inject for functions and whole buffer (the default),
 If nil, never inject.
-
-During the source injection the value of `ess-eval-visibly-p' is
-ignored.
 
 Ess-tracebug injects the source reference by wrapping your source
 code in the statement 'eval(parse(text='%s'))'. The disadvantage
@@ -116,8 +114,9 @@ position. Use \\[next-error] or M-g n to navigate quickly to the
 error.
 "
   :group 'ess-tracebug
-  :type '(choice (const nil) (const function) (const t)))
+  :type '(choice (const nil) (const function) (const function-and-buffer) (const t)))
 
+(define-obsolete-variable-alias 'ess-tracebug-inject-source-p 'ess-inject-source "ESS v13.09")
 
 (defcustom ess-tracebug-enter-hook nil
   "List of functions to call on entry to ess-tracebug mode.
@@ -144,87 +143,110 @@ this reference number. Ess-debug finds this number in the
 referenced buffer.")
 
 
-(defvar ess--tb-buffer-sym nil)
-(make-variable-buffer-local 'ess--tb-buffer-sym)
+;; (defvar ess--tb-buffer-sym nil)
+;; (make-variable-buffer-local 'ess--tb-buffer-sym)
 
 (defvar org-src-mode)
 (defvar org-edit-src-beg-marker)
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
+(defvar ess--last-source-tmp-file nil)
+(defvar ess-tracebug-original-buffer-marker nil
+  "Marker pointing to the beginning of original source code.
 
-(defun ess--make-source-refd-command (beg end)
+If non-nil, tracebug will insert the source references based on
+this location instead of the current buffer. This is useful for
+applications, like org-babel,  that call ess evaluation functions
+from temporary buffers.")
+
+
+(defun ess--make-source-refd-command (beg end visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
-  (let ((filename buffer-file-name))
+  (let ((filename buffer-file-name)
+        (orig-marker (or ess-tracebug-original-buffer-marker
+                         org-edit-src-beg-marker))
+        orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
-    ;; fixme: this is not needed I guess, hash does all the job
-    (unless ess--tb-buffer-sym
-      (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
-    (unless filename ;; org
-      (setq filename (format "[%s]" ess--tb-buffer-sym))
-      (when (and (boundp 'org-src-mode) org-src-mode)
-        (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
-                               filename))))
-    ;; next drops are not necesarry for function but will be for regions
     (goto-char beg)
-    (when (looking-at "\\s +") ;drop trailing lines
-      (re-search-forward "[^ \t\n]" nil t)
-      (setq beg (point-at-bol)))
+    (skip-chars-forward " \t\n")
+    (setq beg (point))
     (goto-char end)
-    (when (looking-back "\\s +") ;drop the end empty lines
-      (re-search-backward "[^ \t\n]" nil t)
-      (setq end (point-at-eol)))
+    (skip-chars-backward " \t\n")
+    (setq end (point)
+          orig-beg beg)
+
+    (when (and ess--last-source-tmp-file (file-exists-p ess--last-source-tmp-file))
+      (delete-file ess--last-source-tmp-file)) ;; cannot put it in ess-tracebug-send-region, process is too slow
+
+    (when (markerp orig-marker)
+      (setq filename (buffer-file-name (marker-buffer orig-marker)))
+      (setq orig-beg (+ beg (marker-position orig-marker))))
+
     (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
-           (tmpfile (concat dir (file-name-nondirectory filename) "@"
+           (tmpfile (concat dir (file-name-nondirectory (or filename "unknown")) "@"
                             (number-to-string ess--tracebug-eval-index))))
       (unless (file-exists-p dir)
         (make-directory dir))
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
-      (puthash tmpfile (list filename ess--tracebug-eval-index beg) ess--srcrefs)
-      (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
-               (list filename ess--tracebug-eval-index beg) ess--srcrefs)
-      (with-silent-modifications
-        (put-text-property beg end 'tb-index ess--tracebug-eval-index))
-      (format inferior-ess-load-command tmpfile))))
+      (setq ess--last-source-tmp-file tmpfile)
+      (if (not filename)
+          (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
+        (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+                 (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (with-silent-modifications
+          (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (if (and visibly ess-load-visibly-command)
+          (format ess-load-visibly-command tmpfile)
+        (format ess-load-command tmpfile)))))
 
 
-(defun ess-tracebug-send-region (proc start end &optional visibly message func)
+(defun ess-tracebug-send-region (proc start end &optional visibly message inject)
   "Send region to process. Source-ref region and wrap in eval(parse(...)) if needed.
-FUNC must be non-nil if the region contains a function definition. "
-  (let* ((inject-p  (or (and ess-tracebug-inject-source-p func)
-                        (eq ess-tracebug-inject-source-p t)))
+If INJECT is non-nil `ess--make-source-refd-command' is called to
+insert source references into evaluated code."
+  (let* ((inject-p  (cond ((eq inject 'function)
+                           ess-inject-source)
+                          ((eq inject 'buffer)
+                           (or (eq ess-inject-source t)
+                               (eq ess-inject-source 'function-and-buffer)))
+                          (t (eq ess-inject-source t))))
          (ess--debug-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
-         (visibly (if (and visibly inject-p)
-                      (buffer-substring start end)
-                    visibly))
+         (vis (unless ess-load-visibly-command ; don't call ess-eval-linewise, process does the whole job
+                (if (and visibly inject-p)
+                    (buffer-substring start end) ; used for 'no-wait value of ess-eval-visibly
+                  vis)))
          (string (if inject-p
-                     (ess--make-source-refd-command start end)
+                     (ess--make-source-refd-command start end visibly)
                    (buffer-substring start end))))
-    (ess-send-string proc string visibly message)))
+    (ess-send-string proc string vis message)))
 
+(defun ess-tracebug-send-function (proc start end &optional visibly message)
+  "Like `ess-tracebug-send-region' but with tweaks for functions."
+  (ess-tracebug-send-region proc start end visibly message 'function))
 
 (defvar ess-tracebug-help nil
   "
-Default prefix: \\[ess-dev-map]
-Default bindings in `ess-tracebug-map':
+ess-dev-map prefix: \\[ess-dev-map]
 
-* Breakpoints:
+* Breakpoints (`ess-dev-map'):
 
  b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
  B   . Set conditional BP               . `ess-bp-set-conditional'
  k   . Kill BP                          . `ess-bp-kil'
  K   . Kill all BPs                     . `ess-bp-kill-all'
- t   . Toggle BP state                  . `ess-bp-toggle-state'
+ o   . Toggle BP state                  . `ess-bp-toggle-state'
  l   . Set logger BP                    . `ess-bp-set-logger'
  n   . Goto next BP                     . `ess-bp-next'
  p   . Goto previous BP                 . `ess-bp-previous'
 
   (C- prefixed equivalents are also defined)
 
-* Debugging:
-
- `   . Show R Traceback                     . `ess-show-R-traceback'
+* Debugging (`ess-dev-map'):
+ `   . Show traceback                       . `ess-show-traceback' (also on C-c `)
+ ~   . Show callstack                       . `ess-show-call-stack' (also on C-c ~)
  e   . Toggle error action (repeat to cycle). `ess-debug-toggle-error-action'
  d   . Flag for debugging                   . `ess-debug-flag-for-debugging'
  u   . Unflag for debugging                 . `ess-debug-unflag-for-debugging'
@@ -232,7 +254,7 @@ Default bindings in `ess-tracebug-map':
 
   (C- prefixed equivalents are also defined)
 
-* Interactive Debugging:
+* Interactive Debugging (`ess-debug-minor-mode-map'):
 
  M-C   . Continue                  . `ess-debug-command-continue'
  M-C-C . Continue multi            . `ess-debug-command-continue-multi'
@@ -240,14 +262,6 @@ Default bindings in `ess-tracebug-map':
  M-C-N . Next step multi           . `ess-debug-command-next-multi'
  M-U   . Up frame                  . `ess-debug-command-up'
  M-Q   . Quit debugging            . `ess-debug-command-quit'
- 1..9  . Enter recover frame       . `ess-debug-command-digit'
- 0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
-
- Note: These commands are electric and are also available in C-c map.
-
-* Misc:
-
- ?   . Show this help           . `ess-tracebug-show-help'
 
 * Navigation to errors (general emacs functionality):
 
@@ -650,6 +664,7 @@ This is the value of `next-error-function' in iESS buffers."
              (line (cadr loc))
              (mkrs (ess--dbg-create-ref-marker file line col)))
         (if mkrs
+            ;; is this really needed? Shall we go directly to the location?
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
           (message "Reference to '%s' not found" file))))))
 
@@ -799,6 +814,13 @@ If nil, the currently debugged line is highlighted for
   :group 'ess-debug
   :type 'boolean)
 
+(defcustom ess-debug-skip-first-call t
+  "If non-nil, skip first debugger call.
+
+In R first call doesn't contain source references and is skipped
+by default."
+  :group 'ess-debug
+  :type 'boolean)
 
 (defvar ess-electric-selection-map
   (let (ess-electric-selection-map)
@@ -1102,6 +1124,7 @@ Kill the *ess.dbg.[R_name]* buffer."
       (comint-output-filter proc string)
       (ess--show-process-buffer-on-error string proc))))
 
+
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process
 when `ess-debug' is active. Call `inferior-ess-output-filter'.
@@ -1120,7 +1143,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (match-input (string-match ess--dbg-regexp-input string))
          (match-selection (and match-input
                                (match-string 2 string))) ;; Selection:
-         (match-skip (string-match ess--dbg-regexp-skip string))
+         (match-skip (and ess-debug-skip-first-call
+                          (string-match ess--dbg-regexp-skip string)))
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
@@ -1241,7 +1265,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
 (define-minor-mode ess-debug-minor-mode
   "Minor mode activated when ESS process is in debugging state."
-  :lighter nil:keymap ess-debug-minor-mode-map)
+  :lighter nil
+  :keymap ess-debug-minor-mode-map)
 
 (defun ess--dbg-goto-last-ref-and-mark (dbuff &optional other-window)
   "Open the most recent debug reference, and set all the
@@ -1276,7 +1301,7 @@ is non nil, attempt to open the location in a different window."
         (run-with-timer ess-debug-blink-interval nil
                         (lambda ()
                           (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
-        (message "Referenced %s not found" (car ref))))))
+        (message "Reference %s not found" (car ref))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
@@ -1291,6 +1316,9 @@ associated buffer. If FILE is nil return nil.
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
+
+;; temporary, hopefully org folks implement something similar
+(defvar org-babel-tangled-file nil)
 
 (defun ess--dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
@@ -1327,6 +1355,8 @@ TB-INDEX is not found return nil.
               (if col
                   (goto-char (+ (point-at-bol) col))
                 (back-to-indentation))
+              (when org-babel-tangled-file
+                (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
 
@@ -1337,66 +1367,52 @@ If FILENAME is not found at all, ask the user where to find it if
 `ess-tracebug-search-path'."
   (let ((dirs ess-tracebug-search-path)
         (spec-dir default-directory)
-        (is-org)
-        ;; add current dir of ess here :TODO:
-        buffsym buffer  thisdir fmts name buffername )
+        buffsym buffer thisdir fmts name buffername)
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
-    ;; 0. get the buffsym reference if discovered
-    ;; todo: this one is probably redundant, and if not it should be done with
-    ;; a ess--srcrefs hash
-    (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
-      (setq buffsym (match-string 2 filename)
-            filename (match-string 1 filename))
-      ;; (message "buf:%s---file:%s" buffsym filename)
-      (setq buffer (dolist (bf (buffer-list))
-                     (when (equal (buffer-local-value 'ess--tb-buffer-sym bf)
-                                  buffsym)
-                       (return bf)))))
-    (unless buffer
-      ;; 1. first search already open buffers for match (associated file might not even exist yet)
-      (dolist (bf (buffer-list))
-        (with-current-buffer  bf
-          (when (and buffer-file-name
-                     (or (and (file-name-absolute-p filename)
-                              (string-match (format "%s\\'" filename) buffer-file-name))
-                         (equal filename (file-name-nondirectory buffer-file-name))))
-            (setq buffer bf)
-            (return))))
-      ;; 2. The file name is absolute.  Use its explicit directory as
-      ;; the first in the search path, and strip it from FILENAME.
-      (when (and (null  buffer)
-                 (file-name-absolute-p filename))
-        (setq filename (abbreviate-file-name (expand-file-name filename))
-              dirs (cons (file-name-directory filename) dirs)
-              filename (file-name-nondirectory filename)))
-      ;; 3. Now search the path.
-      (while (and (null buffer)
-                  dirs )
-        (setq thisdir (car dirs))
-        (setq name (expand-file-name filename thisdir)
-              buffer (and (file-exists-p name)
-                          (find-file-noselect name)))
-        (setq dirs (cdr dirs)))
-      ;; 4. Ask for file if not found (tothink: maybe remove this part?)
-      (if (and (null buffer)
-               ess-debug-ask-for-file)
-          (save-excursion            ;This save-excursion is probably not right.
-            (let* ((pop-up-windows t)
-                   (name (read-file-name
-                          (format "Find next line in (default %s): "  filename)
-                          spec-dir filename t nil))
-                   (origname name))
-              (cond
-               ((not (file-exists-p name))
-                (message "Cannot find file `%s'" name)
-                (ding) (sit-for 2))
-               ((and (file-directory-p name)
-                     (not (file-exists-p
-                           (setq name (expand-file-name filename name)))))
-                (message "No `%s' in directory %s" filename origname)
-                (ding) (sit-for 2))
-               (t
-                (setq buffer (find-file-noselect name))))))))
+    ;; 1. first search already open buffers for match (associated file might not even exist yet)
+    (dolist (bf (buffer-list))
+      (with-current-buffer  bf
+        (when (and buffer-file-name
+                   (or (and (file-name-absolute-p filename)
+                            (string-match (format "%s\\'" filename) buffer-file-name))
+                       (equal filename (file-name-nondirectory buffer-file-name))))
+          (setq buffer bf)
+          (return))))
+    ;; 2. The file name is absolute.  Use its explicit directory as
+    ;; the first in the search path, and strip it from FILENAME.
+    (when (and (null  buffer)
+               (file-name-absolute-p filename))
+      (setq filename (abbreviate-file-name (expand-file-name filename))
+            dirs (cons (file-name-directory filename) dirs)
+            filename (file-name-nondirectory filename)))
+    ;; 3. Now search the path.
+    (while (and (null buffer)
+                dirs )
+      (setq thisdir (car dirs))
+      (setq name (expand-file-name filename thisdir)
+            buffer (and (file-exists-p name)
+                        (find-file-noselect name)))
+      (setq dirs (cdr dirs)))
+    ;; 4. Ask for file if not found (tothink: maybe remove this part?)
+    (if (and (null buffer)
+             ess-debug-ask-for-file)
+        (save-excursion            ;This save-excursion is probably not right.
+          (let* ((pop-up-windows t)
+                 (name (read-file-name
+                        (format "Find next line in (default %s): "  filename)
+                        spec-dir filename t nil))
+                 (origname name))
+            (cond
+             ((not (file-exists-p name))
+              (message "Cannot find file `%s'" name)
+              (ding) (sit-for 2))
+             ((and (file-directory-p name)
+                   (not (file-exists-p
+                         (setq name (expand-file-name filename name)))))
+              (message "No `%s' in directory %s" filename origname)
+              (ding) (sit-for 2))
+             (t
+              (setq buffer (find-file-noselect name)))))))
     ;; nil if not found
     buffer))
 
@@ -1481,7 +1497,7 @@ This commands are triggered by `ess-electric-debug' .
                   "(\\[ess-debug-command-quit])quit")
                 " "))))
 
-;; not used anywhere remove in ESS 13.09
+;; not used anywhere; remove in ESS 13.09
 (defun ess-electric-debug (&optional wait)
   "Call commands defined in `ess-electric-debug-map'.
 Single-key input commands are those that once invoked do not
@@ -1560,7 +1576,7 @@ Equivalent to 'n' at the R prompt."
       (error "Debugger is not active")
     (if (ess--dbg-is-recover-p)
         (ess-send-string (get-process ess-current-process-name) "0")
-      (ess-send-string (get-process ess-current-process-name) ""))))
+      (ess-send-string (get-process ess-current-process-name) "n"))))
 
 (defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
@@ -1664,7 +1680,7 @@ ARGS are ignored to allow using this function in process hooks."
         (ess-developer-source-current-file filename)
       (if (not file)
           ;; source the buffer content, org-mode scratch for ex.
-          (let ((ess-tracebug-inject-source-p t))
+          (let ((ess-inject-source t))
             (ess-tracebug-send-region proc (point-min) (point-max) nil
                                       (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
         (when (buffer-modified-p) (save-buffer))
@@ -1710,7 +1726,7 @@ ARGS are ignored to allow using this function in process hooks."
 
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
-  '((browser "browser(expr=is.null(.BaseNamespaceEnv[['.ESSBP.']][[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
+  '((browser "browser(expr=is.null(.ESSR_Env[['.ESSBP.']][[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
 Each sublist  has five elements:
@@ -2026,13 +2042,13 @@ If there is no active R session, this command triggers an error."
                                   'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
               (put-text-property beg-pos-command (cdr pos)
                                  'bp-active nil)
-              (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- TRUE\n" bp-id)))
+              (ess-command (format ".ESSR_Env[['.ESSBP.']][[%s]] <- TRUE\n" bp-id)))
           (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
           (put-text-property beg-pos-command (cdr pos)
                              'bp-active t)
           (put-text-property  (car pos) beg-pos-command
                               'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs)))
-          (ess-command (format ".BaseNamespaceEnv[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
+          (ess-command (format ".ESSR_Env[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
           ;; (insert (propertize "##"
           ;;                     'ess-bp t
           ;;                     'intangible 'ess-bp

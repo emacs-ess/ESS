@@ -143,7 +143,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     ;; "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
     ;; "ge" "le" "left" "right"
     ;;
-    "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
+    "CRANpkg" "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
     "dontshow" "donttest" "dots" "email" "emph" "enc" "env" "eqn" "figure" "file"
     "href" "if" "ifelse"
