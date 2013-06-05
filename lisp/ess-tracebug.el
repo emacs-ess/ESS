@@ -151,11 +151,21 @@ referenced buffer.")
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
 (defvar ess--last-source-tmp-file nil)
+(defvar ess-tracebug-original-buffer-marker nil
+  "Marker pointing to the beginning of original source code.
+
+If non-nil, tracebug will insert the source references based on
+this location instead of the current buffer. This is useful for
+applications, like org-babel,  that call ess evaluation functions
+from temporary buffers.")
+
 
 (defun ess--make-source-refd-command (beg end visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
   (let ((filename buffer-file-name)
+        (orig-marker (or ess-tracebug-original-buffer-marker
+                         org-edit-src-beg-marker))
         orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
     (goto-char beg)
@@ -169,9 +179,9 @@ block (used for source references insertion)"
     (when (and ess--last-source-tmp-file (file-exists-p ess--last-source-tmp-file))
       (delete-file ess--last-source-tmp-file)) ;; cannot put it in ess-tracebug-send-region, process is too slow
 
-    (when (and (boundp 'org-src-mode) org-src-mode)
-      (setq filename (buffer-file-name (marker-buffer org-edit-src-beg-marker)))
-      (setq orig-beg (marker-position org-edit-src-beg-marker)))
+    (when (markerp orig-marker)
+      (setq filename (buffer-file-name (marker-buffer orig-marker)))
+      (setq orig-beg (+ beg (marker-position orig-marker))))
 
     (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
            (tmpfile (concat dir (file-name-nondirectory (or filename "unknown")) "@"
