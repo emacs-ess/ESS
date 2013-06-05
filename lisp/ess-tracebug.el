@@ -143,45 +143,51 @@ this reference number. Ess-debug finds this number in the
 referenced buffer.")
 
 
-(defvar ess--tb-buffer-sym nil)
-(make-variable-buffer-local 'ess--tb-buffer-sym)
+;; (defvar ess--tb-buffer-sym nil)
+;; (make-variable-buffer-local 'ess--tb-buffer-sym)
 
 (defvar org-src-mode)
 (defvar org-edit-src-beg-marker)
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
+(defvar ess--last-source-tmp-file nil)
 
 (defun ess--make-source-refd-command (beg end visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
-  (let ((filename buffer-file-name))
+  (let ((filename buffer-file-name)
+        orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
-    ;; fixme: this is not needed I guess, hash does all the job
-    (unless ess--tb-buffer-sym
-      (setq ess--tb-buffer-sym (format "TB%d" ess--tracebug-eval-index)))
-    (unless filename ;; org
-      (setq filename (format "[%s]" ess--tb-buffer-sym))
-      (when (and (boundp 'org-src-mode) org-src-mode)
-        (setq filename (concat (buffer-file-name (marker-buffer org-edit-src-beg-marker))
-                               filename))))
     (goto-char beg)
     (skip-chars-forward " \t\n")
     (setq beg (point))
     (goto-char end)
     (skip-chars-backward " \t\n")
-    (setq end (point))
+    (setq end (point)
+          orig-beg beg)
+
+    (when (and ess--last-source-tmp-file (file-exists-p ess--last-source-tmp-file))
+      (delete-file ess--last-source-tmp-file)) ;; cannot put it in ess-tracebug-send-region, process is too slow
+
+    (when (and (boundp 'org-src-mode) org-src-mode)
+      (setq filename (buffer-file-name (marker-buffer org-edit-src-beg-marker)))
+      (setq orig-beg (marker-position org-edit-src-beg-marker)))
+
     (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
-           (tmpfile (concat dir (file-name-nondirectory filename) "@"
+           (tmpfile (concat dir (file-name-nondirectory (or filename "unknown")) "@"
                             (number-to-string ess--tracebug-eval-index))))
       (unless (file-exists-p dir)
         (make-directory dir))
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
-      (puthash tmpfile (list filename ess--tracebug-eval-index beg) ess--srcrefs)
-      (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
-               (list filename ess--tracebug-eval-index beg) ess--srcrefs)
-      (with-silent-modifications
-        (put-text-property beg end 'tb-index ess--tracebug-eval-index))
+      (setq ess--last-source-tmp-file tmpfile)
+      (if (not filename)
+          (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
+        (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+                 (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (with-silent-modifications
+          (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
       (if (and visibly ess-load-visibly-command)
           (format ess-load-visibly-command tmpfile)
         (format ess-load-command tmpfile)))))
@@ -1284,7 +1290,7 @@ is non nil, attempt to open the location in a different window."
         (run-with-timer ess-debug-blink-interval nil
                         (lambda ()
                           (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
-        (message "Referenced %s not found" (car ref))))))
+        (message "Reference %s not found" (car ref))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
@@ -1345,66 +1351,52 @@ If FILENAME is not found at all, ask the user where to find it if
 `ess-tracebug-search-path'."
   (let ((dirs ess-tracebug-search-path)
         (spec-dir default-directory)
-        (is-org)
-        ;; add current dir of ess here :TODO:
-        buffsym buffer  thisdir fmts name buffername )
+        buffsym buffer thisdir fmts name buffername)
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
-    ;; 0. get the buffsym reference if discovered
-    ;; todo: this one is probably redundant, and if not it should be done with
-    ;; a ess--srcrefs hash
-    (when (string-match "\\`\\(.*?\\)\\[\\(TB[0-9]+\\)\\]\\'" filename) ;;; org-mode etc
-      (setq buffsym (match-string 2 filename)
-            filename (match-string 1 filename))
-      ;; (message "buf:%s---file:%s" buffsym filename)
-      (setq buffer (dolist (bf (buffer-list))
-                     (when (equal (buffer-local-value 'ess--tb-buffer-sym bf)
-                                  buffsym)
-                       (return bf)))))
-    (unless buffer
-      ;; 1. first search already open buffers for match (associated file might not even exist yet)
-      (dolist (bf (buffer-list))
-        (with-current-buffer  bf
-          (when (and buffer-file-name
-                     (or (and (file-name-absolute-p filename)
-                              (string-match (format "%s\\'" filename) buffer-file-name))
-                         (equal filename (file-name-nondirectory buffer-file-name))))
-            (setq buffer bf)
-            (return))))
-      ;; 2. The file name is absolute.  Use its explicit directory as
-      ;; the first in the search path, and strip it from FILENAME.
-      (when (and (null  buffer)
-                 (file-name-absolute-p filename))
-        (setq filename (abbreviate-file-name (expand-file-name filename))
-              dirs (cons (file-name-directory filename) dirs)
-              filename (file-name-nondirectory filename)))
-      ;; 3. Now search the path.
-      (while (and (null buffer)
-                  dirs )
-        (setq thisdir (car dirs))
-        (setq name (expand-file-name filename thisdir)
-              buffer (and (file-exists-p name)
-                          (find-file-noselect name)))
-        (setq dirs (cdr dirs)))
-      ;; 4. Ask for file if not found (tothink: maybe remove this part?)
-      (if (and (null buffer)
-               ess-debug-ask-for-file)
-          (save-excursion            ;This save-excursion is probably not right.
-            (let* ((pop-up-windows t)
-                   (name (read-file-name
-                          (format "Find next line in (default %s): "  filename)
-                          spec-dir filename t nil))
-                   (origname name))
-              (cond
-               ((not (file-exists-p name))
-                (message "Cannot find file `%s'" name)
-                (ding) (sit-for 2))
-               ((and (file-directory-p name)
-                     (not (file-exists-p
-                           (setq name (expand-file-name filename name)))))
-                (message "No `%s' in directory %s" filename origname)
-                (ding) (sit-for 2))
-               (t
-                (setq buffer (find-file-noselect name))))))))
+    ;; 1. first search already open buffers for match (associated file might not even exist yet)
+    (dolist (bf (buffer-list))
+      (with-current-buffer  bf
+        (when (and buffer-file-name
+                   (or (and (file-name-absolute-p filename)
+                            (string-match (format "%s\\'" filename) buffer-file-name))
+                       (equal filename (file-name-nondirectory buffer-file-name))))
+          (setq buffer bf)
+          (return))))
+    ;; 2. The file name is absolute.  Use its explicit directory as
+    ;; the first in the search path, and strip it from FILENAME.
+    (when (and (null  buffer)
+               (file-name-absolute-p filename))
+      (setq filename (abbreviate-file-name (expand-file-name filename))
+            dirs (cons (file-name-directory filename) dirs)
+            filename (file-name-nondirectory filename)))
+    ;; 3. Now search the path.
+    (while (and (null buffer)
+                dirs )
+      (setq thisdir (car dirs))
+      (setq name (expand-file-name filename thisdir)
+            buffer (and (file-exists-p name)
+                        (find-file-noselect name)))
+      (setq dirs (cdr dirs)))
+    ;; 4. Ask for file if not found (tothink: maybe remove this part?)
+    (if (and (null buffer)
+             ess-debug-ask-for-file)
+        (save-excursion            ;This save-excursion is probably not right.
+          (let* ((pop-up-windows t)
+                 (name (read-file-name
+                        (format "Find next line in (default %s): "  filename)
+                        spec-dir filename t nil))
+                 (origname name))
+            (cond
+             ((not (file-exists-p name))
+              (message "Cannot find file `%s'" name)
+              (ding) (sit-for 2))
+             ((and (file-directory-p name)
+                   (not (file-exists-p
+                         (setq name (expand-file-name filename name)))))
+              (message "No `%s' in directory %s" filename origname)
+              (ding) (sit-for 2))
+             (t
+              (setq buffer (find-file-noselect name)))))))
     ;; nil if not found
     buffer))
 
