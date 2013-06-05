@@ -333,7 +333,7 @@ there is no process NAME)."
                 (expand-file-name ess-history-file
                                   (or ess-history-directory ess-directory)))
           (comint-read-input-ring))
-        
+
         ;; create and run process.
         (ess-write-to-dribble-buffer
          (format "(ess-multi 1):  start-args=%s \n"
@@ -1683,14 +1683,16 @@ this does not apply when using the S-plus GUI, see `ess-eval-region-ddeclient'.
 
 If INJECT is non-nil the region will be pre-processed in a
 dialect specific way to include source references"
-  
+
   (interactive "r\nP")
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
   (ess-force-buffer-current "Process to use: ")
+
   (unless ess-local-customize-alist
     ;; external applications might call ess-eval-* functions; make it easier for them
-    (ess-setq-vars-local (ess-get-process-variable 'ess-local-customize-alist)))
+    (ess-setq-vars-local (symbol-value (ess-get-process-variable 'ess-local-customize-alist))))
+
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
