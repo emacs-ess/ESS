@@ -38,12 +38,9 @@
 (defun ess-eval-region-ddeclient (start end even-empty)
   "Loop through lines in region and send them to ESS via ddeclient."
   (setq ;; set the following variables for the current ddeESS process.
-   inferior-ess-ddeclient (ess-get-process-variable
-                           ess-current-process-name 'inferior-ess-ddeclient)
-   inferior-ess-client-name (ess-get-process-variable
-                             ess-current-process-name 'inferior-ess-client-name)
-   inferior-ess-client-command (ess-get-process-variable
-                                ess-current-process-name 'inferior-ess-client-command))
+   inferior-ess-ddeclient (ess-get-process-variable 'inferior-ess-ddeclient)
+   inferior-ess-client-name (ess-get-process-variable 'inferior-ess-client-name)
+   inferior-ess-client-command (ess-get-process-variable 'inferior-ess-client-command))
   (narrow-to-region start end)
   (goto-char (point-min))
   (let ((beg))

@@ -701,15 +701,13 @@ Returns the name of the process, or nil if the current buffer has none."
   ;;     (setq ess-current-process-name ess-local-process-name))
   ess-local-process-name)
 
-(defun ess-get-process-variable (name var)
+(defun ess-get-process-variable (var)
   "Return the variable VAR (symbol) local to ESS process called NAME (string)."
-  (with-current-buffer (process-buffer (get-ess-process name))
-    (if (boundp var)
-        (symbol-value var))))
+  (buffer-local-value var (process-buffer (get-ess-process ess-local-process-name))))
 
-(defun ess-set-process-variable (name var val)
+(defun ess-set-process-variable (var val)
   "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
-  (with-current-buffer (process-buffer (get-ess-process name))
+  (with-current-buffer (process-buffer (get-ess-process ess-local-process-name))
     (set var val)))
 
 (defun ess-process-live-p ()
@@ -1069,8 +1067,7 @@ ordinary inferior process.  Alway nil on Unix machines."
         (ess-write-to-dribble-buffer
          (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
         (ess-force-buffer-current "Process to load into: ")
-        (not (equal (ess-get-process-variable
-                     ess-local-process-name 'inferior-ess-ddeclient)
+        (not (equal (ess-get-process-variable 'inferior-ess-ddeclient)
                     (default-value 'inferior-ess-ddeclient))))))
 
 ;; (defun ess-prompt-wait (proc prompt-reg &optional sleep )
@@ -1691,6 +1688,9 @@ dialect specific way to include source references"
   ;;(untabify (point-min) (point-max))
   ;;(untabify start end); do we really need to save-excursion?
   (ess-force-buffer-current "Process to use: ")
+  (unless ess-local-customize-alist
+    ;; external applications might call ess-eval-* functions; make it easier for them
+    (ess-setq-vars-local (ess-get-process-variable 'ess-local-customize-alist)))
   (message "Starting evaluation...")
   (setq message (or message "Eval region"))
 
