@@ -664,6 +664,7 @@ This is the value of `next-error-function' in iESS buffers."
              (line (cadr loc))
              (mkrs (ess--dbg-create-ref-marker file line col)))
         (if mkrs
+            ;; is this really needed? Shall we go directly to the location?
             (compilation-goto-locus marker (car mkrs) (cadr mkrs))
           (message "Reference to '%s' not found" file))))))
 
@@ -1316,6 +1317,9 @@ associated buffer. If FILE is nil return nil.
         (pop-to-buffer (marker-buffer mrk)))
       (goto-char mrk))))
 
+;; temporary, hopefully org folks implement something similar
+(defvar org-babel-tangled-file nil)
+
 (defun ess--dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
@@ -1351,6 +1355,8 @@ TB-INDEX is not found return nil.
               (if col
                   (goto-char (+ (point-at-bol) col))
                 (back-to-indentation))
+              (when org-babel-tangled-file
+                (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
 
