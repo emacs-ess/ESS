@@ -1,3 +1,19 @@
+2013-06-07  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-s-l.el (S-common-cust-alist): Change default for
+	comment-use-syntax to t.  Dirk Eddelbuettel reported the follownig
+	bug:
+
+	With a line like the following in an R buffer, when M-TAB is hit
+	on the line to add a comment, the hash within the string is
+	interpeted as an existing comment, causing the string to be
+	disrupted.
+	
+	rug( foo,  col="#00000030")
+	
+	This is now fixed such that M-TAB would add a hash at
+	the end of the line, allowing for a comment.
+
 2013-05-16  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-inf.el (ess-show-buffer): Thanks to David Reitter for this
