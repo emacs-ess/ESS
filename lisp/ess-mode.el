@@ -201,6 +201,9 @@
     (define-key ess-extra-map "l" 'ess-load-library)
     (define-key ess-extra-map "\C-i" 'ess-install-library)
     (define-key ess-extra-map "i" 'ess-install-library)
+    (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
+    (define-key ess-extra-map "w" 'ess-execute-screen-options)
+
     ;; (define-key map "C-t" 
     ess-extra-map)
   "ESS extra map"
