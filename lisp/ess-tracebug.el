@@ -160,7 +160,7 @@ applications, like org-babel,  that call ess evaluation functions
 from temporary buffers.")
 
 
-(defun ess--make-source-refd-command (beg end visibly)
+(defun ess--make-source-refd-command (beg end &optional visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
   (let ((filename buffer-file-name)
@@ -710,12 +710,12 @@ help ?options for more details.
   "Last debug reference in *ess.dbg* buffer (a marker).")
 (make-variable-buffer-local 'ess--dbg-last-ref-marker)
 
-(defcustom ess-tracebug-search-path '(nil)
+(defcustom ess-tracebug-search-path nil
   "List of directories to search for source files.
 Elements should be directory names, not file names of directories.
 "
-  :type '(repeat (choice (const :tag "Default" nil)
-                         (string :tag "Directory")))
+  :type '(choice (const :tag "Unset" nil)
+                 (repeat :tag "Directory list" (string :tag "Directory")))
   :group 'ess-debug)
 (defalias 'ess--dbg-search-path 'ess-tracebug-search-path)
 (make-obsolete 'ess--dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")

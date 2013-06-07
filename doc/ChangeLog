@@ -1,3 +1,10 @@
+2013-06-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* onewfeat.texi/newfeat.texi: migrated pre-12.03
+	features to onewfeat.texi  However, this will have
+	no practical effect until we stop including
+	onewfeat.texi from ess.texi; see below
+
 2013-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* onewfeat.texi/newfeat.texi: migrated pre-5.3.10 new

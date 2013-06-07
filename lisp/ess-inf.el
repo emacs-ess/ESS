@@ -1717,8 +1717,7 @@ dialect specific way to include source references"
     (cond
      (dev-p     (ess-developer-send-region proc start end visibly message tb-p))
      (tb-p      (ess-tracebug-send-region proc start end visibly message inject))
-     (t         (ess-send-region proc start end visibly message))
-     ))
+     (t         (ess-send-region proc start end visibly message))))
 
   (if (and (fboundp 'deactivate-mark) ess-eval-deactivate-mark)
       (deactivate-mark))
@@ -2115,7 +2114,6 @@ for `ess-eval-region'."
     (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-q" 'ess-quit)
-    (define-key map "\C-c\C-t" 'ess-execute)
     (define-key map "\C-c\C-s" 'ess-execute-search)
     (define-key map "\C-c\C-x" 'ess-execute-objects)
     (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
