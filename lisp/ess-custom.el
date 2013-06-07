@@ -1220,7 +1220,11 @@ directory in which \"R/\" is located.  For example, setting
 `ess-directory-containing-R' to \"c:\" will tell ESS to search
 for R versions with pathnames of the form \"c:/R/R-x.y.z\".
 
-Currently only used when `ess-microsoft-p'."
+Currently only used when `ess-microsoft-p'.  If you change the
+value of this variable, you need to restart Emacs for it to take
+effect.  It also needs to be set before you load ess-site as its
+value is used once only when ESS is loaded."
+
   :group 'ess
   :type 'directory)
 
