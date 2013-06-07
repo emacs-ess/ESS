@@ -1,6 +1,185 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes/New Features in 5.14:
+@itemize @bullet
+@item @ESS{[BUGS/JAGS]}:  Batch BUGS is back!  For recent OpenBUGS
+versions, 3.0.8+, a batch BUGS script is once again available,
+but for Linux only.  Therefore, since it seems that BUGS and JAGS must
+co-exist (rather than a transition from BUGS to JAGS), .bug files are
+now in @ESS{[BUGS]} mode and .jag files are in @ESS{[JAGS]} mode.  @ESS{[BUGS]} now
+works like @ESS{[JAGS]} rather than the original mode @ESS{[BUGS]} mode which
+was difficult to maintain.  Although, @ESS{[BUGS]} appears to work,
+there still may be some features missing as well as bugs.
+
+@item @ESS{[R]}: New customizable variable @code{ess-swv-plug-into-AUCTeX-p}
+Commands to Sweave current file and LaTeX the result are now available
+to AUCTeX users, if this variable is set to @code{t}.
+
+@item @ESS{[S]}: @kbd{C-c C-c}
+(@code{ess-eval-function-or-paragraph-and-step}) is now skipping over
+comments as the other paragraph functions do.
+It (and similar functions) should no longer wrongly find
+@samp{function()} beginnings inside comments or strings.
+
+@item @ESS{[SAS]}: improved by better support for GNU Emacs
+@end itemize
+
+Changes/New Features in 5.13:
+@itemize @bullet
+@item @ESS{[R]}: On Windows, for R 2.12.0 and later, the Rterm executables
+ (in subdirectories i386 / x64) now are found as well as for earlier R versions.
+@item @ESS{[S+]}: on Windows, both 32- and 64-bit versions of S+ (``S-PLUS'')
+ are found now and made available on the menu.
+@item @ESS{[R]}: When prompting for a starting directory, the R version is
+ (always?) correct now.
+@item @ESS{[R]}: on non-Windows platforms, the @code{use-dialog-box}
+ variable is no longer temporarily changed (to @code{nil} for R-x.y.z version
+ functions and to @code{t} for @command{R} itself), but rather the user
+ customization is obeyed.
+@item @ESS{[R]}: more Roxygen improvements.
+@item `Rd-preview-help' now generates preview buffers with navigation
+facilities the same as regular help buffers.
+@item @ESS{}: New functions and keys C-c [up] / [down]
+ for evaluating the buffer ``from beginning till here''.
+@end itemize
+
+Changes/New Features in 5.12:
+@itemize @bullet
+@item @ESS{[SAS]} Font-locking:
+ update of PROCs keywords (up to SAS 9.22); error/warnings.
+@item @ESS{[R]}: Roxygen improvements: S4 classes;
+ also optionally keep spaces when filling arguments
+@item @ESS{[Rd]}: support new keywords:
+ section-name \subsection plus a dozen ``new'' keywords; should match R
+ 2.12.x now.
+@item @command{ess-display-help-on-object} (@kbd{C-c C-v})
+ now @emph{caches} the list of topics, thus speeding up the improvement
+ feature introduced in 5.9.
+@end itemize
+
+Changes/New Features in 5.11:
+@itemize @bullet
+@item Filename completion within buffers now adds only trailing
+characters to complete the filename, rather than expanding to an
+absolute file path.  This filename completion is bound to the TAB key.
+
+@item @kbd{M-n P} in Sweave buffers now prompts for the command to run
+instead of using @command{pdflatex} unconditionally, offering completion from
+customizable collection @code{ess-swv-pdflatex-commands}, the first of
+which is taken as default and that defaults to @command{texi2pdf}.
+@item @kbd{M-RET} is now also bound in S language (R and S+) buffers
+to @command{ess-use-this-dir}. It sends @code{setwd(..)} to the S process
+to set the working directory to the one of the source file.
+@end itemize
+
+Changes/New Features in 5.10:
+@itemize @bullet
+@item @kbd{M-RET} in *S* buffers is now bound to
+@code{ess-dirs}.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+@code{setwd()} within a *S* process.
+@end itemize
+
+Changes/New Features in 5.9:
+@itemize @bullet
+@item Toolbar:  The toolbar now has an icon for starting Splus.
+@item Indentation: New documentation and code has been added to make it
+easier to change how ESS indents code.  In particular, see
+@code{ess-default-style}, @code{ess-own-style-list} and the documention
+subsection ``Changing indentation styles''.
+@item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
+ completion candidates for help file aliases, in addition to object
+ names.
+@item Font locking: is now turned on
+ even without @command{window-system} is @code{nil}, whenever
+ @var{ess-font-lock-mode} is non-nil, i.e., by default.
+@item @ESS{} script editing: ess-eval-deactivate-mark default is now t,
+ as suggested by Leo Alekseyev and subsequent ``unanimous'' ESS-help
+ discussion.
+@item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
+ thanks to Jeffrey Arnold.
+@item @ESS{[R]}: Now finds all R versions, both 64-bit and 32-bit, on some
+ 64-bit Windows machines.  Please report back to ess-core success or failure
+ on your 64-bit Windows machine.
+@item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
+@item @ESS{[R]}: Roxygen on XEmacs no longer font locks for now
+ (as it required missing features and hence broke ESS startup, there).
+@item @ESS{[R]}: Roxygen has a sub-menu on the [ESS] menu.
+@item @ESS{[R]}: Function @command{ess-rutils-htmldocs} in
+ @file{ess-rutils.el} offers an alternative to @code{help.start()} for
+ navigating R documentation, using the @command{browse-url} Emacs
+ function.
+@end itemize
+
+Changes/New Features in 5.8:
+@itemize @bullet
+@item @ESS{[R]}: New @file{ess-rutils.el} with utilities for listing, loading,
+installing, and updating packages, as well as object manipulation
+(listing, viewing, and deleting).  It also provides an alternative to
+@code{RSiteSearch()} that uses the @command{browse-url} function, so
+results can be viewed in an Emacs web browser.
+@item @ESS{[R]}: much more extensive Roxygen interface, via ess-roxy.el
+ from Henning Redestig. Ess-roxy supports filling of roxygen fields,
+ generation and updating roxygen templates, completion of roxygen tags,
+ basic navigation (marking and moving between entries), folding using
+ hs-minor-mode and preview of the Rd file.
+@item Emacs lisp files have got better names (partly, for now).
+@end itemize
+
+Changes/New Features in 5.7:
+@itemize @bullet
+@item @ESS{[R]}: loading a source file (@kbd{C-c C-l}) now works in
+ Windows, similarly to other platforms;
+ (further; it had accidentally been broken in ESS 5.6 on all platforms)
+@end itemize
+
+Changes/New Features in 5.6:
+@itemize @bullet
+@item @ESS{[R]}: help() calls have to differ from old default, with newer
+ versions of R; currently via .help.ESS <- function(...) hack.
+@end itemize
+
+Changes/New Features in 5.4:
+@itemize @bullet
+@item @ESS{[SAS]}: The long overdue change
+from @code{make-regexp} to @code{regexp-opt} for font-locking is
+complete.  The new @code{regexp-opt} is now the default since
+it is better than the old code in many ways (and especially more
+maintainable).  However, there are certainly some special
+cases missed (bug reports and patches welcome!).
+Setting @code{ess-sas-run-regexp-opt} to @code{nil} will result
+in the old code being used.
+@item @ESS{[BUGS]} and @ESS{[JAGS]}: typing @code{=} now results in
+ @code{<-}.
+@item @ESS{[R]} function arguments ``show'' @code{(ess-r-args-show)} now
+ uses the new @code{(tooltip-show-at-point)} contributed by Erik Iverson.
+@item Toolbar icons now also work in (beta) Emacs 23.
+@item @ESS{[S]}: New function @code{ess-change-directory} for setting both
+ emacs' current directory and the directory of an *R* or *S* buffer.
+@item @ESS{[S]} when transient-mark-mode is true, the mark is now kept,
+ rather than deactivated, thanks to a patch from David Reitter.
+@end itemize
+
+Changes/New Features in 5.3.11:
+@itemize @bullet
+@item @ESS{[SAS]}: work around bug in Emacs 22.2 & 22.3 which fails to
+ set case-fold fontification automatically.
+@item Rd mode: support new keyword 'Rdversion'
+@item @ESS{[R]}: now again works with Emacs 21.x
+@end itemize
+
+Changes/New Features in 5.3.10:
+@itemize @bullet
+@item Fixed noweb-mode bug accidentally introduced into 5.3.9
+@item In noweb-mode, e.g., Rnw-mode, electric ``<'' also inserts closing ``@@".
+ Further, the code chunk boundaries are better kept up-to-date, such that
+ code[R] <-> text[LaTeX] minor mode switching should happen more reliably.
+@item In noweb-mode, fix a buglet in rare [Enter] or [Tab] behavior; further,
+ by default disable the former `[[' .. `]]'  code-protection-when-filling
+ behavior which has been found to be buggy.
+@end itemize
+
 Changes/New Features in 5.3.9:
 @itemize @bullet
 @item @ESS{[SAS]}: evince PDF viewer now supported as well; search order:
