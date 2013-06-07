@@ -160,7 +160,7 @@ applications, like org-babel,  that call ess evaluation functions
 from temporary buffers.")
 
 
-(defun ess--make-source-refd-command (beg end visibly)
+(defun ess--make-source-refd-command (beg end &optional visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
   (let ((filename buffer-file-name)
