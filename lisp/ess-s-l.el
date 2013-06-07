@@ -128,7 +128,7 @@
     (ess-imenu-generic-expression  . ess-imenu-S-generic-expression)
     (comment-add                  . 1)
     (comment-start-skip           . "#+ *")
-    (comment-use-syntax           . nil) ;; regexp based, probably faster than syntax based
+    (comment-use-syntax           . t)  ; see log for bug report 2013-06-07
     (comment-column               . 40)
     (ess-no-skip-regexp           . (concat "^ *@\\|" (default-value 'ess-no-skip-regexp)))
     ;; inferior-ess-prompt is used by comint for navigation, only if
