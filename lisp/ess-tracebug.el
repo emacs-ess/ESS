@@ -214,10 +214,11 @@ insert source references into evaluated code."
                                (eq ess-inject-source 'function-and-buffer)))
                           (t (eq ess-inject-source t))))
          (ess--debug-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
-         (vis (unless ess-load-visibly-command ; don't call ess-eval-linewise, process does the whole job
-                (if (and visibly inject-p)
-                    (buffer-substring start end) ; used for 'no-wait value of ess-eval-visibly
-                  vis)))
+         ;; don't call ess-eval-linewise when subprocess does the job
+         (vis (unless (and inject-p ess-load-visibly-command)
+                (if (eq visibly 'no-wait)
+                    (buffer-substring start end)
+                  visibly)))
          (string (if inject-p
                      (ess--make-source-refd-command start end visibly)
                    (buffer-substring start end))))
