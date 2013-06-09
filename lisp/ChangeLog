@@ -1,5 +1,9 @@
 2013-06-09  Stephen Eglen  <stephen@gnu.org>
 
+	* ess-julia.el: Checkdoc modifications, and other whitespace
+	cleanup.  Many docstrings were missing, so I've made initial
+	guesses at what they should be.
+
 	* ess-site.el (ess-etc-directory): Remove * from docstring.
 	Fix most points noted by checkdoc. 
 
