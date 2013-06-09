@@ -1,3 +1,8 @@
+2013-06-09  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-site.el (ess-etc-directory): Remove * from docstring.
+	Fix most points noted by checkdoc. 
+
 2013-06-07  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-s-l.el (S-common-cust-alist): Change default for
