@@ -79,13 +79,13 @@
     (modify-syntax-entry ?\# "<"  table)
     (modify-syntax-entry ?\n ">"  table)
     table)
-  "Syntax table for gretl-mode")
+  "Syntax table for `gretl-mode'.")
 
 ;; syntax table that holds within strings
 (defvar gretl-mode-string-syntax-table
   (let ((table (make-syntax-table)))
     table)
-  "Syntax table for gretl-mode")
+  "Syntax table for `gretl-mode' that holds within strings.")
 
 (defcustom gretl-continuation-offset 4
   "*Extra indentation applied to Gretl continuation lines."
@@ -661,3 +661,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
 
 (provide 'ess-gretl)
 ;; (provide 'ess-gretl)
+
+(provide 'ess-gretl)
+
+;;; ess-gretl.el ends here
