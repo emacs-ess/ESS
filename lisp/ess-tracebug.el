@@ -200,7 +200,9 @@ block (used for source references insertion)"
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
       (if (and visibly ess-load-visibly-command)
           (format ess-load-visibly-command tmpfile)
-        (format ess-load-command tmpfile)))))
+        (format (or ess-load-visibly-noecho-command
+                    ess-load-command)
+                tmpfile)))))
 
 
 (defun ess-tracebug-send-region (proc start end &optional visibly message inject)

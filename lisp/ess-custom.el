@@ -1812,20 +1812,21 @@ status.
 
 ;;*;; Inferior ESS commands
 
-(defcustom ess-load-command "source(\"%s\")\n"
-  "Format-string for building the ess command to load a file.
+(defvar ess-load-command "source(\"%s\")\n"
+  "Dialect specific format-string for building the ess command to load a file.
 
 This format string should use %s to substitute a file name and should
 result in an ESS expression that will command the inferior ESS to load
-that file."
-  :group 'ess-command
-  :type 'string)
+that file.")
 (define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
 
-(defcustom ess-load-visibly-command nil 
-  "Format-string for building the ess command to load a file with echo."
-  :group 'ess-command
-  :type 'string)
+(defvar ess-load-visibly-command nil
+  "Dialect specific format-string for building the ess command to
+  load a file with echo.")
+
+(defvar ess-load-visibly-noecho-command nil
+  "Dialect specific format-string for building the ess command to
+load a file with visible output but no echo.")
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
