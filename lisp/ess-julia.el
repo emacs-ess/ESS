@@ -15,17 +15,17 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 3, any later version.
+;; published by the Free Software Foundation; either version 3, or 
+;; (at your option) any later version.
 ;;
-;; This program is distributed in the hope that it will be useful, but WITHOUT
-;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-;; FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-;; details.
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 ;;
-;; You should have received a copy of the GNU General Public License along with
-;; this program; see the file COPYING.  If not, write to the Free Software
-;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
-;; USA.
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -73,20 +73,20 @@
     (modify-syntax-entry ?= "." table)
     (modify-syntax-entry ?% "." table)
     table)
-  "Syntax table for julia-mode")
+  "Syntax table for `julia-mode'.")
 
 ;; syntax table that holds within strings
 (defvar julia-mode-string-syntax-table
   (let ((table (make-syntax-table)))
     table)
-  "Syntax table for julia-mode")
+  "Syntax table for `julia-mode'.")
 
 ;; disable " inside char quote
 (defvar julia-mode-char-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry ?\" "." table)
     table)
-  "Syntax table for julia-mode")
+  "Syntax table for `julia-mode'.")
 
 ;; not used
 ;; (defconst julia-string-regex
@@ -137,6 +137,8 @@
   (list "end" "else" "elseif" "catch"))
 
 (defun ess-inside-brackets-p (&optional pos)
+  "Return t if position POS is inside brackets.
+POS defaults to point if no value is given."
   (save-excursion
     (let* ((pos (or pos (point)))
 	   (beg (re-search-backward "\\[" (max (point-min) (- pos 1000)) t))
@@ -144,7 +146,9 @@
     (and beg end (> pos beg) (> end pos)))))
 
 (defun julia-at-keyword (kw-list)
-  ; not a keyword if used as a field name, X.word, or quoted, :word
+  "Return the word at point if it matches any keyword in KW-LIST.
+KW-LIST is a list of strings.  The word at point is not considered
+a keyword if used as a field name, X.word, or quoted, :word."
   (and (or (= (point) 1)
 	   (and (not (equal (char-before (point)) ?.))
 		(not (equal (char-before (point)) ?:))))
@@ -152,8 +156,9 @@
        (not (ess-inside-brackets-p (point)))
        (member (current-word) kw-list)))
 
-; get the position of the last open block
 (defun julia-last-open-block-pos (min)
+  "Move back and return the position of the last open block, if one found.
+Do not move back beyond position MIN."
   (let ((count 0))
     (while (not (or (> count 0) (<= (point) min)))
       (backward-word 1)
@@ -161,23 +166,26 @@
 	    (cond ((julia-at-keyword julia-block-start-keywords)
 		   (+ count 1))
 		  ((and (equal (current-word) "end")
-			(not (ess-inside-comment-p)) (not (ess-inside-brackets-p)))
+			(not (ess-inside-comment-p))
+                        (not (ess-inside-brackets-p)))
 		   (- count 1))
 		  (t count))))
     (if (> count 0)
 	(point)
       nil)))
 
-; get indent for last open block
 (defun julia-last-open-block (min)
+  "Move back and return indentation level for last open block.
+Do not move back beyond MIN."
   (let ((pos (julia-last-open-block-pos min)))
     (and pos
 	 (progn
 	   (goto-char pos)
 	   (+ julia-basic-offset (current-indentation))))))
 
-; return indent implied by a special form opening on the previous line, if any
+
 (defun julia-form-indent ()
+  "Return indent implied by a special form opening on the previous line."
   (forward-line -1)
   (end-of-line)
   (backward-sexp)
@@ -193,14 +201,16 @@
       nil)))
 
 (defun julia-paren-indent ()
-  (let* ((p (parse-partial-sexp (save-excursion
-				  ;; only indent by paren if the last open
-				  ;; paren is closer than the last open
-				  ;; block
-				  (or (julia-last-open-block-pos (point-min))
-				      (point-min)))
-				(progn (beginning-of-line)
-				       (point))))
+  "Return indent by last opening paren."
+  (let* ((p (parse-partial-sexp
+             (save-excursion
+               ;; only indent by paren if the last open
+               ;; paren is closer than the last open
+               ;; block
+               (or (julia-last-open-block-pos (point-min))
+                   (point-min)))
+             (progn (beginning-of-line)
+                    (point))))
          (pos (cadr p)))
     (if (or (= 0 (car p)) (null pos))
         nil
@@ -215,33 +225,32 @@
 					;     nil)))
 
 (defun julia-indent-line ()
-  "Indent current line of julia code"
+  "Indent current line of julia code."
   (interactive)
-					;  (save-excursion
-    (end-of-line)
-    (indent-line-to
-     (or (and (ess-inside-string-p (point-at-bol)) 0)
-	 (save-excursion (ignore-errors (julia-form-indent)))
-         (save-excursion (ignore-errors (julia-paren-indent)))
-         ;; previous line ends in =
-	 (save-excursion
-           (beginning-of-line)
-           (skip-chars-backward " \t\n")
-           (when (eql (char-before) ?=)
-             (+ julia-basic-offset (current-indentation))))
-         (save-excursion
-           (let ((endtok (progn
-                           (beginning-of-line)
-                           (forward-to-indentation 0)
-                           (julia-at-keyword julia-block-end-keywords))))
-             (ignore-errors (+ (julia-last-open-block (point-min))
-                               (if endtok (- julia-basic-offset) 0)))))
-	 ;; take same indentation as previous line
-	 (save-excursion (forward-line -1)
-			 (current-indentation))
-         0))
-    (when (julia-at-keyword julia-block-end-keywords)
-      (forward-word 1)))
+  (end-of-line)
+  (indent-line-to
+   (or (and (ess-inside-string-p (point-at-bol)) 0)
+       (save-excursion (ignore-errors (julia-form-indent)))
+       (save-excursion (ignore-errors (julia-paren-indent)))
+       ;; previous line ends in =
+       (save-excursion
+         (beginning-of-line)
+         (skip-chars-backward " \t\n")
+         (when (eql (char-before) ?=)
+           (+ julia-basic-offset (current-indentation))))
+       (save-excursion
+         (let ((endtok (progn
+                         (beginning-of-line)
+                         (forward-to-indentation 0)
+                         (julia-at-keyword julia-block-end-keywords))))
+           (ignore-errors (+ (julia-last-open-block (point-min))
+                             (if endtok (- julia-basic-offset) 0)))))
+       ;; take same indentation as previous line
+       (save-excursion (forward-line -1)
+                       (current-indentation))
+       0))
+  (when (julia-at-keyword julia-block-end-keywords)
+    (forward-word 1)))
 
 (defvar julia-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
@@ -275,6 +284,8 @@
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 (defun julia-send-string-function (process string visibly)
+  "Send the Julia STRING to the PROCESS.
+VISIBLY is not currently used."
   (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
     (with-temp-file file
       (insert string))
@@ -349,7 +360,7 @@
   "List of partial strings for versions of Julia to access within ESS.
 Each string specifies the start of a filename.  If a filename
 beginning with one of these strings is found on `exec-path', a M-x
-command for that version of Julia is made available.  ")
+command for that version of Julia is made available.")
 
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
@@ -381,12 +392,11 @@ command for that version of Julia is made available.  ")
 
 
 (defvar ess-julia-post-run-hook nil
-  "Functions run in process buffer after the initialization of
-  julia process.")
+  "Functions run in process buffer after starting julia process.")
 
 ;;;###autoload
 (defun julia (&optional start-args)
-  "Call 'julia',
+  "Call 'julia'.
 Optional prefix (C-u) allows to set command line arguments, such as
 --load=<file>.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
@@ -471,3 +481,5 @@ to look up any doc strings."
     ))
 
 (provide 'ess-julia)
+
+;;; ess-julia.el ends here

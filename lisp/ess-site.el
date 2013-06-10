@@ -27,11 +27,11 @@
 
 ;;; Commentary:
 
-;; This file defines all the site-specific customizations for ESS. It should be
-;; edited on a per-site basis. Read the comments (1.1 in Section 1 to see if
-;; ess-site.el must be edited. The final directory location of this file must be
-;; supplied in ess-lisp-directory. The editing of remaining sections is
-;; optional. It should then be byte-compiled, and users who wish to use ESS
+;; This file defines all the site-specific customizations for ESS.  It should be
+;; edited on a per-site basis.  Read the comments (1.1 in Section 1 to see if
+;; ess-site.el must be edited.  The final directory location of this file must be
+;; supplied in ess-lisp-directory.  The editing of remaining sections is
+;; optional.  It should then be byte-compiled, and users who wish to use ESS
 ;; should add the line:
 ;;
 ;;    (load "/PATH/TO/THIS/FILE/ess-site")
@@ -155,13 +155,13 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; depends on ess-lisp-directory, and is needed by other modes that are
 ;; loaded before the custom code.
 (defvar ess-etc-directory nil
-  "*Location of the ESS etc/ directory.
+  "Location of the ESS etc/ directory.
 The ESS etc directory stores various auxillary files that are useful
 for ESS, such as icons.")
 
 (defvar ess-etc-directory-list
   '("../etc/ess/" "../etc/" "../../etc/ess/" "./etc/")
-  "*List of directories, relative to `ess-lisp-directory', to search for etc.")
+  "List of directories, relative to `ess-lisp-directory', to search for etc.")
 
 (while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
   (setq ess-etc-directory
@@ -217,13 +217,12 @@ for ESS, such as icons.")
 
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
-  "take away the S-Plus mode association for .s and .S files added by ESS
+  "Remove the S-Plus mode association for .s and .S files added by ESS.
 Putting the following in ~/.emacs restores emacs' default association
 between .s or .S files and assembly mode.
 
   (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
-  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
-"
+  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)"
   (interactive)
   (when (assoc "\\.[qsS]\\'" auto-mode-alist)
     (setq auto-mode-alist
@@ -512,11 +511,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; Create functions for calling different (older or newer than default)
 ;;;  versions of R and S(qpe).
 (defvar ess-versions-created nil
-  "list of strings of all S- and R-versions found on the current computer environment")
+  "List of strings of all S- and R-versions found on the system.")
 
 ;; is currently used (updated) by ess-find-newest-R
 (defvar ess-r-versions-created nil
-  "list of strings of all R-versions found on the current computer environment")
+  "List of strings of all R-versions found on the system.")
 ;; FIXME: should then update ess-versions-created as well (easy),
 ;; -----  *and* update the "Start Process" menu (below)
 ;;    -> To this: wrap the following in functions that can be re-called

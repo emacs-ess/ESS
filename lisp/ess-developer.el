@@ -260,7 +260,7 @@ usually used to manipulate the output, for example insert some text properties.
               (save-excursion (funcall propertize-func)))
             (message "%s" (buffer-substring (point-min) (max (point-min)
                                                              (1- (point))))))
-        (message (buffer-substring-no-properties (point-min) (point-max)))))))
+        (message "%s" (buffer-substring-no-properties (point-min) (point-max)))))))
 
 (defun ess--developer-propertize-output ()
   (goto-char (point-min))
