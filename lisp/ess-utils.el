@@ -850,7 +850,8 @@ EXIT-FORM should be supplied for a more refined control of the
 read-even loop. The loop is exited when EXIT-FORM evaluates to
 t. See examples in the tracebug code.
 "
-  
+  ;;VS[09-06-2013]: check: it seems that set-temporary-overlay-map is designed
+  ;;for this type of things; see also repeat.el package.
   `(let* ((ev last-command-event)
           (command (lookup-key ,map (vector ev)))
           out exit )
