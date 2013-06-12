@@ -1,0 +1,10 @@
+* GENERAL
+** TODO [#A] populate ess-autoload.el and call it from ess-site.el   :13_09:
+   This will ensure that very quick start both for (require "ess-start") and
+   MELPA users.
+** TODO [#B] build ert based test suit                                :13_09:
+** TODO split ess-mode into specialized derived modes
+
+* TRACEBUG
+
+* DEVELOPER  
