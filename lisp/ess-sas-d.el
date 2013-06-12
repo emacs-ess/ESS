@@ -244,7 +244,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
 ;; rmh Jul 10 2003
 (defun ess-electric-run-semicolon (arg)
-  "Insert character.  If the line contains \"run;\" and nothing else then indent line."
+  "Insert character.  If the line contains \"run;\" or \"quit;\" and nothing else then indent line."
   (interactive "P")
   (if ess-sas-edit-keys-toggle (insert ";") (let (insertpos)
                                               (if (and (not arg)
@@ -252,7 +252,7 @@ Better logic needed!  (see 2 uses, in this file).")
                                                        (save-excursion
                                                          (skip-chars-backward " \t")
                                                          (backward-word 1)
-                                                         (and (looking-at "run")
+                                                         (and (looking-at "run\\|quit")
                                                               (progn
                                                                 (skip-chars-backward " \t")
                                                                 (bolp)))))

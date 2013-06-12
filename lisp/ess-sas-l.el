@@ -811,7 +811,7 @@ number."
                (back-to-indentation)
                (or (bobp)
                    (looking-at
-                    "data[ ;]\\|proc[ ;]\\|run[ ;]\\|endsas[ ;]\\|g?options[ ;]\\|%macro[ ;]\\|%mend[ ;]")))
+                    "data[ ;]\\|proc[ ;]\\|run[ ;]\\|quit[ ;]\\|endsas[ ;]\\|g?options[ ;]\\|%macro[ ;]\\|%mend[ ;]")))
              ;;  Case where current statement is DATA, PROC, etc...
              (setq prev-end (point))
              (goto-char (point-min))
