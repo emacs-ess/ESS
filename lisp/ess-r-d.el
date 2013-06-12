@@ -187,7 +187,7 @@
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
-     (ess-traceback-command             . "local({try(traceback(), silent=TRUE);cat(\n\"---------------------------------- \n\", geterrmessage(), fill=TRUE)})\n")
+     (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
      (ess-load-command                  . "invisible(source(\"%s\", local=TRUE, keep.source=TRUE)$value)\n") ;; return correct value for org-babel
      (ess-load-visibly-command          . "source('%s', local=TRUE, echo=TRUE, keep.source=TRUE, max.deparse.length = 300)\n")
