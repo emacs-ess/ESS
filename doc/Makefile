@@ -24,7 +24,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	help-s.texi help-sas.texi inst_svn.texi unixlike.texi windows.texi \
 	license.texi mailing.texi onewfeat.texi news.texi onews.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
-        help-jags.texi Makefile ../Makeconf
+        help-jags.texi allnews.texi Makefile ../Makeconf
 
 ESSINFONODE1='* ESS: (ess).'
 ESSINFONODE2='	        Emacs Speaks Statistics'
@@ -39,7 +39,7 @@ all  : info text html dvi pdf
 docs : info text html
 info : info/ess.info
 text : $(TXTs)
-html : html/ess.html html/readme.html
+html : html/ess.html html/readme.html html/news.html
 dvi  : $(DVIs)
 pdf  : $(PDFs)
 ps   : ess.ps  readme.ps
@@ -126,6 +126,10 @@ html/readme.html: $(TEXISRC)
 		 ##                   ^^^^^^^^^^^^^ (design bug: "FIXME" in ess.texi)
 #MM	$(TEXI2HTML) readme.texi
 #	mv -f readme.html html
+
+html/news.html: $(TEXISRC)
+	mkdir -p html
+	-$(MAKEHTML) html/news.html allnews.texi
 
 refcard/refcard.pdf: refcard/refcard.tex
 	(cd refcard ; pdflatex refcard)
