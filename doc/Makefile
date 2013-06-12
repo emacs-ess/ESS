@@ -104,12 +104,12 @@ install-info : info/ess.info
 install-other-docs: pdf html
 	-$(INSTALLDIR) $(DOCDIR)
 	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
-	$(INSTALL) html/ess.html html/readme.html $(DOCDIR)
+	$(INSTALL) html/ess.html html/readme.html html/news.html $(DOCDIR)
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
 
 uninstall :
 	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf README ANNOUNCE
-	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html
+	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html news.html
 	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf
 
 ##  TO DO:  ess_toc.html & readme_toc.html should be merged into index.html
