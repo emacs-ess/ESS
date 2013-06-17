@@ -289,7 +289,7 @@ unnecessary prompts.
 @section New features in ESS
 
 @include newfeat.texi
-@include onewfeat.texi
+@comment @include onewfeat.texi
 
 @node Credits
 @section Authors of and contributors to ESS

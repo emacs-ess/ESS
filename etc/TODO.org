@@ -1,0 +1,18 @@
+* GENERAL
+** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
+   This will ensure that very quick start both for (require "ess-start") and
+   MELPA users.
+** TODO [#B] build ert based test suit                                :13_09:
+** TODO split ess-mode into specialized derived modes
+
+* COMPLETION
+** TODO make eldoc automatically pick available sub-process           :13_09:
+
+* TRACEBUG
+
+* DEVELOPER  
+
+* MISC
+** TODO make ess-selection-mode-map or just use ess-debug-mode-map
+   When recover mode is on, it would be very convenient to exit it with M-Q.
+   [2013-06-12 Wed]

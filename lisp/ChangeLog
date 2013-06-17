@@ -1,3 +1,9 @@
+2013-06-12  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-d.el: see discussion in the thread:
+	"patch: identing quit statement like run statement in ess-sas" at
+	http://article.gmane.org/gmane.emacs.ess.general/7340
+
 2013-06-09  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-julia.el: Checkdoc modifications, and other whitespace
