@@ -86,6 +86,8 @@
     (define-key ess-dev-map "K" 'ess-bp-kill-all)
     (define-key ess-dev-map "\C-n" 'ess-bp-next)
     (define-key ess-dev-map "n" 'ess-bp-next)
+    (define-key ess-dev-map "i" 'ess-debug-goto-input-event-marker)
+    (define-key ess-dev-map "I" 'ess-debug-goto-input-event-marker)
     (define-key ess-dev-map "\C-p" 'ess-bp-previous)
     (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "\C-e" 'ess-debug-toggle-error-action)
