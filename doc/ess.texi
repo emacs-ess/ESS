@@ -2504,14 +2504,6 @@ packages:
 @cindex ESS tracebug
 @findex ess-tracebug
 
-@emph{Note:} Currently, ess-tracebug does not detect non English error
-and debug messages. For the best experience add the following
-line to your .Rprofile init file:
-
-@verbatim
-   Sys.setlocale("LC_MESSAGES", "C")
-@end verbatim
-
 ESS @code{tracebug} offers visual debugging, interactive error
 navigation, interactive backtrace, breakpoint manipulation, control over
 R error actions, watch window and interactive flagging/unflagging of
@@ -2580,6 +2572,14 @@ Here are all the tracebug commands defined in @code{ess-dev-map}
 
 A more detailed ess-tracebug documentation with screenshots is available
 at @uref{http://code.google.com/p/ess-tracebug/}.
+
+@emph{Note:} Currently, ess-tracebug does not detect some of R's debug
+related messages in non-English locales. To set your R messages to
+English add the following line to your .Rprofile init file:
+
+@verbatim
+   Sys.setlocale("LC_MESSAGES", "C")
+@end verbatim
 
 @node Editing documentation
 @section Editing documentation

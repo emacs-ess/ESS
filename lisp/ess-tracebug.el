@@ -304,9 +304,9 @@ This mode adds to ESS the interactive debugging, breakpoint and
 error navigation functionality.  Strictly speaking ess-tracebug
 is not a minor mode. It integrates globally into ESS and iESS.
 
-Note: Currently, ess-tracebug does not detect non English error
-and debug messages. To set your R messages to English add the
-following line to your .Rprofile init file:
+Note: Currently, ess-tracebug does not detect some of R's debug
+related messages in non-English locales. To set your R messages
+to English add the following line to your .Rprofile init file:
 
    Sys.setlocale(\"LC_MESSAGES\", \"C\")
 
