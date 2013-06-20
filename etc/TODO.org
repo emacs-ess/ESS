@@ -10,11 +10,23 @@
 ** TODO make eldoc (ess--fun.start actually) work from withing strings
 * TRACEBUG
 
-** TODO put back ess-debug-goto-input-event-marker 
+** DONE put back ess-debug-goto-input-event-marker
+   CLOSED: [2013-06-21 Fri 01:18]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
+   :END:
    [2013-06-18 Tue] [[gnus:nnfolder%2Barchive:sent-2013-June#87sj0fulny.fsf@gmail.com][Email to Marius Hofert: Re: {ESS} A suggestion for deb]]
 ** TODO make ess-selection-mode-map or just use ess-debug-mode-map
    When recover mode is on, it would be very convenient to exit it with M-Q.
    [2013-06-12 Wed]
+** DONE tracebug detects only english error messages.
+   CLOSED: [2013-06-21 Fri 01:18]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
+   :END:
+   Try to solve with gettext R's functionality.
 * DEVELOPER  
 
 * MISC
+** TODO method insertion is not working on eval-* commands. Only on C-c C-l
+   [2013-06-20 Thu] [[file:~/works/protoClasses/R/envProtoClass.R]]
