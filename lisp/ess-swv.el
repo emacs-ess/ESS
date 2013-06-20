@@ -376,6 +376,8 @@ file and latex the result."
     ["LaTeX"  ess-swv-latex   t]
     ["PDF(LaTeX)" ess-swv-PDF t]
     ["PS (dvips)" ess-swv-PS  t]
+    ["Knit" ess-swv-knit   t]
+    ["Purl" ess-swv-purl   t]
     ["Insert Sexpr" ess-insert-Sexpr t]
     ["AUCTeX Interface" ess-swv-toggle-plug-into-AUCTeX
      :style toggle :selected ess-swv-plug-into-AUCTeX-p]
