@@ -1107,8 +1107,8 @@ Kill the *ess.dbg.[R_name]* buffer."
   (and (ess-process-live-p)
        (ess-process-get  'is-recover)))
 
-(defvar ess--dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
-(defvar ess--dbg-regexp-jump "debug at ")
+(defvar ess--dbg-regexp-reference "debug \\w+ +\\(.+\\)#\\([0-9]+\\):")
+(defvar ess--dbg-regexp-jump "debug \\w+ ") ;; debug at ,debug bei ,etc
 (defvar ess--dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)

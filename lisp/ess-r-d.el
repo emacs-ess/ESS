@@ -229,14 +229,18 @@
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
-(defvar ess-R-error-regexp-alist '(R R2 R3 R-recover)
+(defvar ess-R-error-regexp-alist '(R1 R R2 R3 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
+
+;; takes precidence over R above in english locales, and allows spaces in file path
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R1 "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(from \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R2 "(\\(\\w+ \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
