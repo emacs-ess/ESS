@@ -1030,7 +1030,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
   (let ((dbuff (get-buffer-create (concat ess--dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
-        (proc (get-ess-process ess-current-process-name)))
+        (proc (get-ess-process ess-local-process-name))
+        (lpn ess-local-process-name))
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
                                         ; Active debug states are usually those, in which prompt start with Browser[d]>
@@ -1043,6 +1044,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
+      (setq ess-local-process-name lpn)
       (buffer-disable-undo)
       ;; (setq buffer-read-only nil)
       (make-local-variable 'overlay-arrow-position) ;; indicator for next-error functionality in the *ess.dbg*,  useful??
@@ -1284,8 +1286,8 @@ the *ess.dbg* buffer associated with the process. If OTHER-WINDOW
 is non nil, attempt to open the location in a different window."
   (interactive)
   (let (t-debug-position ref)
-    (with-current-buffer  dbuff
-      (setq ref  (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
+    (with-current-buffer dbuff
+      (setq ref (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
                                        ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
         (move-marker ess--dbg-last-ref-marker (point-at-eol))
@@ -1317,11 +1319,14 @@ the buffer if found, or nil otherwise be found.
 `ess--dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess--dbg-create-ref-marker file line col))))
+  (let ((mrk (car (ess--dbg-create-ref-marker file line col)))
+        (lpn ess-local-process-name))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
+      ;; set or re-set to lpn as this is the process with debug session on
+      (setq ess-local-process-name lpn)
       (goto-char mrk))))
 
 ;; temporary, hopefully org folks implement something similar
