@@ -182,11 +182,9 @@ block (used for source references insertion)"
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-    (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
-           (tmpfile (concat dir (file-name-nondirectory (or filename "unknown")) "@"
-                            (number-to-string ess--tracebug-eval-index))))
-      (unless (file-exists-p dir)
-        (make-directory dir))
+    (let ((tmpfile (concat (file-name-as-directory temporary-file-directory)
+                           (file-name-nondirectory (or filename "unknown")) "@"
+                           (number-to-string ess--tracebug-eval-index))))
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
       (setq ess--last-source-tmp-file tmpfile)
