@@ -4,7 +4,10 @@
    MELPA users.
 ** TODO [#B] build ert based test suit                                :13_09:
 ** TODO split ess-mode into specialized derived modes
-
+** TODO remote M-x ess-sas-interactive via shell with ssh  
+   sets ess-process-name-list to (("shell"))
+   This prevents iESS[SAS] evaluation since a value of (("SAS")) would be
+   necessary for that.
 * COMPLETION
 ** TODO make eldoc automatically pick available sub-process           :13_09:
 ** TODO make eldoc (ess--fun.start actually) work from withing strings
