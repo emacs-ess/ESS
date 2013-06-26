@@ -9,12 +9,15 @@
    This prevents iESS[SAS] evaluation since a value of (("SAS")) would be
    necessary for that.
 * COMPLETION
-** TODO make eldoc automatically pick available sub-process           :13_09:
-** TODO make eldoc (ess--fun.start actually) work from withing strings
+** DONE make eldoc automatically pick available sub-process           :13_09:
+   :LOGBOOK:
+   - State "DONE"       from "DONE"       [2013-06-26 Wed 16:51]
+   :END:
+** TODO make eldoc (actually ess--fun.start) work from withing strings
+
 * TRACEBUG
 
 ** DONE put back ess-debug-goto-input-event-marker
-   CLOSED: [2013-06-21 Fri 01:18]
    :LOGBOOK:
    - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
    :END:
@@ -23,17 +26,19 @@
    When recover mode is on, it would be very convenient to exit it with M-Q.
    [2013-06-12 Wed]
 ** DONE tracebug detects only english error messages.
-   CLOSED: [2013-06-21 Fri 01:18]
    :LOGBOOK:
    - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
    :END:
-   Try to solve with gettext R's functionality.
+   Try to solve with gettext R's functionality. Partially solved (for most
+   important cases) by relaxing regular expressions.
+
 * DEVELOPER  
-** [#A] Eval in developer is broken
-** "initialize" method is not injected
+** DONE [#A] Eval in developer is broken
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:51]
+   :END:
+** TODO "initialize" method is not injected
+
 * MISC
-** TODO method insertion is not working on eval-* commands. Only on C-c C-l
-   [2013-06-20 Thu] [[file:~/works/protoClasses/R/envProtoClass.R]]
-** TODO when sourcing functions starting with . in developer mode, no message is given
-   [2013-06-21 Fri] [[file:~/works/protoClasses/R/envProtoClass.R::if(is(object,%20"protoCellDefinition"))%20return(object%5B%5B"type"%5D%5D)][file:~/works/protoClasses/R/envProtoClass.R::if(is(object, "protoCellDefinition")) return(object[["type"]])]]
-** TODO C-c C-c with ess-inject-source=t deletes files faster than R can process
+** DONE C-c C-c with ess-inject-source=t deletes files faster than R can process
+   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:46]
