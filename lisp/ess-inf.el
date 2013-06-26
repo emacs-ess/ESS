@@ -877,6 +877,25 @@ there is only one process running."
   (interactive)
   (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
 
+(defun ess-get-next-available-process (&optional dialect)
+  "Return first availabe (aka not busy) process of dialect DIALECT.
+DIALECT defaults to the local value of ess-dialect. Return nil if
+no such process has been found."
+  (setq dialect (or dialect ess-dialect))
+  (when dialect
+    (let (proc)
+     (catch 'found
+       (dolist (p (cons (list ess-local-process-name)
+                        ess-process-name-list))
+         (setq proc (get-process (car p)))
+         (when (and proc
+                    (process-live-p proc)
+                    (equal dialect
+                           (buffer-local-value 'ess-dialect (process-buffer proc)))
+                    (not (process-get proc 'busy)))
+           (throw 'found proc)))))))
+
+
 ;;*;;; Commands for switching to the process buffer
 
 (defun ess-switch-to-ESS (eob-p)
