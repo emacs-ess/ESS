@@ -199,9 +199,9 @@ otherwise call devSource."
             (while (and (setq ns (pop dev-packs))
                         (not assigned-p))
               (when (and (member ns nms) ;;todo: try to load the package if not loaded
-                         (equal "TRUE"
-                                (car (ess-get-words-from-vector
-                                      (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function',inherits=FALSE))\n" name ns)))))
+                         (ess-boolean-command
+                          (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function', inherits=FALSE))\n"
+                                  name ns)))
                 (ess-developer-devSource beg end ns message)
                 (setq assigned-p t)))
             (unless assigned-p
@@ -219,31 +219,21 @@ otherwise call devSource."
       (ess-developer-devSource beg end package message))))
 
 (defun ess-developer-devSource (beg end package &optional message)
-  (let ((ess-load-command
-         (format ".essDev_source(source='%s',package='%s')" "%s" package)))
+  (let* ((ess-load-command
+          (format ".essDev_source(source='%s',package='%s')" "%s" package))
+         (ess-load-visibly-noecho-command ess-load-command))
     (if message (message message))
     (ess--developer-command (ess--make-source-refd-command beg end)
                             'ess--developer-propertize-output)))
   
-;; (defun ess-developer-devSource-string (proc command package &optional mess)
-;;   "devSource COMMAND into the PACKAGE.
-;; String must be quoted with `ess-quote-special-chars'."
-;;   ;; assumes a started process
-;;   (unless (process-get proc 'developer)
-;;     (error "Ess-developer mode is not active"))
-;;   (let ((comm  (format ".essDev_source(expr={%s}, package='%s')"
-;;                        command package)))
-;;     (dbg comm)
-;;     (if mess (message mess))
-;;     (ess--developer-command comm  'ess--developer-propertize-output)))
-
 
 (defun ess--developer-command (comm &optional propertize-func)
   "Evaluate the command and popup a message with the output if succed.
 On error  insert the error at the end of the inferior-ess buffer.
 
-PROPERTIZE-FUNC is a function called with the output buffer being current.
-usually used to manipulate the output, for example insert some text properties.
+PROPERTIZE-FUNC is a function called with the output buffer being
+current. usually used to manipulate the output, for example to
+propertize output text.
 "
   (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
   (let ((buff (get-buffer-create " *ess-command-output*"))
