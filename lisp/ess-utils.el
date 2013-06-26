@@ -783,19 +783,17 @@ etc.
   ;; (while-no-input
   (run-hooks 'ess-idle-timer-functions))
 
-
 (require 'timer)
 (defvar ess--idle-timer
   (run-with-idle-timer ess-idle-timer-interval 'repeat 'ess--idle-timer-function)
   "Timer used to run `ess-idle-timer-functions'.")
 
-
 (defmacro ess-when-new-input (time-var &rest body)
-  "BODY is evaluate only if the value of TIME-VAR is bigger than
-the time of the last user input (stored in 'last-eval' process
-variable). TIME-VAR is the name of the process variable which
-holds the access time. See the code for `ess-synchronize-dirs'
-and `ess-cache-search-list'.
+  "BODY is evaluate only if the value of procss variable TIME-VAR
+is bigger than the time of the last user input (stored in
+'last-eval' process variable). TIME-VAR is the name of the
+process variable which holds the access time. See the code for
+`ess-synchronize-dirs' and `ess-cache-search-list'.
 
 Returns nil when no current process, or process is busy, or
 time-var > last-eval. Otherwise, execute BODY and return the last
@@ -826,8 +824,6 @@ process to avoid excessive requests.
      ,@(mapcar (lambda (el)
 		 `(princ (format "%s:%s\n" ',el ,el)))
 	       args)))
-
-
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
@@ -977,9 +973,6 @@ and y-offsets for the toolbar from point."
 ;;                   nil tooltip-hide-delay
 ;;                   popup-tip-max-width
 ;;                   nil xo yo)))
-
-
-
       
 
 (defvar ess-build-tags-command nil
@@ -1030,7 +1023,6 @@ FTags file (default TAGS): ")
       (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
         (message "Building tags .. ok!")))))
       
-
 
 (defun ess-function-arguments (funname)
   "Get FUNARGS from cache or ask the process for it.
