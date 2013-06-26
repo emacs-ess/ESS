@@ -207,12 +207,16 @@ otherwise call devSource."
             (unless assigned-p
               (ess-developer-send-region-fallback proc beg end visibly message tracebug))))))))
 
+(defvar ess--developer-hist nil)
+
 (defun ess-developer-send-region (proc beg end &optional visibly message tracebug)
   "Ask for for the package and devSource region into it."
-  (let ((package
-         (ess-completing-read "devEval into"
-                              (append ess-developer-packages (list "*current*" )) nil t))
-        (message  (if message (format "dev%s ..." message))))
+  (let* ((all-packs (append ess-developer-packages (list "*current*" )))
+         (default (car (member (car ess--developer-hist) all-packs)))
+         (package
+          (ess-completing-read "devEval into" all-packs
+                               nil t nil 'ess--developer-hist default)))
+    (message  (if message (format "dev%s ..." message)))
     (if (equal package "*current*")
         (ess-developer-send-region-fallback proc beg end visibly message tracebug)
       ;; else, (ignore VISIBLY here)
