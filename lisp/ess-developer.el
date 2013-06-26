@@ -298,11 +298,13 @@ VAL is negative turn it off."
           (run-hooks 'ess-developer-enter-hook)
           (when (file-readable-p ess-developer-enter-source)
             (ess-eval-linewise (format "source(%s)\n" ess-developer-enter-source)))
-          (message "Developer mode is on"))
+          (if ess-developer-packages
+              (message "You are developing: %s" ess-developer-packages)
+            (message "Developer is on (add packages with C-c C-t a)")))
       (run-hooks 'ess-developer-exit-hook)
       (when (file-readable-p ess-developer-exit-source)
         (ess-eval-linewise (format "source(%s)\n" ess-developer-exit-source)))
-      (message "Developer mode is off"))
+      (message "Developer is off"))
     (process-put proc 'developer ess-dev)
     (with-current-buffer (process-buffer proc)
       (setq ess-local-process-name
