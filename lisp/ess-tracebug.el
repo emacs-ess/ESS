@@ -149,7 +149,7 @@ referenced buffer.")
 (defvar org-edit-src-beg-marker nil)
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
-(defvar ess--last-source-tmp-file nil)
+
 (defvar ess-tracebug-original-buffer-marker nil
   "Marker pointing to the beginning of original source code.
 
@@ -175,8 +175,15 @@ block (used for source references insertion)"
     (setq end (point)
           orig-beg beg)
 
-    (when (and ess--last-source-tmp-file (file-exists-p ess--last-source-tmp-file))
-      (delete-file ess--last-source-tmp-file)) ;; cannot put it in ess-tracebug-send-region, process is too slow
+    ;; delete all old temp files
+    (when (and (not (ess-process-get 'busy))
+               (< 1 (time-to-seconds
+                     (time-subtract (current-time)
+                                    (ess-process-get 'last-eval)))))
+      (dolist (f (ess-process-get 'temp-source-files))
+        (and (file-exists-p f)
+             (delete-file f)))
+      (ess-process-put 'temp-source-files nil))
 
     (when (markerp orig-marker)
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
@@ -187,7 +194,8 @@ block (used for source references insertion)"
                            (number-to-string ess--tracebug-eval-index))))
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
-      (setq ess--last-source-tmp-file tmpfile)
+      (ess-process-put 'temp-source-files
+                       (cons tmpfile (ess-process-get 'temp-source-files)))
       (if (not filename)
           (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
         (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
