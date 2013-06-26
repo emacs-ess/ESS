@@ -229,23 +229,31 @@
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
-(defvar ess-R-error-regexp-alist '(R1 R R2 R3 R-recover)
+(defvar ess-R-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
+;; takes precidence over R1 below in english locales, and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
-
-;; takes precidence over R above in english locales, and allows spaces in file path
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R1 "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(\\w+ \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R2 "(\\(\\w+ \\([^)\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
+;; precede R4 and allowes spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             '(R3 "\\(?:^ +\\|: +\\)\\([^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R4 "\\([^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
