@@ -29,7 +29,11 @@
    :END:
    Try to solve with gettext R's functionality.
 * DEVELOPER  
-
+** [#A] Eval in developer is broken
+** "initialize" method is not injected
 * MISC
 ** TODO method insertion is not working on eval-* commands. Only on C-c C-l
    [2013-06-20 Thu] [[file:~/works/protoClasses/R/envProtoClass.R]]
+** TODO when sourcing functions starting with . in developer mode, no message is given
+   [2013-06-21 Fri] [[file:~/works/protoClasses/R/envProtoClass.R::if(is(object,%20"protoCellDefinition"))%20return(object%5B%5B"type"%5D%5D)][file:~/works/protoClasses/R/envProtoClass.R::if(is(object, "protoCellDefinition")) return(object[["type"]])]]
+** TODO C-c C-c with ess-inject-source=t deletes files faster than R can process
