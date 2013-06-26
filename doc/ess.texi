@@ -2503,88 +2503,85 @@ packages:
 @section ESS tracebug
 @cindex ESS tracebug
 @findex ess-tracebug
-@emph{Note:} The official ess-tracebug documentation is still at
-@uref{http://code.google.com/p/ess-tracebug/}.
 
-ESS @code{tracebug} package offers visual debugging, interactive error
+ESS @code{tracebug} offers visual debugging, interactive error
 navigation, interactive backtrace, breakpoint manipulation, control over
 R error actions, watch window and interactive flagging/unflagging of
 functions for debugging.
 
-All of the tracebug functionality can be found on @code{ess-dev-map},
-bound to @kbd{C-c C-t}. 
+From ESS13.05 @code{ess-tracebug} is on by default. You can toggle it on
+and off with @kbd{M-x} @code{ess-tracebug}. To disable startup
+activation of @code{ess-tracebug} set @code{ess-use-tracebug} to nil.
 
-Additionally when subprocess is in a debugging mode,
-@code{ess-debug-minor-mode} is active wich bounds
-@code{ess-debug-minor-mode-map}:
+Tracebug functionality can be found on @code{ess-dev-map}, bound to
+@kbd{C-c C-t}. Additionally, when subprocess is in a debugging state
+@code{ess-debug-minor-mode} is active and the following shortcuts are
+available:
 
 @verbatim
-M-C             ess-debug-command-continue
-M-N             ess-debug-command-next
-M-Q             ess-debug-command-quit
-M-U             ess-debug-command-up
-C-M-S-c         ess-debug-command-continue-multi
-C-M-S-n         ess-debug-command-next-multi
+* Interactive Debugging (`ess-debug-minor-mode-map'):
+
+ M-C   . Continue                  . `ess-debug-command-continue'
+ M-C-C . Continue multi            . `ess-debug-command-continue-multi'
+ M-N   . Next step                 . `ess-debug-command-next'
+ M-C-N . Next step multi           . `ess-debug-command-next-multi'
+ M-U   . Up frame                  . `ess-debug-command-up'
+ M-Q   . Quit debugging            . `ess-debug-command-quit'
+
 @end verbatim
 
-You can always call @kbd{C-c C-t ?}  to display the following menu with
-all the tracebug keys (prefix not included):
 
-@c @multitable {123} {123} {really-really-really-really-really-long}
-@c @item Key @tab Description                      @tab Function
-@c @item b   @tab Set BP (repeat to cycle)         @tab `ess-bp-set'
-@c @item B   @tab Set conditional BP               @tab `ess-bp-set-conditional'
-@c @item k   @tab Kill BP                          @tab `ess-bp-kil'
-@c @item K   @tab Kill all BPs                     @tab `ess-bp-kill-all'
-@c @item t   @tab Toggle BP state                  @tab `ess-bp-toggle-state'
-@c @item l   @tab Set logger BP                    @tab `ess-bp-set-logger'
-@c @item C-n @tab Goto next BP                     @tab `ess-bp-next'
-@c @item C-p @tab Goto previous BP                 @tab `ess-bp-previous'
-@c @end multitable
+Here are all the tracebug commands defined in @code{ess-dev-map}
+(@kbd{C-c C-t ?} to show this table):
 
 @verbatim
- * Breakpoints:
 
-b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
-B   . Set conditional BP               . `ess-bp-set-conditional'
-k   . Kill BP                          . `ess-bp-kil'
-K   . Kill all BPs                     . `ess-bp-kill-all'
-t   . Toggle BP state                  . `ess-bp-toggle-state'
-l   . Set logger BP                    . `ess-bp-set-logger'
-C-n . Goto next BP                     . `ess-bp-next'
-C-p . Goto previous BP                 . `ess-bp-previous'
+* Breakpoints (`ess-dev-map'):
 
- * General Debugging:
+ b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
+ B   . Set conditional BP               . `ess-bp-set-conditional'
+ k   . Kill BP                          . `ess-bp-kil'
+ K   . Kill all BPs                     . `ess-bp-kill-all'
+ o   . Toggle BP state                  . `ess-bp-toggle-state'
+ l   . Set logger BP                    . `ess-bp-set-logger'
+ n   . Goto next BP                     . `ess-bp-next'
+ p   . Goto previous BP                 . `ess-bp-previous'
 
-`   . Show R Traceback                     . `ess-show-R-traceback'
-e   . Toggle error action (repeat to cycle). `ess-dbg-toggle-error-action'
-d   . Flag for debugging                   . `ess-dbg-flag-for-debugging'
-D   . Unflag for debugging                 . `ess-dbg-unflag-for-debugging'
-w   . Watch window                         . `ess-watch'
+  (C- prefixed equivalents are also defined)
 
+* Debugging (`ess-dev-map'):
+ `   . Show traceback                       . `ess-show-traceback' (also on C-c `)
+ ~   . Show callstack                       . `ess-show-call-stack' (also on C-c ~)
+ e   . Toggle error action (repeat to cycle). `ess-debug-toggle-error-action'
+ d   . Flag for debugging                   . `ess-debug-flag-for-debugging'
+ u   . Unflag for debugging                 . `ess-debug-unflag-for-debugging'
+ w   . Watch window                         . `ess-watch'
 
- * Interactive Debugging:
+  (C- prefixed equivalents are also defined)
 
-M-C   . Continue                  . `ess-debug-command-continue'
-M-C-C . Continue multi            . `ess-debug-command-continue-multi'
-M-N   . Next step                 . `ess-debug-command-next'
-M-C-N . Next step multi           . `ess-debug-command-next-multi'
-M-U   . Up frame                  . `ess-debug-command-up'
-M-Q   . Quit debugging            . `ess-debug-command-quit'
-1..9  . Enter recover frame       . `ess-debug-command-digit'
-0     . Exit recover (also q,n,c) . `ess-debug-command-digit'
+* Navigation to errors (general emacs functionality):
 
- * Misc:
+ C-x `, M-g n   . `next-error'
+ M-g p          . `previous-error'
+
+* Misc:
 
 ?   . Show this help		. `ess-tracebug-show-help'
 
- * Navigation to errors (emacs general functionality):
-
-C-x `, M-g n   . `next-error'
-M-g p          . `previous-error'
-
 @end verbatim
 
+A more detailed ess-tracebug documentation with screenshots is available
+at @uref{http://code.google.com/p/ess-tracebug/}.
+
+A short tutorial is at @uref{http://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
+
+@emph{Note:} Currently, ess-tracebug does not detect some of R's debug
+related messages in non-English locales. To set your R messages to
+English add the following line to your .Rprofile init file:
+
+@verbatim
+   Sys.setlocale("LC_MESSAGES", "C")
+@end verbatim
 
 @node Editing documentation
 @section Editing documentation

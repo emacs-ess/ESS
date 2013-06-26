@@ -149,7 +149,7 @@ referenced buffer.")
 (defvar org-edit-src-beg-marker nil)
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
-(defvar ess--last-source-tmp-file nil)
+
 (defvar ess-tracebug-original-buffer-marker nil
   "Marker pointing to the beginning of original source code.
 
@@ -175,21 +175,27 @@ block (used for source references insertion)"
     (setq end (point)
           orig-beg beg)
 
-    (when (and ess--last-source-tmp-file (file-exists-p ess--last-source-tmp-file))
-      (delete-file ess--last-source-tmp-file)) ;; cannot put it in ess-tracebug-send-region, process is too slow
+    ;; delete all old temp files
+    (when (and (not (ess-process-get 'busy))
+               (< 1 (time-to-seconds
+                     (time-subtract (current-time)
+                                    (ess-process-get 'last-eval)))))
+      (dolist (f (ess-process-get 'temp-source-files))
+        (and (file-exists-p f)
+             (delete-file f)))
+      (ess-process-put 'temp-source-files nil))
 
     (when (markerp orig-marker)
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-    (let* ((dir (concat (file-name-as-directory temporary-file-directory) "ESS-region/" ))
-           (tmpfile (concat dir (file-name-nondirectory (or filename "unknown")) "@"
-                            (number-to-string ess--tracebug-eval-index))))
-      (unless (file-exists-p dir)
-        (make-directory dir))
+    (let ((tmpfile (concat (file-name-as-directory temporary-file-directory)
+                           (file-name-nondirectory (or filename "unknown")) "@"
+                           (number-to-string ess--tracebug-eval-index))))
       ;; file is not deleted but overwriten between sessions
       (write-region beg end tmpfile nil 'silent)
-      (setq ess--last-source-tmp-file tmpfile)
+      (ess-process-put 'temp-source-files
+                       (cons tmpfile (ess-process-get 'temp-source-files)))
       (if (not filename)
           (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
         (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
@@ -305,6 +311,13 @@ positive.
 This mode adds to ESS the interactive debugging, breakpoint and
 error navigation functionality.  Strictly speaking ess-tracebug
 is not a minor mode. It integrates globally into ESS and iESS.
+
+Note: Currently, ess-tracebug does not detect some of R's debug
+related messages in non-English locales. To set your R messages
+to English add the following line to your .Rprofile init file:
+
+   Sys.setlocale(\"LC_MESSAGES\", \"C\")
+
 
 See `ess-tracebug-help' for the overview of ess-tracebug functionality."
 
@@ -1025,7 +1038,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
   (let ((dbuff (get-buffer-create (concat ess--dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
-        (proc (get-ess-process ess-current-process-name)))
+        (proc (get-ess-process ess-local-process-name))
+        (lpn ess-local-process-name))
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
                                         ; Active debug states are usually those, in which prompt start with Browser[d]>
@@ -1038,6 +1052,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
+      (setq ess-local-process-name lpn)
       (buffer-disable-undo)
       ;; (setq buffer-read-only nil)
       (make-local-variable 'overlay-arrow-position) ;; indicator for next-error functionality in the *ess.dbg*,  useful??
@@ -1100,8 +1115,8 @@ Kill the *ess.dbg.[R_name]* buffer."
   (and (ess-process-live-p)
        (ess-process-get  'is-recover)))
 
-(defvar ess--dbg-regexp-reference "debug at +\\(.+\\)#\\([0-9]+\\):")
-(defvar ess--dbg-regexp-jump "debug at ")
+(defvar ess--dbg-regexp-reference "debug \\w+ +\\(.+\\)#\\([0-9]+\\):")
+(defvar ess--dbg-regexp-jump "debug \\w+ ") ;; debug at ,debug bei ,etc
 (defvar ess--dbg-regexp-skip
   ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
   ;; don't anchor to bol secondary prompt can occur before (anything else?)
@@ -1279,8 +1294,8 @@ the *ess.dbg* buffer associated with the process. If OTHER-WINDOW
 is non nil, attempt to open the location in a different window."
   (interactive)
   (let (t-debug-position ref)
-    (with-current-buffer  dbuff
-      (setq ref  (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
+    (with-current-buffer dbuff
+      (setq ref (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
                                        ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
         (move-marker ess--dbg-last-ref-marker (point-at-eol))
@@ -1312,11 +1327,14 @@ the buffer if found, or nil otherwise be found.
 `ess--dbg-find-buffer' is used to find the FILE and open the
 associated buffer. If FILE is nil return nil.
 "
-  (let ((mrk (car (ess--dbg-create-ref-marker file line col))))
+  (let ((mrk (car (ess--dbg-create-ref-marker file line col)))
+        (lpn ess-local-process-name))
     (when mrk
       (if (not other-window)
           (switch-to-buffer (marker-buffer mrk))
         (pop-to-buffer (marker-buffer mrk)))
+      ;; set or re-set to lpn as this is the process with debug session on
+      (setq ess-local-process-name lpn)
       (goto-char mrk))))
 
 ;; temporary, hopefully org folks implement something similar

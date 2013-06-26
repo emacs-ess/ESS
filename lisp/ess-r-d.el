@@ -86,6 +86,8 @@
     (define-key ess-dev-map "K" 'ess-bp-kill-all)
     (define-key ess-dev-map "\C-n" 'ess-bp-next)
     (define-key ess-dev-map "n" 'ess-bp-next)
+    (define-key ess-dev-map "i" 'ess-debug-goto-input-event-marker)
+    (define-key ess-dev-map "I" 'ess-debug-goto-input-event-marker)
     (define-key ess-dev-map "\C-p" 'ess-bp-previous)
     (define-key ess-dev-map "p" 'ess-bp-previous)
     (define-key ess-dev-map "\C-e" 'ess-debug-toggle-error-action)
@@ -227,14 +229,18 @@
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
-(defvar ess-R-error-regexp-alist '(R R2 R3 R-recover)
+(defvar ess-R-error-regexp-alist '(R1 R R2 R3 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R "^.* \\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
+
+;; takes precidence over R above in english locales, and allows spaces in file path
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R1 "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(from \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R2 "(\\(\\w+ \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
@@ -664,13 +670,12 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when (and (ess-process-live-p)
-             (not (ess-process-get 'busy)))
+  (let ((proc (ess-get-next-available-process)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-at-point))
                        (car (ess--funname.start)))))
       (when funname
-        (let* ((args (ess-function-arguments funname))
+        (let* ((args (ess-function-arguments funname proc))
                (bargs (cadr args))
                (doc (mapconcat (lambda (el)
                                  (if (equal (car el) "...")

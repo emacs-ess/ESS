@@ -4,15 +4,41 @@
    MELPA users.
 ** TODO [#B] build ert based test suit                                :13_09:
 ** TODO split ess-mode into specialized derived modes
-
+** TODO remote M-x ess-sas-interactive via shell with ssh  
+   sets ess-process-name-list to (("shell"))
+   This prevents iESS[SAS] evaluation since a value of (("SAS")) would be
+   necessary for that.
 * COMPLETION
-** TODO make eldoc automatically pick available sub-process           :13_09:
+** DONE make eldoc automatically pick available sub-process           :13_09:
+   :LOGBOOK:
+   - State "DONE"       from "DONE"       [2013-06-26 Wed 16:51]
+   :END:
+** TODO make eldoc (actually ess--fun.start) work from withing strings
 
 * TRACEBUG
 
-* DEVELOPER  
-
-* MISC
+** DONE put back ess-debug-goto-input-event-marker
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
+   :END:
+   [2013-06-18 Tue] [[gnus:nnfolder%2Barchive:sent-2013-June#87sj0fulny.fsf@gmail.com][Email to Marius Hofert: Re: {ESS} A suggestion for deb]]
 ** TODO make ess-selection-mode-map or just use ess-debug-mode-map
    When recover mode is on, it would be very convenient to exit it with M-Q.
    [2013-06-12 Wed]
+** DONE tracebug detects only english error messages.
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
+   :END:
+   Try to solve with gettext R's functionality. Partially solved (for most
+   important cases) by relaxing regular expressions.
+
+* DEVELOPER  
+** DONE [#A] Eval in developer is broken
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:51]
+   :END:
+** TODO "initialize" method is not injected
+
+* MISC
+** DONE C-c C-c with ess-inject-source=t deletes files faster than R can process
+   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:46]
