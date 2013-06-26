@@ -2573,6 +2573,8 @@ Here are all the tracebug commands defined in @code{ess-dev-map}
 A more detailed ess-tracebug documentation with screenshots is available
 at @uref{http://code.google.com/p/ess-tracebug/}.
 
+A short tutorial is at @uref{http://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
+
 @emph{Note:} Currently, ess-tracebug does not detect some of R's debug
 related messages in non-English locales. To set your R messages to
 English add the following line to your .Rprofile init file:
