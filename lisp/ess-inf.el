@@ -885,15 +885,16 @@ no such process has been found."
   (when dialect
     (let (proc)
      (catch 'found
-       (dolist (p (cons (list ess-local-process-name)
-                        ess-process-name-list))
-         (setq proc (get-process (car p)))
-         (when (and proc
-                    (process-live-p proc)
-                    (equal dialect
-                           (buffer-local-value 'ess-dialect (process-buffer proc)))
-                    (not (process-get proc 'busy)))
-           (throw 'found proc)))))))
+       (dolist (p (cons ess-local-process-name
+                        (mapcar 'car ess-process-name-list)))
+         (when p
+           (setq proc (get-process p))
+           (when (and proc
+                      (process-live-p proc)
+                      (equal dialect
+                             (buffer-local-value 'ess-dialect (process-buffer proc)))
+                      (not (process-get proc 'busy)))
+             (throw 'found proc))))))))
 
 
 ;;*;;; Commands for switching to the process buffer

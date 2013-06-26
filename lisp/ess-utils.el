@@ -1024,7 +1024,7 @@ FTags file (default TAGS): ")
         (message "Building tags .. ok!")))))
       
 
-(defun ess-function-arguments (funname)
+(defun ess-function-arguments (funname &optional proc)
   "Get FUNARGS from cache or ask the process for it.
 
 Return FUNARGS - a list with the first element being a
@@ -1039,10 +1039,14 @@ then update the entry.
 
 Package_name is \"\" if funname was not found or is a special
 name i.e. contains :,$ or @.
+
+If PROC is given, it should be an ESS process which should be
+queried for arguments.
 "
+  
   (when (and funname ;; usually returned by ess--funname.start (might be nil)
-             (ess-process-live-p))
-    (let* ((proc (get-process ess-local-process-name))
+             (or proc (ess-process-live-p)))
+    (let* ((proc (or proc (get-process ess-local-process-name)))
            (args (gethash funname (process-get proc 'funargs-cache)))
            (pack (caar args))
            (ts   (cdar args)))
@@ -1056,7 +1060,8 @@ name i.e. contains :,$ or @.
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
           (with-current-buffer (ess-command (format ess-funargs-command
-                                                    (ess-quote-special-chars funname)))
+                                                    (ess-quote-special-chars funname))
+                                            nil nil nil nil proc)
             (goto-char (point-min))
             (when (re-search-forward "(list" nil t)
               (goto-char (match-beginning 0))

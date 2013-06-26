@@ -670,13 +670,12 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when (and (ess-process-live-p)
-             (not (ess-process-get 'busy)))
+  (let ((proc (ess-get-next-available-process)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-at-point))
                        (car (ess--funname.start)))))
       (when funname
-        (let* ((args (ess-function-arguments funname))
+        (let* ((args (ess-function-arguments funname proc))
                (bargs (cadr args))
                (doc (mapconcat (lambda (el)
                                  (if (equal (car el) "...")
