@@ -162,10 +162,15 @@ from temporary buffers.")
 (defun ess--make-source-refd-command (beg end &optional visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
-  (let ((filename buffer-file-name)
-        (orig-marker (or ess-tracebug-original-buffer-marker
+  (let* ((filename buffer-file-name)
+         (proc-dir (ess-get-process-variable 'default-directory))
+         (remote (when (file-remote-p proc-dir)
+                   (require 'tramp)
+                   ;; should this be done in process buffer?
+                   (tramp-dissect-file-name proc-dir)))
+         (orig-marker (or ess-tracebug-original-buffer-marker
                          org-edit-src-beg-marker))
-        orig-beg)
+         orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
     (goto-char beg)
     (skip-chars-forward " \t\n")
@@ -174,7 +179,7 @@ block (used for source references insertion)"
     (skip-chars-backward " \t\n")
     (setq end (point)
           orig-beg beg)
-
+    
     ;; delete all old temp files
     (when (and (not (ess-process-get 'busy))
                (< 1 (time-to-seconds
@@ -189,10 +194,12 @@ block (used for source references insertion)"
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-    (let ((tmpfile (concat (file-name-as-directory temporary-file-directory)
-                           (file-name-nondirectory (or filename "unknown")) "@"
-                           (number-to-string ess--tracebug-eval-index))))
-      ;; file is not deleted but overwriten between sessions
+    (let ((tmpfile
+           (expand-file-name (concat (file-name-nondirectory (or filename "unknown")) "@"
+                                     (number-to-string ess--tracebug-eval-index))
+                             (if remote
+                                 (tramp-get-remote-tmpdir remote)
+                               temporary-file-directory))))
       (write-region beg end tmpfile nil 'silent)
       (ess-process-put 'temp-source-files
                        (cons tmpfile (ess-process-get 'temp-source-files)))
@@ -203,6 +210,9 @@ block (used for source references insertion)"
                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
         (with-silent-modifications
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (when remote
+        ;; get local name (should this be done in process buffer?)
+        (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
       (if (and visibly ess-load-visibly-command)
           (format ess-load-visibly-command tmpfile)
         (format (or ess-load-visibly-noecho-command

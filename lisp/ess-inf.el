@@ -524,6 +524,7 @@ This marks the process with a message, at a particular time point."
                (goto-char (point-max))
                (insert "\^L\n")))    ; page boundaries = Interactive sessions
            (let ((process-environment
+                  ;; fixme: tramp environment variables?
                   (nconc
                    (list "STATATERM=emacs"
                          (format "PAGER=%s" inferior-ess-pager))
