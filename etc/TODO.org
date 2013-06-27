@@ -45,3 +45,5 @@
 ** TODO watch window behaves unexpectedly  
    [2013-06-27 Thu]
 ** TODO set PAGER="cat" environment variable for tramp process if unset?
+** TODO cleanup ESS namespace 
+   [2013-06-27 Thu]

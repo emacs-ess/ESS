@@ -694,7 +694,7 @@ the  underscore is always inserted. "
     (ignore-errors
       (when (and (eq major-mode 'inferior-ess-mode)
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
-        (narrow-to-region (process-mark (get-ess-process)) (point-max)))
+        (narrow-to-region (process-mark (ess-get-process)) (point-max)))
       (and ess-noweb-mode
            (ess-noweb-in-code-chunk)
            (ess-noweb-narrow-to-chunk))

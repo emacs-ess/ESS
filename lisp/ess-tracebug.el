@@ -1048,7 +1048,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
   (let ((dbuff (get-buffer-create (concat ess--dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
-        (proc (get-ess-process ess-local-process-name))
+        (proc (ess-get-process ess-local-process-name))
         (lpn ess-local-process-name))
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
@@ -2401,7 +2401,7 @@ ready to be send to R process. AL is an association list as return by `ess-watch
   ;; .ess_watch_expressions object in R. Assumes R watch being the current
   ;; buffer, otherwise will most likely install empty list.
   (interactive)
-  (process-send-string (get-ess-process ess-current-process-name)
+  (process-send-string (ess-get-process ess-current-process-name)
                        (ess-watch-parse-assoc (ess-watch-make-alist)))
   ;;todo: delete the prompt at the end of proc buffer todo: defun ess-send-string!!
   (sleep-for 0.05)  ;; need here, if ess-command is used immediately after,  for some weird reason the process buffer will not be changed
