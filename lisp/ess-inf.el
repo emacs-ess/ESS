@@ -971,9 +971,9 @@ If TOGGLE-EOB is given, the value of
     (ess--execute-electric-command map nil nil nil EOB)))
 
 
-(defun get-ess-buffer (name)
+(defun get-ess-buffer (&optional name)
   "Return the buffer associated with the ESS process named by NAME."
-  (process-buffer (get-ess-process name)))
+  (process-buffer (get-ess-process (or name ess-local-process-name))))
 
 (defun update-ess-process-name-list ()
   "Remove names with no process."
