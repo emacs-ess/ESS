@@ -52,7 +52,7 @@
 
 (autoload 'ess-load-file                "ess-inf" "[autoload]" t)
 (autoload 'ess-request-a-process        "ess-inf" "(autoload)" nil)
-(autoload 'get-ess-buffer               "ess-inf" "(autoload)" nil)
+(autoload 'ess-get-process-buffer               "ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
 (autoload 'ess-switch-to-end-of-ESS     "ess-inf" "(autoload)" nil)
 (autoload 'ess-eval-linewise            "ess-inf" "(autoload)" nil)
@@ -218,7 +218,7 @@ is not already."
   (interactive)
   (let* ((proc (or ess-local-process-name
                    (ess-request-a-process "Evaluate into which process? " t)))
-         (ess-buf (get-ess-buffer proc)))
+         (ess-buf (ess-get-process-buffer proc)))
     (setq ess-local-process-name proc)
     (if (get-buffer-window ess-buf) nil
       (display-buffer ess-buf t))
@@ -234,7 +234,7 @@ is not already."
   ;; replacement code begins
   (let* ((proc (or ess-local-process-name
                    (ess-request-a-process "Evaluate into which process? " t)))
-         (ess-buf (get-ess-buffer proc)))
+         (ess-buf (ess-get-process-buffer proc)))
     (setq ess-local-process-name proc)
     (if (get-buffer-window ess-buf) nil
       (display-buffer ess-buf t))

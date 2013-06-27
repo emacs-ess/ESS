@@ -971,7 +971,7 @@ If TOGGLE-EOB is given, the value of
     (ess--execute-electric-command map nil nil nil EOB)))
 
 
-(defun get-ess-buffer (&optional name)
+(defun ess-get-process-buffer (&optional name)
   "Return the buffer associated with the ESS process named by NAME."
   (process-buffer (get-ess-process (or name ess-local-process-name))))
 
@@ -3179,7 +3179,7 @@ but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
   (with-current-buffer
-      (get-ess-buffer ess-current-process-name);to get *its* local vars
+      (ess-get-process-buffer ess-current-process-name);to get *its* local vars
     (let ((result nil)
           (slist (ess-process-get 'search-list))
           (tramp-mode nil)) ;; hack for bogus file-directory-p below
