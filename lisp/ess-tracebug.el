@@ -43,8 +43,10 @@
 ;;  - on the fly  debug/undebug of R functions and methods
 ;;  - highlighting of error source references and easy error navigation
 ;;  - interactive traceback.
-;;  For a complete description please see the
-;;  documentation at http://code.google.com/p/ess-tracebug/
+;;  
+;;  For a complete description please see the documentation at
+;;  http://code.google.com/p/ess-tracebug/ and a brief tutorial at
+;;  http://code.google.com/p/ess-tracebug/wiki/GettingStarted
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
