@@ -274,7 +274,7 @@ and their default values of an R function. Built on \\[ess-r-args-show]."
   (insert "("); (skeleton-pair-insert-maybe nil)
   (if (and (not eldoc-mode)
            ess-local-process-name ; has a process and it must still be running
-           (get-ess-process ess-local-process-name))
+           (ess-get-process ess-local-process-name))
       (ess-r-args-show)))
 
 ;; MM: I would strongly discourage use of the following:
@@ -312,7 +312,7 @@ ess-r-args-current-function if no argument given."
 ;; (defun ess-r-object-tooltip ()
 ;;   "Get info for object at point, and display it in a tooltip."
 ;;   (interactive)
-;;   (let ((proc (get-ess-process))
+;;   (let ((proc (ess-get-process))
 ;;         (objname (current-word))
 ;;         (curbuf (current-buffer))
 ;;         (tmpbuf (get-buffer-create " *ess-r-object-tooltip*"))

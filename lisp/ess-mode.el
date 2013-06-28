@@ -72,7 +72,7 @@
 ;; (autoload 'ess-switch-process           "ess-inf" "" nil)
 ;; (autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
 ;; (autoload 'ess-request-a-process        "ess-inf" "" nil)
-;; (autoload 'get-ess-process              "ess-inf" "" nil)
+;; (autoload 'ess-get-process              "ess-inf" "" nil)
 ;; (autoload 'ess-command                  "ess-inf" "" nil)
 ;; (autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
 ;; (autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
@@ -1415,7 +1415,7 @@ generate the source buffer."
   (let* ((dirname (file-name-as-directory
                    (if (stringp ess-source-directory)
                        ess-source-directory
-                     (with-current-buffer (process-buffer (get-ess-process
+                     (with-current-buffer (process-buffer (ess-get-process
                                                            ess-local-process-name))
                        (ess-setq-vars-local ess-customize-alist)
                        (apply ess-source-directory nil)))))

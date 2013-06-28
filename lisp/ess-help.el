@@ -142,7 +142,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
    (progn
      (ess-force-buffer-current)
      (when current-prefix-arg ;update cache if prefix
-       (with-current-buffer (process-buffer (get-ess-process ess-current-process-name))
+       (with-current-buffer (process-buffer (ess-get-process ess-current-process-name))
          (ess-process-put 'sp-for-help-changed? t)))
      (if (ess-ddeclient-p)
          (list (read-string "Help on: "))

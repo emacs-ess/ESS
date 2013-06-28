@@ -524,6 +524,7 @@ This marks the process with a message, at a particular time point."
                (goto-char (point-max))
                (insert "\^L\n")))    ; page boundaries = Interactive sessions
            (let ((process-environment
+                  ;; fixme: tramp environment variables?
                   (nconc
                    (list "STATATERM=emacs"
                          (format "PAGER=%s" inferior-ess-pager))
@@ -611,7 +612,7 @@ local ESS vars like `ess-local-process-name'"
       (1 font-lock-keyword-face)
       (2 font-lock-variable-name-face)))))
 
-(defun get-ess-process (&optional name use-another)
+(defun ess-get-process (&optional name use-another)
   "Return the ESS process named by NAME.  If USE-ANOTHER is non-nil,
 and the process NAME is not running (anymore), try to connect to another if
 there is one.  By default (USE-ANOTHER is nil), the connection to another
@@ -625,7 +626,7 @@ process happens interactively (when possible)."
     ;; else :
     ;; was (error "Process %s is not running" name)
     (ess-write-to-dribble-buffer
-     (format "get-ess-process: process '%s' not running" name))
+     (format "ess-get-process: process '%s' not running" name))
     (if (= 0 (length ess-process-name-list))
         (save-current-buffer
           (ess-write-to-dribble-buffer
@@ -635,14 +636,14 @@ process happens interactively (when possible)."
                    name ess-language)
           (ess-start-process-specific ess-language ess-dialect)
           ;; and return the process: "call me again"
-          (get-ess-process name))
+          (ess-get-process name))
 
       ;; else: there are other running processes
       (if use-another ; connect to another running process : the first one
           (let ((other-name (car (elt ess-process-name-list 0))))
             ;; "FIXME": try to find the process name that matches *closest*
             (message "associating with *other* process '%s'" other-name)
-            (get-ess-process other-name))
+            (ess-get-process other-name))
         ;; else
         (ding)
         (if (yes-or-no-p
@@ -650,14 +651,14 @@ process happens interactively (when possible)."
             (progn
               (ess-force-buffer-current
                (concat ess-dialect " process to use: ") 'force)
-              (get-ess-process ess-current-process-name))
+              (ess-get-process ess-current-process-name))
           (error "Process %s is not running" name))))))
 
 
 ;; (defun inferior-ess-wait-for-prompt ()
 ;;   "Wait until the ESS process is ready for input."
 ;;   (let* ((cbuffer (current-buffer))
-;;       (sprocess (get-ess-process ess-current-process-name))
+;;       (sprocess (ess-get-process ess-current-process-name))
 ;;       (sbuffer (process-buffer sprocess))
 ;;       (r nil)
 ;;       (timeout 0))
@@ -703,11 +704,11 @@ Returns the name of the process, or nil if the current buffer has none."
 
 (defun ess-get-process-variable (var)
   "Return the variable VAR (symbol) local to ESS process called NAME (string)."
-  (buffer-local-value var (process-buffer (get-ess-process ess-local-process-name))))
+  (buffer-local-value var (process-buffer (ess-get-process ess-local-process-name))))
 
 (defun ess-set-process-variable (var val)
   "Set variable VAR (symbol) local to ESS process called NAME (string) to VAL."
-  (with-current-buffer (process-buffer (get-ess-process ess-local-process-name))
+  (with-current-buffer (process-buffer (ess-get-process ess-local-process-name))
     (set var val)))
 
 (defun ess-process-live-p ()
@@ -970,9 +971,9 @@ If TOGGLE-EOB is given, the value of
     (ess--execute-electric-command map nil nil nil EOB)))
 
 
-(defun get-ess-buffer (name)
+(defun ess-get-process-buffer (&optional name)
   "Return the buffer associated with the ESS process named by NAME."
-  (process-buffer (get-ess-process name)))
+  (process-buffer (ess-get-process (or name ess-local-process-name))))
 
 (defun update-ess-process-name-list ()
   "Remove names with no process."
@@ -1424,12 +1425,12 @@ local({
 
     ;; else: "normal", non-DDE behavior:
 
-    (let* ((sprocess (or proc (get-ess-process ess-local-process-name)))
+    (let* ((sprocess (or proc (ess-get-process ess-local-process-name)))
            sbuffer primary-prompt end-of-output oldpb oldpf oldpm
            )
 
       (unless sprocess
-        ;; should hardly happen, since (get-ess-process *)  already checked:
+        ;; should hardly happen, since (ess-get-process *)  already checked:
         (error "Process %s is not running!" ess-current-process-name))
       (setq sbuffer (process-buffer sprocess))
       (with-current-buffer sbuffer
@@ -1586,7 +1587,7 @@ TEXT.
     ;; Use this to evaluate some code, but don't wait for output.
     (let* ((deactivate-mark); keep local {do *not* deactivate wrongly}
            (cbuffer (current-buffer))
-           (sprocess (get-ess-process ess-current-process-name))
+           (sprocess (ess-get-process ess-current-process-name))
            (sbuffer (process-buffer sprocess))
            (win (get-buffer-window sbuffer t))
            ;; (text (ess-replace-in-string text "\t" " "))
@@ -2720,7 +2721,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
     ;; else:  non-R
     (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
     (ess-make-buffer-current)
-    (let ((sprocess (get-ess-process ess-current-process-name)))
+    (let ((sprocess (ess-get-process ess-current-process-name)))
       (if (not sprocess) (error "No ESS process running"))
       (when (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
         (ess-cleanup)
@@ -2739,7 +2740,7 @@ regarding whether the workspace image should be saved."
   (ess-make-buffer-current)
   (let (cmd
         ;;Q     response
-        (sprocess (get-ess-process ess-current-process-name)))
+        (sprocess (ess-get-process ess-current-process-name)))
     (if (not sprocess) (error "No ESS process running"))
     ;;Q (setq response (completing-read "Save workspace image? "
     ;;Q                                 '( ( "yes".1) ("no" . 1) ("cancel" . 1))
@@ -2956,7 +2957,7 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 using `ess-object-list' if that is non-nil.
 If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv)."
   (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
-      (with-current-buffer (process-buffer (get-ess-process name))
+      (with-current-buffer (process-buffer (ess-get-process name))
         (ess-make-buffer-current)
         (ess-write-to-dribble-buffer (format "(get-object-list %s) .." name))
         (if (or (not ess-sl-modtime-alist)
@@ -3178,7 +3179,7 @@ but by \\[ess-resynch], \\[ess-get-object-list], \\[ess-get-modtime-list],
 \\[ess-execute-objects], \\[ess-object-modtime], \\[ess-create-object-name-db],
 and (indirectly) by \\[ess-get-help-files-list]."
   (with-current-buffer
-      (get-ess-buffer ess-current-process-name);to get *its* local vars
+      (ess-get-process-buffer ess-current-process-name);to get *its* local vars
     (let ((result nil)
           (slist (ess-process-get 'search-list))
           (tramp-mode nil)) ;; hack for bogus file-directory-p below
@@ -3489,7 +3490,7 @@ search path related variables."
 (defun ess-error (msg)
   "Something bad has happened.
 Display the S buffer, and cause an error displaying MSG."
-  (display-buffer (process-buffer (get-ess-process ess-current-process-name)))
+  (display-buffer (process-buffer (ess-get-process ess-current-process-name)))
   (error msg))
 
  ; Provide package

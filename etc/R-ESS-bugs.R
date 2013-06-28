@@ -507,3 +507,10 @@ x <- 1:10
 foo <- function(x) x*x 
 bar <- function(y) y 
 ## via C-c C-c leads to "Error: object 'bar' not found". 
+
+
+### --- 22 ----
+## in the beginning of buffer indenting the second line does give an error 
+if (!grepl("#", x))
+return(res)
+

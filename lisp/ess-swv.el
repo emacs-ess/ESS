@@ -110,7 +110,7 @@
     (save-excursion
       ;; (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
       (basic-save-buffer); do not Sweave/Stangle old version of file !
-      (let* ((sprocess (get-ess-process ess-current-process-name))
+      (let* ((sprocess (ess-get-process ess-current-process-name))
              (sbuffer (process-buffer sprocess))
              (rnw-file (buffer-file-name))
              (Rnw-dir (file-name-directory rnw-file))

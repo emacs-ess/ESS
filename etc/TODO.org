@@ -42,3 +42,8 @@
 * MISC
 ** DONE C-c C-c with ess-inject-source=t deletes files faster than R can process
    - State "DONE"       from "TODO"       [2013-06-26 Wed 16:46]
+** TODO watch window behaves unexpectedly  
+   [2013-06-27 Thu]
+** TODO set PAGER="cat" environment variable for tramp process if unset?
+** TODO cleanup ESS namespace 
+   [2013-06-27 Thu]

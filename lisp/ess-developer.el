@@ -100,8 +100,16 @@ Use `ess-developer-add-package' to modify interactively this
 list. "
   :group 'ess-developer)
 
+(defcustom ess-developer-load-package-command "library(devtools)\nload_all('%s')\n"
+  "Command issued by `ess-developer-load-package'.
+ %s is subsituted with the user supplied directory.")
+
+(defvar ess-developer-root-file "DESCRIPTION"
+  "If this file is present in the directory, it is considered a
+  project root.")
+
 (defcustom ess-developer-force-attach nil
-  "If non-nill all the packages listed in `ess-developer-packages' are attached,
+  "If non-nill all the packages listed in `ess-developer-packages' should be attached
 when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'boolean)
@@ -263,6 +271,23 @@ propertize output text.
   (goto-char (point-min))
   (while (re-search-forward "^\\(\\w.+\\):" nil t)
     (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)))
+
+(defun ess-developer-load-package ()
+  "Interface to load_all function in devtools package.
+See also `ess-developer-load-all-command'."
+  (interactive)
+  (let ((path default-directory)
+        (package))
+    (while (and (not package) (> (length path) 0))
+      (if (file-exists-p (expand-file-name ess-developer-root-file path))
+          (setq package path)
+        (setq path (file-name-directory (substring path 0 -1)))))
+    (setq package (read-directory-name "Package: " package nil t nil))
+    (unless (file-exists-p (expand-file-name ess-developer-root-file package))
+      (error "Not a valid package. No '%s' found in `%s'."
+             ess-developer-root-file package))
+    (message "Loading %s" (abbreviate-file-name package))
+    (ess-eval-linewise (format ess-developer-load-package-command package))))
 
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.

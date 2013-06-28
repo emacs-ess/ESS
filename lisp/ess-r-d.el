@@ -63,6 +63,8 @@
     (define-key ess-dev-map "a" 'ess-developer-add-package)
     (define-key ess-dev-map "\C-r" 'ess-developer-remove-package)
     (define-key ess-dev-map "r" 'ess-developer-remove-package)
+    (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
+    (define-key ess-dev-map "l" 'ess-developer-load-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
@@ -76,8 +78,8 @@
     (define-key ess-dev-map "b" 'ess-bp-set)
     (define-key ess-dev-map [(control ?B)] 'ess-bp-set-conditional)
     (define-key ess-dev-map "B" 'ess-bp-set-conditional)
-    (define-key ess-dev-map "\C-l" 'ess-bp-set-logger)
-    (define-key ess-dev-map "l" 'ess-bp-set-logger)
+    (define-key ess-dev-map "\C-L" 'ess-bp-set-logger)
+    (define-key ess-dev-map "L" 'ess-bp-set-logger)
     (define-key ess-dev-map "\C-o" 'ess-bp-toggle-state)
     (define-key ess-dev-map "o" 'ess-bp-toggle-state)
     (define-key ess-dev-map "\C-k" 'ess-bp-kill)
@@ -224,28 +226,35 @@
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
-     (ess-pager		. R-pager)
-     )
+     (ess-pager		. R-pager))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
-(defvar ess-R-error-regexp-alist '(R1 R R2 R3 R-recover)
+(defvar ess-R-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
+;; takes precidence over R1 below in english locales, and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
-
-;; takes precidence over R above in english locales, and allows spaces in file path
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R1 "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R "\\(at \\(.+\\)#\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(\\w+ \\(.+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R2 "(\\(\\w+ \\([^)\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
+;; precede R4 and allowes spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             '(R3 "\\(?:^ +\\|: +\\)\\([^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(R4 "\\([^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 

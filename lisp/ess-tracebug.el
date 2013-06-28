@@ -43,8 +43,10 @@
 ;;  - on the fly  debug/undebug of R functions and methods
 ;;  - highlighting of error source references and easy error navigation
 ;;  - interactive traceback.
-;;  For a complete description please see the
-;;  documentation at http://code.google.com/p/ess-tracebug/
+;;  
+;;  For a complete description please see the documentation at
+;;  http://code.google.com/p/ess-tracebug/ and a brief tutorial at
+;;  http://code.google.com/p/ess-tracebug/wiki/GettingStarted
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -162,10 +164,15 @@ from temporary buffers.")
 (defun ess--make-source-refd-command (beg end &optional visibly)
   "Encapsulate the region string into eval(parse ... )
 block (used for source references insertion)"
-  (let ((filename buffer-file-name)
-        (orig-marker (or ess-tracebug-original-buffer-marker
+  (let* ((filename buffer-file-name)
+         (proc-dir (ess-get-process-variable 'default-directory))
+         (remote (when (file-remote-p proc-dir)
+                   (require 'tramp)
+                   ;; should this be done in process buffer?
+                   (tramp-dissect-file-name proc-dir)))
+         (orig-marker (or ess-tracebug-original-buffer-marker
                          org-edit-src-beg-marker))
-        orig-beg)
+         orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
     (goto-char beg)
     (skip-chars-forward " \t\n")
@@ -174,7 +181,7 @@ block (used for source references insertion)"
     (skip-chars-backward " \t\n")
     (setq end (point)
           orig-beg beg)
-
+    
     ;; delete all old temp files
     (when (and (not (ess-process-get 'busy))
                (< 1 (time-to-seconds
@@ -189,10 +196,12 @@ block (used for source references insertion)"
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-    (let ((tmpfile (concat (file-name-as-directory temporary-file-directory)
-                           (file-name-nondirectory (or filename "unknown")) "@"
-                           (number-to-string ess--tracebug-eval-index))))
-      ;; file is not deleted but overwriten between sessions
+    (let ((tmpfile
+           (expand-file-name (concat (file-name-nondirectory (or filename "unknown")) "@"
+                                     (number-to-string ess--tracebug-eval-index))
+                             (if remote
+                                 (tramp-get-remote-tmpdir remote)
+                               temporary-file-directory))))
       (write-region beg end tmpfile nil 'silent)
       (ess-process-put 'temp-source-files
                        (cons tmpfile (ess-process-get 'temp-source-files)))
@@ -203,6 +212,9 @@ block (used for source references insertion)"
                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
         (with-silent-modifications
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (when remote
+        ;; get local name (should this be done in process buffer?)
+        (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
       (if (and visibly ess-load-visibly-command)
           (format ess-load-visibly-command tmpfile)
         (format (or ess-load-visibly-noecho-command
@@ -1038,7 +1050,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
 `ess-mode-map' and `inferior-ess-mode-map' respectively."
   (interactive)
   (let ((dbuff (get-buffer-create (concat ess--dbg-output-buf-prefix "." ess-current-process-name "*"))) ;todo: make dbuff a string!
-        (proc (get-ess-process ess-local-process-name))
+        (proc (ess-get-process ess-local-process-name))
         (lpn ess-local-process-name))
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
@@ -2215,8 +2227,10 @@ respectively."
   (unless (get-buffer-window ess-watch-buffer 'visible)
     (save-selected-window
       (ess-switch-to-ESS t)
-      (let* ((split-width-threshold ess-watch-width-threshold)
-             (split-height-threshold ess-watch-height-threshold)
+      (let* ((split-width-threshold (or ess-watch-width-threshold
+                                        split-width-threshold))
+             (split-height-threshold (or ess-watch-height-threshold
+                                         split-height-threshold))
              (win (split-window-sensibly (selected-window))))
         (if win
             (set-window-buffer win buffer-or-name)
@@ -2286,15 +2300,19 @@ Arguments IGNORE and NOCONFIRM currently not used."
   ;; :type 'string
   )
 
-(defcustom ess-watch-height-threshold split-height-threshold
+(defcustom ess-watch-height-threshold nil
   "Minimum height for splitting *R* windwow sensibly to make space for watch window.
-Has exactly the same meaning and initial value as `split-height-threshold'."
+See `split-height-threshold' for a detailed description.
+
+If nil, the value of `split-height-threshold' is used."
   :group 'ess-debug
   :type 'integer)
 
-(defcustom ess-watch-width-threshold split-width-threshold
+(defcustom ess-watch-width-threshold nil
   "Minimum width for splitting *R* windwow sensibly to make space for watch window.
-Has the same meaning and initial value as `split-width-threshold'."
+See `split-width-threshold' for a detailed description.
+
+If nil, the value of `split-width-threshold' is used."
   :group 'ess-debug
   :type 'integer)
 
@@ -2391,7 +2409,7 @@ ready to be send to R process. AL is an association list as return by `ess-watch
   ;; .ess_watch_expressions object in R. Assumes R watch being the current
   ;; buffer, otherwise will most likely install empty list.
   (interactive)
-  (process-send-string (get-ess-process ess-current-process-name)
+  (process-send-string (ess-get-process ess-current-process-name)
                        (ess-watch-parse-assoc (ess-watch-make-alist)))
   ;;todo: delete the prompt at the end of proc buffer todo: defun ess-send-string!!
   (sleep-for 0.05)  ;; need here, if ess-command is used immediately after,  for some weird reason the process buffer will not be changed
