@@ -2225,8 +2225,10 @@ respectively."
   (unless (get-buffer-window ess-watch-buffer 'visible)
     (save-selected-window
       (ess-switch-to-ESS t)
-      (let* ((split-width-threshold ess-watch-width-threshold)
-             (split-height-threshold ess-watch-height-threshold)
+      (let* ((split-width-threshold (or ess-watch-width-threshold
+                                        split-width-threshold))
+             (split-height-threshold (or ess-watch-height-threshold
+                                         split-height-threshold))
              (win (split-window-sensibly (selected-window))))
         (if win
             (set-window-buffer win buffer-or-name)
@@ -2296,15 +2298,19 @@ Arguments IGNORE and NOCONFIRM currently not used."
   ;; :type 'string
   )
 
-(defcustom ess-watch-height-threshold split-height-threshold
+(defcustom ess-watch-height-threshold nil
   "Minimum height for splitting *R* windwow sensibly to make space for watch window.
-Has exactly the same meaning and initial value as `split-height-threshold'."
+See `split-height-threshold' for a detailed description.
+
+If nil, the value of `split-height-threshold' is used."
   :group 'ess-debug
   :type 'integer)
 
-(defcustom ess-watch-width-threshold split-width-threshold
+(defcustom ess-watch-width-threshold nil
   "Minimum width for splitting *R* windwow sensibly to make space for watch window.
-Has the same meaning and initial value as `split-width-threshold'."
+See `split-width-threshold' for a detailed description.
+
+If nil, the value of `split-width-threshold' is used."
   :group 'ess-debug
   :type 'integer)
 
