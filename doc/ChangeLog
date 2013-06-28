@@ -1,3 +1,11 @@
+2013-06-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* help-sas.texi (ESS): convert ESS(SAS) to ESS[SAS]
+	in the table of contents as was done for BUGS/JAGS
+	however, this is not a complete solution since the
+	nodes themselves are still named ESS(SAS)--...
+	and there is no way to fix that, right?
+
 2013-06-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* allnews.texi/Makefile (New features): All "new"
