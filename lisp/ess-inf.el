@@ -711,6 +711,15 @@ Returns the name of the process, or nil if the current buffer has none."
   (with-current-buffer (process-buffer (ess-get-process ess-local-process-name))
     (set var val)))
 
+;; emacs 23 compatibility
+(unless (fboundp 'process-live-p)
+  (defun process-live-p (process)
+    "Returns non-nil if PROCESS is alive.
+A process is considered alive if its status is `run', `open',
+`listen', `connect' or `stop'."
+    (memq (process-status process)
+          '(run open listen connect stop))))
+
 (defun ess-process-live-p ()
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
@@ -718,8 +727,7 @@ process was killed."
   (and ess-local-process-name
        (let ((proc (get-process ess-local-process-name)))
          (and (processp proc)
-              (memq (process-status proc)
-                    '(run open listen connect stop))))))
+              (process-live-p proc)))))
 
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
