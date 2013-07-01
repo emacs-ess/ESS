@@ -1,14 +1,14 @@
 \input texinfo   @c -*-texinfo-*-
 @comment %**start of header
 @setfilename ess.info
-@settitle ESS --- Emacs Speaks Statistics
+@settitle ESS -- Emacs Speaks Statistics
 @comment %**end of header
 
 @synindex pg fn
 
 @include ess-defs.texi
 @titlepage
-@title ESS --- Emacs Speaks Statistics
+@title ESS -- Emacs Speaks Statistics
 ESS version @ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :

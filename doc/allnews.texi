@@ -1,4 +1,4 @@
-
+@settitle ESS -- Emacs Speaks Statistics
 @include ess-defs.texi
 @include newfeat.texi
 @include onewfeat.texi
