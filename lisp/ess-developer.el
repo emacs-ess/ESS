@@ -99,20 +99,56 @@ within package directory."
   :group 'ess-developer
   :type 'boolean)
 
+(defcustom ess-developer-load-on-add-commands '(("library" . "library(%n)")
+                                                ("load_all" . "library(devtools)\nload_all('%d')"))
+  "Alist of available load commands what are proposed for loading on `ess-developer-add-package'.
+
+  %n is replaced with package name,
+  %d is replaced with package directory.
+
+See also `ess-developer-load-package' for related functionality."
+  :group 'ess-developer
+  :type 'alist)
+
+(defvar ess--developer-load-hist nil)
+
 (defun ess-developer-add-package (&optional attached-only)
   "Add a package to `ess-developer-packages' list.
 With prefix argument only choose from among attached packages."
   (interactive "P")
-  (let ((sel (ess-completing-read
-              "Add package"
-              (ess-get-words-from-vector
-               (format "print(unique(c(.packages(), %s)), max=1e6)\n"
-                       (if attached-only "NULL" ".packages(TRUE)") nil t))
-              nil nil nil nil (ess--developer-containing-package))))
+  (ess-force-buffer-current)
+  (let* ((packs (ess-get-words-from-vector
+                 (format "print(unique(c(.packages(), %s)), max=1e6)\n"
+                         (if attached-only "NULL" ".packages(TRUE)") nil t)))
+         (cur-pack (ess--developer-containing-package))
+         (sel (ess-completing-read "Add package" packs nil nil nil nil
+                                   (unless (member cur-pack ess-developer-packages)
+                                     cur-pack)))
+         (check-attached (format ".ess_package_attached('%s')\n" sel)))
+    (unless (ess-boolean-command check-attached)
+      (let* ((fn (if (> (length ess-developer-load-on-add-commands) 1)
+                     (ess-completing-read "Package not loaded. Use"
+                                          (mapcar 'car ess-developer-load-on-add-commands) nil t
+                                          nil 'ess--developer-load-hist (car ess--developer-load-hist))
+                   (caar ess-developer-load-on-add-commands)))
+             (cmd (cdr (assoc fn ess-developer-load-on-add-commands))))
+        (setq cmd (replace-regexp-in-string "%n" sel cmd))
+        (when (string-match-p "%d" cmd)
+          (let ((dir (read-directory-name
+                      "Package: " (ess--developer-locate-package-path sel) nil t nil)))
+            (setq cmd (replace-regexp-in-string "%d" dir cmd))))
+        (ess-eval-linewise (concat cmd "\n")))
+      (ess-wait-for-process)
+      (when (not (ess-boolean-command check-attached))
+        (error "Package '%s' could not be added" sel)))
     (setq ess-developer-packages
           (ess-uniq-list (append ess-developer-packages (list sel))))
-    ;; todo: people might want load with other tools like load_all
-    ;; (ess-eval-linewise (format "library('%s')" sel))
+    ;; turn developer in all files from selected package
+    (dolist (bf (buffer-list))
+      (when (and ess-developer-activate-in-package
+                 (string-equal "R" (buffer-local-value 'ess-dialect bf)))
+        (with-current-buffer bf
+          (ess-developer-activate-in-package))))
     (message "You are developing: %s" ess-developer-packages)))
 
 (defun ess-developer-remove-package ()
