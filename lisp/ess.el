@@ -284,11 +284,11 @@ See also `ess-use-ido'.
                    (eq ess-use-auto-complete t)
                  ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
-      ;; (mapcar (lambda (el) (add-to-list 'ac-trigger-commands el))
-      ;;         '(ess-smart-comma smart-operator-comma skeleton-pair-insert-maybe))
-      (add-to-list 'ac-sources 'ac-source-filename)
+      ;; files should be in front; ugly, but needes
+      (delq 'ac-source-filename 'ac-sources)
       (when isR 
-        (add-to-list 'ac-sources 'ac-source-R)))
+        (add-to-list 'ac-sources 'ac-source-R))
+      (add-to-list 'ac-sources 'ac-source-filename))
 
     ;; eldoc)
     (require 'eldoc)
