@@ -679,34 +679,35 @@ If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
   (let ((proc (ess-get-next-available-process)))
-    (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-                            (symbol-at-point))
-                       (car (ess--funname.start)))))
-      (when funname
-        (let* ((args (ess-function-arguments funname proc))
-               (bargs (cadr args))
-               (doc (mapconcat (lambda (el)
-                                 (if (equal (car el) "...")
-                                     "..."
-                                   (concat (car el) "=" (cdr el))))
-                               bargs ", "))
-               (margs (nth 2 args))
-               (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
-               doc1)
-          (when doc
-            (setq doc (ess-eldoc-docstring-format funname doc))
-            (when (and margs (< (length doc1) W))
-              (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
-              (while (and margs (< (length doc1) W))
-                (let ((head (pop margs)))
-                  (unless (assoc head bargs)
-                    (setq doc doc1
-                          doc1 (concat doc1 head  "=, ")))))
-              (when (equal (substring doc -2) ", ")
-                (setq doc (substring doc 0 -2)))
-              (when (and margs (< (length doc) W))
-                (setq doc (concat doc " {--}"))))
-            doc))))))
+    (when proc
+     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
+                             (symbol-at-point))
+                        (car (ess--funname.start)))))
+       (when funname
+         (let* ((args (ess-function-arguments funname proc))
+                (bargs (cadr args))
+                (doc (mapconcat (lambda (el)
+                                  (if (equal (car el) "...")
+                                      "..."
+                                    (concat (car el) "=" (cdr el))))
+                                bargs ", "))
+                (margs (nth 2 args))
+                (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+                doc1)
+           (when doc
+             (setq doc (ess-eldoc-docstring-format funname doc))
+             (when (and margs (< (length doc1) W))
+               (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
+               (while (and margs (< (length doc1) W))
+                 (let ((head (pop margs)))
+                   (unless (assoc head bargs)
+                     (setq doc doc1
+                           doc1 (concat doc1 head  "=, ")))))
+               (when (equal (substring doc -2) ", ")
+                 (setq doc (substring doc 0 -2)))
+               (when (and margs (< (length doc) W))
+                 (setq doc (concat doc " {--}"))))
+             doc)))))))
 
 (defun ess-eldoc-docstring-format (funname doc)
   (save-match-data
