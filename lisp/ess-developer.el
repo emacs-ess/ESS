@@ -40,9 +40,10 @@
 
 (defface ess-developer-indicator-face
   '((((class grayscale)) (:background "DimGray"))
-    (((class color))
+    (((class color) (background light))
      (:background "deep sky blue" :foreground "red4"  :bold t ))
-    )
+    (((class color) (background dark))
+     (:foreground "deep sky blue"  :bold t )))
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-developer)
 
