@@ -134,11 +134,7 @@ With prefix argument only choose from among attached packages."
     (setq ess-developer-packages
           (ess-uniq-list (append ess-developer-packages (list sel))))
     ;; turn developer in all files from selected package
-    (dolist (bf (buffer-list))
-      (when (and ess-developer-activate-in-package
-                 (string-equal "R" (buffer-local-value 'ess-dialect bf)))
-        (with-current-buffer bf
-          (ess-developer-activate-in-package))))
+    (ess-developer-activate-in-package sel 'all)
     (message "You are developing: %s" ess-developer-packages)))
 
 (defun ess-developer-remove-package ()
@@ -152,8 +148,10 @@ With prefix argument only choose from among attached packages."
     (if (equal "*ALL*" sel)
         (progn
           (setq ess-developer-packages nil)
+          (ess-developer-deactivate-in-package nil 'all)
           (message "Removed *ALL* packages from the `ess-developer-packages' list."))
       (setq ess-developer-packages (delete sel ess-developer-packages))
+      (ess-developer-deactivate-in-package sel 'all)
       (message "Removed package '%s' from the `ess-developer-packages' list"
                (propertize sel 'face 'font-lock-function-name-face)))))
 
