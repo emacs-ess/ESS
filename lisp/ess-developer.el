@@ -304,19 +304,47 @@ open R files till package with name pack-name is found (if any)."
       path)))
 
 
-(defun ess-developer-activate-in-package ()
+(defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of the package and
 package name is registered in `ess-developer-packages'.
 
+If PACKAGE is given, activate only if current file is part of the
+PACKAGE, `ess-developer-packages' is ignored in this case.
+
+If ALL is non-nil, perform activation in all R buffers.
+
 This function does nothing if `ess-developer-activate-in-package'
-is nil."
+is nil. "
   (when ess-developer-activate-in-package
-    (let ((pack (ess--developer-containing-package)))
-      (when (and (not ess-developer)
-                 (member pack ess-developer-packages))
-        (ess-developer t)))))
+    (if all
+        (dolist (bf (buffer-list))
+          (with-current-buffer bf
+            (ess-developer-activate-in-package package)))
+      (let ((pack (ess--developer-containing-package)))
+        (when (and (not ess-developer)
+                   (if package
+                       (equal pack package)
+                     (member pack ess-developer-packages)))
+          (ess-developer t))))))
 
 (add-hook 'R-mode-hook 'ess-developer-activate-in-package)
+
+(defun ess-developer-deactivate-in-package (&optional package all)
+  "Deactivate developer if current file is part of the R package.
+
+If PACKAGE is given, deactivate only if current package is
+PACKAGE.
+
+If ALL is non-nil, deactivate in all open R buffers."
+  (if all
+      (dolist (bf (buffer-list))
+        (with-current-buffer bf
+          (ess-developer-deactivate-in-package package)))
+    (let ((pack (ess--developer-containing-package)))
+      (when (and ess-developer
+                 (or (null package)
+                     (equal pack package)))
+        (ess-developer -1)))))
 
 (defun ess-developer-load-package ()
   "Interface to load_all function in devtools package.
