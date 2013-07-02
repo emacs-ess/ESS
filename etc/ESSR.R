@@ -268,6 +268,10 @@
          assign(log_name, c(log, list(cur_log)), envir = .GlobalEnv)
          invisible(NULL)
      }
+
+     .ess_package_attached <- function(pack_name){
+         as.logical(match(paste0("package:", pack_name), search()))
+     }
  })}
 
 ## length(ls(.ESSR_Env, all = TRUE)) # VS[01-05-2013]: 13 functs
