@@ -245,18 +245,32 @@ Currently works for R only and looks at /R/ parent directory."
     (when (string-equal "R" (file-name-nondirectory path))
       (file-name-nondirectory (directory-file-name (file-name-directory path))))))
 
-(defun ess--developer-locate-package-path ()
+(defun ess--developer-locate-package-path (&optional pack-name)
   "Get the root of R package that contains current directory.
-Root is determined by locating `ess-developer-root-file'."
-  (let (package path)
-    (while (and (not package) (> (length path) 0))
-      (if (file-exists-p (expand-file-name ess-developer-root-file path))
-          (setq package path)
-        (setq path (directory-file-name path))))
-    ;; cache locally
-    (when path
-      (setq ess--developer-package-root path))
-    path))
+Root is determined by locating `ess-developer-root-file'.
+
+If PACK-NAME is given, iterate over default-directories of all
+open R files till package with name pack-name is found (if any)."
+  (if pack-name
+      (let ((bl (buffer-list))
+            path bf)
+        (while (and (setq bf (pop bl))
+                    (not path))
+          (when (buffer-local-value 'ess-dialect bf)
+            (with-current-buffer bf
+              (setq path (ess--developer-locate-package-path)))))
+        path)
+    (let ((path default-directory)
+          package)
+      (while (and (not package) (> (length path) 0))
+        (if (file-exists-p (expand-file-name ess-developer-root-file path))
+            (setq package path)
+          (setq path (file-name-directory (directory-file-name path)))))
+      ;; cache locally
+      (when path
+        (setq ess--developer-package-root path))
+      path)))
+
 
 (defun ess-developer-activate-in-package ()
   "Activate developer if current file is part of the package and
