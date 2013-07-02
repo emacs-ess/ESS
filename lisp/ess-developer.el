@@ -54,11 +54,14 @@
   "List of names of R packages you develop.
 Use `ess-developer-add-package' to modify interactively this
 list. "
-  :group 'ess-developer)
+  :group 'ess-developer
+  :type 'list)
 
 (defcustom ess-developer-load-package-command "library(devtools)\nload_all('%s')\n"
   "Command issued by `ess-developer-load-package'.
- %s is subsituted with the user supplied directory.")
+ %s is subsituted with the user supplied directory."
+  :group 'ess-developer
+  :type 'string)
 
 (defvar ess-developer-root-file "DESCRIPTION"
   "If this file is present in the directory, it is considered a
