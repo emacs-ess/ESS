@@ -89,6 +89,12 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'hook)
 
+(defcustom ess-developer-activate-in-package t
+  "If non-nil, ess-developer is automatically toggled in files
+within package directory."
+  :group 'ess-developer
+  :type 'boolean)
+
 (defun ess-developer-add-package (&optional attached-only)
   "Add a package to `ess-developer-packages' list.
 With prefix argument only choose from among attached packages."
@@ -201,6 +207,7 @@ PROPERTIZE-FUNC is a function called with the output buffer being
 current. usually used to manipulate the output, for example to
 propertize output text.
 "
+  (ess--developer-inject-source-maybe) ; first time only
   (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
   (let ((buff (get-buffer-create " *ess-command-output*"))
         out)
@@ -226,16 +233,47 @@ propertize output text.
   (while (re-search-forward "^\\(\\w.+\\):" nil t)
     (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)))
 
+(defvar ess--developer-package-root nil)
+(make-variable-buffer-local 'ess--developer-package-root)
+
+(defun ess--developer-containing-package ()
+  "Return the name of the container package, nil otherwise.
+Currently works for R only and looks at /R/ parent directory."
+  (let ((path (directory-file-name default-directory)))
+    (when (string-equal "R" (file-name-nondirectory path))
+      (file-name-nondirectory (directory-file-name (file-name-directory path))))))
+
+(defun ess--developer-locate-package-path ()
+  "Get the root of R package that contains current directory.
+Root is determined by locating `ess-developer-root-file'."
+  (let (package path)
+    (while (and (not package) (> (length path) 0))
+      (if (file-exists-p (expand-file-name ess-developer-root-file path))
+          (setq package path)
+        (setq path (directory-file-name path))))
+    ;; cache locally
+    (when path
+      (setq ess--developer-package-root path))
+    path))
+
+(defun ess-developer-activate-in-package ()
+  "Activate developer if current file is part of the package and
+package name is registered in `ess-developer-packages'.
+
+This function does nothing if `ess-developer-activate-in-package'
+is nil."
+  (when ess-developer-activate-in-package
+    (let ((pack (ess--developer-containing-package)))
+      (when (and pack (member pack ess-developer-packages))
+        (ess-developer t)))))
+
+(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
+
 (defun ess-developer-load-package ()
   "Interface to load_all function in devtools package.
 See also `ess-developer-load-all-command'."
   (interactive)
-  (let ((path default-directory)
-        (package))
-    (while (and (not package) (> (length path) 0))
-      (if (file-exists-p (expand-file-name ess-developer-root-file path))
-          (setq package path)
-        (setq path (file-name-directory (substring path 0 -1)))))
+  (let ((package (ess--developer-locate-package-path)))
     (setq package (read-directory-name "Package: " package nil t nil))
     (unless (file-exists-p (expand-file-name ess-developer-root-file package))
       (error "Not a valid package. No '%s' found in `%s'."
@@ -247,40 +285,44 @@ See also `ess-developer-load-all-command'."
   "Non nil in buffers where developer mode is active")
 (make-variable-buffer-local 'ess-developer)
 
+(defun ess--developer-inject-source-maybe ()
+  ;; puting this into ESSR.R makes loading very slow
+  ;; when ESSR is a package, this should go away
+  (let ((devR-file (concat (file-name-directory ess-etc-directory)
+                           "ess-developer.R")))
+    (unless (ess-boolean-command
+             "exists('.essDev_source', envir = .ESSR_Env)\n")
+      (unless (file-exists-p devR-file)
+        (error "Cannot locate 'ess-developer.R' file"))
+      (message "Injecting ess-developer code ...")
+      (ess--inject-code-from-file devR-file)
+      (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
+        (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))))
+
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.
 If optional VAL is non-negative, turn on the developer mode. If
 VAL is negative turn it off."
   (interactive)
   (when (eq val t) (setq val 1))
-  (ess-force-buffer-current "Process to load into: " nil t)
-  (let* ((proc (get-process ess-local-process-name))
-         (ess-dev  (if (numberp val)
-                       (if (< val 0) nil t)
-                     (not (or ess-developer
-                              ;; if t in proc buffer, all associated buffers are in dev-mode
-                              (ess-get-process-variable 'ess-developer)))))
-         (devR-file (concat (file-name-directory ess-etc-directory)
-                            "ess-developer.R")))
+  (let ((ess-dev  (if (numberp val)
+                      (if (< val 0) nil t)
+                    (not (or ess-developer
+                             ;; if t in proc buffer, all associated buffers are in dev-mode
+                             (and (ess-process-live-p)
+                                  (ess-get-process-variable 'ess-developer)))))))
     (if ess-dev
         (progn
-          (unless (ess-boolean-command
-                   "exists('.essDev_source', envir = .ESSR_Env)\n") 
-            ;; puting this into ESSR.R makes loading rather slow
-            (unless (file-exists-p devR-file)
-              (error "Cannot locate 'ess-developer.R' file"))
-            (message "Injecting ess-developer code ...")
-            (ess--inject-code-from-file devR-file)
-            (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
-              (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))
           (run-hooks 'ess-developer-enter-hook)
           (if ess-developer-packages
               (message "You are developing: %s" ess-developer-packages)
             (message "Developer is on (add packages with C-c C-t a)")))
       (run-hooks 'ess-developer-exit-hook)
       (message "Developer is off"))
+
     (setq ess-developer ess-dev)
-    (if (get-buffer-process (current-buffer))
+
+    (if (get-buffer-process (current-buffer)) ; in ess process
         (setq ess-local-process-name
               (if ess-dev
                   (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
@@ -288,7 +330,7 @@ VAL is negative turn it off."
       (if ess-dev
           (add-to-list 'ess--local-mode-line-process-indicator 'ess--developer-local-indicator 'append)
         (delq 'ess--developer-local-indicator ess--local-mode-line-process-indicator)))
-    
+
     (force-window-update)))
 
 (defalias 'ess-toggle-developer 'ess-developer)
