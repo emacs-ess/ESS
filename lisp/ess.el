@@ -285,7 +285,7 @@ See also `ess-use-ido'.
                  ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
       ;; files should be in front; ugly, but needes
-      (delq 'ac-source-filename 'ac-sources)
+      (delq 'ac-source-filename ac-sources)
       (when isR 
         (add-to-list 'ac-sources 'ac-source-R))
       (add-to-list 'ac-sources 'ac-source-filename))
