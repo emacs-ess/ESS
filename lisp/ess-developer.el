@@ -73,16 +73,6 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'boolean)
 
-;; (defcustom ess-developer-enter-source "~/ess-developer-enter.R"
-;;   "File to 'source()' in on entering `ess-developer' mode."
-;;   :group 'ess-developer
-;;   :type 'file)
-
-;; (defcustom ess-developer-exit-source "~/ess-developer-exit.R"
-;;   "File to 'source()' in on exiting `ess-developer' mode."
-;;   :group 'ess-developer
-;;   :type 'file)
-
 (defcustom ess-developer-enter-hook nil
   "Normal hook run on entering `ess-developer' mode."
   :group 'ess-developer
@@ -270,10 +260,12 @@ propertize output text.
 (defun ess--developer-propertize-output ()
   (goto-char (point-min))
   (while (re-search-forward "\\(FUN\\|CLS\\METH\\)\\[" nil t)
-    (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-function-name-face))
+    (put-text-property (match-beginning 1) (match-end 1)
+                       'face 'font-lock-function-name-face))
   (goto-char (point-min))
   (while (re-search-forward "^\\(\\w.+\\):" nil t)
-    (put-text-property (match-beginning 1) (match-end 1) 'face 'font-lock-keyword-face)))
+    (put-text-property (match-beginning 1) (match-end 1)
+                       'face 'font-lock-keyword-face)))
 
 (defvar ess--developer-package-root nil)
 (make-variable-buffer-local 'ess--developer-package-root)
@@ -336,7 +328,8 @@ See also `ess-developer-load-all-command'."
       (error "Not a valid package. No '%s' found in `%s'."
              ess-developer-root-file package))
     (message "Loading %s" (abbreviate-file-name package))
-    (ess-eval-linewise (format ess-developer-load-package-command package))))
+    (ess-eval-linewise
+     (format ess-developer-load-package-command package))))
 
 (defvar ess-developer nil
   "Non nil in buffers where developer mode is active")
