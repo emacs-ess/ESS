@@ -1807,6 +1807,15 @@ status.
 (put 'ess-mode-line-indicator 'risky-local-variable t)
 (make-variable-buffer-local 'ess-mode-line-indicator)
 
+(defvar ess--local-mode-line-process-indicator '("")
+  "List of local process indicators.
+See `ess-mode-line-indicator' for how to set it.
+
+This is an internal varialbe used by tools like `ess-developer'
+and `ess-tracebug'.")
+(put 'ess--local-mode-line-process-indicator 'risky-local-variable t)
+(make-variable-buffer-local 'ess--local-mode-line-process-indicator)
+
 (defvar ess-process-name-list nil
   "Alist of active ESS processes.")
 

@@ -457,36 +457,12 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
 
-  ;;  (make-local-variable 'paragraph-start)
-  ;;  (setq paragraph-start (concat "^$\\|" page-delimiter))
-  ;;  (make-local-variable 'paragraph-separate)
-  ;;  (setq paragraph-separate paragraph-start)
-  ;;  (make-local-variable 'paragraph-ignore-fill-prefix)
-  ;;  (setq paragraph-ignore-fill-prefix t)
-  ;;  (make-local-variable 'indent-line-function)
-  ;;  (setq indent-line-function 'ess-indent-line)
-  ;;  (make-local-variable 'require-final-newline)
-  ;;  (setq require-final-newline t)
-  ;;  (make-local-variable 'comment-start)
-  ;;  (setq comment-start "#")
-  ;;  (make-local-variable 'comment-start-skip)
-  ;;  (setq comment-start-skip "#+ *")
-  ;;  (make-local-variable 'comment-column)
-  ;;  (setq comment-column 40)
-  ;;  (make-local-variable 'comment-indent-function)
-  ;;  (setq comment-indent-function 'ess-comment-indent)
-  ;;  (make-local-variable 'parse-sexp-ignore-comments)
-  ;;  (setq parse-sexp-ignore-comments t)
-  ;;  (ess-set-style ess-default-style)
-  ;;  (make-local-variable 'ess-local-process-name)
-  ;;  (make-local-variable 'ess-keep-dump-files)
-
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
-  (if (featurep 'xemacs)
-      (setq mode-line-process ;; AJR: in future, XEmacs will use modeline-process.
-            '(" [" ess-local-process-name  "]")) ;; xemacs does not support :eval
-    (setq mode-line-process
-          '(" [" (:eval (ess--get-mode-line-indicator))  "]")))
+  (setq mode-line-process
+        '(" ["
+          ess--local-mode-line-process-indicator
+          (:eval (ess--get-mode-line-indicator))
+          "]"))
   ;; completion
   (if (and (featurep 'emacs)
            (>= emacs-major-version 24))

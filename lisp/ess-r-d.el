@@ -155,8 +155,7 @@
     :visible (and ess-dialect (string-match "^R" ess-dialect))
     ["Active?"          ess-toggle-developer
      :style toggle
-     :selected (and (ess-process-live-p)
-                    (ess-process-get 'developer))]
+     :selected ess-developer]
     ["Add package" ess-developer-add-package t]
     ["Remove package" ess-developer-remove-package t]))
 

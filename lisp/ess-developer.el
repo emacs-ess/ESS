@@ -44,55 +44,11 @@
      (:background "deep sky blue" :foreground "red4"  :bold t ))
     )
   "Face to highlight mode line process name when developer mode is on."
-  :group 'ess-developer
-  )
+  :group 'ess-developer)
 
+(defvar ess--developer-local-indicator (propertize "d" 'face 'ess-developer-indicator-face))
+(put 'ess--developer-local-indicator 'risky-local-variable t)
 
-;; (defcustom ess-developer-prefix  "\C-\M-d"
-;;   "Prefix key for ess-developer actions.
-
-;; Action keys are defined in `ess-developer-map':
-
-;; \\{ess-developer-map}
-
-;; It should be a string in the format accepted by define-key such
-;; as '\C-cz'.
-
-;; Set this to nil if you don't want ess-developer-map to be
-;; installed in ess-mode-map altogether.
-;; "
-;;   :group 'ess-developer
-;;   :type 'string)
-
-;; (defvar ess-developer-map
-;;   (let (ess-developer-map)
-;;     (define-prefix-command 'ess-developer-map)
-;;     (define-key ess-developer-map "t" 'ess-developer)
-;;     (define-key ess-developer-map "a" 'ess-developer-add-package)
-;;     (define-key ess-developer-map "r" 'ess-developer-remove-package)
-;;     ;; (define-key ess-developer-map "s" 'ess-developer-source-current-file)
-;;     ess-developer-map)
-;;   "Ess-developer keymap.")
-
-;; (define-key ess-mode-map "\C-cd"                ess-developer-map)
-;; (define-key inferior-ess-mode-map "\C-cd"       ess-developer-map)
-
-
-;; (defun ess-developer-install-prefix-key ()
-;;   "Install the prefix key `ess-developer-prefix' into ess-mode-map."
-;;   (when (and ess-developer-prefix
-;;           (equal ess-dialect "R"))
-;;     (define-key ess-mode-map ess-developer-prefix ess-developer-map)
-;;     (define-key inferior-ess-mode-map ess-developer-prefix ess-developer-map)
-;;     ))
-
-;; (add-hook 'inferior-ess-mode-hook 'ess-developer-install-prefix-key)
-
-;; (defvar ess--developer-p nil
-;;   "t if ESS is in developer mode for current process.
-;; Use `ess-developer' to set this variable.
-;; ")
-;; (make-variable-buffer-local 'ess--developer-p)
 
 (defcustom ess-developer-packages nil
   "List of names of R packages you develop.
@@ -175,7 +131,7 @@ If *current* is selected just invoke source('file_name'),
 otherwise call devSource."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
-  (unless (process-get (get-process ess-local-process-name) 'developer)
+  (unless ess-developer
     (error "Ess-developer mode is not active"))
   (if (not (or filename
                buffer-file-name))
@@ -289,6 +245,10 @@ See also `ess-developer-load-all-command'."
     (message "Loading %s" (abbreviate-file-name package))
     (ess-eval-linewise (format ess-developer-load-package-command package))))
 
+(defvar ess-developer nil
+  "Non nil in buffers where developer mode is active")
+(make-variable-buffer-local 'ess-developer)
+
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.
 If optional VAL is non-negative, turn on the developer mode. If
@@ -297,10 +257,11 @@ VAL is negative turn it off."
   (when (eq val t) (setq val 1))
   (ess-force-buffer-current "Process to load into: " nil t)
   (let* ((proc (get-process ess-local-process-name))
-         (developer-p (process-get proc 'developer))
          (ess-dev  (if (numberp val)
                        (if (< val 0) nil t)
-                     (not developer-p)))
+                     (not (or ess-developer
+                              ;; if t in proc buffer, all associated buffers are in dev-mode
+                              (ess-get-process-variable 'ess-developer)))))
          (devR-file (concat (file-name-directory ess-etc-directory)
                             "ess-developer.R")))
     (if ess-dev
@@ -324,12 +285,15 @@ VAL is negative turn it off."
       (when (file-readable-p ess-developer-exit-source)
         (ess-eval-linewise (format "source(%s)\n" ess-developer-exit-source)))
       (message "Developer is off"))
-    (process-put proc 'developer ess-dev)
-    (with-current-buffer (process-buffer proc)
-      (setq ess-local-process-name
-            (if ess-dev
-                (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
-              (propertize  ess-local-process-name 'face nil))))
+    (setq ess-developer ess-dev)
+    (if (get-buffer-process (current-buffer))
+        (setq ess-local-process-name
+              (if ess-dev
+                  (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
+                (propertize  ess-local-process-name 'face nil)))
+      (if ess-dev
+          (add-to-list 'ess--local-mode-line-process-indicator 'ess--developer-local-indicator 'append)
+        (delq 'ess--developer-local-indicator ess--local-mode-line-process-indicator)))
     (force-window-update)))
 
 (defalias 'ess-toggle-developer 'ess-developer)
