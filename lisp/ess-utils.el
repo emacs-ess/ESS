@@ -818,12 +818,6 @@ process to avoid excessive requests.
            (process-put *proc* ',time-var (current-time))
            out)))))
 
-;; debug util:
-(defmacro dbg (&rest args)
-  `(progn
-     ,@(mapcar (lambda (el)
-		 `(princ (format "%s:%s\n" ',el ,el)))
-	       args)))
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
