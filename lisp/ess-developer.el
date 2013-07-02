@@ -49,7 +49,6 @@
 (defvar ess--developer-local-indicator (propertize "d" 'face 'ess-developer-indicator-face))
 (put 'ess--developer-local-indicator 'risky-local-variable t)
 
-
 (defcustom ess-developer-packages nil
   "List of names of R packages you develop.
 Use `ess-developer-add-package' to modify interactively this
@@ -70,15 +69,15 @@ when ess-developer mode is turned on."
   :group 'ess-developer
   :type 'boolean)
 
-(defcustom ess-developer-enter-source "~/ess-developer-enter.R"
-  "File to 'source()' in on entering `ess-developer' mode."
-  :group 'ess-developer
-  :type 'file)
+;; (defcustom ess-developer-enter-source "~/ess-developer-enter.R"
+;;   "File to 'source()' in on entering `ess-developer' mode."
+;;   :group 'ess-developer
+;;   :type 'file)
 
-(defcustom ess-developer-exit-source "~/ess-developer-exit.R"
-  "File to 'source()' in on exiting `ess-developer' mode."
-  :group 'ess-developer
-  :type 'file)
+;; (defcustom ess-developer-exit-source "~/ess-developer-exit.R"
+;;   "File to 'source()' in on exiting `ess-developer' mode."
+;;   :group 'ess-developer
+;;   :type 'file)
 
 (defcustom ess-developer-enter-hook nil
   "Normal hook run on entering `ess-developer' mode."
@@ -193,7 +192,6 @@ otherwise call devSource."
     (if message (message message))
     (ess--developer-command (ess--make-source-refd-command beg end)
                             'ess--developer-propertize-output)))
-  
 
 (defun ess--developer-command (comm &optional propertize-func)
   "Evaluate the command and popup a message with the output if succed.
@@ -276,14 +274,10 @@ VAL is negative turn it off."
             (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
               (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))
           (run-hooks 'ess-developer-enter-hook)
-          (when (file-readable-p ess-developer-enter-source)
-            (ess-eval-linewise (format "source(%s)\n" ess-developer-enter-source)))
           (if ess-developer-packages
               (message "You are developing: %s" ess-developer-packages)
             (message "Developer is on (add packages with C-c C-t a)")))
       (run-hooks 'ess-developer-exit-hook)
-      (when (file-readable-p ess-developer-exit-source)
-        (ess-eval-linewise (format "source(%s)\n" ess-developer-exit-source)))
       (message "Developer is off"))
     (setq ess-developer ess-dev)
     (if (get-buffer-process (current-buffer))
@@ -294,6 +288,7 @@ VAL is negative turn it off."
       (if ess-dev
           (add-to-list 'ess--local-mode-line-process-indicator 'ess--developer-local-indicator 'append)
         (delq 'ess--developer-local-indicator ess--local-mode-line-process-indicator)))
+    
     (force-window-update)))
 
 (defalias 'ess-toggle-developer 'ess-developer)
