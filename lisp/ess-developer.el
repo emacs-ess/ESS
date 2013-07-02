@@ -279,7 +279,7 @@ propertize output text.
 (make-variable-buffer-local 'ess--developer-package-root)
 
 (defun ess--developer-containing-package ()
-  "Return the name of the container package, nil otherwise.
+  "Return the name of the container package, or nil if not found.
 Currently works for R only and looks at /R/ parent directory."
   (let ((path (directory-file-name default-directory)))
     (when (string-equal "R" (file-name-nondirectory path))
@@ -320,7 +320,8 @@ This function does nothing if `ess-developer-activate-in-package'
 is nil."
   (when ess-developer-activate-in-package
     (let ((pack (ess--developer-containing-package)))
-      (when (and pack (member pack ess-developer-packages))
+      (when (and (not ess-developer)
+                 (member pack ess-developer-packages))
         (ess-developer t)))))
 
 (add-hook 'R-mode-hook 'ess-developer-activate-in-package)
