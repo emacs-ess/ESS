@@ -103,10 +103,12 @@ With prefix argument only choose from among attached packages."
               "Add package"
               (ess-get-words-from-vector
                (format "print(unique(c(.packages(), %s)), max=1e6)\n"
-                       (if attached-only "NULL" ".packages(TRUE)") nil t)))))
+                       (if attached-only "NULL" ".packages(TRUE)") nil t))
+              nil nil nil nil (ess--developer-containing-package))))
     (setq ess-developer-packages
           (ess-uniq-list (append ess-developer-packages (list sel))))
-    (ess-eval-linewise (format "library('%s')" sel))
+    ;; todo: people might want load with other tools like load_all
+    ;; (ess-eval-linewise (format "library('%s')" sel))
     (message "You are developing: %s" ess-developer-packages)))
 
 (defun ess-developer-remove-package ()
