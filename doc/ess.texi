@@ -1,14 +1,14 @@
 \input texinfo   @c -*-texinfo-*-
 @comment %**start of header
 @setfilename ess.info
-@settitle ESS --- Emacs Speaks Statistics
+@settitle ESS -- Emacs Speaks Statistics
 @comment %**end of header
 
 @synindex pg fn
 
 @include ess-defs.texi
 @titlepage
-@title ESS --- Emacs Speaks Statistics
+@title ESS -- Emacs Speaks Statistics
 ESS version @ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :
@@ -514,7 +514,7 @@ you need to end every PROC and DATA step with a "RUN;" statement.  The
 input statements.
 
 @item Graphics (interactive) on the remote machine.  If you run X11
-(@xref{X11}, X-windows)
+(@xref{X11}, X Windows)
 on both the local and remote machines then you should be able to
 display the graphs locally by setting the @samp{DISPLAY} environment
 variable appropriately.  Windows users can download @samp{xfree86}
@@ -595,7 +595,7 @@ commands from @samp{myfile.s} or @samp{myfile.r} on the PC to the
 
 @item Graphics on the remote machine works fine.  If you run the X window
 system on the remote unix machine you should be able to display them in
-@samp{xfree86} on your PC.  If you don't run X11, then you can write
+@samp{xfree86} on your PC.  If you don't run X Windows, or X11, then you can write
 graphics to the postscript device and copy it to your PC with dired and
 display it with ghostscript.
 @end enumerate
@@ -3137,7 +3137,7 @@ features for dealing with such plots.
 
 @menu
 * printer::                     The printer() graphics driver
-* X11::                         The X11() (and other X-windows based) driver
+* X11::                         The X11() (and other X Windows based) driver
 * winjava::                     Java Graphics Device
 @end menu
 
@@ -3161,9 +3161,9 @@ is issued, which displays the current figure.
 @node X11
 @subsection Using ESS with windowing devices
 
-@cindex X windows
+@cindex X Windows
 Of course, the ideal way to use graphics with ESS is to use a windowing
-system.  Under X11, this requires that the DISPLAY environment
+system.  Under X Windows, or X11, this requires that the DISPLAY environment
 variable be appropriately set.
 
 @node winjava

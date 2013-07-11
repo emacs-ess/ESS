@@ -1,3 +1,9 @@
+2013-07-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-defaults):  remove annoying 9.3
+	note/news addition to the comment category; it's not just a 9.3
+	thingie; it is now also in 12.1 and presumably it is eternal
+
 2013-06-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-d.el: see discussion in the thread:
@@ -28,20 +34,6 @@
 	
 	This is now fixed such that M-TAB would add a hash at
 	the end of the line, allowing for a comment.
-
-2013-05-16  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* ess-inf.el (ess-show-buffer): Thanks to David Reitter for this
-	bug report...
-	I noticed that your `ess-show-buffer' function uses
-`display-buffer' to do something that is presented as "switch to
-a buffer" (e.g., switch to process buffer) to the user.
-`display-buffer' is a low-level function, and I wonder why you
-don't simply use the standard Emacs `switch-to-buffer'.  You seem
-to reimplement functionality that Emacs should handle.
-The outcome is that the function is incompatible with tabs - it
-opens up a window rather than switching to the right tab.
-Substituting `switch-to-buffer' seems to work well.
 
 2013-04-11  Rodney Sparapani  <rsparapa@mcw.edu>
 

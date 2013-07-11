@@ -711,6 +711,15 @@ Returns the name of the process, or nil if the current buffer has none."
   (with-current-buffer (process-buffer (ess-get-process ess-local-process-name))
     (set var val)))
 
+;; emacs 23 compatibility
+(unless (fboundp 'process-live-p)
+  (defun process-live-p (process)
+    "Returns non-nil if PROCESS is alive.
+A process is considered alive if its status is `run', `open',
+`listen', `connect' or `stop'."
+    (memq (process-status process)
+          '(run open listen connect stop))))
+
 (defun ess-process-live-p ()
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
@@ -718,8 +727,7 @@ process was killed."
   (and ess-local-process-name
        (let ((proc (get-process ess-local-process-name)))
          (and (processp proc)
-              (memq (process-status proc)
-                    '(run open listen connect stop))))))
+              (process-live-p proc)))))
 
 (defun ess-process-get (propname)
   "Return the variable PROPNAME (symbol) from the plist of the
@@ -1106,7 +1114,7 @@ ordinary inferior process.  Alway nil on Unix machines."
 ;;                 (not (re-search-forward prompt-reg nil t))
 ;;                 )))))
 
-(defun ess-wait-for-process (proc &optional sec-prompt wait force-redisplay)
+(defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay)
   "Wait for 'busy property of the process to become nil.
 If SEC-PROMPT is non-nil return if secondary prompt is detected
 regardless of whether primary prompt was detected or not.  If
@@ -1114,6 +1122,7 @@ WAIT is non-nil wait for WAIT seconds for process output before
 the prompt check, default 0.001s. When FORCE-REDISPLAY is non-nil
 force redisplay. You better use WAIT >= 0.1 if you need
 FORCE-REDISPLAY to avoid excesive redisplay."
+  (setq proc (or proc (get-process ess-local-process-name)))
   (unless (eq (process-status proc) 'run)
     (ess-error "ESS process has died unexpectedly."))
   (setq wait (or wait 0.001)) ;;xemacs is stuck if it's 0 here
@@ -1733,7 +1742,8 @@ dialect specific way to include source references"
 
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
-         (dev-p (process-get proc 'developer))
+         (dev-p (or ess-developer
+                    (ess-get-process-variable 'ess-developer)))
          (tb-p  (process-get proc 'tracebug)))
     (cond
      (dev-p     (ess-developer-send-region proc start end visibly message tb-p))
@@ -1783,7 +1793,8 @@ nil."
                  (end (nth 1 beg-end))
                  (proc (get-process ess-local-process-name))
                  (tb-p  (process-get proc 'tracebug))
-                 (dev-p (process-get proc 'developer))
+                 (dev-p (or ess-developer
+                            (ess-get-process-variable 'ess-developer)))
                  (name (progn (goto-char beg)
                               (forward-word) ;;func names starting with . are not recognized??
                               (ess-read-object-name-default)))
@@ -2038,7 +2049,8 @@ for `ess-eval-region'."
                  (expand-file-name
                   (read-file-name "Load S file: " nil nil t)))))
   (ess-force-buffer-current "Process to load into: ")
-  (if (ess-process-get  'developer)
+  (if (or ess-developer
+          (ess-get-process-variable  'ess-developer))
       (ess-developer-source-current-file filename)
     (if (fboundp (ess-process-get 'source-file-function))
         (funcall (ess-process-get 'source-file-function))

@@ -47,3 +47,12 @@
 ** TODO set PAGER="cat" environment variable for tramp process if unset?
 ** TODO cleanup ESS namespace 
    [2013-06-27 Thu]
+** TODO tramp references not found 
+   [2013-07-08 ma] [[file:~/works/pbm/R/hierarchy.R::..st_is_old..%20<-][file:~/works/pbm/R/hierarchy.R::..st_is_old.. <-]]
+** TODO remove reference to ssh.el from manual + add tramp workflow  
+   [2013-07-10 wo] [[gnus:nnimap%2BSpinuVit:INBOX#51DD58EF.1010702@yahoo.de][Email from Jannis: Re: {ESS} ess-eldoc via ssh re]]
+** TODO don't ask on C-t l for package if already in a package and dev is active ...
+   It interrupts the workflow unnecessarily and feels differently from C-c C-l
+   [2013-07-10 wo] [[file:~/works/protoClasses/R/envProtoClass.R::initMethods%20%3D%20function(...,%20.list%20%3D%20list(),%20changeCallEnv%20%3D%20getOption("protoClasses.changeCallEnv",%20FALSE)){][file:~/works/protoClasses/R/envProtoClass.R::initMethods = function(..., .list = list(), changeCallEnv = getOption("protoClasses.changeCallEnv", FALSE)){]]
+** TODO check Rodney's report on bastard symlinks  
+   [2013-07-11 do]

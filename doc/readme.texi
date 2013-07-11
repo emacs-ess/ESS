@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @comment %**start of header
 @setfilename readme.info
-@settitle ESS --- Emacs Speaks Statistics
+@settitle ESS - Emacs Speaks Statistics
 @comment %**end of header
 
 @include ess-defs.texi

@@ -1708,7 +1708,8 @@ ARGS are ignored to allow using this function in process hooks."
   (ess-force-buffer-current "R process to use: ")
   (let ((proc (get-process ess-local-process-name))
         (file (or filename buffer-file-name)))
-    (if (process-get proc 'developer)
+    (if (or ess-developer
+            (ess-get-process-variable 'ess-developer))
         (ess-developer-source-current-file filename)
       (if (not file)
           ;; source the buffer content, org-mode scratch for ex.

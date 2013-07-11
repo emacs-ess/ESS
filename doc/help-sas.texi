@@ -6,7 +6,7 @@ and the @SAS{} Display Manager.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(SAS)--Design philosophy, ESS(SAS)--Editing files, ESS for SAS, ESS for SAS
-@section ESS(SAS)--Design philosophy
+@section ESS[SAS]--Design philosophy
 
 @ESS{[SAS]} was designed to aid the user in writing and maintaining @SAS{}
 programs, such as @file{@var{foo}.sas}.  Both interactive and batch
@@ -28,7 +28,7 @@ advanced @ESS{[SAS]} users.
 
 @comment  node-name,  next,  previous,  up
 @node ESS(SAS)--Editing files, ESS(SAS)--TAB key, ESS(SAS)--Design philosophy, ESS for SAS
-@section ESS(SAS)--Editing files
+@section ESS[SAS]--Editing files
 
 @ESS{[SAS]} is the mode for editing @SAS{} language files.  This mode handles:
 
@@ -71,7 +71,7 @@ iterative @code{DO} statement, @code{TO} and @code{BY} are not highlighted.
 
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, ESS for SAS
-@section ESS(SAS)--@key{TAB} key
+@section ESS[SAS]--@key{TAB} key
 
 Two options.  The @key{TAB} key is bound by default to
 @code{sas-indent-line}.  This function is used to syntactically indent
@@ -101,7 +101,7 @@ and the stops are defined by @code{ess-sas-tab-stop-list}.
 
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, ESS for SAS
-@section ESS(SAS)--Batch SAS processes
+@section ESS[SAS]--Batch SAS processes
 
 Submission of a @SAS{} batch job is dependent on your environment.
 @code{ess-sas-submit-method} is determined by your operating system and
@@ -224,7 +224,7 @@ Make your editing changes and submit again.
 
 @comment  node-name,  next,  previous,  up
 @node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS for SAS
-@section ESS(SAS)--Function keys for batch processing
+@section ESS[SAS]--Function keys for batch processing
 
 The setup of function keys for @SAS{} batch processing
 is unavoidably complex, but the usage of function keys is simple.
@@ -485,7 +485,7 @@ landscape (first line for "global" key mapping, second for "local"):
 
 @comment  node-name,  next,  previous,  up
 @node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, ESS for SAS
-@section iESS(SAS)--Interactive SAS processes
+@section iESS[SAS]--Interactive SAS processes
 
 Inferior @ESS{} (@iESS{}) is the method for interfacing with interactive
 statistical processes (programs).  @iESS{[SAS]} is what is needed for
@@ -583,7 +583,7 @@ Troubleshooting: @xref{iESS(SAS)--Common problems}.
 
 @comment  node-name,  next,  previous,  up
 @node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, ESS for SAS
-@section iESS(SAS)--Common problems
+@section iESS[SAS]--Common problems
 
 @enumerate
 @item
@@ -638,7 +638,7 @@ shell script appears.
 
 @comment  node-name,  next,  previous,  up
 @node   ESS(SAS)--Graphics, ESS(SAS)--Windows, iESS(SAS)--Common problems, ESS for SAS
-@section ESS(SAS)--Graphics
+@section ESS[SAS]--Graphics
 
 Output from a @SAS{/GRAPH} @code{PROC} can be displayed in a @SAS{/GRAPH}
 window for @SAS{} batch on Windows or for both @SAS{} batch and interactive
@@ -660,7 +660,7 @@ run;
 
 @comment  node-name,  next,  previous,  up
 @node   ESS(SAS)--Windows,  , ESS(SAS)--Graphics, ESS for SAS
-@section ESS(SAS)--Windows
+@section ESS[SAS]--Windows
 
 @itemize @bullet
 @item
