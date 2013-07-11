@@ -261,7 +261,7 @@ propertize output text.
     (put-text-property (match-beginning 1) (match-end 1)
                        'face 'font-lock-function-name-face))
   (goto-char (point-min))
-  (while (re-search-forward "^\\(\\w.+\\):" nil t)
+  (while (re-search-forward "\\([^ \t]+\\):" nil t)
     (put-text-property (match-beginning 1) (match-end 1)
                        'face 'font-lock-keyword-face)))
 
