@@ -119,7 +119,8 @@ With prefix argument only choose from among attached packages."
       (let* ((fn (if (> (length ess-developer-load-on-add-commands) 1)
                      (ess-completing-read "Package not loaded. Use"
                                           (mapcar 'car ess-developer-load-on-add-commands) nil t
-                                          nil 'ess--developer-load-hist (car ess--developer-load-hist))
+                                          nil 'ess--developer-load-hist
+                                          (car ess--developer-load-hist))
                    (caar ess-developer-load-on-add-commands)))
              (cmd (cdr (assoc fn ess-developer-load-on-add-commands))))
         (setq cmd (replace-regexp-in-string "%n" sel cmd))
@@ -265,8 +266,8 @@ propertize output text.
     (put-text-property (match-beginning 1) (match-end 1)
                        'face 'font-lock-keyword-face)))
 
-(defvar ess--developer-package-root nil)
-(make-variable-buffer-local 'ess--developer-package-root)
+(defvar ess--developer-pack-name nil)
+(make-variable-buffer-local 'ess--developer-pack-name)
 
 (defun ess--developer-containing-package ()
   "Return the name of the container package, or nil if not found.
@@ -288,7 +289,12 @@ open R files till package with name pack-name is found (if any)."
                     (not path))
           (when (buffer-local-value 'ess-dialect bf)
             (with-current-buffer bf
-              (setq path (ess--developer-locate-package-path)))))
+              (setq path (ess--developer-locate-package-path))
+              (unless ess--developer-pack-name
+                (setq ess--developer-pack-name ;; cache locally 
+                      (ess--developer-get-package-name path)))
+              (unless (equal ess--developer-pack-name pack-name)
+                (setq path nil)))))
         path)
     (let ((path default-directory)
           package)
@@ -296,11 +302,18 @@ open R files till package with name pack-name is found (if any)."
         (if (file-exists-p (expand-file-name ess-developer-root-file path))
             (setq package path)
           (setq path (file-name-directory (directory-file-name path)))))
-      ;; cache locally
-      (when path
-        (setq ess--developer-package-root path))
       path)))
 
+(defun ess--developer-get-package-name (path)
+  "Find package name in path. Parses DESCRIPTION file, R specific
+so far."
+  (let ((file (expand-file-name ess-developer-root-file path))
+        (case-fold-search t)
+        (find-file-literally t))
+    (with-current-buffer (find-file-noselect file t t)
+      (goto-char (point-min))
+      (re-search-forward "package: \\(.*\\)")
+      (match-string 1))))
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of the package and
