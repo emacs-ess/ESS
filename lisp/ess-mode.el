@@ -486,14 +486,14 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 
 (defun ess--get-mode-line-indicator ()
-  "Get `ess-mode-line-indicator' from process buffer.
+  "Get `ess--mode-line-process-indicator' from process buffer.
 Internal function to be used for dynamic mode-line dysplay in
 ess-mode."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))
              (buff (if proc (process-buffer proc))))
         (if (and proc (buffer-live-p buff))
-            (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
+            (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
           "none"))
     "none"))
 

@@ -1787,7 +1787,7 @@ of Emacs until the code has been successfully evaluated."
 ;; go away, (once we are sure this doesn't break anything)
 (defvaralias 'ess-current-process-name 'ess-local-process-name)
 
-(defvar ess-mode-line-indicator '("" ess-local-process-name)
+(defvar ess--mode-line-process-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
 Local in process buffers and must start with a string. Changes of
 this variable are automatically reflected in mode-lines of the
@@ -1804,12 +1804,12 @@ External utilities such as `ess-tracebug' and `ess-developer'
 customize this variable to indicate changes in the process
 status.
 ")
-(put 'ess-mode-line-indicator 'risky-local-variable t)
-(make-variable-buffer-local 'ess-mode-line-indicator)
+(put 'ess--mode-line-process-indicator 'risky-local-variable t)
+(make-variable-buffer-local 'ess--mode-line-process-indicator)
 
 (defvar ess--local-mode-line-process-indicator '("")
   "List of local process indicators.
-See `ess-mode-line-indicator' for how to set it.
+See `ess--mode-line-process-indicator' for how to set it.
 
 This is an internal varialbe used by tools like `ess-developer'
 and `ess-tracebug'.")

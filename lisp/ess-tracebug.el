@@ -1059,8 +1059,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
     (with-current-buffer (process-buffer proc)
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
-      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-indicator t)
-      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-error-action t)
+      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-indicator t)
+      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-error-action t)
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
@@ -1086,8 +1086,8 @@ Kill the *ess.dbg.[R_name]* buffer."
     (with-current-buffer (process-buffer proc)
       (if (member ess-dialect '("XLS" "SAS" "STA"))
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
-      (delq 'ess--dbg-mode-line-indicator ess-mode-line-indicator)
-      (delq 'ess--dbg-mode-line-error-action ess-mode-line-indicator)
+      (delq 'ess--dbg-mode-line-indicator ess--mode-line-process-indicator)
+      (delq 'ess--dbg-mode-line-error-action ess--mode-line-process-indicator)
       (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
