@@ -460,8 +460,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process
         '(" ["
-          ess--local-mode-line-process-indicator
           (:eval (ess--get-mode-line-indicator))
+          ess--local-mode-line-process-indicator
           "]"))
   ;; completion
   (if (and (featurep 'emacs)

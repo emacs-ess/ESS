@@ -2323,7 +2323,10 @@ to continue it."
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")               ;(concat "iESS:" ess-dialect))
   (setq mode-line-process
-        '(" [" ess-mode-line-indicator "]: %s"))
+        '(" ["
+          ess-mode-line-indicator
+          ess--local-mode-line-process-indicator
+          "]: %s"))
   (use-local-map inferior-ess-mode-map)
   (if ess-mode-syntax-table
       (set-syntax-table ess-mode-syntax-table)
