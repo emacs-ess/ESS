@@ -47,9 +47,6 @@
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-developer)
 
-(defvar ess--developer-local-indicator (propertize "d" 'face 'ess-developer-indicator-face))
-(put 'ess--developer-local-indicator 'risky-local-variable t)
-
 (defcustom ess-developer-packages nil
   "List of names of R packages you develop.
 Use `ess-developer-add-package' to modify interactively this
@@ -396,10 +393,7 @@ VAL is negative turn it off."
   (when (eq val t) (setq val 1))
   (let ((ess-dev  (if (numberp val)
                       (if (< val 0) nil t)
-                    (not (or ess-developer
-                             ;; if t in proc buffer, all associated buffers are in dev-mode
-                             (and (ess-process-live-p)
-                                  (ess-get-process-variable 'ess-developer)))))))
+                    (not ess-developer))))
     (if ess-dev
         (progn
           (run-hooks 'ess-developer-enter-hook)
@@ -407,20 +401,36 @@ VAL is negative turn it off."
               (message "You are developing: %s" ess-developer-packages)
             (message "Developer is on (add packages with C-c C-t a)")))
       (run-hooks 'ess-developer-exit-hook)
-      (message "Developer is off"))
+      (message "%s developer is off" (if (get-buffer-process (current-buffer))
+                                              "Global"
+                                            "Local")))
 
-    (setq ess-developer ess-dev)
+    (setq ess-developer ess-dev))
+    (force-window-update))
 
-    (if (get-buffer-process (current-buffer)) ; in ess process
-        (setq ess-local-process-name
-              (if ess-dev
-                  (propertize ess-local-process-name 'face 'ess-developer-indicator-face)
-                (propertize  ess-local-process-name 'face nil)))
-      (if ess-dev
-          (add-to-list 'ess--local-mode-line-process-indicator 'ess--developer-local-indicator 'append)
-        (delq 'ess--developer-local-indicator ess--local-mode-line-process-indicator)))
 
-    (force-window-update)))
+
+;;; MODELINE
+
+(defvar ess--developer-local-indicator 
+  '(""
+    (:eval
+     ;; process has priority
+     (if (and (ess-process-live-p)
+              (ess-get-process-variable 'ess-developer))
+         (propertize " D" 'face 'ess-developer-indicator-face)
+       (if ess-developer
+           (propertize " d" 'face 'ess-developer-indicator-face)
+         "")))))
+(put 'ess--developer-local-indicator 'risky-local-variable t)
+
+(defun ess-developer-setup-modeline ()
+  (add-to-list 'ess--local-mode-line-process-indicator
+               'ess--developer-local-indicator 'append))
+
+(add-hook 'R-mode-hook 'ess-developer-setup-modeline)
+(add-hook 'inferior-ess-mode-hook 'ess-developer-setup-modeline)
+
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
