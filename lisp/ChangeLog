@@ -1,3 +1,10 @@
+2013-07-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-site.el: Here is a workaround for an Emacs bug related to indirect
+	buffers and spurious lockfiles that rears its ugly head with .Rd files
+http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
+http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
+
 2013-07-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-defaults):  remove annoying 9.3
