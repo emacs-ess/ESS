@@ -1,3 +1,8 @@
+2013-07-27  Henning Redestig  <henning.red@gmail.com>
+
+	* ess-roxy.el (ess-roxy-mode): add interoperability with
+	auto-fill-mode
+
 2013-07-15  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-site.el: Here is a workaround for an Emacs bug related to indirect
