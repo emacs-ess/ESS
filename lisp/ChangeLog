@@ -13,8 +13,10 @@ http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 2013-07-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-defaults):  remove annoying 9.3
-	note/news addition to the comment category; it's not just a 9.3
-	thingie; it is now also in 12.1 and presumably it is eternal
+	note/news from the comment category; it's not a one-time 9.3 specific
+	message; it is also in 12.1 and presumably it is now eternally
+	annoying; but we can't font-lock it since it changes with every
+	new SAS release and it is not worth the maintenance/vigilance
 
 2013-06-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
