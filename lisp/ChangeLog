@@ -437,7 +437,7 @@ http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 	* ess-help.el (ess-skip-to-help-section): this issue is documented in 2 places
 http://www.xemacs.org/About/XEmacsVsGNUemacs.html
 http://www.xemacs.org/Documentation/21.5/html/cl_4.html
-So, the schism goes back many years: circa 1997-1998.  However, the fix is not
+So, the schism goes back many years: circa 1997-1998.  The fix is simple.
 If the keypress is meant to be a character, then
 you wrap last-command-event as follows...
 
