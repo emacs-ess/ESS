@@ -14,6 +14,7 @@
    - State "DONE"       from "DONE"       [2013-06-26 Wed 16:51]
    :END:
 ** TODO make eldoc (actually ess--fun.start) work from withing strings
+** TODO Unit tests for testing common problems (like Sweave), previous bug regressions, etc.
 
 * TRACEBUG
 
