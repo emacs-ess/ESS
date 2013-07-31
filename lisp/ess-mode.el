@@ -204,7 +204,7 @@
     (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
     (define-key ess-extra-map "w" 'ess-execute-screen-options)
 
-    ;; (define-key map "C-t" 
+    ;; (define-key map "C-t"
     ess-extra-map)
   "ESS extra map"
   )
@@ -592,6 +592,11 @@ it cannot find a function beginning."
     (if (search-forward "("
                         (ess-line-end-position 2) t); at most end of next line
         (forward-char 1))
+    ;; TODO: replace the above by hopefully more sucessful logic:
+    ;; 1. If we have 'function *(' in the same line, move to end of that line
+    ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
+    ;;    and only* then do something like the
+    ;;    (search-forward '(' .. (..line-end.. 2) )  above
 
     (setq end (point)); = init-point when nothing found
 
