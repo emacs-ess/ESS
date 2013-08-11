@@ -347,8 +347,11 @@ there is no process NAME)."
            (inferior-ess-make-comint buf-name-str
                                      proc-name
                                      inf-ess-start-args)))
+
+        ;; set accumulation buffer name (buffer to cache output for faster display)
         (process-put (get-process proc-name) 'accum-buffer-name
                      (format " *%s:accum*" proc-name))
+        
         ;; Set the process sentinel to save the history
         (set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
         ;; Add this process to ess-process-name-list, if needed
@@ -372,6 +375,12 @@ there is no process NAME)."
         ;; arguments cache
         (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
         (ess-process-put 'funargs-pre-cache nil)
+        
+        ;; don't font-lock strings over process prompt
+        (set (make-local-variable 'syntax-begin-function)
+             #'inferior-ess-goto-last-prompt)
+        (set (make-local-variable 'font-lock-fontify-region-function)
+             #'inferior-ess-fontify-region)
 
         (run-hooks 'ess-post-run-hook)
 
@@ -387,6 +396,33 @@ there is no process NAME)."
         (if (and inferior-ess-same-window (not inferior-ess-own-frame))
             (switch-to-buffer buff)
           (pop-to-buffer buff))))))
+
+(defun inferior-ess-goto-last-prompt ()
+  (comint-previous-prompt 1))
+
+(defun inferior-ess-fontify-region (beg end &optional verbose)
+  "Fontify output by output within the region to avoid
+fontification spilling over prompts."
+  (let* ((buffer-undo-list t)
+	 (inhibit-point-motion-hooks t)
+         (font-lock-dont-widen t)
+         (buff (current-buffer))
+         (pos (comint-previous-prompt 1)) ; expand to previous prompt
+         (pos2))
+    (with-silent-modifications
+      ;; (dbg pos end)
+      (font-lock-unfontify-region pos end)
+      (while (< pos end)
+        (goto-char pos)
+        (comint-next-prompt 1)
+        (setq pos2 (min (point) end))
+        (save-restriction
+          (narrow-to-region pos pos2)
+          ;; (redisplay)
+          ;; (sit-for 1)
+          (font-lock-default-fontify-region pos pos2 verbose))
+        (setq pos pos2)))
+    ))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
