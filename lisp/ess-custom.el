@@ -2574,8 +2574,10 @@ Created for each process."
 Used for recording status of the program, mainly for debugging.")
 
 (defvar ess-customize-alist nil
-  "Variable settings to use for proper behavior.")
-(make-variable-buffer-local 'ess-customize-alist)
+  "Variable settings to use for proper behavior.
+Not buffer local!")
+;; TODO: fixme We cannot make it local as yet, Not list is set on inferior startup. 
+;; (make-variable-buffer-local 'ess-customize-alist)
 ;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
 (defvar ess-local-customize-alist nil
