@@ -1838,6 +1838,26 @@ that file.")
   "Dialect specific format-string for building the ess command to
 load a file with visible output but no echo.")
 
+(defvar ess-eval-command nil
+  "Dialect specific format-string for building the command to evaluate a string.
+
+This format string should use %s as a placeholder for the string
+to be evaluated and, optionally, %f for the file name to be
+reported in the error references.
+
+The resulting command should not echo code or print any
+transitory output. See also `ess-eval-visibly-command' and
+`ess-eval-visibly-noecho-command'.")
+
+(defvar ess-eval-visibly-command nil
+  "Dialect specific format-string for building the command to
+  evaluate a string with visible output and code echo.
+See ")
+
+(defvar ess-eval-visibly-noecho-command nil
+  "Dialect specific format-string for building the command to
+  evaluate a string with visible output but no echo.")
+
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
 
