@@ -2442,7 +2442,8 @@ to continue it."
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun ess-R--sanitize-help-topic (string)
-  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string)
+  ;; enclose help topics into `` to avoid ?while ?if etc hangs
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
       (format "%s`%s`" (match-string 1 string) (match-string 2 string))
     (format "`%s`" string)))
 
@@ -2451,8 +2452,7 @@ to continue it."
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (format "%s%s" (match-string 1 string)
-                                     (ess-R--sanitize-help-topic (match-string 2 string)))))
+                             string))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
@@ -2460,11 +2460,18 @@ to continue it."
              (process-send-string proc "\n"))
             (help-?-match
              (if (string-match "\\?\\?\\(.+\\)" help-?-match)
-                 (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
+                 (ess--display-indexed-help-page (concat help-?-match "\n")
+                                                 "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess-display-help-on-object help-?-match "%s\n"))
+               (if (string-match "^ *\\? *\\([^:]+\\)$" help-?-match) ; help(foo::bar) doesn't work
+                   (ess-display-help-on-object (match-string 1 help-?-match))
+                 ;; anything else we send to process almost unchanged
+                 (let ((help-?-match (and (string-match inferior-R--input-?-help-regexp string)
+                                          (format "%s%s" (match-string 1 string)
+                                                  (ess-R--sanitize-help-topic (match-string 2 string))))))
+                   (ess-display-help-on-object help-?-match "%s\n"))))
              (process-send-string proc "\n"))
             (page-match
              (switch-to-buffer-other-window
