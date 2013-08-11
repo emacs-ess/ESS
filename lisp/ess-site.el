@@ -408,24 +408,24 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (if ess-microsoft-p
     (progn
-      (ess-message "[ess-site:] require 'ess-sp4-d ...")
-      (require 'ess-sp4-d)
+      ;; (ess-message "[ess-site:] require 'ess-sp4-d ...")
+      ;; (require 'ess-sp4-d)
       (ess-message "[ess-site:] require 'ess-sp6w-d ...")
       (require 'ess-sp6w-d))
   ;; else: decent OS
-  (ess-message "[ess-site:] require 'ess-sp5-d ...")
-  (require 'ess-sp5-d)
+  ;; (ess-message "[ess-site:] require 'ess-sp5-d ...")
+  ;; (require 'ess-sp5-d)
   (ess-message "[ess-site:] require 'ess-sp6-d ...")
   (require 'ess-sp6-d))
 
 (ess-message "[ess-site:] require 'ess-sta-d ...")
 (require 'ess-sta-d)  ;; for Stata.
-(ess-message "[ess-site:] require 'ess-xls-d ...")
-(require 'ess-xls-d)  ;; XLispStat
-(ess-message "[ess-site:] require 'ess-vst-d ...")
-(require 'ess-vst-d)  ;; ViSta
-(ess-message "[ess-site:] require 'ess-arc-d ...")
-(require 'ess-arc-d)  ;; Arc
+;; (ess-message "[ess-site:] require 'ess-xls-d ...")
+;; (require 'ess-xls-d)  ;; XLispStat
+;; (ess-message "[ess-site:] require 'ess-vst-d ...")
+;; (require 'ess-vst-d)  ;; ViSta
+;; (ess-message "[ess-site:] require 'ess-arc-d ...")
+;; (require 'ess-arc-d)  ;; Arc
 (ess-message "[ess-site:] require 'ess-sas-d ...")
 (require 'ess-sas-d)
 (ess-message "[ess-site:] require 'essd-els ...")
