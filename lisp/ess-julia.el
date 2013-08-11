@@ -101,11 +101,8 @@
 (defconst julia-forloop-in-regex
   "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
 
-(defconst ess-subset-regexp
-      "\\[[0-9:, ]*\\]" )
-
-(defconst julia-font-lock-defaults
-  (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\)\\|Int\\(8\\|16\\|32\\|64\\)\\|Integer\\|Float\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexNum\\|Bool\\|Char\\|Number\\|Scalar\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Buffer\\|Size\\|Index\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|PtrInt\\|Long\\|Ulong\\)\\>" .
+(defconst julia-font-lock-keywords
+  (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\|128\\)\\|Int\\(8\\|16\\|32\\|64\\|128\\)\\|BigInt\\|Integer\\|BigFloat\\|FloatingPoint\\|Float16\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexPair\\|Bool\\|Char\\|Number\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|AbstractSparseMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|Task\\|Signed\\|Unsigned\\|Associative\\|Dict\\|IO\\|IOStream\\|Ranges\\|Rational\\|Regex\\|RegexMatch\\|Set\\|IntSet\\|ASCIIString\\|UTF8String\\|ByteString\\|Expr\\|WeakRef\\|Nothing\\|ObjectIdDict\\|SubString\\)\\>" .
       font-lock-type-face)
     (cons
      (concat "\\<\\("
@@ -113,11 +110,12 @@
           'identity
           '("if" "else" "elseif" "while" "for" "begin" "end" "quote"
             "try" "catch" "return" "local" "abstract" "function" "macro" "ccall"
-	    "typealias" "break" "continue" "type" "global" "@\\w+"
-	    "module" "import" "export" "const" "let" "bitstype" "using")
+	    "finally" "typealias" "break" "continue" "type" "global" "@\\w+"
+	    "module" "using" "import" "export" "const" "let" "bitstype" "do"
+	    "baremodule" "importall" "immutable")
           "\\|") "\\)\\>")
      'font-lock-keyword-face)
-    '("\\<\\(true\\|false\\|C_NULL\\|Inf\\|NaN\\|Inf32\\|NaN32\\)\\>" . font-lock-constant-face)
+    '("\\<\\(true\\|false\\|C_NULL\\|Inf\\|NaN\\|Inf32\\|NaN32\\|nothing\\)\\>" . font-lock-constant-face)
     (list julia-unquote-regex 2 'font-lock-constant-face)
     (list julia-char-regex 2 'font-lock-string-face)
     (list julia-forloop-in-regex 1 'font-lock-keyword-face)
@@ -128,13 +126,13 @@
 
 (defconst julia-block-start-keywords
   (list "if" "while" "for" "begin" "try" "function" "type" "let" "macro"
-	"quote"))
+	"quote" "do" "immutable"))
 
 (defconst julia-block-other-keywords
   (list "else" "elseif"))
 
 (defconst julia-block-end-keywords
-  (list "end" "else" "elseif" "catch"))
+  (list "end" "else" "elseif" "catch" "finally"))
 
 (defun ess-inside-brackets-p (&optional pos)
   "Return t if position POS is inside brackets.
@@ -464,20 +462,11 @@ to look up any doc strings."
 (defvar julia-imenu-generic-expression
   ;; don't use syntax classes, screws egrep
   '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
-    ("Function" "[ \t]*function[ \t]+\\([^_][^\t\n]*\\)" 1)
+    ("Function" "^[ \t]*function[ \t]+\\([^_][^\t\n]*\\)" 1)
     ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
     ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1)
     ("Require"      " *\\(\\brequire\\)(\\([^ \t\n)]*\\)" 2)
     ("Include"      " *\\(\\binclude\\)(\\([^ \t\n)]*\\)" 2)
-    ;; ("Classes" "^.*setClass(\\(.*\\)," 1)
-    ;; ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
-    ;; ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
-    ;; ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\"\\(.+\\)\"," 2)
-    ;; ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
-    ;; ;;
-    ;; ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
-    ;; ("Package" "^.*\\(library\\|require\\)(\\(.*\\)," 2)
-    ;; ("Data" "^\\(.+\\)\\s-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
     ))
 
 (provide 'ess-julia)

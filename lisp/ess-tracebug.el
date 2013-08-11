@@ -53,6 +53,7 @@
 ;;; Code:
 
 (require 'ess)
+(require 'format-spec)
 (eval-when-compile
   (require 'compile)
   (require 'overlay)
@@ -162,8 +163,8 @@ from temporary buffers.")
 
 
 (defun ess--make-source-refd-command (beg end &optional visibly)
-  "Encapsulate the region string into eval(parse ... )
-block (used for source references insertion)"
+  "Transform region string in order to add source references.
+Return new command, a string."
   (let* ((filename buffer-file-name)
          (proc-dir (ess-get-process-variable 'default-directory))
          (remote (when (file-remote-p proc-dir)
@@ -196,39 +197,54 @@ block (used for source references insertion)"
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-    (let ((tmpfile
-           (expand-file-name (concat (file-name-nondirectory (or filename "unknown")) "@"
-                                     (number-to-string ess--tracebug-eval-index))
-                             (if remote
-                                 (tramp-get-remote-tmpdir remote)
-                               temporary-file-directory))))
-      (write-region beg end tmpfile nil 'silent)
-      (ess-process-put 'temp-source-files
-                       (cons tmpfile (ess-process-get 'temp-source-files)))
-      (if (not filename)
-          (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
-        (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-        (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
-                 (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-        (with-silent-modifications
-          (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
-      (when remote
-        ;; get local name (should this be done in process buffer?)
-        (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
-      (if (and visibly ess-load-visibly-command)
-          (format ess-load-visibly-command tmpfile)
-        (format (or ess-load-visibly-noecho-command
-                    ess-load-command)
-                tmpfile)))))
+     (let ((tmpfile
+            (expand-file-name (concat (file-name-nondirectory (or filename "unknown")) "@"
+                                      (number-to-string ess--tracebug-eval-index))
+                              (if remote
+                                  (tramp-get-remote-tmpdir remote)
+                                temporary-file-directory)))
+           (eval-format  (if visibly
+                             ess-eval-visibly-command
+                           (or ess-eval-visibly-noecho-command
+                               ess-eval-command))))
+
+       (ess-process-put 'temp-source-files
+                        (cons tmpfile (ess-process-get 'temp-source-files)))
+
+       (when remote
+         ;; get local name (should this be done in process buffer?)
+         (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
+       
+       (if (not filename)
+           (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
+         (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+         (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+         (with-silent-modifications
+           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+       
+       ;; sending string to subprocess is considerably faster than tramp file
+       ;; transfer. So, give priority to ess-eval-*-command if available
+       (if eval-format
+           (format-spec eval-format
+                        `((?s . ,(ess-quote-special-chars
+                                  (buffer-substring-no-properties beg end)))
+                          (?f . ,tmpfile)))
+         ;; else: use ess-load-*-command
+         (write-region beg end tmpfile nil 'silent)
+         (if (and visibly ess-load-visibly-command)
+             (format ess-load-visibly-command tmpfile)
+           (format (or ess-load-visibly-noecho-command
+                       ess-load-command)
+                   tmpfile))))))
 
 
-(defun ess-tracebug-send-region (proc start end &optional visibly message inject)
-  "Send region to process. Source-ref region and wrap in eval(parse(...)) if needed.
-If INJECT is non-nil `ess--make-source-refd-command' is called to
-insert source references into evaluated code."
-  (let* ((inject-p  (cond ((eq inject 'function)
+(defun ess-tracebug-send-region (proc start end &optional visibly message type)
+  "Send region to process adding source references as specified
+by `ess-inject-source' variable."
+  (let* ((inject-p  (cond ((eq type 'function)
                            ess-inject-source)
-                          ((eq inject 'buffer)
+                          ((eq type 'buffer)
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
                           (t (eq ess-inject-source t))))
@@ -1059,8 +1075,8 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
     (with-current-buffer (process-buffer proc)
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
-      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-indicator t)
-      (add-to-list 'ess-mode-line-indicator 'ess--dbg-mode-line-error-action t)
+      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-indicator t)
+      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-error-action t)
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
@@ -1086,8 +1102,8 @@ Kill the *ess.dbg.[R_name]* buffer."
     (with-current-buffer (process-buffer proc)
       (if (member ess-dialect '("XLS" "SAS" "STA"))
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
-      (delq 'ess--dbg-mode-line-indicator ess-mode-line-indicator)
-      (delq 'ess--dbg-mode-line-error-action ess-mode-line-indicator)
+      (delq 'ess--dbg-mode-line-indicator ess--mode-line-process-indicator)
+      (delq 'ess--dbg-mode-line-error-action ess--mode-line-process-indicator)
       (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))

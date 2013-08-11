@@ -129,7 +129,18 @@
     (unless (featurep 'xemacs)
       (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
   (when font-lock-mode
-    (font-lock-fontify-buffer)))
+    (font-lock-fontify-buffer))
+  ;; for auto fill functionality
+  (make-local-variable 'adaptive-fill-regexp)
+  (setq adaptive-fill-regexp (concat ess-roxy-re adaptive-fill-regexp))
+  (make-local-variable 'adaptive-fill-first-line-regexp)
+  (setq adaptive-fill-first-line-regexp (concat ess-roxy-re
+                                                adaptive-fill-first-line-regexp))
+  (make-local-variable 'paragraph-start)
+  (setq paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
+  (make-local-variable 'paragraph-separate)
+  (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
+  )
 
 
 ;; (setq hs-c-start-regexp ess-roxy-str)

@@ -215,6 +215,19 @@ for ESS, such as icons.")
 
 (autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
 
+; Here is a workaround for an Emacs bug related to indirect buffers and 
+; spurious lockfiles that rears its ugly head with .Rd files
+; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
+; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
+(if (featurep 'xemacs) nil
+  ;; (add-hook 'Rd-mode-hook (lambda () 
+  ;;         (set (make-local-variable create-lockfiles) nil)))
+					
+  (make-local-variable 'create-lockfiles)
+
+  (add-hook 'Rd-mode-hook (lambda () (setq create-lockfiles nil))) 
+)
+
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
   "Remove the S-Plus mode association for .s and .S files added by ESS.
@@ -395,24 +408,24 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (if ess-microsoft-p
     (progn
-      (ess-message "[ess-site:] require 'ess-sp4-d ...")
-      (require 'ess-sp4-d)
+      ;; (ess-message "[ess-site:] require 'ess-sp4-d ...")
+      ;; (require 'ess-sp4-d)
       (ess-message "[ess-site:] require 'ess-sp6w-d ...")
       (require 'ess-sp6w-d))
   ;; else: decent OS
-  (ess-message "[ess-site:] require 'ess-sp5-d ...")
-  (require 'ess-sp5-d)
+  ;; (ess-message "[ess-site:] require 'ess-sp5-d ...")
+  ;; (require 'ess-sp5-d)
   (ess-message "[ess-site:] require 'ess-sp6-d ...")
   (require 'ess-sp6-d))
 
 (ess-message "[ess-site:] require 'ess-sta-d ...")
 (require 'ess-sta-d)  ;; for Stata.
-(ess-message "[ess-site:] require 'ess-xls-d ...")
-(require 'ess-xls-d)  ;; XLispStat
-(ess-message "[ess-site:] require 'ess-vst-d ...")
-(require 'ess-vst-d)  ;; ViSta
-(ess-message "[ess-site:] require 'ess-arc-d ...")
-(require 'ess-arc-d)  ;; Arc
+;; (ess-message "[ess-site:] require 'ess-xls-d ...")
+;; (require 'ess-xls-d)  ;; XLispStat
+;; (ess-message "[ess-site:] require 'ess-vst-d ...")
+;; (require 'ess-vst-d)  ;; ViSta
+;; (ess-message "[ess-site:] require 'ess-arc-d ...")
+;; (require 'ess-arc-d)  ;; Arc
 (ess-message "[ess-site:] require 'ess-sas-d ...")
 (require 'ess-sas-d)
 (ess-message "[ess-site:] require 'essd-els ...")

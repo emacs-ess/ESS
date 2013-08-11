@@ -81,6 +81,24 @@
            utils:::.retrieveCompletions())
      }
 
+### SOURCING
+
+     .ess_eval <- function(string, echo = TRUE, print.eval = TRUE, max.deparse.length = 300,
+                           file = tempfile("ESS"), local = parent.frame()){
+         cat(string, file = file)
+         .ess_source(file, echo = echo, print.eval = print.eval,
+                     max.deparse.length = max.deparse.length, local = local)
+     }
+
+     .ess_source <- function(file, echo = TRUE, print.eval = TRUE,
+                             max.deparse.length = 300, local = parent.frame()){
+         invisible(source(file = file,
+                          echo = echo, local = local,
+                          print.eval = print.eval,
+                          max.deparse.length = 300,
+                          keep.source = TRUE)$value) ## return value for org-babel
+     }
+
 ### WEAVING
      .ess_weave <- function(command, file, encoding = NULL){
          if(grepl('knit|purl', deparse(substitute(command))))
@@ -94,9 +112,9 @@
              command(file, encoding = encoding)
      }
 
-### BREAKPOINTS     
+### BREAKPOINTS
      .ESSBP. <- list()
-     
+
 ### DEBUG/UNDEBUG
      .ess_find_funcs <- function(env)
      {
@@ -162,8 +180,8 @@
          all <- .ess_all_functions(packages = packages, env = env)
          which_deb <- lapply(all, function(nm){
              ## if isdebugged is called with string it doess find
-	     tryCatch(isdebugged(get(nm, envir = env)),
-		      error = function(e) FALSE)
+             tryCatch(isdebugged(get(nm, envir = env)),
+                      error = function(e) FALSE)
              ## try(eval(substitute(isdebugged(nm), list(nm = as.name(nm)))), silent = T)
          })
          debugged <- all[which(unlist(which_deb, recursive=FALSE, use.names=FALSE))]

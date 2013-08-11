@@ -347,8 +347,11 @@ there is no process NAME)."
            (inferior-ess-make-comint buf-name-str
                                      proc-name
                                      inf-ess-start-args)))
+
+        ;; set accumulation buffer name (buffer to cache output for faster display)
         (process-put (get-process proc-name) 'accum-buffer-name
                      (format " *%s:accum*" proc-name))
+        
         ;; Set the process sentinel to save the history
         (set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
         ;; Add this process to ess-process-name-list, if needed
@@ -372,6 +375,12 @@ there is no process NAME)."
         ;; arguments cache
         (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
         (ess-process-put 'funargs-pre-cache nil)
+        
+        ;; don't font-lock strings over process prompt
+        (set (make-local-variable 'syntax-begin-function)
+             #'inferior-ess-goto-last-prompt)
+        (set (make-local-variable 'font-lock-fontify-region-function)
+             #'inferior-ess-fontify-region)
 
         (run-hooks 'ess-post-run-hook)
 
@@ -387,6 +396,33 @@ there is no process NAME)."
         (if (and inferior-ess-same-window (not inferior-ess-own-frame))
             (switch-to-buffer buff)
           (pop-to-buffer buff))))))
+
+(defun inferior-ess-goto-last-prompt ()
+  (comint-previous-prompt 1))
+
+(defun inferior-ess-fontify-region (beg end &optional verbose)
+  "Fontify output by output within the region to avoid
+fontification spilling over prompts."
+  (let* ((buffer-undo-list t)
+	 (inhibit-point-motion-hooks t)
+         (font-lock-dont-widen t)
+         (buff (current-buffer))
+         (pos (comint-previous-prompt 1)) ; expand to previous prompt
+         (pos2))
+    (with-silent-modifications
+      ;; (dbg pos end)
+      (font-lock-unfontify-region pos end)
+      (while (< pos end)
+        (goto-char pos)
+        (comint-next-prompt 1)
+        (setq pos2 (min (point) end))
+        (save-restriction
+          (narrow-to-region pos pos2)
+          ;; (redisplay)
+          ;; (sit-for 1)
+          (font-lock-default-fontify-region pos pos2 verbose))
+        (setq pos pos2)))
+    ))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
@@ -2323,7 +2359,10 @@ to continue it."
   (setq major-mode 'inferior-ess-mode)
   (setq mode-name "iESS")               ;(concat "iESS:" ess-dialect))
   (setq mode-line-process
-        '(" [" ess-mode-line-indicator "]: %s"))
+        '(" ["
+          ess--mode-line-process-indicator
+          ess--local-mode-line-process-indicator
+          "]: %s"))
   (use-local-map inferior-ess-mode-map)
   (if ess-mode-syntax-table
       (set-syntax-table ess-mode-syntax-table)
@@ -2435,11 +2474,12 @@ to continue it."
 (defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 ;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
 (defconst inferior-R--input-?-help-regexp
-  "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\)\\(?2:.+\\)\\)") ; "\\?\\{1,2\\}\\) *['\"]?\\([^,=)'\"]*\\)['\"]?") ;;catch ??
+  "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
 (defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defun ess-R--sanitize-help-topic (string)
-  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string)
+  ;; enclose help topics into `` to avoid ?while ?if etc hangs
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
       (format "%s`%s`" (match-string 1 string) (match-string 2 string))
     (format "`%s`" string)))
 
@@ -2448,8 +2488,7 @@ to continue it."
     (let ((help-match (and (string-match inferior-R--input-help string)
                            (match-string 2 string)))
           (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             (format "%s%s" (match-string 1 string)
-                                     (ess-R--sanitize-help-topic (match-string 2 string)))))
+                             string))
           (page-match   (and (string-match inferior-R--page-regexp string)
                              (match-string 2 string))))
       (cond (help-match
@@ -2457,11 +2496,18 @@ to continue it."
              (process-send-string proc "\n"))
             (help-?-match
              (if (string-match "\\?\\?\\(.+\\)" help-?-match)
-                 (ess--display-indexed-help-page (concat help-?-match "\n") "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
+                 (ess--display-indexed-help-page (concat help-?-match "\n")
+                                                 "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
                                                  (format "*ess-apropos[%s](%s)*"
                                                          ess-current-process-name (match-string 1 help-?-match))
                                                  'appropos)
-               (ess-display-help-on-object help-?-match "%s\n"))
+               (if (string-match "^ *\\? *\\([^:]+\\)$" help-?-match) ; help(foo::bar) doesn't work
+                   (ess-display-help-on-object (match-string 1 help-?-match))
+                 ;; anything else we send to process almost unchanged
+                 (let ((help-?-match (and (string-match inferior-R--input-?-help-regexp string)
+                                          (format "%s%s" (match-string 1 string)
+                                                  (ess-R--sanitize-help-topic (match-string 2 string))))))
+                   (ess-display-help-on-object help-?-match "%s\n"))))
              (process-send-string proc "\n"))
             (page-match
              (switch-to-buffer-other-window

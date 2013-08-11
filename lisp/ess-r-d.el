@@ -192,9 +192,12 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-load-command                  . "invisible(source(\"%s\", local=TRUE, keep.source=TRUE)$value)\n") ;; return correct value for org-babel
-     (ess-load-visibly-command          . "invisible(source('%s', local=TRUE, echo=TRUE, keep.source=TRUE, max.deparse.length = 300)$value)\n")
-     (ess-load-visibly-noecho-command   . "invisible(source('%s', local=TRUE, print.eval = TRUE, keep.source=TRUE, max.deparse.length = 300)$value)\n")
+     (ess-eval-command                  . ".ess_eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
+     (ess-eval-visibly-command          . ".ess_eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
+     (ess-eval-visibly-noecho-command   . ".ess_eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
+     (ess-load-command                  . ".ess_source(\"%s\", FALSE, FALSE)\n")
+     (ess-load-visibly-command          . ".ess_source(\"%s\", TRUE, TRUE, 300)\n")
+     (ess-load-visibly-noecho-command   . ".ess_source(\"%s\", FALSE, TRUE, 300)\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))

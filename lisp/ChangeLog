@@ -1,8 +1,22 @@
+2013-07-27  Henning Redestig  <henning.red@gmail.com>
+
+	* ess-roxy.el (ess-roxy-mode): add interoperability with
+	auto-fill-mode
+
+2013-07-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-site.el: Here is a workaround for an Emacs bug related to indirect
+	buffers and spurious lockfiles that rears its ugly head with .Rd files
+http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
+http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
+
 2013-07-11  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-defaults):  remove annoying 9.3
-	note/news addition to the comment category; it's not just a 9.3
-	thingie; it is now also in 12.1 and presumably it is eternal
+	note/news from the comment category; it's not a one-time 9.3 specific
+	message; it is also in 12.1 and presumably it is now eternally
+	annoying; but we can't font-lock it since it changes with every
+	new SAS release and it is not worth the maintenance/vigilance
 
 2013-06-12  Rodney Sparapani  <rsparapa@mcw.edu>
 
@@ -423,7 +437,7 @@
 	* ess-help.el (ess-skip-to-help-section): this issue is documented in 2 places
 http://www.xemacs.org/About/XEmacsVsGNUemacs.html
 http://www.xemacs.org/Documentation/21.5/html/cl_4.html
-So, the schism goes back many years: circa 1997-1998.  However, the fix is not
+So, the schism goes back many years: circa 1997-1998.  The fix is simple.
 If the keypress is meant to be a character, then
 you wrap last-command-event as follows...
 

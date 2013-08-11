@@ -204,7 +204,7 @@
     (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
     (define-key ess-extra-map "w" 'ess-execute-screen-options)
 
-    ;; (define-key map "C-t" 
+    ;; (define-key map "C-t"
     ess-extra-map)
   "ESS extra map"
   )
@@ -460,8 +460,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process
         '(" ["
-          ess--local-mode-line-process-indicator
           (:eval (ess--get-mode-line-indicator))
+          ess--local-mode-line-process-indicator
           "]"))
   ;; completion
   (if (and (featurep 'emacs)
@@ -486,14 +486,14 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
 
 (defun ess--get-mode-line-indicator ()
-  "Get `ess-mode-line-indicator' from process buffer.
+  "Get `ess--mode-line-process-indicator' from process buffer.
 Internal function to be used for dynamic mode-line dysplay in
 ess-mode."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))
              (buff (if proc (process-buffer proc))))
         (if (and proc (buffer-live-p buff))
-            (with-current-buffer buff (mapcar 'eval ess-mode-line-indicator))
+            (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
           "none"))
     "none"))
 
@@ -592,6 +592,11 @@ it cannot find a function beginning."
     (if (search-forward "("
                         (ess-line-end-position 2) t); at most end of next line
         (forward-char 1))
+    ;; TODO: replace the above by hopefully more sucessful logic:
+    ;; 1. If we have 'function *(' in the same line, move to end of that line
+    ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
+    ;;    and only* then do something like the
+    ;;    (search-forward '(' .. (..line-end.. 2) )  above
 
     (setq end (point)); = init-point when nothing found
 

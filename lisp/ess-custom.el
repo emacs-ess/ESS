@@ -968,7 +968,7 @@ to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
 
-(defcustom ess-roxy-tags-param '("author" "aliases" "concept"
+(defcustom ess-roxy-tags-param '("author" "aliases" "concept" "details"
                                  "examples" "format" "keywords"
                                  "method" "exportMethod"
                                  "name" "note" "param"
@@ -976,9 +976,10 @@ to decide highlighting and tag completion."
                                  "seealso" "source" "docType"
                                  "title" "TODO" "usage" "import"
                                  "exportClass" "exportPattern" "S3method"
+                                 "inheritParams"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
-                                 "rdname" "slot")
+                                 "rdname" "section" "slot")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
@@ -1787,7 +1788,7 @@ of Emacs until the code has been successfully evaluated."
 ;; go away, (once we are sure this doesn't break anything)
 (defvaralias 'ess-current-process-name 'ess-local-process-name)
 
-(defvar ess-mode-line-indicator '("" ess-local-process-name)
+(defvar ess--mode-line-process-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
 Local in process buffers and must start with a string. Changes of
 this variable are automatically reflected in mode-lines of the
@@ -1804,12 +1805,12 @@ External utilities such as `ess-tracebug' and `ess-developer'
 customize this variable to indicate changes in the process
 status.
 ")
-(put 'ess-mode-line-indicator 'risky-local-variable t)
-(make-variable-buffer-local 'ess-mode-line-indicator)
+(put 'ess--mode-line-process-indicator 'risky-local-variable t)
+(make-variable-buffer-local 'ess--mode-line-process-indicator)
 
 (defvar ess--local-mode-line-process-indicator '("")
   "List of local process indicators.
-See `ess-mode-line-indicator' for how to set it.
+See `ess--mode-line-process-indicator' for how to set it.
 
 This is an internal varialbe used by tools like `ess-developer'
 and `ess-tracebug'.")
@@ -1836,6 +1837,26 @@ that file.")
 (defvar ess-load-visibly-noecho-command nil
   "Dialect specific format-string for building the ess command to
 load a file with visible output but no echo.")
+
+(defvar ess-eval-command nil
+  "Dialect specific format-string for building the command to evaluate a string.
+
+This format string should use %s as a placeholder for the string
+to be evaluated and, optionally, %f for the file name to be
+reported in the error references.
+
+The resulting command should not echo code or print any
+transitory output. See also `ess-eval-visibly-command' and
+`ess-eval-visibly-noecho-command'.")
+
+(defvar ess-eval-visibly-command nil
+  "Dialect specific format-string for building the command to
+  evaluate a string with visible output and code echo.
+See ")
+
+(defvar ess-eval-visibly-noecho-command nil
+  "Dialect specific format-string for building the command to
+  evaluate a string with visible output but no echo.")
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
@@ -2412,9 +2433,6 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-function-call-face 'ess-function-call-face
   "Face name to use for highlighting function calls.")
 
-(defvar ess-function-call-face 'ess-function-call-face
-  "Face name to use for highlighting function calls.")
-
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
 
@@ -2424,7 +2442,7 @@ the variable `ess-help-own-frame' is non-nil."
           ess-numbers-face font-lock-type-face)
 
   (defface ess-function-call-face
-    '((default (:slant normal :inherit font-lock-builtin-face)))
+    '((default (:slant normal :inherit font-lock-function-name-face)))
     "Font Lock face used to highlight function calls in ess buffers."
     :group 'ess)
 
@@ -2555,11 +2573,10 @@ Created for each process."
   "Buffer for temporary use for setting default variable values.
 Used for recording status of the program, mainly for debugging.")
 
-;; VS[31-08-2012]: No global exchange please. This var should be local. If you
-;; need it in a new buffer, import it from the parent buffer.
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
 Not buffer local!")
+;; TODO: fixme We cannot make it local as yet, Not list is set on inferior startup. 
 ;; (make-variable-buffer-local 'ess-customize-alist)
 ;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
