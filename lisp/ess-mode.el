@@ -927,7 +927,7 @@ of the expression are preserved."
 
 
 (defun ess-indent-or-complete ()
-  "When a region is selected and either `cua-mode' is active or `ess-tab-indent-region' is non-nil, indent the region.
+  "When a region is selected indent the region.
 
 Try to indent first, if code is already properly indented,
 complete instead.  It calls `comint-dynamic-complete' for emacs <
@@ -936,7 +936,7 @@ complete instead.  It calls `comint-dynamic-complete' for emacs <
 In ess-mode, only tries completion if `ess-tab-complete-in-script' is non-nil.
 See also `ess-first-tab-never-complete'."
   (interactive)
-  (if (and mark-active (or cua-mode ess-tab-indent-region))
+  (if mark-active 
       (indent-region (point-min-marker) (point-max-marker))
     (let ((shift (ess-indent-command)))
       (when (and ess-tab-complete-in-script
