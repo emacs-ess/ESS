@@ -293,7 +293,7 @@ found, return nil."
         (if (file-exists-p (expand-file-name ess-developer-root-file path))
             (setq package path)
           (setq path (file-name-directory (directory-file-name path)))))
-      path)))
+      package)))
 
 
 (defun ess-developer--get-package-name (&optional path)
@@ -358,7 +358,10 @@ If ALL is non-nil, deactivate in all open R buffers."
 See also `ess-developer-load-all-command'."
   (interactive)
   (let ((package (ess-developer--get-package-path)))
-    (setq package (read-directory-name "Package: " package nil t nil))
+    (unless (and package ess-developer)
+      ;; ask only when not obvious
+      (setq package
+            (read-directory-name "Package: " package nil t nil)))
     (unless (file-exists-p (expand-file-name ess-developer-root-file package))
       (error "Not a valid package. No '%s' found in `%s'."
              ess-developer-root-file package))
