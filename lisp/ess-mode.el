@@ -911,16 +911,14 @@ of the expression are preserved."
 
 
 (defun ess-indent-or-complete ()
-  "When a region is selected indent the region.
+  "When region is selected indent the region, otherwise, if
+`ess-tab-complete-in-script' is non-nil, try to indent, if code
+is already indented, complete instead.
 
-Try to indent first, if code is already properly indented,
-complete instead.  It calls `comint-dynamic-complete' for emacs <
-24 and `completion-at-point' otherwise.
-
-In ess-mode, only tries completion if `ess-tab-complete-in-script' is non-nil.
-See also `ess-first-tab-never-complete'."
+The default of `ess-tab-complete-in-script' is nil.  Also see
+`ess-first-tab-never-complete'."
   (interactive)
-  (if mark-active 
+  (if (use-region-p)
       (indent-region (region-beginning) (region-end))
     (let ((shift (ess-indent-command)))
       (when (and ess-tab-complete-in-script

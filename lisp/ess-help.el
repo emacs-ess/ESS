@@ -933,8 +933,7 @@ specific.")
   "Get info for object at point, and display it in an electric buffer or tooltip.
 This is an electric command (see `ess--execute-electric-command').
 
-If region is active (`region-active-p') use it instead of the
-object at point.
+If region is active use it instead of the object at point.
 
 After invocation of this command, all standard emacs commands,
 except those containing 'window' in their names, remove the
@@ -952,7 +951,7 @@ option for other dialects).
       (message "Not implemented for dialect %s" ess-dialect)
     (ess-force-buffer-current)
     (let ((map (make-sparse-keymap))
-          (objname (or (and (region-active-p)
+          (objname (or (and (use-region-p)
                             (buffer-substring-no-properties (point) (mark)))
                        (symbol-at-point)))
           bs ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point

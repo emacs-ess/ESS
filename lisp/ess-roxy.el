@@ -465,9 +465,8 @@ point is"
 region, otherwise prefix all lines with the roxy
 string. Convenient for editing example fields."
   (interactive "r")
-  (condition-case nil
-      (if (not (ess-roxy-mark-active))
-          (error "region is not active")))
+  (unless (use-region-p)
+      (error "region is not active"))
   (ess-roxy-roxy-region beg end (ess-roxy-entry-p)))
 
 (defun ess-roxy-roxy-region (beg end &optional on)
@@ -584,12 +583,6 @@ block before the point"
     (if (or not-here (ess-roxy-entry-p))
         (match-string 0)
       ess-roxy-str)))
-
-(defun ess-roxy-mark-active ()
-  "True if region is active and transient mark mode activated"
-  (if (fboundp 'region-active-p)
-      (region-active-p)
-    (and transient-mark-mode mark-active)))
 
 (defun ess-roxy-hide-all ()
   "Hide all Roxygen entries in current buffer. "
