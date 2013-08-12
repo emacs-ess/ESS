@@ -911,31 +911,36 @@ of the expression are preserved."
 
 
 (defun ess-indent-or-complete ()
-  "Try to indent first, if code is already properly indented, complete instead.
-It calls `comint-dynamic-complete' for emacs < 24 and `completion-at-point' otherwise.
+  "When a region is selected indent the region.
+
+Try to indent first, if code is already properly indented,
+complete instead.  It calls `comint-dynamic-complete' for emacs <
+24 and `completion-at-point' otherwise.
 
 In ess-mode, only tries completion if `ess-tab-complete-in-script' is non-nil.
 See also `ess-first-tab-never-complete'."
   (interactive)
-  (let ((shift (ess-indent-command)))
-    (when (and ess-tab-complete-in-script
-               (numberp shift) ;; can be nil if ess-tab-always-indent is nil
-               (equal shift 0)
-               (or (eq last-command 'ess-indent-or-complete)
-                   (null ess-first-tab-never-complete)
-                   (and (eq ess-first-tab-never-complete 'unless-eol)
-                        (looking-at "\\s-*$"))
-                   (and (eq ess-first-tab-never-complete 'symbol)
-                        (not (looking-at "\\w\\|\\s_")))
-                   (and (eq ess-first-tab-never-complete 'symbol-or-paren)
-                        (not (looking-at "\\w\\|\\s_\\|\\s)")))
-                   (and (eq ess-first-tab-never-complete 'symbol-or-paren-or-punct)
-                        (not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))
-                   ))
-      (if (and (featurep 'emacs) (>= emacs-major-version 24))
-          (completion-at-point)
-        (comint-dynamic-complete)
-        ))))
+  (if mark-active 
+      (indent-region (region-beginning) (region-end))
+    (let ((shift (ess-indent-command)))
+      (when (and ess-tab-complete-in-script
+                 (numberp shift) ;; can be nil if ess-tab-always-indent is nil
+                 (equal shift 0)
+                 (or (eq last-command 'ess-indent-or-complete)
+                     (null ess-first-tab-never-complete)
+                     (and (eq ess-first-tab-never-complete 'unless-eol)
+                          (looking-at "\\s-*$"))
+                     (and (eq ess-first-tab-never-complete 'symbol)
+                          (not (looking-at "\\w\\|\\s_")))
+                     (and (eq ess-first-tab-never-complete 'symbol-or-paren)
+                          (not (looking-at "\\w\\|\\s_\\|\\s)")))
+                     (and (eq ess-first-tab-never-complete 'symbol-or-paren-or-punct)
+                          (not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))
+                     ))
+        (if (and (featurep 'emacs) (>= emacs-major-version 24))
+            (completion-at-point)
+          (comint-dynamic-complete)
+          )))))
 
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."
