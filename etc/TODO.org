@@ -2,20 +2,14 @@
 ** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
    This will ensure that very quick start both for (require "ess-start") and
    MELPA users.
-** TODO [#B] build ert based test suit                                :13_09:
+** TODO [#B] build ert based unit test suit                           :13_09:
 ** TODO split ess-mode into specialized derived modes
-** TODO remote M-x ess-sas-interactive via shell with ssh  
-   sets ess-process-name-list to (("shell"))
-   This prevents iESS[SAS] evaluation since a value of (("SAS")) would be
-   necessary for that.
 * COMPLETION
 ** DONE make eldoc automatically pick available sub-process           :13_09:
    :LOGBOOK:
    - State "DONE"       from "DONE"       [2013-06-26 Wed 16:51]
    :END:
 ** TODO make eldoc (actually ess--fun.start) work from withing strings
-** TODO Unit tests for testing common problems (like Sweave), previous bug regressions, etc.
-
 * TRACEBUG
 
 ** DONE put back ess-debug-goto-input-event-marker
@@ -33,6 +27,15 @@
    Try to solve with gettext R's functionality. Partially solved (for most
    important cases) by relaxing regular expressions.
 
+** DONE C-c C-c with ess-inject-source=t deletes files faster than R can process
+   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:46]
+   
+** DONE tramp references not found
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-08-12 ma 23:40]
+   :END:
+   [2013-07-08 ma] [[file:~/works/pbm/R/hierarchy.R::..st_is_old..%20<-][file:~/works/pbm/R/hierarchy.R::..st_is_old.. <-]]
+   
 * DEVELOPER  
 ** DONE [#A] Eval in developer is broken
    :LOGBOOK:
@@ -40,20 +43,28 @@
    :END:
 ** TODO "initialize" method is not injected
 
+** DONE don't ask on C-t l for package if already in a package and dev is active
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-08-12 ma 23:42]
+   :END:
+   It interrupts the workflow unnecessarily and feels differently from C-c C-l
+   [2013-07-10 wo]
+   
+* SAS
+** DONE remote M-x ess-sas-interactive via shell with ssh
+  :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-08-12 ma 23:38]
+  :END:
+   sets ess-process-name-list to (("shell")) This prevents iESS[SAS] evaluation
+   since a value of (("SAS")) would be necessary for that.
+
 * MISC
-** DONE C-c C-c with ess-inject-source=t deletes files faster than R can process
-   - State "DONE"       from "TODO"       [2013-06-26 Wed 16:46]
 ** TODO watch window behaves unexpectedly  
    [2013-06-27 Thu]
 ** TODO set PAGER="cat" environment variable for tramp process if unset?
 ** TODO cleanup ESS namespace 
    [2013-06-27 Thu]
-** TODO tramp references not found 
-   [2013-07-08 ma] [[file:~/works/pbm/R/hierarchy.R::..st_is_old..%20<-][file:~/works/pbm/R/hierarchy.R::..st_is_old.. <-]]
 ** TODO remove reference to ssh.el from manual + add tramp workflow  
    [2013-07-10 wo] [[gnus:nnimap%2BSpinuVit:INBOX#51DD58EF.1010702@yahoo.de][Email from Jannis: Re: {ESS} ess-eldoc via ssh re]]
-** TODO don't ask on C-t l for package if already in a package and dev is active ...
-   It interrupts the workflow unnecessarily and feels differently from C-c C-l
-   [2013-07-10 wo] [[file:~/works/protoClasses/R/envProtoClass.R::initMethods%20%3D%20function(...,%20.list%20%3D%20list(),%20changeCallEnv%20%3D%20getOption("protoClasses.changeCallEnv",%20FALSE)){][file:~/works/protoClasses/R/envProtoClass.R::initMethods = function(..., .list = list(), changeCallEnv = getOption("protoClasses.changeCallEnv", FALSE)){]]
 ** TODO check Rodney's report on bastard symlinks  
    [2013-07-11 do]
