@@ -398,16 +398,19 @@ there is no process NAME)."
           (pop-to-buffer buff))))))
 
 (defun inferior-ess-goto-last-prompt ()
-  (comint-previous-prompt 1))
+  (let ((paragraph-start comint-prompt-regexp))
+    (forward-paragraph -1)
+    ;; (comint-skip-prompt)
+    (point)))
 
 (defun inferior-ess-fontify-region (beg end &optional verbose)
-  "Fontify output by output within the region to avoid
+  "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
   (let* ((buffer-undo-list t)
 	 (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
-         (pos (comint-previous-prompt 1)) ; expand to previous prompt
+         (pos (inferior-ess-goto-last-prompt)) ; expand to last prompt
          (pos2))
     (with-silent-modifications
       ;; (dbg pos end)

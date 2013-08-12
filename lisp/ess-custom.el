@@ -389,6 +389,7 @@ Some useful keys for IDO completion:
   :group 'ess
   :type 'boolean)
 
+
 (defcustom ess-tab-complete-in-script nil
   "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
 See also `ess-first-tab-never-complete'.")
