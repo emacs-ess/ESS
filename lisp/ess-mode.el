@@ -937,7 +937,7 @@ In ess-mode, only tries completion if `ess-tab-complete-in-script' is non-nil.
 See also `ess-first-tab-never-complete'."
   (interactive)
   (if mark-active 
-      (indent-region (point-min-marker) (point-max-marker))
+      (indent-region (region-beginning) (region-end))
     (let ((shift (ess-indent-command)))
       (when (and ess-tab-complete-in-script
                  (numberp shift) ;; can be nil if ess-tab-always-indent is nil
