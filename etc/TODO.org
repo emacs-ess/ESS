@@ -1,9 +1,3 @@
-* GENERAL
-** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
-   This will ensure that very quick start both for (require "ess-start") and
-   MELPA users.
-** TODO [#B] build ert based unit test suit                           :13_09:
-** TODO split ess-mode into specialized derived modes
 * COMPLETION
 ** DONE make eldoc automatically pick available sub-process           :13_09:
    :LOGBOOK:
@@ -11,7 +5,6 @@
    :END:
 ** TODO make eldoc (actually ess--fun.start) work from withing strings
 * TRACEBUG
-
 ** DONE put back ess-debug-goto-input-event-marker
    :LOGBOOK:
    - State "DONE"       from "TODO"       [2013-06-21 Fri 01:18]
@@ -36,6 +29,8 @@
    :END:
    [2013-07-08 ma] [[file:~/works/pbm/R/hierarchy.R::..st_is_old..%20<-][file:~/works/pbm/R/hierarchy.R::..st_is_old.. <-]]
    
+** TODO watch window behaves unexpectedly  
+   [2013-06-27 Thu]
 * DEVELOPER  
 ** DONE [#A] Eval in developer is broken
    :LOGBOOK:
@@ -59,8 +54,11 @@
    since a value of (("SAS")) would be necessary for that.
 
 * MISC
-** TODO watch window behaves unexpectedly  
-   [2013-06-27 Thu]
+** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
+   This will ensure that very quick start both for (require "ess-start") and
+   MELPA users.
+** TODO [#B] build ert based unit test suit                           :13_09:
+** TODO split ess-mode into specialized derived modes
 ** TODO set PAGER="cat" environment variable for tramp process if unset?
 ** TODO cleanup ESS namespace 
    [2013-06-27 Thu]
@@ -68,3 +66,6 @@
    [2013-07-10 wo] [[gnus:nnimap%2BSpinuVit:INBOX#51DD58EF.1010702@yahoo.de][Email from Jannis: Re: {ESS} ess-eldoc via ssh re]]
 ** TODO check Rodney's report on bastard symlinks  
    [2013-07-11 do]
+** TODO check if ess-remote works 
+   [2013-08-12 ma]
+
