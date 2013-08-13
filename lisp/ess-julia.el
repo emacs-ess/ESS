@@ -273,8 +273,7 @@ Do not move back beyond MIN."
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     ;; (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+=[ \t\n]*function")
     (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(julia-font-lock-defaults
-                                      nil nil ((?\_ . "w"))))
+    (font-lock-defaults		  . '(julia-font-lock-keywords nil nil ((?\_ . "w"))))
     )
   "General options for julia source files.")
 
@@ -311,7 +310,7 @@ VISIBLY is not currently used."
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
-    (inferior-ess-font-lock-defaults	. julia-font-lock-defaults)
+    (inferior-ess-font-lock-defaults	. julia-font-lock-keywords)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (ess-load-command   		. "include(\"%s\")\n")

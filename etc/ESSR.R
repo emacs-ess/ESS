@@ -92,11 +92,11 @@
 
      .ess_source <- function(file, echo = TRUE, print.eval = TRUE,
                              max.deparse.length = 300, local = parent.frame()){
-         invisible(source(file = file,
-                          echo = echo, local = local,
-                          print.eval = print.eval,
-                          max.deparse.length = 300,
-                          keep.source = TRUE)$value) ## return value for org-babel
+         invisible(base::source(file = file,
+                                echo = echo, local = local,
+                                print.eval = print.eval,
+                                max.deparse.length = 300,
+                                keep.source = TRUE)$value) ## return value for org-babel
      }
 
 ### WEAVING
