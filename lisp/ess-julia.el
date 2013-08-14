@@ -339,7 +339,7 @@ objects from that MODULE."
   '((prefix     . ess-symbol-start)
     (requires   . 2)
     (candidates . ess-ac-julia-objects)
-    ;; (document   . ess-ac-help-julia-object)
+    (document   . ess-ac-help-object)
     )
   "Auto-completion source for julia objects")
 
