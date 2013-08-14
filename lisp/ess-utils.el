@@ -67,6 +67,14 @@
 	    (eq 'font-lock-comment-face face)))
 	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
 
+(defun ess-inside-brackets-p (&optional pos)
+  "Return t if position POS is inside brackets.
+POS defaults to point if no value is given."
+  (save-excursion
+    (let* ((pos (or pos (point)))
+	   (beg (re-search-backward "\\[" (max (point-min) (- pos 1000)) t))
+	   (end (re-search-forward "\\]" (min (point-max) (+ pos 1000)) t)))
+      (and beg end (> pos beg) (> end pos)))))
 
 (defun ess--extract-default-fl-keywords (keywords)
   "Extract the t-keywords from `ess-font-lock-keywords'."
