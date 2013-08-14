@@ -54,4 +54,16 @@ function fun_args(s::String)
     fun_args(eval(parse(s)))
 end
 
+function main_modules()
+    mainmod = current_module()
+    for nm in names(mainmod)
+        if isdefined(mainmod, nm)
+            mod = eval(mainmod, nm)
+            if isa(mod, Module)
+                print("\"$nm\" ")
+            end
+        end
+    end
+end
+
 end 
