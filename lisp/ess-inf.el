@@ -2409,9 +2409,7 @@ to continue it."
       (progn
         (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the thook
         (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
-        (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local) ;;only for R, is it ok?
-        (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-        )
+        (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local))
     (add-hook 'comint-dynamic-complete-functions
               'ess-complete-filename 'append 'local)
     (add-hook 'comint-dynamic-complete-functions ;; only for R, is it ok?
@@ -2864,107 +2862,6 @@ before you quit.  It is run automatically by \\[ess-quit]."
   (let ((proc (get-buffer-process (current-buffer))))
     (if (processp proc) (delete-process proc))))
 
-;;*;; Object name completion
-
-;;;*;;; The user completion command
-(defun ess-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'. "
-  (if (ess-make-buffer-current)
-      (let* ((funstart (cdr (ess--funname.start)))
-             (completions (ess-R-get-rcompletions funstart))
-             (token (pop completions)))
-        (when completions
-          (list (- (point) (length token)) (point) completions)))
-    (when (string-match "complete" (symbol-name last-command))
-      (message "No ESS process associated with current buffer")
-      nil)
-    ))
-
-(defun ess-complete-object-name ()
-  "Perform completion on `ess-language' object preceding point.
-Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
-or \\[ess-internal-complete-object-name] otherwise."
-  (interactive)
-  (if (ess-make-buffer-current)
-      (if ess-use-R-completion
-          (ess-R-complete-object-name)
-        (ess-internal-complete-object-name))
-    ;; else give a message on second invocation
-    (when (string-match "complete" (symbol-name last-command))
-      (message "No ESS process associated with current buffer")
-      nil)
-    ))
-
-(defun ess-complete-object-name-deprecated ()
-  "Gives a deprecated message "
-  (interactive)
-  (ess-complete-object-name)
-  (message "C-c TAB is deprecated, completions has been moved to [M-TAB] (aka C-M-i)")
-  (sit-for 2 t)
-  )
-
-(defun ess-internal-complete-object-name ()
-  "Perform completion on `ess-language' object preceding point.
-The object is compared against those objects known by
-`ess-get-object-list' and any additional characters up to ambiguity are
-inserted.  Completion only works on globally-known objects (including
-elements of attached data frames), and thus is most suitable for
-interactive command-line entry, and not so much for function editing
-since local objects (e.g. argument names) aren't known.
-
-Use \\[ess-resynch] to re-read the names of the attached directories.
-This is done automatically (and transparently) if a directory is
-modified (S only!), so the most up-to-date list of object names is always
-available.  However attached dataframes are *not* updated, so this
-command may be necessary if you modify an attached dataframe."
-  (interactive)
-  (ess-make-buffer-current)
-  (if (memq (char-syntax (preceding-char)) '(?w ?_))
-      (let* ((comint-completion-addsuffix nil)
-             (end (point))
-             (buffer-syntax (syntax-table))
-             (beg (unwind-protect
-                      (save-excursion
-                        (set-syntax-table ess-mode-syntax-table)
-                        (backward-sexp 1)
-                        (point))
-                    (set-syntax-table buffer-syntax)))
-             (full-prefix (buffer-substring beg end))
-             (pattern full-prefix)
-             ;; See if we're indexing a list with `$'
-             (listname (if (string-match "\\(.+\\)\\$\\(\\(\\sw\\|\\s_\\)*\\)$"
-                                         full-prefix)
-                           (progn
-                             (setq pattern
-                                   (if (not (match-beginning 2)) ""
-                                     (substring full-prefix
-                                                (match-beginning 2)
-                                                (match-end 2))))
-                             (substring full-prefix (match-beginning 1)
-                                        (match-end 1)))))
-             ;; are we trying to get a slot via `@' ?
-             (classname (if (string-match "\\(.+\\)@\\(\\(\\sw\\|\\s_\\)*\\)$"
-                                          full-prefix)
-                            (progn
-                              (setq pattern
-                                    (if (not (match-beginning 2)) ""
-                                      (substring full-prefix
-                                                 (match-beginning 2)
-                                                 (match-end 2))))
-                              (ess-write-to-dribble-buffer
-                               (format "(ess-C-O-Name : slots..) : patt=%s"
-                                       pattern))
-                              (substring full-prefix (match-beginning 1)
-                                         (match-end 1)))))
-             (components (if listname
-                             (ess-object-names listname)
-                           (if classname
-                               (ess-slot-names classname)
-                             ;; Default case: It hangs here when
-                             ;;    options(error=recover) :
-                             (ess-get-object-list ess-current-process-name)))))
-        ;; always return a non-nil value to prevent history expansions
-        (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
 (defun ess-list-object-completions nil
   "List all possible completions of the object name at point."
