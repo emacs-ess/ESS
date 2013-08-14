@@ -338,7 +338,7 @@ VISIBLY is not currently used."
     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
     (ess-cmd-delay			. ess-R-cmd-delay)
     (ess-function-pattern		. ess-R-function-pattern)
-    (ess-object-name-db-file		. "ess-r-namedb.el" )
+    (ess-object-name-db-file		. "ess-jl-namedb.el" )
     (ess-smart-operators		. ess-R-smart-operators)
     (inferior-ess-help-filetype        . nil)
     (inferior-ess-exit-command		. "exit()\n")
