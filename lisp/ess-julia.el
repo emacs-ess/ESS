@@ -292,7 +292,95 @@ VISIBLY is not currently used."
   (ess-get-words-from-vector "ESS.all_help_topics()\n"))
     ;; (ess-command com)))
 
-(defvar julia-help-command "help(\"%s\")\n")
+
+;;; COMPLETION
+
+(defun ess-julia-object-completion ()
+  "Return completions at point in a format required by `completion-at-point-functions'. "
+  (let ((proc (ess-get-next-available-process ess-dialect t))
+        (beg (ess-ac-start-objects)))
+    (if proc
+        (when beg
+          (let* ((prefix (buffer-substring-no-properties beg (point)))
+                 (mod (and (string-match "\\(.*\\)\\..*$" prefix)
+                           (match-string 1 prefix)))
+                 (beg (if mod
+                          (+ beg 1 (length mod))
+                        beg)))
+            (list beg (point)
+                  (nreverse (mapcar 'car (ess-julia--get-objects proc mod)))
+                  :exclusive 'no)))
+      (when (string-match "complet" (symbol-name last-command))
+        (message "No ESS process of dialect %s started" ess-dialect)
+        nil))))
+
+(defun ess-julia--get-objects (&optional proc module)
+  "Return all available objects.
+Local caching might be used."
+  (setq proc (or proc
+                 (get-process ess-local-process-name)))
+  (when (process-live-p proc)
+    (if (process-get proc 'busy)
+        (if module
+            (assoc module (process-get proc 'objects))
+          (process-get proc 'objects))
+      (if module
+          (ess-julia--get-objects-from-module proc module)
+        (let ((modules (ess-get-words-from-vector
+                        "ESS.main_modules()\n" nil nil proc))
+              (cache (process-get proc 'objects)))
+          (prog1 (mapcan (lambda (mod)
+                           (copy-sequence
+                            (or (cdr (assoc mod cache))
+                                (ess-julia--get-objects-from-module proc mod))))
+                         modules)
+            (process-put proc 'objects cache)))))))
+
+(defun ess-julia--get-objects-from-module (proc mod)
+  (with-current-buffer (ess-command (format "whos(%s)\n" mod)
+                                    nil nil nil nil proc)
+    (goto-char (point-min))
+    (let (list)
+      (while (re-search-forward
+              "^\\([^ \t\n]+\\) +\\([^ \t\n]+\\)$" nil t)
+        (push (cons (match-string 1) (match-string 2)) list))
+      (let ((objects (process-get proc 'objects)))
+        (push (cons mod list) objects)
+        (process-put proc 'objects objects))
+      list)))
+
+;; (defun ess-julia-start-of-plain-object ()
+;;   (when (looking-back "\\w\\|\\s_")
+;;     (let ((beg (save-excursion (backward-sexp)
+;;                                (point))))
+;;       (and (not (looking-at "/\\|.[0-9]"))
+;;            (string-match-p "[.]" (buffer-substring beg (point)))
+;;            beg))))
+
+
+;;; AC
+(defvar  ac-source-julia-objects
+  '((prefix     . ess-ac-start-objects)
+    (requires   . 2)
+    (candidates . ess-ac-julia-objects)
+    ;; (document   . ess-ac-help-julia-object)
+    )
+  "Auto-completion source for julia objects")
+
+(defun ess-ac-julia-objects ()
+  "Get all cached objects"
+  (let ((aprf ac-prefix))
+    (let ((proc (ess-get-next-available-process nil t)))
+      (when aprf
+        (if (string-match "\\(.*\\)\\..*$" aprf)
+            (let ((module (match-string 1 aprf)))
+              (mapcar (lambda (el) (concat module "." (car el)))
+                      (ess-julia--get-objects proc module)))
+          (ess-julia--get-objects proc))))))
+
+
+
+;;; ERRORS
 
 (defvar ess-julia-error-regexp-alist '(julia-in julia-at)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
@@ -327,6 +415,7 @@ VISIBLY is not currently used."
     (ess-language			. "julia")
     (ess-dialect			. "julia")
     (ess-suffix				. "jl")
+    (ess-ac-sources                     . '(ac-source-julia-objects))
     (ess-dump-filename-template		. (ess-replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
@@ -372,12 +461,10 @@ command for that version of Julia is made available.")
   (interactive "P")
   ;; (setq ess-customize-alist julia-customize-alist)
   (ess-mode julia-customize-alist proc-name)
-  ;; for emacs < 24
-  ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
   ;; for emacs >= 24
-  ;; (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  ;; (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
-  ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   ;; (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
@@ -417,6 +504,11 @@ to julia, put them in the variable `inferior-julia-args'."
                                  " ? "))
 		      nil))))
       (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+
+      (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+      (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
+      (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+
       (ess--tb-start)
       (set (make-local-variable 'julia-basic-offset) 4)
       ;; remove ` from julia's logo
