@@ -2944,7 +2944,7 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
             (setq i (1+ i)))
           (setq ess-object-list (ess-uniq-list result))))))
 
-(defun ess-get-words-from-vector (command &optional no-prompt-check wait)
+(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of
 strings.  COMMAND should have a terminating newline. WAIT is
@@ -2959,7 +2959,7 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
                   " *ess-get-words*")); initial space: disable-undo
         words)
     (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
-    (ess-command command tbuffer 'sleep no-prompt-check wait)
+    (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
