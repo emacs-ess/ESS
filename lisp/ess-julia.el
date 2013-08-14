@@ -322,7 +322,7 @@ VISIBLY is not currently used."
     (ess-imenu-generic-expression       . julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
-    (inferior-ess-help-command		. julia-help-command)
+    (inferior-ess-help-command		. "help(\"%s\")\n")
     ;; (inferior-ess-help-command	. "help(\"%s\")\n")
     (ess-language			. "julia")
     (ess-dialect			. "julia")
