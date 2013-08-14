@@ -273,64 +273,65 @@ VISIBLY is not currently used."
     (if proc
         (when beg
           (let* ((prefix (buffer-substring-no-properties beg (point)))
-                 (mod (and (string-match "\\(.*\\)\\..*$" prefix)
+                 (obj (and (string-match "\\(.*\\)\\..*$" prefix)
                            (match-string 1 prefix)))
-                 (beg (if mod
-                          (+ beg 1 (length mod))
+                 (beg (if obj
+                          (+ beg 1 (length obj))
                         beg)))
             (list beg (point)
-                  (nreverse (mapcar 'car (julia--get-objects proc mod)))
+                  (nreverse (mapcar 'car (julia--get-objects proc obj)))
                   :exclusive 'no)))
       (when (string-match "complet" (symbol-name last-command))
         (message "No ESS process of dialect %s started" ess-dialect)
         nil))))
 
-(defun julia--get-objects (&optional proc module)
+(defun julia--get-objects (&optional proc obj)
   "Return all available objects.
 Local caching might be used. If MODULE is givven, return only
 objects from that MODULE."
   (setq proc (or proc
                  (get-process ess-local-process-name)))
   (when (process-live-p proc)
-    (if (process-get proc 'busy)
-        (if module
-            (assoc module (process-get proc 'objects))
-          (process-get proc 'objects))
-      (if module
-          (if (string= module "help-objects")
-              (julia-get-help-topics)
-            (julia--get-objects-from-module proc module))
-        (let ((modules (cons "help-objects"
-                             (ess-get-words-from-vector
-                              "ESS.main_modules()\n" nil nil proc)))
-              (cache (process-get proc 'objects)))
-          (prog1 (mapcan (lambda (mod)
-                           (copy-sequence
-                            (or (cdr (assoc mod cache))
-                                (julia--get-objects-from-module proc mod))))
-                         modules)
-            (process-put proc 'objects cache)))))))
+    (let ((objects (process-get proc 'objects)))
+     (if (process-get proc 'busy)
+         (if obj
+             (assoc obj objects)
+           (process-get proc 'objects))
+       (if obj
+           (or (cdr (assoc obj objects))
+               ;; don't cache composite objects and datatypes
+               (julia--get-components proc obj))
+         ;; this segment is entered when user completon at top level is
+         ;; requested, either Tab or AC. Hence Main is always updated.
+         (let ((modules (ess-get-words-from-vector
+                         "ESS.main_modules()\n" nil nil proc))
+               (loc (process-get proc 'last-objects-cache))
+               (lev (process-get proc 'last-eval)))
+           (prog1
+               (mapcan (lambda (mod)
+                         ;; we are caching all modules, and reinit Main every
+                         ;; time user enters commands
+                         (copy-sequence
+                          (or (and (or (not (equal mod "Main"))
+                                       (ignore-errors (time-less-p lev loc)))
+                                   (cdr (assoc mod objects)))
+                              (julia--get-components proc mod t))))
+                       modules)
+             (process-put proc 'last-objects-cache (current-time)))))))))
 
-(defun julia--get-objects-from-module (proc mod)
-  (with-current-buffer (ess-command (format "whos(%s)\n" mod)
+(defun julia--get-components (proc obj &optional cache?)
+  (with-current-buffer (ess-command (format "ESS.components(%s)\n" obj)
                                     nil nil nil nil proc)
     (goto-char (point-min))
     (let (list)
       (while (re-search-forward
               "^\\([^ \t\n]+\\) +\\([^ \t\n]+\\)$" nil t)
         (push (cons (match-string 1) (match-string 2)) list))
-      (let ((objects (process-get proc 'objects)))
-        (push (cons mod list) objects)
-        (process-put proc 'objects objects))
+      (when cache?
+        (let ((objects (process-get proc 'objects)))
+         (push (cons obj list) objects)
+         (process-put proc 'objects objects)))
       list)))
-
-;; (defun julia-start-of-plain-object ()
-;;   (when (looking-back "\\w\\|\\s_")
-;;     (let ((beg (save-excursion (backward-sexp)
-;;                                (point))))
-;;       (and (not (looking-at "/\\|.[0-9]"))
-;;            (string-match-p "[.]" (buffer-substring beg (point)))
-;;            beg))))
 
 
 ;;; AC
