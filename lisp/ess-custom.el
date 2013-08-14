@@ -2318,18 +2318,18 @@ system described in `inferior-ess-font-lock-keywords'.")
 
 (defvar ess-R-fl-keyword:messages
   (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
-        'font-lock-constant-face)
+        'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-R-font-lock-keywords
   '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts
     ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
+    (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
     (ess-R-fl-keyword:keywords  . t)
     (ess-R-fl-keyword:assign-ops        . t)
     (ess-R-fl-keyword:constants . t)
-    (ess-R-fl-keyword:messages  . t)
     (ess-fl-keyword:matrix-labels        . t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
@@ -2356,20 +2356,19 @@ should be t or nil to indicate if the keyword is active or not."
 NOT used. See `inferior-S-font-lock-keywords'")
 (make-obsolete-variable 'ess-S-common-font-lock-keywords nil "ESS[12.09]")
 
-
 (defvar ess-S-fl-keyword:messages
   (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
-        'font-lock-constant-face)
+        'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-S-font-lock-keywords
   '((ess-S-fl-keyword:prompt    . t)
+    (ess-S-fl-keyword:messages  . t)
     (ess-S-fl-keyword:modifiers . t)
     (ess-S-fl-keyword:fun-defs  . t)
     (ess-S-fl-keyword:keywords  . t)
     (ess-S-fl-keyword:assign-ops        . t)
     (ess-S-fl-keyword:constants . t)
-    (ess-S-fl-keyword:messages  . t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
