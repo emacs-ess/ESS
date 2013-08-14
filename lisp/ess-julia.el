@@ -304,7 +304,7 @@ VISIBLY is not currently used."
 
 (defvar julia-customize-alist
   '((comint-use-prompt-regexp		. t)
-    (ess-eldoc-function           . 'ess-julia-eldoc-function)
+    (ess-eldoc-function                 . 'ess-julia-eldoc-function)
     (inferior-ess-primary-prompt	. "a> ") ;; from julia>
     (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
@@ -449,7 +449,7 @@ to look up any doc strings."
             (setq args (sort args (lambda (s1 s2)
                                     (< (length s1) (length s2)))))
             (setq doc (concat doc (pop args)))
-            (while (and args (< (length doc) W))
+            (while (and args (< (+ (length doc) (length (car args))) W))
               (setq doc (concat doc "  "
                                 (pop args))))
             (when (and args (< (length doc) W))

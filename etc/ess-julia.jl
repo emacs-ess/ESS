@@ -18,7 +18,7 @@ end
 ## modified version of function show(io::IO, m::Method)
 function fun_args(m::Method)
     tv = m.tvars
-    io = OUTPUT_STREAM::IO
+    io = STDOUT::IO
     if !isa(tv,Tuple)
         tv = (tv,)
     end
