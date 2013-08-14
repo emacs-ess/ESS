@@ -1066,6 +1066,12 @@ queried for arguments.
             (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))
             )))))
 
+(defun ess-symbol-start ()
+  "Get initial position for objects completion."
+  (let ((beg (car (bounds-of-thing-at-point 'symbol))))
+    (when (and beg (not (save-excursion (goto-char beg)
+                                        (looking-at "/\\|.[0-9]"))))
+      beg)))
 
 (defvar ess--funname.start nil)
 

@@ -970,7 +970,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (when (and ess-local-process-name
              (get-process ess-local-process-name))
     (or (ess-ac-start-args)
-        (ess-ac-start-objects))))
+        (ess-symbol-start))))
 
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS"
@@ -989,7 +989,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
-  '((prefix     . ess-ac-start-objects)
+  '((prefix     . ess-symbol-start)
     ;; (requires   . 2)
     (candidates . ess-ac-objects)
     (document   . ess-ac-help-object))
@@ -1015,25 +1015,6 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
            (ess-get-modtime-list)
            (process-put *proc* 'sp-for-ac-changed? nil))
          (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))))))
-
-(defun ess-ac-start-objects ()
-  "Get initial position for objects completion."
-  (let ((beg (car (bounds-of-thing-at-point 'symbol))))
-    (when (and beg (not (save-excursion (goto-char beg)
-                                        (looking-at "/\\|.[0-9]"))))
-      beg)))
-
-;; (defun ess-ac-start-objects ()
-;;   "Get initial position for objects completion."
-;;   (let ((chars "A-Za-z0-9.$@_:")
-;;         (bad-start-regexp "/\\|.[0-9]") ;; don't use this source if this is the starting string
-;;         )
-;;     (when (string-match-p  (format "[%s]" chars) (char-to-string (char-before)))
-;;       (save-excursion
-;;         (when (re-search-backward (format "[^%s]" chars) nil t)
-;;           (unless (looking-at bad-start-regexp)
-;;             (1+ (point)))
-;;           )))))
 
 (defun ess-ac-help-object (sym)
   "Help string for ac."
@@ -1064,7 +1045,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (when (ess--funname.start)
       (if (looking-back "[(,]+[ \t\n]*")
           (point)
-        (ess-ac-start-objects)))))
+        (ess-symbol-start)))))
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
