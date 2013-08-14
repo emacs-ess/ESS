@@ -2783,7 +2783,7 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
     (ess-make-buffer-current)
     (let ((sprocess (ess-get-process ess-current-process-name)))
       (if (not sprocess) (error "No ESS process running"))
-      (when (yes-or-no-p (format "Really quit ESS process %s? " sprocess))
+      (when (y-or-n-p (format "Really quit ESS process %s? " sprocess))
         (ess-cleanup)
         (goto-char (marker-position (process-mark sprocess)))
         (insert inferior-ess-exit-command)
