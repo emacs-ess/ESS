@@ -925,7 +925,7 @@ there is only one process running."
   (interactive)
   (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
 
-(defun ess-get-next-available-process (&optional dialect)
+(defun ess-get-next-available-process (&optional dialect ignore-busy)
   "Return first availabe (aka not busy) process of dialect DIALECT.
 DIALECT defaults to the local value of ess-dialect. Return nil if
 no such process has been found."
@@ -941,7 +941,8 @@ no such process has been found."
                       (process-live-p proc)
                       (equal dialect
                              (buffer-local-value 'ess-dialect (process-buffer proc)))
-                      (not (process-get proc 'busy)))
+                      (or ignore-busy
+                          (not (process-get proc 'busy))))
              (throw 'found proc))))))))
 
 
