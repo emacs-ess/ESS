@@ -1032,15 +1032,15 @@ FTags file (default TAGS): ")
 Return FUNARGS - a list with the first element being a
 cons (package_name . time_stamp_of_request), second element is a
 string giving arguments of the function as they appear in
-documentation, third element is a list of arguments of all S3
-methods as returned by utils:::functionArgs utility.
+documentation, third element is a list of arguments of all
+methods.
 
-If package_name is R_GlobalEnv or \"\", and time_stamp is less
-recent than the time of the last user interaction to the process,
-then update the entry.
+If package_name is nil , and time_stamp is less recent than the
+time of the last user interaction to the process, then update the
+entry.
 
-Package_name is \"\" if funname was not found or is a special
-name i.e. contains :,$ or @.
+Package_name is also nil if funname was not found or it is a
+special name i.e. contains :,$ or @.
 
 If PROC is given, it should be an ESS process which should be
 queried for arguments.
@@ -1056,6 +1056,7 @@ queried for arguments.
                  (and (time-less-p ts (process-get proc 'last-eval))
                       (or (null pack)
                           (equal pack "")
+                          ;; fixeme: remove this from here
                           (equal pack "R_GlobalEnv"))))
         ;; reset cache
         (setq args nil))
