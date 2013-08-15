@@ -876,7 +876,8 @@ t. See examples in the tracebug code.
 -- If a string starting with 'http' or 'www', browse with `browse-url',
    otherwise execute the command in inferior process.
 
-When command is a string ARGS are substituted by (format ,command ,@args).
+-- If a string, interpret as a command to subprocess, and
+   substitute ARGS with `(format ,command ,@args).
 
 When PROMPT is non-nil ask the user for a string value and
 prepend the response to ARGS.
