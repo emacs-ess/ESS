@@ -88,10 +88,6 @@
     table)
   "Syntax table for `julia-mode'.")
 
-;; not used
-;; (defconst julia-string-regex
-;;   "\"[^\"]*?\\(\\(\\\\\\\\\\)*\\\\\"[^\"]*?\\)*\"")
-
 (defconst julia-char-regex
   "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|$!\\^~\\\\;:]\\|^\\)\\('\\(\\([^']*?[^\\\\]\\)\\|\\(\\\\\\\\\\)\\)'\\)")
 
@@ -260,9 +256,45 @@ VISIBLY is not currently used."
       (insert string))
     (process-send-string process (format ess-load-command file))))
 
+
+;;; HELP
 (defun julia-get-help-topics (&optional proc)
-  (ess-get-words-from-vector "ESS.all_help_topics()\n"))
+  (append (ess-get-words-from-vector "ESS.all_help_topics()\n")
+          (julia--get-objects)))
     ;; (ess-command com)))
+
+(defun julia--retrive-topics (url)
+  (with-current-buffer (url-retrieve-synchronously url)
+    (require 'url)
+    (goto-char (point-min))
+    (let (out)
+      (while (re-search-forward "toctree.*href=\"\\(.+\\)\">\\(.+\\)</a" nil t)
+        (push (propertize (match-string 2)
+                          :manual (concat url (match-string 1)))
+              out))
+      (kill-buffer)
+      (nreverse out))))
+
+(defvar julia--manual-topics nil)
+(defun julia-manual-lookup-function (&rest args) ; args are not used
+  (interactive)
+  "Look up topics at http://docs.julialang.org/en/latest/manual/"
+  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
+  (let* ((pages (or julia--manual-topics
+                    (setq julia--manual-topics
+                          (julia--retrive-topics "http://docs.julialang.org/en/latest/manual/"))))
+         (page (ess-completing-read "Lookup:" pages nil t)))
+    (browse-url (get-text-property 1 :manual page))))
+
+(defvar julia--reference-topics nil)
+(defun julia-reference-lookup-function (&rest args) ; args are not used
+  (interactive)
+  "Look up reference topics"
+  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
+  (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
+    (ess-display-help-on-object
+     (ess-completing-read "Category:" pages nil t))))
+
 
 
 ;;; COMPLETION
@@ -418,6 +450,8 @@ to look up any doc strings."
     (inferior-ess-font-lock-defaults	. julia-font-lock-keywords)
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
+    (ess-manual-lookup-command          . 'julia-manual-lookup-function)
+    (ess-reference-lookup-command       . 'julia-reference-lookup-function)
     (ess-load-command   		. "include(\"%s\")\n")
     (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")

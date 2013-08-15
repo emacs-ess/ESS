@@ -1,5 +1,14 @@
 module ESS
 
+function help_categories()
+    Base.Help.init_help()
+    for cat = Base.Help.CATEGORY_LIST
+        if !isempty(Base.Help.CATEGORY_DICT[cat])
+            println("\"$cat\" ")
+        end
+    end
+end 
+    
 function all_help_topics()
     Base.Help.init_help()
     ## show all categories 
