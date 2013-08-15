@@ -293,7 +293,7 @@ VISIBLY is not currently used."
   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
   (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
     (ess-display-help-on-object
-     (ess-completing-read "Category:" pages nil t))))
+     (ess-completing-read "Category" pages nil t))))
 
 
 
