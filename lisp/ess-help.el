@@ -564,14 +564,20 @@ For internal use. Used in `ess-display-help-on-object',
       window)))
 
 
-
 (defun ess-help-web-search ()
   "Search the web for documentation"
   (interactive)
   (ess-execute-dialect-specific ess-help-web-search-command "Search for: "))
 
-;;*;; Major mode definition
+(defun ess-manual-lookup ()
+  "Search manual for topic"
+  (interactive)
+  (ess-execute-dialect-specific ess-manual-lookup-command ))
 
+(defun ess-reference-lookup ()
+  "Search manual for topic"
+  (interactive)
+  (ess-execute-dialect-specific ess-reference-lookup-command))
 
 (defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
 ;; this breaks "s ?" rather than to fix any (unbroken !) thing:
@@ -596,6 +602,10 @@ For internal use. Used in `ess-display-help-on-object',
     (define-key ess-doc-map "o" 'ess-display-demos)
     (define-key ess-doc-map "\C-w" 'ess-help-web-search)
     (define-key ess-doc-map "w" 'ess-help-web-search)
+    (define-key ess-doc-map "\C-m" 'ess-manual-lookup)
+    (define-key ess-doc-map "m" 'ess-manual-lookup)
+    (define-key ess-doc-map "\C-r" 'ess-reference-lookup)
+    (define-key ess-doc-map "r" 'ess-reference-lookup)
     ess-doc-map
     )
   "ESS documentaion map.")

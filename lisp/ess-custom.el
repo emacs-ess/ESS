@@ -2468,6 +2468,16 @@ Choices are `separate-buffer', `s-process', `www'.  The latter uses
 Passed to `ess-execute-dialect-specific' which see. ")
 (make-variable-buffer-local 'ess-help-web-search-command)
 
+(defvar ess-manual-lookup-command nil
+  "Dialect specific command manual lookup.
+Passed to `ess-execute-dialect-specific' which see. ")
+(make-variable-buffer-local 'ess-manual-lookup-command)
+
+(defvar ess-reference-lookup-command nil
+  "Dialect specific command for reference lookup..
+Passed to `ess-execute-dialect-specific' which see. ")
+(make-variable-buffer-local 'ess-reference-lookup-command)
+
 (defvar ess-funargs-command  nil
   "Dialect specific command to return a list of function arguments.
 See `ess-function-arguments' and .ess_funargs command in R and
