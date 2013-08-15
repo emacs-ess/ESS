@@ -24,6 +24,30 @@ function all_help_topics()
     end
 end
 
+function help(topic::String)
+    Base.Help.init_help()
+    if !haskey(Base.Help.CATEGORY_DICT, topic)
+        # if it's not a category, try another named thing
+        try
+            obj = eval(current_module(), parse(topic))
+            Base.Help.help(obj)
+        catch
+            print("No help information found")
+        end 
+    else
+        ln = length(topic)
+        bar = " ===" * "="^ln * "==="
+        println(bar)
+        println(" =  ", topic, "  =")
+        println(bar, "\n")
+        for func = Base.Help.CATEGORY_DICT[topic]
+            Base.Help.help(func)
+            println()
+            println("-"^72)
+        end
+    end
+end     
+
 ## modified version of function show(io::IO, m::Method)
 function fun_args(m::Method)
         tv = m.tvars
