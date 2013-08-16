@@ -828,13 +828,16 @@ Returns the name of the selected process."
                                         "julia" "SAS" "XLS"  "ViSta")))))
 
   (let* ((pname-list (delq nil ;; keep only those mathing dialect
-                           (mapcar (lambda (lproc)
-                                     (and (equal ess-dialect
-                                                 (buffer-local-value
-                                                  'ess-dialect
-                                                  (process-buffer (get-process (car lproc)))))
-                                          lproc))
-                                   ess-process-name-list)))
+                           (append
+                            (mapcar (lambda (lproc)
+                                      (and (equal ess-dialect
+                                                  (buffer-local-value
+                                                   'ess-dialect
+                                                   (process-buffer (get-process (car lproc)))))
+                                           (not (equal ess-local-process-name (car lproc)))
+                                           (car lproc)))
+                                    ess-process-name-list)
+                            (list ess-local-process-name))))
          (num-processes (length pname-list))
          (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
          (auto-started?))
@@ -844,7 +847,7 @@ Returns the name of the selected process."
                              (buffer-local-value
                               'ess-dialect
                               (process-buffer (get-process
-                                               (caar pname-list))))))))
+                                               (car pname-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -856,18 +859,18 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
           (setq num-processes 1
-                pname-list (list (car ess-process-name-list))
+                pname-list (car ess-process-name-list)
                 auto-started? t)))
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
-                                   (buffer-name (process-buffer (get-process (car lproc)))))
+                                   (buffer-name (process-buffer (get-process lproc))))
                                  pname-list))
            (proc
             (if (or auto-started?
                     (and (not ask-if-1) (= 1 num-processes)))
                 (progn
                   (message "using process '%s'" (car proc-buffers))
-                  (caar pname-list))
+                  (car pname-list))
               ;; else
               (unless (and ess-current-process-name
                            (get-process ess-current-process-name))
@@ -875,10 +878,7 @@ Returns the name of the selected process."
               (when message
                 (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
               ;; ask for buffer name not the *real* process name:
-              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
-                                              (and ess-current-process-name
-                                                   (buffer-name (process-buffer
-                                                                 (get-process ess-current-process-name)))))))
+              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil)))
                 (if (equal buf "*new*")
                     (progn
                       (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff

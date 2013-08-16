@@ -203,11 +203,9 @@
     (define-key ess-extra-map "i" 'ess-install-library)
     (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
     (define-key ess-extra-map "w" 'ess-execute-screen-options)
-
     ;; (define-key map "C-t"
     ess-extra-map)
-  "ESS extra map"
-  )
+  "ESS extra map")
 
 
 (require 'ess-noweb-mode)
@@ -491,7 +489,7 @@ Internal function to be used for dynamic mode-line dysplay in
 ess-mode."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))
-             (buff (if proc (process-buffer proc))))
+             (buff (when proc (process-buffer proc))))
         (if (and proc (buffer-live-p buff))
             (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
           "none"))

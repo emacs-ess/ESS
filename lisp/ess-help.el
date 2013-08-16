@@ -583,8 +583,6 @@ For internal use. Used in `ess-display-help-on-object',
 ;; this breaks "s ?" rather than to fix any (unbroken !) thing:
 ;; (make-variable-buffer-local 'ess-help-sec-map)
 
-
-
 (defvar ess-doc-map
   (let (ess-doc-map)
     (define-prefix-command 'ess-doc-map)
