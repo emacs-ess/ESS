@@ -837,7 +837,9 @@ Returns the name of the selected process."
                                            (not (equal ess-local-process-name (car lproc)))
                                            (car lproc)))
                                     ess-process-name-list)
-                            (list ess-local-process-name))))
+                            ;; append local only if running
+                            (when (assoc ess-local-process-name ess-process-name-list)
+                              (list ess-local-process-name)))))
          (num-processes (length pname-list))
          (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
          (auto-started?))
