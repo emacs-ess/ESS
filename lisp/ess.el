@@ -161,37 +161,44 @@
  ; Miscellaneous "ESS globals"
 
 (defun ess-version-string ()
-  (let* ((fname (concat ess-etc-directory "SVN-REVISION"))
-         (buffer (and (file-exists-p fname)
-                      (find-file-noselect fname)))
-         c1 c2
-         (rev
-          (if buffer
-              ;; then it has two lines that look like
-              ;; |Revision: 4803
-              ;; |Last Changed Date: 2012-04-16
-              (with-current-buffer buffer
-                (ess-write-to-dribble-buffer
-                 (format "(ess-version-string): buffer=%s\n" (buffer-name (current-buffer))))
-                (goto-char (point-min))
-                (when (re-search-forward "Revision: \\(.*\\)" nil t)
-                  (setq c1 (buffer-substring (match-beginning 1) (match-end 1)))
-                  (ess-write-to-dribble-buffer (format "  (ess-version-string): c1=%s\n" c1))
-                  ;; line 2
-                  (forward-line 1)
-                  (when (re-search-forward ".*: \\(.*\\)" nil t)
-                    (setq c2 (buffer-substring (match-beginning 1) (match-end 1)))
-                    (concat "rev. " c1 " (" c2 ")")))))))
-
-    (if (not rev) (setq rev "<unknown>"))
+  (let* ((svn-fname (concat ess-etc-directory "SVN-REVISION"))
+         (svn-rev
+          (when (file-exists-p svn-fname)
+            ;; then it has two lines that look like
+            ;; |Revision: 4803
+            ;; |Last Changed Date: 2012-04-16
+            (with-current-buffer (find-file-noselect svn-fname)
+              (goto-char (point-min))
+              (when (re-search-forward "Revision: \\(.*\\)\n.*: \\(.*\\)" nil t)
+                (concat "svn: " (match-string 1) " (" (match-string 2) ")")))))
+         (git-fname (concat (file-name-directory ess-lisp-directory) ".git/refs/heads/master"))
+         (git-rev (when (file-exists-p git-fname)
+                    (with-current-buffer (find-file-noselect git-fname)
+                      (goto-char (point-min))
+                      (concat "git: "(buffer-substring 1 (point-at-eol))))))
+         (elpa-fname (concat (file-name-directory ess-lisp-directory) "ess-pkg.el"))
+         (elpa-rev (when (file-exists-p elpa-fname)
+                     ;; get it from ELPA dir name, (probbly won't wokr if instaleed manually)
+                     (concat "elpa: "
+                             (replace-regexp-in-string "ess-" ""
+                                                       (file-name-nondirectory
+                                                        (substring (file-name-directory ess-lisp-directory)
+                                                                   1 -1)))))))
     ;; set the "global" ess-revision:
-    (setq ess-revision rev)
+    (setq ess-revision (format "%s%s%s"
+                               (or svn-rev "")
+                               (or git-rev "")
+                               (or elpa-rev "")))
+    (when (string= ess-revision "")
+      (setq ess-revision "<unknown>"))
     (concat ess-version " [" ess-revision "]")))
 
 
 (defun ess-version ()
   (interactive)
-  (message (concat "ess-version : " (ess-version-string))))
+  (message (format "ess-version: %s (loaded from %s)"
+                   (ess-version-string)
+                   (file-name-directory ess-lisp-directory))))
 
 ;;; Set up for menus, if necessary
 ;;;  --> is done in ess-mode.el, ess-inf.el, etc
