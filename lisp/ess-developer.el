@@ -334,7 +334,7 @@ is nil. "
                      (member pack ess-developer-packages)))
           (ess-developer t))))))
 
-(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
+;; (add-hook 'R-mode-hook 'ess-developer-activate-in-package)
 
 (defun ess-developer-deactivate-in-package (&optional package all)
   "Deactivate developer if current file is part of the R package.
