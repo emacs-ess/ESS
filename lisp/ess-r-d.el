@@ -244,7 +244,7 @@
              '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(\\w+ \\([^)\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
