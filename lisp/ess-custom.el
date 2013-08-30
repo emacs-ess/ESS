@@ -1959,8 +1959,7 @@ It is always used in transcript mode.  In inferior ess mode it is
 used only if `comint-use-prompt-regexp' is t.
 
 If not set in language's customise-alist it is constructed at run time
-from `inferior-ess-primary-prompt' and
-`inferior-ess-secondary-prompt' within `ess-multi'.")
+from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 
 (make-variable-buffer-local 'inferior-ess-prompt)
 

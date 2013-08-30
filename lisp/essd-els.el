@@ -160,10 +160,6 @@ buffer on the local computer."
                    (list ess-current-process-name)))))
 
 
-;;; ess-remote is constructed by looking at ess-add-process and
-;;; ESS-elsewhere and ess-multi and then simplifying.
-;;;
-
 (defun ess-remote (&optional proc-name)
   "Execute this command from within a buffer running a process.  It
 runs `ess-add-ess-process' to add the process to

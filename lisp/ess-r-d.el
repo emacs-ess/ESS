@@ -321,7 +321,7 @@ to R, put them in the variable `inferior-R-args'."
       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     
-    (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+    (inferior-ess r-start-args) 
     
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
 

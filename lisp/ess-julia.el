@@ -553,7 +553,7 @@ to julia, put them in the variable `inferior-julia-args'."
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
 		      nil))))
-      (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
       (add-hook 'completion-at-point-functions 'julia-object-completion nil 'local)
