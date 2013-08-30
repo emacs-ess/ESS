@@ -2317,7 +2317,7 @@ system described in `inferior-ess-font-lock-keywords'.")
 ") ;; also matches subsetting
 
 (defvar ess-R-fl-keyword:messages
-  (cons (concat "^" (regexp-opt ess-R-message-prefixes 'enc-paren))
+  (cons (regexp-opt ess-R-message-prefixes 'enc-paren)
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
@@ -2328,9 +2328,9 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
     (ess-R-fl-keyword:keywords  . t)
-    (ess-R-fl-keyword:assign-ops        . t)
+    (ess-R-fl-keyword:assign-ops	. t)
     (ess-R-fl-keyword:constants . t)
-    (ess-fl-keyword:matrix-labels        . t)
+    (ess-fl-keyword:matrix-labels	. t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
@@ -2357,7 +2357,7 @@ NOT used. See `inferior-S-font-lock-keywords'")
 (make-obsolete-variable 'ess-S-common-font-lock-keywords nil "ESS[12.09]")
 
 (defvar ess-S-fl-keyword:messages
-  (cons (concat "^" (regexp-opt ess-S-message-prefixes 'enc-paren))
+  (cons (regexp-opt ess-S-message-prefixes 'enc-paren)
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
