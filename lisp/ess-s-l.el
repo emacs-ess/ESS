@@ -245,7 +245,7 @@
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
-(defconst ess-help-R-sec-regex "^[A-Z][a-z].+:$"
+(defconst ess-help-R-sec-regex "^[A-Z][A-Za-z].+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
 ;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
