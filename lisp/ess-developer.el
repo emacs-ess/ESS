@@ -222,7 +222,9 @@ otherwise call devSource."
 (defun ess-developer-devSource (beg end package &optional message)
   (let* ((ess-load-command
           (format ".essDev_source(source='%s',package='%s')" "%s" package))
-         (ess-load-visibly-noecho-command ess-load-command))
+         (ess-load-visibly-noecho-command ess-load-command)
+         ;; don't want string evaluation
+         ess-eval-command ess-eval-visibly-noecho-command)
     (if message (message message))
     (ess-developer--command (ess--make-source-refd-command beg end)
                             'ess-developer--propertize-output)))
