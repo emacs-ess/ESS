@@ -415,7 +415,7 @@ number."
                                    "options"
                                    "plot" "pmenu" "print" "printto"
                                    "rank" "registry" "report"
-                                   "setinit" "sgpanel" "sgplot" "sgscatter" "sort" "sql" "standard" "summary"
+                                   "setinit" "sgdesign" "sgpanel" "sgplot" "sgrender" "sgscatter" "sort" "sql" "standard" "summary"
                                    "tabulate" "template" "timeplot" "transpose" "trantab"
                                    "univariate"
 

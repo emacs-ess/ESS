@@ -69,3 +69,14 @@
 ** TODO check if ess-remote works 
    [2013-08-12 ma]
 
+** TODO Help focus does not honor focus-follows-mouse/mouse-autoselect-window 
+If you have focus-follows-mouse and mouse-autoselect-window set to t,
+then ask for help in an *R* buffer, i.e.
+> ?setwd
+
+The help buffer steals focus permanently instead of surrendering it
+to mouse movement; you need to physically click in the *R*
+buffer to restore the focus following the mouse.  C-c C-d C-d
+behaves similarly.  Ideally, we should respect the user's settings 
+of focus-follows-mouse/mouse-autoselect-window in this common 
+help/*R* buffer arrangement. 

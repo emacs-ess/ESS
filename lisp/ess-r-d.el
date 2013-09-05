@@ -244,7 +244,7 @@
              '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(\\w+ \\([^)\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
+             '(R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
@@ -321,7 +321,7 @@ to R, put them in the variable `inferior-R-args'."
       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
     
-    (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+    (inferior-ess r-start-args) 
     
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
 

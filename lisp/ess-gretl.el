@@ -604,15 +604,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
 				 inferior-gretl-args
 				 "'] ? "))
 		      nil))))
-      (inferior-ess r-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
-;;      (ess-tb-start)
-      ;;   (set (make-local-variable 'font-lock-syntactic-keywords)
-      ;;        (list
-      ;; 	(list gretl-char-regex 2
-      ;; 	      gretl-mode-char-syntax-table)
-      ;; ;        (list gretl-string-regex 0
-      ;; ;              gretl-mode-string-syntax-table)
-      ;; ))
+      (inferior-ess r-start-args) 
       (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
       (set (make-local-variable 'gretl-basic-offset) 4)
       (setq indent-tabs-mode nil)

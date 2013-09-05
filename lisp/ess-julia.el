@@ -15,7 +15,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 3, or 
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This file is distributed in the hope that it will be useful,
@@ -553,7 +553,7 @@ to julia, put them in the variable `inferior-julia-args'."
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
 		      nil))))
-      (inferior-ess jl-start-args) ;; -> .. (ess-multi ...) -> .. (inferior-ess-mode) ..
+      (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
       (add-hook 'completion-at-point-functions 'julia-object-completion nil 'local)

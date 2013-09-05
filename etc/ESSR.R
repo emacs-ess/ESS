@@ -212,14 +212,15 @@
                      undebug(name)
                  else
                      undebug(get(name, envir = env))
-             }}}
+             }}
+}
 
      .ess_dbg_UndebugALL <- function(funcs)
      {
          tr_state <- tracingState(FALSE)
          on.exit(tracingState(tr_state))
          env <- parent.frame()
-         invisible(lapply(funcs, function( nm ){
+         invisible(lapply(funcs, function( nm ) {
              ## ugly tryCatch, but there might be several names pointing to the
              ## same function, like foo:::bar and bar. An alternative would be
              ## to call .ess_dbg_getTracedAndDebugged each time but that might
@@ -233,10 +234,10 @@
 
      .ess_watch_eval <- function()
      {
-         if(!exists('.ess_watch_expressions')){
+         if(!exists('.ess_watch_expressions')) {
              assign('.ess_watch_expressions', list(), envir = .GlobalEnv)
          }
-         if(length(.ess_watch_expressions) == 0L){
+         if(length(.ess_watch_expressions) == 0L) {
              cat('\n# Watch list is empty!\n
 # a       append new expression
 # i       insert new expression
@@ -247,12 +248,12 @@
 # u/d,U   move the expression up/down
 # q       kill the buffer
 ')
-         }else{
+         } else {
              .parent_frame <- parent.frame()
              .essWEnames <- allNames(.ess_watch_expressions)
              len0p <- !nzchar(.essWEnames)
              .essWEnames[len0p] <- seq_along(len0p)[len0p]
-             for(i in seq_along(.ess_watch_expressions)){
+             for(i in seq_along(.ess_watch_expressions)) {
                  cat('\n@---- ', .essWEnames[[i]], ' ',
                      rep.int('-', max(0, 35 - nchar(.essWEnames[[i]]))), '-@\n', sep = '')
                  cat(paste('@---:', deparse(.ess_watch_expressions[[i]][[1L]])), ' \n', sep = '')
@@ -260,7 +261,8 @@
                                      envir = .parent_frame)),
                           error = function(e) cat('Error:', e$message, '\n' ),
                           warning = function(w) cat('warning: ', w$message, '\n' ))
-             }}
+             }
+}
      }
 
      .ess_log_eval <- function(log_name)
@@ -271,8 +273,8 @@
          .essWEnames <- allNames(.ess_watch_expressions)
          cur_log <- list()
          .parent_frame <- parent.frame()
-         for(i in seq_along(.ess_watch_expressions)){
-             capture.output({
+         for(i in seq_along(.ess_watch_expressions)) {
+             capture.output( {
                  cur_log[[i]] <-
                      tryCatch(eval(.ess_watch_expressions[[i]]),
                               envir = .parent_frame,

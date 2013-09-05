@@ -133,38 +133,10 @@ Alternatively, it can appear in its own frame if
 
   (interactive)
 
-  (ess-write-to-dribble-buffer
-   (format "(inferior-ess 0): ess-start-args=%s \n" ess-start-args))
-
-  ;; set up for current language (need here, to get ess-language, etc).
-
-  ;; Couldn't we rather set all the default values or Local values now ?
-  ;;>>> (ess-setq-vars-default ess-customize-alist (current-buffer))
-  ;;>>> (ess-setq-vars-local   ess-customize-alist (current-buffer))
-  ;;; AJR sez: I think we should set them later; don't want to nuke if
-  ;;; I don't have to.
-  ;;- MM: We shouldn't have to use  ess-setq-vars-default _at all_ ;
-  ;;      only do the buffer local ...-vars-local ones
   (let ((temp-ess-dialect (eval (cdr (assoc 'ess-dialect
                                             ess-customize-alist))))
         (temp-ess-lang (eval (cdr (assoc 'ess-language
                                          ess-customize-alist)))))
-    ;; (with-current-buffer ess-dribble-buffer
-    ;;   ;;- Is this needed? (no, but it's useful to see them there [MM])
-    ;;   ;; Hack to work around the following "default" (global) setting of vars:
-    ;;   ;; make sure our comint-... hack doesn't affect anything else
-    ;;   ;;(make-variable-buffer-local 'comint-use-prompt-regexp)
-    ;;   (make-local-variable 'comint-use-prompt-regexp)
-    ;;   ;; now the abomination:
-    ;;   ;; (ess-setq-vars-default ess-customize-alist)
-
-    ;;   (setq-default comint-use-prompt-regexp nil) ; re set HACK!
-    ;;   ;;>> Doesn't set ess-language,
-    ;;   ;;>> => comint-input-sender is not set to 'ess-input-  ==> no input echo!
-    ;;   ;;>> => that's why things fail:
-    ;;   ;;>> (ess-setq-vars-local ess-customize-alist (current-buffer))
-    ;;   ;;                 ======
-    ;;   )
 
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
@@ -191,7 +163,7 @@ Alternatively, it can appear in its own frame if
                                                    ntry
                                                    temp-dialect)))))
                        (ess-proc-name ntry temp-dialect)))
-           (buf-name-str  (concat "*" procname "*"))
+           (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
            startdir buf method)
 
       (ess-write-to-dribble-buffer
@@ -201,14 +173,19 @@ Alternatively, it can appear in its own frame if
       (cond
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
-             (memq major-mode '(inferior-ess-mode)))
+             (eq major-mode 'inferior-ess-mode))
         (setq startdir  (if ess-ask-for-ess-directory
                             (ess-get-directory defdir temp-dialect procname)
                           defdir)
               buf       (current-buffer)
+              ;; don't change existing buffer name in this case; It is very
+              ;; commong to restart the process in the same buffer.
+              buf-name-str (buffer-name)
               method    1))
 
        ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
+       ;; fixme: buffer name might have been changed, iterate over all
+       ;; inferior-ess buffers
        ((get-buffer buf-name-str)
         (setq buf       (get-buffer buf-name-str)
               method    2))
@@ -233,25 +210,121 @@ Alternatively, it can appear in its own frame if
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
       (ess-setq-vars-local ess-customize-alist) ; buf)
-      (if ess-start-args (setq inferior-ess-start-args ess-start-args))
 
       ;; Write out debug info
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
                ess-language  ess-dialect (current-buffer)))
-      ;; (ess-write-to-dribble-buffer
-      ;;  (format "(inf-ess 2.2): start args = %s, inf-ess-start-args=%s \n"
-      ;;          ess-start-args inferior-ess-start-args))
-      ;; (ess-write-to-dribble-buffer
-      ;;  (format "(inf-ess finish [%s(%s), %s(%s)]\n"
-      ;;          ess-language ess-dialect inferior-ess-program ess-local-process-name))
-
 
       ;; initialize.
       (if startdir (setq default-directory startdir))
-      (let ((ess-directory (or startdir
-                               ess-directory)))
-        (ess-multi procname buf inferior-ess-start-args)))))
+
+      ;; the following was part of ess-multi;
+      
+      (let* ((ess-directory (or startdir
+                                ess-directory))
+             (infargs (or ess-start-args
+                          inferior-ess-start-args))
+             (special-display-regexps nil)
+             (special-display-frame-alist inferior-ess-frame-alist)
+             (proc (get-process procname)))
+        (if inferior-ess-own-frame
+            (setq special-display-regexps '(".")))
+        ;; If ESS process NAME is running, switch to it 
+        (if (and proc (comint-check-proc (process-buffer proc)))
+            ;; fixme: when does this happen?
+            (pop-to-buffer (process-buffer proc))
+          
+          ;; Otherwise, crank up a new process
+          (let* ((symbol-string
+                  (concat "inferior-" inferior-ess-program "-args"))
+                 (switches-symbol (intern-soft symbol-string))
+                 (switches
+                  (if (and switches-symbol (boundp switches-symbol))
+                      (symbol-value switches-symbol))))
+            (set-buffer buf)
+            (inferior-ess-mode)
+            (ess-write-to-dribble-buffer
+             (format "(inferior-ess (post inf-ess): start-args=%s, comint-echoes=%s\n"
+                     infargs comint-process-echoes))
+            (setq ess-local-process-name procname)
+            (goto-char (point-max))
+            ;; load past history
+
+            ;; Set up history file
+            (if ess-history-file
+                (if (eq t ess-history-file)
+                    (set (make-variable-buffer-local 'ess-history-file)
+                         (concat "." ess-dialect "history"))
+                  ;; otherwise must be a string "..."
+                  (unless (stringp ess-history-file)
+                    (error "`ess-history-file' must be nil, t, or a string"))))
+
+            (when ess-history-file
+              (setq comint-input-ring-file-name
+                    (expand-file-name ess-history-file
+                                      (or ess-history-directory ess-directory)))
+              (comint-read-input-ring))
+
+            ;; create and run process.
+            (set-buffer
+             (if switches
+                 (inferior-ess-make-comint buf-name-str
+                                           procname
+                                           infargs
+                                           switches)
+               (inferior-ess-make-comint buf-name-str
+                                         procname
+                                         infargs)))
+
+            ;; set accumulation buffer name (buffer to cache output for faster display)
+            (process-put (get-process procname) 'accum-buffer-name
+                         (format " *%s:accum*" procname))
+            
+            ;; Set the process sentinel to save the history
+            (set-process-sentinel (get-process procname) 'ess-process-sentinel)
+            ;; Add this process to ess-process-name-list, if needed
+            (let ((conselt (assoc procname ess-process-name-list)))
+              (if conselt nil
+                (setq ess-process-name-list
+                      (cons (cons procname nil) ess-process-name-list))))
+            (ess-make-buffer-current)
+            (goto-char (point-max))
+            (setq ess-sl-modtime-alist nil)
+
+            ;; Add the process filter to catch certain output.
+            (set-process-filter (get-process procname)
+                                'inferior-ess-output-filter)
+            ;; (inferior-ess-wait-for-prompt)
+            (inferior-ess-mark-as-busy (get-process procname))
+            (process-send-string (get-process procname) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
+            (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
+            (ess-wait-for-process (get-process procname) nil 0.01)
+
+            ;; arguments cache
+            (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+            (ess-process-put 'funargs-pre-cache nil)
+            
+            ;; don't font-lock strings over process prompt
+            (set (make-local-variable 'syntax-begin-function)
+                 #'inferior-ess-goto-last-prompt)
+            (set (make-local-variable 'font-lock-fontify-region-function)
+                 #'inferior-ess-fontify-region)
+
+            (run-hooks 'ess-post-run-hook)
+
+            ;; EXTRAS
+            (ess-load-extras t)
+            ;; user initialization can take some time ...
+            (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+            (ess-wait-for-process (get-process procname)))
+
+          (with-current-buffer buf
+            (rename-buffer buf-name-str t))
+          
+          (if (and inferior-ess-same-window (not inferior-ess-own-frame))
+              (switch-to-buffer buf)
+            (pop-to-buffer buf)))))))
 
 
 (defvar inferior-ess-objects-command nil
@@ -279,123 +352,6 @@ Default depends on the ESS language/dialect and hence made buffer local")
 ;;; are specific to each ess-process and are buffer-local variables
 ;;; local to the ESS process buffer. If required, these variables should
 ;;; be accessed with the function ess-get-process-variable
-
-(defun ess-multi (name &optional buffer inf-ess-start-args)
-  "Start or switch to ESS process named NAME in the buffer BUFFER.
-BUFFER is only needed if process NAME is not running. BUFFER must
-exist.  Default-directory is the ESS starting directory. BUFFER may be
-visiting a file.
-
-If ess-process NAME is running, switch to it.  If not, use COMINT to
-start up a new process, using NAME and BUFFER (which is needed if
-there is no process NAME)."
-
-  (let* ((proc-name name)
-         (special-display-regexps nil)
-         (special-display-frame-alist inferior-ess-frame-alist)
-         (proc (get-process proc-name)))
-    (if inferior-ess-own-frame
-        (setq special-display-regexps '(".")))
-    ;; If ESS process NAME is running, switch to it
-    (if (and proc (comint-check-proc (process-buffer proc)))
-        (pop-to-buffer (process-buffer proc))
-      ;; Otherwise, crank up a new process
-      (let* ((symbol-string
-              (concat "inferior-" inferior-ess-program "-args"))
-             (switches-symbol (intern-soft symbol-string))
-             (switches
-              (if (and switches-symbol (boundp switches-symbol))
-                  (symbol-value switches-symbol)))
-             (buf-name-str (buffer-name buffer)))
-        (ess-write-to-dribble-buffer
-         (format "(ess-multi 0):  inf-ess-start-args=%s, comint-..echoes=%s\n"
-                 inf-ess-start-args comint-process-echoes))
-        (set-buffer buffer)
-        (inferior-ess-mode)
-        (ess-write-to-dribble-buffer
-         (format "(ess-multi post inf-ess: start-args=%s, comint-echoes=%s\n"
-                 inf-ess-start-args comint-process-echoes))
-        (setq ess-local-process-name proc-name)
-        (goto-char (point-max))
-        ;; load past history
-
-        ;; Set up history file
-        (if ess-history-file
-            (if (eq t ess-history-file)
-                (set (make-variable-buffer-local 'ess-history-file)
-                     (concat "." ess-dialect "history"))
-              ;; otherwise must be a string "..."
-              (unless (stringp ess-history-file)
-                (error "`ess-history-file' must be nil, t, or a string"))))
-
-        (when ess-history-file
-          (setq comint-input-ring-file-name
-                (expand-file-name ess-history-file
-                                  (or ess-history-directory ess-directory)))
-          (comint-read-input-ring))
-
-        ;; create and run process.
-        (ess-write-to-dribble-buffer
-         (format "(ess-multi 1):  start-args=%s \n"
-                 inf-ess-start-args))
-        (set-buffer
-         (if switches
-             (inferior-ess-make-comint buf-name-str
-                                       proc-name
-                                       inf-ess-start-args
-                                       switches)
-           (inferior-ess-make-comint buf-name-str
-                                     proc-name
-                                     inf-ess-start-args)))
-
-        ;; set accumulation buffer name (buffer to cache output for faster display)
-        (process-put (get-process proc-name) 'accum-buffer-name
-                     (format " *%s:accum*" proc-name))
-        
-        ;; Set the process sentinel to save the history
-        (set-process-sentinel (get-process proc-name) 'ess-process-sentinel)
-        ;; Add this process to ess-process-name-list, if needed
-        (let ((conselt (assoc proc-name ess-process-name-list)))
-          (if conselt nil
-            (setq ess-process-name-list
-                  (cons (cons proc-name nil) ess-process-name-list))))
-        (ess-make-buffer-current)
-        (goto-char (point-max))
-        (setq ess-sl-modtime-alist nil)
-
-        ;; Add the process filter to catch certain output.
-        (set-process-filter (get-process proc-name)
-                            'inferior-ess-output-filter)
-        ;; (inferior-ess-wait-for-prompt)
-        (inferior-ess-mark-as-busy (get-process proc-name))
-        (process-send-string (get-process proc-name) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
-        (ess-write-to-dribble-buffer "(ess-multi 2): waiting for process to start (before hook)\n")
-        (ess-wait-for-process (get-process proc-name) nil 0.01)
-
-        ;; arguments cache
-        (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
-        (ess-process-put 'funargs-pre-cache nil)
-        
-        ;; don't font-lock strings over process prompt
-        (set (make-local-variable 'syntax-begin-function)
-             #'inferior-ess-goto-last-prompt)
-        (set (make-local-variable 'font-lock-fontify-region-function)
-             #'inferior-ess-fontify-region)
-
-        (run-hooks 'ess-post-run-hook)
-
-        ;; EXTRAS
-        (ess-load-extras t)
-        ;; user initialization can take some time ...
-        (ess-write-to-dribble-buffer "(ess-multi 3): waiting for process after hook")
-        (ess-wait-for-process (get-process proc-name)))
-
-      (let ((buff (process-buffer (get-process proc-name))))
-        (with-current-buffer buff
-          (rename-buffer (funcall ess-gen-proc-buffer-name-function proc-name) t))
-        (if (and inferior-ess-same-window (not inferior-ess-own-frame))
-            (switch-to-buffer buff)
-          (pop-to-buffer buff))))))
 
 (defun inferior-ess-goto-last-prompt ()
   (let ((paragraph-start comint-prompt-regexp))
@@ -547,7 +503,7 @@ This marks the process with a message, at a particular time point."
 
 (defun inferior-ess-make-comint (bufname
                                  procname
-                                 inferior-ess-start-args
+                                 infargs
                                  &rest switches)
   "Make an S comint process in buffer BUFNAME with process PROCNAME."
 ;;; This function is a modification of make-comint from the comint.el
@@ -574,14 +530,14 @@ This marks the process with a message, at a particular time point."
                       buffer
                       procname
                       inferior-ess-program
-                      inferior-ess-start-args
+                      infargs
                       inferior-ess-start-file))
              (comint-exec buffer
                           procname
                           inferior-ess-program
                           inferior-ess-start-file
                           (ess-line-to-list-of-words
-                           inferior-ess-start-args)))))
+                           infargs)))))
     buffer))
 
 
@@ -828,13 +784,18 @@ Returns the name of the selected process."
                                         "julia" "SAS" "XLS"  "ViSta")))))
 
   (let* ((pname-list (delq nil ;; keep only those mathing dialect
-                           (mapcar (lambda (lproc)
-                                     (and (equal ess-dialect
-                                                 (buffer-local-value
-                                                  'ess-dialect
-                                                  (process-buffer (get-process (car lproc)))))
-                                          lproc))
-                                   ess-process-name-list)))
+                           (append
+                            (mapcar (lambda (lproc)
+                                      (and (equal ess-dialect
+                                                  (buffer-local-value
+                                                   'ess-dialect
+                                                   (process-buffer (get-process (car lproc)))))
+                                           (not (equal ess-local-process-name (car lproc)))
+                                           (car lproc)))
+                                    ess-process-name-list)
+                            ;; append local only if running
+                            (when (assoc ess-local-process-name ess-process-name-list)
+                              (list ess-local-process-name)))))
          (num-processes (length pname-list))
          (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
          (auto-started?))
@@ -844,7 +805,7 @@ Returns the name of the selected process."
                              (buffer-local-value
                               'ess-dialect
                               (process-buffer (get-process
-                                               (caar pname-list))))))))
+                                               (car pname-list))))))))
         ;; try to start "the appropriate" process
         (progn
           (ess-write-to-dribble-buffer
@@ -856,18 +817,18 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
           (setq num-processes 1
-                pname-list (list (car ess-process-name-list))
+                pname-list (car ess-process-name-list)
                 auto-started? t)))
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
-                                   (buffer-name (process-buffer (get-process (car lproc)))))
+                                   (buffer-name (process-buffer (get-process lproc))))
                                  pname-list))
            (proc
             (if (or auto-started?
                     (and (not ask-if-1) (= 1 num-processes)))
                 (progn
                   (message "using process '%s'" (car proc-buffers))
-                  (caar pname-list))
+                  (car pname-list))
               ;; else
               (unless (and ess-current-process-name
                            (get-process ess-current-process-name))
@@ -875,10 +836,7 @@ Returns the name of the selected process."
               (when message
                 (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
               ;; ask for buffer name not the *real* process name:
-              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil
-                                              (and ess-current-process-name
-                                                   (buffer-name (process-buffer
-                                                                 (get-process ess-current-process-name)))))))
+              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil)))
                 (if (equal buf "*new*")
                     (progn
                       (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
