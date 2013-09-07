@@ -64,11 +64,11 @@ list. "
   "If this file is present in the directory, it is considered a
   project root.")
 
-(defcustom ess-developer-force-attach nil
-  "If non-nill all the packages listed in `ess-developer-packages' should be attached
-when ess-developer mode is turned on."
-  :group 'ess-developer
-  :type 'boolean)
+;; (defcustom ess-developer-force-attach nil
+;;   "If non-nill all the packages listed in `ess-developer-packages' should be attached
+;; when ess-developer mode is turned on."
+;;   :group 'ess-developer
+;;   :type 'boolean)
 
 (defcustom ess-developer-enter-hook nil
   "Normal hook run on entering `ess-developer' mode."
@@ -88,7 +88,8 @@ within package directory."
 
 (defcustom ess-developer-load-on-add-commands '(("library" . "library(%n)")
                                                 ("load_all" . "library(devtools)\nload_all('%d')"))
-  "Alist of available load commands what are proposed for loading on `ess-developer-add-package'.
+  "Alist of available load commands what are proposed for loading
+on `ess-developer-add-package'.
 
   %n is replaced with package name,
   %d is replaced with package directory.
@@ -358,8 +359,7 @@ If ALL is non-nil, deactivate in all open R buffers."
         (ess-developer -1)))))
 
 (defun ess-developer-load-package ()
-  "Interface to load_all function in devtools package.
-See also `ess-developer-load-all-command'."
+  "Interface to load_all function from devtools package."
   (interactive)
   (let ((package (ess-developer--get-package-path)))
     (unless (and package ess-developer)
