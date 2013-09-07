@@ -309,7 +309,8 @@ specific so far). PATH defaults to `default-directory'"
         (with-current-buffer (find-file-noselect file t t)
           (goto-char (point-min))
           (re-search-forward "package: \\(.*\\)")
-          (match-string 1))))))
+          (prog1 (match-string 1)
+            (kill-this-buffer)))))))
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of a package which
