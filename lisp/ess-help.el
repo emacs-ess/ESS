@@ -520,6 +520,15 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (ess-help-quit t))
 
+(defun ess--find-displayed-help-window ()
+  (catch 'win
+    (dolist (f (frame-list))
+      (when (frame-visible-p f)
+       (dolist (w (window-list f))
+         (when (eq (buffer-local-value 'major-mode (window-buffer w))
+                   'ess-help-mode)
+           (throw 'win w)))))))
+
 (defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
@@ -531,17 +540,18 @@ For internal use. Used in `ess-display-help-on-object',
         (special-display-frame-alist ess-help-frame-alist)
         (special-display-function (if (eq ess-help-own-frame 'one)
                                       'ess-help-own-frame
-                                    special-display-function)))
-    (if (eq curr-major-mode 'ess-help-mode)
-        (if ess-help-own-frame
-            (pop-to-buffer buff)
-          (switch-to-buffer buff))
+                                    special-display-function))
+        (help-win (or (and (eq curr-major-mode 'ess-help-mode)
+                           (selected-window))
+                      (and ess-help-reuse-window
+                           (ess--find-displayed-help-window)))))
+    (if help-win
+        (progn
+          (select-window help-win)
+          (switch-to-buffer buff nil 'force))
       (if ess-help-pop-to-buffer
           (pop-to-buffer buff)
-        (ess-display-temp-buffer buff))
-      )))
-
-
+        (ess-display-temp-buffer buff)))))
 
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
