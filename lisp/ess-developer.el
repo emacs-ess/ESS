@@ -290,11 +290,14 @@ found, return nil."
                 (setq path nil)))))
         path)
     (let ((path default-directory)
-          package)
-      (while (and (not package) (> (length path) 1))
+          opath package)
+      (while (and path
+                  (not package)
+                  (not (equal path opath)))
         (if (file-exists-p (expand-file-name ess-developer-root-file path))
             (setq package path)
-          (setq path (file-name-directory (directory-file-name path)))))
+          (setq opath path
+                path (file-name-directory (directory-file-name path)))))
       package)))
 
 
@@ -336,8 +339,6 @@ is nil. "
                        (equal pack package)
                      (member pack ess-developer-packages)))
           (ess-developer t))))))
-
-(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
 
 (defun ess-developer-deactivate-in-package (&optional package all)
   "Deactivate developer if current file is part of the R package.
@@ -413,6 +414,8 @@ VAL is negative turn it off."
     (setq ess-developer ess-dev))
     (force-window-update))
 
+(defalias 'ess-toggle-developer 'ess-developer)
+
 
 
 ;;; MODELINE
@@ -433,11 +436,13 @@ VAL is negative turn it off."
   (add-to-list 'ess--local-mode-line-process-indicator
                'ess-developer--local-indicator 'append))
 
+
+
+;;; HOOKS
+
+(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
 (add-hook 'R-mode-hook 'ess-developer-setup-modeline)
 (add-hook 'inferior-ess-mode-hook 'ess-developer-setup-modeline)
-
-
-(defalias 'ess-toggle-developer 'ess-developer)
 
 (provide 'ess-developer)
 ;;; ess-developer.el ends here
