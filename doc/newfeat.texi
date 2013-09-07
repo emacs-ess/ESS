@@ -3,10 +3,12 @@
 
 Changes/New Features in 13.09:
 @itemize @bullet
-@item Documentation: The update of the ESS user manual continues.  The ``New
+@item Documentation: The update of the @ESS{} user manual continues.  The ``New
 Features'' section (and @file{NEWS}) now represent recent changes:  within the last 
 year or so.  All changes can be found in the new @uref{news.html, news.html} (or @file{NEWS}
 and @file{ONEWS}).
+@item Modernization: Re-tooling @ESS{} for modern emacs, and its components, continues.  
+This release is aimed more at resolving bugs rather than new features.
 @end itemize
 
 Changes/New Features in 13.05:
