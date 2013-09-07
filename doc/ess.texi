@@ -2839,8 +2839,8 @@ string.
 @cindex ess developer
 
 Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
-the current buffer for the evaluation in current environment
-(@code{R_GlobalEnv}). Often, in process of the developing packages with
+the current buffer for evaluation in current environment (commonly
+@code{R_GlobalEnv}). Often, in process of the developing packages with
 namespaces, it is necessary to evaluate code directly in the package's
 environment or it's namespace. The @code{ess-developer} utility provides
 such a functionality with minimal disruption of the usual ESS work-flow.
@@ -2865,25 +2865,53 @@ and functions defined in .GlobalEnv can see the objects in
 'package:foo'. See also
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
-In order to use ess-developer mode add names of the packages you are
-developing to @code{ess-developer-packages}. You can do that interactively
-with @kbd{C-c C-t a}, and remove packages with @kbd{C-c C-t r}. When
-developer mode is on, the name of the process in the mode line is
-highlighted with @code{ess-developer-indicator-face}.
+In order to use ess-developer, add names of the packages you are
+developing to @code{ess-developer-packages}. You can do that
+interactively with @kbd{C-c C-t C-a}. To remove packages use @kbd{C-c
+C-t C-r}. When developer mode is on, the process mode line indicator
+features a small or capital letter "d", highlighted with
+@code{ess-developer-indicator-face}.
+
+If variable @code{ess-developer-activate-in-package} is @code{t} (the
+default), R mode will check on startup if the file is part of the
+package. If so, developer mode is activated automatically. This takes
+place only when the parent package has been already added to
+@code{ess-developer-packages}.
+
+Developer mode is usually activated on per-file basis. When so, a small
+"d" appears in the modeline. You can also activate ess-developer on per
+process basis. Then all the buffers associated with the process are put
+into developer mode, regardless of whether they are part of a package or
+not. In this case a big "D" appears in the modeline.
 
 @deffn Command ess-developer @var{val}
 @kindex C-c C-t C-t
-@kbd{C-c C-t C-t} Toggle developer mode on and off.
+@kbd{C-c C-t C-t} Toggle developer mode on and off. If called from
+script buffer, toggle developer on file-by-file basis. When called from
+process buffer, toggle developer on per-process basis.
 @end deffn
 
 @deffn Command ess-developer-add-package @var{from-attached} @var{remove}
 @kindex C-c C-t C-a
-@kbd{C-c C-t C-a} Add a package to your development list.
+@kbd{C-c C-t C-a} Add a package to your development list (@code{ess-developer-packages}).
 @end deffn
 
 @deffn Command ess-developer-remove-package
 @kindex C-c C-t C-r
 @kbd{C-c C-t C-r} Remove a package from your development list.
+@end deffn
+
+When you add a package to @code{ess-developer-packages}, ESS will ask
+for loading command. By default there are two options @code{library} and
+@code{load_all} from @code{devtools} package. You can configure this
+list in @code{ess-developer-load-on-add-commands}. At any time you can
+explicitly load the package containing current file with @kbd{C-c C-t
+l}.
+
+@deffn Command ess-developer-load-package
+@kindex C-c C-t l
+@kbd{C-c C-t l} Load package with @code{load_all} utility from
+@code{devtools} package.
 @end deffn
 
 When developer mode is on, ESS evaluation commands behave differently:
@@ -2892,7 +2920,7 @@ When developer mode is on, ESS evaluation commands behave differently:
 
 @item @kbd{C-c C-l} (@code{ess-load-file}) asks for the package to source
 into and inserts all redefined objects into the package:foo or
-namespace:foo accordingly
+namespace:foo accordingly.
 
 @itemize @minus
 

@@ -64,11 +64,11 @@ list. "
   "If this file is present in the directory, it is considered a
   project root.")
 
-(defcustom ess-developer-force-attach nil
-  "If non-nill all the packages listed in `ess-developer-packages' should be attached
-when ess-developer mode is turned on."
-  :group 'ess-developer
-  :type 'boolean)
+;; (defcustom ess-developer-force-attach nil
+;;   "If non-nill all the packages listed in `ess-developer-packages' should be attached
+;; when ess-developer mode is turned on."
+;;   :group 'ess-developer
+;;   :type 'boolean)
 
 (defcustom ess-developer-enter-hook nil
   "Normal hook run on entering `ess-developer' mode."
@@ -88,7 +88,8 @@ within package directory."
 
 (defcustom ess-developer-load-on-add-commands '(("library" . "library(%n)")
                                                 ("load_all" . "library(devtools)\nload_all('%d')"))
-  "Alist of available load commands what are proposed for loading on `ess-developer-add-package'.
+  "Alist of available load commands what are proposed for loading
+on `ess-developer-add-package'.
 
   %n is replaced with package name,
   %d is replaced with package directory.
@@ -290,11 +291,14 @@ found, return nil."
                 (setq path nil)))))
         path)
     (let ((path default-directory)
-          package)
-      (while (and (not package) (> (length path) 1))
+          opath package)
+      (while (and path
+                  (not package)
+                  (not (equal path opath)))
         (if (file-exists-p (expand-file-name ess-developer-root-file path))
             (setq package path)
-          (setq path (file-name-directory (directory-file-name path)))))
+          (setq opath path
+                path (file-name-directory (directory-file-name path)))))
       package)))
 
 
@@ -309,7 +313,8 @@ specific so far). PATH defaults to `default-directory'"
         (with-current-buffer (find-file-noselect file t t)
           (goto-char (point-min))
           (re-search-forward "package: \\(.*\\)")
-          (match-string 1))))))
+          (prog1 (match-string 1)
+            (kill-this-buffer)))))))
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of a package which
@@ -336,8 +341,6 @@ is nil. "
                      (member pack ess-developer-packages)))
           (ess-developer t))))))
 
-;; (add-hook 'R-mode-hook 'ess-developer-activate-in-package)
-
 (defun ess-developer-deactivate-in-package (&optional package all)
   "Deactivate developer if current file is part of the R package.
 
@@ -356,8 +359,7 @@ If ALL is non-nil, deactivate in all open R buffers."
         (ess-developer -1)))))
 
 (defun ess-developer-load-package ()
-  "Interface to load_all function in devtools package.
-See also `ess-developer-load-all-command'."
+  "Interface to load_all function from devtools package."
   (interactive)
   (let ((package (ess-developer--get-package-path)))
     (unless (and package ess-developer)
@@ -412,6 +414,8 @@ VAL is negative turn it off."
     (setq ess-developer ess-dev))
     (force-window-update))
 
+(defalias 'ess-toggle-developer 'ess-developer)
+
 
 
 ;;; MODELINE
@@ -432,11 +436,13 @@ VAL is negative turn it off."
   (add-to-list 'ess--local-mode-line-process-indicator
                'ess-developer--local-indicator 'append))
 
+
+
+;;; HOOKS
+
+(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
 (add-hook 'R-mode-hook 'ess-developer-setup-modeline)
 (add-hook 'inferior-ess-mode-hook 'ess-developer-setup-modeline)
-
-
-(defalias 'ess-toggle-developer 'ess-developer)
 
 (provide 'ess-developer)
 ;;; ess-developer.el ends here

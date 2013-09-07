@@ -2415,6 +2415,11 @@ See also `inferior-ess-own-frame'."
   :group 'ess-help
   :type '(choice (const nil) (const one) (const t)))
 
+(defcustom ess-help-reuse-window t
+  "If t, ESS tries to display new help buffers in the existing help window"
+  :type 'boolean
+  :group 'ess-help)
+
 (defcustom ess-help-frame-alist special-display-frame-alist
   "Alist of frame parameters used to create help frames.
 This defaults to `special-display-frame-alist' and is used only when
