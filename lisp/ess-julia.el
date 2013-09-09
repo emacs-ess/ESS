@@ -31,7 +31,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Commentary:
-;;  customise inferior-julia-program-name to point to your julia-release-basic
+;;  customise inferior-julia-program-name to point to your julia-basic
 ;;  and start the inferior with M-x julia.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -538,7 +538,7 @@ to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
   ;; get settings, notably inferior-julia-program-name :
   (if (null inferior-julia-program-name)
-      (error "'inferior-julia-program-name' does not point to 'julia-release-basic' executable")
+      (error "'inferior-julia-program-name' does not point to 'julia-basic' executable")
     (setq ess-customize-alist julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format

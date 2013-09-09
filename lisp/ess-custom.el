@@ -2542,10 +2542,10 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defcustom inferior-julia-program-name "julia-release-basic"
+(defcustom inferior-julia-program-name "julia-basic"
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
-  "Path to julia-release-basic executable"
+  "Path to julia-basic executable"
   :group 'ess-Julia)
 
 (defvar julia-basic-offset 4
@@ -2590,7 +2590,7 @@ Used for recording status of the program, mainly for debugging.")
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
 Not buffer local!")
-;; TODO: fixme We cannot make it local as yet, Not list is set on inferior startup. 
+;; TODO: fixme We cannot make it local as yet, Not list is set on inferior startup.
 ;; (make-variable-buffer-local 'ess-customize-alist)
 ;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
