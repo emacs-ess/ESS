@@ -838,7 +838,7 @@ Since ESS 13.05, the default is  RRR  rather than DEFAULT."
 
 ;; the real setting of this happens via <foo>-editing-alist:
 (defvar ess-style ess-default-style
-  "*The buffer specific ESS indentation style.")
+  "*The buffer specific ESS indentation style, see `ess-style-alist' for more.")
 
 ;;*;; Variables controlling behaviour of dump files
 
