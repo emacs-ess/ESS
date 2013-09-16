@@ -3,10 +3,53 @@
 
 Changes/New Features in 13.09:
 @itemize @bullet
-@item Documentation: The update of the ESS user manual continues.  The ``New
-Features'' section (and @file{NEWS}) now represent recent changes:  within the last 
-year or so.  All changes can be found in the new @uref{news.html, news.html} (or @file{NEWS}
-and @file{ONEWS}).
+@item font-lock in process buffers doesn't "spill" over prompts
+Thus, missing closing string delimiters, should not cause wrong
+fontification of the next command inputs in process buffers.
+@item @ESS{julia}: full features M-TAB completion and auto-complete support, 
+which now works for modules, structures and data types.
+@item @ESS{julia}: a much better eldoc showing arguments of 
+methods and data type constructors
+@item ESS-developer: 
+@itemize @minus
+@item ESS-developer work-flow pattern has been streamlined. 
+ESS-developer is now automatically activated on per-file basis if the
+file is part of a developed package @code{ess-developer-packages}. The
+old behavior, activation on per-process basis, is still available if
+@code{ess-developer} is called from a process buffer.
+@item integration with @code{devtools} package. New command
+@code{ess-developer-load-package} calls @code{load_all} on the package
+containing current file. @code{ess-developer-add-package} now offers IDO
+menu completions with available loading methods, currently
+@code{library}, and @code{load_all}. Loading behavior can be customized
+in @code{ess-developer-load-on-add-cmmands}.
+@end itemize
+@item @kbd{TAB} now indents region if region is active
+(a contribution of Matthew Fidler in pull #41)
+@item @kbd{M-x}@code{ess-version} now reports full loading path
+and recognizes git and ELPA versions.
+@item warning and error keyword are now highlighted with
+@code{font-lock-warning-face} as they should be, (for quite some time
+these keywords were hijacked by compilation mode highlighting).
+@item eldoc: Eldoc now recognizes multiple processes.
+If current process is busy, or current buffer is not associated with a
+process, eldoc picks its completions from the first available free
+process.
+@item org-babel: evaluation is now org-friendly
+@item help: new help buffers now try to reuse ess-help buffers. 
+This behavior is controlled by @code{ess-help-reuse-window} custom
+variable.
+@item help: ?foo pops IDO menu on multiple help files 
+(so far it worked only for @kbd{C-c C-v})
+@item remote evaluation is considerably faster now on slow connections
+@item @ESS{R} tracebug R source references regular expressions
+are (mostly) language agnostic.
+@item @code{ess-function-call-face} inherits from @code{font-lock-function-name-face} rather
+than @code{font-lock-builtin-face} as before.
+@item Documentation: The ``New Features'' 
+section (and @file{NEWS}) now represent recent changes: within the last
+year or so.  All changes can be found in the new @uref{news.html,
+news.html} (or @file{NEWS} and @file{ONEWS}).
 @end itemize
 
 Changes/New Features in 13.05:
