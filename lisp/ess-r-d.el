@@ -690,7 +690,7 @@ to look up any doc strings."
   (let ((proc (ess-get-next-available-process)))
     (when proc
      (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
-                             (symbol-at-point))
+                             (thing-at-point 'symbol))
                         (car (ess--funname.start)))))
        (when funname
          (let* ((args (ess-function-arguments funname proc))
