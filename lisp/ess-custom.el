@@ -2299,13 +2299,12 @@ current buffer. Old system. From ESS[12.09] switched to new
 system described in `inferior-ess-font-lock-keywords'.")
 (make-variable-buffer-local 'inferior-ess-font-lock-defaults)
 
-
 (defvar comint-highlight-prompt 'comint-highlight-prompt)
 ;; needed for proper font-lock
 
 (defvar ess-S-fl-keyword:prompt
   (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
-  "Highlith prompts missed by comint.")
+  "Highlight prompts missed by comint.")
 
 ;; (defvar ess-S-fl-keyword:input-line
 ;;   (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
