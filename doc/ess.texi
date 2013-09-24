@@ -1723,7 +1723,9 @@ there is nothing to indent.
 @end defvr
 
 @defvr {User Option} ess-first-tab-never-complete
-If non-@code{nil}, @kbd{TAB} never tries to complete in ess-mode.
+If non-@code{nil}, @kbd{TAB} never tries to complete in ess-mode.  The
+default @code{'symbol} does not try to complete if the next char is a valid
+symbol constituent.  There are more options, see the help (@kbd{C-h v}).
 @end defvr
 
 @deffn Command ess-indent-exp
@@ -3331,7 +3333,6 @@ the customizable variable @code{ess-rutils-keys} is true, several key
 bindings become available in iESS process buffers:
 
 @deffn Command ess-rutils-local-pkgs
-@kindex C-c C-. l
 @kindex C-c C-. l
 @kbd{C-c C-. l} List all packages in all available libraries.
 @end deffn
