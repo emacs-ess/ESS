@@ -6,17 +6,17 @@ Changes/New Features in 13.09:
 @item font-lock in process buffers doesn't "spill" over prompts.
 Missing closing string delimiters should not cause wrong fontification
 of the following command input.
-@item @ESS{julia}: full features M-TAB completion and auto-complete support, 
+@item @ESS{julia}: full features M-TAB completion and auto-complete support,
 which now works for modules, structures and data types.
-@item @ESS{julia}: a much better eldoc showing arguments of 
+@item @ESS{julia}: a much better eldoc showing arguments of
 methods and data type constructors
-@item ESS-developer: 
+@item ESS-developer:
 @itemize @minus
 @item ESS-developer work-flow pattern has been streamlined:
 ESS-developer is now automatically activated on per-file basis if the
 file is part of a developed package @code{ess-developer-packages}. The
-old behavior (activation on per-process basis) is still available on 
-@kbd{M-x} @code{ess-developer} in a process buffer.
+old behavior (activation on per-process basis) is still available on
+@code{M-x ess-developer} in a process buffer.
 @item integration with @code{devtools} package. New command
 @code{ess-developer-load-package} calls @code{load_all} on the package
 containing current file. @code{ess-developer-add-package} now offers IDO
@@ -26,7 +26,7 @@ with @code{ess-developer-load-on-add-commands}.
 @end itemize
 @item @kbd{TAB} now indents region if region is active
 (a contribution of Matthew Fidler in pull #41)
-@item @kbd{M-x}@code{ess-version} now reports full loading path
+@item @code{M-x ess-version} now reports full loading path
 and recognizes git and ELPA versions.
 @item warning and error keyword are now highlighted with
 @code{font-lock-warning-face} as they should be, (for quite some time
@@ -36,10 +36,10 @@ If current process is busy, or current buffer is not associated with a
 process, eldoc picks its completions from the first available free
 process.
 @item org-babel: evaluation is now org-friendly
-@item help: new help buffers now try to reuse ess-help buffers. 
+@item help: new help buffers now try to reuse ess-help buffers.
 This behavior is controlled by @code{ess-help-reuse-window} custom
 variable.
-@item help: ?foo pops IDO menu on multiple help files 
+@item help: ?foo pops IDO menu on multiple help files
 (so far it worked only for @kbd{C-c C-v})
 @item remote evaluation is considerably faster now on slow connections
 @item @ESS{R} tracebug R source references regular expressions
@@ -47,7 +47,7 @@ are (mostly) language agnostic.
 @item @code{ess-function-call-face} inherits from @code{font-lock-function-name-face} rather
 than @code{font-lock-builtin-face}.
 @item @code{ess-inject-source} now accepts @code{function-and-buffer} option.
-@item Documentation: The ``New Features'' 
+@item Documentation: The ``New Features''
 section (and @file{NEWS}) now represent recent changes: within the last
 year or so.  All changes can be found in the new @uref{news.html,
 news.html} (or @file{NEWS} and @file{ONEWS}).
@@ -249,7 +249,7 @@ directory.  Setting this variable now tells ESS how to find
 @file{Rterm.exe} executables when they are installed somewhere else.
 
 @item @ESS{[julia]}: @emph{new} mode
-for editing julia code (@file{*.jl}). Start with @kbd{M-x julia}.
+for editing julia code (@file{*.jl}). Start with @code{M-x julia}.
 
 Full interaction interface, imenu and basic error referencing are available.
 
