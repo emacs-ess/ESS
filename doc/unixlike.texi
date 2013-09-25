@@ -1,5 +1,5 @@
 
-@c @section Unix (Linux / MacOS / Solaris / ...) Installation
+@c @section Unix (Linux/Mac OS X/Solaris/etc.) Installation
 @comment THIS IS A REPLACEMENT FOR THE UNIX PORTION OF inst_tar.texi
 
 For a @b{Unix or Unix-like installation}, please follow the next steps.

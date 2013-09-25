@@ -356,7 +356,7 @@ The following section details those steps necessary to get ESS running
 on your system.
 
 @menu
-* Unix installation::           Installing ESS on your Unix (Linux, MacOS, ...) system
+* Unix installation::           Installing ESS on your Unix (Linux/Mac OS X/etc.) system
 * Microsoft Windows installation::  Installing ESS on your MS Windows system
 * License::
 * Stability::
@@ -369,7 +369,7 @@ on your system.
 @c @include inst_tar.texi
 
 @node Unix installation
-@section Unix (Linux / MacOS / Solaris / ...) Installation
+@section Unix (Linux/Mac OS X/Solaris/etc.) Installation
 @include unixlike.texi
 
 @node Microsoft Windows installation
