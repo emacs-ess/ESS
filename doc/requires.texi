@@ -3,10 +3,14 @@ statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
 ESS supports current, and recent, stable versions of GNU Emacs
 (currently, specifically, the 23.x and 24.x series; alpha/beta/pre-release
-versions are NOT SUPPORTED).
+versions are NOT SUPPORTED).  Non-Windows users beware: GNU Emacs 24.3 is 
+preferable to 24.1 or 24.2: these broken builds suffer from bug 12463 
+@uref{http://debbugs.gnu.org/cgi/bugreport.cgi?bug=12463} which 
+will cause emacs and ESS to get progressively slower over time.
 @c XEmacs currently does not allow all ESS
 @c features. Basic ESS functionality however is supported for the time being
 @c (XEmacs stable 21.4.14 or higher).
+
 Due to XEmacs lacking some features that ESS requires, ESS
 support of XEmacs ends with ESS 12.04-4.  This decision will
 be re-visited in the future as XEmacs continues to sync with
