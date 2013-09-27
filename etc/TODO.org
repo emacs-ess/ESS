@@ -79,4 +79,6 @@ to mouse movement; you need to physically click in the *R*
 buffer to restore the focus following the mouse.  C-c C-d C-d
 behaves similarly.  Ideally, we should respect the user's settings 
 of focus-follows-mouse/mouse-autoselect-window in this common 
-help/*R* buffer arrangement. 
+help/*R* buffer arrangement.
+** TODO Make an option to remember eval-and-go code in comint history
+   
