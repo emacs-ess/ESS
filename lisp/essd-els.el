@@ -186,6 +186,11 @@ C-n to send lines over.  With SAS, use C-c i
     (ess-setq-vars-local ess-customize-alist)
     (inferior-ess-mode)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
+
+    (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+    (ess-process-put 'funargs-pre-cache nil)
+    (ess-load-extras)
+
     (goto-char (point-max))
     (when inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
