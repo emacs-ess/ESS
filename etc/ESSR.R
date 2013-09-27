@@ -48,7 +48,9 @@
 
              fmls <- formals(args)
              fmls_names <- names(fmls)
-             fmls <- gsub('\"', '\\\"', as.character(fmls), fixed=TRUE)
+             fmls <- gsub('\"', '\\\"',
+                          gsub("\\", "\\\\", as.character(fmls), fixed = T),
+                          fixed=TRUE)
              args_alist <-
                  sprintf("'(%s)",
                          paste("(\"", fmls_names, "\" . \"", fmls, "\")",
