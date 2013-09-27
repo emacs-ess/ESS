@@ -6,9 +6,9 @@ Changes/New Features in 13.09:
 @item font-lock in process buffers doesn't "spill" over prompts.
 Missing closing string delimiters should not cause wrong fontification
 of the following command input.
-@item @ESS{julia}: full features M-TAB completion and auto-complete support,
+@item @ESS{[julia]}: full features M-TAB completion and auto-complete support,
 which now works for modules, structures and data types.
-@item @ESS{julia}: a much better eldoc showing arguments of
+@item @ESS{[julia]}: a much better eldoc showing arguments of
 methods and data type constructors
 @item ESS-developer:
   @itemize @minus
@@ -42,7 +42,7 @@ variable.
 @item help: ?foo pops IDO menu on multiple help files
 (so far it worked only for @kbd{C-c C-v})
 @item remote evaluation is considerably faster now on slow connections
-@item @ESS{R} tracebug R source references regular expressions
+@item @ESS{[R]} tracebug R source references regular expressions
 are (mostly) language agnostic.
 @item @code{ess-function-call-face} inherits from
 @code{font-lock-function-name-face} rather than @code{font-lock-builtin-face}.
@@ -51,7 +51,7 @@ are (mostly) language agnostic.
 section (and @file{NEWS}) now represent recent changes: within the last
 year or so.  All changes can be found in the new @uref{news.html,
 news.html} (or @file{NEWS} and @file{ONEWS}).
-@item @ESS{R} @code{ess-rep-regexp} should no longer inf.loop (rarely!),
+@item @ESS{[R]} @code{ess-rep-regexp} should no longer inf.loop (rarely!),
 and hence @code{M-x ess-fix-miscellaneous} should neither.
 @end itemize
 

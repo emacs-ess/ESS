@@ -5,7 +5,7 @@
 @comment %**end of header
 
 @include ess-defs.texi
-@node Announce, Latest Version, General Information, General Information
+@node Announce
 @comment  node-name,  next,  previous,  up
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
@@ -33,39 +33,51 @@ please read the README files that come with ESS.
 @c And to clear up any possible confusion; the name is ESS, NOT ESS-mode.
 @c Thank you :-).
 
-@node Latest Version, Current Features, Announce, General Information
+@menu
+* Latest Version::
+* Current Features::
+* Requirements::
+* Stability::
+* Mailing List::
+* Reporting Bugs::
+* Authors::
+* License::
+* New Features::
+@end menu
+
+@node Latest Version, Current Features, Announce, Announce
 @section Getting the Latest Version
 @include getting.texi
 
-@node Current Features, Requirements, Latest Version, General Information
+@node Current Features, Requirements, Latest Version, Announce
 @section Current Features
 @include currfeat.texi
 
-@node Requirements, Stability, Current Features, General Information
+@node Requirements, Stability, Current Features, Announce
 @section Requirements
 @include requires.texi
 
-@node Stability, Mailing List, Requirements, General Information
+@node Stability, Mailing List, Requirements, Announce
 @section Stability
 @include stabilty.texi
 
-@node Mailing List, Reporting Bugs, Stability, General Information
+@node Mailing List, Reporting Bugs, Stability, Announce
 @section Mailing List
 @include mailing.texi
 
-@node Reporting Bugs, Authors, Mailing List, General Information
+@node Reporting Bugs, Authors, Mailing List, Announce
 @section Reporting Bugs
 @include bugrept.texi
 
-@node Authors, License, Reporting Bugs, General Information
+@node Authors, License, Reporting Bugs, Announce
 @section Authors
 @include authors.texi
 
-@node License, New Features, Authors, General Information
+@node License, New Features, Authors, Announce
 @section License
 @include license.texi
 
-@node New Features, , License, General Information
+@node New Features,  , License, Announce
 @section New Features
 @include newfeat.texi
 

@@ -65,23 +65,22 @@ distclean : clean
 
 ../README: $(TEXISRC)
 	-$(MAKETXT) readme.texi \
-	| perl -pe 'last if /^Concept Index/;' \
-	> ../README
+	| perl -pe 'last if /^Concept Index/;' > $@
 #	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
 
 ../ANNOUNCE: $(TEXISRC)
 	-$(MAKETXT) announc.texi \
-	| perl -pe 'last if /^Concept Index/;' > ../ANNOUNCE
+	| perl -pe 'last if /^Concept Index/;' > $@
 
 README.Microsoft : README.Microsoft.texi
 	$(MAKETXT) README.Microsoft.texi \
-	| perl -pe 'last if /^Concept Index/;' > README.Microsoft
+	| perl -pe 'last if /^Concept Index/;' > $@
 
 ../NEWS: Makefile ess-defs.texi newfeat.texi news.texi
-	-$(MAKETXT) news.texi > ../NEWS
+	-$(MAKETXT) news.texi > $@
 
 ../ONEWS: Makefile ess-defs.texi onewfeat.texi onews.texi
-	-$(MAKETXT) onews.texi > ../ONEWS
+	-$(MAKETXT) onews.texi > $@
 
 ### File Dependencies
 
