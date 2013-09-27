@@ -600,6 +600,9 @@ and one that is well formatted in emacs ess-mode."
   "Fix Miscellaneous S/R `ill-formation's from current \\[point].
  Particularly use \"<-\"and put spaces around operators."
   (interactive "d\nP"); Defaults: point and prefix (C-u)
+  ;; activate by (setq ess-verbose t)
+  (ess-if-verbose-write
+   (format "ess-fix-misc begin (from = %s, verbose = %s)\n" from verbose))
   (save-excursion
 
     (if (string= ess-dialect "R")
@@ -607,14 +610,20 @@ and one that is well formatted in emacs ess-mode."
           (require 'ess-r-d)
           (R-fix-T-F from (not verbose))))
 
+    ;; activate by (setq ess-verbose t)
+    (ess-if-verbose-write "ess-fix-misc: after fix-T-F\n");___D___
+
     ;; former C and matlab programmers leave trailing  ";" :
-    (goto-char from) (ess-rep-regexp "; *$" "" nil 'literal verbose)
+    ;; (goto-char from) (ess-rep-regexp "; *$" "" nil 'literal verbose)
+    ;; (ess-if-verbose-write "ess-fix-misc: after trailing ';'\n");___D___
     (goto-char from) (ess-rep-regexp ";\\( *\\)#" "\\1#" nil nil verbose)
+    (ess-if-verbose-write "ess-fix-misc: after ';' before #\n");___D___
 
     ;;from R 1.9.x "_" is valid in names; here assume no initial / trailing '_'
     (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
     (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
 
+    (ess-if-verbose-write "ess-fix-misc: before 'around \"<-\"' :\n");___D___
     ;; ensure space around  "<-"  ---- but only replace if necessary:
     (goto-char from)
     (ess-rep-regexp "\\([^< \t\n]\\)\\(<<?-\\)" "\\1 \\2" nil nil verbose)
@@ -628,6 +637,7 @@ and one that is well formatted in emacs ess-mode."
     (goto-char from)
     (ess-rep-regexp "\\(<=?\\)\\([^-<= \t\n]\\)" "\\1 \\2" nil nil t)
 
+    (ess-if-verbose-write "ess-fix-misc: before \"=\" \"==\" .. :\n");___D___
     ;; -- ensure space around "=", "==", "!=" :
     (goto-char from) ;; --> " ="
     (ess-rep-regexp "\\([^=!<> ]\\)\\([=!]?\\)=" "\\1 \\2=" nil nil verbose)
@@ -640,6 +650,7 @@ and one that is well formatted in emacs ess-mode."
     (ess-rep-regexp "\\([A-Za-z0-9()]\\)}" "\\1 }" 'fix nil verbose)
     (ess-space-around "else" from verbose)
 
+    (ess-if-verbose-write "ess-fix-misc: after \"{ ... }\" :\n");___D___
     (goto-char from) ;; add a space inside "){"
     (ess-rep-regexp "){" ") {" 'fix nil verbose)
 
@@ -649,6 +660,7 @@ and one that is well formatted in emacs ess-mode."
     (goto-char from)
     (ess-rep-regexp "^\\([^#{\n]*[^#{ \t\n]+[ \t]*\\)}[ \t]*$"
                     "\\1\n}" 'fix nil verbose)
+    (ess-if-verbose-write "ess-fix-misc __end__\n");___D___
     ))
 
 ;; This is by Seth Falcon, modeled after ess-toggle-underscore (see below).
