@@ -485,10 +485,36 @@ processes.  This is a good command to consider binding to a global key.
 @cindex ESS-elsewhere
 @cindex S+elsewhere
 
-ESS works with processes on remote computers as easily as with
-processes on the local machine.  The recommended way to access a
-statistical program on remote computer is to start it from a telnet or
-ssh buffer and then connect ESS to that buffer.
+ESS works with processes on remote computers as easily as with processes
+on the local machine.  The recommended way to access a statistical
+program on remote computer is to start it with tramp. Require tramp in your .emacs file:
+
+@code{(require 'tramp)}
+
+Now start an ssh session with @samp{C-x f /ssh:user@@host: RET}. Tramp
+shoul open a dired buffer in your remote home directory. Now call your
+favorite ESS process (@code{R}, @code{Julia}, @code{stata} etc) as you
+would usually do on local machine: @code{M-x R}.
+
+To simplify the process even further create a "config" file in your
+@code{.ssh/} folder and add an account. For example if you use amazon
+EC2, it might look like following:
+
+@verbatim
+   Host amazon
+      Hostname ec2-54-215-203-181.us-west-1.compute.amazonaws.com
+      User ubuntu
+      IdentityFile ~/.ssh/my_amazon_key.pem
+@end verbatim
+
+With this configuration, a simple @code{C-x f /ssh:amazon:} is enough to
+start a connection.
+
+Older ways to setup a remote ESS connection are through
+@code{ess-remote}. 
+
+Note: @emph{Unfortunately, ess-remote doesn't work with the recent
+ESS. We are working to correct this.}
 
 @enumerate
 @item Start a new telnet or ssh buffer and connect to the remote computer
