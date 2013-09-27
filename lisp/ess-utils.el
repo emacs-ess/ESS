@@ -1036,12 +1036,12 @@ string giving arguments of the function as they appear in
 documentation, third element is a list of arguments of all
 methods.
 
-If package_name is nil , and time_stamp is less recent than the
+If package_name is nil, and time_stamp is less recent than the
 time of the last user interaction to the process, then update the
 entry.
 
-Package_name is also nil if funname was not found or it is a
-special name i.e. contains :,$ or @.
+Package_name is also nil when funname was not found, or funname
+is a special name that contains :,$ or @.
 
 If PROC is given, it should be an ESS process which should be
 queried for arguments.
@@ -1056,9 +1056,7 @@ queried for arguments.
       (when (and args
                  (and (time-less-p ts (process-get proc 'last-eval))
                       (or (null pack)
-                          (equal pack "")
-                          ;; fixeme: remove this from here
-                          (equal pack "R_GlobalEnv"))))
+                          (equal pack ""))))
         ;; reset cache
         (setq args nil))
       (or args
