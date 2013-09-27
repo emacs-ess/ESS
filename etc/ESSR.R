@@ -33,7 +33,7 @@
          }
          ## don't remove; really need eval(parse(  here!!
          fun <- tryCatch(eval(parse(text=funname)),
-                         error=function(e) NULL) ## works for special objects also
+                         error=function(e) NULL) ## also works for special objects containing @:$ etc
          if(is.function(fun)) {
              special <- grepl('[:$@[]', funname)
              args <- if(!special){
@@ -49,7 +49,7 @@
              fmls <- formals(args)
              fmls_names <- names(fmls)
              fmls <- gsub('\"', '\\\"',
-                          gsub("\\", "\\\\", as.character(fmls), fixed = T),
+                          gsub("\\", "\\\\", as.character(fmls),fixed = TRUE),
                           fixed=TRUE)
              args_alist <-
                  sprintf("'(%s)",
@@ -62,6 +62,7 @@
              allargs <- sprintf("'(\"%s\")",
                                 paste(allargs, collapse = '\" "'))
              envname <- environmentName(environment(fun))
+             if(envname == "R_GlobalEnv") envname <- ""
              cat(sprintf('(list \"%s\" %s %s)\n',
                          envname, args_alist, allargs))
          }
