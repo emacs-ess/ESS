@@ -104,15 +104,16 @@
 
 ### WEAVING
      .ess_weave <- function(command, file, encoding = NULL){
-         if(grepl('knit|purl', deparse(substitute(command))))
-             require(knitr)
+         cmd_symb <- substitute(command)
+         if(grepl('knit|purl', deparse(cmd_symb))) require(knitr)
          od <- getwd()
          on.exit(setwd(od))
          setwd(dirname(file))
+         frame <- parent.frame()
          if(is.null(encoding))
-             command(file)
+             eval(bquote(.(cmd_symb)(.(file))), envir = frame)
          else
-             command(file, encoding = encoding)
+             eval(bquote(.(cmd_symb)(.(file), encoding = .(encoding))), envir = frame)
      }
 
 ### BREAKPOINTS
