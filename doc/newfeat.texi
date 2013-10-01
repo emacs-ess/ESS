@@ -1,6 +1,12 @@
 @comment @itemize @w{}
 @comment @item
 
+
+Changes/Bug Fixes in 13.09-1:
+@itemize @bullet
+@item @ESS{[SWV]} .. knitr ..
+@end itemize
+
 Changes/New Features in 13.09:
 @itemize @bullet
 @item font-lock in process buffers doesn't "spill" over prompts.
