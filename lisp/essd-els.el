@@ -180,7 +180,6 @@ C-n to send lines over.  With SAS, use C-c i
 
   (interactive)
   (ess-add-ess-process)
-  (set (make-local-variable ess-remote) t)
   ;; Need to select a remote-customize-alist
   (let ((ess-customize-alist (ess-select-alist-dialect)))
     (ess-write-to-dribble-buffer
@@ -188,34 +187,32 @@ C-n to send lines over.  With SAS, use C-c i
              (current-buffer)))
     (ess-setq-vars-local ess-customize-alist)
     (inferior-ess-mode)
+    (set (make-local-variable 'ess-remote) t)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
 
-    (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
-    (ess-process-put 'funargs-pre-cache nil)
-    (process-put (get-process procname) 'accum-buffer-name
-                 (format " *%s:accum*" procname))
-
-    (ess-load-extras)
-
     (goto-char (point-max))
-    (when inferior-ess-language-start
-        (ess-eval-linewise inferior-ess-language-start
-                           nil nil nil 'wait-prompt))
 
-    ;; todo: this is ugly, add to customise alist
     (when (equal ess-dialect "R")
-        (ess-R-load-ESSR))
-    ;; (ess-load-extras t) ;; not working
+      (ess--R-load-ESSR))
 
     (when (equal ess-dialect "S+")
-        (ess-command ess-S+--injected-code))
+      (ess-command ess-S+--injected-code))
 
     (when (equal ess-language "SAS")
       (font-lock-mode 0)
       (SAS-log-mode)
       (shell-mode)
       (setq buffer-read-only nil)
-      (font-lock-mode 1))))
+      (font-lock-mode 1))
+
+    (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+    (ess-process-put 'funargs-pre-cache nil)
+    (ess-process-put 'accum-buffer-name (format " *%s:accum*" ess-local-process-name))
+    (ess-load-extras)
+
+    (when inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start
+                         nil nil nil 'wait-prompt))))
 
 
  ; Provide package

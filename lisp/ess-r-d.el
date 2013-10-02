@@ -283,18 +283,18 @@ before ess-site is loaded) for it to take effect.")
   "Functions run in process buffer after the initialization of R
   process.")
 
-
-(defun ess-R-load-ESSR ()
+(defun ess--R-load-ESSR ()
   "LOAD/INSTALL/UPDATE ESSR"
   (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
          (uptodate (ess-boolean-command
                     (format
                      "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
                      ESSR-version))))
-    (if uptodate ; nil if not installed
+    (if uptodate ; also nil if not installed
         (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
-      (let ((ESSR (concat ess-etc-directory "ESSR.tar.gz"))
-            (remote (file-remote-p (ess-get-process-variable 'default-directory))))
+      (let ((ESSR (format "%sESSR_%s.tar.gz" ess-etc-directory ESSR-version))
+            (remote (or ess-remote
+                        (file-remote-p (ess-get-process-variable 'default-directory)))))
         (if (or remote
                 (not (file-exists-p ESSR)))
             (if (y-or-n-p (if remote
@@ -360,7 +360,7 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))
 
-    (ess-R-load-ESSR)
+    (ess--R-load-ESSR)
     (redisplay)
     (when ess-can-eval-in-background
       (ess-async-command-delayed
@@ -1264,14 +1264,13 @@ Completion is available for supplying options."
   `ess-install.packages'.")
 
 
-
 (defun ess-R-install.packages (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
     (ess-setCRANMiror)
     (ess-wait-for-process (get-process ess-current-process-name))
-    (setq update t))
+    (unless pack (setq update t)))
   (when (or update
             (not ess--packages-cache))
     (message "Fetching R packages ... ")
