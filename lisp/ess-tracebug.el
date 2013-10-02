@@ -1774,7 +1774,7 @@ ARGS are ignored to allow using this function in process hooks."
 
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
-  '((browser "browser(expr=is.null(.ESSR_Env[['.ESSBP.']][[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
+  '((browser "browser(expr=is.null(.ESSBP.[[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
 Each sublist  has five elements:
@@ -2090,13 +2090,13 @@ If there is no active R session, this command triggers an error."
                                   'display (list 'left-fringe (nth 2 ess-bp-inactive-spec) fringe-face))
               (put-text-property beg-pos-command (cdr pos)
                                  'bp-active nil)
-              (ess-command (format ".ESSR_Env[['.ESSBP.']][[%s]] <- TRUE\n" bp-id)))
+              (ess-command (format ".ESSBP.[[%s]] <- TRUE\n" bp-id)))
           (setq bp-specs (assoc (get-text-property (point) 'bp-type) ess-bp-type-spec-alist))
           (put-text-property beg-pos-command (cdr pos)
                              'bp-active t)
           (put-text-property  (car pos) beg-pos-command
                               'display (list 'left-fringe (nth 3 bp-specs) (nth 4 bp-specs)))
-          (ess-command (format ".ESSR_Env[['.ESSBP.']][[%s]] <- NULL\n" bp-id))
+          (ess-command (format ".ESSBP.[[%s]] <- NULL\n" bp-id))
           ;; (insert (propertize "##"
           ;;                     'ess-bp t
           ;;                     'intangible 'ess-bp
