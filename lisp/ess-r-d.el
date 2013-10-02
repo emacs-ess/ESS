@@ -298,10 +298,14 @@ before ess-site is loaded) for it to take effect.")
         (if (or remote
                 (not (file-exists-p ESSR)))
             (if (y-or-n-p (if remote
-                              "Looks like you are on remote. Install/update ESSR from CRAN?"
+                              "Looks like you are on a remote and ESSR is not installed. Download and install?"
                             ;; this should not be
-                            "Cannot find local ESSR package. Install from CRAN?"))
-                (ess-R-install.packages nil "ESSR")
+                            "Cannot find local ESSR package. Download and install?"))
+                (ess-eval-linewise
+                 (format
+                  "download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = 'ESSR.tar.gz')
+install.packages('ESSR.tar.gz', repos = NULL)\nlibrary('ESSR')"
+                  ESSR-version))
               (message "ESSR was not installed/updated. ESS might not functon correctly")
               (ding))
           (with-temp-message "Installing ESSR package ..."
@@ -1262,7 +1266,6 @@ Completion is available for supplying options."
 (defvar ess--packages-cache nil
   "Cache var to store package names. Used by
   `ess-install.packages'.")
-
 
 (defun ess-R-install.packages (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
