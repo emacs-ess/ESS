@@ -284,6 +284,31 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 
+(defun ess-R-load-ESSR ()
+  "LOAD/INSTALL/UPDATE ESSR"
+  (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
+         (uptodate (ess-boolean-command
+                    (format
+                     "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
+                     ESSR-version))))
+    (if uptodate ; nil if not installed
+        (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
+      (let ((ESSR (concat ess-etc-directory "ESSR.tar.gz"))
+            (remote (file-remote-p (ess-get-process-variable 'default-directory))))
+        (if (or remote
+                (not (file-exists-p ESSR)))
+            (if (y-or-n-p (if remote
+                              "Looks like you are on remote. Install/update ESSR from CRAN?"
+                            ;; this should not be
+                            "Cannot find local ESSR package. Install from CRAN?"))
+                (ess-R-install.packages nil "ESSR")
+              (message "ESSR was not installed/updated. ESS might not functon correctly")
+              (ding))
+          (with-temp-message "Installing ESSR package ..."
+            (ess-eval-linewise
+             (format "install.packages('%s')\nlibrary(ESSR)\n" ESSR)
+             nil nil nil t)))))))
+
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
@@ -335,29 +360,7 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))
 
-    ;; INSTALL/UPDATE ESSR
-    (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
-           (uptodate (ess-boolean-command
-                      (format
-                       "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
-                       ESSR-version))))
-      (if uptodate ; nil if not installed
-          (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
-        (let ((ESSR (concat ess-etc-directory "ESSR.tar.gz"))
-              (remote (file-remote-p (ess-get-process-variable 'default-directory))))
-          (if (or remote
-                  (not (file-exists-p ESSR)))
-              (if (y-or-n-p (if remote
-                                "Looks like you are on remote. Install/update ESSR from CRAN?"
-                              ;; this should not be
-                              "Cannot find local ESSR package. Install from CRAN?"))
-                  (ess-R-install.packages nil "ESSR")
-                (message "ESSR was not installed/updated. ESS might not functon correctly")
-                (ding))
-            (with-temp-message "Installing ESSR package ..."
-              (ess-eval-linewise
-               (format "install.packages('%s')\nlibrary(ESSR)\n" ESSR)
-               nil nil nil t))))))
+    (ess-R-load-ESSR)
     (redisplay)
     (when ess-can-eval-in-background
       (ess-async-command-delayed
