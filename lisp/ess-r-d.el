@@ -334,13 +334,31 @@ to R, put them in the variable `inferior-R-args'."
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))
-    ;; can test only now that R is running:
-    (ess-write-to-dribble-buffer
-     (format "(R): version %s\n"
-             (ess-get-words-from-vector "as.character(getRversion())\n")))
 
-    (ess--inject-code-from-file (format "%sESSR.R" ess-etc-directory))
-
+    ;; INSTALL/UPDATE ESSR
+    (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
+           (uptodate (ess-boolean-command
+                      (format
+                       "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
+                       ESSR-version))))
+      (if uptodate ; nil if not installed
+          (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
+        (let ((ESSR (concat ess-etc-directory "ESSR.tar.gz"))
+              (remote (file-remote-p (ess-get-process-variable 'default-directory))))
+          (if (or remote
+                  (not (file-exists-p ESSR)))
+              (if (y-or-n-p (if remote
+                                "Looks like you are on remote. Install/update ESSR from CRAN?"
+                              ;; this should not be
+                              "Cannot find local ESSR package. Install from CRAN?"))
+                  (ess-R-install.packages nil "ESSR")
+                (message "ESSR was not installed/updated. ESS might not functon correctly")
+                (ding))
+            (with-temp-message "Installing ESSR package ..."
+              (ess-eval-linewise
+               (format "install.packages('%s')\nlibrary(ESSR)\n" ESSR)
+               nil nil nil t))))))
+    (redisplay)
     (when ess-can-eval-in-background
       (ess-async-command-delayed
        "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
