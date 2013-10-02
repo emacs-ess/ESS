@@ -165,13 +165,16 @@ for a better but slower version."
  If VERBOSE   is non-nil, (message ..) about replacements."
   (let ((case-fold-search (and case-fold-search
                                (not fixedcase))); t  <==> ignore case in search
-        (pl) (p))
-    (while (setq p (re-search-forward regexp nil t))
+        (ppt (point)); previous point
+        (p))
+    (while (and (setq p (re-search-forward regexp nil t))
+                (< ppt p))
+      (setq ppt p)
       (cond ((not (ess-inside-string-or-comment-p (1- p)))
              (if verbose
                  (let ((beg (match-beginning 0)))
-                   (message "(beg,p)= (%d,%d) = %s"
-                            beg p (buffer-substring beg p) )))
+                   (message "buffer in (match-beg.,p)=(%d,%d) is '%s'"
+                            beg p (buffer-substring beg p))))
              (replace-match to-string fixedcase literal)
              ;;or (if verbose (setq pl (append pl (list p))))
              )))

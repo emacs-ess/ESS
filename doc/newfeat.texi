@@ -1,29 +1,35 @@
 @comment @itemize @w{}
 @comment @item
 
+
+Changes/Bug Fixes in 13.09-1:
+@itemize @bullet
+@item @ESS{[SWV]} .. knitr ..
+@end itemize
+
 Changes/New Features in 13.09:
 @itemize @bullet
 @item font-lock in process buffers doesn't "spill" over prompts.
 Missing closing string delimiters should not cause wrong fontification
 of the following command input.
-@item @ESS{julia}: full features M-TAB completion and auto-complete support,
+@item @ESS{[julia]}: full features M-TAB completion and auto-complete support,
 which now works for modules, structures and data types.
-@item @ESS{julia}: a much better eldoc showing arguments of
+@item @ESS{[julia]}: a much better eldoc showing arguments of
 methods and data type constructors
 @item ESS-developer:
-@itemize @minus
-@item ESS-developer work-flow pattern has been streamlined:
-ESS-developer is now automatically activated on per-file basis if the
-file is part of a developed package @code{ess-developer-packages}. The
-old behavior (activation on per-process basis) is still available on
-@code{M-x ess-developer} in a process buffer.
-@item integration with @code{devtools} package. New command
-@code{ess-developer-load-package} calls @code{load_all} on the package
-containing current file. @code{ess-developer-add-package} now offers IDO
-menu completions with available loading methods, currently
-@code{library}, and @code{load_all}. Loading command can be customized
-with @code{ess-developer-load-on-add-commands}.
-@end itemize
+  @itemize @minus
+  @item ESS-developer work-flow pattern has been streamlined:
+  ESS-developer is now automatically activated on per-file basis if the
+  file is part of a developed package @code{ess-developer-packages}. The
+  old behavior (activation on per-process basis) is still available on
+  @code{M-x ess-developer} in a process buffer.
+  @item integration with @code{devtools} package. New command
+  @code{ess-developer-load-package} calls @code{load_all} on the package
+  containing current file. @code{ess-developer-add-package} now offers IDO
+  menu completions with available loading methods, currently
+  @code{library}, and @code{load_all}. Loading command can be customized
+  with @code{ess-developer-load-on-add-commands}.
+  @end itemize
 @item @kbd{TAB} now indents region if region is active
 (a contribution of Matthew Fidler in pull #41)
 @item @code{M-x ess-version} now reports full loading path
@@ -42,15 +48,17 @@ variable.
 @item help: ?foo pops IDO menu on multiple help files
 (so far it worked only for @kbd{C-c C-v})
 @item remote evaluation is considerably faster now on slow connections
-@item @ESS{R} tracebug R source references regular expressions
+@item @ESS{[R]} tracebug R source references regular expressions
 are (mostly) language agnostic.
-@item @code{ess-function-call-face} inherits from @code{font-lock-function-name-face} rather
-than @code{font-lock-builtin-face}.
+@item @code{ess-function-call-face} inherits from
+@code{font-lock-function-name-face} rather than @code{font-lock-builtin-face}.
 @item @code{ess-inject-source} now accepts @code{function-and-buffer} option.
 @item Documentation: The ``New Features''
 section (and @file{NEWS}) now represent recent changes: within the last
 year or so.  All changes can be found in the new @uref{news.html,
 news.html} (or @file{NEWS} and @file{ONEWS}).
+@item @ESS{[R]} @code{ess-rep-regexp} should no longer inf.loop (rarely!),
+and hence @code{M-x ess-fix-miscellaneous} should neither.
 @end itemize
 
 Changes/New Features in 13.05:

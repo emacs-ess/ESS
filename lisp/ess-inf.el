@@ -277,10 +277,6 @@ Alternatively, it can appear in its own frame if
                                          procname
                                          infargs)))
 
-            ;; set accumulation buffer name (buffer to cache output for faster display)
-            (process-put (get-process procname) 'accum-buffer-name
-                         (format " *%s:accum*" procname))
-            
             ;; Set the process sentinel to save the history
             (set-process-sentinel (get-process procname) 'ess-process-sentinel)
             ;; Add this process to ess-process-name-list, if needed
@@ -304,7 +300,12 @@ Alternatively, it can appear in its own frame if
             ;; arguments cache
             (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
             (ess-process-put 'funargs-pre-cache nil)
+
+            ;; set accumulation buffer name (buffer to cache output for faster display)
+            (process-put (get-process procname) 'accum-buffer-name
+                         (format " *%s:accum*" procname))
             
+
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function)
                  #'inferior-ess-goto-last-prompt)

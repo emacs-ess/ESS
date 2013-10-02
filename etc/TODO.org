@@ -81,4 +81,4 @@ behaves similarly.  Ideally, we should respect the user's settings
 of focus-follows-mouse/mouse-autoselect-window in this common 
 help/*R* buffer arrangement.
 ** TODO Make an option to remember eval-and-go code in comint history
-   
+** TODO BUG: DESCRIPTION file is killed if set to R-mode   

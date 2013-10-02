@@ -1,0 +1,13 @@
+Package: ESSR
+Type: Package
+Title: ESS Support functions
+Version: 1.0
+Date: 2013-10-01
+Author: Vitalie Spinu
+Maintainer: ESS Core <ESS-help@r-project.org>
+Description: Provides R's side functionality required by ESS (Emacs Speaks Statistics)
+License: GPL
+Imports: methods
+Suggests: knitr
+URL: http://www.r-project.org, http://ess.r-project.org/
+BugReports: <ess-bugs@stat.math.ethz.ch>, https://github.com/emacs-ess/ESS/issues
