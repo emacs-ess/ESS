@@ -159,6 +159,8 @@ buffer on the local computer."
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))
 
+(defvar ess-remote nil
+  "Indicator, t in ess-remote buffers.")
 
 (defun ess-remote (&optional proc-name)
   "Execute this command from within a buffer running a process.  It
@@ -178,6 +180,7 @@ C-n to send lines over.  With SAS, use C-c i
 
   (interactive)
   (ess-add-ess-process)
+  (set (make-local-variable ess-remote) t)
   ;; Need to select a remote-customize-alist
   (let ((ess-customize-alist (ess-select-alist-dialect)))
     (ess-write-to-dribble-buffer
