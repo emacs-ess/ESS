@@ -1262,7 +1262,7 @@ Completion is available for supplying options."
 
 
 
-(defun ess-R-install.packages (&optional update)
+(defun ess-R-install.packages (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
@@ -1274,9 +1274,9 @@ Completion is available for supplying options."
     (message "Fetching R packages ... ")
     (setq ess--packages-cache
           (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
-  (let ((ess-eval-visibly-p t)
-        pack)
-    (setq pack (ess-completing-read "Package to install" ess--packages-cache))
+  (let* ((ess-eval-visibly-p t)
+         (pack (or pack
+                   (ess-completing-read "Package to install" ess--packages-cache))))
     (process-send-string (get-process ess-current-process-name)
                          (format "install.packages('%s')\n" pack))
     (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
@@ -1336,11 +1336,10 @@ Currently works only for R."
 (defun ess-load-library ()
   "Prompt and load dialect specific library/package/module.
 
-Note that add-on code in R are called 'packages' and the name of
-this function has nothing to do with R package mechanism, but it
+Note that add-ons in R are called 'packages' and the name of this
+function has nothing to do with R package mechanism, but it
 rather serves a generic, dialect independent purpose. It is also
-similar to `load-library' emacs function.
-"
+similar to `load-library' emacs function."
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
