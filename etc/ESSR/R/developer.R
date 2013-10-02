@@ -195,7 +195,7 @@
                     newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(inserted, collapse = ", ")))
             }else{
                 .essDev_assign(table, tableEnv, envir = .GlobalEnv)
-                newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(objects(envir = tableEnv, all = T), collapse = ", ")))
+                newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(objects(envir = tableEnv, all.names = T), collapse = ", ")))
             }
         }
         if(length(methodsNs))
@@ -217,7 +217,7 @@
 .essDev_insertMethods <- function(tableEnv,  tablePkg, envns)
     {
         inserted <- character()
-        for(m in ls(envir = tableEnv, all = T)){
+        for(m in ls(envir = tableEnv, all.names = T)){
             if(exists(m, envir = tablePkg, inherits = FALSE)){
                 thisEnv <- get(m, envir = tableEnv)
                 thisPkg <- get(m, envir = tablePkg)
