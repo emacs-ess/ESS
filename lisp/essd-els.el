@@ -189,6 +189,9 @@ C-n to send lines over.  With SAS, use C-c i
 
     (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
     (ess-process-put 'funargs-pre-cache nil)
+    (process-put (get-process procname) 'accum-buffer-name
+                 (format " *%s:accum*" procname))
+
     (ess-load-extras)
 
     (goto-char (point-max))
