@@ -1,6 +1,6 @@
 
 ### BREAKPOINTS
-.ESSBP. <- list()
+.ESSBP. <- new.env()
 
 ### DEBUG/UNDEBUG
 .ess_find_funcs <- function(env)
@@ -179,3 +179,4 @@
 .ess_package_attached <- function(pack_name){
     as.logical(match(paste0("package:", pack_name), search()))
 }
+
