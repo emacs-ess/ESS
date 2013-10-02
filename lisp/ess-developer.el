@@ -238,7 +238,6 @@ PROPERTIZE-FUNC is a function called with the output buffer being
 current. usually used to manipulate the output, for example to
 propertize output text.
 "
-  (ess-developer--inject-source-maybe) ; first time only
   (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
   (let ((buff (get-buffer-create " *ess-command-output*"))
         out)
@@ -377,19 +376,20 @@ If ALL is non-nil, deactivate in all open R buffers."
   "Non nil in buffers where developer mode is active")
 (make-variable-buffer-local 'ess-developer)
 
-(defun ess-developer--inject-source-maybe ()
-  ;; puting this into ESSR.R makes loading very slow
-  ;; when ESSR is a package, this should go away
-  (let ((devR-file (concat (file-name-directory ess-etc-directory)
-                           "ess-developer.R")))
-    (unless (ess-boolean-command
-             "exists('.essDev_source', envir = .ESSR_Env)\n")
-      (unless (file-exists-p devR-file)
-        (error "Cannot locate 'ess-developer.R' file"))
-      (message "Injecting ess-developer code ...")
-      (ess--inject-code-from-file devR-file)
-      (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
-        (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))))
+;; Since the ESSR package, this one is not needed:
+;; (defun ess-developer--inject-source-maybe ()
+;;   ;; puting this into ESSR.R makes loading very slow
+;;   ;; when ESSR is a package, this should go away
+;;   (let ((devR-file (concat (file-name-directory ess-etc-directory)
+;;                            "ess-developer.R")))
+;;     (unless (ess-boolean-command
+;;              "exists('.essDev_source', envir = .ESSR_Env)\n")
+;;       (unless (file-exists-p devR-file)
+;;         (error "Cannot locate 'ess-developer.R' file"))
+;;       (message "Injecting ess-developer code ...")
+;;       (ess--inject-code-from-file devR-file)
+;;       (unless (ess-boolean-command "exists('.essDev_source', envir = .ESSR_Env)\n")
+;;         (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))))
 
 (defun ess-developer (&optional val)
   "Toggle on/off ess-developer functionality.

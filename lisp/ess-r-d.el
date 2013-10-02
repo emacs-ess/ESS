@@ -306,7 +306,7 @@ before ess-site is loaded) for it to take effect.")
                   "download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = 'ESSR.tar.gz')
 install.packages('ESSR.tar.gz', repos = NULL)\nlibrary('ESSR')"
                   ESSR-version))
-              (message "ESSR was not installed/updated. ESS might not functon correctly")
+              (message "ESSR was not installed or updated. ESS might not functon correctly")
               (ding))
           (with-temp-message "Installing ESSR package ..."
             (ess-eval-linewise

@@ -496,6 +496,10 @@ shoul open a dired buffer in your remote home directory. Now call your
 favorite ESS process (@code{R}, @code{Julia}, @code{stata} etc) as you
 would usually do on local machine: @code{M-x R}.
 
+Alternatively you can start your process nomrally (@code{M-x R}). After
+you are asked for starting directory, simply type @samp{/ssh:user@@host:
+RET}. R process will be started on the remote machine.
+
 To simplify the process even further create a "config" file in your
 @code{.ssh/} folder and add an account. For example if you use amazon
 EC2, it might look like following:
@@ -507,31 +511,27 @@ EC2, it might look like following:
       IdentityFile ~/.ssh/my_amazon_key.pem
 @end verbatim
 
-With this configuration, a simple @code{C-x f /ssh:amazon:} is enough to
-start a connection.
+With this configuration @code{/ssh:amazon:} is enough to start a
+connection.
 
-Older ways to setup a remote ESS connection are through
-@code{ess-remote}. 
-
-Note: @emph{Unfortunately, ess-remote doesn't work with the recent
-ESS. We are working to correct this.}
+Other ways to setup a remote ESS connection are through @code{ess-remote}.
 
 @enumerate
-@item Start a new telnet or ssh buffer and connect to the remote computer
-(e.g. use @samp{M-x telnet} or @samp{M-x ssh}; ssh.el is available at
+@item Start a new shell, telnet or ssh buffer and connect to the remote computer
+(e.g. use, @samp{M-x shell}, @samp{M-x telnet} or @samp{M-x ssh}; ssh.el is available at
 @uref{http://www.splode.com/~friedman/software/emacs-lisp/src/ssh.el}).
 
 @item Start the ESS process on the remote machine, for example with one of
 the commands @samp{Splus}, or @samp{R}, or @samp{sas -stdio}.
 
-@item Enter the ESS command @samp{M-x ess-remote}.  You will be prompted for
-a program name.  Enter @samp{sp6} or @samp{r} or @samp{sas} or another
-valid name.  Your telnet process is now known to ESS.  All the usual
-ESS commands (@samp{C-c C-n} and its relatives) now work with the S
-language processes.  For SAS you need to use a different command
-@samp{C-c i} (that is a regular @samp{i}, not a @samp{C-i}) to send
-lines from your @file{myfile.sas} to the remote SAS process.
-@samp{C-c i} sends lines over invisibly.
+@item Start @samp{M-x ess-remote}.  
+You will be prompted for a program name with completion.  Choose
+one. Your process is now known to ESS.  All the usual ESS commands
+(@samp{C-c C-n} and its relatives) now work with the S language
+processes.  For SAS you need to use a different command @samp{C-c i}
+(that is a regular @samp{i}, not a @samp{C-i}) to send lines from your
+@file{myfile.sas} to the remote SAS process. @samp{C-c i} sends lines
+over invisibly.
 @c and lets SAS display them formatted correctly as in a SAS log file.
 With ess-remote you get teletype behavior---the data input, the
 log, and the listing all appear in the same buffer.  To make this work,
