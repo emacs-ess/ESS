@@ -312,7 +312,7 @@ before ess-site is loaded) for it to take effect.")
               (ding))
           (with-temp-message "Installing ESSR package ..."
             (ess-eval-linewise
-             (format "install.packages('%s', repos=NULL)\nlibrary(ESSR)\n" ESSR)
+             (format "install.packages('%s', repos=NULL, type='source')\nlibrary(ESSR)\n" ESSR)
              nil nil nil t)))))))
 
 ;;;### autoload
