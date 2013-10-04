@@ -276,7 +276,6 @@ See also `ess-use-ido'.
       (completing-read prompt collection predicate require-match initial-input hist def)
       )))
 
-
 (defun ess-load-extras (&optional inferior)
   "Load all the extra features depending on custom settings."
 
