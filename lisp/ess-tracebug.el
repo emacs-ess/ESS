@@ -2615,6 +2615,7 @@ Optional N if supplied gives the number of backward steps."
 Ask the user for a function and if it turns to be generic, ask
 for signature and trace it with browser tracer."
   (interactive)
+  (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
          (all-functions (ess-get-words-from-vector
                          (if ess-developer-packages
