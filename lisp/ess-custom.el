@@ -472,7 +472,6 @@ to install your custom sources.
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
 
-
 (defcustom ess-ac-R-argument-suffix " = "
   "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
   :group 'R
@@ -491,6 +490,10 @@ might want to set this to nil.
 "
   :group 'ess
   :type 'boolean)
+
+
+(defvar ess-ac-sources nil
+  "Dialect specific, ESS specific list of ac-sources")
 
 (defvar ess--completing-hist nil
   "Variable to store completion history.

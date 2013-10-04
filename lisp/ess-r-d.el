@@ -286,11 +286,11 @@ before ess-site is loaded) for it to take effect.")
 (defun ess--R-load-ESSR ()
   "LOAD/INSTALL/UPDATE ESSR"
   (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
-         (uptodate (ess-boolean-command
+         (up-to-date (ess-boolean-command
                     (format
                      "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
                      ESSR-version))))
-    (if uptodate ; also nil if not installed
+    (if up-to-date ; also nil if not installed
         (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
       (let ((ESSR (format "%sESSR_%s.tar.gz" ess-etc-directory ESSR-version))
             (remote (or ess-remote
@@ -298,19 +298,21 @@ before ess-site is loaded) for it to take effect.")
         (if (or remote
                 (not (file-exists-p ESSR)))
             (if (y-or-n-p (if remote
-                              "Looks like you are on a remote and ESSR is not installed. Download and install?"
-                            ;; this should not be
-                            "Cannot find local ESSR package. Download and install?"))
+                              "Looks like you are on a remote and compatible ESSR package is not installed. Download and install?"
+                            "Cannot locate local ESSR package source. Download and install?"))
                 (ess-eval-linewise
-                 (format
-                  "download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = 'ESSR.tar.gz')
-install.packages('ESSR.tar.gz', repos = NULL)\nlibrary('ESSR')"
-                  ESSR-version))
+                 (format "local({
+    destfile <- tempfile()
+    on.exit(file.remove(destfile))
+    download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = destfile)
+    install.packages(destfile, repos = NULL)
+}); library('ESSR')\n"
+                         ESSR-version) nil nil nil t)
               (message "ESSR was not installed or updated. ESS might not functon correctly")
               (ding))
           (with-temp-message "Installing ESSR package ..."
             (ess-eval-linewise
-             (format "install.packages('%s')\nlibrary(ESSR)\n" ESSR)
+             (format "install.packages('%s', repos=NULL, type='source')\nlibrary(ESSR)\n" ESSR)
              nil nil nil t)))))))
 
 ;;;### autoload

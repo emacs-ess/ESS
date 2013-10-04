@@ -360,6 +360,7 @@ If ALL is non-nil, deactivate in all open R buffers."
 (defun ess-developer-load-package ()
   "Interface to load_all function from devtools package."
   (interactive)
+  (ess-force-buffer-current)
   (let ((package (ess-developer--get-package-path)))
     (unless (and package ess-developer)
       ;; ask only when not obvious
