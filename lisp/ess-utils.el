@@ -1001,9 +1001,8 @@ Use M-. to navigate to a tag. M-x `visit-tags-table' to
 append/replace the currently used tag table.
 
 If prefix is given, force tag generation based on imenu. Might be
-useful when different languages are also present in the
-directory (.cpp, .c etc).
-"
+useful when different language files are also present in the
+directory (.cpp, .c etc)."
   (interactive "DDirectory to tag: 
 FTags file (default TAGS): ")
   (when (eq (length (file-name-nondirectory tagfile)) 0)

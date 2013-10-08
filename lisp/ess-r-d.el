@@ -306,14 +306,15 @@ before ess-site is loaded) for it to take effect.")
     on.exit(file.remove(destfile))
     download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = destfile)
     install.packages(destfile, repos = NULL)
-}); library('ESSR')\n"
-                         ESSR-version) nil nil nil t)
+}); library('ESSR')\n" 
+                         ESSR-version))
               (message "ESSR was not installed or updated. ESS might not functon correctly")
               (ding))
           (with-temp-message "Installing ESSR package ..."
             (ess-eval-linewise
-             (format "install.packages('%s', repos=NULL, type='source')\nlibrary(ESSR)\n" ESSR)
-             nil nil nil t)))))))
+             ;; library must be on the same line;
+             ;; install.packages might ask for the input
+             (format "install.packages('%s', repos=NULL, type='source');library(ESSR)\n" ESSR))))))))
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -366,8 +367,6 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))
 
-    (ess--R-load-ESSR)
-    (redisplay)
     (when ess-can-eval-in-background
       (ess-async-command-delayed
        "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
@@ -379,7 +378,11 @@ to R, put them in the variable `inferior-R-args'."
                            nil nil nil 'wait-prompt))
 
     (with-ess-process-buffer nil
-      (run-mode-hooks 'ess-R-post-run-hook))))
+      (run-mode-hooks 'ess-R-post-run-hook))
+
+    ;; should be the last; install.packages might ask for input
+    (redisplay)
+    (ess--R-load-ESSR)))
 
 
 
