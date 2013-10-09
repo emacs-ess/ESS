@@ -2397,10 +2397,13 @@ default."
 ;;*;; Variables relating to ess-help-mode
 
 
-(defcustom ess-help-pop-to-buffer t
+(defcustom ess-help-pop-to-buffer 
+  (if (and (boundp 'focus-follows-mouse) focus-follows-mouse
+           (boundp 'mouse-autoselect-window) mouse-autoselect-window)
+      nil t)
   "If non-nil ess-help buffers are given focus during the display.
-The default is t.
-"
+The default is t (except when `focus-follows-mouse' and
+`mouse-autoselect-window' are both t)."
   :group 'ess-help
   :type 'boolean)
 
