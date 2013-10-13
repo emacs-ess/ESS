@@ -426,6 +426,7 @@ to R, put them in the variable `inferior-R-args'."
 
   (ess-roxy-mode t)
   (ad-activate 'mark-paragraph)
+  (ad-activate 'ess-eval-linewise)
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'newline-and-indent)

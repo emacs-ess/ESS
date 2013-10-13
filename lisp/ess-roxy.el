@@ -1,4 +1,4 @@
-;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
+; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
 ;; Copyright (C) 2009--2012 Henning Redestig, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
@@ -69,15 +69,15 @@
 (defvar ess-roxy-mode-map
   (let ((map (make-sparse-keymap)))
     (if ess-roxy-hide-show-p
-        (define-key map (kbd "C-c C-o h") 'ess-roxy-hide-all)) ;; dont bind C-h!!!!
+        (define-key map (kbd "C-c C-o h") 'ess-roxy-hide-all))
     ;; short version (*first*: -> key binding shown in menu):
     (define-key map (kbd "C-c C-o n")   'ess-roxy-next-entry)
     (define-key map (kbd "C-c C-o p")   'ess-roxy-previous-entry)
     ;; For consistency (e.g. C-c C-o C-h !): kept here *in* addition to above
     (define-key map (kbd "C-c C-o C-o") 'ess-roxy-update-entry)
     (define-key map (kbd "C-c C-o C-r") 'ess-roxy-preview-Rd)
-    (define-key map (kbd "C-c C-o C-t") 'ess-roxy-preview-HTML)
-    (define-key map (kbd "C-c C-o t")   'ess-roxy-preview-text)
+    (define-key map (kbd "C-c C-o C-w") 'ess-roxy-preview-HTML)
+    (define-key map (kbd "C-c C-o C-t")   'ess-roxy-preview-text)
     (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
     map)
   )
@@ -521,11 +521,11 @@ in a temporary buffer and return that buffer."
     (delete-file tmpf)
     roxy-buf))
 
-(defun ess-roxy-preview-HTML (&optional visit-instead-of-open)
+(defun ess-roxy-preview-HTML (&optional visit-instead-of-browse)
   "Use a (possibly newly) connected R session and the roxygen package to
 generate a HTML page for the roxygen entry at point and open that
 buffer in a browser.  Visit the HTML file instead of showing it in
-a browser if `visit-instead-of-open' is non-nil."
+a browser if `visit-instead-of-browse' is non-nil."
   (interactive "P")
   (let* ((roxy-buf (ess-roxy-preview))
          (rd-tmp-file (make-temp-file "ess-roxy-" nil ".Rd"))
@@ -539,12 +539,11 @@ a browser if `visit-instead-of-open' is non-nil."
       (kill-buffer roxy-buf))
     (ess-force-buffer-current)
     (ess-command "print(suppressWarnings(require(tools, quietly=TRUE)))\n")
-    (ess-command
-     (if visit-instead-of-open
-         (concat rd-to-html "\n")
-       (concat "browseURL(" rd-to-html ")\n")))
-    (find-file html-tmp-file)))
-
+    (if visit-instead-of-browse
+        (progn
+          (ess-command (concat rd-to-html "\n"))
+          (find-file html-tmp-file))
+      (ess-command (concat "browseURL(" rd-to-html ")\n")))))
 
 (defun ess-roxy-preview-text ()
   "Use the connected R session and the roxygen package to
@@ -667,6 +666,15 @@ list of strings."
         (goto-char (ess-roxy-beg-of-field)))
     ad-do-it))
 
+(defadvice ess-eval-linewise (around ess-roxy-eval-linewise) 
+  "do ess ess-eval-linewise but strip out any roxygen prefixes first"
+  (let ((ptext (substring-no-properties (ad-get-arg 0))))
+    (if (ess-roxy-entry-p)
+        (progn 
+          (string-match ess-roxy-str ptext)
+          (ad-set-arg 0 (replace-match "" nil nil ptext))))
+  ad-do-it))
+        
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
