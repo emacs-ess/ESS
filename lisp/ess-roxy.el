@@ -140,6 +140,7 @@
   (setq paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
+  (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local)
   )
 
 
@@ -656,7 +657,16 @@ list of strings."
       (when (and end (= end (point)))
         (list beg end (append ess-roxy-tags-noparam ess-roxy-tags-param) :exclusive 'no)))))
 
-;; advices
+(defun ess-roxy-remove-roxy-re (string)
+  "Remove the `ess-roxy-str' before sending to R process. Useful
+  for sending code from example section.  This function is placed
+  in `ess-presend-filter-functions'.
+  "
+  (if (ess-roxy-entry-p)
+      (replace-regexp-in-string ess-roxy-re "" string)
+    string))
+(add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
+
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
   (if (and (ess-roxy-entry-p) (not mark-active))
@@ -666,15 +676,6 @@ list of strings."
         (goto-char (ess-roxy-beg-of-field)))
     ad-do-it))
 
-(defadvice ess-eval-linewise (around ess-roxy-eval-linewise) 
-  "do ess ess-eval-linewise but strip out any roxygen prefixes first"
-  (let ((ptext (substring-no-properties (ad-get-arg 0))))
-    (if (ess-roxy-entry-p)
-        (progn 
-          (string-match ess-roxy-str ptext)
-          (ad-set-arg 0 (replace-match "" nil nil ptext))))
-  ad-do-it))
-        
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
