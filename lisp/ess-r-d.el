@@ -285,7 +285,7 @@ before ess-site is loaded) for it to take effect.")
 
 (defun ess--R-load-ESSR ()
   "LOAD/INSTALL/UPDATE ESSR"
-  (let* ((ESSR-version "1.0") ; <- FIXME: smart way to automate this?
+  (let* ((ESSR-version "1.0.1") ; <- FIXME: smart way to automate this?
          (up-to-date (ess-boolean-command
                     (format
                      "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
