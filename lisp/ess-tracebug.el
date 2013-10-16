@@ -196,9 +196,8 @@ Return new command, a string."
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
      (let ((tmpfile
-            (expand-file-name (concat (file-name-nondirectory 
-                                       (or filename (make-temp-file "unknown"))) "@"
-                                      (number-to-string ess--tracebug-eval-index))
+            (expand-file-name (make-temp-name
+                               (concat (or (file-name-nondirectory filename) "unknown") "@"))
                               (if remote
                                   (tramp-get-remote-tmpdir remote)
                                 temporary-file-directory)))
@@ -1417,7 +1416,7 @@ If FILENAME is not found at all, ask the user where to find it if
         (spec-dir default-directory)
         buffsym buffer thisdir fmts name buffername)
     (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
-    ;; 1. first search already open buffers for match (associated file might not even exist yet)
+    ;; 1. search already open buffers for match (associated file might not even exist yet)
     (dolist (bf (buffer-list))
       (with-current-buffer  bf
         (when (and buffer-file-name
