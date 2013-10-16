@@ -196,7 +196,8 @@ Return new command, a string."
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
      (let ((tmpfile
-            (expand-file-name (concat (file-name-nondirectory (or filename "unknown")) "@"
+            (expand-file-name (concat (file-name-nondirectory 
+                                       (or filename (make-temp-file "unknown"))) "@"
                                       (number-to-string ess--tracebug-eval-index))
                               (if remote
                                   (tramp-get-remote-tmpdir remote)
