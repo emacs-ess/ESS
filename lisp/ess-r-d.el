@@ -1314,7 +1314,7 @@ Currently works only for R."
 (defun ess-setCRANMiror ()
   "Set cran mirror"
   (interactive)
-  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
+  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
          (M2 (mapcar (lambda (el)
                        (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
                        (propertize (match-string 1 el) 'URL (match-string 2 el)))
