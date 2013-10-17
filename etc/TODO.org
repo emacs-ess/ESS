@@ -62,14 +62,24 @@
 ** TODO set PAGER="cat" environment variable for tramp process if unset?
 ** TODO cleanup ESS namespace 
    [2013-06-27 Thu]
-** TODO remove reference to ssh.el from manual + add tramp workflow  
+** DONE remove reference to ssh.el from manual + add tramp workflow
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-10-16 Wed 19:17]
+   :END:
    [2013-07-10 wo] [[gnus:nnimap%2BSpinuVit:INBOX#51DD58EF.1010702@yahoo.de][Email from Jannis: Re: {ESS} ess-eldoc via ssh re]]
 ** TODO check Rodney's report on bastard symlinks  
    [2013-07-11 do]
-** TODO check if ess-remote works 
+** DONE check if ess-remote works
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-10-16 Wed 19:17]
+   :END:
    [2013-08-12 ma]
 
-** TODO Help focus does not honor focus-follows-mouse/mouse-autoselect-window 
+** CANCELLED Help focus does not honor focus-follows-mouse/mouse-autoselect-window :CANCELLED:
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2013-10-16 Wed 19:16] \\
+     was not a bug
+   :END:
 If you have focus-follows-mouse and mouse-autoselect-window set to t,
 then ask for help in an *R* buffer, i.e.
 > ?setwd
@@ -81,4 +91,7 @@ behaves similarly.  Ideally, we should respect the user's settings
 of focus-follows-mouse/mouse-autoselect-window in this common 
 help/*R* buffer arrangement.
 ** TODO Make an option to remember eval-and-go code in comint history
-** TODO BUG: DESCRIPTION file is killed if set to R-mode   
+** DONE BUG: DESCRIPTION file is killed if set to R-mode
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2013-10-16 Wed 18:15]
+   :END:
