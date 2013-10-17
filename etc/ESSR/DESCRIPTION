@@ -1,7 +1,7 @@
 Package: ESSR
 Type: Package
 Title: ESS Support functions
-Version: 1.0
+Version: 1.0.1
 Date: 2013-10-01
 Author: Vitalie Spinu
 Maintainer: ESS Core <ESS-help@r-project.org>

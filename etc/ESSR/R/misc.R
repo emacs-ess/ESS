@@ -8,7 +8,10 @@
 ### SOURCING
 .ess_eval <- function(string, echo = TRUE, print.eval = TRUE, max.deparse.length = 300,
                       file = tempfile("ESS"), local = parent.frame()){
+    ## create FILE, put string into it. Then source.
+    ## arguments are like in source and .ess_source
     cat(string, file = file)
+    on.exit(file.remove(file))
     .ess_source(file, echo = echo, print.eval = print.eval,
                 max.deparse.length = max.deparse.length, local = local)
 }
