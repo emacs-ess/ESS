@@ -2227,6 +2227,7 @@ for `ess-eval-region'."
     (set-keymap-parent map minibuffer-local-map)
 
     (define-key map "\t" 'ess-complete-object-name)
+    (define-key map "\C-\M-i" 'ess-complete-object-name) ;; doesn't work:(
     (define-key map "\C-c\C-s" 'ess-execute-search)
     (define-key map "\C-c\C-x" 'ess-execute-objects)
     map)
@@ -2705,9 +2706,14 @@ buffer, name it *BUFF*.  This buffer is erased before use.  Optional
 fourth arg MESSAGE is text to print at the top of the buffer (defaults
 to the command if BUFF is not given.)"
   (interactive (list
-                (read-from-minibuffer "Execute> "
-                                      nil
-                                      ess-mode-minibuffer-map)
+                ;; simpler way to set proc name in mb?
+                (let ((enable-recursive-minibuffers t)
+                      (proc-name (progn (ess-force-buffer-current)
+                                        ess-local-process-name)))
+                  (with-current-buffer (get-buffer " *Minibuf-1*") ;; fixme: hardcoded name
+                    (setq ess-local-process-name proc-name))
+                  (read-from-minibuffer "Execute> " nil
+                                        ess-mode-minibuffer-map))
                 current-prefix-arg))
   (ess-make-buffer-current)
   (let ((the-command (concat command "\n"))
