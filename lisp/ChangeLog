@@ -3,11 +3,6 @@
 	* ess-roxy.el (ess-roxy-mode-map): better key-mappings and
 	behavior of html preview as agreed on ess-help
 
-2013-10-09  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* ess-custom.el (ess-help-pop-to-buffer): now honors
-	focus-follows-mouse/mouse-autoselect-window settings
-
 2013-08-30  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-defaults): added PROCs
