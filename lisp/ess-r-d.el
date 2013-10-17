@@ -297,16 +297,17 @@ before ess-site is loaded) for it to take effect.")
                         (file-remote-p (ess-get-process-variable 'default-directory)))))
         (if (or remote
                 (not (file-exists-p ESSR)))
-            (if (y-or-n-p (if remote
-                              "Looks like you are on a remote and compatible ESSR package is not installed. Download and install?"
-                            "Cannot locate local ESSR package source. Download and install?"))
+            (if (y-or-n-p
+                 (if remote
+                     "Looks like you are on a remote and compatible ESSR package is not installed. Download and install?"
+                   "Cannot locate local ESSR package source. Download and install?"))
                 (ess-eval-linewise
                  (format "local({
-    destfile <- tempfile()
-    on.exit(file.remove(destfile))
+    require(utils) # e.g. when R_DEFAULT_PACKAGES=NULL
+    destfile <- tempfile(); on.exit(file.remove(destfile))
     download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = destfile)
     install.packages(destfile, repos = NULL)
-}); library('ESSR')\n" 
+}); library('ESSR')\n"
                          ESSR-version))
               (message "ESSR was not installed or updated. ESS might not functon correctly")
               (ding))
@@ -352,9 +353,9 @@ to R, put them in the variable `inferior-R-args'."
       (setq use-dialog-box nil)
       (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
           (setq default-process-coding-system '(undecided-dos . undecided-dos))))
-    
-    (inferior-ess r-start-args) 
-    
+
+    (inferior-ess r-start-args)
+
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
 
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
