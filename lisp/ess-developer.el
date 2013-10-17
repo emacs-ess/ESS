@@ -306,14 +306,13 @@ found, return nil."
 specific so far). PATH defaults to `default-directory'"
   (when (setq path (or path (ess-developer--get-package-path)))
     (let ((file (expand-file-name ess-developer-root-file path))
-          (case-fold-search t)
-          (find-file-literally t))
+          (case-fold-search t))
       (when (file-exists-p file)
-        (with-current-buffer (find-file-noselect file t t)
+        (with-temp-buffer
+          (insert-file-contents file)
           (goto-char (point-min))
           (re-search-forward "package: \\(.*\\)")
-          (prog1 (match-string 1)
-            (kill-this-buffer)))))))
+          (match-string 1))))))
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of a package which
