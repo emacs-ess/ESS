@@ -110,7 +110,9 @@
   (define-key ess-transcript-mode-map "\r"       'ess-transcript-send-command-and-move)
   (define-key ess-transcript-mode-map "\M-\r"    'ess-transcript-send-command)
   (define-key ess-transcript-mode-map "\C-c\r"   'ess-transcript-copy-command)
-  (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-clean-region))
+  (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-DO-clean-region)
+  (define-key ess-transcript-mode-map "\C-c\M-c" 'ess-transcript-clean-buffer)
+  )
 
 (easy-menu-define
   ess-transcript-mode-menu ess-transcript-mode-map
@@ -126,10 +128,11 @@
     ["Next prompt"      comint-next-prompt      t]
     "------"
     ["Send and move" ess-transcript-send-command-and-move t]
-    ["Copy command"  ess-transcript-copy-command                t]
-    ["Send command"  ess-transcript-send-command                t]
-    ["Clean Region"  ess-transcript-DO-clean-region     t]
-    ["Switch S process" ess-switch-process              t]
+    ["Copy command"  ess-transcript-copy-command	t]
+    ["Send command"  ess-transcript-send-command	t]
+    ["Clean Region"  ess-transcript-DO-clean-region	t]
+    ["Clean Whole Buffer" ess-transcript-clean-buffer	t]
+    ["Switch S process" ess-switch-process		t]
     ))
 
 (unless (featurep 'xemacs)
@@ -199,7 +202,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (when inferior-ess-font-lock-keywords ;; new system
     (setq inferior-ess-font-lock-defaults
           (ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)))
-  
+
   (set (make-local-variable 'font-lock-defaults)
        '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
 
@@ -264,7 +267,7 @@ is not already."
 (defun ess-transcript-clean-region (beg end even-if-read-only)
   "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes the
-prompt from those lines that remain.  Prefix argument means to 
+prompt from those lines that remain.  Prefix argument means to
 clean even if the buffer is \\[read-only]."
   (interactive "r\nP")
   (unless inferior-ess-prompt
