@@ -306,7 +306,7 @@ before ess-site is loaded) for it to take effect.")
     require(utils) # e.g. when R_DEFAULT_PACKAGES=NULL
     destfile <- tempfile(); on.exit(file.remove(destfile))
     download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = destfile)
-    install.packages(destfile, repos = NULL)
+    install.packages(destfile, repos = NULL, type='source')
 }); library('ESSR')\n"
                          ESSR-version))
               (message "ESSR was not installed or updated. ESS might not functon correctly")
