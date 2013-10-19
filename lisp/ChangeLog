@@ -1,3 +1,8 @@
+2013-10-19  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-clean-region): use t and nil, not 1
+	and 0 for boolean  'buffer-read-only
+
 2013-10-19  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-r-d.el (ess--R-load-ESSR): install.packages need
@@ -50,7 +55,7 @@ http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 	guesses at what they should be.
 
 	* ess-site.el (ess-etc-directory): Remove * from docstring.
-	Fix most points noted by checkdoc. 
+	Fix most points noted by checkdoc.
 
 2013-06-07  Stephen Eglen  <stephen@gnu.org>
 

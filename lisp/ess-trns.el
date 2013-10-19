@@ -278,7 +278,7 @@ clean even if the buffer is \\[read-only]."
   (let ((do-toggle (and buffer-read-only even-if-read-only))
         (ess-prompt-rx (concat "^" inferior-ess-prompt)))
     (save-excursion
-      (if do-toggle (setq buffer-read-only 0))
+      (if do-toggle (setq buffer-read-only nil))
       (save-restriction
         (unless (featurep 'xemacs) ;; does not exist in xemacs:
           (deactivate-mark))
@@ -290,7 +290,7 @@ clean even if the buffer is \\[read-only]."
         (while (re-search-forward ess-prompt-rx nil t)
           (replace-match "" nil nil)))
 
-      (if do-toggle (setq buffer-read-only 1)))))
+      (if do-toggle (setq buffer-read-only t)))))
 
 
 ;; unfinished idea :-----------------------
