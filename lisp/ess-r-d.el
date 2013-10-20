@@ -950,7 +950,7 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-(make-obsolete 'ess-internal-complete-object-name nil "ESS13.09")
+(make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.

@@ -188,7 +188,7 @@
     ;; (define-key map "\M-j"    'ess-eval-line-and-go)
     map)
   "Keymap for ess-eval functions.")
-(make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
+(make-obsolete-variable 'ess-eval-map nil "ESS[12.09.1]")
 
 (defvar ess-extra-map
   (let (ess-extra-map)

@@ -1996,7 +1996,7 @@ session.")
 
 (defvar ess-sp-change nil
   "Variable not used. Use (ess-process-get 'sp-for-help-changed?) instead.")
-(make-obsolete-variable 'ess-sp-change nil "ESS 12.09")
+(make-obsolete-variable 'ess-sp-change nil "ESS[12.09]")
 ;; (make-variable-buffer-local 'ess-sp-change)
 
 (defvar ess-prev-load-dir/file nil
