@@ -276,7 +276,13 @@ clean even if the buffer is \\[read-only]."
            ;; Maybe call ess-clean-region-in-new-transcript ?"))
            ))
   (let ((do-toggle (and buffer-read-only even-if-read-only))
-        (ess-prompt-rx (concat "^" inferior-ess-prompt)))
+        (ess-prompt-rx (if inferior-ess-secondary-prompt
+                           (concat "^\\("
+                                   inferior-ess-prompt
+                                   "\\)\\|\\("
+                                   inferior-ess-secondary-prompt
+                                   "\\)")
+                         (concat "^" inferior-ess-prompt))))
     (save-excursion
       (if do-toggle (setq buffer-read-only nil))
       (save-restriction
