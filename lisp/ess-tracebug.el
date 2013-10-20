@@ -143,11 +143,15 @@ region is marked.  When debugger enteres the code it desplayes
 this reference number. Ess-debug finds this number in the
 referenced buffer.")
 
-
-;; (defvar ess--tb-buffer-sym nil)
-;; (make-variable-buffer-local 'ess--tb-buffer-sym)
-
+;; these vars are org variables that store the src block locations
 (defvar org-edit-src-beg-marker nil)
+(defvar org-babel-current-src-block-location nil
+  "Marker pointing to the src block currently being executed.
+This may also point to a call line or an inline code block.  If
+multiple blocks are being executed (e.g., in chained execution
+through use of the :var header argument) this marker points to
+the outer-most code block.")
+
 ;; hash to store soruce references of the form: tmpname -> (filename . src_start)
 (defvar ess--srcrefs (make-hash-table :test 'equal :size 100))
 
@@ -170,7 +174,8 @@ Return new command, a string."
                    ;; should this be done in process buffer?
                    (tramp-dissect-file-name proc-dir)))
          (orig-marker (or ess-tracebug-original-buffer-marker
-                         org-edit-src-beg-marker))
+                          org-edit-src-beg-marker
+                          org-babel-current-src-block-location))
          orig-beg)
     (setq ess--tracebug-eval-index (1+ ess--tracebug-eval-index))
     (goto-char beg)
