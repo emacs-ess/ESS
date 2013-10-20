@@ -966,7 +966,7 @@ If nil, ESS will try finding one from a list."
   :group 'ess-roxy
   :type 'string)
 
-(defcustom ess-roxy-tags-noparam '("export" "nord")
+(defcustom ess-roxy-tags-noparam '("export" "noRd")
   "The tags used in roxygen fields that can be used alone.  Used
 to decide highlighting and tag completion."
   :group 'ess-roxy
@@ -2399,8 +2399,8 @@ default."
 
 (defcustom ess-help-pop-to-buffer t
   "If non-nil ess-help buffers are given focus during the display.
-The default is t.
-"
+The default is t (except when `focus-follows-mouse' and
+`mouse-autoselect-window' are both t)."
   :group 'ess-help
   :type 'boolean)
 

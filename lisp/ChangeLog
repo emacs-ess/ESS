@@ -1,3 +1,18 @@
+2013-10-19  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-trns.el (ess-transcript-clean-region): use t and nil, not 1
+	and 0 for boolean  'buffer-read-only
+
+2013-10-19  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-r-d.el (ess--R-load-ESSR): install.packages need
+	type='source' on Mac OS X and Windows
+
+2013-10-13  Henning Redestig  <henning@hemulen>
+
+	* ess-roxy.el (ess-roxy-mode-map): better key-mappings and
+	behavior of html preview as agreed on ess-help
+
 2013-08-30  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-defaults): added PROCs
@@ -6,7 +21,7 @@
 2013-08-23  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-interactive): remove '< /dev/tty'
-	
+
 2013-07-27  Henning Redestig  <henning.red@gmail.com>
 
 	* ess-roxy.el (ess-roxy-mode): add interoperability with
@@ -40,7 +55,7 @@ http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 	guesses at what they should be.
 
 	* ess-site.el (ess-etc-directory): Remove * from docstring.
-	Fix most points noted by checkdoc. 
+	Fix most points noted by checkdoc.
 
 2013-06-07  Stephen Eglen  <stephen@gnu.org>
 
@@ -52,9 +67,9 @@ http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 	on the line to add a comment, the hash within the string is
 	interpeted as an existing comment, causing the string to be
 	disrupted.
-	
+
 	rug( foo,  col="#00000030")
-	
+
 	This is now fixed such that M-TAB would add a hash at
 	the end of the line, allowing for a comment.
 
