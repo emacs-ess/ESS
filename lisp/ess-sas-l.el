@@ -96,6 +96,56 @@ the mode line."
   (force-mode-line-update)
   (setq mode-line-process
         '(" [" ess-local-process-name "]")))
+        
+(defcustom ess-automatic-sas-log-or-lst-mode t
+  "Automatically turn on `SAS-log-mode' and `SAS-listing-mode' when enabled."
+  :type 'boolean
+  :group 'ess-sas)
+
+(defun ess-turn-on-SAS-log-mode ()
+  "Turns on `SAS-log-mode' when ESS detects a SAS log.
+A SAS log is defined as having:
+
+1. The first line matches \"^1[ \t]*The SAS System[ \t]+\"
+2. The file name ends in .log.
+"
+  (let ((ret nil))
+    (when ess-automatic-sas-log-or-lst-mode
+      (save-excursion
+        (goto-char (point-min))
+        (setq ret (looking-at "^1[ \t]*The SAS System[ \t]+")))
+      (when (and (buffer-file-name)
+                 (not (string-match ".log$" (buffer-file-name))))
+        (setq ret nil)))
+    (symbol-value 'ret)))
+
+(defun ess-turn-on-SAS-listing-mode ()
+  "Turns on `SAS-listing-mode' when ESS detects as SAS listing.
+A .lst file is a SAS listing file when:
+
+1. The file name ends in .lst
+2. The corresponding log file exists and is a SAS log file.
+
+"
+  (let ((ret ess-automatic-sas-log-or-lst-mode)
+        (bfn (buffer-file-name))
+        log)
+    (when ret
+      (when (and bfn (not (string-match ".lst$" bfn)))
+        (setq ret nil))
+      (when ret
+        (setq log (replace-regexp-in-string "\\.lst$" ".log" bfn))
+        (if (not (file-exists-p log)) (setq ret nil)
+          (with-temp-buffer
+            (insert-file-contents log nil 0 200)
+            (goto-char (point-min))
+            (setq ret (looking-at "^1[ \t]*The SAS System[ \t]+"))))))
+    (symbol-value 'ret)))
+
+(add-to-list 'magic-mode-alist
+             '(ess-turn-on-SAS-log-mode . SAS-log-mode))
+(add-to-list 'magic-mode-alist
+             '(ess-turn-on-SAS-listing-mode . SAS-listing-mode))
 
 (defun SAS-log-mode ()
   "`ess-transcript-mode' for SAS."
@@ -840,7 +890,7 @@ number."
                 ((save-excursion;; added 4/28/94 to properly check
                    (if (bobp) () (backward-char 1));; for end of comment
                    (setq prev-end (point))
-                   (looking-at "*/"));;  improved 1/31/95
+                   (looking-at "\\*/"));;  improved 1/31/95
                  (save-excursion
                    (search-backward "*/"
                                     (point-min) 1 1); comment start is first /*
@@ -852,7 +902,8 @@ number."
                          (if (bobp) 0
                            (if (looking-at ";")
                                (sas-next-statement-indentation)
-                             (+ (current-indentation) sas-indent-width))))))
+                             ;;(+ (current-indentation) sas-indent-width)
+                             (current-indentation))))))
 
                 ;; added 6/27/94 to leave "* ;" comments alone
                 ((save-excursion
@@ -936,7 +987,9 @@ This will (hopefully) be fixed in later versions."
           (beginning-of-sas-statement 1 t))
         (if (or
              (looking-at
-              "data[ \n\t;]\\|proc[ \n\t]\\|%?do[ \n\t;]\\|%macro[ \n\t]\\|/\\*")
+              (concat "data[ \n\t;]\\|"
+                      (regexp-opt '("cards;" "cards4;" "datalines;" "datalines4;" "lines;" "lines4;"))
+                      "\\|proc[ \n\t]\\|%?do[ \n\t;]\\|%macro[ \n\t]\\|/\\*"))
              (save-excursion
                (re-search-forward
                 "\\b%?then\\>[ \n\t]*\\b%?do\\>\\|\\b%?else\\>[ \n\t]*\\b%?do\\>"
