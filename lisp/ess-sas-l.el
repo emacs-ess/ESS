@@ -987,7 +987,9 @@ This will (hopefully) be fixed in later versions."
           (beginning-of-sas-statement 1 t))
         (if (or
              (looking-at
-              "data[ \n\t;]\\|proc[ \n\t]\\|%?do[ \n\t;]\\|%macro[ \n\t]\\|/\\*")
+              (concat "data[ \n\t;]\\|"
+                      (regexp-opt '("cards;" "cards4;" "datalines;" "datalines4;" "lines;" "lines4;"))
+                      "\\|proc[ \n\t]\\|%?do[ \n\t;]\\|%macro[ \n\t]\\|/\\*"))
              (save-excursion
                (re-search-forward
                 "\\b%?then\\>[ \n\t]*\\b%?do\\>\\|\\b%?else\\>[ \n\t]*\\b%?do\\>"
