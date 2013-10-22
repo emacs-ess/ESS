@@ -5,13 +5,17 @@
 Changes/Bug Fixes in 13.09-1:
 @itemize @bullet
 @item @ESS{[SWV]} ... knitr
-@item @ESS: The R code used by ESS now is in package @code{ESSR}, and that
+@item @ESS{}: The R code used by ESS now is in package @code{ESSR}, and that
  is automatically installed, when not present or outdated (compared to ESS).
 @item @ESS{[R]} roxygen ...
 @item Emacs org-babel-mode with R code now correctly finds source references
 @item @ESS{[transcript]}: 'Clean Region' now works with multiline statements;
  @code{ess-transcript-clean-region} etc, now also correctly treat multiline
  statements, i.e., it no longer forgets the lines typically preceded by ``+ ''.
+@item @ESS{[SAS]} Three features/fixes with special thanks to Matthew Fidler
+@uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,https://github.com/emacs-ess/ESS/pulls/mlf176f2} .
+Turn on SAS log mode and SAS listing mode when appropriate.  Indent comments 
+more appropriately. Indent CARDS more appropriately.
 @end itemize
 
 Changes/New Features in 13.09:
@@ -494,7 +498,7 @@ ESS doesn't bind @kbd{M-TAB} for emacs 24 or higher. @kbd{M-TAB} calls the
 default @code{complete-symbol}.
 
 @item @ESS{[R]}: Out of the box integration with @code{Auto
-Completion} mode (http://cx4a.org/software/auto-complete/). Three AC
+Completion} mode @uref{http://cx4a.org/software/auto-complete,http://cx4a.org/software/auto-complete} . Three AC
 sources @code{ac-source-R-args}, @code{ac-source-R-objects} and
 @code{ac-source-R} are provided. The last one combines the previous two
 and makes them play nicely together. Set @code{ess-use-auto-complete} to
