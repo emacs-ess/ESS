@@ -890,7 +890,7 @@ number."
                 ((save-excursion;; added 4/28/94 to properly check
                    (if (bobp) () (backward-char 1));; for end of comment
                    (setq prev-end (point))
-                   (looking-at "*/"));;  improved 1/31/95
+                   (looking-at "\\*/"));;  improved 1/31/95
                  (save-excursion
                    (search-backward "*/"
                                     (point-min) 1 1); comment start is first /*
@@ -902,7 +902,8 @@ number."
                          (if (bobp) 0
                            (if (looking-at ";")
                                (sas-next-statement-indentation)
-                             (+ (current-indentation) sas-indent-width))))))
+                             ;;(+ (current-indentation) sas-indent-width)
+                             (current-indentation))))))
 
                 ;; added 6/27/94 to leave "* ;" comments alone
                 ((save-excursion
