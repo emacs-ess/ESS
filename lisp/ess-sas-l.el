@@ -916,6 +916,10 @@ number."
                    (beginning-of-sas-statement 1)
                    (bobp));; added 4/13/94
                  (setq indent sas-indent-width));; so the first line works
+                ((save-excursion
+                   (beginning-of-sas-statement 2)
+                   (looking-at "cards4?;\\|datalines4?;\\|lines4?;"))
+                 (setq indent (current-indentation))) ; So cards keep indentation.
                 (t
                  (if (progn
                        (save-excursion
