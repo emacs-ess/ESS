@@ -287,12 +287,12 @@ before ess-site is loaded) for it to take effect.")
   "LOAD/INSTALL/UPDATE ESSR"
   (let* ((ESSR-version "1.0.1") ; <- FIXME: smart way to automate this?
          (up-to-date (ess-boolean-command
-                    (format
-                     "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
-                     ESSR-version))))
+                      (format
+                       "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
+                       ESSR-version))))
     (if up-to-date ; also nil if not installed
         (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
-      (let ((ESSR (format "%sESSR_%s.tar.gz" ess-etc-directory ESSR-version))
+      (let ((ESSR (format "%sESSR.tar.gz" ess-etc-directory))
             (remote (or ess-remote
                         (file-remote-p (ess-get-process-variable 'default-directory)))))
         (if (or remote
