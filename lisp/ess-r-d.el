@@ -253,10 +253,12 @@
 
 ;; precede R4 and allowes spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:^ +\\|: +\\)\\([^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             ;; start with bol,: but don't start with digit
+             '(R3 "\\(?:^ +\\|: +\\)\\([^-+[:digit:]\n][^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R4 "\\([^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             ;; don't start with digit, don't contain spaces
+             '(R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
