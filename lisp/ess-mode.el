@@ -223,7 +223,7 @@
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Eval region | line" ess-eval-region-or-line-and-step t]
-    ["Enter expression" ess-execute-in-tb                 t]
+    ["Enter expression" ess-execute                 t]
     ;; sub menus
     "------"
     ("Process"
