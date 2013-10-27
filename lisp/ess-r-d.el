@@ -229,7 +229,11 @@
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM		. "iESS")
      (ess-editor	. R-editor)
-     (ess-pager		. R-pager))
+     (ess-pager		. R-pager)
+     (prettify-symbols-alist            . '(("<-" . ?←)
+                                            ("<<-" . ?↞)
+                                            ("->" . ?→)
+                                            ("->>" . ?↠))))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
