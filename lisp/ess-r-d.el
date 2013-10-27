@@ -1009,7 +1009,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "OBJECTS + ARGS"
   (let ((args (ess-ac-args)))
     ;; sort of intrusive but right
-    (if (< (length ac-prefix) ac-auto-start)
+    (if (and ac-auto-start
+             (< (length ac-prefix) ac-auto-start))
         args
       (if args
           (append args (ess-ac-objects t))
