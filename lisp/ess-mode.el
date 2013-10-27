@@ -154,7 +154,7 @@
     (define-key map "\C-c\C-k"   'ess-force-buffer-current)
     (define-key map "\C-c`"      'ess-show-traceback)
     (define-key map [(control ?c) ?~] 'ess-show-call-stack)
-    (define-key map "\C-c."      'ess-set-style); analogous to binding in C-mode
+    (define-key map "\C-c."      (lambda () (interactive) (message "ess-set-style moved to C-c C-e C-s. Sorry for the inconvenience")))
     (define-key map "{"          'ess-electric-brace)
     (define-key map "}"          'ess-electric-brace)
     (define-key map "\C-\M-q"    'ess-indent-exp)
@@ -188,7 +188,7 @@
     ;; (define-key map "\M-j"    'ess-eval-line-and-go)
     map)
   "Keymap for ess-eval functions.")
-(make-obsolete-variable 'ess-eval-map nil "ESS12.09.1")
+(make-obsolete-variable 'ess-eval-map nil "ESS[12.09.1]")
 
 (defvar ess-extra-map
   (let (ess-extra-map)
@@ -201,6 +201,8 @@
     (define-key ess-extra-map "i" 'ess-install-library)
     (define-key ess-extra-map "\C-l" 'ess-load-library)
     (define-key ess-extra-map "l" 'ess-load-library)
+    (define-key ess-extra-map "\C-s" 'ess-set-style)
+    (define-key ess-extra-map "s" 'ess-set-style)
     (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
     (define-key ess-extra-map "t" 'ess-build-tags-for-directory)
     (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
@@ -221,7 +223,7 @@
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
     ["Eval region | line" ess-eval-region-or-line-and-step t]
-    ["Enter expression" ess-execute-in-tb                 t]
+    ["Enter expression" ess-execute                 t]
     ;; sub menus
     "------"
     ("Process"

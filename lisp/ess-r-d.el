@@ -253,10 +253,12 @@
 
 ;; precede R4 and allowes spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R3 "\\(?:^ +\\|: +\\)\\([^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             ;; start with bol,: but don't start with digit
+             '(R3 "\\(?:^ +\\|: +\\)\\([^-+[:digit:]\n][^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R4 "\\([^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             ;; don't start with digit, don't contain spaces
+             '(R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
@@ -287,12 +289,12 @@ before ess-site is loaded) for it to take effect.")
   "LOAD/INSTALL/UPDATE ESSR"
   (let* ((ESSR-version "1.0.1") ; <- FIXME: smart way to automate this?
          (up-to-date (ess-boolean-command
-                    (format
-                     "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
-                     ESSR-version))))
+                      (format
+                       "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
+                       ESSR-version))))
     (if up-to-date ; also nil if not installed
         (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
-      (let ((ESSR (format "%sESSR_%s.tar.gz" ess-etc-directory ESSR-version))
+      (let ((ESSR (format "%sESSR.tar.gz" ess-etc-directory))
             (remote (or ess-remote
                         (file-remote-p (ess-get-process-variable 'default-directory)))))
         (if (or remote
@@ -950,7 +952,7 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-(make-obsolete 'ess-internal-complete-object-name nil "ESS13.09")
+(make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.
@@ -1007,7 +1009,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "OBJECTS + ARGS"
   (let ((args (ess-ac-args)))
     ;; sort of intrusive but right
-    (if (< (length ac-prefix) ac-auto-start)
+    (if (and ac-auto-start
+             (< (length ac-prefix) ac-auto-start))
         args
       (if args
           (append args (ess-ac-objects t))

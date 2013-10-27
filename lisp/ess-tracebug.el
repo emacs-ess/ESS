@@ -874,10 +874,9 @@ by default."
   (let (ess-electric-selection-map)
     (define-prefix-command 'ess-electric-selection-map)
     ;; command-c and command-Q are not always working reliably
-    (define-key ess-electric-selection-map "M-C" 'ess-debug-command-continue)
-    (define-key ess-electric-selection-map "c" 'ess-debug-command-continue)
-    (define-key ess-electric-selection-map "M-Q" 'ess-debug-command-quit)
-    (define-key ess-electric-selection-map "q" 'ess-debug-command-quit)
+    (define-key ess-electric-selection-map "\M-N" 'ess-debug-command-continue)
+    (define-key ess-electric-selection-map "\M-C" 'ess-debug-command-continue)
+    (define-key ess-electric-selection-map "\M-Q" 'ess-debug-command-quit)
     (define-key ess-electric-selection-map "0" 'ess-debug-command-digit)
     (define-key ess-electric-selection-map "1" 'ess-debug-command-digit)
     (define-key ess-electric-selection-map "2" 'ess-debug-command-digit)

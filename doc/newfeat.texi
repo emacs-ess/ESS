@@ -1,10 +1,33 @@
 @comment @itemize @w{}
 @comment @item
 
-
 Changes/Bug Fixes in 13.09-1:
 @itemize @bullet
-@item @ESS{[SWV]} .. knitr ..
+@item @ESS{[R]} The R code used by ESS now is in package @code{ESSR}.
+@code{ESSR} package is installed and updated automatically from the
+local ESS source. On remote machines, the package is downloaded from the
+internet archive. @code{ESSR} is not available from @code{CRAN} because
+a strict synchronization between versions of @code{ESS} and @code{ESSR}
+is needed.
+@item org-babel: source references of R code executed from org files correctly point
+to source references in original org files (version 8.2.1 or higher of
+org-mode is required for this feature)
+@item @code{ess-execute} is now bound to @kbd{C-c C-e C-e} in @code{ess-extra-map}.
+@item completion works again in @code{ess-execute}
+@item @ESS{[roxygen]} evaluation commands now work in roxygen blocks.
+Leading comments are automatically removed before the evaluation.
+@item @ESS{[transcript]}: 'Clean Region' now works with multiline statements;
+ @code{ess-transcript-clean-region} etc, now also correctly treat
+ multiline statements, i.e., it no longer forgets the lines typically
+ preceded by ``+ ''.
+@item @ESS{[SAS]} Three features/fixes with special thanks to Matthew Fidler
+@uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn
+on SAS log mode and SAS listing mode when appropriate.  Indent comments
+more appropriately. Indent CARDS more appropriately.
+@item @ESS{[SWV]} knitr now evaluates in the current frame
+@item @ESS{[developer]} ess-developer doesn't kill open DESCRIPTION files anymore
+@item @ESS{[roxygen]} @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
+ @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}.
 @end itemize
 
 Changes/New Features in 13.09:
@@ -487,7 +510,7 @@ ESS doesn't bind @kbd{M-TAB} for emacs 24 or higher. @kbd{M-TAB} calls the
 default @code{complete-symbol}.
 
 @item @ESS{[R]}: Out of the box integration with @code{Auto
-Completion} mode (http://cx4a.org/software/auto-complete/). Three AC
+Completion} mode @uref{http://cx4a.org/software/auto-complete,http://cx4a.org/software/auto-complete} . Three AC
 sources @code{ac-source-R-args}, @code{ac-source-R-objects} and
 @code{ac-source-R} are provided. The last one combines the previous two
 and makes them play nicely together. Set @code{ess-use-auto-complete} to
