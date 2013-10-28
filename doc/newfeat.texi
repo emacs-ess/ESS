@@ -21,9 +21,12 @@ Leading comments are automatically removed before the evaluation.
  multiline statements, i.e., it no longer forgets the lines typically
  preceded by ``+ ''.
 @item @ESS{[SAS]} Three features/fixes with special thanks to Matthew Fidler
-@uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn
-on SAS log mode and SAS listing mode when appropriate.  Indent comments
-more appropriately. Indent CARDS more appropriately.
+@uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,
+https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn on SAS log mode
+and SAS listing mode when appropriate.  Indent comments more
+appropriately. Indent CARDS more appropriately.
+@item @ESS{[R]} support for @code{prettify-symbols-mode}
+A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pull/65}
 @item @ESS{[SWV]} knitr now evaluates in the current frame
 @item @ESS{[developer]} ess-developer doesn't kill open DESCRIPTION files anymore
 @item @ESS{[roxygen]} @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
