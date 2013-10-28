@@ -20,12 +20,12 @@
             ## package might not be attached
             try({objNS <- .ess_find_funcs(asNamespace(p))
                  objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
-                 coll[[length(coll) + 1L]] <-
+                 coll[[length(coll) + 1]] <-
                      paste0(p, ':::`', setdiff(objNS, objPKG), '`')
              }, silent = TRUE)
         }
         while(!identical(empty, env)){
-            coll[[length(coll) + 1L]] <- .ess_find_funcs(env)
+            coll[[length(coll) + 1]] <- .ess_find_funcs(env)
             env <- parent.env(env)
         }
         grep('^\\.ess', unlist(coll, use.names = FALSE),
@@ -124,7 +124,7 @@
         if(!exists('.ess_watch_expressions')) {
             assign('.ess_watch_expressions', list(), envir = .GlobalEnv)
         }
-        if(length(.ess_watch_expressions) == 0L) {
+        if(length(.ess_watch_expressions) == 0) {
             cat('\n# Watch list is empty!\n
 # a       append new expression
 # i       insert new expression
@@ -143,7 +143,7 @@
             for(i in seq_along(.ess_watch_expressions)) {
                 cat('\n@---- ', .essWEnames[[i]], ' ',
                     rep.int('-', max(0, 35 - nchar(.essWEnames[[i]]))), '-@\n', sep = '')
-                cat(paste('@---:', deparse(.ess_watch_expressions[[i]][[1L]])), ' \n', sep = '')
+                cat(paste('@---:', deparse(.ess_watch_expressions[[i]][[1]])), ' \n', sep = '')
                 tryCatch(print(eval(.ess_watch_expressions[[i]],
                                     envir = .parent_frame)),
                          error = function(e) cat('Error:', e$message, '\n' ),
