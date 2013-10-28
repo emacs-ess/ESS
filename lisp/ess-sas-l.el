@@ -102,50 +102,43 @@ the mode line."
   :type 'boolean
   :group 'ess-sas)
 
-(defun ess-turn-on-SAS-log-mode ()
-  "Turns on `SAS-log-mode' when ESS detects a SAS log.
+(defun ess-SAS-log-mode-p ()
+  "Return t when when a SAS log file is detected.
 A SAS log is defined as having:
 
-1. The first line matches \"^1[ \t]*The SAS System[ \t]+\"
+1. The first line matches \"^1[ \t]*The SAS System\"
 2. The file name ends in .log.
 "
-  (let ((ret nil))
-    (when ess-automatic-sas-log-or-lst-mode
-      (save-excursion
-        (goto-char (point-min))
-        (setq ret (looking-at "^1[ \t]*The SAS System[ \t]+")))
-      (when (and (buffer-file-name)
-                 (not (string-match ".log$" (buffer-file-name))))
-        (setq ret nil)))
-    (symbol-value 'ret)))
+  (and ess-automatic-sas-log-or-lst-mode
+       (save-excursion
+         (goto-char (point-min))
+         (looking-at "1[ \t]*The SAS System"))
+       (if (buffer-file-name)
+           (string-match ".log$" (buffer-file-name))
+         t)))
 
-(defun ess-turn-on-SAS-listing-mode ()
-  "Turns on `SAS-listing-mode' when ESS detects as SAS listing.
+(defun ess-SAS-listing-mode-p ()
+  "Return t when SAS listing file is detected.
 A .lst file is a SAS listing file when:
 
 1. The file name ends in .lst
 2. The corresponding log file exists and is a SAS log file.
-
 "
-  (let ((ret ess-automatic-sas-log-or-lst-mode)
-        (bfn (buffer-file-name))
-        log)
-    (when ret
-      (when (and bfn (not (string-match ".lst$" bfn)))
-        (setq ret nil))
-      (when ret
-        (setq log (replace-regexp-in-string "\\.lst$" ".log" bfn))
-        (if (not (file-exists-p log)) (setq ret nil)
-          (with-temp-buffer
-            (insert-file-contents log nil 0 200)
-            (goto-char (point-min))
-            (setq ret (looking-at "^1[ \t]*The SAS System[ \t]+"))))))
-    (symbol-value 'ret)))
+  (when ess-automatic-sas-log-or-lst-mode
+    (let* ((bfn (buffer-file-name))
+           (log (and bfn
+                     (replace-regexp-in-string "\\.lst$" ".log" bfn))))
+      (and log
+           (file-exists-p log)
+           (with-temp-buffer
+             (insert-file-contents log nil 0 200)
+             (goto-char (point-min))
+             (looking-at "1[ \t]*The SAS System"))))))
 
 (add-to-list 'magic-mode-alist
-             '(ess-turn-on-SAS-log-mode . SAS-log-mode))
+             '(ess-SAS-log-mode-p . SAS-log-mode))
 (add-to-list 'magic-mode-alist
-             '(ess-turn-on-SAS-listing-mode . SAS-listing-mode))
+             '(ess-SAS-listing-mode-p . SAS-listing-mode))
 
 (defun SAS-log-mode ()
   "`ess-transcript-mode' for SAS."
