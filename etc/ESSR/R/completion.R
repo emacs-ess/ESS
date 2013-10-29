@@ -1,6 +1,10 @@
+.essRversion <- function() {
+    if(exists("getRversion", mode="function"))
+        getRversion() else paste(R.version$major, R.version$minor, sep=".")
+}
 
-.ess_funargs <- function(funname){
-    if(getRversion() > '2.14.1'){
+.ess_funargs <- function(funname) {
+    if(.essRversion() > '2.14.1') {
         comp <- compiler::enableJIT(0)
         olderr <- getOption('error')
         options(error=NULL)
@@ -47,7 +51,7 @@
 }
 
 .ess_get_completions <- function(string, end){
-    if(getRversion() > '2.14.1'){
+    if(.essRversion() > '2.14.1'){
         comp <- compiler::enableJIT(0)
         olderr <- getOption('error')
         options(error=NULL)

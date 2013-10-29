@@ -1,5 +1,5 @@
 .ess_help <- function(..., help_type = getOption('help_type')){
-    if (getRversion() > '2.10')
+    if (.essRversion() > '2.10')
         utils::help(..., help_type = help_type)
     else
         utils::help(..., htmlhelp = (help_type=='html'))

@@ -125,16 +125,17 @@
             assign('.ess_watch_expressions', list(), envir = .GlobalEnv)
         }
         if(length(.ess_watch_expressions) == 0) {
-            cat('\n# Watch list is empty!\n
-# a       append new expression
-# i       insert new expression
-# k       kill
-# e       edit the expression
-# r       rename
-# n/p     navigate
-# u/d,U   move the expression up/down
-# q       kill the buffer
-')
+            ## using old style so this can be parsed by R 1.9.1 (e.g):
+            cat('\n# Watch list is empty!\n',
+'# a       append new expression',
+'# i       insert new expression',
+'# k       kill',
+'# e       edit the expression',
+'# r       rename',
+'# n/p     navigate',
+'# u/d,U   move the expression up/down',
+'# q       kill the buffer',
+sep="\n")
         } else {
             .parent_frame <- parent.frame()
             .essWEnames <- allNames(.ess_watch_expressions)
