@@ -56,6 +56,8 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-sp6w-d.elc msdos.elc 
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
+ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
+
 ### Targets
 
 all: $(ELC) ess-custom.el
@@ -86,6 +88,9 @@ distclean: clean
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
 	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
+
+ess-r-d.el: ../etc/ESSR-VERSION
+	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
 ### File Dependencies
 

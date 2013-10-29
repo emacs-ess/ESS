@@ -290,8 +290,8 @@ before ess-site is loaded) for it to take effect.")
   process.")
 
 (defun ess--R-load-ESSR ()
-  "LOAD/INSTALL/UPDATE ESSR"
-  (let* ((ESSR-version "1.0.1") ; <- FIXME: smart way to automate this?
+  "Load/INSTALL/Update ESSR"
+  (let* ((ESSR-version "1.0.2") ; <- This is auto-updated via make
          (up-to-date (ess-boolean-command
                       (format
                        "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
@@ -308,12 +308,14 @@ before ess-site is loaded) for it to take effect.")
                      "Looks like you are on a remote and compatible ESSR package is not installed. Download and install?"
                    "Cannot locate local ESSR package source. Download and install?"))
                 (ess-eval-linewise
-                 (format "local({
+                 (format ".r <- tryCatch(local({
     require(utils) # e.g. when R_DEFAULT_PACKAGES=NULL
     destfile <- tempfile(); on.exit(file.remove(destfile))
-    download.file('http://vitalie.spinu.info/ESSR/ESSR_%s.tar.gz', destfile = destfile)
-    install.packages(destfile, repos = NULL, type='source')
-}); library('ESSR')\n"
+    download.file('http://ess.math.ethz.ch/downloads/ess/pkgs/src/contrib/ESSR_%s.tar.gz',
+                  destfile = destfile)
+    install.packages(destfile, repos = NULL, type='source') })
+  library('ESSR') 
+})\n"
                          ESSR-version))
               (message "ESSR was not installed or updated. ESS might not functon correctly")
               (ding))
