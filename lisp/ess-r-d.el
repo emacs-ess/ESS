@@ -291,11 +291,20 @@ before ess-site is loaded) for it to take effect.")
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (let* ((ESSR-version "1.0.2") ; <- This is auto-updated via make
-         (up-to-date (ess-boolean-command
-                      (format
-                       "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
-                       ESSR-version))))
+  (let* ((desc-file (concat ess-etc-directory "ESSR/DESCRIPTION"))
+         (ESSR-version (if (file-exists-p desc-file)
+                           (with-temp-buffer
+                             (insert-file-contents desc-file)
+                             (goto-char (point-min))
+                             (re-search-forward "Version: *\\([^ \t\n]+\\)" nil t)
+                             (match-string 1))
+                         (error "Cannot find ESSR package DESCRIPTION file")))
+         (up-to-date (if ESSR-version
+                         (ess-boolean-command
+                          (format
+                           "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
+                           ESSR-version))
+                       (error "Cannot determine ESSR version. Invalid DESCRIPTION file?"))))
     (if up-to-date ; also nil if not installed
         (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
       (let ((ESSR (format "%sESSR.tar.gz" ess-etc-directory))
@@ -309,7 +318,7 @@ before ess-site is loaded) for it to take effect.")
                    "Cannot locate local ESSR package source. Download and install?"))
                 (ess-eval-linewise
                  (format ".r <- tryCatch(local({
-    require(utils) # e.g. when R_DEFAULT_PACKAGES=NULL
+    require(utils)
     destfile <- tempfile(); on.exit(file.remove(destfile))
     download.file('http://ess.math.ethz.ch/downloads/ess/pkgs/src/contrib/ESSR_%s.tar.gz',
                   destfile = destfile)
