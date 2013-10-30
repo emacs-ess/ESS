@@ -547,7 +547,7 @@ For internal use. Used in `ess-display-help-on-object',
                            (ess--find-displayed-help-window)))))
     (if help-win
         (progn
-          (select-window help-win)
+          (select-window help-win 'norecord)
           (set-window-buffer help-win buff)
           ;; (switch-to-buffer buff nil 'force) <- 3rd argument appeared in emacs 24
           )
