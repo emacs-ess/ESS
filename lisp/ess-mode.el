@@ -207,7 +207,7 @@
     (define-key ess-extra-map "t" 'ess-build-tags-for-directory)
     (define-key ess-extra-map "\C-w" 'ess-execute-screen-options)
     (define-key ess-extra-map "w" 'ess-execute-screen-options)
-    ;; (define-key map "C-t"
+    (define-key ess-extra-map "/" 'ess-set-working-directory)
     ess-extra-map)
   "ESS extra map")
 
