@@ -89,8 +89,8 @@ distclean: clean
 ess-custom.el: ../VERSION
 	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
 
-ess-r-d.el: ../etc/ESSR-VERSION
-	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
+# ess-r-d.el: ../etc/ESSR-VERSION
+# 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
 ### File Dependencies
 
