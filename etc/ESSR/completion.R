@@ -1,7 +1,3 @@
-.essRversion <- function() {
-    if(exists("getRversion", mode="function"))
-        getRversion() else paste(R.version$major, R.version$minor, sep=".")
-}
 
 .ess_funargs <- function(funname) {
     if(.essRversion() > '2.14.1') {
