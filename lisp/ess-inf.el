@@ -520,11 +520,16 @@ This marks the process with a message, at a particular time point."
                (goto-char (point-max))
                (insert "\^L\n")))    ; page boundaries = Interactive sessions
            (let ((process-environment
-                  ;; fixme: tramp environment variables?
                   (nconc
                    (list "STATATERM=emacs"
                          (format "PAGER=%s" inferior-ess-pager))
-                   process-environment)))
+                   process-environment))
+                 (tramp-remote-process-environment
+                  (nconc ;; it contains a pager already, so append
+                   (when (boundp 'tramp-remote-process-environment)
+                     (copy-sequence tramp-remote-process-environment))
+                   (list "STATATERM=emacs"
+                         (format "PAGER=%s" inferior-ess-pager)))))
              (ess-write-to-dribble-buffer "Making Process...")
              (ess-write-to-dribble-buffer
               (format "Buf %s, :Proc %s, :Prog %s\n :Args= %s\nStart File=%s\n"

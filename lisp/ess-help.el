@@ -548,7 +548,7 @@ For internal use. Used in `ess-display-help-on-object',
                            (ess--find-displayed-help-window)))))
     (if help-win
         (progn
-          (select-window help-win)
+          (select-window help-win 'norecord)
           (set-window-buffer help-win buff)
           ;; (switch-to-buffer buff nil 'force) <- 3rd argument appeared in emacs 24
           )
@@ -982,7 +982,8 @@ option for other dialects)."
       ;; todo: put digits into the map
       (let* ((inhibit-quit t) ;; C-g removes the buffer
              (buf (ess--execute-electric-command
-                   map (format "Press %s to cycle" (single-key-description last-command-event))
+                   map (format "Press %s to cycle"
+                               (single-key-description last-command-event))
                    nil nil objname))
              ;; read full command
              (keys (read-key-sequence-vector ""))
@@ -1005,13 +1006,15 @@ option for other dialects)."
       ;; can take some time for the command to execute
       (display-buffer buf))
     (sit-for .01)
-    (ess-command (concat com "\n") buf)
+    (ess-command (concat com "\n") buf) ;; erases buf
     (with-current-buffer buf
       (goto-char (point-min))
       (insert (propertize (format "%s:\n\n" com) 'face 'font-lock-string-face))
       (forward-line -1)
       (setq pos (point))
-      (setq buffer-read-only t))
+      ;; set the keys that we are used to in help mode
+      (special-mode)
+      (local-set-key "k" 'kill-this-buffer))
     (if (eq ess-describe-at-point-method 'tooltip)
         (ess-tooltip-show-at-point
          (with-current-buffer buf (buffer-string))  0 30)

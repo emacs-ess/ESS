@@ -209,7 +209,7 @@
             cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
         if(length(newObjects))
             cat(sprintf("GE: %s\n", paste(newObjects, collapse = ", ")))
-        if(length(c(objectsNs, objectsPkg, newObjects)) == 0L)
+        if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
             cat(sprintf("*** Nothing explicitly assigned ***\n"))
         invisible(env)
     }

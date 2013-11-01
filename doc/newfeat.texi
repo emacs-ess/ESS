@@ -3,12 +3,10 @@
 
 Changes/Bug Fixes in 13.09-1:
 @itemize @bullet
-@item @ESS{[R]} The R code used by ESS now is in package @code{ESSR}.
-@code{ESSR} package is installed and updated automatically from the
-local ESS source. On remote machines, the package is downloaded from the
-internet archive. @code{ESSR} is not available from @code{CRAN} because
-a strict synchronization between versions of @code{ESS} and @code{ESSR}
-is needed.
+@item ess-remote and TRAMP: R suport code is now downloaded in binary form, instead 
+of being injected from local machine. The R code is stored in
+@code{~/.config/ESSR/} directory on the remote machine.
+@item TRAMP: PAGER environment variable is now correctly set to @code{inferior-ess-pager}.
 @item org-babel: source references of R code executed from org files correctly point
 to source references in original org files (version 8.2.1 or higher of
 org-mode is required for this feature)

@@ -3,13 +3,15 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
+ETC_FILES = etc/SVN-REVISION # etc/ESSR-VERSION
+
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install uninstall: etc/SVN-REVISION
+all install uninstall: $(ETC_FILES)
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 
-lisp: etc/SVN-REVISION
+lisp: $(ETC_FILES)
 	cd lisp; $(MAKE)
 
 ## the rest of the targets are for ESS developer's use only :
@@ -22,6 +24,9 @@ etc/SVN-REVISION etc/SVN-REVISION-tmp: VERSION lisp/*.el doc/*.texi */Makefile M
 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
 	    | cut -d' ' -f1,2,3,4 > $@-tmp
 	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -e $@ ]; then echo 'not available' > $@ ; fi
+
+# etc/ESSR-VERSION: etc/ESSR/DESCRIPTION
+# 	sed -n '/^Version: */{ s///; s/ *$$//p }' $< > $@
 
 
 ## --- PRE-release ---

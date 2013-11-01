@@ -100,6 +100,8 @@ DOCDIR=$(PREFIX)/share/doc/ess
 #ESSVERSION=$(shell echo "`date +%y.%m`")
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
+
+## Currently only works when run in top ess/ directory; not in etc/ or lisp/ :
 ESSfromSVN=$(shell test -d .svn && echo 'yes')
 ifeq ($(ESSfromSVN),yes)
   ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
