@@ -1123,9 +1123,13 @@ later."
 
 (defun ess--inject-code-from-file (file)
   ;; this is different from ess-load-file
-  (ess-command (with-temp-buffer
-                 (insert-file-contents file)
-                 (buffer-string))))
+  (let ((content (with-temp-buffer
+                   (insert-file-contents file)
+                   (buffer-string))))
+    (when (string= ess-dialect "R")
+      ;; don't detect intermediate prompts
+      (setq content (concat "{" content "}\n")))
+    (ess-command content)))
 
 (provide 'ess-utils)
 
