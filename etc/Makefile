@@ -17,7 +17,7 @@ ICONS = icons/*.xpm
 ESSR_FILES = ESSR/DESCRIPTION ESSR/NAMESPACE ESSR/R/*.R ESSR/man/*.Rd
 ESSR_tarball = ESSR_$(ESSR_VERSION).tar.gz 
 
-all: ESSR-VERSION $(ESSR_tarball) library/ESSR
+all: #ESSR-VERSION $(ESSR_tarball) library/ESSR
 
 ## happens "above" as it is need also in ../lisp/ :
 ESSR-VERSION: $(ESSR_FILES)
