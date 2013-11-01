@@ -282,8 +282,7 @@ the same path is listed on `exec-path' more than once), they are
 ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
-before ess-site is loaded) for it to take effect.")
-  )
+before ess-site is loaded) for it to take effect."))
 
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
@@ -303,20 +302,22 @@ before ess-site is loaded) for it to take effect.")
         (expand-file-name "ESSR" ess-etc-directory)))
     ;; else, remote
     (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
-           (remcodefile (expand-file-name "ESSR/REMOTE" ess-etc-directory))
+           (loadremote (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))
            (version (if (file-exists-p verfile)
                         (with-temp-buffer
                           (insert-file-contents verfile)
                           (buffer-string))
                       (error "Cannot find ESSR source code")))
            (r-load-code (with-temp-buffer
-                          (insert-file-contents remcodefile)
+                          (insert-file-contents loadremote)
                           (buffer-string))))
       (unless (ess-boolean-command (format r-load-code version))
-        (message "Failed to load ESSR.rda on remote machine. Injecting coude from local machine")
-        (let ((files (directory-files (expand-file-name "ESSR" ess-etc-directory)
-                                      t ".R$")))
-          (map #'ess--inject-code-from-file files))))))
+        ;; should not happen, unless extrem conditions (ancient R or failed download) 
+        (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
+        (let ((files (directory-files
+                      (expand-file-name "ESSR" ess-etc-directory)
+                      t "\\.R$")))
+          (mapc #'ess--inject-code-from-file files))))))
 
 
 ;;;### autoload
