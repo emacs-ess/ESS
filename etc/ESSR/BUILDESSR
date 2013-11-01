@@ -14,7 +14,7 @@ out <-
     }
 
 ESSR <- new.env(parent = baseenv())
-for( f in dir(".", pattern = ".R$") )
+for( f in dir("R", full.names = TRUE) )
     sys.source(f, envir = ESSR, keep.source = FALSE)
 
 save(ESSR, file = out)

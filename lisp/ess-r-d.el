@@ -315,7 +315,7 @@ before ess-site is loaded) for it to take effect."))
         ;; should not happen, unless extrem conditions (ancient R or failed download) 
         (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
         (let ((files (directory-files
-                      (expand-file-name "ESSR" ess-etc-directory)
+                      (expand-file-name "ESSR/R" ess-etc-directory)
                       t "\\.R$")))
           (mapc #'ess--inject-code-from-file files))))))
 
