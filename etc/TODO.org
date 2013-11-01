@@ -78,7 +78,7 @@
 ** CANCELLED Help focus does not honor focus-follows-mouse/mouse-autoselect-window :CANCELLED:
    :LOGBOOK:
    - State "CANCELLED"  from "TODO"       [2013-10-16 Wed 19:16] \\
-     was not a bug
+     was not a bug:  said users may want to consider setting ess-help-pop-to-buffer to nil
    :END:
 If you have focus-follows-mouse and mouse-autoselect-window set to t,
 then ask for help in an *R* buffer, i.e.
@@ -91,7 +91,12 @@ behaves similarly.  Ideally, we should respect the user's settings
 of focus-follows-mouse/mouse-autoselect-window in this common 
 help/*R* buffer arrangement.
 ** TODO Make an option to remember eval-and-go code in comint history
-** DONE BUG: DESCRIPTION file is killed if set to R-mode
+** BUG: DESCRIPTION file is killed if set to R-mode
    :LOGBOOK:
    - State "DONE"       from "TODO"       [2013-10-16 Wed 18:15]
    :END:
+** TODO eldoc should ignore some functions
+Some functions have no useful argument information to report and they
+should simply be ignored.  Ideally, this feature would be customizable
+so that each user could add their unfavorite functions.  To start, I
+would put suggest: (), c(), list(), sqrt(), t()
