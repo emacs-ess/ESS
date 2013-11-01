@@ -291,48 +291,33 @@ before ess-site is loaded) for it to take effect.")
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (let* ((desc-file (concat ess-etc-directory "ESSR/DESCRIPTION"))
-         (ESSR-version (if (file-exists-p desc-file)
-                           (with-temp-buffer
-                             (insert-file-contents desc-file)
-                             (goto-char (point-min))
-                             (re-search-forward "Version: *\\([^ \t\n]+\\)" nil t)
-                             (match-string 1))
-                         (error "Cannot find ESSR package DESCRIPTION file")))
-         (up-to-date (if ESSR-version
-                         (ess-boolean-command
-                          (format
-                           "print(tryCatch(packageVersion('ESSR') >= '%s', error = function(e) FALSE))\n"
-                           ESSR-version))
-                       (error "Cannot determine ESSR version. Invalid DESCRIPTION file?"))))
-    (if up-to-date ; also nil if not installed
-        (ess-eval-linewise "library(ESSR)\n" nil nil nil t)
-      (let ((ESSR (format "%sESSR.tar.gz" ess-etc-directory))
-            (remote (or ess-remote
-                        (file-remote-p (ess-get-process-variable 'default-directory)))))
-        (if (or remote
-                (not (file-exists-p ESSR)))
-            (if (y-or-n-p
-                 (if remote
-                     "Looks like you are on a remote and compatible ESSR package is not installed. Download and install?"
-                   "Cannot locate local ESSR package source. Download and install?"))
-                (ess-eval-linewise
-                 (format ".r <- tryCatch(local({
-    require(utils)
-    destfile <- tempfile(); on.exit(file.remove(destfile))
-    download.file('http://ess.math.ethz.ch/downloads/ess/pkgs/src/contrib/ESSR_%s.tar.gz',
-                  destfile = destfile)
-    install.packages(destfile, repos = NULL, type='source') })
-  library('ESSR') 
-})\n"
-                         ESSR-version))
-              (message "ESSR was not installed or updated. ESS might not functon correctly")
-              (ding))
-          (with-temp-message "Installing ESSR package ..."
-            (ess-eval-linewise
-             ;; library must be on the same line;
-             ;; install.packages might ask for the input
-             (format "install.packages('%s', repos=NULL, type='source');library(ESSR)\n" ESSR))))))))
+  (if (not (or ess-remote
+               (file-remote-p (ess-get-process-variable 'default-directory))))
+      (ess-command
+       (format
+        "local({
+           ESSR <- new.env(parent = baseenv())
+           for( f in dir('%s', pattern = '\\\\.R$', full.names=TRUE) )
+               sys.source(f, envir = ESSR, keep.source = FALSE)
+           attach(ESSR)})\n"
+        (expand-file-name "ESSR" ess-etc-directory)))
+    ;; else, remote
+    (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
+           (remcodefile (expand-file-name "ESSR/REMOTE" ess-etc-directory))
+           (version (if (file-exists-p verfile)
+                        (with-temp-buffer
+                          (insert-file-contents verfile)
+                          (buffer-string))
+                      (error "Cannot find ESSR source code")))
+           (r-load-code (with-temp-buffer
+                          (insert-file-contents remcodefile)
+                          (buffer-string))))
+      (unless (ess-boolean-command (format r-load-code version))
+        (message "Failed to load ESSR.rda on remote machine. Injecting coude from local machine")
+        (let ((files (directory-files (expand-file-name "ESSR" ess-etc-directory)
+                                      t ".R$")))
+          (map #'ess--inject-code-from-file files))))))
+
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -391,16 +376,14 @@ to R, put them in the variable `inferior-R-args'."
        ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
        (lambda (proc) (process-put proc 'packages-cached? t))))
 
+    (ess--R-load-ESSR)
+
     (if inferior-ess-language-start
         (ess-eval-linewise inferior-ess-language-start
                            nil nil nil 'wait-prompt))
 
     (with-ess-process-buffer nil
-      (run-mode-hooks 'ess-R-post-run-hook))
-
-    ;; should be the last; install.packages might ask for input
-    (redisplay)
-    (ess--R-load-ESSR)))
+      (run-mode-hooks 'ess-R-post-run-hook))))
 
 
 
