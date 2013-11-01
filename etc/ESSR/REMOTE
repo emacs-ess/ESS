@@ -1,0 +1,22 @@
+## -*- mode: R -*-
+## loading code sent to R on remote machines
+local({
+    curver <- '%s'
+    verfile <- '~/.config/ESSR/VERSION'
+    envfile <- '~/.config/ESSR/ESSR.rda'
+    ver <-
+        if(file.exists(verfile)) scan(verfile)
+        else "0.0"
+    if((ver < curver))
+        tryCatch({
+            url <- paste('http://vitalie.spinu.info/ESSR/ESSR_', curver, '.rda', sep = '')
+            utils::download.file(url, envfile)
+            cat(curver, file = verfile)
+        }, error = function(e) print(FALSE))
+    else{
+        load(evnfile)
+        attach(ESSR)
+        print(FALSE)
+    }
+})
+
