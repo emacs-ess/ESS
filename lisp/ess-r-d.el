@@ -295,11 +295,11 @@ before ess-site is loaded) for it to take effect."))
       (ess-command
        (format
         "local({
-           ESSR <- new.env(parent = baseenv())
-           for( f in dir('%s', pattern = '\\\\.R$', full.names=TRUE) )
+           ESSR <- new.env(parent = asNamespace('utils'))
+           for( f in dir('%s', full.names=TRUE) )
                sys.source(f, envir = ESSR, keep.source = FALSE)
            attach(ESSR)})\n"
-        (expand-file-name "ESSR" ess-etc-directory)))
+        (expand-file-name "ESSR/R" ess-etc-directory)))
     ;; else, remote
     (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
            (loadremote (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))

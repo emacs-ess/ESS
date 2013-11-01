@@ -13,7 +13,7 @@ out <-
         sprintf("%s/ESSR.rda", dir)
     }
 
-ESSR <- new.env(parent = baseenv())
+ESSR <- new.env(parent = asNamespace("utils"))
 for( f in dir("R", full.names = TRUE) )
     sys.source(f, envir = ESSR, keep.source = FALSE)
 
