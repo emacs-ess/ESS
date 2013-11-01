@@ -193,6 +193,9 @@ C-n to send lines over.  With SAS, use C-c i
     (goto-char (point-max))
 
     (when (equal ess-dialect "R")
+      ;; ugly fix for evn variable. What can we do :(
+      (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
+                         nil nil nil 'wait)
       (ess--R-load-ESSR))
 
     (when (equal ess-dialect "S+")
