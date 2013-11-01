@@ -1683,7 +1683,7 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
 
 (defvar inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
-(This is issued by S to continue an incomplete expression).
+This is issued by S to continue an incomplete expression.
 Set to nil if language doesn't support secondary prompt.")
 ;; :group 'ess-proc
 ;; :type 'string)
