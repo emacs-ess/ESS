@@ -67,9 +67,7 @@
   "Syntax table for S code."
   )
 
-
-;; what is R doing here?
-(defvar R-editing-alist
+(defvar S-editing-alist
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
@@ -85,23 +83,12 @@
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (ess-font-lock-keywords       . 'ess-R-font-lock-keywords)
-    (ess-font-lock-defaults       . (ess--extract-default-fl-keywords ess-R-font-lock-keywords))
+    (ess-font-lock-keywords       . 'ess-S-font-lock-keywords)
+    (ess-font-lock-defaults       . (ess--extract-default-fl-keywords ess-S-font-lock-keywords))
     (font-lock-defaults           . '(ess-font-lock-defaults
                                       nil nil ((?\. . "w") (?\_ . "w"))))
     )
-  "General options for R source files.")
-
-
-(defvar S-editing-alist
-  ;; copy the R-list and modify :
-  (let ((S-alist (copy-alist R-editing-alist)))
-    (setcdr (assoc 'ess-font-lock-defaults S-alist)
-            '(ess--extract-default-fl-keywords ess-S-font-lock-keywords))
-    (setcdr (assoc 'ess-font-lock-keywords S-alist)
-            (quote 'ess-S-font-lock-keywords))
-    S-alist)
-  "General options for editing S and S+ source files.")
+  "General options for S and S+ source files.")
 
 (defvar inferior-S-language-start
   '(concat "options("
