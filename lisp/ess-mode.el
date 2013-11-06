@@ -164,6 +164,8 @@
     ;;(define-key map [delete]   'backward-delete-char-untabify)
     (define-key map "\t"         'ess-indent-or-complete)
     (define-key map "\C-c\C-q"   'ess-quit)
+    (define-key map "\M-\r"      'ess-use-this-dir)
+
     ;; smart operators; most likely will go in the future into a separate local map
     (define-key map ","          'ess-smart-comma)
 

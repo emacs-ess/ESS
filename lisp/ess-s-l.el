@@ -138,6 +138,9 @@
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
+    
+    (fill-nobreak-predicate     . 'ess-inside-string-p)
+    (normal-auto-fill-function  . 'ess-do-auto-fill)
     )
   "S-language common settings for all <dialect>-customize-alist s")
 
@@ -814,16 +817,6 @@ and I need to relearn emacs lisp (but I had to, anyway."
     (use-local-map ess-mode-map)
     (set-syntax-table ess-mode-syntax-table)
     ))
-
-(add-hook 'ess-mode-hook
-          (lambda ()
-            (set (make-local-variable 'fill-nobreak-predicate)
-                 'ess-inside-string-p)
-            (set (make-local-variable 'normal-auto-fill-function)
-                 'ess-do-auto-fill)
-            (when (string= ess-language "S");; <- is this needed at all here?
-              (local-set-key "\M-\r" 'ess-use-this-dir))
-            ))
 
 
 
