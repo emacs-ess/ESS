@@ -222,6 +222,7 @@
   '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
     (?D . "\\s *Details:")
+    (?t . "\\s *Details:")
     (?e . "\\s *Examples:")
     (?n . "\\s *Note:")
     (?r . "\\s *References:")
