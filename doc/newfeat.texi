@@ -29,6 +29,8 @@ A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pul
 @item @ESS{[developer]} ess-developer doesn't kill open DESCRIPTION files anymore
 @item @ESS{[roxygen]} @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
  @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}.
+@item @ESS{[R]} @code{summary} methods was moved to 2nd place in 
+@code{ess-R-describe-object-at-point-commands}
 @end itemize
 
 Changes/New Features in 13.09:
