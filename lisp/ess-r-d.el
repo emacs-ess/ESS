@@ -237,6 +237,18 @@
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
+
+(defvar R-editing-alist
+  ;; copy the S-alist and modify :
+  (let ((S-alist (copy-alist S-editing-alist)))
+    (setcdr (assoc 'ess-font-lock-defaults S-alist)
+            '(ess--extract-default-fl-keywords ess-R-font-lock-keywords))
+    (setcdr (assoc 'ess-font-lock-keywords S-alist)
+            (quote 'ess-R-font-lock-keywords))
+    S-alist)
+  "General options for editing R source files.")
+
+
 (defvar ess-R-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
@@ -290,7 +302,7 @@ before ess-site is loaded) for it to take effect."))
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (if (not (or ess-remote
+  (if (not (or (and (boundp 'ess-remote) ess-remote)
                (file-remote-p (ess-get-process-variable 'default-directory))))
       (ess-command
        (format

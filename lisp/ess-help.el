@@ -763,7 +763,8 @@ to see which keystrokes find which sections."
                                ess-help-sec-keys-alist))))
       (if (not the-sec) (error "Invalid section key: %c"
                                last-command-event)
-        (if (re-search-forward (concat "^" the-sec) nil t) nil
+        (if (re-search-forward (concat "^" the-sec) nil t)
+            (recenter)
           (message "No %s section in this help. Sorry." the-sec)
           (goto-char old-point))))))
 

@@ -67,9 +67,7 @@
   "Syntax table for S code."
   )
 
-
-;; what is R doing here?
-(defvar R-editing-alist
+(defvar S-editing-alist
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
@@ -85,23 +83,12 @@
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (ess-font-lock-keywords       . 'ess-R-font-lock-keywords)
-    (ess-font-lock-defaults       . (ess--extract-default-fl-keywords ess-R-font-lock-keywords))
+    (ess-font-lock-keywords       . 'ess-S-font-lock-keywords)
+    (ess-font-lock-defaults       . (ess--extract-default-fl-keywords ess-S-font-lock-keywords))
     (font-lock-defaults           . '(ess-font-lock-defaults
                                       nil nil ((?\. . "w") (?\_ . "w"))))
     )
-  "General options for R source files.")
-
-
-(defvar S-editing-alist
-  ;; copy the R-list and modify :
-  (let ((S-alist (copy-alist R-editing-alist)))
-    (setcdr (assoc 'ess-font-lock-defaults S-alist)
-            '(ess--extract-default-fl-keywords ess-S-font-lock-keywords))
-    (setcdr (assoc 'ess-font-lock-keywords S-alist)
-            (quote 'ess-S-font-lock-keywords))
-    S-alist)
-  "General options for editing S and S+ source files.")
+  "General options for S and S+ source files.")
 
 (defvar inferior-S-language-start
   '(concat "options("
@@ -138,6 +125,9 @@
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
+    
+    (fill-nobreak-predicate     . 'ess-inside-string-p)
+    (normal-auto-fill-function  . 'ess-do-auto-fill)
     )
   "S-language common settings for all <dialect>-customize-alist s")
 
@@ -232,6 +222,7 @@
   '((?a . "\\s *Arguments:")
     (?d . "\\s *Description:")
     (?D . "\\s *Details:")
+    (?t . "\\s *Details:")
     (?e . "\\s *Examples:")
     (?n . "\\s *Note:")
     (?r . "\\s *References:")
@@ -814,16 +805,6 @@ and I need to relearn emacs lisp (but I had to, anyway."
     (use-local-map ess-mode-map)
     (set-syntax-table ess-mode-syntax-table)
     ))
-
-(add-hook 'ess-mode-hook
-          (lambda ()
-            (set (make-local-variable 'fill-nobreak-predicate)
-                 'ess-inside-string-p)
-            (set (make-local-variable 'normal-auto-fill-function)
-                 'ess-do-auto-fill)
-            (when (string= ess-language "S");; <- is this needed at all here?
-              (local-set-key "\M-\r" 'ess-use-this-dir))
-            ))
 
 
 

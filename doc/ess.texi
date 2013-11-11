@@ -2867,50 +2867,49 @@ string.
 @cindex ess developer
 
 Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
-the current buffer for evaluation in current environment (commonly
-@code{R_GlobalEnv}). Often, in process of the developing packages with
-namespaces, it is necessary to evaluate code directly in the package's
-environment or it's namespace. The @code{ess-developer} utility provides
-such a functionality with minimal disruption of the usual ESS work-flow.
+the current buffer for the evaluation in the current environment
+(usually @code{R_GlobalEnv}). Often, in process of the developing
+packages with namespaces, it is necessary to evaluate code directly in
+the package's environment or its namespace. The @code{ess-developer}
+utility provides such a functionality with minimal disruption of the
+usual ESS work-flow.
 
-To understand how ess-developer works you must be familiar with namespace
-system in R.
-
-In a nutshell, all objects defined in a package 'foo' are stored in an
-environment called 'namespace:foo'. Parent environment of
-'namespace:foo' is an environment 'imports:foo' which contains copies of
-all objects from other packages which 'foo' imports. Parent environment
-of 'imports:foo' is the 'namespace:base'. Parent environment of
-'namespace:base' is .GlobalEnv. Thus functions and methods stored in
-'namespace:foo' see all the objects in .GlobalEnv unless shadowed by
-objects in 'imports:foo', 'namespace:base', or 'namespace:foo'
-itself. There is another environment associated with 'foo' -
-'package:foo'. This environment stores *copies* of exported objects from
-'namespace:foo' and is placed on the search() path, i.e. if 'foo' is
-loaded and if you start with .GlobalEnv and iteratively call
-parent.env() you will get eventually to 'package:foo'. Thus all methods
-and functions defined in .GlobalEnv can see the objects in
-'package:foo'. See also
+To understand how ess-developer works you must be familiar with
+namespace system in R. In a nutshell, all objects defined in a package
+'foo' are stored in an environment called 'namespace:foo'. Parent
+environment of 'namespace:foo' is an environment 'imports:foo' which
+contains copies of all objects from other packages which 'foo'
+imports. Parent environment of 'imports:foo' is the
+'namespace:base'. Parent environment of 'namespace:base' is
+.GlobalEnv. Thus functions and methods stored in 'namespace:foo' see all
+the objects in .GlobalEnv unless shadowed by objects in 'imports:foo',
+'namespace:base', or 'namespace:foo' itself. There is another
+environment associated with 'foo' - 'package:foo'. This environment
+stores *copies* of exported objects from 'namespace:foo' and is placed
+on the search() path, i.e. if 'foo' is loaded and if you start with
+.GlobalEnv and iteratively call parent.env() you will get eventually to
+'package:foo'. Thus all methods and functions defined in .GlobalEnv can
+"see" objects in 'package:foo' environment. See also
 @uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
-In order to use ess-developer, add names of the packages you are
-developing to @code{ess-developer-packages}. You can do that
-interactively with @kbd{C-c C-t C-a}. To remove packages use @kbd{C-c
-C-t C-r}. When developer mode is on, the process mode line indicator
-features a small or capital letter "d", highlighted with
-@code{ess-developer-indicator-face}.
+In order to use ess-developer you must add names of the packages that
+you are developing to @code{ess-developer-packages}. You can also do
+that interactively with @kbd{C-c C-t C-a}. To remove packages from
+@code{ess-developer-packages} use @kbd{C-c C-t C-r}. When developer mode
+is on, the process mode line indicator displays a small or capital
+letter "d".
 
 If variable @code{ess-developer-activate-in-package} is @code{t} (the
-default), R mode will check on startup if the file is part of the
-package. If so, developer mode is activated automatically. This takes
-place only when the parent package has been already added to
-@code{ess-developer-packages}.
+default) @code{R-mode} will check after visiting the file whether or not
+the file is part of the package. If visited file is part of a package
+listed in @code{ess-developer-packages}, developer mode is activated
+automatically.
 
-Developer mode is usually activated on per-file basis. When so, a small
-"d" appears in the modeline. You can also activate ess-developer on per
-process basis. Then all the buffers associated with the process are put
-into developer mode, regardless of whether they are part of a package or
-not. In this case a big "D" appears in the modeline.
+Developer mode is usually activated on per-file basis and a small "d"
+appears in the modeline. You can also activate ess-developer for all
+buffers connected to current process. This is done by toggling
+@code{ess-developer} in subprocess buffer. In this case a big "D" will
+appear in the modeline.
 
 @deffn Command ess-developer @var{val}
 @kindex C-c C-t C-t
@@ -2932,9 +2931,8 @@ process buffer, toggle developer on per-process basis.
 When you add a package to @code{ess-developer-packages}, ESS will ask
 for loading command. By default there are two options @code{library} and
 @code{load_all} from @code{devtools} package. You can configure this
-list in @code{ess-developer-load-on-add-commands}. At any time you can
-explicitly load the package containing current file with @kbd{C-c C-t
-l}.
+behavior in @code{ess-developer-load-on-add-commands}. To explisitely
+load the package containing current file use @kbd{C-c C-t l}.
 
 @deffn Command ess-developer-load-package
 @kindex C-c C-t l
@@ -2953,10 +2951,10 @@ namespace:foo accordingly.
 @itemize @minus
 
 @item PLAIN OBJECTS and FUNCTIONS: @*
- If the object is found in an environment (package:foo or namespace:foo),
-  and differs from the old one it is assigned into the corresponding
-  environment. If the object is not found it is assigned into
-  .GlobalEnv. The environment of functions is set to namespace:foo.
+ If the object is found in an environment (package:foo or
+  namespace:foo), and differs from the old one it is assigned into the
+  corresponding environment. If the object is not found it is assigned
+  into .GlobalEnv. The environment of functions is set to namespace:foo.
 
 @item CLASSES: @*
 Same as plain objects, with the difference that even if the class
@@ -2964,26 +2962,38 @@ definition is assigned into .GlobalEnv, it is still associated with the
 package foo. Thus if you issue getClassDeff("foo") you will get a class
 definition with the slot @@package pointing to package "foo".
 
-     @emph{Note:} Occasionally, after adding new classes you might get warnings
-    from "setClass". This is especially true if new class inherits or is
-    inherited by a class whose definition is not exported. You might get
-    something like:
-@code{
+@emph{Note:} Occasionally, after adding new classes you might get warnings
+from "setClass". This is especially true if new class inherits or is
+inherited by a class whose definition is not exported. You might get
+something like:
+    @code{
        Warning: Class "boo" is defined (with package slot ‘foo’) but no
        metadata object found to revise subclass information---not exported?
-}
+       }      
 
-     You can safely ignore this warnings.
+You can safely ignore this warnings.
 
-@item METHODS: @*
+@item S4 METHODS: @*
 Similarly to function definitions modified methods are assigned in the
 local method table in the namespace:foo. New methods are assigned into
 .GlobalEnv, but with the environment pointing to namespace:foo. There is
-a suttle catch with method caching in R though. See ess-developer.R for
-more detailed comments.
+a suttle catch with method caching in R though. See the code in
+etc/ESSR/developer.R for more details.
 
-  Note that if method or generic is exported the *same* table (which is an
-  environment) is present in package:foo.
+  @c Note that if method or generic is exported the *same* table (which is an
+  @c environment) is present in package:foo.
+
+
+@item S3 METHODS: @*
+S3 methods are not automatically registered. You can register them
+manually after you have inserted method_name.my_class into your package
+environment using ess-developer, like follows:
+
+   registerS3method("method_name", "my_class", my_package:::method_name.my_class)
+
+If you don't register your S3 method, R will call the registered (aka
+cached) S3 method instead of the new method that ess-developer inserted
+in the package environment.
 
 @end itemize
 
