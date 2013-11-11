@@ -302,7 +302,7 @@ before ess-site is loaded) for it to take effect."))
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (if (not (or ess-remote
+  (if (not (or (and (boundp 'ess-remote) ess-remote)
                (file-remote-p (ess-get-process-variable 'default-directory))))
       (ess-command
        (format
