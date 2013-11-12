@@ -193,12 +193,12 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-eval-command                  . ".ess_eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
-     (ess-eval-visibly-command          . ".ess_eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
-     (ess-eval-visibly-noecho-command   . ".ess_eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
-     (ess-load-command                  . ".ess_source(\"%s\", FALSE, FALSE)\n")
-     (ess-load-visibly-command          . ".ess_source(\"%s\", TRUE, TRUE, 300)\n")
-     (ess-load-visibly-noecho-command   . ".ess_source(\"%s\", FALSE, TRUE, 300)\n")
+     (ess-eval-command                  . ".ess.eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
+     (ess-eval-visibly-command          . ".ess.eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
+     (ess-eval-visibly-noecho-command   . ".ess.eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
+     (ess-load-command                  . ".ess.source(\"%s\", FALSE, FALSE)\n")
+     (ess-load-visibly-command          . ".ess.source(\"%s\", TRUE, TRUE, 300)\n")
+     (ess-load-visibly-noecho-command   . ".ess.source(\"%s\", FALSE, TRUE, 300)\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
@@ -307,9 +307,10 @@ before ess-site is loaded) for it to take effect."))
       (ess-command
        (format
         "local({
-           ESSR <- new.env(parent = asNamespace('utils'))
-           for( f in dir('%s', full.names=TRUE) )
-               sys.source(f, envir = ESSR, keep.source = FALSE)
+           sys.source('%s/1st.R') ##-> defines ESSR and .ess.sys.source():
+          .ess.sys.source('%s/2-basic.R', envir = ESSR, keep.source = FALSE)
+           for( f in dir('%s', pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
+               try(.ess.sys.source(f, envir = ESSR, keep.source = FALSE))
            attach(ESSR)})\n"
         (expand-file-name "ESSR/R" ess-etc-directory)))
     ;; else, remote
@@ -978,7 +979,7 @@ First element of a returned list is the completion token.
          (end (or end (point)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (comm (format ".ess_get_completions(\"%s\", %d)\n"
+         (comm (format ".ess.get_completions(\"%s\", %d)\n"
                 (ess-quote-special-chars (buffer-substring start end))
                 (- end start))))
     (ess-get-words-from-vector comm)))

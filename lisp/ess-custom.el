@@ -1879,7 +1879,7 @@ This format string should use %s to substitute an object name.")
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
 
-(defcustom inferior-ess-r-help-command ".ess_help(\"%s\", help_type=\"text\")\n"
+(defcustom inferior-ess-r-help-command ".ess.help(\"%s\", help.type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
 This format string should use %s to substitute an object name.

@@ -20,13 +20,12 @@ for( f in dir("R", full.names = TRUE) )
 save(ESSR, file = out)
 
 
-## for ess-r-d.el use:
-
-## local({
-##     ESSR <- new.env(parent = baseenv())
-##     system.time(for( f in dir('%s', pattern = '.R$') )
-##                 sys.source(f, envir = ESSR, keep.source = FALSE))
-##     attach(ESSR)
-## })
+if(FALSE)## for ../lisp/ess-r-d.el use:
+    local({
+        ESSR <- new.env(parent = baseenv())
+        system.time(for( f in dir('%s', pattern = '.R$') )
+                    sys.source(f, envir = ESSR, keep.source = FALSE))
+        attach(ESSR)
+    })
 
 
