@@ -306,10 +306,11 @@ before ess-site is loaded) for it to take effect."))
                (file-remote-p (ess-get-process-variable 'default-directory))))
       (ess-command
        (format
-        "local({
-           sys.source('%s/1st.R') ##-> defines ESSR and .ess.sys.source():
-          .ess.sys.source('%s/2-basic.R', envir = ESSR, keep.source = FALSE)
-           for( f in dir('%s', pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
+        "local({ d <- '%s' ; p0 <- function(...) paste(..., sep='')
+           sys.source(p0(d,'/1st.R'), envir=environment())
+           ##-> defines ESSR and .ess.sys.source():
+          .ess.sys.source(p0(d,'/2_basic.R'), envir = ESSR, keep.source = FALSE)
+           for( f in dir(d, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
                try(.ess.sys.source(f, envir = ESSR, keep.source = FALSE))
            attach(ESSR)})\n"
         (expand-file-name "ESSR/R" ess-etc-directory)))
@@ -325,7 +326,7 @@ before ess-site is loaded) for it to take effect."))
                           (insert-file-contents loadremote)
                           (buffer-string))))
       (unless (ess-boolean-command (format r-load-code version))
-        ;; should not happen, unless extrem conditions (ancient R or failed download) 
+        ;; should not happen, unless extrem conditions (ancient R or failed download)
         (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
         (let ((files (directory-files
                       (expand-file-name "ESSR/R" ess-etc-directory)
@@ -964,6 +965,7 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
+;; Hmm... shouldn't we keep and use this for R <= 2.6.x ???
 (make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
 
 (defun ess-R-get-rcompletions (&optional start end)
