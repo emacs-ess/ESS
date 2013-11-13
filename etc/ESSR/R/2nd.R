@@ -1,12 +1,13 @@
 #### Essential functionality needed by ESS
-#### Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
-## this file is sourced into ESSR environment
+#### Should work on *all* vesions of R. Do not use _ in names, nor :: as they
+#### cannot be parsed in old R versions
 
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
                          if(.ess.Rversion >= "1.9.0") "utils" else "base",
                          sep = ":")
+
 ## Instead of modern  utils::help use one that works in R 1.0.0:
 .ess.findFUN   <- get("find", .ess.utils.name)
 .ess.helpFUN   <- get("help", .ess.utils.name)

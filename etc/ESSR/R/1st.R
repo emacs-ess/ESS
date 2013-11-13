@@ -8,26 +8,26 @@
         else
             function(..., keep.source) sys.source(...)
 
-    .ess.Rversion <- {
-        if(exists("getRversion", mode="function"))
-            getRversion() else paste(R.version$major, R.version$minor, sep=".")
-    }
+    Rver <-
+        if(exists("getRversion", mode="function")) getRversion()
+        else paste(R.version$major, R.version$minor, sep=".")
 
     nn <- names(formals(new.env))
 
     ESSR <-
         if(length(nn) && any(nn == "parent"))
-            new.env(parent = if(.ess.Rversion >= "1.9.0")
-                    getNamespace("utils") else .BaseNamespaceEnv)
+            new.env(parent =
+                    if(Rver >= "1.9.0") getNamespace("utils")
+                    else .BaseNamespaceEnv)
         else
             new.env()
 
-    assign(".ess.Rversion", .ess.Rversion, envir = ESSR)
+    assign(".ess.Rversion", Rver, envir = ESSR)
 
-    ## load basics
+    ## basics from 2nd.R:
     .source(paste(dir,'/2nd.R', sep = ""), envir = ESSR, keep.source = FALSE)
 
-    ## load all others
+    ## all others:
     for( f in dir(dir, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
         try(.source(f, envir = ESSR, keep.source = FALSE))
 
