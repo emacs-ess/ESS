@@ -1,7 +1,7 @@
 ## Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
-## load 2nd.R and all other files into ESSR environment; then attach
-.load.ESSR <- function(dir){
+## load .base.R and all other files into ESSR environment; then attach ESSR
+load.ESSR <- function(dir){
     .source <-
         if(any("keep.source" == names(formals(sys.source))))
             sys.source
@@ -24,8 +24,8 @@
 
     assign(".ess.Rversion", Rver, envir = ESSR)
 
-    ## basics from 2nd.R:
-    .source(paste(dir,'/2nd.R', sep = ""), envir = ESSR, keep.source = FALSE)
+    ## .basic.R:
+    .source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE)
 
     ## all others:
     for( f in dir(dir, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )

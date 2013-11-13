@@ -307,8 +307,8 @@ before ess-site is loaded) for it to take effect."))
       (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
              (cmd (format
                    "local({
-                      source('%s/1st.R', local=TRUE) #define .load.ESSR
-                      .load.ESSR('%s')})\n"
+                      source('%s/.load.R', local=TRUE) #define load.ESSR
+                      load.ESSR('%s')})\n"
                    src-dir src-dir)))
         (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
         (ess-command cmd))
