@@ -302,34 +302,34 @@ before ess-site is loaded) for it to take effect."))
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (if (not (or (and (boundp 'ess-remote) ess-remote)
-               (file-remote-p (ess-get-process-variable 'default-directory))))
-      (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-             (cmd (format
-                   "local({
+  (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
+         (src-dir (expand-file-name "R" ESSR-directory)))
+             
+    (if (not (or (and (boundp 'ess-remote) ess-remote)
+                 (file-remote-p (ess-get-process-variable 'default-directory))))
+        (let ((cmd (format
+                    "local({
                       source('%s/.load.R', local=TRUE) #define load.ESSR
                       load.ESSR('%s')})\n"
-                   src-dir src-dir)))
-        (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
-        (ess-command cmd))
-    ;; else, remote
-    (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
-           (loadremote (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))
-           (version (if (file-exists-p verfile)
-                        (with-temp-buffer
-                          (insert-file-contents verfile)
-                          (buffer-string))
-                      (error "Cannot find ESSR source code")))
-           (r-load-code (with-temp-buffer
-                          (insert-file-contents loadremote)
-                          (buffer-string))))
-      (unless (ess-boolean-command (format r-load-code version))
-        ;; should not happen, unless extrem conditions (ancient R or failed download)
-        (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
-        (let ((files (directory-files
-                      (expand-file-name "ESSR/R" ess-etc-directory)
-                      t "\\.R$")))
-          (mapc #'ess--inject-code-from-file files))))))
+                    src-dir src-dir)))
+          (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+          (ess-command cmd))
+      ;; else, remote
+      (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
+             (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
+             (version (if (file-exists-p verfile)
+                          (with-temp-buffer
+                            (insert-file-contents verfile)
+                            (buffer-string))
+                        (error "Cannot find ESSR source code")))
+             (r-load-code (with-temp-buffer
+                            (insert-file-contents loadremote)
+                            (buffer-string))))
+        (unless (ess-boolean-command (format r-load-code version))
+          ;; should not happen, unless extrem conditions (ancient R or failed download)
+          (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
+          (let ((files (directory-files src-dir t "\\.R$")))
+            (mapc #'ess--inject-code-from-file files)))))))
 
 
 ;;;### autoload
