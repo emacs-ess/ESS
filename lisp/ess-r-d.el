@@ -304,16 +304,19 @@ before ess-site is loaded) for it to take effect."))
   "Load/INSTALL/Update ESSR"
   (if (not (or (and (boundp 'ess-remote) ess-remote)
                (file-remote-p (ess-get-process-variable 'default-directory))))
-      (ess-command
-       (format
-        "local({ d <- '%s' ; p0 <- function(...) paste(..., sep='')
-           sys.source(p0(d,'/1st.R'), envir=environment())
+      (let ((cmd (format
+                  "local({
+           d <- '%s' ; p0 <- function(...) paste(..., sep='')
+           source(p0(d,'/1st.R'), local=environment())
            ##-> defines ESSR and .ess.sys.source():
           .ess.sys.source(p0(d,'/2_basic.R'), envir = ESSR, keep.source = FALSE)
-           for( f in dir(d, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
+           for( f in dir(d, pattern='[A-Za-z].*\\\\.R$', full.names=TRUE) )
                try(.ess.sys.source(f, envir = ESSR, keep.source = FALSE))
-           attach(ESSR)})\n"
-        (expand-file-name "ESSR/R" ess-etc-directory)))
+           attach(ESSR)
+         })\n"
+                  (expand-file-name "ESSR/R" ess-etc-directory))))
+        (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+        (ess-command cmd))
     ;; else, remote
     (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
            (loadremote (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))
@@ -981,7 +984,7 @@ First element of a returned list is the completion token.
          (end (or end (point)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (comm (format ".ess.get_completions(\"%s\", %d)\n"
+         (comm (format ".ess_get_completions(\"%s\", %d)\n"
                 (ess-quote-special-chars (buffer-substring start end))
                 (- end start))))
     (ess-get-words-from-vector comm)))
