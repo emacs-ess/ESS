@@ -7,7 +7,8 @@
 .ess.sys.source <- if(any("keep.source" == names(formals(sys.source))))
 		       sys.source else function(..., keep.source) sys.source(...)
 ESSR <- if(local({nn <- names(formals(new.env))
-                  length(nn) && any(nn == "parent")})) {
+                  length(nn) && any(nn == "parent")}))
+{
     .R.ver <- if(exists("getRversion", mode="function"))
         getRversion() else paste(R.version$major, R.version$minor, sep=".")
     new.env(parent = if(.R.ver >= "1.9.0")

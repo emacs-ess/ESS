@@ -1,13 +1,8 @@
 #### Essential functionality needed by ESS
-#### -------------------------------------
 #### Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
-## run *after* ./1st.R
-##		 ~~~~~
-.ess.Rversion <- {
-    if(exists("getRversion", mode="function"))
-        getRversion() else paste(R.version$major, R.version$minor, sep=".")
-}
+## this file is sourced into ESSR environment
+
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
                          if(.ess.Rversion >= "1.9.0") "utils" else "base",
@@ -50,15 +45,15 @@
 		 keep.source = TRUE)$value) ## return value for org-babel
 }
 
-if(.ess.Rversion < "1.8")# (works for "1.7.2"): bquote() was new in 1.8.0
-    bquote <- function(expr, where=parent.frame())
-{
-    unquote <- function(e)
-        if (is.pairlist(e)) as.pairlist(lapply(e, unquote))
-        else if (length(e) <= 1L) e
-        else if (e[[1L]] == as.name(".")) eval(e[[2L]], where)
-        else as.call(lapply(e, unquote))
+if(.ess.Rversion < "1.8")
+    ## (works for "1.7.2"): bquote() was new in 1.8.0
+    bquote <- function(expr, where=parent.frame()){
+        unquote <- function(e)
+            if (is.pairlist(e)) as.pairlist(lapply(e, unquote))
+            else if (length(e) <= 1L) e
+            else if (e[[1L]] == as.name(".")) eval(e[[2L]], where)
+            else as.call(lapply(e, unquote))
 
-    unquote(substitute(expr))
-}
+        unquote(substitute(expr))
+    }
 
