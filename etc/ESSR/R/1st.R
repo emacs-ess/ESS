@@ -1,17 +1,35 @@
-#### Essential PROTO-functionality needed by ESS (before anything else
-#### -------------------------------------------
-#### even before ./basic.R
-##
 ## Do not use _ in names, nor :: as they cannot be parsed in old R versions
-##
-.ess.sys.source <- if(any("keep.source" == names(formals(sys.source))))
-		       sys.source else function(..., keep.source) sys.source(...)
-ESSR <- if(local({nn <- names(formals(new.env))
-                  length(nn) && any(nn == "parent")}))
-{
-    .R.ver <- if(exists("getRversion", mode="function"))
-        getRversion() else paste(R.version$major, R.version$minor, sep=".")
-    new.env(parent = if(.R.ver >= "1.9.0")
-            getNamespace("utils") else .BaseNamespaceEnv)
-} else new.env()
-##fails: rm(.R.ver)
+
+## load 2nd.R and all other files into ESSR environment; then attach
+.load.ESSR <- function(dir){
+    .source <-
+        if(any("keep.source" == names(formals(sys.source))))
+            sys.source
+        else
+            function(..., keep.source) sys.source(...)
+
+    .ess.Rversion <- {
+        if(exists("getRversion", mode="function"))
+            getRversion() else paste(R.version$major, R.version$minor, sep=".")
+    }
+
+    nn <- names(formals(new.env))
+
+    ESSR <-
+        if(length(nn) && any(nn == "parent"))
+            new.env(parent = if(.ess.Rversion >= "1.9.0")
+                    getNamespace("utils") else .BaseNamespaceEnv)
+        else
+            new.env()
+
+    assign(".ess.Rversion", .ess.Rversion, envir = ESSR)
+
+    ## load basics
+    .source(paste(dir,'/2nd.R', sep = ""), envir = ESSR, keep.source = FALSE)
+
+    ## load all others
+    for( f in dir(dir, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
+        try(.source(f, envir = ESSR, keep.source = FALSE))
+
+    attach(ESSR)
+}
