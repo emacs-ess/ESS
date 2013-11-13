@@ -37,10 +37,9 @@
 .ess.source <- function(file, echo = TRUE, print.eval = TRUE,
                         max.deparse.length = 300, local = parent.frame())
 {
-    ss <- .ess.sourceFUN
-    ss <- if(any("keep.source" == names(formals(ss)))) ss
-    else ## for R versions < 2.7.x, drop 'keep.source':
-	function(..., keep.source) ss(...)
+    ss <- # drop 'keep.source' for older versions
+        if(.ess.Rversion < "2.8") .ess.sourceFUN
+        else function(..., keep.source) .ess.sourceFUN(...)
     invisible(ss(file, echo = echo, local = local, print.eval = print.eval,
 		 max.deparse.length = max.deparse.length,
 		 keep.source = TRUE)$value) ## return value for org-babel
