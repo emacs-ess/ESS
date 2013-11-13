@@ -1,7 +1,8 @@
 #### Essential functionality needed by ESS
 
-#### Should work on *all* vesions of R. Do not use _ in names, nor :: as they
-#### cannot be parsed in old R versions
+## Should work on *all* vesions of R.
+## Do not use _ in names, nor :: , nor 1L etc, as they
+## cannot be parsed in old R versions
 
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
@@ -38,7 +39,7 @@
                         max.deparse.length = 300, local = parent.frame())
 {
     ss <- # drop 'keep.source' for older versions
-        if(.ess.Rversion < "2.8") .ess.sourceFUN
+	if(.ess.Rversion >= "2.8") .ess.sourceFUN
         else function(..., keep.source) .ess.sourceFUN(...)
     invisible(ss(file, echo = echo, local = local, print.eval = print.eval,
 		 max.deparse.length = max.deparse.length,
@@ -50,8 +51,8 @@ if(.ess.Rversion < "1.8")
     bquote <- function(expr, where=parent.frame()){
         unquote <- function(e)
             if (is.pairlist(e)) as.pairlist(lapply(e, unquote))
-            else if (length(e) <= 1L) e
-            else if (e[[1L]] == as.name(".")) eval(e[[2L]], where)
+            else if (length(e) <= 1) e
+            else if (e[[1]] == as.name(".")) eval(e[[2]], where)
             else as.call(lapply(e, unquote))
 
         unquote(substitute(expr))
