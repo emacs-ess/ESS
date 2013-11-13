@@ -12,10 +12,8 @@ load.ESSR <- function(dir){
         if(exists("getRversion", mode="function")) getRversion()
         else paste(R.version$major, R.version$minor, sep=".")
 
-    nn <- names(formals(new.env))
-
     ESSR <-
-        if(length(nn) && any(nn == "parent"))
+	if(length(nn <- names(formals(new.env))) && any(nn == "parent"))
             new.env(parent =
                     if(Rver >= "1.9.0") getNamespace("utils")
                     else .BaseNamespaceEnv)
@@ -27,8 +25,8 @@ load.ESSR <- function(dir){
     ## .basic.R:
     .source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE)
 
-    ## all others:
-    for( f in dir(dir, pattern='[A-Za-z].*\\.R$', full.names=TRUE) )
+    ## all others try(*) as it will fail in old R
+    for( f in dir(dir, pattern='\\.R$', full.names=TRUE) )# <- not the ".<foo>"
         try(.source(f, envir = ESSR, keep.source = FALSE))
 
     attach(ESSR)

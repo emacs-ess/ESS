@@ -283,6 +283,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         )
     (cond
      ((string-match "^R" ess-dialect)
+      ;; carefully using syntax to be parsed in old R versions (no '::', '_'):
       (setq com-package-for-object "sub('package:', '', .ess.findFUN('%s'))\n"
             com-packages           ".packages(all.available=TRUE)\n"
             com-package-index      ".ess.help(package='%s', help.type='text')\n"
