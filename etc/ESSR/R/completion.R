@@ -1,6 +1,6 @@
 
 .ess_funargs <- function(funname) {
-    if(.essRversion() > '2.14.1') {
+    if(.ess.Rversion > '2.14.1') {
         comp <- compiler::enableJIT(0)
         olderr <- getOption('error')
         options(error=NULL)
@@ -47,7 +47,7 @@
 }
 
 .ess_get_completions <- function(string, end){
-    if(.essRversion() > '2.14.1'){
+    if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
         olderr <- getOption('error')
         options(error=NULL)

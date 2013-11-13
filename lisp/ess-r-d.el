@@ -637,7 +637,7 @@ returned."
 (defun ess-current-R-version ()
   "Get the version of R currently running in the ESS buffer as a string"
   (ess-make-buffer-current)
-  (car (ess-get-words-from-vector "as.character(getRversion())\n")))
+  (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
 
 (defun ess-current-R-at-least (version)
   "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
@@ -646,7 +646,7 @@ Examples: (ess-current-R-at-least '2.7.0)
   (ess-make-buffer-current)
   (string= "TRUE"
            (car (ess-get-words-from-vector
-                 (format "as.character(getRversion() >= \"%s\")\n" version)))))
+                 (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
 
 (defvar ess-temp-newest nil)
 
