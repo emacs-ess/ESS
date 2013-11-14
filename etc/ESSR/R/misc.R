@@ -12,9 +12,8 @@
 }
 
 
-## modified version of headtail from package "psych" by William Revelle
 ## Users might find it useful. So don't prefix with .ess.
-headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
+htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
 {
     if (is.data.frame(x) | is.matrix(x)) {
         if (nrow(x) <= tlength + hlength){
@@ -22,26 +21,34 @@ headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
         } else {
             if (is.matrix(x))
                 x <- data.frame(unclass(x))
-            nvar <- dim(x)[2]
-            dots <- rep("...", nvar)
-            h <- data.frame(head(x, hlength))
-            t <- data.frame(tail(x, tlength))
-            for (i in 1:nvar) {
-                if (is.numeric(h[1, i])) {
-                    h[i] <- round(h[i], digits)
-                    t[i] <- round(t[i], digits)
-                }
-                else {
-                    dots[i] <- NA
-                }
+            h <- head(x, hlength)
+            t <- tail(x, tlength)
+            f <- function(x) format(x, digits = digits)
+            for (i in 1:ncol(x)) {
+                h[[i]] <- f(h[[i]])
+                t[[i]] <- f(h[[i]])
             }
-            if (ellipsis) {
-                head.tail <- rbind(h, ... = dots, t)
-            }
-            else {
-                head.tail <- rbind(h, t)
-            }
-            print(head.tail)
+            ## summaries
+            snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
+            d <- " "
+            sumr <- sapply(x, function(c){
+                if(is.numeric(c))
+                    c(f(mean(c, na.rm = TRUE)),
+                      f(sd(c, na.rm = TRUE)), 
+                      f(min(c, na.rm = TRUE)), 
+                      f(max(c, na.rm = TRUE)),
+                      d,
+                      f(sum(is.na(c), na.rm = TRUE)))
+                else if(is.factor(c)) c(d, d, d, d, nlevels(c), sum(is.na(c)))
+                else rep.int(d, length(snames))
+            })
+            sumr <- as.data.frame(sumr)
+            row.names(sumr) <- snames
+            dots <- rep("...", ncol(x))
+            empty <- rep.int(" ", ncol(x))
+            lines <- rep.int(" ", ncol(x))
+            df <- rbind(h, ...= dots, t, `_____` = lines, sumr, ` ` = empty)
+            print(df)
         }
     } else {
         cat("head(", hlength, "):\n", sep = "")
