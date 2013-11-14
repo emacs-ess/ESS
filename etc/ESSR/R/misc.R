@@ -12,7 +12,8 @@
 }
 
 
-## taken literaly from package "psych" by William Revelle
+## modified version of headtail from package "psych" by William Revelle
+## Users might find it useful. So don't prefix with .ess.
 headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
 {
     if (is.data.frame(x) | is.matrix(x)) {
@@ -37,17 +38,14 @@ headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
         else {
             head.tail <- rbind(h, t)
         }
+        print(head.tail)
     }
     else {
-        h <- head(x, hlength)
-        t <- tail(x, tlength)
-        if (ellipsis) {
-            head.tail <- rbind(h, "...       ...", t)
-        }
-        else {
-            head.tail <- rbind(h, t)
-            head.tail <- as.matrix(head.tail)
-        }
+        cat("head(", hlength, "):\n", sep = "")
+        print(head(x, hlength))
+        cat("\ntail(", tlength, "):\n", sep = "")
+        print(tail(x, tlength))
+
     }
-    return(head.tail)
+    invisible(NULL)
 }
