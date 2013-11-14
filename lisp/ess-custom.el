@@ -226,9 +226,8 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
 
 (defcustom ess-R-describe-object-at-point-commands
   '(("str(%s)")
-    ("summary(%s)")
-    ("head(%s, n = 40)")
-    ("tail(%s, n = 40)"))
+    ("headtail(%s, hlength = 25, tlength = 25)")
+    ("summary(%s)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point.
 
