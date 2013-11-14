@@ -11,6 +11,7 @@ load.ESSR <- function(dir){
     Rver <-
         if(exists("getRversion", mode="function")) getRversion()
         else paste(R.version$major, R.version$minor, sep=".")
+
     oldR <- Rver <= "1.3.0"
 
     ESSR <-
@@ -25,6 +26,11 @@ load.ESSR <- function(dir){
 
     assign(".ess.Rversion", Rver, envir = ESSR)
 
+    ESSRver <- scan(paste(dirname(dir), "/VERSION", sep = ""),
+                    what = "character", quiet = TRUE)
+    assign(".ess.ESSRversion", ESSRver, envir = ESSR)
+
+
     ## .basic.R:
     .source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE)
 
@@ -34,11 +40,14 @@ load.ESSR <- function(dir){
             try(.source(f, envir = ESSR, keep.source = FALSE))
 
     if(Rver >= "2.4.0")
-	attach(ESSR)
+        attach(ESSR)
     else if(!oldR) { ## borrow from older library()
-	e <- attach(NULL, name = "ESSR")
-	.Internal(lib.fixup(ESSR, e))
+        e <- attach(NULL, name = "ESSR")
+        .Internal(lib.fixup(ESSR, e))
     } else { ## if(oldR), use as in that old library():
-	.Internal(lib.fixup(ESSR, .GlobalEnv))
+        .Internal(lib.fixup(ESSR, .GlobalEnv))
     }
+
+    ## BUILDESSR needs this:
+    invisible(ESSR)
 }
