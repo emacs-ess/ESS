@@ -17,9 +17,9 @@
 headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
 {
     if (is.data.frame(x) | is.matrix(x)) {
-        if(nrow(x) <= tlength + hlength){
+        if (nrow(x) <= tlength + hlength){
             print(x)
-        }else{
+        } else {
             if (is.matrix(x))
                 x <- data.frame(unclass(x))
             nvar <- dim(x)[2]
@@ -46,9 +46,10 @@ headtail <- function (x, hlength = 4, tlength = 4, digits = 2, ellipsis = TRUE)
     } else {
         cat("head(", hlength, "):\n", sep = "")
         print(head(x, hlength))
-        cat("\ntail(", tlength, "):\n", sep = "")
-        print(tail(x, tlength))
-
+        if(length(x) > tlength + hlength){
+            cat("\ntail(", tlength, "):\n", sep = "")
+            print(tail(x, tlength))
+        }
     }
     invisible(NULL)
 }
