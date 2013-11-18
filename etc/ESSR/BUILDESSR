@@ -1,7 +1,8 @@
+#!/usr/bin/Rscript
 ## -*- mode: R -*-
 ## code to build ESSR environemnt.
 ## Assume that current directory is etc/ESSR
-## run "Rscript BUILDESSR destdir" to create ESSR_<version>.rda in destdir
+## run "./BUILDESSR destdir" to create ESSR_<version>.rda in destdir
 ## where <version>  is picked form ./VERSION file
 
 
