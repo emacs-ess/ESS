@@ -91,7 +91,7 @@
   (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
   (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
   (define-key ess-transcript-mode-map "\C-c\C-t" 'ess-execute-in-tb)
-  (define-key ess-transcript-mode-map "\C-c\t"   'ess-complete-object-name)
+  (define-key ess-transcript-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
   (define-key ess-transcript-mode-map "\C-a"     'comint-bol)
   (define-key ess-transcript-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
   (define-key ess-transcript-mode-map "\M-?"     'comint-dynamic-list-completions)

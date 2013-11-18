@@ -226,9 +226,8 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
 
 (defcustom ess-R-describe-object-at-point-commands
   '(("str(%s)")
-    ("summary(%s)")
-    ("head(%s, n = 40)")
-    ("tail(%s, n = 40)"))
+    ("htsummary(%s, hlength = 20, tlength = 20)")
+    ("summary(%s)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point.
 
@@ -1879,7 +1878,7 @@ This format string should use %s to substitute an object name.")
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
 
-(defcustom inferior-ess-r-help-command ".ess_help(\"%s\", help_type=\"text\")\n"
+(defcustom inferior-ess-r-help-command ".ess.help(\"%s\", help.type=\"text\")\n"
   "Format-string for building the R command to ask for help on an object.
 
 This format string should use %s to substitute an object name.

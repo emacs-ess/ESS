@@ -1232,10 +1232,12 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (with-current-buffer (get-buffer-create (process-get proc 'accum-buffer-name))
         (goto-char (point-max))
         (insert string))
-      ;; Need this timer here.  Process might be waiting for user output
+      ;; Really need this timer here.  Process might be waiting for user output!!
       (when (timerp flush-timer)
+        ;; cancel the timer each time we enter the filter
         (cancel-timer flush-timer)
         (process-put proc 'flush-timer nil))
+      ;; ... and setup a new one
       (process-put proc 'flush-timer
                    (run-at-time .2 nil 'ess--flush-process-output-cache proc))
       (unless last-time ;; don't flush first time
@@ -1243,7 +1245,6 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (process-put proc 'last-flush-time new-time))
       (when (or is-ready
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
-                ;; (null last-time)
                 ;; flush periodically
                 (> (- new-time last-time) .6))
         (ess--flush-process-output-cache proc)))

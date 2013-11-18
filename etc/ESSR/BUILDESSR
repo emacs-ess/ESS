@@ -1,32 +1,18 @@
+#!/usr/bin/Rscript
 ## -*- mode: R -*-
 ## code to build ESSR environemnt.
-## run "Rscript BUILDESSR destdir version" to create ESSR_<version>.rda in destdir
-## assumes that current directory is etc/ESSR
+## Assume that current directory is etc/ESSR
+## run "./BUILDESSR destdir" to create ESSR_<version>.rda in destdir
+## where <version>  is picked form ./VERSION file
+
 
 args <- commandArgs(TRUE)
-dir <- args[[1]]
+dir <- if(length(args)) args[[1]] else "."
+ver <- scan("./VERSION", what = "character", quiet = TRUE)
+rda_file <- sprintf("%s/ESSR_%s.rda", dir, ver)
 
-out <- 
-    if( length(args) == 2 ){
-        sprintf("%s/ESSR_%s.rda", dir, args[[2]])
-    } else {
-        sprintf("%s/ESSR.rda", dir)
-    }
+## exactly as in ess--R-load-ESSR in ess-r-d.el
+source('./R/.load.R', local=TRUE)
+ESSR <- load.ESSR('./R/')
 
-ESSR <- new.env(parent = asNamespace("utils"))
-for( f in dir("R", full.names = TRUE) )
-    sys.source(f, envir = ESSR, keep.source = FALSE)
-
-save(ESSR, file = out)
-
-
-## for ess-r-d.el use:
-
-## local({
-##     ESSR <- new.env(parent = baseenv())
-##     system.time(for( f in dir('%s', pattern = '.R$') )
-##                 sys.source(f, envir = ESSR, keep.source = FALSE))
-##     attach(ESSR)
-## })
-
-
+save(ESSR, file = rda_file)

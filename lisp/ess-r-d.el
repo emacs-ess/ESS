@@ -193,12 +193,12 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-eval-command                  . ".ess_eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
-     (ess-eval-visibly-command          . ".ess_eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
-     (ess-eval-visibly-noecho-command   . ".ess_eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
-     (ess-load-command                  . ".ess_source(\"%s\", FALSE, FALSE)\n")
-     (ess-load-visibly-command          . ".ess_source(\"%s\", TRUE, TRUE, 300)\n")
-     (ess-load-visibly-noecho-command   . ".ess_source(\"%s\", FALSE, TRUE, 300)\n")
+     (ess-eval-command                  . ".ess.eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
+     (ess-eval-visibly-command          . ".ess.eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
+     (ess-eval-visibly-noecho-command   . ".ess.eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
+     (ess-load-command                  . ".ess.source(\"%s\", FALSE, FALSE)\n")
+     (ess-load-visibly-command          . ".ess.source(\"%s\", TRUE, TRUE, 300)\n")
+     (ess-load-visibly-noecho-command   . ".ess.source(\"%s\", FALSE, TRUE, 300)\n")
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
@@ -302,34 +302,34 @@ before ess-site is loaded) for it to take effect."))
 
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR"
-  (if (not (or (and (boundp 'ess-remote) ess-remote)
-               (file-remote-p (ess-get-process-variable 'default-directory))))
-      (ess-command
-       (format
-        "local({
-           ESSR <- new.env(parent = asNamespace('utils'))
-           for( f in dir('%s', full.names=TRUE) )
-               sys.source(f, envir = ESSR, keep.source = FALSE)
-           attach(ESSR)})\n"
-        (expand-file-name "ESSR/R" ess-etc-directory)))
-    ;; else, remote
-    (let* ((verfile (expand-file-name "ESSR/VERSION" ess-etc-directory))
-           (loadremote (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))
-           (version (if (file-exists-p verfile)
-                        (with-temp-buffer
-                          (insert-file-contents verfile)
-                          (buffer-string))
-                      (error "Cannot find ESSR source code")))
-           (r-load-code (with-temp-buffer
-                          (insert-file-contents loadremote)
-                          (buffer-string))))
-      (unless (ess-boolean-command (format r-load-code version))
-        ;; should not happen, unless extrem conditions (ancient R or failed download) 
-        (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
-        (let ((files (directory-files
-                      (expand-file-name "ESSR/R" ess-etc-directory)
-                      t "\\.R$")))
-          (mapc #'ess--inject-code-from-file files))))))
+  (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
+         (src-dir (expand-file-name "R" ESSR-directory)))
+             
+    (if (not (or (and (boundp 'ess-remote) ess-remote)
+                 (file-remote-p (ess-get-process-variable 'default-directory))))
+        (let ((cmd (format
+                    "local({
+                      source('%s/.load.R', local=TRUE) #define load.ESSR
+                      load.ESSR('%s')})\n"
+                    src-dir src-dir)))
+          (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+          (ess-command cmd))
+      ;; else, remote
+      (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
+             (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
+             (version (if (file-exists-p verfile)
+                          (with-temp-buffer
+                            (insert-file-contents verfile)
+                            (buffer-string))
+                        (error "Cannot find ESSR source code")))
+             (r-load-code (with-temp-buffer
+                            (insert-file-contents loadremote)
+                            (buffer-string))))
+        (unless (ess-boolean-command (format r-load-code version))
+          ;; should not happen, unless extrem conditions (ancient R or failed download)
+          (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
+          (let ((files (directory-files src-dir t "\\.R$")))
+            (mapc #'ess--inject-code-from-file files)))))))
 
 
 ;;;### autoload
@@ -637,7 +637,7 @@ returned."
 (defun ess-current-R-version ()
   "Get the version of R currently running in the ESS buffer as a string"
   (ess-make-buffer-current)
-  (car (ess-get-words-from-vector "as.character(getRversion())\n")))
+  (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
 
 (defun ess-current-R-at-least (version)
   "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
@@ -646,7 +646,7 @@ Examples: (ess-current-R-at-least '2.7.0)
   (ess-make-buffer-current)
   (string= "TRUE"
            (car (ess-get-words-from-vector
-                 (format "as.character(getRversion() >= \"%s\")\n" version)))))
+                 (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
 
 (defvar ess-temp-newest nil)
 
@@ -963,6 +963,7 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
+;; Hmm... shouldn't we keep and use this for R <= 2.6.x ???
 (make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
 
 (defun ess-R-get-rcompletions (&optional start end)

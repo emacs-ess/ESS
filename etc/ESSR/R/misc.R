@@ -1,5 +1,3 @@
-
-### WEAVING
 .ess_weave <- function(command, file, encoding = NULL){
     cmd_symb <- substitute(command)
     if(grepl('knit|purl', deparse(cmd_symb))) require(knitr)
@@ -13,3 +11,52 @@
         eval(bquote(.(cmd_symb)(.(file), encoding = .(encoding))), envir = frame)
 }
 
+
+## Users might find it useful. So don't prefix with .ess.
+htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
+{
+    if (is.data.frame(x) | is.matrix(x)) {
+        if (nrow(x) <= tlength + hlength){
+            print(x)
+        } else {
+            if (is.matrix(x))
+                x <- data.frame(unclass(x))
+            h <- head(x, hlength)
+            t <- tail(x, tlength)
+            f <- function(x) format(x, digits = digits)
+            for (i in 1:ncol(x)) {
+                h[[i]] <- f(h[[i]])
+                t[[i]] <- f(h[[i]])
+            }
+            ## summaries
+            snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
+            d <- " "
+            sumr <- sapply(x, function(c){
+                if(is.numeric(c))
+                    c(f(mean(c, na.rm = TRUE)),
+                      f(sd(c, na.rm = TRUE)), 
+                      f(min(c, na.rm = TRUE)), 
+                      f(max(c, na.rm = TRUE)),
+                      d,
+                      f(sum(is.na(c), na.rm = TRUE)))
+                else if(is.factor(c)) c(d, d, d, d, nlevels(c), sum(is.na(c)))
+                else rep.int(d, length(snames))
+            })
+            sumr <- as.data.frame(sumr)
+            row.names(sumr) <- snames
+            dots <- rep("...", ncol(x))
+            empty <- rep.int(" ", ncol(x))
+            lines <- rep.int(" ", ncol(x))
+            df <- rbind(h, ...= dots, t, `_____` = lines, sumr, ` ` = empty)
+            print(df)
+        }
+    } else {
+        cat("head(", hlength, "):\n", sep = "")
+        print(head(x, hlength))
+        if(length(x) > tlength + hlength){
+            cat("\ntail(", tlength, "):\n", sep = "")
+            print(tail(x, tlength))
+        }
+    }
+    invisible(NULL)
+}
