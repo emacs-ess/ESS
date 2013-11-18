@@ -2056,61 +2056,31 @@ for `ess-eval-region'."
   (if (or ess-developer
           (ess-get-process-variable  'ess-developer))
       (ess-developer-source-current-file filename)
-    (if (fboundp (ess-process-get 'source-file-function))
-        (funcall (ess-process-get 'source-file-function))
-
+    (let ((filename (if (and (fboundp 'tramp-tramp-file-p)
+                             (tramp-tramp-file-p filename))
+                        (tramp-file-name-localname (tramp-dissect-file-name filename))
+                      filename)))
       (if ess-microsoft-p
           (setq filename (ess-replace-in-string filename "[\\]" "/")))
-      (let ((source-buffer (get-file-buffer filename)))
-        (if (ess-check-source filename)
-            (error "Buffer %s has not been saved" (buffer-name source-buffer)))
-        ;; else
-        (if (ess-ddeclient-p)
-            (ess-load-file-ddeclient filename)
+      (if (fboundp (ess-process-get 'source-file-function))
+         (funcall (ess-process-get 'source-file-function) filename)
+       (let ((source-buffer (get-file-buffer filename)))
+         (if (ess-check-source filename)
+             (error "Buffer %s has not been saved" (buffer-name source-buffer)))
+         ;; else
+         (if (ess-ddeclient-p)
+             (ess-load-file-ddeclient filename)
 
-          ;; else: "normal", non-DDE behavior:
-
-          ;; Find the process to load into
-          (if source-buffer
-              (with-current-buffer source-buffer
-                (ess-force-buffer-current "Process to load into: ")
-                (ess-check-modifications)))
-          (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-                (filename (if (and (fboundp 'tramp-tramp-file-p)
-                                   (tramp-tramp-file-p filename))
-                              (tramp-file-name-localname (tramp-dissect-file-name filename))
-                            filename))
-                error-occurred nomessage)
-            (ess-eval-linewise (format ess-load-command filename))
-            ;; (with-current-buffer errbuffer
-            ;;   (goto-char (point-max))
-            ;;   (setq error-occurred (re-search-backward ess-dump-error-re nil t))
-            ;;   (setq nomessage (= (buffer-size) 0)))
-            ;; (if error-occurred
-            ;;     (message "Errors: Use %s to find error."
-            ;;              (substitute-command-keys
-            ;;               "\\<inferior-ess-mode-map>\\[ess-parse-errors]"))
-            ;;   ;; Load did not cause an error
-            ;;   (if nomessage (message "Load successful.")
-            ;;     ;; There was a warning message from S
-            ;;     (ess-display-temp-buffer errbuffer))
-            ;;   ;; Consider deleting the file
-            ;;   (let ((skdf (if source-buffer
-            ;;                   (with-current-buffer source-buffer
-            ;;                     ess-keep-dump-files)
-            ;;                 ess-keep-dump-files))) ;; global value
-            ;;     (cond
-            ;;      ((null skdf)
-            ;;       (delete-file filename))
-            ;;      ((memq skdf '(check ask))
-            ;;       (let ((doit (y-or-n-p (format "Delete %s " filename))))
-            ;;         (if doit (delete-file filename))
-            ;;         (and source-buffer
-            ;;              (local-variable-p 'ess-keep-dump-files source-buffer)
-            ;;              (with-current-buffer source-buffer
-            ;;                (setq ess-keep-dump-files doit)))))))
-            ;;   (ess-switch-to-ESS t))
-            ))))))
+           ;; else: "normal", non-DDE behavior:
+           ;; Find the process to load into
+           (if source-buffer
+               (with-current-buffer source-buffer
+                 (ess-force-buffer-current "Process to load into: ")
+                 (ess-check-modifications)))
+           (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+                 error-occurred nomessage)
+             (ess-eval-linewise (format ess-load-command filename))
+             )))))))
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()
