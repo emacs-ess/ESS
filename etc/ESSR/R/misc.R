@@ -15,7 +15,7 @@
 ## Users might find it useful. So don't prefix with .ess.
 htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
 {
-    ## fixme: fimplify and generalize
+    ## fixme: simplify and generalize
     snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
     d <- " "
     num_sumr <- function(x){
@@ -68,6 +68,11 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         cat("_____\n")
         if(is.numeric(x) || is.logical(x))
             print(structure(num_sumr(x), names = snames), quote = FALSE)
+        else if(is.factor(x)){
+            cat("NAs: ", sum(is.na(x), na.rm = TRUE), "\n")
+            cat("levels: \n")
+            print(levels(x))
+        }
     }
     invisible(NULL)
 }
