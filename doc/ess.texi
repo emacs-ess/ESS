@@ -492,11 +492,11 @@ program on remote computer is to start it with tramp. Require tramp in your .ema
 @code{(require 'tramp)}
 
 Now start an ssh session with @samp{C-x f /ssh:user@@host: RET}. Tramp
-shoul open a dired buffer in your remote home directory. Now call your
+should open a dired buffer in your remote home directory. Now call your
 favorite ESS process (@code{R}, @code{Julia}, @code{stata} etc) as you
 would usually do on local machine: @code{M-x R}.
 
-Alternatively you can start your process nomrally (@code{M-x R}). After
+Alternatively you can start your process normally (@code{M-x R}). After
 you are asked for starting directory, simply type @samp{/ssh:user@@host:
 RET}. R process will be started on the remote machine.
 
@@ -611,7 +611,7 @@ the ESS process by entering
 @samp{Splus} or @samp{R} or @samp{sas -stdio}
 as appropriate.  If you can login remotely to your Windows 2000, then
 you should be able to run @samp{Sqpe} on the Windows machine.  I haven't
-tested this and noone has reported their tests to me.  You will not be
+tested this and no-one has reported their tests to me.  You will not be
 able to run the GUI through this text-only connection.
 
 @item Once you get the S or R or SAS prompt, then you are completely connected.
@@ -827,7 +827,7 @@ visible, use
 @cindex reading long command outputs
 @kbd{C-c C-r} (@code{comint-show-output}),
 @findex comint-show-output
-which moves cursor to the previous command line and and places it at the
+which moves cursor to the previous command line and places it at the
 top of the window.
 
 Finally, if you want to discard the last command output altogether, use
@@ -1274,7 +1274,7 @@ The @var{reset} argument specifies restarting from the beginning.
 @deffn Command ess-display-help-on-object @var{object} @var{command}
 @kindex C-c C-v
 @kbd{C-c C-v} Pops up a help buffer for an @Sl{} @var{object} or
-function.  If @var{command} is suplied, it is used instead of
+function.  If @var{command} is supplied, it is used instead of
 @code{inferior-ess-help-command}.  See @ref{Help} for more details.
 @end deffn
 
