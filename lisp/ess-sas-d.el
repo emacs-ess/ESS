@@ -213,22 +213,22 @@ Better logic needed!  (see 2 uses, in this file).")
   (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
 
-                                        ; this is a mess
-                                        ; interactive and batch commands share sas-mode-local-map,
-                                        ; but the associated commands are very different
-                                        ; what would be better is two maps like
-                                        ; sas-batch-mode-local-map and sas-interactive-mode-local-map
-                                        ; or smart function definitions that would do the appropriate
-                                        ; thing for either batch or interactive sessions
-                                        ; however, neither of these solutions are planned
-                                        ; therefore, no key definitions can be shared between
-                                        ; batch and interactive at this time, hence the lines that
-                                        ; are commented below:  uncomment at your own risk
-                                        ;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
-                                        ;  (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
-                                        ;  (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)
-                                        ;  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
-                                        ;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
+  ;; this is a mess
+  ;; interactive and batch commands share sas-mode-local-map,
+  ;; but the associated commands are very different
+  ;; what would be better is two maps like
+  ;; sas-batch-mode-local-map and sas-interactive-mode-local-map
+  ;; or smart function definitions that would do the appropriate
+  ;; thing for either batch or interactive sessions
+  ;; however, neither of these solutions are planned
+  ;; therefore, no key definitions can be shared between
+  ;; batch and interactive at this time, hence the lines that
+  ;; are commented below:  uncomment at your own risk
+  ;;  (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  ;;  (define-key sas-mode-local-map "\C-c\C-b" 'ess-sas-submit)
+  ;;  (define-key sas-mode-local-map "\C-c\C-r" 'ess-sas-submit-region)
+  ;;  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
+  ;;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
 
   (use-local-map sas-mode-local-map)
 
