@@ -23,6 +23,7 @@ Leading comments are automatically removed before the evaluation.
 https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn on SAS log mode
 and SAS listing mode when appropriate.  Indent comments more
 appropriately. Indent CARDS more appropriately.
+@item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} default returns to @code{nil}
 @item @ESS{[R]} support for @code{prettify-symbols-mode}
 A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pull/65}
 @item @ESS{[SWV]} knitr now evaluates in the current frame
