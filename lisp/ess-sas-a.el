@@ -1302,7 +1302,7 @@ Else
     (define-key sas-mode-local-map [return] 'newline-and-indent)
     (define-key sas-mode-local-map "\t" 'sas-indent-line)))
 
-(defvar ess-sas-edit-keys-toggle t
+(defvar ess-sas-edit-keys-toggle nil
   "Toggle TAB/RET key in `SAS-mode'.
 nil binds TAB to `sas-indent-line' and RET to `newline-and-indent'.
 Non-nil binds TAB to `ess-sas-tab-to-tab-stop',
