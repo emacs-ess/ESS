@@ -52,6 +52,7 @@
 (autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
+(autoload 'ess-with-current-buffer      "ess-inf" "[autoload]" t)
 
 (autoload 'ess-goto-beginning-of-function-or-para    "ess-mode" "[autoload]" t)
 (autoload 'ess-goto-end-of-function-or-para          "ess-mode" "[autoload]" t)

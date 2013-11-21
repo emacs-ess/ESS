@@ -1197,7 +1197,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
-         (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
+         (prompt-replace-regexp "\\(^> \\|^\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          (new-time (float-time))
          (last-time (process-get proc 'last-flush-time))
@@ -1724,7 +1724,8 @@ ARGS are ignored to allow using this function in process hooks."
 
 (defun ess--tb-R-source-current-file (&optional filename)
   "Save current file and source it in the .R_GlobalEnv environment."
-  ;; make it more elaborate :todo:
+  ;; fixme: this sucks as it doesn't use ess-load-command and the whole thing
+  ;; seems redundand to the ess-load-file
   (interactive)
   (ess-force-buffer-current "R process to use: ")
   (let ((proc (get-process ess-local-process-name))
@@ -1733,7 +1734,7 @@ ARGS are ignored to allow using this function in process hooks."
             (ess-get-process-variable 'ess-developer))
         (ess-developer-source-current-file filename)
       (if (not file)
-          ;; source the buffer content, org-mode scratch for ex.
+          ;; source the buffer content, org-mode, *scratch* etc.
           (let ((ess-inject-source t))
             (ess-tracebug-send-region proc (point-min) (point-max) nil
                                       (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
@@ -1741,8 +1742,8 @@ ARGS are ignored to allow using this function in process hooks."
         (save-selected-window
           (ess-switch-to-ESS t))
         (ess-send-string (get-process ess-current-process-name)
-                         (concat "\ninvisible(eval({source(file=\"" buffer-file-name
-                                 "\")\n cat(\"Sourced file '" buffer-file-name "'\\n\")}, env=globalenv()))"))))))
+                         (concat "\ninvisible(eval({source(file=\"" filename
+                                 "\")\n cat(\"Sourced file '" filename "'\\n\")}, env=globalenv()))"))))))
 
 ;;;_ + BREAKPOINTS
 

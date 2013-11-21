@@ -15,6 +15,19 @@
 ## Users might find it useful. So don't prefix with .ess.
 htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
 {
+    ## fixme: simplify and generalize
+    snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
+    d <- " "
+    num_sumr <- function(x){
+        c(f(mean(x, na.rm = TRUE)),
+          f(sd(x, na.rm = TRUE)),
+          f(min(x, na.rm = TRUE)),
+          f(max(x, na.rm = TRUE)),
+          d,
+          f(sum(is.na(x), na.rm = TRUE)))
+    }
+    f <- function(x) format(x, digits = digits)
+
     if (is.data.frame(x) | is.matrix(x)) {
         if (nrow(x) <= tlength + hlength){
             print(x)
@@ -23,22 +36,17 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
                 x <- data.frame(unclass(x))
             h <- head(x, hlength)
             t <- tail(x, tlength)
-            f <- function(x) format(x, digits = digits)
             for (i in 1:ncol(x)) {
                 h[[i]] <- f(h[[i]])
                 t[[i]] <- f(h[[i]])
             }
             ## summaries
-            snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
-            d <- " "
             sumr <- sapply(x, function(c){
+                if(is.logical(c))
+                    ## treat logical as numeric; it's harmless
+                    c <- as.integer(c)
                 if(is.numeric(c))
-                    c(f(mean(c, na.rm = TRUE)),
-                      f(sd(c, na.rm = TRUE)), 
-                      f(min(c, na.rm = TRUE)), 
-                      f(max(c, na.rm = TRUE)),
-                      d,
-                      f(sum(is.na(c), na.rm = TRUE)))
+                    num_sumr(c)
                 else if(is.factor(c)) c(d, d, d, d, nlevels(c), sum(is.na(c)))
                 else rep.int(d, length(snames))
             })
@@ -56,6 +64,14 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         if(length(x) > tlength + hlength){
             cat("\ntail(", tlength, "):\n", sep = "")
             print(tail(x, tlength))
+        }
+        cat("_____\n")
+        if(is.numeric(x) || is.logical(x))
+            print(structure(num_sumr(x), names = snames), quote = FALSE)
+        else if(is.factor(x)){
+            cat("NAs: ", sum(is.na(x), na.rm = TRUE), "\n")
+            cat("levels: \n")
+            print(levels(x))
         }
     }
     invisible(NULL)
