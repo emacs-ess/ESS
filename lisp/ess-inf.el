@@ -570,10 +570,7 @@ This marks the process with a message, at a particular time point."
   (let* ((def-dir (file-name-as-directory default))
          (the-dir (expand-file-name
                    (file-name-as-directory
-                    (if (fboundp 'read-directory-name)
-                        ;; use XEmacs' read-directory-name if exists.
-                        (read-directory-name prompt def-dir def-dir t nil)
-                      (read-file-name prompt def-dir def-dir t nil))))))
+                    (read-directory-name prompt def-dir def-dir t nil)))))
     (if (file-directory-p the-dir) nil
       (error "%s is not a valid directory" the-dir))
     the-dir))
