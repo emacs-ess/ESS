@@ -1197,7 +1197,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
-         (prompt-replace-regexp "\\(^> \\|\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
+         (prompt-replace-regexp "\\(^> \\|^\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          (new-time (float-time))
          (last-time (process-get proc 'last-flush-time))
