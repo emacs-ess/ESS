@@ -26,17 +26,20 @@
 ### SOURCING
 .ess.eval <- function(string, echo = TRUE, print.eval = TRUE,
                       max.deparse.length = 300,
-                      file = tempfile("ESS"), local = parent.frame()){
+		      file = tempfile("ESS"),
+		      local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
+{
     ## create FILE, put string into it. Then source.
     ## arguments are like in source and .ess.source
     cat(string, file = file)
     on.exit(file.remove(file))
     .ess.source(file, echo = echo, print.eval = print.eval,
-                max.deparse.length = max.deparse.length, local = local)
+		max.deparse.length = max.deparse.length, local = local)
 }
 
 .ess.source <- function(file, echo = TRUE, print.eval = TRUE,
-                        max.deparse.length = 300, local = parent.frame())
+			max.deparse.length = 300,
+			local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
 {
     ss <- # drop 'keep.source' for older versions
 	if(.ess.Rversion >= "2.8") .ess.sourceFUN
