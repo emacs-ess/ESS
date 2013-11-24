@@ -217,7 +217,7 @@ Return new command, a string."
 
        (when remote
          ;; get local name (should this be done in process buffer?)
-         (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
+         (setq tmpfile (with-parsed-tramp-file-name tmpfile foo foo-localname)))
        
        (if (not filename)
            (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
