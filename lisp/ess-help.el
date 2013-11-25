@@ -992,7 +992,8 @@ option for other dialects)."
              (command (and keys (key-binding keys))))
         (when (and (commandp command)
                    (bufferp buf)
-                   (not (string-match "window" (symbol-name command))))
+                   (or (not (symbolp command)) ;; kill on lambdas
+                       (not (string-match "window" (symbol-name command)))))
           (kill-buffer buf)) ;; bury does not work here :( (emacs bug?)
         (setq unread-command-events
               (append keys unread-command-events)))
