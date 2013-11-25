@@ -1105,23 +1105,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (mapcar (lambda (a) (concat a ess-ac-R-argument-suffix))
               args))))
 
-;; (defun ess-ac-action-args ()
-;;   (when (looking-back "=")
-;;     (delete-char -1)
-;;     (insert " = ")))
-
-
 (defun ess-ac-help-arg (sym)
   "Help string for ac."
   (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
-  (let ((buff (get-buffer-create " *ess-command-output*"))
-        (fun (car ess--funname.start))
-        doc)
-    (ess-command (format ess--ac-help-arg-command sym fun) buff)
-    (with-current-buffer buff
+  (let ((fun (car ess--funname.start)))
+    (with-current-buffer (ess-command (format ess--ac-help-arg-command sym fun))
       (goto-char (point-min))
       (forward-line)
-      (setq doc (buffer-substring-no-properties (point) (point-max))))))
+      (buffer-substring-no-properties (point) (point-max)))))
 
 
 (defvar ess--ac-help-arg-command
