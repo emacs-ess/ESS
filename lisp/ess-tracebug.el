@@ -1216,15 +1216,14 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; insert \n after the prompt when necessary
       (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
       (unless last-time
-        ;; insert new line after previous proompt(s)
-        ;; very slow! Probably because of some comint interaction.
-        ;; Do it on first entry after a flush and only if current column is > 50
+        ;; Insert new line after previous proompt(s). Very slow in long comint
+        ;; buffers. Probably because of some comint interaction. So, do it on
+        ;; first entry after a flush.
         (with-current-buffer pbuf
          (save-excursion
            (let ((pmark (process-mark proc)))
              (goto-char pmark)
-             (when (and (> (current-column) 50)
-                        (looking-back inferior-ess-primary-prompt))
+             (when (looking-back inferior-ess-primary-prompt)
                (insert "\n")
                (set-marker pmark (point)))))))
 
