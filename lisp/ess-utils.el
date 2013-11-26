@@ -1007,6 +1007,12 @@ directory (.cpp, .c etc)."
 FTags file (default TAGS): ")
   (when (eq (length (file-name-nondirectory tagfile)) 0)
     (setq tagfile (concat tagfile "TAGS")))
+  ;; emacs find-tags doesn't play well with remote TAG files :(
+  (when (file-remote-p tagfile)
+    (require 'tramp)
+    (setq tagfile (with-parsed-tramp-file-name tagfile foo foo-localname)))
+  (when (file-remote-p dir)
+    (setq dir (with-parsed-tramp-file-name dir foo foo-localname)))
   (if (and ess-build-tags-command (null current-prefix-arg))
       (ess-eval-linewise (format ess-build-tags-command dir tagfile))
     ;; else generate from imenu
