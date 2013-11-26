@@ -15,13 +15,17 @@ system.time(print(y))
 ##  user  system elapsed 
 ## 0.059   0.010   0.070  -- MM@lynne R CMD BATCH
 ##  user  system elapsed 
-## 0.124   0.097  52.540  -- MM@lynne ESS svn r 5909; incl font-locking, tracebug)
+## 0.124   0.097  52.540  -- MM@lynne ESS svn r 5909; incl font-locking, tracebug
+## 0.128   0.080  57.305       ditto
+## 0.139   0.088  54.770  -- sfs@lynne ESS 13.09 (emacs 24.3.1 GTK+)
 
 set.seed(23456)
 y <- mkCh(50000)
 system.time(print(y))
-##  user  system elapsed 
-## 0.255   0.089   0.345  -- BATCH MM@lynne
+##  user   system  elapsed 
+## 0.255    0.089    0.345  -- BATCH MM@lynne
+## 0.685    0.369 1664.557  -- MM@lynne ESS svn r 5909 ...
+## 0.760    0.398 1643.608  -- ..@lynne ESS 13.09
 
 ## Don't even think of trying this with ESS, currently:
 y <- mkCh(200000)
