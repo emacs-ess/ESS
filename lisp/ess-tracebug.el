@@ -1215,17 +1215,6 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; FIXME: this should be in comint filters!!
       ;; insert \n after the prompt when necessary
       (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
-      (unless last-time
-        ;; Insert new line after previous proompt(s). Very slow in long comint
-        ;; buffers. Probably because of some comint interaction. So, do it on
-        ;; first entry after a flush.
-        (with-current-buffer pbuf
-         (save-excursion
-           (let ((pmark (process-mark proc)))
-             (goto-char pmark)
-             (when (looking-back inferior-ess-primary-prompt)
-               (insert "\n")
-               (set-marker pmark (point)))))))
 
       ;; replace long prompts
       (when inferior-ess-replace-long+
@@ -1245,6 +1234,22 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (process-put proc 'flush-timer
                    (run-at-time .2 nil 'ess--flush-process-output-cache proc))
 
+      (when (or (null last-time)
+                (> (- new-time last-time) .5))
+
+        ;; Very slow in long comint buffers. Probably because of some comint
+        ;; interaction. Not a reall issue, as it is executed periodically
+        ;; or only on first output after a command.
+
+        (with-current-buffer pbuf
+          (save-excursion
+            (let ((pmark (process-mark proc)))
+              (goto-char pmark)
+              (when (looking-back inferior-ess-primary-prompt)
+                (insert-before-markers "\n")
+                (set-marker pmark (point)))))))
+
+
       (unless last-time ;; don't flush first time
         (setq last-time new-time)
         (process-put proc 'last-flush-time new-time))
@@ -1253,6 +1258,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
                 ;; flush periodically
                 (> (- new-time last-time) .6))
+
         (ess--flush-process-output-cache proc)))
 
     ;; WATCH
