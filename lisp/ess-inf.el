@@ -220,7 +220,7 @@ Alternatively, it can appear in its own frame if
       (if startdir (setq default-directory startdir))
 
       ;; the following was part of ess-multi;
-      
+
       (let* ((ess-directory (or startdir
                                 ess-directory))
              (infargs (or ess-start-args
@@ -230,11 +230,11 @@ Alternatively, it can appear in its own frame if
              (proc (get-process procname)))
         (if inferior-ess-own-frame
             (setq special-display-regexps '(".")))
-        ;; If ESS process NAME is running, switch to it 
+        ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             ;; fixme: when does this happen?
             (pop-to-buffer (process-buffer proc))
-          
+
           ;; Otherwise, crank up a new process
           (let* ((symbol-string
                   (concat "inferior-" inferior-ess-program "-args"))
@@ -304,7 +304,7 @@ Alternatively, it can appear in its own frame if
             ;; set accumulation buffer name (buffer to cache output for faster display)
             (process-put (get-process procname) 'accum-buffer-name
                          (format " *%s:accum*" procname))
-            
+
 
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function)
@@ -322,7 +322,7 @@ Alternatively, it can appear in its own frame if
 
           (with-current-buffer buf
             (rename-buffer buf-name-str t))
-          
+
           (if (and inferior-ess-same-window (not inferior-ess-own-frame))
               (switch-to-buffer buf)
             (pop-to-buffer buf)))))))
@@ -2161,22 +2161,22 @@ for `ess-eval-region'."
     "------"
     ("Utils"
      ;; need a toggle switch for above, AJR.
-     ["Attach directory"       ess-execute-attach            t]
-     ["Display object list"    ess-execute-objects           t]
-     ["Display search list"    ess-execute-search            t]
-     ["Edit S Object"    ess-dump-object-into-edit-buffer   t]
-     ["Enter S command"        ess-execute                   t]
-     ["Jump to Error"  ess-parse-errors                      t]
-     ["Load source file" ess-load-file                      t]
-     ["Resynch S completions"  ess-resynch                   t]
+     ["Attach directory"        ess-execute-attach      t]
+     ["Display object list"     ess-execute-objects	t]
+     ["Display search list"     ess-execute-search	t]
+     ["Edit S Object"	ess-dump-object-into-edit-buffer t]
+     ["Enter S command"         ess-execute             t]
+     ["Jump to Error"           ess-parse-errors        t]
+     ["Load source file"  	ess-load-file           t]
+     ["Resynch S completions"	ess-resynch		t]
      )
     "------"
-    ("start-dev" :visible nil)
+    ("start-dev" :visible nil); <-- ??
     ("end-dev" :visible nil)
     "------"
     ("Font Lock"
      :active inferior-ess-font-lock-keywords
-     :filter ess-generate-font-lock-submenu)
+     :filter ess--generate-font-lock-submenu)
     "------"
     ["Describe"         describe-mode                       t]
     ["Send bug report"  ess-submit-bug-report               t]

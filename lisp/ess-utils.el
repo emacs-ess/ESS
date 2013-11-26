@@ -112,7 +112,7 @@ POS defaults to point if no value is given."
             (buffer-list)))))
 
 
-(defun ess-generate-font-lock-submenu (menu)
+(defun ess--generate-font-lock-submenu (menu)
   "Internal, used to generate ESS font-lock submenu"
   (append (mapcar (lambda (el)
                     `[,(symbol-name (car el))
@@ -974,12 +974,12 @@ and y-offsets for the toolbar from point."
 ;; (defun ess-tooltip-show-at-point (text xo yo)
 ;;   (with-no-warnings
 ;;     (pos-tip-show text
-;;                   'popup-tip-face 
+;;                   'popup-tip-face
 ;;                   (point)
 ;;                   nil tooltip-hide-delay
 ;;                   popup-tip-max-width
 ;;                   nil xo yo)))
-      
+
 
 (defvar ess-build-tags-command nil
   "Command passed to generate tags.
@@ -988,7 +988,7 @@ If nil, `ess-build-tags-for-directory' uses the mode's imenu
 regexpresion. Othersiwe, it should be a string with two %s
 formats: one for directory and another for the output file.")
 
-  
+
 (defun ess-build-tags-for-directory (dir tagfile)
   "Ask for directory and tag file and build tags for current dialect.
 
@@ -1003,7 +1003,7 @@ append/replace the currently used tag table.
 If prefix is given, force tag generation based on imenu. Might be
 useful when different language files are also present in the
 directory (.cpp, .c etc)."
-  (interactive "DDirectory to tag: 
+  (interactive "DDirectory to tag:
 FTags file (default TAGS): ")
   (when (eq (length (file-name-nondirectory tagfile)) 0)
     (setq tagfile (concat tagfile "TAGS")))
@@ -1033,7 +1033,7 @@ FTags file (default TAGS): ")
       ;; (dbg (format "%s | %s" find-cmd tags-cmd))
       (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
         (message "Building tags .. ok!")))))
-      
+
 
 (defun ess-function-arguments (funname &optional proc)
   "Get FUNARGS from cache or ask the process for it.
@@ -1054,7 +1054,7 @@ is a special name that contains :,$ or @.
 If PROC is given, it should be an ESS process which should be
 queried for arguments.
 "
-  
+
   (when (and funname ;; usually returned by ess--funname.start (might be nil)
              (or proc (ess-process-live-p)))
     (let* ((proc (or proc (get-process ess-local-process-name)))

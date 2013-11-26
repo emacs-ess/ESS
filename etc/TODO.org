@@ -100,3 +100,5 @@ Some functions have no useful argument information to report and they
 should simply be ignored.  Ideally, this feature would be customizable
 so that each user could add their unfavorite functions.  To start, I
 would put suggest: (), c(), list(), sqrt(), t()
+** TODO ess-doc-map, ess-extra-map, and ess-dev-map  are present "everywhere"
+  notably in ess-help, inferior-ess, and ess-mode
