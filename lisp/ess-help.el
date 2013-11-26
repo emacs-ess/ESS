@@ -143,8 +143,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
    (progn
      (ess-force-buffer-current)
      (when current-prefix-arg ;update cache if prefix
-       (with-current-buffer (process-buffer (ess-get-process ess-current-process-name))
-         (ess-process-put 'sp-for-help-changed? t)))
+       (ess-process-put 'sp-for-help-changed? t))
      (if (ess-ddeclient-p)
          (list (read-string "Help on: "))
        (list (ess-find-help-file "Help on")))))
@@ -887,16 +886,8 @@ return it.  Otherwise, return `ess-help-topics-list'."
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
-  (let ((readrds (if (ess-current-R-at-least "2.13.0")
-                     "readRDS"
-                   ".readRDS")))
-    (apply 'nconc
-           (mapcar (lambda (str)
-                     (let ((a-file (concat str "/help/aliases.rds")))
-                       (and (file-exists-p a-file)
-                            (ess-get-words-from-vector
-                             (format "names(%s(\"%s\"))\n" readrds a-file)))))
-                   (ess-get-words-from-vector "searchpaths()\n")))))
+  (ess-write-to-dribble-buffer "Processing RDS files ...\n")
+  (ess-get-words-from-vector ".ess.getHelpAliases()\n"))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."

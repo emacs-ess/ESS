@@ -23,6 +23,19 @@
 	.ess.helpFUN(..., htmlhelp = (length(help.type) && help.type=='html'))
 }
 
+.ess.getHelpAliases <- function(){
+    readrds <-
+        if(.ess.Rversion >= '2.13.0') readRDS
+        else .readRDS
+    rds_files <- paste(searchpaths(), "/help/aliases.rds", sep = "")
+    unlist(lapply(rds_files,
+                  function(f){
+                      if( file.exists(f) )
+                          try(names(readrds(f)))
+                  }),
+           use.names = FALSE)
+}
+
 ### SOURCING
 .ess.eval <- function(string, echo = TRUE, print.eval = TRUE,
                       max.deparse.length = 300,
