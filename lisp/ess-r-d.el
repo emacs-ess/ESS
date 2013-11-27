@@ -313,7 +313,10 @@ before ess-site is loaded) for it to take effect."))
                       load.ESSR('%s')})\n"
                     src-dir src-dir)))
           (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
-          (ess-command cmd))
+          (with-current-buffer (ess-command cmd)
+            (let ((msg (buffer-string)))
+              (when (> (length msg) 1)
+                (message (format "load ESSR: %s" msg))))))
       ;; else, remote
       (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
              (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
