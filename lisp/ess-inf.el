@@ -3257,11 +3257,14 @@ list."
 subprocess and Emacs buffer `default-directory'."
   (interactive "DChange working directory to: ")
   (if ess-setwd-command
-      (let ((path (or (and (file-remote-p path)
-                           (require 'tramp)
-                           (with-parsed-tramp-file-name path v v-localname))
+      (let* ((remote (file-remote-p path))
+             (path (if remote
+                       (tramp-sh-handle-expand-file-name path)
+                     path))
+             (lpath (if remote
+                        (with-parsed-tramp-file-name path v v-localname)
                       path)))
-        (ess-eval-linewise (format ess-setwd-command path))
+        (ess-eval-linewise (format ess-setwd-command lpath))
         ;; use file-name-as-directory to ensure it has trailing /
         (setq default-directory (file-name-as-directory path)))
     (unless no-error
