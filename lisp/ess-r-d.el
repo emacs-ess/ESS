@@ -134,7 +134,7 @@
     ["Watch" ess-watch  (and (ess-process-live-p)
                              (ess-process-get 'tracebug))]
     ["Error action cycle" ess-debug-toggle-error-action (and (ess-process-live-p)
-                                                           (ess-process-get 'tracebug))]
+                                                             (ess-process-get 'tracebug))]
     "----"
     ["Flag for debugging" ess-debug-flag-for-debugging ess-local-process-name]
     ["Unflag for debugging" ess-debug-unflag-for-debugging ess-local-process-name]
@@ -304,7 +304,7 @@ before ess-site is loaded) for it to take effect."))
   "Load/INSTALL/Update ESSR"
   (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" ESSR-directory)))
-             
+
     (if (not (or (and (boundp 'ess-remote) ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
         (let ((cmd (format
@@ -325,10 +325,15 @@ before ess-site is loaded) for it to take effect."))
              (r-load-code (with-temp-buffer
                             (insert-file-contents loadremote)
                             (buffer-string))))
+        (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
+                                             verfile loadremote))
         (unless (ess-boolean-command (format r-load-code version))
-          ;; should not happen, unless extrem conditions (ancient R or failed download)
-          (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
-          (let ((files (directory-files src-dir t "\\.R$")))
+          (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+                (files (directory-files src-dir t "\\.R$")))
+            (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
+            ;; should not happen, unless extrem conditions (ancient R or failed download))
+            (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
+            (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
             (mapc #'ess--inject-code-from-file files)))))))
 
 
