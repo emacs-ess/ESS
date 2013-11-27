@@ -356,11 +356,10 @@ The following section details those steps necessary to get ESS running
 on your system.
 
 @menu
-* Unix installation::           Installing ESS on your Unix (Linux/Mac OS X/etc.) system
-* Microsoft Windows installation::  Installing ESS on your MS Windows system
+* Step by step instructions::
 * License::
 * Stability::
-* Requirements::                Emacs, Operating Systems and Statistical Packages
+* Requirements::
 @end menu
 
 @c FIXME: the following contains @node s  *and* is also included by readme.texi
@@ -368,13 +367,9 @@ on your system.
 @c         ==> *must* give node pointer problems!
 @c @include inst_tar.texi
 
-@node Unix installation
-@section Unix (Linux/Mac OS X/Solaris/etc.) Installation
-@include unixlike.texi
-
-@node Microsoft Windows installation
-@section Microsoft Windows installation
-@include windows.texi
+@node Step by step instructions
+@section Step by step instructions
+@include installation.texi
 
 @node License
 @section License
