@@ -10,7 +10,7 @@
     if( exists("getRversion", mode="function") ){
         getRversion()
     } else {
-     paste(R.version$major, R.version$minor, sep=".")
+        paste(R.version$major, R.version$minor, sep=".")
  }
 
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
