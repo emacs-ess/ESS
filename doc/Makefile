@@ -21,7 +21,7 @@ TEXI2PDF = LANG=C texi2dvi --pdf
 
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi bugs-ms.texi     \
 	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi \
-	help-s.texi help-sas.texi inst_svn.texi unixlike.texi windows.texi \
+	help-s.texi help-sas.texi inst_svn.texi installation.texi \
 	license.texi mailing.texi onewfeat.texi news.texi onews.texi \
 	newfeat.texi readme.texi requires.texi stabilty.texi help-bugs.texi \
         help-jags.texi allnews.texi Makefile ../Makeconf ../VERSION
