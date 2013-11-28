@@ -36,10 +36,9 @@
   ;;FIXME (defun ess-calculate-indent ..)  can do that ...
   (interactive)
   (setq pos (or pos (point)))
-  (let ((pps (parse-partial-sexp (point-min) pos)))
-         ;; (if (featurep 'xemacs)
-                 ;;   (parse-partial-sexp (point-min) pos)
-                 ;; (syntax-ppss pos))))
+  (let ((pps
+         ;; (parse-partial-sexp (point-min) pos)
+         (syntax-ppss pos)))
     ;; 3: string,  4: comment
     (or (nth 3 pps) (nth 4 pps))))
 
@@ -47,14 +46,11 @@
 (defun ess-inside-string-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
   (interactive)
-  (setq pos (or pos (point)))
-  ;; next doesn't work reliably, when narrowing the buffer in iESS the ppss
-  ;; cahce is screwd :(
-  ;; (let ((pps (if (featurep 'xemacs)
-  ;;                (parse-partial-sexp (point-min) pos)
-  ;;              (syntax-ppss pos))))
-  ;;   (nth 3 pps))
-  (nth 3 (parse-partial-sexp (point-min) pos))
+  ;; when narrowing the buffer in iESS the ppss cahce is screwed:( But it is
+  ;; very fast, so don't bother for now.
+  (let ((pps (syntax-ppss pos)))
+    (nth 3 pps))
+  ;; (nth 3 (parse-partial-sexp (point-min) pos))
   )
 
 (defun ess-inside-comment-p (&optional pos)
@@ -1102,30 +1098,33 @@ of lines.
 
 Also store the cons in 'ess--funname.start for potential use
 later."
-  (save-restriction
-    (let* ((proc (get-buffer-process (current-buffer)))
-           (mark (and proc (process-mark proc))))
+  (save-excursion
+    (save-restriction
+     (let* ((proc (get-buffer-process (current-buffer)))
+            (mark (and proc (process-mark proc))))
 
-      (if (and mark (>= (point) mark))
-          (narrow-to-region mark (point)))
+       (if (and mark (>= (point) mark))
+           (narrow-to-region mark (point)))
 
-      (and ess-noweb-mode
-           (ess-noweb-narrow-to-chunk))
+       (and ess-noweb-mode
+            (ess-noweb-narrow-to-chunk))
 
-      (when (not (ess-inside-string-p))
-        (setq ess--funname.start
-              (condition-case nil ;; check if it is inside a functon call
-                  (save-excursion
-                    (up-list -1)
-                    (while (not (looking-at "("))
-                      (up-list -1))
-                    ;; (skip-chars-backward " \t") ;; bad R style, so not providding help
-                    (let ((funname (symbol-name (symbol-at-point))))
-                      (when (and funname
-                                 (not (member funname ess-S-non-functions)))
-                        (cons funname (- (point) (length funname))))
-                      ))
-                (error nil)))))))
+       (unless (ess-inside-string-p)
+         (setq ess--funname.start
+               (condition-case nil ;; check if it is inside a functon 
+                   (progn
+                     ;; for the sake of big buffers, look only 1000 chars back
+                     (narrow-to-region (max (point-min) (- (point) 1000)) (point))
+                     (up-list -1)
+                     (while (not (looking-at "("))
+                       (up-list -1))
+                     (let ((funname (symbol-name (symbol-at-point))))
+                       (when (and funname
+                                  (not (member funname ess-S-non-functions)))
+                         (cons funname (- (point) (length funname))))
+                       ))
+                 (error nil))
+               ))))))
 
 (defun ess--inject-code-from-file (file)
   ;; this is different from ess-load-file
