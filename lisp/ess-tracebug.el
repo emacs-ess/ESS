@@ -43,7 +43,7 @@
 ;;  - on the fly  debug/undebug of R functions and methods
 ;;  - highlighting of error source references and easy error navigation
 ;;  - interactive traceback.
-;;  
+;;
 ;;  For a complete description please see the documentation at
 ;;  http://code.google.com/p/ess-tracebug/ and a brief tutorial at
 ;;  http://code.google.com/p/ess-tracebug/wiki/GettingStarted
@@ -55,6 +55,7 @@
 (require 'ess)
 (require 'format-spec)
 (eval-when-compile
+  (require 'tramp)
   (require 'compile)
   (require 'overlay)
   (require 'cl))
@@ -185,7 +186,7 @@ Return new command, a string."
     (skip-chars-backward " \t\n")
     (setq end (point)
           orig-beg beg)
-    
+
     ;; delete all old temp files
     (when (and (not (ess-process-get 'busy))
                (< 1 (time-to-seconds
@@ -218,7 +219,7 @@ Return new command, a string."
        (when remote
          ;; get local name (should this be done in process buffer?)
          (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
-       
+
        (if (not filename)
            (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
          (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
@@ -226,7 +227,7 @@ Return new command, a string."
                   (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
          (with-silent-modifications
            (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
-       
+
        ;; sending string to subprocess is considerably faster than tramp file
        ;; transfer. So, give priority to ess-eval-*-command if available
        (if eval-format
@@ -535,7 +536,6 @@ in inferior buffers.  ")
             (ess--tb-make-last-input-overlay
              (point-at-bol) (point-at-eol))))
     ;; busy timer
-    (make-local-variable 'ess--was-busy)
     (setq mode-line-buffer-identification
           (list (car (propertized-buffer-identification "%3b"))
                 `(:eval  (nth ess--busy-count ess-busy-strings)))) ;; 'face 'mode-line-buffer-id))))
@@ -1215,15 +1215,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; FIXME: this should be in comint filters!!
       ;; insert \n after the prompt when necessary
       (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
-      (with-current-buffer pbuf
-        (save-excursion
-          (let ((pmark (process-mark proc)))
-            (goto-char pmark)
-            ;; (beginning-of-line) ;;todo: do it with looking-back and primary-prompt
-            (when (looking-back inferior-ess-primary-prompt)
-              ;; (goto-char pmark)
-              (insert-before-markers "\n")
-              (set-marker pmark (point))))))
+
       ;; replace long prompts
       (when inferior-ess-replace-long+
         (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
@@ -1232,7 +1224,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (with-current-buffer (get-buffer-create (process-get proc 'accum-buffer-name))
         (goto-char (point-max))
         (insert string))
-      ;; Really need this timer here.  Process might be waiting for user output!!
+
+      ;; Need this timer here; process might be waiting for user's input!
       (when (timerp flush-timer)
         ;; cancel the timer each time we enter the filter
         (cancel-timer flush-timer)
@@ -1240,13 +1233,32 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       ;; ... and setup a new one
       (process-put proc 'flush-timer
                    (run-at-time .2 nil 'ess--flush-process-output-cache proc))
+
+      (when (or (null last-time)
+                (> (- new-time last-time) .5))
+
+        ;; Very slow in long comint buffers. Probably because of some comint
+        ;; interaction. Not a reall issue, as it is executed periodically
+        ;; or only on first output after a command.
+
+        (with-current-buffer pbuf
+          (save-excursion
+            (let ((pmark (process-mark proc)))
+              (goto-char pmark)
+              (when (looking-back inferior-ess-primary-prompt)
+                (insert-before-markers "\n")
+                (set-marker pmark (point)))))))
+
+
       (unless last-time ;; don't flush first time
         (setq last-time new-time)
         (process-put proc 'last-flush-time new-time))
+
       (when (or is-ready
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
                 ;; flush periodically
                 (> (- new-time last-time) .6))
+
         (ess--flush-process-output-cache proc)))
 
     ;; WATCH

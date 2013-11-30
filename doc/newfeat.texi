@@ -1,17 +1,20 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes/Bug Fixes in 13.09-1:
+Changes / Selected Bug Fixes in 13.09-1:
 @itemize @bullet
-@item ess-remote and TRAMP: R suport code is now downloaded in binary form, instead 
+@item ess-remote and TRAMP: R suport code is now downloaded in binary form, instead
 of being injected from local machine. The R code is stored in
 @code{~/.config/ESSR/} directory on the remote machine.
 @item TRAMP: PAGER environment variable is now correctly set to @code{inferior-ess-pager}.
+@item retrieval of help topics on remote machines was fixed
 @item org-babel: source references of R code executed from org files correctly point
 to source references in original org files (version 8.2.1 or higher of
 org-mode is required for this feature)
 @item @code{ess-execute} is now bound to @kbd{C-c C-e C-e} in @code{ess-extra-map}.
 @item completion works again in @code{ess-execute}
+@item @ESS{[R]} @code{head} and @code{tail} methods were replaced by @code{htsummary} in
+@code{ess-R-describe-object-at-point-commands}
 @item @ESS{[roxygen]} evaluation commands now work in roxygen blocks.
 Leading comments are automatically removed before the evaluation.
 @item @ESS{[transcript]}: 'Clean Region' now works with multiline statements;
@@ -30,8 +33,9 @@ A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pul
 @item @ESS{[developer]} ess-developer doesn't kill open DESCRIPTION files anymore
 @item @ESS{[roxygen]} @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
  @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}.
-@item @ESS{[R]} @code{summary} methods was moved to 2nd place in 
-@code{ess-R-describe-object-at-point-commands}
+@item @ESS{}: installation with @code{make install} was simplified and should work 
+out of the box on most *nix systems
+@item @ESS{} installation instructions in ESS documentation were considerably simplified.
 @end itemize
 
 Changes/New Features in 13.09:

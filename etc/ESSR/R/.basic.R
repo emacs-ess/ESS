@@ -4,6 +4,15 @@
 ## Do not use _ in names, nor :: , nor 1L etc, as they
 ## cannot be parsed in old R versions
 
+
+## loading ESSR.rda might fails, so re-asign here:
+.ess.Rversion <-
+    if( exists("getRversion", mode="function") ){
+        getRversion()
+    } else {
+        paste(R.version$major, R.version$minor, sep=".")
+ }
+
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
                          if(.ess.Rversion >= "1.9.0") "utils" else "base",
@@ -21,6 +30,19 @@
 	.ess.helpFUN(..., help = help.type)
     else # not using identical(), and working also for NULL:
 	.ess.helpFUN(..., htmlhelp = (length(help.type) && help.type=='html'))
+}
+
+.ess.getHelpAliases <- function(){
+    readrds <-
+        if(.ess.Rversion >= '2.13.0') readRDS
+        else .readRDS
+    rds_files <- paste(searchpaths(), "/help/aliases.rds", sep = "")
+    unlist(lapply(rds_files,
+                  function(f){
+                      if( file.exists(f) )
+                          try(names(readrds(f)))
+                  }),
+           use.names = FALSE)
 }
 
 ### SOURCING

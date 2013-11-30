@@ -32,7 +32,7 @@ load.ESSR <- function(dir){
 
 
     ## .basic.R:
-    .source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE)
+    try(.source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE))
 
     ## all others try(*) as it will fail in old R
     if(!oldR) # no sense if(oldR)

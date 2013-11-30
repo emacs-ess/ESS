@@ -134,7 +134,7 @@
     ["Watch" ess-watch  (and (ess-process-live-p)
                              (ess-process-get 'tracebug))]
     ["Error action cycle" ess-debug-toggle-error-action (and (ess-process-live-p)
-                                                           (ess-process-get 'tracebug))]
+                                                             (ess-process-get 'tracebug))]
     "----"
     ["Flag for debugging" ess-debug-flag-for-debugging ess-local-process-name]
     ["Unflag for debugging" ess-debug-unflag-for-debugging ess-local-process-name]
@@ -304,7 +304,7 @@ before ess-site is loaded) for it to take effect."))
   "Load/INSTALL/Update ESSR"
   (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" ESSR-directory)))
-             
+
     (if (not (or (and (boundp 'ess-remote) ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
         (let ((cmd (format
@@ -313,7 +313,10 @@ before ess-site is loaded) for it to take effect."))
                       load.ESSR('%s')})\n"
                     src-dir src-dir)))
           (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
-          (ess-command cmd))
+          (with-current-buffer (ess-command cmd)
+            (let ((msg (buffer-string)))
+              (when (> (length msg) 1)
+                (message (format "load ESSR: %s" msg))))))
       ;; else, remote
       (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
              (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
@@ -325,10 +328,15 @@ before ess-site is loaded) for it to take effect."))
              (r-load-code (with-temp-buffer
                             (insert-file-contents loadremote)
                             (buffer-string))))
+        (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
+                                             verfile loadremote))
         (unless (ess-boolean-command (format r-load-code version))
-          ;; should not happen, unless extrem conditions (ancient R or failed download)
-          (message "Failed to download ESSR.rda. Injecting ESSR code from local machine")
-          (let ((files (directory-files src-dir t "\\.R$")))
+          (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+                (files (directory-files src-dir t "\\.R$")))
+            (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
+            ;; should not happen, unless extrem conditions (ancient R or failed download))
+            (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
+            (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
             (mapc #'ess--inject-code-from-file files)))))))
 
 
@@ -1105,23 +1113,14 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       (mapcar (lambda (a) (concat a ess-ac-R-argument-suffix))
               args))))
 
-;; (defun ess-ac-action-args ()
-;;   (when (looking-back "=")
-;;     (delete-char -1)
-;;     (insert " = ")))
-
-
 (defun ess-ac-help-arg (sym)
   "Help string for ac."
   (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
-  (let ((buff (get-buffer-create " *ess-command-output*"))
-        (fun (car ess--funname.start))
-        doc)
-    (ess-command (format ess--ac-help-arg-command sym fun) buff)
-    (with-current-buffer buff
+  (let ((fun (car ess--funname.start)))
+    (with-current-buffer (ess-command (format ess--ac-help-arg-command sym fun))
       (goto-char (point-min))
       (forward-line)
-      (setq doc (buffer-substring-no-properties (point) (point-max))))))
+      (buffer-substring-no-properties (point) (point-max)))))
 
 
 (defvar ess--ac-help-arg-command

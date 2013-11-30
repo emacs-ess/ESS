@@ -1,0 +1,73 @@
+@c This file is not used anymore and is the same as installation.texi
+@c @section Unix (Linux/Mac OS X/Solaris/etc.) Installation
+
+@enumerate
+@item Download the latest zip or tgz archive from ESS 
+@uref{http://ess.r-project.org/index.php?Section=download, downloads
+area} and unpack it into a directory where you would like ESS to
+reside. We will denote this directory as @file{/path/to/ESS/} hereafter.
+
+Alternatively you can use @code{svn} or @code{git} to fetch the most
+recent development version to your local machine with:
+
+@example
+svn checkout https://svn.r-project.org/ESS/trunk /path/to/ESS
+@end example
+
+or 
+
+@example
+git clone https://github.com/emacs-ess/ESS.git /path/to/ESS
+@end example
+
+@item @b{Optionally}, compile elisp files and build the documentation with:
+@example
+cd /path/to/ESS/
+make
+@end example
+Without this step, info, pdf and html documentation and reference card
+will not be available.
+
+@item @b{Optionally}, install into your local machine with
+@code{make install}. You might need administrative privileges:
+
+@example
+make install
+@end example
+
+The files are installed into @code{/usr/share/emacs} directory. For this step to
+run correctly on Mac OS X, you will need to adjust the @file{PREFIX}
+path in @file{Makeconf}. The necessary code and instructions are
+commented in that file.
+
+@item If you have performed the @code{make install} step from above, just add
+
+@example
+(require 'ess-site)
+@end example
+
+to your @file{~/.emacs} file. Otherwise, you should add
+@file{/path/to/ESS/lisp/} to your emacs load path and then load ESS with
+the following lines in your @file{~/.emacs}:
+
+@example
+(add-to-list 'load-path "/path/to/ESS/lisp/")
+(load "ess-site")
+@end example
+
+@item Restart your Emacs and check that ESS was loaded from a correct
+location with @code{M-x ess-version}.
+@end enumerate
+
+
+@emph{Note for Windows and Mac OS X users:} The most straightforward
+way to install Emacs on your machine is by downloading
+@uref{http://vgoulet.act.ulaval.ca/en/emacs/, all-in-one} Emacs binary
+by Vincent Goulet.
+
+
+@emph{Note for XEmacs users:} Due to XEmacs lacking some features
+that ESS requires, ESS support of XEmacs ends with ESS 12.04-4.  This
+decision will be re-visited in the future as XEmacs continues to sync
+with GNU Emacs.
+

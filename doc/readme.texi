@@ -65,8 +65,6 @@ Table of Contents
 * Requirements::
 * Latest Version::
 * Installation::
-* Unix installation::
-* Microsoft Windows installation::
 * Starting up::
 * Current Features::
 * New Features::
@@ -101,19 +99,12 @@ Table of Contents
 @c NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation)
 
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
-@node Installation, Unix installation, Latest Version, General Information
+@node Installation, Starting up, Latest Version, General Information
 @comment  node-name,  next,  previous,  up
 @section Installation
+@include installation.texi
 
-@node Unix installation, Microsoft Windows installation, Installation, General Information
-@section Unix (Linux / MacOS / Solaris / ...) Installation
-@include unixlike.texi
-
-@node Microsoft Windows installation, Starting up, Unix installation, General Information
-@section Microsoft Windows installation
-@include windows.texi
-
-@node Starting up, Current Features, Microsoft Windows installation, General Information
+@node Starting up, Current Features, Installation, General Information
 @comment  node-name,  next,  previous,  up
 @section Starting an ESS process
 To start an @Sl{} session on Unix or on Windows when you
