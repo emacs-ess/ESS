@@ -504,10 +504,12 @@ EC2, it might look like following:
       Hostname ec2-54-215-203-181.us-west-1.compute.amazonaws.com
       User ubuntu
       IdentityFile ~/.ssh/my_amazon_key.pem
+      ForwardX11 yes
 @end verbatim
 
 With this configuration @code{/ssh:amazon:} is enough to start a
-connection.
+connection. The ForwardX11 is needed if you want to see R graphic device
+showing on the current machine
 
 Other ways to setup a remote ESS connection are through @code{ess-remote}.
 
