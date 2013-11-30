@@ -55,6 +55,7 @@
 (require 'ess)
 (require 'format-spec)
 (eval-when-compile
+  (require 'tramp)
   (require 'compile)
   (require 'overlay)
   (require 'cl))
@@ -217,7 +218,7 @@ Return new command, a string."
 
        (when remote
          ;; get local name (should this be done in process buffer?)
-         (setq tmpfile (with-parsed-tramp-file-name tmpfile foo foo-localname)))
+         (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
 
        (if (not filename)
            (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
@@ -535,7 +536,6 @@ in inferior buffers.  ")
             (ess--tb-make-last-input-overlay
              (point-at-bol) (point-at-eol))))
     ;; busy timer
-    (make-local-variable 'ess--was-busy)
     (setq mode-line-buffer-identification
           (list (car (propertized-buffer-identification "%3b"))
                 `(:eval  (nth ess--busy-count ess-busy-strings)))) ;; 'face 'mode-line-buffer-id))))
