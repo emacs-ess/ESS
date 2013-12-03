@@ -18,6 +18,12 @@ system.time(print(y))
 ## 0.124   0.097  52.540  -- MM@lynne ESS svn r 5909; incl font-locking, tracebug
 ## 0.128   0.080  57.305       ditto
 ## 0.139   0.088  54.770  -- sfs@lynne ESS 13.09 (emacs 24.3.1 GTK+)
+## --
+## 0.102   0.075   4.685  -- MM@lynne ESS 5.14 (emacs 24.3.1 incl font-lock!)
+## 0.091   0.078   4.683  --     "    ESS 12.04-4 [rev. 4896 (2012-06-07)]
+## 0.123   0.063   4.638  --     "    ESS 12.09-2 [rev. 5395 (2013-01-10)]
+## 0.117   0.118   3.358  --     "    ESS 13.05   [rev. 5574 (2013-05-14)]
+##                 ^^^^^ clearly a bit faster !
 
 set.seed(23456)
 y <- mkCh(50000)
