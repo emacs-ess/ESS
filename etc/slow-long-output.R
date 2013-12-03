@@ -32,6 +32,10 @@ system.time(print(y))
 ## 0.255    0.089    0.345  -- BATCH MM@lynne
 ## 0.685    0.369 1664.557  -- MM@lynne ESS svn r 5909 ...
 ## 0.760    0.398 1643.608  -- ..@lynne ESS 13.09
+## 0.590    0.510   33.349  --     "    ESS 13.05   [rev. 5574 (2013-05-14)]
+## 0.565    0.548   28.251	"	 "	
+## 0.598    0.450   27.804 	"	 "
+
 
 ## Don't even think of trying this with ESS, currently:
 y <- mkCh(200000)
