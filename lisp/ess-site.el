@@ -187,13 +187,14 @@ for ESS, such as icons.")
 
 ;;(1.2) If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
+(if (fboundp 'locate-file) (progn
 (unless (locate-file "ess.info"
                      (if (featurep 'xemacs)
                          Info-directory-list
                        Info-default-directory-list))
   (add-to-list (if (featurep 'xemacs)
                    'Info-directory-list 'Info-default-directory-list)
-               (expand-file-name "../doc/info/" ess-lisp-directory)))
+               (expand-file-name "../doc/info/" ess-lisp-directory)))))
 
 
 ;; ALWAYS:
