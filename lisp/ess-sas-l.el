@@ -97,10 +97,16 @@ the mode line."
   (setq mode-line-process
         '(" [" ess-local-process-name "]")))
         
-(defcustom ess-automatic-sas-log-or-lst-mode t
-  "Automatically turn on `SAS-log-mode' and `SAS-listing-mode' when enabled."
+(defcustom ess-automatic-sas-log-mode t
+  "Automatically turn on `SAS-log-mode' when enabled."
   :type 'boolean
   :group 'ess-sas)
+        
+(defcustom ess-automatic-sas-lst-mode nil
+  "Automatically turn on `SAS-listing-mode' when enabled."
+  :type 'boolean
+  :group 'ess-sas)
+
 
 (defun ess-SAS-log-mode-p ()
   "Return t when when a SAS log file is detected.
@@ -109,7 +115,8 @@ A SAS log is defined as having:
 1. The first line matches \"^1[ \t]*The SAS System\"
 2. The file name ends in .log.
 "
-  (and ess-automatic-sas-log-or-lst-mode
+(interactive) ;; for testing
+  (and ess-automatic-sas-log-mode
        (save-excursion
          (goto-char (point-min))
          (looking-at "1[ \t]*The SAS System"))
@@ -124,7 +131,8 @@ A .lst file is a SAS listing file when:
 1. The file name ends in .lst
 2. The corresponding log file exists and is a SAS log file.
 "
-  (when ess-automatic-sas-log-or-lst-mode
+(interactive) ;; for testing
+  (when ess-automatic-sas-lst-mode
     (let* ((bfn (buffer-file-name))
            (log (and bfn
                      (replace-regexp-in-string "\\.lst$" ".log" bfn))))
