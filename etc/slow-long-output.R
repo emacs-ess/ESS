@@ -15,6 +15,8 @@ system.time(print(y))
 ##  user  system elapsed 
 ## 0.059   0.010   0.070  -- MM@lynne R CMD BATCH
 ##  user  system elapsed 
+## 0.120   0.138   3.225 (+/- 0.2) -- MM@lynne ESS 13.09-1 [svn: 5930]
+##---
 ## 0.124   0.097  52.540  -- MM@lynne ESS svn r 5909; incl font-locking, tracebug
 ## 0.128   0.080  57.305       ditto
 ## 0.139   0.088  54.770  -- sfs@lynne ESS 13.09 (emacs 24.3.1 GTK+)
