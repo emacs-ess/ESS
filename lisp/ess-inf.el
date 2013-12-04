@@ -308,7 +308,7 @@ Alternatively, it can appear in its own frame if
 
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function)
-                 #'inferior-ess-goto-last-prompt)
+                 #'inferior-ess-goto-last-prompt-if-close)
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
@@ -354,11 +354,21 @@ Default depends on the ESS language/dialect and hence made buffer local")
 ;;; local to the ESS process buffer. If required, these variables should
 ;;; be accessed with the function ess-get-process-variable
 
-(defun inferior-ess-goto-last-prompt ()
-  (let ((paragraph-start comint-prompt-regexp))
-    (forward-paragraph -1)
-    ;; (comint-skip-prompt)
-    (point)))
+
+(defun inferior-ess-goto-last-prompt-if-close ()
+  "If any prompt has been found on current line, go to previous primary prompt and return the position.
+Otherwise stay at current position and return nil "
+
+  (let ((new-point (save-excursion
+                     (beginning-of-line)
+                     (if (looking-at inferior-ess-primary-prompt)
+                         (point)
+                       (when  (and inferior-ess-secondary-prompt
+                                   (looking-at inferior-ess-secondary-prompt))
+                         (re-search-backward (concat "^" inferior-ess-primary-prompt))
+                         (point))))))
+    (when new-point
+      (goto-char new-point))))
 
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output within the beg-end region to avoid
@@ -367,7 +377,8 @@ fontification spilling over prompts."
 	 (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
-         (pos (inferior-ess-goto-last-prompt)) ; expand to last prompt
+         (pos (or (inferior-ess-goto-last-prompt-if-close)
+                  beg))
          (pos2))
     (with-silent-modifications
       ;; (dbg pos end)
@@ -381,8 +392,7 @@ fontification spilling over prompts."
           ;; (redisplay)
           ;; (sit-for 1)
           (font-lock-default-fontify-region pos pos2 verbose))
-        (setq pos pos2)))
-    ))
+        (setq pos pos2)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"

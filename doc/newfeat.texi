@@ -36,6 +36,7 @@ A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pul
 @item @ESS{}: installation with @code{make install} was simplified and should work 
 out of the box on most *nix systems
 @item @ESS{} installation instructions in ESS documentation were considerably simplified.
+@item @ESS{font-lock}: bug introduced in v3.09 that was causing very slow process output was fixed
 @end itemize
 
 Changes/New Features in 13.09:
