@@ -127,6 +127,7 @@ A .lst file is a SAS listing file when:
   (when ess-automatic-sas-log-or-lst-mode
     (let* ((bfn (buffer-file-name))
            (log (and bfn
+                     (string-match-p "\\.lst$" bfn)
                      (replace-regexp-in-string "\\.lst$" ".log" bfn))))
       (and log
            (file-exists-p log)

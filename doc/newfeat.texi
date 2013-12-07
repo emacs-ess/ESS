@@ -3,39 +3,39 @@
 
 Changes / Selected Bug Fixes in 13.09-1:
 @itemize @bullet
-@item ess-remote and TRAMP: R suport code is now downloaded in binary form, instead
+@item ess-remote and TRAMP: R support code is now downloaded in binary form instead
 of being injected from local machine. The R code is stored in
-@code{~/.config/ESSR/} directory on the remote machine.
-@item TRAMP: PAGER environment variable is now correctly set to @code{inferior-ess-pager}.
-@item retrieval of help topics on remote machines was fixed
+@code{~/.config/ESSR/} directory on the remote machine
+@item TRAMP: PAGER environment variable is now correctly set to @code{inferior-ess-pager}
+@item retrieval of help topics on remote machines is fixed
 @item org-babel: source references of R code executed from org files correctly point
 to source references in original org files (version 8.2.1 or higher of
 org-mode is required for this feature)
 @item @code{ess-execute} is now bound to @kbd{C-c C-e C-e} in @code{ess-extra-map}.
 @item completion works again in @code{ess-execute}
-@item @ESS{[R]} @code{head} and @code{tail} methods were replaced by @code{htsummary} in
+@item @ESS{[R]}: @code{head} and @code{tail} methods were replaced by @code{htsummary} in
 @code{ess-R-describe-object-at-point-commands}
-@item @ESS{[roxygen]} evaluation commands now work in roxygen blocks.
-Leading comments are automatically removed before the evaluation.
+@item @ESS{[roxygen]}: evaluation commands now work in roxygen blocks.
+Leading comments are automatically removed before the evaluation
 @item @ESS{[transcript]}: 'Clean Region' now works with multiline statements;
- @code{ess-transcript-clean-region} etc, now also correctly treat
- multiline statements, i.e., it no longer forgets the lines typically
- preceded by ``+ ''.
-@item @ESS{[SAS]} Three features/fixes with special thanks to Matthew Fidler
+ @code{ess-transcript-clean-region} etc. correctly treat
+ multiline statements, i.e., no longer forgets the lines typically
+ preceded by '+'
+@item @ESS{[SAS]}: Three features/fixes with special thanks to Matthew Fidler
 @uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,
 https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn on SAS log mode
-and SAS listing mode when appropriate.  Indent comments more
-appropriately. Indent CARDS more appropriately.
+when appropriate.  Indent comments and CARDS statement more appropriately. 
 @item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} default returns to @code{nil}
-@item @ESS{[R]} support for @code{prettify-symbols-mode}
-A contribution of Rüdiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pull/65}
-@item @ESS{[SWV]} knitr now evaluates in the current frame
-@item @ESS{[developer]} ess-developer doesn't kill open DESCRIPTION files anymore
-@item @ESS{[roxygen]} @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
- @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}.
+@item @ESS{[R]}: support for @code{prettify-symbols-mode}: 
+contribution from Rudiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pull/65}
+@item @ESS{[SWV]}: knitr now evaluates in the current frame
+@item @ESS{[developer]}: ess-developer doesn't kill open DESCRIPTION files anymore
+@item @ESS{[roxygen]}: @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
+ @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}
 @item @ESS{}: installation with @code{make install} was simplified and should work 
 out of the box on most *nix systems
-@item @ESS{} installation instructions in ESS documentation were considerably simplified.
+@item @ESS{} installation instructions simplified
+@item fixed font-lock bug introduced in 13.09 that was causing very slow process output
 @end itemize
 
 Changes/New Features in 13.09:

@@ -9,15 +9,13 @@
 ## Otherwise R will call the registered (i.e. cached) S3 method instead of the
 ## new method that ess-developer inserted in the package environment.
 
-.essDev_differs <- function(f1, f2)
-    {
-        if (is.function(f1) && is.function(f2)){
-            !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
-        }else
-            !identical(f1, f2)
-    }
+.essDev.eval <- function(string, package, file = tempfile("ESSDev")){
+    cat(string, file = file)
+    on.exit(file.remove(file))
+    .essDev_source(file,, package = package)
+}
 
-.essDev_source <- function (source, expr, package = "")
+.essDev_source <- function(source, expr, package = "")
     {
         ## require('methods')
         oldopts <- options(warn = 1)
@@ -278,4 +276,12 @@
         if(printInfo) print(out)
         all(out)
     }
+}
+
+
+.essDev_differs <- function(f1, f2) {
+    if (is.function(f1) && is.function(f2)){
+        !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
+    }else
+        !identical(f1, f2)
 }

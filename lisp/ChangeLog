@@ -1,3 +1,9 @@
+2013-12-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-edit-keys-toggle): the default returns
+	to nil; indentation has improved somewhat and will probably
+	improve a bit more in the near future
+
 2013-10-19  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-trns.el (ess-transcript-clean-region): use t and nil, not 1

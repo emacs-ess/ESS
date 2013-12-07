@@ -70,15 +70,15 @@ install: dist
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) ChangeLog *.elc $(LISPDIR)
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
-	if [ -n "$(SITELISP)" ] ; \
+	if [ -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
-		ln -sf $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
+		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
 	fi;
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 uninstall:
 	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
-	if [ -n "$(SITELISP)" ] ; \
+	if [ -n "$(SITELISP)" -a -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
