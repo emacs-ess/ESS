@@ -203,7 +203,7 @@ Return new command, a string."
      (let ((tmpfile
             (expand-file-name (make-temp-name
                                (concat (file-name-nondirectory
-                                        (or filename "unknown")) "@"))
+                                        (or filename "unknown")) "!"))
                               (if remote
                                   (tramp-get-remote-tmpdir remote)
                                 temporary-file-directory)))
