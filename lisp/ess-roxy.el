@@ -492,16 +492,6 @@ in a temporary buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
         (tmpf (make-temp-file "ess-roxy"))
         (roxy-buf (get-buffer-create " *RoxygenPreview*"))
-        ;; (setq roxy-buf (get-buffer-create "*scratch*"))
-        ;; (new-roxygen (with-current-buffer roxy-buf
-        ;;   (goto-char 1)
-        ;;   (ess-command
-        ;;    (concat "compareVersion(paste(packageVersion('"
-        ;;            ess-roxy-package "')), '3.0.0') >= 0\n")
-        ;;    (get-buffer-create " *RoxygenPreview*"))
-        ;;   (if (search-forward-regexp "FALSE" nil t)
-        ;;       nil
-        ;;     t)))
         (out-rd-roclet
          (cond ((string= "roxygen" ess-roxy-package)
                 "make.Rd2.roclet()$parse")
