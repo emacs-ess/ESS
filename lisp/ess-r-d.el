@@ -450,6 +450,7 @@ to R, put them in the variable `inferior-R-args'."
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'newline-and-indent)
+  (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 

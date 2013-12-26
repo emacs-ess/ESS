@@ -667,6 +667,13 @@ list of strings."
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
+(defadvice ess-eval-line-and-step (around ess-eval-line-and-step-roxy)
+  "evaluate line but do not skip over comment (roxy) lines"
+  (if (ess-roxy-entry-p)
+      (let ((simple-next t))
+        ad-do-it)
+    ad-do-it))
+
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
   (if (and (ess-roxy-entry-p) (not mark-active))
