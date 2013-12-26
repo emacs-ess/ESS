@@ -476,7 +476,7 @@ string. Convenient for editing example fields."
           (roxy-str (ess-roxy-guess-str)))
       (narrow-to-region beg (- end 1))
       (if on
-          (progn (setq RE (concat ess-roxy-re " *"))
+          (progn (setq RE (concat ess-roxy-re " +?"))
                  (setq to-string ""))
         (setq RE "^")
         (setq to-string (concat roxy-str " ")))
