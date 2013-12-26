@@ -492,11 +492,22 @@ in a temporary buffer and return that buffer."
   (let ((beg (ess-roxy-beg-of-entry))
         (tmpf (make-temp-file "ess-roxy"))
         (roxy-buf (get-buffer-create " *RoxygenPreview*"))
+        ;; (setq roxy-buf (get-buffer-create "*scratch*"))
+        ;; (new-roxygen (with-current-buffer roxy-buf
+        ;;   (goto-char 1)
+        ;;   (ess-command
+        ;;    (concat "compareVersion(paste(packageVersion('"
+        ;;            ess-roxy-package "')), '3.0.0') >= 0\n")
+        ;;    (get-buffer-create " *RoxygenPreview*"))
+        ;;   (if (search-forward-regexp "FALSE" nil t)
+        ;;       nil
+        ;;     t)))
         (out-rd-roclet
          (cond ((string= "roxygen" ess-roxy-package)
                 "make.Rd2.roclet()$parse")
+               ;; must not line break strings to avoid getting +s in the output
                ((string= "roxygen2" ess-roxy-package)
-                "(function(P) {..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) {roxygen2:::rd_out_cache$compute(x, format(x))}))})")
+                "(function(P) { if(compareVersion(paste(packageVersion('roxygen2')), '3.0.0') < 0) { ..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) { roxygen2:::rd_out_cache$compute(x, format(x))})) } else {..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));cat(vapply(..results, format, FUN.VALUE = character(1))) } })")
                (t (error "need to hard code the roclet output call for roxygen package '%s'"
                          ess-roxy-package))))
         )
