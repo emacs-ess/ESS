@@ -19,8 +19,9 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
 ;;
-;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -628,7 +629,7 @@ list of strings."
               (progn
                 (ess-roxy-match-paren)
                 (point))))))
-      (setq args-txt (replace-regexp-in-string "#+.*\n" "" args-txt))
+      (setq args-txt (replace-regexp-in-string "#+[^\"']*\n" "" args-txt))
       (setq args-txt (replace-regexp-in-string "([^)]+)" "" args-txt))
       (setq args-txt (replace-regexp-in-string "=[^,]+" "" args-txt))
       (setq args-txt (replace-regexp-in-string "[ \t\n]+" "" args-txt))
