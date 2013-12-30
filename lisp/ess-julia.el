@@ -39,6 +39,7 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
+(require 'cl); at least for Emacs 23.x (mapcan .)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
