@@ -39,7 +39,8 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
-(require 'cl); at least for Emacs 23.x (mapcan .)
+(eval-when-compile
+  (require 'cl)); in Emacs <= 23.x for (mapcan .)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
