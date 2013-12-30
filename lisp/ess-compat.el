@@ -36,7 +36,7 @@
 
 ;;; Define a function to make it easier to check which version we're
 ;;; running.
-
+;; no longer in use; 2013-12-30:
 (defun ess-running-emacs-version-or-newer (major minor)
   (or (> emacs-major-version major)
       (and (= emacs-major-version major)
