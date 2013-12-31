@@ -70,7 +70,7 @@ install: dist
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) ChangeLog *.elc $(LISPDIR)
 	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
-	if [ -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
+	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
 	fi;
@@ -78,7 +78,7 @@ install: dist
 
 uninstall:
 	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
-	if [ -n "$(SITELISP)" -a -f "$(SITELISP)/ess-site.el" ] ; \
+	if [ -n "$(SITELISP)" -a -h "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
