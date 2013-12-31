@@ -16,7 +16,7 @@
 ## ETCDIR          Destination of script and icon files
 ## PREFIX(DESTDIR) Directory prepended to SITELISP, INFODIR, DOCDIR & ETCDIR
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr
-DESTDIR=/usr    ## BEWARE:  this default destination is for emacs as provided by the OS 
+DESTDIR=/usr
 PREFIX=$(DESTDIR)
 #
 ##__ GNU Emacs __
