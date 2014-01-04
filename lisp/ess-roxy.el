@@ -586,39 +586,40 @@ block before the point"
       ess-roxy-str)))
 
 (defun ess-roxy-hide-block ()
-  "hide current block"
+  "hide current roxygen comment block"
   (interactive)
   (save-excursion
     (let ((end-of-entry (ess-roxy-end-of-entry))
           (beg-of-entry (ess-roxy-beg-of-entry)))
       (hs-hide-block-at-point nil (list beg-of-entry end-of-entry)))))
 
-(defun ess-roxy-show-block ()
-  "show current block"
-  (interactive)
-  (save-excursion
-    (if (hs-already-hidden-p)
-        (hs-show-block))))
-
 (defun ess-roxy-toggle-hiding ()
   "Toggle hiding/showing of a block.
-See `ess-roxy-show-block' and `ess-roxy-hide-block'."
+See `hs-show-block' and `ess-roxy-hide-block'."
   (interactive)
   (hs-life-goes-on
-   (if (hs-already-hidden-p)
-       (ess-roxy-show-block)
+   (if (hs-overlay-at (point-at-eol))
+       (hs-show-block)
      (ess-roxy-hide-block))))
 
-(defun ess-roxy-hide-all ()
+(defun ess-roxy-show-all ()
   "Hide all Roxygen entries in current buffer. "
   (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward (concat ess-roxy-re) (point-max) t 1)
-      (let ((end-of-entry (ess-roxy-end-of-entry)))
-        (ess-roxy-hide-block)
-        (goto-char end-of-entry)
-        (forward-line 1)))))
+  (ess-roxy-hide-all t))
+
+(defun ess-roxy-hide-all (&optional show)
+  "Hide all Roxygen entries in current buffer. "
+  (interactive)
+  (hs-life-goes-on
+   (save-excursion
+     (goto-char (point-min))
+     (while (re-search-forward (concat ess-roxy-re) (point-max) t 1)
+       (let ((end-of-entry (ess-roxy-end-of-entry)))
+         (if show
+             (hs-show-block)
+           (ess-roxy-hide-block))
+         (goto-char end-of-entry)
+         (forward-line 1))))))
 
 (defun ess-roxy-previous-entry ()
   "Go to beginning of previous Roxygen entry. "
