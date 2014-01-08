@@ -104,4 +104,8 @@ would put suggest: (), c(), list(), sqrt(), t()
   notably in ess-help, inferior-ess, and ess-mode. It would be *really*
   user friendly if we have a "submenu" for each of these maps, and them 
   in both ESS and iESS (or all 4: ESS, iESS, ESS-help, ESS-transcript, ..).
+** TODO ess-execute-screen-options wrong in terminal 
+   [2013-12-19 Thu] [[gnus:nnimap%2BSpinuVit:ESS#CAD%3D7RJZ4EHETKF4LPJpzuw0uO9AuzOtWDYVnV1cZAVQxAotVxg@mail.gmail.com][Email from Ali Tofigh: {ESS} ess-execute-screen-optio]]
+** TODO  
+   [2013-12-20 Fri] [[file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image%20(expand-file-name%20(nth%20idx%20ifiles)%20dir)][file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image (expand-file-name (nth idx ifiles) dir)]]
 
