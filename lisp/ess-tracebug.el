@@ -2715,37 +2715,43 @@ for signature and trace it with browser tracer."
 
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text
-(defadvice delete-char (around delete-backward-char-intangible activate)
+(defadvice delete-char (around ess-delete-backward-char-intangible activate)
   "When about to delete a char that's intangible, delete the whole intangible region
 Only do this when #chars is 1"
-  (if (and (= (ad-get-arg 0) 1)
+  (if (and (eq major-mode 'ess-mode)
+           (= (ad-get-arg 0) 1)
            (get-text-property (point) 'intangible))
       (progn
-        (kill-region (point) (next-single-property-change (point) 'intangible))
+        (kill-region (point) (or (next-single-property-change (point) 'intangible)
+                                 (poin-max)))
         (indent-for-tab-command))
     ad-do-it))
 
-(defadvice delete-backward-char (around delete-backward-char-intangible activate)
+(defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
   "When about to delete a char that's intangible, delete the whole intangible region
 Only do this when called interactively and  #chars is 1"
-  (if (and (= (ad-get-arg 0) 1)
+  (if (and (eq major-mode 'ess-mode)
+           (= (ad-get-arg 0) 1)
            (> (point) (point-min))
            (get-text-property (1- (point)) 'intangible))
       (progn
-        (kill-region (previous-single-property-change (point) 'intangible) (point))
-        (indent-for-tab-command))
+        (let ((beg (or (previous-single-property-change (point) 'intangible)
+                       (point-min))))
+          (kill-region beg (point))))
     ad-do-it))
 
-;;; previous-line gets stuck if next char is intangible
-(defadvice previous-line (around solves-intangible-text-kludge activate)
+;; previous-line gets stuck if next char is intangible
+(defadvice previous-line (around ess-fix-cursor-stuck-at-intangible-text activate)
   "When about to move to previous line when next char is
 intanbible, step char backward first"
-  (if (and (or (null (ad-get-arg 0))
+  (if (and (eq major-mode 'ess-mode)
+           (or (null (ad-get-arg 0))
                (= (ad-get-arg 0) 1))
            (get-text-property (point) 'intangible))
       (backward-char 1))
   ad-do-it)
 
+;; (ad-remove-advice 'previous-line 'around 'delete-backward-char-intangible)
 
 (make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")
