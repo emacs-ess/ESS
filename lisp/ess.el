@@ -390,7 +390,7 @@ Otherwise try a list of fixed known viewers.
                     (executable-find "xpdf")
                     (executable-find "acroread")
                     (executable-find "xdg-open")
-                    ;; this one is wrongly wrong, (ok for time being as it is use donly in swv)
+                    ;; this one is wrong, (ok for time being as it is used only in swv)
                     (car (ess-get-words-from-vector
                           "getOption(\"pdfviewer\")\n"))
                     )))

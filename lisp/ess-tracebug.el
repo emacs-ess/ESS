@@ -1396,7 +1396,8 @@ TB-INDEX is not found return nil.
   (if (stringp line) (setq line (string-to-number line)))
   (if (stringp col) (setq col (string-to-number col)))
   (let* ((srcref (gethash file ess--srcrefs))
-         (file (or (car srcref) file))
+         (file (replace-regexp-in-string "^\n" "" ;; hack for gnu regexp
+                                         (or (car srcref) file)))
          (tb-index (cadr srcref))
          (buffer (ess--dbg-find-buffer file))
          pos)

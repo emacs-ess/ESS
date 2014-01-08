@@ -278,6 +278,10 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
+;; gnu C errors
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R_C "^\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  2 3 nil 2 1))
+
 (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
   (defvar ess-r-versions
     (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver)
