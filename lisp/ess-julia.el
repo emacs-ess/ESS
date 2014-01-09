@@ -121,7 +121,7 @@
 ))
 
 (defconst julia-block-start-keywords
-  (list "if" "while" "for" "begin" "try" "function" "type" "let" "macro"
+  (list "if" "while" "^\s*for" "begin" "try" "function" "type" "let" "macro"
 	"quote" "do" "immutable"))
 
 (defconst julia-block-other-keywords
