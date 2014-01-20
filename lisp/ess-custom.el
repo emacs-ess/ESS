@@ -23,9 +23,8 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 ;;
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; A copy of the GNU General Public License is available at
+;; http://www.r-project.org/Licenses/
 
 ;;; Code:
 
@@ -133,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "13.09-1" ;; updated by 'make'
+(defvar ess-version "13.09-2" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -2066,11 +2065,7 @@ dialects' alists.  Increase this, if you have a fast(er) machine."
 
 ;;; for programming, transcript, and inferior process modes.
 
-(defcustom ess-font-lock-mode
-  (if  (ess-running-emacs-version-or-newer 22 1)
-      global-font-lock-mode
-    ;; else for emacs 21.x and earlier
-    t)
+(defcustom ess-font-lock-mode global-font-lock-mode
   "Non-nil means we use font lock support for ESS buffers.
 Default is t, to use font lock support.
 If you change the value of this variable, restart Emacs for it to take effect."

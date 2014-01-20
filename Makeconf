@@ -10,11 +10,12 @@
 ## Variable        Description
 ## EMACS           use emacs for GNU Emacs, xemacs for XEmacs
 ## EMACSBATCH      emacs/xemacs command for compiling elisp files
+## SITELISP        Destination of site-lisp; but some variants have no site-lisp
 ## LISPDIR         Destination of compiled elisp files
 ## INFODIR         Destination of info files
 ## ETCDIR          Destination of script and icon files
-## PREFIX(DESTDIR) Directory prepended to LISPDIR, INFODIR, DOCDIR & ETCDIR
-##                 Specify either PREFIX or DESTDIR to over-ride /usr/local
+## PREFIX(DESTDIR) Directory prepended to SITELISP, INFODIR, DOCDIR & ETCDIR
+##                 Specify either PREFIX or DESTDIR to over-ride /usr
 DESTDIR=/usr
 PREFIX=$(DESTDIR)
 #
@@ -27,25 +28,28 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 
 ##__ XEmacs __
 #EMACS=$(PREFIX)/bin/xemacs
-#LISPDIR=$(PREFIX)/share/xemacs/site-packages/lisp/ess
+#SITELISP=$(PREFIX)/share/xemacs/site-packages/lisp
+#LISPDIR=$(SITELISP)/ess
 #INFODIR=$(PREFIX)/share/xemacs/site-packages/info
 #ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 #
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
-#PREFIX=/Applications/Emacs.app/Contents/Resources
-#EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
-#LISPDIR=$(PREFIX)/site-lisp/ess
-#INFODIR=/usr/local/info
-#ETCDIR =$(PREFIX)/etc/ess
+# PREFIX=/Applications/Emacs.app/Contents/Resources
+# EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+# SITELISP=$(PREFIX)/site-lisp
+# LISPDIR=$(SITELISP)/ess
+# INFODIR=$(PREFIX)/info
+# ETCDIR =$(PREFIX)/etc/ess
 #
 
 ##__ Aquamacs __  (donated by Dan Knoepfle, Mar 26, 2011)
-#PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
-#EMACS=/Applications/Aquamacs.app/Contents/MacOS/Aquamacs
-#LISPDIR=$(PREFIX)/ess-mode/lisp
-#INFODIR=/usr/local/info
-#ETCDIR=$(PREFIX)/ess-mode/etc
+# PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
+# EMACS=/Applications/Aquamacs.app/Contents/MacOS/Aquamacs
+# SITELISP=/Applications/Aquamacs.app/Contents/Resources/lisp
+# LISPDIR=$(PREFIX)/ess-mode/lisp
+# INFODIR=/Applications/Aquamacs.app/Contents/Resources/info
+# ETCDIR=$(PREFIX)/ess-mode/etc
 #
 
 ## the following command is the same for recent versions of both Emacs and XEmacs

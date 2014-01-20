@@ -21,9 +21,8 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; A copy of the GNU General Public License is available at
+;; http://www.r-project.org/Licenses/
 
 ;;; Commentary:
 
@@ -222,7 +221,7 @@ otherwise call devSource."
 
 (defun ess-developer-devSource (beg end package &optional message)
   (let* ((ess-eval-command
-          (format ".essDev.eval('%s', package='%s', file='%s')" "%s" package "%f"))
+          (format ".essDev.eval(\"%s\", package=\"%s\", file=\"%s\")" "%s" package "%f"))
          (ess-eval-visibly-command ess-eval-command)
          (ess-eval-visibly-noecho-command ess-eval-command))
     (if message (message message))
@@ -237,7 +236,7 @@ PROPERTIZE-FUNC is a function called with the output buffer being
 current. usually used to manipulate the output, for example to
 propertize output text.
 "
-  (setq comm (format "eval({cat('\\n')\n%s\ncat('!@OK@!')})\n" comm))
+  (setq comm (format "eval({cat(\"\\n\")\n%s\ncat(\"!@OK@!\")})\n" comm))
   (let ((buff (get-buffer-create " *ess-command-output*"))
         out)
     (ess-command comm buff nil nil 0.1)

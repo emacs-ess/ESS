@@ -21,9 +21,9 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; A copy of the GNU General Public License is available at
+;; http://www.r-project.org/Licenses/
+
 
 ;;; Commentary:
 
@@ -36,7 +36,7 @@
 
 ;;; Define a function to make it easier to check which version we're
 ;;; running.
-
+;; no longer in use; 2013-12-30:
 (defun ess-running-emacs-version-or-newer (major minor)
   (or (> emacs-major-version major)
       (and (= emacs-major-version major)

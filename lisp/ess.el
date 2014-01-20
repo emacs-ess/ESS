@@ -26,9 +26,8 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 ;;
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; A copy of the GNU General Public License is available at
+;; http://www.r-project.org/Licenses/
 
 ;;; Commentary:
 
@@ -391,7 +390,7 @@ Otherwise try a list of fixed known viewers.
                     (executable-find "xpdf")
                     (executable-find "acroread")
                     (executable-find "xdg-open")
-                    ;; this one is wrongly wrong, (ok for time being as it is use donly in swv)
+                    ;; this one is wrong, (ok for time being as it is used only in swv)
                     (car (ess-get-words-from-vector
                           "getOption(\"pdfviewer\")\n"))
                     )))

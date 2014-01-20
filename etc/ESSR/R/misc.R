@@ -34,8 +34,9 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         } else {
             if (is.matrix(x))
                 x <- data.frame(unclass(x))
-            h <- head(x, hlength)
-            t <- tail(x, tlength)
+            ## conversion needed, to avoid problems with derived classes suchs as data.table
+            h <- as.data.frame(head(x, hlength))
+            t <- as.data.frame(tail(x, tlength))
             for (i in 1:ncol(x)) {
                 h[[i]] <- f(h[[i]])
                 t[[i]] <- f(h[[i]])

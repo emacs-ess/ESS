@@ -23,9 +23,8 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; A copy of the GNU General Public License is available at
+;; http://www.r-project.org/Licenses/
 
 ;;; Commentary:
 
@@ -279,6 +278,10 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
 
+;; gnu C errors
+;; (add-to-list 'compilation-error-regexp-alist-alist
+;;              '(R_C "^\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  2 3 nil 2 1))
+
 (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
   (defvar ess-r-versions
     (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver)
@@ -451,6 +454,7 @@ to R, put them in the variable `inferior-R-args'."
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'newline-and-indent)
+  (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 

@@ -476,7 +476,7 @@ string. Convenient for editing example fields."
           (roxy-str (ess-roxy-guess-str)))
       (narrow-to-region beg (- end 1))
       (if on
-          (progn (setq RE (concat ess-roxy-re " *"))
+          (progn (setq RE (concat ess-roxy-re " +?"))
                  (setq to-string ""))
         (setq RE "^")
         (setq to-string (concat roxy-str " ")))
@@ -495,8 +495,9 @@ in a temporary buffer and return that buffer."
         (out-rd-roclet
          (cond ((string= "roxygen" ess-roxy-package)
                 "make.Rd2.roclet()$parse")
+               ;; must not line break strings to avoid getting +s in the output
                ((string= "roxygen2" ess-roxy-package)
-                "(function(P) {..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) {roxygen2:::rd_out_cache$compute(x, format(x))}))})")
+                "(function(P) { if(compareVersion(paste(packageVersion('roxygen2')), '3.0.0') < 0) { ..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) { roxygen2:::rd_out_cache$compute(x, format(x))})) } else {..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));cat(vapply(..results, format, FUN.VALUE = character(1))) } })")
                (t (error "need to hard code the roclet output call for roxygen package '%s'"
                          ess-roxy-package))))
         )
@@ -584,16 +585,41 @@ block before the point"
         (match-string 0)
       ess-roxy-str)))
 
-(defun ess-roxy-hide-all ()
-  "Hide all Roxygen entries in current buffer. "
+(defun ess-roxy-hide-block ()
+  "hide current roxygen comment block"
   (interactive)
   (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward (concat ess-roxy-re) (point-max) t 1)
-      (if (not (hs-already-hidden-p))
-          (hs-hide-block))
-      (goto-char (ess-roxy-end-of-entry))
-      (forward-line 1))))
+    (let ((end-of-entry (ess-roxy-end-of-entry))
+          (beg-of-entry (ess-roxy-beg-of-entry)))
+      (hs-hide-block-at-point nil (list beg-of-entry end-of-entry)))))
+
+(defun ess-roxy-toggle-hiding ()
+  "Toggle hiding/showing of a block.
+See `hs-show-block' and `ess-roxy-hide-block'."
+  (interactive)
+  (hs-life-goes-on
+   (if (hs-overlay-at (point-at-eol))
+       (hs-show-block)
+     (ess-roxy-hide-block))))
+
+(defun ess-roxy-show-all ()
+  "Hide all Roxygen entries in current buffer. "
+  (interactive)
+  (ess-roxy-hide-all t))
+
+(defun ess-roxy-hide-all (&optional show)
+  "Hide all Roxygen entries in current buffer. "
+  (interactive)
+  (hs-life-goes-on
+   (save-excursion
+     (goto-char (point-min))
+     (while (re-search-forward (concat ess-roxy-re) (point-max) t 1)
+       (let ((end-of-entry (ess-roxy-end-of-entry)))
+         (if show
+             (hs-show-block)
+           (ess-roxy-hide-block))
+         (goto-char end-of-entry)
+         (forward-line 1))))))
 
 (defun ess-roxy-previous-entry ()
   "Go to beginning of previous Roxygen entry. "
@@ -629,7 +655,7 @@ list of strings."
               (progn
                 (ess-roxy-match-paren)
                 (point))))))
-      (setq args-txt (replace-regexp-in-string "#+.*\n" "" args-txt))
+      (setq args-txt (replace-regexp-in-string "#+[^\"']*\n" "" args-txt))
       (setq args-txt (replace-regexp-in-string "([^)]+)" "" args-txt))
       (setq args-txt (replace-regexp-in-string "=[^,]+" "" args-txt))
       (setq args-txt (replace-regexp-in-string "[ \t\n]+" "" args-txt))
@@ -667,6 +693,13 @@ list of strings."
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
+(defadvice ess-eval-line-and-step (around ess-eval-line-and-step-roxy)
+  "evaluate line but do not skip over comment (roxy) lines"
+  (if (ess-roxy-entry-p)
+      (let ((simple-next t))
+        ad-do-it)
+    ad-do-it))
+
 (defadvice mark-paragraph (around ess-roxy-mark-field)
   "mark this field"
   (if (and (ess-roxy-entry-p) (not mark-active))
@@ -679,7 +712,7 @@ list of strings."
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
-      (progn (hs-toggle-hiding))
+      (progn (ess-roxy-toggle-hiding))
     ad-do-it))
 
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
