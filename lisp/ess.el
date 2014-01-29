@@ -226,7 +226,7 @@ Invoke this command with C-u C-u C-y."
   (interactive "*P")
   (if (equal '(16) ARG)
       (ess-yank-cleaned-commands)
-    (yank ARG))
+    (funcall (or (command-remapping 'yank (point)) 'yank)  ARG))
   )
 
  ; ESS Completion
