@@ -431,71 +431,58 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess-R-display-vignettes ()
   "Display R vignettes in ess-help-like buffer."
   (interactive)
-  (if (featurep 'xemacs)
-      (ess-eval-linewise "browseVignettes()\n") ;VS:cannot make regexp bellow work in xemacs
-    (let ((buff (get-buffer-create " *ess-command-output*"))
-          (alist ess-local-customize-alist)
-          packs details
-          p row)
-      (ess-command "local({oo <- options(width=1000);print.default(browseVignettes());options(oo)})\n" buff)
-      (with-current-buffer buff
-        (save-excursion
-          (goto-char (point-max))
-          (while (re-search-backward "\\(?:\\$\\(\\sw+\\)$\\)\\|\\(?:^ ?\\[[0-9]+,\\]\\s-+\"\\(.*\\)\"\\s-*$\\)" nil t)
-            (when (setq row (match-string-no-properties 2))
-              (setq details
-                    (append (list (split-string row  "\"\\s-+\""))
-                            details))
-              )
-            (when (setq p (match-string-no-properties 1))
-              (setq packs (append (list (cons p details)) packs))
-              (setq details nil)))
-          ))
-      (setq buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect)))
-      (ess-with-current-buffer buff
-        (setq buffer-read-only nil)
-        (delete-region (point-min) (point-max))
-        (ess-setq-vars-local (eval alist))
-        (setq ess-help-sec-regex "^\\w+:$"
-              ess-help-type 'vignettes
-              ess-local-process-name ess-current-process-name)
-        (ess-help-mode)
-        (set-buffer-modified-p 'nil)
-        (goto-char (point-min))
-        (dolist (el packs)
-          (let ((pack (pop el)) path)
-            (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
-            (dolist (el2 el)
-              (setq path (nth 0 el2))
+  (let* ((vslist (with-current-buffer (ess-command ".ess_vignetes()\n")
+                   (goto-char (point-min))
+                   (when (re-search-forward "(list" nil t)
+                     (goto-char (match-beginning 0))
+                     (ignore-errors (eval (read (current-buffer)))))))
+         (proc-name ess-current-process-name)
+         (alist ess-local-customize-alist)
+         (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect))))
+    (ess-with-current-buffer buff
+      (setq buffer-read-only nil)
+      (delete-region (point-min) (point-max))
+      (ess-setq-vars-local (eval alist))
+      (setq ess-help-sec-regex "^\\w+:$"
+            ess-help-type 'vignettes
+            ess-local-process-name ess-current-process-name)
+      (ess-help-mode)
+      (set-buffer-modified-p 'nil)
+      (goto-char (point-min))
+      (dolist (el vslist)
+        (let ((pack (car el)))
+          (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
+          (dolist (el2 (cdr el))
+            (let ((path (nth 1 el2)))
               ;; (if xemacs-p
               ;;     (insert (format "Dir: %s \t%s\n" (concat path "/doc/") (nth 2 el2)))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight
                                   'action #'ess--action-R-open-vignete
                                   'follow-link t
-                                  'vignette (file-name-sans-extension (nth 4 el2))
+                                  'vignette (file-name-sans-extension (nth 2 el2))
                                   'package pack
-                                  'help-echo (concat path "/doc/" (nth 4 el2)))
+                                  'help-echo (concat path "/doc/" (nth 2 el2)))
               (insert " ")
               (insert-text-button "Rnw"
                                   'mouse-face 'highlight
                                   'action #'ess--action-open-in-emacs
                                   'follow-link t
-                                  'help-echo (concat path "/doc/" (nth 1 el2)))
+                                  'help-echo (concat path "/doc/" (nth 3 el2)))
               (insert " ")
               (insert-text-button "R"
                                   'mouse-face 'highlight
                                   'action #'ess--action-open-in-emacs
                                   'follow-link t
-                                  'help-echo (concat path "/doc/" (nth 3 el2)))
-              (insert (format "\t%s\n" (nth 2 el2)))
-              )))
-        (goto-char (point-min))
-        (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
-        (delete-char 1)
-        (setq buffer-read-only t))
-      (ess--switch-to-help-buffer buff)
-      )))
+                                  'help-echo (concat path "/doc/" (nth 4 el2)))
+              (insert (format "\t%s\n" (nth 0 el2)))
+              ))))
+      (goto-char (point-min))
+      (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
+      (delete-char 1)
+      (setq buffer-read-only t))
+    (ess--switch-to-help-buffer buff)
+    ))
 
 (defun ess--action-open-in-emacs (pos)
   (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
