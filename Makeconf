@@ -78,8 +78,8 @@ MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o
 #MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
 #
-INSTALLDIR = install -d
-#INSTALLDIR = mkdir -p
+INSTALLDIR = mkdir -p
+#INSTALLDIR = install -d
 #
 INSTALL = cp -p
 #INSTALL = install
