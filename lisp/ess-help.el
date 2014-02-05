@@ -69,6 +69,10 @@
 
 (autoload 'ess-display-help-on-object-ddeclient "ess-dde" "(autoload)" nil)
 
+(autoload 'tramp-tramp-file-p           "tramp" "(autoload).")
+(autoload 'tramp-file-name-localname    "tramp" "(autoload).")
+(autoload 'tramp-dissect-file-name      "tramp" "(autoload).")
+(autoload 'with-parsed-tramp-file-name  "tramp" "(autolaod).")
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -438,14 +442,15 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                      (ignore-errors (eval (read (current-buffer)))))))
          (proc-name ess-current-process-name)
          (alist ess-local-customize-alist)
+         (remote (file-remote-p default-directory))
          (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect))))
-    (ess-with-current-buffer buff
+    (with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
       (ess-setq-vars-local (eval alist))
       (setq ess-help-sec-regex "^\\w+:$"
             ess-help-type 'vignettes
-            ess-local-process-name ess-current-process-name)
+            ess-local-process-name proc-name)
       (ess-help-mode)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
@@ -453,12 +458,17 @@ if necessary.  It is bound to RET and C-m in R-index pages."
         (let ((pack (car el)))
           (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
           (dolist (el2 (cdr el))
-            (let ((path (nth 1 el2)))
+            (let ((path (if remote
+                            (with-parsed-tramp-file-name default-directory nil
+                              (tramp-make-tramp-file-name method user host (nth 1 el2)))
+                          (nth 1 el2))))
               ;; (if xemacs-p
               ;;     (insert (format "Dir: %s \t%s\n" (concat path "/doc/") (nth 2 el2)))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight
-                                  'action #'ess--action-R-open-vignete
+                                  'action (if remote
+                                              #'ess--action-open-in-emacs
+                                            #'ess--action-R-open-vignete)
                                   'follow-link t
                                   'vignette (file-name-sans-extension (nth 2 el2))
                                   'package pack
@@ -479,7 +489,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
               ))))
       (goto-char (point-min))
       (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
-      (delete-char 1)
+      (unless (eobp) (delete-char 1))
       (setq buffer-read-only t))
     (ess--switch-to-help-buffer buff)
     ))
