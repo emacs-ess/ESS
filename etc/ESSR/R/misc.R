@@ -39,7 +39,7 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
             t <- as.data.frame(tail(x, tlength))
             for (i in 1:ncol(x)) {
                 h[[i]] <- f(h[[i]])
-                t[[i]] <- f(h[[i]])
+                t[[i]] <- f(t[[i]])
             }
             ## summaries
             sumr <- sapply(x, function(c){
