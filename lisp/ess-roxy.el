@@ -90,7 +90,8 @@
               "\\)\\>")
      (1 'font-lock-keyword-face prepend))
     (,(concat ess-roxy-re " *\\([@\\]"
-              (regexp-opt '("param" "importFrom") t)
+              (regexp-opt '("param" "importFrom" "importClassesFrom"
+                            "importMethodsFrom") t)
               "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
