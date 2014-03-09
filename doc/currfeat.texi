@@ -32,7 +32,7 @@
   @item Manipulating and editing saved transcripts
   @item Re-evaluating commands from transcript files
   @end itemize
-@item Interaction with Help Pages and other Documenation (R)
+@item Interaction with Help Pages and other Documentation (R)
   @itemize @bullet
   @item Fast Navigation
   @item Sending Examples to running ESS process.
