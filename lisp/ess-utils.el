@@ -73,7 +73,7 @@ POS defaults to point if no value is given."
         (goto-char (nth 1 ppss))
         (when (char-equal ?\[ (char-after))
           (setq r t))
-        (setq ppss (syntax-ppss))
+        (setq ppss (syntax-ppss)))
       r)))
 
 (defun ess--extract-default-fl-keywords (keywords)
