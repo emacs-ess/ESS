@@ -610,8 +610,9 @@ and one that is well formatted in emacs ess-mode."
     (ess-if-verbose-write "ess-fix-misc: after ';' before #\n");___D___
 
     ;;from R 1.9.x "_" is valid in names; here assume no initial / trailing '_'
-    (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
-    (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
+    ;; BUG: The following changes "beta_ " or " _abc"
+    ;; (goto-char from) (ess-rep-regexp " +_ *" " <- " nil 'literal verbose)
+    ;; (goto-char from) (ess-rep-regexp   "_ +" " <- " nil 'literal verbose)
 
     (ess-if-verbose-write "ess-fix-misc: before 'around \"<-\"' :\n");___D___
     ;; ensure space around  "<-"  ---- but only replace if necessary:
