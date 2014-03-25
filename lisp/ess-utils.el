@@ -62,16 +62,19 @@
 	    (eq 'font-lock-comment-face face)))
 	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
 
-(defun ess-inside-brackets-p (&optional pos)
+(defun ess-inside-brackets-p (&optional pos curly?)
   "Return t if position POS is inside brackets.
-POS defaults to point if no value is given."
+POS defaults to point if no value is given. If curly? is non nil
+also return t if inside curly brackets."
   (save-excursion
     (let ((ppss (syntax-ppss pos))
           (r nil))
       (while (and (> (nth 0 ppss) 0)
                   (not r))
         (goto-char (nth 1 ppss))
-        (when (char-equal ?\[ (char-after))
+        (when (or (char-equal ?\[ (char-after))
+                  (and curly?
+                       (char-equal ?\{ (char-after))))
           (setq r t))
         (setq ppss (syntax-ppss)))
       r)))
