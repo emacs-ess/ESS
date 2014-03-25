@@ -169,7 +169,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
 
-(defun ess--flush-help-into-current-buffer (object &optional command)
+(defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
   (ess-write-to-dribble-buffer
    (format "(ess-help '%s' start  ..\n" (buffer-name (current-buffer))))
 
@@ -186,7 +186,9 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
         (setq
          command (format ;; crippled S3 :(
                   "do.call(structure, c('%s', attributes(help('%s'))))\n"
-                  (ess-completing-read "Choose location" packs nil t)
+                  (if dont-ask
+                      (car packs)
+                    (ess-completing-read "Choose location" packs nil t))
                   object)))))
   (ess-command (format (or command inferior-ess-help-command)
                        object) (current-buffer))
