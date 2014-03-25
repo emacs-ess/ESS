@@ -117,7 +117,7 @@
     (list julia-char-regex 2 'font-lock-string-face)
     (list julia-forloop-in-regex 1 'font-lock-keyword-face)
     ;; (cons ess-subset-regexp 'font-lock-constant-face)
-    (cons "\\(\\sw+\\) ?(" '(1 font-lock-function-name-face keep))
+    (cons "\\(\\sw+!?\\) ?(" '(1 font-lock-function-name-face keep))
     ;(list julia-string-regex 0 'font-lock-string-face)
 ))
 
