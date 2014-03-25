@@ -39,7 +39,7 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
             t <- as.data.frame(tail(x, tlength))
             for (i in 1:ncol(x)) {
                 h[[i]] <- f(h[[i]])
-                t[[i]] <- f(h[[i]])
+                t[[i]] <- f(t[[i]])
             }
             ## summaries
             sumr <- sapply(x, function(c){
@@ -76,4 +76,24 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         }
     }
     invisible(NULL)
+}
+
+.ess_vignetes <- function(){
+    vs <- unclass(browseVignettes())
+    vs <- vs[sapply(vs, length) > 0]
+
+    mat2elist <- function(mat){
+        if(!is.null(dim(mat))){
+            apply(mat, 1, function(r)
+                  sprintf("(list \"%s\")",
+                          paste0(gsub("\"","\\\\\"",
+                                      as.vector(r[c("Title", "Dir", "PDF", "File", "R")])),
+                                 collapse = "\" \"")))
+        }
+    }
+    cat("(list \n",
+        paste0(mapply(function(el, name) sprintf("(list \"%s\"  %s)", 
+                                                 name,
+                                                 paste0(mat2elist(el), collapse = "\n")),
+                      vs, names(vs)), collapse = "\n"), ")\n")
 }
