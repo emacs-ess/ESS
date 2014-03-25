@@ -108,4 +108,19 @@ would put suggest: (), c(), list(), sqrt(), t()
    [2013-12-19 Thu] [[gnus:nnimap%2BSpinuVit:ESS#CAD%3D7RJZ4EHETKF4LPJpzuw0uO9AuzOtWDYVnV1cZAVQxAotVxg@mail.gmail.com][Email from Ali Tofigh: {ESS} ess-execute-screen-optio]]
 ** TODO  
    [2013-12-20 Fri] [[file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image%20(expand-file-name%20(nth%20idx%20ifiles)%20dir)][file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image (expand-file-name (nth idx ifiles) dir)]]
-
+** TODO Implement "Extract Function" functionality
+   Proposed by Andreas Leha:
+   ,----
+   | RStudio can analyze a selection of code from within the source editor
+   | and automatically convert it into a re-usable function. Any "free"
+   | variables within the selection (objects that are referenced but not
+   | created within the selection) are converted into function arguments
+   `----
+** TODO > a + b + c is not cleaned correctly with C-u C-u C-y
+   While you are in this part of the code, can you add C-u C-u C-y to the ESS
+   menu item, although maybe it belongs on the Edit menu.  Not clear to me
+   which would be better.
+   
+   Thanks
+   Rich
+   [2014-02-20 Thu] [[gnus:nnimap%2BSpinuVit:ESS/ESS-core#CAGx1TMCSfK3XK6YghxomP03R_tFD2AiC4X%3D0NDcvoje%3D%2B9vMWw@mail.gmail.com][Email from Richard M. Heiberger: bug in ess-transcript-clean-re]]
