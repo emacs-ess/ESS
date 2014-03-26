@@ -2540,8 +2540,8 @@ activation of @code{ess-tracebug} set @code{ess-use-tracebug} to nil.
 
 Tracebug functionality can be found on @code{ess-dev-map}, bound to
 @kbd{C-c C-t}. Additionally, when subprocess is in a debugging state
-@code{ess-debug-minor-mode} is active and the following shortcuts are
-available:
+@code{ess-debug-minor-mode} is active and the following additional
+shortcuts are available:
 
 @verbatim
 * Interactive Debugging (`ess-debug-minor-mode-map'):
@@ -2556,7 +2556,7 @@ available:
 @end verbatim
 
 
-Here are all the tracebug commands defined in @code{ess-dev-map}
+These are all the tracebug commands defined in @code{ess-dev-map}
 (@kbd{C-c C-t ?} to show this table):
 
 @verbatim
@@ -2595,10 +2595,15 @@ Here are all the tracebug commands defined in @code{ess-dev-map}
 
 @end verbatim
 
+To configure how electric watch window splits the display see
+@code{ess-watch-width-threshold} and @code{ess-watch-height-threshold}
+variables.
+
 A more detailed ess-tracebug documentation with screenshots is available
 at @uref{http://code.google.com/p/ess-tracebug/}.
 
 A short tutorial is at @uref{http://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
+
 
 @emph{Note:} Currently, ess-tracebug does not detect some of R's debug
 related messages in non-English locales. To set your R messages to

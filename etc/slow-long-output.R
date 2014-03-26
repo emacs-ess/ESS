@@ -4,6 +4,7 @@ op <- options("max.print")
 ##' construct (random) character vector of length n,  of about 10 characters each
 mkCh <- function(n) {
     if(getOption("max.print") <= n) options(max.print = n + 1) ## <-
+    if(n == 10) stop("error's message with apostrophe - work's in developer mode")
     N <- pmin(26,pmax(1, rpois(n, 10)))
     cbind(vapply(N, function(m) paste(sample(letters, m), collapse=""), ""))
 }
