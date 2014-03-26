@@ -121,10 +121,9 @@
 
 .ess_watch_eval <- function()
     {
-        if(!exists('.ess_watch_expressions')) {
-            assign('.ess_watch_expressions', list(), envir = .GlobalEnv)
-        }
-        if(length(.ess_watch_expressions) == 0) {
+        env <- as.environment("ESSR")
+        exps <- get('.ess_watch_expressions', envir = env)
+        if(length(exps) == 0) {
             ## using old style so this can be parsed by R 1.9.1 (e.g):
             cat('\n# Watch list is empty!\n',
 '# a       append new expression',
@@ -138,14 +137,14 @@
 sep="\n")
         } else {
             .parent_frame <- parent.frame()
-            .essWEnames <- allNames(.ess_watch_expressions)
+            .essWEnames <- allNames(exps)
             len0p <- !nzchar(.essWEnames)
             .essWEnames[len0p] <- seq_along(len0p)[len0p]
-            for(i in seq_along(.ess_watch_expressions)) {
+            for(i in seq_along(exps)) {
                 cat('\n@---- ', .essWEnames[[i]], ' ',
                     rep.int('-', max(0, 35 - nchar(.essWEnames[[i]]))), '-@\n', sep = '')
-                cat(paste('@---:', deparse(.ess_watch_expressions[[i]][[1]])), ' \n', sep = '')
-                tryCatch(print(eval(.ess_watch_expressions[[i]],
+                cat(paste('@---:', deparse(exps[[i]][[1]])), ' \n', sep = '')
+                tryCatch(print(eval(exps[[i]],
                                     envir = .parent_frame)),
                          error = function(e) cat('Error:', e$message, '\n' ),
                          warning = function(w) cat('warning: ', w$message, '\n' ))
@@ -153,11 +152,16 @@ sep="\n")
         }
     }
 
+.ess_watch_assign_expressions <- function(elist){
+    assign(".ess_watch_expressions", elist, envir = as.environment("ESSR"))
+}
+
 .ess_log_eval <- function(log_name)
     {
-        if(!exists(log_name, envir = .GlobalEnv, inherits = FALSE))
-            assign(log_name, list(), envir = .GlobalEnv)
-        log <- get(log_name, envir = .GlobalEnv, inherits = FALSE)
+        env <- as.environment("ESSR")
+        if(!exists(log_name, envir = env, inherits = FALSE))
+            assign(log_name, list(), envir = env)
+        log <- get(log_name, envir = env, inherits = FALSE)
         .essWEnames <- allNames(.ess_watch_expressions)
         cur_log <- list()
         .parent_frame <- parent.frame()
@@ -173,7 +177,7 @@ sep="\n")
             })
         }
         names(cur_log) <- .essWEnames
-        assign(log_name, c(log, list(cur_log)), envir = .GlobalEnv)
+        assign(log_name, c(log, list(cur_log)), envir = env)
         invisible(NULL)
     }
 
