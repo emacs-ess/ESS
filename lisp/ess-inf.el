@@ -2656,7 +2656,7 @@ This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
   (if (string= ess-language "S")
       (ess-eval-linewise (format "options(width=%d, length=99999)"
-                                 (1- (window-width)))
+                                 (- (window-width) 2))
                          nil nil nil 'wait-prompt)))
 
 (defun ess-execute (command &optional invert buff message)
