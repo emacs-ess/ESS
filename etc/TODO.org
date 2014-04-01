@@ -29,7 +29,10 @@
    :END:
    [2013-07-08 ma] [[file:~/works/pbm/R/hierarchy.R::..st_is_old..%20<-][file:~/works/pbm/R/hierarchy.R::..st_is_old.. <-]]
    
-** TODO watch window behaves unexpectedly  
+** DONE watch window behaves unexpectedly
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2014-03-31 Mon 20:13]
+   :END:
    [2013-06-27 Thu]
 * DEVELOPER  
 ** DONE [#A] Eval in developer is broken
@@ -59,7 +62,10 @@
    MELPA users.
 ** TODO [#B] build ert based unit test suit                           :13_09:
 ** TODO split ess-mode into specialized derived modes
-** TODO set PAGER="cat" environment variable for tramp process if unset?
+** DONE set PAGER="cat" environment variable for tramp process if unset?
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2014-03-31 Mon 20:13]
+   :END:
 ** TODO cleanup ESS namespace 
    [2013-06-27 Thu]
 ** DONE remove reference to ssh.el from manual + add tramp workflow
@@ -91,7 +97,7 @@ behaves similarly.  Ideally, we should respect the user's settings
 of focus-follows-mouse/mouse-autoselect-window in this common 
 help/*R* buffer arrangement.
 ** TODO Make an option to remember eval-and-go code in comint history
-** BUG: DESCRIPTION file is killed if set to R-mode
+** DONE DESCRIPTION file is killed if set to R-mode
    :LOGBOOK:
    - State "DONE"       from "TODO"       [2013-10-16 Wed 18:15]
    :END:
@@ -104,10 +110,11 @@ would put suggest: (), c(), list(), sqrt(), t()
   notably in ess-help, inferior-ess, and ess-mode. It would be *really*
   user friendly if we have a "submenu" for each of these maps, and them 
   in both ESS and iESS (or all 4: ESS, iESS, ESS-help, ESS-transcript, ..).
-** TODO ess-execute-screen-options wrong in terminal 
+** DONE ess-execute-screen-options wrong in terminal
+   :LOGBOOK:
+   - State "DONE" [2014-03-31 Mon 20:11]
+   :END:
    [2013-12-19 Thu] [[gnus:nnimap%2BSpinuVit:ESS#CAD%3D7RJZ4EHETKF4LPJpzuw0uO9AuzOtWDYVnV1cZAVQxAotVxg@mail.gmail.com][Email from Ali Tofigh: {ESS} ess-execute-screen-optio]]
-** TODO  
-   [2013-12-20 Fri] [[file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image%20(expand-file-name%20(nth%20idx%20ifiles)%20dir)][file:~/bin/emacs/lisp/image-preview.el::(image-pw--insert-image (expand-file-name (nth idx ifiles) dir)]]
 ** TODO Implement "Extract Function" functionality
    Proposed by Andreas Leha:
    ,----
