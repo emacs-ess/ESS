@@ -116,7 +116,10 @@ would put suggest: (), c(), list(), sqrt(), t()
    | variables within the selection (objects that are referenced but not
    | created within the selection) are converted into function arguments
    `----
-** TODO > a + b + c is not cleaned correctly with C-u C-u C-y
+** DONE > a + b + c is not cleaned correctly with C-u C-u C-y
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2014-03-31 Mon 20:05]
+   :END:
    While you are in this part of the code, can you add C-u C-u C-y to the ESS
    menu item, although maybe it belongs on the Edit menu.  Not clear to me
    which would be better.
