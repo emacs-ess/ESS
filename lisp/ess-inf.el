@@ -1144,7 +1144,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
   (setq proc (or proc (get-process ess-local-process-name)))
   (unless (eq (process-status proc) 'run)
     (ess-error "ESS process has died unexpectedly."))
-  (setq wait (or wait 0.001)) ;;xemacs is stuck if it's 0 here
+  (setq wait (or wait 0.002)) ;;xemacs is stuck if it's 0 here
   (let ((start-time (float-time)))
     (save-excursion
       (while (or (accept-process-output proc wait)
@@ -1505,12 +1505,12 @@ local({
           (set-marker (process-mark sprocess) oldpm))))
     buf))
 
-(defun ess-boolean-command (com &optional buf)
+(defun ess-boolean-command (com &optional buf wait)
   "Like `ess-command' but expects COM to print TRUE or FALSE.
 If TRUE (or true) is found return non-nil otherwise nil.
 
 Example: (ess-boolean-command \"2>1\n\")"
-  (with-current-buffer (ess-command com buf)
+  (with-current-buffer (ess-command com buf nil nil wait)
     (goto-char (point-min))
     (let ((case-fold-search t))
       (re-search-forward "true" nil t))))

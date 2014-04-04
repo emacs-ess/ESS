@@ -333,7 +333,7 @@ before ess-site is loaded) for it to take effect."))
                             (buffer-string))))
         (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
                                              verfile loadremote))
-        (unless (ess-boolean-command (format r-load-code version))
+        (unless (ess-boolean-command (format r-load-code version) nil 0.1)
           (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
                 (files (directory-files src-dir t "\\.R$")))
             (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
