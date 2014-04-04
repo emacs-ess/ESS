@@ -437,7 +437,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess-R-display-vignettes ()
   "Display R vignettes in ess-help-like buffer."
   (interactive)
-  (let* ((vslist (with-current-buffer (ess-command ".ess_vignetes()\n")
+  (let* ((vslist (with-current-buffer (ess-command ".ess_vignettes()\n")
                    (goto-char (point-min))
                    (when (re-search-forward "(list" nil t)
                      (goto-char (match-beginning 0))
@@ -470,7 +470,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                                   'mouse-face 'highlight
                                   'action (if remote
                                               #'ess--action-open-in-emacs
-                                            #'ess--action-R-open-vignete)
+                                            #'ess--action-R-open-vignette)
                                   'follow-link t
                                   'vignette (file-name-sans-extension (nth 2 el2))
                                   'package pack
@@ -498,7 +498,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 (defun ess--action-open-in-emacs (pos)
   (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
-(defun ess--action-R-open-vignete (pos)
+(defun ess--action-R-open-vignette (pos)
   (ess-command (format "vignette('%s', package='%s')\n"
                        (get-text-property pos 'vignette)
                        (get-text-property pos 'package))))
