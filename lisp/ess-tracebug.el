@@ -1206,7 +1206,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (flush-timer (process-get proc 'flush-timer)))
     ;; current-buffer is still the user's input buffer here
     (ess--if-verbose-write-process-state proc string)
-    (inferior-ess-run-callback proc) ;protected
+    (inferior-ess-run-callback proc string)
     (process-put proc 'is-recover match-selection)
 
     (if (or (process-get proc 'suppress-next-output?)
