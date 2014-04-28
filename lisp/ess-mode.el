@@ -1140,6 +1140,7 @@ In usual case returns an integer: the column to indent to.
 Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
+
     ;; Early escape for indentation of a closing parenthesis
     (if (or
          (looking-at "^[[:blank:]]*\)[[:blank:]]*$")
@@ -1149,14 +1150,19 @@ Returns nil if line starts inside a string, t if in a comment."
           (backward-sexp)               ; Move to match parenthesis
 
           ;; If the line ends with a ',' then do vertical alignment
-          (end-of-line)
+          (beginning-of-line)
+          (if (looking-at ".*#")
+              (progn
+                (search-forward "#")
+                (backward-char)
+                )
+            (end-of-line))
           (skip-chars-backward "[:blank:]")
           (backward-char)
           (if (looking-at ",")
               (progn
                 (search-backward "(")
                 (+ (current-column) 1))
-
             ;; Otherwise match indentation of caller
             (current-indentation)))
 
