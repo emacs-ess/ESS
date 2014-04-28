@@ -1140,7 +1140,28 @@ In usual case returns an integer: the column to indent to.
 Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
-    (let ((indent-point (point))
+    ;; Early escape for indentation of a closing parenthesis
+    (if (or
+         (looking-at "^[[:blank:]]*\)[[:blank:]]*$")
+         (looking-at "^[[:blank:]]*\)[[:blank:]]*#+.*$"))
+        (progn
+          (search-forward ")")          ; Move position to the parenthesis
+          (backward-sexp)               ; Move to match parenthesis
+
+          ;; If the line ends with a ',' then do vertical alignment
+          (end-of-line)
+          (skip-chars-backward "[:blank:]")
+          (backward-char)
+          (if (looking-at ",")
+              (progn
+                (search-backward "(")
+                (+ (current-column) 1))
+
+            ;; Otherwise match indentation of caller
+            (current-indentation)))
+
+      ;; Regular indentation checks
+      (let ((indent-point (point))
           (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
           (open-paren-in-column-0-is-defun-start t) ;; basically go to point-min (no better solution aparently)
           (case-fold-search nil)
@@ -1274,7 +1295,7 @@ Returns nil if line starts inside a string, t if in a comment."
                      (if (eq (preceding-char) ?\))
                          (forward-sexp -1))
                      ;; Get initial indentation of the line we are on.
-                     (current-indentation))))))))))
+                     (current-indentation)))))))))))
 
 (defun ess-continued-statement-p ()
   "If a continuatieon of a statement, return an indent to add to continuation."
