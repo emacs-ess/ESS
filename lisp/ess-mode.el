@@ -1169,8 +1169,8 @@ function call"
   (save-excursion
     (forward-line -1)
     (or
-     (looking-at ".*[\\+\\-\\*\\/][[:blank:]]*$")
-     (looking-at ".*[\\+\\-\\*\\/][[:blank:]]*#+")))
+     (looking-at ".*[+*/-][[:blank:]]*$")
+     (looking-at ".*[+*/-][[:blank:]]*#+")))
   )
 
 (defun ess-calculate-indent--continuing-offset ()
@@ -1178,8 +1178,8 @@ function call"
     (let ((number-of-lines 0))
       (forward-line -1)
       (while (or
-              (looking-at ".*[\\+\\-\\*\\/][[:blank:]]*$")
-              (looking-at ".*[\\+\\-\\*\\/][[:blank:]]*#+"))
+              (looking-at ".*[+*/-][[:blank:]]*$")
+              (looking-at ".*[+*/-][[:blank:]]*#+"))
         (forward-line -1)
         (setq number-of-lines (+ number-of-lines 1))
         )
