@@ -402,6 +402,9 @@ Variables controlling indentation style:
  `ess-dont-vertically-align-closing-paren'
     Whether we should vertically align the closing parenthesis of a function
     call.
+ `ess-dont-align-on-assignment'
+    Whether we should align continued statements based on the position of a
+    `<-` or `=` assignment operator.
  `ess-continued-brace-offset'
     Extra indentation given to a brace that starts a substatement.
     This is in addition to ess-continued-statement-offset.
@@ -1173,12 +1176,19 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (current-indentation))
   )
 
+(defun ess-looking-at-comment ()
+  (looking-at "[[:blank:]]*#")
+  )
+
 (defun ess-previous-line-has-trailing-operator ()
   (save-excursion
     (forward-line -1)
-    (or
-     (looking-at ".*[+*/-][[:blank:]]*$")
-     (looking-at ".*[+*/-][[:blank:]]*#+")))
+    (and
+     (not (ess-looking-at-comment))
+     (or
+      (looking-at ".*[+*/-][[:blank:]]*$")
+      (looking-at ".*[+*/-][[:blank:]]*#+")))
+    )
   )
 
 (defun ess-calculate-indent--continuing-offset ()
@@ -1236,6 +1246,7 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
                          (re-search-backward "[ \t]*expression[ \t]*(" bol t))
                     ;; obj <- expression(...
                     ;; modified by shiba (forward-sexp -1)
+
                     (beginning-of-line)
                     (skip-chars-forward " \t")
                     ;; end{modified}
@@ -1257,6 +1268,11 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
                    ((and (numberp ess-arg-function-offset-new-line)
                          (looking-at "[ \t]*([ \t]*$"))
                     (forward-sexp -1)
+                    (when ess-dont-align-on-assignment
+                      (beginning-of-line)
+                      (skip-chars-forward "[:blank:]")
+                      (current-indentation)
+                      )
                     (+ (current-column) ess-arg-function-offset-new-line))
                    ;; case 2: list
                    ((and (listp ess-arg-function-offset-new-line)

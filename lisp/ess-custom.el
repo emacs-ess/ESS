@@ -658,6 +658,9 @@ Compares with other text in same context.")
 (defvar ess-dont-vertically-align-closing-paren nil
   "Whether we should vertically align closing parentheses.")
 
+(defvar ess-dont-align-on-assignment nil
+  "Whether we should vertically align based on the position of '<-' and '=' or not.")
+
 (defvar ess-continued-brace-offset 0
   "Extra indent for substatements that start with open-braces.
 This is in addition to ess-continued-statement-offset.")
@@ -752,6 +755,7 @@ If not number, the statements are indented at open-parenthesis following
         (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
         (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset))
         (cons 'ess-dont-vertically-align-closing-paren '(default-value 'ess-dont-vertically-align-closing-paren))
+        (cons 'ess-dont-align-on-assignment '(default-value 'ess-dont-align-on-assignment))
         )
   "Default style constructed from initial values of indentation variables.")
 
@@ -767,6 +771,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           (BSD (ess-indent-level . 8)
                (ess-first-continued-statement-offset . 0)
@@ -778,6 +783,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           (K&R (ess-indent-level . 5)
                (ess-first-continued-statement-offset . 0)
@@ -789,6 +795,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           (C++ (ess-indent-level . 4)
                (ess-first-continued-statement-offset . 0)
@@ -800,6 +807,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-level . 4)
@@ -812,6 +820,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
@@ -824,6 +833,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-else-offset . 0)
                (ess-close-brace-offset . 2)
                (ess-dont-vertically-align-closing-paren . t)
+               (ess-dont-align-on-assignment . t)
                )
           )
         )
