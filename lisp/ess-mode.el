@@ -1330,8 +1330,25 @@ function call"
                    (current-indentation))))))))
   )
 
+(defun ess-previous-line-is-naked-if-else ()
+  (save-excursion
+    (forward-line -1)
+    (beginning-of-line)
+    (or
+     (looking-at "[[:blank:]]*if[[:blank:]]*\(.*\)[[:blank:]]*$")
+     (looking-at "[[:blank:]]*if[[:blank:]]*\(.*\)[[:blank:]]*#")
+     (looking-at "[[:blank:]]*else[[:blank:]]*$")
+     (looking-at "[[:blank:]]*else[[:blank:]]*#")
+     )
+    )
+  )
 
-
+(defun ess-calculate-indent--naked-if-else-continuation ()
+  (save-excursion
+    (forward-line -1)
+    (+ (current-indentation) ess-indent-level)
+    )
+  )
 
 (defun ess-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as ESS code.
@@ -1348,6 +1365,10 @@ Returns nil if line starts inside a string, t if in a comment."
      ;; Indentation for statement continuations ending in an operator
      ((ess-previous-line-has-trailing-operator)
       (ess-calculate-indent--continuing-offset))
+
+     ;; Indentation for 'naked' if / else blocks
+     ((ess-previous-line-is-naked-if-else)
+      (ess-calculate-indent--naked-if-else-continuation))
 
      ;; default indentation rules
      (t
