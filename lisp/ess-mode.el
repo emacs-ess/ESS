@@ -394,6 +394,8 @@ Variables controlling indentation style:
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
+ `ess-first-continued-statement-offset'
+    Extra indentation given to the first continued statement.
  `ess-continued-statement-offset'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
@@ -1185,7 +1187,7 @@ function call"
         )
       (forward-line 1)
       (+ (current-indentation)
-         (+ ess-indent-level
+         (+ ess-first-continued-statement-offset
             (* (- number-of-lines 1)
                ess-continued-statement-offset)))))
   )
