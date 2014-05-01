@@ -399,6 +399,9 @@ Variables controlling indentation style:
  `ess-continued-statement-offset'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
+ `ess-dont-vertically-align-closing-paren'
+    Whether we should vertically align the closing parenthesis of a function
+    call.
  `ess-continued-brace-offset'
     Extra indentation given to a brace that starts a substatement.
     This is in addition to ess-continued-statement-offset.
@@ -1145,11 +1148,12 @@ Return the amount the indentation changed by."
 (defun ess-calculate-indent--closing-paren ()
   "Determines how to indent a closing parenthesis. Vertical alignment
 is performed if there is an argument declared on the same line as the
-function call"
+function call when 'ess-dont-vertically-align-closing-paren' is t."
   (search-forward ")")          ; Move position to the parenthesis
   (backward-sexp)               ; Move to match parenthesis
 
   ;; If the line ends with a ',' then do vertical alignment
+  ;; First, find the closing ','
   (beginning-of-line)
   (if (looking-at ".*#")
       (progn
@@ -1159,7 +1163,9 @@ function call"
     (end-of-line))
   (skip-chars-backward "[:blank:]")
   (backward-char)
-  (if (looking-at ",")
+  (if (and
+       (not ess-dont-vertically-align-closing-paren)
+       (looking-at ","))
       (progn
         (search-backward "(")
         (+ (current-column) 1))
