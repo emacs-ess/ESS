@@ -1216,6 +1216,31 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
                ess-continued-statement-offset)))))
   )
 
+(defun ess-calculate-indent--starts-with-comma ()
+  (save-excursion
+    ;; Number of whitespace characters separating comma and next character
+    (let ((whitespace-chars 0))
+      (beginning-of-line)
+      (search-forward ",")
+      (forward-char)
+      (while
+          (looking-at "[[:blank:]]")
+        (setq whitespace-chars (+ whitespace-chars 1))
+        (forward-char)
+        )
+
+      ;; Look for the opening parenthesis starting the arglist
+      (forward-line -1)
+      (beginning-of-line)
+      (while
+          (looking-at "[[:blank:]]*\,")
+        (forward-line -1)
+        )
+      (beginning-of-line)
+      (search-forward "(")
+      (- (- (current-column) whitespace-chars) 2)
+      )))
+
 (defun ess-calculate-indent--default (&optional parse-start)
   (let ((indent-point (point))
         (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
@@ -1399,6 +1424,10 @@ Returns nil if line starts inside a string, t if in a comment."
      ;; Indentation for 'naked' if / else blocks
      ((ess-previous-line-is-naked-if-else)
       (ess-calculate-indent--naked-if-else-continuation))
+
+     ;; Indentation for lines that begin with ','
+     ((looking-at "[[:blank:]]*\,")
+      (ess-calculate-indent--starts-with-comma))
 
      ;; default indentation rules
      (t
