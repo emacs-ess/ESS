@@ -1176,6 +1176,13 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (current-indentation))
   )
 
+(defun ess-whole-line-is-comment ()
+  (save-excursion
+    (beginning-of-line)
+    (ess-looking-at-comment)
+    )
+  )
+
 (defun ess-looking-at-comment ()
   (looking-at "[[:blank:]]*#")
   )
@@ -1185,6 +1192,7 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (forward-line -1)
     (and
      (not (ess-looking-at-comment))
+     (not (ess-whole-line-is-comment))
      (or
       (looking-at ".*[+*/-][[:blank:]]*$")
       (looking-at ".*[+*/-][[:blank:]]*#+")))
