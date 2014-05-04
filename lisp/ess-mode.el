@@ -1176,6 +1176,16 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (current-indentation))
   )
 
+(defun ess-whole-line-is-comment-or-blank ()
+  (save-excursion
+    (beginning-of-line)
+    (or
+     (ess-looking-at-comment)
+     (looking-at "^[[:blank:]]*$")
+     )
+    )
+  )
+
 (defun ess-whole-line-is-comment ()
   (save-excursion
     (beginning-of-line)
@@ -1190,12 +1200,12 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
 (defun ess-previous-line-has-trailing-operator ()
   (save-excursion
     (forward-line -1)
-    (and
-     (not (ess-looking-at-comment))
-     (not (ess-whole-line-is-comment))
-     (or
-      (looking-at ".*[+*/-][[:blank:]]*$")
-      (looking-at ".*[+*/-][[:blank:]]*#+")))
+    (while (ess-whole-line-is-comment)
+      (forward-line -1)
+      )
+    (or
+     (looking-at ".*[+*/-][[:blank:]]*$")
+     (looking-at ".*[+*/-][[:blank:]]*#+"))
     )
   )
 
@@ -1204,12 +1214,18 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (let ((number-of-lines 0))
       (forward-line -1)
       (while (or
+              (ess-whole-line-is-comment-or-blank)
               (looking-at ".*[+*/-][[:blank:]]*$")
               (looking-at ".*[+*/-][[:blank:]]*#+"))
+        (when (not (ess-whole-line-is-comment-or-blank))
+          (setq number-of-lines (+ number-of-lines 1))
+          )
         (forward-line -1)
-        (setq number-of-lines (+ number-of-lines 1))
         )
       (forward-line 1)
+      (while (ess-whole-line-is-comment-or-blank)
+        (forward-line 1)
+        )
       (+ (current-indentation)
          (+ ess-first-continued-statement-offset
             (* (- number-of-lines 1)
@@ -1222,7 +1238,6 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
     (let ((whitespace-chars 0))
       (beginning-of-line)
       (search-forward ",")
-      (forward-char)
       (while
           (looking-at "[[:blank:]]")
         (setq whitespace-chars (+ whitespace-chars 1))
@@ -1238,7 +1253,7 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
         )
       (beginning-of-line)
       (search-forward "(")
-      (- (- (current-column) whitespace-chars) 2)
+      (- (- (current-column) whitespace-chars) 1)
       )))
 
 (defun ess-calculate-indent--default (&optional parse-start)
