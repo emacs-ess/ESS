@@ -1200,7 +1200,10 @@ function call when 'ess-dont-vertically-align-closing-paren' is t."
 (defun ess-previous-line-has-trailing-operator ()
   (save-excursion
     (forward-line -1)
-    (while (ess-whole-line-is-comment)
+    (while
+        (and
+         (> (point) (point-min))
+         (ess-whole-line-is-comment))
       (forward-line -1)
       )
     (or
