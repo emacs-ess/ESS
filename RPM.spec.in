@@ -1,6 +1,5 @@
 # This is an RPM spec file that specifies how to package
 # ESS for Fedora Core Linux and, possibly, similar systems.
-# $Id: emacs-ess.spec,v 1.9 2004/10/15 16:44:43 thor Exp $
 
 %define name emacs-ess
 %define version @@VERSION@@
@@ -11,9 +10,9 @@ Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/Editors
-Source: http://ESS.R-project.org/downloads/ess/ess-%{version}.tar.gz
+Source: http://ESS.R-project.org/downloads/ess/ess-%{version}.tgz
 URL: http://ESS.R-project.org/
-Packager: Tom Moertel <tom-rpms@moertel.com>
+Packager: Detlef Steuer <.........de>
 BuildRoot: %{_tmppath}/%{name}-root
 Prefix: %{_prefix}
 BuildArchitectures: noarch
