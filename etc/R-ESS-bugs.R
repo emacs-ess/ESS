@@ -81,18 +81,16 @@ plot(Speed, Distance,
 dimnamesGets <- function (x, value) {
     d <- dim(x)
     if (!is.list(value) || length(value) != 2 ||
-        !(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
-        !(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
+            !(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
+                !(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
         stop(gettextf("invalid dimnames given for '%s' object", class(x)))
     x@Dimnames <- list(if(!is.null(v1)) as.character(v1),
                        if(!is.null(v2)) as.character(v2))
     x
 }
 
-
 ### --- 4 ----------------------------------------------------------------
-##  Here, the indentation is wrong ... rather an Emacs buglet ?
-
+### continued statements
 a <- function(ch) {
     if(ch == Inf) {
         E.cond <- numeric(nb)
@@ -101,13 +99,12 @@ a <- function(ch) {
         indic  <- ifelse(jinf+1 <= 1 & jsup >= 1,1,0)
         E.cond <- ch*(-pbinom(jinf,ni,prb) + 1-pbinom(js.n,ni,prb)) +
             ifelse(ni == 1, prb*indic,
-                   mu*(pbinom(js.n-1,pmax(ni-1,1),prb)-
-                       pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
-### why is the following line wrongly indented by Emacs/ESS ?
-                           mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
-
+                   mu*(pbinom(js.n-1,pmax(ni-1,1),prb) -
+                           pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
+###                        ^-- must be here                               
+                               mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
+###                            ^-- must be here                               
         indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
-
     }
 }
 
@@ -130,7 +127,7 @@ setMeneric <-
 {
     ## comments in here are at least kept via "source" attribute
     if(exists(name, "package:base") &&
-       typeof(get(name, "package:base")) != "closure") {
+           typeof(get(name, "package:base")) != "closure") {
         FALSE
     }
     "ABC"
@@ -379,7 +376,7 @@ a <- some.function(arg1,
 for(s in seq(10, 50, len = 5))
     for(a in seq(.5, 1, len = 5))
         pt_dif_plot(s, a)
-##      ^-- here
+##      ^-- must be here
 
 ### --- 16 ----
 ## VS[05-05-2012|ESS 12.04]:FIXED:
@@ -388,10 +385,10 @@ for(s in seq(10, 50, len = 5))
 getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv)))
         get(bindName, envir = whereEnv)
-##      ^-- here
+##      ^-- must be here
     else
         new("protoForm")
-##      ^-- here
+##      ^-- must be here
 
 parentContainer <-
     if(is.null(.getPrototype(.Object@host))) emptyenv()
@@ -419,11 +416,11 @@ foo <- function(x) {
     my.long.Expression <- expression(
         x[a[j]] == exp(theta[1] + theta[2]^2),
         x[b[i]] == sin(theta[3] ~~ theta[4])
-        )
+    )
     ausdruck <- expression
     my.long.Expr...... <- ausdruck(
         x[a[j]] == exp(theta[1] + theta[2]^2),
-        )
+    )
 }
 
 ## VS[18-08-2012]: redundant feature. This is a feature for long subexpressions
@@ -466,28 +463,35 @@ Ops.x.x <- function(e1, e2)
 
 
 ### --- 19 ---
-## wrong indentation because of the regexp
+## indentation with regexp (bug in ess-backward-to-noncomment)
 parse_roc <- function(lines, match = "^\\s*#+\' ?") {
-                                                       lines <- lines[str_detect(lines, match)]
-                                                       if (length(lines) == 0) return(NULL)
-}
+                                                         lines <- lines[str_detect(lines, match)]
+                                                         if (length(lines) == 0) return(NULL)
+### ^-- must be here    
+                                                     }
 
 
 ### --- 20 ---
-## wrong continuation indentation
-
+## continuation indentation must be consisten in/out {}:
 
 {
-  a <- ggplot(data = overtime.by.month,
-              aes(x="",
-                  y=Percent,
-                  fill = Overtime)) +
-                    geom_bar(width = 1) +
-                      xlab('') +
-                        ylab(sub.txt) +
-                          labs(title = title.txt) +
-                            facet_wrap(~Year.Month)
+    a <- ggplot(data = overtime.by.month, 
+                aes(x="", y=Percent, fill = Overtime)) + 
+                    geom_bar(width = 1) + 
+                        xlab('') +
+                            ylab(sub.txt) +  
+                                labs(title = title.txt) +
+                                    facet_wrap(~Year.Month)
 }
+
+a <- ggplot(data = overtime.by.month, 
+            aes(x="", y=Percent, fill = Overtime)) + 
+                geom_bar(width = 1) + 
+                    xlab('') +
+                        ylab(sub.txt) +  
+                            labs(title = title.txt) +
+                                facet_wrap(~Year.Month)
+
 
 ### --- 21 ---
 
@@ -510,7 +514,59 @@ bar <- function(y) y
 
 
 ### --- 22 ----
-## in the beginning of buffer indenting the second line does give an error 
+## in the beginning of buffer indenting the second line does give an error
+## (FIXED)
 if (!grepl("#", x))
 return(res)
 
+### --- 23 ----
+### threee ways to indent clossing parent depending on context:
+foo <-
+    function_call(
+        a,
+        b,
+        c
+    )
+
+foo <- function_call(
+    a,
+    b,
+    c
+)
+
+foo <- function_call(a,
+                     b,
+                     c
+                     )
+
+### --- 24 ---
+### shift comma in function calls
+
+foo <- function_call(a
+                   , b
+                   , c
+                     )
+
+
+### --- 25 ---
+## if/else in function calls
+
+
+function_call(abc =
+                  if (test)
+                      do_something
+                  else
+                      do_something_else)
+
+function_call(
+    abc =
+        if (test)
+            do_something
+        else
+            do_something_else)
+
+
+function_call(abc = if (test)
+                        do_something
+                    else
+                        do_something_else)
