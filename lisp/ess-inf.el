@@ -3235,7 +3235,8 @@ list."
       (if ess-smart-operators
           (progn
             (delete-horizontal-space)
-            (insert ", "))
+            (insert ", ")
+            (ess-indent-line))
         (insert ","))
       )))
 
