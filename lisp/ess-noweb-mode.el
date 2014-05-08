@@ -89,8 +89,8 @@
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
 (eval-and-compile
-  (require 'ess-compat))
-
+  (require 'ess-compat)
+  (autoload 'ess-write-to-dribble-buffer "ess"))
 
 
 ;;; Variables
@@ -947,10 +947,17 @@ indent according to mode."
   (if auto-fill-function
       (setq auto-fill-function 'ess-noweb-auto-fill-doc-chunk)))
 
+(defun ess-noweb-auto-fill-code-chunk ()
+  "Replacement for do-auto-fill. Cancel filling in chunk headers"
+  (unless (save-excursion
+            (beginning-of-line)
+            (looking-at "<<"))
+    (do-auto-fill)))
+
 (defun ess-noweb-auto-fill-code-mode ()
   "Install the default auto fill function, iff necessary."
   (if auto-fill-function
-      (setq auto-fill-function 'do-auto-fill)))
+      (setq auto-fill-function 'ess-noweb-auto-fill-code-chunk)))
 
 ;;; Marking
 
