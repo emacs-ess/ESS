@@ -947,10 +947,17 @@ indent according to mode."
   (if auto-fill-function
       (setq auto-fill-function 'ess-noweb-auto-fill-doc-chunk)))
 
+(defun ess-noweb-auto-fill-code-chunk ()
+  "Replacement for do-auto-fill. Cancel filling in chunk headers"
+  (unless (save-excursion
+            (beginning-of-line)
+            (looking-at "<<"))
+    (do-auto-fill)))
+
 (defun ess-noweb-auto-fill-code-mode ()
   "Install the default auto fill function, iff necessary."
   (if auto-fill-function
-      (setq auto-fill-function 'do-auto-fill)))
+      (setq auto-fill-function 'ess-noweb-auto-fill-code-chunk)))
 
 ;;; Marking
 
