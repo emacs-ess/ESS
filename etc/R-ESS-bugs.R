@@ -144,7 +144,7 @@ onelinerFails <- function(x, ...) class(x)
 
 onelinerFailsToo <-
     function(x, ...)
-    class(x)
+        class(x)
 
 onelinerWorks <- function(x, ...) { class(x) }
 

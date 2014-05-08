@@ -394,6 +394,8 @@ Variables controlling indentation style:
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
+ `ess-first-continued-statement-offset'
+    Extra indentation given to the first continued statement.
  `ess-continued-statement-offset'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
@@ -1027,7 +1029,7 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
                     (setq at-else (looking-at "else\\W"))
                     (setq at-brace (= (following-char) ?{))
                     (ess-backward-to-noncomment opoint)
-                    (if (ess-continued-statement)
+                    (if (ess--continued-statement)
                         ;; Preceding line did not end in comma or semi;
                         ;; indent this line  ess-continued-statement-offset
                         ;; more than previous.
@@ -1155,7 +1157,7 @@ Return the amount the indentation changed by."
         (beginning-of-defun-function nil) ;; don't call ess-beginning-of-function
         (open-paren-in-column-0-is-defun-start t) ;; basically go to point-min (no better solution aparently)
         (case-fold-search nil)
-        state orig-indent
+        state ind
         containing-sexp)
     (if parse-start
         (goto-char parse-start)
@@ -1169,19 +1171,25 @@ Return the amount the indentation changed by."
     (cond ((or (nth 3 state) (nth 4 state))
            ;; return nil (in string) or t (in comment)
            (nth 4 state))
+          ((and (null containing-sexp)
+                (= (following-char) ?\{))
+           0)
+          ((setq ind (ess--continued-block-statement containing-sexp))
+           (+ ind ess-indent-level))
+          ((setq ind (ess--continued-statement containing-sexp))
+           (+ ind ess-continued-statement-offset))
           ((null containing-sexp)
-           ;; Line is at top level.  May be data or function definition
-           ;; or continuation of if,for,else not folowed by {
-           (beginning-of-line)
-           (if (and (/= (following-char) ?\{)
-                    (progn  (ess-backward-to-noncomment (point-min))
-                            (setq  orig-indent (ess-continued-statement))))
-               (+ orig-indent ess-continued-statement-offset)
-             ;; Unless it starts a function body
-             0))
-          ((progn (ess-backward-to-noncomment (point-min))
-                  (setq orig-indent (ess-continued-statement containing-sexp)))
-           (+ orig-indent ess-continued-statement-offset))
+           0)
+          ;; ;; Line is at top level.  May be data or function definition
+          ;; ;; or continuation of if,for,else not folowed by {
+          ;; (beginning-of-line)
+          ;; (if (/= (following-char) ?\{)
+          ;;     (cond ((setq ind (ess--continued-block-statement containing-sexp))
+          ;;            (+ ind ess-indent-level))
+          ;;           ((setq ind (ess--continued-statement containing-sexp))
+          ;;            (+ ind ess-continued-statement-offset))
+          ;;           (t 0))
+          ;; 0))
           ((/= (char-after containing-sexp) ?{)
            ;; line is expression, not statement:
            ;; indent to just after the surrounding open.
@@ -1239,8 +1247,9 @@ Return the amount the indentation changed by."
              (ess-backward-to-start-of-continued-exp containing-sexp)
              (beginning-of-line)
              (ess-backward-to-noncomment containing-sexp))
+           (forward-line 1)
            ;; Now we get the answer.
-           (if (ess-continued-statement)
+           (if (ess--continued-statement)
                ;; This line is continuation of preceding line's statement;
                ;; indent  ess-continued-statement-offset  more than the
                ;; previous line of the statement.
@@ -1318,54 +1327,75 @@ Returns nil if line starts inside a string, t if in a comment."
      (t
       (ess-calculate-indent--default parse-start)))))
 
-(defun ess-continued-statement (&optional containing-sexp)
+
+(defun ess--continued-block-statement (&optional containing-sexp)
+  "If a continuation line of a block, return and indent of this line, otherwise nil."
+  (save-excursion
+    (beginning-of-line)
+    (ess-backward-to-noncomment containing-sexp)
+    (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
+           nil)
+          ;; treat <- to avoid creating another check function
+          ((looking-back "<-")
+           (current-indentation))
+          ((= (preceding-char) ?\)) ;; if, for, while
+           (ignore-errors
+             ;; if throws an error clearly not a continuation
+             ;; can happen if the parenthetical statement starts a new line
+             ;; (foo)  ## or
+             ;; !(foo)
+             (forward-sexp -2)
+             (if (looking-at "if\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")
+                 (current-column)
+               (when (looking-at "function\\b[ \t]*(")
+                 (current-indentation)))))
+          ((progn (ignore-errors (forward-sexp -1))
+                  (looking-at "else\\b\\|repeat\\b\\([:blank:]*\|\\&\\)"))
+           (let ((col (current-column)))
+             (skip-chars-backward " \t")
+             (if (or (bolp)
+                     (eq (preceding-char) ?\;))
+                 (- col (current-column))
+               (when (eq ?} (preceding-char))
+                 (- (current-column) 1)))))
+          )))
+
+
+(defun ess--continued-statement (&optional containing-sexp)
   "If a continuatieon line, return an indent of this line, otherwise nil."
-  (let ((eol (point)))
-    (save-excursion
+  (save-excursion
+    (beginning-of-line)
+    (ess-backward-to-noncomment containing-sexp)
+    (let ((eol (point)))
       (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
              nil)
-            ;; ((bolp))
-            ((= (preceding-char) ?\)) ;; if, for, while
-             (ignore-errors
-               ;; if throws an error clearly not a continuation
-               ;; can happen if the parenthetical statement starts a new line
-               ;; (foo)  ## or
-               ;; !(foo)
-               (forward-sexp -2)
-               (if (looking-at "if\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")
-                   (current-column)
-                 (when (looking-at "function\\b[ \t]*(")
-                   ;; VS[07-05-2014]: why is this 0 here?
-                   0))))
-            ((progn (ignore-errors (forward-sexp -1))
-                    (looking-at "else\\b\\|repeat\\b\\([:blank:]*\|\\&\\)"))
-             (let ((col (current-column)))
-               (skip-chars-backward " \t")
-               (if (or (bolp)
-                       (eq (preceding-char) ?\;))
-                   (- col (current-column))
-                 (when (eq ?} (preceding-char))
-                   (- (current-column) 1)))))
             (t
              (when
                  (progn (goto-char eol)
                         (skip-chars-backward " \t")
                         (or (and (> (current-column) 1)
-                                 (progn (backward-char 1)
-                                        (looking-at "[-:+*/><=&|]")))
+                                 (and (not (looking-back "<-"))
+                                      (looking-back "[-:+*/><=&|]")))
                             (and (> (current-column) 3)
                                  (progn (backward-char 3)
                                         (looking-at "%[^ \t]%")))))
-               (if containing-sexp
-                   (if (> (point-at-bol) containing-sexp)
-                       (current-indentation)
-                     (goto-char containing-sexp)
-                     (1+ (current-column)))
-                 (current-indentation))))))))
+               (let ((first-indent
+                      (or (and (/= ess-first-continued-statement-offset 0)
+                               (null (ess--continued-statement containing-sexp))
+                               ess-first-continued-statement-offset)
+                          0)))                 
+                 (+ first-indent
+                    (if containing-sexp
+                        (if (> (point-at-bol) containing-sexp)
+                            (current-indentation)
+                          (goto-char containing-sexp)
+                          (1+ (current-column)))
+                      (+ (current-indentation)))))))))))
 
 (defun ess-backward-to-noncomment (lim)
   ;; this one is bad. Use 
-  (let (opoint stop)
+  (let ((lim (or lim (point-min)))
+        opoint stop)
     (while (not stop)
       (skip-chars-backward " \t\n\f" lim)
       (setq opoint (point))

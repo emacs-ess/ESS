@@ -649,6 +649,11 @@ nil means to use R/S indentation.")
   "Extra indentation for open braces.
 Compares with other text in same context.")
 
+(defvar ess-first-continued-statement-offset 0
+  "Extra indentation for the first new line continuing an expression.
+If you set this to non-zero value you might want to set
+`ess-continued-statement-offset' to zero.")
+
 (defvar ess-continued-statement-offset 2
   "Extra indent for lines not starting new statements.")
 
@@ -735,6 +740,7 @@ If not number, the statements are indented at open-parenthesis following
 (defvar ess-default-style-list
   (list 'DEFAULT
         (cons 'ess-indent-level '(default-value 'ess-indent-level))
+        (cons 'ess-first-continued-statement-offset '(default-value 'ess-first-continued-statement-offset))
         (cons 'ess-continued-statement-offset '(default-value 'ess-continued-statement-offset))
         (cons 'ess-brace-offset '(default-value 'ess-brace-offset))
         (cons 'ess-expression-offset '(default-value 'ess-expression-offset))
@@ -750,6 +756,7 @@ If not number, the statements are indented at open-parenthesis following
 (defvar ess-style-alist
   (cons ess-default-style-list
         '((GNU (ess-indent-level . 2)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 2)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
@@ -759,6 +766,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-close-brace-offset . 0)
                )
           (BSD (ess-indent-level . 8)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 8)
                (ess-brace-offset . -8)
                (ess-arg-function-offset . 0)
@@ -768,6 +776,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-close-brace-offset . 0)
                )
           (K&R (ess-indent-level . 5)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 5)
                (ess-brace-offset . -5)
                (ess-arg-function-offset . 0)
@@ -777,6 +786,7 @@ If not number, the statements are indented at open-parenthesis following
                (ess-close-brace-offset . 0)
                )
           (C++ (ess-indent-level . 4)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . -4)
                (ess-arg-function-offset . 0)
@@ -787,6 +797,7 @@ If not number, the statements are indented at open-parenthesis following
                )
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-level . 4)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
@@ -797,6 +808,7 @@ If not number, the statements are indented at open-parenthesis following
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 0)
@@ -816,6 +828,7 @@ value of variables in the OWN group, customize the variable
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
 Remove any existing entry with the same KEY before adding the new one.
+               (ess-first-continued-statement-offset . 0)
 This can be used"
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
