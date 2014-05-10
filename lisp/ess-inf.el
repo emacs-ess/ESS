@@ -443,10 +443,16 @@ Return the 'busy state."
   (process-put proc 'sec-prompt nil))
 
 (defun inferior-ess-run-callback (proc string)
+  ;; callback is stored in 'callbacks proc property. It can be either a function
+  ;; to be called with two artuments PROC and STRING or a cons cell of the form
+  ;; (func . suppress) where, if suppress is non-nil next process output will be
+  ;; suppressed.
   (when (process-get proc 'busy-end?)
     (let* ((cb (car (process-get proc 'callbacks)))
            (suppress (and (consp cb) (cdr cb)))
-           (cb (if (consp cb) (car cb) cb)))
+           (cb (if (and (consp cb)
+                        (not (functionp cb)))
+                   (car cb) cb)))
       (when cb
         (when ess-verbose
             (ess-write-to-dribble-buffer "executing callback ...\n"))
