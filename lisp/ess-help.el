@@ -905,6 +905,10 @@ return it.  Otherwise, return `ess-help-topics-list'."
             ((= following ?\_)
              ;; \b_
              (delete-region (1- (point)) (1+ (point)))))))
+  (goto-char (point-min))
+  (while (re-search-forward "URL:" nil t)
+    ;; quick fix for C-x f confusiong
+    (delete-region (match-beginning 0) (match-end 0)))
   ;; Crunch blank lines
   (goto-char (point-min))
   (while (re-search-forward "\n\n\n\n*" nil t)
