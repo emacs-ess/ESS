@@ -387,13 +387,8 @@ for(s in seq(10, 50, len = 5))
 getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv))) {
         get(bindName, envir = whereEnv)
-<<<<<<< HEAD
-##      ^-- here
-    } else
-=======
 ##      ^-- must be here
     else
->>>>>>> master
         new("protoForm")
 ##      ^-- must be here
 
@@ -522,8 +517,7 @@ bar <- function(y) y
 
 
 ### --- 22 ----
-## in the beginning of buffer indenting the second line does give an error
-## (FIXED)
+## wrong indentation because of #, same reason as 19.
 if (!grepl("#", x))
 return(res)
 
