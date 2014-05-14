@@ -101,9 +101,9 @@ a <- function(ch) {
             ifelse(ni == 1, prb*indic,
                    mu*(pbinom(js.n-1,pmax(ni-1,1),prb) -
                            pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
-###                        ^-- must be here                               
+###                        ^-- must be here
                                mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
-###                            ^-- must be here                               
+###                            ^-- must be here
         indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
     }
 }
@@ -380,7 +380,7 @@ for(s in seq(10, 50, len = 5))
 
 ### --- 16 ----
 ## VS[05-05-2012|ESS 12.04]:FIXED:
-## MM[2014-04-28]: added '}' before else (=> "{" after if(.)) 
+## MM[2014-04-28]: added '}' before else (=> "{" after if(.))
 ## so parse(<file>) works at all!
 ## Gives error unbalanced para at else lines and indentation is wrong
 ## error: Point is not in a function according to 'ess-function-pattern'.
@@ -393,7 +393,7 @@ getOrCreateForm <- function(bindName, whereEnv)
 ##      ^-- must be here
 
 
-parentContainer <- 
+parentContainer <-
     if(is.null(.getPrototype(.Object@host))) { emptyenv()
     } else sdf
 
@@ -470,7 +470,7 @@ Ops.x.x <- function(e1, e2)
 parse_roc <- function(lines, match = "^\\s*#+\' ?") {
                                                          lines <- lines[str_detect(lines, match)]
                                                          if (length(lines) == 0) return(NULL)
-### ^-- must be here    
+### ^-- must be here
                                                      }
 
 
@@ -478,20 +478,20 @@ parse_roc <- function(lines, match = "^\\s*#+\' ?") {
 ## continuation indentation must be consisten in/out {}:
 
 {
-    a <- ggplot(data = overtime.by.month, 
-                aes(x="", y=Percent, fill = Overtime)) + 
-                    geom_bar(width = 1) + 
+    a <- ggplot(data = overtime.by.month,
+                aes(x="", y=Percent, fill = Overtime)) +
+                    geom_bar(width = 1) +
                         xlab('') +
-                            ylab(sub.txt) +  
+                            ylab(sub.txt) +
                                 labs(title = title.txt) +
                                     facet_wrap(~Year.Month)
 }
 
-a <- ggplot(data = overtime.by.month, 
-            aes(x="", y=Percent, fill = Overtime)) + 
-                geom_bar(width = 1) + 
+a <- ggplot(data = overtime.by.month,
+            aes(x="", y=Percent, fill = Overtime)) +
+                geom_bar(width = 1) +
                     xlab('') +
-                        ylab(sub.txt) +  
+                        ylab(sub.txt) +
                             labs(title = title.txt) +
                                 facet_wrap(~Year.Month)
 
@@ -502,18 +502,18 @@ a <- ggplot(data = overtime.by.month,
 ##     Date: Fri, 15 Mar 2013 21:00:45 +0100 (32 minutes, 1 second ago)
 ## Hi,
 ## The following bug happens in ESS 12.09-2 [rev. 5395 (2013-01-10)]. Put the
-## cursor in the line before the function head and hit C-c C-c. 
+## cursor in the line before the function head and hit C-c C-c.
 
 foo <- function(x)
     x # bar
 x <- 1:10
 
-## I'll see 
+## I'll see
 ## > + >  [1]  1  2  3  4  5  6  7  8  9 10
 
-foo <- function(x) x*x 
-bar <- function(y) y 
-## via C-c C-c leads to "Error: object 'bar' not found". 
+foo <- function(x) x*x
+bar <- function(y) y
+## via C-c C-c leads to "Error: object 'bar' not found".
 
 
 ### --- 22 ----
@@ -522,7 +522,7 @@ if (!grepl("#", x))
 return(res)
 
 ### --- 23 ----
-### threee ways to indent clossing parent depending on context:
+### three ways to indent closing parent depending on context:
 foo <-
     function_call(
         a,
@@ -550,7 +550,7 @@ foo <- function_call(a
                      )
 
 ### --- 25 ---
-## if/else in function calls
+## if/else in function calls and nested
 
 function_call(abc =
                   if (test)
@@ -570,6 +570,28 @@ function_call(abc = if (test)
                         do_something
                     else
                         do_something_else)
+
+## real example is smooth.spline() source code:
+ss <- function (x, all.knots, nknots, ...)
+{
+    if (all.knots) {
+        if (!missing(nknots) && !is.null(nknots))
+            warning("'all.knots' is TRUE; 'nknots' specification is disregarded")
+        nknots <- nx
+    } else if (is.null(nknots))# <- for back compatibility
+	nknots <- .nknots.smspl(nx)
+    else {
+	if (is.function(nknots))
+	    nknots <- nknots(nx)
+	else if (!is.numeric(nknots))
+	    stop("'nknots' must be numeric (in {1,..,n})")
+	if (nknots < 1)
+	    stop("'nknots' must be at least 1")
+	else if (nknots > nx)
+	    stop("cannot use more inner knots than unique 'x' values")
+    }
+}
+
 
 ### --- 26 ----
 ## This is correct R, but ESS gives syntax errors when evaluating !!
