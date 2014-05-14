@@ -39,8 +39,6 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
-(eval-when-compile
-  (require 'cl)); in Emacs <= 23.x for (mapcan .)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -326,31 +324,33 @@ objects from that MODULE."
                  (get-process ess-local-process-name)))
   (when (process-live-p proc)
     (let ((objects (process-get proc 'objects)))
-     (if (process-get proc 'busy)
-         (if obj
-             (assoc obj objects)
-           (process-get proc 'objects))
-       (if obj
-           (or (cdr (assoc obj objects))
-               ;; don't cache composite objects and datatypes
-               (julia--get-components proc obj))
-         ;; this segment is entered when user completon at top level is
-         ;; requested, either Tab or AC. Hence Main is always updated.
-         (let ((modules (ess-get-words-from-vector
-                         "ESS.main_modules()\n" nil nil proc))
-               (loc (process-get proc 'last-objects-cache))
-               (lev (process-get proc 'last-eval)))
-           (prog1
-               (mapcan (lambda (mod)
-                         ;; we are caching all modules, and reinit Main every
-                         ;; time user enters commands
-                         (copy-sequence
-                          (or (and (or (not (equal mod "Main"))
-                                       (ignore-errors (time-less-p lev loc)))
-                                   (cdr (assoc mod objects)))
-                              (julia--get-components proc mod t))))
-                       modules)
-             (process-put proc 'last-objects-cache (current-time)))))))))
+      (if (process-get proc 'busy)
+          (if obj
+              (assoc obj objects)
+            (process-get proc 'objects))
+        (if obj
+            (or (cdr (assoc obj objects))
+                ;; don't cache composite objects and datatypes
+                (julia--get-components proc obj))
+          ;; this segment is entered when user completon at top level is
+          ;; requested, either Tab or AC. Hence Main is always updated.
+          (let ((modules (ess-get-words-from-vector
+                          "ESS.main_modules()\n" nil nil proc))
+                (loc (process-get proc 'last-objects-cache))
+                (lev (process-get proc 'last-eval)))
+            (prog1
+                (apply #'nconc
+                       (mapcar
+                        (lambda (mod)
+                          ;; we are caching all modules, and reinit Main every
+                          ;; time user enters commands
+                          (copy-sequence
+                           (or (and (or (not (equal mod "Main"))
+                                        (ignore-errors (time-less-p lev loc)))
+                                    (cdr (assoc mod objects)))
+                               (julia--get-components proc mod t))))
+                        modules))
+              (process-put proc 'last-objects-cache (current-time)))))))))
 
 (defun julia--get-components (proc obj &optional cache?)
   (with-current-buffer (ess-command (format "ESS.components(%s)\n" obj)

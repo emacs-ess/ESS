@@ -1,6 +1,18 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes / Selected Bug Fixes in 14.04:
+@itemize @bullet
+@item @ESS{[R]}: @code{ess-execute-screen-options} uses correct screen width in terminal sessions
+@item @ESS{[R]}: command cleaning with @kbd{C-u C-u C-y} was broken with lines containing " + "
+@item @ESS{[R]}: fixed "empty watch window bug"
+@item @ESS{[R]}: don't ask for help location on ac-quick-help (request of github #81)
+@item @ESS{[R]}: "importClassesFrom" and "importMethodsFrom" were added to the list of two-parameter roxygen commands 
+@item @ESS{[R]}: fix vignetes display and hyperlinks (were broken in 13.09-1)
+@item @ESS{[Julia]}: recognize function names ending with !
+@item @ESS{[Julia]}: fix indentation of "for" comprehension syntax within brackets.
+@end itemize
+
 Changes / Selected Bug Fixes in 13.09-1:
 @itemize @bullet
 @item ess-remote and TRAMP: R support code is now downloaded in binary form instead

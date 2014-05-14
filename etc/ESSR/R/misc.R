@@ -78,7 +78,7 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
     invisible(NULL)
 }
 
-.ess_vignetes <- function(){
+.ess_vignettes <- function(){
     vs <- unclass(browseVignettes())
     vs <- vs[sapply(vs, length) > 0]
 

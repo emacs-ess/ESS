@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "13.09-2" ;; updated by 'make'
+(defvar ess-version "14.05" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -286,12 +286,12 @@ See also `ess-blink-delay'"
 Currently acceptable values are `S',  `XLS', `SAS'.
 Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
 .emacs (also see ess-site.el).")
-  ;; :group 'ess
-  ;; :type '(choice (const :tag "Initial" :value nil)
-  ;;                (const :tag "S"       :value "S")
-  ;;                (const :tag "XLS"     :value "XLS")
-  ;;                (const :tag "SAS"     :value "SAS")
-  ;;                (const :tag "R"       :value "R")))
+;; :group 'ess
+;; :type '(choice (const :tag "Initial" :value nil)
+;;                (const :tag "S"       :value "S")
+;;                (const :tag "XLS"     :value "XLS")
+;;                (const :tag "SAS"     :value "SAS")
+;;                (const :tag "R"       :value "R")))
 
 (make-variable-buffer-local 'ess-language)
 
@@ -649,6 +649,11 @@ nil means to use R/S indentation.")
   "Extra indentation for open braces.
 Compares with other text in same context.")
 
+(defvar ess-first-continued-statement-offset 0
+  "Extra indentation for the first new line continuing an expression.
+If you set this to non-zero value you might want to set
+`ess-continued-statement-offset' to zero.")
+
 (defvar ess-continued-statement-offset 2
   "Extra indent for lines not starting new statements.")
 
@@ -735,6 +740,7 @@ If not number, the statements are indented at open-parenthesis following
 (defvar ess-default-style-list
   (list 'DEFAULT
         (cons 'ess-indent-level '(default-value 'ess-indent-level))
+        (cons 'ess-first-continued-statement-offset '(default-value 'ess-first-continued-statement-offset))
         (cons 'ess-continued-statement-offset '(default-value 'ess-continued-statement-offset))
         (cons 'ess-brace-offset '(default-value 'ess-brace-offset))
         (cons 'ess-expression-offset '(default-value 'ess-expression-offset))
@@ -743,61 +749,76 @@ If not number, the statements are indented at open-parenthesis following
         (cons 'ess-continued-brace-offset '(default-value 'ess-continued-brace-offset))
         (cons 'ess-arg-function-offset '(default-value 'ess-arg-function-offset))
         (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
-        (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset)))
+        (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset))
+        )
   "Default style constructed from initial values of indentation variables.")
 
 (defvar ess-style-alist
   (cons ess-default-style-list
         '((GNU (ess-indent-level . 2)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 2)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
                (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 2)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 0))
+               (ess-close-brace-offset . 0)
+               )
           (BSD (ess-indent-level . 8)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 8)
                (ess-brace-offset . -8)
                (ess-arg-function-offset . 0)
                (ess-arg-function-offset-new-line . '(8))
                (ess-expression-offset . 8)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 0))
+               (ess-close-brace-offset . 0)
+               )
           (K&R (ess-indent-level . 5)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 5)
                (ess-brace-offset . -5)
                (ess-arg-function-offset . 0)
                (ess-arg-function-offset-new-line . '(5))
                (ess-expression-offset . 5)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 0))
+               (ess-close-brace-offset . 0)
+               )
           (C++ (ess-indent-level . 4)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . -4)
                (ess-arg-function-offset . 0)
                (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 0))
+               (ess-close-brace-offset . 0)
+               )
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-level . 4)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 4)
                (ess-arg-function-offset-new-line . '(4))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 0))
+               (ess-close-brace-offset . 0)
+               )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
+               (ess-first-continued-statement-offset . 0)
                (ess-continued-statement-offset . 4)
                (ess-brace-offset . 0)
                (ess-arg-function-offset . 0)
                (ess-arg-function-offset-new-line . '(2))
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
-               (ess-close-brace-offset . 2))))
+               (ess-close-brace-offset . 2)
+               )
+          )
+        )
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
@@ -807,6 +828,7 @@ value of variables in the OWN group, customize the variable
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
 Remove any existing entry with the same KEY before adding the new one.
+               (ess-first-continued-statement-offset . 0)
 This can be used"
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
@@ -872,8 +894,8 @@ to edit more than one object at a time, though.
  (make-temp-name \"scr.\") ; Another way to uniquify"
   ;; MM: The last 3-4 lines above suck (I don't understand them) -- FIXME --
 
-:group 'ess-edit
-:type 'string)
+  :group 'ess-edit
+  :type 'string)
 
 
 ;;*;; Hooks
@@ -2233,15 +2255,15 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-   (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
-         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
-   "Font-lock keyword R modifiers")
+  (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
+        'font-lock-constant-face)     ; modify search list or source (i.e. directives)
+  "Font-lock keyword R modifiers")
 
 (defvar ess-R-fl-keyword:fun-defs
-   (cons ess-R-function-name-regexp
-         '(1 font-lock-function-name-face t)  ; override
-         )
-   "Font-lock keyword - function defintions for R.")
+  (cons ess-R-function-name-regexp
+        '(1 font-lock-function-name-face t)  ; override
+        )
+  "Font-lock keyword - function defintions for R.")
 
 (defvar ess-R-fl-keyword:keywords
   (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
