@@ -1345,10 +1345,14 @@ Returns nil if line starts inside a string, t if in a comment."
              ;; (foo)  ## or
              ;; !(foo)
              (forward-sexp -2)
-             (if (looking-at "if\\b[ \t]*(\\|for\\b[ \t]*(\\|while\\b[ \t]*(")
-                 (current-column)
-               (when (looking-at "function\\b[ \t]*(")
-                 (current-indentation)))))
+             (cond ((looking-at "for\\b[ \t]*(\\|while\\b[ \t]*(")
+                    (current-column))
+                   ((looking-at "if\\b[ \t]*(")
+                    (when (looking-back "\\belse[ \t]*")
+                      (backward-sexp 1))
+                    (current-column))
+                   ((looking-at "function\\b[ \t]*(")
+                    (current-indentation)))))
           ((progn (ignore-errors (forward-sexp -1))
                   (looking-at "else\\b\\|repeat\\b\\([:blank:]*\|\\&\\)"))
            (let ((col (current-column)))
@@ -1415,7 +1419,8 @@ Returns nil if line starts inside a string, t if in a comment."
   (skip-chars-forward " \t"))
 
 (defun ess-backward-to-start-of-if (&optional limit)
-  "Move to the start of the last ``unbalanced'' if."
+  "Move to the start of the last ``unbalanced'' 'if' or 'else if'
+expression."
   (let ((beginning-of-defun-function nil))
     (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
     (let ((if-level 1)
@@ -1425,6 +1430,8 @@ Returns nil if line starts inside a string, t if in a comment."
         (cond ((looking-at "else\\b")
                (setq if-level (1+ if-level)))
               ((looking-at "if\\b")
+               (when (looking-back "\\belse[[:blank:]]*")
+                 (backward-sexp 1))
                (setq if-level (1- if-level)))
               ((< (point) limit)
                (setq if-level 0)

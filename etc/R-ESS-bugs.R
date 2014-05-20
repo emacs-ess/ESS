@@ -579,17 +579,17 @@ ss <- function (x, all.knots, nknots, ...)
             warning("'all.knots' is TRUE; 'nknots' specification is disregarded")
         nknots <- nx
     } else if (is.null(nknots))# <- for back compatibility
-	nknots <- .nknots.smspl(nx)
-    else {
-	if (is.function(nknots))
-	    nknots <- nknots(nx)
-	else if (!is.numeric(nknots))
-	    stop("'nknots' must be numeric (in {1,..,n})")
-	if (nknots < 1)
-	    stop("'nknots' must be at least 1")
-	else if (nknots > nx)
-	    stop("cannot use more inner knots than unique 'x' values")
-    }
+          nknots <- .nknots.smspl(nx)
+      else {
+          if (is.function(nknots))
+              nknots <- nknots(nx)
+          else if (!is.numeric(nknots))
+              stop("'nknots' must be numeric (in {1,..,n})")
+          if (nknots < 1)
+              stop("'nknots' must be at least 1")
+          else if (nknots > nx)
+              stop("cannot use more inner knots than unique 'x' values")
+      }
 }
 
 
