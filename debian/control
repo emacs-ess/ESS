@@ -3,16 +3,16 @@ Section: gnu-r
 Priority: optional
 Maintainer: ESS Debian Maintainers <ess-debian@r-project.org>
 Uploaders: Dirk Eddelbuettel <edd@debian.org>
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
 Build-Depends: debhelper (>= 7.0.0)
-Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texinfo, texi2html
+Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texinfo, texi2html, autotools-dev
 Homepage: http://ess.r-project.org
 
 Package: ess
 Architecture: all
-Depends: ${misc:Depends}, emacs23 | emacs22 | emacs21 | emacsen, dpkg (>= 1.15.4) | install-info
+Depends: ${misc:Depends}, emacs24 | emacs23 | emacsen, dpkg (>= 1.15.4) | install-info, r-base-core
 Conflicts: dhelp (<= 0.3.12)
-Suggests: xlispstat, r-base | r-base-core, pspp, jags
+Suggests: xlispstat, pspp, jags
 Description: Emacs mode for statistical programming and data analysis
  ESS ("Emacs Speaks Statistics") is a GNU Emacs and XEmacs mode for 
  interactive statistical programming and data analysis. Languages 
