@@ -442,18 +442,26 @@ Return the 'busy state."
   (process-put proc 'busy t)
   (process-put proc 'sec-prompt nil))
 
-(defun inferior-ess-run-callback (proc)
+(defun inferior-ess-run-callback (proc string)
+  ;; callback is stored in 'callbacks proc property. It can be either a function
+  ;; to be called with two artuments PROC and STRING or a cons cell of the form
+  ;; (func . suppress) where, if suppress is non-nil next process output will be
+  ;; suppressed.
   (when (process-get proc 'busy-end?)
-    (let ((cb (car (process-get proc 'callbacks))))
+    (let* ((cb (car (process-get proc 'callbacks)))
+           (suppress (and (consp cb) (cdr cb)))
+           (cb (if (and (consp cb)
+                        (not (functionp cb)))
+                   (car cb) cb)))
       (when cb
-        (if ess-verbose
-            (ess-write-to-dribble-buffer "executing callback ...\n")
+        (when ess-verbose
+            (ess-write-to-dribble-buffer "executing callback ...\n"))
+        (when suppress
           (process-put proc 'suppress-next-output? t))
         (process-put proc 'callbacks nil)
         (condition-case err
-            (funcall cb proc)
-          (error (message "%s" (error-message-string err))))
-        ))))
+            (funcall cb proc string)
+          (error (message "%s" (error-message-string err))))))))
 
 (defun ess--if-verbose-write-process-state (proc string &optional filter)
   (ess-if-verbose-write
@@ -483,7 +491,7 @@ the rest to `comint-output-filter'.
 Taken from octave-mod.el."
   (inferior-ess-set-status proc string)
   (ess--if-verbose-write-process-state proc string)
-  (inferior-ess-run-callback proc) ;; protected
+  (inferior-ess-run-callback proc string)
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil)
@@ -597,7 +605,8 @@ This marks the process with a message, at a particular time point."
 ;;*;; General process handling code
 (defmacro with-ess-process-buffer (no-error &rest body)
   "Execute BODY with current-buffer set to the process buffer of ess-current-process-name.
-If NO-ERROR is t don't trigger an error when there is not current process.
+If NO-ERROR is t don't trigger error when there is not current
+process.
 
 Symbol *proc* is bound to the current process during the evaluation of BODY."
   (declare (indent 1))
@@ -1172,7 +1181,7 @@ FORCE-REDISPLAY to avoid excesive redisplay."
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
-  (inferior-ess-run-callback proc)
+  (inferior-ess-run-callback proc string)
   (with-current-buffer (process-buffer proc)
     ;; (princ (format "%s:" string))
     (insert string)))
@@ -1259,7 +1268,6 @@ STRING). In all other cases the behavior is as described in
 
 (defvar ess--inhibit-presend-hooks nil
   "If non-nil don't run presend hooks.")
-
 
 (defun ess--run-presend-hooks (process string)
   ;; run ess-presend-filter-functions and comint-input-filter-functions
@@ -1386,15 +1394,15 @@ explicit interrupt-callback.
 ;;                    (lambda (proc2) (message "name: %s" (process-name proc2))))
 
 
-(defun ess-async-command (com &optional buf proc callback interrupt-callback)
+(defun ess-async-command (com &optional buf proc callback interrupt-callback )
   "Asynchronous version of ess-command.
 COM, BUF, WAIT and PROC are as in `ess-command'.
 
-CALLBACK is a function of one argument (PROC) to run after the
-successful execution. When INTERRUPT-CALLBACK is non-nil, user
-evaluation can interrupt the job. INTERRUPT-CALLBACK should be
-either t or a function of one argument (PROC) to be called on
-interruption.
+CALLBACK is a function of two arguments (PROC STRING) to run
+after the successful execution. When INTERRUPT-CALLBACK is
+non-nil, user evaluation can interrupt the
+job. INTERRUPT-CALLBACK should be either t or a function of one
+argument (PROC) to be called on interruption.
 
 NOTE: Currently this function should be used only for background
 jobs like caching. ESS tries to suppress any output from the
@@ -1410,11 +1418,11 @@ up in user's main buffer.
           (error "Process %s is busy or already running an async command." ess-local-process-name)
         (when (eq interrupt-callback t)
           (setq interrupt-callback (lambda (proc))))
-        (process-put proc 'callbacks (list callback interrupt-callback))
+        (process-put proc 'callbacks (list (cons callback 'suppress-output)
+                                           interrupt-callback))
         (process-put proc 'interruptable? (and interrupt-callback t))
         (process-put proc 'running-async? t)
-        (ess-command com buf nil 'no-prompt-check .02 proc)
-        ))))
+        (ess-command com buf nil 'no-prompt-check .01 proc)))))
 
 
 (defun ess-command (com &optional buf sleep no-prompt-check wait proc force-redisplay)
@@ -2187,6 +2195,7 @@ for `ess-eval-region'."
      ["Jump to Error"           ess-parse-errors        t]
      ["Load source file"  	ess-load-file           t]
      ["Resynch S completions"	ess-resynch		t]
+     ["Recreate R versions known to ESS" (ess-r-versions-create) t]
      )
     "------"
     ("start-dev" :visible nil); <-- ??

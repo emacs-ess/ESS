@@ -56,6 +56,32 @@
    sets ess-process-name-list to (("shell")) This prevents iESS[SAS] evaluation
    since a value of (("SAS")) would be necessary for that.
 
+* INDENTATION
+** TODO closing ) match the function keyword
+   foo(a,
+       b
+   )
+
+   instead of current:
+   
+   foo(a,
+       b
+       )
+
+   And
+   
+   foo(
+     a,
+     b
+   )
+
+   instead of
+   
+   foo(
+     a,
+     b
+     )
+
 * MISC
 ** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
    This will ensure that very quick start both for (require "ess-start") and

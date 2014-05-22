@@ -1,7 +1,7 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes / Selected Bug Fixes in 14.03:
+Changes / Selected Bug Fixes in 14.04:
 @itemize @bullet
 @item @ESS{[R]}: @code{ess-execute-screen-options} uses correct screen width in terminal sessions
 @item @ESS{[R]}: command cleaning with @kbd{C-u C-u C-y} was broken with lines containing " + "
