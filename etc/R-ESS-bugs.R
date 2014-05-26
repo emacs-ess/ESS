@@ -390,7 +390,7 @@ getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv))) {
         get(bindName, envir = whereEnv)
 ##      ^-- must be here
-    else
+    } else
         new("protoForm")
 ##      ^-- must be here
 
