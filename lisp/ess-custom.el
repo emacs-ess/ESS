@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "14.05" ;; updated by 'make'
+(defvar ess-version "14.06" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -2563,7 +2563,8 @@ Defaults to `ess-S-non-functions'."
 (defcustom inferior-julia-program-name "julia-basic"
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
-  "Path to julia-basic executable"
+  "Path to julia(-basic) executable.
+ Must *change* this to \"julia\" for releases > 0.2.x."
   :group 'ess-Julia)
 
 (defvar julia-basic-offset 4
