@@ -734,11 +734,23 @@ list of strings."
 
 (defadvice newline-and-indent (around ess-roxy-newline)
   "Insert a newline in a roxygen field."
-  (if (ess-roxy-entry-p)
-      (progn
-        ad-do-it
-        (insert (concat (ess-roxy-guess-str t) " ")))
-    ad-do-it))
+  (cond
+   ;; Not in roxy entry; do nothing
+   ((not (ess-roxy-entry-p))
+    ad-do-it)
+   ;; Point at beginning of first line of entry; do nothing
+   ((= (point) (ess-roxy-beg-of-entry))
+    ad-do-it)
+   ;; Otherwise: skip over roxy comment string if necessary and then
+   ;; newline and then inset new roxy comment string
+   (t
+    (let ((point-after-roxy-string
+           (save-excursion (forward-line 0)
+                           (move-beginning-of-line nil)
+                           (point))))
+      (goto-char (max (point) point-after-roxy-string)))
+    ad-do-it
+    (insert (concat (ess-roxy-guess-str t) " ")))))
 
 (provide 'ess-roxy)
 
