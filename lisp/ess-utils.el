@@ -1007,9 +1007,10 @@ If prefix is given, force tag generation based on imenu. Might be
 useful when different language files are also present in the
 directory (.cpp, .c etc)."
   (interactive "DDirectory to tag:
-FTags file (default TAGS): ")
-  (when (eq (length (file-name-nondirectory tagfile)) 0)
-    (setq tagfile (concat tagfile "TAGS")))
+GTags file (default TAGS): ")
+  (when (or (eq (length (file-name-nondirectory tagfile)) 0)
+            (file-directory-p tagfile))
+    (setq tagfile (concat (file-name-as-directory tagfile) "TAGS")))
   ;; emacs find-tags doesn't play well with remote TAG files :(
   (when (file-remote-p tagfile)
     (require 'tramp)
