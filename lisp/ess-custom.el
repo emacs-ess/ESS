@@ -2560,7 +2560,7 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defcustom inferior-julia-program-name "julia-basic"
+(defcustom inferior-julia-program-name "julia"
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
   "Path to julia-basic executable"
