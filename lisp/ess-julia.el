@@ -231,7 +231,7 @@ Do not move back beyond MIN."
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . t)
+    (require-final-newline	  . 'ess-require-final-newline)
     (comment-start		  . "# ")
     (comment-add                  . 1)
     (comment-start-skip		  . "#+\\s-*")

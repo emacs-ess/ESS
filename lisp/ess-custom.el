@@ -261,7 +261,7 @@ See also `ess-blink-delay'"
   :type 'boolean)
 
 (defcustom ess-blink-delay .3
-  "Number of secons to highlight the evaluated region."
+  "Number of seconds to highlight the evaluated region."
   :group 'ess
   :type 'number)
 
@@ -548,6 +548,12 @@ it to the customized setting. "
 as objects in that directory (when t). This is not true for DOS and
 other OS's with limited filename lengths.  Even if this is set
 incorrectly, the right things will probably still happen, however."
+  :group 'ess-edit
+  :type 'boolean)
+
+(defcustom ess-require-final-newline t
+  "*Will be used to set `require-final-newline' in several <language>-editing-alist.
+The default (t) is desirable for several (unix/GNU) text tools."
   :group 'ess-edit
   :type 'boolean)
 
