@@ -2570,7 +2570,7 @@ Defaults to `ess-S-non-functions'."
   ;; the default assumes it is on the PATH ... which is typically the case after
   ;; a "typical unix-alike installation"
   "Path to julia(-basic) executable.
- Must *change* this to \"julia\" for releases > 0.2.x."
+ Must *change* this to \"julia\" for releases >= 0.3"
   :group 'ess-Julia)
 
 (defvar julia-basic-offset 4
