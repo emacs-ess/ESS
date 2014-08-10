@@ -11,6 +11,23 @@
         eval(bquote(.(cmd_symb)(.(file), encoding = .(encoding))), envir = frame)
 }
 
+.ess_knit <- function(file, output = NULL){
+    library(knitr)
+    frame <- parent.frame()
+    od <- getwd()
+    on.exit(setwd(od))
+    setwd(dirname(file))
+    ## this bquote is really needed for data.table := operator to work correctly
+    eval(bquote(knit(.(file), output = .(output))), envir = frame)
+}
+
+.ess_sweave <- function(file, output = NULL){
+    od <- getwd()
+    frame <- parent.frame()
+    on.exit(setwd(od))
+    setwd(dirname(file))
+    eval(bquote(Sweave(.(file), output = .(output))), envir = frame)
+}
 
 ## Users might find it useful. So don't prefix with .ess.
 htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)

@@ -390,7 +390,7 @@ getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv))) {
         get(bindName, envir = whereEnv)
 ##      ^-- must be here
-    else
+    } else
         new("protoForm")
 ##      ^-- must be here
 
@@ -531,17 +531,19 @@ foo <-
         b,
         c
     )
+### ^- here
 
 foo <- function_call(
     a,
     b,
     c
-)
+) ## bol
 
 foo <- function_call(a,
                      b,
                      c
                      )
+###                  ^- here                     
 
 ### --- 24 ---
 ### shift comma in function calls
@@ -549,6 +551,7 @@ foo <- function_call(a,
 foo <- function_call(a
                    , b
                    , c
+###                  ^- here                     
                      )
 
 ### --- 25 ---
@@ -580,7 +583,7 @@ ss <- function (x, all.knots, nknots, ...)
         if (!missing(nknots) && !is.null(nknots))
             warning("'all.knots' is TRUE; 'nknots' specification is disregarded")
         nknots <- nx
-    } else if (is.null(nknots))# <- for back compatibility
+    } else if (is.null(nknots))         # <- for back compatibility
           nknots <- .nknots.smspl(nx)
       else {
           if (is.function(nknots))
@@ -594,18 +597,23 @@ ss <- function (x, all.knots, nknots, ...)
       }
 }
 
-## A similar example (from CRAN package code by MM)
-## Here, we do not want subsequently further indentation of the  c1 || c2 || c3 part:
+## "if" conditional is an exception of the continuation rules:
+## Here, we do not want subsequently further indentation of the c1 || c2 || c3
+## part:
 t2 <- function(x) {
     if(long.expression.of.some.size(x, pi) ||
        another.longish.expression(sin(x)*exp(x)) ||
        a.third.condition.under.which.A.is.chosen)
-
         A
     else
         B
 }
 
+
+r <-
+    (some.function (x, 2342)  +
+         another.f (x^3) + sdfsdf - sdfsdf  +
+             and(x) +  the(x) -  last(x)*part(3)) 
 
 
 ### --- 26 ----

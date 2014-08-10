@@ -47,7 +47,7 @@
     (adaptive-fill-mode           . nil)
     (indent-line-function         . 'lisp-indent-line)
     (indent-region-function       . 'lisp-indent-region)
-    (require-final-newline        . t)
+    (require-final-newline        . 'ess-require-final-newline)
     (comment-start                . ";")
     (comment-start-skip           . "\\(\\(^\\|[^\\\\\n]\\)\\(\\\\\\\\\\)*\\);+ *")
     (comment-column               . 40)

@@ -951,128 +951,12 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."
   (interactive)
-  (let ((indent-stack (list nil))
-        (contain-stack (list (point)))
-        (case-fold-search nil)
-        ;; restart
-        outer-loop-done innerloop-done state ostate
-        this-indent
-        last-sexp
-        last-depth
-        at-else at-brace
-        (opoint (point))
-        (next-depth 0))
-    (save-excursion
-      (forward-sexp 1))
-    (save-excursion
-      (setq outer-loop-done nil)
-      (while (and (not (eobp)) (not outer-loop-done))
-        (setq last-depth next-depth)
-        ;; Compute how depth changes over this line
-        ;; plus enough other lines to get to one that
-        ;; does not end inside a comment or string.
-        ;; Meanwhile, do appropriate indentation on comment lines.
-        (setq innerloop-done nil)
-        (while (and (not innerloop-done)
-                    (not (and (eobp) (setq outer-loop-done t))))
-          (setq ostate state)
-          (setq state (parse-partial-sexp (point) (progn (end-of-line) (point))
-                                          nil nil state))
-          (setq next-depth (car state))
-          (if (and (car (cdr (cdr state)))
-                   (>= (car (cdr (cdr state))) 0))
-              (setq last-sexp (car (cdr (cdr state)))))
-          (if (or (nth 4 ostate))
-              (ess-indent-line))
-          (if (nth 4 state)
-              (and (ess-indent-line)
-                   (setcar (nthcdr 4 state) nil)))
-          (if (or (nth 3 state))
-              (forward-line 1)
-            (setq innerloop-done t)))
-        (if (<= next-depth 0)
-            (setq outer-loop-done t))
-        (if outer-loop-done
-            nil
-          ;; If this line had ..))) (((.. in it, pop out of the levels
-          ;; that ended anywhere in this line, even if the final depth
-          ;; doesn't indicate that they ended.
-          (while (> last-depth (nth 6 state))
-            (setq indent-stack (cdr indent-stack)
-                  contain-stack (cdr contain-stack)
-                  last-depth (1- last-depth)))
-          (if (/= last-depth next-depth)
-              (setq last-sexp nil))
-          ;; Add levels for any parens that were started in this line.
-          (while (< last-depth next-depth)
-            (setq indent-stack (cons nil indent-stack)
-                  contain-stack (cons nil contain-stack)
-                  last-depth (1+ last-depth)))
-          (if (null (car contain-stack))
-              (setcar contain-stack (or (car (cdr state))
-                                        (save-excursion (forward-sexp -1)
-                                                        (point)))))
-          (forward-line 1)
-          (skip-chars-forward " \t")
-          (if (eolp)
-              nil
-            (if (and (car indent-stack)
-                     (>= (car indent-stack) 0))
-                ;; Line is on an existing nesting level.
-                ;; Lines inside parens are handled specially.
-                (if (/= (char-after (car contain-stack)) ?{)
-                    (setq this-indent (car indent-stack))
-                  ;; Line is at statement level.
-                  ;; Is it a new statement?  Is it an else?
-                  ;; Find last non-comment character before this line
-                  (save-excursion
-                    (setq at-else (looking-at "else\\W"))
-                    (setq at-brace (= (following-char) ?{))
-                    (ess-backward-to-noncomment opoint)
-                    (if (ess--continued-statement)
-                        ;; Preceding line did not end in comma or semi;
-                        ;; indent this line  ess-continued-statement-offset
-                        ;; more than previous.
-                        (progn
-                          (ess-backward-to-start-of-continued-exp (car contain-stack))
-                          (setq this-indent
-                                (+ ess-continued-statement-offset (current-column)
-                                   (if at-brace ess-continued-brace-offset 0))))
-                      ;; Preceding line ended in comma or semi;
-                      ;; use the standard indent for this level.
-                      (if at-else
-                          (progn (ess-backward-to-start-of-if opoint)
-                                 (setq this-indent (+ ess-else-offset
-                                                      (current-indentation))))
-                        (setq this-indent (car indent-stack))))))
-              ;; Just started a new nesting level.
-              ;; Compute the standard indent for this level.
-              (let ((val (ess-calculate-indent
-                          (if (car indent-stack)
-                              (- (car indent-stack))))))
-                (setcar indent-stack
-                        (setq this-indent val))))
-            ;; Adjust line indentation according to its contents
-            (if (= (following-char) ?})
-                ;;(setq this-indent (- this-indent ess-indent-level)))
-                (setq this-indent (+ this-indent
-                                     (- ess-close-brace-offset ess-indent-level))))
-            (if (= (following-char) ?{)
-                (setq this-indent (+ this-indent ess-brace-offset)))
-            ;; Put chosen indentation into effect.
-            (or (= (current-column) this-indent)
-                (= (following-char) ?\#)
-                (progn
-                  (delete-region (point) (progn (beginning-of-line) (point)))
-                  (indent-to this-indent)))
-            ;; Indent any comment following the text.
-            (or (looking-at comment-start-skip)
-                (if (re-search-forward comment-start-skip
-                                       (save-excursion (end-of-line)
-                                                       (point)) t)
-                    (progn (indent-for-comment) (beginning-of-line))))))))))
-;; (message "Indenting ESS expression...done")
-
+  (save-excursion
+    (let ((start (point))
+          (end (ignore-errors (forward-sexp 1) (point))))
+      (when end
+        (indent-region start end)))))
+        
 ;;;*;;; Support functions for indentation
 
 (defun ess-comment-indent ()
@@ -1370,31 +1254,36 @@ Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
     (ess-backward-to-noncomment containing-sexp)
+    ;; this function is always called at eol
     (let ((eol (point)))
       (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
              nil)
-            (t
-             (when
-                 (progn (goto-char eol)
-                        (skip-chars-backward " \t")
-                        (or (and (> (current-column) 1)
-                                 (and (not (looking-back "<-"))
-                                      (looking-back "[-:+*/><=&|]")))
-                            (and (> (current-column) 3)
-                                 (progn (backward-char 3)
-                                        (looking-at "%[^ \t]%")))))
-               (let ((first-indent
-                      (or (and (/= ess-first-continued-statement-offset 0)
-                               (null (ess--continued-statement containing-sexp))
-                               ess-first-continued-statement-offset)
-                          0)))                 
-                 (+ first-indent
-                    (if containing-sexp
-                        (if (> (point-at-bol) containing-sexp)
-                            (current-indentation)
-                          (goto-char containing-sexp)
-                          (1+ (current-column)))
-                      (+ (current-indentation)))))))))))
+            ((progn (up-list -1)
+                    (looking-back "if[ \t]*"))
+             ;; statements withing "if" condition it always ignore our
+             ;; continuation rules
+             nil)
+            ((progn (goto-char eol)
+                    (skip-chars-backward " \t")
+                    (or (and (> (current-column) 1)
+                             (and (not (looking-back "<-"))
+                                  (looking-back "[-:+*/><=&|]")))
+                        (and (> (current-column) 3)
+                             (progn (backward-char 3)
+                                    (looking-at "%[^ \t]%")))))
+             (let ((first-indent
+                    (or (and (/= ess-first-continued-statement-offset 0)
+                             (null (ess--continued-statement containing-sexp))
+                             ess-first-continued-statement-offset)
+                        0)))                 
+               (+ first-indent
+                  (if containing-sexp
+                      (if (> (point-at-bol) containing-sexp)
+                          (current-indentation)
+                        (goto-char containing-sexp)
+                        (1+ (current-column)))
+                    (+ (current-indentation))))))
+            (t nil)))))
 
 (defun ess-backward-to-noncomment (lim)
   ;; this one is bad. Use 

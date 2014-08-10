@@ -231,7 +231,7 @@ Do not move back beyond MIN."
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . t)
+    (require-final-newline	  . 'ess-require-final-newline)
     (comment-start		  . "# ")
     (comment-add                  . 1)
     (comment-start-skip		  . "#+\\s-*")
@@ -540,7 +540,7 @@ to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
   ;; get settings, notably inferior-julia-program-name :
   (if (null inferior-julia-program-name)
-      (error "'inferior-julia-program-name' does not point to 'julia-basic' executable")
+      (error "'inferior-julia-program-name' does not point to 'julia' or 'julia-basic' executable")
     (setq ess-customize-alist julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
@@ -568,6 +568,7 @@ to julia, put them in the variable `inferior-julia-args'."
       (while (re-search-forward "`" nil t)
         (replace-match "'"))
       (goto-char (point-max))
+      ;; --> julia helpers from ../etc/ess-julia.jl :
       (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
       (with-ess-process-buffer nil
         (run-mode-hooks 'julia-post-run-hook))

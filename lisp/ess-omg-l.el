@@ -254,7 +254,7 @@ Returns nil if line starts inside a string, t if in a comment."
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
+    (require-final-newline        . 'ess-require-final-newline)
     (comment-start                . "//")
     (comment-start-skip           . "//+ *")
     (comment-column               . 40)

@@ -1130,7 +1130,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   '((paragraph-start              . (concat "[ \t\f]*$\\|" page-delimiter))
     (paragraph-separate           . (concat  "[ \t\f]*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . t)
+    (require-final-newline        . 'ess-require-final-newline)
     (comment-column               . 40)
     ;;(comment-indent-function      . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)

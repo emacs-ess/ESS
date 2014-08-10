@@ -449,10 +449,11 @@ Return the 'busy state."
   ;; suppressed.
   (when (process-get proc 'busy-end?)
     (let* ((cb (car (process-get proc 'callbacks)))
-           (suppress (and (consp cb) (cdr cb)))
-           (cb (if (and (consp cb)
-                        (not (functionp cb)))
-                   (car cb) cb)))
+           (listp (not (functionp cb)))
+           (suppress (and listp (consp cb) (cdr cb)))
+           (cb (if (and listp (consp cb))
+                   (car cb)
+                 cb)))
       (when cb
         (when ess-verbose
             (ess-write-to-dribble-buffer "executing callback ...\n"))
@@ -3245,14 +3246,12 @@ list."
           (progn
             (delete-horizontal-space)
             (insert ", ")
-            (ess-indent-line))
+            (unless (eq major-mode 'inferior-ess-mode)
+             (ess-indent-line)))
         (insert ","))
       )))
 
-
-
  ; directories
-
 (defun ess-set-working-directory (path &optional no-error)
   "Set the current working directory to PATH for both ESS
 subprocess and Emacs buffer `default-directory'."
