@@ -390,14 +390,15 @@ objects from that MODULE."
 
 
 ;;; ERRORS
-(defvar julia-error-regexp-alist '(julia-in julia-at)
+(defvar julia-error-regexp-alist '(julia-in julia-at julia-while-load)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (add-to-list 'compilation-error-regexp-alist-alist
              '(julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
              '(julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
-
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(julia-while-load "^\\s-*\\(while loading\\s-\\(.*\\), in .* on line +\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 
 ;;; ELDOC
