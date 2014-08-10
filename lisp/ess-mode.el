@@ -1254,31 +1254,36 @@ Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
     (ess-backward-to-noncomment containing-sexp)
+    ;; this function is always called at eol
     (let ((eol (point)))
       (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
              nil)
-            (t
-             (when
-                 (progn (goto-char eol)
-                        (skip-chars-backward " \t")
-                        (or (and (> (current-column) 1)
-                                 (and (not (looking-back "<-"))
-                                      (looking-back "[-:+*/><=&|]")))
-                            (and (> (current-column) 3)
-                                 (progn (backward-char 3)
-                                        (looking-at "%[^ \t]%")))))
-               (let ((first-indent
-                      (or (and (/= ess-first-continued-statement-offset 0)
-                               (null (ess--continued-statement containing-sexp))
-                               ess-first-continued-statement-offset)
-                          0)))                 
-                 (+ first-indent
-                    (if containing-sexp
-                        (if (> (point-at-bol) containing-sexp)
-                            (current-indentation)
-                          (goto-char containing-sexp)
-                          (1+ (current-column)))
-                      (+ (current-indentation)))))))))))
+            ((progn (up-list -1)
+                    (looking-back "if[ \t]*"))
+             ;; statements withing "if" condition it always ignore our
+             ;; continuation rules
+             nil)
+            ((progn (goto-char eol)
+                    (skip-chars-backward " \t")
+                    (or (and (> (current-column) 1)
+                             (and (not (looking-back "<-"))
+                                  (looking-back "[-:+*/><=&|]")))
+                        (and (> (current-column) 3)
+                             (progn (backward-char 3)
+                                    (looking-at "%[^ \t]%")))))
+             (let ((first-indent
+                    (or (and (/= ess-first-continued-statement-offset 0)
+                             (null (ess--continued-statement containing-sexp))
+                             ess-first-continued-statement-offset)
+                        0)))                 
+               (+ first-indent
+                  (if containing-sexp
+                      (if (> (point-at-bol) containing-sexp)
+                          (current-indentation)
+                        (goto-char containing-sexp)
+                        (1+ (current-column)))
+                    (+ (current-indentation))))))
+            (t nil)))))
 
 (defun ess-backward-to-noncomment (lim)
   ;; this one is bad. Use 
