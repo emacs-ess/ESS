@@ -2560,10 +2560,11 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defcustom inferior-julia-program-name "julia-basic"
-  ;; the default assumes it is on the PATH ... which is typically the case after
-  ;; a "typical unix-alike installation"
-  "Path to julia-basic executable"
+(defcustom inferior-julia-program-name (if (executable-find "julia-basic")
+                                           "julia-basic"
+                                         "julia")
+  "julia' executable.
+Need to be a full path if julia executable is not in the `exec-path'"
   :group 'ess-Julia)
 
 (defvar julia-basic-offset 4
