@@ -3246,14 +3246,12 @@ list."
           (progn
             (delete-horizontal-space)
             (insert ", ")
-            (ess-indent-line))
+            (unless (eq major-mode 'inferior-ess-mode)
+             (ess-indent-line)))
         (insert ","))
       )))
 
-
-
  ; directories
-
 (defun ess-set-working-directory (path &optional no-error)
   "Set the current working directory to PATH for both ESS
 subprocess and Emacs buffer `default-directory'."
