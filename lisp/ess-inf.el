@@ -449,10 +449,11 @@ Return the 'busy state."
   ;; suppressed.
   (when (process-get proc 'busy-end?)
     (let* ((cb (car (process-get proc 'callbacks)))
-           (suppress (and (consp cb) (cdr cb)))
-           (cb (if (and (consp cb)
-                        (not (functionp cb)))
-                   (car cb) cb)))
+           (listp (not (functionp cb)))
+           (suppress (and listp (consp cb) (cdr cb)))
+           (cb (if (and listp (consp cb))
+                   (car cb)
+                 cb)))
       (when cb
         (when ess-verbose
             (ess-write-to-dribble-buffer "executing callback ...\n"))
