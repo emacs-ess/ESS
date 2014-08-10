@@ -1716,7 +1716,7 @@ Set to nil if language doesn't support secondary prompt.")
 
 ;; need to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
-(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\([>+.] \\)*> "
+(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)*> "
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 Customise it to make `comint-previous-prompt' quiqly navigate to
 interesting portions of the buffer.
