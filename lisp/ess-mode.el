@@ -1258,8 +1258,8 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((eol (point)))
       (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
              nil)
-            ((progn (up-list -1)
-                    (looking-back "if[ \t]*"))
+            ((ignore-errors (up-list -1)
+                            (looking-back "if[ \t]*"))
              ;; statements withing "if" condition it always ignore our
              ;; continuation rules
              nil)

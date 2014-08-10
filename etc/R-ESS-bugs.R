@@ -83,8 +83,8 @@ plot(Speed, Distance,
 dimnamesGets <- function (x, value) {
     d <- dim(x)
     if (!is.list(value) || length(value) != 2 ||
-            !(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
-                !(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
+        !(is.null(v1 <- value[[1]]) || length(v1) == d[1]) ||
+        !(is.null(v2 <- value[[2]]) || length(v2) == d[2]))
         stop(gettextf("invalid dimnames given for '%s' object", class(x)))
     x@Dimnames <- list(if(!is.null(v1)) as.character(v1),
                        if(!is.null(v2)) as.character(v2))
@@ -103,16 +103,16 @@ a <- function(ch) {
             ifelse(ni == 1, prb*indic,
                    mu*(pbinom(js.n-1,pmax(ni-1,1),prb) -
                            pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
-###                        ^-- must be here
+###                        ^-- here
                                mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
-###                            ^-- must be here
+###                            ^-- here
         indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
     }
 }
 
 
 ### --- 5 ----------------------------------------------------------------
-### Here, the beginning of function is not found correctly, and hence
+### The beginning of function is not found correctly, and hence
 ###       all "ess-*-function" (C-M-a, C-M-e, ...) fail:
 
 setMeneric <-
@@ -129,7 +129,7 @@ setMeneric <-
 {
     ## comments in here are at least kept via "source" attribute
     if(exists(name, "package:base") &&
-           typeof(get(name, "package:base")) != "closure") {
+       typeof(get(name, "package:base")) != "closure") {
         FALSE
     }
     "ABC"
@@ -369,7 +369,7 @@ a <- some.function(
 
 a <- some.function(arg1,
                    arg2)
-##                 ^--- indent here
+##                 ^--- here
 
 
 ### --- 15 --------------------------------------------------------------
@@ -378,7 +378,7 @@ a <- some.function(arg1,
 for(s in seq(10, 50, len = 5))
     for(a in seq(.5, 1, len = 5))
         pt_dif_plot(s, a)
-##      ^-- must be here
+##      ^-- here
 
 ### --- 16 ----
 ## VS[05-05-2012|ESS 12.04]:FIXED:
@@ -389,15 +389,22 @@ for(s in seq(10, 50, len = 5))
 getOrCreateForm <- function(bindName, whereEnv)
     if(exists(bindName, envir = get(".forms", envir = whereEnv))) {
         get(bindName, envir = whereEnv)
-##      ^-- must be here
+###      ^-- here
     } else
         new("protoForm")
-##      ^-- must be here
+###     ^-- here
+
 
 
 parentContainer <-
     if(is.null(.getPrototype(.Object@host))) { emptyenv()
-    } else sdf
+                                           } else sdf
+### ^-- } is here (broken!)
+
+parentContainer <-
+    if(is.null(.getPrototype(.Object@host))) emptyenv()
+    else sdf
+### ^-- here
 
 ### --- 17 ---
 ## Indentation -----  "expression" is special
@@ -469,10 +476,10 @@ Ops.x.x <- function(e1, e2)
 
 ### --- 19 ---
 ## indentation with regexp (bug in ess-backward-to-noncomment)
-parse_roc <- function(lines, match = "^\\s*#+\' ?") {
+parse_roc <- function(lines, match = "^\\s*+\' ?") {
                                                          lines <- lines[str_detect(lines, match)]
                                                          if (length(lines) == 0) return(NULL)
-### ^-- must be here
+### ^-- here (broken because of the # in the regexp)
                                                      }
 
 
@@ -496,6 +503,7 @@ a <- ggplot(data = overtime.by.month,
                         ylab(sub.txt) +
                             labs(title = title.txt) +
                                 facet_wrap(~Year.Month)
+###                             ^-- face_wrap must be here
 
 
 ### --- 21 ---
@@ -543,7 +551,7 @@ foo <- function_call(a,
                      b,
                      c
                      )
-###                  ^- here                     
+###                  ^-) is here 
 
 ### --- 24 ---
 ### shift comma in function calls
@@ -551,7 +559,7 @@ foo <- function_call(a,
 foo <- function_call(a
                    , b
                    , c
-###                  ^- here                     
+###                  ^- c is here                     
                      )
 
 ### --- 25 ---
@@ -604,6 +612,7 @@ t2 <- function(x) {
     if(long.expression.of.some.size(x, pi) ||
        another.longish.expression(sin(x)*exp(x)) ||
        a.third.condition.under.which.A.is.chosen)
+###    ^-- here        
         A
     else
         B
