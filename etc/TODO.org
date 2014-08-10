@@ -82,6 +82,36 @@
      b
      )
 
+* EVALUATION
+** TODO implement block-based evaluation
+
+   >>>>> Peter Meilstrup on Fri, 10 Jan 2014 23:25:01 -0800 wrote:
+   >> 
+   >>> Over both eval-function (which doesn't usually do what I want when I
+   >>> have inner functions) and eval-paragraph (which doesn't when I put a
+   >>> line break in a function definition), I would prefer a command that
+   >>> did "evaluate all lines that include the top-level bracket enclosing
+   >>> point." That would be easy to implement using parse-partial-sexp and
+   >>> cover the case discussed here.
+   
+   >> I would be happy to implement this. Then we would be able to inject the
+   >> source code reliably. 
+   >> 
+   >> A bit of an issue is the paragraph evaluation. A common pattern in R
+   >> interactive code is to have a bunch of one-liners to be evaluated at
+   >> once. Top-level-form evaluation will break this pattern unless we expand
+   >> the evaluated region to the whole paragraph containing the form.
+   >> 
+   >> Sometimes I need to evaluate an inner form as well. A natural thing
+   >> would be to put it on C-u, but C-u is historically taken for a not very
+   >> useful visual evaluation toggling.
+   >> 
+   >> Any ideas/proposals are welcome.
+   >> 
+   >> Vitalie
+   >> 
+
+
 * MISC
 ** TODO [#A] populate ess-autoload.el and call it from ess-site.el    :13_09:
    This will ensure that very quick start both for (require "ess-start") and
