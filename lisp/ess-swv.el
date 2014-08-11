@@ -158,11 +158,11 @@ Depending on the `ess-swv-processor' used."
                            "purl")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
-(defun ess-swv-weave (choose)
+(defun ess-swv-weave (&optional choose)
   "Run Sweave/knit on the current .Rnw file.
 Depending on the `ess-swv-processor' used.
 
-If CHOOSE is non-nil, offer a menu of available weavers. 
+If CHOOSE is non-nil, offer a menu of available weavers.
 "
   (interactive "P")
   (let ((processor (if choose
@@ -245,7 +245,7 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
          (cmd (if (stringp pdfviewer)
                   (list pdfviewer pdffile)
                 (append pdfviewer  (list pdffile)))))
-                           
+
     ;;(shell-command (concat "pdflatex " latex-filename))
     (message "Running '%s' on '%s' ..." pdflatex-cmd latex-filename)
     (with-current-buffer tex-buf (erase-buffer))
