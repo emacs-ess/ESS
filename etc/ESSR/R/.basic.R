@@ -5,7 +5,7 @@
 ## cannot be parsed in old R versions
 
 
-## loading ESSR.rda might fails, so re-asign here:
+## loading ESSR.rda might fail, so re-assign here:
 .ess.Rversion <-
     if( exists("getRversion", mode="function") ){
         getRversion()

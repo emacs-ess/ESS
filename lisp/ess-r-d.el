@@ -911,7 +911,7 @@ or \\[ess-internal-complete-object-name] otherwise."
   (sit-for 2 t)
   )
 
-;; this one will be removed soon
+;; This one is needed for R <= 2.6.x -- hence *not* obsoleting it
 (defun ess-internal-complete-object-name ()
   "Perform completion on `ess-language' object preceding point.
 The object is compared against those objects known by
@@ -975,8 +975,8 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-;; Hmm... shouldn't we keep and use this for R <= 2.6.x ???
-(make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
+;; *NOT* doing this, as it is needed for R <= 2.6.x
+;;(make-obsolete 'ess-internal-complete-object-name nil "ESS 13.09")
 
 (defun ess-R-get-rcompletions (&optional start end)
   "Call R internal completion utilities (rcomp) for possible completions.
