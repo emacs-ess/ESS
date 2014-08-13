@@ -807,7 +807,7 @@ number."
     (adaptive-fill-mode           . nil)
     (indent-line-function         . 'sas-indent-line)
     ;;(indent-region-function       . 'sas-indent-region)
-    (require-final-newline        . 'ess-require-final-newline)
+    (require-final-newline        . mode-require-final-newline)
     (comment-start                . "/*")
     (comment-start-skip           . "/[*]")
     (comment-end                  . "*/")

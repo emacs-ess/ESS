@@ -254,7 +254,7 @@
   '((paragraph-start              . (concat "^$\\|" page-delimiter))
     (paragraph-separate           . (concat "^$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . 'ess-require-final-newline)
+    (require-final-newline        . mode-require-final-newline)
     (comment-start                . "//")
     (comment-start-skip           . "//+ *")
     (comment-column               . 40)

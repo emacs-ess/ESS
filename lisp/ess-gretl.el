@@ -417,7 +417,7 @@ end keywords as associated values.")
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . 'ess-require-final-newline)
+    (require-final-newline	  . mode-require-final-newline)
     (comment-start		  . "# ")
     (comment-add                  . 1)
     (comment-start-skip		  . "\\s<+\\s-*")
@@ -476,7 +476,7 @@ end keywords as associated values.")
            (gretl--get-words-from-command "help functions\n" "Accessors:" "^Functions")
            (gretl--get-words-from-command "help functions\n" "^Functions" "^For")
            )))
-  
+
 ;; (defvar ess-gretl-error-regexp-alist '(gretl-in gretl-at)
 ;;   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
@@ -602,7 +602,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
 				 inferior-gretl-args
 				 "'] ? "))
 		      nil))))
-      (inferior-ess r-start-args) 
+      (inferior-ess r-start-args)
       (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
       (set (make-local-variable 'gretl-basic-offset) 4)
       (setq indent-tabs-mode nil)

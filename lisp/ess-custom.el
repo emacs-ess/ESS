@@ -551,11 +551,12 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
-(defcustom ess-require-final-newline t
-  "*Will be used to set `require-final-newline' in several <language>-editing-alist.
-The default (t) is desirable for several (unix/GNU) text tools."
-  :group 'ess-edit
-  :type 'boolean)
+;; rather use  standard Emacs   mode-require-final-newline !
+;; (defcustom ess-require-final-newline t
+;;   "*Will be used to set `require-final-newline' in several <language>-editing-alist.
+;; The default (t) is desirable for several (unix/GNU) text tools."
+;;   :group 'ess-edit
+;;   :type 'boolean)
 
 ;;; SJE -- this is set in ess-site.el to be "always", so I changed
 ;;; value t to be "always", so that ess-site.el does not need editing.
