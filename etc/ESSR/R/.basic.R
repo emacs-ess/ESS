@@ -36,8 +36,8 @@
     readrds <-
         if(.ess.Rversion >= '2.13.0') readRDS
         else .readRDS
-    rds_files <- paste(searchpaths(), "/help/aliases.rds", sep = "")
-    unlist(lapply(rds_files,
+    rds.files <- paste(searchpaths(), "/help/aliases.rds", sep = "")
+    unlist(lapply(rds.files,
                   function(f){
                       if( file.exists(f) )
                           try(names(readrds(f)))
