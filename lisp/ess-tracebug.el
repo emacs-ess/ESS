@@ -2727,7 +2727,7 @@ Only do this when #chars is 1"
            (get-text-property (point) 'intangible))
       (progn
         (kill-region (point) (or (next-single-property-change (point) 'intangible)
-                                 (poin-max)))
+                                 (point-max)))
         (indent-for-tab-command))
     ad-do-it))
 
