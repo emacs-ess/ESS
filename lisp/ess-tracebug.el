@@ -188,7 +188,7 @@ Return new command, a string."
 
     ;; delete all old temp files
     (when (and (not (ess-process-get 'busy))
-               (< 1 (time-to-seconds
+               (< 1 (float-time
                      (time-subtract (current-time)
                                     (ess-process-get 'last-eval)))))
       (dolist (f (ess-process-get 'temp-source-files))
