@@ -26,14 +26,22 @@ Error in source("basicModel.R") : basicModel.R:95:1: unexpected symbol
 95: ixQ
    ^            
 
-## 5
+## 5.a
 > + Error in source(file = "/home/vitoshka/works/pbm/R/S4.R") (from #1) : 
   /home/vitoshka/works/pbm/R/S4.R:36:62: unexpected ')'
 35:                           }, list(vname = as.name(".pix_v")), 
 36:                                   pname = as.name(".pix_p"))))
                                                                 ^
+
+## 5.b
+> + Error in source(file = "/home/vitoshka/works/pbm/R/S4.R") (from #1) : 
+  c:/home/vitoshka/works/pbm/R/S4.R:36:62: unexpected ')'
+35:                           }, list(vname = as.name(".pix_v")), 
+36:                                   pname = as.name(".pix_p"))))
+                                                                ^
 >             
 
+                             
 ## 6 first line is not a pattern!
 + . + Error in base::source(file = file, echo = echo, local = local, print.eval = print.eval,  (from #95) : 
   /tmp/model_mixture.R@4:5:13: unexpected symbol

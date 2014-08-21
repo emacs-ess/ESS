@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "14.06" ;; updated by 'make'
+(defvar ess-version "14.08" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -548,12 +548,6 @@ it to the customized setting. "
 as objects in that directory (when t). This is not true for DOS and
 other OS's with limited filename lengths.  Even if this is set
 incorrectly, the right things will probably still happen, however."
-  :group 'ess-edit
-  :type 'boolean)
-
-(defcustom ess-require-final-newline t
-  "*Will be used to set `require-final-newline' in several <language>-editing-alist.
-The default (t) is desirable for several (unix/GNU) text tools."
   :group 'ess-edit
   :type 'boolean)
 

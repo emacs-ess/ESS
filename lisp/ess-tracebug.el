@@ -188,7 +188,7 @@ Return new command, a string."
 
     ;; delete all old temp files
     (when (and (not (ess-process-get 'busy))
-               (< 1 (time-to-seconds
+               (< 1 (float-time
                      (time-subtract (current-time)
                                     (ess-process-get 'last-eval)))))
       (dolist (f (ess-process-get 'temp-source-files))
@@ -2727,7 +2727,7 @@ Only do this when #chars is 1"
            (get-text-property (point) 'intangible))
       (progn
         (kill-region (point) (or (next-single-property-change (point) 'intangible)
-                                 (poin-max)))
+                                 (point-max)))
         (indent-for-tab-command))
     ad-do-it))
 

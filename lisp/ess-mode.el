@@ -956,7 +956,7 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
           (end (ignore-errors (forward-sexp 1) (point))))
       (when end
         (indent-region start end)))))
-        
+
 ;;;*;;; Support functions for indentation
 
 (defun ess-comment-indent ()
@@ -1028,7 +1028,7 @@ Return the amount the indentation changed by."
   (looking-at "[[:blank:]]*([[:blank:]]*\\($\\|#\\)"))
 
 (defun ess-calculate-indent--closing-paren ()
-  (search-forward ")") 
+  (search-forward ")")
   (backward-sexp)
   (if (ess-looking-at-last-open-paren-p)
       ;; If this line ends with "("
@@ -1102,7 +1102,7 @@ Return the amount the indentation changed by."
                    ;;   a <- some.function(
                    ;;     arg1,
                    ;;     arg2)
-                   ;; 
+                   ;;
                    ;; case 1: numeric
                    ((and (numberp ess-arg-function-offset-new-line)
                          (ess-looking-at-last-open-paren-p))
@@ -1206,7 +1206,7 @@ Returns nil if line starts inside a string, t if in a comment."
                              ;; return number of skiped chars
                              (skip-chars-forward ", \t"))))
         (- indent unindent)))
-     
+
      ;; default indentation rules
      (t
       (ess-calculate-indent--default parse-start)))))
@@ -1250,7 +1250,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 
 (defun ess--continued-statement (&optional containing-sexp)
-  "If a continuatieon line, return an indent of this line, otherwise nil."
+  "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
     (beginning-of-line)
     (ess-backward-to-noncomment containing-sexp)
@@ -1275,7 +1275,7 @@ Returns nil if line starts inside a string, t if in a comment."
                     (or (and (/= ess-first-continued-statement-offset 0)
                              (null (ess--continued-statement containing-sexp))
                              ess-first-continued-statement-offset)
-                        0)))                 
+                        0)))
                (+ first-indent
                   (if containing-sexp
                       (if (> (point-at-bol) containing-sexp)
@@ -1286,7 +1286,7 @@ Returns nil if line starts inside a string, t if in a comment."
             (t nil)))))
 
 (defun ess-backward-to-noncomment (lim)
-  ;; this one is bad. Use 
+  ;; this one is bad. Use
   (let ((lim (or lim (point-min)))
         opoint stop)
     (while (not stop)
@@ -1335,7 +1335,7 @@ style variables buffer local."
 
   (interactive)
   (let ((ess-styles (mapcar 'symbol-name (mapcar 'car ess-style-alist))))
-    (if (interactive-p)
+    (if (called-interactively-p 'any)
         (setq style
               (intern (ess-completing-read "Set ESS mode indentation style"
                                            ess-styles nil t nil nil ess-default-style))))
@@ -1346,7 +1346,7 @@ style variables buffer local."
       (error (format "Bad ESS style: %s" style)))
     (if (not quiet)
         (message "ESS-style: %s" ess-style))
-                                        ; finally, set the indentation style variables making each one local
+    ;; finally, set the indentation style variables making each one local
     (mapc (lambda (ess-style-pair)
             (make-local-variable (car ess-style-pair))
             (set (car ess-style-pair)
