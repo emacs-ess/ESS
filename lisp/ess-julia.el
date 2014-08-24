@@ -202,28 +202,35 @@ Do not move back beyond MIN."
 (defun julia-indent-line ()
   "Indent current line of julia code."
   (interactive)
-  (end-of-line)
-  (indent-line-to
-   (or (and (ess-inside-string-p (point-at-bol)) 0)
-       (save-excursion (ignore-errors (julia-form-indent)))
-       (save-excursion (ignore-errors (julia-paren-indent)))
-       ;; previous line ends in =
-       (save-excursion
-         (beginning-of-line)
-         (skip-chars-backward " \t\n")
-         (when (eql (char-before) ?=)
-           (+ julia-basic-offset (current-indentation))))
-       (save-excursion
-         (let ((endtok (progn
+  (let* ((indent (save-excursion
+                   (end-of-line)
+                   (or (and (ess-inside-string-p (point-at-bol)) 0)
+                       (save-excursion (ignore-errors (julia-form-indent)))
+                       (save-excursion (ignore-errors (julia-paren-indent)))
+                       ;; previous line ends in =
+                       (save-excursion
                          (beginning-of-line)
-                         (forward-to-indentation 0)
-                         (julia-at-keyword julia-block-end-keywords))))
-           (ignore-errors (+ (julia-last-open-block (point-min))
-                             (if endtok (- julia-basic-offset) 0)))))
-       ;; take same indentation as previous line
-       (save-excursion (forward-line -1)
-                       (current-indentation))
-       0))
+                         (skip-chars-backward " \t\n")
+                         (when (eql (char-before) ?=)
+                           (+ julia-basic-offset (current-indentation))))
+                       (save-excursion
+                         (let ((endtok (progn
+                                         (beginning-of-line)
+                                         (forward-to-indentation 0)
+                                         (julia-at-keyword julia-block-end-keywords))))
+                           (ignore-errors (+ (julia-last-open-block (point-min))
+                                             (if endtok (- julia-basic-offset) 0)))))
+                       ;; take same indentation as previous line
+                       (save-excursion (forward-line -1)
+                                       (current-indentation))
+                       0)))
+         (cur-point (point))
+         (cur-indent (progn (back-to-indentation)
+                            (point)))
+         (shift (max 0 (- cur-point cur-indent))))
+    (delete-region (point-at-bol) cur-indent)
+    (indent-to indent)
+    (goto-char (+ (point) shift)))
   (when (julia-at-keyword julia-block-end-keywords)
     (forward-word 1)))
 
