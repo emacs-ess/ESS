@@ -1,70 +1,33 @@
 module ESS
 
-function help_categories()
-    Base.Help.init_help()
-    for cat = Base.Help.CATEGORY_LIST
-        if !isempty(Base.Help.CATEGORY_DICT[cat])
-            println("\"$cat\" ")
-        end
-    end
-end 
-    
 function all_help_topics()
     Base.Help.init_help()
     ## show all categories 
-    for cat = Base.Help.CATEGORY_LIST
-        if !isempty(Base.Help.CATEGORY_DICT[cat])
+    for (func, _ ) in Base.Help.MODULE_DICT
+        if !isempty(Base.Help.MODULE_DICT[func])
             println()
-            show(cat); println();
-            for func = Base.Help.CATEGORY_DICT[cat]
-                print("  ")
-                show(func)
-            end
+            show(func);
         end
     end
 end
 
 function help(topic::String)
-    Base.Help.init_help()
-    if !haskey(Base.Help.CATEGORY_DICT, topic)
-        # if it's not a category, try another named thing
-        try
-            obj = eval(current_module(), parse(topic))
-            Base.Help.help(obj)
-        catch
-            print("No help information found")
-        end 
-    else
-        ln = length(topic)
-        bar = " ===" * "="^ln * "==="
-        println(bar)
-        println(" =  ", topic, "  =")
-        println(bar, "\n")
-        for func = Base.Help.CATEGORY_DICT[topic]
-            Base.Help.help(func)
-            println()
-            println("-"^72)
-        end
-    end
-end     
+  Base.Help.help(topic)
+end    
 
 ## modified version of function show(io::IO, m::Method)
 function fun_args(m::Method)
-        tv = m.tvars
-        io = STDOUT::IO
-        if !isa(tv,Tuple)
-            tv = (tv,)
-        end
-        if !isempty(tv)
-            Base.show_delim_array(io, tv, '{', ',', '}', false)
-        end
-        li = m.func.code
-        e = Base.uncompressed_ast(li)
-        argnames = e.args[1]
-        decls = map(Base.argtype_decl_string, argnames, {m.sig...})
-        print(io, "(")
-        print_joined(io, decls, ",", ",")
-        print(io, ")")
+    tv, decls, file, line = Base.arg_decl_parts(m)
+    io = STDOUT::IO
+    if !isempty(tv)
+        Base.show_delim_array(io, tv, '{', ',', '}', false)
+    end
+    li = m.func.code
+    e = Base.uncompressed_ast(li)
+    argnames = e.args[1]
+    print(io, "(")
+    print_joined(io, [isempty(d[2]) ? d[1] : d[1]*"::"*d[2] for d in decls], ",", ",")    
+    print(io, ")")
 end 
 
 ## modified versionof show(io::IO, mt::MethodTable)
@@ -76,8 +39,9 @@ function fun_args(f::Function)
     end 
     print("(list \"$mod\" nil '(")
     d = mt.defs
-    while !is(d,())
+    while !is(d, ())
         print("\"")
+        ## method
         fun_args(d)
         print("\" ")
         d = d.next

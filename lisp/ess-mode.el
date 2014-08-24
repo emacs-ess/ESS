@@ -1019,8 +1019,8 @@ Return the amount the indentation changed by."
 	;; If initial point was within line's indentation,
 	;; position after the indentation.
 	;; Else stay at same point in text.
-	(if (> (- (point-max) pos) (point))
-	    (goto-char (- (point-max) pos))))
+	(when (> (- (point-max) pos) (point))
+          (goto-char (- (point-max) pos))))
       shift-amt)))
 
 

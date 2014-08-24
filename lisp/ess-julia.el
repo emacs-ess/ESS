@@ -202,28 +202,35 @@ Do not move back beyond MIN."
 (defun julia-indent-line ()
   "Indent current line of julia code."
   (interactive)
-  (end-of-line)
-  (indent-line-to
-   (or (and (ess-inside-string-p (point-at-bol)) 0)
-       (save-excursion (ignore-errors (julia-form-indent)))
-       (save-excursion (ignore-errors (julia-paren-indent)))
-       ;; previous line ends in =
-       (save-excursion
-         (beginning-of-line)
-         (skip-chars-backward " \t\n")
-         (when (eql (char-before) ?=)
-           (+ julia-basic-offset (current-indentation))))
-       (save-excursion
-         (let ((endtok (progn
+  (let* ((indent (save-excursion
+                   (end-of-line)
+                   (or (and (ess-inside-string-p (point-at-bol)) 0)
+                       (save-excursion (ignore-errors (julia-form-indent)))
+                       (save-excursion (ignore-errors (julia-paren-indent)))
+                       ;; previous line ends in =
+                       (save-excursion
                          (beginning-of-line)
-                         (forward-to-indentation 0)
-                         (julia-at-keyword julia-block-end-keywords))))
-           (ignore-errors (+ (julia-last-open-block (point-min))
-                             (if endtok (- julia-basic-offset) 0)))))
-       ;; take same indentation as previous line
-       (save-excursion (forward-line -1)
-                       (current-indentation))
-       0))
+                         (skip-chars-backward " \t\n")
+                         (when (eql (char-before) ?=)
+                           (+ julia-basic-offset (current-indentation))))
+                       (save-excursion
+                         (let ((endtok (progn
+                                         (beginning-of-line)
+                                         (forward-to-indentation 0)
+                                         (julia-at-keyword julia-block-end-keywords))))
+                           (ignore-errors (+ (julia-last-open-block (point-min))
+                                             (if endtok (- julia-basic-offset) 0)))))
+                       ;; take same indentation as previous line
+                       (save-excursion (forward-line -1)
+                                       (current-indentation))
+                       0)))
+         (cur-point (point))
+         (cur-indent (progn (back-to-indentation)
+                            (point)))
+         (shift (max 0 (- cur-point cur-indent))))
+    (delete-region (point-at-bol) cur-indent)
+    (indent-to indent)
+    (goto-char (+ (point) shift)))
   (when (julia-at-keyword julia-block-end-keywords)
     (forward-word 1)))
 
@@ -285,14 +292,14 @@ VISIBLY is not currently used."
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
-(defvar julia--reference-topics nil)
-(defun julia-reference-lookup-function (&rest args) ; args are not used
-  (interactive)
-  "Look up reference topics"
-  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
-  (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
-    (ess-display-help-on-object
-     (ess-completing-read "Category" pages nil t))))
+;; julia 0.3.0 doesn't provide categories. Thus we don't support this anymore.
+;; (defun julia-reference-lookup-function (&rest args) ; args are not used
+;;   (interactive)
+;;   "Look up reference topics"
+;;   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
+;;   (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
+;;     (ess-display-help-on-object
+;;      (ess-completing-read "Category" pages nil t))))
 
 
 
@@ -453,7 +460,7 @@ to look up any doc strings."
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command          . 'julia-manual-lookup-function)
-    (ess-reference-lookup-command       . 'julia-reference-lookup-function)
+    ;; (ess-reference-lookup-command       . 'julia-reference-lookup-function)
     (ess-load-command   		. "include(\"%s\")\n")
     (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
