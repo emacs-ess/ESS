@@ -292,14 +292,14 @@ VISIBLY is not currently used."
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
-(defvar julia--reference-topics nil)
-(defun julia-reference-lookup-function (&rest args) ; args are not used
-  (interactive)
-  "Look up reference topics"
-  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
-  (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
-    (ess-display-help-on-object
-     (ess-completing-read "Category" pages nil t))))
+;; julia 0.3.0 doesn't provide categories. Thus we don't support this anymore.
+;; (defun julia-reference-lookup-function (&rest args) ; args are not used
+;;   (interactive)
+;;   "Look up reference topics"
+;;   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
+;;   (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
+;;     (ess-display-help-on-object
+;;      (ess-completing-read "Category" pages nil t))))
 
 
 
@@ -460,7 +460,7 @@ to look up any doc strings."
     (ess-get-help-topics-function	. 'julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command          . 'julia-manual-lookup-function)
-    (ess-reference-lookup-command       . 'julia-reference-lookup-function)
+    ;; (ess-reference-lookup-command       . 'julia-reference-lookup-function)
     (ess-load-command   		. "include(\"%s\")\n")
     (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
