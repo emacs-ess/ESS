@@ -382,32 +382,40 @@ to R, put them in the variable `inferior-R-args'."
 
     (inferior-ess r-start-args)
 
-    (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
+    (R-load-ess-part-2)))
 
-    (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-    (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
-    (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+(defun R-load-ess-part-2 ()
+  "Re-execute the second part of \\[R], e.g. when that partly failed because
+of an unrecognized prompt, as when started with '-d gdb'.
+Notably reloads and attaches ESSR."
+  (interactive)
 
-    ;;-------------------------
-    (setq comint-input-sender 'inferior-R-input-sender)
-    (ess-write-to-dribble-buffer
-     (format "(R): inferior-ess-language-start=%s\n"
-             inferior-ess-language-start))
+  (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
 
-    (when ess-can-eval-in-background
-      (ess-async-command-delayed
-       "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-       ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-       (lambda (proc) (process-put proc 'packages-cached? t))))
+  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
 
-    (ess--R-load-ESSR)
+  ;;-------------------------
+  (setq comint-input-sender 'inferior-R-input-sender)
+  (ess-write-to-dribble-buffer
+   (format "(R): inferior-ess-language-start=%s\n"
+           inferior-ess-language-start))
 
-    (if inferior-ess-language-start
-        (ess-eval-linewise inferior-ess-language-start
-                           nil nil nil 'wait-prompt))
+  (when ess-can-eval-in-background
+    (ess-async-command-delayed
+     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+     (lambda (proc) (process-put proc 'packages-cached? t))))
 
-    (with-ess-process-buffer nil
-      (run-mode-hooks 'ess-R-post-run-hook))))
+  (ess--R-load-ESSR)
+
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start
+                         nil nil nil 'wait-prompt))
+
+  (with-ess-process-buffer nil
+    (run-mode-hooks 'ess-R-post-run-hook)))
 
 
 

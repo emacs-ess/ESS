@@ -2234,7 +2234,7 @@ for `ess-eval-region'."
   "Keymap used in `ess-execute'"
   )
 
-(define-derived-mode inferior-ess-mode comint-mode
+(defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.
 Runs an S interactive job as a subprocess of Emacs, with I/O through an
 Emacs buffer.  Variable `inferior-ess-program' controls which S
@@ -2287,9 +2287,9 @@ C-M-q does Tab on each line starting within following expression.
 Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
-  ;; (interactive)
+  (interactive)
 
-  ;; (comint-mode)
+  (comint-mode)
 
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
   (set (make-local-variable 'process-connection-type) t)
