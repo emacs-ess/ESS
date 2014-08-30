@@ -370,7 +370,7 @@ to R, put them in the variable `inferior-R-args'."
                                    (concat " [other than '" r-always-arg "']"))
                                " ? "))
                     nil)))
-         (cust-alist R-customize-alist)
+         (cust-alist (copy-alist R-customize-alist))
          (gdbp (string-match-p "gdb" r-start-args))
          use-dialog-box)
 
