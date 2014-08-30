@@ -389,7 +389,7 @@ to R, put them in the variable `inferior-R-args'."
 
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
     ;; We need to use callback, becaue R might start with a gdb process
-    (ess-process-put 'callbacks '(R-on-start-function))
+    (ess-process-put 'callbacks '(R-initialize-on-start))
     ;; trigger the callback
     (process-send-string (get-process ess-local-process-name) "\n")
 
@@ -402,7 +402,7 @@ to R, put them in the variable `inferior-R-args'."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))))
 
-(defun R-on-start-function (&optional proc string)
+(defun R-initialize-on-start (&optional proc string)
   "This function is run after the first R prompt.
 Executed in process buffer."
   (interactive)
