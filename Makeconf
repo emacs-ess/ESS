@@ -18,7 +18,7 @@
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr
 DESTDIR=/usr
 PREFIX=$(DESTDIR)
-#
+
 ##__ GNU Emacs __
 EMACS=emacs
 SITELISP=$(PREFIX)/share/emacs/site-lisp
@@ -32,7 +32,6 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #LISPDIR=$(SITELISP)/ess
 #INFODIR=$(PREFIX)/share/xemacs/site-packages/info
 #ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
-#
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
 # PREFIX=/Applications/Emacs.app/Contents/Resources
@@ -41,7 +40,6 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # LISPDIR=$(SITELISP)/ess
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
-#
 
 ##__ Aquamacs __  (donated by Dan Knoepfle, Mar 26, 2011)
 # PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
@@ -50,7 +48,6 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # LISPDIR=$(PREFIX)/ess-mode/lisp
 # INFODIR=/Applications/Aquamacs.app/Contents/Resources/info
 # ETCDIR=$(PREFIX)/ess-mode/etc
-#
 
 ## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
@@ -68,24 +65,24 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 ##                 1st) source-file & 2nd) target-directory
 ## UNINSTALL       deletes all arguments
 ## DOCDIR          Destination of other doc files
-#
+
 SHELL = /bin/sh
-#
+
 MAKEINFO = LC_ALL=C LANG=en makeinfo
 # new:  MAKEHTML <output>.html  <input>.texi  {necessary to build 'Index'}
 MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o
 ##                            ^^^^^^^^^^ today's bandwidth is fast
 #MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
 MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
-#
+
 INSTALLDIR = mkdir -p
 #INSTALLDIR = install -d
-#
+
 INSTALL = cp -p
 #INSTALL = install
-#
+
 UNINSTALL = rm -f
-#
+
 DOCDIR=$(PREFIX)/share/doc/ess
 
 ## Section 3
