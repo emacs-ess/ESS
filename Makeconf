@@ -39,7 +39,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 # SITELISP=$(PREFIX)/site-lisp
 # LISPDIR=$(SITELISP)/ess
-# INFODIR=$(PREFIX)/info
+# INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
 #
 
