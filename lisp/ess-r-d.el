@@ -378,7 +378,7 @@ to R, put them in the variable `inferior-R-args'."
       (setcdr (assoc 'inferior-ess-secondary-prompt cust-alist)
               (format "\\(%s\\)\\|\\((gdb) \\)"
                       (cdr (assoc 'inferior-ess-secondary-prompt cust-alist)))))
-    
+
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
       (setq use-dialog-box nil)
@@ -388,7 +388,7 @@ to R, put them in the variable `inferior-R-args'."
     (inferior-ess r-start-args cust-alist gdbp)
 
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
-    ;; We need to use callback, becaue R might start with a gdb process
+    ;; We need to use callback, because R might start with a gdb process
     (ess-process-put 'callbacks '(R-initialize-on-start))
     ;; trigger the callback
     (process-send-string (get-process ess-local-process-name) "\n")
