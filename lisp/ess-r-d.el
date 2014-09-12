@@ -304,7 +304,7 @@ before ess-site is loaded) for it to take effect."))
   process.")
 
 (defun ess--R-load-ESSR ()
-  "Load/INSTALL/Update ESSR"
+  "Load/INSTALL/Update ESSR."
   (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" ESSR-directory)))
 

@@ -1,9 +1,21 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes / Selected Bug Fixes in 14.04:
+Changes / Selected Bug Fixes in 14.09:
 @itemize @bullet
+@item @ESS{[Julia]}: Executable is changed to @code{julia}.
+@item @ESS{[Julia]}: Completion and help system was adjusted to Julia v.0.3.0. Julia v.0.2.0 is no more supported.
+@item @ESS{[R]}: Running R with @code{gdb} debugger now works as expected
+@item @iESS{}: Inferior ESS buffers are now derived from @code{comint-mode}
 @item @ESS{[R]}: @code{ess-execute-screen-options} uses correct screen width in terminal sessions
+@item @ESS{}: @code{ess-build-tags-for-directory} works when no TAGS file name was provided
+@item @ESS{}: @code{ess-continued-statement-offset} is now respected everywhere 
+except inside of the @code{if} test condition.
+@item @ESS{}: New variable @code{ess-first-continued-statement-offset} for indentation of 
+the first line in multiline statements.
+@item @ESS{R}: Starting @kbd{,} in multiline statements indentation is now ignored
+to achieve a more pleasant alignment.
+@item @ESS{R}: Improved behavior of @kbd{RET} in roxygen blocks. 
 @item @ESS{[R]}: command cleaning with @kbd{C-u C-u C-y} was broken with lines containing " + "
 @item @ESS{[R]}: fixed "empty watch window bug"
 @item @ESS{[R]}: don't ask for help location on ac-quick-help (request of github #81)
