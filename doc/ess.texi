@@ -23,7 +23,7 @@ ESS version @ESSVER
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2013 The ESS Developers
+@author Copyright @copyright{} 2002--2014 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
@@ -521,7 +521,7 @@ Other ways to setup a remote ESS connection are through @code{ess-remote}.
 @item Start the ESS process on the remote machine, for example with one of
 the commands @samp{Splus}, or @samp{R}, or @samp{sas -stdio}.
 
-@item Start @samp{M-x ess-remote}.  
+@item Start @samp{M-x ess-remote}.
 You will be prompted for a program name with completion.  Choose
 one. Your process is now known to ESS.  All the usual ESS commands
 (@samp{C-c C-n} and its relatives) now work with the S language
@@ -2971,7 +2971,7 @@ something like:
     @code{
        Warning: Class "boo" is defined (with package slot ‘foo’) but no
        metadata object found to revise subclass information---not exported?
-       }      
+       }
 
 You can safely ignore this warnings.
 

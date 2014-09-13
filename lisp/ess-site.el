@@ -216,17 +216,17 @@ for ESS, such as icons.")
 
 (autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
 
-; Here is a workaround for an Emacs bug related to indirect buffers and 
+; Here is a workaround for an Emacs bug related to indirect buffers and
 ; spurious lockfiles that rears its ugly head with .Rd files
 ; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
 ; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
 (if (featurep 'xemacs) nil
-  ;; (add-hook 'Rd-mode-hook (lambda () 
+  ;; (add-hook 'Rd-mode-hook (lambda ()
   ;;         (set (make-local-variable create-lockfiles) nil)))
-					
+
   (make-local-variable 'create-lockfiles)
 
-  (add-hook 'Rd-mode-hook (lambda () (setq create-lockfiles nil))) 
+  (add-hook 'Rd-mode-hook (lambda () (setq create-lockfiles nil)))
 )
 
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
@@ -275,8 +275,8 @@ between .s or .S files and assembly mode.
            ;;("\\.log\\'"       . SAS-log-mode)
            ;;("\\.[Ll][Ss][Tt]\\'"      . SAS-listing-mode)
            ("\\.[Ss]t\\'"       . S-transcript-mode)
-           ("\\.[Ss]out"        . S-transcript-mode)
-           ("\\.[Rr]t\\'"       . R-transcript-mode)
+           ("\\.Sout"           . S-transcript-mode)
+           ;;("\\.[Rr]t\\'"       . R-transcript-mode)
            ("\\.[Rr]out"        . R-transcript-mode)
            ("\\.Rd\\'"          . Rd-mode)
            ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
