@@ -304,7 +304,7 @@ before ess-site is loaded) for it to take effect."))
   process.")
 
 (defun ess--R-load-ESSR ()
-  "Load/INSTALL/Update ESSR"
+  "Load/INSTALL/Update ESSR."
   (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" ESSR-directory)))
 
@@ -351,8 +351,6 @@ Optional prefix (C-u) allows to set command line arguments, such as
 If you have certain command line arguments that should always be passed
 to R, put them in the variable `inferior-R-args'."
   (interactive "P")
-  ;; get settings, notably inferior-R-program-name :
-  (setq ess-customize-alist R-customize-alist)
   (ess-write-to-dribble-buffer   ;; for debugging only
    (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
@@ -372,43 +370,57 @@ to R, put them in the variable `inferior-R-args'."
                                    (concat " [other than '" r-always-arg "']"))
                                " ? "))
                     nil)))
+         (cust-alist (copy-alist R-customize-alist))
+         (gdbp (string-match-p "gdb" r-start-args))
          use-dialog-box)
+
+    (when gdbp
+      (setcdr (assoc 'inferior-ess-secondary-prompt cust-alist)
+              (format "\\(%s\\)\\|\\((gdb) \\)"
+                      (cdr (assoc 'inferior-ess-secondary-prompt cust-alist)))))
 
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
       (setq use-dialog-box nil)
-      (if ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
-          (setq default-process-coding-system '(undecided-dos . undecided-dos))))
+      (when ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
+        (setq default-process-coding-system '(undecided-dos . undecided-dos))))
 
-    (inferior-ess r-start-args)
+    (inferior-ess r-start-args cust-alist gdbp)
 
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
+    ;; We need to use callback, because R might start with a gdb process
+    (ess-process-put 'callbacks '(R-initialize-on-start))
+    ;; trigger the callback
+    (process-send-string (get-process ess-local-process-name) "\n")
 
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
     (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-
-    ;;-------------------------
     (setq comint-input-sender 'inferior-R-input-sender)
+
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
-             inferior-ess-language-start))
+             inferior-ess-language-start))))
 
-    (when ess-can-eval-in-background
-      (ess-async-command-delayed
-       "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-       ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-       (lambda (proc) (process-put proc 'packages-cached? t))))
+(defun R-initialize-on-start (&optional proc string)
+  "This function is run after the first R prompt.
+Executed in process buffer."
+  (interactive)
 
-    (ess--R-load-ESSR)
+  (when ess-can-eval-in-background
+    (ess-async-command-delayed
+     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+     (lambda (proc) (process-put proc 'packages-cached? t))))
 
-    (if inferior-ess-language-start
-        (ess-eval-linewise inferior-ess-language-start
-                           nil nil nil 'wait-prompt))
+  (ess--R-load-ESSR)
 
-    (with-ess-process-buffer nil
-      (run-mode-hooks 'ess-R-post-run-hook))))
+  (when inferior-ess-language-start
+    (ess-eval-linewise inferior-ess-language-start
+                       nil nil nil 'wait-prompt))
 
+  (with-ess-process-buffer nil
+    (run-mode-hooks 'ess-R-post-run-hook)))
 
 
 ;; (defun ess--R-cache-installed-packages ()

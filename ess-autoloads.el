@@ -1,6 +1,7 @@
 ;;; ess-autoloads.el --- Emacs Speaks Statistics: statistical programming within Emacs
 
 ;; Copyright (C) 2012 Donald E. Curtis
+;; Copyright (C) 2014 The ESS Core Team
 
 ;; Original Author: Donald E. Curtis
 ;; Created: March 5, 2012

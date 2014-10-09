@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "14.08" ;; updated by 'make'
+(defvar ess-version "14.1x" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -751,7 +751,7 @@ If not number, the statements are indented at open-parenthesis following
         (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
         (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset))
         )
-  "Default style constructed from initial values of indentation variables.")
+  "Style constructed from initial (default) values of ESS indentation variables.")
 
 (defvar ess-style-alist
   (cons ess-default-style-list

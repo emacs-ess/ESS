@@ -96,7 +96,7 @@ If ess-plain-first-buffername, then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
-(defun inferior-ess (&optional ess-start-args)
+(defun inferior-ess (&optional ess-start-args customize-alist no-wait)
   "Start inferior ESS process.
 
 Without a prefix argument, starts a new ESS process, or switches
@@ -133,10 +133,12 @@ Alternatively, it can appear in its own frame if
 
   (interactive)
 
-  (let ((temp-ess-dialect (eval (cdr (assoc 'ess-dialect
-                                            ess-customize-alist))))
-        (temp-ess-lang (eval (cdr (assoc 'ess-language
-                                         ess-customize-alist)))))
+  (let* ((ess-customize-alist (or customize-alist
+                                  ess-customize-alist))
+         (temp-ess-dialect (eval (cdr (assoc 'ess-dialect
+                                             ess-customize-alist))))
+         (temp-ess-lang (eval (cdr (assoc 'ess-language
+                                          ess-customize-alist)))))
 
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
@@ -294,8 +296,9 @@ Alternatively, it can appear in its own frame if
             ;; (inferior-ess-wait-for-prompt)
             (inferior-ess-mark-as-busy (get-process procname))
             (process-send-string (get-process procname) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
-            (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-            (ess-wait-for-process (get-process procname) nil 0.01)
+            (unless no-wait 
+              (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
+              (ess-wait-for-process (get-process procname) nil 0.01))
 
             ;; arguments cache
             (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
@@ -317,8 +320,9 @@ Alternatively, it can appear in its own frame if
             ;; EXTRAS
             (ess-load-extras t)
             ;; user initialization can take some time ...
-            (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-            (ess-wait-for-process (get-process procname)))
+            (unless no-wait
+              (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+              (ess-wait-for-process (get-process procname))))
 
           (with-current-buffer buf
             (rename-buffer buf-name-str t))
@@ -428,26 +432,27 @@ Return the 'busy state."
   (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
     (process-put proc 'busy-end? (and (not busy)
                                       (process-get proc 'busy)))
-    (if (not busy) (process-put proc 'running-async? nil))
+    (when (not busy)
+      (process-put proc 'running-async? nil))
     (process-put proc 'busy busy)
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
                    (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
     (unless no-timestamp
       (process-put proc 'last-eval (current-time)))
-    busy
-    ))
+    busy))
 
 (defun inferior-ess-mark-as-busy (proc)
   (process-put proc 'busy t)
   (process-put proc 'sec-prompt nil))
 
 (defun inferior-ess-run-callback (proc string)
-  ;; callback is stored in 'callbacks proc property. It can be either a function
-  ;; to be called with two artuments PROC and STRING or a cons cell of the form
-  ;; (func . suppress) where, if suppress is non-nil next process output will be
-  ;; suppressed.
-  (when (process-get proc 'busy-end?)
+  ;; callback is stored in 'callbacks proc property. Callbacks is a list that
+  ;; can contain either functions to be called with two artuments PROC and
+  ;; STRING, or cons cells of the form (func . suppress). If SUPPRESS is non-nil
+  ;; next process output will be suppressed.
+  (unless (process-get proc 'busy)
+    ;; only one callback is implemented for now
     (let* ((cb (car (process-get proc 'callbacks)))
            (listp (not (functionp cb)))
            (suppress (and listp (consp cb) (cdr cb)))
@@ -2234,7 +2239,7 @@ for `ess-eval-region'."
   "Keymap used in `ess-execute'"
   )
 
-(define-derived-mode inferior-ess-mode comint-mode
+(defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.
 Runs an S interactive job as a subprocess of Emacs, with I/O through an
 Emacs buffer.  Variable `inferior-ess-program' controls which S
@@ -2287,9 +2292,9 @@ C-M-q does Tab on each line starting within following expression.
 Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
-  ;; (interactive)
+  (interactive)
 
-  ;; (comint-mode)
+  (comint-mode)
 
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
   (set (make-local-variable 'process-connection-type) t)
