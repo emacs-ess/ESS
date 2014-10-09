@@ -207,7 +207,7 @@ Alternatively, it can appear in its own frame if
               method    3)))
 
       (ess-write-to-dribble-buffer
-       (format "(inferior-ess) Method #%d start=%s buf=%s\n" method startdir buf))
+       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method startdir buf))
 
       (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
@@ -234,8 +234,9 @@ Alternatively, it can appear in its own frame if
             (setq special-display-regexps '(".")))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
-            ;; fixme: when does this happen?
-            (pop-to-buffer (process-buffer proc))
+            (progn ;; fixme: when does this happen? -> log:
+              (ess-write-to-dribble-buffer (format "(inf-ess ..): popping to proc\n"))
+              (pop-to-buffer (process-buffer proc)))
 
           ;; Otherwise, crank up a new process
           (let* ((symbol-string
@@ -247,8 +248,8 @@ Alternatively, it can appear in its own frame if
             (set-buffer buf)
             (inferior-ess-mode)
             (ess-write-to-dribble-buffer
-             (format "(inferior-ess (post inf-ess): start-args=%s, comint-echoes=%s\n"
-                     infargs comint-process-echoes))
+             (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
+                     inferior-ess-program infargs comint-process-echoes))
             (setq ess-local-process-name procname)
             (goto-char (point-max))
             ;; load past history
@@ -296,7 +297,7 @@ Alternatively, it can appear in its own frame if
             ;; (inferior-ess-wait-for-prompt)
             (inferior-ess-mark-as-busy (get-process procname))
             (process-send-string (get-process procname) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
-            (unless no-wait 
+            (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
               (ess-wait-for-process (get-process procname) nil 0.01))
 
@@ -920,7 +921,7 @@ there is only one process running."
   (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
 
 (defun ess-get-next-available-process (&optional dialect ignore-busy)
-  "Return first availabe (aka not busy) process of dialect DIALECT.
+  "Return first available (aka not busy) process of dialect DIALECT.
 DIALECT defaults to the local value of ess-dialect. Return nil if
 no such process has been found."
   (setq dialect (or dialect ess-dialect))

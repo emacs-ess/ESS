@@ -292,7 +292,7 @@ following lines to your `.emacs' file:
   (interactive)
   (text-mode)
   (kill-all-local-variables)
-  (ess-setq-vars-local R-customize-alist) ;same functionality is availabe as in R buffers
+  (ess-setq-vars-local R-customize-alist) ;same functionality is available as in R buffers
   (use-local-map Rd-mode-map)
   (setq mode-name "Rd")
   (setq major-mode 'Rd-mode)

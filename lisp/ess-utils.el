@@ -877,7 +877,7 @@ t. See examples in the tracebug code.
 (defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
   "Execute dialect specific command.
 
--- If command is not defined issue warning 'Not availabe for dialect X'
+-- If command is not defined issue warning 'Not available for dialect X'
 -- if a function, execute it with ARGS
 -- If a string starting with 'http' or 'www', browse with `browse-url',
    otherwise execute the command in inferior process.
@@ -1119,7 +1119,7 @@ later."
 
        (unless (ess-inside-string-p)
          (setq ess--funname.start
-               (condition-case nil ;; check if it is inside a functon 
+               (condition-case nil ;; check if it is inside a functon
                    (progn
                      ;; for the sake of big buffers, look only 1000 chars back
                      (narrow-to-region (max (point-min) (- (point) 1000)) (point))
