@@ -500,7 +500,7 @@ temporary one in `temporary-file-directory'.
            (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
           (shell-command shcmd t))
       ;; else directly:
-      (unless ess-local-process-name (setq ess-local-process-name "R"))
+      (ess-force-buffer-current "R process to use: ")
       (ess-command (format "tools::Rd2txt(\"%s\")\n" file) pbuf)
       (set-buffer pbuf))
 
