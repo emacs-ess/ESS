@@ -54,7 +54,7 @@
 (autoload 'ess-switch-to-end-of-ESS     "ess-inf" "[autoload]" t)
 
 (autoload 'ess-help-mode                "ess-help" "[autoload]" t)
-(autoload 'ess-nuke-help-bs             "ess-help" "[autoload]" t)
+(autoload 'ess-help-underline           "ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -475,31 +475,48 @@ following lines to your `.emacs' file:
            (save-excursion
              (insert after))))))
 
-(defun Rd-preview-help ()
-  "Preview the current buffer contents using `Rd-to-help-command'.
+(defun Rd-preview-help (&optional via-shell)
+  "Preview the current Rd buffer contents as help.
+If optional VIA-SHELL is set, using `Rd-to-help-command'.
 If the current buffer is not associated with a file, create a
 temporary one in `temporary-file-directory'.
 "
-  (interactive)
+  (interactive "P")
   (require 'ess-help)
-  (let ((file  buffer-file-name)
+  (let ((file buffer-file-name)
         (pbuf (get-buffer-create "R Help Preview"))
-        del-p shcmd)
+        del-p)
     (unless file
-      (setq file  (make-temp-file "RD_" nil ".Rd"))
+      (setq file (make-temp-file "RD_" nil ".Rd"))
       (write-region (point-min) (point-max) file)
       (setq del-p t))
-    (setq shcmd (format "%s '%s'" Rd-to-help-command file))
-    (set-buffer pbuf)
-    (erase-buffer)
-    (ess-write-to-dribble-buffer
-     (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
-    (shell-command shcmd t)
+
+    (if via-shell ;; FIXME eventually get rid of this option
+        ;; only method in ESS <= 14.09 -- calls "R" even if in "R-devel"; slower
+        (let ((shcmd (format "%s '%s'" Rd-to-help-command file)))
+          (set-buffer pbuf)
+          (erase-buffer)
+          (ess-write-to-dribble-buffer
+           (format "Rd-preview-help: (shell-command |%s| t)" shcmd))
+          (shell-command shcmd t))
+      ;; else directly:
+      (unless ess-local-process-name (setq ess-local-process-name "R"))
+      (ess-command (format "tools::Rd2txt(\"%s\")\n" file) pbuf)
+      (set-buffer pbuf))
+
+    ;; FIXME(2): once got rid of via-shell, consider
+    ;; (ess--flush-help-into-current-buffer file "tools::Rd2txt(\"%s\")\n")
+    ;; instead of all this :
     (ess-setq-vars-local R-customize-alist)
     (setq ess-help-sec-regex ess-help-R-sec-regex
           ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
-    (ess-nuke-help-bs)
+    ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):
+    (ess-help-underline)
     (ess-help-mode)
+    (goto-char (point-min))
+    (set-buffer-modified-p 'nil)
+    (setq buffer-read-only t)
+    (setq truncate-lines nil)
     (when del-p (delete-file file))
     (unless (get-buffer-window pbuf 'visible)
       (display-buffer pbuf t))))
