@@ -789,7 +789,8 @@ to see which keystrokes find which sections."
   "Kill the current buffer and switch back to the ESS process."
   (interactive)
   (kill-buffer (current-buffer))
-  (ess-switch-to-ESS nil))
+  (if (and ess-current-process-name (get-process ess-current-process-name))
+      (ess-switch-to-ESS nil)))
 
 (defun ess-describe-sec-map nil
   "Display help for the `s' key."
