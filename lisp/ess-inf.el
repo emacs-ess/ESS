@@ -3252,9 +3252,8 @@ list."
             (delete-horizontal-space)
             (insert ", ")
             (unless (eq major-mode 'inferior-ess-mode)
-             (ess-indent-line)))
-        (insert ","))
-      )))
+             (indent-according-to-mode)))
+        (insert ",")))))
 
  ; directories
 (defun ess-set-working-directory (path &optional no-error)
