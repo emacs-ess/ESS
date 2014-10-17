@@ -20,12 +20,12 @@
 
 ## Instead of modern  utils::help use one that works in R 1.0.0:
 .ess.findFUN   <- get("find", .ess.utils.name)
-.ess.helpFUN   <- get("help", .ess.utils.name)
 .ess.sourceFUN <- get("source", pos="package:base")
 
 ### HELP
 .ess.help <- function(..., help.type = getOption('help_type'))
 {
+    .ess.helpFUN <- get("help", globalenv())
     if (.ess.Rversion > '2.10')# abbreviating 'help_type' on purpose:
 	.ess.helpFUN(..., help = help.type)
     else # not using identical(), and working also for NULL:
