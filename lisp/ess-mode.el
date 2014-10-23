@@ -1335,10 +1335,10 @@ style variables buffer local."
 
   (interactive)
   (let ((ess-styles (mapcar 'symbol-name (mapcar 'car ess-style-alist))))
-    (if (called-interactively-p 'any)
-        (setq style
-              (intern (ess-completing-read "Set ESS mode indentation style"
-                                           ess-styles nil t nil nil ess-default-style))))
+    (unless style
+      (setq style
+            (intern (ess-completing-read "Set ESS mode indentation style"
+                                         ess-styles nil t nil nil ess-default-style))))
     (setq style (or style ess-style))
     (make-local-variable 'ess-style)
     (if (memq (symbol-name style) ess-styles)
