@@ -1058,7 +1058,7 @@ in the current frame.
 
 If VISIT is non-nil, as well as making BUF visible, we also select it
 as the current buffer."
-  (let ( (frame))
+  (let ((frame))
     (if (ess-buffer-visible-this-frame buf)
         ;;1. Nothing to do, BUF visible in this frame; just return window
         ;; where this buffer is.
@@ -1073,7 +1073,7 @@ as the current buffer."
               (raise-frame frame))
         ;; 3. else BUF not visible in any frame, so show it (but do
         ;; not select it) in another window in current frame.
-        (display-buffer buf)))
+        (display-buffer buf '(display-buffer-use-some-window))))
     ;; At this stage, the buffer should now be visible on screen,
     ;; although it won't have been made current.
     (when visit
