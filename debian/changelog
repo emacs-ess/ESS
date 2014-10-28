@@ -1,3 +1,12 @@
+ess (14.09-2) unstable; urgency=low
+
+  * UNRELEASED
+  * debian/control: Change Depends: on r-base-core to Recommends:
+							  (Closes: #767043)
+  * debian/control: Add julia to Suggests:
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 28 Oct 2014 10:37:29 -0500
+
 ess (14.09-1) unstable; urgency=low
 
   * New upstream version released today 

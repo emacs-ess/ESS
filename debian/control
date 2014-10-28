@@ -10,9 +10,10 @@ Homepage: http://ess.r-project.org
 
 Package: ess
 Architecture: all
-Depends: ${misc:Depends}, emacs24 | emacs23 | emacsen, dpkg (>= 1.15.4) | install-info, r-base-core
+Depends: ${misc:Depends}, emacs24 | emacs23 | emacsen, dpkg (>= 1.15.4) | install-info
+Recommends: r-base-core
 Conflicts: dhelp (<= 0.3.12)
-Suggests: xlispstat, pspp, jags
+Suggests: xlispstat, pspp, jags, julia
 Description: Emacs mode for statistical programming and data analysis
  ESS ("Emacs Speaks Statistics") is a GNU Emacs and XEmacs mode for 
  interactive statistical programming and data analysis. Languages 
