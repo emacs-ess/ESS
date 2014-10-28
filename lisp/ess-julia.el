@@ -74,19 +74,6 @@
     table)
   "Syntax table for `julia-mode'.")
 
-;; syntax table that holds within strings
-(defvar julia-mode-string-syntax-table
-  (let ((table (make-syntax-table)))
-    table)
-  "Syntax table for `julia-mode'.")
-
-;; disable " inside char quote
-(defvar julia-mode-char-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?\" "." table)
-    table)
-  "Syntax table for `julia-mode'.")
-
 (defconst julia-char-regex
   "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|$!\\^~\\\\;:]\\|^\\)\\('\\(\\([^']*?[^\\\\]\\)\\|\\(\\\\\\\\\\)\\)'\\)")
 
@@ -500,12 +487,6 @@ to look up any doc strings."
     (ess-pager		. R-pager)
     )
   "Variables to customize for Julia -- set up later than emacs initialization.")
-
-(defvar julia-versions '("julia")
-  "List of partial strings for versions of Julia to access within ESS.
-Each string specifies the start of a filename.  If a filename
-beginning with one of these strings is found on `exec-path', a M-x
-command for that version of Julia is made available.")
 
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
