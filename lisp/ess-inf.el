@@ -36,7 +36,6 @@
  ; Requires and autoloads
 
 ;;*;; Requires
-;; (require 'ess-site)
 
 ;; Byte-compiler, SHUT-UP!
 (eval-and-compile
@@ -2202,7 +2201,7 @@ for `ess-eval-region'."
      ["Jump to Error"           ess-parse-errors        t]
      ["Load source file"  	ess-load-file           t]
      ["Resynch S completions"	ess-resynch		t]
-     ["Recreate R versions known to ESS" (ess-r-versions-create) t]
+     ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      )
     "------"
     ("start-dev" :visible nil); <-- ??

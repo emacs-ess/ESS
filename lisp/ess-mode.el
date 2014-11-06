@@ -231,6 +231,7 @@
      ["Goto end of process buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to process buffer"    ess-switch-to-inferior-or-script-buffer t]
      ["Switch Process"   ess-switch-process              t]
+     ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      ("Start Process"
       ;; SJE - :help not yet recognised in XEmacs.
       ["R"     R   t] ;; :help "Start a new R process" :active t
