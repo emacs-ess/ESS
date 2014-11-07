@@ -2753,7 +2753,7 @@ regarding whether the workspace image should be saved."
     ;;Q (unless (string-equal response "cancel")
     (ess-cleanup)
     ;;Q   (setq cmd (format "q(\"%s\")\n" response))
-    (setq cmd "q()\n")
+    (setq cmd "base::q()\n")
     (goto-char (marker-position (process-mark sprocess)))
     (process-send-string sprocess cmd)
     ;;(rename-buffer (concat (buffer-name) "-exited") t)
