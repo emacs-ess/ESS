@@ -388,15 +388,20 @@ to R, put them in the variable `inferior-R-args'."
     (inferior-ess r-start-args cust-alist gdbp)
 
     (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
-    ;; We need to use callback, because R might start with a gdb process
-    (ess-process-put 'callbacks '(R-initialize-on-start))
-    ;; trigger the callback
-    (process-send-string (get-process ess-local-process-name) "\n")
 
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
     (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
     (setq comint-input-sender 'inferior-R-input-sender)
+
+    (if gdbp
+        (progn
+          ;; We need to use callback, because R might start with a gdb process
+          (ess-process-put 'callbacks '(R-initialize-on-start))
+          ;; trigger the callback
+          (process-send-string (get-process ess-local-process-name) "\n"))
+      (ess-wait-for-process)
+      (R-initialize-on-start))
 
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
