@@ -1673,7 +1673,7 @@ corresponding program.")
 ;; (setq-default inferior-ess-program inferior-S-program-name)
 
 
-(defvar inferior-R-version "R (newest)"
+(defvar inferior-R-version "R (default)"
   "A (short) name of the current R version.  A global variable for
 ESS internal communication.")
 
