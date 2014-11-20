@@ -460,7 +460,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
-  (set-syntax-table ess-mode-syntax-table)
+  (when ess-mode-syntax-table
+    (set-syntax-table ess-mode-syntax-table))
 
   ;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)

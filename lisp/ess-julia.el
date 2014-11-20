@@ -39,72 +39,10 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
+(require 'julia-mode)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-(defvar ess-julia-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?_ "_" table)   ; underscores in words
-    (modify-syntax-entry ?@ "_" table)
-    (modify-syntax-entry ?. "_" table)
-    (modify-syntax-entry ?# "<" table)   ; #  single-line comment start
-    (modify-syntax-entry ?\n ">" table)  ; \n single-line comment end
-    (modify-syntax-entry ?\{ "(} " table)
-    (modify-syntax-entry ?\} "){ " table)
-    (modify-syntax-entry ?\[ "(] " table)
-    (modify-syntax-entry ?\] ")[ " table)
-    (modify-syntax-entry ?\( "() " table)
-    (modify-syntax-entry ?\) ")( " table)
-    ;(modify-syntax-entry ?\\ "." table)  ; \ is an operator outside quotes
-    (modify-syntax-entry ?'  "." table)  ; character quote or transpose
-    (modify-syntax-entry ?\" "\"" table)
-    (modify-syntax-entry ?` "\"" table)
-    ;; (modify-syntax-entry ?\" "." table)
-    (modify-syntax-entry ?? "." table)
-    (modify-syntax-entry ?$ "." table)
-    (modify-syntax-entry ?& "." table)
-    (modify-syntax-entry ?* "." table)
-    (modify-syntax-entry ?+ "." table)
-    (modify-syntax-entry ?- "." table)
-    (modify-syntax-entry ?< "." table)
-    (modify-syntax-entry ?> "." table)
-    (modify-syntax-entry ?= "." table)
-    (modify-syntax-entry ?% "." table)
-    table)
-  "Syntax table for `ess-julia-mode'.")
-
-(defconst ess-julia-char-regex
-  "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|$!\\^~\\\\;:]\\|^\\)\\('\\(\\([^']*?[^\\\\]\\)\\|\\(\\\\\\\\\\)\\)'\\)")
-
-(defconst ess-julia-unquote-regex
-  "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|!\\^~\\\\;:]\\|^\\)\\($[a-zA-Z0-9_]+\\)")
-
-(defconst ess-julia-forloop-in-regex
-  "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
-
-(defconst ess-julia-font-lock-keywords
-  (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\|128\\)\\|Int\\(8\\|16\\|32\\|64\\|128\\)\\|BigInt\\|Integer\\|BigFloat\\|FloatingPoint\\|Float16\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexPair\\|Bool\\|Char\\|Number\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|AbstractSparseMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|Task\\|Signed\\|Unsigned\\|Associative\\|Dict\\|IO\\|IOStream\\|Ranges\\|Rational\\|Regex\\|RegexMatch\\|Set\\|IntSet\\|ASCIIString\\|UTF8String\\|ByteString\\|Expr\\|WeakRef\\|Nothing\\|ObjectIdDict\\|SubString\\)\\>" .
-      font-lock-type-face)
-    (cons
-     (concat "\\<\\("
-         (mapconcat
-          'identity
-          '("if" "else" "elseif" "while" "for" "begin" "end" "quote"
-            "try" "catch" "return" "local" "abstract" "function" "macro" "ccall"
-	    "finally" "typealias" "break" "continue" "type" "global" "@\\w+"
-	    "module" "using" "import" "export" "const" "let" "bitstype" "do"
-	    "baremodule" "importall" "immutable")
-          "\\|") "\\)\\>")
-     'font-lock-keyword-face)
-    '("\\<\\(true\\|false\\|C_NULL\\|Inf\\|NaN\\|Inf32\\|NaN32\\|nothing\\)\\>" . font-lock-constant-face)
-    (list ess-julia-unquote-regex 2 'font-lock-constant-face)
-    (list ess-julia-char-regex 2 'font-lock-string-face)
-    (list ess-julia-forloop-in-regex 1 'font-lock-keyword-face)
-    ;; (cons ess-subset-regexp 'font-lock-constant-face)
-    (cons "\\(\\sw+!?\\) ?(" '(1 font-lock-function-name-face keep))
-    ;(list julia-string-regex 0 'font-lock-string-face)
-))
 
 (defconst ess-julia-block-start-keywords
   (list "if" "while" "for" "begin" "try" "function" "type" "let" "macro"
@@ -235,9 +173,7 @@ Do not move back beyond MIN."
     (parse-sexp-ignore-comments	  . t)
     (ess-style		  	  . ess-default-style) ;; ignored
     (ess-local-process-name	  . nil)
-    (ess-mode-syntax-table	  . ess-julia-syntax-table)
     (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(ess-julia-font-lock-keywords nil nil ((?\_ . "w"))))
     )
   "General options for julia source files.")
 
@@ -443,7 +379,6 @@ to look up any doc strings."
     (inferior-ess-prompt		. "\\w*> ")
     (ess-local-customize-alist		. 'ess-julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
-    (inferior-ess-font-lock-defaults	. ess-julia-font-lock-keywords)
     (ess-get-help-topics-function	. 'ess-julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command          . 'ess-julia-manual-lookup-function)
@@ -466,7 +401,6 @@ to look up any doc strings."
     (ess-dump-filename-template		. (ess-replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
-    (ess-mode-syntax-table		. ess-julia-syntax-table)
     (ess-mode-editing-alist	        . ess-julia-editing-alist)
     (ess-change-sp-regexp		. nil );ess-R-change-sp-regexp)
     (ess-help-sec-regex			. ess-help-R-sec-regex)
@@ -512,7 +446,8 @@ to look up any doc strings."
   (set (make-local-variable 'ess-julia-basic-offset) 4)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl")
-  (run-hooks 'ess-julia-mode-hook))
+  (run-hooks 'ess-julia-mode-hook)
+  (julia-mode))
 
 (defvar ess-julia-mode-hook nil)
 (defvar ess-julia-post-run-hook nil
