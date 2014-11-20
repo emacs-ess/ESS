@@ -44,121 +44,6 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(defconst ess-julia-block-start-keywords
-  (list "if" "while" "for" "begin" "try" "function" "type" "let" "macro"
-	"quote" "do" "immutable"))
-
-(defconst ess-julia-block-other-keywords
-  (list "else" "elseif"))
-
-(defconst ess-julia-block-end-keywords
-  (list "end" "else" "elseif" "catch" "finally"))
-
-(defun ess-julia-at-keyword (kw-list)
-  "Return the word at point if it matches any keyword in KW-LIST.
-KW-LIST is a list of strings.  The word at point is not
-considered a keyword if used as a field name, X.word, or
-quoted, :word, or it is part of Julia's comprehension syntax."
-  (and (or (= (point) 1)
-	   (and (not (equal (char-before (point)) ?.))
-		(not (equal (char-before (point)) ?:))))
-       (not (ess-inside-string-or-comment-p (point)))
-       (not (ess-inside-brackets-p (point) t))
-       (member (current-word) kw-list)))
-
-(defun ess-julia-last-open-block-pos (min)
-  "Move back and return the position of the last open block, if one found.
-Do not move back beyond position MIN."
-  (let ((count 0))
-    (while (not (or (> count 0) (<= (point) min)))
-      (backward-word 1)
-      (setq count
-	    (cond ((ess-julia-at-keyword ess-julia-block-start-keywords)
-		   (+ count 1))
-		  ((and (equal (current-word) "end")
-			(not (ess-inside-comment-p))
-                        (not (ess-inside-brackets-p)))
-		   (- count 1))
-		  (t count))))
-    (if (> count 0)
-	(point)
-      nil)))
-
-(defun ess-julia-last-open-block (min)
-  "Move back and return indentation level for last open block.
-Do not move back beyond MIN."
-  (let ((pos (ess-julia-last-open-block-pos min)))
-    (and pos
-	 (progn
-	   (goto-char pos)
-	   (+ ess-julia-basic-offset (current-indentation))))))
-
-(defun ess-julia-form-indent ()
-  "Return indent implied by a special form opening on the previous line."
-  (forward-line -1)
-  (end-of-line)
-  (backward-sexp)
-  (if (ess-julia-at-keyword ess-julia-block-other-keywords)
-      (+ ess-julia-basic-offset (current-indentation))
-    (if (char-equal (char-after (point)) ?\()
-        (progn
-          (backward-word 1)
-          (let ((cur (current-indentation)))
-            (if (ess-julia-at-keyword ess-julia-block-start-keywords)
-                (+ ess-julia-basic-offset cur)
-              nil)))
-      nil)))
-
-(defun ess-julia-paren-indent ()
-  "Return indent by last opening paren."
-  (let* ((p (parse-partial-sexp
-             (save-excursion
-               ;; only indent by paren if the last open
-               ;; paren is closer than the last open
-               ;; block
-               (or (ess-julia-last-open-block-pos (point-min))
-                   (point-min)))
-             (point-at-bol)))
-         (pos (cadr p)))
-    (if (or (= 0 (car p)) (null pos))
-        nil
-      (progn (goto-char pos) (+ 1 (current-column))))))
-
-(defun ess-julia-indent-line ()
-  "Indent current line of julia code."
-  (interactive)
-  (let* ((indent (save-excursion
-                   (end-of-line)
-                   (or (and (ess-inside-string-p (point-at-bol)) 0)
-                       (save-excursion (ignore-errors (ess-julia-form-indent)))
-                       (save-excursion (ignore-errors (ess-julia-paren-indent)))
-                       ;; previous line ends in =
-                       (save-excursion
-                         (beginning-of-line)
-                         (skip-chars-backward " \t\n")
-                         (when (eql (char-before) ?=)
-                           (+ ess-julia-basic-offset (current-indentation))))
-                       (save-excursion
-                         (let ((endtok (progn
-                                         (beginning-of-line)
-                                         (forward-to-indentation 0)
-                                         (ess-julia-at-keyword ess-julia-block-end-keywords))))
-                           (ignore-errors (+ (ess-julia-last-open-block (point-min))
-                                             (if endtok (- ess-julia-basic-offset) 0)))))
-                       ;; take same indentation as previous line
-                       (save-excursion (forward-line -1)
-                                       (current-indentation))
-                       0)))
-         (cur-point (point))
-         (cur-indent (progn (back-to-indentation)
-                            (point)))
-         (shift (max 0 (- cur-point cur-indent))))
-    (delete-region (point-at-bol) cur-indent)
-    (indent-to indent)
-    (goto-char (+ (point) shift)))
-  (when (ess-julia-at-keyword ess-julia-block-end-keywords)
-    (forward-word 1)))
-
 (defvar ess-julia-editing-alist
   '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
@@ -168,8 +53,6 @@ Do not move back beyond MIN."
     (comment-add                  . 1)
     (comment-start-skip		  . "#+\\s-*")
     (comment-column		  . 40)
-    (ess-indent-line-function	  . 'ess-julia-indent-line)
-    (indent-line-function	  . 'ess-julia-indent-line)
     (parse-sexp-ignore-comments	  . t)
     (ess-style		  	  . ess-default-style) ;; ignored
     (ess-local-process-name	  . nil)
@@ -441,8 +324,7 @@ to look up any doc strings."
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-  ;; (local-set-key  "\t" 'ess-julia-indent-line) ;; temp workaround
-  ;; (set (make-local-variable 'indent-line-function) 'ess-julia-indent-line)
+
   (set (make-local-variable 'ess-julia-basic-offset) 4)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl")
