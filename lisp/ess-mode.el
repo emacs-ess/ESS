@@ -9,6 +9,7 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
+;; Package-Requires: ((julia-mode "0.3"))
 
 ;; This file is part of ESS
 
