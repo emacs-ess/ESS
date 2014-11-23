@@ -44,22 +44,6 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(defvar ess-julia-editing-alist
-  '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . mode-require-final-newline)
-    (comment-start		  . "# ")
-    (comment-add                  . 1)
-    (comment-start-skip		  . "#+\\s-*")
-    (comment-column		  . 40)
-    (parse-sexp-ignore-comments	  . t)
-    (ess-style		  	  . ess-default-style) ;; ignored
-    (ess-local-process-name	  . nil)
-    (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    )
-  "General options for julia source files.")
-
 (defun ess-julia-send-string-function (process string visibly)
   "Send the Julia STRING to the PROCESS.
 VISIBLY is not currently used."
@@ -284,7 +268,7 @@ to look up any doc strings."
     (ess-dump-filename-template		. (ess-replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
-    (ess-mode-editing-alist	        . ess-julia-editing-alist)
+    (ess-mode-editing-alist	        . nil)
     (ess-change-sp-regexp		. nil );ess-R-change-sp-regexp)
     (ess-help-sec-regex			. ess-help-R-sec-regex)
     (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
