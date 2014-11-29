@@ -296,24 +296,23 @@ to look up any doc strings."
   :group 'ess-julia
   :type 'string)
 
+(defvar ess-julia-mode-map ess-mode-map)
+
 ;;;###autoload
-(defun ess-julia-mode  (&optional proc-name)
+(define-derived-mode ess-julia-mode julia-mode "ESS[julia-derived]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
-  (interactive "P")
-  ;; (setq ess-customize-alist ess-julia-customize-alist)
-  (ess-mode ess-julia-customize-alist proc-name)
+  (ess-mode ess-julia-customize-alist nil t)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-ehook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
 
   (set (make-local-variable 'ess-julia-basic-offset) 4)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl")
-  (run-hooks 'ess-julia-mode-hook)
-  (julia-mode))
+  (run-hooks 'ess-julia-mode-hook))
 
 (defvar ess-julia-mode-hook nil)
 (defvar ess-julia-post-run-hook nil
