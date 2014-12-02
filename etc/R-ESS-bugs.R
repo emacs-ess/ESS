@@ -645,3 +645,15 @@ x <- c(1, 3.075819, 1.515999, 2.156169, 1.480742, 1.765485, 1.460206, 1.603707, 
              cM <- qchisq(0.95, p)
              function(d) as.numeric(d < cM)
          })
+
+### --- 27b ----
+## Even worse from '27' above, wrap the first two lines into one,
+## then put the cursor on the "(" of "list(" and do M-C-q  --> gives
+.a.lst <- list(ex1 = function(p) {
+    cMah <- qchisq(0.975, p)
+    function(d) as.numeric(d < cMah)
+},
+               ex2 = function(p) {
+                   cM <- qchisq(0.95, p)
+                   function(d) as.numeric(d < cM)
+               })
