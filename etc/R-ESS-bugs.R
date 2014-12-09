@@ -428,11 +428,11 @@ foo <- function(x) {
     my.long.Expression <- expression(
         x[a[j]] == exp(theta[1] + theta[2]^2),
         x[b[i]] == sin(theta[3] ~~ theta[4])
-    )
+        )
     ausdruck <- expression
     my.long.Expr...... <- ausdruck(
         x[a[j]] == exp(theta[1] + theta[2]^2),
-    )
+        )
 }
 
 ## VS[18-08-2012]: redundant feature. This is a feature for long subexpressions
@@ -477,10 +477,10 @@ Ops.x.x <- function(e1, e2)
 ### --- 19 ---
 ## indentation with regexp (bug in ess-backward-to-noncomment)
 parse_roc <- function(lines, match = "^\\s*+\' ?") {
-                                                         lines <- lines[str_detect(lines, match)]
-                                                         if (length(lines) == 0) return(NULL)
-### ^-- here (broken because of the # in the regexp)
-                                                     }
+    lines <- lines[str_detect(lines, match)]
+    if (length(lines) == 0) return(NULL)
+### ^-- must be here (broken because of the # in the regexp)
+}
 
 
 ### --- 20 ---
@@ -538,20 +538,20 @@ foo <-
         a,
         b,
         c
-    )
-### ^- here
+        )
+###     ^-- ) is here
 
 foo <- function_call(
     a,
     b,
     c
-) ## bol
+    ) ## bol
 
 foo <- function_call(a,
                      b,
                      c
                      )
-###                  ^-) is here 
+###                  ^-- ) is here 
 
 ### --- 24 ---
 ### shift comma in function calls
@@ -559,7 +559,7 @@ foo <- function_call(a,
 foo <- function_call(a
                    , b
                    , c
-###                  ^- c is here                     
+###                  ^-- c is here                     
                      )
 
 ### --- 25 ---

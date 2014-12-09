@@ -1,6 +1,12 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes / Selected Bug Fixes in 15.03:
+@itemize @bullet
+@item @ESS{}: New offset variable `ess-close-paren-offset` to control
+the indentation of the closing parentheses.
+@end itemize
+
 Changes / Selected Bug Fixes in 14.09:
 @itemize @bullet
 @item @ESS{[Julia]}: Executable is changed to @code{julia}.

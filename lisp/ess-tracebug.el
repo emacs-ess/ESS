@@ -2755,7 +2755,8 @@ intanbible, step char backward first"
       (backward-char 1))
   ad-do-it)
 
-;; (ad-remove-advice 'previous-line 'around 'delete-backward-char-intangible)
+
+;; (ad-remove-advice 'previous-line 'around 'ess-fix-cursor-stuck-at-intangible-text)
 
 (make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")
