@@ -720,15 +720,17 @@ some.function(arg1,
   "Extra indentation for closing parenthesis.
 When a number, adjustment is made with respect to the opening
 parenthesis taking into account the value of
-`ess-arg-function-offset-new-line'. With N = 0:
+`ess-arg-function-offset-new-line'. When set to 0 the closing
+parenthesis is indented as follows: 
 
 some.function(arg1,
               arg2
               )
 
-When list of of form '(N), where N is a number,
+When this variable is a list of the form '(N), N being a number,
 adjust with respect to the indentation of the line containing an
-opening parenthesis. With N = 0:
+opening parenthesis. For example, when set to '(0), the closing
+parenthesis is indented as follows:
 
 {
     some.function(arg1,
