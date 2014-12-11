@@ -545,7 +545,8 @@ foo <- function_call(
     a,
     b,
     c
-    ) ## bol
+    )
+### ^-- ) is here
 
 foo <- function_call(a,
                      b,
@@ -559,9 +560,9 @@ foo <- function_call(a,
 foo <- function_call(a
                    , b
                    , c
-
 ###                  ^-- c is here                     
                      )
+###                  ^-- ) is here                     
 
 ### --- 25 ---
 ## if/else in function calls and nested

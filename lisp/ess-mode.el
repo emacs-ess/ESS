@@ -1024,7 +1024,7 @@ Return the amount the indentation changed by."
           (goto-char (- (point-max) pos))))
       shift-amt)))
 
-(defun ess-calculate-indent--after-open-paren ()
+(defun ess-calculate-indent--after-last-open-paren ()
   ;; called just before the open parenthesis
   (and
    (ess-looking-at-last-open-paren-p)
@@ -1053,10 +1053,14 @@ Return the amount the indentation changed by."
   (search-forward ")")
   (backward-sexp)
   (or 
-   ;; If this line ends with (, we indent as normal text
-   (ess-calculate-indent--after-open-paren)
+   ;; If the cursor is in between parents we indent as normal text to avoid
+   ;; annoyance with paired parents
+   (and (looking-at-p "[( \t\n]+)")
+        (ess-calculate-indent--after-last-open-paren))
    (cond ((numberp ess-close-paren-offset)
-          (+ (current-column) 1 ess-close-paren-offset))
+          (+ (or (ess-calculate-indent--after-last-open-paren)
+                 (1+ (current-column)))
+             ess-close-paren-offset))
          ((and (listp ess-close-paren-offset)
                (numberp (car ess-close-paren-offset)))
           (+ (current-indentation) (car ess-close-paren-offset)))
@@ -1123,7 +1127,7 @@ Return the amount the indentation changed by."
                     (+ (current-column) ess-arg-function-offset))
                    (t
                     (or
-                     (ess-calculate-indent--after-open-paren)
+                     (ess-calculate-indent--after-last-open-paren)
                      (progn (goto-char (1+ containing-sexp))
                             (current-column)))))))
           (t
