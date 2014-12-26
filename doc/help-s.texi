@@ -134,7 +134,7 @@ been created for starting different versions of Splus, type @kbd{M-x
 Splus} and then hit [Tab].  These other versions of Splus can also be
 started from the "ESS->Start Process->Other" menu.
 
-A second mechanim is also available for running other versions of Splus.
+A second mechanism is also available for running other versions of Splus.
 The variable @code{ess-s-versions-list} is a list of lists; each sublist
 should be of the form: (DEFUN-NAME PATH ARGS).  DEFUN-NAME is the name
 of the new emacs function you wish to create to start the new S process;
