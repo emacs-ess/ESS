@@ -19,11 +19,11 @@ lisp: $(ETC_FILES)
 # VERSION:
 # 	@echo "$(ESSVERSION)" > $@
 ## Hmm, this is a bit brittle ... but for distribution, there's no problem
-etc/SVN-REVISION etc/SVN-REVISION-tmp: VERSION lisp/*.el doc/*.texi */Makefile Makefile Makeconf
+etc/SVN-REVISION etc/SVN-REVISION-tmp: VERSION lisp/*.el doc/*.texi doc/Makefile etc/Makefile lisp/Makefile Makefile Makeconf
 	(LC_ALL=C TZ=GMT svn info || $(ECHO) "Revision: unknown") 2> /dev/null \
 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
 	    | cut -d' ' -f1,2,3,4 > $@-tmp
-	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -e $@ ]; then echo 'not available' > $@ ; fi
+	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -f $@ ]; then echo 'not available' > $@ ; fi
 
 # etc/ESSR-VERSION: etc/ESSR/DESCRIPTION
 # 	sed -n '/^Version: */{ s///; s/ *$$//p }' $< > $@
@@ -67,9 +67,9 @@ downloads: all RPM.spec cleanup-dist
 dist: VERSION downloads
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
-	touch $@
+##	touch $@
 
-.PHONY: cleanup-dist cleanup-rel
+.PHONY: cleanup-dist cleanup-rel dist
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
