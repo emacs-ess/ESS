@@ -226,7 +226,11 @@ Invoke this command with C-u C-u C-y."
   (interactive "*P")
   (if (equal '(16) ARG)
       (ess-yank-cleaned-commands)
-    (call-interactively (or (command-remapping 'yank (point)) 'yank)  ARG)))
+    (let* ((remapped (command-remapping 'yank (point)))
+           (command (cond ((eq remapped 'ess-yank) 'yank)
+                          ((null remapped) 'yank)
+                          (t remapped))))
+      (funcall command ARG))))
 
 (put 'ess-yank 'delete-selection 'yank)
 
