@@ -15,3 +15,7 @@ doc/refcard/refcard.*
 *LOCAL*
 *BASE*
 lisp/*.elc
+doc/html/*
+README
+ANNOUNCE
+*SVN*
