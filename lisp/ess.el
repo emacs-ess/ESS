@@ -226,7 +226,9 @@ Invoke this command with C-u C-u C-y."
   (interactive "*P")
   (if (equal '(16) ARG)
       (ess-yank-cleaned-commands)
-    (funcall (or (command-remapping 'yank (point)) 'yank)  ARG)))
+    (call-interactively (or (command-remapping 'yank (point)) 'yank)  ARG)))
+
+(put 'ess-yank 'delete-selection 'yank)
 
  ; ESS Completion
 (defun ess-completing-read (prompt collection &optional predicate
