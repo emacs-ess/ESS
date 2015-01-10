@@ -190,3 +190,11 @@ would put suggest: (), c(), list(), sqrt(), t()
    Thanks
    Rich
    [2014-02-20 Thu] [[gnus:nnimap%2BSpinuVit:ESS/ESS-core#CAGx1TMCSfK3XK6YghxomP03R_tFD2AiC4X%3D0NDcvoje%3D%2B9vMWw@mail.gmail.com][Email from Richard M. Heiberger: bug in ess-transcript-clean-re]]
+
+* RStudio (excerpts from Hadley's R-packages book)
+** TODO Build & reload
+   Available in RStudio via Cmd + Shift + B. This in- stalls the package,
+   restarts R, and then reloads the package with library() (doing this by hand
+   is painful).
+** TODO Jump to github file view. If lines are selected jump to those lines.
+   This is probably there in projectile.
