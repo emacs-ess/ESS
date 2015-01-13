@@ -1073,7 +1073,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-ac-objects (&optional no-kill)
   "Get all cached objects"
  (let ((aprf ac-prefix))
-   (when aprf
+   (when (and aprf (ess-process-live-p))
      (unless no-kill ;; workaround
        (kill-local-variable 'ac-use-comphist))
      (if (string-match-p "[]:$@[]" aprf)
@@ -1115,7 +1115,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-start-args ()
   "Get initial position for args completion"
-  (when (and ess-local-process-name
+  (when (and (ess-process-live-p)
              (not (eq (get-text-property (point) 'face) 'font-lock-string-face)))
     (when (ess--funname.start)
       (if (looking-back "[(,]+[ \t\n]*")
@@ -1124,7 +1124,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
-  (when  ess--funname.start ;; stored by a coll to ess-ac-start-args
+  (when  (and ess--funname.start ;; set in a call to ess-ac-start-args
+              (ess-process-live-p))
     (let ((args (nth 2 (ess-function-arguments (car ess--funname.start))))
           (len (length ac-prefix)))
       (if args
