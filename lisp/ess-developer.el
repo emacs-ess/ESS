@@ -287,16 +287,23 @@ found, return nil."
               (unless (equal ess-developer--pack-name pack-name)
                 (setq path nil)))))
         path)
-    (let ((path default-directory)
-          opath package)
-      (while (and path
-                  (not package)
-                  (not (equal path opath)))
-        (if (file-exists-p (expand-file-name ess-developer-root-file path))
-            (setq package path)
-          (setq opath path
-                path (file-name-directory (directory-file-name path)))))
-      package)))
+    (let ((path (directory-file-name default-directory)))
+      (when (string= "R" (file-name-nondirectory path))
+        (setq path (file-name-directory path))
+        (when (file-exists-p (expand-file-name ess-developer-root-file path))
+          path)))
+    ;; This one is incredibly slow on remotes:
+    ;; (let ((path default-directory)
+    ;;       opath package)
+    ;;   (while (and path
+    ;;               (not package)
+    ;;               (not (equal path opath)))
+    ;;     (if (file-exists-p (expand-file-name ess-developer-root-file path))
+    ;;         (setq package path)
+    ;;       (setq opath path
+    ;;             path (file-name-directory (directory-file-name path)))))
+    ;;   package)
+    ))
 
 
 (defun ess-developer--get-package-name (&optional path)
