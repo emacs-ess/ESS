@@ -18,4 +18,7 @@ lisp/*.elc
 doc/html/*
 README
 ANNOUNCE
+MM-MISC
+Mail-head
+RPM*.spec
 *SVN*
