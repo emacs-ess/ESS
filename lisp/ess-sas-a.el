@@ -464,7 +464,7 @@ current buffer if nil."
 
                                            (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-                                           (ess-sas-goto-shell t)
+                                           ;; (ess-sas-goto-shell t)
                                            (ess-sas-cd)
 
                                            (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
@@ -500,7 +500,7 @@ current buffer if nil."
 
                                            (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-                                           (ess-sas-goto-shell t)
+                                           ;; (ess-sas-goto-shell t)
                                            (ess-sas-cd)
 
                                            (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
@@ -1104,7 +1104,7 @@ i.e. let arg1 be your local equivalent of
                 " " arg2 " " ess-sas-submit-post-command)
         (comint-send-input))
     ;;else
-    (ess-sas-goto-shell t)
+    ;; (ess-sas-goto-shell t)
     (ess-sas-cd)
                                         ;      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
                                         ;"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
