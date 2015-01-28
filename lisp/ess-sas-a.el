@@ -513,7 +513,7 @@ current buffer if nil."
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
-  (ess-sas-goto-shell t)
+;;  (ess-sas-goto-shell t)
   (ess-sas-cd) 
   (ess-sas-goto-log 'no-error-check)
 
