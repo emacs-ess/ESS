@@ -513,7 +513,8 @@ current buffer if nil."
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
-                                        ;  (ess-sas-file-path)
+  (ess-sas-goto-shell t)
+  (ess-sas-cd) 
   (ess-sas-goto-log 'no-error-check)
 
   (save-excursion (let (
@@ -523,8 +524,8 @@ current buffer if nil."
                         (ess-tmp-graph-alist nil)
                         (ess-tmp-glyph nil)
                         (ess-tmp-graph-regexp
-                                        ; (concat "[ ]RECORDS[ ]WRITTEN[ ]+TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
-                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                        (concat "[ rR][eEo][cCu][oOt][rRp][dDu][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
                                  ess-sas-graph-view-suffix-regexp "\\)")))
                                         ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
