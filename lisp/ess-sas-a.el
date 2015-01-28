@@ -421,8 +421,8 @@ on the way."
   (ess-sas-goto-shell t)
   (comint-send-input)
   (if (equal ess-sas-submit-method 'sh)
-      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
-                                             "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
+      (insert "cd \"" (car (last (split-string (file-name-directory ess-sas-file-path)
+                                             "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "\"")
     (if (equal ess-sas-submit-method 'ms-dos) (progn
                                                 (if (string-equal ":" (substring ess-sas-file-path 1 2)) (progn
                                                                                                            (insert (substring ess-sas-file-path 0 2))
