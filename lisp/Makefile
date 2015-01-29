@@ -85,7 +85,7 @@ uninstall:
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
 clean:
-##	rm -f $(ELC) dist
+	rm -f $(ELC) 
 
 distclean: clean
 # and potentially more
