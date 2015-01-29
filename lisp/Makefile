@@ -56,14 +56,16 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-sp6w-d.elc msdos.elc 
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
-ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
+ESSR_VER =`cat ../etc/ESSR-VERSION`
+##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
 
 ### Targets
 
 all: $(ELC) ess-custom.el
 
+.PHONY: dist
 dist: all
-	@touch dist
+##	@touch dist
 ## svn committing happens in ../Makefile
 
 install: dist
@@ -83,7 +85,7 @@ uninstall:
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
 clean:
-	rm -f $(ELC) dist
+##	rm -f $(ELC) dist
 
 distclean: clean
 # and potentially more
