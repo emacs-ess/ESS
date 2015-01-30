@@ -76,7 +76,8 @@ cleanup-dist:
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-svn && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
 ##  should only be called manually (if at all):
 cleanup-rel:
-	@rm -f dist lisp/dist $(ESSDIR)*
+	@rm -f $(ESSDIR)*
+##	@rm -f dist lisp/dist $(ESSDIR)*
 
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
@@ -129,4 +130,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f etc/SVN-REVISION* dist
+	rm -f etc/SVN-REVISION* 

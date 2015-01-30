@@ -1,6 +1,6 @@
 ;;; ess-developer.el --- Developer mode for R.
 
-;; Copyright (C) 2011-2012 V. Spinu, A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 2011-2015 V. Spinu, A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: Vitalie Spinu
@@ -106,7 +106,8 @@ With prefix argument only choose from among attached packages."
   (ess-force-buffer-current)
   (let* ((packs (ess-get-words-from-vector
                  (format "print(unique(c(.packages(), %s)), max=1e6)\n"
-                         (if attached-only "NULL" ".packages(TRUE)") nil t)))
+                         (if attached-only "NULL" ".packages(TRUE)"))
+                 nil t))
          (cur-pack (ess-developer--get-package-name))
          (sel (ess-completing-read "Add package" packs nil nil nil nil
                                    (unless (member cur-pack ess-developer-packages)
@@ -282,7 +283,7 @@ found, return nil."
             (with-current-buffer bf
               (setq path (ess-developer--get-package-path))
               (unless ess-developer--pack-name
-                (setq ess-developer--pack-name ;; cache locally 
+                (setq ess-developer--pack-name ;; cache locally
                       (ess-developer--get-package-name path)))
               (unless (equal ess-developer--pack-name pack-name)
                 (setq path nil)))))
@@ -425,7 +426,7 @@ VAL is negative turn it off."
 
 ;;; MODELINE
 
-(defvar ess-developer--local-indicator 
+(defvar ess-developer--local-indicator
   '(""
     (:eval
      ;; process has priority
