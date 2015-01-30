@@ -541,7 +541,7 @@ in inferior buffers.  ")
     (make-local-variable 'ess--busy-timer)
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
-    (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
+    (add-hook 'kill-buffer-hook (lambda () (when ess--busy-timer (cancel-timer ess--busy-timer))))
     (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
     ;; redefine
