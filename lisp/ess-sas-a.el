@@ -720,6 +720,7 @@ current buffer if nil."
                         "\\|WARNING: Not all variables in the list "
                         "\\|WARNING: RUN statement ignored due to previous errors."
                         "\\|WARNING: Values exist outside the axis range"
+                        "\\|WARNING: Truncated record."
                         "\\|Bus Error In Task\\|Segmentation Violation In Task"))
         (ess-sas-save-point nil)); (ess-sas-pop-mark nil))
 
