@@ -106,8 +106,7 @@ With prefix argument only choose from among attached packages."
   (ess-force-buffer-current)
   (let* ((packs (ess-get-words-from-vector
                  (format "print(unique(c(.packages(), %s)), max=1e6)\n"
-                         (if attached-only "NULL" ".packages(TRUE)"))
-                 nil t))
+                         (if attached-only "NULL" ".packages(TRUE)"))))
          (cur-pack (ess-developer--get-package-name))
          (sel (ess-completing-read "Add package" packs nil nil nil nil
                                    (unless (member cur-pack ess-developer-packages)
