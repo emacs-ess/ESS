@@ -524,7 +524,7 @@ current buffer if nil."
                         (ess-tmp-graph-alist nil)
                         (ess-tmp-glyph nil)
                         (ess-tmp-graph-regexp
-                        (concat "[ rR][eEo][cCu][oOt][rRp][dDu][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                        (concat "[cCub][oOty][rRpt][dDue][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
 ;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
                                  ess-sas-graph-view-suffix-regexp "\\)")))
                                         ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
