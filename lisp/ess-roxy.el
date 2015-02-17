@@ -258,7 +258,7 @@
               (beg-par (point-min))
               (end-par (point-max)))
           (save-excursion
-            (if (re-search-backward (concat ess-roxy-re " *$") beg t)
+            (if (re-search-backward (concat ess-roxy-re " *$") (min beg (point)) t)
                 (setq beg-par (match-end 0))))
           (save-excursion
             (if (re-search-forward (concat ess-roxy-re " *$") end t)
