@@ -28,7 +28,10 @@
 ;;; Code:
 
 
-;;; ELDOC
+;;; ElDoc
+
+(require 'cl-lib)
+(require 'ess-utils)
 
 (defun ess-R-eldoc-function ()
   "Return the doc string, or nil.
@@ -128,39 +131,18 @@ to look up any doc strings."
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
       (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc))))
 
-
 
-;;; ARGUMENTS
-
-(defvar ess-R--funargs-pre-cache
-  '(("plot"
-     (("graphics")
-      (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
-       ("ann" . "par(\"ann\")")     ("axes" . "TRUE")    ("frame.plot" . "axes")    ("panel.first" . "NULL")    ("panel.last" . "NULL")    ("asp" . "NA")    ("..." . ""))
-      ("x" "y" "..." "ci" "type" "xlab" "ylab" "ylim" "main" "ci.col" "ci.type" "max.mfrow" "ask" "mar" "oma" "mgp" "xpd" "cex.main" "verbose" "scale" "xlim" "log" "sub" "ann" "axes" "frame.plot"
-       "panel.first" "panel.last" "asp" "center" "edge.root" "nodePar" "edgePar" "leaflab" "dLeaf" "xaxt" "yaxt" "horiz"
-       "zero.line" "verticals" "col.01line" "pch" "legend.text" "formula" "data" "subset" "to" "from" "newpage" "vp" "labels"
-       "hang" "freq" "density" "angle" "col" "border" "lty" "add" "predicted.values" "intervals" "separator" "col.predicted"
-       "col.intervals" "col.separator" "lty.predicted" "lty.intervals" "lty.separator" "plot.type" "main2" "par.fit" "grid"
-       "panel" "cex" "dimen" "abbrev" "which" "caption" "sub.caption" "id.n" "labels.id" "cex.id" "qqline" "cook.levels"
-       "add.smooth" "label.pos" "cex.caption" "rows" "levels" "conf" "absVal" "ci.lty" "xval" "do.points" "col.points" "cex.points"
-       "col.hor" "col.vert" "lwd" "set.pars" "range.bars" "col.range" "xy.labels" "xy.lines" "nc" "yax.flip" "mar.multi" "oma.multi")))
-    ("print"
-     (("base")
-      (("x" . "")    ("digits" . "NULL")    ("quote" . "TRUE")    ("na.print" . "NULL")    ("print.gap" . "NULL")    ("right" . "FALSE")    ("max" . "NULL")    ("useSource" . "TRUE")    ("..." . ""))
-      ("x" "..." "digits" "signif.stars" "intercept" "tol" "se" "sort" "verbose" "indent" "style" ".bibstyle" "prefix" "vsep" "minlevel" "quote" "right" "row.names" "max" "na.print" "print.gap"
-       "useSource" "diag" "upper" "justify" "title" "max.levels" "width" "steps" "showEnv" "newpage" "vp" "cutoff" "max.level" "give.attr" "units" "abbrCollate" "print.x" "deparse" "locale" "symbolic.cor"
-       "loadings" "zero.print" "calendar"))))
-  "Alist of cached arguments for very time consuming functions.")
+;;; OBJECTS
 
 (defun ess-R-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'. "
+  "Return completions at point in a format required by `completion-at-point-functions'."
   (if (ess-make-buffer-current)
       (let* ((funstart (cdr (ess--funname.start)))
              (completions (ess-R-get-rcompletions funstart))
              (token (pop completions)))
         (when completions
-          (list (- (point) (length token)) (point) completions)))
+          (list (- (point) (length token)) (point)
+                completions)))
     (when (string-match "complete" (symbol-name last-command))
       (message "No ESS process associated with current buffer")
       nil)))
@@ -281,22 +263,139 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                                           possible-completions)
           'none))))
 
+(defun ess--get-cached-completions (prefix &optional point)
+  (if (string-match-p "[]:$@[]" prefix)
+      ;; call proc for objects
+      (cdr (ess-R-get-rcompletions point))
+    ;; else, get cached list of objects
+    (with-ess-process-buffer 'no-error ;; use proc buf alist
+      (ess-when-new-input last-objlist-update
+        (if (and ess-sl-modtime-alist
+                 (not  (process-get *proc* 'sp-for-ac-changed?)))
+            ;; not changes, re-read .GlobalEnv
+            (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
+        ;; reread all objects, but not rda, much faster and not needed anyways
+        (ess-get-modtime-list)
+        (process-put *proc* 'sp-for-ac-changed? nil))
+      (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))))
+
+
+;;; ARGUMENTS
+
+(defcustom ess-R-argument-suffix " = "
+  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
+  :group 'R
+  :type 'string)
+
+(define-obsolete-variable-alias 'ess-ac-R-argument-suffix 'ess-R-argument-suffix "15.3")
+
+(defvar ess-R--funargs-pre-cache
+  '(("plot"
+     (("graphics")
+      (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
+       ("ann" . "par(\"ann\")")     ("axes" . "TRUE")    ("frame.plot" . "axes")    ("panel.first" . "NULL")    ("panel.last" . "NULL")    ("asp" . "NA")    ("..." . ""))
+      ("x" "y" "..." "ci" "type" "xlab" "ylab" "ylim" "main" "ci.col" "ci.type" "max.mfrow" "ask" "mar" "oma" "mgp" "xpd" "cex.main" "verbose" "scale" "xlim" "log" "sub" "ann" "axes" "frame.plot"
+       "panel.first" "panel.last" "asp" "center" "edge.root" "nodePar" "edgePar" "leaflab" "dLeaf" "xaxt" "yaxt" "horiz"
+       "zero.line" "verticals" "col.01line" "pch" "legend.text" "formula" "data" "subset" "to" "from" "newpage" "vp" "labels"
+       "hang" "freq" "density" "angle" "col" "border" "lty" "add" "predicted.values" "intervals" "separator" "col.predicted"
+       "col.intervals" "col.separator" "lty.predicted" "lty.intervals" "lty.separator" "plot.type" "main2" "par.fit" "grid"
+       "panel" "cex" "dimen" "abbrev" "which" "caption" "sub.caption" "id.n" "labels.id" "cex.id" "qqline" "cook.levels"
+       "add.smooth" "label.pos" "cex.caption" "rows" "levels" "conf" "absVal" "ci.lty" "xval" "do.points" "col.points" "cex.points"
+       "col.hor" "col.vert" "lwd" "set.pars" "range.bars" "col.range" "xy.labels" "xy.lines" "nc" "yax.flip" "mar.multi" "oma.multi")))
+    ("print"
+     (("base")
+      (("x" . "")    ("digits" . "NULL")    ("quote" . "TRUE")    ("na.print" . "NULL")    ("print.gap" . "NULL")    ("right" . "FALSE")    ("max" . "NULL")    ("useSource" . "TRUE")    ("..." . ""))
+      ("x" "..." "digits" "signif.stars" "intercept" "tol" "se" "sort" "verbose" "indent" "style" ".bibstyle" "prefix" "vsep" "minlevel" "quote" "right" "row.names" "max" "na.print" "print.gap"
+       "useSource" "diag" "upper" "justify" "title" "max.levels" "width" "steps" "showEnv" "newpage" "vp" "cutoff" "max.level" "give.attr" "units" "abbrCollate" "print.x" "deparse" "locale" "symbolic.cor"
+       "loadings" "zero.print" "calendar"))))
+  "Alist of cached arguments for very time consuming functions.")
+
+
+;;; HELP
+
+(defun ess-R-get-object-help-string (sym)
+  "Help string for ac."
+  (let ((proc (ess-get-next-available-process)))
+    (if (null proc)
+        "No free ESS process found"
+      (let ((buf (get-buffer-create " *ess-command-output*")))
+        (when (string-match ":+\\(.*\\)" sym)
+          (setq sym (match-string 1 sym)))
+        (with-current-buffer (process-buffer proc)
+          (ess-with-current-buffer buf
+            (ess--flush-help-into-current-buffer sym nil t)))
+        (with-current-buffer buf
+          (ess-help-underline)
+          (goto-char (point-min))
+          (buffer-string))))))
+
+(defun ess-R-get-arg-help-string (sym)
+  "Help string for ac."
+  (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
+  (let ((proc (ess-get-next-available-process)))
+    (if (null proc)
+        "No free ESS process found"
+      (let ((fun (car ess--funname.start)))
+        (with-current-buffer (ess-command (format ess--ac-help-arg-command sym fun)
+                                          nil nil nil nil proc)
+          (goto-char (point-min))
+          (forward-line)
+          (buffer-substring-no-properties (point) (point-max)))))))
+
+
+;;; COMPANY
+;;; http://company-mode.github.io/
+
+(defun company-R-objects (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-R-objects))
+    (prefix (unless (company-in-string-or-comment)
+              (let ((start (ess-symbol-start)))
+                (when start
+                  (buffer-substring-no-properties start (point))))))
+    (candidates (let ((proc (ess-get-next-available-process)))
+                  (when proc
+                    (with-current-buffer (process-buffer proc)
+                      (all-completions arg (ess--get-cached-completions arg))))))
+    (doc-buffer (company-doc-buffer (ess-R-get-object-help-string arg)))))
+
+(defun company-R-args (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-R-args))
+    (prefix (unless (company-in-string-or-comment)
+              (let ((start (ess-arg-start)))
+                (when start
+                  (let ((prefix (buffer-substring-no-properties start (point))))
+                    (cons prefix ess-company-arg-prefix-length))))))
+    (candidates (let* ((proc (ess-get-next-available-process))
+                       (args (delete "..." (nth 2 (ess-function-arguments
+                                                   (car ess--funname.start) proc))))
+                       (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
+                                     args)))
+                  (all-completions arg args)))
+    (meta (let ((doc (ess-R-get-arg-help-string arg)))
+            (replace-regexp-in-string "^ +\\| +$" ""
+                                      (replace-regexp-in-string "[ \t\n]+" " " doc))))
+    (require-match 'never)
+    (doc-buffer (company-doc-buffer (ess-R-get-arg-help-string arg)))))
+
 
 ;;; AC SOURCES
 ;;; http://cx4a.org/software/auto-complete/index.html
+
 (defvar ac-source-R
   '((prefix     . ess-ac-start)
     ;; (requires   . 0) ::)
     (candidates . ess-ac-candidates)
-    (document   . ess-ac-help)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
-    )
+    (document   . ess-ac-help))
   "Combined ad-completion source for R function arguments and R objects")
 
 (defun ess-ac-start ()
-  (when (and ess-local-process-name
-             (get-process ess-local-process-name))
-    (or (ess-ac-start-args)
+  (when (ess-process-live-p)
+    (or (ess-arg-start)
         (ess-symbol-start))))
 
 (defun ess-ac-candidates ()
@@ -312,15 +411,15 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-help (sym)
   (if (string-match-p "= *\\'" sym)
-      (ess-ac-help-arg sym)
-    (ess-ac-help-object sym)))
+      (ess-R-get-arg-help-string sym)
+    (ess-R-get-object-help-string sym)))
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
   '((prefix     . ess-symbol-start)
     ;; (requires   . 2)
     (candidates . ess-ac-objects)
-    (document   . ess-ac-help-object))
+    (document   . ess-R-get-object-help-string))
   "Auto-completion source for R objects")
 
 (defun ess-ac-objects (&optional no-kill)
@@ -329,73 +428,28 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
    (when (and aprf (ess-process-live-p))
      (unless no-kill ;; workaround
        (kill-local-variable 'ac-use-comphist))
-     (if (string-match-p "[]:$@[]" aprf)
-         ;; call proc for objects
-         (cdr (ess-R-get-rcompletions ac-point))
-       ;; else, get the (maybe cached) list of objects
-       (with-ess-process-buffer 'no-error ;; use proc buf alist
-         (ess-when-new-input last-objlist-update
-           (if (and ess-sl-modtime-alist
-                    (not  (process-get *proc* 'sp-for-ac-changed?)))
-               ;; not changes, re-read .GlobalEnv
-               (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
-           ;; reread all objects, but not rda, much faster and not needed anyways
-           (ess-get-modtime-list)
-           (process-put *proc* 'sp-for-ac-changed? nil))
-         (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))))))
-
-(defun ess-ac-help-object (sym)
-  "Help string for ac."
-  (let ((buf (get-buffer-create " *ess-command-output*")))
-    (when (string-match ":+\\(.*\\)" sym)
-      (setq sym (match-string 1 sym)))
-    (ess-with-current-buffer buf
-      (ess--flush-help-into-current-buffer sym nil t))
-    (with-current-buffer buf
-      (ess-help-underline)
-      (goto-char (point-min))
-      (buffer-string))))
+     (ess--get-cached-completions aprf ac-point))))
 
 ;; ARGS
 (defvar  ac-source-R-args
-  '((prefix     . ess-ac-start-args)
+  '((prefix     . ess-arg-start)
     ;; (requires   . 0)
     (candidates . ess-ac-args)
-    (document   . ess-ac-help-arg)
     ;; (action     . ess-ac-action-args)
-    )
+    (document   . ess-R-get-arg-help-string))
   "Auto-completion source for R function arguments")
-
-(defun ess-ac-start-args ()
-  "Get initial position for args completion"
-  (when (and (ess-process-live-p)
-             (not (eq (get-text-property (point) 'face) 'font-lock-string-face)))
-    (when (ess--funname.start)
-      (if (looking-back "[(,]+[ \t\n]*")
-          (point)
-        (ess-symbol-start)))))
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
-  (when  (and ess--funname.start ;; set in a call to ess-ac-start-args
+  (when  (and ess--funname.start ;; set in a call to ess-arg-start
               (ess-process-live-p))
-    (let ((args (nth 2 (ess-function-arguments (car ess--funname.start))))
-          (len (length ac-prefix)))
+    (let ((args (nth 2 (ess-function-arguments (car ess--funname.start)))))
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
       (delete "..." args)
-      (mapcar (lambda (a) (concat a ess-ac-R-argument-suffix))
+      (mapcar (lambda (a) (concat a ess-R-argument-suffix))
               args))))
-
-(defun ess-ac-help-arg (sym)
-  "Help string for ac."
-  (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
-  (let ((fun (car ess--funname.start)))
-    (with-current-buffer (ess-command (format ess--ac-help-arg-command sym fun))
-      (goto-char (point-min))
-      (forward-line)
-      (buffer-substring-no-properties (point) (point-max)))))
 
 (defvar ess--ac-help-arg-command
   "

@@ -451,8 +451,7 @@ default), doc strings are truncated to fit into minibufer. This
 allows the use of different abbreviation styles with the
 truncation."
   :group 'ess
-  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t))
-  )
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t)))
 
 
 (defcustom ess-use-auto-complete t
@@ -465,15 +464,22 @@ If non-nil add `ac-source-R' and `ac-source-filename' to the
 ESS defines three AC sources `ac-source-R',`ac-source-R-objects'
 and `ac-source-R-args'. See auto-complete package
 documentation (http://cx4a.org/software/auto-complete/) for how
-to install your custom sources.
-"
+to install your custom sources."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
 
-(defcustom ess-ac-R-argument-suffix " = "
-  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
-  :group 'R
-  :type 'string)
+(defcustom ess-use-company t
+  "If t, activate company support in ess-mode and inferior-ess-mode buffers.
+If non-nil add `company-R-args' and `company-R-objects' to the
+`company-backends'. If 'script-only activate in ess-mode buffers
+only."
+  :group 'ess-extras
+  :type '(choice (const t) (const script-only) (const nil)))
+
+(defcustom ess-company-arg-prefix-length t
+  "Minimum prefix for ess company function argument completion."
+  :group 'ess-extras
+  :type 'number)
 
 (defcustom ess-use-tracebug t
   "If t, load ess-tracebug when R process starts."
@@ -493,6 +499,9 @@ might want to set this to nil.
 (defvar ess-ac-sources nil
   "Dialect specific, ESS specific list of ac-sources")
 
+(defvar ess-company-backends nil
+  "Dialect specific, ESS specific list of `company-backends'")
+
 (defvar ess--completing-hist nil
   "Variable to store completion history.
 Used by `ess-completion-read' command.")
@@ -500,8 +509,7 @@ Used by `ess-completion-read' command.")
 (defvar ess-smart-operators ()
   "List of smart operators to be used in ESS and IESS modes.
 Not to be set by users. It is redefined by mode specific
-settings, such as `ess-R-smart-operators'.
-")
+settings, such as `ess-R-smart-operators'.")
 (make-variable-buffer-local 'ess-smart-operators)
 
 (defvar ess-R-smart-operators nil
@@ -510,15 +518,13 @@ If t, use all. If an axplicit list of operators, use only those
 operators.
 
 In current verion of ESS, it controls the behavior of
-ess-smart-comma only, but will be enriched in the near future.
-")
+ess-smart-comma only, but will be enriched in the near future.")
 
 (defvar ess-no-skip-regexp "[ \t\n]*\\'"
   "If `ess-next-code-line' sees this line, it doesn't jump over.
 
 Used to avoid annoying jumping by ess-eval.*-and-step to end of
-buffer or end chunks etc.
- ")
+buffer or end chunks etc.")
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.

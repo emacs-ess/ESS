@@ -140,8 +140,7 @@ for the object name based on the cursor location for all cases
 except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
 an inferior emacs buffer) the GUI help window is used.
 
-If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
-"
+If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
@@ -532,8 +531,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
 `ess-display-package-index', and `ess-display-vignettes'.
- CURR-MAJOR-MODE default to current major mode.
-"
+ CURR-MAJOR-MODE default to current major mode."
   (setq curr-major-mode (or curr-major-mode major-mode))
   (let ((special-display-regexps (if ess-help-own-frame '(".") nil))
         (special-display-frame-alist ess-help-frame-alist)
@@ -1042,6 +1040,7 @@ option for other dialects)."
            'ess-use-eldoc
            'ess-use-tracebug
            'ess-use-auto-complete
+           'ess-use-company
            'ess-eval-visibly-p
            'ess-can-eval-in-background
            'ess-local-process-name)
