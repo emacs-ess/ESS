@@ -1,8 +1,8 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2010, 2014 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>
@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "14.11" ;; updated by 'make'
+(defvar ess-version "15.03" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
