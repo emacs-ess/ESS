@@ -414,7 +414,7 @@ objects from that MODULE."
     (prefix (unless (company-in-string-or-comment)
               (let ((start (ess-symbol-start)))
                 (when start (buffer-substring-no-properties start (point))))))
-    (candidates (julia-objects arg))
+    (candidates (all-completions arg (mapcar #'car (julia-objects arg))))
     (doc-buffer (company-doc-buffer (julia-get-object-help-string arg)))))
 
 
