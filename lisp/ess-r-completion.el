@@ -375,9 +375,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                        (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                      args)))
                   (all-completions arg args)))
-    (meta (let ((doc (ess-R-get-arg-help-string arg)))
-            (replace-regexp-in-string "^ +\\| +$" ""
-                                      (replace-regexp-in-string "[ \t\n]+" " " doc))))
+    (meta (unless (file-remote-p default-directory)
+            ;; fixme: ideally meta should be fetched with args
+            (let ((doc (ess-R-get-arg-help-string arg)))
+              (replace-regexp-in-string "^ +\\| +$" ""
+                                        (replace-regexp-in-string "[ \t\n]+" " " doc)))))
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-R-get-arg-help-string arg)))))
 
