@@ -53,7 +53,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-d.elc ess-rd.elc \
 	ess-developer.elc ess-tracebug.elc ess-julia.elc\
-	ess-sp6w-d.elc msdos.elc 
+	ess-sp6w-d.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
 ESSR_VER =`cat ../etc/ESSR-VERSION`
@@ -85,7 +85,7 @@ uninstall:
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
 clean:
-	rm -f $(ELC) 
+	rm -f $(ELC)
 
 distclean: clean
 # and potentially more
@@ -96,7 +96,7 @@ distclean: clean
 ### Replace Version numbers (as in ../doc/Makefile !):
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
-	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
+	EV=$(ESSVERSION); perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
 
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
