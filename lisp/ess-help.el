@@ -867,8 +867,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
                 (ess-uniq-list
                  (append (ess-get-object-list name 'exclude-1st)
                          (ess-get-help-files-list)
-                         (ess-get-help-aliases-list)
-                         ))))
+                         (ess-get-help-aliases-list)))))
       ;; else return the existing list
       ess-help-topics-list)))
 

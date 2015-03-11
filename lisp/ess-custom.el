@@ -2038,9 +2038,7 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 (make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
 
 (defvar ess-sl-modtime-alist nil
-  "Alist of modification times for all ess directories accessed this
-session.")
-
+  "Alist of modification times for all ess directories accessed this session.")
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil

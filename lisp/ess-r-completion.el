@@ -264,21 +264,35 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                                           possible-completions)
           'none))))
 
+(defvar ess--cached-sp-objects nil)
+
 (defun ess--get-cached-completions (prefix &optional point)
   (if (string-match-p "[]:$@[]" prefix)
       ;; call proc for objects
       (cdr (ess-R-get-rcompletions point))
     ;; else, get cached list of objects
     (with-ess-process-buffer 'no-error ;; use proc buf alist
-      (ess-when-new-input last-objlist-update
-        (if (and ess-sl-modtime-alist
+      (ess-when-new-input last-cached-completions
+        (if (and ess--cached-sp-objects
                  (not  (process-get *proc* 'sp-for-ac-changed?)))
-            ;; not changes, re-read .GlobalEnv
-            (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force))
-        ;; reread all objects, but not rda, much faster and not needed anyways
-        (ess-get-modtime-list)
-        (process-put *proc* 'sp-for-ac-changed? nil))
-      (apply 'append (mapcar 'cddr ess-sl-modtime-alist)))))
+            ;; if global cache is already there, only re-read local .GlobalEnv
+            (progn
+              (unless ess-sl-modtime-alist
+                ;; initialize if empty
+                (setq ess-sl-modtime-alist '((".GlobalEnv" nil))))
+              ;; fixme: Make adaptive. Not on all remotes are slow; For lots of
+              ;; objects in .GlobalEnv,locals could also be slow.
+              (unless (file-remote-p default-directory)
+                (ess-extract-onames-from-alist ess-sl-modtime-alist 1 'force)))
+          (if ess--cached-sp-objects
+              (ess-get-modtime-list 'ess--cached-sp-objects 'exclude-first)
+            (ess-get-modtime-list)
+            (setq ess--cached-sp-objects (cdr ess-sl-modtime-alist)))
+          ;; reread new package, but not rda, much faster and not needed anyways
+          (process-put *proc* 'sp-for-ac-changed? nil)))
+      (apply 'append
+             (cddar ess-sl-modtime-alist) ; .GlobalEnv
+             (mapcar 'cddr ess--cached-sp-objects)))))
 
 
 ;;; ARGUMENTS
