@@ -381,6 +381,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
             (let ((doc (ess-R-get-arg-help-string arg)))
               (replace-regexp-in-string "^ +\\| +$" ""
                                         (replace-regexp-in-string "[ \t\n]+" " " doc)))))
+    (sorted t)
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-R-get-arg-help-string arg)))))
 
