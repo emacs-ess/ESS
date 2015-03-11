@@ -233,20 +233,24 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-(defun ess-R-get-rcompletions (&optional start end)
+(defun ess-R-get-rcompletions (&optional start end prefix)
   "Call R internal completion utilities (rcomp) for possible completions.
 Optional START and END delimit the entity to complete, default to
-bol and point. First element of a returned list is the completion
-token. Needs version of R>2.7.0 "
+bol and point. If PREFIX is given, perform completion on
+PREFIX. First element of the returned list is the completion
+token. Needs version of R>=2.7.0."
   (let* ((start (or start
-                    (save-excursion (comint-bol nil) (point))))
-         (end (or end (point)))
+                    (if prefix
+                        0
+                      (save-excursion (comint-bol nil) (point)))))
+         (end (or end (if prefix (length prefix) (point))))
+         (prefix (or prefix (buffer-substring start end)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (comm (format ".ess_get_completions(\"%s\", %d)\n"
-                (ess-quote-special-chars (buffer-substring start end))
-                (- end start))))
-    (ess-get-words-from-vector comm)))
+         (cmd (format ".ess_get_completions(\"%s\", %d)\n"
+                      (ess-quote-special-chars prefix)
+                      (- end start))))
+    (ess-get-words-from-vector cmd)))
 
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
@@ -269,7 +273,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess--get-cached-completions (prefix &optional point)
   (if (string-match-p "[]:$@[]" prefix)
       ;; call proc for objects
-      (cdr (ess-R-get-rcompletions point))
+      (cdr (ess-R-get-rcompletions nil nil prefix))
     ;; else, get cached list of objects
     (with-ess-process-buffer 'no-error ;; use proc buf alist
       (ess-when-new-input last-cached-completions
