@@ -489,21 +489,21 @@ parse_roc <- function(lines, match = "^\\s*+\' ?") {
 {
     a <- ggplot(data = overtime.by.month,
                 aes(x="", y=Percent, fill = Overtime)) +
-                    geom_bar(width = 1) +
-                        xlab('') +
-                            ylab(sub.txt) +
-                                labs(title = title.txt) +
-                                    facet_wrap(~Year.Month)
+        geom_bar(width = 1) +
+            xlab('') +
+                ylab(sub.txt) +
+                    labs(title = title.txt) +
+                        facet_wrap(~Year.Month)
 }
 
 a <- ggplot(data = overtime.by.month,
             aes(x="", y=Percent, fill = Overtime)) +
-                geom_bar(width = 1) +
-                    xlab('') +
-                        ylab(sub.txt) +
-                            labs(title = title.txt) +
-                                facet_wrap(~Year.Month)
-###                             ^-- face_wrap must be here
+    geom_bar(width = 1) +
+        xlab('') +
+            ylab(sub.txt) +
+                labs(title = title.txt) +
+                    facet_wrap(~Year.Month)
+###                 ^-- face_wrap must be here
 
 
 ### --- 21 ---

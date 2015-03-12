@@ -1279,8 +1279,10 @@ Returns nil if line starts inside a string, t if in a comment."
                              (and (not (looking-back "<-"))
                                   (looking-back "[-:+*/><=&|]")))
                         (and (> (current-column) 3)
-                             (progn (backward-char 3)
-                                    (looking-at "%[^ \t]%")))))
+                             (looking-back "%[^ \t]%"))))
+             (goto-char (match-beginning 0))
+             (skip-chars-backward " \t")
+             (ess-backward-to-start-of-continued-exp containing-sexp)
              (let ((first-indent
                     (or (and (/= ess-first-continued-statement-offset 0)
                              (null (ess--continued-statement containing-sexp))
@@ -1310,12 +1312,13 @@ Returns nil if line starts inside a string, t if in a comment."
         (beginning-of-line)))))
 
 (defun ess-backward-to-start-of-continued-exp (lim)
-  (if (= (preceding-char) ?\))
-      (forward-sexp -1))
-  (beginning-of-line)
-  (if (<= (point) lim)
-      (goto-char (1+ lim)))
-  (skip-chars-forward " \t"))
+  (let ((lim (or lim (point-min))))
+      (if (= (preceding-char) ?\))
+          (forward-sexp -1))
+    (beginning-of-line)
+    (if (<= (point) lim)
+        (goto-char (1+ lim)))
+    (skip-chars-forward " \t")))
 
 (defun ess-backward-to-start-of-if (&optional limit)
   "Move to the start of the last ``unbalanced'' 'if' or 'else if'
