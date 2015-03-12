@@ -489,22 +489,37 @@ parse_roc <- function(lines, match = "^\\s*+\' ?") {
 {
     a <- ggplot(data = overtime.by.month,
                 aes(x="", y=Percent, fill = Overtime)) +
-                    geom_bar(width = 1) +
-                        xlab('') +
-                            ylab(sub.txt) +
-                                labs(title = title.txt) +
-                                    facet_wrap(~Year.Month)
+        geom_bar(width = 1) +
+            xlab('') +
+                ylab(sub.txt) +
+                    labs(title = title.txt) +
+                        facet_wrap(~Year.Month)
 }
 
 a <- ggplot(data = overtime.by.month,
             aes(x="", y=Percent, fill = Overtime)) +
-                geom_bar(width = 1) +
-                    xlab('') +
-                        ylab(sub.txt) +
-                            labs(title = title.txt) +
-                                facet_wrap(~Year.Month)
-###                             ^-- face_wrap must be here
+    geom_bar(width = 1) +
+        xlab('') +
+            ylab(sub.txt) +
+                labs(title = title.txt) +
+                    facet_wrap(~Year.Month)
+###                 ^-- face_wrap must be here
 
+### --- 20b ---
+
+mean(rnorm(100, mean = runif(1, 1, 10)), na.rm =TRUE) +
+  2
+##^--- 2 is here
+
+mean(rnorm(100, mean = runif(1, 1, 10)),
+     na.rm =TRUE) +
+  2
+##^--- 2 is here
+
+mean(rnorm(100,
+           mean = runif(1, 1, 10)), na.rm=TRUE) +
+  2
+##^--- 2 is here
 
 ### --- 21 ---
 
@@ -659,3 +674,28 @@ x <- c(1, 3.075819, 1.515999, 2.156169, 1.480742, 1.765485, 1.460206, 1.603707, 
                    cM <- qchisq(0.95, p)
                    function(d) as.numeric(d < cM)
                })
+
+### --- 28 ---
+## Indentation of end-line comments (to column 40 = 'indent-column')
+## {this is part of "real" code in Rmpfr/R/hjk.R}:
+hjk <- function(x,n) { # <--- C-M-q  "on {" -- does *no longer* indent the "# .."
+    ##-- Setting steps and stepsize -----
+    nsteps <- floor(log2(1/tol))	# number of steps
+    steps  <- 2^c(-(0:(nsteps-1))) # decreasing step size
+    dir <- diag(1, n, n) # orthogonal directions
+
+    x <- par    # start point
+    fx <- f(x)    # smallest value so far
+    fcount <- 1     # counts number of function calls
+
+    if (info) cat(sprintf("step  nofc %-12s | %20s\n",
+                          "fmin", "xpar"))
+
+    ##-- Start the main loop ------------
+    ns <- 0
+    while (ns < nsteps && fcount < maxfeval && abs(fx) < target) {
+        ns <- ns + 1
+        hjs    <- .hjsearch(x, f, steps[ns], dir, fcount, maxfeval, target)
+    }
+    hjs
+}

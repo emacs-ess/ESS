@@ -284,23 +284,30 @@ See also `ess-use-ido'.
   "Load all the extra features depending on custom settings."
 
   (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
-        (isR (string-match "^R" ess-dialect))
-        (emacsp (featurep 'emacs)))
+        (isR (string-match "^R" ess-dialect)))
 
     ;; auto-complete
-    (when (and emacsp 
-               (require 'auto-complete nil 'no-error)
+    (when (and (boundp 'ac-sources)
                (if inferior
                    (eq ess-use-auto-complete t)
                  ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
-      ;; files should be in front; ugly, but needes
+      ;; files should be in front; ugly, but needed
       (when ess-ac-sources
         (setq ac-sources
               (delq 'ac-source-filename ac-sources))
         (mapcar (lambda (el) (add-to-list 'ac-sources el))
                 ess-ac-sources)
         (add-to-list 'ac-sources 'ac-source-filename)))
+
+    ;; company
+    (when (and (boundp 'company-backends)
+               (if inferior
+                   (eq ess-use-company t)
+                 ess-use-company))
+      (when ess-company-backends
+        (setq-local company-backends
+                    (append ess-company-backends company-backends))))
 
     ;; eldoc)
     (require 'eldoc)
@@ -310,11 +317,10 @@ See also `ess-use-ido'.
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
         (set (make-local-variable 'eldoc-idle-delay) 0.1))
       (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
-      (when emacsp
-        (turn-on-eldoc-mode)))
+      (turn-on-eldoc-mode))
 
     ;; tracebug
-    (when (and ess-use-tracebug emacsp inferior isR)
+    (when (and ess-use-tracebug inferior isR)
       (ess-tracebug 1))))
 
 

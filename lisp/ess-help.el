@@ -140,8 +140,7 @@ for the object name based on the cursor location for all cases
 except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
 an inferior emacs buffer) the GUI help window is used.
 
-If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
-"
+If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
@@ -183,7 +182,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
   (ess-help-mode)
   (when (and (null command)
              (string-match "^R" ess-dialect))
-    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogs (should go away soon)
+    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogues
     (let ((packs (ess-get-words-from-vector
                   (format "as.character(help('%s'))\n" object))))
       (when (> (length packs) 1)
@@ -194,8 +193,12 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'.
                       (car packs)
                     (ess-completing-read "Choose location" packs nil t))
                   object)))))
-  (ess-command (format (or command inferior-ess-help-command)
-                       object) (current-buffer))
+  (ess-command (cond ((and command (string-match-p "%s" command))
+                      (format command object))
+                     ;; avoid formatting commands with % in them (like %>%)
+                     (command command)
+                     (t (format inferior-ess-help-command object)))
+               (current-buffer))
   (ess-help-underline)
   ;;VS[03-09-2012]: todo: this should not be here:
   ;; Stata is clean, so we get a big BARF from this.
@@ -532,8 +535,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Switch to help buffer and take into account `ess-help-own-frame'.
 For internal use. Used in `ess-display-help-on-object',
 `ess-display-package-index', and `ess-display-vignettes'.
- CURR-MAJOR-MODE default to current major mode.
-"
+ CURR-MAJOR-MODE default to current major mode."
   (setq curr-major-mode (or curr-major-mode major-mode))
   (let ((special-display-regexps (if ess-help-own-frame '(".") nil))
         (special-display-frame-alist ess-help-frame-alist)
@@ -869,8 +871,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
                 (ess-uniq-list
                  (append (ess-get-object-list name 'exclude-1st)
                          (ess-get-help-files-list)
-                         (ess-get-help-aliases-list)
-                         ))))
+                         (ess-get-help-aliases-list)))))
       ;; else return the existing list
       ess-help-topics-list)))
 
@@ -1042,6 +1043,7 @@ option for other dialects)."
            'ess-use-eldoc
            'ess-use-tracebug
            'ess-use-auto-complete
+           'ess-use-company
            'ess-eval-visibly-p
            'ess-can-eval-in-background
            'ess-local-process-name)

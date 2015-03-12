@@ -2867,8 +2867,7 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
             (progn (ess-write-to-dribble-buffer "--> (ess-get-modtime-list)\n")
                    (ess-get-modtime-list))
           ;;else
-          (ess-write-to-dribble-buffer " using existing ess-sl-modtime-alist\n")
-          )
+          (ess-write-to-dribble-buffer " using existing ess-sl-modtime-alist\n"))
         (let* ((alist ess-sl-modtime-alist)
                (i 2)
                (n (length alist))
@@ -3125,36 +3124,37 @@ and (indirectly) by \\[ess-get-help-files-list]."
 ;;; and has the same number of elements and is in the same order as the
 ;;; S search list
 
-(defun ess-get-modtime-list ()
-  "Record the modification times of the directories in the search list,
-and the objects in those directories.
-The result is stored in `ess-sl-modtime-alist'."
+(defun ess-get-modtime-list (&optional cache-var-name exclude-first)
+  "Record directories in the search list, and the objects in those directories.
+The result is stored in CACHE-VAR-NAME. If nil, CACHE-VAR-NAME
+defaultst to `ess-sl-modtime-alist'. If EXCLUDE-FIRST is non-nil
+don't recompile first object in the search list."
   ;; Operation applies to process of current buffer
-  (let* ((searchlist (ess-search-list))
-         (index 1)
-         posn
-         newalist)
+  (let* ((searchlist (if exclude-first
+                         (cdr (ess-search-list))
+                       (ess-search-list)))
+         (index (if exclude-first 2 1))
+         (cache-name (or cache-var-name 'ess-sl-modtime-alist))
+         pack newalist)
     (while searchlist
-      (setq posn (car searchlist))
+      (setq pack (car searchlist))
       (setq newalist
             (append
              newalist
-             (list (or (assoc posn ess-sl-modtime-alist)
+             (list (or (assoc pack (symbol-value cache-name))
                        (append
-                        (list posn (ess-dir-modtime posn))
+                        (list pack (ess-dir-modtime pack))
                         (prog2
-                            (message "Forming completions for %s..." posn)
-                            (ess-object-names posn index)
-                          (message "Forming completions for %s...done" posn)
-                          ))))))
+                            (message "Forming completions for %s..." pack)
+                            (ess-object-names pack index)
+                          (message "Forming completions for %s...done" pack)))))))
       (setq index (1+ index))
       (setq searchlist (cdr searchlist)))
     ;;DBG:
     (ess-write-to-dribble-buffer
-     (format "(ess-get-modtime-list): created new alist of length %d\n"
-             (length newalist)));; todo : also give length of components!
-
-    (setq ess-sl-modtime-alist newalist)))
+     (format "(%s): created new alist of length %d\n"
+             cache-var-name (length newalist)))
+    (set cache-name newalist)))
 
 
 (defun ess-search-path-tracker (str)
