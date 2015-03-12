@@ -2227,11 +2227,9 @@ system described in `ess-font-lock-keywords'.")
   (cons "=" 'font-lock-constant-face)
   "=")
 
-
 (defvar ess-fl-keyword:operators
   (cons "[-=+></%]+" 'font-lock-constant-face)
   "Operators.")
-
 
 ;;; fl-keywords S
 (defvar ess-S-fl-keyword:modifiers
@@ -2279,7 +2277,6 @@ default or not."
   :type 'alist)
 
 
-
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
   (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
@@ -2311,8 +2308,11 @@ default or not."
 
 (defvar ess-R-fl-keyword:F&T
   (cons "\\b[FT]\\b" 'font-lock-type-face)
-  "Highlith T and F in addition to TRUE and FALSE in R.")
+  "Highlight T and F in addition to TRUE and FALSE in R.")
 
+(defvar ess-R-fl-keyword:%op%
+  (cons "%[^ \t]*%" 'ess-%op%-face)
+  "Highlight %op% operators.")
 
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
@@ -2325,7 +2325,8 @@ default or not."
     (ess-fl-keyword:operators)
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
-    (ess-R-fl-keyword:F&T))
+    (ess-R-fl-keyword:F&T)
+    (ess-R-fl-keyword:%op%))
   "An alist of available font-lock keywords for the R mode.
 The key of each cons cell is a name of the keyword. The value
 should be t or nil to indicate if the keyword is active or not."
@@ -2485,21 +2486,23 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
 
-(if (featurep 'xemacs)
-    ;; just to make xemacs not to choke on ESS
-    (setq ess-function-call-face font-lock-builtin-face
-          ess-numbers-face font-lock-type-face)
+(defvar ess-%op%-face 'ess-%op%-face
+  "Face name to use for highlighting %op% operators.")
 
-  (defface ess-function-call-face
-    '((default (:slant normal :inherit font-lock-function-name-face)))
-    "Font Lock face used to highlight function calls in ess buffers."
-    :group 'ess)
+(defface ess-function-call-face
+  '((default (:slant normal :inherit font-lock-function-name-face)))
+  "Font Lock face used to highlight function calls in ess buffers."
+  :group 'ess)
 
-  (defface ess-numbers-face
-    '((default (:slant normal :inherit font-lock-type-face)))
-    "Font Lock face used to highlight numbers in ess-mode buffers."
-    :group 'ess)
-  )
+(defface ess-numbers-face
+  '((default (:slant normal :inherit font-lock-type-face)))
+  "Font Lock face used to highlight numbers in ess-mode buffers."
+  :group 'ess)
+
+(defface ess-%op%-face
+  '((default (:slant normal :inherit font-lock-keyword-face)))
+  "Font Lock face used to highlight %op% operators in ess-mode buffers."
+  :group 'ess)
 
 
 (defcustom ess-help-kill-bogus-buffers t
