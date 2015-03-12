@@ -182,7 +182,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (ess-help-mode)
   (when (and (null command)
              (string-match "^R" ess-dialect))
-    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogs (should go away soon)
+    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogues
     (let ((packs (ess-get-words-from-vector
                   (format "as.character(help('%s'))\n" object))))
       (when (> (length packs) 1)
@@ -193,8 +193,12 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
                       (car packs)
                     (ess-completing-read "Choose location" packs nil t))
                   object)))))
-  (ess-command (format (or command inferior-ess-help-command)
-                       object) (current-buffer))
+  (ess-command (cond ((and command (string-match-p "%s" command))
+                      (format command object))
+                     ;; avoid formatting commands with % in them (like %>%)
+                     (command command)
+                     (t (format inferior-ess-help-command object)))
+               (current-buffer))
   (ess-help-underline)
   ;;VS[03-09-2012]: todo: this should not be here:
   ;; Stata is clean, so we get a big BARF from this.
