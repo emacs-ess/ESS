@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
-;; Copyright (C) 1998-2005 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1998-2015 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -124,7 +124,6 @@
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
-    
     (fill-nobreak-predicate     . 'ess-inside-string-p)
     (normal-auto-fill-function  . 'ess-do-auto-fill)
     )
@@ -738,14 +737,14 @@ In that case, the it is removed and replaced by
 
 (defun ess-toggle-S-assign (force)
   "Set the `ess-smart-S-assign-key' (by default \"_\"
-[underscore]) key to \\[ess-smart-S-assign] or back to
+ [underscore]) key to \\[ess-smart-S-assign] or back to
 `ess-smart-S-assign-key'.  Toggle the current definition, unless
 FORCE is non-nil, where \\[ess-smart-S-assign] is set
 unconditionally.
 
-  If you as per default have `ess-smart-S-assign-key' set to
-  underscore, note that using \"C-q _\" will always just insert the
-  underscore character."
+If you as per default have `ess-smart-S-assign-key' set to
+underscore, note that using \"C-q _\" will always just insert the
+underscore character."
   (interactive "P")
   (let ((current-key (lookup-key ess-mode-map ess-smart-S-assign-key))
         (default-key (lookup-key ess-mode-map "_"))
