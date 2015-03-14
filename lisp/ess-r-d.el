@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini
@@ -38,7 +38,6 @@
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
 (require 'ess-s-l)
 (require 'eldoc)
-;; (require 'ess-r-args); some. ~/.emacs rely ess-r-args-show .. replace by autoload !?
 (require 'ess-developer)
 (require 'ess-help)
 (require 'ess-roxy)
@@ -47,6 +46,8 @@
 (require 'easymenu)
 (require 'ess-r-completion)
 
+(autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
+(autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
 (autoload 'ess--flush-help-into-current-buffer "ess-help" "(Autoload)" t)
 
