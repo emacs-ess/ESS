@@ -348,10 +348,10 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (goto-char (point-min))
           (buffer-string))))))
 
-(defun ess-R-get-arg-help-string (sym)
+(defun ess-R-get-arg-help-string (sym &optional proc)
   "Help string for ac."
   (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
-  (let ((proc (ess-get-next-available-process)))
+  (let ((proc (or proc (ess-get-next-available-process))))
     (if (null proc)
         "No free ESS process found"
       (let ((fun (car ess--funname.start)))
