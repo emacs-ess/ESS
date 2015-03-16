@@ -615,7 +615,7 @@ If NO-ERROR is t don't trigger error when there is not current
 process.
 
 Symbol *proc* is bound to the current process during the evaluation of BODY."
-  (declare (indent 1))
+  (declare (indent 1) (debug t))
   `(let ((*proc* (and ess-local-process-name (get-process ess-local-process-name))))
      (if *proc*
          (with-current-buffer (process-buffer *proc*)
@@ -626,7 +626,7 @@ Symbol *proc* is bound to the current process during the evaluation of BODY."
 (defmacro ess-with-current-buffer (buffer &rest body)
   "Like `with-current-buffer' but with transfer of some essential
 local ESS vars like `ess-local-process-name'"
-  (declare (indent 1))
+  (declare (indent 1) (debug t))
   (let ((lpn (make-symbol "lpn"))
         (alist (make-symbol "alist")))
     `(let ((,lpn ess-local-process-name)
