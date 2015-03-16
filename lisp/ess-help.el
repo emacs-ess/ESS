@@ -886,8 +886,12 @@ return it.  Otherwise, return `ess-help-topics-list'."
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
+  (message "Retrieving RDS aliases...")
+  ;; ess-command locks display, make sure the above message is visible
+  (redisplay t)
   (ess-write-to-dribble-buffer "Processing RDS files ...\n")
-  (ess-get-words-from-vector ".ess.getHelpAliases()\n"))
+  (prog1 (ess-get-words-from-vector ".ess.getHelpAliases()\n")
+    (message "Retrieving RDS aliases...done")))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."
