@@ -2822,7 +2822,8 @@ directory and has been modified since it was last read."
   (let* ((entry (nth (1- posn) alist))
          (dir (car entry))
          (timestamp (car (cdr entry)))
-         (new-modtime (ess-dir-modtime dir)))
+         (new-modtime (and timestamp
+                           (ess-dir-modtime dir))))
     ;; Refresh the object listing if necessary
     (if (or force (not (equal new-modtime timestamp)))
         (setcdr (cdr entry) (ess-object-names dir posn)))
