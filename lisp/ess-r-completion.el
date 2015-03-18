@@ -387,7 +387,10 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
               (let ((start (ess-arg-start)))
                 (when start
                   (let ((prefix (buffer-substring-no-properties start (point))))
-                    (cons prefix ess-company-arg-prefix-length))))))
+                    (if ess-company-arg-prefix-length
+                        (cons prefix (>= (length prefix)
+                                         ess-company-arg-prefix-length))
+                      prefix))))))
     (candidates (let* ((proc (ess-get-next-available-process))
                        (args (delete "..." (nth 2 (ess-function-arguments
                                                    (car ess--funname.start) proc))))

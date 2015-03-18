@@ -476,10 +476,11 @@ only."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
 
-(defcustom ess-company-arg-prefix-length t
+(defcustom ess-company-arg-prefix-length nil
   "Minimum prefix for ess company function argument completion."
   :group 'ess-extras
-  :type 'number)
+  :type '(choice (const :tag "Default" nil)
+                 integer))
 
 (defcustom ess-use-tracebug t
   "If t, load ess-tracebug when R process starts."
