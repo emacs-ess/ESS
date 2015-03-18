@@ -1043,6 +1043,11 @@ If TOGGLE-EOB is given, the value of
 ;;       (display-buffer buf nil (get-frame-for-buffer buf))
 ;;     (display-buffer buf nil t)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defcustom ess-show-buffer-action
+  '((display-buffer-use-some-window display-buffer-pop-up-window))
+  "Actions for `ess-show-buffer', passed to `display-buffer'."
+  :group 'ess
+  :type 'list)
 (defun ess-show-buffer (buf &optional visit)
   "Ensure the ESS buffer BUF is visible.
 The buffer, specified as a string, is typically an iESS (e.g. *R*) buffer.
@@ -1072,7 +1077,7 @@ as the current buffer."
               (raise-frame frame))
         ;; 3. else BUF not visible in any frame, so show it (but do
         ;; not select it) in another window in current frame.
-        (display-buffer buf '((display-buffer-pop-up-window display-buffer-use-some-window)))))
+        (display-buffer buf ess-show-buffer-action)))
     ;; At this stage, the buffer should now be visible on screen,
     ;; although it won't have been made current.
     (when visit
