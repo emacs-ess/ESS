@@ -963,7 +963,9 @@ similar to `load-library' emacs function."
 
 (define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
 
- ; provides
+;;; smart-comma was a bad idea
+(eval-after-load "eldoc"
+  '(eldoc-add-command "ess-smart-comma"))
 
 (provide 'ess-r-d)
 
