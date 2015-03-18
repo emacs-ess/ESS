@@ -677,7 +677,7 @@ process happens interactively (when possible)."
             (ess-get-process other-name))
         ;; else
         (ding)
-        (if (yes-or-no-p
+        (if (y-or-n-p
              (format "Process %s is not running, but others are. Switch? " name))
             (progn
               (ess-force-buffer-current
@@ -2769,7 +2769,7 @@ If you want to finish your session, use \\[ess-quit] instead."
   (ding)
   (message "WARNING: \\[inferior-ess-exit-command] will not be executed and graphics devices won't finish properly!")
   (sit-for 2)
-  (if (yes-or-no-p "Still abort? ")
+  (if (y-or-n-p "Still abort? ")
       (comint-quit-subjob)
     (message "Good move.")))
 
