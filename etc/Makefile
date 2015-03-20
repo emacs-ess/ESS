@@ -9,7 +9,7 @@ include ../Makeconf
 
 #ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.*)
 #ETCFILES = ESSR.R ess-developer.R SVN-REVISION *.S sas-keys.* ess-sas-sh-command
-ETCFILES = SVN-REVISION *.S sas-keys.* ess-sas-sh-command
+ETCFILES = SVN-REVISION *.S sas-keys.* ess-sas-sh-command *.jl
 
 #ICONS = $(wildcard icons/*.xpm)
 ICONS = icons/*.xpm
