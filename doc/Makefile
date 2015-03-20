@@ -102,7 +102,7 @@ install-info : info/ess.info
 
 install-other-docs: pdf html
 	-$(INSTALLDIR) $(DOCDIR)
-	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
+	$(INSTALL) ess.pdf readme.pdf $(DOCDIR)
 	$(INSTALL) html/ess.html html/readme.html html/news.html $(DOCDIR)
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
 
