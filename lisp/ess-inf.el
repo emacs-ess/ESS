@@ -911,8 +911,7 @@ there is only one process running."
           (with-current-buffer (process-buffer (get-process proc))
             (setq temp-ess-help-filetype inferior-ess-help-filetype))
           (setq ess-local-process-name proc)
-          (setq inferior-ess-help-filetype temp-ess-help-filetype)
-          )))))
+          (setq inferior-ess-help-filetype temp-ess-help-filetype))))))
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."
@@ -1008,8 +1007,7 @@ If TOGGLE-EOB is given, the value of
             (if blist
                 (ess-show-buffer (car blist) t)
               (message "Found no buffers for ess-dialect %s associated with process %s"
-                       dialect loc-proc-name)))
-          )))
+                       dialect loc-proc-name))))))
     (ess--execute-electric-command map nil nil nil EOB)))
 
 
@@ -1228,8 +1226,7 @@ associated with PROCESS `ess-presend-filter-functions'  hooks.
   (if (ess-ddeclient-p)
       (ess-eval-region-ddeclient start end 'even-empty)
     ;; else: "normal", non-DDE behavior:
-    (ess-send-string process (buffer-substring start end) visibly message)
-    ))
+    (ess-send-string process (buffer-substring start end) visibly message)))
 
 (defvar ess-send-string-function  nil)
 (make-variable-buffer-local 'ess-send-string-function)
@@ -1348,8 +1345,7 @@ Hide all the junk output in temporary buffer."
             (ess-if-verbose-write "interrupting subjob ... finished")
             )
         (set-process-buffer proc old-buff)
-        (set-process-filter proc old-filter)
-        ))))
+        (set-process-filter proc old-filter)))))
 
 (defun ess-async-command-delayed (com &optional buf proc callback delay)
   "Delayed asynchronous ess-command.
@@ -1366,8 +1362,7 @@ current process might change, leading to unpredictable
 consequences.
 
 This function is a wrapper of `ess-async-command' with an
-explicit interrupt-callback.
-"
+explicit interrupt-callback."
   (unless proc
     (error "You must provide PROC argument to ess-async-command-delayed"))
   (let* ((timer (make-symbol "timer"))
@@ -1616,9 +1611,7 @@ will be used instead of the default .001s and be passed to
 
 Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
-TEXT.
-"
-
+TEXT."
   (if (ess-ddeclient-p)
       (ess-eval-linewise-ddeclient text
                                    invisibly eob even-empty
@@ -1684,15 +1677,14 @@ TEXT.
           (process-send-string sprocess com)
           (when (or wait-last-prompt
                     (> (length text) 0))
-            (ess-wait-for-process sprocess t wait-sec))
-          )
+            (ess-wait-for-process sprocess t wait-sec)))
         (if eob (ess-show-buffer (buffer-name sbuffer) nil))
         (goto-char (marker-position (process-mark sprocess)))
         (when win
           (with-selected-window win
             (goto-char (point))
-            (recenter (- -1 scroll-margin))) ;; this recenter is crucial to avoid reseting window-point
-          )))
+            ;; this is crucial to avoid reseting window-point
+            (recenter (- -1 scroll-margin))) )))
 
     (if (numberp sleep-sec)
         (sleep-for sleep-sec)))); in addition to timeout-ms
@@ -2008,8 +2000,7 @@ true."
   (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
            (> (region-end) (region-beginning)))
       (ess-eval-region (region-beginning) (region-end) vis)
-    (ess-eval-line-and-step)
-  ))
+    (ess-eval-line-and-step)))
 
 (defun ess-eval-line-and-step-invisibly ()
   "Evaluate the current line invisibly and step to the next line.
@@ -2071,8 +2062,7 @@ for `ess-eval-region'."
     (goto-char (cadr beg-end))
     (if ess-eval-empty
         (forward-line 1)
-      (ess-next-code-line 1)))
-  )
+      (ess-next-code-line 1))))
 
 ;;; Related to the ess-eval-* commands, there are the ess-load
 ;;; commands.   Need to add appropriate stuff...
@@ -2241,8 +2231,7 @@ for `ess-eval-region'."
     (define-key map "\C-c\C-s" 'ess-execute-search)
     (define-key map "\C-c\C-x" 'ess-execute-objects)
     map)
-  "Keymap used in `ess-execute'"
-  )
+  "Keymap used in `ess-execute'")
 
 (defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.
@@ -2489,8 +2478,7 @@ to continue it."
              (process-send-string proc "\n"))
 
             (t ;; normal command
-             (inferior-ess-input-sender proc string)
-             )))))
+             (inferior-ess-input-sender proc string))))))
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
@@ -2524,8 +2512,7 @@ Note: inferior-ess-secondary-prompt should match exactly.
                     (string-match secondary-prompt (field-string-no-properties pos))
                   t))
       (goto-char pos)
-      (setq pos (previous-single-property-change pos 'field))))
-  )
+      (setq pos (previous-single-property-change pos 'field)))))
 
 (defun inferior-ess--goto-input-end:field ()
   "Move point to the end of input skiping all continuation lines.
@@ -2541,8 +2528,7 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
                     (string-match secondary-prompt (field-string-no-properties pos))
                   t))
       (goto-char pos)
-      (setq pos (next-single-property-change pos 'field)))
-    ))
+      (setq pos (next-single-property-change pos 'field)))))
 
 (defun inferior-ess--get-old-input:field ()
   "Return the ESS command surrounding point (use with fields)."
@@ -2584,8 +2570,7 @@ If in the output field, goes to the begining of previous input.
                 (looking-at inferior-ess-secondary-prompt))))
   (unless (looking-at inferior-ess-prompt)
     (ess-error "Beggining of input not found"))
-  (comint-skip-prompt)
-  )
+  (comint-skip-prompt))
 
 (defun inferior-ess--get-old-input:regexp ()
   "Return the ESS command surrounding point (use regexp)."
@@ -2613,15 +2598,13 @@ If in the output field, goes to the begining of previous input.
             (setq ess-temp-point (point)) ;; this is ugly, used by transcript
             command)
         (message "No command at this point")
-        "")
-      )))
+        ""))))
 
 (defun inferior-ess-get-old-input ()
   "Return the ESS command surrounding point."
   (if comint-use-prompt-regexp
       (inferior-ess--get-old-input:regexp)
-    (inferior-ess--get-old-input:field))
-  )
+    (inferior-ess--get-old-input:field)))
 
 ;;;*;;; Hot key commands
 
@@ -2760,10 +2743,7 @@ regarding whether the workspace image should be saved."
     ;;Q   (setq cmd (format "q(\"%s\")\n" response))
     (setq cmd "base::q()\n")
     (goto-char (marker-position (process-mark sprocess)))
-    (process-send-string sprocess cmd)
-    ;;(rename-buffer (concat (buffer-name) "-exited") t)
-    ;;Q      )
-    ))
+    (process-send-string sprocess cmd)))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
@@ -3299,12 +3279,10 @@ Used in `ess-idle-timer-functions'."
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
       (setq default-directory
             (car (ess-get-words-from-vector ess-getwd-command)))
-      default-directory
-      )))
+      default-directory)))
 
 (defun ess-dirs ()
-  "Set Emacs' current directory to be the same as the *R* process.
-"
+  "Set Emacs' current directory to be the same as the *R* process."
   ;; Note: This function is not necessary anymore. The Emacs
   ;; default-directory and subprocess working directory are
   ;; synchronized automatically.
@@ -3334,8 +3312,7 @@ search path related variables."
         (when (not (equal path old-path))
           (process-put *proc* 'search-list path)
           (ess--mark-search-list-as-changed)
-          path
-          )))))
+          path)))))
 
 
 ;;*;; Temporary buffer handling

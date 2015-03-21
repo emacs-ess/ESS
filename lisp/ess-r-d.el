@@ -958,8 +958,7 @@ similar to `load-library' emacs function."
       (setq pack (ess-completing-read "Load" packs))
       (ess-eval-linewise (format "library('%s')\n" pack))
       (ess--mark-search-list-as-changed)
-      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
-      )))
+      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name)))))))
 
 (define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
 
