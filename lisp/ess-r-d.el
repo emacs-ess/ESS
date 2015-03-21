@@ -427,6 +427,7 @@ Executed in process buffer."
                        nil nil nil 'wait-prompt))
 
   (with-ess-process-buffer nil
+    (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-R-post-run-hook)))
 
 
@@ -941,6 +942,12 @@ Currently works only for R."
 
 (define-obsolete-function-alias 'ess-sos 'ess-R-sos "ESS[12.09-1]")
 
+(defun ess-R-scan-for-library-call (string)
+  "Detect `library/require' calls in string and update tracking vars.
+Placed into `ess-presend-filter-functions' for R dialects."
+  (when (string-match-p "\\blibrary(\\|\\brequire(" string)
+    (ess--mark-search-list-as-changed))
+  string)
 
 (defun ess-load-library ()
   "Prompt and load dialect specific library/package/module.
