@@ -822,7 +822,7 @@ evaluation of BODY.
 Should be used in `ess-idle-timer-functions' which call the
 process to avoid excessive requests.
 "
-  (declare (indent 1))
+  (declare (indent 1) (debug t))
   `(with-ess-process-buffer 'no-error
      (let ((le (process-get *proc* 'last-eval))
            (tv (process-get *proc* ',time-var)))
