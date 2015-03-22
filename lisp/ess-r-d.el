@@ -869,11 +869,14 @@ Completion is available for supplying options."
   "Cache var to store package names. Used by
   `ess-install.packages'.")
 
+(defvar ess--CRAN-mirror nil
+  "CRAN mirror name cache.")
+
 (defun ess-R-install.packages (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
-    (ess-setCRANMiror)
+    (ess-setCRANMiror ess--CRAN-mirror)
     (ess-wait-for-process (get-process ess-current-process-name))
     (unless pack (setq update t)))
   (when (or update
@@ -906,21 +909,23 @@ Currently works only for R."
       (message "Sorry, not available for %s" ess-dialect)
     (ess-eval-linewise "setRepositories(FALSE)\n")))
 
-(defun ess-setCRANMiror ()
+(defun ess-setCRANMiror (&optional mirror)
   "Set cran mirror"
   (interactive)
-  (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
-         (M2 (mapcar (lambda (el)
-                       (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
-                       (propertize (match-string 1 el) 'URL (match-string 2 el)))
-                     M1))
-         (opt  (ess-completing-read "Choose CRAN mirror" M2 nil t)))
-    (when opt
-      (setq opt (get-text-property 0 'URL opt))
-      (ess-command
-       (format "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n" opt))
-      (message "New CHRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
-      )))
+  (let ((mirror-cmd "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n"))
+    (if mirror
+        (ess-command (format mirror-cmd mirror))
+      (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
+             (M2 (mapcar (lambda (el)
+                           (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
+                           (propertize (match-string 1 el) 'URL (match-string 2 el)))
+                         M1))
+             (mirror  (ess-completing-read "Choose CRAN mirror" M2 nil t)))
+        (when mirror
+          (setq mirror (get-text-property 0 'URL mirror))
+          (setq ess--CRAN-mirror mirror)
+          (ess-command (format mirror-cmd mirror))))))
+  (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
 
 (defun ess-R-sos (cmd)
   "Interface to findFn in the library sos."
