@@ -3,7 +3,7 @@
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Doug Bates
@@ -170,19 +170,25 @@
               (goto-char (point-min))
               (when (re-search-forward "Revision: \\(.*\\)\n.*: \\(.*\\)" nil t)
                 (concat "svn: " (match-string 1) " (" (match-string 2) ")")))))
-         (git-fname (concat (file-name-directory ess-lisp-directory) ".git/refs/heads/master"))
+         (lisp-dir (file-name-directory ess-lisp-directory))
+         (git-ref-fn (concat lisp-dir ".git/HEAD"))
+         (git-ref (when (file-exists-p git-ref-fn)
+                    (with-current-buffer (find-file-noselect git-ref-fn)
+                      (goto-char (point-min))
+                      (when (re-search-forward "ref: \\(.*\\)\n" nil t)
+                        (match-string 1)))))
+         (git-fname (concat lisp-dir ".git/" git-ref))
          (git-rev (when (file-exists-p git-fname)
                     (with-current-buffer (find-file-noselect git-fname)
                       (goto-char (point-min))
                       (concat "git: "(buffer-substring 1 (point-at-eol))))))
-         (elpa-fname (concat (file-name-directory ess-lisp-directory) "ess-pkg.el"))
+         (elpa-fname (concat lisp-dir "ess-pkg.el"))
          (elpa-rev (when (file-exists-p elpa-fname)
                      ;; get it from ELPA dir name, (probbly won't wokr if instaleed manually)
                      (concat "elpa: "
                              (replace-regexp-in-string "ess-" ""
                                                        (file-name-nondirectory
-                                                        (substring (file-name-directory ess-lisp-directory)
-                                                                   1 -1)))))))
+                                                        (substring lisp-dir 1 -1)))))))
     ;; set the "global" ess-revision:
     (setq ess-revision (format "%s%s%s"
                                (or svn-rev "")
@@ -410,7 +416,7 @@ Otherwise try a list of fixed known viewers.
       (setq viewer (file-name-nondirectory viewer)))
     viewer))
 
-        
+
 
 
 
@@ -457,7 +463,7 @@ Used in noweb modes.")
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
-  ;; (setq alist (reverse alist)) ;; It should really be in reverse order; 
+  ;; (setq alist (reverse alist)) ;; It should really be in reverse order;
   (mapc (lambda (pair)
           (make-local-variable (car pair))
           (set (car pair) (eval (cdr pair)))
