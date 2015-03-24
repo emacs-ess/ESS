@@ -184,7 +184,7 @@
                       (concat "git: "(buffer-substring 1 (point-at-eol))))))
          (elpa-fname (concat lisp-dir "ess-pkg.el"))
          (elpa-rev (when (file-exists-p elpa-fname)
-                     ;; get it from ELPA dir name, (probbly won't wokr if instaleed manually)
+                     ;; get it from ELPA dir name, (probably won't work if installed manually)
                      (concat "elpa: "
                              (replace-regexp-in-string "ess-" ""
                                                        (file-name-nondirectory
