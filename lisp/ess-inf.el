@@ -1042,7 +1042,7 @@ If TOGGLE-EOB is given, the value of
 ;;     (display-buffer buf nil t)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defcustom ess-show-buffer-action
-  '((display-buffer-use-some-window display-buffer-pop-up-window))
+  '((display-buffer-pop-up-window display-buffer-use-some-window))
   "Actions for `ess-show-buffer', passed to `display-buffer'."
   :group 'ess
   :type 'list)
