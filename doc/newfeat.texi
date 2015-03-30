@@ -1,10 +1,39 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes / Selected Bug Fixes in 15.03:
+Changes and New Features in 15.03:
 @itemize @bullet
+@item @ESS{[R]}: Full native support for `company-mode`.
+@item @ESS{[R]}: More efficient caching algorithm for R completion.
 @item @ESS{}: New offset variable `ess-close-paren-offset` to control
 the indentation of the closing parentheses.
+@item @ESS{[R]}: Ask for CRAN mirror only once per emacs session.
+@item @ESS{[R]}: Detect @code{library} and @code{require} calls
+for better completion caching.
+@item Buffer display is now customizable (@code{ess-show-buffer-action}).
+@item Use @code{y-or-n-p} instead of @code{yes-or-no-p} throughout.
+@item More support for ODS in ess-sas-graph-view.
+@item Makefiles are now both UNIX and GNU friendly.
+@item @ESS{[R]}: Simplify directory lookup in @code{ess-developer} (#137).
+@item Make closed paren indentation consistent
+@end itemize
+
+Bug Fixes in 15.03:
+@itemize @bullet
+@item Fix git version lookup
+@item Don't check directory modtime in R dialect.
+@item Declare all ess macros for edebug.
+@item Add @code{ess-smart-comma} to eldoc message functions.
+@item Inform users when retrieving RDA aliases.
+@item Line ending in '~' is also a continuation line.
+@item Filing roxy paragraphs works as expected now.
+@item In @code{ess-developer-add-package}, remove incorrect `wait` 
+argument from @code{ess-get-words-from-vector} call.
+@item Fix #96, #117, #120, #125, #134, #137.
+@item Fix ess-quit-r. Call base::q() even if it is masked.
+@item Fix `ess-show-buffer` to always display the buffer in another window.
+@item Makefile: Fix cd bug for directories with spaces in them
+@item @code{ess-kill-buffer-and-go} modified to not restart R
 @end itemize
 
 Changes / Selected Bug Fixes in 14.09:
