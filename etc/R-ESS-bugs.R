@@ -691,6 +691,17 @@ x <- c(1, 3.075819, 1.515999, 2.156169, 1.480742, 1.765485, 1.460206, 1.603707, 
 ###                     ^--- here
                     }))
 
+list(function(p){
+         abc
+###      ^-- here
+     })
+###  ^-- here
+
+(ab) {
+    sfdsf
+### ^-- here    
+}
+
 ### --- 28 ---
 ## Indentation of end-line comments (to column 40 = 'indent-column')
 ## {this is part of "real" code in Rmpfr/R/hjk.R}:

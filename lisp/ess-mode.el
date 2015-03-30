@@ -1181,9 +1181,11 @@ Return the amount the indentation changed by."
                  ;; possibly a different line
                  (progn
                    (when (eq (preceding-char) ?\))
-                     (forward-sexp -2))
+                     (forward-sexp -1)
+                     (when (not (looking-back "^[ \t]*"))
+                       (ignore-errors (forward-sexp -1))))
                    (when (not (looking-back "^[ \t]*"))
-                     (forward-sexp -1))
+                     (ignore-errors (forward-sexp -1)))
                    (current-column)))))))))
 
 
