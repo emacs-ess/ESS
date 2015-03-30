@@ -1131,18 +1131,8 @@ Return the amount the indentation changed by."
                      (progn (goto-char (1+ containing-sexp))
                             (current-column)))))))
           (t
-           ;; Statement level (containing-sexp char is "{").  Is it a continuation
-           ;; or a new statement? Find previous non-comment character.
-           (goto-char indent-point)
-           (ess-backward-to-noncomment containing-sexp)
-           ;; Back up over label lines, since they don't
-           ;; affect whether our line is a continuation.
-           (while (eq (preceding-char) ?\,)
-             (ess-backward-to-start-of-continued-exp containing-sexp)
-             (beginning-of-line)
-             (ess-backward-to-noncomment containing-sexp))
-           (forward-line 1)
-           ;; Now we get the answer.
+           ;; Statement level: containing-sexp char is "{"
+
            (if (ess--continued-statement)
                ;; This line is continuation of preceding line's statement;
                ;; indent  ess-continued-statement-offset  more than the
