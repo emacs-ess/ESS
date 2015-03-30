@@ -1180,10 +1180,11 @@ Return the amount the indentation changed by."
                  ;; move to the beginning of that;
                  ;; possibly a different line
                  (progn
-                   (if (eq (preceding-char) ?\))
-                       (forward-sexp -1))
-                   ;; Get initial indentation of the line we are on.
-                   (current-indentation)))))))))
+                   (when (eq (preceding-char) ?\))
+                     (forward-sexp -2))
+                   (when (not (looking-back "^[ \t]*"))
+                     (forward-sexp -1))
+                   (current-column)))))))))
 
 
 (defun ess-calculate-indent (&optional parse-start)
