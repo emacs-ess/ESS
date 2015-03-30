@@ -20,6 +20,7 @@ for better completion caching.
 
 Bug Fixes in 15.03:
 @itemize @bullet
+@item Fix open brace indentation bug (#27 in ess/R-ESS-bugs.R).
 @item Fix git version lookup
 @item Don't check directory modtime in R dialect.
 @item Declare all ess macros for edebug.
