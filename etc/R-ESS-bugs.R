@@ -505,21 +505,23 @@ a <- ggplot(data = overtime.by.month,
                     facet_wrap(~Year.Month)
 ###                 ^-- face_wrap must be here
 
+
 ### --- 20b ---
+## From https://github.com/emacs-ess/ESS/issues/120
 
 mean(rnorm(100, mean = runif(1, 1, 10)), na.rm =TRUE) +
-  2
-##^--- 2 is here
+    2
+##  ^--- 2 is here
 
 mean(rnorm(100, mean = runif(1, 1, 10)),
      na.rm =TRUE) +
-  2
-##^--- 2 is here
+    2
+##  ^--- 2 is here
 
 mean(rnorm(100,
            mean = runif(1, 1, 10)), na.rm=TRUE) +
-  2
-##^--- 2 is here
+    2
+##  ^--- 2 is here
 
 ### --- 21 ---
 
