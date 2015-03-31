@@ -99,8 +99,9 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ##
 
 # $(shell) is a GNU-ism which we workaround to be UNIX make friendly
-#ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
-ESSVERSION=`cat ./VERSION 2> /dev/null || cat ../VERSION`
+ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+#F: but the following use of  `..` *FAILS*
+#F: ESSVERSION=`cat ./VERSION 2> /dev/null || cat ../VERSION`
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 
 ## SVN repo retired
