@@ -36,24 +36,23 @@ etc/SVN-REVISION etc/SVN-REVISION-tmp: VERSION lisp/*.el doc/*.texi doc/Makefile
 # for real men
 # GNUTAR=gtar make downloads
 downloads: all RPM.spec cleanup-dist
-	[ x$(ESSfromSVN) = xyes ] || (echo 'ESS must be "from SVN"'; exit 1 )
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
-	@echo "** (must have setup subversion with cached authentication, prior for security)"
+	@echo "** (must have setup git / github with cached authentication, prior for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	svn checkout --quiet $(SVN_URL)/trunk $(ESSDIR)-svn
+	git clone git@github.com:emacs-ess/ESS.git $(ESSDIR)-git
 	mkdir -p $(ESSDIR)
-	(cd $(ESSDIR)-svn; $(GNUTAR) cvf - --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
+	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
 	CLEANUP="user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
-	svn cleanup
+	#svn svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
          # touch: make it newer than VERSION in the tarball:
-	sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
+	#svn	sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
@@ -73,7 +72,7 @@ dist: VERSION downloads
 cleanup-dist:
 	@echo "** Cleaning up **"
 	(if [ -d $(ESSDIR) ] ; then \
-	  chmod -R u+w $(ESSDIR) $(ESSDIR)-svn && rm -rf $(ESSDIR) $(ESSDIR)-svn; fi)
+	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
 ##  should only be called manually (if at all):
 cleanup-rel:
 	@rm -f $(ESSDIR)*
@@ -96,7 +95,7 @@ ChangeLog: VERSION
 	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
 	@rm ChangeLog.old
-	svn commit -m 'Version $(ESSVERSION)' ChangeLog
+	git commit -m 'Version $(ESSVERSION)' ChangeLog
 
 rel: ChangeLog dist tag homepage
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
@@ -109,7 +108,8 @@ rel: ChangeLog dist tag homepage
 
 tag:
 	@echo "** Tagging the release **"
-	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
+	git tag -m'release tagging' v$(ESSVERSION)
+	# svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 homepage:
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
@@ -130,4 +130,4 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-	rm -f etc/SVN-REVISION* 
+	rm -f etc/SVN-REVISION*
