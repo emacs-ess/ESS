@@ -113,7 +113,7 @@
 
     ;; By popular demand:
     (define-key map "\C-m"       'newline-and-indent); = [RETURN]
-    (define-key map "\C-y"       'ess-yank)
+    (define-key map [remap yank] 'ess-yank)
 
     (define-key map "\C-c\C-r"   'ess-eval-region)
     (define-key map "\C-c\M-r"   'ess-eval-region-and-go)
@@ -231,6 +231,7 @@
      ["Goto end of process buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to process buffer"    ess-switch-to-inferior-or-script-buffer t]
      ["Switch Process"   ess-switch-process              t]
+     ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      ("Start Process"
       ;; SJE - :help not yet recognised in XEmacs.
       ["R"     R   t] ;; :help "Start a new R process" :active t
@@ -248,7 +249,7 @@
       ;; :help "Read about starting a new ESS process" :active t]
       )
      ("Eval visibly "
-      :filter ess--generate-eval-visibly-submenu ))
+      :filter ess--generate-eval-visibly-submenu))
     "------"
     ("ESS Eval"
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
@@ -1023,6 +1024,27 @@ Return the amount the indentation changed by."
           (goto-char (- (point-max) pos))))
       shift-amt)))
 
+(defun ess-calculate-indent--after-last-open-paren ()
+  ;; called just before the open parenthesis
+  (and
+   (ess-looking-at-last-open-paren-p)
+   (cond
+    ;; case 1: numeric
+    ;; distinguish between
+    ;;   a <- some.function(arg1,
+    ;;                      arg2)
+    ((numberp ess-arg-function-offset-new-line)
+     (forward-sexp -1)
+     (+ (current-column) ess-arg-function-offset-new-line))
+    ;; case 2: list
+    ;;   a <- some.function(
+    ;;     arg1,
+    ;;     arg2)
+    ;;
+    ((and (listp ess-arg-function-offset-new-line)
+          (numberp (car ess-arg-function-offset-new-line)))
+     (+ (current-indentation) (car ess-arg-function-offset-new-line))))))
+
 
 (defun ess-looking-at-last-open-paren-p ()
   (looking-at "[[:blank:]]*([[:blank:]]*\\($\\|#\\)"))
@@ -1030,11 +1052,19 @@ Return the amount the indentation changed by."
 (defun ess-calculate-indent--closing-paren ()
   (search-forward ")")
   (backward-sexp)
-  (if (ess-looking-at-last-open-paren-p)
-      ;; If this line ends with "("
-      (current-indentation)
-    ;; otherwise
-    (+ (current-column) 1)))
+  (or 
+   ;; If the cursor is in between parents we indent as normal text to avoid
+   ;; annoyance with paired parents
+   (and (looking-at-p "[( \t\n]+)")
+        (ess-calculate-indent--after-last-open-paren))
+   (cond ((numberp ess-close-paren-offset)
+          (+ (or (ess-calculate-indent--after-last-open-paren)
+                 (1+ (current-column)))
+             ess-close-paren-offset))
+         ((and (listp ess-close-paren-offset)
+               (numberp (car ess-close-paren-offset)))
+          (+ (current-indentation) (car ess-close-paren-offset)))
+         (t (error "ess-close-paren-offset must be a number or a list of one number.")))))
 
 (defun ess-calculate-indent--default (&optional parse-start)
   (let ((indent-point (point))
@@ -1095,44 +1125,14 @@ Return the amount the indentation changed by."
                           bol t))
                     (forward-sexp -1)
                     (+ (current-column) ess-arg-function-offset))
-                   ;; now, distinguish between
-                   ;;   a <- some.function(arg1,
-                   ;;                      arg2)
-                   ;; and
-                   ;;   a <- some.function(
-                   ;;     arg1,
-                   ;;     arg2)
-                   ;;
-                   ;; case 1: numeric
-                   ((and (numberp ess-arg-function-offset-new-line)
-                         (ess-looking-at-last-open-paren-p))
-                    (forward-sexp -1)
-                    (+ (current-column) ess-arg-function-offset-new-line))
-                   ;; case 2: list
-                   ((and (listp ess-arg-function-offset-new-line)
-                         (numberp (car ess-arg-function-offset-new-line))
-                         (ess-looking-at-last-open-paren-p))
-                    ;; flush args to the begining of
-                    (beginning-of-line)
-                    (skip-chars-forward " \t")
-                    (+ (current-column) (car ess-arg-function-offset-new-line)))
-                   ;; End
                    (t
-                    (progn (goto-char (1+ containing-sexp))
-                           (current-column))))))
+                    (or
+                     (ess-calculate-indent--after-last-open-paren)
+                     (progn (goto-char (1+ containing-sexp))
+                            (current-column)))))))
           (t
-           ;; Statement level (containing-sexp char is "{").  Is it a continuation
-           ;; or a new statement? Find previous non-comment character.
-           (goto-char indent-point)
-           (ess-backward-to-noncomment containing-sexp)
-           ;; Back up over label lines, since they don't
-           ;; affect whether our line is a continuation.
-           (while (eq (preceding-char) ?\,)
-             (ess-backward-to-start-of-continued-exp containing-sexp)
-             (beginning-of-line)
-             (ess-backward-to-noncomment containing-sexp))
-           (forward-line 1)
-           ;; Now we get the answer.
+           ;; Statement level: containing-sexp char is "{"
+
            (if (ess--continued-statement)
                ;; This line is continuation of preceding line's statement;
                ;; indent  ess-continued-statement-offset  more than the
@@ -1180,10 +1180,13 @@ Return the amount the indentation changed by."
                  ;; move to the beginning of that;
                  ;; possibly a different line
                  (progn
-                   (if (eq (preceding-char) ?\))
-                       (forward-sexp -1))
-                   ;; Get initial indentation of the line we are on.
-                   (current-indentation)))))))))
+                   (when (eq (preceding-char) ?\))
+                     (forward-sexp -1)
+                     (when (not (looking-back "^[ \t]*"))
+                       (ignore-errors (forward-sexp -1))))
+                   (when (not (looking-back "^[ \t]*"))
+                     (ignore-errors (forward-sexp -1)))
+                   (current-column)))))))))
 
 
 (defun ess-calculate-indent (&optional parse-start)
@@ -1267,10 +1270,12 @@ Returns nil if line starts inside a string, t if in a comment."
                     (skip-chars-backward " \t")
                     (or (and (> (current-column) 1)
                              (and (not (looking-back "<-"))
-                                  (looking-back "[-:+*/><=&|]")))
+                                  (looking-back "[-:+*/><=&|~]")))
                         (and (> (current-column) 3)
-                             (progn (backward-char 3)
-                                    (looking-at "%[^ \t]%")))))
+                             (looking-back "%[^ \t]%"))))
+             (goto-char (match-beginning 0))
+             (skip-chars-backward " \t")
+             (ess-backward-to-start-of-continued-exp containing-sexp)
              (let ((first-indent
                     (or (and (/= ess-first-continued-statement-offset 0)
                              (null (ess--continued-statement containing-sexp))
@@ -1300,12 +1305,13 @@ Returns nil if line starts inside a string, t if in a comment."
         (beginning-of-line)))))
 
 (defun ess-backward-to-start-of-continued-exp (lim)
-  (if (= (preceding-char) ?\))
-      (forward-sexp -1))
-  (beginning-of-line)
-  (if (<= (point) lim)
-      (goto-char (1+ lim)))
-  (skip-chars-forward " \t"))
+  (let ((lim (or lim (point-min))))
+      (if (= (preceding-char) ?\))
+          (forward-sexp -1))
+    (beginning-of-line)
+    (if (<= (point) lim)
+        (goto-char (1+ lim)))
+    (skip-chars-forward " \t")))
 
 (defun ess-backward-to-start-of-if (&optional limit)
   "Move to the start of the last ``unbalanced'' 'if' or 'else if'

@@ -7,14 +7,14 @@
 area} and unpack it into a directory where you would like ESS to
 reside. We will denote this directory as @file{/path/to/ESS/} hereafter.
 
-Alternatively you can use @code{svn} or @code{git} to fetch the most
+Alternatively you can use @code{git} to fetch the most
 recent development version to your local machine with:
-
-@example
-svn checkout https://svn.r-project.org/ESS/trunk /path/to/ESS
-@end example
-
-or 
+@comment 
+@comment @example
+@comment svn checkout https://svn.r-project.org/ESS/trunk /path/to/ESS
+@comment @end example
+@comment 
+@comment or 
 
 @example
 git clone https://github.com/emacs-ess/ESS.git /path/to/ESS

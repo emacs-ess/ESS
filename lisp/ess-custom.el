@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini <blindglobe@gmail.com>
@@ -132,7 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-(defvar ess-version "14.1x" ;; updated by 'make'
+(defvar ess-version "15.03" ;; updated by 'make'
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -451,8 +451,7 @@ default), doc strings are truncated to fit into minibufer. This
 allows the use of different abbreviation styles with the
 truncation."
   :group 'ess
-  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t))
-  )
+  :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t)))
 
 
 (defcustom ess-use-auto-complete t
@@ -465,15 +464,23 @@ If non-nil add `ac-source-R' and `ac-source-filename' to the
 ESS defines three AC sources `ac-source-R',`ac-source-R-objects'
 and `ac-source-R-args'. See auto-complete package
 documentation (http://cx4a.org/software/auto-complete/) for how
-to install your custom sources.
-"
+to install your custom sources."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
 
-(defcustom ess-ac-R-argument-suffix " = "
-  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
-  :group 'R
-  :type 'string)
+(defcustom ess-use-company t
+  "If t, activate company support in ess-mode and inferior-ess-mode buffers.
+If non-nil add `company-R-args' and `company-R-objects' to the
+`company-backends'. If 'script-only activate in ess-mode buffers
+only."
+  :group 'ess-extras
+  :type '(choice (const t) (const script-only) (const nil)))
+
+(defcustom ess-company-arg-prefix-length nil
+  "Minimum prefix for ess company function argument completion."
+  :group 'ess-extras
+  :type '(choice (const :tag "Default" nil)
+                 integer))
 
 (defcustom ess-use-tracebug t
   "If t, load ess-tracebug when R process starts."
@@ -493,6 +500,9 @@ might want to set this to nil.
 (defvar ess-ac-sources nil
   "Dialect specific, ESS specific list of ac-sources")
 
+(defvar ess-company-backends nil
+  "Dialect specific, ESS specific list of `company-backends'")
+
 (defvar ess--completing-hist nil
   "Variable to store completion history.
 Used by `ess-completion-read' command.")
@@ -500,8 +510,7 @@ Used by `ess-completion-read' command.")
 (defvar ess-smart-operators ()
   "List of smart operators to be used in ESS and IESS modes.
 Not to be set by users. It is redefined by mode specific
-settings, such as `ess-R-smart-operators'.
-")
+settings, such as `ess-R-smart-operators'.")
 (make-variable-buffer-local 'ess-smart-operators)
 
 (defvar ess-R-smart-operators nil
@@ -510,15 +519,13 @@ If t, use all. If an axplicit list of operators, use only those
 operators.
 
 In current verion of ESS, it controls the behavior of
-ess-smart-comma only, but will be enriched in the near future.
-")
+ess-smart-comma only, but will be enriched in the near future.")
 
 (defvar ess-no-skip-regexp "[ \t\n]*\\'"
   "If `ess-next-code-line' sees this line, it doesn't jump over.
 
 Used to avoid annoying jumping by ess-eval.*-and-step to end of
-buffer or end chunks etc.
- ")
+buffer or end chunks etc.")
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
@@ -683,7 +690,7 @@ are indented at the previous line indentation + N characters:
      arg2)
 
 
-If a number N, the statement are alligned at the beggining of
+If a number N, the statement are alligned at the beginning of
 function call + N characters:
 
   a <- some.function(other.function(
@@ -715,6 +722,29 @@ some.function(arg1,
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defvar ess-close-brace-offset 0
   "Extra indentation for closing braces.")
+
+(defvar ess-close-paren-offset 0
+  "Extra indentation for closing parenthesis.
+When a number, adjustment is made with respect to the opening
+parenthesis taking into account the value of
+`ess-arg-function-offset-new-line'. When set to 0 the closing
+parenthesis is indented as follows: 
+
+some.function(arg1,
+              arg2
+              )
+
+When this variable is a list of the form '(N), N being a number,
+adjust with respect to the indentation of the line containing an
+opening parenthesis. For example, when set to '(0), the closing
+parenthesis is indented as follows:
+
+{
+    some.function(arg1,
+                  arg2 = X
+    )
+}
+")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-fancy-comments t
@@ -1673,7 +1703,7 @@ corresponding program.")
 ;; (setq-default inferior-ess-program inferior-S-program-name)
 
 
-(defvar inferior-R-version "R (newest)"
+(defvar inferior-R-version "R (default)"
   "A (short) name of the current R version.  A global variable for
 ESS internal communication.")
 
@@ -2009,9 +2039,7 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 (make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
 
 (defvar ess-sl-modtime-alist nil
-  "Alist of modification times for all ess directories accessed this
-session.")
-
+  "Alist of modification times for all ess directories accessed this session.")
 (make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil
@@ -2200,11 +2228,9 @@ system described in `ess-font-lock-keywords'.")
   (cons "=" 'font-lock-constant-face)
   "=")
 
-
 (defvar ess-fl-keyword:operators
   (cons "[-=+></%]+" 'font-lock-constant-face)
   "Operators.")
-
 
 ;;; fl-keywords S
 (defvar ess-S-fl-keyword:modifiers
@@ -2252,7 +2278,6 @@ default or not."
   :type 'alist)
 
 
-
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
   (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
@@ -2284,8 +2309,11 @@ default or not."
 
 (defvar ess-R-fl-keyword:F&T
   (cons "\\b[FT]\\b" 'font-lock-type-face)
-  "Highlith T and F in addition to TRUE and FALSE in R.")
+  "Highlight T and F in addition to TRUE and FALSE in R.")
 
+(defvar ess-R-fl-keyword:%op%
+  (cons "%[^ \t]*%" 'ess-%op%-face)
+  "Highlight %op% operators.")
 
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
@@ -2298,7 +2326,8 @@ default or not."
     (ess-fl-keyword:operators)
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
-    (ess-R-fl-keyword:F&T))
+    (ess-R-fl-keyword:F&T)
+    (ess-R-fl-keyword:%op%))
   "An alist of available font-lock keywords for the R mode.
 The key of each cons cell is a name of the keyword. The value
 should be t or nil to indicate if the keyword is active or not."
@@ -2458,21 +2487,23 @@ the variable `ess-help-own-frame' is non-nil."
 (defvar ess-numbers-face 'ess-numbers-face
   "Face name to use for highlighting numbers.")
 
-(if (featurep 'xemacs)
-    ;; just to make xemacs not to choke on ESS
-    (setq ess-function-call-face font-lock-builtin-face
-          ess-numbers-face font-lock-type-face)
+(defvar ess-%op%-face 'ess-%op%-face
+  "Face name to use for highlighting %op% operators.")
 
-  (defface ess-function-call-face
-    '((default (:slant normal :inherit font-lock-function-name-face)))
-    "Font Lock face used to highlight function calls in ess buffers."
-    :group 'ess)
+(defface ess-function-call-face
+  '((default (:slant normal :inherit font-lock-function-name-face)))
+  "Font Lock face used to highlight function calls in ess buffers."
+  :group 'ess)
 
-  (defface ess-numbers-face
-    '((default (:slant normal :inherit font-lock-type-face)))
-    "Font Lock face used to highlight numbers in ess-mode buffers."
-    :group 'ess)
-  )
+(defface ess-numbers-face
+  '((default (:slant normal :inherit font-lock-type-face)))
+  "Font Lock face used to highlight numbers in ess-mode buffers."
+  :group 'ess)
+
+(defface ess-%op%-face
+  '((default (:slant normal :inherit font-lock-keyword-face)))
+  "Font Lock face used to highlight %op% operators in ess-mode buffers."
+  :group 'ess)
 
 
 (defcustom ess-help-kill-bogus-buffers t

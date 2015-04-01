@@ -9,7 +9,8 @@
 @include ess-defs.texi
 @titlepage
 @title ESS -- Emacs Speaks Statistics
-ESS version @ESSVER
+ESS version 
+@ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :
 @c                                 ~~~~~~~~~~~~~~

@@ -541,7 +541,7 @@ in inferior buffers.  ")
     (make-local-variable 'ess--busy-timer)
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
-    (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
+    (add-hook 'kill-buffer-hook (lambda () (when ess--busy-timer (cancel-timer ess--busy-timer))))
     (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
     ;; redefine
@@ -2755,7 +2755,8 @@ intanbible, step char backward first"
       (backward-char 1))
   ad-do-it)
 
-;; (ad-remove-advice 'previous-line 'around 'delete-backward-char-intangible)
+
+;; (ad-remove-advice 'previous-line 'around 'ess-fix-cursor-stuck-at-intangible-text)
 
 (make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")

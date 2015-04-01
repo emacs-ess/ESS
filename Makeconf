@@ -87,30 +87,33 @@ DOCDIR=$(PREFIX)/share/doc/ess
 
 ## Section 3
 ## For ESS developers only, not part of installation procedure
-## Note that $(shell ... ) only works with GNU make
 ##
 ## Variable        Description
 ## ESSVERSION      set to the contents of VERSION
 ## ESSDIR          ess- prepended to ESSVERSION
-## ESSVERSIONTAG   repository tags cannot contain .'s
+## ESSVERSIONTAG   repository tags cannot contain .'s (no longer used)
 ## GNUTAR          the name of GNU tar to support the z option
-## SVN_URL         repository URL
+## SVN_URL         SVN repository URL (repo retired)
 ## UPLOAD_DIR      Martin's upload directory
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
-# Would be ok, iff all releases were "YY-MM" -- but we have patch releases:
-#ESSVERSION=$(shell echo "`date +%y.%m`")
+
+# $(shell) is a GNU-ism which we workaround to be UNIX make friendly
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
+#F: but the following use of  `..` *FAILS*
+#F: ESSVERSION=`cat ./VERSION 2> /dev/null || cat ../VERSION`
 #ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 
+## SVN repo retired
 ## Currently only works when run in top ess/ directory; not in etc/ or lisp/ :
-ESSfromSVN=$(shell test -d .svn && echo 'yes')
-ifeq ($(ESSfromSVN),yes)
-  ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
-else
-  ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
-endif
-ESSVERSIONTAG=$(ESSVERSIONsvn)
+# ESSfromSVN=$(shell test -d .svn && echo 'yes')
+# ifeq ($(ESSfromSVN),yes)
+#   ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
+# else
+#   ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
+# endif
+# ESSVERSIONTAG=$(ESSVERSIONsvn)
+
 ESSDIR=ess-$(ESSVERSION)
 GNUTAR=tar
 SVN_URL = https://svn.r-project.org/ESS
