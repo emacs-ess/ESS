@@ -1184,9 +1184,11 @@ Return the amount the indentation changed by."
                      (forward-sexp -1)
                      (when (not (looking-back "^[ \t]*"))
                        (ignore-errors (forward-sexp -1))))
-                   (when (not (looking-back "^[ \t]*"))
-                     (ignore-errors (forward-sexp -1)))
-                   (current-column)))))))))
+                   (let ((last-open-pos (cadr (parse-partial-sexp (point-at-bol) (point)))))
+                     (if (not last-open-pos)
+                         (current-indentation)
+                       (goto-char (1+ last-open-pos))
+                       (current-column)))))))))))
 
 
 (defun ess-calculate-indent (&optional parse-start)
