@@ -685,7 +685,7 @@ toggle between the new and the previous assignment."
 
 (defvar polymode-mode)
 (defun ess-smart-S-assign ()
-  "Smart \\[ess-smart-S-assign] key: insert `ess-S-assign', unless in string/comment.
+  "Act as smart `ess-S-assign' key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
 typically \" <- \", can be customized.  In ESS modes other than R/S,
@@ -746,14 +746,16 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
   (define-key ess-mode-map          ess-smart-S-assign-key 'ess-smart-S-assign)
   (define-key inferior-ess-mode-map ess-smart-S-assign-key 'ess-smart-S-assign))
 
-(defun ess-use-smart-S-assign (use)
-  "Activate or disable the smart assignment operator `ess-S-assign'.
-  `ess-S-assign', typically \" <- \", can be customized."
-  (interactive)
-  (if use
+
+;; Written such that whimps can have (ess-disable-smart-S-assign) in .emacs :
+(defun ess-disable-smart-S-assign (activate)
+  "Disable or activate (if prefix argument ACTIVATE is set) the smart assignment
+operator `ess-S-assign'.  That, typically \" <- \", can be customized."
+  (interactive "P")
+  (if activate
       (ess--activate-smart-S-assign-key)
     (ess--unset-smart-S-assign-key)))
-(defalias 'ess-use-smart-underscore 'ess-use-smart-S-assign)
+(defalias 'ess-disable-smart-underscore 'ess-disable-smart-S-assign)
 
 (defun ess-toggle-S-assign (force)
   "Set the `ess-smart-S-assign-key' (by default \"_\"
