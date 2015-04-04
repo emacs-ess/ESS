@@ -753,7 +753,7 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
   (if use
       (ess--activate-smart-S-assign-key)
     (ess--unset-smart-S-assign-key)))
-(defalias 'ess-use-smart-underscore ess-use-smart-S-assign)
+(defalias 'ess-use-smart-underscore 'ess-use-smart-S-assign)
 
 (defun ess-toggle-S-assign (force)
   "Set the `ess-smart-S-assign-key' (by default \"_\"
