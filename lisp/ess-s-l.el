@@ -689,7 +689,7 @@ toggle between the new and the previous assignment."
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
 typically \" <- \", can be customized.  In ESS modes other than R/S,
-the  underscore is always inserted. "
+the underscore is always inserted."
   (interactive)
   ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
   (save-restriction
@@ -713,8 +713,7 @@ the  underscore is always inserted. "
 
 (defun ess-insert-S-assign ()
   "Insert the assignment operator `ess-S-assign', unless it is already there.
-In that case, the it is removed and replaced by
-  `ess-smart-S-assign-key', \\[ess-smart-S-assign-key].
+In that case, it is removed and replaced by `ess-smart-S-assign-key'.
   `ess-S-assign', typically \" <- \", can be customized."
   (interactive)
   ;; one keypress produces ess-S-assign; a second keypress will delete
