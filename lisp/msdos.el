@@ -147,8 +147,7 @@ d. strips ctrl-m from output.
 "
   (interactive)
   (setq msdos-minor-mode t)
-  (make-variable-buffer-local 'comint-completion-addsuffix)
-  (setq comint-completion-addsuffix '("\\" . " "))
+  (set (make-local-variable 'comint-completion-addsuffix) '("\\" . " "))
   (setq comint-process-echoes t)
   (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
   (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
