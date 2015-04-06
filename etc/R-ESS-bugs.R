@@ -740,3 +740,9 @@ foreach(a = 1:3) %:%
 ###     ^---- here        
     }
 ### ^--- here
+
+read.csv('file.csv') %>%
+    mutate(X = X+2, Y = Y/2) %>%
+### ^--- here        
+        filter(X < 5)
+###     ^-- here
