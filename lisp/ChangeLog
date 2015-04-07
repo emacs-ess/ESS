@@ -1,3 +1,9 @@
+2015-04-07  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-prefer-higher-bit): Test code to prefer higher
+	bit (i.e 64 bit rather than 32 bit) Rterm versions for R-newest.
+	Should affect only Windows.
+
 2015-03-18  Sam Steingold  <sds@gnu.org>
 
 	* ess-inf.el (ess-show-buffer-action): Add user option.
