@@ -4,8 +4,8 @@
 Changes and New Features in 15.09:
 @itemize @bullet
 @item @ESS{[R]}: On windows, if `ess-prefer-higher-bit' is non-nil (the
-default), then R-newest will try to run a 64bit (rather than 32 bit)
-version of Windows.
+default), then R-newest will try to run a 64 bit (rather than 32 bit)
+version of R.
 @end itemize
 
 Changes and New Features in 15.03:
