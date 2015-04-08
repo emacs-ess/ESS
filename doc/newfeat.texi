@@ -6,6 +6,7 @@ Changes and New Features in 15.09:
 @item @ESS{[R]}: On windows, if `ess-prefer-higher-bit' is non-nil (the
 default), then R-newest will try to run a 64bit (rather than 32 bit)
 version of Windows.
+@end itemize
 
 Changes and New Features in 15.03:
 @itemize @bullet
@@ -34,7 +35,7 @@ Bug Fixes in 15.03:
 @item Inform users when retrieving RDA aliases.
 @item Line ending in '~' is also a continuation line.
 @item Filing roxy paragraphs works as expected now.
-@item In @code{ess-developer-add-package}, remove incorrect `wait` 
+@item In @code{ess-developer-add-package}, remove incorrect `wait`
 argument from @code{ess-get-words-from-vector} call.
 @item Fix #96, #117, #120, #125, #134, #137.
 @item Fix ess-quit-r. Call base::q() even if it is masked.
