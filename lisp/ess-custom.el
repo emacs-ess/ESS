@@ -132,11 +132,7 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
-<<<<<<< HEAD
-(defvar ess-version "15.xy" ;; updated by 'make'
-=======
 (defvar ess-version "15.09-devel" ;; updated by 'make'
->>>>>>> b4142eeabb39c0f837e7c70c32c469f8c342a9de
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
@@ -732,7 +728,7 @@ some.function(arg1,
 When a number, adjustment is made with respect to the opening
 parenthesis taking into account the value of
 `ess-arg-function-offset-new-line'. When set to 0 the closing
-parenthesis is indented as follows: 
+parenthesis is indented as follows:
 
 some.function(arg1,
               arg2
