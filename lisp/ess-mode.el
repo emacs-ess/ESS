@@ -1024,10 +1024,10 @@ Return the amount the indentation changed by."
           (goto-char (- (point-max) pos))))
       shift-amt)))
 
-(defun ess-calculate-indent--after-last-open-paren ()
+(defun ess-calculate-indent--after-last-open-paren (&optional no-check)
   ;; called just before the open parenthesis
   (and
-   (ess-looking-at-last-open-paren-p)
+   (or no-check (ess-looking-at-last-open-paren-p))
    (cond
     ;; case 1: numeric
     ;; distinguish between
@@ -1057,6 +1057,7 @@ Return the amount the indentation changed by."
    ;; annoyance with paired parents
    (and (looking-at-p "[( \t\n]+)")
         (ess-calculate-indent--after-last-open-paren))
+   
    (cond ((numberp ess-close-paren-offset)
           (+ (or (ess-calculate-indent--after-last-open-paren)
                  (1+ (current-column)))
@@ -1149,7 +1150,12 @@ Return the amount the indentation changed by."
              (goto-char containing-sexp)
              ;; Is line first statement after an open-brace?
              (or
-              ;; If no, find that first statement and indent like it.
+
+              ;; 1) line ending in ({
+              (and (eq (preceding-char) ?\()
+                   (ess-calculate-indent--after-last-open-paren t))
+              
+              ;; 2) find that first statement and indent like it.
               (save-excursion
                 (forward-char 1)
                 (while (progn (skip-chars-forward " \t\n")
@@ -1160,14 +1166,12 @@ Return the amount the indentation changed by."
                 ;; if it is before the line we want to indent.
                 (and (< (point) indent-point)
                      (current-column)))
-              ;; If no previous statement,
-              ;; indent it relative to line brace is on.
-              ;; For open brace in column zero, don't let statement
-              ;; start there too.  If ess-indent-level is zero,
-              ;; use ess-brace-offset +
-              ;; ess-continued-statement-offset instead.
-              ;; For open-braces not the first thing in a line,
-              ;; add in ess-brace-imaginary-offset.
+              
+              ;; 3) If no previous statement, indent it relative to line brace
+              ;; is on. For open brace in column zero, don't let statement start
+              ;; there too.  If ess-indent-level is zero, use ess-brace-offset +
+              ;; ess-continued-statement-offset instead. For open-braces not the
+              ;; first thing in a line, add in ess-brace-imaginary-offset.
               (+ (if (and (bolp) (zerop ess-indent-level))
                      (+ ess-brace-offset ess-continued-statement-offset)
                    ess-indent-level)
@@ -1184,9 +1188,11 @@ Return the amount the indentation changed by."
                      (forward-sexp -1)
                      (when (not (looking-back "^[ \t]*"))
                        (ignore-errors (forward-sexp -1))))
-                   (when (not (looking-back "^[ \t]*"))
-                     (ignore-errors (forward-sexp -1)))
-                   (current-column)))))))))
+                   (let ((last-open-pos (cadr (parse-partial-sexp (point-at-bol) (point)))))
+                     (if (not last-open-pos)
+                         (current-indentation)
+                       (goto-char (1+ last-open-pos))
+                       (current-column)))))))))))
 
 
 (defun ess-calculate-indent (&optional parse-start)
@@ -1248,8 +1254,7 @@ Returns nil if line starts inside a string, t if in a comment."
                      (eq (preceding-char) ?\;))
                  (- col (current-column))
                (when (eq ?} (preceding-char))
-                 (- (current-column) 1)))))
-          )))
+                 (- (current-column) 1))))))))
 
 
 (defun ess--continued-statement (&optional containing-sexp)
@@ -1272,7 +1277,7 @@ Returns nil if line starts inside a string, t if in a comment."
                              (and (not (looking-back "<-"))
                                   (looking-back "[-:+*/><=&|~]")))
                         (and (> (current-column) 3)
-                             (looking-back "%[^ \t]%"))))
+                             (looking-back "%[^ \t]*%"))))
              (goto-char (match-beginning 0))
              (skip-chars-backward " \t")
              (ess-backward-to-start-of-continued-exp containing-sexp)

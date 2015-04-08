@@ -726,3 +726,23 @@ hjk <- function(x,n) { # <--- C-M-q  "on {" -- does *no longer* indent the "# ..
     }
     hjs
 }
+
+### --- 29 ---
+foreach(a = 1:3) %do% {
+    a^2
+### ^--- here
+}
+
+foreach(a = 1:3) %:%
+    foreach(b = 10:13) %dopar% {
+### ^--- here
+        a + b
+###     ^---- here        
+    }
+### ^--- here
+
+read.csv('file.csv') %>%
+    mutate(X = X+2, Y = Y/2) %>%
+### ^--- here        
+        filter(X < 5)
+###     ^-- here
