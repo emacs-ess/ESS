@@ -49,10 +49,10 @@ downloads: all RPM.spec cleanup-dist
 	CLEANUP="user-* useR-* Why_* README.*"; \
 	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd ../..
-	#svn svn cleanup
+	 #svn svn cleanup
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
          # touch: make it newer than VERSION in the tarball:
-	#svn	sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
+         #svn sr=etc/SVN-REVISION ; touch $$sr ; cp -p $$sr $(ESSDIR)/etc/
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
@@ -109,7 +109,7 @@ rel: ChangeLog dist tag homepage
 tag:
 	@echo "** Tagging the release **"
 	git tag -m'release tagging' v$(ESSVERSION)
-	# svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
+	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 homepage:
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )

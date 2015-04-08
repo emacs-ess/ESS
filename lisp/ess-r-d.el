@@ -604,7 +604,14 @@ by the code on Windows for finding the newest version of R."
   :type 'boolean)
 
 (defun ess-rterm-prefer-higher-bit ()
+<<<<<<< HEAD
   "Filter out Rterms."
+=======
+  "Optionally remove 32bit Rterms from being candidate for R-newest.
+Return the list of candidates for being R-newest.  Filtering is done 
+iff `ess-prefer-higher-bit' is non-nil.
+This is used only by Windows when running `ess-find-newest-R'."
+>>>>>>> b4142eeabb39c0f837e7c70c32c469f8c342a9de
   (if ess-prefer-higher-bit
     ;; filter out 32 bit elements
     (let ((filtered

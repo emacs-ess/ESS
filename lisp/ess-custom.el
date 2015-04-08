@@ -132,7 +132,11 @@
   :prefix "ess-")
 ;; Variables (not user-changeable)
 
+<<<<<<< HEAD
 (defvar ess-version "15.xy" ;; updated by 'make'
+=======
+(defvar ess-version "15.09-devel" ;; updated by 'make'
+>>>>>>> b4142eeabb39c0f837e7c70c32c469f8c342a9de
   "Version of ESS currently loaded.")
 
 (defvar ess-revision nil ;; set
