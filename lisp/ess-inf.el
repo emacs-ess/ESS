@@ -256,7 +256,7 @@ Alternatively, it can appear in its own frame if
             ;; Set up history file
             (if ess-history-file
                 (if (eq t ess-history-file)
-                    (set (make-variable-buffer-local 'ess-history-file)
+                    (set (make-local-variable 'ess-history-file)
                          (concat "." ess-dialect "history"))
                   ;; otherwise must be a string "..."
                   (unless (stringp ess-history-file)
