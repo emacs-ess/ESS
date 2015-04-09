@@ -313,7 +313,7 @@ See also `ess-use-ido'.
                  ess-use-company))
       (when ess-company-backends
         (setq-local company-backends
-                    (append ess-company-backends company-backends))
+                    (copy-list (append ess-company-backends company-backends)))
         (delq 'company-capf company-backends)))
 
     ;; eldoc)
