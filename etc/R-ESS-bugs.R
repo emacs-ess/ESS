@@ -712,10 +712,10 @@ print.MethodsFunction <- function(x, byclass = attr(x, "byclass"), ...)
     values <- if (byclass) {
         unique(info$generic)
     } else {
-          visible <- ifelse(info$visible, "", "*")
-          paste0(rownames(info), visible)
+        visible <- ifelse(info$visible, "", "*")
+        paste0(rownames(info), visible)
 ###     ^-- both lines above should start here
-      }
+    }
 ### ^-- "}" here
 
     ## 2nd version:
@@ -723,10 +723,10 @@ print.MethodsFunction <- function(x, byclass = attr(x, "byclass"), ...)
         if (byclass) {
             unique(info$generic)
         } else {
-              visible <- ifelse(info$visible, "", "*")
-              paste0(rownames(info), visible)
+            visible <- ifelse(info$visible, "", "*")
+            paste0(rownames(info), visible)
 ###         ^-- both lines above should start here
-          }
+        }
 ###     ^-- "}" here
     invisible(x)
 }
