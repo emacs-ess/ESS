@@ -415,6 +415,9 @@ Variables controlling indentation style:
    `foo'.
  `ess-arg-function-offset-new-line'
    Extra indent for function arguments when ( is folowed by new line.
+ `ess-arg-function-offset-continued'
+   Extra indent for function arguments when ( is folowed by arguments and a
+   new line.
  `ess-expression-offset'
     Extra indent for internal substatements of `expression' that specified
     in `obj <- expression(...)' form.
@@ -1045,6 +1048,19 @@ Return the amount the indentation changed by."
           (numberp (car ess-arg-function-offset-new-line)))
      (+ (current-indentation) (car ess-arg-function-offset-new-line))))))
 
+(defun ess-calculate-indent--after-open-paren (is-decl)
+  ;; indent for continued argument list
+  (cond
+   ((or (null ess-arg-function-offset-continued)
+        is-decl)
+    (goto-char (1+ containing-sexp))
+    (current-column))
+   ((numberp ess-arg-function-offset-continued)
+    (+ 1 (current-column) ess-arg-function-offset-continued))
+   ((and (listp ess-arg-function-offset-continued)
+         (numberp (car ess-arg-function-offset-continued)))
+    (+ (current-indentation) (car ess-arg-function-offset-continued)))))
+
 
 (defun ess-looking-at-last-open-paren-p ()
   (looking-at "[[:blank:]]*([[:blank:]]*\\($\\|#\\)"))
@@ -1052,12 +1068,12 @@ Return the amount the indentation changed by."
 (defun ess-calculate-indent--closing-paren ()
   (search-forward ")")
   (backward-sexp)
-  (or 
+  (or
    ;; If the cursor is in between parents we indent as normal text to avoid
    ;; annoyance with paired parents
    (and (looking-at-p "[( \t\n]+)")
         (ess-calculate-indent--after-last-open-paren))
-   
+
    (cond ((numberp ess-close-paren-offset)
           (+ (or (ess-calculate-indent--after-last-open-paren)
                  (1+ (current-column)))
@@ -1109,7 +1125,8 @@ Return the amount the indentation changed by."
            ;; line is expression, not statement:
            ;; indent to just after the surrounding open.
            (goto-char containing-sexp)
-           (let ((bol (line-beginning-position)))
+           (let ((bol (line-beginning-position))
+                 (is-decl (looking-back "\\(^\\|[ \t(){}]\\)function\\b[ \t]*")))
 
              (cond ((and (numberp ess-expression-offset)
                          (re-search-backward "[ \t]*expression[ \t]*(" bol t))
@@ -1129,8 +1146,7 @@ Return the amount the indentation changed by."
                    (t
                     (or
                      (ess-calculate-indent--after-last-open-paren)
-                     (progn (goto-char (1+ containing-sexp))
-                            (current-column)))))))
+                     (ess-calculate-indent--after-open-paren is-decl))))))
           (t
            ;; Statement level: containing-sexp char is "{"
 
@@ -1154,7 +1170,7 @@ Return the amount the indentation changed by."
               ;; 1) line ending in ({
               (and (eq (preceding-char) ?\()
                    (ess-calculate-indent--after-last-open-paren t))
-              
+
               ;; 2) find that first statement and indent like it.
               (save-excursion
                 (forward-char 1)
@@ -1166,7 +1182,7 @@ Return the amount the indentation changed by."
                 ;; if it is before the line we want to indent.
                 (and (< (point) indent-point)
                      (current-column)))
-              
+
               ;; 3) If no previous statement, indent it relative to line brace
               ;; is on. For open brace in column zero, don't let statement start
               ;; there too.  If ess-indent-level is zero, use ess-brace-offset +
