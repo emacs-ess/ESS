@@ -1052,12 +1052,12 @@ Return the amount the indentation changed by."
 (defun ess-calculate-indent--closing-paren ()
   (search-forward ")")
   (backward-sexp)
-  (or 
+  (or
    ;; If the cursor is in between parents we indent as normal text to avoid
    ;; annoyance with paired parents
    (and (looking-at-p "[( \t\n]+)")
         (ess-calculate-indent--after-last-open-paren))
-   
+
    (cond ((numberp ess-close-paren-offset)
           (+ (or (ess-calculate-indent--after-last-open-paren)
                  (1+ (current-column)))
@@ -1154,7 +1154,7 @@ Return the amount the indentation changed by."
               ;; 1) line ending in ({
               (and (eq (preceding-char) ?\()
                    (ess-calculate-indent--after-last-open-paren t))
-              
+
               ;; 2) find that first statement and indent like it.
               (save-excursion
                 (forward-char 1)
@@ -1166,7 +1166,7 @@ Return the amount the indentation changed by."
                 ;; if it is before the line we want to indent.
                 (and (< (point) indent-point)
                      (current-column)))
-              
+
               ;; 3) If no previous statement, indent it relative to line brace
               ;; is on. For open brace in column zero, don't let statement start
               ;; there too.  If ess-indent-level is zero, use ess-brace-offset +
@@ -1264,7 +1264,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-backward-to-noncomment containing-sexp)
     ;; this function is always called at eol
     (let ((eol (point)))
-      (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
+      (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\] ?\())
              nil)
             ((ignore-errors (up-list -1)
                             (looking-back "if[ \t]*"))
