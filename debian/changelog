@@ -1,9 +1,12 @@
 ess (15.03-1-2) unstable; urgency=low
 
-  * [not yet finalized]
   * debian/emacsen-compat: Added, with value of zero
+  
+  * debian/emacsen-install: Refreshed
+  
+  * debian/control: Depends: emacsen-common (>= 2.0.8) per Emacsen Policy
 
- -- Dirk Eddelbuettel <edd@debian.org>  Mon, 04 May 2015 06:27:56 -0500
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 04 May 2015 20:29:39 -0500
 
 ess (15.03-1-1) unstable; urgency=low
 
