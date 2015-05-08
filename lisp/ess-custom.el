@@ -835,6 +835,10 @@ If not number, the statements are indented at open-parenthesis following
                (ess-expression-offset . 4)
                (ess-else-offset . 0)
                (ess-close-brace-offset . 0)
+               (ess-brace-imaginary-offset . 0)
+               (ess-continued-brace-offset . 0)
+               (ess-close-paren-offset . 0)
+               (ess-fancy-comments . t)
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
