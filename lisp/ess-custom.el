@@ -649,102 +649,205 @@ nil means to use R/S indentation.")
 (defvar ess-indent-level 2
   "Indentation of S statements with respect to containing block.")
 
-(defvar ess-brace-imaginary-offset 0
-  "Imagined indentation of an open brace following a statement.")
+(defvar ess-offset-block '(t)
+  "Indentation for blocks. A block is usually declared with
+braces but a statement wrapped in anonymous parentheses is also
+considered a block.
 
-(defvar ess-brace-offset 0
-  "Extra indentation for open braces.
-Compares with other text in same context.")
+If a number N, blocks are indented relative to the opening
+parenthesis of the closest function call:
 
-(defvar ess-first-continued-statement-offset 0
-  "Extra indentation for the first new line continuing an expression.
+  {
+      fun_call(parameter = {
+                   stuff
+               }, {
+                   stuff
+               })
+
+      lapply(data, function(x) {
+                 body
+             })
+  }
+
+In this case, the value types of `ess-offset-arguments' and
+`ess-offset-arguments-newline' are taken into account for
+consistency.
+
+
+If a list of the form '(N) where N is a number, blocks are
+indented at the previous line indentation + N characters:
+
+  {
+      fun_call(parameter = {
+          stuff
+      }, {
+          stuff
+      })
+
+      lapply(data, function(x) {
+          body
+      })
+  }
+
+
+If nil, blocks are indented from the opening delimiter:
+
+  {
+      fun_call(parameter = {
+                               stuff
+                           }, {
+                                  stuff
+                              })
+
+      lapply(data, function(x) {
+                                   body
+                               })
+  }
+
+
+You can refer to ess-indent-level by setting this parameter to t
+or '(t) instead of N or '(N).
+")
+
+(defvar ess-offset-block-opening 0
+  "Extra indentation for delimiters opening a block. Only has an
+effect when the block is not an argument of another expression.")
+
+(defvar ess-offset-block-closing 0
+  "Extra indentation for delimiters closing a block. Only has an
+effect when the block is not an argument of another expression.")
+
+(defvar ess-offset-continued-first 0
+  "Extra indentation for the first new line continuing a statement.
 If you set this to non-zero value you might want to set
-`ess-continued-statement-offset' to zero.")
+`ess-offset-continued' to zero.
 
-(defvar ess-continued-statement-offset 2
-  "Extra indent for lines not starting new statements.")
+You can refer to ess-indent-level by setting this parameter to t.")
 
-(defvar ess-continued-brace-offset 0
-  "Extra indent for substatements that start with open-braces.
-This is in addition to ess-continued-statement-offset.")
+(defvar ess-offset-continued 2
+  "Extra indent for lines not starting new statements.
+You can refer to ess-indent-level by setting this parameter to t.")
 
-(defvar ess-arg-function-offset 2
-  "Extra indent for internal substatements of function `foo' that called
-in `arg=foo(...)' form.
-If not number, the statements are indented at open-parenthesis following foo.")
+(defvar ess-offset-continued-opening 0
+  "Extra indent for substatements that start with opening delimiters.
+This is in addition to ess-offset-continued.
 
-(defvar ess-arg-function-offset-new-line '(2)
-  "Extra indent for function arguments when ( is folowed by new line.
+You can refer to ess-indent-level by setting this parameter to t.")
 
-If nil, the statements are indented at open-parenthesis following foo:
+(defvar ess-offset-arguments nil
+  "Extra indent for function arguments or bracket indexing when (
+or [ is not directly followed by a new line.
 
-  a <- some.function(other.function(
-                                    arg1,
-                                    arg2)
+If a number N, the arguments are aligned at the beginning of
+the closest function call + N characters:
 
-If a list of the form '(N) where N is a number, the statements
+  object <- some_function(other_function(arg1,
+                              arg2,
+                              arg3)
+
+
+If a list of the form '(N) where N is a number, the arguments
 are indented at the previous line indentation + N characters:
 
-  a <- some.function(other.function(
-     arg1,
-     arg2)
+  object <- some_function(other_function(arg1,
+      arg2,
+      arg3)
 
 
-If a number N, the statement are alligned at the beginning of
-function call + N characters:
+If nil, the arguments are indented at the opening delimiter
+following foo:
 
-  a <- some.function(other.function(
-                       arg1,
-                       arg2)
+  object <- some_function(other_function(arg1,
+                                         arg2,
+                                         arg3)
 
 
-For inner function arguments the behavior is unchanged:
-
-  some.function(arg1,
-                arg2=other.function(a,
-                  b,
-
-Set `ess-arg-function-offset' to nil if you want:
-
-  some.function(arg1,
-                arg2=other.function(a,
-                                    b,
-
-and
-
-some.function(arg1,
-              arg2=other.function(
-                     a,
-                     b,
-
+You can refer to ess-indent-level by setting this parameter to t
+or '(t) instead of N or '(N).
 ")
 
-;;added rmh 2Nov97 at request of Terry Therneau
-(defvar ess-close-brace-offset 0
-  "Extra indentation for closing braces.")
+(defvar ess-offset-arguments-newline '(t)
+  "Extra indent for function arguments or bracket indexing when (
+or [ is followed by a new line.
 
-(defvar ess-close-paren-offset 0
-  "Extra indentation for closing parenthesis.
-When a number, adjustment is made with respect to the opening
-parenthesis taking into account the value of
-`ess-arg-function-offset-new-line'. When set to 0 the closing
-parenthesis is indented as follows:
+If a number N, the arguments are aligned at the beginning of
+the closest function call + N characters:
 
-some.function(arg1,
-              arg2
-              )
+  object <- some_function(other_function(
+                              arg1,
+                              arg2)
 
-When this variable is a list of the form '(N), N being a number,
-adjust with respect to the indentation of the line containing an
-opening parenthesis. For example, when set to '(0), the closing
-parenthesis is indented as follows:
 
-{
-    some.function(arg1,
-                  arg2 = X
-    )
-}
+If a list of the form '(N) where N is a number, the arguments are
+indented at the previous line indentation + N characters:
+
+  object <- some_function(other_function(
+      arg1,
+      arg2)
+
+
+If nil, the arguments are indented at the opening delimiter
+following foo:
+
+  object <- some_function(other_function(
+                                         arg1,
+                                         arg2)
+
+
+You can refer to ess-indent-level by setting this parameter to t
+or '(t) instead of N or '(N).
 ")
+
+(defvar ess-offset-arguments-closing 0
+  "Extra indentation for delimiters closing an arguments list.
+You can refer to ess-indent-level by setting this parameter to t.")
+
+(defvar ess-indent-function-declaration t
+  "When this setting is switched on the offsets for function
+arguments are ignored for function declarations. All arguments
+are then aligned from the opening parenthesis.
+
+`ess-offset-arguments' is set to 4 here:
+
+  some_function(argument1,
+      argument2, argument3
+  )
+
+But this offset is ignored for function declarations;
+
+  fun <- function(argument1,
+                  argument2
+                  argument3) {
+      body
+  }
+")
+
+(defvar ess-indent-from-outer-parameter nil
+  "When a function is called as argument in another function
+call, should indentation start from the argument name to which
+the inner call is bound, or from the name of the inner function
+call itself?
+
+This setting only has an effect when indentation of arguments is
+relative to the innermost function call. That is, when
+ess-offset-arguments or ess-offset-arguments-newline is set to a
+number N (as opposed to nil or '(N)).
+
+If nil:
+
+  some_function(parameter = other_function(
+                                argument
+                            ))
+
+If t:
+  some_function(parameter = other_function(
+                    argument
+                ))
+")
+
+(defvar ess-offset-continued-opening 0
+  "Extra indent for substatements that start with open-braces.
+This is in addition to ess-offset-continued.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-fancy-comments t
@@ -752,105 +855,139 @@ parenthesis is indented as follows:
   :type 'boolean
   :group 'ess-edit)
 
-
 ;; PeterDalgaard, 1Apr97 :
-;;The default ess-else-offset should be 0, not 2 IMHO (try looking at
+;;The default ess-offset-else should be 0, not 2 IMHO (try looking at
 ;;the ls() function, for instance).  Was 2.
-(defvar ess-else-offset 0
+(defvar ess-offset-else 0
   "Extra indent for `else' lines.")
 
-(defvar ess-expression-offset 4
-  "Extra indent for internal substatements of `expression' that specified
-in `obj <- expression(...)' form.
-If not number, the statements are indented at open-parenthesis following
-`expression'.")
 
 ;;;*;;; Editing styles
 
 (defvar ess-default-style-list
   (list 'DEFAULT
         (cons 'ess-indent-level '(default-value 'ess-indent-level))
-        (cons 'ess-first-continued-statement-offset '(default-value 'ess-first-continued-statement-offset))
-        (cons 'ess-continued-statement-offset '(default-value 'ess-continued-statement-offset))
-        (cons 'ess-brace-offset '(default-value 'ess-brace-offset))
-        (cons 'ess-expression-offset '(default-value 'ess-expression-offset))
-        (cons 'ess-else-offset '(default-value 'ess-else-offset))
+        (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
+        (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
+        (cons 'ess-offset-block-opening '(default-value 'ess-offset-block-opening))
+        (cons 'ess-offset-else '(default-value 'ess-offset-else))
         (cons 'ess-brace-imaginary-offset '(default-value 'ess-brace-imaginary-offset))
-        (cons 'ess-continued-brace-offset '(default-value 'ess-continued-brace-offset))
+        (cons 'ess-offset-continued-opening '(default-value 'ess-offset-continued-opening))
         (cons 'ess-arg-function-offset '(default-value 'ess-arg-function-offset))
         (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
-        (cons 'ess-close-brace-offset '(default-value 'ess-close-brace-offset))
+        (cons 'ess-offset-block-closing '(default-value 'ess-offset-block-closing))
         )
   "Style constructed from initial (default) values of ESS indentation variables.")
 
 (defvar ess-style-alist
   (cons ess-default-style-list
         '((GNU (ess-indent-level . 2)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 2)
-               (ess-brace-offset . 0)
-               (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . '(4))
-               (ess-expression-offset . 2)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 0)
+               (ess-offset-block . '(t))
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . 0)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . t)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . '(4))
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
+               (ess-fancy-comments . t)
                )
           (BSD (ess-indent-level . 8)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 8)
-               (ess-brace-offset . -8)
-               (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . '(8))
-               (ess-expression-offset . 8)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 0)
+               (ess-offset-block . t)
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . 0)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . t)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . '(t))
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
+               (ess-fancy-comments . t)
                )
           (K&R (ess-indent-level . 5)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 5)
-               (ess-brace-offset . -5)
-               (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . '(5))
-               (ess-expression-offset . 5)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 0)
+               (ess-offset-block . t)
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . 0)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . t)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . '(t))
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
+               (ess-fancy-comments . t)
                )
           (C++ (ess-indent-level . 4)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 4)
-               (ess-brace-offset . -4)
-               (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . '(4))
-               (ess-expression-offset . 4)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 0)
+               (ess-offset-block . t)
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . 0)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . t)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . t)
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
+               (ess-fancy-comments . t)
                )
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-level . 4)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 4)
-               (ess-brace-offset . 0)
-               (ess-arg-function-offset . 4)
-               (ess-arg-function-offset-new-line . '(4))
-               (ess-expression-offset . 4)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 0)
-               (ess-brace-imaginary-offset . 0)
-               (ess-continued-brace-offset . 0)
-               (ess-close-paren-offset . 0)
+               (ess-offset-block . '(t))
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . 0)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . t)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . '(t))
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
                (ess-fancy-comments . t)
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
-               (ess-first-continued-statement-offset . 0)
-               (ess-continued-statement-offset . 4)
-               (ess-brace-offset . 0)
-               (ess-arg-function-offset . 0)
-               (ess-arg-function-offset-new-line . '(2))
-               (ess-expression-offset . 4)
-               (ess-else-offset . 0)
-               (ess-close-brace-offset . 2)
+               (ess-offset-block . '(t))
+               (ess-offset-block-opening . 0)
+               (ess-offset-block-closing . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-continued . 4)
+               (ess-offset-continued-opening . 0)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . '(t))
+               (ess-offset-arguments-closing . 0)
+               (ess-offset-else . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-outer-parameter . t)
+               (ess-fancy-comments . t)
                )
+          (RStudio (ess-indent-level . 2)
+                   (ess-offset-block . '(t))
+                   (ess-offset-block-opening . 0)
+                   (ess-offset-block-closing . 0)
+                   (ess-offset-continued-first . t)
+                   (ess-offset-continued . 0)
+                   (ess-offset-continued-opening . 0)
+                   (ess-offset-arguments . nil)
+                   (ess-offset-arguments-newline . '(t))
+                   (ess-offset-arguments-closing . 0)
+                   (ess-offset-else . 0)
+                   (ess-indent-function-declaration . t)
+                   (ess-indent-from-outer-parameter . t)
+                   (ess-fancy-comments . nil)
+                   )
           )
         )
   "Predefined formatting styles for ESS code.
@@ -862,7 +999,7 @@ value of variables in the OWN group, customize the variable
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
 Remove any existing entry with the same KEY before adding the new one.
-               (ess-first-continued-statement-offset . 0)
+               (ess-offset-continued-first . 0)
 This can be used"
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
@@ -889,6 +1026,7 @@ Since ESS 13.05, the default is  RRR  rather than DEFAULT."
                  (const BSD)
                  (const K&R)
                  (const C++)
+                 (const RStudio)
                  (const :tag "Common R" :value RRR)
                  (const CLB))
   :group 'ess-edit)

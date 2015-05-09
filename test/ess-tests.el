@@ -33,7 +33,7 @@
 ;;
 ;; To apply styles for manual testing:
 ;;   M-: (let ((ess-style-alist ess-test-style-alist))
-;;         (ess-set-style 'test-misc1))
+;;         (ess-set-style 'misc1))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -48,20 +48,29 @@
   ;; New test-RRR style containing additional settings.
   ;; Compared to RRR, it makes sure personal configuration does not
   ;; interfere with tests
-  `(,(assq 'RRR ess-style-alist)
+  `((RRR
+     ,@(cdr (assq 'RRR ess-style-alist)))
+    (GNU
+     ,@(cdr (assq 'GNU ess-style-alist)))
+    (RStudio
+     ,@(cdr (assq 'RStudio ess-style-alist)))
+    (C++
+     ,@(cdr (assq 'C++ ess-style-alist)))
     (misc1
      (ess-indent-level . 6)
-     (ess-first-continued-statement-offset . 3)
-     (ess-continued-statement-offset . 0)
-     (ess-brace-offset . -6)
-     (ess-arg-function-offset . 0)
-     (ess-arg-function-offset-new-line . 6)
-     (ess-expression-offset . 0)
-     (ess-else-offset . 6)
-     (ess-close-brace-offset . 6)
-     (ess-brace-imaginary-offset . 3)
-     (ess-continued-brace-offset . 3)
-     (ess-close-paren-offset . '(3)))))
+     (ess-offset-block . nil)
+     (ess-offset-block-opening . -2)
+     (ess-offset-block-closing . t)
+     (ess-offset-continued-first . 3)
+     (ess-offset-continued . 0)
+     (ess-offset-continued-opening . 3)
+     (ess-offset-arguments . t)
+     (ess-offset-arguments-newline . nil)
+     (ess-offset-arguments-closing . t)
+     (ess-offset-else . t)
+     (ess-indent-function-declaration . nil)
+     (ess-indent-from-outer-parameter . nil)
+     )))
 
 (defun ess-test-R-indentation (file style)
   (let ((ess-style-alist (append ess-test-style-alist ess-style-alist)))
