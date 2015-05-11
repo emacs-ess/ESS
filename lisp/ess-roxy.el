@@ -694,6 +694,15 @@ list of strings."
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
+(defun ess-roxy-first-non-blank ()
+  (interactive)
+  (if (ess-roxy-entry-p)
+      (progn
+        (end-of-line)
+        (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
+        (goto-char (match-end 0)))
+    (back-to-indentation)))
+
 (defadvice ess-eval-line-and-step (around ess-eval-line-and-step-roxy)
   "evaluate line but do not skip over comment (roxy) lines"
   (if (ess-roxy-entry-p)
@@ -724,11 +733,10 @@ list of strings."
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
-  (if (and (ess-roxy-entry-p)
-           (not (looking-back (concat ess-roxy-re " *\\="))))
+  (if (ess-roxy-entry-p)
       (progn
         (end-of-line)
-        (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
+        (re-search-backward (concat ess-roxy-re " ?") (point-at-bol))
         (goto-char (match-end 0)))
     ad-do-it))
 
