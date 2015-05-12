@@ -2665,11 +2665,14 @@ This is a good thing to put in `ess-R-post-run-hook' or
     ;; (frame) characters which leads to incorrect sizes with scaled fonts. To
     ;; solve this we approximate font width in pixels and use window-pixel-width
     ;; to compute the approximate number of characters that fit into line.
-    (let* ((r (/ (float (window-font-height)) (window-font-width)))
-           (charw (/ (default-font-height) r))
-           (nchars (floor (/ (window-pixel-width) charw)))
+    (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
+	   (charh (aref (font-info (face-font 'default)) 3))
+           (charw (/ charh  r))
+	   (wedges (window-inside-pixel-edges))
+	   (wwidth (- (nth 2 wedges) (nth 0 wedges)))
+           (nchars (floor (/ wwidth charw)))
            (command (format "options(width=%d, length=99999)\n"
-                            (- nchars (ceiling r)))))
+                            (- nchars 1))))
       (if invisibly
           (ess-command command)
         (ess-eval-linewise command nil nil nil 'wait-prompt)))))
