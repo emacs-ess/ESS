@@ -2657,10 +2657,17 @@ Doesn't work for data frames."
 Also sets the \"length\" option to 99999.
 This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
   (interactive)
-  (if (string= ess-language "S")
+  (when (string= ess-language "S")
+    ;; We cannot use (window-width) here because it returns sizes in default
+    ;; (frame) characters which leads to incorrect sizes with scaled fonts. To
+    ;; solve this we approximate font width in pixels and use window-pixel-width
+    ;; to compute the approximate number of characters that fit into line.
+    (let* ((r (/ (float (window-font-height)) (window-font-width)))
+           (charw (/ (default-font-height) r))
+           (nchars (floor (/ (window-pixel-width) charw))))
       (ess-eval-linewise (format "options(width=%d, length=99999)"
-                                 (- (window-width) 2))
-                         nil nil nil 'wait-prompt)))
+                                 (- nchars (ceiling r)))
+                         nil nil nil 'wait-prompt))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
