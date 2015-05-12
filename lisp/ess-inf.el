@@ -2652,10 +2652,13 @@ Doesn't work for data frames."
                        ")") 'buffer)
   (ess-process-put 'sp-for-help-changed? t))
 
-(defun ess-execute-screen-options ()
+(defun ess-execute-screen-options (&optional invisibly)
   "Cause S to set the \"width\" option to 1 less than the window width.
-Also sets the \"length\" option to 99999.
-This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
+Also sets the \"length\" option to 99999. When INVISIBLY is
+non-nil, don't echo to R subprocess.
+
+This is a good thing to put in `ess-R-post-run-hook' or
+`ess-S+-post-run-hook'."
   (interactive)
   (when (string= ess-language "S")
     ;; We cannot use (window-width) here because it returns sizes in default
@@ -2664,10 +2667,12 @@ This is a good thing to put in `ess-post-run-hook' --- for the S dialects."
     ;; to compute the approximate number of characters that fit into line.
     (let* ((r (/ (float (window-font-height)) (window-font-width)))
            (charw (/ (default-font-height) r))
-           (nchars (floor (/ (window-pixel-width) charw))))
-      (ess-eval-linewise (format "options(width=%d, length=99999)"
-                                 (- nchars (ceiling r)))
-                         nil nil nil 'wait-prompt))))
+           (nchars (floor (/ (window-pixel-width) charw)))
+           (command (format "options(width=%d, length=99999)\n"
+                            (- nchars (ceiling r)))))
+      (if invisibly
+          (ess-command command)
+        (ess-eval-linewise command nil nil nil 'wait-prompt)))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.
