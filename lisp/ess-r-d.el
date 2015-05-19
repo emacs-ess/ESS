@@ -473,6 +473,7 @@ Executed in process buffer."
   (ad-activate 'mark-paragraph)
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
+  (ad-activate 'back-to-indentation)
   (ad-activate 'newline-and-indent)
   (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
