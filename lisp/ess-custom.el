@@ -671,12 +671,12 @@ This is in addition to ess-continued-statement-offset.")
 (defvar ess-arg-function-offset 2
   "Extra indent for internal substatements of function `foo' that called
 in `arg=foo(...)' form.
-If not number, the statements are indented at open-parenthesis following foo.")
+If not number, the statements are indented at open-parenthesis following `foo'.")
 
 (defvar ess-arg-function-offset-new-line '(2)
   "Extra indent for function arguments when ( is folowed by new line.
 
-If nil, the statements are indented at open-parenthesis following foo:
+If nil, the statements are indented at open-parenthesis following `foo':
 
   a <- some.function(other.function(
                                     arg1,
@@ -686,16 +686,16 @@ If a list of the form '(N) where N is a number, the statements
 are indented at the previous line indentation + N characters:
 
   a <- some.function(other.function(
-     arg1,
-     arg2)
+      arg1,
+      arg2)
 
 
 If a number N, the statement are alligned at the beginning of
 function call + N characters:
 
   a <- some.function(other.function(
-                       arg1,
-                       arg2)
+                         arg1,
+                         arg2)
 
 
 For inner function arguments the behavior is unchanged:
@@ -717,6 +717,39 @@ some.function(arg1,
                      a,
                      b,
 
+")
+
+(defvar ess-arg-function-offset-continued nil
+  "Extra indent for function arguments when ( is folowed by arguments and
+a new line. This setting is mainly intended for compatibility with Rstudio
+indentation rules. The default (nil) is recommended.
+
+If nil, the statements are indented at open-parenthesis following `foo':
+
+  a <- some.function(other.function(arg1,
+                                    arg2)
+
+If a list of the form '(N) where N is a number, the statements are indented
+at the previous line indentation + N characters, as in Rstudio:
+
+  a <- some.function(other.function(arg1,
+      arg2)
+
+
+If a number N, the statement are alligned at the beginning of
+function call + N characters:
+
+  a <- some.function(other.function(arg1,
+                         arg2)
+
+Note that this setting only applies to function calls, not functions
+declarations. For declarations, arguments are always aligned with
+the opening parenthese:
+
+  a <- function(arg1,
+                arg2) {
+      body
+  }
 ")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
