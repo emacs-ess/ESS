@@ -316,9 +316,9 @@ if (condition) {
 if (condition) {
       stuff1
 }
-      else {
-            stuff2
-      }
+else {
+      stuff2
+}
 
 ## 3
 if (condition)
@@ -334,10 +334,10 @@ if (condition)
 {
       stuff1
 }
-      else
+else
 {
-            stuff2
-      }
+      stuff2
+}
 
 ## 5
 for (sequence)

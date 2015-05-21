@@ -65,7 +65,6 @@
      (ess-indent-from-outer-parameter . nil)
      (ess-offset-continued . 0)
      (ess-offset-continued-first . 3)
-     (ess-offset-else . t)
      )))
 
 (defun ess-test-R-indentation (file style)

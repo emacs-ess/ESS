@@ -828,17 +828,24 @@ If you set this to non-zero value you might want to set
 
 You can refer to ess-indent-level by setting this parameter to t.")
 
-;; PeterDalgaard, 1Apr97 :
-;;The default ess-offset-else should be 0, not 2 IMHO (try looking at
-;;the ls() function, for instance).  Was 2.
-(defvar ess-offset-else 0
-  "Extra indent for `else' lines.")
-
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-fancy-comments t
   "Non-nil means distiguish between #, ##, and ### for indentation."
   :type 'boolean
   :group 'ess-edit)
+
+(make-obsolete-variable 'ess-arg-function-offset 'ess-indent-from-outer-parameter "15.09")
+(make-obsolete-variable 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
+(make-obsolete-variable 'ess-first-continued-statement-offset 'ess-offset-continued-first "15.09")
+(make-obsolete-variable 'ess-continued-statement-offset 'ess-offset-continued "15.09")
+
+(make-obsolete-variable 'ess-brace-imaginary-offset nil "15.09")
+(make-obsolete-variable 'ess-brace-offset nil "15.09")
+(make-obsolete-variable 'ess-continued-brace-offset nil "15.09")
+(make-obsolete-variable 'ess-close-brace-offset nil "15.09")
+(make-obsolete-variable 'ess-close-paren-offset nil "15.09")
+(make-obsolete-variable 'ess-else-offset  nil "15.09")
+(make-obsolete-variable 'ess-expression-offset nil "15.09")
 
 
 ;;;*;;; Editing styles
@@ -853,7 +860,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
         (cons 'ess-indent-from-outer-parameter '(default-value 'ess-indent-from-outer-parameter))
         (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
         (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
-        (cons 'ess-offset-else '(default-value 'ess-offset-else))
         (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments))
         )
   "Style constructed from initial (default) values of ESS indentation variables.")
@@ -868,7 +874,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (BSD (ess-indent-level . 8)
@@ -879,7 +884,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (K&R (ess-indent-level . 5)
@@ -890,7 +894,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (C++ (ess-indent-level . 4)
@@ -901,7 +904,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           ;; R added ajr 17Feb04 to match "common R" use
@@ -913,7 +915,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
@@ -925,7 +926,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-indent-from-outer-parameter . t)
                (ess-offset-continued . 4)
                (ess-offset-continued-first . 0)
-               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (RStudio (ess-indent-level . 2)
@@ -936,7 +936,6 @@ You can refer to ess-indent-level by setting this parameter to t.")
                    (ess-indent-from-outer-parameter . t)
                    (ess-offset-continued . 0)
                    (ess-offset-continued-first . t)
-                   (ess-offset-else . 0)
                    (ess-fancy-comments . nil)
                    )
           )

@@ -413,8 +413,6 @@ Variables controlling indentation style:
     if or body of a while.
  `ess-offset-continued-first'
     Extra indentation given to the first continued statement.
- `ess-offset-else'
-    Extra indentation for line if it starts with `else'.
  `ess-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
 
@@ -998,13 +996,7 @@ Return the amount the indentation changed by."
           (setq indent comment-column))
          (t
           (if (eq indent t) (setq indent 0))
-          (if (listp indent) (setq indent (car indent)))
-          (cond
-           ((and (looking-at "else\\b")
-                 (not (looking-at "else\\s_")))
-            (setq indent (save-excursion
-                           (ess-backward-to-start-of-if)
-                           (+ (ess-offset 'else) (current-column)))))))))
+          (if (listp indent) (setq indent (car indent))))))
       (skip-chars-forward " \t")
       (setq shift-amt (- indent (current-column)))
       (if (zerop shift-amt)
