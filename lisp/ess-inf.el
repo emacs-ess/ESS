@@ -375,6 +375,8 @@ Otherwise stay at current position and return nil "
       (goto-char new-point))))
 
 (defvar compilation--parsed)
+(defvar ess--tb-last-input)
+(declare-function compilation--ensure-parse "compile")
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
@@ -385,11 +387,11 @@ fontification spilling over prompts."
          (pos (or (inferior-ess-goto-last-prompt-if-close)
                   beg))
          (pos2))
-    ;; Font lock seems to skip regions for unlear reason when
+    ;; Font lock seems to skip regions for unclear reason when
     ;; font-lock-dont-widen is t. This in turn screws compilation marker and
     ;; makes compilation--parse-region think that it parsed stuff that it
-    ;; didn't. So reset it each time.
-    (setq compilation--parsed -1)
+    ;; didn't. So reset it each time. (not used anymore, call compilation--ensure-parse directly)
+    ;; (setq compilation--parsed (copy-marker pos))
     (with-silent-modifications
       ;; (dbg pos end)
       ;; (font-lock-unfontify-region pos end)
@@ -399,12 +401,11 @@ fontification spilling over prompts."
         (setq pos2 (min (point) end))
         (if nil
             (font-lock-default-fontify-region pos pos2 verbose)
-          ;; Some error locations are not fontified with with narrowing. Especiall those from gcc.
-          ;; What on earth is goin on?
           (save-restriction
             (narrow-to-region pos pos2)
             (font-lock-default-fontify-region pos pos2 verbose)))
-        (setq pos pos2)))))
+        (setq pos pos2))
+      (compilation--ensure-parse pos))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
