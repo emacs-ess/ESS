@@ -1,6 +1,42 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 15.09:
+@itemize @bullet
+@item @ESS{[R]}: The indentation logic has been refactored. It should
+be faster, more consistent and more flexible. A test framework has been
+set up in order to prevent any regression on future code
+change. Indentation settings have been renamed to and now all start with
+the prefix @code{ess-offset-}.
+@item @ESS{[R]}: The most visible user change in the indentation setup
+is that customisation is now centered around 3 settings:
+@code{ess-offset-arguments}, @code{ess-offset-arguments-newline} and
+@code{ess-offset-block}. The first two settings control how arguments
+are indented inside function calls and index brackets, while the latter
+controls the indentation of statement blocks. They all take either a
+number @code{N} (indentation relative to innermost function call), a
+list @code{'(N)} containing a number (indentation relative to last line
+indentation as in RStudio) or a @code{nil} value (indentation relative
+to opening delimiter). See the documentation strings of those variables
+for more information. Indentation of delimiters refer to these three
+values depending on the context in order to offer a consistent
+indentation.
+@item @ESS{[R]}: @code{ess-arg-function-offset} has been replaced by
+@code{ess-indent-from-outer-parameter}. This setting works with both
+statement blocks and expressions. It takes only effect when the
+expression offsets are set to a number in order to produce a consistent
+indentation.
+@item @ESS{[R]}: @code{ess-brace-imaginary-offset},
+@code{ess-expression-offset} and all delimiter offsets are deprecated.
+@item @ESS{[R]}: All indentation parameters can now be set to @code{t}
+or @code{'(t)} to refer to the base indentation level
+@code{ess-indent-level}.
+@item @ESS{[R]}: A new RStudio style is provided to mimic as closely
+as possible R files indented via RStudio. To reproduce the setup of some
+RStudio users, you will also need to set @code{ess-offset-arguments} to
+@code{'(t)}.
+@end itemize
+
 Changes and New Features in 15.03-1:
 @itemize @bullet
 @item @ESS{[R]}: An indentation bug has been fixed (github issue 163)
@@ -56,9 +92,9 @@ v.0.3.0. Julia v.0.2.x is no more supported.
 width in terminal sessions
 @item @ESS{}: @code{ess-build-tags-for-directory} works when no TAGS file
 name was provided
-@item @ESS{}: @code{ess-continued-statement-offset} is now respected everywhere
+@item @ESS{}: @code{ess-offset-statement-continued} is now respected everywhere
 except inside of the @code{if} test condition.
-@item @ESS{}: New variable @code{ess-first-continued-statement-offset} for
+@item @ESS{}: New variable @code{ess-offset-statement-first-continued} for
 indentation of the first line in multiline statements.
 @item @ESS{R}: Starting @kbd{,} in multiline statements indentation is now
 ignored to achieve a more pleasant alignment.
