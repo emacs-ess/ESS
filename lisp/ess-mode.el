@@ -395,21 +395,13 @@ Variables controlling indentation style:
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
- `ess-offset-block-opening'
-    Extra indentation for line if it starts with an open brace.
- `ess-offset-block-closing'
-    Extra indentation for closing braces.
  `ess-offset-continued-first'
     Extra indentation given to the first continued statement.
  `ess-offset-continued'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
- `ess-offset-continued-opening'
-    Extra indentation given to a brace that starts a substatement.
-    This is in addition to ess-offset-continued.
  `ess-offset-arguments'
- `ess-offset-newline'
- `ess-offset-closing'
+ `ess-offset-arguments-newline'
  `ess-offset-else'
     Extra indentation for line if it starts with `else'.
  `ess-indent-function-declaration'
@@ -1131,70 +1123,62 @@ Returns nil if line starts inside a string, t if in a comment."
         0)
        ;; Block: Closing
        ((ess-block-closing-p)
-        (ess-calculate-indent--block (ess-offset 'block-closing)))
+        (ess-calculate-indent--block 0))
        ;; Block: Contents
        ((ess-block-p)
         (ess-calculate-indent--block))
        ;; Arguments: Closing
        ((looking-at "[])]")
-        (ess-calculate-indent--args (ess-offset 'arguments-closing)))
+        (ess-calculate-indent--args 0))
        ;; Arguments: Contents
        (t
         (ess-calculate-indent--args))))))
 
-(defun ess-calculate-indent--block (&optional delim-offset)
+(defun ess-calculate-indent--block (&optional offset)
   (when containing-sexp
     (goto-char containing-sexp))
-  (let* ((opening-first (save-excursion
-                          (back-to-indentation)
-                          (ess-climb-block)
-                          (equal (point) containing-sexp)))
-         (offset (or delim-offset
-                     (ess-extract-offset ess-offset-block t)))
-         (indent
-          (if (save-excursion
-                (and prev-containing-sexp
-                     (goto-char prev-containing-sexp)
-                     (looking-at "[[(]")
-                     (ess-looking-back-attached-name-p)))
-              (cond
-               ;; Indent from opening delimiter
-               ((null ess-offset-block)
-                (unless (null (ess-offset 'block))
-                  (ess-climb-block)
-                  (when ess-indent-from-outer-parameter
-                    (ess-climb-parameter)))
-                (current-column))
+  (let ((offset (or offset (ess-extract-offset ess-offset-block t)))
+        (indent
+         (if (save-excursion
+               (and prev-containing-sexp
+                    (goto-char prev-containing-sexp)
+                    (looking-at "[[(]")
+                    (ess-looking-back-attached-name-p)))
+             (cond
+              ;; Indent from opening delimiter
+              ((null ess-offset-block)
+               (unless (null (ess-offset 'block))
+                 (ess-climb-block)
+                 (when ess-indent-from-outer-parameter
+                   (ess-climb-parameter)))
+               (current-column))
 
-               ;; Indent from previous line indentation
-               ((listp ess-offset-block)
-                (goto-char prev-containing-sexp)
-                (current-indentation))
+              ;; Indent from previous line indentation
+              ((listp ess-offset-block)
+               (goto-char prev-containing-sexp)
+               (current-indentation))
 
-               ;; Indent from function call
-               (t
-                (ess-climb-to-args-opening)
-                (ess-calculate-indent--args nil (point) indent-point)))
+              ;; Indent from function call
+              (t
+               (ess-climb-to-args-opening)
+               (ess-calculate-indent--args nil (point) indent-point)))
 
-            ;; Block is not part of an arguments list
-            (ess-climb-block)
-            (current-indentation))))
+           ;; Block is not part of an arguments list
+           (ess-climb-block)
+           (current-indentation))))
 
-    ;; Adjust if opening delim was indented with offset
-    (- (+ indent offset)
-       (if opening-first (ess-offset 'block-opening) 0))))
+    (+ indent offset)))
 
 (defun ess-calculate-indent--block-opening ()
-  (+ (cond ((save-excursion
-              (ess-climb-block)
-              (when (looking-at "function[[:blank:]\n(]+")
-                (when (and containing-sexp
-                           (listp ess-offset-block))
-                  (ignore-errors (backward-sexp)))
-                (current-column))))
-           ((null containing-sexp) 0)
-           (t (ess-calculate-indent--args)))
-     (ess-offset 'block-opening)))
+  (cond ((save-excursion
+           (ess-climb-block)
+           (when (looking-at "function[[:blank:]\n(]+")
+             (when (and containing-sexp
+                        (listp ess-offset-block))
+               (ignore-errors (backward-sexp)))
+             (current-column))))
+        ((null containing-sexp) 0)
+        (t (ess-calculate-indent--args))))
 
 (defun ess-calculate-indent--comma ()
   (let ((indent (save-excursion
@@ -1204,7 +1188,7 @@ Returns nil if line starts inside a string, t if in a comment."
                          (skip-chars-forward ", \t"))))
     (- indent unindent)))
 
-(defun ess-calculate-indent--args (&optional delim-offset from to)
+(defun ess-calculate-indent--args (&optional offset from to)
   (let* ((min-col (ess-minimum-args-indent from to))
          (from (or from containing-sexp))
          (type (progn
@@ -1219,7 +1203,7 @@ Returns nil if line starts inside a string, t if in a comment."
                   ((ess-looking-at-last-open-delim-p)
                    ess-offset-arguments-newline)
                   (t ess-offset-arguments))))
-         (offset (ess-extract-offset type))
+         (offset (or offset (ess-extract-offset type)))
          (indent
           (cond
            ;; Indent from opening delimiter
@@ -1242,12 +1226,7 @@ Returns nil if line starts inside a string, t if in a comment."
               (ess-climb-parameter))
             (current-column)))))
 
-    ;; Lines are normally pushed off from their natural indentation so
-    ;; they don't get further than preceding lines. But we give a
-    ;; chance to the closing delimiters offsets to go beyond that.
-    (+ (or delim-offset 0)
-       (ess-adjust-argument-indent
-        (+ indent (if delim-offset 0 offset))
+    (+ (ess-adjust-argument-indent (+ indent offset)
         min-col))))
 
 ;; Indentation of arguments needs to keep track of how previous
