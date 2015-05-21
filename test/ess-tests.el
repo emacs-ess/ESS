@@ -65,7 +65,11 @@
      (ess-indent-from-outer-parameter . nil)
      (ess-offset-continued . 0)
      (ess-offset-continued-first . 3)
-     )))
+     )
+    (misc2
+     ,@(cdr (assq 'RStudio ess-style-alist))
+     (ess-offset-block . t)
+     (ess-offset-arguments . '(t)))))
 
 (defun ess-test-R-indentation (file style)
   (let ((ess-style-alist (append ess-test-style-alist ess-style-alist)))
