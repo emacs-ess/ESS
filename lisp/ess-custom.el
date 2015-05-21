@@ -709,17 +709,6 @@ You can refer to ess-indent-level by setting this parameter to t
 or '(t) instead of N or '(N).
 ")
 
-(defvar ess-offset-continued 2
-  "Extra indent for lines not starting new statements.
-You can refer to ess-indent-level by setting this parameter to t.")
-
-(defvar ess-offset-continued-first 0
-  "Extra indentation for the first new line continuing a statement.
-If you set this to non-zero value you might want to set
-`ess-offset-continued' to zero.
-
-You can refer to ess-indent-level by setting this parameter to t.")
-
 (defvar ess-offset-arguments nil
   "Extra indent for function arguments or bracket indexing when (
 or [ is not directly followed by a new line.
@@ -810,10 +799,11 @@ call, should indentation start from the argument name to which
 the inner call is bound, or from the name of the inner function
 call itself?
 
-This setting only has an effect when indentation of arguments is
-relative to the innermost function call. That is, when
-ess-offset-arguments or ess-offset-arguments-newline is set to a
-number N as opposed to a nil value or a list '(N).
+This setting only has an effect when indentation of arguments or
+blocks is relative to the innermost function call. That is, when
+ess-offset-arguments, ess-offset-arguments-newline or
+ess-offset-block are set to a number N as opposed to a nil value
+or a list '(N).
 
 If nil:
 
@@ -827,11 +817,16 @@ If t:
                 ))
 ")
 
-;;added rmh 2Nov97 at request of Terry Therneau
-(defcustom ess-fancy-comments t
-  "Non-nil means distiguish between #, ##, and ### for indentation."
-  :type 'boolean
-  :group 'ess-edit)
+(defvar ess-offset-continued 2
+  "Extra indent for lines not starting new statements.
+You can refer to ess-indent-level by setting this parameter to t.")
+
+(defvar ess-offset-continued-first 0
+  "Extra indentation for the first new line continuing a statement.
+If you set this to non-zero value you might want to set
+`ess-offset-continued' to zero.
+
+You can refer to ess-indent-level by setting this parameter to t.")
 
 ;; PeterDalgaard, 1Apr97 :
 ;;The default ess-offset-else should be 0, not 2 IMHO (try looking at
@@ -839,18 +834,27 @@ If t:
 (defvar ess-offset-else 0
   "Extra indent for `else' lines.")
 
+;;added rmh 2Nov97 at request of Terry Therneau
+(defcustom ess-fancy-comments t
+  "Non-nil means distiguish between #, ##, and ### for indentation."
+  :type 'boolean
+  :group 'ess-edit)
+
 
 ;;;*;;; Editing styles
 
 (defvar ess-default-style-list
   (list 'DEFAULT
         (cons 'ess-indent-level '(default-value 'ess-indent-level))
-        (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
+        (cons 'ess-offset-block '(default-value 'ess-offset-block))
+        (cons 'ess-offset-arguments '(default-value 'ess-offset-arguments))
+        (cons 'ess-offset-arguments-newline '(default-value 'ess-offset-arguments-newline))
+        (cons 'ess-indent-function-declaration '(default-value 'ess-indent-function-declaration))
+        (cons 'ess-indent-from-outer-parameter '(default-value 'ess-indent-from-outer-parameter))
         (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
+        (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
         (cons 'ess-offset-else '(default-value 'ess-offset-else))
-        (cons 'ess-brace-imaginary-offset '(default-value 'ess-brace-imaginary-offset))
-        (cons 'ess-arg-function-offset '(default-value 'ess-arg-function-offset))
-        (cons 'ess-arg-function-offset-new-line '(default-value 'ess-arg-function-offset-new-line))
+        (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments))
         )
   "Style constructed from initial (default) values of ESS indentation variables.")
 
@@ -858,81 +862,81 @@ If t:
   (cons ess-default-style-list
         '((GNU (ess-indent-level . 2)
                (ess-offset-block . '(t))
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . t)
                (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . '(4))
-               (ess-offset-else . 0)
+               (ess-offset-arguments-newline . 4)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (BSD (ess-indent-level . 8)
                (ess-offset-block . t)
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . t)
                (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . '(t))
-               (ess-offset-else . 0)
+               (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (K&R (ess-indent-level . 5)
                (ess-offset-block . t)
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . t)
                (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . '(t))
-               (ess-offset-else . 0)
+               (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (C++ (ess-indent-level . 4)
                (ess-offset-block . t)
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . t)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
-               (ess-offset-else . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-level . 4)
                (ess-offset-block . '(t))
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . t)
                (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . '(t))
-               (ess-offset-else . 0)
+               (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-level . 2)
                (ess-offset-block . '(t))
-               (ess-offset-continued-first . 0)
-               (ess-offset-continued . 4)
                (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . '(t))
-               (ess-offset-else . 0)
+               (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
                (ess-indent-from-outer-parameter . t)
+               (ess-offset-continued . 4)
+               (ess-offset-continued-first . 0)
+               (ess-offset-else . 0)
                (ess-fancy-comments . t)
                )
           (RStudio (ess-indent-level . 2)
                    (ess-offset-block . '(t))
-                   (ess-offset-continued-first . t)
-                   (ess-offset-continued . 0)
                    (ess-offset-arguments . nil)
                    (ess-offset-arguments-newline . '(t))
-                   (ess-offset-else . 0)
                    (ess-indent-function-declaration . t)
                    (ess-indent-from-outer-parameter . t)
+                   (ess-offset-continued . 0)
+                   (ess-offset-continued-first . t)
+                   (ess-offset-else . 0)
                    (ess-fancy-comments . nil)
                    )
           )

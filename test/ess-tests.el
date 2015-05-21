@@ -59,13 +59,13 @@
     (misc1
      (ess-indent-level . 6)
      (ess-offset-block . nil)
-     (ess-offset-continued-first . 3)
-     (ess-offset-continued . 0)
      (ess-offset-arguments . t)
      (ess-offset-arguments-newline . nil)
-     (ess-offset-else . t)
      (ess-indent-function-declaration . nil)
      (ess-indent-from-outer-parameter . nil)
+     (ess-offset-continued . 0)
+     (ess-offset-continued-first . 3)
+     (ess-offset-else . t)
      )))
 
 (defun ess-test-R-indentation (file style)

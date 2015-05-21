@@ -28,8 +28,8 @@ function(argument_fun(sub_argument1,
 
 ## 4
 function(argument1, parameter = fun_call(
-    sub_argument),
-    argument2) {}
+                        sub_argument),
+         argument2) {}
 
 ## 5
 function()
@@ -58,9 +58,9 @@ argument)
 
 ## 4
 fun_call(parameter = fun_argument(
-    argument1
-),
-argument2)
+             argument1
+         ),
+         argument2)
 
 ## 5
 fun_call(parameter = fun_argument(argument1,
@@ -103,10 +103,10 @@ fun_call(parameter =
 
 ## 10
 fun_call(parameter = fun_argument(
-    sub_argument
-),
-argument
-)
+             sub_argument
+         ),
+         argument
+         )
 
 ## 11
 {

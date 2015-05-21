@@ -395,17 +395,26 @@ Variables controlling indentation style:
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
- `ess-offset-continued-first'
-    Extra indentation given to the first continued statement.
+ `ess-offset-block'
+    Indentation of blocks opened with curly braces or anonymous parentheses.
+ `ess-offset-arguments'
+    Indentation of function arguments or bracket indices.
+ `ess-offset-arguments-newline'
+    Indentation of function arguments or bracket indices when the opening
+    delimiter is immediately followed by a newline.
+ `ess-indent-function-declaration'
+    Whether arguments of function declarations should always be indented at
+    the opening parenthesis.
+ `ess-indent-from-outer-parameter'
+    Whether function calls given as argument should be indented from the
+    parameter name.
  `ess-offset-continued'
     Extra indentation given to a substatement, such as the then-clause of an
     if or body of a while.
- `ess-offset-arguments'
- `ess-offset-arguments-newline'
+ `ess-offset-continued-first'
+    Extra indentation given to the first continued statement.
  `ess-offset-else'
     Extra indentation for line if it starts with `else'.
- `ess-indent-function-declaration'
- `ess-indent-from-outer-parameter'
  `ess-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
 
