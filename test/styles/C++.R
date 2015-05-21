@@ -36,6 +36,33 @@ function()
 
     function() body
 
+## 6
+object <- function()
+{
+    body
+}
+
+## 7
+{
+    object <- function()
+    {
+        body
+    }
+}
+
+## 8
+fun_call(parameter = function()
+         {
+             body
+         })
+
+## 9
+{
+    fun_call(parameter = function()
+             {
+                 body
+             })
+}
 
 
 ### Function calls
@@ -52,9 +79,9 @@ fun_call(
 
 ## 3
 fun_call(parameter = (
-             stuff
-         ),
-         argument)
+    stuff
+),
+argument)
 
 ## 4
 fun_call(parameter = fun_argument(
@@ -130,6 +157,12 @@ fun_call(parameter = fun_argument(
     )
 }
 
+## 12  # fixme: should be indented relative to <- ?
+
+a <- fun_call(
+         arg1,
+         arg2
+     )
 
 
 ### Blocks
@@ -214,6 +247,15 @@ fun_call(function(x) {
          })
 
 ## 9
+fun_call(
+    {
+        stuff
+    }, {
+        stuff
+    }
+)
+
+## 10
 object <-
     fun_call({
                  stuff
@@ -221,68 +263,81 @@ object <-
                  stuff
              })
 
-## 10
+## 11
 object <-
     fun_call(     {
                  body
              }
              )
 
-## 11
+## 12
+fun_call1(
+    fun_call2({
+                  stuff
+              }
+              )
+)
+
+## 13
 {
-{
-    stuff
-}
+    stuff1
+
+    {
+        stuff2
+    }
 }
 
-## 12
+## 14
 {{
     stuff
 }
 }
 
-## 13
+## 15
 ({
     stuff
 })
 
-## 14
+## 16
 ( {
     stuff
 }
 )
 
-## 15
+
+### Bracket indexing
+
+## 1
 object[
     argument1,
     argument2
 ]
 
-## 16
+## 2
 object[argument1,
        argument2
        ]
 
-## 17
+## 3
 object[(
-           argument1
-       )]
+    argument1
+)]
 
-## 18
+## 4
 {
     object[
         fun_call(
             body
         ),
         argument[
-            (
-                sub_argument
-            )
+        (
+            sub_argument
+        )
         ]
     ]
 }
 
-## 19
+## 5
 {
     object[
         argument1,
@@ -306,48 +361,60 @@ object[(
 ### Control flow
 
 ## 1
-if (condition) {
-    stuff1
-} else {
-    stuff2
+{
+    if (condition) {
+        stuff1
+    } else {
+        stuff2
+    }
 }
 
 ## 2
-if (condition) {
-    stuff1
-}
-else {
-    stuff2
+{
+    if (condition) {
+        stuff1
+    }
+    else {
+        stuff2
+    }
 }
 
 ## 3
-if (condition)
 {
-    stuff1
-} else
-{
-    stuff2
+    if (condition)
+    {
+        stuff1
+    } else
+    {
+        stuff2
+    }
 }
 
 ## 4
-if (condition)
 {
-    stuff1
-}
-else
-{
-    stuff2
+    if (condition)
+    {
+        stuff1
+    }
+    else
+    {
+        stuff2
+    }
 }
 
 ## 5
-for (sequence)
 {
-    stuff
+    for (sequence)
+    {
+        stuff
+    }
 }
 
 ## 6
-for (sequence) {
-    stuff
+{
+    for (sequence) {
+        stuff
+    }
 }
 
 ## 7
@@ -358,6 +425,40 @@ if (condition)
 for (sequence)
     stuff
 
+## 9
+object <-
+    if (condition) {
+        stuff
+    } else {
+        stuff
+    }
+
+## 10
+{
+    object <-
+        if (condition) stuff
+        else stuff
+}
+
+## 10
+{
+    object <-
+        if (condition) fun_call(
+                           argument1,
+                           argument2
+                       )
+        else stuff
+}
+
+## 11
+{
+    fun_call(parameter =
+                 if (condition)
+                     stuff
+                 else
+                     stuff
+             )
+}
 
 
 ### Continuation lines
@@ -444,8 +545,8 @@ stuff +
     fun_call(parameter = argument1,
              fun_call((stuff1 - stuff2 +
                            stuff3
-                      ) /
-                          stuff4)
+             ) /
+                 stuff4)
              )
 
 ## 10
