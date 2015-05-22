@@ -36,7 +36,7 @@
 ;;   - C-c C-o C-o :: update template
 ;; - navigating and filling roxygen fields
 ;;   - C-c TAB, M-q, C-a, ENTER, M-h :: advised tag completion, fill-paragraph,
-;;        move-beginning-of-line, newline-and-indent, mark-paragraph
+;;        move-beginning-of-line, newline-and-indent
 ;;   - C-c C-o n,p :: next, previous roxygen entry
 ;;   - C-c C-o C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
@@ -137,10 +137,6 @@
   (make-local-variable 'adaptive-fill-first-line-regexp)
   (setq adaptive-fill-first-line-regexp (concat ess-roxy-re
                                                 adaptive-fill-first-line-regexp))
-  (make-local-variable 'paragraph-start)
-  (setq paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
-  (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
   (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local)
   )
 
@@ -699,15 +695,6 @@ list of strings."
   (if (ess-roxy-entry-p)
       (let ((simple-next t))
         ad-do-it)
-    ad-do-it))
-
-(defadvice mark-paragraph (around ess-roxy-mark-field)
-  "mark this field"
-  (if (and (ess-roxy-entry-p) (not mark-active))
-      (progn
-        (push-mark (point))
-        (push-mark (1+ (ess-roxy-end-of-field)) nil t)
-        (goto-char (ess-roxy-beg-of-field)))
     ad-do-it))
 
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
