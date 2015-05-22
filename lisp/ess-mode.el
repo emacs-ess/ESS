@@ -405,7 +405,7 @@ Variables controlling indentation style:
  `ess-indent-function-declaration'
     Whether arguments of function declarations should always be indented at
     the opening parenthesis.
- `ess-indent-from-outer-parameter'
+ `ess-indent-from-lhs'
     Whether function calls given as argument should be indented from the
     parameter name.
  `ess-offset-continued'
@@ -1079,9 +1079,16 @@ Return the amount the indentation changed by."
                           (looking-at "function\\|if\\|for")))))
       (goto-char saved-pos))))
 
-(defun ess-climb-parameter ()
-  (when (looking-back "=[[:blank:]]*" (line-beginning-position))
-    (ignore-errors (backward-sexp))))
+(defun ess-climb-lhs ()
+  (let ((saved-pos (point))
+        (start-line (line-number-at-pos)))
+    (ignore-errors
+      (backward-sexp)
+      (forward-sexp)
+      (if (and (equal (line-number-at-pos) start-line)
+               (looking-at "[[:blank:]]*\\(=\\|<-\\)"))
+          (backward-sexp)
+        (goto-char saved-pos)))))
 
 (defun ess-climb-to-args-opening ()
   (let ((saved-pos (point)))
@@ -1157,8 +1164,8 @@ Returns nil if line starts inside a string, t if in a comment."
                ((null ess-offset-block)
                 (unless (null (ess-offset 'block))
                   (ess-climb-block)
-                  (when ess-indent-from-outer-parameter
-                    (ess-climb-parameter)))
+                  (when ess-indent-from-lhs
+                    (ess-climb-lhs)))
                 (current-column))
 
                ;; Indent from previous line indentation
@@ -1241,8 +1248,8 @@ Returns nil if line starts inside a string, t if in a comment."
             (while (equal (char-before) ?\])
               (ignore-errors (backward-sexp)))
             (ignore-errors (backward-sexp))
-            (when ess-indent-from-outer-parameter
-              (ess-climb-parameter))
+            (when ess-indent-from-lhs
+              (ess-climb-lhs))
             (current-column)))))
 
     (+ (ess-adjust-argument-indent (+ indent offset)

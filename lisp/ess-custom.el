@@ -793,11 +793,9 @@ But this offset is ignored for function declarations;
   }
 ")
 
-(defvar ess-indent-from-outer-parameter nil
-  "When a function is called as argument in another function
-call, should indentation start from the argument name to which
-the inner call is bound, or from the name of the inner function
-call itself?
+(defvar ess-indent-from-lhs nil
+  "When true, indentation of arguments will proceed from the
+left-hand side of assignments or function parameters.
 
 This setting only has an effect when indentation of arguments or
 blocks is relative to the innermost function call. That is, when
@@ -811,10 +809,20 @@ If nil:
                                 argument
                             ))
 
+  object <- some_function(
+                argument1,
+                argument2
+            )
+
 If t:
   some_function(parameter = other_function(
                     argument
                 ))
+
+  object <- some_function(
+      argument1,
+      argument2
+  )
 ")
 
 (defvar ess-offset-continued 2
@@ -834,7 +842,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
   :type 'boolean
   :group 'ess-edit)
 
-(make-obsolete-variable 'ess-arg-function-offset 'ess-indent-from-outer-parameter "15.09")
+(make-obsolete-variable 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
 (make-obsolete-variable 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
 (make-obsolete-variable 'ess-first-continued-statement-offset 'ess-offset-continued-first "15.09")
 (make-obsolete-variable 'ess-continued-statement-offset 'ess-offset-continued "15.09")
@@ -857,7 +865,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
         (cons 'ess-offset-arguments '(default-value 'ess-offset-arguments))
         (cons 'ess-offset-arguments-newline '(default-value 'ess-offset-arguments-newline))
         (cons 'ess-indent-function-declaration '(default-value 'ess-indent-function-declaration))
-        (cons 'ess-indent-from-outer-parameter '(default-value 'ess-indent-from-outer-parameter))
+        (cons 'ess-indent-from-lhs '(default-value 'ess-indent-from-lhs))
         (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
         (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
         (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments))
@@ -871,7 +879,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . 4)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -881,7 +889,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -891,7 +899,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -901,7 +909,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -912,7 +920,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -923,7 +931,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
-               (ess-indent-from-outer-parameter . t)
+               (ess-indent-from-lhs . t)
                (ess-offset-continued . 4)
                (ess-offset-continued-first . 0)
                (ess-fancy-comments . t)
@@ -933,7 +941,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
                    (ess-offset-arguments . nil)
                    (ess-offset-arguments-newline . '(t))
                    (ess-indent-function-declaration . t)
-                   (ess-indent-from-outer-parameter . t)
+                   (ess-indent-from-lhs . t)
                    (ess-offset-continued . 0)
                    (ess-offset-continued-first . t)
                    (ess-fancy-comments . nil)

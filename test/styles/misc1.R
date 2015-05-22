@@ -157,7 +157,7 @@ fun_call(parameter = fun_argument(
                 )
 }
 
-## 12  # fixme: should be indented relative to <- ?
+## 12
 
 a <- fun_call(
               arg1,
