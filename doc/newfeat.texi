@@ -22,10 +22,10 @@ for more information. Indentation of delimiters refer to these three
 values depending on the context in order to offer a consistent
 indentation.
 @item @ESS{[R]}: @code{ess-arg-function-offset} has been replaced by
-@code{ess-indent-from-outer-parameter}. This setting works with both
-statement blocks and expressions. It takes only effect when the
-expression offsets are set to a number in order to produce a consistent
-indentation.
+@code{ess-indent-from-lhs} and has been generalised to
+assignements. This setting works with both statement blocks and
+expressions. It takes only effect when the expression offsets are set to
+a number in order to produce a consistent indentation.
 @item @ESS{[R]}: @code{ess-brace-imaginary-offset},
 @code{ess-expression-offset} and all delimiter offsets are deprecated.
 @item @ESS{[R]}: All indentation parameters can now be set to @code{t}

@@ -62,7 +62,7 @@
      (ess-offset-arguments . t)
      (ess-offset-arguments-newline . nil)
      (ess-indent-function-declaration . nil)
-     (ess-indent-from-outer-parameter . nil)
+     (ess-indent-from-lhs . nil)
      (ess-offset-continued . 0)
      (ess-offset-continued-first . 3)
      )
