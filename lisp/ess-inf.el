@@ -376,7 +376,7 @@ Otherwise stay at current position and return nil "
 
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
-(declare-function compilation--ensure-parse "compile")
+(autoload 'compilation--ensure-parse "compile")
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
