@@ -470,9 +470,9 @@ Executed in process buffer."
        'ess-end-of-function)
 
   (ess-roxy-mode t)
-  (ad-activate 'mark-paragraph)
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
+  (ad-activate 'back-to-indentation)
   (ad-activate 'newline-and-indent)
   (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
