@@ -1,5 +1,4 @@
 #!/usr/bin/emacs --script
-;; -*- emacs-lisp -*-
 ;; This script must be run from the test directory
 
 (let ((current-directory (file-name-directory load-file-name)))
