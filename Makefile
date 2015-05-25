@@ -18,6 +18,9 @@ lisp: $(ETC_FILES)
 test:
 	cd test; $(EMACS) --script run-tests
 
+generate-indent-cases:
+	cd test; $(EMACS) --script generate-indent-cases
+
 ## the rest of the targets are for ESS developer's use only :
 
 # VERSION:
