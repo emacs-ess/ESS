@@ -618,3 +618,10 @@ condition8) {
 } && condition8 ||
     condition9 ||
         condition10
+
+## 4
+isFoo <- function(x,y) {
+    (if(cond(x)) foo(x,y, extra.stuff) else TRUE) &&
+                                                    bar(x,y, and.some.more.arguments)
+}
+##  bar(...) should line up with the beginning of (if(cond....
