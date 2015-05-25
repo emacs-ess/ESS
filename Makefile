@@ -14,6 +14,13 @@ all install uninstall: $(ETC_FILES)
 lisp: $(ETC_FILES)
 	cd lisp; $(MAKE)
 
+.PHONY: test
+test:
+	cd test; $(EMACS) --script run-tests
+
+generate-indent-cases:
+	cd test; $(EMACS) --script generate-indent-cases
+
 ## the rest of the targets are for ESS developer's use only :
 
 # VERSION:

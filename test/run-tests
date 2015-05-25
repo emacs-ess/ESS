@@ -1,5 +1,4 @@
-#!/usr/bin/env emacs --script
-;; -*- emacs-lisp -*- the above line does *not* "work"; rather need  emacs24 --script run-tests
+#!/usr/bin/emacs --script
 ;; This script must be run from the test directory
 
 (let ((current-directory (file-name-directory load-file-name)))
