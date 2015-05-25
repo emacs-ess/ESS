@@ -14,6 +14,10 @@ all install uninstall: $(ETC_FILES)
 lisp: $(ETC_FILES)
 	cd lisp; $(MAKE)
 
+.PHONY: test
+test:
+	cd test; $(EMACS) --script run-tests
+
 ## the rest of the targets are for ESS developer's use only :
 
 # VERSION:
