@@ -460,6 +460,25 @@ object <-
              )
 }
 
+## 12 -- if else .. some with '{ .. }' some not -- must still align
+{
+    if(x > 10) {
+        a <- do.large.x(x, ...)
+        x.gt.10(x, y)
+    } # that works fine,
+    else if (x > 3)
+        x.gt.3(x, y, ...)
+    else if (x > 1) {
+        y <- do.x.lrg.1(x)
+        x.smaller.eq.3(x, y, ...)
+    } else if(x > 0)
+          x.in.0..1(x)
+###     ^
+      else ## x <= 0
+          x.negative(x, ...)
+###     ^
+}
+
 
 ### Continuation lines
 
