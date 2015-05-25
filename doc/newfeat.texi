@@ -35,7 +35,12 @@ or @code{'(t)} to refer to the base indentation level
 as possible R files indented via RStudio. To reproduce the setup of some
 RStudio users, you will also need to set @code{ess-offset-arguments} to
 @code{'(t)}.
+@item @ESS{[R]}: Roxygen fields will now be indented on paragraph
+refilling in order to make the documentation more readable. You can also
+refill commented lines in the @code{examples} field without squashing
+the surrounding code in the comments.
 @end itemize
+
 
 Changes and New Features in 15.03-1:
 @itemize @bullet

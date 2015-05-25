@@ -36,7 +36,7 @@
 ;;   - C-c C-o C-o :: update template
 ;; - navigating and filling roxygen fields
 ;;   - C-c TAB, M-q, C-a, ENTER, M-h :: advised tag completion, fill-paragraph,
-;;        move-beginning-of-line, newline-and-indent, mark-paragraph
+;;        move-beginning-of-line, newline-and-indent
 ;;   - C-c C-o n,p :: next, previous roxygen entry
 ;;   - C-c C-o C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
@@ -63,6 +63,8 @@
 
 (require 'ess-custom)
 (require 'hideshow)
+(eval-when-compile
+  (require 'cl))
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 
 ;; ------------------
@@ -132,15 +134,12 @@
   (when font-lock-mode
     (font-lock-fontify-buffer))
   ;; for auto fill functionality
-  (make-local-variable 'adaptive-fill-regexp)
-  (setq adaptive-fill-regexp (concat ess-roxy-re adaptive-fill-regexp))
-  (make-local-variable 'adaptive-fill-first-line-regexp)
-  (setq adaptive-fill-first-line-regexp (concat ess-roxy-re
-                                                adaptive-fill-first-line-regexp))
   (make-local-variable 'paragraph-start)
   (setq paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
+  (make-local-variable 'adaptive-fill-function)
+  (setq adaptive-fill-function 'ess-roxy-adaptive-fill-function)
   (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local)
   )
 
@@ -247,23 +246,36 @@
         (end (ess-roxy-end-of-field)))
     (narrow-to-region beg end)))
 
-(defun ess-roxy-fill-field ()
-  "Fill the current paragraph in the current roxygen field."
-  (interactive)
-  (if (ess-roxy-entry-p)
-      (save-excursion
-        (let ((beg (ess-roxy-beg-of-field))
-              (end (ess-roxy-end-of-field))
-              (fill-prefix (concat (ess-roxy-guess-str) " "))
-              (beg-par (point-min))
-              (end-par (point-max)))
+(defun ess-roxy-adaptive-fill-function ()
+  "Return prefix for filling paragraph or nil if not determined."
+  (when (ess-roxy-entry-p)
+    (let ((roxy-str (car (split-string (ess-roxy-guess-str) "'"))))
+      (if (ess-roxy-in-header-p)
           (save-excursion
-            (if (re-search-backward (concat ess-roxy-re " *$") (min beg (point)) t)
-                (setq beg-par (match-end 0))))
-          (save-excursion
-            (if (re-search-forward (concat ess-roxy-re " *$") end t)
-                (setq end-par (- (match-beginning 0) 1))))
-          (fill-region (max beg beg-par) (min end end-par))))))
+            (move-beginning-of-line 1)
+            (re-search-forward "\\([ \t]*\\)" (line-end-position) t)
+            (concat roxy-str "' " (match-string 1)))
+        (concat roxy-str "' " (make-string ess-indent-level ? ))))))
+
+(defun ess-roxy-current-field ()
+  "Return the name of the field at point."
+  (and (not (ess-roxy-in-header-p))
+       (save-excursion
+         (goto-char (ess-roxy-beg-of-field))
+         (if (re-search-forward (concat ess-roxy-re
+                                        "[ \t]+@\\([[:alpha:]]+\\)")
+                                (line-end-position) t)
+             (match-string-no-properties 1)))))
+
+(defun ess-roxy-should-indent-line-p ()
+  "Return true when point is in a field, but not in its first line."
+  (and (not (ess-roxy-in-header-p))
+       (not (equal (ess-roxy-current-field) "examples"))
+       (save-excursion
+         (beginning-of-line)
+         (let ((line-n (count-lines 1 (point))))
+           (goto-char (ess-roxy-beg-of-field))
+           (not (equal line-n (count-lines 1 (point))))))))
 
 (defun ess-roxy-goto-func-def ()
   "put point at start of function either that the point is in or
@@ -306,7 +318,7 @@ function at point. if here is supplied start inputting
            (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
                                   (concat "\n" roxy-str)))
           (if ess-roxy-fill-param-p
-              (ess-roxy-fill-field))
+              (fill-paragraph))
           )))))
 
 (defun ess-roxy-merge-args (fun ent)
@@ -701,15 +713,6 @@ list of strings."
         ad-do-it)
     ad-do-it))
 
-(defadvice mark-paragraph (around ess-roxy-mark-field)
-  "mark this field"
-  (if (and (ess-roxy-entry-p) (not mark-active))
-      (progn
-        (push-mark (point))
-        (push-mark (1+ (ess-roxy-end-of-field)) nil t)
-        (goto-char (ess-roxy-beg-of-field)))
-    ad-do-it))
-
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "hide this block if we are at the beginning of the line"
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
@@ -717,15 +720,75 @@ list of strings."
     ad-do-it))
 
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
-  "Fill the current roxygen field."
+  "Fill roxygen paragraphs."
   (if (ess-roxy-entry-p)
-      (ess-roxy-fill-field)
+      (let ((saved-pos (point))
+            (comment-start "#+'[ \t]+#")
+            (comment-start-skip "#+'[ \t]+# *")
+            (comment-use-syntax nil)
+            (adaptive-fill-first-line-regexp
+             (concat ess-roxy-re "[ \t]*"))
+            (temp-table (make-syntax-table S-syntax-table)))
+        ;; Prevent the roxy prefix to be interpreted as comment or
+        ;; string starter
+        (modify-syntax-entry ?# "w" temp-table)
+        (modify-syntax-entry ?' "w" temp-table)
+        ;; (comment-normalize-vars) modifies the comment-start regexp
+        ;; in such a way that paragraph filling of comments in
+        ;; @examples fields does not work
+        (cl-letf (((symbol-function 'comment-normalize-vars) #'ignore))
+          (with-syntax-table temp-table
+            (if (save-excursion
+                  (back-to-indentation)
+                  (looking-at "#"))
+                ;; Indentation of comments proceeds simply
+                ad-do-it
+              ;; We refill the whole structural paragraph
+              ;; sequentially, field by field, stopping at @examples
+              (let* ((par-end (save-excursion
+                                (forward-paragraph)
+                                (point)))
+                     (par-start (save-excursion
+                                  (backward-paragraph)
+                                  (point)))
+                     (stop-line (progn
+                                  (goto-char (or (re-search-forward
+                                                  "[ \t]*@examples"
+                                                  par-end t)
+                                                 par-end))
+                                  (line-number-at-pos)))
+                     (paragraph-start
+                      (concat "\\(" ess-roxy-re "\\(" paragraph-start
+                              "\\|[ \t]*@" "\\)" "\\)\\|\\(" paragraph-start "\\)")))
+                (if (re-search-backward
+                     (concat ess-roxy-re "[[:blank:]]+#")
+                     par-start t)
+                    (next-line)
+                  (goto-char par-start))
+                (while (< (line-number-at-pos) stop-line)
+                  (when (ess-roxy-should-indent-line-p)
+                    (move-beginning-of-line 1)
+                    (delete-region (point) (progn (skip-chars-forward " \t") (point)))
+                    (insert (make-string ess-indent-level ? )))
+                  ad-do-it
+                  (forward-paragraph))))))
+        ;; (save-excursion) does not work well here because we may
+        ;; delete the region at point
+        (goto-char saved-pos))
     ad-do-it))
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
-  (if (and (ess-roxy-entry-p)
-           (not (looking-back (concat ess-roxy-re " *\\="))))
+  (if (ess-roxy-entry-p)
+      (progn
+        (end-of-line)
+        (re-search-backward (concat ess-roxy-re " ?") (point-at-bol))
+        (goto-char (match-end 0)))
+    ad-do-it))
+
+(defadvice back-to-indentation (around ess-roxy-back-to-indentation)
+  "Handle back-to-indentation in roxygen doc"
+  (if (ess-roxy-entry-p)
       (progn
         (end-of-line)
         (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
