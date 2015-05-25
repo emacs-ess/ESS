@@ -760,10 +760,8 @@ list of strings."
                      (paragraph-start
                       (concat "\\(" ess-roxy-re "\\(" paragraph-start
                               "\\|[ \t]*@" "\\)" "\\)\\|\\(" paragraph-start "\\)")))
-                (if (re-search-backward
-                     (concat ess-roxy-re "[[:blank:]]+#")
-                     par-start t)
-                    (next-line)
+                (if (re-search-backward (concat ess-roxy-re "[[:blank:]]+#") par-start t)
+                    (forward-line)
                   (goto-char par-start))
                 (while (< (line-number-at-pos) stop-line)
                   (when (ess-roxy-should-indent-line-p)
