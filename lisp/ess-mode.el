@@ -1296,7 +1296,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (if (looking-at "else\\([[:blank:]]\\|$\\)")
         (progn
           (ess-backward-to-start-of-if)
-          (current-column))
+          (current-indentation))
       (beginning-of-line)
       (ess-backward-to-noncomment containing-sexp)
       (let ((indent
@@ -1319,10 +1319,9 @@ Returns nil if line starts inside a string, t if in a comment."
                                     "\\belse[ \t]*"
                                     (line-beginning-position))
                                (backward-sexp))
-                             (current-column))
+                             (current-indentation))
                             ((looking-at "function\\b[ \t]*(")
-                             (if t
-                                 (current-indentation))))))
+                             (current-indentation)))))
                    ((progn (ignore-errors (forward-sexp -1))
                            (looking-at "else\\b\\|repeat\\b\\([:blank:]*\|\\&\\)"))
                     (let ((col (current-column)))

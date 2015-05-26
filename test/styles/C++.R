@@ -428,16 +428,16 @@ for (sequence)
 ## 9
 object <-
     if (condition) {
-        stuff
+        stuff1
     } else {
-        stuff
+        stuff2
     }
 
 ## 10
 {
     object <-
-        if (condition) stuff
-        else stuff
+        if (condition) stuff1
+        else stuff2
 }
 
 ## 10
@@ -454,10 +454,25 @@ object <-
 {
     fun_call(parameter =
                  if (condition)
-                     stuff
+                     stuff1
                  else
-                     stuff
+                     stuff2
              )
+}
+
+## 12 -- some with '{ .. }' some not -- must still align
+{
+    if (condition1) {
+        stuff1
+    }
+    else if (condition2)
+        stuff2
+    else if (condition3) {
+        stuff3
+    } else if(condition4)
+        stuff4
+    else
+        stuff5
 }
 
 
@@ -618,3 +633,10 @@ if (condition1 &&
 } && condition8 ||
     condition9 ||
         condition10
+
+## 4
+isFoo <- function(x,y) {
+    (if(cond(x)) foo(x,y, extra.stuff) else TRUE) &&
+                                                    bar(x,y, and.some.more.arguments)
+}
+##  bar(...) should line up with the beginning of (if(cond....
