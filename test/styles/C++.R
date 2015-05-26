@@ -460,7 +460,7 @@ object <-
              )
 }
 
-## 12 -- some with '{ .. }' some not -- must still align
+## 12
 {
     if (condition1) {
         stuff1
@@ -469,7 +469,7 @@ object <-
         stuff2
     else if (condition3) {
         stuff3
-    } else if(condition4)
+    } else if (condition4)
         stuff4
     else
         stuff5
@@ -586,6 +586,27 @@ object1 <-
         fun_call2() %>%
             fun_call3()
 
+## 13
+{
+    (stuff) %>%
+        fun_call()
+
+    {stuff} %>%
+        fun_call()
+}
+
+## 14
+{
+    (
+        stuff
+    ) %>%
+        fun_call()
+
+    {
+        stuff
+    } %>%
+        fun_call()
+}
 
 
 ### Comments
@@ -633,10 +654,3 @@ if (condition1 &&
 } && condition8 ||
     condition9 ||
         condition10
-
-## 4
-isFoo <- function(x,y) {
-    (if(cond(x)) foo(x,y, extra.stuff) else TRUE) &&
-                                                    bar(x,y, and.some.more.arguments)
-}
-##  bar(...) should line up with the beginning of (if(cond....

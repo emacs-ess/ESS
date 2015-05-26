@@ -586,6 +586,27 @@ object1 <-
         fun_call2() %>%
             fun_call3()
 
+## 13
+{
+    (stuff) %>%
+        fun_call()
+
+    {stuff} %>%
+        fun_call()
+}
+
+## 14
+{
+    (
+        stuff
+    ) %>%
+        fun_call()
+
+    {
+        stuff
+    } %>%
+        fun_call()
+}
 
 
 ### Comments
@@ -633,9 +654,3 @@ condition8) {
 } && condition8 ||
     condition9 ||
         condition10
-
-## 4
-{
-    (stuff) &&
-              TRUE
-}
