@@ -428,16 +428,16 @@ for (sequence)
 ## 9
 object <-
     if (condition) {
-        stuff
+        stuff1
     } else {
-        stuff
+        stuff2
     }
 
 ## 10
 {
     object <-
-        if (condition) stuff
-        else stuff
+        if (condition) stuff1
+        else stuff2
 }
 
 ## 10
@@ -454,10 +454,25 @@ object <-
 {
     fun_call(parameter =
                  if (condition)
-                     stuff
+                     stuff1
                  else
-                     stuff
+                     stuff2
              )
+}
+
+## 12
+{
+    if (condition1) {
+        stuff1
+    }
+    else if (condition2)
+        stuff2
+    else if (condition3) {
+        stuff3
+    } else if (condition4)
+        stuff4
+    else
+        stuff5
 }
 
 
@@ -571,6 +586,27 @@ object1 <-
         fun_call2() %>%
             fun_call3()
 
+## 13
+{
+    (stuff) %>%
+        fun_call()
+
+    {stuff} %>%
+        fun_call()
+}
+
+## 14
+{
+    (
+        stuff
+    ) %>%
+        fun_call()
+
+    {
+        stuff
+    } %>%
+        fun_call()
+}
 
 
 ### Comments
