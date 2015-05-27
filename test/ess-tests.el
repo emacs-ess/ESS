@@ -57,7 +57,7 @@
     (C++
      ,@(cdr (assq 'C++ ess-style-alist)))
     (misc1
-     (ess-indent-level . 6)
+     (ess-indent-offset . 6)
      (ess-offset-block . nil)
      (ess-offset-arguments . t)
      (ess-offset-arguments-newline . nil)
@@ -71,16 +71,53 @@
      (ess-offset-block . t)
      (ess-offset-arguments . '(t)))))
 
+(defun ess-test-get-pos-from-undo-elt (e)
+  "If E represents an edit, return a position value in E, the position
+where the edit took place. Return nil if E represents no real change.
+\nE is an entry in the buffer-undo-list."
+  ;; stolen from goto-chg.el
+  (cond
+   ;; ((numberp e) e)			; num==changed position
+   ;; ((atom e) nil)			; nil==command boundary
+   ((numberp (car e)) (cdr e))	; (beg . end)==insertion
+   ((stringp (car e)) (abs (cdr e))) ; (string . pos)==deletion
+   ;; ((null (car e)) (nthcdr 4 e))	; (nil ...)==text property change
+   ;; ((atom (car e)) nil)		; (t ...)==file modification time
+   (t nil)))			; (marker ...)==marker moved
+
+(defun not-change-on-indent (buffer)
+  "Return t if BUFFER wasn't modified on indent."
+  (with-current-buffer buffer
+    (setq buffer-undo-list nil)
+    (indent-region (point-min) (point-max))
+    (not (buffer-modified-p buffer))))
+
+(defun ess-test-explain-change-on-indent (buffer)
+  "Explainer function for `not-change-on-indent'."
+  (when (buffer-modified-p buffer)
+    (with-current-buffer buffer
+      (let ((bul buffer-undo-list)
+            (change-pos (point-min)))
+        (while (and bul
+                    (null (setq change-pos (ess-test-get-pos-from-undo-elt (car bul)))))
+          (pop bul))
+        (write-region (point-min) (point-max) (buffer-name buffer))
+        `(buffer ,(buffer-name buffer) was modified on line ,(count-lines 1 change-pos)
+                 ess-indent-offset: ,ess-indent-offset
+                 (writen to ,(buffer-name buffer)))))))
+
+(put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
+
 (defun ess-test-R-indentation (file style)
-  (let ((ess-style-alist (append ess-test-style-alist ess-style-alist)))
-    (with-temp-buffer
-      (insert-file-contents-literally file t)
-      (let ((expected (buffer-string)))
-        (R-mode)
-        (setq ess-fancy-comments t)
-        (ess-set-style style)
-        (indent-region (point-min) (point-max))
-        (should (equal (buffer-string) expected))))))
+  (let ((ess-style-alist (append ess-test-style-alist ess-style-alist))
+        (buff (get-buffer-create (concat "ess-test:" (file-name-nondirectory file)))))
+    (with-current-buffer buff
+      (insert-file-contents-literally file t nil nil t)
+      (R-mode)
+      (setq ess-fancy-comments t)
+      (ess-set-style style)
+      (set-buffer-modified-p nil)
+      (should (not-change-on-indent buff)))))
 
 (ert-deftest test-ess-R-indentation-RRR ()
   (ess-test-R-indentation "styles/RRR.R" 'RRR))
