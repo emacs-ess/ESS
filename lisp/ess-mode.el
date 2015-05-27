@@ -391,7 +391,7 @@ Variables controlling indentation style:
  `ess-auto-newline'
     Non-nil means automatically newline before and after braces inserted in S
     code.
- `ess-indent-level'
+ `ess-indent-offset'
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
     which the open-brace appears.
@@ -1015,20 +1015,20 @@ Return the amount the indentation changed by."
   (let* ((name (concat "ess-offset-" (symbol-name symbol)))
          (offset (eval (intern name))))
     (if (eq offset t)
-        ess-indent-level
+        ess-indent-offset
       offset)))
 
 (defun ess-extract-offset (offset &optional use-default)
   (let ((res (cond
               ((null offset)
-               (if use-default ess-indent-level 0))
+               (if use-default ess-indent-offset 0))
               ((listp offset)
                (car offset))
               ((or (numberp offset) (eq t offset))
                offset)
               (t (error "Malformed offset")))))
     (if (eq res t)
-        ess-indent-level
+        ess-indent-offset
       res)))
 
 (defun ess-looking-at-last-open-delim-p ()
@@ -1332,7 +1332,7 @@ Returns nil if line starts inside a string, t if in a comment."
                         (when (eq ?} (preceding-char))
                           (- (current-column) 1))))))))
         (when indent
-          (+ indent ess-indent-level))))))
+          (+ indent ess-indent-offset))))))
 
 (defun ess-calculate-indent--continued (&optional containing-sexp)
   "If a continuation line, return an indent of this line, otherwise nil."

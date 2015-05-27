@@ -255,7 +255,7 @@
             (move-beginning-of-line 1)
             (re-search-forward "\\([ \t]*\\)" (line-end-position) t)
             (concat roxy-str "' " (match-string 1)))
-        (concat roxy-str "' " (make-string ess-indent-level ? ))))))
+        (concat roxy-str "' " (make-string ess-indent-offset ? ))))))
 
 (defun ess-roxy-current-field ()
   "Return the name of the field at point."
@@ -767,7 +767,7 @@ list of strings."
                   (when (ess-roxy-should-indent-line-p)
                     (move-beginning-of-line 1)
                     (delete-region (point) (progn (skip-chars-forward " \t") (point)))
-                    (insert (make-string ess-indent-level ? )))
+                    (insert (make-string ess-indent-offset ? )))
                   ad-do-it
                   (forward-paragraph))))))
         ;; (save-excursion) does not work well here because we may

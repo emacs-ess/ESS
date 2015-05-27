@@ -646,13 +646,16 @@ regardless of where in the line point is when the TAB command is used."
 nil means to use R/S indentation.")
 (make-variable-buffer-local 'ess-indent-line-function)
 
-(defvar ess-indent-level 2
-  "Indentation of S statements with respect to containing block.")
+(defvar ess-indent-offset 2
+  "Main indentation offset that is commonly inherited by other offsets.
+See `ess-style-alist' for all available offsets.")
+
+(define-obsolete-variable-alias 'ess-indent-level 'ess-indent-offset "15.09")
 
 (defvar ess-offset-block '(t)
-  "Indentation for blocks. A block is usually declared with
-braces but a statement wrapped in anonymous parentheses is also
-considered a block.
+  "Indentation for blocks.
+A block is usually declared with braces but a statement wrapped
+in anonymous parentheses is also considered a block.
 
 If a number N, blocks are indented relative to the opening
 parenthesis of the closest function call:
@@ -705,13 +708,17 @@ If nil, blocks are indented from the opening delimiter:
   }
 
 
-You can refer to ess-indent-level by setting this parameter to t
+You can refer to `ess-indent-offset' by setting this parameter to t
 or '(t) instead of N or '(N).
-")
+
+See `ess-style-alist' for other offsets.")
 
 (defvar ess-offset-arguments nil
-  "Extra indent for function arguments or bracket indexing when (
-or [ is not directly followed by a new line.
+  "Indent for function arguments or bracket indexing.
+This variables has an effect only when the ( or [ are not
+directly followed by a new line. See
+`ess-offset-arguments-newline' for indentation after closing
+newline.
 
 If a number N, the arguments are aligned at the beginning of
 the closest function call + N characters:
@@ -737,16 +744,16 @@ following foo:
                                          arg3)
 
 
-You can refer to ess-indent-level by setting this parameter to t
+You can refer to ess-indent-offset by setting this parameter to t
 or '(t) instead of N or '(N).
-")
+
+See `ess-style-alist' for other offsets.")
 
 (defvar ess-offset-arguments-newline '(t)
-  "Extra indent for function arguments or bracket indexing when (
-or [ is followed by a new line.
+  "Indent of arguments when ( or [ is followed by a new line.
 
-If a number N, the arguments are aligned at the beginning of
-the closest function call + N characters:
+If a number N, the arguments are aligned at the beginning of the
+closest function call + N characters:
 
   object <- some_function(other_function(
                               arg1,
@@ -769,39 +776,39 @@ following foo:
                                          arg2)
 
 
-You can refer to ess-indent-level by setting this parameter to t
+You can refer to ess-indent-offset by setting this parameter to t
 or '(t) instead of N or '(N).
 ")
 
 (defvar ess-indent-function-declaration t
-  "When this setting is switched on the offsets for function
-arguments are ignored for function declarations. All arguments
-are then aligned from the opening parenthesis.
+  "When non-nil, `ess-offset-arguments' has no effect on function declarations.
+All arguments are then aligned from the opening parenthesis.
 
-`ess-offset-arguments' is set to 4 here:
+If `ess-offset-arguments' is set to 4, then function calls are
+indented as in:
 
   some_function(argument1,
       argument2, argument3
   )
 
-But this offset is ignored for function declarations;
+but function declarations are aligned on open (;
 
   fun <- function(argument1,
                   argument2
                   argument3) {
       body
   }
-")
+
+See `ess-style-alist' for further details.")
 
 (defvar ess-indent-from-lhs nil
-  "When true, indentation of arguments will proceed from the
-left-hand side of assignments or function parameters.
+  "When non-nil, indent arguments from the left-hand side of an assignment.
 
 This setting only has an effect when indentation of arguments or
 blocks is relative to the innermost function call. That is, when
-ess-offset-arguments, ess-offset-arguments-newline or
-ess-offset-block are set to a number N as opposed to a nil value
-or a list '(N).
+`ess-offset-arguments', `ess-offset-arguments-newline' or
+`ess-offset-block' are set to a number N as opposed to nil or
+'(N).
 
 If nil:
 
@@ -815,6 +822,7 @@ If nil:
             )
 
 If t:
+
   some_function(parameter = other_function(
                     argument
                 ))
@@ -823,22 +831,29 @@ If t:
       argument1,
       argument2
   )
-")
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-offset-continued 2
   "Extra indent for lines not starting new statements.
-You can refer to ess-indent-level by setting this parameter to t.")
+You can refer to `ess-indent-offset' by setting this parameter to
+t.  This variable is automatically set to a buffer local value
+based on the default style in `ess-default-style'.
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-offset-continued-first 0
   "Extra indentation for the first new line continuing a statement.
 If you set this to non-zero value you might want to set
-`ess-offset-continued' to zero.
+`ess-offset-continued' to zero. You can refer to
+`ess-indent-offset' by setting this parameter to t.
 
-You can refer to ess-indent-level by setting this parameter to t.")
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-fancy-comments t
-  "Non-nil means distiguish between #, ##, and ### for indentation."
+  "Non-nil means distiguish between #, ##, and ### for indentation.
+See `ess-style-alist' for for an overview of ESS indentation."
   :type 'boolean
   :group 'ess-edit)
 
@@ -860,7 +875,7 @@ You can refer to ess-indent-level by setting this parameter to t.")
 
 (defvar ess-default-style-list
   (list 'DEFAULT
-        (cons 'ess-indent-level '(default-value 'ess-indent-level))
+        (cons 'ess-indent-offset '(default-value 'ess-indent-offset))
         (cons 'ess-offset-block '(default-value 'ess-offset-block))
         (cons 'ess-offset-arguments '(default-value 'ess-offset-arguments))
         (cons 'ess-offset-arguments-newline '(default-value 'ess-offset-arguments-newline))
@@ -868,91 +883,124 @@ You can refer to ess-indent-level by setting this parameter to t.")
         (cons 'ess-indent-from-lhs '(default-value 'ess-indent-from-lhs))
         (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
         (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
-        (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments))
-        )
+        (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments)))
   "Style constructed from initial (default) values of ESS indentation variables.")
 
 (defvar ess-style-alist
   (cons ess-default-style-list
-        '((GNU (ess-indent-level . 2)
-               (ess-offset-block . '(t))
+        '((GNU (ess-indent-offset . 2)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . 4)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
+               (ess-offset-block . '(t))
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
-          (BSD (ess-indent-level . 8)
-               (ess-offset-block . t)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          (BSD (ess-indent-offset . 8)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
+               (ess-offset-block . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
-          (K&R (ess-indent-level . 5)
-               (ess-offset-block . t)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          (K&R (ess-indent-offset . 5)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
+               (ess-offset-block . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
-          (C++ (ess-indent-level . 4)
-               (ess-offset-block . t)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          (C++ (ess-indent-offset . 4)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
+               (ess-offset-block . t)
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
           ;; R added ajr 17Feb04 to match "common R" use
-          (RRR (ess-indent-level . 4)
-               (ess-offset-block . '(t))
+          (RRR (ess-indent-offset . 4)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
+               (ess-offset-block . '(t))
                (ess-offset-continued . t)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
-          ;; CLB added rmh 2Nov97 at request of Terry Therneau
-          (CLB (ess-indent-level . 2)
-               (ess-offset-block . '(t))
-               (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . t)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          ;; CLB added rmh 2Nov97 at request of Terry Therneau
+          (CLB (ess-indent-offset . 2)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . t)
+               (ess-offset-block . '(t))
                (ess-offset-continued . 4)
                (ess-offset-continued-first . 0)
-               (ess-fancy-comments . t)
-               )
-          (RStudio (ess-indent-level . 2)
-                   (ess-offset-block . '(t))
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          (RStudio (ess-indent-offset . 2)
                    (ess-offset-arguments . nil)
                    (ess-offset-arguments-newline . '(t))
-                   (ess-indent-function-declaration . t)
-                   (ess-indent-from-lhs . t)
+                   (ess-offset-block . '(t))
                    (ess-offset-continued . 0)
                    (ess-offset-continued-first . t)
-                   (ess-fancy-comments . nil)
-                   )
-          )
-        )
+                   (ess-indent-function-declaration . t)
+                   (ess-indent-from-lhs . t)
+                   (ess-fancy-comments . nil))))
+  
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
-`ess-own-style-list'.  The default style in use is controlled by
-`ess-default-style'.")
+`ess-own-style-list'.  The actual style that is applied in R
+buffers is given by `ess-default-style'.
+
+From ESS v15.09 indentation is fully specified by the following
+offsets and variables. See the documentation of these variables
+for examples.
+
+Offsets:
+
+ - `ess-indent-offset': main offset inherited by other offset
+   settings.
+
+ - `ess-offset-arguments': offset for function arguments or
+   bracket indexing.
+
+ - `ess-offset-arguments-newline': offset of arguments when ( or
+   [ is followed by a new line.
+
+ - `ess-offset-block': offset for brace and anonymous parenthesis
+   blocks.
+
+ - `ess-offset-continued': offset for lines not starting new
+   statements.
+
+ - `ess-offset-continued-first': extra offset for first
+   continuation line (i.e. second line of a multiline
+   expression).
+
+Control variables:
+
+  - `ess-indent-function-declaration': whether to ignore
+    `ess-offset-arguments' for function declarations.
+
+  - `ess-indent-from-lhs': whether to indent arguments from
+    left-hand side of an assignment or parameter declaration.
+
+  - `ess-fancy-comments': whether to indent #,## and ### comments
+    distinctly.")
 
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
@@ -974,10 +1022,11 @@ these values, use the customize interface."
          (ess-add-style 'OWN value)))
 
 (defcustom ess-default-style 'RRR
-  "The default value of `ess-style'.
-See the variable `ess-style-alist' for how these groups (RRR, DEFAULT,
-OWN, GNU, BSD, ...) map onto different settings for variables.
-Since ESS 13.05, the default is  RRR  rather than DEFAULT."
+  "The default value of `ess-indent-style'.
+See the variable `ess-style-alist' for how these groups (RRR,
+DEFAULT, GNU, BSD, ...) map onto different settings for
+variables. Since ESS 13.05, the default is RRR rather than
+DEFAULT."
   :type '(choice (const DEFAULT)
                  (const OWN)
                  (const GNU)
@@ -991,7 +1040,7 @@ Since ESS 13.05, the default is  RRR  rather than DEFAULT."
 
 ;; the real setting of this happens via <foo>-editing-alist:
 (defvar ess-style ess-default-style
-  "*The buffer specific ESS indentation style, see `ess-style-alist' for more.")
+  "Current ESS indentation style, see `ess-style-alist' for more.")
 
 ;;*;; Variables controlling behaviour of dump files
 
