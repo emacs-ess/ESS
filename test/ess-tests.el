@@ -101,18 +101,19 @@ where the edit took place. Return nil if E represents no real change.
         (while (and bul
                     (null (setq change-pos (ess-test-get-pos-from-undo-elt (car bul)))))
           (pop bul))
-        (write-region (point-min) (point-max) (buffer-name buffer))
-        `(buffer ,(buffer-name buffer) was modified on line ,(count-lines 1 change-pos)
-                 ess-indent-offset: ,ess-indent-offset
-                 (writen to ,(buffer-name buffer)))))))
+        (let ((diff-file (concat (buffer-name) ".diff")))
+          (diff-buffer-with-file buffer)
+          (with-current-buffer "*Diff*"
+            (write-region (point-min) (point-max) diff-file))
+          `(,(buffer-name buffer) was modified on line ,(count-lines 1 change-pos)
+            (diff was writen to ,diff-file)))))))
 
 (put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
 
 (defun ess-test-R-indentation (file style)
   (let ((ess-style-alist (append ess-test-style-alist ess-style-alist))
-        (buff (get-buffer-create (concat "ess-test:" (file-name-nondirectory file)))))
+        (buff (find-file-noselect file t t)))
     (with-current-buffer buff
-      (insert-file-contents-literally file t nil nil t)
       (R-mode)
       (setq ess-fancy-comments t)
       (ess-set-style style)
