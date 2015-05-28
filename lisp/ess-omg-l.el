@@ -61,9 +61,9 @@
 ;;            (setq indent (current-indentation)))
 ;;           (t
 ;;            (skip-chars-forward " \t")
-;;            (if (and ess-fancy-comments (looking-at "////"))
+;;            (if (and ess-indent-with-fancy-comments (looking-at "////"))
 ;;                (setq indent 0))
-;;            (if (and ess-fancy-comments
+;;            (if (and ess-indent-with-fancy-comments
 ;;                     (looking-at "//")
 ;;                     (not (looking-at "///")))
 ;;                (setq indent comment-column)

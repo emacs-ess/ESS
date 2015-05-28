@@ -851,11 +851,13 @@ If you set this to non-zero value you might want to set
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
-(defcustom ess-fancy-comments t
+(defcustom ess-indent-with-fancy-comments t
   "Non-nil means distiguish between #, ##, and ### for indentation.
 See `ess-style-alist' for for an overview of ESS indentation."
   :type 'boolean
   :group 'ess-edit)
+
+(define-obsolete-variable-alias 'ess-fancy-comments 'ess-indent-with-fancy-comments "15.09")
 
 (make-obsolete-variable 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
 (make-obsolete-variable 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
@@ -883,7 +885,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
         (cons 'ess-indent-from-lhs '(default-value 'ess-indent-from-lhs))
         (cons 'ess-offset-continued '(default-value 'ess-offset-continued))
         (cons 'ess-offset-continued-first '(default-value 'ess-offset-continued-first))
-        (cons 'ess-fancy-comments '(default-value 'ess-fancy-comments)))
+        (cons 'ess-indent-with-fancy-comments '(default-value 'ess-indent-with-fancy-comments)))
   "Style constructed from initial (default) values of ESS indentation variables.")
 
 (defvar ess-style-alist
@@ -896,7 +898,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
 
           (C++ (ess-indent-offset . 4)
                (ess-offset-arguments . nil)
@@ -906,7 +908,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
           
           ;; CLB added rmh 2Nov97 at request of Terry Therneau
           (CLB (ess-indent-offset . 2)
@@ -917,7 +919,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
 
           (GNU (ess-indent-offset . 2)
                (ess-offset-arguments . nil)
@@ -927,7 +929,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
           
           (K&R (ess-indent-offset . 5)
                (ess-offset-arguments . nil)
@@ -937,7 +939,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
           
           ;; R added ajr 17Feb04 to match "common R" use
           (RRR (ess-indent-offset . 4)
@@ -948,7 +950,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-offset-continued-first . 0)
                (ess-indent-function-declaration . t)
                (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
+               (ess-indent-with-fancy-comments . t))
           
           (RStudio (ess-indent-offset . 2)
                    (ess-offset-arguments . nil)
@@ -958,7 +960,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                    (ess-offset-continued-first . t)
                    (ess-indent-function-declaration . t)
                    (ess-indent-from-lhs . t)
-                   (ess-fancy-comments . nil))))
+                   (ess-indent-with-fancy-comments . nil))))
   
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
@@ -1000,7 +1002,7 @@ Control variables:
   - `ess-indent-from-lhs': whether to indent arguments from
     left-hand side of an assignment or parameter declaration.
 
-  - `ess-fancy-comments': whether to indent #,## and ### comments
+  - `ess-indent-with-fancy-comments': whether to indent #,## and ### comments
     distinctly.
 ")
 

@@ -413,7 +413,7 @@ Variables controlling indentation style:
     if or body of a while.
  `ess-offset-continued-first'
     Extra indentation given to the first continued statement.
- `ess-fancy-comments'
+ `ess-indent-with-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
 
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
@@ -986,12 +986,12 @@ Return the amount the indentation changed by."
           (setq indent (current-indentation))
         (skip-chars-forward " \t")
         (cond
-         ((and ess-fancy-comments ;; ### or #!
+         ((and ess-indent-with-fancy-comments ;; ### or #!
                (or (looking-at "###")
                    (and (looking-at "#!") (= 1 (line-number-at-pos)))))
           (setq indent 0))
          ;; Single # comment
-         ((and ess-fancy-comments
+         ((and ess-indent-with-fancy-comments
                (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
           (setq indent comment-column))
          (t

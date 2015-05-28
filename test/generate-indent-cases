@@ -19,7 +19,7 @@
 
   ;; Regenerate indentation in RRR file
   (set-buffer (find-file-noselect RRR-file))
-  (setq ess-fancy-comments t)
+  (setq ess-indent-with-fancy-comments t)
   (ess-set-style 'RRR)
   (indent-region (point-min) (point-max))
   (save-buffer)
@@ -31,7 +31,7 @@
                         (concat (symbol-name test-name) ".R")
                         ess-styles-path)))
        (set-buffer (find-file-noselect test-file))
-       (setq ess-fancy-comments t)
+       (setq ess-indent-with-fancy-comments t)
        (ess-set-style test-name)
        (insert-file-contents-literally RRR-file nil nil nil 'replace)
        (indent-region (point-min) (point-max))

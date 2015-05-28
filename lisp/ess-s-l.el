@@ -290,12 +290,12 @@ when \\[ess-toggle-S-assign-key] is called.")
 ;;         (setq indent (current-indentation)))
 ;;        (t
 ;;         (skip-chars-forward " \t")
-;;         (cond ((and ess-fancy-comments ;; ### or #!
+;;         (cond ((and ess-indent-with-fancy-comments ;; ### or #!
 ;;                     (or (looking-at "###")
 ;;                         (and (looking-at "#!") (= 1 (line-number-at-pos)))))
 ;;                (setq indent 0))
 ;;               ;; Single # comment
-;;               ((and ess-fancy-comments
+;;               ((and ess-indent-with-fancy-comments
 ;;                     (looking-at "#") (not (looking-at "##")))
 ;;                (setq indent comment-column))
 ;;               (t

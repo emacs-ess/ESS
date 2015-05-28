@@ -115,7 +115,7 @@ where the edit took place. Return nil if E represents no real change.
         (buff (find-file-noselect file t t)))
     (with-current-buffer buff
       (R-mode)
-      (setq ess-fancy-comments t)
+      (setq ess-indent-with-fancy-comments t)
       (ess-set-style style)
       (set-buffer-modified-p nil)
       (should (not-change-on-indent buff)))))
