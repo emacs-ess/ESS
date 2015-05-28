@@ -778,10 +778,14 @@ list of strings."
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
   (if (ess-roxy-entry-p)
-      (progn
-        (end-of-line)
-        (re-search-backward (concat ess-roxy-re " ?") (point-at-bol))
-        (goto-char (match-end 0)))
+      (let ((new-pos (save-excursion
+                       (end-of-line)
+                       (and (re-search-backward (concat ess-roxy-re " ?") (point-at-bol) t)
+                            (match-end 0)))))
+        (if (or (bolp)
+                (< new-pos (point)))
+            (goto-char new-pos)
+          ad-do-it))
     ad-do-it))
 
 (defadvice back-to-indentation (around ess-roxy-back-to-indentation)
@@ -789,7 +793,7 @@ list of strings."
   (if (ess-roxy-entry-p)
       (progn
         (end-of-line)
-        (re-search-backward (concat ess-roxy-re " *") (point-at-bol))
+        (re-search-backward (concat ess-roxy-re " *") (point-at-bol) t)
         (goto-char (match-end 0)))
     ad-do-it))
 
