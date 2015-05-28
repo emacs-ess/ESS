@@ -858,19 +858,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
   :group 'ess-edit)
 
 (define-obsolete-variable-alias 'ess-fancy-comments 'ess-indent-with-fancy-comments "15.09")
-
-(make-obsolete-variable 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
-(make-obsolete-variable 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
-(make-obsolete-variable 'ess-first-continued-statement-offset 'ess-offset-continued-first "15.09")
-(make-obsolete-variable 'ess-continued-statement-offset 'ess-offset-continued "15.09")
-
-(make-obsolete-variable 'ess-brace-imaginary-offset nil "15.09")
-(make-obsolete-variable 'ess-brace-offset nil "15.09")
-(make-obsolete-variable 'ess-continued-brace-offset nil "15.09")
-(make-obsolete-variable 'ess-close-brace-offset nil "15.09")
-(make-obsolete-variable 'ess-close-paren-offset nil "15.09")
-(make-obsolete-variable 'ess-else-offset  nil "15.09")
-(make-obsolete-variable 'ess-expression-offset nil "15.09")
+(define-obsolete-variable-alias 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
+(define-obsolete-variable-alias 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
+(define-obsolete-variable-alias 'ess-first-continued-statement-offset 'ess-offset-continued-first "15.09")
+(define-obsolete-variable-alias 'ess-continued-statement-offset 'ess-offset-continued "15.09")
 
 
 ;;;*;;; Editing styles
