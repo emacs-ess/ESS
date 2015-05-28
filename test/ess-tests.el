@@ -69,7 +69,7 @@
     (misc2
      ,@(cdr (assq 'RStudio ess-style-alist))
      (ess-offset-block . t)
-     (ess-offset-arguments . '(t)))))
+     (ess-offset-arguments . (t)))))
 
 (defun ess-test-get-pos-from-undo-elt (e)
   "If E represents an edit, return a position value in E, the position
@@ -111,7 +111,7 @@ where the edit took place. Return nil if E represents no real change.
 (put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
 
 (defun ess-test-R-indentation (file style)
-  (let ((ess-style-alist (append ess-test-style-alist ess-style-alist))
+  (let ((ess-style-alist ess-test-style-alist)
         (buff (find-file-noselect file t t)))
     (with-current-buffer buff
       (R-mode)

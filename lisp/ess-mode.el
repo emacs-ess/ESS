@@ -1467,7 +1467,7 @@ style variables buffer local."
     (mapc (lambda (ess-style-pair)
             (make-local-variable (car ess-style-pair))
             (set (car ess-style-pair)
-                 (eval (cdr ess-style-pair))))
+                 (cdr ess-style-pair)))
           (cdr (assq ess-style ess-style-alist)))
     ess-style))
 
