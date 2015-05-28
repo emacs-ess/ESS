@@ -961,10 +961,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
 `ess-own-style-list'.  RRR style is the common R style that
-adders closely to R internal standards. RStudio style closely to
-the indentation of RStudio editor. DEFAULT style picks
+adheres closely to R internal standards. RStudio style closely
+mimics the indentation of the RStudio editor. DEFAULT style picks
 default (aka global) values from ESS indentation variables.  The
-actual style that is applied in R buffers is given by
+actual style that is applied in R buffers is set by
 `ess-default-style'.
 
 ESS indentation is fully specified by the following offsets and
