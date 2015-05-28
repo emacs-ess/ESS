@@ -888,7 +888,38 @@ See `ess-style-alist' for for an overview of ESS indentation."
 
 (defvar ess-style-alist
   (cons ess-default-style-list
-        '((GNU (ess-indent-offset . 2)
+        '((BSD (ess-indent-offset . 8)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . t)
+               (ess-offset-block . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+
+          (C++ (ess-indent-offset . 4)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . t)
+               (ess-offset-block . t)
+               (ess-offset-continued . t)
+               (ess-offset-continued-first . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+          
+          ;; CLB added rmh 2Nov97 at request of Terry Therneau
+          (CLB (ess-indent-offset . 2)
+               (ess-offset-arguments . nil)
+               (ess-offset-arguments-newline . t)
+               (ess-offset-block . '(t))
+               (ess-offset-continued . 4)
+               (ess-offset-continued-first . 0)
+               (ess-indent-function-declaration . t)
+               (ess-indent-from-lhs . t)
+               (ess-fancy-comments . t))
+
+          (GNU (ess-indent-offset . 2)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . 4)
                (ess-offset-block . '(t))
@@ -898,27 +929,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-indent-from-lhs . t)
                (ess-fancy-comments . t))
           
-          (BSD (ess-indent-offset . 8)
-               (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . t)
-               (ess-offset-block . t)
-               (ess-offset-continued . t)
-               (ess-offset-continued-first . 0)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
-          
           (K&R (ess-indent-offset . 5)
-               (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . t)
-               (ess-offset-block . t)
-               (ess-offset-continued . t)
-               (ess-offset-continued-first . 0)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
-          
-          (C++ (ess-indent-offset . 4)
                (ess-offset-arguments . nil)
                (ess-offset-arguments-newline . t)
                (ess-offset-block . t)
@@ -939,17 +950,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
                (ess-indent-from-lhs . t)
                (ess-fancy-comments . t))
           
-          ;; CLB added rmh 2Nov97 at request of Terry Therneau
-          (CLB (ess-indent-offset . 2)
-               (ess-offset-arguments . nil)
-               (ess-offset-arguments-newline . t)
-               (ess-offset-block . '(t))
-               (ess-offset-continued . 4)
-               (ess-offset-continued-first . 0)
-               (ess-indent-function-declaration . t)
-               (ess-indent-from-lhs . t)
-               (ess-fancy-comments . t))
-          
           (RStudio (ess-indent-offset . 2)
                    (ess-offset-arguments . nil)
                    (ess-offset-arguments-newline . '(t))
@@ -963,44 +963,46 @@ See `ess-style-alist' for for an overview of ESS indentation."
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
-`ess-own-style-list'.  The actual style that is applied in R
-buffers is given by `ess-default-style'.
+`ess-own-style-list'.  RRR style is the common R style that
+adders closely to R internal standards. RStudio style closely to
+the indentation of RStudio editor. DEFAULT style picks
+default (aka global) values from ESS indentation variables.  The
+actual style that is applied in R buffers is given by
+`ess-default-style'.
 
-From ESS v15.09 indentation is fully specified by the following
-offsets and variables. See the documentation of these variables
-for examples.
+ESS indentation is fully specified by the following offsets and
+variables. See the documentation of these variables for examples.
 
 Offsets:
 
- - `ess-indent-offset': main offset inherited by other offset
-   settings.
+ - `ess-indent-offset': main offset inherited by other settings
 
- - `ess-offset-arguments': offset for function arguments or
-   bracket indexing.
+ - `ess-offset-arguments': offset for function and bracket
+   arguments
 
  - `ess-offset-arguments-newline': offset of arguments when ( or
    [ is followed by a new line.
 
  - `ess-offset-block': offset for brace and anonymous parenthesis
-   blocks.
+   blocks
 
- - `ess-offset-continued': offset for lines not starting new
-   statements.
+ - `ess-offset-continued': offset for continuation lines in
+   multiline statements
 
  - `ess-offset-continued-first': extra offset for first
-   continuation line (i.e. second line of a multiline
-   expression).
+   continuation line (i.e. second line of a multiline expression)
 
 Control variables:
 
   - `ess-indent-function-declaration': whether to ignore
-    `ess-offset-arguments' for function declarations.
+    `ess-offset-arguments' for function argument declarations
 
   - `ess-indent-from-lhs': whether to indent arguments from
     left-hand side of an assignment or parameter declaration.
 
   - `ess-fancy-comments': whether to indent #,## and ### comments
-    distinctly.")
+    distinctly.
+")
 
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
@@ -1010,12 +1012,13 @@ This can be used"
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
 
-(defcustom ess-own-style-list (cdr ess-default-style-list)
-  "Indentation variables for your own style that can be changed.
-Set `ess-default-style' to 'OWN to use these values.  To change
-these values, use the customize interface."
+(defcustom ess-own-style-list (cdr (assoc 'RRR ess-style-alist))
+  "Indentation variables for your own style.
+Set `ess-default-style' to 'OWN to use these values. To change
+these values, use the customize interface. See the documentation
+of each variable for its meaning. "
   :group 'ess-edit
-  :type '(repeat (cons symbol integer))
+  :type 'alist
   :initialize 'custom-initialize-set
   :set (lambda (symbol value)
          (set symbol value)
@@ -1025,17 +1028,18 @@ these values, use the customize interface."
   "The default value of `ess-indent-style'.
 See the variable `ess-style-alist' for how these groups (RRR,
 DEFAULT, GNU, BSD, ...) map onto different settings for
-variables. Since ESS 13.05, the default is RRR rather than
-DEFAULT."
-  :type '(choice (const DEFAULT)
-                 (const OWN)
+variables. OWN style is defined in `ess-own-style-list' and you
+can customize it to your needs. DEFAULT style picks default (aka
+global) values from ESS indentation variables."
+  :type '(choice (const OWN)
                  (const GNU)
                  (const BSD)
-                 (const K&R)
                  (const C++)
+                 (const CLB)
+                 (const K&R)
+                 (const RRR)
                  (const RStudio)
-                 (const :tag "Common R" :value RRR)
-                 (const CLB))
+                 (const DEFAULT))
   :group 'ess-edit)
 
 ;; the real setting of this happens via <foo>-editing-alist:
