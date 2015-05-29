@@ -657,6 +657,21 @@ See `ess-style-alist' for all available offsets.")
 A block is usually declared with braces but a statement wrapped
 in anonymous parentheses is also considered a block.
 
+If nil, blocks are indented from the opening delimiter:
+
+  {
+      fun_call(parameter = {
+                               stuff
+                           }, {
+                                  stuff
+                              })
+
+      lapply(data, function(x) {
+                                   body
+                               })
+  }
+
+
 If a number N, blocks are indented relative to the opening
 parenthesis of the closest function call:
 
@@ -691,22 +706,6 @@ indented at the previous line indentation + N characters:
           body
       })
   }
-
-
-If nil, blocks are indented from the opening delimiter:
-
-  {
-      fun_call(parameter = {
-                               stuff
-                           }, {
-                                  stuff
-                              })
-
-      lapply(data, function(x) {
-                                   body
-                               })
-  }
-
 
 You can refer to `ess-indent-offset' by setting this parameter to t
 or '(t) instead of N or '(N).
