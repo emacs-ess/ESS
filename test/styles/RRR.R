@@ -216,8 +216,8 @@ fun_call(parameter1 = {
 },
 parameter3 =
     stuff5 ~
-        stuff6 +
-            stuff7,
+    stuff6 +
+    stuff7,
 argument)
 
 ## 6
@@ -481,67 +481,67 @@ object <-
 ## 1
 stuff1 %>%
     stuff2 %>%
-        stuff3
+    stuff3
 
 ## 2
 {
     stuff1 %>%
         stuff2 %>%
-            stuff3
+        stuff3
 } %>%
     stuff4 %>%
-        stuff5
+    stuff5
 
 ## 3
 (
     stuff1 %>%
         stuff2 %>%
-            stuff3
+        stuff3
 ) %>%
     stuff4 %>%
-        stuff5
+    stuff5
 
 ## 4
 object[
     stuff1 %>%
         stuff2 %>%
-            stuff3
+        stuff3
 ] %>%
     stuff4 %>%
-        stuff5
+    stuff5
 
 ## 5
 stuff1 %>%
     stuff2 %>%
-        if (condition) {
-            stuff3 %>%
-                stuff4 %>%
-                    stuff5
-        } else {
-            stuff6 %>%
-                stuff7 %>%
-                    for (sequence) {
-                        stuff8
-                    } %>%
-                        stuff9 %>%
-                            stuff10
-        } %>%
-            stuff11 %>%
-                stuff12
+    if (condition) {
+        stuff3 %>%
+            stuff4 %>%
+            stuff5
+    } else {
+        stuff6 %>%
+            stuff7 %>%
+            for (sequence) {
+                stuff8
+            } %>%
+            stuff9 %>%
+            stuff10
+    } %>%
+        stuff11 %>%
+        stuff12
 
 ## 6
 stuff[stuff1 %>%
           stuff2 %>%
-              stuff3] %>%
+          stuff3] %>%
     stuff4 %>%
-        stuff5
+    stuff5
 
 ## 7
 ggplot() +
     geom(lhs -
              rhs
          ) +
-        geom()
+    geom()
 
 ## 8
 {
@@ -551,8 +551,8 @@ ggplot() +
                   stuff1
               ) -
                   stuff2) +
-            geom2() +
-                geom3()
+        geom2() +
+        geom3()
 }
 
 ## 9
@@ -567,7 +567,7 @@ stuff +
 ## 10
 fun_call(argument1 %>%
              stuff1, argument2 %>%
-                         stuff2, {
+                     stuff2, {
     stuff3 %>%
         stuff4
 } %>%
@@ -578,13 +578,13 @@ argument3
 ## 11
 object1 <- object2 %>%
     fun_call1() %>%
-        fun_call2()
+    fun_call2()
 
 ## 12
 object1 <-
     object2%>%fun_call1() %>%
-        fun_call2() %>%
-            fun_call3()
+    fun_call2() %>%
+    fun_call3()
 
 ## 13
 {
@@ -635,12 +635,12 @@ object1 <-
 ## 1
 stuff1 &&
     stuff2 ||
-        stuff3
+    stuff3
 
 ## 2
 (stuff1 &&
      stuff2 ||
-         stuff3)
+     stuff3)
 
 ## 3
 if (condition1 &&
@@ -648,9 +648,9 @@ if (condition1 &&
 (condition3 && condition4) ||
 (condition5 &&
      condition6 &&
-         condition7) ||
+     condition7) ||
 condition8) {
     stuff
 } && condition8 ||
     condition9 ||
-        condition10
+    condition10
