@@ -720,6 +720,14 @@ directly followed by a new line. See
 `ess-offset-arguments-newline' for indentation after closing
 newline.
 
+If nil, the arguments are indented at the opening delimiter
+following foo:
+
+  object <- some_function(other_function(arg1,
+                                         arg2,
+                                         arg3)
+
+
 If a number N, the arguments are aligned at the beginning of
 the closest function call + N characters:
 
@@ -736,14 +744,6 @@ are indented at the previous line indentation + N characters:
       arg3)
 
 
-If nil, the arguments are indented at the opening delimiter
-following foo:
-
-  object <- some_function(other_function(arg1,
-                                         arg2,
-                                         arg3)
-
-
 You can refer to ess-indent-offset by setting this parameter to t
 or '(t) instead of N or '(N).
 
@@ -751,6 +751,14 @@ See `ess-style-alist' for other offsets.")
 
 (defvar ess-offset-arguments-newline '(t)
   "Indent of arguments when ( or [ is followed by a new line.
+
+If nil, the arguments are indented at the opening delimiter
+following foo:
+
+  object <- some_function(other_function(
+                                         arg1,
+                                         arg2)
+
 
 If a number N, the arguments are aligned at the beginning of the
 closest function call + N characters:
@@ -766,14 +774,6 @@ indented at the previous line indentation + N characters:
   object <- some_function(other_function(
       arg1,
       arg2)
-
-
-If nil, the arguments are indented at the opening delimiter
-following foo:
-
-  object <- some_function(other_function(
-                                         arg1,
-                                         arg2)
 
 
 You can refer to ess-indent-offset by setting this parameter to t
@@ -991,14 +991,14 @@ Offsets:
 
 Control variables:
 
-  - `ess-indent-function-declaration': whether to ignore
-    `ess-offset-arguments' for function argument declarations
+ - `ess-indent-function-declaration': whether to ignore
+   `ess-offset-arguments' for function argument declarations
 
-  - `ess-indent-from-lhs': whether to indent arguments from
-    left-hand side of an assignment or parameter declaration.
+ - `ess-indent-from-lhs': whether to indent arguments from
+   left-hand side of an assignment or parameter declaration.
 
-  - `ess-indent-with-fancy-comments': whether to indent #,## and ### comments
-    distinctly.
+ - `ess-indent-with-fancy-comments': whether to indent #,## and ### comments
+   distinctly.
 ")
 
 (defun ess-add-style (key entries)
