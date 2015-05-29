@@ -31,7 +31,8 @@
 
 ;;; Code:
 
- ; Requires and autoloads
+
+;;; Requires and autoloads
 
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:  and I had to add all other 'ess-eval-*** ...
@@ -95,7 +96,8 @@
     (point)))
 
 
- ; ESS mode
+
+;;; ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
 ;;;;
@@ -493,6 +495,7 @@ ess-mode."
     "none"))
 
 
+
 ;;*;; User commands in ess-mode
 
 ;;;*;;; Handy commands
@@ -737,6 +740,7 @@ current function."
     (let* ((beg-end (ess-end-of-function)))
       (narrow-to-region (nth 0 beg-end) (nth 1 beg-end)))))
 
+
 ;;*;; Loading files
 
 (defun ess-check-modifications nil
@@ -843,6 +847,8 @@ With prefix argument, only shows the errors ESS reported."
 	(message "Not a syntax error.")
 	(ess-display-temp-buffer errbuff)))))
 
+
+
 ;;*;; ESS code formatting/indentation
 
 ;;;*;;; User commands
@@ -916,7 +922,6 @@ of the expression are preserved."
       ;; call ess-indent-line
       (funcall indent-line-function))))
 
-
 (defun ess-indent-or-complete ()
   "When region is selected indent the region, otherwise, if
 `ess-tab-complete-in-script' is non-nil, try to indent, if code
@@ -956,7 +961,10 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
       (when end
         (indent-region start end)))))
 
-;;;*;;; Support functions for indentation
+
+
+;;;*;;; Indentation Engine
+;; Written by Lionel Henry in mid 2015
 
 (defun ess-comment-indent ()
   (if (or (looking-at "###")
@@ -1443,6 +1451,7 @@ expression."
                (setq if-level 0)
                (goto-char limit)))))))
 
+
 ;;;*;;; Predefined indentation styles
 
 (defun ess-set-style (&optional style quiet)
@@ -1471,10 +1480,10 @@ style variables buffer local."
           (cdr (assq ess-style ess-style-alist)))
     ess-style))
 
+
 ;;*;; Creating and manipulating dump buffers
 
 ;;;*;;; The user command
-
 (defun ess-dump-object-into-edit-buffer (object)
   "Edit an ESS object in its own buffer.
 
