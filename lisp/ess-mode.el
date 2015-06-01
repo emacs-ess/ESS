@@ -1070,7 +1070,7 @@ Return the amount the indentation changed by."
 ;; Should be called just before the opening brace
 (defun ess-looking-back-attached-name-p ()
   (looking-back
-   (concat ess-R-symbol-pattern "[[:blank:]]*")
+   (concat ess-R-symbol-pattern "`?[[:blank:]]*")
    (line-beginning-position)))
 
 (defun ess-climb-block ()
@@ -1130,6 +1130,7 @@ Returns nil if line starts inside a string, t if in a comment."
        ((ess-block-opening-p)
         (ess-calculate-indent--block-opening))
        ;; Block: Continuations
+       ((ess-calculate-indent--continued-definition containing-sexp))
        ((ess-calculate-indent--continued-block containing-sexp))
        ((ess-calculate-indent--continued containing-sexp))
        ((null containing-sexp)
@@ -1298,6 +1299,20 @@ Returns nil if line starts inside a string, t if in a comment."
           (setq min-col (min indent (or min-col indent))))))
     min-col))
 
+(defun ess-calculate-indent--continued-definition (&optional containing-sexp)
+  "Assignment-like continuations, making sure we don't pick up
+   '=' in function calls."
+  (save-excursion
+    (beginning-of-line)
+    (ess-backward-to-noncomment containing-sexp)
+    (when (or (looking-back "<-\\|:=\\|~" (- (point) 2))
+              (and (equal (char-before) ?=)
+                   (save-excursion
+                     (backward-sexp)
+                     (not (looking-back "[ \t\n]*[(,]" (line-beginning-position 0))))))
+      (+ (current-indentation)
+         (ess-offset 'continued-first)))))
+
 (defun ess-calculate-indent--continued-block (&optional containing-sexp)
   "If a continuation line of a block, return and indent of this line, otherwise nil."
   (save-excursion
@@ -1310,9 +1325,6 @@ Returns nil if line starts inside a string, t if in a comment."
       (let ((indent
              (cond ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
                     nil)
-                   ;; treat <- to avoid creating another check function
-                   ((looking-back "<-" (- (point) 2))
-                    (current-indentation))
                    ((= (preceding-char) ?\)) ;; if, for, while, function
                     (ignore-errors
                       ;; if throws an error clearly not a continuation

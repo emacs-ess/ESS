@@ -102,9 +102,9 @@ fun_call(parameter = fun_argument(argument1,
 
 ## 7
 `fun_call`(
-      argument1,
-      argument2
-      )
+           argument1,
+           argument2
+           )
 
 ## 8
 fun_call(argument1
@@ -216,8 +216,8 @@ fun_call(parameter1 = {
                            },
       parameter3 =
          stuff5 ~
-         stuff6 +
-         stuff7,
+            stuff6 +
+            stuff7,
       argument)
 
 ## 6
@@ -257,18 +257,18 @@ fun_call(
 
 ## 10
 object <-
-      fun_call({
+   fun_call({
+                  stuff
+            }, {
                      stuff
-               }, {
-                        stuff
-                  })
+               })
 
 ## 11
 object <-
-      fun_call(     {
-                          body
-                    }
-      )
+   fun_call(     {
+                       body
+                 }
+   )
 
 ## 12
 fun_call1(
@@ -427,27 +427,27 @@ for (sequence)
 
 ## 9
 object <-
-      if (condition) {
-            stuff1
-      } else {
-            stuff2
-      }
+   if (condition) {
+         stuff1
+   } else {
+         stuff2
+   }
 
 ## 10
 {
       object <-
-            if (condition) stuff1
-            else stuff2
+         if (condition) stuff1
+         else stuff2
 }
 
 ## 10
 {
       object <-
-            if (condition) fun_call(
-                                    argument1,
-                                    argument2
-                                    )
-            else stuff
+         if (condition) fun_call(
+                                 argument1,
+                                 argument2
+                                 )
+         else stuff
 }
 
 ## 11
@@ -582,9 +582,9 @@ object1 <- object2 %>%
 
 ## 12
 object1 <-
-      object2%>%fun_call1() %>%
-      fun_call2() %>%
-      fun_call3()
+   object2%>%fun_call1() %>%
+   fun_call2()%>%
+   fun_call3()
 
 ## 13
 {
@@ -607,6 +607,17 @@ object1 <-
 } %>%
    fun_call()
 }
+
+## 15
+object <-
+   stuff1 +
+   stuff2 ~
+      stuff3 +
+      stuff4 :=
+         stuff5 +
+         stuff6 =
+            stuff7 +
+            stuff8
 
 
 ### Comments

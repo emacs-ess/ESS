@@ -98,13 +98,13 @@ fun_call(parameter = fun_argument(argument1,
 
 ## 6
 `fun_call`(argument1,
-    argument2)
+           argument2)
 
 ## 7
 `fun_call`(
     argument1,
     argument2
-    )
+)
 
 ## 8
 fun_call(argument1
@@ -216,8 +216,8 @@ fun_call(parameter1 = {
 },
 parameter3 =
     stuff5 ~
-    stuff6 +
-    stuff7,
+        stuff6 +
+        stuff7,
 argument)
 
 ## 6
@@ -583,7 +583,7 @@ object1 <- object2 %>%
 ## 12
 object1 <-
     object2%>%fun_call1() %>%
-    fun_call2() %>%
+    fun_call2()%>%
     fun_call3()
 
 ## 13
@@ -607,6 +607,17 @@ object1 <-
     } %>%
         fun_call()
 }
+
+## 15
+object <-
+    stuff1 +
+    stuff2 ~
+        stuff3 +
+        stuff4 :=
+            stuff5 +
+            stuff6 =
+                stuff7 +
+                stuff8
 
 
 ### Comments
