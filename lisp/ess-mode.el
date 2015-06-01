@@ -1316,7 +1316,7 @@ Returns nil if line starts inside a string, t if in a comment."
               (and (equal (char-before) ?=)
                    (save-excursion
                      (backward-sexp)
-                     (not (looking-back "[ \t\n]*[(,]" (line-beginning-position 0))))))
+                     (not (looking-back "[(,][ \t\n]*" (line-beginning-position 0))))))
       (+ (current-indentation)
          (ess-offset 'continued-first)))))
 

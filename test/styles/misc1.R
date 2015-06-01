@@ -237,9 +237,9 @@ fun_call(parameter1 = {
                               stuff4
                            },
    parameter3 =
-   stuff5 ~
-   stuff6 +
-      stuff7,
+      stuff5 ~
+      stuff6 +
+         stuff7,
    argument)
 
 ## 6
