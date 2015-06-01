@@ -1983,6 +1983,12 @@ of Emacs until the code has been successfully evaluated."
   :group 'ess-proc
   :type  'number)
 
+(defvar ess-eval-without-trailing-operator nil
+  "If non-nil, trailing operators will be trimmed from evaled input.
+This is useful to evaluate partially a magrittr pipeline or a
+ggplot specification.")
+
+
  ; System variables
 
 ;;*;; Variables relating to multiple processes

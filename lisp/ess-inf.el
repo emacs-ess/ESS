@@ -1312,6 +1312,15 @@ STRING). In all other cases the behavior is as described in
       string
     (concat string "\n")))
 
+(defun ess--delete-trailing-operator-maybe (input)
+  (if ess-eval-without-trailing-operator
+      (replace-regexp-in-string (concat "\\(%[^ \t]%"
+                                        "\\|[-:+*/><=&|~]\\)"
+                                        "[ \t\n]*\\'")
+                                "" input)
+    input))
+(add-hook 'ess-presend-filter-functions 'ess--delete-trailing-operator-maybe)
+
 
 (defvar ess--dbg-del-empty-p t
   "Internal variable to control removal of empty lines during the

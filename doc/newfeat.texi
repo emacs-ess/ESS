@@ -45,6 +45,10 @@ of the RStudio users, you will also need to set
 refilling in order to make the documentation more readable. You can also
 refill commented lines in the @code{examples} field without squashing
 the surrounding code in the comments.
+@item @ESS{[R]}: A new setting, @code{ess-eval-without-trailing-operator},
+will cause trailing operators to be stripped from any evaluated R
+code. This makes it easy to evaluate partially a magrittr pipeline or a
+ggplot specification.
 @end itemize
 
 
