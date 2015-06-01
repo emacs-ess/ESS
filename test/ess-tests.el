@@ -57,15 +57,15 @@
     (C++
      ,@(cdr (assq 'C++ ess-style-alist)))
     (misc1
-     (ess-indent-offset . 6)
+     (ess-indent-offset . 3)
      (ess-offset-block . nil)
      (ess-offset-arguments . t)
      (ess-offset-arguments-newline . nil)
      (ess-indent-function-declaration . nil)
      (ess-indent-from-lhs . nil)
      (ess-indent-from-first-chained-call . nil)
-     (ess-offset-continued . 0)
-     (ess-offset-continued-first . 3)
+     (ess-offset-continued . t)
+     (ess-offset-continued-first . 0)
      )
     (misc2
      ,@(cdr (assq 'RStudio ess-style-alist))
@@ -126,3 +126,6 @@ where the edit took place. Return nil if E represents no real change.
 
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
+
+(ert-deftest test-ess-R-indentation-misc2 ()
+  (ess-test-R-indentation "styles/misc2.R" 'misc2))
