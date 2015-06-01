@@ -1070,7 +1070,7 @@ Return the amount the indentation changed by."
 ;; Should be called just before the opening brace
 (defun ess-looking-back-attached-name-p ()
   (looking-back
-   (concat ess-R-symbol-pattern "[[:blank:]]*")
+   (concat ess-R-symbol-pattern "`?[[:blank:]]*")
    (line-beginning-position)))
 
 (defun ess-climb-block ()

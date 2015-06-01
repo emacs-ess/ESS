@@ -104,7 +104,7 @@ argument3)
 `fun_call`(
   argument1,
   argument2
-  )
+)
 
 ## 8
 fun_call(argument1

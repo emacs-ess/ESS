@@ -98,13 +98,13 @@ fun_call(parameter = fun_argument(argument1,
 
 ## 6
 `fun_call`(argument1,
-  argument2)
+           argument2)
 
 ## 7
 `fun_call`(
   argument1,
   argument2
-  )
+)
 
 ## 8
 fun_call(argument1

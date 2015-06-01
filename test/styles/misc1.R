@@ -102,9 +102,9 @@ fun_call(parameter = fun_argument(argument1,
 
 ## 7
 `fun_call`(
-      argument1,
-      argument2
-      )
+           argument1,
+           argument2
+           )
 
 ## 8
 fun_call(argument1
