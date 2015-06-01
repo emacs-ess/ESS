@@ -833,6 +833,27 @@ If t:
 
 See `ess-style-alist' for for an overview of ESS indentation.")
 
+(defvar ess-indent-from-first-chained-call t
+  "This switch adjusts the behaviour of
+ess-offset-arguments(-newline) and ess-offset-block when they are
+set to `t'. In this case, arguments are indented starting from
+the function call. When ess-indent-from-first-chained-call is `t'
+as well, chained calls will be treated as if they were one call
+and indentation will start from the first one.
+
+For example, with ess-offset-arguments-newline set to `t' and
+ess-indent-from-first-chained-call set to `nil', we have:
+
+  some_function(other_function(
+                    argument
+                ))
+
+And when the latter is set to `t' instead:
+
+  some_function(other_function(
+      argument
+  ))")
+
 (defvar ess-offset-continued 2
   "Extra indent for lines not starting new statements.
 You can refer to `ess-indent-offset' by setting this parameter to
@@ -875,6 +896,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
 
     (C++
@@ -886,6 +908,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
     
     ;; CLB added rmh 2Nov97 at request of Terry Therneau
@@ -898,6 +921,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . 4)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
 
     (GNU
@@ -909,6 +933,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
     
     (K&R
@@ -920,6 +945,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
     
     ;; R added ajr 17Feb04 to match "common R" use
@@ -932,6 +958,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . t))
     
     (RStudio
@@ -943,6 +970,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued-first . t)
      (ess-indent-function-declaration . t)
      (ess-indent-from-lhs . t)
+     (ess-indent-from-first-chained-call . t)
      (ess-indent-with-fancy-comments . nil))
     
     (DEFAULT
@@ -952,6 +980,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-offset-arguments-newline . ,(default-value 'ess-offset-arguments-newline))
       (ess-indent-function-declaration . ,(default-value 'ess-indent-function-declaration))
       (ess-indent-from-lhs . ,(default-value 'ess-indent-from-lhs))
+      (ess-indent-from-first-chained-call . ,(default-value 'ess-indent-from-first-chained-call))
       (ess-offset-continued . ,(default-value 'ess-offset-continued))
       (ess-offset-continued-first . ,(default-value 'ess-offset-continued-first))
       (ess-indent-with-fancy-comments . ,(default-value 'ess-indent-with-fancy-comments))))

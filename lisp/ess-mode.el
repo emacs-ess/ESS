@@ -1253,10 +1253,17 @@ Returns nil if line starts inside a string, t if in a comment."
 
            ;; Indent from attached name
            (t
-            ;; Handle brackets chains (cf data.table)
+            ;; Handle brackets chains such as ][ (cf data.table)
             (while (equal (char-before) ?\])
               (ignore-errors (backward-sexp)))
-            (ignore-errors (backward-sexp))
+            ;; Handle call chains
+            (if ess-indent-from-first-chained-call
+                (while (ignore-errors
+                         (backward-sexp)
+                         (when (looking-back "[[(][ \t,]*"
+                                             (line-beginning-position))
+                           (goto-char (match-beginning 0)))))
+              (ignore-errors (backward-sexp)))
             (when ess-indent-from-lhs
               (ess-climb-lhs))
             (current-column)))))

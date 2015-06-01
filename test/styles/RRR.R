@@ -164,6 +164,28 @@ a <- fun_call(
     arg2
 )
 
+## 13
+fun_call1(fun_call2(
+    argument
+))
+
+## 14
+some_function <- fun_call1(fun_call2(
+    argument
+))
+
+## 15
+object[, fun_call(
+    argument
+)]
+
+## 16
+fun_call1(argument1, fun_call2(fun_call3(
+                         argument2
+                     ))
+          )
+
+
 
 ### Blocks
 

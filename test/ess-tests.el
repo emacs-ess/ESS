@@ -63,6 +63,7 @@
      (ess-offset-arguments-newline . nil)
      (ess-indent-function-declaration . nil)
      (ess-indent-from-lhs . nil)
+     (ess-indent-from-first-chained-call . nil)
      (ess-offset-continued . 0)
      (ess-offset-continued-first . 3)
      )
