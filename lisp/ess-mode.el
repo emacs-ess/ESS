@@ -1175,7 +1175,8 @@ Returns nil if line starts inside a string, t if in a comment."
                   (ess-climb-block)
                   (when ess-indent-from-lhs
                     (ess-climb-lhs)))
-                (current-column))
+                (+ (current-column)
+                   (if (equal type 'opening) 1 0)))
 
                ;; Indent from previous line indentation
                ((listp ess-offset-block)

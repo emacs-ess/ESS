@@ -52,16 +52,16 @@ object <- function()
 
 ## 8
 fun_call(parameter = function()
-        {
-           body
-        })
+         {
+            body
+         })
 
 ## 9
 {
    fun_call(parameter = function()
-           {
-              body
-           })
+            {
+               body
+            })
 }
 
 
@@ -202,9 +202,9 @@ fun_call1(argument1, fun_call2(fun_call3(
    fun_call({
                stuff1
             },
-           {
-              stuff2
-           }
+            {
+               stuff2
+            }
    )
 }
 
@@ -229,13 +229,13 @@ fun_call(
 fun_call(parameter1 = {
                          stuff1
                       },
-        {
-           stuff2
-        }, parameter2 = {
-                           stuff3
-                        }, {
-                              stuff4
-                           },
+         {
+            stuff2
+         }, parameter2 = {
+                            stuff3
+                         }, {
+                               stuff4
+                            },
    parameter3 =
       stuff5 ~
       stuff6 +
@@ -248,9 +248,9 @@ fun <- fun_call({
                 }, {
                       stuff2
                    },
-               {
-                  stuff3
-               }
+                {
+                   stuff3
+                }
        )
 
 ## 7
@@ -270,12 +270,12 @@ fun_call(function(x) {
 
 ## 9
 fun_call(
-        {
-           stuff
-        }, {
-              stuff
-           }
-        )
+         {
+            stuff
+         }, {
+               stuff
+            }
+         )
 
 ## 10
 object <-
@@ -352,10 +352,10 @@ object[(
                    body
                    ),
           argument[
-                  (
-                     sub_argument
-                  )
-                  ]
+                   (
+                      sub_argument
+                   )
+                   ]
           ]
 }
 
@@ -651,10 +651,10 @@ stuff1 +
 {
    ## Hanging comment 1
    fun_call(
-           {
-              ## Hanging comment 2
-           }
-           )
+            {
+               ## Hanging comment 2
+            }
+            )
 }
 
 ## 3
@@ -678,10 +678,10 @@ stuff1 &&
 ## 3
 if (condition1 &&
    condition2 ||
-   (condition3 && condition4) ||
-   (condition5 &&
-       condition6 &&
-          condition7) ||
+    (condition3 && condition4) ||
+    (condition5 &&
+        condition6 &&
+           condition7) ||
    condition8) {
    stuff
 } && condition8 ||
