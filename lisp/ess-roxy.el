@@ -147,7 +147,16 @@
 ;; (setq hs-c-start-regexp ess-roxy-str)
 ;; (make-variable-buffer-local 'hs-c-start-regexp)
 
-;; Function definitions
+
+;;; Function definitions
+
+(defun ess-back-to-roxy ()
+  "Go to roxy prefix"
+  (progn
+    (end-of-line)
+    (re-search-backward (concat ess-roxy-re " ?") (point-at-bol))
+    (goto-char (match-end 0))))
+
 (defun ess-roxy-beg-of-entry ()
   "Get point number at start of current entry, 0 if not in entry"
   (save-excursion
@@ -252,7 +261,7 @@
     (let ((roxy-str (car (split-string (ess-roxy-guess-str) "'"))))
       (if (ess-roxy-in-header-p)
           (save-excursion
-            (move-beginning-of-line 1)
+            (ess-back-to-roxy)
             (re-search-forward "\\([ \t]*\\)" (line-end-position) t)
             (concat roxy-str "' " (match-string 1)))
         (concat roxy-str "' " (make-string ess-indent-offset ? ))))))
@@ -765,7 +774,7 @@ list of strings."
                   (goto-char par-start))
                 (while (< (line-number-at-pos) stop-line)
                   (when (ess-roxy-should-indent-line-p)
-                    (move-beginning-of-line 1)
+                    (ess-back-to-roxy)
                     (delete-region (point) (progn (skip-chars-forward " \t") (point)))
                     (insert (make-string ess-indent-offset ? )))
                   ad-do-it
@@ -811,7 +820,7 @@ list of strings."
    (t
     (let ((point-after-roxy-string
            (save-excursion (forward-line 0)
-                           (move-beginning-of-line nil)
+                           (ess-back-to-roxy)
                            (point))))
       (goto-char (max (point) point-after-roxy-string)))
     ad-do-it
