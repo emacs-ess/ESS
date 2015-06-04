@@ -64,6 +64,13 @@ fun_call(parameter = function()
             })
 }
 
+## 10
+fun_call(
+         function() {
+                       stuff
+                    }
+         )
+
 
 ### Function calls
 

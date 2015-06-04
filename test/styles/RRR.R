@@ -64,6 +64,13 @@ fun_call(parameter = function()
     })
 }
 
+## 10
+fun_call(
+    function() {
+        stuff
+    }
+)
+
 
 ### Function calls
 
@@ -143,14 +150,14 @@ fun_call(parameter = fun_argument(
                        argument3,
                        argument4
                    ), function(x) {
-            body
-        },
-        argument5,
-        fun_call3(
-            argument6
-        ),
-        argument7
-        ), {
+                       body
+                   },
+                   argument5,
+                   fun_call3(
+                       argument6
+                   ),
+                   argument7
+                   ), {
         stuff
     },
     argument8

@@ -1108,6 +1108,14 @@ Return the amount the indentation changed by."
             (looking-at (concat ess-R-name-pattern "[[:blank:]]*[[(]"))))
         t (progn (goto-char saved-pos) nil))))
 
+(defun ess-climb-function-decl (&optional from-block)
+  (let ((orig-point (point))
+        (times (if from-block 2 1)))
+    (ignore-errors (backward-sexp times))
+    (if (looking-at "function[([:blank:]]+")
+        (point)
+      (goto-char orig-point) nil)))
+
 (defun ess-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as ESS code.
 In usual case returns an integer: the column to indent to.
@@ -1150,7 +1158,11 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--block (&optional offset)
   (when containing-sexp
-    (goto-char containing-sexp))
+    (goto-char containing-sexp)
+    ;; When indenting at prev-line, need to climb up function
+    ;; declaration to find correct container-sexp
+    (when (and (ess-offset 'block) (listp (ess-offset 'block)))
+        (ess-climb-function-decl t)))
   (let* ((offset (or offset (ess-extract-offset ess-offset-block t)))
          ;; Check if block is an argument.
          (type (save-excursion
@@ -1230,10 +1242,7 @@ Returns nil if line starts inside a string, t if in a comment."
          (type (progn
                  (goto-char from)
                  (cond
-                  ((and (save-excursion
-                          (ignore-errors (backward-sexp))
-                          (looking-at
-                           "function[([:blank:]]+"))
+                  ((and (save-excursion (ess-climb-function-decl))
                         ess-indent-function-declaration)
                    nil)
                   ((ess-looking-at-last-open-delim-p)
