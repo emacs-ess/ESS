@@ -1073,6 +1073,11 @@ Return the amount the indentation changed by."
    (concat ess-R-symbol-pattern "`?[[:blank:]]*")
    (line-beginning-position)))
 
+(defun ess-function-argument-p ()
+  (save-excursion
+    (backward-sexp)
+    (not (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
+
 (defun ess-climb-block ()
   (let ((saved-pos (point)))
     (unless (and (ignore-errors
@@ -1160,7 +1165,7 @@ Returns nil if line starts inside a string, t if in a comment."
   (when containing-sexp
     (goto-char containing-sexp)
     ;; When indenting at prev-line, need to climb up function
-    ;; declaration to find correct container-sexp
+    ;; declaration to find container-sexp correct
     (when (and (ess-offset 'block) (listp (ess-offset 'block)))
         (ess-climb-function-decl t)))
   (let* ((offset (or offset (ess-extract-offset ess-offset-block t)))
@@ -1210,13 +1215,14 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--block-opening ()
   (cond
    ;; If the block is an argument in a function call, indent
-   ;; accordingly
+   ;; accordingly, but check for continuations first
    ((save-excursion
       (and containing-sexp
            (goto-char containing-sexp)
            (looking-at "[[(]")
            (ess-looking-back-attached-name-p)))
-    (ess-calculate-indent--block 0))
+    (cond ((ess-calculate-indent--continued containing-sexp))
+          (t (ess-calculate-indent--block 0))))
    ;; Top level block
    ((null containing-sexp) 0)
    ;; Block embedded in another block
@@ -1324,9 +1330,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-backward-to-noncomment containing-sexp)
     (when (or (looking-back "<-\\|:=\\|~" (- (point) 2))
               (and (equal (char-before) ?=)
-                   (save-excursion
-                     (backward-sexp)
-                     (not (looking-back "[(,][ \t\n]*" (line-beginning-position 0))))))
+                   (ess-function-argument-p)))
       (+ (current-indentation)
          (ess-offset 'continued-first)))))
 
@@ -1381,11 +1385,6 @@ Returns nil if line starts inside a string, t if in a comment."
             (cond
              ((memq (preceding-char) '(nil ?\, ?\; ?\} ?\{ ?\] ?\())
               nil)
-             ;; Ignore continuation rules for "if" statements
-             ((ignore-errors
-                (up-list -1)
-                (looking-back "if[ \t]*" (line-beginning-position)))
-              nil)
              ((progn (goto-char start)
                      (or (and (> (current-column) 1)
                               (or (looking-back "<-" (- (point) 2))
@@ -1412,29 +1411,34 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-climb-continued-statements ()
   (ignore-errors
+    ;; First climb back to a useful point
     (backward-sexp)
-    (cond ((looking-at "[[(]")
-           (if (ess-looking-back-attached-name-p)
-               (backward-sexp)
-             (let ((prev-pos (point))
-                   (prev-line (line-number-at-pos)))
-               (forward-sexp)
-               (backward-char)
-               (when (equal (line-number-at-pos) prev-line)
-                 (goto-char prev-pos)))))
+    (cond ((and (looking-at "[[(]")
+                (ess-looking-back-attached-name-p))
+           (backward-sexp))
           ((looking-at "{")
            (ess-climb-block)))
-    (when (save-excursion
-            (ignore-errors
-              (let ((line-start (line-number-at-pos)))
-                (backward-sexp)
-                (forward-sexp)
-                (when (equal line-start (line-number-at-pos))
-                  (looking-at
-                   (concat "[[:blank:]]*\\("
-                           "<-\\|[-:+*/><=&|~]"
-                           "\\|%[^ \t]*%\\)"))))))
-      (ess-climb-continued-statements))))
+    (cond
+     ;; Now climb operators
+     ((save-excursion
+        (ignore-errors
+          (let ((line-start (line-number-at-pos)))
+            (backward-sexp)
+            (forward-sexp)
+            (and (equal line-start (line-number-at-pos))
+                 (looking-at
+                  (concat "[[:blank:]]*\\("
+                          "<-\\|!=\\|[-:+*/><=&|~]"
+                          "\\|%[^ \t]*%\\)"))))))
+      (ess-climb-continued-statements))
+     ;; If no previous operator was find and we have a closing
+     ;; delimiter on its own line, we indent from the delimiter, not
+     ;; the char after
+     ((let ((orig-point (point)))
+        (forward-sexp)
+        (back-to-indentation)
+        (cond ((looking-at "[])}]"))
+              (t (goto-char orig-point))))))))
 
 (defun ess-backward-to-noncomment (limit)
   ;; this one is bad. Use

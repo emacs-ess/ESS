@@ -600,7 +600,7 @@ fun_call(argument1 %>%
   stuff3 %>%
     stuff4
 } %>%
-   stuff5,
+  stuff5,
 argument3
 )
 
@@ -684,13 +684,27 @@ stuff1 &&
 
 ## 3
 if (condition1 &&
-    condition2 ||
-(condition3 && condition4) ||
-(condition5 &&
-   condition6 &&
-   condition7) ||
-condition8) {
+      condition2 ||
+      (condition3 && condition4) ||
+      (condition5 &&
+         condition6 &&
+         condition7) ||
+      condition8) {
   stuff
 } && condition8 ||
   condition9 ||
   condition10
+
+## 4
+stuff1 == stuff2 ||
+  condition
+
+## 5
+(stuff1 == stuff2 ||
+   condition
+)
+
+## 6
+(stuff1 != stuff2 ||
+   condition
+)
