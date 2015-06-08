@@ -504,6 +504,18 @@ object <-
         stuff5
 }
 
+## 13
+fun_call(
+    argument,
+    if (condition) {
+        stuff1
+    } else if {
+        stuff3
+    } else {
+        stuff2
+    }
+)
+
 
 ### Continuation lines
 

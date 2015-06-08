@@ -1121,6 +1121,27 @@ Return the amount the indentation changed by."
         (point)
       (goto-char orig-point) nil)))
 
+;; Return t if successful, nil on error
+(defun ess-backward-sexp (&optional N)
+  (condition-case nil
+      (progn (backward-sexp N) t)
+    (error nil)))
+
+(defun ess-climb-if-else (&optional from-block)
+  (when (looking-back ")[ \t]*" (line-beginning-position))
+    (ess-backward-sexp))
+  (let ((orig-point (point)))
+    (if (and (ess-backward-sexp)
+             (looking-at "if\\b\\|else\\b"))
+        (progn
+          (setq orig-point (point))
+          (ess-backward-sexp)
+          (unless (looking-at "else\\b")
+            (goto-char orig-point))
+          (when (looking-back "}?[ \t]*" (line-beginning-position))
+            (goto-char (match-beginning 0))))
+      (goto-char orig-point))))
+
 (defun ess-calculate-indent (&optional parse-start)
   "Return appropriate indentation for current line as ESS code.
 In usual case returns an integer: the column to indent to.
@@ -1167,7 +1188,8 @@ Returns nil if line starts inside a string, t if in a comment."
     ;; When indenting at prev-line, need to climb up function
     ;; declaration to find container-sexp correct
     (when (and (ess-offset 'block) (listp (ess-offset 'block)))
-        (ess-climb-function-decl t)))
+      (or (ess-climb-function-decl t)
+          (ess-climb-if-else))))
   (let* ((offset (or offset (ess-extract-offset ess-offset-block t)))
          ;; Check if block is an argument.
          (type (save-excursion
