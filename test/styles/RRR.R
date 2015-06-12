@@ -475,6 +475,16 @@ object <-
         stuff5
 }
 
+## 13 {simplified from grDevices:::as.raster.array } --- FIXME: below is *desired*
+{
+    r <- array(if (d[3L] == 3L)
+                   rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), maxColorValue = max)
+               else if (d[3L] == 4L)
+                   rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), t(x[,,4L]), maxColorValue = max)
+               else stop("foo"),
+               dim = d[1:2])
+}
+
 
 ### Continuation lines
 
