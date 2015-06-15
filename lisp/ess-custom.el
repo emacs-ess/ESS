@@ -1071,6 +1071,10 @@ Control variables:
  - `ess-indent-align-nested-calls': functions whose nested calls
    should be aligned.
 
+ - `ess-indent-align-braced-continuations': whether to ignore
+   `ess-offset-continued' and `ess-offset-continued-first' inside
+   parenthesis and braces.
+
  - `ess-indent-prev-call-lhs': whether to indent arguments from
    left-hand side of an assignment or parameter declaration.
 
