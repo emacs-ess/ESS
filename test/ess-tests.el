@@ -57,19 +57,20 @@
     (C++
      ,@(cdr (assq 'C++ ess-style-alist)))
     (misc1
-     (ess-indent-offset . 6)
-     (ess-offset-block . nil)
-     (ess-offset-arguments . t)
-     (ess-offset-arguments-newline . nil)
-     (ess-indent-function-declaration . nil)
-     (ess-indent-from-lhs . nil)
-     (ess-offset-continued . 0)
-     (ess-offset-continued-first . 3)
-     )
+     (ess-indent-offset . 3)
+     (ess-offset-block . open-delim)
+     (ess-offset-arguments . prev-call)
+     (ess-offset-arguments-newline . open-delim)
+     (ess-offset-continued . cascade)
+     (ess-indent-align-declaration-args . nil)
+     (ess-indent-override-ifelse . t)
+     (ess-indent-prev-call-lhs . nil)
+     (ess-indent-prev-call-chains . nil)
+     (ess-indent-with-fancy-comments . t))
     (misc2
      ,@(cdr (assq 'RStudio ess-style-alist))
-     (ess-offset-block . t)
-     (ess-offset-arguments . (t)))))
+     (ess-offset-block . prev-call)
+     (ess-offset-arguments . prev-line))))
 
 (defun ess-test-get-pos-from-undo-elt (e)
   "If E represents an edit, return a position value in E, the position
@@ -115,7 +116,6 @@ where the edit took place. Return nil if E represents no real change.
         (buff (find-file-noselect file t t)))
     (with-current-buffer buff
       (R-mode)
-      (setq ess-indent-with-fancy-comments t)
       (ess-set-style style)
       (set-buffer-modified-p nil)
       (should (not-change-on-indent buff)))))
@@ -125,3 +125,6 @@ where the edit took place. Return nil if E represents no real change.
 
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
+
+(ert-deftest test-ess-R-indentation-misc2 ()
+  (ess-test-R-indentation "styles/misc2.R" 'misc2))

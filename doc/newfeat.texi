@@ -16,31 +16,30 @@ customisation is now centered around 3 settings:
 @code{ess-offset-arguments}, @code{ess-offset-arguments-newline} and
 @code{ess-offset-block}. The first two settings control how arguments
 are indented inside function calls and index brackets, while the latter
-controls the indentation of statement blocks. They all take either a
-number @code{N} (indentation relative to innermost function call), a
-list @code{'(N)} containing a number (indentation relative to last line
-indentation as in RStudio) or a @code{nil} value (indentation relative
-to opening delimiter). See the documentation strings of those variables
-for more information. Indentation of delimiters refer to these three
-values depending on the context in order to offer a consistent
-indentation.
-
+controls the indentation of statement blocks. They can be set to
+@code{prev-call} (indentation relative to innermost function call),
+@code{prev-line} (indentation relative to last line indentation as in
+RStudio) or @code{open-delim} (indentation relative to opening
+delimiter). See the documentation strings of those variables for more
+information. Indentation of delimiters refer to these three values
+depending on the context in order to offer a consistent indentation.
 @code{ess-arg-function-offset} has been replaced by
-@code{ess-indent-from-lhs} and has been generalised to
+@code{ess-indent-prev-call-lhs} and has been generalised to
 assignements. This setting works with both statement blocks and
-expressions. It takes only effect when the expression offsets are set to
-a number in order to produce a consistent indentation.
+expressions. It now only takes effect for offsets set to
+@code{prev-call} in order to produce a consistent indentation.
+
 @item @ESS{[R]}: @code{ess-brace-imaginary-offset},
-
 @code{ess-expression-offset} and all delimiter offsets are deprecated.
+The settings for indentation of continued statements have been replaced
+by @code{ess-offset-continuations}. It can be set to either
+@code{cascade} or @code{straight} (the default).
 
-@item @ESS{[R]}: All indentation offsets can now be set to @code{t}
-or @code{'(t)} to refer to the base indentation level
-@code{ess-indent-offset}.
 @item @ESS{[R]}: A new RStudio style is provided to mimic as closely
 as possible R files indented via RStudio. To reproduce the setup of some
 of the RStudio users, you will also need to set
-@code{ess-offset-arguments} to @code{'(t)}.
+@code{ess-offset-arguments} to @code{prev-line}.
+
 @item @ESS{[R]}: Roxygen fields will now be indented on paragraph
 refilling in order to make the documentation more readable. You can also
 refill commented lines in the @code{examples} field without squashing
