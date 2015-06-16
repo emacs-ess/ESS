@@ -1073,17 +1073,19 @@ queried for arguments.
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-          (with-current-buffer (ess-command (format ess-funargs-command
-                                                    (ess-quote-special-chars funname))
-                                            nil nil nil nil proc)
-            (goto-char (point-min))
-            (when (re-search-forward "(list" nil t)
-              (goto-char (match-beginning 0))
-              (setq args (ignore-errors (eval (read (current-buffer)))))
-              (if args
-                  (setcar args (cons (car args) (current-time)))))
-            ;; push even if nil
-            (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache)))))))
+	  (and 
+	   (not (process-get proc 'busy))
+	   (with-current-buffer (ess-command (format ess-funargs-command
+						     (ess-quote-special-chars funname))
+					     nil nil nil nil proc)
+	     (goto-char (point-min))
+	     (when (re-search-forward "(list" nil t)
+	       (goto-char (match-beginning 0))
+	       (setq args (ignore-errors (eval (read (current-buffer)))))
+	       (if args
+		   (setcar args (cons (car args) (current-time)))))
+	     ;; push even if nil
+	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
 
 (defun ess-symbol-start ()
   "Get initial position for objects completion."
