@@ -1,6 +1,6 @@
 ;; ess-julia.el --- ESS julia mode and inferior interaction
 ;;
-;; Copyright (C) 2012 Vitalie Spinu.
+;; Copyright (C) 2012-2015 Vitalie Spinu and the ESS Core team.
 ;;
 ;; Filename: ess-julia.el
 ;; Author: Vitalie Spinu (based on julia-mode.el from julia-lang project)
@@ -39,6 +39,8 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
+(eval-when-compile
+  (require 'cl))
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
