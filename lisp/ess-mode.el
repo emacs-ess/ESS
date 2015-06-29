@@ -1122,11 +1122,18 @@ Return the amount the indentation changed by."
        (prog1 nil
          (goto-char orig-point)))))
 
+(defmacro ess-move-if-not-nil (&rest body)
+  (declare (indent 0)
+           (debug (&rest form)))
+  `(let ((orig-point (point)))
+     (if (progn ,@body)
+         t
+       (prog1 nil
+         (goto-char orig-point)))))
+
 (defun ess-climb-block ()
   (let ((saved-pos (point)))
-    (or (and (ess-backward-sexp)
-             (cond ((looking-at "else")
-                    (re-search-backward
+    (or (and (ess-backward-sexp) (cond ((looking-at "else") (re-search-backward
                      "}[[:blank:]]\\="
                      (line-beginning-position) t)
                     t)
@@ -1136,7 +1143,7 @@ Return the amount the indentation changed by."
           (goto-char saved-pos)))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
-  (ess-move-if t
+  (ess-move-if-not-nil
     (let ((start-line (line-number-at-pos)))
       (ess-climb-operator)
       (when (and (or climb-line (equal (line-number-at-pos) start-line))
@@ -1156,13 +1163,21 @@ Return the amount the indentation changed by."
 ;; (point-min) because that won't work if there is no previous sexp
 ;; Should be called right at the beginning of current sexp.
 (defun ess-climb-operator ()
-  (and (ess-backward-sexp)
-       (/= (point) (point-min))
-       (ess-forward-sexp)
-       (prog1 t
-         (when (and (equal (char-after) ?=)
-                    (equal (char-before) ?:))
-           (forward-char -1)))))
+  (let ((orig-pos (point)))
+    (when (ess-backward-sexp)
+      ;; When there is only empty space or commented code left to
+      ;; climb (e.g. roxygen documentation), there is no previous
+      ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
+      ;; empty space without failing. So we need to skip it.
+      (while (looking-at "[ \t]*\\(#\\|$\\)")
+        (forward-line)
+        (back-to-indentation))
+      (when (and (/= (point) orig-pos)
+                 (ess-forward-sexp))
+        (prog1 t
+          (when (and (equal (char-after) ?=)
+                     (equal (char-before) ?:))
+            (forward-char -1)))))))
 
 (defun ess-unclimb-operator ()
   (ess-forward-sexp)
@@ -1196,7 +1211,7 @@ Return the amount the indentation changed by."
   (or (ess-climb-if-else)
       ;; Climb functions (e.g. ggplot) and
       ;; parenthesised expressions
-      (ess-move-if t
+      (ess-move-if-not-nil
         (ess-backward-sexp)
         (when (looking-at "[[({]")
           (prog1 t
@@ -1208,7 +1223,7 @@ Return the amount the indentation changed by."
   "Climb horizontal as well as vertical if-else chains, with or
 without curly quotes."
   (let ((orig-point (point)))
-    (while (or (ess-move-if t
+    (while (or (ess-move-if-not-nil
                  (while (and (looking-back "[)}][ \t]*" (line-beginning-position))
                              (ess-backward-sexp)))
                  (and (ess-backward-sexp)
@@ -1216,7 +1231,7 @@ without curly quotes."
                           (prog1 (looking-at "if\\b")
                             (when (looking-back "else\\b" (line-beginning-position))
                               (ess-backward-sexp))))))
-               (ess-move-if t
+               (ess-move-if-not-nil
                  (and (not (looking-at "if\\b"))
                       (ess-backward-sexp)
                       (if (looking-back "[)}][ \t]*" (line-beginning-position))
@@ -1520,7 +1535,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-move-to-leftmost-delim ()
   (let ((opening-pos (point))
         (opening-col (current-column)))
-    (ess-move-if t
+    (ess-move-if-not-nil
       (forward-char)
       (prog1 (ess-up-list)
         (backward-char)))
@@ -1536,12 +1551,11 @@ Returns nil if line starts inside a string, t if in a comment."
        ((and climbed
              ess-indent-align-braced-continuations
              containing-sexp
-             (ess-move-if t
+             (ess-move-if-not-nil
                (while (and (/= prev-pos (point))
                            (eq (ess-climb-continued-statements) t))
                  (setq prev-pos (point)))
-               (when (memq (char-before) '(?\( ?\{ ?\[))
-                 t)))
+               (memq (char-before) '(?\( ?\{ ?\[))))
         (when (looking-at "[[({]")
           (ess-move-to-leftmost-delim))
         (+ (current-column)
@@ -1590,13 +1604,13 @@ N times."
             (not (ess-looking-back-statement-start-p))
             ;; Climb over an operator, either horizontally or
             ;; vertically, in which case we increment the counter
-            (ess-move-if t
-              (when (and (ess-climb-operator)
-                         (ess-looking-at-operator-p))
-                (prog1 t
-                  (setq def-op (and (ess-looking-at-definition-op-p) 'inline))
-                  (when (and (ess-update-climber-counter) def-op)
-                    (setq def-op 'newline)))))
+            (ess-move-if-not-nil
+              (and (ess-climb-operator)
+                   (ess-looking-at-operator-p)
+                   (prog1 t
+                     (setq def-op (and (ess-looking-at-definition-op-p) 'inline))
+                     (when (and (ess-update-climber-counter) def-op)
+                       (setq def-op 'newline)))))
             ;; Break loop if we climbed enough or if we reached a
             ;; definition-op
             (if (and (<= counter N)
@@ -1609,7 +1623,7 @@ N times."
                       (def-op
                         ;; Delimiters need special treatment later on
                         ;; because we want to indent from the leftmost one
-                        (unless (ess-move-if t
+                        (unless (ess-move-if-not-nil
                                   (ess-unclimb-object)
                                   (ess-unclimb-operator)
                                   (looking-at "[({]"))
