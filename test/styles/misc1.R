@@ -616,15 +616,15 @@ stuff1 %>%
 
 ## 6
 stuff[stuff1 %>%
-      stuff2 %>%
-      stuff3] %>%
+         stuff2 %>%
+            stuff3] %>%
    stuff4 %>%
       stuff5
 
 ## 7
 ggplot() +
    geom(lhs -
-        rhs
+           rhs
    ) +
       geom()
 
@@ -644,20 +644,20 @@ ggplot() +
 stuff +
    fun_call(parameter = argument1,
       fun_call((stuff1 - stuff2 +
-                stuff3
+                   stuff3
                ) /
-               stuff4)
+                  stuff4)
    ) /
       stuff5
 
 fun_call(arg1 +
-         arg2, arg3 +
-                  arg4)
+            arg2, arg3 +
+                     arg4)
 
 ## 10
 fun_call(argument1 %>%
-         stuff1, argument2 %>%
-                    stuff2, {
+            stuff1, argument2 %>%
+                       stuff2, {
             stuff3 %>%
                stuff4
          } %>%
@@ -751,13 +751,13 @@ object %>%
 
 ## 20
 fun_call(stuff1 + stuff2 +
-         stuff3 +
-         (stuff4 + stuff5 +
-          stuff6) +
-            object[stuff7 +
-                   stuff8] +
-               {stuff9 +
-                stuff10})
+            stuff3 +
+               (stuff4 + stuff5 +
+                   stuff6) +
+                  object[stuff7 +
+                            stuff8] +
+                     {stuff9 +
+                         stuff10})
 
 
 ### Comments
@@ -790,17 +790,17 @@ stuff1 &&
 
 ## 2
 (stuff1 &&
- stuff2 ||
- stuff3)
+    stuff2 ||
+       stuff3)
 
 ## 3
 if (condition1 &&
-    condition2 ||
-    (condition3 && condition4) ||
-       (condition5 &&
-        condition6 &&
-        condition7) ||
-          condition8) {
+       condition2 ||
+          (condition3 && condition4) ||
+             (condition5 &&
+                 condition6 &&
+                    condition7) ||
+                condition8) {
    stuff
 } && condition8 ||
    condition9 ||
@@ -817,7 +817,7 @@ stuff1 == stuff2 ||
 
 ## 6
 (stuff1 != stuff2 ||
- condition
+    condition
 )
 
 ## 7

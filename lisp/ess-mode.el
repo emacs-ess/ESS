@@ -1085,9 +1085,8 @@ Return the amount the indentation changed by."
 
 ;; Should be called just before the opening brace
 (defun ess-looking-back-attached-name-p ()
-  (looking-back
-   (concat ess-R-symbol-pattern "`?[[:blank:]]*")
-   (line-beginning-position)))
+  (save-excursion
+    (ess-climb-object)))
 
 (defun ess-function-argument-p ()
   (save-excursion
@@ -1190,13 +1189,14 @@ Return the amount the indentation changed by."
 ;; containing `@' or `$'. Difficult to achieve with regexps, but
 ;; skipping chars should be faster anyway. Hopefully robust enough.
 (defun ess-climb-object ()
-  (let (climbed)
-    (skip-chars-backward " \t`")
-    (while (some (apply-partially '/= 0)
-                 `(,(skip-syntax-backward "w_")
-                   ,(skip-chars-backward "`")))
-      (setq climbed t))
-    climbed))
+  (ess-move-if-not-nil
+    (let (climbed)
+      (skip-chars-backward " \t`")
+      (while (some (apply-partially '/= 0)
+                   `(,(skip-syntax-backward "w_")
+                     ,(skip-chars-backward "`")))
+        (setq climbed t))
+      climbed)))
 
 (defun ess-unclimb-object ()
   (let (climbed)
@@ -1546,16 +1546,28 @@ Returns nil if line starts inside a string, t if in a comment."
   "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
     (let ((climbed (ess-climb-continued-statements))
+          (overridden-calls
+           (if (or (symbolp ess-indent-align-continuations-in-calls)
+                   (stringp ess-indent-align-continuations-in-calls))
+               (list ess-indent-align-continuations-in-calls)
+             ess-indent-align-continuations-in-calls))
           (prev-pos 0) first-indent)
       (cond
-       ((and climbed
-             ess-indent-align-braced-continuations
-             containing-sexp
-             (ess-move-if-not-nil
-               (while (and (/= prev-pos (point))
-                           (eq (ess-climb-continued-statements) t))
-                 (setq prev-pos (point)))
-               (memq (char-before) '(?\( ?\{ ?\[))))
+       ((save-excursion
+          (and climbed
+               overridden-calls
+               containing-sexp
+               (progn
+                 (goto-char containing-sexp)
+                 (looking-at "("))
+               (if (ess-climb-object)
+                   (when (or (looking-at (concat "\\(" ess-R-symbol-pattern "+\\)"))
+                             (looking-at (concat "`\\(" ess-R-symbol-pattern "+\\)`")))
+                     (member (intern (match-string 1)) overridden-calls))
+                 (member "(" overridden-calls))))
+        (while (and (/= prev-pos (point))
+                    (eq (ess-climb-continued-statements) t))
+          (setq prev-pos (point)))
         (when (looking-at "[[({]")
           (ess-move-to-leftmost-delim))
         (+ (current-column)
