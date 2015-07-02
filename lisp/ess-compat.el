@@ -50,12 +50,8 @@ Only a concern with earlier versions of Emacs.")
 
 ;; FIXME:  When emacs is started from Cygwin shell in Windows,
 ;;         we have (equal window-system 'x) -and should use "--ess" in *d-r.el
-(defvar ess-microsoft-p (or (equal window-system 'w32)
-                            ;; XEmacs only...
-;;;                         (equal (console-type) 'pc)
-;;;                         (equal (console-type) 'mswindows)
-                            (equal window-system 'win32)
-                            (equal window-system 'mswindows))
+(defvar ess-microsoft-p (or (eq system-type 'ms-dos)
+			    (eq system-type 'windows-nt))
   "Value is t if the OS is one of Microsoft's, nil otherwise.")
 
 
