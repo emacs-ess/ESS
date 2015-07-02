@@ -6,8 +6,8 @@
 {
    fun <- function(argument1,
              argument2) {
-      body
-   }
+             body
+          }
 }
 
 ## 2
@@ -61,8 +61,8 @@ object <- function()
 ## 9
 {
    fun_call(parameter = function() {
-               body
-            })
+                           body
+                        })
 }
 
 ## 10
@@ -75,8 +75,8 @@ fun_call(
 ## 11
 {
    fun_call1(fun_call2(argument, function() {
-                          stuff
-                       })
+                                    stuff
+                                 })
    )
 }
 
@@ -167,8 +167,8 @@ fun_call(parameter = fun_argument(
                                       argument3,
                                       argument4
                                       ), function(x) {
-                           body
-                        },
+                                            body
+                                         },
                 argument5,
                 fun_call4(
                           argument6
@@ -296,8 +296,8 @@ fun_call(function(x) {
             body1
          },
    function(x) {
-            body2
-         })
+      body2
+   })
 
 ## 9
 fun_call(
@@ -758,6 +758,13 @@ fun_call(stuff1 + stuff2 +
                             stuff8] +
                      {stuff9 +
                          stuff10})
+
+
+## 21
+object %>% fun_call({
+                       stuff1
+                    }) %>%
+              stuff2
 
 
 ### Comments

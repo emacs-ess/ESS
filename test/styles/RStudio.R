@@ -760,6 +760,13 @@ fun_call(stuff1 + stuff2 +
               stuff10})
 
 
+## 21
+object %>% fun_call({
+  stuff1
+}) %>%
+  stuff2
+
+
 ### Comments
 
 ## 1

@@ -532,12 +532,12 @@ object <-
 fun_call(
     argument,
     parameter = if (condition) {
-      stuff1
-    } else if {
-      stuff3
-    } else {
-      stuff2
-    }
+                  stuff1
+                } else if {
+                  stuff3
+                } else {
+                  stuff2
+                }
 )
 
 ## 14
@@ -555,12 +555,12 @@ fun_call(
 ## 15
 object <- fun_call(argument,
                    parameter = if (condition) {
-                     stuff1
-                   } else if {
-                     stuff3
-                   } else {
-                     stuff2
-                   }
+                                 stuff1
+                               } else if {
+                                 stuff3
+                               } else {
+                                 stuff2
+                               }
                    )
 
 
@@ -758,6 +758,13 @@ fun_call(stuff1 + stuff2 +
                     stuff8] +
            {stuff9 +
               stuff10})
+
+
+## 21
+object %>% fun_call({
+  stuff1
+}) %>%
+  stuff2
 
 
 ### Comments
