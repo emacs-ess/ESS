@@ -406,14 +406,14 @@ Variables controlling indentation style:
     delimiter is immediately followed by a newline.
  `ess-offset-continued'
     Indentation style for continued statements.
- `ess-indent-align-declaration-args'
+ `ess-align-declaration-args'
     Whether arguments of function declarations should always be indented at
     the opening parenthesis.
- `ess-indent-align-nested-calls'
+ `ess-align-nested-calls'
     Functions whose nested calls should be aligned.
- `ess-indent-align-continuations-in-calls'
+ `ess-align-continuations-in-calls'
     Functions in which continuations should be aligned.
- `ess-indent-align-blocks'
+ `ess-align-blocks'
     Blocks that should always be aligned vertically.
  `ess-indent-prev-call-lhs'
     Whether function calls given as argument should be indented from the
@@ -1042,8 +1042,8 @@ Return the amount the indentation changed by."
     offset))
 
 (defun ess-nested-calls-p ()
-  (when ess-indent-align-nested-calls
-    (let ((calls (mapconcat 'identity ess-indent-align-nested-calls "\\|"))
+  (when ess-align-nested-calls
+    (let ((calls (mapconcat 'identity ess-align-nested-calls "\\|"))
           match)
       (save-excursion
         (and containing-sexp
@@ -1302,13 +1302,13 @@ Returns nil if line starts inside a string, t if in a comment."
                       (save-excursion
                         (back-to-indentation)
                         (point))))
-          (and ess-indent-align-blocks
-               (or (and (memq 'fun-decl ess-indent-align-blocks)
+          (and ess-align-blocks
+               (or (and (memq 'fun-decl ess-align-blocks)
                         (ess-climb-function-decl 'from-block)
                         (prog1 t
                           (when ess-indent-prev-call-lhs
                             (ess-climb-lhs))))
-                   (and (memq 'if-else ess-indent-align-blocks)
+                   (and (memq 'if-else ess-align-blocks)
                         (ess-climb-if-else 'from-block)))))
       (+ (current-column) offset))
      ;; Harder case
@@ -1364,7 +1364,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (goto-char (if (and block (not (eq block-type 'opening)))
                      prev-containing-sexp
                    containing-sexp)))
-    (let* ((override (and ess-indent-align-declaration-args
+    (let* ((override (and ess-align-declaration-args
                           (save-excursion (ess-climb-function-decl))))
            (type-sym (cond ((ess-looking-at-last-open-delim-p)
                             'arguments-newline)
@@ -1544,7 +1544,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (cond
        ((save-excursion
           (and climbed
-               ess-indent-align-continuations-in-calls
+               ess-align-continuations-in-calls
                containing-sexp
                (progn
                  (goto-char containing-sexp)
@@ -1552,8 +1552,8 @@ Returns nil if line starts inside a string, t if in a comment."
                (if (ess-climb-object)
                    (when (or (looking-at (concat "\\(" ess-R-symbol-pattern "+\\)"))
                              (looking-at (concat "`\\(" ess-R-symbol-pattern "+\\)`")))
-                     (member (match-string 1) ess-indent-align-continuations-in-calls))
-                 (member "(" ess-indent-align-continuations-in-calls))))
+                     (member (match-string 1) ess-align-continuations-in-calls))
+                 (member "(" ess-align-continuations-in-calls))))
         (while (and (/= prev-pos (point))
                     (eq (ess-climb-continued-statements) t))
           (setq prev-pos (point)))

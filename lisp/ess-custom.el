@@ -803,7 +803,7 @@ The 'straight and 'cascade settings are actually equivalent to
 base indent size. More generally, you can supply '(straight . N)
 to control the size of indentation.")
 
-(defvar ess-indent-align-declaration-args t
+(defvar ess-align-declaration-args t
   "When non-nil, `ess-offset-arguments' has no effect on function declarations.
 All arguments are then aligned from the opening parenthesis.
 
@@ -824,7 +824,7 @@ but function declarations are aligned on open (;
 
 See `ess-style-alist' for further details.")
 
-(defvar ess-indent-align-nested-calls '("ifelse")
+(defvar ess-align-nested-calls '("ifelse")
   "List of strings declaring function calls for which
 `ess-offset-arguments-newline' should be ignored. These calls
 will be vertically aligned instead. The default is `ifelse',
@@ -833,7 +833,7 @@ resulting in the following indentation for nested ifelse calls:
     object <- ifelse(condition1, out1,
               ifelse(condition2, out2, out3))")
 
-(defvar ess-indent-align-continuations-in-calls '("(" "if")
+(defvar ess-align-continuations-in-calls '("(" "if")
   "List of strings for which continuations inside the
 corresponding functions will be indented from the opening
 delimiter. Anonymous parentheses (that is, parentheses that do
@@ -859,7 +859,7 @@ instead of
 Definition operators (`<-', `=', `:=' and `~') still trigger an
 indentation in all cases.")
 
-(defvar ess-indent-align-blocks '(if-else)
+(defvar ess-align-blocks '(if-else)
   "List of block types for which `ess-offset-blocks' should be
 ignored. The overridden blocks are vertically aligned. The list
 can contain either or both of the symbols `if-else' and
@@ -947,10 +947,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -961,10 +961,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -976,10 +976,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-line)
      (ess-offset-continued . (straight 4))
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -990,10 +990,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . (prev-call 4))
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1004,10 +1004,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1019,10 +1019,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . ("ifelse"))
-     (ess-indent-align-continuations-in-calls . ("(" "if"))
-     (ess-indent-align-blocks . (if-else))
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1033,10 +1033,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-line)
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-indent-align-declaration-args . t)
-     (ess-indent-align-nested-calls . nil)
-     (ess-indent-align-continuations-in-calls . nil)
-     (ess-indent-align-blocks . nil)
+     (ess-align-declaration-args . t)
+     (ess-align-nested-calls . nil)
+     (ess-align-continuations-in-calls . nil)
+     (ess-align-blocks . nil)
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . nil))
@@ -1047,10 +1047,10 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-offset-arguments-newline . ,(default-value 'ess-offset-arguments-newline))
       (ess-offset-block . ,(default-value 'ess-offset-block))
       (ess-offset-continued . ,(default-value 'ess-offset-continued))
-      (ess-indent-align-declaration-args . ,(default-value 'ess-indent-align-declaration-args))
-      (ess-indent-align-nested-calls . ,(default-value 'ess-indent-align-nested-calls))
-      (ess-indent-align-continuations-in-calls . ,(default-value 'ess-indent-align-continuations-in-calls))
-      (ess-indent-align-blocks . ,(default-value 'ess-indent-align-blocks))
+      (ess-align-declaration-args . ,(default-value 'ess-align-declaration-args))
+      (ess-align-nested-calls . ,(default-value 'ess-align-nested-calls))
+      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
+      (ess-align-blocks . ,(default-value 'ess-align-blocks))
       (ess-indent-prev-call-lhs . ,(default-value 'ess-indent-prev-call-lhs))
       (ess-indent-prev-call-chains . ,(default-value 'ess-indent-prev-call-chains))
       (ess-indent-with-fancy-comments . ,(default-value 'ess-indent-with-fancy-comments))))
@@ -1087,21 +1087,23 @@ Offsets:
  - `ess-offset-continued-first': extra offset for first
    continuation line (i.e. second line of a multiline expression)
 
-Control variables:
+Overrides (implies vertical alignment):
 
- - `ess-indent-align-declaration-args': whether to ignore
+ - `ess-align-declaration-args': whether to ignore
    `ess-offset-arguments' for function argument declarations
 
- - `ess-indent-align-nested-calls': functions whose nested calls
+ - `ess-align-nested-calls': functions whose nested calls
    should be aligned.
 
- - `ess-indent-align-continuations-in-calls': whether to ignore
+ - `ess-align-continuations-in-calls': whether to ignore
    `ess-offset-continued' and `ess-offset-continued-first' inside
    parentheses or certain function calls.
 
- - `ess-indent-align-blocks': whether to ignore
+ - `ess-align-blocks': whether to ignore
    `ess-offset-blocks' for function declarations or if-else
    branches.
+
+Control variables:
 
  - `ess-indent-prev-call-lhs': whether to indent arguments from
    left-hand side of an assignment or parameter declaration.
