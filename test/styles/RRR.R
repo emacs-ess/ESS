@@ -532,12 +532,12 @@ object <-
 fun_call(
     argument,
     parameter = if (condition) {
-        stuff1
-    } else if {
-        stuff3
-    } else {
-        stuff2
-    }
+                    stuff1
+                } else if {
+                    stuff3
+                } else {
+                    stuff2
+                }
 )
 
 ## 14
@@ -553,16 +553,15 @@ fun_call(
 )
 
 ## 15
-object <- fun_call(argument1,
-                   argument,
+object <- fun_call(argument,
                    parameter = if (condition) {
-    stuff1
-} else if {
-    stuff3
-} else {
-    stuff2
-}
-)
+                                   stuff1
+                               } else if {
+                                   stuff3
+                               } else {
+                                   stuff2
+                               }
+                   )
 
 
 
@@ -585,8 +584,8 @@ stuff1 %>%
 ## 3
 (
     stuff1 %>%
-        stuff2 %>%
-        stuff3
+    stuff2 %>%
+    stuff3
 ) %>%
     stuff4 %>%
     stuff5
@@ -617,15 +616,15 @@ stuff1 %>%
 
 ## 6
 stuff[stuff1 %>%
-      stuff2 %>%
-      stuff3] %>%
+          stuff2 %>%
+          stuff3] %>%
     stuff4 %>%
     stuff5
 
 ## 7
 ggplot() +
     geom(lhs -
-         rhs
+             rhs
          ) +
     geom()
 
@@ -647,22 +646,22 @@ stuff +
              fun_call((stuff1 - stuff2 +
                        stuff3
              ) /
-             stuff4)
+                 stuff4)
              ) /
     stuff5
 
 fun_call(arg1 +
-         arg2, arg3 +
-                   arg4)
+             arg2, arg3 +
+                       arg4)
 
 ## 10
 fun_call(argument1 %>%
-         stuff1, argument2 %>%
-                     stuff2, {
-                         stuff3 %>%
-                             stuff4
-                     } %>%
-                         stuff5,
+             stuff1, argument2 %>%
+                         stuff2, {
+                             stuff3 %>%
+                                 stuff4
+                         } %>%
+                             stuff5,
          argument3
          )
 
@@ -752,13 +751,20 @@ object %>%
 
 ## 20
 fun_call(stuff1 + stuff2 +
-         stuff3 +
-         (stuff4 + stuff5 +
-          stuff6) +
-         object[stuff7 +
-                stuff8] +
-         {stuff9 +
-          stuff10})
+             stuff3 +
+             (stuff4 + stuff5 +
+              stuff6) +
+             object[stuff7 +
+                        stuff8] +
+             {stuff9 +
+                  stuff10})
+
+
+## 21
+object %>% fun_call({
+    stuff1
+}) %>%
+    stuff2
 
 
 ### Comments
