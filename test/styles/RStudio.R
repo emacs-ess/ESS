@@ -772,6 +772,16 @@ object %>% fun_call({
   `stuff1` %>%
   stuff2
 
+## 23
+object[index] %>%
+  fun_call1(
+    argument1
+  )[index2] %>%
+  fun_call2(
+    argument2
+  )[[index3]] %>%
+  stuff
+
 
 ### Comments
 

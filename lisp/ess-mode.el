@@ -1198,12 +1198,16 @@ Return the amount the indentation changed by."
   (or (ess-climb-if-else)
       ;; Climb functions (e.g. ggplot) and
       ;; parenthesised expressions
-      (ess-save-excursion-when-nil
-        (ess-backward-sexp)
-        (when (looking-at "[[({]")
-          (prog1 t
-            (when (ess-looking-back-attached-name-p)
-              (ess-backward-sexp)))))
+      (progn
+        ;; Climb indexing brackets
+        (while (when (eq (char-before) ?\])
+                 (ess-backward-sexp)))
+        (ess-save-excursion-when-nil
+          (ess-backward-sexp)
+          (when (looking-at "[[({]")
+            (prog1 t
+              (when (ess-looking-back-attached-name-p)
+                (ess-backward-sexp))))))
       (ess-climb-object)))
 
 (defun ess-climb-if-else (&optional from-block)
