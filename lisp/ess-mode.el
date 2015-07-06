@@ -1154,7 +1154,8 @@ Return the amount the indentation changed by."
       ;; climb (e.g. roxygen documentation), there is no previous
       ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
       ;; empty space without failing. So we need to skip it.
-      (while (looking-at "[ \t]*\\(#\\|$\\)")
+      (while (and (looking-at "[ \t]*\\(#\\|$\\)")
+                  (/= (point) (point-max)))
         (forward-line)
         (back-to-indentation))
       (when (and (< (point) orig-pos)
@@ -1180,7 +1181,7 @@ Return the amount the indentation changed by."
       (skip-chars-backward " \t`")
       (while (some (apply-partially '/= 0)
                    `(,(skip-syntax-backward "w_")
-                     ,(skip-chars-backward "`")))
+                     ,(skip-chars-backward "`\"'")))
         (setq climbed t))
       climbed)))
 
@@ -1197,12 +1198,16 @@ Return the amount the indentation changed by."
   (or (ess-climb-if-else)
       ;; Climb functions (e.g. ggplot) and
       ;; parenthesised expressions
-      (ess-save-excursion-when-nil
-        (ess-backward-sexp)
-        (when (looking-at "[[({]")
-          (prog1 t
-            (when (ess-looking-back-attached-name-p)
-              (ess-backward-sexp)))))
+      (progn
+        ;; Climb indexing brackets
+        (while (when (eq (char-before) ?\])
+                 (ess-backward-sexp)))
+        (ess-save-excursion-when-nil
+          (ess-backward-sexp)
+          (when (looking-at "[[({]")
+            (prog1 t
+              (when (ess-looking-back-attached-name-p)
+                (ess-backward-sexp))))))
       (ess-climb-object)))
 
 (defun ess-climb-if-else (&optional from-block)
