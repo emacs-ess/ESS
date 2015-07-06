@@ -1154,7 +1154,8 @@ Return the amount the indentation changed by."
       ;; climb (e.g. roxygen documentation), there is no previous
       ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
       ;; empty space without failing. So we need to skip it.
-      (while (looking-at "[ \t]*\\(#\\|$\\)")
+      (while (and (looking-at "[ \t]*\\(#\\|$\\)")
+                  (/= (point) (point-max)))
         (forward-line)
         (back-to-indentation))
       (when (and (< (point) orig-pos)
