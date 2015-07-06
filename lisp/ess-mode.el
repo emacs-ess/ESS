@@ -1181,7 +1181,7 @@ Return the amount the indentation changed by."
       (skip-chars-backward " \t`")
       (while (some (apply-partially '/= 0)
                    `(,(skip-syntax-backward "w_")
-                     ,(skip-chars-backward "`")))
+                     ,(skip-chars-backward "`\"'")))
         (setq climbed t))
       climbed)))
 

@@ -766,6 +766,12 @@ object %>% fun_call({
            }) %>%
     stuff2
 
+## 22
+"string1" %>%
+    'string2' %>%
+    `stuff1` %>%
+    stuff2
+
 
 ### Comments
 
