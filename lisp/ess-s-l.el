@@ -864,8 +864,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
       (progn
         (require 'speedbar)
         (when (featurep 'speedbar)
-          (message "enabling speedbar support")
-
+	  
           (defun S-speedbar-buttons (buffer)
             "attempted hack."
 
