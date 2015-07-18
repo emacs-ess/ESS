@@ -408,22 +408,54 @@ fontification spilling over prompts."
       (compilation--ensure-parse pos))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *proc-name*"
+  "Function to generate buffer name by wrapping PROC-NAME in *proc-name*.
+See `ess-gen-proc-buffer-name-function'."
   (format "*%s*" proc-name))
 
 (defun ess-gen-proc-buffer-name:directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in
-*proc-name:dir-name* where dir-name is a short directory name."
+  "Function to generate buffer name by wrapping PROC-NAME in *PROC-NAME:DIR-NAME*.
+DIR-NAME is a short directory name. See
+`ess-gen-proc-buffer-name-function'."
   (format "*%s:%s*" proc-name (file-name-nondirectory
                                (directory-file-name default-directory))))
 
 (defun ess-gen-proc-buffer-name:abbr-long-directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in
-*proc-name:abbreviated-long-dir-name*, where
-abbreviated-long-dir-name is an abbreviated full directory name.
-Abbreviation performed by `abbreviate-file-name'.
-"
+  "Function to generate buffer name in the form *PROC-NAME:ABBREVIATED-LONG-DIR-NAME*.
+PROC-NAME is a string representing an internal process
+name. ABBREVIATED-LONG-DIR-NAME is an abbreviated full directory
+name. Abbreviation is performed by `abbreviate-file-name'. See
+`ess-gen-proc-buffer-name-function'."
   (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
+
+(defun ess-gen-proc-buffer-name:projectile-or-simple (proc-name)
+  "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
+PROC-NAME is a string representing an internal process
+name. PROJECTILE-ROOT is directory name returned by
+`projectile-project-root' if defined. If
+`projectile-project-root' is undefined or no project directory
+has been found use `ess-gen-proc-buffer-name:simple'. See
+`ess-gen-proc-buffer-name-function'."
+  (let ((proj (and (fboundp 'projectile-project-root)
+		   (projectile-project-p))))
+    (if proj
+	(format "*%s:%s*" proc-name (file-name-nondirectory
+				     (directory-file-name proj)))
+      (ess-gen-proc-buffer-name:simple proc-name))))
+
+(defun ess-gen-proc-buffer-name:projectile-or-directory (proc-name)
+  "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
+PROC-NAME is a string representing an internal process
+name. PROJECTILE-ROOT is directory name returned by
+`projectile-project-root' if defined. If
+`projectile-project-root' is undefined, or no project directory
+has been found, use `ess-gen-proc-buffer-name:directory'. See
+`ess-gen-proc-buffer-name-function'."
+  (let ((proj (and (fboundp 'projectile-project-root)
+		   (projectile-project-p))))
+    (if proj
+	(format "*%s:%s*" proc-name (file-name-nondirectory
+				     (directory-file-name proj)))
+      (ess-gen-proc-buffer-name:directory proc-name))))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC
