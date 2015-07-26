@@ -1135,7 +1135,7 @@ Return the amount the indentation changed by."
       (when (and (or climb-line (equal (line-number-at-pos) start-line))
                  (ess-looking-at-definition-op-p no-fun-arg))
         (prog1 t
-          (ess-climb-object))))))
+          (ess-climb-expression))))))
 
 (defun ess-climb-function-decl (&optional from-block)
   (let ((times (if from-block 2 1)))
@@ -1207,7 +1207,7 @@ Return the amount the indentation changed by."
       (setq climbed t))
     climbed))
 
-(defun ess-climb-R-expression ()
+(defun ess-climb-expression ()
   (or (ess-climb-if-else)
       ;; Climb functions (e.g. ggplot) and
       ;; parenthesised expressions
@@ -1653,7 +1653,7 @@ N times."
                        (ess-forward-sexp)
                        (ess-backward-sexp))))))
       (progn (and (not (ess-looking-back-statement-start-p))
-                  (ess-climb-R-expression)))
+                  (ess-climb-expression)))
       (ess-update-climber-counter))
     ;; Signal either definition-op or if we climbed one line
     (or def-op
