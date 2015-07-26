@@ -1174,15 +1174,28 @@ Return the amount the indentation changed by."
 
 ;; Should climb any names, including backquoted ones or those
 ;; containing `@' or `$'. Difficult to achieve with regexps, but
-;; skipping chars should be faster anyway. Hopefully robust enough.
+;; skipping chars is faster anyway.
 (defun ess-climb-object ()
   (ess-save-excursion-when-nil
     (let (climbed)
-      (skip-chars-backward " \t`")
-      (while (some (apply-partially '/= 0)
-                   `(,(skip-syntax-backward "w_")
-                     ,(skip-chars-backward "`\"'")))
-        (setq climbed t))
+      (skip-chars-backward " \t")
+      ;; Backquoted names can contain any character
+      (if (eq (char-before) ?`)
+          (progn
+            (forward-char -1)
+            (while (not (memq (char-before) '(?` ?\C-J)))
+              (forward-char -1)
+              (setq climbed t))
+            (when climbed
+              (forward-char -1)))
+        (while (some (apply-partially '/= 0)
+                     `(,(skip-syntax-backward "w_")
+                       ,(skip-chars-backward "\"'")))
+          (setq climbed t)))
+      ;; Recurse if we find an indexing char
+      (when (memq (char-before) '(?$ ?@))
+        (forward-char -1)
+        (ess-climb-object))
       climbed)))
 
 (defun ess-unclimb-object ()

@@ -124,8 +124,18 @@ argument3)
 `fun_call`(argument1,
   argument2)
 
+## 6b
+`:=`(argument1,
+  argument2)
+
 ## 7
 `fun_call`(
+  argument1,
+  argument2
+)
+
+## 7b
+`:=`(
   argument1,
   argument2
 )
