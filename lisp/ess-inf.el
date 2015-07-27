@@ -2703,11 +2703,15 @@ This is a good thing to put in `ess-R-post-run-hook' or
            (nchars (if (fboundp 'default-font-width)
                        (floor (/ wwidth (default-font-width)))
                      ;; emacs 24
-                     (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
-                            (charh (aref (font-info (face-font 'default)) 3))
-                            (charw (/ charh  r)))
-                       (floor (/ wwidth charw)))))
-           (command (format "options(width=%d, length=99999)\n" (- nchars 1))))
+                     (let ((ff-def (face-font 'default)))
+                       (if ff-def
+                           (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
+                                  (charh (aref (font-info ff-def) 3))
+                                  (charw (/ charh  r)))
+                             (- (floor (/ wwidth charw)) 1))
+                         ;; e.g., no X11 as in  'emacs -nw'
+                         (- (window-width) 2)))))
+           (command (format "options(width=%d, length=99999)\n" nchars)))
       (if invisibly
           (ess-command command)
         (ess-eval-linewise command nil nil nil 'wait-prompt)))))
