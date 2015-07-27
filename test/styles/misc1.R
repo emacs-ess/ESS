@@ -124,11 +124,21 @@ fun_call(parameter = fun_argument(argument1,
 `fun_call`(argument1,
    argument2)
 
+## 6b
+`:=`(argument1,
+   argument2)
+
 ## 7
 `fun_call`(
            argument1,
            argument2
            )
+
+## 7b
+`:=`(
+     argument1,
+     argument2
+     )
 
 ## 8
 fun_call(argument1
@@ -782,6 +792,10 @@ object[index] %>%
                 )[[index3]] %>%
          stuff
 
+## 24
+fun_call(argument) <-
+   hop
+
 
 ### Comments
 
@@ -847,6 +861,7 @@ stuff1 == stuff2 ||
 object <-
    condition1 | condition2 |
       condition3 | condition4
+
 
 ### Specific situations and overrides
 

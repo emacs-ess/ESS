@@ -1135,7 +1135,7 @@ Return the amount the indentation changed by."
       (when (and (or climb-line (equal (line-number-at-pos) start-line))
                  (ess-looking-at-definition-op-p no-fun-arg))
         (prog1 t
-          (ess-climb-object))))))
+          (ess-climb-expression))))))
 
 (defun ess-climb-function-decl (&optional from-block)
   (let ((times (if from-block 2 1)))
@@ -1174,15 +1174,28 @@ Return the amount the indentation changed by."
 
 ;; Should climb any names, including backquoted ones or those
 ;; containing `@' or `$'. Difficult to achieve with regexps, but
-;; skipping chars should be faster anyway. Hopefully robust enough.
+;; skipping chars is faster anyway.
 (defun ess-climb-object ()
   (ess-save-excursion-when-nil
     (let (climbed)
-      (skip-chars-backward " \t`")
-      (while (some (apply-partially '/= 0)
-                   `(,(skip-syntax-backward "w_")
-                     ,(skip-chars-backward "`\"'")))
-        (setq climbed t))
+      (skip-chars-backward " \t")
+      ;; Backquoted names can contain any character
+      (if (eq (char-before) ?`)
+          (progn
+            (forward-char -1)
+            (while (not (memq (char-before) '(?` ?\C-J)))
+              (forward-char -1)
+              (setq climbed t))
+            (when climbed
+              (forward-char -1)))
+        (while (some (apply-partially '/= 0)
+                     `(,(skip-syntax-backward "w_")
+                       ,(skip-chars-backward "\"'")))
+          (setq climbed t)))
+      ;; Recurse if we find an indexing char
+      (when (memq (char-before) '(?$ ?@))
+        (forward-char -1)
+        (ess-climb-object))
       climbed)))
 
 (defun ess-unclimb-object ()
@@ -1194,7 +1207,7 @@ Return the amount the indentation changed by."
       (setq climbed t))
     climbed))
 
-(defun ess-climb-R-expression ()
+(defun ess-climb-expression ()
   (or (ess-climb-if-else)
       ;; Climb functions (e.g. ggplot) and
       ;; parenthesised expressions
@@ -1640,7 +1653,7 @@ N times."
                        (ess-forward-sexp)
                        (ess-backward-sexp))))))
       (progn (and (not (ess-looking-back-statement-start-p))
-                  (ess-climb-R-expression)))
+                  (ess-climb-expression)))
       (ess-update-climber-counter))
     ;; Signal either definition-op or if we climbed one line
     (or def-op
