@@ -779,6 +779,18 @@ read.csv('file.csv') %>%
 ###     ^-- here
 
 
+### --- 30 --- Following "as desired" but not provided -- github issue
+{
+    r <- array(if (d[3L] == 3L)
+                  rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), maxColorValue = max)
+               else if (d[3L] == 4L)
+                  rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), t(x[,,4L]), maxColorValue = max)
+               else stop("foo"),
+               dim = d[1:2])
+}
+
+
+
 
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
