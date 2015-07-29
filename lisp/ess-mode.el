@@ -31,56 +31,8 @@
 
 ;;; Code:
 
-
-;;; Requires and autoloads
-
-;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
-;;; MM:  and I had to add all other 'ess-eval-*** ...
-;;; >>> why not just do the obvious instead of all these ? Namely,
-;;; (require 'ess-inf)
-;;; ------------------ ?
-;;; AJR: The reason is that we ONLY need to load ess-inf for the
-;;; functions which are interactive in nature.   We don't want to load
-;;; it when we are only editing.
-
-;;; VS: ess-inf is always loaded form ess-toggle-underscore in ess-s-l.el. I am
-;;; placing require ess-inf and ess-mode in ess. This cross autoloads are
-;;; useless. Compiler is also silent without them. These funcs are used in mode-map
-;;; only as symbols.
-
-;; (autoload 'ess-mode-minibuffer-map      "ess-inf" "" nil 'keymap)
-;; (autoload 'ess-read-object-name         "ess-inf" "" nil)
-;; (autoload 'ess-list-object-completions  "ess-inf" "" nil)
-
-;; (autoload 'ess-eval-buffer              "ess-inf" "" nil)
-;; (autoload 'ess-eval-buffer-and-go       "ess-inf" "" nil)
-;; (autoload 'ess-eval-function            "ess-inf" "" nil)
-;; (autoload 'ess-eval-function-and-go     "ess-inf" "" nil)
-;; (autoload 'ess-eval-function-or-paragraph-and-step
-;;   "ess-inf" "" nil)
-;; (autoload 'ess-eval-line                "ess-inf" "" nil)
-;; (autoload 'ess-eval-line-and-go         "ess-inf" "" nil)
-;; (autoload 'ess-eval-line-and-step       "ess-inf" "" nil)
-;; (autoload 'ess-eval-linewise            "ess-inf" "" nil)
-;; (autoload 'ess-eval-paragraph           "ess-inf" "" nil)
-;; (autoload 'ess-eval-paragraph-and-go    "ess-inf" "" nil)
-;; (autoload 'ess-eval-paragraph-and-step  "ess-inf" "" nil)
-;; (autoload 'ess-eval-region              "ess-inf" "" nil)
-;; (autoload 'ess-eval-region-and-go       "ess-inf" "" nil)
-
-;; (autoload 'ess-load-file                "ess-inf" "" nil)
-;; (autoload 'ess-switch-process           "ess-inf" "" nil)
-;; (autoload 'ess-switch-to-ESS            "ess-inf" "" nil)
-;; (autoload 'ess-request-a-process        "ess-inf" "" nil)
-;; (autoload 'ess-get-process              "ess-inf" "" nil)
-;; (autoload 'ess-command                  "ess-inf" "" nil)
-;; (autoload 'ess-create-temp-buffer       "ess-inf" "" nil)
-;; (autoload 'ess-display-temp-buffer      "ess-inf" "" nil)
-;; (autoload 'ess-force-buffer-current     "ess-inf" "" nil)
-;; (autoload 'ess-make-buffer-current      "ess-inf" "" nil)
-;; (autoload 'ess-modtime-gt               "ess-inf" "" nil)
-;; (autoload 'ess-object-modtime           "ess-inf" "" nil)
-;; (autoload 'ess-quit                     "ess-inf" "" nil)
+(eval-when-compile
+  (require 'cl))
 
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
 ;; (autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
