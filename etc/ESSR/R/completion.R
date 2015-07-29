@@ -3,12 +3,8 @@
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
         comp <- compiler::enableJIT(0)
-        olderr <- getOption('error')
-        options(error=NULL)
-        on.exit({
-            compiler::enableJIT(comp)
-            options(error = olderr)
-        })
+        op <- options(error=NULL)
+        on.exit({ options(op); compiler::enableJIT(comp) })
     }
     ## don't remove; really need eval(parse(  here!!
     fun <- tryCatch(eval(parse(text=funname)),
@@ -50,10 +46,8 @@
 .ess_get_completions <- function(string, end){
     if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
-        olderr <- getOption('error')
-        options(error=NULL)
-        on.exit({options(error = olderr)
-                 compiler::enableJIT(comp)})
+        op <- options(error=NULL)
+        on.exit({ options(op); compiler::enableJIT(comp) })
     }
     utils:::.assignLinebuffer(string)
     utils:::.assignEnd(end)
@@ -64,9 +58,8 @@
 }
 
 .ess_arg_help <- function(arg, func){
-    olderr <- getOption('error')
-    options(error=NULL)
-    on.exit(options(error=olderr))
+    op <- options(error=NULL)
+    on.exit(options(op))
     fguess <-
         if(is.null(func)) get('fguess', envir=utils:::.CompletionEnv)
         else func
