@@ -1061,6 +1061,15 @@ Return the amount the indentation changed by."
       (progn (up-list N) t)
     (error nil)))
 
+(defun ess-back-to-indentation ()
+  "Move point to the first non-whitespace character on this line.
+This non-interactive version of (back-to-indentation) should not
+be advised"
+  (beginning-of-line 1)
+  (skip-syntax-forward " " (line-end-position))
+  ;; Move back over chars that have whitespace syntax but have the p flag.
+  (backward-prefix-chars))
+
 (defmacro ess-save-excursion-when-nil (&rest body)
   (declare (indent 0)
            (debug (&rest form)))
@@ -1109,7 +1118,7 @@ Return the amount the indentation changed by."
       (while (and (looking-at "[ \t]*\\(#\\|$\\)")
                   (/= (point) (point-max)))
         (forward-line)
-        (back-to-indentation))
+        (ess-back-to-indentation))
       (when (and (< (point) orig-pos)
                  (ess-forward-sexp))
         (prog1 t
@@ -1208,7 +1217,7 @@ Returns nil if line starts inside a string, t if in a comment."
            (state (syntax-ppss))
            (containing-sexp (cadr state))
            (prev-containing-sexp (car (last (butlast (nth 9 state))))))
-      (back-to-indentation)
+      (ess-back-to-indentation)
       (cond
        ;; return nil (in string) or t (in comment)
        ((or (nth 3 state) (nth 4 state))
@@ -1270,7 +1279,7 @@ Returns nil if line starts inside a string, t if in a comment."
      ((or (and (ess-block-opening-p)
                (equal (point)
                       (save-excursion
-                        (back-to-indentation)
+                        (ess-back-to-indentation)
                         (point))))
           (and ess-align-blocks
                (or (and (memq 'fun-decl ess-align-blocks)
@@ -1374,7 +1383,7 @@ Returns nil if line starts inside a string, t if in a comment."
              ;; Indent from previous line indentation
              ((eq type 'prev-line)
               (goto-char indent-point)
-              (back-to-indentation)
+              (ess-back-to-indentation)
               ;; Closing delimiters are actually not indented at
               ;; prev-line, but at opening-line
               (if (looking-at "[]})]")
@@ -1430,7 +1439,7 @@ Returns nil if line starts inside a string, t if in a comment."
                   (>= (line-number-at-pos) to-line))
         ;; Handle lines starting with a comma
         (let ((indent (if (save-excursion
-                            (back-to-indentation)
+                            (ess-back-to-indentation)
                             (looking-at ","))
                           (+ (current-indentation) 2)
                         (current-indentation))))
