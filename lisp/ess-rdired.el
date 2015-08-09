@@ -117,7 +117,8 @@ function which prints the output for rdired.")
 
 (defvar ess-rdired-mode-map
   (let ((ess-rdired-mode-map (make-sparse-keymap)))
-
+    (if (require 'hide-lines nil t)
+        (define-key ess-rdired-mode-map "/" 'hide-lines))
     (define-key ess-rdired-mode-map "?" 'ess-rdired-help)
     (define-key ess-rdired-mode-map "d" 'ess-rdired-delete)
     (define-key ess-rdired-mode-map "u" 'ess-rdired-undelete)
