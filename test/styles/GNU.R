@@ -613,8 +613,8 @@ stuff1 %>%
 ## 4
 object[
     stuff1 %>%
-      stuff2 %>%
-      stuff3
+    stuff2 %>%
+    stuff3
 ] %>%
   stuff4 %>%
   stuff5
@@ -636,8 +636,8 @@ stuff1 %>%
 
 ## 6
 stuff[stuff1 %>%
-        stuff2 %>%
-        stuff3] %>%
+      stuff2 %>%
+      stuff3] %>%
   stuff4 %>%
   stuff5
 
@@ -775,7 +775,7 @@ fun_call(stuff1 + stuff2 +
            (stuff4 + stuff5 +
             stuff6) +
            object[stuff7 +
-                    stuff8] +
+                  stuff8] +
            {stuff9 +
               stuff10})
 

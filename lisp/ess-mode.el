@@ -364,7 +364,7 @@ Variables controlling indentation style:
  `ess-align-nested-calls'
     Functions whose nested calls should be aligned.
  `ess-align-continuations-in-calls'
-    Functions in which continuations should be aligned.
+    Calls in which continuations should be aligned.
  `ess-align-blocks'
     Blocks that should always be aligned vertically.
  `ess-indent-prev-call-lhs'
@@ -1571,18 +1571,14 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((climbed (ess-climb-continued-statements)) 
           (prev-pos 0) first-indent)
       (cond
-       ((save-excursion
-          (and climbed
-               ess-align-continuations-in-calls
-               containing-sexp
-               (progn
-                 (goto-char containing-sexp)
-                 (looking-at "("))
-               (if (ess-climb-object)
-                   (when (or (looking-at (concat "\\(" ess-R-symbol-pattern "+\\)"))
-                             (looking-at (concat "`\\(" ess-R-symbol-pattern "+\\)`")))
-                     (member (match-string 1) ess-align-continuations-in-calls))
-                 (member "(" ess-align-continuations-in-calls))))
+       ;; Overridden calls
+       ((and climbed
+             ess-align-continuations-in-calls
+             containing-sexp
+             (save-excursion
+               (goto-char containing-sexp)
+               (ess-climb-object)
+               (some 'looking-at ess-align-continuations-in-calls)))
         (while (and (/= prev-pos (point))
                     (eq (ess-climb-continued-statements) t))
           (setq prev-pos (point)))
@@ -1591,7 +1587,9 @@ Returns nil if line starts inside a string, t if in a comment."
         (+ (current-column)
            (if (memq climbed '(inline newline))
                (ess-offset 'continued)
-             0)))
+             0))
+        )
+       ;; Regular case
        (climbed
         (setq first-indent (or (memq climbed '(inline newline))
                                (save-excursion
