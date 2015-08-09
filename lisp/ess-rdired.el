@@ -419,14 +419,16 @@ Rotate between the alternative sorting methods."
                (forward-line 1)
                (point)))
         (end (point-max)))
-    (if (> ess-rdired-sort-num 3)
+    (if (> ess-rdired-sort-num 4)
         (setq ess-rdired-sort-num 1))
     (cond ((eq ess-rdired-sort-num 1)
            (sort-fields 1 beg end))
           ((eq ess-rdired-sort-num 2)
            (sort-fields 2 beg end))
           ((eq ess-rdired-sort-num 3)
-           (sort-numeric-fields 3 beg end)))))
+           (sort-numeric-fields 3 beg end))
+          ((eq ess-rdired-sort-num 4)
+           (sort-numeric-fields 4 beg end)))))
 
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.
