@@ -128,6 +128,7 @@ function which prints the output for rdired.")
     (define-key ess-rdired-mode-map "V" 'ess-rdired-View)
     (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
     (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
+    (define-key ess-rdired-mode-map "r" 'ess-rdired-reverse)
     (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
     (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
     (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
@@ -429,7 +430,18 @@ Rotate between the alternative sorting methods."
            (sort-numeric-fields 3 beg end))
           ((eq ess-rdired-sort-num 4)
            (sort-numeric-fields 4 beg end)))))
-
+           
+(defun ess-rdired-reverse ()
+  "Reverse the current sort order."
+  (interactive)
+  (let ((buffer-read-only nil)
+        (beg (save-excursion
+               (goto-char (point-min))
+               (forward-line 1)
+               (point)))
+        (end (point-max)))
+    (reverse-region beg end)))
+    
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.
 Optional prefix ARG says how many lines to move; default is one line."
