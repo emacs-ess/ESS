@@ -92,7 +92,9 @@
     eval( parse( text=sprintf('data.class(get(\"%s\"))', my.x))) })
   length <- sapply(objs, function(my.x) {
     eval( parse( text=sprintf('length(get(\"%s\"))', my.x))) })
-  d <- data.frame(mode, length)
+  size <- sapply(objs, function(my.x) {
+    eval( parse( text=sprintf('object.size(get(\"%s\"))', my.x))) })
+  d <- data.frame(mode, length, size)
 
   var.names <- row.names(d)
 
