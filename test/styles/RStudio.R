@@ -500,7 +500,7 @@ object <-
 {
   object <-
     if (condition) stuff1
-    else stuff2
+  else stuff2
 }
 
 ## 10
@@ -510,7 +510,7 @@ object <-
       argument1,
       argument2
     )
-    else stuff
+  else stuff
 }
 
 ## 11
@@ -518,8 +518,8 @@ object <-
   fun_call(parameter =
              if (condition)
                stuff1
-             else
-               stuff2
+           else
+             stuff2
            )
 }
 
@@ -541,9 +541,9 @@ object <-
 ## 13
 fun_call(
   argument,
-  parameter = if (condition) {
+  parameter = if (condition1) {
     stuff1
-  } else if {
+  } else if (condition2) {
     stuff3
   } else {
     stuff2
@@ -556,23 +556,33 @@ fun_call(
   parameter =
     if (condition1)
       stuff1
-    else if (condition2)
-      stuff3
-    else
-      stuff2
+  else if (condition2)
+    stuff3
+  else
+    stuff2
 )
 
 ## 15
 object <- fun_call(argument,
-                   parameter = if (condition) {
+                   parameter = if (condition1) {
                      stuff1
-                   } else if {
+                   } else if (condition2) {
                      stuff3
                    } else {
                      stuff2
                    }
                    )
 
+## 16
+object <- fun_call(if (condition)
+                     stuff1
+                   else if (condition2)
+                     stuff2
+                   )
+
+## 17
+while(condition)
+  stuff
 
 
 ### Continuation lines
