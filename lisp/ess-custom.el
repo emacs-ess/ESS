@@ -803,27 +803,6 @@ The 'straight and 'cascade settings are actually equivalent to
 base indent size. More generally, you can supply '(straight . N)
 to control the size of indentation.")
 
-(defvar ess-align-declaration-args t
-  "When non-nil, `ess-offset-arguments' has no effect on function declarations.
-All arguments are then aligned from the opening parenthesis.
-
-If `ess-offset-arguments' is set to 4, then function calls are
-indented as in:
-
-  some_function(argument1,
-      argument2, argument3
-  )
-
-but function declarations are aligned on open (;
-
-  fun <- function(argument1,
-                  argument2
-                  argument3) {
-      body
-  }
-
-See `ess-style-alist' for further details.")
-
 (defvar ess-align-nested-calls '("ifelse")
   "List of strings declaring function calls for which
 `ess-offset-arguments-newline' should be ignored. These calls
@@ -833,8 +812,33 @@ resulting in the following indentation for nested ifelse calls:
     object <- ifelse(condition1, out1,
               ifelse(condition2, out2, out3))")
 
+(defvar ess-align-arguments-in-calls '("function[ \t]*(")
+  "List of regexes specifying the calls where
+`ess-offset-arguments' should have no effect on function
+declarations. The arguments of those calls will be aligned from
+the opening parenthesis.
+
+By default, function declarations are overridden. If for example
+`ess-offset-arguments' is set to `prev-line', then function calls
+are normally indented as in:
+
+  some_function(argument1,
+      argument2, argument3
+  )
+
+However, the parameters of function declarations will be
+vertically aligned:
+
+  fun <- function(argument1,
+                  argument2
+                  argument3) {
+      body
+  }
+
+See `ess-style-alist' for further details.")
+
 (defvar ess-align-continuations-in-calls
-  '("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\[")
+  '("[ \t]*(" "if[ \t]*(" "[^ \t]+\\[")
   "List of regexes for which continuations inside the
 corresponding calls will be indented from the opening
 delimiter. By default, continuations are ignored for anonymous
@@ -950,10 +954,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -965,10 +968,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -981,10 +983,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-line)
      (ess-offset-continued . (straight 4))
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -996,10 +997,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . (prev-call 4))
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -1011,10 +1011,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-call)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -1027,10 +1026,9 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-call)
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls
-      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -1042,8 +1040,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-arguments-newline . prev-line)
      (ess-offset-block . prev-line)
      (ess-offset-continued . straight)
-     (ess-align-declaration-args . t)
      (ess-align-nested-calls . nil)
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . nil)
      (ess-align-blocks . nil)
      (ess-indent-prev-call-lhs . t)
@@ -1056,8 +1054,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-offset-arguments-newline . ,(default-value 'ess-offset-arguments-newline))
       (ess-offset-block . ,(default-value 'ess-offset-block))
       (ess-offset-continued . ,(default-value 'ess-offset-continued))
-      (ess-align-declaration-args . ,(default-value 'ess-align-declaration-args))
       (ess-align-nested-calls . ,(default-value 'ess-align-nested-calls))
+      (ess-align-arguments-in-calls . ,(default-value 'ess-align-arguments-in-calls))
       (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
       (ess-align-blocks . ,(default-value 'ess-align-blocks))
       (ess-indent-prev-call-lhs . ,(default-value 'ess-indent-prev-call-lhs))
@@ -1098,15 +1096,14 @@ Offsets:
 
 Overrides (implies vertical alignment):
 
- - `ess-align-declaration-args': whether to ignore
-   `ess-offset-arguments' for function argument declarations
-
  - `ess-align-nested-calls': functions whose nested calls
    should be aligned.
 
- - `ess-align-continuations-in-calls': whether to ignore
-   `ess-offset-continued' and `ess-offset-continued-first' inside
-   parentheses or certain function calls.
+ - `ess-align-arguments-in-calls': calls where
+   `ess-offset-arguments' should be ignored
+
+ - `ess-align-continuations-in-calls': calls where
+   `ess-offset-continued' should be ignored.
 
  - `ess-align-blocks': whether to ignore
    `ess-offset-blocks' for function declarations or if-else

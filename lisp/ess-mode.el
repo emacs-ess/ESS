@@ -358,11 +358,10 @@ Variables controlling indentation style:
     delimiter is immediately followed by a newline.
  `ess-offset-continued'
     Indentation style for continued statements.
- `ess-align-declaration-args'
-    Whether arguments of function declarations should always be indented at
-    the opening parenthesis.
  `ess-align-nested-calls'
     Functions whose nested calls should be aligned.
+ `ess-align-arguments-in-calls'
+    Calls in which arguments should be aligned.
  `ess-align-continuations-in-calls'
     Calls in which continuations should be aligned.
  `ess-align-blocks'
@@ -1204,7 +1203,7 @@ be advised"
       (ess-climb-call)
       (ess-climb-object)))
 
-(defun ess-climb-if-else-call ()
+(defun ess-climb-if-else-call (multi-line)
   "Climb if, else, and if else calls."
   (ess-save-excursion-when-nil
     (ess-backward-sexp)
@@ -1214,8 +1213,11 @@ be advised"
              ;; Check for `if else'
              (prog1 t
                (ess-save-excursion-when-nil
-                 (and (ess-backward-sexp)
-                      (looking-at "else\\b"))))))
+                 (let ((orig-line (line-number-at-pos)))
+                   (and (ess-backward-sexp)
+                        (if multi-line t
+                          (eq orig-line (line-number-at-pos)))
+                        (looking-at "else\\b")))))))
           ((looking-at "else\\b")))))
 
 (defun ess-climb-if-else (&optional from-block to-curly recurse)
@@ -1225,7 +1227,7 @@ without curly braces."
          ;; If point in front of a block, first try to climb if-else
          ;; then recurse
          (from-block
-          (ess-climb-if-else-call))
+          (ess-climb-if-else-call recurse))
          ((ess-save-excursion-when-nil
             ;; Try to climb body
             (when (cond
@@ -1242,7 +1244,7 @@ without curly braces."
                                  (ess-skip-blanks-backward 1)
                                  (ess-climb-object)))))))
               ;; If successfully climbed body, climb call
-              (ess-climb-if-else-call)))))
+              (ess-climb-if-else-call recurse)))))
     (prog1 t
       (when (and to-curly (looking-at "else"))
         (re-search-backward "}[ \t]*" (line-beginning-position) t))
@@ -1420,8 +1422,10 @@ Returns nil if line starts inside a string, t if in a comment."
       (goto-char (if (and block (not (eq block-type 'opening)))
                      prev-containing-sexp
                    containing-sexp)))
-    (let* ((override (and ess-align-declaration-args
-                          (save-excursion (ess-climb-function-decl))))
+    (let* ((override (and ess-align-arguments-in-calls
+                          (save-excursion
+                            (ess-climb-object)
+                            (some 'looking-at ess-align-arguments-in-calls))))
            (type-sym (cond ((ess-looking-at-last-open-delim-p)
                             'arguments-newline)
                            (t
