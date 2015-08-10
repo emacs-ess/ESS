@@ -47,9 +47,10 @@
   :group 'ess-developer)
 
 (defcustom ess-developer-packages nil
-  "List of names of R packages you develop.
-Use `ess-developer-add-package' to modify interactively this
-list. "
+  "List of names of R packages you currently develop.
+Set this variable to the list of packages you commonly develop or
+use `ess-developer-add-package' to modify interactively this
+list."
   :group 'ess-developer
   :type 'list)
 
@@ -80,8 +81,9 @@ list. "
   :type 'hook)
 
 (defcustom ess-developer-activate-in-package t
-  "If non-nil, ess-developer is automatically toggled in files
-within package directory."
+  "If non-nil, `ess-developer' is automatically turned on within R packages.
+The activation is triggered only for packages currently listed in
+`ess-developer-packages'."
   :group 'ess-developer
   :type 'boolean)
 
@@ -329,7 +331,7 @@ PACKAGE, `ess-developer-packages' is ignored in this case.
 If ALL is non-nil, perform activation in all R buffers.
 
 This function does nothing if `ess-developer-activate-in-package'
-is nil. "
+is nil."
   (when ess-developer-activate-in-package
     (if all
         (dolist (bf (buffer-list))
@@ -397,9 +399,12 @@ If ALL is non-nil, deactivate in all open R buffers."
 ;;         (error "Could not source ess-developer.R. Please investigate the output of *ess-command-output* buffer for errors")))))
 
 (defun ess-developer (&optional val)
-  "Toggle on/off ess-developer functionality.
+  "Toggle on/off `ess-developer' functionality.
 If optional VAL is non-negative, turn on the developer mode. If
-VAL is negative turn it off."
+VAL is negative turn it off.
+
+See also `ess-developer-packages', `ess-developer-add-package'
+and `ess-developer-activate-in-package'."
   (interactive)
   (when (eq val t) (setq val 1))
   (let ((ess-dev  (if (numberp val)
