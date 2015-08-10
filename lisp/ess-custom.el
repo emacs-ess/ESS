@@ -833,19 +833,20 @@ resulting in the following indentation for nested ifelse calls:
     object <- ifelse(condition1, out1,
               ifelse(condition2, out2, out3))")
 
-(defvar ess-align-continuations-in-calls '("(" "if")
-  "List of strings for which continuations inside the
-corresponding functions will be indented from the opening
-delimiter. Anonymous parentheses (that is, parentheses that do
-not belong to a function call), can be referred to with the
-string \"(\". By default, continuations are ignored for anonymous
-parentheses and arguments to `if', which produces the following
-indentation:
+(defvar ess-align-continuations-in-calls
+  '("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\[")
+  "List of regexes for which continuations inside the
+corresponding calls will be indented from the opening
+delimiter. By default, continuations are ignored for anonymous
+parentheses, bracket indexing and arguments to `if', which
+produces the following indentation:
 
   if (test1 || test2 ||
       test3 || test4) {
       10 + (1 + 2 +
             3 + 4)
+      object[variable1 +
+             variable2]
   }
 
 instead of
@@ -854,6 +855,8 @@ instead of
           test3 || test4) {
       10 + (1 + 2 +
                 3 + 4)
+      object[variable1 +
+                 variable2]
   }
 
 Definition operators (`<-', `=', `:=' and `~') still trigger an
@@ -949,7 +952,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . straight)
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -963,7 +967,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . straight)
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -978,7 +983,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . (straight 4))
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -992,7 +998,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . straight)
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -1006,7 +1013,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . straight)
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
@@ -1021,7 +1029,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-offset-continued . straight)
      (ess-align-declaration-args . t)
      (ess-align-nested-calls . ("ifelse"))
-     (ess-align-continuations-in-calls . ("(" "if"))
+     (ess-align-continuations-in-calls
+      . ("[ \t]*(" "if[ \t]*(" "[^ \t]+[ \t]*\\["))
      (ess-align-blocks . (if-else))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
