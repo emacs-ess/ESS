@@ -15,7 +15,7 @@ doc/refcard/refcard.*
 *LOCAL*
 *BASE*
 lisp/*.elc
-doc/html/*
+doc/html/*.html
 README
 ANNOUNCE
 MM-MISC
