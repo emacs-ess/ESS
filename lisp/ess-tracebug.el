@@ -1,6 +1,6 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
 ;;
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 ;;
 ;; Filename: ess-tracebug.el
@@ -1273,7 +1273,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (goto-char (point-max))
         (insert (concat "|-" string "-|")))
       (ess--dbg-goto-last-ref-and-mark dbuff is-iess))
-      
+
     ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
     ;;   (let ((inhibit-read-only t))
     ;;     (goto-char (point-max))
@@ -1349,7 +1349,7 @@ is non nil, attempt to open the location in a different window."
       (let ((buf (apply 'ess--dbg-goto-ref other-window ref)))
 	(if buf
 	    ;; if referenced buffer has been found, put overlays:
-	    (with-current-buffer buf 
+	    (with-current-buffer buf
 	      (setq t-debug-position (copy-marker (point-at-bol)))
 	      (if (equal t-debug-position ess--dbg-current-debug-position)
 		  (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
@@ -1377,8 +1377,8 @@ associated buffer. If FILE is nil return nil."
     (when mrk
       (let ((buf (marker-buffer mrk)))
 	(if (not other-window)
-	    (switch-to-buffer (marker-buffer mrk))
-	  (let ((this-frame (window-frame)))
+	    (switch-to-buffer buf)
+	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
 	    (display-buffer buf)
 	    ;; simple save-frame-excursion
 	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
