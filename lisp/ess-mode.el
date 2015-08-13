@@ -1403,26 +1403,13 @@ Returns nil if line starts inside a string, t if in a comment."
                                     (looking-at "function\\b")))))
                     'decl
                   t)))
-    (cond
-     ;; Alignment at 'prev-call
-     ((and (eq (ess-offset-type 'block) 'prev-call)
-           (memq block-type '(opening body))
-           (or (eq block 'decl)
-               (looking-at "{")))
-      ;; In case of opening delimiter on its own line, jump to
-      ;; function decl
-      (when (and (eq block-type 'opening)
-                 (eq block 'decl))
-        (goto-char indent-point)
-        (ess-backward-sexp 2))
-      (+ (current-column) offset))
-     ;; Generic case
-     ((memq block-type '(opening body))
-      (ess-calculate-indent--args offset (ess-offset-type 'block)
-                                  containing-sexp indent-point block))
-     ;; Block is not part of an arguments list
-     ((eq block-type 'own)(ess-climb-block)
-      (+ (current-indentation) offset)))))
+    (if (not (eq block-type 'own))
+        (ess-calculate-indent--args offset (ess-offset-type 'block)
+                                    containing-sexp indent-point block)
+      ;; Block is not part of an arguments list
+      (ess-climb-block)
+      (+ (current-indentation)
+         offset))))
 
 (defun ess-calculate-indent--comma ()
   (let ((indent (save-excursion
