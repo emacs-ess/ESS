@@ -1137,6 +1137,10 @@ be advised"
                   (/= (point) (point-max)))
         (forward-line)
         (ess-back-to-indentation))
+      ;; Handle %op% operators
+      (when (and (eq (char-before) ?%)
+                 (looking-at (concat ess-R-symbol-pattern "+%")))
+        (ess-backward-sexp))
       (when (and (< (point) orig-pos)
                  (ess-forward-sexp))
         (prog1 t
@@ -1210,13 +1214,13 @@ be advised"
     (cond ((looking-at "(")
            (when (and (ess-backward-sexp)
                       (looking-at "if\\b"))
-             ;; Check for `if else'
+             ;; Check for `else if'
              (prog1 t
                (ess-save-excursion-when-nil
                  (let ((orig-line (line-number-at-pos)))
                    (and (ess-backward-sexp)
-                        (if multi-line t
-                          (eq orig-line (line-number-at-pos)))
+                        (or multi-line
+                            (eq orig-line (line-number-at-pos)))
                         (looking-at "else\\b")))))))
           ((looking-at "else\\b")))))
 
@@ -1334,7 +1338,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--aligned-block ()
   (let ((offset (if (looking-at "[})]") 0
                   (ess-offset 'block))))
-    (when (cond 
+    (when (cond
            ;; Unbraced blocks
            ((ess-climb-if-else 'from-block 'to-curly))
            ;; Braced blocks
@@ -1399,13 +1403,26 @@ Returns nil if line starts inside a string, t if in a comment."
                                     (looking-at "function\\b")))))
                     'decl
                   t)))
-    (if (not (eq block-type 'own))
-        (ess-calculate-indent--args offset (ess-offset-type 'block)
-                                    containing-sexp indent-point block)
-      ;; Block is not part of an arguments list
-      (ess-climb-block)
-      (+ (current-indentation)
-         offset))))
+    (cond
+     ;; Alignment at 'prev-call
+     ((and (eq (ess-offset-type 'block) 'prev-call)
+           (memq block-type '(opening body))
+           (or (eq block 'decl)
+               (looking-at "{")))
+      ;; In case of opening delimiter on its own line, jump to
+      ;; function decl
+      (when (and (eq block-type 'opening)
+                 (eq block 'decl))
+        (goto-char indent-point)
+        (ess-backward-sexp 2))
+      (+ (current-column) offset))
+     ;; Generic case
+     ((memq block-type '(opening body))
+      (ess-calculate-indent--args offset (ess-offset-type 'block)
+                                  containing-sexp indent-point block))
+     ;; Block is not part of an arguments list
+     ((eq block-type 'own)(ess-climb-block)
+      (+ (current-indentation) offset)))))
 
 (defun ess-calculate-indent--comma ()
   (let ((indent (save-excursion
@@ -1544,7 +1561,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (ess-function-argument-p)
                t)))))
 
-(defun ess-move-to-leftmost-delim ()
+(defun ess-jump-to-leftmost-delim ()
   (let ((opening-pos (point))
         (opening-col (current-column)))
     (ess-save-excursion-when-nil
@@ -1572,7 +1589,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
-    (let ((climbed (ess-climb-continued-statements)) 
+    (let ((climbed (ess-climb-continued-statements))
           (prev-pos 0) first-indent)
       (cond
        ;; Overridden calls
@@ -1587,7 +1604,7 @@ Returns nil if line starts inside a string, t if in a comment."
                     (eq (ess-climb-continued-statements) t))
           (setq prev-pos (point)))
         (when (looking-at "[[({]")
-          (ess-move-to-leftmost-delim))
+          (ess-jump-to-leftmost-delim))
         (+ (current-column)
            (if (memq climbed '(inline newline))
                (ess-offset 'continued)
@@ -1602,7 +1619,7 @@ Returns nil if line starts inside a string, t if in a comment."
                (backward-char))
               ;; Take the leftmost of both delimiters as reference
               ((looking-at "[({]")
-               (ess-move-to-leftmost-delim)))
+               (ess-jump-to-leftmost-delim)))
         (+ (current-column)
            (cond ((eq (ess-offset-type 'continued) 'cascade)
                   (ess-offset 'continued))

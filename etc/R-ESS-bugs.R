@@ -1,5 +1,4 @@
-#### File showing off  things that go wrong or *went* wrong in the past
-#### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
+#### File showing off  things that go wrong or *went* wrong in the past #### -- with R-mode (mostly coded in ../lisp/ess-mode.el )
 
 ### NOTE: this file is indented with RRR style !!!!!
 ### but do not change indentations anymore of anything in here:
@@ -789,6 +788,13 @@ read.csv('file.csv') %>%
                dim = d[1:2])
 }
 
+
+### MM: not ok yet
+## {from real code in R sources}
+{
+    obj <- obj && (condition1 || class2 %in% .BasicClasses ||
+                                             condition3)
+}## not ok yet
 
 
 
