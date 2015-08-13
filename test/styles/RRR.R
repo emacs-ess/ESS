@@ -881,7 +881,6 @@ object <-
     condition3 | condition4
 
 
-
 ### Specific situations and overrides
 
 ## 1
@@ -890,10 +889,3 @@ fun_call(
     ifelse(condition2, argument2,
            ifelse))
 )
-## MM: not ok yet
-
-## 2 {from real code in R sources}
-{
-    obj <- obj && (condition1 || class2 %in% .BasicClasses ||
-                                             condition3)
-}## not ok yet

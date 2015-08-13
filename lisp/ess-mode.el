@@ -1210,13 +1210,13 @@ be advised"
     (cond ((looking-at "(")
            (when (and (ess-backward-sexp)
                       (looking-at "if\\b"))
-             ;; Check for `if else'
+             ;; Check for `else if'
              (prog1 t
                (ess-save-excursion-when-nil
                  (let ((orig-line (line-number-at-pos)))
                    (and (ess-backward-sexp)
-                        (if multi-line t
-                          (eq orig-line (line-number-at-pos)))
+                        (or multi-line
+                            (eq orig-line (line-number-at-pos)))
                         (looking-at "else\\b")))))))
           ((looking-at "else\\b")))))
 
@@ -1334,7 +1334,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--aligned-block ()
   (let ((offset (if (looking-at "[})]") 0
                   (ess-offset 'block))))
-    (when (cond 
+    (when (cond
            ;; Unbraced blocks
            ((ess-climb-if-else 'from-block 'to-curly))
            ;; Braced blocks
@@ -1544,7 +1544,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (ess-function-argument-p)
                t)))))
 
-(defun ess-move-to-leftmost-delim ()
+(defun ess-jump-to-leftmost-delim ()
   (let ((opening-pos (point))
         (opening-col (current-column)))
     (ess-save-excursion-when-nil
@@ -1572,7 +1572,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
-    (let ((climbed (ess-climb-continued-statements)) 
+    (let ((climbed (ess-climb-continued-statements))
           (prev-pos 0) first-indent)
       (cond
        ;; Overridden calls
@@ -1587,7 +1587,7 @@ Returns nil if line starts inside a string, t if in a comment."
                     (eq (ess-climb-continued-statements) t))
           (setq prev-pos (point)))
         (when (looking-at "[[({]")
-          (ess-move-to-leftmost-delim))
+          (ess-jump-to-leftmost-delim))
         (+ (current-column)
            (if (memq climbed '(inline newline))
                (ess-offset 'continued)
@@ -1602,7 +1602,7 @@ Returns nil if line starts inside a string, t if in a comment."
                (backward-char))
               ;; Take the leftmost of both delimiters as reference
               ((looking-at "[({]")
-               (ess-move-to-leftmost-delim)))
+               (ess-jump-to-leftmost-delim)))
         (+ (current-column)
            (cond ((eq (ess-offset-type 'continued) 'cascade)
                   (ess-offset 'continued))
