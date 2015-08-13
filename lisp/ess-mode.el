@@ -1137,6 +1137,10 @@ be advised"
                   (/= (point) (point-max)))
         (forward-line)
         (ess-back-to-indentation))
+      ;; Handle %op% operators
+      (when (and (eq (char-before) ?%)
+                 (looking-at (concat ess-R-symbol-pattern "+%")))
+        (ess-backward-sexp))
       (when (and (< (point) orig-pos)
                  (ess-forward-sexp))
         (prog1 t

@@ -880,6 +880,12 @@ object <-
   condition1 | condition2 |
   condition3 | condition4
 
+## 8
+if (condition1 || object1 %op% object2 ||
+      condition3) {
+  stuff
+}
+
 
 ### Specific situations and overrides
 
