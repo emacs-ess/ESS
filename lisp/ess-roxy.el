@@ -276,15 +276,19 @@
                                 (line-end-position) t)
              (match-string-no-properties 1)))))
 
-(defun ess-roxy-should-indent-line-p ()
-  "Return true when point is in a field, but not in its first line."
-  (and (not (ess-roxy-in-header-p))
-       (not (equal (ess-roxy-current-field) "examples"))
-       (save-excursion
-         (beginning-of-line)
-         (let ((line-n (count-lines 1 (point))))
-           (goto-char (ess-roxy-beg-of-field))
-           (not (equal line-n (count-lines 1 (point))))))))
+(defun ess-roxy-maybe-indent-line ()
+  "Indent line when point is in a field, but not in its first line."
+  (when (and (not (ess-roxy-in-header-p))
+             (not (equal (ess-roxy-current-field) "examples"))
+             (save-excursion
+               (beginning-of-line)
+               (let ((line-n (count-lines 1 (point))))
+                 (goto-char (ess-roxy-beg-of-field))
+                 (not (equal line-n (count-lines 1 (point)))))))
+    (ess-roxy-should-indent-line-p)
+    (ess-back-to-roxy)
+    (delete-region (point) (progn (skip-chars-forward " \t") (point)))
+    (insert (make-string ess-indent-offset ? ))))
 
 (defun ess-roxy-goto-func-def ()
   "put point at start of function either that the point is in or
@@ -300,7 +304,7 @@ below the current roxygen entry, error otherwise"
   "get args list for current function"
   (save-excursion
     (ess-roxy-goto-func-def)
-    (let* ((args (ess-roxy-get-function-args)))
+    (let ((args (ess-roxy-get-function-args)))
       (mapcar (lambda (x) (cons x '(""))) args))))
 
 (defun ess-roxy-insert-args (args &optional here)
@@ -715,6 +719,37 @@ list of strings."
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
+(defun ess-roxy-find-par-end (stop-point &rest stoppers)
+  (mapc '(lambda (stopper)
+           (when (and (> stop-point (point))
+                      (save-excursion
+                        (re-search-forward stopper stop-point t)))
+             (setq stop-point (match-beginning 0))))
+        stoppers)
+  (save-excursion
+    (goto-char stop-point)
+    (line-end-position 0)))
+
+(defmacro ess-roxy-with-filling-context (&rest body)
+  (declare (indent 0) (debug (&rest form)))
+  `(let ((comment-start "#+'[ \t]+#")
+         (comment-start-skip "#+'[ \t]+# *")
+         (comment-use-syntax nil)
+         (adaptive-fill-first-line-regexp (concat ess-roxy-re "[ \t]*"))
+         (temp-table (make-syntax-table S-syntax-table))
+         (paragraph-start (concat "\\(" ess-roxy-re "\\(" paragraph-start
+                                  "\\|[ \t]*@" "\\)" "\\)\\|\\(" paragraph-start "\\)")))
+     ;; Prevent the roxy prefix to be interpreted as comment or string
+     ;; starter
+     (modify-syntax-entry ?# "w" temp-table)
+     (modify-syntax-entry ?' "w" temp-table)
+     ;; Neutralise (comment-normalize-vars) modifies the comment-start
+     ;; regexp in such a way that paragraph filling of comments in
+     ;; @examples fields does not work
+     (cl-letf (((symbol-function 'comment-normalize-vars) #'ignore))
+       (with-syntax-table temp-table
+         ,@body))))
+
 (defadvice ess-eval-line-and-step (around ess-eval-line-and-step-roxy)
   "evaluate line but do not skip over comment (roxy) lines"
   (if (ess-roxy-entry-p)
@@ -730,59 +765,50 @@ list of strings."
 
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
   "Fill roxygen paragraphs."
-  (if (ess-roxy-entry-p)
-      (let ((saved-pos (point))
-            (comment-start "#+'[ \t]+#")
-            (comment-start-skip "#+'[ \t]+# *")
-            (comment-use-syntax nil)
-            (adaptive-fill-first-line-regexp
-             (concat ess-roxy-re "[ \t]*"))
-            (temp-table (make-syntax-table S-syntax-table)))
-        ;; Prevent the roxy prefix to be interpreted as comment or
-        ;; string starter
-        (modify-syntax-entry ?# "w" temp-table)
-        (modify-syntax-entry ?' "w" temp-table)
-        ;; (comment-normalize-vars) modifies the comment-start regexp
-        ;; in such a way that paragraph filling of comments in
-        ;; @examples fields does not work
-        (cl-letf (((symbol-function 'comment-normalize-vars) #'ignore))
-          (with-syntax-table temp-table
-            (if (save-excursion
-                  (back-to-indentation)
-                  (looking-at "#"))
-                ;; Indentation of comments proceeds simply
-                ad-do-it
-              ;; We refill the whole structural paragraph
-              ;; sequentially, field by field, stopping at @examples
-              (let* ((par-end (save-excursion
-                                (forward-paragraph)
-                                (point)))
-                     (par-start (save-excursion
-                                  (backward-paragraph)
-                                  (point)))
-                     (stop-line (progn
-                                  (goto-char (or (re-search-forward
-                                                  "[ \t]*@examples"
-                                                  par-end t)
-                                                 par-end))
-                                  (line-number-at-pos)))
-                     (paragraph-start
-                      (concat "\\(" ess-roxy-re "\\(" paragraph-start
-                              "\\|[ \t]*@" "\\)" "\\)\\|\\(" paragraph-start "\\)")))
-                (if (re-search-backward (concat ess-roxy-re "[[:blank:]]+#") par-start t)
-                    (forward-line)
-                  (goto-char par-start))
-                (while (< (line-number-at-pos) stop-line)
-                  (when (ess-roxy-should-indent-line-p)
-                    (ess-back-to-roxy)
-                    (delete-region (point) (progn (skip-chars-forward " \t") (point)))
-                    (insert (make-string ess-indent-offset ? )))
-                  ad-do-it
-                  (forward-paragraph))))))
-        ;; (save-excursion) does not work well here because we may
-        ;; delete the region at point
-        (goto-char saved-pos))
-    ad-do-it))
+  (cond
+   ;; Indentation of @examples roxy comments
+   ((and (ess-roxy-entry-p)
+         (save-excursion
+           (back-to-indentation)
+           (looking-at "#")))
+    (ess-roxy-with-filling-context
+      ad-do-it))
+   ;; Indentation of roxy comments
+   ((ess-roxy-entry-p)
+    (let* ((saved-pos (point))
+           (saved-line (line-number-at-pos))
+           (saved-col (current-column))
+           (buffer (current-buffer))
+           (par-start (save-excursion
+                        (if (save-excursion
+                              (and (backward-paragraph)
+                                   (forward-paragraph)
+                                   (<= (point) saved-pos)))
+                            (line-beginning-position)
+                          (progn (backward-paragraph) (point)))))
+           (par-end (ess-roxy-find-par-end
+                     (save-excursion
+                       (forward-paragraph)
+                       (point))
+                     (concat ess-roxy-re "[ \t]*@examples\\b") "^[^#]")))
+      ;; Refill the whole structural paragraph sequentially, field by
+      ;; field, stopping at @examples
+      (ess-roxy-with-filling-context
+        (save-excursion
+          (save-restriction
+            (narrow-to-region par-start par-end)
+            (goto-char 0)
+            (while (< (point) (point-max))
+              (ess-roxy-maybe-indent-line)
+              ad-do-it
+              (forward-paragraph))))
+        (buffer-string))
+      ;; Restore point position manually because (save-excursion)
+      ;; does not work well: we modify or even delete the region
+      ;; surrounding point
+      (goto-line saved-line)
+      (move-to-column saved-col)))
+   (t ad-do-it)))
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
