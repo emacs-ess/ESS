@@ -592,6 +592,14 @@ else
         stuff2
     }
 
+## 19
+skip <-
+    if(condition)
+        ## replacing the next line by 'stuff1' or even dropping '[-i]]    ``solves the issue''
+        ff(x)[-i]
+else
+    stuff2
+
 
 ### Continuation lines
 
@@ -895,3 +903,5 @@ fun_call(
     ifelse(condition2, argument2,
            ifelse))
 )
+
+
