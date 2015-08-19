@@ -44,6 +44,13 @@ of the RStudio users, you will also need to set
 refilling in order to make the documentation more readable. You can also
 refill commented lines in the @code{examples} field without squashing
 the surrounding code in the comments.
+
+@item @ESS{[R]}: A new setting @code{ess-fill-calls} allows function
+calls to be formatted with @code{(fill-paragraph)}. The function's
+arguments will be arranged so as to not exceed @code{fill-column}.
+When @code{(fill-paragraph)} is called with a prefix, the call is
+formatted with one argument per line.
+
 @end itemize
 
 

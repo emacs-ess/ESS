@@ -576,7 +576,6 @@ during the load. "
                  (const :tag "Always delete"   :value nil)
                  ))
 
-
 (defcustom ess-delete-dump-files nil
   "Non-nil means delete dump files after they are created.
 This applies to dump files created with
@@ -601,6 +600,26 @@ This is useful to prevent sources file being created for objects
 you don't actually modify.  Once the buffer is modified and saved
 however, the file is not subsequently unless `ess-keep-dump-files' is
 nil, and the file is successfully loaded back into S."
+  :group 'ess-edit
+  :type 'boolean)
+
+(defcustom ess-fill-calls t
+  "If non-nil, refilling a paragraph inside a function or
+indexing call will arrange the arguments according to
+`fill-column' as in:
+
+  fun_call(argument1, argument2,
+           argument3, argument4)
+
+When called with a prefix, refilling will format according to one
+argument per line:
+
+  fun_call(
+      argument1,
+      argument2,
+      argument3,
+      argument4
+  )"
   :group 'ess-edit
   :type 'boolean)
 
