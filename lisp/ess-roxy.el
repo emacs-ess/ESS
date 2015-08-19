@@ -720,11 +720,11 @@ list of strings."
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
 (defun ess-roxy-find-par-end (stop-point &rest stoppers)
-  (mapc '(lambda (stopper)
-           (when (and (> stop-point (point))
-                      (save-excursion
-                        (re-search-forward stopper stop-point t)))
-             (setq stop-point (match-beginning 0))))
+  (mapc #'(lambda (stopper)
+            (when (and (> stop-point (point))
+                       (save-excursion
+                         (re-search-forward stopper stop-point t)))
+              (setq stop-point (match-beginning 0))))
         stoppers)
   (save-excursion
     (goto-char stop-point)
@@ -766,14 +766,22 @@ list of strings."
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
   "Fill roxygen paragraphs."
   (cond
-   ;; Indentation of @examples roxy comments
+   ;; Regular case
+   ((not (and (eq major-mode 'ess-mode)
+              (string= ess-dialect "R")))
+    ad-do-it)
+   ;; Filling of call arguments
+   ((and ess-fill-calls
+         (ess-call-p))
+    (ess-fill-args))
+   ;; Filling of @examples roxy comments
    ((and (ess-roxy-entry-p)
          (save-excursion
            (back-to-indentation)
            (looking-at "#")))
     (ess-roxy-with-filling-context
       ad-do-it))
-   ;; Indentation of roxy comments
+   ;; Filling of roxy comments
    ((ess-roxy-entry-p)
     (let* ((saved-pos (point))
            (saved-line (line-number-at-pos))
@@ -806,9 +814,8 @@ list of strings."
       ;; Restore point position manually because (save-excursion)
       ;; does not work well: we modify or even delete the region
       ;; surrounding point
-      (goto-line saved-line)
-      (move-to-column saved-col)))
-   (t ad-do-it)))
+      (ess-goto-line saved-line)
+      (move-to-column saved-col)))))
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"
