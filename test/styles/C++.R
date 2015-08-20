@@ -596,8 +596,8 @@ else
 object <-
     if (condition)
         fun_call()[index]
-else
-    stuff
+    else
+        stuff
 
 
 ### Continuation lines

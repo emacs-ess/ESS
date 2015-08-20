@@ -1113,13 +1113,13 @@ be advised"
   ;; Move back over chars that have whitespace syntax but have the p flag.
   (backward-prefix-chars))
 
-(defun ess-skip-blanks-backward (&optional N)
+(defun ess-climb-blanks (&optional N)
   "Skip blanks and newlines, taking eol comments into account."
   (skip-chars-backward " \t")
   (when (and (> (or N 0) 0)
              (= (point) (line-beginning-position)))
     (ess-backward-to-noncomment (line-beginning-position 0))
-    (ess-skip-blanks-backward (1- N))))
+    (ess-climb-blanks (1- N))))
 
 (defmacro ess-save-excursion-when-nil (&rest body)
   (declare (indent 0)
@@ -1215,7 +1215,7 @@ be advised"
 (defun ess-climb-object ()
   (ess-save-excursion-when-nil
     (let (climbed)
-      (ess-skip-blanks-backward)
+      (ess-climb-blanks)
       ;; Backquoted names can contain any character
       (if (eq (char-before) ?`)
           (progn
@@ -1308,10 +1308,9 @@ without curly braces."
                            (ess-up-list -1))))
                    ;; Climb unbraced body
                    ((ess-save-excursion-when-nil
-                      (and (or (ess-climb-call)
-                               (progn
-                                 (ess-skip-blanks-backward 1)
-                                 (ess-climb-object)))))))
+                      (ess-climb-blanks 1)
+                      (or (ess-climb-call)
+                          (ess-climb-object)))))
               ;; If successfully climbed body, climb call
               (ess-climb-if-else-call recurse)))))
     (prog1 t
