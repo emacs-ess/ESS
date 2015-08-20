@@ -226,6 +226,10 @@ fun_call({
             stuff3
          })
 
+## 18
+fun_call(argument1 %>%
+            stuff,
+   argument2)
 
 
 ### Blocks

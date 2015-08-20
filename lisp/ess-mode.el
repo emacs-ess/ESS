@@ -1583,8 +1583,8 @@ Returns nil if line starts inside a string, t if in a comment."
   (let* ((to (or to (point)))
          (to-line (line-number-at-pos to))
          (from-line (progn
-                       (goto-char (1+ (or from containing-sexp)))
-                       (line-number-at-pos)))
+                      (goto-char (1+ (or from containing-sexp)))
+                      (line-number-at-pos)))
          (prev-pos (1- (point)))
          max-col)
     (while (< prev-pos (min (point) to) )
@@ -1592,14 +1592,20 @@ Returns nil if line starts inside a string, t if in a comment."
       (ess-forward-sexp)
       ;; Ignore the line with the function call and the line to be
       ;; indented.
-      (unless (or (= (line-number-at-pos) from-line)
-                  (>= (line-number-at-pos) to-line))
-        ;; Handle lines starting with a comma
-        (let ((indent (if (save-excursion
-                            (ess-back-to-indentation)
-                            (looking-at ","))
-                          (+ (current-indentation) 2)
-                        (current-indentation))))
+      (unless (or (>= (line-number-at-pos) to-line))
+        (let ((indent (cond
+                       ;; First line: minimum indent is right after (
+                       ((= (line-number-at-pos) from-line)
+                        (save-excursion
+                          (goto-char (1+ containing-sexp))
+                          (current-column)))
+                       ;; Handle lines starting with a comma
+                       ((save-excursion
+                          (ess-back-to-indentation)
+                          (looking-at ","))
+                        (+ (current-indentation) 2))
+                       (t
+                        (current-indentation)))))
           (setq max-col (min indent (or max-col indent))))))
     max-col))
 

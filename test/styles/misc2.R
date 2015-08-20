@@ -159,7 +159,7 @@ fun_call(parameter =
            fun_argument(
              sub_argument
            ),
-           argument
+         argument
 )
 
 ## 10
@@ -226,6 +226,10 @@ fun_call({
   stuff3
 })
 
+## 18
+fun_call(argument1 %>%
+           stuff,
+         argument2)
 
 
 ### Blocks
@@ -518,8 +522,8 @@ object <-
   fun_call(parameter =
              if (condition)
                stuff1
-             else
-               stuff2
+           else
+             stuff2
   )
 }
 
@@ -576,8 +580,8 @@ object <- fun_call(argument,
 ## 16
 object <- fun_call(argument, if (condition)
                                stuff1
-                               else if (condition2)
-                                 stuff2
+                   else if (condition2)
+                     stuff2
 )
 
 ## 17
