@@ -585,20 +585,19 @@ while(condition)
     stuff
 
 ## 18
-if (cond1)
+if (condition1)
     stuff1
 else
-    if (cond2) {
+    if (condition2) {
         stuff2
     }
 
 ## 19
-skip <-
-    if(condition)
-        ## replacing the next line by 'stuff1' or even dropping '[-i]]    ``solves the issue''
-        ff(x)[-i]
+object <-
+    if (condition)
+        fun_call()[index]
 else
-    stuff2
+    stuff
 
 
 ### Continuation lines
@@ -903,5 +902,3 @@ fun_call(
     ifelse(condition2, argument2,
            ifelse))
 )
-
-

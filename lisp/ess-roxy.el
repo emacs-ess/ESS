@@ -743,9 +743,9 @@ list of strings."
      ;; starter
      (modify-syntax-entry ?# "w" temp-table)
      (modify-syntax-entry ?' "w" temp-table)
-     ;; Neutralise (comment-normalize-vars) modifies the comment-start
-     ;; regexp in such a way that paragraph filling of comments in
-     ;; @examples fields does not work
+     ;; Neutralise (comment-normalize-vars) because it modifies the
+     ;; comment-start regexp in such a way that paragraph filling of
+     ;; comments in @examples fields does not work
      (cl-letf (((symbol-function 'comment-normalize-vars) #'ignore))
        (with-syntax-table temp-table
          ,@body))))
@@ -774,48 +774,43 @@ list of strings."
    ((and ess-fill-calls
          (ess-call-p))
     (ess-fill-args))
-   ;; Filling of @examples roxy comments
+   ;; Filling of code comments in @examples roxy field
    ((and (ess-roxy-entry-p)
          (save-excursion
            (back-to-indentation)
            (looking-at "#")))
     (ess-roxy-with-filling-context
       ad-do-it))
-   ;; Filling of roxy comments
+   ;; Filling of roxy blocks
    ((ess-roxy-entry-p)
-    (let* ((saved-pos (point))
-           (saved-line (line-number-at-pos))
-           (saved-col (current-column))
-           (buffer (current-buffer))
-           (par-start (save-excursion
-                        (if (save-excursion
-                              (and (backward-paragraph)
-                                   (forward-paragraph)
-                                   (<= (point) saved-pos)))
-                            (line-beginning-position)
-                          (progn (backward-paragraph) (point)))))
-           (par-end (ess-roxy-find-par-end
-                     (save-excursion
-                       (forward-paragraph)
-                       (point))
-                     (concat ess-roxy-re "[ \t]*@examples\\b") "^[^#]")))
-      ;; Refill the whole structural paragraph sequentially, field by
-      ;; field, stopping at @examples
-      (ess-roxy-with-filling-context
-        (save-excursion
-          (save-restriction
-            (narrow-to-region par-start par-end)
-            (goto-char 0)
-            (while (< (point) (point-max))
-              (ess-roxy-maybe-indent-line)
-              ad-do-it
-              (forward-paragraph))))
-        (buffer-string))
-      ;; Restore point position manually because (save-excursion)
-      ;; does not work well: we modify or even delete the region
-      ;; surrounding point
-      (ess-goto-line saved-line)
-      (move-to-column saved-col)))))
+    (save-excursion
+      (let* ((saved-pos (point))
+             (saved-line (line-number-at-pos))
+             (saved-col (current-column))
+             (buffer (current-buffer))
+             (par-start (save-excursion
+                          (if (save-excursion
+                                (and (backward-paragraph)
+                                     (forward-paragraph)
+                                     (<= (point) saved-pos)))
+                              (line-beginning-position)
+                            (progn (backward-paragraph) (point)))))
+             (par-end (ess-roxy-find-par-end
+                       (save-excursion
+                         (forward-paragraph)
+                         (point))
+                       (concat ess-roxy-re "[ \t]*@examples\\b") "^[^#]")))
+        ;; Refill the whole structural paragraph sequentially, field by
+        ;; field, stopping at @examples
+        (ess-roxy-with-filling-context
+          (save-excursion
+            (save-restriction
+              (narrow-to-region par-start par-end)
+              (goto-char 0)
+              (while (< (point) (point-max))
+                (ess-roxy-maybe-indent-line)
+                ad-do-it
+                (forward-paragraph))))))))))
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"

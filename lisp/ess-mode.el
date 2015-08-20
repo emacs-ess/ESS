@@ -467,8 +467,7 @@ ess-mode."
   (forward-line (1- line)))
 
 (defun ess-containing-sexp-position ()
-  (let ((state (syntax-ppss)))
-    (cadr state)))
+    (cadr (syntax-ppss)))
 
 (defun ess-code-end-position ()
   "Like (line-end-position) but stops at comments"
@@ -1006,7 +1005,7 @@ Return the amount the indentation changed by."
       (car offset)
     offset))
 
-(defun ess-nested-calls-p ()
+(defun ess-calculate-indent--nested-calls ()
   (when ess-align-nested-calls
     (let ((calls (mapconcat 'identity ess-align-nested-calls "\\|"))
           match)
@@ -1066,8 +1065,8 @@ Return the amount the indentation changed by."
 (defun ess-looking-back-operator-p (&optional fun-arg)
   (save-excursion
     (and (ess-climb-operator)
-         (if (and (not fun-arg)
-                  (not (ess-function-argument-p)))
+         (if (not fun-arg)
+             (not (ess-function-argument-p))
            t))))
 
 (defun ess-function-argument-p ()
@@ -1080,7 +1079,9 @@ before the `=' sign."
 
 (defun ess-call-p ()
   "Is point in a function or indexing call?"
-  (let ((containing-sexp (ess-containing-sexp-position)))
+  (let ((containing-sexp (if (boundp 'containing-sexp)
+                             containing-sexp
+                           (ess-containing-sexp-position))))
     (save-excursion
       (and containing-sexp
            (goto-char containing-sexp)
@@ -1369,7 +1370,7 @@ Returns nil if line starts inside a string, t if in a comment."
        ((ess-block-p)
         (ess-calculate-indent--block))
        ;; Arguments: Nested calls override
-       ((ess-nested-calls-p))
+       ((ess-calculate-indent--nested-calls))
        ;; Arguments: Contents
        (t
         (ess-calculate-indent--args))))))
@@ -1485,8 +1486,15 @@ Returns nil if line starts inside a string, t if in a comment."
                          (skip-chars-forward ", \t"))))
     (- indent unindent)))
 
+;; This function is currently the speed bottleneck of the indentation
+;; engine. This is due to the need to call (ess-maximum-args-indent)
+;; to check if some previous arguments have been pushed off from their
+;; natural indentation: we need to check the whole call. This is very
+;; inefficient especially when indenting a region containing a large
+;; function call (e.g. some dplyr's data cleaning code). Should be
+;; solved by implementing a cache as in (syntax-ppss).
 (defun ess-calculate-indent--args (&optional offset type from to block)
-  (let ((min-col (ess-minimum-args-indent from to))
+  (let ((max-col (ess-maximum-args-indent from to))
         (from (or from containing-sexp)))
     (ignore-errors
       (goto-char (if (and block (not (eq block-type 'opening)))
@@ -1556,30 +1564,30 @@ Returns nil if line starts inside a string, t if in a comment."
 
              (t
               (error "Malformed offset")))))
-      (ess-adjust-argument-indent indent offset min-col block))))
+      (ess-adjust-argument-indent indent offset max-col block))))
 
 ;; Indentation of arguments needs to keep track of how previous
 ;; arguments are indented. If one of those has a smaller indentation,
 ;; we push off the current line from its natural indentation. For
 ;; block arguments, we still need to push off this column.
-(defun ess-adjust-argument-indent (base offset min-col push)
+(defun ess-adjust-argument-indent (base offset max-col push)
   (if push
-      (+ offset (min base (or min-col base)))
-    (min (+ base offset) (or min-col (+ base offset)))))
+      (+ offset (min base (or max-col base)))
+    (min (+ base offset) (or max-col (+ base offset)))))
 
 ;; When previous arguments are shifted to the left (can happen in
 ;; several situations) compared to their natural indentation, the
 ;; following lines should not get indented past them. The following
 ;; function checks the minimum indentation for all arguments of the
 ;; current function call or bracket indexing.
-(defun ess-minimum-args-indent (&optional from to)
+(defun ess-maximum-args-indent (&optional from to)
   (let* ((to (or to (point)))
          (to-line (line-number-at-pos to))
          (from-line (progn
                        (goto-char (1+ (or from containing-sexp)))
                        (line-number-at-pos)))
          (prev-pos (1- (point)))
-         min-col)
+         max-col)
     (while (< prev-pos (min (point) to) )
       (setq prev-pos (point))
       (ess-forward-sexp)
@@ -1593,8 +1601,8 @@ Returns nil if line starts inside a string, t if in a comment."
                             (looking-at ","))
                           (+ (current-indentation) 2)
                         (current-indentation))))
-          (setq min-col (min indent (or min-col indent))))))
-    min-col))
+          (setq max-col (min indent (or max-col indent))))))
+    max-col))
 
 (defvar ess-R-operator-pattern "<-\\|!=\\|%[^ \t]*%\\|[-:+*/><=&|~]"
   "Regular expression for an operator")
@@ -1823,69 +1831,67 @@ style variables buffer local."
     (goto-char (match-end 1))))
 
 (defun ess-fill-args ()
-  (let ((start-pos (point-min))
-        (orig-col (current-column))
-        (orig-line (line-number-at-pos))
-        last-pos prefix-break)
-    (ess-fill-args--unroll-lines)
-    ;; With prefix, start with first argument on a newline
-    (when (and current-prefix-arg
-               (not (looking-at "[ \t]*#")))
-      (newline-and-indent))
-    (while (and (not (looking-at "[])]"))
-                ;; Following three conditions prevent infinite loops
-                (/= (point) (or last-pos 1))
-                (not (save-excursion (ess-climb-operator)))
-                (or (memq (char-before) '(?\( ?\[))
-                    (not (save-excursion
-                           (goto-char (line-beginning-position 0))
-                           (looking-at "[ \t]*$")))))
-      (setq prefix-break nil)
-      ;; Record start-pos as future breaking point to avoid breaking
-      ;; at `=' sign
-      (while (looking-at "[ \t]*[\n#]")
-        (forward-line)
-        (ess-back-to-indentation))
-      (setq start-pos (point))
-      (while (and (< (current-column) fill-column)
-                  (not (looking-at "[])]"))
+  (save-excursion
+    (let ((start-pos (point-min))
+          (orig-col (current-column))
+          (orig-line (line-number-at-pos))
+          last-pos prefix-break)
+      (ess-fill-args--unroll-lines)
+      ;; With prefix, start with first argument on a newline
+      (when (and current-prefix-arg
+                 (not (looking-at "[ \t]*#")))
+        (newline-and-indent))
+      (while (and (not (looking-at "[])]"))
+                  ;; Following three conditions prevent infinite loops
                   (/= (point) (or last-pos 1))
-                  ;; Break after one pass if prefix is active
-                  (not prefix-break))
-        (when current-prefix-arg
-          (setq prefix-break t))
-        (ess-jump-char ",")
-        (setq last-pos (point))
-        ;; Jump expression and any continuations. Reindent all lines
-        ;; that were jumped over
-        (let ((cur-line (line-number-at-pos))
-              end-line)
-          (ess-jump-continuations)
-          (save-excursion
-            (when (< cur-line (line-number-at-pos))
-              (setq end-line (line-number-at-pos))
-              (ess-goto-line (1+ cur-line))
-              (while (<= (line-number-at-pos) end-line)
-                (ess-indent-line)
-                (forward-line))))))
-      (when (or (>= (current-column) fill-column)
-                prefix-break)
-        (if (and last-pos (/= last-pos start-pos))
-            (goto-char last-pos)
-          (ess-jump-char ","))
-        (cond ((looking-at "[ \t]*[#\n]")
-               (progn
-                 (forward-line)
-                 (ess-indent-line)))
-              ;; Indent closing paren (which can be on its own line)
-              ((looking-at "[ \t\n]*\\([])]\\)")
-               (goto-char (match-beginning 1))
-               (when current-prefix-arg
-                 (newline-and-indent)))
-              (t
-               (newline-and-indent)))))
-    (ess-goto-line orig-line)
-    (move-to-column orig-col)))
+                  (not (save-excursion (ess-climb-operator)))
+                  (or (memq (char-before) '(?\( ?\[))
+                      (not (save-excursion
+                             (goto-char (line-beginning-position 0))
+                             (looking-at "[ \t]*$")))))
+        (setq prefix-break nil)
+        ;; Record start-pos as future breaking point to avoid breaking
+        ;; at `=' sign
+        (while (looking-at "[ \t]*[\n#]")
+          (forward-line)
+          (ess-back-to-indentation))
+        (setq start-pos (point))
+        (while (and (< (current-column) fill-column)
+                    (not (looking-at "[])]"))
+                    (/= (point) (or last-pos 1))
+                    ;; Break after one pass if prefix is active
+                    (not prefix-break))
+          (when current-prefix-arg
+            (setq prefix-break t))
+          (ess-jump-char ",")
+          (setq last-pos (point))
+          ;; Jump expression and any continuations. Reindent all lines
+          ;; that were jumped over
+          (let ((cur-line (line-number-at-pos))
+                end-line)
+            (ess-jump-continuations)
+            (save-excursion
+              (when (< cur-line (line-number-at-pos))
+                (setq end-line (line-number-at-pos))
+                (ess-goto-line (1+ cur-line))
+                (while (<= (line-number-at-pos) end-line)
+                  (ess-indent-line)
+                  (forward-line))))))
+        (when (or (>= (current-column) fill-column)
+                  prefix-break)
+          (if (and last-pos (/= last-pos start-pos))
+              (goto-char last-pos)
+            (ess-jump-char ","))
+          (cond ((looking-at "[ \t]*[#\n]")
+                 (progn
+                   (forward-line)
+                   (ess-indent-line)))
+                ;; With prefix, closing delim goes on a newline
+                ((looking-at "[ \t]*[])]")
+                 (when current-prefix-arg
+                   (newline-and-indent)))
+                (t
+                 (newline-and-indent))))))))
 
 (defun ess-fill-args--unroll-lines ()
   (let* ((containing-sexp (ess-containing-sexp-position))

@@ -585,12 +585,19 @@ while(condition)
   stuff
 
 ## 18
-if (cond1)
+if (condition1)
   stuff1
 else
-  if (cond2) {
+  if (condition2) {
     stuff2
   }
+
+## 19
+object <-
+  if (condition)
+    fun_call()[index]
+else
+  stuff
 
 
 ### Continuation lines
