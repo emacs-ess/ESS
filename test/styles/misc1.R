@@ -145,11 +145,11 @@ fun_call(argument1
  , argument2
  , argument3,
    argument4, (
-            stuff1
-         ),
+      stuff1
+   ),
    argument5, (
-            stuff2
-         )
+      stuff2
+   )
   ,
    argument6
 )
@@ -226,6 +226,10 @@ fun_call({
             stuff3
          })
 
+## 18
+fun_call(argument1 %>%
+            stuff,
+   argument2)
 
 
 ### Blocks
@@ -366,6 +370,22 @@ fun_call1(
    stuff
 }
 )
+
+## 17
+fun_call(argument, function(argument1,
+                      argument2) {
+                      body
+                   }
+)
+
+## 18
+fun_call(
+         argument,
+         function(argument1,
+            argument2) {
+            body
+         }
+         )
 
 
 ### Bracket indexing
@@ -517,7 +537,7 @@ object <-
 {
    fun_call(parameter =
                if (condition)
-                  stuff1
+               stuff1
       else
          stuff2
    )
@@ -555,7 +575,7 @@ fun_call(
          argument,
          parameter =
             if (condition1)
-               stuff1
+            stuff1
          else if (condition2)
             stuff3
          else
@@ -565,17 +585,17 @@ fun_call(
 ## 15
 object <- fun_call(argument,
              parameter = if (condition1) {
-                      stuff1
-                   } else if (condition2) {
-                      stuff3
-                   } else {
-                      stuff2
-                   }
+                stuff1
+             } else if (condition2) {
+                stuff3
+             } else {
+                stuff2
+             }
           )
 
 ## 16
 object <- fun_call(argument, if (condition)
-                                stuff1
+                      stuff1
              else if (condition2)
                 stuff2
           )
@@ -585,12 +605,19 @@ while(condition)
    stuff
 
 ## 18
-if (cond1)
+if (condition1)
    stuff1
 else
-   if (cond2) {
+   if (condition2) {
       stuff2
    }
+
+## 19
+object <-
+   if (condition)
+      fun_call()[index]
+else
+   stuff
 
 
 ### Continuation lines
@@ -661,9 +688,9 @@ ggplot() +
    ggplot() +
       geom1(argument1,
          argument2 = (
-               stuff1
-            ) -
-               stuff2) +
+            stuff1
+         ) -
+            stuff2) +
          geom2() +
             geom3()
 }
@@ -813,6 +840,12 @@ object[index] %>%
 ## 24
 fun_call(argument) <-
    hop
+
+## 25
+fun_call1(argument, fun_call2(
+                              stuff1
+                              ) +
+                       stuff2)
 
 
 ### Comments

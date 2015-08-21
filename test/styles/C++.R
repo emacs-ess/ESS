@@ -68,8 +68,8 @@ object <- function()
 ## 10
 fun_call(
     function() {
-        stuff
-    }
+    stuff
+}
 )
 
 ## 11
@@ -226,6 +226,10 @@ fun_call({
     stuff3
 })
 
+## 18
+fun_call(argument1 %>%
+             stuff,
+         argument2)
 
 
 ### Blocks
@@ -364,6 +368,22 @@ fun_call1(
 ## 16
 ( {
     stuff
+}
+)
+
+## 17
+fun_call(argument, function(argument1,
+                            argument2) {
+    body
+}
+)
+
+## 18
+fun_call(
+    argument,
+    function(argument1,
+             argument2) {
+    body
 }
 )
 
@@ -585,12 +605,19 @@ while(condition)
     stuff
 
 ## 18
-if (cond1)
+if (condition1)
     stuff1
 else
-    if (cond2) {
+    if (condition2) {
         stuff2
     }
+
+## 19
+object <-
+    if (condition)
+        fun_call()[index]
+    else
+        stuff
 
 
 ### Continuation lines
@@ -813,6 +840,12 @@ object[index] %>%
 ## 24
 fun_call(argument) <-
     hop
+
+## 25
+fun_call1(argument, fun_call2(
+                        stuff1
+                    ) +
+                        stuff2)
 
 
 ### Comments
