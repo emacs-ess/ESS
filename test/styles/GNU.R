@@ -371,6 +371,22 @@ fun_call1(
 }
 )
 
+## 17
+fun_call(argument, function(argument1,
+                            argument2) {
+  body
+}
+)
+
+## 18
+fun_call(
+    argument,
+    function(argument1,
+             argument2) {
+      body
+    }
+)
+
 
 ### Bracket indexing
 

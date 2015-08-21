@@ -1653,12 +1653,22 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--args-prev-line ()
   (ess-at-indent-point
-    ;; Closing delimiters are actually not indented at
-    ;; prev-line, but at opening-line
-    (if (looking-at "[]})]")
-        (progn
-          (ess-up-list -1)
-          (current-indentation))
+    (cond
+     ;; Closing delimiters are actually not indented at
+     ;; prev-line, but at opening-line
+     ((looking-at "[]})]")
+      (ess-up-list -1)
+      (when (looking-at "{")
+        (ess-climb-block-opening))
+      (current-indentation))
+     ;; Function blocks need special treatment
+     ((and (eq type 'prev-line)
+           (eq block 'decl))
+      (goto-char containing-sexp)
+      (ess-climb-block-opening)
+      (current-indentation))
+     ;; Regular case
+     (t
       (ess-climb-continued-statements t)
       ;; Find next non-empty line to indent from
       (while (and (= (forward-line -1) 0)
@@ -1674,7 +1684,7 @@ Returns nil if line starts inside a string, t if in a comment."
                        (progn (goto-char containing-sexp)
                               (line-number-at-pos)))))
         (setq offset 0))
-      (current-indentation))))
+      (current-indentation)))))
 
 ;; Indentation of arguments needs to keep track of how previous
 ;; arguments are indented. If one of those has a smaller indentation,
