@@ -825,6 +825,12 @@ object[index] %>%
 fun_call(argument) <-
     hop
 
+## 25
+fun_call1(argument, fun_call2(
+                        stuff1
+                    ) +
+                        stuff2)
+
 
 ### Comments
 
