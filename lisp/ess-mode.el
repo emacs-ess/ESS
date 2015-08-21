@@ -1200,7 +1200,9 @@ of the curly brackets of a braced block."
             (when (looking-at "[ \t]{")
               (ess-forward-sexp))))
      ;; Naked blocks
-     (and (looking-at "{")
+     (and (or (looking-at "{")
+              (and (looking-at "(")
+                   (not (ess-looking-back-attached-name-p))))
           (ess-forward-sexp)))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
