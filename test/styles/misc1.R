@@ -145,11 +145,11 @@ fun_call(argument1
  , argument2
  , argument3,
    argument4, (
-            stuff1
-         ),
+      stuff1
+   ),
    argument5, (
-            stuff2
-         )
+      stuff2
+   )
   ,
    argument6
 )
@@ -521,7 +521,7 @@ object <-
 {
    fun_call(parameter =
                if (condition)
-                  stuff1
+               stuff1
       else
          stuff2
    )
@@ -559,7 +559,7 @@ fun_call(
          argument,
          parameter =
             if (condition1)
-               stuff1
+            stuff1
          else if (condition2)
             stuff3
          else
@@ -569,17 +569,17 @@ fun_call(
 ## 15
 object <- fun_call(argument,
              parameter = if (condition1) {
-                      stuff1
-                   } else if (condition2) {
-                      stuff3
-                   } else {
-                      stuff2
-                   }
+                stuff1
+             } else if (condition2) {
+                stuff3
+             } else {
+                stuff2
+             }
           )
 
 ## 16
 object <- fun_call(argument, if (condition)
-                                stuff1
+                      stuff1
              else if (condition2)
                 stuff2
           )
@@ -672,9 +672,9 @@ ggplot() +
    ggplot() +
       geom1(argument1,
          argument2 = (
-               stuff1
-            ) -
-               stuff2) +
+            stuff1
+         ) -
+            stuff2) +
          geom2() +
             geom3()
 }

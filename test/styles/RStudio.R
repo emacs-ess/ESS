@@ -579,10 +579,10 @@ object <- fun_call(argument,
 
 ## 16
 object <- fun_call(argument, if (condition)
-                               stuff1
-                   else if (condition2)
-                     stuff2
-                   )
+  stuff1
+  else if (condition2)
+    stuff2
+  )
 
 ## 17
 while(condition)

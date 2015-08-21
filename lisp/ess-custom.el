@@ -672,134 +672,122 @@ See `ess-style-alist' for all available offsets.")
 (define-obsolete-variable-alias 'ess-indent-level 'ess-indent-offset "15.09")
 
 (defvar ess-offset-arguments 'open-delim
-  "Indent for function arguments or bracket indexing.
+  "Indent for arguments of function calls or indexing brackets.
 This variables has an effect only when the ( or [ are not
 directly followed by a new line. See
 `ess-offset-arguments-newline' for indentation after closing
 newline.
 
-If 'open-delim, the arguments are indented at the opening
-delimiter following foo:
+When set to `open-delim', arguments are indented relative to the
+opening parenthesis of the closest function call:
 
-  object <- some_function(other_function(arg1,
-                                         arg2,
-                                         arg3)
-
-
-If 'prev-call, the arguments are aligned at the beginning of the
-closest function call + N characters:
-
-  object <- some_function(other_function(arg1,
-                              arg2,
-                              arg3)
+  object <- call(argument, other_call(argument,
+                                      other_argument))
 
 
-If 'prev-line, the arguments are indented at the previous line
-indentation + N characters:
+When set to `prev-call', arguments are indented relative to the
+closest function call:
 
-  object <- some_function(other_function(arg1,
-      arg2,
-      arg3)
+  object <- call(argument, other_call(argument,
+                               other_argument))
 
 
-The 'prev-call and 'prev-line settings are actually equivalent to
-'(prev-call . t) and '(prev-line . t), where `t' represents the
-base indent size. More generally, you can supply '(prev-call . N)
-to control the size of indentation.
+When set to `prev-line', arguments are indented relative to the
+preceding line:
 
-See `ess-style-alist' for other offsets.")
+  object <- call(argument, other_call(argument,
+      other_argument))
+
+See `ess-style-alist' for other offsets controlling
+indentation.")
 
 (defvar ess-offset-arguments-newline 'prev-call
   "Indent of arguments when ( or [ is followed by a new line.
 
-If 'open-delim, the arguments are indented at the opening
-delimiter following foo:
+If `prev-call', arguments on a new line are indented relative to
+the closest function call:
 
-  object <- some_function(other_function(
-                                         arg1,
-                                         arg2)
+  object <- call(argument, other_call(
+                               argument,
+                               other_argument
+                           ))
 
-
-If 'prev-call, the arguments are aligned at the beginning of the
-closest function call + N characters:
-
-  object <- some_function(other_function(
-                              arg1,
-                              arg2)
+You can control the details of indentation at `prev-call' with
+`ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
 
 
-If prev-line, the arguments are indented at the previous line
-indentation + N characters:
+When set to `open-delim', arguments on a new line are indented
+relative to the opening parenthesis of the closest function call:
 
-  object <- some_function(other_function(
-      arg1,
-      arg2)
+  object <- call(argument, other_call(
+                                      argument,
+                                      other_argument
+                                      ))
 
 
-The 'prev-call and 'prev-line settings are actually equivalent to
-'(prev-call . t) and '(prev-line . t), where `t' represents the
-base indent size. More generally, you can supply '(prev-call . N)
-to control the size of indentation.")
+When set to `prev-line', arguments on a new line are indented
+relative to the preceding line:
+
+  object <- call(argument, other_call(
+      argument,
+      other_argument
+  ))
+
+See `ess-style-alist' for other offsets controlling
+indentation.")
 
 (defvar ess-offset-block 'prev-line
-  "Indentation for blocks.
-A block is usually declared with braces but a statement wrapped
-in anonymous parentheses is also considered a block.
+  "Indentation for blocks. A block is usually declared with
+braces but a statement wrapped in anonymous parentheses is also
+considered a block. This offset can be either `prev-call',
+`prev-line' or `open-delim'.
 
-If nil, blocks are indented from the opening delimiter:
+When set to `prev-call', blocks are indented relative to the
+closest function call:
 
-  {
-      fun_call(parameter = {
-                               stuff
-                           }, {
-                                  stuff
-                              })
+  call(argument, other_call(parameter = {
+                     stuff
+                 }, {
+                     stuff
+                 }))
 
-      lapply(data, function(x) {
-                                   body
-                               })
-  }
+  call(argument, lapply(data, function(x) {
+                     body
+                 }))
 
-
-If a number N, blocks are indented relative to the opening
-parenthesis of the closest function call:
-
-  {
-      fun_call(parameter = {
-                   stuff
-               }, {
-                   stuff
-               })
-
-      lapply(data, function(x) {
-                 body
-             })
-  }
-
-In this case, the value types of `ess-offset-arguments' and
-`ess-offset-arguments-newline' are taken into account for
-consistency.
+You can control the details of indentation at `prev-call' with
+`ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
 
 
-If a list of the form '(N) where N is a number, blocks are
-indented at the previous line indentation + N characters:
+When set to `open-delim', blocks are indented relative to the
+opening parenthesis of the closest function call:
 
-  {
-      fun_call(parameter = {
-          stuff
-      }, {
-          stuff
-      })
+  call(argument, other_call(parameter = {
+                                stuff
+                            }, {
+                                stuff
+                            }))
 
-      lapply(data, function(x) {
-          body
-      })
-  }
+  call(argument, lapply(data, function(x) {
+                            body
+                        }))
 
-You can refer to `ess-indent-offset' by setting this parameter to t
-or '(t) instead of N or '(N).
 
-See `ess-style-alist' for other offsets.")
+When set to `prev-line', blocks are indented relative to the
+preceding line:
+
+  call(argument, other_call(parameter = {
+      stuff
+  }, {
+      stuff
+  }))
+
+  call(argument, lapply(data, function(x) {
+      body
+  }))
+
+See `ess-style-alist' for other offsets controlling
+indentation.")
 
 (defvar ess-offset-continued 'straight
   "This setting controls indentation of continued statements, that is,
@@ -885,16 +873,16 @@ instead of
 Definition operators (`<-', `=', `:=' and `~') still trigger an
 indentation in all cases.")
 
-(defvar ess-align-blocks '(if-else)
+(defvar ess-align-blocks '(control-flow)
   "List of block types for which `ess-offset-blocks' should be
 ignored. The overridden blocks are vertically aligned. The list
-can contain either or both of the symbols `if-else' and
+can contain either or both of the symbols `control-flow' and
 `fun-decl'.
 
-With `if-else', the if and else calls as well as corresponding
-blocks will always be aligned vertically. With `fun-decl', the
-body of a function declaration will always be aligned with the
-call to `function'.")
+With `control-flow', if, else for and while blocks will always be
+aligned vertically. With `fun-decl', the body of a function
+declaration will always be aligned with the call to
+`function'.")
 
 (defvar ess-indent-prev-call-lhs nil
   "When non-nil, indent arguments from the left-hand side of an assignment.
@@ -976,7 +964,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -990,7 +978,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1005,7 +993,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1019,7 +1007,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1033,7 +1021,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1048,7 +1036,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
-     (ess-align-blocks . (if-else))
+     (ess-align-blocks . (control-flow))
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
@@ -1110,9 +1098,6 @@ Offsets:
  - `ess-offset-continued': offset for continuation lines in
    multiline statements
 
- - `ess-offset-continued-first': extra offset for first
-   continuation line (i.e. second line of a multiline expression)
-
 Overrides (implies vertical alignment):
 
  - `ess-align-nested-calls': functions whose nested calls
@@ -1124,9 +1109,8 @@ Overrides (implies vertical alignment):
  - `ess-align-continuations-in-calls': calls where
    `ess-offset-continued' should be ignored.
 
- - `ess-align-blocks': whether to ignore
-   `ess-offset-blocks' for function declarations or if-else
-   branches.
+ - `ess-align-blocks': whether to ignore `ess-offset-blocks' for
+   function declarations or control flow statements .
 
 Control variables:
 

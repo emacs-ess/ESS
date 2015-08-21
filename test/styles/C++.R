@@ -68,8 +68,8 @@ object <- function()
 ## 10
 fun_call(
     function() {
-        stuff
-    }
+    stuff
+}
 )
 
 ## 11
