@@ -772,7 +772,7 @@ list of strings."
     ad-do-it)
    ;; Filling of call arguments
    ((and ess-fill-calls
-         (ess-call-p))
+         (ess-point-in-call-p))
     (ess-fill-args))
    ;; Filling of code comments in @examples roxy field
    ((and (ess-roxy-entry-p)
@@ -810,7 +810,9 @@ list of strings."
               (while (< (point) (point-max))
                 (ess-roxy-maybe-indent-line)
                 ad-do-it
-                (forward-paragraph))))))))))
+                (forward-paragraph))))))))
+   (t
+    ad-do-it)))
 
 (defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
   "move to start"

@@ -1050,13 +1050,14 @@ Return the amount the indentation changed by."
 
 (defvar ess-block-funs-patterns
   (mapcar (lambda (fun) (concat fun "\\b"))
-          '("function" "if" "}?[ \t]*else" "for" "while")))
+          '("function" "if" "for" "while")))
 
 (defun ess-overridden-blocks ()
   (append (when (memq 'fun-decl ess-align-blocks)
             (list (car ess-block-funs-patterns)))
           (when (memq 'control-flow ess-align-blocks)
-            (cdr ess-block-funs-patterns))))
+            (append (cdr ess-block-funs-patterns)
+                    '("}?[ \t]*else")))))
 
 (defun ess-unbraced-block-p ()
   "This indicates whether point is in front of an unbraced block
@@ -1097,7 +1098,7 @@ before the `=' sign."
          (ess-climb-object)
          (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
 
-(defun ess-call-p ()
+(defun ess-point-in-call-p ()
   "Is point in a function or indexing call?"
   (let ((containing-sexp (if (boundp 'containing-sexp)
                              containing-sexp
@@ -1105,8 +1106,9 @@ before the `=' sign."
     (save-excursion
       (and containing-sexp
            (goto-char containing-sexp)
-           (looking-at "[[(]")
-           (ess-looking-back-attached-name-p)))))
+           (or (and (looking-at "(")
+                    (ess-looking-back-attached-name-p))
+               (looking-at "\\["))))))
 
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
@@ -1132,14 +1134,6 @@ be advised"
   (skip-syntax-forward " " (line-end-position))
   ;; Move back over chars that have whitespace syntax but have the p flag.
   (backward-prefix-chars))
-
-(defun ess-climb-blanks (&optional N)
-  "Skip blanks and newlines, taking eol comments into account."
-  (skip-chars-backward " \t")
-  (when (and (> (or N 0) 0)
-             (= (point) (line-beginning-position)))
-    (ess-backward-to-noncomment (line-beginning-position 0))
-    (ess-climb-blanks (1- N))))
 
 (defmacro ess-save-excursion-when-nil (&rest body)
   (declare (indent 0)
@@ -1196,6 +1190,19 @@ of the curly brackets of a braced block."
         (when pos
           (goto-char pos)))))
 
+(defun ess-jump-block ()
+  (ess-save-excursion-when-nil
+    (or
+     ;; Block calls such as `function() {}'
+     (and (some 'looking-at ess-block-funs-patterns)
+          (ess-forward-sexp 2)
+          (prog1 t
+            (when (looking-at "[ \t]{")
+              (ess-forward-sexp))))
+     ;; Naked blocks
+     (and (looking-at "{")
+          (ess-forward-sexp)))))
+
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
   (ess-save-excursion-when-nil
     (let ((start-line (line-number-at-pos)))
@@ -1251,8 +1258,27 @@ of the curly brackets of a braced block."
 (defun ess-jump-continuations ()
   (when (ess-looking-at-operator-p)
     (ess-jump-operator))
-  (ess-while (and (ess-jump-expression)
-                  (ess-jump-operator))))
+  (let (last-pos)
+    (ess-while (and (or (null last-pos) (/= (point) last-pos))
+                    (setq last-pos (point))
+                    (ess-jump-expression)
+                    (ess-jump-operator)))))
+
+(defun ess-climb-blanks (&optional N)
+  "Skip blanks and newlines, taking eol comments into account."
+  (skip-chars-backward " \t")
+  (when (and (> (or N 0) 0)
+             (= (point) (line-beginning-position)))
+    (ess-backward-to-noncomment (line-beginning-position 0))
+    (ess-climb-blanks (1- N))))
+
+(defun ess-jump-blanks (&optional N)
+  (skip-chars-forward " \t")
+  (when (and (> (or N 0) 0)
+             (= (point) (ess-code-end-position)))
+    (forward-line)
+    (ess-back-to-indentation)
+    (ess-jump-blanks (1- N))))
 
 ;; Should climb any names, including backquoted ones or those
 ;; containing `@' or `$'. Difficult to achieve with regexps, but
@@ -1282,11 +1308,18 @@ of the curly brackets of a braced block."
 
 (defun ess-jump-object ()
   (let (climbed)
-    (skip-chars-forward " \t`")
-    (while (some (apply-partially '/= 0)
-                 `(,(skip-syntax-forward "w_")
-                   ,(skip-chars-forward "\"'`")))
-      (setq climbed t))
+    (skip-chars-forward " \t")
+    (if (eq (char-after) ?`)
+        (progn
+          (forward-char)
+          (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
+                  (forward-char))
+            (setq climbed t)
+            (forward-char)))
+      (while (some (apply-partially '/= 0)
+                   `(,(skip-syntax-forward "w_")
+                     ,(skip-chars-forward "\"'`")))
+        (setq climbed t)))
     climbed))
 
 (defun ess-climb-call ()
@@ -1301,7 +1334,7 @@ of the curly brackets of a braced block."
 
 (defun ess-jump-call ()
   (ess-save-excursion-when-nil
-    (and (ess-forward-sexp)
+    (and (ess-jump-object)
          (cond ((eq (char-before) ?\)))
                ((looking-at "\\[")
                 (ess-jump-chained-brackets))
@@ -1315,7 +1348,8 @@ of the curly brackets of a braced block."
 
 (defun ess-jump-expression ()
   (or (ess-jump-call)
-      (ess-jump-object)))
+      (ess-jump-object)
+      (ess-jump-block)))
 
 (defun ess-climb-if-else-call (multi-line)
   "Climb if, else, and if else calls."
@@ -1962,6 +1996,9 @@ style variables buffer local."
          prefix-start prefix-break)
     (modify-syntax-entry ?# "w" temp-table)
     (goto-char (1+ containing-sexp))
+    (when (not (save-excursion
+                 (ess-up-list)))
+      (error "No closing delimiter found"))
     ;; Unroll arguments to a single line until closing delimiter is
     ;; found. Neutralise `#' because we need (ess-up-list) to find
     ;; closing parenthesis even when it's been erroneously clogged
@@ -1985,6 +2022,7 @@ style variables buffer local."
                (ess-up-list))
               ;; Jump over continued statements
               ((ess-looking-back-operator-p)
+               (ess-jump-blanks 1)
                (ess-jump-continuations))
               ;; Jump over comments
               ((looking-at "#")

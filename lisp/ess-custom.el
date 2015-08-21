@@ -1110,7 +1110,7 @@ Overrides (implies vertical alignment):
    `ess-offset-continued' should be ignored.
 
  - `ess-align-blocks': whether to ignore `ess-offset-blocks' for
-   function declarations or control flow statements .
+   function declarations or control flow statements.
 
 Control variables:
 
