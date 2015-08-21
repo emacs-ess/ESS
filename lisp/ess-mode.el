@@ -1463,12 +1463,13 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-calculate-indent--args))))))
 
 (defun ess-calculate-indent--comma ()
-  (let ((indent (save-excursion
-                  (ess-calculate-indent--args)))
-        (unindent (progn (skip-chars-forward " \t")
-                         ;; return number of skiped chars
-                         (skip-chars-forward ", \t"))))
-    (- indent unindent)))
+  (when (ess-point-in-call-p)
+    (let ((indent (save-excursion
+                    (ess-calculate-indent--args)))
+          (unindent (progn (skip-chars-forward " \t")
+                           ;; return number of skiped chars
+                           (skip-chars-forward ", \t"))))
+      (- indent unindent))))
 
 (defun ess-calculate-indent--block-opening ()
   (cond
@@ -1845,7 +1846,8 @@ N times."
                        (setq def-op 'newline)))))
             ;; Break loop if we climbed enough or if we reached a
             ;; definition-op
-            (if (and (<= counter (if (eq (ess-offset-type 'continued) 'cascade)
+            (if (and (not (eq N t))
+                     (<= counter (if (eq (ess-offset-type 'continued) 'cascade)
                                      N
                                    (1+ N))) ; Allows horizontal climbing
                      (not def-op)) t
