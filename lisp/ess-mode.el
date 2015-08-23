@@ -1309,18 +1309,38 @@ of the curly brackets of a braced block."
       climbed)))
 
 (defun ess-jump-object ()
-  (let (climbed)
+  (let (climbed quote-char)
+    (cond
+     ;; Jump over object names
+     ((ess-jump-name))
+     ;; Jump over strings))
+     ((ess-save-excursion-when-nil
+        (skip-chars-forward " \t")
+        (or (and (eq (char-after) ?')
+                 (setq quote-char "'"))
+            (and (eq (char-after) ?\")
+                 (setq quote-char "\""))))
+      (forward-char)
+      (while (and (skip-chars-forward (concat "^" quote-char))
+                  (setq climbed t)
+                  (looking-back quote-char (1- (point)))))
+      (when (eq (char-after) ?\")
+        (forward-char))
+      climbed))))
+
+(defun ess-jump-name ()
+  (let (climbed quote-char)
     (skip-chars-forward " \t")
     (if (eq (char-after) ?`)
+        ;; Jump over backquoted names
         (progn
           (forward-char)
           (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
                   (forward-char))
             (setq climbed t)
             (forward-char)))
-      (while (some (apply-partially '/= 0)
-                   `(,(skip-syntax-forward "w_")
-                     ,(skip-chars-forward "\"'`")))
+      ;; Jump over regular names
+      (while (/= 0 (skip-syntax-forward "w_"))
         (setq climbed t)))
     climbed))
 
