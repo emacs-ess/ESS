@@ -1498,8 +1498,7 @@ Returns nil if line starts inside a string, t if in a comment."
    ;; Block is an argument in a function call
    ((when containing-sexp
       (ess-at-containing-sexp
-        (and (goto-char containing-sexp)
-             (looking-at "[[(]")
+        (and (looking-at "[[(]")
              (ess-looking-back-attached-name-p))))
     (ess-calculate-indent--block 0 'opening))
    ;; Top-level block
@@ -1534,14 +1533,15 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--naked-block ()
   (ess-save-excursion-when-nil
-    (let* ((closing (looking-at "[})]"))
-           (offset (if closing 0 (ess-offset 'block))))
+    (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
+          (start-line (line-number-at-pos))
+          (saved-pos))
+      ;; Block enclosed in curly brackets not part of a call. Check
+      ;; if enclosing { is first thing on line
       (when (and containing-sexp
                  (not (ess-unbraced-block-p))
                  (goto-char containing-sexp)
                  (ess-block-opening-p)
-                 ;; Block enclosed in curly brackets not part of a
-                 ;; call. Check if enclosing { is first thing on line
                  (equal (point) (save-excursion
                                   (ess-back-to-indentation)
                                   (point))))
@@ -1696,6 +1696,8 @@ Returns nil if line starts inside a string, t if in a comment."
       ;; Find next non-empty line to indent from
       (while (and (= (forward-line -1) 0)
                   (looking-at "[ \t]*$")))
+      ;; Don't indent from block continuation
+      (ess-climb-block-opening)
       ;; The following ensures that only the first line
       ;; counts. Otherwise consecutive statements would get
       ;; increasingly more indented.

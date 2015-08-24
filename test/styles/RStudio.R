@@ -619,6 +619,14 @@ object <-
 else
   stuff
 
+## 20
+funcall({
+  if (test1)
+    stuff1
+  if (test2)
+    stuff2
+})
+
 
 ### Continuation lines
 
