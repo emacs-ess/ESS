@@ -1200,7 +1200,9 @@ of the curly brackets of a braced block."
             (when (looking-at "[ \t]{")
               (ess-forward-sexp))))
      ;; Naked blocks
-     (and (looking-at "{")
+     (and (or (looking-at "{")
+              (and (looking-at "(")
+                   (not (ess-looking-back-attached-name-p))))
           (ess-forward-sexp)))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
@@ -1307,18 +1309,38 @@ of the curly brackets of a braced block."
       climbed)))
 
 (defun ess-jump-object ()
-  (let (climbed)
+  (let (climbed quote-char)
+    (cond
+     ;; Jump over object names
+     ((ess-jump-name))
+     ;; Jump over strings))
+     ((ess-save-excursion-when-nil
+        (skip-chars-forward " \t")
+        (or (and (eq (char-after) ?')
+                 (setq quote-char "'"))
+            (and (eq (char-after) ?\")
+                 (setq quote-char "\""))))
+      (forward-char)
+      (while (and (skip-chars-forward (concat "^" quote-char))
+                  (setq climbed t)
+                  (looking-back quote-char (1- (point)))))
+      (when (eq (char-after) ?\")
+        (forward-char))
+      climbed))))
+
+(defun ess-jump-name ()
+  (let (climbed quote-char)
     (skip-chars-forward " \t")
     (if (eq (char-after) ?`)
+        ;; Jump over backquoted names
         (progn
           (forward-char)
           (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
                   (forward-char))
             (setq climbed t)
             (forward-char)))
-      (while (some (apply-partially '/= 0)
-                   `(,(skip-syntax-forward "w_")
-                     ,(skip-chars-forward "\"'`")))
+      ;; Jump over regular names
+      (while (/= 0 (skip-syntax-forward "w_"))
         (setq climbed t)))
     climbed))
 
@@ -1463,20 +1485,20 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-calculate-indent--args))))))
 
 (defun ess-calculate-indent--comma ()
-  (let ((indent (save-excursion
-                  (ess-calculate-indent--args)))
-        (unindent (progn (skip-chars-forward " \t")
-                         ;; return number of skiped chars
-                         (skip-chars-forward ", \t"))))
-    (- indent unindent)))
+  (when (ess-point-in-call-p)
+    (let ((indent (save-excursion
+                    (ess-calculate-indent--args)))
+          (unindent (progn (skip-chars-forward " \t")
+                           ;; return number of skiped chars
+                           (skip-chars-forward ", \t"))))
+      (- indent unindent))))
 
 (defun ess-calculate-indent--block-opening ()
   (cond
    ;; Block is an argument in a function call
    ((when containing-sexp
       (ess-at-containing-sexp
-        (and (goto-char containing-sexp)
-             (looking-at "[[(]")
+        (and (looking-at "[[(]")
              (ess-looking-back-attached-name-p))))
     (ess-calculate-indent--block 0 'opening))
    ;; Top-level block
@@ -1511,14 +1533,15 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--naked-block ()
   (ess-save-excursion-when-nil
-    (let* ((closing (looking-at "[})]"))
-           (offset (if closing 0 (ess-offset 'block))))
+    (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
+          (start-line (line-number-at-pos))
+          (saved-pos))
+      ;; Block enclosed in curly brackets not part of a call. Check
+      ;; if enclosing { is first thing on line
       (when (and containing-sexp
                  (not (ess-unbraced-block-p))
                  (goto-char containing-sexp)
                  (ess-block-opening-p)
-                 ;; Block enclosed in curly brackets not part of a
-                 ;; call. Check if enclosing { is first thing on line
                  (equal (point) (save-excursion
                                   (ess-back-to-indentation)
                                   (point))))
@@ -1673,6 +1696,8 @@ Returns nil if line starts inside a string, t if in a comment."
       ;; Find next non-empty line to indent from
       (while (and (= (forward-line -1) 0)
                   (looking-at "[ \t]*$")))
+      ;; Don't indent from block continuation
+      (ess-climb-block-opening)
       ;; The following ensures that only the first line
       ;; counts. Otherwise consecutive statements would get
       ;; increasingly more indented.
@@ -1845,7 +1870,8 @@ N times."
                        (setq def-op 'newline)))))
             ;; Break loop if we climbed enough or if we reached a
             ;; definition-op
-            (if (and (<= counter (if (eq (ess-offset-type 'continued) 'cascade)
+            (if (and (not (eq N t))
+                     (<= counter (if (eq (ess-offset-type 'continued) 'cascade)
                                      N
                                    (1+ N))) ; Allows horizontal climbing
                      (not def-op)) t
