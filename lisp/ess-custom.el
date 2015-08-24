@@ -982,7 +982,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
-    
+
     ;; CLB added rmh 2Nov97 at request of Terry Therneau
     (CLB
      (ess-indent-offset . 2)
@@ -1011,7 +1011,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
-    
+
     (K&R
      (ess-indent-offset . 5)
      (ess-offset-arguments . open-delim)
@@ -1025,7 +1025,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
-    
+
     ;; R added ajr 17Feb04 to match "common R" use
     (RRR
      (ess-indent-offset . 4)
@@ -1040,7 +1040,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
-    
+
     (RStudio
      (ess-indent-offset . 2)
      (ess-offset-arguments . open-delim)
@@ -1054,7 +1054,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-lhs . t)
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . nil))
-    
+
     (DEFAULT
       (ess-indent-offset . ,(default-value 'ess-indent-offset))
       (ess-offset-arguments . ,(default-value 'ess-offset-arguments))
@@ -1068,7 +1068,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-indent-prev-call-lhs . ,(default-value 'ess-indent-prev-call-lhs))
       (ess-indent-prev-call-chains . ,(default-value 'ess-indent-prev-call-chains))
       (ess-indent-with-fancy-comments . ,(default-value 'ess-indent-with-fancy-comments))))
-  
+
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
@@ -1408,8 +1408,8 @@ current directory.
   :type '(choice (const :tag "*proc*" ess-gen-proc-buffer-name:simple)
                  (const :tag "*proc:dir*" ess-gen-proc-buffer-name:directory)
                  (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:abbr-long-directory)
-		 (const :tag "*proc:projectile-root* or *proc*" ess-gen-proc-buffer-name:projectile-or-simple)
-		 (const :tag "*proc:projectile-root* or *proc:dir*" ess-gen-proc-buffer-name:projectile-or-directory)
+                 (const :tag "*proc:projectile-root* or *proc*" ess-gen-proc-buffer-name:projectile-or-simple)
+                 (const :tag "*proc:projectile-root* or *proc:dir*" ess-gen-proc-buffer-name:projectile-or-directory)
                  function))
 
 

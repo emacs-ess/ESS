@@ -1,4 +1,4 @@
-; ess-roxy.el --- convenient editing of in-code roxygen documentation
+;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
 ;; Copyright (C) 2009--2012 Henning Redestig, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
@@ -493,13 +493,13 @@ region, otherwise prefix all lines with the roxy
 string. Convenient for editing example fields."
   (interactive "r")
   (unless (use-region-p)
-      (error "region is not active"))
+    (error "region is not active"))
   (ess-roxy-roxy-region beg end (ess-roxy-entry-p)))
 
 (defun ess-roxy-roxy-region (beg end &optional on)
   (save-excursion
     (let (RE to-string
-          (roxy-str (ess-roxy-guess-str)))
+             (roxy-str (ess-roxy-guess-str)))
       (narrow-to-region beg (- end 1))
       (if on
           (progn (setq RE (concat ess-roxy-re " +?"))

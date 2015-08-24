@@ -378,8 +378,8 @@ Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (setq alist (or alist
-		  (buffer-local-value 'ess-local-customize-alist (current-buffer))
-		  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
+                  (buffer-local-value 'ess-local-customize-alist (current-buffer))
+                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
   (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
@@ -467,7 +467,7 @@ ess-mode."
   (forward-line (1- line)))
 
 (defun ess-containing-sexp-position ()
-    (cadr (syntax-ppss)))
+  (cadr (syntax-ppss)))
 
 (defun ess-code-end-position ()
   "Like (line-end-position) but stops at comments"
@@ -718,30 +718,30 @@ if this is the case."
   ;;VS[02-04-2012|ESS 12.03]: this is sooo ugly
   (when (> (length ess-change-sp-regexp) 0)
     (and (buffer-file-name) ess-filenames-map
-	 (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
-	       (objname))
-	   (save-excursion
-	     (goto-char (point-min))
-	     ;; Get name of assigned object, if we can find it
-	     (setq objname
-		   (and
-		    (re-search-forward
-		     "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
-		     nil
-		     t)
-		    (buffer-substring (match-beginning 1)
-				      (match-end 1)))))
-	   (and
-	    sourcemod			; the file may have been deleted
-	    objname			; may not have been able to
-					; find name
-	    (ess-modtime-gt (ess-object-modtime objname) sourcemod)
-	    (not (y-or-n-p
+         (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
+               (objname))
+           (save-excursion
+             (goto-char (point-min))
+             ;; Get name of assigned object, if we can find it
+             (setq objname
+                   (and
+                    (re-search-forward
+                     "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
+                     nil
+                     t)
+                    (buffer-substring (match-beginning 1)
+                                      (match-end 1)))))
+           (and
+            sourcemod			; the file may have been deleted
+            objname			; may not have been able to
+                                        ; find name
+            (ess-modtime-gt (ess-object-modtime objname) sourcemod)
+            (not (y-or-n-p
 
-		  (format
-		   "The ESS object %s is newer than this file. Continue?"
-		   objname)))
-	    (error "Aborted"))))))
+                  (format
+                   "The ESS object %s is newer than this file. Continue?"
+                   objname)))
+            (error "Aborted"))))))
 
 (defun ess-check-source (fname)
   "If file FNAME has an unsaved buffer, offer to save it.
@@ -787,30 +787,30 @@ With prefix argument, only shows the errors ESS reported."
       (set-buffer errbuff)
       (goto-char (point-max))
       (if
-	  (re-search-backward
-	   ;; FIXME: R does not give "useful" error messages -
-	   ;; -----  by default: We (ESS) could try to use a more useful one, via
-	   ;;   options(error=essErrorHandler)
-	   ess-error-regexp
-	   nil
-	   t)
-	  (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
-		 (fbuffer (get-file-buffer filename))
-		 (linenum
-		  (string-to-number
-		   (buffer-substring (match-beginning 2) (match-end 2))))
-		 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
-	    (if showerr
+          (re-search-backward
+           ;; FIXME: R does not give "useful" error messages -
+           ;; -----  by default: We (ESS) could try to use a more useful one, via
+           ;;   options(error=essErrorHandler)
+           ess-error-regexp
+           nil
+           t)
+          (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
+                 (fbuffer (get-file-buffer filename))
+                 (linenum
+                  (string-to-number
+                   (buffer-substring (match-beginning 2) (match-end 2))))
+                 (errmess (buffer-substring (match-beginning 1) (match-end 1))))
+            (if showerr
                 (ess-display-temp-buffer errbuff)
-	      (if fbuffer nil
-		(setq fbuffer (find-file-noselect filename))
-		(with-current-buffer fbuffer
-		  (ess-mode)))
-	      (pop-to-buffer fbuffer)
-        (ess-goto-line linenum))
-	    (princ errmess t))
-	(message "Not a syntax error.")
-	(ess-display-temp-buffer errbuff)))))
+              (if fbuffer nil
+                (setq fbuffer (find-file-noselect filename))
+                (with-current-buffer fbuffer
+                  (ess-mode)))
+              (pop-to-buffer fbuffer)
+              (ess-goto-line linenum))
+            (princ errmess t))
+        (message "Not a syntax error.")
+        (ess-display-temp-buffer errbuff)))))
 
 
 
