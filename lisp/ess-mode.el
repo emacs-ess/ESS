@@ -1500,7 +1500,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (ess-at-containing-sexp
         (and (looking-at "[[(]")
              (ess-looking-back-attached-name-p))))
-    (ess-calculate-indent--block 0 'opening))
+    (ess-calculate-indent--block 0))
    ;; Top-level block
    ((null containing-sexp) 0)
    ;; Block is embedded in another block
@@ -1549,33 +1549,33 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-arg-block-p ()
   (unless (null containing-sexp)
-    (cond (arg-block)
-          ;; Unbraced body
-          ((ess-at-indent-point
-             (and (ess-unbraced-block-p)
-                  prev-containing-sexp
-                  (goto-char prev-containing-sexp)
-                  (looking-at "[[(]")
-                  (ess-looking-back-attached-name-p)))
-           'body)
-          ;; Indentation of opening brace as argument
-          ((ess-at-containing-sexp
-             (and (looking-at "[[(]")
-                  (ess-looking-back-attached-name-p)))
-           'opening)
-          ;; Indentation of body or closing brace as argument
-          ((ess-at-containing-sexp
-             (and (or (looking-at "{")
-                      (and (looking-at "(")
-                           (not (ess-looking-back-attached-name-p))))
-                  prev-containing-sexp
-                  (goto-char prev-containing-sexp)
-                  (looking-at "[[(]")
-                  (ess-looking-back-attached-name-p)))
-           'body))))
+    (cond
+     ;; Unbraced body
+     ((ess-at-indent-point
+        (and (ess-unbraced-block-p)
+             prev-containing-sexp
+             (goto-char prev-containing-sexp)
+             (looking-at "[[(]")
+             (ess-looking-back-attached-name-p)))
+      'body)
+     ;; Indentation of opening brace as argument
+     ((ess-at-containing-sexp
+        (and (looking-at "[[(]")
+             (ess-looking-back-attached-name-p)))
+      'opening)
+     ;; Indentation of body or closing brace as argument
+     ((ess-at-containing-sexp
+        (and (or (looking-at "{")
+                 (and (looking-at "(")
+                      (not (ess-looking-back-attached-name-p))))
+             prev-containing-sexp
+             (goto-char prev-containing-sexp)
+             (looking-at "[[(]")
+             (ess-looking-back-attached-name-p)))
+      'body))))
 
-(defun ess-calculate-indent--block (&optional offset arg-block)
-  (let ((arg-block (or arg-block (ess-arg-block-p))))
+(defun ess-calculate-indent--block (&optional offset)
+  (let ((arg-block (ess-arg-block-p)))
     (cond (arg-block
            (ess-calculate-indent--arg-block offset arg-block))
           (t
@@ -1775,13 +1775,15 @@ Returns nil if line starts inside a string, t if in a comment."
                t)))))
 
 (defun ess-maybe-jump-to-leftmost-delim ()
-  (cond ((ess-looking-at-call-p)
-         (ess-save-excursion-when-nil
-           (ess-jump-object)
-           (ess-jump-blanks)
-           (ess-jump-to-leftmost-delim)))
-        ((looking-at "[[({]")
-         (ess-jump-to-leftmost-delim))))
+  (ess-save-excursion-when-nil
+    (and (cond ((ess-looking-at-call-p)
+                (ess-save-excursion-when-nil
+                  (ess-jump-object)
+                  (ess-jump-blanks)
+                  (ess-jump-to-leftmost-delim)))
+               ((looking-at "[[({]")
+                (ess-jump-to-leftmost-delim)))
+         (< (line-number-at-pos) indent-line))))
 
 (defun ess-jump-to-leftmost-delim ()
   "Should be called in front of opening delim."
@@ -1800,7 +1802,7 @@ Returns nil if line starts inside a string, t if in a comment."
 otherwise nil."
   (save-excursion
     (let ((climbed (ess-climb-continued-statements))
-          (prev-pos 0) first-indent)
+          (prev-pos 0))
       (cond
        ;; Overridden calls
        ((and climbed
@@ -1821,20 +1823,23 @@ otherwise nil."
         )
        ;; Regular case
        (climbed
-        (setq first-indent (or (memq climbed '(inline newline))
-                               (save-excursion
-                                 (not (ess-climb-continued-statements)))))
-        (cond ((memq (char-before) '(?\] ?\} ?\)))
-               (backward-char))
-              ;; Take the leftmost of both delimiters as reference
-              ((ess-maybe-jump-to-leftmost-delim)))
-        (+ (current-column)
-           (cond ((eq (ess-offset-type 'continued) 'cascade)
-                  (ess-offset 'continued))
-                 (first-indent
-                  (ess-offset 'continued))
-                 (t
-                  0))))))))
+        (let ((first-indent (or (memq climbed '(inline newline))
+                                (save-excursion
+                                  (not (ess-climb-continued-statements))))))
+         (cond
+          ;; It is more aesthetic to indent continuations from the
+          ;; front of closing delimiters
+          ((memq (char-before) '(?\] ?\} ?\)))
+           (backward-char))
+          ;; Take the leftmost of both delimiters as reference
+          ((ess-maybe-jump-to-leftmost-delim)))
+         (+ (current-column)
+            (cond ((eq (ess-offset-type 'continued) 'cascade)
+                   (ess-offset 'continued))
+                  (first-indent
+                   (ess-offset 'continued))
+                  (t
+                   0)))))))))
 
 (defun ess-looking-back-statement-start-p ()
   (or (looking-back "[,;({[][ \t\n]*" (line-beginning-position -1))
@@ -1882,11 +1887,15 @@ N times."
                        (ess-jump-operator))
                       (def-op
                         ;; Delimiters need special treatment later on
-                        ;; because we want to indent from the leftmost one
+                        ;; because we want to indent from the leftmost
+                        ;; one, but only if the corresponding
+                        ;; expression was already indented.
                         (unless (ess-save-excursion-when-nil
-                                  (ess-jump-object)
-                                  (ess-jump-operator)
-                                  (looking-at "[({]"))
+                                  (and (some 'identity
+                                             `(,(ess-jump-object)
+                                               ,(ess-jump-operator)))
+                                       (looking-at "[({]")
+                                       (< (line-number-at-pos) indent-line)))
                           (ess-climb-lhs)))
                       (t
                        (ess-forward-sexp)
