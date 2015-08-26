@@ -559,23 +559,35 @@ ess-mode."
 (defun ess-beginning-of-function-bleeding (&optional no-error)
   (let ((containing-sexp (ess-containing-sexp-position)))
     (when (cond
+           ;; Point on left-hand side
+           ((ess-save-excursion-when-nil
+              (ess-climb-object)
+              (and (ess-jump-lhs)
+                   (ess-looking-at-function-p))))
            ;; Point on function call.
            ((ess-save-excursion-when-nil
-              (or (looking-at "function[ \t]*")
+              (or (ess-looking-at-function-p)
                   (and (ess-climb-object)
-                       (looking-at "function[ \t]*")))))
-           ;; Point in call
+                       (ess-looking-at-function-p)))))
+           ;; Point in `function' call
            ((ess-save-excursion-when-nil
               (and (ess-point-in-call-p)
                    (goto-char containing-sexp)
                    (ess-climb-object)
-                   (looking-at "function[ \t]*"))))
+                   (ess-looking-at-function-p))))
+           ;; Point between call and body
+           ((ess-save-excursion-when-nil
+              (and (looking-at "[ \t]*{")
+                   (ess-backward-sexp 2)
+                   (ess-looking-at-function-p))))
            ;; Point in body
            ((ess-save-excursion-when-nil
               (and containing-sexp
                    (goto-char containing-sexp)
                    (looking-at "{")
                    (ess-climb-function-decl 'from-block))))
+           ;; Recursion through calls
+           ((ess-beginning-of-function--call-recursion))
            ;; Point just after closing } or closing ) of a relevant
            ;; containing call
            ((ess-save-excursion-when-nil
@@ -584,13 +596,6 @@ ess-mode."
                    (progn
                      (forward-char -1)
                      (ess-beginning-of-function 'no-error)))))
-           ;; Recursion through calls
-           ((ess-save-excursion-when-nil
-              (and containing-sexp
-                   (goto-char containing-sexp)
-                   (looking-at "(")
-                   (ess-climb-object)
-                   (ess-beginning-of-function-bleeding))))
            (t
             (unless no-error
               (error "Point is not in a function."))))
@@ -613,6 +618,19 @@ ess-mode."
             (goto-char (1- (point)))
             (ess-beginning-of-function-bleeding t)))))
       (point))))
+
+(defun ess-beginning-of-function--call-recursion ()
+  (ess-save-excursion-when-nil
+    (and containing-sexp
+         ;; Climb outside {} blocks
+         (prog1 t
+           (goto-char containing-sexp)
+           (let ((containing-sexp containing-sexp))
+             (while (and (looking-at "{")
+                         containing-sexp)
+               (when (setq containing-sexp (ess-containing-sexp-position))
+                 (goto-char containing-sexp)))))
+         (ess-beginning-of-function-bleeding t))))
 
 (defun ess-beginning-of-function (&optional no-error)
   "Leave (and return) the point at the beginning of the current ESS function.
@@ -714,7 +732,7 @@ it cannot find a function beginning."
                 (ess-jump-lhs)
                 (when (cond ((some 'looking-at ess-nested-declaration-calls)
                              (ess-forward-sexp 2))
-                            ((looking-at "function[ \t]*(")
+                            ((ess-looking-at-function-p)
                              (ess-forward-sexp 2)
                              (if (ess-save-excursion-when-nil
                                    (and (ess-forward-sexp)
@@ -1316,11 +1334,14 @@ of the curly brackets of a braced block."
          (ess-looking-at-definition-op-p)
          (ess-jump-operator))))
 
+(defun ess-looking-at-function-p ()
+  (looking-at "function[ \t]*("))
+
 (defun ess-climb-function-decl (&optional from-block)
   (let ((times (if from-block 2 1)))
     (ess-save-excursion-when-nil
       (and (ess-backward-sexp times)
-           (looking-at "function[([:blank:]]+")
+           (ess-looking-at-function-p)
            (point)))))
 
 ;; Useful to check presence of operators. Need to check for
