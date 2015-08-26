@@ -6,8 +6,8 @@
 {
    fun <- function(argument1,
              argument2) {
-             body
-          }
+      body
+   }
 }
 
 ## 2
@@ -36,18 +36,32 @@ function()
 
    function() body
 
-## 6
+## 6a
 object <- function()
-          {
-             body
-          }
+{
+   body
+}
+
+## 6b
+object <-
+   function()
+   {
+      body
+   }
+
+## 6c
+object =
+   function()
+   {
+      body
+   }
 
 ## 7
 {
    object <- function()
-             {
-                body
-             }
+   {
+      body
+   }
 }
 
 ## 8
@@ -87,6 +101,13 @@ fun_call(
                                  })
    )
 }
+
+## 13
+fun_call(object :=
+            function()
+            {
+               body
+            })
 
 
 ### Function calls

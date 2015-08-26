@@ -36,11 +36,25 @@ function()
 
     function() body
 
-## 6
+## 6a
 object <- function()
 {
     body
 }
+
+## 6b
+object <-
+    function()
+    {
+        body
+    }
+
+## 6c
+object =
+    function()
+    {
+        body
+    }
 
 ## 7
 {
@@ -87,6 +101,13 @@ fun_call(
                         })
               )
 }
+
+## 13
+fun_call(object :=
+             function()
+             {
+                 body
+             })
 
 
 ### Function calls
