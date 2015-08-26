@@ -547,96 +547,141 @@ ess-mode."
 
   ); {end let}
 
+
+(defvar ess-nested-declaration-calls
+  (mapcar (lambda (s4-call)
+            (concat "set" s4-call "[ \t]*("))
+          '("As" "Method" "Generic" "GroupMethod" "ReplaceMethod")))
+
+(defvar ess-bleeding-edge nil
+  "Switch to activate new implementations still in development.")
+
+(defun ess-beginning-of-function-bleeding (&optional no-error)
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (when (cond
+           ;; Point on function call.
+           ((ess-save-excursion-when-nil
+              (and (ess-climb-object)
+                   (or (looking-at "function[ \t]*")
+                       (some 'looking-at ess-nested-declaration-calls)))))
+           ;; Point in call
+           ((ess-save-excursion-when-nil
+              (and (ess-point-in-call-p)
+                   (goto-char containing-sexp)
+                   (ess-climb-object)
+                   (or (looking-at "function[ \t]*")
+                       (some 'looking-at ess-nested-declaration-calls)))))
+           ;; Point in body
+           ((ess-save-excursion-when-nil
+              (and containing-sexp
+                   (goto-char containing-sexp)
+                   (looking-at "{")
+                   (ess-climb-function-decl 'from-block))))
+           ;; Point just after closing } or closing ) of a relevant
+           ;; containing call
+           ((ess-save-excursion-when-nil
+              (ess-while (ess-climb-blanks 1))
+              (and (memq (char-before) '(?\} ?\)))
+                   (progn
+                     (forward-char -1)
+                     (ess-beginning-of-function 'no-error)))))
+           (t
+            (unless no-error
+              (error "Point is not in a function."))))
+      (ess-climb-lhs)
+      (point))))
+
 (defun ess-beginning-of-function (&optional no-error)
   "Leave (and return) the point at the beginning of the current ESS function.
 If the optional argument NO-ERROR is non-nil, the function returns nil when
 it cannot find a function beginning."
+  (if ess-bleeding-edge
+      (ess-beginning-of-function-bleeding no-error)
+    ;; FIXME: should not throw error in accordance with beginning-of-defun and
+    ;; beginning-of-defun-function specification
 
-  ;; FIXME: should not throw error in accordance with beginning-of-defun and
-  ;; beginning-of-defun-function specification
+    (interactive)
+    (let ((init-point (point))
+          (in-set-S4 nil)
+          beg end done)
 
-  (interactive)
-  (let ((init-point (point))
-        (in-set-S4 nil)
-        beg end done)
+      ;; Note that we must be sure that we are past the 'function (' text,
+      ;; such that ess-function-pattern is found in BACKwards later.
+      ;; In case we're sitting in a function or setMethod() header,
+      ;; we need to move further.
+      ;; But not too far! {wrongly getting into next function}
+      (if (search-forward "("
+                          (ess-line-end-position 2) t) ; at most end of next line
+          (forward-char 1))
+      ;; TODO: replace the above by hopefully more sucessful logic:
+      ;; 1. If we have 'function *(' in the same line, move to end of that line
+      ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
+      ;;    and only* then do something like the
+      ;;    (search-forward '(' .. (..line-end.. 2) )  above
 
-    ;; Note that we must be sure that we are past the 'function (' text,
-    ;; such that ess-function-pattern is found in BACKwards later.
-    ;; In case we're sitting in a function or setMethod() header,
-    ;; we need to move further.
-    ;; But not too far! {wrongly getting into next function}
-    (if (search-forward "("
-                        (ess-line-end-position 2) t); at most end of next line
-        (forward-char 1))
-    ;; TODO: replace the above by hopefully more sucessful logic:
-    ;; 1. If we have 'function *(' in the same line, move to end of that line
-    ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
-    ;;    and only* then do something like the
-    ;;    (search-forward '(' .. (..line-end.. 2) )  above
+      (setq end (point))             ; = init-point when nothing found
 
-    (setq end (point)); = init-point when nothing found
+      (ess-write-to-dribble-buffer
+       (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
+               init-point (- end init-point)))
+      (if (and (> end 1)
+               (re-search-backward ;; in case of setMethod() etc ..
+                ess-set-function-start
+                ;; at most 1 line earlier {2 is too much: finds previous sometimes}
+                (+ 1 (ess-line-end-position -1)) t))
 
-    (ess-write-to-dribble-buffer
-     (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
-             init-point (- end init-point)))
-    (if (and (> end 1)
-             (re-search-backward ;; in case of setMethod() etc ..
-              ess-set-function-start
-              ;; at most 1 line earlier {2 is too much: finds previous sometimes}
-              (+ 1 (ess-line-end-position -1)) t))
+          (progn ;; yes we *have* an S4  setMethod(..)-like
+            (setq in-set-S4 t
+                  beg (point))
+            (ess-write-to-dribble-buffer
+             (format " set*() function start at position %d" beg))
+            ;; often need to move even further to have 'function(' to our left
+            ;;        (if (search-forward "function" end t)
+            ;;            (ess-write-to-dribble-buffer
+            ;;             (format " -> 'function' already at pos %d\n" (point)))
+            ;;          ;; else need to move further
+            (goto-char end)
+            ;; search 4 lines, we are pretty sure now:
+            (search-forward
+             "function" (ess-line-end-position 4) t)
+            ;;        )
+            (search-forward "(" (ess-line-end-position) t)
+            )
+        ;; else: regular function; no set*Method(..)
+        (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n")
+        )
 
-        (progn ;; yes we *have* an S4  setMethod(..)-like
-          (setq in-set-S4 t
-                beg (point))
+      (while (not done)
+        ;; Need this while loop to skip over local function definitions
+
+        ;; In the case of non-success, it is inefficiently
+        ;; going back in the buffer through all function definitions...
+        (unless
+            (and (re-search-backward ess-function-pattern (point-min) t)
+                 (not (ess-inside-string-or-comment-p (point))))
+          (goto-char init-point)
+          (if no-error
+              (setq  done t  beg nil)
+            ;; else [default]:
+            (error "Point is not in a function according to 'ess-function-pattern'.")
+            ))
+        (unless done
+          (setq beg (point))
           (ess-write-to-dribble-buffer
-           (format " set*() function start at position %d" beg))
-          ;; often need to move even further to have 'function(' to our left
-          ;;        (if (search-forward "function" end t)
-          ;;            (ess-write-to-dribble-buffer
-          ;;             (format " -> 'function' already at pos %d\n" (point)))
-          ;;          ;; else need to move further
-          (goto-char end)
-          ;; search 4 lines, we are pretty sure now:
-          (search-forward
-           "function" (ess-line-end-position 4) t)
-          ;;        )
-          (search-forward "(" (ess-line-end-position) t)
-          )
-      ;; else: regular function; no set*Method(..)
-      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n")
-      )
+           (format "\tMatch,Pt:(%d,%d),%d\n"
+                   (match-beginning 0) (match-end 0) beg))
+          (setq in-set-S4 (looking-at ess-set-function-start))
+          (forward-list 1)              ; get over arguments
 
-    (while (not done)
-      ;; Need this while loop to skip over local function definitions
-
-      ;; In the case of non-success, it is inefficiently
-      ;; going back in the buffer through all function definitions...
-      (unless
-          (and (re-search-backward ess-function-pattern (point-min) t)
-               (not (ess-inside-string-or-comment-p (point))))
-        (goto-char init-point)
-        (if no-error
-            (setq  done t  beg nil)
-          ;; else [default]:
-          (error "Point is not in a function according to 'ess-function-pattern'.")
-          ))
-      (unless done
-        (setq beg (point))
-        (ess-write-to-dribble-buffer
-         (format "\tMatch,Pt:(%d,%d),%d\n"
-                 (match-beginning 0) (match-end 0) beg))
-        (setq in-set-S4 (looking-at ess-set-function-start))
-        (forward-list 1)                ; get over arguments
-
-        ;; The following used to bomb  "Unbalanced parentheses", n1, n2
-        ;; when the above (search-forward "(" ..) wasn't delimited :
-        (unless in-set-S4 (forward-sexp 1)) ; move over braces
-        ;;DBG (ess-write-to-dribble-buffer "|")
-        (setq end (point))
-        (goto-char beg)
-        ;; current function must begin and end around point
-        (setq done (and (>= end init-point) (<= beg init-point)))))
-    beg))
+          ;; The following used to bomb  "Unbalanced parentheses", n1, n2
+          ;; when the above (search-forward "(" ..) wasn't delimited :
+          (unless in-set-S4 (forward-sexp 1)) ; move over braces
+          ;;DBG (ess-write-to-dribble-buffer "|")
+          (setq end (point))
+          (goto-char beg)
+          ;; current function must begin and end around point
+          (setq done (and (>= end init-point) (<= beg init-point)))))
+      beg)))
 
 (defun ess-end-of-function (&optional beginning no-error)
   "Leave the point at the end of the current ESS function.
@@ -673,8 +718,11 @@ Optional argument for location of beginning.  Return '(beg end)."
   "If inside a function go to the beginning of it, otherwise go to the beginning
   of paragraph."
   (interactive)
-  (unless (ess-beginning-of-function 'no-error)
-    (backward-paragraph)))
+  (cond
+   ;; Point inside function
+   ((ess-beginning-of-function 'no-error))
+   (t
+    (backward-paragraph))))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it, otherwise go to the end
@@ -1269,18 +1317,22 @@ of the curly brackets of a braced block."
 (defun ess-climb-blanks (&optional N)
   "Skip blanks and newlines, taking eol comments into account."
   (skip-chars-backward " \t")
-  (when (and (> (or N 0) 0)
-             (= (point) (line-beginning-position)))
-    (ess-backward-to-noncomment (line-beginning-position 0))
-    (ess-climb-blanks (1- N))))
+  (let ((orig-point (point)))
+    (when (and (> (or N 0) 0)
+               (= (point) (line-beginning-position)))
+      (ess-backward-to-noncomment (line-beginning-position 0))
+      (or (ess-climb-blanks (1- N))
+          (/= (point) orig-point)))))
 
 (defun ess-jump-blanks (&optional N)
   (skip-chars-forward " \t")
-  (when (and (> (or N 0) 0)
-             (= (point) (ess-code-end-position)))
-    (forward-line)
-    (ess-back-to-indentation)
-    (ess-jump-blanks (1- N))))
+  (let ((orig-point (point)))
+    (when (and (> (or N 0) 0)
+               (= (point) (ess-code-end-position)))
+      (forward-line)
+      (ess-back-to-indentation)
+      (or (ess-jump-blanks (1- N))
+          (/= (point) orig-point)))))
 
 ;; Should climb any names, including backquoted ones or those
 ;; containing `@' or `$'. Difficult to achieve with regexps, but
