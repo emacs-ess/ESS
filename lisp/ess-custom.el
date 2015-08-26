@@ -704,7 +704,15 @@ indentation.")
 (defvar ess-offset-arguments-newline 'prev-call
   "Indent of arguments when ( or [ is followed by a new line.
 
-If `prev-call', arguments on a new line are indented relative to
+When set to `open-delim', arguments on a new line are indented
+relative to the opening parenthesis of the closest function call:
+
+  object <- call(argument, other_call(
+                                      argument,
+                                      other_argument
+                                      ))
+
+Wnen set to `prev-call', arguments on a new line are indented relative to
 the closest function call:
 
   object <- call(argument, other_call(
@@ -714,15 +722,6 @@ the closest function call:
 
 You can control the details of indentation at `prev-call' with
 `ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
-
-
-When set to `open-delim', arguments on a new line are indented
-relative to the opening parenthesis of the closest function call:
-
-  object <- call(argument, other_call(
-                                      argument,
-                                      other_argument
-                                      ))
 
 
 When set to `prev-line', arguments on a new line are indented
@@ -742,6 +741,20 @@ braces but a statement wrapped in anonymous parentheses is also
 considered a block. This offset can be either `prev-call',
 `prev-line' or `open-delim'.
 
+When set to `open-delim', blocks are indented relative to the
+opening parenthesis of the closest function call:
+
+  call(argument, other_call(parameter = {
+                                stuff
+                            }, {
+                                stuff
+                            }))
+
+  call(argument, lapply(data, function(x) {
+                            body
+                        }))
+
+
 When set to `prev-call', blocks are indented relative to the
 closest function call:
 
@@ -757,20 +770,6 @@ closest function call:
 
 You can control the details of indentation at `prev-call' with
 `ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
-
-
-When set to `open-delim', blocks are indented relative to the
-opening parenthesis of the closest function call:
-
-  call(argument, other_call(parameter = {
-                                stuff
-                            }, {
-                                stuff
-                            }))
-
-  call(argument, lapply(data, function(x) {
-                            body
-                        }))
 
 
 When set to `prev-line', blocks are indented relative to the
