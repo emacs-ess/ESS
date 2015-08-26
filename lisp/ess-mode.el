@@ -561,16 +561,15 @@ ess-mode."
     (when (cond
            ;; Point on function call.
            ((ess-save-excursion-when-nil
-              (and (ess-climb-object)
-                   (or (looking-at "function[ \t]*")
-                       (some 'looking-at ess-nested-declaration-calls)))))
+              (or (looking-at "function[ \t]*")
+                  (and (ess-climb-object)
+                       (looking-at "function[ \t]*")))))
            ;; Point in call
            ((ess-save-excursion-when-nil
               (and (ess-point-in-call-p)
                    (goto-char containing-sexp)
                    (ess-climb-object)
-                   (or (looking-at "function[ \t]*")
-                       (some 'looking-at ess-nested-declaration-calls)))))
+                   (looking-at "function[ \t]*"))))
            ;; Point in body
            ((ess-save-excursion-when-nil
               (and containing-sexp
@@ -585,10 +584,34 @@ ess-mode."
                    (progn
                      (forward-char -1)
                      (ess-beginning-of-function 'no-error)))))
+           ;; Recursion through calls
+           ((ess-save-excursion-when-nil
+              (and containing-sexp
+                   (goto-char containing-sexp)
+                   (looking-at "(")
+                   (ess-climb-object)
+                   (ess-beginning-of-function-bleeding))))
            (t
             (unless no-error
               (error "Point is not in a function."))))
-      (ess-climb-lhs)
+      (when (looking-at "function[ \t]*")
+        (cond
+         ;; We found a lhs. Branch out
+         ((ess-climb-lhs))
+         ;; Check for relevant containing calls (such as S4 setters)
+         ((let ((containing-sexp (ess-containing-sexp-position)))
+            (ess-save-excursion-when-nil
+              (and containing-sexp
+                   (goto-char containing-sexp)
+                   (looking-at "(")
+                   (ess-climb-object)
+                   (some 'looking-at ess-nested-declaration-calls))))
+          (ess-climb-lhs))
+         ;; Recurse when we found a lonely lambda to try and find an
+         ;; enclosing assigned declaration or S4 setter
+         ((ess-save-excursion-when-nil
+            (goto-char (1- (point)))
+            (ess-beginning-of-function-bleeding t)))))
       (point))))
 
 (defun ess-beginning-of-function (&optional no-error)
@@ -683,35 +706,60 @@ it cannot find a function beginning."
           (setq done (and (>= end init-point) (<= beg init-point)))))
       beg)))
 
+(defun ess-end-of-function-bleeding (&optional beginning no-error)
+  (interactive)
+  (let* ((beginning (or beginning (ess-beginning-of-function-bleeding no-error)))
+         (end (when beginning
+                (goto-char beginning)
+                (ess-jump-lhs)
+                (when (cond ((some 'looking-at ess-nested-declaration-calls)
+                             (ess-forward-sexp 2))
+                            ((looking-at "function[ \t]*(")
+                             (ess-forward-sexp 2)
+                             (if (ess-save-excursion-when-nil
+                                   (and (ess-forward-sexp)
+                                        (ess-backward-sexp)
+                                        (looking-at "{")))
+                                 (ess-forward-sexp)
+                               (ess-jump-expression))))
+                  (point)))))
+    (cond ((and beginning end)
+           (list beginning end))
+          (no-error
+           nil)
+          (error "Point is not in a function."))))
+
 (defun ess-end-of-function (&optional beginning no-error)
   "Leave the point at the end of the current ESS function.
 Optional argument for location of beginning.  Return '(beg end)."
   (interactive)
-  (if beginning
-      (goto-char beginning)
-    (setq beginning (ess-beginning-of-function no-error)))
-  (if beginning
-      ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
-      (let ((in-set-S4 (looking-at ess-set-function-start))
-            (end-pos) (npos))
-        (ess-write-to-dribble-buffer
-         (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
-        (forward-list 1)        ; get over arguments || whole set*(..)
-        (unless in-set-S4 (forward-sexp 1)) ; move over braces
-        (ess-write-to-dribble-buffer
-         (format "ess-END-of-fun: found #1 : %d\n" (point)))
+  (if ess-bleeding-edge
+      (ess-end-of-function-bleeding beginning no-error)
+    (if beginning
+        (goto-char beginning)
+      (setq beginning (ess-beginning-of-function no-error)))
+    (if beginning
+        ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
+        (let ((in-set-S4 (looking-at ess-set-function-start))
+              (end-pos) (npos))
+          (ess-write-to-dribble-buffer
+           (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
+          (forward-list 1)      ; get over arguments || whole set*(..)
+          (unless in-set-S4 (forward-sexp 1)) ; move over braces
+          (ess-write-to-dribble-buffer
+           (format "ess-END-of-fun: found #1 : %d\n" (point)))
 
-        ;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
-        ;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
-        (setq end-pos (ess-line-end-position))
-        (while (< (point) end-pos) ; if not at end of line, move further forward
-          (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
-           (min (save-excursion (forward-sexp 1) (point))
-                (save-excursion (forward-paragraph 1) (point)))))
-        (list beginning (point))
-        )
-    ;; else: 'no-error': we are not in a function
-    nil))
+          ;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
+          ;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
+          (setq end-pos (ess-line-end-position))
+          (while (< (point) end-pos) ; if not at end of line, move further forward
+            (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
+             (min (save-excursion (forward-sexp 1) (point))
+                  (save-excursion (forward-paragraph 1) (point)))))
+          (list beginning (point))
+          )
+      ;; else: 'no-error': we are not in a function
+      nil)))
 
 
 (defun ess-goto-beginning-of-function-or-para ()
@@ -1261,6 +1309,12 @@ of the curly brackets of a braced block."
                  (ess-looking-at-definition-op-p no-fun-arg))
         (prog1 t
           (ess-climb-expression))))))
+
+(defun ess-jump-lhs ()
+  (ess-save-excursion-when-nil
+    (and (ess-jump-name)
+         (ess-looking-at-definition-op-p)
+         (ess-jump-operator))))
 
 (defun ess-climb-function-decl (&optional from-block)
   (let ((times (if from-block 2 1)))
