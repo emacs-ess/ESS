@@ -92,7 +92,9 @@
     eval( parse( text=sprintf('data.class(get(\"%s\"))', my.x))) })
   length <- sapply(objs, function(my.x) {
     eval( parse( text=sprintf('length(get(\"%s\"))', my.x))) })
-  d <- data.frame(mode, length)
+  size <- sapply(objs, function(my.x) {
+    eval( parse( text=sprintf('object.size(get(\"%s\"))', my.x))) })
+  d <- data.frame(mode, length, size)
 
   var.names <- row.names(d)
 
@@ -115,7 +117,8 @@ function which prints the output for rdired.")
 
 (defvar ess-rdired-mode-map
   (let ((ess-rdired-mode-map (make-sparse-keymap)))
-
+    (if (require 'hide-lines nil t)
+        (define-key ess-rdired-mode-map "/" 'hide-lines))
     (define-key ess-rdired-mode-map "?" 'ess-rdired-help)
     (define-key ess-rdired-mode-map "d" 'ess-rdired-delete)
     (define-key ess-rdired-mode-map "u" 'ess-rdired-undelete)
@@ -126,6 +129,7 @@ function which prints the output for rdired.")
     (define-key ess-rdired-mode-map "V" 'ess-rdired-View)
     (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
     (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
+    (define-key ess-rdired-mode-map "r" 'ess-rdired-reverse)
     (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
     (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
     (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
@@ -417,15 +421,28 @@ Rotate between the alternative sorting methods."
                (forward-line 1)
                (point)))
         (end (point-max)))
-    (if (> ess-rdired-sort-num 3)
+    (if (> ess-rdired-sort-num 4)
         (setq ess-rdired-sort-num 1))
     (cond ((eq ess-rdired-sort-num 1)
            (sort-fields 1 beg end))
           ((eq ess-rdired-sort-num 2)
            (sort-fields 2 beg end))
           ((eq ess-rdired-sort-num 3)
-           (sort-numeric-fields 3 beg end)))))
-
+           (sort-numeric-fields 3 beg end))
+          ((eq ess-rdired-sort-num 4)
+           (sort-numeric-fields 4 beg end)))))
+           
+(defun ess-rdired-reverse ()
+  "Reverse the current sort order."
+  (interactive)
+  (let ((buffer-read-only nil)
+        (beg (save-excursion
+               (goto-char (point-min))
+               (forward-line 1)
+               (point)))
+        (end (point-max)))
+    (reverse-region beg end)))
+    
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.
 Optional prefix ARG says how many lines to move; default is one line."

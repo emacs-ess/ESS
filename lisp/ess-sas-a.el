@@ -421,8 +421,8 @@ on the way."
   (ess-sas-goto-shell t)
   (comint-send-input)
   (if (equal ess-sas-submit-method 'sh)
-      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
-                                             "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))
+      (insert "cd \"" (car (last (split-string (file-name-directory ess-sas-file-path)
+                                             "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "\"")
     (if (equal ess-sas-submit-method 'ms-dos) (progn
                                                 (if (string-equal ":" (substring ess-sas-file-path 1 2)) (progn
                                                                                                            (insert (substring ess-sas-file-path 0 2))
@@ -464,7 +464,7 @@ current buffer if nil."
 
                                            (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-                                           (ess-sas-goto-shell t)
+                                           ;; (ess-sas-goto-shell t)
                                            (ess-sas-cd)
 
                                            (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
@@ -500,7 +500,7 @@ current buffer if nil."
 
                                            (setq ess-sas-data (read-string "Permanent SAS Dataset: " ess-tmp-sas-data))
 
-                                           (ess-sas-goto-shell t)
+                                           ;; (ess-sas-goto-shell t)
                                            (ess-sas-cd)
 
                                            (insert (concat ess-sas-submit-pre-command " " ess-sas-submit-command
@@ -513,7 +513,8 @@ current buffer if nil."
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
-                                        ;  (ess-sas-file-path)
+;;  (ess-sas-goto-shell t)
+  (ess-sas-cd) 
   (ess-sas-goto-log 'no-error-check)
 
   (save-excursion (let (
@@ -523,8 +524,8 @@ current buffer if nil."
                         (ess-tmp-graph-alist nil)
                         (ess-tmp-glyph nil)
                         (ess-tmp-graph-regexp
-                                        ; (concat "[ ]RECORDS[ ]WRITTEN[ ]+TO[ ]\n?[ ]*\\(\\(\n\\|[^.]\\)*"
-                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                        (concat "[cCub][oOty][rRpt][dDue][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
                                  ess-sas-graph-view-suffix-regexp "\\)")))
                                         ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
@@ -719,6 +720,7 @@ current buffer if nil."
                         "\\|WARNING: Not all variables in the list "
                         "\\|WARNING: RUN statement ignored due to previous errors."
                         "\\|WARNING: Values exist outside the axis range"
+                        "\\|WARNING: Truncated record."
                         "\\|Bus Error In Task\\|Segmentation Violation In Task"))
         (ess-sas-save-point nil)); (ess-sas-pop-mark nil))
 
@@ -1103,7 +1105,7 @@ i.e. let arg1 be your local equivalent of
                 " " arg2 " " ess-sas-submit-post-command)
         (comint-send-input))
     ;;else
-    (ess-sas-goto-shell t)
+    ;; (ess-sas-goto-shell t)
     (ess-sas-cd)
                                         ;      (insert "cd " (car (last (split-string (file-name-directory ess-sas-file-path)
                                         ;"\\([a-zA-Z][a-zA-Z]:\\|]\\)"))))

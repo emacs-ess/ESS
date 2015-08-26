@@ -1,0 +1,39 @@
+#!/usr/bin/emacs --script
+;; (Re)generate files with test cases for indentation
+
+(let ((current-directory (file-name-directory load-file-name)))
+  (setq ess-test-path (expand-file-name "." current-directory))
+  (setq ess-styles-path (expand-file-name "./styles/" current-directory))
+  (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
+
+(add-to-list 'load-path ess-root-path)
+(add-to-list 'load-path ess-test-path)
+
+(require 'ess-site)
+(load (expand-file-name "ess-tests.el" ess-test-path) nil t)
+
+;; The RRR file is taken as a model, so modify this file to add or
+;; adjust test cases.
+(let ((ess-style-alist ess-test-style-alist)
+      (RRR-file (expand-file-name "RRR.R" ess-styles-path)))
+
+  ;; Regenerate indentation in RRR file
+  (set-buffer (find-file-noselect RRR-file))
+  (setq ess-indent-with-fancy-comments t)
+  (ess-set-style 'RRR)
+  (indent-region (point-min) (point-max))
+  (save-buffer)
+
+  (mapc
+   (lambda (test-conf)
+     (let* ((test-name (car test-conf))
+            (test-file (expand-file-name
+                        (concat (symbol-name test-name) ".R")
+                        ess-styles-path)))
+       (set-buffer (find-file-noselect test-file))
+       (setq ess-indent-with-fancy-comments t)
+       (ess-set-style test-name)
+       (insert-file-contents-literally RRR-file nil nil nil 'replace)
+       (indent-region (point-min) (point-max))
+       (save-buffer)))
+   (assq-delete-all 'RRR ess-test-style-alist)))

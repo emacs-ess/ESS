@@ -9,7 +9,8 @@
 @include ess-defs.texi
 @titlepage
 @title ESS -- Emacs Speaks Statistics
-ESS version @ESSVER
+ESS version 
+@ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :
 @c                                 ~~~~~~~~~~~~~~
@@ -1720,8 +1721,8 @@ value is controlled by the variable @code{comment-column},)
 or just after the expression on the line containing the comment if it
 extends beyond the indentation column.  You turn off the default
 behavior by adding the line
-@code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
-@vindex ess-fancy-comments
+@code{(setq ess-indent-with-fancy-comments nil)} to your @file{.emacs} file.
+@vindex ess-indent-with-fancy-comments
 
 ESS also supports Roxygen entries which is R documentation maintained in
 the source code as comments @xref{Roxygen}.

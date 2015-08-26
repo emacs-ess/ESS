@@ -1,13 +1,10 @@
+## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
         comp <- compiler::enableJIT(0)
-        olderr <- getOption('error')
-        options(error=NULL)
-        on.exit({
-            compiler::enableJIT(comp)
-            options(error = olderr)
-        })
+        op <- options(error=NULL)
+        on.exit({ options(op); compiler::enableJIT(comp) })
     }
     ## don't remove; really need eval(parse(  here!!
     fun <- tryCatch(eval(parse(text=funname)),
@@ -49,10 +46,8 @@
 .ess_get_completions <- function(string, end){
     if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
-        olderr <- getOption('error')
-        options(error=NULL)
-        on.exit({options(error = olderr)
-                 compiler::enableJIT(comp)})
+        op <- options(error=NULL)
+        on.exit({ options(op); compiler::enableJIT(comp) })
     }
     utils:::.assignLinebuffer(string)
     utils:::.assignEnd(end)
@@ -61,3 +56,45 @@
     c(get('token', envir=utils:::.CompletionEnv),
       utils:::.retrieveCompletions())
 }
+
+.ess_arg_help <- function(arg, func){
+    op <- options(error=NULL)
+    on.exit(options(op))
+    fguess <-
+        if(is.null(func)) get('fguess', envir=utils:::.CompletionEnv)
+        else func
+    findArgHelp <- function(fun, arg){
+        file <- help(fun, try.all.packages=FALSE)[[1]]
+        hlp <- utils:::.getHelpFile(file)
+        id <- grep('arguments', tools:::RdTags(hlp), fixed=TRUE)
+        if(length(id)){
+            arg_section <- hlp[[id[[1]]]]
+            items <- grep('item', tools:::RdTags(arg_section), fixed=TRUE)
+            ## cat('items:', items, fill=TRUE)
+            if(length(items)){
+                arg_section <- arg_section[items]
+                args <- unlist(lapply(arg_section,
+                                      function(el) paste(unlist(el[[1]][[1]], TRUE, FALSE), collapse='')))
+                fits <- grep(arg, args, fixed=TRUE)
+                ## cat('args', args, 'fits', fill=TRUE)
+                if(length(fits))
+                    paste(unlist(arg_section[[fits[1]]][[2]], TRUE, FALSE), collapse='')
+            }
+        }
+    }
+    funcs <- c(fguess, tryCatch(methods(fguess),
+                                warning=function(w) {NULL},
+                                error=function(e) {NULL}))
+    if(length(funcs) > 1 && length(pos <- grep('default', funcs))){
+        funcs <- c(funcs[[pos[[1]]]], funcs[-pos[[1]]])
+    }
+    i <- 1; found <- FALSE
+    out <- 'No help found'
+    while(i <= length(funcs) && is.null(out <-
+        tryCatch(findArgHelp(funcs[[i]], arg),
+                 warning=function(w) {NULL},
+                 error=function(e) {NULL})
+                                        ))
+        i <- i + 1
+    cat('\n\n', as.character(out), '\n')
+};

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
-;; Copyright (C) 1998-2005 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1998-2015 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -124,7 +124,6 @@
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
-    
     (fill-nobreak-predicate     . 'ess-inside-string-p)
     (normal-auto-fill-function  . 'ess-do-auto-fill)
     )
@@ -291,12 +290,12 @@ when \\[ess-toggle-S-assign-key] is called.")
 ;;         (setq indent (current-indentation)))
 ;;        (t
 ;;         (skip-chars-forward " \t")
-;;         (cond ((and ess-fancy-comments ;; ### or #!
+;;         (cond ((and ess-indent-with-fancy-comments ;; ### or #!
 ;;                     (or (looking-at "###")
 ;;                         (and (looking-at "#!") (= 1 (line-number-at-pos)))))
 ;;                (setq indent 0))
 ;;               ;; Single # comment
-;;               ((and ess-fancy-comments
+;;               ((and ess-indent-with-fancy-comments
 ;;                     (looking-at "#") (not (looking-at "##")))
 ;;                (setq indent comment-column))
 ;;               (t
@@ -310,7 +309,7 @@ when \\[ess-toggle-S-assign-key] is called.")
 ;;                      ((= (following-char) ?})
 ;;                       (setq indent
 ;;                             (+ indent
-;;                                (- ess-close-brace-offset ess-indent-level))))
+;;                                (- ess-close-brace-offset ess-indent-offset))))
 ;;                      ((= (following-char) ?{)
 ;;                       (setq indent (+ indent ess-brace-offset))))))))
 ;;     (skip-chars-forward " \t")
@@ -428,14 +427,14 @@ when \\[ess-toggle-S-assign-key] is called.")
 ;;               ;; If no previous statement,
 ;;               ;; indent it relative to line brace is on.
 ;;               ;; For open brace in column zero, don't let statement
-;;               ;; start there too.  If ess-indent-level is zero, use
+;;               ;; start there too.  If ess-indent-offset is zero, use
 ;;               ;; ess-brace-offset + ess-continued-statement-offset
 ;;               ;; instead.
 ;;               ;; For open-braces not the first thing in a line,
 ;;               ;; add in ess-brace-imaginary-offset.
-;;               (+ (if (and (bolp) (zerop ess-indent-level))
+;;               (+ (if (and (bolp) (zerop ess-indent-offset))
 ;;                      (+ ess-brace-offset ess-continued-statement-offset)
-;;                    ess-indent-level)
+;;                    ess-indent-offset)
 ;;                  ;; Move back over whitespace before the openbrace.
 ;;                  ;; If openbrace is not first nonwhite thing on the line,
 ;;                  ;; add the ess-brace-imaginary-offset.
@@ -686,11 +685,11 @@ toggle between the new and the previous assignment."
 
 (defvar polymode-mode)
 (defun ess-smart-S-assign ()
-  "Smart \\[ess-smart-S-assign] key: insert `ess-S-assign', unless in string/comment.
+  "Act as smart `ess-S-assign' key: insert `ess-S-assign', unless in string/comment.
 If the underscore key is pressed a second time, the assignment
 operator is removed and replaced by the underscore.  `ess-S-assign',
 typically \" <- \", can be customized.  In ESS modes other than R/S,
-the  underscore is always inserted. "
+the underscore is always inserted."
   (interactive)
   ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
   (save-restriction
@@ -714,8 +713,7 @@ the  underscore is always inserted. "
 
 (defun ess-insert-S-assign ()
   "Insert the assignment operator `ess-S-assign', unless it is already there.
-In that case, the it is removed and replaced by
-  `ess-smart-S-assign-key', \\[ess-smart-S-assign-key].
+In that case, it is removed and replaced by `ess-smart-S-assign-key'.
   `ess-S-assign', typically \" <- \", can be customized."
   (interactive)
   ;; one keypress produces ess-S-assign; a second keypress will delete
@@ -736,33 +734,48 @@ In that case, the it is removed and replaced by
           (delete-horizontal-space))
       (insert ess-S-assign))))
 
+;;; Setting / Unsetting the smart S-assign-key behavior -----------------
+
+;; Two basic building blocks, used below:
+(defun ess--unset-smart-S-assign-key ()
+  (define-key ess-mode-map          "_" nil)
+  (define-key inferior-ess-mode-map "_" nil)
+  (define-key ess-mode-map          ess-smart-S-assign-key nil); 'self-insert-command
+  (define-key inferior-ess-mode-map ess-smart-S-assign-key nil))
+(defun ess--activate-smart-S-assign-key ()
+  (define-key ess-mode-map          ess-smart-S-assign-key 'ess-smart-S-assign)
+  (define-key inferior-ess-mode-map ess-smart-S-assign-key 'ess-smart-S-assign))
+
+
+;; Written such that whimps can have (ess-disable-smart-S-assign) in .emacs :
+(defun ess-disable-smart-S-assign (activate)
+  "Disable or activate (if prefix argument ACTIVATE is set) the smart assignment
+operator `ess-S-assign'.  That, typically \" <- \", can be customized."
+  (interactive "P")
+  (if activate
+      (ess--activate-smart-S-assign-key)
+    (ess--unset-smart-S-assign-key)))
+(defalias 'ess-disable-smart-underscore 'ess-disable-smart-S-assign)
+
 (defun ess-toggle-S-assign (force)
   "Set the `ess-smart-S-assign-key' (by default \"_\"
-[underscore]) key to \\[ess-smart-S-assign] or back to
+ [underscore]) key to \\[ess-smart-S-assign] or back to
 `ess-smart-S-assign-key'.  Toggle the current definition, unless
 FORCE is non-nil, where \\[ess-smart-S-assign] is set
 unconditionally.
 
-  If you as per default have `ess-smart-S-assign-key' set to
-  underscore, note that using \"C-q _\" will always just insert the
-  underscore character."
+If you as per default have `ess-smart-S-assign-key' set to
+underscore, note that using \"C-q _\" will always just insert the
+underscore character."
   (interactive "P")
   (let ((current-key (lookup-key ess-mode-map ess-smart-S-assign-key))
-        (default-key (lookup-key ess-mode-map "_"))
-        )
+        (default-key (lookup-key ess-mode-map "_")))
     (if (and (or default-key current-key)
              ;; (stringp current-key) (string= current-key ess-S-assign)
              (not force))
-        (progn
-          (define-key ess-mode-map          "_" nil)
-          (define-key inferior-ess-mode-map "_" nil)
-          (define-key ess-mode-map          ess-smart-S-assign-key nil); 'self-insert-command
-          (define-key inferior-ess-mode-map ess-smart-S-assign-key nil))
+        (ess--unset-smart-S-assign-key)
       ;; else : "force" or current-key is "nil", i.e. default
-      (define-key ess-mode-map          ess-smart-S-assign-key
-        'ess-smart-S-assign)
-      (define-key inferior-ess-mode-map ess-smart-S-assign-key
-        'ess-smart-S-assign))))
+      (ess--activate-smart-S-assign-key))))
 (defalias 'ess-toggle-underscore 'ess-toggle-S-assign)
 ;; NOTA BENE: "_" is smart *by default* :
 ;; -----  The user can always customize `ess-S-assign' ...
@@ -851,8 +864,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
       (progn
         (require 'speedbar)
         (when (featurep 'speedbar)
-          (message "enabling speedbar support")
-
+	  
           (defun S-speedbar-buttons (buffer)
             "attempted hack."
 

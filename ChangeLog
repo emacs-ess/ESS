@@ -1,3 +1,15 @@
+2015-04-23  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 15.03-1 released.
+
+2015-03-31  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 15.03 released.
+
+2015-01-31  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefiles are now UNIX and GNU make friendly.
+
 2014-09-13  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 14.09 released.

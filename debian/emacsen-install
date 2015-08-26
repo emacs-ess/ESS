@@ -16,7 +16,7 @@ if [ ${FLAVOR} = emacs22 ]; then exit 0; fi
 
 echo install/${PACKAGE}: Handling install for emacsen flavor ${FLAVOR}
 
-FLAVORTEST=`echo $FLAVOR | cut -c-6`
+FLAVORTEST=$(echo $FLAVOR | cut -c-6)
 if [ ${FLAVORTEST} = xemacs ] ; then
     SITEFLAG="-no-site-file -no-init-file"
 else
@@ -50,8 +50,11 @@ done
 cat << EOF > path.el
 (setq load-path (cons "." load-path) byte-compile-warnings nil)
 EOF
-${FLAVOR} ${FLAGS} ${FILES}
-${FLAVOR} ${FLAGS} ess.el
+touch Install.log
+${FLAVOR} ${FLAGS} ${FILES} >> Install.log 2>&1
+${FLAVOR} ${FLAGS} ess.el >> Install.log 2>&1
+gzip -9v Install.log
 #rm -f *.el path.el
+
 
 exit 0

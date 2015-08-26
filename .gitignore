@@ -15,3 +15,14 @@ doc/refcard/refcard.*
 *LOCAL*
 *BASE*
 lisp/*.elc
+doc/html/*.html
+README
+ANNOUNCE
+MM-MISC
+Mail-head
+RPM*.spec
+*SVN*
+ess-[1-9]*.[0-9][0-9]
+ess-[1-9]*.[0-9][0-9][-.]???
+ess-[1-9]*.[0-9][0-9]-[0-9]
+ess-[1-9]*.[0-9][0-9]-[0-9][-.]???

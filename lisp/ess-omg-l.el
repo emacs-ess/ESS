@@ -61,9 +61,9 @@
 ;;            (setq indent (current-indentation)))
 ;;           (t
 ;;            (skip-chars-forward " \t")
-;;            (if (and ess-fancy-comments (looking-at "////"))
+;;            (if (and ess-indent-with-fancy-comments (looking-at "////"))
 ;;                (setq indent 0))
-;;            (if (and ess-fancy-comments
+;;            (if (and ess-indent-with-fancy-comments
 ;;                     (looking-at "//")
 ;;                     (not (looking-at "///")))
 ;;                (setq indent comment-column)
@@ -78,7 +78,7 @@
 ;;                    ((= (following-char) ?})
 ;;                     (setq indent
 ;;                           (+ indent
-;;                              (- ess-close-brace-offset ess-indent-level))))
+;;                              (- ess-close-brace-offset ess-indent-offset))))
 ;;                    ((= (following-char) ?{)
 ;;                     (setq indent (+ indent ess-brace-offset)))))))
 ;;     (skip-chars-forward " \t")
@@ -196,13 +196,13 @@
 ;;                 ;; If no previous statement,
 ;;                 ;; indent it relative to line brace is on.
 ;;                 ;; For open brace in column zero, don't let statement
-;;                 ;; start there too.  If ess-indent-level is zero,
+;;                 ;; start there too.  If ess-indent-offset is zero,
 ;;                 ;; use ess-brace-offset + ess-continued-statement-offset instead.
 ;;                 ;; For open-braces not the first thing in a line,
 ;;                 ;; add in ess-brace-imaginary-offset.
-;;                 (+ (if (and (bolp) (zerop ess-indent-level))
+;;                 (+ (if (and (bolp) (zerop ess-indent-offset))
 ;;                        (+ ess-brace-offset ess-continued-statement-offset)
-;;                      ess-indent-level)
+;;                      ess-indent-offset)
 ;;                    ;; Move back over whitespace before the openbrace.
 ;;                    ;; If openbrace is not first nonwhite thing on the line,
 ;;                    ;; add the ess-brace-imaginary-offset.

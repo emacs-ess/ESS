@@ -48,28 +48,30 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
-	ess-eldoc.elc ess-roxy.elc ess-rutils.elc \
+	ess-eldoc.elc ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
 	ess-s-l.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-d.elc ess-rd.elc \
 	ess-developer.elc ess-tracebug.elc ess-julia.elc\
-	ess-sp6w-d.elc msdos.elc 
+	ess-sp6w-d.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 
-ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
+ESSR_VER =`cat ../etc/ESSR-VERSION`
+##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
 
 ### Targets
 
 all: $(ELC) ess-custom.el
 
+.PHONY: dist
 dist: all
-	@touch dist
+##	@touch dist
 ## svn committing happens in ../Makefile
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) ChangeLog *.elc $(LISPDIR)
-	export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
+	-export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
@@ -83,7 +85,7 @@ uninstall:
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
 clean:
-	rm -f $(ELC) dist
+	rm -f $(ELC)
 
 distclean: clean
 # and potentially more
@@ -94,7 +96,7 @@ distclean: clean
 ### Replace Version numbers (as in ../doc/Makefile !):
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
-	perl -pi -e 's/".*"/"$(ESSVERSION)"/ if /ess-version/' $@
+	EV=$(ESSVERSION); perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
 
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@

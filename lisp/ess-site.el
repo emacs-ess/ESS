@@ -728,7 +728,7 @@ update the \"Start Process\" menu."
 ;;; To change them (eg, follow changes suggested by Terry Therneau),
 ;;; you need one or both of the following lines:
 ;;;
-;;(setq ess-fancy-comments nil)
+;;(setq ess-indent-with-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
 
 ;;; 4.0 SAS configuration

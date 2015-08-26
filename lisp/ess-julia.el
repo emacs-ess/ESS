@@ -1,6 +1,6 @@
 ;; ess-julia.el --- ESS julia mode and inferior interaction
 ;;
-;; Copyright (C) 2012 Vitalie Spinu.
+;; Copyright (C) 2012-2015 Vitalie Spinu and the ESS Core team.
 ;;
 ;; Filename: ess-julia.el
 ;; Author: Vitalie Spinu (based on julia-mode.el from julia-lang project)
@@ -40,6 +40,8 @@
 (require 'compile); for compilation-* below
 (require 'ess-utils)
 (require 'julia-mode)
+(eval-when-compile
+  (require 'cl))
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -113,6 +115,16 @@ VISIBLY is not currently used."
         (message "No ESS process of dialect %s started" ess-dialect)
         nil))))
 
+(defun ess-julia-objects (prefix)
+  "Get all cached objects"
+  (when prefix
+    (let ((proc (ess-get-next-available-process nil t)))
+      (if (string-match "\\(.*\\)\\..*$" prefix)
+          (let ((module (match-string 1 prefix)))
+            (mapcar (lambda (el) (concat module "." (car el)))
+                    (ess-julia--get-objects proc module)))
+        (ess-julia--get-objects proc)))))
+
 (defun ess-julia--get-objects (&optional proc obj)
   "Return all available objects.
 Local caching might be used. If MODULE is givven, return only
@@ -163,27 +175,39 @@ objects from that MODULE."
          (process-put proc 'objects objects)))
       list)))
 
-
-;;; AC
+(defun ess-julia-get-object-help-string (sym)
+  "Help string for ac."
+  (let ((proc (ess-get-next-available-process nil t)))
+    (if (null proc)
+        "No free ESS process found"
+      (let ((buf (get-buffer-create " *ess-command-output*")))
+        (with-current-buffer (process-buffer proc)
+          (ess-with-current-buffer buf
+            (ess--flush-help-into-current-buffer sym nil t)))
+        (with-current-buffer buf
+          (ess-help-underline)
+          (goto-char (point-min))
+          (buffer-string))))))
+
 (defvar ac-source-ess-julia-objects
   '((prefix     . ess-symbol-start)
     (requires   . 2)
     (candidates . ess-ac-julia-objects)
-    (document   . ess-ac-help-object)
-    )
+    (document   . ess-julia-get-object-help-string))
   "Auto-completion source for julia objects")
 
 (defun ess-ac-julia-objects ()
-  "Get all cached objects"
-  (let ((aprf ac-prefix))
-    (let ((proc (ess-get-next-available-process nil t)))
-      (when aprf
-        (if (string-match "\\(.*\\)\\..*$" aprf)
-            (let ((module (match-string 1 aprf)))
-              (mapcar (lambda (el) (concat module "." (car el)))
-                      (ess-julia--get-objects proc module)))
-          (ess-julia--get-objects proc))))))
+  (ess-julia-objects ac-prefix))
 
+(defun company-ess-julia-objects (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-ess-julia-objects))
+    (prefix (unless (company-in-string-or-comment)
+              (let ((start (ess-symbol-start)))
+                (when start (buffer-substring-no-properties start (point))))))
+    (candidates (all-completions arg (mapcar #'car (ess-julia-objects arg))))
+    (doc-buffer (company-doc-buffer (ess-julia-get-object-help-string arg)))))
 
 
 ;;; ERRORS
@@ -265,6 +289,7 @@ to look up any doc strings."
     (ess-dialect			. "julia")
     (ess-suffix				. "jl")
     (ess-ac-sources                     . '(ac-source-ess-julia-objects))
+    (ess-company-backends		. '(company-ess-julia-objects))
     (ess-dump-filename-template		. (ess-replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))

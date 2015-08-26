@@ -1,3 +1,24 @@
+2015-04-07  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-prefer-higher-bit): Test code to prefer higher
+	bit (i.e 64 bit rather than 32 bit) Rterm versions for R-newest.
+	Should affect only Windows.
+
+2015-03-18  Sam Steingold  <sds@gnu.org>
+
+	* ess-inf.el (ess-show-buffer-action): Add user option.
+	(ess-show-buffer): Use it instead of a hard-coded value.
+
+2015-01-31  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-goto-log): Added Truncated record warning
+	to list of error messages.
+	(ess-sas-cd): fixed bug for directories with embedded blanks; also
+	commented out unnecessary calls to ess-sas-goto-shell because
+	ess-sas-cd already calls ess-sas-goto-shell
+	(ess-sas-graph-view): fixed wrong directory bug and added support
+	for ODS
+
 2013-12-05  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-a.el (ess-sas-edit-keys-toggle): the default returns

@@ -1,3 +1,31 @@
+ess (15.03-1-2) unstable; urgency=low
+
+  * debian/emacsen-compat: Added, with value of zero
+  
+  * debian/emacsen-install: Refreshed
+  
+  * debian/control: Depends: emacsen-common (>= 2.0.8) per Emacsen Policy
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 04 May 2015 20:29:39 -0500
+
+ess (15.03-1-1) unstable; urgency=low
+
+  * New upstream version released today 
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 23 Apr 2015 12:38:30 -0500
+
+ess (15.03-1) unstable; urgency=low
+
+  * New upstream version released today 
+  
+  * debian/control: Change Depends: on r-base-core to Recommends:
+							  (Closes: #767043)
+  * debian/control: Add julia to Suggests:
+
+  * debian/control: Increased Standards-Version: to current version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 01 Apr 2015 05:31:31 -0500
+
 ess (14.09-1) unstable; urgency=low
 
   * New upstream version released today 

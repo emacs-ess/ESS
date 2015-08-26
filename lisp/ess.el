@@ -3,7 +3,7 @@
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Doug Bates
@@ -111,6 +111,9 @@
 (require 'ess-mode)
 (require 'ess-inf)
 
+(eval-when-compile
+  (require 'cl))
+
 
  ; ess-mode: editing S/R/XLS/SAS source
 
@@ -170,19 +173,25 @@
               (goto-char (point-min))
               (when (re-search-forward "Revision: \\(.*\\)\n.*: \\(.*\\)" nil t)
                 (concat "svn: " (match-string 1) " (" (match-string 2) ")")))))
-         (git-fname (concat (file-name-directory ess-lisp-directory) ".git/refs/heads/master"))
+         (lisp-dir (file-name-directory ess-lisp-directory))
+         (git-ref-fn (concat lisp-dir ".git/HEAD"))
+         (git-ref (when (file-exists-p git-ref-fn)
+                    (with-current-buffer (find-file-noselect git-ref-fn)
+                      (goto-char (point-min))
+                      (when (re-search-forward "ref: \\(.*\\)\n" nil t)
+                        (match-string 1)))))
+         (git-fname (concat lisp-dir ".git/" git-ref))
          (git-rev (when (file-exists-p git-fname)
                     (with-current-buffer (find-file-noselect git-fname)
                       (goto-char (point-min))
                       (concat "git: "(buffer-substring 1 (point-at-eol))))))
-         (elpa-fname (concat (file-name-directory ess-lisp-directory) "ess-pkg.el"))
+         (elpa-fname (concat lisp-dir "ess-pkg.el"))
          (elpa-rev (when (file-exists-p elpa-fname)
-                     ;; get it from ELPA dir name, (probbly won't wokr if instaleed manually)
+                     ;; get it from ELPA dir name, (probably won't work if installed manually)
                      (concat "elpa: "
                              (replace-regexp-in-string "ess-" ""
                                                        (file-name-nondirectory
-                                                        (substring (file-name-directory ess-lisp-directory)
-                                                                   1 -1)))))))
+                                                        (substring lisp-dir 1 -1)))))))
     ;; set the "global" ess-revision:
     (setq ess-revision (format "%s%s%s"
                                (or svn-rev "")
@@ -226,7 +235,13 @@ Invoke this command with C-u C-u C-y."
   (interactive "*P")
   (if (equal '(16) ARG)
       (ess-yank-cleaned-commands)
-    (funcall (or (command-remapping 'yank (point)) 'yank)  ARG)))
+    (let* ((remapped (command-remapping 'yank (point)))
+           (command (cond ((eq remapped 'ess-yank) 'yank)
+                          ((null remapped) 'yank)
+                          (t remapped))))
+      (funcall command ARG))))
+
+(put 'ess-yank 'delete-selection 'yank)
 
  ; ESS Completion
 (defun ess-completing-read (prompt collection &optional predicate
@@ -278,23 +293,31 @@ See also `ess-use-ido'.
   "Load all the extra features depending on custom settings."
 
   (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
-        (isR (string-match "^R" ess-dialect))
-        (emacsp (featurep 'emacs)))
+        (isR (string-match "^R" ess-dialect)))
 
     ;; auto-complete
-    (when (and emacsp 
-               (require 'auto-complete nil 'no-error)
+    (when (and (boundp 'ac-sources)
                (if inferior
                    (eq ess-use-auto-complete t)
                  ess-use-auto-complete))
       (add-to-list 'ac-modes mode)
-      ;; files should be in front; ugly, but needes
+      ;; files should be in front; ugly, but needed
       (when ess-ac-sources
         (setq ac-sources
               (delq 'ac-source-filename ac-sources))
         (mapcar (lambda (el) (add-to-list 'ac-sources el))
                 ess-ac-sources)
         (add-to-list 'ac-sources 'ac-source-filename)))
+
+    ;; company
+    (when (and (boundp 'company-backends)
+               (if inferior
+                   (eq ess-use-company t)
+                 ess-use-company))
+      (when ess-company-backends
+        (set (make-local-variable 'company-backends)
+             (copy-list (append ess-company-backends company-backends)))
+        (delq 'company-capf company-backends)))
 
     ;; eldoc)
     (require 'eldoc)
@@ -304,11 +327,10 @@ See also `ess-use-ido'.
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
         (set (make-local-variable 'eldoc-idle-delay) 0.1))
       (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
-      (when emacsp
-        (turn-on-eldoc-mode)))
+      (turn-on-eldoc-mode))
 
     ;; tracebug
-    (when (and ess-use-tracebug emacsp inferior isR)
+    (when (and ess-use-tracebug inferior isR)
       (ess-tracebug 1))))
 
 
@@ -397,7 +419,7 @@ Otherwise try a list of fixed known viewers.
       (setq viewer (file-name-nondirectory viewer)))
     viewer))
 
-        
+
 
 
 
@@ -444,7 +466,7 @@ Used in noweb modes.")
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
-  ;; (setq alist (reverse alist)) ;; It should really be in reverse order; 
+  ;; (setq alist (reverse alist)) ;; It should really be in reverse order;
   (mapc (lambda (pair)
           (make-local-variable (car pair))
           (set (car pair) (eval (cdr pair)))

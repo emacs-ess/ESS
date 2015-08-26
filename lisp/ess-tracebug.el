@@ -1,6 +1,6 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
 ;;
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 ;;
 ;; Filename: ess-tracebug.el
@@ -541,7 +541,7 @@ in inferior buffers.  ")
     (make-local-variable 'ess--busy-timer)
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
-    (add-hook 'kill-buffer-hook (lambda () (cancel-timer ess--busy-timer)))
+    (add-hook 'kill-buffer-hook (lambda () (when ess--busy-timer (cancel-timer ess--busy-timer))))
     (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
     ;; redefine
@@ -1272,10 +1272,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (with-current-buffer dbuff              ;; insert string in *ess.dbg* buffer
         (goto-char (point-max))
         (insert (concat "|-" string "-|")))
-      (if is-iess
-          (save-selected-window  ;; do not pop to the debugging line if in iESS
-            (ess--dbg-goto-last-ref-and-mark dbuff t))
-        (ess--dbg-goto-last-ref-and-mark dbuff)))
+      (ess--dbg-goto-last-ref-and-mark dbuff is-iess))
 
     ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
     ;;   (let ((inhibit-read-only t))
@@ -1346,43 +1343,51 @@ is non nil, attempt to open the location in a different window."
                                        ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
         (move-marker ess--dbg-last-ref-marker (point-at-eol))
-        (move-marker ess--dbg-current-ref ess--dbg-last-ref-marker) ;; each new step repositions the current-ref!
-        ))
+	;; each new step repositions the current-ref!
+        (move-marker ess--dbg-current-ref ess--dbg-last-ref-marker)))
     (when ref
-      (if (apply 'ess--dbg-goto-ref other-window ref)
-          (progn ;; if referenced  buffer is found put overlays
-            (setq t-debug-position (copy-marker (point-at-bol)))
-            (if (equal t-debug-position ess--dbg-current-debug-position)
-                (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
-                  (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
-                  (run-with-timer ess-debug-blink-interval nil
-                                  (lambda ()
-                                    (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face))))
-                                        ;else
-              (ess--dbg-activate-overlays)))
-        ;;else, buffer is not found: highlight and give the corresponding message
-        (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
-        (run-with-timer ess-debug-blink-interval nil
-                        (lambda ()
-                          (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
-        (message "Reference %s not found" (car ref))))))
+      (let ((buf (apply 'ess--dbg-goto-ref other-window ref)))
+	(if buf
+	    ;; if referenced buffer has been found, put overlays:
+	    (with-current-buffer buf
+	      (setq t-debug-position (copy-marker (point-at-bol)))
+	      (if (equal t-debug-position ess--dbg-current-debug-position)
+		  (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
+		    (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
+		    (run-with-timer ess-debug-blink-interval nil
+				    (lambda ()
+				      (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face))))
+		;; else
+		(ess--dbg-activate-overlays)))
+	  ;;else, buffer is not found: highlight and give the corresponding message
+	  (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
+	  (run-with-timer ess-debug-blink-interval nil
+			  (lambda ()
+			    (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
+	  (message "Reference %s not found" (car ref)))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
 Try to open in a different window if OTHER-WINDOW is nil.  Return
 the buffer if found, or nil otherwise be found.
 `ess--dbg-find-buffer' is used to find the FILE and open the
-associated buffer. If FILE is nil return nil.
-"
+associated buffer. If FILE is nil return nil."
   (let ((mrk (car (ess--dbg-create-ref-marker file line col)))
         (lpn ess-local-process-name))
     (when mrk
-      (if (not other-window)
-          (switch-to-buffer (marker-buffer mrk))
-        (pop-to-buffer (marker-buffer mrk)))
-      ;; set or re-set to lpn as this is the process with debug session on
-      (setq ess-local-process-name lpn)
-      (goto-char mrk))))
+      (let ((buf (marker-buffer mrk)))
+	(if (not other-window)
+	    (switch-to-buffer buf)
+	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
+	    (display-buffer buf)
+	    ;; simple save-frame-excursion
+	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
+	      (ess-select-frame-set-input-focus this-frame))))
+	;; set or re-set to lpn as this is the process with debug session on
+	(with-current-buffer buf
+	  (setq ess-local-process-name lpn)
+	  (goto-char mrk))
+	buf))))
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
@@ -2755,7 +2760,8 @@ intanbible, step char backward first"
       (backward-char 1))
   ad-do-it)
 
-;; (ad-remove-advice 'previous-line 'around 'delete-backward-char-intangible)
+
+;; (ad-remove-advice 'previous-line 'around 'ess-fix-cursor-stuck-at-intangible-text)
 
 (make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
 (make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")

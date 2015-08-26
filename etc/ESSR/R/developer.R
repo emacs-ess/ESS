@@ -255,9 +255,8 @@
         if (exists(x, envir = envir, inherits = FALSE) && bindingIsLocked(x, envir)) {
             unlockBinding(x, envir)
             assign(x, value, envir = envir, inherits = FALSE)
-            w <- options("warn")
-            on.exit(options(w))
-            options(warn = -1)
+            op <- options(warn = -1)
+            on.exit(options(op))
             lockBinding(x, envir)
         } else {
             assign(x, value, envir = envir, inherits = FALSE)

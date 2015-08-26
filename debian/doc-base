@@ -8,5 +8,5 @@ Format: Text
 Files: /usr/share/doc/ess/README*
 
 Format: HTML
-Index: /usr/share/doc/ess/html/ess.html
-Files: /usr/share/doc/ess/html/*.html
+Index: /usr/share/doc/ess/html/ess.html.gz
+Files: /usr/share/doc/ess/html/*.html.gz

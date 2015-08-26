@@ -12,7 +12,6 @@ include ../Makeconf
 #MM SPLITCHAP = -split_chapter -menu -glossary
 ##
 
-TEXI2DVI = LANG=C texi2dvi
 TEXI2PDF = LANG=C texi2dvi --pdf
 
 # To obtain sorted indices run:	"texindex ess.??".
@@ -32,32 +31,25 @@ ESSINFONODE3='                        (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).'
 
 ### Targets --
 PDFs = ess.pdf readme.pdf refcard/refcard.pdf
-DVIs = ess.dvi readme.dvi
 TXTs = ../README ../ANNOUNCE ../NEWS ../ONEWS
 
-all  : info text html dvi pdf
+all  : info text html pdf
 docs : info text html
 info : info/ess.info
 text : $(TXTs)
 html : html/ess.html html/readme.html html/news.html
-dvi  : $(DVIs)
 pdf  : $(PDFs)
-ps   : ess.ps  readme.ps
 
-ess.dvi : $(TEXISRC); $(TEXI2DVI) ess.texi
 ess.pdf : $(TEXISRC); $(TEXI2PDF) ess.texi
-ess.ps  : ess.dvi; LANG=C dvips $^ -o $@
 
-readme.dvi : $(TEXISRC); $(TEXI2DVI) readme.texi
 readme.pdf : $(TEXISRC); $(TEXI2PDF) readme.texi
-readme.ps  : readme.dvi; dvips $^ -o $@
 
 cleanaux:
 	-@rm -f *.aux *.cp *.cps *.fn *.fns *.ky *.kys *.log *.out \
-	        *.pg *.pgs *.ps *.ps-2 *.tmp *.toc *.tp *.vr *.vrs
+	        *.pg *.pgs *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
 clean: cleanaux
-	-@rm -f $(DVIs) $(TXTs) $(PDFs) info/*.info* html/*
+	-@rm -f $(TXTs) $(PDFs) info/*.info* html/*
 
 ## this removes also things in VC (svn, when they are remade by "make"):
 distclean : clean
@@ -102,12 +94,12 @@ install-info : info/ess.info
 
 install-other-docs: pdf html
 	-$(INSTALLDIR) $(DOCDIR)
-	$(INSTALL) ess.dvi ess.pdf readme.dvi readme.pdf ../README ../ANNOUNCE $(DOCDIR)
+	$(INSTALL) ess.pdf readme.pdf $(DOCDIR)
 	$(INSTALL) html/ess.html html/readme.html html/news.html $(DOCDIR)
 	$(INSTALL) refcard/refcard.pdf $(DOCDIR)
 
 uninstall :
-	-cd $(DOCDIR) && $(UNINSTALL) ess.dvi ess.pdf readme.dvi readme.pdf README ANNOUNCE
+	-cd $(DOCDIR) && $(UNINSTALL) ess.pdf readme.pdf README ANNOUNCE
 	-cd $(DOCDIR) && $(UNINSTALL) ess.html readme.html news.html
 	-cd $(DOCDIR) && $(UNINSTALL) refcard.pdf
 

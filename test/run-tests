@@ -1,0 +1,15 @@
+#!/usr/bin/emacs --script
+;; This script must be run from the test directory
+
+(let ((current-directory (file-name-directory load-file-name)))
+  (setq ess-test-path (expand-file-name "." current-directory))
+  (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
+
+(add-to-list 'load-path ess-root-path)
+(add-to-list 'load-path ess-test-path)
+
+(require 'ess-site)
+(load (expand-file-name "ess-tests.el" ess-test-path) nil t)
+
+;; run tests
+(ert-run-tests-batch-and-exit t)
