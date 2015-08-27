@@ -65,7 +65,7 @@
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . nil)
      (ess-align-continuations-in-calls . nil)
-     (ess-align-blocks . (fun-decl))
+     (ess-align-blocks . (fun-decl bare-blocks))
      (ess-indent-prev-call-lhs . nil)
      (ess-indent-prev-call-chains . nil)
      (ess-indent-with-fancy-comments . t))

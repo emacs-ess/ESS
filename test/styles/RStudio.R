@@ -408,6 +408,13 @@ fun_call(
   }
 )
 
+## 19
+fun_call1(
+  fun_call2(argument, function(x) {
+    body
+  })
+)
+
 
 ### Bracket indexing
 

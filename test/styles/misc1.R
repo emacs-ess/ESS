@@ -408,6 +408,13 @@ fun_call(
          }
          )
 
+## 19
+fun_call1(
+          fun_call2(argument, function(x) {
+                                 body
+                              })
+          )
+
 
 ### Bracket indexing
 
@@ -643,9 +650,9 @@ else
 ## 20
 funcall({
            if (test1)
-           stuff1
+              stuff1
            if (test2)
-           stuff2
+              stuff2
         })
 
 
