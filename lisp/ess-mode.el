@@ -9,6 +9,7 @@
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
+;; Package-Requires: ((julia-mode "0.3"))
 
 ;; This file is part of ESS
 
@@ -297,7 +298,7 @@
 (if (featurep 'xemacs)
     (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
-(defun ess-mode (&optional alist proc-name)
+(defun ess-mode (&optional alist proc-name is-derived)
   "Major mode for editing ESS source.
 Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
@@ -378,9 +379,10 @@ Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (setq alist (or alist
-                  (buffer-local-value 'ess-local-customize-alist (current-buffer))
-                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
-  (kill-all-local-variables) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
+		  (buffer-local-value 'ess-local-customize-alist (current-buffer))
+		  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
+  (unless is-derived
+    (kill-all-local-variables)) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
   ;; must happen here, since the mode map is set up too early:
   (if ess-r-args-electric-paren (define-key ess-mode-map "(" 'ess-r-args-auto-show))
@@ -394,8 +396,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   ;;   (ess-local-process-name ess-local-process-name "none")))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.5): alist=%s \n" alist))
-  (setq major-mode 'ess-mode)
-  (setq mode-name (concat "ESS[" ess-language "]")) ; was ess-dialect
+  (unless is-derived
+    (setq major-mode 'ess-mode)
+    (setq mode-name (concat "ESS[" ess-language "]"))) ; was ess-dialect
   ;; The following line does the next 20 or so :-).
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.6): editing-alist=%s \n"
@@ -404,7 +407,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
-  (set-syntax-table ess-mode-syntax-table)
+  (when ess-mode-syntax-table
+    (set-syntax-table ess-mode-syntax-table))
 
   ;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)

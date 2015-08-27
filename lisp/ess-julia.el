@@ -31,7 +31,7 @@
 ;;
 ;;; Commentary:
 ;;  customise inferior-julia-program-name to point to your julia-basic
-;;  and start the inferior with M-x julia.
+;;  and start the inferior with M-x ess-julia.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -39,224 +39,14 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
+(require 'julia-mode)
 (eval-when-compile
   (require 'cl))
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(defvar julia-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?_ "_" table)   ; underscores in words
-    (modify-syntax-entry ?@ "_" table)
-    (modify-syntax-entry ?. "_" table)
-    (modify-syntax-entry ?# "<" table)   ; #  single-line comment start
-    (modify-syntax-entry ?\n ">" table)  ; \n single-line comment end
-    (modify-syntax-entry ?\{ "(} " table)
-    (modify-syntax-entry ?\} "){ " table)
-    (modify-syntax-entry ?\[ "(] " table)
-    (modify-syntax-entry ?\] ")[ " table)
-    (modify-syntax-entry ?\( "() " table)
-    (modify-syntax-entry ?\) ")( " table)
-    ;(modify-syntax-entry ?\\ "." table)  ; \ is an operator outside quotes
-    (modify-syntax-entry ?'  "." table)  ; character quote or transpose
-    (modify-syntax-entry ?\" "\"" table)
-    (modify-syntax-entry ?` "\"" table)
-    ;; (modify-syntax-entry ?\" "." table)
-    (modify-syntax-entry ?? "." table)
-    (modify-syntax-entry ?$ "." table)
-    (modify-syntax-entry ?& "." table)
-    (modify-syntax-entry ?* "." table)
-    (modify-syntax-entry ?+ "." table)
-    (modify-syntax-entry ?- "." table)
-    (modify-syntax-entry ?< "." table)
-    (modify-syntax-entry ?> "." table)
-    (modify-syntax-entry ?= "." table)
-    (modify-syntax-entry ?% "." table)
-    table)
-  "Syntax table for `julia-mode'.")
-
-;; syntax table that holds within strings
-(defvar julia-mode-string-syntax-table
-  (let ((table (make-syntax-table)))
-    table)
-  "Syntax table for `julia-mode'.")
-
-;; disable " inside char quote
-(defvar julia-mode-char-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?\" "." table)
-    table)
-  "Syntax table for `julia-mode'.")
-
-(defconst julia-char-regex
-  "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|$!\\^~\\\\;:]\\|^\\)\\('\\(\\([^']*?[^\\\\]\\)\\|\\(\\\\\\\\\\)\\)'\\)")
-
-(defconst julia-unquote-regex
-  "\\(\\s(\\|\\s-\\|-\\|[,%=<>\\+*/?&|!\\^~\\\\;:]\\|^\\)\\($[a-zA-Z0-9_]+\\)")
-
-(defconst julia-forloop-in-regex
-  "for +[^ 	]+ +.*\\(in\\)\\(\\s-\\|$\\)+")
-
-(defconst julia-font-lock-keywords
-  (list '("\\<\\(\\|Uint\\(8\\|16\\|32\\|64\\|128\\)\\|Int\\(8\\|16\\|32\\|64\\|128\\)\\|BigInt\\|Integer\\|BigFloat\\|FloatingPoint\\|Float16\\|Float32\\|Float64\\|Complex128\\|Complex64\\|ComplexPair\\|Bool\\|Char\\|Number\\|Real\\|Int\\|Uint\\|Array\\|DArray\\|AbstractArray\\|AbstractVector\\|AbstractMatrix\\|AbstractSparseMatrix\\|SubArray\\|StridedArray\\|StridedVector\\|StridedMatrix\\|VecOrMat\\|StridedVecOrMat\\|Range\\|Range1\\|SparseMatrixCSC\\|Tuple\\|NTuple\\|Symbol\\|Function\\|Vector\\|Matrix\\|Union\\|Type\\|Any\\|Complex\\|None\\|String\\|Ptr\\|Void\\|Exception\\|Task\\|Signed\\|Unsigned\\|Associative\\|Dict\\|IO\\|IOStream\\|Ranges\\|Rational\\|Regex\\|RegexMatch\\|Set\\|IntSet\\|ASCIIString\\|UTF8String\\|ByteString\\|Expr\\|WeakRef\\|Nothing\\|ObjectIdDict\\|SubString\\)\\>" .
-      font-lock-type-face)
-    (cons
-     (concat "\\<\\("
-         (mapconcat
-          'identity
-          '("if" "else" "elseif" "while" "for" "begin" "end" "quote"
-            "try" "catch" "return" "local" "abstract" "function" "macro" "ccall"
-	    "finally" "typealias" "break" "continue" "type" "global" "@\\w+"
-	    "module" "using" "import" "export" "const" "let" "bitstype" "do"
-	    "baremodule" "importall" "immutable")
-          "\\|") "\\)\\>")
-     'font-lock-keyword-face)
-    '("\\<\\(true\\|false\\|C_NULL\\|Inf\\|NaN\\|Inf32\\|NaN32\\|nothing\\)\\>" . font-lock-constant-face)
-    (list julia-unquote-regex 2 'font-lock-constant-face)
-    (list julia-char-regex 2 'font-lock-string-face)
-    (list julia-forloop-in-regex 1 'font-lock-keyword-face)
-    ;; (cons ess-subset-regexp 'font-lock-constant-face)
-    (cons "\\(\\sw+!?\\) ?(" '(1 font-lock-function-name-face keep))
-    ;(list julia-string-regex 0 'font-lock-string-face)
-))
-
-(defconst julia-block-start-keywords
-  (list "if" "while" "for" "begin" "try" "function" "type" "let" "macro"
-	"quote" "do" "immutable"))
-
-(defconst julia-block-other-keywords
-  (list "else" "elseif"))
-
-(defconst julia-block-end-keywords
-  (list "end" "else" "elseif" "catch" "finally"))
-
-(defun julia-at-keyword (kw-list)
-  "Return the word at point if it matches any keyword in KW-LIST.
-KW-LIST is a list of strings.  The word at point is not
-considered a keyword if used as a field name, X.word, or
-quoted, :word, or it is part of Julia's comprehension syntax."
-  (and (or (= (point) 1)
-	   (and (not (equal (char-before (point)) ?.))
-		(not (equal (char-before (point)) ?:))))
-       (not (ess-inside-string-or-comment-p (point)))
-       (not (ess-inside-brackets-p (point) t))
-       (member (current-word) kw-list)))
-
-(defun julia-last-open-block-pos (min)
-  "Move back and return the position of the last open block, if one found.
-Do not move back beyond position MIN."
-  (let ((count 0))
-    (while (not (or (> count 0) (<= (point) min)))
-      (backward-word 1)
-      (setq count
-	    (cond ((julia-at-keyword julia-block-start-keywords)
-		   (+ count 1))
-		  ((and (equal (current-word) "end")
-			(not (ess-inside-comment-p))
-                        (not (ess-inside-brackets-p)))
-		   (- count 1))
-		  (t count))))
-    (if (> count 0)
-	(point)
-      nil)))
-
-(defun julia-last-open-block (min)
-  "Move back and return indentation level for last open block.
-Do not move back beyond MIN."
-  (let ((pos (julia-last-open-block-pos min)))
-    (and pos
-	 (progn
-	   (goto-char pos)
-	   (+ julia-basic-offset (current-indentation))))))
-
-(defun julia-form-indent ()
-  "Return indent implied by a special form opening on the previous line."
-  (forward-line -1)
-  (end-of-line)
-  (backward-sexp)
-  (if (julia-at-keyword julia-block-other-keywords)
-      (+ julia-basic-offset (current-indentation))
-    (if (char-equal (char-after (point)) ?\()
-        (progn
-          (backward-word 1)
-          (let ((cur (current-indentation)))
-            (if (julia-at-keyword julia-block-start-keywords)
-                (+ julia-basic-offset cur)
-              nil)))
-      nil)))
-
-(defun julia-paren-indent ()
-  "Return indent by last opening paren."
-  (let* ((p (parse-partial-sexp
-             (save-excursion
-               ;; only indent by paren if the last open
-               ;; paren is closer than the last open
-               ;; block
-               (or (julia-last-open-block-pos (point-min))
-                   (point-min)))
-             (point-at-bol)))
-         (pos (cadr p)))
-    (if (or (= 0 (car p)) (null pos))
-        nil
-      (progn (goto-char pos) (+ 1 (current-column))))))
-
-(defun julia-indent-line ()
-  "Indent current line of julia code."
-  (interactive)
-  (let* ((indent (save-excursion
-                   (end-of-line)
-                   (or (and (ess-inside-string-p (point-at-bol)) 0)
-                       (save-excursion (ignore-errors (julia-form-indent)))
-                       (save-excursion (ignore-errors (julia-paren-indent)))
-                       ;; previous line ends in =
-                       (save-excursion
-                         (beginning-of-line)
-                         (skip-chars-backward " \t\n")
-                         (when (eql (char-before) ?=)
-                           (+ julia-basic-offset (current-indentation))))
-                       (save-excursion
-                         (let ((endtok (progn
-                                         (beginning-of-line)
-                                         (forward-to-indentation 0)
-                                         (julia-at-keyword julia-block-end-keywords))))
-                           (ignore-errors (+ (julia-last-open-block (point-min))
-                                             (if endtok (- julia-basic-offset) 0)))))
-                       ;; take same indentation as previous line
-                       (save-excursion (forward-line -1)
-                                       (current-indentation))
-                       0)))
-         (cur-point (point))
-         (cur-indent (progn (back-to-indentation)
-                            (point)))
-         (shift (max 0 (- cur-point cur-indent))))
-    (delete-region (point-at-bol) cur-indent)
-    (indent-to indent)
-    (goto-char (+ (point) shift)))
-  (when (julia-at-keyword julia-block-end-keywords)
-    (forward-word 1)))
-
-(defvar julia-editing-alist
-  '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . mode-require-final-newline)
-    (comment-start		  . "# ")
-    (comment-add                  . 1)
-    (comment-start-skip		  . "#+\\s-*")
-    (comment-column		  . 40)
-    (ess-indent-line-function	  . 'julia-indent-line)
-    (indent-line-function	  . 'julia-indent-line)
-    (parse-sexp-ignore-comments	  . t)
-    (ess-style		  	  . ess-default-style) ;; ignored
-    (ess-local-process-name	  . nil)
-    (ess-mode-syntax-table	  . julia-syntax-table)
-    (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(julia-font-lock-keywords nil nil ((?\_ . "w"))))
-    )
-  "General options for julia source files.")
-
-(defun julia-send-string-function (process string visibly)
+(defun ess-julia-send-string-function (process string visibly)
   "Send the Julia STRING to the PROCESS.
 VISIBLY is not currently used."
   (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
@@ -266,12 +56,12 @@ VISIBLY is not currently used."
 
 
 ;;; HELP
-(defun julia-get-help-topics (&optional proc)
+(defun ess-julia-get-help-topics (&optional proc)
   (append (ess-get-words-from-vector "ESS.all_help_topics()\n")
-          (julia--get-objects)))
+          (ess-julia--get-objects)))
     ;; (ess-command com)))
 
-(defun julia--retrive-topics (url)
+(defun ess-julia--retrive-topics (url)
   (with-current-buffer (url-retrieve-synchronously url)
     (require 'url)
     (goto-char (point-min))
@@ -283,19 +73,19 @@ VISIBLY is not currently used."
       (kill-buffer)
       (nreverse out))))
 
-(defvar julia--manual-topics nil)
-(defun julia-manual-lookup-function (&rest args) ; args are not used
+(defvar ess-julia--manual-topics nil)
+(defun ess-julia-manual-lookup-function (&rest args) ; args are not used
   (interactive)
   "Look up topics at http://docs.julialang.org/en/latest/manual/"
   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
-  (let* ((pages (or julia--manual-topics
-                    (setq julia--manual-topics
-                          (julia--retrive-topics "http://docs.julialang.org/en/latest/manual/"))))
+  (let* ((pages (or ess-julia--manual-topics
+                    (setq ess-julia--manual-topics
+                          (ess-julia--retrive-topics "http://docs.julialang.org/en/latest/manual/"))))
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
 ;; julia 0.3.0 doesn't provide categories. Thus we don't support this anymore.
-;; (defun julia-reference-lookup-function (&rest args) ; args are not used
+;; (defun ess-julia-reference-lookup-function (&rest args) ; args are not used
 ;;   (interactive)
 ;;   "Look up reference topics"
 ;;   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
@@ -306,7 +96,7 @@ VISIBLY is not currently used."
 
 
 ;;; COMPLETION
-(defun julia-object-completion ()
+(defun ess-julia-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'. "
   (let ((proc (ess-get-next-available-process ess-dialect t))
         (beg (ess-symbol-start)))
@@ -319,23 +109,23 @@ VISIBLY is not currently used."
                           (+ beg 1 (length obj))
                         beg)))
             (list beg (point)
-                  (nreverse (mapcar 'car (julia--get-objects proc obj)))
+                  (nreverse (mapcar 'car (ess-julia--get-objects proc obj)))
                   :exclusive 'no)))
       (when (string-match "complet" (symbol-name last-command))
         (message "No ESS process of dialect %s started" ess-dialect)
         nil))))
 
-(defun julia-objects (prefix)
+(defun ess-julia-objects (prefix)
   "Get all cached objects"
   (when prefix
     (let ((proc (ess-get-next-available-process nil t)))
       (if (string-match "\\(.*\\)\\..*$" prefix)
           (let ((module (match-string 1 prefix)))
             (mapcar (lambda (el) (concat module "." (car el)))
-                    (julia--get-objects proc module)))
-        (julia--get-objects proc)))))
+                    (ess-julia--get-objects proc module)))
+        (ess-julia--get-objects proc)))))
 
-(defun julia--get-objects (&optional proc obj)
+(defun ess-julia--get-objects (&optional proc obj)
   "Return all available objects.
 Local caching might be used. If MODULE is givven, return only
 objects from that MODULE."
@@ -350,7 +140,7 @@ objects from that MODULE."
         (if obj
             (or (cdr (assoc obj objects))
                 ;; don't cache composite objects and datatypes
-                (julia--get-components proc obj))
+                (ess-julia--get-components proc obj))
           ;; this segment is entered when user completon at top level is
           ;; requested, either Tab or AC. Hence Main is always updated.
           (let ((modules (ess-get-words-from-vector
@@ -367,11 +157,11 @@ objects from that MODULE."
                            (or (and (or (not (equal mod "Main"))
                                         (ignore-errors (time-less-p lev loc)))
                                     (cdr (assoc mod objects)))
-                               (julia--get-components proc mod t))))
+                               (ess-julia--get-components proc mod t))))
                         modules))
               (process-put proc 'last-objects-cache (current-time)))))))))
 
-(defun julia--get-components (proc obj &optional cache?)
+(defun ess-julia--get-components (proc obj &optional cache?)
   (with-current-buffer (ess-command (format "ESS.components(%s)\n" obj)
                                     nil nil nil nil proc)
     (goto-char (point-min))
@@ -385,7 +175,7 @@ objects from that MODULE."
          (process-put proc 'objects objects)))
       list)))
 
-(defun julia-get-object-help-string (sym)
+(defun ess-julia-get-object-help-string (sym)
   "Help string for ac."
   (let ((proc (ess-get-next-available-process nil t)))
     (if (null proc)
@@ -399,41 +189,41 @@ objects from that MODULE."
           (goto-char (point-min))
           (buffer-string))))))
 
-(defvar ac-source-julia-objects
+(defvar ac-source-ess-julia-objects
   '((prefix     . ess-symbol-start)
     (requires   . 2)
     (candidates . ess-ac-julia-objects)
-    (document   . julia-get-object-help-string))
+    (document   . ess-julia-get-object-help-string))
   "Auto-completion source for julia objects")
 
 (defun ess-ac-julia-objects ()
-  (julia-objects ac-prefix))
+  (ess-julia-objects ac-prefix))
 
-(defun company-julia-objects (command &optional arg &rest ignored)
+(defun company-ess-julia-objects (command &optional arg &rest ignored)
   (interactive (list 'interactive))
   (cl-case command
-    (interactive (company-begin-backend 'company-julia-objects))
+    (interactive (company-begin-backend 'company-ess-julia-objects))
     (prefix (unless (company-in-string-or-comment)
               (let ((start (ess-symbol-start)))
                 (when start (buffer-substring-no-properties start (point))))))
-    (candidates (all-completions arg (mapcar #'car (julia-objects arg))))
-    (doc-buffer (company-doc-buffer (julia-get-object-help-string arg)))))
+    (candidates (all-completions arg (mapcar #'car (ess-julia-objects arg))))
+    (doc-buffer (company-doc-buffer (ess-julia-get-object-help-string arg)))))
 
 
 ;;; ERRORS
-(defvar julia-error-regexp-alist '(julia-in julia-at julia-while-load)
+(defvar ess-julia-error-regexp-alist '(ess-julia-in ess-julia-at ess-julia-while-load)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
+             '(ess-julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(ess-julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(julia-while-load "^\\s-*\\(while loading\\s-\\(.*\\), in .* on line +\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(ess-julia-while-load "^\\s-*\\(while loading\\s-\\(.*\\), in .* on line +\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 
 ;;; ELDOC
-(defun julia-eldoc-function ()
+(defun ess-julia-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
@@ -460,7 +250,7 @@ to look up any doc strings."
 
 
 ;;; IMENU
-(defvar julia-imenu-generic-expression
+(defvar ess-julia-imenu-generic-expression
   ;; don't use syntax classes, screws egrep
   '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
     ("Function" "^[ \t]*function[ \t]+\\([^_][^\t\n]*\\)" 1)
@@ -472,26 +262,25 @@ to look up any doc strings."
 
 
 ;;; CORE
-(defvar julia-customize-alist
+(defvar ess-julia-customize-alist
   '((comint-use-prompt-regexp		. t)
-    (ess-eldoc-function                 . 'julia-eldoc-function)
+    (ess-eldoc-function                 . 'ess-julia-eldoc-function)
     (inferior-ess-primary-prompt	. "a> ") ;; from julia>
     (inferior-ess-secondary-prompt	. nil)
     (inferior-ess-prompt		. "\\w*> ")
-    (ess-local-customize-alist		. 'julia-customize-alist)
+    (ess-local-customize-alist		. 'ess-julia-customize-alist)
     (inferior-ess-program		. inferior-julia-program-name)
-    (inferior-ess-font-lock-defaults	. julia-font-lock-keywords)
-    (ess-get-help-topics-function	. 'julia-get-help-topics)
+    (ess-get-help-topics-function	. 'ess-julia-get-help-topics)
     (ess-help-web-search-command        . "http://docs.julialang.org/en/latest/search/?q=%s")
-    (ess-manual-lookup-command          . 'julia-manual-lookup-function)
-    ;; (ess-reference-lookup-command       . 'julia-reference-lookup-function)
+    (ess-manual-lookup-command          . 'ess-julia-manual-lookup-function)
+    ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)
     (ess-load-command   		. "include(\"%s\")\n")
     (ess-funargs-command                . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
-    (ess-error-regexp-alist		. julia-error-regexp-alist)
-    (ess-send-string-function		. nil);'julia-send-string-function)
-    (ess-imenu-generic-expression       . julia-imenu-generic-expression)
+    (ess-error-regexp-alist		. ess-julia-error-regexp-alist)
+    (ess-send-string-function		. nil);'ess-julia-send-string-function)
+    (ess-imenu-generic-expression       . ess-julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command	. inferior-R-objects-command)
     ;; (inferior-ess-search-list-command	. "search()\n")
     (inferior-ess-help-command		. "ESS.help(\"%s\")\n")
@@ -499,13 +288,12 @@ to look up any doc strings."
     (ess-language			. "julia")
     (ess-dialect			. "julia")
     (ess-suffix				. "jl")
-    (ess-ac-sources                     . '(ac-source-julia-objects))
-    (ess-company-backends		. '(company-julia-objects))
+    (ess-ac-sources                     . '(ac-source-ess-julia-objects))
+    (ess-company-backends		. '(company-ess-julia-objects))
     (ess-dump-filename-template		. (ess-replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
-    (ess-mode-syntax-table		. julia-syntax-table)
-    (ess-mode-editing-alist	        . julia-editing-alist)
+    (ess-mode-editing-alist	        . nil)
     (ess-change-sp-regexp		. nil );ess-R-change-sp-regexp)
     (ess-help-sec-regex			. ess-help-R-sec-regex)
     (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
@@ -526,12 +314,6 @@ to look up any doc strings."
     )
   "Variables to customize for Julia -- set up later than emacs initialization.")
 
-(defvar julia-versions '("julia")
-  "List of partial strings for versions of Julia to access within ESS.
-Each string specifies the start of a filename.  If a filename
-beginning with one of these strings is found on `exec-path', a M-x
-command for that version of Julia is made available.")
-
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
   ;; These arguments are currently not passed to other versions of julia that have
@@ -539,27 +321,26 @@ command for that version of Julia is made available.")
   :group 'ess-julia
   :type 'string)
 
+(defvar ess-julia-mode-map ess-mode-map)
+
 ;;;###autoload
-(defun julia-mode  (&optional proc-name)
+(define-derived-mode ess-julia-mode julia-mode "ESS[julia-derived]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
-  (interactive "P")
-  ;; (setq ess-customize-alist julia-customize-alist)
-  (ess-mode julia-customize-alist proc-name)
+  (ess-mode ess-julia-customize-alist nil t)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'julia-object-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
+  (add-ehook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-  ;; (local-set-key  "\t" 'julia-indent-line) ;; temp workaround
-  ;; (set (make-local-variable 'indent-line-function) 'julia-indent-line)
-  (set (make-local-variable 'julia-basic-offset) 4)
-  (setq imenu-generic-expression julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl")
-  (run-hooks 'julia-mode-hook))
 
-(defvar julia-mode-hook nil)
-(defvar julia-post-run-hook nil
+  (set (make-local-variable 'ess-julia-basic-offset) 4)
+  (setq imenu-generic-expression ess-julia-imenu-generic-expression)
+  (imenu-add-to-menubar "Imenu-jl")
+  (run-hooks 'ess-julia-mode-hook))
+
+(defvar ess-julia-mode-hook nil)
+(defvar ess-julia-post-run-hook nil
   "Functions run in process buffer after starting julia process.")
 
 ;;;###autoload
@@ -573,7 +354,7 @@ to julia, put them in the variable `inferior-julia-args'."
   ;; get settings, notably inferior-julia-program-name :
   (if (null inferior-julia-program-name)
       (error "'inferior-julia-program-name' does not point to 'julia' or 'julia-basic' executable")
-    (setq ess-customize-alist julia-customize-alist)
+    (setq ess-customize-alist ess-julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
@@ -590,11 +371,11 @@ to julia, put them in the variable `inferior-julia-args'."
       (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-      (add-hook 'completion-at-point-functions 'julia-object-completion nil 'local)
+      (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
 
       (ess--tb-start)
-      (set (make-local-variable 'julia-basic-offset) 4)
+      (set (make-local-variable 'ess-julia-basic-offset) 4)
       ;; remove ` from julia's logo
       (goto-char (point-min))
       (while (re-search-forward "`" nil t)
@@ -603,10 +384,10 @@ to julia, put them in the variable `inferior-julia-args'."
       ;; --> julia helpers from ../etc/ess-julia.jl :
       (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
       (with-ess-process-buffer nil
-        (run-mode-hooks 'julia-post-run-hook))
+        (run-mode-hooks 'ess-julia-post-run-hook))
       )))
 
-(add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
+(add-to-list 'auto-mode-alist '("\\.jl\\'" . ess-julia-mode))
 
 (provide 'ess-julia)
 
