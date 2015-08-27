@@ -53,8 +53,11 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-d.elc ess-rd.elc \
 	ess-developer.elc ess-tracebug.elc ess-julia.elc\
+	julia-mode.elc\
 	ess-sp6w-d.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
+## julia-mode.el : really from the julia sources -- but want in tarball!
+
 
 ESSR_VER =`cat ../etc/ESSR-VERSION`
 ##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
@@ -90,7 +93,6 @@ clean:
 distclean: clean
 # and potentially more
 
-
 ### Targets below here are only for developers - and these must have perl
 
 ### Replace Version numbers (as in ../doc/Makefile !):
@@ -100,6 +102,10 @@ ess-custom.el: ../VERSION
 
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
+
+## This should typically happen before releasing ESS
+julia-mode.el:
+	wget https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el
 
 ### File Dependencies
 
