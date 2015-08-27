@@ -397,8 +397,8 @@ getOrCreateForm <- function(bindName, whereEnv)
 
 parentContainer <-
     if(is.null(.getPrototype(.Object@host))) { emptyenv()
-                                           } else sdf
-### ^-- } is here (broken!)
+    } else sdf
+### ^-- here
 
 parentContainer <-
     if(is.null(.getPrototype(.Object@host))) emptyenv()
@@ -732,7 +732,7 @@ print.MethodsFunction <- function(x, byclass = attr(x, "byclass"), ...)
 
 
 
-### --- 28 --- [still unfixed, 2015-04-08]
+### --- 28 --- [still unfixed, 2015-04-08; 2015-08-27;
 ## Indentation of end-line comments (to column 40 = 'indent-column')
 ## {this is part of "real" code in Rmpfr/R/hjk.R}:
 hjk <- function(x,n) { # <--- C-M-q  "on {" -- does *no longer* indent the "# .."
@@ -774,27 +774,45 @@ foreach(a = 1:3) %:%
 read.csv('file.csv') %>%
     mutate(X = X+2, Y = Y/2) %>%
 ### ^--- here
-        filter(X < 5)
-###     ^-- here
+    filter(X < 5)
+### ^-- here (*was* indented earlier)
 
 
-### --- 30 --- Following "as desired" but not provided -- github issue
+### --- 30 --- ok:
 {
     r <- array(if (d[3L] == 3L)
-                  rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), maxColorValue = max)
+                   rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), maxColorValue = max)
                else if (d[3L] == 4L)
-                  rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), t(x[,,4L]), maxColorValue = max)
+                   rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), t(x[,,4L]), maxColorValue = max)
                else stop("foo"),
                dim = d[1:2])
 }
 
-
-### MM: not ok yet
-## {from real code in R sources}
+## ok :
 {
     obj <- obj && (condition1 || class2 %in% .BasicClasses ||
-                                             condition3)
-}## not ok yet
+                   condition3)
+}
+
+### --- 31 --------
+## C-s "recog"; M-C-a -- should go to beginning of function, does not
+
+glmmTMB <- function (formula, data = NULL)
+{
+    ## glFormula <- function(formula, data=NULL, family = gaussian,
+    ##                       subset, weights, na.action, offset,
+    ##                       contrasts = NULL, mustart, etastart,
+    ##                       control = glmerControl(), ...) {
+
+    ## FIXME: check for offsets in ziformula/dispformula, throw an error
+
+    call <- mf <- mc <- match.call()
+
+    if (is.null(family$family)) {
+      print(family)
+      stop("'family' not recognized")
+    }
+}
 
 
 
