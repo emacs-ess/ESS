@@ -1905,7 +1905,6 @@ List format is identical to that of `ess-bp-type-spec-alist'."
       (goto-char (1- init-pos))  ;; sort of save-excursion
       insertion-pos)))
 
-
 (defun ess-bp-recreate-all ()
   "internal function to recreate all bp"
   (save-excursion
@@ -2749,17 +2748,19 @@ Only do this when called interactively and  #chars is 1"
           (kill-region beg (point))))
     ad-do-it))
 
-;; previous-line gets stuck if next char is intangible
-(defadvice previous-line (around ess-fix-cursor-stuck-at-intangible-text activate)
-  "When about to move to previous line when next char is
-intanbible, step char backward first"
-  (if (and (eq major-mode 'ess-mode)
-           (or (null (ad-get-arg 0))
-               (= (ad-get-arg 0) 1))
-           (get-text-property (point) 'intangible))
-      (backward-char 1))
-  ad-do-it)
+;; reported as bug#21368
 
+;; ;; previous-line gets stuck if next char is intangible
+;; reported 
+;; (defadvice previous-line (around ess-fix-cursor-stuck-at-intangible-text activate)
+;;   "When about to move to previous line when next char is
+;; intangible, step char backward first"
+;;   (when (and (eq major-mode 'ess-mode)
+;;              (or (null (ad-get-arg 0))
+;;                  (= (ad-get-arg 0) 1))
+;;              (get-text-property (point) 'intangible))
+;;     (goto-char (1- (point))))
+;;   ad-do-it)
 
 ;; (ad-remove-advice 'previous-line 'around 'ess-fix-cursor-stuck-at-intangible-text)
 
