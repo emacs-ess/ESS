@@ -50,6 +50,8 @@
   ;; interfere with tests
   `((RRR
      ,@(cdr (assq 'RRR ess-style-alist)))
+    (RRR-aligned
+     ,@(cdr (assq 'RRR-aligned ess-style-alist)))
     (GNU
      ,@(cdr (assq 'GNU ess-style-alist)))
     (RStudio

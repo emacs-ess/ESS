@@ -1050,6 +1050,20 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-prev-call-chains . t)
      (ess-indent-with-fancy-comments . t))
 
+    (RRR-aligned
+     (ess-indent-offset . 4)
+     (ess-offset-arguments . open-delim)
+     (ess-offset-arguments-newline . prev-call)
+     (ess-offset-block . open-delim)
+     (ess-offset-continued . straight)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
+     (ess-align-blocks . (control-flow))
+     (ess-indent-prev-call-lhs . t)
+     (ess-indent-prev-call-chains . nil)
+     (ess-indent-with-fancy-comments . t))
+
     (RStudio
      (ess-indent-offset . 2)
      (ess-offset-arguments . open-delim)
