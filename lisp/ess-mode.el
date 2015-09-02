@@ -367,10 +367,10 @@ Variables controlling indentation style:
     Calls in which continuations should be aligned.
  `ess-align-blocks'
     Blocks that should always be aligned vertically.
- `ess-indent-prev-call-lhs'
+ `ess-indent-from-lhs'
     Whether function calls given as argument should be indented from the
     parameter name.
- `ess-indent-prev-call-chains'
+ `ess-indent-from-chain-start'
     Whether to indent arguments from the first of several consecutive calls.
  `ess-indent-with-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
@@ -1572,7 +1572,11 @@ Returns nil if line starts inside a string, t if in a comment."
         (+ (current-column) offset)))))
 
 (defun ess-arg-block-p ()
-  (unless (null containing-sexp)
+  (unless (or (null containing-sexp)
+              ;; Unbraced blocks in a { block are not arg blocks
+              (and (ess-unbraced-block-p)
+                   (ess-at-containing-sexp
+                     (looking-at "{"))))
     (cond
      ;; Unbraced body
      ((ess-at-indent-point
@@ -1620,13 +1624,13 @@ Returns nil if line starts inside a string, t if in a comment."
                                   (and (eq arg-block 'opening)
                                        (ess-backward-sexp 2)
                                        (looking-at "function\\b"))))
-                            'decl)
+                            'fun-decl)
                            ((ess-at-indent-point
                               (ess-unbraced-block-p))
                             'unbraced)
                            ((ess-at-containing-sexp
                               (not (ess-looking-back-attached-name-p)))
-                            'naked)
+                            'bare-block)
                            (t)))
          (call-pos (if (and (not (eq block-type 'unbraced))
                             (not (eq arg-block 'opening)))
@@ -1666,8 +1670,7 @@ Returns nil if line starts inside a string, t if in a comment."
           (cond
            ;; Indent from opening delimiter
            ((eq type 'open-delim)
-            (re-search-forward "[[(]" (line-end-position) t)
-            (current-column))
+            (ess-calculate-indent--args-open-delim))
            ;; Indent from attached name
            ((eq type 'prev-call)
             (ess-calculate-indent--args-prev-call))
@@ -1680,19 +1683,23 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-adjust-argument-indent indent offset max-col block)
       (+ indent offset))))
 
+(defun ess-calculate-indent--args-open-delim ()
+  (forward-char)
+  (current-column))
+
 (defun ess-calculate-indent--args-prev-call ()
   ;; Handle brackets chains such as ][ (cf data.table)
   (ess-climb-chained-brackets)
   ;; Handle call chains
-  (if ess-indent-prev-call-chains
+  (if ess-indent-from-chain-start
       (while (and (ess-backward-sexp)
                   (when (looking-back "[[(][ \t,]*" (line-beginning-position))
                     (goto-char (match-beginning 0)))))
     (ess-backward-sexp))
-  (when ess-indent-prev-call-lhs
+  (when ess-indent-from-lhs
     (ess-climb-lhs))
   (if (and nil
-           (eq block 'decl)
+           (eq block 'fun-decl)
            (not (eq arg-block 'opening))
            (not (eq (ess-offset-type type-sym) 'open-delim)))
       (+ (ess-offset 'block) (current-column))
@@ -1710,7 +1717,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (current-indentation))
      ;; Function blocks need special treatment
      ((and (eq type 'prev-line)
-           (eq block 'decl))
+           (eq block 'fun-decl))
       (goto-char containing-sexp)
       (ess-climb-block-opening)
       (current-indentation))

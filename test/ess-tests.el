@@ -50,6 +50,8 @@
   ;; interfere with tests
   `((RRR
      ,@(cdr (assq 'RRR ess-style-alist)))
+    (RRR-aligned
+     ,@(cdr (assq 'RRR-aligned ess-style-alist)))
     (GNU
      ,@(cdr (assq 'GNU ess-style-alist)))
     (RStudio
@@ -65,9 +67,9 @@
      (ess-align-nested-calls . ("ifelse"))
      (ess-align-arguments-in-calls . nil)
      (ess-align-continuations-in-calls . nil)
-     (ess-align-blocks . (fun-decl))
-     (ess-indent-prev-call-lhs . nil)
-     (ess-indent-prev-call-chains . nil)
+     (ess-align-blocks . (fun-decl bare-blocks))
+     (ess-indent-from-lhs . nil)
+     (ess-indent-from-chain-start . nil)
      (ess-indent-with-fancy-comments . t))
     (misc2
      ,@(cdr (assq 'RStudio ess-style-alist))

@@ -731,7 +731,7 @@ the closest function call:
                            ))
 
 You can control the details of indentation at `prev-call' with
-`ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
+`ess-indent-from-lhs' and `ess-indent-from-chain-start'.
 
 
 When set to `prev-line', arguments on a new line are indented
@@ -779,7 +779,7 @@ closest function call:
                  }))
 
 You can control the details of indentation at `prev-call' with
-`ess-indent-prev-call-lhs' and `ess-indent-prev-call-chains'.
+`ess-indent-from-lhs' and `ess-indent-from-chain-start'.
 
 
 When set to `prev-line', blocks are indented relative to the
@@ -893,14 +893,10 @@ aligned vertically. With `fun-decl', the body of a function
 declaration will always be aligned with the call to
 `function'.")
 
-(defvar ess-indent-prev-call-lhs nil
-  "When non-nil, indent arguments from the left-hand side of an assignment.
-
-This setting only has an effect when indentation of arguments or
-blocks is relative to the innermost function call. That is, when
-`ess-offset-arguments', `ess-offset-arguments-newline' or
-`ess-offset-block' are set to a number N as opposed to nil or
-'(N).
+(defvar ess-indent-from-lhs nil
+  "When non-nil, indent arguments from the left-hand side of an
+assignment. This setting currently only has an effect for
+offsets set to `prev-call'.
 
 If nil:
 
@@ -926,22 +922,19 @@ If t:
 
 See `ess-style-alist' for for an overview of ESS indentation.")
 
-(defvar ess-indent-prev-call-chains t
-  "This switch adjusts the behaviour of
-ess-offset-arguments(-newline) and ess-offset-block when they are
-set to `t'. In this case, arguments are indented starting from
-the function call. When ess-indent-prev-call-chains is
-`prev-call' as well, chained calls will be treated as if they
-were one call and indentation will start from the first one.
+(defvar ess-indent-from-chain-start t
+  "When non-nil, chained calls will be treated as if they were
+one call and indentation will start from the first one. This
+setting currently only has an effect for offsets set to
+`prev-call'.
 
-For example, with ess-offset-arguments-newline set to `prev-call'
-and ess-indent-prev-call-chains set to `nil', we have:
+If `nil':
 
   some_function(other_function(
                     argument
                 ))
 
-And when the latter is set to `t' instead:
+If `t':
 
   some_function(other_function(
       argument
@@ -955,7 +948,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
   :group 'ess-edit)
 
 (define-obsolete-variable-alias 'ess-fancy-comments 'ess-indent-with-fancy-comments "15.09")
-(define-obsolete-variable-alias 'ess-arg-function-offset 'ess-indent-prev-call-lhs "15.09")
+(define-obsolete-variable-alias 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
 (define-obsolete-variable-alias 'ess-arg-function-offset-new-line 'ess-offset-arguments-newline "15.09")
 (define-obsolete-variable-alias 'ess-first-continued-statement-offset 'ess-offset-continued "15.09")
 (define-obsolete-variable-alias 'ess-continued-statement-offset 'ess-offset-continued "15.09")
@@ -974,8 +967,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . t))
 
     (C++
@@ -988,8 +981,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . t))
 
     ;; CLB added rmh 2Nov97 at request of Terry Therneau
@@ -1003,8 +996,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . t))
 
     (GNU
@@ -1017,8 +1010,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . t))
 
     (K&R
@@ -1031,8 +1024,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . t))
 
     ;; R added ajr 17Feb04 to match "common R" use
@@ -1046,8 +1039,22 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
      (ess-align-blocks . (control-flow))
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
+     (ess-indent-with-fancy-comments . t))
+
+    (RRR-aligned
+     (ess-indent-offset . 4)
+     (ess-offset-arguments . open-delim)
+     (ess-offset-arguments-newline . prev-call)
+     (ess-offset-block . open-delim)
+     (ess-offset-continued . straight)
+     (ess-align-nested-calls . ("ifelse"))
+     (ess-align-arguments-in-calls . ("function[ \t]*("))
+     (ess-align-continuations-in-calls . ("[ \t]*(" "if[ \t]*(" "[^ \t]+\\["))
+     (ess-align-blocks . (control-flow))
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . nil)
      (ess-indent-with-fancy-comments . t))
 
     (RStudio
@@ -1060,8 +1067,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls . ("function[ \t]*("))
      (ess-align-continuations-in-calls . nil)
      (ess-align-blocks . nil)
-     (ess-indent-prev-call-lhs . t)
-     (ess-indent-prev-call-chains . t)
+     (ess-indent-from-lhs . t)
+     (ess-indent-from-chain-start . t)
      (ess-indent-with-fancy-comments . nil))
 
     (DEFAULT
@@ -1074,8 +1081,8 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-align-arguments-in-calls . ,(default-value 'ess-align-arguments-in-calls))
       (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
       (ess-align-blocks . ,(default-value 'ess-align-blocks))
-      (ess-indent-prev-call-lhs . ,(default-value 'ess-indent-prev-call-lhs))
-      (ess-indent-prev-call-chains . ,(default-value 'ess-indent-prev-call-chains))
+      (ess-indent-from-lhs . ,(default-value 'ess-indent-from-lhs))
+      (ess-indent-from-chain-start . ,(default-value 'ess-indent-from-chain-start))
       (ess-indent-with-fancy-comments . ,(default-value 'ess-indent-with-fancy-comments))))
 
   "Predefined formatting styles for ESS code.
@@ -1123,10 +1130,10 @@ Overrides (implies vertical alignment):
 
 Control variables:
 
- - `ess-indent-prev-call-lhs': whether to indent arguments from
+ - `ess-indent-from-lhs': whether to indent arguments from
    left-hand side of an assignment or parameter declaration.
 
- - `ess-indent-prev-call-chains': whether to indent arguments from
+ - `ess-indent-from-chain-start': whether to indent arguments from
    the first of several consecutive calls.
 
  - `ess-indent-with-fancy-comments': whether to indent #,## and ### comments
