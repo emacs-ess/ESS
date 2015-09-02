@@ -1719,7 +1719,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (ess-climb-continued-statements t)
       ;; Find next non-empty line to indent from
       (while (and (= (forward-line -1) 0)
-                  (looking-at "[ \t]*$")))
+                  (looking-at "[ \t]*\\($\\|#\\)")))
       ;; Don't indent from block continuation
       (ess-climb-block-opening)
       ;; The following ensures that only the first line

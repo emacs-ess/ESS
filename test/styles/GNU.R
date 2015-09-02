@@ -906,6 +906,12 @@ object <-
 ### Section comment
 }
 
+## 4
+fun_call(
+    ## Comment
+    argument
+)
+
 
 ### Logical operators
 
