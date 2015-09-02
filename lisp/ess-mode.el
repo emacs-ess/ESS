@@ -2037,10 +2037,17 @@ style variables buffer local."
           (orig-line (line-number-at-pos))
           last-pos prefix-break)
       (ess-fill-args--unroll-lines)
-      ;; With prefix, start with first argument on a newline
-      (when (and current-prefix-arg
-                 (not (looking-at "[ \t]*#")))
+      (cond
+       ;; With prefix, start with first argument on a newline
+       ((and (equal current-prefix-arg '(4))
+             (not (looking-at "[ \t]*#")))
         (newline-and-indent))
+       ;; With double prefix, start second argument on a newline
+       ((and (equal current-prefix-arg '(16))
+             (not (looking-at "[ \t]*#")))
+        (ess-jump-continuations)
+        (ess-jump-char ",")
+        (newline-and-indent)))
       (while (and (not (looking-at "[])]"))
                   ;; Following three conditions prevent infinite loops
                   (/= (point) (or last-pos 1))
@@ -2061,7 +2068,7 @@ style variables buffer local."
                     (/= (point) (or last-pos 1))
                     ;; Break after one pass if prefix is active
                     (not prefix-break))
-          (when current-prefix-arg
+          (when (equal current-prefix-arg '(4))
             (setq prefix-break t))
           (ess-jump-char ",")
           (setq last-pos (point))
@@ -2078,7 +2085,10 @@ style variables buffer local."
                   (ess-indent-line)
                   (forward-line))))))
         (when (or (>= (current-column) fill-column)
-                  prefix-break)
+                  prefix-break
+                  (and (equal current-prefix-arg '(16))
+                       (looking-at "[ \t]*[])]")
+                       (setq last-pos (point))))
           (if (and last-pos (/= last-pos start-pos))
               (goto-char last-pos)
             (ess-jump-char ","))

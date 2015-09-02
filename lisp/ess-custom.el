@@ -619,7 +619,17 @@ argument per line:
       argument2,
       argument3,
       argument4
-  )"
+  )
+
+When called with a double prefix, refilling produces:
+
+  fun_call(argument1,
+      argument2, argument3,
+      argument4, argument5
+  )
+
+The last formatting is meant to be used with
+`ess-offest-arguments' set to `prev-call' or `prev-line'. "
   :group 'ess-edit
   :type 'boolean)
 
