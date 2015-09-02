@@ -894,13 +894,9 @@ declaration will always be aligned with the call to
 `function'.")
 
 (defvar ess-indent-from-lhs nil
-  "When non-nil, indent arguments from the left-hand side of an assignment.
-
-This setting only has an effect when indentation of arguments or
-blocks is relative to the innermost function call. That is, when
-`ess-offset-arguments', `ess-offset-arguments-newline' or
-`ess-offset-block' are set to a number N as opposed to nil or
-'(N).
+  "When non-nil, indent arguments from the left-hand side of an
+assignment. This setting currently only has an effect for
+offsets set to `prev-call'.
 
 If nil:
 
@@ -927,21 +923,18 @@ If t:
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-indent-from-chain-start t
-  "This switch adjusts the behaviour of
-ess-offset-arguments(-newline) and ess-offset-block when they are
-set to `t'. In this case, arguments are indented starting from
-the function call. When ess-indent-from-chain-start is
-`prev-call' as well, chained calls will be treated as if they
-were one call and indentation will start from the first one.
+  "When non-nil, chained calls will be treated as if they were
+one call and indentation will start from the first one. This
+setting currently only has an effect for offsets set to
+`prev-call'.
 
-For example, with ess-offset-arguments-newline set to `prev-call'
-and ess-indent-from-chain-start set to `nil', we have:
+If `nil':
 
   some_function(other_function(
                     argument
                 ))
 
-And when the latter is set to `t' instead:
+If `t':
 
   some_function(other_function(
       argument
