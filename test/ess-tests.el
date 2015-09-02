@@ -68,8 +68,8 @@
      (ess-align-arguments-in-calls . nil)
      (ess-align-continuations-in-calls . nil)
      (ess-align-blocks . (fun-decl bare-blocks))
-     (ess-indent-prev-call-lhs . nil)
-     (ess-indent-prev-call-chains . nil)
+     (ess-indent-from-lhs . nil)
+     (ess-indent-from-chain-start . nil)
      (ess-indent-with-fancy-comments . t))
     (misc2
      ,@(cdr (assq 'RStudio ess-style-alist))

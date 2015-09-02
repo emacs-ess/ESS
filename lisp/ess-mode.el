@@ -367,10 +367,10 @@ Variables controlling indentation style:
     Calls in which continuations should be aligned.
  `ess-align-blocks'
     Blocks that should always be aligned vertically.
- `ess-indent-prev-call-lhs'
+ `ess-indent-from-lhs'
     Whether function calls given as argument should be indented from the
     parameter name.
- `ess-indent-prev-call-chains'
+ `ess-indent-from-chain-start'
     Whether to indent arguments from the first of several consecutive calls.
  `ess-indent-with-fancy-comments'
     Non-nil means distinguish between #, ##, and ### for indentation.
@@ -1691,12 +1691,12 @@ Returns nil if line starts inside a string, t if in a comment."
   ;; Handle brackets chains such as ][ (cf data.table)
   (ess-climb-chained-brackets)
   ;; Handle call chains
-  (if ess-indent-prev-call-chains
+  (if ess-indent-from-chain-start
       (while (and (ess-backward-sexp)
                   (when (looking-back "[[(][ \t,]*" (line-beginning-position))
                     (goto-char (match-beginning 0)))))
     (ess-backward-sexp))
-  (when ess-indent-prev-call-lhs
+  (when ess-indent-from-lhs
     (ess-climb-lhs))
   (if (and nil
            (eq block 'fun-decl)
