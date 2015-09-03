@@ -1488,8 +1488,8 @@ Returns nil if line starts inside a string, t if in a comment."
        ((and (null containing-sexp)
              (not (ess-unbraced-block-p)))
         0)
-       ;; Bare block contents
-       ((ess-calculate-indent--naked-block))
+       ;; Block: Contents (easy case)
+       ((ess-calculate-indent--block-relatively))
        ;; Block: Closing
        ((ess-block-closing-p)
         (ess-calculate-indent--block 0))
@@ -1555,21 +1555,39 @@ Returns nil if line starts inside a string, t if in a comment."
                                (ess-looking-back-definition-op-p t)))))
           (+ (current-column) offset))))))
 
-(defun ess-calculate-indent--naked-block ()
+(defun ess-calculate-indent--block-relatively ()
   (ess-save-excursion-when-nil
     (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
-          (start-line (line-number-at-pos))
-          (saved-pos))
-      ;; Block enclosed in curly brackets not part of a call. Check
-      ;; if enclosing { is first thing on line
-      (when (and containing-sexp
-                 (not (ess-unbraced-block-p))
-                 (goto-char containing-sexp)
-                 (ess-block-opening-p)
-                 (equal (point) (save-excursion
-                                  (ess-back-to-indentation)
-                                  (point))))
-        (+ (current-column) offset)))))
+          (start-line (line-number-at-pos)))
+      (cond
+       ;; If a block already contains an indented line, we can indent
+       ;; relatively from that first line
+       ((ess-save-excursion-when-nil
+          (and (not (looking-at "}"))
+               containing-sexp
+               (goto-char containing-sexp)
+               (looking-at "{")
+               (or (not (looking-at "[ \t]*[#\n]"))
+                   (ess-jump-continuations))
+               (progn
+                 (forward-line)
+                 (ess-back-to-indentation)
+                 (/= (line-number-at-pos) start-line))
+               (save-excursion
+                 (and (ess-jump-continuations)
+                      (/= (line-number-at-pos) start-line)))))
+        (current-column))
+       ;; If a block is not part of a call, we can indent relatively
+       ;; from the opening {. First check that enclosing { is first
+       ;; thing on line
+       ((and containing-sexp
+             (not (ess-unbraced-block-p))
+             (goto-char containing-sexp)
+             (ess-block-opening-p)
+             (equal (point) (save-excursion
+                              (ess-back-to-indentation)
+                              (point))))
+        (+ (current-column) offset))))))
 
 (defun ess-arg-block-p ()
   (unless (or (null containing-sexp)
@@ -1646,7 +1664,8 @@ Returns nil if line starts inside a string, t if in a comment."
 ;; natural indentation: we need to check the whole call. This is very
 ;; inefficient especially when indenting a region containing a large
 ;; function call (e.g. some dplyr's data cleaning code). Should be
-;; solved by implementing a cache as in (syntax-ppss).
+;; solved by implementing a cache as in (syntax-ppss), though it's
+;; probably not worth the work.
 (defun ess-calculate-indent--args (&optional offset type call-pos to block)
   (let* ((call-pos (or call-pos containing-sexp))
          (max-col (prog1 (unless (eq type 'prev-line)
