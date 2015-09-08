@@ -34,12 +34,12 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 #ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
-# PREFIX=/Applications/Emacs.app/Contents/Resources
-# EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
-# SITELISP=$(PREFIX)/site-lisp
-# LISPDIR=$(SITELISP)/ess
-# INFODIR=/usr/local/info
-# ETCDIR =$(PREFIX)/etc/ess
+PREFIX=/Applications/Emacs.app/Contents/Resources
+EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+SITELISP=$(PREFIX)/site-lisp
+LISPDIR=$(SITELISP)/ess
+INFODIR=/usr/local/info
+ETCDIR =$(PREFIX)/etc/ess
 
 ##__ Aquamacs __  (donated by Dan Knoepfle, Mar 26, 2011)
 # PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
@@ -65,6 +65,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 ##                 1st) source-file & 2nd) target-directory
 ## UNINSTALL       deletes all arguments
 ## DOCDIR          Destination of other doc files
+## DOWNLOAD        Download internet file to stdout
 
 SHELL = /bin/sh
 
@@ -84,6 +85,9 @@ INSTALL = cp -p
 UNINSTALL = rm -f
 
 DOCDIR=$(PREFIX)/share/doc/ess
+
+DOWNLOAD = wget -O -
+DOWNLOAD = curl
 
 ## Section 3
 ## For ESS developers only, not part of installation procedure
