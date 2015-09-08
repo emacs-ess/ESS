@@ -39,7 +39,12 @@
 
 (require 'compile); for compilation-* below
 (require 'ess-utils)
-(require 'julia-mode)
+
+(condition-case nil
+      (progn
+        (require 'julia-mode)
+        (when (featurep 'julia-mode)
+
 (eval-when-compile
   (require 'cl))
 
@@ -389,6 +394,6 @@ to julia, put them in the variable `inferior-julia-args'."
 
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . ess-julia-mode))
 
+))  (error nil))
 (provide 'ess-julia)
-
 ;;; ess-julia.el ends here

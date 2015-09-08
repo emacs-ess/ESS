@@ -64,7 +64,7 @@ ESSR_VER =`cat ../etc/ESSR-VERSION`
 
 ### Targets
 
-all: $(ELC) ess-custom.el
+all: $(ELC) ess-custom.el julia-mode.el
 
 .PHONY: dist
 dist: all
@@ -103,9 +103,9 @@ ess-custom.el: ../VERSION
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
-## This should typically happen before releasing ESS
+## This should typically happen before building ESS
 julia-mode.el:
-	wget https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el
+	$(DOWNLOAD) https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el > julia-mode.el
 
 ### File Dependencies
 
