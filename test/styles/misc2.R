@@ -180,7 +180,7 @@ fun_call(parameter =
            fun_argument(
              sub_argument
            ),
-         argument
+  argument
 )
 
 ## 10
@@ -250,7 +250,7 @@ fun_call({
 ## 18
 fun_call(argument1 %>%
            stuff,
-         argument2)
+  argument2)
 
 
 ### Blocks
@@ -904,6 +904,11 @@ fun_call1(fun_call2(fun_call3(
   argument
 ))) %>%
   fun_call2()
+
+## 28
+fun_call(argument1 %>%
+           stuff,
+  argument2)
 
 
 ### Comments
