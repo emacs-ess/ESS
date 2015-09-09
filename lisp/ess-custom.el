@@ -628,8 +628,9 @@ When called with a double prefix, refilling produces:
       argument4, argument5
   )
 
-The last formatting is meant to be used with
-`ess-offest-arguments' set to `prev-call' or `prev-line'. "
+The last formatting is useful for e.g. defining R6 classes. It is
+meant to be used with `ess-offest-arguments' set to `prev-call'
+or `prev-line'. "
   :group 'ess-edit
   :type 'boolean)
 
