@@ -1830,28 +1830,23 @@ Returns nil if line starts inside a string, t if in a comment."
          (ess-forward-sexp)
          (ess-looking-at-definition-op-p no-fun-arg))))
 
-(defun ess-maybe-jump-to-leftmost-delim ()
+(defun ess-maybe-jump-to-leftmost ()
   (ess-save-excursion-when-nil
-    (and (cond ((ess-looking-at-call-p)
-                (ess-save-excursion-when-nil
-                  (ess-jump-object)
-                  (ess-jump-blanks)
-                  (ess-jump-to-leftmost-delim)))
-               ((looking-at "[[({]")
-                (ess-jump-to-leftmost-delim)))
-         (< (line-number-at-pos) indent-line))))
+    (let ((orig-col (current-column)))
+      (and (or (prog1 (ess-looking-at-call-p)
+                 (ess-jump-object)
+                 (ess-jump-blanks))
+               (looking-at "[[({]"))
+           (ess-jump-to-leftmost orig-col)
+           (< (line-number-at-pos) indent-line)))))
 
-(defun ess-jump-to-leftmost-delim ()
+(defun ess-jump-to-leftmost (orig-col)
   "Should be called in front of opening delim."
-  (let ((opening-pos (point))
-        (opening-col (current-column)))
-    (ess-save-excursion-when-nil
-      (forward-char)
-      (prog1 (ess-up-list)
-        (backward-char)))
-    (or (not (< opening-col (current-column)))
-        (prog1 nil
-          (goto-char opening-pos)))))
+  (ess-save-excursion-when-nil
+    (and (prog2 (forward-char)
+             (ess-up-list)
+           (backward-char))
+         (not (< orig-col (current-column))))))
 
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line,
@@ -1882,7 +1877,7 @@ otherwise nil."
         (while (and (/= prev-pos (point))
                     (eq (ess-climb-continued-statements) t))
           (setq prev-pos (point)))
-        (ess-maybe-jump-to-leftmost-delim)
+        (ess-maybe-jump-to-leftmost)
         (+ (current-column)
            (if (memq climbed '(inline newline named))
                (ess-offset 'continued)
@@ -1898,7 +1893,7 @@ otherwise nil."
           ((memq (char-before) '(?\] ?\} ?\)))
            (backward-char))
           ;; Take the leftmost of both delimiters as reference
-          ((ess-maybe-jump-to-leftmost-delim)))
+          ((ess-maybe-jump-to-leftmost)))
          (+ (current-column)
             (cond
              ((eq (ess-offset-type 'continued) 'cascade)
