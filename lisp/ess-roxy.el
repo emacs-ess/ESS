@@ -774,6 +774,9 @@ list of strings."
    ((and ess-fill-calls
          (ess-point-in-call-p))
     (ess-fill-args))
+   ;; Filling of continuations
+   ((and ess-fill-continuations
+         (ess-point-in-continuation-p)))
    ;; Filling of code comments in @examples roxy field
    ((and (ess-roxy-entry-p)
          (save-excursion

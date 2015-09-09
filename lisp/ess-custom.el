@@ -634,6 +634,11 @@ or `prev-line'. "
   :group 'ess-edit
   :type 'boolean)
 
+(defcustom ess-fill-continuations t
+  ""
+  :group 'ess-edit
+  :type 'boolean)
+
 ;;; From ess-mode:
 
 (defcustom ess-mode-silently-save t

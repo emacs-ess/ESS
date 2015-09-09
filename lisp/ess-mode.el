@@ -1115,6 +1115,11 @@ before the `=' sign."
                     (ess-looking-back-attached-name-p))
                (looking-at "\\["))))))
 
+(defun ess-point-in-continuation-p ()
+  (let ((containing-sexp (if (boundp 'containing-sexp)
+                             containing-sexp
+                           (ess-containing-sexp-position))))))
+
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
   (condition-case nil
