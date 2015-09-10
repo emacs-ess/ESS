@@ -1666,6 +1666,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (forward-line)
                  (ess-back-to-indentation)
                  (/= (line-number-at-pos) start-line))
+               (not (looking-at "[ \t]*\\(#\\|$\\)"))
                (save-excursion
                  (ess-jump-continuations)
                  (< (line-number-at-pos) start-line))))

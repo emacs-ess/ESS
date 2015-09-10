@@ -422,6 +422,14 @@ fun_call1({
              object2
           })
 
+## 21
+fun_call(argument,
+   function() {
+
+      stuff
+   }
+   }
+
 
 ### Bracket indexing
 
