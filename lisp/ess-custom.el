@@ -1504,9 +1504,8 @@ non-nil."
   :type 'string)
 
 (defcustom inferior-R-args ""
-  "String of arguments (see 'R --help') used when starting R.
-These arguments are currently not passed to other versions of R that have
-been created using the variable `ess-r-versions'."
+  "String of arguments (see 'R --help') used when starting R,
+including the versions of R created via variable `ess-r-versions'."
   :group 'ess-R
   :type 'string)
 
