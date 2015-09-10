@@ -1129,6 +1129,9 @@ before the `=' sign."
                (ess-jump-continuations)
                (ess-looking-at-operator-p))))))
 
+(defun ess-point-in-comment-p ()
+  (eq (syntax-ppss-context (syntax-ppss)) 'comment))
+
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
   (condition-case nil
@@ -1319,8 +1322,8 @@ of the curly brackets of a braced block."
     (ess-backward-sexp)))
 
 (defun ess-jump-continuation ()
-  (ess-jump-operator)
-  (ess-jump-expression))
+  (and (ess-jump-operator)
+       (ess-jump-expression)))
 
 (defun ess-jump-continuations ()
   (let (last-pos)
@@ -1362,8 +1365,7 @@ into account."
     (ess-skip-blanks-forward newlines)))
 
 (defun ess-climb-comment ()
-  (when (eq (syntax-ppss-context (syntax-ppss))
-            'comment)
+  (when (ess-point-in-comment-p)
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
 
@@ -1668,7 +1670,8 @@ Returns nil if line starts inside a string, t if in a comment."
                  (/= (line-number-at-pos) start-line))
                (not (looking-at "[ \t]*\\(#\\|$\\)"))
                (save-excursion
-                 (ess-jump-continuations)
+                 (or (ess-jump-expression)
+                     (ess-jump-continuations))
                  (< (line-number-at-pos) start-line))))
         (current-column))
        ;; If a block is not part of a call, we can indent relatively
@@ -2184,7 +2187,8 @@ style variables buffer local."
           (bounds (ess-args-bounds))
           ;; Set undo boundaries manually
           (undo-inhibit-record-point t)
-          last-pos prefix-break)
+          last-pos prefix-break
+          last-newline infinite)
       (when (not bounds)
         (error "Could not find function bounds"))
       (when ess-blink-refilling
@@ -2199,17 +2203,13 @@ style variables buffer local."
        ;; With double prefix, start second argument on a newline
        ((and (equal current-prefix-arg '(16))
              (not (looking-at "[ \t]*#")))
+        (ess-jump-expression)
         (ess-jump-continuations)
         (ess-jump-char ",")
         (newline-and-indent)))
       (while (and (not (looking-at "[])]"))
-                  ;; Following three conditions prevent infinite loops
                   (/= (point) (or last-pos 1))
-                  (not (save-excursion (ess-climb-operator)))
-                  (or (memq (char-before) '(?\( ?\[))
-                      (not (save-excursion
-                             (goto-char (line-beginning-position 0))
-                             (looking-at "[ \t]*$")))))
+                  (not infinite))
         (setq prefix-break nil)
         ;; Record start-pos as future breaking point to avoid breaking
         ;; at `=' sign
@@ -2230,7 +2230,10 @@ style variables buffer local."
           ;; that were jumped over
           (let ((cur-line (line-number-at-pos))
                 end-line)
-            (ess-jump-continuations)
+            (when (ess-any
+                    ((ess-jump-expression))
+                    ((ess-jump-continuations)))
+              (setq last-newline nil))
             (save-excursion
               (when (< cur-line (line-number-at-pos))
                 (setq end-line (line-number-at-pos))
@@ -2247,15 +2250,21 @@ style variables buffer local."
               (goto-char last-pos)
             (ess-jump-char ","))
           (cond ((looking-at "[ \t]*[#\n]")
-                 (progn
-                   (forward-line)
-                   (ess-indent-line)))
+                 (forward-line)
+                 (ess-indent-line)
+                 (setq last-newline nil))
                 ;; With prefix, closing delim goes on a newline
                 ((looking-at "[ \t]*[])]")
-                 (when current-prefix-arg
-                   (newline-and-indent)))
+                 (when (and current-prefix-arg
+                            (not last-newline))
+                   (newline-and-indent)
+                   ;; Prevent indenting infinitely
+                   (setq last-newline t)))
+                ((not last-newline)
+                 (newline-and-indent)
+                 (setq last-newline t))
                 (t
-                 (newline-and-indent)))))
+                 (setq infinite t)))))
       (undo-boundary)
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil))))
@@ -2269,6 +2278,7 @@ style variables buffer local."
                  (point))))
       (when beg
         (goto-char orig-point)
+        (ess-jump-object)
         (ess-jump-continuations)
         (list beg (point-marker))))))
 
@@ -2276,22 +2286,32 @@ style variables buffer local."
   (save-excursion
     (let ((bounds (ess-continuations-bounds))
           (undo-inhibit-record-point t)
-          last-pos)
+          (last-pos (point-min))
+          last-newline infinite)
       (when (not bounds)
         (error "Could not find statements bounds"))
       (when ess-blink-refilling
         (ess-blink-region (car bounds) (marker-position (cadr bounds))))
       (undo-boundary)
       (ess-fill--unroll-lines bounds)
-      (while (< (point) (cadr bounds))
+      (while (and (< (point) (cadr bounds))
+                  (/= (point) (or last-pos 1))
+                  (not infinite))
         (setq last-pos (point))
-        (ess-jump-continuation)
-        (when (or (and (> (current-column) fill-column)
-                       (goto-char last-pos))
-                  current-prefix-arg)
-          (ess-jump-operator)
-          (unless (= (point) (cadr bounds))
-            (newline-and-indent))))
+        (when (ess-jump-expression)
+          (setq last-newline nil))
+        (ess-jump-operator)
+        (if (or (and (> (current-column) fill-column)
+                     (goto-char last-pos))
+                current-prefix-arg)
+            (progn
+              (ess-jump-operator)
+              (unless (= (point) (cadr bounds))
+                (when last-newline
+                  (setq infinite t))
+                (newline-and-indent)
+                (setq last-newline t)))
+          (setq last-newline nil)))
       (undo-boundary)
       (set-marker (cadr bounds) nil))))
 
