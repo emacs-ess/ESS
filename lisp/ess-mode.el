@@ -2181,11 +2181,14 @@ style variables buffer local."
           (orig-col (current-column))
           (orig-line (line-number-at-pos))
           (bounds (ess-args-bounds))
+          ;; Set undo boundaries manually
+          (undo-inhibit-record-point t)
           last-pos prefix-break)
       (when (not bounds)
         (error "Could not find function bounds"))
       (when ess-blink-refilling
         (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+      (undo-boundary)
       (ess-fill--unroll-lines bounds t)
       (cond
        ;; With prefix, start with first argument on a newline
@@ -2252,6 +2255,7 @@ style variables buffer local."
                    (newline-and-indent)))
                 (t
                  (newline-and-indent)))))
+      (undo-boundary)
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil))))
 
@@ -2270,11 +2274,13 @@ style variables buffer local."
 (defun ess-fill-continuations ()
   (save-excursion
     (let ((bounds (ess-continuations-bounds))
+          (undo-inhibit-record-point t)
           last-pos)
       (when (not bounds)
         (error "Could not find statements bounds"))
       (when ess-blink-refilling
         (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+      (undo-boundary)
       (ess-fill--unroll-lines bounds)
       (while (< (point) (cadr bounds))
         (setq last-pos (point))
@@ -2285,6 +2291,7 @@ style variables buffer local."
           (ess-jump-operator)
           (unless (= (point) (cadr bounds))
             (newline-and-indent))))
+      (undo-boundary)
       (set-marker (cadr bounds) nil))))
 
 
