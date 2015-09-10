@@ -65,6 +65,7 @@ EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
 ##                 1st) source-file & 2nd) target-directory
 ## UNINSTALL       deletes all arguments
 ## DOCDIR          Destination of other doc files
+## DOWNLOAD        Download internet file to stdout
 
 SHELL = /bin/sh
 
@@ -84,6 +85,9 @@ INSTALL = cp -p
 UNINSTALL = rm -f
 
 DOCDIR=$(PREFIX)/share/doc/ess
+
+DOWNLOAD = wget -O -
+##DOWNLOAD = curl
 
 ## Section 3
 ## For ESS developers only, not part of installation procedure

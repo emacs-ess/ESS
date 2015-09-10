@@ -628,8 +628,34 @@ When called with a double prefix, refilling produces:
       argument4, argument5
   )
 
-The last formatting is meant to be used with
-`ess-offest-arguments' set to `prev-call' or `prev-line'. "
+The last formatting is useful for e.g. defining R6 classes. It is
+meant to be used with `ess-offest-arguments' set to `prev-call'
+or `prev-line'. "
+  :group 'ess-edit
+  :type 'boolean)
+
+(defcustom ess-fill-continuations t
+  "If non-nil, refilling a paragraph inside a continuation of
+statements (expressions separated by operators) will arrange all
+its elements, never going past `fill-column'.
+
+  lm(outcome ~ pred1 + pred2 +
+       pred3 + pred4, data)
+
+When called with a prefix, the statements are layed out according
+to one expression per line:
+
+  lm(outcome ~
+       pred1 +
+       pred2 +
+       pred3 +
+       pred4, data)"
+  :group 'ess-edit
+  :type 'boolean)
+
+(defcustom ess-blink-refilling t
+  "When non-nil, refilling a call or a continuation will first
+blink the filling region."
   :group 'ess-edit
   :type 'boolean)
 

@@ -899,6 +899,17 @@ object <-
     stuff
   )
 
+## 27
+fun_call1(fun_call2(fun_call3(
+    argument
+))) %>%
+  fun_call2()
+
+## 28
+fun_call(argument1 %>%
+           stuff,
+         argument2)
+
 
 ### Comments
 

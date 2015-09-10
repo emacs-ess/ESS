@@ -770,6 +770,10 @@ list of strings."
    ((not (and (eq major-mode 'ess-mode)
               (string= ess-dialect "R")))
     ad-do-it)
+   ;; Filling of continuations
+   ((and ess-fill-continuations
+         (ess-point-in-continuation-p))
+    (ess-fill-continuations))
    ;; Filling of call arguments
    ((and ess-fill-calls
          (ess-point-in-call-p))
