@@ -2184,7 +2184,7 @@ style variables buffer local."
           last-pos prefix-break)
       (when (not bounds)
         (error "Could not find function bounds"))
-      (when ess-blink-filling
+      (when ess-blink-refilling
         (ess-blink-region (car bounds) (marker-position (cadr bounds))))
       (ess-fill--unroll-lines bounds t)
       (cond
@@ -2273,7 +2273,7 @@ style variables buffer local."
           last-pos)
       (when (not bounds)
         (error "Could not find statements bounds"))
-      (when ess-blink-filling
+      (when ess-blink-refilling
         (ess-blink-region (car bounds) (marker-position (cadr bounds))))
       (ess-fill--unroll-lines bounds)
       (while (< (point) (cadr bounds))
