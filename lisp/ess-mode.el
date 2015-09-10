@@ -1092,10 +1092,10 @@ control flow function (if, for, while, etc)."
   (save-excursion
     (and (ess-climb-operator)
          (if (not fun-arg)
-             (not (ess-function-argument-p))
+             (not (ess-looking-at-parameter-p))
            t))))
 
-(defun ess-function-argument-p ()
+(defun ess-looking-at-parameter-p ()
   "Are we looking at a function argument? To be called just
 before the `=' sign."
   (save-excursion
@@ -1116,9 +1116,18 @@ before the `=' sign."
                (looking-at "\\["))))))
 
 (defun ess-point-in-continuation-p ()
-  (let ((containing-sexp (if (boundp 'containing-sexp)
-                             containing-sexp
-                           (ess-containing-sexp-position))))))
+  (unless (looking-at "[[(]")
+    (or (save-excursion
+          (ess-climb-object)
+          (and (save-excursion
+                 (not (and (ess-back-and-forth-sexp)
+                           (ess-looking-at-parameter-p))))
+               (ess-climb-continuations)))
+        (save-excursion
+          (ess-jump-object)
+          (and (not (ess-looking-at-parameter-p))
+               (ess-jump-continuations)
+               (ess-looking-at-operator-p))))))
 
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
@@ -1143,6 +1152,11 @@ before the `=' sign."
   (ess-save-excursion-when-nil
     (and (ess-forward-sexp)
          (ess-backward-sexp))))
+
+(defun ess-back-and-forth-sexp ()
+  (ess-save-excursion-when-nil
+    (and (ess-backward-sexp)
+         (ess-forward-sexp))))
 
 (defun ess-looking-at (regex)
   "Compared to a simple `(looking-at)', this uses sexp motions to
@@ -1202,7 +1216,7 @@ be advised"
 arguments is non-nil. This is useful to trigger
 side-effects. FORMS follows the same syntax as arguments to
 `(cond)'."
-  (declare (indent 0) (debug (&rest form)))
+  (declare (indent 0) (debug nil))
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
      (some 'identity (mapcar 'eval forms))))
 
@@ -1304,14 +1318,25 @@ of the curly brackets of a braced block."
       (ess-forward-sexp))
     (ess-backward-sexp)))
 
+(defun ess-jump-continuation ()
+  (ess-jump-operator)
+  (ess-jump-expression))
+
 (defun ess-jump-continuations ()
-  (when (ess-looking-at-operator-p)
-    (ess-jump-operator))
   (let (last-pos)
-    (ess-while (and (or (null last-pos) (/= (point) last-pos))
-                    (setq last-pos (point))
-                    (ess-jump-expression)
-                    (ess-jump-operator)))))
+    (when (ess-while (and (or (null last-pos)
+                              (/= (point) last-pos))
+                          (setq last-pos (point))
+                          (ess-jump-continuation)))
+      ;; In calls, operators can start on newlines
+      (let ((start-line (line-number-at-pos)))
+        (when (ess-save-excursion-when-nil
+                (and (ess-point-in-call-p)
+                     (ess-skip-blanks-forward t)
+                     (/= (line-number-at-pos) start-line)
+                     (ess-looking-at-operator-p)))
+          (ess-jump-continuations)))
+      t)))
 
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
@@ -1389,20 +1414,24 @@ into account."
       climbed))))
 
 (defun ess-jump-name ()
-  (let (climbed quote-char)
-    (skip-chars-forward " \t")
-    (if (eq (char-after) ?`)
-        ;; Jump over backquoted names
-        (progn
-          (forward-char)
-          (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
-                  (forward-char))
-            (setq climbed t)
-            (forward-char)))
-      ;; Jump over regular names
-      (while (/= 0 (skip-syntax-forward "w_"))
-        (setq climbed t)))
-    climbed))
+  (ess-save-excursion-when-nil
+    (let (climbed quote-char)
+      (skip-chars-forward " \t")
+      ;; Jump over backquoted names
+      (cond ((and (eq (char-after) ?`)
+                  (looking-back ess-R-symbol-pattern
+                                (1- (point))))
+             (forward-char))
+            ((eq (char-after) ?`)
+             (forward-char)
+             (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
+                     (forward-char))
+               (setq climbed t)
+               (forward-char)))
+            ;; Jump over regular names
+            ((while (/= 0 (skip-syntax-forward "w_"))
+               (setq climbed t))))
+      climbed)))
 
 (defun ess-climb-call ()
   "Climb functions (e.g. ggplot) and parenthesised expressions."
@@ -1416,12 +1445,14 @@ into account."
 
 (defun ess-jump-call ()
   (ess-save-excursion-when-nil
-    (and (ess-jump-object)
-         (cond ((eq (char-before) ?\)))
-               ((looking-at "\\[")
-                (ess-jump-chained-brackets))
-               ((looking-at "(")
-                (ess-forward-sexp))))))
+    (or (and (ess-jump-object)
+             (cond ((eq (char-before) ?\)))
+                   ((looking-at "\\[")
+                    (ess-jump-chained-brackets))
+                   ((looking-at "(")
+                    (ess-forward-sexp))))
+        (and (looking-at "[ \t]*(")
+             (ess-forward-sexp)))))
 
 (defun ess-looking-at-call-p ()
   (save-excursion
@@ -1527,7 +1558,6 @@ Returns nil if line starts inside a string, t if in a comment."
   (save-excursion
     (beginning-of-line)
     (let* ((indent-point (point))
-           (indent-line (line-number-at-pos))
            (state (syntax-ppss))
            (containing-sexp (cadr state))
            (prev-containing-sexp (car (last (butlast (nth 9 state))))))
@@ -1814,7 +1844,7 @@ Returns nil if line starts inside a string, t if in a comment."
         (when (eq (char-before) ?,)
           (forward-char -1))
         (ess-climb-expression)
-        (ess-climb-continued-statements))
+        (ess-climb-continuations))
       ;; The following ensures that only the first line
       ;; counts. Otherwise consecutive statements would get
       ;; increasingly more indented.
@@ -1888,7 +1918,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (or (looking-at ess-R-definition-op-pattern)
         (and (equal (char-after) ?=)
              (if no-fun-arg
-                 (not (ess-function-argument-p))
+                 (not (ess-looking-at-parameter-p))
                t)))))
 
 (defun ess-looking-back-definition-op-p (&optional no-fun-arg)
@@ -1905,7 +1935,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (ess-skip-blanks-forward))
                (looking-at "[[({]"))
            (ess-jump-to-leftmost orig-col)
-           (< (line-number-at-pos) indent-line)))))
+           (< (line-number-at-pos) start-line)))))
 
 (defun ess-jump-to-leftmost (orig-col)
   "Should be called in front of opening delim."
@@ -1919,19 +1949,20 @@ Returns nil if line starts inside a string, t if in a comment."
   "If a continuation line, return an indent of this line,
 otherwise nil."
   (save-excursion
-    (let ((new-indent-point
-           ;; Try to climb block opening
-           (ess-save-excursion-when-nil
-             (when (and (looking-at "{")
-                        (ess-climb-block-opening)
-                        ;; But only if it's on its own line
-                        (= (save-excursion
-                             (back-to-indentation)
-                             (point))
-                           (point)))
-               (point))))
-          (prev-pos 0)
-          (climbed (ess-climb-continued-statements)))
+    (let* ((start-line (line-number-at-pos))
+           (new-indent-point
+            ;; Try to climb block opening
+            (ess-save-excursion-when-nil
+              (when (and (looking-at "{")
+                         (ess-climb-block-opening)
+                         ;; But only if it's on its own line
+                         (= (save-excursion
+                              (back-to-indentation)
+                              (point))
+                            (point)))
+                (point))))
+           (prev-pos 0)
+           (climbed (ess-climb-continuations start-line)))
       (cond
        ;; Overridden calls
        ((and climbed
@@ -1942,7 +1973,7 @@ otherwise nil."
                (ess-climb-object)
                (some 'looking-at ess-align-continuations-in-calls)))
         (while (and (/= prev-pos (point))
-                    (eq (ess-climb-continued-statements) t))
+                    (eq (ess-climb-continuations start-line) t))
           (setq prev-pos (point)))
         (ess-maybe-jump-to-leftmost)
         (+ (current-column)
@@ -1953,28 +1984,25 @@ otherwise nil."
        (climbed
         (let ((first-indent (or (memq climbed '(inline newline named))
                                 (save-excursion
-                                  (not (ess-climb-continued-statements))))))
-         (cond
-          ;; It is more aesthetic to indent continuations from the
-          ;; front of closing delimiters
-          ((memq (char-before) '(?\] ?\} ?\)))
-           (backward-char))
-          ;; Take the leftmost of both delimiters as reference
-          ((ess-maybe-jump-to-leftmost)))
-         (+ (current-column)
-            (cond
-             ((eq (ess-offset-type 'continued) 'cascade)
-              (ess-offset 'continued))
-             (first-indent
-              (ess-offset 'continued))
-             (t
-              0)))))))))
+                                  (not (ess-climb-continuations start-line))))))
+          (cond
+           ;; It is more aesthetic to indent continuations from the
+           ;; front of closing delimiters
+           ((memq (char-before) '(?\] ?\} ?\)))
+            (backward-char))
+           ;; Take the leftmost of both delimiters as reference
+           ((ess-maybe-jump-to-leftmost)))
+          (+ (current-column)
+             (cond
+              ((eq (ess-offset-type 'continued) 'cascade)
+               (ess-offset 'continued))
+              (first-indent
+               (ess-offset 'continued))
+              (t
+               0)))))))))
 
 (defun ess-looking-back-statement-start-p ()
-  (or (looking-back "[,;({[][ \t\n]*" (line-beginning-position -1))
-      (save-excursion
-        (ess-climb-operator)
-        (not (ess-looking-at-operator-p)))))
+  (looking-back "[,;({[][ \t\n]*" (line-beginning-position -1)))
 
 (defun ess-update-climber-counter ()
   (when (not (equal prev-line (line-number-at-pos)))
@@ -1982,11 +2010,12 @@ otherwise nil."
     (setq prev-line (line-number-at-pos))))
 
 ;; This ended up quite messy. Could probably be simplified.
-(defun ess-climb-continued-statements (&optional N)
+(defun ess-climb-continuations (&optional start-line N)
   "When N is nil, climb statements horizontally. When N is a
 number, climb statements also vertically but change line at most
 N times."
-  (let ((orig-line (line-number-at-pos))
+  (let ((start-line (or start-line (line-number-at-pos)))
+        (orig-line (line-number-at-pos))
         (prev-line (line-number-at-pos))
         (prev-point 0) (counter 0) (N (or N 1)) (def-op))
     (while (and
@@ -2002,7 +2031,7 @@ N times."
                    (prog1 t
                      (setq def-op (and (ess-looking-at-definition-op-p) 'inline))
                      (when (and (ess-update-climber-counter) def-op)
-                       (setq def-op (if (ess-function-argument-p)
+                       (setq def-op (if (ess-looking-at-parameter-p)
                                         'named
                                       'newline))))))
             ;; Break loop if we climbed enough or if we reached a
@@ -2022,11 +2051,11 @@ N times."
                         ;; one, but only if the corresponding
                         ;; expression was already indented.
                         (unless (ess-save-excursion-when-nil
-                                  (and (some 'identity
-                                             `(,(ess-jump-object)
-                                               ,(ess-jump-operator)))
+                                  (and (ess-any
+                                         ((ess-jump-object))
+                                         ((ess-jump-operator)))
                                        (looking-at "[({]")
-                                       (< (line-number-at-pos) indent-line)))
+                                       (< (line-number-at-pos) start-line)))
                           (ess-climb-lhs)))
                       (t
                        (ess-forth-and-back-sexp))))))
@@ -2097,6 +2126,51 @@ style variables buffer local."
 
 ;;;*;;; Call filling engine
 
+;; Unroll arguments to a single line until closing marker is found.
+(defun ess-fill--unroll-lines (bounds &optional jump-cont)
+  (let* ((last-pos (point-min))
+         (containing-sexp (ess-containing-sexp-position))
+         prefix-break)
+    (goto-char (car bounds))
+    (goto-char (ess-code-end-position))
+    (while (and (/= (point) last-pos)
+                (< (line-end-position)
+                   (cadr bounds))
+                (not prefix-break))
+      (setq last-pos (point))
+      ;; Check whether we ended up in a sub call. In this case, jump
+      ;; over it, otherwise, join lines.
+      (let ((contained-sexp (ess-containing-sexp-position)))
+        (cond ((and contained-sexp
+                    (not (= containing-sexp contained-sexp)))
+               (goto-char (1+ contained-sexp))
+               (ess-up-list))
+              ;; Jump over continued statements
+              ((and jump-cont (ess-looking-back-operator-p))
+               (ess-skip-blanks-forward t)
+               (ess-jump-continuations))
+              ;; Jump over comments
+              ((looking-at "#")
+               (forward-line)
+               (ess-indent-line))
+              (t
+               (join-line 1))))
+      (goto-char (ess-code-end-position)))
+    (goto-char (car bounds))))
+
+;; This should be called inside a call
+(defun ess-args-bounds ()
+  (save-excursion
+    (let ((beg (1+ (ess-containing-sexp-position))))
+      (and beg
+           ;; (ess-up-list) can't find its way when point is on a
+           ;; backquoted name
+           (goto-char beg)
+           (ess-up-list)
+           (prog1 t
+             (forward-char -1))
+           (list beg (point-marker))))))
+
 (defun ess-jump-char (char)
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
@@ -2106,8 +2180,13 @@ style variables buffer local."
     (let ((start-pos (point-min))
           (orig-col (current-column))
           (orig-line (line-number-at-pos))
+          (bounds (ess-args-bounds))
           last-pos prefix-break)
-      (ess-fill-args--unroll-lines)
+      (when (not bounds)
+        (error "Could not find function bounds"))
+      (when ess-blink-filling
+        (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+      (ess-fill--unroll-lines bounds t)
       (cond
        ;; With prefix, start with first argument on a newline
        ((and (equal current-prefix-arg '(4))
@@ -2172,51 +2251,42 @@ style variables buffer local."
                  (when current-prefix-arg
                    (newline-and-indent)))
                 (t
-                 (newline-and-indent))))))))
+                 (newline-and-indent)))))
+      ;; Signal marker for garbage collection
+      (set-marker (cadr bounds) nil))))
 
-(defun ess-fill-args--unroll-lines ()
-  (let* ((containing-sexp (ess-containing-sexp-position))
-         (temp-table (make-syntax-table S-syntax-table))
-         (last-pos (point-min))
-         prefix-start prefix-break)
-    (modify-syntax-entry ?# "w" temp-table)
-    (goto-char (1+ containing-sexp))
-    (when (not (save-excursion
-                 (ess-up-list)))
-      (error "No closing delimiter found"))
-    ;; Unroll arguments to a single line until closing delimiter is
-    ;; found. Neutralise `#' because we need (ess-up-list) to find
-    ;; closing parenthesis even when it's been erroneously clogged
-    ;; behind a comment
-    (goto-char (ess-code-end-position))
-    (while (and (/= (point) last-pos)
-                (< (line-end-position)
-                   (with-syntax-table temp-table
-                     (save-excursion
-                       (goto-char (1+ containing-sexp))
-                       (ess-up-list)
-                       (point))))
-                (not prefix-break))
-      (setq last-pos (point))
-      ;; Check whether we ended up in a sub call. In this case, jump
-      ;; over it, otherwise, join lines.
-      (let ((contained-sexp (ess-containing-sexp-position)))
-        (cond ((and contained-sexp
-                    (not (= containing-sexp contained-sexp)))
-               (goto-char (1+ contained-sexp))
-               (ess-up-list))
-              ;; Jump over continued statements
-              ((ess-looking-back-operator-p)
-               (ess-skip-blanks-forward t)
-               (ess-jump-continuations))
-              ;; Jump over comments
-              ((looking-at "#")
-               (forward-line)
-               (ess-indent-line))
-              (t
-               (join-line 1))))
-      (goto-char (ess-code-end-position)))
-    (goto-char (or prefix-start (1+ containing-sexp)))))
+(defun ess-continuations-bounds ()
+  (save-excursion
+    (let ((orig-point (point))
+          (beg (progn
+                 (ess-climb-object)
+                 (while (ess-climb-continuations))
+                 (point))))
+      (when beg
+        (goto-char orig-point)
+        (ess-jump-continuations)
+        (list beg (point-marker))))))
+
+(defun ess-fill-continuations ()
+  (save-excursion
+    (let ((bounds (ess-continuations-bounds))
+          last-pos)
+      (when (not bounds)
+        (error "Could not find statements bounds"))
+      (when ess-blink-filling
+        (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+      (ess-fill--unroll-lines bounds)
+      (while (< (point) (cadr bounds))
+        (setq last-pos (point))
+        (ess-jump-continuation)
+        (when (or (and (> (current-column) fill-column)
+                       (goto-char last-pos))
+                  current-prefix-arg)
+          (ess-jump-operator)
+          (unless (= (point) (cadr bounds))
+            (newline-and-indent))))
+      (set-marker (cadr bounds) nil))))
+
 
 
 ;;*;; Creating and manipulating dump buffers

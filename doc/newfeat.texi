@@ -45,11 +45,14 @@ refilling in order to make the documentation more readable. You can also
 refill commented lines in the @code{examples} field without squashing
 the surrounding code in the comments.
 
-@item @ESS{[R]}: A new setting @code{ess-fill-calls} allows function
-calls to be formatted with @code{(fill-paragraph)}. The function's
-arguments will be arranged so as to not exceed @code{fill-column}.
-When @code{(fill-paragraph)} is called with a prefix, the call is
-formatted with one argument per line.
+@item @ESS{[R]}: ESS can now format your code. This is controlled 
+through the settings @code{ess-fill-calls} and
+@code{ess-fill-continuations}. When activated, @code{(fill-paragraph)}
+will format your calls and your formulas/continuations and make sure
+they don't go past @code{fill-column}. Refilling with a prefix produces
+an alternative formatting with one element per line. By default, the
+refilled region blinks. Set @code{ess-blink-filling} to nil to prevent
+this.
 
 @end itemize
 
