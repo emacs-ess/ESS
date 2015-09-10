@@ -40,6 +40,7 @@
 (require 'compile); for compilation-* below
 (require 'ess-utils)
 
+;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
 (condition-case nil
       (progn
         (require 'julia-mode)
@@ -314,15 +315,13 @@ to look up any doc strings."
     (inferior-ess-start-args		. "")
     (inferior-ess-language-start	. nil)
     (ess-STERM		. "iESS")
-    (ess-editor	. R-editor)
+    (ess-editor		. R-editor)
     (ess-pager		. R-pager)
     )
   "Variables to customize for Julia -- set up later than emacs initialization.")
 
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
-  ;; These arguments are currently not passed to other versions of julia that have
-  ;; been created using the variable `ess-r-versions'."
   :group 'ess-julia
   :type 'string)
 
