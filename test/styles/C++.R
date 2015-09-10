@@ -945,6 +945,12 @@ fun_call(
     argument
 )
 
+## 5
+object %>%
+    ## comment,
+    ## comment
+    stuff
+
 
 ### Logical operators
 

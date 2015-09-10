@@ -936,7 +936,7 @@ fun_call(argument1 %>%
 
 ## 3
 {
-  ### Section comment
+### Section comment
 }
 
 ## 4
@@ -944,6 +944,12 @@ fun_call(
   ## Comment
   argument
 )
+
+## 5
+object %>%
+  ## comment,
+  ## comment
+  stuff
 
 
 ### Logical operators

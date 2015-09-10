@@ -1129,8 +1129,13 @@ before the `=' sign."
                (ess-jump-continuations)
                (ess-looking-at-operator-p))))))
 
-(defun ess-point-in-comment-p ()
-  (eq (syntax-ppss-context (syntax-ppss)) 'comment))
+(defun ess-point-in-comment-p (&optional state)
+  (let ((state (or state (syntax-ppss))))
+        (eq (syntax-ppss-context state) 'comment)))
+
+(defun ess-point-in-string-p (&optional state)
+  (let ((state (or state (syntax-ppss))))
+        (eq (syntax-ppss-context state) 'string)))
 
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
@@ -1341,17 +1346,30 @@ of the curly brackets of a braced block."
           (ess-jump-continuations)))
       t)))
 
+(defun ess-looking-at-continuation-p (&optional or-parameter)
+  (or (save-excursion
+        (ess-skip-blanks-backward t)
+        (ess-back-and-forth-sexp)
+        (when (ess-looking-at-operator-p)
+          (if or-parameter t
+            (not (ess-looking-at-parameter-p)))))
+      (save-excursion
+        (ess-climb-block-opening))
+      (save-excursion
+        (ess-climb-if-else))))
+
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
 into account."
-  (when (ess-any
-          ((/= 0 (skip-chars-backward " \t")))
-          ((when (and newlines
-                      (= (point) (line-beginning-position)))
-             (forward-line -1)
-             (goto-char (line-end-position))
-             (ess-climb-comment)
-             (ess-skip-blanks-backward newlines))))
+  (when (and (/= (point) (point-min))
+             (ess-any
+               ((/= 0 (skip-chars-backward " \t")))
+               ((when (and newlines
+                           (= (point) (line-beginning-position)))
+                  (forward-line -1)
+                  (goto-char (line-end-position))
+                  (ess-climb-comment)
+                  (ess-skip-blanks-backward newlines)))))
     t))
 
 (defun ess-skip-blanks-forward (&optional newlines)
@@ -1565,15 +1583,21 @@ Returns nil if line starts inside a string, t if in a comment."
            (prev-containing-sexp (car (last (butlast (nth 9 state))))))
       (ess-back-to-indentation)
       (cond
-       ;; return nil (in string) or t (in comment)
-       ((or (nth 3 state) (nth 4 state))
-        (nth 4 state))
+       ;; Strings
+       ((ess-point-in-string-p state)
+        nil)
+       ;; Comments
+       ((or (looking-at "#[^#]")
+            (looking-at "###"))
+        t)
        ;; Indentation of commas
        ((looking-at ",")
         (ess-calculate-indent--comma))
        ;; Arguments: Closing
        ((ess-call-closing-p)
         (ess-calculate-indent--args 0))
+       ;; Block: Contents (easy case)
+       ((ess-calculate-indent--block-relatively))
        ;; Continuations
        ((ess-calculate-indent--continued))
        ;; Block: Overridden contents
@@ -1585,8 +1609,6 @@ Returns nil if line starts inside a string, t if in a comment."
        ((and (null containing-sexp)
              (not (ess-unbraced-block-p)))
         0)
-       ;; Block: Contents (easy case)
-       ((ess-calculate-indent--block-relatively))
        ;; Block: Closing
        ((ess-block-closing-p)
         (ess-calculate-indent--block 0))
@@ -1657,6 +1679,16 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
           (start-line (line-number-at-pos)))
       (cond
+       ;; Comments can be indented relatively in all cases
+       ((looking-at "#")
+        (when (ess-save-excursion-when-nil
+                (forward-line -1)
+                (ess-back-to-indentation)
+                (looking-at "#"))
+          (current-column)))
+       ;; Don't indent relatively continuations
+       ((ess-looking-at-continuation-p)
+        nil)
        ;; If a block already contains an indented line, we can indent
        ;; relatively from that first line
        ((ess-save-excursion-when-nil
