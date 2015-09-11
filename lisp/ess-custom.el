@@ -630,7 +630,14 @@ With the third style refilling produces:
 
 The last formatting is useful for e.g. defining R6 classes. It is
 meant to be used with `ess-offest-arguments' set to `prev-call'
-or `prev-line'. "
+or `prev-line'.
+
+The blinking of the refilled region can be disabled with
+`ess-blink-refilling'.
+
+Note that this feature is experimental and the details of the
+interface may change in the future. We are interested in
+feedbacks."
   :group 'ess-edit
   :type 'boolean)
 
@@ -650,7 +657,14 @@ line:
        pred1 +
        pred2 +
        pred3 +
-       pred4, data)"
+       pred4, data)
+
+The blinking of the refilled region can be disabled with
+`ess-blink-refilling'.
+
+Note that this feature is experimental and the details of the
+interface may change in the future. We are interested in
+feedbacks."
   :group 'ess-edit
   :type 'boolean)
 

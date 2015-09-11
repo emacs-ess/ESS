@@ -2200,19 +2200,19 @@ style variables buffer local."
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
 
-(defvar ess-fill-calls-level nil
+(defvar ess-fill-style-level nil
   "Used internally upon code refilling.")
 
 ;; Detect repeated commands
 (defun ess-fill-style (max-level)
   (cond ((not (memq last-command '(fill-paragraph-or-region
                                    fill-paragraph)))
-         (setq ess-fill-calls-level 1))
-        ((>= ess-fill-calls-level max-level)
-         (setq ess-fill-calls-level 1))
-        (ess-fill-calls-level
-         (setq ess-fill-calls-level (1+ ess-fill-calls-level))))
-  ess-fill-calls-level)
+         (setq ess-fill-style-level 1))
+        ((>= ess-fill-style-level max-level)
+         (setq ess-fill-style-level 1))
+        (ess-fill-style-level
+         (setq ess-fill-style-level (1+ ess-fill-style-level))))
+  ess-fill-style-level)
 
 (defun ess-fill-args ()
   (save-excursion
