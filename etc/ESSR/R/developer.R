@@ -1,20 +1,22 @@
-## COMMENT ON S3 METHODS: It is not feasible and, quite frankly, a bad practice
-## to check all the assigned function names for "." separator. Thus, S3 methods
-## are not automatically registered. You can register them manually after you
-## have inserted method_name.my_class into your package environment using
-## ess-developer, like follows:
+## COMMENT ON S3 METHODS: New S3 methods are not automatically registered. You can
+## register them manually after you have inserted method_name.my_class into your
+## package environment using ess-developer, like follows:
 ##
 ##    registerS3method("method_name", "my_class", my_package:::method_name.my_class)
 ##
-## Otherwise R will call the registered (i.e. cached) S3 method instead of the
-## new method that ess-developer inserted in the package environment.
+## If an S3 methods already exists in a package, ESS-developer will do the right
+## thing.
 
+## evaluate the STRING by saving into a file and calling .essDev_source
 .essDev.eval <- function(string, package, file = tempfile("ESSDev")){
     cat(string, file = file)
     on.exit(file.remove(file))
     .essDev_source(file,, package = package)
 }
 
+## sourcing SOURCE file into an environment. After having a look at each new
+## object in the environment, decide what to do with it. Handles plain objects,
+## functions, existing S3 methods, S4 classes and methods. .
 .essDev_source <- function(source, expr, package = "")
     {
         ## require('methods')
@@ -39,20 +41,24 @@
         if (is.null(envns))
             stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
                           package), domain = NA)
+
+        ## evaluate the SOURCE into new ENV 
         env <- .essDev_evalSource(source, substitute(expr), package)
         envPackage <- getPackageName(env, FALSE)
         if (nzchar(envPackage) && envPackage != package)
             warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
                              sQuote(package), sQuote(envPackage)), domain = NA)
+        
         allObjects <- objects(envir = env, all.names = TRUE)
         allObjects <- allObjects[!(allObjects %in% c(".cacheOnAssign", ".packageName"))]
 
         ## PLAIN OBJECTS and FUNCTIONS:
-        funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <-
-            objectsNs <- objectsPkg <- character()
+        funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <- objectsNs <- objectsPkg <- character()
+
         for (this in allPlainObjects()) {
             thisEnv <- get(this, envir = env)
             thisNs <- NULL
+            
             ## NS
             if (exists(this, envir = envns, inherits = FALSE)){
                 thisNs <- get(this, envir = envns)
@@ -79,6 +85,7 @@
             }else{
                 newNs <- c(newNs, this)
             }
+            
             ## PKG
             if (exists(this, envir = envpkg, inherits = FALSE)){
                 thisPkg <- get(this, envir = envpkg)
@@ -97,6 +104,8 @@
             }else{
                 newPkg <- c(newPkg, this)}
         }
+
+        ## deal with new plain objects and functions
         for(this in intersect(newPkg, newNs)){
             thisEnv <- get(this, envir = env, inherits = FALSE)
             if(exists(this, envir = .GlobalEnv, inherits = FALSE)){
@@ -206,7 +215,7 @@
         if(length(objectsNs))
             cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
         if(length(newObjects))
-            cat(sprintf("GE: %s\n", paste(newObjects, collapse = ", ")))
+            cat(sprintf("GlobalEnv: %s\n", paste(newObjects, collapse = ", ")))
         if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
             cat(sprintf("*** Nothing explicitly assigned ***\n"))
         invisible(env)
