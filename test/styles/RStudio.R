@@ -901,10 +901,10 @@ fun_call1(argument, fun_call2(
 ## 26
 object <-
   {
-    stuff
+    stuff1
   } %>%
   (
-    stuff
+    stuff2
   )
 
 ## 27
@@ -917,6 +917,22 @@ fun_call1(fun_call2(fun_call3(
 fun_call(argument1 %>%
            stuff,
          argument2)
+
+## 29
+fun_call(stuff1 :=
+           (stuff2),
+         argument)
+
+## 30
+fun_call1(fun_call2(
+  fun_call3()) %>%
+    stuff)
+
+## 31
+fun_call(object1 + object2 ~ object3 +
+           object4 + object5 := object6 +
+             object7,
+         argument)
 
 
 ### Comments
