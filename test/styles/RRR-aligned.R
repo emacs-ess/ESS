@@ -109,6 +109,12 @@ fun_call(object :=
                  body
              })
 
+## 14
+fun_call(argument,
+         function(x)
+             stuff
+         )
+
 
 ### Function calls
 

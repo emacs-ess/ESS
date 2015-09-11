@@ -1756,8 +1756,7 @@ Returns nil if line starts inside a string, t if in a comment."
      ;; Unbraced body
      ((ess-at-indent-point
         (and (ess-unbraced-block-p)
-             prev-containing-sexp
-             (goto-char prev-containing-sexp)
+             (goto-char containing-sexp)
              (looking-at "[[(]")
              (ess-looking-back-attached-name-p)))
       'body)
