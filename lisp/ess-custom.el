@@ -611,8 +611,8 @@ indexing call will arrange the arguments according to
   fun_call(argument1, argument2,
            argument3, argument4)
 
-When called with a prefix, refilling will format according to one
-argument per line:
+Refilling repeatedly cycles through different styles. The second
+style formats according to one argument per line:
 
   fun_call(
       argument1,
@@ -621,7 +621,7 @@ argument per line:
       argument4
   )
 
-When called with a double prefix, refilling produces:
+With the third style refilling produces:
 
   fun_call(argument1,
       argument2, argument3,
@@ -642,8 +642,9 @@ its elements, never going past `fill-column'.
   lm(outcome ~ pred1 + pred2 +
        pred3 + pred4, data)
 
-When called with a prefix, the statements are layed out according
-to one expression per line:
+Refilling repeatedly cycles through different styles. The second
+style lay out the statements according to one expression per
+line:
 
   lm(outcome ~
        pred1 +

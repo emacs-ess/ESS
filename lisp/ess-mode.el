@@ -2200,12 +2200,27 @@ style variables buffer local."
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
 
+(defvar ess-fill-calls-level nil
+  "Used internally upon code refilling.")
+
+;; Detect repeated commands
+(defun ess-fill-style (max-level)
+  (cond ((not (memq last-command '(fill-paragraph-or-region
+                                   fill-paragraph)))
+         (setq ess-fill-calls-level 1))
+        ((>= ess-fill-calls-level max-level)
+         (setq ess-fill-calls-level 1))
+        (ess-fill-calls-level
+         (setq ess-fill-calls-level (1+ ess-fill-calls-level))))
+  ess-fill-calls-level)
+
 (defun ess-fill-args ()
   (save-excursion
     (let ((start-pos (point-min))
           (orig-col (current-column))
           (orig-line (line-number-at-pos))
           (bounds (ess-args-bounds))
+          (style (ess-fill-style 3))
           ;; Set undo boundaries manually
           (undo-inhibit-record-point t)
           last-pos prefix-break
@@ -2217,12 +2232,12 @@ style variables buffer local."
       (undo-boundary)
       (ess-fill--unroll-lines bounds t)
       (cond
-       ;; With prefix, start with first argument on a newline
-       ((and (equal current-prefix-arg '(4))
+       ;; Second level, start with first argument on a newline
+       ((and (= style 2)
              (not (looking-at "[ \t]*#")))
         (newline-and-indent))
-       ;; With double prefix, start second argument on a newline
-       ((and (equal current-prefix-arg '(16))
+       ;; Third level, start second argument on a newline
+       ((and (= style 3)
              (not (looking-at "[ \t]*#")))
         (ess-jump-parameter)
         (ess-jump-char ",")
@@ -2242,7 +2257,7 @@ style variables buffer local."
                     (/= (point) (or last-pos 1))
                     ;; Break after one pass if prefix is active
                     (not prefix-break))
-          (when (equal current-prefix-arg '(4))
+          (when (= style 2)
             (setq prefix-break t))
           (ess-jump-char ",")
           (setq last-pos (point))
@@ -2261,7 +2276,7 @@ style variables buffer local."
                   (forward-line))))))
         (when (or (>= (current-column) fill-column)
                   prefix-break
-                  (and (equal current-prefix-arg '(16))
+                  (and (= style 3)
                        (looking-at "[ \t]*[])]")
                        (setq last-pos (point))))
           (if (and last-pos (/= last-pos start-pos))
@@ -2271,9 +2286,9 @@ style variables buffer local."
                  (forward-line)
                  (ess-indent-line)
                  (setq last-newline nil))
-                ;; With prefix, closing delim goes on a newline
+                ;; With levels 2 and 3, closing delim goes on a newline
                 ((looking-at "[ \t]*[])]")
-                 (when (and current-prefix-arg
+                 (when (and (memq style '(2 3))
                             (not last-newline))
                    (newline-and-indent)
                    ;; Prevent indenting infinitely
@@ -2308,6 +2323,7 @@ style variables buffer local."
     (let ((bounds (ess-continuations-bounds))
           (undo-inhibit-record-point t)
           (last-pos (point-min))
+          (style (ess-fill-style 2))
           last-newline infinite)
       (when (not bounds)
         (error "Could not find statements bounds"))
@@ -2324,7 +2340,7 @@ style variables buffer local."
         (ess-jump-operator)
         (if (or (and (> (current-column) fill-column)
                      (goto-char last-pos))
-                current-prefix-arg)
+                (= style 2))
             (progn
               (ess-jump-operator)
               (unless (= (point) (cadr bounds))
