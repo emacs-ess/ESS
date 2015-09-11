@@ -2067,34 +2067,6 @@ otherwise nil."
     (setq def-op t))
   t)
 
-(defun ess-backward-to-start-of-continued-exp (limit)
-  (let ((limit (or limit (point-min))))
-    (if (= (preceding-char) ?\))
-        (forward-sexp -1))
-    (beginning-of-line)
-    (if (<= (point) limit)
-        (goto-char (1+ limit)))
-    (skip-chars-forward " \t")))
-
-(defun ess-backward-to-start-of-if (&optional limit)
-  "Move to the start of the last ``unbalanced'' 'if' or 'else if'
-expression."
-  (let ((beginning-of-defun-function nil))
-    (or limit (setq limit (save-excursion (beginning-of-defun) (point))))
-    (let ((if-level 1)
-          (case-fold-search nil))
-      (while (not (zerop if-level))
-        (backward-sexp 1)
-        (cond ((looking-at "else\\b")
-               (setq if-level (1+ if-level)))
-              ((looking-at "if\\b")
-               (when (looking-back "\\belse[[:blank:]]*")
-                 (backward-sexp 1))
-               (setq if-level (1- if-level)))
-              ((< (point) limit)
-               (setq if-level 0)
-               (goto-char limit)))))))
-
 
 ;;;*;;; Predefined indentation styles
 
