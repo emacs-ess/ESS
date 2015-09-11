@@ -1092,16 +1092,24 @@ control flow function (if, for, while, etc)."
   (save-excursion
     (and (ess-climb-operator)
          (if (not fun-arg)
-             (not (ess-looking-at-parameter-p))
+             (not (ess-looking-at-parameter-op-p))
            t))))
 
-(defun ess-looking-at-parameter-p ()
+(defun ess-looking-at-parameter-op-p ()
   "Are we looking at a function argument? To be called just
 before the `=' sign."
   (save-excursion
     (and (looking-at "[ \t]*=[^=]")
          (ess-climb-object)
          (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
+
+(defun ess-looking-at-parameter-p ()
+  (save-excursion
+    (ess-jump-parameter)))
+
+(defun ess-looking-at-parameter-name-p ()
+  (save-excursion
+    (ess-jump-parameter-name)))
 
 (defun ess-point-in-call-p ()
   "Is point in a function or indexing call?"
@@ -1116,16 +1124,15 @@ before the `=' sign."
                (looking-at "\\["))))))
 
 (defun ess-point-in-continuation-p ()
-  (unless (looking-at "[[(]")
+  (unless (or (looking-at ",")
+              (and (looking-at "[[(]")
+                   (ess-looking-back-attached-name-p)))
     (or (save-excursion
           (ess-climb-object)
-          (and (save-excursion
-                 (not (and (ess-back-and-forth-sexp)
-                           (ess-looking-at-parameter-p))))
-               (ess-climb-continuations)))
+          (not (ess-looking-at-parameter-name-p)))
         (save-excursion
           (ess-jump-object)
-          (and (not (ess-looking-at-parameter-p))
+          (and (not (ess-looking-at-parameter-op-p))
                (ess-jump-continuations)
                (ess-looking-at-operator-p))))))
 
@@ -1352,7 +1359,7 @@ of the curly brackets of a braced block."
         (ess-back-and-forth-sexp)
         (when (ess-looking-at-operator-p)
           (if or-parameter t
-            (not (ess-looking-at-parameter-p)))))
+            (not (ess-looking-at-parameter-op-p)))))
       (save-excursion
         (ess-climb-block-opening))
       (save-excursion
@@ -1413,6 +1420,8 @@ into account."
         (ess-climb-object))
       climbed)))
 
+;; This jumps both object names and atomic objects like strings or
+;; numbers.
 (defun ess-jump-object ()
   (let (climbed quote-char)
     (cond
@@ -1456,8 +1465,10 @@ into account."
 (defun ess-jump-parameter-name ()
   (ess-save-excursion-when-nil
     (and (ess-jump-name)
-         (looking-at "[ \t]*=\\([^=]\\)")
-         (goto-char (match-beginning 1)))))
+         (when (looking-at "[ \t]*=\\([^=]\\)")
+           (goto-char (match-beginning 1))
+           (ess-skip-blanks-forward)
+           t))))
 
 (defun ess-jump-parameter ()
   (ess-any ((ess-jump-parameter-name))
@@ -1965,7 +1976,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (or (looking-at ess-R-definition-op-pattern)
         (and (looking-at "=[^=]")
              (if no-fun-arg
-                 (not (ess-looking-at-parameter-p))
+                 (not (ess-looking-at-parameter-op-p))
                t)))))
 
 (defun ess-looking-back-definition-op-p (&optional no-fun-arg)
@@ -2252,6 +2263,7 @@ style variables buffer local."
           (beg (progn
                  (ess-climb-object)
                  (while (ess-climb-continuations))
+                 (ess-jump-parameter-name)
                  (point))))
       (when beg
         (goto-char orig-point)
@@ -2291,7 +2303,6 @@ style variables buffer local."
           (setq last-newline nil)))
       (undo-boundary)
       (set-marker (cadr bounds) nil))))
-
 
 
 ;;*;; Creating and manipulating dump buffers
