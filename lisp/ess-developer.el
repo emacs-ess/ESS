@@ -269,7 +269,7 @@ propertize output text.
 
 (defun ess-developer--propertize-output ()
   (goto-char (point-min))
-  (while (re-search-forward "\\(FUN\\|CLS\\METH\\)\\[" nil t)
+  (while (re-search-forward "\\(FUN\\|CLS\\|METH\\)\\[" nil t)
     (put-text-property (match-beginning 1) (match-end 1)
                        'face 'font-lock-function-name-face))
   (goto-char (point-min))
