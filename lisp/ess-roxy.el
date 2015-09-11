@@ -774,6 +774,13 @@ list of strings."
    ((and ess-fill-continuations
          (ess-point-in-continuation-p))
     (ess-fill-continuations))
+   ;; Filling of call arguments with point on call name
+   ((and ess-fill-calls
+         (ess-point-on-call-name-p))
+    (save-excursion
+      (skip-chars-forward "^([")
+      (forward-char)
+      (ess-fill-args)))
    ;; Filling of call arguments
    ((and ess-fill-calls
          (ess-point-in-call-p))

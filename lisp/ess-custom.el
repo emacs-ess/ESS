@@ -611,8 +611,16 @@ indexing call will arrange the arguments according to
   fun_call(argument1, argument2,
            argument3, argument4)
 
+
 Refilling repeatedly cycles through different styles. The second
 style formats according to one argument per line:
+
+  fun_call(argument1,
+           argument2,
+           argument3,
+           argument4)
+
+When `ess-fill-calls-newlines' is t, the second style becomes:
 
   fun_call(
       argument1,
@@ -621,16 +629,17 @@ style formats according to one argument per line:
       argument4
   )
 
-With the third style refilling produces:
+
+The third style produces:
 
   fun_call(argument1,
       argument2, argument3,
       argument4, argument5
   )
 
-The last formatting is useful for e.g. defining R6 classes. It is
-meant to be used with `ess-offest-arguments' set to `prev-call'
-or `prev-line'.
+This last formatting is useful for e.g. defining R6 classes. It
+is meant to be used with `ess-offest-arguments' set to
+`prev-call' or `prev-line'.
 
 The blinking of the refilled region can be disabled with
 `ess-blink-refilling'.
@@ -661,6 +670,24 @@ line:
 
 The blinking of the refilled region can be disabled with
 `ess-blink-refilling'.
+
+Note that this feature is experimental and the details of the
+interface may change in the future. We are interested in
+feedbacks."
+  :group 'ess-edit
+  :type 'boolean)
+
+(defcustom ess-fill-calls-newlines nil
+  "When non-nil, the second refilling style produces newlines
+after and before the opening and closing delimiters. This is
+intended for example for dplyr-style code:
+
+  fun_call(
+      argument1,
+      argument2,
+      argument3,
+      argument4
+  )
 
 Note that this feature is experimental and the details of the
 interface may change in the future. We are interested in

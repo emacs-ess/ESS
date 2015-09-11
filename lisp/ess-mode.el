@@ -1127,14 +1127,16 @@ before the `=' sign."
   (unless (or (looking-at ",")
               (and (looking-at "[[(]")
                    (ess-looking-back-attached-name-p)))
-    (or (save-excursion
-          (ess-climb-object)
-          (not (ess-looking-at-parameter-name-p)))
-        (save-excursion
-          (ess-jump-object)
-          (and (not (ess-looking-at-parameter-op-p))
-               (ess-jump-continuations)
-               (ess-looking-at-operator-p))))))
+    (save-excursion
+      (ess-jump-object)
+      (and (not (ess-looking-at-parameter-op-p))
+           (ess-looking-at-operator-p)))))
+
+(defun ess-point-on-call-name-p ()
+  (save-excursion
+    (ess-jump-name)
+    (and (looking-at "[[(]")
+         (ess-looking-back-attached-name-p))))
 
 (defun ess-point-in-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
@@ -2234,6 +2236,7 @@ style variables buffer local."
       (cond
        ;; Second level, start with first argument on a newline
        ((and (= style 2)
+             ess-fill-calls-newlines
              (not (looking-at "[ \t]*#")))
         (newline-and-indent))
        ;; Third level, start second argument on a newline
@@ -2289,6 +2292,7 @@ style variables buffer local."
                 ;; With levels 2 and 3, closing delim goes on a newline
                 ((looking-at "[ \t]*[])]")
                  (when (and (memq style '(2 3))
+                            ess-fill-calls-newlines
                             (not last-newline))
                    (newline-and-indent)
                    ;; Prevent indenting infinitely
