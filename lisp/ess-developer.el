@@ -184,6 +184,12 @@ otherwise call devSource."
       (message "devSourcing '%s' ..." file)
       (ess-developer--command comm 'ess-developer--propertize-output))))
 
+(defun ess-developer--exists-in-ns (var ns)
+  ;; If namespace does not exist, the R code below throw an error. But that's equivalent to FALSE.
+  (let ((cmd "as.character(exists('%s', envir=asNamespace('%s'), mode='function', inherits=FALSE))\n"))
+    (ess-boolean-command
+     (format cmd var ns))))
+
 (defun ess-developer-send-function (proc beg end name &optional visibly message tracebug)
   (save-excursion
     (if (null ess-developer-packages)
@@ -192,21 +198,25 @@ otherwise call devSource."
           (error "Oops, could not find function name (probably a regexp bug)")
         (let ((nms (ess-get-words-from-vector "loadedNamespaces()\n"))
               (dev-packs ess-developer-packages)
+              (default-ns (ess-developer--get-package-name))
               assigned-p ns)
-          ;; such a kludge
           (if (string-match-p ess-set-function-start (concat name "("))
+              ;; if setMethod, setClass etc, do send region 
               (ess-developer-send-region proc beg end visibly message tracebug)
-            (if tracebug (ess-tracebug-set-last-input proc))
-            (while (and (setq ns (pop dev-packs))
-                        (not assigned-p))
-              (when (and (member ns nms) ;;todo: try to load the package if not loaded
-                         (ess-boolean-command
-                          (format "as.character(exists('%s', envir=asNamespace('%s'), mode='function', inherits=FALSE))\n"
-                                  name ns)))
-                (ess-developer-devSource beg end ns message)
-                (setq assigned-p t)))
-            (unless assigned-p
-              (ess-developer-send-region-fallback proc beg end visibly message tracebug))))))))
+            (when tracebug (ess-tracebug-set-last-input proc))
+            (if (member default-ns dev-packs)
+                (ess-developer-devSource beg end default-ns message)
+              ;; iterate over all developed packages and check if functions
+              ;; exists in that namespace
+              (while (and (setq ns (pop dev-packs))
+                          (not assigned-p))
+                (when (and (member ns nms)
+                           (ess-developer--exists-in-ns name ns))
+                  (ess-developer-devSource beg end ns message)
+                  (setq assigned-p t)))
+              ;; last resort - assign in current env 
+              (unless assigned-p
+                (ess-developer-send-region-fallback proc beg end visibly message tracebug)))))))))
 
 (defvar ess-developer--hist nil)
 
@@ -285,10 +295,7 @@ found, return nil."
           (when (buffer-local-value 'ess-dialect bf)
             (with-current-buffer bf
               (setq path (ess-developer--get-package-path))
-              (unless ess-developer--pack-name
-                (setq ess-developer--pack-name ;; cache locally
-                      (ess-developer--get-package-name path)))
-              (unless (equal ess-developer--pack-name pack-name)
+              (unless (equal pack-name (ess-developer--get-package-name))
                 (setq path nil)))))
         path)
     (let ((path (directory-file-name default-directory)))
@@ -296,7 +303,7 @@ found, return nil."
         (setq path (file-name-directory path))
         (when (file-exists-p (expand-file-name ess-developer-root-file path))
           path)))
-    ;; This one is incredibly slow on remotes:
+    ;; This following version is incredibly slow on remotes:
     ;; (let ((path default-directory)
     ;;       opath package)
     ;;   (while (and path
@@ -309,19 +316,24 @@ found, return nil."
     ;;   package)
     ))
 
-
-(defun ess-developer--get-package-name (&optional path)
+(defun ess-developer--get-package-name (&optional path force)
   "Find package name in path. Parses DESCRIPTION file in PATH (R
-specific so far). PATH defaults to `default-directory'"
-  (when (setq path (or path (ess-developer--get-package-path)))
-    (let ((file (expand-file-name ess-developer-root-file path))
-          (case-fold-search t))
-      (when (file-exists-p file)
-        (with-temp-buffer
-          (insert-file-contents file)
-          (goto-char (point-min))
-          (re-search-forward "package: \\(.*\\)")
-          (match-string 1))))))
+specific so far). PATH defaults to the value returned
+by (ess-developer--get-package-path).
+
+If FORCE is non-nil, don't check for buffer local cached value of
+the package name."
+  (or (and (not force)
+           ess-developer--pack-name)
+      (when (setq path (or path (ess-developer--get-package-path)))
+        (let ((file (expand-file-name ess-developer-root-file path))
+              (case-fold-search t))
+          (when (file-exists-p file)
+            (with-temp-buffer
+              (insert-file-contents file)
+              (goto-char (point-min))
+              (re-search-forward "package: \\(.*\\)")
+              (setq ess-developer--pack-name (match-string 1))))))))
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of a package which
