@@ -1420,6 +1420,10 @@ into account."
         (ess-climb-object))
       climbed)))
 
+;; Todo: split name and object climbing
+(defun ess-climb-name ()
+  (ess-climb-object))
+
 ;; This jumps both object names and atomic objects like strings or
 ;; numbers.
 (defun ess-jump-object ()
@@ -2089,6 +2093,32 @@ otherwise nil."
     (setq def-op t))
   t)
 
+(defun ess-indent-call (&optional start)
+  (save-excursion
+    (when (ess-climb-function-calls)
+      (setq start (or start (point)))
+      (skip-chars-forward "^[(")
+      (forward-char)
+      (ess-up-list)
+      (indent-region start (point)))))
+
+(defun ess-climb-function-calls ()
+  (let (containing-sexp finished)
+    (ess-while (and (not finished)
+                    (or
+                     ;; Point inside call
+                     (ess-save-excursion-when-nil
+                       (and (setq containing-sexp
+                                  (ess-containing-sexp-position))
+                            (goto-char containing-sexp)
+                            (ess-climb-name)))
+                     ;; Point on function name
+                     (ess-save-excursion-when-nil
+                       (and (ess-jump-name))
+                       (and (looking-at "[[(]")
+                            (ess-climb-name)
+                            (setq finished t))))))))
+
 
 ;;;*;;; Predefined indentation styles
 
@@ -2255,7 +2285,9 @@ style variables buffer local."
                  (setq infinite t)))))
       (undo-boundary)
       ;; Signal marker for garbage collection
-      (set-marker (cadr bounds) nil))))
+      (set-marker (cadr bounds) nil)
+      ;; Reindent surrounding context
+      (ess-indent-call (car bounds)))))
 
 (defun ess-continuations-bounds ()
   (save-excursion
@@ -2302,7 +2334,8 @@ style variables buffer local."
                 (setq last-newline t)))
           (setq last-newline nil)))
       (undo-boundary)
-      (set-marker (cadr bounds) nil))))
+      (set-marker (cadr bounds) nil)
+      (ess-indent-call (car bounds)))))
 
 
 ;;*;; Creating and manipulating dump buffers
