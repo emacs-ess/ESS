@@ -1453,6 +1453,17 @@ into account."
                (setq climbed t))))
       climbed)))
 
+(defun ess-jump-parameter-name ()
+  (ess-save-excursion-when-nil
+    (and (ess-jump-name)
+         (looking-at "[ \t]*=\\([^=]\\)")
+         (goto-char (match-beginning 1)))))
+
+(defun ess-jump-parameter ()
+  (ess-any ((ess-jump-parameter-name))
+           ((ess-jump-expression))
+           ((ess-jump-continuations))))
+
 (defun ess-climb-call ()
   "Climb functions (e.g. ggplot) and parenthesised expressions."
   (ess-climb-chained-brackets)
@@ -2172,8 +2183,7 @@ style variables buffer local."
        ;; With double prefix, start second argument on a newline
        ((and (equal current-prefix-arg '(16))
              (not (looking-at "[ \t]*#")))
-        (ess-jump-expression)
-        (ess-jump-continuations)
+        (ess-jump-parameter)
         (ess-jump-char ",")
         (newline-and-indent)))
       (while (and (not (looking-at "[])]"))
@@ -2199,9 +2209,7 @@ style variables buffer local."
           ;; that were jumped over
           (let ((cur-line (line-number-at-pos))
                 end-line)
-            (when (ess-any
-                    ((ess-jump-expression))
-                    ((ess-jump-continuations)))
+            (when (ess-jump-parameter)
               (setq last-newline nil))
             (save-excursion
               (when (< cur-line (line-number-at-pos))
