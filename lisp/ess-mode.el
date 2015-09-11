@@ -2283,11 +2283,11 @@ style variables buffer local."
                  (setq last-newline t))
                 (t
                  (setq infinite t)))))
-      (undo-boundary)
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil)
       ;; Reindent surrounding context
-      (ess-indent-call (car bounds)))))
+      (ess-indent-call (car bounds))
+      (undo-boundary))))
 
 (defun ess-continuations-bounds ()
   (save-excursion
@@ -2333,9 +2333,9 @@ style variables buffer local."
                 (newline-and-indent)
                 (setq last-newline t)))
           (setq last-newline nil)))
-      (undo-boundary)
       (set-marker (cadr bounds) nil)
-      (ess-indent-call (car bounds)))))
+      (ess-indent-call (car bounds))
+      (undo-boundary))))
 
 
 ;;*;; Creating and manipulating dump buffers
