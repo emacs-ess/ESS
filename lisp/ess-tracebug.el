@@ -787,16 +787,7 @@ In no-windowed emacs an `overlay-arrow' is displayed at this position.")
   (add-to-list 'overlay-arrow-variable-list 'ess--dbg-current-debug-position))
 
 (defface ess-debug-current-debug-line-face
-  '((((class grayscale)
-      (background light)) (:background "DimGray"))
-    (((class grayscale)
-      (background dark))  (:background "LightGray"))
-    (((class color)
-      (background light) (min-colors 88)) (:background "tan"))
-    (((class color)
-      (background dark) (min-colors 88))  (:background "gray20"))
-    (((background light) (min-colors 8))  (:weight bold))
-    (((background dark) (min-colors 8))  (:weight bold)))
+  '((default (:inherit highlight)))
   "Face used to highlight currently debugged line."
   :group 'ess-debug)
 
@@ -1399,8 +1390,7 @@ position of error. Mk-end is the end of the line where error
 occurred.
 
 If buffer associated with FILE is not found, or line is nil, or
-TB-INDEX is not found return nil.
-"
+TB-INDEX is not found return nil."
   (if (stringp line) (setq line (string-to-number line)))
   (if (stringp col) (setq col (string-to-number col)))
   (let* ((srcref (gethash file ess--srcrefs))
