@@ -630,16 +630,22 @@ When `ess-fill-calls-newlines' is t, the second style becomes:
   )
 
 
-The third style produces:
+Setting `ess-offset-arguments' to `prev-line' or `prev-call'
+activates a third style. It keeps one argument per line except
+for the first N arguments. N is controlled with a prefix. For
+example, calling M-q three times sets N to 1 while calling M-q
+twice then C-U 2 M-q sets N to 2. Here what the default produces:
 
   fun_call(argument1,
-      argument2, argument3,
-      argument4, argument5
+      argument2,
+      argument3,
+      argument4,
+      argument5
   )
 
-This last formatting is useful for e.g. defining R6 classes. It
-is meant to be used with `ess-offest-arguments' set to
-`prev-call' or `prev-line'.
+This style is useful for refilling R6 or ggproto class
+definitions.
+
 
 The blinking of the refilled region can be disabled with
 `ess-blink-refilling'.
