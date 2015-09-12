@@ -369,7 +369,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-objects))
-    (prefix (unless (company-in-string-or-comment)
+    (prefix (unless (ess-inside-string-or-comment-p)
               (let ((start (ess-symbol-start)))
                 (when start
                   (buffer-substring-no-properties start (point))))))
@@ -383,7 +383,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-args))
-    (prefix (unless (company-in-string-or-comment)
+    (prefix (unless (ess-inside-string-or-comment-p)
               (let ((start (ess-arg-start)))
                 (when start
                   (let ((prefix (buffer-substring-no-properties start (point))))

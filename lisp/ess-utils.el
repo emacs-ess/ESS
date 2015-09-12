@@ -35,11 +35,10 @@
   ;;FIXME (defun ess-calculate-indent ..)  can do that ...
   (interactive)
   (setq pos (or pos (point)))
-  (let ((pps
-         ;; (parse-partial-sexp (point-min) pos)
-         (syntax-ppss pos)))
-    ;; 3: string,  4: comment
-    (or (nth 3 pps) (nth 4 pps))))
+  (let ((ppss (syntax-ppss pos)))
+    (or (car (setq ppss (nthcdr 3 ppss)))
+        (car (setq ppss (cdr ppss)))
+        (nth 3 ppss))))
 
 
 (defun ess-inside-string-p (&optional pos)
