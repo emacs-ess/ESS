@@ -359,23 +359,27 @@ Default depends on the ESS language/dialect and hence made buffer local")
 ;;; be accessed with the function ess-get-process-variable
 
 
-(defun inferior-ess-goto-last-prompt-if-close ()
-  "If any prompt has been found on current line, go to previous primary prompt and return the position.
-Otherwise stay at current position and return nil "
+(defun inferior-ess-goto-last-prompt-if-close (&optional pos)
+  "Staging from POS go to previous primary prompt and return the position.
+Look only for primary or secondary prompt on the current line. If
+found, return the starting position of the prompt, otherwise stay
+at current position and return nil. POS defaults to `point'."
 
-  (let ((new-point (save-excursion
-                     (beginning-of-line)
-                     (if (looking-at inferior-ess-primary-prompt)
-                         (point)
-                       (when  (and inferior-ess-secondary-prompt
-                                   (looking-at inferior-ess-secondary-prompt))
-                         (re-search-backward (concat "^" inferior-ess-primary-prompt))
-                         (point))))))
-    (when new-point
-      (goto-char new-point))))
+  (let* ((pos (or pos (point)))
+         (new-pos (save-excursion
+                    (beginning-of-line)
+                    (if (looking-at inferior-ess-primary-prompt)
+                        pos
+                      (when  (and inferior-ess-secondary-prompt
+                                  (looking-at inferior-ess-secondary-prompt))
+                        (re-search-backward (concat "^" inferior-ess-primary-prompt))
+                        pos)))))
+    (when new-pos
+      (goto-char new-pos))))
 
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
+(defvar compilation--parsed)
 (autoload 'compilation--ensure-parse "compile")
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output within the beg-end region to avoid
@@ -384,28 +388,25 @@ fontification spilling over prompts."
 	 (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
-         (pos (or (inferior-ess-goto-last-prompt-if-close)
-                  beg))
-         (pos2))
-    ;; Font lock seems to skip regions for unclear reason when
-    ;; font-lock-dont-widen is t. This in turn screws compilation marker and
-    ;; makes compilation--parse-region think that it parsed stuff that it
-    ;; didn't. So reset it each time. (not used anymore, call compilation--ensure-parse directly)
-    ;; (setq compilation--parsed (copy-marker pos))
-    (with-silent-modifications
-      ;; (dbg pos end)
-      ;; (font-lock-unfontify-region pos end)
-      (while (< pos end)
-        (goto-char pos)
-        (comint-next-prompt 1)
-        (setq pos2 (min (point) end))
-        (if nil
-            (font-lock-default-fontify-region pos pos2 verbose)
+         (pos0 (or (inferior-ess-goto-last-prompt-if-close beg)
+                   beg))
+         (pos1 pos0) pos2)
+    (when (< pos0 end)
+      (with-silent-modifications
+        ;; fontify chunks from prompt to prompt
+        (while (< pos1 end)
+          (goto-char pos1)
+          (comint-next-prompt 1)
+          (setq pos2 (min (point) end))
           (save-restriction
-            (narrow-to-region pos pos2)
-            (font-lock-default-fontify-region pos pos2 verbose)))
-        (setq pos pos2))
-      (compilation--ensure-parse pos))))
+            (narrow-to-region pos1 pos2)
+            (font-lock-default-fontify-region pos1 pos2 verbose))
+          (setq pos1 pos2))
+        ;; highlight errors
+        (setq compilation--parsed beg)
+        (compilation--ensure-parse end)
+        
+        `(jit-lock-bounds ,pos0 . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*.
@@ -1676,7 +1677,6 @@ TEXT."
         ;;            (<= (process-mark sprocess) (point)))
         ;;   (setq eob t))
         ;; (setq wait-last-prompt t)
-        ;; (dbg eob)
 
         ;; the following is required to make sure things work!
         (when (string= ess-language "STA")
@@ -1737,7 +1737,6 @@ TEXT."
 ;;       ;; (set-window-point win (point))
 ;;       (proc-send-test proc win "NA\n")
 ;;       ;; (when win
-;;       ;;   (dbg (point))
 ;;       ;;   (set-window-point win (point-max)))
 ;;       )))
 
@@ -1750,7 +1749,6 @@ TEXT."
 ;;     (set-marker (process-mark proc) (point))
 ;;     (set-window-point win (point))
 ;;     (process-send-string proc com)
-;;     (dbg (window-point win) (window-end win))
 ;;     ))
 
 ;;;*;;; Evaluate only

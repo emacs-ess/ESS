@@ -56,6 +56,9 @@ default, the refilled region blinks. Set @code{ess-blink-filling} to nil
 to prevent this. The interface for this feature is experimental and may
 change in the next release. We are interested in feedbacks.
 
+@item @ESS{[R]}: Fix occasional missing error location fontification
+in inferior buffers.
+
 @end itemize
 
 
