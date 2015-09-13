@@ -277,19 +277,6 @@ Each chunk is fontified in accordance with its own mode"
         (font-lock-fontify-region (car r) (cdr r)))
       t)))
 
-(defadvice font-lock-after-change-function (around ess-remove-fl-multiline-extension activate)
-  "Remove `font-lock-extend-region-multiline' from `font-lock-extend-region-multiline'.
-On commenting the whole chunk, causes infloop in
-`after-change-functions' for no clear reason."
-  (let ((font-lock-extend-region-functions font-lock-extend-region-functions)
-        ;; (font-latex-extend-region-functions nil)
-        )
-    (delq 'font-lock-extend-region-multiline font-lock-extend-region-functions)
-    ad-do-it))
-
-;; (ad-remove-advice 'font-lock-after-change-function 'around 'test-font)
-;; (ad-activate 'font-lock-after-change-function)
-
 
 (defun ess-noweb-font-lock-fontify-this-chunk ()
   "Fontify this chunk according to its own major mode.
