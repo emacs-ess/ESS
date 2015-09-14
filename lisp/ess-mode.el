@@ -960,21 +960,6 @@ Return the amount the indentation changed by."
           (pos (- (point-max) (point))))
       (beginning-of-line)
       (setq beg (point))
-      (if (eq indent nil)
-          (setq indent (current-indentation))
-        (skip-chars-forward " \t")
-        (cond
-         ((and ess-indent-with-fancy-comments ;; ### or #!
-               (or (looking-at "###")
-                   (and (looking-at "#!") (= 1 (line-number-at-pos)))))
-          (setq indent 0))
-         ;; Single # comment
-         ((and ess-indent-with-fancy-comments
-               (looking-at "#") (not (looking-at "##")) (not (looking-at "#'")))
-          (setq indent comment-column))
-         (t
-          (if (eq indent t) (setq indent 0))
-          (if (listp indent) (setq indent (car indent))))))
       (skip-chars-forward " \t")
       (setq shift-amt (- indent (current-column)))
       (if (zerop shift-amt)
@@ -1613,11 +1598,9 @@ Returns nil if line starts inside a string, t if in a comment."
       (cond
        ;; Strings
        ((ess-point-in-string-p state)
-        nil)
+        (current-indentation))
        ;; Comments
-       ((or (looking-at "#[^#]")
-            (looking-at "###"))
-        t)
+       ((ess-calculate-indent--comments))
        ;; Indentation of commas
        ((looking-at ",")
         (ess-calculate-indent--comma))
@@ -1648,6 +1631,18 @@ Returns nil if line starts inside a string, t if in a comment."
        ;; Arguments: Contents
        (t
         (ess-calculate-indent--args))))))
+
+(defun ess-calculate-indent--comments ()
+  (when ess-indent-with-fancy-comments
+    (cond
+     ;; ### or #!
+     ((or (looking-at "###")
+          (and (looking-at "#!")
+               (= 1 (line-number-at-pos))))
+      0)
+     ;; Single # comment
+     ((looking-at "#[^#']")
+      comment-column))))
 
 (defun ess-calculate-indent--comma ()
   (when (ess-point-in-call-p)

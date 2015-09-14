@@ -958,7 +958,7 @@ fun_call(object1 + object2 ~ object3 +
 
 ## 3
 {
-### Section comment
+  ### Section comment
 }
 
 ## 4
