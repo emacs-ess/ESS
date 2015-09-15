@@ -1493,10 +1493,16 @@ into account."
     (ess-skip-blanks-forward)
     (looking-at "[[(]")))
 
-(defun ess-climb-expression ()
-  (or (ess-climb-if-else nil nil 'recurse)
-      (ess-climb-call)
-      (ess-climb-object)))
+(defun ess-climb-expression (&optional no-block)
+  (ess-save-excursion-when-nil
+    (let ((climbed
+           (or (unless no-block
+                 (ess-climb-if-else nil nil 'recurse))
+               (ess-climb-call)
+               (ess-climb-object))))
+      (if (and climbed no-block)
+          (not (ess-block-opening-p))
+        climbed))))
 
 (defun ess-jump-expression ()
   (or (ess-jump-block)
@@ -1540,8 +1546,8 @@ without curly braces."
                    ;; Climb unbraced body
                    ((ess-save-excursion-when-nil
                       (ess-skip-blanks-backward t)
-                      (or (ess-climb-call)
-                          (ess-climb-object)))))
+                      (prog1 (ess-climb-expression 'no-block)
+                        (ess-climb-continuations nil 'no-block)))))
               ;; If successfully climbed body, climb call
               (ess-climb-if-else-call recurse)))))
     (prog1 t
@@ -2054,7 +2060,7 @@ otherwise nil."
 (defun ess-looking-back-closing-p ()
   (memq (char-before) '(?\] ?\} ?\))))
 
-(defun ess-climb-continuations (&optional cascade)
+(defun ess-climb-continuations (&optional cascade no-block)
   (let ((start-line (line-number-at-pos))
         (moved 0)
         (last-pos (point))
@@ -2063,7 +2069,7 @@ otherwise nil."
     (when (ess-while (and (<= moved 1)
                           (ess-climb-operator)
                           (ess-climb-continuations--update-state 'op)
-                          (ess-climb-expression)
+                          (ess-climb-expression no-block)
                           (/= last-pos (point)))
             (ess-climb-continuations--update-state)
             (setq last-pos (point)))
