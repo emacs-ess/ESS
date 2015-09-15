@@ -1295,7 +1295,7 @@ of the curly brackets of a braced block."
         ;; climb (e.g. roxygen documentation), there is no previous
         ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
         ;; empty space without failing. So we need to skip it.
-        (while (and (looking-at "[ \t]*\\(#\\|$\\)")
+        (while (and (looking-at "[[:space:]]*\\(#\\|$\\)")
                     (/= (point) (point-max)))
           (forward-line)
           (ess-back-to-indentation))
@@ -2057,13 +2057,16 @@ otherwise nil."
 (defun ess-climb-continuations (&optional cascade)
   (let ((start-line (line-number-at-pos))
         (moved 0)
+        (last-pos (point))
         last-line prev-point def-op expr)
     (setq last-line start-line)
     (when (ess-while (and (<= moved 1)
                           (ess-climb-operator)
                           (ess-climb-continuations--update-state 'op)
-                          (ess-climb-expression))
-            (ess-climb-continuations--update-state))
+                          (ess-climb-expression)
+                          (/= last-pos (point)))
+            (ess-climb-continuations--update-state)
+            (setq last-pos (point)))
       (when (and prev-point
                  (or (= moved 3)
                      (not expr)))
