@@ -1237,7 +1237,8 @@ side-effects. FORMS follows the same syntax as arguments to
 (defun ess-climb-block-opening ()
   "Should be called either in front of a naked block or in front
 of the curly brackets of a braced block."
-  (or (ess-climb-if-else 'from-block 'to-curly)
+  (or (prog1 (ess-climb-if-else-call)
+        (ess-climb-if-else-curly))
       (let ((pos (ess-unbraced-block-p)))
         (when pos
           (goto-char pos)))))
@@ -1497,7 +1498,7 @@ into account."
   (ess-save-excursion-when-nil
     (let ((climbed
            (or (unless no-block
-                 (ess-climb-if-else nil nil 'recurse))
+                 (ess-climb-if-else 'recurse))
                (ess-climb-call)
                (ess-climb-object))))
       (if (and climbed no-block)
@@ -1509,7 +1510,7 @@ into account."
       (ess-jump-call)
       (ess-jump-object)))
 
-(defun ess-climb-if-else-call (multi-line)
+(defun ess-climb-if-else-call (&optional multi-line)
   "Climb if, else, and if else calls."
   (ess-save-excursion-when-nil
     (ess-backward-sexp)
@@ -1526,35 +1527,55 @@ into account."
                         (looking-at "else\\b")))))))
           ((looking-at "else\\b")))))
 
-(defun ess-climb-if-else (&optional from-block to-curly recurse)
+(defun ess-climb-if-else-body ()
+  (cond
+   ;; Climb braced body
+   ((ess-save-excursion-when-nil
+      (and (when (progn (skip-chars-backward " \t")
+                        (eq (char-before) ?\}))
+             (prog1 t (forward-char -1)))
+           (ess-up-list -1))))
+   ;; Climb unbraced body
+   ((ess-save-excursion-when-nil
+      (ess-skip-blanks-backward t)
+      (prog1 (ess-climb-expression 'no-block)
+        (ess-climb-continuations nil 'no-block))))))
+
+(defun ess-climb-if-else (&optional to-start)
   "Climb horizontal as well as vertical if-else chains, with or
 without curly braces."
-  (when (cond
-         ;; If point in front of a block, first try to climb if-else
-         ;; then recurse
-         (from-block
-          (ess-climb-if-else-call recurse))
-         ((ess-save-excursion-when-nil
-            ;; Try to climb body
-            (when (cond
-                   ;; Climb braced body
-                   ((ess-save-excursion-when-nil
-                      (and (when (progn (skip-chars-backward " \t")
-                                        (eq (char-before) ?\}))
-                             (prog1 t (forward-char -1)))
-                           (ess-up-list -1))))
-                   ;; Climb unbraced body
-                   ((ess-save-excursion-when-nil
-                      (ess-skip-blanks-backward t)
-                      (prog1 (ess-climb-expression 'no-block)
-                        (ess-climb-continuations nil 'no-block)))))
-              ;; If successfully climbed body, climb call
-              (ess-climb-if-else-call recurse)))))
-    (prog1 t
-      (when (and to-curly (looking-at "else"))
-        (re-search-backward "}[ \t]*" (line-beginning-position) t))
-      (when recurse
-        (ess-climb-if-else from-block to-curly recurse)))))
+  ;; Don't climb if we're atop the current chain of if-else
+  (unless (looking-at "if\\b")
+    (ess-save-excursion-when-nil
+      (let ((from-else (looking-at "else\\b")))
+        (when (and (ess-climb-if-else-body)
+                   (ess-climb-if-else-call to-start))
+          ;; If we start from a final else and climb to another else, we
+          ;; are in the wrong chain of if-else. In that case,
+          ;; climb-recurse to the top of the current chain and climb
+          ;; again to step in the outer chain.
+          (when (and from-else (ess-looking-at-final-else))
+            (ess-climb-if-else 'to-start)
+            (ess-climb-if-else-call nil))
+          (when to-start
+            (ess-climb-if-else to-start))
+          t)))))
+
+;; Handles multi-line such as if \n else, with comments in the way etc
+(defun ess-looking-at-final-else ()
+  (or (save-excursion
+        (and (looking-at "else\\b")
+             (ess-forward-sexp)
+             (ess-forth-and-back-sexp)
+             (not (looking-at "if\\b"))))
+      (save-excursion
+        (and (looking-at "if\\b")
+             (ess-backward-sexp)
+             (looking-at "else\\b")))))
+
+(defun ess-climb-if-else-curly ()
+  (when (looking-at "else\\b")
+    (re-search-backward "}[ \t]*" (line-beginning-position) t)))
 
 (defun ess-jump-if-else ()
   (ess-while (ess-save-excursion-when-nil
@@ -1680,7 +1701,8 @@ Returns nil if line starts inside a string, t if in a comment."
   (if (and (memq 'control-flow ess-align-blocks)
            (looking-at "else\\b"))
       (progn
-        (ess-climb-if-else nil 'to-curly)
+        (ess-climb-if-else)
+        (ess-climb-if-else-curly)
         (current-column))
     ;; Check for braced and unbraced blocks
     (ess-save-excursion-when-nil
