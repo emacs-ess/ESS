@@ -696,19 +696,20 @@ if (cond1)
         stuff3
     else
       stuff4
-  else if (cond4)
-    stuff3
+  else if (cond6)
+    stuff5
   else
-    if (cond5)
-      stuff5
+    if (cond7)
+      stuff6
   else
-    stuff6
-else if (cond6)
-  stuff7
+    stuff7
+else if (cond8)
+  stuff8
 else
-  if (cond7)
-    stuff8
-
+  if (cond9)
+    stuff9
+else
+  stuff10
 
 ### Continuation lines
 
