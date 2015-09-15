@@ -1049,16 +1049,20 @@ Return the amount the indentation changed by."
             (append (cdr ess-block-funs-patterns)
                     '("}?[ \t]*else")))))
 
-(defun ess-unbraced-block-p ()
+(defun ess-unbraced-block-p (&optional ignore-ifelse)
   "This indicates whether point is in front of an unbraced block
 following a control flow statement. Returns position of the
 control flow function (if, for, while, etc)."
   (save-excursion
     (and (ess-backward-sexp)
-         (or (looking-at "else\\b")
+         (or (and (looking-at "else\\b")
+                  (not ignore-ifelse))
              (and (looking-at "(")
                   (ess-backward-sexp)
-                  (some 'looking-at ess-block-funs-patterns)))
+                  (some 'looking-at ess-block-funs-patterns)
+                  (if ignore-ifelse
+                      (not (looking-at "if\\b"))
+                    t)))
          (point))))
 
 (defun ess-block-p ()
@@ -1222,24 +1226,24 @@ side-effects. FORMS follows the same syntax as arguments to
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
      (some 'identity (mapcar 'eval forms))))
 
-(defun ess-climb-block ()
-  (let ((saved-pos (point)))
-    (or (and (ess-backward-sexp)
-             (cond ((looking-at "else")
-                    (prog1 t
-                      (re-search-backward "}[[:blank:]]\\="
-                                          (line-beginning-position) t)))
-                   ((and (ess-backward-sexp)
-                         (looking-at "function\\|if\\|for")))))
-        (prog1 nil
-          (goto-char saved-pos)))))
+(defun ess-climb-block (&optional ignore-ifelse)
+  (ess-save-excursion-when-nil
+    (cond
+     ((and (not ignore-ifelse)
+           (ess-climb-if-else 'to-start)))
+     ((and (eq (char-before) ?\})
+           (prog2
+               (forward-char -1)
+               (ess-up-list -1)
+             (ess-climb-block-opening)))))))
 
-(defun ess-climb-block-opening ()
+(defun ess-climb-block-opening (&optional ignore-ifelse)
   "Should be called either in front of a naked block or in front
 of the curly brackets of a braced block."
-  (or (prog1 (ess-climb-if-else-call)
-        (ess-climb-if-else-curly))
-      (let ((pos (ess-unbraced-block-p)))
+  (or (and (not ignore-ifelse)
+           (prog1 (ess-climb-if-else-call)
+             (ess-climb-if-else-curly)))
+      (let ((pos (ess-unbraced-block-p ignore-ifelse)))
         (when pos
           (goto-char pos)))))
 
@@ -1494,14 +1498,13 @@ into account."
     (ess-skip-blanks-forward)
     (looking-at "[[(]")))
 
-(defun ess-climb-expression (&optional no-block)
+(defun ess-climb-expression (&optional ignore-ifelse)
   (ess-save-excursion-when-nil
     (let ((climbed
-           (or (unless no-block
-                 (ess-climb-if-else 'recurse))
+           (or (ess-climb-block ignore-ifelse)
                (ess-climb-call)
                (ess-climb-object))))
-      (if (and climbed no-block)
+      (if (and climbed ignore-ifelse)
           (not (ess-block-opening-p))
         climbed))))
 
@@ -1531,15 +1534,16 @@ into account."
   (cond
    ;; Climb braced body
    ((ess-save-excursion-when-nil
-      (and (when (progn (skip-chars-backward " \t")
+      (and (when (progn (ess-skip-blanks-backward)
                         (eq (char-before) ?\}))
              (prog1 t (forward-char -1)))
            (ess-up-list -1))))
    ;; Climb unbraced body
    ((ess-save-excursion-when-nil
       (ess-skip-blanks-backward t)
-      (prog1 (ess-climb-expression 'no-block)
-        (ess-climb-continuations nil 'no-block))))))
+      (prog1 (ess-climb-expression 'ignore-ifelse)
+        (or (ess-climb-continuations nil 'ignore-ifelse)
+            (ess-climb-block-opening 'ignore-ifelse)))))))
 
 (defun ess-climb-if-else (&optional to-start)
   "Climb horizontal as well as vertical if-else chains, with or
@@ -1556,7 +1560,9 @@ without curly braces."
           ;; again to step in the outer chain.
           (when (and from-else (ess-looking-at-final-else))
             (ess-climb-if-else 'to-start)
+            (ess-climb-block-opening 'ignore-ifelse)
             (ess-climb-if-else-call nil))
+          (ess-maybe-climb-broken-else)
           (when to-start
             (ess-climb-if-else to-start))
           t)))))
@@ -1567,11 +1573,13 @@ without curly braces."
         (and (looking-at "else\\b")
              (ess-forward-sexp)
              (ess-forth-and-back-sexp)
-             (not (looking-at "if\\b"))))
-      (save-excursion
-        (and (looking-at "if\\b")
-             (ess-backward-sexp)
-             (looking-at "else\\b")))))
+             (not (looking-at "if\\b"))))))
+
+;; Broken else: if \n else
+(defun ess-maybe-climb-broken-else ()
+  (ess-save-excursion-when-nil
+    (and (ess-backward-sexp)
+         (looking-at "else\\b"))))
 
 (defun ess-climb-if-else-curly ()
   (when (looking-at "else\\b")
@@ -1807,10 +1815,9 @@ Returns nil if line starts inside a string, t if in a comment."
            ;; Block is not part of an arguments list. Climb over any
            ;; block opening (function declaration, etc) to indent from
            ;; starting indentation.
-           (if (ess-unbraced-block-p)
-               (ess-climb-block-opening)
-             (goto-char containing-sexp)
-             (ess-climb-block))
+           (or (ess-climb-block-opening)
+               (and (goto-char containing-sexp)
+                    (ess-climb-block-opening)))
            (+ (current-indentation) (or offset (ess-offset 'block)))))))
 
 (defun ess-calculate-indent--arg-block (offset arg-block)
@@ -2082,7 +2089,7 @@ otherwise nil."
 (defun ess-looking-back-closing-p ()
   (memq (char-before) '(?\] ?\} ?\))))
 
-(defun ess-climb-continuations (&optional cascade no-block)
+(defun ess-climb-continuations (&optional cascade ignore-ifelse)
   (let ((start-line (line-number-at-pos))
         (moved 0)
         (last-pos (point))
@@ -2091,7 +2098,7 @@ otherwise nil."
     (when (ess-while (and (<= moved 1)
                           (ess-climb-operator)
                           (ess-climb-continuations--update-state 'op)
-                          (ess-climb-expression no-block)
+                          (ess-climb-expression ignore-ifelse)
                           (/= last-pos (point)))
             (ess-climb-continuations--update-state)
             (setq last-pos (point)))
