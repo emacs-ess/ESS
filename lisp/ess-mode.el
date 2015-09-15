@@ -1137,13 +1137,14 @@ before the `=' sign."
 
 ;; The three following wrappers return t if successful, nil on error
 (defun ess-backward-sexp (&optional N)
-  (condition-case nil
-      (progn (backward-sexp N) t)
-    (error nil)))
+  (ess-forward-sexp (- (or N 1))))
 
 (defun ess-forward-sexp (&optional N)
+  (or N (setq N 1))
   (condition-case nil
-      (progn (forward-sexp N) t)
+      (prog1 t
+        (goto-char (or (scan-sexps (point) N)
+                       (buffer-end N))))
     (error nil)))
 
 (defun ess-up-list (&optional N)
