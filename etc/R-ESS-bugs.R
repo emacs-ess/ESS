@@ -778,7 +778,8 @@ read.csv('file.csv') %>%
 ### ^-- here (*was* indented earlier)
 
 
-### --- 30 --- ok:
+### --- 30 ---
+## a) ok:
 {
     r <- array(if (d[3L] == 3L)
                    rgb(t(x[,,1L]), t(x[,,2L]), t(x[,,3L]), maxColorValue = max)
@@ -788,11 +789,20 @@ read.csv('file.csv') %>%
                dim = d[1:2])
 }
 
-## ok :
+## b) ok :
 {
     obj <- obj && (condition1 || class2 %in% .BasicClasses ||
                    condition3)
 }
+
+## c) not yet:
+{
+    if (any(abs(d) < .001*abs(dd) |
+                (is.na(d) & x == y)))
+###         ^
+	TRUE
+}
+
 
 ### --- 31 --------
 ## C-s "recog"; M-C-a -- should go to beginning of function, does not
