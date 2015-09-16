@@ -795,12 +795,11 @@ read.csv('file.csv') %>%
                    condition3)
 }
 
-## c) not yet:
+## c) ok:
 {
     if (any(abs(d) < .001*abs(dd) |
-                (is.na(d) & x == y)))
-###         ^
-	TRUE
+            (is.na(d) & x == y)))
+        TRUE
 }
 
 
