@@ -732,6 +732,12 @@ if (cond1)
 else
     stuff6
 
+## 24
+object <- if(cond)
+              stuff1
+          else
+              stuff2
+
 
 ### Continuation lines
 

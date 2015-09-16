@@ -1012,8 +1012,7 @@ Return the amount the indentation changed by."
      ((looking-at "{"))
      ;; Opening parenthesis not attached to a function opens up a
      ;; block too. Only pick up those that are last on their line
-     ((looking-at "(")
-      (not (ess-looking-back-attached-name-p))))))
+     ((ess-looking-at-block-paren)))))
 
 (defun ess-block-closing-p ()
   (save-excursion
@@ -1069,6 +1068,14 @@ control flow function (if, for, while, etc)."
           (ess-block-opening-p)))
       (ess-unbraced-block-p)))
 
+(defun ess-looking-at-block-paren ()
+  (and (looking-at "(")
+       (not (ess-looking-back-attached-name-p))))
+
+(defun ess-looking-at-call-opening (pattern)
+  (and (looking-at pattern)
+       (ess-looking-back-attached-name-p)))
+
 ;; Should be called just before the opening brace
 (defun ess-looking-back-attached-name-p ()
   (save-excursion
@@ -1105,14 +1112,12 @@ before the `=' sign."
     (save-excursion
       (and containing-sexp
            (goto-char containing-sexp)
-           (or (and (looking-at "(")
-                    (ess-looking-back-attached-name-p))
+           (or (ess-looking-at-call-opening "(")
                (looking-at "\\["))))))
 
 (defun ess-point-in-continuation-p ()
   (unless (or (looking-at ",")
-              (and (looking-at "[[(]")
-                   (ess-looking-back-attached-name-p)))
+              (ess-looking-at-call-opening "[[(]"))
     (save-excursion
       (ess-jump-object)
       (and (not (ess-looking-at-parameter-op-p))
@@ -1121,8 +1126,7 @@ before the `=' sign."
 (defun ess-point-on-call-name-p ()
   (save-excursion
     (ess-jump-name)
-    (and (looking-at "[[(]")
-         (ess-looking-back-attached-name-p))))
+    (ess-looking-at-call-opening "[[(]")))
 
 (defun ess-point-in-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
@@ -1161,6 +1165,12 @@ before the `=' sign."
   (ess-save-excursion-when-nil
     (and (ess-backward-sexp)
          (ess-forward-sexp))))
+
+;; Avoids let-binding a variable just to check a returned position is
+;; not nil
+(defun ess-goto-char (pos)
+  (when pos
+    (goto-char pos)))
 
 (defun ess-looking-at (regex)
   "Compared to a simple `(looking-at)', this uses sexp motions to
@@ -1240,7 +1250,8 @@ side-effects. FORMS follows the same syntax as arguments to
 of the curly brackets of a braced block."
   (or (and (not ignore-ifelse)
            (prog1 (ess-climb-if-else-call)
-             (ess-climb-if-else-curly)))
+             (when (looking-at "else\\b")
+               (ess-skip-curly-backward))))
       (let ((pos (ess-unbraced-block-p ignore-ifelse)))
         (when pos
           (goto-char pos)))))
@@ -1258,8 +1269,7 @@ of the curly brackets of a braced block."
               (ess-forward-sexp))))
      ;; Naked blocks
      (and (or (looking-at "{")
-              (and (looking-at "(")
-                   (not (ess-looking-back-attached-name-p))))
+              (ess-looking-at-block-paren))
           (ess-forward-sexp)))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
@@ -1574,14 +1584,18 @@ without curly braces."
              (not (looking-at "if\\b"))))))
 
 ;; Broken else: if \n else
-(defun ess-maybe-climb-broken-else ()
+(defun ess-maybe-climb-broken-else (&optional same-line)
   (ess-save-excursion-when-nil
-    (and (ess-backward-sexp)
-         (looking-at "else\\b"))))
+    ;; Don't record current line if not needed (expensive operation)
+    (let ((cur-line (when same-line (line-number-at-pos))))
+      (and (ess-backward-sexp)
+           (looking-at "else\\b")
+           (if same-line
+               (= cur-line (line-number-at-pos))
+             t)))))
 
-(defun ess-climb-if-else-curly ()
-  (when (looking-at "else\\b")
-    (re-search-backward "}[ \t]*" (line-beginning-position) t)))
+(defun ess-skip-curly-backward ()
+  (re-search-backward "}[ \t]*" (line-beginning-position) t))
 
 (defun ess-jump-if-else ()
   (ess-while (ess-save-excursion-when-nil
@@ -1640,7 +1654,7 @@ Returns nil if line starts inside a string, t if in a comment."
        ;; Arguments: Closing
        ((ess-call-closing-p)
         (ess-calculate-indent--args 0))
-       ;; Block: Contents (easy case)
+       ;; Block: Contents (easy cases)
        ((ess-calculate-indent--block-relatively))
        ;; Continuations
        ((ess-calculate-indent--continued))
@@ -1691,8 +1705,7 @@ Returns nil if line starts inside a string, t if in a comment."
    ;; Block is an argument in a function call
    ((when containing-sexp
       (ess-at-containing-sexp
-        (and (looking-at "[[(]")
-             (ess-looking-back-attached-name-p))))
+        (ess-looking-at-call-opening "[[(]")))
     (ess-calculate-indent--block 0))
    ;; Top-level block
    ((null containing-sexp) 0)
@@ -1708,7 +1721,8 @@ Returns nil if line starts inside a string, t if in a comment."
            (looking-at "else\\b"))
       (progn
         (ess-climb-if-else)
-        (ess-climb-if-else-curly)
+        (when (looking-at "else\\b")
+          (ess-skip-curly-backward))
         (current-column))
     ;; Check for braced and unbraced blocks
     (ess-save-excursion-when-nil
@@ -1736,14 +1750,26 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
           (start-line (line-number-at-pos)))
       (cond
-       ;; Comments can be indented relatively in all cases
+       ;; By now comments can be indented relatively in all cases
        ((looking-at "#")
         (when (ess-save-excursion-when-nil
                 (forward-line -1)
                 (ess-back-to-indentation)
                 (looking-at "#"))
           (current-column)))
-       ;; Don't indent relatively continuations
+       ;; Braceless block continuations: only when not in a call
+       ((ess-save-excursion-when-nil
+          (and (not (looking-at "{"))
+               (ess-goto-char (ess-unbraced-block-p))
+               (not (looking-at "function\\b"))
+               (or (null containing-sexp)
+                   (ess-at-containing-sexp
+                     (not (looking-at "("))))))
+        (ess-maybe-climb-broken-else 'same-line)
+        (ess-skip-curly-backward)
+        (+ (current-column)
+           (ess-offset 'block)))
+       ;; Don't indent relatively other continuations
        ((ess-looking-at-continuation-p)
         nil)
        ;; If a block already contains an indented line, we can indent
@@ -1786,23 +1812,19 @@ Returns nil if line starts inside a string, t if in a comment."
      ((ess-at-indent-point
         (and (ess-unbraced-block-p)
              (goto-char containing-sexp)
-             (looking-at "[[(]")
-             (ess-looking-back-attached-name-p)))
+             (ess-looking-at-call-opening "[[(]")))
       'body)
      ;; Indentation of opening brace as argument
      ((ess-at-containing-sexp
-        (and (looking-at "[[(]")
-             (ess-looking-back-attached-name-p)))
+        (ess-looking-at-call-opening "[[(]"))
       'opening)
      ;; Indentation of body or closing brace as argument
      ((ess-at-containing-sexp
         (and (or (looking-at "{")
-                 (and (looking-at "(")
-                      (not (ess-looking-back-attached-name-p))))
+                 (ess-looking-at-block-paren))
              prev-containing-sexp
              (goto-char prev-containing-sexp)
-             (looking-at "[[(]")
-             (ess-looking-back-attached-name-p)))
+             (ess-looking-at-call-opening "[[(]")))
       'body))))
 
 (defun ess-calculate-indent--block (&optional offset)
