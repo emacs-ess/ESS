@@ -89,7 +89,8 @@
     ;; the next three can only work in S/R - mode {FIXME}
     (define-key map "\C-\M-a"    'ess-goto-beginning-of-function-or-para)
     (define-key map "\C-\M-e"    'ess-goto-end-of-function-or-para)
-    (define-key map "\C-xnd"     'ess-narrow-to-defun)
+    (define-key map "\C-xnd"     'ess-narrow-to-defun-or-para)
+    (define-key map "\C-xnf"     'ess-narrow-to-defun-or-para)
     (define-key map "\C-c\C-y"   'ess-switch-to-ESS-deprecated)
     (define-key map "\C-c\C-z"   'ess-switch-to-inferior-or-script-buffer)
     (define-key map "\C-c\C-l"   'ess-load-file)
@@ -112,7 +113,7 @@
     (define-key map "{"          'ess-electric-brace)
     (define-key map "}"          'ess-electric-brace)
     (define-key map "\C-\M-q"    'ess-indent-exp)
-    (define-key map "\C-\M-h"    'ess-mark-function)
+    (define-key map "\C-\M-h"    'ess-mark-function-or-para)
     (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
         (define-key map [(meta backspace)] 'backward-kill-word))
     ;;(define-key map [delete]   'backward-delete-char-untabify)
@@ -252,7 +253,7 @@
      ["Complete Filename" comint-replace-by-expanded-filename   t]
      ["Complete File or Object"   ess-indent-or-complete        t]
      ["Kill sexp"         kill-sexp                             t]
-     ["Mark function"     ess-mark-function                     t]
+     ["Mark function"     ess-mark-function-or-para             t]
      ["Indent expression" ess-indent-exp                        t]
      ["Indent line"       ess-indent-command                    t]
      ["Toggle Auto-Fill Mode" auto-fill-mode                    t]
@@ -603,11 +604,9 @@ it cannot find a function beginning."
           (search-forward
            "function" (ess-line-end-position 4) t)
           ;;        )
-          (search-forward "(" (ess-line-end-position) t)
-          )
+          (search-forward "(" (ess-line-end-position) t))
       ;; else: regular function; no set*Method(..)
-      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n")
-      )
+      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n"))
 
     (while (not done)
       ;; Need this while loop to skip over local function definitions
@@ -621,8 +620,7 @@ it cannot find a function beginning."
         (if no-error
             (setq  done t  beg nil)
           ;; else [default]:
-          (error "Point is not in a function according to 'ess-function-pattern'.")
-          ))
+          (error "Point is not in a function according to 'ess-function-pattern'.")))
       (unless done
         (setq beg (point))
         (ess-write-to-dribble-buffer
@@ -666,8 +664,7 @@ Optional argument for location of beginning.  Return '(beg end)."
           (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
            (min (save-excursion (forward-sexp 1) (point))
                 (save-excursion (forward-paragraph 1) (point)))))
-        (list beginning (point))
-        )
+        (list beginning (point)))
     ;; else: 'no-error': we are not in a function
     nil))
 
@@ -675,32 +672,29 @@ Optional argument for location of beginning.  Return '(beg end)."
   "If inside a function go to the beginning of it, otherwise go to the beginning
   of paragraph."
   (interactive)
-  (cond
-   ;; Point inside function
-   ((ess-beginning-of-function 'no-error))
-   (t
-    (backward-paragraph))))
+  (or (ess-beginning-of-function 'no-error)
+      (backward-paragraph))
+  (point))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it, otherwise go to the end
   of paragraph."
   (interactive)
-  (unless (ess-end-of-function nil 'no-error)
-    (forward-paragraph)))
+  (or (ess-end-of-function nil 'no-error)
+      (forward-paragraph))
+  (point))
 
-;;; Kurt's version, suggested 1997-03-06.
-(defun ess-mark-function ()
+(defun ess-mark-function-or-para ()
   "Put mark at end of ESS function, point at beginning."
   (interactive)
-  (let ((beg (ess-beginning-of-function)))
-    (push-mark (point))
-    (ess-end-of-function beg)
-    (exchange-point-and-mark)))
+  (ess-goto-beginning-of-function-or-para)
+  (push-mark (point))
+  (ess-goto-end-of-function-or-para)
+  (exchange-point-and-mark))
 
-;; Donated by Stephen Eglen, 2001-08-29:
-;; This command is analogous to `narrow-to-defun' (elisp)
-;; and `py-narrow-to-defun' (python)."
-(defun ess-narrow-to-defun ()
+(define-obsolete-function-alias 'ess-mark-function 'ess-mark-function-or-para "15.09")
+
+(defun ess-narrow-to-defun-or-para ()
   "Make text outside current function invisible.
 If text is already narrowed, this is removed before narrowing to the
 current function."
@@ -708,8 +702,11 @@ current function."
   ;; if point is not in a function, ess-end-of-function catches the error.
   (save-excursion
     (widen)
-    (let* ((beg-end (ess-end-of-function)))
-      (narrow-to-region (nth 0 beg-end) (nth 1 beg-end)))))
+    (let* ((beg (ess-goto-beginning-of-function-or-para))
+           (end (ess-goto-end-of-function-or-para)))
+      (narrow-to-region beg end))))
+
+(define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
 
 
 ;;*;; Loading files
