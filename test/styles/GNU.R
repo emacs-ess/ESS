@@ -1040,8 +1040,8 @@ object %>%
 
 ## 1
 stuff1 &&
-  stuff2 ||
-  stuff3
+stuff2 ||
+stuff3
 
 ## 2
 (stuff1 &&
@@ -1058,12 +1058,12 @@ if (condition1 &&
     condition8) {
   stuff
 } && condition8 ||
-  condition9 ||
-  condition10
+condition9 ||
+condition10
 
 ## 4
 stuff1 == stuff2 ||
-  condition
+condition
 
 ## 5
 (stuff1 == stuff2 ||
@@ -1089,8 +1089,8 @@ if (condition1 || object1 %op% object2 ||
 ## 9
 any(condition1 |
     condition2) &&
-  all(condition3 &
-      condition4)
+all(condition3 &
+    condition4)
 
 
 ### Specific situations and overrides

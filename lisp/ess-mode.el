@@ -2059,52 +2059,59 @@ otherwise nil."
                           (point))
                         (point))))
               (ess-climb-continuations cascade))))
-      (cond
-       ;; Overridden calls
-       ((and climbed
-             ess-align-continuations-in-calls
-             containing-sexp
-             (save-excursion
-               (goto-char containing-sexp)
-               (ess-climb-object)
-               (some 'looking-at ess-align-continuations-in-calls)))
-        (while (and (/= prev-pos (point))
-                    (eq (ess-climb-continuations cascade) t))
-          (setq prev-pos (point)))
-        (+ (current-column)
-           (if (eq climbed 'def-op)
-               (ess-offset 'continued)
-             0)))
-       ;; Regular case
-       (climbed
-        (let ((first-indent (or (eq climbed 'def-op)
-                                (save-excursion
-                                  (when (ess-looking-back-closing-p)
-                                    (ess-climb-expression))
-                                  (not (ess-climb-continuations cascade)))))
-              max-col)
-          ;; Record all indentation levels between indent-point and
-          ;; the line we climbed. Some lines may have been pushed off
-          ;; their natural indentation. These become the new
-          ;; reference.
-          (save-excursion
-            (while (< (point) indent-point)
-              (setq max-col (current-column))
-              (forward-line)
-              (ess-back-to-indentation)))
-          ;; Indenting continuations from the front of closing
-          ;; delimiters looks better
-          (when
-              (ess-looking-back-closing-p)
-            (backward-char))
-          (+ (min (current-column) max-col)
-             (cond
-              ((eq (ess-offset-type 'continued) 'cascade)
-               (ess-offset 'continued))
-              (first-indent
-               (ess-offset 'continued))
-              (t
-               0)))))))))
+      (when climbed
+        (cond
+         ;; Overridden calls
+         ((and ess-align-continuations-in-calls
+               containing-sexp
+               (save-excursion
+                 (goto-char containing-sexp)
+                 (ess-climb-object)
+                 (some 'looking-at ess-align-continuations-in-calls)))
+          (while (and (/= prev-pos (point))
+                      (eq (ess-climb-continuations cascade) t))
+            (setq prev-pos (point)))
+          (+ (current-column)
+             (if (eq climbed 'def-op)
+                 (ess-offset 'continued)
+               0)))
+         ;; Overridden operators
+         ((and ess-align-after-operators
+               (save-excursion
+                 (ess-jump-expression)
+                 (ess-skip-blanks-forward)
+                 (some 'looking-at ess-align-after-operators)))
+          (current-column))
+         ;; Regular case
+         (t
+          (let ((first-indent (or (eq climbed 'def-op)
+                                  (save-excursion
+                                    (when (ess-looking-back-closing-p)
+                                      (ess-climb-expression))
+                                    (not (ess-climb-continuations cascade)))))
+                max-col)
+            ;; Record all indentation levels between indent-point and
+            ;; the line we climbed. Some lines may have been pushed off
+            ;; their natural indentation. These become the new
+            ;; reference.
+            (save-excursion
+              (while (< (point) indent-point)
+                (setq max-col (current-column))
+                (forward-line)
+                (ess-back-to-indentation)))
+            ;; Indenting continuations from the front of closing
+            ;; delimiters looks better
+            (when
+                (ess-looking-back-closing-p)
+              (backward-char))
+            (+ (min (current-column) max-col)
+               (cond
+                ((eq (ess-offset-type 'continued) 'cascade)
+                 (ess-offset 'continued))
+                (first-indent
+                 (ess-offset 'continued))
+                (t
+                 0))))))))))
 
 (defun ess-looking-back-closing-p ()
   (memq (char-before) '(?\] ?\} ?\))))
