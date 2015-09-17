@@ -1454,7 +1454,8 @@ into account."
       (cond ((and (eq (char-after) ?`)
                   (looking-back ess-R-symbol-pattern
                                 (1- (point))))
-             (forward-char))
+             (forward-char)
+             (setq climbed t))
             ((eq (char-after) ?`)
              (forward-char)
              (when (ess-while (not (memq (char-after) '(?` ?\C-J)))
@@ -1462,7 +1463,10 @@ into account."
                (setq climbed t)
                (forward-char)))
             ;; Jump over regular names
-            ((while (/= 0 (skip-syntax-forward "w_"))
+            ((when (/= 0 (skip-syntax-forward "w_"))
+               ;; Maybe point was inside backticks
+               (when (eq (char-after) ?`)
+                 (forward-char))
                (setq climbed t))))
       climbed)))
 
