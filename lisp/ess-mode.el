@@ -365,7 +365,7 @@ Variables controlling indentation style:
  `ess-align-arguments-in-calls'
     Calls in which arguments should be aligned.
  `ess-align-continuations-in-calls'
-    Calls in which continuations should be aligned.
+    Whether ignore indentation after an operator in calls
  `ess-align-blocks'
     Blocks that should always be aligned vertically.
  `ess-indent-from-lhs'
@@ -1012,7 +1012,7 @@ Return the amount the indentation changed by."
      ((looking-at "{"))
      ;; Opening parenthesis not attached to a function opens up a
      ;; block too. Only pick up those that are last on their line
-     ((ess-looking-at-block-paren)))))
+     ((ess-looking-at-block-paren-p)))))
 
 (defun ess-block-closing-p ()
   (save-excursion
@@ -1068,7 +1068,7 @@ control flow function (if, for, while, etc)."
           (ess-block-opening-p)))
       (ess-unbraced-block-p)))
 
-(defun ess-looking-at-block-paren ()
+(defun ess-looking-at-block-paren-p ()
   (and (looking-at "(")
        (not (ess-looking-back-attached-name-p))))
 
@@ -1269,7 +1269,7 @@ of the curly brackets of a braced block."
               (ess-forward-sexp))))
      ;; Naked blocks
      (and (or (looking-at "{")
-              (ess-looking-at-block-paren))
+              (ess-looking-at-block-paren-p))
           (ess-forward-sexp)))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
@@ -1821,7 +1821,7 @@ Returns nil if line starts inside a string, t if in a comment."
      ;; Indentation of body or closing brace as argument
      ((ess-at-containing-sexp
         (and (or (looking-at "{")
-                 (ess-looking-at-block-paren))
+                 (ess-looking-at-block-paren-p))
              prev-containing-sexp
              (goto-char prev-containing-sexp)
              (ess-looking-at-call-opening "[[(]")))
@@ -2040,6 +2040,28 @@ Returns nil if line starts inside a string, t if in a comment."
          (ess-forward-sexp)
          (ess-looking-at-definition-op-p no-fun-arg))))
 
+;; Move to leftmost side of a call (either the first letter of its
+;; name or its closing delim)
+(defun ess-move-to-leftmost-side ()
+  (when (or (looking-at "[({]")
+            (ess-looking-at-call-p))
+    (ess-save-excursion-when-nil
+      (let ((start-col (current-column)))
+        (skip-chars-forward "^{[(")
+        (forward-char)
+        (ess-up-list)
+        (forward-char -1)
+        (< (current-column) start-col)))))
+
+(defun ess-max-col ()
+  (let ((max-col (point)))
+    (save-excursion
+      (while (< (point) indent-point)
+        (setq max-col (current-column))
+        (forward-line)
+        (ess-back-to-indentation)))
+    max-col))
+
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line,
 otherwise nil."
@@ -2047,58 +2069,45 @@ otherwise nil."
     (let* ((start-line (line-number-at-pos))
            (prev-pos 0)
            (cascade (eq (ess-offset-type 'continued) 'cascade))
-           (climbed
-            (progn
-              ;; Try to climb block opening
-              (ess-save-excursion-when-nil
-                (and (looking-at "{")
-                     (ess-climb-block-opening)
-                     ;; But only if it's on its own line
-                     (= (save-excursion
-                          (back-to-indentation)
-                          (point))
-                        (point))))
-              (ess-climb-continuations cascade))))
+           (climbed (progn
+                      ;; Try to climb block opening
+                      (ess-save-excursion-when-nil
+                        (and (looking-at "{")
+                             (ess-climb-block-opening)
+                             ;; But only if it's on its own line
+                             (= (save-excursion
+                                  (back-to-indentation)
+                                  (point))
+                                (point))))
+                      (ess-climb-continuations cascade)))
+           max-col)
       (when climbed
         (cond
          ;; Overridden calls
          ((and ess-align-continuations-in-calls
+               (not (eq climbed 'def-op))
                containing-sexp
                (save-excursion
                  (goto-char containing-sexp)
-                 (ess-climb-object)
-                 (some 'looking-at ess-align-continuations-in-calls)))
-          (while (and (/= prev-pos (point))
-                      (eq (ess-climb-continuations cascade) t))
-            (setq prev-pos (point)))
-          (+ (current-column)
+                 (looking-at "[[(]")))
+          (setq max-col (ess-max-col))
+          (ess-move-to-leftmost-side)
+          (+ (min (current-column) max-col)
              (if (eq climbed 'def-op)
                  (ess-offset 'continued)
                0)))
-         ;; Overridden operators
-         ((and ess-align-after-operators
-               (save-excursion
-                 (ess-jump-expression)
-                 (ess-skip-blanks-forward)
-                 (some 'looking-at ess-align-after-operators)))
-          (current-column))
          ;; Regular case
          (t
           (let ((first-indent (or (eq climbed 'def-op)
                                   (save-excursion
                                     (when (ess-looking-back-closing-p)
                                       (ess-climb-expression))
-                                    (not (ess-climb-continuations cascade)))))
-                max-col)
+                                    (not (ess-climb-continuations cascade))))))
             ;; Record all indentation levels between indent-point and
             ;; the line we climbed. Some lines may have been pushed off
             ;; their natural indentation. These become the new
             ;; reference.
-            (save-excursion
-              (while (< (point) indent-point)
-                (setq max-col (current-column))
-                (forward-line)
-                (ess-back-to-indentation)))
+            (setq max-col (ess-max-col))
             ;; Indenting continuations from the front of closing
             ;; delimiters looks better
             (when

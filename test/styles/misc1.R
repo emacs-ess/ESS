@@ -1088,9 +1088,9 @@ if (condition1 || object1 %op% object2 ||
 
 ## 9
 any(condition1 |
-    condition2) &&
+       condition2) &&
    all(condition3 &
-       condition4)
+          condition4)
 
 
 ### Specific situations and overrides

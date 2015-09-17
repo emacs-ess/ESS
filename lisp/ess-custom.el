@@ -927,8 +927,7 @@ vertically aligned:
 
 See `ess-style-alist' for further details.")
 
-(defvar ess-align-continuations-in-calls
-  '("[ \t]*(" "[^ \t]+\\[")
+(defvar ess-align-continuations-in-calls t
   "List of regexes for which continuations inside the
 corresponding calls will be indented from the opening
 delimiter. By default, continuations are ignored for anonymous
@@ -940,6 +939,12 @@ produces the following indentation:
   object[variable1 +
          variable2]
 
+  if (test1 || test2 ||
+      test3 || test4) {
+      any(test5 &
+          test6)
+  }
+
 instead of
 
   10 + (1 + 2 +
@@ -947,30 +952,21 @@ instead of
   object[variable1 +
              variable2]
 
-Definition operators (`<-', `=', `:=' and `~') still trigger an
-indentation in all cases.
-
-See also `ess-align-after-operators'.")
-
-(defvar ess-align-after-operators '("|" "&" "!=" "==")
-  "List of regexes matching operators that should not trigger an
-indentation. By default, logical operators are aligned:
-
-  if (test1 || test2 ||
-      test3 || test4) {
-      any(test5 &
-          test6)
-  }
-
-instead of:
-
   if (test1 || test2 ||
         test3 || test4) {
       any(test5 &
             test6)
   }
 
-See also `ess-align-continuations-in-calls'.")
+Definition operators (`<-', `=', `:=' and `~') still trigger an
+indentation in all cases. Also, operators at top level and in
+curly brackets are not affected by this setting and always induce
+an offset:
+
+  {
+      var1 +
+          var2
+  }")
 
 (defvar ess-align-blocks '(control-flow)
   "List of block types for which `ess-offset-blocks' should be
@@ -1056,7 +1052,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1071,7 +1066,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1087,7 +1081,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1102,7 +1095,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1117,7 +1109,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1133,7 +1124,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1148,7 +1138,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-     (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . nil)
@@ -1163,7 +1152,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-nested-calls           . nil)
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . nil)
-     (ess-align-after-operators        . nil)
      (ess-align-blocks                 . nil)
      (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1178,7 +1166,6 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-align-nested-calls           . ,(default-value 'ess-align-nested-calls))
       (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
       (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
-      (ess-align-after-operators        . ,(default-value 'ess-align-after-operators))
       (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
       (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
       (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
@@ -1221,8 +1208,8 @@ Overrides (implies vertical alignment):
  - `ess-align-arguments-in-calls': calls where
    `ess-offset-arguments' should be ignored
 
- - `ess-align-continuations-in-calls': calls where
-   `ess-offset-continued' should be ignored.
+ - `ess-align-continuations-in-calls': whether to ignore
+   `ess-offset-continued' in calls.
 
  - `ess-align-blocks': whether to ignore `ess-offset-blocks' for
    function declarations or control flow statements.

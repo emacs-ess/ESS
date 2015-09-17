@@ -255,7 +255,7 @@ fun_call({
 
 ## 18
 fun_call(argument1 %>%
-             stuff,
+         stuff,
          argument2)
 
 
@@ -798,7 +798,7 @@ stuff[stuff1 %>%
 ## 7
 ggplot() +
     geom(lhs -
-             rhs
+         rhs
          ) +
     geom()
 
@@ -820,22 +820,22 @@ stuff +
              fun_call((stuff1 - stuff2 +
                        stuff3
              ) /
-                 stuff4)
+             stuff4)
              ) /
     stuff5
 
 fun_call(arg1 +
-             arg2, arg3 +
-                       arg4)
+         arg2, arg3 +
+               arg4)
 
 ## 10
 fun_call(argument1 %>%
-             stuff1, argument2 %>%
-                         stuff2, {
-                             stuff3 %>%
-                                 stuff4
-                         } %>%
-                             stuff5,
+         stuff1, argument2 %>%
+                 stuff2, {
+                     stuff3 %>%
+                         stuff4
+                 } %>%
+                 stuff5,
          argument3
          )
 
@@ -925,13 +925,13 @@ object %>%
 
 ## 20
 fun_call(stuff1 + stuff2 +
-             stuff3 +
-             (stuff4 + stuff5 +
-              stuff6) +
-             object[stuff7 +
-                    stuff8] +
-             {stuff9 +
-                  stuff10})
+         stuff3 +
+         (stuff4 + stuff5 +
+          stuff6) +
+         object[stuff7 +
+                stuff8] +
+         {stuff9 +
+              stuff10})
 
 
 ## 21
@@ -964,7 +964,7 @@ fun_call(argument) <-
 fun_call1(argument, fun_call2(
                         stuff1
                     ) +
-                        stuff2)
+                    stuff2)
 
 ## 26
 object <-
@@ -983,7 +983,7 @@ fun_call1(fun_call2(fun_call3(
 
 ## 28
 fun_call(argument1 %>%
-             stuff,
+         stuff,
          argument2)
 
 ## 29
@@ -994,7 +994,7 @@ fun_call(stuff1 :=
 ## 30
 fun_call1(fun_call2(
     fun_call3()) %>%
-        stuff)
+    stuff)
 
 ## 31
 fun_call(object1 + object2 ~ object3 +
@@ -1040,8 +1040,8 @@ object %>%
 
 ## 1
 stuff1 &&
-stuff2 ||
-stuff3
+    stuff2 ||
+    stuff3
 
 ## 2
 (stuff1 &&
@@ -1058,12 +1058,12 @@ if (condition1 &&
     condition8) {
     stuff
 } && condition8 ||
-condition9 ||
-condition10
+    condition9 ||
+    condition10
 
 ## 4
 stuff1 == stuff2 ||
-condition
+    condition
 
 ## 5
 (stuff1 == stuff2 ||
@@ -1089,8 +1089,8 @@ if (condition1 || object1 %op% object2 ||
 ## 9
 any(condition1 |
     condition2) &&
-all(condition3 &
-    condition4)
+    all(condition3 &
+        condition4)
 
 
 ### Specific situations and overrides
