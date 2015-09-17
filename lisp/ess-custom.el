@@ -1192,6 +1192,7 @@ Offsets:
  - `ess-offset-continued': offset for continuation lines in
    multiline statements
 
+
 Overrides (implies vertical alignment):
 
  - `ess-align-nested-calls': functions whose nested calls
@@ -1205,6 +1206,7 @@ Overrides (implies vertical alignment):
 
  - `ess-align-blocks': whether to ignore `ess-offset-blocks' for
    function declarations or control flow statements.
+
 
 Control variables:
 
@@ -1252,6 +1254,7 @@ global) values from ESS indentation variables."
                  (const CLB)
                  (const K&R)
                  (const RRR)
+                 (const RRR-aligned)
                  (const RStudio)
                  (const DEFAULT))
   :group 'ess-edit)
