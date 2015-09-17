@@ -53,8 +53,7 @@ they don't go past @code{fill-column}. Refilling with a prefix produces
 an alternative formatting with one element per line. Repeated refills
 cycle through different styles (see the docstrings for more details). By
 default, the refilled region blinks. Set @code{ess-blink-filling} to nil
-to prevent this. The interface for this feature is experimental and may
-change in the next release. We are interested in feedbacks.
+to prevent this.
 
 @item @ESS{[R]}: Fix occasional missing error location fontification
 in inferior buffers.

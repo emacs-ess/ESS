@@ -2270,12 +2270,20 @@ style variables buffer local."
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
 
-(defvar ess-fill-style-level nil
-  "Used internally upon code refilling.")
+(defvar ess-fill--orig-state nil
+  "Backup of original code to cycle back to original state.")
+
+(defvar ess-fill--second-state nil
+  "Backup of code produce by very first cycling. If this is equal
+  to orig-state, no need to cycle back to original state.")
+
+(defvar ess-fill--style-level nil
+  "Filling style used in last cycle.")
 
 ;; Detect repeated commands
-(defun ess-fill-style (type)
+(defun ess-fill-style (type bounds)
   (let ((max-level
+         ;; This part will be simpler once we have the style alist
          (cond ((eq type 'calls)
                 ;; No third style either when ess-offset-arguments is
                 ;; set to 'open-delim, or when ess-fill-calls-newlines
@@ -2288,14 +2296,27 @@ style variables buffer local."
                   2))
                ((eq type 'continuations)
                 2))))
-    (cond ((not (memq last-command '(fill-paragraph-or-region
-                                     fill-paragraph)))
-           (setq ess-fill-style-level 1))
-          ((>= ess-fill-style-level max-level)
-           (setq ess-fill-style-level 1))
-          (ess-fill-style-level
-           (setq ess-fill-style-level (1+ ess-fill-style-level)))))
-  ess-fill-style-level)
+    (if (not (memq last-command '(fill-paragraph-or-region
+                                  fill-paragraph)))
+        (progn
+          ;; Record original state on first cycling
+          (setq ess-fill--orig-state
+                (buffer-substring (car bounds) (marker-position (cadr bounds))))
+          (setq ess-fill--second-state nil)
+          (setq ess-fill--style-level 1))
+      ;; Also record state on second cycling
+      (when (and (= ess-fill--style-level 1)
+                 (null ess-fill--second-state))
+        (setq ess-fill--second-state
+              (buffer-substring (car bounds) (marker-position (cadr bounds)))))
+      (cond ((>= ess-fill--style-level max-level)
+             (if (string= ess-fill--orig-state
+                          ess-fill--second-state)
+                 (setq ess-fill--style-level 1)
+               (setq ess-fill--style-level 0)))
+            (ess-fill--style-level
+             (setq ess-fill--style-level (1+ ess-fill--style-level))))))
+  ess-fill--style-level)
 
 (defun ess-fill-args ()
   (save-excursion
@@ -2303,92 +2324,97 @@ style variables buffer local."
           (orig-col (current-column))
           (orig-line (line-number-at-pos))
           (bounds (ess-args-bounds))
-          (style (ess-fill-style 'calls))
           ;; Set undo boundaries manually
           (undo-inhibit-record-point t)
-          last-pos prefix-break
-          last-newline infinite)
+          last-pos last-newline prefix-break
+          infinite style)
       (when (not bounds)
         (error "Could not find function bounds"))
-      (when ess-blink-refilling
-        (ess-blink-region (car bounds) (marker-position (cadr bounds))))
-      (undo-boundary)
-      (ess-fill--unroll-lines bounds t)
-      (cond
-       ;; Second level, start with first argument on a newline
-       ((and (= style 2)
-             ess-fill-calls-newlines
-             (not (looking-at "[ \t]*#")))
-        (newline-and-indent))
-       ;; Third level, start a newline after N arguments
-       ((and (= style 3)
-             (not (looking-at "[ \t]*#")))
-        (let ((i (if (numberp current-prefix-arg)
-                     current-prefix-arg
-                   1)))
-          (while (and (> i 0)
-                      (ess-jump-parameter)
-                      (ess-jump-char ","))
-            (setq i (1- i))))
-        (newline-and-indent)))
-      (while (and (not (looking-at "[])]"))
-                  (/= (point) (or last-pos 1))
-                  (not infinite))
-        (setq prefix-break nil)
-        ;; Record start-pos as future breaking point to avoid breaking
-        ;; at `=' sign
-        (while (looking-at "[ \t]*[\n#]")
-          (forward-line)
-          (ess-back-to-indentation))
-        (setq start-pos (point))
-        (while (and (< (current-column) fill-column)
-                    (not (looking-at "[])]"))
+      (setq style (ess-fill-style 'calls bounds))
+      (if (= style 0)
+          (progn
+            (delete-region (car bounds) (marker-position (cadr bounds)))
+            (insert ess-fill--orig-state)
+            (message "Back to original formatting"))
+        (when ess-blink-refilling
+          (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+        (undo-boundary)
+        (ess-fill--unroll-lines bounds t)
+        (cond
+         ;; Second level, start with first argument on a newline
+         ((and (= style 2)
+               ess-fill-calls-newlines
+               (not (looking-at "[ \t]*#")))
+          (newline-and-indent))
+         ;; Third level, start a newline after N arguments
+         ((and (= style 3)
+               (not (looking-at "[ \t]*#")))
+          (let ((i (if (numberp current-prefix-arg)
+                       current-prefix-arg
+                     1)))
+            (while (and (> i 0)
+                        (ess-jump-parameter)
+                        (ess-jump-char ","))
+              (setq i (1- i))))
+          (newline-and-indent)))
+        (while (and (not (looking-at "[])]"))
                     (/= (point) (or last-pos 1))
-                    ;; Break after one pass if prefix is active
-                    (not prefix-break))
-          (when (memq style '(2 3))
-            (setq prefix-break t))
-          (ess-jump-char ",")
-          (setq last-pos (point))
-          ;; Jump expression and any continuations. Reindent all lines
-          ;; that were jumped over
-          (let ((cur-line (line-number-at-pos))
-                end-line)
-            (when (ess-jump-parameter)
-              (setq last-newline nil))
-            (save-excursion
-              (when (< cur-line (line-number-at-pos))
-                (setq end-line (line-number-at-pos))
-                (ess-goto-line (1+ cur-line))
-                (while (<= (line-number-at-pos) end-line)
-                  (ess-indent-line)
-                  (forward-line))))))
-        (when (or (>= (current-column) fill-column)
-                  prefix-break
-                  ;; May be useful later
-                  (and (= style 4)
-                       (looking-at "[ \t]*[])]")
-                       (setq last-pos (point))))
-          (if (and last-pos (/= last-pos start-pos))
-              (goto-char last-pos)
-            (ess-jump-char ","))
-          (cond ((looking-at "[ \t]*[#\n]")
-                 (forward-line)
-                 (ess-indent-line)
-                 (setq last-newline nil))
-                ;; With levels 2 and 3, closing delim goes on a newline
-                ((looking-at "[ \t]*[])]")
-                 (when (and (memq style '(2 3))
-                            ess-fill-calls-newlines
-                            (not last-newline))
+                    (not infinite))
+          (setq prefix-break nil)
+          ;; Record start-pos as future breaking point to avoid breaking
+          ;; at `=' sign
+          (while (looking-at "[ \t]*[\n#]")
+            (forward-line)
+            (ess-back-to-indentation))
+          (setq start-pos (point))
+          (while (and (< (current-column) fill-column)
+                      (not (looking-at "[])]"))
+                      (/= (point) (or last-pos 1))
+                      ;; Break after one pass if prefix is active
+                      (not prefix-break))
+            (when (memq style '(2 3))
+              (setq prefix-break t))
+            (ess-jump-char ",")
+            (setq last-pos (point))
+            ;; Jump expression and any continuations. Reindent all lines
+            ;; that were jumped over
+            (let ((cur-line (line-number-at-pos))
+                  end-line)
+              (when (ess-jump-parameter)
+                (setq last-newline nil))
+              (save-excursion
+                (when (< cur-line (line-number-at-pos))
+                  (setq end-line (line-number-at-pos))
+                  (ess-goto-line (1+ cur-line))
+                  (while (<= (line-number-at-pos) end-line)
+                    (ess-indent-line)
+                    (forward-line))))))
+          (when (or (>= (current-column) fill-column)
+                    prefix-break
+                    ;; May be useful later
+                    (and (= style 4)
+                         (looking-at "[ \t]*[])]")
+                         (setq last-pos (point))))
+            (if (and last-pos (/= last-pos start-pos))
+                (goto-char last-pos)
+              (ess-jump-char ","))
+            (cond ((looking-at "[ \t]*[#\n]")
+                   (forward-line)
+                   (ess-indent-line)
+                   (setq last-newline nil))
+                  ;; With levels 2 and 3, closing delim goes on a newline
+                  ((looking-at "[ \t]*[])]")
+                   (when (and (memq style '(2 3))
+                              ess-fill-calls-newlines
+                              (not last-newline))
+                     (newline-and-indent)
+                     ;; Prevent indenting infinitely
+                     (setq last-newline t)))
+                  ((not last-newline)
                    (newline-and-indent)
-                   ;; Prevent indenting infinitely
-                   (setq last-newline t)))
-                ((not last-newline)
-                 (newline-and-indent)
-                 (setq last-newline t))
-                (t
-                 (setq infinite t)))))
+                   (setq last-newline t))
+                  (t
+                   (setq infinite t))))))
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil)
       ;; Reindent surrounding context
@@ -2414,34 +2440,39 @@ style variables buffer local."
     (let ((bounds (ess-continuations-bounds))
           (undo-inhibit-record-point t)
           (last-pos (point-min))
-          (style (ess-fill-style 'continuations))
-          last-newline infinite)
+          style last-newline infinite)
       (when (not bounds)
         (error "Could not find statements bounds"))
-      (when ess-blink-refilling
-        (ess-blink-region (car bounds) (marker-position (cadr bounds))))
-      (undo-boundary)
-      (ess-fill--unroll-lines bounds)
-      (while (and (< (point) (cadr bounds))
-                  (/= (point) (or last-pos 1))
-                  (not infinite))
-        (setq last-pos (point))
-        (when (and (ess-jump-expression)
-                   (indent-according-to-mode)
-                   (not (> (current-column) fill-column)))
-          (setq last-newline nil))
-        (ess-jump-operator)
-        (if (or (and (> (current-column) fill-column)
-                     (goto-char last-pos))
-                (= style 2))
-            (progn
-              (ess-jump-operator)
-              (unless (= (point) (cadr bounds))
-                (when last-newline
-                  (setq infinite t))
-                (newline-and-indent)
-                (setq last-newline t)))
-          (setq last-newline nil)))
+      (setq style (ess-fill-style 'continuations bounds))
+      (if (= style 0)
+          (progn
+            (delete-region (car bounds) (marker-position (cadr bounds)))
+            (insert ess-fill--orig-state)
+            (message "Back to original formatting"))
+        (when ess-blink-refilling
+          (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+        (undo-boundary)
+        (ess-fill--unroll-lines bounds)
+        (while (and (< (point) (cadr bounds))
+                    (/= (point) (or last-pos 1))
+                    (not infinite))
+          (setq last-pos (point))
+          (when (and (ess-jump-expression)
+                     (indent-according-to-mode)
+                     (not (> (current-column) fill-column)))
+            (setq last-newline nil))
+          (ess-jump-operator)
+          (if (or (and (> (current-column) fill-column)
+                       (goto-char last-pos))
+                  (= style 2))
+              (progn
+                (ess-jump-operator)
+                (unless (= (point) (cadr bounds))
+                  (when last-newline
+                    (setq infinite t))
+                  (newline-and-indent)
+                  (setq last-newline t)))
+            (setq last-newline nil))))
       (set-marker (cadr bounds) nil)
       (ess-indent-call (car bounds))
       (undo-boundary))))

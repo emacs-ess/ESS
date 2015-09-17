@@ -612,8 +612,10 @@ indexing call will arrange the arguments according to
            argument3, argument4)
 
 
-Refilling repeatedly cycles through different styles. The second
-style formats according to one argument per line:
+Refilling repeatedly cycles through different styles and
+eventually to the original formatting.
+
+ The second style formats according to one argument per line:
 
   fun_call(argument1,
            argument2,
@@ -648,11 +650,7 @@ definitions.
 
 
 The blinking of the refilled region can be disabled with
-`ess-blink-refilling'.
-
-Note that this feature is experimental and the details of the
-interface may change in the future. We are interested in
-feedbacks."
+`ess-blink-refilling'."
   :group 'ess-edit
   :type 'boolean)
 
@@ -664,9 +662,11 @@ its elements, never going past `fill-column'.
   lm(outcome ~ pred1 + pred2 +
        pred3 + pred4, data)
 
-Refilling repeatedly cycles through different styles. The second
-style lay out the statements according to one expression per
-line:
+Refilling repeatedly cycles through different styles and
+eventually to the original formatting.
+
+The second style lay out the statements according to one
+expression per line:
 
   lm(outcome ~
        pred1 +
@@ -675,11 +675,7 @@ line:
        pred4, data)
 
 The blinking of the refilled region can be disabled with
-`ess-blink-refilling'.
-
-Note that this feature is experimental and the details of the
-interface may change in the future. We are interested in
-feedbacks."
+`ess-blink-refilling'."
   :group 'ess-edit
   :type 'boolean)
 
@@ -693,11 +689,7 @@ intended for example for dplyr-style code:
       argument2,
       argument3,
       argument4
-  )
-
-Note that this feature is experimental and the details of the
-interface may change in the future. We are interested in
-feedbacks."
+  )"
   :group 'ess-edit
   :type 'boolean)
 
