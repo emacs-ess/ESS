@@ -2277,6 +2277,9 @@ style variables buffer local."
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
 
+(defvar ess-fill--orig-pos nil
+  "Original position of cursor.")
+
 (defvar ess-fill--orig-state nil
   "Backup of original code to cycle back to original state.")
 
@@ -2311,6 +2314,7 @@ style variables buffer local."
         (progn
           ;; Record original state on first cycling
           (setq ess-fill--orig-state (ess-fill--substring bounds))
+          (setq ess-fill--orig-pos (point))
           (setq ess-fill--second-state nil)
           (setq ess-fill--style-level 1))
       ;; Also record state on second cycling
@@ -2336,27 +2340,31 @@ style variables buffer local."
   ess-fill--style-level)
 
 (defun ess-fill-args ()
-  (save-excursion
-    (let ((start-pos (point-min))
-          (orig-col (current-column))
-          (orig-line (line-number-at-pos))
-          (bounds (ess-args-bounds))
-          ;; Set undo boundaries manually
-          (undo-inhibit-record-point t)
-          last-pos last-newline prefix-break
-          infinite style)
-      (when (not bounds)
-        (error "Could not find function bounds"))
-      (setq style (ess-fill-style 'calls bounds))
-      (if (= style 0)
-          (progn
-            (delete-region (car bounds) (marker-position (cadr bounds)))
-            (insert ess-fill--orig-state)
-            (message "Back to original formatting"))
-        (when ess-blink-refilling
-          (ess-blink-region (nth 2 bounds)
-                            (1+ (marker-position (cadr bounds)))))
-        (undo-boundary)
+  (let ((start-pos (point-min))
+        (orig-col (current-column))
+        (orig-line (line-number-at-pos))
+        (bounds (ess-args-bounds))
+        ;; Set undo boundaries manually
+        (undo-inhibit-record-point t)
+        last-pos last-newline prefix-break
+        infinite style)
+    (when (not bounds)
+      (error "Could not find function bounds"))
+    (setq style (ess-fill-style 'calls bounds))
+    (if (= style 0)
+        (progn
+          (delete-region (car bounds) (marker-position (cadr bounds)))
+          (insert ess-fill--orig-state)
+          ;; Restore the point manually. (save-excursion) wouldn't
+          ;; work here because we delete the text rather than just
+          ;; modifying it.
+          (goto-char ess-fill--orig-pos)
+          (message "Back to original formatting"))
+      (when ess-blink-refilling
+        (ess-blink-region (nth 2 bounds)
+                          (1+ (marker-position (cadr bounds)))))
+      (undo-boundary)
+      (save-excursion
         (ess-fill--unroll-lines bounds t)
         (cond
          ;; Second level, start with first argument on a newline
@@ -2432,11 +2440,11 @@ style variables buffer local."
                    (newline-and-indent)
                    (setq last-newline t))
                   (t
-                   (setq infinite t))))))
+                   (setq infinite t)))))
+        ;; Reindent surrounding context
+        (ess-indent-call (car bounds)))
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil)
-      ;; Reindent surrounding context
-      (ess-indent-call (car bounds))
       (undo-boundary))))
 
 (defun ess-continuations-bounds ()
@@ -2454,22 +2462,23 @@ style variables buffer local."
         (list beg (point-marker))))))
 
 (defun ess-fill-continuations ()
-  (save-excursion
-    (let ((bounds (ess-continuations-bounds))
-          (undo-inhibit-record-point t)
-          (last-pos (point-min))
-          style last-newline infinite)
-      (when (not bounds)
-        (error "Could not find statements bounds"))
-      (setq style (ess-fill-style 'continuations bounds))
-      (if (= style 0)
-          (progn
-            (delete-region (car bounds) (marker-position (cadr bounds)))
-            (insert ess-fill--orig-state)
-            (message "Back to original formatting"))
-        (when ess-blink-refilling
-          (ess-blink-region (car bounds) (marker-position (cadr bounds))))
-        (undo-boundary)
+  (let ((bounds (ess-continuations-bounds))
+        (undo-inhibit-record-point t)
+        (last-pos (point-min))
+        style last-newline infinite)
+    (when (not bounds)
+      (error "Could not find statements bounds"))
+    (setq style (ess-fill-style 'continuations bounds))
+    (if (= style 0)
+        (progn
+          (delete-region (car bounds) (marker-position (cadr bounds)))
+          (insert ess-fill--orig-state)
+          (goto-char ess-fill--orig-pos)
+          (message "Back to original formatting"))
+      (when ess-blink-refilling
+        (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+      (undo-boundary)
+      (save-excursion
         (ess-fill--unroll-lines bounds)
         (while (and (< (point) (cadr bounds))
                     (/= (point) (or last-pos 1))
@@ -2490,9 +2499,9 @@ style variables buffer local."
                     (setq infinite t))
                   (newline-and-indent)
                   (setq last-newline t)))
-            (setq last-newline nil))))
+            (setq last-newline nil)))
+        (ess-indent-call (car bounds)))
       (set-marker (cadr bounds) nil)
-      (ess-indent-call (car bounds))
       (undo-boundary))))
 
 
