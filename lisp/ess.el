@@ -111,8 +111,7 @@
 (require 'ess-mode)
 (require 'ess-inf)
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl)
 
 
  ; ess-mode: editing S/R/XLS/SAS source
