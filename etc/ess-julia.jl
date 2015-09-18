@@ -12,7 +12,8 @@ function all_help_topics()
 end
 
 function help(topic::String)
-  Base.Help.help(topic)
+    ##Base.Help.help(topic) ## v0.3 and earlier?
+    eval(parse("@doc $topic")) ##v0.4
 end    
 
 ## modified version of function show(io::IO, m::Method)
