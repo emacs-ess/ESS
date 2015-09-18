@@ -514,7 +514,7 @@ current buffer if nil."
   "Open a GSASFILE for viewing."
   (interactive)
 ;;  (ess-sas-goto-shell t)
-  (ess-sas-cd) 
+  (ess-sas-cd)
   (ess-sas-goto-log 'no-error-check)
 
   (save-excursion (let (
@@ -901,7 +901,7 @@ optional argument is non-nil, then set-buffer rather than switch."
         (save-buffer)
 	(kill-buffer (current-buffer))))
 ))
-    (error nil)) 
+    (error nil))
 ; else
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
   "Creates an MS RTF portrait file from the current buffer."
@@ -926,8 +926,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert "}}}}\n")
 
     (save-buffer)
-    (kill-buffer (current-buffer))) 
-)   
+    (kill-buffer (current-buffer)))
+)
 
 (defun ess-rtf-replace-chars ()
   "Convert a text file to an MS RTF file."
@@ -964,7 +964,7 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert "}}}}\n")
 
     (save-buffer)
-    (kill-buffer (current-buffer))) 
+    (kill-buffer (current-buffer)))
 
 (defun ess-sas-rtf-us-landscape ()
   "Creates an MS RTF US landscape file from the current buffer."
@@ -1339,10 +1339,10 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key [(control f8)] 'ess-sas-submit-region)
   (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
   (global-set-key [(control f9)] 'ess-sas-data-view-insight)
-  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
-  (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
+  ;; (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  ;; (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
+  ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
+  ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
   (if (and ess-sas-edit-keys-toggle
            (equal emacs-major-version 19) (equal emacs-minor-version 28))
@@ -1377,10 +1377,10 @@ accepted for backward compatibility, however, arg is ignored."
   (global-set-key (quote [f8]) 'ess-sas-goto-shell)
   (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
   (global-set-key [(control f9)] 'ess-sas-data-view-insight)
-  (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
-  (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
+  ;; (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
+  ;; (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
+  ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
+  ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
   (if (and ess-sas-edit-keys-toggle
            (equal emacs-major-version 19) (equal emacs-minor-version 28))
