@@ -2259,15 +2259,19 @@ style variables buffer local."
 ;; This should be called inside a call
 (defun ess-args-bounds ()
   (save-excursion
-    (let ((beg (1+ (ess-containing-sexp-position))))
+    (let* ((containing-sexp (ess-containing-sexp-position))
+           (beg (1+ containing-sexp))
+           (call-beg (ess-at-containing-sexp
+                       (ess-climb-name)
+                       (point))))
       (and beg
            ;; (ess-up-list) can't find its way when point is on a
-           ;; backquoted name
+           ;; backquoted name, so start from `beg'.
            (goto-char beg)
            (ess-up-list)
            (prog1 t
              (forward-char -1))
-           (list beg (point-marker))))))
+           (list beg (point-marker) call-beg)))))
 
 (defun ess-jump-char (char)
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
@@ -2340,7 +2344,8 @@ style variables buffer local."
             (insert ess-fill--orig-state)
             (message "Back to original formatting"))
         (when ess-blink-refilling
-          (ess-blink-region (car bounds) (marker-position (cadr bounds))))
+          (ess-blink-region (nth 2 bounds)
+                            (1+ (marker-position (cadr bounds)))))
         (undo-boundary)
         (ess-fill--unroll-lines bounds t)
         (cond
