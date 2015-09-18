@@ -1106,7 +1106,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments)))
 
-    ;; R added ajr 17Feb04 to match "common R" use
+    ;; added ajr 17.Feb'04 to match "common R" use (== DEFAULT apart from  offset = 4)
     (RRR
      (ess-indent-offset                . 4)
      (ess-offset-arguments             . ,(default-value 'ess-offset-arguments))
