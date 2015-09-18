@@ -32,8 +32,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl)
 
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
 ;; (autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
