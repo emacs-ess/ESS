@@ -2287,6 +2287,9 @@ style variables buffer local."
 (defvar ess-fill--style-level nil
   "Filling style used in last cycle.")
 
+(defun ess-fill--substring (bounds)
+  (buffer-substring (car bounds) (marker-position (cadr bounds))))
+
 ;; Detect repeated commands
 (defun ess-fill-style (type bounds)
   (let ((max-level
@@ -2307,20 +2310,27 @@ style variables buffer local."
                                   fill-paragraph)))
         (progn
           ;; Record original state on first cycling
-          (setq ess-fill--orig-state
-                (buffer-substring (car bounds) (marker-position (cadr bounds))))
+          (setq ess-fill--orig-state (ess-fill--substring bounds))
           (setq ess-fill--second-state nil)
           (setq ess-fill--style-level 1))
       ;; Also record state on second cycling
       (when (and (= ess-fill--style-level 1)
                  (null ess-fill--second-state))
-        (setq ess-fill--second-state
-              (buffer-substring (car bounds) (marker-position (cadr bounds)))))
+        (setq ess-fill--second-state (ess-fill--substring bounds)))
       (cond ((>= ess-fill--style-level max-level)
-             (if (string= ess-fill--orig-state
-                          ess-fill--second-state)
-                 (setq ess-fill--style-level 1)
-               (setq ess-fill--style-level 0)))
+             (let ((same-last-and-orig (string= (ess-fill--substring bounds)
+                                                ess-fill--orig-state))
+                   (same-2nd-and-orig (string= ess-fill--orig-state
+                                               ess-fill--second-state)))
+               ;; Avoid cycling to the same state twice
+               (cond ((and same-last-and-orig
+                           same-2nd-and-orig)
+                      (setq ess-fill--style-level 2))
+                     ((or same-last-and-orig
+                          same-2nd-and-orig)
+                      (setq ess-fill--style-level 1))
+                     (t
+                      (setq ess-fill--style-level 0)))))
             (ess-fill--style-level
              (setq ess-fill--style-level (1+ ess-fill--style-level))))))
   ess-fill--style-level)
