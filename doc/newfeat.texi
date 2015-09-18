@@ -23,17 +23,18 @@ RStudio) or @code{open-delim} (indentation relative to opening
 delimiter). See the documentation strings of those variables for more
 information. Indentation of delimiters refer to these three values
 depending on the context in order to offer a consistent indentation.
-@code{ess-arg-function-offset} has been replaced by
-@code{ess-indent-prev-call-lhs} and has been generalised to
-assignements. This setting works with both statement blocks and
-expressions. It now only takes effect for offsets set to
-@code{prev-call} in order to produce a consistent indentation.
 
 @item @ESS{[R]}: @code{ess-brace-imaginary-offset},
-@code{ess-expression-offset} and all delimiter offsets are deprecated.
-The settings for indentation of continued statements have been replaced
-by @code{ess-offset-continuations}. It can be set to either
-@code{cascade} or @code{straight} (the default).
+@code{ess-expression-offset} and all delimiter-specific offsets are
+deprecated. The settings for indentation of continued statements have
+been replaced by @code{ess-offset-continuations}. It can be set to
+either @code{cascade} or @code{straight} (the default).
+@code{ess-arg-function-offset} has been replaced by
+@code{ess-indent-from-lhs} and has been generalised to
+assignements. This setting works with both statement blocks and
+expressions. It now only takes effect for offsets set to
+@code{prev-call} and @code{open-delim} in order to produce a consistent
+indentation.
 
 @item @ESS{[R]}: A new RStudio style is provided to mimic as closely
 as possible R files indented via RStudio. To reproduce the setup of some
@@ -45,15 +46,14 @@ refilling in order to make the documentation more readable. You can also
 refill commented lines in the @code{examples} field without squashing
 the surrounding code in the comments.
 
-@item @ESS{[R]}: ESS can now format your code. This is controlled
+@item @ESS{[R]}: ESS can now format your code! This is controlled
 through the settings @code{ess-fill-calls} and
 @code{ess-fill-continuations}. When activated, @code{(fill-paragraph)}
-will format your calls and your formulas/continuations and make sure
-they don't go past @code{fill-column}. Refilling with a prefix produces
-an alternative formatting with one element per line. Repeated refills
-cycle through different styles (see the docstrings for more details). By
-default, the refilled region blinks. Set @code{ess-blink-filling} to nil
-to prevent this.
+formats your calls and your formulas/continuations while making sure
+they don't go past @code{fill-column}. Repeated refills cycle through
+different styles (see the docstrings for more details). By default, the
+refilled region blinks. Set @code{ess-blink-filling} to nil to prevent
+this.
 
 @item @ESS{[R]}: Fix occasional missing error location fontification
 in inferior buffers.
