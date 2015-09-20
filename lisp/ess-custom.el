@@ -778,8 +778,10 @@ preceding line:
   object <- call(argument, other_call(argument,
       other_argument))
 
-See `ess-style-alist' for other offsets controlling
-indentation.")
+This setting can also be set to a list containing the the offset
+type and the offset size, such as `'(prev-call 2)'. Otherwise,
+`ess-indent-offset' is used as a default. See `ess-style-alist'
+for other offsets controlling indentation.")
 
 (defvar ess-offset-arguments-newline 'prev-call
   "Indent of arguments when ( or [ is followed by a new line.
@@ -791,6 +793,7 @@ relative to the opening parenthesis of the closest function call:
                                       argument,
                                       other_argument
                                       ))
+
 
 Wnen set to `prev-call', arguments on a new line are indented relative to
 the closest function call:
@@ -812,8 +815,10 @@ relative to the preceding line:
       other_argument
   ))
 
-See `ess-style-alist' for other offsets controlling
-indentation.")
+This setting can also be set to a list containing the the offset
+type and the offset size, such as `'(prev-call 2)'. Otherwise,
+`ess-indent-offset' is used as a default. See `ess-style-alist'
+for other offsets controlling indentation.")
 
 (defvar ess-offset-block 'prev-line
   "Indentation for blocks. A block is usually declared with
@@ -865,8 +870,10 @@ preceding line:
       body
   }))
 
-See `ess-style-alist' for other offsets controlling
-indentation.")
+This setting can also be set to a list containing the the offset
+type and the offset size, such as `'(prev-call 2)'. Otherwise,
+`ess-indent-offset' is used as a default. See `ess-style-alist'
+for other offsets controlling indentation.")
 
 (defvar ess-offset-continued 'straight
   "This setting controls indentation of continued statements, that is,
@@ -887,7 +894,9 @@ When set to 'cascade:
 The 'straight and 'cascade settings are actually equivalent to
 '(straight . t) and '(cascade . t), where `t' represents the
 base indent size. More generally, you can supply '(straight . N)
-to control the size of indentation.")
+to control the size of indentation.
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-nested-calls '("ifelse")
   "List of strings declaring function calls for which
@@ -896,7 +905,9 @@ will be vertically aligned instead. The default is `ifelse',
 resulting in the following indentation for nested ifelse calls:
 
     object <- ifelse(condition1, out1,
-              ifelse(condition2, out2, out3))")
+              ifelse(condition2, out2, out3))
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-arguments-in-calls '("function[ \t]*(")
   "List of regexes specifying the calls where
@@ -924,11 +935,8 @@ vertically aligned:
 See `ess-style-alist' for further details.")
 
 (defvar ess-align-continuations-in-calls t
-  "List of regexes for which continuations inside the
-corresponding calls will be indented from the opening
-delimiter. By default, continuations are ignored for anonymous
-parentheses, bracket indexing and arguments to `if', which
-produces the following indentation:
+  "Whether continuations inside calls should be indented from the
+opening delimiter. This produces the following indentation:
 
   10 + (1 + 2 +
         3 + 4)
@@ -962,7 +970,9 @@ an offset:
   {
       var1 +
           var2
-  }")
+  }
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-blocks '(control-flow)
   "List of block types for which `ess-offset-blocks' should be
@@ -977,8 +987,8 @@ declaration will always be aligned with the call to
 
 (defvar ess-indent-from-lhs t
   "When non-nil, indent arguments from the left-hand side of an
-assignment. This setting currently only has an effect for
-offsets set to `prev-call'.
+assignment. This setting only has an effect for offsets set to
+`prev-call'.
 
 If nil:
 
@@ -1007,8 +1017,8 @@ See `ess-style-alist' for for an overview of ESS indentation.")
 (defvar ess-indent-from-chain-start t
   "When non-nil, chained calls will be treated as if they were
 one call and indentation will start from the first one. This
-setting currently only has an effect for offsets set to
-`prev-call'.
+setting only has an effect for offsets set to `prev-call' or
+block offsets set to `opening-delim'.
 
 If `nil':
 
@@ -1020,7 +1030,9 @@ If `t':
 
   some_function(other_function(
       argument
-  ))")
+  ))
+
+See `ess-style-alist' for for an overview of ESS indentation.")
 
 ;;added rmh 2Nov97 at request of Terry Therneau
 (defcustom ess-indent-with-fancy-comments t
@@ -1184,16 +1196,16 @@ Offsets:
 
  - `ess-indent-offset': main offset inherited by other settings
 
- - `ess-offset-arguments': offset for function and bracket
+ - `ess-offset-arguments': offset type for function and bracket
    arguments
 
- - `ess-offset-arguments-newline': offset of arguments when ( or
-   [ is followed by a new line.
+ - `ess-offset-arguments-newline': offset type of arguments
+   when ( or [ is followed by a new line.
 
- - `ess-offset-block': offset for brace and anonymous parenthesis
-   blocks
+ - `ess-offset-block': offset type for brace and anonymous
+   parenthesis blocks
 
- - `ess-offset-continued': offset for continuation lines in
+ - `ess-offset-continued': offset type for continuation lines in
    multiline statements
 
 
@@ -1220,15 +1232,12 @@ Control variables:
  - `ess-indent-from-chain-start': whether to indent arguments from
    the first of several consecutive calls.
 
- - `ess-indent-with-fancy-comments': whether to indent #,## and ### comments
-   distinctly.
-")
+ - `ess-indent-with-fancy-comments': whether to indent #, ## and
+   ### comments distinctly.")
 
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list', with the key KEY.
-Remove any existing entry with the same KEY before adding the new one.
-               (ess-offset-continued-first . 0)
-This can be used"
+Remove any existing entry with the same KEY before adding the new one."
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
 
