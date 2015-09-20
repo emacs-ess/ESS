@@ -689,7 +689,11 @@ intended for example for dplyr-style code:
       argument2,
       argument3,
       argument4
-  )"
+  )
+
+Note that this setting is temporary and likely to be replaced in
+the next ESS version by a more comprehensive and flexible way to
+set refill styles."
   :group 'ess-edit
   :type 'boolean)
 
