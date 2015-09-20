@@ -1165,6 +1165,20 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . nil))
 
+    (RStudio-
+     (ess-indent-offset                . ,(default-value 'ess-indent-offset))
+     (ess-offset-arguments             . prev-line)
+     (ess-offset-arguments-newline     . prev-line)
+     (ess-offset-block                 . ,(default-value 'ess-offset-block))
+     (ess-offset-continued             . ,(default-value 'ess-offset-continued))
+     (ess-align-nested-calls           . nil)
+     (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
+     (ess-align-continuations-in-calls . nil)
+     (ess-align-blocks                 . nil)
+     (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
+     (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
+     (ess-indent-with-fancy-comments   . nil))
+
     (DEFAULT
       (ess-indent-offset                . ,(default-value 'ess-indent-offset))
       (ess-offset-arguments             . ,(default-value 'ess-offset-arguments))
@@ -1182,11 +1196,13 @@ See `ess-style-alist' for for an overview of ESS indentation."
   "Predefined formatting styles for ESS code.
 Values for all groups, except OWN, are fixed.  To change the
 value of variables in the OWN group, customize the variable
-`ess-own-style-list'.  RRR style is the common R style that
+`ess-own-style-list'. RRR style is the common R style that
 adheres closely to R internal standards. RStudio style closely
-mimics the indentation of the RStudio editor. DEFAULT style picks
-default (aka global) values from ESS indentation variables.  The
-actual style that is applied in R buffers is set by
+mimics the indentation of the RStudio editor. RStudio- is the
+same except it does not align arguments in function calls, which
+corresponds to the settings of some RStudio users. DEFAULT style
+picks default (aka global) values from ESS indentation variables.
+The actual style that is applied in R buffers is set by
 `ess-default-style'.
 
 ESS indentation is fully specified by the following offsets and
@@ -1269,6 +1285,7 @@ global) values from ESS indentation variables."
                  (const RRR)
                  (const RRR-aligned)
                  (const RStudio)
+                 (const RStudio-)
                  (const DEFAULT))
   :group 'ess-edit)
 

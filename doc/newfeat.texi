@@ -37,8 +37,8 @@ and @code{open-delim} in order to produce a consistent indentation.
 
 @item @ESS{[R]}: A new RStudio style is provided to mimic as closely
 as possible R files indented via RStudio. To reproduce the setup of some
-of the RStudio users, you will also need to set
-@code{ess-offset-arguments} to @code{prev-line}.
+of the RStudio users, the RStudio- style with
+@code{ess-offset-arguments} set to @code{prev-line} is also provided.
 
 @item @ESS{[R]}: Roxygen fields will now be indented on paragraph
 refilling in order to make the documentation more readable. You can also
