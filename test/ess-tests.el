@@ -45,15 +45,10 @@
 ;;; Indentation tests
 
 (defvar ess-test-style-alist
-  ;; New test-RRR style containing additional settings.
-  ;; Compared to RRR, it makes sure personal configuration does not
-  ;; interfere with tests
   `((RRR
      ,@(cdr (assq 'RRR ess-style-alist)))
     (RRR+
      ,@(cdr (assq 'RRR+ ess-style-alist)))
-    (GNU
-     ,@(cdr (assq 'GNU ess-style-alist)))
     (RStudio-
      ,@(cdr (assq 'RStudio- ess-style-alist)))
     (C++
@@ -61,7 +56,7 @@
     (misc1
      (ess-indent-offset . 3)
      (ess-offset-block . open-delim)
-     (ess-offset-arguments . prev-call)
+     (ess-offset-arguments . (prev-call 5))
      (ess-offset-arguments-newline . open-delim)
      (ess-offset-continued . cascade)
      (ess-align-nested-calls . ("ifelse"))
@@ -70,11 +65,7 @@
      (ess-align-blocks . (fun-decl bare-blocks))
      (ess-indent-from-lhs . nil)
      (ess-indent-from-chain-start . nil)
-     (ess-indent-with-fancy-comments . t))
-    (misc2
-     ,@(cdr (assq 'RStudio ess-style-alist))
-     (ess-offset-block . prev-call)
-     (ess-offset-arguments . prev-line))))
+     (ess-indent-with-fancy-comments . t))))
 
 (defun ess-test-get-pos-from-undo-elt (e)
   "If E represents an edit, return a position value in E, the position
@@ -129,6 +120,3 @@ where the edit took place. Return nil if E represents no real change.
 
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
-
-(ert-deftest test-ess-R-indentation-misc2 ()
-  (ess-test-R-indentation "styles/misc2.R" 'misc2))
