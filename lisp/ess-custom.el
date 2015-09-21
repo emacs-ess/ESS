@@ -1137,7 +1137,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments)))
 
-    (RRR-aligned
+    (RRR+
      (ess-indent-offset                . 4)
      (ess-offset-arguments             . ,(default-value 'ess-offset-arguments))
      (ess-offset-arguments-newline     . ,(default-value 'ess-offset-arguments-newline))
@@ -1193,17 +1193,27 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
       (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments))))
 
-  "Predefined formatting styles for ESS code.
-Values for all groups, except OWN, are fixed.  To change the
-value of variables in the OWN group, customize the variable
-`ess-own-style-list'. RRR style is the common R style that
-adheres closely to R internal standards. RStudio style closely
-mimics the indentation of the RStudio editor. RStudio- is the
-same except it does not align arguments in function calls, which
-corresponds to the settings of some RStudio users. DEFAULT style
-picks default (aka global) values from ESS indentation variables.
-The actual style that is applied in R buffers is set by
-`ess-default-style'.
+  "Predefined formatting styles for ESS code. Use
+`ess-default-style' to apply a style in all R buffers. The values
+of all styles except OWN are fixed. To change the value of
+variables in the OWN group, customize the variable
+`ess-own-style-list'. DEFAULT style picks default (aka global)
+values from ESS indentation variables. In addition, ESS provides
+many indentation styles, the most important being the RRR and the
+RStudio variants.
+
+RRR is the common R style that adheres closely to R internal
+standards. RRR+ is the same except it also aligns blocks in
+function calls with the opening delimiter, producing more
+indentation. The C++ style (named like this for historical
+reasons rather than any resemblance to existing C++ indentation
+schemes) is halfway between these two styles and indent block
+arguments from the start of the surrounding function's name.
+
+The RStudio style closely mimics the indentation of the RStudio
+editor. RStudio- is the same except it does not align arguments
+in function calls, which corresponds to the settings of some
+RStudio users.
 
 ESS indentation is fully specified by the following offsets and
 variables. See the documentation of these variables for examples.
@@ -1283,7 +1293,7 @@ global) values from ESS indentation variables."
                  (const CLB)
                  (const K&R)
                  (const RRR)
-                 (const RRR-aligned)
+                 (const RRR+)
                  (const RStudio)
                  (const RStudio-)
                  (const DEFAULT))
