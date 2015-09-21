@@ -5,38 +5,28 @@ Changes and New Features in 15.09:
 @itemize @bullet
 
 @item @ESS{[R]}: The indentation logic has been refactored. 
-It should be faster, more consistent and more flexible. A test framework
-has been set up in order to prevent any regression on future code
-change. Indentation offsets have been renamed to and now all start with
-the prefix @code{ess-offset-} and other control variables start with
-@code{ess-indent-}. 
+It should be faster, more consistent and more flexible. There are three
+types of indentation settings, those starting with @code{ess-offset-}
+give the actual offsets, those starting with @code{ess-indent-} are
+control (commonly Boolean) variables, and those starting with
+@code{ess-align-} are vertical alignment overrides which inhibit default
+offsets in specific situations. See @code{ess-style-alist} for detailed
+description of the new indentation system and provided default
+indentation styles.
 
-See @code{ess-style-alist} for detailed description of the new
-indentation system and available indentation options.
-
-The visible user change in the indentation setup is that customisation
-is now centered around 3 settings: @code{ess-offset-arguments},
-@code{ess-offset-arguments-newline} and @code{ess-offset-block}. The
-first two settings control how arguments are indented inside function
-calls and index brackets, while the latter controls the indentation of
-statement blocks part of an argument list (for example, lambda function
-definitions inside @code{lapply()} calls). They can be set to
-@code{prev-call} (indentation relative to innermost function call),
-@code{prev-line} (indentation relative to last line indentation as in
-RStudio) or @code{open-delim} (indentation relative to opening
-delimiter). See the documentation strings of those variables for more
-information.
-
-@item @ESS{[R]}: @code{ess-brace-imaginary-offset},
-@code{ess-expression-offset} and all delimiter-specific offsets are
-deprecated. The settings for indentation of continued statements have
-been replaced by @code{ess-offset-continuations}. It can be set to
-either @code{cascade} or @code{straight} (the default).
-@code{ess-arg-function-offset} has been replaced by
-@code{ess-indent-from-lhs} and has been generalised to
+@item @ESS{[R]}: Deprecation of old indentation settings.
+As a consequence of the indentation re-factoring
+@code{ess-brace-imaginary-offset}, @code{ess-expression-offset} and all
+delimiter-specific offsets are deprecated. The settings for indentation
+of continued statements have been replaced by
+@code{ess-offset-continuations}. It can be set to either @code{cascade}
+or @code{straight} (the default). @code{ess-arg-function-offset} has
+been replaced by @code{ess-indent-from-lhs} and has been generalised to
 assignements. This setting now works with both statement blocks and
 expressions and only takes effect for offsets set to @code{prev-call}
 and @code{open-delim} in order to produce a consistent indentation.
+
+@item @ESS{}: A test framework has been set up.
 
 @item @ESS{[R]}: A new RStudio style is provided to mimic as closely
 as possible R files indented via RStudio. To reproduce the setup of some
