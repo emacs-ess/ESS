@@ -27,6 +27,7 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'tramp)
   (require 'cl))
 
 (defun ess-inside-string-or-comment-p (&optional pos)

@@ -38,8 +38,10 @@
 ;;*;; Requires
 
 ;; Byte-compiler, SHUT-UP!
-(eval-and-compile
-  (require 'ess-utils))
+(eval-when-compile
+  (require 'ess-utils)
+  (require 'tramp))
+
 (unless (featurep 'xemacs)
   (require 'newcomment nil t))
 (require 'comint)
@@ -68,7 +70,6 @@
 (autoload 'tramp-tramp-file-p           "tramp" "(autoload).")
 (autoload 'tramp-file-name-localname    "tramp" "(autoload).")
 (autoload 'tramp-dissect-file-name      "tramp" "(autoload).")
-(autoload 'with-parsed-tramp-file-name  "tramp" "(autolaod).")
 
 ;; not really needed as tracebug and developer are loaded in r-d.el
 (autoload 'ess-tracebug-send-region       "ess-tracebug"      "(autoload).")

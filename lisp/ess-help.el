@@ -38,6 +38,7 @@
  ; Requires and autoloads
 
 (eval-when-compile
+  (require 'tramp)
   (require 'reporter)
   (require 'ess-inf)
   (require 'info))
@@ -72,7 +73,6 @@
 (autoload 'tramp-tramp-file-p           "tramp" "(autoload).")
 (autoload 'tramp-file-name-localname    "tramp" "(autoload).")
 (autoload 'tramp-dissect-file-name      "tramp" "(autoload).")
-(autoload 'with-parsed-tramp-file-name  "tramp" "(autolaod).")
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
