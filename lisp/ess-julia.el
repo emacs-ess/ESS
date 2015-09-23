@@ -30,8 +30,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Commentary:
-;;  customise inferior-julia-program-name to point to your julia-basic
-;;  and start the inferior with M-x ess-julia.
+;;
+;;  Customise inferior-julia-program-name to point to your julia binary
+;;  and start the inferior with M-x julia.
+;;
+;;  As of Sept 2015, this file depends heavily on julia-mode.el from the Julia
+;;  sources.  If you install ESS using `make', this will work fine, otherwise
+;;  ensure that julia-mode.el is on your path before loading this file.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
