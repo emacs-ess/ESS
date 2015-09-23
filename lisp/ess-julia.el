@@ -90,6 +90,16 @@ VISIBLY is not currently used."
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
+(defun ess-julia-input-sender (proc string)
+  (save-current-buffer
+    (let* ((help-?-regexp "^ *\\(?:\\(?1: *?\\? *\\)\\(?2:.+\\)\\)")
+           (help-?-match (string-match help-?-regexp string)))
+      (cond (help-?-match
+             (ess-display-help-on-object (match-string 2 string))
+             (process-send-string proc "\n"))
+            (t ;; normal command
+             (inferior-ess-input-sender proc string))))))
+
 ;; julia 0.3.0 doesn't provide categories. Thus we don't support this anymore.
 ;; (defun ess-julia-reference-lookup-function (&rest args) ; args are not used
 ;;   (interactive)
@@ -377,6 +387,7 @@ to julia, put them in the variable `inferior-julia-args'."
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
       (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+      (setq comint-input-sender 'ess-julia-input-sender)
 
       (ess--tb-start)
       (set (make-local-variable 'ess-julia-basic-offset) 4)
