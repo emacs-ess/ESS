@@ -1032,11 +1032,13 @@ If TOGGLE-EOB is given, the value of
                 (blist (cdr (buffer-list))))
             (while (and blist
                         (with-current-buffer (car blist)
-                          (not (or (and (eq major-mode 'ess-mode)
-                                        (equal dialect ess-dialect)
-                                        (null ess-local-process-name))
-                                   (and (eq major-mode 'ess-mode)
-                                        (equal loc-proc-name ess-local-process-name))
+                          (not (or (and
+                                    (memq major-mode '(ess-mode ess-julia-mode))
+                                    (equal dialect ess-dialect)
+                                    (null ess-local-process-name))
+                                   (and
+                                    (memq major-mode '(ess-mode ess-julia-mode))
+                                    (equal loc-proc-name ess-local-process-name))
                                    ))))
               (pop blist))
             (if blist
