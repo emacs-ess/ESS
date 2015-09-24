@@ -107,7 +107,7 @@ or `ess-transcript-mode' buffer.
 
 If `ess-ask-about-transfile' is non-nil, you will be asked for a
 transcript file to use. If there is no transcript file, the buffer
-name will be like *S* or *S2*.
+name will be like *R* or *R2*, determined by `ess-gen-proc-buffer-name-function'.
 
 Takes the program name from the variable `inferior-ess-program'.
 An initialization file (dumped into the process) is specified by
@@ -406,7 +406,7 @@ fontification spilling over prompts."
         ;; highlight errors
         (setq compilation--parsed beg)
         (compilation--ensure-parse end)
-        
+
         `(jit-lock-bounds ,pos0 . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)

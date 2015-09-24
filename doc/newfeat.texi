@@ -56,6 +56,7 @@ in inferior buffers.
 @item @ESS{[R]}: ess-developer now correctly assigned the environment
 of new functions to the package namespace.
 
+
 @item @ESS{[Julia]}: ?[topic] now works in the *julia* buffer.
 Note that support for editing Julia code now depends on
 @file{julia-mode.el} from the Julia project.  If you install ESS from
@@ -68,10 +69,10 @@ running @code{make}, then ensure that you have the @code{julia-mode.el},
 which you can get easily from MELPA for example.
 
 
-@item @iESS{}: For naming inferior processes ESS can use
-@code{projectile}'s project root and it does so by default whenever
-@code{projectile} - @code{ess-gen-proc-buffer-name-function} is set to
-@code{ess-gen-proc-buffer-name:projectile-or-simple}
+@item @iESS{}: For naming inferior processes, ESS can use @code{projectile}'s
+project root and it does so when @code{ess-gen-proc-buffer-name-function} is
+set to @code{ess-gen-proc-buffer-name:projectile-or-simple} as by default,
+or to another value beginning with @code{ess-gen-proc-buffer-name:projectile-*}.
 
 @end itemize
 
