@@ -120,12 +120,12 @@ changed major-mode. This variable is used internally to stop it.")
 If nil, will fontify the entire buffer when
 ess-noweb-font-lock-initial-fontify-buffer is called" )
 
-(defvar old-beginning-of-syntax nil
-  "Stores the function used to find the beginning of syntax in the
-current major mode. ess-noweb-font-lock-mode needs a different one." )
+;; (defvar old-beginning-of-syntax nil
+;;   "Stores the function used to find the beginning of syntax in the
+;; current major mode. ess-noweb-font-lock-mode needs a different one." )
 
-;; (AJR) the next two lines were originally font-lock-warning-face
-;; methods; XEmacs 20.4 doesn't define this, sigh...  -- KLUDGE --.
+;; ;; (AJR) the next two lines were originally font-lock-warning-face
+;; ;; methods; XEmacs 20.4 doesn't define this, sigh...  -- KLUDGE --.
 
 (defvar ess-noweb-font-lock-doc-start-face font-lock-reference-face
   "Face to use to highlight the `@' at the start of each doc chunk")
@@ -198,7 +198,7 @@ Each chunk is fontified in accordance with its own mode"
            (mapcar 'ess-noweb-make-variable-permanent-local
                    '(ess-noweb-font-lock-mode
                      font-lock-dont-widen
-                     font-lock-beginning-of-syntax-function
+                     ;; font-lock-beginning-of-syntax-function
                      syntax-begin-function
                      ess-noweb-use-font-lock-mode
                      after-change-functions))
@@ -241,8 +241,7 @@ Each chunk is fontified in accordance with its own mode"
   "Fontify chunk chunk-num based on the current major mode."
   (save-excursion
     (font-lock-set-defaults)
-    (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (setq font-lock-beginning-of-syntax-function 'ess-noweb-start-of-syntax)
+    ;; (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
     (setq syntax-begin-function 'ess-noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords

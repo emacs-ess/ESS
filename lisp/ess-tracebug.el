@@ -62,7 +62,6 @@
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 (defvar text-scale-mode-amount)
 (autoload 'text-scale-mode              "face-remap" "[autoload]" nil)
-(autoload 'with-parsed-tramp-file-name  "tramp" "(autolaod).")
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
