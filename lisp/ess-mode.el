@@ -1661,7 +1661,7 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-calculate-indent--comma))
        ;; Arguments: Closing
        ((ess-call-closing-p)
-        (ess-calculate-indent--args 0))
+        (ess-calculate-indent--call-closing-delim))
        ;; Block: Contents (easy cases)
        ((ess-calculate-indent--block-relatively))
        ;; Continuations
@@ -1707,6 +1707,13 @@ Returns nil if line starts inside a string, t if in a comment."
                            ;; return number of skiped chars
                            (skip-chars-forward ", \t"))))
       (- indent unindent))))
+
+(defun ess-calculate-indent--call-closing-delim ()
+  (let ((offset (if (save-excursion
+                      (ess-skip-blanks-backward t)
+                      (eq (char-before) ?,))
+                    nil 0)))
+    (ess-calculate-indent--args offset)))
 
 (defun ess-calculate-indent--block-opening ()
   (cond
