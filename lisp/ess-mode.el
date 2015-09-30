@@ -1117,10 +1117,15 @@ before the `=' sign."
 (defun ess-point-in-continuation-p ()
   (unless (or (looking-at ",")
               (ess-looking-at-call-opening "[[(]"))
-    (save-excursion
-      (ess-jump-object)
-      (and (not (ess-looking-at-parameter-op-p))
-           (ess-looking-at-operator-p)))))
+    (or (save-excursion
+          (ess-jump-object)
+          (and (not (ess-looking-at-parameter-op-p))
+               (ess-looking-at-operator-p)))
+        (save-excursion
+          (ess-climb-object)
+          (ess-climb-operator)
+          (and (ess-looking-at-operator-p)
+               (not (ess-looking-at-parameter-op-p)))))))
 
 (defun ess-point-on-call-name-p ()
   (save-excursion
