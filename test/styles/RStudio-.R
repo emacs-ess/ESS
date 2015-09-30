@@ -738,6 +738,11 @@ object <- if(cond)
 else
   stuff2
 
+## 25
+if (condition) {
+  (stuff)
+}
+
 
 ### Continuation lines
 

@@ -1729,7 +1729,7 @@ Returns nil if line starts inside a string, t if in a comment."
         (current-column))
     ;; Check for braced and unbraced blocks
     (ess-save-excursion-when-nil
-      (let ((offset (if (looking-at "[{}()]")
+      (let ((offset (if (looking-at "[{})]")
                         0 (ess-offset 'block))))
         (when (and (cond
                     ;; Unbraced blocks
