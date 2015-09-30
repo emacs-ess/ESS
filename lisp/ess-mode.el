@@ -2344,7 +2344,7 @@ style variables buffer local."
              (setq ess-fill--style-level (1+ ess-fill--style-level))))))
   ess-fill--style-level)
 
-(defun ess-fill-args ()
+(defun ess-fill-args (&optional style)
   (let ((start-pos (point-min))
         (orig-col (current-column))
         (orig-line (line-number-at-pos))
@@ -2352,10 +2352,10 @@ style variables buffer local."
         ;; Set undo boundaries manually
         (undo-inhibit-record-point t)
         last-pos last-newline prefix-break
-        infinite style)
+        infinite)
     (when (not bounds)
       (error "Could not find function bounds"))
-    (setq style (ess-fill-style 'calls bounds))
+    (setq style (or style (ess-fill-style 'calls bounds)))
     (if (= style 0)
         (progn
           (delete-region (car bounds) (marker-position (cadr bounds)))
@@ -2466,14 +2466,14 @@ style variables buffer local."
         (ess-jump-continuations)
         (list beg (point-marker))))))
 
-(defun ess-fill-continuations ()
+(defun ess-fill-continuations (&optional style)
   (let ((bounds (ess-continuations-bounds))
         (undo-inhibit-record-point t)
         (last-pos (point-min))
-        style last-newline infinite)
+        last-newline infinite)
     (when (not bounds)
       (error "Could not find statements bounds"))
-    (setq style (ess-fill-style 'continuations bounds))
+    (setq style (or style (ess-fill-style 'continuations bounds)))
     (if (= style 0)
         (progn
           (delete-region (car bounds) (marker-position (cadr bounds)))
