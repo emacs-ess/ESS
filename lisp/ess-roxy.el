@@ -770,6 +770,15 @@ list of strings."
    ((not (and (eq major-mode 'ess-mode)
               (string= ess-dialect "R")))
     ad-do-it)
+   ;; Filling of code comments in @examples roxy field
+   ((and (ess-roxy-entry-p)
+         (save-excursion
+           (back-to-indentation)
+           (looking-at "#")))
+    (ess-roxy-with-filling-context
+      ad-do-it))
+   ((ess-point-in-comment-p)
+    ad-do-it)
    ;; Filling of continuations
    ((and ess-fill-continuations
          (ess-point-in-continuation-p))
@@ -785,13 +794,6 @@ list of strings."
    ((and ess-fill-calls
          (ess-point-in-call-p))
     (ess-fill-args))
-   ;; Filling of code comments in @examples roxy field
-   ((and (ess-roxy-entry-p)
-         (save-excursion
-           (back-to-indentation)
-           (looking-at "#")))
-    (ess-roxy-with-filling-context
-      ad-do-it))
    ;; Filling of roxy blocks
    ((ess-roxy-entry-p)
     (save-excursion
