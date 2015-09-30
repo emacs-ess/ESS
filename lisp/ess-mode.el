@@ -2372,8 +2372,8 @@ style variables buffer local."
       (save-excursion
         (ess-fill--unroll-lines bounds t)
         (cond
-         ;; Second level, start with first argument on a newline
-         ((and (= style 2)
+         ;; Some styles start with first argument on a newline
+         ((and (memq style '(2 4))
                ess-fill-calls-newlines
                (not (looking-at "[ \t]*#")))
           (newline-and-indent))
@@ -2422,7 +2422,7 @@ style variables buffer local."
                     (forward-line))))))
           (when (or (>= (current-column) fill-column)
                     prefix-break
-                    ;; May be useful later
+                    ;; Ensures closing delim on a newline
                     (and (= style 4)
                          (looking-at "[ \t]*[])]")
                          (setq last-pos (point))))
@@ -2435,7 +2435,7 @@ style variables buffer local."
                    (setq last-newline nil))
                   ;; With levels 2 and 3, closing delim goes on a newline
                   ((looking-at "[ \t]*[])]")
-                   (when (and (memq style '(2 3))
+                   (when (and (memq style '(2 3 4))
                               ess-fill-calls-newlines
                               (not last-newline))
                      (newline-and-indent)
