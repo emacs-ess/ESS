@@ -2197,6 +2197,18 @@ otherwise nil."
                             (ess-climb-name)
                             (setq finished t))))))))
 
+(defadvice newline-and-indent (around ess-newline-and-indent)
+  ad-do-it
+  (when (and (eq major-mode 'ess-mode)
+             (string= ess-dialect "R")
+             (looking-at ")")
+             (ess-point-in-call-p)
+             (save-excursion
+               (ess-skip-blanks-backward t)
+               (eq (char-before) ?,)))
+    (let ((offset (ess-offset 'arguments)))
+      (insert (make-string offset ? )))))
+
 
 ;;;*;;; Predefined indentation styles
 
