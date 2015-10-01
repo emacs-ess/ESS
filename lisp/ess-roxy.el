@@ -779,10 +779,6 @@ list of strings."
       ad-do-it))
    ((ess-point-in-comment-p)
     ad-do-it)
-   ;; Filling of continuations
-   ((and ess-fill-continuations
-         (ess-point-in-continuation-p))
-    (ess-fill-continuations))
    ;; Filling of call arguments with point on call name
    ((and ess-fill-calls
          (ess-point-on-call-name-p))
@@ -790,6 +786,10 @@ list of strings."
       (skip-chars-forward "^([")
       (forward-char)
       (ess-fill-args)))
+   ;; Filling of continuations
+   ((and ess-fill-continuations
+         (ess-point-in-continuation-p))
+    (ess-fill-continuations))
    ;; Filling of call arguments
    ((and ess-fill-calls
          (ess-point-in-call-p))
