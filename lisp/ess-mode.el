@@ -2252,6 +2252,7 @@ style variables buffer local."
       ;; over it, otherwise, join lines.
       (let ((contained-sexp (ess-containing-sexp-position)))
         (cond ((and contained-sexp
+                    containing-sexp
                     (not (= containing-sexp contained-sexp)))
                (goto-char (1+ contained-sexp))
                (ess-up-list))
