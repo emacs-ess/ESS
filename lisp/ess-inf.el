@@ -46,6 +46,7 @@
   (require 'newcomment nil t))
 (require 'comint)
 (require 'overlay)
+(require 'compile)
 
 ;;; VS: These autoloads are not needed. See coments in ess-mode.el.
 ;;*;; Autoloads
@@ -381,7 +382,6 @@ at current position and return nil. POS defaults to `point'."
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
 (defvar compilation--parsed)
-(autoload 'compilation--ensure-parse "compile")
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
@@ -405,8 +405,9 @@ fontification spilling over prompts."
           (setq pos1 pos2))
         ;; highlight errors
         (setq compilation--parsed beg)
-        (compilation--ensure-parse end)
-
+        ;; emacs 23 doesn't have this function
+        (when (fboundp 'compilation--ensure-parse)
+          (compilation--ensure-parse end))
         `(jit-lock-bounds ,pos0 . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
