@@ -2277,23 +2277,6 @@ style variables buffer local."
       (goto-char (ess-code-end-position)))
     (goto-char (car bounds))))
 
-;; This should be called inside a call
-(defun ess-args-bounds ()
-  (save-excursion
-    (let* ((containing-sexp (ess-containing-sexp-position))
-           (beg (1+ containing-sexp))
-           (call-beg (ess-at-containing-sexp
-                       (ess-climb-name)
-                       (point))))
-      (and beg
-           ;; (ess-up-list) can't find its way when point is on a
-           ;; backquoted name, so start from `beg'.
-           (goto-char beg)
-           (ess-up-list)
-           (prog1 t
-             (forward-char -1))
-           (list beg (point-marker) call-beg)))))
-
 (defun ess-jump-char (char)
   (when (looking-at (concat "[ \t]*\\(" char "\\)"))
     (goto-char (match-end 1))))
@@ -2360,11 +2343,31 @@ style variables buffer local."
              (setq ess-fill--style-level (1+ ess-fill--style-level))))))
   ess-fill--style-level)
 
+;; This should be called inside a call
+(defun ess-args-bounds (&optional marker)
+  (save-excursion
+    (let* ((containing-sexp (ess-containing-sexp-position))
+           (beg (1+ containing-sexp))
+           (call-beg (ess-at-containing-sexp
+                       (ess-climb-name)
+                       (point))))
+      (and beg
+           ;; (ess-up-list) can't find its way when point is on a
+           ;; backquoted name, so start from `beg'.
+           (goto-char beg)
+           (ess-up-list)
+           (prog1 t
+             (forward-char -1))
+           (let ((end (if marker
+                          (point-marker)
+                        (point))))
+             (list beg end call-beg))))))
+
 (defun ess-fill-args (&optional style)
   (let ((start-pos (point-min))
         (orig-col (current-column))
         (orig-line (line-number-at-pos))
-        (bounds (ess-args-bounds))
+        (bounds (ess-args-bounds 'marker))
         ;; Set undo boundaries manually
         (undo-inhibit-record-point t)
         last-pos last-newline prefix-break
@@ -2468,7 +2471,7 @@ style variables buffer local."
       (set-marker (cadr bounds) nil)
       (undo-boundary))))
 
-(defun ess-continuations-bounds ()
+(defun ess-continuations-bounds (&optional marker)
   (save-excursion
     (let ((orig-point (point))
           (beg (progn
@@ -2480,10 +2483,13 @@ style variables buffer local."
         (goto-char orig-point)
         (ess-jump-object)
         (ess-jump-continuations)
-        (list beg (point-marker))))))
+        (let ((end (if marker
+                       (point-marker)
+                     (point))))
+          (list beg end))))))
 
 (defun ess-fill-continuations (&optional style)
-  (let ((bounds (ess-continuations-bounds))
+  (let ((bounds (ess-continuations-bounds 'marker))
         (undo-inhibit-record-point t)
         (last-pos (point-min))
         last-newline infinite)
