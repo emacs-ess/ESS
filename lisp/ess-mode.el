@@ -2480,8 +2480,7 @@ style variables buffer local."
                  (ess-jump-parameter-name)
                  (point))))
       (when beg
-        (goto-char orig-point)
-        (ess-jump-object)
+        (ess-jump-expression)
         (ess-jump-continuations)
         (let ((end (if marker
                        (point-marker)
