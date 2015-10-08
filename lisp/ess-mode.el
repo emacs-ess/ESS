@@ -1367,7 +1367,8 @@ of the curly brackets of a braced block."
       (save-excursion
         (ess-climb-block-opening))
       (save-excursion
-        (ess-climb-if-else))))
+        (or (looking-at "else\\b")
+            (ess-climb-if-else-call)))))
 
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
