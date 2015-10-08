@@ -1105,12 +1105,10 @@ before the `=' sign."
 
 (defun ess-point-in-call-p ()
   "Is point in a function or indexing call?"
-  (let ((containing-sexp (if (boundp 'containing-sexp)
-                             containing-sexp
-                           (ess-containing-sexp-position))))
+  (let ((containing-sexp (or (bound-and-true-p containing-sexp)
+                             (ess-containing-sexp-position))))
     (save-excursion
-      (and containing-sexp
-           (prog1 (goto-char containing-sexp)
+      (and (prog1 (ess-goto-char containing-sexp)
              (ess-climb-chained-delims))
            (save-excursion
              (forward-char)
@@ -1134,7 +1132,24 @@ before the `=' sign."
 (defun ess-point-on-call-name-p ()
   (save-excursion
     (ess-jump-name)
-    (ess-looking-at-call-opening "[[(]")))
+    (and (ess-looking-at-call-opening "[[(]")
+         (ess-looking-back-attached-name-p))))
+
+(defun ess-point-in-block-call-p ()
+  (let ((containing-sexp (or (bound-and-true-p containing-sexp)
+                             (ess-containing-sexp-position))))
+    (save-excursion
+      (and (ess-goto-char containing-sexp)
+           (looking-at "{")
+           (ess-climb-block-opening)
+           (cond ((looking-at "function")
+                  'function)
+                 ((looking-at "for")
+                  'for)
+                 ((looking-at "if")
+                  'if)
+                 ((looking-at "else")
+                  'else))))))
 
 (defun ess-point-in-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
@@ -1261,8 +1276,7 @@ of the curly brackets of a braced block."
              (when (looking-at "else\\b")
                (ess-skip-curly-backward))))
       (let ((pos (ess-unbraced-block-p ignore-ifelse)))
-        (when pos
-          (goto-char pos)))))
+        (ess-goto-char pos))))
 
 (defun ess-jump-block ()
   (ess-save-excursion-when-nil
@@ -2213,6 +2227,13 @@ otherwise nil."
 
 (defun ess-climb-outside-calls ()
   (ess-while (ess-climb-outside-call)))
+
+(defun ess-climb-outside-defun ()
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (ess-save-excursion-when-nil
+      (and (ess-goto-char containing-sexp)
+           (ess-climb-block-opening)
+           (looking-at "function")))))
 
 
 ;;;*;;; Predefined indentation styles
