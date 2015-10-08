@@ -2346,25 +2346,24 @@ style variables buffer local."
              (setq ess-fill--style-level (1+ ess-fill--style-level))))))
   ess-fill--style-level)
 
-;; This should be called inside a call
 (defun ess-args-bounds (&optional marker)
-  (save-excursion
-    (let* ((containing-sexp (ess-containing-sexp-position))
-           (beg (1+ containing-sexp))
-           (call-beg (ess-at-containing-sexp
-                       (ess-climb-name)
-                       (point))))
-      (and beg
-           ;; (ess-up-list) can't find its way when point is on a
-           ;; backquoted name, so start from `beg'.
-           (goto-char beg)
-           (ess-up-list)
-           (prog1 t
-             (forward-char -1))
-           (let ((end (if marker
-                          (point-marker)
-                        (point))))
-             (list beg end call-beg))))))
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (when (ess-point-in-call-p)
+      (save-excursion
+        (let ((beg (1+ containing-sexp))
+              (call-beg (ess-at-containing-sexp
+                          (ess-climb-name)
+                          (point))))
+          ;; (ess-up-list) can't find its way when point is on a
+          ;; backquoted name, so start from `beg'.
+          (and (goto-char beg)
+               (ess-up-list)
+               (prog1 t
+                 (forward-char -1))
+               (let ((end (if marker
+                              (point-marker)
+                            (point))))
+                 (list beg end call-beg))))))))
 
 (defun ess-fill-args (&optional style)
   (let ((start-pos (point-min))
