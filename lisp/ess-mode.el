@@ -1111,6 +1111,9 @@ before the `=' sign."
     (save-excursion
       (and containing-sexp
            (goto-char containing-sexp)
+           (save-excursion
+             (forward-char)
+             (ess-up-list))
            (or (ess-looking-at-call-opening "(")
                (looking-at "\\["))))))
 
