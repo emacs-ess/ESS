@@ -1513,14 +1513,6 @@ into account."
         (and (looking-at "[ \t]*(")
              (ess-forward-sexp)))))
 
-(defun ess-climb-outside-call ()
-  (let ((containing-sexp (ess-containing-sexp-position)))
-    (when (ess-point-in-call-p)
-      (ess-save-excursion-when-nil
-        (goto-char containing-sexp)
-        (ess-climb-chained-delims)
-        (ess-climb-name)))))
-
 (defun ess-looking-at-call-p ()
   (save-excursion
     (ess-jump-object)
@@ -2196,29 +2188,31 @@ otherwise nil."
 
 (defun ess-indent-call (&optional start)
   (save-excursion
-    (when (ess-climb-function-calls)
+    (when (ess-climb-outside-calls)
       (setq start (or start (point)))
       (skip-chars-forward "^[(")
       (forward-char)
       (ess-up-list)
       (indent-region start (point)))))
 
-(defun ess-climb-function-calls ()
-  (let (containing-sexp finished)
-    (ess-while (and (not finished)
-                    (or
-                     ;; Point inside call
-                     (ess-save-excursion-when-nil
-                       (and (setq containing-sexp
-                                  (ess-containing-sexp-position))
-                            (goto-char containing-sexp)
-                            (ess-climb-name)))
-                     ;; Point on function name
-                     (ess-save-excursion-when-nil
-                       (and (ess-jump-name))
-                       (and (looking-at "[[(]")
-                            (ess-climb-name)
-                            (setq finished t))))))))
+(defun ess-climb-outside-call ()
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (if (ess-point-in-call-p)
+        (ess-save-excursion-when-nil
+          (goto-char containing-sexp)
+          (ess-climb-chained-delims)
+          (ess-climb-name))
+      ;; At top level or inside a block, check if point is on the
+      ;; function name.
+      (ess-save-excursion-when-nil
+        (let ((orig-pos (point)))
+          (and (ess-jump-name)
+               (looking-at "[[(]")
+               (ess-climb-name)
+               (/= (point) orig-pos)))))))
+
+(defun ess-climb-outside-calls ()
+  (ess-while (ess-climb-outside-call)))
 
 
 ;;;*;;; Predefined indentation styles
