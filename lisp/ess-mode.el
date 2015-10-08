@@ -1509,6 +1509,13 @@ into account."
         (and (looking-at "[ \t]*(")
              (ess-forward-sexp)))))
 
+(defun ess-climb-outside-call ()
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (when (ess-point-in-call-p)
+      (ess-save-excursion-when-nil
+        (goto-char containing-sexp)
+        (ess-climb-name)))))
+
 (defun ess-looking-at-call-p ()
   (save-excursion
     (ess-jump-object)
