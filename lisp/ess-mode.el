@@ -1030,7 +1030,7 @@ Return the amount the indentation changed by."
                  (ess-up-list -1))
                 ((looking-at "]")
                  (when (ess-up-list -1)
-                   (prog1 t (ess-climb-chained-brackets)))))
+                   (prog1 t (ess-climb-chained-delims)))))
       (ess-looking-back-attached-name-p))))
 
 (defvar ess-block-funs-patterns
@@ -1110,7 +1110,8 @@ before the `=' sign."
                            (ess-containing-sexp-position))))
     (save-excursion
       (and containing-sexp
-           (goto-char containing-sexp)
+           (prog1 (goto-char containing-sexp)
+             (ess-climb-chained-delims))
            (save-excursion
              (forward-char)
              (ess-up-list))
@@ -1493,7 +1494,7 @@ into account."
 
 (defun ess-climb-call ()
   "Climb functions (e.g. ggplot) and parenthesised expressions."
-  (ess-climb-chained-brackets)
+  (ess-climb-chained-delims ?\])
   (ess-save-excursion-when-nil
     (ess-backward-sexp)
     (when (looking-at "[[({]")
@@ -1517,6 +1518,7 @@ into account."
     (when (ess-point-in-call-p)
       (ess-save-excursion-when-nil
         (goto-char containing-sexp)
+        (ess-climb-chained-delims)
         (ess-climb-name)))))
 
 (defun ess-looking-at-call-p ()
@@ -1639,10 +1641,13 @@ without curly braces."
            (ess-skip-blanks-forward t)
            (ess-jump-expression)))))
 
-(defun ess-climb-chained-brackets ()
-  "Should be called with point between `]['."
+(defun ess-climb-chained-delims (&optional delim)
+  "Should be called with point between delims, e.g. `]|['."
+  (setq delim (if delim
+                  (list delim)
+                '(?\] ?\))))
   (ess-while (ess-save-excursion-when-nil
-               (when (eq (char-before) ?\])
+               (when (memq (char-before) delim)
                  (ess-backward-sexp)))))
 
 (defun ess-jump-chained-brackets ()
@@ -1940,7 +1945,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--args-prev-call ()
   ;; Handle brackets chains such as ][ (cf data.table)
-  (ess-climb-chained-brackets)
+  (ess-climb-chained-delims)
   ;; Handle call chains
   (if ess-indent-from-chain-start
       (while (and (ess-backward-sexp)
