@@ -38,96 +38,6 @@
     }
 }
 
-
-
-### HANDLERS
-.ess_comp_fun_handler <- function(my_loc, completions){
-    funname <- .ess_get_in(EXPR, c(my_loc, 1))
-    if(is.symbol(funname)) funname <- as.character(funname)
-    else stop("invalid 'EXPR' or 'my_loc' argument")
-    ## avoid completing for {, ( 
-    if(nchar(funname) > 1)
-        completions[[funname]] <- .ess_comp_args(funname)
-    completions
-}
-
-.ess_comp_obj_handler <- function(my_loc, completions){
-    if(nzchar(TOKEN))
-        completions[[TOKEN]] <- .ess_comp_object(funname, force = FALSE)
-    completions
-}
-
-.ess_comp_make_op_handler <- function(operator){
-        function(my_loc, completions){
-            e <- .ess_get_in(EXPR, my_loc)
-            if (IS_CALL) {
-                completions[[operator]] <- .ess_comp_args(e)
-            } else {
-                ## this is probably good engough
-                completions <- .ess_comp_obj_handler(my_loc, completions)
-            }
-            completions
-        }
-}
-
-.ess_comp_bracket_handler <- function(my_loc, completions){
-    arg1 <- .ess_get_in(EXPR, c(my_loc, 2))
-    if(is.symbol(arg1)){
-        data <- eval(arg1)
-
-        if(is(data, "data.table")){
-            completions[["["]] <- list(colnames = names(data))
-        } else if(nchar(TOKEN) > 1) {
-            ## Start completing on at least 2 characters. There could be milions
-            ## of row names.
-            pos <- tail(my_loc, 1)
-            names <-
-                if(is.null(dim(data))){
-                    names(data)
-                } else if (pos <= length(dim(dim)) + 1){
-                    comps <- dimnames(data)[[pos]]
-                } else NULL
-
-            if(!is.null(names)){
-                names <- names[.ess_start_with(names, TOKEN)]
-                if(length(names))
-                    completions[["["]] <- list(meta = list(wrap = T),
-                                               names = head(names, 1000))
-            }
-        }
-    }
-    
-    completions
-}
-
-.ess_comp_tilda_handler <- function(my_loc, completions){
-    call <- .ess_get_in(EXPR, my_loc[-length(my_loc)])
-    if(!is.null(call)){
-        data <- match.call(function(data = NULL, ...){}, call, expand.dots = F)$data
-        if(!is.null(data)){
-            completions[["~"]] <- list(names = names(eval(data)))
-        }
-    }
-    completions
-}
-
-.ess_comp_make_indata_handler <- function(call_name, data_name = "data"){
-    function(my_loc, completions){
-        call <- .ess_get_in(EXPR, my_loc)
-        if(!is.null(call)){
-            dummy <- function(dname = NULL, ...){}
-            names(formals(dummy))[[1]] <- data_name
-            data <- match.call(dummy, call, expand.dots = F)[[data_name]]
-            if(!is.null(data)){
-                if(!is.null(names <- names(eval(data)))){
-                    completions[[call_name]] <- list(names = names)
-                }
-            }
-        }
-        completions
-    }
-}
-
 
 ### COMPLETION
 .ess_comp_args <- function(funname) {
@@ -244,6 +154,97 @@
 }
 
 
+
+### HANDLERS
+.ess_comp_fun_handler <- function(my_loc, completions){
+    funname <- .ess_get_in(EXPR, c(my_loc, 1))
+    if(is.symbol(funname)) funname <- as.character(funname)
+    else stop("invalid 'EXPR' or 'my_loc' argument")
+    ## avoid completing for {, ( 
+    if(nchar(funname) > 1)
+        completions[[funname]] <- .ess_comp_args(funname)
+    completions
+}
+
+.ess_comp_obj_handler <- function(my_loc, completions){
+    if(nzchar(TOKEN))
+        completions[[TOKEN]] <- .ess_comp_object(funname, force = FALSE)
+    completions
+}
+
+.ess_comp_make_op_handler <- function(operator){
+        function(my_loc, completions){
+            e <- .ess_get_in(EXPR, my_loc)
+            if (IS_CALL) {
+                completions[[operator]] <- .ess_comp_args(e)
+            } else {
+                ## this is probably good engough
+                completions <- .ess_comp_obj_handler(my_loc, completions)
+            }
+            completions
+        }
+}
+
+.ess_comp_bracket_handler <- function(my_loc, completions){
+    arg1 <- .ess_get_in(EXPR, c(my_loc, 2))
+    if(is.symbol(arg1)){
+        data <- eval(arg1)
+
+        if(is(data, "data.table")){
+            completions[["["]] <- list(colnames = names(data))
+        } else if(nchar(TOKEN) > 1) {
+            ## Start completing on at least 2 characters. There could be milions
+            ## of row names.
+            pos <- tail(my_loc, 1)
+            names <-
+                if(is.null(dim(data))){
+                    names(data)
+                } else if (pos <= length(dim(dim)) + 1){
+                    comps <- dimnames(data)[[pos]]
+                } else NULL
+
+            if(!is.null(names)){
+                names <- names[.ess_start_with(names, TOKEN)]
+                if(length(names))
+                    completions[["["]] <- list(meta = list(wrap = T),
+                                               names = head(names, 1000))
+            }
+        }
+    }
+    
+    completions
+}
+
+.ess_comp_tilda_handler <- function(my_loc, completions){
+    call <- .ess_get_in(EXPR, my_loc[-length(my_loc)])
+    if(!is.null(call)){
+        data <- match.call(function(data = NULL, ...){}, call, expand.dots = F)$data
+        if(!is.null(data)){
+            completions[["~"]] <- list(names = names(eval(data)))
+        }
+    }
+    completions
+}
+
+.ess_comp_make_indata_handler <- function(call_name, data_name = "data"){
+    function(my_loc, completions){
+        call <- .ess_get_in(EXPR, my_loc)
+        if(!is.null(call)){
+            dummy <- function(dname = NULL, ...){}
+            names(formals(dummy))[[1]] <- data_name
+            data <- match.call(dummy, call, expand.dots = F)[[data_name]]
+            if(!is.null(data)){
+                if(!is.null(names <- names(eval(data)))){
+                    completions[[call_name]] <- list(names = names)
+                }
+            }
+        }
+        completions
+    }
+}
+
+
+### SETUP
 .ess_comp_env <- globalenv()
 ## .ess_comp_env <- new.env(FALSE)
 for(nm in ls(all.names = T, pattern = "^\\.ess_comp")){
@@ -258,6 +259,6 @@ for(nm in ls(all.names = T, pattern = "^\\.ess_comp")){
     "@" = .ess_comp_make_op_handler("@"), 
     "[" =  .ess_comp_bracket_handler,    
     "~" =  .ess_comp_tilda_handler,
-    "with" = .ess_comp_make_indata_handler("with"), 
-    "within" = .ess_comp_make_indata_handler("within")
+    "with" = .ess_comp_make_indata_handler("with", "data"), 
+    "within" = .ess_comp_make_indata_handler("within", "data")
 )
