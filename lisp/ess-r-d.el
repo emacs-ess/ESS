@@ -1003,32 +1003,28 @@ similar to `load-library' emacs function."
 ;;;*;;; Indentation Engine
 ;; Written by Lionel Henry in mid 2015
 
-(defun ess-indent-line ()
-  "Indent current line as ESS code.
+(defun ess-r-indent-line ()
+  "Indent current line as ESS R code.
 Return the amount the indentation changed by."
-  ;; fixme: make this work with standard indent-line-function
-  (if (fboundp ess-indent-line-function)
-      (funcall ess-indent-line-function)
-    ;; else S and R default behavior
-    (let ((indent (ess-calculate-indent nil))
-          beg shift-amt
-          (case-fold-search nil)
-          (pos (- (point-max) (point))))
-      (beginning-of-line)
-      (setq beg (point))
-      (skip-chars-forward " \t")
-      (setq shift-amt (- indent (current-column)))
-      (if (zerop shift-amt)
-          (if (> (- (point-max) pos) (point))
-              (goto-char (- (point-max) pos)))
-        (delete-region beg (point))
-        (indent-to indent)
-        ;; If initial point was within line's indentation,
-        ;; position after the indentation.
-        ;; Else stay at same point in text.
-        (when (> (- (point-max) pos) (point))
-          (goto-char (- (point-max) pos))))
-      shift-amt)))
+  (let ((indent (ess-calculate-indent nil))
+        beg shift-amt
+        (case-fold-search nil)
+        (pos (- (point-max) (point))))
+    (beginning-of-line)
+    (setq beg (point))
+    (skip-chars-forward " \t")
+    (setq shift-amt (- indent (current-column)))
+    (if (zerop shift-amt)
+        (if (> (- (point-max) pos) (point))
+            (goto-char (- (point-max) pos)))
+      (delete-region beg (point))
+      (indent-to indent)
+      ;; If initial point was within line's indentation,
+      ;; position after the indentation.
+      ;; Else stay at same point in text.
+      (when (> (- (point-max) pos) (point))
+        (goto-char (- (point-max) pos))))
+    shift-amt))
 
 (defun ess-indent-call (&optional start)
   (save-excursion

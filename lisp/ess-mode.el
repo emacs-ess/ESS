@@ -927,6 +927,15 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
       (when end
         (indent-region start end)))))
 
+(defun ess-indent-line ()
+  "Indent current line as ESS code.
+Return the amount the indentation changed by."
+  ;; fixme: make this work with standard indent-line-function
+  (if (fboundp ess-indent-line-function)
+      (funcall ess-indent-line-function)
+    ;; else S and R default behavior
+    (ess-r-indent-line)))
+
 
 ;;;*;;; Predefined indentation styles
 
