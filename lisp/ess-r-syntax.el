@@ -131,7 +131,7 @@ side-effects. FORMS follows the same syntax as arguments to
 
 ;;*;; Point predicates
 
-(defun ess-point-in-call-p ()
+(defun ess-point-in-call-p (&optional call)
   "Is point in a function or indexing call?"
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
@@ -142,7 +142,8 @@ side-effects. FORMS follows the same syntax as arguments to
              (forward-char)
              (ess-up-list))
            (or (ess-looking-at-call-opening "(")
-               (looking-at "\\["))))))
+               (looking-at "\\["))
+           (ess-point-on-call-name-p call)))))
 
 (defun ess-point-in-continuation-p ()
   (unless (or (looking-at ",")
@@ -157,27 +158,28 @@ side-effects. FORMS follows the same syntax as arguments to
           (and (ess-looking-at-operator-p)
                (not (ess-looking-at-parameter-op-p)))))))
 
-(defun ess-point-on-call-name-p ()
+(defun ess-point-on-call-name-p (&optional call)
   (save-excursion
-    (ess-jump-name)
-    (and (ess-looking-at-call-opening "[[(]")
-         (ess-looking-back-attached-name-p))))
+    (ess-climb-call-name call)))
 
-(defun ess-point-in-block-call-p ()
+;; If call not specified, returns the type of call
+(defun ess-point-in-block-call-p (&optional call)
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
     (save-excursion
       (and (ess-goto-char containing-sexp)
            (looking-at "{")
            (ess-climb-block-opening)
-           (cond ((looking-at "function")
-                  'function)
-                 ((looking-at "for")
-                  'for)
-                 ((looking-at "if")
-                  'if)
-                 ((looking-at "else")
-                  'else))))))
+           (if call
+               (looking-at call)
+             (cond ((looking-at "function")
+                    'function)
+                   ((looking-at "for")
+                    'for)
+                   ((looking-at "if")
+                    'if)
+                   ((looking-at "else")
+                    'else)))))))
 
 (defun ess-point-in-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
@@ -273,6 +275,7 @@ control flow function (if, for, while, etc)."
           (ess-block-opening-p)))
       (ess-unbraced-block-p)))
 
+;; Parenthesised expressions
 (defun ess-looking-at-block-paren-p ()
   (and (looking-at "(")
        (not (ess-looking-back-attached-name-p))))
@@ -364,15 +367,25 @@ before the `=' sign."
            ((ess-jump-expression))
            ((ess-jump-continuations))))
 
-(defun ess-climb-call ()
+(defun ess-climb-call (&optional call)
   "Climb functions (e.g. ggplot) and parenthesised expressions."
   (ess-climb-chained-delims ?\])
   (ess-save-excursion-when-nil
     (ess-backward-sexp)
-    (when (looking-at "[[({]")
-      (prog1 t
-        (when (ess-looking-back-attached-name-p)
-          (ess-backward-sexp))))))
+    (prog1 (looking-at "[[({]")
+      (if call
+          (and (ess-climb-name)
+               (looking-at call)))
+      (ess-climb-name))))
+
+(defun ess-climb-call-name (&optional call)
+  (ess-save-excursion-when-nil
+    (ess-jump-name)
+    (ess-skip-blanks-forward)
+    (and (ess-looking-at-call-opening "[[(]")
+         (ess-climb-name)
+         (or (null call)
+             (looking-at call)))))
 
 (defun ess-jump-call ()
   (ess-save-excursion-when-nil
@@ -405,13 +418,15 @@ before the `=' sign."
                (when (eq (char-after) ?\[)
                  (ess-forward-sexp)))))
 
-(defun ess-climb-outside-call ()
+(defun ess-climb-outside-call (&optional call)
   (let ((containing-sexp (ess-containing-sexp-position)))
     (if (ess-point-in-call-p)
         (ess-save-excursion-when-nil
           (goto-char containing-sexp)
           (ess-climb-chained-delims)
-          (ess-climb-name))
+          (and (ess-climb-name)
+               (or (null call)
+                   (looking-at call))))
       ;; At top level or inside a block, check if point is on the
       ;; function name.
       (ess-save-excursion-when-nil
@@ -419,6 +434,8 @@ before the `=' sign."
           (and (ess-jump-name)
                (looking-at "[[(]")
                (ess-climb-name)
+               (or (null call)
+                   (looking-at call))
                (/= (point) orig-pos)))))))
 
 (defun ess-climb-outside-calls ()
