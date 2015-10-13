@@ -506,6 +506,37 @@ before the `=' sign."
                             (point))))
                  (list beg end call-beg))))))))
 
+(defun ess-args-alist ()
+  "Return all arguments as an alist with cars set to argument
+names and set to argument code. Both cars and cdrs are returned
+as strings."
+  (save-excursion
+    (when (ess-step-to-first-arg)
+      (let (args current-arg)
+        (while (and (setq current-arg (ess-cons-arg))
+                    (setq args (nconc args (list current-arg)))
+                    (ess-jump-to-next-arg)))
+        args))))
+
+(defun ess-cons-arg ()
+  (save-excursion
+    (ess-skip-blanks-forward t)
+    (let ((param (when (ess-looking-at-parameter-p)
+                   (buffer-substring-no-properties
+                    (point)
+                    (prog2
+                        (ess-jump-name)
+                        (point)
+                      (ess-skip-blanks-forward)
+                      (ess-jump-char "=")
+                      (ess-skip-blanks-forward)))))
+          (arg (buffer-substring-no-properties
+                (point)
+                (progn
+                  (ess-jump-arg)
+                  (point)))))
+      (cons param arg))))
+
 
 ;;;*;;; Statements
 
