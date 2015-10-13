@@ -1693,7 +1693,7 @@ otherwise nil."
                        current-prefix-arg
                      1)))
             (while (and (> i 0)
-                        (ess-jump-parameter)
+                        (ess-jump-arg)
                         (ess-jump-char ","))
               (setq i (1- i))))
           (newline-and-indent)))
@@ -1720,7 +1720,7 @@ otherwise nil."
             ;; that were jumped over
             (let ((cur-line (line-number-at-pos))
                   end-line)
-              (when (ess-jump-parameter)
+              (when (ess-jump-arg)
                 (setq last-newline nil))
               (save-excursion
                 (when (< cur-line (line-number-at-pos))

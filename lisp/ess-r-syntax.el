@@ -210,8 +210,10 @@ into account."
     (ess-skip-blanks-forward newlines)))
 
 (defun ess-jump-char (char)
-  (when (looking-at (concat "[ \t]*\\(" char "\\)"))
-    (goto-char (match-end 1))))
+  (ess-save-excursion-when-nil
+    (ess-skip-blanks-forward t)
+    (when (looking-at char)
+      (goto-char (match-end 0)))))
 
 (defun ess-climb-comment ()
   (when (ess-point-in-comment-p)
@@ -364,15 +366,15 @@ before the `=' sign."
          (ess-climb-object)
          (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
 
+(defun ess-looking-at-arg-p ()
+  (save-excursion
+    (ess-jump-arg)))
+
 (defun ess-looking-at-parameter-p ()
   (save-excursion
     (ess-jump-parameter)))
 
-(defun ess-looking-at-parameter-name-p ()
-  (save-excursion
-    (ess-jump-parameter-name)))
-
-(defun ess-jump-parameter-name ()
+(defun ess-jump-parameter ()
   (ess-save-excursion-when-nil
     (and (ess-jump-name)
          (when (looking-at "[ \t]*=\\([^=]\\)")
@@ -380,10 +382,19 @@ before the `=' sign."
            (ess-skip-blanks-forward)
            t))))
 
-(defun ess-jump-parameter ()
-  (ess-any ((ess-jump-parameter-name))
-           ((ess-jump-expression))
-           ((ess-jump-continuations))))
+(defun ess-jump-arg ()
+  (ess-save-excursion-when-nil
+    (ess-skip-blanks-forward t)
+    (ess-any ((ess-jump-parameter))
+             ((ess-jump-expression))
+             ((ess-jump-continuations)))))
+
+(defun ess-arg-bounds ()
+  "Should be called in front of the argument."
+  (save-excursion
+    (let ((beg (point)))
+      (and (ess-jump-arg)
+           (list beg (point))))))
 
 (defun ess-climb-call (&optional call)
   "Climb functions (e.g. ggplot) and parenthesised expressions."
@@ -404,6 +415,23 @@ before the `=' sign."
          (ess-climb-name)
          (or (null call)
              (looking-at call)))))
+
+(defun ess-step-to-first-arg ()
+  (let ((containing-sexp (ess-containing-sexp-position)))
+    (cond ((ess-point-in-call-p)
+           (goto-char containing-sexp)
+           (forward-char)
+           t)
+          ((ess-point-on-call-name-p)
+           (ess-jump-name)
+           (ess-skip-blanks-forward)
+           (forward-char)
+           t))))
+
+(defun ess-jump-to-next-arg ()
+  (and (ess-jump-arg)
+       (prog1 (ess-jump-char ",")
+         (ess-skip-blanks-forward t))))
 
 (defun ess-jump-call ()
   (ess-save-excursion-when-nil
@@ -477,7 +505,6 @@ before the `=' sign."
                               (point-marker)
                             (point))))
                  (list beg end call-beg))))))))
-
 
 
 ;;;*;;; Statements
@@ -641,7 +668,7 @@ before the `=' sign."
           (beg (progn
                  (ess-climb-object)
                  (while (ess-climb-continuations))
-                 (ess-jump-parameter-name)
+                 (ess-jump-parameter)
                  (point))))
       (when beg
         (ess-jump-expression)
