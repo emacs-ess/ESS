@@ -11,9 +11,9 @@ function all_help_topics()
     end
 end
 
-function help(topic::String)
+function help(topic::AbstractString)
     ##Base.Help.help(topic) ## v0.3 and earlier?
-    eval(parse("@doc $topic")) ##v0.4
+    eval(current_module(), parse("@doc $topic")) ##v0.4
 end    
 
 ## modified version of function show(io::IO, m::Method)
@@ -34,19 +34,19 @@ end
 ## modified versionof show(io::IO, mt::MethodTable)
 function fun_args(f::Function)
     mt = f.env
-    mod = Base.function_module(f)
+    mod = mt.module
     if mod == Main
         mod = "nil"
     end 
     print("(list \"$mod\" nil '(")
     d = mt.defs
-    while !is(d, ())
+    while d != nothing
         print("\"")
         ## method
         fun_args(d)
         print("\" ")
         d = d.next
-        if is(d,())
+        if d == nothing
             print("))")
         end
     end
