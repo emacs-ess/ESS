@@ -1286,7 +1286,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--arg-block (offset arg-block)
   (let* ((block-type (cond ((or (ess-at-containing-sexp
                                   (and (eq arg-block 'body)
-                                       (ess-climb-function-decl t)))
+                                       (ess-climb-defun t)))
                                 (ess-at-indent-point
                                   (and (eq arg-block 'opening)
                                        (ess-backward-sexp 2)

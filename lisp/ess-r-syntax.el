@@ -508,8 +508,8 @@ before the `=' sign."
 
 (defun ess-args-alist ()
   "Return all arguments as an alist with cars set to argument
-names and set to argument code. Both cars and cdrs are returned
-as strings."
+names and cdrs set to the expressions given as argument. Both
+cars and cdrs are returned as strings."
   (save-excursion
     (when (ess-step-to-first-arg)
       (let (args current-arg)
@@ -519,6 +519,9 @@ as strings."
         args))))
 
 (defun ess-cons-arg ()
+  "Return a cons cell of the current argument with car set to the
+parameter name (nil if not specified) and cdr set to the argument
+expression."
   (save-excursion
     (ess-skip-blanks-forward t)
     (let ((param (when (ess-looking-at-parameter-p)
@@ -814,14 +817,14 @@ without curly braces."
 
 ;;;*;;; Function Declarations
 
-(defun ess-looking-at-function-p ()
+(defun ess-looking-at-defun-p ()
   (looking-at "function[ \t]*("))
 
-(defun ess-climb-function-decl (&optional from-block)
+(defun ess-climb-defun (&optional from-block)
   (let ((times (if from-block 2 1)))
     (ess-save-excursion-when-nil
       (and (ess-backward-sexp times)
-           (ess-looking-at-function-p)
+           (ess-looking-at-defun-p)
            (point)))))
 
 (defun ess-climb-outside-defun ()
