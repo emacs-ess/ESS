@@ -65,7 +65,7 @@ end
 
 function fun_args(t::DataType)
     print("(list nil nil '(")
-    for d = names(t)
+    for d = fieldnames(t)
         print("\"$d\" ")
     end
     print("))")
@@ -83,7 +83,7 @@ function components(m::Module)
 end
 
 function components(t::DataType)
-    for v in sort(names(t))
+    for v in sort(fieldnames(t))
         println(rpad(string(v), 30), "field")
     end
 end
