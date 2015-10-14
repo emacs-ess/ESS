@@ -1173,12 +1173,12 @@ Returns nil if line starts inside a string, t if in a comment."
                         0 (ess-offset 'block))))
         (when (and (cond
                     ;; Unbraced blocks
-                    ((ess-climb-block-opening))
+                    ((ess-climb-block-prefix))
                     ;; Braced blocks
                     (containing-sexp
                      (goto-char containing-sexp)
                      (and (looking-at "{")
-                          (ess-climb-block-opening))))
+                          (ess-climb-block-prefix))))
                    (some 'looking-at (ess-overridden-blocks))
                    ;; This ensures that we indent call-prefixed blocks
                    ;; from their lhs if they have one, even when
@@ -1278,9 +1278,9 @@ Returns nil if line starts inside a string, t if in a comment."
            ;; Block is not part of an arguments list. Climb over any
            ;; block opening (function declaration, etc) to indent from
            ;; starting indentation.
-           (or (ess-climb-block-opening)
+           (or (ess-climb-block-prefix)
                (and (goto-char containing-sexp)
-                    (ess-climb-block-opening)))
+                    (ess-climb-block-prefix)))
            (+ (current-indentation) (or offset (ess-offset 'block)))))))
 
 (defun ess-calculate-indent--arg-block (offset arg-block)
@@ -1381,13 +1381,13 @@ Returns nil if line starts inside a string, t if in a comment."
      ((looking-at "[]})]")
       (ess-up-list -1)
       (when (looking-at "{")
-        (ess-climb-block-opening))
+        (ess-climb-block-prefix))
       (current-indentation))
      ;; Function blocks need special treatment
      ((and (eq type 'prev-line)
            (eq block 'fun-decl))
       (goto-char containing-sexp)
-      (ess-climb-block-opening)
+      (ess-climb-block-prefix)
       (current-indentation))
      ;; Regular case
      (t
@@ -1396,7 +1396,7 @@ Returns nil if line starts inside a string, t if in a comment."
                   (looking-at "[ \t]*\\($\\|#\\)")))
       (goto-char (ess-code-end-position))
       ;; Climb relevant structures
-      (unless (ess-climb-block-opening)
+      (unless (ess-climb-block-prefix)
         (when (eq (char-before) ?,)
           (forward-char -1))
         (ess-climb-expression)
@@ -1492,7 +1492,7 @@ otherwise nil."
                       ;; Try to climb block opening
                       (ess-save-excursion-when-nil
                         (and (looking-at "{")
-                             (ess-climb-block-opening)
+                             (ess-climb-block-prefix)
                              ;; But only if it's on its own line
                              (= (save-excursion
                                   (back-to-indentation)
@@ -1693,7 +1693,7 @@ otherwise nil."
                        current-prefix-arg
                      1)))
             (while (and (> i 0)
-                        (ess-jump-parameter)
+                        (ess-jump-arg)
                         (ess-jump-char ","))
               (setq i (1- i))))
           (newline-and-indent)))
@@ -1720,7 +1720,7 @@ otherwise nil."
             ;; that were jumped over
             (let ((cur-line (line-number-at-pos))
                   end-line)
-              (when (ess-jump-parameter)
+              (when (ess-jump-arg)
                 (setq last-newline nil))
               (save-excursion
                 (when (< cur-line (line-number-at-pos))
