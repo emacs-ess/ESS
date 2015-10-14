@@ -12,11 +12,12 @@ mkCh <- function(n) {
 set.seed(1)
 y <- mkCh(9999)
 system.time(print(y))
-## R CMD BATCH slow-long-output.R && grep -A 1 -B 1 '^ *user *sys' slow-long-output.Rout 
-##  user  system elapsed 
+## R CMD BATCH slow-long-output.R && grep -A 1 -B 1 '^ *user *sys' slow-long-output.Rout
+##  user  system elapsed
 ## 0.059   0.010   0.070  -- MM@lynne R CMD BATCH
-##  user  system elapsed 
-## 0.120   0.138   3.225 (+/- 0.2) -- MM@lynne ESS 13.09-1 [svn: 5930]
+## 0.040   0.014  12.762  -- MM@lynne(2015)    ESS 15.09-1 [git: dd226e2027..]
+## 0.027   0.027   1.945  -- MM@lynne(2015)    ESS 14.09   [svn: 6041]
+## 0.120   0.138   3.225  -- MM@lynne(2013-12) ESS 13.09-1 [svn: 5930]
 ##---
 ## 0.124   0.097  52.540  -- MM@lynne ESS svn r 5909; incl font-locking, tracebug
 ## 0.128   0.080  57.305       ditto
@@ -31,19 +32,24 @@ system.time(print(y))
 set.seed(23456)
 y <- mkCh(50000)
 system.time(print(y))
-##  user   system  elapsed 
+##  user   system  elapsed
 ## 0.255    0.089    0.345  -- BATCH MM@lynne
+## 0.035    0.138   27.935  -- MM@lynne(2015)    ESS 15.09-1 [git: dd226e2027..]
+##               .... but sometimes also fast, or considerably slower:
+## 0.049    0.112    1.037
+## 0.036    0.129  103.253
+## 0.157    0.107   11.356  -- MM@lynne(2015)    ESS 14.09   [svn: 6041]
 ## 0.685    0.369 1664.557  -- MM@lynne ESS svn r 5909 ...
 ## 0.760    0.398 1643.608  -- ..@lynne ESS 13.09
 ## 0.590    0.510   33.349  --     "    ESS 13.05   [rev. 5574 (2013-05-14)]
-## 0.565    0.548   28.251	"	 "	
+## 0.565    0.548   28.251	"	 "
 ## 0.598    0.450   27.804 	"	 "
 
 
 ## Don't even think of trying this with ESS, currently:
 y <- mkCh(200000)
 system.time(print(y))
-##  user  system elapsed 
+##  user  system elapsed
 ## 1.013   0.284   1.300  -- BATCH MM@lynne
 
 options(op)
