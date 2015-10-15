@@ -1,4 +1,5 @@
 module ESS
+using Compat
 
 function all_help_topics()
     Base.Help.init_help()
@@ -12,8 +13,9 @@ function all_help_topics()
 end
 
 function help(topic::AbstractString)
-    ##Base.Help.help(topic) ## v0.3 and earlier?
-    eval(current_module(), parse("@doc $topic")) ##v0.4
+    VERSION >= v"0.4-" ?
+    eval(current_module(), parse("@doc $topic")) :
+    Base.Help.help(topic)
 end    
 
 ## modified version of function show(io::IO, m::Method)
@@ -31,25 +33,25 @@ function fun_args(m::Method)
     print(io, ")")
 end 
 
+VERSION >= v"0.4-" && (Base.function_module(f::Function)=f.env.module)
+
 ## modified versionof show(io::IO, mt::MethodTable)
 function fun_args(f::Function)
     mt = f.env
-    mod = mt.module
+    mod = Base.function_module(f)
     if mod == Main
         mod = "nil"
     end 
     print("(list \"$mod\" nil '(")
     d = mt.defs
-    while d != nothing
+    while d != nothing && d != ()
         print("\"")
         ## method
         fun_args(d)
         print("\" ")
         d = d.next
-        if d == nothing
-            print("))")
-        end
     end
+    print("))")
 end
 
 function fun_args(s::ASCIIString)
