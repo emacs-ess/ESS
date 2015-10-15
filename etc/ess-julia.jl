@@ -27,7 +27,7 @@ function fun_args(m::Method)
     e = Base.uncompressed_ast(li)
     argnames = e.args[1]
     print(io, "(")
-    print_joined(io, [isempty(d[2]) ? d[1] : d[1]*"::"*d[2] for d in decls], ",", ",")    
+    print_joined(io, [escape_string(isempty(d[2]) ? d[1] : d[1]*"::"*d[2]) for d in decls], ",", ",")    
     print(io, ")")
 end 
 
