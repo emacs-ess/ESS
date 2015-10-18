@@ -223,6 +223,9 @@ into account."
 (defun ess-looking-back-closing-p ()
   (memq (char-before) '(?\] ?\} ?\))))
 
+(defun ess-looking-back-boundary-p ()
+  (looking-back "[][ \t\n(){},]" (1- (point))))
+
 
 ;;;*;;; Blocks
 
@@ -512,6 +515,14 @@ before the `=' sign."
 (defun ess-climb-outside-calls ()
   (ess-while (ess-climb-outside-call)))
 
+(defun ess-jump-inside-call ()
+  (ess-save-excursion-when-nil
+    (when (ess-jump-name)
+      (ess-skip-blanks-forward)
+      (when (looking-at "(")
+        (forward-char)
+        t))))
+
 (defun ess-args-bounds (&optional marker)
   (let ((containing-sexp (ess-containing-sexp-position)))
     (when (ess-point-in-call-p)
@@ -725,7 +736,7 @@ expression."
          (ess-looking-at-definition-op-p no-fun-arg))))
 
 (defun ess-climb-outside-continuations ()
-  (ess-any ((unless (looking-back "[ \t\n]" (1- (point)))
+  (ess-any ((unless (ess-looking-back-boundary-p)
               (ess-climb-expression)))
            ((ess-while (ess-climb-continuations)))))
 
@@ -853,11 +864,13 @@ without curly braces."
       (ess-looking-at-enclosed-defun-p)))
 
 (defun ess-looking-at-enclosed-defun-p ()
-  (and (ess-looking-at-call-p)
-       (some (lambda (arg)
-               (string-match "^function\\b"
-                             (cdr arg)))
-             (ess-args-alist))))
+  (save-excursion
+    (and (ess-looking-at-call-p)
+         (ess-jump-inside-call)
+         (some (lambda (arg)
+                 (string-match "^function\\b"
+                               (cdr arg)))
+               (ess-args-alist)))))
 
 
 ;;;*;;; Names / Objects / Expressions
