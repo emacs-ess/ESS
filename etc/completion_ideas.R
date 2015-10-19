@@ -17,7 +17,7 @@ dt[, a|] # -> aaaa (unquoted!)
 ## attributes
 x <- ""
 attr(x, "foo") <- function(alpha, beta) {}
-attr(x, "foo")({al| # -> "alpha"               
+attr(x, "foo")({al| # -> "alpha"
 
 ## chains
 mtcars %>% dplyr::select(mp | #-> mpg (unquoted))
@@ -32,4 +32,13 @@ inner_join(foo, bar, by = c(| # provides completions for variables in foo when
 
 
 ## tmp
-(attr(x, "foo")({[al| # -> "alpha"               
+(attr(x, "foo")({[al| # -> "alpha"
+
+
+## Completion of namespaces
+micro| # -> microbenchmark::
+
+## Completion of function bindings
+function(argument) {
+    arg| # -> argument
+}
