@@ -407,7 +407,11 @@ fontification spilling over prompts."
         (setq compilation--parsed beg)
         ;; emacs 23 doesn't have this function
         (when (fboundp 'compilation--ensure-parse)
-          (compilation--ensure-parse end))
+          ;; this line is a workaround for occasional incomplete highlighting of
+          ;; compilation errors on remotes, but it causes an incredible
+          ;; slowdown. See https://github.com/emacs-ess/ESS/issues/258.
+          ;; (compilation--ensure-parse end)
+          )
         `(jit-lock-bounds ,pos0 . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
