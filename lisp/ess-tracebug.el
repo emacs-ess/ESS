@@ -1230,13 +1230,13 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when (or (null last-time)
                 (> (- new-time last-time) .5))
 
-        ;; Very slow in long comint buffers. Probably because of some comint
-        ;; interaction. Not a reall issue, as it is executed periodically
-        ;; or only on first output after a command.
+        ;; Very slow in long comint buffers. Not a real issue, as it is executed
+        ;; periodically, or only on first output after the command.
 
         (with-current-buffer pbuf
           (save-excursion
-            (let ((pmark (process-mark proc)))
+            (let ((pmark (process-mark proc))
+                  (inhibit-modification-hooks t))
               (goto-char pmark)
               (when (looking-back inferior-ess-primary-prompt)
                 (insert-before-markers "\n")
