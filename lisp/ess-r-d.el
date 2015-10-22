@@ -1056,15 +1056,11 @@ Return the amount the indentation changed by."
       (car offset)
     offset))
 
-(defvar ess-block-funs-patterns
-  (mapcar (lambda (fun) (concat fun "\\b"))
-          '("function" "if" "for" "while")))
-
 (defun ess-overridden-blocks ()
   (append (when (memq 'fun-decl ess-align-blocks)
-            (list (car ess-block-funs-patterns)))
+            (list (car ess-prefixed-block-patterns)))
           (when (memq 'control-flow ess-align-blocks)
-            (append (cdr ess-block-funs-patterns)
+            (append (cdr ess-prefixed-block-patterns)
                     '("}?[ \t]*else")))))
 
 (defun ess-calculate-indent (&optional parse-start)
@@ -1184,7 +1180,7 @@ Returns nil if line starts inside a string, t if in a comment."
                    ;; from their lhs if they have one, even when
                    ;; `ess-align-blocks' says to align
                    (not (save-excursion
-                          (and (some 'looking-at ess-block-funs-patterns)
+                          (and (ess-looking-at-prefixed-block-p)
                                (ess-looking-back-definition-op-p t)))))
           (+ (current-column) offset))))))
 
@@ -1286,7 +1282,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--arg-block (offset arg-block)
   (let* ((block-type (cond ((or (ess-at-containing-sexp
                                   (and (eq arg-block 'body)
-                                       (ess-climb-function-decl t)))
+                                       (ess-climb-block-prefix "function")))
                                 (ess-at-indent-point
                                   (and (eq arg-block 'opening)
                                        (ess-backward-sexp 2)
