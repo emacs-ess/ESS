@@ -56,6 +56,13 @@ object =
       body
    }
 
+## 6d
+fun_call(argument) <-
+   function()
+   {
+      body
+   }
+
 ## 7
 {
    object <- function()

@@ -1088,6 +1088,8 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-calculate-indent--call-closing-delim))
        ;; Block: Contents (easy cases)
        ((ess-calculate-indent--block-relatively))
+       ;; Block: Prefixed block
+       ((ess-calculate-indent--prefixed-block-curly))
        ;; Continuations
        ((ess-calculate-indent--continued))
        ;; Block: Overridden contents
@@ -1477,6 +1479,23 @@ Returns nil if line starts inside a string, t if in a comment."
         (ess-back-to-indentation)))
     max-col))
 
+(defun ess-calculate-indent--prefixed-block-curly ()
+  (when (looking-at "{")
+    (ess-save-excursion-when-nil
+      (let ((block-type (ess-climb-block-prefix)))
+        (cond ((ess-save-excursion-when-nil
+                 (and (memq 'fun-decl-curly ess-indent-from-lhs)
+                      (string= block-type "function")
+                      (ess-climb-operator)
+                      (ess-looking-at-assignment-op-p)
+                      (ess-climb-expression)))
+               (current-column))
+              ((= (save-excursion
+                    (back-to-indentation)
+                    (point))
+                  (point))
+               (ess-calculate-indent--continued)))))))
+
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line,
 otherwise nil."
@@ -1484,17 +1503,7 @@ otherwise nil."
     (let* ((start-line (line-number-at-pos))
            (prev-pos 0)
            (cascade (eq (ess-offset-type 'continued) 'cascade))
-           (climbed (progn
-                      ;; Try to climb block opening
-                      (ess-save-excursion-when-nil
-                        (and (looking-at "{")
-                             (ess-climb-block-prefix)
-                             ;; But only if it's on its own line
-                             (= (save-excursion
-                                  (back-to-indentation)
-                                  (point))
-                                (point))))
-                      (ess-climb-continuations cascade)))
+           (climbed (progn (ess-climb-continuations cascade)))
            max-col)
       (when climbed
         (cond

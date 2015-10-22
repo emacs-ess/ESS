@@ -66,14 +66,13 @@
   (when pos
     (goto-char pos)))
 
-(defun ess-looking-at (regex)
+(defun ess-looking-at (regex &optional newlines)
   "Compared to a simple `(looking-at)', this uses sexp motions to
 skip any blanks, newlines and comments. Should be more reliable
 and possibly faster than using complicated regexes."
   (save-excursion
-    (and (ess-forth-and-back-sexp)
-         (looking-at regex)
-         (point))))
+    (ess-skip-blanks-forward newlines)
+    (looking-at regex)))
 
 (defun ess-back-to-indentation ()
   "Move point to the first non-whitespace character on this line.
@@ -726,8 +725,10 @@ expression."
                t)))))
 
 (defun ess-looking-at-assignment-op-p ()
-  (ess-skip-blanks-forward)
-  (looking-at "<-"))
+  (save-excursion
+    (ess-skip-blanks-forward t)
+    (and (looking-at "<-\\|=")
+         (not (ess-looking-at-parameter-op-p)))))
 
 (defun ess-looking-back-definition-op-p (&optional no-fun-arg)
   (save-excursion

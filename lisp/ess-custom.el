@@ -985,12 +985,13 @@ aligned vertically. With `fun-decl', the body of a function
 declaration will always be aligned with the call to
 `function'.")
 
-(defvar ess-indent-from-lhs t
-  "When non-nil, indent arguments from the left-hand side of an
-assignment. This setting only has an effect for offsets set to
-`prev-call'.
+(defvar ess-indent-from-lhs '(arguments fun-decl-curly)
+  "List of syntactic elements that should be indented from the
+left-hand side of an assignment. The list accepts the symbol
+`arguments' and `fun-decl-curly'.
 
-If nil:
+For arguments, this setting only has an effect for offsets set to
+`prev-call'. When set, this indentation is produced:
 
   some_function(parameter = other_function(
                                 argument
@@ -1001,7 +1002,7 @@ If nil:
                 argument2
             )
 
-If t:
+instead of:
 
   some_function(parameter = other_function(
                     argument
@@ -1011,6 +1012,24 @@ If t:
       argument1,
       argument2
   )
+
+
+`fun-decl-curly' refers to the opening curly following a function
+declaration. Setting it produces:
+
+  object <-
+      function(argument)
+  {
+      body
+  }
+
+instead of:
+
+  object <-
+      function(argument)
+      {
+          body
+      }
 
 See `ess-style-alist' for for an overview of ESS indentation.")
 
@@ -1075,7 +1094,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
-     (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
+     (ess-indent-from-lhs              . (arguments))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments)))
 
@@ -1147,7 +1166,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . ,(default-value 'ess-align-continuations-in-calls))
      (ess-align-blocks                 . ,(default-value 'ess-align-blocks))
-     (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
+     (ess-indent-from-lhs              . (arguments))
      (ess-indent-from-chain-start      . nil)
      (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments)))
 
@@ -1161,7 +1180,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . nil)
      (ess-align-blocks                 . nil)
-     (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
+     (ess-indent-from-lhs              . (arguments))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . nil))
 
@@ -1175,7 +1194,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
      (ess-align-arguments-in-calls     . ,(default-value 'ess-align-arguments-in-calls))
      (ess-align-continuations-in-calls . nil)
      (ess-align-blocks                 . nil)
-     (ess-indent-from-lhs              . ,(default-value 'ess-indent-from-lhs))
+     (ess-indent-from-lhs              . (arguments))
      (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
      (ess-indent-with-fancy-comments   . nil))
 

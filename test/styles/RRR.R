@@ -45,16 +45,23 @@ object <- function()
 ## 6b
 object <-
     function()
-    {
-        body
-    }
+{
+    body
+}
 
 ## 6c
 object =
     function()
-    {
-        body
-    }
+{
+    body
+}
+
+## 6d
+fun_call(argument) <-
+    function()
+{
+    body
+}
 
 ## 7
 {
