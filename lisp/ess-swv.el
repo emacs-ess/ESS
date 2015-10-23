@@ -122,8 +122,7 @@
               (format ess-swv-processing-command cmd cmd-args)))
         (message "%s()ing %S" cmd rnw-file)
         (ess-execute Sw-cmd 'buffer nil nil)
-        (switch-to-buffer rnw-buf)
-        (ess-show-buffer (buffer-name sbuffer) nil)))))
+        (message "Finished %s()ing %S" cmd rnw-file)))))
 
 (defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
   "Command used by `ess-swv-run-in-R'.
@@ -256,15 +255,16 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
                             (file-name-nondirectory latex-filename)
                           latex-filename)))
     (if (not (= 0 pdf-status))
-        (message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
+        (progn
+          (message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
+          (display-buffer tex-buf))
       ;; else: pdflatex probably ok
       ;; (set-process-sentinel proc 'shell-command-sentinel)
       (if (and ess-microsoft-p (w32-shell-dos-semantics))
           (shell-command cmdstr-win)
         (message (mapconcat 'identity cmd " "))
         (apply 'start-process  (car cmd) nil cmd)))
-    (display-buffer tex-buf)
-  ))
+    (message "%s finished with status %s" pdflatex-cmd pdf-status)))
 
 
 (defun ess-insert-Sexpr ()
