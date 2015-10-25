@@ -1018,6 +1018,14 @@ fun_call(object1 + object2 ~ object3 +
                  object7,
          argument)
 
+## 32
+fun_call(object ~
+             )
+
+## 33
+fun_call(object +
+         )
+
 
 ### Comments
 
