@@ -985,10 +985,10 @@ aligned vertically. With `fun-decl', the body of a function
 declaration will always be aligned with the call to
 `function'.")
 
-(defvar ess-indent-from-lhs '(arguments fun-decl-curly)
+(defvar ess-indent-from-lhs '(arguments fun-decl-opening)
   "List of syntactic elements that should be indented from the
 left-hand side of an assignment. The list accepts the symbol
-`arguments' and `fun-decl-curly'.
+`arguments' and `fun-decl-opening'.
 
 For arguments, this setting only has an effect for offsets set to
 `prev-call'. When set, this indentation is produced:
@@ -1014,7 +1014,7 @@ instead of:
   )
 
 
-`fun-decl-curly' refers to the opening curly following a function
+`fun-decl-opening' refers to the opening curly following a function
 declaration. Setting it produces:
 
   object <-
@@ -1030,6 +1030,11 @@ instead of:
       {
           body
       }
+
+This is useful when (a) you have a long function name and want to
+break a line after `<-' so that you have room to lay out the
+arguments within `fill-column' characters; (b) you still want to
+align the function body from the LHS to save horizontal space.
 
 See `ess-style-alist' for for an overview of ESS indentation.")
 

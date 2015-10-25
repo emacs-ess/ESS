@@ -1484,7 +1484,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (ess-save-excursion-when-nil
       (let ((block-type (ess-climb-block-prefix)))
         (cond ((ess-save-excursion-when-nil
-                 (and (memq 'fun-decl-curly ess-indent-from-lhs)
+                 (and (memq 'fun-decl-opening ess-indent-from-lhs)
                       (string= block-type "function")
                       (ess-climb-operator)
                       (ess-looking-at-assignment-op-p)
