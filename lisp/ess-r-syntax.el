@@ -666,12 +666,9 @@ expression."
 
 (defun ess-jump-operator ()
   (when (ess-looking-at-operator-p)
-    (ess-forward-sexp)
-    ;; Handle `:=' operator
-    (when (and (equal (char-after) ?=)
-               (equal (char-before) ?:))
-      (ess-forward-sexp))
-    (ess-backward-sexp)))
+    (goto-char (match-end 1))
+    (ess-skip-blanks-forward t)
+    t))
 
 (defun ess-jump-continuation ()
   (and (ess-jump-operator)
@@ -706,7 +703,7 @@ expression."
         (or (looking-at "else\\b")
             (ess-climb-if-else-call)))))
 
-(defvar ess-R-operator-pattern "<-\\|!=\\|%[^ \t]*%\\|[-:+*/><=&|~]"
+(defvar ess-R-operator-pattern "<-\\|:=\\|!=\\|%[^ \t]*%\\|[-:+*/><=&|~]"
   "Regular expression for an operator")
 
 (defvar ess-R-definition-op-pattern "<-\\|:=\\|~"
