@@ -119,6 +119,9 @@ tag:
 	@echo "** Tagging the release **"
 	git tag -m'release tagging' v$(ESSVERSION)
 	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
+	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
+	git push
+
 homepage:
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
