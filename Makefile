@@ -62,7 +62,9 @@ downloads: all RPM.spec cleanup-dist
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
-	touch $(ESSDIR)/.IS.RELEASE
+	touch $(ESSDIR)/etc/.IS.RELEASE
+#	# Getting the git version into the release tarball:
+	cp -p $(ESSDIR)-git/.git/refs/head/master $(ESSDIR)/etc/git-ref
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
