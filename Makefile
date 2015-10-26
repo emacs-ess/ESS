@@ -64,7 +64,7 @@ downloads: all RPM.spec cleanup-dist
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
-	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master $(ESSDIR)/etc/git-ref
+	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
