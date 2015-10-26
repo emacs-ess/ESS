@@ -71,7 +71,7 @@ downloads: all RPM.spec cleanup-dist
 dist: VERSION downloads
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
-##	touch $@
+	touch $@
 
 .PHONY: cleanup-dist cleanup-rel dist
 cleanup-dist:
