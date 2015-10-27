@@ -53,7 +53,7 @@ EOF
 touch Install.log
 ${FLAVOR} ${FLAGS} ${FILES} >> Install.log 2>&1
 ${FLAVOR} ${FLAGS} ess.el >> Install.log 2>&1
-gzip -9v Install.log
+gzip -9fv Install.log
 #rm -f *.el path.el
 
 
