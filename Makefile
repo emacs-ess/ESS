@@ -80,6 +80,7 @@ dist: VERSION downloads
 .PHONY: cleanup-dist cleanup-rel dist
 cleanup-dist:
 	@echo "** Cleaning up **"
+	rm -f $(ESSDIR)/etc/.IS.RELEASE $(ESSDIR)/etc/git-ref
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
 ##  should only be called manually (if at all):

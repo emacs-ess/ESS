@@ -9,7 +9,13 @@ include ../Makeconf
 
 #ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.*)
 #ETCFILES = ESSR.R ess-developer.R SVN-REVISION *.S sas-keys.* ess-sas-sh-command
-ETCFILES = .IS.RELEASE git-ref *.S sas-keys.* ess-sas-sh-command *.jl
+ETCFILES_1 = *.S sas-keys.* ess-sas-sh-command *.jl
+isRELEASE=$(shell test -f .IS.RELEASE && echo 'yes')
+ifeq ($(isRELEASE),yes)
+  ETCFILES = .IS.RELEASE git-ref $(ETCFILES_1)
+else
+  ETCFILES =                     $(ETCFILES_1)
+endif
 
 #ICONS = $(wildcard icons/*.xpm)
 ICONS = icons/*.xpm
@@ -19,6 +25,11 @@ ESSR_CODE_FILES = ESSR/R/*.R ESSR/R/.*.R
 # ESSR_tarball = ESSR_$(ESSR_VERSION).tar.gz
 
 all: #ESSR-VERSION $(ESSR_tarball) library/ESSR
+
+show-etc:
+	@echo $(ETCFILES)
+	ls -l $(ETCFILES)
+
 
 ## happens "above" as it is need also in ../lisp/ :
 # ESSR-VERSION: $(ESSR_FILES)
