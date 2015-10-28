@@ -102,7 +102,7 @@ DOWNLOAD = wget -O -
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
 
-# $(shell) is a GNU-ism which we workaround to be UNIX make friendly
+# $(shell) is a GNU-ism which we would like to workaround to be UNIX make friendly
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 #F: but the following use of  `..` *FAILS*
 #F: ESSVERSION=`cat ./VERSION 2> /dev/null || cat ../VERSION`

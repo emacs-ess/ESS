@@ -59,7 +59,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 ## julia-mode.el : really from the julia sources -- but want in tarball!
 
 
-ESSR_VER =`cat ../etc/ESSR-VERSION`
+# ESSR_VER =`cat ../etc/ESSR-VERSION`
 ##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
 
 ### Targets
@@ -98,7 +98,7 @@ distclean: clean
 ### Replace Version numbers (as in ../doc/Makefile !):
 ## "../VERSION" if that changes, *definitely* need to update ess-custom.el
 ess-custom.el: ../VERSION
-	EV=$(ESSVERSION); perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
+	EV='$(ESSVERSION)'; perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
 
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
