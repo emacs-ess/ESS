@@ -1,3 +1,15 @@
+ess (15.09.1-1) unstable; urgency=low
+
+  * New upstream version released today
+
+  * debian/emacsen-install: Call gzip with '-f' to ensure in-place upgrades
+  							(Closes: #802953)
+
+  * debian/control: Shift Maintainer: address from ess-debian list to me,
+    remove now-redundant Uploaders: field		(Closes: #803003)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Mon, 26 Oct 2015 19:22:28 -0500
+
 ess (15.09-1) unstable; urgency=low
 
   * New upstream version 
