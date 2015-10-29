@@ -2871,11 +2871,10 @@ string.
 
 Usual ESS evaluation commands, @xref{Evaluating code}, send portions of
 the current buffer for the evaluation in the current environment
-(usually @code{R_GlobalEnv}). Often, in process of the developing
-packages with namespaces, it is necessary to evaluate code directly in
-the package's environment or its namespace. The @code{ess-developer}
-utility provides such a functionality with minimal disruption of the
-usual ESS work-flow.
+(usually @code{R_GlobalEnv}). Often, when developing packages with
+namespaces, it is necessary to evaluate code directly in the package's
+environment or its namespace. The @code{ess-developer} utility provides
+such a functionality with minimal disruption of the usual ESS work-flow.
 
 To understand how ess-developer works you must be familiar with
 namespace system in R. In a nutshell, all objects defined in a package
@@ -2934,7 +2933,7 @@ process buffer, toggle developer on per-process basis.
 When you add a package to @code{ess-developer-packages}, ESS will ask
 for loading command. By default there are two options @code{library} and
 @code{load_all} from @code{devtools} package. You can configure this
-behavior in @code{ess-developer-load-on-add-commands}. To explisitely
+behavior in @code{ess-developer-load-on-add-commands}. To explicitly
 load the package containing current file use @kbd{C-c C-t l}.
 
 @deffn Command ess-developer-load-package
@@ -2980,7 +2979,7 @@ You can safely ignore this warnings.
 Similarly to function definitions modified methods are assigned in the
 local method table in the namespace:foo. New methods are assigned into
 .GlobalEnv, but with the environment pointing to namespace:foo. There is
-a suttle catch with method caching in R though. See the code in
+a subtle catch with method caching in R though. See the code in
 etc/ESSR/developer.R for more details.
 
   @c Note that if method or generic is exported the *same* table (which is an
@@ -3000,9 +2999,9 @@ in the package environment.
 
 @end itemize
 
-@item @kbd{C-c C-r}(@code{ess-eval-region}  and functions that depend on
-it (@code{ess-eval-paragraph}, @code{ess-eval-buffer} etc., behave as
-ess-load-file', but restrict the evaluation to the corresponding region.
+@item @kbd{C-c C-r}(@code{ess-eval-region})  and functions that depend on
+it (@code{ess-eval-paragraph}, @code{ess-eval-buffer} etc.), behave as
+@code{ess-load-file}, but restrict the evaluation to the corresponding region.
 
 @item @kbd{C-c C-f} (@code{ess-eval-function}) and friends check if the
 current function's name can be found in a namespace:foo or package:foo
