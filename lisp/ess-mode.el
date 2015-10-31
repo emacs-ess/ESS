@@ -467,8 +467,10 @@ ess-mode."
     (call-interactively 'ess-execute)))
 
 (defun ess-goto-line (line)
-  (goto-char (point-min))
-  (forward-line (1- line)))
+  (save-restriction
+    (widen)
+    (goto-char (point-min))
+    (forward-line (1- line))))
 
 (defun ess-containing-sexp-position ()
   (cadr (syntax-ppss)))
