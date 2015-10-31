@@ -1334,28 +1334,28 @@ is non nil, attempt to open the location in a different window."
                                        ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
         (move-marker ess--dbg-last-ref-marker (point-at-eol))
-	;; each new step repositions the current-ref!
+        ;; each new step repositions the current-ref!
         (move-marker ess--dbg-current-ref ess--dbg-last-ref-marker)))
     (when ref
       (let ((buf (apply 'ess--dbg-goto-ref other-window ref)))
-	(if buf
-	    ;; if referenced buffer has been found, put overlays:
-	    (with-current-buffer buf
-	      (setq t-debug-position (copy-marker (point-at-bol)))
-	      (if (equal t-debug-position ess--dbg-current-debug-position)
-		  (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
-		    (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
-		    (run-with-timer ess-debug-blink-interval nil
-				    (lambda ()
-				      (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face))))
-		;; else
-		(ess--dbg-activate-overlays)))
-	  ;;else, buffer is not found: highlight and give the corresponding message
-	  (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
-	  (run-with-timer ess-debug-blink-interval nil
-			  (lambda ()
-			    (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
-	  (message "Reference %s not found" (car ref)))))))
+        (if buf
+            ;; if referenced buffer has been found, put overlays:
+            (with-current-buffer buf
+              (setq t-debug-position (copy-marker (point-at-bol)))
+              (if (equal t-debug-position ess--dbg-current-debug-position)
+                  (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
+                    (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
+                    (run-with-timer ess-debug-blink-interval nil
+                                    (lambda ()
+                                      (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face))))
+                ;; else
+                (ess--dbg-activate-overlays)))
+          ;;else, buffer is not found: highlight and give the corresponding message
+          (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-ref-not-found-face)
+          (run-with-timer ess-debug-blink-interval nil
+                          (lambda ()
+                            (overlay-put ess--dbg-current-debug-overlay 'face 'ess-debug-current-debug-line-face)))
+          (message "Reference %s not found" (car ref)))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
   "Opens the reference given by FILE, LINE and COL,
@@ -1377,7 +1377,8 @@ associated buffer. If FILE is nil return nil."
 	;; set or re-set to lpn as this is the process with debug session on
 	(with-current-buffer buf
 	  (setq ess-local-process-name lpn)
-	  (goto-char mrk))
+	  (goto-char mrk)
+      (set-window-point (get-buffer-window buf) mrk))
 	buf))))
 
 ;; temporary, hopefully org folks implement something similar
