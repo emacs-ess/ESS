@@ -88,8 +88,8 @@
 (require 'ess-r-d); for Rnw-mode
 (require 'easymenu)
 
-;; currently use exactly for "Sweave" and "Stangle"
-(defun ess-swv-run-in-R (cmd &optional choose-process)
+;; currently use exactly for "Sweave", "Stangle", "knit", and "purl"
+(defun ess-swv-run-in-R (cmd &optional choose-process block)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
   (let* ((rnw-buf (current-buffer)))
     (if choose-process ;; previous behavior
@@ -121,9 +121,15 @@
              (Sw-cmd
               (format ess-swv-processing-command cmd cmd-args)))
         (message "%s()ing %S" cmd rnw-file)
-        (ess-execute Sw-cmd 'buffer nil nil)
-        (switch-to-buffer rnw-buf)
-        (ess-show-buffer (buffer-name sbuffer) nil)))))
+        ;; need to block when we are running ess-swv-weave-PDF so we
+        ;; know when to start compiling the generated .tex file
+        (if block
+            (progn
+              (ess-eval-linewise (concat Sw-cmd "\n") nil nil nil t)
+              (message "Finished %s()ing %S" cmd rnw-file))
+          (ess-execute Sw-cmd 'buffer nil nil)
+          (switch-to-buffer rnw-buf)
+          (ess-show-buffer (buffer-name sbuffer) nil))))))
 
 (defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
   "Command used by `ess-swv-run-in-R'.
@@ -194,6 +200,25 @@ If CHOOSE is non-nil, offer a menu of available weavers.
   (interactive)
   (ess-swv-run-in-R "purl"))
 
+(defun ess-swv-weave-PDF (&optional choose)
+  "Sweave/knit, compile TeX, and display PDF.
+Run Sweave or knit depending on `ess-swv-processor' used.
+
+If CHOOSE is non-nil, offer a menu of available weavers.
+"
+  (interactive "P")
+  (let ((processor (if choose
+                       (ess-completing-read "Weaver" '("sweave" "knitr") nil t)
+                     (symbol-name ess-swv-processor))))
+  (ess-swv-run-in-R (cond ((equal processor "sweave")
+                           "Sweave")
+                          ((equal processor "knitr")
+                           "knit")
+                          (t (error "Not a valid processor %s" ess-swv-processor)))
+                    nil t)
+  (ess-swv-PDF nil t)))
+
+
 (defun ess-swv-latex ()
   "Run LaTeX on the product of Sweave()ing the current file."
   (interactive)
@@ -222,7 +247,7 @@ Sweave file buffer name) and display it."
     (switch-to-buffer buf)
     ))
 
-(defun ess-swv-PDF (&optional pdflatex-cmd)
+(defun ess-swv-PDF (&optional pdflatex-cmd hide-compile-buffer)
   "From LaTeX file, create a PDF (via 'texi2pdf' or 'pdflatex', ...), by
 default using the first entry of `ess-swv-pdflatex-commands' and display it."
   (interactive)
@@ -262,9 +287,9 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
       (if (and ess-microsoft-p (w32-shell-dos-semantics))
           (shell-command cmdstr-win)
         (message (mapconcat 'identity cmd " "))
-        (apply 'start-process  (car cmd) nil cmd)))
-    (display-buffer tex-buf)
-  ))
+        (apply 'start-process  (car cmd) nil cmd))
+      (unless hide-compile-buffer (display-buffer tex-buf)))
+    (message "%s finished with status %d" pdflatex-cmd pdf-status)))
 
 
 (defun ess-insert-Sexpr ()
@@ -361,6 +386,7 @@ file and latex the result."
 (define-key ess-noweb-minor-mode-map "\M-nP" 'ess-swv-PDF)
 (define-key ess-noweb-minor-mode-map "\M-nr" 'ess-swv-knit)
 (define-key ess-noweb-minor-mode-map "\M-nu" 'ess-swv-purl)
+(define-key ess-noweb-minor-mode-map "\M-nv" 'ess-swv-weave-PDF)
 
 (define-key ess-noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
 
@@ -377,6 +403,7 @@ file and latex the result."
     ["PS (dvips)" ess-swv-PS  t]
     ["Knit" ess-swv-knit   t]
     ["Purl" ess-swv-purl   t]
+    ["View PDF" ess-swv-weave-PDF t]
     ["Insert Sexpr" ess-insert-Sexpr t]
     ["AUCTeX Interface" ess-swv-toggle-plug-into-AUCTeX
      :style toggle :selected ess-swv-plug-into-AUCTeX-p]
