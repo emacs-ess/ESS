@@ -1,0 +1,17 @@
+#!/usr/bin/emacs --script
+;; (Re)generate files with test cases for indentation
+
+(let ((current-directory (file-name-directory load-file-name)))
+  (setq ess-test-path (expand-file-name "." current-directory))
+  (setq ess-literate-path (expand-file-name "./literate/" current-directory))
+  (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
+
+(add-to-list 'load-path ess-root-path)
+(add-to-list 'load-path ess-test-path)
+
+(require 'ess-site)
+(load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
+
+(mapc (lambda (file)
+        (ess-ltest-R (expand-file-name file ess-literate-path)))
+      '("roxy.R" "code-fill.R"))
