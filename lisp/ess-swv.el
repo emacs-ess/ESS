@@ -281,15 +281,16 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
                             (file-name-nondirectory latex-filename)
                           latex-filename)))
     (if (not (= 0 pdf-status))
-        (message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
+        (progn (message "** OOPS: error in '%s' (%d)!" pdflatex-cmd pdf-status)
+               (display-buffer tex-buf))
       ;; else: pdflatex probably ok
       ;; (set-process-sentinel proc 'shell-command-sentinel)
       (if (and ess-microsoft-p (w32-shell-dos-semantics))
           (shell-command cmdstr-win)
         (message (mapconcat 'identity cmd " "))
         (apply 'start-process  (car cmd) nil cmd))
-      (unless hide-compile-buffer (display-buffer tex-buf)))
-    (message "%s finished with status %d" pdflatex-cmd pdf-status)))
+      (unless hide-compile-buffer (display-buffer tex-buf))
+      (message "%s finished with status %d" pdflatex-cmd pdf-status))))
 
 
 (defun ess-insert-Sexpr ()
