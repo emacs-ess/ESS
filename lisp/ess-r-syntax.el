@@ -776,7 +776,7 @@ expression."
   (cond
    ;; Climb braced body
    ((ess-save-excursion-when-nil
-      (and (when (progn (ess-skip-blanks-backward)
+      (and (when (progn (ess-skip-blanks-backward t)
                         (eq (char-before) ?\}))
              (prog1 t (forward-char -1)))
            (ess-up-list -1))))
