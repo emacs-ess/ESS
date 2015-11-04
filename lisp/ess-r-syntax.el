@@ -425,14 +425,17 @@ before the `=' sign."
 
 (defun ess-climb-call (&optional call)
   "Climb functions (e.g. ggplot) and parenthesised expressions."
-  (ess-climb-chained-delims ?\])
-  (ess-save-excursion-when-nil
-    (ess-backward-sexp)
-    (prog1 (looking-at "[[({]")
-      (if call
-          (and (ess-climb-name)
-               (looking-at call)))
-      (ess-climb-name))))
+  (or (ess-while (ess-save-excursion-when-nil
+                   (ess-climb-name)
+                   (and (ess-climb-chained-delims ?\])
+                        (ess-climb-expression))))
+      (ess-save-excursion-when-nil
+        (ess-backward-sexp)
+        (prog1 (looking-at "[[({]")
+          (if call
+              (and (ess-climb-name)
+                   (looking-at call)))
+          (ess-climb-name)))))
 
 (defun ess-climb-call-name (&optional call)
   (ess-save-excursion-when-nil

@@ -1037,6 +1037,10 @@ fun_call(object ~
 fun_call(object +
          )
 
+## 34
+fun_call(object[index1]$element[index2][index3]@attribute +
+         stuff)
+
 
 ### Comments
 

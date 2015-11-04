@@ -1,8 +1,8 @@
 EMACS=/usr/bin/emacs
 
-cases: indentation-cases literate-cases
+cases: indent-cases literate-cases
 
-indentation-cases:
+indent-cases:
 	${EMACS} -Q --script generate-indent-cases
 
 literate-cases:
