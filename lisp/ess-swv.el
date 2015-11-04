@@ -158,10 +158,8 @@ Currently 'sweave or 'knitr"
   "Run Stangle/purl on the current .Rnw file.
 Depending on the `ess-swv-processor' used."
   (interactive)
-  (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave)
-                           "Stangle")
-                          ((eq ess-swv-processor 'knitr)
-                           "purl")
+  (ess-swv-run-in-R (cond ((eq ess-swv-processor 'sweave) "Stangle")
+                          ((eq ess-swv-processor 'knitr)  "purl")
                           (t (error "Not a valid processor %s" ess-swv-processor)))))
 
 (defun ess-swv-weave (&optional choose)
@@ -174,11 +172,9 @@ If CHOOSE is non-nil, offer a menu of available weavers.
   (let ((processor (if choose
                        (ess-completing-read "Weaver" '("sweave" "knitr") nil t)
                      (symbol-name ess-swv-processor))))
-    (ess-swv-run-in-R (cond ((equal processor "sweave")
-                             "Sweave")
-                            ((equal processor "knitr")
-                             "knit")
-                            (t (error "Not a valid processor %s" ess-swv-processor))))))
+    (ess-swv-run-in-R (cond ((string= processor "sweave") "Sweave")
+                            ((string= processor "knitr")  "knit")
+                            (t (error "Not a valid processor %s" processor))))))
 
 (defun ess-swv-sweave ()
   "Run Sweave on the current .Rnw file."
@@ -210,13 +206,11 @@ If CHOOSE is non-nil, offer a menu of available weavers.
   (let ((processor (if choose
                        (ess-completing-read "Weaver" '("sweave" "knitr") nil t)
                      (symbol-name ess-swv-processor))))
-  (ess-swv-run-in-R (cond ((equal processor "sweave")
-                           "Sweave")
-                          ((equal processor "knitr")
-                           "knit")
-                          (t (error "Not a valid processor %s" ess-swv-processor)))
-                    nil t)
-  (ess-swv-PDF nil t)))
+    (ess-swv-run-in-R (cond ((string= processor "sweave") "Sweave")
+                            ((string= processor "knitr")  "knit")
+                            (t (error "Not a valid processor %s" processor)))
+                      nil t)
+    (ess-swv-PDF nil t)))
 
 
 (defun ess-swv-latex ()
@@ -302,28 +296,28 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
 
 ;;; back-compatible wrappers:
 (defun ess-makeSweave () "old *DEPRECATED* version of \\[ess-swv-weave]."
-  (interactive) (ding)
-  (message
-   "** warning: ess-makeSweave is deprecated. Do use (ess-swv-weave) instead!")
-  (ess-swv-weave))
+       (interactive) (ding)
+       (message
+        "** warning: ess-makeSweave is deprecated. Do use (ess-swv-weave) instead!")
+       (ess-swv-weave))
 
 (defun ess-makeLatex () "old *DEPRECATED* version of \\[ess-swv-latex]."
-  (interactive) (ding)
-  (message
-   "** warning: ess-makeLatex is deprecated. Do use (ess-swv-latex) instead!")
-  (ess-swv-latex))
+       (interactive) (ding)
+       (message
+        "** warning: ess-makeLatex is deprecated. Do use (ess-swv-latex) instead!")
+       (ess-swv-latex))
 
 (defun ess-makePS () "old *DEPRECATED* version of \\[ess-swv-PS]."
-  (interactive) (ding)
-  (message
-   "** warning: ess-makePS is deprecated. Do use (ess-swv-PS) instead!")
-  (ess-swv-PS))
+       (interactive) (ding)
+       (message
+        "** warning: ess-makePS is deprecated. Do use (ess-swv-PS) instead!")
+       (ess-swv-PS))
 
 (defun ess-makePDF () "old *DEPRECATED* version of \\[ess-swv-PDF]."
-  (interactive) (ding)
-  (message
-   "** warning: ess-makePDF is deprecated. Do use (ess-swv-PDF) instead!")
-  (ess-swv-PDF))
+       (interactive) (ding)
+       (message
+        "** warning: ess-makePDF is deprecated. Do use (ess-swv-PDF) instead!")
+       (ess-swv-PDF))
 
 
 ;; AUCTeX integration.  This is independent of this library, but it fits
