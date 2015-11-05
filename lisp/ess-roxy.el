@@ -777,7 +777,8 @@ list of strings."
            (looking-at "#")))
     (ess-roxy-with-filling-context
       ad-do-it))
-   ((ess-point-in-comment-p)
+   ((and (not (ess-roxy-entry-p))
+         (ess-point-in-comment-p))
     ad-do-it)
    ;; Filling of call arguments with point on call name
    ((and ess-fill-calls
