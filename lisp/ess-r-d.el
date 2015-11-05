@@ -1026,6 +1026,18 @@ Return the amount the indentation changed by."
         (goto-char (- (point-max) pos))))
     shift-amt))
 
+(defun ess-r-indent-exp ()
+  (save-excursion
+    (when current-prefix-arg
+      (ess-climb-to-top-level))
+    (let* ((bounds (ess-continuations-bounds))
+           (end (cadr bounds))
+           (beg (if current-prefix-arg
+                    (car bounds)
+                  (forward-line)
+                  (point))))
+      (indent-region beg end))))
+
 (defun ess-indent-call (&optional start)
   (save-excursion
     (when (ess-climb-outside-calls)

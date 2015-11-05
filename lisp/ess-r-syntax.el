@@ -755,6 +755,10 @@ expression."
                      (point))))
           (list beg end))))))
 
+(defun ess-climb-to-top-level ()
+  (while (ess-goto-char (ess-containing-sexp-position)))
+  (ess-climb-outside-continuations))
+
 
 ;;;*;;; Statements: Control Flow
 

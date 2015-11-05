@@ -14,4 +14,4 @@
 
 (mapc (lambda (file)
         (ess-ltest-R (expand-file-name file ess-literate-path)))
-      '("roxy.R" "code-fill.R"))
+      '("roxy.R" "code-fill.R" "misc.R"))

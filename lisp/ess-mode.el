@@ -337,7 +337,7 @@ Comments are indented in a similar way to Emacs-lisp mode:
                  \\[indent-for-comment] command automatically inserts such a
                  `#' in the right place, or aligns such a comment if it is
                  already inserted.
-\\[ess-indent-exp] command indents each line of the ESS grouping following point.
+\\[ess-indent-exp] command indents each line of the syntactic unit following point.
 
 Variables controlling indentation style:
  `ess-tab-always-indent'
@@ -923,11 +923,16 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."
   (interactive)
-  (save-excursion
-    (let ((start (point))
-          (end (ignore-errors (forward-sexp 1) (point))))
-      (when end
-        (indent-region start end)))))
+  (cond ((string= ess-dialect "R")
+         (ess-r-indent-exp))
+        (t
+         (save-excursion
+           (if (fboundp ess-indent-exp-function)
+               (funcall ess-indent-exp-function)
+             (let ((start (point))
+                   (end (ignore-errors (forward-sexp 1) (point))))
+               (when end
+                 (indent-region start end))))))))
 
 (defun ess-indent-line ()
   "Indent current line as ESS code.
