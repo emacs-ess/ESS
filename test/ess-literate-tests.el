@@ -74,6 +74,7 @@
 (defun ess-ltest-process-case ()
   (let ((case-start (progn
                       (skip-chars-forward " \t\n")
+                      (goto-char (line-beginning-position))
                       (point)))
         (code-start (if (re-search-forward ess-ltest-code-pattern chunk-end t)
                         (goto-char (match-beginning 0))
