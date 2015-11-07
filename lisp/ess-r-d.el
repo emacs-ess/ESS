@@ -1192,16 +1192,10 @@ Returns nil if line starts inside a string, t if in a comment."
                     ((ess-climb-block-prefix))
                     ;; Braced blocks
                     (containing-sexp
-                     (goto-char containing-sexp)
-                     (and (looking-at "{")
-                          (ess-climb-block-prefix))))
-                   (some 'looking-at (ess-overridden-blocks))
-                   ;; This ensures that we indent call-prefixed blocks
-                   ;; from their lhs if they have one, even when
-                   ;; `ess-align-blocks' says to align
-                   (not (save-excursion
-                          (and (ess-looking-at-prefixed-block-p)
-                               (ess-looking-back-definition-op-p t)))))
+                     (when (ess-at-containing-sexp
+                             (looking-at "{"))
+                       (ess-climb-outside-prefixed-block))))
+                   (some 'looking-at (ess-overridden-blocks)))
           (+ (current-column) offset))))))
 
 (defun ess-calculate-indent--block-relatively ()

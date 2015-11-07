@@ -766,6 +766,16 @@ if (condition) {
 }
 
 
+## 27
+object <- if (condition) {
+  stuff1
+}
+else {
+  stuff2
+}
+
+
+
 ### Continuation lines
 
 ## 1

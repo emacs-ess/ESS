@@ -6,8 +6,8 @@
 {
    fun <- function(argument1,
                argument2) {
-      body
-   }
+             body
+          }
 }
 
 ## 2
@@ -38,9 +38,9 @@ function()
 
 ## 6a
 object <- function()
-{
-   body
-}
+          {
+             body
+          }
 
 ## 6b
 object <-
@@ -66,9 +66,9 @@ fun_call(argument) <-
 ## 7
 {
    object <- function()
-   {
-      body
-   }
+             {
+                body
+             }
 }
 
 ## 8
@@ -764,6 +764,16 @@ if (condition) {
    else if (condition3)
       stuff3
 }
+
+
+## 27
+object <- if (condition) {
+   stuff1
+}
+else {
+   stuff2
+}
+
 
 
 ### Continuation lines
