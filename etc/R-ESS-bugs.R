@@ -824,6 +824,27 @@ glmmTMB <- function (formula, data = NULL)
 }
 
 
+### --- 32 --- 2015-11-07 --- indentation again! --------
+{
+    yl <- if(strictlim) {
+        ylim
+    }
+          else {
+              range(y, ylim)
+          }
+    ## room below for weights
+    dy <- 4*dy
+}
+## -- 32 b)
+{
+    yl <- if(strictlim) {
+        ylim
+    }
+          else
+              range(y, ylim)
+    ## continue
+}
+
 
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
