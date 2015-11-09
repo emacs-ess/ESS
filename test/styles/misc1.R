@@ -765,7 +765,6 @@ if (condition) {
       stuff3
 }
 
-
 ## 27
 object <- if (condition) {
    stuff1
@@ -773,7 +772,6 @@ object <- if (condition) {
 else {
    stuff2
 }
-
 
 
 ### Continuation lines
@@ -1083,6 +1081,21 @@ object %>%
    ## comment,
    ## comment
    stuff
+
+## 6a
+object <-
+   function()
+   {
+      stuff
+      ## comment
+   }
+
+## 6b
+object <-
+   function()
+   {
+      ## comment
+   }
 
 
 ### Logical operators

@@ -1203,13 +1203,6 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((offset (if (looking-at "[})]") 0 (ess-offset 'block)))
           (start-line (line-number-at-pos)))
       (cond
-       ;; By now comments can be indented relatively in all cases
-       ((looking-at "#")
-        (when (ess-save-excursion-when-nil
-                (forward-line -1)
-                (ess-back-to-indentation)
-                (looking-at "#"))
-          (current-column)))
        ;; Braceless block continuations: only when not in a call
        ((ess-save-excursion-when-nil
           (and (not (looking-at "{"))
