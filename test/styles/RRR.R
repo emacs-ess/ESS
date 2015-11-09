@@ -774,7 +774,18 @@ object <- if (condition) {
               stuff2
           }
 
-
+## 28
+fun28 <-
+    function(x, y)
+{
+    ans <- if(condition)
+               stuff1
+           else {
+               stuff2
+           }
+        ## comment
+    ans
+}
 
 ### Continuation lines
 
