@@ -845,6 +845,15 @@ glmmTMB <- function (formula, data = NULL)
     ## continue
 }
 
+### --- 33 -- Treat `<<-` as `<-`
+{
+    f(X <-
+          callme(arg))
+    f(X <<-
+      callme(arg))
+}
+## the 2nd 'callme() should indent like the first
+
 
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
