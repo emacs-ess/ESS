@@ -278,6 +278,7 @@ Better logic needed!  (see 2 uses, in this file).")
              ess-dialect
              temp-dialect))
     (ess-SAS-pre-run-hook temp-dialect)
+    (setq ess-eval-visibly-p nil)
     (inferior-ess)
     (save-excursion
       (set-buffer "*SAS*")
