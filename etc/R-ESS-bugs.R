@@ -827,8 +827,8 @@ glmmTMB <- function (formula, data = NULL)
 ### --- 32 --- 2015-11-07 --- indentation again! --------
 {
     yl <- if(strictlim) {
-        ylim
-    }
+              ylim
+          }
           else {
               range(y, ylim)
           }
@@ -838,12 +838,20 @@ glmmTMB <- function (formula, data = NULL)
 ## -- 32 b)
 {
     yl <- if(strictlim) {
-        ylim
-    }
+              ylim
+          }
           else
               range(y, ylim)
     ## continue
 }
+## -- 32 c)
+{
+    U <- if(is.matrix(x))
+             apply(x, 2, foo) / (nrow(x) + 1)
+       else
+           foo(x) / (length(x) + 1)
+}
+## 'else' should align with 'if' (and their code too
 
 ### --- 33 -- Treat `<<-` as `<-`
 {
