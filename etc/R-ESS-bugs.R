@@ -851,7 +851,7 @@ glmmTMB <- function (formula, data = NULL)
        else
            foo(x) / (length(x) + 1)
 }
-## 'else' should align with 'if' (and their code too
+## 'else' should align with 'if' (and their code too)
 
 ### --- 33 -- Treat `<<-` as `<-`
 {
