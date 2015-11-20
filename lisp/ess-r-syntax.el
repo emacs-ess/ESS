@@ -197,19 +197,19 @@ into account."
           (ess-skip-blanks-backward-1))))))
 
 (defun ess-skip-blanks-backward-1 ()
-  (when (and (/= (point) (point-min))
-             (/= 0 (skip-chars-backward " \t")))
-    t))
+  (and (/= (point) (point-min))
+       (/= 0 (skip-chars-backward " \t"))))
 
 (defun ess-skip-blanks-forward (&optional newlines)
   "Skip blanks and newlines forward, taking end-of-line comments
 into account."
-  (skip-chars-forward " \t")
-  (when (and newlines
-             (= (point) (ess-code-end-position)))
-    (forward-line)
-    (ess-back-to-indentation)
-    (ess-skip-blanks-forward newlines)))
+  (when (skip-chars-forward " \t")
+    (prog1 t
+      (when newlines
+        (while (= (point) (ess-code-end-position))
+          (forward-line)
+          (ess-back-to-indentation)
+          (skip-chars-forward " \t"))))))
 
 (defun ess-jump-char (char)
   (ess-save-excursion-when-nil
