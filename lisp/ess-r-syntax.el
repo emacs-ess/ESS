@@ -187,15 +187,18 @@ return the prefix."
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
 into account."
+  (when (ess-skip-blanks-backward-1)
+    (prog1 t
+      (when newlines
+        (while (= (point) (line-beginning-position))
+          (forward-line -1)
+          (goto-char (line-end-position))
+          (ess-climb-comment)
+          (ess-skip-blanks-backward-1))))))
+
+(defun ess-skip-blanks-backward-1 ()
   (when (and (/= (point) (point-min))
-             (ess-any
-               ((/= 0 (skip-chars-backward " \t")))
-               ((when (and newlines
-                           (= (point) (line-beginning-position)))
-                  (forward-line -1)
-                  (goto-char (line-end-position))
-                  (ess-climb-comment)
-                  (ess-skip-blanks-backward newlines)))))
+             (/= 0 (skip-chars-backward " \t")))
     t))
 
 (defun ess-skip-blanks-forward (&optional newlines)
@@ -215,7 +218,8 @@ into account."
       (goto-char (match-end 0)))))
 
 (defun ess-climb-comment ()
-  (when (ess-point-in-comment-p)
+  (when (and (ess-point-in-comment-p)
+             (not (ess-roxy-entry-p)))
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
 
