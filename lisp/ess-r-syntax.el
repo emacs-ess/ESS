@@ -709,7 +709,7 @@ expression."
 (defvar ess-R-operator-pattern "<-\\|:=\\|!=\\|%[^ \t]*%\\|[-:+*/><=&|~]"
   "Regular expression for an operator")
 
-(defvar ess-R-definition-op-pattern "<-\\|:=\\|~"
+(defvar ess-R-definition-op-pattern "<<?-\\|:=\\|~"
   "Regular expression for a definition operator")
 
 (defun ess-looking-at-operator-p ()

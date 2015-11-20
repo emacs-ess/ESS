@@ -1049,6 +1049,14 @@ fun_call(object +
 fun_call(object[index1]$element[index2][index3]@attribute +
            stuff)
 
+## 35a
+fun_call(argument <-
+           object)
+
+## 35b
+fun_call(argument <<-
+           object)
+
 
 ### Comments
 
