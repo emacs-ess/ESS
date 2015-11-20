@@ -958,13 +958,9 @@ without curly braces."
 
 (defun ess-climb-expression (&optional ignore-ifelse)
   (ess-save-excursion-when-nil
-    (let ((climbed
-           (or (ess-climb-block ignore-ifelse)
-               (ess-climb-call)
-               (ess-climb-object))))
-      (if (and climbed ignore-ifelse)
-          (not (ess-block-opening-p))
-        climbed))))
+    (or (ess-climb-block ignore-ifelse)
+        (ess-climb-call)
+        (ess-climb-object))))
 
 (defun ess-jump-expression ()
   (or (ess-jump-block)
