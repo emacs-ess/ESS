@@ -63,6 +63,25 @@ fun_call(argument) <-
     body
 }
 
+## 6e ((6e--6g : all three kinds of quotes must be equivalent in such cases))
+`[.foo` <- function(x, i)
+{
+    body
+}
+
+## 6f
+"[.foo" <- function(x, i)
+{
+    body
+}
+
+## 6g
+'[.foo' <- function(x, i)
+{
+    body
+}
+
+
 ## 7
 {
     object <- function()
