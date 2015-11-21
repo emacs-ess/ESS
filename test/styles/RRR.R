@@ -1097,6 +1097,18 @@ fun_call(argument <<-
 ### Section comment
 }
 
+## 3b
+{
+    E <- expr +
+        ifelse(ni == 1, case1,
+               case2) / denominator -
+### TODO! <-- this should *stand out* hence at '^' (and is no section header)
+R <- foo(E)
+    ## the line above should align with 'E <-'
+    final(expression)
+}
+
+
 ## 4
 fun_call(
     ## Comment
