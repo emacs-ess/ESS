@@ -732,7 +732,7 @@ print.MethodsFunction <- function(x, byclass = attr(x, "byclass"), ...)
 
 
 
-### --- 28 --- [still unfixed, 2015-04-08; 2015-08-27;
+### --- 28 --- [2015-02-17; still unfixed, 2015-11-21]
 ## Indentation of end-line comments (to column 40 = 'indent-column')
 ## {this is part of "real" code in Rmpfr/R/hjk.R}:
 hjk <- function(x,n) { # <--- C-M-q  "on {" -- does *no longer* indent the "# .."
@@ -848,19 +848,19 @@ glmmTMB <- function (formula, data = NULL)
 {
     U <- if(is.matrix(x))
              apply(x, 2, foo) / (nrow(x) + 1)
-       else
-           foo(x) / (length(x) + 1)
+         else
+             foo(x) / (length(x) + 1)
 }
-## 'else' should align with 'if' (and their code too)
+## 'else' now aligns with 'if' (and their code too)
 
 ### --- 33 -- Treat `<<-` as `<-`
 {
     f(X <-
           callme(arg))
     f(X <<-
-      callme(arg))
+          callme(arg))
 }
-## the 2nd 'callme() should indent like the first
+## the 2nd callme() now indents like the first
 
 
 ### Local Variables:
