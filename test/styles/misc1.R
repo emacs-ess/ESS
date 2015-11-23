@@ -1075,6 +1075,10 @@ fun_call(argument <-
 fun_call(argument <<-
             object)
 
+## 36
+funcall(!stuff1 ||
+           stuff2)
+
 
 ### Comments
 

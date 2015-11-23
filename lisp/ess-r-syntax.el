@@ -638,6 +638,15 @@ expression."
                        (equal (char-before) ?:))
               (forward-char -1))))))))
 
+;; Currently doesn't check that the operator is not binary
+(defun ess-climb-unary-operator ()
+  (ess-save-excursion-when-nil
+    (ess-skip-blanks-backward t)
+    (when (memq (char-before) '(?+ ?- ?! ?? ?~))
+      (forward-char -1)
+      t)))
+
+;; Currently returns t if we climbed lines, nil otherwise.
 (defun ess-climb-continuations (&optional cascade ignore-ifelse)
   (let ((start-line (line-number-at-pos))
         (moved 0)
@@ -645,9 +654,11 @@ expression."
         last-line prev-point def-op expr)
     (setq last-line start-line)
     (when (ess-while (and (<= moved 1)
-                          (ess-climb-operator)
-                          (ess-climb-continuations--update-state 'op)
-                          (ess-climb-expression ignore-ifelse)
+                          (or (ess-save-excursion-when-nil
+                                (and (ess-climb-operator)
+                                     (ess-climb-continuations--update-state 'op)
+                                     (ess-climb-expression ignore-ifelse)))
+                              (ess-climb-unary-operator))
                           (/= last-pos (point)))
             (ess-climb-continuations--update-state)
             (setq last-pos (point)))

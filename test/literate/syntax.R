@@ -25,3 +25,14 @@ text ¶# comment
 ##>   (insert "failure"))
 
 text ¶# comment
+
+
+##### Statements
+
+### 1 ----------------------------------------------------------------
+
+(!stuff1 ¶|| stuff2)
+
+##! (ess-climb-continuations)
+
+(¶!stuff1 || stuff2)
