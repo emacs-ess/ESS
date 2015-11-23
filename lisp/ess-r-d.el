@@ -474,10 +474,16 @@ Executed in process buffer."
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'back-to-indentation)
-  (ad-activate 'newline-and-indent)
   (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
+  (substitute-key-definition 'newline-and-indent
+                             'ess-newline-and-indent
+                             ess-mode-map global-map)
+
+  (substitute-key-definition 'indent-new-comment-line
+                             'ess-indent-new-comment-line
+                             ess-mode-map global-map)
 
   (run-hooks 'R-mode-hook))
 

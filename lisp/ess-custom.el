@@ -1533,6 +1533,9 @@ to sweave the current noweb file and latex the result."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
 
+(defvar ess-roxy-insert-prefix-on-newline t
+  "When non-nil, `ess-newline-and-indent' will make sure the new
+line starts with the roxy prefix.")
 
  ; System variables
 

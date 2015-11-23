@@ -850,15 +850,23 @@ list of strings."
         (goto-char (match-end 0)))
     ad-do-it))
 
-(defadvice newline-and-indent (around ess-roxy-newline)
+(defun ess-roxy-indent-new-comment-line ()
+  (if (not (ess-roxy-entry-p))
+      (indent-new-comment-line)
+    (ess-roxy-indent-on-newline)))
+
+(defun ess-roxy-newline-and-indent ()
+  (if (or (not (ess-roxy-entry-p))
+          (not ess-roxy-insert-prefix-on-newline))
+      (newline-and-indent)
+    (ess-roxy-indent-on-newline)))
+
+(defun ess-roxy-indent-on-newline ()
   "Insert a newline in a roxygen field."
   (cond
-   ;; Not in roxy entry; do nothing
-   ((not (ess-roxy-entry-p))
-    ad-do-it)
    ;; Point at beginning of first line of entry; do nothing
    ((= (point) (ess-roxy-beg-of-entry))
-    ad-do-it)
+    (newline-and-indent))
    ;; Otherwise: skip over roxy comment string if necessary and then
    ;; newline and then inset new roxy comment string
    (t
@@ -867,8 +875,9 @@ list of strings."
                            (ess-back-to-roxy)
                            (point))))
       (goto-char (max (point) point-after-roxy-string)))
-    ad-do-it
+    (newline-and-indent)
     (insert (concat (ess-roxy-guess-str t) " ")))))
+
 
 (provide 'ess-roxy)
 

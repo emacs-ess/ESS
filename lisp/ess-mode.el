@@ -129,6 +129,14 @@
     map)
   "Keymap for `ess-mode'.")
 
+;; Redefine substituted commands
+(substitute-key-definition 'newline-and-indent
+                           'ess-newline-and-indent
+                           ess-mode-map global-map)
+
+(substitute-key-definition 'indent-new-comment-line
+                           'ess-indent-new-comment-line
+                           ess-mode-map global-map)
 
 (defvar ess-eval-map
   (let ((map (make-sparse-keymap)))
@@ -379,8 +387,8 @@ Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (setq alist (or alist
-		  (buffer-local-value 'ess-local-customize-alist (current-buffer))
-		  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
+                  (buffer-local-value 'ess-local-customize-alist (current-buffer))
+                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
   (unless is-derived
     (kill-all-local-variables)) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
@@ -708,6 +716,20 @@ current function."
       (narrow-to-region beg end))))
 
 (define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
+
+(defun ess-newline-and-indent ()
+  (interactive)
+  (cond ((string= ess-dialect "R")
+         (ess-roxy-newline-and-indent))
+        (t
+         (newline-and-indent))))
+
+(defun ess-indent-new-comment-line ()
+  (interactive)
+  (cond ((string= ess-dialect "R")
+         (ess-roxy-indent-new-comment-line))
+        (t
+         (indent-new-comment-line))))
 
 
 ;;*;; Loading files
