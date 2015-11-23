@@ -1479,7 +1479,9 @@ Returns nil if line starts inside a string, t if in a comment."
   (let ((max-col (point)))
     (save-excursion
       (while (< (point) indent-point)
-        (setq max-col (current-column))
+        (unless (and ess-indent-with-fancy-comments
+                     (looking-at "### "))
+          (setq max-col (min max-col (current-column))))
         (forward-line)
         (ess-back-to-indentation)))
     max-col))

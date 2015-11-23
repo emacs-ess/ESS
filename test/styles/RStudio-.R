@@ -1105,6 +1105,14 @@ object <-
     ## comment
   }
 
+## 7
+{
+  fun_call(lhs +
+             ### Comment
+             rhs
+  )
+}
+
 
 ### Logical operators
 
