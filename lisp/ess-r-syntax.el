@@ -892,14 +892,9 @@ without curly braces."
     (let (climbed)
       (ess-skip-blanks-backward)
       ;; Backquoted names can contain any character
-      (if (eq (char-before) ?`)
-          (progn
-            (forward-char -1)
-            (while (not (memq (char-before) '(?` ?\C-J)))
-              (forward-char -1)
-              (setq climbed t))
-            (when climbed
-              (forward-char -1)))
+      (if (and (memq (char-before) '(?` ?\" ?\'))
+               (ess-backward-sexp))
+          (setq climbed t)
         (while (some (apply-partially '/= 0)
                      `(,(skip-syntax-backward "w_")
                        ,(skip-chars-backward "\"'")))
@@ -917,24 +912,14 @@ without curly braces."
 ;; This jumps both object names and atomic objects like strings or
 ;; numbers.
 (defun ess-jump-object ()
-  (let (climbed quote-char)
-    (cond
-     ;; Jump over object names
-     ((ess-jump-name))
-     ;; Jump over strings))
-     ((ess-save-excursion-when-nil
-        (skip-chars-forward " \t")
-        (or (and (eq (char-after) ?')
-                 (setq quote-char "'"))
-            (and (eq (char-after) ?\")
-                 (setq quote-char "\""))))
-      (forward-char)
-      (while (and (skip-chars-forward (concat "^" quote-char))
-                  (setq climbed t)
-                  (looking-back quote-char (1- (point)))))
-      (when (eq (char-after) ?\")
-        (forward-char))
-      climbed))))
+  (cond
+   ;; Jump over object names
+   ((ess-jump-name))
+   ;; Jump over strings))
+   ((ess-save-excursion-when-nil
+      (skip-chars-forward " \t")
+      (memq (char-after) '(?\" ?\')))
+    (ess-forward-sexp))))
 
 (defun ess-jump-name ()
   (ess-save-excursion-when-nil

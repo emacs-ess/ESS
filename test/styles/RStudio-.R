@@ -122,6 +122,24 @@ fun_call(argument,
     stuff
 )
 
+## 15a
+`object` <- function()
+{
+  body
+}
+
+## 15b
+"object" <- function()
+{
+  body
+}
+
+## 15c
+'object' <- function()
+{
+  body
+}
+
 
 ### Function calls
 
