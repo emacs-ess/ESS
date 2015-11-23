@@ -189,12 +189,13 @@ return the prefix."
 into account."
   (when (ess-skip-blanks-backward-1)
     (prog1 t
-      (when newlines
-        (while (= (point) (line-beginning-position))
-          (forward-line -1)
-          (goto-char (line-end-position))
-          (ess-climb-comment)
-          (ess-skip-blanks-backward-1))))))
+      (while (and newlines
+                  (/= (point) (point-min))
+                  (= (point) (line-beginning-position)))
+        (forward-line -1)
+        (goto-char (line-end-position))
+        (ess-climb-comment)
+        (ess-skip-blanks-backward-1)))))
 
 (defun ess-skip-blanks-backward-1 ()
   (and (/= (point) (point-min))
@@ -203,13 +204,17 @@ into account."
 (defun ess-skip-blanks-forward (&optional newlines)
   "Skip blanks and newlines forward, taking end-of-line comments
 into account."
-  (when (skip-chars-forward " \t")
-    (prog1 t
-      (when newlines
-        (while (= (point) (ess-code-end-position))
-          (forward-line)
-          (ess-back-to-indentation)
-          (skip-chars-forward " \t"))))))
+  (ess-any ((/= 0 (skip-chars-forward " \t")))
+           ((ess-while (and newlines
+                            (= (point) (ess-code-end-position))
+                            (when (ess-save-excursion-when-nil
+                                    ;; Handles corner cases such as point being on last line
+                                    (let ((orig-point (point)))
+                                      (forward-line)
+                                      (ess-back-to-indentation)
+                                      (> (point) orig-point)))
+                              (skip-chars-forward " \t")
+                              t))))))
 
 (defun ess-jump-char (char)
   (ess-save-excursion-when-nil
