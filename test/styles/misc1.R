@@ -122,6 +122,24 @@ fun_call(argument,
         stuff
 )
 
+## 15a
+`object` <- function()
+            {
+               body
+            }
+
+## 15b
+"object" <- function()
+            {
+               body
+            }
+
+## 15c
+'object' <- function()
+            {
+               body
+            }
+
 
 ### Function calls
 
@@ -1057,6 +1075,10 @@ fun_call(argument <-
 fun_call(argument <<-
             object)
 
+## 36
+funcall(!stuff1 ||
+           stuff2)
+
 
 ### Comments
 
@@ -1104,6 +1126,14 @@ object <-
    {
       ## comment
    }
+
+## 7
+{
+   fun_call(lhs +
+### Comment
+               rhs
+   )
+}
 
 
 ### Logical operators

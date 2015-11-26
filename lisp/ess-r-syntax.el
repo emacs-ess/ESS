@@ -189,12 +189,13 @@ return the prefix."
 into account."
   (when (ess-skip-blanks-backward-1)
     (prog1 t
-      (when newlines
-        (while (= (point) (line-beginning-position))
-          (forward-line -1)
-          (goto-char (line-end-position))
-          (ess-climb-comment)
-          (ess-skip-blanks-backward-1))))))
+      (while (and newlines
+                  (/= (point) (point-min))
+                  (= (point) (line-beginning-position)))
+        (forward-line -1)
+        (goto-char (line-end-position))
+        (ess-climb-comment)
+        (ess-skip-blanks-backward-1)))))
 
 (defun ess-skip-blanks-backward-1 ()
   (and (/= (point) (point-min))
@@ -203,13 +204,17 @@ into account."
 (defun ess-skip-blanks-forward (&optional newlines)
   "Skip blanks and newlines forward, taking end-of-line comments
 into account."
-  (when (skip-chars-forward " \t")
-    (prog1 t
-      (when newlines
-        (while (= (point) (ess-code-end-position))
-          (forward-line)
-          (ess-back-to-indentation)
-          (skip-chars-forward " \t"))))))
+  (ess-any ((/= 0 (skip-chars-forward " \t")))
+           ((ess-while (and newlines
+                            (= (point) (ess-code-end-position))
+                            (when (ess-save-excursion-when-nil
+                                    ;; Handles corner cases such as point being on last line
+                                    (let ((orig-point (point)))
+                                      (forward-line)
+                                      (ess-back-to-indentation)
+                                      (> (point) orig-point)))
+                              (skip-chars-forward " \t")
+                              t))))))
 
 (defun ess-jump-char (char)
   (ess-save-excursion-when-nil
@@ -633,6 +638,15 @@ expression."
                        (equal (char-before) ?:))
               (forward-char -1))))))))
 
+;; Currently doesn't check that the operator is not binary
+(defun ess-climb-unary-operator ()
+  (ess-save-excursion-when-nil
+    (ess-skip-blanks-backward t)
+    (when (memq (char-before) '(?+ ?- ?! ?? ?~))
+      (forward-char -1)
+      t)))
+
+;; Currently returns t if we climbed lines, nil otherwise.
 (defun ess-climb-continuations (&optional cascade ignore-ifelse)
   (let ((start-line (line-number-at-pos))
         (moved 0)
@@ -640,9 +654,11 @@ expression."
         last-line prev-point def-op expr)
     (setq last-line start-line)
     (when (ess-while (and (<= moved 1)
-                          (ess-climb-operator)
-                          (ess-climb-continuations--update-state 'op)
-                          (ess-climb-expression ignore-ifelse)
+                          (or (ess-save-excursion-when-nil
+                                (and (ess-climb-operator)
+                                     (ess-climb-continuations--update-state 'op)
+                                     (ess-climb-expression ignore-ifelse)))
+                              (ess-climb-unary-operator))
                           (/= last-pos (point)))
             (ess-climb-continuations--update-state)
             (setq last-pos (point)))
@@ -892,14 +908,9 @@ without curly braces."
     (let (climbed)
       (ess-skip-blanks-backward)
       ;; Backquoted names can contain any character
-      (if (eq (char-before) ?`)
-          (progn
-            (forward-char -1)
-            (while (not (memq (char-before) '(?` ?\C-J)))
-              (forward-char -1)
-              (setq climbed t))
-            (when climbed
-              (forward-char -1)))
+      (if (and (memq (char-before) '(?` ?\" ?\'))
+               (ess-backward-sexp))
+          (setq climbed t)
         (while (some (apply-partially '/= 0)
                      `(,(skip-syntax-backward "w_")
                        ,(skip-chars-backward "\"'")))
@@ -917,24 +928,14 @@ without curly braces."
 ;; This jumps both object names and atomic objects like strings or
 ;; numbers.
 (defun ess-jump-object ()
-  (let (climbed quote-char)
-    (cond
-     ;; Jump over object names
-     ((ess-jump-name))
-     ;; Jump over strings))
-     ((ess-save-excursion-when-nil
-        (skip-chars-forward " \t")
-        (or (and (eq (char-after) ?')
-                 (setq quote-char "'"))
-            (and (eq (char-after) ?\")
-                 (setq quote-char "\""))))
-      (forward-char)
-      (while (and (skip-chars-forward (concat "^" quote-char))
-                  (setq climbed t)
-                  (looking-back quote-char (1- (point)))))
-      (when (eq (char-after) ?\")
-        (forward-char))
-      climbed))))
+  (cond
+   ;; Jump over object names
+   ((ess-jump-name))
+   ;; Jump over strings))
+   ((ess-save-excursion-when-nil
+      (skip-chars-forward " \t")
+      (memq (char-after) '(?\" ?\')))
+    (ess-forward-sexp))))
 
 (defun ess-jump-name ()
   (ess-save-excursion-when-nil

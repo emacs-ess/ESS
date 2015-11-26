@@ -63,25 +63,6 @@ fun_call(argument) <-
     body
 }
 
-## 6e ((6e--6g : all three kinds of quotes must be equivalent in such cases))
-`[.foo` <- function(x, i)
-{
-    body
-}
-
-## 6f
-"[.foo" <- function(x, i)
-{
-    body
-}
-
-## 6g
-'[.foo' <- function(x, i)
-{
-    body
-}
-
-
 ## 7
 {
     object <- function()
@@ -140,6 +121,24 @@ fun_call(argument,
          function(x)
              stuff
          )
+
+## 15a
+`object` <- function()
+{
+    body
+}
+
+## 15b
+"object" <- function()
+{
+    body
+}
+
+## 15c
+'object' <- function()
+{
+    body
+}
 
 
 ### Function calls
@@ -1076,6 +1075,10 @@ fun_call(argument <-
 fun_call(argument <<-
              object)
 
+## 36
+funcall(!stuff1 ||
+        stuff2)
+
 
 ### Comments
 
@@ -1096,18 +1099,6 @@ fun_call(argument <<-
 {
 ### Section comment
 }
-
-## 3b
-{
-    E <- expr +
-        ifelse(ni == 1, case1,
-               case2) / denominator -
-### TODO! <-- this should *stand out* hence at '^' (and is no section header)
-R <- foo(E)
-    ## the line above should align with 'E <-'
-    final(expression)
-}
-
 
 ## 4
 fun_call(
@@ -1134,6 +1125,14 @@ object <-
     function()
 {
     ## comment
+}
+
+## 7
+{
+    fun_call(lhs +
+### Comment
+             rhs
+             )
 }
 
 
