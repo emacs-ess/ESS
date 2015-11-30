@@ -55,6 +55,7 @@
       (ess-ltest-process-next-subchunk))
     (insert "\n")
     (when (looking-at ess-ltest-section-pattern)
+      (insert "\n")
       (ess-ltest-search-chunk nil t))))
 
 (defun ess-ltest-process-next-subchunk ()
