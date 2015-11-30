@@ -36,3 +36,21 @@ text ¶# comment
 ##! (ess-climb-continuations)
 
 (¶!stuff1 || stuff2)
+
+
+##### Bare blocks
+
+### 1 ----------------------------------------------------------------
+
+function_call()
+¶
+
+##! (ess-climb-block-prefix)
+
+function_call()
+¶
+
+##! (ess-climb-block-prefix "function")
+
+function_call()
+¶

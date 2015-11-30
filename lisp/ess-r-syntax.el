@@ -280,7 +280,7 @@ into account."
              (ess-climb-block-prefix)))))))
 
 (defvar ess-prefixed-block-patterns
-  (mapcar (lambda (fun) (concat fun "\\b"))
+  (mapcar (lambda (fun) (concat fun "[ \t\n]*("))
           '("function" "if" "for" "while")))
 
 (defun ess-looking-at-prefixed-block-p (&optional call)
