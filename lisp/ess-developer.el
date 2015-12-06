@@ -125,8 +125,12 @@ With prefix argument only choose from among attached packages."
              (cmd (cdr (assoc fn ess-developer-load-on-add-commands))))
         (setq cmd (replace-regexp-in-string "%n" sel cmd))
         (when (string-match-p "%d" cmd)
-          (let ((dir (read-directory-name
-                      "Package: " sel-dir nil t nil)))
+          ;; Only ask for package if selected package is different
+          ;; from current package
+          (let ((dir (if (string= cur-pack sel)
+                         sel-dir
+                       (read-directory-name
+                        "Package: " sel-dir nil t nil))))
             (setq cmd (replace-regexp-in-string "%d" dir cmd))))
         (ess-eval-linewise (concat cmd "\n")))
       (ess-wait-for-process)
