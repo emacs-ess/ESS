@@ -108,10 +108,12 @@ With prefix argument only choose from among attached packages."
   (let* ((packs (ess-get-words-from-vector
                  (format "print(unique(c(.packages(), %s)), max=1e6)\n"
                          (if attached-only "NULL" ".packages(TRUE)"))))
-         (cur-pack (ess-developer--get-package-name))
+         (cur-pack (or (car ess-developer-local-package)
+                       (ess-developer--get-package-name)))
          (sel (ess-completing-read "Add package" packs nil nil nil nil
                                    (unless (member cur-pack ess-developer-packages)
                                      cur-pack)))
+         (sel-dir (ess-developer--get-package-path sel))
          (check-attached (format ".ess_package_attached('%s')\n" sel)))
     (unless (ess-boolean-command check-attached)
       (let* ((fn (if (> (length ess-developer-load-on-add-commands) 1)
@@ -124,10 +126,11 @@ With prefix argument only choose from among attached packages."
         (setq cmd (replace-regexp-in-string "%n" sel cmd))
         (when (string-match-p "%d" cmd)
           (let ((dir (read-directory-name
-                      "Package: " (ess-developer--get-package-path sel) nil t nil)))
+                      "Package: " sel-dir nil t nil)))
             (setq cmd (replace-regexp-in-string "%d" dir cmd))))
         (ess-eval-linewise (concat cmd "\n")))
       (ess-wait-for-process)
+      (ess-developer--init-process-local-vars sel sel-dir)
       (when (not (ess-boolean-command check-attached))
         (error "Package '%s' could not be added" sel)))
     (setq ess-developer-packages
@@ -279,41 +282,43 @@ propertize output text.
 (defvar ess-developer--pack-name nil)
 (make-variable-buffer-local 'ess-developer--pack-name)
 
+(defvar ess-developer-local-package nil)
+(make-variable-buffer-local 'ess-developer-local-package)
+
 (defun ess-developer--get-package-path (&optional pack-name)
   "Get the root of R package that contains current directory.
 Root is determined by locating `ess-developer-root-file'.
 
-If PACK-NAME is given, iterate over default-directories of all
-open R files till package with name pack-name is found. If not
-found, return nil."
-  (if pack-name
-      (let ((bl (buffer-list))
-            path bf)
-        (while (and (setq bf (pop bl))
-                    (not path))
-          (when (buffer-local-value 'ess-dialect bf)
-            (with-current-buffer bf
-              (setq path (ess-developer--get-package-path))
-              (unless (equal pack-name (ess-developer--get-package-name))
-                (setq path nil)))))
-        path)
-    (let ((path (directory-file-name default-directory)))
-      (when (string= "R" (file-name-nondirectory path))
-        (setq path (file-name-directory path))
-        (when (file-exists-p (expand-file-name ess-developer-root-file path))
-          path)))
-    ;; This following version is incredibly slow on remotes:
-    ;; (let ((path default-directory)
-    ;;       opath package)
-    ;;   (while (and path
-    ;;               (not package)
-    ;;               (not (equal path opath)))
-    ;;     (if (file-exists-p (expand-file-name ess-developer-root-file path))
-    ;;         (setq package path)
-    ;;       (setq opath path
-    ;;             path (file-name-directory (directory-file-name path)))))
-    ;;   package)
-    ))
+If PACK-NAME is given or if the variable
+`ess-developer-local-package' is locally defined with a cons cell
+of the form `(name . path)', iterate over default-directories of
+all open R files till package with name pack-name is found. If
+not found, return nil."
+  (let ((pack-name (or pack-name (car ess-developer-local-package))))
+    (cond ((and pack-name
+                (string= pack-name (car ess-developer-local-package)))
+           (cdr ess-developer-local-package))
+          (pack-name
+           (ess-developer--find-package-path pack-name))
+          (t
+           (ess-developer--check-current-dir-package-path)))))
+
+(defun ess-developer--find-package-path (pack-name)
+  (let ((bl (buffer-list))
+        path bf)
+    (while (and (setq bf (pop bl))
+                (not path))
+      (when (buffer-local-value 'ess-dialect bf)
+        (with-current-buffer bf
+          (setq path (ess-developer--check-current-dir-package-path)))))
+    path))
+
+(defun ess-developer--check-current-dir-package-path ()
+  (let ((path (directory-file-name default-directory)))
+    (when (string= "R" (file-name-nondirectory path))
+      (setq path (file-name-directory path))
+      (when (file-exists-p (expand-file-name ess-developer-root-file path))
+        path))))
 
 (defun ess-developer--get-package-name (&optional path force)
   "Find package name in path. Parses DESCRIPTION file in PATH (R
@@ -350,13 +355,14 @@ is nil."
         (dolist (bf (buffer-list))
           (with-current-buffer bf
             (ess-developer-activate-in-package package)))
-      (let ((pack (ess-developer--get-package-name)))
+      (let ((package-name (or (car ess-developer-local-package)
+                              (ess-developer--get-package-name))))
         (when (and buffer-file-name
-                   pack
+                   package-name
                    (not ess-developer)
                    (if package
-                       (equal pack package)
-                     (member pack ess-developer-packages)))
+                       (equal package-name package)
+                     (member package-name ess-developer-packages)))
           (ess-developer t))))))
 
 (defun ess-developer-deactivate-in-package (&optional package all)
@@ -380,17 +386,26 @@ If ALL is non-nil, deactivate in all open R buffers."
   "Interface to load_all function from devtools package."
   (interactive)
   (ess-force-buffer-current)
-  (let ((package (ess-developer--get-package-path)))
-    (unless (and package ess-developer)
+  (let ((path (or (cdr ess-developer-local-package)
+                  (ess-developer--get-package-path))))
+    (unless (or ess-developer-local-package
+                (and path ess-developer))
       ;; ask only when not obvious
-      (setq package
-            (read-directory-name "Package: " package nil t nil)))
-    (unless (file-exists-p (expand-file-name ess-developer-root-file package))
+      (setq path (read-directory-name "Package: " path nil t nil)))
+    (unless (file-exists-p (expand-file-name ess-developer-root-file path))
       (error "Not a valid package. No '%s' found in `%s'."
-             ess-developer-root-file package))
-    (message "Loading %s" (abbreviate-file-name package))
+             ess-developer-root-file path))
+    (message "Loading %s" (abbreviate-file-name path))
+    (let ((name (or (car ess-developer-local-package)
+                    (ess-developer--get-package-name path))))
+      (ess-developer--init-process-local-vars name path))
     (ess-eval-linewise
-     (format ess-developer-load-package-command package))))
+     (format ess-developer-load-package-command path))))
+
+(defun ess-developer--init-process-local-vars (name path)
+  (let ((pbuffer (process-buffer (ess-get-process ess-current-process-name))))
+    (with-current-buffer pbuffer
+      (setq-local ess-developer-local-package (cons name path)))))
 
 (defvar ess-developer nil
   "Non nil in buffers where developer mode is active")
