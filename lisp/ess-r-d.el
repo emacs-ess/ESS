@@ -36,6 +36,7 @@
 ;;; Autoloads and Requires
 
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
+(require 'cl)
 (require 'ess-s-l)
 (require 'eldoc)
 (require 'ess-developer)
@@ -345,14 +346,17 @@ before ess-site is loaded) for it to take effect."))
             (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
             (mapc #'ess--inject-code-from-file files)))))))
 
-
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
 Optional prefix (C-u) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
-to R, put them in the variable `inferior-R-args'."
+to R, put them in the variable `inferior-R-args'.
+
+START-ARGS can be a string representing an argument, a list of
+such strings, or any other non-nil value. In the latter case, you
+will be prompted to enter arguments interactively."
   (interactive "P")
   (ess-write-to-dribble-buffer   ;; for debugging only
    (format
@@ -363,16 +367,23 @@ to R, put them in the variable `inferior-R-args'."
               "--ess "
             ;; else: "unix alike"
             (if (not ess-R-readline) "--no-readline ")))
+         (start-args
+          (cond ((stringp start-args)
+                 start-args)
+                ((and start-args
+                      (listp start-args)
+                      (every 'stringp start-args))
+                 (mapconcat 'identity start-args " "))
+                (start-args
+                 (read-string
+                  (concat "Starting Args"
+                          (if r-always-arg
+                              (concat " [other than '" r-always-arg "']"))
+                          " ? ")))))
          (r-start-args
           (concat r-always-arg
-                  inferior-R-args " " ; add space just in case
-                  (if start-args
-                      (read-string
-                       (concat "Starting Args"
-                               (if r-always-arg
-                                   (concat " [other than '" r-always-arg "']"))
-                               " ? "))
-                    nil)))
+                  inferior-R-args " "   ; add space just in case
+                  start-args))
          (cust-alist (copy-alist R-customize-alist))
          (gdbp (string-match-p "gdb" r-start-args))
          use-dialog-box)
