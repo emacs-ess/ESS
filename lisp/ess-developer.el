@@ -54,7 +54,7 @@ list."
   :group 'ess-developer
   :type 'list)
 
-(defcustom ess-developer-load-package-command "library(devtools)\nload_all('%s')\n"
+(defcustom ess-developer-load-package-command "devtools::load_all('%s')\n"
   "Command issued by `ess-developer-load-package'.
  %s is subsituted with the user supplied directory."
   :group 'ess-developer
@@ -88,9 +88,8 @@ The activation is triggered only for packages currently listed in
   :type 'boolean)
 
 (defcustom ess-developer-load-on-add-commands '(("library" . "library(%n)")
-                                                ("load_all" . "library(devtools)\nload_all('%d')"))
-  "Alist of available load commands what are proposed for loading
-on `ess-developer-add-package'.
+                                                ("load_all" . "devtools::load_all('%d')"))
+  "Alist of available load commands proposed by `ess-developer-add-package'.
 
   %n is replaced with package name,
   %d is replaced with package directory.
