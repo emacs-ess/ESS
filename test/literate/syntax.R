@@ -27,6 +27,22 @@ text ¶# comment
 text ¶# comment
 
 
+### 3 ----------------------------------------------------------------
+
+text
+¶text
+
+##! (ess-skip-blanks-backward)
+
+text
+¶text
+
+##! (ess-skip-blanks-backward t)
+
+text¶
+text
+
+
 
 ##### Statements
 

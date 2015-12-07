@@ -1183,9 +1183,9 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--aligned-block ()
   ;; Check for `else' opening
   (if (and (memq 'control-flow ess-align-blocks)
-           (looking-at "else\\b"))
+           (looking-at "else\\b")
+           (ess-climb-if-else))
       (progn
-        (ess-climb-if-else)
         (when (looking-at "else\\b")
           (ess-skip-curly-backward))
         (current-column))
