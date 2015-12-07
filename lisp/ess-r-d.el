@@ -67,6 +67,8 @@
     (define-key ess-dev-map "r" 'ess-developer-remove-package)
     (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
     (define-key ess-dev-map "l" 'ess-developer-load-package)
+    (define-key ess-dev-map "\C-l" 'ess-developer-check-package)
+    (define-key ess-dev-map "c" 'ess-developer-check-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
