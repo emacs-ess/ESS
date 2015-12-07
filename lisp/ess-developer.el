@@ -54,11 +54,9 @@ list."
   :group 'ess-developer
   :type 'list)
 
-(defcustom ess-developer-load-package-command "devtools::load_all('%s')\n"
-  "Command issued by `ess-developer-load-package'.
- %s is subsituted with the user supplied directory."
-  :group 'ess-developer
-  :type 'string)
+(make-obsolete-variable 'ess-developer-load-package-command "\
+This variable is obsolete. Please use the function
+`ess-developer-send-process' instead." "15.09-2")
 
 (defvar ess-developer-root-file "DESCRIPTION"
   "If this file is present in the directory, it is considered a
@@ -386,30 +384,57 @@ If ALL is non-nil, deactivate in all open R buffers."
                      (equal pack package)))
         (ess-developer -1)))))
 
-(defun ess-developer-load-package ()
-  "Interface to load_all function from devtools package."
-  (interactive)
+(defun ess-developer-send-process (command)
   (ess-force-buffer-current)
   (let ((path (or (cdr ess-developer-local-package)
                   (ess-developer--get-package-path))))
     (unless (or ess-developer-local-package
                 (and path ess-developer))
-      ;; ask only when not obvious
+      ;; Ask package directory only when not obvious
       (setq path (read-directory-name "Package: " path nil t nil)))
     (unless (file-exists-p (expand-file-name ess-developer-root-file path))
       (error "Not a valid package. No '%s' found in `%s'."
              ess-developer-root-file path))
-    (message "Loading %s" (abbreviate-file-name path))
     (let ((name (or (car ess-developer-local-package)
                     (ess-developer--get-package-name path))))
       (ess-developer--init-process-local-vars name path))
-    (ess-eval-linewise
-     (format ess-developer-load-package-command path))))
+    (ess-eval-linewise (format command path))))
 
 (defun ess-developer--init-process-local-vars (name path)
   (let ((pbuffer (process-buffer (ess-get-process ess-current-process-name))))
     (with-current-buffer pbuffer
       (setq-local ess-developer-local-package (cons name path)))))
+
+(defun ess-developer-load-package ()
+  "Interface to load_all() function from devtools package.
+
+Without prefix, load the package. With single prefix, recompile
+before loading. With double prefix, unload the package."
+  (interactive)
+  (cond ((equal current-prefix-arg '(16))
+         (ess-developer-send-process "devtools::unload()\n"))
+        ((equal current-prefix-arg '(4))
+         (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"))
+        (t
+         (ess-developer-send-process "devtools::load_all('%s')\n"))))
+
+(defun ess-developer-check-package ()
+  "Interface to checking functions from devtools package.
+
+Without prefix, run the unit tests. With single prefix, perform a
+R CMD check. With double prefix, check only the documentation."
+  (interactive)
+  (cond ((equal current-prefix-arg '(16))
+         (ess-developer-send-process "devtools::check_doc('%s')\n"))
+        ((equal current-prefix-arg '(4))
+         (ess-developer-send-process "devtools::check('%s')\n"))
+        (t
+         (ess-developer-send-process "devtools::test('%s')\n"))))
+
+(defun ess-developer-document-package ()
+  "Interface to document() from devtools package."
+  (interactive)
+  (ess-developer-send-process "devtools::document('%s')\n"))
 
 (defvar ess-developer nil
   "Non nil in buffers where developer mode is active")
