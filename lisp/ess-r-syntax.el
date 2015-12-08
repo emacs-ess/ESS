@@ -189,12 +189,10 @@ return the prefix."
 into account."
   (ess-any ((ess-skip-blanks-backward-1))
            ((when newlines
-              (while (and newlines
-                          (/= (point) (point-min))
-                          (= (point) (line-beginning-position)))
+              (ess-while (and (/= (point) (point-min))
+                              (= (point) (line-beginning-position)))
                 (forward-line -1)
-                (goto-char (line-end-position))
-                (ess-climb-comment)
+                (goto-char (ess-code-end-position))
                 (ess-skip-blanks-backward-1))))))
 
 (defun ess-skip-blanks-backward-1 ()
