@@ -187,15 +187,13 @@ return the prefix."
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
 into account."
-  (when (ess-skip-blanks-backward-1)
-    (prog1 t
-      (while (and newlines
-                  (/= (point) (point-min))
-                  (= (point) (line-beginning-position)))
-        (forward-line -1)
-        (goto-char (line-end-position))
-        (ess-climb-comment)
-        (ess-skip-blanks-backward-1)))))
+  (ess-any ((ess-skip-blanks-backward-1))
+           ((when newlines
+              (ess-while (and (/= (point) (point-min))
+                              (= (point) (line-beginning-position)))
+                (forward-line -1)
+                (goto-char (ess-code-end-position))
+                (ess-skip-blanks-backward-1))))))
 
 (defun ess-skip-blanks-backward-1 ()
   (and (/= (point) (point-min))
@@ -437,14 +435,19 @@ before the `=' sign."
   (or (ess-while (ess-save-excursion-when-nil
                    (ess-climb-name)
                    (and (ess-climb-chained-delims ?\])
-                        (ess-climb-expression))))
+                        ;; (ess-climb-expression)
+                        (if (eq (char-before) ?\))
+                            (ess-climb-call)
+                          (ess-climb-name))
+                        )))
       (ess-save-excursion-when-nil
-        (ess-backward-sexp)
-        (prog1 (looking-at "[[({]")
+        (when (and (memq (char-before) '(?\] ?\) ?\}))
+                   (ess-backward-sexp))
           (if call
               (and (ess-climb-name)
                    (looking-at call)))
-          (ess-climb-name)))))
+          (prog1 t
+            (ess-climb-name))))))
 
 (defun ess-climb-call-name (&optional call)
   (ess-save-excursion-when-nil
