@@ -101,10 +101,10 @@ a <- function(ch) {
         E.cond <- ch*(-pbinom(jinf,ni,prb) + 1-pbinom(js.n,ni,prb)) +
             ifelse(ni == 1, prb*indic,
                    mu*(pbinom(js.n-1,pmax(ni-1,1),prb) -
-                           pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
-###                        ^-- here
-                               mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
-###                            ^-- here
+                       pbinom(jinf-1,pmax(ni-1,1),prb))) / sV -
+###                    ^-- now here (better)
+            mu/sV*(pbinom(js.n,ni,prb) - pbinom(jinf,ni,prb))
+###         ^-- now here (ok; more indentation would also be ok)
         indic2 <- ifelse(jinf+1 <= 1 & jsup >= 1 & ni == 2,1,0)
     }
 }
@@ -427,7 +427,7 @@ foo <- function(x) {
     my.long.Expression <- expression(
         x[a[j]] == exp(theta[1] + theta[2]^2),
         x[b[i]] == sin(theta[3] ~~ theta[4])
-        )
+    )
     ausdruck <- expression
     my.long.Expr...... <- ausdruck(
         x[a[j]] == exp(theta[1] + theta[2]^2),
@@ -489,19 +489,19 @@ parse_roc <- function(lines, match = "^\\s*+\' ?") {
     a <- ggplot(data = overtime.by.month,
                 aes(x="", y=Percent, fill = Overtime)) +
         geom_bar(width = 1) +
-            xlab('') +
-                ylab(sub.txt) +
-                    labs(title = title.txt) +
-                        facet_wrap(~Year.Month)
+        xlab('') +
+        ylab(sub.txt) +
+        labs(title = title.txt) +
+        facet_wrap(~Year.Month)
 }
 
 a <- ggplot(data = overtime.by.month,
             aes(x="", y=Percent, fill = Overtime)) +
     geom_bar(width = 1) +
-        xlab('') +
-            ylab(sub.txt) +
-                labs(title = title.txt) +
-                    facet_wrap(~Year.Month)
+    xlab('') +
+    ylab(sub.txt) +
+    labs(title = title.txt) +
+    facet_wrap(~Year.Month)
 ###                 ^-- face_wrap must be here
 
 
@@ -544,9 +544,9 @@ bar <- function(y) y
 
 
 ### --- 22 ----
-## wrong indentation because of # {was same reason as 19 - but that is fixed!}
+## now correct indentation (inspite of # {was same reason as 19})
 if (!grepl("#", x))
-return(res)
+    return(res)
 
 ### --- 23 ----
 ### three ways to indent closing parent depending on context:
@@ -555,15 +555,15 @@ foo <-
         a,
         b,
         c
-        )
-###     ^-- ) is here
+    )
+### ^-- ) is here now
 
 foo <- function_call(
     a,
     b,
     c
-    )
-### ^-- ) is here
+)
+### ")" is at column 0
 
 foo <- function_call(a,
                      b,
@@ -611,18 +611,18 @@ ss <- function (x, all.knots, nknots, ...)
             warning("'all.knots' is TRUE; 'nknots' specification is disregarded")
         nknots <- nx
     } else if (is.null(nknots))         # <- for back compatibility
-          nknots <- .nknots.smspl(nx)
-      else {
+        nknots <- .nknots.smspl(nx)
+    else {
 ### ^ want 'else' there
-          if (is.function(nknots))
-              nknots <- nknots(nx)
-          else if (!is.numeric(nknots))
-              stop("'nknots' must be numeric (in {1,..,n})")
-          if (nknots < 1)
-              stop("'nknots' must be at least 1")
-          else if (nknots > nx)
-              stop("cannot use more inner knots than unique 'x' values")
-      }
+        if (is.function(nknots))
+            nknots <- nknots(nx)
+        else if (!is.numeric(nknots))
+            stop("'nknots' must be numeric (in {1,..,n})")
+        if (nknots < 1)
+            stop("'nknots' must be at least 1")
+        else if (nknots > nx)
+            stop("cannot use more inner knots than unique 'x' values")
+    }
 ### ^-- want '}' there
 }
 
@@ -642,8 +642,8 @@ t2 <- function(x) {
 
 r <-
     (some.function (x, 2342)  +
-         another.f (x^3) + sdfsdf - sdfsdf  +
-             and(x) +  the(x) -  last(x)*part(3))
+     another.f (x^3) + sdfsdf - sdfsdf  +
+     and(x) +  the(x) -  last(x)*part(3))
 
 
 ### --- 26 ----
@@ -658,46 +658,46 @@ x <- c(1, 3.075819, 1.515999, 2.156169, 1.480742, 1.765485, 1.460206, 1.603707, 
 ## Indentation after open brace
 .a.lst <-
     list(ex1 = function(p) {
-             cMah <- qchisq(0.975, p)
-             function(d) as.numeric(d < cMah)
-###          ^--- here
-         },
-         ex2 = function(p) {
-             cM <- qchisq(0.95, p)
-             function(d) as.numeric(d < cM)
-###          ^--- here
-         })
-###      ^--- here
+        cMah <- qchisq(0.975, p)
+        function(d) as.numeric(d < cMah)
+###     ^--- now here (less indented than prev.)
+    },
+    ex2 = function(p) {
+        cM <- qchisq(0.95, p)
+        function(d) as.numeric(d < cM)
+###     ^--- here
+    })
+### ^--- '}' here
 
 
 .a.lst <- list(ex1 = function(p) {
-                   cMah <- qchisq(0.975, p)
-###                ^--- here
-               },
-               ex2 = function(p) {
-                   cM <- qchisq(0.95, p)
-                   function(d) as.numeric(d < cM)
-###                ^--- here
-               })
+    cMah <- qchisq(0.975, p)
+    function(d) as.numeric(d < cMah)
+}, ## <- now at column 0 {also the next line}
+ex2 = function(p) {
+    cM <- qchisq(0.95, p)
+    function(d) as.numeric(d < cM)
+})
+
 
 .a.lst <- list(list(aa = {
-                        bbb
-###                     ^--- here
-                    },
-                    aaa = function(p) {
-                        qchisq(0.95, p)
-###                     ^--- here
-                    },
-                    aaaa = {
-                        cccc
-###                     ^--- here
-                    }))
+    bbb
+### ^--- here
+},
+aaa = function(p) {
+    qchisq(0.95, p)
+### ^--- here
+},
+aaaa = {
+    cccc
+### ^--- here
+}))
 
 list(function(p){
-         abc
-###      ^-- here
-     })
-###  ^-- here
+    abc
+### ^-- here
+})
+### at column 0
 
 (ab) {
     sfdsf
@@ -709,13 +709,13 @@ print.MethodsFunction <- function(x, byclass = attr(x, "byclass"), ...)
 {
     info <- attr(x, "info")
     values <- if (byclass) {
-        unique(info$generic)
-    } else {
-        visible <- ifelse(info$visible, "", "*")
-        paste0(rownames(info), visible)
-###     ^-- both lines above should start here
-    }
-### ^-- "}" here
+                  unique(info$generic)
+              } else {
+                  visible <- ifelse(info$visible, "", "*")
+                  paste0(rownames(info), visible)
+###               ^-- both lines above should start here
+              }
+###           ^-- "}" here
 
     ## 2nd version:
     val <-
@@ -818,8 +818,8 @@ glmmTMB <- function (formula, data = NULL)
     call <- mf <- mc <- match.call()
 
     if (is.null(family$family)) {
-      print(family)
-      stop("'family' not recognized")
+        print(family)
+        stop("'family' not recognized")
     }
 }
 
