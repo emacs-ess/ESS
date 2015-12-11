@@ -458,6 +458,11 @@ R CMD check. With double prefix, check only the documentation."
   (interactive)
   (ess-developer-send-process "devtools::document('%s')\n"))
 
+(defun ess-developer-install-package ()
+  "Interface to document() from devtools package."
+  (interactive)
+  (ess-developer-send-process "devtools::install('%s')\n"))
+
 (defvar ess-developer nil
   "Non nil in buffers where developer mode is active")
 (make-variable-buffer-local 'ess-developer)
