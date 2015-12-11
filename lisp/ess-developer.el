@@ -302,8 +302,8 @@ not found, return nil."
            (cdr ess-developer-local-package))
           (pack-name
            (ess-developer--find-package-path pack-name))
-          (t
-           (ess-developer--check-current-dir-package-path)))))
+          ((ess-developer--check-current-dir-package-path))
+          ((ess-developer--get-process-package-path)))))
 
 (defun ess-developer--find-package-path (pack-name)
   (let ((bl (buffer-list))
@@ -407,11 +407,17 @@ If ALL is non-nil, deactivate in all open R buffers."
                      (equal pack package)))
         (ess-developer -1)))))
 
+(defun ess-developer--get-process-package-path ()
+  (with-ess-process-buffer t
+    (when (boundp 'ess-developer-local-package)
+      (cdr ess-developer-local-package))))
+
 (defun ess-developer-send-process (command &optional msg)
   (ess-force-buffer-current)
   (let* ((path (or (cdr ess-developer-local-package)
                    (ess-developer--get-package-path)))
-         (name (file-name-nondirectory (directory-file-name path))))
+         (name (when path
+                 (file-name-nondirectory (directory-file-name path)))))
     ;; Ask package directory only when not obvious
     (unless (or ess-developer-local-package path)
       (setq path (read-directory-name "Package: " path nil t nil)))
@@ -425,9 +431,8 @@ If ALL is non-nil, deactivate in all open R buffers."
     (ess-eval-linewise (format command path))))
 
 (defun ess-developer--init-process-local-vars (name path)
-  (let ((pbuffer (process-buffer (ess-get-process ess-current-process-name))))
-    (with-current-buffer pbuffer
-      (setq-local ess-developer-local-package (cons name path)))))
+  (with-ess-process-buffer nil
+    (setq-local ess-developer-local-package (cons name path))))
 
 (defun ess-developer-load-package ()
   "Interface to load_all() function from devtools package.
