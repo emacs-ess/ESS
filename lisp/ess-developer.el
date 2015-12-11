@@ -407,16 +407,18 @@ If ALL is non-nil, deactivate in all open R buffers."
                      (equal pack package)))
         (ess-developer -1)))))
 
-(defun ess-developer-send-process (command)
+(defun ess-developer-send-process (command &optional msg)
   (ess-force-buffer-current)
-  (let ((path (or (cdr ess-developer-local-package)
-                  (ess-developer--get-package-path))))
+  (let* ((path (or (cdr ess-developer-local-package)
+                   (ess-developer--get-package-path)))
+         (name (file-name-nondirectory (directory-file-name path))))
     ;; Ask package directory only when not obvious
     (unless (or ess-developer-local-package path)
       (setq path (read-directory-name "Package: " path nil t nil)))
     (unless (file-exists-p (expand-file-name ess-developer-root-file path))
       (error "Not a valid package. No '%s' found in `%s'."
              ess-developer-root-file path))
+    (message msg name)
     (let ((name (or (car ess-developer-local-package)
                     (ess-developer--get-package-name path))))
       (ess-developer--init-process-local-vars name path))
@@ -434,11 +436,14 @@ Without prefix, load the package. With single prefix, recompile
 before loading. With double prefix, unload the package."
   (interactive)
   (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::unload()\n"))
+         (ess-developer-send-process "devtools::unload()\n"
+                                     "Unloading %s"))
         ((equal current-prefix-arg '(4))
-         (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"))
+         (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"
+                                     "Recompiling %s"))
         (t
-         (ess-developer-send-process "devtools::load_all('%s')\n"))))
+         (ess-developer-send-process "devtools::load_all('%s')\n"
+                                     "Loading %s"))))
 
 (defun ess-developer-check-package ()
   "Interface to checking functions from devtools package.
@@ -447,21 +452,26 @@ Without prefix, run the unit tests. With single prefix, perform a
 R CMD check. With double prefix, check only the documentation."
   (interactive)
   (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::check_doc('%s')\n"))
+         (ess-developer-send-process "devtools::check_doc('%s')\n"
+                                     "Checking documentation of %s"))
         ((equal current-prefix-arg '(4))
-         (ess-developer-send-process "devtools::check('%s')\n"))
+         (ess-developer-send-process "devtools::check('%s')\n"
+                                     "Checking %s"))
         (t
-         (ess-developer-send-process "devtools::test('%s')\n"))))
+         (ess-developer-send-process "devtools::test('%s')\n"
+                                     "Testing %s"))))
 
 (defun ess-developer-document-package ()
   "Interface to document() from devtools package."
   (interactive)
-  (ess-developer-send-process "devtools::document('%s')\n"))
+  (ess-developer-send-process "devtools::document('%s')\n"
+                              "Documenting %s"))
 
 (defun ess-developer-install-package ()
   "Interface to document() from devtools package."
   (interactive)
-  (ess-developer-send-process "devtools::install('%s')\n"))
+  (ess-developer-send-process "devtools::install('%s')\n"
+                              "Installing %s"))
 
 (defvar ess-developer nil
   "Non nil in buffers where developer mode is active")
