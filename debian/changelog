@@ -1,3 +1,9 @@
+ess (15.09.2-1) unstable; urgency=low
+
+  * New upstream version released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 11 Dec 2015 06:17:51 -0600
+
 ess (15.09.1-1) unstable; urgency=low
 
   * New upstream version released today
