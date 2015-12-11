@@ -123,8 +123,8 @@ With prefix argument only choose from among attached packages."
              (cmd (cdr (assoc fn ess-developer-load-on-add-commands))))
         (setq cmd (replace-regexp-in-string "%n" sel cmd))
         (when (string-match-p "%d" cmd)
-          ;; Only ask for package if selected package is different
-          ;; from current package
+          ;; Only ask for path if selected package is different from
+          ;; current package
           (let ((dir (if (string= cur-pack sel)
                          sel-dir
                        (read-directory-name
@@ -315,10 +315,33 @@ not found, return nil."
           (setq path (ess-developer--check-current-dir-package-path)))))
     path))
 
-(defun ess-developer--check-current-dir-package-path ()
+(defvar ess-developer-package-dirs
+  '(("R"        . 1)
+    ("tests"    . 1)
+    ("testthat" . 2)
+    ("inst"     . 1)
+    ("include"  . 2)
+    ("src"      . 1))
+  "Alist of directories names and their depth in a package
+hierarchy. This is used by ESS developer functions to figure out
+whether the current file is in a package. If a DESCRIPTION file
+is found at the presumed root directory of the package, the
+current directory is considered to be part of a R package.")
+
+(defun ess-climb-path (path n)
+  "Takes PATH, climbs its hierarchy N times, and returns the new
+path."
   (let ((path (directory-file-name default-directory)))
-    (when (string= "R" (file-name-nondirectory path))
-      (setq path (file-name-directory path))
+    (dotimes (i n)
+      (setq path (file-name-directory (directory-file-name path))))
+    path))
+
+(defun ess-developer--check-current-dir-package-path ()
+  (let* ((path (directory-file-name default-directory))
+         (current-dir (file-name-nondirectory path))
+         (pkg-dir (assoc current-dir ess-developer-package-dirs)))
+    (when pkg-dir
+      (setq path (ess-climb-path path (cdr pkg-dir)))
       (when (file-exists-p (expand-file-name ess-developer-root-file path))
         path))))
 
@@ -388,9 +411,8 @@ If ALL is non-nil, deactivate in all open R buffers."
   (ess-force-buffer-current)
   (let ((path (or (cdr ess-developer-local-package)
                   (ess-developer--get-package-path))))
-    (unless (or ess-developer-local-package
-                (and path ess-developer))
-      ;; Ask package directory only when not obvious
+    ;; Ask package directory only when not obvious
+    (unless (or ess-developer-local-package path)
       (setq path (read-directory-name "Package: " path nil t nil)))
     (unless (file-exists-p (expand-file-name ess-developer-root-file path))
       (error "Not a valid package. No '%s' found in `%s'."
