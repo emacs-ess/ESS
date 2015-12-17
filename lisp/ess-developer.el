@@ -317,6 +317,7 @@ not found, return nil."
 
 (defvar ess-developer-package-dirs
   '(("R"        . 1)
+    ("r"        . 1)
     ("tests"    . 1)
     ("testthat" . 2)
     ("inst"     . 1)
