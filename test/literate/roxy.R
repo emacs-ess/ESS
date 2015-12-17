@@ -51,10 +51,6 @@ NULL
 
 ##' ¶
 
-##! (global-set-key (kbd "RET") 'newline-and-indent)
-##! (substitute-key-definition 'newline-and-indent
-##!                            'ess-newline-and-indent
-##!                            ess-mode-map global-map)
 ##! "RET"
 
 ##'

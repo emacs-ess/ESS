@@ -477,13 +477,6 @@ Executed in process buffer."
   (ad-activate 'ess-eval-line-and-step)
   (if ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
-  (substitute-key-definition 'newline-and-indent
-                             'ess-newline-and-indent
-                             ess-mode-map global-map)
-
-  (substitute-key-definition 'indent-new-comment-line
-                             'ess-indent-new-comment-line
-                             ess-mode-map global-map)
 
   (run-hooks 'R-mode-hook))
 

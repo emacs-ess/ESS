@@ -66,7 +66,7 @@
   (let ((map (make-sparse-keymap)))
 
     ;; By popular demand:
-    (define-key map "\C-m"       'newline-and-indent); = [RETURN]
+    (define-key map "\C-m"       'ess-newline-and-indent); = [RETURN]
     (define-key map [remap yank] 'ess-yank)
 
     (define-key map "\C-c\C-r"   'ess-eval-region)
@@ -130,10 +130,6 @@
   "Keymap for `ess-mode'.")
 
 ;; Redefine substituted commands
-(substitute-key-definition 'newline-and-indent
-                           'ess-newline-and-indent
-                           ess-mode-map global-map)
-
 (substitute-key-definition 'indent-new-comment-line
                            'ess-indent-new-comment-line
                            ess-mode-map global-map)
