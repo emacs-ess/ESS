@@ -1,13 +1,18 @@
 ### UTILS
-.ess_start_with <- function(strings, str, exact = F){
+
+## Return a vector of elements of STRINGS that start with START. If EXACT is
+## FALSE, ignore case.
+.ess_start_with <- function(strings, start, exact = F){
     if(!exact){
         strings <- tolower(strings)
-        str <- tolower(str)
+        start <- tolower(start)
     }
-   n <- nchar(string)
-   (nchar(strings) >= n) & (substring(strings, 1, n) == str)
+   n <- nchar(start)
+   (nchar(strings) >= n) & (substring(strings, 1, n) == start)
 }
 
+## Extract from hierarchical object OBJ element with recursive names given by
+## PATH. PATH is a vector of names.
 .ess_get_in <- function(obj, path){
     len <- length(path)
     if(len == 1) obj[[path]]
@@ -15,6 +20,18 @@
     else NULL
 }
 
+.ess_print2alist <- function(obj){
+    vec <-
+        switch(class(obj),
+               list = paste0("(", names(obj), " . ", unlist(lapply(obj, .ess_print2alist)), ")",
+                             collapse = " "),
+               character = paste0(sprintf("\"%s\"", obj), collapse = " "),
+               paste0(obj, collapse = " "))
+    paste0("(", vec, ")")
+}
+
+## Return the path of the cursor in EPRR. EPR is a parsed R epresion or
+## list. Set by side effect IS_CALL variable in .ess_comp_env environment.
 .ess_cursor_path <- function(expr, path = c()){
     cursor <- as.name("._.")
     ## reverting, cursor is likely to be in the tail position
@@ -38,53 +55,8 @@
     }
 }
 
-
-### COMPLETION
-.ess_comp_args <- function(funname) {
 
-    if(is.character(funname)){
-        fun <- eval(parse(text=funname)) # works for special objects containing @:$ etc
-    } else if (is.language(funname)){
-        fun <- eval(funname)
-        funname <- deparse(funname)
-    } else stop("invalid funname object")
-
-
-    if(is.function(fun)) {
-        special <- grepl('[:$@[]', funname)
-        args <- if(!special){
-            fundef <- paste(funname, '.default',sep='')
-            do.call('argsAnywhere', list(fundef))
-        }
-
-        if(is.null(args))
-            args <- args(fun)
-        
-        if(is.null(args))
-            args <- do.call('argsAnywhere', list(funname))
-
-        formals <- formals(args)
-        
-        all <-
-            if(special) names(formals)
-            else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = TRUE),
-                          error=function(e) NULL)
-        
-        envname <- environmentName(environment(fun))
-        if(envname == "R_GlobalEnv") envname <- ""
-
-        list(cache = envname, args = formals, allargs = all)
-    }
-}
-
-.ess_comp_object <- function(expr, pos = NULL, force = FALSE){
-    if(force || !nzchar(TOKEN))
-        .ess_set_token(expr, pos)
-    utils:::.completeToken()
-    list(objects = utils:::.retrieveCompletions())
-}
-
-.ess_set_token <- function(text, pos = NULL, force = FALSE){
+.ess_comp_set_token <- function(text, pos = NULL, force = FALSE){
     if(is.language(text))
         text <- deparse(text)
     utils:::.assignLinebuffer(text)
@@ -117,7 +89,66 @@
              .ess_comp_env)
 
     ## sets the TOKEN
-    .ess_set_token(text, start)
+    .ess_comp_set_token(text, start)
+}
+
+
+### CORE COMPLETION
+##' @param funname function name,  a string or a language object.
+##'
+##' @return A list of 3 components:
+##' - cache: name of the cache to be used for storage on emacs side. It's
+##'   commonly the name of the environment where the function is stored.
+##' - args: default arguments of the current function.
+##' - comp: arguments of all methods if FUNNAME is a generic.
+.ess_comp_args <- function(funname) {
+
+    if(is.character(funname)){
+        fun <- eval(parse(text=funname)) # works for special objects containing @:$ etc
+    } else if (is.language(funname)){
+        fun <- tryCatch(eval(funname), error = function(e) NULL)
+        funname <- deparse(funname)
+    } else stop("invalid 'funname' object")
+
+
+    if(is.function(fun)) {
+        special <- grepl('[:$@[]', funname)
+        args <- if(!special){
+            fundef <- paste(funname, '.default', sep='')
+            do.call('argsAnywhere', list(fundef))
+        }
+
+        if(is.null(args))
+            args <- args(fun)
+        
+        if(is.null(args))
+            args <- do.call('argsAnywhere', list(funname))
+
+        formals <- formals(args)
+        
+        all <-
+            if(special) names(formals)
+            else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = TRUE),
+                          error=function(e) NULL)
+        
+        envname <- environmentName(environment(fun))
+        if(envname == "R_GlobalEnv") envname <- ""
+
+        list(type = "call", 
+             cache = envname,
+             name = funname, 
+             args = formals,
+             comp = all)
+    }
+}
+
+.ess_comp_object <- function(expr, pos = NULL, force = FALSE){
+    if(force || !nzchar(TOKEN))
+        .ess_comp_set_token(expr, pos)
+    utils:::.completeToken()
+    list(type = "object", 
+         token = TOKEN,
+         comp = utils:::.retrieveCompletions())
 }
 
 .ess_complete <- function(text){
@@ -141,8 +172,8 @@
         if(is.null(fun)){
             ## default handler
             completions <-
-                if(IS_CALL) .ess_comp_fun_handler(loc_path, completions)
-                else .ess_comp_obj_handler(loc_path, completions)
+                if(IS_CALL) .ess_comp_call_handler(loc_path, completions)
+                else .ess_comp_object_handler(loc_path, completions)
         } else {
             completions <- fun(loc_path, completions)
         }
@@ -156,62 +187,61 @@
 
 
 ### HANDLERS
-.ess_comp_fun_handler <- function(my_loc, completions){
+.ess_comp_call_handler <- function(my_loc, completions){
     funname <- .ess_get_in(EXPR, c(my_loc, 1))
     if(is.symbol(funname)) funname <- as.character(funname)
     else stop("invalid 'EXPR' or 'my_loc' argument")
     ## avoid completing for {, ( 
     if(nchar(funname) > 1)
-        completions[[funname]] <- .ess_comp_args(funname)
+        completions[["call"]] <- .ess_comp_args(funname)
     completions
 }
 
-.ess_comp_obj_handler <- function(my_loc, completions){
+.ess_comp_object_handler <- function(my_loc, completions){
     if(nzchar(TOKEN))
-        completions[[TOKEN]] <- .ess_comp_object(funname, force = FALSE)
+        completions[["object"]] <- .ess_comp_object(TOKEN, force = FALSE)
     completions
-}
-
-.ess_comp_make_op_handler <- function(operator){
-        function(my_loc, completions){
-            e <- .ess_get_in(EXPR, my_loc)
-            if (IS_CALL) {
-                completions[[operator]] <- .ess_comp_args(e)
-            } else {
-                ## this is probably good engough
-                completions <- .ess_comp_obj_handler(my_loc, completions)
-            }
-            completions
-        }
 }
 
 .ess_comp_bracket_handler <- function(my_loc, completions){
     arg1 <- .ess_get_in(EXPR, c(my_loc, 2))
+    ## complete only if the call is a symbol
     if(is.symbol(arg1)){
         data <- eval(arg1)
 
-        if(is(data, "data.table")){
-            completions[["["]] <- list(colnames = names(data))
-        } else if(nchar(TOKEN) > 1) {
-            ## Start completing on at least 2 characters. There could be milions
-            ## of row names.
-            pos <- tail(my_loc, 1)
+        ## With the exception of the second dimmension of data.frames, we start
+        ## completing on at least 'min_len' characters (there could be milions
+        ## of row names).
+        min_len <- 2L
+
+        ## argument position within [...]
+        pos <- PATH[length(my_loc) + 1L] - 2L
+        
+        if (is(data, "data.table")){
+
+            completions[["["]] <- list(type = "[",
+                                       comp = names(data))
+            
+        } else if ((is.data.frame(data) && pos == 2) || nchar(TOKEN) >= min_len) {
+
             names <-
-                if(is.null(dim(data))){
-                    names(data)
-                } else if (pos <= length(dim(dim)) + 1){
-                    comps <- dimnames(data)[[pos]]
+                if (is.null(dim(data))){
+                    ## vectors
+                    if (nchar(TOKEN) > 1)
+                        names(data)
+                } else if (pos <= length(dim(data))){
+                    dimnames(data)[[pos]]
                 } else NULL
 
             if(!is.null(names)){
                 names <- names[.ess_start_with(names, TOKEN)]
                 if(length(names))
-                    completions[["["]] <- list(meta = list(wrap = T),
-                                               names = head(names, 1000))
+                    completions[["["]] <- list(type = "[", 
+                                               quote = TRUE, 
+                                               comp = head(names, 1000))
             }
         }
     }
-    
     completions
 }
 
@@ -220,10 +250,28 @@
     if(!is.null(call)){
         data <- match.call(function(data = NULL, ...){}, call, expand.dots = F)$data
         if(!is.null(data)){
-            completions[["~"]] <- list(names = names(eval(data)))
+            ## tilda completion has higher priority
+            completions <-
+                ## fixme: Potential optimization - don't complete all names if
+                ## there completion already contains completions from "object"
+                c(list("~" = list(type = "~", comp = names(eval(data)))),
+                  completions)
         }
     }
     completions
+}
+
+
+.ess_comp_make_op_handler <- function(operator){
+    function(my_loc, completions){
+        e <- .ess_get_in(EXPR, my_loc)
+        if (IS_CALL) {
+            completions[[operator]] <- .ess_comp_args(e)
+        } else {
+            completions[[operator]] <- .ess_comp_object(TOKEN, force = FALSE)
+        }
+        completions
+    }
 }
 
 .ess_comp_make_indata_handler <- function(call_name, data_name = "data"){
@@ -235,7 +283,9 @@
             data <- match.call(dummy, call, expand.dots = F)[[data_name]]
             if(!is.null(data)){
                 if(!is.null(names <- names(eval(data)))){
-                    completions[[call_name]] <- list(names = names)
+                    completions[[call_name]] <-
+                        list(type = "indata",
+                             comp = names)
                 }
             }
         }
