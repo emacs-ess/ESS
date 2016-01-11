@@ -1,5 +1,5 @@
 module ESS
-using Compat
+
 
 function all_help_topics()
     Base.Help.init_help()
