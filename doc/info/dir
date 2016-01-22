@@ -14,5 +14,6 @@ File: dir,	Node: Top,	This is the top of the INFO tree
 
 * Menu:
 
+Emacs
 * ESS: (ess).	Emacs Speaks Statistics
 		(S/S+/R, SAS, BUGS, Stata, XLisp-Stat).
