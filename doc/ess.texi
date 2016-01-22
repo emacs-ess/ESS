@@ -24,7 +24,7 @@ ESS version
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2014 The ESS Developers
+@author Copyright @copyright{} 2002--2016 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
