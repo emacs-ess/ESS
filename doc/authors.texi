@@ -37,4 +37,8 @@
 @item
 @c @uref{http://www.google.com/, Vitalie Spinu}
 @uref{mailto:spinuvit@@gmail.com, Vitalie Spinu}
+@c --------
+@item
+@c @uref{https://github.com/lionel-, Lionel Henry}
+@uref{mailto:lionel.hry@@gmail.com, Lionel Henry}
 @end itemize
