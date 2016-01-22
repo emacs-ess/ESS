@@ -16,7 +16,7 @@ ESS version
 @c                                 ~~~~~~~~~~~~~~
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani, S.J. Eglen,
-@author S.P. Luque, H. Redestig and V. Spinu)
+@author S.P. Luque, H. Redestig, V. Spinu and L. Henry)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
