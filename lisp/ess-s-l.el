@@ -126,6 +126,7 @@
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
     (fill-nobreak-predicate     . 'ess-inside-string-p)
     (normal-auto-fill-function  . 'ess-do-auto-fill)
+    (ess-execute-screen-options-command . "options(width=%d, length=99999)\n")
     )
   "S-language common settings for all <dialect>-customize-alist s")
 

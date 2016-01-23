@@ -2699,7 +2699,8 @@ non-nil, don't echo to R subprocess.
 This is a good thing to put in `ess-R-post-run-hook' or
 `ess-S+-post-run-hook'."
   (interactive)
-  (when (string= ess-language "S")
+  (if (null ess-execute-screen-options-command)
+      (message "Not implemented for '%s'" ess-dialect)
     ;; We cannot use (window-width) here because it returns sizes in default
     ;; (frame) characters which leads to incorrect sizes with scaled fonts.To
     ;; solve this we approximate font width in pixels and use window-pixel-width
@@ -2716,7 +2717,7 @@ This is a good thing to put in `ess-R-post-run-hook' or
                            (- (floor (/ wwidth charw)) 1))
                        ;; e.g., no X11 as in  'emacs -nw'
                        (- (window-width) 2))))
-           (command (format "options(width=%d, length=99999)\n" nchars)))
+           (command (format ess-execute-screen-options-command nchars)))
       (if invisibly
           (ess-command command)
         (ess-eval-linewise command nil nil nil 'wait-prompt)))))
@@ -2766,7 +2767,7 @@ to the command if BUFF is not given.)"
   "Issue an exiting command to the inferior process, additionally
 also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive)
-  (if (string-equal ess-dialect "R")
+  (if (member ess-dialect "R")
       (ess-quit-r)
     ;; else:  non-R
     (ess-force-buffer-current "Process to quit: " nil 'no-autostart)

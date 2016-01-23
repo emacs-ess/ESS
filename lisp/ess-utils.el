@@ -877,11 +877,10 @@ t. See examples in the tracebug code.
 (defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
   "Execute dialect specific command.
 
--- If command is not defined issue warning 'Not available for dialect X'
--- if a function, execute it with ARGS
+-- If command is nil issue warning 'Not available for dialect X'
+-- If command is a elisp function, execute it with ARGS
 -- If a string starting with 'http' or 'www', browse with `browse-url',
    otherwise execute the command in inferior process.
-
 -- If a string, interpret as a command to subprocess, and
    substitute ARGS with `(format ,command ,@args).
 
@@ -892,7 +891,7 @@ If prompt is a string just pass it to `read-string'. If a list, pass it
 to `ess-completing-read'.
 "
   `(if (null ,command)
-       (message "Sorry, not implemented for dialect %s" ess-dialect)
+       (message "Not implemented for dialect %s" ess-dialect)
      (let* ((com  (if (symbolp ,command)
                      (symbol-function ,command)
                    ,command))

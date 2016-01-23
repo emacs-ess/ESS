@@ -70,6 +70,7 @@
     (comment-end                  . " \*/")
     (comment-start-skip           . "/\\*+ *")
     (comment-use-syntax           . t) ;; needed for multiline
+    (ess-execute-screen-options-command . "set linesize %s\n")
     )
   "Variables to customize for Stata.")
 
@@ -125,9 +126,7 @@ This function is placed in `ess-presend-filter-functions'.
       (goto-char (point-max))
       (with-current-buffer (process-buffer proc)
         (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
-        (run-mode-hooks 'ess-stata-post-run-hook))
-      )
-    ))
+        (run-mode-hooks 'ess-stata-post-run-hook)))))
 
 
 (defun STA-transcript-mode ()

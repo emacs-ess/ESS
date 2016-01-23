@@ -2950,11 +2950,13 @@ the variable `ess-help-own-frame' is non-nil."
   "Font Lock face used to highlight %op% operators in ess-mode buffers."
   :group 'ess)
 
-
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."
   :group 'ess-help
   :type 'boolean)
+
+(defvar ess-execute-screen-options-command nil
+  "Dialect specific command run by `ess-execute-screen-options'.")
 
 (defvar ess-help-form 'separate-buffer
   "*Place to show help.   NOT IMPLEMENTED YET.
