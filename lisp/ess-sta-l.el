@@ -1181,71 +1181,10 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 (defvar stata-profile "~/.stataprofile"
   "File to read on startup (nil for no file).")
 
-;;;;;;;;;;;;;;;
+(define-obsolete-function-alias 'stata-help 'ess-display-help-on-object "ESS[15.09]")
+(define-obsolete-function-alias 'stata-lookup 'ess-display-help-apropos "ESS[16.03]")
 
-;;(require 'comint)
-
-(defun stata-help (the-subject)
-  "Stata help in other buffer."
-  (interactive "sHelp on: ")
-  (let* ((stata-process (get-process "stata"))
-         (stata-buffer (process-buffer stata-process))
-         oldpf oldpb oldpm)
-    (set-buffer stata-buffer)
-    (setq oldpf (process-filter stata-process))
-    (setq oldpb (process-buffer stata-process))
-    (setq oldpm (marker-position (process-mark stata-process)))
-    (save-excursion
-      (if stata-process nil (error "Stata is not running."))
-      (beginning-of-line)
-      (if (looking-at ". ") nil  (error "Stata not ready."))
-      (save-excursion
-        (set-process-buffer stata-process (get-buffer-create "*stata help*"))
-        (set-buffer "*stata help*")
-        (setq buffer-read-only nil)
-        (set-process-filter stata-process 'inferior-ess-ordinary-filter)
-        (erase-buffer)
-        (process-send-string stata-process "help ")
-        (process-send-string stata-process the-subject)
-        (process-send-string stata-process "\n")
-        (stata-prompt-wait stata-process)
-        ;;(stata-help-mode)
-        (set-buffer stata-buffer)
-        (set-process-buffer stata-process oldpb)
-        (set-process-filter stata-process oldpf)
-        (set-marker (process-mark stata-process) oldpm)))
-    (display-buffer "*stata help*")))
-
-(defun stata-lookup (the-subject) "Stata lookup in other buffer"
-  (interactive "sLook up: ")
-  (let* ((stata-process (get-process "stata"))
-         (stata-buffer (process-buffer stata-process))
-         oldpf oldpb oldpm)
-    (set-buffer stata-buffer)
-    (setq oldpf (process-filter stata-process))
-    (setq oldpb (process-buffer stata-process))
-    (setq oldpm (marker-position (process-mark stata-process)))
-    (save-excursion
-      (if stata-process nil (error "Stata is not running."))
-      (beginning-of-line)
-      (if (looking-at ". ") nil  (error "Stata not ready."))
-      (save-excursion
-        (set-process-buffer stata-process (get-buffer-create "*stata help*"))
-        (set-buffer "*stata help*")
-        (setq buffer-read-only nil)
-        (set-process-filter stata-process 'inferior-ess-ordinary-filter)
-        (erase-buffer)
-        (process-send-string stata-process "lookup ")
-        (process-send-string stata-process the-subject)
-        (process-send-string stata-process "\n")
-        (stata-prompt-wait stata-process)
-        (stata-help-mode)
-        (set-buffer stata-buffer)
-        (set-process-buffer stata-process oldpb)
-        (set-process-filter stata-process oldpf)
-        (set-marker (process-mark stata-process) oldpm)))
-    (display-buffer "*stata help*")))
-
+;; fixme? Hook this on C-c C-s /ess-execute-search does an R search() right now/
 (defun stata-variables ()
   "Stata variable list in other buffer."
   (interactive)
@@ -1279,14 +1218,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (display-buffer "*stata variables*")
     (goto-char (point-max))))
 
-(defun stata-review-window ()
-  (interactive)
-  (display-buffer "*stata review*"))
-
-(defun stata-rehelp ()
-  (interactive)
-  (stata-help (current-word)))
-
 ;;;; <IGNORE>
 ;;; This doesn't do anything at the moment.  I have vague plans of
 ;;; implementing a menu interface using emacs
@@ -1313,13 +1244,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 
 ;;;; </IGNORE>
 
-(defun stata-add-to-review-buffer (string)
-  "Adds input to review buffer."
-  (save-excursion
-    (set-buffer (get-buffer-create "*stata review*"))
-    (goto-char (point-max))
-    (insert string)))
-
 (defun stata-prompt-wait (proc &optional start-of-output)
   "Wait for a prompt to appear at BOL of current buffer.
 PROC is the stata process. Does not change point."
@@ -1333,118 +1257,6 @@ PROC is the stata process. Does not change point."
              (if (< (point) start-of-output) (goto-char start-of-output))
              (not (looking-at "^. "))))))
 
-;;(defvar inferior-stata-mode-map nil
-;;  "Keymap for Stata mode")
-
-;;(setq inferior-stata-mode-map (cons 'keymap comint-mode-map))
-;;(define-key inferior-stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
-;;(define-key inferior-stata-mode-map "\C-c\C-v" 'stata-variables)
-;;(define-key inferior-stata-mode-map "\C-c\C-h" 'stata-help)
-;;(define-key inferior-stata-mode-map "\C-c\C-u" 'stata-lookup)
-;;(define-key inferior-stata-mode-map "\C-c\C-r"   'stata-review-window)
-;;(define-key inferior-stata-mode-map [menu-bar stata]
-;;  (cons "Stata" (make-sparse-keymap "Stata")))
-;;(define-key inferior-stata-mode-map [menu-bar stata statahelp]
-;;  '("Help on..." . stata-help))
-;;(define-key inferior-stata-mode-map [menu-bar stata lookup]
-;;  '("Look up..." . stata-lookup))
-;;(define-key inferior-stata-mode-map [menu-bar stata variables]
-;;  '("Variables" . stata-variables))
-;;(define-key inferior-stata-mode-map [menu-bar stata review]
-;;  '("Review" . stata-review-window))
-
-
-;;(defvar stata-mode-map nil
-;;  "Keymap for Stata mode")
-
-;;(setq stata-mode-map (make-sparse-keymap))
-;;(define-key stata-mode-map "\C-c\C-r"    'stata-eval-region)
-;;(define-key stata-mode-map "\C-c\M-r" 'stata-eval-region-and-go)
-;;(define-key stata-mode-map "\C-c\C-b"    'stata-eval-buffer)
-;;(define-key stata-mode-map "\C-c\M-b" 'stata-eval-buffer-and-go)
-;;(define-key stata-mode-map "\C-c\C-f"    'stata-eval-function)
-;;(define-key stata-mode-map "\C-c\C-n"     'stata-eval-line-and-next-line)
-;;(define-key stata-mode-map "\C-c\C-j"    'stata-eval-line)
-;;(define-key stata-mode-map "\C-c\C-r"   'stata-review-window)
-;;(define-key stata-mode-map "\C-c\M-j" 'stata-eval-line-and-go)
-;;(define-key stata-mode-map "\C-c\C-y"    'stata-switch-to-stata)
-;;(define-key stata-mode-map "\C-c\C-z" 'stata-switch-to-end-of-stata)
-;;;;(define-key stata-mode-map "\C-c\C-l"    'stata-load-file)
-;;(define-key stata-mode-map "\C-c\C-h"    'stata-help)
-;;(define-key stata-mode-map "\C-c\C-v"    'stata-variables)
-;;(define-key stata-mode-map "\M-\t" 'comint-replace-by-expanded-filename)
-;;(define-key stata-mode-map "\177" 'backward-delete-char-untabify)
-;;(define-key stata-mode-map "\C-c\C-u" 'stata-lookup)
-;;(define-key stata-mode-map [menu-bar stata]
-;;  (cons "Stata" (make-sparse-keymap "Stata")))
-;;(define-key stata-mode-map [menu-bar stata lookup]
-;;  '("Look up..." . stata-lookup))
-;;(define-key stata-mode-map [menu-bar stata statahelp]
-;;  '("Help on..." . stata-help))
-;;(define-key stata-mode-map [menu-bar stata variables]
-;;  '("Variables" . stata-variables))
-;;(define-key stata-mode-map [menu-bar stata review]
-;;  '("Review" . stata-review-window))
-;;(define-key stata-mode-map [menu-bar stata eval-line]
-;;  '("Eval line" . stata-eval-line))
-;;(define-key stata-mode-map [menu-bar stata eval-next]
-;;  '("Eval line and next line" . stata-eval-line-and-next-line))
-;;(define-key stata-mode-map [menu-bar stata eval-go]
-;;  '("Eval line and go" . stata-eval-line-and-go))
-;;(define-key stata-mode-map [menu-bar stata eval-buff]
-;;  '("Eval buffer" . stata-eval-buffer))
-;;(define-key stata-mode-map [menu-bar stata eval-buff-go]
-;;  '("Eval buffer and go" . stata-eval-buffer-and-go))
-;;(define-key stata-mode-map [menu-bar stata to-stata]
-;;  '("Switch to stata" . stata-switch-to-stata))
-;;
-;;
-;;
-
-                                        ;(defvar stata-help-mode-map nil)
-                                        ;(setq stata-help-mode-map (cons 'keymap help-mode-map))
-                                        ;(define-key stata-help-mode-map [mouse-2] 'stata-rehelp)
-                                        ;(define-key stata-help-mode-map "\C-c\C-r" 'stata-rehelp)
-                                        ;(define-key stata-help-mode-map "\C-c\C-h" 'stata-help)
-                                        ;(define-key stata-help-mode-map [menu-bar stata]
-                                        ;  (cons "Stata" (make-sparse-keymap "Stata")))
-                                        ;(define-key stata-help-mode-map [menu-bar stata statahelp]
-                                        ;  '("Help on..." . stata-help))
-                                        ;(define-key stata-help-mode-map [menu-bar stata rehelp]
-                                        ;  '("rehelp (hyperlink)" . stata-rehelp))
-;;
-
-
-;;(defun inferior-stata-mode ()
-;;"Major mode for running Stata. Based on comint-mode.
-;;Features include Help (\\[stata-help]), Review (\\[stata-review-window]) and
-;;Variables (\\[stata-variables]) mimicking the help, review and
-;;variables windows of Stata for Windows
-;;\\{inferior-stata-mode-map}"
-;;  (interactive)
-;;  (make-comint "stata" "stata"
-;;             (and stata-profile
-;;                  (or (file-exists-p stata-profile)
-;;                      (null (message "Startup file %s not found."
-;;                                     stata-profile))) stata-profile)
-;;             stata-switches)
-;;  (switch-to-buffer "*stata*" )
-;;  (setq comint-process-echoes t)
-;;  (set-process-filter (get-process "stata") 'stata-watch-for-menu-filter)
-;;  (setq comint-input-filter-functions
-;;      (cons 'stata-add-to-review-buffer comint-input-filter-functions))
-;;  (save-excursion
-;;    (set-buffer (get-buffer-create "*stata review*"))
-;;    (stata-mode))
-;;  (setq major-mode 'inferior-stata-mode)
-;;  (setq mode-name "inferior Stata")
-;;  (use-local-map inferior-stata-mode-map))
-;;
-;;(defun stata ()
-;;  (interactive)
-;;  (inferior-stata-mode))
-;;
-
 (defun stata-help-mode ()
   "Major mode for displaying Stata help in a read-only buffer.
 Active commands are Help (\\[stata-help]) and hyperlink
@@ -1454,98 +1266,6 @@ Active commands are Help (\\[stata-help]) and hyperlink
   (setq mode-name "Stata help")
   ;;(use-local-map stata-help-mode-map)
   (setq buffer-read-only t))
-
-;;
-;;
-;;(defun stata-mode ()
-;;"Major mode for editing Stata files. Commands for sending lines to
-;;Stata (\\[stata-eval-line], \\[stata-eval-line-and-go],
-;;\\[stata-eval-line-and-next-line])
-;;and for displaying Stata help (\\[stata-help]), variables (\\[stata-variables])
-;; and review window (\\[stata-review-window])
-;;\\{stata-mode-map}"
-;;  (interactive)
-;;  (kill-all-local-variables)
-;;  (setq major-mode 'stata-mode)
-;;  (setq mode-name "Stata")
-;;  (use-local-map stata-mode-map))
-;;
-;;
-;;(defun stata-eval-region (start end)
-;;  "Send the current region to the inferior stata process."
-;;  (interactive "r")
-;;  (process-send-region "stata" start end)
-;;  (process-send-string "stata" "\n"))
-
-
-
-;;(defun stata-eval-buffer ()
-;;  "Send the current buffer to the inferior stata process."
-;;  (interactive)
-;;  (stata-eval-region (point-min) (point-max)))
-
-;;(defun stata-eval-line ()
-;;  "Send the current line to the inferior stata process."
-;;  (interactive)
-;;  (save-excursion
-;;    (end-of-line)
-;;    (let ((end (point)))
-;;      (beginning-of-line)
-;;      (stata-eval-region (point) end))))
-
-;;(defun stata-eval-line-and-next-line ()
-;;  "Evaluate the current line  and move to the next line."
-;;  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-;;  (interactive)
-;;  (display-buffer (process-buffer (get-process "stata")))
-;;  (save-excursion
-;;    (end-of-line)
-;;    (let ((end (point)))
-;;      (beginning-of-line)
-;;      ;; RDB modified to go to end of S buffer so user can see result
-;;      ;;(stata-eval-visibly (buffer-substring (point) end) nil t)))
-;;      (stata-eval-region (point) end)))
-;;  (next-line 1))
-
-
-;;(defun stata-eval-region-and-go (start end )
-;;  "Send the current region to the inferior S and switch to the process buffer."
-;;  (interactive "r\nP")
-;;  (stata-eval-region start end)
-;;  (stata-switch-to-stata t))
-
-;;(defun stata-eval-buffer-and-go ()
-;;  "Send the current buffer to the inferior stata and switch to the process buffer."
-;;  (interactive)
-;;  (stata-eval-buffer)
-;;  (stata-switch-to-stata t))
-
-
-;;(defun stata-eval-line-and-go ()
-;;  "Send the current line to the inferior stata process and switch to the
-;;process buffer."
-;;  (interactive)
-;;  (stata-eval-line)
-;;  (stata-switch-to-stata t))
-
-
-;;(defun stata-switch-to-stata (eob-p)
-;;  "Switch to the current inferior stata process buffer.
-;;With argument, positions cursor at end of buffer."
-;;  (interactive "P")
-;;  (let (stata-process (get-process "stata"))
-;;    (if stata-process
-;;      (progn
-;;        (switch-to-buffer (process-buffer stata-process))
-;;        (if eob-p (goto-char (point-max))))
-;;      (progn
-;;      (message "No inferior stata process")
-;;      (ding)))))
-
-;;(defun stata-switch-to-end-of-stata nil
-;;  "Switch to the end of the inferior stata process buffer."
-;;  (interactive)
-;;  (stata-switch-to-stata t))
 
 ;;; Suggested function from Brendan Halpin:
 (defvar ess-STA-delimit-do-file "delimit-do.do")

@@ -344,8 +344,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   (let ((object (buffer-name))
         (alist          ess-local-customize-alist)
         (pname ess-local-process-name)
-        (buff (get-buffer-create title))
-        )
+        (buff (get-buffer-create title)))
     (with-current-buffer buff
       (setq ess-help-object help-object)
       (ess-setq-vars-local (eval alist))
@@ -360,7 +359,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (goto-char (point-min))
       (when reg-start  ;; go to the beginning of listing
         (re-search-forward  reg-start  nil t))
-      (when (and item-regexp (featurep 'emacs))
+      (when item-regexp
         ;;linkify the buffer
         (save-excursion
           (while (re-search-forward item-regexp nil t)
@@ -369,8 +368,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                               'action (or action #'ess--action-help-on-object)
                               'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
                               'follow-link t
-                              'help-echo (or help-echo "help on object")))
-          ))
+                              'help-echo (or help-echo "help on object")))))
 
       ;; (save-excursion ;; why R places all these spaces?
       ;;   (goto-char (point-min))
@@ -378,23 +376,25 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       ;;     (replace-match "\t\t\t")))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
-      (setq truncate-lines nil)
-      )
+      (setq truncate-lines nil))
     (unless (ess--help-kill-bogus-buffer-maybe buff)
-      (ess--switch-to-help-buffer buff))
-    ))
+      (ess--switch-to-help-buffer buff))))
 
 
 (defun ess-display-help-apropos (&optional pattern)
   "Create an ess-apropos buffer with a *linked* list of apropos topics."
   (interactive "sPattern: ")
   (let (com regexp)
+
     (cond ((equal ess-dialect "R")
            (setq com "help.search('%s')\n"
                  regexp "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"))
           ((equal ess-dialect "julia")
            (setq com "apropos(\"%s\")\n"
                  regexp "^\\(\\(\\w\\|\\s_\\)+\\)("))
+          ((equal ess-dialect "stata")
+           (setq com "hsearch %s\n"
+                 regexp "^[ 	]*[0-9]+\\.[ 	]+\\(.+\\)$"))
           (t (error "Not implemented for dialect %s" ess-dialect)))
 
     (ess--display-indexed-help-page
@@ -416,7 +416,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
      (format "*ess-demos[%s]*" ess-current-process-name)
      'demos #'ess--action-demo)))
 
-
 (defun ess--action-demo (&optional button)
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
@@ -434,7 +433,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   "Display vignettes if available for the current dialect."
   (interactive)
   (cond
-   ((string-match "^R" ess-dialect) (ess-R-display-vignettes))
+   ((equal ess-dialect "R") (ess-R-display-vignettes))
    (t (message "Sorry, not implemented for %s" ess-dialect))))
 
 (defun ess-R-display-vignettes ()

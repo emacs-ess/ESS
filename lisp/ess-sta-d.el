@@ -150,8 +150,7 @@ This function is placed in `ess-presend-filter-functions'.
   (or (ess-process-get 'help-topics)
       (progn
         (ess-process-put 'help-topics (ess--STA-retrive-topics-from-search))
-        (ess-process-get 'help-topics))
-      ))
+        (ess-process-get 'help-topics))))
 
  ; Provide package
 
