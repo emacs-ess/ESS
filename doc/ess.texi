@@ -67,8 +67,9 @@ by  A.J. Rossini,
     R.A. Sparapani,
     S.J. Eglen,
     S.P. Luque,
-    V. Spinu
-and H. Redestig.
+    H. Redestig,
+    V. Spinu,
+and L. Henry.
 @end display
 
 @c (Formerly: Doug
