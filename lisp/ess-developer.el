@@ -455,11 +455,11 @@ before loading. With double prefix, unload the package."
   "Interface to checking functions from devtools package.
 
 Without prefix, run the unit tests. With single prefix, perform a
-R CMD check. With double prefix, check only the documentation."
+R CMD check. With double prefix, check the reverse dependencies."
   (interactive)
   (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::check_doc('%s')\n"
-                                     "Checking documentation of %s"))
+         (ess-developer-send-process "devtools::revdep_check('%s')\n"
+                                     "Checking reverse dependencies of %s"))
         ((equal current-prefix-arg '(4))
          (ess-developer-send-process "devtools::check('%s')\n"
                                      "Checking %s"))
