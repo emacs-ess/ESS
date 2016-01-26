@@ -442,7 +442,7 @@ Without prefix, load the package. With single prefix, recompile
 before loading. With double prefix, unload the package."
   (interactive)
   (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::unload()\n"
+         (ess-developer-send-process "devtools::unload('%s')\n"
                                      "Unloading %s"))
         ((equal current-prefix-arg '(4))
          (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"
