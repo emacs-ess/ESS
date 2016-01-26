@@ -295,7 +295,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
       (setq com-package-for-object "sub('package:', '', .ess.findFUN('%s'))\n"
             com-packages           ".packages(all.available=TRUE)\n"
             com-package-index      ".ess.help(package='%s', help.type='text')\n"
-            reg-keyword             "^\\([-a-zA-Z0-9._@$]+\\)[^:\n]*$"
+            reg-keyword             "^\\([-a-zA-Z0-9,._@$]+\\)[^:\n]*$"
             reg-start              "^Index:"))
      ((string-match "julia" ess-dialect)
       (setq com-packages           "_ess_list_categories()\n"
@@ -303,7 +303,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
             reg-keyword             "^\\(.*+\\):$*"
             reg-start              ":"
             ))
-     (t (error "Sorry, not implemented for %s " ess-dialect)))
+     (t (error "Not implemented for %s " ess-dialect)))
 
     (when (and com-package-for-object
                ess-help-object
