@@ -60,7 +60,13 @@ This variable is obsolete. Please use the function
 
 (defvar ess-developer-root-file "DESCRIPTION"
   "If this file is present in the directory, it is considered a
-  project root.")
+project root.")
+
+(defvar ess-developer-check-all-dirs t
+  "If non-nil, the whole hierarchy of directories will be checked
+for an R package. This can be slow on remotes. When nil, only
+typical folders of R packages are checked (such as `R', `man',
+`src', etc).")
 
 ;; (defcustom ess-developer-force-attach nil
 ;;   "If non-nill all the packages listed in `ess-developer-packages' should be attached
@@ -324,27 +330,43 @@ not found, return nil."
     ("include"  . 2)
     ("src"      . 1))
   "Alist of directories names and their depth in a package
-hierarchy. This is used by ESS developer functions to figure out
-whether the current file is in a package. If a DESCRIPTION file
-is found at the presumed root directory of the package, the
-current directory is considered to be part of a R package.")
+hierarchy. When `ess-developer-check-all-dirs' is nil, this list
+is used to figure out whether the current file belongs to an R
+package. If the file specified in `ess-developer-root-file'
+(DESCRIPTION by default) is found at the presumed root directory
+of the package, the current directory is considered to be part of
+a R package.")
 
 (defun ess-climb-path (path n)
   "Takes PATH, climbs its hierarchy N times, and returns the new
 path."
-  (let ((path (directory-file-name default-directory)))
-    (dotimes (i n)
-      (setq path (file-name-directory (directory-file-name path))))
-    path))
+  (dotimes (i n)
+    (setq path (file-name-directory (directory-file-name path))))
+  path)
 
 (defun ess-developer--check-current-dir-package-path ()
-  (let* ((path (directory-file-name default-directory))
-         (current-dir (file-name-nondirectory path))
-         (pkg-dir (assoc current-dir ess-developer-package-dirs)))
-    (when pkg-dir
-      (setq path (ess-climb-path path (cdr pkg-dir)))
-      (when (file-exists-p (expand-file-name ess-developer-root-file path))
-        path))))
+  (let* ((path (or (file-name-directory (buffer-file-name))
+                   default-directory))
+         (current-dir (file-name-nondirectory (directory-file-name path)))
+         known-pkg-dir known-path found-path)
+    (while (and (null found-path) path)
+      (cond
+       ;; First check current directory
+       ((file-exists-p (expand-file-name ess-developer-root-file path))
+        (setq found-path default-directory))
+       ;; Check for known directories
+       ((and (setq known-pkg-dir (assoc current-dir ess-developer-package-dirs))
+             (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
+             (file-exists-p (expand-file-name ess-developer-root-file known-path)))
+        (setq found-path known-path))
+       ;; Check for next directory if we are allowed to
+       (ess-developer-check-all-dirs
+        (setq path (ess-climb-path path 1))
+        (setq current-dir (file-name-nondirectory (directory-file-name path))))
+       ;; Break out, no package was found
+       (t
+        (setq path nil))))
+    found-path))
 
 (defun ess-developer--get-package-name (&optional path force)
   "Find package name in path. Parses DESCRIPTION file in PATH (R
