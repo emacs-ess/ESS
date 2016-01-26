@@ -2767,7 +2767,7 @@ to the command if BUFF is not given.)"
   "Issue an exiting command to the inferior process, additionally
 also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive)
-  (if (member ess-dialect "R")
+  (if (equal ess-dialect "R")
       (ess-quit-r)
     ;; else:  non-R
     (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
