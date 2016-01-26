@@ -72,3 +72,18 @@ function_call()
 
 function_call()
 ¶
+
+
+### 2 ----------------------------------------------------------------
+
+    ¶if (test1)
+        stuff1
+    if (test2)
+        stuff2
+
+##! (ess-jump-expression)
+
+    if (test1)
+        stuff1¶
+    if (test2)
+        stuff2

@@ -620,8 +620,8 @@ object <-
   fun_call(parameter =
              if (condition)
                stuff1
-    else
-      stuff2
+             else
+               stuff2
   )
 }
 
@@ -795,6 +795,21 @@ else {
   stuff2
 }
 
+## 28
+if (condition)
+  object <-
+    stuff
+
+## 29
+if (condition1)
+  object <-
+    if (condition2)
+      stuff1
+else
+  stuff2
+else
+  stuff3
+
 
 ### Continuation lines
 
@@ -956,7 +971,7 @@ object %>%
   {
     stuff1
   } %>% object[index] %>% {stuff2} %>% fun_call1() +
-  if (condition1) stuff3 else stuff4 +
+  {if (condition1) stuff3 else stuff4} +
   if (condition2) {
     stuff5
   } else if (condition3) {

@@ -802,7 +802,7 @@ expression."
                         (looking-at "else\\b")))))))
           ((looking-at "else\\b")))))
 
-(defun ess-climb-if-else-body ()
+(defun ess-climb-if-else-body (&optional from-else)
   (cond
    ;; Climb braced body
    ((ess-save-excursion-when-nil
@@ -811,11 +811,12 @@ expression."
              (prog1 t (forward-char -1)))
            (ess-up-list -1))))
    ;; Climb unbraced body
-   ((ess-save-excursion-when-nil
-      (ess-skip-blanks-backward t)
-      (prog1 (ess-climb-expression 'ignore-ifelse)
-        (or (ess-climb-continuations nil 'ignore-ifelse)
-            (ess-climb-block-prefix nil 'ignore-ifelse)))))))
+   ((when from-else
+      (ess-save-excursion-when-nil
+        (ess-skip-blanks-backward t)
+        (prog1 (ess-climb-expression 'ignore-ifelse)
+          (or (ess-climb-continuations nil 'ignore-ifelse)
+              (ess-climb-block-prefix nil 'ignore-ifelse))))))))
 
 (defun ess-climb-if-else (&optional to-start)
   "Climb horizontal as well as vertical if-else chains, with or
@@ -824,7 +825,7 @@ without curly braces."
   (unless (looking-at "if\\b")
     (ess-save-excursion-when-nil
       (let ((from-else (looking-at "else\\b")))
-        (when (and (ess-climb-if-else-body)
+        (when (and (ess-climb-if-else-body from-else)
                    (ess-climb-if-else-call to-start))
           ;; If we start from a final else and climb to another else, we
           ;; are in the wrong chain of if-else. In that case,
@@ -832,6 +833,7 @@ without curly braces."
           ;; again to step in the outer chain.
           (when (and from-else (ess-looking-at-final-else))
             (ess-climb-if-else 'to-start)
+            (ess-climb-continuations)
             (ess-climb-block-prefix nil 'ignore-ifelse)
             (ess-climb-if-else-call nil))
           (ess-maybe-climb-broken-else)
@@ -862,18 +864,22 @@ without curly braces."
   (re-search-backward "}[ \t]*" (line-beginning-position) t))
 
 (defun ess-jump-if-else ()
-  (ess-while (ess-save-excursion-when-nil
-               (ess-skip-blanks-forward t)
-               (cond
-                ((ess-jump-if))
-                ((looking-at "else")
-                 (ess-forward-sexp)
-                 (or (ess-jump-if)
-                     (progn
-                       (ess-skip-blanks-forward t)
-                       (ess-jump-expression))))
-                (t
-                 nil)))))
+  (let (from)
+    (ess-while (ess-save-excursion-when-nil
+                 (ess-skip-blanks-forward t)
+                 (cond
+                  ((and (not (eq from 'if))
+                        (ess-jump-if)
+                        (setq from 'if)))
+                  ((looking-at "else")
+                   (ess-forward-sexp)
+                   (or (ess-jump-if)
+                       (progn
+                         (ess-skip-blanks-forward t)
+                         (ess-jump-expression)))
+                   (setq from 'else))
+                  (t
+                   nil))))))
 
 (defun ess-jump-if ()
   (ess-save-excursion-when-nil
