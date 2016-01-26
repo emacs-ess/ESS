@@ -464,14 +464,19 @@ Without prefix, load the package. With single prefix, recompile
 before loading. With double prefix, unload the package."
   (interactive)
   (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::unload('%s')\n"
-                                     "Unloading %s"))
+         (ess-developer-unload-package))
         ((equal current-prefix-arg '(4))
          (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"
                                      "Recompiling %s"))
         (t
          (ess-developer-send-process "devtools::load_all('%s')\n"
                                      "Loading %s"))))
+
+(defun ess-developer-unload-package ()
+  "Interface to unload() function from devtools package."
+  (interactive)
+  (ess-developer-send-process "devtools::unload('%s')\n"
+                              "Unloading %s"))
 
 (defun ess-developer-check-package ()
   "Interface to checking functions from devtools package.
