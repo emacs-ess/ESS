@@ -112,6 +112,24 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+(defvar r-devtools-map
+  (let (r-devtools-map)
+    (define-prefix-command 'r-devtools-map)
+    (define-key r-devtools-map "\C-c" 'ess-developer-check-package)
+    (define-key r-devtools-map "\C-d" 'ess-developer-document-package)
+    (define-key r-devtools-map "\C-i" 'ess-developer-install-package)
+    (define-key r-devtools-map "\C-l" 'ess-developer-load-package)
+    (define-key r-devtools-map "\C-u" 'ess-developer-unload-package)
+    r-devtools-map))
+
+;; Hacky hooks until we modernise ESS with modular modes derived from
+;; ess-mode
+(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") r-devtools-map)))
+(add-hook 'inferior-ess-mode-hook
+          (lambda ()
+            (when (string-match "^R" ess-dialect)
+              (local-set-key (kbd "C-c C-w") r-devtools-map))))
+
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
   '("Roxygen"
