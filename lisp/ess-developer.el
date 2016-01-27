@@ -150,15 +150,21 @@ See also `ess-developer-inject-to-package'."
 
 (add-hook 'R-mode-hook 'ess-developer-activate-injection-in-package)
 
-(defun ess-developer-send-process (command &optional msg)
+(defun ess-developer-send-process (command &optional msg alt)
   (ess-force-buffer-current)
   (let* ((pkg-info (or (ess-developer-current-package-info)
                        (ess-developer-select-package)))
          (name (car pkg-info))
-         (path (cdr pkg-info)))
+         (path (concat "'" (cdr pkg-info) "'"))
+         (alt (cond ((stringp alt) alt)
+                    (alt "")))
+         (args (when alt
+                 (read-string "Arguments: " alt)))
+         (args (unless (string= "" args)
+                 (concat ", " args))))
     (message msg name)
     (ess-developer--update-process-local-pkg pkg-info)
-    (ess-eval-linewise (format command path))))
+    (ess-eval-linewise (format command (concat path args)))))
 
 
 ;;; Package Detection
@@ -361,54 +367,89 @@ propertize output text.
 
 ;;; Devtools Integration
 
-(defun ess-developer-load-package ()
-  "Interface to load_all() function from devtools package.
+(defun ess-developer-load-package (&optional alt)
+  "Interface to load_all() function from devtools package."
+  (interactive "P")
+  (ess-developer-send-process "devtools::load_all(%s)\n"
+                              "Loading %s"
+                              (when alt "recompile = TRUE")))
 
-Without prefix, load the package. With single prefix, recompile
-before loading. With double prefix, unload the package."
+(defun ess-developer-check-package-alt ()
+  "Interface for `devtools::load()'. Prompts for additional
+arguments."
   (interactive)
-  (cond ((equal current-prefix-arg '(16))
-         (ess-developer-unload-package))
-        ((equal current-prefix-arg '(4))
-         (ess-developer-send-process "devtools::load_all('%s', recompile = TRUE)\n"
-                                     "Recompiling %s"))
-        (t
-         (ess-developer-send-process "devtools::load_all('%s')\n"
-                                     "Loading %s"))))
+  (ess-developer-load-package 'alt))
 
 (defun ess-developer-unload-package ()
-  "Interface to unload() function from devtools package."
+  "Interface to `devtools::unload()'."
   (interactive)
-  (ess-developer-send-process "devtools::unload('%s')\n"
+  (ess-developer-send-process "devtools::unload(%s)\n"
                               "Unloading %s"))
 
-(defun ess-developer-check-package ()
-  "Interface to checking functions from devtools package.
+(defun ess-developer-check-package (&optional alt)
+  "Interface for `devtools::check()'."
+  (interactive "P")
+  (ess-developer-send-process "devtools::check(%s)\n"
+                              "Testing %s"
+                              (when alt "vignettes = FALSE")))
 
-Without prefix, run the unit tests. With single prefix, perform a
-R CMD check. With double prefix, check the reverse dependencies."
+(defun ess-developer-check-package-alt ()
+  "Interface for `devtools::check()'. Prompts for additional
+arguments."
   (interactive)
-  (cond ((equal current-prefix-arg '(16))
-         (ess-developer-send-process "devtools::revdep_check('%s')\n"
-                                     "Checking reverse dependencies of %s"))
-        ((equal current-prefix-arg '(4))
-         (ess-developer-send-process "devtools::check('%s')\n"
-                                     "Checking %s"))
-        (t
-         (ess-developer-send-process "devtools::test('%s')\n"
-                                     "Testing %s"))))
+  (ess-developer-check-package 'alt))
 
-(defun ess-developer-document-package ()
-  "Interface to document() from devtools package."
-  (interactive)
-  (ess-developer-send-process "devtools::document('%s')\n"
-                              "Documenting %s"))
+(defun ess-developer-test-package (&optional alt)
+  "Interface for `devtools::test()'."
+  (interactive "P")
+  (ess-developer-send-process "devtools::test(%s)\n"
+                              "Testing %s"
+                              alt))
 
-(defun ess-developer-install-package ()
-  "Interface to document() from devtools package."
+(defun ess-developer-test-package-alt ()
+  "Interface for `devtools::test()'. Prompts for additional
+arguments."
   (interactive)
-  (ess-developer-send-process "devtools::install('%s')\n"
-                              "Installing %s"))
+  (ess-developer-test-package 'alt))
+
+(defun ess-developer-revdep-check-package (&optional alt)
+  "Interface for `devtools::revdep_check()'."
+  (interactive "P")
+  (ess-developer-send-process "devtools::revdep_check(%s)\n"
+                              "Checking reverse dependencies of %s"
+                              alt))
+
+(defun ess-developer-revdep-check-package-alt ()
+  "Interface for `devtools::revdep_check()'. Prompts for
+additional arguments."
+  (interactive)
+  (ess-developer-revdep-check-package 'alt))
+
+(defun ess-developer-document-package (&optional alt)
+  "Interface for `devtools::document()'."
+  (interactive "P")
+  (ess-developer-send-process "devtools::document(%s)\n"
+                              "Documenting %s"
+                              alt))
+
+(defun ess-developer-document-package-alt ()
+  "Interface for `devtools::document()'. Prompts for
+additional arguments."
+  (interactive)
+  (ess-developer-document-package 'alt))
+
+(defun ess-developer-install-package (&optional alt)
+  "Interface to `devtools::install()'."
+  (interactive "P")
+  (ess-developer-send-process "devtools::install(%s)\n"
+                              "Installing %s"
+                              alt))
+
+(defun ess-developer-install-package-alt ()
+  "Interface for `devtools::install()'. Prompts for
+additional arguments."
+  (interactive)
+  (ess-developer-install-package 'alt))
 
 
 ;;; Deprecated variables and functions
