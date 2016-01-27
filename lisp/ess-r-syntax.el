@@ -621,25 +621,30 @@ expression."
   (ess-save-excursion-when-nil
     (let ((orig-pos (point)))
       (while (forward-comment -1))
-      (when (and (not (memq (char-before) '(?, ?\;)))
-                 (ess-backward-sexp))
-        ;; When there is only empty space or commented code left to
-        ;; climb (e.g. roxygen documentation), there is no previous
-        ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
-        ;; empty space without failing. So we need to skip it.
-        (while (forward-comment 1))
-        ;; Handle %op% operators
-        (when (and (eq (char-before) ?%)
-                   (looking-at (concat ess-R-symbol-pattern "+%")))
-          (ess-backward-sexp))
-        (when (and (< (point) orig-pos)
-                   (ess-forward-sexp)
-                   (ess-looking-at-operator-p))
-          (prog1 t
-            (when (and (equal (char-after) ?=)
-                       (equal (char-before) ?:))
-              (forward-char -1)
-              (ess-skip-blanks-backward))))))))
+      (cond ((memq (char-before) '(?, ?\;))
+             nil)
+            ((eq (char-before) ?%)
+             (forward-char -1)
+             (skip-chars-backward "^%")
+             (forward-char -1)
+             (ess-skip-blanks-backward)
+             t)
+            ;; Fixme: Don't use SEXP motion, simply check for ops
+            ((ess-backward-sexp)
+             ;; When there is only empty space or commented code left to
+             ;; climb (e.g. roxygen documentation), there is no previous
+             ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
+             ;; empty space without failing. So we need to skip it.
+             (while (forward-comment 1))
+             ;; Handle %op% operators
+             (when (and (< (point) orig-pos)
+                        (ess-forward-sexp)
+                        (ess-looking-at-operator-p))
+               (prog1 t
+                 (when (and (equal (char-after) ?=)
+                            (equal (char-before) ?:))
+                   (forward-char -1)
+                   (ess-skip-blanks-backward)))))))))
 
 ;; Currently doesn't check that the operator is not binary
 (defun ess-climb-unary-operator ()
