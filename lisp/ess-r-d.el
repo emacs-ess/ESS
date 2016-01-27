@@ -446,6 +446,23 @@ will be prompted to enter arguments interactively."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))))
 
+(defun r-reload-inferior (&optional start-args)
+  "Reload R and the currently activated developer package, if
+any."
+  (interactive)
+  (ess-force-buffer-current)
+  (let ((pkg-info ess-developer-local-package)
+        (r-proc (ess-get-process)))
+    (with-ess-process-buffer nil
+      (ess-quit-r 'no-save)
+      (while (memq (process-status r-proc) '(run busy))
+        (accept-process-output r-proc 0.002))
+      (kill-buffer)
+      (R start-args)
+      (when pkg-info
+        (setq-local ess-developer-local-package pkg-info)
+        (ess-developer-load-package)))))
+
 (defun R-initialize-on-start (&optional proc string)
   "This function is run after the first R prompt.
 Executed in process buffer."
