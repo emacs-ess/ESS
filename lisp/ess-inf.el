@@ -1811,8 +1811,8 @@ dialect specific way to include source references"
 
   (let* ((proc (get-process ess-local-process-name))
          (visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
-         (dev-p (or ess-developer
-                    (ess-get-process-variable 'ess-developer)))
+         (dev-p (or ess-developer-code-injection
+                    (ess-get-process-variable 'ess-developer-code-injection)))
          (tb-p  (process-get proc 'tracebug)))
     (cond
      (dev-p     (ess-developer-send-region proc start end visibly message tb-p))
@@ -1862,8 +1862,8 @@ nil."
                  (end (nth 1 beg-end))
                  (proc (get-process ess-local-process-name))
                  (tb-p  (process-get proc 'tracebug))
-                 (dev-p (or ess-developer
-                            (ess-get-process-variable 'ess-developer)))
+                 (dev-p (or ess-developer-code-injection
+                            (ess-get-process-variable 'ess-developer-code-injection)))
                  (name (progn (goto-char beg)
                               (forward-word) ;;func names starting with . are not recognized??
                               (ess-read-object-name-default)))
@@ -2116,8 +2116,8 @@ for `ess-eval-region'."
                  (expand-file-name
                   (read-file-name "Load source file: " nil nil t)))))
   (ess-force-buffer-current "Process to load into: ")
-  (if (or ess-developer
-          (ess-get-process-variable  'ess-developer))
+  (if (or ess-developer-code-injection
+          (ess-get-process-variable  'ess-developer-code-injection))
       (ess-developer-source-current-file filename)
     (let ((filename (if (and (fboundp 'tramp-tramp-file-p)
                              (tramp-tramp-file-p filename))
