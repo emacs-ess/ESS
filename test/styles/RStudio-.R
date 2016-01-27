@@ -287,6 +287,10 @@ fun_call(argument1 %>%
 fun_call(argument,
   )
 
+## 20
+fun_call(parameter1 = ,
+  parameter2 = argument)
+
 
 ### Blocks
 

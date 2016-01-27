@@ -620,15 +620,14 @@ expression."
 (defun ess-climb-operator ()
   (ess-save-excursion-when-nil
     (let ((orig-pos (point)))
-      (when (ess-backward-sexp)
+      (while (forward-comment -1))
+      (when (and (not (memq (char-before) '(?, ?\;)))
+                 (ess-backward-sexp))
         ;; When there is only empty space or commented code left to
         ;; climb (e.g. roxygen documentation), there is no previous
         ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
         ;; empty space without failing. So we need to skip it.
-        (while (and (looking-at "[[:space:]]*\\(#\\|$\\)")
-                    (/= (point) (point-max)))
-          (forward-line)
-          (ess-back-to-indentation))
+        (while (forward-comment 1))
         ;; Handle %op% operators
         (when (and (eq (char-before) ?%)
                    (looking-at (concat ess-R-symbol-pattern "+%")))

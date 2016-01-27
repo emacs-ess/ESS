@@ -1520,7 +1520,7 @@ otherwise nil."
     (let* ((start-line (line-number-at-pos))
            (prev-pos 0)
            (cascade (eq (ess-offset-type 'continued) 'cascade))
-           (climbed (progn (ess-climb-continuations cascade)))
+           (climbed (ess-climb-continuations cascade))
            max-col)
       (when climbed
         (cond
