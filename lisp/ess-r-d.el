@@ -115,7 +115,15 @@
     (define-key r-devtools-map "\C-d" 'ess-developer-document-package)
     (define-key r-devtools-map "\C-i" 'ess-developer-install-package)
     (define-key r-devtools-map "\C-l" 'ess-developer-load-package)
+    (define-key r-devtools-map "\C-r" 'ess-developer-revdep-check-package)
+    (define-key r-devtools-map "\C-t" 'ess-developer-test-package)
     (define-key r-devtools-map "\C-u" 'ess-developer-unload-package)
+    (define-key r-devtools-map "c" 'ess-developer-check-package-alt)
+    (define-key r-devtools-map "d" 'ess-developer-document-package-alt)
+    (define-key r-devtools-map "i" 'ess-developer-install-package-alt)
+    (define-key r-devtools-map "l" 'ess-developer-load-package-alt)
+    (define-key r-devtools-map "r" 'ess-developer-revdep-check-package-alt)
+    (define-key r-devtools-map "t" 'ess-developer-test-package-alt)
     r-devtools-map))
 
 ;; Hacky hooks until we modernise ESS with modular modes derived from
