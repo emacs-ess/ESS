@@ -638,7 +638,8 @@ expression."
           (prog1 t
             (when (and (equal (char-after) ?=)
                        (equal (char-before) ?:))
-              (forward-char -1))))))))
+              (forward-char -1)
+              (ess-skip-blanks-backward))))))))
 
 ;; Currently doesn't check that the operator is not binary
 (defun ess-climb-unary-operator ()

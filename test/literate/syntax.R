@@ -76,6 +76,15 @@ stuff1 =; ¶stuff2
 stuff1 =; ¶stuff2
 
 
+### 1c ---------------------------------------------------------------
+
+stuff1 := ¶stuff2
+
+##! (ess-climb-operator)
+
+stuff1¶ := stuff2
+
+
 
 ##### Bare blocks
 
