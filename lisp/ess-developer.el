@@ -87,6 +87,7 @@ whether the current file is part of a package, or the value of
       (ess-developer--process-package-info)))
 
 (defun ess-developer--select-package-name (&optional attached-only)
+  (ess-force-buffer-current)
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
                        (if attached-only "FALSE" "TRUE"))))
