@@ -110,10 +110,9 @@ whether the current file is part of a package, or the value of
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
 (defun ess-developer-select-package (&optional permanently attached-only no-path)
-  "Select a package for ESS developer functions. If ATTACHED-ONLY
-is non-nil, only prompt for attached packages.
-
-See also `ess-developer-select-package-permanently'."
+  "Select a package for ESS developer functions. The package
+metadata will be written in the file-local variables section. If
+ATTACHED-ONLY is non-nil, only prompt for attached packages."
   (interactive)
   (let* ((pkg-name (ess-developer--select-package-name attached-only))
          (pkg-path (unless no-path
@@ -126,18 +125,9 @@ See also `ess-developer-select-package-permanently'."
       (error "Not a valid package. No '%s' found in `%s'." ess-developer-root-file pkg-path))
     (message (concat (format "%s selected" pkg-name)
                      (when permanently " permanently")))
-    (setq-local ess-developer-local-package pkg-info)))
-
-(defun ess-developer-select-package-permanently (&optional attached-only)
-  "Select a package for ESS developer functions and add it
-permanently to the file-local variables section. If ATTACHED-ONLY
-is non-nil, only prompt for attached packages.
-
-See also `ess-developer-select-package'."
-  (interactive)
-  (let ((pkg-info (ess-developer-select-package t attached-only)))
     (save-excursion
-      (add-file-local-variable 'ess-developer-local-package pkg-info))))
+      (add-file-local-variable 'ess-developer-local-package pkg-info))
+    (setq-local ess-developer-local-package pkg-info)))
 
 (defun ess-developer-inject-to-package (&optional attached-only)
   "Select a package for ESS developer functions and add it
