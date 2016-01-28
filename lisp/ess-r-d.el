@@ -109,31 +109,31 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
-(defvar r-devtools-map
-  (let (r-devtools-map)
-    (define-prefix-command 'r-devtools-map)
-    (define-key r-devtools-map "\C-c" 'r-devtools-check-package)
-    (define-key r-devtools-map "\C-d" 'r-devtools-document-package)
-    (define-key r-devtools-map "\C-i" 'r-devtools-install-package)
-    (define-key r-devtools-map "\C-l" 'r-devtools-load-package)
-    (define-key r-devtools-map "\C-r" 'r-devtools-revdep-check-package)
-    (define-key r-devtools-map "\C-t" 'r-devtools-test-package)
-    (define-key r-devtools-map "\C-u" 'r-devtools-unload-package)
-    (define-key r-devtools-map "c" 'r-devtools-check-package-alt)
-    (define-key r-devtools-map "d" 'r-devtools-document-package-alt)
-    (define-key r-devtools-map "i" 'r-devtools-install-package-alt)
-    (define-key r-devtools-map "l" 'r-devtools-load-package-alt)
-    (define-key r-devtools-map "r" 'r-devtools-revdep-check-package-alt)
-    (define-key r-devtools-map "t" 'r-devtools-test-package-alt)
-    r-devtools-map))
+(defvar ess-r-devtools-map
+  (let (ess-r-devtools-map)
+    (define-prefix-command 'ess-r-devtools-map)
+    (define-key ess-r-devtools-map "\C-c" 'ess-r-devtools-check-package)
+    (define-key ess-r-devtools-map "\C-d" 'ess-r-devtools-document-package)
+    (define-key ess-r-devtools-map "\C-i" 'ess-r-devtools-install-package)
+    (define-key ess-r-devtools-map "\C-l" 'ess-r-devtools-load-package)
+    (define-key ess-r-devtools-map "\C-r" 'ess-r-devtools-revdep-check-package)
+    (define-key ess-r-devtools-map "\C-t" 'ess-r-devtools-test-package)
+    (define-key ess-r-devtools-map "\C-u" 'ess-r-devtools-unload-package)
+    (define-key ess-r-devtools-map "c" 'ess-r-devtools-check-package-alt)
+    (define-key ess-r-devtools-map "d" 'ess-r-devtools-document-package-alt)
+    (define-key ess-r-devtools-map "i" 'ess-r-devtools-install-package-alt)
+    (define-key ess-r-devtools-map "l" 'ess-r-devtools-load-package-alt)
+    (define-key ess-r-devtools-map "r" 'ess-r-devtools-revdep-check-package-alt)
+    (define-key ess-r-devtools-map "t" 'ess-r-devtools-test-package-alt)
+    ess-r-devtools-map))
 
 ;; Hacky hooks until we modernise ESS with modular modes derived from
 ;; ess-mode
-(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") r-devtools-map)))
+(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") ess-r-devtools-map)))
 (add-hook 'inferior-ess-mode-hook
           (lambda ()
             (when (string-match "^R" ess-dialect)
-              (local-set-key (kbd "C-c C-w") r-devtools-map))))
+              (local-set-key (kbd "C-c C-w") ess-r-devtools-map))))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -446,12 +446,12 @@ will be prompted to enter arguments interactively."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))))
 
-(defcustom r-reload-inferior-hook nil
+(defcustom ess-r-reload-inferior-hook nil
   "Hook run when reloading the R inferior buffer."
   :type 'hook
   :group 'ess-R)
 
-(defun r-reload-inferior (&optional start-args)
+(defun ess-r-reload-inferior (&optional start-args)
   "Reload R and the currently activated developer package, if
 any."
   (interactive)
@@ -467,7 +467,7 @@ any."
       (when pkg-info
         (setq-local ess-developer-local-package pkg-info)
         (ess-developer-load-package))
-      (run-hooks 'r-reload-inferior-hook))))
+      (run-hooks 'ess-r-reload-inferior-hook))))
 
 (defun R-initialize-on-start (&optional proc string)
   "This function is run after the first R prompt.
