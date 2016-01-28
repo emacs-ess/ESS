@@ -446,6 +446,11 @@ will be prompted to enter arguments interactively."
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))))
 
+(defcustom r-reload-inferior-hook nil
+  "Hook run when reloading the R inferior buffer."
+  :type 'hook
+  :group 'ess-R)
+
 (defun r-reload-inferior (&optional start-args)
   "Reload R and the currently activated developer package, if
 any."
@@ -461,7 +466,8 @@ any."
       (R start-args)
       (when pkg-info
         (setq-local ess-developer-local-package pkg-info)
-        (ess-developer-load-package)))))
+        (ess-developer-load-package))
+      (run-hooks 'r-reload-inferior-hook))))
 
 (defun R-initialize-on-start (&optional proc string)
   "This function is run after the first R prompt.
