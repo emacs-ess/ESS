@@ -140,14 +140,17 @@ See also `ess-developer-inject-to-current-env'."
     (setq-local ess-developer-code-injection pkg-name)
     (message (format "Injecting code in %s" pkg-name))))
 
-(defun ess-developer-inject-to-current-env ()
+(defun ess-developer-activate-code-injection (&optional attached-only)
   "Select current environment for code injection. Useful when
 debugging a function.
 
 See also `ess-developer-inject-to-package'."
   (interactive)
-  (setq-local ess-developer-code-injection "*current*")
-  (message "Injecting code in *current*"))
+  (cond ((string= ess-developer-code-injection "*current*")
+         (ess-developer-inject-to-package attached-only))
+        (t
+         (setq-local ess-developer-code-injection "*current*")
+         (message "Injecting code in *current*"))))
 
 (defun ess-developer-activate-injection-in-package ()
   (when ess-developer-code-injection-in-packages
