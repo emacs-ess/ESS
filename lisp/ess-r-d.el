@@ -57,13 +57,10 @@
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
-    (define-key ess-dev-map "\C-t" 'ess-developer-select-package)
-    (define-key ess-dev-map "t" 'ess-developer-select-package-permanently)
-    (define-key ess-dev-map "\C-j" 'ess-developer-inject-to-current-env)
-    (define-key ess-dev-map "j" 'ess-developer-inject-to-package)
+    (define-key ess-dev-map "\C-a" 'ess-developer-select-package)
+    (define-key ess-dev-map "\C-c" 'ess-developer-inject-to-current-env)
+    (define-key ess-dev-map "c" 'ess-developer-inject-to-package)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
-    (define-key ess-dev-map "\C-a" 'ess-developer-add-package)
-    (define-key ess-dev-map "a" 'ess-developer-add-package)
     (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
     (define-key ess-dev-map "l" 'ess-developer-load-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
@@ -129,11 +126,11 @@
 
 ;; Hacky hooks until we modernise ESS with modular modes derived from
 ;; ess-mode
-(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") ess-r-devtools-map)))
+(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-t C-t") ess-r-devtools-map)))
 (add-hook 'inferior-ess-mode-hook
           (lambda ()
             (when (string-match "^R" ess-dialect)
-              (local-set-key (kbd "C-c C-w") ess-r-devtools-map))))
+              (local-set-key (kbd "C-c C-t C-t") ess-r-devtools-map))))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -183,8 +180,7 @@
     ["Active?"          ess-toggle-developer
      :style toggle
      :selected ess-developer]
-    ["Add package" ess-developer-add-package t]
-    ["Remove package" ess-developer-remove-package t]))
+    ["Select package" ess-developer-select-package t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
