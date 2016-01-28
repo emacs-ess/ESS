@@ -62,16 +62,34 @@ for an R package. This can be slow on remotes. When nil, only
 typical folders of R packages are checked (such as `R', `man',
 `src', etc).")
 
-(defcustom ess-developer-load-on-add-commands '(("library" . "library(%n)")
-                                                ("load_all" . "devtools::load_all('%d')"))
-  "Alist of available load commands proposed by `ess-developer-add-package'.
+(defcustom ess-developer-load-command "library('%n')"
+  "Loading command for `ess-developer-add-package'. Can be a
+string containing a R command with:
 
-  %n is replaced with package name,
-  %d is replaced with package directory.
+  %n to be replaced by the package name,
+  %d to be replaced by the package directory.
+
+Alternatively, can be a quoted Emacs function name such as
+`r-devtools-load-package'.
 
 See also `ess-developer-load-package' for related functionality."
   :group 'ess-developer
   :type 'alist)
+
+(defun ess-developer-load-package ()
+  (let* ((pkg-info (ess-developer-current-package-info))
+         (cmd (if (stringp ess-developer-load-command)
+                  (replace-regexp-in-string "%n" (car pkg-info)
+                   (replace-regexp-in-string "%d" (cdr pkg-info)
+                    ess-developer-load-command))
+                ess-developer-load-command)))
+    (cond ((stringp cmd)
+           (ess-eval-linewise (concat cmd "\n")))
+          ((functionp cmd)
+           (funcall cmd)))))
+
+
+;; deprecate ess-developer-load-on-add-commands
 
 
 ;;; Package UI
