@@ -70,7 +70,7 @@ string containing a R command with:
   %d to be replaced by the package directory.
 
 Alternatively, can be a quoted Emacs function name such as
-`r-devtools-load-package'.
+`ess-r-devtools-load-package'.
 
 See also `ess-developer-load-package' for related functionality."
   :group 'ess-developer
@@ -176,7 +176,8 @@ See also `ess-developer-inject-to-package'."
                     (alt "")))
          (args (when alt
                  (read-string "Arguments: " alt)))
-         (args (unless (string= "" args)
+         (args (unless (or (null args)
+                           (string= "" args))
                  (concat ", " args))))
     (message msg name)
     (ess-developer--update-process-local-pkg pkg-info)
@@ -383,89 +384,89 @@ propertize output text.
 
 ;;; Devtools Integration
 
-(defun r-devtools-load-package (&optional alt)
+(defun ess-r-devtools-load-package (&optional alt)
   "Interface to load_all() function from devtools package."
   (interactive "P")
   (ess-developer-send-process "devtools::load_all(%s)\n"
                               "Loading %s"
                               (when alt "recompile = TRUE")))
 
-(defun r-devtools-check-package-alt ()
+(defun ess-r-devtools-check-package-alt ()
   "Interface for `devtools::load()'. Prompts for additional
 arguments."
   (interactive)
-  (r-devtools-load-package 'alt))
+  (ess-r-devtools-load-package 'alt))
 
-(defun r-devtools-unload-package ()
+(defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
   (interactive)
   (ess-developer-send-process "devtools::unload(%s)\n"
                               "Unloading %s"))
 
-(defun r-devtools-check-package (&optional alt)
+(defun ess-r-devtools-check-package (&optional alt)
   "Interface for `devtools::check()'."
   (interactive "P")
   (ess-developer-send-process "devtools::check(%s)\n"
                               "Testing %s"
                               (when alt "vignettes = FALSE")))
 
-(defun r-devtools-check-package-alt ()
+(defun ess-r-devtools-check-package-alt ()
   "Interface for `devtools::check()'. Prompts for additional
 arguments."
   (interactive)
-  (r-devtools-check-package 'alt))
+  (ess-r-devtools-check-package 'alt))
 
-(defun r-devtools-test-package (&optional alt)
+(defun ess-r-devtools-test-package (&optional alt)
   "Interface for `devtools::test()'."
   (interactive "P")
   (ess-developer-send-process "devtools::test(%s)\n"
                               "Testing %s"
                               alt))
 
-(defun r-devtools-test-package-alt ()
+(defun ess-r-devtools-test-package-alt ()
   "Interface for `devtools::test()'. Prompts for additional
 arguments."
   (interactive)
-  (r-devtools-test-package 'alt))
+  (ess-r-devtools-test-package 'alt))
 
-(defun r-devtools-revdep-check-package (&optional alt)
+(defun ess-r-devtools-revdep-check-package (&optional alt)
   "Interface for `devtools::revdep_check()'."
   (interactive "P")
   (ess-developer-send-process "devtools::revdep_check(%s)\n"
                               "Checking reverse dependencies of %s"
                               alt))
 
-(defun r-devtools-revdep-check-package-alt ()
+(defun ess-r-devtools-revdep-check-package-alt ()
   "Interface for `devtools::revdep_check()'. Prompts for
 additional arguments."
   (interactive)
-  (r-devtools-revdep-check-package 'alt))
+  (ess-r-devtools-revdep-check-package 'alt))
 
-(defun r-devtools-document-package (&optional alt)
+(defun ess-r-devtools-document-package (&optional alt)
   "Interface for `devtools::document()'."
   (interactive "P")
   (ess-developer-send-process "devtools::document(%s)\n"
                               "Documenting %s"
                               alt))
 
-(defun r-devtools-document-package-alt ()
+(defun ess-r-devtools-document-package-alt ()
   "Interface for `devtools::document()'. Prompts for
 additional arguments."
   (interactive)
-  (r-devtools-document-package 'alt))
+  (ess-r-devtools-document-package 'alt))
 
-(defun r-devtools-install-package (&optional alt)
+(defun ess-r-devtools-install-package (&optional alt)
   "Interface to `devtools::install()'."
   (interactive "P")
   (ess-developer-send-process "devtools::install(%s)\n"
                               "Installing %s"
                               alt))
 
-(defun r-devtools-install-package-alt ()
+(defun ess-r-devtools-install-package-alt ()
   "Interface for `devtools::install()'. Prompts for
 additional arguments."
   (interactive)
-  (r-devtools-install-package 'alt))
+  (ess-r-devtools-install-package 'alt))
 
 
 ;;; Deprecated variables and functions
