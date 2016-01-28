@@ -89,9 +89,6 @@ See also `ess-developer-load-package' for related functionality."
            (funcall cmd)))))
 
 
-;; deprecate ess-developer-load-on-add-commands
-
-
 ;;; Package UI
 
 (defun ess-developer-current-package-info ()
@@ -481,7 +478,7 @@ use `ess-developer-select-package' and
 (defalias 'ess-toggle-developer 'ess-developer)
 
 (make-obsolete-variable 'ess-developer "This variable is
-deprecated. `ess-developer-select-package' and
+deprecated. Please use `ess-developer-select-package' and
 `ess-developer-inject-to-package' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-activate-in-package
@@ -489,15 +486,16 @@ deprecated. `ess-developer-select-package' and
                         "16.03")
 
 (make-obsolete-variable 'ess-developer-packages "This variable
-is deprecated. `ess-developer-select-package' and
+is deprecated. Please use `ess-developer-select-package' and
 `ess-developer-inject-to-package' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-enter-hook nil "16.03")
 (make-obsolete-variable 'ess-developer-exit-hook nil "16.03")
 
-(make-obsolete-variable 'ess-developer-load-package-command "\
-This variable is deprecated. Please use the function
-`ess-developer-send-process' instead." "16.03")
+(make-obsolete-variable 'ess-developer-load-on-add-commands "This
+variable is deprecated. Please use `ess-developer-select-package'
+and `ess-developer-inject-to-package' instead." "16.03")
+
 
 (provide 'ess-developer)
 ;;; ess-developer.el ends here
