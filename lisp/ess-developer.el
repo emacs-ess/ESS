@@ -375,13 +375,13 @@ propertize output text.
 ;;; Devtools Integration
 
 (defun ess-r-devtools-load-package (&optional alt)
-  "Interface to load_all() function from devtools package."
+  "Interface for `devtools::load_all()'."
   (interactive "P")
   (ess-developer-send-process "devtools::load_all(%s)\n"
                               "Loading %s"
                               (when alt "recompile = TRUE")))
 
-(defun ess-r-devtools-check-package-alt ()
+(defun ess-r-devtools-load-package-alt ()
   "Interface for `devtools::load()'. Prompts for additional
 arguments."
   (interactive)
