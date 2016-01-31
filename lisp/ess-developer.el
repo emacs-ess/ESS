@@ -30,37 +30,17 @@
 
 ;;; Code:
 
+
 (defgroup ess-developer nil
   "ESS: developer."
   :group 'ess
   :prefix "ess-developer-")
-
-(defvar ess-developer-local-package nil
-  "Cons cell of two strings. The first contains the package name
-active in the current buffer, and the second is the path to that
-package source directory.")
-(make-variable-buffer-local 'ess-developer-local-package)
-
-(defvar ess-developer-code-injection nil
-  "String with the package name where source code should be
-injected.")
-(make-variable-buffer-local 'ess-developer-code-injection)
 
 (defcustom ess-developer-code-injection-in-packages nil
   "If non-nil, `ess-developer-code-injection' is automatically
 set within R packages."
   :group 'ess-developer
   :type 'boolean)
-
-(defvar ess-developer-root-file "DESCRIPTION"
-  "If this file is present in the directory, it is considered a
-project root.")
-
-(defvar ess-developer-check-all-dirs t
-  "If non-nil, the whole hierarchy of directories will be checked
-for an R package. This can be slow on remotes. When nil, only
-typical folders of R packages are checked (such as `R', `man',
-`src', etc).")
 
 (defcustom ess-developer-load-command "library('%n')"
   "Loading command for `ess-developer-add-package'. Can be a
@@ -76,6 +56,40 @@ See also `ess-developer-load-package' for related functionality."
   :group 'ess-developer
   :type 'alist)
 
+(defvar ess-developer-package nil
+  "Current package.
+Cons cell of two strings. CAR is the package name active in the
+current buffer. CDR is the path to its source directory.")
+(make-variable-buffer-local 'ess-developer-package)
+
+(defvar ess-developer-code-injection nil
+  "Package name where source code should be injected.")
+(make-variable-buffer-local 'ess-developer-code-injection)
+
+(defvar ess-developer-root-file "DESCRIPTION"
+  "Presence of this file indicates the project's root.")
+
+(defvar ess-developer-check-all-dirs t
+  "If non-nil, the whole hierarchy of directories will be checked for an R package.
+This can be slow on remotes. When nil, only typical folders of R
+packages are checked (such as `R', `man', `src', etc).")
+
+(defvar ess-developer-package-dirs
+  '(("R"        . 1)
+    ("r"        . 1)
+    ("tests"    . 1)
+    ("testthat" . 2)
+    ("inst"     . 1)
+    ("include"  . 2)
+    ("src"      . 1))
+  "Alist of directories names and their depth in R package hierarchy.
+When `ess-developer-check-all-dirs' is nil, this list is used to
+figure out whether the current file belongs to an R package. If
+the file specified in `ess-developer-root-file'
+(DESCRIPTION by default) is found at the presumed root directory
+of the package, the current directory is considered to be part of
+a R package.")
+
 (defun ess-developer-load-package ()
   (let* ((pkg-info (ess-developer-current-package-info))
          (cmd (if (stringp ess-developer-load-command)
@@ -88,16 +102,17 @@ See also `ess-developer-load-package' for related functionality."
           ((functionp cmd)
            (funcall cmd)))))
 
-
+
 ;;; Package UI
 
 (defun ess-developer-current-package-info ()
-  "Get a cons cell of two strings whose CAR is a package name and
+  "Get package info.
+Return a cons cell of two strings whose CAR is a package name and
 CDR is a package directory. The package is determined by (in this
-order) the buffer-local value of `ess-developer-local-package',
+order) the buffer-local value of `ess-developer-package',
 whether the current file is part of a package, or the value of
-`ess-developer-local-package' in the attached process buffer."
-  (or ess-developer-local-package
+`ess-developer-package' in the attached process buffer."
+  (or ess-developer-package
       (ess-developer--find-package-info)
       (ess-developer--process-package-info)))
 
@@ -110,9 +125,10 @@ whether the current file is part of a package, or the value of
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
 (defun ess-developer-select-package (&optional attached-only no-path)
-  "Select a package for ESS developer functions. The package
-metadata will be written in the file-local variables section. If
-ATTACHED-ONLY is non-nil, only prompt for attached packages."
+  "Select a package for ESS developer functions.
+The package metadata will be written in the file-local variables
+section. If ATTACHED-ONLY is non-nil, only prompt for attached
+packages."
   (interactive)
   (let* ((pkg-name (ess-developer--select-package-name attached-only))
          (pkg-path (unless no-path
@@ -125,12 +141,12 @@ ATTACHED-ONLY is non-nil, only prompt for attached packages."
       (error "Not a valid package. No '%s' found in `%s'." ess-developer-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
-      (add-file-local-variable 'ess-developer-local-package pkg-info))
-    (setq-local ess-developer-local-package pkg-info)))
+      (add-file-local-variable 'ess-developer-package pkg-info))
+    (setq-local ess-developer-package pkg-info)))
 
 (defun ess-developer-inject-to-package (&optional attached-only)
-  "Select a package for ESS developer functions. If ATTACHED-ONLY
-is non-nil, only prompt for attached packages.
+  "Select a package for ESS developer functions.
+If ATTACHED-ONLY is non-nil, prompt only for attached packages.
 
 See also `ess-developer-inject-to-current-env'."
   (interactive)
@@ -175,6 +191,7 @@ See also `ess-developer-inject-to-package'."
     (ess-eval-linewise (format command (concat path args)))))
 
 
+
 ;;; Package Detection
 
 (defun ess-developer--find-package-info ()
@@ -185,22 +202,6 @@ defaults to the value returned by
     (when pkg-path
       (cons (ess-developer--find-package-name pkg-path) pkg-path))))
 
-(defvar ess-developer-package-dirs
-  '(("R"        . 1)
-    ("r"        . 1)
-    ("tests"    . 1)
-    ("testthat" . 2)
-    ("inst"     . 1)
-    ("include"  . 2)
-    ("src"      . 1))
-  "Alist of directories names and their depth in a package
-hierarchy. When `ess-developer-check-all-dirs' is nil, this list
-is used to figure out whether the current file belongs to an R
-package. If the file specified in `ess-developer-root-file'
-(DESCRIPTION by default) is found at the presumed root directory
-of the package, the current directory is considered to be part of
-a R package.")
-
 (defun ess-developer--find-package-path ()
   "Get the root of R package that contains current directory.
 Root is determined by locating `ess-developer-root-file'.
@@ -209,7 +210,7 @@ If PKG-NAME is given, check that the path found corresponds to
 that package.
 
 or if the variable
-`ess-developer-local-package' is locally defined with a cons cell
+`ess-developer-package' is locally defined with a cons cell
 of the form `(name . path)', iterate over default-directories of
 all open R files until the package is found. If not found, return
 nil."
@@ -237,8 +238,7 @@ nil."
     found-path))
 
 (defun ess-climb-path (path n)
-  "Takes PATH, climbs its hierarchy N times, and returns the new
-path."
+  "Takes PATH, climbs its hierarchy N times, and returns the new path."
   (dotimes (i n)
     (setq path (file-name-directory (directory-file-name path))))
   path)
@@ -255,13 +255,14 @@ path."
 
 (defun ess-developer--process-package-info ()
   (with-ess-process-buffer t
-    (bound-and-true-p ess-developer-local-package)))
+    (bound-and-true-p ess-developer-package)))
 
 (defun ess-developer--update-process-local-pkg (pkg-info)
   (with-ess-process-buffer nil
-    (setq-local ess-developer-local-package pkg-info)))
+    (setq-local ess-developer-package pkg-info)))
 
 
+
 ;;; Code Injection
 
 (defun ess-developer--get-injection-package (&optional ask)
@@ -373,6 +374,7 @@ propertize output text.
                        'face 'font-lock-keyword-face)))
 
 
+
 ;;; Devtools Integration
 
 (defun ess-r-devtools-load-package (&optional alt)
@@ -459,11 +461,9 @@ additional arguments."
   (interactive)
   (ess-r-devtools-install-package 'alt))
 
-
 ;;; Deprecated variables and functions
-
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.0, (ess-developer) is deprecated. Please
+  (error "As of ESS 16.03, (ess-developer) is deprecated. Please
 use `ess-developer-select-package' and
 `ess-developer-inject-to-package' instead."))
 
