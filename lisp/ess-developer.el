@@ -36,6 +36,15 @@
   :group 'ess
   :prefix "ess-developer-")
 
+;; (defface ess-developer-indicator-face
+;;   '((((class grayscale)) (:background "DimGray"))
+;;     (((class color) (background light))
+;;      (:foreground "red4"  :bold t ))
+;;     (((class color) (background dark))
+;;      (:foreground "deep sky blue"  :bold t )))
+;;   "Face to highlight mode line process name when developer mode is on."
+;;   :group 'ess-developer)
+
 (defcustom ess-developer-code-injection-in-packages nil
   "If non-nil, `ess-developer-code-injection' is automatically
 set within R packages."
@@ -428,7 +437,6 @@ arguments."
   (ess-developer-send-process "devtools::revdep_check(%s)\n"
                               "Checking reverse dependencies of %s"
                               alt))
-
 (defun ess-r-devtools-revdep-check-package-alt ()
   "Interface for `devtools::revdep_check()'. Prompts for
 additional arguments."
@@ -461,6 +469,87 @@ additional arguments."
   (interactive)
   (ess-r-devtools-install-package 'alt))
 
+
+;;; Minor Mode
+
+;; (defvar ess-developer--local-indicator
+;;   '(""
+;;     (:eval
+;;      ;; process has priority
+;;      (if (and (ess-process-live-p)
+;;               (ess-get-process-variable 'ess-developer))
+;;          (propertize " D" 'face 'ess-developer-indicator-face)
+;;        (if ess-developer
+;;            (propertize " d" 'face 'ess-developer-indicator-face)
+;;          "")))))
+;; (put 'ess-developer--local-indicator 'risky-local-variable t)
+
+;; (defun ess-developer-activate-in-package (&optional package all)
+;;   "Activate developer if current file is part of a package which
+;; is registered in `ess-developer-packages'.
+;; 
+;; If PACKAGE is given, activate only if current file is part of the
+;; PACKAGE, `ess-developer-packages' is ignored in this case.
+;; 
+;; If ALL is non-nil, perform activation in all R buffers.
+;; 
+;; This function does nothing if `ess-developer-activate-in-package'
+;; is nil."
+;;   (when ess-developer-activate-in-package
+;;     (if all
+;;         (dolist (bf (buffer-list))
+;;           (with-current-buffer bf
+;;             (ess-developer-activate-in-package package)))
+;;       (let ((pack (ess-developer--get-package-name)))
+;;         (when (and buffer-file-name
+;;                    pack
+;;                    (not ess-developer)
+;;                    (if package
+;;                        (equal pack package)
+;;                      (member pack ess-developer-packages)))
+;;           (ess-developer t))))))
+;; 
+;; (defun ess-developer-deactivate-in-package (&optional package all)
+;;   "Deactivate developer if current file is part of the R package.
+;; 
+;; If PACKAGE is given, deactivate only if current package is
+;; PACKAGE.
+;; 
+;; If ALL is non-nil, deactivate in all open R buffers."
+;;   (if all
+;;       (dolist (bf (buffer-list))
+;;         (with-current-buffer bf
+;;           (ess-developer-deactivate-in-package package)))
+;;     (let ((pack (ess-developer--get-package-name)))
+;;       (when (and ess-developer
+;;                  (or (null package)
+;;                      (equal pack package)))
+
+;; (defun ess-developer (&optional val)
+;;   "Toggle on/off `ess-developer' functionality.
+;; If optional VAL is non-negative, turn on the developer mode. If
+;; See also `ess-developer-packages', `ess-developer-add-package'
+;; See also `ess-developer-packages', `ess-developer-add-package'
+;; and `ess-developer-activate-in-package'."
+;;    (interactive)
+;;   (when (eq val t) (setq val 1))
+;;   (let ((ess-dev  (if (numberp val)
+;;                       (if (< val 0) nil t)
+;;                     (not ess-developer))))
+;;     (if ess-dev
+;;         (progn
+;;           (run-hooks 'ess-developer-enter-hook)
+;;           (if ess-developer-packages
+;;               (message "You are developing: %s" ess-developer-packages)
+;;             (message "Developer is on (add packages with C-c C-t a)")))
+;;       (run-hooks 'ess-developer-exit-hook)
+;;       (message "%s developer is off" (if (get-buffer-process (current-buffer))
+;;                                               "Global"
+;;                                             "Local")))
+;;     (setq ess-developer ess-dev))
+;;   (force-window-update))
+
+
 ;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
   (error "As of ESS 16.03, (ess-developer) is deprecated. Please
