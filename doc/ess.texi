@@ -9,7 +9,7 @@
 @include ess-defs.texi
 @titlepage
 @title ESS -- Emacs Speaks Statistics
-ESS version 
+ESS version
 @ESSVER
 
 @c --- KEEP this synchronized with ./authors.texi :
@@ -831,8 +831,8 @@ top of the window.
 
 Finally, if you want to discard the last command output altogether, use
 @cindex deleting output
-@kbd{C-c C-o} (@code{comint-kill-output}),
-@findex comint-kill-output
+@kbd{C-c C-o} (@code{comint-delete-output}),
+@findex comint-delete-output
 which deletes everything from the last command to the current prompt.
 Use this command judiciously to keep your transcript to a more
 manageable size.
