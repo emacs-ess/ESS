@@ -392,12 +392,6 @@ propertize output text.
                               "Loading %s"
                               (when alt "recompile = TRUE")))
 
-(defun ess-r-devtools-load-package-alt ()
-  "Interface for `devtools::load()'. Prompts for additional
-arguments."
-  (interactive)
-  (ess-r-devtools-load-package 'alt))
-
 (defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
   (interactive)
@@ -411,12 +405,6 @@ arguments."
                               "Testing %s"
                               (when alt "vignettes = FALSE")))
 
-(defun ess-r-devtools-check-package-alt ()
-  "Interface for `devtools::check()'. Prompts for additional
-arguments."
-  (interactive)
-  (ess-r-devtools-check-package 'alt))
-
 (defun ess-r-devtools-test-package (&optional alt)
   "Interface for `devtools::test()'."
   (interactive "P")
@@ -424,23 +412,12 @@ arguments."
                               "Testing %s"
                               alt))
 
-(defun ess-r-devtools-test-package-alt ()
-  "Interface for `devtools::test()'. Prompts for additional
-arguments."
-  (interactive)
-  (ess-r-devtools-test-package 'alt))
-
 (defun ess-r-devtools-revdep-check-package (&optional alt)
   "Interface for `devtools::revdep_check()'."
   (interactive "P")
   (ess-developer-send-process "devtools::revdep_check(%s)\n"
                               "Checking reverse dependencies of %s"
                               alt))
-(defun ess-r-devtools-revdep-check-package-alt ()
-  "Interface for `devtools::revdep_check()'. Prompts for
-additional arguments."
-  (interactive)
-  (ess-r-devtools-revdep-check-package 'alt))
 
 (defun ess-r-devtools-document-package (&optional alt)
   "Interface for `devtools::document()'."
@@ -449,24 +426,12 @@ additional arguments."
                               "Documenting %s"
                               alt))
 
-(defun ess-r-devtools-document-package-alt ()
-  "Interface for `devtools::document()'. Prompts for
-additional arguments."
-  (interactive)
-  (ess-r-devtools-document-package 'alt))
-
 (defun ess-r-devtools-install-package (&optional alt)
   "Interface to `devtools::install()'."
   (interactive "P")
   (ess-developer-send-process "devtools::install(%s)\n"
                               "Installing %s"
                               alt))
-
-(defun ess-r-devtools-install-package-alt ()
-  "Interface for `devtools::install()'. Prompts for
-additional arguments."
-  (interactive)
-  (ess-r-devtools-install-package 'alt))
 
 
 ;;; Minor Mode
