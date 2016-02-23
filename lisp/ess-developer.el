@@ -36,14 +36,14 @@
   :group 'ess
   :prefix "ess-developer-")
 
-;; (defface ess-developer-indicator-face
-;;   '((((class grayscale)) (:background "DimGray"))
-;;     (((class color) (background light))
-;;      (:foreground "red4"  :bold t ))
-;;     (((class color) (background dark))
-;;      (:foreground "deep sky blue"  :bold t )))
-;;   "Face to highlight mode line process name when developer mode is on."
-;;   :group 'ess-developer)
+(defface ess-developer-indicator-face
+  '((((class grayscale)) (:background "DimGray"))
+    (((class color) (background light))
+     (:foreground "red4"  :bold t ))
+    (((class color) (background dark))
+     (:foreground "deep sky blue"  :bold t )))
+  "Face to highlight mode line process name when developer mode is on."
+  :group 'ess-developer)
 
 (defcustom ess-developer-code-injection-in-packages nil
   "If non-nil, `ess-developer-code-injection' is automatically
@@ -472,89 +472,88 @@ additional arguments."
 
 ;;; Minor Mode
 
-;; (defvar ess-developer--local-indicator
-;;   '(""
-;;     (:eval
-;;      ;; process has priority
-;;      (if (and (ess-process-live-p)
-;;               (ess-get-process-variable 'ess-developer))
-;;          (propertize " D" 'face 'ess-developer-indicator-face)
-;;        (if ess-developer
-;;            (propertize " d" 'face 'ess-developer-indicator-face)
-;;          "")))))
-;; (put 'ess-developer--local-indicator 'risky-local-variable t)
+(defcustom ess-developer-activate-in-package t
+  "If non-nil, `ess-developer-mode' is automatically turned on
+within R packages."
+  :group 'ess-developer
+  :type 'boolean)
 
-;; (defun ess-developer-activate-in-package (&optional package all)
-;;   "Activate developer if current file is part of a package which
-;; is registered in `ess-developer-packages'.
-;; 
-;; If PACKAGE is given, activate only if current file is part of the
-;; PACKAGE, `ess-developer-packages' is ignored in this case.
-;; 
-;; If ALL is non-nil, perform activation in all R buffers.
-;; 
-;; This function does nothing if `ess-developer-activate-in-package'
-;; is nil."
-;;   (when ess-developer-activate-in-package
-;;     (if all
-;;         (dolist (bf (buffer-list))
-;;           (with-current-buffer bf
-;;             (ess-developer-activate-in-package package)))
-;;       (let ((pack (ess-developer--get-package-name)))
-;;         (when (and buffer-file-name
-;;                    pack
-;;                    (not ess-developer)
-;;                    (if package
-;;                        (equal pack package)
-;;                      (member pack ess-developer-packages)))
-;;           (ess-developer t))))))
-;; 
-;; (defun ess-developer-deactivate-in-package (&optional package all)
-;;   "Deactivate developer if current file is part of the R package.
-;; 
-;; If PACKAGE is given, deactivate only if current package is
-;; PACKAGE.
-;; 
-;; If ALL is non-nil, deactivate in all open R buffers."
-;;   (if all
-;;       (dolist (bf (buffer-list))
-;;         (with-current-buffer bf
-;;           (ess-developer-deactivate-in-package package)))
-;;     (let ((pack (ess-developer--get-package-name)))
-;;       (when (and ess-developer
-;;                  (or (null package)
-;;                      (equal pack package)))
+(defcustom ess-developer-enter-hook nil
+  "Normal hook run on entering `ess-developer-mode'."
+  :group 'ess-developer
+  :type 'hook)
 
-;; (defun ess-developer (&optional val)
-;;   "Toggle on/off `ess-developer' functionality.
-;; If optional VAL is non-negative, turn on the developer mode. If
-;; See also `ess-developer-packages', `ess-developer-add-package'
-;; See also `ess-developer-packages', `ess-developer-add-package'
-;; and `ess-developer-activate-in-package'."
-;;    (interactive)
-;;   (when (eq val t) (setq val 1))
-;;   (let ((ess-dev  (if (numberp val)
-;;                       (if (< val 0) nil t)
-;;                     (not ess-developer))))
-;;     (if ess-dev
-;;         (progn
-;;           (run-hooks 'ess-developer-enter-hook)
-;;           (if ess-developer-packages
-;;               (message "You are developing: %s" ess-developer-packages)
-;;             (message "Developer is on (add packages with C-c C-t a)")))
-;;       (run-hooks 'ess-developer-exit-hook)
-;;       (message "%s developer is off" (if (get-buffer-process (current-buffer))
-;;                                               "Global"
-;;                                             "Local")))
-;;     (setq ess-developer ess-dev))
-;;   (force-window-update))
+(defcustom ess-developer-exit-hook nil
+  "Normal hook run on exiting `ess-developer-mode'."
+  :group 'ess-developer
+  :type 'hook)
+
+(defcustom ess-developer-mode-line
+  '(:eval (let ((pkg-info (ess-developer-current-package-info)))
+            (when pkg-info
+                (format " [%s]" (car pkg-info)))))
+  "Mode line for ESS developer. Set this variable to nil to
+disable the mode line entirely."
+  :group 'ess-developer
+  :type 'sexp
+  :risky t)
+
+(define-minor-mode ess-developer-mode
+  "Minor mode enabling developer-specific features for working
+with R."
+  :init-value nil
+  :lighter ess-developer-mode-line
+  (cond
+   (ess-developer-mode
+    (run-hooks 'ess-developer-enter-hook))
+   (t
+    (run-hooks 'ess-developer-exit-hook))))
+
+(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
+
+(defun ess-developer-activate-in-package (&optional package all)
+  "Activate developer if current file is part of a package.
+
+If PACKAGE is given, activate only if current file is part of the
+PACKAGE.
+
+If ALL is non-nil, perform activation in all R buffers.
+
+This function does nothing if `ess-developer-activate-in-package'
+is nil."
+  (when ess-developer-activate-in-package
+    (if all
+        (dolist (bf (buffer-list))
+          (with-current-buffer bf
+            (ess-developer-activate-in-package package)))
+      (let ((pkg-info (ess-developer-current-package-info)))
+        (when (and pkg-info
+                   (or (null package)
+                       (equal (car pkg-info) package)))
+          (ess-developer-mode 1))))))
+
+(defun ess-developer-deactivate-in-package (&optional package all)
+  "Deactivate developer if current file is part of the R package.
+
+If PACKAGE is given, deactivate only if current package is
+PACKAGE.
+
+If ALL is non-nil, deactivate in all open R buffers."
+  (if all
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          (ess-developer-deactivate-in-package package)))
+    (let ((pkg-info (ess-developer-current-package-info)))
+      (when (and ess-developer-mode
+                 (or (null package)
+                     (equal (car pkg-info) package)))
+        (ess-developer-mode 0)))))
 
 
 ;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.03, (ess-developer) is deprecated. Please
-use `ess-developer-select-package' and
-`ess-developer-inject-to-package' instead."))
+  (error "As of ESS 16.03, `ess-developer' is deprecated. Please
+use `ess-developer-mode' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
@@ -562,16 +561,9 @@ use `ess-developer-select-package' and
 deprecated. Please use `ess-developer-select-package' and
 `ess-developer-inject-to-package' instead." "16.03")
 
-(make-obsolete-variable 'ess-developer-activate-in-package
-                        'ess-developer-code-injection-in-packages
-                        "16.03")
-
 (make-obsolete-variable 'ess-developer-packages "This variable
 is deprecated. Please use `ess-developer-select-package' and
 `ess-developer-inject-to-package' instead." "16.03")
-
-(make-obsolete-variable 'ess-developer-enter-hook nil "16.03")
-(make-obsolete-variable 'ess-developer-exit-hook nil "16.03")
 
 (make-obsolete-variable 'ess-developer-load-on-add-commands "This
 variable is deprecated. Please use `ess-developer-select-package'
