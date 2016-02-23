@@ -231,14 +231,14 @@ nil."
       (cond
        ;; First check current directory
        ((file-exists-p (expand-file-name ess-developer-root-file path))
-        (setq found-path default-directory))
+        (setq found-path path))
        ;; Check for known directories
        ((and (setq known-pkg-dir (assoc current-dir ess-developer-package-dirs))
              (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
              (file-exists-p (expand-file-name ess-developer-root-file known-path)))
         (setq found-path known-path))
-       ;; Check for next directory if we are allowed to
-       (ess-developer-check-all-dirs
+       ;; Check for next directory unless we are at root
+       ((not (string= path "/"))
         (setq path (ess-climb-path path 1))
         (setq current-dir (file-name-nondirectory (directory-file-name path))))
        ;; Break out, no package was found
