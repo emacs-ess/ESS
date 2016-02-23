@@ -136,12 +136,12 @@ whether the current file is part of a package, or the value of
         (current-pkg (car (ess-developer-current-package-info))))
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
-(defun ess-developer-select-package (&optional attached-only)
+(defun ess-developer-select-package ()
   "Select a package for ESS developer functions.
+
 The package metadata will be written in the file-local variables
-section. If ATTACHED-ONLY is non-nil, only prompt for attached
-packages."
-  (interactive "P")
+section."
+  (interactive)
   (let* ((pkg-path (read-directory-name
                     "Path: " (or (ess-developer--find-package-path)
                                  ess-developer-library-path)
