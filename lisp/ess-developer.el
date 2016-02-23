@@ -75,6 +75,9 @@ current buffer. CDR is the path to its source directory.")
   "Package name where source code should be injected.")
 (make-variable-buffer-local 'ess-developer-code-injection)
 
+(defvar ess-developer-library-path nil
+  "Default path to find packages.")
+
 (defvar ess-developer-root-file "DESCRIPTION"
   "Presence of this file indicates the project's root.")
 
@@ -133,20 +136,20 @@ whether the current file is part of a package, or the value of
         (current-pkg (car (ess-developer-current-package-info))))
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
-(defun ess-developer-select-package (&optional attached-only no-path)
+(defun ess-developer-select-package (&optional attached-only)
   "Select a package for ESS developer functions.
 The package metadata will be written in the file-local variables
 section. If ATTACHED-ONLY is non-nil, only prompt for attached
 packages."
-  (interactive)
-  (let* ((pkg-name (ess-developer--select-package-name attached-only))
-         (pkg-path (unless no-path
-                     (read-directory-name
-                      "Path: " (ess-developer--find-package-path pkg-name)
-                      nil t)))
+  (interactive "P")
+  (let* ((pkg-path (read-directory-name
+                    "Path: " (or (ess-developer--find-package-path)
+                                 ess-developer-library-path)
+                    nil t))
+         (pkg-name (ess-developer--find-package-name pkg-path))
          (pkg-info (cons pkg-name pkg-path)))
-    (unless (or no-path
-                (file-exists-p (expand-file-name ess-developer-root-file pkg-path)))
+    (unless (and pkg-name pkg-path
+                 (file-exists-p (expand-file-name ess-developer-root-file pkg-path)))
       (error "Not a valid package. No '%s' found in `%s'." ess-developer-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
