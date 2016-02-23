@@ -125,7 +125,7 @@ order) the buffer-local value of `ess-developer-package',
 whether the current file is part of a package, or the value of
 `ess-developer-package' in the attached process buffer."
   (or ess-developer-package
-      (ess-developer--find-package-info)
+      (ess-developer--local-package-info)
       (ess-developer--process-package-info)))
 
 (defun ess-developer--select-package-name (&optional attached-only)
@@ -206,7 +206,7 @@ See also `ess-developer-inject-to-package'."
 
 ;;; Package Detection
 
-(defun ess-developer--find-package-info ()
+(defun ess-developer--local-package-info ()
   "Parses DESCRIPTION file in PATH (R specific so far). PATH
 defaults to the value returned by
 `ess-developer--find-package-path'."
@@ -230,23 +230,19 @@ nil."
                    default-directory))
          (current-dir (file-name-nondirectory (directory-file-name path)))
          known-pkg-dir known-path found-path)
-    (while (and (null found-path) path)
-      (cond
-       ;; First check current directory
-       ((file-exists-p (expand-file-name ess-developer-root-file path))
-        (setq found-path path))
-       ;; Check for known directories
-       ((and (setq known-pkg-dir (assoc current-dir ess-developer-package-dirs))
-             (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
-             (file-exists-p (expand-file-name ess-developer-root-file known-path)))
-        (setq found-path known-path))
-       ;; Check for next directory unless we are at root
-       ((not (string= path "/"))
-        (setq path (ess-climb-path path 1))
-        (setq current-dir (file-name-nondirectory (directory-file-name path))))
-       ;; Break out, no package was found
-       (t
-        (setq path nil))))
+    (cond
+     ;; First check current directory
+     ((file-exists-p (expand-file-name ess-developer-root-file path))
+      (setq found-path path))
+     ;; Check for known directories in current path
+     ((while (and (not (string= path "/"))
+                  (not found-path))
+        (setq current-dir (file-name-nondirectory (directory-file-name path)))
+        (if (and (setq known-pkg-dir (assoc current-dir ess-developer-package-dirs))
+                 (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
+                 (file-exists-p (expand-file-name ess-developer-root-file known-path)))
+            (setq found-path known-path)
+          (setq path (ess-climb-path path 1))))))
     found-path))
 
 (defun ess-climb-path (path n)
