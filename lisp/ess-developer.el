@@ -476,7 +476,7 @@ with R."
    (t
     (run-hooks 'ess-developer-exit-hook))))
 
-(add-hook 'R-mode-hook 'ess-developer-activate-in-package)
+(add-hook 'hack-local-variables-hook 'ess-developer-activate-in-package)
 
 (defun ess-developer-activate-in-package (&optional package all)
   "Activate developer if current file is part of a package.
