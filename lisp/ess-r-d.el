@@ -58,7 +58,7 @@
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
     (define-key ess-dev-map "\C-a" 'ess-developer-select-package)
-    (define-key ess-dev-map "\C-c" 'ess-developer-activate-code-injection)
+    (define-key ess-dev-map "\C-c" 'ess-r-set-source-environment)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
     (define-key ess-dev-map "l" 'ess-developer-load-package)
