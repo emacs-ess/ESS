@@ -45,8 +45,8 @@
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-developer)
 
-(defcustom ess-developer-code-injection-in-packages nil
-  "If non-nil, `ess-developer-code-injection' is automatically
+(defcustom ess-r-source-environment-in-packages nil
+  "If non-nil, `ess-r-source-environment' is automatically
 set within R packages."
   :group 'ess-developer
   :type 'boolean)
@@ -71,9 +71,11 @@ Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 (make-variable-buffer-local 'ess-developer-package)
 
-(defvar ess-developer-code-injection nil
-  "Package name where source code should be injected.")
-(make-variable-buffer-local 'ess-developer-code-injection)
+(defvar ess-r-source-environment nil
+  "Package name where source code should be injected. If set to
+the string \"*current*\", code is sourced into the current
+environment. This is useful for step-debugging.")
+(make-variable-buffer-local 'ess-r-source-environment)
 
 (defvar ess-developer-library-path nil
   "Default path to find packages.")
@@ -156,31 +158,25 @@ section."
       (add-file-local-variable 'ess-developer-package pkg-info))
     (setq-local ess-developer-package pkg-info)))
 
-(defun ess-developer-inject-to-package (&optional attached-only)
-  "Select a package for ESS developer functions.
-If ATTACHED-ONLY is non-nil, prompt only for attached packages.
+(defun ess-r-set-source-environment (&optional attached-only)
+  "Select a package or the current environment where code should
+be sourced. Repeated invocations of this command will switch
+between package selection and the current environment.
 
-See also `ess-developer-inject-to-current-env'."
+If ATTACHED-ONLY is non-nil, prompt only for attached packages."
   (interactive)
-  (let ((pkg-name (ess-developer--select-package-name attached-only)))
-    (setq-local ess-developer-code-injection pkg-name)
-    (message (format "Injecting code in %s" pkg-name))))
-
-(defun ess-developer-activate-code-injection (&optional attached-only)
-  "Select current environment for code injection. Useful when
-debugging a function.
-
-See also `ess-developer-inject-to-package'."
-  (interactive)
-  (cond ((string= ess-developer-code-injection "*current*")
-         (ess-developer-inject-to-package attached-only))
+  ;; FIXME: Need better switching
+  (cond ((string= ess-r-source-environment "*current*")
+         (let ((pkg-name (ess-developer--select-package-name attached-only)))
+           (setq-local ess-r-source-environment pkg-name)
+           (message (format "Injecting code in %s" pkg-name))))
         (t
-         (setq-local ess-developer-code-injection "*current*")
+         (setq-local ess-r-source-environment "*current*")
          (message "Injecting code in *current*"))))
 
 (defun ess-developer-activate-injection-in-package ()
-  (when ess-developer-code-injection-in-packages
-    (setq-local ess-developer-code-injection
+  (when ess-r-source-environment-in-packages
+    (setq-local ess-r-source-environment
                 (car (ess-developer-current-package-info)))))
 
 (add-hook 'R-mode-hook 'ess-developer-activate-injection-in-package)
@@ -274,9 +270,9 @@ nil."
 ;;; Code Injection
 
 (defun ess-developer--get-injection-package (&optional ask)
-  (cond (ess-developer-code-injection)
+  (cond (ess-r-source-environment)
         (ask
-         (ess-developer-inject-to-package))
+         (ess-r-set-source-environment))
         (t
          error "Code injection is not active")))
 
@@ -523,15 +519,15 @@ use `ess-developer-mode' instead."))
 
 (make-obsolete-variable 'ess-developer "This variable is
 deprecated. Please use `ess-developer-select-package' and
-`ess-developer-inject-to-package' instead." "16.03")
+`ess-r-set-source-environment' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-packages "This variable
 is deprecated. Please use `ess-developer-select-package' and
-`ess-developer-inject-to-package' instead." "16.03")
+`ess-r-set-source-environment' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-load-on-add-commands "This
 variable is deprecated. Please use `ess-developer-select-package'
-and `ess-developer-inject-to-package' instead." "16.03")
+and `ess-r-set-source-environment' instead." "16.03")
 
 
 (provide 'ess-developer)
