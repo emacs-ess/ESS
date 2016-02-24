@@ -31,6 +31,7 @@
 ;;; Code:
 
 
+
 (defgroup ess-developer nil
   "ESS: developer."
   :group 'ess
@@ -458,10 +459,16 @@ disable the mode line entirely."
   :type 'sexp
   :risky t)
 
+(defvar ess-developer-mode-map
+  (let ((ess-developer-mode-map (make-sparse-keymap)))
+    (define-key ess-developer-mode-map "\C-c\C-w" 'ess-r-package-dev-map)
+    ess-developer-mode-map))
+
 (define-minor-mode ess-developer-mode
   "Minor mode enabling developer-specific features for working
 with R."
   :init-value nil
+  :keymap ess-developer-mode-map
   :lighter ess-developer-mode-line
   (cond
    (ess-developer-mode

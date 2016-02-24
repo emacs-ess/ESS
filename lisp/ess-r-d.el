@@ -117,14 +117,6 @@
     (define-key ess-r-package-dev-map "\C-u" 'ess-r-devtools-unload-package)
     ess-r-package-dev-map))
 
-;; Hacky hooks until we modernise ESS with modular modes derived from
-;; ess-mode
-(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") ess-r-package-dev-map)))
-(add-hook 'inferior-ess-mode-hook
-          (lambda ()
-            (when (string-match "^R" ess-dialect)
-              (local-set-key (kbd "C-c C-w") ess-r-package-dev-map))))
-
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
   '("Roxygen"
