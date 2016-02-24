@@ -57,8 +57,7 @@
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
-    (define-key ess-dev-map "\C-a" 'ess-developer-select-package)
-    (define-key ess-dev-map "\C-c" 'ess-r-set-source-environment)
+    (define-key ess-dev-map "\C-s" 'ess-r-set-source-environment)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
     (define-key ess-dev-map "l" 'ess-developer-load-package)
@@ -105,25 +104,26 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
-(defvar ess-r-devtools-map
-  (let (ess-r-devtools-map)
-    (define-prefix-command 'ess-r-devtools-map)
-    (define-key ess-r-devtools-map "\C-c" 'ess-r-devtools-check-package)
-    (define-key ess-r-devtools-map "\C-d" 'ess-r-devtools-document-package)
-    (define-key ess-r-devtools-map "\C-i" 'ess-r-devtools-install-package)
-    (define-key ess-r-devtools-map "\C-l" 'ess-r-devtools-load-package)
-    (define-key ess-r-devtools-map "\C-r" 'ess-r-devtools-revdep-check-package)
-    (define-key ess-r-devtools-map "\C-t" 'ess-r-devtools-test-package)
-    (define-key ess-r-devtools-map "\C-u" 'ess-r-devtools-unload-package)
-    ess-r-devtools-map))
+(defvar ess-r-package-dev-map
+  (let (ess-r-package-dev-map)
+    (define-prefix-command 'ess-r-package-dev-map)
+    (define-key ess-r-package-dev-map "\C-a" 'ess-developer-select-package)
+    (define-key ess-r-package-dev-map "\C-c" 'ess-r-devtools-check-package)
+    (define-key ess-r-package-dev-map "\C-d" 'ess-r-devtools-document-package)
+    (define-key ess-r-package-dev-map "\C-i" 'ess-r-devtools-install-package)
+    (define-key ess-r-package-dev-map "\C-l" 'ess-r-devtools-load-package)
+    (define-key ess-r-package-dev-map "\C-r" 'ess-r-devtools-revdep-check-package)
+    (define-key ess-r-package-dev-map "\C-t" 'ess-r-devtools-test-package)
+    (define-key ess-r-package-dev-map "\C-u" 'ess-r-devtools-unload-package)
+    ess-r-package-dev-map))
 
 ;; Hacky hooks until we modernise ESS with modular modes derived from
 ;; ess-mode
-(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-t C-t") ess-r-devtools-map)))
+(add-hook 'R-mode-hook (lambda () (local-set-key (kbd "C-c C-w") ess-r-package-dev-map)))
 (add-hook 'inferior-ess-mode-hook
           (lambda ()
             (when (string-match "^R" ess-dialect)
-              (local-set-key (kbd "C-c C-t C-t") ess-r-devtools-map))))
+              (local-set-key (kbd "C-c C-w") ess-r-package-dev-map))))
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
