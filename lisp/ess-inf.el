@@ -74,7 +74,7 @@
 
 ;; not really needed as tracebug and developer are loaded in r-d.el
 (autoload 'ess-tracebug-send-region       "ess-tracebug"      "(autoload).")
-(autoload 'ess-developer-send-function      "ess-developer"     "(autoload).")
+(autoload 'ess-r-package-send-function      "ess-r-package"     "(autoload).")
 
  ;;*;; Process handling
 
@@ -1815,7 +1815,7 @@ dialect specific way to include source references"
                     (ess-get-process-variable 'ess-r-source-environment)))
          (tb-p  (process-get proc 'tracebug)))
     (cond
-     (dev-p     (ess-developer-send-region proc start end visibly message tb-p))
+     (dev-p     (ess-r-package-send-region proc start end visibly message tb-p))
      (tb-p      (ess-tracebug-send-region proc start end visibly message inject))
      (t         (ess-send-region proc start end visibly message))))
 
@@ -1874,7 +1874,7 @@ nil."
 
             (ess-blink-region beg end)
             (cond
-             (dev-p     (ess-developer-send-function proc beg end name visibly mess tb-p))
+             (dev-p     (ess-r-package-send-function proc beg end name visibly mess tb-p))
              (tb-p      (ess-tracebug-send-function  proc beg end      visibly mess))
              (t         (ess-send-region             proc beg end      visibly mess)))
             beg-end)
@@ -2118,7 +2118,7 @@ for `ess-eval-region'."
   (ess-force-buffer-current "Process to load into: ")
   (if (or ess-r-source-environment
           (ess-get-process-variable  'ess-r-source-environment))
-      (ess-developer-source-current-file filename)
+      (ess-r-package-source-current-file filename)
     (let ((filename (if (and (fboundp 'tramp-tramp-file-p)
                              (tramp-tramp-file-p filename))
                         (tramp-file-name-localname (tramp-dissect-file-name filename))
