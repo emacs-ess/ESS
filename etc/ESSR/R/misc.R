@@ -109,8 +109,16 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         }
     }
     cat("(list \n",
-        paste0(mapply(function(el, name) sprintf("(list \"%s\"  %s)", 
+        paste0(mapply(function(el, name) sprintf("(list \"%s\"  %s)",
                                                  name,
                                                  paste0(mat2elist(el), collapse = "\n")),
                       vs, names(vs)), collapse = "\n"), ")\n")
+}
+
+.ess_Rd2txt <- function(Rd) {
+    fun <- tools::Rd2txt
+    if(length(formals(fun)["stages"]))# newer R version
+	fun(Rd, stages = c("build", "install", "render"))
+    else
+	fun(Rd)
 }

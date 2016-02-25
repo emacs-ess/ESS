@@ -501,7 +501,7 @@ temporary one in `temporary-file-directory'.
           (shell-command shcmd t))
       ;; else directly:
       (ess-force-buffer-current "R process to use: ")
-      (ess-command (format "tools::Rd2txt(\"%s\")\n" file) pbuf)
+      (ess-command (format ".ess_Rd2txt(\"%s\")\n" file) pbuf)
       (set-buffer pbuf))
 
     ;; FIXME(2): once got rid of via-shell, consider
