@@ -61,11 +61,11 @@ See also `ess-r-package-load-package' for related functionality."
   :group 'ess-r-package
   :type 'alist)
 
-(defvar ess-r-package-package nil
+(defvar ess-r-package-info nil
   "Current package.
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
-(make-variable-buffer-local 'ess-r-package-package)
+(make-variable-buffer-local 'ess-r-package-info)
 
 (defvar ess-r-source-environment nil
   "Package name where source code should be injected. If set to
@@ -113,10 +113,10 @@ a R package.")
   "Get package info.
 Return a cons cell of two strings whose CAR is a package name and
 CDR is a package directory. The package is determined by (in this
-order) the buffer-local value of `ess-r-package-package',
+order) the buffer-local value of `ess-r-package-info',
 whether the current file is part of a package, or the value of
-`ess-r-package-package' in the attached process buffer."
-  (or ess-r-package-package
+`ess-r-package-info' in the attached process buffer."
+  (or ess-r-package-info
       (ess-r-package--local-package-info)
       (ess-r-package--process-package-info)))
 
@@ -145,8 +145,8 @@ section."
       (error "Not a valid package. No '%s' found in `%s'." ess-r-package-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
-      (add-file-local-variable 'ess-r-package-package pkg-info))
-    (setq-local ess-r-package-package pkg-info)))
+      (add-file-local-variable 'ess-r-package-info pkg-info))
+    (setq-local ess-r-package-info pkg-info)))
 
 (defun ess-r-set-source-environment (&optional attached-only)
   "Select a package or the current environment where code should
@@ -208,7 +208,7 @@ If PKG-NAME is given, check that the path found corresponds to
 that package.
 
 or if the variable
-`ess-r-package-package' is locally defined with a cons cell
+`ess-r-package-info' is locally defined with a cons cell
 of the form `(name . path)', iterate over default-directories of
 all open R files until the package is found. If not found, return
 nil."
@@ -249,11 +249,11 @@ nil."
 
 (defun ess-r-package--process-package-info ()
   (with-ess-process-buffer t
-    (bound-and-true-p ess-r-package-package)))
+    (bound-and-true-p ess-r-package-info)))
 
 (defun ess-r-package--update-process-local-pkg (pkg-info)
   (with-ess-process-buffer nil
-    (setq-local ess-r-package-package pkg-info)))
+    (setq-local ess-r-package-info pkg-info)))
 
 
 

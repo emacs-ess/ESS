@@ -437,7 +437,7 @@ will be prompted to enter arguments interactively."
 any."
   (interactive)
   (ess-force-buffer-current)
-  (let ((pkg-info ess-r-package-local-package)
+  (let ((pkg-info ess-r-package-info)
         (r-proc (ess-get-process)))
     (with-ess-process-buffer nil
       (ess-quit-r 'no-save)
@@ -446,7 +446,7 @@ any."
       (kill-buffer)
       (R start-args)
       (when pkg-info
-        (setq-local ess-r-package-local-package pkg-info)
+        (setq-local ess-r-package-info pkg-info)
         (ess-r-package-load-package))
       (run-hooks 'ess-r-reload-inferior-hook))))
 
