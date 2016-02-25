@@ -46,7 +46,7 @@
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-developer)
 
-(defcustom ess-r-source-environment-in-packages nil
+(defcustom ess-r-set-source-environment-in-packages nil
   "If non-nil, `ess-r-source-environment' is automatically
 set within R packages."
   :group 'ess-developer
@@ -176,7 +176,7 @@ If ATTACHED-ONLY is non-nil, prompt only for attached packages."
          (message "Injecting code in *current*"))))
 
 (defun ess-developer-activate-injection-in-package ()
-  (when ess-r-source-environment-in-packages
+  (when ess-r-set-source-environment-in-packages
     (setq-local ess-r-source-environment
                 (car (ess-developer-current-package-info)))))
 
