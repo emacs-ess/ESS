@@ -1741,9 +1741,10 @@ ARGS are ignored to allow using this function in process hooks."
   (ess-force-buffer-current "R process to use: ")
   (let ((proc (get-process ess-local-process-name))
         (file (or filename buffer-file-name)))
-    (if (or ess-developer
-            (ess-get-process-variable 'ess-developer))
-        (ess-developer-source-current-file filename)
+    (if (or ess-r-package-mode
+            ;; FIXME: Is this still relevant with ess-developer rewrite?
+            (ess-get-process-variable 'ess-r-package-mode))
+        (ess-r-package-source-current-file filename)
       (if (not file)
           ;; source the buffer content, org-mode, *scratch* etc.
           (let ((ess-inject-source t))
@@ -2635,7 +2636,7 @@ for signature and trace it with browser tracer."
   (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
          (all-functions (ess-get-words-from-vector
-                         (if ess-developer-packages
+                         (if nil ;; FIXME, was checking `ess-developer-packages`
                              (format ".ess_all_functions(c('%s'))\n"
                                      (mapconcat 'identity ess-developer-packages "', '"))
                            ".ess_all_functions()\n")))
@@ -2690,10 +2691,10 @@ for signature and trace it with browser tracer."
   (interactive)
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo\
         (debugged (ess-get-words-from-vector
-                   (if ess-developer-packages
+                   (if nil ;; FIXME: was checking `ess-developer-packages`
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
-                     ".ess_dbg_getTracedAndDebugged()\n")))
+                       ".ess_dbg_getTracedAndDebugged()\n")))
         out-message fun def-val)
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)

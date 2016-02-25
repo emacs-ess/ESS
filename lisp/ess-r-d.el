@@ -39,7 +39,7 @@
 (require 'cl)
 (require 'ess-s-l)
 (require 'eldoc)
-(require 'ess-developer)
+(require 'ess-r-package)
 (require 'ess-help)
 (require 'ess-roxy)
 (require 'ess-tracebug)
@@ -59,8 +59,8 @@
     ;; Note: some of these comand are automatically redefined by those in
     (define-key ess-dev-map "\C-s" 'ess-r-set-source-environment)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
-    (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
-    (define-key ess-dev-map "l" 'ess-developer-load-package)
+    (define-key ess-dev-map "\C-l" 'ess-r-package-load-package)
+    (define-key ess-dev-map "l" 'ess-r-package-load-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
@@ -107,7 +107,7 @@
 (defvar ess-r-package-dev-map
   (let (ess-r-package-dev-map)
     (define-prefix-command 'ess-r-package-dev-map)
-    (define-key ess-r-package-dev-map "\C-a" 'ess-developer-select-package)
+    (define-key ess-r-package-dev-map "\C-a" 'ess-r-package-select-package)
     (define-key ess-r-package-dev-map "\C-c" 'ess-r-devtools-check-package)
     (define-key ess-r-package-dev-map "\C-d" 'ess-r-devtools-document-package)
     (define-key ess-r-package-dev-map "\C-i" 'ess-r-devtools-install-package)
@@ -158,20 +158,20 @@
     "-----"
     ["About" ess-tracebug-show-help t]))
 
-(easy-menu-define ess-developer-menu nil
+(easy-menu-define ess-r-package-menu nil
   "Developer submenu."
   '("Developer"
     :visible (and ess-dialect (string-match "^R" ess-dialect))
     ["Active?"          ess-toggle-developer
      :style toggle
-     :selected ess-developer]
-    ["Select package" ess-developer-select-package t]))
+     :selected ess-r-package]
+    ["Select package" ess-r-package-select-package t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
-(easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-tracebug-menu "end-dev")
 
-(easy-menu-add-item inferior-ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item inferior-ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
 
 
@@ -437,7 +437,7 @@ will be prompted to enter arguments interactively."
 any."
   (interactive)
   (ess-force-buffer-current)
-  (let ((pkg-info ess-developer-local-package)
+  (let ((pkg-info ess-r-package-local-package)
         (r-proc (ess-get-process)))
     (with-ess-process-buffer nil
       (ess-quit-r 'no-save)
@@ -446,8 +446,8 @@ any."
       (kill-buffer)
       (R start-args)
       (when pkg-info
-        (setq-local ess-developer-local-package pkg-info)
-        (ess-developer-load-package))
+        (setq-local ess-r-package-local-package pkg-info)
+        (ess-r-package-load-package))
       (run-hooks 'ess-r-reload-inferior-hook))))
 
 (defun R-initialize-on-start (&optional proc string)
