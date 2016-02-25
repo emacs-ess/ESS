@@ -79,7 +79,7 @@ environment. This is useful for step-debugging.")
 (defvar ess-r-package-root-file "DESCRIPTION"
   "Presence of this file indicates the project's root.")
 
-(defvar ess-r-package-package-dirs
+(defvar ess-r-package-dirs
   '(("R"        . 1)
     ("r"        . 1)
     ("tests"    . 1)
@@ -224,7 +224,7 @@ nil."
      ((while (and (not (string= path "/"))
                   (not found-path))
         (setq current-dir (file-name-nondirectory (directory-file-name path)))
-        (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-package-dirs))
+        (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
                  (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
                  (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
             (setq found-path known-path)
