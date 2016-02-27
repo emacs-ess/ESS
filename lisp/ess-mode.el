@@ -843,7 +843,7 @@ With prefix argument, only shows the errors ESS reported."
   "Insert character and correct line's indentation."
   (interactive "P")
   ;; skeleton-pair takes precedence
-  (if (and (boundp 'skeleton-pair) skeleton-pair (featurep 'skeleton))
+  (if (fboundp 'skeleton-pair-insert-maybe)
       (skeleton-pair-insert-maybe "{")
     ;; else
     (let (insertpos)
