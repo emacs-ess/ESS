@@ -212,8 +212,9 @@ or if the variable
 of the form `(name . path)', iterate over default-directories of
 all open R files until the package is found. If not found, return
 nil."
-  (let* ((path (or (file-name-directory (buffer-file-name))
-                   default-directory))
+  (let* ((path (if (buffer-file-name)
+                   (file-name-directory (buffer-file-name))
+                 default-directory))
          (current-dir (file-name-nondirectory (directory-file-name path)))
          known-pkg-dir known-path found-path)
     (cond
