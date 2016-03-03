@@ -1,3 +1,10 @@
+ess (15.09.2-2) unstable; urgency=medium
+
+  * doc/texinfo.tex: Temporarily adding copy from texinfo 6.0 to avoid
+    breakage with the version included with texinfo 6.1	(Closes: #815734)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Thu, 03 Mar 2016 07:43:01 -0600
+
 ess (15.09.2-1) unstable; urgency=low
 
   * New upstream version released today
