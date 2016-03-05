@@ -332,6 +332,8 @@ to look up any doc strings."
     (ess-STERM                     . "iESS")
     (ess-editor                    . R-editor)
     (ess-pager                     . R-pager)
+    (ess-getwd-command             . "pwd()\n")
+    (ess-setwd-command             . "cd(expanduser(\"%s\"))\n")
     )
   "Variables to customize for Julia -- set up later than emacs initialization.")
 
