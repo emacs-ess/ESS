@@ -1,3 +1,9 @@
+ess (15.09.2-3) unstable; urgency=medium
+
+  * debian/control: Add Build-Depends on texlive-fonts-recommended
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 06 Mar 2016 09:39:09 -0600
+
 ess (15.09.2-2) unstable; urgency=medium
 
   * doc/texinfo.tex: Temporarily adding copy from texinfo 6.0 to avoid

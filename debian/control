@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Standards-Version: 3.9.6
 Build-Depends: debhelper (>= 7.0.0)
-Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texinfo, autotools-dev
+Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texlive-fonts-recommended, texinfo, autotools-dev
 Homepage: http://ess.r-project.org
 
 Package: ess
