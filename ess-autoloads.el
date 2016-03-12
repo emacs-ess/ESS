@@ -54,6 +54,9 @@ Optional prefix (C-u) allows to set command line arguments, such as
 If you have certain command line arguments that should always be passed
 to R, put them in the variable `inferior-R-args'." t)
 
+(autoload 'R-mode "ess-site.el" "Major mode for editing R source." t)
+(add-to-list 'auto-mode-alist '("\\.R$" . R-mode))
+
 (autoload 'S "ess-site" "Call 'S'." t)
 
  ; Local variables section
