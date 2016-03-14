@@ -440,7 +440,7 @@ Misc:
             before-change-functions
             ess-noweb-narrowing
             ess-noweb-chunk-vector
-            post-command-hook
+            ;; post-command-hook
             isearch-mode-hook
             isearch-mode-end-hook
             ess-noweb-doc-mode
@@ -456,7 +456,7 @@ Misc:
         (font-lock-mode -1)
         (require 'ess-noweb-font-lock-mode); which requires ess-noweb-mode .. hmm..
         (ess-noweb-font-lock-mode 1)))
-  (add-hook 'post-command-hook 'ess-noweb-post-command-function)
+  (add-hook 'post-command-hook 'ess-noweb-post-command-function nil t)
 
   (when (or (<= emacs-major-version 20)
             (featurep 'xemacs)) ;; Xemacs or very old GNU Emacs
@@ -476,7 +476,7 @@ Misc:
  ;; If we didn't do the above, then we want to turn ess-noweb-mode
  ;; off, no matter what (hence the condition `t')
  (t
-  (remove-hook 'post-command-hook 'ess-noweb-post-command-function)
+  (remove-hook 'post-command-hook 'ess-noweb-post-command-function t)
 
   (if (fboundp 'remove-local-hook)
       (progn
@@ -504,11 +504,11 @@ by major mode changes."
 
 (defun ess-noweb-note-isearch-mode ()
   "Take note of an incremental search in progress"
-  (remove-hook 'post-command-hook 'ess-noweb-post-command-function))
+  (remove-hook 'post-command-hook 'ess-noweb-post-command-function t))
 
 (defun ess-noweb-note-isearch-mode-end ()
   "Take note of an incremental search having ended"
-  (add-hook 'post-command-hook 'ess-noweb-post-command-function))
+  (add-hook 'post-command-hook 'ess-noweb-post-command-function nil t))
 
 (defun ess-noweb-post-command-function ()
   "The hook being run after each command in noweb mode."
