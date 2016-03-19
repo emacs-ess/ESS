@@ -488,7 +488,7 @@ program on remote computer is to start it with tramp. Require tramp in your .ema
 
 @code{(require 'tramp)}
 
-Now start an ssh session with @samp{C-x f /ssh:user@@host: RET}. Tramp
+Now start an ssh session with @samp{C-x C-f /ssh:user@@host: RET}. Tramp
 should open a dired buffer in your remote home directory. Now call your
 favorite ESS process (@code{R}, @code{Julia}, @code{stata} etc) as you
 would usually do on local machine: @code{M-x R}.
