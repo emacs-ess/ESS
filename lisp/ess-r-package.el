@@ -196,9 +196,9 @@ If ATTACHED-ONLY is non-nil, prompt only for attached packages."
   "Parses DESCRIPTION file in PATH (R specific so far). PATH
 defaults to the value returned by
 `ess-r-package--find-package-path'."
-  (let ((pkg-path (ess-r-package--find-package-path)))
-    (when pkg-path
-      (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
+  (when-let ((pkg-path (ess-r-package--find-package-path)))
+    (setq-local ess-r-package-info
+                (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
 
 (defun ess-r-package--find-package-path ()
   "Get the root of R package that contains current directory.
@@ -399,10 +399,38 @@ propertize output text.
                               "Testing %s"
                               alt))
 
+(defvar ess-r-devtools-revdep-check-cmd
+  "local({
+  pkg_path <- %s
+  res <- devtools::revdep_check(pkg_path)
+
+  if (file.exists(file.path(pkg_path, 'revdep'))) {
+    save_path <- file.path(pkg_path, 'revdep')
+  } else {
+    save_path <- file.path(pkg_path, '.metadata', 'revdep')
+  }
+  devtools::revdep_check_save_summary(res, save_path)
+
+  logs_path <- file.path(save_path, 'logs')
+  if (!dir.exists(logs_path)) {
+    dir.create(logs_path)
+  }
+  devtools::revdep_check_save_logs(res, logs_path)
+})
+")
+
 (defun ess-r-devtools-revdep-check-package (&optional alt)
-  "Interface for `devtools::revdep_check()'."
+  "Interface for `devtools::revdep_check()'.
+
+By default, the revdep summary is saved in `pkg_path/revdep' if
+the directory exists, or `pkg_path/.metadata/revdep' if it
+doesn't exist. The former path is the default in devtools but
+will create problem if it isn't escaped in `.Rbuildignore'. On
+the other hand, `.metadata' is always ignored by the R package
+builder, which makes it a safe directory to store the revdep
+checking results."
   (interactive "P")
-  (ess-r-package-send-process "devtools::revdep_check(%s)\n"
+  (ess-r-package-send-process ess-r-devtools-revdep-check-cmd
                               "Checking reverse dependencies of %s"
                               alt))
 
