@@ -73,6 +73,10 @@ the string \"*current*\", code is sourced into the current
 environment. This is useful for step-debugging.")
 (make-variable-buffer-local 'ess-r-source-environment)
 
+(defvar ess-r-prompt-for-attached-pkgs-only nil
+  "If non-nil, only look for attached packages when selecting a
+namespace to source into.")
+
 (defvar ess-r-package-library-path nil
   "Default path to find packages.")
 
@@ -120,11 +124,11 @@ whether the current file is part of a package, or the value of
       (ess-r-package--local-package-info)
       (ess-r-package--process-package-info)))
 
-(defun ess-r-package--select-package-name (&optional attached-only)
+(defun ess-r-package--select-package-name ()
   (ess-force-buffer-current)
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
-                       (if attached-only "FALSE" "TRUE"))))
+                       (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
         (current-pkg (car (ess-r-package-current-package-info))))
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
@@ -148,16 +152,17 @@ section."
       (add-file-local-variable 'ess-r-package-info pkg-info))
     (setq-local ess-r-package-info pkg-info)))
 
-(defun ess-r-set-source-environment (&optional attached-only)
+(defun ess-r-set-source-environment ()
   "Select a package or the current environment where code should
 be sourced. Repeated invocations of this command will switch
 between package selection and the current environment.
 
-If ATTACHED-ONLY is non-nil, prompt only for attached packages."
+If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
+attached packages."
   (interactive)
   ;; FIXME: Need better switching
   (cond ((string= ess-r-source-environment "*current*")
-         (let ((pkg-name (ess-r-package--select-package-name attached-only)))
+         (let ((pkg-name (ess-r-package--select-package-name)))
            (setq-local ess-r-source-environment pkg-name)
            (message (format "Injecting code in %s" pkg-name))))
         (t
