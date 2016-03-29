@@ -42,7 +42,7 @@
   :group 'ess-r-package)
 
 (defcustom ess-r-set-source-environment-in-packages nil
-  "If non-nil, `ess-r-source-environment' is automatically
+  "If non-nil, `ess-r-evaluation-environment' is automatically
 set within R packages."
   :group 'ess-r-package
   :type 'boolean)
@@ -67,11 +67,11 @@ Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 (make-variable-buffer-local 'ess-r-package-info)
 
-(defvar ess-r-source-environment nil
+(defvar ess-r-evaluation-environment nil
   "Package name where source code should be injected. If set to
 the string \"*current*\", code is sourced into the current
 environment. This is useful for step-debugging.")
-(make-variable-buffer-local 'ess-r-source-environment)
+(make-variable-buffer-local 'ess-r-evaluation-environment)
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If non-nil, only look for attached packages when selecting a
@@ -152,7 +152,7 @@ section."
       (add-file-local-variable 'ess-r-package-info pkg-info))
     (setq-local ess-r-package-info pkg-info)))
 
-(defun ess-r-set-source-environment ()
+(defun ess-r-select-evaluation-namespace ()
   "Select a package or the current environment where code should
 be sourced. Repeated invocations of this command will switch
 between package selection and the current environment.
@@ -161,20 +161,20 @@ If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
   (interactive)
   ;; FIXME: Need better switching
-  (cond ((string= ess-r-source-environment "*current*")
+  (cond ((string= ess-r-evaluation-environment "*current*")
          (let ((pkg-name (ess-r-package--select-package-name)))
-           (setq-local ess-r-source-environment pkg-name)
+           (setq-local ess-r-evaluation-environment pkg-name)
            (message (format "Injecting code in %s" pkg-name))))
         (t
-         (setq-local ess-r-source-environment "*current*")
+         (setq-local ess-r-evaluation-environment "*current*")
          (message "Injecting code in *current*"))))
 
-(defun ess-r-package-activate-injection-in-package ()
+(defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-set-source-environment-in-packages
-    (setq-local ess-r-source-environment
+    (setq-local ess-r-evaluation-environment
                 (car (ess-r-package-current-package-info)))))
 
-(add-hook 'R-mode-hook 'ess-r-package-activate-injection-in-package)
+(add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
 (defun ess-r-package-send-process (command &optional msg alt)
   (ess-force-buffer-current)
@@ -266,9 +266,9 @@ nil."
 ;;; Code Injection
 
 (defun ess-r-package--get-injection-package (&optional ask)
-  (cond (ess-r-source-environment)
+  (cond (ess-r-evaluation-environment)
         (ask
-         (ess-r-set-source-environment))
+         (ess-r-select-evaluation-namespace))
         (t
          error "Code injection is not active")))
 
@@ -549,7 +549,7 @@ use `ess-developer-mode' instead."))
 
 (make-obsolete-variable 'ess-developer "This variable is
 deprecated. Please use `ess-developer-select-package' and
-`ess-r-set-source-environment' instead." "16.03")
+`ess-r-select-evaluation-namespace' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-load-command "This
 variable is deprecated. Please use `ess-r-package-load-command'
@@ -561,11 +561,11 @@ instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-packages "This variable
 is deprecated. Please use `ess-developer-select-package' and
-`ess-r-set-source-environment' instead." "16.03")
+`ess-r-select-evaluation-namespace' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-load-on-add-commands "This
 variable is deprecated. Please use `ess-developer-select-package'
-and `ess-r-set-source-environment' instead." "16.03")
+and `ess-r-select-evaluation-namespace' instead." "16.03")
 
 (make-obsolete-variable 'ess-developer-activate-in-package "This
 variable is deprecated. Please use
