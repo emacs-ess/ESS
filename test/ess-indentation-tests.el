@@ -118,5 +118,14 @@ where the edit took place. Return nil if E represents no real change.
 (ert-deftest test-ess-R-indentation-RRR ()
   (ess-test-R-indentation "styles/RRR.R" 'RRR))
 
+(ert-deftest test-ess-R-indentation-RRR+ ()
+  (ess-test-R-indentation "styles/RRR+.R" 'RRR+))
+
+(ert-deftest test-ess-R-indentation-RStudio- ()
+  (ess-test-R-indentation "styles/RStudio-.R" 'RStudio-))
+
+(ert-deftest test-ess-R-indentation-C++ ()
+  (ess-test-R-indentation "styles/C++.R" 'C++))
+
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
