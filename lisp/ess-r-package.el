@@ -30,8 +30,6 @@
 
 ;;; Code:
 
-
-
 (require 'subr-x)
 
 (defface ess-r-package-indicator-face
@@ -104,7 +102,7 @@ a R package.")
            (funcall cmd)))))
 
 
-;;; Package UI
+;;;*;;; Package UI
 
 (defun ess-r-package-current-package-info ()
   "Get package info.
@@ -171,7 +169,7 @@ section."
 
 
 
-;;; Package Detection
+;;;*;;; Package Detection
 
 (defun ess-r-package--local-package-info ()
   "Parses DESCRIPTION file in PATH (R specific so far). PATH
@@ -239,7 +237,7 @@ nil."
 
 
 
-;;; Code Injection
+;;;*;;; Code Injection
 
 (defun ess-r-package--get-injection-package (&optional ask)
   (cond (ess-r-evaluation-environment)
@@ -351,7 +349,7 @@ propertize output text.
 
 
 
-;;; Devtools Integration
+;;;*;;; Devtools Integration
 
 (defun ess-r-devtools-load-package (&optional alt)
   "Interface for `devtools::load_all()'."
@@ -430,7 +428,7 @@ checking results."
                               alt))
 
 
-;;; Minor Mode
+;;;*;;; Minor Mode
 
 (defcustom ess-r-package-activate-in-package t
   "If non-nil, `ess-r-package-mode' is automatically turned on
@@ -519,7 +517,7 @@ If ALL is non-nil, deactivate in all open R buffers."
         (ess-r-package-mode 0)))))
 
 
-;;; Deprecated variables and functions
+;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
   (error "As of ESS 16.03, `ess-developer' is deprecated. Please
 use `ess-developer-mode' instead."))
@@ -560,4 +558,22 @@ instead." "16.03")
 
 
 (provide 'ess-r-package)
+
+ ; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
+
 ;;; ess-r-package.el ends here
