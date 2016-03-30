@@ -63,18 +63,27 @@ See also `ess-r-package-load-package' for related functionality."
 
 (defvar ess-r-package-info nil
   "Current package.
+
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 (make-variable-buffer-local 'ess-r-package-info)
 
 (defvar ess-r-evaluation-environment nil
-  "Package name where source code should be injected. If set to
-the string \"*current*\", code is sourced into the current
-environment. This is useful for step-debugging.")
+  "Environment into which code should be evaluated.
+
+When nil, code is evaluated in the global environment if tracebug
+is not active, or the evaluation environment of the current
+function if it is active.
+
+Currently only namespaces can be set as evaluation environments.
+Use `ess-r-select-evaluation-namespace' to select a package
+namespace.")
 (make-variable-buffer-local 'ess-r-evaluation-environment)
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
-  "If non-nil, only look for attached packages when selecting a
+  "Whether to look for all installed R packages.
+
+If non-nil, only look for attached packages when selecting a
 namespace to source into.")
 
 (defvar ess-r-package-library-path nil
@@ -124,14 +133,6 @@ whether the current file is part of a package, or the value of
       (ess-r-package--local-package-info)
       (ess-r-package--process-package-info)))
 
-(defun ess-r-package--select-package-name ()
-  (ess-force-buffer-current)
-  (let ((pkgs (ess-get-words-from-vector
-               (format "print(.packages(%s), max = 1e6)\n"
-                       (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
-        (current-pkg (car (ess-r-package-current-package-info))))
-    (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
-
 (defun ess-r-package-select-package ()
   "Select a package for ESS developer functions.
 
@@ -152,22 +153,31 @@ section."
       (add-file-local-variable 'ess-r-package-info pkg-info))
     (setq-local ess-r-package-info pkg-info)))
 
-(defun ess-r-select-evaluation-namespace ()
-  "Select a package or the current environment where code should
-be sourced. Repeated invocations of this command will switch
-between package selection and the current environment.
+(defun ess-r--select-package-name ()
+  (ess-force-buffer-current)
+  (let ((pkgs (ess-get-words-from-vector
+               (format "print(.packages(%s), max = 1e6)\n"
+                       (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
+        (current-pkg (car (ess-r-package-current-package-info))))
+    (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
+
+(defun ess-r-select-evaluation-namespace (&optional prefix)
+  "Select a package namespace for evaluation of R code.
+
+Call with a prefix argument to disable evaluation in a namespace.
 
 If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
-  (interactive)
-  ;; FIXME: Need better switching
-  (cond ((string= ess-r-evaluation-environment "*current*")
-         (let ((pkg-name (ess-r-package--select-package-name)))
+  (interactive "P")
+  (let ((pkg-name (if prefix
+                      ess-r-evaluation-environment
+                    (ess-r--select-package-name))))
+    (cond (prefix
+           (setq-local ess-r-evaluation-environment nil)
+           (message (format "Evaluation of code in %s disabled" pkg-name)))
+          (t
            (setq-local ess-r-evaluation-environment pkg-name)
-           (message (format "Injecting code in %s" pkg-name))))
-        (t
-         (setq-local ess-r-evaluation-environment "*current*")
-         (message "Injecting code in *current*"))))
+           (message (format "Evaluating code in %s" pkg-name))))))
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-set-source-environment-in-packages
