@@ -32,6 +32,8 @@
 
 
 
+(require 'subr-x)
+
 (defface ess-r-package-indicator-face
   '((((class grayscale)) (:background "DimGray"))
     (((class color) (background light))
@@ -447,9 +449,12 @@ within R packages."
   :type 'hook)
 
 (defcustom ess-r-package-mode-line
-  '(:eval (let ((pkg-info (ess-r-package-current-package-info)))
-            (when pkg-info
-                (format " [%s]" (car pkg-info)))))
+  '(:eval (let* ((pkg-name (car (ess-r-package-current-package-info)))
+                 (src (if (string= pkg-name ess-r-evaluation-environment)
+                          (format "src:")
+                        "")))
+            (when pkg-name
+              (format " [pkg:%s%s]" src pkg-name))))
   "Mode line for ESS developer. Set this variable to nil to
 disable the mode line entirely."
   :group 'ess-r-package

@@ -1036,23 +1036,55 @@ namespace.")
 If non-nil, only look for attached packages when selecting a
 namespace to source into.")
 
-(defun ess-r-select-evaluation-namespace (&optional prefix)
+(defun ess-r-select-evaluation-namespace (&optional arg)
   "Select a package namespace for evaluation of R code.
 
-Call with a prefix argument to disable evaluation in a namespace.
+Call interactively with a prefix argument to disable evaluation
+in a namespace.  When calling from a function, ARG can be a
+string giving the package to select, any other non-nil value to
+disable, or nil to prompt for a package.
 
 If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
   (interactive "P")
-  (let ((pkg-name (if prefix
-                      ess-r-evaluation-environment
-                    (ess-r--select-package-name))))
-    (cond (prefix
+  (let ((pkg-name (cond ((stringp arg)
+                         arg)
+                        (arg
+                         ess-r-evaluation-environment)
+                        (t
+                         (ess-r--select-package-name)))))
+    (cond ((and arg (not (stringp arg)))
            (setq-local ess-r-evaluation-environment nil)
+           (ess-r-special-evaluation-mode -1)
            (message (format "Evaluation of code in %s disabled" pkg-name)))
           (t
            (setq-local ess-r-evaluation-environment pkg-name)
-           (message (format "Evaluating code in %s" pkg-name))))))
+           (ess-r-special-evaluation-mode 1)
+           (message (format "Evaluating code in %s" pkg-name))))
+    (force-mode-line-update)))
+
+(defcustom ess-r-special-evaluation-mode-line
+  '(:eval (if (and ess-r-package-mode
+                   (string= ess-r-evaluation-environment
+                            (car (ess-r-package--local-package-info))))
+              ""
+            (format " [src:%s]" ess-r-evaluation-environment)))
+  "Mode line for namespaced evaluation.
+
+The default value handles the interaction with `ess-r-package-mode-line'.
+Set this variable to nil to disable the mode line entirely."
+  :group 'ess-R
+  :type 'sexp
+  :risky t)
+
+(define-minor-mode ess-r-special-evaluation-mode
+  "Minor mode used for evaluating code into special R environments.
+
+Currently only used for namespaced evaluation.  Its main purpose
+is as a placeholder for special settings (e.g. a lighter for the
+mode line)."
+  :init-value nil
+  :lighter ess-r-special-evaluation-mode-line)
 
 (defcustom ess-r-reload-inferior-hook nil
   "Hook run when reloading the R inferior buffer."
@@ -1060,8 +1092,7 @@ attached packages."
   :group 'ess-R)
 
 (defun ess-r-reload-inferior (&optional start-args)
-  "Reload R and the currently activated developer package, if
-any."
+  "Reload R and the currently activated developer package, if any."
   (interactive)
   (ess-force-buffer-current)
   (let ((pkg-info ess-r-package-info)
