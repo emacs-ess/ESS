@@ -68,24 +68,6 @@ Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 (make-variable-buffer-local 'ess-r-package-info)
 
-(defvar ess-r-evaluation-environment nil
-  "Environment into which code should be evaluated.
-
-When nil, code is evaluated in the global environment if tracebug
-is not active, or the evaluation environment of the current
-function if it is active.
-
-Currently only namespaces can be set as evaluation environments.
-Use `ess-r-select-evaluation-namespace' to select a package
-namespace.")
-(make-variable-buffer-local 'ess-r-evaluation-environment)
-
-(defvar ess-r-prompt-for-attached-pkgs-only nil
-  "Whether to look for all installed R packages.
-
-If non-nil, only look for attached packages when selecting a
-namespace to source into.")
-
 (defvar ess-r-package-library-path nil
   "Default path to find packages.")
 
@@ -160,24 +142,6 @@ section."
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
         (current-pkg (car (ess-r-package-current-package-info))))
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
-
-(defun ess-r-select-evaluation-namespace (&optional prefix)
-  "Select a package namespace for evaluation of R code.
-
-Call with a prefix argument to disable evaluation in a namespace.
-
-If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
-attached packages."
-  (interactive "P")
-  (let ((pkg-name (if prefix
-                      ess-r-evaluation-environment
-                    (ess-r--select-package-name))))
-    (cond (prefix
-           (setq-local ess-r-evaluation-environment nil)
-           (message (format "Evaluation of code in %s disabled" pkg-name)))
-          (t
-           (setq-local ess-r-evaluation-environment pkg-name)
-           (message (format "Evaluating code in %s" pkg-name))))))
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-set-source-environment-in-packages
