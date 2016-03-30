@@ -1,0 +1,7 @@
+Package: foo
+Title: title
+License: GPL-2
+Description: Package description.
+Author: author <author@email.com>
+Maintainer: maintainer <maintainer@email.com>
+Version: 0.1
