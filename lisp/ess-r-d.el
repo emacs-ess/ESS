@@ -1016,7 +1016,9 @@ similar to `load-library' emacs function."
   '(eldoc-add-command "ess-smart-comma"))
 
 
-;;;*;;; Interaction with R
+;;*;; Interaction with R
+
+;;;*;;; Namespaced evaluation
 
 (defvar ess-r-evaluation-environment nil
   "Environment into which code should be evaluated.
@@ -1109,7 +1111,10 @@ mode line)."
       (run-hooks 'ess-r-reload-inferior-hook))))
 
 
+;;*;; Editing Tools
+
 ;;;*;;; Indentation Engine
+
 ;; Written by Lionel Henry in mid 2015
 
 (defun ess-r-indent-line ()
