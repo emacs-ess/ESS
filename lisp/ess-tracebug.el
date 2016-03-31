@@ -165,8 +165,11 @@ from temporary buffers.")
 
 
 (defun ess--make-source-refd-command (beg end &optional visibly)
-  "Transform region string in order to add source references.
-Return new command, a string."
+  "Saves a region to a temporary file in order to add source references.
+BEG and END delimit the region.
+
+Returns a string containing an inferior process command for
+loading the temporary file.  This command conforms to VISIBLY."
   (let* ((filename buffer-file-name)
          (proc-dir (ess-get-process-variable 'default-directory))
          (remote (when (file-remote-p proc-dir)
@@ -200,47 +203,47 @@ Return new command, a string."
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-     (let ((tmpfile
-            (expand-file-name (make-temp-name
-                               (concat (file-name-nondirectory
-                                        (or filename "unknown")) "!"))
-                              (if remote
-                                  (tramp-get-remote-tmpdir remote)
-                                temporary-file-directory)))
-           (eval-format  (if visibly
-                             ess-eval-visibly-command
-                           (or ess-eval-visibly-noecho-command
-                               ess-eval-command))))
+    (let ((tmpfile
+           (expand-file-name (make-temp-name
+                              (concat (file-name-nondirectory
+                                       (or filename "unknown")) "!"))
+                             (if remote
+                                 (tramp-get-remote-tmpdir remote)
+                               temporary-file-directory)))
+          (eval-format  (if visibly
+                            ess-eval-visibly-command
+                          (or ess-eval-visibly-noecho-command
+                              ess-eval-command))))
 
-       (ess-process-put 'temp-source-files
-                        (cons tmpfile (ess-process-get 'temp-source-files)))
+      (ess-process-put 'temp-source-files
+                       (cons tmpfile (ess-process-get 'temp-source-files)))
 
-       (when remote
-         ;; get local name (should this be done in process buffer?)
-         (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
+      (when remote
+        ;; get local name (should this be done in process buffer?)
+        (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
 
-       (if (not filename)
-           (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
-         (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-         (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
-                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-         (with-silent-modifications
-           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (if (not filename)
+          (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
+        (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+                 (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (with-silent-modifications
+          (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
 
-       ;; sending string to subprocess is considerably faster than tramp file
-       ;; transfer. So, give priority to ess-eval-*-command if available
-       (if eval-format
-           (format-spec eval-format
-                        `((?s . ,(ess-quote-special-chars
-                                  (buffer-substring-no-properties beg end)))
-                          (?f . ,tmpfile)))
-         ;; else: use ess-load-*-command
-         (write-region beg end tmpfile nil 'silent)
-         (if (and visibly ess-load-visibly-command)
-             (format ess-load-visibly-command tmpfile)
-           (format (or ess-load-visibly-noecho-command
-                       ess-load-command)
-                   tmpfile))))))
+      ;; sending string to subprocess is considerably faster than tramp file
+      ;; transfer. So, give priority to ess-eval-*-command if available
+      (if eval-format
+          (format-spec eval-format
+                       `((?s . ,(ess-quote-special-chars
+                                 (buffer-substring-no-properties beg end)))
+                         (?f . ,tmpfile)))
+        ;; else: use ess-load-*-command
+        (write-region beg end tmpfile nil 'silent)
+        (if (and visibly ess-load-visibly-command)
+            (format ess-load-visibly-command tmpfile)
+          (format (or ess-load-visibly-noecho-command
+                      ess-load-command)
+                  tmpfile))))))
 
 
 (defun ess-tracebug-send-region (proc start end &optional visibly message type)
