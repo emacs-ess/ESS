@@ -1105,6 +1105,13 @@ mode line)."
    ((and nil (fboundp (ess-process-get 'source-file-function)))
     (funcall (ess-process-get 'source-file-function) file))))
 
+(defvar ess-r-namespaced-load-verbose nil
+  "Whether to display information on namespaced loading.
+
+When t, loading a file into a namespaced will output information
+about which objects are exported and which stay hidden in the
+namespace.")
+
 (defcustom ess-r-reload-inferior-hook nil
   "Hook run when reloading the R inferior buffer."
   :type 'hook

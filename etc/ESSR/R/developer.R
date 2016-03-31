@@ -17,7 +17,7 @@
 ## sourcing SOURCE file into an environment. After having a look at each new
 ## object in the environment, decide what to do with it. Handles plain objects,
 ## functions, existing S3 methods, S4 classes and methods. .
-.essDev_source <- function(source, expr, package = "")
+.essDev_source <- function(source, expr, package = "", verbose = FALSE)
 {
     ## require('methods')
     oldopts <- options(warn = 1)
@@ -42,13 +42,13 @@
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
                       package), domain = NA)
 
-    ## evaluate the SOURCE into new ENV 
+    ## evaluate the SOURCE into new ENV
     env <- .essDev_evalSource(source, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
                          sQuote(package), sQuote(envPackage)), domain = NA)
-    
+
     allObjects <- objects(envir = env, all.names = TRUE)
     allObjects <- allObjects[!(allObjects %in% c(".cacheOnAssign", ".packageName"))]
 
@@ -58,7 +58,7 @@
     for (this in allPlainObjects()) {
         thisEnv <- get(this, envir = env)
         thisNs <- NULL
-        
+
         ## NS
         if (exists(this, envir = envns, inherits = FALSE)){
             thisNs <- get(this, envir = envns)
@@ -85,7 +85,7 @@
         }else{
             newNs <- c(newNs, this)
         }
-        
+
         ## PKG
         if (exists(this, envir = envpkg, inherits = FALSE)){
             thisPkg <- get(this, envir = envpkg)
@@ -210,14 +210,17 @@
     if(length(newMethods))
         newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
-    if(length(objectsPkg))
-        cat(sprintf("%s  PKG: %s   ", package, paste(objectsPkg, collapse = ", ")))
-    if(length(objectsNs))
-        cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
-    if(length(newObjects))
-        cat(sprintf("GlobalEnv: %s\n", paste(newObjects, collapse = ", ")))
-    if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
-        cat(sprintf("*** Nothing explicitly assigned ***\n"))
+    if (verbose) {
+        if(length(objectsPkg))
+            cat(sprintf("%s  PKG: %s   ", package, paste(objectsPkg, collapse = ", ")))
+        if(length(objectsNs))
+            cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
+        if(length(newObjects))
+            cat(sprintf("GlobalEnv: %s\n", paste(newObjects, collapse = ", ")))
+        if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
+            cat(sprintf("*** Nothing explicitly assigned ***"))
+        cat("\n")
+    }
     invisible(env)
 }
 
