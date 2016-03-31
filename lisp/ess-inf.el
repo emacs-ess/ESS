@@ -1169,14 +1169,13 @@ Assumes that buffer has not already been in found in current frame."
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
-  (if ess-microsoft-p
-      (progn
-        ;; Debug: C-c C-l fails (to start R or give good message) in Windows
-        (ess-write-to-dribble-buffer
-         (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
-        (ess-force-buffer-current "Process to load into: ")
-        (not (equal (ess-get-process-variable 'inferior-ess-ddeclient)
-                    (default-value 'inferior-ess-ddeclient))))))
+  (when ess-microsoft-p
+    ;; Debug: C-c C-l fails (to start R or give good message) in Windows
+    (ess-write-to-dribble-buffer
+     (format "*ddeclient-p: ess-loc-proc-name is '%s'" ess-local-process-name))
+    (ess-force-buffer-current "Process to load into: ")
+    (not (equal (ess-get-process-variable 'inferior-ess-ddeclient)
+                (default-value 'inferior-ess-ddeclient)))))
 
 ;; (defun ess-prompt-wait (proc prompt-reg &optional sleep )
 ;;   "Wait for a prompt to appear at the end of current buffer.
@@ -2103,47 +2102,50 @@ for `ess-eval-region'."
         (forward-line 1)
       (ess-next-code-line 1))))
 
-;;; Related to the ess-eval-* commands, there are the ess-load
-;;; commands.   Need to add appropriate stuff...
+(defun ess-load-file--normalise-file (file)
+  (let* ((file (if (and (fboundp 'tramp-tramp-file-p)
+                        (tramp-tramp-file-p file))
+                   (tramp-file-name-localname (tramp-dissect-file-name file))
+                 file))
+         (file (if ess-microsoft-p
+                   (ess-replace-in-string file "[\\]" "/")
+                 file)))
+    (when (ess-check-source file)
+      (error "Buffer %s has not been saved" (buffer-name file)))
+    file))
 
+(defun ess-load-file--normalise-buffer (file)
+  (let ((source-buffer (get-file-buffer file)))
+    (if source-buffer
+        (with-current-buffer source-buffer
+          (ess-force-buffer-current "Process to load into: ")
+          (ess-check-modifications))
+      (ess-force-buffer-current "Process to load into: "))))
 
-(defun ess-load-file (&optional filename)
+(defun ess-load-file (filename)
   "Load a source file into an inferior ESS process."
-  (interactive (list
-                (or
-                 (and (memq major-mode '(ess-mode ess-julia-mode))
-                      (buffer-file-name))
-                 (expand-file-name
-                  (read-file-name "Load source file: " nil nil t)))))
-  (ess-force-buffer-current "Process to load into: ")
-  (if (or ess-r-evaluation-environment
-          (ess-get-process-variable  'ess-r-evaluation-environment))
-      (ess-r-package-source-current-file filename)
-    (let ((filename (if (and (fboundp 'tramp-tramp-file-p)
-                             (tramp-tramp-file-p filename))
-                        (tramp-file-name-localname (tramp-dissect-file-name filename))
-                      filename)))
-      (if ess-microsoft-p
-          (setq filename (ess-replace-in-string filename "[\\]" "/")))
-      (if (fboundp (ess-process-get 'source-file-function))
-         (funcall (ess-process-get 'source-file-function) filename)
-       (let ((source-buffer (get-file-buffer filename)))
-         (if (ess-check-source filename)
-             (error "Buffer %s has not been saved" (buffer-name source-buffer)))
-         ;; else
-         (if (ess-ddeclient-p)
-             (ess-load-file-ddeclient filename)
-
-           ;; else: "normal", non-DDE behavior:
-           ;; Find the process to load into
-           (if source-buffer
-               (with-current-buffer source-buffer
-                 (ess-force-buffer-current "Process to load into: ")
-                 (ess-check-modifications)))
-           (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-                 error-occurred nomessage)
-             (ess-eval-linewise (format ess-load-command filename))
-             )))))))
+  (interactive (list (or (and (memq major-mode '(ess-mode ess-julia-mode))
+                              (buffer-file-name))
+                         (expand-file-name
+                          (read-file-name "Load source file: " nil nil t)))))
+  (ess-load-file--normalise-buffer filename)
+  (let ((filename (ess-load-file--normalise-file filename)))
+    (cond
+     ;; Namespaced evaluation (R specific)
+     ((or ess-r-evaluation-env
+          (ess-get-process-variable 'ess-r-evaluation-env))
+      (ess-r-load-file-namespaced filename))
+     ;; Function set as a process property by Tracebug (redundant)
+     ((and nil (fboundp (ess-process-get 'source-file-function)))
+      (funcall (ess-process-get 'source-file-function) filename))
+     ;; DDE evaluation (specific to S-Plus and RGUI on Windows)
+     ((ess-ddeclient-p)
+      (ess-load-file-ddeclient filename))
+     ;; This is currently rarely called
+     (t
+      (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+            error-occurred nomessage)
+        (ess-eval-linewise (format ess-load-command filename)))))))
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()
