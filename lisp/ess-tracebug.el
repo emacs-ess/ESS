@@ -1734,28 +1734,33 @@ ARGS are ignored to allow using this function in process hooks."
           (inferior-ess-move-last-input-overlay))))))
 
 (defun ess--tb-R-source-current-file (&optional filename)
-  "Save current file and source it in the .R_GlobalEnv environment."
+  "Save current file and source it in the .R_GlobalEnv environment.
+
+Returns FILENAME when successful."
   ;; fixme: this sucks as it doesn't use ess-load-command and the whole thing
   ;; seems redundand to the ess-load-file
   (interactive)
   (ess-force-buffer-current "R process to use: ")
   (let ((proc (get-process ess-local-process-name))
         (file (or filename buffer-file-name)))
-    (if (or ess-r-package-mode
-            ;; FIXME: Is this still relevant with ess-developer rewrite?
-            (ess-get-process-variable 'ess-r-package-mode))
-        (ess-r-package-source-current-file filename)
-      (if (not file)
-          ;; source the buffer content, org-mode, *scratch* etc.
-          (let ((ess-inject-source t))
-            (ess-tracebug-send-region proc (point-min) (point-max) nil
-                                      (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
-        (when (buffer-modified-p) (save-buffer))
-        (save-selected-window
-          (ess-switch-to-ESS t))
-        (ess-send-string (get-process ess-current-process-name)
-                         (concat "\ninvisible(eval({source(file=\"" filename
-                                 "\")\n cat(\"Sourced file '" filename "'\\n\")}, env=globalenv()))"))))))
+    (cond
+     ;; ((or ess-r-package-mode
+     ;;      ;; FIXME: Is this still relevant with ess-developer rewrite?
+     ;;      (ess-get-process-variable 'ess-r-package-mode))
+     ;;  (ess-r-load-file-namespaced filename))
+     ((not file)
+      ;; source the buffer content, org-mode, *scratch* etc.
+      (let ((ess-inject-source t))
+        (ess-tracebug-send-region proc (point-min) (point-max) nil
+                                  (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face)))))
+     (t
+      (when (buffer-modified-p) (save-buffer))
+      (save-selected-window
+        (ess-switch-to-ESS t))
+      (ess-send-string (get-process ess-current-process-name)
+                       (concat "\ninvisible(eval({source(file=\"" filename
+                               "\")\n cat(\"Sourced file '" filename "'\\n\")}, env=globalenv()))"))
+      filename))))
 
 ;;;_ + BREAKPOINTS
 

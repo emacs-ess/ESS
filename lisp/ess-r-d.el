@@ -313,6 +313,13 @@ before ess-site is loaded) for it to take effect."))
   "Functions run in process buffer after the initialization of R
   process.")
 
+(defun ess-r-mode-p ()
+  "Check whether we have a buffer running in R mode.
+
+This is to get around the lack of proper derived modes in ESS."
+  (and (eq major-mode 'ess-mode)
+       (string= ess-dialect "R")))
+
 (defun ess--R-load-ESSR ()
   "Load/INSTALL/Update ESSR."
   (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
@@ -1087,6 +1094,16 @@ is as a placeholder for special settings (e.g. a lighter for the
 mode line)."
   :init-value nil
   :lighter ess-r-special-evaluation-mode-line)
+
+(defun ess-r-load-file (file)
+  (cond
+   ;; Namespaced evaluation (R specific)
+   ((or ess-r-evaluation-env
+        (ess-get-process-variable 'ess-r-evaluation-env))
+    (ess-r-load-file-namespaced file))
+   ;; Function set as a process property by Tracebug (redundant)
+   ((and nil (fboundp (ess-process-get 'source-file-function)))
+    (funcall (ess-process-get 'source-file-function) file))))
 
 (defcustom ess-r-reload-inferior-hook nil
   "Hook run when reloading the R inferior buffer."

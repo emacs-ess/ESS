@@ -2122,6 +2122,12 @@ for `ess-eval-region'."
           (ess-check-modifications))
       (ess-force-buffer-current "Process to load into: "))))
 
+(defun ess-load-file--fallback (file)
+  "Default way of sending FILE to an ESS process."
+  (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
+        error-occurred nomessage)
+    (ess-eval-linewise (format ess-load-command filename))))
+
 (defun ess-load-file (filename)
   "Load a source file into an inferior ESS process."
   (interactive (list (or (and (memq major-mode '(ess-mode ess-julia-mode))
@@ -2131,21 +2137,15 @@ for `ess-eval-region'."
   (ess-load-file--normalise-buffer filename)
   (let ((filename (ess-load-file--normalise-file filename)))
     (cond
-     ;; Namespaced evaluation (R specific)
-     ((or ess-r-evaluation-env
-          (ess-get-process-variable 'ess-r-evaluation-env))
-      (ess-r-load-file-namespaced filename))
-     ;; Function set as a process property by Tracebug (redundant)
-     ((and nil (fboundp (ess-process-get 'source-file-function)))
-      (funcall (ess-process-get 'source-file-function) filename))
      ;; DDE evaluation (specific to S-Plus and RGUI on Windows)
      ((ess-ddeclient-p)
       (ess-load-file-ddeclient filename))
-     ;; This is currently rarely called
+     ;; R evaluation
+     ((and (ess-r-mode-p)
+           (ess-r-load-file filename)))
+     ;; Fallback
      (t
-      (let ((errbuffer (ess-create-temp-buffer ess-error-buffer-name))
-            error-occurred nomessage)
-        (ess-eval-linewise (format ess-load-command filename)))))))
+      (ess-load-file--fallback)))))
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()
