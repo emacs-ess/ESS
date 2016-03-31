@@ -102,10 +102,10 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
     mat2elist <- function(mat){
         if(!is.null(dim(mat))){
             apply(mat, 1, function(r)
-                  sprintf("(list \"%s\")",
-                          paste0(gsub("\"","\\\\\"",
-                                      as.vector(r[c("Title", "Dir", "PDF", "File", "R")])),
-                                 collapse = "\" \"")))
+                sprintf("(list \"%s\")",
+                        paste0(gsub("\"","\\\\\"",
+                                    as.vector(r[c("Title", "Dir", "PDF", "File", "R")])),
+                               collapse = "\" \"")))
         }
     }
     cat("(list \n",
@@ -122,3 +122,7 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
     else
 	fun(Rd)
 }
+
+## Local Variables:
+## eval: (ess-set-style 'RRR t)
+## End:
