@@ -11,7 +11,7 @@
         getRversion()
     } else {
         paste(R.version$major, R.version$minor, sep=".")
- }
+    }
 
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
@@ -20,16 +20,15 @@
 
 ## Instead of modern  utils::help use one that works in R 1.0.0:
 .ess.findFUN   <- get("find", .ess.utils.name)
-.ess.sourceFUN <- get("source", pos="package:base")
 .ess.helpFUN   <- get("help", envir=.GlobalEnv)# so it also works with d..tools
 
 ### HELP
 .ess.help <- function(..., help.type = getOption('help_type'))
 {
     if (.ess.Rversion > '2.10')# abbreviating 'help_type' on purpose:
-	.ess.helpFUN(..., help = help.type)
+        .ess.helpFUN(..., help = help.type)
     else # not using identical(), and working also for NULL:
-	.ess.helpFUN(..., htmlhelp = (length(help.type) && help.type=='html'))
+        .ess.helpFUN(..., htmlhelp = (length(help.type) && help.type=='html'))
 }
 
 .ess.getHelpAliases <- function(){
@@ -48,27 +47,27 @@
 ### SOURCING
 .ess.eval <- function(string, echo = TRUE, print.eval = TRUE,
                       max.deparse.length = 300,
-		      file = tempfile("ESS"),
-		      local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
+                      file = tempfile("ESS"),
+                      local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
 {
     ## create FILE, put string into it. Then source.
     ## arguments are like in source and .ess.source
     cat(string, file = file)
     on.exit(file.remove(file))
     .ess.source(file, echo = echo, print.eval = print.eval,
-		max.deparse.length = max.deparse.length, local = local)
+                max.deparse.length = max.deparse.length, local = local)
 }
 
 .ess.source <- function(file, echo = TRUE, print.eval = TRUE,
-			max.deparse.length = 300,
-			local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
+                        max.deparse.length = 300,
+                        local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
 {
     ss <- # drop 'keep.source' for older versions
-	if(.ess.Rversion >= "2.8") .ess.sourceFUN
-        else function(..., keep.source) .ess.sourceFUN(...)
+        if(.ess.Rversion >= "2.8") base::source
+        else function(..., keep.source) base::source(...)
     invisible(ss(file, echo = echo, local = local, print.eval = print.eval,
-		 max.deparse.length = max.deparse.length,
-		 keep.source = TRUE)$value) ## return value for org-babel
+                 max.deparse.length = max.deparse.length,
+                 keep.source = TRUE)$value) ## return value for org-babel
 }
 
 if(.ess.Rversion < "1.8")
@@ -83,3 +82,7 @@ if(.ess.Rversion < "1.8")
         unquote(substitute(expr))
     }
 
+
+## Local Variables:
+## eval: (ess-set-style 'RRR t)
+## End:

@@ -12,9 +12,9 @@
     if(is.function(fun)) {
         special <- grepl('[:$@[]', funname)
         args <- if(!special){
-            fundef <- paste(funname, '.default',sep='')
-            do.call('argsAnywhere', list(fundef))
-        }
+                    fundef <- paste(funname, '.default',sep='')
+                    do.call('argsAnywhere', list(fundef))
+                }
 
         if(is.null(args))
             args <- args(fun)
@@ -91,10 +91,15 @@
     i <- 1; found <- FALSE
     out <- 'No help found'
     while(i <= length(funcs) && is.null(out <-
-        tryCatch(findArgHelp(funcs[[i]], arg),
-                 warning=function(w) {NULL},
-                 error=function(e) {NULL})
+                                            tryCatch(findArgHelp(funcs[[i]], arg),
+                                                     warning=function(w) {NULL},
+                                                     error=function(e) {NULL})
                                         ))
         i <- i + 1
     cat('\n\n', as.character(out), '\n')
 };
+
+
+## Local Variables:
+## eval: (ess-set-style 'RRR t)
+## End:
