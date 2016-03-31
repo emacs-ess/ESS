@@ -320,45 +320,6 @@ This is to get around the lack of proper derived modes in ESS."
   (and (eq major-mode 'ess-mode)
        (string= ess-dialect "R")))
 
-(defun ess--R-load-ESSR ()
-  "Load/INSTALL/Update ESSR."
-  (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
-         (src-dir (expand-file-name "R" ESSR-directory)))
-
-    (if (not (or (and (boundp 'ess-remote) ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (let ((cmd (format
-                    "local({
-                      source('%s/.load.R', local=TRUE) #define load.ESSR
-                      load.ESSR('%s')})\n"
-                    src-dir src-dir)))
-          (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
-          (with-current-buffer (ess-command cmd)
-            (let ((msg (buffer-string)))
-              (when (> (length msg) 1)
-                (message (format "load ESSR: %s" msg))))))
-      ;; else, remote
-      (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
-             (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
-             (version (if (file-exists-p verfile)
-                          (with-temp-buffer
-                            (insert-file-contents verfile)
-                            (buffer-string))
-                        (error "Cannot find ESSR source code")))
-             (r-load-code (with-temp-buffer
-                            (insert-file-contents loadremote)
-                            (buffer-string))))
-        (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
-                                             verfile loadremote))
-        (unless (ess-boolean-command (format r-load-code version) nil 0.1)
-          (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-                (files (directory-files src-dir t "\\.R$")))
-            (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-            ;; should not happen, unless extrem conditions (ancient R or failed download))
-            (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-            (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
-            (mapc #'ess--inject-code-from-file files)))))))
-
 ;;;### autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
@@ -445,7 +406,7 @@ Executed in process buffer."
      ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
      (lambda (proc) (process-put proc 'packages-cached? t))))
 
-  (ess--R-load-ESSR)
+  (inferior-ess-r-load-ESSR)
 
   (when inferior-ess-language-start
     (ess-eval-linewise inferior-ess-language-start
