@@ -199,7 +199,7 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
       ;; ugly fix for evn variable. What can we do :(
       (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
                          nil nil nil 'wait)
-      (ess--R-load-ESSR))
+      (inferior-ess-r-load-ESSR))
 
     (when (equal ess-dialect "S+")
       (ess-command ess-S+--injected-code))
