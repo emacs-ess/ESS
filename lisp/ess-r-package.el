@@ -42,7 +42,7 @@
   :group 'ess-r-package)
 
 (defcustom ess-r-set-source-environment-in-packages nil
-  "If non-nil, `ess-r-evaluation-environment' is automatically
+  "If non-nil, `ess-r-evaluation-env' is automatically
 set within R packages."
   :group 'ess-r-package
   :type 'boolean)
@@ -145,7 +145,7 @@ section."
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-set-source-environment-in-packages
-    (setq-local ess-r-evaluation-environment
+    (setq-local ess-r-evaluation-env
                 (car (ess-r-package-current-package-info)))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
@@ -166,7 +166,6 @@ section."
     (message msg name)
     (ess-r-package--update-process-local-pkg pkg-info)
     (ess-eval-linewise (format command (concat path args)))))
-
 
 
 ;;;*;;; Package Detection
@@ -448,7 +447,7 @@ within R packages."
 
 (defcustom ess-r-package-mode-line
   '(:eval (let* ((pkg-name (car (ess-r-package-current-package-info)))
-                 (src (if (string= pkg-name ess-r-evaluation-environment)
+                 (src (if (string= pkg-name ess-r-evaluation-env)
                           (format "src:")
                         "")))
             (when pkg-name
