@@ -558,11 +558,7 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
-;;; SJE -- this is set in ess-site.el to be "always", so I changed
-;;; value t to be "always", so that ess-site.el does not need editing.
-;;; However, this is a bit messy, and would be nicer if ess-site.el
-;;; value was t rather than "always".
-(defcustom ess-keep-dump-files 'ask
+(defcustom ess-keep-dump-files t
   "Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with ess-dump-object-into-edit-buffer.
@@ -2108,26 +2104,25 @@ for help files.  The default value is nil for other systems."
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
-(defcustom inferior-ess-ddeclient nil
+(defcustom inferior-ess-ddeclient "Initial"
   "ddeclient is the intermediary between emacs and the stat program."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-ddeclient)
-
-(defcustom inferior-ess-client-name nil
+(defcustom inferior-ess-client-name "Initial"
   "Name of ESS program ddeclient talks to."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-client-name)
-
-(defcustom inferior-ess-client-command nil
+(defcustom inferior-ess-client-command "Initial"
   "ddeclient command sent to the ESS program."
   :group 'ess-proc
   :type '(choice (const nil) string))
 
+(make-variable-buffer-local 'inferior-ess-client-name)
+(make-variable-buffer-local 'inferior-ess-ddeclient)
 (make-variable-buffer-local 'inferior-ess-client-command)
+
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name

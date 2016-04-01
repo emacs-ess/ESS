@@ -182,7 +182,6 @@
 (easy-menu-add-item inferior-ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
 
-
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 
@@ -312,6 +311,95 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect."))
 
+;;; Create functions for calling different (older or newer than default)
+;;;  versions of R and S(qpe).
+(defvar ess-versions-created nil
+  "List of strings of all S- and R-versions found on the system.")
+
+;; is currently used (updated) by ess-find-newest-R
+(defvar ess-r-versions-created nil
+  "List of strings of all R-versions found on the system.")
+
+(defun ess-r-s-versions-creation ()
+  "(Re)Create ESS  R-<..> commands FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+  (interactive)
+  ;; Create ess-versions-created, ess-r-versions-created, and on
+  ;; Windows, ess-rterm-version-paths
+  (let ((R-newest-list '("R-newest"))
+        (ess-s-versions-created (if ess-microsoft-p
+                                    (nconc
+                                     (ess-sqpe-versions-create ess-SHOME-versions)               ;; 32-bit
+                                     (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+                                  (ess-s-versions-create)))) ;; use ess-s-versions
+    (if ess-microsoft-p
+        (setq ess-rterm-version-paths ;; (ess-find-rterm))
+              (ess-flatten-list
+               (ess-uniq-list
+                (if (not ess-directory-containing-R)
+                    (if (getenv "ProgramW6432")
+                        (let ((P-1 (getenv "ProgramFiles(x86)"))
+                              (P-2 (getenv "ProgramW6432")))
+                          (nconc
+                           ;; always 32 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+                           ;; keep this both for symmetry and because it can happen:
+                           (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+
+                           ;; always 64 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")
+                           ))
+                      (let ((PF (getenv "ProgramFiles")))
+                        (nconc
+                         ;; always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                         (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                         ))
+                      )
+                  (let ((PF ess-directory-containing-R))
+                    (nconc
+                     (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")
+                     ))
+                  )))))
+    (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
+
+    (setq ess-r-versions-created ;;  for Unix *and* Windows, using either
+          (ess-r-versions-create));; ess-r-versions or ess-rterm-version-paths (above!)
+
+    ;; Add the new defuns, if any, to the menu.
+    ;; Check that each variable exists, before adding.
+    ;; e.g. ess-sqpe-versions-created will not be created on Unix.
+    (setq ess-versions-created
+          (ess-flatten-list
+           (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
+                   '(R-newest-list
+                     ess-r-versions-created
+                     ess-s-versions-created))))))
+
+(defun ess-r-s-versions-creation+menu ()
+  "Call `\\[ess-r-s-versions-creation] creaing `ess-versions-created' and
+update the \"Start Process\" menu."
+  (interactive)
+  (ess-message "[ess-site:] before (ess-r-s-versions-creation) ...")
+  (ess-r-s-versions-creation)
+
+  (when ess-versions-created
+    ;; new-menu will be a list of 3-vectors, of the form:
+    ;; ["R-1.8.1" R-1.8.1 t]
+    (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+                          ess-versions-created)))
+      (easy-menu-add-item ess-mode-menu '("Start Process")
+                          (cons "Other" new-menu))))
+
+  ;; return
+  ess-versions-created)
+
 
 ;;;*;;; Mode init
 
@@ -419,6 +507,9 @@ Executed in process buffer."
                        nil nil nil 'wait-prompt))
 
   (with-ess-process-buffer nil
+    (when ess-microsoft-p
+      (ess-eval-linewise "options(chmhelp=FALSE, help_type=\"text\")"
+                         nil nil nil 'wait))
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-R-post-run-hook)))
 
