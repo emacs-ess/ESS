@@ -986,9 +986,9 @@ similar to `load-library' emacs function."
 
 ;;*;; Interaction with R
 
-;;;*;;; Namespaced evaluation
+;;;*;;; Evaluation
 
-(defvar ess-r-evaluation-environment nil
+(defvar ess-r-evaluation-env nil
   "Environment into which code should be evaluated.
 
 When nil, code is evaluated in the global environment if tracebug
@@ -998,7 +998,7 @@ function if it is active.
 Currently only namespaces can be set as evaluation environments.
 Use `ess-r-select-evaluation-namespace' to select a package
 namespace.")
-(make-variable-buffer-local 'ess-r-evaluation-environment)
+(make-variable-buffer-local 'ess-r-evaluation-env)
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "Whether to look for all installed R packages.
@@ -1020,25 +1020,25 @@ attached packages."
   (let ((pkg-name (cond ((stringp arg)
                          arg)
                         (arg
-                         ess-r-evaluation-environment)
+                         ess-r-evaluation-env)
                         (t
                          (ess-r--select-package-name)))))
     (cond ((and arg (not (stringp arg)))
-           (setq-local ess-r-evaluation-environment nil)
+           (setq-local ess-r-evaluation-env nil)
            (ess-r-special-evaluation-mode -1)
            (message (format "Evaluation of code in %s disabled" pkg-name)))
           (t
-           (setq-local ess-r-evaluation-environment pkg-name)
+           (setq-local ess-r-evaluation-env pkg-name)
            (ess-r-special-evaluation-mode 1)
            (message (format "Evaluating code in %s" pkg-name))))
     (force-mode-line-update)))
 
 (defcustom ess-r-special-evaluation-mode-line
   '(:eval (if (and ess-r-package-mode
-                   (string= ess-r-evaluation-environment
+                   (string= ess-r-evaluation-env
                             (car (ess-r-package--local-package-info))))
               ""
-            (format " [src:%s]" ess-r-evaluation-environment)))
+            (format " [src:%s]" ess-r-evaluation-env)))
   "Mode line for namespaced evaluation.
 
 The default value handles the interaction with `ess-r-package-mode-line'.
