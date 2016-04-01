@@ -34,6 +34,23 @@
 
 ;;; Code:
 
+;; Emacs 19.28 and 19.29 don't have functions we need.
+(if (not (fboundp 'file-name-sans-extension))
+    ;; take the definition from emacs-20.6/lisp/files.el:
+    (defun file-name-sans-extension (filename)
+      "Return FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+      (save-match-data
+        (let ((file (file-name-sans-versions
+                     (file-name-nondirectory filename)))
+              directory)
+          (if (string-match "\\.[^.]*\\'" file)
+              (if (setq directory (file-name-directory filename))
+                  (expand-file-name (substring file 0 (match-beginning 0))
+                                    directory)
+                (substring file 0 (match-beginning 0)))
+            filename)))))
+
 ;;; Define a function to make it easier to check which version we're
 ;;; running.
 ;; no longer in use; 2013-12-30:
