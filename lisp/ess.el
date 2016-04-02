@@ -461,7 +461,6 @@ Otherwise try a list of fixed known viewers.
       (store-match-data (match-data))
       (nreverse list))))
 
-
 (defvar ess--make-local-vars-permenent nil
   "If this varialbe is non-nil in a buffer make all variable permannet.
 Used in noweb modes.")
