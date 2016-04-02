@@ -45,7 +45,7 @@
 }
 
 ### SOURCING
-.ess.eval <- function(string, echo = TRUE, print.eval = TRUE,
+.ess.eval <- function(string, visibly = TRUE, output = FALSE,
                       max.deparse.length = 300,
                       file = tempfile("ESS"),
                       local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
@@ -54,18 +54,18 @@
     ## arguments are like in source and .ess.source
     cat(string, file = file)
     on.exit(file.remove(file))
-    .ess.source(file, echo = echo, print.eval = print.eval,
+    .ess.source(file, visibly = visibly, output = output,
                 max.deparse.length = max.deparse.length, local = local)
 }
 
-.ess.source <- function(file, echo = TRUE, print.eval = TRUE,
+.ess.source <- function(file, visibly = TRUE, output = FALSE,
                         max.deparse.length = 300,
                         local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
 {
     ss <- # drop 'keep.source' for older versions
         if(.ess.Rversion >= "2.8") base::source
         else function(..., keep.source) base::source(...)
-    invisible(ss(file, echo = echo, local = local, print.eval = print.eval,
+    invisible(ss(file, echo = visibly, local = local, print.eval = output,
                  max.deparse.length = max.deparse.length,
                  keep.source = TRUE)$value) ## return value for org-babel
 }

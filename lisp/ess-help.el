@@ -44,35 +44,7 @@
   (require 'info))
 
 (require 'ess)
-
-(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-region-and-go       "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function            "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function-and-go     "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
-(autoload 'ess-with-current-buffer      "ess-inf" "[autoload]" t)
-
-(autoload 'ess-goto-beginning-of-function-or-para    "ess-mode" "[autoload]" t)
-(autoload 'ess-goto-end-of-function-or-para          "ess-mode" "[autoload]" t)
-
-(autoload 'ess-load-file                "ess-inf" "[autoload]" t)
-(autoload 'ess-command                  "ess-inf" "(autoload)" nil)
-(autoload 'ess-display-temp-buffer      "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
-(autoload 'ess-read-object-name-default "ess-inf" "(autoload)" nil)
-(autoload 'ess-make-buffer-current      "ess-inf" "(autoload)" nil)
-(autoload 'ess-search-list              "ess-inf" "(autoload)" nil)
-(autoload 'ess-get-object-list          "ess-inf" "(autoload)" nil)
-
-(autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
-
-(autoload 'ess-display-help-on-object-ddeclient "ess-dde" "(autoload)" nil)
-
-(autoload 'tramp-tramp-file-p           "tramp" "(autoload).")
-(autoload 'tramp-file-name-localname    "tramp" "(autoload).")
-(autoload 'tramp-dissect-file-name      "tramp" "(autoload).")
+(require 'ess-mode)
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -146,22 +118,16 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
      (ess-force-buffer-current)
      (when current-prefix-arg ;update cache if prefix
        (ess-process-put 'sp-for-help-changed? t))
-     (if (ess-ddeclient-p)
-         (list (read-string "Help on: "))
-       (list (ess-find-help-file "Help on")))))
-
-  (if (or (ess-ddeclient-p)
-          (equal inferior-ess-help-filetype "chm"))
-      (if (ess-ddeclient-p)
-          (ess-display-help-on-object-ddeclient object) ;; ddeclient version
-        (ess-eval-linewise (concat "help(" object ")"))) ;; "chm" version
-
-    ;; else: "normal", non-DDE behavior:
+     (list (ess-find-help-file "Help on"))))
+  (cond
+   ((fboundp ess-display-help-on-object-function)
+    (funcall ess-display-help-on-object-function object command))
+   (t
     (let* ((hb-name (concat "*help["
                             ess-current-process-name
                             "](" (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
-           (old-hb-p    (get-buffer hb-name))
-           (tbuffer     (get-buffer-create hb-name)))
+           (old-hb-p (get-buffer hb-name))
+           (tbuffer (get-buffer-create hb-name)))
       (when (or (not old-hb-p)
                 current-prefix-arg
                 (ess--help-get-bogus-buffer-substring old-hb-p))
@@ -170,7 +136,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
                 ess-help-type 'help)
           (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
-        (ess--switch-to-help-buffer tbuffer)))))
+        (ess--switch-to-help-buffer tbuffer))))))
 
 (defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
   (ess-write-to-dribble-buffer
@@ -844,13 +810,18 @@ Keystroke    Section
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
 Stata or XLispStat for additional information."
   (ess-make-buffer-current)
-  (if ess-get-help-topics-function
-      (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
-             (hlpobjs (ess-helpobjs-at-point help-files-list)))
-        (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
-                             nil nil nil nil (car hlpobjs)))
-    ;; (string-match "\\(XLS\\)\\|\\(STA\\)\\|\\(SAS\\)" ess-language)
-    (read-string (format "%s: " p-string))))
+  (cond
+   ((fboundp ess-find-help-file-function)
+    (funcall ess-find-help-file-function p-string))
+   (t
+    ;; Fixme: Are `ess-find-help-file-function' and
+    ;; `ess-get-help-topics-function' redundant?
+    (if ess-get-help-topics-function
+        (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
+               (hlpobjs (ess-helpobjs-at-point help-files-list)))
+          (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+                               nil nil nil nil (car hlpobjs)))
+      (read-string (format "%s: " p-string))))))
 
 ;;*;; Utility functions
 

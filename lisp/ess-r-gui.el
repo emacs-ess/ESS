@@ -71,8 +71,10 @@ nil on Unix machines."
   "options(chmhelp=FALSE, htmlhelp=FALSE, help_type='text'); require(tcltk2)"
   "additional arguments to rgui")
 
-(defun ess-eval-region-ddeclient (start end even-empty)
-  "Loop through lines in region and send them to ESS via ddeclient."
+(defun ess-dde-rgui-send-region (proc start end &optional visibly message)
+  "Loop through lines in region and send them to ESS via ddeclient.
+
+PROC, VISIBLY and MESSAGE are ignored."
   (setq ;; set the following variables for the current ddeESS process.
    inferior-ess-ddeclient (ess-get-process-variable 'inferior-ess-ddeclient)
    inferior-ess-client-name (ess-get-process-variable 'inferior-ess-client-name)
@@ -81,17 +83,17 @@ nil on Unix machines."
   (goto-char (point-min))
 
   (if (equal inferior-ess-ddeclient "execdde")
-      (ess-eval-region-execdde start end even-empty)
+      (ess-eval-region-execdde start end 'even-empty)
 
     (let ((beg))
       (while (or (< (point) (point-max))
-                 (and (= 1 (point-max)) even-empty))
+                 (= 1 (point-max)))
         (setq beg (point))
         (end-of-line)
         ;; call-process-region won't send over a 0-character line.
         ;; We go outside the loop to create a 1-character line " " in the
         ;; *ESS-temporary* buffer
-        (if (= beg (point))  ;; do empty line outside loop
+        (if (= beg (point)) ;; do empty line outside loop
             (ess-eval-linewise-ddeclient " " nil 'eob t)
           (call-process-region
            beg (point)
@@ -104,38 +106,46 @@ nil on Unix machines."
 
 (defvar Rgui-customize-alist
   (append
-   '((ess-local-customize-alist . 'Rgui-customize-alist)
-     (ess-dialect . "R")
-     (ess-suffix . "R")
-     (ess-dump-filename-template . (ess-replace-regexp-in-string
-                                    "S$" ess-suffix ; in the one from custom:
-                                    ess-dump-filename-template-proto))
-     (ess-mode-syntax-table . R-syntax-table)
-     (ess-mode-editing-alist        . R-editing-alist)
-     (ess-change-sp-regexp . ess-R-change-sp-regexp)
-     (ess-help-sec-regex . ess-help-R-sec-regex)
-     (ess-help-sec-keys-alist . ess-help-R-sec-keys-alist)
-     (ess-loop-timeout . ess-S-loop-timeout);fixme: dialect spec.
-     (ess-cmd-delay . ess-R-cmd-delay)
-     (ess-function-pattern              . ess-R-function-pattern)
-     (ess-object-name-db-file . "ess-r-namedb.el" )
-     (inferior-ess-program . inferior-Rgui-program-name)
-     (inferior-ess-objects-command . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
+   '((ess-local-customize-alist        . 'Rgui-customize-alist)
+     (ess-dialect                      . "R")
+     (ess-suffix                       . "R")
+     (ess-dump-filename-template       . (ess-replace-regexp-in-string
+                                          "S$" ess-suffix ; in the one from custom:
+                                          ess-dump-filename-template-proto))
+     (ess-mode-syntax-table            . R-syntax-table)
+     (ess-mode-editing-alist           . R-editing-alist)
+     (ess-change-sp-regexp             . ess-R-change-sp-regexp)
+     (ess-help-sec-regex               . ess-help-R-sec-regex)
+     (ess-help-sec-keys-alist          . ess-help-R-sec-keys-alist)
+     (ess-loop-timeout                 . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-cmd-delay                    . ess-R-cmd-delay)
+     (ess-function-pattern             . ess-R-function-pattern)
+     (ess-object-name-db-file          . "ess-r-namedb.el" )
+     (ess-send-region-function         . #'ess-dde-rgui-send-region)
+     (ess-load-file-function           . #'ess-dde-load-file)
+     (ess-command-function             . #'ess-dde-command)
+     (ess-eval-linewise-function       . #'ess-dde-eval-linewise)
+     (ess-dump-object-function         . #'ess-dde-dump-object)
+     (ess-read-object-name-function    . #'ess-dde-read-object-name)
+     (ess-find-help-file-function      . #'ess-dde-find-help-file)
+     (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
+     (inferior-ess-program             . inferior-Rgui-program-name)
+     (inferior-ess-objects-command     . inferior-R-objects-command)
+     (inferior-ess-font-lock-keywords  . 'inferior-R-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")
-     (inferior-ess-help-command . "help(\"%s\")\n")
-     (inferior-ess-help-filetype        . nil) ;; "chm") ;;?
-     (inferior-ess-exit-command . "q()")
-     (inferior-ess-exit-prompt . "Save workspace image? [y/n/c]: ")
-     (inferior-ess-primary-prompt . "\\([A-Z/][][A-Za-z0-9./]*\\)*[>$] ")
-     (inferior-ess-secondary-prompt . "+ ?")
+     (inferior-ess-help-command        . "help(\"%s\")\n")
+     (inferior-ess-help-filetype       . nil) ;; "chm") ;;?
+     (inferior-ess-exit-command        . "q()")
+     (inferior-ess-exit-prompt         . "Save workspace image? [y/n/c]: ")
+     (inferior-ess-primary-prompt      . "\\([A-Z/][][A-Za-z0-9./]*\\)*[>$] ")
+     (inferior-ess-secondary-prompt    . "+ ?")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file . nil) ;; "~/.ess-R"
-     (inferior-ess-start-args . "")
-     (inferior-ess-ddeclient  . "execdde")
-     (ess-STERM . "ddeSS")
-     (ess-editor . R-editor)
-     (ess-pager . Rgui-pager)
+     (inferior-ess-start-file          . nil) ;; "~/.ess-R"
+     (inferior-ess-start-args          . "")
+     (inferior-ess-ddeclient           . "execdde")
+     (ess-STERM                        . "ddeSS")
+     (ess-editor                       . R-editor)
+     (ess-pager                        . Rgui-pager)
      )
    S-common-cust-alist)
   "Variables to customize for Rgui")

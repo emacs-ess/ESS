@@ -53,6 +53,7 @@
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (ess-help-web-search-command   . "http://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
+    (ess-eval-linewise-function    . #'stata-eval-linewise)
     (inferior-ess-font-lock-defaults . ess-STA-mode-font-lock-defaults)
     (inferior-ess-program          . inferior-STA-program-name)
     (inferior-ess-objects-command  . "describe\n")
@@ -151,6 +152,15 @@ This function is placed in `ess-presend-filter-functions'.
       (progn
         (ess-process-put 'help-topics (ess--STA-retrive-topics-from-search))
         (ess-process-get 'help-topics))))
+
+(defun stata-eval-linewise (text &optional invisibly &rest args)
+  ;; The following is required to make sure things work!
+  (let ((ess-eval-linewise-function nil)
+        ;; RAS: mindless replacement of semi-colons
+        (text (if ess-sta-delimiter-friendly
+                  (ess-replace-in-string text ";" "\n")
+                text)))
+    (apply #'ess-eval-linewise text t args)))
 
  ; Provide package
 
