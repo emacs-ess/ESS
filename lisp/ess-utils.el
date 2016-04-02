@@ -30,174 +30,139 @@
   (require 'tramp)
   (require 'cl))
 
-(defun ess-inside-string-or-comment-p (&optional pos)
-  "Return non-nil if POSition [defaults to (point)] is inside string or comment
- (according to syntax)."
-  ;;FIXME (defun ess-calculate-indent ..)  can do that ...
+
+;;*;; elisp tools
+
+(defun ess-search-except (regexp &optional except backward)
+  "Search for a regexp, store as match 1, optionally ignore
+strings that match exceptions."
   (interactive)
-  (setq pos (or pos (point)))
-  (let ((ppss (syntax-ppss pos)))
-    (or (car (setq ppss (nthcdr 3 ppss)))
-        (car (setq ppss (cdr ppss)))
-        (nth 3 ppss))))
 
+  (let ((continue t) (exit nil))
 
-(defun ess-inside-string-p (&optional pos)
-  "Return non-nil if point is inside string (according to syntax)."
+    (while continue
+      (if (or (and backward (search-backward-regexp regexp nil t))
+              (and (not backward) (search-forward-regexp regexp nil t)))
+          (progn
+            (setq exit (match-string 1))
+            (setq continue (and except (string-match except exit)))
+            (if continue (setq exit nil)))
+        ;;else
+        (setq continue nil))
+      )
+
+    exit))
+
+(defun ess-save-and-set-local-variables ()
+  "If buffer was modified, save file and set Local Variables if defined.
+Return t if buffer was modified, nil otherwise."
   (interactive)
-  ;; when narrowing the buffer in iESS the ppss cahce is screwed:( But it is
-  ;; very fast, so don't bother for now.
-  (let ((pps (syntax-ppss pos)))
-    (nth 3 pps))
-  ;; (nth 3 (parse-partial-sexp (point-min) pos))
-  )
 
-(defun ess-inside-comment-p (&optional pos)
-  "Return non-nil if point is inside string (according to syntax)."
+  (let ((ess-temp-point (point))
+        (ess-temp-return-value (buffer-modified-p)))
+    ;; if buffer has changed, save buffer now (before potential revert)
+    (if ess-temp-return-value (save-buffer))
+
+    ;; If Local Variables are defined, update them now
+    ;; since they may have changed since the last revert
+    ;;  (save-excursion
+    (beginning-of-line -1)
+    (save-match-data
+      (if (search-forward "End:" nil t) (revert-buffer t t)))
+    ;; save-excursion doesn't save point in the presence of a revert
+    ;; so you need to do it yourself
+    (goto-char ess-temp-point)
+
+    ess-temp-return-value))
+
+(defun ess-get-file-or-buffer (file-or-buffer)
+  "Return file-or-buffer if it is a buffer; otherwise return the buffer
+associated with the file which must be qualified by it's path; if the
+buffer does not exist, return nil."
   (interactive)
-  (setq pos (or pos (point)))
+
+  (if file-or-buffer
+      (if (bufferp file-or-buffer) file-or-buffer
+        (find-buffer-visiting file-or-buffer))))
+
+(defun ess-set-local-variables (alist &optional file-or-buffer)
+  "Set local variables from ALIST in current buffer; if file-or-buffer
+is specified, perform action in that buffer."
+  (interactive)
+  (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
+
+  (mapcar (lambda (pair)
+            (make-local-variable (car pair))
+            (set (car pair) (eval (cdr pair))))
+          alist))
+
+(defun ess-clone-local-variables (from-file-or-buffer
+                                  &optional to-file-or-buffer)
+  "Clone local variables from one buffer to another buffer."
+  (interactive)
+  (ess-set-local-variables
+   (ess-sas-create-local-variables-alist from-file-or-buffer)
+   to-file-or-buffer))
+
+(defun ess-return-list (ess-arg)
+  "Given an item, if it is a list return it, else return item in a list."
+  (if (listp ess-arg) ess-arg (list ess-arg)))
+
+;; Copyright (C) 1994 Simon Marshall.
+;; Author: Simon Marshall <Simon.Marshall@mail.esrin.esa.it>
+;; LCD Archive Entry:
+;; unique|Simon Marshall|Simon.Marshall@mail.esrin.esa.it|
+;; Functions and commands to uniquify lists or buffer text (cf. sort).
+;; 23-Apr-1994|1.00|~/packages/unique.el.Z|
+;;
+;; MM: renamed from 'unique' to 'ess-unique', then
+(defun ess-uniq (list predicate)
+  "Uniquify LIST, stably, deleting elements using PREDICATE.
+Return the list with subsequent duplicate items removed by side effects.
+PREDICATE is called with an element of LIST and a list of elements from LIST,
+and should return the list of elements with occurrences of the element removed.
+This function will work even if LIST is unsorted.  See also `ess-uniq-list'."
+  (let ((list list))
+    (while list
+      (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
+  list)
+
+(defun ess-uniq-list (items)
+  "Delete all duplicate entries in ITEMS list, calling `ess-uniq'."
+  (ess-uniq items 'delete))
+
+(defun ess-flatten-list (&rest list)
+  "Take the arguments and flatten them into one long list.
+Drops 'nil' entries."
+  ;; Taken from lpr.el
+  ;; `lpr-flatten-list' is defined here (copied from "message.el" and
+  ;; enhanced to handle dotted pairs as well) until we can get some
+  ;; sensible autoloads, or `flatten-list' gets put somewhere decent.
+
+  ;; (ess-flatten-list '((a . b) c (d . e) (f g h) i . j))
+  ;; => (a b c d e f g h i j)
+  (ess-flatten-list-1 list))
+
+(defun ess-flatten-list-1 (list)
+  (cond
+   ((null list) (list))
+   ((consp list)
+    (append (ess-flatten-list-1 (car list))
+            (ess-flatten-list-1 (cdr list))))
+   (t (list list))))
+
+(defun ess-delete-blank-lines ()
+  "Convert 2 or more lines of white space into one."
+  (interactive)
   (save-excursion
-    (or (when font-lock-mode ;; this is a shortcut (works well usually)
-	  (let ((face (get-char-property pos 'face)))
-	    (eq 'font-lock-comment-face face)))
-	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
-
-(defun ess-inside-brackets-p (&optional pos curly?)
-  "Return t if position POS is inside brackets.
-POS defaults to point if no value is given. If curly? is non nil
-also return t if inside curly brackets."
-  (save-excursion
-    (let ((ppss (syntax-ppss pos))
-          (r nil))
-      (while (and (> (nth 0 ppss) 0)
-                  (not r))
-        (goto-char (nth 1 ppss))
-        (when (or (char-equal ?\[ (char-after))
-                  (and curly?
-                       (char-equal ?\{ (char-after))))
-          (setq r t))
-        (setq ppss (syntax-ppss)))
-      r)))
-
-(defun ess--extract-default-fl-keywords (keywords)
-  "Extract the t-keywords from `ess-font-lock-keywords'."
-  (delq nil (mapcar (lambda (c)
-                      (when (cdr c) (symbol-value (car c))))
-                    (if (symbolp keywords)
-                        (symbol-value keywords)
-                      keywords))))
-
-(defun ess-font-lock-toggle-keyword (keyword)
-  (interactive
-   (list (intern (ess-completing-read
-                  "Keyword to toggle"
-                  (mapcar (lambda (el) (symbol-name (car el)))
-                          (symbol-value ess-font-lock-keywords))
-                  nil t))))
-  (let* ((kwds (symbol-value (if (eq major-mode 'ess-mode)
-                                 ess-font-lock-keywords
-                               inferior-ess-font-lock-keywords)))
-         (kwd (assoc keyword kwds)))
-    (unless kwd (error "Keyword %s was not found in (inferior-)ess-font-lock-keywords list" keyword))
-    (if (cdr kwd)
-        (setcdr kwd nil)
-      (setcdr kwd t))
-    (let ((mode major-mode)
-          (dialect ess-dialect)
-          (fld (ess--extract-default-fl-keywords kwds)))
-      ;; refresh font-lock defaults in all necessary buffers
-      (mapc (lambda (b)
-              (with-current-buffer b
-                (when (and (eq major-mode mode)
-                           (eq ess-dialect dialect))
-                  (setcar font-lock-defaults fld)
-                  (font-lock-refresh-defaults))))
-            (buffer-list)))))
-
-
-(defun ess--generate-font-lock-submenu (menu)
-  "Internal, used to generate ESS font-lock submenu"
-  (append (mapcar (lambda (el)
-                    `[,(symbol-name (car el))
-                      (lambda () (interactive)
-                        (ess-font-lock-toggle-keyword ',(car el)))
-                      :style toggle
-                      :enable t
-                      :selected ,(cdr el)])
-                  (cond ((eq major-mode 'ess-mode)
-                         (symbol-value ess-font-lock-keywords))
-                        ((eq major-mode 'inferior-ess-mode)
-                         (symbol-value inferior-ess-font-lock-keywords))))
-          (list "-----"
-                ["Save to custom" (lambda () (interactive)
-                                    (let ((kwd (if (eq major-mode 'ess-mode)
-                                                   ess-font-lock-keywords
-                                                 inferior-ess-font-lock-keywords)))
-                                      (customize-save-variable kwd (symbol-value kwd)))) t])))
-
-
-
-(defun ess--generate-eval-visibly-submenu (menu)
-  '(["yes" (lambda () (interactive) (setq ess-eval-visibly t))
-     :style radio :enable t :selected (eq ess-eval-visibly t)]
-    ["nowait" (lambda () (interactive) (setq ess-eval-visibly 'nowait))
-     :style radio :enable t :selected (eq ess-eval-visibly 'nowait) ]
-    ["no" (lambda () (interactive) (setq ess-eval-visibly nil))
-     :style radio :enable t :selected (eq ess-eval-visibly nil) ]))
-
-
-(defun ess-quote-special-chars (string)
-  (replace-regexp-in-string
-   "\"" "\\\\\\&"
-   (replace-regexp-in-string ;; replace backslashes
-    "\\\\" "\\\\" string nil t)))
-
-;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
-;; is "wrongly" returning   "p1"  for word "p1.part2" :
-(defun ess-extract-word-name ()
-  "Get the word you're on (cheap algorithm). Use `ess-read-object-name-default'
-for a better but slower version."
-  (save-excursion
-    (re-search-forward "\\<\\w+\\>" nil t)
-    (buffer-substring (match-beginning 0) (match-end 0))))
-
-(defun ess-rep-regexp (regexp to-string &optional fixedcase literal verbose)
-  "Instead of (replace-regexp..) -- do NOT replace in strings or comments.
- If FIXEDCASE is non-nil, do *not* alter case of replacement text.
- If LITERAL   is non-nil, do *not* treat `\\' as special.
- If VERBOSE   is non-nil, (message ..) about replacements."
-  (let ((case-fold-search (and case-fold-search
-                               (not fixedcase))); t  <==> ignore case in search
-        (ppt (point)); previous point
-        (p))
-    (while (and (setq p (re-search-forward regexp nil t))
-                (< ppt p))
-      (setq ppt p)
-      (cond ((not (ess-inside-string-or-comment-p (1- p)))
-             (if verbose
-                 (let ((beg (match-beginning 0)))
-                   (message "buffer in (match-beg.,p)=(%d,%d) is '%s'"
-                            beg p (buffer-substring beg p))))
-             (replace-match to-string fixedcase literal)
-             ;;or (if verbose (setq pl (append pl (list p))))
-             )))
-    ;;or (if (and verbose pl)
-    ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
-    ) )
-
-(defun ess-replace-regexp-dump-to-src
-  (regexp to-string &optional dont-query verbose ensure-mode)
-  "Depending on dont-query, call `ess-rep-regexp' or `query-replace-regexp'
-from the beginning of the buffer."
-  (save-excursion
-    (if (and ensure-mode
-             (not (equal major-mode 'ess-mode)))
-        (ess-mode))
     (goto-char (point-min))
-    (if dont-query
-        (ess-rep-regexp     regexp to-string nil nil verbose)
-      (query-replace-regexp regexp to-string nil))))
+    (save-match-data
+      (while (search-forward-regexp "^[ \t]*\n[ \t]*\n" nil t)
+        ;;(goto-char (match-beginning 0))
+        (delete-blank-lines)))))
 
+
+;;*;; System
 
 (defun ess-revert-wisely ()
   "Revert from disk if file and buffer last modification times are different."
