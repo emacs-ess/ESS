@@ -318,6 +318,10 @@ their own frames."
             (when (string= ess-language "SAS") ;; e.g. not for R-only users
               (local-set-key "\C-c\C-w" 'ess-multi-frame-SAS))))
 
+(defun ess-num-or-zero (arg)
+  "*If a number, then return that number, otherwise return 0."
+  (or (and (numberp arg) arg) 0))
+
  ; Provide package
 
 (provide 'ess-sas-d)
