@@ -15,8 +15,10 @@
 
 
 (when (= (length argv) 0)
-  (setq argv '("--rstats" "--rstats-indent")))
+  (setq argv '("--inf" "--rstats" "--rstats-indent")))
 
+(when (member "--inf" argv)
+  (load (expand-file-name "ess-inf-tests.el" ess-test-path) nil t))
 (when (member "--rstats" argv)
   (load (expand-file-name "ess-r-tests.el" ess-test-path) nil t))
 (when (member "--rstats-indent" argv)
