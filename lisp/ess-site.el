@@ -266,9 +266,9 @@ for ESS, such as icons.")
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 (ess-message "[ess-site:] after ess-check-R-prog... ...")
 
+(ess-message "[ess-site:] *very* end ...")
 
  ; Local variables section
-(ess-message "[ess-site:] *very* end ...")
 
 ;;; This file is automatically placed in Outline minor mode.
 ;;; The file is structured as follows:
@@ -277,6 +277,7 @@ for ESS, such as icons.")
 ;;; Subsections: ;;;*;;;
 ;;; Components:  defuns, defvars, defconsts
 ;;;              Random code beginning with a ;;;;* comment
+
 ;;; Local variables:
 ;;; mode: emacs-lisp
 ;;; mode: outline-minor

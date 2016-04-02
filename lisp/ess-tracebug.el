@@ -56,6 +56,7 @@
   (require 'compile)
   (require 'overlay)
   (require 'cl))
+(require 'ess-utils)
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 (defvar text-scale-mode-amount)
@@ -66,6 +67,16 @@
 Currently only R is supported."
   :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
   :group 'ess)
+
+(defvar ess-tracebug-indicator " TB"
+  "String to be displayed in mode-line alongside the process
+  name. Indicates that ess-tracebug-mode is turned on. ")
+
+;; (defvar ess--tracebug-p nil
+;;   "Non nil if ess-tracebug is turned on for current process.
+;; Function `ess-tracebug'  toggles on/off this variable.")
+;; (make-variable-buffer-local 'ess--tracebug-p)
+;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
 
 
 (defcustom ess-tracebug-prefix nil

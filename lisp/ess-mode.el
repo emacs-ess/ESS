@@ -39,12 +39,6 @@
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
 (autoload 'SAS-menu                     "ess-sas-d.el" "(autoload)" t)
 
-(defun ess-line-end-position (&optional N)
-  "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
-  (save-excursion
-    (end-of-line N)
-    (point)))
-
 
 
 ;;; ESS mode
@@ -58,7 +52,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-
 
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
@@ -439,7 +432,42 @@ ess-mode."
             (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
           "none"))
     "none"))
+
+;;*;; Dispatching infrastructure for dialects
 
+(defvar ess--make-local-vars-permanent nil
+  "If this variable is non-nil in a buffer make all variable permannet.
+Used in noweb modes.")
+(make-variable-buffer-local 'ess--make-local-vars-permanent)
+(put 'ess--make-local-vars-permanent 'permanent-local t)
+
+(defun ess-setq-vars-local (alist &optional buf)
+  "Set language variables from ALIST, in buffer BUF, if desired."
+  (if buf (set-buffer buf))
+  ;; (setq alist (reverse alist)) ;; It should really be in reverse order;
+  (mapc (lambda (pair)
+          (make-local-variable (car pair))
+          (set (car pair) (eval (cdr pair)))
+          (when ess--make-local-vars-permanent
+            (put (car pair) 'permanent-local t)) ;; hack for Rnw
+          )
+        alist)
+  (ess-write-to-dribble-buffer
+   (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
+           ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
+
+(defun ess-setq-vars-default (alist &optional buf)
+  "Set language variables from ALIST, in buffer BUF, if desired."
+  (ess-write-to-dribble-buffer
+   (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
+           ess-language ess-dialect buf comint-process-echoes comint-input-sender))
+  (if buf (set-buffer buf))
+  (mapc (lambda (pair)
+          (set-default (car pair) (eval (cdr pair))))
+        alist)
+  (ess-write-to-dribble-buffer
+   (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
+           ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
 
 
 ;;*;; User commands in ess-mode
@@ -1095,6 +1123,47 @@ generate the source buffer."
 (defun ess-dump-object-into-edit-buffer-other-frame (object)
   "Edit an ESS object in its own frame."
   (switch-to-buffer-other-frame (ess-dump-object-into-edit-buffer object)))
+
+(defun ess-version ()
+  (interactive)
+  (message (format "ess-version: %s (loaded from %s)"
+                   (ess-version-string)
+                   (file-name-directory ess-lisp-directory))))
+
+(defun ess-version-string ()
+  (let* ((ess-dir (file-name-directory ess-lisp-directory)) ; if(<from source>) the top-level 'ess/'
+         (is-release (file-exists-p (concat ess-etc-directory ".IS.RELEASE")))
+         (rel-string (if is-release "Released "))
+         (git-ref-fn (concat ess-dir ".git/HEAD"))
+         (git-ref (when (file-exists-p git-ref-fn)
+                    (with-current-buffer (find-file-noselect git-ref-fn)
+                      (goto-char (point-min))
+                      (when (re-search-forward "ref: \\(.*\\)\n" nil t)
+                        (match-string 1)))))
+         (git-fname (if git-ref
+                        (concat ess-dir ".git/" git-ref)
+                      ;; for release
+                      (concat ess-etc-directory "git-ref")))
+         (git-rev (when (file-exists-p git-fname)
+                    (with-current-buffer (find-file-noselect git-fname)
+                      (goto-char (point-min))
+                      (concat "git: "(buffer-substring 1 (point-at-eol))))))
+         (elpa-fname (concat ess-dir "ess-pkg.el"))
+         (elpa-rev (when (file-exists-p elpa-fname)
+                     ;; get it from ELPA dir name, (probably won't work if installed manually)
+                     (concat "elpa: "
+                             (replace-regexp-in-string "ess-" ""
+                                                       (file-name-nondirectory
+                                                        (substring ess-dir 1 -1)))))))
+    ;; set the "global" ess-revision:
+    (setq ess-revision (format "%s%s%s"
+                               (or rel-string "") ;;(or svn-rev "")
+                               (or git-rev "")
+                               (or elpa-rev "")))
+    (when (string= ess-revision "")
+      (setq ess-revision "<unknown>"))
+    (concat ess-version " [" ess-revision "]")))
+
 
 (provide 'ess-mode)
 

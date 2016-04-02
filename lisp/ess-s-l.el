@@ -867,7 +867,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
       (progn
         (require 'speedbar)
         (when (featurep 'speedbar)
-	  
+
           (defun S-speedbar-buttons (buffer)
             "attempted hack."
 
@@ -904,6 +904,45 @@ return it.  Otherwise, return `ess-help-topics-list'."
      (t
       ess-help-topics-list))))
 
+;;; On a PC, the default is S+.
+;; Elsewhere (unix and linux) the default is S+
+(cond  (ess-microsoft-p
+        ;; MS-Windows-------------------------------------------------
+
+        ;;        (fset 'S
+        ;;           (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+        ;;               'S+-msdos
+        ;;             'S+))
+        (defun S-by-icon (&rest x)
+          (interactive)
+          (message "Please start S+ from the icon.
+ Then you can connect emacs to it with `M-x S-existing'.")
+          )
+        (fset 'S 'S-by-icon)
+        (fset 'S-existing
+              (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+                  'S+-msdos-existing
+                'S+-existing))
+        (fset 'Sqpe 'Sqpe+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode))
+
+       (t ;;((eq system-type 'gnu/linux)
+        ;; Linux etc (including Mac OSX !?) --------------------------
+        (fset 'S 'S+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode)))
+
+;;;;* Alias S-mode to s-mode
+;;; Emacs will set the mode for a file based on the file's header.
+;;; The mode name is indicated by putting it between -*- on the top line.
+;;; (Other commands can go here too, see an Emacs manual.)
+;;; For a file you also load, you will want a leading # (comment to S)
+;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
+;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and
+;;; not S-mode.
+(fset 'S-transcript-mode 's-transcript-mode)
+(fset 'S-mode 's-mode)
 
 (provide 'ess-s-l)
 
