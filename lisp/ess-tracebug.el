@@ -51,13 +51,13 @@
 ;;
 ;;; Code:
 
-(require 'ess)
 (require 'format-spec)
 (eval-when-compile
   (require 'tramp)
   (require 'compile)
   (require 'overlay)
   (require 'cl))
+(require 'ess-utils)
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 (defvar text-scale-mode-amount)
@@ -67,8 +67,7 @@
   "Error navigation and debugging for ESS.
 Currently only R is supported."
   :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
-  :group 'ess
-  )
+  :group 'ess)
 
 (defvar ess-tracebug-indicator " TB"
   "String to be displayed in mode-line alongside the process

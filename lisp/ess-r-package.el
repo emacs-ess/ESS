@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'subr-x)
+(require 'ess-utils)
 
 (defface ess-r-package-indicator-face
   '((((class grayscale)) (:background "DimGray"))

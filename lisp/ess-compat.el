@@ -51,16 +51,6 @@ The extension, in a file name, is the part that follows the last `.'."
                 (substring file 0 (match-beginning 0)))
             filename)))))
 
-;;; Define a function to make it easier to check which version we're
-;;; running.
-;; no longer in use; 2013-12-30:
-(defun ess-running-emacs-version-or-newer (major minor)
-  (or (> emacs-major-version major)
-      (and (= emacs-major-version major)
-           (>= emacs-minor-version minor))))
-
-                                        ;(defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
-
 (defvar ess-local-custom-available (featurep 'custom)
   "Value is nil if custom.el not available, t if available.
 Only a concern with earlier versions of Emacs.")
@@ -294,6 +284,38 @@ mode is enabled.  Usually, such commands should use
 `use-region-p' instead of this function, because `use-region-p'
 also checks the value of `use-empty-active-region'."
     (and transient-mark-mode mark-active)))
+
+;;; xemacs process-put and process-get workarounds:
+;;; !!!! remove this when xemacs starts supporting them!!!
+(when (featurep 'xemacs)
+  (defvar process-plist-map (make-hash-table :test 'eq :weakness 'key)
+    "Property list information for process, when XEmacs doesn't provide this.
+See `process-plist' and `set-process-plist'.")
+
+  (defun-when-void process-plist (process)
+    "Return the property list of PROCESS."
+    (check-argument-type #'processp process)
+    (gethash process process-plist-map))
+
+  (defun-when-void set-process-plist (process plist)
+    "Set the property list of PROCESS to PLIST."
+    (check-argument-type #'processp process)
+    (check-argument-type #'valid-plist-p plist)
+    (puthash process plist process-plist-map))
+
+
+  (defun-when-void process-get (process propname)
+    "Return the value of PROCESS' PROPNAME property.
+This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
+    (plist-get (process-plist process) propname))
+
+  (defun-when-void process-put (process propname value)
+    "Change PROCESS' PROPNAME property to VALUE.
+It can be retrieved with `(process-get PROCESS PROPNAME)'."
+    (set-process-plist process
+                       (plist-put (process-plist process) propname value)))
+  )
+
 
 (provide 'ess-compat)
 

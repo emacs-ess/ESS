@@ -28,6 +28,7 @@
 
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
+(require 'ess-utils)
 
 (defvar essddr-version "0.9-1"
   "Current version of ess-rd.el.")
