@@ -35,9 +35,7 @@
 (require 'cl)
 
 (autoload 'ess-turn-on-eldoc            "ess-r-d" "" nil)
-;; (autoload 'ess-ddeclient-p              "ess-inf" "(autoload)" nil)
-(autoload 'ess-dump-object-ddeclient        "ess-dde" "(autoload)" nil)
-(autoload 'SAS                              "ess-sas-d.el" "(autoload)" t)
+(autoload 'SAS-menu                     "ess-sas-d.el" "(autoload)" t)
 
 (require 'ess-utils)
 
@@ -276,22 +274,6 @@
     ["Read ESS info" (ess-goto-info "") t]
     ["Send bug report"  ess-submit-bug-report           t]
     ))
-
-
-
-;; (defun test-gen-menu (men)
-;;   '(
-;;     ["About editing" (ess-goto-info "Editing")  t]
-;;     ["Read ESS info" (ess-goto-info "") t]
-;;     ["Send bug report"  ess-submit-bug-report           t]))
-
-(defun SAS-menu ()
-  "Start SAS from the menu."
-  (interactive)
-  (if ess-microsoft-p
-      ;; replace with other choices for starting SAS under XEmacs?
-      (error "SAS cannot be started this way in ESS on Windows.")
-    (SAS)))
 
 (defun ess-mode-xemacs-menu ()
   "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
@@ -1004,9 +986,7 @@ generate the source buffer."
   (interactive
    (progn
      (ess-force-buffer-current "Process to dump from: ")
-     (if (ess-ddeclient-p)
-         (list (read-string "Object to edit: "))
-       (ess-read-object-name "Object to edit"))))
+     (ess-read-object-name "Object to edit")))
 
   (let* ((dirname (file-name-as-directory
                    (if (stringp ess-source-directory)
@@ -1052,12 +1032,10 @@ generate the source buffer."
     (if (file-writable-p filename) nil
       (error "Can't dump %s as %f is not writeable." object filename))
 
-    (if (ess-ddeclient-p)
-        ;; ddeclient version
-        (ess-dump-object-ddeclient object filename)
-
-      ;; else: "normal", non-DDE behavior:
-
+    (cond
+     ((fboundp ess-dump-object-function)
+      (funcall ess-dump-object-function object filename))
+     (t
       ;; Make sure we start fresh
       (if (get-file-buffer filename)
           (kill-buffer (get-file-buffer filename)))
@@ -1087,7 +1065,7 @@ generate the source buffer."
 
       ;; Delete the file if necessary
       (if ess-delete-dump-files
-          (delete-file (buffer-file-name))))))
+          (delete-file (buffer-file-name)))))))
 
 (defun ess-find-dump-file-other-window (filename)
   "Find ESS source file FILENAME in another window."

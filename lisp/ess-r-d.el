@@ -194,20 +194,20 @@
 (defvar R-customize-alist
   (append
    '((ess-local-customize-alist         . 'R-customize-alist)
-     (ess-eldoc-function                . 'ess-R-eldoc-function)
+     (ess-eldoc-function                . #'ess-R-eldoc-function)
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-ac-sources                    . '(ac-source-R))
-     (ess-company-backends		. '((company-R-args company-R-objects)))
+     (ess-company-backends              . '((company-R-args company-R-objects)))
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-eval-command                  . ".ess.eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
-     (ess-eval-visibly-command          . ".ess.eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
-     (ess-eval-visibly-noecho-command   . ".ess.eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
-     (ess-load-command                  . ".ess.source(\"%s\", FALSE, FALSE)\n")
-     (ess-load-visibly-command          . ".ess.source(\"%s\", TRUE, TRUE, 300)\n")
-     (ess-load-visibly-noecho-command   . ".ess.source(\"%s\", FALSE, TRUE, 300)\n")
+     (ess-format-eval-command-function  . #'ess-r-format-eval-command)
+     (ess-format-load-command-function  . #'ess-r-format-load-command)
+     (ess-send-region-function          . #'ess-r-send-region)
+     (ess-load-file-function            . #'ess-r-load-file)
+     (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
+     (ess-format-eval-message-function  . #'ess-r-format-eval-message)
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
@@ -232,13 +232,14 @@
      (inferior-ess-exit-command         . "q()")
      (inferior-ess-exit-prompt          . "Save workspace image? [y/n/c]: ")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
-     (inferior-ess-start-args		. "")
-     (ess-error-regexp-alist		. ess-R-error-regexp-alist)
+     (inferior-ess-start-file	          . nil) ;; "~/.ess-R"
+     (inferior-ess-start-args           . "")
+     (inferior-ess-quit-function        . #'inferior-ess-r-quit)
+     (ess-error-regexp-alist            . ess-R-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
-     (ess-STERM		. "iESS")
-     (ess-editor	. R-editor)
-     (ess-pager		. R-pager)
+     (ess-STERM                         . "iESS")
+     (ess-editor                        . R-editor)
+     (ess-pager                         . R-pager)
      (prettify-symbols-alist            . '(("<-" . ?←)
                                             ("<<-" . ?↞)
                                             ("->" . ?→)
@@ -769,7 +770,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
-  (setq ess--make-local-vars-permenent t)
+  (setq ess--make-local-vars-permanent t)
   (ess-noweb-mode 1); turn it on
   (ess-noweb-set-doc-mode 'latex-mode)
   (ess-noweb-set-code-mode 'R-mode)
@@ -988,6 +989,36 @@ similar to `load-library' emacs function."
 
 ;;;*;;; Evaluation
 
+(defun ess-r-arg (param value &optional wrap)
+  (let ((value (if wrap
+                   (concat "'" value "'")
+                 value)))
+    (concat ", " param " = " value)))
+
+(defun ess-r-format-eval-command (string &optional visibly output file namespace)
+  (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
+        (visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
+        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
+        (file (if file (ess-r-arg "file" file t)))
+        (pkg (if namespace (ess-r-arg "package" namespace t) "")))
+    (concat cmd "('" string "'" visibly output file pkg ")\n")))
+
+(defun ess-r-format-load-command (file &optional visibly output namespace)
+  (let ((cmd (if namespace ".essDev_source" ".ess.source"))
+        (visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
+        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
+        (pkg (if namespace (ess-r-arg "package" namespace t) ""))
+        (msg (concat "cat('"
+                     (when namespace (format "[%s] " namespace))
+                     (format "Sourced file %s\n')" file))))
+    (concat cmd "('" file "'" visibly output pkg "); " msg)))
+
+(defun ess-r-format-eval-message (message)
+  (if (ess-r-namespaced-evaluation-p)
+      (let ((pkg-name (ess-r--get-evaluation-env)))
+        (format "[%s] %s" pkg-name message))
+    message))
+
 (defvar ess-r-evaluation-env nil
   "Environment into which code should be evaluated.
 
@@ -1056,15 +1087,19 @@ mode line)."
   :init-value nil
   :lighter ess-r-special-evaluation-mode-line)
 
-(defun ess-r-load-file (file)
-  (cond
-   ;; Namespaced evaluation (R specific)
-   ((or ess-r-evaluation-env
-        (ess-get-process-variable 'ess-r-evaluation-env))
-    (ess-r-load-file-namespaced file))
-   ;; Function set as a process property by Tracebug (redundant)
-   ((and nil (fboundp (ess-process-get 'source-file-function)))
-    (funcall (ess-process-get 'source-file-function) file))))
+(defun ess-r-namespaced-evaluation-p ()
+  (and
+   ;; Always evaluate in current environment while debugging
+   (not ess-debug-minor-mode)
+   (or ess-r-evaluation-env
+       (ess-get-process-variable 'ess-r-evaluation-env))))
+
+(defun ess-r--get-evaluation-env (&optional ask)
+  (cond (ess-r-evaluation-env)
+        (ask
+         (ess-r-select-evaluation-namespace))
+        (t
+         (error "Namespaced evaluation is not active"))))
 
 (defvar ess-r-namespaced-load-verbose nil
   "Whether to display information on namespaced loading.
@@ -1073,12 +1108,126 @@ When t, loading a file into a namespaced will output information
 about which objects are exported and which stay hidden in the
 namespace.")
 
-(defcustom ess-r-reload-inferior-hook nil
+(defvar ess-r-namespaced-load-only-existing t
+  "Whether to load only objects already existing in a namespace.")
+
+(defun ess-r-load-file (file)
+  (cond
+   ;; Namespaced evaluation
+   ((ess-r-namespaced-evaluation-p)
+    (ess-r-load-file-namespaced file))
+   ;; Evaluation into current env via .ess.source()
+   (t
+    (let ((command (ess-r-format-load-command file nil t)))
+      (ess-send-string (ess-get-process) command)))))
+
+(defun ess-r-load-file-namespaced (&optional file)
+  "Load FILE into a package namespace.
+
+This prompts for a package when no package is currently
+selected (see `ess-r-select-evaluation-namespace')."
+  (interactive)
+  (ess-force-buffer-current "R process to use: ")
+  (let* ((pkg-name (ess-r--get-evaluation-env))
+         (command (ess-r-format-load-command file nil t pkg-name)))
+    (ess-send-string (ess-get-process) command)))
+
+(defun ess-r-make-source-refd-command (string visibly tmpfile)
+  (let ((pkg-name (when (ess-r-namespaced-evaluation-p)
+                    (ess-r--get-evaluation-env))))
+    (ess-format-eval-command string visibly t tmpfile pkg-name)))
+
+(defun ess-r-send-region (proc start end visibly message)
+  (cond
+   ;; Namespaced evaluation
+   ((ess-r-namespaced-evaluation-p)
+    (ess-r-send-region-namespaced proc start end visibly message))
+   ;; Evaluation into current env
+   (t
+    (ess-send-string proc (buffer-substring start end) visibly message))))
+
+(defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
+  "Ask for for the package and devSource region into it."
+  (let* ((pkg-name (ess-r--get-evaluation-env 'ask-if-nil))
+         (message (ess-r-format-eval-message (or message "Eval region"))))
+    (ess-send-string proc (buffer-substring start end) visibly message)))
+
+
+;;;*;;; Utils for inferior R process
+
+(defun inferior-ess-r-load-ESSR ()
+  "Load/INSTALL/Update ESSR."
+  (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
+         (src-dir (expand-file-name "R" pkg-dir)))
+
+    (if (not (or (and (boundp 'ess-remote) ess-remote)
+                 (file-remote-p (ess-get-process-variable 'default-directory))))
+        (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
+      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+
+(defun inferior-ess-r-load-ESSR--local (pkg-dir src-dir)
+  (let ((cmd (format "local({
+                          source('%s/.load.R', local=TRUE) #define load.ESSR
+                          load.ESSR('%s')
+                      })\n"
+                     src-dir src-dir)))
+    (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+    (with-current-buffer (ess-command cmd)
+      (let ((msg (buffer-string)))
+        (when (> (length msg) 1)
+          (message (format "load ESSR: %s" msg)))))))
+
+(defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
+  (let* ((verfile (expand-file-name "VERSION" pkg-dir))
+         (loadremote (expand-file-name "LOADREMOTE" pkg-dir))
+         (version (if (file-exists-p verfile)
+                      (with-temp-buffer
+                        (insert-file-contents verfile)
+                        (buffer-string))
+                    (error "Cannot find ESSR source code")))
+         (r-load-code (with-temp-buffer
+                        (insert-file-contents loadremote)
+                        (buffer-string))))
+    (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
+                                         verfile loadremote))
+    (unless (ess-boolean-command (format r-load-code version) nil 0.1)
+      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+            (files (directory-files src-dir t "\\.R$")))
+        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
+        ;; should not happen, unless extrem conditions (ancient R or failed download))
+        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
+        (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
+        (mapc #'ess--inject-code-from-file files)))))
+
+(defun inferior-ess-r-quit (&optional no-save)
+  "Issue an exiting command to an inferior R process, and
+optionally clean up.  This version is for killing *R* processes;
+it asks the extra question regarding whether the workspace image
+should be saved unless NO-SAVE is non-nil."
+  (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
+  (ess-make-buffer-current)
+  (let (cmd
+        ;;Q     response
+        (sprocess (ess-get-process ess-current-process-name)))
+    (if (not sprocess) (error "No ESS process running"))
+    ;;Q (setq response (completing-read "Save workspace image? "
+    ;;Q                                 '( ( "yes".1) ("no" . 1) ("cancel" . 1))
+    ;;Q                                 nil t))
+    ;;Q (if (string-equal response "")
+    ;;Q (setq response "default")); which will ask again (in most situations)
+    ;;Q (unless (string-equal response "cancel")
+    (ess-cleanup)
+    ;;Q   (setq cmd (format "q(\"%s\")\n" response))
+    (setq cmd (format "base::q('%s')\n" (if no-save "no" "default")))
+    (goto-char (marker-position (process-mark sprocess)))
+    (process-send-string sprocess cmd)))
+
+(defcustom inferior-ess-r-reload-hook nil
   "Hook run when reloading the R inferior buffer."
   :type 'hook
   :group 'ess-R)
 
-(defun ess-r-reload-inferior (&optional start-args)
+(defun inferior-ess-r-reload (&optional start-args)
   "Reload R and the currently activated developer package, if any."
   (interactive)
   (ess-force-buffer-current)
@@ -1093,7 +1242,7 @@ namespace.")
       (when pkg-info
         (setq-local ess-r-package-info pkg-info)
         (ess-r-package-load-package))
-      (run-hooks 'ess-r-reload-inferior-hook))))
+      (run-hooks 'inferior-ess-r-reload-hook))))
 
 
 ;;*;; Editing Tools

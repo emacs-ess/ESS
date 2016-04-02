@@ -820,6 +820,8 @@ and I need to relearn emacs lisp (but I had to, anyway."
     (set-syntax-table ess-mode-syntax-table)
     ))
 
+(defun ess-chm-display-help-on-object (object &rest args)
+  (ess-eval-linewise (concat "help(" object ")")))
 
 
 ;;; S imenu support

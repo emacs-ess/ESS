@@ -34,11 +34,10 @@
 
 ;;; Requires and Autoloads:
 
+(require 'ess-mode)
+(require 'ess-inf)
 (require 'ess-s-l)
-;;NO: this is autoloaded from other places (require 'ess-dde)
-
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
+(require 'ess-dde)
 
 (defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
@@ -53,11 +52,20 @@ connects it to the '(ddeESS [S+4])' window.")
   (append
    '((ess-local-customize-alist         . 'S+4-customize-alist)
      (ess-dialect                       . S+4-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
+     (ess-loop-timeout                  . ess-S-loop-timeout) ;fixme: dialect spec.
      (ess-object-name-db-file           . "ess-sp4-namedb.el" )
      (inferior-ess-program              . inferior-S+4-program-name)
      (inferior-ess-help-command         . "help(\"%s\")\n")
-     (inferior-ess-help-filetype . "chm")
+     (inferior-ess-help-filetype        . "chm")
+
+     (ess-send-region-function          . #'ess-dde-send-region)
+     (ess-load-file-function            . #'ess-dde-load-file)
+     (ess-command-function              . #'ess-dde-command)
+     (ess-eval-linewise-function        . #'ess-dde-eval-linewise)
+     (ess-dump-object-function          . #'ess-dde-dump-object)
+     (ess-read-object-name-function     . #'ess-dde-read-object-name)
+     (ess-find-help-file-function       . #'ess-dde-find-help-file)
+     (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
 
      (inferior-ess-start-file           . nil) ;"~/.ess-S+4")
      (inferior-ess-start-args           . (concat
@@ -80,9 +88,10 @@ connects it to the '(ddeESS [S+4])' window.")
      (ess-dialect                       . S+4-dialect-name)
      (ess-loop-timeout                  . 500000 );fixme: dialect specific custom.v
      (ess-object-name-db-file           . "ess-sp4-namedb.el" )
+     (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
      (inferior-ess-program              . inferior-Sqpe+4-program-name)
      (inferior-ess-help-command         . "help(\"%s\")\n")
-     (inferior-ess-help-filetype . "chm")
+     (inferior-ess-help-filetype        . "chm")
      (inferior-ess-search-list-command  . "searchPaths()\n")
      (inferior-ess-start-file           . nil) ;"~/.ess-S+4")
      (inferior-ess-language-start . (concat

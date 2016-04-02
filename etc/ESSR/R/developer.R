@@ -8,16 +8,16 @@
 ## thing.
 
 ## evaluate the STRING by saving into a file and calling .essDev_source
-.essDev.eval <- function(string, package, file = tempfile("ESSDev")){
+.essDev.eval <- function(string, visibly, output, package, file = tempfile("ESSDev")){
     cat(string, file = file)
     on.exit(file.remove(file))
-    .essDev_source(file,, package = package)
+    .essDev_source(file, visibly, output, package = package)
 }
 
 ## sourcing SOURCE file into an environment. After having a look at each new
 ## object in the environment, decide what to do with it. Handles plain objects,
 ## functions, existing S3 methods, S4 classes and methods. .
-.essDev_source <- function(source, expr, package = "", verbose = FALSE)
+.essDev_source <- function(source, visibly, output, expr, package = "", verbose = FALSE)
 {
     ## require('methods')
     oldopts <- options(warn = 1)
@@ -43,7 +43,7 @@
                       package), domain = NA)
 
     ## evaluate the SOURCE into new ENV
-    env <- .essDev_evalSource(source, substitute(expr), package)
+    env <- .essDev_evalSource(source, visibly, output, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
@@ -243,7 +243,7 @@
 }
 
 
-.essDev_evalSource <- function (source, expr, package = "")
+.essDev_evalSource <- function (source, visibly, output, expr, package = "")
 {
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if(is.null(envns))
@@ -255,7 +255,11 @@
     if (missing(source))
         eval(expr, envir = env)
     else  if (is(source, "character"))
-        for (text in source) sys.source(text, envir = env, keep.source = TRUE)
+        for (text in source) {
+            base::source(text, local = env, echo = visibly,
+                         print.eval = output, keep.source = TRUE,
+                         max.deparse.length = 300)
+        }
     else stop(gettextf("Invalid source argument:  got an object of class \"%s\"",
                        class(source)[[1]]), domain = NA)
     env
