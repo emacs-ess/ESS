@@ -90,7 +90,6 @@
   (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
   (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
   (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
-  (define-key ess-transcript-mode-map "\C-c\C-t" 'ess-execute-in-tb)
   (define-key ess-transcript-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
   (define-key ess-transcript-mode-map "\C-a"     'comint-bol)
   (define-key ess-transcript-mode-map "\M-\t"    'comint-replace-by-expanded-filename)

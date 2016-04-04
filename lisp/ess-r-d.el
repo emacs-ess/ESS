@@ -33,40 +33,30 @@
 
 ;;; Code:
 
-;;; Autoloads and Requires
-
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
 (require 'cl)
-(require 'ess-s-l)
-(require 'eldoc)
-(require 'ess-developer)
-(require 'ess-help)
-(require 'ess-roxy)
-(require 'ess-tracebug)
-(require 'compile); for compilation-* below
+(require 'compile)
 (require 'easymenu)
+(require 'eldoc)
+(require 'ess-utils)
+(require 'ess-help)
+(require 'ess-tracebug)
+(require 'ess-s-l)
+(require 'ess-roxy)
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
+(require 'ess-r-package)
 
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
-(autoload 'ess-help-underline "ess-help" "(Autoload)" t)
-(autoload 'ess--flush-help-into-current-buffer "ess-help" "(Autoload)" t)
 
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
-    ;; Note: some of these comand are automatically redefined by those in
-    (define-key ess-dev-map "\C-t" 'ess-toggle-developer)
-    (define-key ess-dev-map "t" 'ess-toggle-developer)
-    ;; (define-key ess-dev-map "\C-T" 'ess-toggle-tracebug)
+    (define-key ess-dev-map "\C-s" 'ess-r-select-evaluation-namespace)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
-    (define-key ess-dev-map "\C-a" 'ess-developer-add-package)
-    (define-key ess-dev-map "a" 'ess-developer-add-package)
-    (define-key ess-dev-map "\C-r" 'ess-developer-remove-package)
-    (define-key ess-dev-map "r" 'ess-developer-remove-package)
-    (define-key ess-dev-map "\C-l" 'ess-developer-load-package)
-    (define-key ess-dev-map "l" 'ess-developer-load-package)
+    (define-key ess-dev-map "\C-l" 'ess-r-package-load-package)
+    (define-key ess-dev-map "l" 'ess-r-package-load-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
@@ -110,6 +100,19 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+(defvar ess-r-package-dev-map
+  (let (ess-r-package-dev-map)
+    (define-prefix-command 'ess-r-package-dev-map)
+    (define-key ess-r-package-dev-map "\C-a" 'ess-r-package-select-package)
+    (define-key ess-r-package-dev-map "\C-c" 'ess-r-devtools-check-package)
+    (define-key ess-r-package-dev-map "\C-d" 'ess-r-devtools-document-package)
+    (define-key ess-r-package-dev-map "\C-i" 'ess-r-devtools-install-package)
+    (define-key ess-r-package-dev-map "\C-l" 'ess-r-devtools-load-package)
+    (define-key ess-r-package-dev-map "\C-r" 'ess-r-devtools-revdep-check-package)
+    (define-key ess-r-package-dev-map "\C-t" 'ess-r-devtools-test-package)
+    (define-key ess-r-package-dev-map "\C-u" 'ess-r-devtools-unload-package)
+    ess-r-package-dev-map))
+
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
   '("Roxygen"
@@ -151,97 +154,102 @@
     "-----"
     ["About" ess-tracebug-show-help t]))
 
-(easy-menu-define ess-developer-menu nil
+(easy-menu-define ess-r-package-menu nil
   "Developer submenu."
   '("Developer"
     :visible (and ess-dialect (string-match "^R" ess-dialect))
-    ["Active?"          ess-toggle-developer
+    ["Active?" ess-r-package-mode
      :style toggle
-     :selected ess-developer]
-    ["Add package" ess-developer-add-package t]
-    ["Remove package" ess-developer-remove-package t]))
+     :selected ess-r-package-mode]
+    ["Select package" ess-r-package-select-package t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
-(easy-menu-add-item ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-tracebug-menu "end-dev")
-
-(easy-menu-add-item inferior-ess-mode-menu nil ess-developer-menu "end-dev")
+(easy-menu-add-item inferior-ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
 
-
-;; modify S Syntax table:
-(setq R-syntax-table S-syntax-table)
-
-;; In R 2.x, back tick now is a quote character, so lets tell Emacs
-;; that it is; the problem below for older R should no longer be a
-;; serious issue.
-;;R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
-;; breaks when things like `..' are used:
-(modify-syntax-entry ?` "\"" R-syntax-table)
-(modify-syntax-entry ?_  "_"  R-syntax-table) ; foo_bar is symbol in R >=1.9
-
-(ess-message "[ess-r-d:] (autoload ..) & (def** ..)")
-
-;; (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-;; (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
+;; Inherit from S Syntax table:
+(setq ess-r-syntax-table S-syntax-table)
+(modify-syntax-entry ?` "\"" ess-r-syntax-table)
+(modify-syntax-entry ?_  "_"  ess-r-syntax-table)
 
 (defvar R-customize-alist
   (append
-   '((ess-local-customize-alist         . 'R-customize-alist)
-     (ess-eldoc-function                . 'ess-R-eldoc-function)
-     (ess-dialect                       . "R")
-     (ess-suffix                        . "R")
-     (ess-ac-sources                    . '(ac-source-R))
-     (ess-company-backends		. '((company-R-args company-R-objects)))
-     (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
-     (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
-     (ess-call-stack-command            . "traceback(1)\n")
-     (ess-eval-command                  . ".ess.eval(\"%s\", FALSE, FALSE, file=\"%f\")\n")
-     (ess-eval-visibly-command          . ".ess.eval(\"%s\", TRUE, TRUE, 300, file=\"%f\")\n")
-     (ess-eval-visibly-noecho-command   . ".ess.eval(\"%s\", FALSE, TRUE, 300, file=\"%f\")\n")
-     (ess-load-command                  . ".ess.source(\"%s\", FALSE, FALSE)\n")
-     (ess-load-visibly-command          . ".ess.source(\"%s\", TRUE, TRUE, 300)\n")
-     (ess-load-visibly-noecho-command   . ".ess.source(\"%s\", FALSE, TRUE, 300)\n")
-     (ess-dump-filename-template        . (ess-replace-regexp-in-string
-                                           "S$" ess-suffix ; in the one from custom:
-                                           ess-dump-filename-template-proto))
-     (ess-help-web-search-command       . 'ess-R-sos)
-     (ess-mode-syntax-table             . R-syntax-table)
-     (ess-mode-editing-alist            . R-editing-alist)
-     (ess-change-sp-regexp              . ess-R-change-sp-regexp)
-     (ess-help-sec-regex                . ess-help-R-sec-regex)
-     (ess-help-sec-keys-alist           . ess-help-R-sec-keys-alist)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
-     (ess-cmd-delay                     . ess-R-cmd-delay)
-     (ess-function-pattern              . ess-R-function-pattern)
-     (ess-object-name-db-file           . "ess-r-namedb.el" )
-     (ess-smart-operators               . ess-R-smart-operators)
-     (inferior-ess-program              . inferior-R-program-name)
-     (inferior-ess-objects-command      . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords   . 'inferior-R-font-lock-keywords)
-     (inferior-ess-search-list-command  . "search()\n")
-     ;;(inferior-ess-help-command               . "help(\"%s\", htmlhelp=FALSE)\n")
-     (inferior-ess-help-command         . inferior-ess-r-help-command)
-     (inferior-ess-help-filetype        . nil)
-     (inferior-ess-exit-command         . "q()")
-     (inferior-ess-exit-prompt          . "Save workspace image? [y/n/c]: ")
-     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file		. nil) ;; "~/.ess-R"
-     (inferior-ess-start-args		. "")
-     (ess-error-regexp-alist		. ess-R-error-regexp-alist)
+   '((ess-local-customize-alist             . 'R-customize-alist)
+     (ess-dialect                           . "R")
+     (ess-suffix                            . "R")
+     (ess-ac-sources                        . ess-r-ac-sources)
+     (ess-company-backends                  . ess-r-company-backends)
+     (ess-build-tags-command                . ess-r-build-tags-command)
+     (ess-traceback-command                 . ess-r-traceback-command)
+     (ess-call-stack-command                . ess-r-call-stack-command)
+     (ess-format-eval-command-function      . #'ess-r-format-eval-command)
+     (ess-format-load-command-function      . #'ess-r-format-load-command)
+     (ess-send-region-function              . #'ess-r-send-region)
+     (ess-load-file-function                . #'ess-r-load-file)
+     (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
+     (ess-format-eval-message-function      . #'ess-r-format-eval-message)
+     (ess-install-library-function          . #'ess-r-install-library)
+     (ess-eldoc-function                    . #'ess-r-eldoc-function)
+     (ess-help-web-search-command           . #'ess-r-sos)
+     (ess-dump-filename-template            . ess-r-dump-filename-template)
+     (ess-mode-syntax-table                 . ess-r-syntax-table)
+     (ess-mode-editing-alist                . ess-r-editing-alist)
+     (ess-change-sp-regexp                  . ess-R-change-sp-regexp)
+     (ess-help-sec-regex                    . ess-help-r-sec-regex)
+     (ess-help-sec-keys-alist               . ess-help-r-sec-keys-alist)
+     (ess-loop-timeout                      . ess-r-loop-timeout)
+     (ess-function-pattern                  . ess-r-function-pattern)
+     (ess-object-name-db-file               . "ess-r-namedb.el")
+     (ess-smart-operators                   . ess-R-smart-operators)
+     (inferior-ess-program                  . inferior-R-program-name)
+     (inferior-ess-objects-command          . inferior-R-objects-command)
+     (inferior-ess-font-lock-keywords       . 'inferior-R-font-lock-keywords)
+     (inferior-ess-search-list-command      . "search()\n")
+     (inferior-ess-help-command             . inferior-ess-r-help-command)
+     (inferior-ess-help-filetype            . nil)
+     (inferior-ess-exit-command             . "q()")
+     (inferior-ess-exit-prompt              . "Save workspace image? [y/n/c]: ")
+     (inferior-ess-start-file               . nil)
+     (inferior-ess-start-args               . "")
+     (inferior-ess-quit-function            . #'inferior-ess-r-quit)
+     (ess-error-regexp-alist                . ess-r-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
-     (ess-STERM		. "iESS")
-     (ess-editor	. R-editor)
-     (ess-pager		. R-pager)
-     (prettify-symbols-alist            . '(("<-" . ?←)
-                                            ("<<-" . ?↞)
-                                            ("->" . ?→)
-                                            ("->>" . ?↠))))
+     (ess-STERM                             . "iESS")
+     (ess-editor                            . R-editor)
+     (ess-pager                             . R-pager)
+     (prettify-symbols-alist                . '(("<-" . ?←)
+                                                ("<<-" . ?↞)
+                                                ("->"  . ?→)
+                                                ("->>" . ?↠))))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
+(defvar ess-r-build-tags-command
+  "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
 
-(defvar R-editing-alist
+(defvar ess-r-traceback-command
+  "local({cat(geterrmessage(), \
+'---------------------------------- \n', \
+fill=TRUE); try(traceback(), silent=TRUE)})\n")
+
+(defvar ess-r-call-stack-command "traceback(1)\n")
+
+(defvar ess-r-dump-filename-template
+  (ess-replace-regexp-in-string
+   "S$" "R" ess-dump-filename-template-proto))
+
+(defvar ess-r-ac-sources
+  '(ac-source-R))
+
+(defvar ess-r-company-backends
+  '((company-R-args company-R-objects)))
+
+(defvar ess-r-loop-timeout
+  2000000)
+
+(defvar ess-r-editing-alist
   ;; copy the S-alist and modify :
   (let ((S-alist (copy-alist S-editing-alist)))
     (setcdr (assoc 'ess-font-lock-defaults S-alist)
@@ -251,11 +259,27 @@
     S-alist)
   "General options for editing R source files.")
 
+(defconst ess-help-r-sec-regex "^[A-Z][A-Za-z].+:$"
+  "Reg(ular) Ex(pression) of section headers in help file.")
 
-(defvar ess-R-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
+(defconst ess-help-r-sec-keys-alist
+  '((?a . "\\s *Arguments:")
+    (?d . "\\s *Description:")
+    (?D . "\\s *Details:")
+    (?t . "\\s *Details:")
+    (?e . "\\s *Examples:")
+    (?n . "\\s *Note:")
+    (?r . "\\s *References:")
+    (?s . "\\s *See Also:")
+    (?u . "\\s *Usage:")
+    (?v . "\\s *Value[s]?")     ;
+    )
+  "Alist of (key . string) pairs for use in help section searching.")
+
+(defvar ess-r-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
-;; takes precidence over R1 below in english locales, and allows spaces in file path
+;; Takes precidence over R1 below in english locales, and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R "\\(\\(?:at \\|(@\\)\\([^#]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
@@ -265,18 +289,13 @@
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
-;; (add-to-list 'compilation-error-regexp-alist-alist
-;;              '(R2 "\\(?:^ +\\(.*?\\):\\([0-9]+\\):\\([0-9]+\\):\\)"  1 2 nil 2 1))
-;; (add-to-list 'compilation-error-regexp-alist-alist
-;;              '(R3 "\\(?:Error.*: .*\n? +\\)\\(.*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
-
-;; precede R4 and allowes spaces in file path
+;; Precedes R4 and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             ;; start with bol,: but don't start with digit
+             ;; Start with bol,: but don't start with digit
              '(R3 "\\(?:^ +\\|: +\\)\\([^-+[:digit:]\n]:?[^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             ;; don't start with digit, don't contain spaces
+             ;; Don't start with digit, don't contain spaces
              '(R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
@@ -303,48 +322,100 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect."))
 
+;;; Create functions for calling different (older or newer than default)
+;;;  versions of R and S(qpe).
+(defvar ess-versions-created nil
+  "List of strings of all S- and R-versions found on the system.")
+
+;; is currently used (updated) by ess-find-newest-R
+(defvar ess-r-versions-created nil
+  "List of strings of all R-versions found on the system.")
+
+(defun ess-r-s-versions-creation ()
+  "(Re)Create ESS  R-<..> commands FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+  (interactive)
+  ;; Create ess-versions-created, ess-r-versions-created, and on
+  ;; Windows, ess-rterm-version-paths
+  (let ((R-newest-list '("R-newest"))
+        (ess-s-versions-created
+         (if ess-microsoft-p
+             (nconc
+              (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
+              (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+           (ess-s-versions-create))))
+    (if ess-microsoft-p
+        (setq ess-rterm-version-paths
+              (ess-flatten-list
+               (ess-uniq-list
+                (if (not ess-directory-containing-R)
+                    (if (getenv "ProgramW6432")
+                        (let ((P-1 (getenv "ProgramFiles(x86)"))
+                              (P-2 (getenv "ProgramW6432")))
+                          (nconc
+                           ;; Always 32 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+
+                           ;; Keep this both for symmetry and because it can happen:
+                           (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+
+                           ;; Always 64 on 64 bit OS, nil on 32 bit OS
+                           (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                           (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")))
+                      (let ((PF (getenv "ProgramFiles")))
+                        (nconc
+                         ;; Always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                         (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))
+                  (let ((PF ess-directory-containing-R))
+                    (nconc
+                     (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                     (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))))))
+    (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
+
+    (setq ess-r-versions-created   ;; For Unix *and* Windows, using either
+          (ess-r-versions-create)) ;; ess-r-versions or ess-rterm-version-paths (above!)
+
+    ;; Add the new defuns, if any, to the menu.
+    ;; Check that each variable exists, before adding.
+    ;; e.g. ess-sqpe-versions-created will not be created on Unix.
+    (setq ess-versions-created
+          (ess-flatten-list
+           (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
+                   '(R-newest-list
+                     ess-r-versions-created
+                     ess-s-versions-created))))))
+
+(defun ess-r-s-versions-creation+menu ()
+  "Call `\\[ess-r-s-versions-creation] creaing `ess-versions-created' and
+update the \"Start Process\" menu."
+  (interactive)
+  (ess-message "[ess-site:] before (ess-r-s-versions-creation) ...")
+  (ess-r-s-versions-creation)
+
+  (when ess-versions-created
+    ;; new-menu will be a list of 3-vectors, of the form:
+    ;; ["R-1.8.1" R-1.8.1 t]
+    (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+                            ess-versions-created)))
+      (easy-menu-add-item ess-mode-menu '("Start Process")
+                          (cons "Other" new-menu))))
+  ess-versions-created)
+
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
   process.")
 
-(defun ess--R-load-ESSR ()
-  "Load/INSTALL/Update ESSR."
-  (let* ((ESSR-directory (expand-file-name "ESSR" ess-etc-directory))
-         (src-dir (expand-file-name "R" ESSR-directory)))
+(defun ess-r-mode-p ()
+  "Check whether we have a buffer running in R mode.
 
-    (if (not (or (and (boundp 'ess-remote) ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (let ((cmd (format
-                    "local({
-                      source('%s/.load.R', local=TRUE) #define load.ESSR
-                      load.ESSR('%s')})\n"
-                    src-dir src-dir)))
-          (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
-          (with-current-buffer (ess-command cmd)
-            (let ((msg (buffer-string)))
-              (when (> (length msg) 1)
-                (message (format "load ESSR: %s" msg))))))
-      ;; else, remote
-      (let* ((verfile (expand-file-name "VERSION" ESSR-directory))
-             (loadremote (expand-file-name "LOADREMOTE" ESSR-directory))
-             (version (if (file-exists-p verfile)
-                          (with-temp-buffer
-                            (insert-file-contents verfile)
-                            (buffer-string))
-                        (error "Cannot find ESSR source code")))
-             (r-load-code (with-temp-buffer
-                            (insert-file-contents loadremote)
-                            (buffer-string))))
-        (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
-                                             verfile loadremote))
-        (unless (ess-boolean-command (format r-load-code version) nil 0.1)
-          (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-                (files (directory-files src-dir t "\\.R$")))
-            (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-            ;; should not happen, unless extrem conditions (ancient R or failed download))
-            (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-            (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
-            (mapc #'ess--inject-code-from-file files)))))))
+This is to get around the lack of proper derived modes in ESS."
+  (and (eq major-mode 'ess-mode)
+       (string= ess-dialect "R")))
 
 ;;;### autoload
 (defun R (&optional start-args)
@@ -401,10 +472,10 @@ will be prompted to enter arguments interactively."
 
     (inferior-ess r-start-args cust-alist gdbp)
 
-    (ess-process-put 'funargs-pre-cache ess-R--funargs-pre-cache)
+    (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
 
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-    (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
+    (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
     (setq comint-input-sender 'inferior-R-input-sender)
 
@@ -432,13 +503,16 @@ Executed in process buffer."
      ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
      (lambda (proc) (process-put proc 'packages-cached? t))))
 
-  (ess--R-load-ESSR)
+  (inferior-ess-r-load-ESSR)
 
   (when inferior-ess-language-start
     (ess-eval-linewise inferior-ess-language-start
                        nil nil nil 'wait-prompt))
 
   (with-ess-process-buffer nil
+    (when ess-microsoft-p
+      (ess-eval-linewise "options(chmhelp=FALSE, help_type=\"text\")"
+                         nil nil nil 'wait))
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-R-post-run-hook)))
 
@@ -456,19 +530,15 @@ Executed in process buffer."
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive "P")
   (setq ess-customize-alist R-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode R-customize-alist proc-name)
   ;; for emacs < 24
   (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name t 'local)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  ;; ECB needs seminatic stuff.
-  ;;  (if (featurep 'semantic)
-  ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
   (when (and ess-imenu-use-S (require 'ess-menu))
     (setq imenu-generic-expression ess-imenu-generic-expression)
     (imenu-add-to-menubar "Imenu-R"))
@@ -486,7 +556,9 @@ Executed in process buffer."
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'back-to-indentation)
   (ad-activate 'ess-eval-line-and-step)
-  (if ess-roxy-hide-show-p
+
+  ;; FIXME: Why advice our own function?
+  (when ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 
   (run-hooks 'R-mode-hook))
@@ -752,7 +824,6 @@ If the value returned is nil, no valid newest version of R could be found."
               new-r    (cdr this-r))))
     new-r))
 
-
 (defun ess-find-rterm (&optional ess-R-root-dir bin-Rterm-exe)
   "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
 If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
@@ -789,13 +860,13 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
                   (if (file-exists-p R-path) R-path)))
               R-ver))))
 
-;;;### autoload
+;;;###autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
 See `ess-noweb-mode' and `R-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
-  (setq ess--make-local-vars-permenent t)
+  (setq ess--make-local-vars-permanent t)
   (ess-noweb-mode 1); turn it on
   (ess-noweb-set-doc-mode 'latex-mode)
   (ess-noweb-set-code-mode 'R-mode)
@@ -817,7 +888,6 @@ See `ess-noweb-mode' and `R-mode' for more help."
   "Does the right thing."
   (interactive)
   (ess-transcript-mode R-customize-alist))
-
 (fset 'r-transcript-mode 'R-transcript-mode)
 
 (defun R-fix-T-F (&optional from quietly)
@@ -832,84 +902,14 @@ See `ess-noweb-mode' and `R-mode' for more help."
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
                     'fixcase nil (not quietly))))
 
-;; From: Sebastian Luque <spluque@gmail.com>
-;; To: ess-help@stat.math.ethz.ch
-;; Date: Mon, 01 May 2006 19:17:49 -0500
-
-;; Without knowing how to tell R to use w3m from within Emacs, and after
-;; switching to Konqueror's window for the millionth time, I wrote the
-;; following function:
-
-;; This emulates some of the functionality of RSiteSearch() and tests ok in
-;; my system GNU Emacs 22.0.50.1 (i486-pc-linux-gnu, X toolkit, Xaw3d scroll
-;; bars) of 2006-04-27 on pacem, modified by Debian.  This has the benefit of
-;; displaying results with whatever you've told browse-url to use; in my
-;; case, w3m with the emacs-w3m package.
-
-;; My elisp skills are rather poor, so comments and suggestions for
-;; improvement are welcome.
-;; --
-;; Seb
-
-
-;; MM _FIXME_: This only works correctly for  Emacs 22.0.50 (alpha)
-;;             for 21.x it has problems in the (completing-read-multiple .)
-;;             at the end
-(defun R-site-search (string)
-  "Search the R archives for STRING, using default criteria.  If
-called with a prefix, options are available for
-  1) matches per page,
-  2) sections of the archives to search (separated by value of `crm-default-separator'),
-  3) for displaying results in long or short formats, and
-  4) for sorting by any given field.
-Completion is available for supplying options."
-  (interactive "sSearch string: ")
-  (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
-        (okstring (replace-regexp-in-string " +" "+" string)))
-    (if current-prefix-arg
-        (let ((mpp (concat
-                    "&max="
-                    (completing-read
-                     "Matches per page: "
-                     '(("20" 1) ("30" 2) ("40" 3) ("50" 4) ("100" 5)))))
-              (format (concat
-                       "&result="
-                       (completing-read
-                        "Format: " '("normal" "short")
-                        nil t "normal" nil "normal")))
-              (sortby (concat
-                       "&sort="
-                       (completing-read
-                        "Sort by: "
-                        '(("score" 1) ("date:late" 2) ("date:early" 3)
-                          ("field:subject:ascending" 4)
-                          ("field:subject:decending" 5)
-                          ("field:from:ascending" 6) ("field:from:decending" 7)
-                          ("field:size:ascending" 8) ("field:size:decending" 9))
-                        nil t "score" nil "score")))
-              (restrict (concat
-                         "&idxname="
-                         (mapconcat
-                          'identity
-                          (completing-read-multiple
-                           "Limit search to: "
-                           '(("Rhelp02a" 1) ("functions" 2) ("docs" 3)
-                             ("Rhelp01" 4))
-                           nil t "Rhelp02a,functions,docs" nil
-                           "Rhelp02a,functions,docs") "&idxname="))))
-          (browse-url (concat site okstring mpp format sortby restrict)))
-      ;; else: without prefix use defaults:
-      (browse-url (concat site okstring "&max=20&result=normal&sort=score"
-                          "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
-
 (defvar ess--packages-cache nil
   "Cache var to store package names. Used by
-  `ess-install.packages'.")
+  `ess-r-install-library'.")
 
 (defvar ess--CRAN-mirror nil
   "CRAN mirror name cache.")
 
-(defun ess-R-install.packages (&optional update pack)
+(defun ess-r-install-library (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
@@ -927,17 +927,6 @@ Completion is available for supplying options."
     (process-send-string (get-process ess-current-process-name)
                          (format "install.packages('%s')\n" pack))
     (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
-
-(define-obsolete-function-alias 'ess-install.packages 'ess-R-install.packages "ESS[12.09-1]")
-
-(defun ess-install-library ()
-  "Install library/package for current dialect.
-Currently works only for R."
-  (interactive)
-  (if (not (string-match "^R" ess-dialect))
-      (message "Sorry, not available for %s" ess-dialect)
-    (ess-R-install.packages)))
-
 
 (defun ess-setRepositories ()
   "Call setRepositories()"
@@ -964,9 +953,8 @@ Currently works only for R."
           (ess-command (format mirror-cmd mirror))))))
   (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
 
-(defun ess-R-sos (cmd)
+(defun ess-r-sos (cmd)
   "Interface to findFn in the library sos."
-                                        ;(interactive (list (read-from-minibuffer "Web search for:" nil nil t nil (current-word))))
   (interactive  "sfindFn: ")
   (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(suppressPackageStartupMessages(require(sos)))\n")))
     (if (y-or-n-p "Library 'sos' is not installed. Install? ")
@@ -976,7 +964,7 @@ Currently works only for R."
   (message nil)
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd)))
 
-(define-obsolete-function-alias 'ess-sos 'ess-R-sos "ESS[12.09-1]")
+(define-obsolete-function-alias 'ess-sos 'ess-r-sos "ESS[12.09-1]")
 
 (defun ess-R-scan-for-library-call (string)
   "Detect `library/require' calls in string and update tracking vars.
@@ -1010,7 +998,267 @@ similar to `load-library' emacs function."
   '(eldoc-add-command "ess-smart-comma"))
 
 
+;;*;; Interaction with R
+
+;;;*;;; Evaluation
+
+(defun ess-r-arg (param value &optional wrap)
+  (let ((value (if wrap
+                   (concat "'" value "'")
+                 value)))
+    (concat ", " param " = " value)))
+
+(defun ess-r-format-args (visibly output namespace)
+  (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
+        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
+        (pkg (when namespace (ess-r-arg "package" namespace t)))
+        (verbose (when (and ess-r-special-evaluation-mode
+                            ess-r-namespaced-load-verbose)
+                   (ess-r-arg "verbose" "TRUE"))))
+    (concat visibly output pkg verbose)))
+
+(defun ess-r-format-eval-command (string &optional visibly output file namespace)
+  (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
+        (file (when file (ess-r-arg "file" file t)))
+        (args (ess-r-format-args visibly output namespace)))
+    (concat cmd "('" string "'" args file ")\n")))
+
+(defun ess-r-format-load-command (file &optional visibly output namespace)
+  (let ((cmd (if namespace ".essDev_source" ".ess.source"))
+        (args (ess-r-format-args visibly output namespace))
+        (msg (concat "cat('"
+                     (when namespace (format "[%s] " namespace))
+                     (format "Sourced file %s\n')" file))))
+    (concat cmd "('" file "'" args "); " msg)))
+
+(defun ess-r-format-eval-message (message)
+  (if (ess-r-namespaced-evaluation-p)
+      (let ((pkg-name (ess-r--get-evaluation-env)))
+        (format "[%s] %s" pkg-name message))
+    message))
+
+(defvar ess-r-evaluation-env nil
+  "Environment into which code should be evaluated.
+
+When nil, code is evaluated in the global environment if tracebug
+is not active, or the evaluation environment of the current
+function if it is active.
+
+Currently only namespaces can be set as evaluation environments.
+Use `ess-r-select-evaluation-namespace' to select a package
+namespace.")
+(make-variable-buffer-local 'ess-r-evaluation-env)
+
+(defvar ess-r-prompt-for-attached-pkgs-only nil
+  "Whether to look for all installed R packages.
+
+If non-nil, only look for attached packages when selecting a
+namespace to source into.")
+
+(defun ess-r-select-evaluation-namespace (&optional arg)
+  "Select a package namespace for evaluation of R code.
+
+Call interactively with a prefix argument to disable evaluation
+in a namespace.  When calling from a function, ARG can be a
+string giving the package to select, any other non-nil value to
+disable, or nil to prompt for a package.
+
+If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
+attached packages."
+  (interactive "P")
+  (let ((pkg-name (cond ((stringp arg)
+                         arg)
+                        (arg
+                         ess-r-evaluation-env)
+                        (t
+                         (ess-r--select-package-name)))))
+    (cond ((and arg (not (stringp arg)))
+           (setq-local ess-r-evaluation-env nil)
+           (ess-r-special-evaluation-mode -1)
+           (message (format "Evaluation of code in %s disabled" pkg-name)))
+          (t
+           (setq-local ess-r-evaluation-env pkg-name)
+           (ess-r-special-evaluation-mode 1)
+           (message (format "Evaluating code in %s" pkg-name))))
+    (force-mode-line-update)))
+
+(defcustom ess-r-special-evaluation-mode-line
+  '(:eval (if (and ess-r-package-mode
+                   (string= ess-r-evaluation-env
+                            (car (ess-r-package--local-package-info))))
+              ""
+            (format " [src:%s]" ess-r-evaluation-env)))
+  "Mode line for namespaced evaluation.
+
+The default value handles the interaction with `ess-r-package-mode-line'.
+Set this variable to nil to disable the mode line entirely."
+  :group 'ess-R
+  :type 'sexp
+  :risky t)
+
+(define-minor-mode ess-r-special-evaluation-mode
+  "Minor mode used for evaluating code into special R environments.
+
+Currently only used for namespaced evaluation.  Its main purpose
+is as a placeholder for special settings (e.g. a lighter for the
+mode line)."
+  :init-value nil
+  :lighter ess-r-special-evaluation-mode-line)
+
+(defun ess-r-namespaced-evaluation-p ()
+  (and
+   ;; Always evaluate in current environment while debugging
+   (not ess-debug-minor-mode)
+   (or ess-r-evaluation-env
+       (ess-get-process-variable 'ess-r-evaluation-env))))
+
+(defun ess-r--get-evaluation-env (&optional ask)
+  (cond (ess-r-evaluation-env)
+        (ask
+         (ess-r-select-evaluation-namespace))
+        (t
+         (error "Namespaced evaluation is not active"))))
+
+(defvar ess-r-namespaced-load-verbose t
+  "Whether to display information on namespaced loading.
+
+When t, loading a file into a namespaced will output information
+about which objects are exported and which stay hidden in the
+namespace.")
+
+(defvar ess-r-namespaced-load-only-existing t
+  "Whether to load only objects already existing in a namespace.")
+
+(defun ess-r-load-file (file)
+  (cond
+   ;; Namespaced evaluation
+   ((ess-r-namespaced-evaluation-p)
+    (ess-r-load-file-namespaced file))
+   ;; Evaluation into current env via .ess.source()
+   (t
+    (let ((command (ess-r-format-load-command file nil t)))
+      (ess-send-string (ess-get-process) command)))))
+
+(defun ess-r-load-file-namespaced (&optional file)
+  "Load FILE into a package namespace.
+
+This prompts for a package when no package is currently
+selected (see `ess-r-select-evaluation-namespace')."
+  (interactive)
+  (ess-force-buffer-current "R process to use: ")
+  (let* ((pkg-name (ess-r--get-evaluation-env))
+         (command (ess-r-format-load-command file nil t pkg-name)))
+    (ess-send-string (ess-get-process) command)))
+
+(defun ess-r-make-source-refd-command (string visibly tmpfile)
+  (let ((pkg-name (when (ess-r-namespaced-evaluation-p)
+                    (ess-r--get-evaluation-env))))
+    (ess-format-eval-command string visibly t tmpfile pkg-name)))
+
+(defun ess-r-send-region (proc start end visibly message)
+  (cond
+   ;; Namespaced evaluation
+   ((ess-r-namespaced-evaluation-p)
+    (ess-r-send-region-namespaced proc start end visibly message))
+   ;; Evaluation into current env
+   (t
+    (ess-send-string proc (buffer-substring start end) visibly message))))
+
+(defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
+  "Ask for for the package and devSource region into it."
+  (let* ((pkg-name (ess-r--get-evaluation-env 'ask-if-nil))
+         (message (ess-r-format-eval-message (or message "Eval region"))))
+    (ess-send-string proc (buffer-substring start end) visibly message)))
+
+
+;;;*;;; Utils for inferior R process
+
+(defun inferior-ess-r-load-ESSR ()
+  "Load/INSTALL/Update ESSR."
+  (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
+         (src-dir (expand-file-name "R" pkg-dir)))
+
+    (if (not (or (and (boundp 'ess-remote) ess-remote)
+                 (file-remote-p (ess-get-process-variable 'default-directory))))
+        (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
+      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+
+(defun inferior-ess-r-load-ESSR--local (pkg-dir src-dir)
+  (let ((cmd (format "local({
+                          source('%s/.load.R', local=TRUE) #define load.ESSR
+                          load.ESSR('%s')
+                      })\n"
+                     src-dir src-dir)))
+    (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+    (with-current-buffer (ess-command cmd)
+      (let ((msg (buffer-string)))
+        (when (> (length msg) 1)
+          (message (format "load ESSR: %s" msg)))))))
+
+(defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
+  (let* ((verfile (expand-file-name "VERSION" pkg-dir))
+         (loadremote (expand-file-name "LOADREMOTE" pkg-dir))
+         (version (if (file-exists-p verfile)
+                      (with-temp-buffer
+                        (insert-file-contents verfile)
+                        (buffer-string))
+                    (error "Cannot find ESSR source code")))
+         (r-load-code (with-temp-buffer
+                        (insert-file-contents loadremote)
+                        (buffer-string))))
+    (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
+                                         verfile loadremote))
+    (unless (ess-boolean-command (format r-load-code version) nil 0.1)
+      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+            (files (directory-files src-dir t "\\.R$")))
+        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
+        ;; should not happen, unless extrem conditions (ancient R or failed download))
+        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
+        (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
+        (mapc #'ess--inject-code-from-file files)))))
+
+(defun inferior-ess-r-quit (&optional no-save)
+  "Issue an exiting command to an inferior R process, and
+optionally clean up.  This version is for killing *R* processes;
+it asks the extra question regarding whether the workspace image
+should be saved unless NO-SAVE is non-nil."
+  (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
+  (ess-make-buffer-current)
+  (let (cmd
+        (sprocess (ess-get-process ess-current-process-name)))
+    (when (not sprocess) (error "No ESS process running"))
+    (ess-cleanup)
+    (setq cmd (format "base::q('%s')\n" (if no-save "no" "default")))
+    (goto-char (marker-position (process-mark sprocess)))
+    (process-send-string sprocess cmd)))
+
+(defcustom inferior-ess-r-reload-hook nil
+  "Hook run when reloading the R inferior buffer."
+  :type 'hook
+  :group 'ess-R)
+
+(defun inferior-ess-r-reload (&optional start-args)
+  "Reload R and the currently activated developer package, if any."
+  (interactive)
+  (ess-force-buffer-current)
+  (let ((pkg-info ess-r-package-info)
+        (r-proc (ess-get-process)))
+    (with-ess-process-buffer nil
+      (ess-quit-r 'no-save)
+      (while (memq (process-status r-proc) '(run busy))
+        (accept-process-output r-proc 0.002))
+      (kill-buffer)
+      (R start-args)
+      (when pkg-info
+        (setq-local ess-r-package-info pkg-info)
+        (ess-r-package-load-package))
+      (run-hooks 'inferior-ess-r-reload-hook))))
+
+
+;;*;; Editing Tools
+
 ;;;*;;; Indentation Engine
+
 ;; Written by Lionel Henry in mid 2015
 
 (defun ess-r-indent-line ()
@@ -1577,7 +1825,7 @@ otherwise nil."
              (looking-at (concat match "("))
              (current-column))))))
 
-
+
 ;;;*;;; Call filling engine
 
 ;; Unroll arguments to a single line until closing marker is found.

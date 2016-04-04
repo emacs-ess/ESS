@@ -11,7 +11,7 @@ dir <- if(length(args)) args[[1]] else "."
 ver <- scan("./VERSION", what = "character", quiet = TRUE)
 rda_file <- sprintf("%s/ESSR_%s.rda", dir, ver)
 
-## exactly as in ess--R-load-ESSR in ess-r-d.el
+## exactly as in inferior-ess-r-load-ESSR in ess-r-d.el
 source('./R/.load.R', local=TRUE)
 ESSR <- load.ESSR('./R/')
 

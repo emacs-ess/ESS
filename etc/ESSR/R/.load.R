@@ -19,8 +19,8 @@ load.ESSR <- function(dir){
             attach(NULL, name = "ESSR")
         else if(length(nn <- names(formals(new.env))) && any(nn == "parent"))
             new.env(parent =
-                    if(Rver >= "1.9.0") getNamespace("utils")
-                    else .BaseNamespaceEnv)
+                        if(Rver >= "1.9.0") getNamespace("utils")
+                        else .BaseNamespaceEnv)
         else
             new.env()
 
@@ -51,3 +51,8 @@ load.ESSR <- function(dir){
     ## BUILDESSR needs this:
     invisible(ESSR)
 }
+
+
+## Local Variables:
+## eval: (ess-set-style 'RRR t)
+## End:

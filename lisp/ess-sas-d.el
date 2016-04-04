@@ -268,6 +268,14 @@ Better logic needed!  (see 2 uses, in this file).")
                                                     (self-insert-command (prefix-numeric-value arg)))
                                                 (self-insert-command (prefix-numeric-value arg))))))
 
+(defun SAS-menu ()
+  "Start SAS from the menu."
+  (interactive)
+  (if ess-microsoft-p
+      ;; replace with other choices for starting SAS under XEmacs?
+      (error "SAS cannot be started this way in ESS on Windows.")
+    (SAS)))
+
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
   (interactive)
@@ -309,6 +317,10 @@ their own frames."
           (lambda ()
             (when (string= ess-language "SAS") ;; e.g. not for R-only users
               (local-set-key "\C-c\C-w" 'ess-multi-frame-SAS))))
+
+(defun ess-num-or-zero (arg)
+  "*If a number, then return that number, otherwise return 0."
+  (or (and (numberp arg) arg) 0))
 
  ; Provide package
 

@@ -1,5 +1,8 @@
 #!/usr/bin/emacs --script
+
 ;; This script must be run from the test directory
+;; With no argument, run all tests. Otherwise run only mentioned tests.
+;; Possible arguments: --rstats --rstats-indent
 
 (let ((current-directory (file-name-directory load-file-name)))
   (setq ess-test-path (expand-file-name "." current-directory))
@@ -9,7 +12,17 @@
 (add-to-list 'load-path ess-test-path)
 
 (require 'ess-site)
-(load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t)
+
+
+(when (= (length argv) 0)
+  (setq argv '("--inf" "--rstats" "--rstats-indent")))
+
+(when (member "--inf" argv)
+  (load (expand-file-name "ess-inf-tests.el" ess-test-path) nil t))
+(when (member "--rstats" argv)
+  (load (expand-file-name "ess-r-tests.el" ess-test-path) nil t))
+(when (member "--rstats-indent" argv)
+ (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)

@@ -36,10 +36,10 @@
 
 ;;; Code:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
+(require 'ess-mode)
+(require 'ess-inf)
 (require 'ess-s-l)
+(require 'ess-dde)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...
@@ -71,21 +71,30 @@
 (defvaralias 'S+6-customize-alist 'S+-customize-alist)
 (defvar S+-customize-alist
   (append
-   '((ess-local-customize-alist         . 'S+-customize-alist)
-     (ess-dialect                       . S+-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
-     (ess-function-pattern              . ess-R-function-pattern)
+   '((ess-local-customize-alist        . 'S+-customize-alist)
+     (ess-dialect                      . S+-dialect-name)
+     (ess-loop-timeout                 . ess-S-loop-timeout) ;fixme: dialect spec.
+     (ess-function-pattern             . ess-r-function-pattern)
 
-     (ess-object-name-db-file           . "ess-sp6-namedb.el")
-     (inferior-ess-program              . inferior-S+-program-name)
-     (inferior-ess-help-command   . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
-     (inferior-ess-help-filetype . nil)
-     (inferior-ess-search-list-command  . "searchPaths()\n")
+     (ess-object-name-db-file          . "ess-sp6-namedb.el")
+     (inferior-ess-program             . inferior-S+-program-name)
+     (inferior-ess-help-command        . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
+     (inferior-ess-help-filetype       . nil)
+     (inferior-ess-search-list-command . "searchPaths()\n")
 
-     (ess-directory-function            . S+-directory-function)
-     (ess-setup-directory-function      . S+-setup-directory-function)
-     (inferior-ess-start-args       . inferior-S+-start-args)
-     (ess-STERM  . "iESS")
+     (ess-send-region-function         . #'ess-dde-send-region)
+     (ess-load-file-function           . #'ess-dde-load-file)
+     (ess-command-function             . #'ess-dde-command)
+     (ess-eval-linewise-function       . #'ess-dde-eval-linewise)
+     (ess-dump-object-function         . #'ess-dde-dump-object)
+     (ess-read-object-name-function    . #'ess-dde-read-object-name)
+     (ess-find-help-file-function      . #'ess-dde-find-help-file)
+     (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
+
+     (ess-directory-function           . S+-directory-function)
+     (ess-setup-directory-function     . S+-setup-directory-function)
+     (inferior-ess-start-args          . inferior-S+-start-args)
+     (ess-STERM                        . "iESS")
      )
    S+common-cust-alist)
 

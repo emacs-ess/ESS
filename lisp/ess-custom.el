@@ -189,7 +189,7 @@ as `ess-imenu-use-S'."
 ;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
-                                ("install.packages"     . ess-install.packages)
+                                ("install.packages"     . ess-install-library)
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
                                 ("help-apropos"         . ess-display-help-apropos)
@@ -210,6 +210,9 @@ as `ess-imenu-use-S'."
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
 
+(defvar ess-install-library-function nil
+  "Dialect-specific function to install a library.")
+(make-variable-buffer-local 'ess-install-library-function)
 
 
 (defcustom ess-describe-at-point-method nil
@@ -558,11 +561,7 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
-;;; SJE -- this is set in ess-site.el to be "always", so I changed
-;;; value t to be "always", so that ess-site.el does not need editing.
-;;; However, this is a bit messy, and would be nicer if ess-site.el
-;;; value was t rather than "always".
-(defcustom ess-keep-dump-files 'ask
+(defcustom ess-keep-dump-files t
   "Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with ess-dump-object-into-edit-buffer.
@@ -603,6 +602,15 @@ however, the file is not subsequently deleted unless
 back into S."
   :group 'ess-edit
   :type 'boolean)
+
+(defvar ess-dump-object-function nil
+  "Dialect specific function for dumping objects.")
+
+(defvar ess-read-object-name-function nil
+  "Dialect specific function for reading object name.")
+
+(make-variable-buffer-local 'ess-dump-object-function)
+(make-variable-buffer-local 'ess-read-object-name-function)
 
 (defcustom ess-fill-calls t
   "If non-nil, refilling a paragraph inside a function or
@@ -1597,7 +1605,7 @@ current directory.
 ;;*;; Regular expressions
 
 ;; -- Note: Some variables not-to-customize moved to ./ess-mode.el :
-;; ess-set-function-start
+;; ess-r-set-function-start
 
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
@@ -2108,26 +2116,25 @@ for help files.  The default value is nil for other systems."
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
-(defcustom inferior-ess-ddeclient nil
+(defcustom inferior-ess-ddeclient "Initial"
   "ddeclient is the intermediary between emacs and the stat program."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-ddeclient)
-
-(defcustom inferior-ess-client-name nil
+(defcustom inferior-ess-client-name "Initial"
   "Name of ESS program ddeclient talks to."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-client-name)
-
-(defcustom inferior-ess-client-command nil
+(defcustom inferior-ess-client-command "Initial"
   "ddeclient command sent to the ESS program."
   :group 'ess-proc
   :type '(choice (const nil) string))
 
+(make-variable-buffer-local 'inferior-ess-client-name)
+(make-variable-buffer-local 'inferior-ess-ddeclient)
 (make-variable-buffer-local 'inferior-ess-client-command)
+
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
@@ -2321,41 +2328,88 @@ and `ess-tracebug'.")
 
 ;;*;; Inferior ESS commands
 
-(defvar ess-load-command "source(\"%s\")\n"
+(defvar ess-load-command "source('%s')\n"
   "Dialect specific format-string for building the ess command to load a file.
 
 This format string should use %s to substitute a file name and should
 result in an ESS expression that will command the inferior ESS to load
 that file.")
-(define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
-
-(defvar ess-load-visibly-command nil
-  "Dialect specific format-string for building the ess command to
-  load a file with echo.")
-
-(defvar ess-load-visibly-noecho-command nil
-  "Dialect specific format-string for building the ess command to
-load a file with visible output but no echo.")
 
 (defvar ess-eval-command nil
   "Dialect specific format-string for building the command to evaluate a string.
+
+It is usually faster to send a string to remote processes than a
+file.  The latter involves Tramp and can be quite slow.  When
+possible, a dialect should implement that command and use it
+preferentially.
 
 This format string should use %s as a placeholder for the string
 to be evaluated and, optionally, %f for the file name to be
 reported in the error references.
 
 The resulting command should not echo code or print any
-transitory output. See also `ess-eval-visibly-command' and
+transitory output.  See also `ess-eval-visibly-command' and
 `ess-eval-visibly-noecho-command'.")
 
-(defvar ess-eval-visibly-command nil
-  "Dialect specific format-string for building the command to
-  evaluate a string with visible output and code echo.
-See ")
+(defvar ess-format-load-command-function nil
+  "Dialect-specific function to build a command to load a file.
 
-(defvar ess-eval-visibly-noecho-command nil
-  "Dialect specific format-string for building the command to
-  evaluate a string with visible output but no echo.")
+This is useful to build a command based on user settings, for
+example whether to display output visibly, with echo, etc.  When
+set, `ess-load-command' is ignored.")
+
+(defvar ess-format-eval-command-function nil
+  "Dialect-specific function to build a command to evaluate a string.
+
+This is useful to build a command based on user settings, for
+example whether to display output visibly, with echo, etc.  When
+set, `ess-eval-command' is ignored.")
+
+(defvar ess-format-eval-message-function nil
+  "Dialect-specific function for formatting an evaluation message.")
+
+(make-variable-buffer-local 'ess-eval-command)
+(make-variable-buffer-local 'ess-load-command)
+(make-variable-buffer-local 'ess-format-eval-command-function)
+(make-variable-buffer-local 'ess-format-load-command-function)
+(make-variable-buffer-local 'ess-format-eval-message-function)
+
+(define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
+(define-obsolete-variable-alias 'ess-load-visibly-command 'ess-format-load-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-load-visibly-noecho-command 'ess-format-load-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-eval-visibly-command 'ess-format-eval-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-eval-visibly-noecho-command 'ess-format-eval-command-function "ESS v16.04")
+
+(defvar ess-send-region-function nil
+  "Dialect-specific function to send a region to an inferior process.")
+
+(defvar ess-load-file-function nil
+  "Dialect-specific function to load a file in an inferior process.")
+
+(defvar ess-send-string-function nil
+  "Dialect-specific function to send a string to an inferior process.")
+
+(defvar ess-make-source-refd-command-function nil
+  "Dialect-specific function to make a source referenced command.")
+
+(defvar ess-command-function nil
+  "Dialect-specific function to send a command to an inferior process.")
+
+(defvar ess-eval-linewise-function nil
+  "Dialect-specific function to evaluate a string linewise.")
+
+(make-variable-buffer-local 'ess-send-region-function)
+(make-variable-buffer-local 'ess-load-file-function)
+(make-variable-buffer-local 'ess-send-string-function)
+(make-variable-buffer-local 'ess-make-source-refd-command-function)
+(make-variable-buffer-local 'ess-command-function)
+(make-variable-buffer-local 'ess-eval-linewise-function)
+
+(defvar inferior-ess-quit-function nil
+  "Dialect specific function to quit the inferior process.
+
+Should perform clean-up.  This is called after `ess-quit'.")
+(make-variable-buffer-local 'inferior-ess-quit-function)
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
@@ -2384,7 +2438,16 @@ If set, changes will take effect when next R session is started."
 
 (defvar ess-get-help-topics-function nil
   "Dialect specific help topics retrieval")
+
+(defvar ess-display-help-on-object-function nil
+  "Dialect specific function for displaying help on object.")
+
+(defvar ess-find-help-file-function nil
+  "Dialect specific function for displaying help on object.")
+
 (make-variable-buffer-local 'ess-get-help-topics-function)
+(make-variable-buffer-local 'ess-display-help-on-object-function)
+(make-variable-buffer-local 'ess-find-help-file-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
@@ -2428,26 +2491,6 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   "Command to find the value of the current S prompt."
   :group 'ess-command
   :type 'string)
-
-(defvar ess-cmd-delay nil
-  "*Set to a positive number if ESS will include delays proportional to
-`ess-cmd-delay'  in some places. These delays are introduced to
-prevent timeouts in certain processes, such as completion.
-
-This variable has no effect from ESS12.03
-")
-(make-variable-buffer-local 'ess-cmd-delay)
-
-(defvar ess-R-cmd-delay nil
-  "Used to initialize `ess-cmd-delay'.
-
-This variable has no effect from ESS12.03
-")
-
-(defvar ess-S+-cmd-delay 1.0
-  "Used to initialize `ess-cmd-delay'.
-This variable has no effect from ESS12.03
-")
 
 ;;*;; Regular expressions
 (defvar inferior-ess-prompt nil
@@ -2512,6 +2555,7 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
   "Cache of help topics")
 
 (make-variable-buffer-local 'ess-help-topics-list)
+
 
 ;;*;; Miscellaneous system variables
 
@@ -2986,7 +3030,7 @@ S+ for details of the format that should be returned.")
 
 (defvar ess-eldoc-function nil
   "Holds a dialect specific eldoc function,
-See `ess-R-eldoc-function' and `ess-julia-eldoc-function' for examples.")
+See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."

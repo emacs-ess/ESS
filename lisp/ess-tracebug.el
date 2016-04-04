@@ -51,13 +51,12 @@
 ;;
 ;;; Code:
 
-(require 'ess)
-(require 'format-spec)
 (eval-when-compile
   (require 'tramp)
   (require 'compile)
   (require 'overlay)
   (require 'cl))
+(require 'ess-utils)
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 (defvar text-scale-mode-amount)
@@ -67,8 +66,7 @@
   "Error navigation and debugging for ESS.
 Currently only R is supported."
   :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
-  :group 'ess
-  )
+  :group 'ess)
 
 (defvar ess-tracebug-indicator " TB"
   "String to be displayed in mode-line alongside the process
@@ -163,10 +161,15 @@ this location instead of the current buffer. This is useful for
 applications, like org-babel,  that call ess evaluation functions
 from temporary buffers.")
 
+(defun ess-tracebug-p ()
+  (ess-process-get 'tracebug))
 
-(defun ess--make-source-refd-command (beg end &optional visibly)
-  "Transform region string in order to add source references.
-Return new command, a string."
+(defun ess-make-source-refd-command (beg end &optional visibly)
+  "Saves a region to a temporary file in order to add source references.
+BEG and END delimit the region.
+
+Returns a string containing an inferior process command for
+loading the temporary file.  This command conforms to VISIBLY."
   (let* ((filename buffer-file-name)
          (proc-dir (ess-get-process-variable 'default-directory))
          (remote (when (file-remote-p proc-dir)
@@ -186,7 +189,7 @@ Return new command, a string."
     (setq end (point)
           orig-beg beg)
 
-    ;; delete all old temp files
+    ;; Delete all old temp files
     (when (and (not (ess-process-get 'busy))
                (< 1 (float-time
                      (time-subtract (current-time)
@@ -200,48 +203,42 @@ Return new command, a string."
       (setq filename (buffer-file-name (marker-buffer orig-marker)))
       (setq orig-beg (+ beg (marker-position orig-marker))))
 
-     (let ((tmpfile
-            (expand-file-name (make-temp-name
-                               (concat (file-name-nondirectory
-                                        (or filename "unknown")) "!"))
-                              (if remote
-                                  (tramp-get-remote-tmpdir remote)
-                                temporary-file-directory)))
-           (eval-format  (if visibly
-                             ess-eval-visibly-command
-                           (or ess-eval-visibly-noecho-command
-                               ess-eval-command))))
+    (let ((tmpfile
+           (expand-file-name (make-temp-name
+                              (concat (file-name-nondirectory
+                                       (or filename "unknown")) "!"))
+                             (if remote
+                                 (tramp-get-remote-tmpdir remote)
+                               temporary-file-directory))))
 
-       (ess-process-put 'temp-source-files
-                        (cons tmpfile (ess-process-get 'temp-source-files)))
+      (ess-process-put 'temp-source-files
+                       (cons tmpfile (ess-process-get 'temp-source-files)))
 
-       (when remote
-         ;; get local name (should this be done in process buffer?)
-         (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
+      (when remote
+        ;; Get local name (should this be done in process buffer?)
+        (setq tmpfile (with-parsed-tramp-file-name tmpfile nil localname)))
 
-       (if (not filename)
-           (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
-         (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-         (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
-                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
-         (with-silent-modifications
-           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (if (not filename)
+          (puthash tmpfile (list nil ess--tracebug-eval-index nil) ess--srcrefs)
+        (puthash tmpfile (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (puthash (file-name-nondirectory tmpfile) ; R sometimes strips dirs
+                 (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
+        (with-silent-modifications
+          (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
+      (let ((string (buffer-substring-no-properties beg end)))
+        (if (fboundp ess-make-source-refd-command-function)
+            (funcall ess-make-source-refd-command-function string visibly tmpfile)
+          (ess-make-source-refd-command--fallback string visibly tmpfile))))))
 
-       ;; sending string to subprocess is considerably faster than tramp file
-       ;; transfer. So, give priority to ess-eval-*-command if available
-       (if eval-format
-           (format-spec eval-format
-                        `((?s . ,(ess-quote-special-chars
-                                  (buffer-substring-no-properties beg end)))
-                          (?f . ,tmpfile)))
-         ;; else: use ess-load-*-command
-         (write-region beg end tmpfile nil 'silent)
-         (if (and visibly ess-load-visibly-command)
-             (format ess-load-visibly-command tmpfile)
-           (format (or ess-load-visibly-noecho-command
-                       ess-load-command)
-                   tmpfile))))))
-
+(defun ess-make-source-refd-command--fallback (string visibly tmpfile)
+  (cond
+   ;; Sending string to subprocess is considerably faster than tramp file
+   ;; transfer. So, give priority to `ess-eval-command' if available
+   ((ess-format-eval-command string visibly t tmpfile))
+   ;; When no `ess-eval-command' available, use `ess-load-command'
+   (t
+    (write-region beg end tmpfile nil 'silent)
+    (ess-format-load-command tmpfile visibly t))))
 
 (defun ess-tracebug-send-region (proc start end &optional visibly message type)
   "Send region to process adding source references as specified
@@ -252,24 +249,24 @@ by `ess-inject-source' variable."
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
                           (t (eq ess-inject-source t))))
-         (ess--debug-del-empty-p (if inject-p nil ess--dbg-del-empty-p))
-         ;; don't call ess-eval-linewise when subprocess does the job
-         (vis (unless (and inject-p ess-load-visibly-command)
-                (if (eq visibly 'no-wait)
-                    (buffer-substring start end)
-                  visibly)))
+         (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
-                     (ess--make-source-refd-command start end visibly)
-                   (buffer-substring start end))))
-    (ess-send-string proc string vis message)))
+                     (ess-make-source-refd-command start end visibly)
+                   (buffer-substring start end)))
+         (message (if (fboundp ess-format-eval-message-function)
+                      (funcall ess-format-eval-message-function message)
+                    message))
+         ;; Visible evaluation is not nice when sourcing temporary files
+         ;; You get .ess.eval(*code*) instead of *code*
+         (visibly (unless inject-p visibly)))
+    (ess-send-string proc string visibly message)))
 
 (defun ess-tracebug-send-function (proc start end &optional visibly message)
   "Like `ess-tracebug-send-region' but with tweaks for functions."
   (ess-tracebug-send-region proc start end visibly message 'function))
 
 (defvar ess-tracebug-help nil
-  "
-ess-dev-map prefix: \\[ess-dev-map]
+  "ess-dev-map prefix: \\[ess-dev-map]
 
 * Breakpoints (`ess-dev-map'):
 
@@ -545,11 +542,7 @@ in inferior buffers.  ")
     (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
 
     ;; redefine
-    ;; todo: all this part should go
-    (when (equal ess-dialect "R")
-      (process-put (get-buffer-process (current-buffer))
-                   'source-file-function
-                   'ess--tb-R-source-current-file))
+    ;; todo: all this part should go (partially gone now)
     (unless (fboundp 'orig-ess-parse-errors)
       (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
       (defalias 'ess-parse-errors (symbol-function 'next-error)))))
@@ -618,7 +611,7 @@ You can bind 'no-select' versions of this commands:
           (ess-dirs)
           (message nil)
           (make-local-variable 'compilation-error-regexp-alist)
-          (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
+          (setq compilation-error-regexp-alist ess-r-error-regexp-alist)
           (make-local-variable 'compilation-search-path)
           (setq compilation-search-path ess-tracebug-search-path)
           (ess-setq-vars-local alist)
@@ -1733,29 +1726,6 @@ ARGS are ignored to allow using this function in process hooks."
           (goto-char last-input-mark)
           (inferior-ess-move-last-input-overlay))))))
 
-(defun ess--tb-R-source-current-file (&optional filename)
-  "Save current file and source it in the .R_GlobalEnv environment."
-  ;; fixme: this sucks as it doesn't use ess-load-command and the whole thing
-  ;; seems redundand to the ess-load-file
-  (interactive)
-  (ess-force-buffer-current "R process to use: ")
-  (let ((proc (get-process ess-local-process-name))
-        (file (or filename buffer-file-name)))
-    (if (or ess-developer
-            (ess-get-process-variable 'ess-developer))
-        (ess-developer-source-current-file filename)
-      (if (not file)
-          ;; source the buffer content, org-mode, *scratch* etc.
-          (let ((ess-inject-source t))
-            (ess-tracebug-send-region proc (point-min) (point-max) nil
-                                      (format "Sourced buffer '%s'" (propertize (buffer-name) 'face 'font-lock-function-name-face))))
-        (when (buffer-modified-p) (save-buffer))
-        (save-selected-window
-          (ess-switch-to-ESS t))
-        (ess-send-string (get-process ess-current-process-name)
-                         (concat "\ninvisible(eval({source(file=\"" filename
-                                 "\")\n cat(\"Sourced file '" filename "'\\n\")}, env=globalenv()))"))))))
-
 ;;;_ + BREAKPOINTS
 
 (defface ess-bp-fringe-inactive-face
@@ -2635,7 +2605,7 @@ for signature and trace it with browser tracer."
   (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
          (all-functions (ess-get-words-from-vector
-                         (if ess-developer-packages
+                         (if nil ;; FIXME, was checking `ess-developer-packages`
                              (format ".ess_all_functions(c('%s'))\n"
                                      (mapconcat 'identity ess-developer-packages "', '"))
                            ".ess_all_functions()\n")))
@@ -2690,10 +2660,10 @@ for signature and trace it with browser tracer."
   (interactive)
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo\
         (debugged (ess-get-words-from-vector
-                   (if ess-developer-packages
+                   (if nil ;; FIXME: was checking `ess-developer-packages`
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
-                     ".ess_dbg_getTracedAndDebugged()\n")))
+                       ".ess_dbg_getTracedAndDebugged()\n")))
         out-message fun def-val)
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)

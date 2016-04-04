@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'ess-s-l)
+(require 'ess-utils)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
@@ -199,7 +200,7 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
       ;; ugly fix for evn variable. What can we do :(
       (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
                          nil nil nil 'wait)
-      (ess--R-load-ESSR))
+      (inferior-ess-r-load-ESSR))
 
     (when (equal ess-dialect "S+")
       (ess-command ess-S+--injected-code))
