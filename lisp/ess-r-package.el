@@ -30,7 +30,7 @@
 
 ;;; Code:
 
-(require 'subr-x)
+(require 'ess-utils)
 
 (defface ess-r-package-indicator-face
   '((((class grayscale)) (:background "DimGray"))
@@ -174,9 +174,10 @@ section."
   "Parses DESCRIPTION file in PATH (R specific so far). PATH
 defaults to the value returned by
 `ess-r-package--find-package-path'."
-  (when-let ((pkg-path (ess-r-package--find-package-path)))
-    (setq-local ess-r-package-info
-                (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
+  (let ((pkg-path (ess-r-package--find-package-path)))
+    (when pkg-path
+      (setq-local ess-r-package-info
+                  (cons (ess-r-package--find-package-name pkg-path) pkg-path)))))
 
 (defun ess-r-package--find-package-path ()
   "Get the root of R package that contains current directory.
