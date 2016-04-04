@@ -32,9 +32,10 @@
 
 (eval-when-compile
   (require 'cl))
+(require 'subr-x)
 (require 'ess-utils)
 
-(defun ess-R-eldoc-function ()
+(defun ess-r-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
@@ -134,11 +135,11 @@ to look up any doc strings."
 
 ;;; OBJECTS
 
-(defun ess-R-object-completion ()
+(defun ess-r-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'."
   (if (ess-make-buffer-current)
       (let* ((funstart (cdr (ess--funname.start)))
-             (completions (ess-R-get-rcompletions funstart))
+             (completions (ess-r-get-rcompletions funstart))
              (token (pop completions)))
         (when completions
           (list (- (point) (length token)) (point)
@@ -149,12 +150,12 @@ to look up any doc strings."
 
 (defun ess-complete-object-name ()
   "Perform completion on `ess-language' object preceding point.
-Uses \\[ess-R-complete-object-name] when `ess-use-R-completion' is non-nil,
+Uses \\[ess-r-complete-object-name] when `ess-use-R-completion' is non-nil,
 or \\[ess-internal-complete-object-name] otherwise."
   (interactive)
   (if (ess-make-buffer-current)
       (if ess-use-R-completion
-          (ess-R-complete-object-name)
+          (ess-r-complete-object-name)
         (ess-internal-complete-object-name))
     ;; else give a message on second invocation
     (when (string-match "complete" (symbol-name last-command))
@@ -232,7 +233,7 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-(defun ess-R-get-rcompletions (&optional start end prefix)
+(defun ess-r-get-rcompletions (&optional start end prefix)
   "Call R internal completion utilities (rcomp) for possible completions.
 Optional START and END delimit the entity to complete, default to
 bol and point. If PREFIX is given, perform completion on
@@ -251,11 +252,11 @@ token. Needs version of R>=2.7.0."
                       (- end start))))
     (ess-get-words-from-vector cmd)))
 
-(defun ess-R-complete-object-name ()
+(defun ess-r-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive)
-  (let ((possible-completions (ess-R-get-rcompletions))
+  (let ((possible-completions (ess-r-get-rcompletions))
         token-string)
     ;; If there are no possible-completions, should return nil, so
     ;; that when this function is called from
@@ -272,7 +273,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess--get-cached-completions (prefix &optional point)
   (if (string-match-p "[]:$@[]" prefix)
       ;; call proc for objects
-      (cdr (ess-R-get-rcompletions nil nil prefix))
+      (cdr (ess-r-get-rcompletions nil nil prefix))
     ;; else, get cached list of objects
     (with-ess-process-buffer 'no-error ;; use proc buf alist
       (ess-when-new-input last-cached-completions
@@ -307,7 +308,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (define-obsolete-variable-alias 'ess-ac-R-argument-suffix 'ess-R-argument-suffix "15.3")
 
-(defvar ess-R--funargs-pre-cache
+(defvar ess-r--funargs-pre-cache
   '(("plot"
      (("graphics")
       (("x" . "")    ("y" . "NULL")    ("type" . "p")    ("xlim" . "NULL")    ("ylim" . "NULL")    ("log" . "")    ("main" . "NULL")    ("sub" . "NULL")    ("xlab" . "NULL")    ("ylab" . "NULL")
@@ -331,7 +332,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 ;;; HELP
 
-(defun ess-R-get-object-help-string (sym)
+(defun ess-r-get-object-help-string (sym)
   "Help string for ac."
   (let ((proc (ess-get-next-available-process)))
     (if (null proc)
@@ -347,7 +348,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (goto-char (point-min))
           (buffer-string))))))
 
-(defun ess-R-get-arg-help-string (sym &optional proc)
+(defun ess-r-get-arg-help-string (sym &optional proc)
   "Help string for ac."
   (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
   (let ((proc (or proc (ess-get-next-available-process))))
@@ -376,7 +377,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                   (when proc
                     (with-current-buffer (process-buffer proc)
                       (all-completions arg (ess--get-cached-completions arg))))))
-    (doc-buffer (company-doc-buffer (ess-R-get-object-help-string arg)))))
+    (doc-buffer (company-doc-buffer (ess-r-get-object-help-string arg)))))
 
 (defun company-R-args (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -401,12 +402,12 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                        (with-current-buffer (process-buffer proc)
                          (not (file-remote-p default-directory))))
               ;; fixme: ideally meta should be fetched with args
-              (let ((doc (ess-R-get-arg-help-string arg proc)))
+              (let ((doc (ess-r-get-arg-help-string arg proc)))
                 (replace-regexp-in-string "^ +\\| +$" ""
                                           (replace-regexp-in-string "[ \t\n]+" " " doc))))))
     (sorted t)
     (require-match 'never)
-    (doc-buffer (company-doc-buffer (ess-R-get-arg-help-string arg)))))
+    (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
 
 
 ;;; AC SOURCES
@@ -438,15 +439,15 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-help (sym)
   (if (string-match-p "= *\\'" sym)
-      (ess-R-get-arg-help-string sym)
-    (ess-R-get-object-help-string sym)))
+      (ess-r-get-arg-help-string sym)
+    (ess-r-get-object-help-string sym)))
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
   '((prefix     . ess-symbol-start)
     ;; (requires   . 2)
     (candidates . ess-ac-objects)
-    (document   . ess-R-get-object-help-string))
+    (document   . ess-r-get-object-help-string))
   "Auto-completion source for R objects")
 
 (defun ess-ac-objects (&optional no-kill)
@@ -463,7 +464,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; (requires   . 0)
     (candidates . ess-ac-args)
     ;; (action     . ess-ac-action-args)
-    (document   . ess-R-get-arg-help-string))
+    (document   . ess-r-get-arg-help-string))
   "Auto-completion source for R function arguments")
 
 (defun ess-ac-args ()

@@ -33,6 +33,7 @@
  ; Requires and autoloads
 
 (ess-message "[ess-s-l:] (def** ) only ...")
+(require 'ess-utils)
 
  ; Configuration variables
 
@@ -137,10 +138,7 @@
      (ess-help-sec-regex        . ess-help-S+-sec-regex)
      (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
      (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
-     (ess-cmd-delay             . (if (featurep 'xemacs); needs much less delay
-                                      (* 0.1 ess-S+-cmd-delay)
-                                    ess-S+-cmd-delay))
-     (ess-function-pattern      . ess-S-function-pattern)
+     (ess-function-pattern      . ess-s-function-pattern)
      (ess-function-template     . " <- \n#\nfunction()\n{\n\n}\n")
      (ess-dump-filename-template . (ess-replace-regexp-in-string
                                     "S$" ess-suffix ; in the one from custom:
@@ -216,26 +214,8 @@
     (?v . "VALUE:"))
   "Help section keys for S4.")
 
-;; R
-(defconst ess-help-R-sec-keys-alist
-  '((?a . "\\s *Arguments:")
-    (?d . "\\s *Description:")
-    (?D . "\\s *Details:")
-    (?t . "\\s *Details:")
-    (?e . "\\s *Examples:")
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:")
-    (?s . "\\s *See Also:")
-    (?u . "\\s *Usage:")
-    (?v . "\\s *Value[s]?")     ;
-    )
-  "Alist of (key . string) pairs for use in help section searching.")
-
 
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
-  "Reg(ular) Ex(pression) of section headers in help file.")
-
-(defconst ess-help-R-sec-regex "^[A-Z][A-Za-z].+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
 ;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.

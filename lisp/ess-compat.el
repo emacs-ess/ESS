@@ -316,6 +316,19 @@ It can be retrieved with `(process-get PROCESS PROPNAME)'."
                        (plist-put (process-plist process) propname value)))
   )
 
+(defun ess-mode-xemacs-menu ()
+  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
+  (if 'ess-mode
+      (easy-menu-add ess-mode-menu)
+    (easy-menu-remove ess-mode-menu)))
+
+(when (featurep 'xemacs)
+  (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
+
+(when (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
+  (eval-after-load "ess-mode"
+    '(define-key ess-mode-map [(meta backspace)] 'backward-kill-word)))
+
 
 (provide 'ess-compat)
 

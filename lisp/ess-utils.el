@@ -33,6 +33,12 @@
 
 ;;*;; elisp tools
 
+(defun ess-goto-line (line)
+  (save-restriction
+    (widen)
+    (goto-char (point-min))
+    (forward-line (1- line))))
+
 (defun ess-line-end-position (&optional N)
   "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
   (save-excursion
@@ -1031,6 +1037,81 @@ we simply do not break it (instead of breaking after the first word)."
 
 
 ;;*;; Syntax
+
+(defun ess-containing-sexp-position ()
+  (cadr (syntax-ppss)))
+
+(defun ess-code-end-position ()
+  "Like (line-end-position) but stops at comments"
+  (save-excursion
+    (or (and (re-search-forward "#" (line-end-position) t)
+             (match-beginning 0))
+        (line-end-position))))
+
+;; FIXME: The following function pattern stuff is specific to R but is
+;; used throughout ESS
+
+(defvar ess-r-set-function-start
+  "^set[MGAR][Ma-z]+\\s-?(")
+
+(defvar ess-function-pattern nil
+  "Regexp to match the beginning of a function in S buffers.")
+
+(defvar ess-r-symbol-pattern
+  "\\(\\sw\\|\\s_\\)"
+  "The regular expression for matching an R symbol")
+
+(defvar ess-r-name-pattern
+  (concat "\\(" ess-r-symbol-pattern "+\\|\\(`\\).+`\\)")
+  "The regular expression for matching a R name.")
+
+(let* ((Q     "\\s\"")                    ; quote
+       (repl "\\(<-\\)?")                 ; replacement (function)
+       (Sym-0 "\\(\\sw\\|\\s_\\)")        ; symbol
+       (Symb (concat Sym-0 "+"))
+       (xSymb "[^ \t\n\"']+") ;; (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
+       ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
+       (_or_  "\\)\\|\\(")                ; OR
+       (space "\\(\\s-\\|\n\\)*")         ; white space
+
+       (part-1 (concat
+                "\\(" ;;--------outer Either-------
+                "\\(\\("          ; EITHER
+                Q xSymb Q         ; any function name between quotes
+                _or_
+                "\\(^\\|[ ]\\)" Symb ; (beginning of name) + ess-r-symbol-pattern
+                "\\)\\)"))        ; END EITHER OR
+
+       (set-S4-exp
+        (concat
+         "^set\\(As\\|Method\\|Generic\\|GroupMethod\\|ReplaceMethod\\)(" ; S4 ...
+         Q xSymb Q "," space
+         ;; and now often `` signature(......), : ''
+         ".*" ;; <<< FIXME ???
+         ))
+
+       (part-2 (concat
+                "\\|" ;;--------outer Or ---------
+                set-S4-exp
+                "\\)" ;;--------end outer Either/Or-------
+
+                "\\(" space "\\s<.*\\s>\\)*"      ; whitespace, comment
+                ;; FIXME: in principle we should skip 'definition *= *' here
+                space "function\\s-*(" ; whitespace, function keyword, parenthesis
+                )))
+
+  (defvar ess-r-function-pattern
+    (concat part-1
+            "\\s-*\\(<-\\|=\\)" ; whitespace, assign
+            part-2)
+    "The regular expression for matching the beginning of an R function.")
+
+  (defvar ess-s-function-pattern
+    (concat part-1
+            "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign (incl. "_")
+            part-2)
+    "The regular expression for matching the beginning of an S function."))
+
 
 (defvar ess--funname.start nil)
 

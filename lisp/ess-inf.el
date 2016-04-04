@@ -1415,10 +1415,10 @@ the ESS process buffer.  If an optional second argument
 OUT-BUFFER exists save the output in that buffer.  OUT-BUFFER is
 erased before use.  CMD should have a terminating newline.
 Guarantees that the value of `.Last.value' will be preserved.
-When optional third arg SLEEP is non-nil, `(sleep-for (* a
-SLEEP))' will be used in a few places where `a' is proportional
-to `ess-cmd-delay'.  WAIT and FORCE-REDISPLAY are as in
-`ess-wait-for-process' and are passed to `ess-wait-for-process'.
+
+SLEEP is deprecated and no longer has any effect. WAIT and
+FORCE-REDISPLAY are as in `ess-wait-for-process' and are passed
+to `ess-wait-for-process'.
 
 PROC should be a process, if nil the process name is taken from
 `ess-local-process-name'.  This command doesn't set 'last-eval
