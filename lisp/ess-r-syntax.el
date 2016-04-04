@@ -27,10 +27,10 @@
 
 ;;; Code:
 
+(require 'ess-utils)
 (require 'regexp-opt)
-;; mainly 'cl-lib [but that's missing in E 24.2]; also need (some .)
-(with-no-warnings (require 'cl))
 
+(with-no-warnings (require 'cl)) ; instead of cl-lib so we support Emacs 24.2
 
 
 ;;*;; Utils
@@ -892,7 +892,7 @@ into account."
       (forward-char)
       (backward-sexp)
       (not (looking-back
-            (concat ess-R-name-pattern "[[:blank:]]*")
+            (concat ess-r-name-pattern "[[:blank:]]*")
             (line-beginning-position)))))))
 
 (defun ess-block-p ()
@@ -1543,7 +1543,7 @@ without curly braces."
       (skip-chars-forward " \t")
       ;; Jump over backquoted names
       (cond ((and (eq (char-after) ?`)
-                  (looking-back ess-R-symbol-pattern
+                  (looking-back ess-r-symbol-pattern
                                 (1- (point))))
              (forward-char)
              (setq climbed t))

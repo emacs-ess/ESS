@@ -24,15 +24,16 @@
 
 ;;; Commentary:
 
-                                        ;In Rgui:
-                                        ;> library(tcltk2)  ## >= 1.0-6
-                                        ;> .ess.command <- function() source("c:/temp/ess-tempfile.R", echo=TRUE)
-                                        ;> tclFun(.ess.command)
-                                        ;[1] "R_call 0203A04C"
+;; In Rgui:
+;; > library(tcltk2)  ## >= 1.0-6
+;; > .ess.command <- function() source("c:/temp/ess-tempfile.R", echo=TRUE)
+;; > tclFun(.ess.command)
+;; [1] "R_call 0203A04C"
 
 ;;; Code:
 
 (require 'ess-dde) ;; needed here because we override several definitions
+(require 'ess-r-d)
 
 (defun ess-ddeclient-p ()
   "Returns the name of the ddeclient iff `ess-local-process-name'
@@ -113,13 +114,12 @@ PROC, VISIBLY and MESSAGE are ignored."
                                           "S$" ess-suffix ; in the one from custom:
                                           ess-dump-filename-template-proto))
      (ess-mode-syntax-table            . ess-r-syntax-table)
-     (ess-mode-editing-alist           . R-editing-alist)
+     (ess-mode-editing-alist           . ess-r-editing-alist)
      (ess-change-sp-regexp             . ess-R-change-sp-regexp)
-     (ess-help-sec-regex               . ess-help-R-sec-regex)
-     (ess-help-sec-keys-alist          . ess-help-R-sec-keys-alist)
+     (ess-help-sec-regex               . ess-help-r-sec-regex)
+     (ess-help-sec-keys-alist          . ess-help-r-sec-keys-alist)
      (ess-loop-timeout                 . ess-S-loop-timeout);fixme: dialect spec.
-     (ess-cmd-delay                    . ess-R-cmd-delay)
-     (ess-function-pattern             . ess-R-function-pattern)
+     (ess-function-pattern             . ess-r-function-pattern)
      (ess-object-name-db-file          . "ess-r-namedb.el" )
      (ess-send-region-function         . #'ess-dde-rgui-send-region)
      (ess-load-file-function           . #'ess-dde-load-file)

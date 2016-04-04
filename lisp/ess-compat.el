@@ -43,22 +43,74 @@
   "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
 
-;; for emacs <= 24.2 :
-(unless (fboundp 'defvar-local)
-  (defmacro defvar-local (var val &optional docstring)
-    "Define VAR as a buffer-local variable with default value VAL.
-Like `defvar' but additionally marks the variable as being automatically
-buffer-local wherever it is set."
-    (declare (debug defvar) (doc-string 3))
-    ;; Can't use backquote here, it's too early in the bootstrap.
-    (list 'progn (list 'defvar var val docstring)
-          (list 'make-variable-buffer-local (list 'quote var)))))
+(unless (fboundp 'use-region-p)
+  ;; emacs 23 needs this
+  (defun use-region-p ()
+    "Return t if the region is active and it is appropriate to act on it.
+This is used by commands that act specially on the region under
+Transient Mark mode.
 
-(unless (fboundp 'setq-local)
-  (defmacro setq-local (var val)
-    "Set variable VAR to value VAL in current buffer."
-    ;; Can't use backquote here, it's too early in the bootstrap.
-    (list 'set (list 'make-local-variable (list 'quote var)) val)))
+The return value is t if Transient Mark mode is enabled and the
+mark is active; furthermore, if `use-empty-active-region' is nil,
+the region must not be empty.  Otherwise, the return value is nil.
+
+For some commands, it may be appropriate to ignore the value of
+`use-empty-active-region'; in that case, use `region-active-p'."
+    (and (region-active-p)
+         (or use-empty-active-region (> (region-end) (region-beginning)))))
+
+  (defun region-active-p ()
+    "Return t if Transient Mark mode is enabled and the mark is active.
+
+Some commands act specially on the region when Transient Mark
+mode is enabled.  Usually, such commands should use
+`use-region-p' instead of this function, because `use-region-p'
+also checks the value of `use-empty-active-region'."
+    (and transient-mark-mode mark-active)))
+
+;;; xemacs process-put and process-get workarounds:
+;;; !!!! remove this when xemacs starts supporting them!!!
+(when (featurep 'xemacs)
+  (defvar process-plist-map (make-hash-table :test 'eq :weakness 'key)
+    "Property list information for process, when XEmacs doesn't provide this.
+See `process-plist' and `set-process-plist'.")
+
+  (defun-when-void process-plist (process)
+    "Return the property list of PROCESS."
+    (check-argument-type #'processp process)
+    (gethash process process-plist-map))
+
+  (defun-when-void set-process-plist (process plist)
+    "Set the property list of PROCESS to PLIST."
+    (check-argument-type #'processp process)
+    (check-argument-type #'valid-plist-p plist)
+    (puthash process plist process-plist-map))
+
+
+  (defun-when-void process-get (process propname)
+    "Return the value of PROCESS' PROPNAME property.
+This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
+    (plist-get (process-plist process) propname))
+
+  (defun-when-void process-put (process propname value)
+    "Change PROCESS' PROPNAME property to VALUE.
+It can be retrieved with `(process-get PROCESS PROPNAME)'."
+    (set-process-plist process
+                       (plist-put (process-plist process) propname value)))
+  )
+
+(defun ess-mode-xemacs-menu ()
+  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
+  (if 'ess-mode
+      (easy-menu-add ess-mode-menu)
+    (easy-menu-remove ess-mode-menu)))
+
+(when (featurep 'xemacs)
+  (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
+
+(when (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
+  (eval-after-load "ess-mode"
+    '(define-key ess-mode-map [(meta backspace)] 'backward-kill-word)))
 
 (provide 'ess-compat)
 
