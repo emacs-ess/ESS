@@ -1008,7 +1008,7 @@ similar to `load-library' emacs function."
   (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
         (file (when file (ess-r-arg "file" file t)))
         (args (ess-r-format-args visibly output namespace)))
-    (concat cmd "('" string "'" file args ")\n")))
+    (concat cmd "('" string "'" args file ")\n")))
 
 (defun ess-r-format-load-command (file &optional visibly output namespace)
   (let ((cmd (if namespace ".essDev_source" ".ess.source"))
