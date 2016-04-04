@@ -611,7 +611,7 @@ You can bind 'no-select' versions of this commands:
           (ess-dirs)
           (message nil)
           (make-local-variable 'compilation-error-regexp-alist)
-          (setq compilation-error-regexp-alist ess-R-error-regexp-alist)
+          (setq compilation-error-regexp-alist ess-r-error-regexp-alist)
           (make-local-variable 'compilation-search-path)
           (setq compilation-search-path ess-tracebug-search-path)
           (ess-setq-vars-local alist)

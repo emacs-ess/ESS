@@ -42,8 +42,9 @@
 ;;
 ;;; Code:
 
-(require 'compile); for compilation-* below
+(require 'compile)
 (require 'ess-utils)
+(require 'ess-r-d)
 
 ;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
 (condition-case nil
@@ -316,11 +317,10 @@ to look up any doc strings."
                                            ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . nil)
     (ess-change-sp-regexp          . nil );ess-R-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist)
+    (ess-help-sec-regex            . ess-help-r-sec-regex)
+    (ess-help-sec-keys-alist       . ess-help-r-sec-keys-alist)
     (ess-loop-timeout              . ess-S-loop-timeout);fixme: dialect spec.
-    (ess-cmd-delay                 . ess-R-cmd-delay)
-    (ess-function-pattern          . ess-R-function-pattern)
+    (ess-function-pattern          . ess-r-function-pattern)
     (ess-object-name-db-file       . "ess-jl-namedb.el" )
     (ess-smart-operators           . ess-R-smart-operators)
     (inferior-ess-help-filetype    . nil)

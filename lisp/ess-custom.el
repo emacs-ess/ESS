@@ -189,7 +189,7 @@ as `ess-imenu-use-S'."
 ;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
-                                ("install.packages"     . ess-install.packages)
+                                ("install.packages"     . ess-install-library)
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
                                 ("help-apropos"         . ess-display-help-apropos)
@@ -210,6 +210,9 @@ as `ess-imenu-use-S'."
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
 
+(defvar ess-install-library-function nil
+  "Dialect-specific function to install a library.")
+(make-variable-buffer-local 'ess-install-library-function)
 
 
 (defcustom ess-describe-at-point-method nil
@@ -1602,7 +1605,7 @@ current directory.
 ;;*;; Regular expressions
 
 ;; -- Note: Some variables not-to-customize moved to ./ess-mode.el :
-;; ess-set-function-start
+;; ess-r-set-function-start
 
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
@@ -2489,26 +2492,6 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :group 'ess-command
   :type 'string)
 
-(defvar ess-cmd-delay nil
-  "*Set to a positive number if ESS will include delays proportional to
-`ess-cmd-delay'  in some places. These delays are introduced to
-prevent timeouts in certain processes, such as completion.
-
-This variable has no effect from ESS12.03
-")
-(make-variable-buffer-local 'ess-cmd-delay)
-
-(defvar ess-R-cmd-delay nil
-  "Used to initialize `ess-cmd-delay'.
-
-This variable has no effect from ESS12.03
-")
-
-(defvar ess-S+-cmd-delay 1.0
-  "Used to initialize `ess-cmd-delay'.
-This variable has no effect from ESS12.03
-")
-
 ;;*;; Regular expressions
 (defvar inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
@@ -3047,7 +3030,7 @@ S+ for details of the format that should be returned.")
 
 (defvar ess-eldoc-function nil
   "Holds a dialect specific eldoc function,
-See `ess-R-eldoc-function' and `ess-julia-eldoc-function' for examples.")
+See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."
