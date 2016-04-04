@@ -45,7 +45,6 @@
 (require 'comint)
 (require 'overlay)
 (require 'compile)
-(require 'subr-x)
 (require 'format-spec)
 (require 'ess-tracebug)
 
@@ -1776,25 +1775,26 @@ nil."
       ;; Evaluation is forward oriented
       (forward-line -1)
       (ess-next-code-line 1))
-    (when-let ((beg-end (ess-end-of-function nil no-error)))
-      (let* ((beg (nth 0 beg-end))
-             (end (nth 1 beg-end))
-             (proc (get-process ess-local-process-name))
-             ;; FIXME: func names starting with . are not recognized??
-             (name (progn (goto-char beg)
-                          (forward-word)
-                          (ess-read-object-name-default)))
-             (msg (format "Eval function %s"
-                          (propertize (or name "???")
-                                      'face 'font-lock-function-name-face)))
-             (visibly (if vis (not ess-eval-visibly) ess-eval-visibly)))
-        (ess-blink-region beg end)
-        (cond
-         ((ess-tracebug-p)
-          (ess-tracebug-send-function proc beg end visibly msg))
-         (t
-          (ess-send-region proc beg end visibly msg)))
-        beg-end))))
+    (let ((beg-end (ess-end-of-function nil no-error)))
+      (when beg-end
+        (let* ((beg (nth 0 beg-end))
+               (end (nth 1 beg-end))
+               (proc (get-process ess-local-process-name))
+               ;; FIXME: func names starting with . are not recognized??
+               (name (progn (goto-char beg)
+                            (forward-word)
+                            (ess-read-object-name-default)))
+               (msg (format "Eval function %s"
+                            (propertize (or name "???")
+                                        'face 'font-lock-function-name-face)))
+               (visibly (if vis (not ess-eval-visibly) ess-eval-visibly)))
+          (ess-blink-region beg end)
+          (cond
+           ((ess-tracebug-p)
+            (ess-tracebug-send-function proc beg end visibly msg))
+           (t
+            (ess-send-region proc beg end visibly msg)))
+          beg-end)))))
 
 
 ;; This is from  Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
