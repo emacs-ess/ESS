@@ -1,5 +1,6 @@
 
 (require 'ert)
+(require 'ess-site)
 (require 'ess-r-tests-utils)
 
 
@@ -12,7 +13,7 @@
     (should (string= (ess-r-format-eval-command command nil t)
                      ".ess.eval('command(\"string\")', visibly = FALSE, output = TRUE)\n"))
     (should (string= (ess-r-format-eval-command command t t "file.ext" "foo")
-                     ".essDev.eval('command(\"string\")', visibly = TRUE, output = TRUE, file = 'file.ext', package = 'foo')\n"))
+                     ".essDev.eval('command(\"string\")', visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
     (with-r-file nil
       (let ((command "command(\"string\")"))
         (should (string= (ess-format-eval-command command)
