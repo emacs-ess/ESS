@@ -1008,23 +1008,28 @@ similar to `load-library' emacs function."
                  value)))
     (concat ", " param " = " value)))
 
+(defun ess-r-format-args (visibly output namespace)
+  (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
+        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
+        (pkg (when namespace (ess-r-arg "package" namespace t)))
+        (verbose (when (and ess-r-special-evaluation-mode
+                            ess-r-namespaced-load-verbose)
+                   (ess-r-arg "verbose" "TRUE"))))
+    (concat visibly output pkg verbose)))
+
 (defun ess-r-format-eval-command (string &optional visibly output file namespace)
   (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
-        (visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
-        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
-        (file (if file (ess-r-arg "file" file t)))
-        (pkg (if namespace (ess-r-arg "package" namespace t) "")))
-    (concat cmd "('" string "'" visibly output file pkg ")\n")))
+        (file (when file (ess-r-arg "file" file t)))
+        (args (ess-r-format-args visibly output namespace)))
+    (concat cmd "('" string "'" file args ")\n")))
 
 (defun ess-r-format-load-command (file &optional visibly output namespace)
   (let ((cmd (if namespace ".essDev_source" ".ess.source"))
-        (visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
-        (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
-        (pkg (if namespace (ess-r-arg "package" namespace t) ""))
+        (args (ess-r-format-args visibly output namespace))
         (msg (concat "cat('"
                      (when namespace (format "[%s] " namespace))
                      (format "Sourced file %s\n')" file))))
-    (concat cmd "('" file "'" visibly output pkg "); " msg)))
+    (concat cmd "('" file "'" args "); " msg)))
 
 (defun ess-r-format-eval-message (message)
   (if (ess-r-namespaced-evaluation-p)
@@ -1114,7 +1119,7 @@ mode line)."
         (t
          (error "Namespaced evaluation is not active"))))
 
-(defvar ess-r-namespaced-load-verbose nil
+(defvar ess-r-namespaced-load-verbose t
   "Whether to display information on namespaced loading.
 
 When t, loading a file into a namespaced will output information

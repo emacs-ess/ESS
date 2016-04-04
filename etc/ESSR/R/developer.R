@@ -8,10 +8,13 @@
 ## thing.
 
 ## evaluate the STRING by saving into a file and calling .essDev_source
-.essDev.eval <- function(string, visibly, output, package, file = tempfile("ESSDev")){
+.essDev.eval <- function(string, visibly, output, package,
+                         file = tempfile("ESSDev"), verbose = FALSE) {
     cat(string, file = file)
     on.exit(file.remove(file))
-    .essDev_source(file, visibly, output, package = package)
+    .essDev_source(file, visibly, output,
+                   package = package,
+                   verbose = verbose)
 }
 
 ## sourcing SOURCE file into an environment. After having a look at each new
@@ -19,7 +22,6 @@
 ## functions, existing S3 methods, S4 classes and methods. .
 .essDev_source <- function(source, visibly, output, expr, package = "", verbose = FALSE)
 {
-    ## require('methods')
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
     MPattern <- methods:::.TableMetaPattern()
