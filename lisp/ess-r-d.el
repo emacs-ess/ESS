@@ -212,6 +212,8 @@
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
+     (ess-build-help-command-function   . #'ess-r-build-help-command)
+     (ess-build-help-command-on-action-function . #'ess-r-build-help-command-on-action)
      (ess-help-web-search-command       . 'ess-R-sos)
      (ess-mode-syntax-table             . R-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
@@ -382,7 +384,7 @@ will be prompted to enter arguments interactively."
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
     (add-hook 'completion-at-point-functions 'ess-R-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-    (setq comint-input-sender 'inferior-R-input-sender)
+    (setq comint-input-sender 'inferior-ess-r-input-sender)
 
     (if gdbp
         (progn
@@ -987,7 +989,7 @@ similar to `load-library' emacs function."
 
 
 ;;*;; Interaction with R
-
+
 ;;;*;;; Evaluation
 
 (defun ess-r-arg (param value &optional wrap)
@@ -1158,8 +1160,102 @@ selected (see `ess-r-select-evaluation-namespace')."
          (message (ess-r-format-eval-message (or message "Eval region"))))
     (ess-send-string proc (buffer-substring start end) visibly message)))
 
-
+
+;;;*;;; Help
+
+(defun ess-r-namespaced-object-p (object)
+  (string-match "^[[:alnum:].]+::" object))
+
+(defun ess-r-build-help-command--qualified (object)
+  (when (ess-r-namespaced-object-p object)
+    (let* ((pkg-name (substring object (match-beginning 0) (- (match-end 0) 2)))
+           (object (concat "'" (substring object (match-end 0)) "'"))
+           (pkg (ess-r-arg "package" pkg-name t)))
+      (concat ".ess.help(" object pkg ")\n"))))
+
+(defun ess-r-build-help-command--get-package-dir (object dont-ask)
+  ;; Ugly hack to avoid tcl/tk dialogues
+  (let ((pkgs (ess-get-words-from-vector
+               (format "as.character(help('%s'))\n" object))))
+    (when (> (length pkgs) 1)
+      (if dont-ask
+          (car pkgs)
+        (ess-completing-read "Choose location" pkgs nil t)))))
+
+(defun ess-r-build-help-command--unqualified (object dont-ask)
+  (let ((pkg-dir (ess-r-build-help-command--get-package-dir object dont-ask))
+        (command (format inferior-ess-r-help-command object)))
+    (if pkg-dir
+        ;; Invoking `print.help_files_with_topic'
+        (format "do.call(structure, c('%s', attributes(%s)))\n" pkg-dir command)
+      command)))
+
+(defun ess-r-build-help-command (object &optional dont-ask)
+  (cond ((ess-r-build-help-command--qualified object))
+        (t
+         (ess-r-build-help-command--unqualified object dont-ask))))
+
+;; FIXME: use ess-r-build-help-command
+(defun ess-r-build-help-command-on-action (string)
+  (cond ((string-match "::" string)
+         (format "?%s\n" (ess-help-r--sanitize-topic string)))
+        ((eq ess-help-type 'index)
+         (format "?%s::`%s`\n" ess-help-object string))))
+
+(defun ess-help-r--sanitize-topic (string)
+  ;; Enclose help topics into `` to avoid ?while ?if etc hangs
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
+      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
+    (format "`%s`" string)))
+
+(defconst inferior-ess-r--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
+(defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
+(defconst inferior-ess-r--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
+
+;; FIXME: This is still buggy in some cases with namespaced
+;; commands. This also tends to issue error messages even when it
+;; works
+(defun ess-help-r--process-help-input (proc string)
+  (let ((help-match (and (string-match inferior-ess-r--input-help string)
+                         (match-string 2 string)))
+        (help-?-match (and (string-match inferior-ess-r--input-?-help-regexp string)
+                           string))
+        (page-match   (and (string-match inferior-ess-r--page-regexp string)
+                           (match-string 2 string))))
+    (cond (help-match
+           (ess-display-help-on-object help-match)
+           (process-send-string proc "\n"))
+          (help-?-match
+           (if (string-match "\\?\\?\\(.+\\)" help-?-match)
+               (ess--display-indexed-help-page (concat help-?-match "\n")
+                                               "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
+                                               (format "*ess-apropos[%s](%s)*"
+                                                       ess-current-process-name (match-string 1 help-?-match))
+                                               'appropos)
+             ;; help(foo::bar) doesn't work
+             (if (string-match "^ *\\? *\\([^:]+\\)$" help-?-match)
+                 (ess-display-help-on-object (match-string 1 help-?-match))
+               ;; Anything else we send to process almost unchanged
+               (let ((help-?-match (and (string-match inferior-ess-r--input-?-help-regexp string)
+                                        (format "%s%s" (match-string 1 string)
+                                                (ess-help-r--sanitize-topic (match-string 2 string))))))
+                 (ess-display-help-on-object help-?-match "%s\n"))))
+           (process-send-string proc "\n"))
+          (page-match
+           (switch-to-buffer-other-window
+            (ess-command (concat page-match "\n")
+                         (get-buffer-create (concat page-match ".rt"))))
+           (R-transcript-mode)
+           (process-send-string proc "\n")))))
+
+
 ;;;*;;; Utils for inferior R process
+
+(defun inferior-ess-r-input-sender (proc string)
+  (save-current-buffer
+    (cond ((ess-help-r--process-help-input proc string))
+          (t
+           (inferior-ess-input-sender proc string)))))
 
 (defun inferior-ess-r-load-ESSR ()
   "Load/INSTALL/Update ESSR."

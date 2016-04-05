@@ -120,7 +120,7 @@
     ;; inferior-ess-prompt is used by comint for navigation, only if
     ;; comint-use-prompt-regexp is t; (transcript-mode also relies on this regexp)
     (inferior-ess-prompt           . inferior-S-prompt) ;customizable
-    (ess-get-help-topics-function  . 'ess-get-S-help-topics-function)
+    (ess-get-help-topics-function  . #'ess-s-get-help-topics-function)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
@@ -882,6 +882,28 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
           (ess-S-initialize-speedbar)))
     (error nil)))
+
+(defun ess-s-get-help-topics-function (name)
+  "Return a list of current S help topics associated with process NAME.
+If 'sp-for-help-changed?' process variable is non-nil or
+`ess-help-topics-list' is nil, (re)-populate the latter and
+return it.  Otherwise, return `ess-help-topics-list'."
+  (with-ess-process-buffer nil
+    (ess-write-to-dribble-buffer
+     (format "(ess-get-help-topics-list %s) .." name))
+    (cond
+     ;; (Re)generate the list of topics
+     ((or (not ess-help-topics-list)
+          (ess-process-get 'sp-for-help-changed?))
+      (ess-process-put 'sp-for-help-changed? nil)
+      (setq ess-help-topics-list
+            (ess-uniq-list
+             (append (ess-get-object-list name 'exclude-1st)
+                     (ess-get-help-files-list)
+                     (ess-get-help-aliases-list)))))
+     (t
+      ess-help-topics-list))))
+
 
 (provide 'ess-s-l)
 

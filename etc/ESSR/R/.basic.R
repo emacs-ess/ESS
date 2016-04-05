@@ -20,15 +20,28 @@
 
 ## Instead of modern  utils::help use one that works in R 1.0.0:
 .ess.findFUN   <- get("find", .ess.utils.name)
-.ess.helpFUN   <- get("help", envir=.GlobalEnv)# so it also works with d..tools
+
 
 ### HELP
-.ess.help <- function(..., help.type = getOption('help_type'))
-{
-    if (.ess.Rversion > '2.10')# abbreviating 'help_type' on purpose:
-        .ess.helpFUN(..., help = help.type)
-    else # not using identical(), and working also for NULL:
-        .ess.helpFUN(..., htmlhelp = (length(help.type) && help.type=='html'))
+.ess.help <- function(..., help.type = getOption("help_type")) {
+    if (is.null(help.type)) {
+        help.type <- "text"
+    }
+
+    ## - Searching in global env makes sure it works with devtools
+    ## - Redefining to .ess.help this way is necessary because
+    ##   `print.help_files_with_topic` (used internally when there's
+    ##   more than one a package) uses the quoted call
+    .ess.help <- function(...) {
+        do.call(get("help", envir = .GlobalEnv), list(...))
+    }
+
+    if (.ess.Rversion > "2.10") {
+        ## Abbreviating help_type to avoid underscore
+        .ess.help(..., help = help.type)
+    } else {
+        .ess.help(..., htmlhelp = help.type == "html")
+    }
 }
 
 .ess.getHelpAliases <- function(){

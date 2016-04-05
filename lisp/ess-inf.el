@@ -1431,8 +1431,6 @@ This handles Tramp when working on a remote."
          "ESS process not ready. Finish your command before trying again.")))
     proc))
 
-;; TODO >>> dde dispatch!! <<<
-
 (defun ess-command (cmd &optional out-buffer sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process command CMD and delete the output from
 the ESS process buffer.  If an optional second argument
@@ -2331,56 +2329,8 @@ to continue it."
         (ess-eval-linewise string nil nil ess-eval-empty)
       (ess-send-string proc string))))
 
-
 (defvar ess-help-arg-regexp "\\(['\"]?\\)\\([^,=)'\"]*\\)\\1"
   "Reg(ular) Ex(pression) of help(.) arguments.  MUST: 2nd \\(.\\) = arg.")
-(defconst inferior-R--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
-;; (defconst inferior-R-2-input-help (format "^ *\\? *%s" ess-help-arg-regexp))
-(defconst inferior-R--input-?-help-regexp
-  "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
-(defconst inferior-R--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
-
-(defun ess-R--sanitize-help-topic (string)
-  ;; enclose help topics into `` to avoid ?while ?if etc hangs
-  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
-      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
-    (format "`%s`" string)))
-
-(defun inferior-R-input-sender (proc string)
-  (save-current-buffer
-    (let ((help-match (and (string-match inferior-R--input-help string)
-                           (match-string 2 string)))
-          (help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                             string))
-          (page-match   (and (string-match inferior-R--page-regexp string)
-                             (match-string 2 string))))
-      (cond (help-match
-             (ess-display-help-on-object help-match)
-             (process-send-string proc "\n"))
-            (help-?-match
-             (if (string-match "\\?\\?\\(.+\\)" help-?-match)
-                 (ess--display-indexed-help-page (concat help-?-match "\n")
-                                                 "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
-                                                 (format "*ess-apropos[%s](%s)*"
-                                                         ess-current-process-name (match-string 1 help-?-match))
-                                                 'appropos)
-               (if (string-match "^ *\\? *\\([^:]+\\)$" help-?-match) ; help(foo::bar) doesn't work
-                   (ess-display-help-on-object (match-string 1 help-?-match))
-                 ;; anything else we send to process almost unchanged
-                 (let ((help-?-match (and (string-match inferior-R--input-?-help-regexp string)
-                                          (format "%s%s" (match-string 1 string)
-                                                  (ess-R--sanitize-help-topic (match-string 2 string))))))
-                   (ess-display-help-on-object help-?-match "%s\n"))))
-             (process-send-string proc "\n"))
-            (page-match
-             (switch-to-buffer-other-window
-              (ess-command (concat page-match "\n")
-                           (get-buffer-create (concat page-match ".rt"))))
-             (R-transcript-mode)
-             (process-send-string proc "\n"))
-
-            (t ;; normal command
-             (inferior-ess-input-sender proc string))))))
 
 (defun inferior-ess-send-input ()
   "Sends the command on the current line to the ESS process."
@@ -3077,36 +3027,32 @@ P-STRING is the prompt string."
 
 (defun ess-read-object-name-default ()
   "Return the object name at point, or nil if none."
-  (condition-case ()
-      (save-excursion
-        ;; The following line circumvents an 18.57 bug in following-char
-        (if (eobp) (backward-char 1)) ; Hopefully buffer is not empty!
-        ;; Get onto a symbol
-        (catch 'nosym ; bail out if there's no symbol at all before point
-          (while (/= (char-syntax (following-char)) ?w)
-            (if (bobp) (throw 'nosym nil) (backward-char 1)))
-          (let*
-              ((end (progn (forward-sexp 1) (point)))
-               (beg (progn (backward-sexp 1) (point))))
-            (buffer-substring-no-properties beg end))))
-    (error nil)))
+  (ignore-errors
+    (save-excursion
+      ;; The following line circumvents an 18.57 bug in following-char
+      (if (eobp) (backward-char 1))   ; Hopefully buffer is not empty!
+      ;; Get onto a symbol
+      (catch 'nosym ; bail out if there's no symbol at all before point
+        (while (/= (char-syntax (following-char)) ?w)
+          (if (bobp) (throw 'nosym nil) (backward-char 1)))
+        (let*
+            ((end (progn (forward-sexp 1) (point)))
+             (beg (progn (backward-sexp 1) (point))))
+          (buffer-substring-no-properties beg end))))))
 
 (defun ess-read-object-name-dump ()
   "Return the object name at point, or \"Temporary\" if none."
-  (condition-case ()
-      (save-excursion
-        ;; The following line circumvents an 18.57 bug in following-char
-        (if (eobp) (backward-char 1)) ; Hopefully buffer is not empty!
-        ;; Get onto a symbol
-        (catch 'nosym ; bail out if there's no symbol at all before point
-          (while (/= (char-syntax (following-char)) ?w)
-            (if (bobp) (throw 'nosym nil) (backward-char 1)))
-          (let*
-              ((end (progn (forward-sexp 1) (point)))
-               (beg (progn (backward-sexp 1) (point)))
-               (object-name (buffer-substring beg end)))
-            (or object-name "Temporary"))))
-    (error nil)))
+  (ignore-errors
+    (save-excursion
+      ;; Get onto a symbol
+      (catch 'nosym ; bail out if there's no symbol at all before point
+        (while (/= (char-syntax (following-char)) ?w)
+          (if (bobp) (throw 'nosym nil) (backward-char 1)))
+        (let*
+            ((end (progn (forward-sexp 1) (point)))
+             (beg (progn (backward-sexp 1) (point)))
+             (object-name (buffer-substring beg end)))
+          (or object-name "Temporary"))))))
 
 ;;;; start of ess-smart-operators
 ;;;; inspired by slime repl shortcuts

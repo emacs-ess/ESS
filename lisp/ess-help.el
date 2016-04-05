@@ -138,6 +138,13 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer))))))
 
+(defun ess-build-help-command (object)
+  (cond ((fboundp ess-build-help-command-function)
+         (funcall ess-build-help-command-function object))
+        (t
+         ;; FIXME: Remove the inferior- prefix for consistency
+         (format inferior-ess-help-command object))))
+
 (defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
   (ess-write-to-dribble-buffer
    (format "(ess-help '%s' start  ..\n" (buffer-name (current-buffer))))
@@ -146,25 +153,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (if buffer-read-only (setq buffer-read-only nil))
   (delete-region (point-min) (point-max))
   (ess-help-mode)
-  (when (and (null command)
-             (string-match "^R" ess-dialect))
-    ;;VS[16-12-2012]: ugly hack to avoid tcl/tk dialogues
-    (let ((packs (ess-get-words-from-vector
-                  (format "as.character(help('%s'))\n" object))))
-      (when (> (length packs) 1)
-        (setq
-         command (format ;; crippled S3 :(
-                  "do.call(structure, c('%s', attributes(help('%s'))))\n"
-                  (if dont-ask
-                      (car packs)
-                    (ess-completing-read "Choose location" packs nil t))
-                  object)))))
-  (ess-command (cond ((and command (string-match-p "%s" command))
-                      (format command object))
-                     ;; avoid formatting commands with % in them (like %>%)
-                     (command command)
-                     (t (format inferior-ess-help-command object)))
-               (current-buffer))
+  (ess-command (ess-build-help-command object) (current-buffer))
   (ess-help-underline)
   ;;VS[03-09-2012]: todo: this should not be here:
   ;; Stata is clean, so we get a big BARF from this.
@@ -174,7 +163,6 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (set-buffer-modified-p 'nil)
   (setq buffer-read-only t)
   (setq truncate-lines nil))
-
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus buffer with message. Return t if killed."
@@ -229,16 +217,9 @@ It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (let* ((string (button-label button))
-         (command
-          (when (equal ess-dialect "R")
-            (cond ((string-match"::" string)
-                   (format "?%s\n" (ess-R--sanitize-help-topic string)))
-                  ((eq ess-help-type 'index)
-                   (concat "?" ess-help-object "::`%s`\n"))
-                  ))))
-    (ess-display-help-on-object string command)
-    ))
-
+         (command (when (fboundp ess-build-help-command-on-action)
+                    (funcall ess-build-help-command-on-action string))))
+    (ess-display-help-on-object string command)))
 
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
@@ -781,30 +762,39 @@ Keystroke    Section
               (substitute-command-keys
                "\\{ess-help-sec-map}")))))
 
-(defun ess-helpobjs-at-point (slist)
-  ;;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
-  ;;; the function call point is in. DEF is either OBJ or FUN (in that order)
-  ;;; which has a a help file, i.e. it is a member of slist (string-list). nil
-  ;;; otherwise
-  (let ((obj (ess-read-object-name-default))
-        (fun (condition-case ()
-                 (save-excursion
-                   (save-restriction
-                     (narrow-to-region (max (point-min) (- (point) 1000))
-                                       (point-max))
-                     (backward-up-list 1)
-                     (backward-char 1)
-                     (ess-read-object-name-default)))
-               (error nil))))
-    (if (and obj (not (string-match "[[:alpha:]]" obj))) ;;exclude numbers
-      (setq obj nil))
+(defun ess-helpobjs-at-point--read-obj ()
+  (let* ((obj (ess-read-object-name-default)))
+    ;; Exclude numbers
+    (unless (and obj (not (string-match "[[:alpha:]]" obj)))
+      obj)))
+
+(defun ess-unqualify-symbol (object)
+  (if (string-match "^[[:alnum:].]+::?" object)
+      (substring object (match-end 0))
+    object))
+
+(defun ess-helpobjs-at-point (slist &optional)
+  ;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
+  ;; the function call point is in. DEF is either OBJ or FUN (in that order)
+  ;; which has a a help file, i.e. it is a member of slist (string-list). nil
+  ;; otherwise
+  (let* ((obj (ess-helpobjs-at-point--read-obj))
+         (unqualified-obj (ess-unqualify-symbol obj))
+         ;; FIXME: probably should use syntactic logic here
+         (fun (condition-case ()
+                  (save-excursion
+                    (save-restriction
+                      (narrow-to-region (max (point-min) (- (point) 1000))
+                                        (point-max))
+                      (backward-up-list 1)
+                      (backward-char 1)
+                      (ess-read-object-name-default)))
+                (error nil))))
     (list (or (car (member obj slist))
+              (when (member unqualified-obj slist)
+                obj)
               (car (member fun slist)))
           obj fun)))
-
-;; defunct old name:
-;; (defun ess-read-helpobj-name-default (slist)
-;;   (car (delq nil (ess-helpobjs-at-point slist))))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING.  Note that we can't search SAS,
@@ -813,37 +803,18 @@ Stata or XLispStat for additional information."
   (cond
    ((fboundp ess-find-help-file-function)
     (funcall ess-find-help-file-function p-string))
+   ;; Fixme: Are `ess-find-help-file-function' and
+   ;; `ess-get-help-topics-function' redundant?
+   ((fboundp ess-get-help-topics-function)
+    (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
+           (hlpobjs (ess-helpobjs-at-point help-files-list)))
+      (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+                           nil nil nil nil (car hlpobjs))))
    (t
-    ;; Fixme: Are `ess-find-help-file-function' and
-    ;; `ess-get-help-topics-function' redundant?
-    (if ess-get-help-topics-function
-        (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
-               (hlpobjs (ess-helpobjs-at-point help-files-list)))
-          (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
-                               nil nil nil nil (car hlpobjs)))
-      (read-string (format "%s: " p-string))))))
+    (read-string (format "%s: " p-string)))))
+
 
 ;;*;; Utility functions
-
-(defun ess-get-S-help-topics-function (name)
-  "Return a list of current S help topics associated with process NAME.
-If 'sp-for-help-changed?' process variable is non-nil or
-`ess-help-topics-list' is nil, (re)-populate the latter and
-return it.  Otherwise, return `ess-help-topics-list'."
-  (with-ess-process-buffer nil
-    (ess-write-to-dribble-buffer
-     (format "(ess-get-help-topics-list %s) .." name))
-    (if (or (not ess-help-topics-list)
-            (ess-process-get 'sp-for-help-changed?))
-        (progn
-          (ess-process-put 'sp-for-help-changed? nil)
-          (setq ess-help-topics-list
-                (ess-uniq-list
-                 (append (ess-get-object-list name 'exclude-1st)
-                         (ess-get-help-files-list)
-                         (ess-get-help-aliases-list)))))
-      ;; else return the existing list
-      ess-help-topics-list)))
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."

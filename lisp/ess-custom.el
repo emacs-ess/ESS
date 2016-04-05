@@ -2430,7 +2430,7 @@ This format string should use %s to substitute an object name.")
 (setq-default inferior-ess-help-command "help(\"%s\")\n")
 
 
-(defcustom inferior-ess-r-help-command ".ess.help(\"%s\", help.type=\"text\")\n"
+(defcustom inferior-ess-r-help-command ".ess.help('%s')\n"
   "Format-string for building the R command to ask for help on an object.
 
 This format string should use %s to substitute an object name.
@@ -2447,9 +2447,17 @@ If set, changes will take effect when next R session is started."
 (defvar ess-find-help-file-function nil
   "Dialect specific function for displaying help on object.")
 
+(defvar ess-build-help-command-function nil
+  "Dialect specific function for building an help command.")
+
+(defvar ess-build-help-command-on-action-function nil
+  "Dialect specific function for building a help command on button press.")
+
 (make-variable-buffer-local 'ess-get-help-topics-function)
 (make-variable-buffer-local 'ess-display-help-on-object-function)
 (make-variable-buffer-local 'ess-find-help-file-function)
+(make-variable-buffer-local 'ess-build-help-command-function)
+(make-variable-buffer-local 'ess-build-help-command-on-action-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
