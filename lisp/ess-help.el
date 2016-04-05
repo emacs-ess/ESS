@@ -169,8 +169,9 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (when ess-help-kill-bogus-buffers
     (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
       (when bog-mes
-        (when (< (length bog-mes) 10) ;;no message at all, how to treat this properly?
-          (setq bog-mes (format "No documentation found; %s" bog-mes)))
+        ;; The following is giving erroneous messages when help is displayed in the browser
+        ;; (when (< (length bog-mes) 10) ;;no message at all, how to treat this properly?
+        ;;   (setq bog-mes (format "No documentation found; %s" bog-mes)))
         (ess-write-to-dribble-buffer
          (format "(ess-help: kill bogus buffer %s ..\n" (buffer-name buffer)))
         (message "%s" (replace-regexp-in-string  "\n" "" bog-mes))
