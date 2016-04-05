@@ -203,8 +203,8 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-format-eval-command-function  . #'ess-r-format-eval-command)
-     (ess-format-load-command-function  . #'ess-r-format-load-command)
+     (ess-build-eval-command-function  . #'ess-r-format-eval-command)
+     (ess-build-load-command-function  . #'ess-r-format-load-command)
      (ess-send-region-function          . #'ess-r-send-region)
      (ess-load-file-function            . #'ess-r-load-file)
      (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
@@ -1141,7 +1141,7 @@ selected (see `ess-r-select-evaluation-namespace')."
 (defun ess-r-make-source-refd-command (string visibly tmpfile)
   (let ((pkg-name (when (ess-r-namespaced-evaluation-p)
                     (ess-r--get-evaluation-env))))
-    (ess-format-eval-command string visibly t tmpfile pkg-name)))
+    (ess-build-eval-command string visibly t tmpfile pkg-name)))
 
 (defun ess-r-send-region (proc start end visibly message)
   (cond

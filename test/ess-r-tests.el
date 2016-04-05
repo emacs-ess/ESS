@@ -16,7 +16,7 @@
                      ".essDev.eval('command(\"string\")', visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
     (with-r-file nil
       (let ((command "command(\"string\")"))
-        (should (string= (ess-format-eval-command command)
+        (should (string= (ess-build-eval-command command)
                          (ess-r-format-eval-command command)))))))
 
 (ert-deftest ess-r-format-load-command ()
@@ -27,7 +27,7 @@
   (should (string= (ess-r-format-load-command "file.ext" nil t "foo")
                    ".essDev_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo'); cat('[foo] Sourced file file.ext\n')"))
   (with-r-file nil
-    (should (string= (ess-format-load-command "file")
+    (should (string= (ess-build-load-command "file")
                      (ess-r-format-load-command "file")))))
 
 

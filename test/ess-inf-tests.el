@@ -25,12 +25,12 @@
 
 ;;; Inferior utils
 
-(ert-deftest ess-format-eval-command ()
-  (should (not (ess-format-eval-command "command()")))
+(ert-deftest ess-build-eval-command ()
+  (should (not (ess-build-eval-command "command()")))
   (let ((ess-eval-command "%s - %f"))
-    (should (string= (ess-format-eval-command "command(\"string\")" nil nil "file")
+    (should (string= (ess-build-eval-command "command(\"string\")" nil nil "file")
                      "command(\"string\") - file"))))
 
-(ert-deftest ess-format-load-command ()
-  (should (string= (ess-format-load-command "file")
+(ert-deftest ess-build-load-command ()
+  (should (string= (ess-build-load-command "file")
                    "source('file')\n")))

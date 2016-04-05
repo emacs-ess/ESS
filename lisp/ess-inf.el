@@ -1138,26 +1138,26 @@ Assumes that buffer has not already been in found in current frame."
 
 ;;*;; Utils for evaluation
 
-(defun ess-format-eval-command (string &optional visibly output file &rest args)
+(defun ess-build-eval-command (string &optional visibly output file &rest args)
   "Format an evaluation command.
 
-Dispatches on the dialect-specific `ess-format-eval-command-function'
+Dispatches on the dialect-specific `ess-build-eval-command-function'
 and `ess-eval-command', in that order."
-  (cond ((fboundp ess-format-eval-command-function)
-         (apply ess-format-eval-command-function
+  (cond ((fboundp ess-build-eval-command-function)
+         (apply ess-build-eval-command-function
                 string visibly output file args))
         (ess-eval-command
          (format-spec ess-eval-command
                       `((?s . ,string)
                         (?f . ,file))))))
 
-(defun ess-format-load-command (file &optional visibly output &rest args)
+(defun ess-build-load-command (file &optional visibly output &rest args)
   "Format a loading command.
 
-Dispatches on the dialect-specific `ess-format-load-command-function'
+Dispatches on the dialect-specific `ess-build-load-command-function'
 and `ess-load-command', in that order."
-  (if (fboundp ess-format-load-command-function)
-      (apply ess-format-load-command-function file visibly output args)
+  (if (fboundp ess-build-load-command-function)
+      (apply ess-build-load-command-function file visibly output args)
     (format ess-load-command file)))
 
 (defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay)
@@ -1396,7 +1396,7 @@ This handles Tramp when working on a remote."
      ;; Normal loading. Note that there is no tracebug version because
      ;; sourced files automatically have source references.
      (t
-      (let ((command (ess-format-load-command file nil t)))
+      (let ((command (ess-build-load-command file nil t)))
         (ess-send-string (ess-get-process) command t))))))
 
 ;; C-c C-l  *used to* eval code:

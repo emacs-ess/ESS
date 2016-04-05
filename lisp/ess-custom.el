@@ -2353,14 +2353,14 @@ The resulting command should not echo code or print any
 transitory output.  See also `ess-eval-visibly-command' and
 `ess-eval-visibly-noecho-command'.")
 
-(defvar ess-format-load-command-function nil
+(defvar ess-build-load-command-function nil
   "Dialect-specific function to build a command to load a file.
 
 This is useful to build a command based on user settings, for
 example whether to display output visibly, with echo, etc.  When
 set, `ess-load-command' is ignored.")
 
-(defvar ess-format-eval-command-function nil
+(defvar ess-build-eval-command-function nil
   "Dialect-specific function to build a command to evaluate a string.
 
 This is useful to build a command based on user settings, for
@@ -2372,15 +2372,15 @@ set, `ess-eval-command' is ignored.")
 
 (make-variable-buffer-local 'ess-eval-command)
 (make-variable-buffer-local 'ess-load-command)
-(make-variable-buffer-local 'ess-format-eval-command-function)
-(make-variable-buffer-local 'ess-format-load-command-function)
+(make-variable-buffer-local 'ess-build-eval-command-function)
+(make-variable-buffer-local 'ess-build-load-command-function)
 (make-variable-buffer-local 'ess-format-eval-message-function)
 
 (define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
-(define-obsolete-variable-alias 'ess-load-visibly-command 'ess-format-load-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-load-visibly-noecho-command 'ess-format-load-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-eval-visibly-command 'ess-format-eval-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-eval-visibly-noecho-command 'ess-format-eval-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-load-visibly-command 'ess-build-load-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-load-visibly-noecho-command 'ess-build-load-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-eval-visibly-command 'ess-build-eval-command-function "ESS v16.04")
+(define-obsolete-variable-alias 'ess-eval-visibly-noecho-command 'ess-build-eval-command-function "ESS v16.04")
 
 (defvar ess-send-region-function nil
   "Dialect-specific function to send a region to an inferior process.")
