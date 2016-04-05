@@ -39,10 +39,10 @@
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (let ((proc (ess-get-next-available-process))
-        (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
-                                    (thing-at-point 'symbol))
-                               (car (ess--funname.start))))))
+  (let* ((proc (ess-get-next-available-process))
+         (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
+                                     (thing-at-point 'symbol))
+                                (car (ess--funname.start))))))
     (when funname
       (let* ((args (ess-function-arguments funname proc))
              (bargs (cadr args))
