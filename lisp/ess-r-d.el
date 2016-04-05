@@ -317,7 +317,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-call-stack-command "traceback(1)\n")
 
 (defvar ess-r-dump-filename-template
-  (ess-replace-regexp-in-string
+  (replace-regexp-in-string
    "S$" "R" ess-dump-filename-template-proto))
 
 (defvar ess-r-ac-sources
