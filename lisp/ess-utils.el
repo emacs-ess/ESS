@@ -1152,6 +1152,26 @@ later."
       (setq content (concat "{" content "}\n")))
     (ess-command content)))
 
+(defvar ess-current-region-overlay
+  (let ((overlay (make-overlay (point) (point))))
+    (overlay-put overlay 'face  'highlight)
+    overlay)
+  "The overlay for highlighting currently evaluated region or line.")
+
+(defun ess-blink-region (start end)
+  (when ess-blink-region
+    (move-overlay ess-current-region-overlay start end)
+    (run-with-timer ess-blink-delay nil
+                    (lambda ()
+                      (delete-overlay ess-current-region-overlay)))))
+
+(defun ess-deactivate-mark ()
+  (cond ((and (featurep 'evil) evil-mode)
+         (when (evil-visual-state-p)
+           (evil-normal-state)))
+        ((fboundp 'deactivate-mark)
+         (deactivate-mark))))
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here

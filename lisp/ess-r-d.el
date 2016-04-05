@@ -39,6 +39,7 @@
 (require 'cl)
 (require 'ess-s-l)
 (require 'eldoc)
+(require 'ess-utils)
 (require 'ess-r-package)
 (require 'ess-help)
 (require 'ess-roxy)
