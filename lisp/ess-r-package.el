@@ -61,12 +61,11 @@ See also `ess-r-package-load-package' for related functionality."
   :group 'ess-r-package
   :type 'alist)
 
-(defvar ess-r-package-info nil
-  "Current package.
+(defvar-local ess-r-package-info nil
+  "Current package info cache.
 
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
-(make-variable-buffer-local 'ess-r-package-info)
 
 (defvar ess-r-package-library-path nil
   "Default path to find packages.")
@@ -113,7 +112,8 @@ whether the current file is part of a package, or the value of
 `ess-r-package-info' in the attached process buffer."
   (or ess-r-package-info
       (ess-r-package--local-package-info)
-      (ess-r-package--process-package-info)))
+      (with-ess-process-buffer t
+        ess-r-package-info)))
 
 (defun ess-r-package-select-package ()
   "Select a package for ESS developer functions.
@@ -133,7 +133,7 @@ section."
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
       (add-file-local-variable 'ess-r-package-info pkg-info))
-    (setq-local ess-r-package-info pkg-info)))
+    (setq ess-r-package-info pkg-info)))
 
 (defun ess-r--select-package-name ()
   (ess-force-buffer-current)
@@ -168,7 +168,8 @@ section."
                            (string= "" args))
                  (concat ", " args))))
     (message msg name)
-    (ess-r-package--update-process-local-pkg pkg-info)
+    (with-ess-process-buffer nil
+      (setq ess-r-package-info pkg-info))
     (ess-eval-linewise (format command (concat path args)))))
 
 
@@ -179,9 +180,11 @@ section."
 defaults to the value returned by
 `ess-r-package--find-package-path'."
   (let ((pkg-path (ess-r-package--find-package-path)))
-    (when pkg-path
-      (setq-local ess-r-package-info
-                  (cons (ess-r-package--find-package-name pkg-path) pkg-path)))))
+    (setq ess-r-package-info
+          (if pkg-path
+              (cons (ess-r-package--find-package-name pkg-path) pkg-path)
+            ;; cache non-package files as well
+            '(nil)))))
 
 (defun ess-r-package--find-package-path ()
   "Get the root of R package that contains current directory.
@@ -221,14 +224,6 @@ Root is determined by locating `ess-r-package-root-file'."
         (goto-char (point-min))
         (re-search-forward "package: \\(.*\\)")
         (match-string 1)))))
-
-(defun ess-r-package--process-package-info ()
-  (with-ess-process-buffer t
-    (bound-and-true-p ess-r-package-info)))
-
-(defun ess-r-package--update-process-local-pkg (pkg-info)
-  (with-ess-process-buffer nil
-    (setq-local ess-r-package-info pkg-info)))
 
 
 ;;;*;;; Devtools Integration
