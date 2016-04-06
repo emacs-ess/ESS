@@ -774,7 +774,7 @@ Keystroke    Section
       (substring object (match-end 0))
     object))
 
-(defun ess-helpobjs-at-point (slist &optional)
+(defun ess-helpobjs-at-point (slist)
   ;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
   ;; the function call point is in. DEF is either OBJ or FUN (in that order)
   ;; which has a a help file, i.e. it is a member of slist (string-list). nil
@@ -782,15 +782,14 @@ Keystroke    Section
   (let* ((obj (ess-helpobjs-at-point--read-obj))
          (unqualified-obj (ess-unqualify-symbol obj))
          ;; FIXME: probably should use syntactic logic here
-         (fun (condition-case ()
-                  (save-excursion
-                    (save-restriction
-                      (narrow-to-region (max (point-min) (- (point) 1000))
-                                        (point-max))
-                      (backward-up-list 1)
-                      (backward-char 1)
-                      (ess-read-object-name-default)))
-                (error nil))))
+         (fun (ignore-errors
+                (save-excursion
+                  (save-restriction
+                    (narrow-to-region (max (point-min) (- (point) 1000))
+                                      (point-max))
+                    (backward-up-list 1)
+                    (backward-char 1)
+                    (ess-read-object-name-default))))))
     (list (or (car (member obj slist))
               (when (member unqualified-obj slist)
                 obj)
