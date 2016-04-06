@@ -1074,7 +1074,7 @@ attached packages."
   '(:eval (let ((env (ess-r-get-evaluation-env)))
             (if env
                 (format " %s" (if (equal env (car (ess-r-package-get-info)))
-                                  "PKG"
+                                  "pkg"
                                 env))
               ""))))
 (put 'ess-r--evaluation-env-mode-line 'risky-local-variable t)
