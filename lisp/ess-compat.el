@@ -34,6 +34,34 @@
 
 ;;; Code:
 
+
+(unless (fboundp 'when-let)
+  (defmacro if-let (bindings then &rest else)
+    "Process BINDINGS and if all values are non-nil eval THEN, else ELSE.
+Argument BINDINGS is a list of tuples whose car is a symbol to be
+bound and (optionally) used in THEN, and its cadr is a sexp to be
+evalled to set symbol's value.  In the special case you only want
+to bind a single value, BINDINGS can just be a plain tuple."
+    (declare (indent 2)
+             (debug ([&or (&rest (symbolp form)) (symbolp form)] form body)))
+    (when (and (<= (length bindings) 2)
+               (not (listp (car bindings))))
+      ;; Adjust the single binding case
+      (setq bindings (list bindings)))
+    `(let* ,(internal--build-bindings bindings)
+       (if ,(car (internal--listify (car (last bindings))))
+           ,then
+         ,@else)))
+
+  (defmacro when-let (bindings &rest body)
+    "Process BINDINGS and if all values are non-nil eval BODY.
+Argument BINDINGS is a list of tuples whose car is a symbol to be
+bound and (optionally) used in BODY, and its cadr is a sexp to be
+evalled to set symbol's value.  In the special case you only want
+to bind a single value, BINDINGS can just be a plain tuple."
+    (declare (indent 1) (debug if-let))
+    (list 'if-let bindings (macroexp-progn body))))
+
 ;;; Define a function to make it easier to check which version we're
 ;;; running.
 ;; no longer in use; 2013-12-30:
