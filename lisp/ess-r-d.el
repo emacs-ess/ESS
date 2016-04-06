@@ -203,12 +203,12 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-build-eval-command-function  . #'ess-r-format-eval-command)
-     (ess-build-load-command-function  . #'ess-r-format-load-command)
+     (ess-build-eval-command-function  . #'ess-r-build-eval-command)
+     (ess-build-load-command-function  . #'ess-r-build-load-command)
      (ess-send-region-function          . #'ess-r-send-region)
      (ess-load-file-function            . #'ess-r-load-file)
      (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
-     (ess-format-eval-message-function  . #'ess-r-format-eval-message)
+     (ess-build-eval-message-function  . #'ess-r-build-eval-message)
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
@@ -998,7 +998,7 @@ similar to `load-library' emacs function."
                  value)))
     (concat ", " param " = " value)))
 
-(defun ess-r-format-args (visibly output namespace)
+(defun ess-r-build-args (visibly output namespace)
   (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
         (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
         (pkg (when namespace (ess-r-arg "package" namespace t)))
@@ -1007,21 +1007,21 @@ similar to `load-library' emacs function."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
-(defun ess-r-format-eval-command (string &optional visibly output file namespace)
+(defun ess-r-build-eval-command (string &optional visibly output file namespace)
   (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
         (file (when file (ess-r-arg "file" file t)))
-        (args (ess-r-format-args visibly output namespace)))
+        (args (ess-r-build-args visibly output namespace)))
     (concat cmd "('" string "'" args file ")\n")))
 
-(defun ess-r-format-load-command (file &optional visibly output namespace)
+(defun ess-r-build-load-command (file &optional visibly output namespace)
   (let ((cmd (if namespace ".essDev_source" ".ess.source"))
-        (args (ess-r-format-args visibly output namespace))
+        (args (ess-r-build-args visibly output namespace))
         (msg (concat "cat('"
                      (when namespace (format "[%s] " namespace))
                      (format "Sourced file %s\n')" file))))
     (concat cmd "('" file "'" args "); " msg)))
 
-(defun ess-r-format-eval-message (message)
+(defun ess-r-build-eval-message (message)
   (if (ess-r-namespaced-evaluation-p)
       (let ((pkg-name (ess-r--get-evaluation-env)))
         (format "[%s] %s" pkg-name message))
@@ -1030,20 +1030,16 @@ similar to `load-library' emacs function."
 (defvar ess-r-evaluation-env nil
   "Environment into which code should be evaluated.
 
-When nil, code is evaluated in the global environment if tracebug
-is not active, or the evaluation environment of the current
-function if it is active.
+When nil, code is evaluated in the current environment.
 
-Currently only namespaces can be set as evaluation environments.
-Use `ess-r-select-evaluation-namespace' to select a package
-namespace.")
+Currently only namespaces can be set as evaluation
+environments. Use `ess-r-select-evaluation-namespace' to select a
+package namespace.")
 (make-variable-buffer-local 'ess-r-evaluation-env)
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
-  "Whether to look for all installed R packages.
-
-If non-nil, only look for attached packages when selecting a
-namespace to source into.")
+  "If nil provide completion for all installed R packages.
+If non-nil, only look for attached packages.")
 
 (defun ess-r-select-evaluation-namespace (&optional arg)
   "Select a package namespace for evaluation of R code.
@@ -1126,7 +1122,7 @@ namespace.")
     (ess-r-load-file-namespaced file))
    ;; Evaluation into current env via .ess.source()
    (t
-    (let ((command (ess-r-format-load-command file nil t)))
+    (let ((command (ess-r-build-load-command file nil t)))
       (ess-send-string (ess-get-process) command)))))
 
 (defun ess-r-load-file-namespaced (&optional file)
@@ -1137,7 +1133,7 @@ selected (see `ess-r-select-evaluation-namespace')."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
   (let* ((pkg-name (ess-r--get-evaluation-env))
-         (command (ess-r-format-load-command file nil t pkg-name)))
+         (command (ess-r-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
 (defun ess-r-make-source-refd-command (string visibly tmpfile)
@@ -1157,7 +1153,7 @@ selected (see `ess-r-select-evaluation-namespace')."
 (defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
   "Ask for for the package and devSource region into it."
   (let* ((pkg-name (ess-r--get-evaluation-env 'ask-if-nil))
-         (message (ess-r-format-eval-message (or message "Eval region"))))
+         (message (ess-r-build-eval-message (or message "Eval region"))))
     (ess-send-string proc (buffer-substring start end) visibly message)))
 
 

@@ -2367,14 +2367,14 @@ This is useful to build a command based on user settings, for
 example whether to display output visibly, with echo, etc.  When
 set, `ess-eval-command' is ignored.")
 
-(defvar ess-format-eval-message-function nil
+(defvar ess-build-eval-message-function nil
   "Dialect-specific function for formatting an evaluation message.")
 
 (make-variable-buffer-local 'ess-eval-command)
 (make-variable-buffer-local 'ess-load-command)
 (make-variable-buffer-local 'ess-build-eval-command-function)
 (make-variable-buffer-local 'ess-build-load-command-function)
-(make-variable-buffer-local 'ess-format-eval-message-function)
+(make-variable-buffer-local 'ess-build-eval-message-function)
 
 (define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
 (define-obsolete-variable-alias 'ess-load-visibly-command 'ess-build-load-command-function "ESS v16.04")

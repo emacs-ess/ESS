@@ -1,10 +1,10 @@
 ;;; ess-r-package.el --- Package development mode for R.
 
-;; Copyright (C) 2011-2015 V. Spinu, A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2011-2015 Lionel Henry, Vitalie Spinu, A.J. Rossini, Richard
+;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, and
+;;      Stephen Eglen.
 
-;; Author: Vitalie Spinu
-;; Created: 12-11-2011
+;; Author: Lionel Henry, Vitalie Spinu
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; Keywords: languages, tools

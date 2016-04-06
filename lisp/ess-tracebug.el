@@ -253,8 +253,8 @@ by `ess-inject-source' variable."
          (string (if inject-p
                      (ess-make-source-refd-command start end visibly)
                    (buffer-substring start end)))
-         (message (if (fboundp ess-format-eval-message-function)
-                      (funcall ess-format-eval-message-function message)
+         (message (if (fboundp ess-build-eval-message-function)
+                      (funcall ess-build-eval-message-function message)
                     message))
          ;; Visible evaluation is not nice when sourcing temporary files
          ;; You get .ess.eval(*code*) instead of *code*
