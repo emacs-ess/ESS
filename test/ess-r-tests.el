@@ -33,22 +33,22 @@
 
 ;;; ess-r-package-mode
 
-(ert-deftest ess-r-mode-line ()
-  (with-r-file "dummy-pkg/R/test.R"
-    (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-      (should (string= mode-line " [pkg:foo]")))
+;; (ert-deftest ess-r-mode-line ()
+;;   (with-r-file "dummy-pkg/R/test.R"
+;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
+;;       (should (string= mode-line " [pkg:foo]")))
 
-    (ess-r-select-evaluation-namespace "foo")
-    (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-      (should (string= mode-line " [pkg:src:foo]")))
+;;     (ess-r-set-evaluation-namespace "foo")
+;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
+;;       (should (string= mode-line " [pkg:src:foo]")))
 
-    (ess-r-select-evaluation-namespace "bar")
-    (let ((pkg-mode-line (eval (plist-get ess-r-package-mode-line :eval)))
-          (src-mode-line (eval (plist-get ess-r-special-evaluation-mode-line :eval))))
-      (should (string= pkg-mode-line " [pkg:foo]"))
-      (should (string= src-mode-line " [src:bar]")))
+;;     (ess-r-set-evaluation-namespace "bar")
+;;     (let ((pkg-mode-line (eval (plist-get ess-r-package-mode-line :eval)))
+;;           (src-mode-line (eval (plist-get ess-r-special-evaluation-mode-line :eval))))
+;;       (should (string= pkg-mode-line " [pkg:foo]"))
+;;       (should (string= src-mode-line " [src:bar]")))
 
-    (ess-r-select-evaluation-namespace '(4))
-    (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-      (should (string= mode-line " [pkg:foo]")))))
+;;     (ess-r-set-evaluation-namespace '(4))
+;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
+;;       (should (string= mode-line " [pkg:foo]")))))
 

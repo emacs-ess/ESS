@@ -325,12 +325,9 @@ within R packages."
   :type 'hook)
 
 (defcustom ess-r-package-mode-line
-  '(:eval (let* ((pkg-name (car (ess-r-package-current-package-info)))
-                 (src (if (string= pkg-name ess-r-evaluation-env)
-                          (format "src:")
-                        "")))
+  '(:eval (let* ((pkg-name (car (ess-r-package-current-package-info))))
             (when pkg-name
-              (format " [pkg:%s%s]" src pkg-name))))
+              (format " [pkg:%s]" pkg-name))))
   "Mode line for ESS developer. Set this variable to nil to
 disable the mode line entirely."
   :group 'ess-r-package

@@ -464,7 +464,7 @@ Executed in process buffer."
   (ad-activate 'move-beginning-of-line)
   (ad-activate 'back-to-indentation)
   (ad-activate 'ess-eval-line-and-step)
-  (if ess-roxy-hide-show-p
+  (when ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 
   (run-hooks 'R-mode-hook))
@@ -1002,7 +1002,7 @@ similar to `load-library' emacs function."
   (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
         (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
         (pkg (when namespace (ess-r-arg "package" namespace t)))
-        (verbose (when (and ess-r-special-evaluation-mode
+        (verbose (when (and (ess-r-evaluation-env)
                             ess-r-namespaced-load-verbose)
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
@@ -1055,58 +1055,25 @@ disable, or nil to prompt for a package.
 If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
   (interactive "P")
-  (let ((pkg-name (cond ((stringp arg)
-                         arg)
-                        (arg
-                         ess-r-evaluation-env)
-                        (t
-                         (ess-r--select-package-name)))))
-    (cond ((and arg (not (stringp arg)))
-           (setq-local ess-r-evaluation-env nil)
-           (ess-r-special-evaluation-mode -1)
-           (message (format "Evaluation of code in %s disabled" pkg-name)))
-          (t
-           (setq-local ess-r-evaluation-env pkg-name)
-           (ess-r-special-evaluation-mode 1)
-           (message (format "Evaluating code in %s" pkg-name))))
+  (let ((env (cond ((stringp arg) arg)
+                   (arg (ess-r-evaluation-env))
+                   (t (ess-r--select-package-name)))))
+    (if (and arg (not (stringp arg)))
+        (progn
+          (setq-local ess-r-evaluation-env nil)
+          (delq 'ess-r--evaluation-env-mode-line 'ess--local-mode-line-process-indicator)
+          (message (format "Evaluation in `%s' disabled" env)))
+      (setq-local ess-r-evaluation-env env)
+      (add-to-list 'ess--local-mode-line-process-indicator 'ess-r--evaluation-env-mode-line t)
+      (message (format "Evaluating in %s" env)))
     (force-mode-line-update)))
 
-(defcustom ess-r-special-evaluation-mode-line
-  '(:eval (if (and ess-r-package-mode
-                   (string= ess-r-evaluation-env
-                            (car (ess-r-package--local-package-info))))
-              ""
-            (format " [src:%s]" ess-r-evaluation-env)))
-  "Mode line for namespaced evaluation.
-
-The default value handles the interaction with `ess-r-package-mode-line'.
-Set this variable to nil to disable the mode line entirely."
-  :group 'ess-R
-  :type 'sexp
-  :risky t)
-
-(define-minor-mode ess-r-special-evaluation-mode
-  "Minor mode used for evaluating code into special R environments.
-
-Currently only used for namespaced evaluation.  Its main purpose
-is as a placeholder for special settings (e.g. a lighter for the
-mode line)."
-  :init-value nil
-  :lighter ess-r-special-evaluation-mode-line)
-
-(defun ess-r-namespaced-evaluation-p ()
-  (and
-   ;; Always evaluate in current environment while debugging
-   (not ess-debug-minor-mode)
-   (or ess-r-evaluation-env
-       (ess-get-process-variable 'ess-r-evaluation-env))))
-
-(defun ess-r--get-evaluation-env (&optional ask)
-  (cond (ess-r-evaluation-env)
-        (ask
-         (ess-r-select-evaluation-namespace))
-        (t
-         (error "Namespaced evaluation is not active"))))
+(defvar-local ess-r--evaluation-env-mode-line 
+  '(:eval (let ((env (ess-r-evaluation-env)))
+            (if env
+                (format " %s" (substring env 0 3))
+              ""))))
+(put 'ess-r--evaluation-env-mode-line 'risky-local-variable t)
 
 (defvar ess-r-namespaced-load-verbose t
   "Whether to display information on namespaced loading.
@@ -1121,7 +1088,7 @@ namespace.")
 (defun ess-r-load-file (file)
   (cond
    ;; Namespaced evaluation
-   ((ess-r-namespaced-evaluation-p)
+   ((ess-r-evaluation-env)
     (ess-r-load-file-namespaced file))
    ;; Evaluation into current env via .ess.source()
    (t
@@ -1140,14 +1107,13 @@ selected (see `ess-r-set-evaluation-namespace')."
     (ess-send-string (ess-get-process) command)))
 
 (defun ess-r-make-source-refd-command (string visibly tmpfile)
-  (let ((pkg-name (when (ess-r-namespaced-evaluation-p)
-                    (ess-r--get-evaluation-env))))
+  (let ((pkg-name (ess-r-evaluation-env)))
     (ess-build-eval-command string visibly t tmpfile pkg-name)))
 
 (defun ess-r-send-region (proc start end visibly message)
   (cond
    ;; Namespaced evaluation
-   ((ess-r-namespaced-evaluation-p)
+   ((ess-r-evaluation-env)
     (ess-r-send-region-namespaced proc start end visibly message))
    ;; Evaluation into current env
    (t
