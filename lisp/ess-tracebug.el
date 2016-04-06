@@ -65,18 +65,7 @@
   "Error navigation and debugging for ESS.
 Currently only R is supported."
   :link '(emacs-library-link :tag "Source Lisp File" "ess-tracebug.el")
-  :group 'ess
-  )
-
-(defvar ess-tracebug-indicator " TB"
-  "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-tracebug-mode is turned on. ")
-
-;; (defvar ess--tracebug-p nil
-;;   "Non nil if ess-tracebug is turned on for current process.
-;; Function `ess-tracebug'  toggles on/off this variable.")
-;; (make-variable-buffer-local 'ess--tracebug-p)
-;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
+  :group 'ess)
 
 
 (defcustom ess-tracebug-prefix nil
@@ -724,9 +713,9 @@ This is the value of `next-error-function' in iESS buffers."
   :prefix "ess-debug-")
 
 (defcustom  ess-debug-error-action-alist
-  '(( "-" "NONE"       "NULL" )
-    ( "r" "RECOVER"    "utils::recover")
-    ( "t" "TRACEBACK"  "base::traceback"))
+  '(( ""   "NONE"       "NULL" )
+    ( " r" "RECOVER"    "utils::recover")
+    ( " t" "TRACEBACK"  "base::traceback"))
   "Alist of 'on-error' actions.
 Toggled with `ess-debug-toggle-error-action'.  Each element must
 have the form (DISP SYMB ACTION) where DISP is the string to be
@@ -826,17 +815,6 @@ reference is the same as the preceding one. It is highlighted for
 `ess-debug-blink-interval' seconds."
   :group 'ess-debug )
 
-
-
-(defcustom ess-debug-indicator " db "
-  "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-debug-mode is turned on. When the
-  debugger is in active state this string is shown in upper case
-  and highlighted."
-  :group 'ess-debug
-  :type 'string)
-
-
 (defcustom ess-debug-ask-for-file nil
   "If non nil, ask for file if the current debug reference is not found.
 
@@ -916,6 +894,7 @@ The action list is in `ess-debug-error-action-alist'. "
         (setq actions ess-debug-error-action-alist))
       (setq act (pop actions))
       (ess-debug-set-error-action act)
+      (force-mode-line-update)
       (message "On-error action set to: %s"
                (propertize (cadr act) 'face 'font-lock-function-name-face)))
     (push ev unread-command-events)))
@@ -1013,25 +992,29 @@ of the ring."
   (ring-insert ess--dbg-forward-ring (point-marker))
   (message "Point inserted into the forward-ring"))
 
-(defvar ess--dbg-mode-line-indicator
+(defvar ess-debug-indicator " DB"
+  "String to be displayed in mode-line alongside the process
+  name. Indicates that ess-debug-mode is turned on. When the
+  debugger is in active state this string is shown in upper case
+  and highlighted.")
+
+(defvar-local ess--dbg-mode-line-debug
   '(:eval (let ((proc (get-process ess-local-process-name)))
             (if (and proc (process-get proc 'dbg-active))
-                (let ((str (upcase ess-debug-indicator)))
-                  (setq ess-debug-minor-mode t) ; activate the keymap
-                  (put-text-property 1 (1- (length str)) 'face '(:foreground "white" :background "red")
+                (let ((str ess-debug-indicator))
+                  (ess-debug-minor-mode 1) ; activate the keymap
+                  (put-text-property 1 (length str)
+                                     'face '(:foreground "white" :background "red")
                                      str)
                   str)
-              (setq ess-debug-minor-mode nil)
-              ess-debug-indicator))))
-(make-variable-buffer-local 'ess--dbg-mode-line-indicator)
-(put 'ess--dbg-mode-line-indicator 'risky-local-variable t)
+              (ess-debug-minor-mode -1)
+              ""))))
+(put 'ess--dbg-mode-line-debug 'risky-local-variable t)
 
-(defvar ess--dbg-mode-line-error-action
+(defvar-local ess--dbg-mode-line-error-action
   '(:eval (or (and (ess-process-live-p)
                    (ess-process-get 'on-error-action))
-              "-")))
-
-(make-variable-buffer-local 'ess--dbg-mode-line-error-action)
+              "")))
 (put 'ess--dbg-mode-line-error-action 'risky-local-variable t)
 
 (defun ess--dbg-remove-empty-lines (string)
@@ -1062,7 +1045,7 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
     (with-current-buffer (process-buffer proc)
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
-      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-indicator t)
+      (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-debug t)
       (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-error-action t)
 
       (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
@@ -1089,7 +1072,7 @@ Kill the *ess.dbg.[R_name]* buffer."
     (with-current-buffer (process-buffer proc)
       (if (member ess-dialect '("XLS" "SAS" "STA"))
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
-      (delq 'ess--dbg-mode-line-indicator ess--mode-line-process-indicator)
+      (delq 'ess--dbg-mode-line-debug ess--mode-line-process-indicator)
       (delq 'ess--dbg-mode-line-error-action ess--mode-line-process-indicator)
       (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
     (set-process-filter proc 'inferior-ess-output-filter)
