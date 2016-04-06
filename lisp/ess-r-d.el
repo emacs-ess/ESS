@@ -1056,16 +1056,17 @@ If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
   (interactive "P")
   (let ((env (cond ((stringp arg) arg)
-                   (arg (ess-r-get-evaluation-env))
-                   (t (ess-r--select-package-name)))))
-    (if (and arg (not (stringp arg)))
-        (progn
-          (setq-local ess-r-evaluation-env nil)
-          (delq 'ess-r--evaluation-env-mode-line 'ess--local-mode-line-process-indicator)
-          (message (format "Evaluation in `%s' disabled" env)))
-      (setq-local ess-r-evaluation-env env)
+                   ((null arg) (ess-r--select-package-name))
+                   (t "*none*"))))
+    (if (equal env "*none*")
+        (let ((cur-env (ess-r-get-evaluation-env)))
+          ;; fixme: does not work if env is set at process level
+          (setq ess-r-evaluation-env nil)
+          (delq 'ess-r--evaluation-env-mode-line ess--local-mode-line-process-indicator)
+          (message (format "Evaluation in %s disabled" (propertize cur-env 'face font-lock-function-name-face))))
+      (setq ess-r-evaluation-env env)
       (add-to-list 'ess--local-mode-line-process-indicator 'ess-r--evaluation-env-mode-line t)
-      (message (format "Evaluating in %s" env)))
+      (message (format "Evaluating in %s" (propertize env 'face font-lock-function-name-face))))
     (force-mode-line-update)))
 
 (defvar-local ess-r--evaluation-env-mode-line 

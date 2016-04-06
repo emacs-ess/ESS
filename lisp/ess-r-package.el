@@ -141,7 +141,11 @@ section."
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
         (current-pkg (car (ess-r-package-current-package-info))))
-    (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
+    (when-let ((env (ess-r-get-evaluation-env)))
+      (setq pkgs (append '("*none*") pkgs))
+      (when (equal env current-pkg)
+        (setq current-pkg "*none*")))
+    (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
