@@ -181,41 +181,32 @@ defaults to the value returned by
 
 (defun ess-r-package--find-package-path ()
   "Get the root of R package that contains current directory.
-Root is determined by locating `ess-r-package-root-file'.
-
-If PKG-NAME is given, check that the path found corresponds to
-that package.
-
-or if the variable
-`ess-r-package-info' is locally defined with a cons cell
-of the form `(name . path)', iterate over default-directories of
-all open R files until the package is found. If not found, return
-nil."
+Root is determined by locating `ess-r-package-root-file'."
   (let* ((path (if (buffer-file-name)
                    (file-name-directory (buffer-file-name))
-                 default-directory))
-         (current-dir (file-name-nondirectory (directory-file-name path)))
-         known-pkg-dir known-path found-path)
-    (cond
+                 default-directory)))
+    (or
      ;; First check current directory
-     ((file-exists-p (expand-file-name ess-r-package-root-file path))
-      (setq found-path path))
+     (and (file-exists-p (expand-file-name ess-r-package-root-file path))
+          path)
      ;; Check for known directories in current path
-     ((while (and (not (string= path "/"))
-                  (not found-path))
-        (setq current-dir (file-name-nondirectory (directory-file-name path)))
-        (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
-                 (setq known-path (ess-climb-path path (cdr known-pkg-dir)))
-                 (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
-            (setq found-path known-path)
-          (setq path (ess-climb-path path 1))))))
-    found-path))
+     (let ((current-dir (file-name-nondirectory (directory-file-name path)))
+           known-pkg-dir known-path found-path)
+       (while (and path (not found-path))
+         (setq current-dir (file-name-nondirectory (directory-file-name path)))
+         (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
+                  (setq known-path (ess--parent-dir path (cdr known-pkg-dir)))
+                  (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
+             (setq found-path known-path)
+           (setq path (ess--parent-dir path 1))))
+       found-path))))
 
-(defun ess-climb-path (path n)
-  "Takes PATH, climbs its hierarchy N times, and returns the new path."
-  (dotimes (i n)
-    (setq path (file-name-directory (directory-file-name path))))
-  path)
+(defun ess--parent-dir (path n)
+  "Return Nth parent of PATH."
+  (when (> (length path) 1) ; ~ or /
+    (dotimes (i n)
+      (setq path (file-name-directory (directory-file-name path))))
+    path))
 
 (defun ess-r-package--find-package-name (path)
   (let ((file (expand-file-name ess-r-package-root-file path))
