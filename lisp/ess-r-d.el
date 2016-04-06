@@ -1002,7 +1002,7 @@ similar to `load-library' emacs function."
   (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
         (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
         (pkg (when namespace (ess-r-arg "package" namespace t)))
-        (verbose (when (and (ess-r-evaluation-env)
+        (verbose (when (and (ess-r-get-evaluation-env)
                             ess-r-namespaced-load-verbose)
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
@@ -1022,7 +1022,7 @@ similar to `load-library' emacs function."
     (concat cmd "('" file "'" args "); " msg)))
 
 (defun ess-r-build-eval-message (message)
-  (let ((env (ess-r-evaluation-env)))
+  (let ((env (ess-r-get-evaluation-env)))
     (if env
         (format "[%s] %s" env message))
     message))
@@ -1034,7 +1034,7 @@ environment. Currently only packages can be set as evaluation
 environments. Use `ess-r-set-evaluation-namespace' to set this
 variable.")
 
-(defun ess-r-evaluation-env ()
+(defun ess-r-get-evaluation-env ()
   "Get current evaluation env."
   (unless ess-debug-minor-mode
     (or ess-r-evaluation-env
@@ -1056,7 +1056,7 @@ If `ess-r-prompt-for-attached-pkgs-only' is non-nil, prompt only for
 attached packages."
   (interactive "P")
   (let ((env (cond ((stringp arg) arg)
-                   (arg (ess-r-evaluation-env))
+                   (arg (ess-r-get-evaluation-env))
                    (t (ess-r--select-package-name)))))
     (if (and arg (not (stringp arg)))
         (progn
@@ -1069,7 +1069,7 @@ attached packages."
     (force-mode-line-update)))
 
 (defvar-local ess-r--evaluation-env-mode-line 
-  '(:eval (let ((env (ess-r-evaluation-env)))
+  '(:eval (let ((env (ess-r-get-evaluation-env)))
             (if env
                 (format " %s" (substring env 0 3))
               ""))))
@@ -1088,7 +1088,7 @@ namespace.")
 (defun ess-r-load-file (file)
   (cond
    ;; Namespaced evaluation
-   ((ess-r-evaluation-env)
+   ((ess-r-get-evaluation-env)
     (ess-r-load-file-namespaced file))
    ;; Evaluation into current env via .ess.source()
    (t
@@ -1102,18 +1102,18 @@ This prompts for a package when no package is currently
 selected (see `ess-r-set-evaluation-namespace')."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
-  (let* ((pkg-name (ess-r-evaluation-env))
+  (let* ((pkg-name (ess-r-get-evaluation-env))
          (command (ess-r-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
 (defun ess-r-make-source-refd-command (string visibly tmpfile)
-  (let ((pkg-name (ess-r-evaluation-env)))
+  (let ((pkg-name (ess-r-get-evaluation-env)))
     (ess-build-eval-command string visibly t tmpfile pkg-name)))
 
 (defun ess-r-send-region (proc start end visibly message)
   (cond
    ;; Namespaced evaluation
-   ((ess-r-evaluation-env)
+   ((ess-r-get-evaluation-env)
     (ess-r-send-region-namespaced proc start end visibly message))
    ;; Evaluation into current env
    (t
@@ -1121,7 +1121,7 @@ selected (see `ess-r-set-evaluation-namespace')."
 
 (defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
   "Ask for for the package and devSource region into it."
-  (let* ((pkg-name (or (ess-r-evaluation-env)
+  (let* ((pkg-name (or (ess-r-get-evaluation-env)
                        (ess-r-set-evaluation-namespace))))
     (message (ess-r-build-eval-message (or message "Eval region"))))
   (ess-send-string proc (buffer-substring start end) visibly message))
