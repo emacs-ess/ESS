@@ -43,7 +43,7 @@
 
 (defcustom ess-r-package-auto-set-evaluation-env t
   "If non-nil, evaluation env is set to package env automatically.
-See also `ess-r-select-evaluation-namespace' and `ess-r-evaluation-env'."
+See also `ess-r-set-evaluation-namespace' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
@@ -145,8 +145,8 @@ section."
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
-    (setq-local ess-r-evaluation-env
-                (car (ess-r-package-current-package-info)))))
+    (when-let ((pkg (car (ess-r-package-current-package-info))))
+      (ess-r-set-evaluation-namespace pkg))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
@@ -398,15 +398,15 @@ If ALL is non-nil, deactivate in all open R buffers."
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.03, `ess-developer' is deprecated. Use `ess-r-select-evaluation-namespace' instead."))
+  (error "As of ESS 16.03, `ess-developer' is deprecated. Use `ess-r-set-evaluation-namespace' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
-(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-select-evaluation-namespace' instead." "16.03")
+(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
 (make-obsolete-variable 'ess-developer-load-command "Please use `ess-r-package-load-command' instead." "16.03")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.03")
-(make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-select-evaluation-namespace' instead." "16.03")
-(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-select-evaluation-namespace' instead." "16.03")
+(make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
+(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
 (make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-activate-in-package' instead." "16.03")
 (make-obsolete-variable 'ess-developer-enter-hook "Please use `ess-r-package-enter-hook' instead." "16.03")
 (make-obsolete-variable 'ess-developer-exit-hook "Please use `ess-r-package-exit-hook' instead." "16.03")

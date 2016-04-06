@@ -58,7 +58,7 @@
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
     ;; Note: some of these comand are automatically redefined by those in
-    (define-key ess-dev-map "\C-s" 'ess-r-select-evaluation-namespace)
+    (define-key ess-dev-map "\C-s" 'ess-r-set-evaluation-namespace)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
     (define-key ess-dev-map "\C-l" 'ess-r-package-load-package)
     (define-key ess-dev-map "l" 'ess-r-package-load-package)
@@ -1022,26 +1022,29 @@ similar to `load-library' emacs function."
     (concat cmd "('" file "'" args "); " msg)))
 
 (defun ess-r-build-eval-message (message)
-  (if (ess-r-namespaced-evaluation-p)
-      (let ((pkg-name (ess-r--get-evaluation-env)))
-        (format "[%s] %s" pkg-name message))
+  (let ((env (ess-r-evaluation-env)))
+    (if env
+        (format "[%s] %s" env message))
     message))
 
-(defvar ess-r-evaluation-env nil
+(defvar-local ess-r-evaluation-env nil
   "Environment into which code should be evaluated.
+When this variable is nil, code is evaluated in the current
+environment. Currently only packages can be set as evaluation
+environments. Use `ess-r-set-evaluation-namespace' to set this
+variable.")
 
-When nil, code is evaluated in the current environment.
-
-Currently only namespaces can be set as evaluation
-environments. Use `ess-r-select-evaluation-namespace' to select a
-package namespace.")
-(make-variable-buffer-local 'ess-r-evaluation-env)
+(defun ess-r-evaluation-env ()
+  "Get current evaluation env."
+  (unless ess-debug-minor-mode
+    (or ess-r-evaluation-env
+        (ess-get-process-variable 'ess-r-evaluation-env))))
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If nil provide completion for all installed R packages.
 If non-nil, only look for attached packages.")
 
-(defun ess-r-select-evaluation-namespace (&optional arg)
+(defun ess-r-set-evaluation-namespace (&optional arg)
   "Select a package namespace for evaluation of R code.
 
 Call interactively with a prefix argument to disable evaluation
@@ -1129,10 +1132,10 @@ namespace.")
   "Load FILE into a package namespace.
 
 This prompts for a package when no package is currently
-selected (see `ess-r-select-evaluation-namespace')."
+selected (see `ess-r-set-evaluation-namespace')."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
-  (let* ((pkg-name (ess-r--get-evaluation-env))
+  (let* ((pkg-name (ess-r-evaluation-env))
          (command (ess-r-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
@@ -1152,11 +1155,12 @@ selected (see `ess-r-select-evaluation-namespace')."
 
 (defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
   "Ask for for the package and devSource region into it."
-  (let* ((pkg-name (ess-r--get-evaluation-env 'ask-if-nil))
-         (message (ess-r-build-eval-message (or message "Eval region"))))
-    (ess-send-string proc (buffer-substring start end) visibly message)))
+  (let* ((pkg-name (or (ess-r-evaluation-env)
+                       (ess-r-set-evaluation-namespace))))
+    (message (ess-r-build-eval-message (or message "Eval region"))))
+  (ess-send-string proc (buffer-substring start end) visibly message))
 
-
+
 ;;;*;;; Help
 
 (defun ess-r-namespaced-object-p (object)

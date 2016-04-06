@@ -2289,6 +2289,7 @@ of Emacs until the code has been successfully evaluated."
   :type  'number)
 
  ; System variables
+;; VS[06-04-2016]: fixme: move all inf vars into ess-inf.el.
 
 ;;*;; Variables relating to multiple processes
 
