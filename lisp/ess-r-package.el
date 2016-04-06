@@ -41,7 +41,7 @@
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-r-package)
 
-(defcustom ess-r-set-source-environment-in-packages nil
+(defcustom ess-r-set-source-environment-in-packages t
   "If non-nil, evaluation environment is set to package namespace automatically.
 See also `ess-r-evaluation-env'."
   :group 'ess-r-package
