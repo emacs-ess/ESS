@@ -90,7 +90,7 @@ of the package, the current directory is considered to be part of
 a R package.")
 
 (defun ess-r-package-load-package ()
-  (let* ((pkg-info (ess-r-package-current-package-info))
+  (let* ((pkg-info (ess-r-package-get-info))
          (cmd (if (stringp ess-r-package-load-command)
                   (replace-regexp-in-string "%n" (car pkg-info)
                    (replace-regexp-in-string "%d" (cdr pkg-info)
@@ -104,8 +104,8 @@ a R package.")
 
 ;;;*;;; Package UI
 
-(defun ess-r-package-current-package-info ()
-  "Get package info.
+(defun ess-r-package-get-info ()
+  "Get current package info.
 Return a cons cell of two strings whose CAR is a package name and
 CDR is a package directory. The package is determined by (in this
 order) the buffer-local value of `ess-r-package-info',
@@ -140,7 +140,7 @@ section."
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
-        (current-pkg (car (ess-r-package-current-package-info))))
+        (current-pkg (car (ess-r-package-get-info))))
     (when-let ((env (ess-r-get-evaluation-env)))
       (setq pkgs (append '("*none*") pkgs))
       (when (equal env current-pkg)
@@ -149,14 +149,14 @@ section."
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
-    (when-let ((pkg (car (ess-r-package-current-package-info))))
+    (when-let ((pkg (car (ess-r-package-get-info))))
       (ess-r-set-evaluation-namespace pkg))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
 (defun ess-r-package-send-process (command &optional msg alt)
   (ess-force-buffer-current)
-  (let* ((pkg-info (or (ess-r-package-current-package-info)
+  (let* ((pkg-info (or (ess-r-package-get-info)
                        (ess-r-package-select-package)))
          (name (car pkg-info))
          (path (concat "'" (cdr pkg-info) "'"))
@@ -329,7 +329,7 @@ within R packages."
   :type 'hook)
 
 (defcustom ess-r-package-mode-line
-  '(:eval (let* ((pkg-name (car (ess-r-package-current-package-info))))
+  '(:eval (let* ((pkg-name (car (ess-r-package-get-info))))
             (when pkg-name
               (format " [pkg:%s]" pkg-name))))
   "Mode line for ESS developer. Set this variable to nil to
@@ -373,7 +373,7 @@ is nil."
         (dolist (bf (buffer-list))
           (with-current-buffer bf
             (ess-r-package-activate-in-package package)))
-      (let ((pkg-info (ess-r-package-current-package-info)))
+      (let ((pkg-info (ess-r-package-get-info)))
         (when (and pkg-info
                    (or (null package)
                        (equal (car pkg-info) package)))
@@ -390,7 +390,7 @@ If ALL is non-nil, deactivate in all open R buffers."
       (dolist (buf (buffer-list))
         (with-current-buffer buf
           (ess-r-package-deactivate-in-package package)))
-    (let ((pkg-info (ess-r-package-current-package-info)))
+    (let ((pkg-info (ess-r-package-get-info)))
       (when (and ess-r-package-mode
                  (or (null package)
                      (equal (car pkg-info) package)))
