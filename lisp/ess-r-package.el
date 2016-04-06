@@ -41,9 +41,9 @@
   "Face to highlight mode line process name when developer mode is on."
   :group 'ess-r-package)
 
-(defcustom ess-r-set-source-environment-in-packages t
-  "If non-nil, evaluation environment is set to package namespace automatically.
-See also `ess-r-evaluation-env'."
+(defcustom ess-r-package-auto-set-evaluation-env t
+  "If non-nil, evaluation env is set to package env automatically.
+See also `ess-r-select-evaluation-namespace' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
@@ -144,7 +144,7 @@ section."
     (ess-completing-read "Package: " pkgs nil nil nil nil current-pkg)))
 
 (defun ess-r-package-set-namespaced-evaluation ()
-  (when ess-r-set-source-environment-in-packages
+  (when ess-r-package-auto-set-evaluation-env
     (setq-local ess-r-evaluation-env
                 (car (ess-r-package-current-package-info)))))
 
