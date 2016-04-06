@@ -141,16 +141,18 @@ section."
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
         (current-pkg (car (ess-r-package-get-info))))
-    (when-let ((env (ess-r-get-evaluation-env)))
-      (setq pkgs (append '("*none*") pkgs))
-      (when (equal env current-pkg)
-        (setq current-pkg "*none*")))
+    (let ((env (ess-r-get-evaluation-env)))
+     (when env
+       (setq pkgs (append '("*none*") pkgs))
+       (when (equal env current-pkg)
+         (setq current-pkg "*none*"))))
     (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
-    (when-let ((pkg (car (ess-r-package-get-info))))
-      (ess-r-set-evaluation-namespace pkg))))
+    (let ((pkg (car (ess-r-package-get-info))))
+      (when pkg
+        (ess-r-set-evaluation-namespace pkg)))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
