@@ -376,23 +376,6 @@ is nil."
                        (equal (car pkg-info) package)))
           (ess-r-package-mode 1))))))
 
-(defun ess-r-package-deactivate-in-package (&optional package all)
-  "Deactivate developer if current file is part of the R package.
-
-If PACKAGE is given, deactivate only if current package is
-PACKAGE.
-
-If ALL is non-nil, deactivate in all open R buffers."
-  (if all
-      (dolist (buf (buffer-list))
-        (with-current-buffer buf
-          (ess-r-package-deactivate-in-package package)))
-    (let ((pkg-info (ess-r-package-get-info)))
-      (when (and ess-r-package-mode
-                 (or (null package)
-                     (equal (car pkg-info) package)))
-        (ess-r-package-mode 0)))))
-
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
