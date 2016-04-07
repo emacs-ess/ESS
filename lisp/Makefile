@@ -105,7 +105,7 @@ ess-custom.el: ../VERSION
 
 ## This should typically happen before building ESS
 julia-mode.el:
-	$(DOWNLOAD) https://raw.githubusercontent.com/JuliaLang/julia/master/contrib/julia-mode.el > julia-mode.el
+	$(DOWNLOAD) https://raw.githubusercontent.com/JuliaLang/julia-emacs/master/julia-mode.el > julia-mode.el
 
 ### File Dependencies
 
