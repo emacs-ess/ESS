@@ -212,9 +212,13 @@ Root is determined by locating `ess-r-package-root-file'."
 
 (defun ess--parent-dir (path n)
   "Return Nth parent of PATH."
-  (when (> (length path) 1) ; ~ or /
-    (dotimes (i n)
-      (setq path (file-name-directory (directory-file-name path))))
+  (let ((opath path))
+    (while (and path (> n 0))
+      (setq path (file-name-directory (directory-file-name opath)))
+      (if (equal path opath)
+          (setq path nil)
+        (setq opath path
+              n (1- n))))
     path))
 
 (defun ess-r-package--find-package-name (path)
