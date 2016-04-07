@@ -780,7 +780,7 @@ Keystroke    Section
   ;; which has a a help file, i.e. it is a member of slist (string-list). nil
   ;; otherwise
   (let* ((obj (ess-helpobjs-at-point--read-obj))
-         (unqualified-obj (ess-unqualify-symbol obj))
+         (unqualified-obj (and obj (ess-unqualify-symbol obj)))
          ;; FIXME: probably should use syntactic logic here
          (fun (ignore-errors
                 (save-excursion
