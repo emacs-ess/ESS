@@ -371,7 +371,7 @@ is nil."
           (with-current-buffer bf
             (ess-r-package-activate-in-package package)))
       (let ((pkg-info (ess-r-package-get-info)))
-        (when (and pkg-info
+        (when (and (car pkg-info)
                    (or (null package)
                        (equal (car pkg-info) package)))
           (ess-r-package-mode 1))))))

@@ -1039,7 +1039,8 @@ variable.")
   "Get current evaluation env."
   (unless ess-debug-minor-mode
     (or ess-r-evaluation-env
-        (ess-get-process-variable 'ess-r-evaluation-env))))
+        (and ess-current-process-name
+             (ess-get-process-variable 'ess-r-evaluation-env)))))
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If nil provide completion for all installed R packages.

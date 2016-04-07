@@ -33,22 +33,12 @@
 
 ;;; ess-r-package-mode
 
-;; (ert-deftest ess-r-mode-line ()
-;;   (with-r-file "dummy-pkg/R/test.R"
-;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-;;       (should (string= mode-line " [pkg:foo]")))
-
-;;     (ess-r-set-evaluation-namespace "foo")
-;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-;;       (should (string= mode-line " [pkg:src:foo]")))
-
-;;     (ess-r-set-evaluation-namespace "bar")
-;;     (let ((pkg-mode-line (eval (plist-get ess-r-package-mode-line :eval)))
-;;           (src-mode-line (eval (plist-get ess-r-special-evaluation-mode-line :eval))))
-;;       (should (string= pkg-mode-line " [pkg:foo]"))
-;;       (should (string= src-mode-line " [src:bar]")))
-
-;;     (ess-r-set-evaluation-namespace '(4))
-;;     (let ((mode-line (eval (plist-get ess-r-package-mode-line :eval))))
-;;       (should (string= mode-line " [pkg:foo]")))))
-
+(ert-deftest ess-r-package-auto-activate ()
+  (let ((buffer (generate-new-buffer " *ESS autoactivate test*")))
+    (should (with-current-buffer buffer
+              (text-mode)
+              (hack-local-variables)
+              (not ess-r-package-mode))))
+  (with-r-file "dummy-pkg/R/test.R"
+    (hack-local-variables)
+    (should ess-r-package-mode)))
