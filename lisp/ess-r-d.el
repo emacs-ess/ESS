@@ -1025,8 +1025,8 @@ similar to `load-library' emacs function."
 (defun ess-r-build-eval-message (message)
   (let ((env (ess-r-get-evaluation-env)))
     (if env
-        (format "[%s] %s" env message))
-    message))
+        (format "[%s] %s" env message)
+      message)))
 
 (defvar-local ess-r-evaluation-env nil
   "Environment into which code should be evaluated.
