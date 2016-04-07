@@ -4,10 +4,10 @@
 Changes and New Features in 16.04:
 @itemize @bullet
 
-@item @ESS{[R]}: Help lookup has been improved. 
+@item @ESS{[R]}: Help lookup has been improved.
 It is now possible to get help for namespaced objects such as
 pkg::foobar.
-
+@end itemize
 
 Changes and New Features in 15.09:
 @itemize @bullet
