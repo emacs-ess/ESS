@@ -309,7 +309,7 @@ checking results."
 
 ;;;*;;; Minor Mode
 
-(defcustom ess-r-package-activate-in-package t
+(defcustom ess-r-package-auto-activate t
   "If non-nil, `ess-r-package-mode' is automatically turned on
 within R packages."
   :group 'ess-r-package
@@ -353,28 +353,14 @@ disable the mode line entirely."
    (t
     (run-hooks 'ess-r-package-exit-hook))))
 
-(add-hook 'hack-local-variables-hook 'ess-r-package-activate-in-package)
+(add-hook 'hack-local-variables-hook 'ess-r-package-auto-activate)
 
-(defun ess-r-package-activate-in-package (&optional package all)
-  "Activate developer if current file is part of a package.
-
-If PACKAGE is given, activate only if current file is part of the
-PACKAGE.
-
-If ALL is non-nil, perform activation in all R buffers.
-
-This function does nothing if `ess-r-package-activate-in-package'
-is nil."
-  (when ess-r-package-activate-in-package
-    (if all
-        (dolist (bf (buffer-list))
-          (with-current-buffer bf
-            (ess-r-package-activate-in-package package)))
-      (let ((pkg-info (ess-r-package-get-info)))
-        (when (and (car pkg-info)
-                   (or (null package)
-                       (equal (car pkg-info) package)))
-          (ess-r-package-mode 1))))))
+(defun ess-r-package-auto-activate ()
+  "Activate developer if current file is part of a package."
+  (when ess-r-package-auto-activate
+    (let ((pkg-info (ess-r-package-get-info)))
+      (when (car pkg-info)
+        (ess-r-package-mode 1)))))
 
 
 ;;;*;;; Deprecated variables and functions
@@ -388,7 +374,7 @@ is nil."
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.03")
 (make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
 (make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
-(make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-activate-in-package' instead." "16.03")
+(make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-auto-activate' instead." "16.03")
 (make-obsolete-variable 'ess-developer-enter-hook "Please use `ess-r-package-enter-hook' instead." "16.03")
 (make-obsolete-variable 'ess-developer-exit-hook "Please use `ess-r-package-exit-hook' instead." "16.03")
 
