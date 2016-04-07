@@ -7,6 +7,14 @@ Changes and New Features in 16.04:
 @item @ESS{[R]}: Help lookup has been improved.
 It is now possible to get help for namespaced objects such as
 pkg::foobar.
+
+@item @ESS{[R]}: ``developer mode'' has been entirely refactored.
+To enter it, you now need @kbd{C-c C-t C-s} (`s' as mnemonic for ``source()'').
+Also, programmeRs with many installed packages typically want to set the
+new @code{ess-r-prompt-for-attached-pkgs-only} variable to @code{t} in
+order that not all installed packages are searched but only those currently
+on the R's search() path.
+
 @end itemize
 
 Changes and New Features in 15.09:
