@@ -1194,7 +1194,8 @@ selected (see `ess-r-set-evaluation-namespace')."
                            (match-string 2 string))))
     (cond (help-match
            (ess-display-help-on-object help-match)
-           (process-send-string proc "\n"))
+           (process-send-string proc "\n")
+           t)
           (help-?-match
            (if (string-match "\\?\\?\\(.+\\)" help-?-match)
                (ess--display-indexed-help-page (concat help-?-match "\n")
@@ -1210,22 +1211,23 @@ selected (see `ess-r-set-evaluation-namespace')."
                                         (format "%s%s" (match-string 1 string)
                                                 (ess-help-r--sanitize-topic (match-string 2 string))))))
                  (ess-display-help-on-object help-?-match "%s\n"))))
-           (process-send-string proc "\n"))
+           (process-send-string proc "\n")
+           t)
           (page-match
            (switch-to-buffer-other-window
             (ess-command (concat page-match "\n")
                          (get-buffer-create (concat page-match ".rt"))))
            (R-transcript-mode)
-           (process-send-string proc "\n")))))
+           (process-send-string proc "\n")
+           t))))
 
 
 ;;;*;;; Utils for inferior R process
 
 (defun inferior-ess-r-input-sender (proc string)
   (save-current-buffer
-    (cond ((ess-help-r--process-help-input proc string))
-          (t
-           (inferior-ess-input-sender proc string)))))
+    (or (ess-help-r--process-help-input proc string)
+        (inferior-ess-input-sender proc string))))
 
 (defun inferior-ess-r-load-ESSR ()
   "Load/INSTALL/Update ESSR."
