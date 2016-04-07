@@ -863,6 +863,34 @@ glmmTMB <- function (formula, data = NULL)
 ## the 2nd callme() now indents like the first
 
 
+### --- 34 ---  "eval-function" (e.g. C-c C-c) fails with this
+
+##' checking pretty():
+chkPretty <- function(x, n = 5, min.n = NULL, ..., max.D = 1) {
+    if(is.null(min.n)) {
+	## work with both pretty.default() and greDevices::prettyDate()
+	## *AND* these have a different default for 'min.n' we must be "extra smart":
+	min.n <-
+	    if(inherits(x, "Date") || inherits(x, "POSIXt"))
+		n %/% 2 # grDevices:::prettyDate
+	    else
+		n %/% 3 # pretty.default
+    }
+    pr <- pretty(x, n=n, min.n=min.n, ...)
+    ## if debugging: pr <- grDevices:::prettyDate(x, n=n, min.n=min.n, ...)
+    stopifnot(length(pr) >= (min.n+1),
+	      abs(length(pr) - (n+1)) <= max.D,
+              ## must be equidistant [may need fuzz, i.e., signif(.) ?]:
+	      length(pr) == 1 || length(unique(diff(pr))) == 1,
+	      ## pretty(x, *) must cover range of x:
+	      min(pr) <= min(x), max(x) <= max(pr))
+    invisible(pr)
+}
+
+
+
+
+
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
 ### End:
