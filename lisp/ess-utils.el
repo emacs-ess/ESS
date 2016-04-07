@@ -1172,6 +1172,57 @@ later."
         ((fboundp 'deactivate-mark)
          (deactivate-mark))))
 
+(defun ess-replace-in-string (str regexp newtext &optional literal)
+  "Replace all matches in STR for REGEXP with NEWTEXT string.
+Optional LITERAL non-nil means do a literal replacement.
+Otherwise treat \\ in NEWTEXT string as special:
+  \\& means substitute original matched text,
+  \\N means substitute match for \(...\) number N,
+  \\\\ means insert one \\."
+  (if (not (stringp str))
+      (error "(replace-in-string): First argument must be a string: %s" str))
+  (if (stringp newtext)
+      nil
+    (error "(replace-in-string): 3rd arg must be a string: %s"
+           newtext))
+  (let ((rtn-str "")
+        (start 0)
+        (special)
+        match prev-start)
+    (while (setq match (string-match regexp str start))
+      (setq prev-start start
+            start (match-end 0)
+            rtn-str
+            (concat
+             rtn-str
+             (substring str prev-start match)
+             (cond (literal newtext)
+                   (t (mapconcat
+                       (function
+                        (lambda (c)
+                          (if special
+                              (progn
+                                (setq special nil)
+                                (cond ((eq c ?\\) "\\")
+                                      ((eq c ?&)
+                                       (substring str
+                                                  (match-beginning 0)
+                                                  (match-end 0)))
+                                      ((and (>= c ?0) (<= c ?9))
+                                       (if (> c (+ ?0 (length
+                                                       (match-data))))
+                                           ;; Invalid match num
+                                           (error "(replace-in-string) Invalid match num: %c" c)
+                                         (setq c (- c ?0))
+                                         (substring str
+                                                    (match-beginning c)
+                                                    (match-end c))))
+                                      (t (char-to-string c))))
+                            (if (eq c ?\\) (progn (setq special t) nil)
+                              (char-to-string c)))))
+                       newtext ""))))))
+    (concat rtn-str (substring str start))))
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here

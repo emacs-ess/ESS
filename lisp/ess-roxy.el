@@ -61,6 +61,7 @@
 
 ;;; Code:
 
+(require 'ess-utils)
 (require 'ess-custom)
 (require 'hideshow)
 (eval-when-compile
