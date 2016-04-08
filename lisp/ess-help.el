@@ -153,7 +153,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (if buffer-read-only (setq buffer-read-only nil))
   (delete-region (point-min) (point-max))
   (ess-help-mode)
-  (ess-command (ess-build-help-command object) (current-buffer))
+  (ess-command (or command (ess-build-help-command object)) (current-buffer))
   (ess-help-underline)
   ;;VS[03-09-2012]: todo: this should not be here:
   ;; Stata is clean, so we get a big BARF from this.
@@ -209,17 +209,16 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
           (if com-get-file-path
               (browse-url (car (ess-get-words-from-vector (format com-get-file-path ess-help-object))))
             (when (functionp fun-get-file-path)
-              (browse-url (funcall fun-get-file-path ess-help-object))))))
-      )))
+              (browse-url (funcall fun-get-file-path ess-help-object)))))))))
 
-(defun ess--action-help-on-object (&optional button)
+(defun ess--button-action (&optional button)
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (interactive)
   (let* ((string (button-label button))
-         (command (when (fboundp 'ess-build-help-command-on-action)
-                    (funcall ess-build-help-command-on-action string))))
+         (command (when (fboundp ess-build-help-command-function)
+                    (funcall ess-build-help-command-function string))))
     (ess-display-help-on-object string command)))
 
 (defun ess-display-package-index ()
@@ -285,7 +284,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   ;; ITEM-REGEXP -- first subexpression is highlighted
   ;; TITLE of the help page
   ;; HELP-TYPE to be stored in `ess-help-type' local variable
-  ;; ACTION is a function with no argument (default is `ess--action-help-on-object')
+  ;; ACTION is a function with no argument (default is `ess--button-action')
   ;; HELP-ECHO
   ;; REG-START gives the start location from where to search linkifying"
   (interactive)
@@ -313,7 +312,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
           (while (re-search-forward item-regexp nil t)
             (make-text-button (match-beginning 1) (match-end 1)
                               'mouse-face 'highlight
-                              'action (or action #'ess--action-help-on-object)
+                              'action (or action #'ess--button-action)
                               'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
                               'follow-link t
                               'help-echo (or help-echo "help on object")))))

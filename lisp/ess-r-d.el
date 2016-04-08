@@ -214,7 +214,6 @@
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
      (ess-build-help-command-function   . #'ess-r-build-help-command)
-     (ess-build-help-command-on-action-function . #'ess-r-build-help-command-on-action)
      (ess-help-web-search-command       . 'ess-R-sos)
      (ess-mode-syntax-table             . R-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
@@ -1154,30 +1153,19 @@ selected (see `ess-r-set-evaluation-namespace')."
         (ess-completing-read "Choose location" pkgs nil t)))))
 
 (defun ess-r-build-help-command--unqualified (object dont-ask)
-  (let ((pkg-dir (ess-r-build-help-command--get-package-dir object dont-ask))
-        (command (format inferior-ess-r-help-command object)))
-    (if pkg-dir
-        ;; Invoking `print.help_files_with_topic'
-        (format "do.call(structure, c('%s', attributes(%s)))\n" pkg-dir command)
-      command)))
+  (if (eq ess-help-type 'index)
+      ;; we are in index page, qualify with namespace
+      (ess-r-build-help-command--qualified (format "%s::%s" ess-help-object object))
+    (let ((pkg-dir (ess-r-build-help-command--get-package-dir object dont-ask))
+          (command (format inferior-ess-r-help-command object)))
+      (if pkg-dir
+          ;; Invoking `print.help_files_with_topic'
+          (format "do.call(structure, c('%s', attributes(%s)))\n" pkg-dir command)
+        command))))
 
 (defun ess-r-build-help-command (object &optional dont-ask)
-  (cond ((ess-r-build-help-command--qualified object))
-        (t
-         (ess-r-build-help-command--unqualified object dont-ask))))
-
-;; FIXME: use ess-r-build-help-command
-(defun ess-r-build-help-command-on-action (string)
-  (cond ((string-match "::" string)
-         (format "?%s\n" (ess-help-r--sanitize-topic string)))
-        ((eq ess-help-type 'index)
-         (format "?%s::`%s`\n" ess-help-object string))))
-
-(defun ess-help-r--sanitize-topic (string)
-  ;; Enclose help topics into `` to avoid ?while ?if etc hangs
-  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
-      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
-    (format "`%s`" string)))
+  (or (ess-r-build-help-command--qualified object)
+      (ess-r-build-help-command--unqualified object dont-ask)))
 
 (defconst inferior-ess-r--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
@@ -1222,6 +1210,11 @@ selected (see `ess-r-set-evaluation-namespace')."
            (process-send-string proc "\n")
            t))))
 
+(defun ess-help-r--sanitize-topic (string)
+  ;; Enclose help topics into `` to avoid ?while ?if etc hangs
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
+      (format "%s`%s`" (match-string 1 string) (match-string 2 string))
+    (format "`%s`" string)))
 
 ;;;*;;; Utils for inferior R process
 

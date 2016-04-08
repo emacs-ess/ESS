@@ -2451,14 +2451,10 @@ If set, changes will take effect when next R session is started."
 (defvar ess-build-help-command-function nil
   "Dialect specific function for building an help command.")
 
-(defvar ess-build-help-command-on-action-function nil
-  "Dialect specific function for building a help command on button press.")
-
 (make-variable-buffer-local 'ess-get-help-topics-function)
 (make-variable-buffer-local 'ess-display-help-on-object-function)
 (make-variable-buffer-local 'ess-find-help-file-function)
 (make-variable-buffer-local 'ess-build-help-command-function)
-(make-variable-buffer-local 'ess-build-help-command-on-action-function)
 
 (defcustom inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
