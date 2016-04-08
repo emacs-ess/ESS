@@ -215,20 +215,14 @@ loading the temporary file.  This command conforms to VISIBLY."
         (with-silent-modifications
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
       (let ((string (buffer-substring-no-properties beg end)))
-        (if (fboundp ess-make-source-refd-command-function)
-            (funcall ess-make-source-refd-command-function string visibly tmpfile)
-          (ess-make-source-refd-command--fallback string visibly tmpfile))))))
-
-(defun ess-make-source-refd-command--fallback (string visibly tmpfile)
-  (cond
-   ;; Sending string to subprocess is considerably faster than tramp file
-   ;; transfer. So, give priority to `ess-eval-command' if available
-   ((let ((string (ess-quote-special-chars string)))
-      (ess-build-eval-command string visibly t tmpfile)))
-   ;; When no `ess-eval-command' available, use `ess-load-command'
-   (t
-    (write-region beg end tmpfile nil 'silent)
-    (ess-build-load-command tmpfile visibly t))))
+        (or
+         ;; Sending string to subprocess is considerably faster than tramp file
+         ;; transfer. So, give priority to `ess-eval-command' if available
+         (ess-build-eval-command string visibly t tmpfile)
+         ;; When no `ess-eval-command' available, use `ess-load-command'
+         (progn
+           (write-region beg end tmpfile nil 'silent)
+           (ess-build-load-command tmpfile visibly t)))))))
 
 (defun ess-tracebug-send-region (proc start end &optional visibly message type)
   "Send region to process adding source references as specified

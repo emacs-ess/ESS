@@ -208,7 +208,6 @@
      (ess-build-load-command-function  . #'ess-r-build-load-command)
      (ess-send-region-function          . #'ess-r-send-region)
      (ess-load-file-function            . #'ess-r-load-file)
-     (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
      (ess-build-eval-message-function  . #'ess-r-build-eval-message)
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
@@ -1008,17 +1007,19 @@ similar to `load-library' emacs function."
     (concat visibly output pkg verbose)))
 
 (defun ess-r-build-eval-command (string &optional visibly output file namespace)
-  (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
-        (file (when file (ess-r-arg "file" file t)))
-        (args (ess-r-build-args visibly output namespace)))
+  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
+         (cmd (if namespace ".essDev.eval" ".ess.eval"))
+         (file (when file (ess-r-arg "file" file t)))
+         (args (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" args file ")\n")))
 
 (defun ess-r-build-load-command (file &optional visibly output namespace)
-  (let ((cmd (if namespace ".essDev_source" ".ess.source"))
-        (args (ess-r-build-args visibly output namespace))
-        (msg (concat "cat('"
-                     (when namespace (format "[%s] " namespace))
-                     (format "Sourced file %s\n')" file))))
+  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
+         (cmd (if namespace ".essDev_source" ".ess.source"))
+         (args (ess-r-build-args visibly output namespace))
+         (msg (concat "cat('"
+                      (when namespace (format "[%s] " namespace))
+                      (format "Sourced file %s\n')" file))))
     (concat cmd "('" file "'" args "); " msg)))
 
 (defun ess-r-build-eval-message (message)
@@ -1111,11 +1112,6 @@ selected (see `ess-r-set-evaluation-namespace')."
   (let* ((pkg-name (ess-r-get-evaluation-env))
          (command (ess-r-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
-
-(defun ess-r-make-source-refd-command (string visibly tmpfile)
-  (let ((pkg-name (ess-r-get-evaluation-env))
-        (string (ess-quote-special-chars string)))
-    (ess-r-build-eval-command string visibly t tmpfile pkg-name)))
 
 (defun ess-r-send-region (proc start end visibly message)
   (cond

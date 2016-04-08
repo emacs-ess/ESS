@@ -17,7 +17,7 @@
     (with-r-file nil
       (let ((command "command(\"string\")"))
         (should (string= (ess-build-eval-command command)
-                         (ess-r-build-eval-command command)))))))
+                         (ess-r-build-eval-command (ess-quote-special-chars command))))))))
 
 (ert-deftest ess-r-build-load-command ()
   (should (string= (ess-r-build-load-command "file.ext")

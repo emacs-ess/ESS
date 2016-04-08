@@ -2392,9 +2392,6 @@ set, `ess-eval-command' is ignored.")
 (defvar ess-send-string-function nil
   "Dialect-specific function to send a string to an inferior process.")
 
-(defvar ess-make-source-refd-command-function nil
-  "Dialect-specific function to make a source referenced command.")
-
 (defvar ess-command-function nil
   "Dialect-specific function to send a command to an inferior process.")
 
@@ -2404,7 +2401,6 @@ set, `ess-eval-command' is ignored.")
 (make-variable-buffer-local 'ess-send-region-function)
 (make-variable-buffer-local 'ess-load-file-function)
 (make-variable-buffer-local 'ess-send-string-function)
-(make-variable-buffer-local 'ess-make-source-refd-command-function)
 (make-variable-buffer-local 'ess-command-function)
 (make-variable-buffer-local 'ess-eval-linewise-function)
 

@@ -29,7 +29,7 @@
   (should (not (ess-build-eval-command "command()")))
   (let ((ess-eval-command "%s - %f"))
     (should (string= (ess-build-eval-command "command(\"string\")" nil nil "file")
-                     "command(\"string\") - file"))))
+                     "command(\\\"string\\\") - file"))))
 
 (ert-deftest ess-build-load-command ()
   (should (string= (ess-build-load-command "file")
