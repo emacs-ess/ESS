@@ -1022,7 +1022,8 @@ similar to `load-library' emacs function."
     (concat cmd "('" file "'" args "); " msg)))
 
 (defun ess-r-build-eval-message (message)
-  (let ((env (ess-r-get-evaluation-env)))
+  (let ((env (or (and ess-debug-minor-mode "tracebug")
+                 (ess-r-get-evaluation-env))))
     (if env
         (format "[%s] %s" env message)
       message)))
