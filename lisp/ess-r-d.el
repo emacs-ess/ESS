@@ -1011,7 +1011,7 @@ similar to `load-library' emacs function."
   (let ((cmd (if namespace ".essDev.eval" ".ess.eval"))
         (file (when file (ess-r-arg "file" file t)))
         (args (ess-r-build-args visibly output namespace)))
-    (concat cmd "('" string "'" args file ")\n")))
+    (concat cmd "(\"" string "\"" args file ")\n")))
 
 (defun ess-r-build-load-command (file &optional visibly output namespace)
   (let ((cmd (if namespace ".essDev_source" ".ess.source"))
@@ -1112,8 +1112,9 @@ selected (see `ess-r-set-evaluation-namespace')."
     (ess-send-string (ess-get-process) command)))
 
 (defun ess-r-make-source-refd-command (string visibly tmpfile)
-  (let ((pkg-name (ess-r-get-evaluation-env)))
-    (ess-build-eval-command string visibly t tmpfile pkg-name)))
+  (let ((pkg-name (ess-r-get-evaluation-env))
+        (string (ess-quote-special-chars string)))
+    (ess-r-build-eval-command string visibly t tmpfile pkg-name)))
 
 (defun ess-r-send-region (proc start end visibly message)
   (cond

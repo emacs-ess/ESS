@@ -9,11 +9,11 @@
 (ert-deftest ess-r-build-eval-command ()
   (let ((command "command(\"string\")"))
     (should (string= (ess-r-build-eval-command command)
-                     ".ess.eval('command(\"string\")', visibly = FALSE, output = FALSE)\n"))
+                     ".ess.eval(\"command(\"string\")\", visibly = FALSE, output = FALSE)\n"))
     (should (string= (ess-r-build-eval-command command nil t)
-                     ".ess.eval('command(\"string\")', visibly = FALSE, output = TRUE)\n"))
+                     ".ess.eval(\"command(\"string\")\", visibly = FALSE, output = TRUE)\n"))
     (should (string= (ess-r-build-eval-command command t t "file.ext" "foo")
-                     ".essDev.eval('command(\"string\")', visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
+                     ".essDev.eval(\"command(\"string\")\", visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
     (with-r-file nil
       (let ((command "command(\"string\")"))
         (should (string= (ess-build-eval-command command)
@@ -30,15 +30,28 @@
     (should (string= (ess-build-load-command "file")
                      (ess-r-build-load-command "file")))))
 
+(ert-deftest ess-r-send-single-quoted-strings ()
+  (with-r-running nil
+    (insert "'hop'\n")
+    (let (ess-eval-visibly)
+      (should (output= (ess-eval-buffer nil)
+                       "[1] \"hop\"")))))
+
+(ert-deftest ess-r-send-double-quoted-strings ()
+  (with-r-running nil
+    (insert "\"hop\"\n")
+    (let (ess-eval-visibly)
+      (should (output= (ess-eval-buffer nil)
+                       "[1] \"hop\"")))))
+
 
 ;;; ess-r-package-mode
 
 (ert-deftest ess-r-package-auto-activate ()
-  (let ((buffer (generate-new-buffer " *ESS autoactivate test*")))
-    (should (with-current-buffer buffer
-              (text-mode)
-              (hack-local-variables)
-              (not ess-r-package-mode))))
+  (with-temp-buffer
+    (text-mode)
+    (hack-local-variables)
+    (should (not ess-r-package-mode)))
   (with-r-file "dummy-pkg/R/test.R"
     (hack-local-variables)
     (should ess-r-package-mode)))

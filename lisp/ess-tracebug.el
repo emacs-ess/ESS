@@ -223,7 +223,8 @@ loading the temporary file.  This command conforms to VISIBLY."
   (cond
    ;; Sending string to subprocess is considerably faster than tramp file
    ;; transfer. So, give priority to `ess-eval-command' if available
-   ((ess-build-eval-command string visibly t tmpfile))
+   ((let ((string (ess-quote-special-chars string)))
+      (ess-build-eval-command string visibly t tmpfile)))
    ;; When no `ess-eval-command' available, use `ess-load-command'
    (t
     (write-region beg end tmpfile nil 'silent)

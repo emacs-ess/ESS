@@ -1329,11 +1329,9 @@ STRING need not end with \\n."
         (string (ess--run-presend-hooks process string)))
     (inferior-ess--interrupt-subjob-maybe process)
     (inferior-ess-mark-as-busy process)
-    (cond
-     ((fboundp 'ess-send-string-function)
-      (funcall ess-send-string-function process string visibly message))
-     (t
-      (ess-send-string--fallback process string visibly message)))))
+    (if (fboundp 'ess-send-string-function)
+        (funcall ess-send-string-function process string visibly message)
+      (ess-send-string--fallback process string visibly message))))
 
 (defun ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
