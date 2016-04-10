@@ -284,14 +284,18 @@
 
 .ess.assign <- function (x, value, envir)
 {
+    ## Cannot add bindings to locked environments
     if (exists(x, envir = envir, inherits = FALSE) && bindingIsLocked(x, envir)) {
         unlockBinding(x, envir)
         assign(x, value, envir = envir, inherits = FALSE)
         op <- options(warn = -1)
         on.exit(options(op))
         lockBinding(x, envir)
-    } else {
+    } else if (!environmentIsLocked(envir)) {
         assign(x, value, envir = envir, inherits = FALSE)
+    } else {
+        warning(sprintf("Cannot assign `%s` in locked environment", x),
+                call. = FALSE)
     }
     invisible(NULL)
 }
@@ -338,7 +342,7 @@
     lapply(pkgs, function(pkg) {
         isDep <- vapply(dependentPkgs, function(deps) pkg %in% deps, logical(1))
         pkgDependentObjs <- names(dependentPkgs[isDep])
-        cat(sprintf("DEP:%s: %s   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
+        cat(sprintf("DEP:%s: [%s]   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
     })
 }
 
