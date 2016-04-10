@@ -13,7 +13,7 @@
     (should (string= (ess-r-build-eval-command command nil t)
                      ".ess.eval(\"command(\"string\")\", visibly = FALSE, output = TRUE)\n"))
     (should (string= (ess-r-build-eval-command command t t "file.ext" "foo")
-                     ".essDev.eval(\"command(\"string\")\", visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
+                     ".ess.ns_eval(\"command(\"string\")\", visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
     (with-r-file nil
       (let ((command "command(\"string\")"))
         (should (string= (ess-build-eval-command command)
@@ -25,7 +25,7 @@
   (should (string= (ess-r-build-load-command "file.ext" t t)
                    ".ess.source('file.ext', visibly = TRUE, output = TRUE); cat('Sourced file file.ext\n')"))
   (should (string= (ess-r-build-load-command "file.ext" nil t "foo")
-                   ".essDev_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo'); cat('[foo] Sourced file file.ext\n')"))
+                   ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo'); cat('[foo] Sourced file file.ext\n')"))
   (with-r-file nil
     (should (string= (ess-build-load-command "file")
                      (ess-r-build-load-command "file")))))

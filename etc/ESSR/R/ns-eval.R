@@ -7,12 +7,12 @@
 ## If an S3 methods already exists in a package, ESS-developer will do the right
 ## thing.
 
-## evaluate the STRING by saving into a file and calling .essDev_source
-.essDev.eval <- function(string, visibly, output, package,
+## evaluate the STRING by saving into a file and calling .ess.ns_source
+.ess.ns_eval <- function(string, visibly, output, package,
                          file = tempfile("ESSDev"), verbose = FALSE) {
     cat(string, file = file)
     on.exit(file.remove(file))
-    .essDev_source(file, visibly, output,
+    .ess.ns_source(file, visibly, output,
                    package = package,
                    verbose = verbose)
 }
@@ -20,7 +20,7 @@
 ## sourcing SOURCE file into an environment. After having a look at each new
 ## object in the environment, decide what to do with it. Handles plain objects,
 ## functions, existing S3 methods, S4 classes and methods. .
-.essDev_source <- function(source, visibly, output, expr, package = "", verbose = FALSE)
+.ess.ns_source <- function(source, visibly, output, expr, package = "", verbose = FALSE)
 {
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
@@ -45,7 +45,7 @@
                       package), domain = NA)
 
     ## evaluate the SOURCE into new ENV
-    env <- .essDev_evalSource(source, visibly, output, substitute(expr), package)
+    env <- .ess.ns_evalSource(source, visibly, output, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
@@ -66,14 +66,14 @@
             thisNs <- get(this, envir = envns)
             if(is.function(thisNs) || is.function(thisEnv)){
                 if(is.function(thisNs) && is.function(thisEnv)){
-                    if(.essDev_differs(thisEnv, thisNs)){
+                    if(.ess.differs(thisEnv, thisNs)){
                         environment(thisEnv) <- environment(thisNs)
-                        .essDev_assign(this, thisEnv, envns)
+                        .ess.assign(this, thisEnv, envns)
                         funcNs <- c(funcNs, this)
                         if(exists(".__S3MethodsTable__.", envir = envns, inherits = FALSE)){
                             S3_table <- get(".__S3MethodsTable__.", envir = envns)
                             if(exists(this, envir = S3_table, inherits = FALSE))
-                                .essDev_assign(this, thisEnv, S3_table)
+                                .ess.assign(this, thisEnv, S3_table)
                         }
                     }
                 }else{
@@ -81,7 +81,7 @@
                 }
             }else{
                 if(!identical(thisEnv, thisNs)){
-                    .essDev_assign(this, thisEnv, envns)
+                    .ess.assign(this, thisEnv, envns)
                     objectsNs <- c(objectsNs, this)}
             }
         }else{
@@ -93,15 +93,15 @@
             thisPkg <- get(this, envir = envpkg)
             if(is.function(thisPkg) || is.function(thisEnv)){
                 if(is.function(thisPkg) && is.function(thisEnv)){
-                    if(.essDev_differs(thisPkg, thisEnv)){
+                    if(.ess.differs(thisPkg, thisEnv)){
                         environment(thisEnv) <- environment(thisPkg)
-                        .essDev_assign(this, thisEnv, envpkg)
+                        .ess.assign(this, thisEnv, envpkg)
                         funcPkg <- c(funcPkg, this)}
                 }else{
                     newPkg <- c(newPkg, this)}
             }else{
                 if(!identical(thisPkg, thisEnv)){
-                    .essDev_assign(this, thisEnv, envpkg)
+                    .ess.assign(this, thisEnv, envpkg)
                     objectsPkg <- c(objectsPkg, this)}}
         }else{
             newPkg <- c(newPkg, this)}
@@ -112,14 +112,14 @@
         thisEnv <- get(this, envir = env, inherits = FALSE)
         if(exists(this, envir = .GlobalEnv, inherits = FALSE)){
             thisGl <- get(this, envir = .GlobalEnv)
-            if(.essDev_differs(thisEnv, thisGl)){
+            if(.ess.differs(thisEnv, thisGl)){
                 if(is.function(thisEnv)){
                     environment(thisEnv) <- envns
                     newFunc <- c(newFunc, this)
                 }else{
                     newObjects <- c(newObjects, this)
                 }
-                .essDev_assign(this, thisEnv, .GlobalEnv)
+                .ess.assign(this, thisEnv, .GlobalEnv)
             }
         }else{
             if(is.function(thisEnv)){
@@ -128,7 +128,7 @@
             }else{
                 newObjects <- c(newObjects, this)
             }
-            .essDev_assign(this, thisEnv, .GlobalEnv)
+            .ess.assign(this, thisEnv, .GlobalEnv)
         }
     }
     if(length(funcNs))
@@ -144,16 +144,16 @@
         newPkg <- newNs <- FALSE
         thisEnv <- get(this, envir = env)
         if(exists(this, envir = envpkg, inherits = FALSE)){
-            if(!.essDev_identicalClass(thisEnv, get(this, envir = envpkg))){
-                .essDev_assign(this, thisEnv, envir = envpkg)
+            if(!.ess.identicalClass(thisEnv, get(this, envir = envpkg))){
+                .ess.assign(this, thisEnv, envir = envpkg)
                 classesPkg <- c(classesPkg, this)
             }
         }else{
             newPkg <- TRUE
         }
         if(exists(this, envir = envns, inherits = FALSE)){
-            if(!.essDev_identicalClass(thisEnv, get(this, envir = envns))){
-                .essDev_assign(this, thisEnv, envir = envns)
+            if(!.ess.identicalClass(thisEnv, get(this, envir = envns))){
+                .ess.assign(this, thisEnv, envir = envns)
                 classesNs <- c(classesNs, this)
             }
         }else{
@@ -161,12 +161,12 @@
         }
         if(newNs && newPkg){
             if(exists(this, envir = .GlobalEnv, inherits = FALSE)){
-                if(!.essDev_identicalClass(thisEnv, get(this, envir = .GlobalEnv))){
-                    .essDev_assign(this, thisEnv, envir = .GlobalEnv)
+                if(!.ess.identicalClass(thisEnv, get(this, envir = .GlobalEnv))){
+                    .ess.assign(this, thisEnv, envir = .GlobalEnv)
                     newClasses <- c(newClasses, this)
                 }
             }else{
-                .essDev_assign(this, thisEnv, envir = .GlobalEnv)
+                .ess.assign(this, thisEnv, envir = .GlobalEnv)
                 newClasses <- c(newClasses, this)
             }
         }
@@ -195,15 +195,15 @@
         table <- methodNames[[i]]
         tableEnv <- get(table,  envir = env)
         if(exists(table,  envir = envns, inherits = FALSE)){
-            inserted <- .essDev_insertMethods(tableEnv, get(table, envir = envns), envns)
+            inserted <- .ess.ns_insertMethods(tableEnv, get(table, envir = envns), envns)
             if(length(inserted))
                 methodsNs <- c(methodsNs,  gettextf("%s{%s}", methods[[i]], paste(inserted, collapse = ", ")))
         }else if(exists(table,  envir = .GlobalEnv, inherits = FALSE)){
-            inserted <- .essDev_insertMethods(tableEnv, get(table, envir = .GlobalEnv), envns)
+            inserted <- .ess.ns_insertMethods(tableEnv, get(table, envir = .GlobalEnv), envns)
             if(length(inserted))
                 newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(inserted, collapse = ", ")))
         }else{
-            .essDev_assign(table, tableEnv, envir = .GlobalEnv)
+            .ess.assign(table, tableEnv, envir = .GlobalEnv)
             newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(objects(envir = tableEnv, all.names = T), collapse = ", ")))
         }
     }
@@ -226,7 +226,7 @@
     invisible(env)
 }
 
-.essDev_insertMethods <- function(tableEnv,  tablePkg, envns)
+.ess.ns_insertMethods <- function(tableEnv,  tablePkg, envns)
 {
     inserted <- character()
     for(m in ls(envir = tableEnv, all.names = T)){
@@ -234,18 +234,17 @@
             thisEnv <- get(m, envir = tableEnv)
             thisPkg <- get(m, envir = tablePkg)
             if(is(thisEnv, "MethodDefinition") && is(thisPkg, "MethodDefinition") &&
-               .essDev_differs(thisEnv@.Data, thisPkg@.Data)){
+               .ess.differs(thisEnv@.Data, thisPkg@.Data)){
                 environment(thisEnv@.Data) <- envns
                 ## environment of cached method in getMethodsForDispatch table is still env
                 ## not a problem as such,  but might confuse users
-                .essDev_assign(m, thisEnv, tablePkg)
+                .ess.assign(m, thisEnv, tablePkg)
                 inserted <- c(inserted, m)
             }}}
     inserted
 }
 
-
-.essDev_evalSource <- function (source, visibly, output, expr, package = "")
+.ess.ns_evalSource <- function (source, visibly, output, expr, package = "")
 {
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if(is.null(envns))
@@ -267,8 +266,7 @@
     env
 }
 
-
-.essDev_assign <- function (x, value, envir)
+.ess.assign <- function (x, value, envir)
 {
     if (exists(x, envir = envir, inherits = FALSE) && bindingIsLocked(x, envir)) {
         unlockBinding(x, envir)
@@ -282,7 +280,7 @@
     invisible(NULL)
 }
 
-.essDev_identicalClass <- function(cls1, cls2, printInfo = FALSE){
+.ess.identicalClass <- function(cls1, cls2, printInfo = FALSE){
     slots1 <- slotNames(class(cls1))
     slots2 <- slotNames(class(cls2))
     if(identical(slots1, slots2)){
@@ -295,8 +293,7 @@
     }
 }
 
-
-.essDev_differs <- function(f1, f2) {
+.ess.differs <- function(f1, f2) {
     if (is.function(f1) && is.function(f2)){
         !(identical(body(f1), body(f2)) && identical(args(f1), args(f2)))
     }else
