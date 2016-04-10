@@ -39,6 +39,11 @@
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
                       package), domain = NA)
 
+    ## Get all Imports envs where we propagate objects
+    pkgEnvNames <- Filter(.ess.is_package, search())
+    packages <- lapply(pkgEnvNames, function(envName) substring(envName, 9))
+    importsEnvs <- lapply(packages, function(pkgName) parent.env(asNamespace(pkgName)))
+
     ## Evaluate the SOURCE into new ENV
     env <- .ess.ns_evalSource(source, visibly, output, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
@@ -58,6 +63,7 @@
 
     ## PLAIN OBJECTS and FUNCTIONS:
     funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <- objectsNs <- objectsPkg <- character()
+    dependentPkgs <- list()
 
     for (this in allPlainObjects) {
         thisEnv <- get(this, envir = env)
@@ -107,6 +113,12 @@
                     objectsPkg <- c(objectsPkg, this)}}
         }else{
             newPkg <- c(newPkg, this)}
+
+        if (!is.null(thisNs)) {
+            isDependent <- .ess.ns_propagate(thisEnv, this, importsEnvs)
+            newDeps <- stats::setNames(list(packages[isDependent]), this)
+            dependentPkgs <- c(dependentPkgs, newDeps)
+        }
     }
 
     ## deal with new plain objects and functions
@@ -219,6 +231,8 @@
             cat(sprintf("%s  PKG: %s   ", package, paste(objectsPkg, collapse = ", ")))
         if(length(objectsNs))
             cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
+        if(length(dependentPkgs))
+            .ess.ns_format_deps(dependentPkgs)
         if(length(newObjects))
             cat(sprintf("GlobalEnv: %s\n", paste(newObjects, collapse = ", ")))
         if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
@@ -302,6 +316,31 @@
         !identical(f1, f2)
 }
 
+.ess.is_package <- function(envName) {
+  isPkg <- identical(substring(envName, 0, 8), "package:")
+  isPkg && (envName != "package:base")
+}
+
+.ess.ns_propagate <- function(obj, name, importsEnvs) {
+  containsObj <- vapply(importsEnvs, logical(1), FUN = function(envs) {
+    name %in% names(envs)
+  })
+
+  lapply(importsEnvs[containsObj], .ess.assign,
+         x = name, value = obj)
+
+  containsObj
+}
+
+.ess.ns_format_deps <- function(dependentPkgs) {
+    pkgs <- unique(unlist(dependentPkgs, use.names = FALSE))
+
+    lapply(pkgs, function(pkg) {
+        isDep <- vapply(dependentPkgs, function(deps) pkg %in% deps, logical(1))
+        pkgDependentObjs <- names(dependentPkgs[isDep])
+        cat(sprintf("DEP:%s: %s   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
+    })
+}
 
 ## Local Variables:
 ## eval: (ess-set-style 'RRR t)
