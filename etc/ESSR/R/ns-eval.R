@@ -24,12 +24,7 @@
 {
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
-    MPattern <- methods:::.TableMetaPattern()
-    CPattern <- methods:::.ClassMetaPattern()
-    allPlainObjects <- function() allObjects[!(grepl(MPattern, allObjects) |
-                                               grepl(CPattern, allObjects))]
-    allMethodTables <- function() allObjects[grepl(MPattern, allObjects)]
-    allClassDefs <- function() allObjects[grepl(CPattern, allObjects)]
+
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
     if(is.null(envpkg)){
@@ -44,20 +39,27 @@
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
                       package), domain = NA)
 
-    ## evaluate the SOURCE into new ENV
+    ## Evaluate the SOURCE into new ENV
     env <- .ess.ns_evalSource(source, visibly, output, substitute(expr), package)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
                          sQuote(package), sQuote(envPackage)), domain = NA)
 
+    ## Get all sourced objects, methods and classes
     allObjects <- objects(envir = env, all.names = TRUE)
     allObjects <- allObjects[!(allObjects %in% c(".cacheOnAssign", ".packageName"))]
+    MetaPattern <- methods:::.TableMetaPattern()
+    ClassPattern <- methods:::.ClassMetaPattern()
+    allPlainObjects <- allObjects[!(grepl(MetaPattern, allObjects) |
+                                    grepl(ClassPattern, allObjects))]
+    allMethodTables <- allObjects[grepl(MetaPattern, allObjects)]
+    allClassDefs <- allObjects[grepl(ClassPattern, allObjects)]
 
     ## PLAIN OBJECTS and FUNCTIONS:
     funcNs <- funcPkg <- newFunc <- newNs <- newObjects <- newPkg <- objectsNs <- objectsPkg <- character()
 
-    for (this in allPlainObjects()) {
+    for (this in allPlainObjects) {
         thisEnv <- get(this, envir = env)
         thisNs <- NULL
 
@@ -140,7 +142,7 @@
 
     ## CLASSES
     classesPkg <- classesNs <- newClasses <- character()
-    for(this in allClassDefs()){
+    for(this in allClassDefs){
         newPkg <- newNs <- FALSE
         thisEnv <- get(this, envir = env)
         if(exists(this, envir = envpkg, inherits = FALSE)){
@@ -172,11 +174,11 @@
         }
     }
     if(length(classesPkg))
-        objectsPkg <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesPkg, collapse = ", ")))
+        objectsPkg <- gettextf("CLS[%s]", sub(ClassPattern, "", paste(classesPkg, collapse = ", ")))
     if(length(classesNs))
-        objectsNs <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(classesNs, collapse = ", ")))
+        objectsNs <- gettextf("CLS[%s]", sub(ClassPattern, "", paste(classesNs, collapse = ", ")))
     if(length(newClasses))
-        newObjects <- gettextf("CLS[%s]", sub(methods:::.ClassMetaPattern(), "", paste(newClasses, collapse = ", ")))
+        newObjects <- gettextf("CLS[%s]", sub(ClassPattern, "", paste(newClasses, collapse = ", ")))
 
     ## METHODS:
     ## Method internals: For efficiency reasons setMethod() caches
@@ -187,7 +189,7 @@
     ## environment of the cached object has namespace:foo as it's parent but the
     ## environment of the object in local table is precisely namspace:foo. This
     ## does not cause any difference in evaluation.
-    methodNames <- allMethodTables()
+    methodNames <- allMethodTables
     methods <- sub(methods:::.TableMetaPrefix(), "", methodNames)
     methods <- sub(":.*", "", methods)
     methodsNs <- newMethods <- character()
