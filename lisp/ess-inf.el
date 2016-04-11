@@ -1744,19 +1744,21 @@ dialect specific way to include source references"
 
 (defun ess-eval-buffer (vis)
   "Send the current buffer to the inferior ESS process.
-Arg has same meaning as for `ess-eval-region'."
+VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer" 'buffer))
 
 (defun ess-eval-buffer-from-beg-to-here (vis)
+  "Send region from beginning to point to the inferior ESS process.
+VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-eval-region (point-min) (point) vis "Eval buffer from the beginning
-of the buffer until here, i.e. 'point'"))
+  (ess-eval-region (point-min) (point) vis "Eval buffer till point"))
 
 (defun ess-eval-buffer-from-here-to-end (vis)
+  "Send region from point to end of buffer to the inferior ESS process.
+VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (ess-eval-region (point) (point-max) vis "Eval buffer from here ('point') until
-the end of the buffer"))
+  (ess-eval-region (point) (point-max) vis "Eval buffer till end"))
 
 
 (defun ess-eval-function (vis &optional no-error)
