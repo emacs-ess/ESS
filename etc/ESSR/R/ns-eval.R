@@ -342,7 +342,7 @@
     lapply(pkgs, function(pkg) {
         isDep <- vapply(dependentPkgs, function(deps) pkg %in% deps, logical(1))
         pkgDependentObjs <- names(dependentPkgs[isDep])
-        cat(sprintf("DEP:%s: [%s]   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
+        cat(sprintf("DEP:%s [%s]   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
     })
 }
 
