@@ -1734,7 +1734,8 @@ dialect specific way to include source references"
   (let ((visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
         (message (or message "Eval region"))
         (proc (ess-get-process)))
-    (ess-send-region proc start end visibly message))
+    (save-excursion
+      (ess-send-region proc start end visibly message)))
 
   (when ess-eval-deactivate-mark
     (ess-deactivate-mark))
