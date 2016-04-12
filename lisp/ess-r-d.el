@@ -54,6 +54,11 @@
 (autoload 'ess-help-underline "ess-help" "(Autoload)" t)
 (autoload 'ess--flush-help-into-current-buffer "ess-help" "(Autoload)" t)
 
+
+;;*;; Mode definition
+
+;;;*;;; UI (Keymaps / Menus)
+
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
@@ -118,6 +123,7 @@
     (define-key ess-r-package-dev-map "\C-t" 'ess-r-devtools-test-package)
     (define-key ess-r-package-dev-map "\C-u" 'ess-r-devtools-unload-package)
     ess-r-package-dev-map))
+
 
 (easy-menu-define ess-roxygen-menu nil
   "Roxygen submenu."
@@ -190,8 +196,6 @@
 
 (ess-message "[ess-r-d:] (autoload ..) & (def** ..)")
 
-;; (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-;; (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 (defvar R-customize-alist
   (append
@@ -311,6 +315,9 @@ ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect."))
+
+
+;;;*;;; Mode init
 
 (defvar ess-R-post-run-hook nil
   "Functions run in process buffer after the initialization of R
@@ -469,6 +476,9 @@ Executed in process buffer."
   (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
+
+
+;;*;; Miscellaneous
 
 (defun ess-R-arch-2-bit (arch)
   "Translate R's architecture shortcuts/directory names to 'bits',
@@ -1129,7 +1139,7 @@ selected (see `ess-r-set-evaluation-namespace')."
     (message (ess-r-build-eval-message (or message "Eval region"))))
   (ess-send-string proc (buffer-substring start end) visibly message))
 
-
+
 ;;;*;;; Help
 
 (defun ess-r-namespaced-object-p (object)
@@ -1313,7 +1323,7 @@ should be saved unless NO-SAVE is non-nil."
 
 
 ;;*;; Editing Tools
-
+
 ;;;*;;; Indentation Engine
 
 ;; Written by Lionel Henry in mid 2015
@@ -1882,7 +1892,7 @@ otherwise nil."
              (looking-at (concat match "("))
              (current-column))))))
 
-
+
 ;;;*;;; Call filling engine
 
 ;; Unroll arguments to a single line until closing marker is found.
