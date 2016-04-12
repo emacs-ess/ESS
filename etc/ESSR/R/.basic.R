@@ -78,9 +78,10 @@
     ss <- # drop 'keep.source' for older versions
         if(.ess.Rversion >= "2.8") base::source
         else function(..., keep.source) base::source(...)
-    invisible(ss(file, echo = visibly, local = local, print.eval = output,
-                 max.deparse.length = max.deparse.length,
-                 keep.source = TRUE)$value) ## return value for org-babel
+    ss(file, echo = visibly, local = local, print.eval = output,
+       max.deparse.length = max.deparse.length,
+       keep.source = TRUE)$value ## return value for org-babel
+    cat(sprintf("Sourced file %s\n", file))
 }
 
 if(.ess.Rversion < "1.8")

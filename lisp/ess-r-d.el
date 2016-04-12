@@ -1026,11 +1026,8 @@ similar to `load-library' emacs function."
 (defun ess-r-build-load-command (file &optional visibly output namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
-         (args (ess-r-build-args visibly output namespace))
-         (msg (concat "cat('"
-                      (when namespace (format "[%s] " namespace))
-                      (format "Sourced file %s\n')" file))))
-    (concat cmd "('" file "'" args "); " msg)))
+         (args (ess-r-build-args visibly output namespace)))
+    (concat cmd "('" file "'" args ")\n")))
 
 (defun ess-r-build-eval-message (message)
   (let ((env (if ess-debug-minor-mode

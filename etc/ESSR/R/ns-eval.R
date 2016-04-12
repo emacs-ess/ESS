@@ -239,6 +239,7 @@
             cat(sprintf("*** Nothing explicitly assigned ***"))
         cat("\n")
     }
+    cat(sprintf("[%s] Sourced file %s\n", package, source))
     invisible(env)
 }
 
