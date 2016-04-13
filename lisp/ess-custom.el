@@ -604,15 +604,6 @@ back into S."
   :group 'ess-edit
   :type 'boolean)
 
-(defvar ess-dump-object-function nil
-  "Dialect specific function for dumping objects.")
-
-(defvar ess-read-object-name-function nil
-  "Dialect specific function for reading object name.")
-
-(make-variable-buffer-local 'ess-dump-object-function)
-(make-variable-buffer-local 'ess-read-object-name-function)
-
 (defcustom ess-fill-calls t
   "If non-nil, refilling a paragraph inside a function or
 indexing call will arrange the arguments according to
@@ -2354,61 +2345,14 @@ The resulting command should not echo code or print any
 transitory output.  See also `ess-eval-visibly-command' and
 `ess-eval-visibly-noecho-command'.")
 
-(defvar ess-build-load-command-function nil
-  "Dialect-specific function to build a command to load a file.
-
-This is useful to build a command based on user settings, for
-example whether to display output visibly, with echo, etc.  When
-set, `ess-load-command' is ignored.")
-
-(defvar ess-build-eval-command-function nil
-  "Dialect-specific function to build a command to evaluate a string.
-
-This is useful to build a command based on user settings, for
-example whether to display output visibly, with echo, etc.  When
-set, `ess-eval-command' is ignored.")
-
 (defvar ess-build-eval-message-function nil
   "Dialect-specific function for formatting an evaluation message.")
 
 (make-variable-buffer-local 'ess-eval-command)
 (make-variable-buffer-local 'ess-load-command)
-(make-variable-buffer-local 'ess-build-eval-command-function)
-(make-variable-buffer-local 'ess-build-load-command-function)
 (make-variable-buffer-local 'ess-build-eval-message-function)
 
 (define-obsolete-variable-alias 'inferior-ess-load-command 'ess-load-command "ESS v13.09")
-(define-obsolete-variable-alias 'ess-load-visibly-command 'ess-build-load-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-load-visibly-noecho-command 'ess-build-load-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-eval-visibly-command 'ess-build-eval-command-function "ESS v16.04")
-(define-obsolete-variable-alias 'ess-eval-visibly-noecho-command 'ess-build-eval-command-function "ESS v16.04")
-
-(defvar ess-send-region-function nil
-  "Dialect-specific function to send a region to an inferior process.")
-
-(defvar ess-load-file-function nil
-  "Dialect-specific function to load a file in an inferior process.")
-
-(defvar ess-send-string-function nil
-  "Dialect-specific function to send a string to an inferior process.")
-
-(defvar ess-command-function nil
-  "Dialect-specific function to send a command to an inferior process.")
-
-(defvar ess-eval-linewise-function nil
-  "Dialect-specific function to evaluate a string linewise.")
-
-(make-variable-buffer-local 'ess-send-region-function)
-(make-variable-buffer-local 'ess-load-file-function)
-(make-variable-buffer-local 'ess-send-string-function)
-(make-variable-buffer-local 'ess-command-function)
-(make-variable-buffer-local 'ess-eval-linewise-function)
-
-(defvar inferior-ess-quit-function nil
-  "Dialect specific function to quit the inferior process.
-
-Should perform clean-up.  This is called after `ess-quit'.")
-(make-variable-buffer-local 'inferior-ess-quit-function)
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.

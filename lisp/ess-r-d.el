@@ -208,10 +208,7 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-build-eval-command-function  . #'ess-r-build-eval-command)
-     (ess-build-load-command-function  . #'ess-r-build-load-command)
      (ess-send-region-function          . #'ess-r-send-region)
-     (ess-load-file-function            . #'ess-r-load-file)
      (ess-build-eval-message-function  . #'ess-r-build-eval-message)
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
@@ -240,7 +237,6 @@
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
      (inferior-ess-start-file	          . nil) ;; "~/.ess-R"
      (inferior-ess-start-args           . "")
-     (inferior-ess-quit-function        . #'inferior-ess-r-quit)
      (ess-error-regexp-alist            . ess-R-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM                         . "iESS")
@@ -1017,14 +1013,14 @@ similar to `load-library' emacs function."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
-(defun ess-r-build-eval-command (string &optional visibly output file namespace)
+(ess-defun ess-build-eval-command R (string &optional visibly output file namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_eval" ".ess.eval"))
          (file (when file (ess-r-arg "file" file t)))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" args file ")\n")))
 
-(defun ess-r-build-load-command (file &optional visibly output namespace)
+(ess-defun ess-build-load-command R (file &optional visibly output namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (args (ess-r-build-args visibly output namespace)))
@@ -1100,7 +1096,7 @@ namespace.")
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")
 
-(defun ess-r-load-file (file)
+(ess-defun ess-load-file R (file)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1274,11 +1270,7 @@ selected (see `ess-r-set-evaluation-namespace')."
         (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
-(defun inferior-ess-r-quit (&optional no-save)
-  "Issue an exiting command to an inferior R process, and
-optionally clean up.  This version is for killing *R* processes;
-it asks the extra question regarding whether the workspace image
-should be saved unless NO-SAVE is non-nil."
+(ess-defun inferior-ess-r-quit R (&optional no-save)
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-make-buffer-current)
   (let (cmd

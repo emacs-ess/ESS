@@ -300,7 +300,6 @@ to look up any doc strings."
     (ess-dump-error-re             . "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp              . "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist        . ess-julia-error-regexp-alist)
-    (ess-send-string-function      . nil);'ess-julia-send-string-function)
     (ess-imenu-generic-expression  . ess-julia-imenu-generic-expression)
     ;; (inferior-ess-objects-command    . inferior-R-objects-command)
     ;; (inferior-ess-search-list-command        . "search()\n")

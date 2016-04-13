@@ -6,29 +6,29 @@
 
 ;;; Inferior R
 
-(ert-deftest ess-r-build-eval-command ()
+(ert-deftest ess-build-eval-command:R ()
   (let ((command "command(\"string\")"))
-    (should (string= (ess-r-build-eval-command command)
+    (should (string= (ess-build-eval-command:R command)
                      ".ess.eval(\"command(\"string\")\", visibly = FALSE, output = FALSE)\n"))
-    (should (string= (ess-r-build-eval-command command nil t)
+    (should (string= (ess-build-eval-command:R command nil t)
                      ".ess.eval(\"command(\"string\")\", visibly = FALSE, output = TRUE)\n"))
-    (should (string= (ess-r-build-eval-command command t t "file.ext" "foo")
+    (should (string= (ess-build-eval-command:R command t t "file.ext" "foo")
                      ".ess.ns_eval(\"command(\"string\")\", visibly = TRUE, output = TRUE, package = 'foo', file = 'file.ext')\n"))
     (with-r-file nil
       (let ((command "command(\"string\")"))
         (should (string= (ess-build-eval-command command)
-                         (ess-r-build-eval-command (ess-quote-special-chars command))))))))
+                         (ess-build-eval-command:R (ess-quote-special-chars command))))))))
 
-(ert-deftest ess-r-build-load-command ()
-  (should (string= (ess-r-build-load-command "file.ext")
-                   ".ess.source('file.ext', visibly = FALSE, output = FALSE); cat('Sourced file file.ext\n')"))
-  (should (string= (ess-r-build-load-command "file.ext" t t)
-                   ".ess.source('file.ext', visibly = TRUE, output = TRUE); cat('Sourced file file.ext\n')"))
-  (should (string= (ess-r-build-load-command "file.ext" nil t "foo")
-                   ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo'); cat('[foo] Sourced file file.ext\n')"))
+(ert-deftest ess-build-load-command:R ()
+  (should (string= (ess-build-load-command:R "file.ext")
+                   ".ess.source('file.ext', visibly = FALSE, output = FALSE)\n"))
+  (should (string= (ess-build-load-command:R "file.ext" t t)
+                   ".ess.source('file.ext', visibly = TRUE, output = TRUE)\n"))
+  (should (string= (ess-build-load-command:R "file.ext" nil t "foo")
+                   ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo')\n"))
   (with-r-file nil
     (should (string= (ess-build-load-command "file")
-                     (ess-r-build-load-command "file")))))
+                     (ess-build-load-command:R "file")))))
 
 (ert-deftest ess-r-send-single-quoted-strings ()
   (with-r-running nil
