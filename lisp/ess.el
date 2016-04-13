@@ -518,7 +518,7 @@ Used in noweb modes.")
 
 ;; Toby Speight <Toby.Speight@ansa.co.uk>
 ;;> ;; untested
-;;> (let ((l R-customize-alist))            ; or whatever
+;;> (let ((l ess-r-customize-alist))            ; or whatever
 ;;>   (while l
 ;;>     (set (car (car l)) (cdr (car l)))   ; set, not setq!
 ;;>     (setq l (cdr l))))
@@ -534,18 +534,18 @@ Used in noweb modes.")
 ;; Erik Naggum <erik@naggum.no>
 ;;
 ;;(mapcar (lambda (pair) (set (car pair) (cdr pair)))
-;;        R-customize-alist)
+;;        ess-r-customize-alist)
 ;;
 ;;if you want to evaluate these things along the way, which it appears that
 ;;you want, try:
 ;;
 ;;(mapcar (lambda (pair) (set (car pair) (eval (cdr pair))))
-;;        R-customize-alist)
+;;        ess-r-customize-alist)
 
 ;; jsa@alexandria.organon.com (Jon S Anthony)
 ;;(mapcar (lambda (x)
 ;;          (set-variable (car x) (cdr x)))
-;;      R-customize-alist)
+;;      ess-r-customize-alist)
 
 
 

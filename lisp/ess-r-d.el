@@ -197,9 +197,9 @@
 (ess-message "[ess-r-d:] (autoload ..) & (def** ..)")
 
 
-(defvar R-customize-alist
+(defvar ess-r-customize-alist
   (append
-   '((ess-local-customize-alist         . 'R-customize-alist)
+   '((ess-local-customize-alist         . 'ess-r-customize-alist)
      (ess-eldoc-function                . #'ess-R-eldoc-function)
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
@@ -253,6 +253,7 @@
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
+(defalias 'R-customize-alist 'ess-r-customize-alist)
 
 (defvar R-editing-alist
   ;; copy the S-alist and modify :
@@ -368,7 +369,7 @@ will be prompted to enter arguments interactively."
           (concat r-always-arg
                   inferior-R-args " "   ; add space just in case
                   start-args))
-         (cust-alist (copy-alist R-customize-alist))
+         (cust-alist (copy-alist ess-r-customize-alist))
          (gdbp (string-match-p "gdb" r-start-args))
          use-dialog-box)
 
@@ -439,9 +440,9 @@ Executed in process buffer."
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive "P")
-  (setq ess-customize-alist R-customize-alist)
+  (setq ess-customize-alist ess-r-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
-  (ess-mode R-customize-alist proc-name)
+  (ess-mode ess-r-customize-alist proc-name)
   ;; for emacs < 24
   (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name t 'local)
   ;; for emacs >= 24
@@ -803,7 +804,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
 (defun R-transcript-mode ()
   "Does the right thing."
   (interactive)
-  (ess-transcript-mode R-customize-alist))
+  (ess-transcript-mode ess-r-customize-alist))
 
 (fset 'r-transcript-mode 'R-transcript-mode)
 

@@ -113,7 +113,7 @@ return new alist whose car is the new pair and cdr is ALIST.
      ((string= dialect "s3")    S3-customize-alist)
      ((string= dialect "s4")    S4-customize-alist)
      ((string= dialect "stata") STA-customize-alist)
-     ((string= dialect "R")     R-customize-alist )
+     ((string= dialect "R")     ess-r-customize-alist)
      ((string= dialect "sp3")   S+3-customize-alist)
      ((string= dialect "sp4")   S+4-customize-alist)
      ((string= dialect "sqpe4") Sqpe+4-customize-alist)

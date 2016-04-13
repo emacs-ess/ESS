@@ -292,7 +292,7 @@ following lines to your `.emacs' file:
   (interactive)
   (text-mode)
   (kill-all-local-variables)
-  (ess-setq-vars-local R-customize-alist) ;same functionality is available as in R buffers
+  (ess-setq-vars-local ess-r-customize-alist) ;same functionality is available as in R buffers
   (use-local-map Rd-mode-map)
   (setq mode-name "Rd")
   (setq major-mode 'Rd-mode)
@@ -507,7 +507,7 @@ temporary one in `temporary-file-directory'.
     ;; FIXME(2): once got rid of via-shell, consider
     ;; (ess--flush-help-into-current-buffer file "tools::Rd2txt(\"%s\")\n")
     ;; instead of all this :
-    (ess-setq-vars-local R-customize-alist)
+    (ess-setq-vars-local ess-r-customize-alist)
     (setq ess-help-sec-regex ess-help-R-sec-regex
           ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
     ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):

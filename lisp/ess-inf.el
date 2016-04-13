@@ -3196,7 +3196,7 @@ search path related variables."
 
 ;; I added the component:
 ;;  (inferior-ess-search-list-command . "search()\n")
-;; to S+3-customize-alist and R-customize-alist, and then I redefined the
+;; to S+3-customize-alist and ess-r-customize-alist, and then I redefined the
 ;; ess-create-temp-buffer function as follows:
 (defun ess-create-temp-buffer (name)
   "Create an empty buffer called NAME."
