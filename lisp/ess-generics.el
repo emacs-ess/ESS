@@ -27,6 +27,33 @@
 ;;
 ;;; Code
 
+(defun ess-generics--override (name args body)
+  (let ((funname (intern (format "%s-function" name))))
+    `(if (fboundp ,funname)
+         (apply ,funname ,@(delq '&rest (delq '&optional (copy-alist args))))
+       ,@(or body
+             `((error (format "`%s' is not implemented for dialect `%s'"
+                              ',name ess-dialect)))))))
+
+(defun ess-generics--expand-overrides (name args body)
+  ;; ripped off from `mode-local--expand-overrides'
+  (let ((forms body)
+        (ditto t)
+        form xbody)
+    (while forms
+      (setq form (car forms))
+      (cond
+       ((atom form))
+       ((eq (car form) :override)
+        (setq form (ess-generics--override name args (cdr form))))
+       ((eq (car form) :override-with-args)
+        (setq form (ess-generics--override name (cadr form) (cddr form))))
+       ((setq form (ess-generics--expand-overrides name args form))))
+      (setq ditto (and ditto (eq (car forms) form))
+            xbody (cons form xbody)
+            forms (cdr forms)))
+    (if ditto body (nreverse xbody))))
+
 (defmacro ess-defmethod (name args docstring &rest body)
   "Define a new function, as with `defun', which can be overloaded.
 NAME is the name of the function to create. ARGS are the
@@ -39,12 +66,8 @@ default is to signal error if {name}-function is not defined."
   (let ((funname (intern (format "%s-function" name))))
    `(eval-and-compile
       (defvar-local ,funname nil ,(format "When defined this function is called by `%s'." name))
-      (defun ,name ,args ,(format "%s\nUse `ess-defun' to define dialect specific overrides." docstring)
-             (if (fboundp ,funname)
-                 (funcall ,funname ,@args)
-               ,@(or body
-                     `((error (format "`%s' is not implemented for dialect `%s'"
-                                      ',name ess-dialect)))))))))
+      (defun ,name ,args ,(format "%s\n\nUse `ess-defun' to define dialect specific overrides." docstring)
+             ,@(ess-generics--expand-overrides name args body)))))
 
 (defmacro ess-defun (name dialect args &rest body)
   "Define a dialect specific override of the method NAME.
@@ -53,26 +76,30 @@ error. DIALECT is the dialect name this override is being defined
 for. ARGS are the function arguments, which should match those of
 the same named function created with `ess-defmethod'. BODY is the
 implementation of this function."
-  (declare (indent defun) (debug defun))
+  (declare (indent defun) (debug (&define sexp sexp lambda-list def-body)))
   (let ((new-name (intern (format "%s:%s" name dialect)))
-        (local-var-name (intern (format "%s-function" name)))
-        (cust-alist-name (intern (downcase (format "ess-%s-customize-alist" dialect)))))
-    (unless (fboundp name)
-      (error "Use `ess-defmethod' to define `%s' generic first"))
+        (fun-name (intern (format "%s-function" name)))
+        (alist-name (intern (downcase (format "ess-%s-customize-alist" dialect)))))
     `(eval-and-compile
-       (unless (boundp ',cust-alist-name)
-         (defvar ,cust-alist-name nil
+       (unless (boundp ',alist-name)
+         (defvar ,alist-name nil
            ,(format "Variables to customize dialect '%s'." dialect)))
-       (add-to-list ',cust-alist-name
-                    '(,local-var-name . ,new-name))
+       (add-to-list ',alist-name
+                    '(,fun-name . ',new-name))
        (defun ,new-name ,args
          ,(format "%s\nThis is an override for `%s' for `%s' dialect."
-                  (replace-regexp-in-string "\nUse.*ess-defun.*\\." "" (documentation name))
+                  ;; fixme: NAME might be undefined as yet. Look at help-fns-describe-function-functions
+                  (or (and (fboundp name)
+                           (documentation name)
+                           ;; hackish
+                           (replace-regexp-in-string "\nUse.*ess-defun.*\\." "" (documentation name)))
+                      "")
                   name dialect)
          ;; The body for this implementation
          ,@body)
        ;; For find-func to locate the definition of NEW-NAME.
        (put ',new-name 'definition-name ',name))))
+
 
 
 (provide 'ess-generics)
