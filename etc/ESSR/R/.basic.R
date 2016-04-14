@@ -60,8 +60,7 @@
 ### SOURCING
 .ess.eval <- function(string, visibly = TRUE, output = FALSE,
                       max.deparse.length = 300,
-                      file = tempfile("ESS"),
-                      local = NULL)
+                      file = tempfile("ESS"), local = NULL)
 {
     if (is.null(local)) {
         local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE

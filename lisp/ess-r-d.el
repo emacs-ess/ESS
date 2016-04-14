@@ -1027,9 +1027,9 @@ similar to `load-library' emacs function."
     (concat cmd "('" file "'" args ")\n")))
 
 (defun ess-r-build-eval-message (message)
-  (let ((env (if ess-debug-minor-mode
-                 (substring-no-properties ess-debug-indicator 1)
-               (ess-r-get-evaluation-env))))
+  (let ((env (cond ((ess-r-get-evaluation-env))
+                   (ess-debug-minor-mode
+                    (substring-no-properties ess-debug-indicator 1)))))
     (if env
         (format "[%s] %s" env message)
       message)))
@@ -1043,10 +1043,9 @@ variable.")
 
 (defun ess-r-get-evaluation-env ()
   "Get current evaluation env."
-  (unless ess-debug-minor-mode
-    (or ess-r-evaluation-env
-        (and ess-current-process-name
-             (ess-get-process-variable 'ess-r-evaluation-env)))))
+  (or ess-r-evaluation-env
+      (and ess-current-process-name
+           (ess-get-process-variable 'ess-r-evaluation-env))))
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If nil provide completion for all installed R packages.

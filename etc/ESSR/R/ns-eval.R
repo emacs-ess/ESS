@@ -9,11 +9,13 @@
 
 ## evaluate the STRING by saving into a file and calling .ess.ns_source
 .ess.ns_eval <- function(string, visibly, output, package,
-                         file = tempfile("ESSDev"), verbose = FALSE) {
+                         file = tempfile("ESSDev"), verbose = FALSE,
+                         fallback_env = parent.frame()) {
     cat(string, file = file)
     on.exit(file.remove(file))
     .ess.ns_source(file, visibly, output, package = package,
-                   verbose = verbose, fakeSource = TRUE)
+                   verbose = verbose, fakeSource = TRUE,
+                   fallback_env = fallback_env)
 }
 
 ## sourcing SOURCE file into an environment. After having a look at each new
@@ -21,7 +23,8 @@
 ## functions, existing S3 methods, S4 classes and methods. .
 .ess.ns_source <- function(source, visibly, output, expr,
                            package = "", verbose = FALSE,
-                           fakeSource = FALSE)
+                           fakeSource = FALSE,
+                           fallback_env = parent.frame())
 {
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
@@ -125,8 +128,8 @@
     ## deal with new plain objects and functions
     for(this in intersect(newPkg, newNs)){
         thisEnv <- get(this, envir = env, inherits = FALSE)
-        if(exists(this, envir = .GlobalEnv, inherits = FALSE)){
-            thisGl <- get(this, envir = .GlobalEnv)
+        if(exists(this, envir = fallback_env, inherits = FALSE)){
+            thisGl <- get(this, envir = fallback_env)
             if(.ess.differs(thisEnv, thisGl)){
                 if(is.function(thisEnv)){
                     environment(thisEnv) <- envns
@@ -134,7 +137,7 @@
                 }else{
                     newObjects <- c(newObjects, this)
                 }
-                .ess.assign(this, thisEnv, .GlobalEnv)
+                .ess.assign(this, thisEnv, fallback_env)
             }
         }else{
             if(is.function(thisEnv)){
@@ -143,7 +146,7 @@
             }else{
                 newObjects <- c(newObjects, this)
             }
-            .ess.assign(this, thisEnv, .GlobalEnv)
+            .ess.assign(this, thisEnv, fallback_env)
         }
     }
     if(length(funcNs))
@@ -175,13 +178,13 @@
             newNs <- TRUE
         }
         if(newNs && newPkg){
-            if(exists(this, envir = .GlobalEnv, inherits = FALSE)){
-                if(!.ess.identicalClass(thisEnv, get(this, envir = .GlobalEnv))){
-                    .ess.assign(this, thisEnv, envir = .GlobalEnv)
+            if(exists(this, envir = fallback_env, inherits = FALSE)){
+                if(!.ess.identicalClass(thisEnv, get(this, envir = fallback_env))){
+                    .ess.assign(this, thisEnv, envir = fallback_env)
                     newClasses <- c(newClasses, this)
                 }
             }else{
-                .ess.assign(this, thisEnv, envir = .GlobalEnv)
+                .ess.assign(this, thisEnv, envir = fallback_env)
                 newClasses <- c(newClasses, this)
             }
         }
@@ -213,12 +216,12 @@
             inserted <- .ess.ns_insertMethods(tableEnv, get(table, envir = envns), envns)
             if(length(inserted))
                 methodsNs <- c(methodsNs,  gettextf("%s{%s}", methods[[i]], paste(inserted, collapse = ", ")))
-        }else if(exists(table,  envir = .GlobalEnv, inherits = FALSE)){
-            inserted <- .ess.ns_insertMethods(tableEnv, get(table, envir = .GlobalEnv), envns)
+        }else if(exists(table,  envir = fallback_env, inherits = FALSE)){
+            inserted <- .ess.ns_insertMethods(tableEnv, get(table, envir = fallback_env), envns)
             if(length(inserted))
                 newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(inserted, collapse = ", ")))
         }else{
-            .ess.assign(table, tableEnv, envir = .GlobalEnv)
+            .ess.assign(table, tableEnv, envir = fallback_env)
             newMethods <- c(newMethods,  gettextf("%s{%s}", methods[[i]], paste(objects(envir = tableEnv, all.names = T), collapse = ", ")))
         }
     }
@@ -234,8 +237,10 @@
             cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
         if(length(dependentPkgs))
             .ess.ns_format_deps(dependentPkgs)
-        if(length(newObjects))
-            cat(sprintf("GlobalEnv: %s\n", paste(newObjects, collapse = ", ")))
+        if(length(newObjects)) {
+            env_name <- if (identical(fallback_env, .GlobalEnv)) "GlobalEnv" else "Local"
+            cat(sprintf("%s: %s\n", env_name, paste(newObjects, collapse = ", ")))
+        }
         if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
             cat(sprintf("*** Nothing explicitly assigned ***"))
         cat("\n")
