@@ -61,27 +61,39 @@
 .ess.eval <- function(string, visibly = TRUE, output = FALSE,
                       max.deparse.length = 300,
                       file = tempfile("ESS"),
-                      local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
+                      local = NULL)
 {
+    if (is.null(local)) {
+        local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE
+    }
+
     ## create FILE, put string into it. Then source.
     ## arguments are like in source and .ess.source
     cat(string, file = file)
     on.exit(file.remove(file))
     .ess.source(file, visibly = visibly, output = output,
-                max.deparse.length = max.deparse.length, local = local)
+                max.deparse.length = max.deparse.length,
+                local = local, fake.source = TRUE)
 }
 
 .ess.source <- function(file, visibly = TRUE, output = FALSE,
                         max.deparse.length = 300,
-                        local = if (.ess.Rversion > '2.13') parent.frame() else FALSE)
+                        local = NULL, fake.source = FALSE)
 {
+    if (is.null(local)) {
+        local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE
+    }
+
     ss <- # drop 'keep.source' for older versions
         if(.ess.Rversion >= "2.8") base::source
         else function(..., keep.source) base::source(...)
     out <- ss(file, echo = visibly, local = local, print.eval = output,
               max.deparse.length = max.deparse.length,
               keep.source = TRUE)$value
-    cat(sprintf("Sourced file %s\n", file))
+
+    if (!fake.source) {
+        cat(sprintf("Sourced file %s\n", file))
+    }
 
     ## Return value for org-babel
     invisible(out)

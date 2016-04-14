@@ -12,15 +12,16 @@
                          file = tempfile("ESSDev"), verbose = FALSE) {
     cat(string, file = file)
     on.exit(file.remove(file))
-    .ess.ns_source(file, visibly, output,
-                   package = package,
-                   verbose = verbose)
+    .ess.ns_source(file, visibly, output, package = package,
+                   verbose = verbose, fakeSource = TRUE)
 }
 
 ## sourcing SOURCE file into an environment. After having a look at each new
 ## object in the environment, decide what to do with it. Handles plain objects,
 ## functions, existing S3 methods, S4 classes and methods. .
-.ess.ns_source <- function(source, visibly, output, expr, package = "", verbose = FALSE)
+.ess.ns_source <- function(source, visibly, output, expr,
+                           package = "", verbose = FALSE,
+                           fakeSource = FALSE)
 {
     oldopts <- options(warn = 1)
     on.exit(options(oldopts))
@@ -239,7 +240,11 @@
             cat(sprintf("*** Nothing explicitly assigned ***"))
         cat("\n")
     }
-    cat(sprintf("[%s] Sourced file %s\n", package, source))
+
+    if (!fakeSource) {
+        cat(sprintf("[%s] Sourced file %s\n", package, source))
+    }
+
     invisible(env)
 }
 
