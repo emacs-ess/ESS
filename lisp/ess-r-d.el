@@ -1012,14 +1012,14 @@ similar to `load-library' emacs function."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
-(ess-defmethod ess-build-eval-command R (string &optional visibly output file namespace)
+(ess-defmethod R ess-build-eval-command (string &optional visibly output file namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_eval" ".ess.eval"))
          (file (when file (ess-r-arg "file" file t)))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" args file ")\n")))
 
-(ess-defmethod ess-build-load-command R (file &optional visibly output namespace)
+(ess-defmethod R ess-build-load-command (file &optional visibly output namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (args (ess-r-build-args visibly output namespace)))
@@ -1094,7 +1094,7 @@ namespace.")
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")
 
-(ess-defmethod ess-load-file R (file)
+(ess-defmethod R ess-load-file (file)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1115,7 +1115,7 @@ selected (see `ess-r-set-evaluation-namespace')."
          (command (ess-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
-(ess-defmethod ess-send-region R (proc start end visibly message)
+(ess-defmethod R ess-send-region (proc start end visibly message)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1268,7 +1268,7 @@ selected (see `ess-r-set-evaluation-namespace')."
         (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
-(ess-defmethod inferior-ess-r-quit R (&optional no-save)
+(ess-defmethod R inferior-ess-r-quit (&optional no-save)
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-make-buffer-current)
   (let (cmd

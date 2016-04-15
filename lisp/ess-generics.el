@@ -72,7 +72,7 @@ default is to signal error if {name}-function is not defined."
       (defun ,name ,args ,(format "%s\n\nUse `ess-defmethod' to define dialect specific overrides." docstring)
              ,@(ess-generics--expand-overrides name args body)))))
 
-(defmacro ess-defmethod (name dialect args &rest body)
+(defmacro ess-defmethod (dialect name args &rest body)
   "Define a dialect specific override of the method NAME.
 If NAME wasn't created with `ess-defgeneric' signal an
 error. DIALECT is the dialect name this override is being defined
