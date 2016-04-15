@@ -1025,7 +1025,7 @@ generate the source buffer."
           ;; No buffer and no file
           (ess-dump-object object filename))))))
 
-(ess-defmethod ess-dump-object (object filename)
+(ess-defgeneric ess-dump-object (object filename)
   "Dump the ESS object OBJECT into file FILENAME."
   (let ((complete-dump-command (format inferior-ess-dump-command
                                        object filename)))

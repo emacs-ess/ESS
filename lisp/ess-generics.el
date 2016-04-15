@@ -20,17 +20,20 @@
 ;;
 ;;; Comment
 ;;
-;; Define generic method with `ess-defmethod' and dialect specific override with
-;; `ess-defun`. Current implementation is using `{name}-function' and
+;; Define generic method with `ess-defgeneric' and dialect specific override with
+;; `ess-defmethod`. Current implementation is using `{name}-function' and
 ;; `ess-customize-alist' as the backbone mechanism. This might change in the
 ;; future.
 ;;
 ;;; Code
 
 (defun ess-generics--override (name args body)
-  (let ((funname (intern (format "%s-function" name))))
+  (let ((funname (intern (format "%s-function" name)))
+        (arg-list (delq '&rest (delq '&optional (copy-alist args)))))
     `(if (fboundp ,funname)
-         (apply ,funname ,@(delq '&rest (delq '&optional (copy-alist args))))
+         ,(if (memq '&rest args)
+              `(apply ,funname ,@arg-list)
+            `(funcall ,funname ,@arg-list))
        ,@(or body
              `((error (format "`%s' is not implemented for dialect `%s'"
                               ',name ess-dialect)))))))
@@ -54,7 +57,7 @@
             forms (cdr forms)))
     (if ditto body (nreverse xbody))))
 
-(defmacro ess-defmethod (name args docstring &rest body)
+(defmacro ess-defgeneric (name args docstring &rest body)
   "Define a new function, as with `defun', which can be overloaded.
 NAME is the name of the function to create. ARGS are the
 arguments to the function. DOCSTRING is a documentation string to
@@ -66,15 +69,15 @@ default is to signal error if {name}-function is not defined."
   (let ((funname (intern (format "%s-function" name))))
    `(eval-and-compile
       (defvar-local ,funname nil ,(format "When defined this function is called by `%s'." name))
-      (defun ,name ,args ,(format "%s\n\nUse `ess-defun' to define dialect specific overrides." docstring)
+      (defun ,name ,args ,(format "%s\n\nUse `ess-defmethod' to define dialect specific overrides." docstring)
              ,@(ess-generics--expand-overrides name args body)))))
 
-(defmacro ess-defun (name dialect args &rest body)
+(defmacro ess-defmethod (name dialect args &rest body)
   "Define a dialect specific override of the method NAME.
-If NAME wasn't created with `ess-defmethod' signal an
+If NAME wasn't created with `ess-defgeneric' signal an
 error. DIALECT is the dialect name this override is being defined
 for. ARGS are the function arguments, which should match those of
-the same named function created with `ess-defmethod'. BODY is the
+the same named function created with `ess-defgeneric'. BODY is the
 implementation of this function."
   (declare (indent defun) (debug (&define sexp sexp lambda-list def-body)))
   (let ((new-name (intern (format "%s:%s" name dialect)))
@@ -92,7 +95,7 @@ implementation of this function."
                   (or (and (fboundp name)
                            (documentation name)
                            ;; hackish
-                           (replace-regexp-in-string "\nUse.*ess-defun.*\\." "" (documentation name)))
+                           (replace-regexp-in-string "\nUse.*ess-defmethod.*\\." "" (documentation name)))
                       "")
                   name dialect)
          ;; The body for this implementation

@@ -208,7 +208,6 @@
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
-     (ess-send-region-function          . #'ess-r-send-region)
      (ess-build-eval-message-function  . #'ess-r-build-eval-message)
      (ess-dump-filename-template        . (ess-replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
@@ -1013,14 +1012,14 @@ similar to `load-library' emacs function."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
-(ess-defun ess-build-eval-command R (string &optional visibly output file namespace)
+(ess-defmethod ess-build-eval-command R (string &optional visibly output file namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_eval" ".ess.eval"))
          (file (when file (ess-r-arg "file" file t)))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" args file ")\n")))
 
-(ess-defun ess-build-load-command R (file &optional visibly output namespace)
+(ess-defmethod ess-build-load-command R (file &optional visibly output namespace)
   (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (args (ess-r-build-args visibly output namespace)))
@@ -1095,14 +1094,14 @@ namespace.")
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")
 
-(ess-defun ess-load-file R (file)
+(ess-defmethod ess-load-file R (file)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
     (ess-r-load-file-namespaced file))
    ;; Evaluation into current env via .ess.source()
    (t
-    (let ((command (ess-r-build-load-command file nil t)))
+    (let ((command (ess-build-load-command file nil t)))
       (ess-send-string (ess-get-process) command)))))
 
 (defun ess-r-load-file-namespaced (&optional file)
@@ -1113,10 +1112,10 @@ selected (see `ess-r-set-evaluation-namespace')."
   (interactive)
   (ess-force-buffer-current "R process to use: ")
   (let* ((pkg-name (ess-r-get-evaluation-env))
-         (command (ess-r-build-load-command file nil t pkg-name)))
+         (command (ess-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
-(defun ess-r-send-region (proc start end visibly message)
+(ess-defmethod ess-send-region R (proc start end visibly message)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1269,7 +1268,7 @@ selected (see `ess-r-set-evaluation-namespace')."
         (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
-(ess-defun inferior-ess-r-quit R (&optional no-save)
+(ess-defmethod inferior-ess-r-quit R (&optional no-save)
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-make-buffer-current)
   (let (cmd

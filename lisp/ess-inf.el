@@ -1136,7 +1136,7 @@ Assumes that buffer has not already been in found in current frame."
 
 ;;*;; Utils for evaluation
 
-(ess-defmethod ess-build-eval-command (string &optional visibly output file &rest args)
+(ess-defgeneric ess-build-eval-command (string &optional visibly output file &rest args)
   "Format an evaluation command.
 Wrap STRING with `ess-quote-special-chars' and dispatch on the
 dialect-specific `ess-build-eval-command' function and
@@ -1149,7 +1149,7 @@ defined, return nil."
                      `((?s . ,string)
                        (?f . ,file))))))
 
-(ess-defmethod ess-build-load-command (file &optional visibly output &rest args)
+(ess-defgeneric ess-build-load-command (file &optional visibly output &rest args)
   "Format a loading command.
 Dispatches on the dialect-specific `ess-build-load-command'
 and `ess-load-command', in that order."
@@ -1304,7 +1304,7 @@ Hide all the junk output in temporary buffer."
   (when message
     (message message)))
 
-(ess-defmethod ess-send-string (process string &optional visibly message)
+(ess-defgeneric ess-send-string (process string &optional visibly message)
   "ESS wrapper for `process-send-string'.
 Run `comint-input-filter-functions' and current buffer's and
 PROCESS' `ess-presend-filter-functions' hooks on the input
@@ -1324,7 +1324,7 @@ described in `ess-eval-visibly'. STRING need not end with \\n."
     (:override
      (ess-send-string--fallback process string visibly message))))
 
-(ess-defmethod ess-send-region (process start end &optional visibly message)
+(ess-defgeneric ess-send-region (process start end &optional visibly message)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call
 `ess-send-string'. If MESSAGE is supplied, display it at the
@@ -1360,7 +1360,7 @@ end. Run current buffer's and PROCESS'
           (ess-check-modifications))
       (ess-force-buffer-current "Process to load into: "))))
 
-(ess-defmethod ess-load-file (&optional filename)
+(ess-defgeneric ess-load-file (&optional filename)
   "Load a source file into an inferior ESS process.
 
 This handles Tramp when working on a remote."
@@ -1409,7 +1409,7 @@ This handles Tramp when working on a remote."
          "ESS process not ready. Finish your command before trying again.")))
     proc))
 
-(ess-defmethod ess-command (cmd &optional out-buffer sleep no-prompt-check wait proc force-redisplay)
+(ess-defgeneric ess-command (cmd &optional out-buffer sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process command CMD and delete the output from
 the ESS process buffer.  If an optional second argument
 OUT-BUFFER exists save the output in that buffer.  OUT-BUFFER is
@@ -1556,7 +1556,7 @@ explicit interrupt-callback."
 
 ;;*;;  Evaluating lines, paragraphs, regions, and buffers.
 
-(ess-defmethod ess-eval-linewise
+(ess-defgeneric ess-eval-linewise
   (text &optional invisibly eob even-empty wait-last-prompt sleep-sec wait-sec)
   "Evaluate TEXT in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
@@ -2516,7 +2516,7 @@ to the command if BUFF is not given.)"
 
 ;;;*;;; Quitting
 
-(ess-defmethod ess-quit ()
+(ess-defgeneric ess-quit ()
   "Issue an exiting command to the inferior process, additionally
 also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (interactive)
@@ -2947,7 +2947,7 @@ compatibility only."
  ; Miscellaneous routines
 
 ;;;*;;; Routines for reading object names
-(ess-defmethod ess-read-object-name (p-string)
+(ess-defgeneric ess-read-object-name (p-string)
   "Read an object name from the minibuffer with completion, and return it.
 P-STRING is the prompt string."
   (:override
