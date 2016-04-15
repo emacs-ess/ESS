@@ -361,7 +361,8 @@ disable the mode line entirely."
 
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
-  (when ess-r-package-auto-activate
+  (when (and ess-r-package-auto-activate
+             (buffer-file-name))
     (let ((pkg-info (ess-r-package-get-info)))
       (when (car pkg-info)
         (ess-r-package-mode 1)))))
