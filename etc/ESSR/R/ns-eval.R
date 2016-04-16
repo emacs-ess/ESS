@@ -230,6 +230,10 @@
     if(length(newMethods))
         newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
+    if (!fakeSource) {
+        cat(sprintf("[%s] Sourced file %s\n", package, source))
+    }
+
     if (verbose) {
         if(length(objectsPkg))
             cat(sprintf("%s  PKG: %s   ", package, paste(objectsPkg, collapse = ", ")))
@@ -244,10 +248,6 @@
         if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
             cat(sprintf("*** Nothing explicitly assigned ***"))
         cat("\n")
-    }
-
-    if (!fakeSource) {
-        cat(sprintf("[%s] Sourced file %s\n", package, source))
     }
 
     invisible(env)
