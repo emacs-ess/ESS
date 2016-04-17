@@ -150,7 +150,10 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (if buffer-read-only (setq buffer-read-only nil))
   (delete-region (point-min) (point-max))
   (ess-help-mode)
-  (ess-command (or command (ess-build-help-command object)) (current-buffer))
+  (let ((command (if (and command (string-match-p "%s" command))
+                     (format command object)
+                   command)))
+    (ess-command (or command (ess-build-help-command object)) (current-buffer)))
   (ess-help-underline)
   ;;VS[03-09-2012]: todo: this should not be here:
   ;; Stata is clean, so we get a big BARF from this.

@@ -1172,9 +1172,6 @@ selected (see `ess-r-set-evaluation-namespace')."
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
 (defconst inferior-ess-r--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
-;; FIXME: This is still buggy in some cases with namespaced
-;; commands. This also tends to issue error messages even when it
-;; works
 (defun ess-help-r--process-help-input (proc string)
   (let ((help-match (and (string-match inferior-ess-r--input-help string)
                          (match-string 2 string)))
