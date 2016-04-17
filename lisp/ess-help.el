@@ -45,7 +45,7 @@
 
 (require 'ess)
 (require 'ess-mode)
-(require 'cl-seq)
+(require 'cl)
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
