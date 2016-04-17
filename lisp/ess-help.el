@@ -119,10 +119,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
      (when current-prefix-arg ;update cache if prefix
        (ess-process-put 'sp-for-help-changed? t))
      (list (ess-find-help-file "Help on"))))
-  (cond
-   ((fboundp ess-display-help-on-object-function)
-    (funcall ess-display-help-on-object-function object command))
-   (t
+  (if (fboundp ess-display-help-on-object-function)
+      (funcall ess-display-help-on-object-function object command)
     (let* ((hb-name (concat "*help["
                             ess-current-process-name
                             "](" (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
@@ -136,14 +134,13 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
                 ess-help-type 'help)
           (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
-        (ess--switch-to-help-buffer tbuffer))))))
+        (ess--switch-to-help-buffer tbuffer)))))
 
 (defun ess-build-help-command (object)
-  (cond ((fboundp ess-build-help-command-function)
-         (funcall ess-build-help-command-function object))
-        (t
-         ;; FIXME: Remove the inferior- prefix for consistency
-         (format inferior-ess-help-command object))))
+  (if (fboundp ess-build-help-command-function)
+      (funcall ess-build-help-command-function object)
+    ;; TODO-CLEANUP: Remove the inferior- prefix for consistency
+    (format inferior-ess-help-command object)))
 
 (defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
   (ess-write-to-dribble-buffer
@@ -492,15 +489,14 @@ For internal use. Used in `ess-display-help-on-object',
                            (selected-window))
                       (and ess-help-reuse-window
                            (ess--find-displayed-help-window)))))
-    (if help-win
-        (progn
-          (select-window help-win 'norecord)
-          (set-window-buffer help-win buff)
-          ;; (switch-to-buffer buff nil 'force) <- 3rd argument appeared in emacs 24
-          )
-      (if ess-help-pop-to-buffer
-          (pop-to-buffer buff)
-        (ess-display-temp-buffer buff)))))
+    (cond (help-win
+           (select-window help-win 'norecord)
+           ;; (switch-to-buffer buff nil 'force) <- 3rd argument appeared in emacs 24
+           (set-window-buffer help-win buff))
+          (ess-help-pop-to-buffer
+           (pop-to-buffer buff))
+          (t
+           (ess-display-temp-buffer buff)))))
 
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")

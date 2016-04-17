@@ -1187,20 +1187,7 @@ selected (see `ess-r-set-evaluation-namespace')."
            (process-send-string proc "\n")
            t)
           (help-?-match
-           (if (string-match "\\?\\?\\(.+\\)" help-?-match)
-               (ess--display-indexed-help-page (concat help-?-match "\n")
-                                               "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
-                                               (format "*ess-apropos[%s](%s)*"
-                                                       ess-current-process-name (match-string 1 help-?-match))
-                                               'appropos)
-             ;; help(foo::bar) doesn't work
-             (if (string-match "^ *\\? *\\([^:]+\\)$" help-?-match)
-                 (ess-display-help-on-object (match-string 1 help-?-match))
-               ;; Anything else we send to process almost unchanged
-               (let ((help-?-match (and (string-match inferior-ess-r--input-?-help-regexp string)
-                                        (format "%s%s" (match-string 1 string)
-                                                (ess-help-r--sanitize-topic (match-string 2 string))))))
-                 (ess-display-help-on-object help-?-match "%s\n"))))
+           (ess-help-r--display-help-? proc string help-?-match)
            (process-send-string proc "\n")
            t)
           (page-match
@@ -1210,6 +1197,23 @@ selected (see `ess-r-set-evaluation-namespace')."
            (R-transcript-mode)
            (process-send-string proc "\n")
            t))))
+
+(defun ess-help-r--display-help-? (proc string help-?-match)
+  (cond ((string-match "\\?\\?\\(.+\\)" help-?-match)
+         (ess--display-indexed-help-page (concat help-?-match "\n")
+                                         "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
+                                         (format "*ess-apropos[%s](%s)*"
+                                                 ess-current-process-name (match-string 1 help-?-match))
+                                         'appropos))
+        ;; help(foo::bar) doesn't work
+        ((string-match "^ *\\? *\\([^:]+\\)$" help-?-match)
+         (ess-display-help-on-object (match-string 1 help-?-match)))
+        ;; Anything else we send to process almost unchanged
+        (t
+         (let ((help-?-match (and (string-match inferior-ess-r--input-?-help-regexp string)
+                                  (format "%s%s" (match-string 1 string)
+                                          (ess-help-r--sanitize-topic (match-string 2 string))))))
+           (ess-display-help-on-object help-?-match "%s\n")))))
 
 (defun ess-help-r--sanitize-topic (string)
   ;; Enclose help topics into `` to avoid ?while ?if etc hangs
