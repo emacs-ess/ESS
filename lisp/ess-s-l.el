@@ -891,6 +891,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
   (with-ess-process-buffer nil
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
+    (ess-help-r--check-last-help-type)
     (cond
      ;; (Re)generate the list of topics
      ((or (not ess-help-topics-list)

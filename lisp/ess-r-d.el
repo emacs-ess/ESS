@@ -1176,6 +1176,13 @@ selected (see `ess-r-set-evaluation-namespace')."
   "Variable holding the last known help type. If it changes,
 we flush the cache.")
 
+(defun ess-help-r--check-last-help-type ()
+  (let ((help-type (ess-string-command "getOption('help_type')\n")))
+    (when (not (string= help-type ess-help-r--last-help-type))
+      (let ((help-buffers (ess-help-get-local-help-buffers)))
+        (mapc #'kill-buffer help-buffers))
+      (setq ess-help-r--last-help-type help-type))))
+
 (defun ess-help-r--process-help-input (proc string)
   (let ((help-match (and (string-match inferior-ess-r--input-help string)
                          (match-string 2 string)))
@@ -1184,10 +1191,7 @@ we flush the cache.")
         (page-match   (and (string-match inferior-ess-r--page-regexp string)
                            (match-string 2 string))))
     (when (or help-match help-?-match page-match)
-      (let ((html-type (ess-string-command "getOption('html_type')\n")))
-        (when (not (string= html-type ess-help-r--last-help-type))
-          (ess-process-put 'sp-for-help-changed? t)
-          (setq ess-help-r--last-help-type html-type)))
+      (ess-help-r--check-last-help-type)
       (cond (help-match
              (ess-display-help-on-object help-match)
              (process-send-string proc "\n"))
@@ -1209,8 +1213,7 @@ we flush the cache.")
                                          (format "*ess-apropos[%s](%s)*"
                                                  ess-current-process-name (match-string 1 help-?-match))
                                          'appropos))
-        ;; help(foo::bar) doesn't work
-        ((string-match "^ *\\? *\\([^:]+\\)$" help-?-match)
+        ((string-match "^ *\\? *\\([^ \t]+\\)$" help-?-match)
          (ess-display-help-on-object (match-string 1 help-?-match)))
         ;; Anything else we send to process almost unchanged
         (t

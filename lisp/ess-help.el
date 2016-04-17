@@ -45,6 +45,7 @@
 
 (require 'ess)
 (require 'ess-mode)
+(require 'cl-seq)
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -89,6 +90,17 @@ first 150 characters of the buffer are searched."
         (if searching
             (buffer-substring (match-beginning 0) (match-end 0))
           (buffer-string))))))
+
+(defun ess-help-get-local-help-buffers ()
+  (ess-force-buffer-current)
+  (cl-remove-if-not
+   (lambda (buffer) (let* ((pattern (concat "*help[" ess-current-process-name "]("))
+                      (name (buffer-name buffer))
+                      (candidate (when (> (length name) (length pattern))
+                                   (substring name 0 (length pattern))) ))
+                 (when (string= pattern candidate)
+                   buffer)))
+   (buffer-list)))
 
 (defvar ess-help-type nil
   "Type of help file, help, index, vingettes etc.
