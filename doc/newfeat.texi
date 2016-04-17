@@ -1,12 +1,14 @@
 @comment @itemize @w{}
 @comment @item
 
+
 Changes and New Features in 16.04:
 @itemize @bullet
 
 @item @ESS{[R]}: Help lookup has been improved.
 It is now possible to get help for namespaced objects such as
-pkg::foobar.
+pkg::foobar. Furthemore, ESS recognises more reliably when you change
+@code{options('html_type')}.
 
 @item @ESS{[R]}: ``developer mode'' has been entirely refactored.
 To enter it, you now need @kbd{C-c C-t C-s} (`s' as mnemonic for ``source()'').
@@ -16,6 +18,7 @@ order that not all installed packages are searched but only those currently
 on the R's search() path.
 
 @end itemize
+
 
 Changes and New Features in 15.09:
 @itemize @bullet

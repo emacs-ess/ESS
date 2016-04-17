@@ -1172,6 +1172,10 @@ selected (see `ess-r-set-evaluation-namespace')."
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
 (defconst inferior-ess-r--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
+(defvar ess-help-r--last-help-type nil
+  "Variable holding the last known help type. If it changes,
+we flush the cache.")
+
 (defun ess-help-r--process-help-input (proc string)
   (let ((help-match (and (string-match inferior-ess-r--input-help string)
                          (match-string 2 string)))
@@ -1179,21 +1183,24 @@ selected (see `ess-r-set-evaluation-namespace')."
                            string))
         (page-match   (and (string-match inferior-ess-r--page-regexp string)
                            (match-string 2 string))))
-    (cond (help-match
-           (ess-display-help-on-object help-match)
-           (process-send-string proc "\n")
-           t)
-          (help-?-match
-           (ess-help-r--display-help-? proc string help-?-match)
-           (process-send-string proc "\n")
-           t)
-          (page-match
-           (switch-to-buffer-other-window
-            (ess-command (concat page-match "\n")
-                         (get-buffer-create (concat page-match ".rt"))))
-           (R-transcript-mode)
-           (process-send-string proc "\n")
-           t))))
+    (when (or help-match help-?-match page-match)
+      (let ((html-type (ess-string-command "getOption('html_type')\n")))
+        (when (not (string= html-type ess-help-r--last-help-type))
+          (ess-process-put 'sp-for-help-changed? t)
+          (setq ess-help-r--last-help-type html-type)))
+      (cond (help-match
+             (ess-display-help-on-object help-match)
+             (process-send-string proc "\n"))
+            (help-?-match
+             (ess-help-r--display-help-? proc string help-?-match)
+             (process-send-string proc "\n"))
+            (page-match
+             (switch-to-buffer-other-window
+              (ess-command (concat page-match "\n")
+                           (get-buffer-create (concat page-match ".rt"))))
+             (R-transcript-mode)
+             (process-send-string proc "\n")))
+      t)))
 
 (defun ess-help-r--display-help-? (proc string help-?-match)
   (cond ((string-match "\\?\\?\\(.+\\)" help-?-match)

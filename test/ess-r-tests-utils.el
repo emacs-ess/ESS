@@ -49,11 +49,6 @@
                             (buffer-string)))
           (kill-process proc))))))
 
-(defun ess-kill-last-line ()
-  (goto-char (point-max))
-  (forward-line -1)
-  (delete-region (point-at-eol) (point-max)))
-
 ;; The following retrieve the last output and clean the output
 ;; buffer. This is useful to continue testing without restarting a
 ;; fresh R session.

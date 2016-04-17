@@ -1223,6 +1223,12 @@ Otherwise treat \\ in NEWTEXT string as special:
                        newtext ""))))))
     (concat rtn-str (substring str start))))
 
+(defun ess-kill-last-line ()
+  (save-excursion
+    (goto-char (point-max))
+    (forward-line -1)
+    (delete-region (point-at-eol) (point-max))))
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here

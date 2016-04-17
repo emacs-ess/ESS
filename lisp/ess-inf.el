@@ -1480,6 +1480,11 @@ Example: (ess-boolean-command \"2>1\n\")"
     (let ((case-fold-search t))
       (re-search-forward "true" nil t))))
 
+(defun ess-string-command (com &optional buf wait)
+  "Returns the output of COM as a string."
+  (with-current-buffer (ess-command com buf nil nil wait)
+    (ess-kill-last-line)
+    (buffer-substring (point-min) (point-max))))
 
 ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
 ;;                    (lambda (proc) (message "done")))
