@@ -2530,11 +2530,10 @@ also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
   (:override
    (let ((sprocess (ess-get-process ess-current-process-name)))
      (if (not sprocess) (error "No ESS process running"))
-     (when (y-or-n-p (format "Really quit ESS process %s? " sprocess))
-       (ess-cleanup)
-       (goto-char (marker-position (process-mark sprocess)))
-       (insert inferior-ess-exit-command)
-       (process-send-string sprocess inferior-ess-exit-command)))))
+     (ess-cleanup)
+     (goto-char (marker-position (process-mark sprocess)))
+     (insert inferior-ess-exit-command)
+     (process-send-string sprocess inferior-ess-exit-command))))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
