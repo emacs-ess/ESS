@@ -236,7 +236,7 @@
 
     if (verbose) {
         if(length(objectsPkg))
-            cat(sprintf("%s  PKG: %s   ", package, paste(objectsPkg, collapse = ", ")))
+            cat(sprintf("\nPKG: %s   ", paste(objectsPkg, collapse = ", ")))
         if(length(objectsNs))
             cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
         if(length(dependentPkgs))
