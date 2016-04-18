@@ -1279,9 +1279,7 @@ we flush the cache.")
         (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
-(ess-defmethod R inferior-ess-r-quit (&optional no-save)
-  (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
-  (ess-make-buffer-current)
+(ess-defmethod R ess-quit (&optional no-save)
   (let (cmd
         ;;Q     response
         (sprocess (ess-get-process ess-current-process-name)))
@@ -1310,7 +1308,7 @@ we flush the cache.")
   (let ((pkg-info ess-r-package-info)
         (r-proc (ess-get-process)))
     (with-ess-process-buffer nil
-      (ess-quit-r 'no-save)
+      (ess-quit 'no-save)
       (while (memq (process-status r-proc) '(run busy))
         (accept-process-output r-proc 0.002))
       (kill-buffer)

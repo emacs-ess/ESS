@@ -2521,9 +2521,9 @@ to the command if BUFF is not given.)"
 
 ;;;*;;; Quitting
 
-(ess-defgeneric ess-quit ()
+(ess-defgeneric ess-quit (&rest args)
   "Issue an exiting command to the inferior process, additionally
-also running \\[ess-cleanup].  For R, runs \\[ess-quit-r], see there."
+also running \\[ess-cleanup]."
   (interactive)
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-make-buffer-current)
