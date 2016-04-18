@@ -189,7 +189,7 @@ as `ess-imenu-use-S'."
 ;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
-                                ("install.packages"     . ess-install.packages)
+                                ("install.packages"     . ess-install-library)
                                 ("library"              . ess-library)
                                 ("objects[ls]"          . ess-execute-objects)
                                 ("help-apropos"         . ess-display-help-apropos)
@@ -210,6 +210,9 @@ as `ess-imenu-use-S'."
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
 
+(defvar ess-install-library-function nil
+  "Dialect-specific function to install a library.")
+(make-variable-buffer-local 'ess-install-library-function)
 
 
 (defcustom ess-describe-at-point-method nil
@@ -558,11 +561,7 @@ incorrectly, the right things will probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
-;;; SJE -- this is set in ess-site.el to be "always", so I changed
-;;; value t to be "always", so that ess-site.el does not need editing.
-;;; However, this is a bit messy, and would be nicer if ess-site.el
-;;; value was t rather than "always".
-(defcustom ess-keep-dump-files 'ask
+(defcustom ess-keep-dump-files t
   "Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with ess-dump-object-into-edit-buffer.
@@ -1597,7 +1596,7 @@ current directory.
 ;;*;; Regular expressions
 
 ;; -- Note: Some variables not-to-customize moved to ./ess-mode.el :
-;; ess-set-function-start
+;; ess-r-set-function-start
 
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
@@ -2108,26 +2107,25 @@ for help files.  The default value is nil for other systems."
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
-(defcustom inferior-ess-ddeclient nil
+(defcustom inferior-ess-ddeclient "Initial"
   "ddeclient is the intermediary between emacs and the stat program."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-ddeclient)
-
-(defcustom inferior-ess-client-name nil
+(defcustom inferior-ess-client-name "Initial"
   "Name of ESS program ddeclient talks to."
   :group 'ess-proc
   :type 'string)
 
-(make-variable-buffer-local 'inferior-ess-client-name)
-
-(defcustom inferior-ess-client-command nil
+(defcustom inferior-ess-client-command "Initial"
   "ddeclient command sent to the ESS program."
   :group 'ess-proc
   :type '(choice (const nil) string))
 
+(make-variable-buffer-local 'inferior-ess-client-name)
+(make-variable-buffer-local 'inferior-ess-ddeclient)
 (make-variable-buffer-local 'inferior-ess-client-command)
+
 
 ;;;;; user settable defaults
 (defvar inferior-S-program-name  inferior-S+3-program-name
@@ -2438,26 +2436,6 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   "Command to find the value of the current S prompt."
   :group 'ess-command
   :type 'string)
-
-(defvar ess-cmd-delay nil
-  "*Set to a positive number if ESS will include delays proportional to
-`ess-cmd-delay'  in some places. These delays are introduced to
-prevent timeouts in certain processes, such as completion.
-
-This variable has no effect from ESS12.03
-")
-(make-variable-buffer-local 'ess-cmd-delay)
-
-(defvar ess-R-cmd-delay nil
-  "Used to initialize `ess-cmd-delay'.
-
-This variable has no effect from ESS12.03
-")
-
-(defvar ess-S+-cmd-delay 1.0
-  "Used to initialize `ess-cmd-delay'.
-This variable has no effect from ESS12.03
-")
 
 ;;*;; Regular expressions
 (defvar inferior-ess-prompt nil
@@ -2997,7 +2975,7 @@ S+ for details of the format that should be returned.")
 
 (defvar ess-eldoc-function nil
   "Holds a dialect specific eldoc function,
-See `ess-R-eldoc-function' and `ess-julia-eldoc-function' for examples.")
+See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments."

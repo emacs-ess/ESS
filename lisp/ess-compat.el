@@ -34,15 +34,22 @@
 
 ;;; Code:
 
-;;; Define a function to make it easier to check which version we're
-;;; running.
-;; no longer in use; 2013-12-30:
-(defun ess-running-emacs-version-or-newer (major minor)
-  (or (> emacs-major-version major)
-      (and (= emacs-major-version major)
-           (>= emacs-minor-version minor))))
-
-                                        ;(defvar ess-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
+;; Emacs 19.28 and 19.29 don't have functions we need.
+(if (not (fboundp 'file-name-sans-extension))
+    ;; take the definition from emacs-20.6/lisp/files.el:
+    (defun file-name-sans-extension (filename)
+      "Return FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+      (save-match-data
+        (let ((file (file-name-sans-versions
+                     (file-name-nondirectory filename)))
+              directory)
+          (if (string-match "\\.[^.]*\\'" file)
+              (if (setq directory (file-name-directory filename))
+                  (expand-file-name (substring file 0 (match-beginning 0))
+                                    directory)
+                (substring file 0 (match-beginning 0)))
+            filename)))))
 
 (defvar ess-local-custom-available (featurep 'custom)
   "Value is nil if custom.el not available, t if available.
@@ -277,6 +284,51 @@ mode is enabled.  Usually, such commands should use
 `use-region-p' instead of this function, because `use-region-p'
 also checks the value of `use-empty-active-region'."
     (and transient-mark-mode mark-active)))
+
+;;; xemacs process-put and process-get workarounds:
+;;; !!!! remove this when xemacs starts supporting them!!!
+(when (featurep 'xemacs)
+  (defvar process-plist-map (make-hash-table :test 'eq :weakness 'key)
+    "Property list information for process, when XEmacs doesn't provide this.
+See `process-plist' and `set-process-plist'.")
+
+  (defun-when-void process-plist (process)
+    "Return the property list of PROCESS."
+    (check-argument-type #'processp process)
+    (gethash process process-plist-map))
+
+  (defun-when-void set-process-plist (process plist)
+    "Set the property list of PROCESS to PLIST."
+    (check-argument-type #'processp process)
+    (check-argument-type #'valid-plist-p plist)
+    (puthash process plist process-plist-map))
+
+
+  (defun-when-void process-get (process propname)
+    "Return the value of PROCESS' PROPNAME property.
+This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
+    (plist-get (process-plist process) propname))
+
+  (defun-when-void process-put (process propname value)
+    "Change PROCESS' PROPNAME property to VALUE.
+It can be retrieved with `(process-get PROCESS PROPNAME)'."
+    (set-process-plist process
+                       (plist-put (process-plist process) propname value)))
+  )
+
+(defun ess-mode-xemacs-menu ()
+  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
+  (if 'ess-mode
+      (easy-menu-add ess-mode-menu)
+    (easy-menu-remove ess-mode-menu)))
+
+(when (featurep 'xemacs)
+  (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
+
+(when (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
+  (eval-after-load "ess-mode"
+    '(define-key ess-mode-map [(meta backspace)] 'backward-kill-word)))
+
 
 (provide 'ess-compat)
 
