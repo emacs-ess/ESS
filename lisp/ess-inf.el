@@ -1333,8 +1333,8 @@ end. Run current buffer's and PROCESS'
   (cond
    ((ess-tracebug-p)
     (ess-tracebug-send-region proc start end visibly message inject))
-   (:override
-    (ess-send-string process (buffer-substring start end) visibly message))))
+   (t (:override
+       (ess-send-string process (buffer-substring start end) visibly message)))))
 
 ;;*;; Evaluation commands
 
