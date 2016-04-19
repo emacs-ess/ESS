@@ -1817,7 +1817,7 @@ end of region if region was active.
         (goto-char end))
     (ess-eval-function-or-paragraph-and-step vis)))
 
-(defun ess-eval-line (vis)
+(defun ess-eval-line (&optional vis)
   "Send the current line to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
