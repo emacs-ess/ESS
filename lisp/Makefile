@@ -54,6 +54,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-d.elc ess-rd.elc \
 	ess-r-package.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
+	ess-generics.elc ess-r-gui.elc\
 	ess-sp6w-d.elc msdos.elc
 ##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 ## julia-mode.el : really from the julia sources -- but want in tarball!
@@ -187,6 +188,8 @@ ess-jags-d.elc : ess-jags-d.el ess-bugs-l.elc ess-utils.elc ess-inf.elc
 ## GRETL
 
 ess-gretl.elc : ess-gretl.el
+
+ess-r-gui.elc : ess-r-gui.el ess-dde.elc
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
