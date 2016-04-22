@@ -464,21 +464,8 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                        (get-text-property pos 'vignette)
                        (get-text-property pos 'package))))
 
-(defun ess-help-quit (&optional kill)
-  "Quit help."
-  ;;VS: `quit-window', doesn't focus previously selected buffer, which is annoying
-  (interactive "P")
-  (let* ((buffer (window-buffer))
-         (obuffer (other-buffer buffer t)))
-    (bury-buffer)
-    (pop-to-buffer obuffer)
-    (if kill
-        (kill-buffer buffer))))
-
-(defun ess-help-kill ()
-  "Quit and kill the help buffer"
-  (interactive)
-  (ess-help-quit t))
+(defalias 'ess-help-quit 'quit-window)
+(make-obsolete 'ess-help-quit 'quit-window "16.04")
 
 (defun ess--find-displayed-help-window ()
   (catch 'win
@@ -584,7 +571,7 @@ For internal use. Used in `ess-display-help-on-object',
     (suppress-keymap map)   ; suppress all usual "printing" characters
     (when (boundp 'special-mode-map)
       (set-keymap-parent map special-mode-map))
-    (define-key map "q" 'ess-help-quit)  ;was 'ess-switch-to-end-of-ESS)
+    (define-key map "q" 'quit-window)
     (define-key map "\C-m" 'next-line)
     ;; (define-key map "s" ess-help-sec-map)
     (define-key map "h" 'ess-display-help-on-object)
