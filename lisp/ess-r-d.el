@@ -167,13 +167,13 @@
     ["About" ess-tracebug-show-help t]))
 
 (easy-menu-define ess-r-package-menu nil
-  "Developer submenu."
-  '("Developer"
+  "Package Development submenu."
+  '("Package development"
     :visible (and ess-dialect (string-match "^R" ess-dialect))
-    ["Active?"          ess-toggle-developer
+    ["Active?" ess-r-package-mode
      :style toggle
-     :selected ess-r-package]
-    ["Select package" ess-r-package-select-package t]))
+     :selected ess-r-package-mode]
+    ["Select namespace for evaluation" ess-r-set-evaluation-namespace t]))
 
 (easy-menu-add-item ess-mode-menu nil ess-roxygen-menu "end-dev")
 (easy-menu-add-item ess-mode-menu nil ess-r-package-menu "end-dev")
