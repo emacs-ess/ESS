@@ -370,18 +370,18 @@ disable the mode line entirely."
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.03, `ess-developer' is deprecated. Use `ess-r-set-evaluation-namespace' instead."))
+  (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-namespace' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
-(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
-(make-obsolete-variable 'ess-developer-load-command "Please use `ess-r-package-load-command' instead." "16.03")
-(make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.03")
-(make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
-(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.03")
-(make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-auto-activate' instead." "16.03")
-(make-obsolete-variable 'ess-developer-enter-hook "Please use `ess-r-package-enter-hook' instead." "16.03")
-(make-obsolete-variable 'ess-developer-exit-hook "Please use `ess-r-package-exit-hook' instead." "16.03")
+(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
+(make-obsolete-variable 'ess-developer-load-command "Please use `ess-r-package-load-command' instead." "16.04")
+(make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
+(make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
+(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
+(make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-auto-activate' instead." "16.04")
+(make-obsolete-variable 'ess-developer-enter-hook "Please use `ess-r-package-enter-hook' instead." "16.04")
+(make-obsolete-variable 'ess-developer-exit-hook "Please use `ess-r-package-exit-hook' instead." "16.04")
 
 
 (provide 'ess-r-package)
