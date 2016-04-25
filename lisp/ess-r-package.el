@@ -43,7 +43,7 @@
 
 (defcustom ess-r-package-auto-set-evaluation-env t
   "If non-nil, evaluation env is set to package env automatically.
-See also `ess-r-set-evaluation-namespace' and `ess-r-evaluation-env'."
+See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
@@ -115,11 +115,8 @@ whether the current file is part of a package, or the value of
       (with-ess-process-buffer t
         ess-r-package-info)))
 
-(defun ess-r-package-select-package ()
-  "Select a package for ESS developer functions.
-
-The package metadata will be written in the file-local variables
-section."
+(defun ess-r-package-set-package ()
+  "Set a package for ESS r-package commands."
   (interactive)
   (let* ((pkg-path (read-directory-name
                     "Path: " (or (ess-r-package--find-package-path)
@@ -152,14 +149,14 @@ section."
   (when ess-r-package-auto-set-evaluation-env
     (let ((pkg (car (ess-r-package-get-info))))
       (when pkg
-        (ess-r-set-evaluation-namespace pkg)))))
+        (ess-r-set-evaluation-env pkg)))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
 (defun ess-r-package-send-process (command &optional msg alt)
   (ess-force-buffer-current)
   (let* ((pkg-info (or (ess-r-package-get-info)
-                       (ess-r-package-select-package)))
+                       (ess-r-package-set-package)))
          (name (car pkg-info))
          (path (concat "'" (cdr pkg-info) "'"))
          (alt (cond ((stringp alt) alt)
@@ -370,15 +367,15 @@ disable the mode line entirely."
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-namespace' instead."))
+  (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
-(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
+(make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-load-command "Please use `ess-r-package-load-command' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
-(make-obsolete-variable 'ess-developer-packages "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
-(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-developer-select-package' and `ess-r-set-evaluation-namespace' instead." "16.04")
+(make-obsolete-variable 'ess-developer-packages "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
+(make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-activate-in-package "Please use `ess-r-package-auto-activate' instead." "16.04")
 (make-obsolete-variable 'ess-developer-enter-hook "Please use `ess-r-package-enter-hook' instead." "16.04")
 (make-obsolete-variable 'ess-developer-exit-hook "Please use `ess-r-package-exit-hook' instead." "16.04")
