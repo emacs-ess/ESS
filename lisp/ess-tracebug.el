@@ -1269,9 +1269,9 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (process-put proc 'dbg-active t)
       (message
        (ess--debug-keys-message-string))
-      ;; (when ess--dbg-auto-single-key-p
-      ;;   (ess-electric-debug t))
-      )
+      (unless match-jump
+        ;; no source reference, simply show the inferiro
+        (ess-show-buffer pbuf)))
 
     (when match-selection ;(and (not was-in-recover) match-selection)
       (ess-electric-selection t))))
