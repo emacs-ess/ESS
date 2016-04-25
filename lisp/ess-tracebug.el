@@ -1129,16 +1129,41 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess--suppress-next-output? nil)
 
+(defvar ess-mpi-alist
+  '(("MSG" . message)))
+
+(defun ess-mpi-handle-messages-in-buffer (buf)
+  (let ((obuf (current-buffer)))
+    (with-current-buffer buf
+      (goto-char (point-min))
+      ;; This should be smarter because emacs might cut it in the middle of the
+      ;; message. In practice this almost never happen because we are
+      ;; accumulating output into the cache buffer.
+      (while (re-search-forward "\\([^]+\\)\\([^]+\\)" nil t)
+        (let* ((mbeg (match-beginning 0))
+               (mend (match-end 0))
+               (head (match-string 1))
+               (payload (match-string 2))
+               (handler (cdr (assoc head ess-mpi-alist))))
+          (if handler
+              (with-current-buffer obuf
+                (funcall handler payload))
+            ;; don't throw error here. The buffer must be cleaned first.
+            (message "Now handler defined for MPI message '%s" head))
+          (goto-char mend)
+          (delete-region mbeg mend))))))
+
 (defun ess--flush-process-output-cache (proc)
-  (let ((string (with-current-buffer
-                    (get-buffer-create (process-get proc 'accum-buffer-name))
-                  (prog1 (buffer-string)
-                    (erase-buffer)))))
-    (when (> (length string) 0)
-      (process-put proc 'last-flush-time (and (process-get proc 'busy)
-                                              (float-time)))
-      (comint-output-filter proc string)
-      (ess--show-process-buffer-on-error string proc))))
+  (let ((pbuf (get-buffer-create (process-get proc 'accum-buffer-name))))
+    (ess-mpi-handle-messages-in-buffer pbuf)
+    (let ((string (with-current-buffer pbuf
+                    (prog1 (buffer-string)
+                      (erase-buffer)))))
+      (when (> (length string) 0)
+        (process-put proc 'last-flush-time (and (process-get proc 'busy)
+                                                (float-time)))
+        (comint-output-filter proc string)
+        (ess--show-process-buffer-on-error string proc)))))
 
 
 (defun inferior-ess-tracebug-output-filter (proc string)
@@ -1198,16 +1223,17 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         ;; cancel the timer each time we enter the filter
         (cancel-timer flush-timer)
         (process-put proc 'flush-timer nil))
+
       ;; ... and setup a new one
       (process-put proc 'flush-timer
                    (run-at-time .2 nil 'ess--flush-process-output-cache proc))
 
+      ;; insert "\n" after prompt
       (when (or (null last-time)
                 (> (- new-time last-time) .5))
 
-        ;; Very slow in long comint buffers. Not a real issue, as it is executed
-        ;; periodically, or only on first output after the command.
-
+        ;; Very slow in long comint buffers, but it's not a real issue, as it is
+        ;; executed periodically.
         (with-current-buffer pbuf
           (save-excursion
             (let ((pmark (process-mark proc))
@@ -1216,7 +1242,6 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
               (when (looking-back inferior-ess-primary-prompt)
                 (insert-before-markers "\n")
                 (set-marker pmark (point)))))))
-
 
       (unless last-time ;; don't flush first time
         (setq last-time new-time)

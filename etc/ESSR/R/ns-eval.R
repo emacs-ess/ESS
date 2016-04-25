@@ -231,23 +231,22 @@
         newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
     if (!fakeSource) {
-        cat(sprintf("[%s] Sourced file %s\n", package, source))
+        .ess_mpi_MSG("[%s] Sourced file %s\n", package, source)
     }
 
     if (verbose) {
         if(length(objectsPkg))
-            cat(sprintf("\nPKG: %s   ", paste(objectsPkg, collapse = ", ")))
+            .ess_mpi_MSG("\nPKG: %s   ", paste(objectsPkg, collapse = ", "))
         if(length(objectsNs))
-            cat(sprintf("NS: %s   ", paste(objectsNs, collapse = ", ")))
+            .ess_mpi_MSG("NS: %s   ", paste(objectsNs, collapse = ", "))
         if(length(dependentPkgs))
             .ess.ns_format_deps(dependentPkgs)
         if(length(newObjects)) {
             env_name <- if (identical(fallback_env, .GlobalEnv)) "GlobalEnv" else "Local"
-            cat(sprintf("%s: %s\n", env_name, paste(newObjects, collapse = ", ")))
+            .ess_mpi_MSG("%s: %s", env_name, paste(newObjects, collapse = ", "))
         }
         if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
-            cat(sprintf("*** Nothing explicitly assigned ***"))
-        cat("\n")
+            .ess_mpi_MSG("*** Nothing explicitly assigned ***")
     }
 
     invisible(env)
@@ -353,7 +352,7 @@
     lapply(pkgs, function(pkg) {
         isDep <- vapply(dependentPkgs, function(deps) pkg %in% deps, logical(1))
         pkgDependentObjs <- names(dependentPkgs[isDep])
-        cat(sprintf("DEP:%s [%s]   ", pkg, paste(pkgDependentObjs, collapse = ", ")))
+        .ess_mpi_MSG("DEP:%s [%s]   ", pkg, paste(pkgDependentObjs, collapse = ", "))
     })
 }
 
