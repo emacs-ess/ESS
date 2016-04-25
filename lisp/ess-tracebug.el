@@ -1132,7 +1132,8 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-mpi-alist
   '(("MSG" . message)))
 
-(defun ess-mpi-handle-messages-in-buffer (buf)
+(defun ess-mpi-handle-messages (buf)
+  "Handle all mpi messages in BUF and delete them."
   (let ((obuf (current-buffer)))
     (with-current-buffer buf
       (goto-char (point-min))
@@ -1155,7 +1156,7 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defun ess--flush-process-output-cache (proc)
   (let ((pbuf (get-buffer-create (process-get proc 'accum-buffer-name))))
-    (ess-mpi-handle-messages-in-buffer pbuf)
+    (ess-mpi-handle-messages pbuf)
     (let ((string (with-current-buffer pbuf
                     (prog1 (buffer-string)
                       (erase-buffer)))))
@@ -1224,10 +1225,6 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (cancel-timer flush-timer)
         (process-put proc 'flush-timer nil))
 
-      ;; ... and setup a new one
-      (process-put proc 'flush-timer
-                   (run-at-time .2 nil 'ess--flush-process-output-cache proc))
-
       ;; insert "\n" after prompt
       (when (or (null last-time)
                 (> (- new-time last-time) .5))
@@ -1252,7 +1249,13 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
                 ;; flush periodically
                 (> (- new-time last-time) .6))
 
-        (ess--flush-process-output-cache proc)))
+        (ess--flush-process-output-cache proc))
+
+      ;; setup a new flush timer (remove this if you want to debug the mpi handler)
+      (process-put proc 'flush-timer
+                   (run-at-time .2 nil 'ess--flush-process-output-cache proc))
+
+      )
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)

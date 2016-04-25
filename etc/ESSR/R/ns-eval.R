@@ -236,7 +236,7 @@
 
     if (verbose) {
         if(length(objectsPkg))
-            .ess_mpi_MSG("\nPKG: %s   ", paste(objectsPkg, collapse = ", "))
+            .ess_mpi_MSG("PKG: %s   ", paste(objectsPkg, collapse = ", "))
         if(length(objectsNs))
             .ess_mpi_MSG("NS: %s   ", paste(objectsNs, collapse = ", "))
         if(length(dependentPkgs))
