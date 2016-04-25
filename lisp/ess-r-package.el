@@ -32,15 +32,6 @@
 
 (require 'ess-utils)
 
-(defface ess-r-package-indicator-face
-  '((((class grayscale)) (:background "DimGray"))
-    (((class color) (background light))
-     (:foreground "red4"  :bold t ))
-    (((class color) (background dark))
-     (:foreground "deep sky blue"  :bold t )))
-  "Face to highlight mode line process name when developer mode is on."
-  :group 'ess-r-package)
-
 (defcustom ess-r-package-auto-set-evaluation-env t
   "If non-nil, evaluation env is set to package env automatically.
 See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
