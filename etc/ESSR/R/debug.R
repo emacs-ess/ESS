@@ -185,6 +185,18 @@
     as.logical(match(paste0("package:", pack_name), search()))
 }
 
+## magrittr debug_pipe
+.ess_pipe_browser <- function(x){
+    if(is.data.frame(x))
+        with(x, {
+            browser(skipCalls = 4)
+            x
+        })
+    else {
+        browser(skipCalls = 0)
+        x
+    }
+}
 
 ## Local Variables:
 ## eval: (ess-set-style 'RRR t)

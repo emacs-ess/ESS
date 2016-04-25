@@ -1742,9 +1742,18 @@ ARGS are ignored to allow using this function in process hooks."
   "Face used to highlight 'recover' breakpoints fringe."
   :group 'ess-debug)
 
+(defun ess--bp-pipe-block-p ()
+  (save-excursion
+    (let ((inhibit-point-motion-hooks t)
+          (inhibit-field-text-motion t))
+      (forward-line -1)
+      (end-of-line)
+      (looking-back "\\%>\\%[ \t]*"))))
+
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
-  '((browser "browser(expr=is.null(.ESSBP.[[%s]]))" "B>\n"   filled-square  ess-bp-fringe-browser-face)
+  '((pipe    ".ess_pipe_browser() %%>%%" "B %>%\n" filled-square ess-bp-fringe-browser-face ess--bp-pipe-block-p)
+    (browser "browser(expr=is.null(.ESSBP.[[%s]]));" "B>\n" filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
 Each sublist  has five elements:
@@ -1752,7 +1761,8 @@ Each sublist  has five elements:
 2- R expression to be inserted (%s is substituted with unique identifier).
 3- string to be displayed instead of the expression
 4- fringe bitmap to use
-5- face for fringe and displayed string."
+5- face for fringe and displayed string
+6- optional, a function which should return nil if this BP doesn't apply to current context."
   :group 'ess-debug
   :type '(alist :key-type symbol
                 :value-type (group string string symbol face)))
@@ -1798,7 +1808,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
                         (setcar (cdr tl) (format (cadr tl) condition))
                         (setcar (cddr tl) (format (caddr tl) condition))
                         (list tl)))
-                     (t ess-bp-type-spec-alist))))
+                     (t (copy-sequence ess-bp-type-spec-alist)))))
     (or (assoc type spec-alist)
         (if no-error
             nil
@@ -1921,10 +1931,10 @@ buffer is searched.  This command is intended for use in
 interactive commands like `ess-bp-toggle-state' and `ess-bp-kill'.
 Use `ess-bp-previous-position' in programs."
   (interactive)
-  (let* ( (pos-end (if (get-char-property (1- (point)) 'ess-bp)
+  (let*  ((pos-end (if (get-char-property (1- (point)) 'ess-bp)
                        (point)
                      (previous-single-property-change (point) 'ess-bp nil (window-start))))
-          (pos-start (if (get-char-property (point) 'ess-bp)    ;;check for bobp
+          (pos-start (if (get-char-property (point) 'ess-bp) ;;check for bobp
                          (point)
                        (next-single-property-change (point) 'ess-bp nil (window-end))))
           pos dist-up dist-down)
@@ -1965,16 +1975,25 @@ to the current position, nil if not found. "
       ;; set bp-type to next type in types
       (setq bp-type (get-text-property (car pos) 'bp-type))
       (setq types (cdr (member (assq bp-type types) types))) ; nil if bp-type is last in the list
-      (if (null types) (setq types ess-bp-type-spec-alist))
+      (when (null types)
+        (setq types ess-bp-type-spec-alist))
       (ess-bp-kill)
       (indent-for-tab-command))
+    ;; skip contextual bps
+    (while (and (nth 5 (car types))
+                (not (funcall (nth 5 (car types)))))
+      (pop types))
     (setq bp-type (pop types))
     (ess-bp-create (car bp-type))
     (while  (eq (event-basic-type (setq ev (read-event (format "'%c' to cycle" com-char))))
                 com-char)
       (if (null types) (setq types ess-bp-type-spec-alist))
-      (setq bp-type (pop types))
       (ess-bp-kill)
+      ;; skip contextual bps
+      (while (and (nth 5 (car types))
+                  (not (funcall (nth 5 (car types)))))
+        (pop types))
+      (setq bp-type (pop types))
       (ess-bp-create (car bp-type))
       (indent-for-tab-command))
     (push ev unread-command-events)))
