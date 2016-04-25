@@ -1114,10 +1114,13 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess--dbg-regexp-reference "debug \\w+ +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess--dbg-regexp-jump "debug \\w+ ") ;; debug at ,debug bei ,etc
 (defvar ess--dbg-regexp-skip
-  ;; VS[21-03-2012|ESS 12.03]: sort of forgot why recover() was for:(
-  ;; don't anchor to bol secondary prompt can occur before (anything else?)
+  ;; don't anchor to bol; secondary prompt can occur before (anything else?)
   ;; "\\(\\(?:Called from: \\)\\|\\(?:debugging in: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
   "\\(\\(?:Called from: \\)\\|\\(?:#[0-9]*: +recover()\\)\\)")
+
+(defvar ess--dbg-regexp-no-skip
+  ;; exceptions for first skip (magrittr)
+  "debug_pipe")
 
 (defvar ess--dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
 (defvar ess--dbg-regexp-selection "\\(Selection: \\'\\)")
@@ -1157,7 +1160,8 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (match-selection (and match-input
                                (match-string 2 string))) ;; Selection:
          (match-skip (and ess-debug-skip-first-call
-                          (string-match ess--dbg-regexp-skip string)))
+                          (string-match ess--dbg-regexp-skip string)
+                          (not (string-match ess--dbg-regexp-no-skip string))))
          (match-dbg (or match-skip (and match-input (not match-selection))))
          ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
          ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
@@ -1243,7 +1247,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
     ;;     ))
 
     ;; SKIP if needed
-    (when (and match-skip  (not was-in-recover))
+    (when (and match-skip (not was-in-recover))
       (process-send-string proc  "n\n"))
 
     ;; EXIT the debugger
@@ -1256,7 +1260,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (when wbuff
         (ess-watch-refresh-buffer-visibly wbuff)))
 
-    ;; ACTIVATE the debugger and trigger electric COMMAND if entered for the first time
+    ;; ACTIVATE the debugger if entered for the first time
     (when (and (not was-in-dbg)
                (not match-selection)
                (or match-jump match-dbg))
