@@ -187,11 +187,18 @@
 
 ## magrittr debug_pipe
 .ess_pipe_browser <- function(x){
-    if(is.data.frame(x))
-        with(x, {
-            browser(skipCalls = 4)
+    if(is.list(x))
+        evalq({
+            browser(skipCalls = 2)
             x
-        })
+        }, envir = x)
+    else if(is.environment(x))
+        ## enclos argumentn has no effect for unclear reason, need to hack
+        eval(bquote({
+            x <- .(environment())
+            browser(skipCalls = 2)
+            x
+        }), envir = x)
     else {
         browser(skipCalls = 0)
         x
