@@ -2,7 +2,7 @@
 
 .ess_mpi_send <- function(head, payload, ...){
     payload <- sprintf(as.character(payload), ...)
-    cat(sprintf("%s%s", head, payload))
+    cat(sprintf("%s%s", head, payload))
 }
 
 .ess_mpi_MSG <- function(msg, ...){

@@ -1132,6 +1132,8 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess-mpi-alist
   '(("MSG" . message)))
 
+(defvar ess-mpi-control-regexp "\\(.+\\)\\(.+\\)")
+
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them."
   (let ((obuf (current-buffer)))
@@ -1140,7 +1142,7 @@ Kill the *ess.dbg.[R_name]* buffer."
       ;; This should be smarter because emacs might cut it in the middle of the
       ;; message. In practice this almost never happen because we are
       ;; accumulating output into the cache buffer.
-      (while (re-search-forward "\\([^]+\\)\\([^]+\\)" nil t)
+      (while (re-search-forward  ess-mpi-control-regexp nil t)
         (let* ((mbeg (match-beginning 0))
                (mend (match-end 0))
                (head (match-string 1))
