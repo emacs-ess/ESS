@@ -1129,10 +1129,32 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess--suppress-next-output? nil)
 
-(defvar ess-mpi-alist
-  '(("MSG" . message)))
 
-(defvar ess-mpi-control-regexp "\\(.+\\)\\(.+\\)")
+
+;;; MPI
+
+(defvar ess-mpi-control-regexp "\\([^]+\\)\\([^]+\\)")
+
+(defvar ess-mpi-alist
+  '(("message" . message)
+    ("eval" . ess-mpi:eval)
+    ("y-or-n" . ess-mpi:y-or-n)))
+
+(defun ess-mpi:eval (expr &optional callback)
+  "Evaluate EXP as emacs expression.
+If present, the CALLBACK string is passed through `format' with
+returned value from EXPR and then sent to the subprocess."
+  (let ((result (eval (read expr))))
+    (when callback
+      (ess-send-string (ess-get-process) (format callback result)))))
+
+(defun ess-mpi:y-or-n (prompt callback)
+  "Ask `y-or-n-p' with PROMPT.
+The CALLBACK string is passed through `format' with returned
+value from EXPR and then sent to the subprocess."
+  (let ((result (y-or-n-p prompt)))
+    (when callback
+      (ess-send-string (ess-get-process) (format callback result)))))
 
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them."
@@ -1146,14 +1168,17 @@ Kill the *ess.dbg.[R_name]* buffer."
         (let* ((mbeg (match-beginning 0))
                (mend (match-end 0))
                (head (match-string 1))
-               (payload (match-string 2))
+               (payload (split-string (match-string 2) ""))
                (handler (cdr (assoc head ess-mpi-alist))))
           (if handler
-              (with-current-buffer obuf
-                (funcall handler payload))
+              (condition-case-unless-debug err
+                  (with-current-buffer obuf
+                    (apply handler payload))
+                (error (message (format "Error in mpi `%s' handler: %%s" head)
+                                (error-message-string err))))
             ;; don't throw error here. The buffer must be cleaned first.
             (message "Now handler defined for MPI message '%s" head))
-          (goto-char mend)
+          (goto-char mbeg)
           (delete-region mbeg mend))))))
 
 (defun ess--flush-process-output-cache (proc)
@@ -1253,9 +1278,10 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
         (ess--flush-process-output-cache proc))
 
-      ;; setup a new flush timer (remove this if you want to debug the mpi handler)
-      (process-put proc 'flush-timer
-                   (run-at-time .2 nil 'ess--flush-process-output-cache proc))
+      ;; setup a new flush timer (check for edebug to be able to debug mpi handler)
+      (unless (and (boundp 'edebug-mode) edebug-mode)
+        (process-put proc 'flush-timer
+                     (run-at-time .2 nil 'ess--flush-process-output-cache proc)))
 
       )
 
