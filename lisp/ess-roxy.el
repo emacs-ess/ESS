@@ -741,8 +741,8 @@ list of strings."
          (paragraph-start (concat "\\(" ess-roxy-re "\\(" paragraph-start
                                   "\\|[ \t]*@" "\\)" "\\)\\|\\(" paragraph-start "\\)"))
          (temp-table (if ,examples
-			 (make-syntax-table S-syntax-table)
-		       Rd-mode-syntax-table)))
+                         (make-syntax-table S-syntax-table)
+                       Rd-mode-syntax-table)))
      (when ,examples
        ;; Prevent the roxy prefix to be interpreted as comment or string
        ;; starter
