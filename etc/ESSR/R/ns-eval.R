@@ -231,7 +231,7 @@
         newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
     if (!fakeSource) {
-        .ess_mpi_message("[%s] Sourced file %s\n", package, source)
+        cat(sprintf("[%s] Sourced file %s\n", package, source))
     }
 
     if (verbose) {
