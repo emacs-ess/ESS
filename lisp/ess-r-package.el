@@ -216,8 +216,8 @@ Root is determined by locating `ess-r-package-root-file'."
       (with-temp-buffer
         (insert-file-contents file)
         (goto-char (point-min))
-        (re-search-forward "package: \\(.*\\)")
-        (match-string 1)))))
+        (when (re-search-forward "package: \\(.*\\)" nil t)
+          (match-string 1))))))
 
 
 ;;;*;;; Devtools Integration
