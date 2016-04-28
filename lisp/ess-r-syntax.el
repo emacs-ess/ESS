@@ -60,16 +60,14 @@
     (and (ess-backward-sexp)
          (ess-forward-sexp))))
 
-;; Avoids let-binding a variable just to check a returned position is
-;; not nil
 (defun ess-goto-char (pos)
+  "Go to `pos' if it is non-nil.
+If `pos' is nil, return nil.  Otherwise return `pos' itself."
   (when pos
     (goto-char pos)))
 
 (defun ess-looking-at (regex &optional newlines)
-  "Compared to a simple `(looking-at)', this uses sexp motions to
-skip any blanks, newlines and comments. Should be more reliable
-and possibly faster than using complicated regexes."
+  "Like `looking-at' but consumes blanks and comments first."
   (save-excursion
     (ess-skip-blanks-forward newlines)
     (looking-at regex)))
