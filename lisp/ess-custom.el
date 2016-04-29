@@ -2626,7 +2626,7 @@ This variable has no effect. Customize
 
 ;;
 (defvar ess-R-assign-ops
-  '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
+  '("<<-" "<-" "->" "->>") ; don't want "=" here which is not only for assign
   ;; VS??: it's good to have different colour for = anyhow,
   ;; very helpful to read code like foo(x=xa, p=pa, x_not_na)
   )
