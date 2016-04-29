@@ -193,13 +193,40 @@
 ;; modify S Syntax table:
 (setq R-syntax-table S-syntax-table)
 
-;; In R 2.x, back tick now is a quote character, so lets tell Emacs
-;; that it is; the problem below for older R should no longer be a
-;; serious issue.
-;;R >= 1.8: back tick `string` -- unfortunately no *pair* checking:
-;; breaks when things like `..' are used:
+;; Letting Emacs treat backquoted names as strings (even though they
+;; are identifiers) solves many problems with regard to nested strings
+;; and quotes
 (modify-syntax-entry ?` "\"" R-syntax-table)
-(modify-syntax-entry ?_  "_"  R-syntax-table) ; foo_bar is symbol in R >=1.9
+
+;; foo_bar is symbol in R >=1.9
+(modify-syntax-entry ?_ "_" R-syntax-table)
+
+(defun ess-r-font-lock-syntactic-face-function (state)
+  (let ((string-end (save-excursion
+                      (and (nth 3 state)
+                           (ess-goto-char (nth 8 state))
+                           (ess-forward-sexp)
+                           (point)))))
+    (when (eq (nth 3 state) ?`)
+      (put-text-property (nth 8 state) string-end 'ess-r-backquoted t))
+    (cond
+     ((save-excursion
+        (and (ess-goto-char string-end)
+             (ess-looking-at "<-")
+             (ess-goto-char (match-end 0))
+             (ess-looking-at "function\\b")))
+      font-lock-function-name-face)
+     ((save-excursion
+        (and (ess-goto-char string-end)
+             (ess-looking-at "(")))
+      ess-function-call-face)
+     ((eq (nth 3 state) ?`)
+      'ess-backquoted-face)
+     ((nth 3 state)
+      font-lock-string-face)
+     (t
+      font-lock-comment-face))))
+
 
 (ess-message "[ess-r-d:] (autoload ..) & (def** ..)")
 
@@ -251,7 +278,8 @@
      (prettify-symbols-alist            . '(("<-" . ?←)
                                             ("<<-" . ?↞)
                                             ("->" . ?→)
-                                            ("->>" . ?↠))))
+                                            ("->>" . ?↠)))
+     (font-lock-syntactic-face-function . #'ess-r-font-lock-syntactic-face-function))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than emacs initialization.")
 
