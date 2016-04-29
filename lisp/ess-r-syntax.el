@@ -47,6 +47,16 @@
       (progn (up-list N) t)
     (error nil)))
 
+(defun ess-forward-char (&optional N)
+  (unless (= (point) (point-max))
+    (forward-char (or N 1))
+    t))
+
+(defun ess-backward-char (&optional N)
+  (unless (= (point) (point-min))
+    (forward-char (- (or N 1)))
+    t))
+
 ;; Going forth and back is a fast and reliable way of skipping in
 ;; front of the next sexp despite blanks, newlines and comments that
 ;; may be in the way.
@@ -124,6 +134,187 @@ side-effects. FORMS follows the same syntax as arguments to
   (declare (indent 0) (debug nil))
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
      (some 'identity (mapcar 'eval forms))))
+
+
+;;*;; Tokenisation
+
+(defalias 'ess-token-type #'car)
+(defalias 'ess-token-string #'cdr)
+
+(defun ess-token-after ()
+  "Returns next token.
+Cons cell containing the token type and string representation."
+  (save-excursion
+    (ess-jump-token)))
+
+(defun ess-token-before ()
+  "Returns previous token.
+Cons cell containing the token type and string representation."
+  (save-excursion
+    (ess-climb-token)))
+
+(defun ess-climb-token ()
+  (when (ess-skip-token-backward)
+    (ess-token-after)))
+
+(defun ess-skip-token-backward ()
+  (ess-save-excursion-when-nil
+    (ess-climb-outside-comment)
+    (ess-skip-blanks-backward t)
+    (cond
+     ;; Operators
+     ((eq (char-syntax (char-before)) ?.)
+      (prog1 (ess-backward-char)
+        ;; Two-character operators
+        (when (eq (char-syntax (char-before)) ?.)
+          (ess-backward-char))))
+     ;; Quoting delimiters
+     ((memq (char-syntax (char-before)) '(?\" ?$))
+      (ess-backward-sexp))
+     ;; Syntaxic delimiters
+     ((memq (char-syntax (char-before)) '(?\( ?\)))
+      (prog1 (ess-backward-char)
+        ;; Also skip double brackets
+        (ess-save-excursion-when-nil
+          (when (let ((current-delim (char-after)))
+                  (ess-skip-blanks-backward)
+                  (and (memq (char-before) '(?\[ ?\]))
+                       (eq current-delim (char-before))))
+            (ess-backward-char)))))
+     ;; Identifiers and numbers
+     ((/= (skip-syntax-backward "w_") 0)))))
+
+(defun ess-jump-token ()
+  "Consume a token forward.
+Returns a cons cell containing the token type and the token
+string content. Returns nil when the end of the buffer is
+reached."
+  (ess-skip-blanks-forward t)
+  (let* ((token-start (point))
+         (token-type (or (ess-consume-token)
+                         (error "Internal error: Tokenization failed")))
+         (token-string (buffer-substring-no-properties token-start (point))))
+    (unless (eq token-type 'buffer-end)
+      (cons token-type token-string))))
+
+(defun ess-consume-token ()
+  "Advance one token.
+Returns token type if a token was consumed, nil otherwise."
+  (or (ess-consume-token--literal)
+      (ess-consume-token--punctuation)
+      (ess-consume-token--keyword)
+      (ess-consume-token--delimiter)
+      (ess-consume-token--operator)))
+
+(defun ess-consume-token--literal ()
+  (or (pcase (char-after)
+        (`?`
+         (when (ess-forward-sexp)
+           'identifier))
+        ((or ?\" ?\')
+         (when (ess-forward-sexp)
+           'string)))
+      (cond
+       ;; Simply assume anything starting with a digit is a number. May be
+       ;; too liberal but takes care of fractional numbers, integers such
+       ;; as 10L, etc. False positives are not valid R code anyway.
+       ((looking-at "[0-9]")
+        (ess-forward-sexp)
+        'number)
+       ((looking-at "\\sw\\|\\s_")
+        (ess-forward-sexp)
+        'identifier))))
+
+(defun ess-consume-token--punctuation ()
+  (or (when (= (point) (point-max))
+        'buffer-end)
+      (pcase (char-after)
+        (`?,
+         (forward-char)
+         'comma)
+        (`?\;
+         (forward-char)
+         'colon))))
+
+(defun ess-consume-token--keyword ()
+  (let ((type (when (looking-at "[a-z]+\\b")
+                (pcase (match-string 0)
+                  (`"if" 'if)
+                  (`"then" 'then)
+                  (`"else" 'else)
+                  ((or "for" "while" "function")
+                   'block-keyword)))))
+    (when type
+      (ess-forward-sexp)
+      type)))
+
+(defun ess-consume-token--delimiter ()
+  (pcase (char-after)
+     (`?\(
+      (forward-char)
+      'open-paren)
+     (`?\)
+      (forward-char)
+      'close-paren)
+     (`?\{
+      (forward-char)
+      'open-curly)
+     (`?\}
+      (forward-char)
+      'close-curly)
+     (`?\[
+      (forward-char)
+      (if (ess-looking-at "\\[")
+          (progn
+            (ess-skip-blanks-forward)
+            (forward-char)
+            'open-double-brackets)
+        'open-bracket))
+     (`?\]
+      (forward-char)
+      (if (ess-looking-at "\\]")
+          (progn
+            (ess-skip-blanks-forward)
+            (forward-char)
+            'close-double-brackets)
+        'close-bracket))))
+
+(defun ess-consume-token--operator ()
+  (when (pcase (char-after)
+          ((or ?= ?!)
+           (prog1 (ess-forward-char)
+             (ess-consume-token--char ?= 1)))
+          ((or ?& ?| ?* ?@ ?$)
+           (prog1 (ess-forward-char)
+             (ess-consume-token--char (char-before) 1)))
+          (`?<
+           (prog1 (ess-forward-char)
+             (cond ((memq (char-after) '(?- ?=))
+                    (ess-forward-char))
+                   ((and (eq (char-after) ?<)
+                         (eq (char-after (1+ (point))) ?-))
+                    (ess-forward-char 2)))))
+          (`?>
+           (prog1 (ess-forward-char)
+             (ess-consume-token--char ?= 1)))
+          (`?-
+           (prog1 (ess-forward-char)
+             (ess-consume-token--char ?> 2)))
+          (`?:
+           (prog1 (ess-forward-char)
+             (or (ess-consume-token--char ?= 1)
+                 (ess-consume-token--char ?: 2))))
+          ((or ?+ ?/ ?^ ?~ ??)
+           (ess-forward-char))
+          (`?%
+           (ess-forward-sexp)))
+    'operator))
+
+(defsubst ess-consume-token--char (char times)
+  (ess-while (and (> times 0)
+                  (eq (char-after) char))
+    (ess-forward-char)
+    (setq times (1- times))))
 
 
 ;;*;; Point predicates
