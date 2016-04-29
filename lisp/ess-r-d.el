@@ -190,16 +190,20 @@
 (easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
 
 
-;; modify S Syntax table:
-(setq R-syntax-table S-syntax-table)
+;; Inherit from the S syntax table:
+(setq ess-r-syntax-table (copy-syntax-table S-syntax-table))
 
 ;; Letting Emacs treat backquoted names as strings (even though they
 ;; are identifiers) solves many problems with regard to nested strings
 ;; and quotes
-(modify-syntax-entry ?` "\"" R-syntax-table)
+(modify-syntax-entry ?` "\"" ess-r-syntax-table)
 
-;; foo_bar is symbol in R >=1.9
-(modify-syntax-entry ?_ "_" R-syntax-table)
+;; Underscore is valid in R symbols
+(modify-syntax-entry ?_ "_" ess-r-syntax-table)
+
+(modify-syntax-entry ?: "." ess-r-syntax-table)
+(modify-syntax-entry ?@ "." ess-r-syntax-table)
+(modify-syntax-entry ?$ "." ess-r-syntax-table)
 
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
@@ -248,7 +252,7 @@
                                            ess-dump-filename-template-proto))
      (ess-build-help-command-function   . #'ess-r-build-help-command)
      (ess-help-web-search-command       . 'ess-R-sos)
-     (ess-mode-syntax-table             . R-syntax-table)
+     (ess-mode-syntax-table             . ess-r-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
      (ess-change-sp-regexp              . ess-R-change-sp-regexp)
      (ess-help-sec-regex                . ess-help-R-sec-regex)
@@ -292,6 +296,8 @@
             '(ess--extract-default-fl-keywords ess-R-font-lock-keywords))
     (setcdr (assoc 'ess-font-lock-keywords S-alist)
             (quote 'ess-R-font-lock-keywords))
+    (setcdr (assoc 'ess-mode-syntax-table S-alist)
+            (quote ess-r-syntax-table))
     S-alist)
   "General options for editing R source files.")
 
