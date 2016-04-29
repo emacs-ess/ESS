@@ -66,8 +66,8 @@
     (define-key ess-dev-map "\C-s" 'ess-r-set-evaluation-env)
     (define-key ess-dev-map "s" 'ess-r-set-evaluation-env)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
-    (define-key ess-dev-map "\C-l" 'ess-r-package-load-package)
-    (define-key ess-dev-map "l" 'ess-r-package-load-package)
+    (define-key ess-dev-map "\C-l" 'ess-r-devtools-load-package)
+    (define-key ess-dev-map "l" 'ess-r-devtools-load-package)
     (define-key ess-dev-map "`" 'ess-show-traceback)
     (define-key ess-dev-map "~" 'ess-show-call-stack)
     (define-key ess-dev-map "\C-w" 'ess-watch)
@@ -1324,7 +1324,7 @@ we flush the cache.")
       (R start-args)
       (when pkg-info
         (setq-local ess-r-package-info pkg-info)
-        (ess-r-package-load-package))
+        (ess-r-devtools-load-package))
       (run-hooks 'inferior-ess-r-reload-hook))))
 
 

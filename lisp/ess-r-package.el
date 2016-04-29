@@ -38,19 +38,6 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
-(defcustom ess-r-package-load-command "library('%n')"
-  "Loading command for `ess-r-package-add-package'.
-Can be a string containing a R command with:
-
-  %n to be replaced by the package name,
-  %d to be replaced by the package directory.
-
-Alternatively, can be a quoted Emacs function name such as
-`ess-r-devtools-load-package'.
-
-See also `ess-r-package-load-package' for related functionality."
-  :group 'ess-r-package)
-
 (defvar-local ess-r-package-info nil
   "Current package info cache.
 
@@ -77,23 +64,6 @@ to an R package. If the file specified in `ess-r-package-root-file'
 (DESCRIPTION by default) is found at the presumed root directory
 of the package, the current directory is considered to be part of
 a R package.")
-
-(defun ess-r-package-load-package ()
-  "Load package with `ess-r-package-load-command'."
-  (interactive)
-  (let* ((pkg-info (ess-r-package-get-info))
-         (cmd (if (car pkg-info)
-                  (if (stringp ess-r-package-load-command)
-                      (replace-regexp-in-string
-                       "%n" (car pkg-info)
-                       (replace-regexp-in-string "%d" (cdr pkg-info)
-                                                 ess-r-package-load-command))
-                    ess-r-package-load-command)
-                (error "Not in a package"))))
-    (cond ((stringp cmd)
-           (ess-eval-linewise (concat cmd "\n")))
-          ((functionp cmd)
-           (funcall cmd)))))
 
 
 ;;;*;;; Package UI
@@ -367,7 +337,6 @@ disable the mode line entirely."
 (defalias 'ess-toggle-developer 'ess-developer)
 
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
-(make-obsolete-variable 'ess-developer-load-command "Please use `ess-r-package-load-command' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
 (make-obsolete-variable 'ess-developer-packages "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-load-on-add-commands "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
