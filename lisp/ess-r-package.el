@@ -46,9 +46,9 @@ Can be a string containing a R command with:
   %d to be replaced by the package directory.
 
 Alternatively, can be a quoted Emacs function name such as
-`ess-r-package-load-package'.
+`ess-r-devtools-load-package'.
 
-See also `ess-load-package' for related functionality."
+See also `ess-r-package-load-package' for related functionality."
   :group 'ess-r-package
   :type 'alist)
 
@@ -79,7 +79,7 @@ to an R package. If the file specified in `ess-r-package-root-file'
 of the package, the current directory is considered to be part of
 a R package.")
 
-(defun ess-load-package ()
+(defun ess-r-package-load-package ()
   (let* ((pkg-info (ess-r-package-get-info))
          (cmd (if (stringp ess-r-package-load-command)
                   (replace-regexp-in-string "%n" (car pkg-info)
@@ -222,34 +222,34 @@ Root is determined by locating `ess-r-package-root-file'."
 
 ;;;*;;; Devtools Integration
 
-(defun ess-r-package-load-package (&optional alt)
+(defun ess-r-devtools-load-package (&optional alt)
   "Interface for `devtools::load_all()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::load_all(%s)\n"
                               "Loading %s"
                               (when alt "recompile = TRUE")))
 
-(defun ess-r-package-unload-package ()
+(defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
   (interactive)
   (ess-r-package-send-process "devtools::unload(%s)\n"
                               "Unloading %s"))
 
-(defun ess-r-package-check-package (&optional alt)
+(defun ess-r-devtools-check-package (&optional alt)
   "Interface for `devtools::check()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::check(%s)\n"
                               "Testing %s"
                               (when alt "vignettes = FALSE")))
 
-(defun ess-r-package-test-package (&optional alt)
+(defun ess-r-devtools-test-package (&optional alt)
   "Interface for `devtools::test()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::test(%s)\n"
                               "Testing %s"
                               alt))
 
-(defvar ess-r-package-revdep-check-cmd
+(defvar ess-r-devtools-revdep-check-cmd
   "local({
   pkg_path <- %s
   res <- devtools::revdep_check(pkg_path)
@@ -269,7 +269,7 @@ Root is determined by locating `ess-r-package-root-file'."
 })
 ")
 
-(defun ess-r-package-revdep-check-package (&optional alt)
+(defun ess-r-devtools-revdep-check-package (&optional alt)
   "Interface for `devtools::revdep_check()'.
 
 By default, the revdep summary is saved in `pkg_path/revdep' if
@@ -280,18 +280,18 @@ the other hand, `.metadata' is always ignored by the R package
 builder, which makes it a safe directory to store the revdep
 checking results."
   (interactive "P")
-  (ess-r-package-send-process ess-r-package-revdep-check-cmd
+  (ess-r-package-send-process ess-r-devtools-revdep-check-cmd
                               "Checking reverse dependencies of %s"
                               alt))
 
-(defun ess-r-package-document-package (&optional alt)
+(defun ess-r-devtools-document-package (&optional alt)
   "Interface for `devtools::document()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::document(%s)\n"
                               "Documenting %s"
                               alt))
 
-(defun ess-r-package-install-package (&optional alt)
+(defun ess-r-devtools-install-package (&optional alt)
   "Interface to `devtools::install()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::install(%s)\n"
