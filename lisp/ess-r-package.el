@@ -80,6 +80,7 @@ of the package, the current directory is considered to be part of
 a R package.")
 
 (defun ess-r-package-load-package ()
+  (interactive)
   (let* ((pkg-info (ess-r-package-get-info))
          (cmd (if (stringp ess-r-package-load-command)
                   (replace-regexp-in-string "%n" (car pkg-info)
