@@ -5,43 +5,40 @@
 Changes and New Features in 16.04:
 @itemize @bullet
 
-@item @ESS{[R]}: ``developer mode'' has been entirely refactored.
-It has been renamed to ``ess-r-package-mode'' to reflect that it is
-specific to R. ESS automatically enables this mode when you open a
-buffer belonging to an R package. As a result, all the package
-management UI has been obsoleted. The idea is to use a real project
-manager (such as @code{projectile}) to find R packages rather than
-having to deal with an ad hoc system. If you'd rather not have ESS look
-out for packages each time you open a file, please set
-@code{ess-r-package-auto-activate} to @code{nil}. You can then call
-@code{ess-r-package-mode} manually or from the menu. When the package
-mode is active, a new mode-line area displays the name of the current
-package.
-
-The package development mode provides features to make package
-development easier. Namespaced evaluation is enabled automatically. The
-evaluation commands will attempt to update the package namespace as well
-as the @code{Import} environments of all loaded packages that depend on
-it. Note that objects that are not already present in the namespace
-cannot be added in this manner, you will first have to reinstall the
-package with the new objects. To select another namespace to evaluate
-into, use @kbd{C-c C-t C-s} (also works outside package files). If you
-prefer to evaluate in the global environment at all time, set
-@code{ess-r-package-auto-set-evaluation-env} to @code{nil}.
-
-Finally, many commands from the @code{devtools} packages have been added
-to the package development keymap on @kbd{C-c C-w}. Call them with a
-@kbd{C-u} prefix to add arguments to the calls. For instance @kbd{C-c
-C-w C-l} calls @code{load_all()} and @kbd{C-u C-c C-w C-l} prompts for
-additional arguments with the default to recompile all C/C++ sources.
-
+@item @ESS{[R]}: @code{developer} functionality has been refactored.
+The new user interface consists of a single command
+@code{ess-r-set-evaluation-env} bound by default to @kbd{C-c C-t
+C-s}. Once an evaluation environment has been set with, all subsequent
+ESS evaluation will source the code into that environment. By default,
+for file within R packages the evaluation environment is set to the
+package environment. Set @code{ess-r-package-auto-set-evaluation-env} to
+@code{nil} to disable this.
+@item @ESS{[R]}: New @code{ess-r-package-mode}
+This development mode provides features to make package development
+easier. Currently, most of the commands are based on the @code{devtools}
+packages and are accessible with @kbd{C-c C-w} prefix. See the
+documentation of @code{ess-r-package-mode} function for all available
+commands. With @kbd{C-u} prefix each command asks for extra arguments to
+the underlying devtools function. This mode is automatically enabled in
+all files within R packages and is indicated with @code{[pkg:NAME]} in
+the mode-line.
 @item @ESS{[R]}: Help lookup has been improved.
 It is now possible to get help for namespaced objects such as
-pkg::foobar. Furthemore, ESS recognises more reliably when you change
+pkg::foobar. Furthemore, ESS recognizes more reliably when you change
 @code{options('html_type')}.
-
+@item @ESS{[R]}: New specialized breakpoints for debugging magrittr pipes
+@item @ESS{}: ESS now implements a simple message passing interface
+to communicate between ESS and inferior process.
 @end itemize
 
+Bug fixes in 16.04:
+@itemize @bullet
+@item @ESS{[R]}: Roxygen blocks with backtics are now correctly filled
+@item @ESS{[R]}: Don't skip breakpoints in magrittr's @code{debug_pipe}
+@item @ESS{[R]}: Error highlighting now understands `testthat` type errors
+@item @ESS{[Julia]}: Added getwd and setwd generic commands
+@item 
+@end itemize
 
 Changes and New Features in 15.09:
 @itemize @bullet
