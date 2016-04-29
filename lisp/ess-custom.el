@@ -2943,14 +2943,19 @@ the variable `ess-help-own-frame' is non-nil."
   "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
 
-(defface ess-%op%-face
-  '((default (:slant normal :inherit font-lock-keyword-face)))
-  "Font Lock face used to highlight %op% operators in ess-mode buffers."
-  :group 'ess)
-
 (defface ess-backquoted-face
   '((default (:inherit default)))
-  "Face name to use for backquoted names."
+  "Font Lock face for backquoted names."
+  :group 'ess)
+
+(defface ess-operator-face
+  '((default (:inherit font-lock-constant-face)))
+  "Font Lock face for operators."
+  :group 'ess)
+
+(defface ess-%op%-face
+  '((default (:inherit ess-operator-face)))
+  "Font Lock face used to highlight %op% operators in ess-mode buffers."
   :group 'ess)
 
 (defcustom ess-help-kill-bogus-buffers t
