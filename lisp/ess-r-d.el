@@ -193,10 +193,10 @@
 ;; Inherit from the S syntax table:
 (setq ess-r-syntax-table (copy-syntax-table S-syntax-table))
 
-;; Letting Emacs treat backquoted names as strings (even though they
-;; are identifiers) solves many problems with regard to nested strings
-;; and quotes
+;; Letting Emacs treat backquoted names and %ops% as strings solves
+;; many problems with regard to nested strings and quotes
 (modify-syntax-entry ?` "\"" ess-r-syntax-table)
+(modify-syntax-entry ?% "\"" ess-r-syntax-table)
 
 ;; Underscore is valid in R symbols
 (modify-syntax-entry ?_ "_" ess-r-syntax-table)
@@ -214,6 +214,8 @@
     (when (eq (nth 3 state) ?`)
       (put-text-property (nth 8 state) string-end 'ess-r-backquoted t))
     (cond
+     ((eq (nth 3 state) ?%)
+      'ess-%op%-face)
      ((save-excursion
         (and (ess-goto-char string-end)
              (ess-looking-at "<-")
