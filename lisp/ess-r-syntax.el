@@ -157,34 +157,6 @@ Cons cell containing the token type and string representation."
 (defun ess-token-before-type ()
   (ess-token-type (ess-token-before)))
 
-;; Todo: "string"() should be an identifier
-(defun ess-refine-token (token)
-  (pcase (car token)
-    ;; Parameter assignment
-    (`(operator . "=")
-     (save-excursion
-       (goto-char (ess-token-start token))
-       (let ((containing-sexp (ess-containing-sexp-position)))
-         (when (and containing-sexp
-                    (ess-at-containing-sexp
-                      (and (string= (ess-token-after-string) "(")
-                           (memq (ess-token-before-type) '(identifier string))))
-                    (save-excursion
-                      (and (ess-climb-token)
-                           (member (ess-token-before-string) '("," "(")))))
-           (setcar (car token) 'param-assign)))))
-    ;; Quoted identifiers
-    (`(string . ,_)
-     (when (or
-            ;; Quoted parameter names
-            (eq (ess-token-refined-type (ess-token-after)) 'param-assign)
-            ;; Quoted call names
-            (save-excursion
-              (goto-char (ess-token-end token))
-              (string= (ess-token-after-string) "(")))
-       (setcar (car token) 'identifier))))
-  token)
-
 (defun ess-climb-token (&optional type string)
   (ess-save-excursion-when-nil
     (ess-escape-comment)
@@ -426,6 +398,33 @@ reached."
       (progn (/= (skip-syntax-backward ".") 0)
              (ess-behind-token-p 'operator))
       (/= (skip-syntax-backward "w_") 0)))
+
+(defun ess-refine-token (token)
+  (pcase (car token)
+    ;; Parameter assignment
+    (`(operator . "=")
+     (save-excursion
+       (goto-char (ess-token-start token))
+       (let ((containing-sexp (ess-containing-sexp-position)))
+         (when (and containing-sexp
+                    (ess-at-containing-sexp
+                      (and (string= (ess-token-after-string) "(")
+                           (memq (ess-token-before-type) '(identifier string))))
+                    (save-excursion
+                      (and (ess-climb-token)
+                           (member (ess-token-before-string) '("," "(")))))
+           (setcar (car token) 'param-assign)))))
+    ;; Quoted identifiers
+    (`(string . ,_)
+     (when (or
+            ;; Quoted parameter names
+            (eq (ess-token-refined-type (ess-token-after)) 'param-assign)
+            ;; Quoted call names
+            (save-excursion
+              (goto-char (ess-token-end token))
+              (string= (ess-token-after-string) "(")))
+       (setcar (car token) 'identifier))))
+  token)
 
 
 ;;*;; Point predicates
