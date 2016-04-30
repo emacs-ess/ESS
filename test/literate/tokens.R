@@ -400,6 +400,39 @@ a < >  a >=  a > =  a <=¶
 
 
 
+##### Token refinement
+
+### 1 Parameter assignment -------------------------------------------
+
+call(param ¶= NULL)
+
+##! (should (token= "="))
+##! (should (eq (ess-token-refined-type (ess-token-before)) 'param-assign))
+
+call(param =¶ NULL)
+
+
+### 2 Quoted parameter names -----------------------------------------
+
+call(¶"param" = NULL)
+
+##! (should (token= "\"param\""))
+##! (should (eq (ess-token-refined-type (ess-token-before)) 'identifier))
+
+call("param"¶ = NULL)
+
+
+### 2 Quoted call names ----------------------------------------------
+
+¶"call"()
+
+##! (should (token= "\"call\""))
+##! (should (eq (ess-token-refined-type (ess-token-before)) 'identifier))
+
+"call"¶()
+
+
+
 ##### Blanks, Characters and Comments
 
 ### 1 ----------------------------------------------------------------

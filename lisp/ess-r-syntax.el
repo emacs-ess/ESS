@@ -120,8 +120,8 @@ be advised"
 (defmacro ess-at-containing-sexp (&rest body)
   (declare (indent 0)
            (debug (&rest form)))
-  '(when (null containing-sexp)
-     (error "Internal error: containing-sexp is nil"))
+  '(when (not (bound-and-true-p containing-sexp))
+     (error "Internal error: containing-sexp is nil or undefined"))
   `(save-excursion
      (goto-char containing-sexp)
      (progn ,@body)))
@@ -152,11 +152,51 @@ Cons cell containing the token type and string representation."
   (save-excursion
     (ess-jump-token)))
 
+(defun ess-token-after-string ()
+  (ess-token-string (ess-token-after)))
+
+(defun ess-token-after-type ()
+  (ess-token-type (ess-token-after)))
+
 (defun ess-token-before ()
   "Returns previous token.
 Cons cell containing the token type and string representation."
   (save-excursion
     (ess-climb-token)))
+
+(defun ess-token-before-string ()
+  (ess-token-string (ess-token-before)))
+
+(defun ess-token-before-type ()
+  (ess-token-type (ess-token-before)))
+
+;; Todo: "string"() should be an identifier
+(defun ess-refine-token (token)
+  (pcase (car token)
+    ;; Parameter assignment
+    (`(operator . "=")
+     (save-excursion
+       (goto-char (ess-token-start token))
+       (let ((containing-sexp (ess-containing-sexp-position)))
+         (when (and containing-sexp
+                    (ess-at-containing-sexp
+                      (and (string= (ess-token-after-string) "(")
+                           (memq (ess-token-before-type) '(identifier string))))
+                    (save-excursion
+                      (and (ess-climb-token)
+                           (member (ess-token-before-string) '("," "(")))))
+           (setcar (car token) 'param-assign)))))
+    ;; Quoted identifiers
+    (`(string . ,_)
+     (when (or
+            ;; Quoted parameter names
+            (eq (ess-token-refined-type (ess-token-after)) 'param-assign)
+            ;; Quoted call names
+            (save-excursion
+              (goto-char (ess-token-end token))
+              (string= (ess-token-after-string) "(")))
+       (setcar (car token) 'identifier))))
+  token)
 
 (defun ess-climb-token ()
   (ess-climb-outside-comment)
