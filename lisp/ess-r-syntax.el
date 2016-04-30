@@ -199,7 +199,7 @@ Cons cell containing the token type and string representation."
   token)
 
 (defun ess-climb-token ()
-  (ess-climb-outside-comment)
+  (ess-escape-comment)
   (ess-skip-blanks-backward t)
   (unless (= (point) (point-min))
     (or (ess-climb-token--back)
@@ -317,13 +317,14 @@ reached."
 (defun ess-jump-token--punctuation ()
   (or (when (= (point) (point-max))
         'buffer-end)
-      (pcase (char-after)
-        (`?,
-         (forward-char)
-         'comma)
-        (`?\;
-         (forward-char)
-         'colon))))
+      (when (pcase (char-after)
+              (`?,
+               (forward-char)
+               'comma)
+              (`?\;
+               (forward-char)
+               'colon))
+        'punctuation)))
 
 (defun ess-jump-token--keyword ()
   (let ((type (when (looking-at "[a-z]+\\b")
@@ -338,35 +339,36 @@ reached."
       type)))
 
 (defun ess-jump-token--delimiter ()
-  (pcase (char-after)
-     (`?\(
-      (forward-char)
-      'open-paren)
-     (`?\)
-      (forward-char)
-      'close-paren)
-     (`?\{
-      (forward-char)
-      'open-curly)
-     (`?\}
-      (forward-char)
-      'close-curly)
-     (`?\[
-      (forward-char)
-      (if (ess-looking-at "\\[")
-          (progn
-            (ess-skip-blanks-forward)
-            (forward-char)
-            'open-double-brackets)
-        'open-bracket))
-     (`?\]
-      (forward-char)
-      (if (ess-looking-at "\\]")
-          (progn
-            (ess-skip-blanks-forward)
-            (forward-char)
-            'close-double-brackets)
-        'close-bracket))))
+  (when (pcase (char-after)
+          (`?\(
+           (forward-char)
+           'open-paren)
+          (`?\)
+           (forward-char)
+           'close-paren)
+          (`?\{
+           (forward-char)
+           'open-curly)
+          (`?\}
+           (forward-char)
+           'close-curly)
+          (`?\[
+           (forward-char)
+           (if (ess-looking-at "\\[")
+               (progn
+                 (ess-skip-blanks-forward)
+                 (forward-char)
+                 'open-double-brackets)
+             'open-bracket))
+          (`?\]
+           (forward-char)
+           (if (ess-looking-at "\\]")
+               (progn
+                 (ess-skip-blanks-forward)
+                 (forward-char)
+                 'close-double-brackets)
+             'close-bracket)))
+    'delimiter))
 
 (defun ess-jump-token--operator ()
   (when (pcase (char-after)
@@ -408,6 +410,25 @@ reached."
                   (eq (char-before) (car chars))
                   (ess-backward-char))
     (setq chars (cdr chars))))
+
+(defun ess-escape-token ()
+  (ess-escape-comment)
+  (or (ess-escape-string)
+      (when (ess-behind-token-p 'delimiter)
+        (prog1 t
+          (mapc (lambda (delim)
+                  (while (and (member (ess-token-after-string)
+                                      (list (make-string 1 delim)
+                                            (make-string 2 delim)))
+                              (eq (char-before) delim))
+                    (ess-backward-char)))
+                '(?\[ ?\]))))
+      (ess-behind-token-p 'punctuation)
+      (and (ess-behind-token-p 'identifier)
+           (not (memq (char-syntax (char-before)) '(?w ?_))))
+      (progn (/= (skip-syntax-backward ".") 0)
+             (ess-behind-token-p 'operator))
+      (/= (skip-syntax-backward "w_") 0)))
 
 
 ;;*;; Point predicates
@@ -461,6 +482,13 @@ return the prefix."
   (let ((state (or state (syntax-ppss))))
         (eq (syntax-ppss-context state) 'string)))
 
+(defun ess-behind-token-p (type &optional string)
+  (let ((token (ess-token-after)))
+    (and (eq (ess-token-type token) type)
+         (if string
+             (string= (ess-token-string token) string)
+           t))))
+
 
 ;;*;; Syntactic Travellers and Predicates
 
@@ -502,7 +530,7 @@ into account."
     (when (looking-at char)
       (goto-char (match-end 0)))))
 
-(defun ess-climb-outside-comment ()
+(defun ess-escape-comment ()
   (when (ess-within-comment-p)
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
@@ -512,6 +540,10 @@ into account."
 
 (defun ess-ahead-boundary-p ()
   (looking-back "[][ \t\n(){},]" (1- (point))))
+
+(defun ess-escape-string ()
+  (and (nth 3 (syntax-ppss))
+       (ess-goto-char (nth 8 (syntax-ppss)))))
 
 
 ;;;*;;; Blocks
