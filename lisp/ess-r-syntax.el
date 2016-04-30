@@ -346,7 +346,7 @@ reached."
                    'block-keyword)))))
     (when type
       (ess-forward-sexp)
-      type)))
+      'keyword)))
 
 (defun ess-jump-token--delimiter ()
   (when (pcase (char-after)
@@ -507,7 +507,7 @@ return the prefix."
 
 ;;*;; Syntactic Travellers and Predicates
 
-;;;*;;; Blanks, Characters and Comments
+;;;*;;; Blanks, Characters, Comments and Delimiters
 
 (defun ess-skip-blanks-backward (&optional newlines)
   "Skip blanks and newlines backward, taking end-of-line comments
@@ -559,6 +559,10 @@ into account."
 (defun ess-escape-string ()
   (and (nth 3 (syntax-ppss))
        (ess-goto-char (nth 8 (syntax-ppss)))))
+
+(defun ess-climb-paired-sexp (string)
+  (when (ess-ahead-token-p 'delimiter string)
+    (ess-backward-sexp)))
 
 
 ;;;*;;; Blocks
@@ -645,8 +649,8 @@ return the prefix."
              (prog1 (and (ess-climb-if-else-call)
                          (or (null call)
                              (looking-at call)))
-               (when (looking-at "else\\b")
-                 (ess-skip-curly-backward))))
+               (when (ess-behind-token-p 'keyword "else")
+                 (ess-climb-token 'delimiter "}"))))
         (let ((pos (ess-unbraced-block-p ignore-ifelse)))
           (and (ess-goto-char pos)
                (if call
@@ -1083,19 +1087,17 @@ expression."
 (defun ess-climb-if-else-call (&optional multi-line)
   "Climb if, else, and if else calls."
   (ess-save-excursion-when-nil
-    (ess-backward-sexp)
-    (cond ((looking-at "(")
-           (when (and (ess-backward-sexp)
-                      (looking-at "if\\b"))
+    (cond ((ess-climb-paired-sexp ")")
+           (when (ess-climb-token 'keyword "if")
              ;; Check for `else if'
              (prog1 t
                (ess-save-excursion-when-nil
                  (let ((orig-line (line-number-at-pos)))
-                   (and (ess-backward-sexp)
+                   (and (ess-climb-token 'keyword "else")
                         (or multi-line
-                            (eq orig-line (line-number-at-pos)))
-                        (looking-at "else\\b")))))))
-          ((looking-at "else\\b")))))
+                            (eq orig-line (line-number-at-pos)))))))))
+          ((ess-climb-token 'keyword "else")))))
+
 
 (defun ess-climb-if-else-body (&optional from-else)
   (cond
@@ -1117,16 +1119,18 @@ expression."
   "Climb horizontal as well as vertical if-else chains, with or
 without curly braces."
   ;; Don't climb if we're atop the current chain of if-else
-  (unless (looking-at "if\\b")
+  (unless (ess-behind-token-p 'keyword "if")
     (ess-save-excursion-when-nil
-      (let ((from-else (looking-at "else\\b")))
+      (let ((from-else (ess-behind-token-p 'keyword "else")))
         (when (and (ess-climb-if-else-body from-else)
                    (ess-climb-if-else-call to-start))
           ;; If we start from a final else and climb to another else, we
           ;; are in the wrong chain of if-else. In that case,
           ;; climb-recurse to the top of the current chain and climb
           ;; again to step in the outer chain.
-          (when (and from-else (ess-behind-final-else-p))
+          (when (save-excursion (and from-else
+                                     (ess-jump-token 'keyword "else")
+                                     (not (ess-jump-token 'keyword "if"))))
             (ess-climb-if-else 'to-start)
             (ess-climb-continuations)
             (ess-climb-block-prefix nil 'ignore-ifelse)
@@ -1136,21 +1140,12 @@ without curly braces."
             (ess-climb-if-else to-start))
           t)))))
 
-;; Handles multi-line such as if \n else, with comments in the way etc
-(defun ess-behind-final-else-p ()
-  (or (save-excursion
-        (and (looking-at "else\\b")
-             (ess-forward-sexp)
-             (ess-forth-and-back-sexp)
-             (not (looking-at "if\\b"))))))
-
 ;; Broken else: if \n else
 (defun ess-maybe-climb-broken-else (&optional same-line)
   (ess-save-excursion-when-nil
     ;; Don't record current line if not needed (expensive operation)
     (let ((cur-line (when same-line (line-number-at-pos))))
-      (and (ess-backward-sexp)
-           (looking-at "else\\b")
+      (and (ess-climb-token 'keyword "else")
            (if same-line
                (= cur-line (line-number-at-pos))
              t)))))
