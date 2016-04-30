@@ -138,8 +138,13 @@ side-effects. FORMS follows the same syntax as arguments to
 
 ;;*;; Tokenisation
 
-(defalias 'ess-token-type #'car)
-(defalias 'ess-token-string #'cdr)
+(defalias 'ess-token-type #'caar)
+(defalias 'ess-token-string #'cdar)
+(defalias 'ess-token-start #'cadr)
+(defalias 'ess-token-end #'cddr)
+
+(defun ess-token-refined-type (token)
+  (ess-token-type (ess-refine-token token)))
 
 (defun ess-token-after ()
   "Returns next token.
@@ -169,7 +174,8 @@ Cons cell containing the token type and string representation."
          (token-string (buffer-substring-no-properties (point) token-end)))
     (unless (or (null token-type)
                 (eq token-type 'buffer-start))
-      (cons token-type token-string))))
+      (cons (cons token-type token-string)
+            (cons (point) token-end)))))
 
 (defun ess-climb-token--operator ()
   (when (pcase (char-before)
@@ -246,7 +252,8 @@ reached."
                                                   (line-end-position)))))
          (token-string (buffer-substring-no-properties token-start (point))))
     (unless (eq token-type 'buffer-end)
-      (cons token-type token-string))))
+      (cons (cons token-type token-string)
+            (cons token-start (point))))))
 
 (defun ess-jump-token--literal ()
   (or (pcase (char-after)
