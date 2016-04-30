@@ -783,22 +783,22 @@ list of strings."
     (ess-roxy-with-filling-context t
       ad-do-it))
    ((and (not (ess-roxy-entry-p))
-         (ess-point-in-comment-p))
+         (ess-within-comment-p))
     ad-do-it)
    ;; Filling of call arguments with point on call name
    ((and ess-fill-calls
-         (ess-point-on-call-name-p))
+         (ess-within-call-name-p))
     (save-excursion
       (skip-chars-forward "^([")
       (forward-char)
       (ess-fill-args)))
    ;; Filling of continuations
    ((and ess-fill-continuations
-         (ess-point-in-continuation-p))
+         (ess-within-continuation-p))
     (ess-fill-continuations))
    ;; Filling of call arguments
    ((and ess-fill-calls
-         (ess-point-in-call-p))
+         (ess-within-call-p))
     (ess-fill-args))
    ;; Filling of roxy blocks
    ((ess-roxy-entry-p)

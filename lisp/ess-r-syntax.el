@@ -412,7 +412,7 @@ reached."
 
 ;;*;; Point predicates
 
-(defun ess-point-in-call-p (&optional call)
+(defun ess-within-call-p (&optional call)
   "Is point in a function or indexing call?"
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
@@ -422,28 +422,28 @@ reached."
            (save-excursion
              (forward-char)
              (ess-up-list))
-           (or (ess-looking-at-call-opening "(")
+           (or (ess-behind-call-opening "(")
                (looking-at "\\["))
-           (ess-point-on-call-name-p call)))))
+           (ess-within-call-name-p call)))))
 
-(defun ess-point-in-continuation-p ()
+(defun ess-within-continuation-p ()
   (unless (or (looking-at ",")
-              (ess-looking-at-call-opening "[[(]"))
+              (ess-behind-call-opening "[[(]"))
     (or (save-excursion
           (ess-jump-object)
-          (and (not (ess-looking-at-parameter-op-p))
-               (ess-looking-at-operator-p)))
+          (and (not (ess-behind-parameter-op-p))
+               (ess-behind-operator-p)))
         (save-excursion
           (ess-climb-object)
           (ess-climb-operator)
-          (and (ess-looking-at-operator-p)
-               (not (ess-looking-at-parameter-op-p)))))))
+          (and (ess-behind-operator-p)
+               (not (ess-behind-parameter-op-p)))))))
 
-(defun ess-point-on-call-name-p (&optional call)
+(defun ess-within-call-name-p (&optional call)
   (save-excursion
     (ess-climb-call-name call)))
 
-(defun ess-point-in-prefixed-block-p (&optional call)
+(defun ess-within-prefixed-block-p (&optional call)
   "Is point in a prefixed block? Prefixed blocks refer to the
 blocks following function declarations, control flow statements,
 etc.
@@ -453,11 +453,11 @@ return the prefix."
   (save-excursion
     (ess-climb-outside-prefixed-block call)))
 
-(defun ess-point-in-comment-p (&optional state)
+(defun ess-within-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
         (eq (syntax-ppss-context state) 'comment)))
 
-(defun ess-point-in-string-p (&optional state)
+(defun ess-within-string-p (&optional state)
   (let ((state (or state (syntax-ppss))))
         (eq (syntax-ppss-context state) 'string)))
 
@@ -503,14 +503,14 @@ into account."
       (goto-char (match-end 0)))))
 
 (defun ess-climb-outside-comment ()
-  (when (ess-point-in-comment-p)
+  (when (ess-within-comment-p)
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
 
-(defun ess-looking-back-closing-p ()
+(defun ess-ahead-closing-p ()
   (memq (char-before) '(?\] ?\} ?\))))
 
-(defun ess-looking-back-boundary-p ()
+(defun ess-ahead-boundary-p ()
   (looking-back "[][ \t\n(){},]" (1- (point))))
 
 
@@ -522,7 +522,7 @@ into account."
      ((looking-at "{"))
      ;; Opening parenthesis not attached to a function opens up a
      ;; block too. Only pick up those that are last on their line
-     ((ess-looking-at-block-paren-p)))))
+     ((ess-behind-block-paren-p)))))
 
 (defun ess-block-closing-p ()
   (save-excursion
@@ -543,9 +543,9 @@ into account."
       (ess-unbraced-block-p)))
 
 ;; Parenthesised expressions
-(defun ess-looking-at-block-paren-p ()
+(defun ess-behind-block-paren-p ()
   (and (looking-at "(")
-       (not (ess-looking-back-attached-name-p))))
+       (not (ess-ahead-attached-name-p))))
 
 (defun ess-climb-block (&optional ignore-ifelse)
   (ess-save-excursion-when-nil
@@ -562,7 +562,7 @@ into account."
   (mapcar (lambda (fun) (concat fun "[ \t\n]*("))
           '("function" "if" "for" "while")))
 
-(defun ess-looking-at-prefixed-block-p (&optional call)
+(defun ess-behind-prefixed-block-p (&optional call)
   (if call
       (looking-at (concat call "[ \t]*("))
     (some 'looking-at ess-prefixed-block-patterns)))
@@ -635,16 +635,16 @@ return the prefix."
    ;; if-else blocks
    ((ess-jump-if-else))
    ;; Prefixed blocks such as `function() {}'
-   ((ess-looking-at-prefixed-block-p)
+   ((ess-behind-prefixed-block-p)
     (ess-jump-prefixed-block))
    ;; Naked blocks
    ((and (or (looking-at "{")
-             (ess-looking-at-block-paren-p))
+             (ess-behind-block-paren-p))
          (ess-forward-sexp)))))
 
 (defun ess-jump-prefixed-block (&optional call)
   (ess-save-excursion-when-nil
-    (when (ess-looking-at-prefixed-block-p call)
+    (when (ess-behind-prefixed-block-p call)
       (ess-forward-sexp 2)
       (ess-skip-blanks-forward t)
       (if (looking-at "{")
@@ -662,18 +662,18 @@ return the prefix."
                 ((looking-at "]")
                  (when (ess-up-list -1)
                    (prog1 t (ess-climb-chained-delims)))))
-      (ess-looking-back-attached-name-p))))
+      (ess-ahead-attached-name-p))))
 
-(defun ess-looking-at-call-opening (pattern)
+(defun ess-behind-call-opening (pattern)
   (and (looking-at pattern)
-       (ess-looking-back-attached-name-p)))
+       (ess-ahead-attached-name-p)))
 
 ;; Should be called just before the opening brace
-(defun ess-looking-back-attached-name-p ()
+(defun ess-ahead-attached-name-p ()
   (save-excursion
     (ess-climb-object)))
 
-(defun ess-looking-at-parameter-op-p ()
+(defun ess-behind-parameter-op-p ()
   "Are we looking at a function argument? To be called just
 before the `=' sign."
   (save-excursion
@@ -681,11 +681,11 @@ before the `=' sign."
          (ess-climb-object)
          (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
 
-(defun ess-looking-at-arg-p ()
+(defun ess-behind-arg-p ()
   (save-excursion
     (ess-jump-arg)))
 
-(defun ess-looking-at-parameter-p ()
+(defun ess-behind-parameter-p ()
   (save-excursion
     (ess-jump-parameter)))
 
@@ -734,18 +734,18 @@ before the `=' sign."
   (ess-save-excursion-when-nil
     (ess-jump-name)
     (ess-skip-blanks-forward)
-    (and (ess-looking-at-call-opening "[[(]")
+    (and (ess-behind-call-opening "[[(]")
          (ess-climb-name)
          (or (null call)
              (looking-at call)))))
 
 (defun ess-step-to-first-arg ()
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (cond ((ess-point-in-call-p)
+    (cond ((ess-within-call-p)
            (goto-char containing-sexp)
            (forward-char)
            t)
-          ((ess-point-on-call-name-p)
+          ((ess-within-call-name-p)
            (ess-jump-name)
            (ess-skip-blanks-forward)
            (forward-char)
@@ -767,7 +767,7 @@ before the `=' sign."
         (and (looking-at "[ \t]*(")
              (ess-forward-sexp)))))
 
-(defun ess-looking-at-call-p ()
+(defun ess-behind-call-p ()
   (save-excursion
     (ess-jump-object)
     (ess-skip-blanks-forward)
@@ -789,7 +789,7 @@ before the `=' sign."
 
 (defun ess-climb-outside-call (&optional call)
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (if (ess-point-in-call-p)
+    (if (ess-within-call-p)
         (ess-save-excursion-when-nil
           (goto-char containing-sexp)
           (ess-climb-chained-delims)
@@ -820,7 +820,7 @@ before the `=' sign."
 
 (defun ess-args-bounds (&optional marker)
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (when (ess-point-in-call-p)
+    (when (ess-within-call-p)
       (save-excursion
         (let ((beg (1+ containing-sexp))
               (call-beg (ess-at-containing-sexp
@@ -855,7 +855,7 @@ parameter name (nil if not specified) and cdr set to the argument
 expression."
   (save-excursion
     (ess-skip-blanks-forward t)
-    (let ((param (when (ess-looking-at-parameter-p)
+    (let ((param (when (ess-behind-parameter-p)
                    (buffer-substring-no-properties
                     (point)
                     (prog2
@@ -873,11 +873,11 @@ expression."
 
 ;;;*;;; Statements
 
-(defun ess-looking-back-operator-p (&optional fun-arg)
+(defun ess-ahead-operator-p (&optional fun-arg)
   (save-excursion
     (and (ess-climb-operator)
          (if (not fun-arg)
-             (not (ess-looking-at-parameter-op-p))
+             (not (ess-behind-parameter-op-p))
            t))))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
@@ -885,14 +885,14 @@ expression."
     (let ((start-line (line-number-at-pos)))
       (ess-climb-operator)
       (when (and (or climb-line (equal (line-number-at-pos) start-line))
-                 (ess-looking-at-definition-op-p no-fun-arg))
+                 (ess-behind-definition-op-p no-fun-arg))
         (prog1 t
           (ess-climb-expression))))))
 
 (defun ess-jump-lhs ()
   (ess-save-excursion-when-nil
     (and (ess-jump-name)
-         (ess-looking-at-definition-op-p)
+         (ess-behind-definition-op-p)
          (ess-jump-operator))))
 
 (defun ess-climb-operator ()
@@ -933,7 +933,7 @@ expression."
 (defun ess-climb-continuations--update-state (&optional op)
   ;; Climbing multi-line expressions should not count as moving up
   (when op
-    (setq expr (ess-looking-back-closing-p)))
+    (setq expr (ess-ahead-closing-p)))
   (let ((cur-line (line-number-at-pos)))
     (when (and last-line
                (< cur-line last-line)
@@ -944,13 +944,13 @@ expression."
   (when (and (not op)
              (<= moved 1))
     (setq prev-point (point)))
-  (when (and (ess-looking-at-definition-op-p)
+  (when (and (ess-behind-definition-op-p)
              (<= moved 1))
     (setq def-op t))
   t)
 
 (defun ess-jump-operator ()
-  (when (ess-looking-at-operator-p)
+  (when (ess-behind-operator-p)
     (ess-jump-token)
     (ess-skip-blanks-forward t)
     t))
@@ -968,14 +968,14 @@ expression."
       ;; In calls, operators can start on newlines
       (let ((start-line (line-number-at-pos)))
         (when (ess-save-excursion-when-nil
-                (and (ess-point-in-call-p)
+                (and (ess-within-call-p)
                      (ess-skip-blanks-forward t)
                      (/= (line-number-at-pos) start-line)
-                     (ess-looking-at-operator-p)))
+                     (ess-behind-operator-p)))
           (ess-jump-continuations)))
       t)))
 
-(defun ess-looking-at-continuation-p (&optional or-parameter)
+(defun ess-behind-continuation-p (&optional or-parameter)
   (or (save-excursion
         (or (eq (ess-token-before-type) 'operator)
             (when or-parameter
@@ -986,7 +986,7 @@ expression."
         (or (looking-at "else\\b")
             (ess-climb-if-else-call)))))
 
-(defun ess-looking-at-operator-p ()
+(defun ess-behind-operator-p ()
   (eq (ess-token-after-type) 'operator))
 
 (defun ess-token-definition-op-p (token strict)
@@ -996,19 +996,19 @@ expression."
            (not (eq (ess-token-refined-type token) 'param-assign))
          t)))
 
-(defun ess-looking-at-definition-op-p (&optional strict)
+(defun ess-behind-definition-op-p (&optional strict)
   (ess-token-definition-op-p (ess-token-after) strict))
 
-(defun ess-looking-back-definition-op-p (&optional strict)
+(defun ess-ahead-definition-op-p (&optional strict)
   (ess-token-definition-op-p (ess-token-before) strict))
 
-(defun ess-looking-at-assignment-op-p ()
+(defun ess-behind-assignment-op-p ()
   (let ((token (ess-token-after)))
     (and (member (ess-token-string token) '("<-" "="))
          (not (eq (ess-token-refined-type token) 'param-assign)))))
 
 (defun ess-climb-outside-continuations ()
-  (ess-any ((unless (ess-looking-back-boundary-p)
+  (ess-any ((unless (ess-ahead-boundary-p)
               (ess-climb-expression)))
            ((ess-while (ess-climb-continuations)))))
 
@@ -1079,7 +1079,7 @@ without curly braces."
           ;; are in the wrong chain of if-else. In that case,
           ;; climb-recurse to the top of the current chain and climb
           ;; again to step in the outer chain.
-          (when (and from-else (ess-looking-at-final-else))
+          (when (and from-else (ess-behind-final-else-p))
             (ess-climb-if-else 'to-start)
             (ess-climb-continuations)
             (ess-climb-block-prefix nil 'ignore-ifelse)
@@ -1090,7 +1090,7 @@ without curly braces."
           t)))))
 
 ;; Handles multi-line such as if \n else, with comments in the way etc
-(defun ess-looking-at-final-else ()
+(defun ess-behind-final-else-p ()
   (or (save-excursion
         (and (looking-at "else\\b")
              (ess-forward-sexp)
@@ -1141,13 +1141,13 @@ without curly braces."
 
 ;;;*;;; Function Declarations
 
-(defun ess-looking-at-defun-p ()
+(defun ess-behind-defun-p ()
   (or (looking-at "function[ \t]*(")
-      (ess-looking-at-enclosed-defun-p)))
+      (ess-behind-enclosed-defun-p)))
 
-(defun ess-looking-at-enclosed-defun-p ()
+(defun ess-behind-enclosed-defun-p ()
   (save-excursion
-    (and (ess-looking-at-call-p)
+    (and (ess-behind-call-p)
          (ess-jump-inside-call)
          (some (lambda (arg)
                  (string-match "^function\\b"

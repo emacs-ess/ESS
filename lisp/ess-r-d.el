@@ -1456,7 +1456,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (ess-back-to-indentation)
       (cond
        ;; Strings
-       ((ess-point-in-string-p state)
+       ((ess-within-string-p state)
         (current-indentation))
        ;; Comments
        ((ess-calculate-indent--comments))
@@ -1506,7 +1506,7 @@ Returns nil if line starts inside a string, t if in a comment."
       comment-column))))
 
 (defun ess-calculate-indent--comma ()
-  (when (ess-point-in-call-p)
+  (when (ess-within-call-p)
     (let ((indent (save-excursion
                     (ess-calculate-indent--args)))
           (unindent (progn (skip-chars-forward " \t")
@@ -1522,7 +1522,7 @@ Returns nil if line starts inside a string, t if in a comment."
         ((save-excursion
            (and (ess-climb-operator)
                 (or (not ess-align-continuations-in-calls)
-                    (ess-looking-at-definition-op-p))))
+                    (ess-behind-definition-op-p))))
          (ess-calculate-indent--continued))
         (t
          (ess-calculate-indent--args 0))))
@@ -1532,7 +1532,7 @@ Returns nil if line starts inside a string, t if in a comment."
    ;; Block is an argument in a function call
    ((when containing-sexp
       (ess-at-containing-sexp
-        (ess-looking-at-call-opening "[[(]")))
+        (ess-behind-call-opening "[[(]")))
     (ess-calculate-indent--block 0))
    ;; Top-level block
    ((null containing-sexp) 0)
@@ -1584,7 +1584,7 @@ Returns nil if line starts inside a string, t if in a comment."
         (+ (current-column)
            (ess-offset 'block)))
        ;; Don't indent relatively other continuations
-       ((ess-looking-at-continuation-p)
+       ((ess-behind-continuation-p)
         nil)
        ;; If a block already contains an indented line, we can indent
        ;; relatively from that first line
@@ -1626,19 +1626,19 @@ Returns nil if line starts inside a string, t if in a comment."
      ((ess-at-indent-point
         (and (ess-unbraced-block-p)
              (goto-char containing-sexp)
-             (ess-looking-at-call-opening "[[(]")))
+             (ess-behind-call-opening "[[(]")))
       'body)
      ;; Indentation of opening brace as argument
      ((ess-at-containing-sexp
-        (ess-looking-at-call-opening "[[(]"))
+        (ess-behind-call-opening "[[(]"))
       'opening)
      ;; Indentation of body or closing brace as argument
      ((ess-at-containing-sexp
         (and (or (looking-at "{")
-                 (ess-looking-at-block-paren-p))
+                 (ess-behind-block-paren-p))
              prev-containing-sexp
              (goto-char prev-containing-sexp)
-             (ess-looking-at-call-opening "[[(]")))
+             (ess-behind-call-opening "[[(]")))
       'body))))
 
 (defun ess-calculate-indent--block (&optional offset)
@@ -1667,7 +1667,7 @@ Returns nil if line starts inside a string, t if in a comment."
                               (ess-unbraced-block-p))
                             'unbraced)
                            ((ess-at-containing-sexp
-                              (not (ess-looking-back-attached-name-p)))
+                              (not (ess-ahead-attached-name-p)))
                             'bare-block)
                            (t)))
          (call-pos (if (and (not (eq block-type 'unbraced))
@@ -1834,7 +1834,7 @@ Returns nil if line starts inside a string, t if in a comment."
 ;; name or its closing delim)
 (defun ess-move-to-leftmost-side ()
   (when (or (looking-at "[({]")
-            (ess-looking-at-call-p))
+            (ess-behind-call-p))
     (ess-save-excursion-when-nil
       (let ((start-col (current-column)))
         (skip-chars-forward "^{[(")
@@ -1862,7 +1862,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (and (memq 'fun-decl-opening ess-indent-from-lhs)
                       (string= block-type "function")
                       (ess-climb-operator)
-                      (ess-looking-at-assignment-op-p)
+                      (ess-behind-assignment-op-p)
                       (ess-climb-expression)))
                (current-column))
               ((= (save-excursion
@@ -1899,7 +1899,7 @@ otherwise nil."
          (t
           (let ((first-indent (or (eq climbed 'def-op)
                                   (save-excursion
-                                    (when (ess-looking-back-closing-p)
+                                    (when (ess-ahead-closing-p)
                                       (ess-climb-expression))
                                     (not (ess-climb-continuations cascade))))))
             ;; Record all indentation levels between indent-point and
@@ -1910,7 +1910,7 @@ otherwise nil."
             ;; Indenting continuations from the front of closing
             ;; delimiters looks better
             (when
-                (ess-looking-back-closing-p)
+                (ess-ahead-closing-p)
               (backward-char))
             (+ (min (current-column) max-col)
                (cond
@@ -1959,7 +1959,7 @@ otherwise nil."
                (goto-char (1+ contained-sexp))
                (ess-up-list))
               ;; Jump over continued statements
-              ((and jump-cont (ess-looking-back-operator-p))
+              ((and jump-cont (ess-ahead-operator-p))
                (ess-skip-blanks-forward t)
                (ess-jump-continuations))
               ;; Jump over comments
