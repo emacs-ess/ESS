@@ -1408,7 +1408,7 @@ Return the amount the indentation changed by."
 
 (defun ess-indent-call (&optional start)
   (save-excursion
-    (when (ess-climb-outside-calls)
+    (when (ess-escape-calls)
       (setq start (or start (point)))
       (skip-chars-forward "^[(")
       (forward-char)
@@ -1562,7 +1562,7 @@ Returns nil if line starts inside a string, t if in a comment."
                     (containing-sexp
                      (when (ess-at-containing-sexp
                              (looking-at "{"))
-                       (ess-climb-outside-prefixed-block))))
+                       (ess-escape-prefixed-block))))
                    (some 'looking-at (ess-overridden-blocks)))
           (+ (current-column) offset))))))
 

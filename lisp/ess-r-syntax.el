@@ -472,7 +472,7 @@ etc.
 If CALL not nil, check if the prefix corresponds to CALL. If nil,
 return the prefix."
   (save-excursion
-    (ess-climb-outside-prefixed-block call)))
+    (ess-escape-prefixed-block call)))
 
 (defun ess-within-comment-p (&optional state)
   (let ((state (or state (syntax-ppss))))
@@ -645,7 +645,7 @@ return the prefix."
                        ((looking-at "else")
                         "else"))))))))
 
-(defun ess-climb-outside-prefixed-block (&optional call)
+(defun ess-escape-prefixed-block (&optional call)
   "Climb outside of a prefixed block."
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
@@ -653,13 +653,13 @@ return the prefix."
           (and (ess-goto-char containing-sexp)
                (looking-at "{")
                (ess-climb-block-prefix call)))
-        (ess-climb-outside-unbraced-block call))))
+        (ess-escape-unbraced-block call))))
 
-(defun ess-climb-outside-unbraced-block (&optional call)
+(defun ess-escape-unbraced-block (&optional call)
   (ess-save-excursion-when-nil
     (while (and (not (ess-unbraced-block-p))
-                (or (ess-climb-outside-continuations)
-                    (ess-climb-outside-call))))
+                (or (ess-escape-continuations)
+                    (ess-escape-call))))
     (ess-climb-block-prefix call)))
 
 (defun ess-jump-block ()
@@ -819,7 +819,7 @@ before the `=' sign."
                (when (eq (char-after) ?\[)
                  (ess-forward-sexp)))))
 
-(defun ess-climb-outside-call (&optional call)
+(defun ess-escape-call (&optional call)
   (let ((containing-sexp (ess-containing-sexp-position)))
     (if (ess-within-call-p)
         (ess-save-excursion-when-nil
@@ -839,8 +839,8 @@ before the `=' sign."
                    (looking-at call))
                (/= (point) orig-pos)))))))
 
-(defun ess-climb-outside-calls ()
-  (ess-while (ess-climb-outside-call)))
+(defun ess-escape-calls ()
+  (ess-while (ess-escape-call)))
 
 (defun ess-jump-inside-call ()
   (ess-save-excursion-when-nil
@@ -1039,7 +1039,7 @@ expression."
     (and (member (ess-token-string token) '("<-" "="))
          (not (eq (ess-token-refined-type token) 'param-assign)))))
 
-(defun ess-climb-outside-continuations ()
+(defun ess-escape-continuations ()
   (ess-any ((unless (ess-ahead-boundary-p)
               (ess-climb-expression)))
            ((ess-while (ess-climb-continuations)))))
@@ -1048,7 +1048,7 @@ expression."
   (save-excursion
     (let ((orig-point (point))
           (beg (progn
-                 (ess-climb-outside-continuations)
+                 (ess-escape-continuations)
                  (point))))
       (when beg
         (ess-jump-expression)
@@ -1060,7 +1060,7 @@ expression."
 
 (defun ess-climb-to-top-level ()
   (while (ess-goto-char (ess-containing-sexp-position)))
-  (ess-climb-outside-continuations))
+  (ess-escape-continuations))
 
 
 ;;;*;;; Statements: Control Flow
