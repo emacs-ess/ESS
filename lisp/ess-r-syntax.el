@@ -198,15 +198,20 @@ Cons cell containing the token type and string representation."
        (setcar (car token) 'identifier))))
   token)
 
-(defun ess-climb-token ()
-  (ess-escape-comment)
-  (ess-skip-blanks-backward t)
-  (unless (= (point) (point-min))
-    (or (ess-climb-token--back)
-        (ess-climb-token--back-and-forth)
-        (error "Internal error: Backward tokenization failed:\n%s"
-               (buffer-substring (line-beginning-position)
-                                 (line-end-position))))))
+(defun ess-climb-token (&optional type string)
+  (ess-save-excursion-when-nil
+    (ess-escape-comment)
+    (ess-skip-blanks-backward t)
+    (let ((token (unless (= (point) (point-min))
+                   (or (ess-climb-token--back)
+                       (ess-climb-token--back-and-forth)
+                       (error "Internal error: Backward tokenization failed:\n%s"
+                              (buffer-substring (line-beginning-position)
+                                                (line-end-position)))))))
+      (if (or type string)
+          (when (ess-check-token token type string)
+            token)
+        token))))
 
 (defun ess-climb-token--back ()
   (let* ((token-end (point))
@@ -275,25 +280,30 @@ Cons cell containing the token type and string representation."
      ;; Identifiers and numbers
      ((/= (skip-syntax-backward "w_") 0)))))
 
-(defun ess-jump-token ()
+(defun ess-jump-token (&optional type string)
   "Consume a token forward.
 Returns a cons cell containing the token type and the token
 string content. Returns nil when the end of the buffer is
 reached."
-  (ess-skip-blanks-forward t)
-  (let* ((token-start (point))
-         (token-type (or (ess-jump-token--literal)
-                         (ess-jump-token--punctuation)
-                         (ess-jump-token--keyword)
-                         (ess-jump-token--delimiter)
-                         (ess-jump-token--operator)
-                         (error "Internal error: Forward tokenization failed:\n%s"
-                                (buffer-substring (line-beginning-position)
-                                                  (line-end-position)))))
-         (token-string (buffer-substring-no-properties token-start (point))))
-    (unless (eq token-type 'buffer-end)
-      (cons (cons token-type token-string)
-            (cons token-start (point))))))
+  (ess-save-excursion-when-nil
+    (ess-skip-blanks-forward t)
+    (let* ((token-start (point))
+           (token-type (or (ess-jump-token--keyword)
+                           (ess-jump-token--literal)
+                           (ess-jump-token--delimiter)
+                           (ess-jump-token--operator)
+                           (ess-jump-token--punctuation)
+                           (error "Internal error: Forward tokenization failed:\n%s"
+                                  (buffer-substring (line-beginning-position)
+                                                    (line-end-position)))))
+           (token-string (buffer-substring-no-properties token-start (point))))
+      (unless (eq token-type 'buffer-end)
+        (let ((token (cons (cons token-type token-string)
+                           (cons token-start (point)))))
+          (if (or type string)
+              (when (ess-check-token token type string)
+                token)
+            token))))))
 
 (defun ess-jump-token--literal ()
   (or (pcase (char-after)
@@ -483,11 +493,16 @@ return the prefix."
         (eq (syntax-ppss-context state) 'string)))
 
 (defun ess-behind-token-p (type &optional string)
-  (let ((token (ess-token-after)))
-    (and (eq (ess-token-type token) type)
-         (if string
-             (string= (ess-token-string token) string)
-           t))))
+  (ess-check-token (ess-token-after) type string))
+
+(defun ess-ahead-token-p (type &optional string)
+  (ess-check-token (ess-token-before) type string))
+
+(defun ess-check-token (token type &optional string)
+  (and (eq (ess-token-type token) type)
+       (if string
+           (string= (ess-token-string token) string)
+         t)))
 
 
 ;;*;; Syntactic Travellers and Predicates
