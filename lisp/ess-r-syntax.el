@@ -57,19 +57,6 @@
     (forward-char (- (or N 1)))
     t))
 
-;; Going forth and back is a fast and reliable way of skipping in
-;; front of the next sexp despite blanks, newlines and comments that
-;; may be in the way.
-(defun ess-forth-and-back-sexp ()
-  (ess-save-excursion-when-nil
-    (and (ess-forward-sexp)
-         (ess-backward-sexp))))
-
-(defun ess-back-and-forth-sexp ()
-  (ess-save-excursion-when-nil
-    (and (ess-backward-sexp)
-         (ess-forward-sexp))))
-
 (defun ess-goto-char (pos)
   "Go to `pos' if it is non-nil.
 If `pos' is nil, return nil.  Otherwise return `pos' itself."
