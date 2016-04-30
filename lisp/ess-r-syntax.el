@@ -156,9 +156,10 @@ Cons cell containing the token type and string representation."
 (defun ess-climb-token ()
   (ess-climb-outside-comment)
   (ess-skip-blanks-backward t)
-  (or (ess-climb-token--back)
-      (ess-climb-token--back-and-forth)
-      (error "Internal error: Tokenization failed")))
+  (unless (= (point) (point-min))
+    (or (ess-climb-token--back)
+        (ess-climb-token--back-and-forth)
+        (error "Internal error: Tokenization failed"))))
 
 (defun ess-climb-token--back ()
   (let* ((token-end (point))

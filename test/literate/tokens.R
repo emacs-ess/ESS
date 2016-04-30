@@ -88,6 +88,16 @@
 () a[[[]]] {}¶
 
 
+### 5 Buffer boundaries
+
+¶
+
+##! (should (not (ess-jump-token)))
+##! (should (not (ess-climb-token)))
+
+¶
+
+
 
 ##### Jumping/Climbing operator tokens
 
