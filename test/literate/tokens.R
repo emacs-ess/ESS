@@ -98,6 +98,21 @@
 ¶
 
 
+### 6 Punctuation
+
+¶.; .,
+
+##! (ess-jump-token)
+##! (should (token= ";"))
+
+.;¶ .,
+
+##> (ess-jump-token)
+##> (should (token= ","))
+
+.; .,¶
+
+
 
 ##### Jumping/Climbing operator tokens
 

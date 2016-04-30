@@ -210,6 +210,9 @@ Cons cell containing the token type and string representation."
 (defun ess-skip-token-backward ()
   (ess-save-excursion-when-nil
     (cond
+     ;; Punctuation
+     ((memq (char-before) '(?, ?\;))
+      (ess-backward-char))
      ;; Quoting delimiters
      ((memq (char-syntax (char-before)) '(?\" ?$))
       (ess-backward-sexp))
