@@ -219,7 +219,7 @@ Cons cell containing the token type and string representation."
 
 (defun ess-climb-token--operator ()
   (when (pcase (char-before)
-          ((or ?+ ?/ ?^ ?~ ??)
+          ((or ?+ ?/ ?^ ?~ ?? ?!)
            (ess-backward-char))
           (`?=
            (prog1 (ess-backward-char)
@@ -503,8 +503,7 @@ into account."
       (goto-char (match-end 0)))))
 
 (defun ess-climb-outside-comment ()
-  (when (and (ess-point-in-comment-p)
-             (not (ess-roxy-entry-p)))
+  (when (ess-point-in-comment-p)
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
 
@@ -896,45 +895,18 @@ expression."
          (ess-looking-at-definition-op-p)
          (ess-jump-operator))))
 
-;; Useful to check presence of operators. Need to check for
-;; (point-min) because that won't work if there is no previous sexp
-;; Should be called right at the beginning of current sexp.
 (defun ess-climb-operator ()
-  (ess-save-excursion-when-nil
-    (let ((orig-pos (point)))
-      (while (forward-comment -1))
-      (cond ((memq (char-before) '(?, ?\;))
-             nil)
-            ((eq (char-before) ?%)
-             (forward-char -1)
-             (skip-chars-backward "^%")
-             (forward-char -1)
-             (ess-skip-blanks-backward)
-             t)
-            ;; Fixme: Don't use SEXP motion, simply check for ops
-            ((ess-backward-sexp)
-             ;; When there is only empty space or commented code left to
-             ;; climb (e.g. roxygen documentation), there is no previous
-             ;; SEXP, but (ess-backward-sexp) will nevertheless climb the
-             ;; empty space without failing. So we need to skip it.
-             (while (forward-comment 1))
-             ;; Handle %op% operators
-             (when (and (< (point) orig-pos)
-                        (ess-forward-sexp)
-                        (ess-looking-at-operator-p))
-               (prog1 t
-                 (when (and (equal (char-after) ?=)
-                            (equal (char-before) ?:))
-                   (forward-char -1)
-                   (ess-skip-blanks-backward)))))))))
+  (when (ess-save-excursion-when-nil
+          (eq (ess-token-type (ess-climb-token)) 'operator))
+    (prog1 t
+      (ess-skip-blanks-backward))))
 
 ;; Currently doesn't check that the operator is not binary
 (defun ess-climb-unary-operator ()
   (ess-save-excursion-when-nil
-    (ess-skip-blanks-backward t)
-    (when (memq (char-before) '(?+ ?- ?! ?? ?~))
-      (forward-char -1)
-      t)))
+    (let ((token (ess-climb-token)))
+      (and (eq (ess-token-type token) 'operator)
+           (member (ess-token-string token) '("+" "-" "!" "?" "~"))))))
 
 ;; Currently returns t if we climbed lines, nil otherwise.
 (defun ess-climb-continuations (&optional cascade ignore-ifelse)
@@ -979,7 +951,7 @@ expression."
 
 (defun ess-jump-operator ()
   (when (ess-looking-at-operator-p)
-    (goto-char (match-end 1))
+    (ess-jump-token)
     (ess-skip-blanks-forward t)
     t))
 
@@ -1005,46 +977,35 @@ expression."
 
 (defun ess-looking-at-continuation-p (&optional or-parameter)
   (or (save-excursion
-        (ess-skip-blanks-backward t)
-        (ess-back-and-forth-sexp)
-        (when (ess-looking-at-operator-p)
-          (if or-parameter t
-            (not (ess-looking-at-parameter-op-p)))))
+        (or (eq (ess-token-before-type) 'operator)
+            (when or-parameter
+              (eq (ess-token-before-type) 'param-assign))))
       (save-excursion
         (ess-climb-block-prefix))
       (save-excursion
         (or (looking-at "else\\b")
             (ess-climb-if-else-call)))))
 
-(defvar ess-R-operator-pattern "<-\\|:=\\|!=\\|%[^ \t]*%\\|[-:+*/><=&|~]"
-  "Regular expression for an operator")
-
-(defvar ess-R-definition-op-pattern "<<?-\\|:=\\|~"
-  "Regular expression for a definition operator")
-
 (defun ess-looking-at-operator-p ()
-  (looking-at (concat "[[:blank:]]*\\(" ess-R-operator-pattern "\\)")))
+  (eq (ess-token-after-type) 'operator))
 
-(defun ess-looking-at-definition-op-p (&optional no-fun-arg)
-  (save-excursion
-    (skip-chars-forward "[ \t]")
-    (or (looking-at ess-R-definition-op-pattern)
-        (and (looking-at "=[^=]")
-             (if no-fun-arg
-                 (not (ess-looking-at-parameter-op-p))
-               t)))))
+(defun ess-token-definition-op-p (token strict)
+  (and (eq (ess-token-type token) 'operator)
+       (member (ess-token-string token) '("<-" "<<-" ":=" "~" "="))
+       (if strict
+           (not (eq (ess-token-refined-type token) 'param-assign))
+         t)))
+
+(defun ess-looking-at-definition-op-p (&optional strict)
+  (ess-token-definition-op-p (ess-token-after) strict))
+
+(defun ess-looking-back-definition-op-p (&optional strict)
+  (ess-token-definition-op-p (ess-token-before) strict))
 
 (defun ess-looking-at-assignment-op-p ()
-  (save-excursion
-    (ess-skip-blanks-forward t)
-    (and (looking-at "<-\\|=")
-         (not (ess-looking-at-parameter-op-p)))))
-
-(defun ess-looking-back-definition-op-p (&optional no-fun-arg)
-  (save-excursion
-    (and (ess-backward-sexp)
-         (ess-forward-sexp)
-         (ess-looking-at-definition-op-p no-fun-arg))))
+  (let ((token (ess-token-after)))
+    (and (member (ess-token-string token) '("<-" "="))
+         (not (eq (ess-token-refined-type token) 'param-assign)))))
 
 (defun ess-climb-outside-continuations ()
   (ess-any ((unless (ess-looking-back-boundary-p)
