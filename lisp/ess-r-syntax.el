@@ -154,20 +154,59 @@ Cons cell containing the token type and string representation."
     (ess-climb-token)))
 
 (defun ess-climb-token ()
-  (when (ess-skip-token-backward)
-    (ess-token-after)))
+  (ess-climb-outside-comment)
+  (ess-skip-blanks-backward t)
+  (or (ess-climb-token--back)
+      (ess-climb-token--back-and-forth)
+      (error "Internal error: Tokenization failed")))
+
+(defun ess-climb-token--back ()
+  (let* ((token-end (point))
+         (token-type (ess-climb-token--operator))
+         (token-string (buffer-substring-no-properties (point) token-end)))
+    (unless (or (null token-type)
+                (eq token-type 'buffer-start))
+      (cons token-type token-string))))
+
+(defun ess-climb-token--operator ()
+  (when (pcase (char-before)
+          ((or ?+ ?/ ?^ ?~ ??)
+           (ess-backward-char))
+          (`?=
+           (prog1 (ess-backward-char)
+             (or (ess-climb-token--char ?=)
+                 (ess-climb-token--char ?!)
+                 (ess-climb-token--char ?:)
+                 (ess-climb-token--char ?>)
+                 (ess-climb-token--char ?<))))
+          ((or ?& ?| ?* ?@ ?$)
+           (prog1 (ess-backward-char)
+             (ess-climb-token--char (char-after))))
+          (`?<
+           (ess-backward-char))
+          (`?>
+           (prog1 (ess-backward-char)
+             (or (ess-climb-token--char ?-)
+                 (and (looking-back "->" (- (point) 2))
+                      (goto-char (- (point) 2))))))
+          (`?-
+           (prog1 (ess-backward-char)
+             (ess-climb-token--char ?< ?<)))
+          (`?:
+           (prog1 (ess-backward-char)
+             (ess-climb-token--char ?: ?:))))
+    'operator))
+
+(defun ess-climb-token--back-and-forth ()
+  (let ((limit (point)))
+    (when (ess-skip-token-backward)
+      (save-restriction
+        (narrow-to-region (point) limit)
+        (ess-token-after)))))
 
 (defun ess-skip-token-backward ()
   (ess-save-excursion-when-nil
-    (ess-climb-outside-comment)
-    (ess-skip-blanks-backward t)
     (cond
-     ;; Operators
-     ((eq (char-syntax (char-before)) ?.)
-      (prog1 (ess-backward-char)
-        ;; Two-character operators
-        (when (eq (char-syntax (char-before)) ?.)
-          (ess-backward-char))))
      ;; Quoting delimiters
      ((memq (char-syntax (char-before)) '(?\" ?$))
       (ess-backward-sexp))
@@ -191,22 +230,17 @@ string content. Returns nil when the end of the buffer is
 reached."
   (ess-skip-blanks-forward t)
   (let* ((token-start (point))
-         (token-type (or (ess-consume-token)
+         (token-type (or (ess-jump-token--literal)
+                         (ess-jump-token--punctuation)
+                         (ess-jump-token--keyword)
+                         (ess-jump-token--delimiter)
+                         (ess-jump-token--operator)
                          (error "Internal error: Tokenization failed")))
          (token-string (buffer-substring-no-properties token-start (point))))
     (unless (eq token-type 'buffer-end)
       (cons token-type token-string))))
 
-(defun ess-consume-token ()
-  "Advance one token.
-Returns token type if a token was consumed, nil otherwise."
-  (or (ess-consume-token--literal)
-      (ess-consume-token--punctuation)
-      (ess-consume-token--keyword)
-      (ess-consume-token--delimiter)
-      (ess-consume-token--operator)))
-
-(defun ess-consume-token--literal ()
+(defun ess-jump-token--literal ()
   (or (pcase (char-after)
         (`?`
          (when (ess-forward-sexp)
@@ -225,7 +259,7 @@ Returns token type if a token was consumed, nil otherwise."
         (ess-forward-sexp)
         'identifier))))
 
-(defun ess-consume-token--punctuation ()
+(defun ess-jump-token--punctuation ()
   (or (when (= (point) (point-max))
         'buffer-end)
       (pcase (char-after)
@@ -236,7 +270,7 @@ Returns token type if a token was consumed, nil otherwise."
          (forward-char)
          'colon))))
 
-(defun ess-consume-token--keyword ()
+(defun ess-jump-token--keyword ()
   (let ((type (when (looking-at "[a-z]+\\b")
                 (pcase (match-string 0)
                   (`"if" 'if)
@@ -248,7 +282,7 @@ Returns token type if a token was consumed, nil otherwise."
       (ess-forward-sexp)
       type)))
 
-(defun ess-consume-token--delimiter ()
+(defun ess-jump-token--delimiter ()
   (pcase (char-after)
      (`?\(
       (forward-char)
@@ -279,42 +313,46 @@ Returns token type if a token was consumed, nil otherwise."
             'close-double-brackets)
         'close-bracket))))
 
-(defun ess-consume-token--operator ()
+(defun ess-jump-token--operator ()
   (when (pcase (char-after)
-          ((or ?= ?!)
-           (prog1 (ess-forward-char)
-             (ess-consume-token--char ?= 1)))
-          ((or ?& ?| ?* ?@ ?$)
-           (prog1 (ess-forward-char)
-             (ess-consume-token--char (char-before) 1)))
-          (`?<
-           (prog1 (ess-forward-char)
-             (cond ((memq (char-after) '(?- ?=))
-                    (ess-forward-char))
-                   ((and (eq (char-after) ?<)
-                         (eq (char-after (1+ (point))) ?-))
-                    (ess-forward-char 2)))))
-          (`?>
-           (prog1 (ess-forward-char)
-             (ess-consume-token--char ?= 1)))
-          (`?-
-           (prog1 (ess-forward-char)
-             (ess-consume-token--char ?> 2)))
-          (`?:
-           (prog1 (ess-forward-char)
-             (or (ess-consume-token--char ?= 1)
-                 (ess-consume-token--char ?: 2))))
           ((or ?+ ?/ ?^ ?~ ??)
            (ess-forward-char))
+          ((or ?= ?!)
+           (prog1 (ess-forward-char)
+             (ess-jump-token--char ?=)))
+          ((or ?& ?| ?* ?@ ?$)
+           (prog1 (ess-forward-char)
+             (ess-jump-token--char (char-before))))
+          (`?<
+           (prog1 (ess-forward-char)
+             (or (ess-jump-token--char ?-)
+                 (ess-jump-token--char ?=)
+                 (ess-jump-token--char ?< ?-))))
+          (`?>
+           (prog1 (ess-forward-char)
+             (ess-jump-token--char ?=)))
+          (`?-
+           (prog1 (ess-forward-char)
+             (ess-jump-token--char ?> ?>)))
+          (`?:
+           (prog1 (ess-forward-char)
+             (or (ess-jump-token--char ?=)
+                 (ess-jump-token--char ?: ?:))))
           (`?%
            (ess-forward-sexp)))
     'operator))
 
-(defsubst ess-consume-token--char (char times)
-  (ess-while (and (> times 0)
-                  (eq (char-after) char))
-    (ess-forward-char)
-    (setq times (1- times))))
+(defsubst ess-jump-token--char (&rest chars)
+  (ess-while (and chars
+                  (eq (char-after) (car chars))
+                  (ess-forward-char))
+    (setq chars (cdr chars))))
+
+(defsubst ess-climb-token--char (&rest chars)
+  (ess-while (and chars
+                  (eq (char-before) (car chars))
+                  (ess-backward-char))
+    (setq chars (cdr chars))))
 
 
 ;;*;; Point predicates
@@ -409,7 +447,7 @@ into account."
     (when (looking-at char)
       (goto-char (match-end 0)))))
 
-(defun ess-climb-comment ()
+(defun ess-climb-outside-comment ()
   (when (and (ess-point-in-comment-p)
              (not (ess-roxy-entry-p)))
     (prog1 (comment-beginning)
