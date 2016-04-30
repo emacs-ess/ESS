@@ -159,7 +159,9 @@ Cons cell containing the token type and string representation."
   (unless (= (point) (point-min))
     (or (ess-climb-token--back)
         (ess-climb-token--back-and-forth)
-        (error "Internal error: Tokenization failed"))))
+        (error "Internal error: Backward tokenization failed:\n%s"
+               (buffer-substring (line-beginning-position)
+                                 (line-end-position))))))
 
 (defun ess-climb-token--back ()
   (let* ((token-end (point))
@@ -236,7 +238,9 @@ reached."
                          (ess-jump-token--keyword)
                          (ess-jump-token--delimiter)
                          (ess-jump-token--operator)
-                         (error "Internal error: Tokenization failed")))
+                         (error "Internal error: Forward tokenization failed:\n%s"
+                                (buffer-substring (line-beginning-position)
+                                                  (line-end-position)))))
          (token-string (buffer-substring-no-properties token-start (point))))
     (unless (eq token-type 'buffer-end)
       (cons token-type token-string))))
