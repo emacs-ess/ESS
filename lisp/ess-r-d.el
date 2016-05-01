@@ -211,7 +211,7 @@
      (ess-dialect                       . "R")
      (ess-suffix                        . "R")
      (ess-ac-sources                    . '(ac-source-R))
-     (ess-company-backends              . '((company-R-args company-R-objects)))
+     (ess-company-backends              . '((company-R-args company-R-objects :sorted)))
      (ess-build-tags-command            . "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
