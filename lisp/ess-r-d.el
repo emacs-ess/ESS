@@ -273,7 +273,7 @@
 
 ;; takes precidence over R1 below in english locales, and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R "\\(\\(?:at \\|(@\\)\\([^#]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R "\\(\\(?: at \\|(@\\)\\([^#\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
