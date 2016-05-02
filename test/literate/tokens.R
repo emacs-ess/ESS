@@ -5,11 +5,11 @@
 
 ¶`a"a"a` "a`a`a"
 
-##! (should (token= "`a\"a\"a`"))
+##! (should (token= "identifier" "`a\"a\"a`"))
 
 `a"a"a`¶ "a`a`a"
 
-##> (should (token= "\"a`a`a\""))
+##> (should (token= "string" "\"a`a`a\""))
 
 `a"a"a` "a`a`a"¶
 
@@ -18,11 +18,11 @@
 
 ¶.a_a a10
 
-##! (should (token= ".a_a"))
+##! (should (token= "identifier" ".a_a"))
 
 .a_a¶ a10
 
-##> (should (token= "a10"))
+##> (should (token= "identifier" "a10"))
 
 .a_a a10¶
 
@@ -31,19 +31,19 @@
 
 ¶100 1E10 1e10 1.10
 
-##! (should (token= "100"))
+##! (should (token= "number" "100"))
 
 100¶ 1E10 1e10 1.10
 
-##> (should (token= "1E10"))
+##> (should (token= "number" "1E10"))
 
 100 1E10¶ 1e10 1.10
 
-##> (should (token= "1e10"))
+##> (should (token= "number" "1e10"))
 
 100 1E10 1e10¶ 1.10
 
-##> (should (token= "1.10"))
+##> (should (token= "number" "1.10"))
 
 100 1E10 1e10 1.10¶
 
@@ -65,8 +65,8 @@
 
 () a[[¶[]]] {}
 
-##> (should (next-token= "["))
-##> (should (token-before= "[["))
+##> (should (ess-jump-token "["))
+##> (should (ess-token-before= "[["))
 
 () a[[[¶]]] {}
 
@@ -74,8 +74,8 @@
 
 () a[[[]]¶] {}
 
-##> (should (next-token= "]"))
-##> (should (token-before= "]]"))
+##> (should (ess-jump-token "]"))
+##> (should (ess-token-before= "]]"))
 
 () a[[[]]]¶ {}
 
@@ -92,8 +92,8 @@
 
 ¶
 
-##! (should (not (ess-jump-token)))
-##! (should (not (ess-climb-token)))
+##! (should (ess-token-before= "buffer-start"))
+##! (should (ess-token-after= "buffer-end"))
 
 ¶
 
@@ -111,6 +111,19 @@
 ##> (should (token= ","))
 
 .; .,¶
+
+
+### 7 Keywords
+
+¶if else function while for
+
+##! (should (token= "if"))
+##! (should (token= "else"))
+##! (should (token= "function"))
+##! (should (token= "while"))
+##! (should (token= "for"))
+
+if else function while for¶
 
 
 
@@ -135,8 +148,8 @@ a & a &&¶ a &&& a | a || a ||| a
 
 a & a && a &&¶& a | a || a ||| a
 
-##> (should (next-token= "&"))
-##> (should (token-before= "&&"))
+##> (should (ess-jump-token "&"))
+##> (should (ess-token-before= "&&"))
 
 a & a && a &&&¶ a | a || a ||| a
 
@@ -155,8 +168,8 @@ a & a && a &&& a | a ||¶ a ||| a
 
 a & a && a &&& a | a || a ||¶| a
 
-##> (should (next-token= "|"))
-##> (should (token-before= "||"))
+##> (should (ess-jump-token "|"))
+##> (should (ess-token-before= "||"))
 
 a & a && a &&& a | a || a |||¶ a
 
@@ -185,8 +198,8 @@ a = a := a ==¶ a === a :== a != a :!= a
 
 a = a := a == a ==¶= a :== a != a :!= a
 
-##> (should (next-token= "="))
-##> (should (token-before= "=="))
+##> (should (ess-jump-token "="))
+##> (should (ess-token-before= "=="))
 
 a = a := a == a ===¶ a :== a != a :!= a
 
@@ -195,8 +208,8 @@ a = a := a == a ===¶ a :== a != a :!= a
 
 a = a := a == a === a :=¶= a != a :!= a
 
-##> (should (next-token= "="))
-##> (should (token-before= "=="))
+##> (should (ess-jump-token "="))
+##> (should (ess-token-before= "=="))
 
 a = a := a == a === a :==¶ a != a :!= a
 
@@ -220,12 +233,12 @@ a = a := a == a === a :== a != a :!=¶ a
 ¶a %>% a %a`a`a"a"a$a@a% a %% a %%% a % a
 
 ##! (ess-jump-token)
-##! (should (token= "%>%"))
+##! (should (token= "%infix%" "%>%"))
 
 a %>%¶ a %a`a`a"a"a$a@a% a %% a %%% a % a
 
 ##> (ess-jump-token)
-##> (should (token= "%a`a`a\"a\"a$a@a%"))
+##> (should (token= "%infix%" "%a`a`a\"a\"a$a@a%"))
 
 a %>% a %a`a`a"a"a$a@a%¶ a %% a %%% a % a
 
@@ -239,7 +252,7 @@ a %>% a %a`a`a"a"a$a@a% a %%¶ a %%% a % a
 
 a %>% a %a`a`a"a"a$a@a% a %% a %%¶% a % a
 
-##> (should (token= "% a %"))
+##> (should (token= "%infix%" "% a %"))
 
 a %>% a %a`a`a"a"a$a@a% a %% a %%% a %¶ a
 
@@ -320,8 +333,8 @@ a:  a::  a:::¶  a::::  a:::=
 
 a:  a::  a:::  a:::¶:  a:::=
 
-##> (should (next-token= ":"))
-##> (should (token-before= ":::"))
+##> (should (ess-jump-token ":"))
+##> (should (ess-token-before= ":::"))
 
 a:  a::  a:::  a::::¶  a:::=
 
@@ -399,6 +412,21 @@ a < >  a >=  a > =¶  a <=
 a < >  a >=  a > =  a <=¶
 
 
+### 8 Special operators ----------------------------------------------
+
+¶~a~~a
+
+##! (should (token= "~"))
+
+~¶a~~a
+
+##> (ess-jump-token)
+##> (should (token= "~"))
+##> (should (token= "~"))
+
+~a~~¶a
+
+
 
 ##### Token refinement
 
@@ -407,7 +435,7 @@ a < >  a >=  a > =  a <=¶
 call(param ¶= NULL)
 
 ##! (should (token= "="))
-##! (should (eq (ess-token-refined-type (ess-token-before)) 'param-assign))
+##! (should (ess-refined-token= (ess-token-before) "param-assign"))
 
 call(param =¶ NULL)
 
@@ -416,8 +444,8 @@ call(param =¶ NULL)
 
 call(¶"param" = NULL)
 
-##! (should (token= "\"param\""))
-##! (should (eq (ess-token-refined-type (ess-token-before)) 'identifier))
+##! (should (token= "string" "\"param\""))
+##! (should (ess-refined-token= (ess-token-before) "identifier"))
 
 call("param"¶ = NULL)
 
@@ -426,8 +454,8 @@ call("param"¶ = NULL)
 
 ¶"call"()
 
-##! (should (token= "\"call\""))
-##! (should (eq (ess-token-refined-type (ess-token-before)) 'identifier))
+##! (should (token= "string" "\"call\""))
+##! (should (ess-refined-token= (ess-token-before) "identifier"))
 
 "call"¶()
 

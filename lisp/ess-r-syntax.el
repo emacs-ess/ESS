@@ -27,6 +27,8 @@
 
 ;;; Code:
 
+(require 'regexp-opt)
+
 
 ;;*;; Utils
 
@@ -122,65 +124,67 @@ side-effects. FORMS follows the same syntax as arguments to
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
      (some 'identity (mapcar 'eval forms))))
 
+(defun ess-char-syntax (string)
+  (char-to-string (char-syntax (string-to-char string))))
+
 
 ;;*;; Tokenisation
 
-(defalias 'ess-token-type #'caar)
-(defalias 'ess-token-string #'cdar)
-(defalias 'ess-token-start #'cadr)
-(defalias 'ess-token-end #'cddr)
+(defun ess-token-type (token) (car (nth 0 token)))
+(defun ess-token-value (token) (cdr (nth 0 token)))
+(defun ess-token-start (token) (car (nth 1 token)))
+(defun ess-token-end (token) (cdr (nth 1 token)))
 
 (defun ess-token-refined-type (token)
   (ess-token-type (ess-refine-token token)))
 
-(defun ess-token-after ()
+(defun ess-token-after (&optional token)
   "Returns next token.
 Cons cell containing the token type and string representation."
   (save-excursion
+    (when token
+      (goto-char (ess-token-end token)))
     (ess-jump-token)))
 
-(defun ess-token-after-string ()
-  (ess-token-string (ess-token-after)))
-
-(defun ess-token-after-type ()
-  (ess-token-type (ess-token-after)))
-
-(defun ess-token-before ()
+(defun ess-token-before (&optional token)
   "Returns previous token.
 Cons cell containing the token type and string representation."
   (save-excursion
+    (when token
+      (goto-char (ess-token-start token)))
     (ess-climb-token)))
-
-(defun ess-token-before-string ()
-  (ess-token-string (ess-token-before)))
-
-(defun ess-token-before-type ()
-  (ess-token-type (ess-token-before)))
 
 (defun ess-climb-token (&optional type string)
   (ess-save-excursion-when-nil
     (ess-escape-comment)
     (ess-skip-blanks-backward t)
-    (let ((token (unless (= (point) (point-min))
-                   (or (ess-climb-token--back)
-                       (ess-climb-token--back-and-forth)
-                       (error "Internal error: Backward tokenization failed:\n%s"
-                              (buffer-substring (line-beginning-position)
-                                                (line-end-position)))))))
+    (let ((token (or (ess-climb-token--back)
+                     (ess-climb-token--back-and-forth)
+                     (error "Internal error: Backward tokenization failed:\n%s"
+                            (buffer-substring (line-beginning-position)
+                                              (line-end-position))))))
       (if (or type string)
-          (when (ess-check-token token type string)
+          (when (ess-token= token type string)
             token)
         token))))
 
+(defun ess-token--cons (type value)
+  (if (eq type 'self)
+      (cons value nil)
+    (cons type value)))
+
 (defun ess-climb-token--back ()
   (let* ((token-end (point))
-         (token-type (ess-climb-token--operator))
-         (token-string (buffer-substring-no-properties (point) token-end)))
-    (unless (or (null token-type)
-                (eq token-type 'buffer-start))
-      (cons (cons token-type token-string)
+         (token-type (if (= (point) (point-min))
+                         "buffer-start"
+                       (ess-climb-token--operator)))
+         (token-value (buffer-substring-no-properties (point) token-end)))
+    (unless (null token-type)
+      (list (ess-token--cons token-type token-value)
             (cons (point) token-end)))))
 
+;; Difficult to use regexps here because we want to match greedily
+;; backward
 (defun ess-climb-token--operator ()
   (when (pcase (char-before)
           ((or ?+ ?/ ?^ ?~ ?? ?!)
@@ -208,7 +212,13 @@ Cons cell containing the token type and string representation."
           (`?:
            (prog1 (ess-backward-char)
              (ess-climb-token--char ?: ?:))))
-    'operator))
+    'self))
+
+(defsubst ess-climb-token--char (&rest chars)
+  (ess-while (and chars
+                  (eq (char-before) (car chars))
+                  (ess-backward-char))
+    (setq chars (cdr chars))))
 
 (defun ess-climb-token--back-and-forth ()
   (let ((limit (point)))
@@ -247,184 +257,181 @@ reached."
   (ess-save-excursion-when-nil
     (ess-skip-blanks-forward t)
     (let* ((token-start (point))
-           (token-type (or (ess-jump-token--keyword)
+           (token-type (or (ess-jump-token--regexps)
                            (ess-jump-token--literal)
-                           (ess-jump-token--delimiter)
-                           (ess-jump-token--operator)
+                           (ess-jump-token--infix-op)
                            (ess-jump-token--punctuation)
                            (error "Internal error: Forward tokenization failed:\n%s"
                                   (buffer-substring (line-beginning-position)
                                                     (line-end-position)))))
-           (token-string (buffer-substring-no-properties token-start (point))))
-      (unless (eq token-type 'buffer-end)
-        (let ((token (cons (cons token-type token-string)
-                           (cons token-start (point)))))
-          (if (or type string)
-              (when (ess-check-token token type string)
-                token)
-            token))))))
+           (token-value (buffer-substring-no-properties token-start (point))))
+      (let ((token (list (ess-token--cons token-type token-value)
+                         (cons token-start (point)))))
+        (if (or type string)
+            (when (ess-token= token type string)
+              token)
+          token)))))
 
 (defun ess-jump-token--literal ()
-  (or (pcase (char-after)
-        (`?`
-         (when (ess-forward-sexp)
-           'identifier))
-        ((or ?\" ?\')
-         (when (ess-forward-sexp)
-           'string)))
-      (cond
-       ;; Simply assume anything starting with a digit is a number. May be
-       ;; too liberal but takes care of fractional numbers, integers such
-       ;; as 10L, etc. False positives are not valid R code anyway.
-       ((looking-at "[0-9]")
-        (ess-forward-sexp)
-        'number)
-       ((looking-at "\\sw\\|\\s_")
-        (ess-forward-sexp)
-        'identifier))))
+  (cond
+   ;; Simply assume anything starting with a digit is a number. May be
+   ;; too liberal but takes care of fractional numbers, integers such
+   ;; as 10L, etc. False positives are not valid R code anyway.
+   ((looking-at "[0-9]")
+    (ess-forward-sexp)
+    "number")
+   ((or (looking-at "\\sw\\|\\s_")
+        (eq (char-after) ?`))
+    (ess-forward-sexp)
+    "identifier")
+   ((memq (char-after) '(?\" ?\'))
+    (ess-forward-sexp)
+    "string")))
 
 (defun ess-jump-token--punctuation ()
   (or (when (= (point) (point-max))
-        'buffer-end)
-      (when (pcase (char-after)
-              (`?,
-               (forward-char)
-               'comma)
-              (`?\;
-               (forward-char)
-               'colon))
-        'punctuation)))
+        "buffer-end")
+      (when (memq (char-after) '(?, ?\;))
+        (forward-char)
+        'self)))
 
-(defun ess-jump-token--keyword ()
-  (let ((type (when (looking-at "[a-z]+\\b")
-                (pcase (match-string 0)
-                  (`"if" 'if)
-                  (`"then" 'then)
-                  (`"else" 'else)
-                  ((or "for" "while" "function")
-                   'block-keyword)))))
-    (when type
-      (ess-forward-sexp)
-      'keyword)))
+(defvar ess-r-keywords-list
+  '("if" "then" "else" "for" "while" "function"))
 
-(defun ess-jump-token--delimiter ()
-  (when (pcase (char-after)
-          (`?\(
-           (forward-char)
-           'open-paren)
-          (`?\)
-           (forward-char)
-           'close-paren)
-          (`?\{
-           (forward-char)
-           'open-curly)
-          (`?\}
-           (forward-char)
-           'close-curly)
-          (`?\[
-           (forward-char)
-           (if (ess-looking-at "\\[")
-               (progn
-                 (ess-skip-blanks-forward)
-                 (forward-char)
-                 'open-double-brackets)
-             'open-bracket))
-          (`?\]
-           (forward-char)
-           (if (ess-looking-at "\\]")
-               (progn
-                 (ess-skip-blanks-forward)
-                 (forward-char)
-                 'close-double-brackets)
-             'close-bracket)))
-    'delimiter))
+(defvar ess-r-delimiters-list
+  '("(" ")" "{" "}" "[" "]" "[[" "]]"))
 
-(defun ess-jump-token--operator ()
-  (when (pcase (char-after)
-          ((or ?+ ?/ ?^ ?~ ??)
-           (ess-forward-char))
-          ((or ?= ?!)
-           (prog1 (ess-forward-char)
-             (ess-jump-token--char ?=)))
-          ((or ?& ?| ?* ?@ ?$)
-           (prog1 (ess-forward-char)
-             (ess-jump-token--char (char-before))))
-          (`?<
-           (prog1 (ess-forward-char)
-             (or (ess-jump-token--char ?-)
-                 (ess-jump-token--char ?=)
-                 (ess-jump-token--char ?< ?-))))
-          (`?>
-           (prog1 (ess-forward-char)
-             (ess-jump-token--char ?=)))
-          (`?-
-           (prog1 (ess-forward-char)
-             (ess-jump-token--char ?> ?>)))
-          (`?:
-           (prog1 (ess-forward-char)
-             (or (ess-jump-token--char ?=)
-                 (ess-jump-token--char ?: ?:))))
-          (`?%
-           (ess-forward-sexp)))
-    'operator))
+(defvar ess-r-operators-list
+  '("+" "-" "*" "/" "%%" "**" "^"
+    "&" "&&" "|" "||" "!" "?" "~"
+    "==" "!=" "<" "<=" ">=" ">"
+    "=" "<-" "<<-" "->" "->>"
+    "$" "@" ":" "::" ":::" ":="))
 
-(defsubst ess-jump-token--char (&rest chars)
-  (ess-while (and chars
-                  (eq (char-after) (car chars))
-                  (ess-forward-char))
-    (setq chars (cdr chars))))
+(defvar ess-r-keywords-re
+  (concat (regexp-opt ess-r-keywords-list) "\\b"))
 
-(defsubst ess-climb-token--char (&rest chars)
-  (ess-while (and chars
-                  (eq (char-before) (car chars))
-                  (ess-backward-char))
-    (setq chars (cdr chars))))
+(defvar ess-r-delimiters-re
+  (regexp-opt ess-r-delimiters-list))
+
+(defvar ess-r-operators-re
+  (regexp-opt ess-r-operators-list))
+
+(defun ess-jump-token--regexps ()
+  (when (or (looking-at ess-r-keywords-re)
+            (looking-at ess-r-delimiters-re)
+            (looking-at ess-r-operators-re))
+    (goto-char (match-end 0))
+    'self))
+
+(defun ess-jump-token--infix-op ()
+  (or (when (looking-at ess-r-operators-re)
+        (goto-char (match-end 0))
+        'self)
+      (when (eq (char-after) ?%)
+        (ess-forward-sexp)
+        "%infix%")))
 
 (defun ess-escape-token ()
   (ess-escape-comment)
   (or (ess-escape-string)
-      (when (ess-behind-token-p 'delimiter)
+      (when (ess-token-delimiter-p (ess-token-after))
         (prog1 t
-          (mapc (lambda (delim)
-                  (while (and (member (ess-token-after-string)
-                                      (list (make-string 1 delim)
-                                            (make-string 2 delim)))
-                              (eq (char-before) delim))
+          (mapc (lambda (delims)
+                  (while (and (ess-token-after= nil delims)
+                              (eq (char-before) (string-to-char
+                                                 (car delim))))
                     (ess-backward-char)))
-                '(?\[ ?\]))))
-      (ess-behind-token-p 'punctuation)
-      (and (ess-behind-token-p 'identifier)
+                '(("[" "[[") ("]" "]]")))))
+      (ess-token-after= '("," ";"))
+      (and (ess-token-after= "identifier")
            (not (memq (char-syntax (char-before)) '(?w ?_))))
       (progn (/= (skip-syntax-backward ".") 0)
-             (ess-behind-token-p 'operator))
+             (ess-token-operator-p (ess-token-after)))
       (/= (skip-syntax-backward "w_") 0)))
 
 (defun ess-refine-token (token)
-  (pcase (car token)
+  (pcase (ess-token-type token)
     ;; Parameter assignment
-    (`(operator . "=")
+    (`"="
      (save-excursion
        (goto-char (ess-token-start token))
        (let ((containing-sexp (ess-containing-sexp-position)))
          (when (and containing-sexp
                     (ess-at-containing-sexp
-                      (and (string= (ess-token-after-string) "(")
-                           (memq (ess-token-before-type) '(identifier string))))
+                      (and (ess-token-after= "(")
+                           (ess-token-before= '("identifier" "string"))))
                     (save-excursion
                       (and (ess-climb-token)
-                           (member (ess-token-before-string) '("," "(")))))
-           (setcar (car token) 'param-assign)))))
+                           (ess-token-before= '("," "(")))))
+           (setcar (car token) "param-assign")))))
     ;; Quoted identifiers
-    (`(string . ,_)
+    (`"string"
      (when (or
             ;; Quoted parameter names
-            (eq (ess-token-refined-type (ess-token-after)) 'param-assign)
+            (ess-refined-token= (ess-token-after) "param-assign")
             ;; Quoted call names
-            (save-excursion
-              (goto-char (ess-token-end token))
-              (string= (ess-token-after-string) "(")))
-       (setcar (car token) 'identifier))))
+            (ess-token-after= "("))
+       (setcar (car token) "identifier")))
+    (`(or "(" ")")
+     (or (save-excursion
+           (if (ess-token-close-delimiter-p token)
+               (ess-climb-paired-sexp nil token)
+             (goto-char (ess-token-start token)))
+           (when (ess-token-before= "keyword")
+             (setcar (car token) "prefixed-block-delimiter")))
+         (when (ess-token= token ")")
+           (save-excursion
+             (ess-climb-paired-sexp ")" token)
+             (when (ess-token-before= '("identifier" "string"))
+               (setcar (car token) "argslist-delimiter"))))))
+    (`(or "{" "}")
+     (save-excursion
+       (unless (ess-climb-paired-sexp "}" token)
+         (goto-char (ess-token-start token)))
+       (when (ess-refined-token= (ess-token-before) "prefixed-block-delimiter")
+         (setcar (car token) "prefixed-block-delimiter")))))
   token)
+
+
+;;;*;;; Token predicates
+
+(defun ess-token= (token &optional type string)
+  (when (and (null type)
+             (null string))
+    (error "No condition supplied"))
+  (let ((type (if (stringp type) (list type) type))
+        (string (if (stringp string) (list string) string)))
+    (and (if type (member (ess-token-type token) type) t)
+         (if string (member (ess-token-value token) string) t))))
+
+(defun ess-refined-token= (token type &optional string)
+  (ess-token= (ess-refine-token token) type string))
+
+(defun ess-token-after= (type &optional string)
+  (ess-token= (ess-token-after) type string))
+
+(defun ess-token-before= (type &optional string)
+  (ess-token= (ess-token-before) type string))
+
+(defun ess-token-open-delimiter-p (token)
+  (string= (ess-char-syntax (ess-token-type token)) "("))
+
+(defun ess-token-close-delimiter-p (token)
+  (string= (ess-char-syntax (ess-token-type token)) ")"))
+
+(defun ess-token-delimiter-p (token)
+  (or (ess-token-open-delimiter-p token)
+      (ess-token-close-delimiter-p token)))
+
+(defun ess-token-operator-p (token &optional strict)
+  (and (or (member (ess-token-type token) ess-r-operators-list)
+           (string= (ess-token-type token) "%infix%"))
+       (or (null strict)
+           (not (ess-refined-token= token "param-assign")))))
+
+(defun ess-token-keyword-p (token)
+  (member (ess-token-type token) ess-r-keywords-list))
 
 
 ;;*;; Point predicates
@@ -448,13 +455,13 @@ reached."
               (ess-behind-call-opening "[[(]"))
     (or (save-excursion
           (ess-jump-object)
-          (and (not (ess-behind-parameter-op-p))
+          (and (not (ess-ahead-param-assign-p))
                (ess-behind-operator-p)))
         (save-excursion
           (ess-climb-object)
           (ess-climb-operator)
           (and (ess-behind-operator-p)
-               (not (ess-behind-parameter-op-p)))))))
+               (not (ess-ahead-param-assign-p)))))))
 
 (defun ess-within-call-name-p (&optional call)
   (save-excursion
@@ -477,18 +484,6 @@ return the prefix."
 (defun ess-within-string-p (&optional state)
   (let ((state (or state (syntax-ppss))))
         (eq (syntax-ppss-context state) 'string)))
-
-(defun ess-behind-token-p (type &optional string)
-  (ess-check-token (ess-token-after) type string))
-
-(defun ess-ahead-token-p (type &optional string)
-  (ess-check-token (ess-token-before) type string))
-
-(defun ess-check-token (token type &optional string)
-  (and (eq (ess-token-type token) type)
-       (if string
-           (string= (ess-token-string token) string)
-         t)))
 
 
 ;;*;; Syntactic Travellers and Predicates
@@ -546,9 +541,14 @@ into account."
   (and (nth 3 (syntax-ppss))
        (ess-goto-char (nth 8 (syntax-ppss)))))
 
-(defun ess-climb-paired-sexp (string)
-  (when (ess-ahead-token-p 'delimiter string)
-    (ess-backward-sexp)))
+(defun ess-climb-paired-sexp (&optional type token)
+  (ess-save-excursion-when-nil
+    (let ((token (or token (ess-token-before))))
+      (goto-char (ess-token-end token))
+      (when (if type
+                (ess-token= token type)
+              (ess-token-delimiter-p token))
+        (ess-backward-sexp)))))
 
 
 ;;;*;;; Blocks
@@ -635,8 +635,8 @@ return the prefix."
              (prog1 (and (ess-climb-if-else-call)
                          (or (null call)
                              (looking-at call)))
-               (when (ess-behind-token-p 'keyword "else")
-                 (ess-climb-token 'delimiter "}"))))
+               (when (ess-token-after= "else")
+                 (ess-climb-token "}"))))
         (let ((pos (ess-unbraced-block-p ignore-ifelse)))
           (and (ess-goto-char pos)
                (if call
@@ -710,13 +710,10 @@ return the prefix."
   (save-excursion
     (ess-climb-object)))
 
-(defun ess-behind-parameter-op-p ()
+(defun ess-ahead-param-assign-p ()
   "Are we looking at a function argument? To be called just
 before the `=' sign."
-  (save-excursion
-    (and (looking-at "[ \t]*=[^=]")
-         (ess-climb-object)
-         (looking-back "[(,][ \t\n]*" (line-beginning-position 0)))))
+  (ess-refined-token= (ess-token-before) "param-assign"))
 
 (defun ess-behind-arg-p ()
   (save-excursion
@@ -910,12 +907,11 @@ expression."
 
 ;;;*;;; Statements
 
-(defun ess-ahead-operator-p (&optional fun-arg)
-  (save-excursion
-    (and (ess-climb-operator)
-         (if (not fun-arg)
-             (not (ess-behind-parameter-op-p))
-           t))))
+(defun ess-behind-operator-p (&optional strict)
+  (ess-token-operator-p (ess-token-after) strict))
+
+(defun ess-ahead-operator-p (&optional strict)
+  (ess-token-operator-p (ess-token-before) strict))
 
 (defun ess-climb-lhs (&optional no-fun-arg climb-line)
   (ess-save-excursion-when-nil
@@ -933,17 +929,15 @@ expression."
          (ess-jump-operator))))
 
 (defun ess-climb-operator ()
-  (when (ess-save-excursion-when-nil
-          (eq (ess-token-type (ess-climb-token)) 'operator))
-    (prog1 t
+  (when (ess-token-operator-p (ess-token-before))
+    (prog1 (ess-climb-token)
       (ess-skip-blanks-backward))))
 
 ;; Currently doesn't check that the operator is not binary
 (defun ess-climb-unary-operator ()
   (ess-save-excursion-when-nil
     (let ((token (ess-climb-token)))
-      (and (eq (ess-token-type token) 'operator)
-           (member (ess-token-string token) '("+" "-" "!" "?" "~"))))))
+      (member (ess-token-type token) '("+" "-" "!" "?" "~")))))
 
 ;; Currently returns t if we climbed lines, nil otherwise.
 (defun ess-climb-continuations (&optional cascade ignore-ifelse)
@@ -1012,25 +1006,18 @@ expression."
           (ess-jump-continuations)))
       t)))
 
-(defun ess-behind-continuation-p (&optional or-parameter)
-  (or (save-excursion
-        (or (eq (ess-token-before-type) 'operator)
-            (when or-parameter
-              (eq (ess-token-before-type) 'param-assign))))
+(defun ess-ahead-continuation-p (&optional or-parameter)
+  (or (ess-token-operator-p (ess-token-before) (not or-parameter))
       (save-excursion
         (ess-climb-block-prefix))
+      (ess-token-after= "else")
       (save-excursion
-        (or (looking-at "else\\b")
-            (ess-climb-if-else-call)))))
-
-(defun ess-behind-operator-p ()
-  (eq (ess-token-after-type) 'operator))
+        (ess-climb-if-else-call))))
 
 (defun ess-token-definition-op-p (token strict)
-  (and (eq (ess-token-type token) 'operator)
-       (member (ess-token-string token) '("<-" "<<-" ":=" "~" "="))
+  (and (ess-token= token '("<-" "<<-" ":=" "~" "="))
        (if strict
-           (not (eq (ess-token-refined-type token) 'param-assign))
+           (not (ess-refined-token= token "param-assign"))
          t)))
 
 (defun ess-behind-definition-op-p (&optional strict)
@@ -1041,8 +1028,8 @@ expression."
 
 (defun ess-behind-assignment-op-p ()
   (let ((token (ess-token-after)))
-    (and (member (ess-token-string token) '("<-" "="))
-         (not (eq (ess-token-refined-type token) 'param-assign)))))
+    (and (ess-token= token '("<-" "="))
+         (not (ess-refined-token= token "param-assign")))))
 
 (defun ess-escape-continuations ()
   (ess-any ((unless (ess-ahead-boundary-p)
@@ -1074,15 +1061,15 @@ expression."
   "Climb if, else, and if else calls."
   (ess-save-excursion-when-nil
     (cond ((ess-climb-paired-sexp ")")
-           (when (ess-climb-token 'keyword "if")
+           (when (ess-climb-token "if")
              ;; Check for `else if'
              (prog1 t
                (ess-save-excursion-when-nil
                  (let ((orig-line (line-number-at-pos)))
-                   (and (ess-climb-token 'keyword "else")
+                   (and (ess-climb-token "else")
                         (or multi-line
                             (eq orig-line (line-number-at-pos)))))))))
-          ((ess-climb-token 'keyword "else")))))
+          ((ess-climb-token "else")))))
 
 
 (defun ess-climb-if-else-body (&optional from-else)
@@ -1105,9 +1092,9 @@ expression."
   "Climb horizontal as well as vertical if-else chains, with or
 without curly braces."
   ;; Don't climb if we're atop the current chain of if-else
-  (unless (ess-behind-token-p 'keyword "if")
+  (unless (ess-token-after= "if")
     (ess-save-excursion-when-nil
-      (let ((from-else (ess-behind-token-p 'keyword "else")))
+      (let ((from-else (ess-token-after= "else")))
         (when (and (ess-climb-if-else-body from-else)
                    (ess-climb-if-else-call to-start))
           ;; If we start from a final else and climb to another else, we
@@ -1115,8 +1102,8 @@ without curly braces."
           ;; climb-recurse to the top of the current chain and climb
           ;; again to step in the outer chain.
           (when (save-excursion (and from-else
-                                     (ess-jump-token 'keyword "else")
-                                     (not (ess-jump-token 'keyword "if"))))
+                                     (ess-jump-token "else")
+                                     (not (ess-jump-token "if"))))
             (ess-climb-if-else 'to-start)
             (ess-climb-continuations)
             (ess-climb-block-prefix nil 'ignore-ifelse)
@@ -1131,7 +1118,7 @@ without curly braces."
   (ess-save-excursion-when-nil
     ;; Don't record current line if not needed (expensive operation)
     (let ((cur-line (when same-line (line-number-at-pos))))
-      (and (ess-climb-token 'keyword "else")
+      (and (ess-climb-token "else")
            (if same-line
                (= cur-line (line-number-at-pos))
              t)))))

@@ -1520,9 +1520,9 @@ Returns nil if line starts inside a string, t if in a comment."
            (eq (char-before) ?,))
          (ess-calculate-indent--args nil))
         ((save-excursion
-           (and (ess-climb-operator)
-                (or (not ess-align-continuations-in-calls)
-                    (ess-behind-definition-op-p))))
+           (and (ess-ahead-operator-p)
+                (or (ess-ahead-definition-op-p)
+                    (not ess-align-continuations-in-calls))))
          (ess-calculate-indent--continued))
         (t
          (ess-calculate-indent--args 0))))
@@ -1584,7 +1584,7 @@ Returns nil if line starts inside a string, t if in a comment."
         (+ (current-column)
            (ess-offset 'block)))
        ;; Don't indent relatively other continuations
-       ((ess-behind-continuation-p)
+       ((ess-ahead-continuation-p)
         nil)
        ;; If a block already contains an indented line, we can indent
        ;; relatively from that first line
@@ -1959,8 +1959,8 @@ otherwise nil."
                (goto-char (1+ contained-sexp))
                (ess-up-list))
               ;; Jump over continued statements
-              ((and jump-cont (ess-ahead-operator-p))
-               (ess-skip-blanks-forward t)
+              ((and jump-cont (ess-ahead-operator-p 'strict))
+               (ess-climb-token)
                (ess-jump-continuations))
               ;; Jump over comments
               ((looking-at "#")
