@@ -28,6 +28,7 @@
 ;;; Code:
 
 (require 'regexp-opt)
+(require 'cl-lib)
 
 
 ;;*;; Utils
@@ -291,12 +292,21 @@ reached."
 (defun ess-jump-token--punctuation ()
   (or (when (= (point) (point-max))
         "buffer-end")
-      (when (memq (char-after) '(?, ?\;))
-        (forward-char)
-        'self)))
+      (pcase (char-after)
+        (`?\;
+         (forward-char)
+         'self)
+        (`?,
+         (forward-char)
+         ;; Treat blanks after comma as part of an argument
+         (ess-skip-blanks-forward t)
+         ","))))
+
+(defvar ess-r-prefix-keywords-list
+  '("if" "for" "while" "function"))
 
 (defvar ess-r-keywords-list
-  '("if" "then" "else" "for" "while" "function"))
+  (append ess-r-prefix-keywords-list '("else")))
 
 (defvar ess-r-delimiters-list
   '("(" ")" "{" "}" "[" "]" "[[" "]]"))
@@ -334,6 +344,7 @@ reached."
 
 (defun ess-escape-token ()
   (ess-escape-comment)
+  (ess-skip-blanks-forward)
   (or (ess-escape-string)
       (when (ess-token-delimiter-p (ess-token-after))
         (prog1 t
@@ -351,47 +362,61 @@ reached."
       (/= (skip-syntax-backward "w_") 0)))
 
 (defun ess-refine-token (token)
+  (let ((refined-type
+         (pcase (ess-token-type token)
+           ;; Parameter assignment
+           ("="
+            (save-excursion
+              (goto-char (ess-token-start token))
+              (let ((containing-sexp (ess-containing-sexp-position)))
+                (when (and containing-sexp
+                           (ess-at-containing-sexp
+                             (and (ess-token-after= "(")
+                                  (ess-token-before= '("identifier" "string"))))
+                           (save-excursion
+                             (and (ess-climb-token)
+                                  (ess-token-before= '("," "(")))))
+                  "param-assign"))))
+           ;; Quoted identifiers
+           ("string"
+            (when (or
+                   ;; Quoted parameter names
+                   (ess-refined-token= (ess-token-after) "param-assign")
+                   ;; Quoted call names
+                   (ess-token-after= "("))
+              "identifier"))
+           ((or "(" ")")
+            (or (save-excursion
+                  (if (ess-token-close-delimiter-p token)
+                      (ess-climb-paired-delims nil token)
+                    (goto-char (ess-token-start token)))
+                  (when (ess-token-keyword-p (ess-token-before))
+                    "prefixed-expr-delimiter"))
+                ;; Fixme: probably too crude. Better handled in parser
+                (when (ess-token= token ")")
+                  (save-excursion
+                    (ess-climb-paired-delims ")" token)
+                    (when (ess-token-before= '("identifier" "string" ")" "]" "]]" "}"))
+                      "argslist-delimiter")))))
+           ((or "{" "}")
+            (save-excursion
+              (unless (ess-climb-paired-delims "}" token)
+                (goto-char (ess-token-start token)))
+              (when (ess-refined-token= (ess-token-before) "prefixed-expr-delimiter")
+                "prefixed-expr-delimiter"))))))
+    (if refined-type
+        (list (cons refined-type (ess-token-value token))
+              (nth 1 token))
+      token)))
+
+(defun ess-token-balancing-delim (token)
   (pcase (ess-token-type token)
-    ;; Parameter assignment
-    (`"="
-     (save-excursion
-       (goto-char (ess-token-start token))
-       (let ((containing-sexp (ess-containing-sexp-position)))
-         (when (and containing-sexp
-                    (ess-at-containing-sexp
-                      (and (ess-token-after= "(")
-                           (ess-token-before= '("identifier" "string"))))
-                    (save-excursion
-                      (and (ess-climb-token)
-                           (ess-token-before= '("," "(")))))
-           (setcar (car token) "param-assign")))))
-    ;; Quoted identifiers
-    (`"string"
-     (when (or
-            ;; Quoted parameter names
-            (ess-refined-token= (ess-token-after) "param-assign")
-            ;; Quoted call names
-            (ess-token-after= "("))
-       (setcar (car token) "identifier")))
-    (`(or "(" ")")
-     (or (save-excursion
-           (if (ess-token-close-delimiter-p token)
-               (ess-climb-paired-sexp nil token)
-             (goto-char (ess-token-start token)))
-           (when (ess-token-before= "keyword")
-             (setcar (car token) "prefixed-block-delimiter")))
-         (when (ess-token= token ")")
-           (save-excursion
-             (ess-climb-paired-sexp ")" token)
-             (when (ess-token-before= '("identifier" "string"))
-               (setcar (car token) "argslist-delimiter"))))))
-    (`(or "{" "}")
-     (save-excursion
-       (unless (ess-climb-paired-sexp "}" token)
-         (goto-char (ess-token-start token)))
-       (when (ess-refined-token= (ess-token-before) "prefixed-block-delimiter")
-         (setcar (car token) "prefixed-block-delimiter")))))
-  token)
+    (`"(" ")")
+    (`")" "(")
+    (`"[" "]")
+    (`"]" "[")
+    (`"[[" "]]")
+    (`"]]" "[[")))
 
 
 ;;;*;;; Token predicates
@@ -432,6 +457,294 @@ reached."
 
 (defun ess-token-keyword-p (token)
   (member (ess-token-type token) ess-r-keywords-list))
+
+
+;;;*;;; Tokens properties and accessors
+
+(defun ess-token-make-hash (&rest specs)
+  (let ((table (make-hash-table :test #'equal)))
+    (mapc (lambda (spec)
+            ;; alist
+            (if (listp (cdr spec))
+                (mapc (lambda (cell)
+                      (puthash (car cell) (cdr cell) table))
+                    spec)
+              ;; Cons cell
+              (mapc (lambda (token)
+                        (puthash token (cdr spec) table))
+                      (car spec))))
+          specs)
+    table))
+
+(defvar ess-token-r-powers-delimiters
+  '(("("  . 100)
+    ("["  . 100)
+    ("[[" . 100)))
+
+(defvar ess-token-r-powers-operator
+  '(("?"       .  5)
+    ("else"    .  8)
+    ("<-"      . 10)
+    ("<<-"     . 10)
+    ("="       . 15)
+    ("->"      . 20)
+    ("->>"     . 20)
+    ("~"       . 25)
+    ("|"       . 30)
+    ("||"      . 30)
+    ("&"       . 35)
+    ("&&"      . 35)
+    ("!"       . 40)
+    ("<"       . 45)
+    (">"       . 45)
+    ("<="      . 45)
+    (">="      . 45)
+    ("=="      . 45)
+    ("+"       . 50)
+    ("-"       . 50)
+    ("*"       . 55)
+    ("/"       . 55)
+    ("%infix%" . 60)
+    (":"       . 65)
+    ("^"       . 70)
+    ("$"       . 75)
+    ("@"       . 75)
+    ("::"      . 80)
+    (":::"     . 80)))
+
+(defvar ess-token-r-power-table
+  (ess-token-make-hash ess-token-r-powers-operator
+                       ess-token-r-powers-delimiters))
+
+(defvar ess-token-r-right-powers-operator
+  '((")"  . 1)))
+
+(defvar ess-token-r-right-power-table
+  (ess-token-make-hash ess-token-r-powers-operator
+                       ess-token-r-right-powers-operator))
+
+(defvar ess-token-r-nud-table
+  (ess-token-make-hash
+   '(("identifier" . identity)
+     ("literal" . identity)
+     ("number" . identity)
+     ("function" . identity)
+     ("if" . identity)
+     ("while" . identity)
+     ("for" . identity))
+   '(("(" . ess-parser-nud-block)
+     ("{" . ess-parser-nud-block))))
+
+(defvar ess-token-r-rnud-table
+  (ess-token-make-hash
+   '(("identifier" . identity)
+     ("literal" . identity)
+     ("number" . identity))
+   '((")" . ess-parser-rnud-paren)
+     ("}" . ess-parser-nud-block))))
+
+(defvar ess-token-r-leds-operator
+  (let ((operators-list (append '("%infix%" "else") ess-r-operators-list)))
+    (cons operators-list #'ess-parser-led-lassoc)))
+
+(defvar ess-token-r-leds-delimiter
+  '(("(" . ess-parser-led-funcall)
+    ("[" . ess-parser-led-funcall)
+    ("[[" . ess-parser-led-funcall)))
+
+(defvar ess-token-r-led-table
+  (ess-token-make-hash ess-token-r-leds-operator
+                       ess-token-r-leds-delimiter))
+
+(defvar ess-token-r-rid-table
+  (ess-token-make-hash
+   '((")" . ess-parser-rid-expr-prefix))))
+
+
+;;;*;;; Nud, led and rid functions
+
+(defun ess-parser-nud-block (prefix-token)
+  (let ((right (list (cons "TODO" nil))))
+    (ess-parser-advance-pair nil prefix-token)
+    (ess-node (cons "block" nil)
+              (cons (ess-token-start prefix-token) (point))
+              (list prefix-token right))))
+
+(defun ess-parser-led-lassoc (start infix-token)
+  (let* ((power (ess-parser-power infix-token))
+         (end (ess-parse-expression power)))
+    (ess-node (cons "binary-op" nil)
+              (cons (ess-parser-token-start start) (point))
+              (list start infix-token end))))
+
+(defun ess-parser-led-funcall (left infix-token)
+  (when (ess-token= left (append '("identifier" "string" "node")
+                                 ess-r-prefix-keywords-list))
+    (let* ((power (ess-parser-power infix-token))
+           (right (ess-parse-arglist power infix-token))
+           (type (if (ess-token= left ess-r-prefix-keywords-list)
+                     "prefixed-expr"
+                   "funcall")))
+      (when (string= type "prefixed-expr")
+        (setq right (list right (ess-parse-expression 0))))
+      (ess-node (cons type nil)
+                (cons (ess-parser-token-start left) (point))
+                (list left right)))))
+
+(defun ess-parser-rid-expr-prefix (right suffix-token)
+  (when (ess-refined-token= suffix-token "prefixed-expr-delimiter")
+    (ess-parser-rnud-paren suffix-token right)))
+
+(defun ess-parser-rnud-paren (suffix-token &optional prefixed-expr)
+  (let* ((infix-token (save-excursion
+                        (ess-parser-advance-pair nil suffix-token)))
+         (power (ess-parser-power infix-token))
+         (args (ess-parse-arglist power suffix-token))
+         (left (if prefixed-expr
+                   (ess-parser-advance)
+                 (ess-parse-expression power)))
+         (type (cond (prefixed-expr "prefixed-expr")
+                     (left "funcall")
+                     (t "enclosed-expr"))))
+    (when prefixed-expr
+      (setcdr (car prefixed-expr) (list infix-token suffix-token)))
+    (ess-node (cons type nil)
+              (cons (ess-parser-token-start suffix-token) (point))
+              (if prefixed-expr
+                  (list prefixed-expr args left)
+                (list args left)))))
+
+
+;;;*;;; Parsing
+
+(defun ess-parser-advance (&optional type value)
+  (if (bound-and-true-p ess-parser--backward)
+      (ess-climb-token type value)
+    (ess-jump-token type value)))
+
+(defun ess-parser-advance-pair (&optional type token)
+  (if (bound-and-true-p ess-parser--backward)
+      (ess-climb-paired-delims type token)
+    (ess-jump-paired-delims type token)))
+
+(defun ess-parser-next-token ()
+  (if (bound-and-true-p ess-parser--backward)
+      (ess-token-before)
+    (ess-token-after)))
+
+(defun ess-parser-token-start (token)
+  (if (bound-and-true-p ess-parser--backward)
+      (ess-token-end token)
+    (ess-token-start token)))
+
+(defun ess-parser-power (token)
+  (or (if (bound-and-true-p ess-parser--backward)
+          (gethash (ess-token-type token) ess-token-r-right-power-table)
+        (gethash (ess-token-type token) ess-token-r-power-table))
+      0))
+
+(defun ess-node (type pos contents)
+  (let ((pos (if (bound-and-true-p ess-parser--backward)
+                 (cons (cdr pos) (car pos))
+               pos))
+        (contents (if (bound-and-true-p ess-parser--backward)
+                      (nreverse contents)
+                    contents)))
+    (list type pos contents)))
+
+(defalias 'ess-node-start #'ess-token-start)
+(defalias 'ess-node-end #'ess-token-end)
+
+(defun ess-parse-start-token (token)
+  (let* ((table (if (bound-and-true-p ess-parser--backward)
+                    ess-token-r-rnud-table
+                  ess-token-r-nud-table))
+         (nud (gethash (ess-token-type token) table)))
+    (when (fboundp nud)
+      (funcall nud token))))
+
+(defun ess-parse-infix-token (infix-token left)
+  (let ((infix-power (ess-parser-power infix-token))
+        (led (or (when (bound-and-true-p ess-parser--backward)
+                   (gethash (ess-token-type infix-token) ess-token-r-rid-table))
+                 (gethash (ess-token-type infix-token) ess-token-r-led-table))))
+    (funcall led left infix-token)))
+
+(defun ess-parse-expression (&optional power)
+  (let ((current (ess-parse-start-token (ess-parser-advance)))
+        (power (or power 0))
+        (next (ess-parser-next-token))
+        (last-sucessful-pos (point))
+        last-success)
+    (setq last-success current)
+    (while (and current (< power (ess-parser-power next)))
+      (ess-parser-advance)
+      (when (setq current (ess-parse-infix-token next current))
+        (setq last-sucessful-pos (point))
+        (setq last-success current))
+      (setq next (ess-parser-next-token)))
+    (goto-char last-sucessful-pos)
+    last-success))
+
+(defun ess-parse-arglist (power start-token)
+  (let ((start-pos (point))
+        (arg-start-pos (point))
+        (arglist (list start-token))
+        (closing-delim (ess-token-balancing-delim start-token))
+        expr)
+    (while (and (setq expr (ess-parse-expression))
+                (push (ess-node (cons "arg" nil)
+                                (cons arg-start-pos (point))
+                                (list expr))
+                      arglist)
+                (ess-parser-advance ","))
+      (setq arg-start-pos (point)))
+    (push (ess-parser-advance closing-delim) arglist)
+    (ess-node (cons "arglist" nil)
+              (cons start-pos (1- (point)))
+              (nreverse arglist))))
+
+(defun forward-ess-r-expr ()
+  (interactive)
+  (ess-save-excursion-when-nil
+    (ess-escape-token)
+    (ess-parse-expression)))
+
+(defun forward-ess-r-sexp ()
+  (interactive)
+  (ess-save-excursion-when-nil
+    (ess-escape-token)
+    (let* ((orig-token (ess-token-after))
+           (tree (ess-parse-expression))
+           (sexp-node (ess-parser-tree-assoc orig-token tree)))
+      (when sexp-node
+        (goto-char (ess-token-end sexp-node))
+        sexp-node))))
+
+(defun backward-ess-r-expr ()
+  (interactive)
+  (let ((ess-parser--backward t))
+    (ess-parse-expression)))
+
+(defun backward-ess-r-sexp ()
+  (interactive)
+  (error "todo"))
+
+(defun ess-parser-tree-assoc (key tree)
+  (let ((next tree)
+        stack last-node result)
+    (while (and next (null result))
+      (cond ((eq next 'node-end)
+             (pop last-node))
+            ((nth 2 next)
+             (push 'node-end stack)
+             (dolist (node (nth 2 next))
+               (push node stack))
+             (push next last-node))
+            ((equal next key)
+             (setq result (car last-node))))
+      (setq next (pop stack)))
+    result))
 
 
 ;;*;; Point predicates
@@ -541,14 +854,25 @@ into account."
   (and (nth 3 (syntax-ppss))
        (ess-goto-char (nth 8 (syntax-ppss)))))
 
-(defun ess-climb-paired-sexp (&optional type token)
+(defun ess-climb-paired-delims (&optional type token)
   (ess-save-excursion-when-nil
     (let ((token (or token (ess-token-before))))
       (goto-char (ess-token-end token))
       (when (if type
                 (ess-token= token type)
               (ess-token-delimiter-p token))
-        (ess-backward-sexp)))))
+        (and (ess-backward-sexp)
+             (ess-token-after))))))
+
+(defun ess-jump-paired-delims (&optional type token)
+  (ess-save-excursion-when-nil
+    (let ((token (or token (ess-token-after))))
+      (goto-char (ess-token-start token))
+      (when (if type
+                (ess-token= token type)
+              (ess-token-delimiter-p token))
+        (and (ess-forward-sexp)
+             (ess-token-before))))))
 
 
 ;;;*;;; Blocks
@@ -1060,7 +1384,7 @@ expression."
 (defun ess-climb-if-else-call (&optional multi-line)
   "Climb if, else, and if else calls."
   (ess-save-excursion-when-nil
-    (cond ((ess-climb-paired-sexp ")")
+    (cond ((ess-climb-paired-delims ")")
            (when (ess-climb-token "if")
              ;; Check for `else if'
              (prog1 t
