@@ -24,7 +24,7 @@ all files within R packages and is indicated with @code{[pkg:NAME]} in
 the mode-line.
 @item @ESS{[R]}: Help lookup has been improved.
 It is now possible to get help for namespaced objects such as
-pkg::foobar. Furthemore, ESS recognizes more reliably when you change
+pkg::foobar. Furthermore, ESS recognizes more reliably when you change
 @code{options('html_type')}.
 @item @ESS{[R]}: New specialized breakpoints for debugging magrittr pipes
 @item @ESS{}: ESS now implements a simple message passing interface
@@ -37,8 +37,8 @@ Bug fixes in 16.04:
 @item @ESS{[R]}: Don't skip breakpoints in magrittr's @code{debug_pipe}
 @item @ESS{[R]}: Error highlighting now understands `testthat` type errors
 @item @ESS{[Julia]}: Added getwd and setwd generic commands
-@item 
 @end itemize
+
 
 Changes and New Features in 15.09:
 @itemize @bullet
@@ -61,7 +61,7 @@ of continued statements have been replaced by
 @code{ess-offset-continuations}. It can be set to either @code{cascade}
 or @code{straight} (the default). @code{ess-arg-function-offset} has
 been replaced by @code{ess-indent-from-lhs} and has been generalised to
-assignements. This setting now works with both statement blocks and
+assignments. This setting now works with both statement blocks and
 expressions and only takes effect for offsets set to @code{prev-call}
 and @code{open-delim} in order to produce a consistent indentation.
 
