@@ -1332,7 +1332,7 @@ end. Run current buffer's and PROCESS'
 `ess-presend-filter-functions' hooks."
   (cond
    ((ess-tracebug-p)
-    (ess-tracebug-send-region proc start end visibly message inject))
+    (ess-tracebug-send-region proc start end visibly message))
    (t (:override
        (ess-send-string process (buffer-substring start end) visibly message)))))
 
@@ -1653,14 +1653,11 @@ they might throw off the debugger."
     (skip-chars-backward "\n\t ")
     (setq end (point))))
 
-(defun ess-eval-region (start end toggle &optional message inject)
+(defun ess-eval-region (start end toggle &optional message)
   "Send the current region to the inferior ESS process.
 With prefix argument toggle the meaning of `ess-eval-visibly';
 this does not apply when using the S-plus GUI, see
-`ess-dde-send-region'.
-
-If INJECT is non-nil the region will be pre-processed in a
-dialect specific way to include source references"
+`ess-dde-send-region'."
   (interactive "r\nP")
 
   (ess-force-buffer-current "Process to use: ")
