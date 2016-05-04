@@ -1304,7 +1304,7 @@ Hide all the junk output in temporary buffer."
   (when message
     (message message)))
 
-(ess-defgeneric ess-send-string (process string &optional visibly message)
+(ess-defgeneric ess-send-string (process string &optional visibly message type)
   "ESS wrapper for `process-send-string'.
 Run `comint-input-filter-functions' and current buffer's and
 PROCESS' `ess-presend-filter-functions' hooks on the input
@@ -1312,7 +1312,8 @@ STRING. VISIBLY can be nil, t, 'nowait or a string.  If string
 the behavior is as with 'nowait with the differences that
 inserted string is VISIBLY instead of STRING (evaluated command
 is still STRING).  In all other cases the behavior is as
-described in `ess-eval-visibly'. STRING need not end with \\n."
+described in `ess-eval-visibly'. STRING need not end with
+\\n. TYPE is a symbol indicating type of the string."
   ;; No support of `visibly' when there's no secondary prompt
   (let ((visibly (if (and (eq visibly t)
                           (null inferior-ess-secondary-prompt))
@@ -1324,17 +1325,18 @@ described in `ess-eval-visibly'. STRING need not end with \\n."
     (:override
      (ess-send-string--fallback process string visibly message))))
 
-(ess-defgeneric ess-send-region (process start end &optional visibly message)
+(ess-defgeneric ess-send-region (process start end &optional visibly message type)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call
 `ess-send-string'. If MESSAGE is supplied, display it at the
 end. Run current buffer's and PROCESS'
-`ess-presend-filter-functions' hooks."
+`ess-presend-filter-functions' hooks. TYPE is a symbol indicating
+type of the region."
   (cond
    ((ess-tracebug-p)
-    (ess-tracebug-send-region proc start end visibly message))
+    (ess-tracebug-send-region proc start end visibly message type))
    (t (:override
-       (ess-send-string process (buffer-substring start end) visibly message)))))
+       (ess-send-string process (buffer-substring start end) visibly message type)))))
 
 ;;*;; Evaluation commands
 
@@ -1653,11 +1655,12 @@ they might throw off the debugger."
     (skip-chars-backward "\n\t ")
     (setq end (point))))
 
-(defun ess-eval-region (start end toggle &optional message)
+(defun ess-eval-region (start end toggle &optional message type)
   "Send the current region to the inferior ESS process.
 With prefix argument toggle the meaning of `ess-eval-visibly';
 this does not apply when using the S-plus GUI, see
-`ess-dde-send-region'."
+`ess-dde-send-region'. TYPE is a symbol indicating what type of
+region this is."
   (interactive "r\nP")
 
   (ess-force-buffer-current "Process to use: ")
@@ -1674,7 +1677,7 @@ this does not apply when using the S-plus GUI, see
         (message (or message "Eval region"))
         (proc (ess-get-process)))
     (save-excursion
-      (ess-send-region proc start end visibly message)))
+      (ess-send-region proc start end visibly message type)))
 
   (when ess-eval-deactivate-mark
     (ess-deactivate-mark))

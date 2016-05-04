@@ -1124,14 +1124,14 @@ selected (see `ess-r-set-evaluation-env')."
          (command (ess-build-load-command file nil t pkg-name)))
     (ess-send-string (ess-get-process) command)))
 
-(ess-defmethod R ess-send-region (proc start end visibly message)
+(ess-defmethod R ess-send-region (proc start end visibly message type)
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
     (ess-r-send-region-namespaced proc start end visibly message))
    ;; Evaluation into current env
    (t
-    (ess-send-string proc (buffer-substring start end) visibly message))))
+    (ess-send-string proc (buffer-substring start end) visibly message type))))
 
 (defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
   "Ask for for the package and devSource region into it."
