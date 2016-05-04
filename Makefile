@@ -54,9 +54,9 @@ downloads: all RPM.spec cleanup-dist
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
-	CLEANUP="user-* useR-* Why_* README.*"; \
-	 cd $(ESSDIR)/doc; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
-	 $(MAKE) all cleanaux ; cd ../..
+	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
+	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
+	 $(MAKE) all cleanaux ; cd $$CD; fi
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
 	cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
 	cp -p RPM.spec $(ESSDIR)/
