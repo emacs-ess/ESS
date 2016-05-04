@@ -115,15 +115,16 @@
 
 ### 7 Keywords
 
-¶if else function while for
+¶if if_else else function while for
 
 ##! (should (token= "if"))
+##! (should (token= "identifier" "if_else"))
 ##! (should (token= "else"))
 ##! (should (token= "function"))
 ##! (should (token= "while"))
 ##! (should (token= "for"))
 
-if else function while for¶
+if if_else else function while for¶
 
 
 

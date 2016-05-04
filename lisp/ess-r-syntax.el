@@ -319,7 +319,7 @@ reached."
     "$" "@" ":" "::" ":::" ":="))
 
 (defvar ess-r-keywords-re
-  (concat (regexp-opt ess-r-keywords-list) "\\b"))
+  (concat (regexp-opt ess-r-keywords-list) "\\_>"))
 
 (defvar ess-r-delimiters-re
   (regexp-opt ess-r-delimiters-list))
