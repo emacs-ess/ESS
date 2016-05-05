@@ -213,7 +213,7 @@ Root is determined by locating `ess-r-package-root-file'."
   "Interface for `devtools::check()'."
   (interactive "P")
   (ess-r-package-send-process "devtools::check(%s)\n"
-                              "Testing %s"
+                              "Checking %s"
                               (when alt "vignettes = FALSE")))
 
 (defun ess-r-devtools-test-package (&optional alt)
