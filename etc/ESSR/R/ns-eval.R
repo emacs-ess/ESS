@@ -245,9 +245,7 @@
             if(length(newObjects)) {
                 env_name <- if (identical(fallback_env, .GlobalEnv)) "GlobalEnv" else "Local"
                 sprintf("%s: %s", env_name, paste(newObjects, collapse = ", "))
-            },
-            if(length(c(objectsNs, objectsPkg, newObjects)) == 0)
-                sprintf("*** Nothing explicitly assigned ***")))
+            }))
         if(length(msgs))
             .ess_mpi_message(paste(msgs, collapse = "  "))
 
