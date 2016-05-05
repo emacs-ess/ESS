@@ -1014,20 +1014,22 @@ similar to `load-library' emacs function."
   (let ((visibly (ess-r-arg "visibly" (if visibly "TRUE" "FALSE")))
         (output (ess-r-arg "output" (if output "TRUE" "FALSE")))
         (pkg (when namespace (ess-r-arg "package" namespace t)))
-        (verbose (when (and (ess-r-get-evaluation-env)
+        (verbose (when (and namespace
                             ess-r-namespaced-load-verbose)
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
 (ess-defmethod R ess-build-eval-command (string &optional visibly output file namespace)
-  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
+  (let* ((namespace (unless ess-debug-minor-mode
+                      (or namespace (ess-r-get-evaluation-env))))
          (cmd (if namespace ".ess.ns_eval" ".ess.eval"))
          (file (when file (ess-r-arg "file" file t)))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" args file ")\n")))
 
 (ess-defmethod R ess-build-load-command (file &optional visibly output namespace)
-  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
+  (let* ((namespace (unless ess-debug-minor-mode
+                      (or namespace (ess-r-get-evaluation-env))))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "('" file "'" args ")\n")))
