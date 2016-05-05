@@ -1028,8 +1028,7 @@ similar to `load-library' emacs function."
     (concat cmd "(\"" string "\"" args file ")\n")))
 
 (ess-defmethod R ess-build-load-command (file &optional visibly output namespace)
-  (let* ((namespace (unless ess-debug-minor-mode
-                      (or namespace (ess-r-get-evaluation-env))))
+  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (args (ess-r-build-args visibly output namespace)))
     (concat cmd "('" file "'" args ")\n")))
