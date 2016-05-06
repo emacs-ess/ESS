@@ -69,8 +69,7 @@ VISIBLY is not currently used."
 ;;; HELP
 (defun ess-julia-get-help-topics (&optional proc)
   (append (ess-get-words-from-vector "ESS.all_help_topics()\n")
-          (ess-julia--get-objects)))
-    ;; (ess-command com)))
+          (ess-julia--get-objects proc)))
 
 (defun ess-julia--retrive-topics (url)
   (with-current-buffer (url-retrieve-synchronously url)
@@ -136,10 +135,10 @@ VISIBLY is not currently used."
         (message "No ESS process of dialect %s started" ess-dialect)
         nil))))
 
-(defun ess-julia-objects (prefix)
-  "Get all cached objects"
+(defun ess-julia-objects (prefix &optional proc)
+  "Given PREFIX get all cached objects from PROC."
   (when prefix
-    (let ((proc (ess-get-next-available-process nil t)))
+    (let ((proc (or proc (ess-get-next-available-process nil t))))
       (if (string-match "\\(.*\\)\\..*$" prefix)
           (let ((module (match-string 1 prefix)))
             (mapcar (lambda (el) (concat module "." (car el)))
@@ -150,8 +149,7 @@ VISIBLY is not currently used."
   "Return all available objects.
 Local caching might be used. If MODULE is givven, return only
 objects from that MODULE."
-  (setq proc (or proc
-                 (get-process ess-local-process-name)))
+  (setq proc (or proc (ess-get-process)))
   (when (process-live-p proc)
     (let ((objects (process-get proc 'objects)))
       (if (process-get proc 'busy)
@@ -227,7 +225,9 @@ objects from that MODULE."
     (prefix (unless (company-in-string-or-comment)
               (let ((start (ess-symbol-start)))
                 (when start (buffer-substring-no-properties start (point))))))
-    (candidates (all-completions arg (mapcar #'car (ess-julia-objects arg))))
+    (candidates (let ((proc (ess-get-next-available-process)))
+                  (when proc
+                    (all-completions arg (mapcar #'car (ess-julia-objects arg proc))))))
     (doc-buffer (company-doc-buffer (ess-julia-get-object-help-string arg)))))
 
 
