@@ -118,7 +118,7 @@ rel: ChangeLog dist tag homepage
 
 tag:
 	@echo "** Tagging the release **"
-	git tag -m'release tagging' v$(ESSVERSION)
+	git tag -a -m'release tagging' v$(ESSVERSION)
 	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
 	git push
