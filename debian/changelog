@@ -1,10 +1,16 @@
-ess (15.09.2-3) unstable; urgency=medium
+ess (16.04-1) unstable; urgency=medium
+
+  * New upstream version released today
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 07 May 2016 11:46:33 -0500
+
+ess (15.09.2-3) unstable; urgency=low
 
   * debian/control: Add Build-Depends on texlive-fonts-recommended
 
  -- Dirk Eddelbuettel <edd@debian.org>  Sun, 06 Mar 2016 09:39:09 -0600
 
-ess (15.09.2-2) unstable; urgency=medium
+ess (15.09.2-2) unstable; urgency=low
 
   * doc/texinfo.tex: Temporarily adding copy from texinfo 6.0 to avoid
     breakage with the version included with texinfo 6.1	(Closes: #815734)
