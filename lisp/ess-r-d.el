@@ -205,6 +205,14 @@
 (modify-syntax-entry ?@ "." ess-r-syntax-table)
 (modify-syntax-entry ?$ "." ess-r-syntax-table)
 
+;; Prevent string delimiting characters from messing up output in the
+;; inferior buffer
+(setq inferior-ess-r-syntax-table (copy-syntax-table ess-r-syntax-table))
+(modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
+(modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
+(modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
+(modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
+
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
                       (and (nth 3 state)
@@ -276,6 +284,7 @@
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
      (inferior-ess-start-file	          . nil) ;; "~/.ess-R"
      (inferior-ess-start-args           . "")
+     (inferior-ess-mode-syntax-table    . inferior-ess-r-syntax-table)
      (ess-error-regexp-alist            . ess-R-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-R-describe-object-at-point-commands)
      (ess-STERM                         . "iESS")

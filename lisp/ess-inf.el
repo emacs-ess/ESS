@@ -2173,10 +2173,10 @@ to continue it."
           ess--local-mode-line-process-indicator
           "]: %s"))
   (use-local-map inferior-ess-mode-map)
-  (if ess-mode-syntax-table
-      (set-syntax-table ess-mode-syntax-table)
-    ;; FIXME: need to do something if not set!  Get from the proper place!
-    )
+  (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
+                              ess-mode-syntax-table)))
+    (when inf-syntax-table
+      (set-syntax-table inf-syntax-table)))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"

@@ -3065,6 +3065,9 @@ Need to be a full path if julia executable is not in the `exec-path'"
 (defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
 (make-variable-buffer-local 'ess-mode-syntax-table)
 
+(defvar inferior-ess-mode-syntax-table nil "Syntax table for `inferior-ess-mode'.")
+(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
+
 
  ; Buffer local customization stuff
 
