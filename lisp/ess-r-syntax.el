@@ -816,12 +816,12 @@ into account."
 
 (defun ess-skip-blanks-backward-1 ()
   (and (/= (point) (point-min))
-       (/= 0 (skip-chars-backward " \t"))))
+       (/= 0 (skip-syntax-backward " "))))
 
 (defun ess-skip-blanks-forward (&optional newlines)
   "Skip blanks and newlines forward, taking end-of-line comments
 into account."
-  (ess-any ((/= 0 (skip-chars-forward " \t")))
+  (ess-any ((/= 0 (skip-syntax-forward " ")))
            ((ess-while (and newlines
                             (= (point) (ess-code-end-position))
                             (when (ess-save-excursion-when-nil

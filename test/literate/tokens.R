@@ -504,3 +504,18 @@ text
 
 text¶
 text
+
+
+### 4 Form Feed character --------------------------------------------
+
+text
+
+
+¶text
+
+##! (ess-skip-blanks-backward t)
+
+text¶
+
+
+text
