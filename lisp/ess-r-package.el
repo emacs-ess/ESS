@@ -220,8 +220,17 @@ Root is determined by locating `ess-r-package-root-file'."
                               (when alt "vignettes = FALSE")))
 
 (defun ess-r-devtools-test-package (&optional alt)
-  "Interface for `devtools::test()'."
+  "Interface for `devtools::test()'.
+When called with a prefix argument, check that the file name
+starts with `test-' and ends with `.R'. If that is the case, use
+the string in-between as default filter argument."
   (interactive "P")
+  (let (file-name)
+    (when (and alt buffer-file-name
+               (setq file-name (file-name-nondirectory buffer-file-name))
+               (string-match "test-\\([[:alnum:]]+\\)\\.[rR]" file-name))
+      (setq alt (match-string-no-properties 1 (file-name-nondirectory buffer-file-name)))
+      (setq alt (concat "\"" alt "\""))))
   (ess-r-package-send-process "devtools::test(%s)\n"
                               "Testing %s"
                               alt))
