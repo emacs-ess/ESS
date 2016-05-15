@@ -118,23 +118,26 @@ whether the current file is part of a package, or the value of
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
-(defun ess-r-package-send-process (command &optional msg alt)
+(defun ess-r-package-send-process (command &optional msg alt default-alt)
   (ess-force-buffer-current)
   (let* ((pkg-info (or (ess-r-package-get-info)
                        (ess-r-package-set-package)))
          (name (car pkg-info))
          (path (concat "'" (cdr pkg-info) "'"))
-         (alt (cond ((stringp alt) alt)
-                    (alt "")))
-         (args (when alt
-                 (read-string "Arguments: " alt)))
-         (args (unless (or (null args)
-                           (string= "" args))
-                 (concat ", " args))))
+         (args (ess-r-command--process-alt-args alt default-alt)))
     (message msg name)
     (with-ess-process-buffer nil
       (setq ess-r-package-info pkg-info))
     (ess-eval-linewise (format command (concat path args)))))
+
+(defun ess-r-command--process-alt-args (alt &optional default-alt)
+  (let ((args (cond ((stringp alt) alt)
+                    (alt (read-string "Arguments: " default-alt))
+                    (t ""))))
+    (if (or (null args)
+            (string= "" args))
+        args
+      (concat ", " args))))
 
 
 ;;;*;;; Package Detection
@@ -204,7 +207,7 @@ Root is determined by locating `ess-r-package-root-file'."
   (interactive "P")
   (ess-r-package-send-process "devtools::load_all(%s)\n"
                               "Loading %s"
-                              (when alt "recompile = TRUE")))
+                              alt "recompile = TRUE"))
 
 (defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
@@ -217,7 +220,7 @@ Root is determined by locating `ess-r-package-root-file'."
   (interactive "P")
   (ess-r-package-send-process "devtools::check(%s)\n"
                               "Checking %s"
-                              (when alt "vignettes = FALSE")))
+                              alt "vignettes = FALSE"))
 
 (defun ess-r-devtools-test-package (&optional alt)
   "Interface for `devtools::test()'.
@@ -287,6 +290,17 @@ checking results."
   (ess-r-package-send-process "devtools::install(%s)\n"
                               "Installing %s"
                               alt))
+
+(defun ess-r-devtools-install-github (&optional alt repo)
+  "Interface to `devtools::install_github()'.
+Asks for github repository in the form of user/repo, unless REPO
+is supplied. Prompts for additional arguments when called with a
+prefix."
+  (interactive "P")
+  (let ((command "devtools::install_github(%s%s)")
+        (repo (concat "'" (or repo (read-string "User/Repo: ")) "'"))
+        (args (ess-r-command--process-alt-args alt "ref = ")))
+    (ess-eval-linewise (format command repo args))))
 
 
 ;;;*;;; Minor Mode
