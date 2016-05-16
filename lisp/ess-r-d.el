@@ -2086,70 +2086,73 @@ otherwise nil."
                         (ess-jump-char ","))
               (setq i (1- i))))
           (newline-and-indent)))
-        (while (and (not (looking-at "[])]"))
-                    (/= (point) (or last-pos 1))
-                    (not infinite))
-          (setq prefix-break nil)
-          ;; Record start-pos as future breaking point to avoid breaking
-          ;; at `=' sign
-          (while (looking-at "[ \t]*[\n#]")
-            (forward-line)
-            (ess-back-to-indentation))
-          (setq start-pos (point))
-          (while (and (< (current-column) fill-column)
-                      (not (looking-at "[])]"))
-                      (/= (point) (or last-pos 1))
-                      ;; Break after one pass if prefix is active
-                      (not prefix-break))
-            (when (memq style '(2 3))
-              (setq prefix-break t))
-            (ess-jump-char ",")
-            (setq last-pos (point))
-            ;; Jump expression and any continuations. Reindent all lines
-            ;; that were jumped over
-            (let ((cur-line (line-number-at-pos))
-                  end-line)
-              (when (ess-jump-arg)
-                (setq last-newline nil))
-              (save-excursion
-                (when (< cur-line (line-number-at-pos))
-                  (setq end-line (line-number-at-pos))
-                  (ess-goto-line (1+ cur-line))
-                  (while (and (<= (line-number-at-pos) end-line)
-                              (/= (point) (point-max)))
-                    (ess-indent-line)
-                    (forward-line))))))
-          (when (or (>= (current-column) fill-column)
-                    prefix-break
-                    ;; Ensures closing delim on a newline
-                    (and (= style 4)
-                         (looking-at "[ \t]*[])]")
-                         (setq last-pos (point))))
-            (if (and last-pos (/= last-pos start-pos))
-                (goto-char last-pos)
-              (ess-jump-char ","))
-            (cond ((looking-at "[ \t]*[#\n]")
-                   (forward-line)
-                   (ess-indent-line)
-                   (setq last-newline nil))
-                  ;; With levels 2 and 3, closing delim goes on a newline
-                  ((looking-at "[ \t]*[])]")
-                   (when (and (memq style '(2 3 4))
-                              ess-fill-calls-newlines
-                              (not last-newline))
-                     (newline-and-indent)
-                     ;; Prevent indenting infinitely
-                     (setq last-newline t)))
-                  ((not last-newline)
-                   (newline-and-indent)
-                   (setq last-newline t))
-                  (t
-                   (setq infinite t)))))
+        (ess-fill-args--roll-lines)
         ;; Reindent surrounding context
         (ess-indent-call (car bounds)))
       ;; Signal marker for garbage collection
       (set-marker (cadr bounds) nil)
       (undo-boundary))))
+
+(defun ess-fill-args--roll-lines ()
+  (while (and (not (looking-at "[])]"))
+              (/= (point) (or last-pos 1))
+              (not infinite))
+    (setq prefix-break nil)
+    ;; Record start-pos as future breaking point to avoid breaking
+    ;; at `=' sign
+    (while (looking-at "[ \t]*[\n#]")
+      (forward-line)
+      (ess-back-to-indentation))
+    (setq start-pos (point))
+    (while (and (< (current-column) fill-column)
+                (not (looking-at "[])]"))
+                (/= (point) (or last-pos 1))
+                ;; Break after one pass if prefix is active
+                (not prefix-break))
+      (when (memq style '(2 3))
+        (setq prefix-break t))
+      (ess-jump-char ",")
+      (setq last-pos (point))
+      ;; Jump expression and any continuations. Reindent all lines
+      ;; that were jumped over
+      (let ((cur-line (line-number-at-pos))
+            end-line)
+        (when (ess-jump-arg)
+          (setq last-newline nil))
+        (save-excursion
+          (when (< cur-line (line-number-at-pos))
+            (setq end-line (line-number-at-pos))
+            (ess-goto-line (1+ cur-line))
+            (while (and (<= (line-number-at-pos) end-line)
+                        (/= (point) (point-max)))
+              (ess-indent-line)
+              (forward-line))))))
+    (when (or (>= (current-column) fill-column)
+              prefix-break
+              ;; Ensures closing delim on a newline
+              (and (= style 4)
+                   (looking-at "[ \t]*[])]")
+                   (setq last-pos (point))))
+      (if (and last-pos (/= last-pos start-pos))
+          (goto-char last-pos)
+        (ess-jump-char ","))
+      (cond ((looking-at "[ \t]*[#\n]")
+             (forward-line)
+             (ess-indent-line)
+             (setq last-newline nil))
+            ;; With levels 2 and 3, closing delim goes on a newline
+            ((looking-at "[ \t]*[])]")
+             (when (and (memq style '(2 3 4))
+                        ess-fill-calls-newlines
+                        (not last-newline))
+               (newline-and-indent)
+               ;; Prevent indenting infinitely
+               (setq last-newline t)))
+            ((not last-newline)
+             (newline-and-indent)
+             (setq last-newline t))
+            (t
+             (setq infinite t))))))
 
 (defun ess-fill-continuations (&optional style)
   (let ((bounds (ess-continuations-bounds 'marker))
