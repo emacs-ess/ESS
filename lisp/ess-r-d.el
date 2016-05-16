@@ -2111,14 +2111,17 @@ otherwise nil."
                 (not prefix-break))
       (when (memq style '(2 3))
         (setq prefix-break t))
-      (ess-jump-char ",")
+      (ess-jump-token ",")
       (setq last-pos (point))
       ;; Jump expression and any continuations. Reindent all lines
       ;; that were jumped over
       (let ((cur-line (line-number-at-pos))
             end-line)
-        (when (ess-jump-arg)
-          (setq last-newline nil))
+        (cond ((ess-jump-arg)
+               (setq last-newline nil))
+              ((ess-token-after= ",")
+               (setq last-newline nil)
+               (setq last-pos (1- (point)))))
         (save-excursion
           (when (< cur-line (line-number-at-pos))
             (setq end-line (line-number-at-pos))
