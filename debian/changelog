@@ -1,3 +1,12 @@
+ess (16.04-2) unstable; urgency=medium
+
+  * debian/emacsen-install: Skip installation for emacs23
+  * debian/control: Note requirement for emacs24 or later
+  
+  * debian/control: Increased Standards-Version: to current version
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Sun, 22 May 2016 15:30:40 -0500
+
 ess (16.04-1) unstable; urgency=medium
 
   * New upstream version released today

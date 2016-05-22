@@ -2,7 +2,7 @@ Source: ess
 Section: gnu-r
 Priority: optional
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
-Standards-Version: 3.9.6
+Standards-Version: 3.9.7
 Build-Depends: debhelper (>= 7.0.0)
 Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texlive-fonts-recommended, texinfo, autotools-dev
 Homepage: http://ess.r-project.org
@@ -22,3 +22,5 @@ Description: Emacs mode for statistical programming and data analysis
  ESS grew out of the desire for bug fixes and extensions to S-mode and
  SAS-mode as well as a consistent union of their features in one
  package.
+ .
+ As of versions 16.04 or later, Emacs version 24 or later is required.
