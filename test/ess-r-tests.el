@@ -44,6 +44,16 @@
       (should (output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
+(ert-deftest ess-r-run-presend-hooks ()
+  (with-r-running nil
+    ;; (ess-r-package-mode 1)
+    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\"")))
+          (ess-r-evaluation-env "base")
+          ess-eval-visibly)
+      (insert "\"foo\"\n")
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       "[1] \"bar\"")))))
+
 
 ;;; ess-r-package-mode
 

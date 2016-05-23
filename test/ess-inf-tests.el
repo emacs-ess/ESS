@@ -22,6 +22,12 @@
                            (buffer-string))
                          "[1] TRUE"))))))
 
+(ert-deftest ess-run-presend-hooks ()
+  (with-r-running nil
+    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\""))))
+      (should (output= (ess-send-string (ess-get-process) "\"foo\"")
+                       "[1] \"bar\"")))))
+
 
 ;;; Inferior utils
 
