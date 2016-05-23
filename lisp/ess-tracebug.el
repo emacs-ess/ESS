@@ -153,7 +153,7 @@ from temporary buffers.")
 (defun ess-tracebug-p ()
   (ess-process-get 'tracebug))
 
-(defun ess-make-source-refd-command (beg end &optional visibly)
+(defun ess-make-source-refd-command (beg end visibly process)
   "Saves a region to a temporary file in order to add source references.
 BEG and END delimit the region.
 
@@ -214,7 +214,7 @@ loading the temporary file.  This command conforms to VISIBLY."
                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
         (with-silent-modifications
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
-      (let ((string (buffer-substring-no-properties beg end)))
+      (let ((string (ess-process-buffer-substring process start end)))
         (or
          ;; Sending string to subprocess is considerably faster than tramp file
          ;; transfer. So, give priority to `ess-eval-command' if available
@@ -224,7 +224,10 @@ loading the temporary file.  This command conforms to VISIBLY."
            (write-region beg end tmpfile nil 'silent)
            (ess-build-load-command tmpfile visibly t)))))))
 
-(defun ess-tracebug-send-region (proc start end &optional visibly message type)
+(defun ess-process-buffer-substring (process start end)
+  (ess--run-presend-hooks process (buffer-substring-no-properties start end)))
+
+(defun ess-tracebug-send-region (process start end &optional visibly message type)
   "Send region to process adding source references as specified
 by `ess-inject-source' variable."
   (let* ((inject-p  (cond ((eq type 'function)
@@ -238,15 +241,17 @@ by `ess-inject-source' variable."
                                  (ess-r-get-evaluation-env)))))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
-                     (ess-make-source-refd-command start end visibly)
-                   (buffer-substring start end)))
+                     (ess-make-source-refd-command start end visibly process)
+                   (ess-process-buffer-substring process start end)))
          (message (if (fboundp ess-build-eval-message-function)
                       (funcall ess-build-eval-message-function message)
                     message))
          ;; Visible evaluation is not nice when sourcing temporary files
          ;; You get .ess.eval(*code*) instead of *code*
          (visibly (unless inject-p visibly)))
-    (ess-send-string proc string visibly message)))
+    ;; Don't run the presend hooks twice
+    (let ((ess--inhibit-presend-hooks t))
+      (ess-send-string process string visibly message))))
 
 (defun ess-tracebug-send-function (proc start end &optional visibly message)
   "Like `ess-tracebug-send-region' but with tweaks for functions."
