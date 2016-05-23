@@ -57,20 +57,24 @@
 ;; to perform ulterior tests with a fresh R to avoid contaminating
 ;; them.
 
-(defun output ()
-  (with-current-buffer output-buffer
-    (ess-kill-last-line)
-    (prog1 (buffer-string)
-      (erase-buffer))))
+(defmacro output (&rest body)
+  (declare (indent 1) (debug (&rest body)))
+  `(progn
+     ,@body
+     (ess-wait-for-process proc)
+     (with-current-buffer output-buffer
+       (ess-kill-last-line)
+       (prog1 (buffer-string)
+         (erase-buffer)))))
 
-(defmacro output= (code expected)
-  (eval code)
-  (ess-wait-for-process proc)
-  (let ((output (output)))
-    (if (string= output (eval expected))
-        output
-      ;; Probably a better way but this gets the job done
-      (signal 'ert-test-failed (list (concat "Expected: \n" expected)
-                                     (concat "Result: \n" output))))))
+(defmacro output= (body expected)
+  (declare (indent 1) (debug (&rest body)))
+  `(progn
+     (let ((output (output ,body)))
+       (if (string= output (eval ,expected))
+           output
+         ;; Probably a better way but this gets the job done
+         (signal 'ert-test-failed (list (concat "Expected: \n" expected)
+                                        (concat "Result: \n" output)))))))
 
 (provide 'ess-r-tests-utils)
