@@ -75,9 +75,14 @@
                 local = local, fake.source = TRUE)
 }
 
+.ess.strip.error <- function(msg, srcfile) {
+    pattern <- paste0(srcfile, ":[0-9]+:[0-9]+: ")
+    sub(pattern, "", msg)
+}
+
 .ess.source <- function(file, visibly = TRUE, output = FALSE,
-                        max.deparse.length = 300,
-                        local = NULL, fake.source = FALSE)
+                        max.deparse.length = 300, local = NULL,
+                        fake.source = FALSE, keep.source = TRUE)
 {
     if (is.null(local)) {
         local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE
@@ -86,16 +91,20 @@
     ss <- # drop 'keep.source' for older versions
         if(.ess.Rversion >= "2.8") base::source
         else function(..., keep.source) base::source(...)
-    out <- ss(file, echo = visibly, local = local, print.eval = output,
-              max.deparse.length = max.deparse.length,
-              keep.source = TRUE)$value
+    out <- tryCatch(ss(file, echo = visibly, local = local, print.eval = output,
+                       max.deparse.length = max.deparse.length,
+                       keep.source = keep.source),
+                    error = function(x) {
+                        msg <- .ess.strip.error(x$message, file)
+                        stop(msg, call. = FALSE)
+                    })
 
     if (!fake.source) {
         cat(sprintf("Sourced file %s\n", file))
     }
 
     ## Return value for org-babel
-    invisible(out)
+    invisible(out$value)
 }
 
 if(.ess.Rversion < "1.8")

@@ -44,16 +44,6 @@
       (should (output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
-(ert-deftest ess-r-run-presend-hooks ()
-  (with-r-running nil
-    ;; (ess-r-package-mode 1)
-    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\"")))
-          (ess-r-evaluation-env "base")
-          ess-eval-visibly)
-      (insert "\"foo\"\n")
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
-                       "[1] \"bar\"")))))
-
 
 ;;; ess-r-package-mode
 
@@ -65,3 +55,33 @@
   (with-r-file "dummy-pkg/R/test.R"
     (hack-local-variables)
     (should ess-r-package-mode)))
+
+
+;;; Namespaced evaluation
+
+(ert-deftest ess-r-run-presend-hooks ()
+  (with-r-running nil
+    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\"")))
+          (ess-r-evaluation-env "base")
+          ess-eval-visibly)
+      (insert "\"foo\"\n")
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       "[1] \"bar\"")))))
+
+(ert-deftest ess-r-namespaced-eval-no-sourced-message ()
+  (with-r-running nil
+    (let ((ess-r-evaluation-env "base")
+          ess-eval-visibly)
+      (insert "\"foo\"\n")
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       "[1] \"foo\"")))))
+
+(ert-deftest ess-r-namespaced-eval-no-srcref-in-errors ()
+  (with-r-running nil
+  (let ((ess-r-evaluation-env "base")
+        (error-msg "Error: unexpected symbol")
+        ess-eval-visibly)
+    (insert "(foo bar)\n")
+    (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
+      (should (string= (substring output 0 (length error-msg))
+                       error-msg))))))

@@ -49,7 +49,7 @@
     importsEnvs <- lapply(packages, function(pkgName) parent.env(asNamespace(pkgName)))
 
     ## Evaluate the SOURCE into new ENV
-    env <- .ess.ns_evalSource(source, visibly, output, substitute(expr), package)
+    env <- .ess.ns_evalSource(source, visibly, output, substitute(expr), package, fakeSource)
     envPackage <- getPackageName(env, FALSE)
     if (nzchar(envPackage) && envPackage != package)
         warning(gettextf("Supplied package, %s, differs from package inferred from source, %s",
@@ -272,7 +272,7 @@
     inserted
 }
 
-.ess.ns_evalSource <- function (source, visibly, output, expr, package = "")
+.ess.ns_evalSource <- function (source, visibly, output, expr, package = "", fakeSource)
 {
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if(is.null(envns))
@@ -285,9 +285,10 @@
         eval(expr, envir = env)
     else  if (is(source, "character"))
         for (text in source) {
-            base::source(text, local = env, echo = visibly,
-                         print.eval = output, keep.source = TRUE,
-                         max.deparse.length = 300)
+            .ess.source(text, local = env, visibly = visibly,
+                        output = output, keep.source = TRUE,
+                        max.deparse.length = 300,
+                        fake.source = fakeSource)
         }
     else stop(gettextf("Invalid source argument:  got an object of class \"%s\"",
                        class(source)[[1]]), domain = NA)
