@@ -247,11 +247,8 @@ from the beginning of the buffer."
 ;;- `require-final-newline', which is built in.  I hope the names make it
 ;;- obvious.
 
-;; (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
-;;or at least
-;; (add-hook 'ess-mode-hook
-;;         (lambda ()
-;;           (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
+;; use
+;; (add-hook 'write-file-functions 'ess-nuke-trailing-whitespace)
 
 (defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask
   "*[Dis]activates (ess-nuke-trailing-whitespace).
