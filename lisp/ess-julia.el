@@ -249,7 +249,8 @@ objects from that MODULE."
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when (and (ess-process-live-p)
+  (when (and ess-can-eval-in-background
+             (ess-process-live-p)
              (not (ess-process-get 'busy)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-at-point))

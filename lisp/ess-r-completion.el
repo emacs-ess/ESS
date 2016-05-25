@@ -39,7 +39,7 @@
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
   (interactive)
-  (when eldoc-mode
+  (when (and eldoc-mode ess-can-eval-in-background)
     (let* ((proc (ess-get-next-available-process))
            (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
                                        (thing-at-point 'symbol))
@@ -79,8 +79,7 @@ to look up any doc strings."
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
                      (+ 2 (length funname)))))
-           newdoc
-           )
+           newdoc)
       (setq doc
             (if (or (<= (length doc) W)
                     (null ess-eldoc-abbreviation-style)
