@@ -245,7 +245,7 @@ implementation."
   :type 'alist)
 
 
-(defcustom ess-can-eval-in-background nil
+(defcustom ess-can-eval-in-background t
   "If non-nil ESS can perform caching and other background
  activities by calling the subprocess on idle time.")
 

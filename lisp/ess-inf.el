@@ -2236,8 +2236,8 @@ to continue it."
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
 
   ;; timers
-  (add-hook 'ess-idle-timer-functions 'ess-cache-search-list nil 'local)
-  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
+  ;; (add-hook 'ess-idle-timer-functions 'ess-cache-search-list nil 'local)
+  ;; (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
 
   ;;; Keep <tabs> out of the code.
   (set (make-local-variable 'indent-tabs-mode) nil)
@@ -3059,7 +3059,7 @@ subprocess and Emacs buffer `default-directory'."
 
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
-Used in `ess-idle-timer-functions'."
+To be used in `ess-idle-timer-functions'."
   (when (and ess-can-eval-in-background
              ess-getwd-command)
     (ess-when-new-input last-sync-dirs
@@ -3089,7 +3089,7 @@ changed."
   (ess-process-put 'sp-for-ac-changed? t))
 
 (defun ess-cache-search-list ()
-  "Used in `ess-idle-timer-functions', to set
+  "To be used in `ess-idle-timer-functions', to set
 search path related variables."
   (when (and ess-can-eval-in-background
              inferior-ess-search-list-command)

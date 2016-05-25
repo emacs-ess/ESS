@@ -413,11 +413,11 @@ will be prompted to enter arguments interactively."
 Executed in process buffer."
   (interactive)
 
-  (when ess-can-eval-in-background
-    (ess-async-command-delayed
-     "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-     ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-     (lambda (proc) (process-put proc 'packages-cached? t))))
+  ;; (when ess-can-eval-in-background
+  ;;   (ess-async-command-delayed
+  ;;    "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
+  ;;    ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
+  ;;    (lambda (proc) (process-put proc 'packages-cached? t))))
 
   (inferior-ess-r-load-ESSR)
 
