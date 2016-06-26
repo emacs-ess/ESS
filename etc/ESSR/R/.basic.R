@@ -69,7 +69,11 @@
     ## create FILE, put string into it. Then source.
     ## arguments are like in source and .ess.source
     cat(string, file = file)
-    on.exit(file.remove(file))
+    ## The following on.exit infloops in R 3.3.0
+    ## https://github.com/emacs-ess/ESS/issues/334
+    ## https://bugs.r-project.org/bugzilla/show_bug.cgi?id=16971
+    ## So we are cleanning it in .ess.source instead.
+    ## on.exit(file.remove(file))
     .ess.source(file, visibly = visibly, output = output,
                 max.deparse.length = max.deparse.length,
                 local = local, fake.source = TRUE)
@@ -91,15 +95,21 @@
     ss <- # drop 'keep.source' for older versions
         if(.ess.Rversion >= "2.8") base::source
         else function(..., keep.source) base::source(...)
+
     out <- tryCatch(ss(file, echo = visibly, local = local, print.eval = output,
                        max.deparse.length = max.deparse.length,
                        keep.source = keep.source),
                     error = function(x) {
+                        if(fake.source) {
+                            file.remove(file)
+                        }
                         msg <- .ess.strip.error(x$message, file)
                         stop(msg, call. = FALSE)
                     })
 
-    if (!fake.source) {
+    if (fake.source) {
+        file.remove(file)
+    } else {
         cat(sprintf("Sourced file %s\n", file))
     }
 
