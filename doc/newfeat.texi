@@ -1,6 +1,10 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 16.09:
+@itemize @bullet
+@item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
+@end itemize
 
 Changes and New Features in 16.04:
 @itemize @bullet

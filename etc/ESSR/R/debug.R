@@ -32,8 +32,9 @@
          invert = TRUE, value = TRUE)
 }
 
-.ess_dbg_getTracedAndDebugged <- function(packages = c())
+.ess_dbg_getTracedAndDebugged <- function()
 {
+    packages <- base::.packages()
     tr_state <- tracingState(FALSE)
     on.exit(tracingState(tr_state))
     generics <- methods::getGenerics()

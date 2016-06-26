@@ -2671,14 +2671,20 @@ for signature and trace it with browser tracer."
   (interactive)
   (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
+         (pkg (car (ess-r-package-get-info)))
          (all-functions (ess-get-words-from-vector
-                         (if nil ;; FIXME, was checking `ess-developer-packages`
-                             (format ".ess_all_functions(c('%s'))\n"
-                                     (mapconcat 'identity ess-developer-packages "', '"))
+                         (if pkg
+                             (format ".ess_all_functions(c('%s'))\n" pkg)
                            ".ess_all_functions()\n")))
-         (obj-at-point (car (ess-helpobjs-at-point all-functions)))
-         (ufunc  (ess-completing-read "Debug" all-functions
-                                      nil nil nil nil obj-at-point))
+         (obj-at-point (ess-helpobjs-at-point--read-obj))
+         (default (and
+                   obj-at-point
+                   (let* ((reg (regexp-quote obj-at-point))
+                          (matches (loop for el in all-functions
+                                         if (string-match reg el) collect el)))
+                     (car (sort matches (lambda (a b) (< (length a) (length b))))))))
+         (ufunc (ess-completing-read "Debug" all-functions
+                                     nil nil nil nil default))
          signature default-string out-message)
     ;; is it generic
     (if (equal "TRUE"
