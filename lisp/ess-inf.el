@@ -2969,13 +2969,14 @@ P-STRING is the prompt string."
       ;; The following line circumvents an 18.57 bug in following-char
       (if (eobp) (backward-char 1))   ; Hopefully buffer is not empty!
       ;; Get onto a symbol
-      (catch 'nosym ; bail out if there's no symbol at all before point
-        (while (/= (char-syntax (following-char)) ?w)
-          (if (bobp) (throw 'nosym nil) (backward-char 1)))
-        (let*
-            ((end (progn (forward-sexp 1) (point)))
-             (beg (progn (backward-sexp 1) (point))))
-          (buffer-substring-no-properties beg end))))))
+      (catch 'nosym          ; bail out if there's no symbol at all before point
+        (while (let ((sc (char-syntax (following-char))))
+                 (not (or (= sc ?w) (= sc ?_))))
+          (if (bobp) (throw 'nosym nil) (backward-char 1))))
+      (let*
+          ((end (progn (forward-sexp 1) (point)))
+           (beg (progn (backward-sexp 1) (point))))
+        (buffer-substring-no-properties beg end)))))
 
 (defun ess-read-object-name-dump ()
   "Return the object name at point, or \"Temporary\" if none."
