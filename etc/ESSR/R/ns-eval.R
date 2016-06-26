@@ -12,9 +12,9 @@
                          file = tempfile("ESSDev"), verbose = FALSE,
                          fallback_env = parent.frame()) {
     cat(string, file = file)
-    on.exit(file.remove(file))
+    on.exit(.ess.file.remove(file))
     .ess.ns_source(file, visibly, output, package = package,
-                   verbose = verbose, fakeSource = TRUE,
+                   verbose = verbose, fake.source = TRUE,
                    fallback_env = fallback_env)
 }
 
@@ -23,7 +23,7 @@
 ## functions, existing S3 methods, S4 classes and methods. .
 .ess.ns_source <- function(source, visibly, output, expr,
                            package = "", verbose = FALSE,
-                           fakeSource = FALSE,
+                           fake.source = FALSE,
                            fallback_env = parent.frame())
 {
     oldopts <- options(warn = 1)

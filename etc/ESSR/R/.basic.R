@@ -84,6 +84,11 @@
     sub(pattern, "", msg)
 }
 
+.ess.file.remove <- function(file){
+    if (base::file.exists(file)) base::file.remove(file)
+    else FALSE
+}
+
 .ess.source <- function(file, visibly = TRUE, output = FALSE,
                         max.deparse.length = 300, local = NULL,
                         fake.source = FALSE, keep.source = TRUE)
@@ -101,14 +106,14 @@
                        keep.source = keep.source),
                     error = function(x) {
                         if(fake.source) {
-                            file.remove(file)
+                            .ess.file.remove(file)
                         }
                         msg <- .ess.strip.error(x$message, file)
                         stop(msg, call. = FALSE)
                     })
 
     if (fake.source) {
-        file.remove(file)
+        .ess.file.remove(file)
     } else {
         cat(sprintf("Sourced file %s\n", file))
     }
