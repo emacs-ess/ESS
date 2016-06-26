@@ -230,10 +230,6 @@
     if(length(newMethods))
         newObjects <- c(newObjects, gettextf("METH[%s]", paste(newMethods, collapse = ", ")))
 
-    if (!fake.source) {
-        cat(sprintf("[%s] Sourced file %s\n", package, file))
-    }
-
     if (verbose) {
         msgs <- unlist(list(
             if(length(objectsPkg))
@@ -290,7 +286,8 @@
             .ess.source(f, local = env, visibly = visibly,
                         output = output, keep.source = TRUE,
                         max.deparse.length = 300,
-                        fake.source = fake.source)
+                        fake.source = fake.source,
+                        message.prefix = sprintf("[%s] ", package))
         }
     else stop(gettextf("Invalid file argument:  got an object of class \"%s\"",
                        class(file)[[1]]), domain = NA)

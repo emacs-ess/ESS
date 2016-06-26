@@ -91,7 +91,8 @@
 
 .ess.source <- function(file, visibly = TRUE, output = FALSE,
                         max.deparse.length = 300, local = NULL,
-                        fake.source = FALSE, keep.source = TRUE)
+                        fake.source = FALSE, keep.source = TRUE,
+                        message.prefix = "")
 {
     if (is.null(local)) {
         local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE
@@ -115,7 +116,7 @@
     if (fake.source) {
         .ess.file.remove(file)
     } else {
-        cat(sprintf("Sourced file %s\n", file))
+        cat(sprintf("%sSourced file %s\n", message.prefix, file))
     }
 
     ## Return value for org-babel
