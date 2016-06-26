@@ -1460,6 +1460,7 @@ wrapping the code into:
                  (if no-prompt-check
                      (sleep-for 0.02)   ; 0.1 is noticeable!
                    (ess-wait-for-process proc nil wait force-redisplay)
+                   (ess-mpi-handle-messages (current-buffer))
                    ;; Remove prompt
                    ;; If output is cat(..)ed this deletes the output
                    (goto-char (point-max))

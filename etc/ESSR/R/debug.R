@@ -1,4 +1,3 @@
-
 ### BREAKPOINTS
 .ESSBP. <- new.env()
 
@@ -18,10 +17,13 @@
     coll <- list()
     for(p in packages){
         ## package might not be attached
-        try({objNS <- .ess_find_funcs(asNamespace(p))
+        try(
+        {
+            objNS <- .ess_find_funcs(asNamespace(p))
             objPKG <- .ess_find_funcs(as.environment(paste0('package:', p)))
-            coll[[length(coll) + 1]] <-
-                paste0(p, ':::`', setdiff(objNS, objPKG), '`')
+            objNS <- setdiff(objNS, objPKG)
+            if(length(objPKG))
+                coll[[length(coll) + 1]] <- paste0(p, ':::', objNS)
         }, silent = TRUE)
     }
     while(!identical(empty, env)){
@@ -30,6 +32,21 @@
     }
     grep('^\\.ess', unlist(coll, use.names = FALSE),
          invert = TRUE, value = TRUE)
+}
+
+.ess_dbg_flag_for_debuging <- function(fname){
+    all <- utils::getAnywhere(fname)
+    if(length(all$obj) == 0){
+        msg <- sprintf("No functions names '%s' found", fname)
+    } else {
+        msg <- sprintf("Flagged '%s' for debugging", fname)
+        tryCatch(lapply(all$obj, debug),
+                 error = function(e){
+                     msg <- paste0("Error: ", e$message)
+                 })
+    }
+    cat(msg)
+    .ess_mpi_message(msg)
 }
 
 .ess_dbg_getTracedAndDebugged <- function()

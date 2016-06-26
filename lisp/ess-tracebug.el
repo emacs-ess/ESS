@@ -2684,13 +2684,14 @@ for signature and trace it with browser tracer."
                                          if (string-match reg el) collect el)))
                      (car (sort matches (lambda (a b) (< (length a) (length b))))))))
          (ufunc (ess-completing-read "Debug" all-functions
-                                     nil nil nil nil default))
+                                     nil nil nil nil (or default obj-at-point)))
          signature default-string out-message)
-    ;; is it generic
-    (if (equal "TRUE"
-               (car (ess-get-words-from-vector
-                     (format "as.character(isGeneric('%s'))\n" ufunc))))
-        (save-excursion ;; if so, find the signature
+    ;; FIXME: Most of the following logic should be in R
+    (if (ess-boolean-command (format "as.character(isGeneric('%s'))\n" ufunc))
+
+        ;; it's S4 generic:
+        (save-excursion
+          ;; ask for exact signature
           (setq signature
                 (ess-completing-read (concat "Method for generic '" ufunc "'")
                                      (ess--dbg-get-signatures ufunc) ;signal an error if not found
@@ -2699,13 +2700,13 @@ for signature and trace it with browser tracer."
               ;;debug, the default ufunc
               (ess-command (format "trace('%s', tracer = browser)\n" ufunc) tbuffer)
             (ess-command (format "trace('%s', tracer = browser, signature = c('%s'))\n" ufunc signature) tbuffer))
-          (set-buffer tbuffer)
-          ;; give appropriate message or error
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))
+          (with-current-buffer tbuffer
+            ;; give appropriate message or error
+            (message (buffer-substring-no-properties (point-min) (point-max)))))
+
       ;;else, not an S4 generic
-      (when (car (ess-get-words-from-vector
-                  (format "as.character(.knownS3Generics['%s'])\n" ufunc)))
-        ;; if S3 generic:
+      (when (ess-boolean-command (format "as.character(.knownS3Generics['%s'])\n" ufunc))
+        ;; it's S3 generic:
         (setq all-functions
               (ess-get-words-from-vector
                (format "local({gens<-methods('%s');as.character(gens[attr(gens, 'info')$visible])})\n" ufunc)))
@@ -2714,18 +2715,9 @@ for signature and trace it with browser tracer."
               (delq nil (mapcar (lambda (el)
                                   (if (not (char-equal ?* (aref el (1- (length el))))) el))
                                 all-functions)))
-        ;; tothink: ess-developer?
         (setq ufunc (ess-completing-read (format "Method for S3 generic '%s'" ufunc)
                                          (cons ufunc all-functions) nil t)))
-      (save-excursion
-        ;; no quotes
-        (ess-command (format "debug(%s)\n" ufunc) tbuffer)
-        (set-buffer tbuffer)
-        (if (= (point-max) 1)
-            (setq out-message (format "Flagged function '%s' for debugging" ufunc))
-          ;; error occurred
-          (setq out-message (buffer-substring-no-properties (point-min) (point-max))))))
-    (message out-message)))
+      (ess-command (format ".ess_dbg_flag_for_debuging('%s')\n" ufunc)))))
 
 
 (defun ess-debug-unflag-for-debugging ()
