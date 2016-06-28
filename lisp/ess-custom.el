@@ -2626,28 +2626,16 @@ This variable has no effect. Customize
 
 ;;
 (defvar ess-R-assign-ops
-  '("<<-" "<-" "->") ; don't want "=" here which is not only for assign
+  '("<<-" "<-" "->" "->>") ; don't want "=" here which is not only for assign
   ;; VS??: it's good to have different colour for = anyhow,
   ;; very helpful to read code like foo(x=xa, p=pa, x_not_na)
   )
 (defvar ess-S-assign-ops ess-R-assign-ops) ; since "_" is deprecated for S-plus as well
 
-
-;; ;; Note: \\s\" is really \s" which means match a char belonging to the
-;; ;; "quote character" syntax class.
-;; (defvar ess-R-function-name-regexp
-;;   (concat "\\s\"?\\(\\(\\sw\\|\\s_\\)+"
-;;           "\\(<-\\)?\\)\\s\"?\\s-*\\(<-\\)"
-;;           "\\(\\s-\\|\n\\)*function")
-;;   )
-
-
-;; VS: simpler and more general:
 (defvar ess-R-function-name-regexp
-  (concat "\\(\\(?2:\\s\"\\).+\\2\\|\\sw+\\)"
-          "\\s-*\\(<-\\)"
-          "[ \t\n]*function"))
-
+  (concat "\\("      "\\sw+" "\\)"
+          "[ \t]*"   "\\(<-\\)"
+          "[ \t\n]*" "function\\b"))
 
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
@@ -2669,7 +2657,7 @@ system described in `ess-font-lock-keywords'.")
 
 
 (defvar ess-fl-keyword:fun-calls
-  (cons "\\(\\sw+\\) ?(" '(1 ess-function-call-face keep))
+  (cons "\\(\\sw+\\)[\t ]*(" '(1 ess-function-call-face keep))
   "Font lock for function calls.")
 
 (defvar ess-fl-keyword:numbers
@@ -2742,8 +2730,7 @@ default or not."
 
 (defvar ess-R-fl-keyword:fun-defs
   (cons ess-R-function-name-regexp
-        '(1 font-lock-function-name-face t)  ; override
-        )
+        '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
 (defvar ess-R-fl-keyword:keywords
@@ -2956,8 +2943,18 @@ the variable `ess-help-own-frame' is non-nil."
   "Font Lock face used to highlight numbers in ess-mode buffers."
   :group 'ess)
 
+(defface ess-backquoted-face
+  '((default (:inherit default)))
+  "Font Lock face for backquoted names."
+  :group 'ess)
+
+(defface ess-operator-face
+  '((default (:inherit font-lock-constant-face)))
+  "Font Lock face for operators."
+  :group 'ess)
+
 (defface ess-%op%-face
-  '((default (:slant normal :inherit font-lock-keyword-face)))
+  '((default (:inherit ess-operator-face)))
   "Font Lock face used to highlight %op% operators in ess-mode buffers."
   :group 'ess)
 
@@ -3067,6 +3064,9 @@ Need to be a full path if julia executable is not in the `exec-path'"
 ;;; ess-trns.el, so we provide it here.
 (defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
 (make-variable-buffer-local 'ess-mode-syntax-table)
+
+(defvar inferior-ess-mode-syntax-table nil "Syntax table for `inferior-ess-mode'.")
+(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
 
 
  ; Buffer local customization stuff

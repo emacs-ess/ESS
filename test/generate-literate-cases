@@ -9,9 +9,12 @@
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
 
+(require 'ert)
 (require 'ess-site)
 (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
 
+(message "\nStarting literate tests")
+
 (mapc (lambda (file)
         (ess-ltest-R (expand-file-name file ess-literate-path)))
-      '("roxy.R" "code-fill.R" "misc.R" "syntax.R"))
+      '("roxy" "code-fill" "misc" "syntax" "tokens"))

@@ -1,19 +1,29 @@
 
-(defvar ess-ltest-R-chunk-pattern "^###[ \t]*[0-9]+")
+(defvar ess-ltest-R-chunk-pattern "^###[ \t]*\\([0-9]+[a-zA-Z]*\\) \\([^\n]*\\)$")
 (defvar ess-ltest-R-code-start-pattern "^##!")
 (defvar ess-ltest-R-code-cont-pattern "^##>")
 (defvar ess-ltest-R-code-pattern "^##[!>]")
-(defvar ess-ltest-R-section-pattern "^##### ")
-(defvar ess-ltest-R-mode-init '((R-mode)))
+(defvar ess-ltest-R-section-pattern "^##### \\([^\n]*\\)$")
+(defvar ess-ltest-R-mode-init '((mode . R)))
 
 (defun ess-ltest-R (&optional file)
   (when file
-    (set-buffer (find-file-noselect file)))
+    (let ((r-file (concat file ".R"))
+          (el-file (concat file ".el")))
+      (message "---Testing %s" (file-name-nondirectory r-file))
+      (set-buffer (find-file-noselect r-file))
+      (when (file-exists-p el-file)
+        (load-file el-file))))
+  ;; Don't check safety of local variables declared in test files
+  (cl-letf (((symbol-function 'safe-local-variable-p) (lambda (sym val) t)))
+    (let ((enable-dir-local-variables nil))
+      (hack-local-variables)))
   (let ((ess-ltest-chunk-pattern ess-ltest-R-chunk-pattern)
         (ess-ltest-code-cont-pattern ess-ltest-R-code-cont-pattern)
         (ess-ltest-code-pattern ess-ltest-R-code-pattern)
         (ess-ltest-section-pattern ess-ltest-R-section-pattern)
-        (ess-ltest-mode-init ess-ltest-R-mode-init))
+        (ess-ltest-mode-init (append (assq-delete-all 'mode file-local-variables-alist)
+                                     ess-ltest-R-mode-init)))
     (ess-ltest-this-buffer))
   (save-buffer))
 
@@ -21,23 +31,55 @@
   (goto-char 1)
   (let ((undo-inhibit-record-point t))
     (undo-boundary)
+    ;; Print first section header
+    (ess-ltest-print-section-header)
     (when (ess-ltest-search-chunk nil t)
       (while (looking-at ess-ltest-chunk-pattern)
+        (ess-ltest-print-chunk-id)
         (ess-ltest-process-next-chunk)))
     (skip-chars-backward "\n")
-    (delete-region (1+ (point)) (point-max))
+    (let ((point-max (or (ess-ltest-local-variables-pos)
+                         (point-max))))
+      (delete-region (1+ (point)) point-max)
+      (insert "\n"))
+    (when (looking-at (concat "\n" comment-start "+ +Local Variables:"))
+      (insert "\n"))
     (undo-boundary)))
 
+(defun ess-ltest-local-variables-pos ()
+  (save-excursion
+    (let ((pattern (concat "^" comment-start "+ +Local Variables:")))
+      (when (re-search-forward pattern nil t)
+        (match-beginning 0)))))
+
+(defun ess-ltest-print-section-header ()
+  (save-excursion
+    (skip-chars-forward " \n\t")
+    (when (looking-at ess-ltest-section-pattern)
+      (message (match-string-no-properties 1)))))
+
+(defun ess-ltest-print-chunk-id ()
+  (let ((number (concat "#" (match-string-no-properties 1)))
+        (msg (match-string-no-properties 2)))
+    (setq msg (substring msg 0 (string-match "-+$" msg)))
+    (message (if (> (length msg) 0)
+                 (concat number " - " msg)
+               number))))
+
 (defun ess-ltest-search-chunk (&optional n skip-section)
-  (let ((next-chunk (save-excursion
-                      (if (re-search-forward ess-ltest-chunk-pattern
-                                             nil t (or n 1))
-                          (match-beginning 0)
-                        (point-max)))))
-    (goto-char (if (and (not skip-section)
-                        (re-search-forward ess-ltest-section-pattern
-                                           next-chunk t))
-                   (match-beginning 0)
+  (let* ((next-chunk (save-excursion
+                       (cond ((re-search-forward ess-ltest-chunk-pattern
+                                                 nil t (or n 1))
+                              (match-beginning 0))
+                             ((ess-ltest-local-variables-pos))
+                             (t
+                              (point-max)))))
+         (next-section (save-excursion
+                         (when (re-search-forward ess-ltest-section-pattern
+                                                  next-chunk t)
+                           (match-beginning 0)))))
+    (goto-char (if (and (not skip-section) next-section)
+                   next-section
                  next-chunk))))
 
 (defun ess-ltest-process-next-chunk ()
@@ -52,13 +94,14 @@
                       (ess-ltest-process-case)))
          (test-case-state test-case))
     (while (looking-at ess-ltest-code-pattern)
-      (ess-ltest-process-next-subchunk))
+      (ess-ltest-process-next-subchunk chunk-end))
     (insert "\n")
+    (ess-ltest-print-section-header)
     (when (looking-at ess-ltest-section-pattern)
       (insert "\n")
       (ess-ltest-search-chunk nil t))))
 
-(defun ess-ltest-process-next-subchunk ()
+(defun ess-ltest-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at ess-ltest-code-cont-pattern))
          (test-code (ess-ltest-process-code))
          (test-result (ess-ltest- (if continuation test-case-state test-case)
@@ -113,7 +156,7 @@
 (defmacro ess-ltest (init &rest body)
   (apply 'ess-ltest- `(,init (,@body))))
 
-(defun ess-ltest- (init body mode-init &optional keep-state)
+(defun ess-ltest- (init body local-variables &optional keep-state)
   (unless keep-state
     (and ess-ltest--state-buffer
          (buffer-name ess-ltest--state-buffer)
@@ -124,7 +167,8 @@
     (if keep-state
         (delete-region (point-min) (point-max))
       (transient-mark-mode 1)
-      (mapc 'eval mode-init))
+      (setq-local file-local-variables-alist (copy-alist local-variables))
+      (hack-local-variables-apply))
     (insert init)
     (goto-char (point-min))
     (when (search-forward "×" nil t)
@@ -147,7 +191,8 @@
                     ((and (listp x)
                           (eq (car x) 'kbd))
                      (ess-ltest-unalias x))
-                    (t (eval x)))) body)
+                    (t (eval x))))
+            body)
     (insert "¶")
     (when (region-active-p)
       (exchange-point-and-mark)

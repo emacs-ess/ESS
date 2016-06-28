@@ -112,7 +112,7 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-dump-filename-template       . (ess-replace-regexp-in-string
                                           "S$" ess-suffix ; in the one from custom:
                                           ess-dump-filename-template-proto))
-     (ess-mode-syntax-table            . R-syntax-table)
+     (ess-mode-syntax-table            . ess-r-syntax-table)
      (ess-mode-editing-alist           . R-editing-alist)
      (ess-change-sp-regexp             . ess-R-change-sp-regexp)
      (ess-help-sec-regex               . ess-help-R-sec-regex)

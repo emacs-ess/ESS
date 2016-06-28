@@ -1280,30 +1280,6 @@ Hide all the junk output in temporary buffer."
 
 ;;*;; Evaluation primitives
 
-(defun ess-send-string--fallback (process string &optional visibly message)
-  (cond
-   ;; Wait after each line
-   ((eq visibly t)
-    (let ((ess--inhibit-presend-hooks t))
-      (ess-eval-linewise string)))
-   ;; Insert command and eval invisibly
-   ((or (stringp visibly)
-        (eq visibly 'nowait))
-    (with-current-buffer (process-buffer process)
-      (save-excursion
-        (goto-char (process-mark process))
-        (insert-before-markers
-         (propertize (format "%s\n"
-                             (replace-regexp-in-string
-                              "\n[ \t]" "\n+ "
-                              (if (stringp visibly) visibly string)))
-                     'font-lock-face 'comint-highlight-input)))
-      (process-send-string process (ess--concat-new-line-maybe string))))
-   (t
-    (process-send-string process (ess--concat-new-line-maybe string))))
-  (when message
-    (message message)))
-
 (ess-defgeneric ess-send-string (process string &optional visibly message type)
   "ESS wrapper for `process-send-string'.
 Run `comint-input-filter-functions' and current buffer's and
@@ -1323,7 +1299,28 @@ described in `ess-eval-visibly'. STRING need not end with
     (inferior-ess--interrupt-subjob-maybe process)
     (inferior-ess-mark-as-busy process)
     (:override
-     (ess-send-string--fallback process string visibly message))))
+     (cond
+      ;; Wait after each line
+      ((eq visibly t)
+       (let ((ess--inhibit-presend-hooks t))
+         (ess-eval-linewise string)))
+      ;; Insert command and eval invisibly
+      ((or (stringp visibly)
+           (eq visibly 'nowait))
+       (with-current-buffer (process-buffer process)
+         (save-excursion
+           (goto-char (process-mark process))
+           (insert-before-markers
+            (propertize (format "%s\n"
+                                (replace-regexp-in-string
+                                 "\n[ \t]" "\n+ "
+                                 (if (stringp visibly) visibly string)))
+                        'font-lock-face 'comint-highlight-input)))
+         (process-send-string process (ess--concat-new-line-maybe string))))
+      (t
+       (process-send-string process (ess--concat-new-line-maybe string))))
+     (when message
+       (message message)))))
 
 (ess-defgeneric ess-send-region (process start end &optional visibly message type)
   "Low level ESS version of `process-send-region'.
@@ -2173,10 +2170,10 @@ to continue it."
           ess--local-mode-line-process-indicator
           "]: %s"))
   (use-local-map inferior-ess-mode-map)
-  (if ess-mode-syntax-table
-      (set-syntax-table ess-mode-syntax-table)
-    ;; FIXME: need to do something if not set!  Get from the proper place!
-    )
+  (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
+                              ess-mode-syntax-table)))
+    (when inf-syntax-table
+      (set-syntax-table inf-syntax-table)))
 
   (ess-write-to-dribble-buffer
    (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"

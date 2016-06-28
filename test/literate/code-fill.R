@@ -80,6 +80,27 @@ fun_call(¶         ## comment
            argument2)
 
 
+### 6 Empty arguments ------------------------------------------------
+
+fun_call¶(argument1, , arg2, , argument3, , argument4)
+
+##! (setq-local fill-column 42)
+##! "M-q"
+
+fun_call¶(argument1, , arg2, , argument3, ,
+         argument4)
+
+##> "M-q"
+
+fun_call¶(argument1,
+        ,
+         arg2,
+        ,
+         argument3,
+        ,
+         argument4)
+
+
 
 ##### Continuation Filling
 
@@ -121,3 +142,4 @@ fun_call(¶argument +)
 ##! "M-q"
 
 fun_call(¶argument +)
+
