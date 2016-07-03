@@ -1541,7 +1541,7 @@ Returns nil if line starts inside a string, t if in a comment."
    ;; Block is an argument in a function call
    ((when containing-sexp
       (ess-at-containing-sexp
-        (ess-behind-call-opening "[[(]")))
+        (ess-behind-call-opening-p "[[(]")))
     (ess-calculate-indent--block 0))
    ;; Top-level block
    ((null containing-sexp) 0)
@@ -1635,11 +1635,11 @@ Returns nil if line starts inside a string, t if in a comment."
      ((ess-at-indent-point
         (and (ess-unbraced-block-p)
              (goto-char containing-sexp)
-             (ess-behind-call-opening "[[(]")))
+             (ess-behind-call-opening-p "[[(]")))
       'body)
      ;; Indentation of opening brace as argument
      ((ess-at-containing-sexp
-        (ess-behind-call-opening "[[(]"))
+        (ess-behind-call-opening-p "[[(]"))
       'opening)
      ;; Indentation of body or closing brace as argument
      ((ess-at-containing-sexp
@@ -1647,7 +1647,7 @@ Returns nil if line starts inside a string, t if in a comment."
                  (ess-behind-block-paren-p))
              prev-containing-sexp
              (goto-char prev-containing-sexp)
-             (ess-behind-call-opening "[[(]")))
+             (ess-behind-call-opening-p "[[(]")))
       'body))))
 
 (defun ess-calculate-indent--block (&optional offset)

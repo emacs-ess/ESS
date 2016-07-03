@@ -759,13 +759,13 @@ reached."
            (save-excursion
              (forward-char)
              (ess-up-list))
-           (or (ess-behind-call-opening "(")
+           (or (ess-behind-call-opening-p "(")
                (looking-at "\\["))
            (ess-within-call-name-p call)))))
 
 (defun ess-within-continuation-p ()
   (unless (or (looking-at ",")
-              (ess-behind-call-opening "[[(]"))
+              (ess-behind-call-opening-p "[[(]"))
     (or (save-excursion
           (ess-jump-object)
           (and (not (ess-ahead-param-assign-p))
@@ -1025,7 +1025,7 @@ return the prefix."
                    (prog1 t (ess-climb-chained-delims)))))
       (ess-ahead-attached-name-p))))
 
-(defun ess-behind-call-opening (pattern)
+(defun ess-behind-call-opening-p (pattern)
   (and (looking-at pattern)
        (ess-ahead-attached-name-p)))
 
@@ -1092,7 +1092,7 @@ before the `=' sign."
   (ess-save-excursion-when-nil
     (ess-jump-name)
     (ess-skip-blanks-forward)
-    (and (ess-behind-call-opening "[[(]")
+    (and (ess-behind-call-opening-p "[[(]")
          (ess-climb-name)
          (or (null call)
              (looking-at call)))))
