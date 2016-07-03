@@ -228,7 +228,7 @@
         (and (ess-goto-char string-end)
              (ess-looking-at "<-")
              (ess-goto-char (match-end 0))
-             (ess-looking-at "function\\b")))
+             (ess-looking-at "function\\b" t)))
       font-lock-function-name-face)
      ((save-excursion
         (and (ess-goto-char string-end)
