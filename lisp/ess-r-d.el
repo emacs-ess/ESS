@@ -211,7 +211,7 @@
 ;; (modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
-;; (modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
+(modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
 
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
