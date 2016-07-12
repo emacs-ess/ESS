@@ -388,17 +388,23 @@ if necessary.  It is bound to RET and C-m in R-index pages."
     (ess-eval-linewise command)
     (ess-switch-to-end-of-ESS)))
 
-(defun ess-display-vignettes ()
-  "Display vignettes if available for the current dialect."
-  (interactive)
+(defun ess-display-vignettes (&optional all)
+  "Display vignettes if available for the current dialect.
+With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
+ packages, which can be *very* slow."
+  (interactive "P")
   (cond
-   ((equal ess-dialect "R") (ess-R-display-vignettes))
+   ((equal ess-dialect "R") (ess-R-display-vignettes all))
    (t (message "Sorry, not implemented for %s" ess-dialect))))
 
-(defun ess-R-display-vignettes ()
-  "Display R vignettes in ess-help-like buffer."
-  (interactive)
-  (let* ((vslist (with-current-buffer (ess-command ".ess_vignettes()\n")
+(defun ess-R-display-vignettes (&optional all)
+  "Display R vignettes in ess-help-like buffer..
+With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
+ packages, which can be *very* slow."
+  (interactive "P")
+  (let* ((vslist (with-current-buffer
+                     (ess-command
+                      (format ".ess_vignettes(%s)\n" (if all "TRUE" "")))
                    (goto-char (point-min))
                    (when (re-search-forward "(list" nil t)
                      (goto-char (match-beginning 0))

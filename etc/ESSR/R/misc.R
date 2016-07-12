@@ -95,8 +95,8 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
     invisible(NULL)
 }
 
-.ess_vignettes <- function(){
-    vs <- unclass(browseVignettes())
+.ess_vignettes <- function(all=FALSE) {
+    vs <- unclass(browseVignettes(all=all))
     vs <- vs[sapply(vs, length) > 0]
 
     mat2elist <- function(mat){
