@@ -227,7 +227,8 @@ objects from that MODULE."
                 (when start (buffer-substring-no-properties start (point))))))
     (candidates (let ((proc (ess-get-next-available-process)))
                   (when proc
-                    (all-completions arg (mapcar #'car (ess-julia-objects arg proc))))))
+                    (all-completions arg (mapcar (lambda (x) (or (car-safe x) x))
+                                                 (ess-julia-objects arg proc))))))
     (doc-buffer (company-doc-buffer (ess-julia-get-object-help-string arg)))))
 
 
@@ -302,6 +303,8 @@ to look up any doc strings."
     (ess-error-regexp              . "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist        . ess-julia-error-regexp-alist)
     (ess-imenu-generic-expression  . ess-julia-imenu-generic-expression)
+    (ess-mode-syntax-table         . julia-mode-syntax-table)
+    (ess-mode-completion-syntax-table . ess-julia-completion-syntax-table)
     ;; (inferior-ess-objects-command    . inferior-R-objects-command)
     ;; (inferior-ess-search-list-command        . "search()\n")
     (inferior-ess-help-command     . "ESS.help(\"%s\")\n")
@@ -342,7 +345,15 @@ to look up any doc strings."
   :group 'ess-julia
   :type 'string)
 
-(defvar ess-julia-mode-map ess-mode-map)
+(defvar ess-julia-completion-syntax-table
+  (let ((table (make-syntax-table ess-r-syntax-table)))
+    (modify-syntax-entry ?. "_" table)
+    ;; (modify-syntax-entry ?: "_" table)
+    ;; (modify-syntax-entry ?$ "_" table)
+    (modify-syntax-entry ?@ "_" table)
+    table)
+  "Syntax table used for completion and help symbol lookup.
+It makes underscores and dots word constituent chars.")
 
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia-derived]"
