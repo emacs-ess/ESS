@@ -1,16 +1,9 @@
 module ESS
 
-
 function all_help_topics()
-    Base.Help.init_help()
-    ## show all categories 
-    for (func, _ ) in Base.Help.MODULE_DICT
-        if !isempty(Base.Help.MODULE_DICT[func])
-            println()
-            show(func);
-        end
-    end
-end
+    ## There are not clear topics anymore. Approximate those with a very general apropos(" ")
+    apropos(" ")
+end 
 
 function help(topic::AbstractString)
     VERSION >= v"0.4-" ?
@@ -75,6 +68,12 @@ end
 
 
 ### OBJECT COMPLETION
+# Must print an output of the form:
+# 
+# Cache                         Module
+# Write                         Module
+# add                           Function
+# free                          Function
 function components(m::Module)
     for v in sort(names(m))
         s = string(v)
@@ -99,16 +98,17 @@ end
 
 
 ### MISC
-function main_modules()
-    mainmod = current_module()
-    for nm in names(mainmod)
-        if isdefined(mainmod, nm)
-            mod = eval(mainmod, nm)
+function main_modules(m::Module)
+    for nm in names(m)
+        if isdefined(m, nm)
+            mod = eval(m, nm)
             if isa(mod, Module)
                 print("\"$nm\" ")
             end
         end
     end
 end
+
+main_modules() = main_modules(current_module())
 
 end 

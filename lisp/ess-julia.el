@@ -68,7 +68,8 @@ VISIBLY is not currently used."
 
 ;;; HELP
 (defun ess-julia-get-help-topics (&optional proc)
-  (append (ess-get-words-from-vector "ESS.all_help_topics()\n")
+  (append (with-current-buffer (ess-command "ESS.all_help_topics()\n")
+            (split-string (buffer-string) "\n"))
           (ess-julia--get-objects proc)))
 
 (defun ess-julia--retrive-topics (url)
@@ -150,6 +151,8 @@ VISIBLY is not currently used."
 Local caching might be used. If MODULE is givven, return only
 objects from that MODULE."
   (setq proc (or proc (ess-get-process)))
+  (when (stringp proc)
+    (setq proc (get-process proc)))
   (when (process-live-p proc)
     (let ((objects (process-get proc 'objects)))
       (if (process-get proc 'busy)
