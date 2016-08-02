@@ -1083,9 +1083,20 @@ queried for arguments.
 	     ;; push even if nil
 	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
 
+(defun ess-symbol-at-point ()
+  "Like `symbol-at-point' but consider fully qualified names.
+Fully qualified names include accessor symbols (like aaa$bbb and
+aaa@bbb in R)."
+  (with-syntax-table (or ess-mode-completion-syntax-table
+                         ess-mode-syntax-table)
+    (symbol-at-point)))
+
 (defun ess-symbol-start ()
-  "Get initial position for objects completion."
-  (let ((beg (car (bounds-of-thing-at-point 'symbol))))
+  "Get initial position for objects completion.
+Symbols are fully qualified names that include accessor
+symbols (like aaa$bbb and aaa@bbb in R)."
+  (let ((beg (car (with-syntax-table (or ess-mode-completion-syntax-table ess-mode-syntax-table)
+                    (bounds-of-thing-at-point 'symbol)))))
     (when (and beg (not (save-excursion (goto-char beg)
                                         (looking-at "/\\|.[0-9]"))))
       beg)))
@@ -1131,7 +1142,7 @@ later."
                      (up-list -1)
                      (while (not (looking-at "("))
                        (up-list -1))
-                     (let ((funname (symbol-name (symbol-at-point))))
+                     (let ((funname (symbol-name (ess-symbol-at-point))))
                        (when (and funname
                                   (not (member funname ess-S-non-functions)))
                          (cons funname (- (point) (length funname))))

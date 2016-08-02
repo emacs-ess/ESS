@@ -200,7 +200,6 @@
 
 ;; Underscore is valid in R symbols
 (modify-syntax-entry ?_ "_" ess-r-syntax-table)
-
 (modify-syntax-entry ?: "." ess-r-syntax-table)
 (modify-syntax-entry ?@ "." ess-r-syntax-table)
 (modify-syntax-entry ?$ "." ess-r-syntax-table)
@@ -212,6 +211,16 @@
 ;; (modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
 (modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
+
+(defvar ess-r-completion-syntax-table
+  (let ((table (make-syntax-table ess-r-syntax-table)))
+    (modify-syntax-entry ?. "_" table)
+    (modify-syntax-entry ?: "_" table)
+    (modify-syntax-entry ?$ "_" table)
+    (modify-syntax-entry ?@ "_" table)
+    table)
+  "Syntax table used for completion and help symbol lookup.
+It makes underscores and dots word constituent chars.")
 
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
@@ -263,6 +272,7 @@
      (ess-build-help-command-function   . #'ess-r-build-help-command)
      (ess-help-web-search-command       . 'ess-R-sos)
      (ess-mode-syntax-table             . ess-r-syntax-table)
+     (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
      (ess-mode-editing-alist            . R-editing-alist)
      (ess-change-sp-regexp              . ess-R-change-sp-regexp)
      (ess-help-sec-regex                . ess-help-R-sec-regex)

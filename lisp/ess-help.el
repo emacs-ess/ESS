@@ -920,7 +920,7 @@ option for other dialects)."
     (let ((map (make-sparse-keymap))
           (objname (or (and (use-region-p)
                             (buffer-substring-no-properties (point) (mark)))
-                       (symbol-at-point)))
+                       (ess-symbol-at-point)))
           bs ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
