@@ -1088,14 +1088,17 @@ queried for arguments.
 Fully qualified names include accessor symbols (like aaa$bbb and
 aaa@bbb in R)."
   (with-syntax-table (or ess-mode-completion-syntax-table
-                         ess-mode-syntax-table)
+                         ess-mode-syntax-table
+                         (syntax-table))
     (symbol-at-point)))
 
 (defun ess-symbol-start ()
   "Get initial position for objects completion.
 Symbols are fully qualified names that include accessor
 symbols (like aaa$bbb and aaa@bbb in R)."
-  (let ((beg (car (with-syntax-table (or ess-mode-completion-syntax-table ess-mode-syntax-table)
+  (let ((beg (car (with-syntax-table (or ess-mode-completion-syntax-table
+                                         ess-mode-syntax-table
+                                         (syntax-table))
                     (bounds-of-thing-at-point 'symbol)))))
     (when (and beg (not (save-excursion (goto-char beg)
                                         (looking-at "/\\|.[0-9]"))))
