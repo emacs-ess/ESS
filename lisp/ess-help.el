@@ -688,6 +688,8 @@ Other keybindings are as follows:
   ;; section headings.
 
   (setq ess-help-sec-map (make-sparse-keymap))
+  (setq-local show-trailing-whitespace nil)
+
   (dolist (pair ess-help-sec-keys-alist)
     (define-key ess-help-sec-map (char-to-string (car pair))
       'ess-skip-to-help-section))
