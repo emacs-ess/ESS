@@ -349,12 +349,13 @@ disable the mode line entirely."
    (t
     (run-hooks 'ess-r-package-exit-hook))))
 
-(add-hook 'hack-local-variables-hook 'ess-r-package-auto-activate)
+(add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
 
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
   (when (and ess-r-package-auto-activate
-             (buffer-file-name))
+             (or (buffer-file-name)
+                 default-directory))
     (let ((pkg-info (ess-r-package-get-info)))
       (when (car pkg-info)
         (ess-r-package-mode 1)))))
