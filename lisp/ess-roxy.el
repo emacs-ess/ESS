@@ -714,12 +714,15 @@ list of strings."
 (defun ess-roxy-remove-roxy-re (string)
   "Remove the `ess-roxy-str' before sending to R process. Useful
   for sending code from example section.  This function is placed
-  in `ess-presend-filter-functions'.
-  "
+  in `ess-presend-filter-functions'."
+  ;; FIXME: This should happen only in examples, and only when STRING is
+  ;; entirely contained inside examples section. Currently this function
+  ;; indiscriminately strips leading comments from the entire STRING. This makes
+  ;; evaluation of code blocks following roxy blocks impossible.
   (if (ess-roxy-entry-p)
       (replace-regexp-in-string ess-roxy-re "" string)
     string))
-(add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
+;; (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
 (defun ess-roxy-find-par-end (stop-point &rest stoppers)
   (mapc #'(lambda (stopper)
