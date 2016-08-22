@@ -704,9 +704,10 @@ list of strings."
   ;; Only strip the prefix in the @examples field, and only when
   ;; STRING is entirely contained inside it. This allows better
   ;; behaviour for evaluation of regions.
-  (if (with-temp-buffer
-        (insert string)
-        (ess-roxy-entry-p "examples"))
+  (if (and (ess-roxy-entry-p "examples")
+           (with-temp-buffer
+             (insert string)
+             (ess-roxy-entry-p)))
       (replace-regexp-in-string ess-roxy-re "" string)
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
