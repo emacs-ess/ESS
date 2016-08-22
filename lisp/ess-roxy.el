@@ -131,8 +131,7 @@
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
   (make-local-variable 'adaptive-fill-function)
-  (setq adaptive-fill-function 'ess-roxy-adaptive-fill-function)
-  (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local))
+  (setq adaptive-fill-function 'ess-roxy-adaptive-fill-function))
 
 
 ;;; Function definitions
@@ -229,11 +228,13 @@
         (if cont (setq cont (= (forward-line 1) 0))))
       end)))
 
-(defun ess-roxy-entry-p ()
+(defun ess-roxy-entry-p (&optional field)
   "True if point is in a roxy entry"
-  (save-excursion
-    (beginning-of-line)
-    (looking-at (concat ess-roxy-re))))
+  (and (save-excursion
+         (beginning-of-line)
+         (looking-at (concat ess-roxy-re)))
+       (or (null field)
+           (string= (ess-roxy-current-field) field))))
 
 (defun ess-roxy-narrow-to-field ()
   "Go to to the start of current field"
@@ -700,14 +701,15 @@ list of strings."
   "Remove the `ess-roxy-str' before sending to R process. Useful
   for sending code from example section.  This function is placed
   in `ess-presend-filter-functions'."
-  ;; FIXME: This should happen only in examples, and only when STRING is
-  ;; entirely contained inside examples section. Currently this function
-  ;; indiscriminately strips leading comments from the entire STRING. This makes
-  ;; evaluation of code blocks following roxy blocks impossible.
-  (if (ess-roxy-entry-p)
+  ;; Only strip the prefix in the @examples field, and only when
+  ;; STRING is entirely contained inside it. This allows better
+  ;; behaviour for evaluation of regions.
+  (if (with-temp-buffer
+        (insert string)
+        (ess-roxy-entry-p "examples"))
       (replace-regexp-in-string ess-roxy-re "" string)
     string))
-;; (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
+(add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
 (defun ess-roxy-find-par-end (stop-point &rest stoppers)
   (mapc #'(lambda (stopper)
