@@ -106,7 +106,6 @@
 
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing in-code documentation."
-  ;; :lighter " Rox"
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
@@ -115,22 +114,13 @@
         (if (and (featurep 'emacs) (>= emacs-major-version 24))
             (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
           (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
-        (if ess-roxy-hide-show-p
-            (progn
-                                        ;(setq hs-c-start-regexp "s")
-              (if (condition-case nil
-                      (if (and (symbolp hs-minor-mode)
-                               (symbol-value hs-minor-mode))
-                          nil t) (error t) )
-                  (progn
-                    (hs-minor-mode)))
-              (if ess-roxy-start-hidden-p
-                  (ess-roxy-hide-all)))))
-    (if ess-roxy-hide-show-p
-        (if hs-minor-mode
-            (progn
-              (hs-show-all)
-              (hs-minor-mode))))
+        (when (and ess-roxy-hide-show-p (featurep 'hideshow))
+          (hs-minor-mode 1)
+          (when ess-roxy-start-hidden-p
+            (ess-roxy-hide-all))))
+    (when (and ess-roxy-hide-show-p (bound-and-true-p hs-minor-mode))
+      (hs-show-all)
+      (hs-minor-mode))
     (unless (featurep 'xemacs)
       (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
   (when font-lock-mode
@@ -142,12 +132,7 @@
   (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
   (make-local-variable 'adaptive-fill-function)
   (setq adaptive-fill-function 'ess-roxy-adaptive-fill-function)
-  (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local)
-  )
-
-
-;; (setq hs-c-start-regexp ess-roxy-str)
-;; (make-variable-buffer-local 'hs-c-start-regexp)
+  (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil 'local))
 
 
 ;;; Function definitions
