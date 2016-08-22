@@ -1746,8 +1746,11 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
   (save-excursion
     (forward-paragraph)
+    ;; Skip blank code to avoid sending surrounding comments
+    (ess-skip-blanks-backward 'multiline)
     (let ((end (point)))
       (backward-paragraph)
+      (ess-skip-blanks-forward 'multiline)
       (ess-eval-region (point) end vis "Eval paragraph"))))
 
 ;; ;; Experimental - after suggestion from Jenny Brian for an 'eval-multiline'
