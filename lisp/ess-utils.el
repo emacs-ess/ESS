@@ -1262,8 +1262,32 @@ On dark background, lighten.  Oposite on light."
                    intensity)))
          (face (list (cons 'background-color color))))
     (with-silent-modifications
-      (font-lock-prepend-text-property start end 'face face)
-      (put-text-property start end 'ess-face-adjusted t))))
+      (ess-adjust-face-properties start end 'face face))))
+
+;; Taken from font-lock.el.
+(defun ess-adjust-face-properties (start end prop value)
+  "Tweaked `font-lock-prepend-text-property'.
+Adds the `ess-face-adjusted' property so we only adjust face once."
+  (let ((val (if (listp value) value (list value))) next prev)
+    (while (/= start end)
+      (setq next (next-single-property-change start prop nil end)
+            prev (get-text-property start prop))
+      ;; Canonicalize old forms of face property.
+      (and (memq prop '(face font-lock-face))
+           (listp prev)
+           (or (keywordp (car prev))
+               (memq (car prev) '(foreground-color background-color)))
+           (setq prev (list prev)))
+      (add-text-properties start next
+                           (list prop (append val (if (listp prev) prev (list prev)))
+                                 'ess-face-adjusted t))
+      (setq start next))))
+
+(defun ess-find-overlay (pos prop)
+  (cl-some (lambda (overlay)
+             (when (overlay-get overlay prop)
+               overlay))
+           (overlays-at pos)))
 
 (provide 'ess-utils)
 

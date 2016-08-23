@@ -118,19 +118,45 @@ code.")
         (cons new-start new-end))
     (cons start end)))
 
+(defun ess-roxy-modify-examples (overlay after start end &optional length)
+  (when (and overlay after)
+    (ess-roxy-delete-examples-field overlay (min (1+ (overlay-end overlay))
+                                                 (point-max)))))
+
+(defun ess-roxy-insert-in-front-examples (overlay after start end &optional length)
+  (when (and overlay after)
+    (ess-roxy-delete-examples-field overlay (1+ end))))
+
+(defun ess-roxy-delete-examples-field (overlay header-end)
+  (let ((inhibit-modification-hooks t))
+    (delete-overlay overlay)
+    (when (get-text-property header-end 'ess-roxy-examples)
+      (let ((field-end (next-single-property-change header-end 'ess-roxy-examples)))
+        (remove-list-of-text-properties header-end field-end
+                                        (list 'ess-roxy-examples
+                                              'ess-face-adjusted
+                                              'ess-adjust-face-background))))))
+
 (defun ess-roxy-syntax-propertize (start end)
   (funcall
    (syntax-propertize-rules
     ;; Cache `@examples' field boundaries in text properties. Signal
     ;; buffer and chunks for face adjustment.
-    ("^#+' +@examples"
-     (0 (progn
+    ("^\\(#+'\\) +\\(@examples\\)[ \t\n]"
+     (1 (progn
           (setq-local ess-buffer-has-chunks t)
-          (let ((examples-start (1+ (match-end 0)))
-                (examples-end (1+ (ess-roxy-end-of-field))))
-            (add-text-properties examples-start examples-end
+          (let ((field-start (1+ (match-end 2)))
+                (field-end (1+ (save-match-data
+                                 (ess-roxy-end-of-field)))))
+            (add-text-properties field-start field-end
                                  (list 'ess-adjust-face-background t
-                                       'ess-roxy-examples t)))
+                                       'ess-roxy-examples t))
+            (unless (ess-find-overlay (match-beginning 2) 'ess-roxy-examples-header)
+              (let ((overlay (make-overlay (match-beginning 2) (match-end 2))))
+                (overlay-put overlay 'modification-hooks (list #'ess-roxy-modify-examples))
+                (overlay-put overlay 'insert-in-front-hooks (list #'ess-roxy-modify-examples))
+                (overlay-put overlay 'insert-behind-hooks (list #'ess-roxy-insert-in-front-examples))
+                (overlay-put overlay 'ess-roxy-examples-header t))))
           nil)))
     ("^#+'"
      ;; Remove comment and string properties of roxy prefix in fields
