@@ -257,6 +257,8 @@ Use you regular key for `outline-show-entry' to reveal it.")
 
 (defun ess-roxy-cycle-example ()
   (interactive)
+  (unless (featurep 'outline-magic)
+    (error "Please install and load outline-magic"))
   (ess-roxy-substitute-outline-regexp #'outline-cycle))
 
 (defun ess-roxy-show-example ()
@@ -276,9 +278,10 @@ Use you regular key for `outline-show-entry' to reveal it.")
       (when (ess-roxy-entry-p "examples")
         (ess-roxy-hide-example)))))
 
-(substitute-key-definition 'outline-cyle
-                           'ess-roxy-cyle-example
-                           ess-roxy-mode-map outline-minor-mode-map)
+(when (featurep 'outline-magic)
+  (substitute-key-definition 'outline-cyle
+                             'ess-roxy-cyle-example
+                             ess-roxy-mode-map outline-mode-menu-bar-map))
 
 (substitute-key-definition 'outline-hide-entry
                            'ess-roxy-hide-example
