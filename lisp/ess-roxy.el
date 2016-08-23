@@ -143,20 +143,28 @@ code.")
           (string-to-syntax "-")))))
    start end))
 
-(defun ess-roxy-fontify-region (start end loudly &optional go)
 (defun ess-roxy-fontify-region (start end loudly)
   (prog1 (font-lock-default-fontify-region start end loudly)
     (when (and ess-adjust-chunk-faces ess-buffer-has-chunks)
       (let* ((prop 'ess-adjust-face-background)
              (end (line-end-position))
              (adjust-start (or (and (get-text-property start prop)
-                                    (previous-single-property-change start prop nil))
+                                    (previous-single-property-change start prop))
                                (next-single-property-change start prop nil end)))
              next-pos)
-        (while (< adjust-start end)
+        (while (progn
+                 (when (get-text-property adjust-start 'ess-face-adjusted)
+                   (setq adjust-start (next-single-property-change
+                                       adjust-start 'ess-face-adjusted nil end)))
+                 (< adjust-start end))
           (setq next-pos (next-single-property-change adjust-start prop nil end))
-          (ess-adjust-face-background adjust-start next-pos)
+          (when (text-property-not-all adjust-start end 'ess-face-adjusted t)
+            (ess-adjust-face-background adjust-start next-pos))
           (setq adjust-start (next-single-property-change next-pos prop nil end)))))))
+
+(defun ess-roxy-unfontify-region (start end)
+  (font-lock-default-unfontify-region start end)
+  (remove-list-of-text-properties start end (list 'ess-face-adjusted)))
 
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing ROxygen documentation."
@@ -179,7 +187,8 @@ code.")
                     #'ess-roxy-extend-region-to-field
                     'append 'local)
           (setq-local syntax-propertize-function #'ess-roxy-syntax-propertize)
-          (setq-local font-lock-fontify-region-function #'ess-roxy-fontify-region)))
+          (setq-local font-lock-fontify-region-function #'ess-roxy-fontify-region)
+          (setq-local font-lock-unfontify-region-function #'ess-roxy-unfontify-region)))
     (when (and ess-roxy-hide-show-p
                (bound-and-true-p hs-minor-mode))
       (hs-show-all)
@@ -188,6 +197,7 @@ code.")
       (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
     (setq-local syntax-propertize-function nil)
     (setq-local font-lock-fontify-region-function nil)
+    (setq-local font-lock-unfontify-region-function nil)
     (remove-hook 'syntax-propertize-extend-region-functions
                  #'ess-roxy-extend-region-to-field
                  'local))

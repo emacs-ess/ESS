@@ -1262,7 +1262,8 @@ On dark background, lighten.  Oposite on light."
                    intensity)))
          (face (list (cons 'background-color color))))
     (with-silent-modifications
-      (font-lock-prepend-text-property start end 'face face))))
+      (font-lock-prepend-text-property start end 'face face)
+      (put-text-property start end 'ess-face-adjusted t))))
 
 (provide 'ess-utils)
 
