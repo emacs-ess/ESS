@@ -102,6 +102,62 @@
     (,(concat ess-roxy-re)
      (0 'bold prepend))))
 
+(defvar ess-roxy-fontify-examples t
+  "When non-nil, the `@examples' field is fontified as ordinary
+code.")
+
+(defun ess-roxy-extend-region-to-field (start end)
+  (if (or (progn
+            (goto-char start)
+            (ess-roxy-entry-p "examples"))
+          (progn
+            (goto-char end)
+            (ess-roxy-entry-p "examples")))
+      (let ((new-start (min start (ess-roxy-beg-of-field)))
+            (new-end (max end (ess-roxy-end-of-field))))
+        (cons new-start new-end))
+    (cons start end)))
+
+(defun ess-roxy-syntax-propertize (start end)
+  (funcall
+   (syntax-propertize-rules
+    ;; Cache `@examples' field boundaries in text properties. Signal
+    ;; buffer and chunks for face adjustment.
+    ("^#+' +@examples"
+     (0 (save-excursion
+          (setq-local ess-buffer-has-chunks t)
+          (goto-char (match-beginning 0))
+          (let ((examples-start (1+ (match-end 0)))
+                (examples-end (1+ (ess-roxy-end-of-field))))
+            (put-text-property examples-start examples-end 'ess-roxy-examples t)
+            (put-text-property examples-start examples-end 'ess-adjust-face-background t))
+          nil)))
+    ("^#+'"
+     ;; Remove comment and string properties of roxy prefix in fields
+     ;; that should be fontified as usual. Add `roxy-prefix' property
+     ;; so we can manually fontify the prefix as comment later on.
+     (0 (when (get-text-property (match-beginning 0) 'ess-roxy-examples)
+          (put-text-property (match-beginning 0) (match-end 0)
+                             'ess-roxy-prefix t)
+          (put-text-property (match-beginning 0) (match-end 0)
+                             'font-lock-face 'font-lock-comment-face)
+          (string-to-syntax "-")))))
+   start end))
+
+(defun ess-roxy-fontify-region (start end loudly &optional go)
+  (prog1 (font-lock-default-fontify-region start end loudly)
+    (when (and t ess-adjust-chunk-faces ess-buffer-has-chunks)
+      (let* ((prop 'ess-adjust-face-background)
+             (end (line-end-position))
+             (adjust-start (or (and (get-text-property start prop)
+                                    (previous-single-property-change start prop nil))
+                               (next-single-property-change start prop nil end)))
+             next-pos)
+        (while (< adjust-start end)
+          (setq next-pos (next-single-property-change adjust-start prop nil end))
+          (ess-adjust-face-background adjust-start next-pos)
+          (setq adjust-start (next-single-property-change next-pos prop nil end)))))))
+
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing ROxygen documentation."
   :keymap ess-roxy-mode-map
@@ -112,15 +168,29 @@
         (if (and (featurep 'emacs) (>= emacs-major-version 24))
             (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
           (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
+        ;; Hideshow Integration
         (when (and ess-roxy-hide-show-p (featurep 'hideshow))
           (hs-minor-mode 1)
           (when ess-roxy-start-hidden-p
-            (ess-roxy-hide-all))))
-    (when (and ess-roxy-hide-show-p (bound-and-true-p hs-minor-mode))
+            (ess-roxy-hide-all)))
+        ;; Fontification
+        (when ess-roxy-fontify-examples
+          (add-hook 'syntax-propertize-extend-region-functions
+                    #'ess-roxy-extend-region-to-field
+                    'append 'local)
+          (setq-local syntax-propertize-function #'ess-roxy-syntax-propertize)
+          (setq-local font-lock-fontify-region-function #'ess-roxy-fontify-region)))
+    (when (and ess-roxy-hide-show-p
+               (bound-and-true-p hs-minor-mode))
       (hs-show-all)
       (hs-minor-mode))
     (unless (featurep 'xemacs)
-      (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
+      (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
+    (setq-local syntax-propertize-function nil)
+    (setq-local font-lock-fontify-region-function nil)
+    (remove-hook 'syntax-propertize-extend-region-functions
+                 #'ess-roxy-extend-region-to-field
+                 'local))
   (when font-lock-mode
     (font-lock-fontify-buffer))
   ;; Autofill

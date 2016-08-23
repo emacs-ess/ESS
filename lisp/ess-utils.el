@@ -1240,6 +1240,30 @@ Otherwise treat \\ in NEWTEXT string as special:
     (forward-line -1)
     (delete-region (point-at-eol) (point-max))))
 
+(defvar ess-adjust-chunk-faces t
+  "Whether to adjust background color in code chunks.")
+
+(defvar-local ess-buffer-has-chunks nil
+  "Internal usage: indicates whether a buffer has chunks.
+This is used to make face adjustment a no-op when a buffer does
+not contain chunks.")
+
+(defvar ess-adjust-face-intensity 2
+  "Default intensity for adjusting faces.")
+
+(defun ess-adjust-face-background (start end &optional intensity)
+  "Adjust face background between BEG and END.
+On dark background, lighten.  Oposite on light."
+  (let* ((intensity (or intensity ess-adjust-face-intensity))
+         (color (color-lighten-name
+                 (face-background 'default)
+                 (if (eq (frame-parameter nil 'background-mode) 'light)
+                     (- intensity)
+                   intensity)))
+         (face (list (cons 'background-color color))))
+    (with-silent-modifications
+      (font-lock-prepend-text-property start end 'face face))))
+
 (provide 'ess-utils)
 
 ;;; ess-utils.el ends here
