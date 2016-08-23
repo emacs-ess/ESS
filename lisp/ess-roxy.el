@@ -59,17 +59,20 @@
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
-;;; Code:
+;;; Dependencies:
 
 (require 'ess-utils)
 (require 'ess-custom)
 (require 'hideshow)
+(require 'outline)
 (eval-when-compile
   (require 'cl))
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 
-;; ------------------
+
+;;; Roxy Minor Mode
+
 (defvar ess-roxy-mode-map
   (let ((map (make-sparse-keymap)))
     (if ess-roxy-hide-show-p
@@ -234,6 +237,40 @@ code.")
   (setq-local paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
   (setq-local adaptive-fill-function 'ess-roxy-adaptive-fill-function))
 
+
+;;; Outline Integration
+
+(defvar ess-roxy-outline-regexp "^#+' +@examples\\|^[^#]")
+
+(defun ess-roxy-substitute-outline-regexp (command)
+  (let ((outline-regexp (if (ess-roxy-entry-p "examples")
+                            ess-roxy-outline-regexp
+                          outline-regexp)))
+    (funcall command)))
+
+(defun ess-roxy-cycle-example ()
+  (interactive)
+  (ess-roxy-substitute-outline-regexp #'outline-cycle))
+
+(defun ess-roxy-show-example ()
+  (interactive)
+  (ess-roxy-substitute-outline-regexp #'outline-show-entry))
+
+(defun ess-roxy-hide-example ()
+  (interactive)
+  (ess-roxy-substitute-outline-regexp #'outline-hide-entry))
+
+(substitute-key-definition 'outline-cyle
+                           'ess-roxy-cyle-example
+                           ess-roxy-mode-map outline-minor-mode-map)
+
+(substitute-key-definition 'outline-hide-entry
+                           'ess-roxy-hide-example
+                           ess-roxy-mode-map outline-minor-mode-map)
+
+(substitute-key-definition 'outline-show-entry
+                           'ess-roxy-show-example
+                           ess-roxy-mode-map outline-minor-mode-map)
 
 ;;; Function definitions
 
