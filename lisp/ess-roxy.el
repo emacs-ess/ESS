@@ -124,29 +124,29 @@ code.")
     ;; Cache `@examples' field boundaries in text properties. Signal
     ;; buffer and chunks for face adjustment.
     ("^#+' +@examples"
-     (0 (save-excursion
+     (0 (progn
           (setq-local ess-buffer-has-chunks t)
-          (goto-char (match-beginning 0))
           (let ((examples-start (1+ (match-end 0)))
                 (examples-end (1+ (ess-roxy-end-of-field))))
-            (put-text-property examples-start examples-end 'ess-roxy-examples t)
-            (put-text-property examples-start examples-end 'ess-adjust-face-background t))
+            (add-text-properties examples-start examples-end
+                                 (list 'ess-adjust-face-background t
+                                       'ess-roxy-examples t)))
           nil)))
     ("^#+'"
      ;; Remove comment and string properties of roxy prefix in fields
      ;; that should be fontified as usual. Add `roxy-prefix' property
      ;; so we can manually fontify the prefix as comment later on.
      (0 (when (get-text-property (match-beginning 0) 'ess-roxy-examples)
-          (put-text-property (match-beginning 0) (match-end 0)
-                             'ess-roxy-prefix t)
-          (put-text-property (match-beginning 0) (match-end 0)
-                             'font-lock-face 'font-lock-comment-face)
+          (add-text-properties (match-beginning 0) (match-end 0)
+                               (list 'ess-roxy-prefix t
+                                     'font-lock-face 'font-lock-comment-face))
           (string-to-syntax "-")))))
    start end))
 
 (defun ess-roxy-fontify-region (start end loudly &optional go)
+(defun ess-roxy-fontify-region (start end loudly)
   (prog1 (font-lock-default-fontify-region start end loudly)
-    (when (and t ess-adjust-chunk-faces ess-buffer-has-chunks)
+    (when (and ess-adjust-chunk-faces ess-buffer-has-chunks)
       (let* ((prop 'ess-adjust-face-background)
              (end (line-end-position))
              (adjust-start (or (and (get-text-property start prop)
