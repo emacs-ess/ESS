@@ -210,6 +210,9 @@ code.")
           (hs-minor-mode 1)
           (when ess-roxy-start-hidden-p
             (ess-roxy-hide-all)))
+        ;;  Outline Integration
+        (when ess-roxy-fold-examples
+          (ess-roxy-hide-all-examples))
         ;; Fontification
         (when ess-roxy-fontify-examples
           (add-hook 'syntax-propertize-extend-region-functions
@@ -240,6 +243,10 @@ code.")
 
 ;;; Outline Integration
 
+(defvar ess-roxy-fold-examples nil
+  "Whether to fold `@examples' when opening a buffer.
+Use you regular key for `outline-show-entry' to reveal it.")
+
 (defvar ess-roxy-outline-regexp "^#+' +@examples\\|^[^#]")
 
 (defun ess-roxy-substitute-outline-regexp (command)
@@ -259,6 +266,15 @@ code.")
 (defun ess-roxy-hide-example ()
   (interactive)
   (ess-roxy-substitute-outline-regexp #'outline-hide-entry))
+
+(defun ess-roxy-hide-all-examples ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "^#+' +@examples\\b" nil t)
+      ;; Handle edge cases
+      (when (ess-roxy-entry-p "examples")
+        (ess-roxy-hide-example)))))
 
 (substitute-key-definition 'outline-cyle
                            'ess-roxy-cyle-example
