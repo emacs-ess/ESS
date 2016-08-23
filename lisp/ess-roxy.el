@@ -308,6 +308,17 @@ code.")
         (end (ess-roxy-end-of-field)))
     (narrow-to-region beg end)))
 
+(defun ess-roxy-extract-field ()
+  (let ((field (buffer-substring (ess-roxy-beg-of-entry)
+                                 (ess-roxy-end-of-entry)))
+        (prefix-re (ess-roxy-guess-str)))
+    (with-temp-buffer
+      (insert field)
+      (goto-char (point-min))
+      (while (re-search-forward prefix-re (point-max) 'noerror)
+        (replace-match ""))
+      (buffer-substring (point-min) (point-max)))))
+
 (defun ess-roxy-adaptive-fill-function ()
   "Return prefix for filling paragraph or nil if not determined."
   (when (ess-roxy-entry-p)
