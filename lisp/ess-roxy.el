@@ -83,10 +83,7 @@
     (define-key map (kbd "C-c C-o C-w") 'ess-roxy-preview-HTML)
     (define-key map (kbd "C-c C-o C-t")   'ess-roxy-preview-text)
     (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
-    map)
-  )
-
-;; (defvar ess-roxy-font-lock-keywords nil)
+    map))
 
 (defvar ess-roxy-font-lock-keywords
   `((,(concat ess-roxy-re " *\\([@\\]"
@@ -95,7 +92,8 @@
      (1 'font-lock-keyword-face prepend))
     (,(concat ess-roxy-re " *\\([@\\]"
               (regexp-opt '("param" "importFrom" "importClassesFrom"
-                            "importMethodsFrom") t)
+                            "importMethodsFrom")
+                          t)
               "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
@@ -105,11 +103,11 @@
      (0 'bold prepend))))
 
 (define-minor-mode ess-roxy-mode
-  "Minor mode for editing in-code documentation."
+  "Minor mode for editing ROxygen documentation."
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
-        (unless (featurep 'xemacs) ;; does not exist in xemacs:
+        (unless (featurep 'xemacs)
           (font-lock-add-keywords nil ess-roxy-font-lock-keywords))
         (if (and (featurep 'emacs) (>= emacs-major-version 24))
             (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
@@ -125,13 +123,10 @@
       (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)))
   (when font-lock-mode
     (font-lock-fontify-buffer))
-  ;; for auto fill functionality
-  (make-local-variable 'paragraph-start)
-  (setq paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
-  (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
-  (make-local-variable 'adaptive-fill-function)
-  (setq adaptive-fill-function 'ess-roxy-adaptive-fill-function))
+  ;; Autofill
+  (setq-local paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
+  (setq-local paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
+  (setq-local adaptive-fill-function 'ess-roxy-adaptive-fill-function))
 
 
 ;;; Function definitions
@@ -232,7 +227,7 @@
   "True if point is in a roxy entry"
   (and (save-excursion
          (beginning-of-line)
-         (looking-at (concat ess-roxy-re)))
+         (looking-at ess-roxy-re))
        (or (null field)
            (string= (ess-roxy-current-field) field))))
 
@@ -319,8 +314,7 @@ function at point. if here is supplied start inputting
            (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
                                   (concat "\n" roxy-str)))
           (if ess-roxy-fill-param-p
-              (fill-paragraph))
-          )))))
+              (fill-paragraph)))))))
 
 (defun ess-roxy-merge-args (fun ent)
   "Take two args lists (alists) and return their union. Result
@@ -383,8 +377,7 @@ non-nil."
                 (insert (concat line-break roxy-str " @"
                                 (car tag-def) " " (cdr tag-def))))
               ))
-          (setq line-break "\n")
-          )))))
+          (setq line-break "\n"))))))
 
 (defun ess-roxy-goto-end-of-entry ()
   "Put point at the top of the entry at point or above the
@@ -398,7 +391,8 @@ roxygen entry."
   (if (ess-roxy-entry-p)
       (progn
         (goto-char (ess-roxy-end-of-entry))
-        t) (forward-line) nil))
+        t)
+    (forward-line) nil))
 
 (defun ess-roxy-goto-beg-of-entry ()
   "put point at the top of the entry at point or above the
@@ -412,7 +406,8 @@ roxygen entry."
   (if (ess-roxy-entry-p)
       (progn
         (goto-char (ess-roxy-beg-of-entry))
-        t) (forward-line) nil))
+        t)
+    (forward-line) nil))
 
 (defun ess-roxy-delete-args ()
   "remove all args from the entry at point or above the function
@@ -470,7 +465,8 @@ point is"
                     (setq desc (replace-regexp-in-string
                                 (concat "^" (regexp-quote arg-name) " *") "" args-text))
                     (setq args (cons (list (concat arg-name)
-                                           (concat desc)) args))))
+                                           (concat desc))
+                                     args))))
               (forward-line -1))
             args)
         nil))))
@@ -527,7 +523,8 @@ in a temporary buffer and return that buffer."
         (append-to-file beg (point) tmpf))
       (ess-force-buffer-current)
       (ess-command (concat "print(suppressWarnings(require(" ess-roxy-package
-                           ", quietly=TRUE)))\n") roxy-buf)
+                           ", quietly=TRUE)))\n")
+                   roxy-buf)
       (with-current-buffer roxy-buf
         (goto-char 1)
         (if (search-forward-regexp "FALSE" nil t)
