@@ -415,12 +415,16 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
     )
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
+  ;; timer
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
+;;; extras
   (ess-load-extras)
-  (run-mode-hooks 'ess-mode-hook)
-  (unless is-derived
-    (with-demoted-errors "File local-variables error: %s"
-      (hack-local-variables)))
+  ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
+  ;; (ess-load-object-name-db-file)
+  (if (> emacs-major-version 21)
+      (run-mode-hooks 'ess-mode-hook)
+    ;; old emacs 21.x
+    (run-hooks 'ess-mode-hook))
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
 
