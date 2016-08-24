@@ -359,7 +359,7 @@ to look up any doc strings."
 It makes underscores and dots word constituent chars.")
 
 ;;;###autoload
-(define-derived-mode ess-julia-mode julia-mode "ESS[julia-derived]"
+(define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
   (ess-mode ess-julia-customize-alist nil t)
   ;; for emacs >= 24
