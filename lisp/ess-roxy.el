@@ -126,7 +126,7 @@ code.")
     (ess-roxy-delete-examples-field overlay (min (1+ (overlay-end overlay))
                                                  (point-max)))))
 
-(defun ess-roxy-insert-in-front-examples (overlay after start end &optional length)
+(defun ess-roxy-insert-behind-examples (overlay after start end &optional length)
   (when (and overlay after)
     (ess-roxy-delete-examples-field overlay (1+ end))))
 
@@ -158,7 +158,7 @@ code.")
               (let ((overlay (make-overlay (match-beginning 2) (match-end 2))))
                 (overlay-put overlay 'modification-hooks (list #'ess-roxy-modify-examples))
                 (overlay-put overlay 'insert-in-front-hooks (list #'ess-roxy-modify-examples))
-                (overlay-put overlay 'insert-behind-hooks (list #'ess-roxy-insert-in-front-examples))
+                (overlay-put overlay 'insert-behind-hooks (list #'ess-roxy-insert-behind-examples))
                 (overlay-put overlay 'ess-roxy-examples-header t))))
           nil)))
     ("^#+'"
