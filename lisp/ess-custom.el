@@ -213,7 +213,7 @@ as `ess-imenu-use-S'."
 
 
 (defcustom ess-describe-at-point-method nil
-  "Whehter `ess-describe-object-at-point' should use a tooltip.
+  "Whether `ess-describe-object-at-point' should use a tooltip.
 If nil display in an electric buffer. If 'tooltip display in
 a tooltip.
 
