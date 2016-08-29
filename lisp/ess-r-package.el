@@ -306,8 +306,7 @@ prefix."
 ;;;*;;; Minor Mode
 
 (defcustom ess-r-package-auto-activate t
-  "If non-nil, `ess-r-package-mode' is automatically turned on
-within R packages."
+  "If non-nil, `ess-r-package-mode' is turned on within R packages."
   :group 'ess-r-package
   :type 'boolean)
 
@@ -354,6 +353,7 @@ disable the mode line entirely."
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
   (when (and ess-r-package-auto-activate
+             (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
              (or (buffer-file-name)
                  default-directory))
     (let ((pkg-info (ess-r-package-get-info)))
