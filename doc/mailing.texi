@@ -1,9 +1,9 @@
 
 There is a mailing list for discussions and announcements relating to
 ESS.  Join the list by sending an e-mail with "subscribe ess-help" (or
-"help") in the body to @email{ess-help-request@@stat.math.ethz.ch};
+"help") in the body to @email{ess-help-request@@r-project.org};
 contributions to the list may be mailed to
-@email{ess-help@@stat.math.ethz.ch}.  Rest assured, this is a fairly
+@email{ess-help@@r-project.org}.  Rest assured, this is a fairly
 low-volume mailing list.
 
 The purposes of the mailing list include

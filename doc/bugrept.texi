@@ -1,5 +1,5 @@
 Please send bug reports, suggestions etc. to
-@email{ESS-bugs@@stat.math.ethz.ch}
+@email{ESS-bugs@@r-project.org}
 
 The easiest way to do this is within Emacs by typing
 
