@@ -2133,9 +2133,8 @@ Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
   (interactive)
-
-  (comint-mode)
-
+  (delay-mode-hooks
+    (comint-mode))
   (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
   (set (make-local-variable 'process-connection-type) t)
   ;; initialize all custom vars:
@@ -2246,19 +2245,13 @@ to continue it."
   (set (make-local-variable 'paragraph-start)
        (concat inferior-ess-primary-prompt "\\|\^L"))
   (set (make-local-variable 'paragraph-separate) "\^L")
-
-  ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
-  ;; (ess-load-object-name-db-file)
-  ;; (sleep-for 0.5)
   (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
-  (run-hooks 'inferior-ess-mode-hook)
-
+  (run-mode-hooks 'inferior-ess-mode-hook)
   (ess-write-to-dribble-buffer
    (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
            (current-buffer) ess-language
            comint-process-echoes comint-input-sender))
-
   (message
    (concat (substitute-command-keys
             "Type \\[describe-mode] for help on ESS version ")
