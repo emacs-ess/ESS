@@ -47,7 +47,8 @@
 
 (defun ess-up-list (&optional N)
   (condition-case nil
-      (progn (up-list N) t)
+      (let (forward-sexp-function)
+        (progn (up-list N) t))
     (error nil)))
 
 (defun ess-forward-char (&optional N)
