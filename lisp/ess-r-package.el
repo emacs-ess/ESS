@@ -223,6 +223,12 @@ Root is determined by locating `ess-r-package-root-file'."
                               "Checking %s"
                               alt "vignettes = FALSE"))
 
+(defun ess-r-devtools-check-package-buildwin (&optional alt)
+  "Interface for `devtools::buildwin()'."
+  (interactive "P")
+  (ess-r-package-send-process "devtools::build_win(%s)\n"
+                              "Checking %s on CRAN's Windows server"))
+
 (defun ess-r-devtools-test-package (&optional alt)
   "Interface for `devtools::test()'.
 When called with a non-string prefix argument (as with C-u),
