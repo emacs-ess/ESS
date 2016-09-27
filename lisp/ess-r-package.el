@@ -318,48 +318,13 @@ Default location is determined by `ess-r-package-library-path'."
          (path (read-directory-name "Path: " default-path)))
     (ess-eval-linewise (format command path))))
 
-;; # R code for fetching all pkg functions:
-;;
-;; library("purrr")
-;;
-;; devtools_env <- asNamespace("devtools")
-;; exports <- getNamespaceExports("devtools")
-;; funs_exported <- as.list(devtools_env)[exports]
-;;
-;; is_first_arg <- function(f, arg) {
-;;   args <- names(formals(f))
-;;   length(args) && args[[1]] == arg
-;; }
-;;
-;; funs_pkg <- funs_exported %>%
-;;   keep(is.function) %>%
-;;   keep(is_first_arg, "pkg") %>%
-;;   names() %>%
-;;   sort()
-;;
-;; funs_pkg_list <- paste0("\"", funs_pkg, "\"", collapse = " ")
-;; cat(funs_pkg_list, "\n")
-
-(defvar ess-r-devtools-package-functions
-  '("bash" "build" "build_vignettes" "build_win" "check" "check_man" "clean_dll"
-    "clean_vignettes" "compile_dll" "dev_package_deps" "document" "imports_env"
-    "install" "install_deps" "install_dev_deps" "lint" "load_all" "load_code"
-    "load_data" "load_dll" "missing_s3" "ns_env" "package_deps" "parse_ns_file"
-    "pkg_env" "release" "release_checks" "reload" "revdep" "revdep_check"
-    "revdep_check_print_problems" "revdep_check_reset" "revdep_check_resume"
-    "revdep_check_save_summary" "revdep_email" "revdep_maintainers"
-    "run_examples" "show_news" "spell_check" "submit_cran" "test" "uninstall"
-    "unload" "use_appveyor" "use_code_of_conduct" "use_coverage"
-    "use_cran_badge" "use_cran_comments" "use_data_raw" "use_dev_version"
-    "use_github_links" "use_mit_license" "use_news_md" "use_package_doc"
-    "use_rcpp" "use_readme_md" "use_readme_rmd" "use_revdep" "use_rstudio"
-    "use_testthat" "use_travis" "uses_testthat" "wd"))
-
 (defun ess-r-devtools-ask (&optional alt)
   "Asks with completion for a devtools command.
 When called with prefix, also asks for additional arguments."
   (interactive "P")
-  (let* ((fun (completing-read "Function: " ess-r-devtools-package-functions))
+  (ess-force-buffer-current "Process to use: ")
+  (let* ((devtools-funs (car (ess-data-command ".ess_devtools_functions()\n")))
+         (fun (completing-read "Function: " devtools-funs))
          (command (format "devtools::%s(%s)\n" fun "%s")))
     (ess-r-package-send-process command
                                 (format "Running %s" fun)
