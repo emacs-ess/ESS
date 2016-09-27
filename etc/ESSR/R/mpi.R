@@ -17,4 +17,7 @@
     .ess_mpi_send("eval", expr, callback)
 }
 
+.ess_mpi_error <- function(msg, ...) {
+    .ess_mpi_send("error", sprintf(msg, ...))
+}
 
