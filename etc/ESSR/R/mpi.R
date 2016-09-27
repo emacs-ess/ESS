@@ -17,4 +17,15 @@
     .ess_mpi_send("eval", expr, callback)
 }
 
+.ess_mpi_error <- function(msg, ...) {
+    .ess_mpi_send("error", sprintf(msg, ...))
+}
 
+.ess_mpi_data <- function(data) {
+    if (!is.character(data)) {
+        .ess_mpi_error("MPI expected character vector")
+    } else {
+        data <- paste(data, collapse = "")
+        .ess_mpi_send("data", data)
+    }
+}

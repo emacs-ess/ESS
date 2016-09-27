@@ -318,6 +318,18 @@ Default location is determined by `ess-r-package-library-path'."
          (path (read-directory-name "Path: " default-path)))
     (ess-eval-linewise (format command path))))
 
+(defun ess-r-devtools-ask (&optional alt)
+  "Asks with completion for a devtools command.
+When called with prefix, also asks for additional arguments."
+  (interactive "P")
+  (ess-force-buffer-current "Process to use: ")
+  (let* ((devtools-funs (car (ess-data-command ".ess_devtools_functions()\n")))
+         (fun (completing-read "Function: " devtools-funs))
+         (command (format "devtools::%s(%s)\n" fun "%s")))
+    (ess-r-package-send-process command
+                                (format "Running %s" fun)
+                                alt)))
+
 
 ;;;*;;; Minor Mode
 

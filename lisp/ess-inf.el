@@ -1434,12 +1434,33 @@ wrapping the code into:
   (:override
    (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
          (proc (ess-command--normalise-proc proc no-prompt-check)))
+     (ess-command--send out-buffer no-prompt-check proc
+       (setq inferior-ess-primary-prompt primary-prompt)
+       (setq buffer-read-only nil)
+       (erase-buffer)
+       (set-marker (process-mark proc) (point-min))
+       (inferior-ess-mark-as-busy proc)
+       (process-send-string proc cmd)
+       ;; Need time for ess-create-object-name-db on PC
+       (if no-prompt-check
+           (sleep-for 0.02)             ; 0.1 is noticeable!
+         (ess-wait-for-process proc nil wait force-redisplay)
+         (ess-mpi-handle-messages (current-buffer))
+         ;; Remove prompt
+         ;; If output is cat(..)ed this deletes the output
+         (goto-char (point-max))
+         (delete-region (point-at-bol) (point-max))))
+     out-buffer)))
+
+(defmacro ess-command--send (out-buffer proc &rest form)
+  (declare (indent 2)
+           (debug (sexp sexp &rest form)))
+  `(let ((out-buffer (or ,out-buffer (get-buffer-create " *ess-command-output*"))))
      (with-current-buffer (process-buffer proc)
        (let ((primary-prompt inferior-ess-primary-prompt)
              (oldpb (process-buffer proc))
              (oldpf (process-filter proc))
              (oldpm (marker-position (process-mark proc))))
-         (ess-if-verbose-write (format "n(ess-command %s ..)" cmd))
          ;; Swap the process buffer with the output buffer before
          ;; sending the command
          (unwind-protect
@@ -1447,28 +1468,20 @@ wrapping the code into:
                (set-process-buffer proc out-buffer)
                (set-process-filter proc 'inferior-ess-ordinary-filter)
                (with-current-buffer out-buffer
-                 (setq inferior-ess-primary-prompt primary-prompt)
-                 (setq buffer-read-only nil)
-                 (erase-buffer)
-                 (set-marker (process-mark proc) (point-min))
-                 (inferior-ess-mark-as-busy proc)
-                 (process-send-string proc cmd)
-                 ;; Need time for ess-create-object-name-db on PC
-                 (if no-prompt-check
-                     (sleep-for 0.02)   ; 0.1 is noticeable!
-                   (ess-wait-for-process proc nil wait force-redisplay)
-                   (ess-mpi-handle-messages (current-buffer))
-                   ;; Remove prompt
-                   ;; If output is cat(..)ed this deletes the output
-                   (goto-char (point-max))
-                   (delete-region (point-at-bol) (point-max)))
-                 (ess-if-verbose-write " .. ok{ess-command}")))
-           (ess-if-verbose-write " .. exiting{ess-command}\n")
+                 ,@form))
            ;; Restore the process buffer in its previous state
            (set-process-buffer proc oldpb)
            (set-process-filter proc oldpf)
-           (set-marker (process-mark proc) oldpm))))
-     out-buffer)))
+           (set-marker (process-mark proc) oldpm))))))
+
+(defun ess-data-command (cmd &optional buf wait)
+  (let ((proc (ess-get-process ess-local-process-name)))
+    (ess-command--send buf proc
+      (inferior-ess-mark-as-busy proc)
+      (process-send-string proc cmd)
+      (ess-wait-for-process proc nil wait)
+      (let ((data (ess-mpi-handle-messages (current-buffer))))
+        (or data (error "No data returned from inferior"))))))
 
 (defun ess-boolean-command (com &optional buf wait)
   "Like `ess-command' but expects COM to print TRUE or FALSE.

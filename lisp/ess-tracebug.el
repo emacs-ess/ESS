@@ -1145,8 +1145,13 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess-mpi-alist
   '(("message" . message)
+    ("error" . ess-mpi:error)
+    ("data" . ess-mpi:data)
     ("eval" . ess-mpi:eval)
     ("y-or-n" . ess-mpi:y-or-n)))
+
+(defun ess-mpi:error (msg)
+  (message (format "Error in inferior: %s" msg)))
 
 (defun ess-mpi:eval (expr &optional callback)
   "Evaluate EXP as emacs expression.
@@ -1164,9 +1169,18 @@ value from EXPR and then sent to the subprocess."
     (when callback
       (ess-send-string (ess-get-process) (format callback result)))))
 
+(define-error 'ess-mpi-data "MPI data")
+(defun ess-mpi:data (&rest data)
+  "Signal that DATA should be returned from the MPI handlers."
+  (signal 'ess-mpi-data data))
+
 (defun ess-mpi-handle-messages (buf)
-  "Handle all mpi messages in BUF and delete them."
-  (let ((obuf (current-buffer)))
+  "Handle all mpi messages in BUF and delete them.
+Returns a list of elements sent to ESS via `.ess_mpi_data()'. The
+list is as long as the number of times the data MPI handler is
+called (typically only once)."
+  (let ((obuf (current-buffer))
+        output-data)
     (with-current-buffer buf
       (goto-char (point-min))
       ;; This should be smarter because emacs might cut it in the middle of the
@@ -1182,12 +1196,14 @@ value from EXPR and then sent to the subprocess."
               (condition-case-unless-debug err
                   (with-current-buffer obuf
                     (apply handler payload))
+                (ess-mpi-data (push (cdr err) output-data))
                 (error (message (format "Error in mpi `%s' handler: %%s" head)
                                 (error-message-string err))))
-            ;; don't throw error here. The buffer must be cleaned first.
+            ;; Don't throw error here. The buffer must be cleaned first.
             (message "Now handler defined for MPI message '%s" head))
           (goto-char mbeg)
-          (delete-region mbeg mend))))))
+          (delete-region mbeg mend))))
+    output-data))
 
 (defun ess--flush-process-output-cache (proc)
   (let ((pbuf (get-buffer-create (process-get proc 'accum-buffer-name))))
