@@ -1145,8 +1145,12 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess-mpi-alist
   '(("message" . message)
+    ("error" . ess-mpi:error)
     ("eval" . ess-mpi:eval)
     ("y-or-n" . ess-mpi:y-or-n)))
+
+(defun ess-mpi:error (msg)
+  (message (format "Error in inferior: %s" msg)))
 
 (defun ess-mpi:eval (expr &optional callback)
   "Evaluate EXP as emacs expression.
