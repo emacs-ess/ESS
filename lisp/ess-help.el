@@ -156,7 +156,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
 
 (defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
   (ess-write-to-dribble-buffer
-   (format "(ess-help '%s' start  ..\n" (buffer-name (current-buffer))))
+   (format "(ess-help '%s' start (command: '%s') \n"
+           (buffer-name (current-buffer)) command)
 
   ;; Ask the corresponding ESS process for the help file:
   (if buffer-read-only (setq buffer-read-only nil))
