@@ -309,6 +309,15 @@ prefix."
         (args (ess-r-command--process-alt-args alt "ref = ")))
     (ess-eval-linewise (format command repo args))))
 
+(defun ess-r-devtools-create-package (&optional alt)
+  "Interface to `devtools::create()'.
+Default location is determined by `ess-r-package-library-path'."
+  (interactive "P")
+  (let* ((command "devtools::create(\"%s\")")
+         (default-path (expand-file-name ess-r-package-library-path))
+         (path (read-directory-name "Path: " default-path)))
+    (ess-eval-linewise (format command path))))
+
 
 ;;;*;;; Minor Mode
 
