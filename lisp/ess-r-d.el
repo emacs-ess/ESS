@@ -1384,7 +1384,8 @@ we flush the cache.")
       (run-hooks 'inferior-ess-r-reload-hook))))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
-  (ess-force-buffer-current prompt force no-autostart ask-if-1 "R"))
+  (setq ess-dialect "R")
+  (ess-force-buffer-current prompt force no-autostart ask-if-1))
 
 
 ;;*;; Editing Tools
