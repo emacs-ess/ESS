@@ -98,7 +98,7 @@ whether the current file is part of a package, or the value of
     (setq ess-r-package-info pkg-info)))
 
 (defun ess-r--select-package-name ()
-  (ess-force-buffer-current)
+  (inferior-ess-r-force)
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
@@ -119,7 +119,7 @@ whether the current file is part of a package, or the value of
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
 (defun ess-r-package-send-process (command &optional msg alt default-alt)
-  (ess-force-buffer-current)
+  (inferior-ess-r-force)
   (let* ((pkg-info (or (ess-r-package-get-info)
                        (ess-r-package-set-package)))
          (name (car pkg-info))
