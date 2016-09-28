@@ -810,7 +810,7 @@ LANGUAGE (and DIALECT)."
       ;; save excursion is not working here !!! bad bad bad !!
       )))
 
-(defun ess-request-a-process (message &optional noswitch ask-if-1)
+(defun ess-request-a-process (message &optional noswitch ask-if-1 dialect)
   "Ask for a process, and make it the current ESS process.
 If there is exactly one process, only ask if ASK-IF-1 is non-nil.
 Also switches to the process buffer unless NOSWITCH is non-nil.  Interactively,
@@ -823,11 +823,13 @@ Returns the name of the selected process."
   (update-ess-process-name-list)
 
   (setq ess-dialect
-    (or ess-dialect (ess-completing-read
-                     "Set `ess-dialect'"
-                     (delete-dups (list "R" "S+" S+-dialect-name
-                                        "stata" STA-dialect-name
-                                        "julia" "SAS" "XLS"  "ViSta")))))
+        (or dialect
+            ess-dialect
+            (ess-completing-read
+             "Set `ess-dialect'"
+             (delete-dups (list "R" "S+" S+-dialect-name
+                                "stata" STA-dialect-name
+                                "julia" "SAS" "XLS"  "ViSta")))))
 
   (let* ((pname-list (delq nil ;; keep only those mathing dialect
                            (append
@@ -895,8 +897,7 @@ Returns the name of the selected process."
         (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
       proc)))
 
-
-(defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
+(defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1 dialect)
   "Make sure the current buffer is attached to an ESS process.
 If not, or FORCE (prefix argument) is non-nil, prompt for a
 process name with PROMPT. If NO-AUTOSTART is nil starts the new
@@ -916,12 +917,14 @@ there is only one process running."
       (if (and ess-local-process-name (not force) no-autostart)
           (error "Process %s has died" ess-local-process-name)
         ;; ess-local-process-name is nil -- which process to attach to
-        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
+        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1 dialect))
               temp-ess-help-filetype  dialect)
           (with-current-buffer (process-buffer (get-process proc))
             (setq temp-ess-help-filetype inferior-ess-help-filetype))
           (setq ess-local-process-name proc)
           (setq inferior-ess-help-filetype temp-ess-help-filetype))))))
+
+(defalias 'inferior-ess-force #'ess-force-buffer-current)
 
 (defun ess-switch-process ()
   "Force a switch to a new underlying process."

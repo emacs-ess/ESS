@@ -1383,6 +1383,9 @@ we flush the cache.")
         (ess-r-devtools-load-package))
       (run-hooks 'inferior-ess-r-reload-hook))))
 
+(defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
+  (ess-force-buffer-current prompt force no-autostart ask-if-1 "R"))
+
 
 ;;*;; Editing Tools
 
