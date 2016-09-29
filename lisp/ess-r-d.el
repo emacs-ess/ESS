@@ -474,6 +474,9 @@ Executed in process buffer."
   ;;    ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
   ;;    (lambda (proc) (process-put proc 'packages-cached? t))))
 
+  ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
+  (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
+                     nil nil nil 'wait)
   (inferior-ess-r-load-ESSR)
 
   (when inferior-ess-language-start
