@@ -162,9 +162,7 @@ Cons cell containing the token type and string representation."
     (ess-skip-blanks-backward t)
     (let ((token (or (ess-climb-token--back)
                      (ess-climb-token--back-and-forth)
-                     (error "Internal error: Backward tokenization failed:\n%s"
-                            (buffer-substring (line-beginning-position)
-                                              (line-end-position))))))
+                     (progn (forward-char -1) (ess-token-after)))))
       (if (or type string)
           (when (ess-token= token type string)
             token)
@@ -263,9 +261,7 @@ reached."
                            (ess-jump-token--literal)
                            (ess-jump-token--infix-op)
                            (ess-jump-token--punctuation)
-                           (error "Internal error: Forward tokenization failed:\n%s"
-                                  (buffer-substring (line-beginning-position)
-                                                    (line-end-position)))))
+                           (progn (forward-char) "unknown")))
            (token-value (buffer-substring-no-properties token-start (point))))
       (let ((token (list (ess-token--cons token-type token-value)
                          (cons token-start (point)))))
