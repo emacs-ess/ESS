@@ -59,7 +59,8 @@
 
 ;; this *is* enabled now via ess-mode-hook in ./ess-site.el
 
-;;; Dependencies:
+
+;;*;; Dependencies:
 
 (require 'ess-utils)
 (require 'ess-custom)
@@ -70,8 +71,8 @@
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 
-
-;;; Roxy Minor Mode
+
+;;*;; Roxy Minor Mode
 
 (defvar ess-roxy-mode-map
   (let ((map (make-sparse-keymap)))
@@ -241,7 +242,8 @@ Experimental feature with known bugs.")
   (setq-local adaptive-fill-function 'ess-roxy-adaptive-fill-function))
 
 
-;;; Outline Integration
+
+;;*;; Outline Integration
 
 (defvar ess-roxy-fold-examples nil
   "Whether to fold `@examples' when opening a buffer.
@@ -293,7 +295,8 @@ Use you regular key for `outline-show-entry' to reveal it.")
                            'ess-roxy-show-example
                            ess-roxy-mode-map outline-minor-mode-map)
 
-;;; Function definitions
+
+;;*;; Function definitions
 
 (defun ess-back-to-roxy ()
   "Go to roxy prefix"
@@ -895,6 +898,9 @@ list of strings."
     (goto-char stop-point)
     (line-end-position 0)))
 
+
+;;*;; Advices
+
 (defmacro ess-roxy-with-filling-context (examples &rest body)
   (declare (indent 0) (debug (&rest form)))
   `(let ((comment-start "#+'[ \t]+#")
@@ -1046,7 +1052,23 @@ list of strings."
     (newline-and-indent)
     (insert (concat (ess-roxy-guess-str t) " ")))))
 
-
 (provide 'ess-roxy)
+
+ ; Local variables section
+
+;;; This file is automatically placed in Outline minor mode.
+;;; The file is structured as follows:
+;;; Chapters:     ^L ;
+;;; Sections:    ;;*;;
+;;; Subsections: ;;;*;;;
+;;; Components:  defuns, defvars, defconsts
+;;;              Random code beginning with a ;;;;* comment
+
+;;; Local variables:
+;;; mode: emacs-lisp
+;;; outline-minor-mode: nil
+;;; mode: outline-minor
+;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; End:
 
 ;;; ess-roxy.el ends here
