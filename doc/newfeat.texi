@@ -1,10 +1,27 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes and New Features in 16.09:
+Changes and New Features in 16.10:
 @itemize @bullet
+
+@item @ESS{[R]}: Syntax highlighting is now more consistent. Backquoted
+names are not fontified as strings (since they really are identifiers).
+Furthermore they are now correctly recognised when they are function
+definitions or function calls. Finally, backquoted names and @code{%op%}
+operators are recognised as sexp. This is useful for code navigation,
+e.g. with @kbd{C-M-f} and @kbd{C-M-b}.
+@item @ESS{[R]}: Integration of outline mode with roxygen examples fields.
+You can use outline mode's code folding commands to fold the examples
+field. This is especially nice to use with well documented packages with
+long examples set. Set @code{ess-roxy-fold-examples} to non-nil to
+automatically fold the examples field when you open a buffer.
+@item @ESS{[R]}: New experimental feature: syntax highlighting in
+roxygen examples fields. This is turned off by default. Set
+@code{ess-roxy-fontify-examples} to non-nil to try it out.
 @item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
+
 @end itemize
+
 
 Changes and New Features in 16.04:
 @itemize @bullet
