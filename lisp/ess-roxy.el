@@ -105,9 +105,9 @@
     (,(concat ess-roxy-re)
      (0 'bold prepend))))
 
-(defvar ess-roxy-fontify-examples t
-  "When non-nil, the `@examples' field is fontified as ordinary
-code.")
+(defvar ess-roxy-fontify-examples nil
+  "When non-nil, the `@examples' field is fontified as ordinary code.
+Experimental feature with known bugs.")
 
 (defun ess-roxy-extend-region-to-field (start end)
   (if (or (progn
