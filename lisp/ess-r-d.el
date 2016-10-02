@@ -116,6 +116,8 @@
     (define-prefix-command 'ess-r-package-dev-map)
     (define-key ess-r-package-dev-map "\C-s" 'ess-r-package-set-package)
     (define-key ess-r-package-dev-map "s"    'ess-r-package-set-package)
+    (define-key ess-r-package-dev-map "\C-a" 'ess-r-devtools-ask)
+    (define-key ess-r-package-dev-map "a"    'ess-r-devtools-ask)
     (define-key ess-r-package-dev-map "\C-c" 'ess-r-devtools-check-package)
     (define-key ess-r-package-dev-map "c"    'ess-r-devtools-check-package)
     (define-key ess-r-package-dev-map "\C-d" 'ess-r-devtools-document-package)
