@@ -7,9 +7,10 @@ Changes and New Features in 16.10:
 @item @ESS{[R]}: Syntax highlighting is now more consistent. Backquoted
 names are not fontified as strings (since they really are identifiers).
 Furthermore they are now correctly recognised when they are function
-definitions or function calls. Finally, backquoted names and @code{%op%}
-operators are recognised as sexp. This is useful for code navigation,
-e.g. with @kbd{C-M-f} and @kbd{C-M-b}.
+definitions or function calls.
+@item @ESS{[R]}: Backquoted names and @code{%op%} operators are 
+recognised as sexp. This is useful for code navigation, e.g. with
+@kbd{C-M-f} and @kbd{C-M-b}.
 @item @ESS{[R]}: Integration of outline mode with roxygen examples fields.
 You can use outline mode's code folding commands to fold the examples
 field. This is especially nice to use with well documented packages with
@@ -18,6 +19,9 @@ automatically fold the examples field when you open a buffer.
 @item @ESS{[R]}: New experimental feature: syntax highlighting in
 roxygen examples fields. This is turned off by default. Set
 @code{ess-roxy-fontify-examples} to non-nil to try it out.
+@item @ESS{[R]}: New package development command @code{ess-r-devtools-ask}
+bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
+command that takes @code{pkg} as argument.
 @item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
 
 @end itemize
