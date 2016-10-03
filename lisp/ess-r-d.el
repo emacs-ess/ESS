@@ -477,6 +477,8 @@ Executed in process buffer."
   ;;    (lambda (proc) (process-put proc 'packages-cached? t))))
 
   ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
+  ;; much more careful :
+  ;; if(getOption("pager") == file.path(R.home(), "bin", "pager") && grepl("\\<more\\>", .P <- Sys.getenv("PAGER"))) { cat("PAGER has more: ", sQuote(.P),"\n --> setting R's \"pager\"\n"); options(pager="cat") }
   (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
                      nil nil nil 'wait)
   (inferior-ess-r-load-ESSR)
