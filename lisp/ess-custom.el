@@ -2161,7 +2161,7 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   :group 'ess-proc
   :type '(choice (const nil) file))
 
-(defcustom inferior-ess-pager "cat"
+(defcustom inferior-ess-pager (if ess-microsoft-p "console" "cat")
   "Pager to use for reporting help files and similar things."
   :group 'ess-proc
   :type 'string)
