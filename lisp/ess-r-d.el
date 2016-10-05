@@ -477,10 +477,17 @@ Executed in process buffer."
   ;;    (lambda (proc) (process-put proc 'packages-cached? t))))
 
   ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
-  ;; much more careful :
-  ;; if(getOption("pager") == file.path(R.home(), "bin", "pager") && grepl("\\<more\\>", .P <- Sys.getenv("PAGER"))) { cat("PAGER has more: ", sQuote(.P),"\n --> setting R's \"pager\"\n"); options(pager="cat") }
-  (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
-                     nil nil nil 'wait)
+  ;; carefully set "pager" option  "when needed":
+  (ess-eval-linewise
+   (format
+    "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) # rather take the ESS one
+      options(pager='%s')\n" inferior-ess-pager)
+   ;; Even more careful / sophisticated :
+   ;;  "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager')) &&
+   ;;  grepl('\\<more\\>', .P <- Sys.getenv('PAGER'))) {  # rather take the ESS one
+   ;;    cat('$PAGER has more: ', sQuote(.P), '\\n --> setting R`s pager option():\\n')
+   ;;    options(pager='%s')\n}\n" inferior-ess-pager)
+   nil nil nil 'wait)
   (inferior-ess-r-load-ESSR)
 
   (when inferior-ess-language-start
@@ -1145,7 +1152,7 @@ attached packages."
       (message (format "Evaluating in %s" (propertize env 'face font-lock-function-name-face))))
     (force-mode-line-update)))
 
-(defvar-local ess-r--evaluation-env-mode-line 
+(defvar-local ess-r--evaluation-env-mode-line
   '(:eval (let ((env (ess-r-get-evaluation-env)))
             (if env
                 (format " %s"
