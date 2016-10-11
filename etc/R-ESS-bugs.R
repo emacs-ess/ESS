@@ -696,6 +696,7 @@ aaaa = {
 list(function(p){
     abc
 ### ^-- here
+    ## <-- Press [Tab] before/at the first '#': should *NOT* insert '...='
 })
 ### at column 0
 
