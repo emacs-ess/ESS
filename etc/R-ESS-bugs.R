@@ -889,6 +889,24 @@ chkPretty <- function(x, n = 5, min.n = NULL, ..., max.D = 1) {
 }
 
 
+### --- 35 ---  indentation of conditional function definitions:
+## from a robustbase vignette:
+{
+    ## calculate robustness weights
+    lwgts <- Mwgt(lresid, lctrl$tuning.psi, lctrl$psi)
+    ## function to calculate robustified leverages
+    tfun <-
+        if (is.function(attr(estlist$design, 'gen')))
+            function(i) {
+                if (all(is.na(wi <- lwgts[i,]))) wi
+                else .lmrob.hat(lXs[,,i,lcdn[2]],wi)
+            }
+    else
+###     \-<-- 'else' (and all below) should indent 4 more,  'else' matching the above 'if'
+        function(i) {
+            if (all(is.na(wi <- lwgts[i,]))) wi else .lmrob.hat(lX, wi)
+        }
+}
 
 
 
