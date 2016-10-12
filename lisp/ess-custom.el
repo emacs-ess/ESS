@@ -1645,6 +1645,11 @@ non-nil."
   :group 'ess-proc
   :type 'boolean)
 
+(defcustom inferior-ess-jit-lock-chunk-size 10000
+  "Default for (buffer local) `jit-lock-chunk-size' in inferior ESS buffers."
+  :group 'ess-proc
+  :type 'integer)
+
 
 (defcustom inferior-R-program-name
   (if ess-microsoft-p "Rterm"  "R")

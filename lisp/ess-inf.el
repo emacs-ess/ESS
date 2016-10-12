@@ -2246,6 +2246,8 @@ to continue it."
   (set (make-local-variable 'paragraph-start)
        (concat inferior-ess-primary-prompt "\\|\^L"))
   (set (make-local-variable 'paragraph-separate) "\^L")
+  (if (featurep 'jit-lock)
+      (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
   (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
   (run-mode-hooks 'inferior-ess-mode-hook)
