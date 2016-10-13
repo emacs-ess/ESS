@@ -432,8 +432,7 @@ Otherwise try a list of fixed known viewers.
                     (executable-find "acroread")
                     (executable-find "xdg-open")
                     ;; this one is wrong, (ok for time being as it is used only in swv)
-                    (car (ess-get-words-from-vector
-                          "getOption(\"pdfviewer\")\n"))
+                    (car (ess-get-words-from-vector "getOption(\"pdfviewer\")\n"))
                     )))
     (when (stringp viewer)
       (setq viewer (file-name-nondirectory viewer)))

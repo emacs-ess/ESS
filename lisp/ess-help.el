@@ -220,7 +220,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
             (ess-command (format com-html-help  ess-help-object))
           (require 'browse-url)
           (if com-get-file-path
-              (browse-url (car (ess-get-words-from-vector (format com-get-file-path ess-help-object))))
+              (browse-url (car (ess-get-words-from-vector
+                                (format com-get-file-path ess-help-object))))
             (when (functionp fun-get-file-path)
               (browse-url (funcall fun-get-file-path ess-help-object)))))))))
 
