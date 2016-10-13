@@ -2663,8 +2663,9 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
                                           word-regexp)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of
-strings.  COMMAND should have a terminating newline. WAIT is
-passed to `ess-command'.
+strings.  COMMAND should have a terminating newline.  NO-PROMPT-CHECK,
+WAIT, and PROC are passed to `ess-command'.  WORD-REGEXP maybe a string,
+the keyword 'R-word, or nil.
 
 To avoid truncation of long vectors, wrap your
 command (%s) like this, or a version with explicit options(max.print=1e6):
@@ -2676,19 +2677,21 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
         (full-word-regexp
          (let* ((I "\\|")
                 (w-RE (cond
-                       ((stringp word-regexp)  word-regexp)
-                       ((eq word-regexp 'R-word) "[.]?[^.\"][.]*") ; non-'..*' word
+                       ((stringp word-regexp)     word-regexp)
+                       ((eq word-regexp 'R-word)  "[.]?[^.\"][.]*") ; non-'..*' word
                        ;; default:
-                       (t  "[^\"]")))
+                       (t                         "[^\"]")))
                 (word-RE (concat "\\("
                               "\\\\\\\"" I w-RE ; match \"  or  w-RE
                               "\\)*")))
            (concat "\"" "\\(" word-RE "\\)"
                    "\""
-                   (regexp-opt '(" " "$" "@") t)
+                   "\\( \\|$\\)" ;; or rather (regexp-opt '(" " "$" "@") t)
                    )))
         words)
-    (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
+    (ess-if-verbose-write
+     (format "(ess-get-words-* command=%s full-word-regexp=%S)\n"
+                                  command full-word-regexp))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
