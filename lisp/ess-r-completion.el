@@ -232,12 +232,12 @@ command may be necessary if you modify an attached dataframe."
         ;; always return a non-nil value to prevent history expansions
         (or (comint-dynamic-simple-complete  pattern components) 'none))))
 
-(defun ess-R-get-rcompletions (&optional start end prefix)
+(defun ess-R-get-rcompletions (&optional start end prefix allow-3-dots)
   "Call R internal completion utilities (rcomp) for possible completions.
 Optional START and END delimit the entity to complete, default to
-bol and point. If PREFIX is given, perform completion on
-PREFIX. First element of the returned list is the completion
-token. Needs version of R >= 2.7.0."
+bol and point.  If PREFIX is given, perform completion on
+PREFIX.  First element of the returned list is the completion
+token.  Needs version of R >= 2.7.0."
   (let* ((start (or start
                     (if prefix
                         0
@@ -246,10 +246,14 @@ token. Needs version of R >= 2.7.0."
          (prefix (or prefix (buffer-substring start end)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (cmd (format ".ess_get_completions(\"%s\", %d)\n"
-                      (ess-quote-special-chars prefix)
-                      (- end start))))
-    (ess-get-words-from-vector cmd nil nil nil 'R-word)))
+         (call1 (format ".ess_get_completions(\"%s\", %d)"
+                        (ess-quote-special-chars prefix)
+                        (- end start)))
+         (cmd (if allow-3-dots
+                  (concat call1 "\n")
+                (concat "local({ r <- " call1 "; r[r != '...='] })\n"))))
+
+    (ess-get-words-from-vector cmd)))
 
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').

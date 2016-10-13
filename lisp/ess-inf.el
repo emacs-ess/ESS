@@ -1440,7 +1440,7 @@ wrapping the code into:
              (oldpb (process-buffer proc))
              (oldpf (process-filter proc))
              (oldpm (marker-position (process-mark proc))))
-         (ess-if-verbose-write (format "n(ess-command %s ..)" cmd))
+         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
          ;; Swap the process buffer with the output buffer before
          ;; sending the command
          (unwind-protect
@@ -2659,36 +2659,30 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
             (setq i (1+ i)))
           (setq ess-object-list (ess-uniq-list result))))))
 
-(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc
-                                          word-regexp)
+(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of
 strings.  COMMAND should have a terminating newline.  NO-PROMPT-CHECK,
-WAIT, and PROC are passed to `ess-command'.  WORD-REGEXP maybe a string,
-the keyword 'R-word, or nil.
+WAIT, and PROC are passed to `ess-command'.  FILTER may be the
+keyword 'non-... or nil.
 
 To avoid truncation of long vectors, wrap your
 command (%s) like this, or a version with explicit options(max.print=1e6):
 
 local({ out <- try({%s}); print(out, max=1e6) })\n
 "
-  (let ((tbuffer (get-buffer-create
+  (let* ((tbuffer (get-buffer-create
                   " *ess-get-words*")); initial space: disable-undo
-        (full-word-regexp
-         (let* ((I "\\|")
-                (w-RE (cond
-                       ((stringp word-regexp)     word-regexp)
-                       ((eq word-regexp 'R-word)  "[.]?[^.\"][.]*") ; non-'..*' word
-                       ;; default:
-                       (t                         "[^\"]")))
-                (word-RE (concat "\\("
-                              "\\\\\\\"" I w-RE ; match \"  or  w-RE
-                              "\\)*")))
-           (concat "\"" "\\(" word-RE "\\)"
+         (word-RE
+          (concat "\\("
+                  "\\\\\\\"" "\\|" "[^\"]" ;  \" or non-"-char
+                  "\\)*"))
+         (full-word-regexp
+          (concat "\"" "\\(" word-RE "\\)"
                    "\""
-                   "\\( \\|$\\)" ;; or rather (regexp-opt '(" " "$" "@") t)
-                   )))
-        words)
+                   "\\( \\|$\\)"; space or end
+                   ))
+         words)
     (ess-if-verbose-write
      (format "(ess-get-words-* command=%s full-word-regexp=%S)\n"
                                   command full-word-regexp))
