@@ -2672,20 +2672,23 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
 "
   (let ((tbuffer (get-buffer-create
                   " *ess-get-words*")); initial space: disable-undo
+        (word-RE (let* ((I "\\|")
+                        (w-RE (concat "\\("
+                                  "\\\\\\\"" I "[.]?[^.\"][.]*" ; match \" or non-'..*' word
+                                  "\\)*")))
+                   (concat "\"" "\\(" w-RE "\\)"
+                           "\""
+                           (regexp-opt '(" " "$" "@") t)
+                           )))
         words)
     (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
-      ;; this is bad, only R specific test
-      ;; (if (not (looking-at "[+ \t>\n]*\\[1\\]"))
-      ;;     (progn (ess-if-verbose-write "not seeing \"[1]\".. ")
-      ;;            (setq words nil)
-      ;;            )
-      (while (re-search-forward "\"\\(\\(\\\\\\\"\\|[^\"]\\)*\\)\"\\( \\|$\\)" nil t);match \"
-        (setq words (cons (buffer-substring (match-beginning 1)
-                                            (match-end 1)) words))))
+      (while (re-search-forward word-RE nil t)
+        (setq words (cons (buffer-substring (match-beginning 1) (match-end 1))
+                          words))))
     (ess-if-verbose-write
      (if (> (length words) 5)
          (format " |-> (length words)= %d\n" (length words))
