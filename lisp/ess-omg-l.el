@@ -275,14 +275,13 @@
 (defvar ess-OMG-font-lock-defaults
   (append (list
            (cons "\\b[0-9]+\\b" 'font-lock-type-face) ; numbers
-           (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-                 'font-lock-keyword-face))
+           (cons (regexp-opt ess-S-keywords 'words) 'font-lock-keyword-face))
           (list
            (cons (regexp-opt ess-S-assign-ops)
                  'font-lock-constant-face)     ; assign
-           (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
+           (cons (regexp-opt ess-S-constants 'words)
                  'font-lock-type-face)          ; constants
-           (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
+           (cons (regexp-opt ess-S-modifyiers 'words)
                  'font-lock-constant-face)     ; modify search list or source
 
            (cons ess-S-function-name-regexp

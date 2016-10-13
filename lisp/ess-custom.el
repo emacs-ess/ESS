@@ -2683,7 +2683,7 @@ system described in `ess-font-lock-keywords'.")
 
 ;;; fl-keywords S
 (defvar ess-S-fl-keyword:modifiers
-  (cons (concat "\\<" (regexp-opt ess-S-modifyiers 'enc-paren) "\\>")
+  (cons (regexp-opt ess-S-modifyiers 'words)
         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers")
 
@@ -2694,16 +2694,14 @@ system described in `ess-font-lock-keywords'.")
   "Font-lock function deffinitions keyword.")
 
 (defvar ess-S-fl-keyword:keywords
-  (cons (concat "\\<" (regexp-opt ess-S-keywords 'enc-paren) "\\>")
-        'font-lock-keyword-face))
+  (cons (regexp-opt ess-S-keywords 'words) 'font-lock-keyword-face))
 
 (defvar ess-S-fl-keyword:assign-ops
   (cons (regexp-opt ess-S-assign-ops) 'font-lock-constant-face)
   "Font-lock assign operators")
 
 (defvar ess-S-fl-keyword:constants
-  (cons (concat "\\<" (regexp-opt ess-S-constants 'enc-paren) "\\>")
-        'font-lock-type-face)
+  (cons (regexp-opt ess-S-constants 'words) 'font-lock-type-face)
   "Font-lock constants keyword.")
 
 
@@ -2729,7 +2727,7 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  (cons (concat "\\<" (regexp-opt ess-R-modifyiers 'enc-paren) "\\>")
+  (cons (regexp-opt ess-R-modifyiers 'words)
         'font-lock-constant-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers")
 
@@ -2739,7 +2737,7 @@ default or not."
   "Font-lock keyword - function defintions for R.")
 
 (defvar ess-R-fl-keyword:keywords
-  (cons (concat "\\<" (regexp-opt ess-R-keywords 'enc-paren) "\\>")
+  (cons (regexp-opt ess-R-keywords 'words)
         'font-lock-keyword-face))
 
 (defvar ess-R-fl-keyword:assign-ops
@@ -2747,8 +2745,7 @@ default or not."
   "Font-lock assign operators")
 
 (defvar ess-R-fl-keyword:constants
-  (cons (concat "\\<" (regexp-opt ess-R-constants 'enc-paren) "\\>")
-        'font-lock-type-face)
+  (cons (regexp-opt ess-R-constants 'words) 'font-lock-type-face)
   "Font-lock constants keyword.")
 
 (defvar ess-R-fl-keyword:numbers
