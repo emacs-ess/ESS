@@ -2659,7 +2659,8 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
             (setq i (1+ i)))
           (setq ess-object-list (ess-uniq-list result))))))
 
-(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
+(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc
+                                          word-regexp)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of
 strings.  COMMAND should have a terminating newline. WAIT is
@@ -2672,21 +2673,27 @@ local({ out <- try({%s}); print(out, max=1e6) })\n
 "
   (let ((tbuffer (get-buffer-create
                   " *ess-get-words*")); initial space: disable-undo
-        (word-RE (let* ((I "\\|")
-                        (w-RE (concat "\\("
-                                  "\\\\\\\"" I "[.]?[^.\"][.]*" ; match \" or non-'..*' word
-                                  "\\)*")))
-                   (concat "\"" "\\(" w-RE "\\)"
-                           "\""
-                           (regexp-opt '(" " "$" "@") t)
-                           )))
+        (full-word-regexp
+         (let* ((I "\\|")
+                (w-RE (cond
+                       ((stringp word-regexp)  word-regexp)
+                       ((eq word-regexp 'R-word) "[.]?[^.\"][.]*") ; non-'..*' word
+                       ;; default:
+                       (t  "[^\"]")))
+                (word-RE (concat "\\("
+                              "\\\\\\\"" I w-RE ; match \"  or  w-RE
+                              "\\)*")))
+           (concat "\"" "\\(" word-RE "\\)"
+                   "\""
+                   (regexp-opt '(" " "$" "@") t)
+                   )))
         words)
     (ess-if-verbose-write (format "ess-get-words*(%s).. " command))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
-      (while (re-search-forward word-RE nil t)
+      (while (re-search-forward full-word-regexp nil t)
         (setq words (cons (buffer-substring (match-beginning 1) (match-end 1))
                           words))))
     (ess-if-verbose-write

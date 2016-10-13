@@ -237,7 +237,7 @@ command may be necessary if you modify an attached dataframe."
 Optional START and END delimit the entity to complete, default to
 bol and point. If PREFIX is given, perform completion on
 PREFIX. First element of the returned list is the completion
-token. Needs version of R>=2.7.0."
+token. Needs version of R >= 2.7.0."
   (let* ((start (or start
                     (if prefix
                         0
@@ -249,7 +249,7 @@ token. Needs version of R>=2.7.0."
          (cmd (format ".ess_get_completions(\"%s\", %d)\n"
                       (ess-quote-special-chars prefix)
                       (- end start))))
-    (ess-get-words-from-vector cmd)))
+    (ess-get-words-from-vector cmd nil nil nil 'R-word)))
 
 (defun ess-R-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
