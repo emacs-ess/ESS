@@ -8,7 +8,7 @@ Changes and New Features in 16.10:
 names are not fontified as strings (since they really are identifiers).
 Furthermore they are now correctly recognised when they are function
 definitions or function calls.
-@item @ESS{[R]}: Backquoted names and @code{%op%} operators are 
+@item @ESS{[R]}: Backquoted names and @code{%op%} operators are
 recognised as sexp. This is useful for code navigation, e.g. with
 @kbd{C-M-f} and @kbd{C-M-b}.
 @item @ESS{[R]}: Integration of outline mode with roxygen examples fields.
@@ -23,7 +23,14 @@ roxygen examples fields. This is turned off by default. Set
 bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
 command that takes @code{pkg} as argument.
 @item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
+@end itemize
 
+Bug fixes in 16.10:
+@itemize @bullet
+@item @ESS{[R]}: Fixes (and improvements) in Package development
+@item @ESS{[R]}: Completion no longer produces @code{...=} inside @code{list(  )}.
+@item @ESS{[julia]}: help and completion work (better)
+@item @ESS{[julia]}: available via @code{ess-remote}
 @end itemize
 
 
