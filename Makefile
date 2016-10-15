@@ -39,14 +39,23 @@ generate-indent-cases:
 
 ## --- PRE-release ---
 
-# new target to create .tgz and .zip files only
-# run in the foreground so you can accept the certificate
-# for real men
+# Create .tgz and .zip files only
 # GNUTAR=gtar make downloads
-downloads: all RPM.spec cleanup-dist
+downloads: $(ESSDIR)
 	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for release $(ESSVERSION),"
-	@echo "** from $(ESSDIR)"
+	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
+	@echo "** Creating .tgz file **"
+	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
+	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
+	@echo "** Creating .zip file **"
+	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
+	zip -r $(ESSDIR).zip $(ESSDIR)
+
+# Create the "release" directory
+# run in the foreground so you can accept the certificate
+$(ESSDIR): all RPM.spec cleanup-dist
+	@echo "**********************************************************"
+	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
@@ -57,20 +66,15 @@ downloads: all RPM.spec cleanup-dist
 	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
 	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd $$CD; fi
+#	just in case: update from VERSION
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
+# 	# cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
 	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
-	@echo "** Creating .tgz file **"
-	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
-	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
-	@echo "** Creating .zip file **"
-	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
-	zip -r $(ESSDIR).zip $(ESSDIR)
 
 dist: VERSION downloads
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
