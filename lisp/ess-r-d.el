@@ -1383,7 +1383,7 @@ we flush the cache.")
 (defun inferior-ess-r-reload (&optional start-args)
   "Reload R and the currently activated developer package, if any."
   (interactive)
-  (ess-force-buffer-current)
+  (inferior-ess-r-force)
   (let ((pkg-info ess-r-package-info)
         (r-proc (ess-get-process)))
     (with-ess-process-buffer nil
@@ -1392,7 +1392,7 @@ we flush the cache.")
         (accept-process-output r-proc 0.002))
       (kill-buffer)
       (R start-args)
-      (when pkg-info
+      (unless (equal pkg-info '(nil))
         (setq-local ess-r-package-info pkg-info)
         (ess-r-devtools-load-package))
       (run-hooks 'inferior-ess-r-reload-hook))))
