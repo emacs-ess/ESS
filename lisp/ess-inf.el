@@ -2571,6 +2571,12 @@ before you quit.  It is run automatically by \\[ess-quit]."
             (kill-buffer buf)))))
     (ess-switch-to-ESS nil)))
 
+(ess-defgeneric inferior-ess-reload (&optional start-args)
+  "Reload the inferior process."
+  (interactive)
+  (:override
+   (error "Unimplemented for this dialect")))
+
 (defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."
   ;; This simply deletes the buffers process to avoid an Emacs bug

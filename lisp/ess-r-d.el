@@ -1380,9 +1380,7 @@ we flush the cache.")
   :type 'hook
   :group 'ess-R)
 
-(defun inferior-ess-r-reload (&optional start-args)
-  "Reload R and the currently activated developer package, if any."
-  (interactive)
+(ess-defmethod R inferior-ess-reload (&optional start-args)
   (inferior-ess-r-force)
   (let ((pkg-info ess-r-package-info)
         (r-proc (ess-get-process)))

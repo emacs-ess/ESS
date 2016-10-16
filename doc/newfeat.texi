@@ -22,11 +22,14 @@ roxygen examples fields. This is turned off by default. Set
 @item @ESS{[R]}: New package development command @code{ess-r-devtools-ask}
 bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
 command that takes @code{pkg} as argument.
-@item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
+@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process. 
+Currently only implemented for R. The R method runs @code{inferior-ess-r-reload-hook}
+on reloading.
 @end itemize
 
 Bug fixes in 16.10:
 @itemize @bullet
+@item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
 @item @ESS{[R]}: Fixes (and improvements) in Package development
 @item @ESS{[R]}: Completion no longer produces @code{...=} inside @code{list(  )}.
 @item @ESS{[julia]}: help and completion work (better)

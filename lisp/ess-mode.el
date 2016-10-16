@@ -159,6 +159,8 @@
     (define-key ess-extra-map "i" 'ess-install-library)
     (define-key ess-extra-map "\C-l" 'ess-load-library)
     (define-key ess-extra-map "l" 'ess-load-library)
+    (define-key ess-extra-map "\C-r" 'inferior-ess-reload)
+    (define-key ess-extra-map "r" 'inferior-ess-reload)
     (define-key ess-extra-map "\C-s" 'ess-set-style)
     (define-key ess-extra-map "s" 'ess-set-style)
     (define-key ess-extra-map "\C-t" 'ess-build-tags-for-directory)
