@@ -25,6 +25,7 @@ command that takes @code{pkg} as argument.
 @item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process. 
 Currently only implemented for R. The R method runs @code{inferior-ess-r-reload-hook}
 on reloading.
+@item @ESS{[R]}: @code{ess-r-package-mode} is now activated in non-file buffers as well.
 @end itemize
 
 Bug fixes in 16.10:
@@ -32,10 +33,12 @@ Bug fixes in 16.10:
 @item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
 @item @ESS{[R]}: Fixes (and improvements) in Package development
 @item @ESS{[R]}: Completion no longer produces @code{...=} inside @code{list(  )}.
+@item @ESS{[R]}: Better debugging and tracing in packages.
+@item @ESS{[R]}: Better detection of symbols at point.
+@item @ESS{[R]}: No more spurious warnings on deletion of temporary files.
 @item @ESS{[julia]}: help and completion work (better)
 @item @ESS{[julia]}: available via @code{ess-remote}
 @end itemize
-
 
 Changes and New Features in 16.04:
 @itemize @bullet
