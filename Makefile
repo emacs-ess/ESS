@@ -125,7 +125,7 @@ tag:
 	git tag -a -m'release tagging' v$(ESSVERSION)
 	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
-	git push v$(ESSVERSION)
+	git push --tags
 
 homepage:
 	@echo "** Updating ESS Webpage **"
