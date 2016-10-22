@@ -50,6 +50,7 @@ downloads: $(ESSDIR)
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
+	touch $@
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
@@ -96,7 +97,7 @@ cleanup-rel:
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 
-## --- RELEASE ---
+## --- RELEASE section ---
 
 ## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel' <<--- MUST
 ##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,26 +112,35 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	git commit -m 'Version $(ESSVERSION)' ChangeLog
 
-rel: ChangeLog dist tag homepage
+tag:
+	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
+	git pull --tags
+	git tag -a -m'release tagging' v$(ESSVERSION)
+	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
+	git push origin v$(ESSVERSION)
+	@touch $@
+
+homepage:
+	@echo "** Updating ESS Webpage **"
+	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
+	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
+	@touch $@
+
+upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files **"
 	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
+	touch $@
+
+#==== RELEASE : ====
+
+rel: ChangeLog dist tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
+	touch $@
 
-tag:
-	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
-	git pull --tags
-	git tag -a -m'release tagging' v$(ESSVERSION)
-	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
-	git push --tags
-
-homepage:
-	@echo "** Updating ESS Webpage **"
-	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
 
 ## TODO (when MM has GPG set up properly): add this to 'rel'
 .PHONY: buildrpm
