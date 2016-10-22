@@ -121,9 +121,9 @@ rel: ChangeLog dist tag homepage
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 
 tag:
-	@echo "** Tagging the release **"
+	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
+	git pull --tags
 	git tag -a -m'release tagging' v$(ESSVERSION)
-	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
 	git push --tags
 
