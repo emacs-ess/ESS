@@ -67,9 +67,9 @@ $(ESSDIR): all RPM.spec cleanup-dist
 	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
 	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd $$CD; fi
-#	just in case: update from VERSION
+#	just in case: update from VERSION:
 	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-# 	# cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
+	cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
 	cp -p RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile

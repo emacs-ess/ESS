@@ -65,10 +65,10 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 
 ### Targets
 
-all: $(ELC) ess-custom.el julia-mode.el
+all: $(ELC) ess-custom.el
 
 .PHONY: dist
-dist: all
+dist: all julia-mode.el
 ##	@touch dist
 ## svn committing happens in ../Makefile
 
@@ -104,9 +104,10 @@ ess-custom.el: ../VERSION
 # ess-r-d.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
-## This should typically happen before building ESS
+## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
-	$(DOWNLOAD) https://raw.githubusercontent.com/JuliaLang/julia-emacs/master/julia-mode.el > julia-mode.el
+	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
+ https://raw.githubusercontent.com/JuliaLang/julia-emacs/master/julia-mode.el > $@
 
 ### File Dependencies
 
