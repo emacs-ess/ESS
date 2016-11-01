@@ -28,10 +28,11 @@
         help.type <- "text"
     }
 
-    ## - Searching in global env makes sure it works with devtools
+    ## - get("help", ..) searching in global env works with devtools redefines
     ## - Redefining to .ess.help this way is necessary because
-    ##   `print.help_files_with_topic` (used internally when there's
+    ##   utils:::print.help_files_with_topic (used internally when there's
     ##   more than one a package) uses the quoted call
+    ##   MM: don't understand; more specifically?
     .ess.help <- function(...) {
         do.call(get("help", envir = .GlobalEnv), list(...))
     }
