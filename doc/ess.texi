@@ -1785,26 +1785,29 @@ appropriately, or inserts an appropriate comment marker.
 @end table
 
 @menu
-* Styles::                      Changing indentation styles
+* Styles:: Changing styles for indentation and alignment
 @end menu
 
 @node Styles
-@subsection Changing indentation styles
+@subsection Changing styles for code indentation and alignment
 
-The combined value of nine variables that control indentation are
+The combined value of twelve variables (4 of three groups @code{ess-indent-*},
+@code{ess-offset-*} and @code{ess-align-*}) that control indentation etc are
 collectively termed a @i{style}.  ESS provides several styles covering the
 common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
-@code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{CLB}.  The
+@code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{RRR+},
+@code{Rstudio}, @code{Rstudio-}, and @code{CLB}.  The
 variable @code{ess-style-alist} lists the value of each indentation
-variable per style.
+variable per style (and its documentation contains more).
 
 @deffn Command ess-set-style
-@kindex C-c .
-@kbd{C-c .} Sets the formatting style in this buffer to be one of the
-predefined styles, including @code{GNU}, @code{BSD}, @code{K&R},
-@code{CLB}, and @code{C++}. The @code{DEFAULT} style uses the default
-values for the indenting variables; The @code{OWN} style allows you to
-use your own private values of the indentation variable, see below.
+@kindex C-c C-e s
+@kindex C-c C-e C-s
+@kbd{C-c C-e C-s} (or @kbd{C-c C-e s}) sets the formatting style in this
+buffer to be one of the predefined styles, see above.  The @code{DEFAULT}
+style uses the default values for the indenting variables; The @code{OWN}
+style allows you to use your own private values of the indentation
+variable, see below.
 @example
 (setq ess-default-style 'C++)
 @end example
@@ -1812,7 +1815,7 @@ use your own private values of the indentation variable, see below.
 
 @defvr {User Option} ess-default-style
 The default value of @code{ess-style}.  See the variable
-@code{ess-style-alist} for how these groups (DEFAULT, OWN, GNU, BSD,
+@code{ess-style-alist} for how these groups (DEFAULT, OWN, GNU, RRR,
 @dots{}) map onto different settings for variables.
 @end defvr
 
@@ -2901,7 +2904,7 @@ package. In such cases @kbd{C-c C-t C-s} is your friend.
 
 @deffn Command ess-r-set-evaluation-env @var{arg}
 @kindex C-c C-t C-s
-@kbd{C-c C-t C-s} Set or unset the current evaluation environment (a package). 
+@kbd{C-c C-t C-s} Set or unset the current evaluation environment (a package).
 @end deffn
 
 @node Extras
