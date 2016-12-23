@@ -40,8 +40,8 @@ generate-indent-cases:
 ## --- PRE-release ---
 
 # Create .tgz and .zip files only
-# GNUTAR=gtar make downloads
-downloads: $(ESSDIR)
+# GNUTAR=gtar make tarballs
+tarballs: $(ESSDIR)
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
 	@echo "** Creating .tgz file **"
@@ -68,16 +68,16 @@ $(ESSDIR): all RPM.spec cleanup-dist
 	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd $$CD; fi
 #	just in case: update from VERSION:
-	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-	cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
-	cp -p RPM.spec $(ESSDIR)/
+	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
+	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
 	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
 
-dist: VERSION downloads
+dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
 	touch $@
