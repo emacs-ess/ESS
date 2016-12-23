@@ -1098,7 +1098,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
    ;; All Custom ado files which are 'reliable' and which are not file killers
    ;; this might be a useless endeavor --- but I cannot generate tag files
    ;; all the s-extensions are listed under Stata's name (since they alter
-   ;; data and will be moved tot he utils directory
+   ;; data and will be moved to the utils directory
    (eval-when-compile
      (make-regexps
       "[ \t]*"
