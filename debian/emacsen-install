@@ -8,13 +8,14 @@
 FLAVOR=$1
 PACKAGE=ess
 
-if [ ${FLAVOR} = emacs ]; then exit 0; fi
-
-if [ ${FLAVOR} = xemacs21 ]; then exit 0; fi
-
-if [ ${FLAVOR} = emacs22 ]; then exit 0; fi
-
-if [ ${FLAVOR} = emacs23 ]; then exit 0; fi
+# edd 03 Jan 2017 cf #850041
+#if [ ${FLAVOR} = emacs ]; then exit 0; fi
+#if [ ${FLAVOR} = xemacs21 ]; then exit 0; fi
+#if [ ${FLAVOR} = emacs22 ]; then exit 0; fi
+#if [ ${FLAVOR} = emacs23 ]; then exit 0; fi
+case ${FLAVOR} in xemacs*|emacs|emacs2[1-3])
+    exit 0;;
+esac
 
 echo install/${PACKAGE}: Handling install for emacsen flavor ${FLAVOR}
 
