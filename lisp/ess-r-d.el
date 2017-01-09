@@ -1388,7 +1388,6 @@ we flush the cache.")
       (ess-quit 'no-save)
       (while (memq (process-status r-proc) '(run busy))
         (accept-process-output r-proc 0.002))
-      (kill-buffer)
       (R start-args)
       (run-hooks 'inferior-ess-r-reload-hook))))
 

@@ -860,9 +860,10 @@ Stata or XLispStat for additional information."
              ;; \b_
              (delete-region (1- (point)) (1+ (point)))))))
   (goto-char (point-min))
-  (while (re-search-forward "URL: " nil t)
-    ;; quick fix for C-x f confusiong
-    (delete-region (match-beginning 0) (match-end 0)))
+  (let ((case-fold-search nil)); 'URL' != 'url' ('libcurl: ' on ?capabilities)
+    (while (re-search-forward "\\bURL: " nil t); test with ?rtags
+      ;; quick fix for C-x f confusion (getting into tramp)
+      (delete-region (match-beginning 0) (match-end 0))))
   ;; Crunch blank lines
   (goto-char (point-min))
   (while (re-search-forward "\n\n\n\n*" nil t)

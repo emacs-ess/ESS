@@ -2,7 +2,8 @@
 
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
-        comp <- compiler::enableJIT(0)
+        ## temporarily disable JIT compilation and errors
+        comp <- compiler::enableJIT(0) 
         op <- options(error=NULL)
         on.exit({ options(op); compiler::enableJIT(comp) })
     }

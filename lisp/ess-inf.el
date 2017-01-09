@@ -2574,8 +2574,11 @@ before you quit.  It is run automatically by \\[ess-quit]."
 (ess-defgeneric inferior-ess-reload (&optional start-args)
   "Reload the inferior process."
   (interactive)
-  (:override
-   (error "Unimplemented for this dialect")))
+  (let ((dir (ess-get-working-directory))
+        (ess-ask-for-ess-directory nil))
+    (:override
+     (error "Unimplemented for this dialect"))
+    (ess-set-working-directory dir)))
 
 (defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."

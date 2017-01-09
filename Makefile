@@ -40,8 +40,8 @@ generate-indent-cases:
 ## --- PRE-release ---
 
 # Create .tgz and .zip files only
-# GNUTAR=gtar make downloads
-downloads: $(ESSDIR)
+# GNUTAR=gtar make tarballs
+tarballs: $(ESSDIR)
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
 	@echo "** Creating .tgz file **"
@@ -50,6 +50,7 @@ downloads: $(ESSDIR)
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
+	touch $@
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
@@ -66,17 +67,17 @@ $(ESSDIR): all RPM.spec cleanup-dist
 	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
 	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd $$CD; fi
-#	just in case: update from VERSION
-	cd lisp; $(MAKE) ess-custom.el; cp ess-custom.el ../$(ESSDIR)/lisp/; cd ..
-# 	# cd lisp; $(MAKE) julia-mode.el; cp julia-mode.el ../$(ESSDIR)/lisp/; cd ..
-	cp -p RPM.spec $(ESSDIR)/
+#	just in case: update from VERSION:
+	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
+	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
 	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
 
-dist: VERSION downloads
+dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el
 	touch $@
@@ -96,7 +97,7 @@ cleanup-rel:
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 
-## --- RELEASE ---
+## --- RELEASE section ---
 
 ## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel' <<--- MUST
 ##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,26 +112,35 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	git commit -m 'Version $(ESSVERSION)' ChangeLog
 
-rel: ChangeLog dist tag homepage
+tag:
+	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
+	git pull --tags
+	git tag -a -m'release tagging' v$(ESSVERSION)
+	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
+	git push origin v$(ESSVERSION)
+	@touch $@
+
+homepage:
+	@echo "** Updating ESS Webpage **"
+	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
+	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
+	@touch $@
+
+upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files **"
 	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
+	touch $@
+
+#==== RELEASE : ====
+
+rel: ChangeLog dist tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
+	touch $@
 
-tag:
-	@echo "** Tagging the release **"
-	git tag -a -m'release tagging' v$(ESSVERSION)
-	 #svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSION)
-	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
-	git push v$(ESSVERSION)
-
-homepage:
-	@echo "** Updating ESS Webpage **"
-	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
 
 ## TODO (when MM has GPG set up properly): add this to 'rel'
 .PHONY: buildrpm
