@@ -1,6 +1,6 @@
 ;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
 ;;
-;; Copyright (C) 2009--2012 Henning Redestig, A.J. Rossini, Richard
+;; Copyright (C) 2009--2017 Henning Redestig, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen
 ;;      Eglen and Vitalie Spinu.
 ;;
@@ -67,7 +67,8 @@
 (require 'hideshow)
 (require 'outline)
 (eval-when-compile
-  (require 'cl))
+  ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+  (with-no-warnings (require 'cl)))
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 

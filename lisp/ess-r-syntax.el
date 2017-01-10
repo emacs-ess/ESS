@@ -28,7 +28,9 @@
 ;;; Code:
 
 (require 'regexp-opt)
-(require 'cl-lib)
+;; mainly 'cl-lib [but that's missing in E 24.2]; also need (some .)
+(with-no-warnings (require 'cl))
+
 
 
 ;;*;; Utils
@@ -348,7 +350,7 @@ reached."
           (mapc (lambda (delims)
                   (while (and (ess-token-after= nil delims)
                               (eq (char-before) (string-to-char
-                                                 (car delim))))
+                                                 (car delims))))
                     (ess-backward-char)))
                 '(("[" "[[") ("]" "]]")))))
       (ess-token-after= '("," ";"))
@@ -895,7 +897,7 @@ into account."
 
 (defun ess-block-p ()
   (or (save-excursion
-        (when containing-sexp
+        (when containing-sexp ;; <- *global* defined in caller (yuck !)
           (goto-char containing-sexp)
           (ess-block-opening-p)))
       (ess-unbraced-block-p)))
@@ -1270,15 +1272,17 @@ expression."
                       :prev-point nil
                       :def-op nil
                       :expr nil)))
-    (when (ess-while (and (<= (plist-get state :moved) 1)
-                          (or (ess-save-excursion-when-nil
-                                (and (ess-climb-operator)
-                                     (ess-climb-continuations--update-state state 'op)
-                                     (ess-climb-expression ignore-ifelse)))
-                              (ess-climb-unary-operator))
-                          (/= (plist-get state :last-pos) (point)))
-            (ess-climb-continuations--update-state state nil)
-            (plist-put state :last-pos (point)))
+    (when
+        (ess-while
+            (and (<= (plist-get state :moved) 1)
+                 (or (ess-save-excursion-when-nil
+                       (and (ess-climb-operator)
+                            (ess-climb-continuations--update-state state cascade 'op)
+                            (ess-climb-expression ignore-ifelse)))
+                     (ess-climb-unary-operator))
+                 (/= (plist-get state :last-pos) (point)))
+          (ess-climb-continuations--update-state state cascade nil)
+          (plist-put state :last-pos (point)))
       (when (and (plist-get state :prev-point)
                  (or (= (plist-get state :moved) 3)
                      (not (plist-get state :expr))))
@@ -1287,7 +1291,7 @@ expression."
           'def-op
         (< (line-number-at-pos) (plist-get state :start-line))))))
 
-(defun ess-climb-continuations--update-state (state &optional op)
+(defun ess-climb-continuations--update-state (state cascade &optional op)
   ;; Climbing multi-line expressions should not count as moving up
   (when op
     (plist-put state :expr (ess-ahead-closing-p)))

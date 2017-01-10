@@ -1,6 +1,6 @@
 ;;; ess-help.el --- Support for viewing ESS help files
 
-;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
+;; Copyright (C) 1989-1994, 2017 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
 ;; Copyright (C) 1998--2001 A.J. Rossini, Martin Maechler, Kurt Hornik and
 ;;      Richard M. Heiberger <rmh@temple.edu>.
@@ -45,7 +45,8 @@
 
 (require 'ess)
 (require 'ess-mode)
-(require 'cl)
+;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+(with-no-warnings (require 'cl))
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

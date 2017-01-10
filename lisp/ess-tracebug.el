@@ -1,6 +1,6 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
 ;;
-;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 ;;
 ;; Filename: ess-tracebug.el
@@ -55,7 +55,8 @@
   (require 'tramp)
   (require 'compile)
   (require 'overlay)
-  (require 'cl))
+  ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+  (with-no-warnings (require 'cl)))
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place
 (defvar text-scale-mode-amount)
@@ -2781,7 +2782,7 @@ Only do this when called interactively and  #chars is 1"
 ;; reported as bug#21368
 
 ;; ;; previous-line gets stuck if next char is intangible
-;; reported 
+;; reported
 ;; (defadvice previous-line (around ess-fix-cursor-stuck-at-intangible-text activate)
 ;;   "When about to move to previous line when next char is
 ;; intangible, step char backward first"

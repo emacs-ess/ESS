@@ -126,8 +126,9 @@
 (require 'ess-custom)
 (require 'ess-mode)
 (require 'ess-inf)
+;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+(with-no-warnings (require 'cl))
 
-(require 'cl)
 
 
  ; ess-mode: editing S/R/XLS/SAS source

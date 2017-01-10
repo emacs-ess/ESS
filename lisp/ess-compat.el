@@ -1,6 +1,6 @@
 ;;; ess-compat.el --- simple determination of Emacs/XEmacs and version #.
 
-;; Copyright (C) 2000--2005 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 2000--2017 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
@@ -277,6 +277,18 @@ mode is enabled.  Usually, such commands should use
 `use-region-p' instead of this function, because `use-region-p'
 also checks the value of `use-empty-active-region'."
     (and transient-mark-mode mark-active)))
+
+;; for emacs <= 24.2 :
+(unless (fboundp 'defvar-local)
+  (defmacro defvar-local (var val &optional docstring)
+    "Define VAR as a buffer-local variable with default value VAL.
+Like `defvar' but additionally marks the variable as being automatically
+buffer-local wherever it is set."
+    (declare (debug defvar) (doc-string 3))
+    ;; Can't use backquote here, it's too early in the bootstrap.
+    (list 'progn (list 'defvar var val docstring)
+          (list 'make-variable-buffer-local (list 'quote var)))))
+
 
 (provide 'ess-compat)
 

@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: A.J. Rossini
@@ -36,7 +36,8 @@
 ;;; Autoloads and Requires
 
 (ess-message "[ess-r-d:] (require 'ess-s-l)")
-(require 'cl)
+;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+(with-no-warnings (require 'cl))
 (require 'ess-s-l)
 (require 'eldoc)
 (require 'ess-utils)
@@ -1055,6 +1056,7 @@ similar to `load-library' emacs function."
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
     (let ((ess-eval-visibly-p t)
+;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
           (packs (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
           pack)
       (setq pack (ess-completing-read "Load" packs))

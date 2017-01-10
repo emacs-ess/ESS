@@ -3,7 +3,7 @@
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
@@ -32,7 +32,8 @@
 
 ;;; Code:
 
-(require 'cl)
+;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+(with-no-warnings (require 'cl))
 (require 'ess-generics)
 (require 'ess-utils)
 

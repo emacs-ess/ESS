@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1998--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2012 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
+;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
 
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
@@ -28,7 +28,8 @@
 
 (eval-when-compile
   (require 'tramp)
-  (require 'cl))
+  ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
+  (with-no-warnings (require 'cl)))
 
 (defun ess-inside-string-or-comment-p (&optional pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
@@ -1069,7 +1070,7 @@ queried for arguments.
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	  (and 
+	  (and
 	   (not (process-get proc 'busy))
 	   (with-current-buffer (ess-command (format ess-funargs-command
 						     (ess-quote-special-chars funname))
