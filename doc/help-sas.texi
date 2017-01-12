@@ -108,7 +108,7 @@ Submission of a @SAS{} batch job is dependent on your environment.
 your shell.  It defaults to @code{'sh} unless you are running Windows or
 Mac Classic.  Under Windows, it will default to @code{'sh} if you are using
 a @UNIX{}-imitating shell; otherwise @code{'ms-dos} for an @acronym{MS-DOS}
-shell.  On Mac OS X, it will default to @code{'sh}, but under Mac Classic,
+shell.  On macOS, it will default to @code{'sh}, but under Mac Classic,
 it defaults to @code{'apple-script}.  You will also set this to @code{'sh}
 if the @SAS{} batch job needs to run on a remote machine rather than your
 local machine.  This works transparently if you are editing the remote file

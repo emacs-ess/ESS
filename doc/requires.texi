@@ -4,16 +4,16 @@ statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 ESS supports current, and recent, stable versions of GNU Emacs
 (currently, 24.3 or higher; alpha/beta/pre-release
 @c (currently, the 24.x and 25.x series; alpha/beta/pre-release
-versions are NOT SUPPORTED).  Non-Windows users beware: GNU Emacs 24.3 is 
-preferable to 24.1 or 24.2: these broken builds suffer from bug 12463 
-@uref{http://debbugs.gnu.org/cgi/bugreport.cgi?bug=12463} which 
+versions are NOT SUPPORTED).  Non-Windows users beware: GNU Emacs 24.3 is
+preferable to 24.1 or 24.2: these broken builds suffer from bug 12463
+@uref{http://debbugs.gnu.org/cgi/bugreport.cgi?bug=12463} which
 will cause Emacs to get progressively slower over time.
 @c XEmacs currently does not allow all ESS
 @c features. Basic ESS functionality however is supported for the time being
 @c (XEmacs stable 21.4.14 or higher).
 
 Due to XEmacs lacking some features that ESS requires, ESS
-support of XEmacs ended with ESS 12.04-4.  
+support of XEmacs ended with ESS 12.04-4.
 
 To build the PDF documentation, you will need a version of TeX Live or
 texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
@@ -39,7 +39,7 @@ texinfo RPMs, do NOT include texi2dvi).
 @c @item Solaris/x86 (all but BUGS and S-PLUS)
 @c @c cannot confirm this right now @item SGI (all)
 @c @item MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS)
-@c @item Apple Mac OS X 10.4-5 (R, JAGS, Stata)
+@c @item Apple macOS 10.4-5 (R, JAGS, Stata)
 @c @end itemize
 
 @c with the following versions of emacs

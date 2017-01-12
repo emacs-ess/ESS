@@ -17,7 +17,7 @@ The ESS Developers proudly announce the release of ESS
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
 R/S-PLUS, SAS, BUGS/JAGS, Stata and other statistical analysis
-packages under the UNIX, GNU Linux, Microsoft Windows, Mac OS X and
+packages under the UNIX, GNU Linux, Microsoft Windows, macOS and
 other operating systems.  ESS is a package for the GNU Emacs and
 XEmacs text editors whose features ESS uses to streamline the creation
 and use of statistical software.  ESS knows the syntax and grammar of
