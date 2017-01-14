@@ -59,6 +59,7 @@ the following lines in your @file{~/.emacs}:
 location with @code{M-x ess-version}.
 @end enumerate
 
+@c -- NOTE: keep in sync with more important ../../ESS-web/php/download.php
 @emph{Note for Windows and macOS users:} The most straightforward
 way to install Emacs on your machine is by downloading
 the Emacs binary by Vincent Goulet; either
