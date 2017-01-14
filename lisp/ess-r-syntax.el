@@ -189,7 +189,7 @@ Cons cell containing the token type and string representation."
 ;; backward
 (defun ess-climb-token--operator ()
   (when (pcase (char-before)
-          ((or ?+ ?/ ?^ ?~ ?? ?!)
+          ((or `?+ `?/ `?^ `?~ `?? `?!)
            (ess-backward-char))
           (`?=
            (prog1 (ess-backward-char)
@@ -198,7 +198,7 @@ Cons cell containing the token type and string representation."
                  (ess-climb-token--char ?:)
                  (ess-climb-token--char ?>)
                  (ess-climb-token--char ?<))))
-          ((or ?& ?| ?* ?@ ?$)
+          ((or `?& `?| `?* `?@ `?$)
            (prog1 (ess-backward-char)
              (ess-climb-token--char (char-after))))
           (`?<
@@ -364,7 +364,7 @@ reached."
   (let ((refined-type
          (pcase (ess-token-type token)
            ;; Parameter assignment
-           ("="
+           (`"="
             (save-excursion
               (goto-char (ess-token-start token))
               (let ((containing-sexp (ess-containing-sexp-position)))
@@ -377,14 +377,14 @@ reached."
                                   (ess-token-before= '("," "(")))))
                   "param-assign"))))
            ;; Quoted identifiers
-           ("string"
+           (`"string"
             (when (or
                    ;; Quoted parameter names
                    (ess-refined-token= (ess-token-after) "param-assign")
                    ;; Quoted call names
                    (ess-token-after= "("))
               "identifier"))
-           ((or "(" ")")
+           ((or `"(" `")")
             (or (save-excursion
                   (if (ess-token-close-delimiter-p token)
                       (ess-climb-paired-delims nil token)
@@ -397,7 +397,7 @@ reached."
                     (ess-climb-paired-delims ")" token)
                     (when (ess-token-before= '("identifier" "string" ")" "]" "]]" "}"))
                       "argslist-delimiter")))))
-           ((or "{" "}")
+           ((or `"{" `"}")
             (save-excursion
               (unless (ess-climb-paired-delims "}" token)
                 (goto-char (ess-token-start token)))
