@@ -289,6 +289,12 @@ buffer-local wherever it is set."
     (list 'progn (list 'defvar var val docstring)
           (list 'make-variable-buffer-local (list 'quote var)))))
 
+(unless (fboundp 'setq-local)
+  (defmacro setq-local (var val)
+    "Set variable VAR to value VAL in current buffer."
+    ;; Can't use backquote here, it's too early in the bootstrap.
+    (list 'set (list 'make-local-variable (list 'quote var)) val)))
+
 
 (provide 'ess-compat)
 
