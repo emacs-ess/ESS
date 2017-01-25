@@ -269,7 +269,7 @@ It makes underscores and dots word constituent chars.")
      (ess-traceback-command             . "local({cat(geterrmessage(), \"---------------------------------- \n\", fill=TRUE);try(traceback(), silent=TRUE)})\n")
      (ess-call-stack-command            . "traceback(1)\n")
      (ess-build-eval-message-function  . #'ess-r-build-eval-message)
-     (ess-dump-filename-template        . (ess-replace-regexp-in-string
+     (ess-dump-filename-template        . (replace-regexp-in-string
                                            "S$" ess-suffix ; in the one from custom:
                                            ess-dump-filename-template-proto))
      (ess-build-help-command-function   . #'ess-r-build-help-command)
@@ -526,7 +526,7 @@ Executed in process buffer."
   ;; ECB needs seminatic stuff.
   ;;  (if (featurep 'semantic)
   ;;      (setq semantic-toplevel-bovine-table r-toplevel-bovine-table))
-  (when (and ess-imenu-use-S (require 'ess-menu))
+  (when ess-imenu-use-S
     (setq imenu-generic-expression ess-imenu-generic-expression)
     (imenu-add-to-menubar "Imenu-R"))
 
@@ -834,7 +834,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
 
   (when (file-directory-p ess-R-root-dir) ; otherwise file-name-all-.. errors
     (setq ess-R-root-dir
-          (ess-replace-regexp-in-string "[\\]" "/" ess-R-root-dir))
+          (replace-regexp-in-string "[\\]" "/" ess-R-root-dir))
     (let ((R-ver
            (ess-drop-non-directories
             (ess-flatten-list
@@ -844,7 +844,7 @@ If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
       (mapcar (lambda (dir)
                 (let ((R-path
                        (concat ess-R-root-dir
-                               (ess-replace-regexp-in-string "[\\]" "/" dir)
+                               (replace-regexp-in-string "[\\]" "/" dir)
                                bin-Rterm-exe)))
                   (if (file-exists-p R-path) R-path)))
               R-ver))))

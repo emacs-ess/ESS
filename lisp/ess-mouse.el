@@ -219,18 +219,10 @@ the string one more time by embedding it in a \"page()\" command."
   (if (equal ess-language "S")
       (setq mouse-me-menu-commands ess-S-mouse-me-menu-commands-alist)))
 
-;; (if (not (featurep 'xemacs))
-;;     (progn
-;;       ;;gnu emacs
 ;;       (define-key ess-mode-map              [S-mouse-3] 'ess-mouse-me)
 ;;       (define-key inferior-ess-mode-map     [S-mouse-3] 'ess-mouse-me)
 ;;       (defun ess-S-mouse-me-ess-transcript-mode ()
-;;      (define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me)))
-;;   ;; xemacs
-;;   (define-key ess-mode-map              [(shift button3)] 'ess-mouse-me)
-;;   (define-key inferior-ess-mode-map     [(shift button3)] 'ess-mouse-me)
-;;   (defun ess-S-mouse-me-ess-transcript-mode ()
-;;     (define-key ess-transcript-mode-map [(shift button3)] 'ess-mouse-me)))
+;;         (define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me))
 ;;
 (add-hook 'ess-mode-hook            'ess-S-mouse-me-menu-commands)
 (add-hook 'inferior-ess-mode-hook   'ess-S-mouse-me-menu-commands)
@@ -240,19 +232,19 @@ the string one more time by embedding it in a \"page()\" command."
 
  ; Local variables section
 
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;; This file is automatically placed in Outline minor mode.
+;; The file is structured as follows:
+;; Chapters:     ^L ;
+;; Sections:    ;;*;;
+;; Subsections: ;;;*;;;
+;; Components:  defuns, defvars, defconsts
+;;              Random code beginning with a ;;;;* comment
 
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
+;; Local variables:
+;; mode: emacs-lisp
+;; outline-minor-mode: nil
+;; mode: outline-minor
+;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;; End:
 
 ;;; ess-mouse.el ends here

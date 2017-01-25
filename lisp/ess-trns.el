@@ -135,25 +135,14 @@
     ["Switch S process" ess-switch-process		t]
     ))
 
-(unless (featurep 'xemacs)
-  (if (featurep 'ess-trans)
-      (define-key ess-transcript-mode-map [menu-bar ess-trans]
-        (cons "ess-trans" ess-transcript-mode-menu))
-    (eval-after-load "ess-trans"
-      '(define-key ess-transcript-mode-map
-         [menu-bar ess-trans]
-         (cons "ess-trans"
-               ess-transcript-mode-menu)))))
-
-(when (featurep 'xemacs)
-  (defun ess-transcript-mode-xemacs-menu ()
-    "Hook to install `ess-transcript-mode' menu for XEmacs (w/ easymenu)."
-    (if 'ess-transcript-mode
-        (easy-menu-add ess-transcript-mode-menu)
-      (easy-menu-remove ess-transcript-mode-menu)))
-
-  (add-hook 'ess-transcript-mode-hook 'ess-transcript-mode-xemacs-menu))
-
+(if (featurep 'ess-trans)
+    (define-key ess-transcript-mode-map [menu-bar ess-trans]
+      (cons "ess-trans" ess-transcript-mode-menu))
+  (eval-after-load "ess-trans"
+    '(define-key ess-transcript-mode-map
+       [menu-bar ess-trans]
+       (cons "ess-trans"
+             ess-transcript-mode-menu))))
 
 (defun ess-transcript-mode (alist &optional proc)
   "Major mode for manipulating {ESS} transcript files.
@@ -287,8 +276,7 @@ clean even if the buffer is \\[read-only]."
     (save-excursion
       (if do-toggle (setq buffer-read-only nil))
       (save-restriction
-        (unless (featurep 'xemacs) ;; does not exist in xemacs:
-          (deactivate-mark))
+        (deactivate-mark)
         (narrow-to-region beg end)
         (goto-char (point-min))
         (delete-non-matching-lines ess-prompt-rx)
@@ -336,18 +324,18 @@ Use point-min/max to obey narrow-to-region."
 
  ; Local variables section
 
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;; This file is automatically placed in Outline minor mode.
+;; The file is structured as follows:
+;; Chapters:     ^L ;
+;; Sections:    ;;*;;
+;; Subsections: ;;;*;;;
+;; Components:  defuns, defvars, defconsts
+;;              Random code beginning with a ;;;;* comment
 
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
+;; Local variables:
+;; mode: emacs-lisp
+;; mode: outline-minor
+;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;; End:
 
 ;;; ess-trns.el ends here

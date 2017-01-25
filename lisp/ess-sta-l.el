@@ -82,18 +82,8 @@ regexp-search, and so specials should be quoted.
     (modify-syntax-entry ?` "(\'" tbl)
     (modify-syntax-entry ?\' ")`" tbl)
     ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
-    (cond
-     ;; XEmacs 19, 20, 21
-     ((memq '8-bit c-emacs-features)
-      (modify-syntax-entry ?/  ". 1456" tbl)
-      (modify-syntax-entry ?*  ". 23"   tbl))
-     ;; Emacs 19, 20, 21
-     ((memq '1-bit c-emacs-features)
-      (modify-syntax-entry ?/  ". 124b" tbl)
-      (modify-syntax-entry ?*  ". 23"   tbl))
-     ;; incompatible
-     (t (error "CC Mode is incompatible with this version of Emacs"))
-     )
+    (modify-syntax-entry ?/  ". 124b" tbl)
+    (modify-syntax-entry ?*  ". 23"   tbl)
     (modify-syntax-entry ?\n "> b"  tbl)
     ;; Give CR the same syntax as newline, for selective-display
     (modify-syntax-entry ?\^m "> b" tbl)

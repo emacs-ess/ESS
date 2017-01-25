@@ -506,7 +506,7 @@ end keywords as associated values.")
     (ess-language			. "gretl")
     (ess-dialect			. "gretl")
     (ess-suffix				. "inp")
-    (ess-dump-filename-template		. (ess-replace-regexp-in-string
+    (ess-dump-filename-template		. (replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
     (ess-mode-syntax-table		. gretl-syntax-table)

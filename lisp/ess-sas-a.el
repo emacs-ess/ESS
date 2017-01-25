@@ -120,8 +120,7 @@ or `ess-sas-data-view-insight'."
   :type  'integer)
 
 (defcustom ess-sas-rtf-font-name "Bitstream Vera Sans Mono"
-;    (if (featurep 'xemacs) "Lucida Sans Typewriter" "Bitstream Vera Sans Mono")
-  "*Name of font to create MS RTF with"
+  "Name of font with which to create MS RTF."
   :group 'ess-sas
   :type  'string)
 
@@ -169,11 +168,7 @@ Virtual PC emulator on your Mac; buffer-local."
 (make-variable-buffer-local 'ess-sas-submit-command-options)
 
 (defvar ess-sas-submit-method
-  (if ess-microsoft-p
-      (if (w32-shell-dos-semantics) 'ms-dos 'sh)
-    (if (or (equal system-type 'Apple-Macintosh)
-            (and ess-sas-submit-mac-virtual-pc (equal system-type 'darwin)))
-        'apple-script 'sh))
+  (if (and ess-microsoft-p (w32-shell-dos-semantics)) 'ms-dos 'sh)
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
@@ -513,81 +508,70 @@ current buffer if nil."
 (defun ess-sas-graph-view ()
   "Open a GSASFILE for viewing."
   (interactive)
-;;  (ess-sas-goto-shell t)
+  ;;  (ess-sas-goto-shell t)
   (ess-sas-cd)
   (ess-sas-goto-log 'no-error-check)
 
-  (save-excursion (let (
-                        (ess-tmp-length (length ess-sas-graph-view-viewer-alist))
-                        (ess-tmp-counter 0)
-                        (ess-tmp-graph nil)
-                        (ess-tmp-graph-alist nil)
-                        (ess-tmp-glyph nil)
-                        (ess-tmp-graph-regexp
-                        (concat "[cCub][oOty][rRpt][dDue][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
-;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
-                                 ess-sas-graph-view-suffix-regexp "\\)")))
-                                        ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+  (save-excursion
+    (let (
+          (ess-tmp-length (length ess-sas-graph-view-viewer-alist))
+          (ess-tmp-counter 0)
+          (ess-tmp-graph nil)
+          (ess-tmp-graph-alist nil)
+          (ess-tmp-glyph nil)
+          (ess-tmp-graph-regexp
+           (concat "[cCub][oOty][rRpt][dDue][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                   ;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
+                   ess-sas-graph-view-suffix-regexp "\\)")))
+     ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
-                    (save-match-data
-                      (search-backward-regexp "[ \t=]" nil t)
+      (save-match-data
+        (search-backward-regexp "[ \t=]" nil t)
 
-                      (save-excursion
-                        (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp)))
+        (save-excursion
+          (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp)))
 
-                      (if (not ess-tmp-graph)
-                          (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp nil t)))
+        (if (not ess-tmp-graph)
+            (setq ess-tmp-graph (ess-search-except ess-tmp-graph-regexp nil t)))
 
-                      (setq ess-tmp-graph (read-string "GSASFILE: "
-                                                       (or ess-tmp-graph ess-sas-file-path)))
+        (setq ess-tmp-graph (read-string "GSASFILE: "
+                                         (or ess-tmp-graph ess-sas-file-path)))
 
-                      (if (fboundp 'ess-xemacs-insert-glyph) (progn
-                                                               (if (string-match "[.][gG][iI][fF]" ess-tmp-graph)
-                                                                   (setq ess-tmp-glyph 'gif)
-                                                                 ;;else
-                                                                 (if (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph)
-                                                                     (setq ess-tmp-glyph 'jpeg)))))
+        ;;GNU Emacs graphics file image viewing mode loaded?
+        (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
+                 (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
+            (find-file ess-tmp-graph)
+          ;;else XEmacs graphics file image viewing mode loaded?
+          (if (and (fboundp 'image-mode)
+                   (string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
+                                 ess-tmp-graph))
+              (find-file ess-tmp-graph)
+            ;;else use the appropriate graphics file image viewer
+            (while (< ess-tmp-counter ess-tmp-length)
+              (setq ess-tmp-graph-alist
+                    (nth ess-tmp-counter ess-sas-graph-view-viewer-alist))
+              (setq ess-tmp-graph-regexp (car ess-tmp-graph-alist))
 
-                      ;;GNU Emacs graphics file image viewing mode loaded?
-                      (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
-                               (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
-                          (find-file ess-tmp-graph)
-                        ;;else XEmacs graphics file image viewing mode loaded?
-                        (if (and (fboundp 'image-mode)
-                                 (string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
-                                               ess-tmp-graph))
-                            (find-file ess-tmp-graph)
-                          ;;else XEmacs graphics file image viewing primitives loaded?
-                          (if ess-tmp-glyph (progn
-                                              (switch-to-buffer (file-name-nondirectory ess-tmp-graph))
-                                              (ess-xemacs-insert-glyph
-                                               (make-glyph (vector ess-tmp-glyph :file ess-tmp-graph))))
+              (if (string-match
+                   (concat "[.]" ess-tmp-graph-regexp) ess-tmp-graph)
+                  (progn
+                    (ess-sas-goto-shell t)
+                    (insert ess-sas-submit-pre-command " "
+                            (cdr ess-tmp-graph-alist) " " ess-tmp-graph
+                            (if (equal ess-sas-submit-method 'sh) " &"))
+                    (setq ess-tmp-glyph 'alist)
+                    (setq ess-tmp-counter ess-tmp-length))
+                ;;else
+                (setq ess-tmp-counter (+ ess-tmp-counter 1))))
 
-                            ;;else use the appropriate graphics file image viewer
-                            (while (< ess-tmp-counter ess-tmp-length)
-                              (setq ess-tmp-graph-alist
-                                    (nth ess-tmp-counter ess-sas-graph-view-viewer-alist))
-                              (setq ess-tmp-graph-regexp (car ess-tmp-graph-alist))
+            (if (not ess-tmp-glyph)
+                (progn
+                  (ess-sas-goto-shell t)
+                  (insert ess-sas-submit-pre-command " "
+                          ess-sas-graph-view-viewer-default " " ess-tmp-graph
+                          (if (equal ess-sas-submit-method 'sh) " &"))))
 
-                              (if (string-match
-                                   (concat "[.]" ess-tmp-graph-regexp) ess-tmp-graph)
-                                  (progn
-                                    (ess-sas-goto-shell t)
-                                    (insert ess-sas-submit-pre-command " "
-                                            (cdr ess-tmp-graph-alist) " " ess-tmp-graph
-                                            (if (equal ess-sas-submit-method 'sh) " &"))
-                                    (setq ess-tmp-glyph 'alist)
-                                    (setq ess-tmp-counter ess-tmp-length))
-                                ;;else
-                                (setq ess-tmp-counter (+ ess-tmp-counter 1))))
-
-                            (if (not ess-tmp-glyph) (progn
-                                                      (ess-sas-goto-shell t)
-                                                      (insert ess-sas-submit-pre-command " "
-                                                              ess-sas-graph-view-viewer-default " " ess-tmp-graph
-                                                              (if (equal ess-sas-submit-method 'sh) " &"))))
-
-                            (comint-send-input))))))))
+            (comint-send-input)))))))
 
 (defun ess-sas-file-path (&optional force)
   "Define `ess-sas-file-path' to be the current buffer depending on suffix."
@@ -735,16 +719,16 @@ current buffer if nil."
               (and (goto-char (point-min))
                    (search-forward-regexp ess-sas-error nil t)))
           t
-                                        ; this feature never worked quite right (and was XEmacs only to boot)
-                                        ; after highlighting an error message, moving point would cause an unwanted
-                                        ; highlighting between point and mark; why god, why?!?
-                                        ;
-                                        ;       (if (and (boundp 'zmacs-regions) zmacs-regions)
-                                        ;           (progn
-                                        ;               (if ess-sas-pop-mark (pop-mark)
-                                        ;                   (setq ess-sas-pop-mark t))
-                                        ;               (push-mark (match-beginning 0) t)
-                                        ;               (zmacs-activate-region)))
+        ;; this feature never worked quite right (and was XEmacs only to boot)
+        ;; after highlighting an error message, moving point would cause an
+        ;; unwanted highlighting between point and mark; why god, why?!?
+        ;;
+        ;;       (if (and (boundp 'zmacs-regions) zmacs-regions)
+        ;;           (progn
+        ;;               (if ess-sas-pop-mark (pop-mark)
+        ;;                   (setq ess-sas-pop-mark t))
+        ;;               (push-mark (match-beginning 0) t)
+        ;;               (zmacs-activate-region)))
         (goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()
@@ -870,38 +854,6 @@ optional argument is non-nil, then set-buffer rather than switch."
   (kill-buffer nil)
   )
 
-(if (featurep 'xemacs) (condition-case nil
-      (progn
-        (require 'rtf-support)
-        (when (featurep 'rtf-support)
-
-(defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
-"Creates an MS RTF portrait file from the current buffer."
-    (interactive)
-    (ess-sas-file-path t)
-    (ess-revert-wisely)
-
-    (if (equal ess-tmp-font-size nil)
-	(setq ess-tmp-font-size "21"))
-
-    (let
-	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
-	    ;(expand-file-name (buffer-name)) "[.][^.]*$" ".rtf")))
-	(rtf-export ess-temp-rtf-file)
-	(ess-sas-goto "rtf" t)
-	(goto-char (point-min))
-	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
-	(goto-line 2)
-	(if (string-match ess-sas-suffix-regexp ess-sas-file-path)
-	    (insert "\\margl720\\margr720\\margt720\\margb720\n"))
-        (goto-char (point-min))
-
-        (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
-
-        (save-buffer)
-	(kill-buffer (current-buffer))))
-))
-    (error nil))
 ; else
 (defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
   "Creates an MS RTF portrait file from the current buffer."
@@ -927,7 +879,6 @@ optional argument is non-nil, then set-buffer rather than switch."
 
     (save-buffer)
     (kill-buffer (current-buffer)))
-)
 
 (defun ess-rtf-replace-chars ()
   "Convert a text file to an MS RTF file."
@@ -1293,10 +1244,8 @@ Else
 
   (if arg
       (progn
-        (if (and (equal emacs-major-version 19) (equal emacs-minor-version 28))
-            (define-key sas-mode-local-map [C-tab] 'ess-sas-backward-delete-tab)
-          ;;else
-          (define-key sas-mode-local-map [(control tab)] 'ess-sas-backward-delete-tab))
+        (define-key sas-mode-local-map [(control tab)]
+          'ess-sas-backward-delete-tab)
         (define-key sas-mode-local-map [return] 'newline)
         (define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
     ;;else
@@ -1324,9 +1273,8 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
-  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
-    (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-    (global-set-key [(control f2)] 'ess-sas-rtf-landscape))
+  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
+  (global-set-key [(control f2)] 'ess-sas-rtf-landscape)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-goto-shell)
   (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
@@ -1344,12 +1292,8 @@ accepted for backward compatibility, however, arg is ignored."
   ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
-  (if (and ess-sas-edit-keys-toggle
-           (equal emacs-major-version 19) (equal emacs-minor-version 28))
-      (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
-                                        ;else
-    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-                                        ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
+  ;; (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (setq ess-sas-global-pc-keys t)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys nil)
@@ -1362,9 +1306,8 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
-    (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-    (global-set-key [(control f2)] 'ess-sas-rtf-landscape))
+  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
+  (global-set-key [(control f2)] 'ess-sas-rtf-landscape)
   (global-set-key (quote [f2]) 'ess-revert-wisely)
   (global-set-key (quote [f3]) 'ess-sas-submit)
   (global-set-key [(control f3)] 'ess-sas-submit-region)
@@ -1382,12 +1325,8 @@ accepted for backward compatibility, however, arg is ignored."
   ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
   ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
   (global-set-key (quote [f12]) 'ess-sas-graph-view)
-  (if (and ess-sas-edit-keys-toggle
-           (equal emacs-major-version 19) (equal emacs-minor-version 28))
-      (global-set-key [C-tab] 'ess-sas-backward-delete-tab)
-                                        ;else
-    (global-set-key [(control tab)] 'ess-sas-backward-delete-tab))
-                                        ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
+  ;;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys t)
   (setq ess-sas-local-pc-keys nil)
@@ -1401,9 +1340,8 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
-  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
-    (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-    (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape))
+  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
+  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
   (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
@@ -1435,9 +1373,8 @@ in SAS-mode and related modes.")
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (when (or (not (featurep 'xemacs)) (featurep 'rtf-support))
-    (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-    (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape))
+  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
+  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape)
   (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
   (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
   (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
@@ -1466,19 +1403,19 @@ in SAS-mode and related modes.")
 
  ; Local variables section
 
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
+;; This file is automatically placed in Outline minor mode.
+;; The file is structured as follows:
+;; Chapters:     ^L ;
+;; Sections:    ;;*;;
+;; Subsections: ;;;*;;;
+;; Components:  defuns, defvars, defconsts
+;;              Random code beginning with a ;;;;* comment
 
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
+;; Local variables:
+;; mode: emacs-lisp
+;; outline-minor-mode: nil
+;; mode: outline-minor
+;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;; End:
 
 ;;; ess-sas-a.el ends here

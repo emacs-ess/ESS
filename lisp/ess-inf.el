@@ -1798,8 +1798,7 @@ paragraph.
  Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
-           (> (region-end) (region-beginning)))
+  (if (use-region-p)
       (ess-eval-region (region-beginning) (region-end) vis)
     (ess-eval-function-or-paragraph vis)))
 
@@ -1812,8 +1811,7 @@ end of region if region was active.
  Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
-           (> (region-end) (region-beginning)))
+  (if (use-region-p)
       (let ((end (region-end)))
         (ess-eval-region (region-beginning) end vis)
         (goto-char end))
@@ -1892,8 +1890,7 @@ true."
  evaluation of the line.
 "
   (interactive "P")
-  (if (and transient-mark-mode mark-active ;; xemacs doesn't have use-region-p
-           (> (region-end) (region-beginning)))
+  (if (use-region-p)
       (ess-eval-region (region-beginning) (region-end) vis)
     (ess-eval-line-and-step)))
 
@@ -1997,7 +1994,7 @@ for `ess-eval-region'."
     (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
     (define-key map "\C-c\C-z" 'ess-switch-to-inferior-or-script-buffer) ; mask comint map
     (define-key map "\C-d"     'delete-char)   ; EOF no good in S
-    (if (and (featurep 'emacs) (>= emacs-major-version 24))
+    (if (>= emacs-major-version 24)
         (define-key map "\t"       'completion-at-point)
       (define-key map "\t"       'comint-dynamic-complete)
       (define-key map "\M-\t"    'comint-dynamic-complete))
@@ -2058,16 +2055,6 @@ for `ess-eval-region'."
     ["About"            (ess-goto-info "Entering Commands") t]
     ))
 
-
-
-(defun inferior-ess-mode-xemacs-menu ()
-  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
-  (if 'inferior-ess-mode
-      (easy-menu-add inferior-ess-mode-menu)
-    (easy-menu-remove inferior-ess-mode-menu)))
-
-(if (string-match "XEmacs" emacs-version)
-    (add-hook 'inferior-ess-mode-hook 'inferior-ess-mode-xemacs-menu))
 
 (defvar ess-mode-minibuffer-map
   (let ((map (make-sparse-keymap)))

@@ -137,12 +137,10 @@
      (ess-help-sec-regex        . ess-help-S+-sec-regex)
      (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
      (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
-     (ess-cmd-delay             . (if (featurep 'xemacs); needs much less delay
-                                      (* 0.1 ess-S+-cmd-delay)
-                                    ess-S+-cmd-delay))
+     (ess-cmd-delay             . ess-S+-cmd-delay)
      (ess-function-pattern      . ess-S-function-pattern)
      (ess-function-template     . " <- \n#\nfunction()\n{\n\n}\n")
-     (ess-dump-filename-template . (ess-replace-regexp-in-string
+     (ess-dump-filename-template . (replace-regexp-in-string
                                     "S$" ess-suffix ; in the one from custom:
                                     ess-dump-filename-template-proto))
      (ess-traceback-command     . "traceback()\n")

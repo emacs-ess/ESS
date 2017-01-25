@@ -32,13 +32,6 @@
 ;; installation, configuration and troubleshooting, please visit
 ;; http://www.svenhartenstein.de/emacs-ess.php
 
-;; Users of XEmacs (or maybe non-GNU-Emacs users): The code below must
-;; be slightly adapted in order to work in XEmacs (i.e. comment out
-;; the delete-trailing-whitespace function call by putting a semicolon
-;; at the beginning of the line). Furthermore, the tooltip option does
-;; NOT work in XEmacs (yet) (and will probably only ever work if the
-;; ESS-core team will adapt the code for XEmacs compatibility).
-
 ;; == Requirements ==
 
 ;; * ESS mode must be loaded and running.
@@ -46,8 +39,6 @@
 ;; * For the tooltip option to work, Emacs must not run within a
 ;;   terminal but (directly) under the X window system (in case of
 ;;   GNU/Linux).
-;; * The tooltip option currently requires GNU Emacs (i.e. not XEmacs
-;;   or a similar other derivate).
 
 ;; == Installation ==
 

@@ -29,7 +29,7 @@
 ;;; Commentary:
 
 ;; Strictly for debugging and development.  usage is:
-;;           xemacs -no-site-file -no-init-file -load ess-debug.el -f S4
+;;           emacs -Q -l ess-debug.el -f S4
 ;; (or similar!)
 ;;
 ;; The whole point of this file is to enable debugging from a vanilla

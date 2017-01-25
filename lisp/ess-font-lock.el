@@ -33,6 +33,8 @@
 
 (require 'font-lock)
 (require 'paren)
+
+;; FIXME: What is this doing here!?
 (if (fboundp 'show-paren-mode) (show-paren-mode 1))
 
 ;;; Emacs 20.x notes:
@@ -50,11 +52,11 @@
 
 (defun ess-font-lock-rmh ()
   "Set font-lock colors to Richard Heiberger's usual choice."
+  ;; FIXME: Turn it into a Custom theme!
   (interactive)
 
-  (if (featurep 'xemacs) nil
-    (set-foreground-color "Black")
-    (set-background-color "lightcyan"))
+  (set-foreground-color "Black")
+  (set-background-color "lightcyan")
 
   (set-face-background 'mode-line "lightskyblue")
   (set-face-foreground 'mode-line "midnightblue")
@@ -69,11 +71,11 @@
 
 (defun ess-font-lock-blue ()
   "Set font-lock colors to Richard Heiberger's blue color scheme."
+  ;; FIXME: Turn it into a Custom theme!
   (interactive)
 
-  (if (featurep 'xemacs) nil
-    (set-foreground-color "Black")
-    (set-background-color "LightBlue"))
+  (set-foreground-color "Black")
+  (set-background-color "LightBlue")
 
   (set-face-foreground 'mode-line "LightBlue")
   (set-face-background 'mode-line "DarkSlateBlue")
@@ -88,11 +90,11 @@
 
 (defun ess-font-lock-wheat ()
   "Set font-lock colors to Richard Heiberger's wheat color scheme."
+  ;; FIXME: Turn it into a Custom theme!
   (interactive)
 
-  (if (featurep 'xemacs) nil
-    (set-foreground-color "Black")
-    (set-background-color "Wheat"))
+  (set-foreground-color "Black")
+  (set-background-color "Wheat")
 
   (set-face-foreground 'mode-line "Wheat")
   (set-face-background 'mode-line "Sienna")
@@ -108,11 +110,11 @@
 
 (defun ess-font-lock-bw ()
   "Set font-lock colors to Richard Heiberger's black and white color scheme."
+  ;; FIXME: Turn it into a Custom theme!
   (interactive)
 
-  (if (featurep 'xemacs) nil
-    (set-foreground-color "Black")
-    (set-background-color "white"))
+  (set-foreground-color "Black")
+  (set-background-color "white")
 
   (set-face-foreground 'mode-line "gray10")
   (set-face-background 'mode-line "gray90")
@@ -137,6 +139,7 @@
 
 (defun ess-font-lock-db ()
   "Set font-lock colors (leave fore-/back-ground alone) courtesy David Brahm <David.Brahm@fmr.com>"
+  ;; FIXME: Turn it into a Custom theme!
   (interactive)
   (set-face-foreground 'font-lock-comment-face       "Firebrick")  ; #...    %...
   (set-face-foreground 'font-lock-string-face        "SeaGreen")   ; "..."   "..."

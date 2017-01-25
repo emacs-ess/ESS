@@ -100,7 +100,7 @@
     ;; (define-key map "\C-c\C-t"   'ess-execute-in-tb)
     (define-key map "\C-c\t"     'ess-complete-object-name-deprecated)
     ;;M  (define-key map "\C-c\t"        'comint-dynamic-complete-filename)
-    (unless (and (featurep 'emacs) (>= emacs-major-version 24))
+    (unless (>= emacs-major-version 24)
       (define-key map "\M-\t"    'comint-dynamic-complete))
     (define-key map "\M-?"       'ess-list-object-completions)
     ;; wrong here (define-key map "\C-c\C-k" 'ess-request-a-process)
@@ -112,8 +112,6 @@
     (define-key map "}"          'ess-electric-brace)
     (define-key map "\C-\M-q"    'ess-indent-exp)
     (define-key map "\C-\M-h"    'ess-mark-function-or-para)
-    (if (featurep 'xemacs) ;; work around Xemacs bug (\C-\M-h redefines M-BS):
-        (define-key map [(meta backspace)] 'backward-kill-word))
     ;;(define-key map [delete]   'backward-delete-char-untabify)
     (define-key map "\t"         'ess-indent-or-complete)
     (define-key map "\C-c\C-q"   'ess-quit)
@@ -193,9 +191,8 @@
      ["Switch Process"   ess-switch-process              t]
      ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      ("Start Process"
-      ;; SJE - :help not yet recognised in XEmacs.
-      ["R"     R   t] ;; :help "Start a new R process" :active t
-      ["S"     S   t] ;; :help "Start a new S process" :active t
+      ["R"     R   :help "Start a new R process" :active t]
+      ["S"     S   :help "Start a new S process" :active t]
       ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
       ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
       ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
@@ -277,15 +274,6 @@
     ["Read ESS info" (ess-goto-info "") t]
     ["Send bug report"  ess-submit-bug-report           t]
     ))
-
-(defun ess-mode-xemacs-menu ()
-  "Hook to install `ess-mode' menu for XEmacs (w/ easymenu)."
-  (if 'ess-mode
-      (easy-menu-add ess-mode-menu)
-    (easy-menu-remove ess-mode-menu)))
-
-(if (featurep 'xemacs)
-    (add-hook 'ess-mode-hook 'ess-mode-xemacs-menu))
 
 (defun ess-mode (&optional alist proc-name is-derived)
   "Major mode for editing ESS source.
@@ -410,8 +398,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
           ess--local-mode-line-process-indicator
           "]"))
   ;; completion
-  (if (and (featurep 'emacs)
-           (>= emacs-major-version 24))
+  (if (>= emacs-major-version 24)
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
     (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
     (delq t comint-dynamic-complete-functions)
@@ -420,14 +407,11 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
        (cons "/" ""))
   ;; timer
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
-;;; extras
+  ;; extras
   (ess-load-extras)
   ;; SJE Tue 28 Dec 2004: do not attempt to load object name db.
   ;; (ess-load-object-name-db-file)
-  (if (> emacs-major-version 21)
-      (run-mode-hooks 'ess-mode-hook)
-    ;; old emacs 21.x
-    (run-hooks 'ess-mode-hook))
+  (run-mode-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
 
@@ -839,7 +823,7 @@ With prefix argument, only shows the errors ESS reported."
                      (bolp))
                    (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
           (progn
-            (insert (if (featurep 'xemacs) (event-to-character last-command-event) last-command-event))
+            (insert last-command-event)
             (ess-indent-line)
             (if ess-auto-newline
                 (progn
@@ -918,7 +902,7 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
                      (and (eq ess-first-tab-never-complete 'symbol-or-paren-or-punct)
                           (not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))
                      ))
-        (if (and (featurep 'emacs) (>= emacs-major-version 24))
+        (if (>= emacs-major-version 24)
             (completion-at-point)
           (comint-dynamic-complete)
           )))))

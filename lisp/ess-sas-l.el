@@ -180,8 +180,7 @@ A .lst file is a SAS listing file when:
   :type  'boolean)
 
 ;; user can specify the sas program name
-(defcustom sas-program
-  (if (equal system-type 'Apple-Macintosh) "invoke SAS using program file" "sas")
+(defcustom sas-program "sas"
   "*Command to invoke SAS, default for buffer-local `ess-sas-submit-command'."
   :group 'ess-sas
   :type  'string)
