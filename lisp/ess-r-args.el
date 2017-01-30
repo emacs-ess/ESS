@@ -174,8 +174,7 @@
   (require 'ess-custom))
 
 (eval-when-compile
-  (if ess-has-tooltip
-      (require 'tooltip))); for tooltip-show
+  (require 'tooltip)); for tooltip-show
 
 (require 'ess)
 
@@ -219,8 +218,7 @@ buffer readjustments for multiline string)."
       (setq function (ess-r-args-current-function)))
   (ess-message ".... function='%s'" function)
   (when function
-    (let* ((tt (and (equal ess-r-args-show-as 'tooltip)
-                    ess-has-tooltip))
+    (let* ((tt (equal ess-r-args-show-as 'tooltip))
            (args (concat ess-r-args-show-prefix
                          (ess-r-args-get function (not tt)))))
       (ess-message "(ess-r-args-show): args='%s'" args)
