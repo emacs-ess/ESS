@@ -481,8 +481,8 @@ Executed in process buffer."
   ;; carefully set "pager" option  "when needed":
   (ess-eval-linewise
    (format
-    "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) # rather take the ESS one
-      options(pager='%s')\n" inferior-ess-pager)
+    "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) options(pager='%s') # rather take the ESS one \n"
+    inferior-ess-pager)
    ;; Even more careful / sophisticated :
    ;;  "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager')) &&
    ;;  grepl('\\<more\\>', .P <- Sys.getenv('PAGER'))) {  # rather take the ESS one
