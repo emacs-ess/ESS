@@ -175,7 +175,8 @@ in the region, leaving only the S commands.  Other keybindings are:
   (setq major-mode 'ess-transcript-mode)
   (setq mode-name "ESS Transcript")
   (use-local-map ess-transcript-mode-map)
-  (set-syntax-table ess-mode-syntax-table)
+  (set-syntax-table (or inferior-ess-mode-syntax-table
+                        ess-mode-syntax-table))
   (setq mode-line-process
         '(" [" ess-local-process-name "]"))
   (make-local-variable 'ess-local-process-name)
