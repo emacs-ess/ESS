@@ -537,6 +537,8 @@ temporary one in `temporary-file-directory'.
 
 
 ;; Provide ourself
+(provide 'ess-rd)
+;; Legacy feature
 (provide 'essddr)
 
 ;; ess-rd.el ends here
