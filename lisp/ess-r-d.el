@@ -33,12 +33,10 @@
 
 ;;; Code:
 
-(ess-message "[ess-r-d:] (require 'ess-s-l)")
 (with-no-warnings (require 'cl)) ; instead of cl-lib so we support Emacs 24.2
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
-(require 'ess-utils)
 (require 'ess-help)
 (require 'ess-tracebug)
 (require 'ess-s-l)
@@ -46,7 +44,10 @@
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
 (require 'ess-r-package)
+(require 'ess-utils)
 
+
+(ess-message "[ess-r-d:] (require 'ess-s-l)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 

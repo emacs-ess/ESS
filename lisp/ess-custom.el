@@ -315,14 +315,6 @@ Used to adjust for changes in versions of the program.")
 ;;; SJE -- why use "Initial-dialect"?  If we use nil, it matches "None"
 ;;; in the custom choice.
 
-;; (defcustom ess-etc-directory
-;;   (expand-file-name (concat ess-lisp-directory "/../etc/"))
-;;   "*Location of the ESS etc/ directory.
-;; The ESS etc directory stores various auxillary files that are useful
-;; for ESS, such as icons."
-;;   :group 'ess
-;;   :type 'directory)
-
 (defcustom ess-directory-function nil
   "Function to return the directory that ESS is run from.
 If nil or if the function returns nil then you get `ess-directory'."

@@ -65,75 +65,27 @@
 ;; contain the file ess-site.elc.  This is probably the current
 ;; directory, or the value of LISPDIR if it was set in the Makefile.
 
-(eval-and-compile
-
-  ;; WARNING: with Emacs 20.2 (and 20.3 in one case),
-  ;; =======  MUST USE ONE OF THE NON-DEFAULT SETTINGS BELOW
-
-  ;; NOTE again: MOST people should NOT change anything here !!!
-  ;; ====        ====        ================
-
-  ;; A nice default
-  (defvar ess-lisp-directory
-    (directory-file-name
-     (file-name-directory
-      (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
-          (file-truename load-file-name)
-        (locate-library "ess-site") )))
-    "Directory containing ess-site.el(c) and other ESS lisp files.")
-
-  (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
-
-  ;; Need these as early as here [also in ./ess-comp.el] :
-  (defun ess-message (format-string &rest args)
-    "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
-    (when (bound-and-true-p ess-show-load-messages)
-      (message format-string args)))
-
-  (defun ess-require (feature &rest args)
-    (let ((feature-name (symbol-name feature)))
-      (ess-message (concat "[ess-site:] require '" feature-name))
-      (apply 'require feature args))))
-
-
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
+(eval-and-compile (require 'ess-utils))
+(add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 (ess-message (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
+
+(defun ess-require (feature &rest args)
+  (let ((feature-name (symbol-name feature)))
+    (ess-message (concat "[ess-site:] require '" feature-name))
+    (apply 'require feature args)))
 
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
 (ess-require 'ess-compat)
 
-(defvar ess-etc-directory nil
-  "Location of the ESS etc/ directory.
-The ESS etc directory stores various auxillary files that are useful
-for ESS, such as icons.")
-
-(defvar ess-etc-directory-list
-  '("../etc/ess/" "../etc/" "../../etc/ess/" "./etc/")
-  "List of directories, relative to `ess-lisp-directory', to search for etc.")
-
-(while (and (listp ess-etc-directory-list) (consp ess-etc-directory-list))
-  (setq ess-etc-directory
-        (expand-file-name (concat ess-lisp-directory "/"
-                                  (car ess-etc-directory-list))))
-  (if (file-directory-p ess-etc-directory)
-      (setq ess-etc-directory-list nil)
-    (setq ess-etc-directory nil)
-    (setq ess-etc-directory-list (cdr ess-etc-directory-list))
-    (when (null ess-etc-directory-list)
-      (beep 0) (beep 0)
-      (message (concat
-                "ERROR:ess-site.el:ess-etc-directory\n"
-                "Relative to ess-lisp-directory, one of the following must exist:\n"
-                "../etc/ess, ../etc, ../../etc/ess or ./etc"))
-      (sit-for 4))))
-
 ;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix
 (unless (locate-file "ess.info" Info-default-directory-list)
   (add-to-list 'Info-default-directory-list (expand-file-name "../doc/info/" ess-lisp-directory)))
+
 
 
 ;; Loads ess-custom.el and more
@@ -178,8 +130,7 @@ for ESS, such as icons.")
 ;;; Toolbar support
 (ess-require 'ess-toolbar)
 
-(when (featurep 'emacs)
-  (ess-require 'ido nil t))
+(ess-require 'ido nil t)
 
 
 ;;;  Site Specific setup
@@ -250,6 +201,7 @@ for ESS, such as icons.")
 (ess-message "[ess-site:] after ess-check-R-prog... ...")
 
 (ess-message "[ess-site:] *very* end ...")
+
 
  ; Local variables section
 

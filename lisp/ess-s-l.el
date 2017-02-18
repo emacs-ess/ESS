@@ -32,8 +32,8 @@
 
  ; Requires and autoloads
 
-(ess-message "[ess-s-l:] (def** ) only ...")
 (require 'ess-utils)
+(ess-message "[ess-s-l:] (def** ) only ...")
 
  ; Configuration variables
 
