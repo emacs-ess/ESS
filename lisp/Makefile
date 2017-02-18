@@ -38,7 +38,7 @@ CORE = ess.elc ess-site.elc
 ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-dde.elc ess-compat.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
-	ess-menu.elc ess-mouse.elc mouseme.elc \
+	ess-mouse.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
 	essd-els.elc ess-gretl.elc \
