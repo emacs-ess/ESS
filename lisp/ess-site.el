@@ -131,15 +131,9 @@ for ESS, such as icons.")
       (sit-for 4))))
 
 ;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
-;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
-(when (fboundp 'locate-file)
-  (unless (locate-file "ess.info"
-                       (if (featurep 'xemacs)
-                           Info-directory-list
-                         Info-default-directory-list))
-    (add-to-list (if (featurep 'xemacs)
-                     'Info-directory-list 'Info-default-directory-list)
-                 (expand-file-name "../doc/info/" ess-lisp-directory))))
+;; resurrecting Stephen's version with a bug-fix
+(unless (locate-file "ess.info" Info-default-directory-list)
+  (add-to-list 'Info-default-directory-list (expand-file-name "../doc/info/" ess-lisp-directory)))
 
 
 ;; Loads ess-custom.el and more
