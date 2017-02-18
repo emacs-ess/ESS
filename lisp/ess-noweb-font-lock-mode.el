@@ -204,8 +204,6 @@ Each chunk is fontified in accordance with its own mode"
                      after-change-functions))
            (setq ess-noweb-font-lock-mode t
                  font-lock-dont-widen t)
-           (when (< emacs-major-version 21) ; needed for emacs < 21.1 only :
-             (make-local-hook 'after-change-functions))
            (add-hook 'after-change-functions
              'font-lock-after-change-function nil t)
            (add-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)

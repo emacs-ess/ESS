@@ -1,3 +1,23 @@
+2017-01-19  Stefan Monnier  <monnier@iro.umontreal.ca>
+
+	* ess-toolbar.el: Remove redundant ":group 'ess-toolbar".
+
+	* ess-site.el (Rd-mode-hook): Fix buffer-local setting of create-lockfiles.
+	(ess-restore-asm-extns): Use remq instead of remassoc.
+
+	* ess-rd.el (Rd-active-mark): Remove.
+	(Rd-font): Use region-active-p instead.
+
+	* ess-mode.el (ess-mode-menu): Use :help.
+
+	* ess-menu.el: Remove empty file.
+
+	* ess-inf.el (ess-eval-region-or-function-or-paragraph)
+	(ess-eval-region-or-function-or-paragraph-and-step)
+	(ess-eval-region-or-line-and-step): Use use-region-p.
+
+	* ess-compat.el: Get rid of support for XEmacs and old Emacsen.
+
 2015-11-18    <rsparapa@mcw.edu>
 	
 	* ess-sas-d.el (SAS): fix for issue #249: SAS has no prompt

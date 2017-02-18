@@ -63,8 +63,6 @@
 ;; and can be altered to provide other information if you so need it.
 ;; (Martin Maechler suggested providing output from str() here.)
 
-;; Tested on Emacs 21.2, 21.3 pretest and XEmacs 21.1.14, using R 1.6.
-
 ;; Todo - compare functionality with ess-mouse-me (ess-mous.el).
 
 ;; Todo - How to select alternative environments?  Currently only
@@ -147,10 +145,7 @@ function which prints the output for rdired.")
     (define-key ess-rdired-mode-map [down] 'ess-rdired-next-line)
     (define-key ess-rdired-mode-map [up] 'ess-rdired-previous-line)
     (define-key ess-rdired-mode-map "g" 'revert-buffer)
-    (if (featurep 'xemacs)
-        (define-key ess-rdired-mode-map [button2] 'ess-rdired-mouse-view)
-      (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
-      )
+    (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
     ess-rdired-mode-map))
 
 (defun ess-rdired-mode ()
@@ -468,13 +463,8 @@ Optional prefix ARG says how many lines to move; default is one line."
   (interactive "e")
   (let (window pos)
     (save-excursion
-      (if (featurep 'xemacs)
-          ;; XEmacs
-          (setq window (event-window event)
-                pos (event-point event))
-        ;; Emacs
-        (setq window (posn-window (event-end event))
-              pos (posn-point (event-end event))))
+      (setq window (posn-window (event-end event))
+            pos (posn-point (event-end event)))
       (if (not (windowp window))
           (error "No file chosen"))
       (set-buffer (window-buffer window))

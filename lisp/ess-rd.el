@@ -36,17 +36,6 @@
   "ESS Core Team <ess-core@r-project.org>"
   "Current maintainer of ess-rd.el.")
 
-(defun Rd-active-mark () nil)           ;silence compiler.
-(if (featurep 'xemacs)
-    ;; Special support for XEmacs (curtesy of auctex):
-    (defun Rd-active-mark ()
-      (and zmacs-regions (mark)))
-
-  ;; else:  special support for GNU Emacs
-  (defun Rd-active-mark ()
-    (and transient-mark-mode mark-active))
-  )
-
 (autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
 (autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
 (autoload 'ess-switch-process           "ess-inf" "[autoload]" t)
@@ -460,7 +449,7 @@ following lines to your `.emacs' file:
                (set-buffer "*Help*")
                (insert help))))
 
-          ((Rd-active-mark)
+          ((region-active-p)
            (save-excursion
              (cond ((> (mark) (point))
                     (insert before)

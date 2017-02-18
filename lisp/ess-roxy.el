@@ -202,9 +202,8 @@ Experimental feature with known bugs.")
   :keymap ess-roxy-mode-map
   (if ess-roxy-mode
       (progn
-        (unless (featurep 'xemacs)
-          (font-lock-add-keywords nil ess-roxy-font-lock-keywords))
-        (if (and (featurep 'emacs) (>= emacs-major-version 24))
+        (font-lock-add-keywords nil ess-roxy-font-lock-keywords)
+        (if (>= emacs-major-version 24)
             (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
           (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
         ;; Hideshow Integration
@@ -227,8 +226,7 @@ Experimental feature with known bugs.")
                (bound-and-true-p hs-minor-mode))
       (hs-show-all)
       (hs-minor-mode))
-    (unless (featurep 'xemacs)
-      (font-lock-remove-keywords nil ess-roxy-font-lock-keywords))
+    (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)
     (setq-local syntax-propertize-function nil)
     (setq-local font-lock-fontify-region-function nil)
     (setq-local font-lock-unfontify-region-function nil)

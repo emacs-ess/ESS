@@ -304,9 +304,6 @@ See also `ess-use-ido'.
               (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string)))
           sel)
       ;; else usual completion
-      (when (and (featurep 'xemacs) ;; xemacs workaround
-                 (not (listp (car collection))))
-        (setq collection (mapcar 'list collection)))
       (completing-read prompt collection predicate require-match initial-input hist def)
       )))
 
@@ -370,39 +367,7 @@ See also `ess-use-ido'.
 ;; ;;         (ding)
 ;;            (sit-for 1))))))
 
-;;; xemacs process-put and process-get workarounds:
-;;; !!!! remove this when xemacs starts supporting them!!!
-
-(when (featurep 'xemacs)
-  (defvar process-plist-map (make-hash-table :test 'eq :weakness 'key)
-    "Property list information for process, when XEmacs doesn't provide this.
-See `process-plist' and `set-process-plist'.")
-
-  (defun-when-void process-plist (process)
-    "Return the property list of PROCESS."
-    (check-argument-type #'processp process)
-    (gethash process process-plist-map))
-
-  (defun-when-void set-process-plist (process plist)
-    "Set the property list of PROCESS to PLIST."
-    (check-argument-type #'processp process)
-    (check-argument-type #'valid-plist-p plist)
-    (puthash process plist process-plist-map))
-
-
-  (defun-when-void process-get (process propname)
-    "Return the value of PROCESS' PROPNAME property.
-This is the last value stored with `(process-put PROCESS PROPNAME VALUE)'."
-    (plist-get (process-plist process) propname))
-
-  (defun-when-void process-put (process propname value)
-    "Change PROCESS' PROPNAME property to VALUE.
-It can be retrieved with `(process-get PROCESS PROPNAME)'."
-    (set-process-plist process
-                       (plist-put (process-plist process) propname value)))
-  )
-
-;;; Running these must be done "every time" before use, since
+;; Running these must be done "every time" before use, since
 ;;; they depend on a customizable variable.
 
 ;; trying different viewers; thanks to an original patch for

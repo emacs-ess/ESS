@@ -317,9 +317,9 @@ to look up any doc strings."
     (ess-suffix                    . "jl")
     (ess-ac-sources                . '(ac-source-ess-julia-objects))
     (ess-company-backends          . '(company-ess-julia-objects))
-    (ess-dump-filename-template    . (ess-replace-regexp-in-string
-                                           "S$" ess-suffix ; in the one from custom:
-                                           ess-dump-filename-template-proto))
+    (ess-dump-filename-template    . (replace-regexp-in-string
+                                      "S$" ess-suffix ; in the one from custom:
+                                      ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . nil)
     (ess-change-sp-regexp          . nil );ess-R-change-sp-regexp)
     (ess-help-sec-regex            . ess-help-R-sec-regex)

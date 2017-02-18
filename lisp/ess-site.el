@@ -46,13 +46,9 @@
 ;;
 ;; will work.
 ;;
-;; with XEmacs, this is simply:
-;;
-;;      (add-path "/path/to/ess/lisp-directory")
-;;
 ;; with Emacs (and in general):
 ;;
-;;      (setq load-path (cons "/path/to/ess/lisp-directory" load-path))
+;;      (add-to-list 'load-path "/path/to/ess/lisp-directory")
 
 ;;; Code:
 
@@ -62,19 +58,16 @@
 
 ;;;; 1. Load path, autoloads, and major modes
 ;;;; ========================================
-;;;
-;;; (1.1) For most users the variable ess-lisp-directory will
-;;; automatically be set correctly.  If you are working with an old
-;;; emacs, one in which file-truename is not defined, then you might
-;;; need to change the value of ess-lisp-directory to the directory
-;;; which is to contain the file ess-site.elc.  This is probably the
-;;; current directory, or the value of LISPDIR if it was set in the
-;;; Makefile.
+;;
+;; (1.1) For most users the variable ess-lisp-directory will
+;; automatically be set correctly.  If you are working with an old
+;; emacs, one in which file-truename is not defined, then you might
+;; need to change the value of ess-lisp-directory to the directory
+;; which is to contain the file ess-site.elc.  This is probably the
+;; current directory, or the value of LISPDIR if it was set in the
+;; Makefile.
 
 (eval-and-compile
-
-  ;; Not important in XEmacs, if unpacking from ../xemacs/site-lisp/
-  ;; directory.
 
   ;; WARNING: with Emacs 20.2 (and 20.3 in one case),
   ;; =======  MUST USE ONE OF THE NON-DEFAULT SETTINGS BELOW
@@ -105,23 +98,6 @@
 
   ;;)
 
-  ;; emacs 19.28 and 19.29 don't have functions we need.
-  (if (not (fboundp 'file-name-sans-extension))
-      ;; take the definition from emacs-20.6/lisp/files.el:
-      (defun file-name-sans-extension (filename)
-        "Return FILENAME sans final \"extension\".
-The extension, in a file name, is the part that follows the last `.'."
-        (save-match-data
-          (let ((file (file-name-sans-versions
-                       (file-name-nondirectory filename)))
-                directory)
-            (if (string-match "\\.[^.]*\\'" file)
-                (if (setq directory (file-name-directory filename))
-                    (expand-file-name (substring file 0 (match-beginning 0))
-                                      directory)
-                  (substring file 0 (match-beginning 0)))
-              filename)))))
-
   (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 
   ;; Need these as early as here [also in ./ess-comp.el] :
@@ -142,13 +118,9 @@ The extension, in a file name, is the part that follows the last `.'."
 ;; load code to figure out what version/strain of Emacs we are running
 ;; must come *AFTER* load-path is set !
 
-;;; The following require sets ess-local-custom-available to
-;;; true if custom is provided at this point.
+;; The following require sets ess-local-custom-available to
+;; true if custom is provided at this point.
 (require 'ess-compat)
-;;; If it is not provided, but we think it will be available when necessary,
-;;; then we can use the following line (uncommented) to make sure that
-;;; it will be used.  If you have to ask, then you don't need this.
-;;(setq ess-local-custom-available t)
 
 ;; SJE Thu 13 May 2004
 ;; Maybe ess-etc-directory should not be defcustom, since its value
@@ -189,11 +161,8 @@ for ESS, such as icons.")
 ;; resurrecting Stephen's version with a bug-fix & xemacs compatibility
 (if (fboundp 'locate-file) (progn
 (unless (locate-file "ess.info"
-                     (if (featurep 'xemacs)
-                         Info-directory-list
-                       Info-default-directory-list))
-  (add-to-list (if (featurep 'xemacs)
-                   'Info-directory-list 'Info-default-directory-list)
+                     Info-default-directory-list)
+  (add-to-list 'Info-default-directory-list
                (expand-file-name "../doc/info/" ess-lisp-directory)))))
 
 
@@ -203,16 +172,16 @@ for ESS, such as icons.")
 (ess-message "[ess-site:] .. after requiring 'ess ...")
 
 
-;;; (1.3) Files ending in .q and .S are considered to be S source files
-;;; Files ending in .St are considered to be S transcript files
-;;;
-;;; NB: in standard Emacs, files ending in .s are assembler files.  If you
-;;; want to use assembler.  If a user wants to
-;;; restore the default modes for assembly file extensions, the
-;;; following can go into ~/.emacs or ~/.xemacs/init.el
-;;;
-;;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
-;;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
+;; (1.3) Files ending in .q and .S are considered to be S source files
+;; Files ending in .St are considered to be S transcript files
+;;
+;; NB: in standard Emacs, files ending in .s are assembler files.  If you
+;; want to use assembler.  If a user wants to
+;; restore the default modes for assembly file extensions, the
+;; following can go into ~/.emacs or ~/.emacs.d/init.el
+;;
+;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
+;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
 
 (autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
 
@@ -220,14 +189,8 @@ for ESS, such as icons.")
 ; spurious lockfiles that rears its ugly head with .Rd files
 ; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
 ; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
-(if (featurep 'xemacs) nil
-  ;; (add-hook 'Rd-mode-hook (lambda ()
-  ;;         (set (make-local-variable create-lockfiles) nil)))
-
-  (make-local-variable 'create-lockfiles)
-
-  (add-hook 'Rd-mode-hook (lambda () (setq create-lockfiles nil)))
-)
+(add-hook 'Rd-mode-hook
+          (lambda () (set (make-local-variable 'create-lockfiles) nil)))
 
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
@@ -238,15 +201,14 @@ between .s or .S files and assembly mode.
   (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
   (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)"
   (interactive)
-  (when (assoc "\\.[qsS]\\'" auto-mode-alist)
-    (setq auto-mode-alist
-          (remassoc "\\.[qsS]\\'" auto-mode-alist))
-    ;; put .q extention back
-    ;; (add-to-list is in xemacs and GNU emacs)
-    ;; R-mode when in a R/ subdirectory, otherwise S-mode:
-    (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
-    (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))
-    ))
+  (let ((assoc (assoc "\\.[qsS]\\'" auto-mode-alist)))
+    (when assoc
+      (setq auto-mode-alist (remq assoc auto-mode-alist))
+      ;; put .q extention back
+      ;; R-mode when in a R/ subdirectory, otherwise S-mode:
+      (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
+      (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))
+      )))
 
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
@@ -288,12 +250,9 @@ between .s or .S files and assembly mode.
            )
          auto-mode-alist)))
 
-;; Rscript and littler interpreters recognized.  XEmacs entries can
-;; be regexps, which complicates matters as "r" on its own matches
-;; other interpeters like "perl".
+;; Rscript and littler interpreters recognized.
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
-(add-to-list 'interpreter-mode-alist
-             (cons (if (featurep 'xemacs) "r$" "r")    'r-mode))
+(add-to-list 'interpreter-mode-alist '("r" . r-mode))
 
 
 ;; (1.4) Customize the dialects for your setup.
@@ -450,14 +409,12 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; (1.8) Speedbar and mouse
 
-(ess-message "[ess-site:] require 'ess-menu ...")
-(require 'ess-menu)
 (require 'ess-mouse)
 
 ;; (1.9) Toolbar support
 
 ;; To remove toolbar support under ESS, add "(setq ess-use-toolbar nil)"
-;; to your ~/.emacs or ~/.xemacs/init.el before (require 'ess-site)
+;; to your ~/.emacs or ~/.emacs.d/init.el before (require 'ess-site)
 (ess-message "[ess-site:] require 'ess-toolbar ...")
 (require 'ess-toolbar)
 
@@ -680,37 +637,37 @@ update the \"Start Process\" menu."
 ;;; and the source file temporary.
 (setq ess-keep-dump-files "always")
 
-;;; (3.4) ess-ask-for-ess-directory
-;;; If t, will ask for the directory to use.  If nil, assumes the
-;;; default (usually, the users home directory...).
+;; (3.4) ess-ask-for-ess-directory
+;; If t, will ask for the directory to use.  If nil, assumes the
+;; default (usually, the users home directory...).
 ;;now rather in ./ess-custom.el : (setq ess-ask-for-ess-directory t)
 
-;;; (3.5) ess-directory default  (correlated with above)
-;;; The default location for running the subprocess is configurable.
-;;; By default, that is the default-directory (a lisp variable which
-;;; initially contains the directory from which the inferior ESS
-;;; statistical package/process  is started).
-;;; For example, the following function (added to the pre-run-hook, by
-;;; the line following it) will set the default directory to be your
-;;; home directory:
-;;;
+;; (3.5) ess-directory default  (correlated with above)
+;; The default location for running the subprocess is configurable.
+;; By default, that is the default-directory (a lisp variable which
+;; initially contains the directory from which the inferior ESS
+;; statistical package/process  is started).
+;; For example, the following function (added to the pre-run-hook, by
+;; the line following it) will set the default directory to be your
+;; home directory:
+;;
 ;;(defun ajr:ess-set-directory ()
 ;;  "Set ess-directory to home."
 ;;  (setq-default ess-directory (file-name-as-directory (getenv "HOME"))))
 ;;(add-hook 'ess-pre-run-hook 'ajr:ess-set-directory)
-;;;
-;;; If you replace the setq-default line with:
-;;;
+;;
+;; If you replace the setq-default line with:
+;;
 ;; (setq-default ess-directory (file-name-as-directory
 ;;                          (concat (getenv "HOME") "/ess/")))
-;;;
-;;; then it will always start up in the directory "ess" in your home
-;;; directory.
-;;;
-;;; The default is to have ess to start up in the current buffer's
-;;; directory (the one in which you started the inferior ESS
-;;; statistical package/process).  This is obtained
-;;; by setting ess-directory to nil, i.e.
+;;
+;; then it will always start up in the directory "ess" in your home
+;; directory.
+;;
+;; The default is to have ess to start up in the current buffer's
+;; directory (the one in which you started the inferior ESS
+;; statistical package/process).  This is obtained
+;; by setting ess-directory to nil, i.e.
 ;; (setq-default ess-directory nil) ; this is the default.
 
 (when ess-microsoft-p
@@ -723,70 +680,69 @@ update the \"Start Process\" menu."
 
 ;;; 3.6 Example of formatting changes
 
-;;; Formatting and indentation patterns are defined in ess-custom.el, please
-;;; see ess-custom.el for exact definitions of these variable settings.
-;;; To change them (eg, follow changes suggested by Terry Therneau),
-;;; you need one or both of the following lines:
-;;;
+;; Formatting and indentation patterns are defined in ess-custom.el, please
+;; see ess-custom.el for exact definitions of these variable settings.
+;; To change them (eg, follow changes suggested by Terry Therneau),
+;; you need one or both of the following lines:
+;;
 ;;(setq ess-indent-with-fancy-comments nil)
 ;;(setq ess-default-style 'CLB)
 
 ;;; 4.0 SAS configuration
 
-;;; Beginning with ESS 5.1.13, we have editing options in SAS-mode.
-;;; The default behavior is as it was in prior releases.
-;;;
-;;; There are two sets of alternatives.
-;;;   1. Editing SAS-mode files.
-;;;   1a. Default: TAB is bound to sas-indent-line.
-;;;       Current line is correctly indented as SAS code.  Equivalent to
-;;;(setq ess-sas-edit-keys-toggle nil) ;; default TAB in sas-mode
-;;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
-;;;       columns at a time.  C-TAB moves backwards and deletes characters
-;;;       up to 4 columns at a time.
-;;;       The following line is for the optional behavior.
-;;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
-;;;   Use the function call (ess-sas-edit-keys-toggle)
-;;;   to change the setting after the first SAS-mode buffer has been created.
-;;;   1c. You can also define C-TAB in all modes by Option 2b (below).
-;;;
-;;;   2. Managing submitted SAS jobs with function keys.
-;;;   2a. Default: To define the function keys in ESS[SAS] mode only,
-;;;   you will need, at most, one of the following two lines.
-;;;(setq ess-sas-local-unix-keys t)  ;; F2-F12 bound in ESS[SAS] mode
-;;;(setq ess-sas-local-pc-keys t)    ;; F2-F12 bound in ESS[SAS] mode
-;;;
-;;;   2b. Options: To define the function keys in all modes,
-;;;   you will need, at most, one of the following two lines.
-;;;(setq ess-sas-global-unix-keys t) ;; F2-F12 bound in all modes
-;;;(setq ess-sas-global-pc-keys t)   ;; F2-F12 bound in all modes
-;;;
-;;;   3. If it is more convenient to have "*Async Shell Command*"
-;;;      in same-window-buffer-names, then:
-;;;(ess-same-window-async)
-;;;
-;;;(defvar sas-program "sas" "*Name of program which runs sas.")
-;;;
-;;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
+;; Beginning with ESS 5.1.13, we have editing options in SAS-mode.
+;; The default behavior is as it was in prior releases.
+;;
+;; There are two sets of alternatives.
+;;   1. Editing SAS-mode files.
+;;   1a. Default: TAB is bound to sas-indent-line.
+;;       Current line is correctly indented as SAS code.  Equivalent to
+;;(setq ess-sas-edit-keys-toggle nil) ;; default TAB in sas-mode
+;;   1b. Optional: TAB is bound to tab-to-tab-stop and inserts up to 4
+;;       columns at a time.  C-TAB moves backwards and deletes characters
+;;       up to 4 columns at a time.
+;;       The following line is for the optional behavior.
+;;(setq ess-sas-edit-keys-toggle t)   ;; optional TAB and C-TAB in sas-mode
+;;   Use the function call (ess-sas-edit-keys-toggle)
+;;   to change the setting after the first SAS-mode buffer has been created.
+;;   1c. You can also define C-TAB in all modes by Option 2b (below).
+;;
+;;   2. Managing submitted SAS jobs with function keys.
+;;   2a. Default: To define the function keys in ESS[SAS] mode only,
+;;   you will need, at most, one of the following two lines.
+;;(setq ess-sas-local-unix-keys t)  ;; F2-F12 bound in ESS[SAS] mode
+;;(setq ess-sas-local-pc-keys t)    ;; F2-F12 bound in ESS[SAS] mode
+;;
+;;   2b. Options: To define the function keys in all modes,
+;;   you will need, at most, one of the following two lines.
+;;(setq ess-sas-global-unix-keys t) ;; F2-F12 bound in all modes
+;;(setq ess-sas-global-pc-keys t)   ;; F2-F12 bound in all modes
+;;
+;;   3. If it is more convenient to have "*Async Shell Command*"
+;;      in same-window-buffer-names, then:
+;;(ess-same-window-async)
+;;
+;;(defvar sas-program "sas" "*Name of program which runs sas.")
+;;
+;;(defvar sas-indent-width 4 "*Amount to indent sas statements")
 
 (ess-message "[ido:]")
-(if (featurep 'emacs)
-    (require 'ido nil t))
+(require 'ido nil t)
 
  ; Local variables section
 (ess-message "[ess-site:] *very* end ...")
 
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
+;; This file is automatically placed in Outline minor mode.
+;; The file is structured as follows:
+;; Chapters:     ^L ;
+;; Sections:    ;;*;;
+;; Subsections: ;;;*;;;
+;; Components:  defuns, defvars, defconsts
+;;              Random code beginning with a ;;;;* comment
+;; Local variables:
+;; mode: emacs-lisp
+;; mode: outline-minor
+;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;; End:
 
 ;;; ess-site.el ends here

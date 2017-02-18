@@ -706,27 +706,25 @@ we simply do not break it (instead of breaking after the first word)."
 (defun ess-select-frame-set-input-focus (frame)
   "Select FRAME, raise it, and set input focus, if possible.
 Copied almost verbatim from gnus-utils.el (but with test for mac added)."
-  (cond ((featurep 'xemacs)
-         (raise-frame frame)
-         (select-frame frame)
-         (focus-frame frame))
-        ;; The function `select-frame-set-input-focus' won't set
-        ;; the input focus under Emacs 21.2 and X window system.
-        ;;((fboundp 'select-frame-set-input-focus)
-        ;; (defalias 'gnus-select-frame-set-input-focus
-        ;;   'select-frame-set-input-focus)
-        ;; (select-frame-set-input-focus frame))
-        (t
-         (raise-frame frame)
-         (select-frame frame)
-         (cond ((and
-                 (memq window-system '(x mac))
-                 (fboundp 'x-focus-frame))
-                (x-focus-frame frame))
-               ((eq window-system 'w32)
-                (w32-focus-frame frame)))
-         (when focus-follows-mouse
-           (set-mouse-position frame (1- (frame-width frame)) 0)))))
+  ;; FIXME: Is this still needed, or can we just use
+  ;; select-frame-set-input-focus with recent enough Emacsen?
+  ;;
+  ;; The function `select-frame-set-input-focus' won't set
+  ;; the input focus under Emacs 21.2 and X window system.
+  ;;((fboundp 'select-frame-set-input-focus)
+  ;; (defalias 'gnus-select-frame-set-input-focus
+  ;;   'select-frame-set-input-focus)
+  ;; (select-frame-set-input-focus frame))
+  (raise-frame frame)
+  (select-frame frame)
+  (cond ((and
+          (memq window-system '(x mac))
+          (fboundp 'x-focus-frame))
+         (x-focus-frame frame))
+        ((eq window-system 'w32)
+         (w32-focus-frame frame)))
+  (when focus-follows-mouse
+    (set-mouse-position frame (1- (frame-width frame)) 0)))
 
 (defun ess-sci-to-dec ()
   "For BUGS/S family: Express +/-0.000E+/-0 or +/-0.0e+/-00 as a decimal."

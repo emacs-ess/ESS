@@ -890,11 +890,6 @@ NOTE: Not all of these are clean OR are even consistent.
   (RS)  I don't know if this was fixed, but I haven't had any problems
         with indenting recently.
 
-* (AJR) SAS fontlocking of comments needs to be fixed.
-  (RS)  I believe this is done.  We made a few changes, but the biggest
-	problem was that Emacs 19.34 was misbehaving.  
-	See ess-sas-run-make-regexp above.
-
 * (KH) explicit statement:
  
   I have only one remark (one of my usual ones).  I'd like to be able to

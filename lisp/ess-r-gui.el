@@ -109,7 +109,7 @@ PROC, VISIBLY and MESSAGE are ignored."
    '((ess-local-customize-alist        . 'Rgui-customize-alist)
      (ess-dialect                      . "R")
      (ess-suffix                       . "R")
-     (ess-dump-filename-template       . (ess-replace-regexp-in-string
+     (ess-dump-filename-template       . (replace-regexp-in-string
                                           "S$" ess-suffix ; in the one from custom:
                                           ess-dump-filename-template-proto))
      (ess-mode-syntax-table            . ess-r-syntax-table)

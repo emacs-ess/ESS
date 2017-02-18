@@ -204,7 +204,7 @@ as `ess-imenu-use-S'."
   "An alist of custom ESS commands available for call by
 `ess-handy-commands' and `ess-smart-comma' function."
   :group 'ess
-  :type (if (featurep 'emacs) 'alist 'list))
+  :type 'alist)
 
 (defvar ess--local-handy-commands nil
   "Store handy commands locally")
@@ -2047,10 +2047,7 @@ order for it to work right.  And Emacs is too smart for it."
 ;;; These variables are currently used only with the S language files for
 ;;; S S-Plus R.
 
-(defcustom R-editor
-  (if ess-microsoft-p "emacsclient.exe"
-    (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient" "emacsclient"))) ;; unix
+(defcustom R-editor "emacsclient"
   "Editor called by R process with 'edit()' command."
   :group 'ess
   :type 'string)
@@ -2061,26 +2058,14 @@ order for it to work right.  And Emacs is too smart for it."
   :type '(choice (const nil) string))
 
 
-;; FIXME:  For GNU emacs, "emacsclient" (without ".exe") also works on Windoze
-;;   (if (>= emacs-major-version 22) "emacsclient" ; for all platforms
-(defcustom S-editor
-  (if ess-microsoft-p "emacsclient.exe"
-    (if (equal system-type 'Apple-Macintosh) nil
-      ;; unix:
-      (if (featurep 'xemacs) "gnuclient" "emacsclient")))
+(defcustom S-editor "emacsclient"
   "Editor called by S process with 'edit()' command."
   :group 'ess
   :type 'string)
 
 (defcustom S-pager
-  (if ess-microsoft-p "emacsclientw.exe"
-    (if (equal system-type 'Apple-Macintosh) nil
-      (if (featurep 'xemacs) "gnuclient" "emacsclient")))
+  (if ess-microsoft-p "emacsclientw.exe" "emacsclient")
   "Pager called by S process with 'page()' command."
-  ;; Change made to provide a better help(function) experience with
-  ;; S+6 and xemacs
-  ;; gnuclient -q will open a buffer with an HTML help file
-  ;; you can view it with M-x browse-url-of-buffer
   :group 'ess
   :type 'string)
 

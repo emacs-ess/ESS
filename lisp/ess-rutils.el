@@ -321,7 +321,7 @@ displaying results in long or short formats, and sorting by any given field.
 Options should be separated by value of `crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
-        (okstring (ess-replace-regexp-in-string " +" "+" string)))
+        (okstring (replace-regexp-in-string " +" "+" string)))
     (if current-prefix-arg
         (let ((mpp (concat
                     "&max="
@@ -426,20 +426,8 @@ Options should be separated by value of `crm-default-separator'."
     ["Browse HTML"             ess-rutils-html-docs     t]
     ["Apropos"                 ess-rutils-apropos       t]))
 
-(when (featurep 'xemacs)
-  (defun ess-rutils-mode-xemacs-menu ()
-    "Hook to install `ess-rutils-mode' menu for XEmacs (with easymenu)."
-    (if 'inferior-ess-mode
-        ;; Why does using nil for 2nd arg put menu at top level?
-        (easy-menu-add-item inferior-ess-mode-menu nil
-                            ess-rutils-mode-menu)
-      (easy-menu-remove-item inferior-ess-mode-menu nil
-                             ess-rutils-mode-menu)))
-  (add-hook 'inferior-ess-mode-hook 'ess-rutils-mode-xemacs-menu t))
-
-(unless (featurep 'xemacs)
-  (easy-menu-add-item inferior-ess-mode-menu nil
-                      ess-rutils-mode-menu))
+(easy-menu-add-item inferior-ess-mode-menu nil
+                    ess-rutils-mode-menu)
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 (add-hook 'ess-R-post-run-hook
