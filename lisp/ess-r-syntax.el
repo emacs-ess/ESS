@@ -897,7 +897,7 @@ into account."
 
 (defun ess-block-p ()
   (or (save-excursion
-        (when containing-sexp ;; <- *global* defined in caller (yuck !)
+        (when containing-sexp
           (goto-char containing-sexp)
           (ess-block-opening-p)))
       (ess-unbraced-block-p)))
