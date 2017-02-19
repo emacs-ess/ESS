@@ -43,30 +43,22 @@
   "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
 
-(unless (fboundp 'use-region-p)
-  ;; emacs 23 needs this
-  (defun use-region-p ()
-    "Return t if the region is active and it is appropriate to act on it.
-This is used by commands that act specially on the region under
-Transient Mark mode.
+;; for emacs <= 24.2 :
+(unless (fboundp 'defvar-local)
+  (defmacro defvar-local (var val &optional docstring)
+    "Define VAR as a buffer-local variable with default value VAL.
+Like `defvar' but additionally marks the variable as being automatically
+buffer-local wherever it is set."
+    (declare (debug defvar) (doc-string 3))
+    ;; Can't use backquote here, it's too early in the bootstrap.
+    (list 'progn (list 'defvar var val docstring)
+          (list 'make-variable-buffer-local (list 'quote var)))))
 
-The return value is t if Transient Mark mode is enabled and the
-mark is active; furthermore, if `use-empty-active-region' is nil,
-the region must not be empty.  Otherwise, the return value is nil.
-
-For some commands, it may be appropriate to ignore the value of
-`use-empty-active-region'; in that case, use `region-active-p'."
-    (and (region-active-p)
-         (or use-empty-active-region (> (region-end) (region-beginning)))))
-
-  (defun region-active-p ()
-    "Return t if Transient Mark mode is enabled and the mark is active.
-
-Some commands act specially on the region when Transient Mark
-mode is enabled.  Usually, such commands should use
-`use-region-p' instead of this function, because `use-region-p'
-also checks the value of `use-empty-active-region'."
-    (and transient-mark-mode mark-active)))
+(unless (fboundp 'setq-local)
+  (defmacro setq-local (var val)
+    "Set variable VAR to value VAL in current buffer."
+    ;; Can't use backquote here, it's too early in the bootstrap.
+    (list 'set (list 'make-local-variable (list 'quote var)) val)))
 
 (provide 'ess-compat)
 

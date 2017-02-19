@@ -43,7 +43,6 @@
   (require 'ess-inf)
   (require 'info))
 
-(require 'ess)
 (require 'ess-mode)
 ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
 (with-no-warnings (require 'cl))
