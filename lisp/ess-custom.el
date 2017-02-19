@@ -226,7 +226,7 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
   :type '(choice (const :tag "buffer" :value nil ) (const tooltip))
   )
 
-(defcustom ess-R-describe-object-at-point-commands
+(defcustom ess-r-describe-object-at-point-commands
   '(("str(%s)")
     ("htsummary(%s, hlength = 20, tlength = 20)")
     ("summary(%s, maxsum = 20)"))
@@ -237,6 +237,9 @@ The value of each element is nil and is not used in current
 implementation."
   :group 'R
   :type 'alist)
+(defvaralias
+  'ess-R-describe-object-at-point-commands
+  'ess-r-describe-object-at-point-commands)
 
 
 (defcustom ess-S-describe-object-at-point-commands
@@ -505,16 +508,17 @@ Used by `ess-completion-read' command.")
 (defvar ess-smart-operators ()
   "List of smart operators to be used in ESS and IESS modes.
 Not to be set by users. It is redefined by mode specific
-settings, such as `ess-R-smart-operators'.")
+settings, such as `ess-r-smart-operators'.")
 (make-variable-buffer-local 'ess-smart-operators)
 
-(defvar ess-R-smart-operators nil
+(defvar ess-r-smart-operators nil
   "If nil, don't use any of smart operators.
 If t, use all. If an axplicit list of operators, use only those
 operators.
 
 In current verion of ESS, it controls the behavior of
 ess-smart-comma only, but will be enriched in the near future.")
+(defvaralias 'ess-R-smart-operators 'ess-r-smart-operators)
 
 (defvar ess-no-skip-regexp "[ \t\n]*\\'"
   "If `ess-next-code-line' sees this line, it doesn't jump over.
@@ -1643,11 +1647,12 @@ non-nil."
   :type 'integer)
 
 
-(defcustom inferior-R-program-name
+(defcustom inferior-ess-r-program-name
   (if ess-microsoft-p "Rterm"  "R")
   "Program name for invoking an inferior ESS with \\[R]."
   :group 'ess-R
   :type 'string)
+(defvaralias 'inferior-R-program-name 'inferior-ess-r-program-name)
 
 (defcustom inferior-R-args ""
   "String of arguments (see 'R --help') used when starting R,
@@ -1676,11 +1681,12 @@ Don't use this to send initialization command to stata, use
   :group 'ess-Stata
   :type 'string)
 
-(defcustom inferior-R-objects-command "print(objects(pos=%d, all.names=TRUE), max=1e6)\n"
+(defcustom inferior-ess-r-objects-command "print(objects(pos=%d, all.names=TRUE), max=1e6)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
+(defvaralias 'inferior-R-objects-command 'inferior-ess-r-objects-command)
 
 (defcustom ess-getwd-command nil
   "Command string retriving the working directory from the process.")
@@ -2039,15 +2045,17 @@ order for it to work right.  And Emacs is too smart for it."
 ;;; These variables are currently used only with the S language files for
 ;;; S S-Plus R.
 
-(defcustom R-editor "emacsclient"
+(defcustom ess-r-editor "emacsclient"
   "Editor called by R process with 'edit()' command."
   :group 'ess
   :type 'string)
+(defvaralias 'R-editor 'ess-r-editor)
 
-(defcustom R-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
+(defcustom ess-r-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
   "Pager called by R process with 'page()' command."
   :group 'ess
   :type '(choice (const nil) string))
+(defvaralias 'R-pager 'ess-r-pager)
 
 
 (defcustom S-editor "emacsclient"
@@ -2444,9 +2452,10 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|source(\\)"
   "The regexp for matching the S commands that change the search path.")
 
-(defvar ess-R-change-sp-regexp
+(defvar ess-r-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|require(\\|source(\\)"
   "The regexp for matching the R commands that change the search path.")
+(defvaralias 'ess-R-change-sp-regexp 'ess-r-change-sp-regexp)
 
 ;;*;; Process-dependent variables
 
@@ -2768,7 +2777,7 @@ system described in `inferior-ess-font-lock-keywords'.")
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
-(defcustom inferior-R-font-lock-keywords
+(defcustom inferior-ess-r-font-lock-keywords
   '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts
     ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
     (ess-R-fl-keyword:messages  . t)
@@ -2796,6 +2805,7 @@ should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :type 'alist
   )
+(defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
 
 
 (defvar ess-S-common-font-lock-keywords nil

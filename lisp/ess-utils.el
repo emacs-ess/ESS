@@ -504,7 +504,7 @@ symbols to this variable.
 Most likely you will need a local hook. Then you should specify
 the LOCAL argument to `add-hook' and initialise it in
 `ess-mode-hook' or `ess-post-run-hook', or one of the more
-specialised hooks `ess-R-post-run-hook',`ess-stata-post-run-hook'
+specialised hooks `ess-r-post-run-hook',`ess-stata-post-run-hook'
 etc.
 ")
 

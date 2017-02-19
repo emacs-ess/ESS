@@ -92,7 +92,7 @@
 ;; If you wish to call other versions of R on a Unix system, ESS
 ;; should auto-detect other versions of R, according to matches to the
 ;; variable `ess-r-versions' as described in its docstring.  Consider
-;; changing that variable rather than changing inferior-R-program-name
+;; changing that variable rather than changing inferior-ess-r-program-name
 ;; if your version of R is not already auto-detected.
 ;;(setq-default inferior-R-program-name "R")        ; unix systems
 ;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well

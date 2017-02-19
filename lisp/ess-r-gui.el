@@ -115,7 +115,7 @@ PROC, VISIBLY and MESSAGE are ignored."
                                           ess-dump-filename-template-proto))
      (ess-mode-syntax-table            . ess-r-syntax-table)
      (ess-mode-editing-alist           . ess-r-editing-alist)
-     (ess-change-sp-regexp             . ess-R-change-sp-regexp)
+     (ess-change-sp-regexp             . ess-r-change-sp-regexp)
      (ess-help-sec-regex               . ess-help-r-sec-regex)
      (ess-help-sec-keys-alist          . ess-help-r-sec-keys-alist)
      (ess-loop-timeout                 . ess-S-loop-timeout);fixme: dialect spec.
@@ -130,8 +130,8 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-find-help-file-function      . #'ess-dde-find-help-file)
      (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
      (inferior-ess-program             . inferior-Rgui-program-name)
-     (inferior-ess-objects-command     . inferior-R-objects-command)
-     (inferior-ess-font-lock-keywords  . 'inferior-R-font-lock-keywords)
+     (inferior-ess-objects-command     . inferior-ess-r-objects-command)
+     (inferior-ess-font-lock-keywords  . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")
      (inferior-ess-help-command        . "help(\"%s\")\n")
      (inferior-ess-help-filetype       . nil) ;; "chm") ;;?
@@ -144,7 +144,7 @@ PROC, VISIBLY and MESSAGE are ignored."
      (inferior-ess-start-args          . "")
      (inferior-ess-ddeclient           . "execdde")
      (ess-STERM                        . "ddeSS")
-     (ess-editor                       . R-editor)
+     (ess-editor                       . ess-r-editor)
      (ess-pager                        . Rgui-pager)
      )
    S-common-cust-alist)
