@@ -30,8 +30,7 @@
 
 ;;; ElDoc
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl)
 (require 'subr-x)
 (require 'ess-utils)
 

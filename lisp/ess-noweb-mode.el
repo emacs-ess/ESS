@@ -88,9 +88,8 @@
 ;;; Code:
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
-(eval-and-compile
-  (require 'ess-compat)
-  (autoload 'ess-write-to-dribble-buffer "ess"))
+(require 'ess-compat)
+(autoload 'ess-write-to-dribble-buffer "ess")
 
 
 ;;; Variables
