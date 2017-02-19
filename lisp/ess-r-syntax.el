@@ -1272,17 +1272,15 @@ expression."
                       :prev-point nil
                       :def-op nil
                       :expr nil)))
-    (when
-        (ess-while
-            (and (<= (plist-get state :moved) 1)
-                 (or (ess-save-excursion-when-nil
-                       (and (ess-climb-operator)
-                            (ess-climb-continuations--update-state state cascade 'op)
-                            (ess-climb-expression ignore-ifelse)))
-                     (ess-climb-unary-operator))
-                 (/= (plist-get state :last-pos) (point)))
-          (ess-climb-continuations--update-state state cascade nil)
-          (plist-put state :last-pos (point)))
+    (when (ess-while (and (<= (plist-get state :moved) 1)
+                          (or (ess-save-excursion-when-nil
+                               (and (ess-climb-operator)
+                                    (ess-climb-continuations--update-state state cascade 'op)
+                                    (ess-climb-expression ignore-ifelse)))
+                              (ess-climb-unary-operator))
+                          (/= (plist-get state :last-pos) (point)))
+                     (ess-climb-continuations--update-state state cascade nil)
+                     (plist-put state :last-pos (point)))
       (when (and (plist-get state :prev-point)
                  (or (= (plist-get state :moved) 3)
                      (not (plist-get state :expr))))
