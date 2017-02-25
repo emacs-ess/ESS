@@ -1468,7 +1468,8 @@ to decide highlighting and tag completion."
                                  "inheritParams"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
-                                 "rdname" "section" "slot")
+                                 "rdname" "section" "slot" "description"
+                                 "md")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
