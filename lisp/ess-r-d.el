@@ -37,17 +37,13 @@
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
-(require 'ess-custom)
-(require 'ess-inf)
-(require 'ess-help)
 (require 'ess-mode)
-(require 'ess-tracebug)
+(require 'ess-help)
 (require 'ess-s-l)
 (require 'ess-roxy)
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
 (require 'ess-r-package)
-(require 'ess-utils)
 
 
 (ess-message "[ess-r-d:] (require 'ess-s-l)")

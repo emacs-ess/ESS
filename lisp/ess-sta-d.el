@@ -35,7 +35,7 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(require 'ess-utils)
+(require 'ess-mode)
 (require 'ess-sta-l)
 
 (defvar STA-dialect-name "stata"

@@ -34,8 +34,12 @@
 
 ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
 (with-no-warnings (require 'cl))
-(require 'ess-generics)
+(require 'ess-custom)
 (require 'ess-utils)
+(require 'ess-generics)
+(require 'ess-inf)
+
+;; FIXME: should this be optional?
 (require 'ess-noweb-mode)
 
 (autoload 'SAS-menu "ess-sas-d.el" "(autoload)" t)
