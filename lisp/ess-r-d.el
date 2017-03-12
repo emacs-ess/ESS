@@ -37,6 +37,7 @@
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
+(require 'ess-custom)
 (require 'ess-inf)
 (require 'ess-help)
 (require 'ess-mode)
