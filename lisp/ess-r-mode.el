@@ -1059,14 +1059,12 @@ See `ess-noweb-mode' and `R-mode' for more help."
 (defun ess-r-sos (cmd)
   "Interface to findFn in the library sos."
   (interactive  "sfindFn: ")
-  (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(suppressPackageStartupMessages(require(sos)))\n")))
+  (unless (ess-boolean-command "print(requireNamespace('sos', quietly = TRUE))\n")
     (if (y-or-n-p "Library 'sos' is not installed. Install? ")
         (ess-eval-linewise "install.packages('sos')\n")
       (signal 'quit nil)))
   (message nil)
-  (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd)))
-
-(define-obsolete-function-alias 'ess-sos 'ess-r-sos "ESS[12.09-1]")
+  (ess-eval-linewise (format "sos::findFn(\"%s\", maxPages=10)" cmd)))
 
 (defun ess-R-scan-for-library-call (string)
   "Detect `library/require' calls in string and update tracking vars.
