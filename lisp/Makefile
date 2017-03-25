@@ -51,7 +51,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-eldoc.elc ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
 	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
-	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-d.elc ess-rd.elc \
+	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
 	ess-r-package.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
 	ess-generics.elc ess-r-gui.elc\
@@ -101,7 +101,7 @@ distclean: clean
 ess-custom.el: ../VERSION
 	EV='$(ESSVERSION)'; perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
 
-# ess-r-d.el: ../etc/ESSR-VERSION
+# ess-r-mode.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
@@ -152,7 +152,7 @@ ess-sp3-d.elc : ess-sp3-d.el ess-s-lang.elc ess.elc
 
 ess-s4-d.elc : ess-s4-d.el ess-s-lang.elc ess.elc
 
-ess-r-d.elc : ess-r-d.el ess-s-lang.elc ess.elc
+ess-r-mode.elc : ess-r-mode.el ess-s-lang.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
 

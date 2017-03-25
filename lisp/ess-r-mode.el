@@ -1,4 +1,4 @@
-;;; ess-r-d.el --- R customization
+;;; ess-r-mode.el --- R customization
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -46,7 +46,7 @@
 (require 'ess-r-package)
 
 
-(ess-message "[ess-r-d:] (require 'ess-s-lang)")
+(ess-message "[ess-r-mode:] (require 'ess-s-lang)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 
@@ -248,7 +248,7 @@ It makes underscores and dots word constituent chars.")
       font-lock-comment-face))))
 
 
-(ess-message "[ess-r-d:] (autoload ..) & (def** ..)")
+(ess-message "[ess-r-mode:] (autoload ..) & (def** ..)")
 
 
 (defvar ess-r-customize-alist
@@ -2248,7 +2248,7 @@ otherwise nil."
       (set-marker (cadr bounds) nil)
       (undo-boundary))))
 
-(provide 'ess-r-d)
+(provide 'ess-r-mode)
 
  ; Local variables section
 
@@ -2267,4 +2267,4 @@ otherwise nil."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-r-d.el ends here
+;;; ess-r-mode.el ends here

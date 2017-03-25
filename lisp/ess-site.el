@@ -95,7 +95,7 @@
 ;;; Loading popular dialects (they should become optional in the future)
 
 ;; R and Julia
-(ess-require 'ess-r-d)
+(ess-require 'ess-r-mode)
 (ess-require 'ess-julia)
 
 ;; S-PLUS (MathSoft/StatSci/Insightful/TIBCO)
@@ -189,7 +189,7 @@
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
-(eval-after-load "ess-r-d"
+(eval-after-load "ess-r-mode"
   '(progn
      (ess-message "[ess-site:] before creating ess-versions-* ...")
      (ess-r-s-versions-creation+menu)

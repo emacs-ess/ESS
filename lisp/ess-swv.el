@@ -86,7 +86,7 @@
 
 (require 'ess-utils)
 (require 'ess-noweb-mode)
-(require 'ess-r-d); for Rnw-mode
+(require 'ess-r-mode); for Rnw-mode
 (require 'easymenu)
 
 ;; currently use exactly for "Sweave", "Stangle", "knit", and "purl"

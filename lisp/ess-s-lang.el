@@ -552,7 +552,7 @@ and one that is well formatted in emacs ess-mode."
 
     (if (string= ess-dialect "R")
         (progn
-          (require 'ess-r-d)
+          (require 'ess-r-mode)
           (R-fix-T-F from (not verbose))))
 
     ;; activate by (setq ess-verbose t)

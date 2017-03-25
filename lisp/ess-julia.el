@@ -44,7 +44,7 @@
 
 (require 'compile)
 (require 'ess-utils)
-(require 'ess-r-d)
+(require 'ess-r-mode)
 
 ;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
 (condition-case nil

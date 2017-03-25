@@ -131,7 +131,7 @@ Use `add-hook' to insert append your functions to this list.
   :group 'ess-tracebug
   :type 'hook)
 
-(autoload 'ess-dev-map "ess-r-d" "[autoload]" nil)
+(autoload 'ess-dev-map "ess-r-mode" "[autoload]" nil)
 (defvaralias 'ess-tracebug-map 'ess-dev-map)
 
 (defvar ess--tracebug-eval-index 0

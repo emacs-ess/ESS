@@ -28,7 +28,7 @@
 
 ;; The purpose of this file is to demonstrate some of the extras that
 ;; have been constructed for the ESS R mode; if they prove
-;; interesting, then they might be migrated to ess-r-d, the primary
+;; interesting, then they might be migrated to ess-r-mode, the primary
 ;; ESS R mode tools.
 
 ;;; Code:

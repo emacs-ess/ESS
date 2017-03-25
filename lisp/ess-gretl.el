@@ -37,7 +37,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 (require 'compile); for compilation-* below
-(require 'ess-r-d)
+(require 'ess-r-mode)
 
 
 ;;; Code:

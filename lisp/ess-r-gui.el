@@ -33,7 +33,7 @@
 ;;; Code:
 
 (require 'ess-dde) ;; needed here because we override several definitions
-(require 'ess-r-d)
+(require 'ess-r-mode)
 
 (defun ess-ddeclient-p ()
   "Returns the name of the ddeclient iff `ess-local-process-name'
