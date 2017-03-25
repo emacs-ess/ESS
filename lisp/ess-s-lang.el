@@ -1,4 +1,4 @@
-;;; ess-s-l.el --- Support for editing S source code
+;;; ess-s-lang.el --- Support for editing S source code
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
@@ -33,7 +33,7 @@
  ; Requires and autoloads
 
 (require 'ess-utils)
-(ess-message "[ess-s-l:] (def** ) only ...")
+(ess-message "[ess-s-lang:] (def** ) only ...")
 
  ; Configuration variables
 
@@ -160,7 +160,7 @@
   "Common settings for all S+<*>-customize-alist s"
   )
 
-;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l!).
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-lang!).
 
 (defconst ess-help-S+sec-keys-alist
   '((?a . "ARGUMENTS:")
@@ -900,7 +900,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
 
-(provide 'ess-s-l)
+(provide 'ess-s-lang)
 
  ; Local variables section
 
@@ -919,4 +919,4 @@ return it.  Otherwise, return `ess-help-topics-list'."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-s-l.el ends here
+;;; ess-s-lang.el ends here

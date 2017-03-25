@@ -293,7 +293,7 @@
   "Font-lock patterns used in `OMG' buffers.")
 
 
-;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l.el !).
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-lang.el !).
 
 (defconst OMG-help-sec-keys-alist
   '((?a . "ARGUMENTS:")

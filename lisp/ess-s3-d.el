@@ -33,7 +33,7 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
-(require 'ess-s-l)
+(require 'ess-s-lang)
 
 (defvar S3-customize-alist
   (append

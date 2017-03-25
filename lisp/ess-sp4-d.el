@@ -36,7 +36,7 @@
 
 (require 'ess-mode)
 (require 'ess-inf)
-(require 'ess-s-l)
+(require 'ess-s-lang)
 (require 'ess-dde)
 
 (defvar S+4-dialect-name "S+4"

@@ -36,7 +36,7 @@
 
 ;;; Requires and Autoloads:
 
-(require 'ess-s-l)
+(require 'ess-s-lang)
 ;;NO: this is autoloaded from other places (require 'ess-dde)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")

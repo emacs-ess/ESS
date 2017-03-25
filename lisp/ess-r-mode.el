@@ -28,7 +28,7 @@
 
 ;;; Commentary:
 
-;; This file defines all the R customizations for ESS.  See ess-s-l.el
+;; This file defines all the R customizations for ESS.  See ess-s-lang.el
 ;; for general S language customizations.
 
 ;;; Code:
@@ -39,14 +39,14 @@
 (require 'eldoc)
 (require 'ess-mode)
 (require 'ess-help)
-(require 'ess-s-l)
+(require 'ess-s-lang)
 (require 'ess-roxy)
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
 (require 'ess-r-package)
 
 
-(ess-message "[ess-r-d:] (require 'ess-s-l)")
+(ess-message "[ess-r-d:] (require 'ess-s-lang)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 

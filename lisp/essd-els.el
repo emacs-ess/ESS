@@ -32,7 +32,7 @@
 
 ;;; Code:
 
-(require 'ess-s-l)
+(require 'ess-s-lang)
 (require 'ess-utils)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")

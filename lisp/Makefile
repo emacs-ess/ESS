@@ -49,7 +49,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
 	ess-eldoc.elc ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
-	ess-s-l.elc ess-s3-d.elc ess-s4-d.elc \
+	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-d.elc ess-rd.elc \
 	ess-r-package.elc ess-tracebug.elc ess-julia.elc\
@@ -142,17 +142,17 @@ ess-help.elc: ess-help.el $(CORE)
 
 ## S languages
 
-ess-s-l.elc : ess-s-l.el ess.elc
+ess-s-lang.elc : ess-s-lang.el ess.elc
 
 ess-sas-d.elc : ess-sas-d.el ess.elc
 
-ess-s3-d.elc : ess-s3-d.el ess-s-l.elc ess.elc
+ess-s3-d.elc : ess-s3-d.el ess-s-lang.elc ess.elc
 
-ess-sp3-d.elc : ess-sp3-d.el ess-s-l.elc ess.elc
+ess-sp3-d.elc : ess-sp3-d.el ess-s-lang.elc ess.elc
 
-ess-s4-d.elc : ess-s4-d.el ess-s-l.elc ess.elc
+ess-s4-d.elc : ess-s4-d.el ess-s-lang.elc ess.elc
 
-ess-r-d.elc : ess-r-d.el ess-s-l.elc ess.elc
+ess-r-d.elc : ess-r-d.el ess-s-lang.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
 

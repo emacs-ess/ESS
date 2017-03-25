@@ -38,7 +38,7 @@
 
 (require 'ess-mode)
 (require 'ess-inf)
-(require 'ess-s-l)
+(require 'ess-s-lang)
 (require 'ess-dde)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
