@@ -430,7 +430,7 @@ Options should be separated by value of `crm-default-separator'."
                     ess-rutils-mode-menu)
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
-(add-hook 'ess-R-post-run-hook
+(add-hook 'ess-r-post-run-hook
           (lambda ()
             (ess--inject-code-from-file ess-rutils-rhtml-fn)) t)
 

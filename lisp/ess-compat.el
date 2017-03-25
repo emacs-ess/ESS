@@ -32,12 +32,6 @@
 
 ;;; Code:
 
-;; FIXME:  When Emacs is started from Cygwin shell in Windows,
-;;         we have (equal window-system 'x) -and should use "--ess" in *d-r.el
-(defvar ess-microsoft-p (memq system-type '(ms-dos windows-nt))
-  "Value is t if the OS is one of Microsoft's, nil otherwise.")
-
-
 (defun ess-sleep ()
   ;; FIXME: Not a "compatibility" thing any more, so move to ess-utils.el.
   "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."

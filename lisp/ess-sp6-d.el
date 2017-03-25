@@ -38,7 +38,7 @@
 
 (require 'ess-mode)
 (require 'ess-inf)
-(require 'ess-s-l)
+(require 'ess-s-lang)
 (require 'ess-dde)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
@@ -74,7 +74,7 @@
    '((ess-local-customize-alist        . 'S+-customize-alist)
      (ess-dialect                      . S+-dialect-name)
      (ess-loop-timeout                 . ess-S-loop-timeout) ;fixme: dialect spec.
-     (ess-function-pattern             . ess-R-function-pattern)
+     (ess-function-pattern             . ess-r-function-pattern)
 
      (ess-object-name-db-file          . "ess-sp6-namedb.el")
      (inferior-ess-program             . inferior-S+-program-name)

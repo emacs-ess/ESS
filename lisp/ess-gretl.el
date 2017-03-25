@@ -37,6 +37,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 (require 'compile); for compilation-* below
+(require 'ess-r-mode)
 
 
 ;;; Code:
@@ -511,15 +512,14 @@ end keywords as associated values.")
 					   ess-dump-filename-template-proto))
     (ess-mode-syntax-table		. gretl-syntax-table)
     (ess-mode-editing-alist	        . gretl-editing-alist)
-    (ess-change-sp-regexp		. nil );ess-R-change-sp-regexp)
-    (ess-help-sec-regex			. ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist		. ess-help-R-sec-keys-alist)
+    (ess-change-sp-regexp		. nil );ess-r-change-sp-regexp)
+    (ess-help-sec-regex			. ess-help-r-sec-regex)
+    (ess-help-sec-keys-alist		. ess-help-r-sec-keys-alist)
     (ess-loop-timeout			. ess-S-loop-timeout);fixme: dialect spec.
-    (ess-cmd-delay			. ess-R-cmd-delay)
-    (ess-function-pattern		. ess-R-function-pattern)
+    (ess-function-pattern		. ess-r-function-pattern)
     (ess-object-name-db-file		. "ess-r-namedb.el" )
     ;; (ess-imenu-mode-function		. nil)
-    (ess-smart-operators		. ess-R-smart-operators)
+    (ess-smart-operators		. ess-r-smart-operators)
     (inferior-ess-help-filetype        . nil)
     (inferior-ess-exit-command		. "exit\n")
     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
@@ -585,7 +585,7 @@ Optional prefix (C-u) allows to set command line arguments, such as
 If you have certain command line arguments that should always be passed
 to gretl, put them in the variable `inferior-gretl-args'."
   (interactive "P")
-  ;; get settings, notably inferior-R-program-name :
+  ;; get settings, notably inferior-ess-r-program-name :
   ;; (if (null inferior-gretl-program-name)
   ;;     (error "'inferior-gretl-program-name' does not point to 'gretl-release-basic' executable")
     (setq ess-customize-alist gretl-customize-alist)

@@ -245,7 +245,7 @@ An alternative, for R users, is that rather than adjusting the PATH
 variable, you can add the following to your emacs initialization file
 (and restart emacs):
 @example
-(setq inferior-R-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
+(setq inferior-ess-r-program-name "c:/progra~1/R/R-2.2.1/bin/Rterm.exe")
 @end example
 This assumes that you have installed R-2.2.1 in the default location.
 Change the path otherwise to point to other locations.

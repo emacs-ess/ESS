@@ -44,14 +44,14 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	essd-els.elc ess-gretl.elc \
 	ess-lsp-l.elc ess-xls-d.elc ess-vst-d.elc ess-arc-d.elc \
 	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
-	ess-sta-l.elc ess-sta-d.elc make-regexp.elc \
+	ess-stata-lang.elc ess-stata-mode.elc make-regexp.elc \
 	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
 	ess-eldoc.elc ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
-	ess-s-l.elc ess-s3-d.elc ess-s4-d.elc \
+	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
-	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-d.elc ess-rd.elc \
+	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
 	ess-r-package.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
 	ess-generics.elc ess-r-gui.elc\
@@ -101,7 +101,7 @@ distclean: clean
 ess-custom.el: ../VERSION
 	EV='$(ESSVERSION)'; perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
 
-# ess-r-d.el: ../etc/ESSR-VERSION
+# ess-r-mode.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
@@ -142,17 +142,17 @@ ess-help.elc: ess-help.el $(CORE)
 
 ## S languages
 
-ess-s-l.elc : ess-s-l.el ess.elc
+ess-s-lang.elc : ess-s-lang.el ess.elc
 
 ess-sas-d.elc : ess-sas-d.el ess.elc
 
-ess-s3-d.elc : ess-s3-d.el ess-s-l.elc ess.elc
+ess-s3-d.elc : ess-s3-d.el ess-s-lang.elc ess.elc
 
-ess-sp3-d.elc : ess-sp3-d.el ess-s-l.elc ess.elc
+ess-sp3-d.elc : ess-sp3-d.el ess-s-lang.elc ess.elc
 
-ess-s4-d.elc : ess-s4-d.el ess-s-l.elc ess.elc
+ess-s4-d.elc : ess-s4-d.el ess-s-lang.elc ess.elc
 
-ess-r-d.elc : ess-r-d.el ess-s-l.elc ess.elc
+ess-r-mode.elc : ess-r-mode.el ess-s-lang.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
 
@@ -172,9 +172,9 @@ ess-sas-d.elc : ess-sas-d.el ess-sas-l.elc ess.elc
 
 ## Stata
 
-ess-sta-l.elc : ess-sta-l.el ess.elc
+ess-stata-lang.elc : ess-stata-lang.el ess.elc
 
-ess-sta-d.elc : ess-sta-d.el ess.elc
+ess-stata-mode.elc : ess-stata-mode.el ess.elc
 
 ## BUGS
 

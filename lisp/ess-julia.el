@@ -42,8 +42,9 @@
 ;;
 ;;; Code:
 
-(require 'compile); for compilation-* below
+(require 'compile)
 (require 'ess-utils)
+(require 'ess-r-mode)
 
 ;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
 (condition-case nil
@@ -308,7 +309,7 @@ to look up any doc strings."
     (ess-imenu-generic-expression  . ess-julia-imenu-generic-expression)
     (ess-mode-syntax-table         . julia-mode-syntax-table)
     (ess-mode-completion-syntax-table . ess-julia-completion-syntax-table)
-    ;; (inferior-ess-objects-command    . inferior-R-objects-command)
+    ;; (inferior-ess-objects-command    . inferior-ess-r-objects-command)
     ;; (inferior-ess-search-list-command        . "search()\n")
     (inferior-ess-help-command     . "ESS.help(\"%s\")\n")
     ;; (inferior-ess-help-command       . "help(\"%s\")\n")
@@ -321,14 +322,13 @@ to look up any doc strings."
                                       "S$" ess-suffix ; in the one from custom:
                                       ess-dump-filename-template-proto))
     (ess-mode-editing-alist        . nil)
-    (ess-change-sp-regexp          . nil );ess-R-change-sp-regexp)
-    (ess-help-sec-regex            . ess-help-R-sec-regex)
-    (ess-help-sec-keys-alist       . ess-help-R-sec-keys-alist)
+    (ess-change-sp-regexp          . nil );ess-r-change-sp-regexp)
+    (ess-help-sec-regex            . ess-help-r-sec-regex)
+    (ess-help-sec-keys-alist       . ess-help-r-sec-keys-alist)
     (ess-loop-timeout              . ess-S-loop-timeout);fixme: dialect spec.
-    (ess-cmd-delay                 . ess-R-cmd-delay)
-    (ess-function-pattern          . ess-R-function-pattern)
+    (ess-function-pattern          . ess-r-function-pattern)
     (ess-object-name-db-file       . "ess-jl-namedb.el" )
-    (ess-smart-operators           . ess-R-smart-operators)
+    (ess-smart-operators           . ess-r-smart-operators)
     (inferior-ess-help-filetype    . nil)
     (inferior-ess-exit-command     . "exit()\n")
     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
@@ -336,8 +336,8 @@ to look up any doc strings."
     (inferior-ess-start-args       . "")
     (inferior-ess-language-start   . nil)
     (ess-STERM                     . "iESS")
-    (ess-editor                    . R-editor)
-    (ess-pager                     . R-pager)
+    (ess-editor                    . ess-r-editor)
+    (ess-pager                     . ess-r-pager)
     (ess-getwd-command             . "pwd()\n")
     (ess-setwd-command             . "cd(expanduser(\"%s\"))\n")
     )

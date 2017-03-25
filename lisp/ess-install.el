@@ -122,10 +122,10 @@ ignored."
 ;; i.e. need to change c:\\some\\dir\\ess-site.el to
 ;; c:/some/dir/ess-site.el
 ;; To do this, we have to load in ess-replace-in-string, from
-;; the file ess-inf.el
+;; the file ess-utils.el
 
 (save-window-excursion
-  (find-file (concat ess-lisp-dir "ess-inf.el"))
+  (find-file (concat ess-lisp-dir "ess-utils.el"))
   (goto-char (point-min))
   (search-forward-regexp "^(defun ess-replace-in-string " nil t)
   (eval-defun nil)

@@ -39,7 +39,7 @@
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
-(require 'ess-s-l)
+(require 'ess-s-lang)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...

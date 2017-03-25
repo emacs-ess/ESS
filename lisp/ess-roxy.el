@@ -64,6 +64,7 @@
 
 (require 'ess-utils)
 (require 'ess-custom)
+(require 'ess-utils)
 (require 'hideshow)
 (require 'outline)
 (eval-when-compile

@@ -36,7 +36,7 @@
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 
-(require 'ess-s-l)
+(require 'ess-s-lang)
 
 ;; Some of this is based on files from:
 ;;     Copyright (C) 1996, John M. Chambers.

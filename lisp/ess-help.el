@@ -43,7 +43,6 @@
   (require 'ess-inf)
   (require 'info))
 
-(require 'ess)
 (require 'ess-mode)
 ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
 (with-no-warnings (require 'cl))
@@ -914,7 +913,7 @@ electric *ess-describe* buffer. Use `other-window' to switch to
 Customize `ess-describe-at-point-method' if you wan to display
 the description in a tooltip.
 
-See also `ess-R-describe-object-at-point-commands' (and similar
+See also `ess-r-describe-object-at-point-commands' (and similar
 option for other dialects)."
   (interactive)
   (if (not ess-describe-object-at-point-commands)

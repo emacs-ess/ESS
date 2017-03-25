@@ -1,4 +1,4 @@
-;;; ess-sta-l.el --- Stata customization
+;;; ess-stata-lang.el --- Stata customization
 
 ;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
 ;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
@@ -1275,7 +1275,7 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(provide 'ess-sta-l)
+(provide 'ess-stata-lang)
 
  ; Local variables section
 
@@ -1294,4 +1294,4 @@ Active commands are Help (\\[stata-help]) and hyperlink
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-sta-l.el ends here
+;;; ess-stata-lang.el ends here

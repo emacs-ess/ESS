@@ -28,6 +28,7 @@
 
 ;; To stave off byte compiler errors
 (eval-when-compile (require 'ess-help))
+(require 'ess-utils)
 
 (defvar essddr-version "0.9-1"
   "Current version of ess-rd.el.")
@@ -297,6 +298,14 @@ following lines to your `.emacs' file:
        '(Rd-font-lock-keywords nil nil))
   ;; (set (make-local-variable 'parse-sexp-ignore-comments) t)
 
+  ;; Here is a workaround for an Emacs bug related to indirect buffers and
+  ;; spurious lockfiles that rears its ugly head with .Rd files
+  ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
+  ;; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
+  (unless (featurep 'xemacs)
+    (make-local-variable 'create-lockfiles)
+    (setq create-lockfiles nil))
+
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
     "Menu keymap for Rd mode." Rd-mode-menu)
@@ -497,8 +506,9 @@ temporary one in `temporary-file-directory'.
     ;; (ess--flush-help-into-current-buffer file "tools::Rd2txt(\"%s\")\n")
     ;; instead of all this :
     (ess-setq-vars-local ess-r-customize-alist)
-    (setq ess-help-sec-regex ess-help-R-sec-regex
-          ess-help-sec-keys-alist ess-help-R-sec-keys-alist)
+    ;; FIXME: Is this really needed?
+    (setq ess-help-sec-regex ess-help-r-sec-regex
+          ess-help-sec-keys-alist ess-help-r-sec-keys-alist)
     ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):
     (ess-help-underline)
     (ess-help-mode)

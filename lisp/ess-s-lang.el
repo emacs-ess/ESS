@@ -1,4 +1,4 @@
-;;; ess-s-l.el --- Support for editing S source code
+;;; ess-s-lang.el --- Support for editing S source code
 
 ;; Copyright (C) 1989-1997 D. Bates, Kademan, Ritter, D.M. Smith, K. Hornik,
 ;;      R.M. Heiberger, M. Maechler, and A.J. Rossini.
@@ -32,7 +32,8 @@
 
  ; Requires and autoloads
 
-(ess-message "[ess-s-l:] (def** ) only ...")
+(require 'ess-utils)
+(ess-message "[ess-s-lang:] (def** ) only ...")
 
  ; Configuration variables
 
@@ -137,8 +138,7 @@
      (ess-help-sec-regex        . ess-help-S+-sec-regex)
      (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
      (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
-     (ess-cmd-delay             . ess-S+-cmd-delay)
-     (ess-function-pattern      . ess-S-function-pattern)
+     (ess-function-pattern      . ess-s-function-pattern)
      (ess-function-template     . " <- \n#\nfunction()\n{\n\n}\n")
      (ess-dump-filename-template . (replace-regexp-in-string
                                     "S$" ess-suffix ; in the one from custom:
@@ -160,7 +160,7 @@
   "Common settings for all S+<*>-customize-alist s"
   )
 
-;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-l!).
+;;; Changes from S to S-PLUS 3.x.  (standard S3 should be in ess-s-lang!).
 
 (defconst ess-help-S+sec-keys-alist
   '((?a . "ARGUMENTS:")
@@ -214,41 +214,12 @@
     (?v . "VALUE:"))
   "Help section keys for S4.")
 
-;; R
-(defconst ess-help-R-sec-keys-alist
-  '((?a . "\\s *Arguments:")
-    (?d . "\\s *Description:")
-    (?D . "\\s *Details:")
-    (?t . "\\s *Details:")
-    (?e . "\\s *Examples:")
-    (?n . "\\s *Note:")
-    (?r . "\\s *References:")
-    (?s . "\\s *See Also:")
-    (?u . "\\s *Usage:")
-    (?v . "\\s *Value[s]?")     ;
-    )
-  "Alist of (key . string) pairs for use in help section searching.")
-
 
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
-(defconst ess-help-R-sec-regex "^[A-Z][A-Za-z].+:$"
-  "Reg(ular) Ex(pression) of section headers in help file.")
-
 ;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
 ;;; See also ./ess-utils.el
-
-(defvar ess-function-outline-file
-  (concat ess-etc-directory  "/function-outline.S")
-  "The file name of the ess-function outline that is to be inserted at point,
-when \\[ess-insert-function-outline] is used.
-Placeholders (substituted `at runtime'): $A$ for `Author', $D$ for `Date'.")
-
-;; Use the user's own ~/S/emacs-fun.outline  if (s)he has one : ---
-(let ((outline-file (concat (getenv "HOME") "/S/function-outline.S")))
-  (if (file-exists-p outline-file)
-      (setq ess-function-outline-file outline-file)))
 
 ;; Seth's idea; see ess-toggle-S-assign-key below
 (defvar ess-S-assign-key [?\C-=] ;; = "\C-c=" ; old-default:  "_"
@@ -448,20 +419,6 @@ when \\[ess-toggle-S-assign-key] is called.")
 ;;                    ;; Get initial indentation of the line we are on.
 ;;                    (current-indentation))))))))))
 
-(defun ess-insert-function-outline ()
-  "Insert an S function definition `outline' at point.
-Uses the file given by the variable `ess-function-outline-file'."
-  (interactive)
-  (let ((oldpos (point)))
-    (save-excursion
-      (insert-file-contents ess-function-outline-file)
-      (if (search-forward "$A$" nil t)
-          (replace-match (user-full-name) 'not-upcase 'literal))
-      (goto-char oldpos)
-      (if (search-forward "$D$" nil t)
-          (replace-match (ess-time-string 'clock) 'not-upcase 'literal)))
-    (goto-char (1+ oldpos))))
-
 
 ;; typically bound to M-Enter
 (defun ess-use-this-dir (&optional no-force-current)
@@ -595,7 +552,7 @@ and one that is well formatted in emacs ess-mode."
 
     (if (string= ess-dialect "R")
         (progn
-          (require 'ess-r-d)
+          (require 'ess-r-mode)
           (R-fix-T-F from (not verbose))))
 
     ;; activate by (setq ess-verbose t)
@@ -865,7 +822,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
       (progn
         (require 'speedbar)
         (when (featurep 'speedbar)
-	  
+
           (defun S-speedbar-buttons (buffer)
             "attempted hack."
 
@@ -903,8 +860,47 @@ return it.  Otherwise, return `ess-help-topics-list'."
      (t
       ess-help-topics-list))))
 
+;;; On a PC, the default is S+.
+;; Elsewhere (unix and linux) the default is S+
+(cond  (ess-microsoft-p
+        ;; MS-Windows-------------------------------------------------
 
-(provide 'ess-s-l)
+        ;;        (fset 'S
+        ;;           (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+        ;;               'S+-msdos
+        ;;             'S+))
+        (defun S-by-icon (&rest x)
+          (interactive)
+          (message "Please start S+ from the icon.
+ Then you can connect emacs to it with `M-x S-existing'.")
+          )
+        (fset 'S 'S-by-icon)
+        (fset 'S-existing
+              (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+                  'S+-msdos-existing
+                'S+-existing))
+        (fset 'Sqpe 'Sqpe+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode))
+
+       (t ;;((eq system-type 'gnu/linux)
+        ;; Linux etc (including Mac OSX !?) --------------------------
+        (fset 'S 'S+)
+        (fset 's-mode 'S+-mode)
+        (fset 's-transcript-mode 'S+-transcript-mode)))
+
+;;;;* Alias S-mode to s-mode
+;;; Emacs will set the mode for a file based on the file's header.
+;;; The mode name is indicated by putting it between -*- on the top line.
+;;; (Other commands can go here too, see an Emacs manual.)
+;;; For a file you also load, you will want a leading # (comment to S)
+;;; Emacs will downcase the name of the mode, e.g., S, so we must provide
+;;; s-mode in lower case too.  That is, "#-*- S-*-" invokes s-mode and
+;;; not S-mode.
+(fset 'S-transcript-mode 's-transcript-mode)
+(fset 'S-mode 's-mode)
+
+(provide 'ess-s-lang)
 
  ; Local variables section
 
@@ -923,4 +919,4 @@ return it.  Otherwise, return `ess-help-topics-list'."
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-s-l.el ends here
+;;; ess-s-lang.el ends here

@@ -170,9 +170,7 @@
 
 ;;; Code:
 
-(eval-and-compile
-  (require 'ess-custom))
-
+(require 'ess-custom)
 (eval-when-compile
   (require 'tooltip)); for tooltip-show
 

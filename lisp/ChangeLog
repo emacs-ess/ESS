@@ -694,7 +694,7 @@ you wrap last-command-event as follows...
 
 	* ess-mode.el (ess-mode): (ess-load-extras)
 
-	* ess-eldoc.el (ess-eldoc): moved the code into ess-r-d.el.
+	* ess-eldoc.el (ess-eldoc): moved the code into ess-r-mode.el.
 
 	* ess-developer.el: moved documentation into the user manual
 

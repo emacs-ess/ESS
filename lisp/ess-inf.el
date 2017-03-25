@@ -121,7 +121,7 @@ Alternatively, it can appear in its own frame if
 
            (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
-                                 inferior-R-program-name
+                                 inferior-ess-r-program-name
                                temp-ess-dialect) ; use temp-ess-dialect
                                         ; if not R, R program name
                                         ; otherwise.
@@ -727,7 +727,7 @@ process happens interactively (when possible)."
 ;;-   ;; "f" : existing file {file name completion} !
 ;;-   (setq inferior-ess-program filename))
 ;; the inferior-ess-program is initialized in the customize..alist,
-;; e.g. from  inferior-R-program-name ... --> should change rather these.
+;; e.g. from  inferior-ess-r-program-name ... --> should change rather these.
 ;; However these really depend on the current ess-language!
 ;; Plan: 1) must know and use ess-language
 ;;       2) change the appropriate  inferior-<ESSlang>-program-name
@@ -1415,10 +1415,10 @@ the ESS process buffer.  If an optional second argument
 OUT-BUFFER exists save the output in that buffer.  OUT-BUFFER is
 erased before use.  CMD should have a terminating newline.
 Guarantees that the value of `.Last.value' will be preserved.
-When optional third arg SLEEP is non-nil, `(sleep-for (* a
-SLEEP))' will be used in a few places where `a' is proportional
-to `ess-cmd-delay'.  WAIT and FORCE-REDISPLAY are as in
-`ess-wait-for-process' and are passed to `ess-wait-for-process'.
+
+SLEEP is deprecated and no longer has any effect. WAIT and
+FORCE-REDISPLAY are as in `ess-wait-for-process' and are passed
+to `ess-wait-for-process'.
 
 PROC should be a process, if nil the process name is taken from
 `ess-local-process-name'.  This command doesn't set 'last-eval
@@ -2438,7 +2438,7 @@ Doesn't work for data frames."
 Also sets the \"length\" option to 99999. When INVISIBLY is
 non-nil, don't echo to R subprocess.
 
-This is a good thing to put in `ess-R-post-run-hook' or
+This is a good thing to put in `ess-r-post-run-hook' or
 `ess-S+-post-run-hook'."
   (interactive)
   (if (null ess-execute-screen-options-command)
