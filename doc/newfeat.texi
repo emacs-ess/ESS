@@ -1,6 +1,17 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 17.05:
+@itemize @bullet
+@item The ESS initialisation process has been streamlined. You can now
+load the R and Stata modes independently from the rest of ESS. Just put
+@code{(require 'ess-r-mode)} or @code{(require 'ess-stata-mode)} in your
+init file. This is for experienced Emacs users as this requires setting
+up autoloads for @code{.R} files manually. We will keep maintaining
+@code{ess-site} for easy loading of all ESS features.
+@end itemize
+
+
 Changes and New Features in 16.10:
 @itemize @bullet
 
