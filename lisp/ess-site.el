@@ -108,7 +108,7 @@
 (ess-require 'essd-els)
 
 ;; Stata, SAS and batch BUGS
-(ess-require 'ess-sta-d)
+(ess-require 'ess-stata-mode)
 (ess-require 'ess-sas-d)
 (ess-require 'ess-bugs-l)
 

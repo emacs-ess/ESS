@@ -1,4 +1,4 @@
-;;; ess-sta-d.el --- Stata customization
+;;; ess-stata-mode.el --- Stata customization
 
 ;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
 ;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
@@ -165,7 +165,7 @@ This function is placed in `ess-presend-filter-functions'.
 
  ; Provide package
 
-(provide 'ess-sta-d)
+(provide 'ess-stata-mode)
 
  ; Local variables section
 
@@ -184,4 +184,4 @@ This function is placed in `ess-presend-filter-functions'.
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
 ;;; End:
 
-;;; ess-sta-d.el ends here
+;;; ess-stata-mode.el ends here
