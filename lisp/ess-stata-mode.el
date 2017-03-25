@@ -36,7 +36,7 @@
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 (require 'ess-mode)
-(require 'ess-sta-l)
+(require 'ess-stata-lang)
 
 (defvar STA-dialect-name "stata"
   "Name of 'dialect' for Stata.");easily changeable in a user's .emacs

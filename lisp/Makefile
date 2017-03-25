@@ -44,7 +44,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	essd-els.elc ess-gretl.elc \
 	ess-lsp-l.elc ess-xls-d.elc ess-vst-d.elc ess-arc-d.elc \
 	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
-	ess-sta-l.elc ess-sta-d.elc make-regexp.elc \
+	ess-stata-lang.elc ess-sta-d.elc make-regexp.elc \
 	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
@@ -172,7 +172,7 @@ ess-sas-d.elc : ess-sas-d.el ess-sas-l.elc ess.elc
 
 ## Stata
 
-ess-sta-l.elc : ess-sta-l.el ess.elc
+ess-stata-lang.elc : ess-stata-lang.el ess.elc
 
 ess-sta-d.elc : ess-sta-d.el ess.elc
 
