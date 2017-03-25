@@ -45,7 +45,6 @@
 (require 'ess-r-syntax)
 (require 'ess-r-package)
 
-
 (ess-message "[ess-r-mode:] (require 'ess-s-lang)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
@@ -188,7 +187,7 @@
 
 
 ;; Inherit from the S syntax table:
-(setq ess-r-syntax-table (copy-syntax-table S-syntax-table))
+(defvar ess-r-syntax-table (copy-syntax-table S-syntax-table))
 
 ;; Letting Emacs treat backquoted names and %ops% as strings solves
 ;; many problems with regard to nested strings and quotes
@@ -203,7 +202,7 @@
 
 ;; TOTHINK: Prevent string delimiting characters from messing up output in the
 ;; inferior buffer
-(setq inferior-ess-r-syntax-table (copy-syntax-table ess-r-syntax-table))
+(defvar inferior-ess-r-syntax-table (copy-syntax-table ess-r-syntax-table))
 ;; (modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
@@ -261,6 +260,7 @@ It makes underscores and dots word constituent chars.")
      (ess-build-tags-command                . ess-r-build-tags-command)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
+     (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
      (ess-build-eval-message-function       . #'ess-r-build-eval-message)
      (ess-format-eval-command-function      . #'ess-r-format-eval-command)
      (ess-format-load-command-function      . #'ess-r-format-load-command)
@@ -1061,8 +1061,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
   (interactive  "sfindFn: ")
   (unless (equal "TRUE" (car (ess-get-words-from-vector "as.character(suppressPackageStartupMessages(require(sos)))\n")))
     (if (y-or-n-p "Library 'sos' is not installed. Install? ")
-        (progn (ess-eval-linewise "install.packages('sos')\n")
-               (ess-eval-linewise "library(sos)\n"))
+        (ess-eval-linewise "install.packages('sos')\n")
       (signal 'quit nil)))
   (message nil)
   (ess-eval-linewise (format "findFn(\"%s\", maxPages=10)" cmd)))
