@@ -36,15 +36,6 @@
 
 ;; We should probably get rid of these variables
 
-(defvar ess-lisp-directory
-  ;; A nice default
-  (directory-file-name
-   (file-name-directory
-    (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
-        (file-truename load-file-name)
-      (locate-library "ess-site") )))
-  "Directory containing ess-site.el(c) and other ESS lisp files.")
-
 (defvar ess-etc-directory nil
   "Location of the ESS etc/ directory.
 The ESS etc directory stores various auxillary files that are useful

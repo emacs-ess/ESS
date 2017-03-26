@@ -66,10 +66,20 @@
 ;; directory, or the value of LISPDIR if it was set in the Makefile.
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
+(defvar ess-lisp-directory
+  ;; A nice default
+  (directory-file-name
+   (file-name-directory
+    (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
+        (file-truename load-file-name)
+      (locate-library "ess-site") )))
+  "Directory containing ess-site.el(c) and other ESS lisp files.")
+
 (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
+(require 'ess-utils);; <<- _not_ in load-path typically for traditional setup
+
 (ess-message (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
-(require 'ess-utils)
 
 (defun ess-require (feature &rest args)
   (let ((feature-name (symbol-name feature)))
