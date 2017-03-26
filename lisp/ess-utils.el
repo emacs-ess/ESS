@@ -34,7 +34,15 @@
 
 ;;*;; Internal ESS tools and variables
 
-;; We should probably get rid of these variables
+;; FIXME: We should get rid of that variable.
+(defvar ess-lisp-directory
+  ;; A nice default
+  (directory-file-name
+   (file-name-directory
+    (if (and (boundp 'load-file-name) load-file-name) ;; A nice default
+        (file-truename load-file-name)
+      (locate-library "ess-site") )))
+  "Directory containing ess-site.el(c) and other ESS lisp files.")
 
 (defvar ess-etc-directory nil
   "Location of the ESS etc/ directory.
