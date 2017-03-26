@@ -576,7 +576,9 @@ For internal use. Used in `ess-display-help-on-object',
   (let ((map (make-keymap))); Full keymap, in order to
     (suppress-keymap map)   ; suppress all usual "printing" characters
     (when (boundp 'special-mode-map)
-      (set-keymap-parent map special-mode-map))
+      (set-keymap-parent map (make-composed-keymap
+                              button-buffer-map
+                              special-mode-map)))
     (define-key map "q" 'quit-window)
     (define-key map "\C-m" 'next-line)
     ;; (define-key map "s" ess-help-sec-map)
