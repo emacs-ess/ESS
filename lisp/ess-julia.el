@@ -118,6 +118,10 @@ VISIBLY is not currently used."
 
 
 ;;; COMPLETION
+(defun ess-julia-latexsub-completion ()
+  "Return completions for latex input in a format required by `completion-at-point-functions'."
+  #'julia-latexsub)
+
 (defun ess-julia-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'. "
   (let ((proc (ess-get-next-available-process ess-dialect t))
@@ -408,6 +412,7 @@ to julia, put them in the variable `inferior-julia-args'."
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
       (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+      (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
       (setq comint-input-sender 'ess-julia-input-sender)
 
       (ess--tb-start)
