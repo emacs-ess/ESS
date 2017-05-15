@@ -424,6 +424,11 @@ to julia, put them in the variable `inferior-julia-args'."
       (goto-char (point-min))
       (while (re-search-forward "`" nil t)
         (replace-match "'"))
+      ;; remove an offending unmatched parenthesis
+      (goto-char (point-min))
+      (forward-line 4)
+      (when (re-search-forward "(" nil t)
+        (replace-match "|"))
       (goto-char (point-max))
       ;; --> julia helpers from ../etc/ess-julia.jl :
       (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
