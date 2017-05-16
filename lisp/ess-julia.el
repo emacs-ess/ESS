@@ -414,6 +414,7 @@ to julia, put them in the variable `inferior-julia-args'."
       (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
       (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
       (setq comint-input-sender 'ess-julia-input-sender)
+      (setenv "EDITOR" ess-editor)
 
       (ess--tb-start)
       (set (make-local-variable 'ess-julia-basic-offset) 4)
