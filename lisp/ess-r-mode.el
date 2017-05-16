@@ -1015,6 +1015,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
 (defun ess-r-install-library (&optional update pack)
   "Prompt and install R package. With argument, update cached packages list."
   (interactive "P")
+  (inferior-ess-r-force)
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
     (ess-setCRANMiror ess--CRAN-mirror)
     (ess-wait-for-process (get-process ess-current-process-name))
