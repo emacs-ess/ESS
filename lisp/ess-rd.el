@@ -133,7 +133,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     ;; "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
     ;; "ge" "le" "left" "right"
     ;;
-    "CRANpkg" "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
+    "R" "RdOpts" "S3method" "S4method" "Sexpr" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
     "dontshow" "donttest" "dots" "email" "emph" "enc" "env" "eqn" "figure" "file"
     "href" "if" "ifelse"
@@ -141,6 +141,10 @@ All Rd mode abbrevs start with a grave accent (`).")
     "newcommand" "option" "out"
     "pkg" "sQuote" "renewcommand"
     "samp" "strong" "tab" "url" "var" "verb"
+    ;; System macros (from <R>/share/Rd/macros/system.Rd ):
+    "CRANpkg" "PR" "sspace" "doi"
+    "packageTitle" "packageDescription" "packageAuthor"
+    "packageMaintainer" "packageDESCRIPTION" "packageIndices"
     ))
 
 ;; Need to fix Rd-bold-face problem.
