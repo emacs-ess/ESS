@@ -10,7 +10,7 @@ local({
     ver <- if(file.exists(verfile)) scan(verfile, what = "string") else "0.0"
     tryCatch({
         if(ver < curver) {
-            url <- paste('http://vitalie.spinu.info/ESSR/ESSR_', curver, '.rda', sep = '')
+            url <- paste('https://vitalie.spinu.info/ESSR/ESSR_', curver, '.rda', sep = '')
             if(!file.exists(.c.dir))
                 dir.create(.c.dir, recursive = TRUE)
             utils::download.file(url, envfile)
