@@ -18,12 +18,12 @@ setMethod("slplot", "pcaRes",
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title
-##' @param a
-##' @param b
-##' @param d
-##' @param asd
-##' @return
+##' @title Must have a title
+##' @param a any
+##' @param b any
+##' @param d any
+##' @param asd any
+##' @return invisible
 ##' @author Henning Redestig
 trickyInArgsComments <- function(a,#comment
                                  b,#hejhopp trams
