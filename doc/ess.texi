@@ -2873,7 +2873,7 @@ string.
 @section Namespaced Evaluation
 @cindex ess developer
 
-In non package files evaluation commands (@xref{Evaluating code}) send
+In non package files evaluation commands, @xref{Evaluating code}, send
 portions of the current buffer environment (@code{R_GlobalEnv}. When
 developing packages, ESS sends code to the corresponding package
 namespace and (for visible objects) into package environment (visible on
