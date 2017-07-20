@@ -279,8 +279,8 @@ to look up any doc strings."
               (setq doc (concat doc "  "
                                 (pop args))))
             (when (and args (< (length doc) W))
-              (setq doc (concat doc " {--}"))))
-          doc)))))
+              (setq doc (concat doc " {--}")))
+            doc))))))
 
 
 ;;; IMENU
