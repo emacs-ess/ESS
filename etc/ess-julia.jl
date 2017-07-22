@@ -23,8 +23,6 @@ function fun_args(m::Method)
     print(io, ")")
 end 
 
-VERSION >= v"0.4-" && (Base.function_module(f::Function)=typeof(f).name.module)
-
 ## modified versionof show(io::IO, mt::MethodTable)
 function fun_args(f::Function)
     mt = Base.MethodList(methods(f).mt)
