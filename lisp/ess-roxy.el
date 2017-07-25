@@ -676,15 +676,24 @@ string. Convenient for editing example fields."
   "Use a (possibly newly) connected R session and the roxygen package
 `ess-roxy-package' to generate the Rd code for entry at point, place it
 in a temporary buffer and return that buffer."
-  (let ((beg (ess-roxy-beg-of-entry))
+  (let* ((beg (ess-roxy-beg-of-entry))
         (tmpf (make-temp-file "ess-roxy"))
         (roxy-buf (get-buffer-create " *RoxygenPreview*"))
+        (R-old-roxy
+         (concat
+          "..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");"
+          "cat(vapply(..results, function(x) roxygen2:::rd_out_cache$compute(x, format(x)), character(1)))" ))
+        (R-new-roxy
+         (concat
+          "..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));"
+          "cat(vapply(..results, format, character(1)))" ))
         (out-rd-roclet
          (cond ((string= "roxygen" ess-roxy-package)
                 "make.Rd2.roclet()$parse")
                ;; must not line break strings to avoid getting +s in the output
                ((string= "roxygen2" ess-roxy-package)
-                "(function(P) { if(compareVersion(paste(packageVersion('roxygen2')), '3.0.0') < 0) { ..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");cat(vapply(..results, FUN.VALUE=character(1), function(x) { roxygen2:::rd_out_cache$compute(x, format(x))})) } else {..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));cat(vapply(..results, format, FUN.VALUE = character(1))) } })")
+                (concat "(function(P) { if(packageVersion('roxygen2') < '3.0.0') {"
+                        R-old-roxy "} else {" R-new-roxy "} })"))
                (t (error "need to hard code the roclet output call for roxygen package '%s'"
                          ess-roxy-package))))
         )
@@ -756,7 +765,14 @@ facilitate saving that file."
           (goto-char 1)
           (search-forward-regexp "name{\\(.+\\)}")
           (set-visited-file-name (concat (match-string 1) ".Rd"))))
-    (Rd-mode)))
+    (Rd-mode)
+    ;; why should the following be needed here? [[currently has no effect !!]]
+    ;; usually in a *.Rd file fontification happens automatically
+    (if (fboundp 'font-lock-ensure)
+        (font-lock-ensure)
+      ;; emacs <= 24.x.y:
+      (font-lock-fontify-buffer))))
+
 
 (defun ess-roxy-guess-str (&optional not-here)
   "guess the prefix used in the current roxygen block. If
