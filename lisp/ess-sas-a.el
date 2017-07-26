@@ -119,7 +119,7 @@ or `ess-sas-data-view-insight'."
   :group 'ess-sas
   :type  'integer)
 
-(defcustom ess-sas-rtf-font-name "Bitstream Vera Sans Mono"
+(defcustom ess-sas-rtf-font-name "Courier" ; "Bitstream Vera Sans Mono"
   "Name of font with which to create MS RTF."
   :group 'ess-sas
   :type  'string)
