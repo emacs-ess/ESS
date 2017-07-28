@@ -450,7 +450,7 @@ If the optional argument NO-ERROR is non-nil, the function returns nil when
 it cannot find a function beginning."
   ;; FIXME: should not throw error in accordance with beginning-of-defun and
   ;; beginning-of-defun-function specification
-
+  ;; FIXME: should __WORK__ in the crucial case: large function w/ internal function defs
   (interactive)
   (let ((init-point (point))
         (in-set-S4 nil)

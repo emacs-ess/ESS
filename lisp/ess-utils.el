@@ -1088,11 +1088,12 @@ we simply do not break it (instead of breaking after the first word)."
 
 ;; FIXME: The following function pattern stuff is specific to R but is
 ;; used throughout ESS
-
 (defvar ess-r-set-function-start
-  "^set[MGAR][Ma-z]+\\s-?(")
+  ;; [MGAR].. <=>  {setMethod(), set[Group]Generic(), setAs(), setReplaceMethod()}
+  ;; see also set-S4-exp in ess-r-function-pattern below
+  "^set[MGAR][GMa-z]+\\s-?(")
 
-(defvar ess-function-pattern nil
+(defvar ess-function-pattern nil ; in R set to ess-r-function-pattern
   "Regexp to match the beginning of a function in S buffers.")
 
 (defvar ess-r-symbol-pattern
@@ -1122,7 +1123,7 @@ we simply do not break it (instead of breaking after the first word)."
 
        (set-S4-exp
         (concat
-         "^set\\(As\\|Method\\|Generic\\|GroupMethod\\|ReplaceMethod\\)(" ; S4 ...
+         "^set\\(As\\|Method\\|Generic\\|GroupGeneric\\|ReplaceMethod\\)(" ; S4 ...
          Q xSymb Q "," space
          ;; and now often `` signature(......), : ''
          ".*" ;; <<< FIXME ???
