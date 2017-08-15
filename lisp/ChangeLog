@@ -19,7 +19,7 @@
 	* ess-compat.el: Get rid of support for XEmacs and old Emacsen.
 
 2015-11-18    <rsparapa@mcw.edu>
-	
+
 	* ess-sas-d.el (SAS): fix for issue #249: SAS has no prompt
 
 2015-04-07  Stephen Eglen  <stephen@gnu.org>
