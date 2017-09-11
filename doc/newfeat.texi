@@ -9,6 +9,10 @@ load the R and Stata modes independently from the rest of ESS. Just put
 init file. This is for experienced Emacs users as this requires setting
 up autoloads for @code{.R} files manually. We will keep maintaining
 @code{ess-site} for easy loading of all ESS features.
+
+@item If you reload the inferior process in a buffer that has no process
+attached, ESS now switches automatically to one (prompting you for
+selection if there are several running).
 @end itemize
 
 

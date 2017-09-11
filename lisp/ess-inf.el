@@ -2561,6 +2561,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
 (ess-defgeneric inferior-ess-reload (&optional start-args)
   "Reload the inferior process."
   (interactive)
+  (inferior-ess-force)
   (let ((dir (ess-get-working-directory))
         (ess-ask-for-ess-directory nil))
     (:override
