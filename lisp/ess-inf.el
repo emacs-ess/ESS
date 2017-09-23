@@ -2510,6 +2510,7 @@ to the command if BUFF is not given.)"
 also running \\[ess-cleanup]."
   (interactive)
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
+  (ess-interrupt)
   (ess-make-buffer-current)
   (:override
    (let ((sprocess (ess-get-process ess-current-process-name)))
@@ -2518,6 +2519,21 @@ also running \\[ess-cleanup]."
      (goto-char (marker-position (process-mark sprocess)))
      (insert inferior-ess-exit-command)
      (process-send-string sprocess inferior-ess-exit-command))))
+
+(defun ess-interrupt ()
+  "Interrupt the inferior process.
+This sends an interrupt and quits a debugging session."
+  (interactive)
+  (inferior-ess-force)
+  (let ((proc (ess-get-process)))
+    ;; Interrupt current task before reloading. Useful if the process is
+    ;; prompting for input, for instance in R in case of a crash
+    (interrupt-process proc comint-ptyp)
+    (ess-wait-for-process proc)
+    ;; Quit debugging session before reloading
+    (when (ess-debug-active-p)
+      (ess-debug-command-quit)
+      (ess-wait-for-process proc))))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
@@ -2562,15 +2578,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
   "Reload the inferior process."
   (interactive)
   (inferior-ess-force)
-  (let ((proc (ess-get-process)))
-    ;; Quit debugging session before reloading
-    (when (ess-debug-active-p)
-      (ess-debug-command-quit)
-      (ess-wait-for-process proc))
-    ;; Interrupt current task before reloading. Useful if the process is
-    ;; prompting for input, for instance in R in case of a crash
-    (interrupt-process proc comint-ptyp)
-    (ess-wait-for-process proc))
+  (ess-interrupt)
   (let ((dir (ess-get-working-directory))
         (ess-ask-for-ess-directory nil))
     (:override
