@@ -908,6 +908,15 @@ chkPretty <- function(x, n = 5, min.n = NULL, ..., max.D = 1) {
         }
 }
 
+### --- 36 -------- indentation of  '#' inside string -- PLUS a comment ('#') after that:
+A <- f("abc") +
+    f("abc") + f("abc") +
+    f("abc # abc") +
+    ## The above is now ok,
+    f("abc # abc") +     # <- a comment with no quotes nor hashtag in it -- already causes problem
+f("ABCDEF") +
+    f(g(h("abc # def"), "foo ## bar")) +
+    f("another")
 
 
 ### Local Variables:
