@@ -10,9 +10,10 @@ init file. This is for experienced Emacs users as this requires setting
 up autoloads for @code{.R} files manually. We will keep maintaining
 @code{ess-site} for easy loading of all ESS features.
 
-@item If you reload the inferior process in a buffer that has no process
-attached, ESS now switches automatically to one (prompting you for
-selection if there are several running).
+@item Reloading the process is now more robust. If no process is attached,
+ESS now switches automatically to one (prompting you for selection if
+there are several running). Reloading will now work during a debug
+session or when R is prompting for input (for instance after a crash).
 @end itemize
 
 

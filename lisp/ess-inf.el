@@ -2562,6 +2562,15 @@ before you quit.  It is run automatically by \\[ess-quit]."
   "Reload the inferior process."
   (interactive)
   (inferior-ess-force)
+  (let ((proc (ess-get-process)))
+    ;; Quit debugging session before reloading
+    (when (ess-debug-active-p)
+      (ess-debug-command-quit)
+      (ess-wait-for-process proc))
+    ;; Interrupt current task before reloading. Useful if the process is
+    ;; prompting for input, for instance in R in case of a crash
+    (interrupt-process proc comint-ptyp)
+    (ess-wait-for-process proc))
   (let ((dir (ess-get-working-directory))
         (ess-ask-for-ess-directory nil))
     (:override
