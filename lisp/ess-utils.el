@@ -1083,6 +1083,7 @@ we simply do not break it (instead of breaking after the first word)."
   "Like (line-end-position) but stops at comments"
   (save-excursion
     (or (and (re-search-forward "#" (line-end-position) t)
+             (not (ess-within-string-p))
              (match-beginning 0))
         (line-end-position))))
 
