@@ -919,6 +919,16 @@ f("ABCDEF") +
     f("another")
 
 
+### --- 37 ----------Github issue #432 ---- now fixed
+## Indentation after string with "*"
+fo4 <- function(x, ...) {
+    if(length(x) > 0)
+        warning("Result gave strings of *different* #{characters}")
+    x
+    ## 'x' was wrongly indented --here: ^
+}
+
+
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
 ### End:
