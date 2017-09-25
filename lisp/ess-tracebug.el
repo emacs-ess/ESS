@@ -1130,6 +1130,11 @@ Kill the *ess.dbg.[R_name]* buffer."
   (and (ess-process-live-p)
        (ess-process-get  'is-recover)))
 
+(defun ess-debug-active-p ()
+  (and (ess-process-live-p)
+       (or (ess-process-get 'dbg-active)
+           (ess-process-get 'is-recover))))
+
 (defvar ess--dbg-regexp-reference "debug \\w+ +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess--dbg-regexp-jump "debug \\w+ ") ;; debug at ,debug bei ,etc
 (defvar ess--dbg-regexp-skip
@@ -1661,6 +1666,9 @@ triggered the command."
   "Digit commands in selection mode.
 If suplied ev must be a proper key event or a string representing the digit."
   (interactive)
+  (inferior-ess-force)
+  (unless (ess--dbg-is-recover-p)
+    (error "Recover is not active"))
   (unless ev
     (setq ev last-command-event))
   (let* ((ev-char (if (stringp ev)
@@ -1670,70 +1678,68 @@ If suplied ev must be a proper key event or a string representing the digit."
          (mark-pos (marker-position (process-mark proc)))
          (comint-prompt-read-only nil)
          prompt  depth)
-    (if (process-get proc 'is-recover)
-        (with-current-buffer (process-buffer proc)
-          (goto-char mark-pos)
-          (save-excursion
-            (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess--tb-last-input t)
-              (setq depth (string-to-number (match-string 1)))
-              (when (> depth 9)
-                (setq ev-char (ess-completing-read "Selection" (mapcar 'number-to-string
-                                                                       (number-sequence depth 0 -1))
-                                                   nil t ev-char nil)))))
-          (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
-          (insert (concat  prompt ev-char "\n"))
-          (ess-send-string proc ev-char)
-          (move-marker (process-mark proc) (max-char)))
-      (error "Recover is not active"))))
+    (with-current-buffer (process-buffer proc)
+      (goto-char mark-pos)
+      (save-excursion
+        (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess--tb-last-input t)
+          (setq depth (string-to-number (match-string 1)))
+          (when (> depth 9)
+            (setq ev-char (ess-completing-read "Selection" (mapcar 'number-to-string
+                                                                   (number-sequence depth 0 -1))
+                                               nil t ev-char nil)))))
+      (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
+      (insert (concat  prompt ev-char "\n"))
+      (ess-send-string proc ev-char)
+      (move-marker (process-mark proc) (max-char)))))
 
 (defun ess-debug-command-next (&optional ev)
   "Step next in debug mode.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (if (not (ess--dbg-is-active-p))
-      (error "Debugger is not active")
-    (if (ess--dbg-is-recover-p)
-        (ess-send-string (get-process ess-current-process-name) "0")
-      (ess-send-string (get-process ess-current-process-name) "n"))))
+  (inferior-ess-force)
+  (unless (ess--dbg-is-active-p)
+    (error "Debugger is not active"))
+  (if (ess--dbg-is-recover-p)
+      (ess-send-string (ess-get-process) "0")
+    (ess-send-string (ess-get-process) "n")))
 
 (defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
   (interactive)
-  (if (not (ess--dbg-is-active-p))
-      (error "Debugger is not active")
-    (let ((N (or N (read-number "Number of steps: " 10)))
-          (proc (get-process ess-local-process-name))
-          (ess--suppress-next-output? t))
-      (while (and (ess--dbg-is-active-p) (> N 0))
-        (ess-debug-command-next)
-        (ess-wait-for-process proc)
-        (setq N (1- N))))
-    (ess-debug-command-next)))
+  (inferior-ess-force)
+  (unless (ess--dbg-is-active-p)
+    (error "Debugger is not active"))
+  (let ((N (or N (read-number "Number of steps: " 10)))
+        (ess--suppress-next-output? t))
+    (while (and (ess--dbg-is-active-p) (> N 0))
+      (ess-debug-command-next)
+      (ess-wait-for-process)
+      (setq N (1- N))))
+  (ess-debug-command-next))
 
 (defun ess-debug-command-continue-multi (&optional ev N)
   "Ask for N, and continue (c) N times in debug mode."
   (interactive)
-  (if (not (ess--dbg-is-active-p))
-      (error "Debugger is not active")
-    (let ((N (or N (read-number "Number of continuations: " 10)))
-          (proc (get-process ess-local-process-name))
-          (ess--suppress-next-output? t))
-      (while (and (ess--dbg-is-active-p) (> N 1))
-        (ess-debug-command-continue)
-        (ess-wait-for-process proc)
-        (setq N (1- N))))
-    (ess-debug-command-continue)))
-
+  (inferior-ess-force)
+  (unless (ess--dbg-is-active-p)
+    (error "Debugger is not active"))
+  (let ((N (or N (read-number "Number of continuations: " 10)))
+        (ess--suppress-next-output? t))
+    (while (and (ess--dbg-is-active-p) (> N 1))
+      (ess-debug-command-continue)
+      (ess-wait-for-process)
+      (setq N (1- N))))
+  (ess-debug-command-continue))
 
 (defun ess-debug-command-up (&optional ev)
   "Step up one call frame.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (if (not (ess--dbg-is-active-p))
-      (error "Debugger is not active")
-    (let ((proc (get-process ess-local-process-name)))
-      (ess-send-string proc
-                       "try(browserSetDebug(), silent=T)\nc\n"))))
+  (inferior-ess-force)
+  (unless (ess--dbg-is-active-p)
+    (error "Debugger is not active"))
+  (let ((up-cmd "try(browserSetDebug(), silent=T)\nc\n"))
+    (ess-send-string (ess-get-process) up-cmd)))
 
 ;; (defun ess-debug-previous-error (&optional ev)
 ;;   "Go to previous reference during the debug process.
@@ -1744,36 +1750,29 @@ Equivalent to 'n' at the R prompt."
 
 (defun ess-debug-command-quit (&optional ev)
   "Quits the browser/debug in R process.
- Equivalent to 'Q' at the R prompt."
+Equivalent of `Q' at the R prompt."
   (interactive)
-  (let ((proc (get-process ess-current-process-name) ))
-    (if (not (or (process-get proc 'dbg-active)
-                 (process-get proc 'is-recover)))
-        (error "Debugger is not active")
-      (when (ess--dbg-is-recover-p)
-        (ess-send-string proc "0")
+  (inferior-ess-force)
+  (cond ((ess--dbg-is-recover-p)
+         (ess-send-string (ess-get-process) "0"))
         ;; if recover is called in a loop the following stalls emacs
         ;; (ess-wait-for-process proc nil 0.05)
-        )
-      (if (and (process-get proc 'dbg-active)
-               (not (process-get proc 'is-recover))); still in debug mode
-          (ess-send-string proc "Q")))))
+        ((ess--dbg-is-active-p)
+         (ess-send-string (ess-get-process) "Q"))
+        (t
+         (error "Debugger is not active"))))
 
 (defun ess-debug-command-continue (&optional ev)
   "Continue the code execution.
- Equivalent of 'c' at the R prompt."
+Equivalent of `c' at the R prompt."
   (interactive)
-  (let ((proc (get-process ess-current-process-name)))
-    (if (not (or (process-get proc 'dbg-active)
-                 (process-get proc 'is-recover)))
-        (error "Debugger is not active")
-      (when (ess--dbg-is-recover-p)
-        (ess-send-string proc "0")
-        ;; (ess-wait-for-process proc nil 0.05) <- when in a loop, gets stuck
-        ) ;; get out of recover mode
-      (if (and (process-get proc 'dbg-active) ; still in debug mode
-               (not (process-get proc 'is-recover))); still in debug mode
-          (ess-send-string proc "c")))))
+  (inferior-ess-force)
+  (cond ((ess--dbg-is-recover-p)
+         (ess-send-string (ess-get-process) "0"))
+        ((ess--dbg-is-active-p)
+         (ess-send-string (ess-get-process) "c"))
+        (t
+         (error "Debugger is not active"))))
 
 (defun ess-tracebug-set-last-input (&rest ARGS)
   "Move `ess--tb-last-input' marker to the process mark.
