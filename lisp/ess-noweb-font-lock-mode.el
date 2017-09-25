@@ -195,13 +195,13 @@ Each chunk is fontified in accordance with its own mode"
                      font-lock-unfontify-buffer-function))
              (setq font-lock-fontify-buffer-function 'nwfl-donowt)
              (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
-           (mapcar 'ess-noweb-make-variable-permanent-local
-                   '(ess-noweb-font-lock-mode
-                     font-lock-dont-widen
-                     ;; font-lock-beginning-of-syntax-function
-                     syntax-begin-function
-                     ess-noweb-use-font-lock-mode
-                     after-change-functions))
+           (mapc 'ess-noweb-make-variable-permanent-local
+                 '(ess-noweb-font-lock-mode
+                   font-lock-dont-widen
+                   ;; font-lock-beginning-of-syntax-function
+                   syntax-begin-function
+                   ess-noweb-use-font-lock-mode
+                   after-change-functions))
            (setq ess-noweb-font-lock-mode t
                  font-lock-dont-widen t)
            (add-hook 'after-change-functions
@@ -267,8 +267,8 @@ Each chunk is fontified in accordance with its own mode"
                    (marker-position (cdr (aref ess-noweb-chunk-vector
                                                (1+ chunk-num))))))
           (font-latex-extend-region-functions nil);; don't extend anything
-          (font-lock-extend-region-functions nil)) ;; this infloops :( 
-      (save-restriction      
+          (font-lock-extend-region-functions nil)) ;; this infloops :(
+      (save-restriction
         (narrow-to-region (car r) (cdr r))
         ;; (sit-for 3)
         (font-lock-fontify-region (car r) (cdr r)))

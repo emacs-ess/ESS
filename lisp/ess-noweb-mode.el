@@ -414,7 +414,7 @@ Misc:
 ;; ess-noweb-mode on
 (cond
  (ess-noweb-mode                            ;Setup the minor-mode
-  (mapcar 'ess-noweb-make-variable-permanent-local
+  (mapc 'ess-noweb-make-variable-permanent-local
           '(ess-noweb-mode
             ess-local-process-name ;; also made permanent in ess-mode, but let it be
             ess-dialect

@@ -643,8 +643,8 @@ See also `ess-use-ido'."
       (when ess-ac-sources
         (setq ac-sources
               (delq 'ac-source-filename ac-sources))
-        (mapcar (lambda (el) (add-to-list 'ac-sources el))
-                ess-ac-sources)
+        (mapc (lambda (el) (add-to-list 'ac-sources el))
+              ess-ac-sources)
         (add-to-list 'ac-sources 'ac-source-filename)))
 
     ;; company
@@ -1267,7 +1267,7 @@ symbols (like aaa$bbb and aaa@bbb in R)."
   "Get initial position for args completion"
   (when (not (ess-inside-string-p))
     (when (ess--funname.start)
-      (if (looking-back "[(,]+[ \t\n]*")
+      (if (looking-back "[(,]+[ \t\n]*" nil)
           (point)
         (ess-symbol-start)))))
 
