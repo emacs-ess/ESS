@@ -908,13 +908,13 @@ chkPretty <- function(x, n = 5, min.n = NULL, ..., max.D = 1) {
         }
 }
 
-### --- 36 -------- indentation of  '#' inside string -- PLUS a comment ('#') after that:
+### --- 36 --- indentation of '#' inside string plus a '#' after that, issue #446
 A <- f("abc") +
     f("abc") + f("abc") +
     f("abc # abc") +
     ## The above is now ok,
-    f("abc # abc") +     # <- a comment with no quotes nor hashtag in it -- already causes problem
-f("ABCDEF") +
+    f("abc # abc") +     # <- comment w/o quotes or hashtag -- fixed now: next line was indented to beginning of line
+    f("ABCDEF") +
     f(g(h("abc # def"), "foo ## bar")) +
     f("another")
 
