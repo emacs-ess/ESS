@@ -1158,6 +1158,14 @@ object <-
   )
 }
 
+## 8
+"#" + # comment
+  NULL
+
+## 9
+"* #"
+x
+
 
 ### Logical operators
 

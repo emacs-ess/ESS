@@ -1082,9 +1082,8 @@ we simply do not break it (instead of breaking after the first word)."
 (defun ess-code-end-position ()
   "Like (line-end-position) but stops at comments"
   (save-excursion
-    (end-of-line)
-    (while (ess-within-comment-p)
-      (re-search-backward "#" (line-beginning-position) t))
+    (goto-char (1+ (line-end-position)))
+    (forward-comment -1)
     (point)))
 
 ;; FIXME: The following function pattern stuff is specific to R but is
