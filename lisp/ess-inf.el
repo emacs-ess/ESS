@@ -2582,11 +2582,22 @@ before you quit.  It is run automatically by \\[ess-quit]."
   (ess-interrupt)
   (:override
    (let ((dir (ess-get-working-directory))
-         (ess-ask-for-ess-directory nil))
+         (ess-ask-for-ess-directory nil)
+         (proc (ess-get-proc)))
      (ess-quit 'no-save)
-     (ess-wait-for-process)
+     (inferior-ess--wait-for-exit proc)
      (error "Unimplemented for this dialect")
      (ess-set-working-directory dir))))
+
+(defun inferior-ess--wait-for-exit (proc)
+  "Wait for process exit.
+This should be used instead of `ess-wait-for-process' for waiting
+after issuing a quit command as the latter assumes a live process."
+  (let ((start-time (float-time)))
+    (while (eq (process-status proc) 'run)
+      (accept-process-output proc 0.002)
+      (when (> (- (float-time) start-time) 1)
+        (error "Timeout while quitting process")))))
 
 (defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."
