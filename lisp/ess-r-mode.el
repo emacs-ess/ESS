@@ -602,15 +602,14 @@ Executed in process buffer."
   (interactive)
   ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
   ;; carefully set "pager" option  "when needed":
-  (ess-eval-linewise
-   (format
-    "if (identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) options(pager='%s') # rather take the ESS one \n"
-    inferior-ess-pager)
-   nil nil nil 'wait)
+  (let ((pager-cmd (format
+                    "if (identical(getOption('pager'), file.path(R.home('bin'), 'pager')))
+                        options(pager='%s')\n"
+                    inferior-ess-pager)))
+    (ess-command pager-cmd))
   (inferior-ess-r-load-ESSR)
   (when inferior-ess-language-start
-    (ess-eval-linewise inferior-ess-language-start
-                       nil nil nil 'wait-prompt))
+    (ess-command (concat inferior-ess-language-start "\n")))
   (with-ess-process-buffer nil
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
@@ -1350,7 +1349,6 @@ we flush the cache.")
   "Load/INSTALL/Update ESSR."
   (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" pkg-dir)))
-
     (if (not (or (and (boundp 'ess-remote) ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
         (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
