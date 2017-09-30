@@ -1163,22 +1163,23 @@ and `ess-load-command', in that order."
 If SEC-PROMPT is non-nil return if secondary prompt is detected
 regardless of whether primary prompt was detected or not.  If
 WAIT is non-nil wait for WAIT seconds for process output before
-the prompt check, default 0.001s. When FORCE-REDISPLAY is non-nil
+the prompt check, default 0.002s. When FORCE-REDISPLAY is non-nil
 force redisplay. You better use WAIT >= 0.1 if you need
 FORCE-REDISPLAY to avoid excesive redisplay."
   (setq proc (or proc (get-process ess-local-process-name)))
   (unless (eq (process-status proc) 'run)
-    (ess-error "ESS process has died unexpectedly."))
-  (setq wait (or wait 0.002)) ;;xemacs is stuck if it's 0 here
+    (ess-error "ESS process has died unexpectedly"))
+  ;; 2ms is a good default for remotes
+  (setq wait (or wait 0.002))
   (let ((start-time (float-time)))
     (save-excursion
       (while (or (accept-process-output proc wait)
-                 (if (and sec-prompt (process-get proc 'sec-prompt))
-                     nil
-                   (if force-redisplay (redisplay 'force))
+                 (unless (and sec-prompt (process-get proc 'sec-prompt))
                    (process-get proc 'busy)))
-        (if (> (- (float-time) start-time) .5)
-            (setq wait .5))))))
+        (when force-redisplay
+          (redisplay 'force))
+        (when (> (- (float-time) start-time) .5)
+          (setq wait .5))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
