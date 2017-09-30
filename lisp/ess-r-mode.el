@@ -584,43 +584,24 @@ will be prompted to enter arguments interactively."
   "This function is run after the first R prompt.
 Executed in process buffer."
   (interactive)
-
-  ;; (when ess-can-eval-in-background
-  ;;   (ess-async-command-delayed
-  ;;    "invisible(installed.packages())\n" nil (get-process ess-local-process-name)
-  ;;    ;; "invisible(Sys.sleep(10))\n" nil (get-process ess-local-process-name) ;; test only
-  ;;    (lambda (proc) (process-put proc 'packages-cached? t))))
-
   ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
   ;; carefully set "pager" option  "when needed":
   (ess-eval-linewise
    (format
-    "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) options(pager='%s') # rather take the ESS one \n"
+    "if (identical(getOption('pager'), file.path(R.home('bin'), 'pager'))) options(pager='%s') # rather take the ESS one \n"
     inferior-ess-pager)
-   ;; Even more careful / sophisticated :
-   ;;  "if(identical(getOption('pager'), file.path(R.home('bin'), 'pager')) &&
-   ;;  grepl('\\<more\\>', .P <- Sys.getenv('PAGER'))) {  # rather take the ESS one
-   ;;    cat('$PAGER has more: ', sQuote(.P), '\\n --> setting R`s pager option():\\n')
-   ;;    options(pager='%s')\n}\n" inferior-ess-pager)
    nil nil nil 'wait)
   (inferior-ess-r-load-ESSR)
-
   (when inferior-ess-language-start
     (ess-eval-linewise inferior-ess-language-start
                        nil nil nil 'wait-prompt))
-
+  ;; FIXME Emacs 25.1: Use `when-let'
+  (let ((pkg-path (cdr (ess-r-package-get-info))))
+    (when pkg-path
+      (ess-set-working-directory pkg-path)))
   (with-ess-process-buffer nil
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
-
-
-;; (defun ess--R-cache-installed-packages ()
-;;   "Run by `ess-delayed-init' in R process buffer.
-;; Useses internal R caching of installed packages."
-;;   (ess-command "invisible(installed.packages())\n"
-;;                nil nil nil .2 nil 'redisplay)
-;;   (ess-process-put 'packages-cached? t)
-;;   )
 
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
@@ -1405,15 +1386,15 @@ we flush the cache.")
   :group 'ess-R)
 
 (ess-defmethod R inferior-ess-reload (&optional start-args)
-  (inferior-ess-r-force)
   (let ((pkg-info ess-r-package-info)
-        (r-proc (ess-get-process)))
+        (dir (ess-get-working-directory))
+        (ess-ask-for-ess-directory nil))
     (with-ess-process-buffer nil
       (ess-quit 'no-save)
-      (while (memq (process-status r-proc) '(run busy))
-        (accept-process-output r-proc 0.002))
+      (ess-wait-for-process)
       (R start-args)
-      (run-hooks 'inferior-ess-r-reload-hook))))
+      (run-hooks 'inferior-ess-r-reload-hook))
+    (ess-set-working-directory (or (cdr pkg-info) dir))))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
   (setq ess-dialect "R")

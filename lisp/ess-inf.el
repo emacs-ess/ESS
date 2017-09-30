@@ -2513,12 +2513,11 @@ also running \\[ess-cleanup]."
   (ess-interrupt)
   (ess-make-buffer-current)
   (:override
-   (let ((sprocess (ess-get-process ess-current-process-name)))
-     (if (not sprocess) (error "No ESS process running"))
+   (let ((proc (ess-get-process)))
      (ess-cleanup)
-     (goto-char (marker-position (process-mark sprocess)))
+     (goto-char (marker-position (process-mark proc)))
      (insert inferior-ess-exit-command)
-     (process-send-string sprocess inferior-ess-exit-command))))
+     (process-send-string proc inferior-ess-exit-command))))
 
 (defun ess-interrupt ()
   "Interrupt the inferior process.
@@ -2578,12 +2577,15 @@ before you quit.  It is run automatically by \\[ess-quit]."
   "Reload the inferior process."
   (interactive)
   (inferior-ess-force)
+  ;; Interrupt early so we can get working directory
   (ess-interrupt)
-  (let ((dir (ess-get-working-directory))
-        (ess-ask-for-ess-directory nil))
-    (:override
-     (error "Unimplemented for this dialect"))
-    (ess-set-working-directory dir)))
+  (:override
+   (let ((dir (ess-get-working-directory))
+         (ess-ask-for-ess-directory nil))
+     (ess-quit 'no-save)
+     (ess-wait-for-process)
+     (error "Unimplemented for this dialect")
+     (ess-set-working-directory dir))))
 
 (defun ess-kill-buffer-function ()
   "Function run just before an ESS process buffer is killed."

@@ -80,6 +80,12 @@ whether the current file is part of a package, or the value of
       (with-ess-process-buffer t
         ess-r-package-info)))
 
+(defun ess-r-package-use-dir ()
+  "Set process directory to current package directory."
+  (interactive)
+  (let ((dir (cdr (ess-r-package-get-info))))
+    (ess-use-dir dir)))
+
 (defun ess-r-package-set-package ()
   "Set a package for ESS r-package commands."
   (interactive)
