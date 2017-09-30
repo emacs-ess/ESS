@@ -18,6 +18,10 @@ will now work during a debug session or when R is prompting for input
 
 @item @ESS{[R]}: New command @code{ess-r-package-use-dir}. It sets the
 working directory of the current process to the current package directory.
+
+@item @ESS{[R]}: Launching or reloading R from a package file now sets
+the working directory to the package path. You can now launch R from
+files within @code{R/} or @code{src/} without worrying about the wd.
 @end itemize
 
 
