@@ -14,7 +14,9 @@ up autoloads for @code{.R} files manually. We will keep maintaining
 process is attached, ESS now switches automatically to one (prompting
 you for selection if there are several running). Reloading and quitting
 will now work during a debug session or when R is prompting for input
-(for instance after a crash).
+(for instance after a crash). Finally, the window configuration is saved
+and restored after reloading to prevent the buffer of the new process
+from capturing the cursor.
 
 @item @ESS{[R]}: New command @code{ess-r-package-use-dir}. It sets the
 working directory of the current process to the current package directory.

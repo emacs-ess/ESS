@@ -2580,14 +2580,15 @@ before you quit.  It is run automatically by \\[ess-quit]."
   (inferior-ess-force)
   ;; Interrupt early so we can get working directory
   (ess-interrupt)
-  (:override
-   (let ((dir (ess-get-working-directory))
-         (ess-ask-for-ess-directory nil)
-         (proc (ess-get-proc)))
-     (ess-quit 'no-save)
-     (inferior-ess--wait-for-exit proc)
-     (error "Unimplemented for this dialect")
-     (ess-set-working-directory dir))))
+  (save-window-excursion
+    (:override
+     (let ((dir (ess-get-working-directory))
+           (ess-ask-for-ess-directory nil)
+           (proc (ess-get-proc)))
+       (ess-quit 'no-save)
+       (inferior-ess--wait-for-exit proc)
+       (error "Unimplemented for this dialect")
+       (ess-set-working-directory dir)))))
 
 (defun inferior-ess--wait-for-exit (proc)
   "Wait for process exit.
