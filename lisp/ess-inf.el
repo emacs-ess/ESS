@@ -245,12 +245,12 @@ Alternatively, it can appear in its own frame if
             (goto-char (point-max))
             (setq ess-sl-modtime-alist nil)
 
-            ;; Add the process filter to catch certain output.
+            ;; Add the process filter to catch certain output
             (set-process-filter (get-process procname)
                                 'inferior-ess-output-filter)
-            ;; (inferior-ess-wait-for-prompt)
             (inferior-ess-mark-as-busy (get-process procname))
-            (process-send-string (get-process procname) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
+            ;; Make sure we catch the prompt if user comp is super-duper fast
+            (inferior-ess--wait-for-prompt (when no-wait 0.5))
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
               (ess-wait-for-process (get-process procname) nil 0.01))
@@ -705,6 +705,21 @@ process happens interactively (when possible)."
               (ess-get-process ess-current-process-name))
           (error "Process %s is not running" name))))))
 
+(defun inferior-ess--wait-for-prompt (seconds)
+  (let ((start-time (float-time)))
+    (while (and (not (inferior-ess--idle-prompt-p))
+                (if seconds
+                    (> (- (float-time) start-time) seconds)
+                  t))
+      (accept-process-output proc 0.001))))
+
+(defun inferior-ess--idle-prompt-p ()
+  (let ((inhibit-field-text-motion t))
+    (save-excursion
+      (with-ess-process-buffer nil
+        (goto-char (point-max))
+        (beginning-of-line)
+        (looking-at (concat "^" inferior-ess-primary-prompt "$"))))))
 
 ;; (defun inferior-ess-wait-for-prompt ()
 ;;   "Wait until the ESS process is ready for input."
@@ -742,6 +757,7 @@ process happens interactively (when possible)."
 ;; Plan: 1) must know and use ess-language
 ;;       2) change the appropriate  inferior-<ESSlang>-program-name
 ;; (how?) in R/S : assign(paste("inferior-",ESSlang,"-p...."),  filename))
+
 
 ;;*;; Multiple process handling code
 
