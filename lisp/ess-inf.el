@@ -2529,6 +2529,9 @@ This sends an interrupt and quits a debugging session."
     ;; Interrupt current task before reloading. Useful if the process is
     ;; prompting for input, for instance in R in case of a crash
     (interrupt-process proc comint-ptyp)
+    ;; Workaround for Windows terminals
+    (unless (memq system-type '(gnu/linux darwin))
+      (process-send-string nil "\n"))
     (ess-wait-for-process proc)
     ;; Quit debugging session before reloading
     (when (ess-debug-active-p)
