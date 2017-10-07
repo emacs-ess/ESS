@@ -116,9 +116,6 @@ Alternatively, it can appear in its own frame if
      (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
              ess-language ess-dialect temp-ess-dialect (current-buffer)))
     (let* ((process-environment process-environment)
-           (defdir (or (and ess-directory-function (funcall ess-directory-function))
-                       ess-directory default-directory))
-
            ;; Use temp-ess-dialect if not R, R program name otherwise
            (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
@@ -142,9 +139,7 @@ Alternatively, it can appear in its own frame if
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
              (eq major-mode 'inferior-ess-mode))
-        (setq startdir  (if ess-ask-for-ess-directory
-                            (ess-get-directory defdir temp-dialect procname)
-                          defdir))
+        (setq startdir (inferior-ess--get-directory procname temp-dialect))
         (setq buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
@@ -160,9 +155,7 @@ Alternatively, it can appear in its own frame if
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
-        (setq startdir  (if ess-ask-for-ess-directory
-                          (ess-get-directory defdir temp-dialect procname)
-                        defdir))
+        (setq startdir (inferior-ess--get-directory procname temp-dialect))
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
                                                            startdir "")))
@@ -581,21 +574,30 @@ This marks the process with a message, at a particular time point."
 
 ;;*;; Requester functions called at startup
 
-(defun ess-get-directory (default dialect procname)
-  (let ((prog-version (cond ((string= dialect "R")
-                             (concat ", " inferior-R-version)) ; notably for the R-X.Y versions
-                            (inferior-ess-program
-                             (concat ", " inferior-ess-program ))
-                            (t ""))))
-    (ess-prompt-for-directory
-     (directory-file-name default)
-     (format "ESS (*%s*%s) starting data directory? "
-             procname prog-version)
-     ;; (format "ESS [%s {%s(%s)}: '%s'] starting data directory? "
-     ;;         ;;FIXME: maybe rather tmp-dialect (+ evt drop ess-language?)?
-     ;;         procname ess-language ess-dialect prog-version)
-     )))
+;; FIXME EMACS 25.1:
+;; Deprecate `ess-directory-function' in favour of `project-find-functions'?
+(defun inferior-ess--default-directory ()
+  (let ((dir (or (and ess-directory-function
+                      (funcall ess-directory-function))
+                 ess-default-directory
+                 default-directory)))
+    (directory-file-name dir)))
 
+(defun inferior-ess--get-directory (procname dialect)
+  "This returns the directory of the current project"
+  (let ((default-dir (inferior-ess--default-directory)))
+    (if (not ess-ask-for-ess-directory)
+        default-dir
+      (let* ((prog (cond ((string= dialect "R")
+                          ;; Includes R-X.Y versions
+                          (concat ", " inferior-R-version))
+                         (inferior-ess-program
+                          (concat ", " inferior-ess-program ))
+                         (t "")))
+             (prompt (format "ESS (*%s*%s) starting data directory? "
+                             procname
+                             prog)))
+        (ess-prompt-for-directory default-dir prompt)))))
 
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
