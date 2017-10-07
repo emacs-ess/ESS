@@ -577,7 +577,9 @@ This marks the process with a message, at a particular time point."
 ;; FIXME EMACS 25.1:
 ;; Deprecate `ess-directory-function' in favour of `project-find-functions'?
 (defun inferior-ess--default-directory ()
-  (let ((dir (or (and ess-directory-function
+  (let ((dir (or (and (fboundp 'project-current)
+                      (cdr (project-current)))
+                 (and ess-directory-function
                       (funcall ess-directory-function))
                  ess-default-directory
                  default-directory)))
