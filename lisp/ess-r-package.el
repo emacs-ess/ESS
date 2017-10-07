@@ -87,6 +87,11 @@ whether the current file is part of a package, or the value of
       (with-ess-process-buffer t
         ess-r-package-info)))
 
+(defun ess-r-package-project (dir)
+  (let ((info (ess-r-package--package-dir-info dir)))
+    (when (car info)
+      info)))
+
 (defun ess-r-package--all-source-dirs (dir)
   (when (file-exists-p dir)
     (cl-loop for f in (directory-files-and-attributes dir t "^[^.]")
@@ -180,19 +185,25 @@ return all physically present directories."
   "Parses DESCRIPTION file in PATH (R specific so far). PATH
 defaults to the value returned by
 `ess-r-package--find-package-path'."
-  (let ((pkg-path (ess-r-package--find-package-path)))
-    (setq ess-r-package-info
-          (if pkg-path
-              (cons (ess-r-package--find-package-name pkg-path) pkg-path)
-            ;; cache non-package files as well
-            '(nil)))))
+  ;; Cache info for better performance on remotes
+  (setq ess-r-package-info (ess-r-package--package-dir-info)))
 
-(defun ess-r-package--find-package-path ()
+(defun ess-r-package--package-dir-info (&optional dir)
+  (let ((pkg-path (ess-r-package--find-package-path dir)))
+    (if pkg-path
+        (cons (ess-r-package--find-package-name pkg-path) pkg-path)
+      ;; Ensures that non-package files are cached as well
+      '(nil))))
+
+(defun ess-r-package--find-package-path (&optional dir)
   "Get the root of R package that contains current directory.
 Root is determined by locating `ess-r-package-root-file'."
-  (let* ((path (if (buffer-file-name)
-                   (file-name-directory (buffer-file-name))
-                 default-directory))
+  (let* ((path (cond
+                (dir)
+                ((buffer-file-name)
+                 (file-name-directory (buffer-file-name)))
+                (t
+                 default-directory)))
          (pkg-path
           (when path
             (or
@@ -406,8 +417,10 @@ disable the mode line entirely."
   :lighter ess-r-package-mode-line
   (cond
    (ess-r-package-mode
+    (add-hook 'project-find-functions #'ess-r-package-project)
     (run-hooks 'ess-r-package-enter-hook))
    (t
+    (remove-hook 'project-find-functions #'ess-r-package-project)
     (run-hooks 'ess-r-package-exit-hook))))
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
