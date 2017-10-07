@@ -1386,17 +1386,8 @@ we flush the cache.")
   :group 'ess-R)
 
 (ess-defmethod R inferior-ess-reload (&optional start-args)
-  (let ((dir (ess-get-working-directory))
-        (ess-ask-for-ess-directory nil)
-        (proc (ess-get-process)))
-    (with-ess-process-buffer nil
-      (ess-quit 'no-save)
-      (inferior-ess--wait-for-exit proc)
-      (R start-args)
-      (run-hooks 'inferior-ess-r-reload-hook))
-    ;; If we are in a package the working directory is already set
-    (unless (cdr ess-r-package-info)
-      (ess-set-working-directory dir))))
+  (R start-args)
+  (run-hooks 'inferior-ess-r-reload-hook))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
   (setq ess-dialect "R")

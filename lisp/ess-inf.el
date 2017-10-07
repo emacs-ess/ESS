@@ -2578,14 +2578,17 @@ before you quit.  It is run automatically by \\[ess-quit]."
   ;; Interrupt early so we can get working directory
   (ess-interrupt)
   (save-window-excursion
-    (:override
-     (let ((dir (ess-get-working-directory))
-           (ess-ask-for-ess-directory nil)
-           (proc (ess-get-proc)))
-       (ess-quit 'no-save)
-       (inferior-ess--wait-for-exit proc)
-       (error "Unimplemented for this dialect")
-       (ess-set-working-directory dir)))))
+    ;; Make sure we don't ask for directory again
+    (let ((project-find-functions nil)
+          (ess-directory-function nil)
+          (ess-default-directory nil)
+          ;; Use current working directory as default before restarting
+          (ess-ask-for-ess-directory nil)
+          (default-dir (ess-get-working-directory)))
+      (ess-quit 'no-save)
+      (inferior-ess--wait-for-exit (ess-get-process))
+      (:override
+       (error "Unimplemented for this dialect")))))
 
 (defun inferior-ess--wait-for-exit (proc)
   "Wait for process exit.
