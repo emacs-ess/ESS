@@ -2579,12 +2579,11 @@ before you quit.  It is run automatically by \\[ess-quit]."
   (ess-interrupt)
   (save-window-excursion
     ;; Make sure we don't ask for directory again
+    ;; Use current working directory as default
     (let ((project-find-functions nil)
           (ess-directory-function nil)
-          (ess-default-directory nil)
-          ;; Use current working directory as default before restarting
-          (ess-ask-for-ess-directory nil)
-          (default-dir (ess-get-working-directory)))
+          (ess-default-directory (ess-get-working-directory))
+          (ess-ask-for-ess-directory nil))
       (ess-quit 'no-save)
       (inferior-ess--wait-for-exit (ess-get-process))
       (:override
