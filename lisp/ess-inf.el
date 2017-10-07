@@ -119,15 +119,15 @@ Alternatively, it can appear in its own frame if
            (defdir (or (and ess-directory-function (funcall ess-directory-function))
                        ess-directory default-directory))
 
+           ;; Use temp-ess-dialect if not R, R program name otherwise
            (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
                                  inferior-ess-r-program-name
-                               temp-ess-dialect) ; use temp-ess-dialect
-                                        ; if not R, R program name
-                                        ; otherwise.
+                               temp-ess-dialect)
                            temp-ess-dialect))
            (temp-lang temp-ess-lang)
-           (procname (let ((ntry 0) ;; find the next non-existent process N (*R:N*)
+           ;; Find the next non-existent process N (*R:N*)
+           (procname (let ((ntry 0)
                            (done nil))
                        (while (not done)
                          (setq ntry (1+ ntry))
@@ -177,20 +177,15 @@ Alternatively, it can appear in its own frame if
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method startdir buf))
 
-      (set-buffer buf)
       ;; Now that we have the buffer, set buffer-local variables.
-      (ess-setq-vars-local ess-customize-alist) ; buf)
+      (set-buffer buf)
+      (ess-setq-vars-local ess-customize-alist)
 
-      ;; Write out debug info
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
                ess-language  ess-dialect (current-buffer)))
 
-      ;; initialize.
-      (if startdir (setq default-directory startdir))
-
-      ;; the following was part of ess-multi;
-
+      (when startdir (setq default-directory startdir))
       (let* ((ess-directory (or startdir
                                 ess-directory))
              (infargs (or ess-start-args
