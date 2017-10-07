@@ -130,11 +130,8 @@ Alternatively, it can appear in its own frame if
            (procname (let ((ntry 0) ;; find the next non-existent process N (*R:N*)
                            (done nil))
                        (while (not done)
-                         (setq ntry (1+ ntry)
-                               done (not
-                                     (get-process (ess-proc-name
-                                                   ntry
-                                                   temp-dialect)))))
+                         (setq ntry (1+ ntry))
+                         (setq done (not (get-process (ess-proc-name ntry temp-dialect)))))
                        (ess-proc-name ntry temp-dialect)))
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
            startdir buf method)
@@ -149,33 +146,33 @@ Alternatively, it can appear in its own frame if
              (eq major-mode 'inferior-ess-mode))
         (setq startdir  (if ess-ask-for-ess-directory
                             (ess-get-directory defdir temp-dialect procname)
-                          defdir)
-              buf       (current-buffer)
-              ;; don't change existing buffer name in this case; It is very
-              ;; commong to restart the process in the same buffer.
-              buf-name-str (buffer-name)
-              method    1))
+                          defdir))
+        (setq buf (current-buffer))
+        ;; don't change existing buffer name in this case; It is very
+        ;; commong to restart the process in the same buffer.
+        (setq buf-name-str (buffer-name))
+        (setq method 1))
 
        ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
        ;; fixme: buffer name might have been changed, iterate over all
        ;; inferior-ess buffers
        ((get-buffer buf-name-str)
-        (setq buf       (get-buffer buf-name-str)
-              method    2))
+        (setq buf (get-buffer buf-name-str))
+        (setq method 2))
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
         (setq startdir  (if ess-ask-for-ess-directory
-                            (ess-get-directory defdir temp-dialect procname)
-                          defdir)
-              buf       (if ess-ask-about-transfile
-                            (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                                 startdir "")))
-                              (if (string= transfilename "")
-                                  (get-buffer-create buf-name-str)
-                                (find-file-noselect (expand-file-name  transfilename))))
-                          (get-buffer-create buf-name-str))
-              method    3)))
+                          (ess-get-directory defdir temp-dialect procname)
+                        defdir))
+        (setq buf (if ess-ask-about-transfile
+                      (let ((transfilename (read-file-name "Use transcript file (default none):"
+                                                           startdir "")))
+                        (if (string= transfilename "")
+                            (get-buffer-create buf-name-str)
+                          (find-file-noselect (expand-file-name  transfilename))))
+                    (get-buffer-create buf-name-str)))
+        (setq method 3)))
 
       (ess-write-to-dribble-buffer
        (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method startdir buf))
