@@ -594,7 +594,7 @@ This marks the process with a message, at a particular time point."
                          (inferior-ess-program
                           (concat ", " inferior-ess-program ))
                          (t "")))
-             (prompt (format "ESS (*%s*%s) starting data directory? "
+             (prompt (format "%s starting project directory? "
                              procname
                              prog)))
         (ess-prompt-for-directory default-dir prompt)))))
