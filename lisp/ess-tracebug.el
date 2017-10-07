@@ -1488,10 +1488,12 @@ TB-INDEX is not found return nil."
 If FILENAME is not found at all, ask the user where to find it if
 `ess--dbg-ask-for-file' is non-nil.  Search the directories in
 `ess-tracebug-search-path'."
-  (let ((dirs ess-tracebug-search-path)
-        (spec-dir default-directory)
-        buffsym buffer thisdir fmts name buffername)
-    (setq dirs (cons spec-dir dirs)) ;; current does not have priority!! todo:should be R working dir
+  (let ((dirs (append
+               (ess-r-package-sources-dirs)
+               (cl-loop for d in ess-tracebug-search-path
+                        append (ess-r-package--get-all-subdirs d))))
+        buffsym buffer fmts name buffername)
+    (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
     ;; 1. search already open buffers for match (associated file might not even exist yet)
     (dolist (bf (buffer-list))
       (with-current-buffer  bf
@@ -1509,13 +1511,11 @@ If FILENAME is not found at all, ask the user where to find it if
             dirs (cons (file-name-directory filename) dirs)
             filename (file-name-nondirectory filename)))
     ;; 3. Now search the path.
-    (while (and (null buffer)
-                dirs )
-      (setq thisdir (car dirs))
-      (setq name (expand-file-name filename thisdir)
-            buffer (and (file-exists-p name)
-                        (find-file-noselect name)))
-      (setq dirs (cdr dirs)))
+    (while (and (null buffer) dirs)
+      (let ((thisdir (pop dirs)))
+        (setq name (expand-file-name filename thisdir)
+              buffer (and (file-exists-p name)
+                          (find-file-noselect name)))))
     ;; 4. Ask for file if not found (tothink: maybe remove this part?)
     (if (and (null buffer)
              ess-debug-ask-for-file)
