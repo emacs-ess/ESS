@@ -139,7 +139,7 @@ Alternatively, it can appear in its own frame if
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
              (eq major-mode 'inferior-ess-mode))
-        (setq startdir (inferior-ess--get-directory procname temp-dialect))
+        (setq startdir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
         (setq buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
@@ -155,7 +155,7 @@ Alternatively, it can appear in its own frame if
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
-        (setq startdir (inferior-ess--get-directory procname temp-dialect))
+        (setq startdir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
                                                            startdir "")))
@@ -576,7 +576,7 @@ This marks the process with a message, at a particular time point."
 
 ;; FIXME EMACS 25.1:
 ;; Deprecate `ess-directory-function' in favour of `project-find-functions'?
-(defun inferior-ess--default-directory ()
+(defun inferior-ess--get-startup-directory ()
   (let ((dir (or (and (fboundp 'project-current)
                       (cdr (project-current)))
                  (and ess-directory-function
@@ -585,21 +585,20 @@ This marks the process with a message, at a particular time point."
                  default-directory)))
     (directory-file-name dir)))
 
-(defun inferior-ess--get-directory (procname dialect)
-  "This returns the directory of the current project"
-  (let ((default-dir (inferior-ess--default-directory)))
-    (if (not ess-ask-for-ess-directory)
-        default-dir
-      (let* ((prog (cond ((string= dialect "R")
-                          ;; Includes R-X.Y versions
-                          (concat ", " inferior-R-version))
-                         (inferior-ess-program
-                          (concat ", " inferior-ess-program ))
-                         (t "")))
-             (prompt (format "%s starting project directory? "
-                             procname
-                             prog)))
-        (ess-prompt-for-directory default-dir prompt)))))
+(defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
+  (let ((default-dir (inferior-ess--get-startup-directory)))
+    (if ess-ask-for-ess-directory
+        (let* ((prog (cond ((string= dialect "R")
+                            ;; Includes R-X.Y versions
+                            (concat ", " inferior-R-version))
+                           (inferior-ess-program
+                            (concat ", " inferior-ess-program ))
+                           (t "")))
+               (prompt (format "%s starting project directory? "
+                               procname
+                               prog)))
+          (ess-prompt-for-directory default-dir prompt))
+      default-dir)))
 
 (defun ess-prompt-for-directory (default prompt)
   "`prompt' for a directory, using `default' as the usual."
