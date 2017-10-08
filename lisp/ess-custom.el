@@ -337,13 +337,13 @@ a workspace."
   :group 'ess
   :type '(choice (const nil) function))
 
-(defcustom ess-default-directory nil
+(defcustom ess-startup-directory nil
   "The directory ESS is run from.  It must end in a slash.
 Provided as a default if `ess-ask-for-ess-directory' is non-nil.
 A nil value means use the current buffer's default directory."
   :group 'ess
   :type '(choice (const nil) directory))
-(defalias 'ess-directory 'ess-default-directory)
+(defalias 'ess-directory 'ess-startup-directory)
 
 (defcustom ess-history-directory nil
   "Directory to pick up `ess-history-file' from.

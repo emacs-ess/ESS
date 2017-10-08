@@ -581,7 +581,7 @@ This marks the process with a message, at a particular time point."
                       (cdr (project-current)))
                  (and ess-directory-function
                       (funcall ess-directory-function))
-                 ess-default-directory
+                 ess-startup-directory
                  default-directory)))
     (directory-file-name dir)))
 
@@ -2581,7 +2581,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
     ;; Use current working directory as default
     (let ((project-find-functions nil)
           (ess-directory-function nil)
-          (ess-default-directory (ess-get-working-directory))
+          (ess-startup-directory (ess-get-working-directory))
           (ess-ask-for-ess-directory nil))
       (ess-quit 'no-save)
       (inferior-ess--wait-for-exit (ess-get-process))
