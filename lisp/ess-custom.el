@@ -343,7 +343,7 @@ Provided as a default if `ess-ask-for-ess-directory' is non-nil.
 A nil value means use the current buffer's default directory."
   :group 'ess
   :type '(choice (const nil) directory))
-(defalias 'ess-directory 'ess-startup-directory)
+(defvaralias 'ess-directory 'ess-startup-directory)
 
 (defcustom ess-history-directory nil
   "Directory to pick up `ess-history-file' from.
