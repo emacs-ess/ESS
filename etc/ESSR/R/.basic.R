@@ -96,30 +96,23 @@
                         message.prefix = "")
 {
     if (is.null(local)) {
-        local <- if (.ess.Rversion > '2.13') parent.frame() else FALSE
+        local <- if (.ess.Rversion > "2.13")
+            parent.frame()
+        else FALSE
     }
+    ss <- if (.ess.Rversion >= "2.8")
+        base::source
+          else function(..., keep.source) base::source(...)
 
-    ss <- # drop 'keep.source' for older versions
-        if(.ess.Rversion >= "2.8") base::source
-        else function(..., keep.source) base::source(...)
+    on.exit({
+        if (fake.source)
+            .ess.file.remove(file)
+    })
 
-    out <- tryCatch(ss(file, echo = visibly, local = local, print.eval = output,
-                       max.deparse.length = max.deparse.length,
-                       keep.source = keep.source),
-                    error = function(x) {
-                        if(fake.source) {
-                            .ess.file.remove(file)
-                        }
-                        msg <- .ess.strip.error(x$message, file)
-                        stop(msg, call. = FALSE)
-                    })
+    out <- ss(file, echo = visibly, local = local, print.eval = output,
+              max.deparse.length = max.deparse.length, keep.source = keep.source)
 
-    if (fake.source) {
-        .ess.file.remove(file)
-    } else {
-        cat(sprintf("%sSourced file %s\n", message.prefix, file))
-    }
-
+    cat(sprintf("%sSourced file %s\n", message.prefix, file))
     ## Return value for org-babel
     invisible(out$value)
 }
