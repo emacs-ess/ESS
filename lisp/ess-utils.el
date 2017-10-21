@@ -394,6 +394,17 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
   "Drop all entries that do not \"look like\" directories."
   (ess-flatten-list (mapcar 'file-name-directory file-strings)))
 
+(defun ess--parent-dir (path n)
+  "Return Nth parent of PATH."
+  (let ((opath path))
+    (while (and path (> n 0))
+      (setq path (file-name-directory (directory-file-name opath)))
+      (if (equal path opath)
+          (setq path nil)
+        (setq opath path
+              n (1- n))))
+    path))
+
 
 ;;*;; Interaction with inferiors
 
