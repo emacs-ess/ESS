@@ -90,6 +90,13 @@ is searched from that directory instead of `default-directory'."
       (when (car project)
         project))))
 
+(defun ess-r-package-name (&optional dir)
+  "Return the name of the current package as a string."
+  ;; FIXME Emacs 25.1: Use `when-let'
+  (let ((project (ess-r-package-project dir)))
+    (when project
+      (symbol-name (car project)))))
+
 (defun ess-r-package-get-info ()
   "Deprecated function to get package info.
 Please use `ess-r-package-project' instead."
@@ -149,7 +156,7 @@ return all physically present directories."
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
-        (current-pkg (car (ess-r-package-project))))
+        (current-pkg (ess-r-package-name)))
     (let ((env (ess-r-get-evaluation-env)))
      (when env
        (setq pkgs (append '("*none*") pkgs))
@@ -160,7 +167,7 @@ return all physically present directories."
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
     ;; FIXME Emacs 25.1: Use `when-let'
-    (let ((pkg (car (ess-r-package-project))))
+    (let ((pkg (ess-r-package-name)))
       (when pkg
         (ess-r-set-evaluation-env pkg)))))
 
@@ -170,7 +177,7 @@ return all physically present directories."
   (inferior-ess-r-force)
   (let* ((pkg-info (or (ess-r-package-project)
                        (ess-r-package-set-package)))
-         (name (car pkg-info))
+         (name (symbol-name (car pkg-info)))
          (path (concat "'" (cdr pkg-info) "'"))
          (args (ess-r-command--process-alt-args alt default-alt)))
     (message msg name)
@@ -227,7 +234,7 @@ Root is determined by locating `ess-r-package-root-file'."
         (insert-file-contents file)
         (goto-char (point-min))
         (when (re-search-forward "package: \\(.*\\)" nil t)
-          (match-string 1))))))
+          (intern (match-string 1)))))))
 
 
 ;;;*;;; Devtools Integration
@@ -379,7 +386,7 @@ When called with prefix, also asks for additional arguments."
 
 (defcustom ess-r-package-mode-line
   ;; FIXME Emacs 25.1: Use `when-let'
-  '(:eval (let ((pkg-name (car (ess-r-package-project))))
+  '(:eval (let ((pkg-name (ess-r-package-name)))
             (when pkg-name
               (format " [pkg:%s]" pkg-name))))
   "Mode line for ESS developer. Set this variable to nil to
@@ -417,8 +424,8 @@ disable the mode line entirely."
              (or (buffer-file-name)
                  default-directory))
     ;; FIXME Emacs 25.1: Use `when-let'
-    (let ((pkg-info (car (ess-r-package-project))))
-      (when (car pkg-info)
+    (let ((pkg-info (ess-r-package-project)))
+      (when pkg-info
         (ess-r-package-mode 1)))))
 
 

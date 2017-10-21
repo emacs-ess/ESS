@@ -1164,7 +1164,7 @@ attached packages."
   '(:eval (let ((env (ess-r-get-evaluation-env)))
             (if env
                 (format " %s"
-                        (propertize  (if (equal env (car (ess-r-package-project)))
+                        (propertize  (if (equal env (ess-r-package-name))
                                          "pkg"
                                        env)
                                      'face 'mode-line-emphasis))
