@@ -4,12 +4,6 @@
 Changes and New Features in 17.05:
 @itemize @bullet
 
-@item Lookup for references in inferior buffers has been improved.
-New variable @code{ess-r-package-source-roots} contains package
-sub-directories which are searched recursively during the file lookup
-point. Directories in @code{ess-tracebug-search-path} are now also
-searched recursively.
-
 @item The ESS initialisation process has been streamlined. You can now
 load the R and Stata modes independently from the rest of ESS. Just put
 @code{(require 'ess-r-mode)} or @code{(require 'ess-stata-mode)} in your
@@ -32,6 +26,12 @@ working directory of the current process to the current package directory.
 the working directory to the package path. You can now launch R from
 files within @code{R/} or @code{src/} without worrying about the wd.
 @end itemize
+
+@item Lookup for references in inferior buffers has been improved.
+New variable @code{ess-r-package-source-roots} contains package
+sub-directories which are searched recursively during the file lookup
+point. Directories in @code{ess-tracebug-search-path} are now also
+searched recursively.
 
 
 Changes and New Features in 16.10:
