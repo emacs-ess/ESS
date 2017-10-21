@@ -38,7 +38,7 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
-(defvar-local ess-r-package-info nil
+(defvar-local ess-r-package--project-cache nil
   "Current package info cache.
 
 Cons cell of two strings. CAR is the package name active in the
@@ -79,13 +79,13 @@ all source dirs recursively within the current package.")
   "Get current package info.
 Return a cons cell of two strings whose CAR is a package name and
 CDR is a package directory. The package is determined by (in this
-order) the buffer-local value of `ess-r-package-info',
+order) the buffer-local value of `ess-r-package--project-cache',
 whether the current file is part of a package, or the value of
-`ess-r-package-info' in the attached process buffer."
-  (or ess-r-package-info
+`ess-r-package--project-cache' in the attached process buffer."
+  (or ess-r-package--project-cache
       (ess-r-package--local-package-info)
       (with-ess-process-buffer t
-        ess-r-package-info)))
+        ess-r-package--project-cache)))
 
 (defun ess-r-package-project (dir)
   (let ((info (ess-r-package--package-dir-info dir)))
@@ -134,8 +134,8 @@ return all physically present directories."
       (error "Not a valid package. No '%s' found in `%s'." ess-r-package-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
-      (add-file-local-variable 'ess-r-package-info pkg-info))
-    (setq ess-r-package-info pkg-info)))
+      (add-file-local-variable 'ess-r-package--project-cache pkg-info))
+    (setq ess-r-package--project-cache pkg-info)))
 
 (defun ess-r--select-package-name ()
   (inferior-ess-r-force)
@@ -168,7 +168,7 @@ return all physically present directories."
          (args (ess-r-command--process-alt-args alt default-alt)))
     (message msg name)
     (with-ess-process-buffer nil
-      (setq ess-r-package-info pkg-info))
+      (setq ess-r-package--project-cache pkg-info))
     (ess-eval-linewise (format command (concat path args)))))
 
 (defun ess-r-command--process-alt-args (alt &optional default-alt)
@@ -188,7 +188,7 @@ return all physically present directories."
 defaults to the value returned by
 `ess-r-package--find-package-path'."
   ;; Cache info for better performance on remotes
-  (setq ess-r-package-info (ess-r-package--package-dir-info)))
+  (setq ess-r-package--project-cache (ess-r-package--package-dir-info)))
 
 (defun ess-r-package--package-dir-info (&optional dir)
   (let ((pkg-path (ess-r-package--find-package-path dir)))
