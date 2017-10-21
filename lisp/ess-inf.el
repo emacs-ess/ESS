@@ -274,6 +274,11 @@ Alternatively, it can appear in its own frame if
 
             ;; EXTRAS
             (ess-load-extras t)
+            ;; This is redundant but it ensures a visible `setwd' in
+            ;; the inferior process in case we did not prompt for a
+            ;; starting directory.
+            (unless ess-ask-for-ess-directory
+              (ess-set-working-directory startdir))
             ;; user initialization can take some time ...
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
