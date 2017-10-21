@@ -75,22 +75,29 @@ all source dirs recursively within the current package.")
 
 ;;;*;;; Package UI
 
-(defun ess-r-package-get-info ()
-  "Get current package info.
-Return a cons cell of two strings whose CAR is a package name and
-CDR is a package directory. The package is determined by (in this
-order) the buffer-local value of `ess-r-package--project-cache',
-whether the current file is part of a package, or the value of
-`ess-r-package--project-cache' in the attached process buffer."
-  (or ess-r-package--project-cache
-      (ess-r-package--local-package-info)
-      (with-ess-process-buffer t
-        ess-r-package--project-cache)))
+(defun ess-r-package-project (&optional dir)
+  "Return the current package as an Emacs project instance.
+A project instance is a cons cell of the project name as symbol
+and the project path as string. If DIR is provided, the package
+is searched from that directory instead of `default-directory'."
+  (if (car ess-r-package--project-cache)
+      ess-r-package--project-cache
+    (let* ((pkg-path (ess-r-package--find-package-path (or dir default-directory)))
+           (project (when pkg-path
+                      (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
+      ;; Cache info for better performance on remotes
+      (setq-local ess-r-package--project-cache (or project (list nil)))
+      (when (car project)
+        project))))
 
-(defun ess-r-package-project (dir)
-  (let ((info (ess-r-package--package-dir-info dir)))
-    (when (car info)
-      info)))
+(defun ess-r-package-get-info ()
+  "Deprecated function to get package info.
+Please use `ess-r-package-project' instead."
+  (let ((project (ess-r-package-project)))
+    (if project
+        (cons (symbol-name (car project)) (cdr project))
+      (list nil))))
+(make-obsolete 'ess-r-package-get-info 'ess-r-package-project "17.11")
 
 (defun ess-r-package--all-source-dirs (dir)
   (when (file-exists-p dir)
@@ -182,20 +189,6 @@ return all physically present directories."
 
 
 ;;;*;;; Package Detection
-
-(defun ess-r-package--local-package-info ()
-  "Parses DESCRIPTION file in PATH (R specific so far). PATH
-defaults to the value returned by
-`ess-r-package--find-package-path'."
-  ;; Cache info for better performance on remotes
-  (setq ess-r-package--project-cache (ess-r-package--package-dir-info)))
-
-(defun ess-r-package--package-dir-info (&optional dir)
-  (let ((pkg-path (ess-r-package--find-package-path dir)))
-    (if pkg-path
-        (cons (ess-r-package--find-package-name pkg-path) pkg-path)
-      ;; Ensures that non-package files are cached as well
-      '(nil))))
 
 (defun ess-r-package--find-package-path (&optional dir)
   "Get the root of R package that contains current directory.
