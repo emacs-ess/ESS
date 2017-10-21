@@ -595,10 +595,6 @@ Executed in process buffer."
   (when inferior-ess-language-start
     (ess-eval-linewise inferior-ess-language-start
                        nil nil nil 'wait-prompt))
-  ;; FIXME Emacs 25.1: Use `when-let'
-  (let ((pkg-path (cdr (ess-r-package-get-info))))
-    (when pkg-path
-      (ess-set-working-directory pkg-path)))
   (with-ess-process-buffer nil
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
