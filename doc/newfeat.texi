@@ -22,9 +22,28 @@ from capturing the cursor.
 @item @ESS{[R]}: New command @code{ess-r-package-use-dir}. It sets the
 working directory of the current process to the current package directory.
 
-@item @ESS{[R]}: Launching or reloading R from a package file now sets
-the working directory to the package path. You can now launch R from
-files within @code{R/} or @code{src/} without worrying about the wd.
+@item @ESS{[R]}: Launching R from a package file now recognises the package
+root as the likely startup directory for R. If
+@code{ess-ask-for-ess-directory} is non-nil, ESS prompts with the
+package root as default selection. Otherwise the working directory is
+automatically set to the package root.
+
+The mechanism is a bit more general if you are using Emacs 25.1 or
+older. On those recent Emacsen R packages are now recognised as Emacs
+projects and ESS queries Emacs projects to get the default startup
+directory. This means that any git or subversion directory will be
+recognised as project root even if it is not an R package.
+
+In light of these developments, @code{ess-r-package-get-info} is
+deprecated in favour of @code{ess-r-package-project}. This function
+returns an Emacs project instance, e.g. a cons cell of the project name
+as symbol and the package directory as string. In addition
+@code{ess-r-package-name} returns the current package name as a string
+(rather than a symbol as in the project instance).
+
+In the future (long term), we will thus deprecate
+@code{ess-directory-function} in favour of the Emacs wide hook
+@code{project-find-functions}.
 @end itemize
 
 @item Lookup for references in inferior buffers has been improved.
