@@ -88,21 +88,21 @@ is searched from that directory instead of `default-directory'."
       ;; Cache info for better performance on remotes
       (setq-local ess-r-package--project-cache (or project (list nil)))
       (when (car project)
-        project))))
+        (cons 'r-package (cdr project))))))
 
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
   ;; FIXME Emacs 25.1: Use `when-let'
   (let ((project (ess-r-package-project dir)))
     (when project
-      (symbol-name (car project)))))
+      (symbol-name (car ess-r-package--project-cache)))))
 
 (defun ess-r-package-get-info ()
   "Deprecated function to get package info.
 Please use `ess-r-package-project' instead."
   (let ((project (ess-r-package-project)))
     (if project
-        (cons (symbol-name (car project)) (cdr project))
+        (cons (ess-r-package-name) (cdr project))
       (list nil))))
 (make-obsolete 'ess-r-package-get-info 'ess-r-package-project "17.11")
 
@@ -177,12 +177,12 @@ return all physically present directories."
   (inferior-ess-r-force)
   (let* ((pkg-info (or (ess-r-package-project)
                        (ess-r-package-set-package)))
-         (name (symbol-name (car pkg-info)))
+         (name (ess-r-package-name))
          (path (concat "'" (cdr pkg-info) "'"))
          (args (ess-r-command--process-alt-args alt default-alt)))
     (message msg name)
     (with-ess-process-buffer nil
-      (setq ess-r-package--project-cache pkg-info))
+      (setq ess-r-package--project-cache ess-r-package--project-cache))
     (ess-eval-linewise (format command (concat path args)))))
 
 (defun ess-r-command--process-alt-args (alt &optional default-alt)

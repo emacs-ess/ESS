@@ -38,8 +38,7 @@ In light of these developments, @code{ess-r-package-get-info} is
 deprecated in favour of @code{ess-r-package-project}. This function
 returns an Emacs project instance, e.g. a cons cell of the project name
 as symbol and the package directory as string. In addition
-@code{ess-r-package-name} returns the current package name as a string
-(rather than a symbol as in the project instance).
+@code{ess-r-package-name} returns the current package name as a string.
 
 In the future (long term), we will thus deprecate
 @code{ess-directory-function} in favour of the Emacs wide hook
