@@ -1489,9 +1489,9 @@ If FILENAME is not found at all, ask the user where to find it if
 `ess--dbg-ask-for-file' is non-nil.  Search the directories in
 `ess-tracebug-search-path'."
   (let ((dirs (append
-               (ess-r-package-sources-dirs)
+               (ess-r-package-source-dirs)
                (cl-loop for d in ess-tracebug-search-path
-                        append (ess-r-package--get-all-subdirs d))))
+                        append (ess-r-package--all-source-dirs d))))
         buffsym buffer fmts name buffername)
     (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
     ;; 1. search already open buffers for match (associated file might not even exist yet)

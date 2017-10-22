@@ -65,12 +65,12 @@ to an R package. If the file specified in `ess-r-package-root-file'
 of the package, the current directory is considered to be part of
 a R package.")
 
-(defvar ess-r-package-sources-subdirs
+(defvar ess-r-package-source-roots
   '("R" "src" "tests" "inst/include")
   "List of sub-directories within R package where source files are located.
 All children of these directories are also considered source
-containing directories.  Use `ess-r-package-sources-dirs' to get
-all sources dirs within the current package.")
+containing directories.  Use `ess-r-package-source-dirs' to get
+all source dirs recursively within the current package.")
 
 
 ;;;*;;; Package UI
@@ -87,16 +87,16 @@ whether the current file is part of a package, or the value of
       (with-ess-process-buffer t
         ess-r-package-info)))
 
-(defun ess-r-package--get-all-subdirs (dir)
+(defun ess-r-package--all-source-dirs (dir)
   (when (file-exists-p dir)
     (cl-loop for f in (directory-files-and-attributes dir t "^[^.]")
              if (cadr f)
-             append (cons (car f) (ess-r-package--get-all-subdirs (car f))))))
+             append (cons (car f) (ess-r-package--all-source-dirs (car f))))))
 
-(defun ess-r-package-sources-dirs ()
+(defun ess-r-package-source-dirs ()
   "Get paths within current R package with source files.
 Return nil if not in a package. Search sub-directories listed in
-`ess-r-package-sources-subdirs' are searched recursively and
+`ess-r-package-source-roots' are searched recursively and
 return all physically present directories."
   (let ((pkg-root (cdr (ess-r-package-get-info))))
     (when pkg-root
@@ -104,9 +104,9 @@ return all physically present directories."
         (cl-loop for f in files
                  if (and (cadr f)
                          (cl-some (lambda (el) (string-match-p (concat "/" el "$") (car f)))
-                                  ess-r-package-sources-subdirs))
+                                  ess-r-package-source-roots))
                  append (cons (car f)
-                              (ess-r-package--get-all-subdirs (car f))))))))
+                              (ess-r-package--all-source-dirs (car f))))))))
 
 (defun ess-r-package-use-dir ()
   "Set process directory to current package directory."
