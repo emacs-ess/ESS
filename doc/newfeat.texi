@@ -28,11 +28,17 @@ root as the likely startup directory for R. If
 package root as default selection. Otherwise the working directory is
 automatically set to the package root.
 
-The mechanism is a bit more general if you are using Emacs 25.1 or
-older. On those recent Emacsen R packages are now recognised as Emacs
-projects and ESS queries Emacs projects to get the default startup
-directory. This means that any git or subversion directory will be
-recognised as project root even if it is not an R package.
+An exception is made when you are opening a new process from the
+@code{tests} folder. Since @code{R CMD check} sets the working directory
+to that folder when executing test files, this folder is preferred over
+the package root.
+
+The mechanism for selecting a directory is a bit more general if you are
+using Emacs 25.1 or older. On those recent Emacsen R packages are now
+recognised as Emacs projects and ESS queries Emacs projects to get the
+default startup directory. This means that any git or subversion
+directory will be recognised as project root even if it is not an R
+package (and in fact regardless of language or dialect).
 
 @item @ESS{[R]} Lookup for references in inferior buffers has been
 improved. New variable @code{ess-r-package-source-roots} contains

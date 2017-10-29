@@ -585,8 +585,25 @@ This marks the process with a message, at a particular time point."
                  default-directory)))
     (directory-file-name dir)))
 
+;; FIXME: Move all that R stuff elsewhere
+(defun inferior-ess-r--adjust-startup-directory (dir dialect)
+  (if (string= dialect "R")
+      (let* ((project-dir (cdr (ess-r-package-project)))
+             (tests-dir (expand-file-name (file-name-as-directory "tests")
+                                          project-dir)))
+        ;; Prefer the `tests' directory but only if the package
+        ;; directory was selected in the first place
+        (if (and project-dir
+                 (string= project-dir dir)
+                 (string= default-directory tests-dir))
+            tests-dir
+          dir))
+    dir))
+
 (defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
-  (let ((default-dir (inferior-ess--get-startup-directory)))
+  (let ((default-dir (inferior-ess-r--adjust-startup-directory
+                      (inferior-ess--get-startup-directory)
+                      dialect)))
     (if ess-ask-for-ess-directory
         (let* ((prog (cond ((string= dialect "R")
                             ;; Includes R-X.Y versions
