@@ -34,22 +34,13 @@ projects and ESS queries Emacs projects to get the default startup
 directory. This means that any git or subversion directory will be
 recognised as project root even if it is not an R package.
 
-In light of these developments, @code{ess-r-package-get-info} is
-deprecated in favour of @code{ess-r-package-project}. This function
-returns an Emacs project instance, e.g. a cons cell of the project name
-as symbol and the package directory as string. In addition
-@code{ess-r-package-name} returns the current package name as a string.
+@item @ESS{[R]} Lookup for references in inferior buffers has been
+improved. New variable @code{ess-r-package-source-roots} contains
+package sub-directories which are searched recursively during the file
+lookup point. Directories in @code{ess-tracebug-search-path} are now
+also searched recursively.
 
-In the future (long term), we will thus deprecate
-@code{ess-directory-function} in favour of the Emacs wide hook
-@code{project-find-functions}.
 @end itemize
-
-@item Lookup for references in inferior buffers has been improved.
-New variable @code{ess-r-package-source-roots} contains package
-sub-directories which are searched recursively during the file lookup
-point. Directories in @code{ess-tracebug-search-path} are now also
-searched recursively.
 
 
 Changes and New Features in 16.10:
