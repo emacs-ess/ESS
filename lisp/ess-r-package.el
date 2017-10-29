@@ -38,7 +38,7 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   :group 'ess-r-package
   :type 'boolean)
 
-(defvar-local ess-r-package-info nil
+(defvar-local ess-r-package--project-cache nil
   "Current package info cache.
 
 Cons cell of two strings. CAR is the package name active in the
@@ -75,17 +75,36 @@ all source dirs recursively within the current package.")
 
 ;;;*;;; Package UI
 
+(defun ess-r-package-project (&optional dir)
+  "Return the current package as an Emacs project instance.
+A project instance is a cons cell of the project name as symbol
+and the project path as string. If DIR is provided, the package
+is searched from that directory instead of `default-directory'."
+  (if (car ess-r-package--project-cache)
+      ess-r-package--project-cache
+    (let* ((pkg-path (ess-r-package--find-package-path (or dir default-directory)))
+           (project (when pkg-path
+                      (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
+      ;; Cache info for better performance on remotes
+      (setq-local ess-r-package--project-cache (or project (list nil)))
+      (when (car project)
+        (cons 'r-package (cdr project))))))
+
+(defun ess-r-package-name (&optional dir)
+  "Return the name of the current package as a string."
+  ;; FIXME Emacs 25.1: Use `when-let'
+  (let ((project (ess-r-package-project dir)))
+    (when project
+      (symbol-name (car ess-r-package--project-cache)))))
+
 (defun ess-r-package-get-info ()
-  "Get current package info.
-Return a cons cell of two strings whose CAR is a package name and
-CDR is a package directory. The package is determined by (in this
-order) the buffer-local value of `ess-r-package-info',
-whether the current file is part of a package, or the value of
-`ess-r-package-info' in the attached process buffer."
-  (or ess-r-package-info
-      (ess-r-package--local-package-info)
-      (with-ess-process-buffer t
-        ess-r-package-info)))
+  "Deprecated function to get package info.
+Please use `ess-r-package-project' instead."
+  (let ((project (ess-r-package-project)))
+    (if project
+        (cons (ess-r-package-name) (cdr project))
+      (list nil))))
+(make-obsolete 'ess-r-package-get-info 'ess-r-package-project "17.11")
 
 (defun ess-r-package--all-source-dirs (dir)
   (when (file-exists-p dir)
@@ -98,7 +117,8 @@ whether the current file is part of a package, or the value of
 Return nil if not in a package. Search sub-directories listed in
 `ess-r-package-source-roots' are searched recursively and
 return all physically present directories."
-  (let ((pkg-root (cdr (ess-r-package-get-info))))
+  ;; FIXME Emacs 25.1: Use `when-let'
+  (let ((pkg-root (cdr (ess-r-package-project))))
     (when pkg-root
       (let ((files (directory-files-and-attributes pkg-root t "^[^.]")))
         (cl-loop for f in files
@@ -111,7 +131,7 @@ return all physically present directories."
 (defun ess-r-package-use-dir ()
   "Set process directory to current package directory."
   (interactive)
-  (let ((dir (cdr (ess-r-package-get-info))))
+  (let ((dir (cdr (ess-r-package-project))))
     (ess-use-dir dir)))
 
 (defun ess-r-package-set-package ()
@@ -128,15 +148,15 @@ return all physically present directories."
       (error "Not a valid package. No '%s' found in `%s'." ess-r-package-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
-      (add-file-local-variable 'ess-r-package-info pkg-info))
-    (setq ess-r-package-info pkg-info)))
+      (add-file-local-variable 'ess-r-package--project-cache pkg-info))
+    (setq ess-r-package--project-cache pkg-info)))
 
 (defun ess-r--select-package-name ()
   (inferior-ess-r-force)
   (let ((pkgs (ess-get-words-from-vector
                (format "print(.packages(%s), max = 1e6)\n"
                        (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
-        (current-pkg (car (ess-r-package-get-info))))
+        (current-pkg (ess-r-package-name)))
     (let ((env (ess-r-get-evaluation-env)))
      (when env
        (setq pkgs (append '("*none*") pkgs))
@@ -146,7 +166,8 @@ return all physically present directories."
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
-    (let ((pkg (car (ess-r-package-get-info))))
+    ;; FIXME Emacs 25.1: Use `when-let'
+    (let ((pkg (ess-r-package-name)))
       (when pkg
         (ess-r-set-evaluation-env pkg)))))
 
@@ -154,14 +175,14 @@ return all physically present directories."
 
 (defun ess-r-package-send-process (command &optional msg alt default-alt)
   (inferior-ess-r-force)
-  (let* ((pkg-info (or (ess-r-package-get-info)
+  (let* ((pkg-info (or (ess-r-package-project)
                        (ess-r-package-set-package)))
-         (name (car pkg-info))
+         (name (ess-r-package-name))
          (path (concat "'" (cdr pkg-info) "'"))
          (args (ess-r-command--process-alt-args alt default-alt)))
     (message msg name)
     (with-ess-process-buffer nil
-      (setq ess-r-package-info pkg-info))
+      (setq ess-r-package--project-cache ess-r-package--project-cache))
     (ess-eval-linewise (format command (concat path args)))))
 
 (defun ess-r-command--process-alt-args (alt &optional default-alt)
@@ -176,23 +197,15 @@ return all physically present directories."
 
 ;;;*;;; Package Detection
 
-(defun ess-r-package--local-package-info ()
-  "Parses DESCRIPTION file in PATH (R specific so far). PATH
-defaults to the value returned by
-`ess-r-package--find-package-path'."
-  (let ((pkg-path (ess-r-package--find-package-path)))
-    (setq ess-r-package-info
-          (if pkg-path
-              (cons (ess-r-package--find-package-name pkg-path) pkg-path)
-            ;; cache non-package files as well
-            '(nil)))))
-
-(defun ess-r-package--find-package-path ()
+(defun ess-r-package--find-package-path (&optional dir)
   "Get the root of R package that contains current directory.
 Root is determined by locating `ess-r-package-root-file'."
-  (let* ((path (if (buffer-file-name)
-                   (file-name-directory (buffer-file-name))
-                 default-directory))
+  (let* ((path (cond
+                (dir)
+                ((buffer-file-name)
+                 (file-name-directory (buffer-file-name)))
+                (t
+                 default-directory)))
          (pkg-path
           (when path
             (or
@@ -213,17 +226,6 @@ Root is determined by locating `ess-r-package-root-file'."
     (when pkg-path
       (directory-file-name pkg-path))))
 
-(defun ess--parent-dir (path n)
-  "Return Nth parent of PATH."
-  (let ((opath path))
-    (while (and path (> n 0))
-      (setq path (file-name-directory (directory-file-name opath)))
-      (if (equal path opath)
-          (setq path nil)
-        (setq opath path
-              n (1- n))))
-    path))
-
 (defun ess-r-package--find-package-name (path)
   (let ((file (expand-file-name ess-r-package-root-file path))
         (case-fold-search t))
@@ -232,7 +234,7 @@ Root is determined by locating `ess-r-package-root-file'."
         (insert-file-contents file)
         (goto-char (point-min))
         (when (re-search-forward "package: \\(.*\\)" nil t)
-          (match-string 1))))))
+          (intern (match-string 1)))))))
 
 
 ;;;*;;; Devtools Integration
@@ -383,7 +385,8 @@ When called with prefix, also asks for additional arguments."
   :type 'hook)
 
 (defcustom ess-r-package-mode-line
-  '(:eval (let* ((pkg-name (car (ess-r-package-get-info))))
+  ;; FIXME Emacs 25.1: Use `when-let'
+  '(:eval (let ((pkg-name (ess-r-package-name)))
             (when pkg-name
               (format " [pkg:%s]" pkg-name))))
   "Mode line for ESS developer. Set this variable to nil to
@@ -406,8 +409,10 @@ disable the mode line entirely."
   :lighter ess-r-package-mode-line
   (cond
    (ess-r-package-mode
+    (add-hook 'project-find-functions #'ess-r-package-project)
     (run-hooks 'ess-r-package-enter-hook))
    (t
+    (remove-hook 'project-find-functions #'ess-r-package-project)
     (run-hooks 'ess-r-package-exit-hook))))
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
@@ -418,8 +423,9 @@ disable the mode line entirely."
              (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
              (or (buffer-file-name)
                  default-directory))
-    (let ((pkg-info (ess-r-package-get-info)))
-      (when (car pkg-info)
+    ;; FIXME Emacs 25.1: Use `when-let'
+    (let ((pkg-info (ess-r-package-project)))
+      (when pkg-info
         (ess-r-package-mode 1)))))
 
 

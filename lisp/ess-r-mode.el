@@ -595,10 +595,6 @@ Executed in process buffer."
   (when inferior-ess-language-start
     (ess-eval-linewise inferior-ess-language-start
                        nil nil nil 'wait-prompt))
-  ;; FIXME Emacs 25.1: Use `when-let'
-  (let ((pkg-path (cdr (ess-r-package-get-info))))
-    (when pkg-path
-      (ess-set-working-directory pkg-path)))
   (with-ess-process-buffer nil
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
@@ -1168,7 +1164,7 @@ attached packages."
   '(:eval (let ((env (ess-r-get-evaluation-env)))
             (if env
                 (format " %s"
-                        (propertize  (if (equal env (car (ess-r-package-get-info)))
+                        (propertize  (if (equal env (ess-r-package-name))
                                          "pkg"
                                        env)
                                      'face 'mode-line-emphasis))
@@ -1386,17 +1382,8 @@ we flush the cache.")
   :group 'ess-R)
 
 (ess-defmethod R inferior-ess-reload (&optional start-args)
-  (let ((dir (ess-get-working-directory))
-        (ess-ask-for-ess-directory nil)
-        (proc (ess-get-process)))
-    (with-ess-process-buffer nil
-      (ess-quit 'no-save)
-      (inferior-ess--wait-for-exit proc)
-      (R start-args)
-      (run-hooks 'inferior-ess-r-reload-hook))
-    ;; If we are in a package the working directory is already set
-    (unless (cdr ess-r-package-info)
-      (ess-set-working-directory dir))))
+  (R start-args)
+  (run-hooks 'inferior-ess-r-reload-hook))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
   (setq ess-dialect "R")

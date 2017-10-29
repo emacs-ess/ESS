@@ -2685,7 +2685,7 @@ for signature and trace it with browser tracer."
   (interactive)
   (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
-         (pkg (car (ess-r-package-get-info)))
+         (pkg (ess-r-package-name))
          (all-functions (ess-get-words-from-vector
                          (if pkg
                              (format ".ess_all_functions(c('%s'))\n" pkg)
