@@ -107,12 +107,14 @@
     on.exit({
         if (fake.source)
             .ess.file.remove(file)
+        else
+            cat(sprintf("%sSourced file %s\n", message.prefix, file))
+
     })
 
     out <- ss(file, echo = visibly, local = local, print.eval = output,
               max.deparse.length = max.deparse.length, keep.source = keep.source)
 
-    cat(sprintf("%sSourced file %s\n", message.prefix, file))
     ## Return value for org-babel
     invisible(out$value)
 }
