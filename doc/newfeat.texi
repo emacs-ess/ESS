@@ -34,7 +34,7 @@ to that folder when executing test files, this folder is preferred over
 the package root.
 
 The mechanism for selecting a directory is a bit more general if you are
-using Emacs 25.1 or older. On those recent Emacsen R packages are now
+using Emacs 25.1 or newer. On those recent Emacsen R packages are now
 recognised as Emacs projects and ESS queries Emacs projects to get the
 default startup directory. This means that any git or subversion
 directory will be recognised as project root even if it is not an R
