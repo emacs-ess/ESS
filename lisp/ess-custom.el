@@ -3098,6 +3098,9 @@ Used to store the values for passing on to newly created buffers.")
 
 (make-variable-buffer-local 'ess-listing-minor-mode)
 
+(defvar ess--enable-experimental-projects nil
+  "Enable experimental project support in ESS")
+
 (provide 'ess-custom)
 
  ; Local variables section
