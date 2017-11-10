@@ -173,8 +173,7 @@ return all physically present directories."
                                             (1+ (length path))
                                             (length default-directory)))
                         (subpath (substring subpath 0 2)))
-                   (and (string= subpath
-                                 (file-name-as-directory "R")))))
+                   (string= subpath (file-name-as-directory "R"))))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
