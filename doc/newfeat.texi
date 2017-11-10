@@ -1,7 +1,7 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes and New Features in 17.05:
+Changes and New Features in 17.11:
 @itemize @bullet
 
 @item The ESS initialisation process has been streamlined. You can now
