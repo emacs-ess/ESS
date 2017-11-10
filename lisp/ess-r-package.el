@@ -166,10 +166,16 @@ return all physically present directories."
 
 (defun ess-r-package-set-namespaced-evaluation ()
   (when ess-r-package-auto-set-evaluation-env
-    ;; FIXME Emacs 25.1: Use `when-let'
-    (let ((pkg (ess-r-package-name)))
-      (when pkg
-        (ess-r-set-evaluation-env pkg)))))
+    (let ((path (cdr (ess-r-package-project))))
+      ;; Check that we are in a file within R/
+      (when (and path
+                 (let* ((subpath (substring default-directory
+                                            (1+ (length path))
+                                            (length default-directory)))
+                        (subpath (substring subpath 0 2)))
+                   (and (string= subpath
+                                 (file-name-as-directory "R")))))
+        (ess-r-set-evaluation-env (ess-r-package-name))))))
 
 (add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
 
