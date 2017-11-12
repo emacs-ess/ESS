@@ -28,6 +28,11 @@ package sub-directories which are searched recursively during the file
 lookup point. Directories in @code{ess-tracebug-search-path} are now
 also searched recursively.
 
+@item @ESS{[R]} Namespaced evaluation is now automatically enabled only
+in the @code{R/} directory. This way ESS will not attempt to update
+function definitions from a package if you are working from e.g. a test
+file.
+
 @end itemize
 
 
