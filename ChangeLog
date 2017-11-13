@@ -1,3 +1,7 @@
+2017-11-13  ESS Maintainers <ESS-core@r-project.org>
+
+  * Version 17.11 released.
+
 2017-01-19  Stefan Monnier  <monnier@iro.umontreal.ca>
 
 	* .gitignore: Add ELPA's ess-autoloads.el.
