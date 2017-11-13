@@ -31,7 +31,6 @@
 ;;; ElDoc
 
 (require 'cl)
-(require 'subr-x)
 (require 'ess-utils)
 
 (defun ess-r-eldoc-function ()
