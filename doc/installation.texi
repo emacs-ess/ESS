@@ -69,7 +69,7 @@ or from
 
 
 @emph{Note for XEmacs users:} Due to XEmacs lacking some features
-that ESS requires, ESS support of XEmacs ends with ESS 12.04-4.  This
-decision will be re-visited in the future as XEmacs continues to sync
-with GNU Emacs.
+that ESS requires, ESS support of XEmacs ends with ESS 12.04-4.  @c This
+@c decision will be re-visited in the future as XEmacs continues to sync
+@c with GNU Emacs.
 
