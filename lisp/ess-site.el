@@ -75,13 +75,16 @@
   ;; A nice default
   (directory-file-name
    (file-name-directory
-    (if (and (boundp 'load-file-name) load-file-name)
+    (if load-file-name
         (file-truename load-file-name)
       (locate-library "ess-site") )))
   "Directory containing ess-site.el(c) and other ESS lisp files.")
 
+;; Depending on how ESS is loaded the `load-path' might not contain
+;; the `lisp' directory. For this reason we need to add it before we
+;; start requiring ESS files
 (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
-(require 'ess-utils);; <<- _not_ in load-path typically for traditional setup
+(require 'ess-utils)
 
 (ess-message (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 

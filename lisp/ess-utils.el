@@ -35,7 +35,11 @@
 ;;*;; Internal ESS tools and variables
 
 (defvar ess-lisp-directory
-  (directory-file-name (file-name-directory (locate-library "ess-site")))
+  (directory-file-name
+   (file-name-directory
+    (if load-file-name
+        (file-truename load-file-name)
+      (locate-library "ess-utils") )))
   "Directory containing ess-site.el(c) and other ESS lisp files.")
 
 (defvar ess-etc-directory nil
