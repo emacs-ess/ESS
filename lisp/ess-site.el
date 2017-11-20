@@ -80,6 +80,12 @@
       (locate-library "ess-site") )))
   "Directory containing ess-site.el(c) and other ESS lisp files.")
 
+(defvar ess-etc-directory nil
+  "Location of the ESS etc/ directory.
+The ESS etc directory stores various auxillary files that are useful
+for ESS, such as icons.")
+
+
 ;; Depending on how ESS is loaded the `load-path' might not contain
 ;; the `lisp' directory. For this reason we need to add it before we
 ;; start requiring ESS files
