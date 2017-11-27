@@ -241,6 +241,7 @@
                                ess-bugs-chains ess-bugs-monitor ess-bugs-thin ess-bugs-burnin ess-bugs-update))
   )
 
+;;;###autoload
 (defun ess-bugs-mode ()
   "ESS[BUGS]: Major mode for BUGS."
   (interactive)
