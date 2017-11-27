@@ -236,6 +236,7 @@
                                ess-jags-chains ess-jags-monitor ess-jags-thin ess-jags-burnin ess-jags-update))
   )
 
+;;;###autoload
 (defun ess-jags-mode ()
   "ESS[JAGS]: Major mode for JAGS."
   (interactive)
