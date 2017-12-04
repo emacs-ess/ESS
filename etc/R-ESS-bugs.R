@@ -928,6 +928,17 @@ fo4 <- function(x, ...) {
     ## 'x' was wrongly indented --here: ^
 }
 
+### --- 38 ----------Mario Bouguin to ESS-bugs, Nov 21, 2017 ----
+scored <- read.csv(scored_path, comment.char="#")
+## writes
+## When I'm on the line and execute ess-eval-region-or-function-or-paragraph-and-step (i.e. C-c C-c), R only receives this:
+##
+## > scored <- read.csv(scored_path, comment.char="
+## +
+## MM: but I don't see this, so told him to upgrade ESS (he had 16.10, Windows)
+
+
+
 
 ### Local Variables:
 ### page-delimiter: "^### --- [1-9]"
