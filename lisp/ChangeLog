@@ -1,3 +1,8 @@
+2017-12-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-interactive): removing altprint/altlog 
+	since this feature is not working anyways
+
 2017-01-19  Stefan Monnier  <monnier@iro.umontreal.ca>
 
 	* ess-toolbar.el: Remove redundant ":group 'ess-toolbar".
