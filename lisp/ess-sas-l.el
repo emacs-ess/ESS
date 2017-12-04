@@ -408,7 +408,7 @@ number."
 
        ;; SAS execution blocks: DATA, %MACRO/%MEND, %DO/%END, etc.
        (cons (regexp-opt '(
-                           "data" "start" ;"proc"
+                           "data" "start" "return" ;"proc"
                            "%macro" "%mend"
                            "%do" "%to" "%by" "%end"
                            "%goto" "%go to"
@@ -429,7 +429,7 @@ number."
        (cons (concat "\\<"
                      (regexp-opt
                       '(
-                        "end;" "list;" "lostcard;" "page;" "return;" "stop;"
+                        "end;" "list;" "lostcard;" "page;" "stop;" ;"return;" 
                         )))
              font-lock-keyword-face)
 
@@ -603,7 +603,7 @@ number."
                  "parentname" "palette" "polyroot" "prod" "product" "pv"
                  "quartile" 
                  "rancomb" "randdirichlet" "randfun" "randmultinomial" "randmvt" "randnormal" "randwishart"
-                 "ranperk" "ranperm" "ranktie" "rates" "ratio" "remove" "repeat" "return" "root" "row" 
+                 "ranperk" "ranperm" "ranktie" "rates" "ratio" "remove" "repeat" "root" "row" 
                  "rowcat" "rowcatc" "rowvec" "rsubstr" 
                  "sample" "setdif" "shape" "shapecol" "skewness" "solve" "sparse" "splinev" "spot" 
                  "sqrsym" "sqrvech" "ssq" "standard" "storage" "sub2ndx" "sweep" "symsqr"
@@ -762,7 +762,7 @@ number."
      ;; SAS statements that must be followed by a semi-colon
      (cons (concat
             "\\(^[0-9]*\\|):\\|[;,]\\|then\\|else\\)[ \t]*"
-            "\\(cards4?\\|datalines\\|end\\|l\\(ostcard\\)\\|page\\|return\\|stop\\)?"
+            "\\(cards4?\\|datalines\\|end\\|l\\(ostcard\\)\\|page\\|stop\\)?"
             "[ \t]*;")                      font-lock-keyword-face)
 
      ;; SAS/GRAPH statements not handled above
