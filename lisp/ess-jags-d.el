@@ -256,6 +256,7 @@
   )
 
 (defvaralias 'ess-jags-mode-hook 'ess-bugs-mode-hook)
+(defvaralias 'ess-jags-mode-map 'ess-bugs-mode-map)
 
 (setq features (delete 'ess-bugs-d features))
 (provide 'ess-jags-d)
