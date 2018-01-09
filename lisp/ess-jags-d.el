@@ -255,6 +255,8 @@
       (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
   )
 
+(defvaralias 'ess-jags-mode-hook 'ess-bugs-mode-hook)
+
 (setq features (delete 'ess-bugs-d features))
 (provide 'ess-jags-d)
 
