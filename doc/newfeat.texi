@@ -6,6 +6,10 @@ Changes and New Features in development version:
 
 @item ESS modes now inherit from @code{prog-mode}.
 
+@item @ESS{[R]}: The package development minor mode now only activates
+within editing buffers, i.e. ones that inherit from @code{prog-mode} or
+@code{text-mode}.
+
 @end itemize
 
 
