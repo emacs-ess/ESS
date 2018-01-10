@@ -228,7 +228,8 @@ It makes underscores and dots word constituent chars.")
       (put-text-property (nth 8 state) string-end 'ess-r-backquoted t))
     (cond
      ((eq (nth 3 state) ?%)
-      'ess-%op%-face)
+      (unless (eq major-mode 'inferior-ess-mode)
+        'ess-%op%-face))
      ((save-excursion
         (and (ess-goto-char string-end)
              (ess-looking-at "<-")
