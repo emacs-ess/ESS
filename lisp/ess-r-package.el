@@ -425,7 +425,7 @@ disable the mode line entirely."
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
   (when (and ess-r-package-auto-activate
-             (or (provided-mode-derived-p major-mode 'text-mode 'prog-mode))
+             (derived-mode-p 'text-mode 'prog-mode)
              (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
              (or (buffer-file-name)
                  default-directory))
