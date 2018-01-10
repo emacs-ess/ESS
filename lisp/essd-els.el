@@ -161,8 +161,9 @@ buffer on the local computer."
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))
 
-(defcustom inferior-ess-remote-pager "cat"
-  "Remote pager to use for reporting help files and similar things."
+(defcustom inferior-ess-remote-pager nil
+  "Remote pager to use for reporting help files and similar things.
+The default value is nil."
   :group 'ess-proc
   :type 'string)
 
