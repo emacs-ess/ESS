@@ -426,9 +426,7 @@ disable the mode line entirely."
   "Activate developer if current file is part of a package."
   (when (and ess-r-package-auto-activate
              (derived-mode-p 'text-mode 'prog-mode)
-             (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
-             (or (buffer-file-name)
-                 default-directory))
+             (or (buffer-file-name) default-directory))
     ;; FIXME Emacs 25.1: Use `when-let'
     (let ((pkg-info (ess-r-package-project)))
       (when pkg-info
