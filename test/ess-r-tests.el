@@ -51,7 +51,7 @@
 
 ;;; ess-r-package-mode
 
-(ert-deftest ess-r-package-auto-activate ()
+(ert-deftest ess-r-package-auto-activation ()
   (with-temp-buffer
     (text-mode)
     (hack-local-variables)
@@ -59,6 +59,12 @@
   (with-r-file "dummy-pkg/R/test.R"
     (hack-local-variables)
     (should ess-r-package-mode)))
+
+(ert-deftest ess-r-package-no-auto-activation ()
+  (with-r-file "dummy-pkg/R/test.R"
+    (eshell)
+    (should (not ess-r-package-mode))
+    (kill-buffer)))
 
 
 ;;; Namespaced evaluation
