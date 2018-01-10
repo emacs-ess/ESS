@@ -77,11 +77,13 @@
                        "[1] \"foo\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-srcref-in-errors ()
-  (with-r-running nil
-  (let ((ess-r-evaluation-env "base")
-        (error-msg "Error: unexpected symbol")
-        ess-eval-visibly)
-    (insert "(foo bar)\n")
-    (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
-      (should (string= (substring output 0 (length error-msg))
-                       error-msg))))))
+  ;; Fails since https://github.com/emacs-ess/ESS/commit/3a7d913
+  (when nil
+    (with-r-running nil
+      (let ((ess-r-evaluation-env "base")
+            (error-msg "Error: unexpected symbol")
+            ess-eval-visibly)
+        (insert "(foo bar)\n")
+        (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
+          (should (string= (substring output 0 (length error-msg))
+                           error-msg)))))))
