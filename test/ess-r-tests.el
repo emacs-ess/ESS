@@ -6,6 +6,10 @@
 
 ;;; Inferior R
 
+(ert-deftest ess-r-inherits-prog-mode ()
+  (with-r-file nil
+    (should (derived-mode-p 'prog-mode))))
+
 (ert-deftest ess-build-eval-command:R ()
   (let ((command "command(\"string\")"))
     (should (string= (ess-build-eval-command:R command)

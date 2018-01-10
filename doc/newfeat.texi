@@ -1,6 +1,14 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in development version:
+@itemize @bullet
+
+@item ESS modes now inherit from @code{prog-mode}.
+
+@end itemize
+
+
 Changes and New Features in 17.11:
 @itemize @bullet
 

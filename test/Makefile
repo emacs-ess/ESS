@@ -3,6 +3,9 @@ EMACS=/usr/bin/emacs
 all:
 	${EMACS} -Q --script run-tests
 
+ess:
+	${EMACS} -Q --script run-tests --ess
+
 inf:
 	${EMACS} -Q --script run-tests --inf
 

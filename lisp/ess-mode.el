@@ -378,6 +378,9 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (run-mode-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
+;; Set parent to `prog-mode'
+(put 'ess-mode 'derived-mode-parent 'prog-mode)
+
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
 Internal function to be used for dynamic mode-line dysplay in
