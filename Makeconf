@@ -87,7 +87,7 @@ UNINSTALL = rm -f
 DOCDIR=$(PREFIX)/share/doc/ess
 
 # N.B. $(shell) is a GNU-ism: we need a workaround to be UNIX make friendly
-DOWNLOAD=$(shell which -s wget && echo 'wget -O -' || which curl)
+DOWNLOAD=$(shell command -v wget && echo 'wget -O -' || command -v curl)
 ##DOWNLOAD = wget -O -
 ##DOWNLOAD = curl
 
