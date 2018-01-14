@@ -422,10 +422,18 @@ disable the mode line entirely."
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
 
+(defvar ess-r-package-auto-activate-modes '(text-mode prog-mode)
+  "List of package mode names. The package mode will only be
+activated in modes inheriting from one of those. Set this to
+`fundamental-mode' to activate the package mode unconditionally.")
+
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
   (when (and ess-r-package-auto-activate
-             (derived-mode-p 'text-mode 'prog-mode)
+             (apply #'derived-mode-p (if (listp ess-r-package-auto-activate-modes)
+                                       ess-r-package-auto-activate-modes
+                                       (list ess-r-package-auto-activate-modes)))
+             (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
              (or (buffer-file-name) default-directory))
     ;; FIXME Emacs 25.1: Use `when-let'
     (let ((pkg-info (ess-r-package-project)))

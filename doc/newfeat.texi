@@ -7,8 +7,11 @@ Changes and New Features in development version:
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates
-within editing buffers, i.e. ones that inherit from @code{prog-mode} or
-@code{text-mode}.
+within editing buffers by default, i.e. ones that inherit from
+@code{prog-mode} or @code{text-mode}. If you want to restore the old
+behaviour and activate the package mode in all buffers (that have a
+@code{default-directory} that is part of a package path), set it to
+@code{fundamental-mode}.
 
 @end itemize
 
