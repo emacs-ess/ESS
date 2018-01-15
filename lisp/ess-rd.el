@@ -318,7 +318,7 @@ following lines to your `.emacs' file:
   (turn-on-auto-fill)
   (message "Rd mode version %s" essddr-version)
   (setq ess-language "S" ess-dialect  "R"); (buffer local)
-  (run-hooks 'Rd-mode-hook))
+  (run-mode-hooks 'Rd-mode-hook))
 
 ;; FIXME: The following should be moved to ess-utils.el, no? (MM thinks)
 (defun ess-point (position)

@@ -567,8 +567,8 @@ been created using the variable `ess-r-versions'."
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   ;; (local-set-key  "\t" 'gretl-indent-line) ;; temp workaround
   ;; (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
- ;; (ess-imenu-gretl)
-  (run-hooks 'gretl-mode-hook))
+  ;; (ess-imenu-gretl)
+  (run-mode-hooks 'gretl-mode-hook))
 
 
 (defvar ess-gretl-post-run-hook nil

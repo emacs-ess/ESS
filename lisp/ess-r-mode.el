@@ -637,7 +637,7 @@ Executed in process buffer."
   (when ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))
 
-  (run-hooks 'R-mode-hook))
+  (run-mode-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
 (fset 'ess-r-mode 'R-mode)
@@ -957,7 +957,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
         ess-dialect "R"
         ess-language "S")
   (put 'ess--local-handy-commands 'permanent-local t)
-  (run-hooks 'Rnw-mode-hook))
+  (run-mode-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
 

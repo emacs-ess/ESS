@@ -700,7 +700,7 @@ Other keybindings are as follows:
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
   (define-key ess-help-mode-map "s" ess-help-sec-map)
 
-  (run-hooks 'ess-help-mode-hook))
+  (run-mode-hooks 'ess-help-mode-hook))
 
 ;;*;; User commands defined in ESS help mode
 
