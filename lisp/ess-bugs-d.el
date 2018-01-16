@@ -254,7 +254,7 @@
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
   (setq ess-language "S") ; mimic S for ess-smart-underscore
-  (run-hooks 'ess-bugs-mode-hook)
+  (run-mode-hooks 'ess-bugs-mode-hook)
 
   (if (not (w32-shell-dos-semantics))
       (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))

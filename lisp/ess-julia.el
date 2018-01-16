@@ -379,7 +379,7 @@ It makes underscores and dots word constituent chars.")
   (set (make-local-variable 'ess-julia-basic-offset) 4)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl")
-  (run-hooks 'ess-julia-mode-hook))
+  (run-mode-hooks 'ess-julia-mode-hook))
 
 (defvar ess-julia-mode-hook nil)
 (defvar ess-julia-post-run-hook nil

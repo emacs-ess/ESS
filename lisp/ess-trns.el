@@ -199,7 +199,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
 
-  (run-hooks 'ess-transcript-mode-hook))
+  (run-mode-hooks 'ess-transcript-mode-hook))
 
 ;;*;; Commands used in S transcript mode
 

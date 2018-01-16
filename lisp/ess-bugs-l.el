@@ -269,7 +269,7 @@ add path to the command name."
         comint-prompt-regexp "^Bugs> *")
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
-  (run-hooks 'ess-bugs-shell-mode-hook)
+  (run-mode-hooks 'ess-bugs-shell-mode-hook)
   )
 
 (provide 'ess-bugs-l)
