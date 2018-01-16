@@ -448,7 +448,7 @@ Misc:
   (add-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
   (add-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
   (setq ess-noweb-doc-mode-syntax-table nil)
-  (run-mode-hooks 'ess-noweb-mode-hook)
+  (run-hooks 'ess-noweb-mode-hook)
   (message
    "noweb mode: use `M-x ess-noweb-describe-mode' for further information"))
  ;; If we didn't do the above, then we want to turn ess-noweb-mode
@@ -1279,8 +1279,8 @@ in the middle and and update the chunk vector."
                 (if (not (equal major-mode ess-noweb-code-mode))
                     (progn
                       (funcall ess-noweb-code-mode)
-                      (run-mode-hooks 'ess-noweb-select-mode-hook)
-                      (run-mode-hooks 'ess-noweb-select-code-mode-hook))))
+                      (run-hooks 'ess-noweb-select-mode-hook)
+                      (run-hooks 'ess-noweb-select-code-mode-hook))))
             ;; Inside a documentation chunk
             (progn
               (if (not (equal major-mode ess-noweb-doc-mode))
@@ -1293,8 +1293,8 @@ in the middle and and update the chunk vector."
                           (make-syntax-table (syntax-table)))
                     (ess-noweb-set-doc-syntax-table)))
               (set-syntax-table ess-noweb-doc-mode-syntax-table)
-              (run-mode-hooks 'ess-noweb-select-mode-hook)
-              (run-mode-hooks 'ess-noweb-select-doc-mode-hook)))
+              (run-hooks 'ess-noweb-select-mode-hook)
+              (run-hooks 'ess-noweb-select-doc-mode-hook)))
           (run-hooks 'ess-noweb-changed-chunk-hook)))))
 
 (defvar ess-noweb-doc-mode ess-noweb-default-doc-mode

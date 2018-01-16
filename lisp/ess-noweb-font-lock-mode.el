@@ -209,7 +209,7 @@ Each chunk is fontified in accordance with its own mode"
            (add-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)
            (add-hook 'ess-noweb-changed-chunk-hook
              'ess-noweb-font-lock-fontify-this-chunk)
-           (run-mode-hooks 'ess-noweb-font-lock-mode-hook)
+           (run-hooks 'ess-noweb-font-lock-mode-hook)
            (message "ess-noweb-font-lock mode: use `M-x ess-noweb-font-lock-describe-mode' for more info"))
          ;; If we didn't do the above, then we want to turn ess-noweb-font-lock-mode
          ;; off, no matter what (hence the condition `t')
