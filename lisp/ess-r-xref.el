@@ -47,8 +47,10 @@
   (when (ess-r-xref--exists symbol)
     (if (ess-r-xref--has-srcfile symbol)
         (ess-r-xref--find-srcfile symbol)
-      ;; TODO: Implement non-srcfile references.
-      nil)))
+      (if (ess-r-xref--is-function symbol)
+          (ess-r-xref--find-body symbol)
+        ;; Ignore non-functions for now.
+        nil))))
 
 
 ;;; Source File Locations
@@ -79,6 +81,26 @@ they are loaded via byte-compiled packages."
                       (expand-file-name (string-trim file))
                       (string-to-number line)
                       0)))))
+
+
+;;; Local/Byte-compiled Locations
+
+(defun ess-r-xref--is-function (symbol)
+  "Check whether SYMBOL is an R symbol."
+  (ess-boolean-command (format "is.function(%s)\n" symbol)))
+
+(defun ess-r-xref--find-body (fn)
+  "Creates an xref to a buffer containing the body of the R function FN."
+  (let ((cmd (format "cat(\"%s <- \"); print.function(%s)\n"
+                     fn fn))
+        (buff (get-buffer-create
+               (format "*definition[R]:%s*" fn))))
+    (with-current-buffer (ess-command cmd buff)
+      ;; TODO: This should probably have its own bespoke mode, just using the
+      ;; syntax of `r-mode', so as to avoid pullin in all of ESS's hooks.
+      (r-mode)
+      (setq buffer-read-only t))
+    (list (xref-make (format "%s" fn) (xref-make-buffer-location buff 0)))))
 
 (provide 'ess-r-xref)
 
