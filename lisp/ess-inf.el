@@ -836,8 +836,8 @@ Returns the name of the selected process."
   (setq ess-dialect (or ess-dialect
                         (ess-completing-read
                          "Set `ess-dialect'"
-                         (delete-dups (list "R" "S+" S+-dialect-name
-                                            "stata" STA-dialect-name
+                         (delete-dups (list "R" "S+" (if (boundp 'S+-dialect-name) S+-dialect-name "S+")
+                                            "stata" (if (boundp 'STA-dialect-name) STA-dialect-name "stata")
                                             "julia" "SAS" "XLS"  "ViSta")))))
 
   (let* ((pname-list (delq nil ;; keep only those mathing dialect
