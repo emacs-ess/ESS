@@ -891,8 +891,7 @@ The action list is in `ess-debug-error-action-alist'. "
   (let* ((alist ess-debug-error-action-alist)
          (ev last-command-event)
          (com-char  (event-basic-type ev))
-         (cur-action (or (ess-process-get 'on-error-action)
-                         "-"))
+         (cur-action (or (ess-process-get 'on-error-action) ""))
          actions act)
     (setq actions
           (cdr (member (assoc cur-action ess-debug-error-action-alist)
