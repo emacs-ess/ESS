@@ -326,7 +326,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
   '(ac-source-R))
 
 (defvar ess-r-company-backends
-  '((company-R-args company-R-objects)))
+  '((company-R-args company-R-objects :separate)))
 
 (defvar ess-r-loop-timeout
   2000000)
