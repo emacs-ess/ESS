@@ -43,14 +43,37 @@
   (ess-symbol-at-point))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
-  (inferior-ess-r-force)
-  (when (ess-r-xref--exists symbol)
-    (if (ess-r-xref--has-srcfile symbol)
-        (ess-r-xref--find-srcfile symbol)
-      (if (ess-r-xref--is-function symbol)
-          (ess-r-xref--find-body symbol)
-        ;; Ignore non-functions for now.
-        nil))))
+  (ess-r-xref--check-for-process
+   (when (ess-r-xref--exists symbol)
+     (if (ess-r-xref--has-srcfile symbol)
+         (ess-r-xref--find-srcfile symbol)
+       ;; Ignore non-functions for now.
+       (when (ess-r-xref--is-function symbol)
+         (ess-r-xref--find-body symbol))))))
+
+(cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
+  ;; Not yet supported.
+  nil)
+
+(cl-defmethod xref-backend-identifier-completion-table ((_backend (eql ess-r)))
+  (ess-r-xref--check-for-process
+   (let ((raw (ess-get-object-list ess-local-process-name)))
+     ;; This is not technically correct, since some of these objects are
+     ;; non-functions. But it *is* approximately correct, and expensive to
+     ;; filter with existing functions. A better strategy may be desirable in
+     ;; the future.
+     raw)))
+
+(defmacro ess-r-xref--check-for-process (&rest body)
+  "Wraps statements in BODY with `ess-make-buffer-current'."
+  `(if (not (ess-make-buffer-current))
+       (prog1 nil
+         ;; Give a message on the second invocation, as with
+         ;; `ess-complete-object-name'.
+         (when (string-match "xref" (symbol-name last-command))
+           (message "No ESS process associated with current buffer. Definitions \
+are not available.")))
+     ,@body))
 
 
 ;;; Source File Locations
