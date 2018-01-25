@@ -104,7 +104,6 @@ ess-custom.el: ../VERSION
 # ess-r-mode.el: ../etc/ESSR-VERSION
 # 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
 
-.PHONY: julia-mode.el
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(EMACSBATCH) --eval\
