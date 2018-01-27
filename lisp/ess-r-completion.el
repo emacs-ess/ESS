@@ -355,7 +355,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (let ((proc (or proc (ess-get-next-available-process))))
     (if (null proc)
         "No free ESS process found"
-      (let ((fun (car ess--fn-name-start)))
+      (let ((fun (car ess--fn-name-start-cache)))
         (with-current-buffer (ess-command (format ".ess_arg_help('%s','%s')\n" sym fun)
                                           nil nil nil nil proc)
           (goto-char (point-min))
@@ -394,7 +394,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                       prefix))))))
     (candidates (let* ((proc (ess-get-next-available-process))
                        (args (delete "..." (nth 2 (ess-function-arguments
-                                                   (car ess--fn-name-start) proc))))
+                                                   (car ess--fn-name-start-cache) proc))))
                        (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                      args)))
                   (all-completions arg args)))
@@ -470,9 +470,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
-  (when  (and ess--fn-name-start ;; set in a call to ess-arg-start
+  (when  (and ess--fn-name-start-cache ;; set in a call to ess-arg-start
               (ess-process-live-p))
-    (let ((args (nth 2 (ess-function-arguments (car ess--fn-name-start)))))
+    (let ((args (nth 2 (ess-function-arguments (car ess--fn-name-start-cache)))))
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))
