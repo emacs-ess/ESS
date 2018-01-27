@@ -579,7 +579,6 @@ in inferior buffers.  ")
   "Ring of markers to the positions from which `ess--dbg-goto-input-point' is called.
  See the also `ess--dbg-goto-debug-point'")
 
-
 ;; (setq ess-R--tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
 

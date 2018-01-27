@@ -266,7 +266,7 @@ to look up any doc strings."
              (not (ess-process-get 'busy)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-name (ess-symbol-at-point)))
-                       (car (ess--funname.start)))))
+                       (car (ess--fn-name-start)))))
       (when funname
         (let* ((args (copy-sequence (nth 2 (ess-function-arguments funname))))
                (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))

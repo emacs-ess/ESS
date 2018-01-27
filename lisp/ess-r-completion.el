@@ -42,7 +42,7 @@ to look up any doc strings."
     (let* ((proc (ess-get-next-available-process))
            (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
                                        (thing-at-point 'symbol))
-                                  (car (ess--funname.start))))))
+                                  (car (ess--fn-name-start))))))
       (when funname
         (let* ((args (ess-function-arguments funname proc))
                (bargs (cadr args))
@@ -136,7 +136,7 @@ to look up any doc strings."
 (defun ess-r-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'."
   (if (ess-make-buffer-current)
-      (let* ((funstart (cdr (ess--funname.start)))
+      (let* ((funstart (cdr (ess--fn-name-start)))
              (completions (ess-r-get-rcompletions funstart))
              (token (pop completions)))
         (when completions
@@ -251,7 +251,6 @@ token.  Needs version of R >= 2.7.0."
          (cmd (if allow-3-dots
                   (concat call1 "\n")
                 (concat "local({ r <- " call1 "; r[r != '...='] })\n"))))
-
     (ess-get-words-from-vector cmd)))
 
 (defun ess-r-complete-object-name ()
@@ -329,7 +328,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
       ("x" "..." "digits" "signif.stars" "intercept" "tol" "se" "sort" "verbose" "indent" "style" ".bibstyle" "prefix" "vsep" "minlevel" "quote" "right" "row.names" "max" "na.print" "print.gap"
        "useSource" "diag" "upper" "justify" "title" "max.levels" "width" "steps" "showEnv" "newpage" "vp" "cutoff" "max.level" "give.attr" "units" "abbrCollate" "print.x" "deparse" "locale" "symbolic.cor"
        "loadings" "zero.print" "calendar"))))
-  "Alist of cached arguments for very time consuming functions.")
+  "Alist of cached arguments for time consuming functions.")
 
 
 ;;; HELP
@@ -356,7 +355,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (let ((proc (or proc (ess-get-next-available-process))))
     (if (null proc)
         "No free ESS process found"
-      (let ((fun (car ess--funname.start)))
+      (let ((fun (car ess--fn-name-start)))
         (with-current-buffer (ess-command (format ".ess_arg_help('%s','%s')\n" sym fun)
                                           nil nil nil nil proc)
           (goto-char (point-min))
@@ -395,7 +394,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                       prefix))))))
     (candidates (let* ((proc (ess-get-next-available-process))
                        (args (delete "..." (nth 2 (ess-function-arguments
-                                                   (car ess--funname.start) proc))))
+                                                   (car ess--fn-name-start) proc))))
                        (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                      args)))
                   (all-completions arg args)))
@@ -471,9 +470,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
-  (when  (and ess--funname.start ;; set in a call to ess-arg-start
+  (when  (and ess--fn-name-start ;; set in a call to ess-arg-start
               (ess-process-live-p))
-    (let ((args (nth 2 (ess-function-arguments (car ess--funname.start)))))
+    (let ((args (nth 2 (ess-function-arguments (car ess--fn-name-start)))))
       (if args
           (set (make-local-variable 'ac-use-comphist) nil)
         (kill-local-variable 'ac-use-comphist))

@@ -1166,46 +1166,40 @@ we simply do not break it (instead of breaking after the first word)."
     "The regular expression for matching the beginning of an S function."))
 
 
-(defvar ess--funname.start nil)
+(defvar ess--fn-name-start-cache nil)
 
-(defun ess--funname.start (&optional look-back)
-  "If inside a function call, return (FUNNAMME . START) where
-FUNNAME is a function name found before ( and START is where
-FUNNAME starts.
-
-LOOK-BACK is a number of characters to look back; defaults to
-2000. As the search might get quite slow for files with thousands
-of lines.
-
-Also store the cons in 'ess--funname.start for potential use
-later."
+(defun ess--fn-name-start (&optional look-back)
+  "Return (FN-NAME . START-POS).
+FN-NAME is a function name located before the pointer. START-POS
+is the position where FN-NAME starts. LOOK-BACK is a number of
+characters to look back; defaults to 2000. Store this cons in
+variable `ess--fn-name-start-cache'."
   (save-excursion
     (save-restriction
-     (let* ((proc (get-buffer-process (current-buffer)))
-            (mark (and proc (process-mark proc))))
+      (let* ((proc (get-buffer-process (current-buffer)))
+             (mark (and proc (process-mark proc))))
 
-       (if (and mark (>= (point) mark))
-           (narrow-to-region mark (point)))
+        (if (and mark (>= (point) mark))
+            (narrow-to-region mark (point)))
 
-       (and ess-noweb-mode
-            (ess-noweb-narrow-to-chunk))
+        (and ess-noweb-mode
+             (ess-noweb-narrow-to-chunk))
 
-       (unless (ess-inside-string-p)
-         (setq ess--funname.start
-               (condition-case nil ;; check if it is inside a functon
-                   (progn
-                     ;; for the sake of big buffers, look only 1000 chars back
-                     (narrow-to-region (max (point-min) (- (point) 1000)) (point))
-                     (up-list -1)
-                     (while (not (looking-at "("))
-                       (up-list -1))
-                     (let ((funname (symbol-name (symbol-at-point))))
-                       (when (and funname
-                                  (not (member funname ess-S-non-functions)))
-                         (cons funname (- (point) (length funname))))
-                       ))
-                 (error nil))
-               ))))))
+        (unless (ess-inside-string-p)
+          (setq ess--fn-name-start-cache
+                (condition-case nil ;; check if it is inside a functon
+                    (progn
+                      ;; for the sake of big buffers, look only 1000 chars back
+                      (narrow-to-region (max (point-min) (- (point) 1000)) (point))
+                      (up-list -1)
+                      (while (not (looking-at "("))
+                        (up-list -1))
+                      (let ((funname (symbol-name (symbol-at-point))))
+                        (when (and funname
+                                   (not (member funname ess-S-non-functions)))
+                          (cons funname (- (point) (length funname))))
+                        ))
+                  (error nil))))))))
 
 (defun ess-function-arguments (funname &optional proc)
   "Get FUNARGS from cache or ask the process for it.
@@ -1227,7 +1221,7 @@ If PROC is given, it should be an ESS process which should be
 queried for arguments.
 "
 
-  (when (and funname ;; usually returned by ess--funname.start (might be nil)
+  (when (and funname ;; usually returned by ess--fn-name-start (might be nil)
              (or proc (ess-process-live-p)))
     (let* ((proc (or proc (get-process ess-local-process-name)))
            (args (gethash funname (process-get proc 'funargs-cache)))
@@ -1241,19 +1235,19 @@ queried for arguments.
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	  (and
-	   (not (process-get proc 'busy))
-	   (with-current-buffer (ess-command (format ess-funargs-command
-						     (ess-quote-special-chars funname))
-					     nil nil nil nil proc)
-	     (goto-char (point-min))
-	     (when (re-search-forward "(list" nil t)
-	       (goto-char (match-beginning 0))
-	       (setq args (ignore-errors (eval (read (current-buffer)))))
-	       (if args
-		   (setcar args (cons (car args) (current-time)))))
-	     ;; push even if nil
-	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
+	      (and
+	       (not (process-get proc 'busy))
+	       (with-current-buffer (ess-command (format ess-funargs-command
+						                             (ess-quote-special-chars funname))
+					                         nil nil nil nil proc)
+	         (goto-char (point-min))
+	         (when (re-search-forward "(list" nil t)
+	           (goto-char (match-beginning 0))
+	           (setq args (ignore-errors (eval (read (current-buffer)))))
+	           (if args
+		           (setcar args (cons (car args) (current-time)))))
+	         ;; push even if nil
+	         (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
 
 (defun ess-symbol-at-point ()
   "Like `symbol-at-point' but consider fully qualified names.
@@ -1279,7 +1273,7 @@ symbols (like aaa$bbb and aaa@bbb in R)."
 (defun ess-arg-start ()
   "Get initial position for args completion"
   (when (not (ess-inside-string-p))
-    (when (ess--funname.start)
+    (when (ess--fn-name-start)
       (if (looking-back "[(,]+[ \t\n]*" nil)
           (point)
         (ess-symbol-start)))))

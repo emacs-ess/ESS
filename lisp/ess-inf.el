@@ -339,7 +339,7 @@ at current position and return nil. POS defaults to `point'."
   "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
   (let* ((buffer-undo-list t)
-	 (inhibit-point-motion-hooks t)
+	     (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
          (pos0 (or (inferior-ess-goto-last-prompt-if-close beg)
