@@ -1194,11 +1194,10 @@ variable `ess--fn-name-start-cache'."
                       (up-list -1)
                       (while (not (looking-at "("))
                         (up-list -1))
-                      (let ((funname (symbol-name (symbol-at-point))))
+                      (let ((funname (symbol-name (ess-symbol-at-point))))
                         (when (and funname
                                    (not (member funname ess-S-non-functions)))
-                          (cons funname (- (point) (length funname))))
-                        ))
+                          (cons funname (- (point) (length funname))))))
                   (error nil))))))))
 
 (defun ess-function-arguments (funname &optional proc)
