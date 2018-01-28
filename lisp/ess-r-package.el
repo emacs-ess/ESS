@@ -374,10 +374,14 @@ When called with prefix, also asks for additional arguments."
 
 ;;;*;;; Minor Mode
 
-(defcustom ess-r-package-auto-activate t
-  "If non-nil, `ess-r-package-mode' is turned on within R packages."
-  :group 'ess-r-package
-  :type 'boolean)
+(defcustom ess-r-package-auto-activate '(text-mode prog-mode inferior-ess-mode)
+  "If non-nil, `ess-r-package-mode' is turned on within R packages.
+If `t' the minor mode auto-activates unconditionally (though only
+in R packages). If a list of modes, it auto-activates in buffers
+whose major mode inherits from one of the list elements. This
+defaults to editing modes and inferior buffers."
+  :group 'ess-r-package :type
+  'sexp)
 
 (defcustom ess-r-package-enter-hook nil
   "Normal hook run on entering `ess-r-package-mode'."
@@ -388,14 +392,6 @@ When called with prefix, also asks for additional arguments."
   "Normal hook run on exiting `ess-r-package-mode'."
   :group 'ess-r-package
   :type 'hook)
-
-(defcustom ess-r-package-auto-activate-modes '(text-mode prog-mode inferior-ess-mode)
-  "List of major modes where to auto-activate `ess-r-package-mode'.
-The package mode is activated in all modes which inherit from one
-of these. Set this to `fundamental-mode' if you want to activate
-the package mode unconditionally."
-  :group 'ess-r-package-mode
-  :type '(repeat symbol))
 
 (defcustom ess-r-package-mode-line
   ;; FIXME Emacs 25.1: Use `when-let'
@@ -433,12 +429,11 @@ disable the mode line entirely."
 
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
-  (when (and ess-r-package-auto-activate
-             (or (buffer-file-name) default-directory)
+  (when (and (or (buffer-file-name) default-directory)
              (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
-             (apply #'derived-mode-p (if (listp ess-r-package-auto-activate-modes)
-                                         ess-r-package-auto-activate-modes
-                                       (list ess-r-package-auto-activate-modes))))
+             (if (listp ess-r-package-auto-activate)
+                 (apply #'derived-mode-p ess-r-package-auto-activate)
+               ess-r-package-auto-activate))
     ;; FIXME Emacs 25.1: Use `when-let'
     (let ((pkg-info (ess-r-package-project)))
       (when pkg-info

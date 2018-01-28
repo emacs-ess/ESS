@@ -64,6 +64,11 @@
   (with-r-file "dummy-pkg/R/test.R"
     (eshell)
     (should (not ess-r-package-mode))
+    (kill-buffer))
+  (with-r-file "dummy-pkg/R/test.R"
+    (let ((ess-r-package-auto-activate t))
+      (eshell)
+      (should ess-r-package-mode))
     (kill-buffer)))
 
 

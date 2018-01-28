@@ -10,8 +10,8 @@ Changes and New Features in development version:
 within editing buffers by default, i.e. ones that inherit from
 @code{prog-mode} or @code{text-mode}. If you want to restore the old
 behaviour and activate the package mode in all buffers (that have a
-@code{default-directory} that is part of a package path), set it to
-@code{fundamental-mode}.
+@code{default-directory} that is part of a package path), set
+@code{ess-r-package-auto-activate} to @code{t}.
 
 @end itemize
 
