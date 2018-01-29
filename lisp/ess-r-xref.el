@@ -40,16 +40,18 @@
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
-  (ess-symbol-at-point))
+  ;; Symbols are either a string, or a list whose car is the namespace and whose
+  ;; cdr is the symbol.
+  (let* ((symbol (ess-symbol-at-point))
+         (parts (when symbol (split-string (symbol-name symbol) "::"))))
+    (if (cdr parts) parts (car parts))))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
   (ess-r-xref--check-for-process
-   (when (ess-r-xref--exists symbol)
-     (if (ess-r-xref--has-srcfile symbol)
-         (ess-r-xref--find-srcfile symbol)
-       ;; Ignore non-functions for now.
-       (when (ess-r-xref--is-function symbol)
-         (ess-r-xref--find-body symbol))))))
+   ;; Ignore non-functions.
+   (when (ess-r-xref--fn-exists-p symbol)
+     (or (ess-r-xref--srcfile-xref symbol)
+         (ess-r-xref--body-xref symbol)))))
 
 (cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
   ;; Not yet supported.
@@ -78,51 +80,74 @@ are not available.")))
 
 ;;; Source File Locations
 
-(defun ess-r-xref--exists (symbol)
-  "Check whether SYMBOL is a known R symbol."
-  (ess-boolean-command (format "exists(\"%s\")\n" symbol)))
+(defun ess-r-xref--get-symbol (symbol)
+  "Transform the R object SYMBOL into an explicit get() call."
+  (if (listp symbol)
+      ;; Handle namespaced symbols.
+       (format "base::get(\"%s\", envir = base::asNamespace(\"%s\"), inherits = FALSE)"
+               (cadr symbol) (car symbol))
+    (format "base::get(\"%s\")" symbol)))
 
-(defun ess-r-xref--has-srcfile (symbol)
-  "Checks that the R symbol SYMBOL has a valid source file reference.
+(defun ess-r-xref--fn-exists-p (symbol)
+  "Check whether SYMBOL is a known R function."
+  (and (if (listp symbol)
+           ;; Handle namespaced symbols.
+           (ess-boolean-command
+            (format "base::exists(\"%s\", envir = base::asNamespace(\"%s\"), inherits = FALSE)\n"
+                    (cadr symbol) (car symbol)))
+         (ess-boolean-command (format "base::exists(\"%s\")\n" symbol)))
+       (ess-boolean-command (format "base::is.function(%s)\n"
+                                    (ess-r-xref--get-symbol symbol)))))
+
+(defun ess-r-xref--srcfile-xref (symbol)
+  "Creates an xref for the source file reference of R symbol SYMBOL, if it has one.
 
 Most functions will not have source file references, either
 because they were sent to the interpreter directly, or because
 they are loaded via byte-compiled packages."
-  (ess-boolean-command
-   (format
-    "!is.null(utils::getSrcref(%s)) && file.exists(utils::getSrcFilename(%s))\n"
-    symbol symbol)))
-
-(defun ess-r-xref--find-srcfile (symbol)
-  "Creates an xref for the source file reference of R symbol SYMBOL."
-  (let ((file (ess-string-command
-               (format "cat(utils::getSrcFilename(%s)[1], \"\\n\")\n" symbol)))
-        (line (ess-string-command
-               (format "cat(utils::getSrcLocation(%s, which = \"line\")[1], \"\\n\")\n" symbol))))
-    (list (xref-make (format "%s" symbol)
-                     (xref-make-file-location
-                      (expand-file-name (string-trim file))
-                      (string-to-number line)
-                      0)))))
+  (when (ess-boolean-command (format "!base::is.null(utils::getSrcref(%s))\n"
+                                     (ess-r-xref--get-symbol symbol)))
+    (let ((fname (string-trim
+                  (ess-string-command
+                   (format "base::cat(utils::getSrcFilename(%s, full.names = TRUE)[1], \"\\n\")\n"
+                           (ess-r-xref--get-symbol symbol)))))
+          (line (string-to-number
+                 (ess-string-command
+                  (format "base::cat(utils::getSrcLocation(%s, which = \"line\")[1], \"\\n\")\n"
+                          (ess-r-xref--get-symbol symbol))))))
+      ;; For now, require that the file exists.
+      ;; TODO: Handle srcfiles cached by ESS.
+      ;; TODO: Handle temp install directories.
+      (when (ess-boolean-command (format "base::file.exists(\"%s\")\n" fname))
+        (list (xref-make (if (listp symbol)
+                             (concat (car symbol) "::" (cadr symbol))
+                           symbol)
+                         (xref-make-file-location
+                          (expand-file-name fname) line 0)))))))
 
 
 ;;; Local/Byte-compiled Locations
 
-(defun ess-r-xref--is-function (symbol)
-  "Check whether SYMBOL is an R symbol."
-  (ess-boolean-command (format "is.function(%s)\n" symbol)))
-
-(defun ess-r-xref--find-body (fn)
-  "Creates an xref to a buffer containing the body of the R function FN."
-  (let ((cmd (format "cat(\"%s <- \"); print.function(%s)\n"
-                     fn fn))
+(defun ess-r-xref--body-xref (symbol)
+  "Creates an xref to a buffer containing the body of the R function SYMBOL."
+  (let ((cmd (format "base::cat(\"%s <- \"); base::print.function(%s)\n"
+                     (if (listp symbol)
+                         (concat (car symbol) "::" (cadr symbol))
+                       symbol)
+                     (ess-r-xref--get-symbol symbol)))
         (buff (get-buffer-create
-               (format "*definition[R]:%s*" fn)))
+               (format "*definition[R]:%s*"
+                       (if (listp symbol)
+                           (concat (car symbol) "::" (cadr symbol))
+                         symbol))))
         (proc ess-local-process-name))
     (with-current-buffer (ess-command cmd buff)
       (ess-r-source-mode)
       (setq-local ess-local-process-name proc))
-    (list (xref-make (format "%s" fn) (xref-make-buffer-location buff 0)))))
+    (list (xref-make (if (listp symbol)
+                         (concat (car symbol) "::" (cadr symbol))
+                       symbol)
+                     (xref-make-buffer-location buff 0)))))
 
 
 ;;; R Function Source Viewer Mode
