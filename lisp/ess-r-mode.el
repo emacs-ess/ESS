@@ -44,6 +44,7 @@
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
 (require 'ess-r-package)
+(when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
 
 (ess-message "[ess-r-mode:] (require 'ess-s-lang)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
@@ -566,6 +567,8 @@ will be prompted to enter arguments interactively."
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
     (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+    (when (>= emacs-major-version 25)
+      (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local))
     (setq comint-input-sender 'inferior-ess-r-input-sender)
 
     (if gdbp
@@ -613,6 +616,8 @@ Executed in process buffer."
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (when (>= emacs-major-version 25)
+    (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local))
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (when ess-imenu-use-S
