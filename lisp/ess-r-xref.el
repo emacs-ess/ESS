@@ -98,23 +98,38 @@ because they were sent to the interpreter directly, or because
 they are loaded via byte-compiled packages."
   (when (ess-boolean-command (format "!base::is.null(utils::getSrcref(%s))\n"
                                      (ess-r-xref--get-symbol symbol)))
-    (let ((fname (string-trim
+    (let* ((fname (string-trim
+                   (ess-string-command
+                    (format "base::cat(utils::getSrcFilename(%s, full.names = TRUE)[1], \"\\n\")\n"
+                            (ess-r-xref--get-symbol symbol)))))
+           ;; Check if the file srcref is cached by ESS.
+           (srcref (gethash fname ess--srcrefs))
+           (ess-buff (when srcref (ess--dbg-find-buffer (car srcref))))
+           ;; R seems to keep track of lines even for non-existent files, too.
+           (line (string-to-number
                   (ess-string-command
-                   (format "base::cat(utils::getSrcFilename(%s, full.names = TRUE)[1], \"\\n\")\n"
-                           (ess-r-xref--get-symbol symbol)))))
-          (line (string-to-number
-                 (ess-string-command
-                  (format "base::cat(utils::getSrcLocation(%s, which = \"line\")[1], \"\\n\")\n"
-                          (ess-r-xref--get-symbol symbol))))))
-      ;; For now, require that the file exists.
-      ;; TODO: Handle srcfiles cached by ESS.
-      ;; TODO: Handle temp install directories.
-      (when (ess-boolean-command (format "base::file.exists(\"%s\")\n" fname))
+                   (format "base::cat(utils::getSrcLocation(%s, which = \"line\")[1], \"\\n\")\n"
+                           (ess-r-xref--get-symbol symbol))))))
+      (cond
+       ;; When the function was evaluated linewise into the interpreter, the
+       ;; filename will be empty. We can't do anything in this case.
+       ((string-equal fname "") nil)
+       ;; If the file exists, jump into it.
+       ((ess-boolean-command (format "base::file.exists(\"%s\")\n" fname))
         (list (xref-make (if (listp symbol)
                              (concat (car symbol) "::" (cadr symbol))
                            symbol)
                          (xref-make-file-location
-                          (expand-file-name fname) line 0)))))))
+                          (expand-file-name fname) line 0))))
+       ;; For functions eval'd into ESS, we can use the cached file position.
+       (ess-buff (list (xref-make
+                        (if (listp symbol)
+                            (concat (car symbol) "::" (cadr symbol))
+                          symbol)
+                        (xref-make-buffer-location ess-buff (caddr srcref)))))
+       ;; TODO: Handle other non-existing srcfiles, such as temp install
+       ;; directories.
+       (t nil))))) ;; We didn't find it.
 
 
 (provide 'ess-r-xref)
