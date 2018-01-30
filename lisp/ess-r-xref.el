@@ -32,6 +32,9 @@
 (require 'xref)
 (require 'ess)
 
+;; Silence the byte compiler.
+(declare-function inferior-ess-r-force "ess-r-mode.el")
+
 
 ;;; Xref API
 
@@ -47,35 +50,24 @@
     (if (cdr parts) parts (car parts))))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
-  (ess-r-xref--check-for-process
-   ;; Ignore non-functions.
-   (when (ess-r-xref--fn-exists-p symbol)
-     (or (ess-r-xref--srcfile-xref symbol)
-         (ess-r-xref--body-xref symbol)))))
+  (inferior-ess-r-force)
+  ;; Ignore non-functions.
+  (when (ess-r-xref--fn-exists-p symbol)
+    (or (ess-r-xref--srcfile-xref symbol)
+        (ess-r-xref--body-xref symbol))))
 
 (cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
   ;; Not yet supported.
   nil)
 
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql ess-r)))
-  (ess-r-xref--check-for-process
-   (let ((raw (ess-get-object-list ess-local-process-name)))
-     ;; This is not technically correct, since some of these objects are
-     ;; non-functions. But it *is* approximately correct, and expensive to
-     ;; filter with existing functions. A better strategy may be desirable in
-     ;; the future.
-     raw)))
-
-(defmacro ess-r-xref--check-for-process (&rest body)
-  "Wraps statements in BODY with `ess-make-buffer-current'."
-  `(if (not (ess-make-buffer-current))
-       (prog1 nil
-         ;; Give a message on the second invocation, as with
-         ;; `ess-complete-object-name'.
-         (when (string-match "xref" (symbol-name last-command))
-           (message "No ESS process associated with current buffer. Definitions \
-are not available.")))
-     ,@body))
+  (inferior-ess-r-force)
+  (let ((raw (ess-get-object-list ess-local-process-name)))
+    ;; This is not technically correct, since some of these objects are
+    ;; non-functions. But it *is* approximately correct, and expensive to
+    ;; filter with existing functions. A better strategy may be desirable in
+    ;; the future.
+    raw))
 
 
 ;;; Source File Locations
