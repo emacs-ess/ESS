@@ -33,7 +33,8 @@
 
 ;;; Code:
 
-(with-no-warnings (require 'cl)) ; instead of cl-lib so we support Emacs 24.2
+(eval-when-compile
+  (require 'cl-lib))
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
@@ -533,7 +534,7 @@ will be prompted to enter arguments interactively."
                  start-args)
                 ((and start-args
                       (listp start-args)
-                      (every 'stringp start-args))
+                      (cl-every 'stringp start-args))
                  (mapconcat 'identity start-args " "))
                 (start-args
                  (read-string
@@ -1594,7 +1595,8 @@ Returns nil if line starts inside a string, t if in a comment."
                      (when (ess-at-containing-sexp
                              (looking-at "{"))
                        (ess-escape-prefixed-block))))
-                   (some 'looking-at (ess-overridden-blocks)))
+                   (cl-some 'looking-at
+                            (ess-overridden-blocks)))
           (+ (current-column) offset))))))
 
 (defun ess-calculate-indent--block-relatively ()
@@ -1725,7 +1727,8 @@ Returns nil if line starts inside a string, t if in a comment."
          (override (and ess-align-arguments-in-calls
                         (save-excursion
                           (ess-climb-object)
-                          (some 'looking-at ess-align-arguments-in-calls))))
+                          (cl-some 'looking-at
+                                   ess-align-arguments-in-calls))))
          (type-sym (cond (block 'block)
                          ((looking-at "[[:blank:]]*[([][[:blank:]]*\\($\\|#\\)")
                           'arguments-newline)

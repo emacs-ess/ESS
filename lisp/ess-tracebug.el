@@ -54,8 +54,8 @@
 (require 'tramp)
 (require 'compile)
 (require 'overlay)
-;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-(with-no-warnings (require 'cl))
+(eval-when-compile
+  (require 'cl-lib))
 (require 'ess-utils)
 
 (autoload 'ess-helpobjs-at-point        "ess-help" "[autoload]" nil) ;;todo: rename and put into a more neutral place

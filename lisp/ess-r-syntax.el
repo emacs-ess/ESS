@@ -30,7 +30,8 @@
 (require 'ess-utils)
 (require 'regexp-opt)
 
-(with-no-warnings (require 'cl)) ; instead of cl-lib so we support Emacs 24.2
+(eval-when-compile
+  (require 'cl-lib))
 
 
 ;;*;; Utils
@@ -126,7 +127,7 @@ side-effects. FORMS follows the same syntax as arguments to
 `(cond)'."
   (declare (indent 0) (debug nil))
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
-     (some 'identity (mapcar 'eval forms))))
+     (cl-some 'identity (mapcar 'eval forms))))
 
 (defun ess-char-syntax (string)
   (char-to-string (char-syntax (string-to-char string))))
@@ -925,7 +926,7 @@ into account."
 (defun ess-behind-prefixed-block-p (&optional call)
   (if call
       (looking-at (concat call "[ \t]*("))
-    (some 'looking-at ess-prefixed-block-patterns)))
+    (cl-some 'looking-at ess-prefixed-block-patterns)))
 
 (defun ess-unbraced-block-p (&optional ignore-ifelse)
   "This indicates whether point is in front of an unbraced
@@ -937,7 +938,7 @@ position of the control flow function (if, for, while, etc)."
                   (not ignore-ifelse))
              (and (looking-at "(")
                   (ess-backward-sexp)
-                  (some 'looking-at ess-prefixed-block-patterns)
+                  (cl-some 'looking-at ess-prefixed-block-patterns)
                   (if ignore-ifelse
                       (not (looking-at "if\\b"))
                     t)))
@@ -1492,10 +1493,10 @@ without curly braces."
   (save-excursion
     (and (ess-behind-call-p)
          (ess-jump-inside-call)
-         (some (lambda (arg)
-                 (string-match "^function\\b"
-                               (cdr arg)))
-               (ess-args-alist)))))
+         (cl-some (lambda (arg)
+                    (string-match "^function\\b"
+                                  (cdr arg)))
+                  (ess-args-alist)))))
 
 
 ;;;*;;; Names / Objects / Expressions
@@ -1511,9 +1512,9 @@ without curly braces."
       (if (and (memq (char-before) '(?` ?\" ?\'))
                (ess-backward-sexp))
           (setq climbed t)
-        (while (some (apply-partially '/= 0)
-                     `(,(skip-syntax-backward "w_")
-                       ,(skip-chars-backward "\"'")))
+        (while (cl-some (apply-partially '/= 0)
+                        `(,(skip-syntax-backward "w_")
+                          ,(skip-chars-backward "\"'")))
           (setq climbed t)))
       ;; Recurse if we find an indexing char
       (when (memq (char-before) '(?$ ?@))

@@ -32,8 +32,8 @@
 
 ;;; Code:
 
-;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-(with-no-warnings (require 'cl))
+(eval-when-compile
+  (require 'cl-lib))
 (require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-generics)
@@ -710,7 +710,7 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
                      ))
         (if (>= emacs-major-version 24)
             (completion-at-point)
-          (comint-dynamic-complete)
+          (completion-at-point)
           )))))
 
 (defun ess-indent-exp ()

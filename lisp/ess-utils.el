@@ -28,8 +28,7 @@
 
 (eval-when-compile
   (require 'tramp)
-  ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-  (with-no-warnings (require 'cl)))
+  (require 'cl-lib))
 
 
 ;;*;; Internal ESS tools and variables
@@ -668,7 +667,7 @@ See also `ess-use-ido'."
                  ess-use-company))
       (when ess-company-backends
         (set (make-local-variable 'company-backends)
-             (copy-list (append ess-company-backends company-backends)))
+             (cl-copy-list (append ess-company-backends company-backends)))
         (delq 'company-capf company-backends)))
 
     ;; eldoc)
