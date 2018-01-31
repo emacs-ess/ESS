@@ -710,7 +710,7 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
                      ))
         (if (>= emacs-major-version 24)
             (completion-at-point)
-          (comint-dynamic-complete)
+          (completion-at-point)
           )))))
 
 (defun ess-indent-exp ()
