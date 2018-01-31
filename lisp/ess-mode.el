@@ -32,8 +32,8 @@
 
 ;;; Code:
 
-;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-(with-no-warnings (require 'cl))
+(eval-when-compile
+  (require 'cl-lib))
 (require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-generics)

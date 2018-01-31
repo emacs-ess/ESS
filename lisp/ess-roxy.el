@@ -68,8 +68,7 @@
 (require 'hideshow)
 (require 'outline)
 (eval-when-compile
-  ;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-  (with-no-warnings (require 'cl)))
+  (require 'cl-lib))
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 

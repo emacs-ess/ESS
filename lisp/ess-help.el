@@ -38,14 +38,13 @@
  ; Requires and autoloads
 
 (eval-when-compile
+  (require 'cl-lib)
   (require 'tramp)
   (require 'reporter)
   (require 'ess-inf)
   (require 'info))
 
 (require 'ess-mode)
-;; We can't use cl-lib whilst supporting Emacs <= 24.2 users
-(with-no-warnings (require 'cl))
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
