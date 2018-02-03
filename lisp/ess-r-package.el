@@ -181,26 +181,41 @@ Namespaced evaluation is enabled if
                    (string= subpath (file-name-as-directory "R"))))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
-(add-hook 'R-mode-hook 'ess-r-package-set-namespaced-evaluation)
+(add-hook 'R-mode-hook 'ess-r-package-enable-namespaced-evaluation)
 
-(defun ess-r-package-send-process (command &optional msg alt default-alt)
+(defun ess-r-package-eval-linewise (command &optional msg p actions pkg-path)
+  "Send COMMAND to R process.
+COMMAND is a command string with %s placeholder for the
+arguments. MSG is the message displayed in minibuffer with %s
+placeholder for the package name. P is the value of universal
+argument usually received from the upstream command and indicates
+which action in ACTIONS list to perform; if 0 or nil, first
+action, if 1 or (4) second if 2 or (16) third etc. ACTIONS is a
+list of strings (R arguments), or functions which return R
+arguments, or expressions which return R arguments."
   (inferior-ess-r-force)
   (let* ((pkg-info (or (ess-r-package-project)
                        (ess-r-package-set-package)))
-         (name (ess-r-package-name))
-         (path (concat "'" (cdr pkg-info) "'"))
-         (args (ess-r-command--process-alt-args alt default-alt)))
-    (message msg name)
+         (pkg-name (ess-r-package-name))
+         (pkg-path (or pkg-path (concat "'" (cdr pkg-info) "'")))
+         (args (ess-r-command--build-args p actions)))
+    (message msg pkg-name)
     (with-ess-process-buffer nil
       (setq ess-r-package--project-cache ess-r-package--project-cache))
-    (ess-eval-linewise (format command (concat path args)))))
+    (ess-eval-linewise (format command (concat pkg-path args)))))
 
-(defun ess-r-command--process-alt-args (alt &optional default-alt)
-  (let ((args (cond ((stringp alt) alt)
-                    (alt (read-string "Arguments: " default-alt))
-                    (t ""))))
-    (if (or (null args)
-            (string= "" args))
+(defun ess-r-command--build-args (ix &optional actions)
+  (let* ((n (cond ((null ix) 0)
+                  ((listp ix) (round (log (car ix) 4)))
+                  ((integer ix) ix)
+                  (t (error "Invalid index"))))
+         (action (nth n actions))
+         (args (cond ((null action) "")
+                     ((stringp action) action)
+                     ((functionp action) (funcall action))
+                     ((listp action) (eval action))
+                     (t (error "Invalid action")))))
+    (if (string= "" args)
         args
       (concat ", " args))))
 
@@ -249,51 +264,52 @@ Root is determined by locating `ess-r-package-root-file'."
 
 ;;;*;;; Devtools Integration
 
-(defun ess-r-devtools-load-package (&optional alt)
-  "Interface for `devtools::load_all()'."
+(defun ess-r-devtools-load-package (&optional arg)
+  "Interface for `devtools::load_all()'.
+With prefix ARG ask for extra args."
   (interactive "P")
-  (ess-r-package-send-process "devtools::load_all(%s)\n"
-                              "Loading %s"
-                              alt "recompile = TRUE"))
+  (ess-r-package-eval-linewise
+   "devtools::load_all(%s)\n" "Loading %s" arg
+   '("" (read-string "Load args:" "recompile = TRUE"))))
 
 (defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
   (interactive)
-  (ess-r-package-send-process "devtools::unload(%s)\n"
-                              "Unloading %s"))
+  (ess-r-package-eval-linewise
+   "devtools::unload(%s)\n" "Unloading %s"))
 
-(defun ess-r-devtools-check-package (&optional alt)
-  "Interface for `devtools::check()'."
+(defun ess-r-devtools-check-package (&optional arg)
+  "Interface for `devtools::check()'.
+With prefix ARG ask for extra args."
   (interactive "P")
-  (ess-r-package-send-process "devtools::check(%s)\n"
-                              "Checking %s"
-                              alt "vignettes = FALSE"))
+  (ess-r-package-eval-linewise
+   "devtools::check(%s)\n" "Checking %s" arg
+   '("" (read-string "Check args: " "vignettes = FALSE"))))
 
-(defun ess-r-devtools-check-package-buildwin (&optional alt)
-  "Interface for `devtools::buildwin()'."
+(defun ess-r-devtools-check-package-buildwin (&optional arg)
+  "Interface for `devtools::buildwin()'.
+With prefix ARG build with R-devel instead of R-patched."
   (interactive "P")
-  (ess-r-package-send-process "devtools::build_win(%s)\n"
-                              "Checking %s on CRAN's Windows server"))
+  (ess-r-package-eval-linewise
+   "devtools::build_win(%s)\n" "Checking %s on CRAN's Windows server" arg
+   '("" "version = 'R-devel'")))
 
-(defun ess-r-devtools-test-package (&optional alt)
+(defun ess-r-devtools-test-package (&optional arg)
   "Interface for `devtools::test()'.
-When called with a non-string prefix argument (as with C-u),
-check that the file name starts with `test-' and ends with
-`.R'. If that is the case, use the string in-between as default
-filter argument. Otherwise, use the whole base filename."
+With prefix argument ARG, run tests on current file only."
   (interactive "P")
-  (let (file-name)
-    (when (and alt
-               (not (stringp alt))
-               buffer-file-name
-               (setq file-name (file-name-nondirectory buffer-file-name)))
-      (setq alt (if (string-match "test-\\([[:alnum:]]+\\)\\.[rR]" file-name)
-                    (match-string-no-properties 1 file-name)
-                  (file-name-base buffer-file-name)))
-      (setq alt (concat "\"" alt "\""))))
-  (ess-r-package-send-process "devtools::test(%s)\n"
-                              "Testing %s"
-                              alt))
+  (ess-r-package-eval-linewise
+   "devtools::test(%s)\n" "Testing %s" arg
+   '("" ess-r-devtools--cur-file-filter)))
+
+(defun ess-r-devtools--cur-file-filter ()
+  (let ((file (or (and buffer-file-name
+                       (file-name-nondirectory buffer-file-name))
+                  (error "Buffer not visiting a file"))))
+    (format "filter = \"%s\""
+            (if (string-match "test-\\([[:alnum:]]+\\)\\.[rR]" file)
+                (match-string-no-properties 1 file)
+              (file-name-base buffer-file-name)))))
 
 (defvar ess-r-devtools-revdep-check-cmd
   "local({
@@ -315,9 +331,8 @@ filter argument. Otherwise, use the whole base filename."
 })
 ")
 
-(defun ess-r-devtools-revdep-check-package (&optional alt)
+(defun ess-r-devtools-revdep-check-package ()
   "Interface for `devtools::revdep_check()'.
-
 By default, the revdep summary is saved in `pkg_path/revdep' if
 the directory exists, or `pkg_path/.metadata/revdep' if it
 doesn't exist. The former path is the default in devtools but
@@ -326,34 +341,44 @@ the other hand, `.metadata' is always ignored by the R package
 builder, which makes it a safe directory to store the revdep
 checking results."
   (interactive "P")
-  (ess-r-package-send-process ess-r-devtools-revdep-check-cmd
-                              "Checking reverse dependencies of %s"
-                              alt))
+  (ess-r-package-eval-linewise
+   ess-r-devtools-revdep-check-cmd "Checking reverse dependencies of %s"))
 
-(defun ess-r-devtools-document-package (&optional alt)
-  "Interface for `devtools::document()'."
+(defun ess-r-devtools-document-package (&optional arg)
+  "Interface for `devtools::document()'.
+With prefix ARG ask for extra arguments."
   (interactive "P")
-  (ess-r-package-send-process "devtools::document(%s)\n"
-                              "Documenting %s"
-                              alt))
+  (ess-r-package-eval-linewise
+   "devtools::document(%s)\n" "Documenting %s"
+   '("" (read-string "Document args: "))))
 
-(defun ess-r-devtools-install-package (&optional alt)
-  "Interface to `devtools::install()'."
+(defun ess-r-devtools-install-package (&optional arg)
+  "Interface to `devtools::install()'.
+On prefix ARG (C-u), build the package first outside of current
+tree (local = FALSE). With double prefix ARG (C-u C-u) install
+quickly (quick = TRUE, upgrade_dependencies = FALSE)."
   (interactive "P")
-  (ess-r-package-send-process "devtools::install(%s)\n"
-                              "Installing %s"
-                              alt))
+  (ess-r-package-eval-linewise
+   "devtools::install(%s)\n" "Installing %s" arg
+   '("keep_source = TRUE"
+     (read-string "Install args: " "keep_source = TRUE, local = FALSE")
+     (read-string "Install args: " "keep_source = TRUE, quick = TRUE, upgrade_dependencies = FALSE"))))
 
-(defun ess-r-devtools-install-github (&optional alt repo)
+(defvar ess-r-devtools--install-github-history nil)
+(defun ess-r-devtools-install-github (&optional arg)
   "Interface to `devtools::install_github()'.
-Asks for github repository in the form of user/repo, unless REPO
-is supplied. Prompts for additional arguments when called with a
-prefix."
+Asks for github repository in the form of user/repo. Force
+re-installation when called with a prefix ARG."
   (interactive "P")
-  (let ((command "devtools::install_github(%s%s)")
-        (repo (concat "'" (or repo (read-string "User/Repo: ")) "'"))
-        (args (ess-r-command--process-alt-args alt "ref = ")))
-    (ess-eval-linewise (format command repo args))))
+  (let ((command "devtools::install_github(%s)")
+        (repo (format "'%s'"
+                      (read-string "User/Repo: " nil
+                                   'ess-r-devtools--install-github-history
+                                   (car ess-r-devtools--install-github-history)))))
+    (ess-r-package-eval-linewise
+     command "Installing '%s' from github" arg
+     '("" (read-string "Install args: " "force = TRUE"))
+     repo)))
 
 (defun ess-r-devtools-create-package (&optional alt)
   "Interface to `devtools::create()'.
@@ -364,17 +389,17 @@ Default location is determined by `ess-r-package-library-path'."
          (path (read-directory-name "Path: " default-path)))
     (ess-eval-linewise (format command path))))
 
-(defun ess-r-devtools-ask (&optional alt)
+(defun ess-r-devtools-execute-command (&optional arg)
   "Asks with completion for a devtools command.
-When called with prefix, also asks for additional arguments."
+When called with prefix ARG asks for additional arguments."
   (interactive "P")
   (inferior-ess-r-force)
   (let* ((devtools-funs (ess-get-words-from-vector ".ess_devtools_functions()\n"))
          (fun (completing-read "Function: " devtools-funs))
-         (command (format "devtools::%s(%s)\n" fun "%s")))
-    (ess-r-package-send-process command
-                                (format "Running %s" fun)
-                                alt)))
+         (command (format "devtools::%s(%%s)\n" fun)))
+    (ess-r-package-eval-linewise
+     command (format "Running %s" fun)
+     '("" (read-string "Args: ")))))
 
 
 ;;;*;;; Minor Mode
@@ -452,8 +477,10 @@ disable the mode line entirely."
 (defalias 'ess-toggle-developer 'ess-developer)
 
 (defvaralias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation)
+(fset 'ess-r-devtools-ask 'ess-r-devtools-execute-command)
+(define-obsolete-function-alias 'ess-r-devtools-ask 'ess-r-devtools-execute-command "18.04")
+(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env ess-r-package-auto-enable-namespaced-evaluation "18.04")
 
-(make-obsolete-variable 'ess-r-package-auto-set-evaluation-env "Please use `ess-r-package-auto-set-evaluation-env' instead." "18.04")
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
 (make-obsolete-variable 'ess-developer-packages "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
