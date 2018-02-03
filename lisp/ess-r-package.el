@@ -32,7 +32,7 @@
 
 (require 'ess-utils)
 
-(defcustom ess-r-package-auto-set-evaluation-env t
+(defcustom ess-r-package-auto-enable-namespaced-evaluation t
   "If non-nil, evaluation env is set to package env automatically.
 See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   :group 'ess-r-package
@@ -96,7 +96,6 @@ is searched from that directory instead of `default-directory'."
 
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
-  ;; FIXME Emacs 25.1: Use `when-let'
   (let ((project (ess-r-package-project dir)))
     (when project
       (symbol-name (car ess-r-package--project-cache)))))
@@ -121,7 +120,6 @@ Please use `ess-r-package-project' instead."
 Return nil if not in a package. Search sub-directories listed in
 `ess-r-package-source-roots' are searched recursively and
 return all physically present directories."
-  ;; FIXME Emacs 25.1: Use `when-let'
   (let ((pkg-root (cdr (ess-r-package-project))))
     (when pkg-root
       (let ((files (directory-files-and-attributes pkg-root t "^[^.]")))
@@ -168,8 +166,11 @@ return all physically present directories."
          (setq current-pkg "*none*"))))
     (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
 
-(defun ess-r-package-set-namespaced-evaluation ()
-  (when ess-r-package-auto-set-evaluation-env
+(defun ess-r-package-enable-namespaced-evaluation ()
+  "Enable namespaced evaluation in current buffer.
+Namespaced evaluation is enabled if
+`ess-r-package-auto-enable-namespaced-evaluation' is non-nil."
+  (when ess-r-package-auto-enable-namespaced-evaluation
     (let ((path (cdr (ess-r-package-project))))
       ;; Check that we are in a file within R/
       (when (and path
@@ -450,6 +451,9 @@ disable the mode line entirely."
 
 (defalias 'ess-toggle-developer 'ess-developer)
 
+(defvaralias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation)
+
+(make-obsolete-variable 'ess-r-package-auto-set-evaluation-env "Please use `ess-r-package-auto-set-evaluation-env' instead." "18.04")
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
 (make-obsolete-variable 'ess-developer-packages "Please use `ess-r-package-set-package' and `ess-r-set-evaluation-env' instead." "16.04")
