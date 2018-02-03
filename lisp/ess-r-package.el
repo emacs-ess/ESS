@@ -77,7 +77,7 @@ containing directories.  Use `ess-r-package-source-dirs' to get
 all source dirs recursively within the current package.")
 
 
-;;;*;;; Package UI
+;;;*;;; Package Detection
 
 (defun ess-r-package-project (&optional dir)
   "Return the current package as an Emacs project instance.
@@ -130,6 +130,61 @@ return all physically present directories."
                  append (cons (car f)
                               (ess-r-package--all-source-dirs (car f))))))))
 
+(defun ess-r--select-package-name ()
+  (inferior-ess-r-force)
+  (let ((pkgs (ess-get-words-from-vector
+               (format "print(.packages(%s), max = 1e6)\n"
+                       (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
+        (current-pkg (ess-r-package-name)))
+    (let ((env (ess-r-get-evaluation-env)))
+      (when env
+        (setq pkgs (append '("*none*") pkgs))
+        (when (equal env current-pkg)
+          (setq current-pkg "*none*"))))
+    (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
+
+(defun ess-r-package--find-package-path (&optional dir)
+  "Get the root of R package that contains current directory.
+Root is determined by locating `ess-r-package-root-file'."
+  (let* ((path (cond
+                (dir)
+                ((buffer-file-name)
+                 (file-name-directory (buffer-file-name)))
+                (t
+                 default-directory)))
+         (pkg-path
+          (when path
+            (or
+             ;; First check current directory
+             (and (file-exists-p (expand-file-name ess-r-package-root-file path))
+                  path)
+             ;; Check for known directories in current path
+             (let ((current-dir (file-name-nondirectory (directory-file-name path)))
+                   known-pkg-dir known-path presumptive-path)
+               (while (and path (not presumptive-path))
+                 (setq current-dir (file-name-nondirectory (directory-file-name path)))
+                 (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
+                          (setq known-path (ess--parent-dir path (cdr known-pkg-dir)))
+                          (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
+                     (setq presumptive-path known-path)
+                   (setq path (ess--parent-dir path 1))))
+               presumptive-path)))))
+    (when pkg-path
+      (directory-file-name pkg-path))))
+
+(defun ess-r-package--find-package-name (path)
+  (let ((file (expand-file-name ess-r-package-root-file path))
+        (case-fold-search t))
+    (when (file-exists-p file)
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (when (re-search-forward "package: \\(.*\\)" nil t)
+          (intern (match-string 1)))))))
+
+
+;;;*;;; UI
+
 (defun ess-r-package-use-dir ()
   "Set process directory to current package directory."
   (interactive)
@@ -153,18 +208,8 @@ return all physically present directories."
       (add-file-local-variable 'ess-r-package--project-cache pkg-info))
     (setq ess-r-package--project-cache pkg-info)))
 
-(defun ess-r--select-package-name ()
-  (inferior-ess-r-force)
-  (let ((pkgs (ess-get-words-from-vector
-               (format "print(.packages(%s), max = 1e6)\n"
-                       (if ess-r-prompt-for-attached-pkgs-only "FALSE" "TRUE"))))
-        (current-pkg (ess-r-package-name)))
-    (let ((env (ess-r-get-evaluation-env)))
-     (when env
-       (setq pkgs (append '("*none*") pkgs))
-       (when (equal env current-pkg)
-         (setq current-pkg "*none*"))))
-    (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
+
+;;;*;;; Evaluation
 
 (defun ess-r-package-enable-namespaced-evaluation ()
   "Enable namespaced evaluation in current buffer.
@@ -218,48 +263,6 @@ arguments, or expressions which return R arguments."
     (if (string= "" args)
         args
       (concat ", " args))))
-
-
-;;;*;;; Package Detection
-
-(defun ess-r-package--find-package-path (&optional dir)
-  "Get the root of R package that contains current directory.
-Root is determined by locating `ess-r-package-root-file'."
-  (let* ((path (cond
-                (dir)
-                ((buffer-file-name)
-                 (file-name-directory (buffer-file-name)))
-                (t
-                 default-directory)))
-         (pkg-path
-          (when path
-            (or
-             ;; First check current directory
-             (and (file-exists-p (expand-file-name ess-r-package-root-file path))
-                  path)
-             ;; Check for known directories in current path
-             (let ((current-dir (file-name-nondirectory (directory-file-name path)))
-                   known-pkg-dir known-path presumptive-path)
-               (while (and path (not presumptive-path))
-                 (setq current-dir (file-name-nondirectory (directory-file-name path)))
-                 (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
-                          (setq known-path (ess--parent-dir path (cdr known-pkg-dir)))
-                          (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
-                     (setq presumptive-path known-path)
-                   (setq path (ess--parent-dir path 1))))
-               presumptive-path)))))
-    (when pkg-path
-      (directory-file-name pkg-path))))
-
-(defun ess-r-package--find-package-name (path)
-  (let ((file (expand-file-name ess-r-package-root-file path))
-        (case-fold-search t))
-    (when (file-exists-p file)
-      (with-temp-buffer
-        (insert-file-contents file)
-        (goto-char (point-min))
-        (when (re-search-forward "package: \\(.*\\)" nil t)
-          (intern (match-string 1)))))))
 
 
 ;;;*;;; Devtools Integration
