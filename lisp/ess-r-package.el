@@ -297,6 +297,14 @@ With prefix ARG build with R-devel instead of R-patched."
    "devtools::build_win(%s)\n" "Checking %s on CRAN's Windows server" arg
    '("" "version = 'R-devel'")))
 
+(defun ess-r-devtools-build (&optional arg)
+  "Interface for `devtools::build()'.
+With prefix arg, build with 'vignettes = FALSE'."
+  (interactive "P")
+  (ess-r-package-eval-linewise
+   "devtools::build(%s)\n" "Building %s" arg
+   '("" "vignettes = FALSE")))
+
 (defun ess-r-devtools-test-package (&optional arg)
   "Interface for `devtools::test()'.
 With prefix argument ARG, run tests on current file only."
