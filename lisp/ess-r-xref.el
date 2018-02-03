@@ -30,10 +30,8 @@
 
 (require 'subr-x)
 (require 'xref)
-(require 'ess)
-
-;; Silence the byte compiler.
-(declare-function inferior-ess-r-force "ess-r-mode.el")
+(require 'ess-r-mode)
+(require 'ess-utils)
 
 
 ;;; Xref API
@@ -43,17 +41,11 @@
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
-  ;; Symbols are either a string, or a list whose car is the namespace and whose
-  ;; cdr is the symbol.
-  (let* ((symbol (ess-symbol-at-point))
-         (parts (when symbol (split-string (symbol-name symbol) "::"))))
-    (if (cdr parts) parts (car parts))))
+  (ess-symbol-at-point))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
-  (inferior-ess-r-force)
-  ;; Ignore non-functions.
-  (when (ess-r-xref--fn-exists-p symbol)
-    (ess-r-xref--srcfile-xref symbol)))
+  (let ((xref (ess-r-xref--xref symbol)))
+    (when xref (list xref))))
 
 (cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
   ;; Not yet supported.
@@ -61,75 +53,36 @@
 
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql ess-r)))
   (inferior-ess-r-force)
-  (let ((raw (ess-get-object-list ess-local-process-name)))
-    ;; This is not technically correct, since some of these objects are
-    ;; non-functions. But it *is* approximately correct, and expensive to
-    ;; filter with existing functions. A better strategy may be desirable in
-    ;; the future.
-    raw))
+  (ess-get-words-from-vector ".ess_all_functions()\n"))
 
 
 ;;; Source File Locations
 
-(defun ess-r-xref--get-symbol (symbol)
-  "Transform the R object SYMBOL into an explicit get() call."
-  (if (listp symbol)
-      ;; Handle namespaced symbols.
-       (format "base::get(\"%s\", envir = base::asNamespace(\"%s\"), inherits = FALSE)"
-               (cadr symbol) (car symbol))
-    (format "base::get(\"%s\")" symbol)))
+(defun ess-r-xref--srcref (symbol)
+  (inferior-ess-r-force)
+  (with-current-buffer (ess-command (format ".ess_srcref(\"%s\")\n" symbol))
+    (goto-char (point-min))
+    (when (re-search-forward "(" nil 'noerror)
+      (goto-char (match-beginning 0))
+      (read (current-buffer)))))
 
-(defun ess-r-xref--fn-exists-p (symbol)
-  "Check whether SYMBOL is a known R function."
-  (and (if (listp symbol)
-           ;; Handle namespaced symbols.
-           (ess-boolean-command
-            (format "base::exists(\"%s\", envir = base::asNamespace(\"%s\"), inherits = FALSE)\n"
-                    (cadr symbol) (car symbol)))
-         (ess-boolean-command (format "base::exists(\"%s\")\n" symbol)))
-       (ess-boolean-command (format "base::is.function(%s)\n"
-                                    (ess-r-xref--get-symbol symbol)))))
-
-(defun ess-r-xref--srcfile-xref (symbol)
-  "Creates an xref for the source file reference of R symbol SYMBOL, if it has one.
-
-Most functions will not have source file references, either
-because they were sent to the interpreter directly, or because
-they are loaded via byte-compiled packages."
-  (when (ess-boolean-command (format "!base::is.null(utils::getSrcref(%s))\n"
-                                     (ess-r-xref--get-symbol symbol)))
-    (let* ((fname (string-trim
-                   (ess-string-command
-                    (format "base::cat(utils::getSrcFilename(%s, full.names = TRUE)[1], \"\\n\")\n"
-                            (ess-r-xref--get-symbol symbol)))))
-           ;; Check if the file srcref is cached by ESS.
-           (srcref (gethash fname ess--srcrefs))
-           (ess-buff (when srcref (ess--dbg-find-buffer (car srcref))))
-           ;; R seems to keep track of lines even for non-existent files, too.
-           (line (string-to-number
-                  (ess-string-command
-                   (format "base::cat(utils::getSrcLocation(%s, which = \"line\")[1], \"\\n\")\n"
-                           (ess-r-xref--get-symbol symbol))))))
-      (cond
-       ;; When the function was evaluated linewise into the interpreter, the
-       ;; filename will be empty. We can't do anything in this case.
-       ((string-equal fname "") nil)
-       ;; If the file exists, jump into it.
-       ((ess-boolean-command (format "base::file.exists(\"%s\")\n" fname))
-        (list (xref-make (if (listp symbol)
-                             (concat (car symbol) "::" (cadr symbol))
-                           symbol)
-                         (xref-make-file-location
-                          (expand-file-name fname) line 0))))
-       ;; For functions eval'd into ESS, we can use the cached file position.
-       (ess-buff (list (xref-make
-                        (if (listp symbol)
-                            (concat (car symbol) "::" (cadr symbol))
-                          symbol)
-                        (xref-make-buffer-location ess-buff (caddr srcref)))))
-       ;; TODO: Handle other non-existing srcfiles, such as temp install
-       ;; directories.
-       (t nil))))) ;; We didn't find it.
+(defun ess-r-xref--xref (symbol)
+  "Create an xref for the source file reference of R symbol SYMBOL."
+  (let ((ref (ess-r-xref--srcref symbol)))
+    (when ref
+      (let* ((file (nth 0 ref))
+             (line (nth 1 ref))
+             (col (nth 2 ref))
+             ;; Check if the file srcref is cached by ESS.
+             (ess-ref (gethash file ess--srcrefs))
+             (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref)))))
+        (cond
+         (ess-buff
+          ;; FIXME: this breaks when eval is on larger spans than function
+          (xref-make symbol (xref-make-buffer-location ess-buff (caddr ess-ref))))
+         ((ess-boolean-command (format "base::file.exists(\"%s\")\n" file))
+          (xref-make symbol (xref-make-file-location file line col)))
+         (t nil))))))
 
 
 (provide 'ess-r-xref)

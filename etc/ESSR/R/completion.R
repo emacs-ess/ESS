@@ -1,5 +1,30 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
+.ess_eval <- function(str) {
+    ## don't remove; really need eval(parse(  here!!
+    tryCatch(base::eval(base::parse(text=str)),
+             error=function(e) NULL) ## also works for special objects containing @:$ etc
+}
+
+.ess_nonull <- function(x, default = "") {
+    if (is.null(x)) default
+    else x
+}
+
+.ess_srcref <- function(name) {
+    fn <- .ess_eval(name)
+    out <- "()\n"
+    if (is.function(fn) && !is.null(utils::getSrcref(fn))) {
+        file <- utils::getSrcFilename(fn, full.names = TRUE)
+        if (file != "") {
+            line <- .ess_nonull(utils::getSrcLocation(fn, "line"), 1)
+            col <- .ess_nonull(utils::getSrcLocation(fn, "column"), 1)
+            out <- sprintf("(\"%s\" %d %d)\n", file, line, col - 1)
+        }
+    }
+    cat(out)
+}
+
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
         ## temporarily disable JIT compilation and errors
@@ -7,9 +32,7 @@
         op <- options(error=NULL)
         on.exit({ options(op); compiler::enableJIT(comp) })
     }
-    ## don't remove; really need eval(parse(  here!!
-    fun <- tryCatch(eval(parse(text=funname)),
-                    error=function(e) NULL) ## also works for special objects containing @:$ etc
+    fun <- .ess_eval(funname)
     if(is.function(fun)) {
         special <- grepl('[:$@[]', funname)
         args <- if(!special){
