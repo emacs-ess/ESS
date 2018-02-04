@@ -20,7 +20,7 @@ DESTDIR=/usr
 PREFIX=$(DESTDIR)
 
 ##__ GNU Emacs __
-EMACS=emacs
+EMACS ?= emacs
 SITELISP=$(PREFIX)/share/emacs/site-lisp
 LISPDIR=$(SITELISP)/ess
 INFODIR=$(PREFIX)/share/info
