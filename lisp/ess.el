@@ -112,6 +112,7 @@
         )
     (require 'font-lock))
 
+(require 'ess-utils)
 (require 'ess-compat)
 (require 'ess-custom)
 (require 'ess-mode)
@@ -133,19 +134,6 @@
   "Jump to the last error generated from a sourced file." t)
 
 (autoload 'ess-load-file "ess-inf" "Source a file into S.")
-
-(autoload 'ess-inside-string-or-comment-p "ess-utils"
-  "Non-nil, if inside string or comment." t)
-(autoload 'ess-inside-string-p "ess-utils" "Non-nil if inside string." t)
-
-(autoload 'ess-do-auto-fill "ess-utils" "substitute for \\[do-auto-fill]." t)
-
-(autoload 'ess-rep-regexp "ess-utils" "Replace, but not in string/comment." t)
-
-(autoload 'ess-time-string "ess-utils" "Return time-stamp string." t)
-
-(autoload 'ess-nuke-trailing-whitespace "ess-utils"
-  "Maybe get rid of trailing blanks." t)
 
  ; ess-transcript-mode: editing ``outputs'
 

@@ -1510,6 +1510,7 @@ If not `nil' and not `t', query for each instance."
 
 ;;*;; Debugging tools
 
+(defvar ess-dribble-buffer nil)
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to dribble ('*ESS*') buffer."
   (unless (buffer-live-p ess-dribble-buffer)
