@@ -30,11 +30,10 @@
 
 (require 'subr-x)
 (require 'xref)
-(require 'ess-r-mode)
 (require 'ess-utils)
+(require 'ess-tracebug)
 
 
-;;; Xref API
 
 (defun ess-r-xref-backend ()
   "An `xref-backend-functions' implementation for `R-mode'."
