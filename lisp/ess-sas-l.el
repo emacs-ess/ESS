@@ -49,13 +49,9 @@
 
 ;;; Code:
 
-(ess-message "[ess-sas-l:] (require 'ess) ...")
 (require 'ess)
-(ess-message "[ess-sas-l:] (require 'ess-mode) ...")
 (require 'ess-mode)
 (require 'ess-custom)
-
-(ess-message "[ess-sas-l:] (autoload ..) (def** ..) etc ...")
 
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode." t)
 

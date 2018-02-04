@@ -47,7 +47,6 @@
 (require 'ess-r-package)
 (when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
 
-(ess-message "[ess-r-mode:] (require 'ess-s-lang)")
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 
@@ -248,9 +247,6 @@ It makes underscores and dots word constituent chars.")
       font-lock-string-face)
      (t
       font-lock-comment-face))))
-
-
-(ess-message "[ess-r-mode:] (autoload ..) & (def** ..)")
 
 
 (defvar ess-r-customize-alist
@@ -461,7 +457,6 @@ The extension, in a file name, is the part that follows the last `.'."
                      (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
                      (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
                      (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))))))
-    (ess-message "[ess-site:] (let ... before (ess-r-versions-create) ...")
 
     (setq ess-r-versions-created   ;; For Unix *and* Windows, using either
           (ess-r-versions-create)) ;; ess-r-versions or ess-rterm-version-paths (above!)
@@ -480,7 +475,6 @@ The extension, in a file name, is the part that follows the last `.'."
   "Call `\\[ess-r-s-versions-creation] creaing `ess-versions-created' and
 update the \"Start Process\" menu."
   (interactive)
-  (ess-message "[ess-site:] before (ess-r-s-versions-creation) ...")
   (ess-r-s-versions-creation)
 
   (when ess-versions-created

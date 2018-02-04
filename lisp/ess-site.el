@@ -92,12 +92,14 @@ for ESS, such as icons.")
 (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 (require 'ess-utils)
 
-(ess-message (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
+(ess-write-to-dribble-buffer
+ (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
 
 (defun ess-require (feature &rest args)
   (let ((feature-name (symbol-name feature)))
-    (ess-message (concat "[ess-site:] require '" feature-name))
+    (ess-write-to-dribble-buffer
+     (concat "[ess-site:] require '" feature-name))
     (apply 'require feature args)))
 
 ;; load code to figure out what version/strain of Emacs we are running
@@ -215,16 +217,14 @@ for ESS, such as icons.")
 
 (eval-after-load "ess-r-mode"
   '(progn
-     (ess-message "[ess-site:] before creating ess-versions-* ...")
+     (ess-write-to-dribble-buffer "[ess-site:] before creating ess-versions-* ...")
      (ess-r-s-versions-creation+menu)
-     (ess-message "[ess-site:] after ess-versions-created ...")))
+     (ess-write-to-dribble-buffer "[ess-site:] after ess-versions-created ...")))
 
 ;; Check to see that inferior-ess-r-program-name points to a working version
 ;; of R; if not, try to find the newest version:
 (ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
-(ess-message "[ess-site:] after ess-check-R-prog... ...")
-
-(ess-message "[ess-site:] *very* end ...")
+(ess-write-to-dribble-buffer "[ess-site:] *very* end ...")
 
 
  ; Local variables section

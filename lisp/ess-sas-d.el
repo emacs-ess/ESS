@@ -34,16 +34,10 @@
 
 ;;; Autoloads:
 
-(ess-message "[ess-sas-d:] require 'comint & 'shell ...")
 (require 'comint)
 (require 'shell)
 (require 'executable)
-
-;;(ess-message "[ess-sas-d:] require 'ess-sas-a ...")
-;;(require 'ess-sas-a)
-(ess-message "[ess-sas-d:] require 'ess-sas-l ...")
 (require 'ess-sas-l)
-(ess-message "[ess-sas-d:] (autoload ..) (def** ..) ...")
 
 (autoload 'inferior-ess "ess-inf" no-doc t)
 (autoload 'ess-mode "ess-mode" no-doc t)

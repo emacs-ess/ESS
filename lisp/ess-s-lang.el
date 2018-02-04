@@ -33,7 +33,6 @@
  ; Requires and autoloads
 
 (require 'ess-utils)
-(ess-message "[ess-s-lang:] (def** ) only ...")
 
  ; Configuration variables
 
