@@ -52,6 +52,7 @@
 (require 'ess)
 (require 'ess-mode)
 (require 'ess-custom)
+(require 'ess-sas-a)
 
 (autoload 'ess-transcript-mode "ess-trns" "ESS source eval mode." t)
 
@@ -145,6 +146,7 @@ A .lst file is a SAS listing file when:
   (ess-transcript-minor-mode 1)
   (setq buffer-read-only t)) ;; to protect the buffer.
 
+(defvar sas-mode-local-map nil "contains modified local keymap for SAS")
 (defun SAS-listing-mode()
   "Fundamental mode with `ess-listing-minor-mode' and read-only."
   (interactive)
@@ -174,12 +176,6 @@ A .lst file is a SAS listing file when:
   "*Require confirmation when revisiting a modified sas-output file."
   :group 'ess-sas
   :type  'boolean)
-
-;; user can specify the sas program name
-(defcustom sas-program "sas"
-  "*Command to invoke SAS, default for buffer-local `ess-sas-submit-command'."
-  :group 'ess-sas
-  :type  'string)
 
 (defcustom sas-pre-run-hook nil
   "Hook to execute prior to running SAS via `submit-sas'."
@@ -248,8 +244,6 @@ number."
   "If you do not want to run regexp-opt, then set to nil."
   :group 'ess-sas
   :type '(choice (const nil) string))
-
-(require 'ess-sas-a)
 
 (defvar sas-buffer-name nil)
 (defvar sas-file-root nil)

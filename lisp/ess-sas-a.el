@@ -153,6 +153,11 @@ Virtual PC emulator on your Mac; buffer-local."
 
 (make-variable-buffer-local 'ess-sas-submit-mac-virtual-pc)
 
+(defcustom sas-program "sas"
+  "*Command to invoke SAS, default for buffer-local `ess-sas-submit-command'."
+  :group 'ess-sas
+  :type  'string)
+
 (defcustom ess-sas-submit-command sas-program
   "*Command to invoke SAS in batch; buffer-local."
   :group 'ess-sas

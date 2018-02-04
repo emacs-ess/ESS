@@ -186,8 +186,6 @@ Better logic needed!  (see 2 uses, in this file).")
 
 ;;; The functions of interest (mode, inferior mode)
 
-(defvar sas-mode-local-map nil "contains modified local keymap for SAS")
-
 (defun SAS-mode (&optional proc-name)
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)

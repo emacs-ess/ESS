@@ -31,8 +31,7 @@
 
 ;;; Code:
 
- ; Requires and autoloads
-
+(require 'ess-s-lang)
 
  ; Specialized functions
 
