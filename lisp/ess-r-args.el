@@ -200,7 +200,7 @@ buffer readjustments for multiline string)."
       (setq function (ess-r-args-current-function)))
   (when (and function
              (or ess-current-process-name
-                 (interactive-p)))
+                 (called-interactively-p)))
     (ess-force-buffer-current "R process to use: ")
     ;; ^^^^^^^^^^^^^^^ has own error handler
     (mapconcat (lambda (arg) (concat (car arg) "=" (cdr arg)))

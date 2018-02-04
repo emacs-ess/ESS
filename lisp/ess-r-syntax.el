@@ -111,6 +111,7 @@ be advised"
      (ess-back-to-indentation)
      (progn ,@body)))
 
+(defvar containing-sexp)
 (defmacro ess-at-containing-sexp (&rest body)
   (declare (indent 0)
            (debug (&rest form)))

@@ -166,10 +166,9 @@ from temporary buffers.")
 
 (defun ess-make-source-refd-command (beg end visibly process)
   "Saves a region to a temporary file in order to add source references.
-BEG and END delimit the region.
-
-Returns a string containing an inferior process command for
-loading the temporary file.  This command conforms to VISIBLY."
+BEG and END delimit the region. Returns a string containing an
+inferior process command for loading the temporary file.  This
+command conforms to VISIBLY."
   (let* ((filename buffer-file-name)
          (proc-dir (ess-get-process-variable 'default-directory))
          (remote (when (file-remote-p proc-dir)
@@ -225,7 +224,7 @@ loading the temporary file.  This command conforms to VISIBLY."
                  (list filename ess--tracebug-eval-index orig-beg) ess--srcrefs)
         (with-silent-modifications
           (put-text-property beg end 'tb-index ess--tracebug-eval-index)))
-      (let ((string (ess-process-buffer-substring process start end)))
+      (let ((string (ess-process-buffer-substring process beg end)))
         (or
          ;; Sending string to subprocess is considerably faster than tramp file
          ;; transfer. So, give priority to `ess-eval-command' if available
@@ -476,18 +475,21 @@ The first element of the list is used as an indicator of the
 process being ready (i.e. not busy). Implemented lists that you
 can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 `ess--busy-vbars'"
-  :group 'ess)
+  :group 'ess
+  :type '(repeat string))
 
 (defvar ess--busy-timer nil
   "Timer used for busy process indication")
 
 (defcustom inferior-ess-split-long-prompt t
   "If non-nil, long prompt '> > > > > + + + + > ' is split."
-  :group 'ess-tracebug)
+  :group 'ess-tracebug
+  :type 'boolean)
 
 (defcustom inferior-ess-replace-long+ t
   "If non-nil,  '+ + + + ' containing more than 4 + is replaced by `ess-long+replacement'"
-  :group 'ess-tracebug)
+  :group 'ess-tracebug
+  :type 'boolean)
 
 (defvar ess-long+replacement "+ . + "
   "Replacement used for long + prompt.
@@ -563,7 +565,7 @@ in inferior buffers.  ")
     (kill-local-variable 'ess--tb-last-input-overlay)
     (kill-local-variable 'ess--tb-last-input)
     (font-lock-remove-keywords nil (compilation-mode-font-lock-keywords))
-    (font-lock-fontify-buffer)
+    (font-lock-ensure)
     (kill-local-variable 'compilation-error-regexp-alist)
     (kill-local-variable 'compilation-search-path)
     (cancel-timer ess--busy-timer)
@@ -1031,11 +1033,9 @@ of the ring."
 
 (defun ess--dbg-remove-empty-lines (string)
   "Remove empty lines (which interfere with evals) during debug.
-
-This function is placed in `ess-presend-filter-functions'.
-"
+This function is placed in `ess-presend-filter-functions'."
   ;; the process here is an ugly reliance on dynamic scope
-  (if (and ess--dbg-del-empty-p (process-get process 'dbg-active))
+  (if (and ess--dbg-del-empty-p (ess-process-get 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
     string))
 
@@ -1289,7 +1289,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
             (let ((pmark (process-mark proc))
                   (inhibit-modification-hooks t))
               (goto-char pmark)
-              (when (looking-back inferior-ess-primary-prompt)
+              (when (looking-back inferior-ess-primary-prompt (point-at-bol))
                 (insert-before-markers "\n")
                 (set-marker pmark (point)))))))
 
@@ -1440,15 +1440,14 @@ associated buffer. If FILE is nil return nil."
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
+(declare-function org-babel-tangle-jump-to-org "ob-tangle.el")
 
 (defun ess--dbg-create-ref-marker (file line &optional col)
   "Create markers to the reference given by FILE, LINE and COL.
 Return list of two markers MK-start and MK-end. MK-start is the
 position of error. Mk-end is the end of the line where error
-occurred.
-
-If buffer associated with FILE is not found, or line is nil, or
-TB-INDEX is not found return nil."
+occurred. If buffer associated with FILE is not found, or line is
+nil, or TB-INDEX is not found return nil."
   (if (stringp line) (setq line (string-to-number line)))
   (if (stringp col) (setq col (string-to-number col)))
   (let* ((srcref (gethash file ess--srcrefs))
@@ -1476,7 +1475,8 @@ TB-INDEX is not found return nil."
               (if col
                   (goto-char (+ (point-at-bol) col))
                 (back-to-indentation))
-              (when org-babel-tangled-file
+              (when (and (boundp 'org-babel-tangled-file)
+                         org-babel-tangled-file)
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
@@ -1521,7 +1521,7 @@ If FILENAME is not found at all, ask the user where to find it if
           (let* ((pop-up-windows t)
                  (name (read-file-name
                         (format "Find next line in (default %s): "  filename)
-                        spec-dir filename t nil))
+                        nil filename t nil))
                  (origname name))
             (cond
              ((not (file-exists-p name))
@@ -1824,7 +1824,7 @@ ARGS are ignored to allow using this function in process hooks."
           (inhibit-field-text-motion t))
       (forward-line -1)
       (end-of-line)
-      (looking-back "\\%>\\%[ \t]*"))))
+      (looking-back "\\%>\\%[ \t]*" (point-at-bol)))))
 
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
@@ -1849,7 +1849,8 @@ Each sublist  has five elements:
   ;; List format is identical to that of the elements of
   ;; `ess-bp-type-spec-alist' except that the second element giving
   ;; the R expression is meaningless here." ;;fixme: second element is missing make it nil for consistency with all other specs
-  :group 'ess-debug)
+  :group 'ess-debug
+  :type 'list)
 
 (defcustom ess-bp-conditional-spec
   '(conditional     "browser(expr={%s})"  "CB[ %s ]>\n"  question-mark  ess-bp-fringe-browser-face)
@@ -1858,13 +1859,15 @@ List format is identical to that of the elements of
 `ess-bp-type-spec-alist'.  User is asked for the conditional
 expression to be replaced instead of %s in the second and third
 elements of the specifications."
-  :group 'ess-debug)
+  :group 'ess-debug
+  :type 'list)
 
 (defcustom ess-bp-logger-spec
   '(logger     ".ess_log_eval('%s')"  "L[ \"%s\" ]>\n"  hollow-square  ess-bp-fringe-logger-face)
   "List giving the loggers specifications.
 List format is identical to that of `ess-bp-type-spec-alist'."
-  :group 'ess-debug)
+  :group 'ess-debug
+  :type 'list)
 
 
 (defun ess-bp-get-bp-specs (type &optional condition no-error)
@@ -2402,7 +2405,9 @@ If nil, the value of `split-width-threshold' is used."
   "The number of steps to scale the watch font down (up).
 Each step scales the height of the default face in the watch
 window by the variable `text-scale-mode-step' (a negative number
-of steps decreases the height by the same amount)")
+of steps decreases the height by the same amount)"
+  :group 'ess-debug
+  :type 'integer)
 
 (defvar ess-watch-help nil
   "Keymap for the *R watch* buffer.

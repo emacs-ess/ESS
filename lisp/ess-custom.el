@@ -259,7 +259,9 @@ implementation."
 
 (defcustom ess-can-eval-in-background t
   "If non-nil ESS can perform caching and other background
- activities by calling the subprocess on idle time.")
+ activities by calling the subprocess on idle time."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-user-full-name (user-full-name)
   "The full name of the user."
@@ -395,7 +397,9 @@ Some useful keys for IDO completion:
 
 (defcustom ess-tab-complete-in-script nil
   "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
-See also `ess-first-tab-never-complete'.")
+See also `ess-first-tab-never-complete'."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-first-tab-never-complete 'symbol
   "If t, first TAB never tries to complete in ess-mode.
@@ -1678,7 +1682,8 @@ for file name completion.  This can mess up ess evaluation completely."
 
 (defcustom inferior-STA-start-file nil
   "Initialization file for Stata."
-  :group 'ess-Stata)
+  :group 'ess-Stata
+  :type '(choice (const nil) string))
 
 (defcustom inferior-STA-start-args ""
   "String of switches used when starting stata.
@@ -1695,10 +1700,10 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :type 'string)
 (defvaralias 'inferior-R-objects-command 'inferior-ess-r-objects-command)
 
-(defcustom ess-getwd-command nil
+(defvar ess-getwd-command nil
   "Command string retriving the working directory from the process.")
 
-(defcustom ess-setwd-command nil
+(defvar ess-setwd-command nil
   "Command string to set working directory.
 Should contain a formating %s to be replaced by a
 path (as in 'setwd(%s)\\n'.")
@@ -3021,7 +3026,8 @@ Defaults to `ess-S-non-functions'."
                                          "julia")
   "julia' executable.
 Need to be a full path if julia executable is not in the `exec-path'"
-  :group 'ess-Julia)
+  :group 'ess-Julia
+  :type 'string)
 
 (defvar julia-basic-offset 4
   "Offset for julia code editing")

@@ -229,6 +229,8 @@ objects from that MODULE."
 (defun ess-ac-julia-objects ()
   (ess-julia-objects ac-prefix))
 
+(declare-function company-begin-backend "company.el")
+
 (defun company-ess-julia-objects (command &optional arg &rest ignored)
   (interactive (list 'interactive))
   (cl-case command
@@ -365,6 +367,8 @@ to look up any doc strings."
   "Syntax table used for completion and help symbol lookup.
 It makes underscores and dots word constituent chars.")
 
+(defvar ess-julia-basic-offset 4)
+
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
@@ -375,8 +379,6 @@ It makes underscores and dots word constituent chars.")
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-
-  (set (make-local-variable 'ess-julia-basic-offset) 4)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl")
   (run-mode-hooks 'ess-julia-mode-hook))
@@ -402,14 +404,14 @@ to julia, put them in the variable `inferior-julia-args'."
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
     (let* ((jl-start-args
-	    (concat inferior-julia-args " " ; add space just in case
-		    (if start-args
-			(read-string
+	        (concat inferior-julia-args " " ; add space just in case
+		            (if start-args
+			            (read-string
                          (concat "Starting Args"
                                  (if inferior-julia-args
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
-		      nil))))
+		              nil))))
       (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -419,7 +421,6 @@ to julia, put them in the variable `inferior-julia-args'."
       (setq comint-input-sender 'ess-julia-input-sender)
 
       (ess--tb-start)
-      (set (make-local-variable 'ess-julia-basic-offset) 4)
       ;; remove ` from julia's logo
       (goto-char (point-min))
       (while (re-search-forward "`" nil t)
