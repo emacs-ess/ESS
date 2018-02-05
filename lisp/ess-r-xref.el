@@ -57,6 +57,15 @@
 
 ;;; Source File Locations
 
+(defcustom ess-r-xref-pkg-source-dir nil
+  "Directory to look for R package sources (each in a
+subdirectory under the package name)."
+  :type 'directory)
+
+(defcustom ess-r-xref-pkg-sources nil
+  "Alist of R packages and directories of their source code."
+  :type '(alist :key-type string :value-type directory))
+
 (defun ess-r-xref--srcref (symbol)
   (inferior-ess-r-force)
   (with-current-buffer (ess-command (format ".ess_srcref(\"%s\")\n" symbol))
@@ -64,6 +73,27 @@
     (when (re-search-forward "(" nil 'noerror)
       (goto-char (match-beginning 0))
       (read (current-buffer)))))
+
+(defun ess-r-xref--pkg-srcfile (symbol r-src-file)
+  "Look in the source directory of the R package containing symbol SYMBOL for R-SRC-FILE."
+  (let* ((env-name (ess-string-command (format ".ess_pkg_name(\"%s\")\n" symbol)))
+         (pkg (if (string-equal env-name "R_GlobalEnv")
+                  ;; This probably shouldn't happen, but just in case...
+                  (error "Can't find package for symbol %s." symbol)
+                env-name))
+         (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
+                  (when ess-r-xref-pkg-source-dir
+                    (expand-file-name pkg ess-r-xref-pkg-source-dir))
+                  (read-directory-name
+                   (format "%s package source dir: " pkg) nil nil t)))
+         (file (expand-file-name r-src-file dir)))
+    (if (file-readable-p file)
+        (progn
+          ;; Keep track of the package's source directory.
+          (unless (assoc-default pkg ess-r-xref-pkg-sources)
+            (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
+          file)
+      (error "Can't read %s." file))))
 
 (defun ess-r-xref--xref (symbol)
   "Create an xref for the source file reference of R symbol SYMBOL."
@@ -74,13 +104,22 @@
              (col (nth 2 ref))
              ;; Check if the file srcref is cached by ESS.
              (ess-ref (gethash file ess--srcrefs))
-             (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref)))))
+             (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref))))
+             ;; Check if the file seems like it's in an R package, something
+             ;; like "/tmp/R-downloads/pkg/R/src.R".
+             (r-src-file (when (and (not ess-ref)
+                                    (string-match "/\\(R/.*\\)$" file))
+                           (match-string 1 file))))
         (cond
          (ess-buff
           ;; FIXME: this breaks when eval is on larger spans than function
           (xref-make symbol (xref-make-buffer-location ess-buff (caddr ess-ref))))
          ((ess-boolean-command (format "base::file.exists(\"%s\")\n" file))
           (xref-make symbol (xref-make-file-location file line col)))
+         (r-src-file
+          (let ((pkg-file (ess-r-xref--pkg-srcfile symbol r-src-file)))
+            (xref-make symbol (xref-make-file-location
+                                (expand-file-name pkg-file) line col))))
          (t nil))))))
 
 (provide 'ess-r-xref)

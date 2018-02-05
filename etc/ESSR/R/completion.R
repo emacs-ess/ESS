@@ -25,6 +25,12 @@
     cat(out)
 }
 
+.ess_pkg_name <- function(name) {
+    fn <- .ess_eval(name)
+    env_name <- base::environmentName(base::environment(fn))
+    cat(sprintf("%s\n", env_name[1]))
+}
+
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
         ## temporarily disable JIT compilation and errors
