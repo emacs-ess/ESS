@@ -83,7 +83,6 @@
           (xref-make symbol (xref-make-file-location file line col)))
          (t nil))))))
 
-
 (provide 'ess-r-xref)
 
 ;;; ess-r-xref.el ends here

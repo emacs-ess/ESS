@@ -319,7 +319,6 @@ Default depends on the ESS language/dialect and hence made buffer local")
 Look only for primary or secondary prompt on the current line. If
 found, return the starting position of the prompt, otherwise stay
 at current position and return nil. POS defaults to `point'."
-
   (let* ((pos (or pos (point)))
          (new-pos (save-excursion
                     (beginning-of-line)
@@ -327,7 +326,7 @@ at current position and return nil. POS defaults to `point'."
                         pos
                       (when  (and inferior-ess-secondary-prompt
                                   (looking-at inferior-ess-secondary-prompt))
-                        (re-search-backward (concat "^" inferior-ess-primary-prompt))
+                        (re-search-backward (concat "^" inferior-ess-primary-prompt) nil t)
                         pos)))))
     (when new-pos
       (goto-char new-pos))))
@@ -2351,11 +2350,10 @@ NOTE: to be used only with fields, see `comint-use-prompt-regexp'.
 ;; }
 (defun inferior-ess--goto-input-start:regexp ()
   "Move point to the begining of input skiping all continuation lines.
-If in the output field, goes to the begining of previous input.
-"
+If in the output field, goes to the begining of previous input."
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
-    (re-search-backward (concat "^" inferior-ess-prompt)))
+    (re-search-backward (concat "^" inferior-ess-prompt) nil t))
   ;; at bol
   (when (and inferior-ess-secondary-prompt
              (looking-at inferior-ess-secondary-prompt))
@@ -2383,10 +2381,9 @@ If in the output field, goes to the begining of previous input.
             (when inferior-ess-secondary-prompt
               (while (progn (forward-line 1)
                             (looking-at inferior-ess-secondary-prompt))
-                (re-search-forward inferior-ess-secondary-prompt (point-at-eol))
+                (re-search-forward inferior-ess-secondary-prompt (point-at-eol) t)
                 (setq command (concat command "\n"
-                                      (buffer-substring-no-properties (point) (point-at-eol))))
-                ))
+                                      (buffer-substring-no-properties (point) (point-at-eol))))))
             (forward-line -1)
             (setq ess-temp-point (point)) ;; this is ugly, used by transcript
             command)
