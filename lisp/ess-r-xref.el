@@ -40,7 +40,7 @@
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
-  (ess-symbol-at-point))
+  (symbol-name (ess-symbol-at-point)))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
   (let ((xref (ess-r-xref--xref symbol)))
