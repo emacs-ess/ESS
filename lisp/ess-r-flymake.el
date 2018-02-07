@@ -37,6 +37,11 @@ See \"lintr::with_defaults\" for how to customize this."
   :group 'ess-R
   :type 'string)
 
+(defcustom ess-r-flymake-lintr-cache t
+  "If non-nil, cache lintr results."
+  :group 'ess-R
+  :type 'string)
+
 (defvar-local ess-r--flymake-proc nil)
 
 (defun ess-r-flymake (report-fn &rest _args)
@@ -69,6 +74,7 @@ REPORT-FN is flymake's callback function."
                            ;; everything after --args as a string:
                            "try(lint(commandArgs(TRUE)"
                            ", " "linters = " ess-r-flymake-linters
+                           (when ess-r-flymake-lintr-cache ", cache = TRUE")
                            "))"))
                    "--args" ,(eval
                               ;; text string of the current buffer:
