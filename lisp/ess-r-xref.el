@@ -77,17 +77,16 @@
                 env-name))
          (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
                   (when ess-r-package-library-path
-                    (expand-file-name pkg ess-r-package-library-path))
-                  (read-directory-name
-                   (format "%s package source dir: " pkg) nil nil t)))
-         (file (expand-file-name r-src-file dir)))
-    (if (file-readable-p file)
-        (progn
-          ;; Keep track of the package's source directory.
-          (unless (assoc-default pkg ess-r-xref-pkg-sources)
-            (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
-          file)
-      (error "Can't read %s." file))))
+                    (expand-file-name pkg ess-r-package-library-path))))
+         (file (when dir (expand-file-name r-src-file dir))))
+    (when file
+      (if (file-readable-p file)
+          (progn
+            ;; Keep track of the package's source directory.
+            (unless (assoc-default pkg ess-r-xref-pkg-sources)
+              (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
+            file)
+        (error "Can't read %s." file)))))
 
 (defun ess-r-xref--xref (symbol)
   "Create an xref for the source file reference of R symbol SYMBOL."
@@ -111,9 +110,9 @@
          ((file-readable-p file)
           (xref-make symbol (xref-make-file-location file line col)))
          (r-src-file
-          (let ((pkg-file (ess-r-xref--pkg-srcfile symbol r-src-file)))
+          (when-let ((pkg-file (ess-r-xref--pkg-srcfile symbol r-src-file)))
             (xref-make symbol (xref-make-file-location
-                                (expand-file-name pkg-file) line col))))
+                               (expand-file-name pkg-file) line col))))
          (t nil))))))
 
 (provide 'ess-r-xref)
