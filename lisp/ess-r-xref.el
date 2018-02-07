@@ -108,7 +108,7 @@
          (ess-buff
           ;; FIXME: this breaks when eval is on larger spans than function
           (xref-make symbol (xref-make-buffer-location ess-buff (caddr ess-ref))))
-         ((ess-boolean-command (format "base::file.exists(\"%s\")\n" file))
+         ((file-readable-p file)
           (xref-make symbol (xref-make-file-location file line col)))
          (r-src-file
           (let ((pkg-file (ess-r-xref--pkg-srcfile symbol r-src-file)))
