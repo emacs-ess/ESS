@@ -30,6 +30,13 @@
 
 ;;; Code:
 
+(defcustom ess-r-flymake-linters "default_linters"
+  "Default linters to use.
+
+See \"lintr::with_defaults\" for how to customize this."
+  :group 'ess-R
+  :type 'string)
+
 (defvar-local ess-r--flymake-proc nil)
 
 (defun ess-r-flymake (report-fn &rest _args)
@@ -61,7 +68,7 @@ REPORT-FN is flymake's callback function."
                            ;; commandArgs(TRUE) lets us access
                            ;; everything after --args as a string:
                            "try(lint(commandArgs(TRUE)"
-                           ", " "linters = default_linters"
+                           ", " "linters = " ess-r-flymake-linters
                            "))"))
                    "--args" ,(eval
                               ;; text string of the current buffer:
