@@ -106,7 +106,7 @@
         (cond
          (ess-buff
           ;; FIXME: this breaks when eval is on larger spans than function
-          (xref-make symbol (xref-make-buffer-location ess-buff (caddr ess-ref))))
+          (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref))))
          ((file-readable-p file)
           (xref-make symbol (xref-make-file-location file line col)))
          (r-src-file
