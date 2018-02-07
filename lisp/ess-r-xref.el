@@ -57,11 +57,6 @@
 
 ;;; Source File Locations
 
-(defcustom ess-r-xref-pkg-source-dir nil
-  "Directory to look for R package sources (each in a
-subdirectory under the package name)."
-  :type 'directory)
-
 (defcustom ess-r-xref-pkg-sources nil
   "Alist of R packages and directories of their source code."
   :type '(alist :key-type string :value-type directory))
@@ -81,8 +76,8 @@ subdirectory under the package name)."
                   (error "Can't find package for symbol %s." symbol)
                 env-name))
          (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
-                  (when ess-r-xref-pkg-source-dir
-                    (expand-file-name pkg ess-r-xref-pkg-source-dir))
+                  (when ess-r-package-library-path
+                    (expand-file-name pkg ess-r-package-library-path))
                   (read-directory-name
                    (format "%s package source dir: " pkg) nil nil t)))
          (file (expand-file-name r-src-file dir)))
