@@ -76,9 +76,8 @@ subdirectory under the package name)."
 
 (defun ess-r-xref--pkg-srcfile (symbol r-src-file)
   "Look in the source directory of the R package containing symbol SYMBOL for R-SRC-FILE."
-  (let* ((env-name (ess-string-command (format ".ess_pkg_name(\"%s\")\n" symbol)))
-         (pkg (if (string-equal env-name "R_GlobalEnv")
-                  ;; This probably shouldn't happen, but just in case...
+  (let* ((env-name (ess-string-command (format ".ess_fn_pkg(\"%s\")\n" symbol)))
+         (pkg (if (string-equal env-name "")
                   (error "Can't find package for symbol %s." symbol)
                 env-name))
          (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
