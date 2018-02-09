@@ -133,6 +133,8 @@ REPORT-FN is flymake's callback function."
 
 (defun ess-r-setup-flymake ()
   "Setup flymake for ESS."
+  (when (< 26 emacs-major-version)
+    (error "ESS-flymake requires Emacs version 26 or later"))
   (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
   ;; Try not to enable flymake if flycheck is already running:
   (unless (bound-and-true-p flycheck-mode)
