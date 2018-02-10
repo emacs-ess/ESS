@@ -32,6 +32,7 @@
 
 (eval-when-compile
   (require 'cl-lib))
+(require 'ess-custom)
 
 (defcustom ess-r-flymake-linters "default_linters"
   "Default linters to use.
@@ -48,12 +49,10 @@ See \"lintr::with_defaults\" for how to customize this."
 (defvar-local ess-r--flymake-proc nil)
 
 (defun ess-r-flymake (report-fn &rest _args)
-  "A Flymake backend for ESS-R modes. Relies on the lintr package.
-
+  "A Flymake backend for ESS-R modes.  Relies on the lintr package.
 REPORT-FN is flymake's callback function."
-  (unless (executable-find
-           ;; TODO - check whether lintr package is available
-           "R") (error "Cannot find a suitable R"))
+  (unless (executable-find "R")
+    (error "Cannot find a suitable R"))
   ;; If a live process launched in an earlier check was found, that
   ;; process is killed.  When that process's sentinel eventually runs,
   ;; it will notice its obsoletion, since it have since reset
@@ -70,7 +69,8 @@ REPORT-FN is flymake's callback function."
        (make-process
         :name "ess-r-flymake" :noquery t :connection-type 'pipe
         :buffer (generate-new-buffer " *ess-r-flymake*")
-        :command `("R" "--slave" "--restore" "--no-save" "-e"
+        :command `(,inferior-R-program-name
+                   "--slave" "--restore" "--no-save" "-e"
                    ,(eval (concat
                            "library(lintr);"
                            ;; commandArgs(TRUE) lets us access
@@ -107,7 +107,7 @@ REPORT-FN is flymake's callback function."
                                   ;; type
                                   (group-n 3 (| "style: " "warning: " "error: "))
                                   ;; msg
-                                  (group-n 4 (one-or-more not-newline)) "\n")
+                                  (group-n 4 (one-or-more not-newline)) line-end)
                               nil t)
                        for msg = (match-string 4)
                        for (beg . end) = (flymake-diag-region
@@ -115,9 +115,9 @@ REPORT-FN is flymake's callback function."
                                           (string-to-number (match-string 1))
                                           (string-to-number (match-string 2)))
                        for type = (let ((str (match-string 3)))
-                                    (cond ((string-equal str "error: ") :error)
-                                          ((string-equal str "warning: ") :warning)
-                                          ((string-equal str "style: ") :note)))
+                                    (cond ((string= str "error: ") :error)
+                                          ((string= str "warning: ") :warning)
+                                          ((string= str "style: ") :note)))
                        collect (flymake-make-diagnostic source
                                                         beg
                                                         end
@@ -135,10 +135,11 @@ REPORT-FN is flymake's callback function."
   "Setup flymake for ESS."
   (when (< 26 emacs-major-version)
     (error "ESS-flymake requires Emacs version 26 or later"))
-  (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
-  ;; Try not to enable flymake if flycheck is already running:
-  (unless (bound-and-true-p flycheck-mode)
-    (flymake-mode)))
+  (when (string= "R" ess-dialect)
+    (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
+    ;; Try not to enable flymake if flycheck is already running:
+    (unless (bound-and-true-p flycheck-mode)
+      (flymake-mode))))
 
 ;; Enable flymake in Emacs 26+
 (when (<= 26 emacs-major-version)
