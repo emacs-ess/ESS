@@ -36,11 +36,18 @@
 (require 'ess-custom)
 (require 'flymake)
 
-(defcustom ess-r-flymake-linters "default_linters"
+(defcustom ess-r-flymake-linters
+  '("commented_code_linter = NULL"
+    "single_quotes_linter = NULL"
+    "infix_spaces_linter = NULL"
+    "line_length_linter(80)"
+    "object_usage_linter = NULL")
   "Default linters to use.
-See \"lintr::with_defaults\" for how to customize this."
+Can be either a string with R expression to be used as
+is (e.g. 'lintr::default_linters'). Or a list of strings where
+each element is passed as argument to 'lintr::with_defaults'."
   :group 'ess-R
-  :type 'string)
+  :type '(choice string (repeat string)))
 
 (defcustom ess-r-flymake-lintr-cache t
   "If non-nil, cache lintr results."
@@ -66,6 +73,17 @@ See \"lintr::with_defaults\" for how to customize this."
         }
     }
 };"))
+
+(defun ess-r--flymake-linters ()
+  (replace-regexp-in-string
+   "[\n\t ]+" " "
+   (if (stringp ess-r-flymake-linters)
+       ess-r-flymake-linters
+     (concat "lintr::with_defaults("
+             (mapconcat #'identity
+                        ess-r-flymake-linters
+                        ", ")
+             ")"))))
 
 (defun ess-r--flymake-msg-type (str)
   "Transform STR into log level."
@@ -128,7 +146,7 @@ REPORT-FN is flymake's callback function."
     (setq ess-r--flymake-proc
           (make-process
            :name "ess-r-flymake" :noquery t :connection-type 'pipe
-           :buffer (generate-new-buffer "*r-flymake*")
+           :buffer (generate-new-buffer "*ess-r-flymake*")
            :command (list inferior-R-program-name
                           "--vanilla" "--slave"
                           "-e" (concat
@@ -136,7 +154,7 @@ REPORT-FN is flymake's callback function."
                                 ;; commandArgs(TRUE) returns everything after
                                 ;; --args as a character vector
                                 "esslint(commandArgs(TRUE),"
-                                "linters = " ess-r-flymake-linters
+                                "linters = " (ess-r--flymake-linters)
                                 (when ess-r-flymake-lintr-cache
                                   ", cache = TRUE")
                                 ")")
