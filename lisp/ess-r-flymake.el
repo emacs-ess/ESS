@@ -1,9 +1,11 @@
 ;;; ess-r-flymake.el --- A ess-r Flymake backend  -*- lexical-binding: t; -*-
-
+;;
 ;; Copyright (C) 2018 J. Alexander Branham (alex DOT branham AT gmail DOT com)
-
-;; This file is not part of GNU Emacs.
-
+;; Copyright (C) 2018 ESS-core team
+;; Maintainer: ESS-core <ESS-core@r-project.org>
+;;
+;; This file is NOT part of GNU Emacs.
+;;
 ;; This is free software; you can redistribute it and/or modify it under
 ;; the terms of the GNU General Public License as published by the Free
 ;; Software Foundation; either version 3, or (at your option) any later
@@ -18,20 +20,19 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 ;; MA 02110-1301 USA.
-
-
+;;
 ;;; Commentary:
+;;
 ;; Flymake is the built-in Emacs package that supports on-the-fly
 ;; syntax checking.  This file adds support for this in R-mode by
 ;; relying on the lintr package, available on CRAN and currently
 ;; hosted at https://github.com/jimhester/lintr.
-
+;;
 ;; It is enabled by default.
-
+;;
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl-lib))
+(require 'cl-lib)
 (require 'ess-custom)
 (require 'flymake)
 
@@ -67,6 +68,7 @@ See \"lintr::with_defaults\" for how to customize this."
 };"))
 
 (defun ess-r--flymake-msg-type (str)
+  "Transform STR into log level."
   (cond ((string= str "error: ") :error)
         ((string= str "warning: ") :warning)
         ((string= str "style: ") :note)
