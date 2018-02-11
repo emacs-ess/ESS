@@ -57,7 +57,7 @@ REPORT-FN is flymake's callback function."
   ;; check will detect this.
   (when (process-live-p ess-r--flymake-proc)
     (kill-process ess-r--flymake-proc))
-  (let ((source (current-buffer)))
+  (let ((src-buffer (current-buffer)))
     (save-restriction
       (widen)
       (setq
@@ -82,15 +82,16 @@ REPORT-FN is flymake's callback function."
         (lambda (proc _event)
           (when (eq 'exit (process-status proc))
             (unwind-protect
-                (if (eq proc (buffer-local-value 'ess-r--flymake-proc source))
-                    (ess-r-flymake--parse-output proc report-fn)
+                (if (eq proc (buffer-local-value 'ess-r--flymake-proc src-buffer))
+                    (ess-r-flymake--parse-output (process-buffer proc) src-buffer report-fn)
                   (flymake-log :warning "Canceling obsolete check %s" proc))
               (kill-buffer (process-buffer proc))))))))))
 
-(defun ess-r-flymake--parse-output (proc report-fn)
-  "Parse the PROC's buffer for messages and locations.
-Collect all messages into a list and call REPORT-FN on it."
-  (with-current-buffer (process-buffer proc)
+(defun ess-r-flymake--parse-output (msg-buffer src-buffer report-fn)
+  "Parse the content of MSG-BUFFER for lint locations.
+SRC-BUFFER is the original source buffer.  Collect all messages
+into a list and call REPORT-FN on it."
+  (with-current-buffer msg-buffer
     (goto-char (point-min))
     (cl-loop
      while (search-forward-regexp
@@ -108,12 +109,12 @@ Collect all messages into a list and call REPORT-FN on it."
      for msg = (match-string 4)
      for (beg . end) = (let ((line (string-to-number (match-string 1)))
                              (col (string-to-number (match-string 2))))
-                         (flymake-diag-region (current-buffer) line col))
+                         (flymake-diag-region src-buffer line col))
      for type = (let ((str (match-string 3)))
                   (cond ((string= str "error: ") :error)
                         ((string= str "warning: ") :warning)
                         ((string= str "style: ") :note)))
-     collect (flymake-make-diagnostic (current-buffer) beg end type msg)
+     collect (flymake-make-diagnostic src-buffer beg end type msg)
      into diags
      finally (funcall report-fn diags))))
 
