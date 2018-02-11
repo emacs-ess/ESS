@@ -33,10 +33,10 @@
 (eval-when-compile
   (require 'cl-lib))
 (require 'ess-custom)
+(require 'flymake)
 
 (defcustom ess-r-flymake-linters "default_linters"
   "Default linters to use.
-
 See \"lintr::with_defaults\" for how to customize this."
   :group 'ess-R
   :type 'string)
@@ -51,16 +51,12 @@ See \"lintr::with_defaults\" for how to customize this."
 (defun ess-r-flymake (report-fn &rest _args)
   "A Flymake backend for ESS-R modes.  Relies on the lintr package.
 REPORT-FN is flymake's callback function."
-  (unless (executable-find "R")
-    (error "Cannot find a suitable R"))
-  ;; If a live process launched in an earlier check was found, that
-  ;; process is killed.  When that process's sentinel eventually runs,
-  ;; it will notice its obsoletion, since it have since reset
-  ;; `ess-r-flymake-proc' to a different value
+  (unless (executable-find inferior-ess-r-program-name)
+    (error "Cannot find program '%s'" inferior-ess-r-program-name))
+  ;; Kill the process if earlier check was found. The sentinel of the earlier
+  ;; check will detect this.
   (when (process-live-p ess-r--flymake-proc)
     (kill-process ess-r--flymake-proc))
-  ;; Save the current buffer, the narrowing restriction, remove any
-  ;; narrowing restriction.
   (let ((source (current-buffer)))
     (save-restriction
       (widen)
@@ -68,72 +64,62 @@ REPORT-FN is flymake's callback function."
        ess-r--flymake-proc
        (make-process
         :name "ess-r-flymake" :noquery t :connection-type 'pipe
-        :buffer (generate-new-buffer " *ess-r-flymake*")
-        :command `(,inferior-R-program-name
-                   "--slave" "--restore" "--no-save" "-e"
-                   ,(eval (concat
-                           "library(lintr);"
-                           ;; commandArgs(TRUE) lets us access
-                           ;; everything after --args as a string:
-                           "try(lint(commandArgs(TRUE)"
-                           ", " "linters = " ess-r-flymake-linters
-                           (when ess-r-flymake-lintr-cache ", cache = TRUE")
-                           "))"))
-                   "--args" ,(eval
-                              ;; text string of the current buffer:
-                              (concat (buffer-substring-no-properties
-                                       (point-min) (point-max)))))
+        :buffer (generate-new-buffer "*r-flymake*")
+        :command (list inferior-R-program-name
+                       "--slave" "--restore" "--no-save"
+                       "-e" (concat
+                             "library(lintr);"
+                             ;; commandArgs(TRUE) returns everything after
+                             ;; --args as a character vector
+                             "lint(commandArgs(TRUE),"
+                             "linters = " ess-r-flymake-linters
+                             (when ess-r-flymake-lintr-cache
+                               ", cache = TRUE")
+                             ")")
+                       "--args" (buffer-substring-no-properties
+                                 (point-min) (point-max)))
         :sentinel
         (lambda (proc _event)
           (when (eq 'exit (process-status proc))
             (unwind-protect
-                ;; Only proceed if `proc' is the same as
-                ;; `ess-r--flymake-proc', which indicates that
-                ;; `proc' is not an obsolete process.
-                (if (with-current-buffer source (eq proc ess-r--flymake-proc))
-                    (with-current-buffer (process-buffer proc)
-                      (goto-char (point-min))
-                      ;; Parse the output buffer for diagnostic's
-                      ;; messages and locations, collect them in a list
-                      ;; of objects, and call `report-fn'.
-                      (cl-loop
-                       while (search-forward-regexp
-                              ;; Regex to match the output lint() gives us.
-                              (rx line-start "<text>:"
-                                  ;; row
-                                  (group-n 1 (one-or-more num)) ":"
-                                  ;; column
-                                  (group-n 2 (one-or-more num)) ": "
-                                  ;; type
-                                  (group-n 3 (| "style: " "warning: " "error: "))
-                                  ;; msg
-                                  (group-n 4 (one-or-more not-newline)) line-end)
-                              nil t)
-                       for msg = (match-string 4)
-                       for (beg . end) = (flymake-diag-region
-                                          source
-                                          (string-to-number (match-string 1))
-                                          (string-to-number (match-string 2)))
-                       for type = (let ((str (match-string 3)))
-                                    (cond ((string= str "error: ") :error)
-                                          ((string= str "warning: ") :warning)
-                                          ((string= str "style: ") :note)))
-                       collect (flymake-make-diagnostic source
-                                                        beg
-                                                        end
-                                                        type
-                                                        msg)
-                       into diags
-                       finally (funcall report-fn diags)))
-                  (flymake-log :warning "Canceling obsolete check %s"
-                               proc))
-              ;; Cleanup the temporary buffer used to hold the
-              ;; check's output.
+                (if (eq proc (buffer-local-value 'ess-r--flymake-proc source))
+                    (ess-r-flymake--parse-output proc report-fn)
+                  (flymake-log :warning "Canceling obsolete check %s" proc))
               (kill-buffer (process-buffer proc))))))))))
+
+(defun ess-r-flymake--parse-output (proc report-fn)
+  "Parse the PROC's buffer for messages and locations.
+Collect all messages into a list and call REPORT-FN on it."
+  (with-current-buffer (process-buffer proc)
+    (goto-char (point-min))
+    (cl-loop
+     while (search-forward-regexp
+            ;; Regex to match the output lint() gives us.
+            (rx line-start "<text>:"
+                ;; row
+                (group-n 1 (one-or-more num)) ":"
+                ;; column
+                (group-n 2 (one-or-more num)) ": "
+                ;; type
+                (group-n 3 (| "style: " "warning: " "error: "))
+                ;; msg
+                (group-n 4 (one-or-more not-newline)) line-end)
+            nil t)
+     for msg = (match-string 4)
+     for (beg . end) = (let ((line (string-to-number (match-string 1)))
+                             (col (string-to-number (match-string 2))))
+                         (flymake-diag-region (current-buffer) line col))
+     for type = (let ((str (match-string 3)))
+                  (cond ((string= str "error: ") :error)
+                        ((string= str "warning: ") :warning)
+                        ((string= str "style: ") :note)))
+     collect (flymake-make-diagnostic (current-buffer) beg end type msg)
+     into diags
+     finally (funcall report-fn diags))))
 
 (defun ess-r-setup-flymake ()
   "Setup flymake for ESS."
-  (when (< 26 emacs-major-version)
+  (when (< emacs-major-version 26)
     (error "ESS-flymake requires Emacs version 26 or later"))
   (when (string= "R" ess-dialect)
     (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
