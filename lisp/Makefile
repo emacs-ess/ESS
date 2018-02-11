@@ -52,7 +52,7 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
-	ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
+	ess-r-flymake.elc ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
 	ess-generics.elc ess-r-gui.elc\
 	ess-sp6w-d.elc msdos.elc
