@@ -1,11 +1,11 @@
 .ess_weave <- function(command, file, encoding = NULL){
     cmd_symb <- substitute(command)
-    if(grepl('knit|purl', deparse(cmd_symb))) require(knitr)
+    if (grepl('knit|purl', deparse(cmd_symb))) require(knitr)
     od <- getwd()
     on.exit(setwd(od))
     setwd(dirname(file))
     frame <- parent.frame()
-    if(is.null(encoding))
+    if (is.null(encoding))
         eval(bquote(.(cmd_symb)(.(file))), envir = frame)
     else
         eval(bquote(.(cmd_symb)(.(file), encoding = .(encoding))), envir = frame)
@@ -30,8 +30,7 @@
 }
 
 ## Users might find it useful. So don't prefix with .ess.
-htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
-{
+htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
     ## fixme: simplify and generalize
     snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
     d <- " "
@@ -51,7 +50,8 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
         } else {
             if (is.matrix(x))
                 x <- data.frame(unclass(x))
-            ## conversion needed, to avoid problems with derived classes suchs as data.table
+            ## conversion needed, to avoid problems with derived classes suchs
+            ## as data.table
             h <- as.data.frame(head(x, hlength))
             t <- as.data.frame(tail(x, tlength))
             for (i in 1:ncol(x)) {
@@ -60,12 +60,12 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
             }
             ## summaries
             sumr <- sapply(x, function(c){
-                if(is.logical(c))
+                if (is.logical(c))
                     ## treat logical as numeric; it's harmless
                     c <- as.integer(c)
-                if(is.numeric(c))
+                if (is.numeric(c))
                     num_sumr(c)
-                else if(is.factor(c)) c(d, d, d, d, nlevels(c), sum(is.na(c)))
+                else if (is.factor(c)) c(d, d, d, d, nlevels(c), sum(is.na(c)))
                 else rep.int(d, length(snames))
             })
             sumr <- as.data.frame(sumr)
@@ -73,20 +73,20 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
             dots <- rep("...", ncol(x))
             empty <- rep.int(" ", ncol(x))
             lines <- rep.int(" ", ncol(x))
-            df <- rbind(h, ...= dots, t, `_____` = lines, sumr, ` ` = empty)
+            df <- rbind(h, ... = dots, t, `_____` = lines, sumr, ` ` = empty)
             print(df)
         }
     } else {
         cat("head(", hlength, "):\n", sep = "")
         print(head(x, hlength))
-        if(length(x) > tlength + hlength){
+        if (length(x) > tlength + hlength){
             cat("\ntail(", tlength, "):\n", sep = "")
             print(tail(x, tlength))
         }
         cat("_____\n")
-        if(is.numeric(x) || is.logical(x))
+        if (is.numeric(x) || is.logical(x))
             print(structure(num_sumr(x), names = snames), quote = FALSE)
-        else if(is.factor(x)){
+        else if (is.factor(x)){
             cat("NAs: ", sum(is.na(x), na.rm = TRUE), "\n")
             cat("levels: \n")
             print(levels(x))
@@ -96,32 +96,35 @@ htsummary <- function (x, hlength = 4, tlength = 4, digits = 3)
 }
 
 .ess_vignettes <- function(all=FALSE) {
-    vs <- unclass(browseVignettes(all=all))
+    vs <- unclass(browseVignettes(all = all))
     vs <- vs[sapply(vs, length) > 0]
 
-    mat2elist <- function(mat){
-        if(!is.null(dim(mat))){
+    mat2elist <- function(mat) {
+        if (!is.null(dim(mat))){
             apply(mat, 1, function(r)
                 sprintf("(list \"%s\")",
-                        paste0(gsub("\"","\\\\\"",
-                                    as.vector(r[c("Title", "Dir", "PDF", "File", "R")])),
+                        paste0(gsub("\"", "\\\\\"",
+                                    as.vector(r[c("Title", "Dir", "PDF",
+                                                  "File", "R")])),
                                collapse = "\" \"")))
         }
     }
     cat("(list \n",
-        paste0(mapply(function(el, name) sprintf("(list \"%s\"  %s)",
-                                                 name,
-                                                 paste0(mat2elist(el), collapse = "\n")),
-                      vs, names(vs)), collapse = "\n"), ")\n")
+        paste0(mapply(function(el, name) {
+            sprintf("(list \"%s\"  %s)",
+                    name, paste0(mat2elist(el), collapse = "\n"))
+        },
+        vs, names(vs)), collapse = "\n"), ")\n")
 }
 
-.ess_Rd2txt <- function(Rd) {
+.ess_Rd2txt <- function(rd) {
     fun <- tools::Rd2txt
-    if(length(formals(fun)["stages"]))# newer R version
-	fun(Rd, stages = c("build", "install", "render"))
+    if (length(formals(fun)["stages"]))# newer R version
+        fun(rd, stages = c("build", "install", "render"))
     else
-	fun(Rd)
+        fun(rd)
 }
+
 
 ## Local Variables:
 ## eval: (ess-set-style 'RRR t)
