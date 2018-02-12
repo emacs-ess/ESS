@@ -390,11 +390,11 @@ name. Abbreviation is performed by `abbreviate-file-name'. See
   "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
 PROC-NAME is a string representing an internal process
 name. PROJECTILE-ROOT is directory name returned by
-`projectile-project-root' if defined. If
-`projectile-project-root' is undefined or no project directory
+`projectile-project-p' if defined. If
+`projectile-project-p' is undefined or no project directory
 has been found use `ess-gen-proc-buffer-name:simple'. See
 `ess-gen-proc-buffer-name-function'."
-  (let ((proj (and (fboundp 'projectile-project-root)
+  (let ((proj (and (fboundp 'projectile-project-p)
 		   (projectile-project-p))))
     (if proj
 	(format "*%s:%s*" proc-name (file-name-nondirectory
@@ -405,11 +405,11 @@ has been found use `ess-gen-proc-buffer-name:simple'. See
   "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
 PROC-NAME is a string representing an internal process
 name. PROJECTILE-ROOT is directory name returned by
-`projectile-project-root' if defined. If
-`projectile-project-root' is undefined, or no project directory
+`projectile-project-p' if defined. If
+`projectile-project-p' is undefined, or no project directory
 has been found, use `ess-gen-proc-buffer-name:directory'. See
 `ess-gen-proc-buffer-name-function'."
-  (let ((proj (and (fboundp 'projectile-project-root)
+  (let ((proj (and (fboundp 'projectile-project-p)
 		   (projectile-project-p))))
     (if proj
 	(format "*%s:%s*" proc-name (file-name-nondirectory
