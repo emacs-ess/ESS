@@ -42,7 +42,9 @@
     "infix_spaces_linter = NULL"
     "line_length_linter = NULL"
     "object_name_linter = NULL"
-    "object_usage_linter = NULL")
+    "object_usage_linter = NULL"
+    "pipe_continuation_linter = NULL"
+    "trailing_whitespace_linter = NULL")
   "Default linters to use.
 Can be either a string with R expression to be used as
 is (e.g. 'lintr::default_linters'). Or a list of strings where
