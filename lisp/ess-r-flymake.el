@@ -40,7 +40,7 @@
   '("commented_code_linter = NULL"
     "single_quotes_linter = NULL"
     "infix_spaces_linter = NULL"
-    "line_length_linter(80)"
+    "line_length_linter = NULL"
     "object_name_linter = NULL"
     "object_usage_linter = NULL")
   "Default linters to use.
