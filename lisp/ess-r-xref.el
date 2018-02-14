@@ -41,7 +41,9 @@ associations, but could be used by the users for a more refined
 control of package locations than `ess-r-package-library-paths'.")
 
 (defun ess-r-xref-backend ()
-  "An `xref-backend-functions' implementation for `R-mode'."
+  "An `xref-backend-functions' implementation for `R-mode'.
+R's xref backend searches for `ess-r-package-library-paths' when
+srcrefs point to temporary locations."
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
