@@ -44,8 +44,12 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 
-(defvar ess-r-package-library-path nil
-  "Default path to find packages.")
+(defcustom ess-r-package-library-paths nil
+  "Default path to find user packages.
+Can be either a string specifying a directory or a list of directories."
+  :group 'ess-r-package-library-paths
+  :type `(choice string (repeat string)))
+(define-obsolete-variable-alias 'ess-r-package-library-path 'ess-r-package-library-paths "v18.04")
 
 (defvar ess-r-package-root-file "DESCRIPTION"
   "Presence of this file indicates the project's root.")
