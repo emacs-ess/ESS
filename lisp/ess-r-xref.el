@@ -31,6 +31,7 @@
 (require 'subr-x)
 (require 'xref)
 (require 'ess-utils)
+(require 'ess-r-package)
 (require 'ess-tracebug)
 
 
@@ -57,9 +58,11 @@
 
 ;;; Source File Locations
 
-(defcustom ess-r-xref-pkg-sources nil
-  "Alist of R packages and directories of their source code."
-  :type '(alist :key-type string :value-type directory))
+(defvar ess-r-xref-pkg-sources nil
+  "Alist of R package->directory associations.
+This variable is used as a cache of package->directory
+associations, but could be used by the users for a more refined
+control of package locations than `ess-r-package-library-paths'.")
 
 (defun ess-r-xref--srcref (symbol)
   (inferior-ess-r-force)
@@ -76,17 +79,21 @@
                   (error "Can't find package for symbol %s." symbol)
                 env-name))
          (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
-                  (when ess-r-package-library-path
-                    (expand-file-name pkg ess-r-package-library-path))))
+                  (cond ((stringp ess-r-package-library-paths)
+                         (expand-file-name pkg ess-r-package-library-paths))
+                        ((listp ess-r-package-library-paths)
+                         (cl-loop for d in ess-r-package-library-paths
+                                  for p = (expand-file-name pkg d)
+                                  when (file-exists-p p) return p))
+                        (t (error "Invalid value of `ess-r-package-library-paths'")))))
          (file (when dir (expand-file-name r-src-file dir))))
     (when file
-      (if (file-readable-p file)
-          (progn
-            ;; Keep track of the package's source directory.
-            (unless (assoc-default pkg ess-r-xref-pkg-sources)
-              (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
-            file)
-        (error "Can't read %s." file)))))
+      (unless (file-readable-p file)
+        (error "Can't read %s." file))
+      ;; Cache package's source directory.
+      (unless (assoc pkg ess-r-xref-pkg-sources)
+        (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
+      file)))
 
 (defun ess-r-xref--xref (symbol)
   "Create an xref for the source file reference of R symbol SYMBOL."
