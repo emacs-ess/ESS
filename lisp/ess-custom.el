@@ -442,7 +442,6 @@ If nil show only when the point is in a function call, i.e. after (."
   :group 'ess-extras
   :type  'boolean)
 
-
 (defcustom ess-eldoc-abbreviation-style 'normal
   "How ess-eldoc string should be abbreviated when it doesn't fit into one line
 A symbol which can be
@@ -462,6 +461,10 @@ truncation."
   :group 'ess
   :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t)))
 
+(defcustom ess-use-flymake t
+  "If non-nil activate flymake in ess-mode buffers."
+  :group 'ess
+  :type 'boolean)
 
 (defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.

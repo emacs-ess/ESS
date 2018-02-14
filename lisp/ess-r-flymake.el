@@ -171,14 +171,16 @@ REPORT-FN is flymake's callback function."
                  (kill-buffer (process-buffer proc)))))))))
 
 (defun ess-r-setup-flymake ()
-  "Setup flymake for ESS."
-  (when (< emacs-major-version 26)
-    (error "ESS-flymake requires Emacs version 26 or later"))
-  (when (string= "R" ess-dialect)
-    (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
-    ;; Try not to enable flymake if flycheck is already running:
-    (unless (bound-and-true-p flycheck-mode)
-      (flymake-mode))))
+  "Setup flymake for ESS.
+Activate flymake only if `ess-use-flymake' is non-nil."
+  (when ess-use-flymake
+    (when (< emacs-major-version 26)
+      (error "ESS-flymake requires Emacs version 26 or later"))
+    (when (string= "R" ess-dialect)
+      (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
+      ;; Try not to enable flymake if flycheck is already running:
+      (unless (bound-and-true-p flycheck-mode)
+        (flymake-mode)))))
 
 ;; Enable flymake in Emacs 26+
 (when (<= 26 emacs-major-version)
