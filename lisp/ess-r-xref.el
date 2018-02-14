@@ -34,7 +34,11 @@
 (require 'ess-r-package)
 (require 'ess-tracebug)
 
-
+(defvar ess-r-xref-pkg-sources nil
+  "Alist of R package->directory associations.
+This variable is used as a cache of package->directory
+associations, but could be used by the users for a more refined
+control of package locations than `ess-r-package-library-paths'.")
 
 (defun ess-r-xref-backend ()
   "An `xref-backend-functions' implementation for `R-mode'."
@@ -54,15 +58,6 @@
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql ess-r)))
   (inferior-ess-r-force)
   (ess-get-words-from-vector ".ess_all_functions()\n"))
-
-
-;;; Source File Locations
-
-(defvar ess-r-xref-pkg-sources nil
-  "Alist of R package->directory associations.
-This variable is used as a cache of package->directory
-associations, but could be used by the users for a more refined
-control of package locations than `ess-r-package-library-paths'.")
 
 (defun ess-r-xref--srcref (symbol)
   (inferior-ess-r-force)
@@ -99,28 +94,25 @@ control of package locations than `ess-r-package-library-paths'.")
   "Create an xref for the source file reference of R symbol SYMBOL."
   (let ((ref (ess-r-xref--srcref symbol)))
     (when ref
-      (let* ((file (nth 0 ref))
-             (line (nth 1 ref))
-             (col (nth 2 ref))
-             ;; Check if the file srcref is cached by ESS.
-             (ess-ref (gethash file ess--srcrefs))
-             (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref))))
-             ;; Check if the file seems like it's in an R package, something
-             ;; like "/tmp/R-downloads/pkg/R/src.R".
-             (r-src-file (when (and (not ess-ref)
-                                    (string-match "/\\(R/.*\\)$" file))
-                           (match-string 1 file))))
-        (cond
-         (ess-buff
-          ;; FIXME: this breaks when eval is on larger spans than function
-          (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref))))
-         ((file-readable-p file)
-          (xref-make symbol (xref-make-file-location file line col)))
-         (r-src-file
-          (when-let ((pkg-file (ess-r-xref--pkg-srcfile symbol r-src-file)))
-            (xref-make symbol (xref-make-file-location
-                               (expand-file-name pkg-file) line col))))
-         (t nil))))))
+      (let ((file (nth 0 ref))
+            (line (nth 1 ref))
+            (col  (nth 2 ref)))
+        (or
+         ;; 1) Result of ESS evaluation
+         (let* ((ess-ref (gethash file ess--srcrefs))
+                (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref)))))
+           (when ess-buff
+             ;; FIXME: this breaks when eval is on larger spans than function
+             (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref)))))
+         ;; 2) Actual file location
+         (when (file-readable-p file)
+           (xref-make symbol (xref-make-file-location file line col)))
+         ;; 3) Temporary sources - truncate and locate in ess-r-package-library-paths
+         (when (string-match "/\\(R/.*\\)$" file)
+           (let ((pkg-file (ess-r-xref--pkg-srcfile symbol (match-string 1 file))))
+             (when pkg-file
+               (xref-make symbol (xref-make-file-location
+                                  (expand-file-name pkg-file) line col))))))))))
 
 (provide 'ess-r-xref)
 
