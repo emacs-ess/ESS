@@ -108,6 +108,18 @@
     ess-dev-map)
   "Keymap for commands related to development and debugging.")
 
+(defvar ess-r-package-check-map
+  (let (ess-r-package-check-map)
+    (define-prefix-command 'ess-r-package-check-map)
+    (define-key ess-r-package-check-map "\C-c" 'ess-r-devtools-check-package)
+    (define-key ess-r-package-check-map "c" 'ess-r-devtools-check-package)
+    (define-key ess-r-package-check-map "\C-w" 'ess-r-devtools-check-with-winbuilder)
+    (define-key ess-r-package-check-map "w" 'ess-r-devtools-check-with-winbuilder)
+    (define-key ess-r-package-check-map "\C-h" 'ess-r-rhub-check-package)
+    (define-key ess-r-package-check-map "h" 'ess-r-rhub-check-package)
+    ess-r-package-check-map)
+  "Keymap for R package checks.")
+
 (defvar ess-r-package-dev-map
   (let (ess-r-package-dev-map)
     (define-prefix-command 'ess-r-package-dev-map)
@@ -119,10 +131,8 @@
     (define-key ess-r-package-dev-map "e"    'ess-r-devtools-execute-command)
     (define-key ess-r-package-dev-map "\C-b" 'ess-r-devtools-build)
     (define-key ess-r-package-dev-map "b"    'ess-r-devtools-build)
-    (define-key ess-r-package-dev-map "\C-B" 'ess-r-devtools-check-package-buildwin)
-    (define-key ess-r-package-dev-map "B"    'ess-r-devtools-check-package-buildwin)
-    (define-key ess-r-package-dev-map "\C-c" 'ess-r-devtools-check-package)
-    (define-key ess-r-package-dev-map "c"    'ess-r-devtools-check-package)
+    (define-key ess-r-package-dev-map "\C-c" 'ess-r-package-check-map)
+    (define-key ess-r-package-dev-map "c" 'ess-r-package-check-map)
     (define-key ess-r-package-dev-map "\C-d" 'ess-r-devtools-document-package)
     (define-key ess-r-package-dev-map "d"    'ess-r-devtools-document-package)
     (define-key ess-r-package-dev-map "g"    'ess-r-devtools-install-github)

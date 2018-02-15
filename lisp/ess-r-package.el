@@ -289,13 +289,27 @@ With prefix ARG ask for extra args."
    "devtools::check(%s)\n" "Checking %s" arg
    '("" (read-string "Arguments: " "vignettes = FALSE"))))
 
-(defun ess-r-devtools-check-package-buildwin (&optional arg)
+(defun ess-r-devtools-check-with-winbuilder (&optional arg)
   "Interface for `devtools::buildwin()'.
 With prefix ARG build with R-devel instead of R-patched."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::build_win(%s)\n" "Checking %s on CRAN's Windows server" arg
    '("" "version = 'R-devel'")))
+
+(defvar ess-r-rhub--history nil)
+(declare-function ess-r-check-install-package "ess-r-mode.el")
+(defun ess-r-rhub-check-package (&optional arg)
+  "Interface for `rhub::check()'.
+With prefix ARG run with `valgrind = TRUE'."
+  (interactive "P")
+  (ess-r-check-install-package "rhub")
+  (let* ((platforms (ess-get-words-from-vector "rhub::platforms()$name\n"))
+         (platform (completing-read "Platform: " platforms nil t  nil
+                                    ess-r-rhub--history (car ess-r-rhub--history)))
+         (cmd (format "rhub::check_for_cran(%%s, platform = '%s')\n" platform))
+         (msg (format "Checking %%s on RHUB (%s)" platform)))
+    (ess-r-package-eval-linewise cmd msg arg '("" "valgrind = TRUE"))))
 
 (defun ess-r-devtools-build (&optional arg)
   "Interface for `devtools::build()'.
@@ -486,6 +500,7 @@ disable the mode line entirely."
   (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
+(define-obsolete-function-alias 'ess-r-devtools-check-package-buildwin 'ess-r-devtools-check-with-winbuilder)
 (define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 (define-obsolete-function-alias 'ess-r-devtools-ask 'ess-r-devtools-execute-command "18.04")
 (define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
