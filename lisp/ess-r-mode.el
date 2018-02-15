@@ -140,8 +140,6 @@
     (define-key ess-r-package-dev-map "i"    'ess-r-devtools-install-package)
     (define-key ess-r-package-dev-map "\C-l" 'ess-r-devtools-load-package)
     (define-key ess-r-package-dev-map "l"    'ess-r-devtools-load-package)
-    (define-key ess-r-package-dev-map "\C-r" 'ess-r-devtools-revdep-check-package)
-    (define-key ess-r-package-dev-map "r"    'ess-r-devtools-revdep-check-package)
     (define-key ess-r-package-dev-map "\C-t" 'ess-r-devtools-test-package)
     (define-key ess-r-package-dev-map "t"    'ess-r-devtools-test-package)
     (define-key ess-r-package-dev-map "\C-u" 'ess-r-devtools-unload-package)

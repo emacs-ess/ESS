@@ -356,19 +356,6 @@ With prefix argument ARG, run tests on current file only."
 })
 ")
 
-(defun ess-r-devtools-revdep-check-package ()
-  "Interface for `devtools::revdep_check()'.
-By default, the revdep summary is saved in `pkg_path/revdep' if
-the directory exists, or `pkg_path/.metadata/revdep' if it
-doesn't exist. The former path is the default in devtools but
-will create problem if it isn't escaped in `.Rbuildignore'. On
-the other hand, `.metadata' is always ignored by the R package
-builder, which makes it a safe directory to store the revdep
-checking results."
-  (interactive "P")
-  (ess-r-package-eval-linewise
-   ess-r-devtools-revdep-check-cmd "Checking reverse dependencies of %s"))
-
 (defun ess-r-devtools-document-package (&optional arg)
   "Interface for `devtools::document()'.
 With prefix ARG ask for extra arguments."
