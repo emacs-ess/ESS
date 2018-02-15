@@ -147,7 +147,7 @@ REPORT-FN is flymake's callback function."
     (setq ess-r--flymake-proc
           (make-process
            :name "ess-r-flymake" :noquery t :connection-type 'pipe
-           :buffer (generate-new-buffer "*ess-r-flymake*")
+           :buffer (generate-new-buffer " *ess-r-flymake*")
            :command (list inferior-R-program-name
                           "--no-save" "--no-restore" "--no-site-file" "--no-init-file" "--slave"
                           "-e" (concat
