@@ -338,7 +338,7 @@ at current position and return nil. POS defaults to `point'."
   "Fontify output by output within the beg-end region to avoid
 fontification spilling over prompts."
   (let* ((buffer-undo-list t)
-	     (inhibit-point-motion-hooks t)
+         (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
          (pos0 (or (inferior-ess-goto-last-prompt-if-close beg)
@@ -395,10 +395,10 @@ name. PROJECTILE-ROOT is directory name returned by
 has been found use `ess-gen-proc-buffer-name:simple'. See
 `ess-gen-proc-buffer-name-function'."
   (let ((proj (and (fboundp 'projectile-project-p)
-		   (projectile-project-p))))
+		           (projectile-project-p))))
     (if proj
-	(format "*%s:%s*" proc-name (file-name-nondirectory
-				     (directory-file-name proj)))
+        (format "*%s:%s*" proc-name (file-name-nondirectory
+                                     (directory-file-name proj)))
       (ess-gen-proc-buffer-name:simple proc-name))))
 
 (defun ess-gen-proc-buffer-name:projectile-or-directory (proc-name)
@@ -410,10 +410,10 @@ name. PROJECTILE-ROOT is directory name returned by
 has been found, use `ess-gen-proc-buffer-name:directory'. See
 `ess-gen-proc-buffer-name-function'."
   (let ((proj (and (fboundp 'projectile-project-p)
-		   (projectile-project-p))))
+		           (projectile-project-p))))
     (if proj
-	(format "*%s:%s*" proc-name (file-name-nondirectory
-				     (directory-file-name proj)))
+        (format "*%s:%s*" proc-name (file-name-nondirectory
+                                     (directory-file-name proj)))
       (ess-gen-proc-buffer-name:directory proc-name))))
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
@@ -453,7 +453,7 @@ Return the 'busy state."
                  cb)))
       (when cb
         (when ess-verbose
-            (ess-write-to-dribble-buffer "executing callback ...\n"))
+          (ess-write-to-dribble-buffer "executing callback ...\n"))
         (when suppress
           (process-put proc 'suppress-next-output? t))
         (process-put proc 'callbacks nil)
@@ -650,7 +650,7 @@ local ESS vars like `ess-local-process-name'"
   (let ((lpn (make-symbol "lpn"))
         (alist (make-symbol "alist")))
     `(let ((,lpn ess-local-process-name)
-            (,alist ess-local-customize-alist))
+           (,alist ess-local-customize-alist))
        (with-current-buffer ,buffer
          (ess-setq-vars-local (eval ,alist))
          (setq ess-local-process-name ,lpn)
@@ -803,20 +803,20 @@ LANGUAGE (and DIALECT)."
        (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
                language dialect (current-buffer)))
       (cond ;; ((string= dialect "R") (R))
-            ;; ((string= language "S") ;
-            ;;  (message "ESS process not running, trying to start R, since language = 'S")
-            ;;  (R))
-            ;; ((string= dialect STA-dialect-name) (stata))
-            ;;general case
-            ((fboundp dsymb)
-             (funcall dsymb))
-            (t ;; else: ess-dialect is not a function
+       ;; ((string= language "S") ;
+       ;;  (message "ESS process not running, trying to start R, since language = 'S")
+       ;;  (R))
+       ;; ((string= dialect STA-dialect-name) (stata))
+       ;;general case
+       ((fboundp dsymb)
+        (funcall dsymb))
+       (t ;; else: ess-dialect is not a function
 
-             ;; Typically triggered from
-             ;; ess-force-buffer-current("Process to load into: ")
-             ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
-             (error "No ESS processes running; not yet implemented to start (%s,%s)"
-                    language dialect)))
+        ;; Typically triggered from
+        ;; ess-force-buffer-current("Process to load into: ")
+        ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
+        (error "No ESS processes running; not yet implemented to start (%s,%s)"
+               language dialect)))
       ;; save excursion is not working here !!! bad bad bad !!
       )))
 
@@ -946,18 +946,18 @@ no such process has been found."
   (setq dialect (or dialect ess-dialect))
   (when dialect
     (let (proc)
-     (catch 'found
-       (dolist (p (cons ess-local-process-name
-                        (mapcar 'car ess-process-name-list)))
-         (when p
-           (setq proc (get-process p))
-           (when (and proc
-                      (process-live-p proc)
-                      (equal dialect
-                             (buffer-local-value 'ess-dialect (process-buffer proc)))
-                      (or ignore-busy
-                          (not (process-get proc 'busy))))
-             (throw 'found proc))))))))
+      (catch 'found
+        (dolist (p (cons ess-local-process-name
+                         (mapcar 'car ess-process-name-list)))
+          (when p
+            (setq proc (get-process p))
+            (when (and proc
+                       (process-live-p proc)
+                       (equal dialect
+                              (buffer-local-value 'ess-dialect (process-buffer proc)))
+                       (or ignore-busy
+                           (not (process-get proc 'busy))))
+              (throw 'found proc))))))))
 
 
 ;;*;;; Commands for switching to the process buffer
@@ -1362,7 +1362,7 @@ type of the region."
 
 (defun ess-load-file--normalise-buffer (file)
   (when (ess-check-source file)
-      (error "Buffer %s has not been saved" (buffer-name file)))
+    (error "Buffer %s has not been saved" (buffer-name file)))
   (let ((source-buffer (get-file-buffer file)))
     (if source-buffer
         (with-current-buffer source-buffer
@@ -1390,7 +1390,7 @@ This handles Tramp when working on a remote."
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()
- "Display a list of recent inputs entered into the current buffer."
+  "Display a list of recent inputs entered into the current buffer."
   (interactive)
   (message "C-c C-l  no longer loads a source file in [iESS], rather use C-c M-l instead")
   (comint-dynamic-list-input-ring))
@@ -1484,9 +1484,8 @@ wrapping the code into:
 
 (defun ess-boolean-command (com &optional buf wait)
   "Like `ess-command' but expects COM to print TRUE or FALSE.
-If TRUE (or true) is found return non-nil otherwise nil.
-
-Example: (ess-boolean-command \"2>1\n\")"
+If TRUE (or true) is found return non-nil otherwise
+nil. Example (ess-boolean-command \"2>1\n\")"
   (with-current-buffer (ess-command com buf nil nil wait)
     (goto-char (point-min))
     (let ((case-fold-search t))
@@ -1567,7 +1566,7 @@ explicit interrupt-callback."
                            ;; idle timer doesn't work here
                            (run-with-timer ,delay nil 'ess-async-command-delayed
                                            ,com ,buf ,proc ,callback ,delay))
-                         (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
+                       (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
     (run-with-idle-timer delay nil com-fun)))
 
 
@@ -2049,7 +2048,7 @@ for `ess-eval-region'."
      ["Edit S Object"	ess-dump-object-into-edit-buffer t]
      ["Enter S command"         ess-execute             t]
      ["Jump to Error"           ess-parse-errors        t]
-     ["Load source file"  	ess-load-file           t]
+     ["Load source file"    ess-load-file           t]
      ["Resynch S completions"	ess-resynch		t]
      ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      )
