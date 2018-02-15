@@ -219,11 +219,12 @@ Namespaced evaluation is enabled if
     (let ((path (cdr (ess-r-package-project))))
       ;; Check that we are in a file within R/
       (when (and path
-                 (let* ((subpath (substring default-directory
-                                            (1+ (length path))
-                                            (length default-directory)))
-                        (subpath (substring subpath 0 2)))
-                   (string= subpath (file-name-as-directory "R"))))
+                 (let ((subpath (substring default-directory
+                                           (1+ (length path))
+                                           (length default-directory))))
+                   (when (> (length subpath) 2)
+                     (string= (substring subpath 0 2)
+                              (file-name-as-directory "R")))))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
 (add-hook 'R-mode-hook 'ess-r-package-enable-namespaced-evaluation)
