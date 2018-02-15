@@ -273,7 +273,7 @@ With prefix ARG ask for extra args."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::load_all(%s)\n" "Loading %s" arg
-   '("" (read-string "Load args:" "recompile = TRUE"))))
+   '("" (read-string "Arguments: " "recompile = TRUE"))))
 
 (defun ess-r-devtools-unload-package ()
   "Interface to `devtools::unload()'."
@@ -287,7 +287,7 @@ With prefix ARG ask for extra args."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::check(%s)\n" "Checking %s" arg
-   '("" (read-string "Check args: " "vignettes = FALSE"))))
+   '("" (read-string "Arguments: " "vignettes = FALSE"))))
 
 (defun ess-r-devtools-check-package-buildwin (&optional arg)
   "Interface for `devtools::buildwin()'.
@@ -361,7 +361,7 @@ With prefix ARG ask for extra arguments."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::document(%s)\n" "Documenting %s"
-   '("" (read-string "Document args: "))))
+   '("" (read-string "Arguments: "))))
 
 (defun ess-r-devtools-install-package (&optional arg)
   "Interface to `devtools::install()'.
@@ -372,8 +372,8 @@ quickly (quick = TRUE, upgrade_dependencies = FALSE)."
   (ess-r-package-eval-linewise
    "devtools::install(%s)\n" "Installing %s" arg
    '("keep_source = TRUE"
-     (read-string "Install args: " "keep_source = TRUE, local = FALSE")
-     (read-string "Install args: " "keep_source = TRUE, quick = TRUE, upgrade_dependencies = FALSE"))))
+     (read-string "Arguments: " "local = FALSE, keep_source = TRUE")
+     (read-string "Arguments: " "quick = TRUE, upgrade_dependencies = FALSE, keep_source = TRUE"))))
 
 (defvar ess-r-devtools--install-github-history nil)
 (defun ess-r-devtools-install-github (&optional arg)
@@ -388,13 +388,13 @@ re-installation when called with a prefix ARG."
                                    (car ess-r-devtools--install-github-history)))))
     (ess-r-package-eval-linewise
      command "Installing '%s' from github" arg
-     '("" (read-string "Install args: " "force = TRUE"))
+     '("" (read-string "Arguments: " "force = TRUE"))
      repo)))
 
-(defun ess-r-devtools-create-package (&optional alt)
+(defun ess-r-devtools-create-package ()
   "Interface to `devtools::create()'.
 Default location is determined by `ess-r-package-library-path'."
-  (interactive "P")
+  (interactive)
   (let* ((command "devtools::create(\"%s\")")
          (default-path (expand-file-name ess-r-package-library-path))
          (path (read-directory-name "Path: " default-path)))
@@ -409,8 +409,8 @@ When called with prefix ARG asks for additional arguments."
          (fun (completing-read "Function: " devtools-funs))
          (command (format "devtools::%s(%%s)\n" fun)))
     (ess-r-package-eval-linewise
-     command (format "Running %s" fun)
-     '("" (read-string "Args: ")))))
+     command (format "Running %s" fun) arg
+     '("" (read-string "Arguments: ")))))
 
 
 ;;;*;;; Minor Mode
@@ -486,11 +486,9 @@ disable the mode line entirely."
   (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead."))
 
 (defalias 'ess-toggle-developer 'ess-developer)
-
-(defvaralias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation)
-(fset 'ess-r-devtools-ask 'ess-r-devtools-execute-command)
+(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 (define-obsolete-function-alias 'ess-r-devtools-ask 'ess-r-devtools-execute-command "18.04")
-(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env ess-r-package-auto-enable-namespaced-evaluation "18.04")
+(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")
