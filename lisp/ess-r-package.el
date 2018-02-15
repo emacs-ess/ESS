@@ -361,7 +361,7 @@ With prefix argument ARG, run tests on current file only."
 With prefix ARG ask for extra arguments."
   (interactive "P")
   (ess-r-package-eval-linewise
-   "devtools::document(%s)\n" "Documenting %s"
+   "devtools::document(%s)\n" "Documenting %s" arg
    '("" (read-string "Arguments: "))))
 
 (defun ess-r-devtools-install-package (&optional arg)
