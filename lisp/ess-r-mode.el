@@ -1043,14 +1043,18 @@ See `ess-noweb-mode' and `R-mode' for more help."
           (ess-command (format mirror-cmd mirror))))))
   (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
 
+(defun ess-r-check-install-package (pkg)
+  "Check if package PKG is installed and offer to install if not."
+  (unless (ess-boolean-command (format "print(requireNamespace('%s', quietly = TRUE))\n" pkg))
+    (if (y-or-n-p "Library 'sos' is not installed. Install? ")
+        (ess-eval-linewise "install.packages('sos')\n")
+      (signal 'quit nil))
+    (message nil)))
+
 (defun ess-r-sos (cmd)
   "Interface to findFn in the library sos."
   (interactive  "sfindFn: ")
-  (unless (ess-boolean-command "print(requireNamespace('sos', quietly = TRUE))\n")
-    (if (y-or-n-p "Library 'sos' is not installed. Install? ")
-        (ess-eval-linewise "install.packages('sos')\n")
-      (signal 'quit nil)))
-  (message nil)
+  (ess-r-check-install-package "sos")
   (ess-eval-linewise (format "sos::findFn(\"%s\", maxPages=10)" cmd)))
 
 (defun ess-R-scan-for-library-call (string)
