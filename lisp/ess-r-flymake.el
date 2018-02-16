@@ -167,12 +167,15 @@ REPORT-FN is flymake's callback function."
                                     (point-min) (point-max)))
            :sentinel
            (lambda (proc _event)
-             (when (eq 'exit (process-status proc))
+             (cond
+              ((eq 'exit (process-status proc))
                (unwind-protect
                    (if (eq proc (buffer-local-value 'ess-r--flymake-proc src-buffer))
                        (ess-r--flymake-parse-output (process-buffer proc) src-buffer report-fn)
                      (flymake-log :warning "Canceling obsolete check %s" proc))
-                 (kill-buffer (process-buffer proc)))))))))
+                 (kill-buffer (process-buffer proc))))
+              ((not (eq 'run (process-status proc)))
+               (kill-buffer (process-buffer proc)))))))))
 
 (defun ess-r-setup-flymake ()
   "Setup flymake for ESS.
