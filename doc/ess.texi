@@ -2920,6 +2920,7 @@ ESS has a few extra features, which didn't fit anywhere else.
 @c todo: sort alphabetically
 @menu
 * ESS ElDoc::                   Display function arguments in minibuffer
+* ESS Flymake::                 On-the-fly syntax checking
 * Handy commands::              Usefully commands at your fingertips
 * Highlighting::                Syntactic highlighting of buffers
 * Parens::                      Parenthesis matching
@@ -2973,6 +2974,28 @@ Ess-eldoc also honors the value of
 cause the truncation of doc string indifferent of the value of
 @code{ess-eldoc-abbreviation-style}. This way you can combine different
 filter levels with the truncation.
+
+@node ESS Flymake
+@section Flymake
+@cindex flymake
+The minor mode @code{flymake-mode} provides on-the-fly syntax
+checking. ESS provides support for flymake in R-mode in Emacs versions
+26 and newer. It is enabled by default, to disable it you may set
+@code{ess-use-flymake} to @code{nil}. In order to use it, you may need
+to install the @code{lintr} R package, available from CRAN.
+
+@defvr {User Option} ess-r-flymake-linters
+This variable describes the linters to use. It can either be a string
+with an R expression to be used as-is or a list of strings where each
+element is passed to @code{lintr::with_defaults}. See the help page
+for @code{lintr::default_linters} for information on available linters
+and their defaults.
+@end defvr
+
+@defvr {User Option} ess-r-flymake-lintr-cache
+When @code{t} (the default), lintr uses a cache. Change to @code{nil}
+to disable lintr's caching mechanism.
+@end defvr
 
 @node Handy commands
 @section Handy commands
