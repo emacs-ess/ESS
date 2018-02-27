@@ -49,7 +49,7 @@
     "trailing_blank_lines_linter = NULL")
   "Default linters to use.
 Can be either a string with R expression to be used as
-is (e.g. 'lintr::default_linters'). Or a list of strings where
+is (e.g. 'lintr::default_linters').  Or a list of strings where
 each element is passed as argument to 'lintr::with_defaults'."
   :group 'ess-R
   :type '(choice string (repeat string)))
@@ -80,6 +80,8 @@ each element is passed as argument to 'lintr::with_defaults'."
 };"))
 
 (defun ess-r--flymake-linters ()
+  "If `ess-r-flymake-linters' is a string, use that.
+Otherwise, construct a string to pass to lintr::with_defaults."
   (replace-regexp-in-string
    "[\n\t ]+" " "
    (if (stringp ess-r-flymake-linters)
