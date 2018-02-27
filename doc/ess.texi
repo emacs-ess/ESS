@@ -846,14 +846,20 @@ forwards through previously entered commands in the process buffer:
 
 @table @kbd
 @item C-c C-p
-@findex comint-previous-input
-@code{comint-previous-input} Moves point to the preceding command in the
+@findex comint-previous-prompt
+@code{comint-previous-prompt} Moves point to the preceding prompt in the
 process buffer.
+@c @findex comint-previous-input
+@c @code{comint-previous-input} Moves point to the preceding command in the
+@c process buffer.
 
 @item C-c C-n
-@findex comint-next-input
-@code{comint-next-input} Moves point to the next command in the process
+@findex comint-next-prompt
+@code{comint-next-prompt} Moves point to the next prompt in the process
 buffer.
+@c @findex comint-next-input
+@c @code{comint-next-input} Moves point to the next command in the process
+@c buffer.
 @end table
 
 @noindent
