@@ -28,8 +28,10 @@
 
 ;;; Code:
 
+(when (>= emacs-major-version 25)
+  (require 'xref))
+
 (require 'subr-x)
-(require 'xref)
 (require 'ess-utils)
 (require 'ess-r-package)
 (require 'ess-tracebug)
