@@ -2966,7 +2966,7 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defconst ess-f-t-face 'ess-f-t-face)
 (defface ess-f-t-face
-  '((default (:inherit font-lock-type-face)))
+  '((default (:inherit ess-constant-face)))
   "Font lock face used to highlight F and T."
   :group 'ess-faces)
 
