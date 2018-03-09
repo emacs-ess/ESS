@@ -11,8 +11,13 @@
     else x
 }
 
-.ess_srcref <- function(name) {
-    fn <- .ess_eval(name)
+.ess_srcref <- function(name, pkg) {
+    if (!is.null(pkg) && requireNamespace(pkg)) {
+        env <- asNamespace(pkg)
+    } else {
+        env <- globalenv()
+    }
+    fn <- .ess_eval(name, env)
     out <- "()\n"
     if (is.function(fn) && !is.null(utils::getSrcref(fn))) {
         file <- utils::getSrcFilename(fn, full.names = TRUE)
