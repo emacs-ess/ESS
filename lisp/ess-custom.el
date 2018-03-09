@@ -2970,6 +2970,7 @@ the variable `ess-help-own-frame' is non-nil."
   "Font lock face used to highlight F and T."
   :group 'ess-faces)
 
+(defconst ess-matrix-face 'ess-matrix-face)
 (defface ess-matrix-face
   '((default (:inherit font-lock-constant-face)))
   "Font lock face used to highlight matrices."
