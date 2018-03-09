@@ -18,6 +18,11 @@ Users need to install the @code{lintr} package (available on CRAN) to
 use it. Customizable options include @code{ess-use-flymake},
 @code{ess-r-flymake-linters}, and @code{ess-r-flymake-lintr-cache}.
 
+@item Improved customization for faces.
+ESS now provides custom faces for (nearly) all faces used and places
+face customization options into their own group. Users can customize
+these options using @kbd{M-x customize-group RET ess-faces}.
+
 @end itemize
 
 
