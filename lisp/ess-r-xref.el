@@ -65,11 +65,16 @@ srcrefs point to temporary locations."
 
 (defun ess-r-xref--srcref (symbol)
   (inferior-ess-r-force)
-  (with-current-buffer (ess-command (format ".ess_srcref(\"%s\")\n" symbol))
-    (goto-char (point-min))
-    (when (re-search-forward "(" nil 'noerror)
-      (goto-char (match-beginning 0))
-      (read (current-buffer)))))
+  ;; Look for `symbol' inside the package namespace
+  (let* ((pkg (ess-r-package-name))
+         (pkg (if pkg
+                  (concat "\"" pkg "\"")
+                "NULL")))
+    (with-current-buffer (ess-command (format ".ess_srcref(\"%s\", %s)\n" symbol pkg))
+      (goto-char (point-min))
+      (when (re-search-forward "(" nil 'noerror)
+        (goto-char (match-beginning 0))
+        (read (current-buffer))))))
 
 (defun ess-r-xref--pkg-srcfile (symbol r-src-file)
   "Look in the source directory of the R package containing symbol SYMBOL for R-SRC-FILE."

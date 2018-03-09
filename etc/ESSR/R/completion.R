@@ -1,8 +1,8 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
-.ess_eval <- function(str) {
+.ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
-    tryCatch(base::eval(base::parse(text=str)),
+    tryCatch(base::eval(base::parse(text=str), envir = env),
              error=function(e) NULL) ## also works for special objects containing @:$ etc
 }
 
@@ -11,8 +11,13 @@
     else x
 }
 
-.ess_srcref <- function(name) {
-    fn <- .ess_eval(name)
+.ess_srcref <- function(name, pkg) {
+    if (!is.null(pkg) && requireNamespace(pkg)) {
+        env <- asNamespace(pkg)
+    } else {
+        env <- globalenv()
+    }
+    fn <- .ess_eval(name, env)
     out <- "()\n"
     if (is.function(fn) && !is.null(utils::getSrcref(fn))) {
         file <- utils::getSrcFilename(fn, full.names = TRUE)
