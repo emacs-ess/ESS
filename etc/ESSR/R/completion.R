@@ -1,8 +1,8 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
-.ess_eval <- function(str) {
+.ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
-    tryCatch(base::eval(base::parse(text=str)),
+    tryCatch(base::eval(base::parse(text=str), envir = env),
              error=function(e) NULL) ## also works for special objects containing @:$ etc
 }
 
