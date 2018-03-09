@@ -2955,13 +2955,17 @@ the variable `ess-help-own-frame' is non-nil."
 (defconst ess-modifiers-face 'ess-modifiers-face)
 (defface ess-modifiers-face
   '((default (:inherit font-lock-constant-face)))
-  "Font lock face used to highlight modifiers."
+  "Font lock face used to highlight modifiers.
+In `R-mode', for example, this includes \"library,\" \"attach,\"
+and others, see `ess-R-modifyiers'."
   :group 'ess-faces)
 
 (defconst ess-constant-face 'ess-constant-face)
 (defface ess-constant-face
   '((default (:inherit font-lock-type-face)))
-  "Font lock face used to highlight constants."
+  "Font lock face used to highlight constants.
+In `R-mode', for example, this includes TRUE, FALSE, Inf and
+others. See `ess-R-constants'."
   :group 'ess-faces)
 
 (defconst ess-f-t-face 'ess-f-t-face)
@@ -2973,13 +2977,15 @@ the variable `ess-help-own-frame' is non-nil."
 (defconst ess-matrix-face 'ess-matrix-face)
 (defface ess-matrix-face
   '((default (:inherit font-lock-constant-face)))
-  "Font lock face used to highlight matrices."
+  "Font lock face used to highlight row/column labels in matrices."
   :group 'ess-faces)
 
 (defconst ess-keyword-face 'ess-keyword-face)
 (defface ess-keyword-face
   '((default (:inherit font-lock-keyword-face)))
-  "Font lock face used to highlight keywords."
+  "Font lock face used to highlight keywords.
+In `R-mode', for example, this includes \"while,\" \"if/else\",
+\"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
 
