@@ -1,4 +1,4 @@
-;;; ess-r-completion.el --- R completion
+;;; ess-r-completion.el --- R completion  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler, Kurt
 ;;      Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.

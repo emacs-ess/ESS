@@ -1,4 +1,4 @@
-;;; ess-comp.el --- setting for compiling, only.
+;;; ess-comp.el --- setting for compiling, only.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--2006 A. J. Rossini
 ;; Copyright (C) 1997--2006 A.J. Rossini, Richard M. Heiberger, Martin

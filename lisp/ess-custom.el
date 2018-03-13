@@ -1,4 +1,4 @@
-;;; ess-custom.el --- Customize variables for ESS
+;;; ess-custom.el --- Customize variables for ESS  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.

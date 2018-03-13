@@ -1,4 +1,4 @@
-;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs
+;;; ess.el --- Emacs Speaks Statistics: statistical programming within Emacs  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin

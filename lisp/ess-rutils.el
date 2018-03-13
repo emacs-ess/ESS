@@ -1,4 +1,4 @@
-;;; ess-rutils.el --- R functions and keybindings to use in iESS.
+;;; ess-rutils.el --- R functions and keybindings to use in iESS.  -*- lexical-binding: t; -*-
 
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)

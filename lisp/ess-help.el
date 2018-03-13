@@ -1,4 +1,4 @@
-;;; ess-help.el --- Support for viewing ESS help files
+;;; ess-help.el --- Support for viewing ESS help files  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989-1994, 2017 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>

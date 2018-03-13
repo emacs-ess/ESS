@@ -1,4 +1,4 @@
-;;; ess-inf.el --- Support for running S as an inferior Emacs process
+;;; ess-inf.el --- Support for running S as an inferior Emacs process  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989-1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997-1999 A.J. Rossini <rossini@u.washington.edu>,
@@ -1319,7 +1319,7 @@ end. Run current buffer's and PROCESS'
 type of the region."
   (cond
    ((ess-tracebug-p)
-    (ess-tracebug-send-region proc start end visibly message type))
+    (ess-tracebug-send-region process start end visibly message type))
    (t (:override
        (ess-send-string process (buffer-substring start end) visibly message type)))))
 
@@ -1629,6 +1629,8 @@ TEXT."
 This trims newlines at beginning and end of the region because
 they might throw off the debugger."
   (save-excursion
+    (let ((start (region-beginning))
+          (end (region-end)))
     (goto-char start)
     (skip-chars-forward "\n\t ")
     (setq start (point))
@@ -1638,7 +1640,7 @@ they might throw off the debugger."
 
     (goto-char end)
     (skip-chars-backward "\n\t ")
-    (setq end (point))))
+    (setq end (point)))))
 
 (defun ess-eval-region (start end toggle &optional message type)
   "Send the current region to the inferior ESS process.
@@ -1655,6 +1657,11 @@ region this is."
     ;; External applications might call ess-eval-* functions; make it
     ;; easier for them
     (ess-setq-vars-local (symbol-value (ess-get-process-variable 'ess-local-customize-alist))))
+
+  ;; activate region
+  (goto-char end)
+  (push-mark)
+  (goto-char start)
 
   (ess-eval-region--normalise-region)
 

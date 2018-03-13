@@ -1,4 +1,4 @@
-;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.
+;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2002--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.

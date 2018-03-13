@@ -1,4 +1,4 @@
-;;; ess-compat.el --- simple determination of Emacs and version #.
+;;; ess-compat.el --- simple determination of Emacs and version #.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2000--2017 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.

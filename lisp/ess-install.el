@@ -1,4 +1,4 @@
-;;; ess-install.el --- Automatic installation of ESS.
+;;; ess-install.el --- Automatic installation of ESS.  -*- lexical-binding: t; -*-
 ;; Auto-install procedure.  EXPERIMENTAL!
 
 ;; Copyright (C) 2006 A.J. Rossini, Richard M. Heiberger, Martin

@@ -1,4 +1,4 @@
-;;; ess-r-package.el --- Package development mode for R.
+;;; ess-r-package.el --- Package development mode for R.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2011-2015 Lionel Henry, Vitalie Spinu, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, and
