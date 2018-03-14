@@ -196,7 +196,9 @@ Root is determined by locating `ess-r-package-root-file'."
   (interactive)
   (let* ((pkg-path (read-directory-name
                     "Path: " (or (ess-r-package--find-package-path)
-                                 ess-r-package-library-path)
+                                 (if (stringp ess-r-package-library-paths)
+                                     ess-r-package-library-paths
+                                   (car ess-r-package-library-paths)))
                     nil t))
          (pkg-name (ess-r-package--find-package-name pkg-path))
          (pkg-info (cons pkg-name pkg-path)))
@@ -395,10 +397,13 @@ re-installation when called with a prefix ARG."
 
 (defun ess-r-devtools-create-package ()
   "Interface to `devtools::create()'.
-Default location is determined by `ess-r-package-library-path'."
+Default location is determined by the first element of
+`ess-r-package-library-paths'."
   (interactive)
   (let* ((command "devtools::create(\"%s\")")
-         (default-path (expand-file-name ess-r-package-library-path))
+         (default-path (if (stringp ess-r-package-library-paths)
+                           ess-r-package-library-paths
+                         (car ess-r-package-library-paths)))
          (path (read-directory-name "Path: " default-path)))
     (ess-eval-linewise (format command path))))
 
