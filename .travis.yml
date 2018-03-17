@@ -6,7 +6,12 @@ env:
   - EVM_EMACS=emacs-git-snapshot-travis
 
 before_install:
-  - sudo apt-get install -y --no-install-recommends r-base
+  - sudo apt-get install -y --no-install-recommends
+      r-base
+      texinfo
+      texlive-latex-base
+      texlive-latex-recommended
+      texlive-latex-extra
 
   - git clone https://github.com/rejeep/evm.git $HOME/.evm
   - export PATH=$HOME/.evm/bin:$PATH
