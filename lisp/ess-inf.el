@@ -3147,6 +3147,65 @@ search path related variables."
           (ess--mark-search-list-as-changed)
           path)))))
 
+ ; Asynchronous hook
+
+(defvar ess-inferior-async-active-filters nil)
+
+(defsubst ess-inferior-async-generate-id ()
+  (intern (concat "ess-async-filter-" (number-to-string (abs (random))))))
+
+(defun ess-inferior-async (fun &optional proc)
+  "Execute FUN once PROC is ready by creating a one-off comint
+filter that will cleans after itself. FUN can be a symbol
+representing a function or a lambda."
+  (let* ((proc (or proc (ess-get-process ess-local-process-name)))
+         (proc-name (with-current-buffer (process-buffer proc)
+                      ess-local-process-name))
+         (id (ess-inferior-async-generate-id))
+         (hooked (ess-inferior-async-generate-filter id proc-name)))
+    (setq ess-inferior-async-active-filters
+          (push (list id fun) ess-inferior-async-active-filters))
+    (add-hook 'comint-output-filter-functions hooked)))
+
+(defun ess-inferior-async-generate-filter (id proc-name)
+  `(lambda (string)
+     (condition-case err
+         (progn
+           (update-ess-process-name-list)
+           (cond
+            ;; Process cannot be found, so clean up
+            ((not (assoc-string ,proc-name ess-process-name-list))
+             (ess-inferior-async-cleanup (quote ,id)))
+            ;; Comint process is an inferior ESS, run the filter
+            ((and (eq major-mode 'inferior-ess-mode)
+                  (string= ess-local-process-name ,proc-name))
+             (let ((ready (ess-inferior-ready-p string)))
+               (when ready
+                 (unwind-protect
+                     (ess-inferior-async-run (quote ,id))
+                   (ess-inferior-async-cleanup (quote ,id))))))))
+       (error
+        (message (concat "Error during async evaluation: " (cadr err)))
+        (ess-inferior-async-cleanup (quote ,id))))
+     string))
+
+(defun ess-inferior-async-run (id)
+  (let ((fun (cadr (assoc id ess-inferior-async-active-filters))))
+    (funcall fun)))
+
+;; False positives when invisible commands are issued.
+(defun ess-inferior-ready-p (string)
+  (let* ((prompt-length (length inferior-ess-primary-prompt))
+         (substring (when (>= (length string) prompt-length)
+                      (substring string (- prompt-length)))))
+    (string= substring inferior-ess-primary-prompt)))
+
+(defun ess-inferior-async-cleanup (id)
+  (remove-hook 'comint-output-filter-functions
+               (ess-inferior-async-generate-filter id ess-local-process-name))
+  (setq ess-inferior-async-active-filters
+        (assq-delete-all id ess-inferior-async-active-filters)))
+
 
 ;;*;; Temporary buffer handling
 
