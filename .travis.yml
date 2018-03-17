@@ -6,6 +6,8 @@ env:
   - EVM_EMACS=emacs-git-snapshot-travis
 
 before_install:
+  - sudo apt-get install -y --no-install-recommends r-base
+
   - git clone https://github.com/rejeep/evm.git $HOME/.evm
   - export PATH=$HOME/.evm/bin:$PATH
 
