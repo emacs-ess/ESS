@@ -104,11 +104,11 @@
 (require 'font-lock)
 
 (defvar ess-noweb-font-lock-mode nil
-  "Buffer local variable, t iff this buffer is using ess-noweb-font-lock-mode.")
+  "Buffer local variable, t iff this buffer is using `ess-noweb-font-lock-mode'.")
 
 (defvar ess-noweb-use-font-lock-mode t
   "DO NOT CHANGE THIS VARIABLE
-If you use nw-turn-on-font-lock to turn on font-locking, then turn it
+If you use `nw-turn-on-font-lock' to turn on font-locking, then turn it
 off again, it would come back on again of its own accord when you
 changed major-mode. This variable is used internally to stop it.")
 
@@ -153,23 +153,22 @@ ess-noweb-font-lock-initial-fontify-buffer is called" )
 ;; it. Trying to stop it looks tricky, but using this function as your
 ;; `font-lock-fontify-buffer' function stops it wasting your time
 
-(defun nwfl-donowt()
-  "This function does nothing at all")
+(defalias 'nwfl-donowt #'ignore)
 
 ;; The following function is just a wrapper for ess-noweb-font-lock-mode,
 ;; enabling it to be called as ess-noweb-font-lock-minor-mode instead.
 
-(defun ess-noweb-font-lock-minor-mode ( &optional arg)
-  "Minor meta mode for managing syntax highlighting in noweb files.
-See ess-noweb-font-lock-mode."
-  (interactive)
-  (ess-noweb-font-lock-mode arg))
+(define-obsolete-function-alias 'ess-noweb-font-lock-minor-mode
+  #'ess-noweb-font-lock-mode "ESS-16.11")
 
 ;; Here we get to the meat of the problem
 
 (defun ess-noweb-font-lock-mode ( &optional arg)
-  "Minor mode for syntax highlighting when using ess-noweb-mode to edit noweb files.
-Each chunk is fontified in accordance with its own mode"
+  ;; FIXME: Don't define a new minor mode.  Instead, arrange for normal
+  ;; font-lock to call our functions such as
+  ;; ess-noweb-font-lock-fontify-chunk-by-number.
+  "Minor mode for syntax highlighting when using `ess-noweb-mode' to edit noweb files.
+Each chunk is fontified in accordance with its own mode."
   (interactive "P")
   (if (or ess-noweb-mode ess-noweb-font-lock-mode)
       (progn
@@ -190,12 +189,12 @@ Each chunk is fontified in accordance with its own mode"
         (cond
           (ess-noweb-font-lock-mode                 ;Setup the minor-mode
            (when (and (boundp 'global-font-lock-mode) global-font-lock-mode)
-             (mapc 'ess-noweb-make-variable-permanent-local
+             (mapc #'ess-noweb-make-variable-permanent-local
                    '(font-lock-fontify-buffer-function
                      font-lock-unfontify-buffer-function))
-             (setq font-lock-fontify-buffer-function 'nwfl-donowt)
-             (setq font-lock-unfontify-buffer-function 'nwfl-donowt))
-           (mapc 'ess-noweb-make-variable-permanent-local
+             (setq font-lock-fontify-buffer-function #'nwfl-donowt)
+             (setq font-lock-unfontify-buffer-function #'nwfl-donowt))
+           (mapc #'ess-noweb-make-variable-permanent-local
                  '(ess-noweb-font-lock-mode
                    font-lock-dont-widen
                    ;; font-lock-beginning-of-syntax-function
@@ -205,10 +204,12 @@ Each chunk is fontified in accordance with its own mode"
            (setq ess-noweb-font-lock-mode t
                  font-lock-dont-widen t)
            (add-hook 'after-change-functions
-             'font-lock-after-change-function nil t)
-           (add-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)
+                     #'font-lock-after-change-function nil t)
+           ;; FIXME: Why add ess-noweb-font-lock-mode-fn to our own hook,
+           ;; instead of just calling ess-noweb-font-lock-mode-fn directly?
+           (add-hook 'ess-noweb-font-lock-mode-hook #'ess-noweb-font-lock-mode-fn)
            (add-hook 'ess-noweb-changed-chunk-hook
-             'ess-noweb-font-lock-fontify-this-chunk)
+             #'ess-noweb-font-lock-fontify-this-chunk)
            (run-hooks 'ess-noweb-font-lock-mode-hook)
            (message "ess-noweb-font-lock mode: use `M-x ess-noweb-font-lock-describe-mode' for more info"))
          ;; If we didn't do the above, then we want to turn ess-noweb-font-lock-mode
@@ -219,12 +220,12 @@ Each chunk is fontified in accordance with its own mode"
              ;;       'font-lock-default-fontify-buffer)
              ;; Get back our unfontify buffer function
              (setq font-lock-unfontify-buffer-function
-                   'font-lock-default-unfontify-buffer))
-           (remove-hook 'ess-noweb-font-lock-mode-hook 'ess-noweb-font-lock-mode-fn)
+                   #'font-lock-default-unfontify-buffer))
+           (remove-hook 'ess-noweb-font-lock-mode-hook #'ess-noweb-font-lock-mode-fn)
            (remove-hook 'ess-noweb-changed-chunk-hook
-                        'ess-noweb-font-lock-fontify-this-chunk)
+                        #'ess-noweb-font-lock-fontify-this-chunk)
            (remove-hook 'after-change-functions
-                        'font-lock-after-change-function )
+                        #'font-lock-after-change-function )
            (font-lock-default-unfontify-buffer)
            (setq ess-noweb-use-font-lock-mode nil)
            (message "ess-noweb-font-lock-mode removed"))))
@@ -235,12 +236,15 @@ Each chunk is fontified in accordance with its own mode"
   (interactive)
   (goto-char (car (ess-noweb-chunk-region))))
 
+(defvar font-latex-extend-region-functions)
+(defvar syntax-begin-function)
+
 (defun ess-noweb-font-lock-fontify-chunk-by-number ( chunk-num )
-  "Fontify chunk chunk-num based on the current major mode."
+  "Fontify chunk CHUNK-NUM based on the current major mode."
   (save-excursion
     (font-lock-set-defaults)
     ;; (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (setq syntax-begin-function 'ess-noweb-start-of-syntax)
+    (setq syntax-begin-function #'ess-noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords
           ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"
@@ -255,7 +259,9 @@ Each chunk is fontified in accordance with its own mode"
           ;;                    (0 ess-noweb-font-lock-doc-start-face prepend )))))
           (append font-lock-keywords
                   '(("^[ \t\n]*\\(<<\\)\\([^>]*\\)\\(>>=?\\)"
+                     ;; FIXME: Why not use ess-noweb-font-lock-brackets-face?
                      (1 font-lock-reference-face  prepend )
+                     ;; FIXME: Why not use ess-noweb-font-lock-chunk-name-face?
                      (2 font-lock-keyword-face prepend)
                      (3 font-lock-reference-face prepend))
                     ("^@[ \t\n]+"
@@ -284,10 +290,10 @@ by ess-noweb-mode.el"
 
 (defun ess-noweb-font-lock-initial-fontify-buffer ()
   "Applies syntax highlighting to some or all chunks in a noweb buffer.
-The number of chunks is set by ess-noweb-font-lock-max-initial-chunks: if
+The number of chunks is set by `ess-noweb-font-lock-max-initial-chunks': if
 this is nil, the entire buffer is fontified.
-It is intended to be called when first entering ess-noweb-font-lock-mode.
-For other purposes, use ess-noweb-font-lock-fontify-chunks."
+It is intended to be called when first entering `ess-noweb-font-lock-mode'.
+For other purposes, use `ess-noweb-font-lock-fontify-chunks'."
   (interactive)
   ;; This will be tricky. It will be very slow to go throught the chunks
   ;; in order, switching major modes all the time.
@@ -296,7 +302,7 @@ For other purposes, use ess-noweb-font-lock-fontify-chunks."
   ;; different code modes regularly, but it should be bearable. It should
   ;; only happen when the file is first read in, anyway
   (save-excursion
-    (let (start-chunk end-chunk this-chunk chunk-counter)
+    (let (start-chunk end-chunk this-chunk)
       (setq this-chunk (ess-noweb-find-chunk-index-buffer))
       (if ess-noweb-font-lock-max-initial-chunks
           (progn
@@ -325,13 +331,12 @@ For other purposes, use ess-noweb-font-lock-fontify-chunks."
     (ess-noweb-font-lock-fontify-chunks start-chunk end-chunk)))
 
 (defun ess-noweb-font-lock-fontify-chunks (start-chunk end-chunk)
-  "Fontify a noweb file from start-chunk to end-chunk"
+  "Fontify a noweb file from START-CHUNK to END-CHUNK."
   (interactive)
-  (let (chunk-counter)
+  (let ((chunk-counter start-chunk))
     (save-excursion
       (message "Fontifying from %d to %d" start-chunk end-chunk)
       ;; Want to set DOC mode for the first Doc chunk, not for the others
-      (setq chunk-counter start-chunk)
       (while  (stringp (car (aref ess-noweb-chunk-vector chunk-counter)))
         (setq chunk-counter (+ chunk-counter 1)))
       (goto-char (cdr (aref ess-noweb-chunk-vector chunk-counter)))
@@ -369,18 +374,16 @@ For other purposes, use ess-noweb-font-lock-fontify-chunks."
 ;; turn-on-lock was around, I redefined turn-on-font-lock to do the
 ;; right thing.
 
-(defvar ess-noweb-old-turn-on-font-lock nil)
+(define-obsolete-function-alias 'nw-turn-on-font-lock
+  #'turn-on-font-lock "ESS-16.11")
 
-(defun nw-turn-on-font-lock ()
-  "Turn on font-lock mode, with due regard to whether we are in ess-noweb-mode"
+(defadvice turn-on-font-lock (around ess-noweb-font-lock activate)
+  ;; FIXME: An advice on turn-on-font-lock is definitely not sufficient,
+  ;; since font-lock can be enabled without going through turn-on-font-lock!
   (if (not ess-noweb-mode)
-      (ess-noweb-old-turn-on-font-lock)
+      ad-do-it
     (if (and (not ess-noweb-font-lock-mode) ess-noweb-use-font-lock-mode)
-        (ess-noweb-font-lock-mode ))))
-
-(unless (functionp 'ess-noweb-old-turn-on-font-lock)
-  (fset 'ess-noweb-old-turn-on-font-lock (symbol-function 'turn-on-font-lock))
-  (fset 'turn-on-font-lock (symbol-function 'nw-turn-on-font-lock)))
+        (ess-noweb-font-lock-mode))))
 
 (provide 'ess-noweb-font-lock-mode)
 ;;  *****
