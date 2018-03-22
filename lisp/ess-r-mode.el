@@ -379,21 +379,22 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 ;; Takes precidence over R1 below in english locales, and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R "\\(\\(?: at \\|(@\\)\\([^#\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(R1 " \\([^ \t\n]+\\)#\\([0-9]+\\)[: ]"  1 2 nil 2))
+             ;; valgrind style (stl_numeric.h:183)
+             '(R1 "(\\([^ ):\n]+\\):\\([0-9]+\\)?)" 1 2 nil 2))
 
 (add-to-list 'compilation-error-regexp-alist-alist
              '(R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
 
 ;; Precedes R4 and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
-             ;; Start with bol,: but don't start with digit
-             '(R3 "\\(?:^ +\\|: +\\)\\([^-+[:digit:]\n]:?[^:\n]*\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
+             ;; Starts at bol or with ": " (patterns 3,4,5,6,9)
+             '(R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \n]:?[^: ]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             ;; Don't start with digit, don't contain spaces
+             ;; Don't start with digit; no spaces
              '(R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
