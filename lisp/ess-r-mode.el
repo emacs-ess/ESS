@@ -391,7 +391,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 ;; Precedes R4 and allows spaces in file path
 (add-to-list 'compilation-error-regexp-alist-alist
              ;; Starts at bol or with ": " (patterns 3,4,5,6,9)
-             '(R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \n]:?[^: ]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1))
+             '(R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1))
 
 (add-to-list 'compilation-error-regexp-alist-alist
              ;; Don't start with digit; no spaces
