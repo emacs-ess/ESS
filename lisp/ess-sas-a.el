@@ -107,7 +107,7 @@ or `ess-sas-data-view-insight'."
 
   "*Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
-  :type  'string)
+  :type  '(choice (const nil) (alist)))
 
 ;;(defcustom ess-sas-smart-back-tab nil
 ;;    "*Set to t to make C-TAB insert an end/%end; statement to close a block."

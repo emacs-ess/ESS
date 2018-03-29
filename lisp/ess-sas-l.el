@@ -243,7 +243,7 @@ number."
 (defcustom ess-sas-run-regexp-opt t
   "If you do not want to run regexp-opt, then set to nil."
   :group 'ess-sas
-  :type '(choice (const nil) string))
+  :type 'boolean)
 
 (defvar sas-buffer-name nil)
 (defvar sas-file-root nil)

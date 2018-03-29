@@ -565,7 +565,7 @@ lines or reboot emacs. The first call clears the default
 `ess-smart-S-assign' assignment and the second line re-assigns
 it to the customized setting. "
   :group 'ess-S
-  :type 'character)
+  :type 'string)
 
 ;;*;; Variables concerning editing behaviour
 
@@ -587,7 +587,7 @@ during the load. "
   :group 'ess-edit
   :type '(choice (const :tag "Check" :value  'check)
                  (const :tag "Ask"   :value  'ask)
-                 (const :tag "Always keep"   :value "always")
+                 (const :tag "Always keep"   :value t)
                  (const :tag "Always delete"   :value nil)
                  ))
 
@@ -1504,7 +1504,7 @@ instead placed at the beginning of the entry (and should
 therefore also be at the beginning of this template to give
 syntactically correct roxygen entries)"
   :group 'ess-roxy
-  :type '(alist :value-type (group string)))
+  :type '(alist :key-type string :value-type string))
 
 (defcustom ess-roxy-fill-param-p nil
   "Non-nil causes parameter descriptions to be filled (word-wrapped) upon `ess-roxy-update-entry'."
@@ -1540,7 +1540,7 @@ the line at point"
   "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
 the first entry is the default command."
   :group 'ess-sweave
-  :type 'list)
+  :type '(repeat string))
 
 (defcustom ess-swv-plug-into-AUCTeX-p nil
   "Non-nil means add commands to AUCTeX's \\[TeX-command-list]
@@ -1725,7 +1725,7 @@ path (as in 'setwd(%s)\\n'.")
     nil)
   "Safe (no embedded blanks) 8.3 name for 32-bit programs that works across internationalization."
   :group 'ess
-  :type 'string)
+  :type '(choice (string) (const nil)))
 
 (defcustom ess-program-files-64 ;; 64 bit version
   (if (and ess-microsoft-p (getenv "ProgramW6432"))
@@ -1733,7 +1733,7 @@ path (as in 'setwd(%s)\\n'.")
     nil)
   "Safe (no embedded blanks) 8.3 name for 64-bit programs that works across internationalization."
   :group 'ess
-  :type 'string)
+  :type '(choice (string) (const nil)))
 
 (defcustom ess-directory-containing-R nil
   "nil (the default) means the search for all occurences of R
@@ -1750,7 +1750,7 @@ effect.  It also needs to be set before you load ess-site as its
 value is used once only when ESS is loaded."
 
   :group 'ess
-  :type 'directory)
+  :type '(choice (directory) (const nil)))
 
 (defcustom ess-rterm-version-paths nil
   "Stores the full path file names of Rterm versions, computed via
@@ -1859,7 +1859,7 @@ in S+4 Commands window and in Sqpe+4 buffer."
   (concat ess-program-files "/spls45se/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-SPLUS
-  :type 'string)
+  :type '(choice (const nil) (string)))
 
 (defcustom inferior-Sqpe+4-SHOME-name
   (if ess-microsoft-p (concat ess-program-files "/spls45se" ""))
@@ -1869,7 +1869,7 @@ S-Plus 4.5 Student Edition.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-SPLUS
-  :type 'string)
+  :type '(choice (const nil) (string)))
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
 ;;         (PATH (getenv "PATH"))
@@ -1977,7 +1977,7 @@ for Windows Commands window and in Sqpe+6 for Windows buffer."
   (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
-  :type 'string)
+  :type '(choice (const nil) (string)))
 
 (defvaralias 'inferior-Sqpe+6-SHOME-name 'inferior-Sqpe+-SHOME-name)
 (defcustom inferior-Sqpe+-SHOME-name
@@ -1988,7 +1988,7 @@ S-Plus 8.1.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-SPLUS
-  :type 'string)
+  :type '(choice (const nil) (string)))
 ;;(if ess-microsoft-p
 ;;    (let* ((SHOME (getenv "SHOME"))
 ;;         (PATH (getenv "PATH"))
@@ -2045,7 +2045,7 @@ order for it to work right.  And Emacs is too smart for it."
 (defcustom ess-sta-delimiter-friendly nil
   "Non-nil means convert embedded semi-colons to newlines for Stata processing."
   :group 'ess-Stata
-  :type 'string)
+  :type 'boolean)
 
 (defcustom inferior-OMG-program-name "omegahat"
   "Program name for invoking an inferior ESS with omegahat()."
@@ -2112,7 +2112,7 @@ for editing and then to be returned to the process.")
   "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype
 for help files.  The default value is nil for other systems."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) (string)))
 (make-variable-buffer-local 'inferior-ess-help-filetype)
 (setq-default inferior-ess-help-filetype nil)
 
@@ -2122,12 +2122,12 @@ for help files.  The default value is nil for other systems."
 (defcustom inferior-ess-ddeclient nil
   "ddeclient is the intermediary between emacs and the stat program."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) (string)))
 
 (defcustom inferior-ess-client-name nil
   "Name of ESS program ddeclient talks to."
   :group 'ess-proc
-  :type 'string)
+  :type '(choice (const nil) (string)))
 
 (defcustom inferior-ess-client-command nil
   "ddeclient command sent to the ESS program."
@@ -3038,8 +3038,8 @@ See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 are: 'message' (the default) or 'tooltip'."
   :group 'ess-R
   :type '(choice
-          (const :tag "message" :value 'message)
-          (const :tag "tooltip" :value 'tooltip)))
+          (const :tag "message" :value message)
+          (const :tag "tooltip" :value tooltip)))
 
 (defcustom ess-r-args-keep-silent ess-S-non-functions
   "List of functions names which should *not* trigger \\[ess-r-args-show];

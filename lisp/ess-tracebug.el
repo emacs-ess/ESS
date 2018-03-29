@@ -89,7 +89,7 @@ Set this to a key cominbation you don't use often, like:
 The postfix keys are defined in `ess-tracebug-map':
 \\{ess-tracebug-map}
 "
-  :type 'string
+  :type '(choice (const nil) (string))
   :group 'ess-tracebug)
 
 ;; (make-obsolete-variable 'ess-tracebug-prefix "ess-tracebug-prefix will be removed in future versions.
@@ -740,7 +740,7 @@ actual expression to be assigned to 'error' user option. See R's
 help ?options for more details.
 "
   :type '(alist :key-type string
-                :value-type (string string))
+                :value-type (group string string))
   :group 'ess-debug)
 
 (defvar ess--dbg-output-buf-prefix " *ess.dbg"
@@ -2391,7 +2391,7 @@ See `split-height-threshold' for a detailed description.
 
 If nil, the value of `split-height-threshold' is used."
   :group 'ess-debug
-  :type 'integer)
+  :type '(choice (const nil) (integer)))
 
 (defcustom ess-watch-width-threshold nil
   "Minimum width for splitting *R* windwow sensibly to make space for watch window.
@@ -2399,7 +2399,7 @@ See `split-width-threshold' for a detailed description.
 
 If nil, the value of `split-width-threshold' is used."
   :group 'ess-debug
-  :type 'integer)
+  :type '(choice (const nil) (integer)))
 
 (defcustom  ess-watch-scale-amount -1
   "The number of steps to scale the watch font down (up).
