@@ -1,4 +1,24 @@
 
+(defun ess-ltest-check (file)
+  (let ((path (expand-file-name file "literate")))
+    (should (ess-ltest-do 'test path))))
+
+(ert-deftest test-ess-roxy-literate ()
+  (ess-ltest-check "roxy.R"))
+
+(ert-deftest test-ess-r-code-fill ()
+  (ess-ltest-check "code-fill.R"))
+
+(ert-deftest test-ess-r-misc ()
+  (ess-ltest-check "misc.R"))
+
+(ert-deftest test-ess-r-syntax ()
+  (ess-ltest-check "syntax.R"))
+
+(ert-deftest test-ess-r-tokens ()
+  (ess-ltest-check "tokens.R"))
+
+
 (defvar ess-ltest-R-chunk-pattern "^###[ \t]*\\([0-9]+[a-zA-Z]*\\) \\([^\n]*\\)$")
 (defvar ess-ltest-R-code-start-pattern "^##!")
 (defvar ess-ltest-R-code-cont-pattern "^##>")
@@ -6,26 +26,44 @@
 (defvar ess-ltest-R-section-pattern "^##### \\([^\n]*\\)$")
 (defvar ess-ltest-R-mode-init '((mode . R)))
 
-(defun ess-ltest-R (&optional file)
-  (when file
-    (let ((r-file (concat file ".R"))
-          (el-file (concat file ".el")))
-      (message "---Testing %s" (file-name-nondirectory r-file))
-      (set-buffer (find-file-noselect r-file))
-      (when (file-exists-p el-file)
-        (load-file el-file))))
-  ;; Don't check safety of local variables declared in test files
-  (cl-letf (((symbol-function 'safe-local-variable-p) (lambda (sym val) t)))
-    (let ((enable-dir-local-variables nil))
-      (hack-local-variables)))
-  (let ((ess-ltest-chunk-pattern ess-ltest-R-chunk-pattern)
-        (ess-ltest-code-cont-pattern ess-ltest-R-code-cont-pattern)
-        (ess-ltest-code-pattern ess-ltest-R-code-pattern)
-        (ess-ltest-section-pattern ess-ltest-R-section-pattern)
-        (ess-ltest-mode-init (append (assq-delete-all 'mode file-local-variables-alist)
-                                     ess-ltest-R-mode-init)))
-    (ess-ltest-this-buffer))
-  (save-buffer))
+(defun ess-ltest-do (action file)
+  (unless (memq action '(test regenerate))
+    (error "Invalid literate test action"))
+  (let ((verb (if (eq action 'test)
+                  "Testing"
+                "Regenerating")))
+    (message "---%s %s" verb (file-name-nondirectory file)))
+  (let* ((src-buffer (if (file-exists-p file)
+                         (find-file-noselect file)
+                       (error "Can't find literate test file")))
+         (src-string (with-current-buffer src-buffer
+                       (buffer-string)))
+         (output (ess-ltest-buffer-string file src-string)))
+    (pcase action
+      (`test (string= src-string output))
+      (`regenerate (with-current-buffer src-buffer
+                     (erase-buffer)
+                     (insert output)
+                     (save-buffer))))))
+
+(defun ess-ltest-buffer-string (file src-string)
+  (let ((el-file (concat (file-name-sans-extension file) ".el")))
+    (when (file-exists-p el-file)
+      (load-file el-file)))
+  (with-temp-buffer
+    (insert src-string)
+    ;; Don't check safety of local variables declared in test files
+    (cl-letf (((symbol-function 'safe-local-variable-p) (lambda (sym val) t)))
+      (let ((enable-dir-local-variables nil))
+        (hack-local-variables)))
+    (let ((ess-ltest-chunk-pattern ess-ltest-R-chunk-pattern)
+          (ess-ltest-code-cont-pattern ess-ltest-R-code-cont-pattern)
+          (ess-ltest-code-pattern ess-ltest-R-code-pattern)
+          (ess-ltest-section-pattern ess-ltest-R-section-pattern)
+          (ess-ltest-mode-init (append (assq-delete-all 'mode file-local-variables-alist)
+                                       ess-ltest-R-mode-init)))
+      (ess-ltest-this-buffer)
+      (buffer-string))))
 
 (defun ess-ltest-this-buffer ()
   (goto-char 1)
