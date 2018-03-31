@@ -1,4 +1,7 @@
-EMACS=/usr/bin/emacs
+EMACS?=emacs
+
+.PHONY: literate
+
 
 all:
 	${EMACS} -Q --script run-tests
@@ -14,6 +17,9 @@ r:
 
 r-indent:
 	${EMACS} -Q --script run-tests --rstats-indent
+
+literate:
+	${EMACS} -Q --script run-tests --literate
 
 
 cases: indent-cases literate-cases

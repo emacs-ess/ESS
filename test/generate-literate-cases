@@ -1,4 +1,4 @@
-#!/usr/bin/emacs --script
+#!/usr/bin/env emacs --script
 ;; (Re)generate files with test cases for indentation
 
 (let ((current-directory (file-name-directory load-file-name)))
@@ -16,5 +16,5 @@
 (message "\nStarting literate tests")
 
 (mapc (lambda (file)
-        (ess-ltest-R (expand-file-name file ess-literate-path)))
-      '("roxy" "code-fill" "misc" "syntax" "tokens"))
+        (ess-ltest-do 'regenerate (expand-file-name file ess-literate-path)))
+      '("roxy.R" "code-fill.R" "misc.R" "syntax.R" "tokens.R"))

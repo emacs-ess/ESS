@@ -1,4 +1,4 @@
-#!/usr/bin/emacs --script
+#!/usr/bin/env emacs --script
 
 ;; This script must be run from the test directory
 ;; With no argument, run all tests. Otherwise run only mentioned tests.
@@ -15,7 +15,7 @@
 
 
 (when (= (length argv) 0)
-  (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent")))
+  (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent" "--literate")))
 
 (when (member "--ess" argv)
   (load (expand-file-name "ess-tests.el" ess-test-path) nil t))
@@ -25,6 +25,8 @@
   (load (expand-file-name "ess-r-tests.el" ess-test-path) nil t))
 (when (member "--rstats-indent" argv)
  (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t))
+(when (member "--literate" argv)
+ (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)
