@@ -1,4 +1,4 @@
-EMACS=/usr/bin/emacs
+EMACS?=emacs
 
 all:
 	${EMACS} -Q --script run-tests
