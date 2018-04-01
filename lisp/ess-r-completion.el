@@ -411,6 +411,26 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
 
+;; installed.packages maintains its own cache
+(defun company-R-library-all-completions ()
+  (let ((proc (ess-get-next-available-process)))
+    (when proc
+      (ess-get-words-from-vector
+       "local({ out <- try({rownames(installed.packages())}); print(out, max=1e6) })\n"))))
+
+;; completion for library names -- only active within 'library(...)'
+(defun company-R-library (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-R-library))
+    (prefix (and (string= "library" (car-safe (ess--fn-name-start 'symbol)))
+              (let ((start (ess-symbol-start)))
+                (and start (buffer-substring start (point))))))
+    (candidates (all-completions arg (company-R-library-all-completions)))
+    (annotation "<package>")
+    (duplicates nil)
+    (sorted t)))
+
 
 ;;; AC SOURCES
 ;;; http://cx4a.org/software/auto-complete/index.html
