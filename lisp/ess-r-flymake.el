@@ -57,7 +57,7 @@ each element is passed as argument to 'lintr::with_defaults'."
 (defcustom ess-r-flymake-lintr-cache t
   "If non-nil, cache lintr results."
   :group 'ess-R
-  :type 'string)
+  :type 'boolean)
 
 (defvar-local ess-r--flymake-proc nil)
 

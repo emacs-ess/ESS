@@ -1068,7 +1068,8 @@ If TOGGLE-EOB is given, the value of
   '((display-buffer-pop-up-window display-buffer-use-some-window))
   "Actions for `ess-show-buffer', passed to `display-buffer'."
   :group 'ess
-  :type 'list)
+  :type '(list (repeat function)))
+
 (defun ess-show-buffer (buf &optional visit)
   "Ensure the ESS buffer BUF is visible.
 The buffer, specified as a string, is typically an iESS (e.g. *R*) buffer.
