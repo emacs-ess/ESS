@@ -139,6 +139,7 @@ New way to do it."
 
 
 (defalias 'S+6-mode 'S+-mode)
+;;;###autoload
 (defun S+-mode (&optional proc-name)
   "Major mode for editing S+ source.  See `ess-mode' for more help."
   (interactive)

@@ -2078,6 +2078,7 @@ for `ess-eval-region'."
     map)
   "Keymap used in `ess-execute'")
 
+;;;###autoload
 (defun inferior-ess-mode ()
   "Major mode for interacting with an inferior ESS process.
 Runs an S interactive job as a subprocess of Emacs, with I/O through an

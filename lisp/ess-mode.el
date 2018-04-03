@@ -242,6 +242,7 @@
     ["Read ESS info" (ess-goto-info "") t]
     ["Send bug report"  ess-submit-bug-report           t]))
 
+;;;###autoload
 (defun ess-mode (&optional alist proc-name is-derived)
   "Major mode for editing ESS source.
 Optional arg ALIST describes how to customize the editing mode.

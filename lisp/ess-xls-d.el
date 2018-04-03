@@ -66,6 +66,7 @@
 
 ;;; The functions of interest (mode, inferior mode)
 
+;;;###autoload
 (defun XLS-mode (&optional proc-name)
   "Major mode for editing XLispStat source.  NOT EVEN STARTED."
   (interactive)

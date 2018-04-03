@@ -519,7 +519,7 @@ This is to get around the lack of proper derived modes in ESS."
   (and (eq major-mode 'ess-mode)
        (string= ess-dialect "R")))
 
-;;;### autoload
+;;;###autoload
 (defun R (&optional start-args)
   "Call 'R', the 'GNU S' system from the R Foundation.
 Optional prefix (C-u) allows to set command line arguments, such as
@@ -615,7 +615,7 @@ Executed in process buffer."
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
 
-;;;### autoload
+;;;###autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
   (interactive "P")
@@ -981,6 +981,7 @@ See `ess-noweb-mode' and `R-mode' for more help."
 (autoload 'ess-transcript-mode "ess-trns"
   "Major mode for editing S transcript files." t)
 
+;;;###autoload
 (defun R-transcript-mode ()
   "Does the right thing."
   (interactive)

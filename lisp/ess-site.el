@@ -166,7 +166,7 @@ for ESS, such as icons.")
 
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
-
+;;;###autoload
 (unless (assoc "\\.[rR]\\'" auto-mode-alist)
   (setq auto-mode-alist
         (append
@@ -205,7 +205,9 @@ for ESS, such as icons.")
          auto-mode-alist)))
 
 ;; Rscript and littler interpreters recognized.
+;;;###autoload
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
+;;;###autoload
 (add-to-list 'interpreter-mode-alist '("r" . r-mode))
 
 (autoload 'ess-transcript-mode "ess-trns"
