@@ -77,6 +77,7 @@
   "Variables to customize for Stata.")
 
 
+;;;###autoload
 (defun STA-mode (&optional proc-name)
   "Major mode for editing Stata source.  See `ess-mode' for more help."
   (interactive)
