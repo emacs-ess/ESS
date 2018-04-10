@@ -45,6 +45,7 @@
     "object_usage_linter = NULL"
     "open_curly_linter = NULL"
     "pipe_continuation_linter = NULL"
+    "spaces_left_parentheses_linter = NULL"
     "trailing_whitespace_linter = NULL"
     "trailing_blank_lines_linter = NULL")
   "Default linters to use.
