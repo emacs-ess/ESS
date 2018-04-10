@@ -202,7 +202,8 @@ User is asked for confirmation."
   (let ((inst "install.packages(c(")
         (count 0))
     (save-excursion
-      (goto-line 2)
+      (goto-char (point-min))
+      (forward-line)
       ;; as long as number of lines between buffer start and point is smaller
       ;; than the total number of lines in buffer, go to the beginning of the
       ;; line, check if line is flagged, and if it is, advance the counter by
