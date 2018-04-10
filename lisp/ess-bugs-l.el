@@ -36,7 +36,7 @@
 (defcustom ess-bugs-batch-method
   (if ess-microsoft-p (if (w32-shell-dos-semantics) 'dos 'sh) 'sh)
   "Method used by `ess-bugs-batch'.
-The default is based on the value of the emacs variable `system-type'
+The default is based on the value of the Emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
 'sh           if *shell* runs a Bourne-like or a C-like Unix shell
 'dos          if *shell* runs a DOS-like Windows shell
@@ -50,7 +50,8 @@ Users whose default is not 'sh, but are accessing a remote machine with
 `telnet' or `ssh', should have the following in their init file:
    (setq-default ess-bugs-batch-method 'sh)"
   :group 'ess-bugs
-  )
+  :type '(choice (const 'sh :tag "Bourne/C-like Unix Shell")
+                 (const 'dos :tag "DOS-like Windows shell")))
 
 (defcustom ess-bugs-batch-post-command
   (if (equal ess-bugs-batch-method 'sh) "&" " ")

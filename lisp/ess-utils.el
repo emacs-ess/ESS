@@ -495,6 +495,7 @@ to `ess-completing-read'.
 (defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
   `ess-idle-timer-functions'."
+  :type '(integer)
   :group 'ess)
 
 (defvar ess-idle-timer-functions nil
