@@ -1631,8 +1631,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
           (while (string-match ".*\\(%N\\).*" line-number-format)
             (setq line-number-format
                   (replace-match "\n" t t line-number-format 1)))
-          (save-excursion
-            (set-buffer buffer)
+          (with-current-buffer buffer
             (insert line-number-format))))))
 
 
@@ -1710,8 +1709,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                       (ess-noweb-tangle-chunk tangle-buffer pre-chunk)
                       (forward-line 1)))
                   (if post-chunk
-                      (save-excursion
-                        (set-buffer tangle-buffer)
+                      (with-current-buffer tangle-buffer
                         (backward-char)
                         (insert post-chunk)
                         (beginning-of-line 2)))))
@@ -1729,8 +1727,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
                 (setq pre-chunk (concat prefix-string
                                         pre-chunk)))
             ;; And copy it to the buffer
-            (save-excursion
-              (set-buffer tangle-buffer)
+            (with-current-buffer tangle-buffer
               (insert pre-chunk)))
           ;; If this is the first line of the chunk, we need to change
           ;; prefix-string to consist solely of spaces
@@ -1743,8 +1740,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
           ;; Either way, go to the next line
           (beginning-of-line 2))
 
-        (save-excursion
-          (set-buffer tangle-buffer)
+        (with-current-buffer tangle-buffer
           (goto-char (point-min))
           (while (re-search-forward "\@\<<" nil t)
             (replace-match "<<" nil nil)
@@ -1756,8 +1752,7 @@ This may be useful in shell scripts, where the first line (or two) must have a
             (untabify (point-min)(point-max))))
 
         (if buffer
-            (save-excursion
-              (set-buffer buffer)
+            (with-current-buffer buffer
               (insert-buffer-substring tangle-buffer)
               (kill-buffer tangle-buffer)))
         ))))
@@ -1770,8 +1765,7 @@ thread."
   (if (not buffer)
       (progn
         (setq buffer (get-buffer-create name))
-        (save-excursion
-          (set-buffer buffer)
+        (with-current-buffer buffer
           (erase-buffer))))
   (save-excursion
     (goto-char (point-min))

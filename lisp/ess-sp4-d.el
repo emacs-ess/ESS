@@ -397,8 +397,8 @@ If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+4-multipleinstances ""))
     (S+4-msdos proc-name))
-  (save-excursion
-    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+  (with-current-buffer
+      (car (buffer-list))    ; get the ESS buffer just created
     (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)
