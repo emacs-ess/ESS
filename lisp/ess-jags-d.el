@@ -245,7 +245,6 @@
   (setq major-mode 'ess-jags-mode)
   (setq mode-name "ESS[JAGS]")
   (use-local-map ess-bugs-mode-map)
-  (setq font-lock-auto-fontify t)
   (make-local-variable 'font-lock-defaults)
   (setq font-lock-defaults '(ess-jags-font-lock-keywords nil t))
   (setq ess-language "S") ; mimic S for ess-smart-underscore
