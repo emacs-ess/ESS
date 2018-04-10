@@ -721,12 +721,10 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
          (ess-r-indent-exp))
         (t
          (save-excursion
-           (if (fboundp ess-indent-exp-function)
-               (funcall ess-indent-exp-function)
-             (let ((start (point))
-                   (end (ignore-errors (forward-sexp 1) (point))))
-               (when end
-                 (indent-region start end))))))))
+           (let ((start (point))
+                 (end (ignore-errors (forward-sexp 1) (point))))
+             (when end
+               (indent-region start end)))))))
 
 (defun ess-indent-line ()
   "Indent current line as ESS code.
