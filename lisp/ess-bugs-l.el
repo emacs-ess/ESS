@@ -139,8 +139,8 @@ Users whose default is not 'sh, but are accessing a remote machine with
 (modify-syntax-entry ?\\ "."  ess-bugs-syntax-table)
 (modify-syntax-entry ?#  "<"  ess-bugs-syntax-table)
 (modify-syntax-entry ?\n ">"  ess-bugs-syntax-table)
-(modify-syntax-entry ?(  "()" ess-bugs-syntax-table)
-                     (modify-syntax-entry ?)  ")(" ess-bugs-syntax-table)
+(modify-syntax-entry ?\(  "()" ess-bugs-syntax-table)
+                     (modify-syntax-entry ?\)  ")(" ess-bugs-syntax-table)
 (modify-syntax-entry ?.  "w"  ess-bugs-syntax-table)
 
 (defun ess-bugs-file ()
