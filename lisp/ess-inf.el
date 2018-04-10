@@ -603,7 +603,6 @@ This marks the process with a message, at a particular time point."
                             (concat ", " inferior-ess-program ))
                            (t "")))
                (prompt (format "%s starting project directory? "
-                               procname
                                prog)))
           (ess-prompt-for-directory default-dir prompt))
       default-dir)))
