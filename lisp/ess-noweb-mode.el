@@ -197,7 +197,7 @@ replaced by sequences of '*'.")
     (if (not name)
         (progn
           ;; Assume latex documentation, but set to html if appropriate
-          (if (eq ess-noweb-doc-mode html-mode)
+          (if (eq ess-noweb-doc-mode 'html-mode)
               (setq name (concat (substring (buffer-file-name) 0
                                             (string-match ".nw" name))
                                  ".html"))
