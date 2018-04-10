@@ -256,7 +256,7 @@ arguments, or expressions which return R arguments."
 (defun ess-r-command--build-args (ix &optional actions)
   (let* ((n (cond ((null ix) 0)
                   ((listp ix) (round (log (car ix) 4)))
-                  ((integer ix) ix)
+                  ((integerp ix) ix)
                   (t (error "Invalid index"))))
          (action (nth n actions))
          (args (cond ((null action) "")
