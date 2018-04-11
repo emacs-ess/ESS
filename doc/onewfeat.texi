@@ -1,6 +1,853 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 15.09:
+@itemize @bullet
+
+@item @ESS{[R]}: The indentation logic has been refactored.
+It should be faster, more consistent and more flexible. There are three
+types of indentation settings, those starting with @code{ess-offset-}
+give the actual offsets, those starting with @code{ess-indent-} are
+control (commonly Boolean) variables, and those starting with
+@code{ess-align-} are vertical alignment overrides which inhibit default
+offsets in specific situations. See @code{ess-style-alist} for detailed
+description of the new indentation system and provided default
+indentation styles.
+
+@item @ESS{[R]}: Deprecation of old indentation settings.
+As a consequence of the indentation re-factoring
+@code{ess-brace-imaginary-offset}, @code{ess-expression-offset} and all
+delimiter-specific offsets are deprecated. The settings for indentation
+of continued statements have been replaced by
+@code{ess-offset-continuations}. It can be set to either @code{cascade}
+or @code{straight} (the default). @code{ess-arg-function-offset} has
+been replaced by @code{ess-indent-from-lhs} and has been generalised to
+assignments. This setting now works with both statement blocks and
+expressions and only takes effect for offsets set to @code{prev-call}
+and @code{open-delim} in order to produce a consistent indentation.
+
+@item @ESS{}: A test framework has been set up.
+
+@item @ESS{[R]}: A new RStudio style is provided to mimic as closely
+as possible R files indented via RStudio. To reproduce the setup of some
+of the RStudio users, the RStudio- style with
+@code{ess-offset-arguments} set to @code{prev-line} is also provided. In
+addition, the new RRR+ style is equivalent to RRR except it indents
+blocks in function calls relatively to the opening delimiter. This style
+does not try to save horizontal space and produces more indentation.
+
+@item @ESS{[R]}: Roxygen fields will now be indented on paragraph
+refilling in order to make the documentation more readable. You can also
+refill commented lines in the @code{examples} field without squashing
+the surrounding code in the comments.
+
+@item @ESS{[R]}: ESS can now format your code! This is controlled
+through the settings @code{ess-fill-calls} and
+@code{ess-fill-continuations}. When activated, @code{(fill-paragraph)}
+formats your calls and your formulas/continuations while making sure
+they don't go past @code{fill-column}. Repeated refills cycle through
+different styles (see the docstrings for more details). By default, the
+refilled region blinks. Set @code{ess-blink-filling} to nil to prevent
+this.
+
+@item @ESS{[R]}: Fix occasional missing error location fontification
+in inferior buffers.
+
+@item @ESS{[R]}: ess-developer now correctly assigned the environment
+of new functions to the package namespace.
+
+
+@item @ESS{[Julia]}: ?[topic] now works in the *julia* buffer.
+Note that support for editing Julia code now depends on
+@file{julia-mode.el} from the Julia project.  If you install ESS from
+the official tarball/zip file, @file{julia-mode.el} is already included.
+Otherwise, if you install ESS by
+running @code{make}, then the latest version of @file{julia-mode.el} is
+downloaded (and so you need an active internet connection to install)
+during the installation process.  Alternatively, if you run ESS without
+running @code{make}, then ensure that you have the @code{julia-mode.el},
+which you can get easily from MELPA for example.
+
+
+@item @iESS{}: For naming inferior processes, ESS can use @code{projectile}'s
+project root and it does so when @code{ess-gen-proc-buffer-name-function} is
+set to @code{ess-gen-proc-buffer-name:projectile-or-simple} as by default,
+or to another value beginning with @code{ess-gen-proc-buffer-name:projectile-*}.
+
+@end itemize
+
+
+Changes and New Features in 15.03-1:
+@itemize @bullet
+@item @ESS{[R]}: An indentation bug has been fixed (github issue 163)
+@item @ESS{[R]}: On windows, if `ess-prefer-higher-bit' is non-nil (the
+default), then R-newest will try to run a 64 bit (rather than 32 bit)
+version of R.
+@end itemize
+
+Changes and New Features in 15.03:
+@itemize @bullet
+@item @ESS{[R]}: Full native support for `company-mode`.
+@item @ESS{[R]}: More efficient caching algorithm for R completion.
+@item @ESS{}: New offset variable `ess-close-paren-offset` to control
+the indentation of the closing parentheses.
+@item @ESS{[R]}: Ask for CRAN mirror only once per emacs session.
+@item @ESS{[R]}: Detect @code{library} and @code{require} calls
+for better completion caching.
+@item Buffer display is now customizable (@code{ess-show-buffer-action}).
+@item Use @code{y-or-n-p} instead of @code{yes-or-no-p} throughout.
+@item More support for ODS in ess-sas-graph-view.
+@item Makefiles are now both UNIX and GNU friendly.
+@item @ESS{[R]}: Simplify directory lookup in @code{ess-developer} (#137).
+@item Make closed paren indentation consistent
+@end itemize
+
+Bug Fixes in 15.03:
+@itemize @bullet
+@item Fix open brace indentation bug (#27 in ess/R-ESS-bugs.R).
+@item Fix git version lookup
+@item Don't check directory modtime in R dialect.
+@item Declare all ess macros for edebug.
+@item Add @code{ess-smart-comma} to eldoc message functions.
+@item Inform users when retrieving RDA aliases.
+@item Line ending in '~' is also a continuation line.
+@item Filing roxy paragraphs works as expected now.
+@item In @code{ess-developer-add-package}, remove incorrect `wait`
+argument from @code{ess-get-words-from-vector} call.
+@item Fix #96, #117, #120, #125, #134, #137.
+@item Fix ess-quit-r. Call base::q() even if it is masked.
+@item Fix `ess-show-buffer` to always display the buffer in another window.
+@item Makefile: Fix cd bug for directories with spaces in them
+@item @code{ess-kill-buffer-and-go} modified to not restart R
+@end itemize
+
+Changes / Selected Bug Fixes in 14.09:
+@itemize @bullet
+@item @ESS{[Julia]}: Executable is changed to @code{julia}.
+@item @ESS{[Julia]}: Completion and help system was adjusted to Julia
+v.0.3.0. Julia v.0.2.x is no more supported.
+@item @ESS{[R]}: Running R with @code{gdb} debugger now works as expected
+@item @iESS{}: Inferior ESS buffers are now derived from @code{comint-mode}
+@item @ESS{[R]}: @code{ess-execute-screen-options} uses correct screen
+width in terminal sessions
+@item @ESS{}: @code{ess-build-tags-for-directory} works when no TAGS file
+name was provided
+@item @ESS{}: @code{ess-offset-statement-continued} is now respected everywhere
+except inside of the @code{if} test condition.
+@item @ESS{}: New variable @code{ess-offset-statement-first-continued} for
+indentation of the first line in multiline statements.
+@item @ESS{R}: Starting @kbd{,} in multiline statements indentation is now
+ignored to achieve a more pleasant alignment.
+@item @ESS{R}: Improved behavior of @kbd{RET} in roxygen blocks.
+@item @ESS{[R]}: command cleaning with @kbd{C-u C-u C-y} was broken with
+lines containing " + "
+@item @ESS{[R]}: fixed "empty watch window bug"
+@item @ESS{[R]}: don't ask for help location on ac-quick-help (request of github #81)
+@item @ESS{[R]}: "importClassesFrom" and "importMethodsFrom" were added to
+the list of two-parameter roxygen commands
+@item @ESS{[R]}: fix vignetes display and hyperlinks (were broken in 13.09-1)
+@item @ESS{[Julia]}: recognize function names ending with !
+@item @ESS{[Julia]}: fix indentation of "for" comprehension syntax within brackets.
+@end itemize
+
+Changes / Selected Bug Fixes in 13.09-1:
+@itemize @bullet
+@item ess-remote and TRAMP: R support code is now downloaded in binary form instead
+of being injected from local machine. The R code is stored in
+@code{~/.config/ESSR/} directory on the remote machine
+@item TRAMP: PAGER environment variable is now correctly set to @code{inferior-ess-pager}
+@item retrieval of help topics on remote machines is fixed
+@item org-babel: source references of R code executed from org files correctly point
+to source references in original org files (version 8.2.1 or higher of
+org-mode is required for this feature)
+@item @code{ess-execute} is now bound to @kbd{C-c C-e C-e} in @code{ess-extra-map}.
+@item completion works again in @code{ess-execute}
+@item @ESS{[R]}: @code{head} and @code{tail} methods were replaced by @code{htsummary} in
+@code{ess-R-describe-object-at-point-commands}
+@item @ESS{[roxygen]}: evaluation commands now work in roxygen blocks.
+Leading comments are automatically removed before the evaluation
+@item @ESS{[transcript]}: 'Clean Region' now works with multiline statements;
+ @code{ess-transcript-clean-region} etc. correctly treat
+ multiline statements, i.e., no longer forgets the lines typically
+ preceded by '+'
+@item @ESS{[SAS]}: Three features/fixes with special thanks to Matthew Fidler
+@uref{https://github.com/emacs-ess/ESS/pulls/mlf176f2,
+https://github.com/emacs-ess/ESS/pulls/mlf176f2}. Turn on SAS log mode
+when appropriate.  Indent comments and CARDS statement more appropriately.
+@item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} default returns to @code{nil}
+@item @ESS{[R]}: support for @code{prettify-symbols-mode}:
+contribution from Rudiger Sonderfeld @uref{https://github.com/emacs-ess/ESS/pull/65}
+@item @ESS{[SWV]}: knitr now evaluates in the current frame
+@item @ESS{[developer]}: ess-developer doesn't kill open DESCRIPTION files anymore
+@item @ESS{[roxygen]}: @code{ess-roxy-preview-HTML} is now on @kbd{C-c C-o C-w} and
+ @code{ess-roxy-preview-text} is now on @code{C-c C-o C-t}
+@item @ESS{}: installation with @code{make install} was simplified and should work
+out of the box on most *nix systems
+@item @ESS{} installation instructions simplified
+@item fixed font-lock bug introduced in 13.09 that was causing very slow process output
+@end itemize
+
+Changes/New Features in 13.09:
+@itemize @bullet
+@item font-lock in process buffers doesn't "spill" over prompts.
+Missing closing string delimiters should not cause wrong fontification
+of the following command input.
+@item @ESS{[julia]}: full features M-TAB completion and auto-complete support,
+which now works for modules, structures and data types.
+@item @ESS{[julia]}: a much better eldoc showing arguments of
+methods and data type constructors
+@item ESS-developer:
+  @itemize @minus
+  @item ESS-developer work-flow pattern has been streamlined:
+  ESS-developer is now automatically activated on per-file basis if the
+  file is part of a developed package @code{ess-developer-packages}. The
+  old behavior (activation on per-process basis) is still available on
+  @code{M-x ess-developer} in a process buffer.
+  @item integration with @code{devtools} package. New command
+  @code{ess-developer-load-package} calls @code{load_all} on the package
+  containing current file. @code{ess-developer-add-package} now offers IDO
+  menu completions with available loading methods, currently
+  @code{library}, and @code{load_all}. Loading command can be customized
+  with @code{ess-developer-load-on-add-commands}.
+  @end itemize
+@item @kbd{TAB} now indents region if region is active
+(a contribution of Matthew Fidler in pull #41)
+@item @code{M-x ess-version} now reports full loading path
+and recognizes git and ELPA versions.
+@item warning and error keyword are now highlighted with
+@code{font-lock-warning-face} as they should be, (for quite some time
+these keywords have been hijacked by compilation mode fontification).
+@item eldoc: Eldoc now recognizes multiple processes.
+If current process is busy, or current buffer is not associated with a
+process, eldoc picks its completions from the first available free
+process.
+@item org-babel: evaluation is now org-friendly
+@item help: new help buffers now try to reuse ess-help buffers.
+This behavior is controlled by @code{ess-help-reuse-window} custom
+variable.
+@item help: ?foo pops IDO menu on multiple help files
+(so far it worked only for @kbd{C-c C-v})
+@item remote evaluation is considerably faster now on slow connections
+@item @ESS{[R]} tracebug R source references regular expressions
+are (mostly) language agnostic.
+@item @code{ess-function-call-face} inherits from
+@code{font-lock-function-name-face} rather than @code{font-lock-builtin-face}.
+@item @code{ess-inject-source} now accepts @code{function-and-buffer} option.
+@item Documentation: The ``New Features''
+section (and @file{NEWS}) now represent recent changes: within the last
+year or so.  All changes can be found in the new @uref{news.html,
+news.html} (or @file{NEWS} and @file{ONEWS}).
+@item @ESS{[R]} @code{ess-rep-regexp} should no longer inf.loop (rarely!),
+and hence @code{M-x ess-fix-miscellaneous} should neither.
+@end itemize
+
+Changes/New Features in 13.05:
+@itemize @bullet
+@item @ESS{[gretl]}: Support for @code{gretl} (both editing and
+sub-process interaction). A contribution of Ahmadou Dicko.
+@item @ESS{}: process output display is 4-10 times faster due to new caching
+and only occasional emacs re-display (for the moment this functionality
+is available only when @code{ess-tracebug} is active).
+@item @ESS{}: @kbd{C-c `} is now bound to @code{ess-show-traceback} and
+@kbd{C-c ~} is bound to @code{ess-show-call-stack}.
+@item @ESS{[R]}: ESS stores function in 'ESSR' environment to
+avoid kludging users' global environment and accidental deletion.
+@item @ESS{[R]}: new variable @code{ess-swv-processing-command} to control
+weaving and tangling.
+@item @ESS{[R]}: @code{ess-default-style} has been changed
+ (from @code{DEFAULT}) to @code{RRR}.  Use something like
+ @code{(setq ess-default-style 'DEFAULT)} or
+ @code{(setq ess-indent-level 2)} in your @file{~/.emacs} equivalent
+ @emph{before} loading ESS, if you do not like this new ``incompatible''
+ default style.
+@item @ESS{[julia]}: ESS stores its functions in 'ESS' module.
+@item @ESS{[julia]}: Eldoc is now supported in julia modes
+@item @ESS{[julia]}: Adjusted error reference detection and interactive help
+to julia internal changes
+@item @ESS{[R]}: @code{ess-use-tracebug}'s default has been changed to
+ @code{t}. Set it to nil if you want to keep the previous behavior.
+@item @ESS{[tracebug]}: Electric debug keys have been removed [breaking change]
+The functionality was replaced with @code{ess-debug-minor-mode} and
+@code{ess-debug-minor-mode-map}.
+@item @ESS{[tracebug]}: @code{ess-tracebug-map} is an alias to
+ @code{ess-dev-map} @kbd{C-c C-t}.
+@item @ESS{[tracebug]}: @code{ess-bp-toggle-state} (@kbd{C-c C-t o})
+ can now be used during the debug session to toggle breakpoints on the fly
+ (suggestion by Ross Boylan).
+@item @ESS{[tracebug]}: @code{ess-debug-flag-for-debugging} and
+@code{ess-debug-unflag-for-debugging} work correctly from the debugging
+ contexts. These commands also recognize non-exported functions for the
+ packages listed in @code{ess-developer-packages} (@kbd{C-c C-t C-a}).
+
+@item @ESS{[R]}: Eldoc (activated by @code{ess-use-eldoc}) has
+ become more sophisticated, and hence also more intruding in the interface
+ between the Statistics softare, e.g., @R{}, and the user.
+
+ Note that you can turn off ElDoc, by placing @code{(setq ess-use-eldoc nil)}
+ in your @file{~/.emacs} file, prior to loading ESS,
+
+@item @ESS{[SAS]}: long over-looked @code{SAS-mode-hook} appears!
+@item @ESS{[SAS]}: @code{ess-sas-edit-keys-toggle} now defaults to @code{t}
+since @code{sas-indent-line} is still broken, i.e. @kbd{TAB} is now
+bound to @code{ess-sas-tab-to-tab-stop} by default
+@end itemize
+
+
+Changes/Bug Fixes in 12.09-2:
+@itemize @bullet
+@item @ESS{}: new @code{ess-switch-to-end-of-proc-buffer} variable that controls
+ whether @kbd{C-c C-z} switches to the end of process buffer. The
+ default is @code{t}. You can use prefix argument to @kbd{C-c C-z} to
+ toggle this variable.
+@item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs
+to hang during R debugging with @code{ess-eval-visibly} equal to
+@code{t}.
+@item @ESS{}: fix in @code{ess-eval-linewise} that was causing emacs to recenter
+the prompt in visible window
+@item @ESS{[tracebug]}: A better handling of ``Selection'' prompts
+and debug related singlekey commands.
+@item @ESS{}: fix a bug in @code{ess-switch-process} that was causing
+@code{*new*} selection to fail.
+@item @ESS{[R]}: Solve missing @code{ess-local-process-name} bug in R-dired.
+@item @ESS{[SWV]}: @code{ess-swv-PDF} doesn't ask for a command to run if
+there is only one command in @code{ess-swv-pdflatex-commands}.
+@item @ESS{[SWV]}: @code{ess-swv-weave} gained an universal argument to
+allow for an interactive choice between available weavers (sweave,
+knitr).
+@item @ESS{}: @code{ess-eval-*-and-step} functions go to next empty
+line at eob, instead of staying at the last line.
+@end itemize
+
+
+Changes/New Features in 12.09-1:
+@itemize @bullet
+@item @ESS{} @emph{Breaking Changes in Keys}:
+
+@itemize @minus
+@item New keymaps:
+@code{ess-doc-map} bound to @kbd{C-c C-d}; @code{ess-extra-map} bound
+to @kbd{C-c C-e}; @code{ess-dump-object-into-edit-buffer} was moved on
+@kbd{C-c C-e C-d}
+@item roxygen map was moved on @kbd{C-c C-o} and
+@kbd{ess-roxy-update-entry} now resides on @kbd{C-c C-o C-o}
+@item ess-handy-commands is not bound anymore
+@item @code{ess-dev-map} (including @code{ess-tracebug} and @code{ess-developer})
+moved on @kbd{C-c C-t}
+@item @code{C-c C-y} is deprecated in favor of @code{C-c C-z C-z}
+@end itemize
+@item @ESS{[R]} new command @code{ess-describe-object-at-point}
+bound to @kbd{C-c C-d C-e} (repeat @kbd{C-e} or @kbd{e} to cycle). It
+was inspired by Erik Iverson's @code{ess-R-object-tooltip}. Customize
+@code{ess-describe-at-point-method} to use tooltip instead of an
+electric buffer.
+@item @ESS{}: New command @code{ess-build-tags-for-directory}
+bound to @kbd{C-c C-e C-t} for building dialect specific tag
+tables. After building tags use @kbd{M-.} to navigate to
+function and objects definitions. By default @kbd{C-c C-e C-t} builds
+tags based on imenu regular expressions and also include other common
+languages @code{.c, .o, .cpp} etc. But it relies on external @code{find}
+and @code{etags} commands. If @code{ess-build-tags-command} is defined
+(for @code{R}), the inferior process is asked to build tags instead.
+@item @ESS{}: @code{ess-switch-process} offers @code{*new*} alternative
+to start a new process instead of switching to one of the currently
+running processes.
+@item @ESS{}: Switching between processes (@kbd{C-c C-s}) uses buffer names instead
+of the internal process names. Use @code{M-x rename-buffer} command to
+conveniently rename your process buffers.
+@item @ESS{}: Process buffers can be automatically named on process creation
+according to user specified scheme. Default schemes are *proc*,
+*proc:dir* and *proc:abbr-long-dir* where @code{proc} stands for the
+internal process name and @code{dir} stands for the directory where the
+process was started in. The default is *proc*. For customization see
+@code{ess-gen-proc-buffer-name-function}.
+@item @ESS{}: @code{ess-eval-visibly-p} is deprecated in favor of @code{ess-eval-visibly}.
+@item @ESS{}: New evaluation pattern @code{nowait}.
+In addition to old @code{nil} and @code{t} values,
+@code{ess-eval-visibly} accepts @code{nowait} for a visible evaluation
+with no waiting for the process. See @code{ess-eval-visibly} for details
+on evaluation patterns.
+@item @ESS{}: New ``Process'' menu entry with process related commands and configuration
+@item @iESS{}: Process buffer is now automatically shown on errors
+@item @ESS{}: New @code{ess-switch-to-inferior-or-script-buffer} command bound to @kbd{C-c C-z}
+in both script and process buffers. If invoked form process buffer it
+switches to the most recent buffer of the same dialect. It is a single
+key command.
+@item @ESS{R-help}:  On multiple help pages with the same name, @kbd{C-c C-v}
+now asks for user resolution directly in emacs.
+@item @ESS{[R]} ess-roxy: new variable @code{ess-roxy-re} for fontification
+of cases where the number of leading @kbd{#} differs from
+@code{ess-roxy-str}.
+@item @ESS{[R]} Eldoc was considerably enhanced.
+It now finds hidden default S3 methods and displays non-default methods'
+arguments after trailing ||.
+@item @ESS{[R]}: New @code{ess-display-demos} command bound to @kbd{C-c C-d o} and @kbd{C-c C-d C-o}
+@item @ESS{}: New @code{ess-help-web-search} command bound to @kbd{C-c C-d w} and @kbd{C-c C-d C-w}
+to facilitate interactive search of web resources. Implemented for @code{R},
+@code{Stata} and @code{Julia}. See also @code{ess-help-web-search-command}.
+@item @ESS{}: ess-pdf-viewer-pref accepts now command line arguments
+@item @ESS{[Rnw]}: Add knitr support.
+Customize @code{ess-swv-processor} for the default processor.
+@item @ESS{[Rnw]}: More thorough renaming of remaining
+@code{noweb-*} to @code{ess-noweb-*}.
+@item @ESS{[Rnw]} new commands @code{ess-eval-chunk-and-step} and @code{ess-eval-chunk}
+bound to @kbd{M-n C-c} and @kbd{M-n C-M-x} to mirror standard ess
+commands in C-c map.
+@item @ESS{[R]} Auto-completion: new variable
+@code{ess-ac-R-argument-suffix} to customize the insertion of trailing
+"=". Defaults to `` = ``.
+@item @ESS{[Julia]}: Added index, apropos and web-search to julia.
+@item @ESS{} help: More evaluation commands were added to ess-help mode (@kbd{C-c C-c}, @kbd{C-M-x} etc)
+@end itemize
+
+Bug Fixes in 12.09-1:
+@itemize @bullet
+@item @iESS{help}: Multiple help pages with the same name are properly handled on @kbd{C-c C-v}
+@item @iESS{remote}: Evaluation with ESS remote no longer freezes emacs.
+@item @iESS{}: @code{comint-previous-prompt} @kbd{C-c C-p} no longer stops on secondary prompt ``+''.
+@item @iESS{[R]}, @iESS{(Sqpe) [S]} on Windows:
+The @code{options("editor")} is now initialized to @code{emacsclient}
+instead of the previous @code{gnuclient}.  The user may need to add the
+line @code{(server-start)} to the emacs initialization
+file. @code{emacsclient} has been included with emacs since GNU Emacs
+22.1.
+@item @ESS{[Rnw]} Fixed ``connection to R'' bug (in 12.09 only).
+@item @ESS{[Rnw]} Explicit @code{ess-swv-stangle} and @code{ess-swv-sweave}
+functions.
+@item @ESS{[Rnw]} Fixed completion and smart underscore problems cause by unmatched ``\'''
+@item @ESS{[R]} is more careful with the @code{R} code injection.
+It now happens only once at the start of the session.
+@item @ESS{[R]}: Fixed auto-scrolling the comint buffer on evaluation.
+@item @ESS{[Julia]}: Solve several indentation and word navigation problems.
+@item @ESS{[Julia]}: Help system works again.
+@end itemize
+
+Changes/New Features in 12.09:
+
+@itemize @bullet
+@item @b{Due to XEmacs lacking some features that ESS requires, ESS support of XEmacs
+ends with ESS 12.04-4.  This decision will be re-visited in the future as
+XEmacs continues to sync with GNU Emacs.}
+
+@item @ESS{[R]}: On Windows, there is now a new customizable variable
+(currently called @code{ess-directory-containing-R}) to tell ESS where
+to look for the @file{Rterm.exe} executables.  The name of the variable
+and the values it can take are both in beta and subject to change.  Prior
+to this variable, ESS searched only in the default installation
+directory.  Setting this variable now tells ESS how to find
+@file{Rterm.exe} executables when they are installed somewhere else.
+
+@item @ESS{[julia]}: @emph{new} mode
+for editing julia code (@file{*.jl}). Start with @code{M-x julia}.
+
+Full interaction interface, imenu and basic error referencing are available.
+
+
+@item @ESS{[R]} noweb: @code{noweb-mode} and @code{noweb-font-lock-mode} have
+been renamed to @code{ess-noweb-mode} and
+@code{ess-noweb-font-lock-mode} to avoid conflicts with the ``real'' @code{noweb-mode}.
+
+@item @ESS{[R]} noweb: The long standing font-lock bug has been solved
+in @code{ess-noweb} interface.
+
+
+@item @ESS{}: Basic evaluation keys are now bound to @code{ess-eval-region-*-} functions:
+
+@itemize @minus
+@item @kbd{C-M-x} is bound to @code{ess-eval-region-or-function-or-paragraph}
+@item @kbd{C-c C-c} is bound to @code{ess-eval-region-or-function-or-paragraph-and-step}
+@item @kbd{C-RET} is bound to @code{ess-eval-region-or-line-and-step}
+@end itemize
+
+Each of these functions first evaluates the region whenever the region
+is active.
+
+@item @ESS{}: @kbd{C-M-a}/@kbd{C-M-e} now step to beginning/end of
+paragraph if no function has been detected.
+
+@item @ESS{}: @code{ess-eval-*-and-step} family of functions are now smarter,
+and don't step to end of buffer or end of chunk code (@code{@@}) when at
+the end of the code.
+
+@item @ESS{}: @code{ess-handy-commands} function is bound to @kbd{C-c h}
+
+@item @ESS{}: ESS is now @emph{blinking}  the evaluated region.
+Set @code{ess-blink-region} to nil to deactivate; @code{ess-blink-delay}
+gives the duration of the blink. Evaluated region is ``blinked'' in
+@code{highlight} face.
+
+@item @ESS{[R-help]}  New key @kbd{a} for ``apropos()'' in help buffers. Also available
+through @kbd{C-c h}.
+
+@item @ESS{[R-help]}  All R commands of type foo?bar and foo??bar are recognized
+and redirected into appropriate *ESS-help* buffers.
+
+@item @ESS{[R]}: New customization interface for @emph{font-lock}.
+
+ESS font-lock operates with predefined keywords. Default keywords are
+listed in @code{ess-R-font-lock-keywords} and
+@code{inferior-R-font-lock-keywords}, which see. The user can easily
+customize those by adding new keywords. These variables can also be
+interactively accessed and saved through @kbd{ESS/Font-lock} submenu.
+
+Several new fontification keywords have been added. Most notably the
+keywords for highlighting of function calls, numbers and operators.
+
+@item @ESS{[R]}: auto-complete is now activated by default whenever
+auto-complete package is detected. Set @code{ess-use-auto-complete} to
+nil to deactivate.
+@item @ESS{[R]}: R AC sources are no longer auto-starting at 0 characters
+but at the default @code{ac-auto-start} characters.
+@item @ESS{} no longer redefines default ac-sources,
+but only appends @code{ac-source-filename} to it.
+@item @ESS{}: @code{ac-source-R} now concatenates `` = `` to function arguments.
+
+@item @ESS{}: Menus for ESS and iESS have been reorganized and enriched with
+@emph{Tracebug} and @emph{Developer} submenus.
+
+@item @ESS{[R]}: @code{ess-developer} and @code{ess-tracebug} commands are available by default
+in @code{ess-dev-map} which is bound to @kbd{C-c d} in ESS and iESS maps.
+
+@item @ESS{[R]}: @code{eldoc} truncates long lines whenever @code{eldoc-echo-area-use-multiline-p}
+is non-nil (the default). Set this variable to t if you insist on multiline eldoc.
+See also @code{ess-eldoc-abbreviation-style}.
+
+@item @ESS{[R]}: completion code pre-caches arguments
+of heavy generics such as @code{plot} and @code{print} to eliminated the
+undesirable delay on first request.
+
+@item @iESS{}: Prompts in inferior buffers are now highlighted uniformly with
+@code{comint-highlight-prompt} face.
+
+@item @ESS{[R]}: R process no longer wait for the completion of input in inferior buffer.
+Thus, long running commands like @code{Sys.sleep(5)} no longer stall emacs.
+
+@item @ESS{}: [R, S, Stata, Julia] have specialized @code{ess-X-post-run-hook}s, which
+are run at the end of subprocess initialization.
+
+@item @ESS{[Stata]}: All interactive evaluation commands work as expected.
+On-line comments are removed before the evaluation and multiline
+comments are skipped on @kbd{C-c C-c} and other interactive commands.
+
+@item @ESS{} no longer auto-connects to a subprocess with a different dialect than
+the current buffer's one.
+
+@item @ESS{}: @code{ess-arg-function-offset-new-line} is now a list for all
+the ESS indentation styles, which results in the following indentation
+after an open ``('':
+
+@verbatim
+  a <- some.function(other.function(
+     arg1,
+     arg2)
+@end verbatim
+
+@item @ESS{[SAS]}: Improved MS RTF support for GNU Emacs; try
+  @code{ess-sas-rtf-portrait} and @code{ess-sas-rtf-landscape}.
+@end itemize
+
+Changes/Bug Fixes in 12.04-3:
+@itemize @bullet
+@item @ESS{}: basic support for package.el compatibility
+@item @ESS{[R]}: correct indentation of & and | continuation lines
+@item @code{M-x ess-version} shows the svn revision even after @code{make install}
+@item @ESS{[SAS]}: improved XEmacs support
+@item @iESS{[R]}: better finding of previous prompt
+@item @ESS{[Stata]}: adjusted prompt for mata mode
+@item @ESS{[R]}: resolved name clashes with cl.el
+@item @ESS{[R]}: removed dependence on obsolete package assoc
+@item New @code{make} target  @code{lisp}, to build the lisp-only part, i.e., not building the docs.
+@end itemize
+
+Changes/New Features in 12.04-1:
+@itemize @bullet
+@item @iESS{[Stata]}: New interactive help invocation.
+@item @iESS{[Stata]}: New custom variable @code{inferior-STA-start-file}.
+@item @iESS{[Stata]}: @code{inferior-STA-program-name} is now ``stata''
+and can be  customized.
+@item @ESS{[Stata]} New sections in stata help files
+Syntax(@kbd{s-S}), Remarks(@kbd{r}), Title(@kbd{t}).
+@end itemize
+
+Bug Fixes in 12.04-1:
+@itemize @bullet
+@item @ESS{[R]}: Better @code{ess-tracebug} error handling.
+@item @ESS{[R]}: Corrected @code{ess-eldoc} help string filtering
+and improved argument caching.
+@item @ESS{[R]}: Indentation of non-block if/else/for/while lines fixed.
+@item @code{M-x ess-version} should work better.
+@item @ESS{}: Filename completion now again works inside strings.
+@item @iESS{[Stata]}: Fixed prompt detection issue.
+@item @ESS{[Rd]}: R is autostarted also from here, when needed.
+@end itemize
+
+Changes/New Features in 12.04:
+@itemize @bullet
+@item @ESS{}: Reverting new behavior of 12.03, @kbd{TAB} in @code{ess-mode}
+no longer completes by default.  If you want smart @kbd{TAB} completion
+in R and S scripts, similarly to @iESS{} behavior, set the variable
+@code{ess-tab-complete-in-script} to @code{t}. Also see
+@code{ess-first-tab-never-complete} for how to customize where first
+@kbd{TAB} is allowed to complete.
+@item @ESS{}: completion is consistently bound to @kbd{M-TAB} (aka @kbd{M-C-i})
+in both Emacs23 and Emacs24.
+@item @ESS{}: The variable @code{ess-arg-function-offset-new-line}
+introduced in @ESS{(12.03)} now accepts a list with the first element a
+number to indicate that the offset should be computed from the indent of
+the previous line. For example setting it to '(2) results in:
+
+@verbatim
+  a <- some.function(
+    arg1,
+    arg2)
+@end verbatim
+
+
+@end itemize
+
+Changes/New Features in 12.03:
+@itemize @bullet
+@item @ESS{} indentation: new offset variable @code{ess-arg-function-offset-new-line}
+controlling for the indentation of lines immediately following open
+'('. This is useful to shift backwards function arguments after a long
+function call expression:
+
+@verbatim
+  a <- some.function(
+         arg1,
+         arg2)
+@end verbatim
+
+
+instead of the old
+
+@verbatim
+  a <- some.function(
+                     arg1,
+                     arg2)
+@end verbatim
+
+If '(' is not followed by new line the behavior is unchanged:
+
+@verbatim
+  a <- some.function(arg1,
+                     arg2)
+@end verbatim
+
+This variable should be set as part of indentation style lists, or in
+ess-mode hook.
+@item @ESS{[R]}: @kbd{C-c .} sets (indentation) style.
+@item @ESS{}: In ESS buffers @code{yank}(@kbd{C-y}) command accepts
+ double argument @kbd{C-u C-u} to paste commands only. It deletes any
+lines not beginning with a prompt, and then removes the prompt from
+those lines that remain. Useful to paste code from emails,
+documentation, inferior ESS buffers or transcript files.
+@item Documentation: ESS user manual has been rearranged and
+completed with several new chapters and sections to reflect newly added
+features (``Completion'', ``Developing with ESS'', ``ESS tracebug'',
+``ESS developer'', ``ESS ElDoc'', ``IDO Completion'' and ``Evaluating
+Code'')
+@item RefCard: Reference card was updated to include new features.
+@item Eldoc: Eldoc was rewritten and is activated by default.
+See @code{ess-use-eldoc}, @code{ess-eldoc-show-on-symbol},
+@code{ess-eldoc-abbreviation-style} variables for how to change the default
+behavior. @emph{Note:} @code{skeleton-pair-insert-maybe} prohibits eldoc
+display, on @kbd{(} insertion.
+@item @ESS{[R]}: Eldoc shows arguments of a generic function whenever found.
+@item @ESS{}: @kbd{TAB} in @code{ess-mode} now indents and completes,
+if there is nothing to indent. Set
+@code{ess-first-tab-never-completes-p} to @code{t} to make @kbd{TAB}
+never complete on first invocation. Completion mechanism is similar to
+the completion in the @code{inferior-ess-mode} -- a filename expansion
+is tried, if not found ESS completes the symbol by querying the
+process.
+@item @ESS{} for emacs version 24 or higher: ESS is  fully compatible with
+the emacs 24 completion scheme, i.e. all the completion is done by
+@code{completion-at-point}. Also in accordance with emacs conventions,
+ESS doesn't bind @kbd{M-TAB} for emacs 24 or higher. @kbd{M-TAB} calls the
+default @code{complete-symbol}.
+
+@item @ESS{[R]}: Out of the box integration with @code{Auto
+Completion} mode @uref{http://cx4a.org/software/auto-complete,http://cx4a.org/software/auto-complete} . Three AC
+sources @code{ac-source-R-args}, @code{ac-source-R-objects} and
+@code{ac-source-R} are provided. The last one combines the previous two
+and makes them play nicely together. Set @code{ess-use-auto-complete} to
+@code{t} to start using it.  Refer to documentation string of
+@code{ac-use-auto-complete} for further information.
+@item @ESS{[R]}: New unified and fast argument completion system,
+comprised of @code{ess-funname.start}, @code{ess-function-arguments},
+@code{ess-get-object-at-point}. Eldoc and auto-completion integration
+are using this system.
+@item @ESS{}: @code{ess-switch-to-end-of-ESS}(@kbd{C-c C-z}),
+and @code{ess-switch-to-ESS}(@kbd{C-c C-y}): Automatically start the
+process whenever needed.
+@item @ESS{[R]}: @code{roxy} knows about previewing text version of the
+documentation. Bound to @kbd{C-c C-e t}.
+@item @ESS{[R]}: Solved the ``nil filename'' bug in roxygen support.
+@item @ESS{[R]}: @code{ess-tracebug} is now part of @ESS{}:
+
+New Features:
+
+@itemize @minus
+@item Source injection: Tracebug now can inject source references on the
+fly during code evaluation, i.e. you don't have to source your file, but
+just evaluate your code in normal fashion. Variable
+@code{ess-tracebug-inject-source-p} controls this behavior - if t,
+always inject source reference, if @code{'function}, inject only for
+functions (this is the default), if @code{nil}, never inject.
+
+During the source injection the value of @code{ess-eval-visibly} is
+ignored.
+@item Org-mode support: Visual debugger is now aware of the
+temporary org source editing buffer (@kbd{C-c '}) and jumps through this
+buffers if still alive, or in original org buffer otherwise.
+@item New keys in watch mode: @kbd{?} and @kbd{d}
+@item Two new hooks: ess-tracebug-enter-hook and ess-tracebug-exit-hook
+@end itemize
+
+@item @ESS{[R]}: New package @code{ess-developer} to evaluate @code{R}
+code directly in the package environment and namespace. It can be
+toggled on and off with @kbd{C-c d t}. When @code{ess-developer} is on
+all ESS evaluation commands are redefined to evaluate code in
+appropriate environments. Add package names to the list of your
+development packages with @kbd{C-d a}, and remove with @kbd{C-d
+r}. Source the current file with @kbd{C-d s}.Evaluation function which
+depend on @code{`ess-eval-region'} ask for the package to source the
+code into, @code{ess-eval-function} and alternatives search for the
+function name in the development packages' environment and namespace and
+insert the definition accordingly. See the documentation section
+``Developing with ESS/ESS developer'' for more details.
+
+@item @ESS{[R]} help system:
+
+New Features:
+
+@itemize @minus
+@item @kbd{q} quits window instead of calling @code{ess-switch-to-end-of-ESS}.
+This is consistent with emacs behavior help and other special buffers (@emph{breaking change}).
+@item @kbd{k} kills window without asking for the name (pointed by Sam Steingold)
+@item Help map inherits from @code{special-mode-map} as sugested by Sam Steingold.
+@item Package index: new function @code{ess-display-index} bound to
+@kbd{i} in help mode map.
+@item Package vignettes: new function @code{ess-display-vignettes} bound to
+@kbd{v} in help mode map.
+@item Display help in HTML browser: new function @code{ess-display-help-in-browser} bound to
+@kbd{w} in help mode map. It depends on @code{R}'s @code{browser}
+option.
+@item New custom variable @code{ess-help-pop-to-buffer}: if non-nil
+@ESS{} help buffers are given focus on display. The default is
+@code{t} (@emph{breaking change}).
+@item New menu entries for the above functions.
+@item Bogus help buffers are no longer generated by default, i.e.
+buffers of the form ``No documentation for 'foo' in specified packages and libraries:
+you could try '??foo' ''.  @code{ess-help-kill-bogus-buffers} now defaults to
+@code{t}.  Beware, there may be instances where the default is unsatisfactory
+such as debugging and/or during R development.  Thanks to Ross Boylan for
+making the suggestion, Sam Steingold for reminding us of this variable and
+Martin Maechler for the warning.
+@end itemize
+@item @ESS{} now uses @code{IDO} completing read functionality
+for all the interactive requests. It uses ido completion
+mechanism whenever available, and falls back on classical
+completing-read otherwise. You can set @code{ess-use-ido} to nil if you
+don't want the IDO completion. See the documentation string of
+@code{ess-use-ido} for more information about @code{IDO} and @ESS{}
+configuration.
+
+@item @ESS{[S]}: ``@kbd{,}`` is bound to ess-smart-comma:
+If comma is invoked at the process marker of an ESS inferior
+buffer, request and execute a command from @code{`ess-handy-commands'}
+list. If @code{ess-R-smart-operators} is t @code{`ess-smart-comma}
+also inserts `` `` after comma.
+@item @ESS{[S]}, notably @code{R}: Variable @code{`ess-handy-commands'}
+stores an alist of useful commands which are called by @code{ess-smart-comma} in
+the inferior buffer.
+
+Currently containing:
+
+@table @asis
+@item change-directory
+    @code{ess-change-directory}
+@item help-index
+          @code{ess-display-index}
+@item help-object
+         @code{ess-display-help-on-object}
+@item vignettes
+           @code{ess-display-vignettes}
+@item objects[ls]
+         @code{ess-execute-objects}
+@item search
+              @code{ess-execute-search}
+@item set-width
+           @code{ess-execute-screen-options}
+@item install.packages
+    @code{ess-install.packages}
+@item library
+             @code{ess-library}
+@item setRepos
+            @code{ess-setRepositories}
+@item sos
+                 @code{ess-sos}
+@end table
+
+Handy commands: @code{ess-library}, @code{ess-install.packages}, etc -
+ask for item with completion and execute the correspond
+command. @code{ess-sos} is a interface to @code{findFn} function in
+package @code{sos}. If package @code{sos} is not found, ask user for
+interactive install.
+
+@item @ESS{}: New dynamic mode line indicator: Process status is automatically
+reflected in all mode-lines of associated with the process
+buffers. Particularly useful for displaying debug status of
+@code{ess-tracebug} and developer status of @code{ess-developer} in all
+associated buffers.
+
+@item @ESS{}: New @code{ess-completing-read} mechanism: @ESS{} uses
+@code{ido} completions whenever possible. Variable @code{ess-use-ido}
+controls whether to use ido completion or not. Active by default.
+
+@item @ESS{} now supports comint fields for output and input
+detection. This feature is not used by default, but might be useful in
+the future.
+
+@item @ESS{[S]}: New custom variable @code{inferior-ess-S-prompt} to
+customize prompt detection regular expression in the inferior ESS
+buffers. You can customize this variable to enhance comint navigation
+(@code{comint-previous-prompt} and @code{comint-next-prompt}) the
+inferior buffers.
+
+@item @ESS{[R]}: Internal @code{R} completion retrieval
+(@code{ess-R-complete-object-name})  was rewritten and is faster now.
+
+@item @ESS{} is using process plist to store process specific variables,
+as opposed to buffer local variables as it was using before. The use of
+buffer local variables to store process variables is discouraged.
+
+@item @ESS{}: new functions to manipulate process plists:
+@code{ess-process-get} and @code{ess-process-set}.
+
+@item @ESS{}: Internal process waiting mechanism was completely rewritten. ESS
+no more relies on prompt regular expressions for the prompt
+detection. The only requirement on the primary process prompt is to end
+in @code{> }. This could be overwritten by setting
+@code{inferor-ess-primary-prompt}.
+
+@item @ESS{[S]}, notably @code{R}: Saved command history:
+ @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
+ file name. By setting it to @code{nil} no command line history is saved
+ anymore.  @var{ess-history-directory} now allows to have the history
+ all saved in one ``central'' file.
+@item @ESS{[R]}: more Roxygen improvements.
+@item @ESS{[R]}: @kbd{C-c .} to set (indentation) style.
+
+@item @ESS{[R]}: Functions with non-standard names (for example 'aaa-bbb:cc') are
+properly handled by font-lock and evaluation routines.
+@item @ESS{[R]}:Several regexp bugs (described in etc/R-ESS-bugs.el) were
+fixed in @code{ess-get-words-from-vector} and @code{ess-command}.
+@end itemize
+
+@comment @end itemize
+
+
 Changes/New Features in 5.14:
 @itemize @bullet
 @item @ESS{[BUGS/JAGS]}:  Batch BUGS is back!  For recent OpenBUGS
