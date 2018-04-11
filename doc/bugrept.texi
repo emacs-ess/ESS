@@ -1,5 +1,6 @@
 Please send bug reports, suggestions etc. to
-@email{ESS-bugs@@r-project.org}
+@email{ESS-bugs@@r-project.org}, or post them on our
+@uref{https://github.com/emacs-ess/ESS/issues, github issue tracker}
 
 The easiest way to do this is within Emacs by typing
 

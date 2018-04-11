@@ -1,27 +1,26 @@
 @itemize @bullet
 @item Languages Supported:
   @itemize @bullet
-  @item S family (R and S+ AKA S-PLUS)
+  @item S family (R, S, and S+ AKA S-PLUS)
   @item SAS
-  @item OpenBUGS/JAGS
+  @item BUGS/JAGS
   @item Stata
-@c  @item XLispStat including Arc and ViSta
   @item Julia
   @end itemize
-@item Editing source code (S family, SAS, OpenBUGS/JAGS, Stata, Julia)
+@item Editing source code (S family, SAS, BUGS/JAGS, Stata, Julia)
   @itemize @bullet
   @item Syntactic indentation and highlighting of source code
   @item Partial evaluation of code
   @item Loading and error-checking of code
   @item Source code revision maintenance
-  @item Batch execution (SAS, OpenBUGS/JAGS)
+  @item Batch execution (SAS, BUGS/JAGS)
   @item Use of imenu to provide links to appropriate functions
   @end itemize
-@item Interacting with the process (S family, SAS, Stata, Julia)
+@item Interacting with the process (R family, SAS, Stata, Julia)
   @itemize @bullet
   @item Command-line editing
   @item Searchable Command history
-  @item Command-line completion of S family object names and file names
+  @item Command-line completion of R family object names and file names
   @item Quick access to object lists and search lists
   @item Transcript recording
   @item Interface to the help system

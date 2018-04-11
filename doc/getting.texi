@@ -1,13 +1,10 @@
-The latest released version of ESS is always available on the web at:
+@subsection Source code
+You may download the latest ESS release source code from the
 @uref{http://ess.r-project.org, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
-@comment @subsection ESS subversion repository
-@comment @include inst_svn.texi
-
 @subsection Git for ESS development
-For development and experimentation on new ESS features, there is now a
-GitHub branch for @ESS{}, available at @uref{https://github.com/emacs-ess/ESS}.
-
+Developers and experimentation on ESS mainly happens through git. ESS is
+currently hosted on Github: @uref{https://github.com/emacs-ess/ESS}.
 
 

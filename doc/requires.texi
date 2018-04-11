@@ -2,16 +2,7 @@ ESS is most likely to work with current/recent versions of the following
 statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
 ESS supports current, and recent, stable versions of GNU Emacs
-(currently, 24.3 or higher; alpha/beta/pre-release
-@c (currently, the 24.x and 25.x series; alpha/beta/pre-release
-versions are NOT SUPPORTED).  
-@c Non-Windows users beware: GNU Emacs 24.3 is
-@c preferable to 24.1 or 24.2: these broken builds suffer from bug 12463
-@c @uref{http://debbugs.gnu.org/cgi/bugreport.cgi?bug=12463} which
-@c will cause Emacs to get progressively slower over time.
-@c XEmacs currently does not allow all ESS
-@c features. Basic ESS functionality however is supported for the time being
-@c (XEmacs stable 21.4.14 or higher).
+(currently, 24.3 or higher; alpha/beta/pre-release versions are NOT SUPPORTED).  
 
 Due to XEmacs lacking some features that ESS requires, ESS
 support of XEmacs ended with ESS 12.04-4.
@@ -19,42 +10,3 @@ support of XEmacs ended with ESS 12.04-4.
 To build the PDF documentation, you will need a version of TeX Live or
 texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
 texinfo RPMs, do NOT include texi2dvi).
-
-@c ESS has been tested with
-
-@c @itemize @bullet
-@c @item R >=0.49
-@c @item S-PLUS 3.3-4, 4.5, 2000, 5.0-1, 6.0-2, 7.0, 8.0
-@c @item S4
-@c @item SAS >=9.1
-@c @item BUGS 0.5, 0.6
-@c @item JAGS 1.0
-@c @item Stata >=10.0 (command line only)
-@c @c is anyone still using this? @item XLispStat >=3.50
-@c @end itemize
-
-@c on the following platforms
-
-@c @itemize @bullet
-@c @item Linux/x86 (all but BUGS)
-@c @item Solaris/x86 (all but BUGS and S-PLUS)
-@c @c cannot confirm this right now @item SGI (all)
-@c @item MS Windows 98/NT/2000/XP (R, S-PLUS, SAS interactive only, and BUGS)
-@c @item Apple macOS 10.4-5 (R, JAGS, Stata)
-@c @end itemize
-
-@c with the following versions of emacs
-
-@c @itemize @bullet
-@c @item GNU Emacs 20.3-7, 21.1, 21.3-4, 22.1
-@c @item XEmacs 21.4.0-8, 21.4.9-13@footnote{
-@c require the files.el patch to revert-buffer for the Local Variables
-@c updating problem}, 21.4.14-15, 21.4.17-22 (betas not supported, but 21.5.23+ may work)
-@c @c @item GNU Emacs <20.3 and XEmacs <21.0@footnote{These releases of emacs are no
-@c @c longer supported, so an upgrade is recommended if you plan to use ESS.
-@c @c If you have GNU Emacs 19.29, see @xref{Unix installation}.  Also, note
-@c @c that the `custom' library bundled with Emacs 19.34 is too _old_, its API is
-@c @c incompatible with the `new custom' bundled with recent Emacsen.
-@c @c The `new custom' for Emacs 19.34 is available for download
-@c @c @uref{ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz, here}.}
-@c @end itemize
