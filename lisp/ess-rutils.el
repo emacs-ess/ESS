@@ -100,7 +100,7 @@ Useful bindings to handle package loading and installing.
     (insert "**Available packages in all local R libraries**"))
   (setq buffer-read-only t)
   (ess-rutils-mode)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-namepkg ()
@@ -148,7 +148,7 @@ getOptions(\"repos\") in the current R session."
     (insert "**packages available to install**\n"))
   (setq buffer-read-only t)
   (ess-rutils-mode)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-mark-install (arg)
@@ -272,7 +272,7 @@ to rebuild installed packages if needed."
   "Manipulate R objects; wrapper for `ess-rdired'."
   (interactive)
   (ess-rdired)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-load-wkspc (file)
