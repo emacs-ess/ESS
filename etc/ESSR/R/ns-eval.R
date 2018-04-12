@@ -297,13 +297,14 @@
 .ess.assign <- function (x, value, envir)
 {
     ## Cannot add bindings to locked environments
-    if (exists(x, envir = envir, inherits = FALSE) && bindingIsLocked(x, envir)) {
+    exists <- exists(x, envir = envir, inherits = FALSE)
+    if (exists && bindingIsLocked(x, envir)) {
         unlockBinding(x, envir)
         assign(x, value, envir = envir, inherits = FALSE)
         op <- options(warn = -1)
         on.exit(options(op))
         lockBinding(x, envir)
-    } else if (!environmentIsLocked(envir)) {
+    } else if (exists || !environmentIsLocked(envir)) {
         assign(x, value, envir = envir, inherits = FALSE)
     } else {
         warning(sprintf("Cannot assign `%s` in locked environment", x),
