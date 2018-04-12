@@ -199,8 +199,10 @@
     (shell)
     (ess-sleep)
 
-    (if (and (w32-shell-dos-semantics) (string-equal ":" (substring ess-bugs-file 1 2)))
-        (insert (substring ess-bugs-file 0 2)))
+    (when (and (when (fboundp 'w32-shell-dos-semantics)
+                 (w32-shell-dos-semantics))
+               (string-equal ":" (substring ess-bugs-file 1 2)))
+      (insert (substring ess-bugs-file 0 2)))
 
     (comint-send-input)
     (insert "cd \"" ess-bugs-file-dir "\"")
@@ -255,8 +257,9 @@
   (setq ess-language "S") ; mimic S for ess-smart-underscore
   (run-mode-hooks 'ess-bugs-mode-hook)
 
-  (if (not (w32-shell-dos-semantics))
-      (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
+  (unless (when (fboundp 'w32-shell-dos-semantics)
+            (w32-shell-dos-semantics))
+    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
   )
 
 (defun ess-sci-to-dec ()

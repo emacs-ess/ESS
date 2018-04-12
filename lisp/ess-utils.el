@@ -946,7 +946,9 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
                  (memq window-system '(x mac))
                  (fboundp 'x-focus-frame))
                 (x-focus-frame frame))
-               ((eq window-system 'w32)
+               ((and (eq window-system 'w32)
+                     ;; silence byte compiler warnings about w32-fns
+                     (fboundp 'w32-focus-frame))
                 (w32-focus-frame frame)))
          (when focus-follows-mouse
            (set-mouse-position frame (1- (frame-width frame)) 0)))))

@@ -173,7 +173,10 @@ Virtual PC emulator on your Mac; buffer-local."
 (make-variable-buffer-local 'ess-sas-submit-command-options)
 
 (defvar ess-sas-submit-method
-  (if (and ess-microsoft-p (w32-shell-dos-semantics)) 'ms-dos 'sh)
+  (if (and (and ess-microsoft-p
+                (fboundp 'w32-shell-dos-semantics))
+           (w32-shell-dos-semantics))
+      'ms-dos 'sh)
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
@@ -1022,7 +1025,10 @@ should be ..."
     (save-excursion
       (ess-sas-goto-shell t)
 
-      (if (and (w32-shell-dos-semantics)
+      (if (and (when
+                   ;; Silence byte compiler warns about w32-fns
+                   (fboundp 'w32-shell-dos-semantics)
+                 (w32-shell-dos-semantics))
                (string-equal ":" (substring ess-sas-file-path 1 2)))
           (progn
             (insert (substring ess-sas-file-path 0 2))

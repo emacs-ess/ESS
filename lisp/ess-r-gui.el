@@ -166,14 +166,17 @@ independent Rgui R Console."
              (current-buffer)))
     (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (let ((default-ddeclient (default-value 'inferior-ess-ddeclient)))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
-      ;; (setenv "S_PROJ" default-directory)
-      (setq-default inferior-ess-ddeclient "execdde")
-      (inferior-ess)
-      (setq-default inferior-ess-ddeclient default-ddeclient)
-      (sleep-for 2) ; need to wait, else working too fast!
-      )
+    (when
+        ;; Silence byte compiler warns about this function
+        (fboundp 'w32-short-file-name)
+      (let ((default-ddeclient (default-value 'inferior-ess-ddeclient)))
+        (cd (w32-short-file-name (directory-file-name default-directory)))
+        ;; (setenv "S_PROJ" default-directory)
+        (setq-default inferior-ess-ddeclient "execdde")
+        (inferior-ess)
+        (setq-default inferior-ess-ddeclient default-ddeclient)
+        (sleep-for 2) ; need to wait, else working too fast!
+        ))
     (setq comint-process-echoes nil)
 
     ;; *R* buffer

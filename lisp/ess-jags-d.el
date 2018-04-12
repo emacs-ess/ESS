@@ -184,7 +184,8 @@
     (shell)
     (ess-sleep)
 
-    (if (w32-shell-dos-semantics)
+    (if (when (fboundp 'w32-shell-dos-semantics)
+          (w32-shell-dos-semantics))
         (if (string-equal ":" (substring ess-bugs-file 1 2))
             (progn
               (insert (substring ess-bugs-file 0 2))
@@ -250,8 +251,9 @@
   (setq ess-language "S") ; mimic S for ess-smart-underscore
   (run-mode-hooks 'ess-bugs-mode-hook)
 
-  (if (not (w32-shell-dos-semantics))
-      (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
+  (unless (and (fboundp 'w32-shell-dos-semantics)
+               (w32-shell-dos-semantics))
+    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
   )
 
 (defvaralias 'ess-jags-mode-hook 'ess-bugs-mode-hook)
