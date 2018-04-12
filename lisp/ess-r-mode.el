@@ -1480,7 +1480,7 @@ Return the amount the indentation changed by."
         ((null offset)
          0)
         (t
-         ess-indent-level)))
+         ess-indent-offset)))
 
 (defun ess-offset-type (offset)
   (setq offset (eval (intern (concat "ess-offset-" (symbol-name offset)))))
