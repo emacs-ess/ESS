@@ -1500,7 +1500,7 @@ If FILENAME is not found at all, ask the user where to find it if
                             (string-match (format "%s\\'" filename) buffer-file-name))
                        (equal filename (file-name-nondirectory buffer-file-name))))
           (setq buffer bf)
-          (return))))
+          (cl-return))))
     ;; 2. The file name is absolute.  Use its explicit directory as
     ;; the first in the search path, and strip it from FILENAME.
     (when (and (null  buffer)
@@ -2697,8 +2697,8 @@ for signature and trace it with browser tracer."
          (default (and
                    obj-at-point
                    (let* ((reg (regexp-quote obj-at-point))
-                          (matches (loop for el in all-functions
-                                         if (string-match reg el) collect el)))
+                          (matches (cl-loop for el in all-functions
+                                            if (string-match reg el) collect el)))
                      (car (sort matches (lambda (a b) (< (length a) (length b))))))))
          (ufunc (ess-completing-read "Debug" all-functions
                                      nil nil nil nil (or default obj-at-point)))
