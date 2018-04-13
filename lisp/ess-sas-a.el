@@ -32,6 +32,9 @@
 
 ;;; Section 1:  Variable Definitions
 
+;; For do-applescript
+(require 'ess-r-a)
+
 (defvar ess-sas-file-path "."
   "Full path-name of the sas file to perform operations on.")
 
