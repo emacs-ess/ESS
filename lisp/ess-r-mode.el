@@ -590,7 +590,8 @@ will be prompted to enter arguments interactively."
           ;; trigger the callback
           (process-send-string (get-process ess-local-process-name) "\n"))
       (ess-wait-for-process)
-      (R-initialize-on-start))
+      (R-initialize-on-start)
+      (comint-goto-process-mark))
 
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
