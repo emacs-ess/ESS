@@ -95,7 +95,7 @@ PROC, VISIBLY and MESSAGE are ignored."
         ;; We go outside the loop to create a 1-character line " " in the
         ;; *ESS-temporary* buffer
         (if (= beg (point)) ;; do empty line outside loop
-            (ess-eval-linewise-ddeclient " " nil 'eob t)
+            (ess-dde-eval-linewise " " nil 'eob t)
           (call-process-region
            beg (point)
            inferior-ess-ddeclient nil nil nil
