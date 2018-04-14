@@ -39,6 +39,11 @@
       (should (output= (ess-send-string (ess-get-process) "\"foo\"")
                        "[1] \"bar\"")))))
 
+(ert-deftest ess-load-file ()
+  (with-r-running nil
+    (should (string-match "^\\[1\\] \"foo\"\nSourced file"
+                          (output nil (ess-load-file "fixtures/file.R"))))))
+
 
 ;;; Inferior utils
 

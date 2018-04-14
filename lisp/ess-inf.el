@@ -2891,7 +2891,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
         ;; else, re-compute:
         (ess-write-to-dribble-buffer " (ess-search-list ... ) ")
         (let ((tbuffer (get-buffer-create " *search-list*"))
-              (homedir (inferior-ess-default-directory))
+              (homedir default-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
               elt)
           (ess-command my-search-cmd tbuffer 0.05); <- sleep for dde only; does (erase-buffer)
@@ -2904,7 +2904,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
               (setq elt (buffer-substring (match-beginning 1) (match-end 1)))
               ;;Dbg: (ess-write-to-dribble-buffer (format "  .. elt= %s \t" elt))
               (if (and (string-match "^[^/]" elt)
-                       (file-directory-p (concat (inferior-ess-default-directory) elt)))
+                       (file-directory-p (concat homedir elt)))
                   (progn
                     ;;Dbg: (ess-write-to-dribble-buffer "*IS* directory\n")
                     (setq elt (concat homedir elt)))
