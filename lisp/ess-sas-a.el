@@ -32,9 +32,6 @@
 
 ;;; Section 1:  Variable Definitions
 
-;; For do-applescript
-(require 'ess-r-a)
-
 (defvar ess-sas-file-path "."
   "Full path-name of the sas file to perform operations on.")
 
@@ -185,8 +182,6 @@ The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
 'sh               if *shell* runs sh, ksh, csh, tcsh or bash
 'ms-dos           if *shell* follows MS-DOS semantics
-'apple-script     *shell* unavailable in Mac Classic, use AppleScript,
-                  also for Windows SAS in Virtual PC on Mac OS X
 
 Unix users will get 'sh by default.
 
@@ -963,9 +958,6 @@ depends on the value of  `ess-sas-submit-method'"
                                         ;(ess-save-and-set-local-variables)
 
   (cond
-   ((eq ess-sas-submit-method 'apple-script)
-    (ess-sas-submit-mac ess-sas-submit-command
-                        ess-sas-submit-command-options))
    ((eq ess-sas-submit-method 'ms-dos)
     (ess-sas-submit-windows ess-sas-submit-command
                             ess-sas-submit-command-options))
@@ -1001,20 +993,6 @@ their files from the remote computer.  Local copies of the .sas .lst
  (concat "cd " (car (last
                      (split-string (file-name-directory ess-sas-file-path) "\\(:\\|]\\)")))))
 (ess-eval-linewise (concat arg1 " " arg2 " " (buffer-name) " &")))
-
-(defun ess-sas-submit-mac (arg1 arg2)
-  "If you are using Mac SAS, then arg1, `ess-sas-submit-command', should be
-the AppleScript command \"invoke SAS using program file\", and, if necessary,
-arg2, `ess-sas-submit-command-options', is a string of the form
-\"with options { \\\"option-1\\\", \\\"option-2\\\", etc.}\".  If you are
-using Windows SAS with the PC emulator Virtual PC, then `ess-sas-submit-command'
-should be ..."
-                                        ;(ess-save-and-set-local-variables)
-
-  (do-applescript (concat arg1 " \""
-                          (if (not ess-sas-submit-mac-virtual-pc)
-                              (unix-filename-to-mac default-directory))
-                          (buffer-name) "\"" arg2)))
 
 (defun ess-sas-submit-region ()
   "Write region to temporary file, and submit to SAS."
