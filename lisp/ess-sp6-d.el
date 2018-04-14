@@ -50,11 +50,7 @@
        (file-directory-p (concat directory ".Data"))
        (file-directory-p (concat directory ".Data/__Meta"))))
 
-(defvar S+-directory-function
-  (lambda ()
-    (if (S+-directory-p default-directory)
-        default-directory
-      (or ess-directory default-directory))))
+(defvar S+-directory-function #'inferior-ess-default-directory)
 
 (defvaralias 'S+6-setup-directory-function 'S+-setup-directory-function)
 (defvar S+-setup-directory-function
