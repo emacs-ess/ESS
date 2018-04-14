@@ -5,6 +5,18 @@
 (require 'ess-r-tests-utils)
 
 
+;;; Startup
+
+(ert-deftest ess-default-directory-preserved ()
+  (let ((default-directory "foo")
+        (ess-startup-directory temporary-file-directory)
+        ess-ask-for-ess-directory)
+    (with-r-running nil
+      (should (string= default-directory "foo"))
+      (should (string= (inferior-ess-default-directory) temporary-file-directory)))
+    (should (string= default-directory "foo"))))
+
+
 ;;; Evaluation
 
 (ert-deftest ess-evaluation ()

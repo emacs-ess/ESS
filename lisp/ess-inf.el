@@ -129,9 +129,8 @@ Alternatively, it can appear in its own frame if
                          (setq ntry (1+ ntry)))
                        (ess-proc-name ntry temp-dialect)))
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
+           (start-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
            buf method)
-      (setq-local default-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
-
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
                procname temp-dialect buf-name-str))
@@ -157,7 +156,7 @@ Alternatively, it can appear in its own frame if
        (t
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           default-directory
+                                                           start-directory
                                                            "")))
                         (if (string= transfilename "")
                             (get-buffer-create buf-name-str)
@@ -166,7 +165,7 @@ Alternatively, it can appear in its own frame if
         (setq method 3)))
 
       (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method default-directory buf))
+       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method start-directory buf))
 
       ;; Now that we have the buffer, set buffer-local variables.
       (set-buffer buf)
@@ -217,7 +216,7 @@ Alternatively, it can appear in its own frame if
             (when ess-history-file
               (setq comint-input-ring-file-name
                     (expand-file-name ess-history-file
-                                      (or ess-history-directory default-directory)))
+                                      (or ess-history-directory start-directory)))
               (comint-read-input-ring))
 
             ;; create and run process.
@@ -266,10 +265,11 @@ Alternatively, it can appear in its own frame if
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
-            ;; This ensures a visible `setwd' in the inferior process
-            ;; and this makes sure we catch the prompt if user comp is
+            ;; This sets `default-directory' in the process buffer,
+            ;; ensures a visible `setwd' in the inferior process and
+            ;; this makes sure we catch the prompt if user comp is
             ;; super-duper fast
-            (ess-set-working-directory default-directory)
+            (ess-set-working-directory start-directory)
 
             (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
