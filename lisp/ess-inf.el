@@ -246,8 +246,7 @@ Alternatively, it can appear in its own frame if
             (set-process-filter (get-process procname)
                                 'inferior-ess-output-filter)
             (inferior-ess-mark-as-busy (get-process procname))
-            ;; Make sure we catch the prompt if user comp is super-duper fast
-            (inferior-ess--wait-for-prompt (when no-wait 0.5))
+
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
               (ess-wait-for-process (get-process procname) nil 0.01))
@@ -267,15 +266,14 @@ Alternatively, it can appear in its own frame if
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
-            (run-hooks 'ess-post-run-hook)
+            ;; This ensures a visible `setwd' in the inferior process
+            ;; and this makes sure we catch the prompt if user comp is
+            ;; super-duper fast
+            (ess-set-working-directory default-directory)
 
-            ;; EXTRAS
+            (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
-            ;; This is redundant but it ensures a visible `setwd' in
-            ;; the inferior process in case we did not prompt for a
-            ;; starting directory.
-            (unless ess-ask-for-ess-directory
-              (ess-set-working-directory default-directory))
+
             ;; user initialization can take some time ...
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
@@ -707,46 +705,6 @@ process happens interactively (when possible)."
 
 (defun inferior-ess-default-directory ()
   (ess-get-process-variable 'default-directory))
-
-(defun inferior-ess--wait-for-prompt (seconds)
-  (let ((start-time (float-time)))
-    (while (and (not (inferior-ess--idle-prompt-p))
-                (if seconds
-                    (> (- (float-time) start-time) seconds)
-                  t))
-      (accept-process-output proc 0.001))))
-
-(defun inferior-ess--idle-prompt-p ()
-  (let ((inhibit-field-text-motion t))
-    (save-excursion
-      (with-ess-process-buffer nil
-        (goto-char (point-max))
-        (beginning-of-line)
-        (looking-at (concat "^" inferior-ess-primary-prompt "$"))))))
-
-;; (defun inferior-ess-wait-for-prompt ()
-;;   "Wait until the ESS process is ready for input."
-;;   (let* ((cbuffer (current-buffer))
-;;       (sprocess (ess-get-process ess-current-process-name))
-;;       (sbuffer (process-buffer sprocess))
-;;       (r nil)
-;;       (timeout 0))
-;;     (set-buffer sbuffer)
-;;     (while (progn
-;;           (if (not (eq (process-status sprocess) 'run))
-;;               (ess-error "ESS process has died unexpectedly.")
-;;             (if (> (setq timeout (1+ timeout)) ess-loop-timeout)
-;;                 (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
-;;             (accept-process-output)
-;;             (goto-char (point-max))
-;;             (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?)
-;;             ;; above, except for Stata, which has "broken" i/o,
-;;             ;; sigh... (AJR)
-;;             (setq r (looking-at inferior-ess-prompt))
-;;             (not (or r (looking-at ".*\\?\\s *"))))))
-;;     (goto-char (point-max))
-;;     (set-buffer cbuffer)
-;;     (symbol-value r)))
 
 ;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
 ;;- (defun ess-set-inferior-program-name (filename)
