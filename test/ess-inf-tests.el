@@ -8,19 +8,18 @@
 ;;; Evaluation
 
 (ert-deftest ess-evaluation ()
+  ;; `ess-send-string'
   (with-r-running nil
+    (should (output= (ess-send-string proc "TRUE") "[1] TRUE")))
 
-    ;; `ess-send-string'
-    (should (output= (ess-send-string proc "TRUE") "[1] TRUE"))
-
-    ;; `ess-command'
-    (with-r-running nil
-      (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
-        (ess-command "identity(TRUE)\n" output-buffer)
-        (should (string= (with-current-buffer output-buffer
-                           (ess-kill-last-line)
-                           (buffer-string))
-                         "[1] TRUE"))))))
+  ;; `ess-command'
+  (with-r-running nil
+    (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
+      (ess-command "identity(TRUE)\n" output-buffer)
+      (should (string= (with-current-buffer output-buffer
+                         (ess-kill-last-line)
+                         (buffer-string))
+                       "[1] TRUE")))))
 
 (ert-deftest ess-run-presend-hooks ()
   (with-r-running nil
