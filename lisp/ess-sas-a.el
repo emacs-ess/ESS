@@ -586,7 +586,6 @@ current buffer if nil."
                      (if (or force (string-match ess-sas-suffix-regexp ess-sas-temp-file)) ;;(progn
                          (setq ess-sas-file-path
                                (nth 0 (split-string ess-sas-temp-file "[<]")))))))
-;; (setq ess-directory (file-name-directory ess-sas-file-path)))))))
 
 (defun ess-sas-file-path-remote-host ()
   "Return the remote host, if any, associated with `ess-sas-file-path'."

@@ -23,6 +23,12 @@ ESS now provides custom faces for (nearly) all faces used and places
 face customization options into their own group. Users can customize
 these options using @kbd{M-x customize-group RET ess-faces}.
 
+@item @ESS{[R]}: Changing the working directory is now always reflected
+in the process buffer.
+
+@item @ESS{[R]}: The startup screen has been cleaned up and displays
+the startup directory with an explicit @code{setwd()}.
+
 @end itemize
 
 

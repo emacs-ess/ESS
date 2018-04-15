@@ -16,6 +16,8 @@
   (declare (indent 1) (debug (&rest body)))
   `(apply #'with-r-running- (list ,file '(,@body))))
 
+(defvar ess-r-tests-current-output-buffer nil)
+
 (defun with-r-running- (file body)
   (let ((r-file-buffer (cond ((bufferp file)
                               file)
@@ -31,23 +33,18 @@
                        (R "--vanilla"))
                      (ess-get-process)))
              (ess-local-process-name (process-name proc))
-             (prev-buffer (process-buffer proc))
-             (output-buffer (get-buffer-create " *ess-r-tests-output*")))
-        (with-current-buffer output-buffer
-          (erase-buffer))
-        (set-process-buffer proc output-buffer)
-        (set-process-filter proc 'inferior-ess-ordinary-filter)
-        (unwind-protect (prog1
-                            ;; Returning the last value
-                            (car (last (mapcar #'eval body)))
-                          (ess-wait-for-process proc)
-                          ;; Avoid getting "Process killed" in
-                          ;; output-buffer
-                          (set-process-buffer proc prev-buffer)
-                          (with-current-buffer output-buffer
-                            (ess-kill-last-line)
-                            (buffer-string)))
-          (kill-process proc))))))
+             (output-buffer (process-buffer proc)))
+        (unwind-protect
+            (progn
+              (setq ess-r-tests-current-output-buffer (process-buffer proc))
+              (let ((inhibit-read-only t))
+                (with-current-buffer ess-r-tests-current-output-buffer
+                  (erase-buffer)))
+              (set-process-filter proc 'inferior-ess-ordinary-filter)
+              (prog1 (car (last (mapcar #'eval body)))
+                (ess-wait-for-process proc)))
+          (kill-process proc)
+          (setq ess-r-tests-current-output-buffer nil))))))
 
 ;; The following retrieve the last output and clean the output
 ;; buffer. This is useful to continue testing without restarting a
@@ -62,7 +59,7 @@
   `(progn
      ,@body
      (ess-wait-for-process proc)
-     (with-current-buffer output-buffer
+     (with-current-buffer ess-r-tests-current-output-buffer
        (ess-kill-last-line)
        (prog1 (buffer-string)
          (erase-buffer)))))
@@ -70,8 +67,9 @@
 (defmacro output= (body expected)
   (declare (indent 1) (debug (&rest body)))
   `(progn
-     (let ((output (output ,body)))
-       (if (string= output (eval ,expected))
+     (let ((output (output ,body))
+           (expected (eval ,expected)))
+       (if (string= output expected)
            output
          ;; Probably a better way but this gets the job done
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)

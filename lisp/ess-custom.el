@@ -334,7 +334,7 @@ Used to adjust for changes in versions of the program.")
 
 (defcustom ess-directory-function nil
   "Function to return the directory that ESS is run from.
-If nil or if the function returns nil then you get `ess-directory'."
+If nil or if the function returns nil then you get `ess-startup-directory'."
   :group 'ess
   :type '(choice (const nil) function))
 

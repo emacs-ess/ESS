@@ -987,7 +987,7 @@ option for other dialects)."
            'ess-dialect
            'ess-ask-for-ess-directory
            'ess-ask-about-transfile
-           'ess-directory
+           'default-directory
            'ess-keep-dump-files
            'ess-source-directory
            'ess-use-ido

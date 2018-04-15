@@ -129,8 +129,8 @@ Alternatively, it can appear in its own frame if
                          (setq ntry (1+ ntry)))
                        (ess-proc-name ntry temp-dialect)))
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
-           startdir buf method)
-
+           (start-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
+           buf method)
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
                procname temp-dialect buf-name-str))
@@ -139,7 +139,6 @@ Alternatively, it can appear in its own frame if
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
              (eq major-mode 'inferior-ess-mode))
-        (setq startdir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
         (setq buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
@@ -155,10 +154,10 @@ Alternatively, it can appear in its own frame if
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
-        (setq startdir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           startdir "")))
+                                                           start-directory
+                                                           "")))
                         (if (string= transfilename "")
                             (get-buffer-create buf-name-str)
                           (find-file-noselect (expand-file-name  transfilename))))
@@ -166,7 +165,7 @@ Alternatively, it can appear in its own frame if
         (setq method 3)))
 
       (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method startdir buf))
+       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method start-directory buf))
 
       ;; Now that we have the buffer, set buffer-local variables.
       (set-buffer buf)
@@ -176,10 +175,7 @@ Alternatively, it can appear in its own frame if
        (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
                ess-language  ess-dialect (current-buffer)))
 
-      (when startdir (setq default-directory startdir))
-      (let* ((ess-directory (or startdir
-                                ess-directory))
-             (infargs (or ess-start-args
+      (let* ((infargs (or ess-start-args
                           inferior-ess-start-args))
              (special-display-regexps nil)
              (special-display-frame-alist inferior-ess-frame-alist)
@@ -220,7 +216,7 @@ Alternatively, it can appear in its own frame if
             (when ess-history-file
               (setq comint-input-ring-file-name
                     (expand-file-name ess-history-file
-                                      (or ess-history-directory ess-directory)))
+                                      (or ess-history-directory start-directory)))
               (comint-read-input-ring))
 
             ;; create and run process.
@@ -245,12 +241,11 @@ Alternatively, it can appear in its own frame if
             (goto-char (point-max))
             (setq ess-sl-modtime-alist nil)
 
-            ;; Add the process filter to catch certain output.
+            ;; Add the process filter to catch certain output
             (set-process-filter (get-process procname)
                                 'inferior-ess-output-filter)
-            ;; (inferior-ess-wait-for-prompt)
             (inferior-ess-mark-as-busy (get-process procname))
-            (process-send-string (get-process procname) "\n") ;; to be sure we catch the prompt if user comp is super-duper fast.
+
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
               (ess-wait-for-process (get-process procname) nil 0.01))
@@ -270,10 +265,15 @@ Alternatively, it can appear in its own frame if
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
-            (run-hooks 'ess-post-run-hook)
+            ;; This sets `default-directory' in the process buffer,
+            ;; ensures a visible `setwd' in the inferior process and
+            ;; this makes sure we catch the prompt if user comp is
+            ;; super-duper fast
+            (ess-set-working-directory start-directory)
 
-            ;; EXTRAS
+            (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
+
             ;; user initialization can take some time ...
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
@@ -307,7 +307,6 @@ Default depends on the ESS language/dialect and hence made buffer local")
 ;;;     ess-local-process-name
 ;;;     ess-sl-modtime-alist
 ;;;     ess-prev-load-dir/file
-;;;     ess-directory
 ;;;     ess-object-list
 ;;; are specific to each ess-process and are buffer-local variables
 ;;; local to the ESS process buffer. If required, these variables should
@@ -539,7 +538,6 @@ This marks the process with a message, at a particular time point."
     ;; comint mode. Otherwise, leave buffer and existing process alone.
     (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
            (with-current-buffer  buffer
-             (if ess-directory (setq default-directory ess-directory))
              (if (eq (buffer-size) 0) nil
                (goto-char (point-max))
                (insert "\^L\n")))    ; page boundaries = Interactive sessions
@@ -705,30 +703,8 @@ process happens interactively (when possible)."
               (ess-get-process ess-current-process-name))
           (error "Process %s is not running" name))))))
 
-
-;; (defun inferior-ess-wait-for-prompt ()
-;;   "Wait until the ESS process is ready for input."
-;;   (let* ((cbuffer (current-buffer))
-;;       (sprocess (ess-get-process ess-current-process-name))
-;;       (sbuffer (process-buffer sprocess))
-;;       (r nil)
-;;       (timeout 0))
-;;     (set-buffer sbuffer)
-;;     (while (progn
-;;           (if (not (eq (process-status sprocess) 'run))
-;;               (ess-error "ESS process has died unexpectedly.")
-;;             (if (> (setq timeout (1+ timeout)) ess-loop-timeout)
-;;                 (ess-error "Timeout waiting for prompt. Check inferior-ess-prompt or ess-loop-timeout."))
-;;             (accept-process-output)
-;;             (goto-char (point-max))
-;;             (beginning-of-line); bol ==> no need for "^" in *-prompt! (MM?)
-;;             ;; above, except for Stata, which has "broken" i/o,
-;;             ;; sigh... (AJR)
-;;             (setq r (looking-at inferior-ess-prompt))
-;;             (not (or r (looking-at ".*\\?\\s *"))))))
-;;     (goto-char (point-max))
-;;     (set-buffer cbuffer)
-;;     (symbol-value r)))
+(defun inferior-ess-default-directory ()
+  (ess-get-process-variable 'default-directory))
 
 ;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
 ;;- (defun ess-set-inferior-program-name (filename)
@@ -742,6 +718,7 @@ process happens interactively (when possible)."
 ;; Plan: 1) must know and use ess-language
 ;;       2) change the appropriate  inferior-<ESSlang>-program-name
 ;; (how?) in R/S : assign(paste("inferior-",ESSlang,"-p...."),  filename))
+
 
 ;;*;; Multiple process handling code
 
@@ -2914,7 +2891,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
         ;; else, re-compute:
         (ess-write-to-dribble-buffer " (ess-search-list ... ) ")
         (let ((tbuffer (get-buffer-create " *search-list*"))
-              (homedir ess-directory)
+              (homedir default-directory)
               (my-search-cmd inferior-ess-search-list-command); from ess-buffer
               elt)
           (ess-command my-search-cmd tbuffer 0.05); <- sleep for dde only; does (erase-buffer)
@@ -2927,7 +2904,7 @@ and (indirectly) by \\[ess-get-help-files-list]."
               (setq elt (buffer-substring (match-beginning 1) (match-end 1)))
               ;;Dbg: (ess-write-to-dribble-buffer (format "  .. elt= %s \t" elt))
               (if (and (string-match "^[^/]" elt)
-                       (file-directory-p (concat ess-directory elt)))
+                       (file-directory-p (concat homedir elt)))
                   (progn
                     ;;Dbg: (ess-write-to-dribble-buffer "*IS* directory\n")
                     (setq elt (concat homedir elt)))
