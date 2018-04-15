@@ -46,6 +46,15 @@ nil on Unix machines."
         (if (not (equal ess-ddeclient (default-value 'inferior-ess-ddeclient)))
             ess-ddeclient))))
 
+(defvar ess-command-file "c:/temp/ess-tempfile.R"
+  "File name for communication with Rgui.")
+(defvar inferior-ess-execdde
+  (concat (getenv "R_HOME") "/site-library/tcltk2/bin/execdde.exe")
+  "Full pathname to execdde executable.")
+(defvar ess-rgui-command " -s TclEval -t R -c .ess.command > NUL"
+  "Command to `inferior-ess-execdde' that will make Rgui read the command file.")
+
+
 (defun ess-eval-region-execdde (start end even-empty)
   "Loop through lines in region and send them to ESS via execdde."
   (setq ;; set the following variables for the current ddeESS process.
@@ -61,13 +70,6 @@ nil on Unix machines."
 ;;                                                         ^^^^^^^^^ FIXME! do something better
 (defvar inferior-Rgui-program-name "cmd" "Rgui program name")
 (defvar Rgui-pager "emacsclientw.exe" "Rgui pager program")
-(defvar ess-command-file "c:/temp/ess-tempfile.R"
-  "file name for communication with Rgui")
-(defvar inferior-ess-execdde
-  (concat (getenv "R_HOME") "/site-library/tcltk2/bin/execdde.exe")
-  "Full pathname to execdde executable")
-(defvar ess-rgui-command " -s TclEval -t R -c .ess.command > NUL"
-  "command to inferior-ess-execdde that will make Rgui read the command file")
 (defvar inferior-ess-language-start-rgui
   "options(chmhelp=FALSE, htmlhelp=FALSE, help_type='text'); require(tcltk2)"
   "additional arguments to rgui")
@@ -95,7 +97,7 @@ PROC, VISIBLY and MESSAGE are ignored."
         ;; We go outside the loop to create a 1-character line " " in the
         ;; *ESS-temporary* buffer
         (if (= beg (point)) ;; do empty line outside loop
-            (ess-eval-linewise-ddeclient " " nil 'eob t)
+            (ess-dde-eval-linewise " " nil 'eob t)
           (call-process-region
            beg (point)
            inferior-ess-ddeclient nil nil nil
@@ -166,14 +168,17 @@ independent Rgui R Console."
              (current-buffer)))
     (setq ess-customize-alist           ; change inferior-ess-primary-prompt
           (append ess-customize-alist '((inferior-ess-primary-prompt   . "^"))))
-    (let ((default-ddeclient (default-value 'inferior-ess-ddeclient)))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
-      ;; (setenv "S_PROJ" default-directory)
-      (setq-default inferior-ess-ddeclient "execdde")
-      (inferior-ess)
-      (setq-default inferior-ess-ddeclient default-ddeclient)
-      (sleep-for 2) ; need to wait, else working too fast!
-      )
+    (when
+        ;; Silence byte compiler warns about this function
+        (fboundp 'w32-short-file-name)
+      (let ((default-ddeclient (default-value 'inferior-ess-ddeclient)))
+        (cd (w32-short-file-name (directory-file-name default-directory)))
+        ;; (setenv "S_PROJ" default-directory)
+        (setq-default inferior-ess-ddeclient "execdde")
+        (inferior-ess)
+        (setq-default inferior-ess-ddeclient default-ddeclient)
+        (sleep-for 2) ; need to wait, else working too fast!
+        ))
     (setq comint-process-echoes nil)
 
     ;; *R* buffer

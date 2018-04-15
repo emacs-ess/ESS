@@ -34,6 +34,13 @@
   (require 'cl-lib))
 (require 'ess-utils)
 
+(defvar ac-auto-start)
+(defvar ac-prefix)
+(defvar ac-point)
+(defvar ac-use-comphist)
+(declare-function company-begin-backend "company")
+(declare-function company-doc-buffer "company")
+
 (defun ess-r-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try

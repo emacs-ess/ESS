@@ -85,8 +85,7 @@ Better logic needed!  (see 2 uses, in this file).")
     ;; If someone is running a *shell* buffer, rename it to avoid
     ;; inadvertent nuking.
     (if ess-shell-buffer-name-flag
-        (save-excursion
-          (set-buffer "*shell*")
+        (with-current-buffer "*shell*"
           (setq ess-shell-buffer-name
                 (rename-buffer "*ess-shell-regular*" t))))
 
@@ -124,8 +123,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
     ;; Restore the *shell* buffer
     (if ess-shell-buffer-name-flag
-        (save-excursion
-          (set-buffer ess-shell-buffer-name)
+        (with-current-buffer ess-shell-buffer-name
           (rename-buffer "*shell*")))
 
     (delete-other-windows)
@@ -281,8 +279,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (ess-SAS-pre-run-hook temp-dialect)
     (setq ess-eval-visibly-p nil)
     (inferior-ess)
-    (save-excursion
-      (set-buffer "*SAS*")
+    (with-current-buffer "*SAS*"
       (use-local-map sas-mode-local-map))))
 
 
@@ -297,12 +294,11 @@ then enter C-c C-w to put *SAS* *SAS.log* *SAS.lst* buffers into
 their own frames."
   (interactive)
   (delete-other-windows)
-  (save-excursion
-    (set-buffer "*SAS*")
-    (make-frame)
-    (set-buffer "*SAS.log*")
-    (make-frame)
-    (set-buffer "*SAS.lst*")
+  (with-current-buffer "*SAS*"
+    (make-frame))
+  (with-current-buffer "*SAS.log*"
+    (make-frame))
+  (with-current-buffer "*SAS.lst*"
     (make-frame)))
 
 

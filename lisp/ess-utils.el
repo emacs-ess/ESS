@@ -30,6 +30,11 @@
   (require 'tramp)
   (require 'cl-lib))
 
+(defvar ac-modes)
+(declare-function evil-visual-state-p "evil")
+(declare-function evil-normal-state "evil")
+(declare-function color-lighten-name "color")
+
 
 ;;*;; Internal ESS tools and variables
 
@@ -495,6 +500,7 @@ to `ess-completing-read'.
 (defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
   `ess-idle-timer-functions'."
+  :type '(integer)
   :group 'ess)
 
 (defvar ess-idle-timer-functions nil
@@ -623,6 +629,8 @@ See also `ess-use-ido'."
               sel)
           (unwind-protect
               (progn
+                ;; Can remove this call when we drop support for Emacs
+                ;; < 25.1, as it is aliased to ignore then
                 (ido-init-completion-maps)
                 (add-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
                 (add-hook 'choose-completion-string-functions 'ido-choose-completion-string)
@@ -866,7 +874,7 @@ Otherwise try a list of fixed known viewers.
                       (delete-overlay ess-current-region-overlay)))))
 
 (defun ess-deactivate-mark ()
-  (cond ((and (featurep 'evil) evil-mode)
+  (cond ((and (featurep 'evil) (bound-and-true-p evil-mode))
          (when (evil-visual-state-p)
            (evil-normal-state)))
         ((fboundp 'deactivate-mark)
@@ -946,7 +954,9 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
                  (memq window-system '(x mac))
                  (fboundp 'x-focus-frame))
                 (x-focus-frame frame))
-               ((eq window-system 'w32)
+               ((and (eq window-system 'w32)
+                     ;; silence byte compiler warnings about w32-fns
+                     (fboundp 'w32-focus-frame))
                 (w32-focus-frame frame)))
          (when focus-follows-mouse
            (set-mouse-position frame (1- (frame-width frame)) 0)))))

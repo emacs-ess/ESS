@@ -37,6 +37,8 @@
 ;;; Requires and Autoloads:
 
 (require 'ess-s-lang)
+(defvar ess-S+-startup-delay)
+(defvar version-function-name)
 ;;NO: this is autoloaded from other places (require 'ess-dde)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
@@ -70,7 +72,10 @@ connects it to the '(ddeESS [S+])' window.")
                                     " "
                                     inferior-S+-print-command
                                     " S_PROJ="
-                                    (w32-short-file-name (directory-file-name default-directory))))
+                                    (when (fboundp 'w32-short-file-name)
+                                      (w32-short-file-name
+                                       (directory-file-name
+                                        default-directory)))))
      ;;    (inferior-ess-ddeclient      . "ddeclient")
      ;;    (inferior-ess-client-name    . "S-PLUS")
      ;;    (inferior-ess-client-command . "SCommand")
@@ -189,8 +194,11 @@ to start the Splus program."
     (let ((s-proj (getenv "S_PROJ"))
           (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
           )
-      (cd (w32-short-file-name (directory-file-name default-directory)))
-      (setenv "S_PROJ" (w32-short-file-name default-directory))
+      (cd (when (fboundp 'w32-short-file-name)
+            (w32-short-file-name (directory-file-name default-directory))))
+      (setenv "S_PROJ" (when
+                           (fboundp 'w32-short-file-name)
+                         (w32-short-file-name default-directory)))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
                                         ; command in '(ddeESS [S+])' should follow the "$"
@@ -332,7 +340,6 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (interactive)
   (ess-transcript-mode S+-customize-alist))
 
-(defalias 'S+-msdos 'S+-msdos)
 (defun S+-msdos (&optional proc-name)
   "Verify that `inferior-S+-program-name' points to S-Plus 6 or
 S-Plus 7 or S-Plus 8.  Start normally for S-Plus 6.1 and later.
@@ -342,8 +349,8 @@ if `inferior-S+-program-name' doesn't point to S-Plus 6 or
 S-Plus 7 or S-Plus 8."
   (interactive)
   (with-current-buffer  (find-file-noselect
-                 (concat (executable-find inferior-S+-program-name)
-                         "/../../versions") t)
+                         (concat (executable-find inferior-S+-program-name)
+                                 "/../../versions") t)
     (setq buffer-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
@@ -393,8 +400,11 @@ to start the Splus program."
     (let ((s-proj (getenv "S_PROJ"))
           (use-dialog-box (not (or ess-microsoft-p (eq system-type 'cygwin))))
           )
-      (cd (w32-short-file-name (directory-file-name default-directory)))
-      (setenv "S_PROJ" (w32-short-file-name default-directory))
+      (cd (when (fboundp 'w32-short-file-name)
+            (w32-short-file-name (directory-file-name default-directory))))
+      (setenv "S_PROJ" (when
+                           (fboundp 'w32-short-file-name)
+                         (w32-short-file-name default-directory)))
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
                                         ; command in '(ddeESS [S+])' should follow the "$"
@@ -447,9 +457,9 @@ Splus Commands window (are supposed to) appear in this buffer.\n\n")
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (setq buffer-read-only t)          ; force buffer to be read-only
     (setq mode-name "ddeESS")
-;;  (ess-eval-linewise inferior-S+-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+-editor-pager-command)
     (if inferior-ess-language-start
-      (ess-eval-linewise inferior-ess-language-start))
+        (ess-eval-linewise inferior-ess-language-start))
     ))
 
 (defalias 'S+6-msdos-existing 'S+-msdos-existing)

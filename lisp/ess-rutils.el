@@ -46,6 +46,9 @@
 ;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
 
+;; TODO: Refactor and remove byte-compile-warnings file-local variable.
+(defvar pkg)
+
 ;;; Code:
 
 ;; Autoloads and requires
@@ -100,7 +103,7 @@ Useful bindings to handle package loading and installing.
     (insert "**Available packages in all local R libraries**"))
   (setq buffer-read-only t)
   (ess-rutils-mode)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-namepkg ()
@@ -148,7 +151,7 @@ getOptions(\"repos\") in the current R session."
     (insert "**packages available to install**\n"))
   (setq buffer-read-only t)
   (ess-rutils-mode)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-mark-install (arg)
@@ -202,7 +205,8 @@ User is asked for confirmation."
   (let ((inst "install.packages(c(")
         (count 0))
     (save-excursion
-      (goto-line 2)
+      (goto-char (point-min))
+      (forward-line)
       ;; as long as number of lines between buffer start and point is smaller
       ;; than the total number of lines in buffer, go to the beginning of the
       ;; line, check if line is flagged, and if it is, advance the counter by
@@ -271,7 +275,7 @@ to rebuild installed packages if needed."
   "Manipulate R objects; wrapper for `ess-rdired'."
   (interactive)
   (ess-rdired)
-  (if (featurep 'fit-frame)
+  (if (fboundp 'fit-frame)
       (fit-frame)))
 
 (defun ess-rutils-load-wkspc (file)
@@ -438,3 +442,7 @@ Options should be separated by value of `crm-default-separator'."
 (provide 'ess-rutils)
 
 ;;; ess-rutils.el ends here
+
+;; Local Variables:
+;; byte-compile-warnings: (not lexical)
+;; End:

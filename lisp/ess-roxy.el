@@ -72,6 +72,8 @@
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 
+(defvar roxy-str)
+
 
 ;;*;; Roxy Minor Mode
 
@@ -234,7 +236,11 @@ Experimental feature with known bugs.")
                  #'ess-roxy-extend-region-to-field
                  'local))
   (when font-lock-mode
-    (font-lock-fontify-buffer))
+    (if (fboundp 'font-lock-ensure)
+        (font-lock-ensure)
+      ;; font-lock-fontify-buffer call can be removed when we drop
+      ;; support for Emacs older than 25.1
+      (with-no-warnings (font-lock-fontify-buffer))))
   ;; Autofill
   (setq-local paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
   (setq-local paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
@@ -256,6 +262,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
                           outline-regexp)))
     (funcall command)))
 
+(declare-function outline-cycle "outline-magic")
 (defun ess-roxy-cycle-example ()
   (interactive)
   (unless (featurep 'outline-magic)
@@ -770,7 +777,7 @@ facilitate saving that file."
     (if (fboundp 'font-lock-ensure)
         (font-lock-ensure)
       ;; emacs <= 24.x.y:
-      (font-lock-fontify-buffer))))
+      (with-no-warnings (font-lock-fontify-buffer)))))
 
 
 (defun ess-roxy-guess-str (&optional not-here)

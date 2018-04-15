@@ -96,7 +96,7 @@ PROC, VISIBLY and MESSAGE are ignored."
 If prefix arg is given, forces a query of the ESS process for the help
 file.  Otherwise just pops to an existing buffer if it exists."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-linewise-ddeclient (concat "help(" object ")")))
+  (ess-dde-eval-linewise (concat "help(" object ")")))
 
 (defun ess-dde-find-help-file (p-string)
   (read-string "Help on: "))
@@ -118,7 +118,7 @@ nor offer alternate buffers or editing capability."
             ;; it calls ess-command which requires two-way communication
             ;; with the S-Plus process
             )))
-    (ess-eval-linewise-ddeclient (format ess-load-command filename)))
+    (ess-dde-eval-linewise (format ess-load-command filename)))
   (widen))
 
 
@@ -126,7 +126,7 @@ nor offer alternate buffers or editing capability."
 (defun ess-dde-dump-object (object filename)
   "Dump the ESS object OBJECT into file FILENAME."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-linewise-ddeclient (concat "dump('" object "','" filename "')"))
+  (ess-dde-eval-linewise (concat "dump('" object "','" filename "')"))
   (sleep-for 5)
   (find-file filename)
   (widen))
@@ -137,7 +137,7 @@ nor offer alternate buffers or editing capability."
 (defun ess-dput-expression-ddeclient (object filename)
   "Dump the ESS object found by evaluating OBJECT into file FILENAME."
   (ess-force-buffer-current "Process to load into: ")
-  (ess-eval-linewise-ddeclient (concat "dput(" object ",'" filename "')"))
+  (ess-dde-eval-linewise (concat "dput(" object ",'" filename "')"))
   (sleep-for 2)
   (find-file filename))
 
@@ -153,7 +153,7 @@ file into an emacs buffer and displays it."
     (if (not buf) (setq buf "ess-temp.st"))
     (if (not sleep) (setq sleep 1))
     (setq filename (concat (file-name-as-directory (getenv "TEMP")) buf))
-    (ess-eval-linewise-ddeclient
+    (ess-dde-eval-linewise
      (concat ".old.Last.value <- .Last.value; sink('"
              filename
              "'); print("

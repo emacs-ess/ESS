@@ -358,7 +358,7 @@ reached."
       (ess-token-after= '("," ";"))
       (and (ess-token-after= "identifier")
            (not (memq (char-syntax (char-before)) '(?w ?_))))
-      (progn (/= (skip-syntax-backward ".") 0)
+      (progn (skip-syntax-backward ".")
              (ess-token-operator-p (ess-token-after)))
       (/= (skip-syntax-backward "w_") 0)))
 

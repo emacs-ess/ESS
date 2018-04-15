@@ -46,6 +46,10 @@
 (require 'ess-utils)
 (require 'ess-r-mode)
 
+(defvar ac-prefix)
+(declare-function company-in-string-or-comment "company")
+(declare-function company-doc-buffer "company")
+
 ;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
 (condition-case nil
       (progn
@@ -227,6 +231,7 @@ objects from that MODULE."
   "Auto-completion source for julia objects")
 
 (defun ess-ac-julia-objects ()
+  (require 'auto-complete)
   (ess-julia-objects ac-prefix))
 
 (declare-function company-begin-backend "company.el")

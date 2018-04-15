@@ -39,6 +39,8 @@
 (require 'ess-s-lang)
 (require 'ess-dde)
 
+(defvar ess-S+-startup-delay)
+
 (defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
 
@@ -160,7 +162,9 @@ is here to allow slow disks to start the Splus program."
           (append ess-customize-alist '((inferior-ess-start-args   . "-i"))))
     (let ((s-proj (getenv "S_PROJ"))
           (manpath (getenv "MANPATH")))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (if (fboundp 'w32-short-file-name)
+          (cd (w32-short-file-name (directory-file-name default-directory)))
+        (cd (directory-file-name default-directory)))
       (setenv "S_PROJ" default-directory)
       ;; I don't know why this PATH/MANPATH game is needed,
       ;; except that it doesn't work without it.
@@ -325,7 +329,9 @@ is here to allow slow disks to start the Splus program."
     (setq ess-customize-alist           ; change inferior-ess-start-args
           (append ess-customize-alist '((inferior-ess-start-args   . ""))))
     (let ((s-proj (getenv "S_PROJ")))
-      (cd (w32-short-file-name (directory-file-name default-directory)))
+      (if (fboundp 'w32-short-file-name)
+          (cd (w32-short-file-name (directory-file-name default-directory)))
+        (cd (directory-file-name default-directory)))
       (setenv "S_PROJ" default-directory)
       (inferior-ess)
       (sleep-for 2) ; need to wait, else working too fast!  The Splus
@@ -378,9 +384,9 @@ to) appear in this buffer.\n\n")
     (use-local-map comint-mode-map)    ; a shell buffer after Splus is finished.
     (setq buffer-read-only t)          ; force buffer to be read-only
     (setq mode-name "ddeESS")
-;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
+    ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
     (if inferior-ess-language-start
-      (ess-eval-linewise inferior-ess-language-start))
+        (ess-eval-linewise inferior-ess-language-start))
     ))
 
 (defun S+4-msdos-existing (&optional proc-name)
@@ -393,8 +399,8 @@ If you have a HOME environment variable, it will open it there."
   (interactive)
   (let* ((inferior-S+4-multipleinstances ""))
     (S+4-msdos proc-name))
-  (save-excursion
-    (set-buffer (car (buffer-list)))    ; get the ESS buffer just created
+  (with-current-buffer
+      (car (buffer-list))    ; get the ESS buffer just created
     (setq buffer-read-only nil)         ; permit writing in ESS buffer
     (goto-char (point-max))
     (beginning-of-line)

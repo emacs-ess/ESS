@@ -89,6 +89,11 @@
 (require 'ess-r-mode); for Rnw-mode
 (require 'easymenu)
 
+(defvar TeX-command-list)
+(defvar TeX-command-default)
+(defvar TeX-file-extensions)
+(declare-function TeX-normal-mode "tex")
+
 ;; currently use exactly for "Sweave", "Stangle", "knit", and "purl"
 (defun ess-swv-run-in-R (cmd &optional choose-process block)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
@@ -280,7 +285,10 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
                (display-buffer tex-buf))
       ;; else: pdflatex probably ok
       ;; (set-process-sentinel proc 'shell-command-sentinel)
-      (if (and ess-microsoft-p (w32-shell-dos-semantics))
+      (if (and (and ess-microsoft-p
+                    ;; Silence byte compiler warns about w32-fns
+                    (fboundp 'w32-shell-dos-semantics))
+               (w32-shell-dos-semantics))
           (shell-command cmdstr-win)
         (message (mapconcat 'identity cmd " "))
         (apply 'start-process  (car cmd) nil cmd))

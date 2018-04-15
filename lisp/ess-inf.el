@@ -46,6 +46,14 @@
 (require 'format-spec)
 (require 'ess-tracebug)
 
+(declare-function tramp-sh-handle-expand-file-name "tramp-sh")
+
+;; TODO: refactor and remove file-local variable
+;; byte-compile-warnings. See ess-r-mode.el also
+(defvar proc)
+(defvar start)
+(defvar end)
+
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -356,13 +364,6 @@ fontification spilling over prompts."
           (setq pos1 pos2))
         ;; highlight errors
         (setq compilation--parsed beg)
-        ;; emacs 23 doesn't have this function
-        (when (fboundp 'compilation--ensure-parse)
-          ;; this line is a workaround for occasional incomplete highlighting of
-          ;; compilation errors on remotes, but it causes an incredible
-          ;; slowdown. See https://github.com/emacs-ess/ESS/issues/258.
-          ;; (compilation--ensure-parse end)
-          )
         `(jit-lock-bounds ,pos0 . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
@@ -610,7 +611,6 @@ This marks the process with a message, at a particular time point."
                             (concat ", " inferior-ess-program ))
                            (t "")))
                (prompt (format "%s starting project directory? "
-                               procname
                                prog)))
           (ess-prompt-for-directory default-dir prompt))
       default-dir)))
@@ -3061,7 +3061,9 @@ subprocess and Emacs buffer `default-directory'."
   (if ess-setwd-command
       (let* ((remote (file-remote-p path))
              (path (if remote
-                       (tramp-sh-handle-expand-file-name path)
+                       (progn
+                         (require 'tramp-sh)
+                         (tramp-sh-handle-expand-file-name path))
                      path))
              (lpath (if remote
                         (with-parsed-tramp-file-name path v v-localname)
@@ -3212,6 +3214,7 @@ Display the S buffer, and cause an error displaying MSG."
 ;;; outline-minor-mode: nil
 ;;; mode: outline-minor
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; byte-compile-warnings: (not lexical)
 ;;; End:
 
 ;;; ess-inf.el ends here

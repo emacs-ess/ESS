@@ -323,6 +323,7 @@ parenthetical grouping.")
 (defvar gretl-block-else-or-end-regexp
   (concat gretl-block-else-regexp "\\|" gretl-block-end-regexp))
 
+(defvar gretl-basic-offset 4)
 
 (defvar gretl-block-match-alist
   '(("loop" . ("endloop"))
@@ -547,8 +548,6 @@ These arguments are currently not passed to other versions of gretl that have
 been created using the variable `ess-r-versions'."
   :group 'ess-gretl
   :type 'string)
-
-(defvar gretl-basic-offset 4)
 
 ;;;###autoload
 (defun gretl-mode  (&optional proc-name)

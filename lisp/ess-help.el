@@ -429,8 +429,18 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
           (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
           (dolist (el2 (cdr el))
             (let ((path (if remote
-                            (with-parsed-tramp-file-name default-directory nil
-                              (tramp-make-tramp-file-name method user host (nth 1 el2)))
+                            (if (>= emacs-major-version 26)
+                                (with-parsed-tramp-file-name default-directory nil
+                                  (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
+                              (with-no-warnings
+                                ;; Have to wrap this in
+                                ;; with-no-warnings because otherwise
+                                ;; the byte compiler complains about
+                                ;; calling tramp-make-tramp-file-name
+                                ;; with an incorrect number of
+                                ;; arguments on Emacs 26+.
+                                (with-parsed-tramp-file-name default-directory nil
+                                  (tramp-make-tramp-file-name method user host (nth 1 el2)))))
                           (nth 1 el2))))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight

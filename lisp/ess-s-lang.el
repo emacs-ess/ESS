@@ -34,6 +34,8 @@
 
 (require 'ess-utils)
 
+(autoload 'speedbar-add-supported-extension "speedbar.el")
+
  ; Configuration variables
 
 (defvar S-syntax-table

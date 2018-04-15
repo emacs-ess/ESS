@@ -205,6 +205,8 @@ A .lst file is a SAS listing file when:
 
 (defcustom sas-get-options-history nil
   "History list of Options passed to SAS in sas-get-dataset."
+  :type '(choice (const nil)
+                 (string))
   :group 'ess-sas)
 
 (defcustom sas-page-number-max-line 3

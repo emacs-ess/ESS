@@ -36,6 +36,13 @@
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr
 ;; with vsize set to (for example) 40M, and nsize set to 600000.
+
+;; Undefined on non-apple devices
+(declare-function ns-do-applescript "nsfns.m" (script))
+(declare-function do-applescript "ess-r-a" (script))
+(unless (fboundp 'do-applescript)
+  (defalias 'do-applescript 'ns-do-applescript))
+
 (defalias 'essr
   (read-kbd-macro
    "C-u M-x R RET - - vsize = 40M SPC - - nsize = 600000 2*RET"))
