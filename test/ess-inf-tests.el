@@ -7,7 +7,21 @@
 
 ;;; Startup
 
-(ert-deftest ess-default-directory-preserved ()
+(defun ess-r-tests-startup-output ()
+  (let* ((proc (save-window-excursion
+                 (let ((ess-ask-for-ess-directory nil))
+                   (R "--vanilla"))
+                 (ess-get-process)))
+         (output-buffer (process-buffer proc)))
+    (unwind-protect
+        (with-current-buffer output-buffer
+          (buffer-string))
+      (kill-process proc))))
+
+(ert-deftest ess-startup-verbose-setwd ()
+  (should (string-match "to quit R.\n\n> setwd(.*)$" (ess-r-tests-startup-output))))
+
+(ert-deftest ess-startup-default-directory-preserved ()
   (let ((default-directory "foo")
         (ess-startup-directory temporary-file-directory)
         ess-ask-for-ess-directory)
@@ -43,6 +57,14 @@
   (with-r-running nil
     (should (string-match "^\\[1\\] \"foo\"\nSourced file"
                           (output nil (ess-load-file "fixtures/file.R"))))))
+
+
+;;; Inferior interaction
+
+(ert-deftest ess-verbose-setwd ()
+  (with-r-running nil
+    (should (output= (ess-set-working-directory temporary-file-directory)
+                     (format "setwd('%s')" temporary-file-directory)))))
 
 
 ;;; Inferior utils
