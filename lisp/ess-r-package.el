@@ -376,9 +376,9 @@ quickly (quick = TRUE, upgrade_dependencies = FALSE)."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::install(%s)\n" "Installing %s" arg
-   '("keep_source = TRUE"
-     (read-string "Arguments: " "local = FALSE, keep_source = TRUE")
-     (read-string "Arguments: " "quick = TRUE, upgrade_dependencies = FALSE, keep_source = TRUE"))))
+   '("quick = TRUE, upgrade_dependencies = FALSE, keep_source = TRUE"
+     (read-string "Arguments: " "keep_source = TRUE")
+     (read-string "Arguments: " "local = FALSE, keep_source = TRUE"))))
 
 (defvar ess-r-devtools--install-github-history nil)
 (defun ess-r-devtools-install-github (&optional arg)
