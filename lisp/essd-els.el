@@ -32,8 +32,22 @@
 
 ;;; Code:
 
+(require 'ess-arc-d)
+(require 'ess-julia)
+(require 'ess-omg-d)
 (require 'ess-s-lang)
+(require 'ess-s3-d)
+(require 'ess-s4-d)
+(require 'ess-sas-d)
+(require 'ess-sp3-d)
+(require 'ess-sp4-d)
+(require 'ess-sp5-d)
+(require 'ess-sp6-d)
+(require 'ess-sp6w-d)
+(require 'ess-stata-mode)
 (require 'ess-utils)
+(require 'ess-vst-d)
+(require 'ess-xls-d)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 (autoload 'ess-mode     "ess-mode" "Edit an ESS process.")

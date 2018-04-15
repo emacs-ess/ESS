@@ -46,6 +46,9 @@
 ;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
 ;; on a *lot* of ideas from ess-rdired.el.
 
+;; TODO: Refactor and remove byte-compile-warnings file-local variable.
+(defvar pkg)
+
 ;;; Code:
 
 ;; Autoloads and requires
@@ -439,3 +442,7 @@ Options should be separated by value of `crm-default-separator'."
 (provide 'ess-rutils)
 
 ;;; ess-rutils.el ends here
+
+;; Local Variables:
+;; byte-compile-warnings: (not lexical)
+;; End:

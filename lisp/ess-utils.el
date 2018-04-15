@@ -30,6 +30,11 @@
   (require 'tramp)
   (require 'cl-lib))
 
+(defvar ac-modes)
+(declare-function evil-visual-state-p "evil")
+(declare-function evil-normal-state "evil")
+(declare-function color-lighten-name "color")
+
 
 ;;*;; Internal ESS tools and variables
 
@@ -624,6 +629,8 @@ See also `ess-use-ido'."
               sel)
           (unwind-protect
               (progn
+                ;; Can remove this call when we drop support for Emacs
+                ;; < 25.1, as it is aliased to ignore then
                 (ido-init-completion-maps)
                 (add-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
                 (add-hook 'choose-completion-string-functions 'ido-choose-completion-string)
@@ -867,7 +874,7 @@ Otherwise try a list of fixed known viewers.
                       (delete-overlay ess-current-region-overlay)))))
 
 (defun ess-deactivate-mark ()
-  (cond ((and (featurep 'evil) evil-mode)
+  (cond ((and (featurep 'evil) (bound-and-true-p evil-mode))
          (when (evil-visual-state-p)
            (evil-normal-state)))
         ((fboundp 'deactivate-mark)

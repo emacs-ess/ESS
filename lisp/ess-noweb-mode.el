@@ -91,6 +91,8 @@
 (require 'ess-compat)
 (autoload 'ess-write-to-dribble-buffer "ess")
 
+(defvar weave-process)
+
 
 ;;; Variables
 

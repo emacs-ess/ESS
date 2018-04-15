@@ -89,6 +89,11 @@
 (require 'ess-r-mode); for Rnw-mode
 (require 'easymenu)
 
+(defvar TeX-command-list)
+(defvar TeX-command-default)
+(defvar TeX-file-extensions)
+(declare-function TeX-normal-mode "tex")
+
 ;; currently use exactly for "Sweave", "Stangle", "knit", and "purl"
 (defun ess-swv-run-in-R (cmd &optional choose-process block)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."

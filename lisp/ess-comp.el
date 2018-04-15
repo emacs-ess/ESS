@@ -37,6 +37,8 @@
 (add-to-list 'load-path nil)
 
 ;; defvar'ed to nil in ./ess-site.el
+;; TODO: ^^^^ This isn't true?
+(defvar ess-show-load-messages)
 (setq ess-show-load-messages t)
 
 (defun ess-message (format-string &rest args)

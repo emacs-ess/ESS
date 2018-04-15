@@ -39,6 +39,8 @@
 (require 'ess-s-lang)
 (require 'ess-dde)
 
+(defvar ess-S+-startup-delay)
+
 (defvar S+4-dialect-name "S+4"
   "Name of 'dialect' for S-PLUS 4.x.");easily changeable in a user's .emacs
 

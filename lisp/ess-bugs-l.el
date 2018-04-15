@@ -27,6 +27,18 @@
 (require 'font-lock)
 (require 'comint)
 (require 'ess-compat)
+(require 'ess-utils)
+(require 'ess-custom)
+(defvar ess-bugs-command)
+(defvar ess-bugs-chains)
+(defvar ess-jags-command)
+(defvar ess-jags-chains)
+(defvar ess-bugs-default-bins)
+
+(declare-function ess-bugs-na-bug "ess-bugs-d")
+(declare-function ess-jags-na-bug "ess-jags-d")
+(declare-function ess-bugs-na-bmd "ess-bugs-d")
+(declare-function ess-jags-na-jmd "ess-jags-d")
 
 (defgroup ess-bugs nil
   "ESS: BUGS."

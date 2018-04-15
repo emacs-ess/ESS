@@ -72,6 +72,8 @@
 (autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 
+(defvar roxy-str)
+
 
 ;;*;; Roxy Minor Mode
 
@@ -260,6 +262,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
                           outline-regexp)))
     (funcall command)))
 
+(declare-function outline-cycle "outline-magic")
 (defun ess-roxy-cycle-example ()
   (interactive)
   (unless (featurep 'outline-magic)

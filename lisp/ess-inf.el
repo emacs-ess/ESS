@@ -46,6 +46,14 @@
 (require 'format-spec)
 (require 'ess-tracebug)
 
+(declare-function tramp-sh-handle-expand-file-name "tramp-sh")
+
+;; TODO: refactor and remove file-local variable
+;; byte-compile-warnings. See ess-r-mode.el also
+(defvar proc)
+(defvar start)
+(defvar end)
+
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3053,7 +3061,9 @@ subprocess and Emacs buffer `default-directory'."
   (if ess-setwd-command
       (let* ((remote (file-remote-p path))
              (path (if remote
-                       (tramp-sh-handle-expand-file-name path)
+                       (progn
+                         (require 'tramp-sh)
+                         (tramp-sh-handle-expand-file-name path))
                      path))
              (lpath (if remote
                         (with-parsed-tramp-file-name path v v-localname)
@@ -3204,6 +3214,7 @@ Display the S buffer, and cause an error displaying MSG."
 ;;; outline-minor-mode: nil
 ;;; mode: outline-minor
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; byte-compile-warnings: (not lexical)
 ;;; End:
 
 ;;; ess-inf.el ends here

@@ -34,6 +34,9 @@
 ;;; Code:
 
 (require 'ess-lsp-l)
+(declare-function ess-write-to-dribble-buffer "ess-utils")
+(defvar ess-customize-alist)
+(defvar ess-dialect)
 
 (autoload 'inferior-ess "ess-inf" "Run an ESS process.")
 

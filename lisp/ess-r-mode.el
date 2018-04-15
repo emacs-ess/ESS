@@ -51,6 +51,24 @@
 (autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
 (autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
 
+;; TODO: Refactor so as to not rely on dynamic scoping.  After that
+;; refactor, also remove the file-local-variable byte-compile-warnings
+;; (not lexical) at the bottom.
+(defvar block)
+(defvar containing-sexp)
+(defvar indent-point)
+(defvar infinite)
+(defvar last-newline)
+(defvar last-pos)
+(defvar offset)
+(defvar prefix-break)
+(defvar prev-containing-sexp)
+(defvar start)
+(defvar start-pos)
+(defvar style)
+(defvar type)
+
+
 
 ;;*;; Mode definition
 
@@ -434,6 +452,7 @@ before ess-site is loaded) for it to take effect."))
   "(Re)Create ESS  R-<..> commands FILENAME sans final \"extension\".
 The extension, in a file name, is the part that follows the last `.'."
   (interactive)
+  (declare-function ess-sqpe-versions-create "ess-sp6w-d")
   ;; Create ess-versions-created, ess-r-versions-created, and on
   ;; Windows, ess-rterm-version-paths
   (let ((R-newest-list '("R-newest"))
@@ -2262,6 +2281,7 @@ otherwise nil."
 ;;; outline-minor-mode: nil
 ;;; mode: outline-minor
 ;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
+;;; byte-compile-warnings: (not lexical)
 ;;; End:
 
 ;;; ess-r-mode.el ends here
