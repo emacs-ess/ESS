@@ -60,17 +60,16 @@
     (hack-local-variables)
     (should ess-r-package-mode)))
 
-(ert-deftest ess-r-package-no-auto-activation ()
+(ert-deftest ess-r-package-auto-activation-in-eshell ()
   (with-r-file "dummy-pkg/R/test.R"
     (eshell)
-    (should (not ess-r-package-mode))
+    (should ess-r-package-mode)
     (kill-buffer))
   (with-r-file "dummy-pkg/R/test.R"
     (let ((ess-r-package-auto-activate t))
       (eshell)
       (should ess-r-package-mode))
     (kill-buffer)))
-
 
 ;;; Namespaced evaluation
 
@@ -81,7 +80,7 @@
           ess-eval-visibly)
       (insert "\"foo\"\n")
       (should (output= (ess-eval-region (point-min) (point-max) nil)
-                       "[1] \"bar\"")))))
+                "[1] \"bar\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-sourced-message ()
   (with-r-running nil
