@@ -67,8 +67,9 @@
 (defmacro output= (body expected)
   (declare (indent 1) (debug (&rest body)))
   `(progn
-     (let ((output (output ,body)))
-       (if (string= output (eval ,expected))
+     (let ((output (output ,body))
+           (expected (eval ,expected)))
+       (if (string= output expected)
            output
          ;; Probably a better way but this gets the job done
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)
