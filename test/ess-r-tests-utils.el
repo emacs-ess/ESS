@@ -41,12 +41,8 @@
                 (with-current-buffer ess-r-tests-current-output-buffer
                   (erase-buffer)))
               (set-process-filter proc 'inferior-ess-ordinary-filter)
-              (let ((last-value (car (last (mapcar #'eval body)))))
-                (ess-wait-for-process proc)
-                ;; Avoid getting "Process killed" in output-buffer
-                (with-current-buffer ess-r-tests-current-output-buffer
-                  (ess-kill-last-line))
-                last-value))
+              (prog1 (car (last (mapcar #'eval body)))
+                (ess-wait-for-process proc)))
           (kill-process proc)
           (setq ess-r-tests-current-output-buffer nil))))))
 
