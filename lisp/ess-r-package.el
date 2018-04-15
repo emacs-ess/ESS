@@ -423,14 +423,19 @@ When called with prefix ARG asks for additional arguments."
 
 ;;;*;;; Minor Mode
 
-(defcustom ess-r-package-auto-activate '(text-mode prog-mode inferior-ess-mode)
+(defcustom ess-r-package-auto-activate t
   "If non-nil, `ess-r-package-mode' is turned on within R packages.
-If `t' the minor mode auto-activates unconditionally (though only
-in R packages). If a list of modes, it auto-activates in buffers
-whose major mode inherits from one of the list elements. This
-defaults to editing modes and inferior buffers."
-  :group 'ess-r-package :type
-  'sexp)
+If `t' the minor mode auto-activates in R packages. See
+`ess-r-package-exclude-modes' if you wish to inhibit
+`ess-r-package-mode' in specific buffers."
+  :group 'ess-r-package
+  :type 'boolean)
+
+(defcustom ess-r-package-exclude-modes '(fundamental-mode)
+  "A list of modes where `ess-r-package' must not be activated.
+The check is done with `derived-mode-p'."
+  :group 'ess-r-package
+  :type '(repeat symbol))
 
 (defcustom ess-r-package-enter-hook nil
   "Normal hook run on entering `ess-r-package-mode'."
@@ -475,15 +480,17 @@ disable the mode line entirely."
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
 
-
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
-  (when (and (or (buffer-file-name) default-directory)
-             (not (memq major-mode '(minibuffer-inactive-mode fundamental-mode)))
-             (if (listp ess-r-package-auto-activate)
-                 (apply #'derived-mode-p ess-r-package-auto-activate)
-               ess-r-package-auto-activate))
-    ;; FIXME Emacs 25.1: Use `when-let'
+  (when (and ess-r-package-auto-activate
+             (or (buffer-name) default-directory)
+             (not (eq major-mode 'minibuffer-inactive-mode))
+             (or
+              ;; users probably have these in fundamental mode
+              (member (buffer-name) '("DESCRIPTION" "NAMESPACE"))
+              (if ess-r-package-exclude-modes
+                  (not (apply #'derived-mode-p ess-r-package-exclude-modes))
+                t)))
     (let ((pkg-info (ess-r-package-project)))
       (when pkg-info
         (ess-r-package-mode 1)))))
