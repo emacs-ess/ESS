@@ -470,15 +470,17 @@ disable the mode line entirely."
   :init-value nil
   :keymap ess-r-package-mode-map
   :lighter ess-r-package-mode-line
-  (cond
-   (ess-r-package-mode
-    (add-hook 'project-find-functions #'ess-r-package-project)
-    (run-hooks 'ess-r-package-enter-hook))
-   (t
+  (if ess-r-package-mode
+      (progn
+        (add-hook 'project-find-functions #'ess-r-package-project)
+        (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-package-project)
-    (run-hooks 'ess-r-package-exit-hook))))
+    (run-hooks 'ess-r-package-exit-hook)))
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
+
+
+;;;*;;; Activation
 
 (defun ess-r-package-auto-activate ()
   "Activate developer if current file is part of a package."
@@ -494,6 +496,31 @@ disable the mode line entirely."
     (let ((pkg-info (ess-r-package-project)))
       (when pkg-info
         (ess-r-package-mode 1)))))
+
+(defun ess-r-package-re-activate ()
+  "Restart `ess-r-package-mode'.
+First, deactivate package mode if active, and activate if in
+package mode. Use this function if state of the buffer such as
+`default-directory' has changed."
+  (when ess-r-package-mode
+    (ess-r-package-mode -1))
+  (setq ess-r-package--project-cache nil)
+  (ess-r-package-auto-activate))
+
+(defvar-local ess-r--old-default-dir nil)
+(defun ess-r-package-default-directory-tracker (&rest _)
+  (unless (equal ess-r--old-default-dir default-directory)
+    (setq ess-r--old-default-dir default-directory)
+    (ess-r-package-re-activate)))
+
+(defun ess-r-package-activate-directory-tracker ()
+  (add-hook 'after-change-functions 'ess-r-package-default-directory-tracker t t))
+
+(add-hook 'shell-mode-hook 'ess-r-package-activate-directory-tracker t)
+(add-hook 'eshell-mode-hook 'ess-r-package-activate-directory-tracker t)
+(when (fboundp 'advice-add)
+  (require 'shell)
+  (advice-add 'shell-resync-dirs :after 'ess-r-package-re-activate))
 
 
 ;;;*;;; Deprecated variables and functions
