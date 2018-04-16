@@ -71,6 +71,18 @@
       (should ess-r-package-mode))
     (kill-buffer)))
 
+(ert-deftest ess-r-package-auto-no-activation-in-eshell ()
+  (with-r-file "dummy-pkg/R/test.R"
+    (let ((ess-r-package-exclude-modes '(eshell-mode)))
+      (eshell)
+      (should (not ess-r-package-mode))
+      (kill-buffer)))
+  (with-r-file "dummy-pkg/R/test.R"
+    (let ((ess-r-package-auto-activate nil))
+      (eshell)
+      (should (not ess-r-package-mode))
+      (kill-buffer))))
+
 ;;; Namespaced evaluation
 
 (ert-deftest ess-r-run-presend-hooks ()
