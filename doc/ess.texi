@@ -3275,10 +3275,8 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @menu
 * ESS(R)--Editing files::
 * iESS(R)--Inferior ESS processes::
-* ESS-help--assistance with viewing help::
 * Philosophies for using ESS(R)::
-* Scenarios for use (possibilities--based on actual usage)::
-* Customization Examples and Solutions to Problems::
+* Example ESS usage::
 @end menu
 @include help-s.texi
 

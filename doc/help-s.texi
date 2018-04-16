@@ -3,16 +3,16 @@
 @section ESS[R]--Editing files
 
 @ESS{[R]} mode should be automatically turned on when visiting a file
-ending with an R or S suffix (*.R, *.S, *.s, etc).  Alternatively, type
-@kbd{M-x R-mode} to put the current buffer into R mode.  However, one
-will have to start up an inferior process to take advantage of the
-interactive features.
+ending with an R or S suffix (*.R, *.S, *.s, etc), which enables the
+features discussed previously.  Alternatively, type @kbd{M-x R-mode} to
+put the current buffer into R mode.  However, one will have to start up
+an inferior process to take advantage of the interactive features.
 
-@node iESS(R)--Inferior ESS processes, ESS-help--assistance with viewing help, ESS(R)--Editing files, ESS for R
+@node iESS(R)--Inferior ESS processes, Philosophies for using ESS(R), ESS(R)--Editing files, ESS for R
 @comment  node-name,  next,  previous,  up
 @section iESS[R]--Inferior ESS processes
 
-To start up iESS mode, use:
+To start up iESS mode for R, use:
 @example
    M-x R
    M-x S+3
@@ -21,29 +21,19 @@ To start up iESS mode, use:
    M-x S+6
 @end example
 
+@noindent
 (for R, S-PLUS 3.x, S4, S+5, S+6 or or S+7, respectively.  This assumes that
 you have access to each).
 
 @cindex command line arguments
-In the case that you wish to pass command line arguments to the
-starting R process, set the variable @code{inferior-R-args}.
+In the case that you wish to pass command line arguments to the starting
+R process, call it with the universal prefix. To set command line
+arguments that apply to all future iESS sessions, set the variable
+@code{inferior-R-args}.
 
 Note that R has some extremely useful command line arguments.  For
 example, @code{--vanilla} will ensure R starts up without loading in any init
-files.  To enter a command line argument, call R using a "prefix
-argument", by
-
-@example
-   C-u M-x R
-@end example
-
-and when ESS prompts for "Starting Args ? ", enter (for example):
-
-   @code{--vanilla}
-
-Then that R process will be started up using @code{R --vanilla}.  If you
-wish to always call R with certain arguments, set the variable
-@code{inferior-R-args} accordingly.
+files.
 
 If you have other versions of R or S available on the system, ESS
 is also able to start those versions.  How this exactly works depend on
@@ -118,47 +108,39 @@ starting different versions of S-Plus, type @kbd{M-x spl} and then hit
 "ESS->Start Process->Other" menu.
 
 
-@node ESS-help--assistance with viewing help, Philosophies for using ESS(R), iESS(R)--Inferior ESS processes, ESS for R
+@node Philosophies for using ESS(R), Example ESS usage, iESS(R)--Inferior ESS processes, ESS for R
 @comment  node-name,  next,  previous,  up
-@section ESS-help--assistance with viewing help
-
-ESS has built-in facilities for viewing help files from R.  @xref{Help}.
-
-
-@node Philosophies for using ESS(R), Scenarios for use (possibilities--based on actual usage), ESS-help--assistance with viewing help, ESS for R
 @section Philosophies for using ESS[R]
 
-The first is preferred, and configured for.  The second one can be
-retrieved again, by changing Emacs variables.
+There are two philosophies for using ESS.  Most modern best practices
+prefer the first.  ESS is configured for the first, and this is what the
+manual focuses on.
 
-1: (preferred by the current group of developers):  The source code is
-   real.  The objects are realizations of the source code.  Source
-   for EVERY user modified object is placed in a particular directory
-   or directories, for later editing and retrieval.
+1: The source code is real.  Objects are realizations of the source
+   code.  Source for EVERY user modified object is placed in a
+   particular directory or directories, for later editing and retrieval.
 
-2: (older version): R objects are real.  Source code is a temporary
-   realization of the objects.  Dumped buffers should not be saved.
-   _We_strongly_discourage_this_approach_.  However, if you insist,
-   add the following lines to your .emacs file:
+2: R objects are real.  Source code is a temporary realization of the
+   objects.  Dumped buffers should not be saved.
+   _We_strongly_discourage_this_approach_.  However, if you insist, add
+   the following lines to your Emacs configuration file:
 @example
 (setq ess-keep-dump-files nil)
 (setq ess-delete-dump-files t)
 (setq ess-mode-silently-save nil)
 @end example
-The second saves a small amount of disk space.  The first allows for
-better portability as well as external version control for code.
 
-@node Scenarios for use (possibilities--based on actual usage), Customization Examples and Solutions to Problems, Philosophies for using ESS(R), ESS for R
-@section Scenarios for use (possibilities--based on actual usage)
+@node Example ESS usage, , Philosophies for using ESS(R), ESS for R
+@section Example ESS usage
 
-We present some basic suggestions for using ESS to interact with SR
+We present some basic examples for using ESS to interact with R
 These are just a subset of approaches, many better approaches are
 possible.  Contributions of examples of how you work with ESS are
 appreciated (especially since it helps us determine priorities on
-future enhancements)! (comments as to what should be happening are
-prefixed by "##").
+future enhancements)! Comments as to what should be happening are
+prefixed by "##".
 @display
-1:  ##    Data Analysis Example (source code is real)
+1:  ## Data Analysis Example
     ## Load the file you want to work with
     C-x C-f myfile.R
 
@@ -209,101 +191,5 @@ prefixed by "##").
     ## save the revised myfile.R when you have finished
     C-c C-s
 
-
-
-@c 3:  ## Program revision example (S object is real)
-
-@c     ## Start up S-PLUS 3.x in a process buffer (this will be *S+3:1*)
-@c     M-x S+3
-
-@c     ## Dump an existing S object my.function into a buffer to work with
-@c     C-c C-d my.function
-@c     ## a new buffer named yourloginname.my.function.S will be created with
-@c     ## an editable copy of the object.  The buffer is associated with the
-@c     ## pathname /tmp/yourloginname.my.function.S and will amlost certainly not
-@c     ## exist after you log off.
-
-@c     ## enter program, functions, and code into work buffer, and send
-@c     ## entire contents to S-PLUS when ready
-@c     C-c C-b
-
-@c     ## Go to *S+3:1* buffer, which is the process buffer, and examine
-@c     ## the results.
-@c     C-c C-y
-@c     ## The sequence C-c C-y is a shortcut for:  C-x b *S+3:1*
-
-@c     ## Return to the work buffer (may/may not be prefixed)
-@c     C-x C-b yourloginname.my.function.S
-@c     ## Fix the function that didn't work, and resubmit by placing the
-@c     ## cursor somewhere in the function and
-@c     C-c C-f
-@c     ## Or you could've selected a region (using the mouse, or keyboard
-@c     ## via setting point/mark) and
-@c     C-c C-r
-@c     ## Or you could step through, line by line, using
-@c     C-c C-n
-@c     ## Or just send a single line (without moving to the next) using
-@c     C-c C-j
-@c     ## To fix that error in syntax for the "rchisq" command, get help
-@c     ## by
-@c     C-c C-v rchisq
-
-
-@c 4:    Data Analysis (S object is real)
-@c     ## Start up S-PLUS 3.x, in a process buffer (this will be *S+3:1*)
-@c     M-x S+3
-
-@c     ## Work in the process buffer.  When you find an object that needs
-@c     ## to be changed (this could be a data frame, or a variable, or a
-@c     ## function), dump it to a buffer:
-@c     C-c C-d my.cool.function
-
-@c     ## Edit the function as appropriate, and dump back in to the
-@c     ## process buffer
-@c     C-c C-b
-
-@c     ## Return to the S-PLUS process buffer
-@c     C-c C-y
-@c     ## Continue working.
-
-@c     ## When you need help, use
-@c     C-c C-v rchisq
-@c     ## instead of entering:   help("rchisq")
 @end display
 
-
-@node Customization Examples and Solutions to Problems,  , Scenarios for use (possibilities--based on actual usage), ESS for R
-@section Customization Examples and Solutions to Problems
-
-1. Suppose that you are primarily an SPLUS 3.4 user, occasionally
-   using S version 4, and sick and tired of the buffer-name *S+3*
-   we've stuck you with.  Simply edit the "ess-dialect" alist entry in
-   the ess-sp3-d.el and ess-s4-d.el files to be "S" instead of "S4" and
-   "S+3".  This will ensure that all the inferior process buffer names
-   are "*S*".
-
-2. Suppose that you WANT to have the first buffer name indexed by
-   ":1", in the same manner as your S-PLUS processes 2,3,4, and 5 (for
-   you heavy simulation people).  Then
-   add after your (require 'ess-site) or (load "ess-site") command
-    in your .emacs file, the line:
-@example
-(setq ess-plain-first-buffername nil)
-@end example
-
-3. Fontlocking sometimes fails to behave nicely upon errors.  When
-   Splus dumps, a mis-matched "  (double-quote) can result in the
-   wrong font-lock face being used for the remainder of the buffer.
-
-   Solution: add a " at the end of the "Dumped..." statement, to
-   revert the font-lock face back to normal.
-
-4. When you change directory within a *R* or *S* session using the
-setwd() command, emacs does not recognise that you have changed the
-current directory.
-
-Solution: Use @kbd{M-x ess-change-directory}.  This will prompt you for
-the directory to change to.  It will then change directory within the
-*S* buffer, and also update the emacs variable @code{default-directory}.
-Alternatively, if you have already executed setwd(), press @kbd{M-RET}
-within the *S* buffer so that Emacs can update @code{default-directory}.
