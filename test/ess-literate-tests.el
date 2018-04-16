@@ -1,3 +1,5 @@
+(eval-when-compile
+  (require 'cl-lib))
 
 (defun ess-ltest-check (file)
   (let ((path (expand-file-name file "literate")))
@@ -241,13 +243,13 @@
 
 (defun ess-ltest-decode-keysequence (str)
   "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
-  (let ((table (copy-seq (syntax-table))))
-    (loop for i from ?0 to ?9 do
-         (modify-syntax-entry i "." table))
-    (loop for i from ? to ? do
-         (modify-syntax-entry i "w" table))
-    (loop for i in '(? ?\( ?\) ?\[ ?\] ?{ ?} ?\" ?\' ?\ )
-       do (modify-syntax-entry i "w" table))
+  (let ((table (copy-sequence (syntax-table))))
+    (cl-loop for i from ?0 to ?9 do
+             (modify-syntax-entry i "." table))
+    (cl-loop for i from ? to ? do
+             (modify-syntax-entry i "w" table))
+    (cl-loop for i in '(? ?\( ?\) ?\[ ?\] ?{ ?} ?\" ?\' ?\ )
+             do (modify-syntax-entry i "w" table))
     (cl-mapcan (lambda (x)
                  (let ((y (ignore-errors (read x))))
                    (if (numberp y)
