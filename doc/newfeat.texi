@@ -29,6 +29,9 @@ in the process buffer.
 @item @ESS{[R]}: The startup screen has been cleaned up and displays
 the startup directory with an explicit @code{setwd()}.
 
+@item ESS now displays the language dialect in the mode-line
+So, for example, R buffers will now show ESS[R] rather than ESS[S].
+
 @end itemize
 
 

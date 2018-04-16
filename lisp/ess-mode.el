@@ -344,7 +344,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
    (format "(ess-mode-1.5): alist=%s \n" alist))
   (unless is-derived
     (setq major-mode 'ess-mode)
-    (setq mode-name (concat "ESS[" ess-language "]"))) ; was ess-dialect
+    (setq mode-name (concat "ESS[" (or ess-dialect ess-language) "]")))
   ;; The following line does the next 20 or so :-).
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1.6): editing-alist=%s \n"
