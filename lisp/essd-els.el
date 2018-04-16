@@ -82,7 +82,8 @@
   (inferior-ess)
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start)))
-(make-obsolete #'S+elsewhere #'ess-remote)
+;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
+(make-obsolete #'S+elsewhere #'ess-remote "2000")
 
 
 (defun S+elsewhere-mode (&optional proc-name)
