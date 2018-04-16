@@ -3299,21 +3299,11 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 @node ESS for BUGS
 @chapter ESS for BUGS
 
-@menu
-* ESS(BUGS)--Model files::
-* ESS(BUGS)--Command files::
-* ESS(BUGS)--Log files::
-@end menu
 @include help-bugs.texi
 
 @node ESS for JAGS
 @chapter ESS for JAGS
 
-@menu
-* ESS(JAGS)--Model files::
-* ESS(JAGS)--Command files::
-* ESS(JAGS)--Log files::
-@end menu
 @include help-jags.texi
 
 

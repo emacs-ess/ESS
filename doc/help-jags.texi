@@ -1,7 +1,3 @@
-@ESS{[BUGS]} was originally designed for use with BUGS software.  
-Later, it evolved to support JAGS as a dialect of the
-BUGS language via @ESS{[JAGS]}.  Since BUGS and JAGS are quite
-similar, @ESS{[BUGS]} and @ESS{[JAGS]} are necessarily similar.
 @ESS{[JAGS]} provides 4 features.  First, JAGS syntax is described to
 allow for proper fontification of statements, distributions,
 functions, commands and comments in JAGS model files, command files
@@ -11,32 +7,23 @@ single file.  Third, @ESS{} provides a JAGS batch script that allows @ESS{}
 to set JAGS batch parameters.  Fourth, key sequences are defined to
 create a command file and submit a JAGS batch process. 
 
-@comment  node-name,  next,  previous,  up
-@node ESS(JAGS)--Model files, ESS(JAGS)--Command files, ESS for JAGS, ESS for JAGS
 @section ESS[JAGS]--Model files
 
-Model files with the @file{.bug} extension are edited in @ESS{[BUGS]} mode
-if @code{(require 'ess-bugs-d)} was performed or edited in @ESS{[JAGS]} mode
-if @code{(require 'ess-jags-d)}.
-Three keys are bound for your use in @ESS{[BUGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.
+Files with the @file{.jag} extension are edited in @ESS{[JAGS]} mode.
+Three keys are bound for your use in @ESS{[JAGS]}, @kbd{F2}, @kbd{C-c C-c} and @kbd{=}.
 @kbd{F2} performs the same action as it does in @ESS{[SAS]},
 @xref{ESS(SAS)--Function keys for batch processing}.  @kbd{C-c C-c} performs the
 function @code{ess-bugs-next-action} which you will use a lot.  Pressing it
 in an empty buffer for a model file will produce a template for you.  @kbd{=}
 inserts the set operator, @code{<-}.
 
-@ESS{[JAGS]} does not support "replacement" variables which were part of
-@ESS{[BUGS]}.  Although, "replacement" variables are an extremely convenient
-feature, creating the elisp code for their operation was challenging.  So, a
-more elisp-ish approach was adopted for @ESS{[JAGS]}:  elisp local variables.
-These variables are
-created as part of the template, i.e. with the first press of @kbd{C-c C-c} 
-in an empty buffer.  For your @file{.bug} file, they are named 
-@code{ess-jags-chains}, @code{ess-jags-monitor}, @code{ess-jags-thin},  
-@code{ess-jags-burnin} and @code{ess-jags-update};
-they appear in the @code{Local Variables} section.  When you are
-finished editing your model file, pressing @kbd{C-c C-c} will perform
-the necessary actions to build your command file for you. 
+The first press of @kbd{C-c C-c} will set up a template, including some
+necessary file-local variables in an empty buffer.  These variables are
+@code{ess-jags-chains}, @code{ess-jags-monitor}, @code{ess-jags-thin},
+@code{ess-jags-burnin} and @code{ess-jags-update}; they appear in the
+@code{Local Variables} section.  When you are finished editing your
+model file, pressing @kbd{C-c C-c} will perform the necessary actions to
+build your command file for you.
 
 The @code{ess-jags-chains} variable is the number of chains that
 you want to initialize and sample from; defaults to 1.
@@ -55,12 +42,9 @@ to keep.  By default, the update parameter is set to 10000.  Both
 @code{ess-jags-burnin} and @code{ess-jags-update} are multiplied by
 @code{ess-jags-thin} since JAGS does not do it automatically.
 
-@comment  node-name,  next,  previous,  up
-@node ESS(JAGS)--Command files, ESS(JAGS)--Log files, ESS(JAGS)--Model files, ESS for JAGS
 @section ESS[JAGS]--Command files
 
-To avoid extension name collision, @file{.bmd} is used for BUGS
-command files and @file{.jmd} for JAGS command files.  For your 
+Files ending in @file{.jmd} are for JAGS command files.  For your 
 @file{.jmd} file, there is only one variable, @code{ess-jags-command}, 
 in the @code{Local Variables} section.  When you have
 finished editing your model file and press @kbd{C-c C-c}, a command
@@ -70,8 +54,6 @@ again will submit your command file as a batch job.
 The @code{ess-jags-command} variable allows you to specify a different
 JAGS program to use to run your model; defaults to ``jags''.
 
-@comment  node-name,  next,  previous,  up
-@node ESS(JAGS)--Log files, , ESS(JAGS)--Command files, ESS for JAGS
 @section ESS[JAGS]--Log files
 
 The @file{.jog} extension is used for JAGS log
