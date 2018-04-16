@@ -2773,7 +2773,7 @@ ESS has a few extra features, which didn't fit anywhere else.
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
 * Toolbar::                     Support for toolbar in ESS
-* TAGS::                        Using TAGS for S files
+* Xref::                        Xref
 * Rdired::                      Directory editor for R objects
 * Rutils::                      R object/package management and help utilities
 * Org::                         Interaction with Org mode
@@ -3033,48 +3033,14 @@ for evaluating regions of your source buffers.  The toolbar should be
 present if your Emacs can display images.  @xref{Customization}, for ways
 to change the toolbar.
 
-@node TAGS
-@section TAGS
-
-@c This needs to be rewritten now that ESS supports xref
-
-The Emacs tags facility can be used to navigate around your files
-containing definitions of S functions.  This facility is independent of
-ESS usage, but is written here since ESS users may wish to take
-advantage of TAGS facility.  Read more about Emacs tags in an Emacs
-manual.
-
-Etags, the program that generates the TAGS file, does not yet know the
-syntax to recognise function definitions in R files.  Hence, you will
-need to provide a regexp that matches your function definitions.  Here
-is an example call (broken over two lines; type as one line) that should
-be appropriate.
-
-@example
-etags --language=none
---regex='/\([^ \t]+\)[ \t]*<-[ \t]*function/\1/' *.R
-@end example
-
-This will find entries in your source file of the form:
-
-@example
-some.name <- function
-@end example
-
-with the function name starting in column 0.  Windows users may need to
-change the single quotes to double quotes.
-
-R version 2.9.0 introduced a front-end script for finding R tags, which
-calls the @samp{rtags()} function.  By default, this script will
-recursively search the directories for relevant tags in R/C/Rd files.
-To use this script from the command line, try the following to get
-started:
-
-@example
-R CMD rtags --help
-@end example
-
-For further details, see @uref{http://developer.r-project.org/rtags.html}
+@node Xref
+@section Xref
+@cindex xref
+@cindex finding function definitions
+Xref is an Emacs interface that supports finding ``identifiers,''
+usually function definitions in ESS's view.  ESS ships with support for
+Xref in Emacs versions 25.1 and higher.  @xref{Xref,,, emacs, The Gnu
+Emacs Reference Manual} for how to use this feature.
 
 @node Rdired
 @section Rdired
