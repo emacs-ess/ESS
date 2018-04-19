@@ -623,7 +623,8 @@ Executed in process buffer."
   ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
   ;; carefully set "pager" option  "when needed":
   (let ((pager-cmd (format
-                    "if (identical(getOption('pager'), file.path(R.home('bin'), 'pager')))
+                    "if(identical(getOption('pager'),
+                                  file.path(R.home(), 'bin', 'pager')))
                         options(pager='%s')\n"
                     inferior-ess-pager)))
     (ess-command pager-cmd))
