@@ -2883,10 +2883,16 @@ Possible values are:
   'one: All help buffers are shown in one dedicated frame.
      t: Each help buffer gets its own frame.
 
+Note if you set this to t you should also set
+`ess-help-reuse-window' to nil to ensure that help buffers are
+displayed in a new frame.
+
 The parameters of this frame are stored in `ess-help-frame-alist'.
 See also `inferior-ess-own-frame'."
   :group 'ess-help
-  :type '(choice (const nil) (const one) (const t)))
+  :type '(choice (const :tag "Display in current frame" nil)
+                 (const :tag "Display in one frame" one)
+                 (const :tag "Display in a new frame" t)))
 
 (defcustom ess-help-reuse-window t
   "If t, ESS tries to display new help buffers in the existing help window"
