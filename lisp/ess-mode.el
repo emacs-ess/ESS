@@ -376,11 +376,13 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
   (ess-load-extras)
+  (run-mode-hooks 'prog-mode-hook)
   (run-mode-hooks 'ess-mode-hook)
   (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
 
 ;; Set parent to `prog-mode'
 (put 'ess-mode 'derived-mode-parent 'prog-mode)
+(set-keymap-parent ess-mode-map prog-mode-map)
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.

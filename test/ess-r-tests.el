@@ -4,11 +4,22 @@
 (require 'ess-r-tests-utils)
 
 
-;;; Inferior R
+;;; R
 
 (ert-deftest ess-r-inherits-prog-mode ()
-  (with-r-file nil
-    (should (derived-mode-p 'prog-mode))))
+  (let ((prog-mode-hook (lambda () (setq ess-test-prog-hook t))))
+    (with-r-file nil
+      (should (derived-mode-p 'prog-mode))
+      (should ess-test-prog-hook)
+      (should
+       ;; Test that prog-mode-map is a keymap-parent
+       (let ((map (current-local-map))
+             found)
+         (while (and map (not found))
+           (if (eq (keymap-parent map) prog-mode-map)
+               (setq found t)
+             (setq map (keymap-parent map))))
+         found)))))
 
 (ert-deftest ess-build-eval-command:R ()
   (let ((command "command(\"string\")"))
