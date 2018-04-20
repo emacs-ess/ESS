@@ -35,6 +35,9 @@ So, for example, R buffers will now show ESS[R] rather than ESS[S].
 @item @ESS{[R]}: @code{Makevars} files are now automatically opened
 with @code{makefile-mode}.
 
+@item New varaible @code{ess-write-to-dribble}.
+This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
+
 @end itemize
 
 

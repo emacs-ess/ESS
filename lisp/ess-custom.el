@@ -3116,13 +3116,19 @@ Created for each process."
 (defvar ess-error-regexp-alist nil
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
+(defcustom ess-write-to-dribble t
+  "Non-nil means write to `ess-dribble-buffer'.
+See also `ess-verbose'."
+  :group 'ess-proc
+  :type 'boolean)
+
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-dribble-buffer (generate-new-buffer "*ESS*")
-  "Buffer for temporary use for setting default variable values.
+(defvar ess-dribble-buffer "*ESS*"
+  "Name of buffer for temporary use for setting default variable values.
 Used for recording status of the program, mainly for debugging.")
 
 (defvar ess-customize-alist nil
