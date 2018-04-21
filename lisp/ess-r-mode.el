@@ -2269,7 +2269,7 @@ otherwise nil."
 ;;*;; Provide and auto-loads
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("/Makevars$" . makefile-mode))
+(add-to-list 'auto-mode-alist '("/Makevars\\(\\.win\\)?$" . makefile-mode))
 
 (provide 'ess-r-mode)
 

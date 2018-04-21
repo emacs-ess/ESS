@@ -130,5 +130,7 @@
 
 (ert-deftest ess-r-makevars-mode ()
   (save-window-excursion
-    (switch-to-buffer (find-file-noselect "fixtures/Makevars"))
-    (should (eq major-mode 'makefile-mode))))
+    (mapc (lambda (file)
+            (switch-to-buffer (find-file-noselect file))
+            (should (eq major-mode 'makefile-mode)))
+          '("fixtures/Makevars" "fixtures/Makevars.win"))))
