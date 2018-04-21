@@ -32,6 +32,9 @@ the startup directory with an explicit @code{setwd()}.
 @item ESS now displays the language dialect in the mode-line
 So, for example, R buffers will now show ESS[R] rather than ESS[S].
 
+@item @ESS{[R]}: @code{Makevars} files are now automatically opened
+with @code{makefile-mode}.
+
 @end itemize
 
 

@@ -113,3 +113,11 @@
         (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
           (should (string= (substring output 0 (length error-msg))
                            error-msg)))))))
+
+
+;;; Misc
+
+(ert-deftest ess-r-makevars-mode ()
+  (save-window-excursion
+    (switch-to-buffer (find-file-noselect "fixtures/Makevars"))
+    (should (eq major-mode 'makefile-mode))))

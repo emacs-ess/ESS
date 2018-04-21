@@ -2265,6 +2265,12 @@ otherwise nil."
       (set-marker (cadr bounds) nil)
       (undo-boundary))))
 
+
+;;*;; Provide and auto-loads
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("/Makevars$" . makefile-mode))
+
 (provide 'ess-r-mode)
 
  ; Local variables section
