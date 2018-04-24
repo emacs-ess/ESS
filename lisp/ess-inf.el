@@ -277,7 +277,8 @@ Alternatively, it can appear in its own frame if
             ;; ensures a visible `setwd' in the inferior process and
             ;; this makes sure we catch the prompt if user comp is
             ;; super-duper fast
-            (ess-set-working-directory start-directory)
+            (when ess-setwd-command
+              (ess-set-working-directory start-directory))
 
             (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)

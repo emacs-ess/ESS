@@ -73,7 +73,8 @@
     (comment-start-skip           . "/\\*+ *")
     (comment-use-syntax           . t) ;; needed for multiline
     (ess-execute-screen-options-command . "set linesize %s\n")
-    )
+    (ess-getwd-command             . "pwd")
+    (ess-setwd-command             . "cd \"%s\""))
   "Variables to customize for Stata.")
 
 
