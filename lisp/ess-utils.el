@@ -29,7 +29,7 @@
 (eval-when-compile
   (require 'tramp)
   (require 'cl-lib))
-
+(require 'ess-custom)
 (defvar ac-modes)
 (declare-function evil-visual-state-p "evil")
 (declare-function evil-normal-state "evil")
@@ -1520,16 +1520,17 @@ If not `nil' and not `t', query for each instance."
 
 ;;*;; Debugging tools
 
-(defvar ess-dribble-buffer nil)
+(defvar ess-dribble-buffer)
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to dribble ('*ESS*') buffer."
-  (unless (buffer-live-p ess-dribble-buffer)
-    ;; ESS dribble buffer must be re-created.
-    (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
-  (let (deactivate-mark)
-    (with-current-buffer ess-dribble-buffer
-      (goto-char (point-max))
-      (insert-before-markers text))))
+  (unless (or ess-verbose ess-write-to-dribble)
+    (unless (buffer-live-p ess-dribble-buffer)
+      ;; ESS dribble buffer must be re-created.
+      (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
+    (let (deactivate-mark)
+      (with-current-buffer ess-dribble-buffer
+        (goto-char (point-max))
+        (insert-before-markers text)))))
 
 ;; Shortcut to render "dribbling" statements less cluttering:
 (defun ess-if-verbose-write (text)
