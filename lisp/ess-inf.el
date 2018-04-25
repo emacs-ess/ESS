@@ -197,8 +197,8 @@ Alternatively, it can appear in its own frame if
                   (concat "inferior-" inferior-ess-program "-args"))
                  (switches-symbol (intern-soft symbol-string))
                  (switches
-                  (if (and switches-symbol (boundp switches-symbol))
-                      (symbol-value switches-symbol))))
+                  (when (and switches-symbol (boundp switches-symbol))
+                    (symbol-value switches-symbol))))
             (set-buffer buf)
             (inferior-ess-mode)
             (ess-write-to-dribble-buffer
@@ -206,18 +206,16 @@ Alternatively, it can appear in its own frame if
                      inferior-ess-program infargs comint-process-echoes))
             (setq ess-local-process-name procname)
             (goto-char (point-max))
-            ;; load past history
 
-            ;; Set up history file
-            (if ess-history-file
-                (if (eq t ess-history-file)
-                    (set (make-local-variable 'ess-history-file)
-                         (concat "." ess-dialect "history"))
-                  ;; otherwise must be a string "..."
-                  (unless (stringp ess-history-file)
-                    (error "`ess-history-file' must be nil, t, or a string"))))
 
             (when ess-history-file
+              ;; Load past history
+              (if (eq t ess-history-file)
+                  (set (make-local-variable 'ess-history-file)
+                       (concat "." ess-dialect "history"))
+                ;; otherwise must be a string "..."
+                (unless (stringp ess-history-file)
+                  (error "`ess-history-file' must be nil, t, or a string")))
               (setq comint-input-ring-file-name
                     (expand-file-name ess-history-file
                                       (or ess-history-directory start-directory)))
@@ -238,7 +236,7 @@ Alternatively, it can appear in its own frame if
             (set-process-sentinel (get-process procname) 'ess-process-sentinel)
             ;; Add this process to ess-process-name-list, if needed
             (let ((conselt (assoc procname ess-process-name-list)))
-              (if conselt nil
+              (unless conselt
                 (setq ess-process-name-list
                       (cons (cons procname nil) ess-process-name-list))))
             (ess-make-buffer-current)

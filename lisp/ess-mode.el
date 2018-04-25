@@ -877,7 +877,6 @@ RESET is for compatibility with `next-error' and is ignored."
 
 (defun ess-dump-object-into-edit-buffer (object)
   "Edit an ESS object in its own buffer.
-
 Without a prefix argument, this simply finds the file pointed to by
 `ess-source-directory'. If this file does not exist, or if a
 prefix argument is given, a dump() command is sent to the ESS process to
@@ -933,8 +932,8 @@ generate the source buffer."
 
     (:override
      ;; Make sure we start fresh
-     (if (get-file-buffer filename)
-         (kill-buffer (get-file-buffer filename)))
+     (when (get-file-buffer filename)
+       (kill-buffer (get-file-buffer filename)))
 
      (ess-command complete-dump-command)
      (message "Dumped in %s" filename)
@@ -956,12 +955,12 @@ generate the source buffer."
        (setq make-backup-files nil))
 
      ;; Don't get confirmation to delete dumped files when loading
-     (if (eq ess-keep-dump-files 'check)
-         (setq ess-keep-dump-files nil))
+     (when (eq ess-keep-dump-files 'check)
+       (setq ess-keep-dump-files nil))
 
      ;; Delete the file if necessary
-     (if ess-delete-dump-files
-         (delete-file (buffer-file-name))))))
+     (when ess-delete-dump-files
+       (delete-file (buffer-file-name))))))
 
 (defun ess-find-dump-file-other-window (filename)
   "Find ESS source file FILENAME in another window."
