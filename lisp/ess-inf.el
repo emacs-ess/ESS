@@ -601,23 +601,20 @@ This marks the process with a message, at a particular time point."
     dir))
 
 (defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
+  "Possibly prompt for a startup directory.
+When `ess-ask-for-ess-directory' is non-nil, prompt.  PROCNAME is
+the name of the inferior process (e.g. \"R:1\"), and DIALECT is
+the language dialect (e.g. \"R\")."
   (let ((default-dir (inferior-ess-r--adjust-startup-directory
                       (inferior-ess--get-startup-directory)
                       dialect)))
     (if ess-ask-for-ess-directory
-        (let* ((prog (cond ((string= dialect "R")
-                            ;; Includes R-X.Y versions
-                            (concat ", " inferior-R-version))
-                           (inferior-ess-program
-                            (concat ", " inferior-ess-program ))
-                           (t "")))
-               (prompt (format "%s starting project directory? "
-                               prog)))
+        (let ((prompt (format "%s starting project directory? " procname)))
           (ess-prompt-for-directory default-dir prompt))
       default-dir)))
 
 (defun ess-prompt-for-directory (default prompt)
-  "`prompt' for a directory, using `default' as the usual."
+  "PROMPT for a directory, using DEFAULT as the usual."
   (let* ((def-dir (file-name-as-directory default))
          (the-dir (expand-file-name
                    (file-name-as-directory
