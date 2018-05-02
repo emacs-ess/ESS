@@ -115,7 +115,7 @@ e.  BEG and END denote the region in the current buffer to be sent."
 (defun pd::set-up-demo ()
 
   ;; (if (not xemacs) (set-default-font "*courier-bold-r*--14**"))
-  (R)
+  (run-ess-r)
   (split-window-vertically 6)
   (find-file "demos.R")
 

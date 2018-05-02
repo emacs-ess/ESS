@@ -105,7 +105,7 @@
       (cond ((= 0 (length ess-process-name-list))
              (message "no ESS processes running; starting R")
              (sit-for 1); so the user notices before the next msgs/prompt
-             (R)
+             (ess-run-r)
              (set-buffer rnw-buf)
              )
             ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
