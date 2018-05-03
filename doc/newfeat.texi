@@ -52,6 +52,9 @@ removed. This affects @code{C-c h}, which was bound to
 @code{ess-handy-commands} in @code{Rd-mode-map},
 @code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
 
+@item Variable @code{ess-s-versions-list} is obsolete and ignored.
+Use @code{ess-s-versions} instead.  You may pass arguments by starting the inferior process with the universal argument.
+
 @end itemize
 
 
