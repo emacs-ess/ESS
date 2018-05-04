@@ -3184,11 +3184,9 @@ search path related variables."
 (defun ess-display-temp-buffer (buff)
   "Display the buffer BUFF using `temp-buffer-show-function' and respecting
 `ess-display-buffer-reuse-frames'."
-  (if temp-buffer-show-function
-      (when (fboundp 'temp-buffer-show-function)
-        (temp-buffer-show-function buff))
-    (display-buffer buff :frame `(when ess-display-buffer-reuse-frames
-                                   (reusable-frames . t)))))
+  (if (fboundp temp-buffer-show-function)
+      (funcall temp-buffer-show-function buff))
+  (display-buffer buff '(display-buffer-reuse-window) ess-display-buffer-reuse-frames))
 
 ;;*;; Error messages
 

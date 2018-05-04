@@ -132,9 +132,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
      (list (ess-find-help-file "Help on"))))
   (if (fboundp ess-display-help-on-object-function)
       (funcall ess-display-help-on-object-function object command)
-    (let* ((hb-name (concat "*help["
-                            ess-current-process-name
-                            "](" (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
+    (let* ((hb-name (concat "*help[" ess-current-process-name "]("
+                            (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
            (old-hb-p (get-buffer hb-name))
            (tbuffer (get-buffer-create hb-name)))
       (when (or (not old-hb-p)
@@ -469,8 +468,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
       (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
       (unless (eobp) (delete-char 1))
       (setq buffer-read-only t))
-    (ess--switch-to-help-buffer buff)
-    ))
+    (ess--switch-to-help-buffer buff)))
 
 (defun ess--action-open-in-emacs (pos)
   (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
@@ -491,56 +489,55 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
                    'ess-help-mode)
            (throw 'win w)))))))
 
-(defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
+(defun ess--switch-to-help-buffer (buff)
   "Switch to an ESS help BUFF.
-For internal use.  Take into account variable `ess-help-own-frame'.
-CURR-MAJOR-MODE default to current major mode."
-  (setq curr-major-mode (or curr-major-mode major-mode))
-  (let ((display-buffer-alist
-         (cons `(,(if ess-help-own-frame "." nil)
-                 ,(if (eq ess-help-own-frame 'one)
-                      #'ess-help-own-frame
-                    #'ess-help-new-frame)
-                 ,ess-help-frame-alist)
-               display-buffer-alist))
-        (help-win (or (and (eq curr-major-mode 'ess-help-mode)
-                           (selected-window))
-                      (and ess-help-reuse-window
-                           (ess--find-displayed-help-window)))))
-    (cond (help-win
-           (select-window help-win 'norecord)
-           (set-window-buffer help-win buff))
-          (ess-help-pop-to-buffer
-           (pop-to-buffer buff))
-          (t
-           (ess-display-temp-buffer buff)))))
+For internal use.  Take into account variable `ess-help-own-frame'."
+  (if (eq ess-help-own-frame t)
+      ;; 0) always pop new frame
+      (let* ((frame (make-frame ess-help-frame-alist))
+             (action `(display-buffer-same-window (reusable-frames . ,frame))))
+        (ess--display-help buff frame action))
+    (let ((help-win (or
+                     ;; if this doc is already displayed, reuse 
+                     (get-buffer-window buff 'all-frames)
+                     ;; if help window visible, reuse
+                     (and ess-help-reuse-window
+                          (ess--find-displayed-help-window)))))
+      (cond
+       ;; 1) existent help window lying somewhere; reuse
+       (help-win
+        (set-window-buffer help-win buff)
+        (let ((action '(display-buffer-reuse-window (reusable-frames . t))))
+          (ess--display-help buff nil action)))
+       ;; 2) 
+       ((eq ess-help-own-frame 'one)
+        (let* ((frame (if (frame-live-p ess--help-frame)
+                          ess--help-frame
+                        (make-frame ess-help-frame-alist)))
+               (action `(display-buffer-same-window (reusable-frames . ,frame))))
+          (setq ess--help-frame frame)
+          (ess--display-help buff frame action)))
+       ;; 3) display help in other window
+       (t
+        (ess--display-help buff))))))
 
-(defvar ess-help-frame nil
+(defun ess--display-help (buff &optional frame action)
+  (let ((action (or action `(nil (reusable-frames . ,(or frame ess-display-buffer-reuse-frames))))))
+    (when (and (framep frame)
+               (not (eq (selected-frame) frame)))
+      ;; VS[04-05-2018]: `display-buffer` framework has no satisfactory
+      ;; functionality to display buffers in selected windows. So, do some extra
+      ;; frame selection here.
+      (raise-frame frame)
+      (if ess-help-pop-to-buffer
+          (select-frame-set-input-focus frame)
+        (select-frame frame)))
+    (if ess-help-pop-to-buffer
+        (pop-to-buffer buff action)
+      (display-buffer buff action))))
+
+(defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
-
-(defun ess-help-own-frame (buffer &rest _ignore)
-  "Put BUFFER into `ess-help-frame'."
-  ;; SJE: Code adapted from Kevin Rodgers.
-  (if (frame-live-p ess-help-frame)
-      (progn
-        (or (frame-visible-p ess-help-frame)
-            (make-frame-visible ess-help-frame))
-        (raise-frame ess-help-frame)
-        (select-frame ess-help-frame)
-        (switch-to-buffer buffer)
-        (selected-window))
-    ;; else
-    (let ((window (get-buffer-window (ess-help-new-frame buffer))))
-      (setq ess-help-frame (window-frame window))
-      window)))
-
-(defun ess-help-new-frame (buffer &rest _ignore)
-  "Open BUFFER in a new frame.
-Returns the buffer."
-  (make-frame ess-help-frame-alist)
-  (switch-to-buffer buffer)
-  buffer)
-
 
 (defun ess-help-web-search ()
   "Search the web for documentation"
@@ -818,8 +815,8 @@ Keystroke    Section
           obj fun)))
 
 (defun ess-find-help-file (p-string)
-  "Find help, prompting for P-STRING.  Note that we can't search SAS,
-Stata or XLispStat for additional information."
+  "Find help, prompting for P-STRING.
+Note that we can't search SAS, Stata or XLispStat for additional information."
   (ess-make-buffer-current)
   (cond
    ((fboundp ess-find-help-file-function)

@@ -2887,21 +2887,21 @@ Note if you set this to t you should also set
 `ess-help-reuse-window' to nil to ensure that help buffers are
 displayed in a new frame.
 
-The parameters of this frame are stored in `ess-help-frame-alist'.
+The parameters of the own frame are stored in `ess-help-frame-alist'.
 See also `inferior-ess-own-frame'."
   :group 'ess-help
   :type '(choice (const :tag "Display in current frame" nil)
                  (const :tag "Display in one frame" one)
-                 (const :tag "Display in a new frame" t)))
+                 (const :tag "Always display in a new frame" t)))
 
 (defcustom ess-help-reuse-window t
-  "If t, ESS tries to display new help buffers in the existing help window"
+  "If t, ESS tries to display new help buffers in the existing help window."
   :type 'boolean
   :group 'ess-help)
 
-(defcustom ess-help-frame-alist special-display-frame-alist
+(defcustom ess-help-frame-alist default-frame-alist
   "Alist of frame parameters used to create help frames.
-This defaults to `special-display-frame-alist' and is used only when
+This defaults to `default-frame-alist' and is used only when
 the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
   :type 'alist)
