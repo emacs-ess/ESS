@@ -185,11 +185,7 @@ Alternatively, it can appear in its own frame if
 
       (let* ((infargs (or ess-start-args
                           inferior-ess-start-args))
-             (special-display-regexps nil)
-             (special-display-frame-alist inferior-ess-frame-alist)
              (proc (get-process procname)))
-        (if inferior-ess-own-frame
-            (setq special-display-regexps '(".")))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
@@ -201,8 +197,8 @@ Alternatively, it can appear in its own frame if
                   (concat "inferior-" inferior-ess-program "-args"))
                  (switches-symbol (intern-soft symbol-string))
                  (switches
-                  (if (and switches-symbol (boundp switches-symbol))
-                      (symbol-value switches-symbol))))
+                  (when (and switches-symbol (boundp switches-symbol))
+                    (symbol-value switches-symbol))))
             (set-buffer buf)
             (inferior-ess-mode)
             (ess-write-to-dribble-buffer
@@ -210,18 +206,16 @@ Alternatively, it can appear in its own frame if
                      inferior-ess-program infargs comint-process-echoes))
             (setq ess-local-process-name procname)
             (goto-char (point-max))
-            ;; load past history
 
-            ;; Set up history file
-            (if ess-history-file
-                (if (eq t ess-history-file)
-                    (set (make-local-variable 'ess-history-file)
-                         (concat "." ess-dialect "history"))
-                  ;; otherwise must be a string "..."
-                  (unless (stringp ess-history-file)
-                    (error "`ess-history-file' must be nil, t, or a string"))))
 
             (when ess-history-file
+              ;; Load past history
+              (if (eq t ess-history-file)
+                  (set (make-local-variable 'ess-history-file)
+                       (concat "." ess-dialect "history"))
+                ;; otherwise must be a string "..."
+                (unless (stringp ess-history-file)
+                  (error "`ess-history-file' must be nil, t, or a string")))
               (setq comint-input-ring-file-name
                     (expand-file-name ess-history-file
                                       (or ess-history-directory start-directory)))
@@ -242,7 +236,7 @@ Alternatively, it can appear in its own frame if
             (set-process-sentinel (get-process procname) 'ess-process-sentinel)
             ;; Add this process to ess-process-name-list, if needed
             (let ((conselt (assoc procname ess-process-name-list)))
-              (if conselt nil
+              (unless conselt
                 (setq ess-process-name-list
                       (cons (cons procname nil) ess-process-name-list))))
             (ess-make-buffer-current)
@@ -277,7 +271,8 @@ Alternatively, it can appear in its own frame if
             ;; ensures a visible `setwd' in the inferior process and
             ;; this makes sure we catch the prompt if user comp is
             ;; super-duper fast
-            (ess-set-working-directory start-directory)
+            (when ess-setwd-command
+              (ess-set-working-directory start-directory))
 
             (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
@@ -290,9 +285,15 @@ Alternatively, it can appear in its own frame if
           (with-current-buffer buf
             (rename-buffer buf-name-str t))
 
-          (if (and inferior-ess-same-window (not inferior-ess-own-frame))
-              (switch-to-buffer buf)
-            (pop-to-buffer buf)))))))
+          ;; Show the buffer in a new frame, window, or selected
+          ;; window depending on user settings:
+          (cond (inferior-ess-own-frame
+                 (progn
+                   (make-frame inferior-ess-frame-alist)
+                   (switch-to-buffer buf)))
+                (inferior-ess-same-window
+                 (switch-to-buffer buf))
+                (t (pop-to-buffer buf))))))))
 
 
 (defvar inferior-ess-objects-command nil
@@ -600,23 +601,20 @@ This marks the process with a message, at a particular time point."
     dir))
 
 (defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
+  "Possibly prompt for a startup directory.
+When `ess-ask-for-ess-directory' is non-nil, prompt.  PROCNAME is
+the name of the inferior process (e.g. \"R:1\"), and DIALECT is
+the language dialect (e.g. \"R\")."
   (let ((default-dir (inferior-ess-r--adjust-startup-directory
                       (inferior-ess--get-startup-directory)
                       dialect)))
     (if ess-ask-for-ess-directory
-        (let* ((prog (cond ((string= dialect "R")
-                            ;; Includes R-X.Y versions
-                            (concat ", " inferior-R-version))
-                           (inferior-ess-program
-                            (concat ", " inferior-ess-program ))
-                           (t "")))
-               (prompt (format "%s starting project directory? "
-                               prog)))
+        (let ((prompt (format "%s starting project directory? " procname)))
           (ess-prompt-for-directory default-dir prompt))
       default-dir)))
 
 (defun ess-prompt-for-directory (default prompt)
-  "`prompt' for a directory, using `default' as the usual."
+  "PROMPT for a directory, using DEFAULT as the usual."
   (let* ((def-dir (file-name-as-directory default))
          (the-dir (expand-file-name
                    (file-name-as-directory
@@ -2692,20 +2690,20 @@ command (%s) like this, or a version with explicit options(max.print=1e6):
 local({ out <- try({%s}); print(out, max=1e6) })\n
 "
   (let* ((tbuffer (get-buffer-create
-                  " *ess-get-words*")); initial space: disable-undo
+                   " *ess-get-words*")); initial space: disable-undo
          (word-RE
           (concat "\\("
                   "\\\\\\\"" "\\|" "[^\"]" ;  \" or non-"-char
                   "\\)*"))
          (full-word-regexp
           (concat "\"" "\\(" word-RE "\\)"
-                   "\""
-                   "\\( \\|$\\)"; space or end
-                   ))
+                  "\""
+                  "\\( \\|$\\)"; space or end
+                  ))
          words)
     (ess-if-verbose-write
      (format "(ess-get-words-* command=%s full-word-regexp=%S)\n"
-                                  command full-word-regexp))
+             command full-word-regexp))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
@@ -3032,8 +3030,8 @@ P-STRING is the prompt string."
     (call-interactively
      (cdr (assoc (ess-completing-read "Execute"
                                       (sort (mapcar 'car commands)
-                                            'string-lessp) nil t nil
-                                            'ess--handy-history hist)
+                                            'string-lessp)
+                                      nil t nil 'ess--handy-history hist)
                  commands)))))
 
 (defun ess-smart-comma ()
@@ -3050,7 +3048,7 @@ list."
             (delete-horizontal-space)
             (insert ", ")
             (unless (eq major-mode 'inferior-ess-mode)
-             (indent-according-to-mode)))
+              (indent-according-to-mode)))
         (insert ",")))))
 
  ; directories
@@ -3185,8 +3183,9 @@ search path related variables."
 (defun ess-display-temp-buffer (buff)
   "Display the buffer BUFF using `temp-buffer-show-function' and respecting
 `ess-display-buffer-reuse-frames'."
-  (let ((display-buffer-reuse-frames ess-display-buffer-reuse-frames))
-    (funcall (or temp-buffer-show-function 'display-buffer) buff)))
+  (if (fboundp temp-buffer-show-function)
+      (funcall temp-buffer-show-function buff))
+  (display-buffer buff '(display-buffer-reuse-window) ess-display-buffer-reuse-frames))
 
 ;;*;; Error messages
 

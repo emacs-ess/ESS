@@ -2883,19 +2883,25 @@ Possible values are:
   'one: All help buffers are shown in one dedicated frame.
      t: Each help buffer gets its own frame.
 
-The parameters of this frame are stored in `ess-help-frame-alist'.
+Note if you set this to t you should also set
+`ess-help-reuse-window' to nil to ensure that help buffers are
+displayed in a new frame.
+
+The parameters of the own frame are stored in `ess-help-frame-alist'.
 See also `inferior-ess-own-frame'."
   :group 'ess-help
-  :type '(choice (const nil) (const one) (const t)))
+  :type '(choice (const :tag "Display in current frame" nil)
+                 (const :tag "Display in one frame" one)
+                 (const :tag "Always display in a new frame" t)))
 
 (defcustom ess-help-reuse-window t
-  "If t, ESS tries to display new help buffers in the existing help window"
+  "If t, ESS tries to display new help buffers in the existing help window."
   :type 'boolean
   :group 'ess-help)
 
-(defcustom ess-help-frame-alist special-display-frame-alist
+(defcustom ess-help-frame-alist default-frame-alist
   "Alist of frame parameters used to create help frames.
-This defaults to `special-display-frame-alist' and is used only when
+This defaults to `default-frame-alist' and is used only when
 the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
   :type 'alist)
@@ -3116,13 +3122,19 @@ Created for each process."
 (defvar ess-error-regexp-alist nil
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
+(defcustom ess-write-to-dribble t
+  "Non-nil means write to `ess-dribble-buffer'.
+See also `ess-verbose'."
+  :group 'ess-proc
+  :type 'boolean)
+
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
   :group 'ess-proc
   :type 'boolean)
 
-(defvar ess-dribble-buffer (generate-new-buffer "*ESS*")
-  "Buffer for temporary use for setting default variable values.
+(defvar ess-dribble-buffer "*ESS*"
+  "Name of buffer for temporary use for setting default variable values.
 Used for recording status of the program, mainly for debugging.")
 
 (defvar ess-customize-alist nil
