@@ -1,35 +1,63 @@
-@c This file is not used anymore and is the same as installation.texi
-@c @section Unix (Linux/macOS/Solaris/etc.) Installation
+@subsection Packaged ESS
 
-@enumerate
-@item Download the latest zip or tgz archive from ESS
-@uref{http://ess.r-project.org/index.php?Section=download, downloads
-area} and unpack it into a directory where you would like ESS to
-reside. We will denote this directory as @file{/path/to/ESS/} hereafter.
+You may install ESS from Emacs by using @code{M-x package-install} if
+you add the third-party package archive MELPA to
+@code{package-archives}. Instructions on how to do so are found on
+@uref{https://melpa.org/, MELPA's website}. MELPA also hosts
+MELPA-stable with stable ESS builds. You may choose between MELPA with
+the latest and greatest features (and bugs) or MELPA-stable, which may
+lag a bit behind but should be more stable.
 
-Alternatively you can use @code{git} to fetch the most
-recent development version to your local machine with:
-@comment
-@comment @example
-@comment svn checkout https://svn.r-project.org/ESS/trunk /path/to/ESS
-@comment @end example
-@comment
-@comment or
+Alternatively, many GNU/Linux distributions package and distribute ESS,
+check with your distribution to see if this is the case.  You may need
+to add the above require statement to your configuration file in order
+to activate ESS.
+
+You will need to add
 
 @example
-git clone https://github.com/emacs-ess/ESS.git /path/to/ESS
+(require 'ess-site)
 @end example
 
-@item @b{Optionally}, compile elisp files and build the documentation with:
+@noindent
+to your Emacs configuration file in order to activate ESS.  Advanced
+users may activate only a particular language by loading @code{(require
+'ess-r-mode)} instead.
+
+Users of the nonfree operating systems macOS and Windows may be
+interested in downloading the Emacs binary by Vincent Goulet:
+@enumerate
+@item macOS
+@uref{https://vigou3.github.io/emacs-modified-macos/, Emacs Modified for macOS}
+@item Windows
+@uref{https://vigou3.github.io/emacs-modified-windows/, Emacs Modified for Windows}.
+@end enumerate
+
+@subsection From source
+
+Users who wish to install ESS from the source code may follow these instructions:
+
+@enumerate
+@item Obtain the ESS source files.
+
+@xref{Latest Version,,, ESS, ESS}
+
+We will refer to the location of the ESS source files as
+@file{/path/to/ESS/} hereafter.
+
+@item @b{Optionally}, compile elisp files and build the documentation:
 @example
 cd /path/to/ESS/
 make
 @end example
 Without this step, info, pdf and html documentation and reference card
-will not be available.
+will not be available. Uncompiled ESS will also run slower.
 
-@item @b{Optionally}, install into your local machine with
-@code{make install}. You might need administrative privileges:
+@item @b{Optionally}, install site-wide:
+
+You may make ESS available to all users of a machine by installing it
+site-wide. To do so, run @code{make install}. You might need
+administrative privileges:
 
 @example
 make install
@@ -40,36 +68,35 @@ run correctly on macOS, you will need to adjust the @file{PREFIX}
 path in @file{Makeconf}. The necessary code and instructions are
 commented in that file.
 
-@item If you have performed the @code{make install} step from above, just add
+@item Initialize ESS
+
+If you have performed the @code{make install} step from above, add:
 
 @example
 (require 'ess-site)
 @end example
 
-to your @file{~/.emacs} file. Otherwise, you should add
-@file{/path/to/ESS/lisp/} to your emacs load path and then load ESS with
-the following lines in your @file{~/.emacs}:
+to your Emacs configuration file. Otherwise, you should add
+@file{/path/to/ESS/lisp/} to your Emacs load path and then load ESS with
+the following lines in your Emacs configuration file:
 
 @example
 (add-to-list 'load-path "/path/to/ESS/lisp/")
-(load "ess-site")
+(require 'ess-site)
 @end example
 
-@item Restart your Emacs and check that ESS was loaded from a correct
+ess-site.el loads all ESS languages.  If you only want to load support
+for R, you may use
+
+@example
+(require 'ess-r-mode)
+@end example
+
+@noindent
+instead of ess-site.  Note that support for loading only part of ESS is
+recommended only for experienced Emacs users.
+
+@item Check installation
+Restart your Emacs and check that ESS was loaded from a correct
 location with @code{M-x ess-version}.
 @end enumerate
-
-@c -- NOTE: keep in sync with more important ../../ESS-web/php/download.php
-@emph{Note for Windows and macOS users:} The most straightforward
-way to install Emacs on your machine is by downloading
-the Emacs binary by Vincent Goulet; either
-@uref{https://vigou3.github.io/emacs-modified-macos/, Emacs Modified for macOS}
-or from
-@uref{https://vigou3.github.io/emacs-modified-windows/, Emacs Modified for Windows}.
-
-
-@emph{Note for XEmacs users:} Due to XEmacs lacking some features
-that ESS requires, ESS support of XEmacs ends with ESS 12.04-4.  @c This
-@c decision will be re-visited in the future as XEmacs continues to sync
-@c with GNU Emacs.
-
