@@ -492,23 +492,23 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
            (throw 'win w)))))))
 
 (defun ess--switch-to-help-buffer (buff &optional curr-major-mode)
-  "Switch to help buffer and take into account `ess-help-own-frame'.
-For internal use. Used in `ess-display-help-on-object',
-`ess-display-package-index', and `ess-display-vignettes'.
- CURR-MAJOR-MODE default to current major mode."
+  "Switch to an ESS help BUFF.
+For internal use.  Take into account variable `ess-help-own-frame'.
+CURR-MAJOR-MODE default to current major mode."
   (setq curr-major-mode (or curr-major-mode major-mode))
-  (let ((special-display-regexps (if ess-help-own-frame '(".") nil))
-        (special-display-frame-alist ess-help-frame-alist)
-        (special-display-function (if (eq ess-help-own-frame 'one)
-                                      'ess-help-own-frame
-                                    special-display-function))
+  (let ((display-buffer-alist
+         (cons `(,(if ess-help-own-frame "." nil)
+                 ,(if (eq ess-help-own-frame 'one)
+                      #'ess-help-own-frame
+                    #'ess-help-new-frame)
+                 ,ess-help-frame-alist)
+               display-buffer-alist))
         (help-win (or (and (eq curr-major-mode 'ess-help-mode)
                            (selected-window))
                       (and ess-help-reuse-window
                            (ess--find-displayed-help-window)))))
     (cond (help-win
            (select-window help-win 'norecord)
-           ;; (switch-to-buffer buff nil 'force) <- 3rd argument appeared in emacs 24
            (set-window-buffer help-win buff))
           (ess-help-pop-to-buffer
            (pop-to-buffer buff))
@@ -518,8 +518,8 @@ For internal use. Used in `ess-display-help-on-object',
 (defvar ess-help-frame nil
   "Stores the frame used for displaying R help buffers.")
 
-(defun  ess-help-own-frame (buffer &rest ignore)
-  "Put all ESS help buffers into `ess-help-frame'."
+(defun ess-help-own-frame (buffer &rest _ignore)
+  "Put BUFFER into `ess-help-frame'."
   ;; SJE: Code adapted from Kevin Rodgers.
   (if (frame-live-p ess-help-frame)
       (progn
@@ -530,10 +530,16 @@ For internal use. Used in `ess-display-help-on-object',
         (switch-to-buffer buffer)
         (selected-window))
     ;; else
-    (let ((window (special-display-popup-frame buffer)))
-      (set-window-dedicated-p window nil)
+    (let ((window (get-buffer-window (ess-help-new-frame buffer))))
       (setq ess-help-frame (window-frame window))
       window)))
+
+(defun ess-help-new-frame (buffer &rest _ignore)
+  "Open BUFFER in a new frame.
+Returns the buffer."
+  (make-frame ess-help-frame-alist)
+  (switch-to-buffer buffer)
+  buffer)
 
 
 (defun ess-help-web-search ()

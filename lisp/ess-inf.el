@@ -185,11 +185,7 @@ Alternatively, it can appear in its own frame if
 
       (let* ((infargs (or ess-start-args
                           inferior-ess-start-args))
-             (special-display-regexps nil)
-             (special-display-frame-alist inferior-ess-frame-alist)
              (proc (get-process procname)))
-        (if inferior-ess-own-frame
-            (setq special-display-regexps '(".")))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
@@ -291,9 +287,16 @@ Alternatively, it can appear in its own frame if
           (with-current-buffer buf
             (rename-buffer buf-name-str t))
 
-          (if (and inferior-ess-same-window (not inferior-ess-own-frame))
-              (switch-to-buffer buf)
-            (pop-to-buffer buf)))))))
+          ;; Show the buffer in a new frame, window, or selected
+          ;; window depending on user settings:
+          (cond (inferior-ess-own-frame
+                 (progn
+                   (make-frame inferior-ess-frame-alist)
+                   (switch-to-buffer buf)))
+                (inferior-ess-same-window
+                 (progn
+                   (switch-to-buffer buf)))
+                (t (pop-to-buffer buf))))))))
 
 
 (defvar inferior-ess-objects-command nil
@@ -3183,8 +3186,11 @@ search path related variables."
 (defun ess-display-temp-buffer (buff)
   "Display the buffer BUFF using `temp-buffer-show-function' and respecting
 `ess-display-buffer-reuse-frames'."
-  (let ((display-buffer-reuse-frames ess-display-buffer-reuse-frames))
-    (funcall (or temp-buffer-show-function 'display-buffer) buff)))
+  (if temp-buffer-show-function
+      (when (fboundp 'temp-buffer-show-function)
+        (temp-buffer-show-function buff))
+    (display-buffer buff :frame `(when ess-display-buffer-reuse-frames
+                                   (reusable-frames . t)))))
 
 ;;*;; Error messages
 
