@@ -292,8 +292,7 @@ Alternatively, it can appear in its own frame if
                    (make-frame inferior-ess-frame-alist)
                    (switch-to-buffer buf)))
                 (inferior-ess-same-window
-                 (progn
-                   (switch-to-buffer buf)))
+                 (switch-to-buffer buf))
                 (t (pop-to-buffer buf))))))))
 
 
@@ -2691,20 +2690,20 @@ command (%s) like this, or a version with explicit options(max.print=1e6):
 local({ out <- try({%s}); print(out, max=1e6) })\n
 "
   (let* ((tbuffer (get-buffer-create
-                  " *ess-get-words*")); initial space: disable-undo
+                   " *ess-get-words*")); initial space: disable-undo
          (word-RE
           (concat "\\("
                   "\\\\\\\"" "\\|" "[^\"]" ;  \" or non-"-char
                   "\\)*"))
          (full-word-regexp
           (concat "\"" "\\(" word-RE "\\)"
-                   "\""
-                   "\\( \\|$\\)"; space or end
-                   ))
+                  "\""
+                  "\\( \\|$\\)"; space or end
+                  ))
          words)
     (ess-if-verbose-write
      (format "(ess-get-words-* command=%s full-word-regexp=%S)\n"
-                                  command full-word-regexp))
+             command full-word-regexp))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
     (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
@@ -3031,8 +3030,8 @@ P-STRING is the prompt string."
     (call-interactively
      (cdr (assoc (ess-completing-read "Execute"
                                       (sort (mapcar 'car commands)
-                                            'string-lessp) nil t nil
-                                            'ess--handy-history hist)
+                                            'string-lessp)
+                                      nil t nil 'ess--handy-history hist)
                  commands)))))
 
 (defun ess-smart-comma ()
@@ -3049,7 +3048,7 @@ list."
             (delete-horizontal-space)
             (insert ", ")
             (unless (eq major-mode 'inferior-ess-mode)
-             (indent-according-to-mode)))
+              (indent-according-to-mode)))
         (insert ",")))))
 
  ; directories

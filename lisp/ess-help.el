@@ -509,7 +509,7 @@ For internal use.  Take into account variable `ess-help-own-frame'."
         (set-window-buffer help-win buff)
         (let ((action '(display-buffer-reuse-window (reusable-frames . t))))
           (ess--display-help buff nil action)))
-       ;; 2) 
+       ;; 2)
        ((eq ess-help-own-frame 'one)
         (let* ((frame (if (frame-live-p ess--help-frame)
                           ess--help-frame
