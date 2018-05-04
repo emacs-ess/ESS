@@ -422,10 +422,11 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R_C "^\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  2 3 nil 2 1))
 
-(let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
-  (defvar ess-r-versions
-    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver)
-    "List of partial strings for versions of R to access within ESS.
+
+(defvar ess-r-versions
+  (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
+    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver))
+  "List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
 beginning with one of these strings is found on `exec-path', a M-x
 command for that version of R is made available.  For example, if the
@@ -437,7 +438,7 @@ the same path is listed on `exec-path' more than once), they are
 ignored by calling `ess-uniq-list'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
-before ess-site is loaded) for it to take effect."))
+before ess-site is loaded) for it to take effect.")
 
 ;; Create functions for calling different (older or newer than default)
 ;; versions of R and S(qpe).
