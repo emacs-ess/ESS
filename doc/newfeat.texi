@@ -4,6 +4,9 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: Fontification of roxygen @code{@@param} keywords now
+supports comma-separated parameters.
+
 @item @ESS{[R]}: Function-like keywords such as @code{if} or @code{stop}
 are no longer fontified as keyword if not followed by an opening
 parenthesis.

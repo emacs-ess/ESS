@@ -101,7 +101,7 @@
               (regexp-opt '("param" "importFrom" "importClassesFrom"
                             "importMethodsFrom")
                           'words)
-              "\\)\\(?:[ \t]+\\(\\sw+\\)\\)")
+              "\\)\\(?:[ \t]+\\(\\(?:\\sw+,?\\)+\\)\\)")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
     (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
