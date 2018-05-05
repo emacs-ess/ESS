@@ -4,6 +4,10 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: Function-like keywords such as @code{if} or @code{stop}
+are no longer fontified as keyword if not followed by an opening
+parenthesis.
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates

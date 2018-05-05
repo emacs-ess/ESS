@@ -2633,14 +2633,16 @@ This variable has no effect. Customize
   (append ess-RS-constants
           '("T" "F")))
 
-(defvar ess-R-keywords
-  ;; "Reserved Words" -- part 2 --
-  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next" "function"
-    ;; note that these are *NOT* reserved words in R:
-    "return" "message" "warning" "stop"))
+(defconst ess-r--keywords
+  '("in" "else" "break" "next"))
+(defvaralias 'ess-R-keywords 'ess-r--keywords)
+
+(defconst ess-r--fn-like-keywords
+  '("while" "for" "if" "switch" "function" "return" "message" "warning" "stop")
+  "Keywords that precedece an opening parenthesis.")
 
 (defvar ess-S-keywords
-  (append ess-R-keywords '("terminate")))
+  (append ess-r--keywords '("terminate")))
 
 ;; only some of these keywords "look like functions but are not":
 (defvar ess-S-non-functions
@@ -2769,8 +2771,12 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
-(defvar ess-R-fl-keyword:keywords
-  (cons (regexp-opt ess-R-keywords 'words)
+(defconst ess-r--fl-keyword:keywords
+  (cons (regexp-opt ess-r--keywords 'words)
+        'ess-keyword-face))
+
+(defconst ess-r--fl-keyword:fn-like-keywords
+  (cons (concat (regexp-opt ess-r--fn-like-keywords 'words) "\\s-*(")
         'ess-keyword-face))
 
 (defvar ess-R-fl-keyword:assign-ops
@@ -2792,7 +2798,8 @@ default or not."
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
     (ess-R-fl-keyword:fun-defs   . t)
-    (ess-R-fl-keyword:keywords   . t)
+    (ess-r--fl-keyword:keywords . t)
+    (ess-r--fl-keyword:fn-like-keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -2847,7 +2854,8 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
-    (ess-R-fl-keyword:keywords  . t)
+    (ess-r--fl-keyword:keywords . t)
+    (ess-r--fl-keyword:fn-like-keywords . t)
     (ess-R-fl-keyword:assign-ops	. t)
     (ess-R-fl-keyword:constants . t)
     (ess-fl-keyword:matrix-labels	. t)
