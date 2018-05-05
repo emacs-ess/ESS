@@ -97,11 +97,11 @@
               (regexp-opt ess-roxy-tags-param t)
               "\\)\\>")
      (1 'font-lock-keyword-face prepend))
-    (,(concat ess-roxy-re " *\\([@\\]"
+    (,(concat ess-roxy-re " *\\(@"
               (regexp-opt '("param" "importFrom" "importClassesFrom"
                             "importMethodsFrom")
-                          t)
-              "\\)\\>\\(?:[ \t]+\\(\\sw+\\)\\)?")
+                          'words)
+              "\\)\\(?:[ \t]+\\(\\sw+\\)\\)")
      (1 'font-lock-keyword-face prepend)
      (3 'font-lock-variable-name-face prepend))
     (,(concat "[@\\]" (regexp-opt ess-roxy-tags-noparam t) "\\>")
