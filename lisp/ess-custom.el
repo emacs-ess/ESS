@@ -2633,16 +2633,16 @@ This variable has no effect. Customize
   (append ess-RS-constants
           '("T" "F")))
 
-(defvar ess-r--keywords
-  '("in" "else" "break" "next"))
+(defvar ess-R-bare-keywords
+  '("in" "else" "break" "next")
+  "Keywords that do not precede an opening parenthesis.")
 
-(defvar ess-r--fn-like-keywords
+(defvar ess-R-keywords
   '("while" "for" "if" "switch" "function" "return" "message" "warning" "stop")
   "Keywords that precedece an opening parenthesis.")
-(defvaralias 'ess-R-keywords 'ess-r--fn-like-keywords)
 
 (defvar ess-S-keywords
-  (append ess-r--keywords '("terminate")))
+  (append ess-R-keywords '("terminate")))
 
 ;; only some of these keywords "look like functions but are not":
 (defvar ess-S-non-functions
@@ -2771,13 +2771,15 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
-(defconst ess-r--fl-keyword:keywords
-  (cons (regexp-opt ess-r--keywords 'words)
-        'ess-keyword-face))
+(defconst ess-R-fl-keyword:bare-keywords
+  (cons (regexp-opt ess-R-bare-keywords 'words)
+        'ess-keyword-face)
+  "Font-lock keywords that do not precede an opening parenthesis.")
 
-(defconst ess-r--fl-keyword:fn-like-keywords
-  (cons (concat (regexp-opt ess-r--fn-like-keywords 'words) "\\s-*(")
-        'ess-keyword-face))
+(defconst ess-R-fl-keyword:keywords
+  (cons (concat (regexp-opt ess-R-keywords 'words) "\\s-*(")
+        'ess-keyword-face)
+  "Font-lock keywords that precede an opening parenthesis.")
 
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
@@ -2798,8 +2800,8 @@ default or not."
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
     (ess-R-fl-keyword:fun-defs   . t)
-    (ess-r--fl-keyword:keywords . t)
-    (ess-r--fl-keyword:fn-like-keywords . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -2854,8 +2856,8 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
-    (ess-r--fl-keyword:keywords . t)
-    (ess-r--fl-keyword:fn-like-keywords . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:assign-ops	. t)
     (ess-R-fl-keyword:constants . t)
     (ess-fl-keyword:matrix-labels	. t)
