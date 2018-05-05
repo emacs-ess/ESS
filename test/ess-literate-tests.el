@@ -217,6 +217,8 @@
     (goto-char (point-max))
     (search-backward "¶")
     (delete-char 1)
+    ;; Fontification must take place after removing "¶"
+    (font-lock-ensure)
     ;; Reset Emacs state
     (unless keep-state
       (setq last-command nil)
