@@ -88,3 +88,31 @@ NULL
 ##'     magna aliqua.
 NULL
 
+
+
+##### Fontification of roxy blocks
+
+### 1 Param keyword --------------------------------------------------
+
+##' ¶@param foo
+NULL
+
+##! (should (memq 'font-lock-keyword-face (faces-at-point)))
+
+##' ¶@param foo
+NULL
+
+##> (forward-char)
+##> (should (memq 'font-lock-keyword-face (faces-at-point)))
+
+##' @¶param foo
+NULL
+
+##> (forward-word)
+##> (forward-char)
+##> (should (not (memq 'font-lock-keyword-face (faces-at-point))))
+##> (should (memq 'font-lock-variable-name-face (faces-at-point)))
+
+##' @param ¶foo
+NULL
+
