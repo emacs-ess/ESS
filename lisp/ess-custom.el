@@ -2633,11 +2633,11 @@ This variable has no effect. Customize
   (append ess-RS-constants
           '("T" "F")))
 
-(defconst ess-r--keywords
+(defvar ess-r--keywords
   '("in" "else" "break" "next"))
 (defvaralias 'ess-R-keywords 'ess-r--keywords)
 
-(defconst ess-r--fn-like-keywords
+(defvar ess-r--fn-like-keywords
   '("while" "for" "if" "switch" "function" "return" "message" "warning" "stop")
   "Keywords that precedece an opening parenthesis.")
 
