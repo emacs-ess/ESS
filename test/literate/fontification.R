@@ -4,13 +4,15 @@
 ### 1 Bare function-like keywords are not fontified ------------------
 
 ¶while for if switch function return message warning stop
+signalCondition invokeRestart tryCatch withRestarts withCallingHandlers
 
 ##! (while (not (eolp))
 ##>   (should (not (face-at-point)))
 ##>   (forward-word)
 ##>   (ignore-errors (forward-char)))
 
-while for if switch function return message warning stop¶
+while for if switch function return message warning stop
+signalCondition invokeRestart tryCatch withRestarts withCallingHandlers¶
 
 
 ### 2 Function-like keywords are fontified ---------------------------
