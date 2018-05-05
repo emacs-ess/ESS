@@ -36,3 +36,27 @@ while() for() if() switch() function() return() message() warning() stop()¶
 
 in else break next¶
 
+
+### 4 Search list modifiers are not fontified if not in function position
+
+¶library attach detach source require
+
+##! (while (not (eolp))
+##>   (should (not (face-at-point)))
+##>   (forward-word)
+##>   (ignore-errors (forward-char)))
+
+library attach detach source require¶
+
+
+### 5 Search list modifiers are fontified if in function position ----
+
+¶library() attach() detach() source() require()
+
+##! (while (not (eolp))
+##>   (should (eq (face-at-point) 'ess-modifiers-face))
+##>   (forward-word)
+##>   (ignore-errors (forward-char 3)))
+
+library() attach() detach() source() require()¶
+

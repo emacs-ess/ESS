@@ -2762,7 +2762,7 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  (cons (regexp-opt ess-R-modifyiers 'words)
+  (cons (concat (regexp-opt ess-R-modifyiers 'words) "\\s-*(")
         'ess-modifiers-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers.")
 
