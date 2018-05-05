@@ -221,7 +221,8 @@
     (search-backward "¶")
     (delete-char 1)
     ;; Fontification must take place after removing "¶"
-    (font-lock-ensure)
+    ;; FIXME after Emacs 24.3: Use `font-lock-ensure'
+    (font-lock-default-fontify-buffer)
     ;; Reset Emacs state
     (unless keep-state
       (setq last-command nil)
