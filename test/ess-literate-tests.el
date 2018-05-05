@@ -20,6 +20,9 @@
 (ert-deftest test-ess-r-tokens ()
   (ess-ltest-check "tokens.R"))
 
+(ert-deftest test-ess-r-tokens ()
+  (ess-ltest-check "fontification.R"))
+
 
 (defvar ess-ltest-R-chunk-pattern "^###[ \t]*\\([0-9]+[a-zA-Z]*\\) \\([^\n]*\\)$")
 (defvar ess-ltest-R-code-start-pattern "^##!")
