@@ -1,4 +1,4 @@
-## COMMENT ON S3 METHODS: New S3 methods are not automatically registered. You can
+## NOTE ON S3 METHODS: New S3 methods are not automatically registered. You can
 ## register them manually after you have inserted method_name.my_class into your
 ## package environment using ess-developer, like follows:
 ##
@@ -20,24 +20,25 @@
 
 ## sourcing FILE into an environment. After having a look at each new object in
 ## the environment, decide what to do with it. Handles plain objects, functions,
-## existing S3 methods, S4 classes and methods. .
+## existing S3 methods, S4 classes and methods.
 .ess.ns_source <- function(file, visibly, output, expr,
                            package = "", verbose = FALSE,
                            fake.source = FALSE,
-                           fallback_env = parent.frame())
-{
-    oldopts <- options(warn = 1)
+                           fallback_env = parent.frame()) {
+    oldopts <- options(warn = 2)
     on.exit(options(oldopts))
 
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
-    if(is.null(envpkg)){
-        library(package, character.only = TRUE)
-        envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
-    }
     if (is.null(envpkg))
-        stop(gettextf("Can't find an environment corresponding to package name '%s'",
-                      package), domain = NA)
+        if (require(package, quietly = TRUE, character.only = TRUE)) {
+            envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
+        } else {
+            ## no such package; source in current environment
+            return(.ess.source(file, visibly = visibly,
+                               output = output, local = fallback_env, 
+                               fake.source = fake.source))
+        }
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if (is.null(envns))
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
@@ -149,6 +150,7 @@
             .ess.assign(this, thisEnv, fallback_env)
         }
     }
+
     if(length(funcNs))
         objectsNs <- c(objectsNs, sprintf("FUN[%s]", paste(funcNs, collapse = ", ")))
     if(length(funcPkg))
@@ -269,9 +271,8 @@
 }
 
 ## our version of R's evalSource
-.ess.ns_evalSource <- function (file, visibly, output, expr,
-                                package = "", fake.source = FALSE)
-{
+.ess.ns_evalSource <- function(file, visibly, output, expr, package = "",
+                               fake.source = FALSE) {
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if(is.null(envns))
         stop(gettextf("Package \"%s\" is not attached and no namespace found for it",
@@ -294,8 +295,7 @@
     env
 }
 
-.ess.assign <- function (x, value, envir)
-{
+.ess.assign <- function(x, value, envir) {
     ## Cannot add bindings to locked environments
     exists <- exists(x, envir = envir, inherits = FALSE)
     if (exists && bindingIsLocked(x, envir)) {

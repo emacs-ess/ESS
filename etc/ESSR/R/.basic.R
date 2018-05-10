@@ -93,16 +93,17 @@
 .ess.source <- function(file, visibly = TRUE, output = FALSE,
                         max.deparse.length = 300, local = NULL,
                         fake.source = FALSE, keep.source = TRUE,
-                        message.prefix = "")
-{
+                        message.prefix = "") {
     if (is.null(local)) {
         local <- if (.ess.Rversion > "2.13")
             parent.frame()
         else FALSE
     }
-    ss <- if (.ess.Rversion >= "2.8")
-        base::source
-          else function(..., keep.source) base::source(...)
+
+    ss <-
+        if (.ess.Rversion >= "2.8")
+            base::source
+        else function(..., keep.source) base::source(...)
 
     on.exit({
         if (fake.source)
