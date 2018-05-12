@@ -86,12 +86,10 @@ for ESS, such as icons.")
  (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
 
-(defun ess-require (feature &rest args)
-  "Like `require', but write to the dribble buffer."
-  (let ((feature-name (symbol-name feature)))
-    (ess-write-to-dribble-buffer
-     (concat "[ess-site:] require '" feature-name))
-    (apply 'require feature args)))
+;; load code to figure out what version/strain of Emacs we are running
+;; must come *AFTER* load-path is set !
+
+(require 'ess-compat)
 
 ;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix
@@ -101,49 +99,46 @@ for ESS, such as icons.")
 
 
 ;; Loads ess-custom.el and more
-(ess-require 'ess)
+(require 'ess)
 
 
 ;;; Loading popular dialects (they should become optional in the future)
 
 ;; R and Julia
-(ess-require 'ess-r-mode)
-(ess-require 'ess-julia)
+(require 'ess-r-mode)
+(require 'ess-julia)
 
 ;; S-PLUS (MathSoft/StatSci/Insightful/TIBCO)
-(ess-require 'ess-sp3-d)
+(require 'ess-sp3-d)
 (if ess-microsoft-p
-    (ess-require 'ess-sp6w-d)
-  (ess-require 'ess-sp6-d))
+    (require 'ess-sp6w-d)
+  (require 'ess-sp6-d))
 
 ;; S-elsewhere, on another machine by telnet
-(ess-require 'essd-els)
+(require 'essd-els)
 
 ;; Stata, SAS and batch BUGS
-(ess-require 'ess-stata-mode)
-(ess-require 'ess-sas-d)
-(ess-require 'ess-bugs-l)
+(require 'ess-stata-mode)
+(require 'ess-sas-d)
+(require 'ess-bugs-l)
 
 (ess-write-to-dribble-buffer
  (format "[ess-site.el]: ess-customize-alist=%s \n"
          ess-customize-alist))
 
 ;;; Literate Data Analysis
-(ess-require 'ess-noweb)
-(ess-require 'ess-swv)
+(require 'ess-noweb)
+(require 'ess-swv)
 
 (ess-write-to-dribble-buffer
  (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
          ess-customize-alist))
 
 ;;; Speedbar and mouse
-(ess-require 'ess-mouse)
+(require 'ess-mouse)
 
 ;;; Toolbar support
-(ess-require 'ess-toolbar)
-
-(ess-require 'ido nil t)
-
+(require 'ess-toolbar)
 
 ;;;  Site Specific setup
 ;;;; ===============================================
