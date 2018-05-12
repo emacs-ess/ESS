@@ -33,9 +33,6 @@
 
 ;; Installation and usage.
 ;;
-;; Load in this library, e.g. with the command:
-;; (autoload 'ess-rdired "ess-rdired" "View *R* objects in a dired-like buffer." t)
-;;
 ;; After loading this file, do "M-x R" to start an R session, then
 ;; create a few variables:
 ;; s <- sin(seq(from=0, to=8*pi, length=100))
@@ -168,6 +165,7 @@ can then examine these objects, plot them, and so on.
 (defvar ess-rdired-sort-num nil)        ;silence the compiler.
 ;; but see following defun -- maybe it should be buffer local.
 
+;;;###autoload
 (defun ess-rdired ()
   "Run dired-like mode on R objects.
 This is the main function.  See documentation for `ess-rdired-mode' though

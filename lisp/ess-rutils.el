@@ -51,7 +51,6 @@
 ;;; Code:
 
 ;; Autoloads and requires
-(autoload 'ess-rdired "ess-rdired" "View *R* objects in a dired-like buffer." t)
 (require 'ess-site)
 
 (defvar ess-rutils-buf "*R temp*"

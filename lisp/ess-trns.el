@@ -34,29 +34,8 @@
  ; Requires and autoloads
 
 (require 'ess)
-
-(eval-when-compile
-  (require 'comint)
-  (require 'ess-inf))
-
-(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-region-and-go       "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function            "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-function-and-go     "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line                "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-go         "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
-
-(autoload 'comint-previous-prompt       "comint" "[autoload]" t)
-(autoload 'comint-next-prompt           "comint" "[autoload]" t)
-
-(autoload 'ess-load-file                "ess-inf" "[autoload]" t)
-(autoload 'ess-request-a-process        "ess-inf" "(autoload)" nil)
-(autoload 'ess-get-process-buffer               "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-ESS            "ess-inf" "(autoload)" nil)
-(autoload 'ess-switch-to-end-of-ESS     "ess-inf" "(autoload)" nil)
-(autoload 'ess-eval-linewise            "ess-inf" "(autoload)" nil)
-(autoload 'inferior-ess-get-old-input   "ess-inf" "(autoload)" nil)
+(require 'ess-inf)
+(require 'comint)
 
  ; ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -142,7 +121,7 @@
        [menu-bar ess-trans]
        (cons "ess-trans"
              ess-transcript-mode-menu))))
-
+;;;###autoload
 (defun ess-transcript-mode (alist &optional proc)
   "Major mode for manipulating {ESS} transcript files.
 
@@ -251,6 +230,7 @@ is not already."
       (insert input)))
   (ess-switch-to-end-of-ESS))
 
+;;;###autoload
 (defun ess-transcript-clean-region (beg end even-if-read-only)
   "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes the

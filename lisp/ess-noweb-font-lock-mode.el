@@ -159,7 +159,7 @@ ess-noweb-font-lock-initial-fontify-buffer is called" )
   #'ess-noweb-font-lock-mode "ESS-16.11")
 
 ;; Here we get to the meat of the problem
-
+;;;###autoload
 (defun ess-noweb-font-lock-mode ( &optional arg)
   ;; FIXME: Don't define a new minor mode.  Instead, arrange for normal
   ;; font-lock to call our functions such as

@@ -32,8 +32,6 @@
 
 ;;; Code:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-
 ;;; Requires and Autoloads:
 
 (require 'ess-lsp-l)

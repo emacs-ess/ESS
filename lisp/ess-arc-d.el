@@ -38,8 +38,6 @@
 (defvar ess-customize-alist)
 (defvar ess-dialect)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-
 (defvar ARC-customize-alist
   '((ess-customize-alist           .  ARC-customize-alist )
     (ess-language                  .  "XLS"               )

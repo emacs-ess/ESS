@@ -434,13 +434,10 @@ end keywords as associated values.")
     (ess-local-process-name	  . nil)
     ;;(ess-keep-dump-files	    . 'ask)
     (ess-mode-syntax-table	  . gretl-syntax-table)
-  ;;  (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
+    ;;  (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
     (font-lock-defaults		  . '(gretl-font-lock-defaults))
     )
   "General options for gretl source files.")
-
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 
 
 ;; (defun gretl-send-string-function (process string visibly)

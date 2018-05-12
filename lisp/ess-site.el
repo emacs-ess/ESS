@@ -1,8 +1,11 @@
 ;;; ess-site.el --- user customization of ESS
 
 ;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2012 A.J. Rossini, Richard M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2011--2018 A.J. Rossini, Richard M. Heiberger, Martin
+;;      Maechler, Kurt Hornik, Rodney Sparapani, Stephen Eglen,
+;;      Vitalie Spinu, and Lionel Henry.
 
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
@@ -78,7 +81,7 @@
     (if load-file-name
         (file-truename load-file-name)
       (locate-library "ess-site") )))
-  "Directory containing ess-site.el(c) and other ESS lisp files.")
+  "Directory containing ess-site.el(c) and other ESS Lisp files.")
 
 (defvar ess-etc-directory nil
   "Location of the ESS etc/ directory.
@@ -97,6 +100,7 @@ for ESS, such as icons.")
 
 
 (defun ess-require (feature &rest args)
+  "Like `require', but write to the dribble buffer."
   (let ((feature-name (symbol-name feature)))
     (ess-write-to-dribble-buffer
      (concat "[ess-site:] require '" feature-name))
@@ -157,8 +161,6 @@ for ESS, such as icons.")
 ;;;  Site Specific setup
 ;;;; ===============================================
 
-(autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
-
 ;; Be careful when editing the following. MISTAKES WILL RESULT IN
 ;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
 ;;;###autoload
@@ -204,13 +206,6 @@ for ESS, such as icons.")
 (add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("r" . r-mode))
-
-(autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files." t)
-(autoload 'ess-transcript-clean-region "ess-trns" no-doc t)
-
-(autoload 'ess-rdired "ess-rdired"
-  "View *R* objects in a dired-like buffer." t)
 
 (eval-after-load "ess-r-mode"
   '(progn

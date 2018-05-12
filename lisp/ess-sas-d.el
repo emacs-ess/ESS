@@ -39,10 +39,6 @@
 (require 'executable)
 (require 'ess-sas-l)
 
-(autoload 'inferior-ess "ess-inf" no-doc t)
-(autoload 'ess-mode "ess-mode" no-doc t)
-(autoload 'ess-proc-name "ess-inf" no-doc nil)
-
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp -nosyntaxcheck"
   "*Arguments to use for starting SAS.")
 
@@ -258,6 +254,7 @@ Better logic needed!  (see 2 uses, in this file).")
                                                     (self-insert-command (prefix-numeric-value arg)))
                                                 (self-insert-command (prefix-numeric-value arg))))))
 
+;;;###autoload
 (defun SAS-menu ()
   "Start SAS from the menu."
   (interactive)

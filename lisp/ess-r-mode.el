@@ -48,9 +48,6 @@
 (when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
-(autoload 'ess-r-args-show      "ess-r-args" "(Autoload)" t)
-(autoload 'ess-r-args-auto-show "ess-r-args" "(Autoload)" t)
-
 ;; TODO: Refactor so as to not rely on dynamic scoping.  After that
 ;; refactor, also remove the file-local-variable byte-compile-warnings
 ;; (not lexical) at the bottom.
@@ -73,7 +70,7 @@
 ;;*;; Mode definition
 
 ;;;*;;; UI (Keymaps / Menus)
-
+;;;###autoload
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
@@ -940,9 +937,6 @@ See `ess-noweb-mode' and `R-mode' for more help."
   (run-mode-hooks 'Rnw-mode-hook))
 
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
-
-(autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files." t)
 
 ;;;###autoload
 (defun R-transcript-mode ()

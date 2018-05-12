@@ -41,10 +41,6 @@
 (defvar version-function-name)
 ;;NO: this is autoloaded from other places (require 'ess-dde)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
-
 (defvaralias 'inferior-S+6-multipleinstances 'inferior-S+-multipleinstances)
 (defvar inferior-S+-multipleinstances "/MULTIPLEINSTANCES"
   "Default \"/MULTIPLEINSTANCES\" opens up a new instance of S+[678] in a

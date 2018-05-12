@@ -112,7 +112,7 @@ Is name of the package for package index.
 Local in ess-help buffers.")
 (make-variable-buffer-local 'ess-help-object)
 
-
+;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
   "Display documentation for OBJECT in another window.
 If prefix arg is given, force an update of the cached help topics
@@ -121,7 +121,7 @@ existing buffer if it exists.  Uses the variable
 `inferior-ess-help-command' for the actual help command.  Prompts
 for the object name based on the cursor location for all cases
 except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
-an inferior emacs buffer) the GUI help window is used.
+an inferior Emacs buffer) the GUI help window is used.
 
 If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
   (interactive
@@ -145,6 +145,8 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
           (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
+;;;###autoload
+(defalias 'ess-help 'ess-display-help-on-object)
 
 (defun ess-build-help-command (object)
   (if (fboundp ess-build-help-command-function)
@@ -790,7 +792,7 @@ Keystroke    Section
   (if (string-match "^[[:alnum:].]+::?" object)
       (substring object (match-end 0))
     object))
-
+;;;###autoload
 (defun ess-helpobjs-at-point (slist)
   ;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
   ;; the function call point is in. DEF is either OBJ or FUN (in that order)
@@ -892,9 +894,9 @@ Note that we can't search SAS, Stata or XLispStat for additional information."
       (put-text-property (point) (1+ (point)) 'face 'underline))))
 
 ;;*;; Link to Info
-
+;;;###autoload
 (defun ess-goto-info (node)
-  "Display node NODE from ess-mode info."
+  "Display node NODE from `ess-mode' info."
   (require 'info)
   (split-window)
   ;;(other-window 1)
@@ -985,7 +987,7 @@ option for other dialects)."
 
 
  ; Bug Reporting
-
+;;;###autoload
 (defun ess-submit-bug-report ()
   "Submit a bug report on the ess-mode package."
   (interactive)

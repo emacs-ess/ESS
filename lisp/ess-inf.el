@@ -66,39 +66,46 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Starting a process
-
+;;;###autoload
 (defun ess-proc-name (n name)
   "Return name of process N, as a string, with NAME prepended.
-If ess-plain-first-buffername, then initial process is number-free."
+If `ess-plain-first-buffername', then initial process is number-free."
   (concat name
           (if (not (and ess-plain-first-buffername
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
+;;;###autoload
 (defun inferior-ess (&optional ess-start-args customize-alist no-wait)
   "Start inferior ESS process.
 
 Without a prefix argument, starts a new ESS process, or switches
-  to the ESS process associated with the current buffer.
-With a prefix, starts the process with those args.
-The current buffer is used if it is an `inferior-ess-mode'
-or `ess-transcript-mode' buffer.
+to the ESS process associated with the current buffer.  With
+ESS-START-ARGS (perhaps specified via \\[universal-argument]),
+starts the process with those args.  The current buffer is used
+if it is an `inferior-ess-mode' or `ess-transcript-mode' buffer.
 
 If `ess-ask-about-transfile' is non-nil, you will be asked for a
-transcript file to use. If there is no transcript file, the buffer
-name will be like *R* or *R2*, determined by `ess-gen-proc-buffer-name-function'.
+transcript file to use.  If there is no transcript file, the
+buffer name will be like *R* or *R2*, determined by
+`ess-gen-proc-buffer-name-function'.
 
 Takes the program name from the variable `inferior-ess-program'.
 An initialization file (dumped into the process) is specified by
-`inferior-ess-start-file', and `inferior-ess-start-args' is used to
-accompany the call for `inferior-ess-program'.
+`inferior-ess-start-file', and `inferior-ess-start-args' is used
+to accompany the call for `inferior-ess-program'.
 
 When creating a new process, the process buffer replaces the
 current window if `inferior-ess-same-window' is non-nil.
 Alternatively, it can appear in its own frame if
 `inferior-ess-own-frame' is non-nil.
 
-\(Type \\[describe-mode] in the process buffer for a list of commands.)"
+\(Type \\[describe-mode] in the process buffer for a list of
+commands.)
+
+CUSTOMIZE-ALIST is the list of dialect-specific variables.  When
+non-nil, NO-WAIT tells ESS not to wait for the process to finish.
+This may be useful for debugging."
 
   ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
   ;; If not, maybe ask about starting directory and/or transcript file.
@@ -1324,6 +1331,7 @@ type of the region."
           (ess-check-modifications))
       (ess-force-buffer-current "Process to load into: "))))
 
+;;;###autoload
 (ess-defgeneric ess-load-file (&optional filename)
   "Load a source file into an inferior ESS process.
 

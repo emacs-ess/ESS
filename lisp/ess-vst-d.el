@@ -35,8 +35,6 @@
 
 (require 'ess-lsp-l)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-
 (defvar VST-customize-alist
   '((ess-customize-alist           .  VST-customize-alist )
     (ess-language                  .  "XLS"               )

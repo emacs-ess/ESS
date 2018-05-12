@@ -32,9 +32,6 @@
 
 ;;; Code:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
 (require 'ess-mode)
 (require 'ess-stata-lang)
 

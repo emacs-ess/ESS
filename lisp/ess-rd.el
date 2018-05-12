@@ -26,9 +26,9 @@
 
 ;;; Code:
 
-;; To stave off byte compiler errors
-(eval-when-compile (require 'ess-help))
 (require 'ess-utils)
+(require 'ess-help)
+(require 'ess-inf)
 
 (defvar essddr-version "0.9-1"
   "Current version of ess-rd.el.")
@@ -36,15 +36,6 @@
 (defvar essddr-maintainer-address
   "ESS Core Team <ess-core@r-project.org>"
   "Current maintainer of ess-rd.el.")
-
-(autoload 'ess-eval-region              "ess-inf" "[autoload]" t)
-(autoload 'ess-eval-line-and-step       "ess-inf" "[autoload]" t)
-(autoload 'ess-switch-process           "ess-inf" "[autoload]" t)
-(autoload 'ess-switch-to-ESS            "ess-inf" "[autoload]" t)
-(autoload 'ess-switch-to-end-of-ESS     "ess-inf" "[autoload]" t)
-
-(autoload 'ess-help-mode                "ess-help" "[autoload]" t)
-(autoload 'ess-help-underline           "ess-help" "[autoload]" t)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -474,7 +465,7 @@ following lines to your `.emacs' file:
            (insert before)
            (save-excursion
              (insert after))))))
-
+;;;###autoload
 (defun Rd-preview-help (&optional via-shell)
   "Preview the current Rd buffer contents as help.
 If optional VIA-SHELL is set, using `Rd-to-help-command'.

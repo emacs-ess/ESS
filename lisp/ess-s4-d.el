@@ -34,8 +34,6 @@
 
 ;;; Code:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-
 (require 'ess-s-lang)
 
 ;; Some of this is based on files from:

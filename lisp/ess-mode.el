@@ -43,8 +43,6 @@
 ;; FIXME: should this be optional?
 (require 'ess-noweb-mode)
 
-(autoload 'SAS-menu "ess-sas-d.el" "(autoload)" t)
-
  ; ESS mode
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -800,6 +798,7 @@ Returns t if the buffer existed and was modified, but was not saved."
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
 
+;;;###autoload
 (defun ess-parse-errors (&optional showerr reset)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported.
@@ -837,11 +836,11 @@ RESET is for compatibility with `next-error' and is ignored."
 
 
 ;;*;; Creating and manipulating dump buffers
-
+;;;###autoload
 (defun ess-dump-object-into-edit-buffer (object)
-  "Edit an ESS object in its own buffer.
+  "Edit an ESS OBJECT in its own buffer.
 Without a prefix argument, this simply finds the file pointed to by
-`ess-source-directory'. If this file does not exist, or if a
+`ess-source-directory'.  If this file does not exist, or if a
 prefix argument is given, a dump() command is sent to the ESS process to
 generate the source buffer."
   (interactive

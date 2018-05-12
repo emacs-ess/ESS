@@ -35,9 +35,6 @@
 
 (require 'ess-omg-l)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
 (defvar OMG-dialect-name "OMG"
   "Name of 'dialect' for Omega.") ;easily changeable in a user's .emacs
 

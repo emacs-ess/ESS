@@ -36,8 +36,6 @@
  ; Requires and autoloads
 
 (require 'ess-noweb-mode)
-;; still needed when user turns font-lock-mode *on* (from initial off):
-(autoload 'ess-noweb-font-lock-mode "ess-noweb-font-lock-mode")
 
  ; Variables
 

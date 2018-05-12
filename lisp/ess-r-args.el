@@ -206,7 +206,7 @@ buffer readjustments for multiline string)."
     (mapconcat (lambda (arg) (concat (car arg) "=" (cdr arg)))
                (cadr (ess-function-arguments function))
                ", ")))
-
+;;;###autoload
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
 \\[ess-r-args-current-function] if called without argument."
@@ -231,6 +231,7 @@ buffer readjustments for multiline string)."
           (ess-tooltip-show-at-point args 0 30))
         ))))
 
+;;;###autoload
 (defun ess-r-args-auto-show ()
   "Typically assigned to \"(\": If there's an ess-process, automatically show arguments
 and their default values of an R function. Built on \\[ess-r-args-show]."

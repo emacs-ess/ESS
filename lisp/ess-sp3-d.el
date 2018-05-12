@@ -30,9 +30,6 @@
 
 ;;; Code:
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
 (require 'ess-s-lang)
 
 (defvar S+3-dialect-name "S+3"

@@ -59,9 +59,6 @@
 (eval-when-compile
   (require 'cl-lib))
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
-
 (defun ess-julia-send-string-function (process string visibly)
   "Send the Julia STRING to the PROCESS.
 VISIBLY is not currently used."

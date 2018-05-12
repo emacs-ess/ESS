@@ -69,7 +69,6 @@
 (require 'outline)
 (eval-when-compile
   (require 'cl-lib))
-(autoload 'Rd-preview-help "ess-rd" "[autoload]" t)
 (require 'essddr "ess-rd.el")
 
 (defvar roxy-str)

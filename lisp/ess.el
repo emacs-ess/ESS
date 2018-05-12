@@ -3,8 +3,9 @@
 ;; Copyright (C) 1989--1996 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;; Copyright (C) 2011--2018 A.J. Rossini, Richard M. Heiberger, Martin
+;;      Maechler, Kurt Hornik, Rodney Sparapani, Stephen Eglen,
+;;      Vitalie Spinu, and Lionel Henry.
 
 ;; Author: Doug Bates
 ;;     Ed Kademan
@@ -46,8 +47,8 @@
 
 ;; THE ESS MAILING LIST
 ;;
-;; There is an informal mailing list for discussions of ESS. Alpha
-;; and beta releases of ESS are also announced here. Send mail
+;; There is an informal mailing list for discussions of ESS.  Alpha
+;; and beta releases of ESS are also announced here.  Send mail
 ;; to ess-help-request@r-project.org to join.
 
 ;; OVERVIEW OF ESS
@@ -96,81 +97,8 @@
 
 ;;; Code:
 
-;;*;; Requires and autoloads
-;;;=====================================================
-;;;
-
-;; Shortcut to render "dribbling" statements less cluttering:
-(defun ess-if-verbose-write (text)
-  "Write TEXT to dribble buffer ('*ESS*') only *if* `ess-verbose'."
-  (if ess-verbose (ess-write-to-dribble-buffer text)))
-
-
-(require 'easymenu)
-(if (or window-system
-        noninteractive ; compilation!
-        )
-    (require 'font-lock))
-
-(require 'ess-utils)
-(require 'ess-custom)
-(require 'ess-mode)
-(require 'ess-inf)
-(eval-when-compile
-  (require 'cl-lib))
-
-
-
- ; ess-mode: editing S/R/XLS/SAS source
-
-(autoload 'inferior-ess "ess-inf"
-  "Run [inferior-ess-program], an ess process, in an Emacs buffer" t)
-
-(autoload 'ess-dump-object-into-edit-buffer "ess-mode"
-  "Edit an S object." t)
-
-(autoload 'ess-parse-errors "ess-mode"
-  "Jump to the last error generated from a sourced file." t)
-
-(autoload 'ess-load-file "ess-inf" "Source a file into S.")
-
- ; ess-transcript-mode: editing ``outputs'
-
-(autoload 'ess-transcript-mode "ess-trns"
-  "Major mode for editing S transcript files." t)
-
-(autoload 'ess-display-help-on-object "ess-help"
-  "Display help on an S object." t)
-
-(defalias 'ess-help 'ess-display-help-on-object)
-
-(autoload 'ess-goto-info "ess-help"
-  "Jump to the relevant section in the `ess-mode' manual." t)
-
-(autoload 'ess-submit-bug-report "ess-help"
-  "Submit a bug report on the `ess-mode' package." t)
-
-;;==> ess-inf.el  has its OWN autoload's !
-
-
-(run-hooks 'ess-mode-load-hook)
+(require 'ess-site)
 
 (provide 'ess)
-
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
 
 ;;; ess.el ends here

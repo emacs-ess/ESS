@@ -34,12 +34,6 @@
 ;; -- Id: ess-noweb-mode.el,v 1.11 1999/03/21 20:14:41 root Exp --
 
 
-;; Put this into your ~/.emacs to use this mode automagically.
-;;
-;; (autoload 'ess-noweb-mode "ess-noweb-mode" "Editing noweb files." t)
-;; (setq auto-mode-alist (append (list (cons "\\.nw$" 'ess-noweb-mode))
-;;                            auto-mode-alist))
-
 ;;; NEWS:
 
 ;;   * [tho] M-n q, aka: M-x ess-noweb-fill-chunk
@@ -88,7 +82,7 @@
 ;;; Code:
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
-(autoload 'ess-write-to-dribble-buffer "ess")
+(require 'ess-compat)
 
 (defvar weave-process)
 
@@ -345,6 +339,7 @@ replaced by sequences of '*'.")
   (interactive)
   (ess-noweb-mode arg)) ; this was ess-noweb-minor-mode???  (truly recursive)
 
+;;;###autoload
 (defun ess-noweb-mode ( &optional arg )
   "Minor meta mode for editing noweb files.
 `Meta' refers to the fact that this minor mode is switching major

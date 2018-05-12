@@ -49,8 +49,6 @@
 (require 'ess-vst-d)
 (require 'ess-xls-d)
 
-(autoload 'inferior-ess "ess-inf" "Run an ESS process.")
-(autoload 'ess-mode     "ess-mode" "Edit an ESS process.")
 (defvar S+elsewhere-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS at another location.")
                                         ;easily changeable in a user's .emacs
