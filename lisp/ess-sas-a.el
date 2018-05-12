@@ -1158,12 +1158,14 @@ Keep in mind that the maximum command line length in MS-DOS is
     (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
   (ess-sas-goto-log))
 
-(defvar ess-sas-versions-created)
-(defun ess-sas-versions-create ()
+(defvar ess-sas-created-runners)
+(define-obsolete-variable-alias
+  'ess-sas-versions-created 'ess-sas-created-runners "2018-05-12")
+(defun ess-sas-define-runners ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.
 See `ess-sas-versions' for strings that determine which functions are created.
 
-The local variable `ess-sas-versions-created' is used to return list of
+The local variable `ess-sas-created-runners' is used to return list of
 the new SAS defuns, if any, that were created.  The defuns will normally
 be placed on the menubar upon ESS initialization."
   ;; This works by creating a temp buffer where the template function is
@@ -1177,8 +1179,10 @@ be placed on the menubar upon ESS initialization."
                          (mapcar #'ess-find-exec-completions
                                  ess-sas-versions))))))
     ;; Iterate over each string in VERSIONS, creating a new defun each time.
-    (setq ess-sas-versions-created
+    (setq ess-sas-created-runners
           (mapc (lambda (v) (ess-define-runner v "SAS")) versions))))
+(define-obsolete-function-alias
+  'ess-sas-create-versions 'ess-sas-define-runners "2018-05-12")
 
 
 ;;; Section 3:  Key Definitions

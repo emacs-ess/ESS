@@ -428,7 +428,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
     (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver))
   "List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename.  If a filename
-beginning with one of these strings is found on `exec-path', a M-x
+beginning with one of these strings is found on `exec-path', a
 command for that version of R is made available.  For example, if the
 file \"R-1.8.1\" is found and this variable includes the string
 \"R-1\", a function called `M-x R-1.8.1' will be available to run that
@@ -449,52 +449,50 @@ before ess-site is loaded) for it to take effect.")
   "List of R-versions found from `ess-r-versions' on the system.")
 (define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "2018-05-05")
 
-(defun ess-r-s-versions-creation ()
-  "(Re)Create ESS  R-<..> commands FILENAME sans final \"extension\".
-The extension, in a file name, is the part that follows the last `.'."
+(defun ess-r-s-define-runners ()
+  "(Re)Create ESS R-X.Y.Z and S-X.Y.Z commands.
+See `ess-r-versions' and `ess-s-versions' for which functions
+will be (re)created."
   (interactive)
-  (declare-function ess-sqpe-versions-create "ess-sp6w-d")
-  ;; Create ess-versions-created, ess-r-versions-created, and on
-  ;; Windows, ess-rterm-version-paths
   (let ((R-newest-list '("R-newest"))
-        (ess-s-versions-created
+        (ess-s-created-runners
          (if ess-microsoft-p
              (nconc
               (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
               (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
-           (ess-s-versions-create))))
-    (if ess-microsoft-p
-        (setq ess-rterm-version-paths
-              (ess-flatten-list
-               (ess-uniq-list
-                (if (not ess-directory-containing-R)
-                    (if (getenv "ProgramW6432")
-                        (let ((P-1 (getenv "ProgramFiles(x86)"))
-                              (P-2 (getenv "ProgramW6432")))
-                          (nconc
-                           ;; Always 32 on 64 bit OS, nil on 32 bit OS
-                           (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-                           (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-
-                           ;; Keep this both for symmetry and because it can happen:
-                           (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
-
-                           ;; Always 64 on 64 bit OS, nil on 32 bit OS
-                           (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-                           (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-                           (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")))
-                      (let ((PF (getenv "ProgramFiles")))
+           (ess-s-define-runners))))
+    (when ess-microsoft-p
+      (setq ess-rterm-version-paths
+            (ess-flatten-list
+             (ess-uniq-list
+              (if (not ess-directory-containing-R)
+                  (if (getenv "ProgramW6432")
+                      (let ((P-1 (getenv "ProgramFiles(x86)"))
+                            (P-2 (getenv "ProgramW6432")))
                         (nconc
-                         ;; Always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-                         (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                         (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                         (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))
-                  (let ((PF ess-directory-containing-R))
-                    (nconc
-                     (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                     (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                     (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))))))
-    (ess-r-versions-create)
+                         ;; Always 32 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+
+                         ;; Keep this both for symmetry and because it can happen:
+                         (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+
+                         ;; Always 64 on 64 bit OS, nil on 32 bit OS
+                         (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                         (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")))
+                    (let ((PF (getenv "ProgramFiles")))
+                      (nconc
+                       ;; Always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                       (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                       (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))
+                (let ((PF ess-directory-containing-R))
+                  (nconc
+                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))))))
+    (ess-r-define-runners)
     ;; Add the new defuns, if any, to the menu.
     ;; Check that each variable exists, before adding.
     ;; e.g. ess-sqpe-versions-created will not be created on Unix.
@@ -502,15 +500,17 @@ The extension, in a file name, is the part that follows the last `.'."
           (ess-flatten-list
            (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
                    '(R-newest-list
-                     ess-r-versions-created
-                     ess-s-versions-created))))))
+                     ess-r-created-runners
+                     ess-s-created-runners))))))
+(define-obsolete-function-alias
+  'ess-r-s-versions-creation 'ess-r-s-define-runners "2018-5-12")
 
-(defun ess-r-s-versions-creation+menu ()
-  "Call `\\[ess-r-s-versions-creation] creaing `ess-versions-created' and
+(defun ess-r-s-define-runners+menu ()
+  "Set up R-X.Y.Z and S-X.Y.Z functions and add them to the menu.
+Call `\\[ess-r-s-define-runners] creating `ess-versions-created' and
 update the \"Start Process\" menu."
   (interactive)
-  (ess-r-s-versions-creation)
-
+  (ess-r-s-define-runners)
   (when ess-versions-created
     ;; new-menu will be a list of 3-vectors, of the form:
     ;; ["R-1.8.1" R-1.8.1 t]
@@ -519,7 +519,8 @@ update the \"Start Process\" menu."
       (easy-menu-add-item ess-mode-menu '("Start Process")
                           (cons "Other" new-menu))))
   ess-versions-created)
-
+(define-obsolete-function-alias
+  'ess-r-s-versions-creation+menu 'ess-r-s-define-runners+menu "2018-05-12")
 
 
 ;;;*;;; Mode init
@@ -711,7 +712,7 @@ Executed in process buffer."
         (cons val long-path)
       val)))
 
-(defun ess-r-versions-create ()
+(defun ess-r-define-runners ()
   "Generate functions for starting other versions of R.
 See `ess-r-versions' for strings that determine which functions
 are created.  On MS Windows, this works using
@@ -735,6 +736,8 @@ as `ess-r-created-runners' upon ESS initialization."
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners
             (mapc (lambda (v) (ess-define-runner v "R")) versions)))))
+(define-obsolete-function-alias
+  'ess-r-versions-create 'ess-r-define-runners "2018-05-12")
 
 (defvar ess-newest-R nil
   "Stores the newest version of R that has been found.  Used as a cache,
@@ -779,7 +782,7 @@ newest version of R can be potentially time-consuming."
             (ess-newest-r
              (if ess-microsoft-p
                  (ess-rterm-prefer-higher-bit)
-               (add-to-list 'ess-r-versions-created
+               (add-to-list 'ess-r-created-runners
                             inferior-ess-r-program-name))))))
 
 (defun ess-check-R-program-name ()
@@ -795,8 +798,8 @@ update `inferior-ess-r-program-name' accordingly."
 
 (defun R-newest (&optional start-args)
   "Find the newest version of R available, and run it.
-Subsequent calls to R-newest will run that version, rather than searching
-again for the newest version.  Providing an optional prefix arg (C-u) will
+Subsequent calls to `R-newest' will run that version, rather than searching
+again for the newest version.  Providing an optional prefix START-ARGS (\\[universal-argument]) will
 prompt for command line arguments."
   (interactive "P")
   (let ((rnewest (ess-find-newest-R)))

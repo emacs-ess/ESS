@@ -166,14 +166,16 @@ of S using this method.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
-(defvar ess-s-versions-created)
-(defun ess-s-versions-create ()
-  "Generate defuns for starting other versions of S.
+(defvar ess-s-created-runners)
+(define-obsolete-variable-alias
+  'ess-s-versions-created 'ess-s-created-runners "2018-05-12")
+(defun ess-s-define-runners ()
+  "Generate functions for starting other versions of S.
 See `ess-s-versions' for strings that determine which functions are created.
 It assumes these versions of S can be run as a substitute for Splus6.
 
-This function returns the list of S defuns, if any, that were
-created.  The defuns will normally be placed on the menubar upon
+This function returns the list of functions, if any, that were
+created.  The functions will normally be placed on the menubar upon
 ESS initialization."
   (when ess-s-versions
     (let ((versions
@@ -184,8 +186,10 @@ ESS initialization."
                                    ess-s-versions))))))
       ;; Iterate over each string in VERSIONS, creating a new defun
       ;; each time.
-      (setq ess-s-versions-created
+      (setq ess-s-created-runners
             (mapc (lambda (v) (ess-define-runner v "S")) versions)))))
+(define-obsolete-function-alias
+  'ess-s-versions-create 'ess-s-define-runners "2018-05-12")
 
  ; Provide package
 
