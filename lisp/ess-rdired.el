@@ -493,4 +493,6 @@ After switching to a new process, the buffer is updated."
   (ess-switch-process)
   (ess-rdired))
 
+(provide 'ess-rdired)
+
 ;;; ess-rdired.el ends here.

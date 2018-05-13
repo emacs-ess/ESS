@@ -295,9 +295,11 @@ clean even if the buffer is \\[read-only]."
 
 (defun ess-transcript-clean-buffer ()
   "Cleanup the whole buffer.
-Use point-min/max to obey narrow-to-region."
+Use point-min/max to obey `narrow-to-region'."
   (interactive)
   (ess-transcript-clean-region (point-min) (point-max) 'In-ANY-case))
+
+(provide 'ess-trns)
 
  ; Local variables section
 
