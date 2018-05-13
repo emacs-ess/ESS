@@ -227,6 +227,8 @@ Better logic needed!  (see 2 uses, in this file).")
   (run-mode-hooks 'SAS-mode-hook))
 
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Ss][Aa][Ss]\\'" . SAS-mode))
 
 ;; rmh Jul 10 2003
 (defun ess-electric-run-semicolon (arg)

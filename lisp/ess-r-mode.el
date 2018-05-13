@@ -674,6 +674,17 @@ Executed in process buffer."
 (fset 'r-mode 'R-mode)
 (fset 'ess-r-mode 'R-mode)
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[rR]profile\\'" . R-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("NAMESPACE\\'" . R-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("CITATION\\'"       . R-mode))
+
 
 ;;*;; Miscellaneous
 
@@ -939,12 +950,24 @@ See `ess-noweb-mode' and `R-mode' for more help."
 (fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
 
 ;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[rR]nw\\'" . Rnw-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[sS]nw\\'" . Snw-mode))
+
+;;;###autoload
 (defun R-transcript-mode ()
   "Does the right thing."
   (interactive)
   (ess-transcript-mode ess-r-customize-alist))
 
 (fset 'r-transcript-mode 'R-transcript-mode)
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Rr]out" . R-transcript-mode))
+;;;###autoload
+(add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
+;;;###autoload
+(add-to-list 'interpreter-mode-alist '("r" . r-mode))
 
 (defun R-fix-T-F (&optional from quietly)
   "Fix T/F into TRUE and FALSE *cautiously*, i.e. not in comments and strings;

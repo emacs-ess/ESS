@@ -321,6 +321,14 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
         (ess-eval-linewise inferior-ess-language-start))
     (if shome-nil-p (setenv "SHOME" nil))))
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.sp\\'" . S-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[qsS]\\'" . S-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.ssc\\'" . S-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.SSC\\'" . S-mode))
 
 (defalias 'S+6-mode 'S+-mode)
 (defun S+-mode (&optional proc-name)

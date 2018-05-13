@@ -72,6 +72,9 @@
   (ess-mode XLS-customize-alist proc-name)
   (setq major-mode 'XLS-mode))
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.lsp\\'" . XLS-mode))
+
 (fset 'xlispstat-mode 'XLS-mode)
 
 (defun XLS ()

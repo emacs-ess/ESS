@@ -309,6 +309,9 @@ following lines to your `.emacs' file:
   (setq ess-language "S" ess-dialect  "R"); (buffer local)
   (run-mode-hooks 'Rd-mode-hook))
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.Rd\\'" . Rd-mode))
+
 ;; FIXME: The following should be moved to ess-utils.el, no? (MM thinks)
 (defun ess-point (position)
   "Returns the value of point at certain positions."

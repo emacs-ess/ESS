@@ -34,6 +34,7 @@
 ;;; Code:
 
 (require 'ess-lsp-l)
+(require 'ess-inf)
 (declare-function ess-write-to-dribble-buffer "ess-utils")
 (defvar ess-customize-alist)
 (defvar ess-dialect)

@@ -38,6 +38,7 @@
 ;;*;; Requires
 (require 'mouseme)
 (require 'ess-dde)
+(require 'ess-trns)
 ;;(if (or (equal window-system 'w32)
 ;;      (equal window-system 'win32)
 ;;      (equal window-system 'mswindows))

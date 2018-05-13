@@ -84,6 +84,7 @@
 
 (fset 'omegahat 'OMG)
 
+;;;###autoload
 (defun OMG-mode (&optional proc-name)
   "Major mode for editing Omegahat source.  NOT EVEN STARTED."
   (interactive)
@@ -91,6 +92,11 @@
   (ess-mode OMG-customize-alist proc-name)
   ;;(java-mode)
   (setq major-mode 'OMG-mode))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.omg\\'" . omegahat-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.hat\\'" . omegahat-mode))
 
 (fset 'omegahat-mode 'OMG-mode)
 

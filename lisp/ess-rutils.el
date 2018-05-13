@@ -52,6 +52,7 @@
 
 ;; Autoloads and requires
 (require 'ess-site)
+(require 'ess-rdired)
 
 (defvar ess-rutils-buf "*R temp*"
   "Name of temporary R buffer.")
@@ -269,13 +270,6 @@ to rebuild installed packages if needed."
   (if (y-or-n-p "Delete all objects? ")
       (ess-execute "rm(list=ls())" 'buffer)))
 
-(defun ess-rutils-objs ()
-  "Manipulate R objects; wrapper for `ess-rdired'."
-  (interactive)
-  (ess-rdired)
-  (if (fboundp 'fit-frame)
-      (fit-frame)))
-
 (defun ess-rutils-load-wkspc (file)
   "Load workspace FILE into R."
   (interactive "fFile with workspace to load: ")
@@ -401,7 +395,7 @@ Options should be separated by value of `crm-default-separator'."
     (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
       'ess-rutils-rm-all)
     (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
-      'ess-rutils-objs)
+      'ess-rdired)
     (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
       'ess-rutils-load-wkspc)
     (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
@@ -414,7 +408,7 @@ Options should be separated by value of `crm-default-separator'."
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
   "Submenu of `inferior-ess-mode' to use with RUtils."
   '("RUtils"
-    ["Manage objects"          ess-rutils-objs          t]
+    ["Manage objects"          ess-rdired               t]
     ["Remove objects"          ess-rutils-rm-all        t]
     "------"
     ["Local packages"           ess-rutils-local-pkgs   t]

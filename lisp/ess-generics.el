@@ -57,6 +57,7 @@
             forms (cdr forms)))
     (if ditto body (nreverse xbody))))
 
+;;;###autoload
 (defmacro ess-defgeneric (name args docstring &rest body)
   "Define a new function, as with `defun', which can be overloaded.
 NAME is the name of the function to create. ARGS are the

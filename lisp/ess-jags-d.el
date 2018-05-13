@@ -256,6 +256,13 @@
     (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
   )
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Jj][Aa][Gg]\\'" . ess-jags-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Jj][Oo][Gg]\\'" . ess-jags-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Jj][Mm][Dd]\\'" . ess-jags-mode))
+
 (defvaralias 'ess-jags-mode-hook 'ess-bugs-mode-hook)
 (defvaralias 'ess-jags-mode-map 'ess-bugs-mode-map)
 

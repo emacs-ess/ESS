@@ -86,6 +86,11 @@
 (fset 'stata-mode 'STA-mode)
 (fset 'Stata-mode 'STA-mode)
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.do\\'" . STA-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.ado\\'" . STA-mode))
+
 
 (defun ess-sta-remove-comments (string)
   "Remove one-line comments before sending the STRING to process.

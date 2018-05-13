@@ -264,6 +264,13 @@
     (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
   )
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Bb][Uu][Gg]\\'" . ess-bugs-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Bb][Oo][Gg]\\'" . ess-bugs-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Bb][Mm][Dd]\\'" . ess-bugs-mode))
+
 (defun ess-sci-to-dec ()
   "For BUGS/S family: Express +/-0.000E+/-0 or +/-0.0e+/-00 as a decimal."
   (interactive)

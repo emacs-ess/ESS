@@ -35,23 +35,10 @@
 ;; ess-site.el must be edited.  The final directory location of this file must be
 ;; supplied in ess-lisp-directory.  The editing of remaining sections is
 ;; optional.  It should then be byte-compiled, and users who wish to use ESS
-;; should add the line:
+;; should add the path to ess-site to their `load-path' and require it:
 ;;
-;;    (load "/PATH/TO/THIS/FILE/ess-site")
-;;
-;; (where /PATH/TO/THIS/FILE is the path to ess-site.elc: i.e. the value of
-;; `ess-lisp-directory', below) to their .emacs file.
-;;
-;; Alternatively, if the file is already in a directory specified by
-;; the load-path variable:
-;;
+;;    (add-to-list 'load-path "/path/to/ess/lisp-directory");;
 ;;    (require 'ess-site)
-;;
-;; will work.
-;;
-;; with Emacs (and in general):
-;;
-;;      (add-to-list 'load-path "/path/to/ess/lisp-directory")
 
 ;;; Code:
 
@@ -160,52 +147,6 @@ for ESS, such as icons.")
 
 ;;;  Site Specific setup
 ;;;; ===============================================
-
-;; Be careful when editing the following. MISTAKES WILL RESULT IN
-;; *.sty BEING TREATED AS ESS[S], rather than LaTeX-mode!
-;;;###autoload
-(unless (assoc "\\.[rR]\\'" auto-mode-alist)
-  (setq auto-mode-alist
-        (append
-         '(("\\.sp\\'"          . S-mode) ;; re: Don MacQueen <macq@llnl.gov>
-           ("/R/.*\\.q\\'"      . R-mode) ;; R/*.q is R code (e.g., in package)
-           ("\\.[qsS]\\'"       . S-mode) ;; s,S [see ess-restore-asm-extns above!]
-           ("\\.ssc\\'"         . S-mode) ;; Splus (>= 4.x) script files.
-           ("\\.SSC\\'"         . S-mode) ;; ditto for windoze
-           ("\\.[rR]\\'"        . R-mode)
-           ("\\.[rR]nw\\'"      . Rnw-mode)
-           ("\\.[sS]nw\\'"      . Snw-mode); currently identical to Rnw-mode
-           ("\\.[rR]profile\\'" . R-mode)
-           ("NAMESPACE\\'"      . R-mode)
-           ("CITATION\\'"       . R-mode)
-           ("\\.omg\\'"         . omegahat-mode)
-           ("\\.hat\\'"         . omegahat-mode) ;; Duncan's pref'd...
-           ("\\.lsp\\'"         . XLS-mode)
-           ("\\.do\\'"          . STA-mode)
-           ("\\.ado\\'"         . STA-mode)
-           ("\\.[Ss][Aa][Ss]\\'"        . SAS-mode)
-           ;; Many .log/.lst files, not just SAS
-           ;;("\\.log\\'"       . SAS-log-mode)
-           ;;("\\.[Ll][Ss][Tt]\\'"      . SAS-listing-mode)
-           ("\\.[Ss]t\\'"       . S-transcript-mode)
-           ("\\.Sout"           . S-transcript-mode)
-           ;;("\\.[Rr]t\\'"       . R-transcript-mode)
-           ("\\.[Rr]out"        . R-transcript-mode)
-           ("\\.Rd\\'"          . Rd-mode)
-           ("\\.[Bb][Uu][Gg]\\'"         . ess-bugs-mode)
-           ("\\.[Bb][Oo][Gg]\\'"         . ess-bugs-mode)
-           ("\\.[Bb][Mm][Dd]\\'"         . ess-bugs-mode)
-           ("\\.[Jj][Aa][Gg]\\'"         . ess-jags-mode)
-           ("\\.[Jj][Oo][Gg]\\'"         . ess-jags-mode)
-           ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
-           )
-         auto-mode-alist)))
-
-;; Rscript and littler interpreters recognized.
-;;;###autoload
-(add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
-;;;###autoload
-(add-to-list 'interpreter-mode-alist '("r" . r-mode))
 
 (eval-after-load "ess-r-mode"
   '(progn

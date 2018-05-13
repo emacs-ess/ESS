@@ -30,6 +30,7 @@
   (require 'tramp)
   (require 'cl-lib))
 (require 'ess-custom)
+(require 'ido)
 (defvar ac-modes)
 (declare-function evil-visual-state-p "evil")
 (declare-function evil-normal-state "evil")

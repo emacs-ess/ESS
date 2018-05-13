@@ -800,6 +800,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
 
+
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
 (define-obsolete-function-alias 'ess-smart-underscore 'ess-smart-S-assign "2018-06-08")
 
@@ -807,6 +808,10 @@ return it.  Otherwise, return `ess-help-topics-list'."
 (define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
 (define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.Sout" . S-transcript-mode))
 
 (provide 'ess-s-lang)
 
