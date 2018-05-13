@@ -200,7 +200,6 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-local-pc-keys (ess-sas-local-pc-keys))
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
-  (define-key sas-mode-local-map "\C-ci" 'ess-eval-line-and-step-invisibly)
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
 
   ;; this is a mess

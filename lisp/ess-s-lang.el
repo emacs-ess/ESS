@@ -747,7 +747,6 @@ underscore character."
   (interactive)
   (require 'ess-mode); typically unnecessary
   (require 'ess-inf); dito
-  (define-key ess-mode-map          "\C-cf" 'ess-insert-function-outline)
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
 
   ;; Make M-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
