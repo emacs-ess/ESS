@@ -43,6 +43,15 @@ with @code{makefile-mode}.
 @item New varaible @code{ess-write-to-dribble}.
 This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
 
+@item ESS now respects Emacs conventions for keybindings.
+This means that The @code{C-c [letter]} bindings have been
+removed. This affects @code{C-c h}, which was bound to
+@code{ess-eval-line-and-step-invisibly} in @code{sas-mode-local-map};
+@code{C-c f}, which was bound to @code{ess-insert-function-outline} in
+@code{ess-add-MM-keys}; and @code{C-c h}, which was bound to
+@code{ess-handy-commands} in @code{Rd-mode-map},
+@code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
+
 @end itemize
 
 
