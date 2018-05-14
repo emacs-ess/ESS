@@ -40,6 +40,7 @@
                                output = output, local = fallback_env, 
                                fake.source = fake.source))
         }
+
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if (is.null(envns))
         stop(gettextf("Can't find a namespace environment corresponding to package name '%s\"",
@@ -100,7 +101,8 @@
             }else{
                 if(!identical(thisEnv, thisNs)){
                     .ess.assign(this, thisEnv, envns)
-                    objectsNs <- c(objectsNs, this)}
+                    objectsNs <- c(objectsNs, this)
+                }
             }
         }else{
             newNs <- c(newNs, this)
@@ -114,15 +116,20 @@
                     if(.ess.differs(thisPkg, thisEnv)){
                         environment(thisEnv) <- environment(thisPkg)
                         .ess.assign(this, thisEnv, envpkg)
-                        funcPkg <- c(funcPkg, this)}
+                        funcPkg <- c(funcPkg, this)
+                    }
                 }else{
-                    newPkg <- c(newPkg, this)}
+                    newPkg <- c(newPkg, this)
+                }
             }else{
                 if(!identical(thisPkg, thisEnv)){
                     .ess.assign(this, thisEnv, envpkg)
-                    objectsPkg <- c(objectsPkg, this)}}
+                    objectsPkg <- c(objectsPkg, this)
+                }
+            }
         }else{
-            newPkg <- c(newPkg, this)}
+            newPkg <- c(newPkg, this)
+        }
 
         if (!is.null(thisNs)) {
             isDependent <- .ess.ns_propagate(thisEnv, this, importsEnvs)
@@ -257,8 +264,7 @@
     invisible(env)
 }
 
-.ess.ns_insertMethods <- function(tableEnv,  tablePkg, envns)
-{
+.ess.ns_insertMethods <- function(tableEnv,  tablePkg, envns) {
     inserted <- character()
     for(m in ls(envir = tableEnv, all.names = T)){
         if(exists(m, envir = tablePkg, inherits = FALSE)){
@@ -318,7 +324,7 @@
     invisible(NULL)
 }
 
-.ess.identicalClass <- function(cls1, cls2, printInfo = FALSE){
+.ess.identicalClass <- function(cls1, cls2, printInfo = FALSE) {
     slots1 <- slotNames(class(cls1))
     slots2 <- slotNames(class(cls2))
     if(identical(slots1, slots2)){
