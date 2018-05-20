@@ -21,7 +21,7 @@ NOWEAVE=noweave
 # have to preload the files that contain macro definitions or the
 # byte compiler will compile everything that references them
 # incorrectly.  also preload a file that sets byte compiler options.
-PRELOADS = -l ./ess-comp.el
+COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
 
 
 ## files that contain key macro definitions.  almost everything
@@ -112,14 +112,14 @@ julia-mode.el:
 ### File Dependencies
 
 .el.elc:
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile $<
+	$(COMPILE) $<
 
 
 ess-custom.elc: ess-custom.el ess-comp.el
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-custom.el
+	$(COMPILE) ess-custom.el
 
 ess.elc: ess.el ess-comp.el ess-custom.elc
-	$(EMACSBATCH) $(PRELOADS) -l ess-custom.elc -f batch-byte-compile ess.el
+	$(COMPILE) ess.el
 
 ess-site.elc: ess-site.el ess.elc
 
@@ -129,14 +129,14 @@ ess-inf.elc: ess-inf.el ess-comp.el $(CORE)
 # 	@echo " ** the function set-keymap-parent is not known to be defined."
 # 	@echo " ** assignment to free variable comint-last-input-end"
 # 	@echo "from the byte compiler if they occur. It is completely normal."
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-inf.el
+	$(COMPILE) ess-inf.el
 
 
 ess-mode.elc: ess-mode.el ess-comp.el $(CORE)
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-mode.el
+	$(COMPILE) ess-mode.el
 
 ess-trns.elc: ess-trns.el ess-comp.el $(CORE)
-	$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile ess-trns.el
+	$(COMPILE) ess-trns.el
 
 ess-help.elc: ess-help.el $(CORE)
 
@@ -196,7 +196,7 @@ ess-r-gui.elc : ess-r-gui.el ess-dde.elc
 # Ignore this.
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
-#  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))
+#  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(COMPILE) %s.el" file file file file)))
 
 # Use this to print an envvar for debugging purposes.
 # Example: make print-EMACS
