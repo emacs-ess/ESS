@@ -192,7 +192,12 @@ ess-gretl.elc : ess-gretl.el
 
 ess-r-gui.elc : ess-r-gui.el ess-dde.elc
 
+
 # Ignore this.
 #(defun S-insert-make-rule (file)
 #  (interactive "sFile:")
 #  (insert (format "%s.elc:  %s.el $(CORE)\n\t@echo compiling %s.el...\n\t@$(EMACSBATCH) $(PRELOADS) -f batch-byte-compile %s.el" file file file file)))
+
+# Use this to print an envvar for debugging purposes.
+# Example: make print-EMACS
+print-%: ; @echo $* = $($*)
