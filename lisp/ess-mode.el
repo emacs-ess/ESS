@@ -327,9 +327,6 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (unless is-derived
     (kill-all-local-variables)) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
-  ;; fixme: This is dialect-specific
-  ;; must happen here, since the mode map is set up too early:
-  (if ess-r-args-electric-paren (define-key ess-mode-map "(" 'ess-r-args-auto-show))
   (ess-write-to-dribble-buffer
    (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
            ess-language

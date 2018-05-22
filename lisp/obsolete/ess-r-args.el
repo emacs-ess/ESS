@@ -188,6 +188,7 @@ found."
       (let ((rfunname (buffer-substring-no-properties posend (point))))
         (if (posix-string-match "^[a-zA-Z0-9_\.]+$" rfunname)
             rfunname nil)))))
+(make-obsolete 'ess-r-args-current-function "See `eldoc-mode'" "2018-05-22")
 
 (defun ess-r-args-get (&optional function trim)
   "Returns string of arguments and their default values of R
@@ -206,6 +207,9 @@ buffer readjustments for multiline string)."
     (mapconcat (lambda (arg) (concat (car arg) "=" (cdr arg)))
                (cadr (ess-function-arguments function))
                ", ")))
+
+(make-obsolete 'ess-r-args-get "See `eldoc-mode'" "2018-05-22")
+
 ;;;###autoload
 (defun ess-r-args-show (&optional function)
   "Show arguments and their default values of R function. Calls
@@ -230,6 +234,7 @@ buffer readjustments for multiline string)."
           ;; lines of text
           (ess-tooltip-show-at-point args 0 30))
         ))))
+(make-obsolete 'ess-r-args-show "See `eldoc-mode'" "2018-05-22")
 
 ;;;###autoload
 (defun ess-r-args-auto-show ()
@@ -241,6 +246,7 @@ and their default values of an R function. Built on \\[ess-r-args-show]."
            ess-local-process-name ; has a process and it must still be running
            (ess-get-process ess-local-process-name))
       (ess-r-args-show)))
+(make-obsolete 'ess-r-args-auto-show "See `eldoc-mode'" "2018-05-22")
 
 ;; MM: I would strongly discourage use of the following:
 ;;     it leads to clueless newbie-users  who indeed
@@ -257,6 +263,7 @@ ess-r-args-current-function if no argument given."
             (pointpos (point)))
         (insert args)
         (goto-char pointpos))))
+(make-obsolete 'ess-r-args-insert "See `eldoc-mode'" "2018-05-22")
 
 
 ;; (defvar ess-r-object-tooltip-alist
