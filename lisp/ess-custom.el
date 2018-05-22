@@ -1634,12 +1634,6 @@ by `ess-function-template'."
  ; ess-inf: variables for inferior-ess.
 
 ;;*;; System dependent variables
-
-;; If you need to change the *-program-name variables, do so in
-;; ess-site.el.  Do NOT make the changes here!!
-;; Keep a copy of your revised ess-site.el to use as a starting point
-;; for upgrades of ESS.
-
 (defcustom inferior-ess-own-frame nil
   "Non-nil means that inferior ESS buffers should start in their own frame.
 The parameters of this frame are stored in `inferior-ess-frame-alist'."
@@ -1667,11 +1661,11 @@ non-nil."
   :type 'integer)
 
 
-(defcustom inferior-ess-r-program-name
-  (if ess-microsoft-p "Rterm"  "R")
+(defcustom inferior-ess-r-program-name (or (executable-find "Rterm")
+                                           (executable-find "R"))
   "Program name for invoking an inferior ESS with \\[R]."
   :group 'ess-R
-  :type 'string)
+  :type '(choice (string) file))
 (defvaralias 'inferior-R-program-name 'inferior-ess-r-program-name)
 
 (defcustom inferior-R-args ""
@@ -1827,10 +1821,11 @@ menu."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-S+3-program-name "Splus"
+(defcustom inferior-S+3-program-name (or (executable-find "Splus")
+                                         "Splus")
   "Program name for invoking an inferior ESS with S+3()."
   :group 'ess-SPLUS
-  :type 'string)
+  :type '(choice (string) file))
 
 (defcustom inferior-S+4-program-name
   (concat ess-program-files "/spls45se/cmd/Splus.exe")
@@ -1898,15 +1893,17 @@ different computer."
   :group 'ess-proc
   :type 'string)
 
-(defcustom inferior-S4-program-name "S4"
+(defcustom inferior-S4-program-name (or (executable-find "S4")
+                                        "S4")
   "Program name to invoke an inferior ESS with S4()."
   :group 'ess-S
-  :type 'string)
+  :type '(choice (string) (file)))
 
-(defcustom inferior-S+5-program-name "Splus5"
+(defcustom inferior-S+5-program-name (or (executable-find "Splus5")
+                                         "Splus5")
   "Program name to invoke an inferior ESS with S+5()."
   :group 'ess-SPLUS
-  :type 'string)
+  :type '(choice (string) (file)))
 
 (defvaralias 'S+6-dialect-name 'S+-dialect-name)
 (defcustom S+-dialect-name "S+"
@@ -1916,21 +1913,21 @@ Easily changeable in a user's `.emacs'."
   :type 'string)
 
 (defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
-(if ess-microsoft-p
-    (defcustom inferior-S+-program-name
+
+(defcustom inferior-S+-program-name
+  (if ess-microsoft-p
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
-      "Program name to invoke an external GUI S+ for Windows.
-The default value is correct for a default installation of
-S-Plus 8.1 and with bash as the shell.
-For any other version or location, change this value in ess-site.el or
-site-start.el.  Use the 8.3 version of the pathname.
-Use double backslashes if you use the msdos shell."
-      :group 'ess-SPLUS
-      :type 'string)
-  (defcustom inferior-S+-program-name "Splus"
-    "Program name to invoke an inferior ESS with S+ for Unix."
-    :group 'ess-SPLUS
-    :type 'string))
+    (or (executable-find "Splus")
+        "Splus"))
+  "Program name to invoke S+.
+On Unix/Linux, use the Splus executable.  On Windows, the default
+value is correct for a default installation of S-Plus 8.1 and
+with bash as the shell.  For any other version or location,
+change this value in ess-site.el or site-start.el.  Use the 8.3
+version of the pathname.  Use double backslashes if you use the
+msdos shell."
+  :group 'ess-SPLUS
+  :type '(choice (string) (file)))
 
 (defvaralias 'inferior-S+6-start-args 'inferior-S+-start-args)
 (defvaralias 'inferior-Splus-args 'inferior-S+-start-args)
@@ -2015,42 +2012,48 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-S
   :type '(choice (const nil) (const t) (const ask)))
 
-(defcustom inferior-XLS-program-name "xlispstat"
+(defcustom inferior-XLS-program-name (or (executable-find "xlispstat")
+                                         "xlispstat")
   "Program name for invoking an inferior ESS with \\[XLS]."
   :group 'ess-XLS
-  :type 'string)
+  :type '(choice (string) (file)))
 
-(defcustom inferior-VST-program-name "vista"
+(defcustom inferior-VST-program-name (or (executable-find "vista")
+                                         "vista")
   "Program name for invoking an inferior ESS with \\[ViSta]."
   :group 'ess-XLS
-  :type 'string)
+  :type '(choice (string) (file)))
 
-(defcustom inferior-ARC-program-name "arc"
+(defcustom inferior-ARC-program-name (or (executable-find "arc")
+                                         "arc")
   "Program name for invoking an inferior ESS with \\[ARC]."
   :group 'ess-XLS
-  :type 'string)
+  :type '(choice (string) (file)))
 
-(defcustom inferior-SAS-program-name "sas"
+(defcustom inferior-SAS-program-name (or (executable-find "sas")
+                                         "sas")
   "Program name for invoking an inferior ESS with SAS()."
   :group 'ess-sas
-  :type 'string)
+  :type '(choice (string) (file)))
 
-(defcustom inferior-STA-program-name "stata"
+(defcustom inferior-STA-program-name (or (executable-find "stata")
+                                         "stata")
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
-  :type 'string)
+  :type '(choice (string) (file)))
 
 (defcustom ess-sta-delimiter-friendly nil
   "Non-nil means convert embedded semi-colons to newlines for Stata processing."
   :group 'ess-Stata
   :type 'boolean)
 
-(defcustom inferior-OMG-program-name "omegahat"
+(defcustom inferior-OMG-program-name (or (executable-find "omegahat")
+                                         "omegahat")
   "Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG
-  :type 'string)
+  :type '(choice (string) (file)))
 
 
 ;;;;; names for setting the pager and editor options of the
@@ -3006,17 +3009,17 @@ In `R-mode', for example, this includes \"while,\" \"if/else\",
 
 (defvar ess-help-web-search-command nil
   "Dialect specific command web help search.
-Passed to `ess-execute-dialect-specific' which see. ")
+Passed to `ess-execute-dialect-specific' which see.")
 (make-variable-buffer-local 'ess-help-web-search-command)
 
 (defvar ess-manual-lookup-command nil
   "Dialect specific command manual lookup.
-Passed to `ess-execute-dialect-specific' which see. ")
+Passed to `ess-execute-dialect-specific' which see.")
 (make-variable-buffer-local 'ess-manual-lookup-command)
 
 (defvar ess-reference-lookup-command nil
-  "Dialect specific command for reference lookup..
-Passed to `ess-execute-dialect-specific' which see. ")
+  "Dialect specific command for reference lookup.
+Passed to `ess-execute-dialect-specific' which see.")
 (make-variable-buffer-local 'ess-reference-lookup-command)
 
 (defvar ess-funargs-command  nil
@@ -3026,7 +3029,7 @@ S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
 
 (defvar ess-eldoc-function nil
-  "Holds a dialect specific eldoc function,
+  "Holds a dialect specific eldoc function.
 See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
 (defcustom ess-r-args-noargsmsg "No args found."
@@ -3072,24 +3075,23 @@ Defaults to `ess-S-non-functions'."
   "Alist of (key . string) pairs for use in section searching.")
 
 (defvar ess-help-sec-regex nil
-  "Reg(ular) Ex(pression) of section headers in help file")
+  "Reg(ular) Ex(pression) of section headers in help file.")
 
 (make-variable-buffer-local 'ess-help-sec-keys-alist)
 (make-variable-buffer-local 'ess-help-sec-regex)
 
 
  ; julia-mode
-(defcustom inferior-julia-program-name (if (executable-find "julia-basic")
-                                           "julia-basic"
-                                         "julia")
-  "julia' executable.
-Need to be a full path if julia executable is not in the `exec-path'"
+(defcustom inferior-julia-program-name (or (executable-find "julia-basic")
+                                           (executable-find "julia")
+                                           "julia")
+  "Executable for Julia.
+Should be an absolute path to the julia executable."
   :group 'ess-Julia
-  :type 'string)
+  :type '(choice (string) (file)))
 
 (defvar julia-basic-offset 4
-  "Offset for julia code editing")
-
+  "Offset for julia code editing.")
 
 
  ; ess-mode: editing S source
@@ -3151,7 +3153,7 @@ Used to store the values for passing on to newly created buffers.")
 (make-variable-buffer-local 'ess-local-customize-alist)
 
 (defvar ess-mode-editing-alist nil
-  "Variable settings for ess-mode.")
+  "Variable settings for `ess-mode'.")
 
 (defvar ess-transcript-minor-mode nil
   "Non-nil if using `ess-transcript-mode' as a minor mode of some other mode.")
@@ -3159,12 +3161,12 @@ Used to store the values for passing on to newly created buffers.")
 (make-variable-buffer-local 'ess-transcript-minor-mode)
 
 (defvar ess-listing-minor-mode nil
-  "Non-nil if using ess-listing-minor-mode.")
+  "Non-nil if using `ess-listing-minor-mode'.")
 
 (make-variable-buffer-local 'ess-listing-minor-mode)
 
 (defvar ess--enable-experimental-projects nil
-  "Enable experimental project support in ESS")
+  "Enable experimental project support in ESS.")
 
 (provide 'ess-custom)
 
