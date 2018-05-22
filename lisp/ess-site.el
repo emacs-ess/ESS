@@ -220,7 +220,7 @@ for ESS, such as icons.")
 (eval-after-load "ess-r-mode"
   '(progn
      (ess-write-to-dribble-buffer "[ess-site:] before creating ess-versions-* ...")
-     (ess-r-s-versions-creation+menu)
+     (ess-r-s-define-runners+menu)
      (ess-write-to-dribble-buffer "[ess-site:] after ess-versions-created ...")))
 
 ;; Check to see that inferior-ess-r-program-name points to a working version
