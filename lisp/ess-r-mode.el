@@ -331,12 +331,20 @@ It makes underscores and dots word constituent chars.")
      (ess-pager                             . ess-r-pager)
      (ess-mode-syntax-table                 . ess-r-syntax-table)
      (font-lock-syntactic-face-function     . #'ess-r-font-lock-syntactic-face-function)
-     (prettify-symbols-alist                . '(("<-" . ?←)
-                                                ("<<-" . ?↞)
-                                                ("->"  . ?→)
-                                                ("->>" . ?↠))))
+     ;; Setup prettify-symbols-alist to show "pretty" arrows, but make
+     ;; sure that they arrows use the same amount of spacing as <- and
+     ;; <<- to ensure indentation does not change when
+     ;; prettify-symbols-mode is turned on/off.
+     (prettify-symbols-alist                . '(("<-" . (?\s (Br . Bl) ?\s (Bc . Bc) ?←))
+                                                      ("->" . (?\s (Br . Bl) ?\s (Bc . Bc) ?→))
+                                                      ("->>" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                                                                     (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?>
+                                                                     (Bc . Bl) ?- (Br . Br) ?>))
+                                                      ("<<-" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                                                                     (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
+                                                                     (Bc . Bl) ?< (Br . Br) ?-)))))
    S-common-cust-alist)
-  "Variables to customize for R -- set up later than emacs initialization.")
+  "Variables to customize for R -- set up later than Emacs initialization.")
 
 (defalias 'R-customize-alist 'ess-r-customize-alist)
 
