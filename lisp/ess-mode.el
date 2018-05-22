@@ -33,6 +33,7 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'cl)
   (require 'cl-lib))
 (require 'ess-custom)
 (require 'ess-utils)
@@ -988,6 +989,29 @@ generate the source buffer."
                   ;; This may fail if there are no opens
                   (down-list 1)
                 (error nil)))))))
+
+(defun ess-define-runner (name dialect)
+  "Create a function NAME.
+This function starts the inferior process with the specified
+version.  DIALECT can be \"R,\" \"S,\", \"SAS.\""
+  (lexical-let ((name name)
+                (dialect dialect))
+    (fset (intern name)
+          (lambda (&optional start-args)
+            "Start this process version in an inferior ESS buffer.
+Function defined using `ess-define-runner'."
+            (interactive "P")
+            (cond ((string= dialect "R")
+                   (let ((inferior-R-version name)
+                         (inferior-ess-r-program-name (if ess-microsoft-p
+                                                          "Rterm" "R")))
+                     (R start-args)))
+                  ((string= dialect "S")
+                   (let ((inferior-S+-program-name name))
+                     (S+)))
+                  ((string= dialect "SAS")
+                   (let ((inferior-SAS-program-name name))
+                     (SAS))))))))
 
 (defun ess-version ()
   (interactive)
