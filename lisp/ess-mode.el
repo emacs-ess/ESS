@@ -1002,15 +1002,13 @@ version.  DIALECT can be \"R,\" \"S,\", \"SAS.\""
 Function defined using `ess-define-runner'."
             (interactive "P")
             (cond ((string= dialect "R")
-                   (let ((inferior-R-version name)
-                         (inferior-ess-r-program-name (if ess-microsoft-p
-                                                          "Rterm" "R")))
+                   (let ((inferior-ess-r-program name))
                      (R start-args)))
                   ((string= dialect "S")
-                   (let ((inferior-S+-program-name name))
+                   (let ((inferior-S+-program name))
                      (S+)))
                   ((string= dialect "SAS")
-                   (let ((inferior-SAS-program-name name))
+                   (let ((inferior-SAS-program name))
                      (SAS))))))))
 
 (defun ess-version ()

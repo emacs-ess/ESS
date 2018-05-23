@@ -60,7 +60,7 @@ connects it to the '(ddeESS [S+])' window.")
      (ess-loop-timeout          . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file    . "ess-sp6-namedb.el" )
      (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
-     (inferior-ess-program       . inferior-S+-program-name)
+     (inferior-ess-program       . inferior-S+-program)
      (inferior-ess-help-command  . "help(\"%s\")\n")
      (inferior-ess-help-filetype . "chm")
      (inferior-ess-search-list-command . "searchPaths()\n")
@@ -92,7 +92,7 @@ connects it to the '(ddeESS [S+])' window.")
      (ess-loop-timeout           . 500000 );fixme: dialect specific custom.var
      (ess-object-name-db-file    . "ess-sp6-namedb.el" )
      (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
-     (inferior-ess-program       . inferior-Sqpe+-program-name)
+     (inferior-ess-program       . inferior-Sqpe+-program)
      (inferior-ess-help-command  . "help(\"%s\")\n")
      (inferior-ess-help-filetype . "chm")
      (inferior-ess-search-list-command . "searchPaths()\n")
@@ -139,23 +139,23 @@ connects it to the '(ddeESS [S+])' window.")
 ;;;
 (defalias 'S+6 'S+)
 (defun S+ (&optional proc-name)
-  "Verify that `inferior-S+-program-name' points to S-Plus 6 or
+  "Verify that `inferior-S+-program' points to S-Plus 6 or
 S-Plus 7 or S-Plus 8.  Start normally for S-Plus 6.1 and later.
 Inform the user to start S-Plus 6.0 from the icon and then
 connect to it with `S+-existing'.  Give an error message if
-`inferior-S+-program-name' doesn't point to S-Plus 6 or S-Plus 7
+`inferior-S+-program' doesn't point to S-Plus 6 or S-Plus 7
 or S-Plus 8."
   (interactive)
   (with-current-buffer (find-file-noselect
-                        (concat (executable-find inferior-S+-program-name)
+                        (concat (executable-find inferior-S+-program)
                                 "/../../versions") t)
     (setq buffer-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
-        (error "The emacs variable `inferior-S+-program-name' does
+        (error "The emacs variable `inferior-S+-program' does
 not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd' (expand the
 `[678]?' to match your setup) to your `exec-path' or specify the complete
-path to `Splus.exe' in the variable `inferior-S+-program-name' in your
+path to `Splus.exe' in the variable `inferior-S+-program' in your
 `.emacs' file.")
       (forward-line)
       (if (search-backward "splus\t6.0" (point-min) t)
@@ -215,7 +215,7 @@ to start the Splus program."
     (setq comint-process-echoes nil)
     (setq comint-input-sender 'comint-simple-send)
     (goto-char (point-max))
-    (insert (concat inferior-S+-program-name " "
+    (insert (concat inferior-S+-program " "
                     inferior-ess-start-args)) ; Note: there is no final "&".
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+])'
     ;; With the "&", the results of  !system.command  in S get lost.
@@ -341,24 +341,24 @@ Splus Commands window blink a DOS window and you won't see them.\n\n")
   (ess-transcript-mode S+-customize-alist))
 
 (defun S+-msdos (&optional proc-name)
-  "Verify that `inferior-S+-program-name' points to S-Plus 6 or
+  "Verify that `inferior-S+-program' points to S-Plus 6 or
 S-Plus 7 or S-Plus 8.  Start normally for S-Plus 6.1 and later.
 Inform the user to start S-Plus 6.0 from the icon and then
 connect to it with `S+-msdos-existing'.  Give an error message
-if `inferior-S+-program-name' doesn't point to S-Plus 6 or
+if `inferior-S+-program' doesn't point to S-Plus 6 or
 S-Plus 7 or S-Plus 8."
   (interactive)
   (with-current-buffer  (find-file-noselect
-                         (concat (executable-find inferior-S+-program-name)
+                         (concat (executable-find inferior-S+-program)
                                  "/../../versions") t)
     (setq buffer-read-only 1)
     (forward-line)
     (if (not (search-backward-regexp "splus\t[678].[0-9]" (point-min) t))
-        (error "The emacs variable `inferior-S+-program-name' does
+        (error "The emacs variable `inferior-S+-program' does
  not point to S-Plus 6 or 7 or 8.  Please add `splus[678]?/cmd'
  (expand the `[678]?' to match your setup) to your `exec-path' or
  specify the complete path to `Splus.exe' in the variable
-`inferior-S+-program-name' in your `.emacs' file.")  ;;; " This comment keeps emacs font-lock from getting out of phase.
+`inferior-S+-program' in your `.emacs' file.")  ;;; " This comment keeps emacs font-lock from getting out of phase.
 
       (progn
         (forward-line)
@@ -422,7 +422,7 @@ to start the Splus program."
     (setq comint-process-echoes nil)
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
-    (insert (concat inferior-S+-program-name " "
+    (insert (concat inferior-S+-program " "
                     inferior-ess-start-args)) ; Note: there is no final "&".
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+])'
     ;; With the "&", the results of  !system.command  in S get lost.
@@ -558,7 +558,7 @@ This function was generated by `ess-sqpe-versions-create'."
   (let* ((use-dialog-box) ;; MS dialog box won't return a directory
          (shome-old (getenv "SHOME"))
          (inferior-Sqpe+-SHOME-name "ess-SHOME")
-         (inferior-Sqpe+-program-name (concat "ess-SHOME" "/cmd/sqpe.exe")))
+         (inferior-Sqpe+-program (concat "ess-SHOME" "/cmd/sqpe.exe")))
     (setenv "SHOME" "ess-SHOME")
     (ess-write-to-dribble-buffer
      (format "\n(Sqpe+template): ess-dialect=%s, buf=%s\n" ess-dialect

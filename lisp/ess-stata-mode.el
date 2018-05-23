@@ -56,7 +56,7 @@
     (ess-help-web-search-command   . "http://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
     (ess-eval-linewise-function    . #'stata-eval-linewise)
     (inferior-ess-font-lock-defaults . ess-STA-mode-font-lock-defaults)
-    (inferior-ess-program          . inferior-STA-program-name)
+    (inferior-ess-program          . inferior-STA-program)
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
     (inferior-ess-exit-command     . "exit\n")

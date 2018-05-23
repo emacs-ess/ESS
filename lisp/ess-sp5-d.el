@@ -53,7 +53,7 @@
      (ess-dialect                       . S+5-dialect-name)
      (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-sp5-namedb.el")
-     (inferior-ess-program              . inferior-S+5-program-name)
+     (inferior-ess-program              . inferior-S+5-program)
      ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff
      (inferior-ess-help-command   . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
      (inferior-ess-help-filetype . nil)

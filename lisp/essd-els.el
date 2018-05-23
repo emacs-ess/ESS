@@ -61,7 +61,7 @@
      (ess-dialect                       . S+elsewhere-dialect-name)
      (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
-     (inferior-ess-program              . inferior-S-elsewhere-program-name)
+     (inferior-ess-program              . inferior-S-elsewhere-program)
      (inferior-ess-help-command         . "help(\"%s\", pager=\"cat\", window=F)\n")
 
      (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
@@ -149,7 +149,7 @@ return new alist whose car is the new pair and cdr is ALIST.
 ;;   ;; Need to select a elsewhere-customize-alist
 ;;   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
 ;;     (ess-change-alist 'inferior-ess-program
-;;                       inferior-ESS-elsewhere-program-name
+;;                       inferior-ESS-elsewhere-program
 ;;                       elsewhere-customize-alist)
 ;;     (setq ess-customize-alist elsewhere-customize-alist)
 ;;     (ess-write-to-dribble-buffer

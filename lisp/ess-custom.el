@@ -376,7 +376,7 @@ for all projects."
   :type 'boolean)
 
 
-(defcustom ess-use-inferior-program-name-in-buffer-name nil
+(defcustom ess-use-inferior-program-in-buffer-name nil
   "For R, use e.g., 'R-2.1.0' or 'R-devel' (the program name) for buffer name.
 Avoids the plain dialect name."
   :group 'ess
@@ -1661,12 +1661,12 @@ non-nil."
   :type 'integer)
 
 
-(defcustom inferior-ess-r-program-name (or (executable-find "Rterm")
-                                           (executable-find "R"))
+(defcustom inferior-ess-r-program (or (executable-find "Rterm")
+                                      (executable-find "R"))
   "Program name for invoking an inferior ESS with \\[R]."
   :group 'ess-R
   :type '(choice (string) file))
-(defvaralias 'inferior-R-program-name 'inferior-ess-r-program-name)
+(defvaralias 'inferior-R-program 'inferior-ess-r-program)
 
 (defcustom inferior-R-args ""
   "String of arguments (see 'R --help') used when starting R,
@@ -1692,7 +1692,7 @@ for file name completion.  This can mess up ess evaluation completely."
   "String of switches used when starting stata.
 Don't use this to send initialization command to stata, use
 `inferior-STA-start-file' instead. Also see
-`inferior-STA-program-name'."
+`inferior-STA-program'."
   :group 'ess-Stata
   :type 'string)
 
@@ -1816,18 +1816,18 @@ menu."
   :group 'ess-SPLUS
   :type '(repeat string))
 
-(defcustom inferior-S3-program-name "/disk05/s/S"
+(defcustom inferior-S3-program "/disk05/s/S"
   "Program name for invoking an inferior ESS with S3()."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-S+3-program-name (or (executable-find "Splus")
-                                         "Splus")
+(defcustom inferior-S+3-program (or (executable-find "Splus")
+                                    "Splus")
   "Program name for invoking an inferior ESS with S+3()."
   :group 'ess-SPLUS
   :type '(choice (string) file))
 
-(defcustom inferior-S+4-program-name
+(defcustom inferior-S+4-program
   (concat ess-program-files "/spls45se/cmd/Splus.exe")
   "Program name for invoking an external GUI S+4.
 The default value is correct for a default installation of
@@ -1850,7 +1850,7 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :group 'ess-S
   :type 'string)
 
-(defcustom inferior-Sqpe+4-program-name
+(defcustom inferior-Sqpe+4-program
   (concat ess-program-files "/spls45se/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+4()."
   :group 'ess-SPLUS
@@ -1882,25 +1882,25 @@ version of the pathname."
 ;;      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
 
 
-(defcustom inferior-S-elsewhere-program-name "sh"
+(defcustom inferior-S-elsewhere-program "sh"
   "Program name to invoke an inferior ESS with S on a different computer."
   :group 'ess-proc
   :type 'string)
 
-(defcustom inferior-ESS-elsewhere-program-name "sh"
+(defcustom inferior-ESS-elsewhere-program "sh"
   "Program name to invoke an inferior ESS with program on a
 different computer."
   :group 'ess-proc
   :type 'string)
 
-(defcustom inferior-S4-program-name (or (executable-find "S4")
-                                        "S4")
+(defcustom inferior-S4-program (or (executable-find "S4")
+                                   "S4")
   "Program name to invoke an inferior ESS with S4()."
   :group 'ess-S
   :type '(choice (string) (file)))
 
-(defcustom inferior-S+5-program-name (or (executable-find "Splus5")
-                                         "Splus5")
+(defcustom inferior-S+5-program (or (executable-find "Splus5")
+                                    "Splus5")
   "Program name to invoke an inferior ESS with S+5()."
   :group 'ess-SPLUS
   :type '(choice (string) (file)))
@@ -1912,9 +1912,9 @@ Easily changeable in a user's `.emacs'."
   :group 'ess-SPLUS
   :type 'string)
 
-(defvaralias 'inferior-S+6-program-name 'inferior-S+-program-name)
+(defvaralias 'inferior-S+6-program 'inferior-S+-program)
 
-(defcustom inferior-S+-program-name
+(defcustom inferior-S+-program
   (if ess-microsoft-p
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
     (or (executable-find "Splus")
@@ -1969,8 +1969,8 @@ for Windows Commands window and in Sqpe+6 for Windows buffer."
   :group 'ess-SPLUS
   :type 'string)
 
-(defvaralias 'inferior-Sqpe+6-program-name 'inferior-Sqpe+-program-name)
-(defcustom inferior-Sqpe+-program-name
+(defvaralias 'inferior-Sqpe+6-program 'inferior-Sqpe+-program)
+(defcustom inferior-Sqpe+-program
   (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
   :group 'ess-S
@@ -2012,32 +2012,32 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-S
   :type '(choice (const nil) (const t) (const ask)))
 
-(defcustom inferior-XLS-program-name (or (executable-find "xlispstat")
-                                         "xlispstat")
+(defcustom inferior-XLS-program (or (executable-find "xlispstat")
+                                    "xlispstat")
   "Program name for invoking an inferior ESS with \\[XLS]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
-(defcustom inferior-VST-program-name (or (executable-find "vista")
-                                         "vista")
+(defcustom inferior-VST-program (or (executable-find "vista")
+                                    "vista")
   "Program name for invoking an inferior ESS with \\[ViSta]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
-(defcustom inferior-ARC-program-name (or (executable-find "arc")
-                                         "arc")
+(defcustom inferior-ARC-program (or (executable-find "arc")
+                                    "arc")
   "Program name for invoking an inferior ESS with \\[ARC]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
-(defcustom inferior-SAS-program-name (or (executable-find "sas")
-                                         "sas")
+(defcustom inferior-SAS-program (or (executable-find "sas")
+                                    "sas")
   "Program name for invoking an inferior ESS with SAS()."
   :group 'ess-sas
   :type '(choice (string) (file)))
 
-(defcustom inferior-STA-program-name (or (executable-find "stata")
-                                         "stata")
+(defcustom inferior-STA-program (or (executable-find "stata")
+                                    "stata")
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
@@ -2049,8 +2049,8 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type 'boolean)
 
-(defcustom inferior-OMG-program-name (or (executable-find "omegahat")
-                                         "omegahat")
+(defcustom inferior-OMG-program (or (executable-find "omegahat")
+                                    "omegahat")
   "Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG
   :type '(choice (string) (file)))
@@ -2143,8 +2143,8 @@ for help files.  The default value is nil for other systems."
 
 
 ;;;;; user settable defaults
-(defvar inferior-S-program-name  inferior-S+3-program-name
-  "*Program name for invoking an inferior ESS with S().")
+(defvar inferior-S-program  inferior-S+3-program
+  "Program name for invoking an inferior ESS with S.")
 ;;- (setq inferior-S-program
 ;;-       (cond ((string= S-proc-prefix "S") "Splus")
 ;;-         ((string= S-proc-prefix "R") "R")
@@ -2152,18 +2152,14 @@ for help files.  The default value is nil for other systems."
 ;;-         ))
 ;;(make-local-variable 'inferior-S-program)
 
-(defvar inferior-ess-program nil ;inferior-S-program-name
-  "*Default program name for invoking inferior-ess().
-The other variables ...-program-name should be changed, for the
+(defvar inferior-ess-program nil ;inferior-S-program
+  "Default program name for invoking inferior-ess.
+The other variables ...-program should be changed, for the
 corresponding program.")
 
 (make-variable-buffer-local 'inferior-ess-program)
-;; (setq-default inferior-ess-program inferior-S-program-name)
+;; (setq-default inferior-ess-program inferior-S-program)
 
-
-(defvar inferior-R-version "R (default)"
-  "A (short) name of the current R version.  A global variable for
-ESS internal communication.")
 
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
@@ -3082,9 +3078,9 @@ Defaults to `ess-S-non-functions'."
 
 
  ; julia-mode
-(defcustom inferior-julia-program-name (or (executable-find "julia-basic")
-                                           (executable-find "julia")
-                                           "julia")
+(defcustom inferior-julia-program (or (executable-find "julia-basic")
+                                      (executable-find "julia")
+                                      "julia")
   "Executable for Julia.
 Should be an absolute path to the julia executable."
   :group 'ess-Julia

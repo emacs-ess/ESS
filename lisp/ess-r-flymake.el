@@ -144,8 +144,8 @@ into a list and call REPORT-FN on it."
 (defun ess-r-flymake (report-fn &rest _args)
   "A Flymake backend for ESS-R modes.  Relies on the lintr package.
 REPORT-FN is flymake's callback function."
-  (unless (executable-find inferior-ess-r-program-name)
-    (error "Cannot find program '%s'" inferior-ess-r-program-name))
+  (unless (executable-find inferior-ess-r-program)
+    (error "Cannot find program '%s'" inferior-ess-r-program))
   ;; Kill the process if earlier check was found. The sentinel of the earlier
   ;; check will detect this.
   (when (process-live-p ess-r--flymake-proc)
@@ -155,7 +155,7 @@ REPORT-FN is flymake's callback function."
           (make-process
            :name "ess-r-flymake" :noquery t :connection-type 'pipe
            :buffer (generate-new-buffer "*ess-r-flymake*")
-           :command (list inferior-R-program-name
+           :command (list inferior-R-program
                           "--no-save" "--no-restore" "--no-site-file" "--no-init-file" "--slave"
                           "-e" (concat
                                 ess-r--flymake-def-linter

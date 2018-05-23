@@ -56,7 +56,7 @@
     (inferior-ess-primary-prompt   . "> ?"               )
     (inferior-ess-secondary-prompt . "^"                 )
     (comint-use-prompt-regexp      . t)
-    (inferior-ess-program          . inferior-XLS-program-name)
+    (inferior-ess-program          . inferior-XLS-program)
     (inferior-ess-help-command     . "(help '%s)\n"      )
     (inferior-ess-objects-command  . "(variables)\n"     )
     (inferior-ess-exit-command     . "(exit)\n"          )

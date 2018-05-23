@@ -138,10 +138,10 @@ Better logic needed!  (see 2 uses, in this file).")
     (other-window 2)
 
     ;;workaround
-    (setq inferior-SAS-program-name
+    (setq inferior-SAS-program
           (concat (file-name-as-directory ess-etc-directory)
                   "ess-sas-sh-command"))
-    (setq inferior-ess-program inferior-SAS-program-name)))
+    (setq inferior-ess-program inferior-SAS-program)))
 
 (defun ess-insert-accept (command)
   "Submit command to process, get next line."
@@ -163,7 +163,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (ess-dialect                   . "SAS")
     (ess-mode-editing-alist        . SAS-editing-alist) ; from ess-sas-l.el
     (ess-mode-syntax-table         . SAS-syntax-table)
-    (inferior-ess-program          . inferior-SAS-program-name)
+    (inferior-ess-program          . inferior-SAS-program)
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . " ")
     (ess-object-name-db-file       . "ess-sas-namedb.el")

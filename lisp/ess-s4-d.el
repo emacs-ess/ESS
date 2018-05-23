@@ -49,7 +49,7 @@
      (ess-change-sp-regexp              . ess-S-change-sp-regexp)
      (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
      (ess-object-name-db-file           . "ess-s4-namedb.el")
-     (inferior-ess-program              . inferior-S4-program-name)
+     (inferior-ess-program              . inferior-S4-program)
      (inferior-ess-objects-command      . ".SmodeObs(%d, pattern=\"%s\")\n")
      ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff
      (inferior-ess-help-command         . "help(\"%s\")\n")

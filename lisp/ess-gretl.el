@@ -531,7 +531,7 @@ end keywords as associated values.")
     )
   "Variables to customize for Gretl -- set up later than emacs initialization.")
 
-;; (defcustom inferior-gretl-program-name "gretlcli"
+;; (defcustom inferior-gretl-program "gretlcli"
 ;;   "*The program to use for running gretl scripts."
 ;;   :type 'string
 ;;   :group 'ess-gretl)
@@ -584,33 +584,33 @@ Optional prefix (C-u) allows to set command line arguments, such as
 If you have certain command line arguments that should always be passed
 to gretl, put them in the variable `inferior-gretl-args'."
   (interactive "P")
-  ;; get settings, notably inferior-ess-r-program-name :
-  ;; (if (null inferior-gretl-program-name)
-  ;;     (error "'inferior-gretl-program-name' does not point to 'gretl-release-basic' executable")
-    (setq ess-customize-alist gretl-customize-alist)
-    (ess-write-to-dribble-buffer   ;; for debugging only
-     (format
-      "\n(Gretl): ess-dialect=%s, buf=%s"
-      ess-dialect (current-buffer)))
-    (let* ((r-start-args
-	    (concat inferior-gretl-args " " ; add space just in case
-		    (if start-args
-			(read-string
-			 (concat "Starting Args [other than `"
-				 inferior-gretl-args
-				 "'] ? "))
-		      nil))))
-      (inferior-ess r-start-args)
-      (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
-      (set (make-local-variable 'gretl-basic-offset) 4)
-      (setq indent-tabs-mode nil)
-      (goto-char (point-max))
-      ;; (if inferior-ess-language-start
-      ;; 	(ess-eval-linewise inferior-ess-language-start
-      ;; 			   nil nil nil 'wait-prompt)))
-      (with-ess-process-buffer nil
-        (run-mode-hooks 'ess-gretl-post-run-hook))
-      ))
+  ;; get settings, notably inferior-ess-r-program :
+  ;; (if (null inferior-gretl-program)
+  ;;     (error "'inferior-gretl-program' does not point to 'gretl-release-basic' executable")
+  (setq ess-customize-alist gretl-customize-alist)
+  (ess-write-to-dribble-buffer   ;; for debugging only
+   (format
+    "\n(Gretl): ess-dialect=%s, buf=%s"
+    ess-dialect (current-buffer)))
+  (let* ((r-start-args
+	  (concat inferior-gretl-args " " ; add space just in case
+		  (if start-args
+		      (read-string
+		       (concat "Starting Args [other than `"
+			       inferior-gretl-args
+			       "'] ? "))
+		    nil))))
+    (inferior-ess r-start-args)
+    (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
+    (set (make-local-variable 'gretl-basic-offset) 4)
+    (setq indent-tabs-mode nil)
+    (goto-char (point-max))
+    ;; (if inferior-ess-language-start
+    ;; 	(ess-eval-linewise inferior-ess-language-start
+    ;; 			   nil nil nil 'wait-prompt)))
+    (with-ess-process-buffer nil
+      (run-mode-hooks 'ess-gretl-post-run-hook))
+    ))
 
 
 ;;;; IMENU

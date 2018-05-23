@@ -125,9 +125,9 @@ Alternatively, it can appear in its own frame if
              ess-language ess-dialect temp-ess-dialect (current-buffer)))
     (let* ((process-environment process-environment)
            ;; Use temp-ess-dialect if not R, R program name otherwise
-           (temp-dialect (if ess-use-inferior-program-name-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
+           (temp-dialect (if ess-use-inferior-program-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
-                                 inferior-ess-r-program-name
+                                 inferior-ess-r-program
                                temp-ess-dialect)
                            temp-ess-dialect))
            (temp-lang temp-ess-lang)
@@ -705,16 +705,16 @@ process happens interactively (when possible)."
   (ess-get-process-variable 'default-directory))
 
 ;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
-;;- (defun ess-set-inferior-program-name (filename)
+;;- (defun ess-set-inferior-program (filename)
 ;;-   "Allows to set or change `inferior-ess-program', the program (file)name."
 ;;-   (interactive "fR executable (script) file: ")
 ;;-   ;; "f" : existing file {file name completion} !
 ;;-   (setq inferior-ess-program filename))
 ;; the inferior-ess-program is initialized in the customize..alist,
-;; e.g. from  inferior-ess-r-program-name ... --> should change rather these.
+;; e.g. from  inferior-ess-r-program ... --> should change rather these.
 ;; However these really depend on the current ess-language!
 ;; Plan: 1) must know and use ess-language
-;;       2) change the appropriate  inferior-<ESSlang>-program-name
+;;       2) change the appropriate  inferior-<ESSlang>-program
 ;; (how?) in R/S : assign(paste("inferior-",ESSlang,"-p...."),  filename))
 
 
