@@ -80,6 +80,9 @@ for ESS, such as icons.")
 ;; the `lisp' directory. For this reason we need to add it before we
 ;; start requiring ESS files
 (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
+;; Add ess-lisp-directory/obsolete to load-path; files here will
+;; automatically warn that they are obsolete when loaded.
+(add-to-list 'load-path (directory-file-name (concat ess-lisp-directory "/obsolete")))
 (require 'ess-utils)
 
 (ess-write-to-dribble-buffer
