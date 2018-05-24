@@ -223,9 +223,9 @@ for ESS, such as icons.")
      (ess-r-s-define-runners+menu)
      (ess-write-to-dribble-buffer "[ess-site:] after ess-versions-created ...")))
 
-;; Check to see that inferior-ess-r-program-name points to a working version
+;; Check to see that inferior-ess-r-program points to a working version
 ;; of R; if not, try to find the newest version:
-(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
+(ess-check-R-program) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 (ess-write-to-dribble-buffer "[ess-site:] *very* end ...")
 
 

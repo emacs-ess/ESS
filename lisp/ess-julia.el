@@ -31,7 +31,7 @@
 ;;
 ;;; Commentary:
 ;;
-;;  Customise inferior-julia-program-name to point to your julia binary
+;;  Customise inferior-julia-program to point to your julia binary
 ;;  and start the inferior with M-x julia.
 ;;
 ;;  As of Sept 2015, this file depends heavily on julia-mode.el from the Julia
@@ -310,7 +310,7 @@ to look up any doc strings."
     (inferior-ess-secondary-prompt . nil)
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
-    (inferior-ess-program          . inferior-julia-program-name)
+    (inferior-ess-program          . inferior-julia-program)
     (ess-get-help-topics-function  . 'ess-julia-get-help-topics)
     (ess-help-web-search-command   . "http://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command     . 'ess-julia-manual-lookup-function)
@@ -400,23 +400,23 @@ Optional prefix (C-u) allows to set command line arguments, such as
 If you have certain command line arguments that should always be passed
 to julia, put them in the variable `inferior-julia-args'."
   (interactive "P")
-  ;; get settings, notably inferior-julia-program-name :
-  (if (null inferior-julia-program-name)
-      (error "'inferior-julia-program-name' does not point to 'julia' or 'julia-basic' executable")
+  ;; get settings, notably inferior-julia-program :
+  (if (null inferior-julia-program)
+      (error "'inferior-julia-program' does not point to 'julia' or 'julia-basic' executable")
     (setq ess-customize-alist ess-julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
     (let* ((jl-start-args
-	        (concat inferior-julia-args " " ; add space just in case
-		            (if start-args
-			            (read-string
+	    (concat inferior-julia-args " " ; add space just in case
+		    (if start-args
+			(read-string
                          (concat "Starting Args"
                                  (if inferior-julia-args
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
-		              nil))))
+		      nil))))
       (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first

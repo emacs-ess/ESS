@@ -56,7 +56,7 @@ connects it to the '(ddeESS [S+4])' window.")
      (ess-dialect                       . S+4-dialect-name)
      (ess-loop-timeout                  . ess-S-loop-timeout) ;fixme: dialect spec.
      (ess-object-name-db-file           . "ess-sp4-namedb.el" )
-     (inferior-ess-program              . inferior-S+4-program-name)
+     (inferior-ess-program              . inferior-S+4-program)
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype        . "chm")
 
@@ -91,7 +91,7 @@ connects it to the '(ddeESS [S+4])' window.")
      (ess-loop-timeout                  . 500000 );fixme: dialect specific custom.v
      (ess-object-name-db-file           . "ess-sp4-namedb.el" )
      (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
-     (inferior-ess-program              . inferior-Sqpe+4-program-name)
+     (inferior-ess-program              . inferior-Sqpe+4-program)
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype        . "chm")
      (inferior-ess-search-list-command  . "searchPaths()\n")
@@ -186,7 +186,7 @@ is here to allow slow disks to start the Splus program."
     (setq comint-process-echoes nil)
     (setq comint-input-sender 'comint-simple-send)
     (goto-char (point-max))
-    (insert (concat inferior-S+4-program-name " "
+    (insert (concat inferior-S+4-program " "
                     inferior-ess-start-args)) ; Note: there is no final "&".
     ;; Without the "&", the results of  !system.command  come to '(ddeESS [S+4])'
     ;; With the "&", the results of  !system.command  in S get lost.
@@ -350,7 +350,7 @@ is here to allow slow disks to start the Splus program."
     (setq comint-process-echoes nil)
     (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
-    (insert (concat inferior-S+4-program-name " "
+    (insert (concat inferior-S+4-program " "
                     inferior-ess-start-args)) ; Note: there is no final "&".
                                         ; Without the "&", the results of  !system.command  come to '(ddeESS [S+4])'
                                         ; With the "&", the results of  !system.command  in S get lost.

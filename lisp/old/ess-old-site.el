@@ -77,32 +77,32 @@
 ;;; provided for cases where the program is not on the standard default path.
 ;;; If the program doesn't get located correctly by the default use of
 ;;; M-x S+3 (for example), then put the path name for your system into the
-;;; the variable inferior-S+3-program-name.  If for any reason you want the
+;;; the variable inferior-S+3-program.  If for any reason you want the
 ;;; default use of M-x S to refer to a different program than S+3, then
-;;; redefine inferior-S-program-name.
+;;; redefine inferior-S-program.
 
-;;(setq-default inferior-S3-program-name "/disk05/s/S")
-;;(setq-default inferior-S+3-program-name "Splus34")
-;;(setq-default inferior-S4-program-name "/disk05/s4/S")
-;;(setq-default inferior-S+4-program-name "Splus")
-;;(setq-default inferior-S+5-program-name "Splus5")
-;;(setq-default inferior-S+-program-name "Splus7") ; unix systems ; or
-;;(setq-default inferior-S+-program-name "Splus") ; unix systems
+;;(setq-default inferior-S3-program "/disk05/s/S")
+;;(setq-default inferior-S+3-program "Splus34")
+;;(setq-default inferior-S4-program "/disk05/s4/S")
+;;(setq-default inferior-S+4-program "Splus")
+;;(setq-default inferior-S+5-program "Splus5")
+;;(setq-default inferior-S+-program "Splus7") ; unix systems ; or
+;;(setq-default inferior-S+-program "Splus") ; unix systems
 ;;
 ;; If you wish to call other versions of R on a Unix system, ESS
 ;; should auto-detect other versions of R, according to matches to the
 ;; variable `ess-r-versions' as described in its docstring.  Consider
-;; changing that variable rather than changing inferior-ess-r-program-name
+;; changing that variable rather than changing inferior-ess-r-program
 ;; if your version of R is not already auto-detected.
-;;(setq-default inferior-R-program-name "R")        ; unix systems
-;;(setq-default inferior-R-program-name "Rterm")    ; MS Windows, see below for path as well
-;;(setq-default inferior-R-program-name "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
-;;(setq-default inferior-XLS-program-name "xlispstat")
-;;(setq-default inferior-ARC-program-name "arc")
-;;(setq-default inferior-VST-program-name "vista")
-;;(setq-default inferior-SAS-program-name "sas")
-;;(setq-default inferior-OMG-program-name "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
-;;(setq-default inferior-OMG-program-name "omegahat")
+;;(setq-default inferior-R-program "R")        ; unix systems
+;;(setq-default inferior-R-program "Rterm")    ; MS Windows, see below for path as well
+;;(setq-default inferior-R-program "C:\\Program Files\\R\\R-2.5.0\\bin\\Rterm.exe")
+;;(setq-default inferior-XLS-program "xlispstat")
+;;(setq-default inferior-ARC-program "arc")
+;;(setq-default inferior-VST-program "vista")
+;;(setq-default inferior-SAS-program "sas")
+;;(setq-default inferior-OMG-program "/home/rossini/src/anoncvs/Omegahat/org/omegahat/bin/omegahat")
+;;(setq-default inferior-OMG-program "omegahat")
 
 
 ;;; The line below is the ESS default and sends the commands window
@@ -128,19 +128,19 @@
 ;;; See ess-sp4-d.el or ess-sp6w-d.el
 
 ;;; -----> configuration now via custom, see ./ess-custom.el and look for
-;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
+;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program
 
 
 ;;; see essd-els.el
 
-;;(setq-default inferior-S-elsewhere-program-name "sh")
-;;(setq-default inferior-S-elsewhere-program-name "ssh")
+;;(setq-default inferior-S-elsewhere-program "sh")
+;;(setq-default inferior-S-elsewhere-program "ssh")
 ;;; You might consider using ssh, if you can!  (and if you really do
 ;;; this, use ssh-agent, etc, for securing your sessions).
 
 
 ;;;; Choice for S().
-;;(setq-default inferior-S-program-name inferior-S+3-program-name)
+;;(setq-default inferior-S-program inferior-S+3-program)
 
 ;; (ess-message "[ess-site:] require 'ess-s4-d ...")
 ;; (require 'ess-s4-d) ; has become VERY RARE ..
@@ -189,7 +189,7 @@
 
 ;;; (3.02) Some people have requested using the program name as part
 ;;; of the buffer.  Turned on for R.
-;;(setq ess-use-inferior-program-name-in-buffer-name t)
+;;(setq ess-use-inferior-program-in-buffer-name t)
 
 
 ;;; (3.2) Framepop.  Windows produced by ess-execute-objects etc. are

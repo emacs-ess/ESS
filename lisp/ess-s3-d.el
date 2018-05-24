@@ -43,7 +43,7 @@
      (ess-change-sp-regexp              . ess-S-change-sp-regexp)
      (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
      (ess-object-name-db-file           . "ess-s3-namedb.el" )
-     (inferior-ess-program              . inferior-S3-program-name) ;        "S")
+     (inferior-ess-program              . inferior-S3-program) ;        "S")
      (inferior-ess-help-command         . "help(\"%s\")\n")
      (inferior-ess-help-filetype . nil)
      (inferior-ess-search-list-command  . "search()\n")

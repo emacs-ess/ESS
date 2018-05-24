@@ -68,7 +68,7 @@ nil on Unix machines."
 
 (if (not (getenv "R_HOME")) (setenv "R_HOME" "c:/progra~1/R/R-2.6.1"))
 ;;                                                         ^^^^^^^^^ FIXME! do something better
-(defvar inferior-Rgui-program-name "cmd" "Rgui program name")
+(defvar inferior-Rgui-program "cmd" "Rgui program name")
 (defvar Rgui-pager "emacsclientw.exe" "Rgui pager program")
 (defvar inferior-ess-language-start-rgui
   "options(chmhelp=FALSE, htmlhelp=FALSE, help_type='text'); require(tcltk2)"
@@ -131,7 +131,7 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-read-object-name-function    . #'ess-dde-read-object-name)
      (ess-find-help-file-function      . #'ess-dde-find-help-file)
      (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
-     (inferior-ess-program             . inferior-Rgui-program-name)
+     (inferior-ess-program             . inferior-Rgui-program)
      (inferior-ess-objects-command     . inferior-ess-r-objects-command)
      (inferior-ess-font-lock-keywords  . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")

@@ -314,7 +314,7 @@ It makes underscores and dots word constituent chars.")
      (ess-function-pattern                  . ess-r-function-pattern)
      (ess-object-name-db-file               . "ess-r-namedb.el")
      (ess-smart-operators                   . ess-r-smart-operators)
-     (inferior-ess-program                  . inferior-ess-r-program-name)
+     (inferior-ess-program                  . inferior-ess-r-program)
      (inferior-ess-objects-command          . inferior-ess-r-objects-command)
      (inferior-ess-font-lock-keywords       . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command      . "search()\n")
@@ -336,13 +336,13 @@ It makes underscores and dots word constituent chars.")
      ;; <<- to ensure indentation does not change when
      ;; prettify-symbols-mode is turned on/off.
      (prettify-symbols-alist                . '(("<-" . (?\s (Br . Bl) ?\s (Bc . Bc) ?←))
-                                                      ("->" . (?\s (Br . Bl) ?\s (Bc . Bc) ?→))
-                                                      ("->>" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
-                                                                     (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?>
-                                                                     (Bc . Bl) ?- (Br . Br) ?>))
-                                                      ("<<-" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
-                                                                     (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
-                                                                     (Bc . Bl) ?< (Br . Br) ?-)))))
+                                                ("->" . (?\s (Br . Bl) ?\s (Bc . Bc) ?→))
+                                                ("->>" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                                                               (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?>
+                                                               (Bc . Bl) ?- (Br . Br) ?>))
+                                                ("<<-" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                                                               (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
+                                                               (Bc . Bl) ?< (Br . Br) ?-)))))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than Emacs initialization.")
 
@@ -791,17 +791,17 @@ newest version of R can be potentially time-consuming."
              (if ess-microsoft-p
                  (ess-rterm-prefer-higher-bit)
                (add-to-list 'ess-r-created-runners
-                            inferior-ess-r-program-name))))))
+                            inferior-ess-r-program))))))
 
-(defun ess-check-R-program-name ()
-  "Check if `inferior-ess-r-program-name' points to an executable version of R.
+(defun ess-check-R-program ()
+  "Check if `inferior-ess-r-program' points to an executable version of R.
 If not, try to find the newest version of R elsewhere on the system, and
-update `inferior-ess-r-program-name' accordingly."
-  (unless (executable-find inferior-ess-r-program-name)
+update `inferior-ess-r-program' accordingly."
+  (unless (executable-find inferior-ess-r-program)
     ;; need to check if we can find another name.
     (let ((newest (ess-find-newest-R)))
       (if newest
-          (setq inferior-ess-r-program-name newest)
+          (setq inferior-ess-r-program newest)
         (message "Sorry, no version of R could be found on your system.")))))
 
 (defun R-newest (&optional start-args)

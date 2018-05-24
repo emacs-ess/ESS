@@ -56,7 +56,7 @@
     (ess-help-sec-regex            . ess-help-S+-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-S+sec-keys-alist)
     (ess-object-name-db-file       . "ess-omg-namedb.el" )
-    (inferior-ess-program          . inferior-OMG-program-name)
+    (inferior-ess-program          . inferior-OMG-program)
     (inferior-ess-objects-command  . "objects(%d)\n")
     (inferior-ess-help-command     . "help(\"%s\",pager=\"cat\",window=F)\n")
     (inferior-ess-exit-command     . "q()\n")

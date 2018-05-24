@@ -47,7 +47,7 @@
     (ess-help-sec-keys-alist       .  " ")
     (inferior-ess-primary-prompt   .  "> ?"               )
     (comint-use-prompt-regexp      . t)
-    (inferior-ess-program          .  inferior-VST-program-name)
+    (inferior-ess-program          .  inferior-VST-program)
     (inferior-ess-help-command     .  "(help '%s)\n"      )
     (inferior-ess-objects-command  .  "(variables)\n"     )
     (inferior-ess-exit-command     .  "(exit)\n"          )
