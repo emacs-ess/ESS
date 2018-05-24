@@ -877,13 +877,6 @@ Return the name of the newest version of R."
     (setq ess-temp-newest rtimes)
     (ess-find-newest-date rtimes)))
 
-;; Test case for following defun:
-;; (setq a '( ("2003-10-04" . "R-1.7")
-;;         ("2006-11-19" . "R-2.2")
-;;         ("2007-07-01" . "R-dev")
-;;         ("-1" . "R-broken")
-;;         ("2005-12-30" . "R-2.0")))
-;; (ess-find-newest-date a)
 (defun ess-find-newest-date (rvers)
   "Find the newest version of R given in the a-list RVERS.
 Each element of RVERS is a dotted pair (date . R-version), where
