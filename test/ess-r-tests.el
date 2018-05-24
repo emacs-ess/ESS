@@ -134,3 +134,11 @@
             (switch-to-buffer (find-file-noselect file))
             (should (eq major-mode 'makefile-mode)))
           '("fixtures/Makevars" "fixtures/Makevars.win"))))
+
+(ert-deftest ess-find-newest-date ()
+  (should (equal (ess-find-newest-date '(("2003-10-04" . "R-1.7")
+                                         ("2006-11-19" . "R-2.2")
+                                         ("2007-07-01" . "R-dev")
+                                         ("-1"         . "R-broken")
+                                         ("2005-12-30" . "R-2.0")))
+                 "R-dev")))
