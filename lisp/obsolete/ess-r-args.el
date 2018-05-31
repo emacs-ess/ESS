@@ -176,6 +176,29 @@
 
 (require 'ess)
 
+;; These defvars were previously defcustoms in ess-custom
+(defvar ess-r-args-noargsmsg "No args found."
+  "Message returned if \\[ess-r-args-get] cannot find a list of arguments.")
+(make-obsolete-variable 'ess-r-args-noargsmsg "Use `eldoc-mode' instead." "2018-05-22")
+
+(defvar ess-r-args-show-prefix "ARGS: "
+  "A prefix string that is shown before the arguments list.")
+(make-obsolete-variable 'ess-r-args-show-prefix "Use `eldoc-mode' instead." "2018-05-22")
+
+(defvar ess-r-args-show-as 'message
+  "How ess-r-args-show should show the argument list. Possible values
+are: 'message' (the default) or 'tooltip'.")
+(make-obsolete-variable 'ess-r-args-show-as "Use `eldoc-mode' instead." "2018-05-22")
+
+(defvar ess-r-args-keep-silent ess-S-non-functions
+  "List of functions names which should *not* trigger \\[ess-r-args-show];
+Defaults to `ess-S-non-functions'.")
+(make-obsolete-variable 'ess-r-args-keep-silent "Use `eldoc-mode' instead." "2018-05-22")
+
+(defvar ess-r-args-electric-paren nil
+  "Non-nil means re-assign \"(\" to \\[ess-r-args-auto-show].")
+(make-obsolete-variable 'ess-r-args-electric-paren "Use `eldoc-mode' instead." "2018-05-22")
+
 (defun ess-r-args-current-function ()
   "Returns the name of the R function assuming point is currently
 within the argument list or nil if no possible function name is
