@@ -658,18 +658,15 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
           (delete-horizontal-space))
       (insert ess-S-assign))))
 
-(defalias 'ess--unset-smart-S-assign-key 'ignore "")
-(make-obsolete 'ess--unset-smart-S-assign-key
-               "it does nothing. Set `ess-smart-S-assign-key' to nil." "2018-06-08")
-(defalias 'ess-disable-smart-S-assign 'ignore "")
-(make-obsolete 'ess-disable-smart-S-assign
-               "it does nothing. Set `ess-smart-S-assign-key' to nil." "2018-06-08")
 (defalias 'ess--activate-smart-S-assign-key 'ignore "")
 (make-obsolete 'ess--activate-smart-S-assign-key
                "it does nothing. Set `ess-smart-S-assign-key' instead." "2018-06-08")
-(defalias 'ess-toggle-S-assign 'ignore "")
-(make-obsolete 'ess-toggle-S-assign
-               "it does nothing. Set `ess-smart-S-assign-key' instead." "2018-06-08")
+(defun ess-disable-smart-S-assign ()
+  "Disable `ess-smart-S-assign'."
+  (declare (obsolete ess-smart-S-assign-key "2018-06-08"))
+  (setq ess-smart-S-assign-key nil))
+(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
 
 (defun ess-add-MM-keys ()
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and

@@ -68,10 +68,10 @@ variables.
 
 @item Customization of ess-smart-S-assign-key has been reworked.
 You should now set the value before ESS is loaded. The following
-functions have been made obsolete and are ignored:
-ess-toggle-S-assign, ess-toggle-S-assign-key,
-ess--unset-smart-S-assign-key, ess--activate-smart-S-assign-key,
-ess-disable-smart-S-assign,
+functions have been made obsolete. You should customize
+ess-smart-S-assign-key instead: ess-toggle-S-assign,
+ess-toggle-S-assign-key, ess--unset-smart-S-assign-key,
+ess--activate-smart-S-assign-key, ess-disable-smart-S-assign
 
 @end itemize
 
