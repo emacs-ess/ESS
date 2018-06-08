@@ -66,6 +66,12 @@ will need to update their customization to
 @code{inferior-ess-R-program}. These variables are treated as risky
 variables.
 
+@item Customization of ess-smart-S-assign-key has been reworked.
+You should now set the value before ESS is loaded. The following
+functions have been made obsolete and are ignored:
+ess-toggle-S-assign, ess-toggle-S-assign-key,
+ess--unset-smart-S-assign-key, ess--activate-smart-S-assign-key,
+ess-disable-smart-S-assign,
 
 @end itemize
 

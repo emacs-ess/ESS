@@ -551,24 +551,19 @@ buffer or end chunks etc.")
 
 (defcustom ess-S-assign " <- "
   "String used for left assignment in all S dialects.
- Used by \\[ess-smart-S-assign]."
+Used by \\[ess-smart-S-assign]."
   :group 'ess-S
   :type 'string)
 
 (defcustom ess-smart-S-assign-key "_"
-  "Key used by `ess-smart-S-assign'. By default bound to
-underscore, but can be set to any key. If this key is customized,
-you must add
+  "Key used by `ess-smart-S-assign'.
+Should be nil or a \"simple\" key, in other words no key
+modifiers.
 
- (ess-toggle-S-assign nil)
- (ess-toggle-S-assign nil)
-
-after the line that sets the customization and evaluate these
-lines or reboot emacs. The first call clears the default
-`ess-smart-S-assign' assignment and the second line re-assigns
-it to the customized setting. "
+You may change this to nil at any time. However, if you change it
+to another string, it must be set before ESS is loaded."
   :group 'ess-S
-  :type 'string)
+  :type '(choice (const :tag "Nothing" :value nil) string))
 
 ;;*;; Variables concerning editing behaviour
 
