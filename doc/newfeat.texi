@@ -4,6 +4,13 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item This is the last release to support Emacs older than 25.1
+Going forward, only GNU Emacs 25.1 and newer will be supported. Soon
+after this release, support for older Emacs versions will be dropped
+from the git master branch. Note that MELPA uses the git master branch
+to produce ESS snapshots, so if you are using Emacs < 25.1 from MELPA
+and are unable to upgrade, you should switch to MELPA-stable.
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates
