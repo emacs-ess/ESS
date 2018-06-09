@@ -565,6 +565,25 @@ to another string, it must be set before ESS is loaded."
   :group 'ess-S
   :type '(choice (const :tag "Nothing" :value nil) string))
 
+(defcustom ess-r-prettify-symbols
+  '(("<-" . (?\s (Br . Bl) ?\s (Bc . Bc) ?←))
+    ("->" . (?\s (Br . Bl) ?\s (Bc . Bc) ?→))
+    ("->>" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                   (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?>
+                   (Bc . Bl) ?- (Br . Br) ?>))
+    ("<<-" .  (?\s (Br . Bl) ?\s (Br . Bl) ?\s
+                   (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
+                   (Bc . Bl) ?< (Br . Br) ?-)))
+  ;; Setup prettify-symbols-alist to show "pretty" arrows, but make
+  ;; sure that they arrows use the same amount of spacing as <- and
+  ;; <<- to ensure indentation does not change when
+  ;; prettify-symbols-mode is turned on/off.
+  "Alist of symbols prettifications, see `prettify-symbols-alist'.
+This gets appended to `prettify-symbols-alist', so set it to nil
+if you want to disable R specific prettification."
+  :group 'ess-R
+  :type '(alist :key-type string :value-type symbol))
+
 ;;*;; Variables concerning editing behaviour
 
 (defcustom ess-filenames-map t
