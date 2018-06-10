@@ -2634,10 +2634,8 @@ This variable has no effect. Customize
           '("T" "F")))
 
 (defvar ess-R-keywords
-  ;; "Reserved Words" -- part 2 --
-  '("while" "for" "in" "repeat" "if" "else" "switch" "break" "next" "function"
-    ;; note that these are *NOT* reserved words in R:
-    "return" "message" "warning" "stop"))
+  '("in" "else" "break" "next" "while" "for" "if" "switch"
+    "function" "return" "message" "warning" "stop"))
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
@@ -2760,7 +2758,7 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  (cons (regexp-opt ess-R-modifyiers 'words)
+  (cons (concat (regexp-opt ess-R-modifyiers 'words) "\\s-*(")
         'ess-modifiers-face)     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers.")
 
@@ -2769,9 +2767,25 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
-(defvar ess-R-fl-keyword:keywords
-  (cons (regexp-opt ess-R-keywords 'words)
-        'ess-keyword-face))
+;; FIXME Emacs 25: Remove guard
+(eval-and-compile
+  (let* ((keywords (if (< emacs-major-version 25)
+                       (list (append (list 'bare) ess-R-keywords) (list 'normal))
+                     (require 'seq)
+                     (seq-group-by (lambda (x) (if (member x '("in" "else" "break" "next"))
+                                              'bare
+                                            'normal))
+                                   ess-R-keywords)))
+         (bare-keywords (cdr (assq 'bare keywords)))
+         (function-keywords (cdr (assq 'normal keywords))))
+    (defvar ess-R-fl-keyword:bare-keywords
+      (cons (regexp-opt bare-keywords 'words)
+            'ess-keyword-face)
+      "Font-lock keywords that do not precede an opening parenthesis.")
+    (defvar ess-R-fl-keyword:keywords
+      (cons (concat (regexp-opt function-keywords 'words) "\\s-*(")
+            'ess-keyword-face)
+      "Font-lock keywords that precede an opening parenthesis.")))
 
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
@@ -2792,7 +2806,8 @@ default or not."
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
     (ess-R-fl-keyword:fun-defs   . t)
-    (ess-R-fl-keyword:keywords   . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -2847,7 +2862,8 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
-    (ess-R-fl-keyword:keywords  . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:assign-ops	. t)
     (ess-R-fl-keyword:constants . t)
     (ess-fl-keyword:matrix-labels	. t)

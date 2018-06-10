@@ -20,6 +20,9 @@
 (ert-deftest test-ess-r-tokens ()
   (ess-ltest-check "tokens.R"))
 
+(ert-deftest test-ess-r-tokens ()
+  (ess-ltest-check "fontification.R"))
+
 
 (defvar ess-ltest-R-chunk-pattern "^###[ \t]*\\([0-9]+[a-zA-Z]*\\) \\([^\n]*\\)$")
 (defvar ess-ltest-R-code-start-pattern "^##!")
@@ -217,6 +220,9 @@
     (goto-char (point-max))
     (search-backward "¶")
     (delete-char 1)
+    ;; Fontification must take place after removing "¶"
+    ;; FIXME after Emacs 24.3: Use `font-lock-ensure'
+    (font-lock-default-fontify-buffer)
     ;; Reset Emacs state
     (unless keep-state
       (setq last-command nil)
