@@ -21,6 +21,7 @@ while for if switch function return message warning stop¶
 ##! (while (not (eolp))
 ##>   (should (eq (face-at-point) 'ess-keyword-face))
 ##>   (forward-word)
+##>   (should (not (face-at-point)))
 ##>   (ignore-errors (forward-char 3)))
 
 while() for() if() switch() function() return() message() warning() stop()¶
@@ -58,6 +59,7 @@ library attach detach source require¶
 ##! (while (not (eolp))
 ##>   (should (eq (face-at-point) 'ess-modifiers-face))
 ##>   (forward-word)
+##>   (should (not (face-at-point)))
 ##>   (ignore-errors (forward-char 3)))
 
 library() attach() detach() source() require()¶

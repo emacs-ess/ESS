@@ -2758,8 +2758,8 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  (cons (concat (regexp-opt ess-R-modifyiers 'words) "\\s-*(")
-        'ess-modifiers-face)     ; modify search list or source (i.e. directives)
+  (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
+        '(1 ess-modifiers-face))     ; modify search list or source (i.e. directives)
   "Font-lock keyword R modifiers.")
 
 (defvar ess-R-fl-keyword:fun-defs
@@ -2783,8 +2783,8 @@ default or not."
             'ess-keyword-face)
       "Font-lock keywords that do not precede an opening parenthesis.")
     (defvar ess-R-fl-keyword:keywords
-      (cons (concat (regexp-opt function-keywords 'words) "\\s-*(")
-            'ess-keyword-face)
+      (cons (concat "\\(" (regexp-opt function-keywords 'words) "\\)\\s-*(")
+            '(1 ess-keyword-face))
       "Font-lock keywords that precede an opening parenthesis.")))
 
 (defvar ess-R-fl-keyword:assign-ops
