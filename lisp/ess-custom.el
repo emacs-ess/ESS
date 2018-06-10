@@ -2767,36 +2767,25 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
-;; FIXME Emacs 25: Use `seq-group-by'.
-(if (< emacs-major-version 25)
-    (defun ess--seq-group-by (function sequence)
-      (reduce
-       (lambda (acc elt)
-         (let* ((key (funcall function elt))
-                (cell (assoc key acc)))
-           (if cell
-               (setcdr cell (push elt (cdr cell)))
-             (push (list key elt) acc))
-           acc))
-       (reverse sequence)
-       :initial-value nil))
-  (require 'seq)
-  (defalias 'ess--seq-group-by #'seq-group-by))
-
-(let* ((keywords (ess--seq-group-by (lambda (x) (if (member x '("in" "else" "break" "next"))
-                                               'bare
-                                             'normal))
-                                    ess-R-keywords))
-       (bare-keywords (cdr (assq 'bare keywords)))
-       (function-keywords (cdr (assq 'normal keywords))))
-  (defvar ess-R-fl-keyword:bare-keywords
-    (cons (regexp-opt bare-keywords 'words)
-          'ess-keyword-face)
-    "Font-lock keywords that do not precede an opening parenthesis.")
-  (defvar ess-R-fl-keyword:keywords
-    (cons (concat (regexp-opt function-keywords 'words) "\\s-*(")
-          'ess-keyword-face)
-    "Font-lock keywords that precede an opening parenthesis."))
+;; FIXME Emacs 25: Remove guard
+(eval-and-compile
+  (let* ((keywords (if (< emacs-major-version 25)
+                       (list (append (list 'bare) ess-R-keywords) (list 'normal))
+                     (require 'seq)
+                     (seq-group-by (lambda (x) (if (member x '("in" "else" "break" "next"))
+                                              'bare
+                                            'normal))
+                                   ess-R-keywords)))
+         (bare-keywords (cdr (assq 'bare keywords)))
+         (function-keywords (cdr (assq 'normal keywords))))
+    (defvar ess-R-fl-keyword:bare-keywords
+      (cons (regexp-opt bare-keywords 'words)
+            'ess-keyword-face)
+      "Font-lock keywords that do not precede an opening parenthesis.")
+    (defvar ess-R-fl-keyword:keywords
+      (cons (concat (regexp-opt function-keywords 'words) "\\s-*(")
+            'ess-keyword-face)
+      "Font-lock keywords that precede an opening parenthesis.")))
 
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)

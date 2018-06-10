@@ -4,15 +4,14 @@
 ### 1 Bare function-like keywords are not fontified ------------------
 
 ¶while for if switch function return message warning stop
-signalCondition invokeRestart tryCatch withRestarts withCallingHandlers
 
 ##! (while (not (eolp))
-##>   (should (not (face-at-point)))
+##>   (when (>= emacs-major-version 25)
+##>     (should (not (face-at-point))))
 ##>   (forward-word)
 ##>   (ignore-errors (forward-char)))
 
-while for if switch function return message warning stop
-signalCondition invokeRestart tryCatch withRestarts withCallingHandlers¶
+while for if switch function return message warning stop¶
 
 
 ### 2 Function-like keywords are fontified ---------------------------
@@ -44,7 +43,8 @@ in else break next¶
 ¶library attach detach source require
 
 ##! (while (not (eolp))
-##>   (should (not (face-at-point)))
+##>   (when (>= emacs-major-version 25)
+##>     (should (not (face-at-point))))
 ##>   (forward-word)
 ##>   (ignore-errors (forward-char)))
 

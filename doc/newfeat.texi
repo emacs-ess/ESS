@@ -10,7 +10,8 @@ supports comma-separated parameters.
 @item @ESS{[R]}: Function-like keywords such as @code{if ()} or
 @code{stop()} are no longer fontified as keyword if not followed by an
 opening parenthesis. The same holds for search path modifiers like
-@code{library()} or @code{require()}.
+@code{library()} or @code{require()}. This feature is only available in
+Emacs >= 25.
 
 @item ESS modes now inherit from @code{prog-mode}.
 
