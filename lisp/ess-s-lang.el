@@ -219,18 +219,6 @@
 (defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
-;;; S-mode extras of Martin Maechler, Statistik, ETH Zurich.
-;;; See also ./ess-utils.el
-
-;; Seth's idea; see ess-toggle-S-assign-key below
-(defvar ess-S-assign-key [?\C-=] ;; = "\C-c=" ; old-default:  "_"
-  "This key is mapped to insert `ess-S-assign' (by default '<-'),
-when \\[ess-toggle-S-assign-key] is called.")
-
-(defvar ess-S-assign-key-last nil
-  "This caches the previous value (binding) of `ess-S-assign-key'.  It allows
- \\[ess-toggle-S-assign-key] to toggle back to the previous definition.")
-
  ; Function Definitions
 
 (defun S-comment-indent ()
@@ -613,63 +601,39 @@ and one that is well formatted in emacs ess-mode."
     (ess-if-verbose-write "ess-fix-misc __end__\n");___D___
     ))
 
-;; This is by Seth Falcon, modeled after ess-toggle-underscore (see below).
-(defun ess-toggle-S-assign-key (force)
-  "Possibly bind the key in `ess-S-assign-key' to inserting `ess-S-assign'.
-If `ess-S-assign-key' is \"_\", simply use \\[ess-toggle-underscore].
-Otherwise, unless the prefix argument FORCE is set,
-toggle between the new and the previous assignment."
-  (interactive "P")
-  (require 'ess-mode)
-  (require 'ess-inf)
-  (let ((current-action (lookup-key ess-mode-map ess-S-assign-key))
-        (insert-S-assign (lambda() (interactive)
-                           (delete-horizontal-space) (insert ess-S-assign))))
-    (if (and (stringp ess-S-assign-key)
-             (string= ess-S-assign-key "_"))
-        (ess-toggle-underscore force)
-      ;; else "do things here"
-      (let* ((current-is-S-assign (eq current-action insert-S-assign))
-             (new-action (if force insert-S-assign
-                           ;; else "not force" (default):
-                           (if (or current-is-S-assign
-                                   (eq ess-S-assign-key-last insert-S-assign))
-                               ess-S-assign-key-last
-                             insert-S-assign))))
-        (message "[ess-toggle-S-assign-key:] current: '%s', new: '%s'"
-                 current-action new-action)
-        (define-key ess-mode-map          ess-S-assign-key new-action)
-        (define-key inferior-ess-mode-map ess-S-assign-key new-action)
-        (if (not (and force current-is-S-assign))
-            (setq ess-S-assign-key-last current-action))))))
+(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
 
 (defvar polymode-mode)
-(defun ess-smart-S-assign ()
-  "Act as smart `ess-S-assign' key: insert `ess-S-assign', unless in string/comment.
-If the underscore key is pressed a second time, the assignment
-operator is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized.  In ESS modes other than R/S,
-the underscore is always inserted."
+(defun ess-smart-S-assign (&optional N)
+  "Act as smart `ess-S-assign' key.
+Insert `ess-S-assign', unless in string/comment.  If the
+underscore key is pressed a second time, the assignment operator
+is removed and replaced by the underscore.  `ess-S-assign',
+typically \" <- \", can be customized.  In ESS modes other than
+R/S, the underscore is always inserted.
+
+If `ess-smart-S-assign-key' is nil, just call
+`self-insert-command'. You can pass N as usual."
   (interactive)
-  ;;(insert (if (ess-inside-string-or-comment-p (point)) "_" ess-S-assign))
-  (save-restriction
-    (ignore-errors
-      (when (and (eq major-mode 'inferior-ess-mode)
-                 (> (point) (process-mark (get-buffer-process (current-buffer)))))
-        (narrow-to-region (process-mark (ess-get-process)) (point-max)))
-      (and ess-noweb-mode
-           (ess-noweb-in-code-chunk)
-           (ess-noweb-narrow-to-chunk))
-      (and (fboundp 'pm/narrow-to-span)
-           polymode-mode
-           (pm/narrow-to-span)))
-    (if (or
-         (ess-inside-string-or-comment-p (point))
-         (not (equal ess-language "S")))
-        (insert ess-smart-S-assign-key)
-      ;; else:
-      (ess-insert-S-assign))))
-(defalias 'ess-smart-underscore 'ess-smart-S-assign)
+  (if ess-smart-S-assign-key
+      (save-restriction
+        (ignore-errors
+          (when (and (eq major-mode 'inferior-ess-mode)
+                     (> (point) (process-mark (get-buffer-process (current-buffer)))))
+            (narrow-to-region (process-mark (ess-get-process)) (point-max)))
+          (and ess-noweb-mode
+               (ess-noweb-in-code-chunk)
+               (ess-noweb-narrow-to-chunk))
+          (and (fboundp 'pm/narrow-to-span)
+               polymode-mode
+               (pm/narrow-to-span)))
+        (if (or
+             (ess-inside-string-or-comment-p (point))
+             (not (equal ess-language "S")))
+            (insert ess-smart-S-assign-key)
+          (ess-insert-S-assign)))
+    (funcall #'self-insert-command (or N 1))))
+(define-obsolete-function-alias 'ess-smart-underscore 'ess-smart-S-assign "2018-06-08")
 
 (defun ess-insert-S-assign ()
   "Insert the assignment operator `ess-S-assign', unless it is already there.
@@ -694,52 +658,15 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
           (delete-horizontal-space))
       (insert ess-S-assign))))
 
-;;; Setting / Unsetting the smart S-assign-key behavior -----------------
-
-;; Two basic building blocks, used below:
-(defun ess--unset-smart-S-assign-key ()
-  (define-key ess-mode-map          "_" nil)
-  (define-key inferior-ess-mode-map "_" nil)
-  (define-key ess-mode-map          ess-smart-S-assign-key nil); 'self-insert-command
-  (define-key inferior-ess-mode-map ess-smart-S-assign-key nil))
-(defun ess--activate-smart-S-assign-key ()
-  (define-key ess-mode-map          ess-smart-S-assign-key 'ess-smart-S-assign)
-  (define-key inferior-ess-mode-map ess-smart-S-assign-key 'ess-smart-S-assign))
-
-
-;; Written such that whimps can have (ess-disable-smart-S-assign) in .emacs :
-(defun ess-disable-smart-S-assign (activate)
-  "Disable or activate (if prefix argument ACTIVATE is set) the smart assignment
-operator `ess-S-assign'.  That, typically \" <- \", can be customized."
-  (interactive "P")
-  (if activate
-      (ess--activate-smart-S-assign-key)
-    (ess--unset-smart-S-assign-key)))
-(defalias 'ess-disable-smart-underscore 'ess-disable-smart-S-assign)
-
-(defun ess-toggle-S-assign (force)
-  "Set the `ess-smart-S-assign-key' (by default \"_\"
- [underscore]) key to \\[ess-smart-S-assign] or back to
-`ess-smart-S-assign-key'.  Toggle the current definition, unless
-FORCE is non-nil, where \\[ess-smart-S-assign] is set
-unconditionally.
-
-If you as per default have `ess-smart-S-assign-key' set to
-underscore, note that using \"C-q _\" will always just insert the
-underscore character."
-  (interactive "P")
-  (let ((current-key (lookup-key ess-mode-map ess-smart-S-assign-key))
-        (default-key (lookup-key ess-mode-map "_")))
-    (if (and (or default-key current-key)
-             ;; (stringp current-key) (string= current-key ess-S-assign)
-             (not force))
-        (ess--unset-smart-S-assign-key)
-      ;; else : "force" or current-key is "nil", i.e. default
-      (ess--activate-smart-S-assign-key))))
-(defalias 'ess-toggle-underscore 'ess-toggle-S-assign)
-;; NOTA BENE: "_" is smart *by default* :
-;; -----  The user can always customize `ess-S-assign' ...
-(ess-toggle-S-assign 'force-to-S-assign)
+(defalias 'ess--activate-smart-S-assign-key 'ignore "")
+(make-obsolete 'ess--activate-smart-S-assign-key
+               "it does nothing. Set `ess-smart-S-assign-key' instead." "2018-06-08")
+(defun ess-disable-smart-S-assign ()
+  "Disable `ess-smart-S-assign'."
+  (declare (obsolete ess-smart-S-assign-key "2018-06-08"))
+  (setq ess-smart-S-assign-key nil))
+(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
 
 (defun ess-add-MM-keys ()
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and

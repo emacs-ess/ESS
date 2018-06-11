@@ -1957,12 +1957,10 @@ for `ess-eval-region'."
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map comint-mode-map)
-
     (define-key map "\C-y"              'ess-yank)
     ;; Use syntax valid *both* for GNU emacs and XEmacs :
     (define-key map "\r"       'inferior-ess-send-input)
     (define-key map "\C-a"     'comint-bol)
-
     ;; 2010-06-03 SJE
     ;; disabled this in favour of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
@@ -1992,6 +1990,8 @@ for `ess-eval-region'."
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
+    (when ess-smart-S-assign-key
+      (define-key map ess-smart-S-assign-key #'ess-smart-S-assign))
     map)
   "Keymap for `inferior-ess' mode.")
 
