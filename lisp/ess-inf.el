@@ -3053,8 +3053,9 @@ list."
 
  ; directories
 (defun ess-set-working-directory (path &optional no-error)
-  "Set the current working directory to PATH for both ESS
-subprocess and Emacs buffer `default-directory'."
+  "Set the current working to PATH for the ESS buffer and iESS process.
+NO-ERROR prevents errors when this has not been implemented for
+`ess-dialect'."
   (interactive "DChange working directory to: ")
   (if ess-setwd-command
       (let* ((remote (file-remote-p path))
@@ -3073,6 +3074,16 @@ subprocess and Emacs buffer `default-directory'."
       (error "Not implemented for dialect %s" ess-dialect))))
 
 (defalias 'ess-change-directory 'ess-set-working-directory)
+(define-obsolete-function-alias
+  'ess-use-dir 'ess-set-working-directory "2018-06-11")
+
+(defun ess-use-this-dir (&optional no-force-current)
+  "Set the current process directory to `default-directory'.
+If that buffer has no associated *R* process, use
+\\[ess-force-buffer-current], unless prefix argument
+NO-FORCE-CURRENT is non-nil."
+  (interactive "P")
+  (ess-set-working-directory default-directory))
 
 (defun ess-get-working-directory (&optional no-error)
   "Retrive the current working directory from the current ess process."

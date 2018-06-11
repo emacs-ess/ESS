@@ -408,32 +408,6 @@
 ;;                    ;; Get initial indentation of the line we are on.
 ;;                    (current-indentation))))))))))
 
-
-(defun ess-use-this-dir (&optional no-force-current)
-  "Set the current process directory to `default-directory'.
-If that buffer has no associated *R* process, use
-\\[ess-force-buffer-current], unless prefix argument
-NO-FORCE-CURRENT is non-nil."
-  (interactive "P")
-  (ess-use-dir default-directory))
-
-(defun ess-use-dir (dir &optional no-force-current)
-  (interactive "P")
-  (unless (string= ess-language "S")
-    ;; FIXME: generalize this for Stata, SAS, Xlispstat... -- then move to ess-mode.el
-    (error "ESS setting working directory in *%s* not yet implemented for language %s"
-           ess-local-process-name
-           ess-language))
-  (unless no-force-current
-    (ess-force-buffer-current "R process to use: "))
-  (if ess-local-process-name
-      (let ((cmd (format "setwd('%s')\n" dir)))
-        (ess-command cmd)
-        (message "Directory of *%s* process set to %s"
-                 ess-local-process-name dir))
-    (message "No *%s* process associated with this buffer." ess-dialect)))
-
-
 ;;*;; S/R  Pretty-Editing
 
 (defun ess-fix-comments (&optional dont-query verbose)
