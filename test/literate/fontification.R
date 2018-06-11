@@ -16,6 +16,18 @@ while for if switch function return on.exit stop
 tryCatch withRestarts invokeRestart recover browser¶
 
 
+### 1b Bare function-like weak keywords are not fontified ------------
+
+¶message warning signalCondition withCallingHandlers
+
+##! (while (not (eolp))
+##>   (should (not (face-at-point)))
+##>   (forward-sexp)
+##>   (ignore-errors (forward-char)))
+
+message warning signalCondition withCallingHandlers¶
+
+
 ### 2 Function-like keywords are fontified ---------------------------
 
 ¶while() for() if() switch() function() return() on.exit() stop()
@@ -29,6 +41,19 @@ tryCatch() withRestarts() invokeRestart() recover() browser()
 
 while() for() if() switch() function() return() on.exit() stop()
 tryCatch() withRestarts() invokeRestart() recover() browser()¶
+
+
+### 2b Function-like weak keywords are fontified ---------------------
+
+¶message() warning() signalCondition() withCallingHandlers()
+
+##! (while (not (eolp))
+##>   (should (eq (face-at-point) 'ess-weak-keyword-face))
+##>   (ess-forward-sexp)
+##>   (should (not (face-at-point)))
+##>   (ignore-errors (forward-char 3)))
+
+message() warning() signalCondition() withCallingHandlers()¶
 
 
 ### 3 Simple keywords are always fontified ---------------------------

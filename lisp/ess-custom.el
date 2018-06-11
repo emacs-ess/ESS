@@ -2654,6 +2654,10 @@ This variable has no effect. Customize
 These keywords either cause a control flow jump or establish a
 jump target.")
 
+(defvar ess-R-weak-keywords
+  '("message" "warning" "signalCondition" "withCallingHandlers")
+  "Keywords that possibly impact control flow.
+These keywords might cause a control flow jump but do not necessarily.")
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
@@ -2805,6 +2809,10 @@ default or not."
             '(1 ess-keyword-face))
       "Font-lock keywords that precede an opening parenthesis.")))
 
+(defvar ess-R-fl-keyword:weak-keywords
+  (cons (concat "\\(" (regexp-opt ess-R-weak-keywords 'words) "\\)\\s-*(")
+        '(1 ess-weak-keyword-face)))
+
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
   "Font-lock assign operators.")
@@ -2824,8 +2832,9 @@ default or not."
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
     (ess-R-fl-keyword:fun-defs   . t)
-    (ess-R-fl-keyword:bare-keywords . t)
     (ess-R-fl-keyword:keywords . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:weak-keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -3074,7 +3083,16 @@ In `R-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
+(defconst ess-weak-keyword-face 'ess-weak-keyword-face)
+(defface ess-weak-keyword-face
+  '((default (:inherit ess-modifiers-face)))
+  "Font lock face used to highlight weak keywords.
+In `R-mode', for example, this includes \"message(),\" \"warning()\",
+and \"withCallingHandlers(),\". See `ess-R-weak-keywords'.
 
+By default, these keywords are highlighted with the same face as
+`ess-R-modifyiers'"
+  :group 'ess-faces)
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."

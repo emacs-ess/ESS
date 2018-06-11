@@ -21,6 +21,13 @@ have been added to @code{ess-R-keywords}: @code{on.exit()},
 functions that either cause a jump in control flow or represent a jump
 target.
 
+In addition, the new @code{ess-R-weak-keywords} variable holds functions
+that might cause a jump but not necessarily. It includes
+@code{message()}, @code{warning()} (moved from @code{ess-R-keywords}),
+@code{signalCondition()} and @code{withCallingHandlers()}. These
+keywords inherit from @code{ess-modifiers-face} (the face used for
+@code{library()} etc).
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates
