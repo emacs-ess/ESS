@@ -3078,12 +3078,15 @@ NO-ERROR prevents errors when this has not been implemented for
   'ess-use-dir 'ess-set-working-directory "2018-06-11")
 
 (defun ess-use-this-dir (&optional no-force-current)
-  "Set the current process directory to `default-directory'.
-If that buffer has no associated *R* process, use
-\\[ess-force-buffer-current], unless prefix argument
-NO-FORCE-CURRENT is non-nil."
+  "Set the current process directory to the directory of this file.
+`default-directory' is used as a fallback.  If that buffer has no
+associated *R* process, use \\[ess-force-buffer-current], unless
+prefix argument NO-FORCE-CURRENT is non-nil."
   (interactive "P")
-  (ess-set-working-directory default-directory))
+  (let ((dir (if buffer-file-name
+                 (file-name-directory buffer-file-name)
+               default-directory)))
+    (ess-set-working-directory dir)))
 
 (defun ess-get-working-directory (&optional no-error)
   "Retrive the current working directory from the current ess process."
