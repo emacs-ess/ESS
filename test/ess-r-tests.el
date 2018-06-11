@@ -142,3 +142,36 @@
                                          ("-1"         . "R-broken")
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
+
+(ert-deftest ess-smart-S-assign ()
+  ;; one call should insert assignment:
+  (should
+   (string= " <- "
+            (ess-r-test-with-temp-text ""
+              (progn
+                (ess-smart-S-assign)
+                (buffer-substring (point-min) (point-max))))))
+  ;; Two calls should insert underscore:
+  (should
+   (string= "_"
+            (ess-r-test-with-temp-text ""
+              (progn
+                (ess-smart-S-assign)
+                (ess-smart-S-assign)
+                (buffer-substring (point-min) (point-max))))))
+  ;; One call should insert underscore in comments
+  (should
+   (string= "## _"
+            (ess-r-test-with-temp-text "## <point>"
+              (progn
+                (ess-smart-S-assign)
+                (buffer-substring (point-min) (point-max))))))
+  ;; Users can set this to other keys, test =
+  (should
+   (string= "="
+            (ess-r-test-with-temp-text ""
+              (let ((ess-smart-S-assign-key "="))
+                (progn
+                  (ess-smart-S-assign)
+                  (ess-smart-S-assign)
+                  (buffer-substring (point-min) (point-max))))))))
