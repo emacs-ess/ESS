@@ -13,6 +13,14 @@ opening parenthesis. The same holds for search path modifiers like
 @code{library()} or @code{require()}. This feature is only available in
 Emacs >= 25.
 
+@item @ESS{[R]}: We have improved fontification of keywords so they
+better reflect the semantics of the R language. The following variables
+have been added to @code{ess-R-keywords}: @code{on.exit()},
+@code{tryCatch()}, @code{withRestarts()}, @code{invokeRestart()},
+@code{recover()} and @code{browser()}. This variable now refers to
+functions that either cause a jump in control flow or represent a jump
+target.
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates

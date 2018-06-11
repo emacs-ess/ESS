@@ -3,28 +3,32 @@
 
 ### 1 Bare function-like keywords are not fontified ------------------
 
-¶while for if switch function return message warning stop
+¶while for if switch function return on.exit stop
+tryCatch withRestarts invokeRestart recover browser
 
 ##! (while (not (eolp))
 ##>   (when (>= emacs-major-version 25)
 ##>     (should (not (face-at-point))))
-##>   (forward-word)
+##>   (forward-sexp)
 ##>   (ignore-errors (forward-char)))
 
-while for if switch function return message warning stop¶
+while for if switch function return on.exit stop
+tryCatch withRestarts invokeRestart recover browser¶
 
 
 ### 2 Function-like keywords are fontified ---------------------------
 
-¶while() for() if() switch() function() return() message() warning() stop()
+¶while() for() if() switch() function() return() on.exit() stop()
+tryCatch() withRestarts() invokeRestart() recover() browser()
 
 ##! (while (not (eolp))
 ##>   (should (eq (face-at-point) 'ess-keyword-face))
-##>   (forward-word)
+##>   (ess-forward-sexp)
 ##>   (should (not (face-at-point)))
 ##>   (ignore-errors (forward-char 3)))
 
-while() for() if() switch() function() return() message() warning() stop()¶
+while() for() if() switch() function() return() on.exit() stop()
+tryCatch() withRestarts() invokeRestart() recover() browser()¶
 
 
 ### 3 Simple keywords are always fontified ---------------------------

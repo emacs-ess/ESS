@@ -2647,7 +2647,13 @@ This variable has no effect. Customize
 
 (defvar ess-R-keywords
   '("in" "else" "break" "next" "while" "for" "if" "switch"
-    "function" "return" "message" "warning" "stop"))
+    "function" "return" "on.exit" "stop"
+    "tryCatch" "withRestarts" "invokeRestart"
+    "recover" "browser")
+  "Keywords that impact control flow.
+These keywords either cause a control flow jump or establish a
+jump target.")
+
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
