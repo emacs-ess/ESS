@@ -58,14 +58,14 @@ message() warning() signalCondition() withCallingHandlers()¶
 
 ### 3 Simple keywords are always fontified ---------------------------
 
-¶in else break next
+¶in else break next repeat
 
 ##! (while (not (eolp))
 ##>   (should (eq (face-at-point) 'ess-keyword-face))
 ##>   (forward-word)
 ##>   (ignore-errors (forward-char)))
 
-in else break next¶
+in else break next repeat¶
 
 
 ### 4 Search list modifiers are not fontified if not in function position

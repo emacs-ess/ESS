@@ -2646,8 +2646,8 @@ This variable has no effect. Customize
           '("T" "F")))
 
 (defvar ess-R-keywords
-  '("in" "else" "break" "next" "while" "for" "if" "switch"
-    "function" "return" "on.exit" "stop"
+  '("in" "else" "break" "next" "repeat" "while" "for" "if"
+    "switch" "function" "return" "on.exit" "stop"
     "tryCatch" "withRestarts" "invokeRestart"
     "recover" "browser")
   "Keywords that impact control flow.
@@ -2789,12 +2789,15 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
+(defvar ess-r--bare-keywords
+  '("in" "else" "break" "next" "repeat"))
+
 ;; FIXME Emacs 25: Remove guard
 (eval-and-compile
   (let* ((keywords (if (< emacs-major-version 25)
                        (list (append (list 'bare) ess-R-keywords) (list 'normal))
                      (require 'seq)
-                     (seq-group-by (lambda (x) (if (member x '("in" "else" "break" "next"))
+                     (seq-group-by (lambda (x) (if (member x ess-r--bare-keywords)
                                               'bare
                                             'normal))
                                    ess-R-keywords)))
