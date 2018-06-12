@@ -127,7 +127,7 @@ Alternatively, it can appear in its own frame if
            ;; Use temp-ess-dialect if not R, R program name otherwise
            (temp-dialect (if ess-use-inferior-program-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
                              (if (string-equal temp-ess-dialect "R")
-                                 inferior-ess-r-program
+                                 (file-name-nondirectory inferior-ess-r-program)
                                temp-ess-dialect)
                            temp-ess-dialect))
            (temp-lang temp-ess-lang)
