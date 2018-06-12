@@ -189,7 +189,7 @@ Root is determined by locating `ess-r-package-root-file'."
   "Set process directory to current package directory."
   (interactive)
   (let ((dir (cdr (ess-r-package-project))))
-    (ess-use-dir dir)))
+    (ess-set-working-directory dir)))
 
 (defun ess-r-package-set-package ()
   "Set a package for ESS r-package commands."

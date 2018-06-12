@@ -59,6 +59,14 @@
       (should (output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
+(ert-deftest ess-set-working-directory ()
+  (with-r-running nil
+    (ess-set-working-directory "/")
+    (ess-eval-linewise "getwd()" 'invisible)
+    (should (output= (ess-eval-buffer nil)
+              "setwd('/')\n> [1] \"/\""))
+    (should (string= default-directory "/"))))
+
 
 ;;; ess-r-package-mode
 
