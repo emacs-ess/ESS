@@ -1,4 +1,4 @@
-;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
+;;; ess-roxy.el --- convenient editing of in-code roxygen documentation  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2009--2017 Henning Redestig, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, Stephen

@@ -1,4 +1,4 @@
-;;; ess-font-lock.el --- font-lock color options
+;;; ess-font-lock.el --- font-lock color options  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2000--2006 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.

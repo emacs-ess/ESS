@@ -1,4 +1,4 @@
-;;; ess-mode.el --- Support for editing ESS source code
+;;; ess-mode.el --- Support for editing ESS source code  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
@@ -245,8 +245,15 @@
     ["Read ESS info" (ess-goto-info "") t]
     ["Send bug report"  ess-submit-bug-report           t]))
 
+;; local vars for lexical binding
+(defvar-local ess--containing-sexp nil)
+(defvar-local ess--prev-containing-sexp nil)
+(defvar-local ess--type nil)
+(defvar-local ess--block nil)
+(defvar-local ess--offset nil)
+
 ;;;###autoload
-(defun ess-mode (&optional alist proc-name is-derived)
+(defun ess-mode (&optional alist _proc-name is-derived)
   "Major mode for editing ESS source.
 Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
@@ -550,7 +557,7 @@ Optional argument for location of beginning.  Return '(beg end)."
   (if beginning
       ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
       (let ((in-set-S4 (looking-at ess-r-set-function-start))
-            (end-pos) (npos))
+            (end-pos))
         (ess-write-to-dribble-buffer
          (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
         (forward-list 1)      ; get over arguments || whole set*(..)
@@ -840,7 +847,7 @@ Returns t if the buffer existed and was modified, but was not saved."
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
 
-(defun ess-parse-errors (&optional showerr reset)
+(defun ess-parse-errors (&optional showerr _reset)
   "Jump to error in last loaded ESS source file.
 With prefix argument, only shows the errors ESS reported.
 

@@ -1,4 +1,4 @@
-;;; ess-r-gui.el --- Run Rgui on Windows as an inferior Emacs process
+;;; ess-r-gui.el --- Run Rgui on Windows as an inferior Emacs process  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2008 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.

@@ -1,4 +1,4 @@
-;;; ess-utils.el --- General Emacs utility functions used by ESS
+;;; ess-utils.el --- General Emacs utility functions used by ESS  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1998--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -35,6 +35,8 @@
 (declare-function evil-normal-state "evil")
 (declare-function color-lighten-name "color")
 
+(require 'ess-custom)
+
 
 ;;*;; Internal ESS tools and variables
 
@@ -44,7 +46,7 @@
     (if load-file-name
         (file-truename load-file-name)
       (locate-library "ess-utils") )))
-  "Directory containing ess-site.el(c) and other ESS lisp files.")
+  "Directory containing ess-site.el(c) and other ESS Lisp files.")
 
 (defvar ess-etc-directory nil
   "Location of the ESS etc/ directory.
@@ -464,8 +466,8 @@ to `ess-completing-read'.
   `(if (null ,command)
        (message "Not implemented for dialect %s" ess-dialect)
      (let* ((com  (if (symbolp ,command)
-                     (symbol-function ,command)
-                   ,command))
+                      (symbol-function ,command)
+                    ,command))
             (prompt ',prompt)
             (resp (and prompt
                        (if (stringp  prompt)
@@ -500,7 +502,7 @@ to `ess-completing-read'.
 (defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
   `ess-idle-timer-functions'."
-  :type '(integer)
+  :type 'integer
   :group 'ess)
 
 (defvar ess-idle-timer-functions nil
@@ -1243,19 +1245,19 @@ queried for arguments.
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	      (and
-	       (not (process-get proc 'busy))
-	       (with-current-buffer (ess-command (format ess-funargs-command
-						                             (ess-quote-special-chars funname))
-					                         nil nil nil nil proc)
-	         (goto-char (point-min))
-	         (when (re-search-forward "(list" nil t)
-	           (goto-char (match-beginning 0))
-	           (setq args (ignore-errors (eval (read (current-buffer)))))
-	           (if args
-		           (setcar args (cons (car args) (current-time)))))
-	         ;; push even if nil
-	         (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
+	  (and
+	   (not (process-get proc 'busy))
+	   (with-current-buffer (ess-command (format ess-funargs-command
+						     (ess-quote-special-chars funname))
+					     nil nil nil nil proc)
+	     (goto-char (point-min))
+	     (when (re-search-forward "(list" nil t)
+	       (goto-char (match-beginning 0))
+	       (setq args (ignore-errors (eval (read (current-buffer)))))
+	       (if args
+		   (setcar args (cons (car args) (current-time)))))
+	     ;; push even if nil
+	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
 
 (defun ess-symbol-at-point ()
   "Like `symbol-at-point' but consider fully qualified names.
@@ -1377,7 +1379,7 @@ for a better but slower version."
     ) )
 
 (defun ess-replace-regexp-dump-to-src
-  (regexp to-string &optional dont-query verbose ensure-mode)
+    (regexp to-string &optional dont-query verbose ensure-mode)
   "Depending on dont-query, call `ess-rep-regexp' or `query-replace-regexp'
 from the beginning of the buffer."
   (save-excursion

@@ -1,4 +1,4 @@
-;;; ess-r-args.el --- Insert R function's arguments
+;;; ess-r-args.el --- Insert R function's arguments  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2007 Sven Hartenstein <mail at svenhartenstein dot de>
 ;; Copyright (C) 2007 A.J. Rossini, Richard M. Heiberger, Martin
