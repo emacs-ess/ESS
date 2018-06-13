@@ -46,10 +46,6 @@
 ;; All faces can be looked at, under Emacs 20.x, with
 ;;        [menu-bar] [Edit] [Text Properties] [Display Faces}
 
-;;; For XEmacs
-
-;; ... (tony needs to write something here).
-
 (defun ess-font-lock-rmh ()
   "Set font-lock colors to Richard Heiberger's usual choice."
   ;; FIXME: Turn it into a Custom theme!

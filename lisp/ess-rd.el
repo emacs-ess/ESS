@@ -305,9 +305,8 @@ following lines to your `.emacs' file:
   ;; spurious lockfiles that rears its ugly head with .Rd files
   ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
   ;; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
-  (unless (featurep 'xemacs)
-    (make-local-variable 'create-lockfiles)
-    (setq create-lockfiles nil))
+  (make-local-variable 'create-lockfiles)
+  (setq create-lockfiles nil)
 
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map

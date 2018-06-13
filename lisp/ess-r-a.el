@@ -113,8 +113,6 @@ e.  BEG and END denote the region in the current buffer to be sent."
 ;;; This needs to be cleaned and validated!
 
 (defun pd::set-up-demo ()
-
-  ;; (if (not xemacs) (set-default-font "*courier-bold-r*--14**"))
   (run-ess-r)
   (split-window-vertically 6)
   (find-file "demos.R")
@@ -140,7 +138,6 @@ is)."
     (other-window -1))
 
   ;; call this once
-  ;; (ajr::scroll-to-end::peterD "xemacs")
   ;; (ajr::scroll-to-end::peterD "emacs")
 
   (global-set-key [f11] 'show-max-other-window)

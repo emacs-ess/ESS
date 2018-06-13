@@ -28,9 +28,8 @@
 ;; This code adds a toolbar to ESS modes for editing R and S code.
 ;; Support can be added for other modes (e.g. STATA), just ask!
 ;;
-;; This code is experimental, and runs best on Emacs 21 and XEmacs
-;; 21.  It has been tested only on Linux machines.  All feedback
-;; appreciated.
+;; This code is experimental. It has been tested only on Linux
+;; machines.  All feedback appreciated.
 ;;
 ;; If your emacs can support images, the ESS toolbar should be loaded.
 ;;
@@ -76,21 +75,19 @@ For beginners, this is probably better set to a non-nil value."
   :type 'boolean)
 
 (defcustom ess-toolbar-items
-  '( (R   "startr"  "Start R process")
+  '( (R   "startr")
      ;;(S   "spluslogo" "Start S process")
-     (S   "splus_letter_small" "Start S process")
-     (ess-eval-line-and-step   "rline" "Eval line & step")
-     (ess-eval-region   "rregion" "Eval region")
-     (ess-eval-function-or-paragraph-and-step "rregion"
-                                              "Eval function or paragraph and step")
-     (ess-load-file   "rbuffer" "Load file")
-     (ess-eval-function   "rfunction" "Eval function")
-     (ess-switch-to-ESS   "switch_ess" "Switch to ESS buffer"))
+     (S   "splus_letter_small")
+     (ess-eval-line-and-step   "rline")
+     (ess-eval-region   "rregion")
+     (ess-eval-function-or-paragraph-and-step "rregion")
+     (ess-load-file   "rbuffer")
+     (ess-eval-function   "rfunction")
+     (ess-switch-to-ESS   "switch_ess"))
   "Items to be added to the ESS toolbar.
-Each list element has three items:
+Each list element has two items:
 1. the name of the function to run
 2. the icon to be used (without .xpm extension)
-3. the tooltip doc string (XEmacs only; Emacs gets doc string from menu items.
 
 General toolbar items are also added to the ESS toolbar
 iff `ess-toolbar-own-icons' is nil.
@@ -105,8 +102,7 @@ toolbar has changed."
          (if (fboundp 'ess-make-toolbar)
              (ess-make-toolbar)))
   :type '(repeat (list (function :tag "Function to run")
-                       (string  :tag "Icon")
-                       (string  :tag "Tooltip"))))
+                       (string  :tag "Icon"))))
 
 (defvar ess-icon-directory
   (expand-file-name "icons" ess-etc-directory)
@@ -176,7 +172,7 @@ is added globally when ess-toolbar.el is loaded."
          ))
       ))
 
-;; Following needed for Emacs 23, not Emacs 22 (nor XEmacs).
+;; Following needed for Emacs 23, not Emacs 22
 (when (boundp 'image-load-path)
   (add-to-list 'image-load-path ess-icon-directory))
 

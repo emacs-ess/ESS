@@ -643,9 +643,6 @@ See also `ess-use-ido'."
               (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string)))
           sel)
       ;; else usual completion
-      (when (and (featurep 'xemacs) ;; xemacs workaround
-                 (not (listp (car collection))))
-        (setq collection (mapcar 'list collection)))
       (completing-read prompt collection predicate require-match initial-input hist def))))
 
 (defun ess-load-extras (&optional inferior)
@@ -877,7 +874,7 @@ Otherwise try a list of fixed known viewers.
   (cond ((and (featurep 'evil) (bound-and-true-p evil-mode))
          (when (evil-visual-state-p)
            (evil-normal-state)))
-        ((fboundp 'deactivate-mark)
+        (mark-active
          (deactivate-mark))))
 
 ;; SJE: 2009-01-30 -- this contribution from
@@ -937,29 +934,24 @@ and y-offsets for the toolbar from point."
 (defun ess-select-frame-set-input-focus (frame)
   "Select FRAME, raise it, and set input focus, if possible.
 Copied almost verbatim from gnus-utils.el (but with test for mac added)."
-  (cond ((featurep 'xemacs)
-         (raise-frame frame)
-         (select-frame frame)
-         (focus-frame frame))
-        ;; The function `select-frame-set-input-focus' won't set
-        ;; the input focus under Emacs 21.2 and X window system.
-        ;;((fboundp 'select-frame-set-input-focus)
-        ;; (defalias 'gnus-select-frame-set-input-focus
-        ;;   'select-frame-set-input-focus)
-        ;; (select-frame-set-input-focus frame))
-        (t
-         (raise-frame frame)
-         (select-frame frame)
-         (cond ((and
-                 (memq window-system '(x mac))
-                 (fboundp 'x-focus-frame))
-                (x-focus-frame frame))
-               ((and (eq window-system 'w32)
-                     ;; silence byte compiler warnings about w32-fns
-                     (fboundp 'w32-focus-frame))
-                (w32-focus-frame frame)))
-         (when focus-follows-mouse
-           (set-mouse-position frame (1- (frame-width frame)) 0)))))
+  ;; The function `select-frame-set-input-focus' won't set
+  ;; the input focus under Emacs 21.2 and X window system.
+  ;;((fboundp 'select-frame-set-input-focus)
+  ;; (defalias 'gnus-select-frame-set-input-focus
+  ;;   'select-frame-set-input-focus)
+  ;; (select-frame-set-input-focus frame))
+  (raise-frame frame)
+  (select-frame frame)
+  (cond ((and
+          (memq window-system '(x mac))
+          (fboundp 'x-focus-frame))
+         (x-focus-frame frame))
+        ((and (eq window-system 'w32)
+              ;; silence byte compiler warnings about w32-fns
+              (fboundp 'w32-focus-frame))
+         (w32-focus-frame frame)))
+  (when focus-follows-mouse
+    (set-mouse-position frame (1- (frame-width frame)) 0)))
 
 (defun ess-do-auto-fill ()
   "This is the same as \\[do-auto-fill] in GNU emacs 21.3, with one major

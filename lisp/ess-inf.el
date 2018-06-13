@@ -1025,20 +1025,6 @@ If TOGGLE-EOB is given, the value of
   (if (eq (length ess-process-name-list) 0)
       (setq ess-current-process-name nil)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ess-show-buffer
-;; Something like this almost works, but problems with XEmacs and Emacs
-;; differing implementations of the args to display-buffer make this
-;; too tough to pursue.  The longer version below works.
-;; (defun ess-show-buffer (buf)
-;;   "Display the buffer BUF, a string, but do not select it.
-;; Returns the window corresponding to the buffer."
-;;   ;; On XEmacs, I get an error if third arg to display-buffer is t and
-;;   ;; the BUF is in another frame.  Emacs does not have this problem.
-;;   (if (featurep 'xemacs)
-;;       (display-buffer buf nil (get-frame-for-buffer buf))
-;;     (display-buffer buf nil t)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defcustom ess-show-buffer-action
   '((display-buffer-pop-up-window display-buffer-use-some-window))
   "Actions for `ess-show-buffer', passed to `display-buffer'."
@@ -1958,7 +1944,6 @@ for `ess-eval-region'."
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map comint-mode-map)
     (define-key map "\C-y"              'ess-yank)
-    ;; Use syntax valid *both* for GNU emacs and XEmacs :
     (define-key map "\r"       'inferior-ess-send-input)
     (define-key map "\C-a"     'comint-bol)
     ;; 2010-06-03 SJE
@@ -2162,7 +2147,6 @@ to continue it."
 
   ;; Font-lock support
   ;; AJR: This (the following local-var is already the case!
-  ;; KH sez: only in XEmacs :-(.  (& Emacs 22.1, SJE).
   (when inferior-ess-font-lock-keywords ;; new system
     (setq inferior-ess-font-lock-defaults
           (ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)))
