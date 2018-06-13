@@ -155,8 +155,6 @@ Type \\[ess-transcript-clean-region] to delete all outputs and prompts
 in the region, leaving only the S commands.  Other keybindings are:
 
 \\{ess-transcript-mode-map}"
-  (interactive)
-  (require 'ess-inf)
   (kill-all-local-variables)
   (setq buffer-read-only t) ;; to protect the buffer.
   (ess-setq-vars-local alist); (current-buffer))
