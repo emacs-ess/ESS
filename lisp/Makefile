@@ -33,10 +33,10 @@ CORE = ess.elc ess-site.elc
 
 ### Everything but ess-debug.el, ess-install.el
 ###		  ess-send.el , ess-send2.el
-### DEPRECATED:  essl-bug.el
+### DEPRECATED:  essl-bug.el ess-compat.el
 ##
 ELC = $(CORE) ess-comp.elc ess-custom.elc \
-	ess-dde.elc ess-compat.elc ess-font-lock.elc \
+	ess-dde.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
 	ess-mouse.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
@@ -178,7 +178,7 @@ ess-stata-mode.elc : ess-stata-mode.el ess.elc
 
 ## BUGS
 
-ess-bugs-l.elc : ess-bugs-l.el ess-compat.elc
+ess-bugs-l.elc : ess-bugs-l.el
 
 ess-bugs-d.elc : ess-bugs-d.el ess-bugs-l.elc
 

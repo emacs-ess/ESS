@@ -88,7 +88,6 @@
 ;;; Code:
 
 ;; Want to use these now in order to cater for all obscure kinds of emacsen
-(require 'ess-compat)
 (autoload 'ess-write-to-dribble-buffer "ess")
 
 (defvar weave-process)

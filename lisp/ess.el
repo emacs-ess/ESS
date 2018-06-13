@@ -113,7 +113,6 @@
     (require 'font-lock))
 
 (require 'ess-utils)
-(require 'ess-compat)
 (require 'ess-custom)
 (require 'ess-mode)
 (require 'ess-inf)
