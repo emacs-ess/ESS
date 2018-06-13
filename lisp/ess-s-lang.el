@@ -575,8 +575,6 @@ and one that is well formatted in emacs ess-mode."
     (ess-if-verbose-write "ess-fix-misc __end__\n");___D___
     ))
 
-(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
-
 (defvar polymode-mode)
 (defun ess-smart-S-assign (&optional N)
   "Act as smart `ess-S-assign' key.
@@ -607,7 +605,6 @@ If `ess-smart-S-assign-key' is nil, just call
             (insert ess-smart-S-assign-key)
           (ess-insert-S-assign)))
     (funcall #'self-insert-command (or N 1))))
-(define-obsolete-function-alias 'ess-smart-underscore 'ess-smart-S-assign "2018-06-08")
 
 (defun ess-insert-S-assign ()
   "Insert the assignment operator `ess-S-assign', unless it is already there.
@@ -639,8 +636,6 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
   "Disable `ess-smart-S-assign'."
   (declare (obsolete ess-smart-S-assign-key "2018-06-08"))
   (setq ess-smart-S-assign-key nil))
-(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
-(define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
 
 (defun ess-add-MM-keys ()
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and
@@ -803,6 +798,14 @@ return it.  Otherwise, return `ess-help-topics-list'."
 ;;; not S-mode.
 (fset 'S-transcript-mode 's-transcript-mode)
 (fset 'S-mode 's-mode)
+
+(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
+(define-obsolete-function-alias 'ess-smart-underscore 'ess-smart-S-assign "2018-06-08")
+
+(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
+
 
 (provide 'ess-s-lang)
 
