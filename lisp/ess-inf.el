@@ -737,15 +737,6 @@ Returns the name of the process, or nil if the current buffer has none."
   (with-current-buffer (process-buffer (ess-get-process ess-local-process-name))
     (set var val)))
 
-;; emacs 23 compatibility
-(unless (fboundp 'process-live-p)
-  (defun process-live-p (process)
-    "Returns non-nil if PROCESS is alive.
-A process is considered alive if its status is `run', `open',
-`listen', `connect' or `stop'."
-    (memq (process-status process)
-          '(run open listen connect stop))))
-
 (defun ess-process-live-p ()
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
@@ -1963,10 +1954,7 @@ for `ess-eval-region'."
     (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
     (define-key map "\C-c\C-z" 'ess-switch-to-inferior-or-script-buffer) ; mask comint map
     (define-key map "\C-d"     'delete-char)   ; EOF no good in S
-    (if (>= emacs-major-version 24)
-        (define-key map "\t"       'completion-at-point)
-      (define-key map "\t"       'comint-dynamic-complete)
-      (define-key map "\M-\t"    'comint-dynamic-complete))
+    (define-key map "\t"       'completion-at-point)
     (define-key map "\C-c\t"   'ess-complete-object-name-deprecated)
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
@@ -2165,27 +2153,10 @@ to continue it."
     (setq font-lock-keywords-only nil))
 
   ;;; Completion support ----------------
+  (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the hook
+  (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
 
-  ;; SJE: comint-dynamic-complete-functions is regarded as a hook, rather
-  ;; than a regular variable.  Note order of completion (thanks David Brahm):
-
-  (if (and (featurep 'emacs ) (>= emacs-major-version 24))
-      (progn
-        (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the thook
-        (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
-        (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local))
-    (add-hook 'comint-dynamic-complete-functions
-              'ess-complete-filename 'append 'local)
-    (add-hook 'comint-dynamic-complete-functions ;; only for R, is it ok?
-              'ess-complete-object-name 'append 'local)
-    (add-hook 'comint-dynamic-complete-functions
-              'comint-replace-by-expanded-history 'append 'local)
-
-    ;; When a hook is buffer-local, the dummy function `t' is added to
-    ;; indicate that the functions in the global value of the hook
-    ;; should also be run.  SJE: I have removed this, as I think it
-    ;; interferes with our normal completion.
-    (remove-hook 'comint-dynamic-complete-functions 't 'local))
 
   ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
   ;; KH: next 2 lines solve.

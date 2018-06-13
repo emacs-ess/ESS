@@ -27,32 +27,7 @@
 
 ;;; Commentary:
 
-;; This file contains functions for easily determining features of the
-;; version of Emacs that we are using.
-
 ;;; Code:
-
-(defun ess-sleep ()
-  ;; FIXME: Not a "compatibility" thing any more, so move to ess-utils.el.
-  "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
-  (sleep-for ess-sleep-for-shell))
-
-;; for emacs <= 24.2 :
-(unless (fboundp 'defvar-local)
-  (defmacro defvar-local (var val &optional docstring)
-    "Define VAR as a buffer-local variable with default value VAL.
-Like `defvar' but additionally marks the variable as being automatically
-buffer-local wherever it is set."
-    (declare (debug defvar) (doc-string 3))
-    ;; Can't use backquote here, it's too early in the bootstrap.
-    (list 'progn (list 'defvar var val docstring)
-          (list 'make-variable-buffer-local (list 'quote var)))))
-
-(unless (fboundp 'setq-local)
-  (defmacro setq-local (var val)
-    "Set variable VAR to value VAL in current buffer."
-    ;; Can't use backquote here, it's too early in the bootstrap.
-    (list 'set (list 'make-local-variable (list 'quote var)) val)))
 
 (provide 'ess-compat)
 

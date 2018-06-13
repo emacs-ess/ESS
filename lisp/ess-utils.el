@@ -1585,6 +1585,10 @@ Adds the `ess-face-adjusted' property so we only adjust face once."
                overlay))
            (overlays-at pos)))
 
+(defun ess-sleep ()
+  "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
+  (sleep-for ess-sleep-for-shell))
+
 (provide 'ess-utils)
 
  ; Local variables section
