@@ -98,9 +98,9 @@
     (define-key map "\C-c\C-k"   'ess-force-buffer-current)
     (define-key map "\C-c`"      'ess-show-traceback)
     (define-key map [(control ?c) ?~] 'ess-show-call-stack)
-    (define-key map "{"          'ess-electric-brace)
-    (define-key map "}"          'ess-electric-brace)
     (define-key map "\C-\M-q"    'ess-indent-exp)
+    (define-key map "{"          'skeleton-pair-insert-maybe)
+    (define-key map "}"          'skeleton-pair-insert-maybe)
     (define-key map "\C-\M-h"    'ess-mark-function-or-para)
     (define-key map "\t"         'ess-indent-or-complete)
     (define-key map "\C-c\C-q"   'ess-quit)
@@ -731,38 +731,6 @@ Return the amount the indentation changed by."
       (funcall ess-indent-line-function)
     ;; else S and R default behavior
     (ess-r-indent-line)))
-
-(defun ess-electric-brace (arg)
-  "Insert character and correct line's indentation."
-  (interactive "P")
-  ;; skeleton-pair takes precedence
-  (if (fboundp 'skeleton-pair-insert-maybe)
-      (skeleton-pair-insert-maybe "{")
-    ;; else
-    (let (insertpos)
-      (if (and (not arg)
-               (eolp)
-               (or (save-excursion
-                     (skip-chars-backward " \t")
-                     (bolp))
-                   (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
-          (progn
-            (insert last-command-event)
-            (ess-indent-line)
-            (if ess-auto-newline
-                (progn
-                  (newline)
-                  ;; (newline) may have done auto-fill
-                  (setq insertpos (- (point) 2))
-                  (ess-indent-line)))
-            (save-excursion
-              (if insertpos (goto-char (1+ insertpos)))
-              (delete-char -1))))
-      (if insertpos
-          (save-excursion
-            (goto-char insertpos)
-            (self-insert-command (prefix-numeric-value arg)))
-        (self-insert-command (prefix-numeric-value arg))))))
 
 
 ;;*;; Loading files
