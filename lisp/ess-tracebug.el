@@ -485,9 +485,14 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
   :type 'boolean)
 
 (defcustom inferior-ess-replace-long+ t
-  "If non-nil,  '+ + + + ' containing more than 4 + is replaced by `ess-long+replacement'"
+  "Determines if ESS replaces long + sequences in output.
+If 'strip, remove all such instances.  Otherwise, if non-nil, '+
++ + + ' containing more than 4 + is replaced by
+`ess-long+replacement'."
   :group 'ess-tracebug
-  :type 'boolean)
+  :type '(choice (const nil :tag "No replacement")
+                 (const 'strip :tag "Replace all")
+                 (const t :tag "Replace 4 or more +")))
 
 (defvar ess-long+replacement "+ . + "
   "Replacement used for long + prompt.
@@ -1262,8 +1267,13 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
       (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
 
       ;; replace long prompts
-      (when inferior-ess-replace-long+
-        (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+" ess-long+replacement string)))
+      (when (and inferior-ess-replace-long+
+                 (or (not ess-eval-visibly)
+                     (eq ess-eval-visibly 'nowait)))
+        (if (eq inferior-ess-replace-long+ 'strip)
+            (setq string (replace-regexp-in-string "\\(\\+ \\).*\\'" "" string))
+          (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
+                                                 ess-long+replacement string))))
 
       ;; COMINT
       (with-current-buffer (get-buffer-create (process-get proc 'accum-buffer-name))
