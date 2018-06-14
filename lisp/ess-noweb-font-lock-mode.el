@@ -124,9 +124,6 @@ ess-noweb-font-lock-initial-fontify-buffer is called" )
 ;;   "Stores the function used to find the beginning of syntax in the
 ;; current major mode. ess-noweb-font-lock-mode needs a different one." )
 
-;; ;; (AJR) the next two lines were originally font-lock-warning-face
-;; ;; methods; XEmacs 20.4 doesn't define this, sigh...  -- KLUDGE --.
-
 (defvar ess-noweb-font-lock-doc-start-face font-lock-reference-face
   "Face to use to highlight the `@' at the start of each doc chunk")
 

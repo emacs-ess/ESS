@@ -5,7 +5,6 @@
 ;; Last-Updated: 2013-09-22T16:08:47+0000
 ;;           By: Sebastian P. Luque
 ;; Version: $Id$
-;; Compatibility: GNU Emacs >= 22.0.50.1
 
 ;; Copyright (c) 2005-2013 Sebastian P. Luque
 

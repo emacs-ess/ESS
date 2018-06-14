@@ -94,8 +94,6 @@
     (define-key map "\C-c\C-v"   'ess-display-help-on-object)
     (define-key map "\C-c\C-s"   'ess-switch-process)
     (define-key map "\C-c\t"     'ess-complete-object-name-deprecated)
-    (unless (>= emacs-major-version 24)
-      (define-key map "\M-\t"    'comint-dynamic-complete))
     (define-key map "\M-?"       'ess-list-object-completions)
     (define-key map "\C-c\C-k"   'ess-force-buffer-current)
     (define-key map "\C-c`"      'ess-show-traceback)
@@ -370,10 +368,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
           ess--local-mode-line-process-indicator
           "]"))
   ;; completion
-  (if (>= emacs-major-version 24)
-      (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-    (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
-    (delq t comint-dynamic-complete-functions))
+  (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
+  (delq t comint-dynamic-complete-functions)
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
 
@@ -712,12 +708,8 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
                      (and (eq ess-first-tab-never-complete 'symbol-or-paren)
                           (not (looking-at "\\w\\|\\s_\\|\\s)")))
                      (and (eq ess-first-tab-never-complete 'symbol-or-paren-or-punct)
-                          (not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))
-                     ))
-        (if (>= emacs-major-version 24)
-            (completion-at-point)
-          (completion-at-point)
-          )))))
+                          (not (looking-at "\\w\\|\\s_\\|\\s)\\|\\s.")))))
+        (completion-at-point)))))
 
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."

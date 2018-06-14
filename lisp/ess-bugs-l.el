@@ -26,7 +26,6 @@
 
 (require 'font-lock)
 (require 'comint)
-(require 'ess-compat)
 (require 'ess-utils)
 (require 'ess-custom)
 (defvar ess-bugs-command)

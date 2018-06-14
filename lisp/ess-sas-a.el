@@ -727,16 +727,6 @@ current buffer if nil."
               (and (goto-char (point-min))
                    (search-forward-regexp ess-sas-error nil t)))
           t
-        ;; this feature never worked quite right (and was XEmacs only to boot)
-        ;; after highlighting an error message, moving point would cause an
-        ;; unwanted highlighting between point and mark; why god, why?!?
-        ;;
-        ;;       (if (and (boundp 'zmacs-regions) zmacs-regions)
-        ;;           (progn
-        ;;               (if ess-sas-pop-mark (pop-mark)
-        ;;                   (setq ess-sas-pop-mark t))
-        ;;               (push-mark (match-beginning 0) t)
-        ;;               (zmacs-activate-region)))
         (goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()

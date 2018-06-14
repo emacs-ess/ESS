@@ -102,11 +102,6 @@ for ESS, such as icons.")
      (concat "[ess-site:] require '" feature-name))
     (apply 'require feature args)))
 
-;; load code to figure out what version/strain of Emacs we are running
-;; must come *AFTER* load-path is set !
-
-(ess-require 'ess-compat)
-
 ;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix
 (unless (locate-file "ess.info" Info-default-directory-list)

@@ -262,7 +262,7 @@ Better logic needed!  (see 2 uses, in this file).")
   "Start SAS from the menu."
   (interactive)
   (if ess-microsoft-p
-      ;; replace with other choices for starting SAS under XEmacs?
+      ;; replace with other choices for starting SAS?
       (error "SAS cannot be started this way in ESS on Windows.")
     (SAS)))
 

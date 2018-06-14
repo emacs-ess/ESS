@@ -205,9 +205,7 @@ Experimental feature with known bugs.")
   (if ess-roxy-mode
       (progn
         (font-lock-add-keywords nil ess-roxy-font-lock-keywords)
-        (if (>= emacs-major-version 24)
-            (add-to-list 'completion-at-point-functions 'ess-roxy-tag-completion)
-          (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag))
+        (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag)
         ;; Hideshow Integration
         (when (and ess-roxy-hide-show-p (featurep 'hideshow))
           (hs-minor-mode 1)
