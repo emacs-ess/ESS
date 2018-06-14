@@ -14,6 +14,8 @@
 ;; Created: October 14, 1991
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 ;; Keywords: statistics, languages
+;; URL: http://ess.r-project.org/
+;; Package-Requires: ((julia-mode "0.3"))
 
 ;; This file is part of ESS
 
