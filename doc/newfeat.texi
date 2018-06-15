@@ -14,15 +14,17 @@ opening parenthesis. The same holds for search path modifiers like
 Emacs >= 25.
 
 @item @ESS{[R]}: We have improved fontification of keywords so they
-better reflect the semantics of the R language. The following variables
-have been added to @code{ess-R-keywords}: @code{on.exit()},
-@code{tryCatch()}, @code{withRestarts()}, @code{invokeRestart()},
-@code{recover()} and @code{browser()}. This variable now refers to
-functions that either cause a jump in control flow or represent a jump
-target.
+better reflect the semantics of the R language. @code{ess-R-keywords}
+now only contains words reserved by the R parser.
+@code{ess-R-control-flow-keywords} contains words of base functions that
+cause non-contiguous control flow, such as @code{return()} and
+@code{stop()}. It includes the following variables that were previously
+not fontified: @code{on.exit()}, @code{tryCatch()},
+@code{withRestarts()}, @code{invokeRestart()}, @code{recover()} and
+@code{browser()}
 
-In addition, the new @code{ess-R-weak-keywords} variable holds functions
-that might cause a jump but not necessarily. It includes
+Finally, @code{ess-R-signal-keywords} contains functions part of the
+condition system that only potentially impact control flow:
 @code{message()}, @code{warning()} (moved from @code{ess-R-keywords}),
 @code{signalCondition()} and @code{withCallingHandlers()}. These
 keywords inherit from @code{ess-modifiers-face} (the face used for

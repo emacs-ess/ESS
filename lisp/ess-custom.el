@@ -2646,17 +2646,20 @@ This variable has no effect. Customize
           '("T" "F")))
 
 (defvar ess-R-keywords
-  '("in" "else" "break" "next" "repeat" "while" "for" "if"
-    "switch" "function" "return" "on.exit" "stop"
+  '("if" "else" "repeat" "while" "function" "for" "in" "next" "break")
+  "Reserved words in the R language.")
+
+(defvar ess-R-control-flow-keywords
+  '("switch" "function" "return" "on.exit" "stop"
     "tryCatch" "withRestarts" "invokeRestart"
     "recover" "browser")
   "Keywords that impact control flow.
 These keywords either cause a control flow jump or establish a
 jump target.")
 
-(defvar ess-R-weak-keywords
+(defvar ess-R-signal-keywords
   '("message" "warning" "signalCondition" "withCallingHandlers")
-  "Keywords that possibly impact control flow.
+  "Keywords for condition signalling.
 These keywords might cause a control flow jump but do not necessarily.")
 
 (defvar ess-S-keywords
@@ -2812,9 +2815,13 @@ default or not."
             '(1 ess-keyword-face))
       "Font-lock keywords that precede an opening parenthesis.")))
 
-(defvar ess-R-fl-keyword:weak-keywords
-  (cons (concat "\\(" (regexp-opt ess-R-weak-keywords 'words) "\\)\\s-*(")
-        '(1 ess-weak-keyword-face)))
+(defvar ess-R-fl-keyword:control-flow-keywords
+  (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
+        '(1 ess-r-control-flow-keyword-face)))
+
+(defvar ess-R-fl-keyword:signal-keywords
+  (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
+        '(1 ess-r-signal-keyword-face)))
 
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
@@ -2837,7 +2844,8 @@ default or not."
     (ess-R-fl-keyword:fun-defs   . t)
     (ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:bare-keywords . t)
-    (ess-R-fl-keyword:weak-keywords . t)
+    (ess-R-fl-keyword:control-flow-keywords . t)
+    (ess-R-fl-keyword:signal-keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -3081,17 +3089,28 @@ others. See `ess-R-constants'."
 (defconst ess-keyword-face 'ess-keyword-face)
 (defface ess-keyword-face
   '((default (:inherit font-lock-keyword-face)))
-  "Font lock face used to highlight keywords.
+  "Font lock face used to highlight reserved keywords.
 In `R-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
-(defconst ess-weak-keyword-face 'ess-weak-keyword-face)
-(defface ess-weak-keyword-face
+(defconst ess-r-control-flow-keyword-face 'ess-r-control-flow-keyword-face)
+(defface ess-r-control-flow-keyword-face
+  '((default (:inherit ess-keyword-face)))
+  "Font lock face used to highlight control flow keywords.
+In `R-mode', for example, this includes \"switch(),\" \"tryCatch()\",
+and \"stop(),\". See `ess-R-control-flow-keywords'.
+
+By default, these keywords are highlighted with the same face as
+`ess-R-keywords'"
+  :group 'ess-faces)
+
+(defconst ess-r-signal-keyword-face 'ess-r-signal-keyword-face)
+(defface ess-r-signal-keyword-face
   '((default (:inherit ess-modifiers-face)))
   "Font lock face used to highlight weak keywords.
 In `R-mode', for example, this includes \"message(),\" \"warning()\",
-and \"withCallingHandlers(),\". See `ess-R-weak-keywords'.
+and \"withCallingHandlers(),\". See `ess-R-signal-keywords'.
 
 By default, these keywords are highlighted with the same face as
 `ess-R-modifyiers'"

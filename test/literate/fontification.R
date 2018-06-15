@@ -30,8 +30,7 @@ message warning signalCondition withCallingHandlers¶
 
 ### 2 Function-like keywords are fontified ---------------------------
 
-¶while() for() if() switch() function() return() on.exit() stop()
-tryCatch() withRestarts() invokeRestart() recover() browser()
+¶while() for() if() function()
 
 ##! (while (not (eolp))
 ##>   (should (eq (face-at-point) 'ess-keyword-face))
@@ -39,16 +38,30 @@ tryCatch() withRestarts() invokeRestart() recover() browser()
 ##>   (should (not (face-at-point)))
 ##>   (ignore-errors (forward-char 3)))
 
-while() for() if() switch() function() return() on.exit() stop()
-tryCatch() withRestarts() invokeRestart() recover() browser()¶
+while() for() if() function()¶
 
 
-### 2b Function-like weak keywords are fontified ---------------------
+### 2b Function-like control flow keywords are fontified -------------
+
+¶switch() return() on.exit() stop() tryCatch()
+withRestarts() invokeRestart() recover() browser()
+
+##! (while (not (eolp))
+##>   (should (eq (face-at-point) 'ess-r-control-flow-keyword-face))
+##>   (ess-forward-sexp)
+##>   (should (not (face-at-point)))
+##>   (ignore-errors (forward-char 3)))
+
+switch() return() on.exit() stop() tryCatch()
+withRestarts() invokeRestart() recover() browser()¶
+
+
+### 2c Function-like signal keywords are fontified ---------------------
 
 ¶message() warning() signalCondition() withCallingHandlers()
 
 ##! (while (not (eolp))
-##>   (should (eq (face-at-point) 'ess-weak-keyword-face))
+##>   (should (eq (face-at-point) 'ess-r-signal-keyword-face))
 ##>   (ess-forward-sexp)
 ##>   (should (not (face-at-point)))
 ##>   (ignore-errors (forward-char 3)))
