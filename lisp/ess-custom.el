@@ -2646,8 +2646,21 @@ This variable has no effect. Customize
           '("T" "F")))
 
 (defvar ess-R-keywords
-  '("in" "else" "break" "next" "while" "for" "if" "switch"
-    "function" "return" "message" "warning" "stop"))
+  '("if" "else" "repeat" "while" "function" "for" "in" "next" "break")
+  "Reserved words in the R language.")
+
+(defvar ess-R-control-flow-keywords
+  '("switch" "function" "return" "on.exit" "stop"
+    "tryCatch" "withRestarts" "invokeRestart"
+    "recover" "browser")
+  "Keywords that impact control flow.
+These keywords either cause a control flow jump or establish a
+jump target.")
+
+(defvar ess-R-signal-keywords
+  '("message" "warning" "signalCondition" "withCallingHandlers")
+  "Keywords for condition signalling.
+These keywords might cause a control flow jump but do not necessarily.")
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
@@ -2779,12 +2792,15 @@ default or not."
         '(1 font-lock-function-name-face nil))
   "Font-lock keyword - function defintions for R.")
 
+(defvar ess-r--bare-keywords
+  '("in" "else" "break" "next" "repeat"))
+
 ;; FIXME Emacs 25: Remove guard
 (eval-and-compile
   (let* ((keywords (if (< emacs-major-version 25)
                        (list (append (list 'bare) ess-R-keywords) (list 'normal))
                      (require 'seq)
-                     (seq-group-by (lambda (x) (if (member x '("in" "else" "break" "next"))
+                     (seq-group-by (lambda (x) (if (member x ess-r--bare-keywords)
                                               'bare
                                             'normal))
                                    ess-R-keywords)))
@@ -2798,6 +2814,14 @@ default or not."
       (cons (concat "\\(" (regexp-opt function-keywords 'words) "\\)\\s-*(")
             '(1 ess-keyword-face))
       "Font-lock keywords that precede an opening parenthesis.")))
+
+(defvar ess-R-fl-keyword:control-flow-keywords
+  (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
+        '(1 ess-r-control-flow-keyword-face)))
+
+(defvar ess-R-fl-keyword:signal-keywords
+  (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
+        '(1 ess-r-signal-keyword-face)))
 
 (defvar ess-R-fl-keyword:assign-ops
   (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
@@ -2818,8 +2842,10 @@ default or not."
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
     (ess-R-fl-keyword:fun-defs   . t)
-    (ess-R-fl-keyword:bare-keywords . t)
     (ess-R-fl-keyword:keywords . t)
+    (ess-R-fl-keyword:bare-keywords . t)
+    (ess-R-fl-keyword:control-flow-keywords . t)
+    (ess-R-fl-keyword:signal-keywords . t)
     (ess-R-fl-keyword:assign-ops . t)
     (ess-R-fl-keyword:constants  . t)
     (ess-fl-keyword:fun-calls)
@@ -3063,12 +3089,32 @@ others. See `ess-R-constants'."
 (defconst ess-keyword-face 'ess-keyword-face)
 (defface ess-keyword-face
   '((default (:inherit font-lock-keyword-face)))
-  "Font lock face used to highlight keywords.
+  "Font lock face used to highlight reserved keywords.
 In `R-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
+(defconst ess-r-control-flow-keyword-face 'ess-r-control-flow-keyword-face)
+(defface ess-r-control-flow-keyword-face
+  '((default (:inherit ess-keyword-face)))
+  "Font lock face used to highlight control flow keywords.
+In `R-mode', for example, this includes \"switch(),\" \"tryCatch()\",
+and \"stop(),\". See `ess-R-control-flow-keywords'.
 
+By default, these keywords are highlighted with the same face as
+`ess-R-keywords'"
+  :group 'ess-faces)
+
+(defconst ess-r-signal-keyword-face 'ess-r-signal-keyword-face)
+(defface ess-r-signal-keyword-face
+  '((default (:inherit ess-modifiers-face)))
+  "Font lock face used to highlight weak keywords.
+In `R-mode', for example, this includes \"message(),\" \"warning()\",
+and \"withCallingHandlers(),\". See `ess-R-signal-keywords'.
+
+By default, these keywords are highlighted with the same face as
+`ess-R-modifyiers'"
+  :group 'ess-faces)
 
 (defcustom ess-help-kill-bogus-buffers t
   "Non-nil means kill ESS help buffers immediately if they are \"bogus\"."

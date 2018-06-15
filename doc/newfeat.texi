@@ -13,6 +13,23 @@ opening parenthesis. The same holds for search path modifiers like
 @code{library()} or @code{require()}. This feature is only available in
 Emacs >= 25.
 
+@item @ESS{[R]}: We have improved fontification of keywords so they
+better reflect the semantics of the R language. @code{ess-R-keywords}
+now only contains words reserved by the R parser.
+@code{ess-R-control-flow-keywords} contains words of base functions that
+cause non-contiguous control flow, such as @code{return()} and
+@code{stop()}. It includes the following variables that were previously
+not fontified: @code{on.exit()}, @code{tryCatch()},
+@code{withRestarts()}, @code{invokeRestart()}, @code{recover()} and
+@code{browser()}
+
+Finally, @code{ess-R-signal-keywords} contains functions part of the
+condition system that only potentially impact control flow:
+@code{message()}, @code{warning()} (moved from @code{ess-R-keywords}),
+@code{signalCondition()} and @code{withCallingHandlers()}. These
+keywords inherit from @code{ess-modifiers-face} (the face used for
+@code{library()} etc).
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates
