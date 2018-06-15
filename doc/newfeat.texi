@@ -30,6 +30,10 @@ condition system that only potentially impact control flow:
 keywords inherit from @code{ess-modifiers-face} (the face used for
 @code{library()} etc).
 
+@item @ESS{[R]}: New function @code{ess-r-generate-font-lock-regexps}
+that should be called to regenerate the font-lock regexps after having
+modified a keywords variable such as @code{ess-R-keywords}.
+
 @item ESS modes now inherit from @code{prog-mode}.
 
 @item @ESS{[R]}: The package development minor mode now only activates

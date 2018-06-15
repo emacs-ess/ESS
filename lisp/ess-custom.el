@@ -2647,7 +2647,9 @@ This variable has no effect. Customize
 
 (defvar ess-R-keywords
   '("if" "else" "repeat" "while" "function" "for" "in" "next" "break")
-  "Reserved words in the R language.")
+  "Reserved words in the R language.
+If you modify this variable, call `ess-r-generate-font-lock-regexps'
+for the changes to take effect.")
 
 (defvar ess-R-control-flow-keywords
   '("switch" "function" "return" "on.exit" "stop"
@@ -2655,12 +2657,18 @@ This variable has no effect. Customize
     "recover" "browser")
   "Keywords that impact control flow.
 These keywords either cause a control flow jump or establish a
-jump target.")
+jump target.
+
+If you modify this variable, call `ess-r-generate-font-lock-regexps'
+for the changes to take effect.")
 
 (defvar ess-R-signal-keywords
   '("message" "warning" "signalCondition" "withCallingHandlers")
   "Keywords for condition signalling.
-These keywords might cause a control flow jump but do not necessarily.")
+These keywords might cause a control flow jump but do not necessarily.
+
+If you modify this variable, call `ess-r-generate-font-lock-regexps'
+for the changes to take effect.")
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
@@ -2782,21 +2790,52 @@ default or not."
 
 
 ;;; fl-keywords R
-(defvar ess-R-fl-keyword:modifiers
-  (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
-        '(1 ess-modifiers-face))     ; modify search list or source (i.e. directives)
-  "Font-lock keyword R modifiers.")
+(defvar ess-R-fl-keyword:modifiers nil
+  "Font-lock regexp for search path modifiers.")
 
-(defvar ess-R-fl-keyword:fun-defs
-  (cons ess-R-function-name-regexp
-        '(1 font-lock-function-name-face nil))
-  "Font-lock keyword - function defintions for R.")
+(defvar ess-R-fl-keyword:fun-defs nil
+  "Font-lock regexp for function definitions.")
+
+(defvar ess-R-fl-keyword:bare-keywords nil
+  "Font-lock regexp for keywords that do not precede an opening parenthesis.")
+
+(defvar ess-R-fl-keyword:keywords nil
+  "Font-lock regexp for keywords that precede an opening parenthesis.")
+
+(defvar ess-R-fl-keyword:control-flow-keywords nil
+  "Font-lock regexp for control flow keywords.")
+
+(defvar ess-R-fl-keyword:signal-keywords nil
+  "Font-lock regexp for signal keywords.")
+
+(defvar ess-R-fl-keyword:assign-ops nil
+  "Font-lock regexp for assignment operators.")
+
+(defvar ess-R-fl-keyword:constants nil
+  "Font-lock regexp for constants.")
+
+(defvar ess-R-fl-keyword:numbers
+  (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
+  "Font-lock regexp for numbers")
+
+(defvar ess-R-fl-keyword:F&T
+  (cons "\\b[FT]\\b" 'ess-f-t-face)
+  "Font-lock regexp for `F' and `T'.")
 
 (defvar ess-r--bare-keywords
   '("in" "else" "break" "next" "repeat"))
 
-;; FIXME Emacs 25: Remove guard
-(eval-and-compile
+(defun ess-r-generate-font-lock-regexps ()
+  "Generate the font-lock regexps based on font-lock keywords.
+Call this function after having modified a keyword variable such
+as `ess-R-keywords'."
+  (setq ess-R-fl-keyword:modifiers
+        (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
+              '(1 ess-modifiers-face)))
+  (setq ess-R-fl-keyword:fun-defs
+        (cons ess-R-function-name-regexp
+              '(1 font-lock-function-name-face nil)))
+  ;; FIXME Emacs 25: Remove guard
   (let* ((keywords (if (< emacs-major-version 25)
                        (list (append (list 'bare) ess-R-keywords) (list 'normal))
                      (require 'seq)
@@ -2806,38 +2845,25 @@ default or not."
                                    ess-R-keywords)))
          (bare-keywords (cdr (assq 'bare keywords)))
          (function-keywords (cdr (assq 'normal keywords))))
-    (defvar ess-R-fl-keyword:bare-keywords
-      (cons (regexp-opt bare-keywords 'words)
-            'ess-keyword-face)
-      "Font-lock keywords that do not precede an opening parenthesis.")
-    (defvar ess-R-fl-keyword:keywords
-      (cons (concat "\\(" (regexp-opt function-keywords 'words) "\\)\\s-*(")
-            '(1 ess-keyword-face))
-      "Font-lock keywords that precede an opening parenthesis.")))
+    (setq ess-R-fl-keyword:bare-keywords
+          (cons (regexp-opt bare-keywords 'words)
+                'ess-keyword-face))
+    (setq ess-R-fl-keyword:keywords
+          (cons (concat "\\(" (regexp-opt function-keywords 'words) "\\)\\s-*(")
+                '(1 ess-keyword-face))))
+  (setq ess-R-fl-keyword:control-flow-keywords
+        (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
+              '(1 ess-r-control-flow-keyword-face)))
+  (setq ess-R-fl-keyword:signal-keywords
+        (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
+              '(1 ess-r-signal-keyword-face)))
+  (setq ess-R-fl-keyword:assign-ops
+        (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face))
+  (setq ess-R-fl-keyword:constants
+        (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face))
+  nil)
 
-(defvar ess-R-fl-keyword:control-flow-keywords
-  (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
-        '(1 ess-r-control-flow-keyword-face)))
-
-(defvar ess-R-fl-keyword:signal-keywords
-  (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
-        '(1 ess-r-signal-keyword-face)))
-
-(defvar ess-R-fl-keyword:assign-ops
-  (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
-  "Font-lock assign operators.")
-
-(defvar ess-R-fl-keyword:constants
-  (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face)
-  "Font-lock constants keyword.")
-
-(defvar ess-R-fl-keyword:numbers
-  (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
-  "Font-lock numbers")
-
-(defvar ess-R-fl-keyword:F&T
-  (cons "\\b[FT]\\b" 'ess-f-t-face)
-  "Highlight T and F in addition to TRUE and FALSE in R.")
+(ess-r-generate-font-lock-regexps)
 
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:modifiers  . t)
