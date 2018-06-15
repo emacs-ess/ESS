@@ -170,7 +170,7 @@
   ;; One call should insert underscore in comments
   (should
    (string= "## _"
-            (ess-r-test-with-temp-text "## <point>"
+            (ess-r-test-with-temp-text "## ¶"
               (progn
                 (ess-smart-S-assign)
                 (buffer-substring (point-min) (point-max))))))
