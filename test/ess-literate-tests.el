@@ -1,29 +1,21 @@
 
 (eval-when-compile
   (require 'cl-lib))
+(require 'ert)
 
-(defun elt-check (file)
-  (let ((path (expand-file-name file "literate")))
-    (should (elt-do 'test path))))
+(defmacro elt-deftest (name args file)
+  `(ert-deftest ,name ,args
+     (let ((path (expand-file-name ,file "literate")))
+       (should (elt-do 'test path)))))
 
-(ert-deftest test-ess-roxy-literate ()
-  (elt-check "roxy.R"))
-
-(ert-deftest test-ess-r-code-fill ()
-  (elt-check "code-fill.R"))
-
-(ert-deftest test-ess-r-misc ()
-  (elt-check "misc.R"))
-
-(ert-deftest test-ess-r-syntax ()
-  (elt-check "syntax.R"))
-
-(ert-deftest test-ess-r-tokens ()
-  (elt-check "tokens.R"))
-
-(ert-deftest test-ess-r-tokens ()
-  (elt-check "fontification.R"))
-
+(defun elt--activate-font-lock-keywords ()
+  "Activate font-lock keywords for some of ELT's symbols."
+  (font-lock-add-keywords
+   nil
+   '(("(\\(\\<elt-deftest\\)\\>\\s *\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+      (1 font-lock-keyword-face nil t)
+      (2 font-lock-function-name-face nil t)))))
+(add-hook 'emacs-lisp-mode-hook #'elt--activate-font-lock-keywords)
 
 (defvar elt-R-chunk-pattern "^###[ \t]*\\([0-9]+[a-zA-Z]*\\) \\([^\n]*\\)$")
 (defvar elt-R-code-start-pattern "^##!")

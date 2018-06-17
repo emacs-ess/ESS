@@ -24,9 +24,15 @@
 (when (member "--rstats" argv)
   (load (expand-file-name "ess-r-tests.el" ess-test-path) nil t))
 (when (member "--rstats-indent" argv)
- (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t))
+  (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t))
 (when (member "--literate" argv)
- (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t))
+  (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
+  (elt-deftest test-ess-roxy-literate () "roxy.R")
+  (elt-deftest test-ess-r-code-fill () "code-fill.R")
+  (elt-deftest test-ess-r-misc () "misc.R")
+  (elt-deftest test-ess-r-syntax () "syntax.R")
+  (elt-deftest test-ess-r-tokens () "tokens.R")
+  (elt-deftest test-ess-r-fontification () "fontification.R"))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)
