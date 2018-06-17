@@ -632,9 +632,10 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
 (defalias 'ess--activate-smart-S-assign-key 'ignore "")
 (make-obsolete 'ess--activate-smart-S-assign-key
                "it does nothing. Set `ess-smart-S-assign-key' instead." "2018-06-08")
-(defun ess-disable-smart-S-assign ()
+(defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-smart-S-assign'."
   (declare (obsolete ess-smart-S-assign-key "2018-06-08"))
+  (warn "This function is obsolete, use `ess-smart-S-assign-key' instead.")
   (setq ess-smart-S-assign-key nil))
 
 (defun ess-add-MM-keys ()
