@@ -225,7 +225,9 @@
           cursors-end)
       (while (search-backward "¶" nil t)
         (delete-char 1)
-        (push (point-marker) cursors-start))
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-start)))
       (unless cursors-start
         (error "There must be at least one point cursor"))
       ;; Fontification must take place after removing "¶"
@@ -249,7 +251,9 @@
                          (elt-unalias x))
                         (t (eval x))))
                 body)
-        (push (point-marker) cursors-end))
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-end)))
       (dolist (cursor cursors-end)
         (goto-char cursor)
         (insert "¶")))
