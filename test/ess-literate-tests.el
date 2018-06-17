@@ -6,7 +6,7 @@
 (defmacro elt-deftest (name args file)
   `(ert-deftest ,name ,args
      (let ((path (expand-file-name ,file "literate")))
-       (should (elt-do 'test path)))))
+       (elt-do 'test path))))
 
 (defun elt--activate-font-lock-keywords ()
   "Activate font-lock keywords for some of ELT's symbols."
@@ -38,7 +38,7 @@
                        (buffer-string)))
          (output (elt-buffer-string file src-string)))
     (pcase action
-      (`test (string= src-string output))
+      (`test (should (string= src-string output)))
       (`regenerate (with-current-buffer src-buffer
                      (erase-buffer)
                      (insert output)
@@ -125,17 +125,25 @@
                       (save-excursion
                         (elt-search-chunk)
                         (point-marker))))
-         (test-case (progn
-                      (skip-chars-forward " \t\n")
-                      (elt-process-case)))
-         (test-case-state test-case))
-    (while (looking-at elt-code-pattern)
-      (elt-process-next-subchunk chunk-end))
-    (insert "\n")
-    (elt-print-section-header)
-    (when (looking-at elt-section-pattern)
-      (insert "\n")
-      (elt-search-chunk nil t))))
+         (orig-chunk (buffer-substring chunk-beg chunk-end)))
+    (condition-case cnd
+        (let* ((test-case (progn
+                            (skip-chars-forward " \t\n")
+                            (elt-process-case)))
+               (test-case-state test-case))
+          (while (looking-at elt-code-pattern)
+            (elt-process-next-subchunk chunk-end))
+          (insert "\n")
+          (elt-print-section-header)
+          (when (looking-at elt-section-pattern)
+            (insert "\n")
+            (elt-search-chunk nil t)))
+      (ert-test-skipped
+        (message (concat "  Skipping test: " (cadr cnd)))
+        (goto-char chunk-beg)
+        (delete-region chunk-beg chunk-end)
+        (insert orig-chunk)
+        nil))))
 
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
