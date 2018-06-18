@@ -1679,7 +1679,8 @@ non-nil."
 
 
 (defcustom inferior-ess-r-program (or (executable-find "Rterm")
-                                      (executable-find "R"))
+                                      (executable-find "R")
+                                      "R")
   "Program name for invoking an inferior ESS with \\[R]."
   :group 'ess-R
   :type '(choice (string) file))
