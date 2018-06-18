@@ -23,6 +23,9 @@ NOWEAVE=noweave
 # incorrectly.  also preload a file that sets byte compiler options.
 COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
 
+HAS_EMACS25 = `$(EMACSBATCH) --eval "(princ emacs-version)" | grep -q "^25"`
+HAS_EMACS26 = `$(EMACSBATCH) --eval "(princ emacs-version)" | grep -q "^26"`
+
 
 ## files that contain key macro definitions.  almost everything
 ## depends on them because the byte-compiler inlines macro expansions.
@@ -31,10 +34,11 @@ COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
 ## optimizations.  When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-### Everything but ess-debug.el, ess-install.el
-###		  ess-send.el , ess-send2.el
-### DEPRECATED:  essl-bug.el ess-compat.el
-##
+EMACS25_ELC = ess-r-xref.elc
+EMACS26_ELC = ess-r-flymake.elc
+
+## * Everything but ess-debug.el, ess-install.el ess-send.el, ess-send2.el
+## * julia-mode is needed for tarball
 ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-dde.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
@@ -52,12 +56,11 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-args.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
-	ess-r-flymake.elc ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
-	julia-mode.elc\
-	ess-generics.elc ess-r-gui.elc\
-	ess-sp6w-d.elc msdos.elc
-##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
-## julia-mode.el : really from the julia sources -- but want in tarball!
+	ess-r-package.elc ess-tracebug.elc ess-julia.elc \
+	julia-mode.elc \
+	ess-generics.elc ess-r-gui.elc \
+	ess-sp6w-d.elc msdos.elc \
+	$(EMACS25_ELC) $(EMACS26_ELC)
 
 
 # ESSR_VER =`cat ../etc/ESSR-VERSION`
@@ -191,6 +194,13 @@ ess-jags-d.elc : ess-jags-d.el ess-bugs-l.elc ess-utils.elc ess-inf.elc
 ess-gretl.elc : ess-gretl.el
 
 ess-r-gui.elc : ess-r-gui.el ess-dde.elc
+
+
+$(EMACS25_ELC):
+	if $(HAS_EMACS25); then $(COMPILE) $*.el; fi
+
+$(EMACS26_ELC):
+	if $(HAS_EMACS26); then $(COMPILE) $*.el; fi
 
 
 # Ignore this.
