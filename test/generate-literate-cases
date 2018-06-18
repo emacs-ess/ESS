@@ -17,4 +17,5 @@
 
 (mapc (lambda (file)
         (elt-do 'regenerate (expand-file-name file ess-literate-path)))
-      '("roxy.R" "code-fill.R" "misc.R" "syntax.R" "tokens.R" "fontification.R"))
+      '("elt.R" "roxy.R" "code-fill.R" "misc.R" "syntax.R" "tokens.R"
+        "fontification.R"))

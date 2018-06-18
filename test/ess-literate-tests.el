@@ -6,7 +6,7 @@
 (defmacro elt-deftest (name args file)
   `(ert-deftest ,name ,args
      (let ((path (expand-file-name ,file "literate")))
-       (should (elt-do 'test path)))))
+       (elt-do 'test path))))
 
 (defun elt--activate-font-lock-keywords ()
   "Activate font-lock keywords for some of ELT's symbols."
@@ -38,7 +38,7 @@
                        (buffer-string)))
          (output (elt-buffer-string file src-string)))
     (pcase action
-      (`test (string= src-string output))
+      (`test (should (string= src-string output)))
       (`regenerate (with-current-buffer src-buffer
                      (erase-buffer)
                      (insert output)
@@ -125,17 +125,25 @@
                       (save-excursion
                         (elt-search-chunk)
                         (point-marker))))
-         (test-case (progn
-                      (skip-chars-forward " \t\n")
-                      (elt-process-case)))
-         (test-case-state test-case))
-    (while (looking-at elt-code-pattern)
-      (elt-process-next-subchunk chunk-end))
-    (insert "\n")
-    (elt-print-section-header)
-    (when (looking-at elt-section-pattern)
-      (insert "\n")
-      (elt-search-chunk nil t))))
+         (orig-chunk (buffer-substring chunk-beg chunk-end)))
+    (condition-case cnd
+        (let* ((test-case (progn
+                            (skip-chars-forward " \t\n")
+                            (elt-process-case)))
+               (test-case-state test-case))
+          (while (looking-at elt-code-pattern)
+            (elt-process-next-subchunk chunk-end))
+          (insert "\n")
+          (elt-print-section-header)
+          (when (looking-at elt-section-pattern)
+            (insert "\n")
+            (elt-search-chunk nil t)))
+      (ert-test-skipped
+        (message (concat "  Skipping test: " (cadr cnd)))
+        (goto-char chunk-beg)
+        (delete-region chunk-beg chunk-end)
+        (insert orig-chunk)
+        nil))))
 
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
@@ -209,30 +217,46 @@
     (goto-char (point-min))
     (when (search-forward "×" nil t)
       (backward-delete-char 1)
-      (set-mark (point)))
+      (set-mark (point))
+      (when (search-forward "×" nil t)
+        (error "There can only be one mark cursor")))
     (goto-char (point-max))
-    (search-backward "¶")
-    (delete-char 1)
-    ;; Fontification must take place after removing "¶"
-    ;; FIXME after Emacs 24.3: Use `font-lock-ensure'
-    (font-lock-default-fontify-buffer)
-    ;; Reset Emacs state
-    (unless keep-state
-      (setq last-command nil)
-      (setq current-prefix-arg nil))
-    (mapcar (lambda (x)
-              (cond ((equal x '(kbd "C-u"))
-                     (setq current-prefix-arg (list 4)))
-                    ((stringp x)
-                     (if (string= x "C-u")
-                         (setq current-prefix-arg (list 4))
-                       (elt-unalias (kbd x))))
-                    ((and (listp x)
-                          (eq (car x) 'kbd))
-                     (elt-unalias x))
-                    (t (eval x))))
-            body)
-    (insert "¶")
+    (let (cursors-start
+          cursors-end)
+      (while (search-backward "¶" nil t)
+        (delete-char 1)
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-start)))
+      (unless cursors-start
+        (error "There must be at least one point cursor"))
+      ;; Fontification must take place after removing "¶"
+      ;; FIXME Emacs 25: Use `font-lock-ensure'
+      (font-lock-default-fontify-buffer)
+      (dolist (cursor cursors-start)
+        (goto-char cursor)
+        ;; Reset Emacs state
+        (unless keep-state
+          (setq last-command nil)
+          (setq current-prefix-arg nil))
+        (mapcar (lambda (x)
+                  (cond ((equal x '(kbd "C-u"))
+                         (setq current-prefix-arg (list 4)))
+                        ((stringp x)
+                         (if (string= x "C-u")
+                             (setq current-prefix-arg (list 4))
+                           (elt-unalias (kbd x))))
+                        ((and (listp x)
+                              (eq (car x) 'kbd))
+                         (elt-unalias x))
+                        (t (eval x))))
+                body)
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-end)))
+      (dolist (cursor cursors-end)
+        (goto-char cursor)
+        (insert "¶")))
     (when (region-active-p)
       (exchange-point-and-mark)
       (insert "×"))
