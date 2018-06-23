@@ -229,18 +229,20 @@ This may be useful for debugging."
               (comint-read-input-ring))
 
             ;; create and run process.
-            (set-buffer
-             (if switches
-                 (inferior-ess-make-comint buf-name-str
-                                           procname
-                                           infargs
-                                           switches)
-               (inferior-ess-make-comint buf-name-str
-                                         procname
-                                         infargs)))
+            (setq buf
+                  (if switches
+                      (inferior-ess-make-comint buf-name-str
+                                                procname
+                                                infargs
+                                                switches)
+                    (inferior-ess-make-comint buf-name-str
+                                              procname
+                                              infargs)))
+            (set-buffer buf)
+            (setq proc (get-buffer-process buf))
 
             ;; Set the process sentinel to save the history
-            (set-process-sentinel (get-process procname) 'ess-process-sentinel)
+            (set-process-sentinel proc 'ess-process-sentinel)
             ;; Add this process to ess-process-name-list, if needed
             (let ((conselt (assoc procname ess-process-name-list)))
               (unless conselt
@@ -251,13 +253,12 @@ This may be useful for debugging."
             (setq ess-sl-modtime-alist nil)
 
             ;; Add the process filter to catch certain output
-            (set-process-filter (get-process procname)
-                                'inferior-ess-output-filter)
-            (inferior-ess-mark-as-busy (get-process procname))
+            (set-process-filter proc 'inferior-ess-output-filter)
+            (inferior-ess-mark-as-busy proc)
 
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-              (ess-wait-for-process (get-process procname) nil 0.01))
+              (ess-wait-for-process proc nil 0.01))
 
             ;; arguments cache
             (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
@@ -287,7 +288,7 @@ This may be useful for debugging."
             ;; user initialization can take some time ...
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-              (ess-wait-for-process (get-process procname))))
+              (ess-wait-for-process proc)))
 
           (with-current-buffer buf
             (rename-buffer buf-name-str t))
