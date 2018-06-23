@@ -213,7 +213,6 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
 
     (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
     (ess-process-put 'funargs-pre-cache nil)
-    (ess-process-put 'accum-buffer-name (format " *%s:accum*" ess-local-process-name))
     (ess-load-extras)
 
     (when inferior-ess-language-start

@@ -479,11 +479,6 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 (defvar ess--busy-timer nil
   "Timer used for busy process indication")
 
-(defcustom inferior-ess-split-long-prompt t
-  "If non-nil, long prompt '> > > > > + + + + > ' is split."
-  :group 'ess-tracebug
-  :type 'boolean)
-
 (defcustom inferior-ess-replace-long+ t
   "Determines if ESS replaces long + sequences in output.
 If 'strip, remove all such instances.  Otherwise, if non-nil, '+
@@ -1210,28 +1205,68 @@ value from EXPR and then sent to the subprocess."
           (goto-char mbeg)
           (delete-region mbeg mend))))))
 
-(defun ess--flush-process-output-cache (proc)
-  (let ((pbuf (get-buffer-create (process-get proc 'accum-buffer-name))))
-    (ess-mpi-handle-messages pbuf)
-    (let ((string (with-current-buffer pbuf
-                    (prog1 (buffer-string)
-                      (erase-buffer)))))
-      (when (> (length string) 0)
-        (process-put proc 'last-flush-time (and (process-get proc 'busy)
-                                                (float-time)))
-        (comint-output-filter proc string)
-        (ess--show-process-buffer-on-error string proc)))))
+(defun ess--replace-long+-in-prompt (prompt)
+  "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value."
+  (cond
+   (ess-eval-visibly prompt)
+   ((eq inferior-ess-replace-long+ 'strip) "> ")
+   ((eq inferior-ess-replace-long+ t)
+    (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
+                              ess-long+replacement prompt))
+   (t prompt)))
 
+(defun ess--flush-accumulated-output (proc)
+  "Flush accumulated output of PROC into its output buffer.
+Insertion happens chunk by chunk. A chunk is a region between two
+prompts."
+  (let ((abuf (ess--accumulation-buffer proc))
+        (pbuf (process-buffer proc)))
+    (ess-mpi-handle-messages abuf)
+    (with-current-buffer abuf
+      (goto-char (point-min))
+      (unless (eq (point) (point-max))
+        (ess--show-process-buffer-on-error proc)
+        (let ((clean (not (eq ess-eval-visibly t)))
+              (beg-pos 1)
+              (end-pos 1)
+              (end-prompt (process-get proc 'end-prompt?))
+              (prompt-regexp (buffer-local-value 'comint-prompt-regexp pbuf)))
+          (while (re-search-forward prompt-regexp nil t)
+            (setq end-pos (match-end 0))
+            (let ((str (buffer-substring-no-properties beg-pos end-pos))
+                  (is-prompt (eq (match-beginning 0) beg-pos)))
+              (if is-prompt
+                  ;; avoid comint-output-filter
+                  (let ((prompt (ess--replace-long+-in-prompt str)))
+                    (with-current-buffer pbuf
+                      (save-restriction
+                        (widen)
+                        (goto-char (process-mark proc))
+                        (with-silent-modifications
+                          (insert prompt)
+	                      (set-marker (process-mark proc) (point))))))
+                (comint-output-filter proc (if end-prompt (concat "\n" str) str))))
+            (setq end-prompt clean
+                  beg-pos end-pos))
+          ;; insert last chunk if any
+          (unless (eq end-pos (point-max))
+            (let ((str (buffer-substring-no-properties end-pos (point-max))))
+              (comint-output-filter proc (if end-prompt (concat "\n" str) str))
+              (setq end-prompt nil)))
+          (process-put proc 'end-prompt? end-prompt)
+          (process-put proc 'flush-time (and (process-get proc 'busy)
+                                             (float-time)))
+          (erase-buffer))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
-  "Standard output filter for the inferior ESS process
-when `ess-debug' is active. Call `inferior-ess-output-filter'.
-
-Check for activation expressions (defined in
-`ess--dbg-regexp-debug',...), when found puts iESS in the debugging state.
-If in debugging state, mirrors the output into *ess.dbg* buffer."
+  "Standard output filter for the inferior ESS process when
+`ess-debug' is active. Call `inferior-ess-output-filter'. Check
+for debug reg-expressions (see `ess--dbg-regexp-debug',...), when
+found puts iESS in the debugging state. If in debugging state,
+mirrors the output into *ess.dbg* buffer."
   (let* ((is-iess (member major-mode (list 'inferior-ess-mode 'ess-watch-mode)))
          (pbuf (process-buffer proc))
+         (abuf (ess--accumulation-buffer proc))
          (dbuff (process-get proc 'dbg-buffer))
          (wbuff (get-buffer ess-watch-buffer))
          (was-in-dbg (process-get proc 'dbg-active))
@@ -1250,8 +1285,9 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
          (prompt-replace-regexp "\\(^> \\|^\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          (new-time (float-time))
-         (last-time (process-get proc 'last-flush-time))
+         (last-time (process-get proc 'flush-time))
          (flush-timer (process-get proc 'flush-timer)))
+
     ;; current-buffer is still the user's input buffer here
     (ess--if-verbose-write-process-state proc string)
     (inferior-ess-run-callback proc string)
@@ -1259,65 +1295,32 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
 
     (if (or (process-get proc 'suppress-next-output?)
             ess--suppress-next-output?)
-        ;; works only for surpressing short output, for time being is enough (for callbacks)
+        ;; works only for surpressing short output, enough for now (for callbacks)
         (process-put proc 'suppress-next-output? nil)
 
-      ;; FIXME: this should be in comint filters!!
-      ;; insert \n after the prompt when necessary
-      (setq string (replace-regexp-in-string prompt-replace-regexp " \n" string nil nil 1))
-
-      ;; replace long prompts
-      (when (and inferior-ess-replace-long+
-                 (or (not ess-eval-visibly)
-                     (eq ess-eval-visibly 'nowait)))
-        (if (eq inferior-ess-replace-long+ 'strip)
-            (setq string (replace-regexp-in-string "\\(\\+ \\).*\\'" "" string))
-          (setq string (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
-                                                 ess-long+replacement string))))
-
-      ;; COMINT
-      (with-current-buffer (get-buffer-create (process-get proc 'accum-buffer-name))
+      (with-current-buffer abuf
         (goto-char (point-max))
         (insert string))
 
-      ;; Need this timer here; process might be waiting for user's input!
+      ;; cancel the timer every time we enter the filter
       (when (timerp flush-timer)
-        ;; cancel the timer each time we enter the filter
         (cancel-timer flush-timer)
         (process-put proc 'flush-timer nil))
 
-      ;; insert "\n" after prompt
-      (when (or (null last-time)
-                (> (- new-time last-time) .5))
-
-        ;; Very slow in long comint buffers, but it's not a real issue, as it is
-        ;; executed periodically.
-        (with-current-buffer pbuf
-          (save-excursion
-            (let ((pmark (process-mark proc))
-                  (inhibit-modification-hooks t))
-              (goto-char pmark)
-              (when (looking-back inferior-ess-primary-prompt (point-at-bol))
-                (insert-before-markers "\n")
-                (set-marker pmark (point)))))))
-
-      (unless last-time ;; don't flush first time
+      (unless last-time ;; don't flush for the first time
         (setq last-time new-time)
-        (process-put proc 'last-flush-time new-time))
+        (process-put proc 'flush-time new-time))
 
+      ;; flush periodically
       (when (or is-ready
                 (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
-                ;; flush periodically
                 (> (- new-time last-time) .6))
-
-        (ess--flush-process-output-cache proc))
+        (ess--flush-accumulated-output proc))
 
       ;; setup a new flush timer (check for edebug to be able to debug mpi handler)
       (unless (and (boundp 'edebug-mode) edebug-mode)
         (process-put proc 'flush-timer
-                     (run-at-time .2 nil 'ess--flush-process-output-cache proc)))
-
-      )
+                     (run-at-time .2 nil #'ess--flush-accumulated-output proc))))
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
@@ -1330,7 +1333,7 @@ If in debugging state, mirrors the output into *ess.dbg* buffer."
         (insert (concat "|-" string "-|")))
       (ess--dbg-goto-last-ref-and-mark dbuff is-iess))
 
-    ;; (with-current-buffer dbuff ;; uncomment to see the value of STRING just before  debugger exists
+    ;; (with-current-buffer dbuff ;; un-comment to see the value of STRING just before debugger exists
     ;;   (let ((inhibit-read-only t))
     ;;     (goto-char (point-max))
     ;;     (insert (concat " ---\n " string "\n ---"))
