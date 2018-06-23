@@ -265,8 +265,8 @@ This may be useful for debugging."
             (ess-process-put 'funargs-pre-cache nil)
 
             ;; don't font-lock strings over process prompt
-            (set (make-local-variable 'syntax-begin-function)
-                 #'inferior-ess-last-prompt-this-line)
+            (set (make-local-variable 'syntax-begin-function) ;; fixme: obsolete in emacs 25.1
+                 #'inferior-ess-last-prompt-end)
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
@@ -325,23 +325,13 @@ Default depends on the ESS language/dialect and hence made buffer local")
 Default depends on the ESS language/dialect and hence made buffer local")
 (make-variable-buffer-local 'ess-retr-lastvalue-command)
 
-;;; A note on multiple processes: the following variables
-;;;     ess-local-process-name
-;;;     ess-sl-modtime-alist
-;;;     ess-prev-load-dir/file
-;;;     ess-object-list
-;;; are specific to each ess-process and are buffer-local variables
-;;; local to the ESS process buffer. If required, these variables should
-;;; be accessed with the function ess-get-process-variable
-
-(defun inferior-ess-last-prompt-this-line (&optional pos)
-  "Return end of prompt on the same line where POS is."
+(defun inferior-ess-last-prompt-end (&optional pos limit)
+  "Move to the end of last prompt from POS, but not further than LIMIT."
   (let ((pos (or pos (point))))
     (goto-char pos)
-    (beginning-of-line)
-    (if (looking-at inferior-ess-prompt)
-        (match-end 0)
-      pos)))
+    (end-of-line)
+    (when (re-search-backward inferior-ess-prompt limit t)
+      (goto-char (match-end 0)))))
 
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
@@ -351,11 +341,11 @@ Default depends on the ESS language/dialect and hence made buffer local")
   (let* ((buffer-undo-list t)
          (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
+         (font-lock-extend-region-functions nil)
          (buff (current-buffer))
-         (pos0 (or (inferior-ess-last-prompt-this-line beg) beg))
-         (pos1 pos0)
+         (pos1 beg)
          (pos2))
-    (when (< pos0 end)
+    (when (< beg end)
       (with-silent-modifications
         ;; fontify chunks from prompt to prompt
         (while (< pos1 end)
@@ -368,7 +358,7 @@ Default depends on the ESS language/dialect and hence made buffer local")
           (setq pos1 pos2))
         ;; highlight errors
         (setq compilation--parsed beg)
-        `(jit-lock-bounds ,pos0 . ,end)))))
+        `(jit-lock-bounds ,beg . ,end)))))
 
 (defun ess-gen-proc-buffer-name:simple (proc-name)
   "Function to generate buffer name by wrapping PROC-NAME in *proc-name*.
@@ -497,14 +487,14 @@ Taken from octave-mod.el."
   (if (process-get proc 'suppress-next-output?)
       ;; works only for surpressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil)
-    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))
-    (ess--show-process-buffer-on-error string proc)))
+    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
 
-
-(defun ess--show-process-buffer-on-error (string proc)
+(defun ess--show-process-buffer-on-error (proc)
   (let ((case-fold-search nil))
-    (when (string-match "Error\\(:\\| +in\\)" string)
-      (ess-show-buffer (process-buffer proc)))))
+    (with-current-buffer (ess--accumulation-buffer proc)
+      (goto-char (point-min))
+      (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
+        (ess-show-buffer (process-buffer proc))))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
