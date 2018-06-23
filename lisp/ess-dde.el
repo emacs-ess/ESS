@@ -174,20 +174,4 @@ file into an emacs buffer and displays it."
 
 (provide 'ess-dde)
 
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
 ;;; ess-dde.el ends here

@@ -390,9 +390,4 @@ For other purposes, use `ess-noweb-font-lock-fontify-chunks'."
 ;;  Tel. +49 5254 991-823 //Fax. +49 5254 991-749
 
 
-
-;; Local Variables:
-;; mode:emacs-lisp
-;; End:
-
 ;;; ess-noweb-font-lock-mode.el ends here

@@ -1599,20 +1599,4 @@ Adds the `ess-face-adjusted' property so we only adjust face once."
 
 (provide 'ess-utils)
 
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
 ;;; ess-utils.el ends here

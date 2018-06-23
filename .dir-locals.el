@@ -6,4 +6,5 @@
   (bug-reference-url-format . "https://github.com/emacs-ess/ess/issues/%s")
   (sentence-end-double-space))
  (emacs-lisp-mode
+  (outline-regexp . "\f\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*")
   (indent-tabs-mode)))

@@ -544,21 +544,4 @@ package mode. Use this function if state of the buffer such as
 
 (provide 'ess-r-package)
 
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
 ;;; ess-r-package.el ends here

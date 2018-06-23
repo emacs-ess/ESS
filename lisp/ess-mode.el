@@ -1011,21 +1011,4 @@ Function defined using `ess-define-runner'."
 
 (provide 'ess-mode)
 
- ; Local variables section
-
-;;; This file is automatically placed in Outline minor mode.
-;;; The file is structured as follows:
-;;; Chapters:     ^L ;
-;;; Sections:    ;;*;;
-;;; Subsections: ;;;*;;;
-;;; Components:  defuns, defvars, defconsts
-;;;              Random code beginning with a ;;;;* comment
-
-;;; Local variables:
-;;; mode: emacs-lisp
-;;; outline-minor-mode: nil
-;;; mode: outline-minor
-;;; outline-regexp: "\^L\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*"
-;;; End:
-
 ;;; ess-mode.el ends here
