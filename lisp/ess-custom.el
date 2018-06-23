@@ -2738,7 +2738,6 @@ system described in `ess-font-lock-keywords'.")
   (cons (regexp-opt ess-S-constants 'words) 'ess-constant-face)
   "Font-lock constants keyword.")
 
-
 (defcustom ess-S-font-lock-keywords
   '((ess-S-fl-keyword:modifiers . t)
     (ess-S-fl-keyword:fun-defs  . t)
@@ -2854,9 +2853,6 @@ system described in `inferior-ess-font-lock-keywords'.")
   (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
   "Highlight prompts missed by comint.")
 
-;; (defvar ess-S-fl-keyword:input-line
-;;   (cons "^[a-zA-Z0-9 ]*[>+]\\(.*$\\)" '(1 font-lock-variable-name-face keep t)))
-
 (defvar ess-fl-keyword:matrix-labels
   ;; also matches subsetting
   (cons "\\[,?[1-9][0-9]*,?\\]" 'ess-matrix-face)
@@ -2868,8 +2864,7 @@ system described in `inferior-ess-font-lock-keywords'.")
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-ess-r-font-lock-keywords
-  '((ess-S-fl-keyword:prompt   . t) ;; comint does that, but misses some prompts
-    ;; (ess-S-fl-keyword:input-line) ;; comint boguously highlights input with text props, no use for this
+  '((ess-S-fl-keyword:prompt   . t) ;; comint is bad at prompt highlighting
     (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
     (ess-R-fl-keyword:fun-defs  . t)
