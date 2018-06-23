@@ -498,8 +498,8 @@ If 'strip, remove all such instances.  Otherwise, if non-nil, '+
   "Replacement used for long + prompt.
 Customization of this variable is not recommended. You can set it
 to '. '. If you set it to anything else you will have to change
-`inferior-S-prompt' to assure the correct prompt navigation
-in inferior buffers.  ")
+`inferior-S-prompt' to assure the correct prompt detection
+in inferior buffers.")
 
 (defmacro ess-copy-key (from-map to-map fun)
   `(define-key ,to-map
@@ -525,7 +525,7 @@ in inferior buffers.  ")
     (set (make-local-variable 'compilation-error-regexp-alist)
          ess-error-regexp-alist)
     (let (compilation-mode-font-lock-keywords)
-     (compilation-setup t))
+      (compilation-setup t))
     (setq next-error-function 'ess-tracebug-next-error-function)
     ;; new locals
     (make-local-variable 'ess--tb-last-input)
@@ -1150,7 +1150,7 @@ Kill the *ess.dbg.[R_name]* buffer."
 (defvar ess--dbg-regexp-debug  "\\(\\(?:Browse[][0-9]+\\)\\|\\(?:debug: \\)\\)")
 (defvar ess--dbg-regexp-selection "\\(Selection: \\'\\)")
 (defvar ess--dbg-regexp-input (concat ess--dbg-regexp-debug "\\|"
-                                     ess--dbg-regexp-selection))
+                                      ess--dbg-regexp-selection))
 
 (defvar ess--suppress-next-output? nil)
 

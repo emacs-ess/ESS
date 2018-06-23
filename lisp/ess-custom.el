@@ -2237,38 +2237,24 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   :group 'ess-proc
   :type 'string)
 
-;; does it make sense to customize here, as we currently set this *directly*
-;; in the FOO-BAR-cust-alist's ???
-;; VS: Right. It only confuses users. It should be set in post-run-hook if
-;; desired;  inferior-S-prompt should be customized instead.
 (defvar inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.")
-
 (make-variable-buffer-local 'inferior-ess-primary-prompt)
-;; (setq-default inferior-ess-primary-prompt "> ")
 
 (defvar inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
 This is issued by S to continue an incomplete expression.
 Set to nil if language doesn't support secondary prompt.")
-;; :group 'ess-proc
-;; :type 'string)
-
 (make-variable-buffer-local 'inferior-ess-secondary-prompt)
-;; (setq-default inferior-ess-secondary-prompt "+ ")
 
 (defvar ess-traceback-command nil
   "Command to generate error traceback.")
 
-;; need to recognise  + + + > > >
+;; need this to recognise  + + + > > >
 ;; and "+ . + " in tracebug prompt
-(defcustom inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)*> "
+(defvar inferior-S-prompt "^[]a-zA-Z0-9.[]*\\(?:[>+.] \\)+"
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
-Customise it to make `comint-previous-prompt' quiqly navigate to
-interesting portions of the buffer.
- "
-  :group 'ess-proc
-  :type 'string)
+Must be anchored to BOL.")
 
 (defvaralias 'inferior-ess-S-prompt 'inferior-S-prompt)
 ;;*;; Variables controlling interaction with the ESS process
@@ -2628,14 +2614,6 @@ If you change the value of this variable, restart Emacs for it to take effect."
   :group 'ess
   :type 'boolean)
 
-(defvar inferior-ess-font-lock-input t
-  "
-
-This variable has no effect. Customize
-`inferior-ess-font-lock-keywords' directly.
-")
-(make-obsolete-variable 'inferior-ess-font-lock-input nil "ESS[12.09]")
-
 ;; "Reserved Words" -- part 1 --
 (defvar ess-RS-constants
   '("TRUE" "FALSE" "NA" "NULL" "Inf" "NaN"))
@@ -2905,13 +2883,7 @@ system described in `inferior-ess-font-lock-keywords'.")
     (ess-fl-keyword:operators)
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
-    (ess-R-fl-keyword:F&T)
-    ;;VS[17-09-2012]: what is this matching?
-    ;; (cons "^\\*\\*\\*.*\\*\\*\\*\\s *$" 'font-lock-comment-face); ess-mode msg
-
-    ;; (cons "#" 'font-lock-comment-face) ; comment
-    ;; (cons "^[^#]*#\\(.*$\\)" '(1 font-lock-comment-face keep t)) ; comments
-    )
+    (ess-R-fl-keyword:F&T))
   "Font-lock patterns used in inferior-R-mode buffers.
 The key of each cons cell is a name of the keyword.  The value
 should be t or nil to indicate if the keyword is active or not."
