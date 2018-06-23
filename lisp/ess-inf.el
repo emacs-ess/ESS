@@ -264,11 +264,6 @@ This may be useful for debugging."
             (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
             (ess-process-put 'funargs-pre-cache nil)
 
-            ;; set accumulation buffer name (buffer to cache output for faster display)
-            (process-put (get-process procname) 'accum-buffer-name
-                         (format " *%s:accum*" procname))
-
-
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function)
                  #'inferior-ess-last-prompt-this-line)
@@ -303,6 +298,16 @@ This may be useful for debugging."
                  (switch-to-buffer buf))
                 (t (pop-to-buffer buf))))))))
 
+(defun ess--accumulation-buffer (proc)
+  (let ((abuf (process-get proc :accum-buffer)))
+    (if (buffer-live-p abuf)
+        abuf
+      (let ((abuf (get-buffer-create (format " *%s:accum*" (process-name proc)))))
+        (process-put proc :accum-buffer abuf)
+        (with-current-buffer abuf
+          (buffer-disable-undo)
+          (setq-local inhibit-modification-hooks t))
+        abuf))))
 
 (defvar inferior-ess-objects-command nil
   "The language/dialect specific command for listing objects.
@@ -512,11 +517,13 @@ flash or you'll hear a beep.  Taken from octave-mod.el."
         (setq string (substring string 1))))
   string)
 
-
 (defun ess-process-sentinel (proc message)
   "Sentinel for use with ESS processes.
 This marks the process with a message, at a particular time point."
   (save-excursion
+    (let ((abuf (process-get proc :accum-buffer)))
+      (when (buffer-live-p abuf)
+        (kill-buffer abuf)))
     (setq message (substring message 0 -1)) ; strip newline
     (set-buffer (process-buffer proc))
     (comint-write-input-ring)
@@ -525,10 +532,7 @@ This marks the process with a message, at a particular time point."
      (format "\nProcess %s %s at %s\n"
              (process-name proc) message (current-time-string)))))
 
-(defun inferior-ess-make-comint (bufname
-                                 procname
-                                 infargs
-                                 &rest switches)
+(defun inferior-ess-make-comint (bufname procname infargs &rest switches)
   "Make an S comint process in buffer BUFNAME with process PROCNAME."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
