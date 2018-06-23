@@ -271,7 +271,7 @@ This may be useful for debugging."
 
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function)
-                 #'inferior-ess-goto-last-prompt-if-close)
+                 #'inferior-ess-last-prompt-this-line)
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
@@ -329,37 +329,27 @@ Default depends on the ESS language/dialect and hence made buffer local")
 ;;; local to the ESS process buffer. If required, these variables should
 ;;; be accessed with the function ess-get-process-variable
 
-
-(defun inferior-ess-goto-last-prompt-if-close (&optional pos)
-  "Staging from POS go to previous primary prompt and return the position.
-Look only for primary or secondary prompt on the current line. If
-found, return the starting position of the prompt, otherwise stay
-at current position and return nil. POS defaults to `point'."
-  (let* ((pos (or pos (point)))
-         (new-pos (save-excursion
-                    (beginning-of-line)
-                    (if (looking-at inferior-ess-primary-prompt)
-                        pos
-                      (when  (and inferior-ess-secondary-prompt
-                                  (looking-at inferior-ess-secondary-prompt))
-                        (re-search-backward (concat "^" inferior-ess-primary-prompt) nil t)
-                        pos)))))
-    (when new-pos
-      (goto-char new-pos))))
+(defun inferior-ess-last-prompt-this-line (&optional pos)
+  "Return end of prompt on the same line where POS is."
+  (let ((pos (or pos (point))))
+    (goto-char pos)
+    (beginning-of-line)
+    (if (looking-at inferior-ess-prompt)
+        (match-end 0)
+      pos)))
 
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
 (defvar compilation--parsed)
 (defun inferior-ess-fontify-region (beg end &optional verbose)
-  "Fontify output by output within the beg-end region to avoid
-fontification spilling over prompts."
+  "Fontify output by output to avoid fontification spilling over prompts."
   (let* ((buffer-undo-list t)
          (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
          (buff (current-buffer))
-         (pos0 (or (inferior-ess-goto-last-prompt-if-close beg)
-                   beg))
-         (pos1 pos0) pos2)
+         (pos0 (or (inferior-ess-last-prompt-this-line beg) beg))
+         (pos1 pos0)
+         (pos2))
     (when (< pos0 end)
       (with-silent-modifications
         ;; fontify chunks from prompt to prompt
