@@ -150,7 +150,7 @@ buildrpm: dist
 builddeb:
 	dpkg-buildpackage -uc -us -rfakeroot -tc
 
-
+## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
 ## 'distclean' removes also things in VC (svn, when they are remade by "make"):
 clean distclean: cleanup-dist
