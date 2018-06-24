@@ -2796,25 +2796,19 @@ default or not."
 (defvar ess-r--bare-keywords
   '("in" "else" "break" "next" "repeat"))
 
-;; FIXME Emacs 25: Remove guard
-(eval-and-compile
-  (let* ((keywords (if (< emacs-major-version 25)
-                       (list (append (list 'bare) ess-R-keywords) (list 'normal))
-                     (require 'seq)
-                     (seq-group-by (lambda (x) (if (member x ess-r--bare-keywords)
-                                              'bare
-                                            'normal))
-                                   ess-R-keywords)))
-         (bare-keywords (cdr (assq 'bare keywords)))
-         (function-keywords (cdr (assq 'normal keywords))))
-    (defvar ess-R-fl-keyword:bare-keywords
-      (cons (regexp-opt bare-keywords 'words)
-            'ess-keyword-face)
-      "Font-lock keywords that do not precede an opening parenthesis.")
-    (defvar ess-R-fl-keyword:keywords
-      (cons (concat "\\(" (regexp-opt function-keywords 'words) "\\)\\s-*(")
-            '(1 ess-keyword-face))
-      "Font-lock keywords that precede an opening parenthesis.")))
+(defvar ess-R-fl-keyword:bare-keywords
+  (cons (regexp-opt ess-r--bare-keywords 'words)
+        'ess-keyword-face)
+  "Font-lock keywords that do not precede an opening parenthesis.")
+
+(defvar ess-R-fl-keyword:keywords
+  (let ((function-kwords
+         (delq nil
+               (mapcar (lambda (k) (unless (member k ess-r--bare-keywords) k))
+                       ess-R-keywords))))
+    (cons (concat "\\(" (regexp-opt function-kwords 'words) "\\)\\s-*(")
+          '(1 ess-keyword-face)))
+  "Font-lock keywords that precede an opening parenthesis.")
 
 (defvar ess-R-fl-keyword:control-flow-keywords
   (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
