@@ -299,5 +299,6 @@ Use point-min/max to obey `narrow-to-region'."
   (interactive)
   (ess-transcript-clean-region (point-min) (point-max) 'In-ANY-case))
 
+(provide 'ess-trns)
 
 ;;; ess-trns.el ends here
