@@ -55,6 +55,13 @@
   "Name of 'dialect' for S-PLUS at another location.")
                                         ;easily changeable in a user's .emacs
 
+(defcustom inferior-ess-remote-pager nil
+  "Remote pager to use for reporting help files and similar things.
+The default value is nil."
+  :group 'ess-proc
+  :type '(choice (const nil) string))
+
+
 (defvar S+elsewhere-customize-alist
   (append
    '((ess-local-customize-alist         . 'S+elsewhere-customize-alist)
@@ -141,26 +148,6 @@ return new alist whose car is the new pair and cdr is ALIST.
      (t                         S+elsewhere-customize-alist)
      )))
 
-
-;; (defun ESS-elsewhere (&optional proc-name)
-;;   "Call an inferior process from ELSEWHERE.
-;; This command is obsolete; please use `ess-remote' instead."
-;;   (interactive)
-;;   ;; Need to select a elsewhere-customize-alist
-;;   (let ((elsewhere-customize-alist (ess-select-alist-dialect)))
-;;     (ess-change-alist 'inferior-ess-program
-;;                       inferior-ESS-elsewhere-program
-;;                       elsewhere-customize-alist)
-;;     (setq ess-customize-alist elsewhere-customize-alist)
-;;     (ess-write-to-dribble-buffer
-;;      (format "\n(ESS-elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
-;;              (current-buffer)))
-;;     (inferior-ess)
-;;     (if (equal ess-language "S")
-;;         (if inferior-ess-language-start
-;;             (ess-eval-linewise inferior-ess-language-start)))))
-
-
 (defun ess-add-ess-process ()
   "Execute this command from within a buffer running a process to add
 the process to `ess-process-name-alist' and to make it the
@@ -175,12 +162,6 @@ buffer on the local computer."
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))
-
-(defcustom inferior-ess-remote-pager nil
-  "Remote pager to use for reporting help files and similar things.
-The default value is nil."
-  :group 'ess-proc
-  :type 'string)
 
 (defvar ess-remote nil
   "Indicator, t in ess-remote buffers.")
@@ -219,7 +200,8 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
 
     (when (equal ess-dialect "R")
       ;; ugly fix for evn variable. What can we do :(
-      (ess-eval-linewise (format "options(pager='%s')\n" (or inferior-ess-remote-pager inferior-ess-pager))
+      (ess-eval-linewise (format "options(pager='%s')\n"
+                                 (or inferior-ess-remote-pager inferior-ess-pager))
                          nil nil nil 'wait)
       (inferior-ess-r-load-ESSR))
 
