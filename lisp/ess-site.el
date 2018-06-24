@@ -82,9 +82,9 @@ for ESS, such as icons.")
 (add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
 ;; Add ess-lisp-directory/obsolete to load-path; files here will
 ;; automatically warn that they are obsolete when loaded.
-(add-to-list 'load-path (directory-file-name (concat ess-lisp-directory "/obsolete")))
-(require 'ess-utils)
+(add-to-list 'load-path (file-name-as-directory (expand-file-name "obsolete" ess-lisp-directory)))
 
+(require 'ess-utils)
 (ess-write-to-dribble-buffer
  (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
@@ -93,7 +93,6 @@ for ESS, such as icons.")
 ;; resurrecting Stephen's version with a bug-fix
 (unless (locate-file "ess.info" Info-default-directory-list)
   (add-to-list 'Info-default-directory-list (expand-file-name "../doc/info/" ess-lisp-directory)))
-
 
 
 ;; Loads ess-custom.el and more

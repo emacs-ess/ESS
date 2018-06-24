@@ -18,23 +18,18 @@ NOWEAVE=noweave
 ##.nw.h:  ;       $(NOTANGLE) -R$*.h | cpif $*.h
 .tex.dvi: ;     latex '\scrollmode \input '"$*"; while grep -s 'Rerun to get cross-references right' $*.log; do latex '\scrollmode \input '"$*"; done
 
-# have to preload the files that contain macro definitions or the
-# byte compiler will compile everything that references them
-# incorrectly.  also preload a file that sets byte compiler options.
+# Have to preload the files that contain macro definitions or the byte compiler
+# will compile everything that references them incorrectly. Also preload a file
+# that sets byte compiler options.
 COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
 
 
-## files that contain key macro definitions.  almost everything
-## depends on them because the byte-compiler inlines macro expansions.
-## everything also depends on the byte compiler options file since
-## this might do odd things like turn off certain compiler
-## optimizations.  When these change, RECOMPILE.
+## Files that contain key macro definitions. Almost everything depends on them
+## because the byte-compiler inlines macro expansions. Everything also depends
+## on the byte compiler options file since this might do odd things like turn
+## off certain compiler optimizations. When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-### Everything but ess-debug.el, ess-install.el
-###		  ess-send.el , ess-send2.el
-### DEPRECATED:  essl-bug.el ess-compat.el
-##
 ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-dde.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
@@ -48,15 +43,16 @@ ELC = $(CORE) ess-comp.elc ess-custom.elc \
 	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
-	ess-eldoc.elc ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
+	ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
 	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
 	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
 	ess-rdired.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
 	ess-r-flymake.elc ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
 	ess-generics.elc ess-r-gui.elc\
-	ess-sp6w-d.elc msdos.elc
-##      ^^^^^^^^^^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
+	obsolete/msdos.elc obsolete/ess-eldoc.elc obsolete/ess-r-args.elc\
+	ess-sp6w-d.elc
+##  ^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 ## julia-mode.el : really from the julia sources -- but want in tarball!
 
 
@@ -69,12 +65,11 @@ all: $(ELC) ess-custom.el
 
 .PHONY: dist
 dist: all julia-mode.el
-##	@touch dist
-## svn committing happens in ../Makefile
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
-	$(INSTALL) ChangeLog *.elc $(LISPDIR)
+	$(INSTALL) *.elc $(LISPDIR)
+	$(INSTALL) obsolete/*.elc $(LISPDIR)
 	-export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
@@ -83,7 +78,7 @@ install: dist
 #	test "$(LISPDIR)" = "." || $(INSTALL) *.elc $(LISPDIR)
 
 uninstall:
-	-cd $(LISPDIR) && $(UNINSTALL) ChangeLog *.elc *.el
+	-cd $(LISPDIR) && $(UNINSTALL) *.elc *.el
 	if [ -n "$(SITELISP)" -a -h "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
@@ -113,7 +108,6 @@ julia-mode.el:
 
 .el.elc:
 	$(COMPILE) $<
-
 
 ess-custom.elc: ess-custom.el ess-comp.el
 	$(COMPILE) ess-custom.el
