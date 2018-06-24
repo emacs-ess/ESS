@@ -3,18 +3,26 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
+.PHONY: version
+version:
+	@echo "********************* VERSIONS **************************"
+	@echo $(shell $(EMACS) --version | sed -n 1p)
+	@echo ESS $(ESSVERSION)
+	@echo git HEAD $(shell git rev-parse --short HEAD)
+	@echo "*********************************************************"
+
 .PHONY: all install uninstall
-all install uninstall:
+all install uninstall: version
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 
 .PHONY: lisp
-lisp:
+lisp: version
 	cd lisp; $(MAKE)
 
 .PHONY: test
-test:
+test: version
 	cd test; $(EMACS) --script run-tests
 
 generate-indent-cases:
