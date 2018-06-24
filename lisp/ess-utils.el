@@ -1259,17 +1259,24 @@ aaa@bbb in R)."
                          (syntax-table))
     (symbol-at-point)))
 
+(defun ess-bounds-of-symbol ()
+  "Get bounds of symbol at point.
+Intended for completion."
+  (let ((bounds (with-syntax-table (or ess-mode-completion-syntax-table
+                                       ess-mode-syntax-table
+                                       (syntax-table))
+                  (bounds-of-thing-at-point 'symbol))))
+    (and bounds
+         (not (save-excursion
+                (goto-char (car bounds))
+                (looking-at "/\\|.[0-9]")))
+         bounds)))
+
 (defun ess-symbol-start ()
   "Get initial position for objects completion.
 Symbols are fully qualified names that include accessor
 symbols (like aaa$bbb and aaa@bbb in R)."
-  (let ((beg (car (with-syntax-table (or ess-mode-completion-syntax-table
-                                         ess-mode-syntax-table
-                                         (syntax-table))
-                    (bounds-of-thing-at-point 'symbol)))))
-    (when (and beg (not (save-excursion (goto-char beg)
-                                        (looking-at "/\\|.[0-9]"))))
-      beg)))
+  (car (ess-bounds-of-symbol)))
 
 (defun ess-arg-start ()
   "Get initial position for args completion"

@@ -204,7 +204,7 @@ Experimental feature with known bugs.")
   (if ess-roxy-mode
       (progn
         (font-lock-add-keywords nil ess-roxy-font-lock-keywords)
-        (add-to-list 'comint-dynamic-complete-functions 'ess-roxy-complete-tag)
+        (add-hook 'completion-at-point-functions #'ess-roxy-complete-tag 'local) ;; should be first
         ;; Hideshow Integration
         (when (and ess-roxy-hide-show-p (featurep 'hideshow))
           (hs-minor-mode 1)
@@ -875,11 +875,13 @@ list of strings."
 
 (defun ess-roxy-complete-tag ()
   "complete the tag at point"
-  (let ((token-string (thing-at-point 'symbol)))
-    (when (and token-string (string-match "@.+" token-string))
-      (comint-dynamic-simple-complete
-       (replace-regexp-in-string "^@" "" token-string)
-       (append ess-roxy-tags-noparam ess-roxy-tags-param)))))
+  (let ((bounds (ess-bounds-of-symbol)))
+    (when (and bounds
+               (save-excursion
+                 (goto-char (car bounds))
+                 (eq (following-char) ?@)))
+      (list (1+ (car bounds)) (cdr bounds)
+            (append ess-roxy-tags-noparam ess-roxy-tags-param)))))
 
 (defun ess-roxy-tag-completion ()
   "Completion data for emacs >= 24"
