@@ -176,6 +176,12 @@ buffer on the local computer."
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))
 
+(defcustom inferior-ess-remote-pager nil
+  "Remote pager to use for reporting help files and similar things.
+The default value is nil."
+  :group 'ess-proc
+  :type 'string)
+
 (defvar ess-remote nil
   "Indicator, t in ess-remote buffers.")
 
@@ -213,7 +219,7 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
 
     (when (equal ess-dialect "R")
       ;; ugly fix for evn variable. What can we do :(
-      (ess-eval-linewise (format "options(pager='%s')\n" inferior-ess-pager)
+      (ess-eval-linewise (format "options(pager='%s')\n" (or inferior-ess-remote-pager inferior-ess-pager))
                          nil nil nil 'wait)
       (inferior-ess-r-load-ESSR))
 
