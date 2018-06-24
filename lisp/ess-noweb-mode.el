@@ -81,9 +81,6 @@
 
 ;;; Code:
 
-;; Want to use these now in order to cater for all obscure kinds of emacsen
-(require 'ess-compat)
-
 (defvar weave-process)
 
 

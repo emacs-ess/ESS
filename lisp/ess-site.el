@@ -89,11 +89,6 @@ for ESS, such as icons.")
  (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
 
-;; load code to figure out what version/strain of Emacs we are running
-;; must come *AFTER* load-path is set !
-
-(require 'ess-compat)
-
 ;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
 ;; resurrecting Stephen's version with a bug-fix
 (unless (locate-file "ess.info" Info-default-directory-list)
