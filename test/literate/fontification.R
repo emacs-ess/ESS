@@ -106,3 +106,62 @@ library attach detach source require¶
 
 library() attach() detach() source() require()¶
 
+
+### 6 Assignment operators are fontified -----------------------------
+
+foo¶ <- foo <<- foo -> foo ->> foo
+
+##! (while (not (eolp))
+##>   (should (not (face-at-point)))
+##>   (forward-char)
+##>   (should (eq (face-at-point) 'ess-assignment-face))
+##>   (skip-syntax-forward ".")
+##>   (should (not (face-at-point)))
+##>   (ignore-errors (forward-word)))
+
+foo <- foo <<- foo -> foo ->> foo¶
+
+
+### 7 Constants are fontified ----------------------------------------
+
+¶TRUE FALSE NA NULL Inf NaN
+NA_integer_ NA_real_ NA_complex_ NA_character_
+
+##! (while (not (eolp))
+##>   (should (eq (face-at-point) 'ess-constant-face))
+##>   (ignore-errors
+##>     (ess-forward-sexp)
+##>     (forward-char)))
+
+TRUE FALSE NA NULL Inf NaN
+NA_integer_ NA_real_ NA_complex_ NA_character_¶
+
+
+### 8 Can regenerate regexps after modifying keywords ----------------
+
+¶foobar foobaz()
+
+##! (setq-local ess-R-keywords (append '("foobaz") ess-R-keywords))
+##> (ess-r-generate-font-lock-regexps)
+##> (ess-r-mode)
+##> (font-lock-ensure)
+##> (should (not (face-at-point)))
+##> (forward-word)
+##> (forward-char)
+##> (should (eq (face-at-point) 'ess-keyword-face))
+
+foobar ¶foobaz()
+
+
+### 9 Can set keywords variable to nil -------------------------------
+
+¶stop()
+
+##! (setq-local ess-R-control-flow-keywords nil)
+##> (ess-r-generate-font-lock-regexps)
+##> (ess-r-mode)
+##> (font-lock-ensure)
+##> (should (not (face-at-point)))
+
+¶stop()
+
