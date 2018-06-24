@@ -3,15 +3,14 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-ETC_FILES = # etc/SVN-REVISION  etc/ESSR-VERSION
-
-## This is the default target, i.e. 'make' and 'make all' are the same.
-all install uninstall: $(ETC_FILES)
+.PHONY: all install uninstall
+all install uninstall:
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 
-lisp: $(ETC_FILES)
+.PHONY: lisp
+lisp:
 	cd lisp; $(MAKE)
 
 .PHONY: test
@@ -22,20 +21,6 @@ generate-indent-cases:
 	cd test; $(EMACS) --script generate-indent-cases
 
 ## the rest of the targets are for ESS developer's use only :
-
-# VERSION:
-# 	@echo "$(ESSVERSION)" > $@
-## Hmm, this is a bit brittle ... but for distribution, there's no problem
-## no longer: using git!
-# etc/SVN-REVISION etc/SVN-REVISION-tmp: VERSION lisp/*.el doc/*.texi doc/Makefile etc/Makefile lisp/Makefile Makefile Makeconf
-# 	(LC_ALL=C TZ=GMT svn info || $(ECHO) "Revision: unknown") 2> /dev/null \
-# 	    | sed -n -e '/^Revision/p' -e '/^Last Changed Date/'p \
-# 	    | cut -d' ' -f1,2,3,4 > $@-tmp
-# 	if [ -s $@-tmp ]; then mv $@-tmp $@ ; elif [ ! -f $@ ]; then echo 'not available' > $@ ; fi
-
-# etc/ESSR-VERSION: etc/ESSR/DESCRIPTION
-# 	sed -n '/^Version: */{ s///; s/ *$$//p }' $< > $@
-
 
 ## --- PRE-release ---
 
