@@ -2,10 +2,6 @@
 
   * Version 17.11 released.
 
-2017-01-19  Stefan Monnier  <monnier@iro.umontreal.ca>
-
-	* .gitignore: Add ELPA's ess-autoloads.el.
-
 2016-10-22  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 16.10 released.
@@ -34,19 +30,9 @@
 
   * Version 15.03 released.
 
-2015-01-31  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* Makefiles are now UNIX and GNU make friendly.
-
 2014-09-13  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 14.09 released.
-
-2013-12-10  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* Makeconf (SITELISP): tersely documenting SITELISP
-	and incorporating into comments for emacs variants
-	* Makeconf (INFODIR): updating INFODIR for Mac OS X
 
 2013-12-07  ESS Maintainers <ESS-core@r-project.org>
 
@@ -59,14 +45,6 @@
 2013-05-14  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 13.05 released.
-
-2013-01-14  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* Makeconf (INFODIR): on Mac OS X, this
-	directory does not fall under Emacs.app as
-	previously indicated; it is actually the
-	same as you might expect on UNIX/Linux,
-	i.e. /usr/local/info
 
 2013-01-12  ESS Maintainers <ESS-core@r-project.org>
 
@@ -92,11 +70,6 @@
 
   * Version 12.04-2 released.
 
-2012-05-07  Rodney Sparapani  <rsparapa@mcw.edu>
-
-	* Makeconf;Makefile;*/Makefile (uninstall):
-	first attempt at uninstall target; please test
-
 2012-04-05  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 12.04 released.
@@ -104,56 +77,6 @@
 2012-03-30  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 12.03 released.  New numbering scheme.
-
-2012-03-11  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* doc/ess.texi (Styles): added C-c . to the docs.
-	(Help): added description of i, v, w, q, k keys.
-	(Object names): added TAB completion in ess-mode.
-	(Other edit buffer commands): TAB completion adjusted.
-
-2012-03-13  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* doc/newfeat.texi: New emacs 24 completion. M-TAB and breaking change emphasis.
-
-2012-02-29  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* doc/refcard/refcard.tex: added new features and removed
-	deprecated bindings.
-
-2012-02-26  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* doc/ess.texi: rearranged, renamed and completed with several new
-	chapters and sections to reflect newly added features
-	(``Completion'', ``Developing with ESS'', ``ESS tracebug'', ``ESS
-	developer'', ``ESS ElDoc'', ``IDO Comppletion'' and ``Evaluating
-	Code'').
-
-	First chapters are all about S and R, no special distinctions is
-	necessary in the section names. ESS is defector 80% R, and docs
-	are reflecting that.
-
-2012-02-25  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* doc/newfeat.texi: completed documenting changes.
-
-2011-12-13  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* etc/R-ESS-bugs.R (`swank:quit-inspector`): added swanky functions.
-
-2011-12-12  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* etc/ess-developer.R: R side of ess-developer.el
-
-
-2011-11-24  Vitalie Spinu  <spinuvit@gmail.com>
-
-	* etc/R-ESS-bugs.el ("\n\n\n"): double prompt bug (5))
-
-2011-11-11  Vitalie Spinu (spinuvit@gmail.com)  <spinuvit@gmail.com>
-
-	* etc/R-ESS-bugs.el: added this file for tracking R-bugs from the
-	lisp side.
 
 2011-07-30  ESS Maintainers <ESS-core@r-project.org>
 
