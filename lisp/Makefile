@@ -107,7 +107,7 @@ ess-custom.el: ../VERSION
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
- https://raw.githubusercontent.com/JuliaLang/julia-emacs/master/julia-mode.el > $@
+	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
 
 ### File Dependencies
 
