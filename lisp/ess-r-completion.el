@@ -194,14 +194,9 @@ command may be necessary if you modify an attached dataframe."
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
-             (end (point))
-             (buffer-syntax (syntax-table))
-             (beg (unwind-protect
-                      (save-excursion
-                        (set-syntax-table ess-mode-syntax-table)
-                        (backward-sexp 1)
-                        (point))
-                    (set-syntax-table buffer-syntax)))
+             (bounds (ess-bounds-of-symbol))
+             (beg (car bounds))
+             (end (cdr bounds))
              (full-prefix (buffer-substring beg end))
              (pattern full-prefix)
              ;; See if we're indexing a list with `$'
@@ -237,7 +232,7 @@ command may be necessary if you modify an attached dataframe."
                              ;;    options(error=recover) :
                              (ess-get-object-list ess-current-process-name)))))
         ;; always return a non-nil value to prevent history expansions
-        (or (comint-dynamic-simple-complete  pattern components) 'none))))
+        (or (completion-in-region beg end components) 'none))))
 
 (defun ess-r-get-rcompletions (&optional start end prefix allow-3-dots)
   "Call R internal completion utilities (rcomp) for possible completions.
@@ -267,14 +262,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive)
   (let ((possible-completions (ess-r-get-rcompletions))
         token-string)
-    ;; If there are no possible-completions, should return nil, so
-    ;; that when this function is called from
-    ;; comint-dynamic-complete-functions, other functions can also be
-    ;; tried.
     (when possible-completions
       (setq token-string (pop possible-completions))
-      (or (comint-dynamic-simple-complete token-string
-                                          possible-completions)
+      (or (completion-in-region (- (point) (length token-string))
+                                (point)
+                                possible-completions)
           'none))))
 
 (defvar ess--cached-sp-objects nil)
