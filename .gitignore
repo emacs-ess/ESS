@@ -14,7 +14,7 @@ doc/refcard/refcard.*
 *REMOTE*
 *LOCAL*
 *BASE*
-lisp/*.elc
+*.elc
 doc/html/*.html
 README
 ANNOUNCE
