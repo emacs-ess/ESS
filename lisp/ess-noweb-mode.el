@@ -336,6 +336,8 @@ replaced by sequences of '*'.")
   (interactive)
   (ess-noweb-mode arg)) ; this was ess-noweb-minor-mode???  (truly recursive)
 
+(declare-function ess-noweb-font-lock-mode "ess-noweb-font-lock-mode")
+
 ;;;###autoload
 (defun ess-noweb-mode ( &optional arg )
   "Minor meta mode for editing noweb files.
@@ -389,24 +391,24 @@ Misc:
 \\[ess-noweb-update-chunk-vector] \tupdate the markers for chunks
 \\[ess-noweb-describe-mode] \tdescribe ess-noweb-mode
 "  (interactive "P")
-;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
-;; It seems to ensure that the variable ess-noweb-mode is made
-;; local to this buffer. It then sets ess-noweb-mode to `t' if
-;;     1) It was called with an argument greater than 0
-;; or  2) It was called with no argument, and ess-noweb-mode is
-;;        currently nil
-;; ess-noweb-mode is nil if the argument was <= 0 or there
-;; was no argument and ess-noweb-mode is currently `t'
-(kill-all-local-variables)
-(set (make-local-variable 'ess-noweb-mode)
-     (if arg
-         (> (prefix-numeric-value arg) 0)
-       (not ess-noweb-mode)))
-;; Now, if ess-noweb-mode is true, we want to turn
-;; ess-noweb-mode on
-(cond
- (ess-noweb-mode                            ;Setup the minor-mode
-  (mapc 'ess-noweb-make-variable-permanent-local
+  ;; This bit is tricky: copied almost verbatim from bib-cite-mode.el
+  ;; It seems to ensure that the variable ess-noweb-mode is made
+  ;; local to this buffer. It then sets ess-noweb-mode to `t' if
+  ;;     1) It was called with an argument greater than 0
+  ;; or  2) It was called with no argument, and ess-noweb-mode is
+  ;;        currently nil
+  ;; ess-noweb-mode is nil if the argument was <= 0 or there
+  ;; was no argument and ess-noweb-mode is currently `t'
+  (kill-all-local-variables)
+  (set (make-local-variable 'ess-noweb-mode)
+       (if arg
+           (> (prefix-numeric-value arg) 0)
+         (not ess-noweb-mode)))
+  ;; Now, if ess-noweb-mode is true, we want to turn
+  ;; ess-noweb-mode on
+  (cond
+   (ess-noweb-mode                            ;Setup the minor-mode
+    (mapc 'ess-noweb-make-variable-permanent-local
           '(ess-noweb-mode
             ess-local-process-name ;; also made permanent in ess-mode, but let it be
             ess-dialect
@@ -422,45 +424,44 @@ Misc:
             ess-noweb-code-mode
             ess-noweb-default-code-mode
             ess-noweb-last-chunk-index))
-  (ess-noweb-update-chunk-vector)
-  (setq ess-noweb-last-chunk-index
-        (if (equal 0 (ess-noweb-find-chunk-index-buffer)) 1 0))
-  (if font-lock-mode
-      (progn
-        (font-lock-mode -1)
-        (require 'ess-noweb-font-lock-mode); which requires ess-noweb-mode .. hmm..
-        (ess-noweb-font-lock-mode 1)))
-  (add-hook 'post-command-hook 'ess-noweb-post-command-function)
+    (ess-noweb-update-chunk-vector)
+    (setq ess-noweb-last-chunk-index
+          (if (equal 0 (ess-noweb-find-chunk-index-buffer)) 1 0))
+    (if font-lock-mode
+        (progn
+          (font-lock-mode -1)
+          (ess-noweb-font-lock-mode 1)))
+    (add-hook 'post-command-hook 'ess-noweb-post-command-function)
 
-  (add-hook 'after-change-functions 'ess-noweb-after-change-function nil t)
-  (add-hook 'before-change-functions 'ess-noweb-before-change-function nil t)
+    (add-hook 'after-change-functions 'ess-noweb-after-change-function nil t)
+    (add-hook 'before-change-functions 'ess-noweb-before-change-function nil t)
 
-  (add-hook 'ess-noweb-select-doc-mode-hook 'ess-noweb-auto-fill-doc-mode)
-  (add-hook 'ess-noweb-select-code-mode-hook 'ess-noweb-auto-fill-code-mode)
-  (add-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
-  (add-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
-  (setq ess-noweb-doc-mode-syntax-table nil)
-  (run-hooks 'ess-noweb-mode-hook)
-  (message
-   "noweb mode: use `M-x ess-noweb-describe-mode' for further information"))
- ;; If we didn't do the above, then we want to turn ess-noweb-mode
- ;; off, no matter what (hence the condition `t')
- (t
-  (remove-hook 'post-command-hook 'ess-noweb-post-command-function)
+    (add-hook 'ess-noweb-select-doc-mode-hook 'ess-noweb-auto-fill-doc-mode)
+    (add-hook 'ess-noweb-select-code-mode-hook 'ess-noweb-auto-fill-code-mode)
+    (add-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
+    (add-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
+    (setq ess-noweb-doc-mode-syntax-table nil)
+    (run-hooks 'ess-noweb-mode-hook)
+    (message
+     "noweb mode: use `M-x ess-noweb-describe-mode' for further information"))
+   ;; If we didn't do the above, then we want to turn ess-noweb-mode
+   ;; off, no matter what (hence the condition `t')
+   (t
+    (remove-hook 'post-command-hook 'ess-noweb-post-command-function)
 
-  (remove-hook 'after-change-functions 'ess-noweb-after-change-function t)
-  (remove-hook 'before-change-functions 'ess-noweb-before-change-function t)
+    (remove-hook 'after-change-functions 'ess-noweb-after-change-function t)
+    (remove-hook 'before-change-functions 'ess-noweb-before-change-function t)
 
-  (remove-hook 'ess-noweb-select-doc-mode-hook 'ess-noweb-auto-fill-doc-mode)
-  (remove-hook 'ess-noweb-select-code-mode-hook 'ess-noweb-auto-fill-code-mode)
-  (remove-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
-  (remove-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
-  (if (and (boundp 'ess-noweb-font-lock-mode)
-           ess-noweb-font-lock-mode)
-      (progn
-        (ess-noweb-font-lock-mode -1)
-        (message "ESS-Noweb and ESS-Noweb-Font-Lock Modes Removed"))
-    (message "ESS-Noweb mode removed")))))
+    (remove-hook 'ess-noweb-select-doc-mode-hook 'ess-noweb-auto-fill-doc-mode)
+    (remove-hook 'ess-noweb-select-code-mode-hook 'ess-noweb-auto-fill-code-mode)
+    (remove-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
+    (remove-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
+    (if (and (boundp 'ess-noweb-font-lock-mode)
+             ess-noweb-font-lock-mode)
+        (progn
+          (ess-noweb-font-lock-mode -1)
+          (message "ESS-Noweb and ESS-Noweb-Font-Lock Modes Removed"))
+      (message "ESS-Noweb mode removed")))))
 
 (defun ess-noweb-make-variable-permanent-local (var)
   "Declare VAR buffer local, but protect it from beeing killed

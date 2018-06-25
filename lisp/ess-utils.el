@@ -684,7 +684,7 @@ See also `ess-use-ido'."
       (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
         (set (make-local-variable 'eldoc-idle-delay) 0.1))
       (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
-      (turn-on-eldoc-mode))
+      (eldoc-mode 1))
 
     ;; tracebug
     (when (and ess-use-tracebug inferior isR)

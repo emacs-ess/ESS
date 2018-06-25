@@ -48,7 +48,7 @@
   "Popup a menu of functions to run on selected string or region."
   (interactive)
   (ess-mouse-me-helper
-   (lambda ()
+   (lambda (name)
      (or (x-popup-menu (list '(0 0)
                              (get-buffer-window (get-buffer (buffer-name))))
                        (funcall mouse-me-build-menu-function name))
@@ -92,7 +92,7 @@
             (and (stringp name) (string= name "" )))
         (error "No string to pass to function"))
     ;; popup a menu to get a command to run
-    (setq cmd (funcall func))
+    (setq cmd (funcall func name))
     ;; run the command, eval'ing if it was a list
     (if (listp cmd)
         (setq cmd (eval cmd)))

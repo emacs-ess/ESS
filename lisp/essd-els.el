@@ -76,7 +76,6 @@ The default value is nil."
    S+common-cust-alist)
   "Variables to customize for S+elsewhere")
 
-
 (defun S+elsewhere (&optional proc-name)
   "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
   (interactive)
@@ -88,8 +87,7 @@ The default value is nil."
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start)))
 ;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
-(make-obsolete #'S+elsewhere #'ess-remote "2000")
-
+(make-obsolete 'S+elsewhere #'ess-remote "2000")
 
 (defun S+elsewhere-mode (&optional proc-name)
   "Major mode for editing S+3 source.  See `ess-mode' for more help."

@@ -637,8 +637,6 @@ Executed in process buffer."
   (setq ess-customize-alist ess-r-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode ess-r-customize-alist proc-name)
-  ;; for emacs < 24
-  (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name t 'local)
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
@@ -1565,7 +1563,6 @@ Returns nil if line starts inside a string, t if in a comment."
    ((null containing-sexp) 0)
    ;; Block is embedded in another block
    ((ess-at-containing-sexp
-      (equal (char-after) ?\{)
       (+ (current-indentation)
          (ess-offset 'block))))))
 

@@ -145,7 +145,7 @@ the symbol `string' it will be called with one string argument."
 (defun mouse-me (event)
   "Popup a menu of functions to run on selected string or region."
   (interactive "e")
-  (mouse-me-helper event (lambda ()
+  (mouse-me-helper event (lambda (name)
                            (or (x-popup-menu event (funcall mouse-me-build-menu-function name))
                                (error "No command to run")))))
 
