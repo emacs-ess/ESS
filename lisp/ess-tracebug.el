@@ -1211,8 +1211,14 @@ value from EXPR and then sent to the subprocess."
    (ess-eval-visibly prompt)
    ((eq inferior-ess-replace-long+ 'strip) "> ")
    ((eq inferior-ess-replace-long+ t)
-    (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
-                              ess-long+replacement prompt))
+    (let ((prompt (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
+                                            ess-long+replacement prompt))
+          (len (length prompt)))
+      (if (and (> len 2)
+               (eq (elt prompt (- len 2)) ?+))
+          ;; append > for aesthetic reasons
+          (concat prompt "> ")
+        prompt)))
    (t prompt)))
 
 (defun ess--flush-accumulated-output (proc)
@@ -1280,9 +1286,6 @@ mirrors the output into *ess.dbg* buffer."
                           (string-match ess--dbg-regexp-skip string)
                           (not (string-match ess--dbg-regexp-no-skip string))))
          (match-dbg (or match-skip (and match-input (not match-selection))))
-         ;;check for main  prompt!! the process splits the output and match-end == nil might indicate this only
-         ;; (prompt-regexp "^>\\( [>+]\\)*\\( \\)$") ;; default prompt only
-         (prompt-replace-regexp "\\(^> \\|^\\([>+] \\)\\{2,\\}\\)\\(?1: \\)") ;; works only with the default prompt
          (is-ready (not (inferior-ess-set-status proc string)))
          (new-time (float-time))
          (last-time (process-get proc 'flush-time))
