@@ -489,7 +489,7 @@ If 'strip, remove all such instances.  Otherwise, if non-nil, '+
                  (const 'strip :tag "Replace all")
                  (const t :tag "Replace 4 or more +")))
 
-(defvar ess-long+replacement "+ . + "
+(defvar ess-long+replacement ". + "
   "Replacement used for long + prompt.
 Customization of this variable is not recommended. You can set it
 to '. '. If you set it to anything else you will have to change
@@ -1205,21 +1205,41 @@ value from EXPR and then sent to the subprocess."
           (goto-char mbeg)
           (delete-region mbeg mend))))))
 
-(defun ess--replace-long+-in-prompt (prompt)
-  "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value."
-  (cond
-   (ess-eval-visibly prompt)
-   ((eq inferior-ess-replace-long+ 'strip) "> ")
-   ((eq inferior-ess-replace-long+ t)
-    (let ((prompt (replace-regexp-in-string "\\(\\+ \\)\\{4\\}\\(\\+ \\)+"
-                                            ess-long+replacement prompt))
-          (len (length prompt)))
-      (if (and (> len 2)
-               (eq (elt prompt (- len 2)) ?+))
-          ;; append > for aesthetic reasons
-          (concat prompt "> ")
-        prompt)))
-   (t prompt)))
+(defun ess--replace-long+-in-prompt (prompt is-final)
+  "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
+If IS-FINAL means that PROMPT occurs at the end of the process
+chunk. If non-nil, special care is taken not to drop last '+'
+value as it might be a continuation prompt."
+  ;; see #576 for interesting input examples
+  (let ((len (length prompt)))
+    (if (or (null inferior-ess-replace-long+)
+            (< len 2))
+        prompt
+      (let ((last+ (eq (elt prompt (- len 2)) ?+)))
+        (cond
+         ((eq inferior-ess-replace-long+ 'strip)
+          (if (and last+ is-final)
+              "+ "
+            "> "))
+         ((eq inferior-ess-replace-long+ t)
+          (let ((prompt (replace-regexp-in-string "\\(\\+ \\)\\{2\\}\\(\\+ \\)+"
+                                                  ess-long+replacement prompt))
+                (len (length prompt)))
+            (if (and last+ (not is-final))
+                ;; append > for aesthetic reasons
+                (concat prompt "> ")
+              prompt)))
+         (t (error "Invalid values of `inferior-ess-replace-long+'")))))))
+
+(defun ess--offset-output (prev-prompt str)
+  (if prev-prompt
+      (let* ((len (length prev-prompt))
+             (last+ (eq (elt prev-prompt (- len 2)) ?+)))
+        (if (and (> len 1) last+)
+            ;; append > for aesthetic reasons
+            (concat "> \n" str)
+          (concat "\n" str)))
+    str))
 
 (defun ess--flush-accumulated-output (proc)
   "Flush accumulated output of PROC into its output buffer.
@@ -1232,34 +1252,37 @@ prompts."
       (goto-char (point-min))
       (unless (eq (point) (point-max))
         (ess--show-process-buffer-on-error proc)
-        (let ((clean (not (eq ess-eval-visibly t)))
-              (beg-pos 1)
-              (end-pos 1)
-              (end-prompt (process-get proc 'end-prompt?))
+        (let ((do-clean (not (eq ess-eval-visibly t)))
+              (pos1 1) (pos2 1) (tpos 1) (prompt)
+              (prev-prompt (process-get proc 'prev-prompt))
               (prompt-regexp (buffer-local-value 'comint-prompt-regexp pbuf)))
           (while (re-search-forward prompt-regexp nil t)
-            (setq end-pos (match-end 0))
-            (let ((str (buffer-substring-no-properties beg-pos end-pos))
-                  (is-prompt (eq (match-beginning 0) beg-pos)))
-              (if is-prompt
-                  ;; avoid comint-output-filter
-                  (let ((prompt (ess--replace-long+-in-prompt str)))
-                    (with-current-buffer pbuf
-                      (save-restriction
-                        (widen)
-                        (goto-char (process-mark proc))
-                        (with-silent-modifications
-                          (insert prompt)
-	                      (set-marker (process-mark proc) (point))))))
-                (comint-output-filter proc (if end-prompt (concat "\n" str) str))))
-            (setq end-prompt clean
-                  beg-pos end-pos))
+            (setq pos1 (match-beginning 0)
+                  tpos (match-end 0))
+            (when (> pos1 pos2)
+              (let ((str (buffer-substring pos2 pos1)))
+                (comint-output-filter proc (ess--offset-output prev-prompt str))))
+            (setq pos2 tpos)
+            (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
+                           (if do-clean
+                               (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
+                             prompt)))
+            ;; insert prompt but avoid comint-output-filter
+            (with-current-buffer pbuf
+              (save-restriction
+                (widen)
+                (goto-char (process-mark proc))
+                (with-silent-modifications
+                  (insert prompt)
+	              (set-marker (process-mark proc) (point)))))
+            (setq prev-prompt (and do-clean prompt)
+                  pos1 pos2))
           ;; insert last chunk if any
-          (unless (eq end-pos (point-max))
-            (let ((str (buffer-substring-no-properties end-pos (point-max))))
-              (comint-output-filter proc (if end-prompt (concat "\n" str) str))
-              (setq end-prompt nil)))
-          (process-put proc 'end-prompt? end-prompt)
+          (unless (eq pos1 (point-max))
+            (let ((str (buffer-substring-no-properties pos1 (point-max))))
+              (comint-output-filter proc (ess--offset-output prev-prompt str))
+              (setq prev-prompt nil)))
+          (process-put proc 'prev-prompt prev-prompt)
           (process-put proc 'flush-time (and (process-get proc 'busy)
                                              (float-time)))
           (erase-buffer))))))
