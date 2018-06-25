@@ -11,6 +11,10 @@ from the git master branch. Note that MELPA uses the git master branch
 to produce ESS snapshots, so if you are using Emacs < 25.1 from MELPA
 and are unable to upgrade, you should switch to MELPA-stable.
 
+@item @ESS{[R]}: Long + + prompts in the inferior no longer offset output.
+New option @code{strip} for @code{inferior-ess-replace-long+} strips the
+entire + + sequence.
+
 @item @ESS{[R]}: Fontification of roxygen @code{@@param} keywords now
 supports comma-separated parameters.
 
