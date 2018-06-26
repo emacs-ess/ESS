@@ -6,7 +6,11 @@ Changes and New Features in development version:
 
 @item @ESS{[R]}: The R package mode now sets @code{ess-dialect} to
 @code{"R"} for all modes. This way interactive commands called from C or
-C++ files automatically select relevant inferior processes.
+C++ files automatically select relevant inferior processes. We
+selectively forward settings that are relevant for interaction with the
+inferior from any mode. If an ESS command doesn't work as expected from
+a C or C++ file within a package (or any other mode), please file an
+issue.
 
 @item @ESS{[R]}: @code{ess-r-package-use-dir} (which sets the working
 directory to the root of the current package) now works with any mode

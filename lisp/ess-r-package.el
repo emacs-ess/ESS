@@ -472,14 +472,14 @@ disable the mode line entirely."
   :lighter ess-r-package-mode-line
   (if ess-r-package-mode
       (progn
-        ;; Forward R' setwd command so `ess-r-package-use-dir' works
-        ;; for all modes. May want to use a more general package-wide
-        ;; customize-alist in the future.
-        (let ((setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
-              (getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
-          (setq-local ess-setwd-command setwd-cmd)
-          (setq-local ess-getwd-command getwd-cmd))
-        (setq-local ess-dialect "R")
+        ;; Forward relevant R settings for interacting with inferior
+        ;; processes from any mode
+        (let ((vars '(ess-dialect
+                      ess-setwd-command
+                      ess-getwd-command)))
+          (mapc (lambda (var) (set (make-local-variable var)
+                              (eval (cdr (assq var ess-r-customize-alist)))))
+                vars))
         (add-hook 'project-find-functions #'ess-r-package-project)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-package-project)
