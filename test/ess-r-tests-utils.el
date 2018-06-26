@@ -13,6 +13,19 @@
       (R-mode)
       (mapcar #'eval body))))
 
+(defmacro with-c-file (file &rest body)
+  (declare (indent 1) (debug (&rest body)))
+  `(apply #'with-c-file- (list ,file '(,@body))))
+
+(defun with-c-file- (file body)
+  (let ((c-file-buffer (if file
+                           (find-file-noselect file)
+                         (generate-new-buffer " *with-c-file-temp*"))))
+    (save-window-excursion
+      (switch-to-buffer c-file-buffer)
+      (c-mode)
+      (mapcar #'eval body))))
+
 ;; Borrowed from org
 (defmacro ess-r-test-with-temp-text (text &rest body)
   "Run body in a temporary buffer with `R-mode' as the active

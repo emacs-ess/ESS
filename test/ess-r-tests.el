@@ -108,7 +108,7 @@
       (kill-buffer))))
 
 (ert-deftest ess-r-package-vars ()
-  (with-r-file "dummy-pkg/src/test.c"
+  (with-c-file "dummy-pkg/src/test.c"
     (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
           (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
       (should (string= ess-setwd-command r-setwd-cmd))
@@ -120,7 +120,13 @@
       (ess-r-package-use-dir)
       (should (string= (directory-file-name default-directory) pkg-dir))
       (ess-wait-for-process)
-      (should (string= (ess-get-working-directory) pkg-dir)))))
+      (should (string= (ess-get-working-directory) pkg-dir))
+      (ess-wait-for-process)
+      (let ((proc-buffer (ess-get-process-buffer)))
+        (inferior-ess-reload)
+        (should (string-match "Process R:2 finished"
+                              (with-current-buffer proc-buffer
+                                (buffer-string))))))))
 
 
 ;;; Namespaced evaluation

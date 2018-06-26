@@ -476,7 +476,9 @@ disable the mode line entirely."
         ;; processes from any mode
         (let ((vars '(ess-dialect
                       ess-setwd-command
-                      ess-getwd-command)))
+                      ess-getwd-command
+                      ess-quit-function
+                      inferior-ess-reload-function)))
           (mapc (lambda (var) (set (make-local-variable var)
                               (eval (cdr (assq var ess-r-customize-alist)))))
                 vars))
