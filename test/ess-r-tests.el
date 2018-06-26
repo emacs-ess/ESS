@@ -107,16 +107,20 @@
       (should (not ess-r-package-mode))
       (kill-buffer))))
 
-(ert-deftest ess-r-package-setwd ()
+(ert-deftest ess-r-package-vars ()
   (with-r-file "dummy-pkg/src/test.c"
-    (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
-      (should (string= ess-setwd-command r-setwd-cmd)))
+    (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
+          (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
+      (should (string= ess-setwd-command r-setwd-cmd))
+      (should (string= ess-getwd-command r-getwd-cmd)))
     (let ((pkg-dir (cdr (ess-r-package-project)))
           ;; Not sure why this is needed:
           ess-ask-for-ess-directory)
       (ess-set-working-directory (expand-file-name "src" pkg-dir))
       (ess-r-package-use-dir)
-      (should (string= (directory-file-name default-directory) pkg-dir)))))
+      (should (string= (directory-file-name default-directory) pkg-dir))
+      (ess-wait-for-process)
+      (should (string= (ess-get-working-directory) pkg-dir)))))
 
 
 ;;; Namespaced evaluation

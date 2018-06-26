@@ -475,8 +475,10 @@ disable the mode line entirely."
         ;; Forward R' setwd command so `ess-r-package-use-dir' works
         ;; for all modes. May want to use a more general package-wide
         ;; customize-alist in the future.
-        (let ((cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
-          (setq-local ess-setwd-command cmd))
+        (let ((setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
+              (getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
+          (setq-local ess-setwd-command setwd-cmd)
+          (setq-local ess-getwd-command getwd-cmd))
         (setq-local ess-dialect "R")
         (add-hook 'project-find-functions #'ess-r-package-project)
         (run-hooks 'ess-r-package-enter-hook))
