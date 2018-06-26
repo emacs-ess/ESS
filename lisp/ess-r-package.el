@@ -472,6 +472,11 @@ disable the mode line entirely."
   :lighter ess-r-package-mode-line
   (if ess-r-package-mode
       (progn
+        ;; Forward R' setwd command so `ess-r-package-use-dir' works
+        ;; for all modes. May want to use a more general package-wide
+        ;; customize-alist in the future.
+        (let ((cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
+          (setq-local ess-setwd-command cmd))
         (add-hook 'project-find-functions #'ess-r-package-project)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-package-project)

@@ -102,6 +102,12 @@
       (should (not ess-r-package-mode))
       (kill-buffer))))
 
+(ert-deftest ess-r-package-setwd ()
+  (with-r-file "dummy-pkg/src/test.c"
+    (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
+      (should (string= ess-setwd-command r-setwd-cmd)))))
+
+
 ;;; Namespaced evaluation
 
 (ert-deftest ess-r-run-presend-hooks ()
