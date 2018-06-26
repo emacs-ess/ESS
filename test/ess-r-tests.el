@@ -67,6 +67,11 @@
               "setwd('/')\n> [1] \"/\""))
     (should (string= default-directory "/"))))
 
+(ert-deftest ess-inferior-force ()
+  (with-r-running nil
+    (should (equal (ess-get-words-from-vector "letters[1:2]\n")
+                   (list "a" "b")))))
+
 
 ;;; ess-r-package-mode
 
