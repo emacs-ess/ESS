@@ -477,6 +477,7 @@ disable the mode line entirely."
         ;; customize-alist in the future.
         (let ((cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
           (setq-local ess-setwd-command cmd))
+        (setq-local ess-dialect "R")
         (add-hook 'project-find-functions #'ess-r-package-project)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-package-project)

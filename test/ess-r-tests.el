@@ -105,7 +105,13 @@
 (ert-deftest ess-r-package-setwd ()
   (with-r-file "dummy-pkg/src/test.c"
     (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist))))
-      (should (string= ess-setwd-command r-setwd-cmd)))))
+      (should (string= ess-setwd-command r-setwd-cmd)))
+    (let ((pkg-dir (cdr (ess-r-package-project)))
+          ;; Not sure why this is needed:
+          ess-ask-for-ess-directory)
+      (ess-set-working-directory (expand-file-name "src" pkg-dir))
+      (ess-r-package-use-dir)
+      (should (string= (directory-file-name default-directory) pkg-dir)))))
 
 
 ;;; Namespaced evaluation

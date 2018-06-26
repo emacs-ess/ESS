@@ -4,7 +4,12 @@
 Changes and New Features in development version:
 @itemize @bullet
 
-@item @ESS{[R]}: @code{ess-r-package-use-dir} now works with any mode
+@item @ESS{[R]}: The R package mode now sets @code{ess-dialect} to
+@code{"R"} for all modes. This way interactive commands called from C or
+C++ files automatically select relevant inferior processes.
+
+@item @ESS{[R]}: @code{ess-r-package-use-dir} (which sets the working
+directory to the root of the current package) now works with any mode
 (e.g. in C or C++ files within @code{/src}).
 
 @item This is the last release to support Emacs older than 25.1
