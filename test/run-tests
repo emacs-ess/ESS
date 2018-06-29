@@ -13,6 +13,9 @@
 
 (require 'ess-site)
 
+;; lintr probably isn't installed in the test suite and flymake will
+;; complain about that. Disable it during tests.
+(setq ess-use-flymake nil)
 
 (when (= (length argv) 0)
   (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent" "--literate")))
