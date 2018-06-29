@@ -491,10 +491,8 @@ If 'strip, remove all such instances.  Otherwise, if non-nil, '+
 
 (defvar ess-long+replacement ". + "
   "Replacement used for long + prompt.
-Customization of this variable is not recommended. You can set it
-to '. '. If you set it to anything else you will have to change
-`inferior-S-prompt' to assure the correct prompt detection
-in inferior buffers.")
+Please don't customize this or other prompt related variables.
+ESS internal code assumes default R prompts.")
 
 (defmacro ess-copy-key (from-map to-map fun)
   `(define-key ,to-map
