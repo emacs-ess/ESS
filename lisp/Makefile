@@ -21,7 +21,7 @@ NOWEAVE=noweave
 # Have to preload the files that contain macro definitions or the byte compiler
 # will compile everything that references them incorrectly. Also preload a file
 # that sets byte compiler options.
-COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
+COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 
 ## Files that contain key macro definitions. Almost everything depends on them
@@ -30,7 +30,7 @@ COMPILE = $(EMACSBATCH) -l ./ess-comp.el -f batch-byte-compile
 ## off certain compiler optimizations. When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
-ELC = $(CORE) ess-comp.elc ess-custom.elc \
+ELC = $(CORE) ess-custom.elc \
 	ess-dde.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
 	ess-mouse.elc mouseme.elc \
@@ -109,15 +109,15 @@ julia-mode.el:
 .el.elc:
 	$(COMPILE) $<
 
-ess-custom.elc: ess-custom.el ess-comp.el
+ess-custom.elc: ess-custom.el
 	$(COMPILE) ess-custom.el
 
-ess.elc: ess.el ess-comp.el ess-custom.elc
+ess.elc: ess.el ess-custom.elc
 	$(COMPILE) ess.el
 
 ess-site.elc: ess-site.el ess.elc
 
-ess-inf.elc: ess-inf.el ess-comp.el $(CORE)
+ess-inf.elc: ess-inf.el $(CORE)
 # 	@echo " "
 # 	@echo "For the next compile, please disregard the messages"
 # 	@echo " ** the function set-keymap-parent is not known to be defined."
@@ -126,10 +126,10 @@ ess-inf.elc: ess-inf.el ess-comp.el $(CORE)
 	$(COMPILE) ess-inf.el
 
 
-ess-mode.elc: ess-mode.el ess-comp.el $(CORE)
+ess-mode.elc: ess-mode.el $(CORE)
 	$(COMPILE) ess-mode.el
 
-ess-trns.elc: ess-trns.el ess-comp.el $(CORE)
+ess-trns.elc: ess-trns.el $(CORE)
 	$(COMPILE) ess-trns.el
 
 ess-help.elc: ess-help.el $(CORE)
