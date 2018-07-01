@@ -963,9 +963,11 @@ Function defined using `ess-define-runner'."
                      (R start-args)))
                   ((string= dialect "S")
                    (let ((inferior-S+-program name))
+                     (require 'ess-sp6-d)
                      (S+)))
                   ((string= dialect "SAS")
                    (let ((inferior-SAS-program name))
+                     (require 'ess-sas-d)
                      (SAS))))))))
 
 (defun ess-version ()
