@@ -187,9 +187,27 @@ ESS initialization."
       ;; Iterate over each string in VERSIONS, creating a new defun
       ;; each time.
       (setq ess-s-created-runners
-            (mapc (lambda (v) (ess-define-runner v "S")) versions)))))
+            (mapc (lambda (v) (ess-define-runner v "S")) versions))
+      (setq ess-versions-created (append ess-versions-created
+                                         ess-r-created-runners))
+      ;; Add to menu
+      (when ess-versions-created
+        ;; new-menu will be a list of 3-vectors, of the form:
+        ;; ["R-1.8.1" R-1.8.1 t]
+        (let ((new-menu (mapcar (lambda (x) (vector x (intern x) t))
+                                ess-versions-created)))
+          (easy-menu-add-item ess-mode-menu '("Start Process")
+                              (cons "Other" new-menu)))))))
+;; Define the runners
+(if ess-microsoft-p
+    (nconc
+     (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
+     (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+  (ess-s-define-runners))
 (define-obsolete-function-alias
   'ess-s-versions-create 'ess-s-define-runners "2018-05-12")
+
+
 
  ; Provide package
 

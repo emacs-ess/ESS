@@ -174,8 +174,6 @@
 (eval-when-compile
   (require 'tooltip)); for tooltip-show
 
-(require 'ess)
-
 ;; These defvars were previously defcustoms in ess-custom
 (defvar ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments.")

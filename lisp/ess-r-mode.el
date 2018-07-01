@@ -443,81 +443,6 @@ before ess-site is loaded) for it to take effect.")
   "List of R-versions found from `ess-r-versions' on the system.")
 (define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "2018-05-05")
 
-(defun ess-r-s-define-runners ()
-  "(Re)Create ESS R-X.Y.Z and S-X.Y.Z commands.
-See `ess-r-versions' and `ess-s-versions' for which functions
-will be (re)created."
-  (interactive)
-  (let ((R-newest-list '("R-newest"))
-        (ess-s-created-runners
-         (if ess-microsoft-p
-             (nconc
-              (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
-              (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
-           (require 'ess-sp6-d)
-           (ess-s-define-runners))))
-    (when ess-microsoft-p
-      (setq ess-rterm-version-paths
-            (ess-flatten-list
-             (ess-uniq-list
-              (if (not ess-directory-containing-R)
-                  (if (getenv "ProgramW6432")
-                      (let ((P-1 (getenv "ProgramFiles(x86)"))
-                            (P-2 (getenv "ProgramW6432")))
-                        (nconc
-                         ;; Always 32 on 64 bit OS, nil on 32 bit OS
-                         (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
-                         (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
-
-                         ;; Keep this both for symmetry and because it can happen:
-                         (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
-
-                         ;; Always 64 on 64 bit OS, nil on 32 bit OS
-                         (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
-                         (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
-                         (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")))
-                    (let ((PF (getenv "ProgramFiles")))
-                      (nconc
-                       ;; Always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
-                       (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                       (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                       (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))
-                (let ((PF ess-directory-containing-R))
-                  (nconc
-                   (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
-                   (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))))))
-    (ess-r-define-runners)
-    ;; Add the new defuns, if any, to the menu.
-    ;; Check that each variable exists, before adding.
-    ;; e.g. ess-sqpe-versions-created will not be created on Unix.
-    (setq ess-versions-created
-          (ess-flatten-list
-           (mapcar (lambda(x) (if (boundp x) (symbol-value x) nil))
-                   '(R-newest-list
-                     ess-r-created-runners
-                     ess-s-created-runners))))))
-(define-obsolete-function-alias
-  'ess-r-s-versions-creation 'ess-r-s-define-runners "2018-5-12")
-
-(defun ess-r-s-define-runners+menu ()
-  "Set up R-X.Y.Z and S-X.Y.Z functions and add them to the menu.
-Call `\\[ess-r-s-define-runners] creating `ess-versions-created' and
-update the \"Start Process\" menu."
-  (interactive)
-  (ess-r-s-define-runners)
-  (when ess-versions-created
-    ;; new-menu will be a list of 3-vectors, of the form:
-    ;; ["R-1.8.1" R-1.8.1 t]
-    (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
-                            ess-versions-created)))
-      (easy-menu-add-item ess-mode-menu '("Start Process")
-                          (cons "Other" new-menu))))
-  ess-versions-created)
-(define-obsolete-function-alias
-  'ess-r-s-versions-creation+menu 'ess-r-s-define-runners+menu "2018-05-12")
-
-
 ;;;*;;; Mode init
 
 (defvar ess-r-post-run-hook nil
@@ -739,7 +664,17 @@ as `ess-r-created-runners' upon ESS initialization."
                                      ess-r-versions)))))))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners
-            (mapc (lambda (v) (ess-define-runner v "R")) versions)))))
+            (mapc (lambda (v) (ess-define-runner v "R")) versions))
+      (setq ess-versions-created (append ess-versions-created
+                                         ess-r-created-runners))
+      ;; Add to menu
+      (when ess-versions-created
+        ;; new-menu will be a list of 3-vectors, of the form:
+        ;; ["R-1.8.1" R-1.8.1 t]
+        (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+                                ess-versions-created)))
+          (easy-menu-add-item ess-mode-menu '("Start Process")
+                              (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "2018-05-12")
 
@@ -2219,6 +2154,42 @@ otherwise nil."
       (undo-boundary))))
 
 
+
+;; Create functions that can be called for running different versions
+;; of R.
+;; FIXME: Should be set in ess-custom
+(setq ess-rterm-version-paths
+      (ess-flatten-list
+       (ess-uniq-list
+        (if (not ess-directory-containing-R)
+            (if (getenv "ProgramW6432")
+                (let ((P-1 (getenv "ProgramFiles(x86)"))
+                      (P-2 (getenv "ProgramW6432")))
+                  (nconc
+                   ;; Always 32 on 64 bit OS, nil on 32 bit OS
+                   (ess-find-rterm (concat P-1 "/R/") "bin/Rterm.exe")
+                   (ess-find-rterm (concat P-1 "/R/") "bin/i386/Rterm.exe")
+
+                   ;; Keep this both for symmetry and because it can happen:
+                   (ess-find-rterm (concat P-1 "/R/") "bin/x64/Rterm.exe")
+
+                   ;; Always 64 on 64 bit OS, nil on 32 bit OS
+                   (ess-find-rterm (concat P-2 "/R/") "bin/Rterm.exe")
+                   (ess-find-rterm (concat P-2 "/R/") "bin/i386/Rterm.exe")
+                   (ess-find-rterm (concat P-2 "/R/") "bin/x64/Rterm.exe")))
+              (let ((PF (getenv "ProgramFiles")))
+                (nconc
+                 ;; Always 32 on 32 bit OS, depends on 32 or 64 process on 64 bit OS
+                 (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+                 (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+                 (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe"))))
+          (let ((PF ess-directory-containing-R))
+            (nconc
+             (ess-find-rterm (concat PF "/R/") "bin/Rterm.exe")
+             (ess-find-rterm (concat PF "/R/") "bin/i386/Rterm.exe")
+             (ess-find-rterm (concat PF "/R/") "bin/x64/Rterm.exe")))))))
+(ess-r-define-runners)
+
 ;;*;; Provide and auto-loads
 
 ;;;###autoload

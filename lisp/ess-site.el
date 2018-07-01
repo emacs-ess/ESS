@@ -42,9 +42,6 @@
 
 ;;; Code:
 
-;; Provide here; otherwise we'll get infinite loops of (require ..):
-(provide 'ess-site)
-
 ;;;; Load path, autoloads, and major modes
 ;;;; ========================================
 ;;
@@ -95,10 +92,6 @@ for ESS, such as icons.")
   (add-to-list 'Info-default-directory-list (expand-file-name "../doc/info/" ess-lisp-directory)))
 
 
-;; Loads ess-custom.el and more
-(require 'ess)
-
-
 ;;; Loading popular dialects (they should become optional in the future)
 
 ;; R and Julia
@@ -137,20 +130,9 @@ for ESS, such as icons.")
 ;;; Toolbar support
 (require 'ess-toolbar)
 
-;;;  Site Specific setup
-;;;; ===============================================
-
-(eval-after-load "ess-r-mode"
-  '(progn
-     (ess-write-to-dribble-buffer "[ess-site:] before creating ess-versions-* ...")
-     (ess-r-s-define-runners+menu)
-     (ess-write-to-dribble-buffer "[ess-site:] after ess-versions-created ...")))
-
-;; Check to see that inferior-ess-r-program points to a working version
-;; of R; if not, try to find the newest version:
-(ess-check-R-program) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 (ess-write-to-dribble-buffer "[ess-site:] *very* end ...")
 
 
+(provide 'ess-site)
 
 ;;; ess-site.el ends here

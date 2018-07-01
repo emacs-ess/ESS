@@ -81,8 +81,7 @@
 ;;; Autoloads and Requires
 
 (eval-when-compile
-  (require 'ess-custom)
-  (require 'ess))
+  (require 'ess-custom))
 
 (require 'ess-utils)
 (require 'ess-noweb-mode)

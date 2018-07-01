@@ -49,7 +49,6 @@
 
 ;;; Code:
 
-(require 'ess)
 (require 'ess-mode)
 (require 'ess-custom)
 (require 'ess-sas-a)
