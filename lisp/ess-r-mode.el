@@ -454,6 +454,7 @@ will be (re)created."
              (nconc
               (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
               (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
+           (require 'ess-sp6-d)
            (ess-s-define-runners))))
     (when ess-microsoft-p
       (setq ess-rterm-version-paths
