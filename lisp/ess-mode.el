@@ -948,26 +948,28 @@ generate the source buffer."
                   (down-list 1)
                 (error nil)))))))
 
-(defun ess-define-runner (name dialect)
+(defun ess-define-runner (name dialect &optional path)
   "Create a function NAME.
 This function starts the inferior process with the specified
-version.  DIALECT can be \"R,\" \"S,\", \"SAS.\""
+version. DIALECT can be \"R,\" \"S,\", \"SAS.\" If given, PATH
+should be the absolute path to the program. It defaults to NAME."
   (lexical-let ((name name)
-                (dialect dialect))
+                (dialect dialect)
+                (path path))
     (fset (intern name)
           (lambda (&optional start-args)
             "Start this process version in an inferior ESS buffer.
 Function defined using `ess-define-runner'."
             (interactive "P")
             (cond ((string= dialect "R")
-                   (let ((inferior-ess-r-program name))
+                   (let ((inferior-ess-r-program (or path name)))
                      (R start-args)))
                   ((string= dialect "S")
-                   (let ((inferior-S+-program name))
+                   (let ((inferior-S+-program (or path name)))
                      (require 'ess-sp6-d)
                      (S+)))
                   ((string= dialect "SAS")
-                   (let ((inferior-SAS-program name))
+                   (let ((inferior-SAS-program (or path name)))
                      (require 'ess-sas-d)
                      (SAS))))))))
 

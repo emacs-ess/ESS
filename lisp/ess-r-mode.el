@@ -658,16 +658,18 @@ as `ess-r-created-runners' upon ESS initialization."
                              (mapcar #'ess-find-exec-completions
                                      ess-r-versions)))))))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
-      (setq ess-r-created-runners
-            (mapc (lambda (v) (ess-define-runner v "R")) versions))
-      ;; Add to menu
-      (when ess-r-created-runners
-        ;; new-menu will be a list of 3-vectors, of the form:
-        ;; ["R-1.8.1" R-1.8.1 t]
-        (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
-                                ess-r-created-runners)))
-          (easy-menu-add-item ess-mode-menu '("Start Process")
-                              (cons "Other" new-menu)))))))
+      (setq ess-r-created-runners versions)
+    (if ess-microsoft-p
+        (cl-mapcar (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
+      (mapc (lambda (v) (ess-define-runner v "R")) versions))
+    ;; Add to menu
+    (when ess-r-created-runners
+      ;; new-menu will be a list of 3-vectors, of the form:
+      ;; ["R-1.8.1" R-1.8.1 t]
+      (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+                              ess-r-created-runners)))
+        (easy-menu-add-item ess-mode-menu '("Start Process")
+                            (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "2018-05-12")
 
