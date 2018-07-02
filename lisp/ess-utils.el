@@ -1287,15 +1287,14 @@ symbols (like aaa$bbb and aaa@bbb in R)."
         (ess-symbol-start)))))
 
 (defun ess-inside-string-or-comment-p (&optional pos)
-  "Return non-nil if POSition [defaults to (point)] is inside string or comment
- (according to syntax)."
-  ;;FIXME (defun ess-calculate-indent ..)  can do that ...
-  (interactive)
-  (setq pos (or pos (point)))
-  (let ((ppss (syntax-ppss pos)))
-    (or (car (setq ppss (nthcdr 3 ppss)))
-        (car (setq ppss (cdr ppss)))
-        (nth 3 ppss))))
+  "Return non-nil if POS is inside a string or comment.
+POS defaults to `point.'"
+  (save-excursion
+    (let* ((pos (or pos (point)))
+           (state (syntax-ppss pos)))
+      (or (nth 3 state) (nth 4 state)))))
+
+
 
 (defun ess-inside-string-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
