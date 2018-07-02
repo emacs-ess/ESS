@@ -434,11 +434,6 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
-;; Create functions for calling different (older or newer than default)
-;; versions of R and S(qpe).
-(defvar ess-versions-created nil
-  "List of strings of all S- and R-versions found on the system.")
-
 (defvar ess-r-created-runners nil
   "List of R-versions found from `ess-r-versions' on the system.")
 (define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "2018-05-05")
@@ -665,14 +660,12 @@ as `ess-r-created-runners' upon ESS initialization."
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners
             (mapc (lambda (v) (ess-define-runner v "R")) versions))
-      (setq ess-versions-created (append ess-versions-created
-                                         ess-r-created-runners))
       ;; Add to menu
-      (when ess-versions-created
+      (when ess-r-created-runners
         ;; new-menu will be a list of 3-vectors, of the form:
         ;; ["R-1.8.1" R-1.8.1 t]
         (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
-                                ess-versions-created)))
+                                ess-r-created-runners)))
           (easy-menu-add-item ess-mode-menu '("Start Process")
                               (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
