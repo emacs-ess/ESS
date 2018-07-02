@@ -549,12 +549,6 @@ ess-smart-comma only, but will be enriched in the near future.")
 Used to avoid annoying jumping by ess-eval.*-and-step to end of
 buffer or end chunks etc.")
 
-(defcustom ess-S-assign " <- "
-  "String used for left assignment in all S dialects.
-Used by \\[ess-smart-S-assign]."
-  :group 'ess-S
-  :type 'string)
-
 (defcustom ess-smart-S-assign-key "_"
   "Key used by `ess-smart-S-assign'.
 Should be nil or a \"simple\" key, in other words no key
@@ -564,6 +558,19 @@ You may change this to nil at any time. However, if you change it
 to another string, it must be set before ESS is loaded."
   :group 'ess-S
   :type '(choice (const :tag "Nothing" :value nil) string))
+
+(defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")
+                                 '(" <<- " " = " " -> " " ->> "))
+  "List of assignment operators.
+`ess-cycle-assignment' uses this list.  These strings must
+contain spaces on either side."
+  ;; Note that spaces on either side is not strictly true (as in the
+  ;; function won't error), but matching <-/<<- is broken without
+  ;; them.
+  :type '(repeat string)
+  :group 'ess)
+(defvar ess-S-assign)
+(make-obsolete-variable 'ess-S-assign 'ess-assign-list "2018-07-01")
 
 (defcustom ess-r-prettify-symbols
   '(("<-" . (?\s (Br . Bl) ?\s (Bc . Bc) ?←))

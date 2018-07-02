@@ -107,15 +107,21 @@ will need to update their customization to
 @code{inferior-ess-R-program}. These variables are treated as risky
 variables.
 
-@item Customization of ess-smart-S-assign-key has been reworked.
-Use @code{(setq ess-smart-S-assign-key nil)} to disable smart
-assignment at any time instead of @code{(ess-toggle-underscore nil)}.
-To use another key, you should set the value of
-@code{ess-smart-S-assign-key} before ESS is loaded. The following
-functions have been made obsolete. You should customize
-ess-smart-S-assign-key instead: ess-toggle-S-assign,
-ess-toggle-S-assign-key, ess--unset-smart-S-assign-key,
-ess--activate-smart-S-assign-key, ess-disable-smart-S-assign
+@item @code{ess-smart-S-assign} changed name to @code{ess-insert-S-assign}.
+By default, it provides similar functionality. Since many users
+dislike this functionality, it is easier to disable; set
+@code{ess-smart-S-assign-key} to nil. The following functions have
+been made obsolete and will be removed in the next release of ESS:
+ess-smart-S-assign, ess-toggle-S-assign, ess-toggle-S-assign-key,
+ess-disable-smart-S-assign.
+
+@item The option ess-S-assign has been removed.
+Customize new option @code{ess-assign-list} instead.
+
+@item @code{C-c C-=} is now bound to @code{ess-cycle-assignment} by default
+See the docstring for details. New user customization option
+@code{ess-assign-list} controls what assignment operators are cycled
+through.
 
 @end itemize
 
