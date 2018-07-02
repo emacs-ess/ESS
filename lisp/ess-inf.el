@@ -1952,12 +1952,12 @@ for `ess-eval-region'."
     (define-key map "\M-?"     'ess-list-object-completions)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
     (define-key map ","        'ess-smart-comma)
-
+    (define-key map (kbd "C-c C-=") 'ess-cycle-assignment)
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
     (when ess-smart-S-assign-key
-      (define-key map ess-smart-S-assign-key #'ess-smart-S-assign))
+      (define-key map ess-smart-S-assign-key 'ess-insert-assign))
     map)
   "Keymap for `inferior-ess' mode.")
 

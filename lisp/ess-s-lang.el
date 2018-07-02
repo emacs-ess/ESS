@@ -575,67 +575,51 @@ and one that is well formatted in emacs ess-mode."
     (ess-if-verbose-write "ess-fix-misc __end__\n");___D___
     ))
 
-(defvar polymode-mode)
-(defun ess-smart-S-assign (&optional N)
-  "Act as smart `ess-S-assign' key.
-Insert `ess-S-assign', unless in string/comment.  If the
-underscore key is pressed a second time, the assignment operator
-is removed and replaced by the underscore.  `ess-S-assign',
-typically \" <- \", can be customized.  In ESS modes other than
-R/S, the underscore is always inserted.
-
-If `ess-smart-S-assign-key' is nil, just call
-`self-insert-command'. You can pass N as usual."
+(defun ess-cycle-assignment ()
+  "Cycle between assignment symbols in `ess-assign-list'.
+On consecutive calls, replace the assignment symbol before point
+with the next symbol from that list. This function sets the last
+keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
+\"=\" again cycles to the next assignment."
   (interactive)
+  (if (eq last-command this-command)
+      (let ((slist ess-assign-list)
+            str)
+        (while (and (setq str (car slist)
+                          slist (cdr slist))
+                    (not (and (re-search-backward str
+                                                  (- (point) (length str)) t)
+                              (not (replace-match (car slist))))))))
+    (insert (car ess-assign-list)))
+  (set-transient-map
+   (let ((map (make-sparse-keymap))
+         (key (format "%c" (event-basic-type last-input-event))))
+     (define-key map (kbd key) #'ess-cycle-assignment)
+     map)))
+
+(defun ess-insert-assign (arg)
+  "Insert the first element of `ess-assign-list' unless in string or comment.
+If the character before point is the first element of
+`ess-assign-list', replace it with the last character typed. If
+`ess-smart-S-assign-key' is nil, do `self-insert-command' using
+ARG as the number of times to insert."
+  (interactive "p")
   (if ess-smart-S-assign-key
-      (save-restriction
-        (ignore-errors
-          (when (and (eq major-mode 'inferior-ess-mode)
-                     (> (point) (process-mark (get-buffer-process (current-buffer)))))
-            (narrow-to-region (process-mark (ess-get-process)) (point-max)))
-          (and ess-noweb-mode
-               (ess-noweb-in-code-chunk)
-               (ess-noweb-narrow-to-chunk))
-          (and (fboundp 'pm/narrow-to-span)
-               polymode-mode
-               (pm/narrow-to-span)))
-        (if (or
-             (ess-inside-string-or-comment-p (point))
-             (not (equal ess-language "S")))
-            (insert ess-smart-S-assign-key)
-          (ess-insert-S-assign)))
-    (funcall #'self-insert-command (or N 1))))
+      (let* ((assign (car ess-assign-list))
+             (event (event-basic-type last-input-event))
+             (char (ignore-errors (format "%c" event))))
+        (cond ((and char (ess-inside-string-or-comment-p))
+               (insert char))
+              ((re-search-backward assign (- (point) (length assign)) t)
+               (if (and char (numberp event))
+                   (replace-match char)
+                 (replace-match "")))
+              (t (insert assign))))
+    (funcall #'self-insert-command arg)))
 
-(defun ess-insert-S-assign ()
-  "Insert the assignment operator `ess-S-assign', unless it is already there.
-In that case, it is removed and replaced by `ess-smart-S-assign-key'.
-  `ess-S-assign', typically \" <- \", can be customized."
-  (interactive)
-  ;; one keypress produces ess-S-assign; a second keypress will delete
-  ;; ess-S-assign and instead insert _
-  ;; Rather than trying to count a second _ keypress, just check whether
-  ;; the current point is preceded by ess-S-assign.
-  (let ((assign-len (length ess-S-assign)))
-    (if (and
-         (>= (point) (+ assign-len (point-min))) ;check that we can move back
-         (save-excursion
-           (backward-char assign-len)
-           (looking-at ess-S-assign)))
-        ;; If we are currently looking at ess-S-assign, replace it with _
-        (progn
-          (delete-char (- assign-len))
-          (insert ess-smart-S-assign-key))
-      (if (string= ess-smart-S-assign-key "_")
-          (delete-horizontal-space))
-      (insert ess-S-assign))))
-
-(defalias 'ess--activate-smart-S-assign-key 'ignore "")
-(make-obsolete 'ess--activate-smart-S-assign-key
-               "it does nothing. Set `ess-smart-S-assign-key' instead." "2018-06-08")
 (defun ess-disable-smart-S-assign (&rest _ignore)
-  "Disable `ess-smart-S-assign'."
-  (declare (obsolete ess-smart-S-assign-key "2018-06-08"))
-  (warn "This function is obsolete, use `ess-smart-S-assign-key' instead.")
+  "Disable `ess-insert-assign'."
+  (declare (obsolete "Use ess-smart-S-assign-key instead." "2018-06-08"))
   (setq ess-smart-S-assign-key nil))
 
 (defun ess-add-MM-keys ()
@@ -648,8 +632,8 @@ In that case, it is removed and replaced by `ess-smart-S-assign-key'.
 
   ;; Make M-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
   ;; Note this overwrites 'M--' as "negative argument" (still on 'C--'):
-  (define-key ess-mode-map          [?\M--] 'ess-insert-S-assign)
-  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-S-assign)
+  (define-key ess-mode-map          [?\M--] 'ess-insert-assign)
+  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-assign)
   )
 
 
@@ -802,11 +786,12 @@ return it.  Otherwise, return `ess-help-topics-list'."
 
 
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
-(define-obsolete-function-alias 'ess-smart-underscore 'ess-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "2018-06-08")
+(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "2018-06-21")
+(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "2018-07-02")
 
 (define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "2018-06-08")
 (define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
-(define-obsolete-function-alias 'ess--unset-smart-S-assign-key 'ess-disable-smart-S-assign "2018-06-08")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))
