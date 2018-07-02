@@ -188,14 +188,12 @@ ESS initialization."
       ;; each time.
       (setq ess-s-created-runners
             (mapc (lambda (v) (ess-define-runner v "S")) versions))
-      (setq ess-versions-created (append ess-versions-created
-                                         ess-r-created-runners))
       ;; Add to menu
-      (when ess-versions-created
+      (when ess-s-created-runners
         ;; new-menu will be a list of 3-vectors, of the form:
         ;; ["R-1.8.1" R-1.8.1 t]
         (let ((new-menu (mapcar (lambda (x) (vector x (intern x) t))
-                                ess-versions-created)))
+                                ess-s-created-runners)))
           (easy-menu-add-item ess-mode-menu '("Start Process")
                               (cons "Other" new-menu)))))))
 ;; Define the runners
