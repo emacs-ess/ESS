@@ -156,7 +156,7 @@
      ["Goto end of process buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to process buffer"    ess-switch-to-inferior-or-script-buffer t]
      ["Switch Process"   ess-switch-process              t]
-     ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
+     ;; ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      ("Start Process"
       ["R"     R   :help "Start a new R process" :active t]
       ["S"     S   :help "Start a new S process" :active t]

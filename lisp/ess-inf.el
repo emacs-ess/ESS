@@ -1992,7 +1992,7 @@ for `ess-eval-region'."
      ["Jump to Error"           ess-parse-errors        t]
      ["Load source file"    ess-load-file           t]
      ["Resynch S completions"	ess-resynch		t]
-     ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
+     ;; ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      )
     "------"
     ("start-dev" :visible nil); <-- ??
