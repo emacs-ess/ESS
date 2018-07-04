@@ -2200,14 +2200,8 @@ to continue it."
   "Sends the command on the current line to the ESS process."
   (interactive)
   (run-hooks 'ess-send-input-hook)
-  ;; (let ((proc (get-buffer-process (current-buffer))))
-  ;;   (if (not proc)
-  ;;       (user-error "Current buffer has no process")
-  ;;     (let ((comint-process-echoes (or comint-process-echoes
-  ;;                                      (< (point) (marker-position (process-mark proc))))))
-  ;;       (comint-send-input))))
-  (comint-send-input)
-  (setq ess-object-list nil)) ;; Will be reconstructed from cache if needs be
+  (comint-send-input (not (eq ess-eval-visibly t)))
+  (setq ess-object-list nil))
 
 (defun inferior-ess--goto-input-start:field ()
   "Move point to the begining of input skiping all continuation lines.
