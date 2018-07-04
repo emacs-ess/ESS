@@ -8,10 +8,7 @@
 ;;; Startup
 
 (defun ess-r-tests-startup-output ()
-  (let* ((proc (save-window-excursion
-                 (let ((ess-ask-for-ess-directory nil))
-                   (R "--vanilla"))
-                 (ess-get-process)))
+  (let* ((proc (ess-vanila-R))
          (output-buffer (process-buffer proc)))
     (unwind-protect
         (with-current-buffer output-buffer

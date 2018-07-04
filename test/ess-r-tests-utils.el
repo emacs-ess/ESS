@@ -1,3 +1,4 @@
+;; ess-r-tests-utils.el --- Various utilities for ess R tests
 
 (defmacro with-r-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
@@ -33,6 +34,13 @@ otherwise place the point at the beginning of the inserted text."
        ,@body)))
 (def-edebug-spec org-test-with-temp-text (form body))
 
+(defun ess-vanila-R ()
+  "Start vanila R process and return the process object."
+  (save-window-excursion
+    (let ((ess-ask-for-ess-directory nil))
+      (R "--vanilla"))
+    (ess-get-process)))
+
 (defmacro with-r-running (file &rest body)
   (declare (indent 1) (debug (&rest body)))
   `(apply #'with-r-running- (list ,file '(,@body))))
@@ -49,10 +57,7 @@ otherwise place the point at the beginning of the inserted text."
     (save-window-excursion
       (switch-to-buffer r-file-buffer)
       (R-mode)
-      (let* ((proc (save-window-excursion
-                     (let ((ess-ask-for-ess-directory nil))
-                       (R "--vanilla"))
-                     (ess-get-process)))
+      (let* ((proc (ess-vanila-R))
              (ess-local-process-name (process-name proc))
              (output-buffer (process-buffer proc)))
         (unwind-protect

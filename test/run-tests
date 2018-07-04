@@ -21,7 +21,8 @@
   (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent" "--literate")))
 
 (when (member "--ess" argv)
-  (load (expand-file-name "ess-tests.el" ess-test-path) nil t))
+  (load (expand-file-name "ess-tests.el" ess-test-path) nil t)
+  (load (expand-file-name "ess-org-tests.el" ess-test-path) nil t))
 (when (member "--inf" argv)
   (load (expand-file-name "ess-inf-tests.el" ess-test-path) nil t))
 (when (member "--rstats" argv)

@@ -1265,14 +1265,9 @@ prompts."
                            (if do-clean
                                (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
                              prompt)))
-            ;; insert prompt but avoid comint-output-filter
-            (with-current-buffer pbuf
-              (save-restriction
-                (widen)
-                (goto-char (process-mark proc))
-                (with-silent-modifications
-                  (insert prompt)
-	              (set-marker (process-mark proc) (point)))))
+            ;; Cannot bypass this call to comint-output-filter function as
+            ;; external tools could rely on prompts (org-babel [#598])
+            (comint-output-filter proc prompt)
             (setq prev-prompt (and do-clean prompt)
                   pos1 pos2))
           ;; insert last chunk if any
