@@ -46,6 +46,9 @@
 ;; on a *lot* of ideas from ess-rdired.el.
 
 ;; TODO: Refactor and remove byte-compile-warnings file-local variable.
+;; TODO: This should be more tightly integrated with ess-r-mode and ESSR.
+;; TODO: Should be active in ess-r-mode not only ess-inf
+;; TODO: Both S level Utils and this package's Rutils are in the menu; confusing and inconvenient.
 (defvar pkg)
 
 ;;; Code:
@@ -60,14 +63,7 @@
 (defvar ess-rutils-mode-map nil
   "Keymap for the *R temp* buffer.")
 
-(defvar ess-rutils-rhtml-fn
-  (expand-file-name "ess-rutils-help-start.R" ess-etc-directory)
-  "Path to the file defining the R function .rutils.help.start().
-This file is loaded into the inferior R process so that
-`ess-rutils-html-docs' can use .rutils.help.start().")
-
-(if ess-rutils-mode-map
-    ()
+(unless ess-rutils-mode-map
   (setq ess-rutils-mode-map (make-sparse-keymap))
   (define-key ess-rutils-mode-map "l" 'ess-rutils-loadpkg)
   (define-key ess-rutils-mode-map "i" 'ess-rutils-mark-install)
@@ -289,17 +285,16 @@ File extension not required."
 
 (defun ess-rutils-html-docs (&optional remote)
   "Use `browse-url' to navigate R html documentation.
-Documentation is produced by a modified help.start(), that returns the URL
-produced by GNU R's http server.  This function is defined in a file given
-by the path in variable `ess-rutils-rhtml-fn'.  If called with a prefix,
-the modified help.start() is called with update=TRUE.  The optional REMOTE
-argument should be a string with a valid URL for the 'R_HOME' directory on
-a remote server (defaults to NULL)."
+Documentation is produced by a modified help.start(), that
+returns the URL produced by GNU R's http server. If called with a
+prefix, the modified help.start() is called with update=TRUE. The
+optional REMOTE argument should be a string with a valid URL for
+the 'R_HOME' directory on a remote server (defaults to NULL)."
   (interactive)
   (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
          (remote (if (or (and remote (not (string= "" remote))))
                      (concat "remote=" remote) "remote=NULL"))
-         (rhtml (format ".rutils.help.start(%s, %s)\n" update remote))
+         (rhtml (format ".ess_help_start(%s, %s)\n" update remote))
          (tmpbuf (get-buffer-create "**ess-rutils-mode**")))
     (ess-command rhtml tmpbuf)
     (set-buffer tmpbuf)
@@ -422,14 +417,10 @@ Options should be separated by value of `crm-default-separator'."
     ["Browse HTML"             ess-rutils-html-docs     t]
     ["Apropos"                 ess-rutils-apropos       t]))
 
-(easy-menu-add-item inferior-ess-mode-menu nil
-                    ess-rutils-mode-menu)
+(easy-menu-add-item inferior-ess-mode-menu nil ess-rutils-mode-menu "Utils")
+(add-hook 'inferior-ess-mode-hook 'ess-rutils-keys)
 
-(add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
-(add-hook 'ess-r-post-run-hook
-          (lambda ()
-            (ess--inject-code-from-file ess-rutils-rhtml-fn)) t)
-
+(make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "2018-06")
 
 (provide 'ess-rutils)
 
