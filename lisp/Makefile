@@ -21,37 +21,33 @@ NOWEAVE=noweave
 # Have to preload the files that contain macro definitions or the byte compiler
 # will compile everything that references them incorrectly. Also preload a file
 # that sets byte compiler options.
-COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
+COMPILE = $(EMACSBATCH) --directory . --directory obsolete -f batch-byte-compile
 
-
-## Files that contain key macro definitions. Almost everything depends on them
-## because the byte-compiler inlines macro expansions. Everything also depends
-## on the byte compiler options file since this might do odd things like turn
-## off certain compiler optimizations. When these change, RECOMPILE.
 CORE = ess.elc ess-site.elc
 
 ELC = $(CORE) ess-custom.elc \
-	ess-dde.elc ess-font-lock.elc \
 	ess-help.elc ess-inf.elc ess-mode.elc \
-	ess-mouse.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
-	essd-els.elc ess-gretl.elc \
-	ess-lsp-l.elc ess-xls-d.elc ess-vst-d.elc ess-arc-d.elc \
 	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
 	ess-stata-lang.elc ess-stata-mode.elc make-regexp.elc \
-	ess-omg-l.elc ess-omg-d.elc \
 	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
 	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
 	ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
-	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
-	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
+	ess-s-lang.elc \
 	ess-rdired.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
 	ess-r-flymake.elc ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
 	julia-mode.elc\
-	ess-generics.elc ess-r-gui.elc\
+	ess-generics.elc \
+	obsolete/ess-omg-l.elc obsolete/ess-omg-d.elc \
+	obsolete/ess-dde.elc obsolete/ess-font-lock.elc \
+	obsolete/ess-r-gui.elc\
+	obsolete/ess-sp3-d.elc obsolete/ess-sp4-d.elc obsolete/ess-sp5-d.elc obsolete/ess-sp6-d.elc \
+	obsolete/ess-s3-d.elc obsolete/ess-s4-d.elc \
 	obsolete/msdos.elc obsolete/ess-eldoc.elc obsolete/ess-r-args.elc\
-	ess-sp6w-d.elc
+	obsolete/essd-els.elc obsolete/ess-gretl.elc \
+	obsolete/ess-lsp-l.elc obsolete/ess-xls-d.elc obsolete/ess-vst-d.elc obsolete/ess-arc-d.elc \
+	obsolete/ess-sp6w-d.elc
 ##  ^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
 ## julia-mode.el : really from the julia sources -- but want in tarball!
 
@@ -140,23 +136,9 @@ ess-s-lang.elc : ess-s-lang.el ess.elc
 
 ess-sas-d.elc : ess-sas-d.el ess.elc
 
-ess-s3-d.elc : ess-s3-d.el ess-s-lang.elc ess.elc
-
-ess-sp3-d.elc : ess-sp3-d.el ess-s-lang.elc ess.elc
-
-ess-s4-d.elc : ess-s4-d.el ess-s-lang.elc ess.elc
-
 ess-r-mode.elc : ess-r-mode.el ess-s-lang.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
-
-## Lisp Languages
-
-ess-lsp-l.elc : ess-lsp-l.el ess.elc
-
-ess-xls-d.elc : ess-xls-d.el ess-lsp-l.elc ess.elc
-
-ess-vst-d.elc : ess-vst-d.el ess-lsp-l.elc ess.elc
 
 ## SAS
 
@@ -179,13 +161,6 @@ ess-bugs-d.elc : ess-bugs-d.el ess-bugs-l.elc
 ## JAGS
 
 ess-jags-d.elc : ess-jags-d.el ess-bugs-l.elc ess-utils.elc ess-inf.elc
-
-## GRETL
-
-ess-gretl.elc : ess-gretl.el
-
-ess-r-gui.elc : ess-r-gui.el ess-dde.elc
-
 
 # Ignore this.
 #(defun S-insert-make-rule (file)
