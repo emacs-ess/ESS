@@ -4,7 +4,7 @@
 ;; As we use the R inferior for the generic tests
 (require 'ess-r-tests-utils)
 
-
+
 ;;; Startup
 
 (defun ess-r-tests-startup-output ()
@@ -27,7 +27,7 @@
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
     (should (string= default-directory "foo"))))
 
-
+
 ;;; Evaluation
 
 (ert-deftest ess-evaluation ()
@@ -56,14 +56,52 @@
                           (output nil (ess-load-file "fixtures/file.R"))))))
 
 
+
 ;;; Inferior interaction
 
 (ert-deftest ess-verbose-setwd ()
   (with-r-running nil
     (should (output= (ess-set-working-directory temporary-file-directory)
-                     (format "setwd('%s')" temporary-file-directory)))))
+              (format "setwd('%s')" temporary-file-directory)))))
+
+
+;;; Sending input
+
+(ert-deftest ess-inf-send-input-invisible ()
+  (let ((ess-eval-visibly nil))
+    (should (string= (ess-send-input-to-R "\n\n")
+                     "> "))
+    (should (string= (ess-send-input-to-R "invisible(0)")
+                     "> "))
+    (should (string= (ess-send-input-to-R "invisible(0)" t)
+                     "invisible(0)\n> "))))
+
+(ert-deftest ess-inf-send-complex-input ()
+  (let ((ess-eval-visibly nil)
+        (input "identity(
+  identity(
+    identity(
+      head(mtcars[, c('wt', 'vs')], 3))))
+'+ + + + > some-output >'
+cat('+ + + + > cleaned-prompts >\n')
+")
+        (output "> 
+                 wt vs
+Mazda RX4     2.620  0
+Mazda RX4 Wag 2.875  0
+Datsun 710    2.320  1
+> 
+[1] \"+ + + + > some-output >\"
+> 
+cleaned-prompts >
+> "))
+    (let ((inferior-ess-replace-long+ t))
+      (should (string=
+               (ess-send-input-to-R input)
+               output)))))
 
 
+
 ;;; Inferior utils
 
 (ert-deftest ess-build-eval-command ()

@@ -2200,7 +2200,10 @@ to continue it."
   "Sends the command on the current line to the ESS process."
   (interactive)
   (run-hooks 'ess-send-input-hook)
-  (comint-send-input (not (eq ess-eval-visibly t)))
+  (unless (ess-process-get 'busy)
+    ;; avoid new line insertion
+    (ess-process-put 'prev-prompt nil))
+  (comint-send-input)
   (setq ess-object-list nil))
 
 (defun inferior-ess--goto-input-start:field ()

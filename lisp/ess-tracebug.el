@@ -80,7 +80,6 @@ Currently only R is supported."
 
 (defcustom ess-tracebug-prefix nil
   "*Key to be used as prefix for all ess-tracebug commands.
-
 Set this to a key cominbation you don't use often, like:
 
  (setq ess-tracebug-prefix \"\\M-t\")
@@ -118,15 +117,13 @@ paragraph, R will report an error."
 
 (defcustom ess-tracebug-enter-hook nil
   "List of functions to call on entry to ess-tracebug mode.
-Use `add-hook' to insert append your functions to this list.
-"
+Use `add-hook' to insert append your functions to this list."
   :group 'ess-tracebug
   :type 'hook)
 
 (defcustom ess-tracebug-exit-hook nil
   "List of functions to call on exit of ess-tracebug mode.
-Use `add-hook' to insert append your functions to this list.
-"
+Use `add-hook' to insert append your functions to this list."
   :group 'ess-tracebug
   :type 'hook)
 
@@ -153,7 +150,6 @@ the outer-most code block.")
 
 (defvar ess-tracebug-original-buffer-marker nil
   "Marker pointing to the beginning of original source code.
-
 If non-nil, tracebug will insert the source references based on
 this location instead of the current buffer. This is useful for
 applications, like org-babel,  that call ess evaluation functions

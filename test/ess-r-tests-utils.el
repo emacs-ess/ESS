@@ -41,6 +41,28 @@ otherwise place the point at the beginning of the inserted text."
       (R "--vanilla"))
     (ess-get-process)))
 
+(defun ess-send-input-to-R (input &optional in-repl)
+  "Send INPUT and return the entire content of the REPL buffer.
+If IN-REPL is non-nil, send interactively at the REPL, otherwise
+use `ess-send-string'. Note, that all prompts in the output are
+replaced with '> '. There is no full proof way to test for
+prompts given that process output could be split arbitrary."
+  (let ((prompt-regexp (concat "^" inferior-S-prompt))
+        (proc (ess-vanila-R)))
+    (unwind-protect
+        (with-current-buffer (process-buffer proc)
+          (erase-buffer)
+          (if in-repl
+              (progn
+                (insert input)
+                (inferior-ess-send-input))
+            (ess-send-string proc input))
+          (ess-wait-for-process proc)
+          (replace-regexp-in-string
+           prompt-regexp "> "
+           (buffer-substring-no-properties (point-min) (point-max))))
+      (kill-process proc))))
+
 (defmacro with-r-running (file &rest body)
   (declare (indent 1) (debug (&rest body)))
   `(apply #'with-r-running- (list ,file '(,@body))))
