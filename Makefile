@@ -3,6 +3,12 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
+.PHONY: all install uninstall
+all install uninstall: version
+	cd etc; $(MAKE) $@
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+
 .PHONY: version
 version:
 	@echo "********************* VERSIONS **************************"
@@ -10,12 +16,6 @@ version:
 	@echo ESS $(ESSVERSION)
 	@echo git HEAD $(shell git rev-parse --short HEAD)
 	@echo "*********************************************************"
-
-.PHONY: all install uninstall
-all install uninstall: version
-	cd etc; $(MAKE) $@
-	cd lisp; $(MAKE) $@
-	cd doc; $(MAKE) $@
 
 .PHONY: lisp
 lisp: version
