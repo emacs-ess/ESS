@@ -98,15 +98,6 @@ for ESS, such as icons.")
 (require 'ess-r-mode)
 (require 'ess-julia)
 
-;; S-PLUS (MathSoft/StatSci/Insightful/TIBCO)
-(require 'ess-sp3-d)
-(if ess-microsoft-p
-    (require 'ess-sp6w-d)
-  (require 'ess-sp6-d))
-
-;; S-elsewhere, on another machine by telnet
-(require 'essd-els)
-
 ;; Stata, SAS and batch BUGS
 (require 'ess-stata-mode)
 (require 'ess-sas-d)
@@ -123,9 +114,6 @@ for ESS, such as icons.")
 (ess-write-to-dribble-buffer
  (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
          ess-customize-alist))
-
-;;; Speedbar and mouse
-(require 'ess-mouse)
 
 ;;; Toolbar support
 (require 'ess-toolbar)
