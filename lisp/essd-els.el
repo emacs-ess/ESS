@@ -103,20 +103,6 @@ The default value is nil."
 ;; This REALLY shouldn't need an editing mode.  Just a transcript and
 ;; an inferior process handler.
 
-(defun ess-change-alist (item value alist)
-  "Modify ALIST to set VALUE to ITEM.
-If there is a pair whose car is ITEM, replace its cdr by VALUE.
-If there is not such pair, create new pair (ITEM . VALUE) and
-return new alist whose car is the new pair and cdr is ALIST.
-\[tomo's ELIS like function]"
-  (let ((pair (assoc item alist)))
-    (if pair
-        (progn
-          (setcdr pair value)
-          alist)
-      (cons (cons item value) alist))))
-
-
 (defun ess-select-alist-dialect (&optional dialect)
   "Query user for an ESS dialect and return the matching customize-alist."
   (interactive)

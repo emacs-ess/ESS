@@ -435,13 +435,27 @@ on the way."
                                                                  (file-name-directory ess-sas-file-path)) "\""))))
   (comint-send-input))
 
+(defun ess-sas--change-alist (item value alist)
+  "Modify ALIST to set VALUE to ITEM.
+If there is a pair whose car is ITEM, replace its cdr by VALUE.
+If there is not such pair, create new pair (ITEM . VALUE) and
+return new alist whose car is the new pair and cdr is ALIST.
+\[tomo's ELIS like function]"
+  (let ((pair (assoc item alist)))
+    (if pair
+        (progn
+          (setcdr pair value)
+          alist)
+      (cons (cons item value) alist))))
+
 (defun ess-sas-create-local-variables-alist (&optional file-or-buffer)
   "Create an alist of local variables from file-or-buffer, use the
 current buffer if nil."
-
   (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
+  (ess-sas--change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
-  (ess-change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
+(define-obsolete-function-alias
+  'ess-change-alist 'ess-sas--change-alist "2018-07-06")
 
 (defun ess-sas-data-view-fsview (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
