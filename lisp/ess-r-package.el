@@ -189,7 +189,7 @@ Root is determined by locating `ess-r-package-root-file'."
   "Set process directory to current package directory."
   (interactive)
   (let ((dir (cdr (ess-r-package-project))))
-    (ess-set-working-directory dir)))
+    (ess-set-working-directory (abbreviate-file-name dir))))
 
 (defun ess-r-package-set-package ()
   "Set a package for ESS r-package commands."
@@ -245,7 +245,7 @@ arguments, or expressions which return R arguments."
   (let* ((pkg-info (or (ess-r-package-project)
                        (ess-r-package-set-package)))
          (pkg-name (ess-r-package-name))
-         (pkg-path (or pkg-path (concat "'" (cdr pkg-info) "'")))
+         (pkg-path (or pkg-path (concat "'" (abbreviate-file-name (cdr pkg-info)) "'")))
          (args (ess-r-command--build-args p actions)))
     (message msg pkg-name)
     (with-ess-process-buffer nil

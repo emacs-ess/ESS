@@ -1325,7 +1325,7 @@ This handles Tramp when working on a remote."
                               (buffer-file-name))
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))
-  (ess-load-file--normalise-buffer filename)
+  (ess-load-file--normalise-buffer (abbreviate-file-name filename))
   ;; Pop up an inferior window
   (save-selected-window
     (ess-switch-to-ESS t))
@@ -3031,7 +3031,7 @@ prefix argument NO-FORCE-CURRENT is non-nil."
   (let ((dir (if buffer-file-name
                  (file-name-directory buffer-file-name)
                default-directory)))
-    (ess-set-working-directory dir)))
+    (ess-set-working-directory (abbreviate-file-name dir))))
 
 (defun ess-get-working-directory (&optional no-error)
   "Retrive the current working directory from the current ess process."
