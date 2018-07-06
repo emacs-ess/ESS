@@ -148,7 +148,7 @@
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
          (test-code (elt-process-code))
-         (test-result (elt- (if continuation test-case-state test-case)
+         (test-result (elt-run- (if continuation test-case-state test-case)
                             test-code elt-mode-init
                             continuation))
          (subchunk-end (save-excursion
@@ -197,10 +197,10 @@
 (defvar elt--state-buffer nil
   "Evaluation buffer of previous test chunk.")
 
-(defmacro elt (init &rest body)
-  (apply 'elt- `(,init (,@body))))
+(defmacro elt-run (init &rest body)
+  (apply 'elt-run- `(,init (,@body))))
 
-(defun elt- (init body local-variables &optional keep-state)
+(defun elt-run- (init body local-variables &optional keep-state)
   (unless keep-state
     (and elt--state-buffer
          (buffer-name elt--state-buffer)
