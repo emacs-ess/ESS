@@ -1303,7 +1303,7 @@ type of the region."
          (file (if ess-microsoft-p
                    (ess-replace-in-string file "[\\]" "/")
                  file)))
-    file))
+    (abbreviate-file-name file)))
 
 (defun ess-load-file--normalise-buffer (file)
   (when (ess-check-source file)
@@ -1325,7 +1325,7 @@ This handles Tramp when working on a remote."
                               (buffer-file-name))
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))
-  (ess-load-file--normalise-buffer (abbreviate-file-name filename))
+  (ess-load-file--normalise-buffer filename)
   ;; Pop up an inferior window
   (save-selected-window
     (ess-switch-to-ESS t))
