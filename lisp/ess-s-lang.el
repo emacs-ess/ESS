@@ -612,7 +612,7 @@ ARG as the number of times to insert."
                (insert char))
               ((re-search-backward assign (- (point) (length assign)) t)
                (if (and char (numberp event))
-                   (replace-match char)
+                   (replace-match char t t)
                  (replace-match "")))
               (t (insert assign))))
     (funcall #'self-insert-command arg)))
