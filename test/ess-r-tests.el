@@ -113,7 +113,7 @@
           (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
       (should (string= ess-setwd-command r-setwd-cmd))
       (should (string= ess-getwd-command r-getwd-cmd)))
-    (let ((pkg-dir (cdr (ess-r-package-project)))
+    (let ((pkg-dir (abbreviate-file-name (cdr (ess-r-package-project))))
           ;; Not sure why this is needed:
           ess-ask-for-ess-directory)
       (ess-set-working-directory (expand-file-name "src" pkg-dir))
@@ -124,7 +124,7 @@
       (ess-wait-for-process)
       (let ((proc-buffer (ess-get-process-buffer)))
         (inferior-ess-reload)
-        (should (string-match "Process R:2 finished"
+        (should (string-match "Process R\\(:.\\)? finished"
                               (with-current-buffer proc-buffer
                                 (buffer-string))))))))
 
