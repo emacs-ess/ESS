@@ -124,7 +124,7 @@
       (ess-wait-for-process)
       (let ((proc-buffer (ess-get-process-buffer)))
         (inferior-ess-reload)
-        (should (string-match "Process R\\(:.\\)? finished"
+        (should (string-match "Process R\\(:.\\)? \\(finished\\|killed\\)"
                               (with-current-buffer proc-buffer
                                 (buffer-string))))))))
 
