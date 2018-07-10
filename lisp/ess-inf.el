@@ -2634,6 +2634,7 @@ command (%s) like this, or a version with explicit options(max.print=1e6):
 
 local({ out <- try({%s}); print(out, max=1e6) })\n
 "
+  (inferior-ess-force)
   (let* ((tbuffer (get-buffer-create
                    " *ess-get-words*")); initial space: disable-undo
          (word-RE
@@ -3036,7 +3037,7 @@ prefix argument NO-FORCE-CURRENT is non-nil."
 (defun ess-get-working-directory (&optional no-error)
   "Retrive the current working directory from the current ess process."
   (if ess-getwd-command
-      (car (ess-get-words-from-vector ess-getwd-command))
+      (abbreviate-file-name (car (ess-get-words-from-vector ess-getwd-command)))
     (unless no-error
       (error "Not implemented for dialect %s" ess-dialect))))
 

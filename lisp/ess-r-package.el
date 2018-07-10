@@ -472,6 +472,16 @@ disable the mode line entirely."
   :lighter ess-r-package-mode-line
   (if ess-r-package-mode
       (progn
+        ;; Forward relevant R settings for interacting with inferior
+        ;; processes from any mode
+        (let ((vars '(ess-dialect
+                      ess-setwd-command
+                      ess-getwd-command
+                      ess-quit-function
+                      inferior-ess-reload-function)))
+          (mapc (lambda (var) (set (make-local-variable var)
+                              (eval (cdr (assq var ess-r-customize-alist)))))
+                vars))
         (add-hook 'project-find-functions #'ess-r-package-project)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-package-project)

@@ -4,6 +4,14 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: Interaction with inferior process in non-R files within
+packages (for instance C or C++ files) has been improved. This is a work
+in progress.
+
+@item @ESS{[R]}: @code{ess-r-package-use-dir} (which sets the working
+directory to the root of the current package) now works with any mode
+(e.g. in C or C++ files within @code{/src}).
+
 @item This is the last release to support Emacs older than 25.1
 Going forward, only GNU Emacs 25.1 and newer will be supported. Soon
 after this release, support for older Emacs versions will be dropped
