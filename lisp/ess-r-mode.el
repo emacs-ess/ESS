@@ -38,7 +38,7 @@
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
-(require 'ess-mode)
+(require 'ess)
 (require 'ess-help)
 (require 'ess-s-lang)
 (require 'ess-roxy)

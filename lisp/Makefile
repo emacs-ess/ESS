@@ -24,15 +24,9 @@ NOWEAVE=noweave
 COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 
-## Files that contain key macro definitions. Almost everything depends on them
-## because the byte-compiler inlines macro expansions. Everything also depends
-## on the byte compiler options file since this might do odd things like turn
-## off certain compiler optimizations. When these change, RECOMPILE.
-CORE = ess.elc ess-site.elc
-
-ELC = $(CORE) ess-custom.elc \
+ELC =   ess.elc ess-site.elc ess-custom.elc \
 	ess-dde.elc ess-font-lock.elc \
-	ess-help.elc ess-inf.elc ess-mode.elc \
+	ess-help.elc ess-inf.elc \
 	ess-mouse.elc mouseme.elc \
 	ess-swv.elc ess-toolbar.elc \
 	ess-trns.elc ess-utils.elc \
@@ -124,10 +118,6 @@ ess-inf.elc: ess-inf.el $(CORE)
 # 	@echo " ** assignment to free variable comint-last-input-end"
 # 	@echo "from the byte compiler if they occur. It is completely normal."
 	$(COMPILE) ess-inf.el
-
-
-ess-mode.elc: ess-mode.el $(CORE)
-	$(COMPILE) ess-mode.el
 
 ess-trns.elc: ess-trns.el $(CORE)
 	$(COMPILE) ess-trns.el

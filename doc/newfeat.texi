@@ -131,6 +131,17 @@ See the docstring for details. New user customization option
 @code{ess-assign-list} controls what assignment operators are cycled
 through.
 
+@item The ESS initialization process has been further streamlined.
+If you update the autoloads (which installation from
+@code{package-install} does), you should not need to @code{(require
+'ess-site)} at all, as autoloads should automatically load ESS when it
+is needed (e.g. the first time an R buffer is opened). In order to
+defer loading your ESS config, you may want to do something like
+@code{(with-require-after-load "ess" <ess-config-here>)} in your Emacs
+init file. Users of the popular @code{use-package} Emacs package can
+now do @code{(use-package ess :defer t)} to take advantage of this
+behavior.
+
 @end itemize
 
 

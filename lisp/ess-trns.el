@@ -33,7 +33,7 @@
 
  ; Requires and autoloads
 
-(require 'ess-mode)
+(require 'ess)
 (require 'ess-inf)
 (require 'comint)
 

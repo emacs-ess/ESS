@@ -44,7 +44,7 @@
   (require 'ess-inf)
   (require 'info))
 
-(require 'ess-mode)
+(require 'ess)
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -989,7 +989,7 @@ option for other dialects)."
 (defun ess-submit-bug-report ()
   "Submit a bug report on the ess-mode package."
   (interactive)
-  (require 'ess-mode)
+  (require 'ess)
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report

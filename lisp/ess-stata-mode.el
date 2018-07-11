@@ -32,7 +32,7 @@
 
 ;;; Code:
 
-(require 'ess-mode)
+(require 'ess)
 (require 'ess-stata-lang)
 
 (defvar STA-dialect-name "stata"
