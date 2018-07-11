@@ -25,7 +25,7 @@
 
 ;;; Code:
 
-(require 'ess-mode)
+(require 'ess)
 
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions

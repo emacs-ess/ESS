@@ -626,7 +626,7 @@ ARG as the number of times to insert."
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and
  \\<inferior-ess-mode-map>\\[ess-execute-screen-options]."
   (interactive)
-  (require 'ess-mode); typically unnecessary
+  (require 'ess); typically unnecessary
   (require 'ess-inf); dito
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
 
