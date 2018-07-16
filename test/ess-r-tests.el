@@ -19,6 +19,15 @@
            (if (eq (keymap-parent map) prog-mode-map)
                (setq found t)
              (setq map (keymap-parent map))))
+         found))
+      (should
+       ;; Test that ess-mode-map is a keymap-parent
+       (let ((map (current-local-map))
+             found)
+         (while (and map (not found))
+           (if (eq (keymap-parent map) ess-mode-map)
+               (setq found t)
+             (setq map (keymap-parent map))))
          found)))))
 
 (ert-deftest ess-build-eval-command:R ()
