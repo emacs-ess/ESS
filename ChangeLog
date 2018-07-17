@@ -1,3 +1,13 @@
+2018-07-17  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* lisp/ess-sas-l.el (SAS-log-mode) and
+	(SAS-listing-mode): add (buffer-disable-undo)
+	since these buffers are buffer-read-only and
+	they can get quite large. Furthermore, when
+	they are re-generated/reverted/reloaded with
+	(ess-revert-wisely) & friends; these large buffers
+	trigger an error: undo-outer-limit exceeded.
+
 2017-11-13  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 17.11 released.
