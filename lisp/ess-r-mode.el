@@ -894,9 +894,9 @@ See `ess-noweb-mode' and `R-mode' for more help."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Rr]out" . R-transcript-mode))
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist '("Rscript" . r-mode))
+(add-to-list 'interpreter-mode-alist '("Rscript" . R-mode))
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist '("r" . r-mode))
+(add-to-list 'interpreter-mode-alist '("r" . R-mode))
 
 (defun R-fix-T-F (&optional from quietly)
   "Fix T/F into TRUE and FALSE *cautiously*, i.e. not in comments and strings;
