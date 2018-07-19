@@ -567,7 +567,7 @@ Executed in process buffer."
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (when ess-imenu-use-S
-    (setq imenu-generic-expression ess-imenu-generic-expression)
+    (setq imenu-generic-expression ess-imenu-S-generic-expression)
     (imenu-add-to-menubar "Imenu-R"))
 
   ;; useful for swankr/slime:
