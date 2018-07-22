@@ -106,8 +106,6 @@
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
-    (when ess-smart-S-assign-key
-      (define-key map ess-smart-S-assign-key 'ess-insert-assign))
     (define-key map (kbd "C-c C-=") 'ess-cycle-assignment)
     map)
   "Keymap for `ess-mode'.")

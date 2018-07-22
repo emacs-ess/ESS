@@ -69,6 +69,15 @@
 
 ;;*;; Mode definition
 
+(defvar ess-r-mode-map
+  (let ((map (make-sparse-keymap)))
+    (when ess-smart-S-assign-key
+      (define-key map ess-smart-S-assign-key 'ess-insert-assign))
+    map)
+  "Keymap for `ess-r-mode'.")
+;; TODO: Remove this after using define-derived-mode:
+(set-keymap-parent ess-r-mode-map ess-mode-map)
+
 ;;;*;;; UI (Keymaps / Menus)
 ;;;###autoload
 (defvar ess-dev-map
@@ -569,6 +578,8 @@ Executed in process buffer."
   (when ess-imenu-use-S
     (setq imenu-generic-expression ess-imenu-S-generic-expression)
     (imenu-add-to-menubar "Imenu-R"))
+  ;; TODO: remove after using define-derived-mode:
+  (use-local-map ess-r-mode-map)
 
   ;; useful for swankr/slime:
   (set (make-local-variable 'beginning-of-defun-function)
