@@ -279,9 +279,6 @@ This may be useful for debugging."
             (unless (and proc (eq (process-status proc) 'run))
               (error "Process %s failed to start" procname))
 
-            ;; don't font-lock strings over process prompt
-            (set (make-local-variable 'syntax-begin-function) ;; fixme: obsolete in emacs 25.1
-                 #'inferior-ess-last-prompt-end)
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
@@ -322,14 +319,6 @@ Default depends on the ESS language/dialect and hence made buffer local")
   "The command to retrieve the last value.  See S section for more details.
 Default depends on the ESS language/dialect and hence made buffer local")
 (make-variable-buffer-local 'ess-retr-lastvalue-command)
-
-(defun inferior-ess-last-prompt-end (&optional pos limit)
-  "Move to the end of last prompt from POS, but not further than LIMIT."
-  (let ((pos (or pos (point))))
-    (goto-char pos)
-    (end-of-line)
-    (when (re-search-backward inferior-ess-prompt limit t)
-      (goto-char (match-end 0)))))
 
 (defvar compilation--parsed)
 (defvar ess--tb-last-input)
