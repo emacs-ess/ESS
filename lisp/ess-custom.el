@@ -2849,10 +2849,6 @@ Should be an absolute path to the julia executable."
 (make-variable-buffer-local 'ess-mode-syntax-table)
 (make-variable-buffer-local 'ess-mode-completion-syntax-table)
 
-(defvar inferior-ess-mode-syntax-table nil "Syntax table for `inferior-ess-mode'.")
-(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
-
-
  ; Buffer local customization stuff
 
 (defcustom ess-error-buffer-name "*ESS-errors*"

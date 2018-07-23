@@ -44,6 +44,23 @@
     (should (string= (ess-build-load-command "file")
                      (ess-build-load-command:R "file")))))
 
+(ert-deftest inferior-ess-inherits-from-comint ()
+  (with-inferior-r-buffer
+    ;; Derive from comint
+    (should (derived-mode-p 'comint-mode))
+    ;; Use R-mode's syntax table
+    (should (eql (char-table-parent inferior-ess-mode-syntax-table)
+                 ess-r-syntax-table))
+    (should
+     ;; Test that comint-mode-map is a keymap-parent
+     (let ((map (current-local-map))
+           found)
+       (while (and map (not found))
+         (if (eq (keymap-parent map) comint-mode-map)
+             (setq found t)
+           (setq map (keymap-parent map))))
+       found))))
+
 (ert-deftest ess-r-send-single-quoted-strings ()
   (with-r-running nil
     (insert "'hop'\n")

@@ -62,6 +62,10 @@
 (defvar start)
 (defvar end)
 
+(defvar inferior-ess-mode-syntax-table (make-syntax-table)
+  "Syntax table for `inferior-ess-mode'.")
+(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
+
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -214,7 +218,15 @@ This may be useful for debugging."
                  (switches
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
-
+            (set-buffer buf)
+            ;; FIXME: we need this horrible hack so that
+            ;; inferior-ess-mode-syntax-table gets set. A saner way
+            ;; might be to define a major mode for each inferior mode.
+            ;; This would also have the advantage of having
+            ;; inferior-ess-r-mode-map and whatnot:
+            (setq-local inferior-ess-mode-syntax-table
+                        (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
+                                  (alist-get 'ess-mode-syntax-table ess-customize-alist))))
             (inferior-ess-mode)
             (ess-write-to-dribble-buffer
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
@@ -1736,7 +1748,6 @@ meaning as for `ess-eval-region'."
 
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map comint-mode-map)
     (define-key map "\C-y"              'ess-yank)
     (define-key map "\r"       'inferior-ess-send-input)
     (define-key map "\C-a"     'comint-bol)
@@ -1826,81 +1837,26 @@ meaning as for `ess-eval-region'."
     map)
   "Keymap used in `ess-execute'.")
 
-;;;###autoload
-(defun inferior-ess-mode ()
+(define-derived-mode inferior-ess-mode comint-mode "iESS"
   "Major mode for interacting with an inferior ESS process.
-Runs an S interactive job as a subprocess of Emacs, with I/O through an
-Emacs buffer.  Variable `inferior-ess-program' controls which S
-is run.
 
-Commands are sent to the ESS process by typing them, and pressing
-\\[inferior-ess-send-input].  Pressing \\[complete-dynamic-complete]
-completes known object names or filenames, as appropriate.  Other
-keybindings for this mode are:
+To learn more about how to use inferior ess modes, see Info node `(ess)Top'.
 
-\\{inferior-ess-mode-map}
-
-When editing S objects, the use of \\[ess-load-file] is advocated.
-`ess-load-file' keeps source files (if `ess-keep-dump-files' is non-nil) in
-the directory specified by `ess-source-directory', with the
-filename chosen according to `ess-dump-filename-template'. When a file is
-loaded, `ess-mode' parses error messages and jumps to the appropriate file
-if errors occur. The ess-eval- commands do not do this.
-
-Customization: Entry to this mode runs the hooks on `comint-mode-hook' and
-`inferior-ess-mode-hook' (in that order).
-
-You can send text to the inferior ESS process from other buffers
-containing source code. The key bindings of these commands can be
-found by typing \\[describe-mode].
-
-    `ess-eval-region' sends the current region to the ESS process.
-    `ess-eval-buffer' sends the current buffer to the ESS process.
-    `ess-eval-function' sends the current function to the ESS process.
-    `ess-eval-line' sends the current line to the ESS process.
-    `ess-beginning-of-function' and `ess-end-of-function' move the point to
-        the beginning and end of the current S function.
-    `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
-    `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
-        buffer and puts point at the end of it.
-
-    `ess-eval-region-and-go', `ess-eval-buffer-and-go',
-        `ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
-        process buffer after sending their text.
-    `ess-dump-object-into-edit-buffer' moves an S object into a temporary file
-        and buffer for editing
-    `ess-load-file' sources a file of commands to the ESS process.
-
-Commands:
-Return after the end of the process' output sends the text from the
-    end of process to point.
-Return before the end of the process' output copies the sexp ending at point
-    to the end of the process' output, and sends it.
-Delete converts tabs to spaces as it moves back.
-C-M-q does Tab on each line starting within following expression.
-Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
-  (interactive)
-  (delay-mode-hooks
-    (comint-mode))
-  (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
-  (set (make-local-variable 'process-connection-type) t)
   ;; initialize all custom vars:
-  (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
+  (ess-setq-vars-local ess-customize-alist)
+  (setq-local comint-input-sender 'inferior-ess-input-sender)
 
   ;; If comint-process-echoes is t  inferior-ess-input-sender
   ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
-  (set (make-local-variable 'comint-process-echoes)
-       (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
-
-  (when (and (member ess-dialect '("R")) ;; S+ echoes!!
-             (not (eq ess-eval-visibly t)))
-    ;; when 'nowait or nil, don't wait for process
-    (setq comint-process-echoes nil))
+  (setq-local comint-process-echoes (unless (and (member ess-dialect '("R")) ;; S+ echoes!!
+                                                 ;; when 'nowait or nil, don't wait for process
+                                                 (not (eq ess-eval-visibly t)))
+                                      (not (member ess-language '("SAS" "XLS" "OMG" "julia")))))
 
   (when comint-use-prompt-regexp ;; why comint is not setting this? bug?
-    (set (make-local-variable 'inhibit-field-text-motion) t))
+    (setq-local inhibit-field-text-motion t))
 
   (unless inferior-ess-prompt ;; build when unset
     (setq inferior-ess-prompt
@@ -1913,68 +1869,34 @@ to continue it."
   (setq comint-get-old-input 'inferior-ess-get-old-input) ;; todo: this is R specific
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local) ;; R and S specific
 
-  (setq major-mode 'inferior-ess-mode)
-  (setq mode-name "iESS")               ;(concat "iESS:" ess-dialect))
   (setq mode-line-process
         '(" ["
           ess--mode-line-process-indicator
           ess--local-mode-line-process-indicator
           "]: %s"))
-  (use-local-map inferior-ess-mode-map)
-  (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
-                              ess-mode-syntax-table)))
-    (when inf-syntax-table
-      (set-syntax-table inf-syntax-table)))
-
-  (ess-write-to-dribble-buffer
-   (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-           (current-buffer) ess-language
-           comint-process-echoes comint-input-sender))
 
   (when (string= ess-language "S") ;; todo: what is this doing here?
     (local-set-key "\M-\r"    'ess-dirs))
-
-  ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
-  ;; this variable to t, when we need it to be nil.  The Emacs 22
-  ;; solution to this bug is to use define-derived-mode to derive
-  ;; inferior-ess-mode from comint-mode.  Not sure if we can go down
-  ;; that route yet.  I've used the when condition so that if the var
-  ;; is nil, don't bother setting it -- as setting it will make a new
-  ;; local var.
-  (when font-lock-keywords-only
-    (setq font-lock-keywords-only nil))
 
   ;;; Completion support ----------------
   (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the hook
   (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
-  ;; KH: next 2 lines solve.
-  (set (make-local-variable 'comint-completion-addsuffix)
-       (cons "/" ""))
+
+  ;; Avoid spaces after filenames
+  (setq-local comint-completion-addsuffix (cons "/" ""))
+
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
-  ;; timers
-  ;; (add-hook 'ess-idle-timer-functions 'ess-cache-search-list nil 'local)
-  ;; (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
+
   ;;; Keep <tabs> out of the code.
-  (set (make-local-variable 'indent-tabs-mode) nil)
-  (set (make-local-variable 'paragraph-start)
-       (concat inferior-ess-primary-prompt "\\|\^L"))
-  (set (make-local-variable 'paragraph-separate) "\^L")
-  (if (featurep 'jit-lock)
-      (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
-  (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
   (add-hook 'window-configuration-change-hook #'ess-set-width nil t)
-  (run-mode-hooks 'inferior-ess-mode-hook)
-  (ess-write-to-dribble-buffer
-   (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-           (current-buffer) ess-language
-           comint-process-echoes comint-input-sender))
-  (message
-   (concat (substitute-command-keys
-            "Type \\[describe-mode] for help on ESS version ")
-           ess-version)))
+  (setq-local indent-tabs-mode nil)
+
+  (setq-local paragraph-start (concat inferior-ess-primary-prompt "\\|\^L"))
+  (setq-local paragraph-separate "\^L")
+  (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
+
 
 
 ;;*;; Commands used exclusively in inferior-ess-mode
@@ -2354,12 +2276,10 @@ after issuing a quit command as the latter assumes a live process."
       (when (> (- (float-time) start-time) 1)
         (error "Timeout while quitting process")))))
 
-(defun ess-kill-buffer-function ()
-  "Function run just before an ESS process buffer is killed."
-  ;; This simply deletes the buffers process to avoid an Emacs bug
-  ;; where the sentinel is run *after* the buffer is deleted
-  (let ((proc (get-buffer-process (current-buffer))))
-    (if (processp proc) (delete-process proc))))
+(defun ess-list-object-completions nil
+  "List all possible completions of the object name at point."
+  (interactive)
+  (ess-complete-object-name))
 
 
 ;;;*;;; Support functions
