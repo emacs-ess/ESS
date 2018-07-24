@@ -42,6 +42,11 @@
 ;; FIXME: should this be optional?
 (require 'ess-noweb-mode)
 
+;; Silence the byte compiler
+(declare-function run-ess-r "ess-r-mode")
+(declare-function S+ "ess-sp6w-d")
+(declare-function SAS "ess-sas-d")
+
  ; ESS mode
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -391,42 +396,6 @@ ess-mode."
     "none"))
 
 
-;;*;; Dispatching infrastructure for dialects
-
-(defvar ess--make-local-vars-permanent nil
-  "If this variable is non-nil in a buffer make all variable permannet.
-Used in noweb modes.")
-(make-variable-buffer-local 'ess--make-local-vars-permanent)
-(put 'ess--make-local-vars-permanent 'permanent-local t)
-
-(defun ess-setq-vars-local (alist &optional buf)
-  "Set language variables from ALIST, in buffer BUF, if desired."
-  (if buf (set-buffer buf))
-  (mapc (lambda (pair)
-          (make-local-variable (car pair))
-          (set (car pair) (eval (cdr pair)))
-          (when ess--make-local-vars-permanent
-            (put (car pair) 'permanent-local t)) ;; hack for Rnw
-          )
-        alist)
-  (ess-write-to-dribble-buffer
-   (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
-
-(defun ess-setq-vars-default (alist &optional buf)
-  "Set language variables from ALIST, in buffer BUF, if desired."
-  (ess-write-to-dribble-buffer
-   (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender))
-  (if buf (set-buffer buf))
-  (mapc (lambda (pair)
-          (set-default (car pair) (eval (cdr pair))))
-        alist)
-  (ess-write-to-dribble-buffer
-   (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
-           ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
-
-
 ;;*;; User commands in ess-mode
 
 ;;;*;;; Miscellaneous
@@ -443,122 +412,6 @@ Currently works only for R."
 
 
 ;;;*;;; Motion / manipulation commands
-
-(defun ess-beginning-of-function (&optional no-error)
-  "Leave (and return) the point at the beginning of the current ESS function.
-If the optional argument NO-ERROR is non-nil, the function returns nil when
-it cannot find a function beginning."
-  ;; FIXME: should not throw error in accordance with beginning-of-defun and
-  ;; beginning-of-defun-function specification
-  ;; FIXME: should __WORK__ in the crucial case: large function w/ internal function defs
-  (interactive)
-  (let ((init-point (point))
-        (in-set-S4 nil)
-        beg end done)
-
-    ;; Note that we must be sure that we are past the 'function (' text,
-    ;; such that ess-function-pattern is found in BACKwards later.
-    ;; In case we're sitting in a function or setMethod() header,
-    ;; we need to move further.
-    ;; But not too far! {wrongly getting into next function}
-    (if (search-forward "("
-                        (ess-line-end-position 2) t) ; at most end of next line
-        (forward-char 1))
-    ;; TODO: replace the above by hopefully more sucessful logic:
-    ;; 1. If we have 'function *(' in the same line, move to end of that line
-    ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
-    ;;    and only* then do something like the
-    ;;    (search-forward '(' .. (..line-end.. 2) )  above
-
-    (setq end (point))             ; = init-point when nothing found
-
-    (ess-write-to-dribble-buffer
-     (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
-             init-point (- end init-point)))
-    (if (and (> end 1)
-             (re-search-backward ;; in case of setMethod() etc ..
-              ess-r-set-function-start
-              ;; at most 1 line earlier {2 is too much: finds previous sometimes}
-              (+ 1 (ess-line-end-position -1)) t))
-
-        (progn ;; yes we *have* an S4  setMethod(..)-like
-          (setq in-set-S4 t
-                beg (point))
-          (ess-write-to-dribble-buffer
-           (format " set*() function start at position %d" beg))
-          ;; often need to move even further to have 'function(' to our left
-          ;;        (if (search-forward "function" end t)
-          ;;            (ess-write-to-dribble-buffer
-          ;;             (format " -> 'function' already at pos %d\n" (point)))
-          ;;          ;; else need to move further
-          (goto-char end)
-          ;; search 4 lines, we are pretty sure now:
-          (search-forward
-           "function" (ess-line-end-position 4) t)
-          ;;        )
-          (search-forward "(" (ess-line-end-position) t))
-      ;; else: regular function; no set*Method(..)
-      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n"))
-
-    (while (not done)
-      ;; Need this while loop to skip over local function definitions
-
-      ;; In the case of non-success, it is inefficiently
-      ;; going back in the buffer through all function definitions...
-      (unless
-          (and (re-search-backward ess-function-pattern (point-min) t)
-               (not (ess-inside-string-or-comment-p (point))))
-        (goto-char init-point)
-        (if no-error
-            (setq  done t  beg nil)
-          ;; else [default]:
-          (error "Point is not in a function according to 'ess-function-pattern'.")))
-      (unless done
-        (setq beg (point))
-        (ess-write-to-dribble-buffer
-         (format "\tMatch,Pt:(%d,%d),%d\n"
-                 (match-beginning 0) (match-end 0) beg))
-        (setq in-set-S4 (looking-at ess-r-set-function-start))
-        (forward-list 1)              ; get over arguments
-
-        ;; The following used to bomb  "Unbalanced parentheses", n1, n2
-        ;; when the above (search-forward "(" ..) wasn't delimited :
-        (unless in-set-S4 (forward-sexp 1)) ; move over braces
-        ;;DBG (ess-write-to-dribble-buffer "|")
-        (setq end (point))
-        (goto-char beg)
-        ;; current function must begin and end around point
-        (setq done (and (>= end init-point) (<= beg init-point)))))
-    beg))
-
-(defun ess-end-of-function (&optional beginning no-error)
-  "Leave the point at the end of the current ESS function.
-Optional argument for location of beginning.  Return '(beg end)."
-  (interactive)
-  (if beginning
-      (goto-char beginning)
-    (setq beginning (ess-beginning-of-function no-error)))
-  (if beginning
-      ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
-      (let ((in-set-S4 (looking-at ess-r-set-function-start))
-            (end-pos) (npos))
-        (ess-write-to-dribble-buffer
-         (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
-        (forward-list 1)      ; get over arguments || whole set*(..)
-        (unless in-set-S4 (forward-sexp 1)) ; move over braces
-        (ess-write-to-dribble-buffer
-         (format "ess-END-of-fun: found #1 : %d\n" (point)))
-
-        ;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
-        ;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
-        (setq end-pos (ess-line-end-position))
-        (while (< (point) end-pos) ; if not at end of line, move further forward
-          (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
-           (min (save-excursion (forward-sexp 1) (point))
-                (save-excursion (forward-paragraph 1) (point)))))
-        (list beginning (point)))
-    ;; else: 'no-error': we are not in a function
-    nil))
 
 (defun ess-goto-beginning-of-function-or-para ()
   "If inside a function go to the beginning of it, otherwise go to the beginning
@@ -602,14 +455,16 @@ current function."
 
 (defun ess-newline-and-indent ()
   (interactive)
-  (cond ((string= ess-dialect "R")
+  (cond ((and (fboundp 'ess-roxy-newline-and-indent)
+              (string= ess-dialect "R"))
          (ess-roxy-newline-and-indent))
         (t
          (newline-and-indent))))
 
 (defun ess-indent-new-comment-line ()
   (interactive)
-  (cond ((string= ess-dialect "R")
+  (cond ((and (fboundp 'ess-roxy-indent-new-comment-line)
+              (string= ess-dialect "R"))
          (ess-roxy-indent-new-comment-line))
         (t
          (indent-new-comment-line))))
@@ -709,7 +564,8 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
 (defun ess-indent-exp ()
   "Indent each line of the ESS grouping following point."
   (interactive)
-  (cond ((string= ess-dialect "R")
+  (cond ((and (fboundp 'ess-r-indent-exp)
+              (string= ess-dialect "R"))
          (ess-r-indent-exp))
         (t
          (save-excursion
@@ -722,114 +578,13 @@ The default of `ess-tab-complete-in-script' is nil.  Also see
   "Indent current line as ESS code.
 Return the amount the indentation changed by."
   ;; fixme: make this work with standard indent-line-function
-  (if (fboundp ess-indent-line-function)
-      (funcall ess-indent-line-function)
-    ;; else S and R default behavior
-    (ess-r-indent-line)))
-
-
-;;*;; Loading files
-
-(defun ess-check-modifications nil
-  "Check whether loading this file would overwrite some ESS objects
-which have been modified more recently than this file, and confirm
-if this is the case."
-  ;; FIXME: this should really cycle through all top-level assignments in
-  ;; the buffer
-  ;;VS[02-04-2012|ESS 12.03]: this is sooo ugly
-  (when (> (length ess-change-sp-regexp) 0)
-    (and (buffer-file-name) ess-filenames-map
-         (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
-               (objname))
-           (save-excursion
-             (goto-char (point-min))
-             ;; Get name of assigned object, if we can find it
-             (setq objname
-                   (and
-                    (re-search-forward
-                     "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
-                     nil
-                     t)
-                    (buffer-substring (match-beginning 1)
-                                      (match-end 1)))))
-           (and
-            sourcemod			; the file may have been deleted
-            objname			; may not have been able to
-                                        ; find name
-            (ess-modtime-gt (ess-object-modtime objname) sourcemod)
-            (not (y-or-n-p
-
-                  (format
-                   "The ESS object %s is newer than this file. Continue?"
-                   objname)))
-            (error "Aborted"))))))
-
-(defun ess-check-source (fname)
-  "If file FNAME has an unsaved buffer, offer to save it.
-Returns t if the buffer existed and was modified, but was not saved."
-  (let ((buff (get-file-buffer fname)))
-    ;; RMH: Corrections noted below are needed for C-c C-l to work
-    ;; correctly when issued from *S* buffer.
-    ;; The following barfs since
-    ;; 1. `if' does not accept a buffer argument, `not' does.
-    ;; 2. (buffer-file-name) is not necessarily defined for *S*
-    ;;(if buff
-    ;; (let ((deleted (not (file-exists-p (buffer-file-name)))))
-    ;; Next 2 lines are RMH's solution:
-    (if (not(not buff))
-        (let ((deleted (not (file-exists-p fname))))
-          (if (and deleted (not (buffer-modified-p buff)))
-              ;; Buffer has been silently deleted, so silently save
-              (with-current-buffer buff
-                (set-buffer-modified-p t)
-                (save-buffer))
-            (if (and (buffer-modified-p buff)
-                     (or ess-mode-silently-save
-                         (y-or-n-p
-                          (format "Save buffer %s first? "
-                                  (buffer-name buff)))))
-                (with-current-buffer buff
-                  (save-buffer))))
-          (buffer-modified-p buff)))))
-
-(defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
-  "Regexp to search for errors.")
-
-;;;###autoload
-(defun ess-parse-errors (&optional showerr reset)
-  "Jump to error in last loaded ESS source file.
-With prefix argument, only shows the errors ESS reported.
-
-RESET is for compatibility with `next-error' and is ignored."
-  (interactive "P")
-  (ess-make-buffer-current)
-  (let ((errbuff (get-buffer ess-error-buffer-name)))
-    (when (not errbuff)
-      (error "You need to do a load first!"))
-    (set-buffer errbuff)
-    (goto-char (point-max))
-    ;; FIXME: R does not give "useful" error messages by default. We
-    ;; could try to use a more useful one, via
-    ;; options(error=essErrorHandler)
-    (cond ((re-search-backward ess-error-regexp nil t)
-           (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
-                  (fbuffer (get-file-buffer filename))
-                  (linenum
-                   (string-to-number
-                    (buffer-substring (match-beginning 2) (match-end 2))))
-                  (errmess (buffer-substring (match-beginning 1) (match-end 1))))
-             (if showerr
-                 (ess-display-temp-buffer errbuff)
-               (if fbuffer nil
-                 (setq fbuffer (find-file-noselect filename))
-                 (with-current-buffer fbuffer
-                   (ess-mode)))
-               (pop-to-buffer fbuffer)
-               (ess-goto-line linenum))
-             (princ errmess t)))
-          (t
-           (message "Not a syntax error.")
-           (ess-display-temp-buffer errbuff)))))
+  (cond ((fboundp ess-indent-line-function)
+         (funcall ess-indent-line-function))
+        ;; else S and R default behavior
+        ((fboundp 'ess-r-indent-line)
+         (ess-r-indent-line))
+        ;; fallback on Emacs
+        (t (funcall indent-line-function))))
 
 
 ;;*;; Creating and manipulating dump buffers
@@ -963,7 +718,8 @@ Function defined using `ess-define-runner'."
             (interactive "P")
             (cond ((string= dialect "R")
                    (let ((inferior-ess-r-program (or path name)))
-                     (R start-args)))
+                     (require 'ess-r-mode)
+                     (run-ess-r start-args)))
                   ((string= dialect "S")
                    (let ((inferior-S+-program (or path name)))
                      (require 'ess-sp6-d)

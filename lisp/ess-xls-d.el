@@ -34,7 +34,12 @@
 
 ;;; Requires and Autoloads:
 
+(require 'ess-custom)
 (require 'ess-lsp-l)
+(require 'ess-utils)
+(require 'ess)
+(require 'ess-inf)
+(require 'ess-trns)
 
 (defvar ess-help-XLS-sec-keys-alist
   '((?a . "Args:"))

@@ -40,6 +40,8 @@
 (require 'ess-inf)
 (require 'ess-s-lang)
 (require 'ess-dde)
+(require 'ess-trns)
+
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...
@@ -100,21 +102,6 @@
   "Functions run in process buffer after the initialization of S+
   process.")
 
-(defalias 'S+6 'S+)
-(defun S+ (&optional proc-name)
-  "Call 'Splus6', based on S version 4, from Bell Labs.
-New way to do it."
-  (interactive)
-  (setq ess-customize-alist S+-customize-alist)
-  (ess-write-to-dribble-buffer
-   (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess)
-  (ess-command ess-S+--injected-code)
-  (if inferior-ess-language-start
-      (ess-eval-linewise inferior-ess-language-start))
-  (with-ess-process-buffer nil
-    (run-mode-hooks 'ess-S+-post-run-hook)))
-
 (defvar ess-S+--injected-code
   ".ess_funargs <- function(funname){
   ## funname <- deparse(substitute(object))
@@ -132,6 +119,21 @@ New way to do it."
   }
 }
 ")
+
+(defalias 'S+6 'S+)
+(defun S+ (&optional proc-name)
+  "Call 'Splus6', based on S version 4, from Bell Labs.
+New way to do it."
+  (interactive)
+  (setq ess-customize-alist S+-customize-alist)
+  (ess-write-to-dribble-buffer
+   (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
+  (inferior-ess)
+  (ess-command ess-S+--injected-code)
+  (if inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start))
+  (with-ess-process-buffer nil
+    (run-mode-hooks 'ess-S+-post-run-hook)))
 
 
 (defalias 'S+6-mode 'S+-mode)

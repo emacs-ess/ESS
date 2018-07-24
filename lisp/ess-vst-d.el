@@ -33,7 +33,10 @@
 
 ;;; Requires and Autoloads:
 
+(require 'ess-custom)
 (require 'ess-lsp-l)
+(require 'ess-utils)
+(require 'ess-inf)
 
 (defvar VST-customize-alist
   '((ess-customize-alist           .  VST-customize-alist )

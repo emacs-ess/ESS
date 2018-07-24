@@ -31,10 +31,18 @@
 (when (>= emacs-major-version 25)
   (require 'subr-x)
   (require 'xref))
-
+;; Cludge to silence the byte compiler until we drop support for Emacs 24.
+(declare-function xref-make "xref")
+(declare-function xref-make-buffer-location "xref")
+(declare-function xref-make-file-location "xref")
+(require 'ess-inf)
 (require 'ess-utils)
 (require 'ess-r-package)
 (require 'ess-tracebug)
+
+;; Silence the byte compiler. OK because this file is only loaded by ess-r-mode.
+(declare-function inferior-ess-r-force "ess-r-mode")
+
 
 (defvar ess-r-xref-pkg-sources nil
   "Alist of R package->directory associations.

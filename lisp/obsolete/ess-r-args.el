@@ -171,6 +171,8 @@
 ;;; Code:
 
 (require 'ess-custom)
+(require 'ess-inf)
+(require 'ess-utils)
 (eval-when-compile
   (require 'tooltip)); for tooltip-show
 

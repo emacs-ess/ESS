@@ -53,6 +53,8 @@
 ;; only needed in Emacs >= 22.x
 (unless (boundp 'c-emacs-features)
   (require 'cc-vars));; for syntax-table
+(require 'comint)
+(require 'ess-trns)
 
                                         ;(setq max-lisp-eval-depth 500)
 (eval-when-compile

@@ -2541,12 +2541,6 @@ after issuing a quit command as the latter assumes a live process."
   (let ((proc (get-buffer-process (current-buffer))))
     (if (processp proc) (delete-process proc))))
 
-
-(defun ess-list-object-completions nil
-  "List all possible completions of the object name at point."
-  (interactive)
-  (ess-complete-object-name))
-
 ;;;*;;; Support functions
 (defun ess-extract-onames-from-alist (alist posn &optional force)
   "Return the object names in position POSN of ALIST.
@@ -3147,7 +3141,115 @@ search path related variables."
       (funcall temp-buffer-show-function buff))
   (display-buffer buff '(display-buffer-reuse-window) ess-display-buffer-reuse-frames))
 
+(defun ess--inject-code-from-file (file)
+  ;; this is different from ess-load-file
+  (let ((content (with-temp-buffer
+                   (insert-file-contents file)
+                   (buffer-string))))
+    (when (string= ess-dialect "R")
+      ;; don't detect intermediate prompts
+      (setq content (concat "{" content "}\n")))
+    (ess-command content)))
+
+
+(defun ess-check-modifications nil
+  "Check whether loading this file would overwrite some ESS objects
+which have been modified more recently than this file, and confirm
+if this is the case."
+  ;; FIXME: this should really cycle through all top-level assignments in
+  ;; the buffer
+  ;;VS[02-04-2012|ESS 12.03]: this is sooo ugly
+  (when (> (length ess-change-sp-regexp) 0)
+    (and (buffer-file-name) ess-filenames-map
+         (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
+               (objname))
+           (save-excursion
+             (goto-char (point-min))
+             ;; Get name of assigned object, if we can find it
+             (setq objname
+                   (and
+                    (re-search-forward
+                     "^\\s *\"?\\(\\(\\sw\\|\\s_\\)+\\)\"?\\s *[<_]"
+                     nil
+                     t)
+                    (buffer-substring (match-beginning 1)
+                                      (match-end 1)))))
+           (and
+            sourcemod			; the file may have been deleted
+            objname			; may not have been able to
+                                        ; find name
+            (ess-modtime-gt (ess-object-modtime objname) sourcemod)
+            (not (y-or-n-p
+
+                  (format
+                   "The ESS object %s is newer than this file. Continue?"
+                   objname)))
+            (error "Aborted"))))))
+
+(defun ess-check-source (fname)
+  "If file FNAME has an unsaved buffer, offer to save it.
+Returns t if the buffer existed and was modified, but was not saved."
+  (let ((buff (get-file-buffer fname)))
+    ;; RMH: Corrections noted below are needed for C-c C-l to work
+    ;; correctly when issued from *S* buffer.
+    ;; The following barfs since
+    ;; 1. `if' does not accept a buffer argument, `not' does.
+    ;; 2. (buffer-file-name) is not necessarily defined for *S*
+    ;;(if buff
+    ;; (let ((deleted (not (file-exists-p (buffer-file-name)))))
+    ;; Next 2 lines are RMH's solution:
+    (if (not (not buff))
+        (let ((deleted (not (file-exists-p fname))))
+          (if (and deleted (not (buffer-modified-p buff)))
+              ;; Buffer has been silently deleted, so silently save
+              (with-current-buffer buff
+                (set-buffer-modified-p t)
+                (save-buffer))
+            (if (and (buffer-modified-p buff)
+                     (or ess-mode-silently-save
+                         (y-or-n-p
+                          (format "Save buffer %s first? "
+                                  (buffer-name buff)))))
+                (with-current-buffer buff
+                  (save-buffer))))
+          (buffer-modified-p buff)))))
+
 ;;*;; Error messages
+
+(defun ess-parse-errors (&optional showerr reset)
+  "Jump to error in last loaded ESS source file.
+With prefix argument, only shows the errors ESS reported.
+
+RESET is for compatibility with `next-error' and is ignored."
+  (interactive "P")
+  (ess-make-buffer-current)
+  (let ((errbuff (get-buffer ess-error-buffer-name)))
+    (when (not errbuff)
+      (error "You need to do a load first!"))
+    (set-buffer errbuff)
+    (goto-char (point-max))
+    ;; FIXME: R does not give "useful" error messages by default. We
+    ;; could try to use a more useful one, via
+    ;; options(error=essErrorHandler)
+    (cond ((re-search-backward ess-error-regexp nil t)
+           (let* ((filename (buffer-substring (match-beginning 3) (match-end 3)))
+                  (fbuffer (get-file-buffer filename))
+                  (linenum
+                   (string-to-number
+                    (buffer-substring (match-beginning 2) (match-end 2))))
+                  (errmess (buffer-substring (match-beginning 1) (match-end 1))))
+             (if showerr
+                 (ess-display-temp-buffer errbuff)
+               (if fbuffer nil
+                 (setq fbuffer (find-file-noselect filename))
+                 (with-current-buffer fbuffer
+                   (ess-mode)))
+               (pop-to-buffer fbuffer)
+               (ess-goto-line linenum))
+             (princ errmess t)))
+          (t
+           (message "Not a syntax error.")
+           (ess-display-temp-buffer errbuff)))))
 
 (defun ess-error (msg)
   "Something bad has happened.

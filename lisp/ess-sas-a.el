@@ -26,7 +26,15 @@
 ;;; Code:
 
 (require 'ess)
-
+;; Silence the byte compiler
+;; FIXME: This is a lot, perhaps they can be moved?
+(defvar sas-indent-width)
+(defvar SAS-customize-alist)
+(defvar sas-mode-local-map)
+(declare-function ess-num-or-zero "ess-sas-d")
+;; FIXME: What is this doing here???
+(declare-function ess-add-ess-process "essd-els")
+(declare-function ess-listing-minor-mode "ess-sas-l")
 ;;; Table of Contents
 ;;; Section 1:  Variable Definitions
 ;;; Section 2:  Function Definitions
@@ -292,6 +300,16 @@ ignored by calling `ess-uniq-list'.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
+(defvar ess-sas-global-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
+
+(defvar ess-sas-local-pc-keys nil
+  "Non-nil if function keys use PC-like SAS key definitions
+in SAS-mode and related modes.")
+
+(defvar ess-sas-local-unix-keys nil
+  "Non-nil if function keys use Unix-like SAS key definitions
+in SAS-mode and related modes.")
 
 ;;; Section 2:  Function Definitions
 
@@ -1261,9 +1279,6 @@ accepted for backward compatibility, however, arg is ignored."
   (setq ess-sas-local-unix-keys nil)
   )
 
-(defvar ess-sas-global-unix-keys nil
-  "Non-nil if function keys use Unix-like SAS key definitions in all modes.")
-
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
@@ -1294,10 +1309,6 @@ accepted for backward compatibility, however, arg is ignored."
   (setq ess-sas-local-unix-keys nil)
   )
 
-(defvar ess-sas-local-pc-keys nil
-  "Non-nil if function keys use PC-like SAS key definitions
-in SAS-mode and related modes.")
-
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
@@ -1327,10 +1338,6 @@ in SAS-mode and related modes.")
   (setq ess-sas-local-unix-keys nil)
   )
 
-(defvar ess-sas-local-unix-keys nil
-  "Non-nil if function keys use Unix-like SAS key definitions
-in SAS-mode and related modes.")
-
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
@@ -1359,6 +1366,98 @@ in SAS-mode and related modes.")
   (setq ess-sas-local-pc-keys nil)
   (setq ess-sas-local-unix-keys t)
   )
+
+(defun ess-kermit-get (&optional ess-file-arg ess-dir-arg)
+  "Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
+buffer, start kermit and then log in to the remote machine.  Open
+a file that starts with `ess-kermit-prefix'.  From that buffer,
+execute this command.  It will retrieve a file from the remote
+directory that you specify with the same name, but without the
+`ess-kermit-prefix'."
+
+  (interactive)
+
+  ;;     (save-match-data
+  (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
+        (ess-temp-file-remote-directory ess-dir-arg))
+
+    (if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1))
+        (progn
+          ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
+          ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
+          ;; default on the second pass.  So, here's a temporary work-around.  It will fail
+          ;; if you change the default, so maybe this variable should not be customizable.
+          ;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
+          ;; 21.4.10.  XEmacs 21.4.8 is fine.
+          (if ess-temp-file-remote-directory
+              (setq ess-kermit-remote-directory ess-temp-file-remote-directory)
+
+            (if (string-equal "." ess-kermit-remote-directory)
+                (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
+                                                               ess-kermit-remote-directory))))
+
+          (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
+          ;;        (setq ess-temp-file (substring ess-temp-file (match-end 0)))
+          (ess-sas-goto-shell)
+          (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -s "
+                  (substring ess-temp-file 1) " -a " ess-temp-file)
+          (comint-send-input)
+          ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
+          ;;        (comint-send-input)
+          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+          ;;                (concat "receive ]" ess-sas-temp-file)))
+          ;;        (comint-send-input)
+          ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
+          ;;        (comint-send-input)
+          (insert (read-string "Press Return when shell is ready: "))
+          (comint-send-input)
+          (switch-to-buffer (find-buffer-visiting ess-temp-file))
+          (ess-revert-wisely)
+          ))))
+
+(defun ess-kermit-send ()
+  "Send a file with Kermit.  WARNING:  Experimental!  From
+a file that starts with `ess-kermit-prefix',
+execute this command.  It will transfer this file to the remote
+directory with the same name, but without the `ess-kermit-prefix'."
+
+  (interactive)
+
+  ;;     (save-match-data
+  (let ((ess-temp-file (expand-file-name (buffer-name)))
+        (ess-temp-file-remote-directory nil))
+
+    (if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1))
+        (progn
+          ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
+          ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
+          ;; default on the second pass.  Here's a temporary work-around.  It will fail
+          ;; if you change the default, so maybe this variable should not be customizable.
+          ;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
+          ;; 21.4.10.  XEmacs 21.4.8 is fine.
+          (if (string-equal "." ess-kermit-remote-directory)
+              (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
+                                                             ess-kermit-remote-directory)))
+
+          (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
+
+          ;;        (setq ess-temp-file (substring ess-temp-file (match-end 0)))
+          (ess-sas-goto-shell)
+          (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -a "
+                  (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
+          (comint-send-input)
+          ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
+          ;;        (comint-send-input)
+          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+          ;;                (concat "receive ]" ess-sas-temp-file)))
+          ;;        (comint-send-input)
+          ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
+          ;;        (comint-send-input)
+          (insert (read-string "Press Return when shell is ready: "))
+          (comint-send-input)
+          (switch-to-buffer (find-buffer-visiting ess-temp-file))
+          (ess-revert-wisely)
+          ))))
 
 (provide 'ess-sas-a)
 

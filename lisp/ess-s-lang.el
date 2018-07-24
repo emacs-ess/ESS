@@ -32,7 +32,10 @@
 
  ; Requires and autoloads
 
+(require 'ess)
+(require 'ess-help)
 (require 'ess-utils)
+(require 'ess-inf)
 
 (autoload 'speedbar-add-supported-extension "speedbar.el")
 
@@ -227,7 +230,9 @@
           (and (looking-at "#!") (= 1 (line-number-at-pos))))
       (current-column)
     (if (looking-at "##")
-        (let ((tem (ess-calculate-indent)))
+        (let ((tem (when ;; FIXME ess-calculate-indent is R specific
+                       (fboundp 'ess-calculate-indent)
+                     (ess-calculate-indent))))
           (if (listp tem) (car tem) tem))
       (skip-chars-backward " \t")
       (max (if (bolp) 0 (1+ (current-column)))
@@ -731,7 +736,8 @@ return it.  Otherwise, return `ess-help-topics-list'."
   (with-ess-process-buffer nil
     (ess-write-to-dribble-buffer
      (format "(ess-get-help-topics-list %s) .." name))
-    (ess-help-r--check-last-help-type)
+    (when (fboundp 'ess-help-r--check-last-help-type)
+      (ess-help-r--check-last-help-type))
     (cond
      ;; (Re)generate the list of topics
      ((or (not ess-help-topics-list)

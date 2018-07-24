@@ -31,8 +31,9 @@
 
 ;;; Code:
 
-
-;; *NO* Requires and autoloads
+(require 'ess-custom)
+(require 'ess)
+(require 'ess-utils)
 
 (defun ess-ddeclient-p ()
   "Returns t iff `ess-local-process-name' is associated with an

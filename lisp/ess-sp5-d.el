@@ -37,6 +37,7 @@
 ;;; Code:
 
 (require 'ess-s-lang)
+(require 'ess-trns)
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
 ;; Lots of things are broken between them, GRR...

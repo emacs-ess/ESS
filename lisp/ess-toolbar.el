@@ -50,6 +50,9 @@
 
 ;;; Code:
 
+(require 'ess-utils)
+(require 'ess)
+
 (defgroup ess-toolbar nil
   "ESS: toolbar support."
   :group 'ess

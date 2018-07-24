@@ -38,6 +38,7 @@
 (require 'ess-inf)
 (require 'ess-s-lang)
 (require 'ess-dde)
+(require 'ess-trns)
 
 (defvar ess-S+-startup-delay)
 

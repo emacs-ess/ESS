@@ -37,6 +37,7 @@
 ;;; Requires and Autoloads:
 
 (require 'ess-s-lang)
+(require 'ess-trns)
 (defvar ess-S+-startup-delay)
 (defvar version-function-name)
 ;;NO: this is autoloaded from other places (require 'ess-dde)

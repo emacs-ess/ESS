@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'ess-s-lang)
+(require 'ess-trns)
 
 (defvar S+3-dialect-name "S+3"
   "Name of 'dialect' for S-PLUS 3.x.");easily changeable in a user's .emacs
