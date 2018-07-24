@@ -79,6 +79,9 @@
 
 ;;; Code:
 
+(require 'ess-custom)
+(require 'ess-inf)
+
 (defvar ess-rdired-objects "{.rdired.objects <- function(objs) {
   if (length(objs)==0) {
     \"No objects to view!\"

@@ -56,10 +56,45 @@
 (require 'overlay)
 (eval-when-compile
   (require 'cl-lib))
+(require 'ess-custom)
 (require 'ess-utils)
 
 (defvar text-scale-mode-amount)
 (autoload 'text-scale-mode              "face-remap" "[autoload]" nil)
+
+;; Silence the byte compiler. This is OK here because this file is
+;; only loaded from ess-inf and has no autoloads.
+;; TODO: This is a LOT. Can we move some of this around?
+(defvar ess--dbg-del-empty-p)
+(defvar inferior-ess-mode-map)
+(declare-function ess--accumulation-buffer "ess-inf")
+(declare-function ess--if-verbose-write-process-state "ess-inf")
+(declare-function ess--run-presend-hooks "ess-inf")
+(declare-function ess--show-process-buffer-on-error "ess-inf")
+(declare-function ess-boolean-command "ess-inf")
+(declare-function ess-build-eval-command "ess-inf")
+(declare-function ess-build-load-command "ess-inf")
+(declare-function ess-command "ess-inf")
+(declare-function ess-dirs "ess-inf")
+(declare-function ess-force-buffer-current "ess-inf")
+(declare-function ess-get-process "ess-inf")
+(declare-function ess-get-process-variable "ess-inf")
+(declare-function ess-get-words-from-vector "ess-inf")
+(declare-function ess-process-get "ess-inf")
+(declare-function ess-process-live-p "ess-inf")
+(declare-function ess-process-put "ess-inf")
+(declare-function ess-send-string "ess-inf")
+(declare-function ess-show-buffer "ess-inf")
+(declare-function ess-switch-to-ESS "ess-inf")
+(declare-function ess-wait-for-process "ess-inf")
+(declare-function inferior-ess-run-callback "ess-inf")
+(declare-function inferior-ess-set-status "ess-inf")
+(declare-function ess-helpobjs-at-point--read-obj "ess-help")
+(declare-function ess-r-get-evaluation-env "ess-r-mode")
+(declare-function ess-r-package--all-source-dirs "ess-r-package")
+(declare-function ess-r-package-name "ess-r-package")
+(declare-function ess-r-package-source-dirs "ess-r-package")
+
 
 (defgroup ess-tracebug nil
   "Error navigation and debugging for ESS.
@@ -76,6 +111,32 @@ Currently only R is supported."
 ;; Function `ess-tracebug'  toggles on/off this variable.")
 ;; (make-variable-buffer-local 'ess--tracebug-p)
 ;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
+
+(defvar ess-watch-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map special-mode-map)
+    (define-key map "?" 'ess-watch-help)
+    (define-key map "k" 'ess-watch-kill)
+    ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
+    ;; editing requires a little more work.
+    (define-key map "a" 'ess-watch-add)
+    (define-key map "i" 'ess-watch-insert)
+    (define-key map "e" 'ess-watch-edit-expression)
+    (define-key map "r" 'ess-watch-rename)
+    (define-key map "q" 'ess-watch-quit)
+    (define-key map "u" 'ess-watch-move-up)
+    (define-key map "U" 'ess-watch-move-down)
+    (define-key map "d" 'ess-watch-move-down)
+    (define-key map "n" 'ess-watch-next-block)
+    (define-key map "p" 'ess-watch-previous-block)
+    ;; R mode keybindings.
+    (define-key map "\C-c\C-s" 'ess-watch-switch-process)
+    (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
+    map)
+  "Keymap for the *R watch* buffer.
+
+\\{ess-watch-mode-map}")
 
 
 (defcustom ess-tracebug-prefix nil
@@ -94,6 +155,44 @@ The postfix keys are defined in `ess-tracebug-map':
 ;; Electric debug keys are now on C-c and ess-dev maps." "ESS 13.05")
 ;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
 
+(defcustom ess-tracebug-search-path nil
+  "List of directories to search for source files.
+Elements should be directory names, not file names of directories.
+"
+  :type '(choice (const :tag "Unset" nil)
+                 (repeat :tag "Directory list" (string :tag "Directory")))
+  :group 'ess-debug)
+
+(defvar ess-watch-buffer "*R watch*"
+  "Name of the watch buffer.")
+
+(defcustom ess-watch-height-threshold nil
+  "Minimum height for splitting *R* windwow sensibly to make space for watch window.
+See `split-height-threshold' for a detailed description.
+
+If nil, the value of `split-height-threshold' is used."
+  :group 'ess-debug
+  :type '(choice (const nil) (integer)))
+
+(defcustom ess-watch-width-threshold nil
+  "Minimum width for splitting *R* windwow sensibly to make space for watch window.
+See `split-width-threshold' for a detailed description.
+
+If nil, the value of `split-width-threshold' is used."
+  :group 'ess-debug
+  :type '(choice (const nil) (integer)))
+
+(defcustom  ess-watch-scale-amount -1
+  "The number of steps to scale the watch font down (up).
+Each step scales the height of the default face in the watch
+window by the variable `text-scale-mode-step' (a negative number
+of steps decreases the height by the same amount)"
+  :group 'ess-debug
+  :type 'integer)
+
+(defvar  ess-watch-current-block-overlay nil
+  "The overlay for currently selected block in the R watch buffer .")
+(make-variable-buffer-local 'ess-watch-current-block-overlay)
 
 (defcustom ess-inject-source 'function-and-buffer
   "Control the source injection into evaluated code.
@@ -607,7 +706,8 @@ You can bind 'no-select' versions of this commands:
           (ess-dirs)
           (message nil)
           (make-local-variable 'compilation-error-regexp-alist)
-          (setq compilation-error-regexp-alist ess-r-error-regexp-alist)
+          (when (boundp 'ess-r-error-regexp-alist)
+            (setq compilation-error-regexp-alist ess-r-error-regexp-alist))
           (make-local-variable 'compilation-search-path)
           (setq compilation-search-path ess-tracebug-search-path)
           (ess-setq-vars-local alist)
@@ -745,16 +845,6 @@ help ?options for more details.
 (defvar ess--dbg-last-ref-marker (make-marker)
   "Last debug reference in *ess.dbg* buffer (a marker).")
 (make-variable-buffer-local 'ess--dbg-last-ref-marker)
-
-(defcustom ess-tracebug-search-path nil
-  "List of directories to search for source files.
-Elements should be directory names, not file names of directories.
-"
-  :type '(choice (const :tag "Unset" nil)
-                 (repeat :tag "Directory list" (string :tag "Directory")))
-  :group 'ess-debug)
-(defalias 'ess--dbg-search-path 'ess-tracebug-search-path)
-(make-obsolete 'ess--dbg-search-path 'ess-tracebug-search-path "ESS[12.09]")
 
 (defvar ess--dbg-buf-p nil
   "This is t in ess.dbg buffers.")
@@ -1690,7 +1780,7 @@ triggered the command."
   "Digit commands in selection mode.
 If suplied ev must be a proper key event or a string representing the digit."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (unless (ess--dbg-is-recover-p)
     (error "Recover is not active"))
   (unless ev
@@ -1720,7 +1810,7 @@ If suplied ev must be a proper key event or a string representing the digit."
   "Step next in debug mode.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
     (error "Debugger is not active"))
   (if (ess--dbg-is-recover-p)
@@ -1730,7 +1820,7 @@ Equivalent to 'n' at the R prompt."
 (defun ess-debug-command-next-multi (&optional ev N)
   "Ask for N and step (n) N times in debug mode."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
     (error "Debugger is not active"))
   (let ((N (or N (read-number "Number of steps: " 10)))
@@ -1744,7 +1834,7 @@ Equivalent to 'n' at the R prompt."
 (defun ess-debug-command-continue-multi (&optional ev N)
   "Ask for N, and continue (c) N times in debug mode."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
     (error "Debugger is not active"))
   (let ((N (or N (read-number "Number of continuations: " 10)))
@@ -1759,7 +1849,7 @@ Equivalent to 'n' at the R prompt."
   "Step up one call frame.
 Equivalent to 'n' at the R prompt."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
     (error "Debugger is not active"))
   (let ((up-cmd "try(browserSetDebug(), silent=T)\nc\n"))
@@ -1776,7 +1866,7 @@ Equivalent to 'n' at the R prompt."
   "Quits the browser/debug in R process.
 Equivalent of `Q' at the R prompt."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (cond ((ess--dbg-is-recover-p)
          (ess-send-string (ess-get-process) "0"))
         ;; if recover is called in a loop the following stalls emacs
@@ -1790,7 +1880,7 @@ Equivalent of `Q' at the R prompt."
   "Continue the code execution.
 Equivalent of `c' at the R prompt."
   (interactive)
-  (inferior-ess-force)
+  (ess-force-buffer-current)
   (cond ((ess--dbg-is-recover-p)
          (ess-send-string (ess-get-process) "0"))
         ((ess--dbg-is-active-p)
@@ -2355,49 +2445,11 @@ Arguments IGNORE and NOCONFIRM currently not used."
   (ess-watch)
   (message "Watch reverted"))
 
-(defvar ess-watch-mode-map nil
-  "Keymap for the *R watch* buffer.
-
-\\{ess-watch-mode-map}
-")
-
-(unless ess-watch-mode-map
-  (setq ess-watch-mode-map (make-sparse-keymap))
-  (when (boundp 'special-mode-map)
-    (set-keymap-parent ess-watch-mode-map special-mode-map))
-  (define-key ess-watch-mode-map "?" 'ess-watch-help)
-  (define-key ess-watch-mode-map "k" 'ess-watch-kill)
-  ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
-  ;; editing requires a little more work.
-  (define-key ess-watch-mode-map "a" 'ess-watch-add)
-  (define-key ess-watch-mode-map "i" 'ess-watch-insert)
-  (define-key ess-watch-mode-map "e" 'ess-watch-edit-expression)
-  (define-key ess-watch-mode-map "r" 'ess-watch-rename)
-  (define-key ess-watch-mode-map "q" 'ess-watch-quit)
-  (define-key ess-watch-mode-map "u" 'ess-watch-move-up)
-  (define-key ess-watch-mode-map "U" 'ess-watch-move-down)
-  (define-key ess-watch-mode-map "d" 'ess-watch-move-down)
-  (define-key ess-watch-mode-map "n" 'ess-watch-next-block)
-  (define-key ess-watch-mode-map "p" 'ess-watch-previous-block)
-  ;; R mode keybindings.
-  (define-key ess-watch-mode-map "\C-c\C-s" 'ess-watch-switch-process)
-  (define-key ess-watch-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
-  (define-key ess-watch-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-  ;; Debug keys:
-  )
-
 
 (defface ess-watch-current-block-face
   '((default (:inherit highlight)))
   "Face used to highlight current watch block."
   :group 'ess-debug)
-
-(defvar  ess-watch-current-block-overlay nil
-  "The overlay for currently selected block in the R watch buffer .")
-(make-variable-buffer-local 'ess-watch-current-block-overlay)
-
-(defvar ess-watch-buffer "*R watch*"
-  "Name of the watch buffer.")
 
 (defvar  ess-watch-start-block "@----"  ;; fixme: make defcustom and modify the injected command correspondingly
   "String indicating the beginning of a block in watch buffer."
@@ -2410,30 +2462,6 @@ Arguments IGNORE and NOCONFIRM currently not used."
   ;; :group 'ess-debug
   ;; :type 'string
   )
-
-(defcustom ess-watch-height-threshold nil
-  "Minimum height for splitting *R* windwow sensibly to make space for watch window.
-See `split-height-threshold' for a detailed description.
-
-If nil, the value of `split-height-threshold' is used."
-  :group 'ess-debug
-  :type '(choice (const nil) (integer)))
-
-(defcustom ess-watch-width-threshold nil
-  "Minimum width for splitting *R* windwow sensibly to make space for watch window.
-See `split-width-threshold' for a detailed description.
-
-If nil, the value of `split-width-threshold' is used."
-  :group 'ess-debug
-  :type '(choice (const nil) (integer)))
-
-(defcustom  ess-watch-scale-amount -1
-  "The number of steps to scale the watch font down (up).
-Each step scales the height of the default face in the watch
-window by the variable `text-scale-mode-step' (a negative number
-of steps decreases the height by the same amount)"
-  :group 'ess-debug
-  :type 'integer)
 
 (defvar ess-watch-help nil
   "Keymap for the *R watch* buffer.

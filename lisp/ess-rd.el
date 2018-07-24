@@ -25,10 +25,13 @@
 ;; Ave, Cambridge, MA 02139, USA.
 
 ;;; Code:
-
+(require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-help)
 (require 'ess-inf)
+;; Silence the byte compiler, see TODO below; can we remove these?
+(defvar ess-help-r-sec-regex)
+(defvar ess-help-r-sec-keys-alist)
 
 (defvar essddr-version "0.9-1"
   "Current version of ess-rd.el.")
@@ -302,7 +305,6 @@ following lines to your `.emacs' file:
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
     "Menu keymap for Rd mode." Rd-mode-menu)
-  (easy-menu-add Rd-mode-menu-map Rd-mode-map)
 
   (turn-on-auto-fill)
   (message "Rd mode version %s" essddr-version)

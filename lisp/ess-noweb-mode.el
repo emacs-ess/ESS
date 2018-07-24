@@ -81,6 +81,9 @@
 
 ;;; Code:
 
+(require 'ess-custom)
+(require 'ess-utils)
+
 (defvar weave-process)
 
 
@@ -175,6 +178,12 @@ mouse-1, this will override your binding.")
 \"[[\" .. \"]]\" pairs.  Note that rarely this has been found to be buggy
 with the \"catastrophic\" consequence of whole parts of your document being
 replaced by sequences of '*'.")
+
+(defvar ess-noweb-doc-mode ess-noweb-default-doc-mode
+  "Default major mode for editing noweb documentation chunks.
+It is not possible to have more than one doc-mode in a file.
+However, this variable is used to determine whether the doc-mode needs
+to by added to the mode-line")
 
 ;; The following is apparently broken -- dangling code that was
 ;; commented out.  Need to see if we can get it working?
@@ -1289,12 +1298,6 @@ in the middle and and update the chunk vector."
               (run-hooks 'ess-noweb-select-mode-hook)
               (run-hooks 'ess-noweb-select-doc-mode-hook)))
           (run-hooks 'ess-noweb-changed-chunk-hook)))))
-
-(defvar ess-noweb-doc-mode ess-noweb-default-doc-mode
-  "Default major mode for editing noweb documentation chunks.
-It is not possible to have more than one doc-mode in a file.
-However, this variable is used to determine whether the doc-mode needs
-to by added to the mode-line")
 
 (defun ess-noweb-set-doc-mode (mode)
   "Change the major mode for editing documentation chunks."

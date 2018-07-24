@@ -93,6 +93,22 @@
 (defvar TeX-file-extensions)
 (declare-function TeX-normal-mode "tex")
 
+(defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
+  "Command used by `ess-swv-run-in-R'.
+
+First %s is literally replaced by the processing command (for
+example: Sweave) second %s is replaced with a string containing a
+processed file and possibly additional argument encoding (example:
+\"path/to/foo.Rnw\", encoding='utf-8')
+
+.ess_weave changes the working directory to that of the supplied
+file.
+
+If you want to simply call knitr or Sweave in global environment
+set this command to \"%s(%s)\"."
+  :group 'ess-R
+  :type 'string)
+
 ;; currently use exactly for "Sweave", "Stangle", "knit", and "purl"
 (defun ess-swv-run-in-R (cmd &optional choose-process block)
   "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
@@ -135,22 +151,6 @@
           (ess-execute Sw-cmd 'buffer nil nil)
           (switch-to-buffer rnw-buf)
           (ess-show-buffer (buffer-name sbuffer) nil))))))
-
-(defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
-  "Command used by `ess-swv-run-in-R'.
-
-First %s is literally replaced by the processing command (for
-example: Sweave) second %s is replaced with a string containing a
-processed file and possibly additional argument encoding (example:
-\"path/to/foo.Rnw\", encoding='utf-8')
-
-.ess_weave changes the working directory to that of the supplied
-file.
-
-If you want to simply call knitr or Sweave in global environment
-set this command to \"%s(%s)\"."
-  :group 'ess-R
-  :type 'string)
 
 (defcustom ess-swv-processor 'sweave
   "Processor to use for weaving and tangling.

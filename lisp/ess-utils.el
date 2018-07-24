@@ -29,12 +29,16 @@
 (eval-when-compile
   (require 'tramp)
   (require 'cl-lib))
+
+;; The only ESS file this file should depend on is ess-custom.el
+(require 'comint)
 (require 'ess-custom)
 (require 'ido)
 (defvar ac-modes)
 (declare-function evil-visual-state-p "evil")
 (declare-function evil-normal-state "evil")
 (declare-function color-lighten-name "color")
+(declare-function tramp-dissect-file-name "tramp")
 
 
 ;;*;; Internal ESS tools and variables
@@ -70,6 +74,12 @@ for ESS, such as icons.")
                     "Relative to ess-lisp-directory, one of the following must exist:\n"
                     "../etc/ess, ../etc, ../../etc/ess or ./etc"))
           (sit-for 4))))))
+
+(defvar ess--make-local-vars-permanent nil
+  "If this variable is non-nil in a buffer make all variable permannet.
+Used in noweb modes.")
+(make-variable-buffer-local 'ess--make-local-vars-permanent)
+(put 'ess--make-local-vars-permanent 'permanent-local t)
 
 (defun ess-message (format-string &rest args)
   "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
@@ -153,14 +163,6 @@ is specified, perform action in that buffer."
             (make-local-variable (car pair))
             (set (car pair) (eval (cdr pair))))
           alist))
-
-(defun ess-clone-local-variables (from-file-or-buffer
-                                  &optional to-file-or-buffer)
-  "Clone local variables from one buffer to another buffer."
-  (interactive)
-  (ess-set-local-variables
-   (ess-sas-create-local-variables-alist from-file-or-buffer)
-   to-file-or-buffer))
 
 (defun ess-return-list (ess-arg)
   "Given an item, if it is a list return it, else return item in a list."
@@ -253,98 +255,6 @@ Drops 'nil' entries."
                                                                (goto-char ess-temp-store-point))
                                                              t)
     nil))
-
-(defun ess-kermit-get (&optional ess-file-arg ess-dir-arg)
-  "Get a file with Kermit.  WARNING:  Experimental!  From your *shell*
-buffer, start kermit and then log in to the remote machine.  Open
-a file that starts with `ess-kermit-prefix'.  From that buffer,
-execute this command.  It will retrieve a file from the remote
-directory that you specify with the same name, but without the
-`ess-kermit-prefix'."
-
-  (interactive)
-
-  ;;     (save-match-data
-  (let ((ess-temp-file (if ess-file-arg ess-file-arg (buffer-name)))
-        (ess-temp-file-remote-directory ess-dir-arg))
-
-    (if (string-equal ess-kermit-prefix (substring ess-temp-file 0 1))
-        (progn
-          ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
-          ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
-          ;; default on the second pass.  So, here's a temporary work-around.  It will fail
-          ;; if you change the default, so maybe this variable should not be customizable.
-          ;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
-          ;; 21.4.10.  XEmacs 21.4.8 is fine.
-          (if ess-temp-file-remote-directory
-              (setq ess-kermit-remote-directory ess-temp-file-remote-directory)
-
-            (if (string-equal "." ess-kermit-remote-directory)
-                (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file from: "
-                                                               ess-kermit-remote-directory))))
-
-          (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
-          ;;        (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-          (ess-sas-goto-shell)
-          (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -s "
-                  (substring ess-temp-file 1) " -a " ess-temp-file)
-          (comint-send-input)
-          ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-          ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
-          ;;                (concat "receive ]" ess-sas-temp-file)))
-          ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
-          ;;        (comint-send-input)
-          (insert (read-string "Press Return when shell is ready: "))
-          (comint-send-input)
-          (switch-to-buffer (find-buffer-visiting ess-temp-file))
-          (ess-revert-wisely)
-          ))))
-
-(defun ess-kermit-send ()
-  "Send a file with Kermit.  WARNING:  Experimental!  From
-a file that starts with `ess-kermit-prefix',
-execute this command.  It will transfer this file to the remote
-directory with the same name, but without the `ess-kermit-prefix'."
-
-  (interactive)
-
-  ;;     (save-match-data
-  (let ((ess-temp-file (expand-file-name (buffer-name)))
-        (ess-temp-file-remote-directory nil))
-
-    (if (string-equal ess-kermit-prefix (substring (file-name-nondirectory ess-temp-file) 0 1))
-        (progn
-          ;; I think there is a bug in the buffer-local variable handling in GNU Emacs 21.3
-          ;; Setting ess-kermit-remote-directory every time is somehow resetting it to the
-          ;; default on the second pass.  Here's a temporary work-around.  It will fail
-          ;; if you change the default, so maybe this variable should not be customizable.
-          ;; In any case, there is also trouble with local variables in XEmacs 21.4.9 and
-          ;; 21.4.10.  XEmacs 21.4.8 is fine.
-          (if (string-equal "." ess-kermit-remote-directory)
-              (setq ess-kermit-remote-directory (read-string "Remote directory to transfer file to: "
-                                                             ess-kermit-remote-directory)))
-
-          (setq ess-temp-file-remote-directory ess-kermit-remote-directory)
-
-          ;;        (setq ess-temp-file (substring ess-temp-file (match-end 0)))
-          (ess-sas-goto-shell)
-          (insert "cd " ess-temp-file-remote-directory "; " ess-kermit-command " -a "
-                  (substring (file-name-nondirectory ess-temp-file) 1) " -g "  ess-temp-file)
-          (comint-send-input)
-          ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
-          ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
-          ;;                (concat "receive ]" ess-sas-temp-file)))
-          ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
-          ;;        (comint-send-input)
-          (insert (read-string "Press Return when shell is ready: "))
-          (comint-send-input)
-          (switch-to-buffer (find-buffer-visiting ess-temp-file))
-          (ess-revert-wisely)
-          ))))
 
 
 (defun ess-find-exec (ess-root-arg ess-root-dir)
@@ -487,16 +397,6 @@ to `ess-completing-read'.
               (ess-eval-linewise com))
              (t
               (error "Argument COMMAND must be either a function or a string"))))))
-
-(defun ess--inject-code-from-file (file)
-  ;; this is different from ess-load-file
-  (let ((content (with-temp-buffer
-                   (insert-file-contents file)
-                   (buffer-string))))
-    (when (string= ess-dialect "R")
-      ;; don't detect intermediate prompts
-      (setq content (concat "{" content "}\n")))
-    (ess-command content)))
 
 (defcustom ess-idle-timer-interval 1
   "Number of idle seconds to wait before running function in
@@ -687,7 +587,7 @@ See also `ess-use-ido'."
       (eldoc-mode 1))
 
     ;; tracebug
-    (when (and ess-use-tracebug inferior isR)
+    (when (and ess-use-tracebug inferior isR (fboundp 'ess-tracebug))
       (ess-tracebug 1))))
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
@@ -751,7 +651,8 @@ Invoke this command with C-u C-u C-y."
     (push-mark beg)
     (setq this-command t)
     (insert-for-yank (current-kill 0))
-    (ess-transcript-clean-region beg (point) nil)
+    (when (and (require 'ess-trns) (fboundp 'ess-transcript-clean-region))
+      (ess-transcript-clean-region beg (point) nil))
     (if (eq (point) beg)
         (message "No commands found"))
     (if (eq this-command t)
@@ -795,6 +696,7 @@ GTags file (default TAGS): ")
     (require 'tramp)
     (setq tagfile (with-parsed-tramp-file-name tagfile foo foo-localname)))
   (when (file-remote-p dir)
+    (require 'tramp)
     (setq dir (with-parsed-tramp-file-name dir foo foo-localname)))
   (if (and ess-build-tags-command (null current-prefix-arg))
       (ess-eval-linewise (format ess-build-tags-command dir tagfile))
@@ -848,9 +750,9 @@ Otherwise try a list of fixed known viewers.
                     (executable-find "acroread")
                     (executable-find "xdg-open")
                     ;; this one is wrong, (ok for time being as it is used only in swv)
-                    (car (ess-get-words-from-vector
-                          "getOption(\"pdfviewer\")\n"))
-                    )))
+                    (when (fboundp 'ess-get-words-from-vector)
+                      (car (ess-get-words-from-vector
+                          "getOption(\"pdfviewer\")\n"))))))
     (when (stringp viewer)
       (setq viewer (file-name-nondirectory viewer)))
     viewer))
@@ -1184,7 +1086,8 @@ variable `ess--fn-name-start-cache'."
         (if (and mark (>= (point) mark))
             (narrow-to-region mark (point)))
 
-        (and ess-noweb-mode
+        (and (fboundp 'ess-noweb-narrow-to-chunk)
+             (bound-and-true-p ess-noweb-mode)
              (ess-noweb-narrow-to-chunk))
 
         (unless (ess-inside-string-p)
@@ -1219,11 +1122,10 @@ Package_name is also nil when funname was not found, or funname
 is a special name that contains :,$ or @.
 
 If PROC is given, it should be an ESS process which should be
-queried for arguments.
-"
-
+queried for arguments."
   (when (and funname ;; usually returned by ess--fn-name-start (might be nil)
-             (or proc (ess-process-live-p)))
+             (or proc (and (fboundp 'ess-process-live-p)
+                           (ess-process-live-p))))
     (let* ((proc (or proc (get-process ess-local-process-name)))
            (args (gethash funname (process-get proc 'funargs-cache)))
            (pack (caar args))
@@ -1249,6 +1151,122 @@ queried for arguments.
 		           (setcar args (cons (car args) (current-time)))))
 	         ;; push even if nil
 	         (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
+
+(defun ess-beginning-of-function (&optional no-error)
+  "Leave (and return) the point at the beginning of the current ESS function.
+If the optional argument NO-ERROR is non-nil, the function returns nil when
+it cannot find a function beginning."
+  ;; FIXME: should not throw error in accordance with beginning-of-defun and
+  ;; beginning-of-defun-function specification
+  ;; FIXME: should __WORK__ in the crucial case: large function w/ internal function defs
+  (interactive)
+  (let ((init-point (point))
+        (in-set-S4 nil)
+        beg end done)
+
+    ;; Note that we must be sure that we are past the 'function (' text,
+    ;; such that ess-function-pattern is found in BACKwards later.
+    ;; In case we're sitting in a function or setMethod() header,
+    ;; we need to move further.
+    ;; But not too far! {wrongly getting into next function}
+    (if (search-forward "("
+                        (ess-line-end-position 2) t) ; at most end of next line
+        (forward-char 1))
+    ;; TODO: replace the above by hopefully more sucessful logic:
+    ;; 1. If we have 'function *(' in the same line, move to end of that line
+    ;; 2. if *not*, skip all comment lines (concat space comment-char .* "\n")
+    ;;    and only* then do something like the
+    ;;    (search-forward '(' .. (..line-end.. 2) )  above
+
+    (setq end (point))             ; = init-point when nothing found
+
+    (ess-write-to-dribble-buffer
+     (format "ess-BEG-of-fun after 'search-FWD (': Ini-pt %d, (p)-Ini-pt = %d\n"
+             init-point (- end init-point)))
+    (if (and (> end 1)
+             (re-search-backward ;; in case of setMethod() etc ..
+              ess-r-set-function-start
+              ;; at most 1 line earlier {2 is too much: finds previous sometimes}
+              (+ 1 (ess-line-end-position -1)) t))
+
+        (progn ;; yes we *have* an S4  setMethod(..)-like
+          (setq in-set-S4 t
+                beg (point))
+          (ess-write-to-dribble-buffer
+           (format " set*() function start at position %d" beg))
+          ;; often need to move even further to have 'function(' to our left
+          ;;        (if (search-forward "function" end t)
+          ;;            (ess-write-to-dribble-buffer
+          ;;             (format " -> 'function' already at pos %d\n" (point)))
+          ;;          ;; else need to move further
+          (goto-char end)
+          ;; search 4 lines, we are pretty sure now:
+          (search-forward
+           "function" (ess-line-end-position 4) t)
+          ;;        )
+          (search-forward "(" (ess-line-end-position) t))
+      ;; else: regular function; no set*Method(..)
+      (ess-write-to-dribble-buffer "ELSE  not in setMethod() header ...\n"))
+
+    (while (not done)
+      ;; Need this while loop to skip over local function definitions
+
+      ;; In the case of non-success, it is inefficiently
+      ;; going back in the buffer through all function definitions...
+      (unless
+          (and (re-search-backward ess-function-pattern (point-min) t)
+               (not (ess-inside-string-or-comment-p (point))))
+        (goto-char init-point)
+        (if no-error
+            (setq  done t  beg nil)
+          ;; else [default]:
+          (error "Point is not in a function according to 'ess-function-pattern'.")))
+      (unless done
+        (setq beg (point))
+        (ess-write-to-dribble-buffer
+         (format "\tMatch,Pt:(%d,%d),%d\n"
+                 (match-beginning 0) (match-end 0) beg))
+        (setq in-set-S4 (looking-at ess-r-set-function-start))
+        (forward-list 1)              ; get over arguments
+
+        ;; The following used to bomb  "Unbalanced parentheses", n1, n2
+        ;; when the above (search-forward "(" ..) wasn't delimited :
+        (unless in-set-S4 (forward-sexp 1)) ; move over braces
+        ;;DBG (ess-write-to-dribble-buffer "|")
+        (setq end (point))
+        (goto-char beg)
+        ;; current function must begin and end around point
+        (setq done (and (>= end init-point) (<= beg init-point)))))
+    beg))
+
+(defun ess-end-of-function (&optional beginning no-error)
+  "Leave the point at the end of the current ESS function.
+Optional argument for location of beginning.  Return '(beg end)."
+  (interactive)
+  (if beginning
+      (goto-char beginning)
+    (setq beginning (ess-beginning-of-function no-error)))
+  (if beginning
+      ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
+      (let ((in-set-S4 (looking-at ess-r-set-function-start))
+            (end-pos) (npos))
+        (ess-write-to-dribble-buffer
+         (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
+        (forward-list 1)      ; get over arguments || whole set*(..)
+        (unless in-set-S4 (forward-sexp 1)) ; move over braces
+        (ess-write-to-dribble-buffer
+         (format "ess-END-of-fun: found #1 : %d\n" (point)))
+
+        ;; For one-line functions withOUT '{ .. }' body  -- added 2008-07-23 --
+        ;; particularly helpful for C-c C-c (ess-eval-function-or-paragraph-and-step):
+        (setq end-pos (ess-line-end-position))
+        (while (< (point) end-pos) ; if not at end of line, move further forward
+          (goto-char ;; careful not to move too far; e.g. *not* over empty lines:
+           (min (save-excursion (forward-sexp 1) (point))
+                (save-excursion (forward-paragraph 1) (point)))))
+        (list beginning (point)))
+    ;; else: 'no-error': we are not in a function
+    nil))
 
 (defun ess-symbol-at-point ()
   "Like `symbol-at-point' but consider fully qualified names.
@@ -1595,6 +1613,26 @@ Adds the `ess-face-adjusted' property so we only adjust face once."
 (defun ess-sleep ()
   "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
+
+(defun ess-setq-vars-local (alist &optional buf)
+  "Set language variables from ALIST, in buffer BUF, if desired."
+  (when buf (set-buffer buf))
+  (mapc (lambda (pair)
+          (make-local-variable (car pair))
+          (set (car pair) (eval (cdr pair)))
+          (when ess--make-local-vars-permanent
+            (put (car pair) 'permanent-local t))) ;; hack for Rnw
+        alist))
+
+(defun ess-setq-vars-default (alist &optional buf)
+  "Set language variables from ALIST, in buffer BUF, if desired."
+  (when buf (set-buffer buf))
+  (mapc (lambda (pair)
+          (set-default (car pair) (eval (cdr pair))))
+        alist))
+
+(defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
+  "Regexp to search for errors.")
 
 (provide 'ess-utils)
 

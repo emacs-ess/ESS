@@ -40,11 +40,15 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'tramp)
-  (require 'reporter)
-  (require 'ess-inf)
-  (require 'info))
+  (require 'reporter))
 
+(require 'info)
 (require 'ess)
+(require 'ess-inf)
+(require 'ess-utils)
+
+(defvar ess--help-frame nil
+  "Stores the frame used for displaying R help buffers.")
 
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -536,9 +540,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
         (pop-to-buffer buff action)
       (display-buffer buff action))))
 
-(defvar ess--help-frame nil
-  "Stores the frame used for displaying R help buffers.")
-
 (defun ess-help-web-search ()
   "Search the web for documentation"
   (interactive)
@@ -694,7 +695,6 @@ Other keybindings are as follows:
   (require 'easymenu)
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
     "Menu keymap for ess-help mode." ess-help-mode-menu)
-  (easy-menu-add ess-help-mode-menu-map ess-help-mode-map)
 
   ;; Add the keys for navigating among sections; this is done
   ;; dynamically since different languages (e.g. S vs R) have different

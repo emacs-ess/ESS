@@ -45,7 +45,10 @@
 (require 'ess-r-completion)
 (require 'ess-r-syntax)
 (require 'ess-r-package)
+(require 'ess-trns)
 (when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
+;; TODO: Remove when we drop support for Emacs 24:
+(declare-function ess-r-xref-backend "exx-r-xref")
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
 ;; TODO: Refactor so as to not rely on dynamic scoping.  After that
@@ -249,6 +252,13 @@
     table)
   "Syntax table used for completion and help symbol lookup.
 It makes underscores and dots word constituent chars.")
+
+(defvar ess-r-namespaced-load-verbose t
+  "Whether to display information on namespaced loading.
+
+When t, loading a file into a namespaced will output information
+about which objects are exported and which stay hidden in the
+namespace.")
 
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
@@ -1063,10 +1073,6 @@ variable.")
       (and ess-current-process-name
            (ess-get-process-variable 'ess-r-evaluation-env))))
 
-(defvar ess-r-prompt-for-attached-pkgs-only nil
-  "If nil provide completion for all installed R packages.
-If non-nil, only look for attached packages.")
-
 (defun ess-r-set-evaluation-env (&optional arg)
   "Select a package namespace for evaluation of R code.
 
@@ -1102,13 +1108,6 @@ attached packages."
                                      'face 'mode-line-emphasis))
               ""))))
 (put 'ess-r--evaluation-env-mode-line 'risky-local-variable t)
-
-(defvar ess-r-namespaced-load-verbose t
-  "Whether to display information on namespaced loading.
-
-When t, loading a file into a namespaced will output information
-about which objects are exported and which stay hidden in the
-namespace.")
 
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")

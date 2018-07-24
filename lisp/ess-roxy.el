@@ -112,6 +112,10 @@
   "When non-nil, the `@examples' field is fontified as ordinary code.
 Experimental feature with known bugs.")
 
+(defvar ess-roxy-fold-examples nil
+  "Whether to fold `@examples' when opening a buffer.
+Use you regular key for `outline-show-entry' to reveal it.")
+
 (defun ess-roxy-extend-region-to-field (start end)
   (if (or (progn
             (goto-char start)
@@ -246,10 +250,6 @@ Experimental feature with known bugs.")
 
 
 ;;*;; Outline Integration
-
-(defvar ess-roxy-fold-examples nil
-  "Whether to fold `@examples' when opening a buffer.
-Use you regular key for `outline-show-entry' to reveal it.")
 
 (defvar ess-roxy-outline-regexp "^#+' +@examples\\|^[^#]")
 

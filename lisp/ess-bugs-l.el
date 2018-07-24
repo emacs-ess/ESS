@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'font-lock)
+(require 'shell)
 (require 'comint)
 (require 'ess-utils)
 (require 'ess-custom)
@@ -270,7 +271,6 @@ add path to the command name."
 (defun ess-bugs-shell ()
   "Create a buffer with BUGS running as a subprocess."
   (interactive)
-  (require 'shell)
   (switch-to-buffer (concat "*" ess-bugs-shell-buffer-name "*"))
   (make-comint ess-bugs-shell-buffer-name ess-bugs-shell-command nil
                ess-bugs-default-bins ess-bugs-shell-default-output-file-root)

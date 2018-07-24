@@ -45,6 +45,7 @@
 (require 'ess-sp6-d)
 (require 'ess-sp6w-d)
 (require 'ess-stata-mode)
+(require 'ess-trns)
 (require 'ess-utils)
 (require 'ess-vst-d)
 (require 'ess-xls-d)

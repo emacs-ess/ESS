@@ -35,6 +35,8 @@
 
  ; Requires and autoloads
 
+(require 'ess-custom)
+(require 'ess-inf)
 (require 'ess-noweb-mode)
 
  ; Variables

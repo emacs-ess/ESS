@@ -187,6 +187,12 @@ Cons cell containing the token type and string representation."
       (list (ess-token--cons token-type token-value)
             (cons (point) token-end)))))
 
+(defsubst ess-climb-token--char (&rest chars)
+  (ess-while (and chars
+                  (eq (char-before) (car chars))
+                  (ess-backward-char))
+    (setq chars (cdr chars))))
+
 ;; Difficult to use regexps here because we want to match greedily
 ;; backward
 (defun ess-climb-token--operator ()
@@ -217,12 +223,6 @@ Cons cell containing the token type and string representation."
            (prog1 (ess-backward-char)
              (ess-climb-token--char ?: ?:))))
     'self))
-
-(defsubst ess-climb-token--char (&rest chars)
-  (ess-while (and chars
-                  (eq (char-before) (car chars))
-                  (ess-backward-char))
-    (setq chars (cdr chars))))
 
 (defun ess-climb-token--back-and-forth ()
   (let ((limit (point)))

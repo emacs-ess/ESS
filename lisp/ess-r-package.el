@@ -30,7 +30,19 @@
 
 ;;; Code:
 
+(require 'ess-custom)
+(require 'ess-inf)
 (require 'ess-utils)
+;; Silence the byte compiler, OK because this file is only loaded by
+;; ess-r-mode and has no autoloads.
+(defvar ess-r-customize-alist)
+(declare-function inferior-ess-r-force "ess-r-mode")
+(declare-function ess-r-get-evaluation-env "ess-r-mode")
+(declare-function ess-r-set-evaluation-env "ess-r-mode")
+
+(defvar ess-r-prompt-for-attached-pkgs-only nil
+  "If nil provide completion for all installed R packages.
+If non-nil, only look for attached packages.")
 
 (defcustom ess-r-package-auto-enable-namespaced-evaluation t
   "If non-nil, evaluation env is set to package env automatically.

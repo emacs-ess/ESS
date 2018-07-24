@@ -34,6 +34,7 @@
 ;;; Requires and Autoloads:
 
 (require 'ess-omg-l)
+(require 'ess-trns)
 
 (defvar OMG-dialect-name "OMG"
   "Name of 'dialect' for Omega.") ;easily changeable in a user's .emacs

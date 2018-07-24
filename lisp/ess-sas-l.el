@@ -53,6 +53,8 @@
 (require 'ess-custom)
 (require 'ess-sas-a)
 
+(declare-function SAS-mode "ess-sas-d")
+
 (put 'ess-transcript-minor-mode 'permanent-local t)
 (or (assq 'ess-transcript-minor-mode minor-mode-alist)
     (setq minor-mode-alist
