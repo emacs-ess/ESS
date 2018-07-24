@@ -32,9 +32,11 @@
 ;;
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 (require 'ess-custom)
 (require 'flymake)
+;; TODO: When remove support for Emacs 24, remove the nil t:
+(require 'project nil t)
 
 (defcustom ess-r-flymake-linters
   '("commented_code_linter = NULL"
@@ -62,23 +64,44 @@ each element is passed as argument to 'lintr::with_defaults'."
 
 (defvar-local ess-r--flymake-proc nil)
 
+(defvar-local ess-r--lintr-file nil
+  "Location of the .lintr file for this buffer.")
+
 (defvar ess-r--flymake-def-linter
   (replace-regexp-in-string
    "[\n\t ]+" " "
-   "esslint <- function(str, linters, cache) {
+   "esslint <- function(str, ...) {
     if (!suppressWarnings(require(lintr, quietly=T))) {
         cat('@@error: @@`lintr` package not installed')
     } else {
         if (packageVersion('lintr') <= '1.0.1') {
             cat('@@error: @@Need `lintr` version > v1.0.1')
         } else {
-            tryCatch(lintr::lint(commandArgs(TRUE), linters = linters, cache = cache),
+            tryCatch(lintr::lint(commandArgs(TRUE), ...),
                     error = function(e) {
                        cat('@@warning: @@', e)
                     })
         }
     }
 };"))
+
+(defun ess-r--find-lintr-file ()
+  "Return the absolute path to the .lintr file.
+Check first the current directory, then the project root, then
+the user's home directory.  Return nil if we couldn't find a .lintr file."
+  (cond (;; current directory
+         (file-readable-p (expand-file-name ".lintr" default-directory))
+         (expand-file-name ".lintr" default-directory))
+        ;; Project root
+        ((and (fboundp 'ess-r-package-project)
+              (ess-r-package-project)) (expand-file-name ".lintr" (cdr (ess-r-package-project))))
+        ((and (fboundp 'project-roots)  ; checking that project-roots is defined can be removed when drop Emacs 24
+              (project-current)
+              (project-roots (project-current)))
+         (expand-file-name ".lintr" (car (project-roots (project-current)))))
+        ;; Home directory
+        ((file-readable-p (expand-file-name ".lintr" (getenv "HOME")))
+         (expand-file-name ".lintr" (getenv "HOME")))))
 
 (defun ess-r--flymake-linters ()
   "If `ess-r-flymake-linters' is a string, use that.
@@ -158,13 +181,16 @@ REPORT-FN is flymake's callback function."
            :command (list inferior-R-program
                           "--no-save" "--no-restore" "--no-site-file" "--no-init-file" "--slave"
                           "-e" (concat
+                                (when ess-r--lintr-file
+                                  (concat "options(lintr.linter_file = \"" ess-r--lintr-file "\");"))
                                 ess-r--flymake-def-linter
                                 ;; commandArgs(TRUE) returns everything after
                                 ;; --args as a character vector
-                                "esslint(commandArgs(TRUE),"
-                                "linters = " (ess-r--flymake-linters)
-                                (when ess-r-flymake-lintr-cache
-                                  ", cache = TRUE")
+                                "esslint(commandArgs(TRUE)"
+                                (unless ess-r--lintr-file
+                                  ",linters = " (ess-r--flymake-linters)
+                                  (when ess-r-flymake-lintr-cache
+                                    ", cache = TRUE"))
                                 ")")
                           "--args" (buffer-substring-no-properties
                                     (point-min) (point-max)))
@@ -187,6 +213,7 @@ Activate flymake only if `ess-use-flymake' is non-nil."
     (when (< emacs-major-version 26)
       (error "ESS-flymake requires Emacs version 26 or later"))
     (when (string= "R" ess-dialect)
+      (setq ess-r--lintr-file (ess-r--find-lintr-file))
       (add-hook 'flymake-diagnostic-functions #'ess-r-flymake nil t)
       ;; Try not to enable flymake if flycheck is already running:
       (unless (bound-and-true-p flycheck-mode)
