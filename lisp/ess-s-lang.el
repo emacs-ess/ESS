@@ -521,10 +521,9 @@ and one that is well formatted in emacs ess-mode."
    (format "ess-fix-misc begin (from = %s, verbose = %s)\n" from verbose))
   (save-excursion
 
-    (if (string= ess-dialect "R")
-        (progn
-          (require 'ess-r-mode)
-          (R-fix-T-F from (not verbose))))
+    (when (and (string= ess-dialect "R")
+               (fboundp 'ess-r-fix-T-F))
+      (ess-r-fix-T-F from (not verbose)))
 
     ;; activate by (setq ess-verbose t)
     (ess-if-verbose-write "ess-fix-misc: after fix-T-F\n");___D___
