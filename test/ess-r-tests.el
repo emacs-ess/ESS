@@ -57,7 +57,25 @@
     (insert "\"hop\"\n")
     (let (ess-eval-visibly)
       (should (output= (ess-eval-buffer nil)
-                       "[1] \"hop\"")))))
+                "[1] \"hop\"")))))
+
+(when (> emacs-major-version 24)
+  ;; Skip before Emacs 25 when rectangle-mark-mode was improved. We
+  ;; have to wrap the whole thing in that when statement because ert's
+  ;; skip-unless was only introduced in Emacs 24.4 and we're testing
+  ;; all the way back to Emacs 24.3 still, ugh.
+  (ert-deftest ess-r-eval-rectangle-mark-mode ()
+    (with-r-running nil
+      (insert "x <- 1\nx\nx + 1\nx  +  2\n")
+      (let (ess-eval-visibly)
+        (should (output= (progn
+                           (goto-char (point-min))
+                           (transient-mark-mode)
+                           (rectangle-mark-mode)
+                           (forward-line 3)
+                           (end-of-line)
+                           (ess-eval-region-or-line-and-step))
+                  "> [1] 1\n> [1] 2\n> [1] 3"))))))
 
 (ert-deftest ess-set-working-directory ()
   (with-r-running nil
