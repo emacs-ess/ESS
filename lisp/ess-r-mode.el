@@ -908,9 +908,11 @@ See `ess-noweb-mode' and `R-mode' for more help."
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("r" . R-mode))
 
-(defun R-fix-T-F (&optional from quietly)
-  "Fix T/F into TRUE and FALSE *cautiously*, i.e. not in comments and strings;
- starting from the current position (point)."
+(defun ess-r-fix-T-F (&optional from quietly)
+  "Change T/F into TRUE and FALSE cautiously.
+Do not change in comments and strings. Start at FROM, which
+defaults to point, and change to end of buffer. When QUIETLY, do
+not issue messages."
   (interactive "d\nP"); point and prefix (C-u)
   (save-excursion
     (goto-char from)
@@ -919,6 +921,8 @@ See `ess-noweb-mode' and `R-mode' for more help."
     (goto-char from)
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
                     'fixcase nil (not quietly))))
+(define-obsolete-function-alias 'R-fix-T-F 'ess-r-fix-T-F
+  "2018-07-25")
 
 (defvar ess--packages-cache nil
   "Cache var to store package names. Used by
