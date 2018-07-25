@@ -1611,11 +1611,13 @@ they might throw off the debugger."
     (setq end (point))))
 
 (defun ess-eval-region (start end toggle &optional message type)
-  "Send the current region to the inferior ESS process.
-With prefix argument toggle the meaning of `ess-eval-visibly';
-this does not apply when using the S-plus GUI, see
-`ess-dde-send-region'. TYPE is a symbol indicating what type of
-region this is."
+  "Send the region from START to END to the inferior ESS process.
+TOGGLE switches the meaning of `ess-eval-visibly'. If given,
+MESSAGE is `message'ed. TYPE is a symbol indicating what type of
+region this is.
+
+If command `rectangle-mark-mode' is active, send the lines of the
+rectangle separately to the inferior process."
   (interactive "r\nP")
 
   (ess-force-buffer-current "Process to use: ")
@@ -1625,18 +1627,30 @@ region this is."
     ;; External applications might call ess-eval-* functions; make it
     ;; easier for them
     (ess-setq-vars-local (symbol-value (ess-get-process-variable 'ess-local-customize-alist))))
+  (if (and (bound-and-true-p rectangle-mark-mode)
+           ;; TODO: Remove this check after dropping support for Emacs
+           ;; 24, replace by putting this at the top of this file:
+           ;; (declare-function extract-rectangle-bounds "rect")
+           (fboundp 'extract-rectangle-bounds))
+      ;; If we're in rectangle-mark-mode, loop over each line of the
+      ;; rectangle. Send them separately.
+      (let ((reclines (extract-rectangle-bounds (min (mark) (point)) (max (mark) (point)))))
+        (mapc (lambda (l)
+                (ess--eval-region (car l) (cdr l) toggle message type))
+              reclines))
+    (ess--eval-region start end toggle message type)))
 
+(defun ess--eval-region (start end toggle &optional message type)
+  "Helper function for `ess-eval-region', which see.
+START, END, TOGGLE, MESSAGE, and TYPE described there."
   (ess-eval-region--normalise-region)
-
   (let ((visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
         (message (or message "Eval region"))
         (proc (ess-get-process)))
     (save-excursion
       (ess-send-region proc start end visibly message type)))
-
   (when ess-eval-deactivate-mark
     (ess-deactivate-mark))
-
   (list start end))
 
 (defun ess-eval-buffer (vis)
@@ -1747,11 +1761,12 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
         (ess-next-code-line 1)))))
 
 (defun ess-eval-region-or-function-or-paragraph (vis)
-  "Send the current region if mark is active, if not, send
-function if \\[point] is inside one, otherwise the current
-paragraph.
+  "Send the region, function, or paragraph depending on context.
+Send the region if it is active. If not, send function if `point'
+is inside one, otherwise the current paragraph. Treats
+rectangular regions as `ess-eval-region' does.
 
- Prefix arg VIS toggles visibility of ess-code as for
+Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
   (if (use-region-p)
@@ -1759,12 +1774,14 @@ paragraph.
     (ess-eval-function-or-paragraph vis)))
 
 (defun ess-eval-region-or-function-or-paragraph-and-step (vis)
-  "Send the current region if mark is active, if not, send
-function if \\[point] is inside one, otherwise the current
-paragraph. After evaluation step to the next code line or to the
-end of region if region was active.
+  "Send the region, function, or paragraph depending on context.
+Send the region if it is active. If not, send function if `point'
+is inside one, otherwise the current paragraph. Treats
+rectangular regions as `ess-eval-region' does. After evaluation
+step to the next code line or to the end of region if region was
+active.
 
- Prefix arg VIS toggles visibility of ess-code as for
+Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
   (if (use-region-p)
@@ -1841,10 +1858,10 @@ true."
 (defun ess-eval-region-or-line-and-step (&optional vis)
   "Evaluate region if there is an active one, otherwise the current line.
 
- Prefix arg VIS toggles visibility of ess-code when evaluating
- the region (as for `ess-eval-region') and has no effect for
- evaluation of the line.
-"
+Prefix arg VIS toggles visibility of ess-code when evaluating the
+region (as for `ess-eval-region') and has no effect for
+evaluation of the line. Treats rectangular regions as
+`ess-eval-region' does."
   (interactive "P")
   (if (use-region-p)
       (ess-eval-region (region-beginning) (region-end) vis)
@@ -1856,19 +1873,13 @@ Evaluate all comments and empty lines."
   (interactive)
   (ess-eval-line-and-step t t t))
 
-;; goes to the real front, in case you do double function definition
-;; 29-Jul-92 -FER
-;; don't know why David changed it.
-
-;; FER's versions don't work properly with nested functions. Replaced
-;; mine. DMS 16 Nov 92
-
-
 ;;;*;;; Evaluate and switch to S
 
 (defun ess-eval-region-and-go (start end vis)
-  "Send the current region to the inferior S and switch to the process buffer.
-Arg has same meaning as for `ess-eval-region'."
+  "Send region from START to END to the inferior process buffer.
+START and END default to the current region, and rectangular
+regions are treated as `ess-eval-region'. VIS has same meaning as
+for `ess-eval-region'."
   (interactive "r\nP")
   (ess-eval-region start end vis)
   (ess-switch-to-ESS t))
