@@ -233,14 +233,6 @@
 (modify-syntax-entry ?@ "." ess-r-syntax-table)
 (modify-syntax-entry ?$ "." ess-r-syntax-table)
 
-;; TOTHINK: Prevent string delimiting characters from messing up output in the
-;; inferior buffer
-(defvar inferior-ess-r-syntax-table (copy-syntax-table ess-r-syntax-table))
-(modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
-;; (modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
-;; (modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
-(modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
-
 (defvar ess-r-completion-syntax-table
   (let ((table (make-syntax-table ess-r-syntax-table)))
     (modify-syntax-entry ?. "_" table)
@@ -497,13 +489,6 @@ before ess-site is loaded) for it to take effect.")
 (define-obsolete-variable-alias 'ess-R-post-run-hook 'ess-r-post-run-hook "ESS 18.10.2")
 (defvar ess-r-post-run-hook nil
   "Functions run in process buffer after the initialization of R process.")
-
-(defun ess-r-mode-p ()
-  "Check whether we have a buffer running in R mode.
-
-This is to get around the lack of proper derived modes in ESS."
-  (and (eq major-mode 'ess-mode)
-       (string= ess-dialect "R")))
 
 ;;;###autoload
 (defun run-ess-r (&optional start-args)
@@ -2202,6 +2187,32 @@ state.")
       (undo-boundary))))
 
 
+
+;;;*;;; Inferior R mode
+
+(defvar inferior-ess-r-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\M-\r" 'ess-dirs)
+    map)
+  "Keymap for `inferior-ess-r-mode'.")
+
+;; TOTHINK: Prevent string delimiting characters from messing up output in the
+;; inferior buffer
+(defvar inferior-ess-r-mode-syntax-table
+  (let ((table (copy-syntax-table ess-r-mode-syntax-table)))
+    (modify-syntax-entry ?% "." table)
+    (modify-syntax-entry ?\' "." table)
+    table)
+  "Syntax table for `inferior-ess-r-mode'.")
+
+(define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
+  "Major mode for interacting with inferior R processes."
+  (setq-local comint-process-echoes (eql ess-eval-visibly t))
+  (setq comint-get-old-input #'inferior-ess-get-old-input)
+  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local))
+
+
+
 
 ;; Create functions that can be called for running different versions
 ;; of R.

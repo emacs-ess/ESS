@@ -53,6 +53,7 @@
 (declare-function tramp-sh-handle-expand-file-name "tramp-sh")
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
+(declare-function inferior-ess-r-mode "ess-r-mode")
 
 (declare-function ess-mode "ess")
 
@@ -62,9 +63,10 @@
 (defvar start)
 (defvar end)
 
-(defvar inferior-ess-mode-syntax-table (make-syntax-table)
+(defvar inferior-ess-mode-syntax-table
+  (let ((tab (copy-syntax-table comint-mode-syntax-table)))
+    tab)
   "Syntax table for `inferior-ess-mode'.")
-(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
 
  ;;*;; Process handling
 
@@ -219,15 +221,20 @@ This may be useful for debugging."
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
             (set-buffer buf)
-            ;; FIXME: we need this horrible hack so that
-            ;; inferior-ess-mode-syntax-table gets set. A saner way
-            ;; might be to define a major mode for each inferior mode.
-            ;; This would also have the advantage of having
-            ;; inferior-ess-r-mode-map and whatnot:
-            (setq-local inferior-ess-mode-syntax-table
-                        (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
-                                  (alist-get 'ess-mode-syntax-table ess-customize-alist))))
-            (inferior-ess-mode)
+            (cond ((string= "R" ess-dialect)
+                   (progn (require 'ess-r-mode)
+                          (inferior-ess-r-mode)))
+                  ;; FIXME: we need this horrible hack so that
+                  ;; inferior-ess-mode-syntax-table gets set for
+                  ;; languages that still rely on the old way of doing
+                  ;; things (before we used define-derived-mode for
+                  ;; inferior modes).
+                  (t
+                   (progn
+                     (setq-local inferior-ess-mode-syntax-table
+                                 (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
+                                           (alist-get 'ess-mode-syntax-table ess-customize-alist))))
+                     (inferior-ess-mode))))
             (ess-write-to-dribble-buffer
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
                      inferior-ess-program infargs comint-process-echoes))
@@ -1735,7 +1742,7 @@ meaning as for `ess-eval-region'."
   (ess-eval-paragraph vis)
   (ess-step-line 'paragraph))
 
- ; Inferior S mode
+ ; Inferior ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
 ;;;;
@@ -1849,11 +1856,8 @@ to continue it."
   (setq-local comint-input-sender 'inferior-ess-input-sender)
 
   ;; If comint-process-echoes is t  inferior-ess-input-sender
-  ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
-  (setq-local comint-process-echoes (unless (and (member ess-dialect '("R")) ;; S+ echoes!!
-                                                 ;; when 'nowait or nil, don't wait for process
-                                                 (not (eq ess-eval-visibly t)))
-                                      (not (member ess-language '("SAS" "XLS" "OMG" "julia")))))
+  ;; recopies the input, otherwise not
+  (setq-local comint-process-echoes (not (member ess-language '("SAS" "XLS" "OMG" "julia"))))
 
   (when comint-use-prompt-regexp ;; why comint is not setting this? bug?
     (setq-local inhibit-field-text-motion t))
@@ -1866,17 +1870,12 @@ to continue it."
                   inferior-ess-secondary-prompt
                   "\\)")))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-  (setq comint-get-old-input 'inferior-ess-get-old-input) ;; todo: this is R specific
-  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local) ;; R and S specific
 
   (setq mode-line-process
         '(" ["
           ess--mode-line-process-indicator
           ess--local-mode-line-process-indicator
           "]: %s"))
-
-  (when (string= ess-language "S") ;; todo: what is this doing here?
-    (local-set-key "\M-\r"    'ess-dirs))
 
   ;;; Completion support ----------------
   (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the hook
