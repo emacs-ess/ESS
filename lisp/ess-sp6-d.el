@@ -141,7 +141,8 @@ New way to do it."
   "Major mode for editing S+ source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+-customize-alist)
-  (ess-mode S+-customize-alist proc-name)
+  (setq-local ess-local-customize-alist S+-customize-alist)
+  (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (if ess-imenu-use-S (ess-imenu-S)))
 

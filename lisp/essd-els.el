@@ -82,7 +82,8 @@ The default value is nil."
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+elsewhere-customize-alist)
-  (ess-mode S+elsewhere-customize-alist proc-name))
+  (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
+  (ess-mode))
 
 (defun S+elsewhere-transcript-mode ()
   "S-PLUS 3.x transcript mode."

@@ -80,7 +80,8 @@
   "Major mode for editing Stata source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist STA-customize-alist)
-  (ess-mode STA-customize-alist proc-name))
+  (setq-local ess-local-customize-alist STA-customize-alist)
+  (ess-mode))
 
 (fset 'stata-mode 'STA-mode)
 (fset 'Stata-mode 'STA-mode)

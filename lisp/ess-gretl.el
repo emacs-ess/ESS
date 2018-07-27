@@ -550,13 +550,8 @@ been created using the variable `ess-r-versions'."
   (interactive "P")
   ;; (setq ess-customize-alist gretl-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
-  (ess-mode gretl-customize-alist proc-name)
-  ;; for emacs < 24
-  ;; (add-hook 'comint-dynamic-complete-functions 'ess-complete-object-name nil 'local)
-  ;; for emacs >= 24
-  ;; (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  ;; (add-hook 'completion-at-point-functions 'ess-object-completion nil 'local)
-  ;; (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (setq-local ess-local-customize-alist gretl-customize-alist)
+  (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   ;; (local-set-key  "\t" 'gretl-indent-line) ;; temp workaround

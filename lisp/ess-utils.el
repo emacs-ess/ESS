@@ -586,10 +586,8 @@ See also `ess-use-ido'."
 
 (defun ess-load-extras (&optional inferior)
   "Load all the extra features depending on custom settings."
-
   (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
-        (isR (string-match "^R" ess-dialect)))
-
+        (isR (memq major-mode '(ess-r-mode ess-inferior-r-mode))))
     ;; auto-complete
     (when (and (boundp 'ac-sources)
                (if inferior
@@ -1261,7 +1259,6 @@ Optional argument for location of BEGINNING.  Return '(beg end)."
 Fully qualified names include accessor symbols (like aaa$bbb and
 aaa@bbb in R)."
   (with-syntax-table (or ess-mode-completion-syntax-table
-                         ess-mode-syntax-table
                          (syntax-table))
     (symbol-at-point)))
 
@@ -1269,7 +1266,6 @@ aaa@bbb in R)."
   "Get bounds of symbol at point.
 Intended for completion."
   (let ((bounds (with-syntax-table (or ess-mode-completion-syntax-table
-                                       ess-mode-syntax-table
                                        (syntax-table))
                   (bounds-of-thing-at-point 'symbol))))
     (and bounds

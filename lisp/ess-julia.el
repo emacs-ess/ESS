@@ -353,7 +353,7 @@ to look up any doc strings."
   "Variables to customize for Julia -- set up later than emacs initialization.")
 
 (defvar ess-julia-completion-syntax-table
-  (let ((table (make-syntax-table ess-r-syntax-table)))
+  (let ((table (make-syntax-table ess-r-mode-syntax-table)))
     (modify-syntax-entry ?. "_" table)
     ;; (modify-syntax-entry ?: "_" table)
     ;; (modify-syntax-entry ?$ "_" table)
@@ -365,7 +365,9 @@ It makes underscores and dots word constituent chars.")
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
-  (ess-mode ess-julia-customize-alist nil t)
+  (setq-local ess-local-customize-alist ess-julia-customize-alist)
+  (ess-mode)
+  ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)

@@ -1412,12 +1412,14 @@ prompts."
             (erase-buffer)))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
-  "Standard output filter for the inferior ESS process when `ess-debug' is active.
-Call `inferior-ess-output-filter'. Check for debug
+  "Standard output filter for the inferior ESS process.
+When `ess-debug' is active, this is the filter. Call
+`inferior-ess-output-filter'. Check for debug
 reg-expressions (see `ess--dbg-regexp-debug',...), when found
 puts iESS in the debugging state. If in debugging state, mirrors
 the output into *ess.dbg* buffer."
-  (let* ((is-iess (member major-mode (list 'inferior-ess-mode 'ess-watch-mode)))
+  (let* ((is-iess (or (eql major-mode 'ess-watch-mode)
+                      (derived-mode-p 'inferior-ess-mode)))
          (pbuf (process-buffer proc))
          (abuf (ess--accumulation-buffer proc))
          (dbuff (process-get proc 'dbg-buffer))
@@ -2170,7 +2172,7 @@ Returns the beginning position of the hidden text."
                 ;;                              'bp-substring 'comment)))
                 ))))))))
 
-(add-hook 'R-mode-hook 'ess-bp-recreate-all)
+(add-hook 'ess-r-mode-hook 'ess-bp-recreate-all)
 
 
 (defun ess-bp-get-bp-position-nearby ()
@@ -2879,7 +2881,7 @@ for signature and trace it with browser tracer."
 (defadvice delete-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when #chars is 1"
-  (if (and (eq major-mode 'ess-mode)
+  (if (and (derived-mode-p 'ess-mode)
            (= (ad-get-arg 0) 1)
            (get-text-property (point) 'intangible))
       (progn
@@ -2891,7 +2893,7 @@ Only do this when #chars is 1"
 (defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when called interactively and #chars is 1"
-  (if (and (eq major-mode 'ess-mode)
+  (if (and (derived-mode-p 'ess-mode)
            (= (ad-get-arg 0) 1)
            (> (point) (point-min))
            (get-text-property (1- (point)) 'intangible))

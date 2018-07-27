@@ -248,7 +248,7 @@ Namespaced evaluation is enabled if
                    (string= (directory-file-name subpath) "R")))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
-(add-hook 'R-mode-hook 'ess-r-package-enable-namespaced-evaluation)
+(add-hook 'ess-r-mode-hook 'ess-r-package-enable-namespaced-evaluation)
 
 (defun ess-r-package-eval-linewise (command &optional msg p actions pkg-path)
   "Send COMMAND to R process.

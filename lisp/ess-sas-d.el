@@ -184,7 +184,8 @@ Better logic needed!  (see 2 uses, in this file).")
   "Major mode for editing SAS source.  See ess-mode for more help."
   (interactive)
   (setq ess-customize-alist SAS-customize-alist)
-  (ess-mode SAS-customize-alist proc-name)
+  (setq-local ess-local-customize-alist SAS-customize-alist)
+  (ess-mode)
 
   ;; Local map settings, AFTER initialization (only if not yet defined)
   (if sas-mode-local-map

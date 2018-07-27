@@ -39,8 +39,8 @@ between .s or .S files and assembly mode.
           (remassoc "\\.[qsS]\\'" auto-mode-alist))
     ;; put .q extention back
     ;; (add-to-list is in xemacs and GNU emacs)
-    ;; R-mode when in a R/ subdirectory, otherwise S-mode:
-    (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
+    ;; ess-r-mode when in a R/ subdirectory, otherwise S-mode:
+    (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . ess-r-mode))
     (add-to-list 'auto-mode-alist '("\\.q\\'" . S-mode))
     ))
 

@@ -218,23 +218,23 @@
 (easy-menu-add-item inferior-ess-mode-menu nil ess-r-package-menu "end-dev")
 (easy-menu-add-item inferior-ess-mode-menu nil ess-tracebug-menu "end-dev")
 
+(defvar ess-r-mode-syntax-table
+  (let ((table (copy-syntax-table S-syntax-table)))
+    ;; Letting Emacs treat backquoted names and %ops% as strings solves
+    ;; many problems with regard to nested strings and quotes
+    (modify-syntax-entry ?` "\"" table)
+    (modify-syntax-entry ?% "\"" table)
+    ;; Underscore is valid in R symbols
+    (modify-syntax-entry ?_ "_" table)
+    (modify-syntax-entry ?: "." table)
+    (modify-syntax-entry ?@ "." table)
+    (modify-syntax-entry ?$ "." table)
+    table)
+  "Syntax table for `ess-r-mode'.")
 
-;; Inherit from the S syntax table:
-(defvar ess-r-syntax-table (copy-syntax-table S-syntax-table))
-
-;; Letting Emacs treat backquoted names and %ops% as strings solves
-;; many problems with regard to nested strings and quotes
-(modify-syntax-entry ?` "\"" ess-r-syntax-table)
-(modify-syntax-entry ?% "\"" ess-r-syntax-table)
-
-;; Underscore is valid in R symbols
-(modify-syntax-entry ?_ "_" ess-r-syntax-table)
-(modify-syntax-entry ?: "." ess-r-syntax-table)
-(modify-syntax-entry ?@ "." ess-r-syntax-table)
-(modify-syntax-entry ?$ "." ess-r-syntax-table)
 
 (defvar ess-r-completion-syntax-table
-  (let ((table (make-syntax-table ess-r-syntax-table)))
+  (let ((table (copy-syntax-table ess-r-mode-syntax-table)))
     (modify-syntax-entry ?. "_" table)
     (modify-syntax-entry ?: "_" table)
     (modify-syntax-entry ?$ "_" table)
@@ -351,7 +351,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-help-web-search-command           . #'ess-r-sos)
      (ess-build-help-command-function       . #'ess-r-build-help-command)
      (ess-dump-filename-template            . ess-r-dump-filename-template)
-     (ess-mode-editing-alist                . ess-r-editing-alist)
      (ess-change-sp-regexp                  . ess-r-change-sp-regexp)
      (ess-help-sec-regex                    . ess-help-r-sec-regex)
      (ess-help-sec-keys-alist               . ess-help-r-sec-keys-alist)
@@ -372,12 +371,9 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-describe-object-at-point-commands . 'ess-r-describe-object-at-point-commands)
      (ess-STERM                             . "iESS")
      (ess-editor                            . ess-r-editor)
-     (ess-pager                             . ess-r-pager)
-     (ess-mode-syntax-table                 . ess-r-syntax-table)
-     (font-lock-syntactic-face-function     . #'ess-r-font-lock-syntactic-face-function)
-     (prettify-symbols-alist                . ess-r-prettify-symbols))
+     (ess-pager                             . ess-r-pager))
    S-common-cust-alist)
-  "Variables to customize for R -- set up later than Emacs initialization.")
+  "Variables to customize for R.")
 
 ;; VS[24-08-2018]: FIXME: make initialization of custom-alist tail-to-top and
 ;; put this into the above alist
@@ -405,14 +401,6 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (defvar ess-r-company-backends
   '((company-R-library company-R-args company-R-objects :separate)))
-
-(defvar ess-r-editing-alist
-  ;; copy the S-alist and modify :
-  (let ((S-alist (copy-alist S-editing-alist)))
-    (setcdr (assoc 'ess-mode-syntax-table S-alist)
-            (quote ess-r-syntax-table))
-    S-alist)
-  "General options for editing R source files.")
 
 (defconst ess-help-r-sec-regex "^[A-Z][A-Za-z].+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
@@ -605,12 +593,20 @@ Executed in process buffer."
     (run-mode-hooks 'ess-r-post-run-hook)))
 
 ;;;###autoload
-(defun R-mode  (&optional proc-name)
+(define-derived-mode ess-r-mode ess-mode "ESS[R]"
   "Major mode for editing R source.  See `ess-mode' for more help."
-  (interactive "P")
-  (setq ess-customize-alist ess-r-customize-alist)
-  ;;(setq imenu-generic-expression R-imenu-generic-expression)
-  (ess-mode ess-r-customize-alist proc-name)
+  (ess-setq-vars-local ess-r-customize-alist)
+  (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local require-final-newline mode-require-final-newline)
+  (setq-local indent-line-function  'ess-indent-line)
+  (setq-local parse-sexp-ignore-comments t)
+  (setq-local ess-style ess-default-style)
+  (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
+  (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
+  (setq-local prettify-symbols-alist ess-r-prettify-symbols)
+  (setq font-lock-defaults '(ess-build-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w"))))
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
@@ -622,31 +618,31 @@ Executed in process buffer."
     (imenu-add-to-menubar "Imenu-R"))
 
   ;; useful for swankr/slime:
-  (set (make-local-variable 'beginning-of-defun-function)
-       (lambda (&optional arg)
-         (skip-chars-backward " \t\n")
-         (ess-beginning-of-function 'no-error)))
-  (set (make-local-variable 'end-of-defun-function)
-       'ess-end-of-function)
+  (setq-local beginning-of-defun-function
+              (lambda (&optional arg)
+                (skip-chars-backward " \t\n")
+                (ess-beginning-of-function 'no-error)))
+  (setq-local end-of-defun-function
+              'ess-end-of-function)
 
   (ess-roxy-mode t)
-  (ad-activate 'fill-paragraph)
-  (run-mode-hooks 'R-mode-hook))
+  (ad-activate 'fill-paragraph))
 ;;;###autoload
-(defalias 'r-mode #'R-mode)
+(define-obsolete-function-alias 'R-mode 'ess-r-mode)
 ;;;###autoload
-(defalias 'ess-r-mode #'R-mode)
+(defalias 'r-mode 'ess-r-mode)
+
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
+(add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
+(add-to-list 'auto-mode-alist '("\\.[rR]\\'" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.[rR]profile\\'" . R-mode))
+(add-to-list 'auto-mode-alist '("\\.[rR]profile\\'" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("NAMESPACE\\'" . R-mode))
+(add-to-list 'auto-mode-alist '("NAMESPACE\\'" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("CITATION\\'"       . R-mode))
+(add-to-list 'auto-mode-alist '("CITATION\\'" . ess-r--mode))
 
 
 ;;*;; Miscellaneous
@@ -908,13 +904,13 @@ use \"bin/Rterm.exe\"."
 ;;;###autoload
 (defun Rnw-mode ()
   "Major mode for editing Sweave(R) source.
-See `ess-noweb-mode' and `R-mode' for more help."
+See `ess-noweb-mode' and `ess-r-mode' for more help."
   (interactive)
   (require 'ess-noweb);; << probably someplace else
   (setq ess--make-local-vars-permanent t)
   (ess-noweb-mode 1); turn it on
   (ess-noweb-set-doc-mode 'latex-mode)
-  (ess-noweb-set-code-mode 'R-mode)
+  (ess-noweb-set-code-mode 'ess-r-mode)
   (setq ess--local-handy-commands
         (append '(("weave"      . ess-swv-weave)
                   ("tangle"     . ess-swv-tangle))
@@ -942,9 +938,9 @@ See `ess-noweb-mode' and `R-mode' for more help."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Rr]out" . R-transcript-mode))
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist '("Rscript" . R-mode))
+(add-to-list 'interpreter-mode-alist '("Rscript" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist '("r" . R-mode))
+(add-to-list 'interpreter-mode-alist '("r" . ess-r-mode))
 
 (defun ess-r-fix-T-F (&optional from quietly)
   "Change T/F into TRUE and FALSE cautiously.

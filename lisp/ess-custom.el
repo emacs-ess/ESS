@@ -1405,10 +1405,11 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-(defcustom R-mode-hook nil
+(defcustom ess-r-mode-hook nil
   "Hook run when entering R mode."
   :type 'hook
   :group 'ess-R)
+(define-obsolete-variable-alias 'R-mode-hook 'ess-r-mode-hook)
 
 (defcustom Rnw-mode-hook nil
   "Hook run when entering Rnw mode."
@@ -2612,7 +2613,7 @@ keywords in the current buffer. See
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T))
-  "Font-lock patterns used in inferior-R-mode buffers.
+  "Font-lock patterns used in `inferior-ess-r-mode' buffers.
 The key of each cons cell is a name of the keyword.  The value
 should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
@@ -2750,7 +2751,7 @@ and others. See `ess-R-modifiers'."
 (defface ess-constant-face
   '((default (:inherit font-lock-type-face)))
   "Font lock face used to highlight constants.
-In `R-mode', for example, this includes TRUE, FALSE, Inf and
+In `ess-r-mode', for example, this includes TRUE, FALSE, Inf and
 others. See `ess-R-constants'."
   :group 'ess-faces)
 
@@ -2764,7 +2765,7 @@ others. See `ess-R-constants'."
 (defface ess-keyword-face
   '((default (:inherit font-lock-keyword-face)))
   "Font lock face used to highlight reserved keywords.
-In `R-mode', for example, this includes \"while,\" \"if/else\",
+In `ess-r-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
@@ -2840,13 +2841,8 @@ Should be an absolute path to the julia executable."
   :group 'ess-Julia
   :type '(choice (string) (file)))
 
- ; ess-mode: editing S source
-
-;;; This syntax table is required by ess-mode.el, ess-inf.el and
-;;; ess-trns.el, so we provide it here.
-(defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
+;; FIXME
 (defvar ess-mode-completion-syntax-table nil "Completion and help syntax table for `ess-mode'.")
-(make-variable-buffer-local 'ess-mode-syntax-table)
 (make-variable-buffer-local 'ess-mode-completion-syntax-table)
 
  ; Buffer local customization stuff
