@@ -209,7 +209,6 @@ This may be useful for debugging."
                  (switches
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
-            (set-buffer buf)
             (cond ((string= "R" ess-dialect)
                    (progn (require 'ess-r-mode)
                           (inferior-ess-r-mode)))
@@ -228,17 +227,6 @@ This may be useful for debugging."
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
                      inferior-ess-program infargs comint-process-echoes))
             (setq ess-local-process-name procname)
-            (goto-char (point-max))
-
-            (when ess-history-file
-              ;; Load past history
-              (when (eq t ess-history-file)
-                (setq-local ess-history-file (concat "." ess-dialect "history")))
-              (let ((histfile (expand-file-name ess-history-file
-                                                (or ess-history-directory cur-dir))))
-                (when (file-readable-p histfile)
-                  (setq comint-input-ring-file-name histfile)
-                  (comint-read-input-ring))))
 
             (with-current-buffer buf
               (rename-buffer buf-name-str t))
@@ -1842,6 +1830,21 @@ to continue it."
   (when ess-customize-alist
     (ess-setq-vars-local ess-customize-alist))
   (setq-local comint-input-sender 'inferior-ess-input-sender)
+
+  (when ess-history-file
+    (setq comint-input-ring-file-name
+          (expand-file-name (if (eql t ess-history-file)
+                                (concat "." ess-dialect "history")
+                              ess-history-file)
+                            ess-history-directory))
+    (comint-read-input-ring))
+
+  ;; don't font-lock strings over process prompt
+  (setq-local syntax-begin-function ;; fixme: obsolete in emacs 25.1
+              #'inferior-ess-last-prompt-end)
+  (setq-local font-lock-fontify-region-function
+              #'inferior-ess-fontify-region)
+
 
   ;; If comint-process-echoes is t  inferior-ess-input-sender
   ;; recopies the input, otherwise not
