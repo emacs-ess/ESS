@@ -79,7 +79,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Starting a process
-;;;###autoload
 (defun ess-proc-name (n name)
   "Return name of process N, as a string, with NAME prepended.
 If `ess-plain-first-buffername', then initial process is number-free."
@@ -88,7 +87,6 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
-;;;###autoload
 (defun inferior-ess (&optional ess-start-args customize-alist no-wait)
   "Start inferior ESS process.
 

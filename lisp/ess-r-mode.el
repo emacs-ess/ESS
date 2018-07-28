@@ -51,6 +51,9 @@
 (require 'ess-r-xref)
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
+;; Silence the byte compiler
+(defvar add-log-current-defun-header-regexp)
+
 ;; TODO: Refactor so as to not rely on dynamic scoping.  After that
 ;; refactor, also remove the file-local-variable byte-compile-warnings
 ;; (not lexical) at the bottom.
