@@ -2810,10 +2810,6 @@ default or not."
   (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face)
   "Font-lock constants keyword.")
 
-(defvar ess-R-fl-keyword:numbers
-  (cons "\\b[0-9]*[.eE]?[0-9]+[eEL]?\\b" 'ess-numbers-face)
-  "Font-lock numbers")
-
 (defvar ess-R-fl-keyword:F&T
   (cons "\\b[FT]\\b" 'ess-f-t-face)
   "Highlight T and F in addition to TRUE and FALSE in R.")
