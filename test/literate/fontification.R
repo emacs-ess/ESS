@@ -106,3 +106,33 @@ library attach detach source require¶
 
 library() attach() detach() source() require()¶
 
+
+### 6 Assignment operators are fontified -----------------------------
+
+foo¶ <- foo <<- foo -> foo ->> foo
+
+##! (while (not (eolp))
+##>   (should (not (face-at-point)))
+##>   (forward-char)
+##>   (should (eq (face-at-point) 'ess-assignment-face))
+##>   (skip-syntax-forward ".")
+##>   (should (not (face-at-point)))
+##>   (ignore-errors (forward-word)))
+
+foo <- foo <<- foo -> foo ->> foo¶
+
+
+### 7 Constants are fontified ----------------------------------------
+
+¶TRUE FALSE NA NULL Inf NaN
+NA_integer_ NA_real_ NA_complex_ NA_character_
+
+##! (while (not (eolp))
+##>   (should (eq (face-at-point) 'ess-constant-face))
+##>   (ignore-errors
+##>     (ess-forward-sexp)
+##>     (forward-char)))
+
+TRUE FALSE NA NULL Inf NaN
+NA_integer_ NA_real_ NA_complex_ NA_character_¶
+
