@@ -398,15 +398,18 @@ quickly (quick = TRUE, upgrade_dependencies = FALSE)."
 Asks for github repository in the form of user/repo. Force
 re-installation when called with a prefix ARG."
   (interactive "P")
-  (let ((command "devtools::install_github(%s)")
+  (let ((command "devtools::install_github(%s%s)")
         (repo (format "'%s'"
                       (read-string "User/Repo: " nil
                                    'ess-r-devtools--install-github-history
-                                   (car ess-r-devtools--install-github-history)))))
-    (ess-r-package-eval-linewise
-     command "Installing '%s' from github" arg
-     '("" (read-string "Arguments: " "force = TRUE"))
-     repo)))
+                                   (car ess-r-devtools--install-github-history))))
+        (args (if arg
+                  (ess-r-command--build-args 0 '((read-string "Arguments: " "force = TRUE")))
+                "")))
+    (inferior-ess-r-force)
+    (ess-show-buffer (ess-get-process-buffer))
+    (message "Installing %s from github" repo)
+    (ess-eval-linewise (format command repo args))))
 
 (defun ess-r-devtools-create-package ()
   "Interface to `devtools::create()'.
