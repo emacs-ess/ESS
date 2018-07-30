@@ -116,3 +116,33 @@ foo <-¶ foo <<-¶ foo ->¶ foo ->>¶ foo
 ¶TRUE ¶FALSE ¶NA ¶NULL ¶Inf ¶NaN
 ¶NA_integer_ ¶NA_real_ ¶NA_complex_ ¶NA_character_
 
+
+### 8 Can modify keywords --------------------------------------------
+
+¶foobar foobaz()
+
+##! (let ((ess-R-keywords (append '("foobaz") ess-R-keywords)))
+##>   (ess-r-mode)
+##>   (font-lock-ensure))
+##> (should (not (face-at-point)))
+##> (forward-word)
+##> (forward-char)
+
+foobar ¶foobaz()
+
+##> (should (eq (face-at-point) 'ess-keyword-face))
+
+foobar ¶foobaz()
+
+
+### 9 Can set keywords variable to nil -------------------------------
+
+¶stop()
+
+##! (let (ess-R-control-flow-keywords)
+##>   (ess-r-mode)
+##>   (font-lock-ensure))
+##> (should (not (face-at-point)))
+
+¶stop()
+

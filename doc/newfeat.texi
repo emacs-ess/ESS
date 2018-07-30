@@ -4,6 +4,11 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS: Font-lock keywords are now generated lazily. That means you
+can now add or remove keywords from variables like @code{ess-R-keywords}
+in your Emacs config after loading ESS (i.e. in the @code{:config}
+section for @code{use-package} users).
+
 @item @ESS{[R]}: Interaction with inferior process in non-R files within
 packages (for instance C or C++ files) has been improved. This is a work
 in progress.
