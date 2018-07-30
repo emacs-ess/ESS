@@ -2781,8 +2781,10 @@ default or not."
   '("in" "else" "break" "next" "repeat"))
 
 (defvar ess-R-fl-keyword:bare-keywords
-  '(eval . (cons (regexp-opt ess-r--bare-keywords 'words)
-                 'ess-keyword-face))
+  '(eval . (let ((bare-keywords (delq nil (mapcar (lambda (keyword)
+                                                    (car (member keyword ess-r--bare-keywords)))
+                                                  ess-R-keywords))))
+             (cons (regexp-opt bare-keywords 'words) 'ess-keyword-face)))
   "Font-lock keywords that do not precede an opening parenthesis.")
 
 (defvar ess-R-fl-keyword:keywords

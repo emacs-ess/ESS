@@ -146,3 +146,21 @@ foobar ¶foobaz()
 
 ¶stop()
 
+
+### 10 Can remove bare keywords from `ess-R-keywords'
+
+¶in else
+
+##! (let ((ess-R-keywords '("in")))
+##>   (ess-r-mode)
+##>   (font-lock-ensure))
+##> (should (eq (face-at-point) 'ess-keyword-face))
+##> (forward-word)
+##> (forward-char)
+
+in ¶else
+
+##> (should (not (face-at-point)))
+
+in ¶else
+
