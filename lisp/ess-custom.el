@@ -2768,46 +2768,46 @@ default or not."
 
 ;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
-        '(1 ess-modifiers-face))     ; modify search list or source (i.e. directives)
+  '(eval . (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
+                 '(1 ess-modifiers-face)))
   "Font-lock keyword R modifiers.")
 
 (defvar ess-R-fl-keyword:fun-defs
-  (cons ess-R-function-name-regexp
-        '(1 font-lock-function-name-face nil))
+  '(eval . (cons ess-R-function-name-regexp
+                 '(1 font-lock-function-name-face nil)))
   "Font-lock keyword - function defintions for R.")
 
 (defvar ess-r--bare-keywords
   '("in" "else" "break" "next" "repeat"))
 
 (defvar ess-R-fl-keyword:bare-keywords
-  (cons (regexp-opt ess-r--bare-keywords 'words)
-        'ess-keyword-face)
+  '(eval . (cons (regexp-opt ess-r--bare-keywords 'words)
+                 'ess-keyword-face))
   "Font-lock keywords that do not precede an opening parenthesis.")
 
 (defvar ess-R-fl-keyword:keywords
-  (let ((function-kwords
-         (delq nil
-               (mapcar (lambda (k) (unless (member k ess-r--bare-keywords) k))
-                       ess-R-keywords))))
-    (cons (concat "\\(" (regexp-opt function-kwords 'words) "\\)\\s-*(")
-          '(1 ess-keyword-face)))
+  '(eval . (let ((function-kwords
+                  (delq nil
+                        (mapcar (lambda (k) (unless (member k ess-r--bare-keywords) k))
+                                ess-R-keywords))))
+             (cons (concat "\\(" (regexp-opt function-kwords 'words) "\\)\\s-*(")
+                   '(1 ess-keyword-face))))
   "Font-lock keywords that precede an opening parenthesis.")
 
 (defvar ess-R-fl-keyword:control-flow-keywords
-  (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
-        '(1 ess-r-control-flow-keyword-face)))
+  '(eval . (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
+                 '(1 ess-r-control-flow-keyword-face))))
 
 (defvar ess-R-fl-keyword:signal-keywords
-  (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
-        '(1 ess-r-signal-keyword-face)))
+  '(eval . (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
+                 '(1 ess-r-signal-keyword-face))))
 
 (defvar ess-R-fl-keyword:assign-ops
-  (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face)
+  '(eval . (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face))
   "Font-lock assign operators.")
 
 (defvar ess-R-fl-keyword:constants
-  (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face)
+  '(eval . (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face))
   "Font-lock constants keyword.")
 
 (defvar ess-R-fl-keyword:F&T
