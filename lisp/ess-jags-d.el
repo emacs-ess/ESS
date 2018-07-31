@@ -239,19 +239,11 @@
   )
 
 ;;;###autoload
-(defun ess-jags-mode ()
-  "ESS[JAGS]: Major mode for JAGS."
-  (interactive)
-  (kill-all-local-variables)
-  (ess-setq-vars-local '((comment-start . "#")))
-  (setq major-mode 'ess-jags-mode)
-  (setq mode-name "ESS[JAGS]")
-  (use-local-map ess-bugs-mode-map)
-  (make-local-variable 'font-lock-defaults)
+(define-derived-mode ess-jags-mode ess-bugs-mode "ESS[JAGS]"
+  "Major mode for JAGS."
+  (setq-local comment-start "#")
   (setq font-lock-defaults '(ess-jags-font-lock-keywords nil t))
   (setq ess-language "S") ; mimic S for ess-smart-underscore
-  (run-mode-hooks 'ess-bugs-mode-hook)
-
   (unless (and (fboundp 'w32-shell-dos-semantics)
                (w32-shell-dos-semantics))
     (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
@@ -263,6 +255,7 @@
 (defvaralias 'ess-jags-mode-hook 'ess-bugs-mode-hook)
 (defvaralias 'ess-jags-mode-map 'ess-bugs-mode-map)
 
+;; FIXME: What is this doing here!?
 (setq features (delete 'ess-bugs-d features))
 (provide 'ess-jags-d)
 
