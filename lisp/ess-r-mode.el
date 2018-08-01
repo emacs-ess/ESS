@@ -931,15 +931,28 @@ See `ess-noweb-mode' and `ess-r-mode' for more help."
 (add-to-list 'auto-mode-alist '("\\.[sS]nw\\'" . Snw-mode))
 
 ;;;###autoload
-(defun R-transcript-mode ()
-  "Does the right thing."
-  (interactive)
-  (ess-transcript-mode ess-r-customize-alist))
+(define-derived-mode ess-r-transcript-mode ess-transcript-mode "ESS R Transcript"
+  "A Major mode for R transcript files."
+  :syntax-table ess-r-mode-syntax-table
+  (ess-setq-vars-local ess-r-customize-alist)
+  (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local require-final-newline mode-require-final-newline)
+  (setq-local indent-line-function  'ess-indent-line)
+  (setq-local parse-sexp-ignore-comments t)
+  (setq-local ess-style ess-default-style)
+  (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
+  (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
+  (setq-local prettify-symbols-alist ess-r-prettify-symbols)
+  (setq ess-font-lock-keywords 'ess-R-font-lock-keywords
+        ess-font-lock-defaults (ess--extract-default-fl-keywords ess-R-font-lock-keywords)
+        font-lock-defaults '(ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w")))))
 
-(fset 'r-transcript-mode 'R-transcript-mode)
+(fset 'r-transcript-mode 'ess-r-transcript-mode)
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.[Rr]out" . R-transcript-mode))
+(add-to-list 'auto-mode-alist '("\\.[Rr]out" . ess-r-transcript-mode))
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("Rscript" . ess-r-mode))
 ;;;###autoload
@@ -1258,7 +1271,7 @@ If it changes, we flush the cache.")
              (switch-to-buffer-other-window
               (ess-command (concat page-match "\n")
                            (get-buffer-create (concat page-match ".rt"))))
-             (R-transcript-mode)
+             (ess-r-transcript-mode)
              (process-send-string proc "\n")))
       t)))
 
