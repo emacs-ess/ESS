@@ -561,12 +561,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
 
 (defvar ess-help-mode-map
   (let ((map (make-keymap))); Full keymap, in order to
-    (suppress-keymap map)   ; suppress all usual "printing" characters
-    (when (boundp 'special-mode-map)
-      (set-keymap-parent map (make-composed-keymap
-                              button-buffer-map
-                              special-mode-map)))
-    (define-key map "q" 'quit-window)
     (define-key map "\C-m" 'next-line)
     ;; (define-key map "s" ess-help-sec-map)
     (define-key map "h" 'ess-display-help-on-object)
@@ -574,7 +568,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     (define-key map "i" 'ess-display-package-index)
     (define-key map "a" 'ess-display-help-apropos)
     (define-key map "v" 'ess-display-vignettes)
-    ;; TODO: `electric mouse-2'
     ;; (define-key map [mouse-2] 'ess-display-help-on-object)
     (define-key map "l" 'ess-eval-line-visibly-and-step)
     (define-key map "r" 'ess-eval-region-and-go)
@@ -584,7 +577,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     (define-key map "/" 'isearch-forward)
     (define-key map "x" 'ess-kill-buffer-and-go)
     (define-key map "k" 'kill-this-buffer)
-    (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
@@ -637,47 +629,31 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     ["Kill Buffer"			kill-this-buffer t]
     ["Kill Buffer & Go"		ess-kill-buffer-and-go t]
     "-"
-    ["Handy commands"		ess-handy-commands t]
-    ["Describe ESS-help Mode"	ess-describe-help-mode t])
-  "Menu used in `ess-help-mode'.")
+    ["Handy commands"		ess-handy-commands t])
+  "Menu used in ess-help mode.")
 
-(defun ess-help-mode ()
-;;; Largely ripped from more-mode.el,
-;;; originally by Wolfgang Rupprecht wolfgang@mgm.mit.edu
-  "Mode for viewing ESS help files.
-Use SPC and DEL to page back and forth through the file.
-Use `n'  and `p' to move to next and previous section,
-    `s' to jump to a particular section;   `s ?' for help.
-Use `q' to return to your ESS session; `x' to kill this buffer first.
-The usual commands for evaluating ESS source are available.
-Other keybindings are as follows:
-\\{ess-help-mode-map}"
-  (interactive)
-  (setq major-mode 'ess-help-mode)
-  (setq mode-name "ESS Help")
-  (setq font-lock-mode nil)
-  (use-local-map ess-help-mode-map)
-  ;;; Keep <tabs> out of the code.
-  (make-local-variable 'indent-tabs-mode)
-  (setq indent-tabs-mode nil)
-  (if ess-mode-syntax-table ;;set in advance by ess-setq-local
-      (set-syntax-table ess-mode-syntax-table))
-  (require 'easymenu)
-  (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
-    "Menu keymap for ess-help mode." ess-help-mode-menu)
+(easy-menu-define ess-help-mode-menu-map ess-help-mode-map
+  "Menu keymap for ess-help mode." ess-help-mode-menu)
+
+(define-derived-mode ess-help-mode special-mode "ESS Help"
+  "Mode for viewing ESS help files."
+  ;; FIXME
+  ;; (if ess-mode-syntax-table ;;set in advance by ess-setq-local
+  ;;     (set-syntax-table ess-mode-syntax-table))
+  (setq show-trailing-whitespace nil)
+
   ;; Add the keys for navigating among sections; this is done
   ;; dynamically since different languages (e.g. S vs R) have different
   ;; section headings.
-  (setq ess-help-sec-map (make-sparse-keymap))
-  (setq-local show-trailing-whitespace nil)
-  (dolist (pair ess-help-sec-keys-alist)
-    (define-key ess-help-sec-map (char-to-string (car pair))
-      'ess-skip-to-help-section))
-  (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
-  (define-key ess-help-sec-map ">" 'end-of-buffer)
-  (define-key ess-help-sec-map "<" 'beginning-of-buffer)
-  (define-key ess-help-mode-map "s" ess-help-sec-map)
-  (run-mode-hooks 'ess-help-mode-hook))
+  ;; FIXME: define ess-r-help-mode and others, move these there:
+  ;; (setq ess-help-sec-map (make-sparse-keymap))
+  ;; (dolist (pair ess-help-sec-keys-alist)
+  ;;   (define-key ess-help-sec-map (char-to-string (car pair))
+  ;;     'ess-skip-to-help-section))
+  ;; (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
+  ;; (define-key ess-help-sec-map ">" 'end-of-buffer)
+  ;; (define-key ess-help-sec-map "<" 'beginning-of-buffer)
+  )
 
 
 ;;*;; User commands defined in ESS help mode
@@ -713,11 +689,6 @@ sections."
   (let ((case-fold-search nil))
     (if (re-search-backward ess-help-sec-regex nil 'no-error) nil
       (message "No previous section."))))
-
-(defun ess-describe-help-mode nil
-  "Display help for `ess-mode'."
-  (interactive)
-  (describe-function 'ess-help-mode))
 
 (defun ess-kill-buffer-and-go nil
   "Kill the current buffer and switch back to the ESS process."
