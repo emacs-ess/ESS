@@ -2225,6 +2225,37 @@ state.")
 
 
 
+;;;*;;; R Help mode
+
+(defvar ess-r-help-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "s<" 'beginning-of-buffer)
+    (define-key map "s>" 'end-of-buffer)
+    (define-key map "sa" 'ess-skip-to-help-section)
+    (define-key map "sd" 'ess-skip-to-help-section)
+    (define-key map "sD" 'ess-skip-to-help-section)
+    (define-key map "st" 'ess-skip-to-help-section)
+    (define-key map "se" 'ess-skip-to-help-section)
+    (define-key map "sn" 'ess-skip-to-help-section)
+    (define-key map "sr" 'ess-skip-to-help-section)
+    (define-key map "ss" 'ess-skip-to-help-section)
+    (define-key map "su" 'ess-skip-to-help-section)
+    (define-key map "sv" 'ess-skip-to-help-section)
+    map)
+  "Keymap for `ess-r-help-mode'.")
+
+(define-derived-mode ess-r-help-mode ess-help-mode "R Help"
+  "Major mode for help buffers."
+  (setq ess-dialect "R"
+        ess-help-web-search-command #'ess-r-sos
+        ess-build-help-command-function #'ess-r-build-help-command
+        ess-help-sec-regex ess-help-r-sec-regex
+        ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
+        inferior-ess-help-command inferior-ess-r-help-command
+        inferior-ess-help-filetype nil))
+
+
+
 
 ;; Create functions that can be called for running different versions
 ;; of R.

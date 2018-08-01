@@ -40,10 +40,13 @@
 (eval-when-compile
   (require 'tramp)
   (require 'reporter))
+(require 'easymenu)
 (require 'info)
 (require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-utils)
+
+(declare-function ess-r-help-mode 'ess-r-mode)
 
 (defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
@@ -55,6 +58,13 @@
 ;;;; * The function ess-display-help-on-object
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ess--help-major-mode (&optional dialect)
+  "Determine which help major mode to call, and call it.
+DIALECT defaults to `ess-dialect'."
+  (let ((ess-dialect (or dialect ess-dialect)))
+    (cond ((string= ess-dialect "R") (require 'ess-r-mode) (ess-r-help-mode))
+          (t (ess-help-mode)))))
 
 (defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
   "Return non-nil if BUFFER looks like a bogus ESS help buffer.
@@ -157,7 +167,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
   (let ((inhibit-modification-hooks t)
         (inhibit-read-only t))
     (delete-region (point-min) (point-max))
-    (ess-help-mode)
+    (ess--help-major-mode)
     (let ((command (if (and command (string-match-p "%s" command))
                        (format command object)
                      command)))
@@ -276,14 +286,14 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
                                                &optional action help-echo reg-start help-object)
-  "Internal function to display help pages with linked actions
-  ;; COMMAND to produce the indexed help page
-  ;; ITEM-REGEXP -- first subexpression is highlighted
-  ;; TITLE of the help page
-  ;; HELP-TYPE to be stored in `ess-help-type' local variable
-  ;; ACTION is a function with no argument (default is `ess--button-action')
-  ;; HELP-ECHO
-  ;; REG-START gives the start location from where to search linkifying"
+  "Internal function to display help pages with linked actions.
+COMMAND to produce the indexed help page,
+ITEM-REGEXP -- first subexpression is highlighted,
+TITLE of the help page,
+HELP-TYPE to be stored in `ess-help-type' local variable,
+ACTION is a function with no argument (default is `ess--button-action'),
+HELP-ECHO if given becomes the help-echo property of the button,
+REG-START gives the start location from where to search linkifying, and HELP-OBJECT becomes `ess-help-object'."
   (interactive)
   (let ((inhibit-modification-hooks t)
         (alist          ess-local-customize-alist)
@@ -296,7 +306,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
             ess-local-process-name pname)
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
-      (ess-help-mode)
+      (ess--help-major-mode)
       (ess-command command buff)
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
@@ -401,7 +411,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
       (setq ess-help-sec-regex "^\\w+:$"
             ess-help-type 'vignettes
             ess-local-process-name proc-name)
-      (ess-help-mode)
+      (ess--help-major-mode)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
       (dolist (el vslist)
@@ -416,9 +426,9 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
                               ;; incorrect number of arguments on Both 26+ and 25 emacses.
                               (if (>= emacs-major-version 26)
                                   (with-parsed-tramp-file-name default-directory nil
-                                    (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
+                                                               (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
                                 (with-parsed-tramp-file-name default-directory nil
-                                  (tramp-make-tramp-file-name method user host (nth 1 el2)))))
+                                                             (tramp-make-tramp-file-name method user host (nth 1 el2)))))
                           (nth 1 el2))))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight
@@ -463,8 +473,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
     (dolist (f (frame-list))
       (when (frame-visible-p f)
         (dolist (w (window-list f))
-          (when (eq (buffer-local-value 'major-mode (window-buffer w))
-                    'ess-help-mode)
+          (when (with-current-buffer (window-buffer w) (derived-mode-p 'ess-help-mode))
             (throw 'win w)))))))
 
 (defun ess--switch-to-help-buffer (buff)
@@ -730,7 +739,6 @@ Keystroke    Section
       (substring object (match-end 0))
     object))
 
-;;;###autoload
 (defun ess-helpobjs-at-point (slist)
   "Return a list (def obj fun).
 Obj is a name at point, fun is the name of the function call
@@ -927,7 +935,6 @@ other dialects)."
 (defun ess-submit-bug-report ()
   "Submit a bug report to the ESS maintainers."
   (interactive)
-  (require 'ess-mode)
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report

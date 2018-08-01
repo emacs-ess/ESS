@@ -511,7 +511,7 @@ temporary one in `temporary-file-directory'."
           ess-help-sec-keys-alist ess-help-r-sec-keys-alist)
     ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):
     (ess-help-underline)
-    (ess-help-mode)
+    (ess--help-major-mode)
     (goto-char (point-min))
     (set-buffer-modified-p 'nil)
     (setq buffer-read-only t)
