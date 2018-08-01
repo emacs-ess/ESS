@@ -631,7 +631,7 @@ Executed in process buffer."
   (ess-roxy-mode t)
   (ad-activate 'fill-paragraph))
 ;;;###autoload
-(define-obsolete-function-alias 'R-mode 'ess-r-mode)
+(defalias 'R-mode 'ess-r-mode)
 ;;;###autoload
 (defalias 'r-mode 'ess-r-mode)
 
@@ -645,7 +645,7 @@ Executed in process buffer."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("NAMESPACE\\'" . ess-r-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("CITATION\\'" . ess-r--mode))
+(add-to-list 'auto-mode-alist '("CITATION\\'" . ess-r-mode))
 
 
 ;;*;; Miscellaneous
