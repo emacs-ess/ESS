@@ -172,10 +172,27 @@ This function is placed in `ess-presend-filter-functions'.
         (run-mode-hooks 'ess-stata-post-run-hook)))))
 
 
-(defun STA-transcript-mode ()
+(define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
+  :syntax-table ess-stata-mode-syntax-table
   "Stata transcript mode."
-  (interactive)
-  (ess-transcript-mode STA-customize-alist))
+  (ess-set-local-variables STA-customize-alist)
+  (ess-setq-vars-local STA-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq-local comment-column 40)
+  (setq-local comment-end " \*/")
+  (setq-local comment-start "/\* ")
+  (setq-local comment-start-skip "/\\*+ *")
+  (setq-local comment-use-syntax t)
+  (setq-local ess-style ess-default-style)
+  (setq-local indent-line-function 'ess-indent-line)
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
+  (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
+  (setq-local parse-sexp-ignore-comments t)
+  (setq-local require-final-newline mode-require-final-newline)
+  (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
+
+(defalias 'STA-transcript-mode 'ess-stata-mode-syntax-table)
 
 (defun ess--STA-retrive-topics-from-search ()
   (with-current-buffer (ess-command inferior-ess-search-list-command)
