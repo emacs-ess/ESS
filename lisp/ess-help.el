@@ -97,12 +97,13 @@ first 150 characters of the buffer are searched."
 (defun ess-help-get-local-help-buffers ()
   (ess-force-buffer-current)
   (cl-remove-if-not
-   (lambda (buffer) (let* ((pattern (concat "*help[" ess-current-process-name "]("))
-                      (name (buffer-name buffer))
-                      (candidate (when (> (length name) (length pattern))
-                                   (substring name 0 (length pattern))) ))
-                 (when (string= pattern candidate)
-                   buffer)))
+   (lambda (buffer)
+     (let* ((pattern (concat "*help[" ess-current-process-name "]("))
+            (name (buffer-name buffer))
+            (candidate (when (> (length name) (length pattern))
+                         (substring name 0 (length pattern))) ))
+       (when (string= pattern candidate)
+         buffer)))
    (buffer-list)))
 
 (defvar ess-help-type nil
@@ -340,12 +341,10 @@ if necessary.  It is bound to RET and C-m in R-index pages."
     (unless (ess--help-kill-bogus-buffer-maybe buff)
       (ess--switch-to-help-buffer buff))))
 
-
 (defun ess-display-help-apropos (&optional pattern)
   "Create an ess-apropos buffer with a *linked* list of apropos topics."
   (interactive "sPattern: ")
   (let (com regexp)
-
     (cond ((equal ess-dialect "R")
            (setq com "help.search('%s')\n"
                  regexp "^\\([^ \t\n:]+::[^ \t\n:]+\\)[ \t\n]+"))
@@ -354,9 +353,8 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                  regexp "^\\(\\(\\w\\|\\s_\\)+\\)("))
           ((equal ess-dialect "stata")
            (setq com "hsearch %s\n"
-                 regexp "^[ 	]*[0-9]+\\.[ 	]+\\(.+\\)$"))
+                 regexp "^[\t ]*[0-9]+\\.[\t ]+\\(.+\\)$"))
           (t (error "Not implemented for dialect %s" ess-dialect)))
-
     (ess--display-indexed-help-page
      (format com pattern) regexp
      (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
@@ -484,10 +482,10 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
   (catch 'win
     (dolist (f (frame-list))
       (when (frame-visible-p f)
-       (dolist (w (window-list f))
-         (when (eq (buffer-local-value 'major-mode (window-buffer w))
-                   'ess-help-mode)
-           (throw 'win w)))))))
+        (dolist (w (window-list f))
+          (when (eq (buffer-local-value 'major-mode (window-buffer w))
+                    'ess-help-mode)
+            (throw 'win w)))))))
 
 (defun ess--switch-to-help-buffer (buff)
   "Switch to an ESS help BUFF.
@@ -498,7 +496,7 @@ For internal use.  Take into account variable `ess-help-own-frame'."
              (action `(display-buffer-same-window (reusable-frames . ,frame))))
         (ess--display-help buff frame action))
     (let ((help-win (or
-                     ;; if this doc is already displayed, reuse 
+                     ;; if this doc is already displayed, reuse
                      (get-buffer-window buff 'all-frames)
                      ;; if help window visible, reuse
                      (and ess-help-reuse-window
@@ -636,33 +634,32 @@ For internal use.  Take into account variable `ess-help-own-frame'."
 
 ;; One reason for the following menu is to <TEACH> the user about key strokes
 (defvar ess-help-mode-menu
-  (list "ESS-help"
-	["Search Forward"		isearch-forward t]
-	["Next Section"			ess-skip-to-next-section t]
-	["Previous Section"		ess-skip-to-previous-section t]
-	["Help on Section Skipping"	ess-describe-sec-map t]
-	["Beginning of Buffer"		beginning-of-buffer t]
-	["End of Buffer"		end-of-buffer t]
-	"-"
-	["Help on ..."			ess-display-help-on-object t]
-	["Apropos of ..."		ess-display-help-apropos t]
-	["Index of ..."			ess-display-package-index t]
-	["Vignettes"			ess-display-vignettes t]
-	["Open in Browser"		ess-display-help-in-browser t]
-	"-"
-	["Eval Line"			ess-eval-line-and-step t]
-	["Eval Paragraph & step"	ess-eval-paragraph-and-step t]
-	["Eval Region & Go"		ess-eval-region-and-go t]
-	["Switch to ESS Process"	ess-switch-to-ESS t]
-	["Switch to End of ESS Proc."	ess-switch-to-end-of-ESS t]
-	["Switch _the_ Process"		ess-switch-process t]
-	"-"
-	["Kill Buffer"			kill-this-buffer t]
-	["Kill Buffer & Go"		ess-kill-buffer-and-go t]
-	"-"
-	["Handy commands"		ess-handy-commands t]
-	["Describe ESS-help Mode"	ess-describe-help-mode t]
-        )
+  '("ESS-help"
+    ["Search Forward"		isearch-forward t]
+    ["Next Section"			ess-skip-to-next-section t]
+    ["Previous Section"		ess-skip-to-previous-section t]
+    ["Help on Section Skipping"	ess-describe-sec-map t]
+    ["Beginning of Buffer"		beginning-of-buffer t]
+    ["End of Buffer"		end-of-buffer t]
+    "-"
+    ["Help on ..."			ess-display-help-on-object t]
+    ["Apropos of ..."		ess-display-help-apropos t]
+    ["Index of ..."			ess-display-package-index t]
+    ["Vignettes"			ess-display-vignettes t]
+    ["Open in Browser"		ess-display-help-in-browser t]
+    "-"
+    ["Eval Line"			ess-eval-line-and-step t]
+    ["Eval Paragraph & step"	ess-eval-paragraph-and-step t]
+    ["Eval Region & Go"		ess-eval-region-and-go t]
+    ["Switch to ESS Process"	ess-switch-to-ESS t]
+    ["Switch to End of ESS Proc."	ess-switch-to-end-of-ESS t]
+    ["Switch _the_ Process"		ess-switch-process t]
+    "-"
+    ["Kill Buffer"			kill-this-buffer t]
+    ["Kill Buffer & Go"		ess-kill-buffer-and-go t]
+    "-"
+    ["Handy commands"		ess-handy-commands t]
+    ["Describe ESS-help Mode"	ess-describe-help-mode t])
   "Menu used in ess-help mode.")
 
 (defun ess-help-mode ()
@@ -752,7 +749,7 @@ to see which keystrokes find which sections."
   (interactive)
   (kill-buffer (current-buffer))
   (when (and ess-current-process-name (get-process ess-current-process-name))
-      (ess-switch-to-ESS nil)))
+    (ess-switch-to-ESS nil)))
 
 (defun ess-describe-sec-map nil
   "Display help for the `s' key."
