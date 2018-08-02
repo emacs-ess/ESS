@@ -237,8 +237,8 @@ Use you regular key for `outline-show-entry' to reveal it.")
                  #'ess-roxy-extend-region-to-field
                  'local))
   (when font-lock-mode
-    (if (fboundp 'font-lock-ensure)
-        (font-lock-ensure)
+    (if (fboundp 'font-lock-flush)
+        (font-lock-flush)
       ;; font-lock-fontify-buffer call can be removed when we drop
       ;; support for Emacs older than 25.1
       (with-no-warnings (font-lock-fontify-buffer))))

@@ -676,6 +676,7 @@ Other keybindings are as follows:
   (interactive)
   (setq major-mode 'ess-help-mode)
   (setq mode-name "ESS Help")
+  (setq font-lock-mode nil)
   (use-local-map ess-help-mode-map)
 
   ;;; Keep <tabs> out of the code.
