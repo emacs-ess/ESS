@@ -301,7 +301,6 @@ to look up any doc strings."
 ;;; CORE
 (defvar ess-julia-customize-alist
   '((comint-use-prompt-regexp      . t)
-    (ess-eldoc-function            . 'ess-julia-eldoc-function)
     (inferior-ess-primary-prompt   . "a> ") ;; from julia>
     (inferior-ess-secondary-prompt . nil)
     (inferior-ess-prompt           . "\\w*> ")
@@ -364,9 +363,12 @@ It makes underscores and dots word constituent chars.")
 
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
-  "Major mode for editing julia source.  See `ess-mode' for more help."
+  "Major mode for julia files."
   (setq-local ess-local-customize-alist ess-julia-customize-alist)
-  (ess-mode)
+  (ess-setq-vars-local ess-julia-customize-alist)
+  (add-function :before-until (local 'eldoc-documentation-function)
+                #'ess-julia-eldoc-function)
+  (when ess-use-eldoc (eldoc-mode))
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
@@ -374,8 +376,7 @@ It makes underscores and dots word constituent chars.")
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl")
-  (run-mode-hooks 'ess-julia-mode-hook))
+  (imenu-add-to-menubar "Imenu-jl"))
 
 (defvar ess-julia-mode-hook nil)
 (defvar ess-julia-post-run-hook nil

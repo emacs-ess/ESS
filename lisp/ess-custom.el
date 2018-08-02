@@ -402,7 +402,7 @@ aggressive and dangerous).
                  (const t)))
 
 (defcustom ess-use-eldoc t
-  "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
+  "If t, activate eldoc in `ess-mode' and `inferior-ess-mode' buffers.
 If 'script-only activate in ess-mode buffers only.
 
 See also `ess-eldoc-show-on-symbol'."
@@ -2807,10 +2807,6 @@ Passed to `ess-execute-dialect-specific' which see.")
 See `ess-function-arguments' and .ess_funargs command in R and
 S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
-
-(defvar ess-eldoc-function nil
-  "Holds a dialect specific eldoc function.
-See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
  ; System variables
 ;;;=====================================================

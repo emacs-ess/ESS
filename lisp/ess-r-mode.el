@@ -350,7 +350,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
      (ess-format-eval-message-function      . #'ess-r-format-eval-message)
      (ess-install-library-function          . #'ess-r-install-library)
-     (ess-eldoc-function                    . #'ess-r-eldoc-function)
      (ess-help-web-search-command           . #'ess-r-sos)
      (ess-build-help-command-function       . #'ess-r-build-help-command)
      (ess-dump-filename-template            . ess-r-dump-filename-template)
@@ -608,6 +607,9 @@ Executed in process buffer."
   (setq-local ess-style ess-default-style)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
+  (add-function :before-until (local 'eldoc-documentation-function)
+                #'ess-r-eldoc-function)
+  (when ess-use-eldoc (eldoc-mode))
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)
   (setq font-lock-defaults '(ess-build-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w"))))
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -2220,6 +2222,9 @@ state.")
 (define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
   "Major mode for interacting with inferior R processes."
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
+  (add-function :before-until (local 'eldoc-documentation-function)
+                #'ess-r-eldoc-function)
+  (when ess-use-eldoc (eldoc-mode))
   (setq comint-get-old-input #'inferior-ess-get-old-input)
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local))
 

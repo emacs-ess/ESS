@@ -33,6 +33,7 @@
 (eval-when-compile
   (require 'tramp))
 ;; The only ESS file this file should depend on is ess-custom.el
+(require 'cl-lib)
 (require 'comint)
 (require 'ess-custom)
 (require 'ido)
@@ -586,6 +587,7 @@ See also `ess-use-ido'."
 
 (defun ess-load-extras (&optional inferior)
   "Load all the extra features depending on custom settings."
+  ;; TODO: Get rid of this function and set this stuff up in mode initialization.
   (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
         (isR (memq major-mode '(ess-r-mode ess-inferior-r-mode))))
     ;; auto-complete
@@ -611,16 +613,6 @@ See also `ess-use-ido'."
         (set (make-local-variable 'company-backends)
              (cl-copy-list (append ess-company-backends company-backends)))
         (delq 'company-capf company-backends)))
-
-    ;; eldoc)
-    (require 'eldoc)
-    (when (and ess-eldoc-function ;; if mode provide this, it suports eldoc
-               (or (and (not inferior) ess-use-eldoc)
-                   (and inferior (eq ess-use-eldoc t))))
-      (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
-        (set (make-local-variable 'eldoc-idle-delay) 0.1))
-      (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
-      (eldoc-mode 1))
 
     ;; tracebug
     (when (and ess-use-tracebug inferior isR (fboundp 'ess-tracebug))

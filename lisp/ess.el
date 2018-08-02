@@ -343,6 +343,8 @@ indentation style. See `ess-style-alist' for predefined styles."
        (cons "/" ""))
 
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
+  (when ess-use-eldoc
+    (eldoc-mode))
   (ess-load-extras))
 
 (defun ess--get-mode-line-indicator ()
