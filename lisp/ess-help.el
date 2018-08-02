@@ -146,6 +146,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
         (ess-with-current-buffer tbuffer
           (setq ess-help-object object
                 ess-help-type 'help)
+          (setq buffer-read-only t)
           (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
@@ -159,27 +160,20 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
     (format inferior-ess-help-command object)))
 
 (defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
-  (ess-write-to-dribble-buffer
-   (format "(ess-help '%s' start (command: '%s') \n"
-           (buffer-name (current-buffer)) command))
-
-  ;; Ask the corresponding ESS process for the help file:
-  (if buffer-read-only (setq buffer-read-only nil))
-  (delete-region (point-min) (point-max))
-  (ess-help-mode)
-  (let ((command (if (and command (string-match-p "%s" command))
-                     (format command object)
-                   command)))
-    (ess-command (or command (ess-build-help-command object)) (current-buffer)))
-  (ess-help-underline)
-  ;;VS[03-09-2012]: todo: this should not be here:
-  ;; Stata is clean, so we get a big BARF from this.
-  (unless (string= ess-language "STA")
-    (ess-nuke-help-bs))
-  (goto-char (point-min))
-  (set-buffer-modified-p 'nil)
-  (setq buffer-read-only t)
-  (setq truncate-lines nil))
+  (let ((inhibit-modification-hooks t)
+        (inhibit-read-only t))
+    (delete-region (point-min) (point-max))
+    (ess-help-mode)
+    (let ((command (if (and command (string-match-p "%s" command))
+                       (format command object)
+                     command)))
+      (ess-command (or command (ess-build-help-command object)) (current-buffer)))
+    (ess-help-underline)
+    (unless (string= ess-language "STA")
+      (ess-nuke-help-bs))
+    (goto-char (point-min))
+    (set-buffer-modified-p 'nil)
+    (setq truncate-lines nil)))
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus buffer with message. Return t if killed."
@@ -306,7 +300,8 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   ;; HELP-ECHO
   ;; REG-START gives the start location from where to search linkifying"
   (interactive)
-  (let ((object (buffer-name))
+  (let ((inhibit-modification-hooks t)
+        (object (buffer-name))
         (alist          ess-local-customize-alist)
         (pname ess-local-process-name)
         (buff (get-buffer-create title)))
@@ -418,7 +413,8 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
          (proc-name ess-current-process-name)
          (alist ess-local-customize-alist)
          (remote (file-remote-p default-directory))
-         (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect))))
+         (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect)))
+         (inhibit-modification-hooks t))
     (with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
