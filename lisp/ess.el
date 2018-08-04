@@ -342,10 +342,7 @@ indentation style. See `ess-style-alist' for predefined styles."
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
 
-  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
-  (when ess-use-eldoc
-    (eldoc-mode))
-  (ess-load-extras))
+  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.

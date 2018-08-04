@@ -486,13 +486,6 @@ might want to set this to nil.
   :group 'ess
   :type 'boolean)
 
-
-(defvar ess-ac-sources nil
-  "Dialect specific, ESS specific list of ac-sources")
-
-(defvar ess-company-backends nil
-  "Dialect specific, ESS specific list of `company-backends'")
-
 (defvar ess--completing-hist nil
   "Variable to store completion history.
 Used by `ess-completion-read' command.")

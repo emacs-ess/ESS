@@ -366,9 +366,14 @@ It makes underscores and dots word constituent chars.")
   "Major mode for julia files."
   (setq-local ess-local-customize-alist ess-julia-customize-alist)
   (ess-setq-vars-local ess-julia-customize-alist)
+  ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-julia-eldoc-function)
   (when ess-use-eldoc (eldoc-mode))
+  ;; auto-complete
+  (ess--setup-auto-complete '(ac-source-ess-julia-objects))
+  ;; company
+  (ess--setup-company '(company-ess-julia-objects))
   ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)

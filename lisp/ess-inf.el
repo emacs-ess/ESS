@@ -281,7 +281,6 @@ This may be useful for debugging."
               (ess-set-working-directory cur-dir))
 
             (run-hooks 'ess-post-run-hook)
-            (ess-load-extras t)
 
             ;; user initialization can take some time ...
             (unless no-wait

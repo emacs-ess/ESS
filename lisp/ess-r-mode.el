@@ -336,8 +336,6 @@ To be used as part of `font-lock-defaults' keywords."
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
      (ess-dialect                           . "R")
      (ess-suffix                            . "R")
-     (ess-ac-sources                        . ess-r-ac-sources)
-     (ess-company-backends                  . ess-r-company-backends)
      (ess-build-tags-command                . ess-r-build-tags-command)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
@@ -607,9 +605,14 @@ Executed in process buffer."
   (setq-local ess-style ess-default-style)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
+  ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
   (when ess-use-eldoc (eldoc-mode))
+  ;; auto-complete
+  (ess--setup-auto-complete ess-r-ac-sources)
+  ;; company
+  (ess--setup-company ess-r-company-backends)
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)
   (setq font-lock-defaults '(ess-build-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w"))))
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -2222,9 +2225,16 @@ state.")
 (define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
   "Major mode for interacting with inferior R processes."
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
+  ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
   (when ess-use-eldoc (eldoc-mode))
+  ;; tracebug
+  (when ess-use-tracebug (ess-tracebug 1))
+  ;; auto-complete
+  (ess--setup-auto-complete ess-r-ac-sources t)
+  ;; company
+  (ess--setup-company ess-r-company-backends t)
   (setq comint-get-old-input #'inferior-ess-get-old-input)
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local))
 
