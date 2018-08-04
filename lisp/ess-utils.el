@@ -1312,8 +1312,6 @@ POS defaults to `point.'"
            (state (syntax-ppss pos)))
       (or (nth 3 state) (nth 4 state)))))
 
-
-
 (defun ess-inside-string-p (&optional pos)
   "Return non-nil if point is inside string (according to syntax)."
   (interactive)

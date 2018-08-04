@@ -539,6 +539,7 @@ will be prompted to enter arguments interactively."
     (ess-write-to-dribble-buffer
      (format "(R): inferior-ess-language-start=%s\n"
              inferior-ess-language-start))))
+
 ;;;###autoload
 (defalias 'R #'run-ess-r)
 
@@ -600,8 +601,10 @@ Executed in process buffer."
 
   (run-mode-hooks 'R-mode-hook))
 
-(fset 'r-mode 'R-mode)
-(fset 'ess-r-mode 'R-mode)
+;;;###autoload
+(defalias 'r-mode #'R-mode)
+;;;###autoload
+(defalias 'ess-r-mode #'R-mode)
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("/R/.*\\.q\\'" . R-mode))
