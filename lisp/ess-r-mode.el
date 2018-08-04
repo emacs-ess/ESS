@@ -950,9 +950,9 @@ See `ess-noweb-mode' and `ess-r-mode' for more help."
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)
-  (setq ess-font-lock-keywords 'ess-R-font-lock-keywords
-        ess-font-lock-defaults (ess--extract-default-fl-keywords ess-R-font-lock-keywords)
-        font-lock-defaults '(ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w")))))
+  (setq inferior-ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
+  (setq font-lock-defaults '(ess-build-font-lock-keywords
+                             nil nil ((?\. . "w") (?\_ . "w") (?' . ".")))))
 
 (fset 'r-transcript-mode 'ess-r-transcript-mode)
 

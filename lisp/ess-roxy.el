@@ -842,8 +842,7 @@ placed in `ess-presend-filter-functions'."
   "Fill roxygen paragraphs."
   (cond
    ;; Regular case
-   ((not (and (derived-mode-p 'ess-mode)
-              (string= ess-dialect "R")))
+   ((not (derived-mode-p 'ess-r-mode))
     ad-do-it)
    ;; Filling of code comments in @examples roxy field
    ((and (ess-roxy-entry-p)

@@ -918,11 +918,11 @@ toggled."
             (while (and blist
                         (with-current-buffer (car blist)
                           (not (or (and
-                                    (derived-mode-p 'ess-mode)
+                                    (ess-derived-mode-p)
                                     (equal dialect ess-dialect)
                                     (null ess-local-process-name))
                                    (and
-                                    (derived-mode-p 'ess-mode)
+                                    (ess-derived-mode-p)
                                     (equal loc-proc-name ess-local-process-name))
                                    ))))
               (pop blist))
@@ -1185,8 +1185,7 @@ type of the region."
 (ess-defgeneric ess-load-file (&optional filename)
   "Load a source file into an inferior ESS process.
 This handles Tramp when working on a remote."
-  (interactive (list (or (and (or (derived-mode-p 'ess-mode)
-                                  (derived-mode-p 'ess-julia-mode))
+  (interactive (list (or (and (ess-derived-mode-p)
                               (buffer-file-name))
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))

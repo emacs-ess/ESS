@@ -2858,7 +2858,7 @@ for signature and trace it with browser tracer."
 (defadvice delete-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when #chars is 1"
-  (if (and (derived-mode-p 'ess-mode)
+  (if (and (ess-derived-mode-p)
            (= (ad-get-arg 0) 1)
            (get-text-property (point) 'intangible))
       (progn
@@ -2870,7 +2870,7 @@ Only do this when #chars is 1"
 (defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when called interactively and #chars is 1"
-  (if (and (derived-mode-p 'ess-mode)
+  (if (and (ess-derived-mode-p)
            (= (ad-get-arg 0) 1)
            (> (point) (point-min))
            (get-text-property (1- (point)) 'intangible))

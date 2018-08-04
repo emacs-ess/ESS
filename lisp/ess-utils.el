@@ -444,6 +444,11 @@ etc.")
     ["no" (lambda () (interactive) (setq ess-eval-visibly nil))
      :style radio :enable t :selected (eq ess-eval-visibly nil) ]))
 
+(defun ess-derived-mode-p ()
+  "Non-nil if the current major mode is an ESS major mode."
+  (or (derived-mode-p 'ess-mode)
+      (derived-mode-p 'ess-julia-mode)))
+
 ;;;*;;; Font Lock
 
 (defun ess--fl-keywords-values ()
