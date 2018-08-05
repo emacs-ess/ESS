@@ -588,6 +588,8 @@ Executed in process buffer."
   (inferior-ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
+  ;; tracebug
+  (when ess-use-tracebug (ess-tracebug 1))
   (with-ess-process-buffer nil
     (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
     (run-mode-hooks 'ess-r-post-run-hook)))
@@ -2229,8 +2231,6 @@ state.")
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
   (when ess-use-eldoc (eldoc-mode))
-  ;; tracebug
-  (when ess-use-tracebug (ess-tracebug 1))
   ;; auto-complete
   (ess--setup-auto-complete ess-r-ac-sources t)
   ;; company
