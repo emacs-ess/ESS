@@ -67,6 +67,26 @@
     tab)
   "Syntax table for `inferior-ess-mode'.")
 
+(defun ess--inferior-major-mode (dialect)
+  "Set major mode according to DIALECT."
+  (cond ((string= "R" dialect)
+         (progn (require 'ess-r-mode)
+                (inferior-ess-r-mode)))
+        ((string= "julia" dialect)
+         (progn (require 'ess-julia)
+                (ess-inferior-julia-mode)))
+        ;; FIXME: we need this horrible hack so that
+        ;; inferior-ess-mode-syntax-table gets set for
+        ;; languages that still rely on the old way of doing
+        ;; things (before we used define-derived-mode for
+        ;; inferior modes).
+        (t
+         (progn
+           (setq-local inferior-ess-mode-syntax-table
+                       (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
+                                 (alist-get 'ess-mode-syntax-table ess-customize-alist))))
+           (inferior-ess-mode)))))
+
  ;;*;; Process handling
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -207,20 +227,7 @@ This may be useful for debugging."
                  (switches
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
-            (cond ((string= "R" ess-dialect)
-                   (progn (require 'ess-r-mode)
-                          (inferior-ess-r-mode)))
-                  ;; FIXME: we need this horrible hack so that
-                  ;; inferior-ess-mode-syntax-table gets set for
-                  ;; languages that still rely on the old way of doing
-                  ;; things (before we used define-derived-mode for
-                  ;; inferior modes).
-                  (t
-                   (progn
-                     (setq-local inferior-ess-mode-syntax-table
-                                 (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
-                                           (alist-get 'ess-mode-syntax-table ess-customize-alist))))
-                     (inferior-ess-mode))))
+            (ess--inferior-major-mode ess-dialect)
             (ess-write-to-dribble-buffer
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
                      inferior-ess-program infargs comint-process-echoes))
