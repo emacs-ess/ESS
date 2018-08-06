@@ -75,6 +75,9 @@
         ((string= "julia" dialect)
          (progn (require 'ess-julia)
                 (ess-inferior-julia-mode)))
+        ((string= "stata" dialect)
+         (progn (require 'ess-stata-mode)
+                (ess-inferior-stata-mode)))
         ;; FIXME: we need this horrible hack so that
         ;; inferior-ess-mode-syntax-table gets set for
         ;; languages that still rely on the old way of doing

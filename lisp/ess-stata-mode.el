@@ -171,6 +171,17 @@ This function is placed in `ess-presend-filter-functions'.
         (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
         (run-mode-hooks 'ess-stata-post-run-hook)))))
 
+(defvar ess-inferior-stata-mode-syntax-table
+  (let ((tab (copy-syntax-table ess-stata-mode-syntax-table)))
+    tab)
+  "Syntax table for `ess-inferior-stata-mode'.")
+
+(define-derived-mode ess-inferior-stata-mode inferior-ess-mode "iESS"
+  "Inferior `stata' mode."
+  (ess-setq-vars-local STA-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
+
 
 (define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
   :syntax-table ess-stata-mode-syntax-table
