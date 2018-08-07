@@ -47,6 +47,7 @@
 (require 'ess-utils)
 
 (declare-function ess-r-help-mode 'ess-r-mode)
+(declare-function ess-stata-help-mode "ess-stata-lang")
 
 (defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
@@ -64,6 +65,7 @@
 DIALECT defaults to `ess-dialect'."
   (let ((ess-dialect (or dialect ess-dialect)))
     (cond ((string= ess-dialect "R") (require 'ess-r-mode) (ess-r-help-mode))
+          ((string= ess-dialect "stata") (require 'ess-stata-lang) (ess-stata-help-mode))
           (t (ess-help-mode)))))
 
 (defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
