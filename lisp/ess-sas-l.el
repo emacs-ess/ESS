@@ -137,14 +137,11 @@ A .lst file is a SAS listing file when:
 (add-to-list 'magic-mode-alist
              '(ess-SAS-listing-mode-p . SAS-listing-mode))
 
-(defun SAS-log-mode ()
-"`ess-transcript-mode' for SAS."
-(interactive)
-(SAS-mode)
-(setq mode-name "ESS[LOG]")
-(ess-transcript-minor-mode 1)
-(setq buffer-read-only t) ;; to protect the buffer.
-(buffer-disable-undo))
+(define-derived-mode SAS-log-mode SAS-mode "ESS[LOG]"
+  "`ess-transcript-mode' for SAS."
+  (ess-transcript-minor-mode 1)
+  (setq buffer-read-only t) ;; to protect the buffer.
+  (buffer-disable-undo))
 
 (defvar sas-mode-local-map nil "contains modified local keymap for SAS")
 (define-derived-mode SAS-listing-mode special-mode "ESS[LST]"
