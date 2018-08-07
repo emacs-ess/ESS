@@ -42,7 +42,9 @@
 
 (defgroup ess nil
   "ESS: Emacs Speaks Statistics."
-  :group 'local)
+  :group 'languages
+  :link '(info-link "(ESS)")
+  :link '(url-link "https://ess.r-project.org/"))
 
 (defgroup ess-edit nil
   "ESS: editing behavior, including coments/indentation."
