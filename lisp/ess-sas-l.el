@@ -252,39 +252,6 @@ number."
 (defvar sas-file-root nil)
 (defvar sas-submitable nil)
 (defvar sas-dataset nil)
-(defvar SAS-syntax-table nil "Syntax table for SAS code.")
-
-(if SAS-syntax-table nil
-  (setq SAS-syntax-table (make-syntax-table))
-
-  ;; (if (equal system-type 'windows-nt)
-  ;;     ;; backslash is punctuation (used in MS file names)
-  ;;     (modify-syntax-entry ?\\ "."  SAS-syntax-table)
-  ;;    ;; backslash is an escape character
-  ;;    (modify-syntax-entry ?\\ "\\" SAS-syntax-table))
-  (modify-syntax-entry ?\\ "."  SAS-syntax-table)  ;; backslash is punctuation
-  (modify-syntax-entry ?+  "."  SAS-syntax-table)
-  (modify-syntax-entry ?-  "."  SAS-syntax-table)
-  (modify-syntax-entry ?=  "."  SAS-syntax-table)
-  (modify-syntax-entry ?%  "w"  SAS-syntax-table)
-  (modify-syntax-entry ?<  "."  SAS-syntax-table)
-  (modify-syntax-entry ?>  "."  SAS-syntax-table)
-  (modify-syntax-entry ?&  "w"  SAS-syntax-table)
-  (modify-syntax-entry ?|  "."  SAS-syntax-table)
-  (modify-syntax-entry ?\' "\"" SAS-syntax-table)
-  (modify-syntax-entry ?*  ". 23"  SAS-syntax-table) ; comment character
-  (modify-syntax-entry ?\; "."  SAS-syntax-table)
-  (modify-syntax-entry ?_  "w"  SAS-syntax-table)
-  (modify-syntax-entry ?<  "."  SAS-syntax-table)
-  (modify-syntax-entry ?>  "."  SAS-syntax-table)
-  (modify-syntax-entry ?/  ". 14"  SAS-syntax-table) ; comment character
-  (modify-syntax-entry ?.  "w"  SAS-syntax-table))
-
-(require 'font-lock); fontification also works in terminals!
-;; (if (or window-system
-;;      noninteractive) ; compilation!
-;;; ...
-
 
 (defvar SAS-mode-font-lock-defaults
   (if ess-sas-run-regexp-opt
@@ -826,34 +793,6 @@ number."
             "[ \t]*(")                      font-lock-function-name-face)
      ))
   "Font Lock regexs for SAS.")
-
-
-(defvar SAS-editing-alist
-  '((sentence-end                 . ";[\t\n */]*")
-    (paragraph-start              . "^[ \t]*$")
-    (paragraph-separate           . "^[ \t]*$")
-    (paragraph-ignore-fill-prefix . t)
-    ;;(fill-paragraph-function      . 'lisp-fill-paragraph)
-    (adaptive-fill-mode           . nil)
-    (indent-line-function         . 'sas-indent-line)
-    ;;(indent-region-function       . 'sas-indent-region)
-    (require-final-newline        . mode-require-final-newline)
-    (comment-start                . "/*")
-    (comment-start-skip           . "/[*]")
-    (comment-end                  . "*/")
-    (comment-end-skip             . "[*]/")
-    (comment-column               . 40)
-    ;;(comment-indent-function      . 'lisp-comment-indent)
-    (parse-sexp-ignore-comments   . t)
-    (ess-style                . ess-default-style)
-    (ess-local-process-name       . nil)
-    ;;(ess-keep-dump-files          . 'ask)
-    (tab-stop-list                . ess-sas-tab-stop-list)
-    (ess-mode-syntax-table        . SAS-syntax-table)
-    (font-lock-keywords-case-fold-search . t)
-    (font-lock-defaults           . '(SAS-mode-font-lock-defaults)))
-  "General options for editing SAS source files.")
-
 
 (defun beginning-of-sas-statement (arg &optional comment-start)
   "Move point to beginning of current sas statement."
