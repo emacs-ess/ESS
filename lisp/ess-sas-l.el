@@ -1626,17 +1626,9 @@ page ;
     '("Submit File " . submit-sas))
   )
 
-                                        ;(require 'sas)
-
-(defun sas-dir-mode ()
+(define-derived-mode sas-dir-mode special-mode "SAS"
   "Major mode for managing sas files."
-  (interactive)
-  (kill-all-local-variables)
-  (use-local-map sas-dir-mode-map)
-  (setq major-mode 'sas-dir-mode)
-  (setq mode-name "SAS")
-  (setq sas-directory-name (expand-file-name default-directory))
-  (setq buffer-read-only 1))
+  (setq sas-directory-name (expand-file-name default-directory)))
 
 
 ;;(defun sas-make-library (directory &optional update)
