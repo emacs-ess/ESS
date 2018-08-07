@@ -24,12 +24,10 @@
 ;;; Code:
 
 (require 'ess-bugs-l)
+(require 'ess-bugs-d)
 (require 'ess-utils)
 (require 'ess-inf)
 (require 'ess-mode)
-
-(setq auto-mode-alist
-      (append '(("\\.[jJ][aA][gG]\\'" . ess-jags-mode)) auto-mode-alist))
 
 (defvar ess-jags-command "jags" "Default JAGS program in PATH.")
 (make-local-variable 'ess-jags-command)

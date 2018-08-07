@@ -53,6 +53,8 @@
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
 (declare-function inferior-ess-r-mode "ess-r-mode")
+(declare-function ess-inferior-julia-mode "ess-julia")
+(declare-function ess-inferior-stata-mode "ess-stata-mode")
 
 (declare-function ess-mode "ess")
 

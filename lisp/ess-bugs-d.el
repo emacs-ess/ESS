@@ -29,9 +29,6 @@
 (require 'ess-custom)
 (require 'ess-mode)
 
-(setq auto-mode-alist
-      (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
-
 (defvar ess-bugs-command "OpenBUGS" "Default BUGS program in PATH.")
 (make-local-variable 'ess-bugs-command)
 
