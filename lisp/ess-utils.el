@@ -302,6 +302,7 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
                         (car ess-tmp-files))
                 ess-tmp-files (cdr ess-tmp-files))
           (if (and (file-executable-p ess-tmp-file)
+                   (not (backup-file-name-p ess-tmp-file))
                    (not (file-directory-p ess-tmp-file)))
               ;; we have found a possible executable, so keep it.
               (setq ess-tmp-exec
