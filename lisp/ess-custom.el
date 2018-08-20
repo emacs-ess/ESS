@@ -473,9 +473,12 @@ truncation."
   :type '(choice (const nil) (const mild) (const normal) (const strong) (const aggressive) (const t)))
 
 (defcustom ess-use-flymake t
-  "If non-nil activate flymake in ess-mode buffers."
+  "If non-nil activate flymake in `ess-mode' buffers.
+If 'process, only check if the buffer has an inferior process."
   :group 'ess
-  :type 'boolean)
+  :type '(choice (const :tag "Always" t)
+                 (const :tag "With running inferior process" process)
+                 (const :tag "Never" nil)))
 
 (defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
