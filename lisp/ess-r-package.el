@@ -122,7 +122,7 @@ Please use `ess-r-package-project' instead."
 (make-obsolete 'ess-r-package-get-info 'ess-r-package-project "17.11")
 
 (defun ess-r-package--all-source-dirs (dir)
-  (when (file-exists-p dir)
+  (when (file-directory-p dir)
     (cl-loop for f in (directory-files-and-attributes dir t "^[^.]")
              if (cadr f)
              append (cons (car f) (ess-r-package--all-source-dirs (car f))))))
