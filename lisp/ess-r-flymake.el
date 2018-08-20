@@ -34,6 +34,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'ess-custom)
+(require 'ess-inf)
 (require 'flymake)
 ;; TODO: When remove support for Emacs 24, remove the nil t:
 (require 'project nil t)
@@ -173,38 +174,43 @@ REPORT-FN is flymake's callback function."
   ;; check will detect this.
   (when (process-live-p ess-r--flymake-proc)
     (kill-process ess-r--flymake-proc))
-  (let ((src-buffer (current-buffer)))
-    (setq ess-r--flymake-proc
-          (make-process
-           :name "ess-r-flymake" :noquery t :connection-type 'pipe
-           :buffer (generate-new-buffer "*ess-r-flymake*")
-           :command (list inferior-R-program
-                          "--no-save" "--no-restore" "--no-site-file" "--no-init-file" "--slave"
-                          "-e" (concat
-                                (when ess-r--lintr-file
-                                  (concat "options(lintr.linter_file = \"" ess-r--lintr-file "\");"))
-                                ess-r--flymake-def-linter
-                                ;; commandArgs(TRUE) returns everything after
-                                ;; --args as a character vector
-                                "esslint(commandArgs(TRUE)"
-                                (unless ess-r--lintr-file
-                                  ",linters = " (ess-r--flymake-linters)
-                                  (when ess-r-flymake-lintr-cache
-                                    ", cache = TRUE"))
-                                ")")
-                          "--args" (buffer-substring-no-properties
-                                    (point-min) (point-max)))
-           :sentinel
-           (lambda (proc _event)
-             (cond
-              ((eq 'exit (process-status proc))
-               (unwind-protect
-                   (if (eq proc (buffer-local-value 'ess-r--flymake-proc src-buffer))
-                       (ess-r--flymake-parse-output (process-buffer proc) src-buffer report-fn)
-                     (flymake-log :warning "Canceling obsolete check %s" proc))
-                 (kill-buffer (process-buffer proc))))
-              ((not (eq 'run (process-status proc)))
-               (kill-buffer (process-buffer proc)))))))))
+  (if (and (eql ess-use-flymake 'process)
+           (not (ess-process-live-p)))
+      (progn
+        (funcall report-fn nil)
+        (flymake-delete-own-overlays))
+    (let ((src-buffer (current-buffer)))
+      (setq ess-r--flymake-proc
+            (make-process
+             :name "ess-r-flymake" :noquery t :connection-type 'pipe
+             :buffer (generate-new-buffer " *ess-r-flymake*")
+             :command (list inferior-R-program
+                            "--no-save" "--no-restore" "--no-site-file" "--no-init-file" "--slave"
+                            "-e" (concat
+                                  (when ess-r--lintr-file
+                                    (concat "options(lintr.linter_file = \"" ess-r--lintr-file "\");"))
+                                  ess-r--flymake-def-linter
+                                  ;; commandArgs(TRUE) returns everything after
+                                  ;; --args as a character vector
+                                  "esslint(commandArgs(TRUE)"
+                                  (unless ess-r--lintr-file
+                                    ",linters = " (ess-r--flymake-linters)
+                                    (when ess-r-flymake-lintr-cache
+                                      ", cache = TRUE"))
+                                  ")")
+                            "--args" (buffer-substring-no-properties
+                                      (point-min) (point-max)))
+             :sentinel
+             (lambda (proc _event)
+               (cond
+                ((eq 'exit (process-status proc))
+                 (unwind-protect
+                     (if (eq proc (buffer-local-value 'ess-r--flymake-proc src-buffer))
+                         (ess-r--flymake-parse-output (process-buffer proc) src-buffer report-fn)
+                       (flymake-log :warning "Canceling obsolete check %s" proc))
+                   (kill-buffer (process-buffer proc))))
+                ((not (eq 'run (process-status proc)))
+                 (kill-buffer (process-buffer proc))))))))))
 
 (defun ess-r-setup-flymake ()
   "Setup flymake for ESS.

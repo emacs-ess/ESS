@@ -2829,6 +2829,11 @@ checking. ESS provides support for flymake in R-mode in Emacs versions
 @code{ess-use-flymake} to @code{nil}. In order to use it, you may need
 to install the @code{lintr} R package, available from CRAN.
 
+@defvr {User Option} ess-use-flymake
+When non-nil, use flymake. If @code{'process}, only use flymake when the
+buffer has an inferior process running.
+@end defvr
+
 @defvr {User Option} ess-r-flymake-linters
 This variable describes the linters to use. It can either be a string
 with an R expression to be used as-is or a list of strings where each
