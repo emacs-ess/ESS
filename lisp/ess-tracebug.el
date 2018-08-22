@@ -1288,11 +1288,6 @@ value from EXPR and then sent to the subprocess."
           (goto-char mbeg)
           (delete-region mbeg mend))))))
 
-(defvar ess--R-simple-prompt "\\(\\+ \\)\\{2,\\}\\(> \\)?"
-  "Regexp to match long prompts in R output.
-`inferior-ess-S-prompt' is too general and causes many false
-positive.")
-
 (defun ess--replace-long+-in-prompt (prompt is-final)
   "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
 If IS-FINAL means that PROMPT occurs at the end of the process
@@ -1569,19 +1564,19 @@ associated buffer. If FILE is nil return nil."
         (lpn ess-local-process-name))
     (when mrk
       (let ((buf (marker-buffer mrk)))
-	    (if (not other-window)
-	        (switch-to-buffer buf)
-	      (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
-	        (display-buffer buf)
-	        ;; simple save-frame-excursion
-	        (unless (eq this-frame (window-frame (get-buffer-window buf t)))
-	          (ess-select-frame-set-input-focus this-frame))))
-	    ;; set or re-set to lpn as this is the process with debug session on
-	    (with-current-buffer buf
-	      (setq ess-local-process-name lpn)
-	      (goto-char mrk)
-          (set-window-point (get-buffer-window buf) mrk))
-	    buf))))
+	(if (not other-window)
+	    (switch-to-buffer buf)
+	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
+	    (display-buffer buf)
+	    ;; simple save-frame-excursion
+	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
+	      (ess-select-frame-set-input-focus this-frame))))
+	;; set or re-set to lpn as this is the process with debug session on
+	(with-current-buffer buf
+	  (setq ess-local-process-name lpn)
+	  (goto-char mrk)
+      (set-window-point (get-buffer-window buf) mrk))
+	buf))))
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
@@ -1625,6 +1620,7 @@ nil, or TB-INDEX is not found return nil."
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
+
 (defun ess--dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
@@ -1636,18 +1632,15 @@ If FILENAME is not found at all, ask the user where to find it if
                         append (ess-r-package--all-source-dirs d))))
         buffsym buffer fmts name buffername)
     (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
-    (cond
-     
-     ;; 1. search already open buffers for match (associated file might not even exist yet)
-     ((and (dolist (bf (buffer-list))
-             (with-current-buffer  bf
-               (when (and buffer-file-name
-                          (or (and (file-name-absolute-p filename)
-                                   (string-match (format "%s\\'" filename) buffer-file-name))
-                              (equal filename (file-name-nondirectory buffer-file-name))))
-                 (setq buffer bf)
-                 (cl-return))))
-           buffer)))
+    ;; 1. search already open buffers for match (associated file might not even exist yet)
+    (dolist (bf (buffer-list))
+      (with-current-buffer  bf
+        (when (and buffer-file-name
+                   (or (and (file-name-absolute-p filename)
+                            (string-match (format "%s\\'" filename) buffer-file-name))
+                       (equal filename (file-name-nondirectory buffer-file-name))))
+          (setq buffer bf)
+          (cl-return))))
     ;; 2. The file name is absolute.  Use its explicit directory as
     ;; the first in the search path, and strip it from FILENAME.
     (when (and (null  buffer)
@@ -2830,7 +2823,7 @@ for signature and trace it with browser tracer."
                    (if nil ;; FIXME: was checking `ess-developer-packages`
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
-                     ".ess_dbg_getTracedAndDebugged()\n")))
+                       ".ess_dbg_getTracedAndDebugged()\n")))
         out-message fun def-val)
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)

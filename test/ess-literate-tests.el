@@ -5,7 +5,8 @@
 
 (defmacro elt-deftest (name args file)
   `(ert-deftest ,name ,args
-     (let ((path (expand-file-name ,file "literate")))
+     (let ((inhibit-message ess-inhibit-message-in-tests)
+           (path (expand-file-name ,file "literate")))
        (elt-do 'test path))))
 
 (defun elt--activate-font-lock-keywords ()

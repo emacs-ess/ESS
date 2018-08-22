@@ -3,7 +3,6 @@
 (require 'ess-site)
 (require 'ess-r-tests-utils)
 
-
 ;;; R
 
 (ert-deftest ess-r-inherits-prog-mode ()
@@ -94,36 +93,39 @@
 ;;; ess-r-package-mode
 
 (ert-deftest ess-r-package-auto-activation ()
-  (with-temp-buffer
-    (text-mode)
-    (hack-local-variables)
-    (should (not ess-r-package-mode)))
-  (with-r-file "dummy-pkg/R/test.R"
-    (hack-local-variables)
-    (should ess-r-package-mode)))
+  (let ((inhibit-message ess-inhibit-message-in-tests))
+    (with-temp-buffer
+      (text-mode)
+      (hack-local-variables)
+      (should (not ess-r-package-mode)))
+    (with-r-file "dummy-pkg/R/test.R"
+      (hack-local-variables)
+      (should ess-r-package-mode))))
 
-(ert-deftest ess-r-package-auto-activation-in-eshell ()
-  (with-r-file "dummy-pkg/R/test.R"
-    (eshell)
-    (should ess-r-package-mode)
-    (kill-buffer))
-  (with-r-file "dummy-pkg/R/test.R"
-    (let ((ess-r-package-auto-activate t))
-      (eshell)
-      (should ess-r-package-mode))
-    (kill-buffer)))
-
-(ert-deftest ess-r-package-auto-no-activation-in-eshell ()
-  (with-r-file "dummy-pkg/R/test.R"
-    (let ((ess-r-package-exclude-modes '(eshell-mode)))
-      (eshell)
-      (should (not ess-r-package-mode))
-      (kill-buffer)))
-  (with-r-file "dummy-pkg/R/test.R"
-    (let ((ess-r-package-auto-activate nil))
-      (eshell)
-      (should (not ess-r-package-mode))
+(ert-deftest ess-r-package-auto-activation-in-shell ()
+  (let ((kill-buffer-query-functions nil))
+    (with-r-file "dummy-pkg/R/test.R"
+      (shell)
+      (should ess-r-package-mode)
+      (kill-buffer))
+    (with-r-file "dummy-pkg/R/test.R"
+      (let ((ess-r-package-auto-activate t))
+        (shell)
+        (should ess-r-package-mode))
       (kill-buffer))))
+
+(ert-deftest ess-r-package-auto-no-activation-in-shell ()
+  (let ((kill-buffer-query-functions nil))
+    (with-r-file "dummy-pkg/R/test.R"
+      (let ((ess-r-package-exclude-modes '(shell-mode)))
+        (shell)
+        (should (not ess-r-package-mode))
+        (kill-buffer)))
+    (with-r-file "dummy-pkg/R/test.R"
+      (let ((ess-r-package-auto-activate nil))
+        (shell)
+        (should (not ess-r-package-mode))
+        (kill-buffer)))))
 
 (ert-deftest ess-r-package-vars ()
   (with-c-file "dummy-pkg/src/test.c"

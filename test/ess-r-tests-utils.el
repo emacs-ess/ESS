@@ -1,11 +1,14 @@
 ;; ess-r-tests-utils.el --- Various utilities for ess R tests
 
+(defvar ess-inhibit-message-in-tests nil)
+
 (defmacro with-r-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
   `(apply #'with-r-file- (list ,file '(,@body))))
 
 (defun with-r-file- (file body)
-  (let ((r-file-buffer (if file
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (r-file-buffer (if file
                            (find-file-noselect file)
                          (generate-new-buffer " *with-r-file-temp*"))))
     (save-window-excursion
@@ -18,7 +21,8 @@
   `(apply #'with-c-file- (list ,file '(,@body))))
 
 (defun with-c-file- (file body)
-  (let ((c-file-buffer (if file
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (c-file-buffer (if file
                            (find-file-noselect file)
                          (generate-new-buffer " *with-c-file-temp*"))))
     (save-window-excursion
@@ -118,7 +122,8 @@ split arbitrary."
 (defvar ess-r-tests-current-output-buffer nil)
 
 (defun with-r-running- (file body)
-  (let ((r-file-buffer (cond ((bufferp file)
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (r-file-buffer (cond ((bufferp file)
                               file)
                              ((stringp file)
                               (find-file-noselect file))

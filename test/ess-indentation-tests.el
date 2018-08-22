@@ -40,7 +40,7 @@
 ;;; Code:
 
 (require 'ert)
-
+(require 'ess-r-tests-utils)
 
 ;;; Indentation tests
 
@@ -105,15 +105,6 @@ where the edit took place. Return nil if E represents no real change.
             (diff was writen to ,diff-file)))))))
 
 (put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
-
-(defun ess-test-R-indentation (file style)
-  (let ((ess-style-alist ess-test-style-alist)
-        (buff (find-file-noselect file t t)))
-    (with-current-buffer buff
-      (R-mode)
-      (ess-set-style style)
-      (set-buffer-modified-p nil)
-      (should (not-change-on-indent buff)))))
 
 (ert-deftest test-ess-R-indentation-RRR ()
   (ess-test-R-indentation "styles/RRR.R" 'RRR))

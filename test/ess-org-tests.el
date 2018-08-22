@@ -8,7 +8,8 @@
   (declare (indent 1))
   (let ((proc (ess-vanila-R))
         (org-confirm-babel-evaluate nil)
-        (ess-ask-for-ess-directory nil))
+        (ess-ask-for-ess-directory nil)
+        (inhibit-message ess-inhibit-message-in-tests))
     (unwind-protect
         (with-current-buffer (get-buffer-create "*ess-org-test*")
           (erase-buffer)

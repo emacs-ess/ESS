@@ -12,6 +12,8 @@
 (add-to-list 'load-path ess-test-path)
 
 (require 'ess-site)
+(require 'ess-r-tests-utils)
+(setq ess-inhibit-message-in-tests t)
 
 ;; lintr probably isn't installed in the test suite and flymake will
 ;; complain about that. Disable it during tests.
