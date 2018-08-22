@@ -73,7 +73,7 @@
                      "> "))
     (should (string= (ess-send-input-to-R "invisible(0)")
                      "> "))
-    (should (string= (ess-send-input-to-R "invisible(0)" t)
+    (should (string= (ess-send-input-to-R "invisible(0)" 'repl)
                      "invisible(0)\n> "))))
 
 (ert-deftest ess-inf-send-complex-input ()
@@ -96,10 +96,51 @@ Datsun 710    2.320  1
 cleaned-prompts >
 > "))
     (let ((inferior-ess-replace-long+ t))
-      (should (string=
-               (ess-send-input-to-R input)
-               output)))))
+      (should (string= output (ess-send-input-to-R input))))))
 
+(ert-deftest ess-inf-send-fn ()
+  (let ((input "fn <- function() {
+}
+")
+        (output "> ")
+        (output-nowait "
+> fn <- function() {
++ }
+> "))
+    (let ((inferior-ess-replace-long+ t))
+      (let ((ess-eval-visibly nil))
+        (should (string= output
+                         (ess-send-input-to-R input 'c-c))))
+      (let ((ess-eval-visibly 'nowait))
+        (should (string= output-nowait
+                         (ess-send-input-to-R input 'c-c)))))))
+
+(ert-deftest ess-inf-send-cat-some.text ()
+  (let ((input "cat(\"some. text\n\")
+head(cars, 2)
+")
+        (output "> 
+some. text
+> 
+  speed dist
+1     4    2
+2     4   10
+> ")
+        (output-nowait "cat(\"some. text\n\")
+head(cars, 2)
+some. text
+> 
+  speed dist
+1     4    2
+2     4   10
+> "))
+    (let ((inferior-ess-replace-long+ t))
+      (let ((ess-eval-visibly nil))
+        (should (string= output
+                         (ess-send-input-to-R input 'c-c))))
+      (let ((ess-eval-visibly 'nowait))
+        (should (string= output-nowait
+                         (ess-send-input-to-R input 'c-c)))))))
 
 
 ;;; Inferior utils

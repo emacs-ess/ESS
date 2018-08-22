@@ -70,7 +70,6 @@
 (declare-function ess--accumulation-buffer "ess-inf")
 (declare-function ess--if-verbose-write-process-state "ess-inf")
 (declare-function ess--run-presend-hooks "ess-inf")
-(declare-function ess--show-process-buffer-on-error "ess-inf")
 (declare-function ess-boolean-command "ess-inf")
 (declare-function ess-build-eval-command "ess-inf")
 (declare-function ess-build-load-command "ess-inf")
@@ -1289,6 +1288,11 @@ value from EXPR and then sent to the subprocess."
           (goto-char mbeg)
           (delete-region mbeg mend))))))
 
+(defvar ess--R-simple-prompt "\\(\\+ \\)\\{2,\\}\\(> \\)?"
+  "Regexp to match long prompts in R output.
+`inferior-ess-S-prompt' is too general and causes many false
+positive.")
+
 (defun ess--replace-long+-in-prompt (prompt is-final)
   "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
 If IS-FINAL means that PROMPT occurs at the end of the process
@@ -1329,42 +1333,67 @@ value as it might be a continuation prompt."
   "Flush accumulated output of PROC into its output buffer.
 Insertion happens chunk by chunk. A chunk is a region between two
 prompts."
-  (let ((abuf (ess--accumulation-buffer proc))
-        (pbuf (process-buffer proc)))
-    (ess-mpi-handle-messages abuf)
-    (with-current-buffer abuf
-      (goto-char (point-min))
-      (unless (eq (point) (point-max))
-        (ess--show-process-buffer-on-error proc)
-        (let ((do-clean (not (eq ess-eval-visibly t)))
-              (pos1 1) (pos2 1) (tpos 1) (prompt)
-              (prev-prompt (process-get proc 'prev-prompt))
-              (prompt-regexp (buffer-local-value 'comint-prompt-regexp pbuf)))
-          (while (re-search-forward prompt-regexp nil t)
-            (setq pos1 (match-beginning 0)
-                  tpos (match-end 0))
-            (when (> pos1 pos2)
-              (let ((str (buffer-substring pos2 pos1)))
-                (comint-output-filter proc (ess--offset-output prev-prompt str))))
-            (setq pos2 tpos)
-            (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
-                           (if do-clean
-                               (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
-                             prompt)))
-            ;; Cannot bypass this call to comint-output-filter function as
-            ;; external tools could rely on prompts (org-babel [#598])
-            (comint-output-filter proc prompt)
-            (setq prev-prompt (and do-clean prompt)
-                  pos1 pos2))
-          ;; insert last chunk if any
-          (unless (eq pos1 (point-max))
-            (let ((str (buffer-substring-no-properties pos1 (point-max))))
-              (comint-output-filter proc (ess--offset-output prev-prompt str))
-              (setq prev-prompt nil)))
-          (process-put proc 'prev-prompt prev-prompt)
-          (process-put proc 'flush-time (and (process-get proc 'busy)
-                                             (float-time)))
-          (erase-buffer))))))
+  (let ((abuf (ess--accumulation-buffer proc)))
+    (when (> (buffer-size abuf) 0)
+      (let ((pbuf (process-buffer proc))
+            (nowait (eq ess-eval-visibly 'nowait)))
+        (ess-mpi-handle-messages abuf)
+        (with-current-buffer abuf
+          (goto-char (point-min))
+          (let ((case-fold-search nil))
+            (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
+              (ess-show-buffer (process-buffer proc))))
+          (goto-char (point-min))
+          ;; skip first line of + + prompts
+          (when  (and nowait (looking-at "\\(\\+ \\)+$"))
+            (forward-line 1))
+          (let ((do-clean (not (eq ess-eval-visibly t)))
+                (pos2 (point))
+                (pos1 (point))
+                (tpos nil)
+                (prompt nil)
+                (regexp (if nowait
+                            ;; we cannot disambiguate printed input fields and
+                            ;; prompts in output in this case; match 2+ pluses or
+                            ;; > and 2+ spaces
+                            "\\(^\\([+>] \\)\\{2,\\}\\)\\|\\(> \\) +"
+                          "^\\([+>] \\)+"))
+                (prev-prompt (process-get proc 'prev-prompt))
+                (eol (point-at-eol)))
+            (while (re-search-forward regexp nil t)
+              (setq pos1 (match-beginning 0)
+                    tpos (if nowait
+                             (or (match-end 1) (match-end 3))
+                           (match-end 0)))
+              ;; for debugging in R:accum window in order to see the pointer moving
+              ;; (set-window-point (get-buffer-window) tpos)
+              (when (> pos1 pos2)
+                (let ((str (buffer-substring pos2 pos1)))
+                  (comint-output-filter proc (ess--offset-output prev-prompt str))))
+              (setq pos2 tpos)
+              (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
+                             (if do-clean
+                                 (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
+                               prompt)))
+              ;; Cannot bypass this trivial call to comint-output-filter this
+              ;; call to comint-output-filter function as external tools could
+              ;; rely on prompts (org-babel [#598]). Setting dummy regexp in
+              ;; order to avoid comint erasing this prompt which contrasts to
+              ;; how we output prompts in all other cases.
+              (with-current-buffer pbuf
+                (let ((comint-prompt-regexp "^$"))
+                  (comint-output-filter proc prompt)))
+              (setq prev-prompt (and do-clean prompt)
+                    pos1 pos2))
+            ;; insert last chunk if any
+            (unless (eq pos1 (point-max))
+              (let ((str (buffer-substring-no-properties pos1 (point-max))))
+                (comint-output-filter proc (ess--offset-output prev-prompt str))
+                (setq prev-prompt nil)))
+            (process-put proc 'prev-prompt prev-prompt)
+            (process-put proc 'flush-time (and (process-get proc 'busy)
+                                               (float-time)))
+            (erase-buffer)))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process when
@@ -1540,19 +1569,19 @@ associated buffer. If FILE is nil return nil."
         (lpn ess-local-process-name))
     (when mrk
       (let ((buf (marker-buffer mrk)))
-	(if (not other-window)
-	    (switch-to-buffer buf)
-	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
-	    (display-buffer buf)
-	    ;; simple save-frame-excursion
-	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
-	      (ess-select-frame-set-input-focus this-frame))))
-	;; set or re-set to lpn as this is the process with debug session on
-	(with-current-buffer buf
-	  (setq ess-local-process-name lpn)
-	  (goto-char mrk)
-      (set-window-point (get-buffer-window buf) mrk))
-	buf))))
+	    (if (not other-window)
+	        (switch-to-buffer buf)
+	      (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
+	        (display-buffer buf)
+	        ;; simple save-frame-excursion
+	        (unless (eq this-frame (window-frame (get-buffer-window buf t)))
+	          (ess-select-frame-set-input-focus this-frame))))
+	    ;; set or re-set to lpn as this is the process with debug session on
+	    (with-current-buffer buf
+	      (setq ess-local-process-name lpn)
+	      (goto-char mrk)
+          (set-window-point (get-buffer-window buf) mrk))
+	    buf))))
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
@@ -1596,7 +1625,6 @@ nil, or TB-INDEX is not found return nil."
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
-
 (defun ess--dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
@@ -1608,15 +1636,18 @@ If FILENAME is not found at all, ask the user where to find it if
                         append (ess-r-package--all-source-dirs d))))
         buffsym buffer fmts name buffername)
     (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
-    ;; 1. search already open buffers for match (associated file might not even exist yet)
-    (dolist (bf (buffer-list))
-      (with-current-buffer  bf
-        (when (and buffer-file-name
-                   (or (and (file-name-absolute-p filename)
-                            (string-match (format "%s\\'" filename) buffer-file-name))
-                       (equal filename (file-name-nondirectory buffer-file-name))))
-          (setq buffer bf)
-          (cl-return))))
+    (cond
+     
+     ;; 1. search already open buffers for match (associated file might not even exist yet)
+     ((and (dolist (bf (buffer-list))
+             (with-current-buffer  bf
+               (when (and buffer-file-name
+                          (or (and (file-name-absolute-p filename)
+                                   (string-match (format "%s\\'" filename) buffer-file-name))
+                              (equal filename (file-name-nondirectory buffer-file-name))))
+                 (setq buffer bf)
+                 (cl-return))))
+           buffer)))
     ;; 2. The file name is absolute.  Use its explicit directory as
     ;; the first in the search path, and strip it from FILENAME.
     (when (and (null  buffer)
@@ -2799,7 +2830,7 @@ for signature and trace it with browser tracer."
                    (if nil ;; FIXME: was checking `ess-developer-packages`
                        (format ".ess_dbg_getTracedAndDebugged(c('%s'))\n"
                                (mapconcat 'identity ess-developer-packages "', '"))
-                       ".ess_dbg_getTracedAndDebugged()\n")))
+                     ".ess_dbg_getTracedAndDebugged()\n")))
         out-message fun def-val)
     ;; (prin1 debugged)
     (if (eq (length debugged) 0)

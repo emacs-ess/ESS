@@ -489,13 +489,6 @@ Taken from octave-mod.el."
       (process-put proc 'suppress-next-output? nil)
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
 
-(defun ess--show-process-buffer-on-error (proc)
-  (let ((case-fold-search nil))
-    (with-current-buffer (ess--accumulation-buffer proc)
-      (goto-char (point-min))
-      (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
-        (ess-show-buffer (process-buffer proc))))))
-
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
 If STRING starts with a `^G', ring the Emacs bell and strip it.
@@ -1779,9 +1772,7 @@ Send the region if it is active. If not, send function if `point'
 is inside one, otherwise the current paragraph. Treats
 rectangular regions as `ess-eval-region' does. After evaluation
 step to the next code line or to the end of region if region was
-active.
-
-Prefix arg VIS toggles visibility of ess-code as for
+active. Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
   (if (use-region-p)

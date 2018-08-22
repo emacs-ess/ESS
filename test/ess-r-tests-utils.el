@@ -50,31 +50,66 @@ otherwise place the point at the beginning of the inserted text."
 (defun ess-vanila-R ()
   "Start vanila R process and return the process object."
   (save-window-excursion
-    (let ((ess-ask-for-ess-directory nil))
+    (let ((inhibit-message ess-inhibit-message-in-tests)
+          (ess-ask-for-ess-directory nil))
       (R "--vanilla"))
     (ess-get-process)))
 
-(defun ess-send-input-to-R (input &optional in-repl)
-  "Send INPUT and return the entire content of the REPL buffer.
-If IN-REPL is non-nil, send interactively at the REPL, otherwise
-use `ess-send-string'. Note, that all prompts in the output are
-replaced with '> '. There is no full proof way to test for
-prompts given that process output could be split arbitrary."
-  (let ((prompt-regexp (concat "^" inferior-S-prompt))
-        (proc (ess-vanila-R)))
+(defun ess-send-input-to-R (input &optional type)
+  "Eval INPUT and return the entire content of the REPL buffer.
+TYPE can be one of 'string, 'region 'c-c or 'repl. If nil or
+'string, use `ess-send-string' (lowest level primitive); if
+'region use `ess-eval-region' if 'c-c use
+`ess-eval-region-or-function-or-paragraph' which is by default
+bound to C-c C-c; if 'repl, eval interactively at the REPL. All
+prompts in the output are replaced with '> '. There is no full
+proof way to test for prompts given that process output could be
+split arbitrary."
+  (let ((prompt-regexp "^\\([+.>] \\)\\{2,\\}")
+        (proc (ess-vanila-R))
+        (inhibit-message ess-inhibit-message-in-tests))
     (unwind-protect
         (with-current-buffer (process-buffer proc)
           (erase-buffer)
-          (if in-repl
-              (progn
-                (insert input)
-                (inferior-ess-send-input))
+          ;; (switch-to-buffer (current-buffer)) ; for debugging
+          (cond
+           ((or (null type) (eq type 'string))
             (ess-send-string proc input))
+           ((eq type 'repl)
+            (insert input)
+            (inferior-ess-send-input))
+           ((or (eq type 'region)
+                (eq type 'c-c))
+            (with-temp-buffer
+              (insert input)
+              (goto-char (point-min))
+              (R-mode)
+              (setq ess-current-process-name (process-name proc))
+              (if (eq type 'region)
+                  (ess-eval-region (point-min) (point-max) nil)
+                (ess-eval-region-or-function-or-paragraph nil))))
+           (t (error "Invalid TYPE parameter")))
+          ;; give time to accumulate output
+          (sleep-for 0.05)
           (ess-wait-for-process proc)
           (replace-regexp-in-string
            prompt-regexp "> "
            (buffer-substring-no-properties (point-min) (point-max))))
-      (kill-process proc))))
+      (kill-process proc)
+      ;; fixme: kill in sentinel; this doesn't work in batch mode
+      ;; (kill-buffer (process-buffer proc))
+      )))
+
+
+(defun ess-test-R-indentation (file style)
+  (let ((ess-style-alist ess-test-style-alist)
+        (buff (find-file-noselect file t t))
+        (inhibit-message ess-inhibit-message-in-tests))
+    (with-current-buffer buff
+      (R-mode)
+      (ess-set-style style)
+      (set-buffer-modified-p nil)
+      (should (not-change-on-indent buff)))))
 
 (defmacro with-r-running (file &rest body)
   (declare (indent 1) (debug (&rest body)))
