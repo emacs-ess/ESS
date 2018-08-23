@@ -1315,13 +1315,17 @@ value as it might be a continuation prompt."
          (t (error "Invalid values of `inferior-ess-replace-long+'")))))))
 
 (defun ess--offset-output (prev-prompt str)
+  "Add suitable offset to STR given the preceding PREV-PROMPT."
   (if prev-prompt
-      (let* ((len (length prev-prompt))
-             (last+ (eq (elt prev-prompt (- len 2)) ?+)))
-        (if (and (> len 1) last+)
-            ;; append > for aesthetic reasons
+      (let ((len (length prev-prompt)))
+        ;; prompts have at least 2 chars
+        (if (eq (elt prev-prompt (- len 2)) ?+)
+            ;; when last + append > for aesthetic reasons
             (concat "> \n" str)
-          (concat "\n" str)))
+          (if (eq (elt str 0) ?\n)
+              ;; don't insert empty lines
+              str
+            (concat "\n" str))))
     str))
 
 (defun ess--flush-accumulated-output (proc)
@@ -1346,8 +1350,11 @@ prompts."
             (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
               (ess-show-buffer (process-buffer proc))))
           (goto-char (point-min))
-          ;; skip first line of + + prompts
-          (when  (and nowait (looking-at "\\(\\+ \\)+$"))
+          (when  (and nowait (looking-at "\\(\\+ \\)\\{2,\\}$"))
+            ;; First long + + in the output mirror the sent input and are
+            ;; unnecessary in nowait case. This will miss on short input which
+            ;; produces only one +, but we cannot remove it because we cannot
+            ;; distinguish it from continuation lines at the REPL.
             (forward-line 1))
           (let ((do-clean (not (eq ess-eval-visibly t)))
                 (pos2 (point))

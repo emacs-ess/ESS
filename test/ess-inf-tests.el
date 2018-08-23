@@ -103,7 +103,7 @@ cleaned-prompts >
 }
 ")
         (output "> ")
-        (output-nowait "
+        (output-nowait "+ 
 > fn <- function() {
 + }
 > "))
@@ -129,7 +129,7 @@ some. text
 > ")
           (output-nowait "cat(\"some. text\n\")
 head(cars, 2)
-some. text
++ some. text
 > 
   speed dist
 1     4    2
