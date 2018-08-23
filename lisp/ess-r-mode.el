@@ -1418,7 +1418,7 @@ Returns nil if line starts inside a string, t if in a comment."
       (ess-back-to-indentation)
       (cond
        ;; Strings
-       ((ess-within-string-p state)
+       ((ess-inside-string-p)
         (current-indentation))
        ;; Comments
        ((ess-calculate-indent--comments))

@@ -1304,33 +1304,23 @@ symbols (like aaa$bbb and aaa@bbb in R)."
           (point)
         (ess-symbol-start)))))
 
-(defun ess-inside-string-or-comment-p (&optional pos)
-  "Return non-nil if POS is inside a string or comment.
-POS defaults to `point.'"
-  (save-excursion
-    (let* ((pos (or pos (point)))
-           (state (syntax-ppss pos)))
-      (or (nth 3 state) (nth 4 state)))))
-
 (defun ess-inside-string-p (&optional pos)
-  "Return non-nil if point is inside string (according to syntax)."
-  (interactive)
-  ;; when narrowing the buffer in iESS the ppss cahce is screwed:( But it is
-  ;; very fast, so don't bother for now.
-  (let ((pps (syntax-ppss pos)))
-    (nth 3 pps))
-  ;; (nth 3 (parse-partial-sexp (point-min) pos))
-  )
+  "Return non-nil if POS is inside string.
+POS defaults to `point'."
+  (let ((pos (or pos (point))))
+    (nth 3 (syntax-ppss pos))))
 
 (defun ess-inside-comment-p (&optional pos)
-  "Return non-nil if point is inside string (according to syntax)."
-  (interactive)
-  (setq pos (or pos (point)))
-  (save-excursion
-    (or (when font-lock-mode ;; this is a shortcut (works well usually)
-	  (let ((face (get-char-property pos 'face)))
-	    (eq 'font-lock-comment-face face)))
-	(nth 4 (parse-partial-sexp (progn (goto-char pos) (point-at-bol)) pos)))))
+  "Return non-nil if POS is inside string.
+POS defaults to `point'."
+  (let ((pos (or pos (point))))
+    (nth 4 (syntax-ppss pos))))
+
+(defun ess-inside-string-or-comment-p (&optional pos)
+  "Return non-nil if POS is inside a string or comment.
+POS defaults to `point'."
+  (or (ess-inside-string-p pos)
+      (ess-inside-comment-p pos)))
 
 (defun ess-inside-brackets-p (&optional pos curly?)
   "Return t if position POS is inside brackets.
