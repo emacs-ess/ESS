@@ -72,6 +72,9 @@ split arbitrary."
   (let ((prompt-regexp "^\\([+.>] \\)\\{2,\\}")
         (proc (ess-vanila-R))
         (inhibit-message ess-inhibit-message-in-tests))
+    ;; just in case
+    (ess-wait-for-process proc)
+    (ess--flush-accumulated-output proc)
     (unwind-protect
         (with-current-buffer (process-buffer proc)
           (erase-buffer)
@@ -100,9 +103,11 @@ split arbitrary."
             (goto-char (point-max)))
           ;; remove END>
           (delete-region (match-beginning 0) (match-end 0))
+          ;; (buffer-substring-no-properties (point-min) (point-max))
           (replace-regexp-in-string
            prompt-regexp "> "
-           (buffer-substring-no-properties (point-min) (point-max))))
+           (buffer-substring-no-properties (point-min) (point-max)))
+          )
       (kill-process proc)
       ;; fixme: kill in sentinel; this doesn't work in batch mode
       ;; (kill-buffer (process-buffer proc))
@@ -119,8 +124,12 @@ split arbitrary."
       (set-buffer-modified-p nil)
       (should (not-change-on-indent buff)))))
 
+
+;;; NB: !!! Uses inferior-ess-ordinary-filter which is not representative to the
+;;; common tracebug case.
+
 (defmacro with-r-running (file &rest body)
-  (declare (indent 1) (debug (&rest body)))
+  (declare (indent 1) (debug (form body)))
   `(apply #'with-r-running- (list ,file '(,@body))))
 
 (defvar ess-r-tests-current-output-buffer nil)
@@ -162,15 +171,16 @@ split arbitrary."
 (defmacro output (&rest body)
   (declare (indent 1) (debug (&rest body)))
   `(progn
+     (ess-wait-for-process proc)
      ,@body
      (ess-wait-for-process proc)
      (with-current-buffer ess-r-tests-current-output-buffer
        (ess-kill-last-line)
-       (prog1 (buffer-string)
+       (prog1 (buffer-substring-no-properties (point-min) (point-max))
          (erase-buffer)))))
 
 (defmacro output= (body expected)
-  (declare (indent 1) (debug (&rest body)))
+  (declare (indent 0) (debug (sexp sexp)))
   `(progn
      (let ((output (output ,body))
            (expected (eval ,expected)))

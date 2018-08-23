@@ -1334,15 +1334,15 @@ Insertion happens chunk by chunk. A chunk is a region between two
 prompts."
   (let ((abuf (ess--accumulation-buffer proc))
         (pbuf (process-buffer proc))
-        (nowait (eq ess-eval-visibly 'nowait)))
+        (nowait (eq ess-eval-visibly 'nowait))
+        (flush-timer (process-get proc 'flush-timer)))
     (when (> (buffer-size abuf) 0)
+      (when (timerp flush-timer)
+        (cancel-timer flush-timer))
       (if (eq (buffer-local-value 'major-mode pbuf) 'fundamental-mode)
           ;; Just in case if we are in *ess-command* buffer; restart the timer.
-          (let ((flush-timer (process-get proc 'flush-timer)))
-            (when (timerp flush-timer)
-              (cancel-timer flush-timer))
-            (process-put proc 'flush-timer
-                         (run-at-time .02 nil #'ess--flush-accumulated-output proc)))
+          (process-put proc 'flush-timer
+                       (run-at-time .02 nil #'ess--flush-accumulated-output proc))
         (ess-mpi-handle-messages abuf)
         (with-current-buffer abuf
           (goto-char (point-min))
@@ -1350,12 +1350,15 @@ prompts."
             (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
               (ess-show-buffer (process-buffer proc))))
           (goto-char (point-min))
-          (when  (and nowait (looking-at "\\(\\+ \\)\\{2,\\}$"))
-            ;; First long + + in the output mirror the sent input and are
-            ;; unnecessary in nowait case. This will miss on short input which
-            ;; produces only one +, but we cannot remove it because we cannot
-            ;; distinguish it from continuation lines at the REPL.
-            (forward-line 1))
+          ;; First long + + in the output mirrors the sent input by the user and
+          ;; is unnecessary in nowait case. A single + can be a continuation in
+          ;; the REPL, thus we check if there is an extra output after the + .
+          (message (format "first line: %s" (buffer-substring (point-min) (point-at-eol))))
+          (when nowait
+            (when (or (looking-at "\\([+>] \\)\\{2,\\}\n?")
+                      (and (looking-at "\\+ \n?")
+                           (> (point-max) (match-end 0))))
+              (goto-char (match-end 0))))
           (let ((do-clean (not (eq ess-eval-visibly t)))
                 (pos2 (point))
                 (pos1 (point))
@@ -1456,21 +1459,27 @@ mirrors the output into *ess.dbg* buffer."
         (process-put proc 'flush-time new-time))
 
       ;; flush periodically
-      (if (or
-           is-ready
-           ;; for the sake of ess-eval-linewise
-           (process-get proc 'sec-prompt)
-           (> (- new-time last-time) .6)
-           (and (boundp 'edebug-mode) edebug-mode)
-           ;; the flush is not getting called if the third party call
-           ;; accept-process-output in a loop (e.g. org-babel-execute-src-block)
-           (and (boundp 'org-babel-current-src-block-location)
-                org-babel-current-src-block-location))
-          (ess--flush-accumulated-output proc)
-        ;; setup new flush timer; also for is-read = t to avoid detecting
-        ;; intermediate prompts as end-of-output prompts (especially for tests)
-        (process-put proc 'flush-timer
-                     (run-at-time (if is-ready .02 .2) nil #'ess--flush-accumulated-output proc))))
+      (let ((fast-flush (or is-ready
+                            ;; for the sake of ess-eval-linewise
+                            (process-get proc 'sec-prompt))))
+        (if (or
+             ;; theoretically we should flush asynchronously in all cases but
+             ;; somewhat unexpectedly it introduces much more randomness during
+             ;; batch testing. todo: flush directly for now and either remove or
+             ;; improve on the next refactoring iteration
+             fast-flush
+             (> (- new-time last-time) .5)
+             (and (boundp 'edebug-mode) edebug-mode)
+             ;; the flush is not getting called if the third party call
+             ;; accept-process-output in a loop (e.g. org-babel-execute-src-block)
+             (and (boundp 'org-babel-current-src-block-location)
+                  org-babel-current-src-block-location))
+            (ess--flush-accumulated-output proc)
+          ;; setup new flush timer; ideally also for fast-flush cased in order
+          ;; to avoid detecting intermediate prompts as end-of-output prompts
+          (let ((timeout (if fast-flush .01 .2)))
+            (process-put proc 'flush-timer
+                         (run-at-time timeout nil #'ess--flush-accumulated-output proc))))))
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
