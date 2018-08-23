@@ -791,14 +791,6 @@ return the prefix."
   (save-excursion
     (ess-escape-prefixed-block call)))
 
-(defun ess-within-comment-p (&optional state)
-  (let ((state (or state (syntax-ppss))))
-        (eq (syntax-ppss-context state) 'comment)))
-
-(defun ess-within-string-p (&optional state)
-  (let ((state (or state (syntax-ppss))))
-        (eq (syntax-ppss-context state) 'string)))
-
 
 ;;*;; Syntactic Travellers and Predicates
 
@@ -841,7 +833,7 @@ into account."
       (goto-char (match-end 0)))))
 
 (defun ess-escape-comment ()
-  (when (ess-within-comment-p)
+  (when (ess-inside-comment-p)
     (prog1 (comment-beginning)
      (skip-chars-backward "#+[ \t]*"))))
 

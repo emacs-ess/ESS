@@ -972,7 +972,7 @@ list of strings."
     (ess-roxy-with-filling-context t
       ad-do-it))
    ((and (not (ess-roxy-entry-p))
-         (ess-within-comment-p))
+         (ess-inside-comment-p))
     ad-do-it)
    ;; Filling of call arguments with point on call name
    ((and ess-fill-calls
