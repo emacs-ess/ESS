@@ -1263,7 +1263,7 @@ described in `ess-eval-visibly'. STRING need not end with
            (insert-before-markers
             (propertize (format "%s\n"
                                 (replace-regexp-in-string
-                                 "\n[ \t]" "\n+ "
+                                 "\n" "\n+ "
                                  (if (stringp visibly) visibly string)))
                         'font-lock-face 'comint-highlight-input)))
          (process-send-string process (ess--concat-new-line-maybe string))))
