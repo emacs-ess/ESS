@@ -93,9 +93,13 @@ split arbitrary."
                   (ess-eval-region (point-min) (point-max) nil)
                 (ess-eval-region-or-function-or-paragraph nil))))
            (t (error "Invalid TYPE parameter")))
-          ;; give time to accumulate output
-          (sleep-for 0.05)
-          (ess-wait-for-process proc)
+          (process-send-string proc "cat('END')\n")
+          ;; wait till we have our end marker
+          (while (not (looking-back "\n?END> " nil t))
+            (sleep-for 0.01)
+            (goto-char (point-max)))
+          ;; remove END>
+          (delete-region (match-beginning 0) (match-end 0))
           (replace-regexp-in-string
            prompt-regexp "> "
            (buffer-substring-no-properties (point-min) (point-max))))

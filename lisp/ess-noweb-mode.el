@@ -1058,7 +1058,6 @@ switch narrowing on."
   "If in a documentation chunk, goto to the Nth documentation
 chunk from point, else goto to the Nth code chunk from point."
   (interactive "p")
-  ;; (dbg (current-buffer))
   (if (ess-noweb-in-code-chunk)
       (ess-noweb-next-code-chunk n)
     (ess-noweb-next-doc-chunk n)))

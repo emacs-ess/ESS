@@ -716,7 +716,6 @@ GTags file (default TAGS): ")
            (tags-cmd (format "etags -o %s --regex='%s' -" tagfile
                              (mapconcat 'identity regs "' --regex='"))))
       (message "Building tags: %s" tagfile)
-      ;; (dbg (format "%s | %s" find-cmd tags-cmd))
       (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
         (message "Building tags .. ok!")))))
 

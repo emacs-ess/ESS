@@ -1328,10 +1328,17 @@ value as it might be a continuation prompt."
   "Flush accumulated output of PROC into its output buffer.
 Insertion happens chunk by chunk. A chunk is a region between two
 prompts."
-  (let ((abuf (ess--accumulation-buffer proc)))
+  (let ((abuf (ess--accumulation-buffer proc))
+        (pbuf (process-buffer proc))
+        (nowait (eq ess-eval-visibly 'nowait)))
     (when (> (buffer-size abuf) 0)
-      (let ((pbuf (process-buffer proc))
-            (nowait (eq ess-eval-visibly 'nowait)))
+      (if (eq (buffer-local-value 'major-mode pbuf) 'fundamental-mode)
+          ;; Just in case if we are in *ess-command* buffer; restart the timer.
+          (let ((flush-timer (process-get proc 'flush-timer)))
+            (when (timerp flush-timer)
+              (cancel-timer flush-timer))
+            (process-put proc 'flush-timer
+                         (run-at-time .02 nil #'ess--flush-accumulated-output proc)))
         (ess-mpi-handle-messages abuf)
         (with-current-buffer abuf
           (goto-char (point-min))
@@ -1370,11 +1377,11 @@ prompts."
                              (if do-clean
                                  (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
                                prompt)))
-              ;; Cannot bypass this trivial call to comint-output-filter this
-              ;; call to comint-output-filter function as external tools could
-              ;; rely on prompts (org-babel [#598]). Setting dummy regexp in
-              ;; order to avoid comint erasing this prompt which contrasts to
-              ;; how we output prompts in all other cases.
+              ;; Cannot bypass this trivial call to comint-output-filter because
+              ;; external tools could rely on prompts (org-babel [#598] for
+              ;; example). Setting dummy regexp in order to avoid comint erasing
+              ;; this prompt which contrasts to how we output prompts in all
+              ;; other cases.
               (with-current-buffer pbuf
                 (let ((comint-prompt-regexp "^$"))
                   (comint-output-filter proc prompt)))
@@ -1424,6 +1431,7 @@ mirrors the output into *ess.dbg* buffer."
 
     (if (or (process-get proc 'suppress-next-output?)
             ess--suppress-next-output?)
+
         ;; works only for surpressing short output, enough for now (for callbacks)
         (process-put proc 'suppress-next-output? nil)
 
@@ -1431,7 +1439,7 @@ mirrors the output into *ess.dbg* buffer."
         (goto-char (point-max))
         (insert string))
 
-      ;; cancel the timer every time we enter the filter
+      ;; cancel the timer each time we enter this filter
       (when (timerp flush-timer)
         (cancel-timer flush-timer)
         (process-put proc 'flush-timer nil))
@@ -1441,15 +1449,21 @@ mirrors the output into *ess.dbg* buffer."
         (process-put proc 'flush-time new-time))
 
       ;; flush periodically
-      (when (or is-ready
-                (process-get proc 'sec-prompt) ; for the sake of ess-eval-linewise
-                (> (- new-time last-time) .6))
-        (ess--flush-accumulated-output proc))
-
-      ;; setup a new flush timer (check for edebug to be able to debug mpi handler)
-      (unless (and (boundp 'edebug-mode) edebug-mode)
+      (if (or
+           is-ready
+           ;; for the sake of ess-eval-linewise
+           (process-get proc 'sec-prompt)
+           (> (- new-time last-time) .6)
+           (and (boundp 'edebug-mode) edebug-mode)
+           ;; the flush is not getting called if the third party call
+           ;; accept-process-output in a loop (e.g. org-babel-execute-src-block)
+           (and (boundp 'org-babel-current-src-block-location)
+                org-babel-current-src-block-location))
+          (ess--flush-accumulated-output proc)
+        ;; setup new flush timer; also for is-read = t to avoid detecting
+        ;; intermediate prompts as end-of-output prompts (especially for tests)
         (process-put proc 'flush-timer
-                     (run-at-time .2 nil #'ess--flush-accumulated-output proc))))
+                     (run-at-time (if is-ready .02 .2) nil #'ess--flush-accumulated-output proc))))
 
     ;; WATCH
     (when (and is-ready wbuff) ;; refresh only if the process is ready and wbuff exists, (not only in the debugger!!)
@@ -1564,19 +1578,19 @@ associated buffer. If FILE is nil return nil."
         (lpn ess-local-process-name))
     (when mrk
       (let ((buf (marker-buffer mrk)))
-	(if (not other-window)
-	    (switch-to-buffer buf)
-	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
-	    (display-buffer buf)
-	    ;; simple save-frame-excursion
-	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
-	      (ess-select-frame-set-input-focus this-frame))))
-	;; set or re-set to lpn as this is the process with debug session on
-	(with-current-buffer buf
-	  (setq ess-local-process-name lpn)
-	  (goto-char mrk)
-      (set-window-point (get-buffer-window buf) mrk))
-	buf))))
+	    (if (not other-window)
+	        (switch-to-buffer buf)
+	      (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
+	        (display-buffer buf)
+	        ;; simple save-frame-excursion
+	        (unless (eq this-frame (window-frame (get-buffer-window buf t)))
+	          (ess-select-frame-set-input-focus this-frame))))
+	    ;; set or re-set to lpn as this is the process with debug session on
+	    (with-current-buffer buf
+	      (setq ess-local-process-name lpn)
+	      (goto-char mrk)
+          (set-window-point (get-buffer-window buf) mrk))
+	    buf))))
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
@@ -1619,7 +1633,6 @@ nil, or TB-INDEX is not found return nil."
                          org-babel-tangled-file)
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
-
 
 (defun ess--dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.

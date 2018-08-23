@@ -69,12 +69,12 @@
 
 (ert-deftest ess-inf-send-input-invisible ()
   (let ((ess-eval-visibly nil))
-    (should (string= (ess-send-input-to-R "\n\n")
-                     "> "))
-    (should (string= (ess-send-input-to-R "invisible(0)")
-                     "> "))
-    (should (string= (ess-send-input-to-R "invisible(0)" 'repl)
-                     "invisible(0)\n> "))))
+    (should (string= "> "
+                     (ess-send-input-to-R "\n\n")))
+    (should (string= "> "
+                     (ess-send-input-to-R "invisible(0)")))
+    (should (string= "invisible(0)\n> "
+                     (ess-send-input-to-R "invisible(0)" 'repl)))))
 
 (ert-deftest ess-inf-send-complex-input ()
   (let ((ess-eval-visibly nil)
@@ -98,7 +98,7 @@ cleaned-prompts >
     (let ((inferior-ess-replace-long+ t))
       (should (string= output (ess-send-input-to-R input))))))
 
-(ert-deftest ess-inf-send-fn ()
+(ert-deftest ess-inf-send-fn-test ()
   (let ((input "fn <- function() {
 }
 ")
@@ -139,9 +139,12 @@ some. text
         (let ((ess-eval-visibly nil))
           (should (string= output
                            (ess-send-input-to-R input 'c-c))))
-        (let ((ess-eval-visibly 'nowait))
-          (should (string= output-nowait
-                           (ess-send-input-to-R input 'c-c))))))))
+        ;; these test fails occasionally due to inherent randomness of the
+        ;; process output splitting
+        (unless (getenv "TRAVIS")
+          (let ((ess-eval-visibly 'nowait))
+            (should (string= output-nowait
+                             (ess-send-input-to-R input 'c-c)))))))))
 
 
 ;;; Inferior utils
