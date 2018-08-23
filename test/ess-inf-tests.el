@@ -115,18 +115,19 @@ cleaned-prompts >
         (should (string= output-nowait
                          (ess-send-input-to-R input 'c-c)))))))
 
-(ert-deftest ess-inf-send-cat-some.text ()
-  (let ((input "cat(\"some. text\n\")
+(when (version< "25" emacs-version)
+  (ert-deftest ess-inf-send-cat-some.text ()
+    (let ((input "cat(\"some. text\n\")
 head(cars, 2)
 ")
-        (output "> 
+          (output "> 
 some. text
 > 
   speed dist
 1     4    2
 2     4   10
 > ")
-        (output-nowait "cat(\"some. text\n\")
+          (output-nowait "cat(\"some. text\n\")
 head(cars, 2)
 some. text
 > 
@@ -134,13 +135,13 @@ some. text
 1     4    2
 2     4   10
 > "))
-    (let ((inferior-ess-replace-long+ t))
-      (let ((ess-eval-visibly nil))
-        (should (string= output
-                         (ess-send-input-to-R input 'c-c))))
-      (let ((ess-eval-visibly 'nowait))
-        (should (string= output-nowait
-                         (ess-send-input-to-R input 'c-c)))))))
+      (let ((inferior-ess-replace-long+ t))
+        (let ((ess-eval-visibly nil))
+          (should (string= output
+                           (ess-send-input-to-R input 'c-c))))
+        (let ((ess-eval-visibly 'nowait))
+          (should (string= output-nowait
+                           (ess-send-input-to-R input 'c-c))))))))
 
 
 ;;; Inferior utils
