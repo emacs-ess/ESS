@@ -261,7 +261,7 @@ parenthetical grouping.")
        (member (current-word) kw-list)))
 
 
-(defconst gretl-font-lock-defaults
+(defconst gretl-font-lock-keywords
   (list
    ;; Fontify all builtin keywords.
    (cons (concat "\\<\\("
@@ -435,7 +435,6 @@ end keywords as associated values.")
     ;;(ess-keep-dump-files	    . 'ask)
     (ess-mode-syntax-table	  . gretl-syntax-table)
     ;;  (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    (font-lock-defaults		  . '(gretl-font-lock-defaults))
     )
   "General options for gretl source files.")
 
@@ -492,8 +491,8 @@ end keywords as associated values.")
     (inferior-ess-prompt		. "\\? ")
     (ess-local-customize-alist		. 'gretl-customize-alist)
     (inferior-ess-program		. "gretlcli")
-    (inferior-ess-font-lock-defaults	. gretl-font-lock-defaults)
     (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
+    (font-lock-defaults		  . '(gretl-font-lock-keywords))
     (ess-load-command   		. "open \"%s\"\n")
     ;; (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     ;; (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
@@ -506,8 +505,8 @@ end keywords as associated values.")
     (ess-dialect			. "gretl")
     (ess-suffix				. "inp")
     (ess-dump-filename-template		. (replace-regexp-in-string
-					   "S$" ess-suffix ; in the one from custom:
-					   ess-dump-filename-template-proto))
+					                   "S$" ess-suffix ; in the one from custom:
+					                   ess-dump-filename-template-proto))
     (ess-mode-syntax-table		. gretl-syntax-table)
     (ess-mode-editing-alist	        . gretl-editing-alist)
     (ess-change-sp-regexp		. nil );ess-r-change-sp-regexp)

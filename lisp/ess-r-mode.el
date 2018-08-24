@@ -255,7 +255,6 @@ It makes underscores and dots word constituent chars.")
 
 (defvar ess-r-namespaced-load-verbose t
   "Whether to display information on namespaced loading.
-
 When t, loading a file into a namespaced will output information
 about which objects are exported and which stay hidden in the
 namespace.")
@@ -288,7 +287,6 @@ namespace.")
       font-lock-string-face)
      (t
       font-lock-comment-face))))
-
 
 (defvar ess-r-customize-alist
   (append
@@ -323,7 +321,6 @@ namespace.")
      (ess-smart-operators                   . ess-r-smart-operators)
      (inferior-ess-program                  . inferior-ess-r-program)
      (inferior-ess-objects-command          . inferior-ess-r-objects-command)
-     (inferior-ess-font-lock-keywords       . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command      . "search()\n")
      (inferior-ess-help-command             . inferior-ess-r-help-command)
      (inferior-ess-help-filetype            . nil)
@@ -341,6 +338,13 @@ namespace.")
      (prettify-symbols-alist                . ess-r-prettify-symbols))
    S-common-cust-alist)
   "Variables to customize for R -- set up later than Emacs initialization.")
+
+;; VS[24-08-2018]: FIXME: make initialization of custom-alist tail-to-top and
+;; put this into the above alist
+(setcdr (assoc 'ess-font-lock-keywords ess-r-customize-alist)
+        (quote 'ess-R-font-lock-keywords))
+(setcdr (assoc 'inferior-ess-font-lock-keywords ess-r-customize-alist)
+        (quote 'inferior-ess-R-font-lock-keywords))
 
 (defalias 'R-customize-alist 'ess-r-customize-alist)
 
@@ -370,10 +374,6 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-editing-alist
   ;; copy the S-alist and modify :
   (let ((S-alist (copy-alist S-editing-alist)))
-    (setcdr (assoc 'ess-font-lock-defaults S-alist)
-            '(ess--extract-default-fl-keywords ess-R-font-lock-keywords))
-    (setcdr (assoc 'ess-font-lock-keywords S-alist)
-            (quote 'ess-R-font-lock-keywords))
     (setcdr (assoc 'ess-mode-syntax-table S-alist)
             (quote ess-r-syntax-table))
     S-alist)

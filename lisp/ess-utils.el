@@ -447,43 +447,77 @@ etc.
 
 ;;;*;;; Font Lock
 
-(defun ess--extract-default-fl-keywords (keywords)
-  "Extract the t-keywords from `ess-font-lock-keywords'."
-  (delq nil (mapcar (lambda (c)
-                      (when (cdr c) (symbol-value (car c))))
-                    (if (symbolp keywords)
-                        (symbol-value keywords)
-                      keywords))))
+(defun ess--fl-keywords-values ()
+  "Return a cons (STANDARD-VALUE . CUSTOM-VALUE) of ess-font-lock-keywords."
+  (let ((sym (if (derived-mode-p 'ess-mode)
+                 ess-font-lock-keywords
+               ;; also in transcript mode
+               inferior-ess-font-lock-keywords)))
+    (if (and (symbolp sym)
+             (custom-variable-p sym))
+        (cons
+         (eval (car (get sym 'standard-value)))
+         (symbol-value sym))
+      (error "(inferior-)`ess-font-lock-keywords' must be a symbol of a custom variable"))))
+
+(defun ess--extract-fl-keywords ()
+  (let ((values (ess--fl-keywords-values)))
+    (mapcar (lambda (kv)
+              (let ((cust-kv (assoc (car kv) (cdr values))))
+                (when cust-kv
+                  (setcdr kv (cdr cust-kv))))
+              kv)
+            (copy-alist (car values)))))
+
+(defun ess-build-font-lock-keywords ()
+  "Retrieve `font-lock-keywords' from ess-[dialect]-font-lock-keywords.
+Merge the customized values of that variable on top of the
+standard values and return the new list. For this to work,
+`ess-font-lock-keywords' and `inferior-ess-font-lock-keywords'
+should hold a name of the ess-[dialect]-font-lock-keywords
+variable."
+  (delq nil
+        (mapcar (lambda (c)
+                  (when (cdr c)
+                    (symbol-value (car c))))
+                (ess--extract-fl-keywords))))
 
 (defun ess-font-lock-toggle-keyword (keyword)
-  (interactive
-   (list (intern (ess-completing-read
-                  "Keyword to toggle"
-                  (mapcar (lambda (el) (symbol-name (car el)))
-                          (symbol-value ess-font-lock-keywords))
-                  nil t))))
-  (let* ((kwds (symbol-value (if (eq major-mode 'ess-mode)
-                                 ess-font-lock-keywords
-                               inferior-ess-font-lock-keywords)))
-         (kwd (assoc keyword kwds)))
-    (unless kwd (error "Keyword %s was not found in (inferior-)ess-font-lock-keywords list" keyword))
-    (if (cdr kwd)
-        (setcdr kwd nil)
-      (setcdr kwd t))
+  (interactive)
+  (let* ((values (ess--fl-keywords-values))
+         (keyword (or keyword
+                      (intern (ess-completing-read
+                               "Keyword to toggle"
+                               (mapcar (lambda (el) (symbol-name (car el)))
+                                       (car values))
+                               nil t))))
+         (kwd (cond
+               ;; already in custom values
+               ((assoc keyword (cdr values)))
+               ;; if keyword is not already in custom values (can happen if
+               ;; we add new keywords but the user has the old value saved in
+               ;; .emacs-custom.el)
+               ((let ((kwd (assoc keyword (car values)))
+                      (sym (if (derived-mode-p 'ess-mode)
+                               ess-font-lock-keywords
+                             inferior-ess-font-lock-keywords)))
+                  (when kwd
+                    (set sym (cons kwd (symbol-value sym)))
+                    kwd)))
+               (t (error "Invalid keyword %s" keyword)))))
+    (setcdr kwd (not (cdr kwd)))
     (let ((mode major-mode)
-          (dialect ess-dialect)
-          (fld (ess--extract-default-fl-keywords kwds)))
-      ;; refresh font-lock defaults in all necessary buffers
+          (dialect ess-dialect))
+      ;; refresh font-lock defaults in all relevant buffers
       (mapc (lambda (b)
               (with-current-buffer b
                 (when (and (eq major-mode mode)
                            (eq ess-dialect dialect))
-                  (setcar font-lock-defaults fld)
                   (font-lock-refresh-defaults))))
             (buffer-list)))))
 
 (defun ess--generate-font-lock-submenu (menu)
-  "Internal, used to generate ESS font-lock submenu"
+  "Generate ESS font-lock submenu in MENU."
   (append (mapcar (lambda (el)
                     `[,(symbol-name (car el))
                       (lambda () (interactive)
@@ -491,16 +525,15 @@ etc.
                       :style toggle
                       :enable t
                       :selected ,(cdr el)])
-                  (cond ((eq major-mode 'ess-mode)
-                         (symbol-value ess-font-lock-keywords))
-                        ((eq major-mode 'inferior-ess-mode)
-                         (symbol-value inferior-ess-font-lock-keywords))))
+                  (ess--extract-fl-keywords))
           (list "-----"
-                ["Save to custom" (lambda () (interactive)
-                                    (let ((kwd (if (eq major-mode 'ess-mode)
-                                                   ess-font-lock-keywords
-                                                 inferior-ess-font-lock-keywords)))
-                                      (customize-save-variable kwd (symbol-value kwd)))) t])))
+                ["Save to custom"
+                 (lambda () (interactive)
+                   (customize-save-variable (if (derived-mode-p 'ess-mode)
+                                                ess-font-lock-keywords
+                                              inferior-ess-font-lock-keywords)
+                                            (ess--extract-fl-keywords)))
+                 t])))
 
 
 ;;;*;;; External modes
@@ -752,7 +785,7 @@ Otherwise try a list of fixed known viewers.
                     ;; this one is wrong, (ok for time being as it is used only in swv)
                     (when (fboundp 'ess-get-words-from-vector)
                       (car (ess-get-words-from-vector
-                          "getOption(\"pdfviewer\")\n"))))))
+                            "getOption(\"pdfviewer\")\n"))))))
     (when (stringp viewer)
       (setq viewer (file-name-nondirectory viewer)))
     viewer))

@@ -2128,15 +2128,6 @@ to continue it."
   (when (string= ess-language "S") ;; todo: what is this doing here?
     (local-set-key "\M-\r"    'ess-dirs))
 
-  ;; Font-lock support
-  ;; AJR: This (the following local-var is already the case!
-  (when inferior-ess-font-lock-keywords ;; new system
-    (setq inferior-ess-font-lock-defaults
-          (ess--extract-default-fl-keywords inferior-ess-font-lock-keywords)))
-
-  (set (make-local-variable 'font-lock-defaults)
-       '(inferior-ess-font-lock-defaults nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
-
   ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
   ;; this variable to t, when we need it to be nil.  The Emacs 22
   ;; solution to this bug is to use define-derived-mode to derive

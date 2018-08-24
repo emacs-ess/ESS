@@ -2689,20 +2689,11 @@ These keywords might cause a control flow jump but do not necessarily.")
   ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
   )
 
-
 (defvar ess-font-lock-keywords nil
   "Internal. Holds a name of the dialect sepcific font-lock
 keywords in the current buffer. See `ess-R-font-lock-keywords'
 for an example.")
 (make-variable-buffer-local 'ess-font-lock-keywords)
-
-(defvar ess-font-lock-defaults nil
-  "Internal. Holds dialect sepcific font-lock defaults in the
-current buffer. Old system. From ESS[12.09] switched to new
-system described in `ess-font-lock-keywords'.")
-(make-variable-buffer-local 'ess-font-lock-defaults)
-
-
 
 (defvar ess-fl-keyword:fun-calls
   (cons "\\(\\sw+\\)[\t ]*(" '(1 ess-function-call-face keep))
@@ -2847,12 +2838,6 @@ keywords in the current buffer. See
 `inferior-R-font-lock-keywords' for an example.")
 (make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
-(defvar inferior-ess-font-lock-defaults nil
-  "Internal. Holds dialect sepcific font-lock defaults in the
-current buffer. Old system. From ESS[12.09] switched to new
-system described in `inferior-ess-font-lock-keywords'.")
-(make-variable-buffer-local 'inferior-ess-font-lock-defaults)
-
 (defvar comint-highlight-prompt 'comint-highlight-prompt)
 ;; needed for proper font-lock
 
@@ -2870,7 +2855,7 @@ system described in `inferior-ess-font-lock-keywords'.")
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
-(defcustom inferior-ess-r-font-lock-keywords
+(defcustom inferior-ess-R-font-lock-keywords
   '((ess-S-fl-keyword:prompt   . t) ;; comint is bad at prompt highlighting
     (ess-R-fl-keyword:messages  . t)
     (ess-R-fl-keyword:modifiers . t)
@@ -2891,10 +2876,8 @@ The key of each cons cell is a name of the keyword.  The value
 should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :group 'ess-faces
-  :type 'alist
-  )
-(defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
-
+  :type 'alist)
+(defvaralias 'inferior-r-font-lock-keywords 'inferior-ess-R-font-lock-keywords)
 
 (defvar ess-S-fl-keyword:messages
   (cons (regexp-opt ess-S-message-prefixes 'enc-paren)
@@ -2922,20 +2905,12 @@ default."
   :group 'ess-faces
   :type 'alist)
 
-;; use the inferior-* ones directly in ess-trns.el
-;; (defvar ess-trans-font-lock-keywords
-;;   inferior-ess-font-lock-keywords
-;;   "Font-lock patterns used in `ess-transcript-mode' buffers.")
 
-
+
 ;;;*;;; ess-help variables
 
- ; ess-help-mode
-;; This will never need to be loaded independently of any of the other
-;; modules, but they can all call it so we may as well put it here.
-
-;;*;; Variables relating to ess-help-mode
-
+;; This will never need to be loaded independently of any of the other modules,
+;; but they can all call it so we may as well put it here.
 
 (defcustom ess-help-pop-to-buffer t
   "If non-nil ess-help buffers are given focus during the display.

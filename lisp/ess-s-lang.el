@@ -86,12 +86,7 @@
     ;;(ess-keep-dump-files          . 'ask)
     (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
-    (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function")
-    (ess-font-lock-keywords       . 'ess-S-font-lock-keywords)
-    (ess-font-lock-defaults       . (ess--extract-default-fl-keywords ess-S-font-lock-keywords))
-    (font-lock-defaults           . '(ess-font-lock-defaults
-                                      nil nil ((?\. . "w") (?\_ . "w"))))
-    )
+    (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function"))
   "General options for S and S+ source files.")
 
 (defvar inferior-S-language-start
@@ -132,7 +127,10 @@
     (fill-nobreak-predicate     . 'ess-inside-string-p)
     (normal-auto-fill-function  . 'ess-do-auto-fill)
     (ess-execute-screen-options-command . "options(width=%d, length=99999)\n")
-    )
+    (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
+    (ess-font-lock-keywords       . 'ess-S-font-lock-keywords)
+    (font-lock-defaults           . '(ess-build-font-lock-keywords
+                                      nil nil ((?\. . "w") (?\_ . "w")))))
   "S-language common settings for all <dialect>-customize-alist s")
 
 (defconst S+common-cust-alist
@@ -156,10 +154,8 @@
       . "\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$")
      (inferior-ess-objects-command  . inferior-Splus-objects-command)
      (ess-describe-object-at-point-commands . 'ess-S-describe-object-at-point-commands)
-     (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
      (ess-editor . S-editor)
-     (ess-pager  . S-pager)
-     )
+     (ess-pager  . S-pager))
    S-common-cust-alist)
   "Common settings for all S+<*>-customize-alist s"
   )
