@@ -1353,12 +1353,13 @@ prompts."
           ;; First long + + in the output mirrors the sent input by the user and
           ;; is unnecessary in nowait case. A single + can be a continuation in
           ;; the REPL, thus we check if there is an extra output after the + .
-          (message (format "first line: %s" (buffer-substring (point-min) (point-at-eol))))
           (when nowait
-            (when (or (looking-at "\\([+>] \\)\\{2,\\}\n?")
-                      (and (looking-at "\\+ \n?")
-                           (> (point-max) (match-end 0))))
-              (goto-char (match-end 0))))
+            (when (looking-at "\\([+>] \\)\\{2,\\}\n?")
+              (goto-char (match-end 0))
+              (when (eq (point) (point-max))
+                ;; if this is the last prompt in the output back-up one prompt
+                ;; (cannot happen after \n)
+                (backward-char 2))))
           (let ((do-clean (not (eq ess-eval-visibly t)))
                 (pos2 (point))
                 (pos1 (point))

@@ -98,8 +98,7 @@ cleaned-prompts >
 }
 ")
         (output "> ")
-        (output-nowait "+ 
-> fn <- function() {
+        (output-nowait "> fn <- function() {
 + }
 > "))
     (let ((inferior-ess-replace-long+ t))
