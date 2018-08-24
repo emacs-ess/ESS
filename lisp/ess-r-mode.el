@@ -1468,7 +1468,7 @@ Returns nil if line starts inside a string, t if in a comment."
       comment-column))))
 
 (defun ess-calculate-indent--comma ()
-  (when (ess-within-call-p)
+  (when (ess-inside-call-p)
     (let ((indent (save-excursion
                     (ess-calculate-indent--args)))
           (unindent (progn (skip-chars-forward " \t")

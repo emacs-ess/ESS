@@ -750,7 +750,7 @@ reached."
 
 ;;*;; Point predicates
 
-(defun ess-within-call-p (&optional call)
+(defun ess-inside-call-p (&optional call)
   "Is point in a function or indexing call?"
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
@@ -762,9 +762,9 @@ reached."
              (ess-up-list))
            (or (ess-behind-call-opening-p "(")
                (looking-at "\\["))
-           (ess-within-call-name-p call)))))
+           (ess-inside-call-name-p call)))))
 
-(defun ess-within-continuation-p ()
+(defun ess-inside-continuation-p ()
   (unless (or (looking-at ",")
               (ess-behind-call-opening-p "[[(]"))
     (or (save-excursion
@@ -777,11 +777,11 @@ reached."
           (and (ess-behind-operator-p)
                (not (ess-ahead-param-assign-p)))))))
 
-(defun ess-within-call-name-p (&optional call)
+(defun ess-inside-call-name-p (&optional call)
   (save-excursion
     (ess-climb-call-name call)))
 
-(defun ess-within-prefixed-block-p (&optional call)
+(defun ess-inside-prefixed-block-p (&optional call)
   "Is point in a prefixed block? Prefixed blocks refer to the
 blocks following function declarations, control flow statements,
 etc.
@@ -1092,11 +1092,11 @@ before the `=' sign."
 
 (defun ess-step-to-first-arg ()
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (cond ((ess-within-call-p)
+    (cond ((ess-inside-call-p)
            (goto-char containing-sexp)
            (forward-char)
            t)
-          ((ess-within-call-name-p)
+          ((ess-inside-call-name-p)
            (ess-jump-name)
            (ess-skip-blanks-forward)
            (forward-char)
@@ -1140,7 +1140,7 @@ before the `=' sign."
 
 (defun ess-escape-call (&optional call)
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (if (ess-within-call-p)
+    (if (ess-inside-call-p)
         (ess-save-excursion-when-nil
           (goto-char containing-sexp)
           (ess-climb-chained-delims)
@@ -1171,7 +1171,7 @@ before the `=' sign."
 
 (defun ess-args-bounds (&optional marker)
   (let ((containing-sexp (ess-containing-sexp-position)))
-    (when (ess-within-call-p)
+    (when (ess-inside-call-p)
       (save-excursion
         (let ((beg (1+ containing-sexp))
               (call-beg (ess-at-containing-sexp
@@ -1321,7 +1321,7 @@ expression."
       ;; In calls, operators can start on newlines
       (let ((start-line (line-number-at-pos)))
         (when (ess-save-excursion-when-nil
-                (and (ess-within-call-p)
+                (and (ess-inside-call-p)
                      (ess-skip-blanks-forward t)
                      (/= (line-number-at-pos) start-line)
                      (ess-behind-operator-p)))

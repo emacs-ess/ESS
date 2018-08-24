@@ -976,18 +976,18 @@ list of strings."
     ad-do-it)
    ;; Filling of call arguments with point on call name
    ((and ess-fill-calls
-         (ess-within-call-name-p))
+         (ess-inside-call-name-p))
     (save-excursion
       (skip-chars-forward "^([")
       (forward-char)
       (ess-fill-args)))
    ;; Filling of continuations
    ((and ess-fill-continuations
-         (ess-within-continuation-p))
+         (ess-inside-continuation-p))
     (ess-fill-continuations))
    ;; Filling of call arguments
    ((and ess-fill-calls
-         (ess-within-call-p))
+         (ess-inside-call-p))
     (ess-fill-args))
    ;; Filling of roxy blocks
    ((ess-roxy-entry-p)
