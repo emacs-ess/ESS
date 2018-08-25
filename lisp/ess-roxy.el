@@ -108,25 +108,9 @@
     (,(concat ess-roxy-re)
      (0 'bold prepend))))
 
-(defvar ess-roxy-fontify-examples nil
-  "When non-nil, the `@examples' field is fontified as ordinary code.
-Experimental feature with known bugs.")
-
 (defvar ess-roxy-fold-examples nil
   "Whether to fold `@examples' when opening a buffer.
 Use you regular key for `outline-show-entry' to reveal it.")
-
-(defun ess-roxy-extend-region-to-field (start end)
-  (if (or (progn
-            (goto-char start)
-            (ess-roxy-entry-p "examples"))
-          (progn
-            (goto-char end)
-            (ess-roxy-entry-p "examples")))
-      (let ((new-start (min start (ess-roxy-beg-of-field)))
-            (new-end (max end (ess-roxy-end-of-field))))
-        (cons new-start new-end))
-    (cons start end)))
 
 (defun ess-roxy-modify-examples (overlay after start end &optional length)
   (when (and overlay after)
@@ -147,61 +131,6 @@ Use you regular key for `outline-show-entry' to reveal it.")
                                               'ess-face-adjusted
                                               'ess-adjust-face-background))))))
 
-(defun ess-roxy-syntax-propertize (start end)
-  (funcall
-   (syntax-propertize-rules
-    ;; Cache `@examples' field boundaries in text properties. Signal
-    ;; buffer and chunks for face adjustment.
-    ("^\\(#+'\\) +\\(@examples\\)[ \t\n]"
-     (1 (progn
-          (setq-local ess-buffer-has-chunks t)
-          (let ((field-start (1+ (match-end 2)))
-                (field-end (1+ (save-match-data
-                                 (ess-roxy-end-of-field)))))
-            (add-text-properties field-start field-end
-                                 (list 'ess-adjust-face-background t
-                                       'ess-roxy-examples t))
-            (unless (ess-find-overlay (match-beginning 2) 'ess-roxy-examples-header)
-              (let ((overlay (make-overlay (match-beginning 2) (match-end 2))))
-                (overlay-put overlay 'modification-hooks (list #'ess-roxy-modify-examples))
-                (overlay-put overlay 'insert-in-front-hooks (list #'ess-roxy-modify-examples))
-                (overlay-put overlay 'insert-behind-hooks (list #'ess-roxy-insert-behind-examples))
-                (overlay-put overlay 'ess-roxy-examples-header t))))
-          nil)))
-    ("^#+'"
-     ;; Remove comment and string properties of roxy prefix in fields
-     ;; that should be fontified as usual. Add `roxy-prefix' property
-     ;; so we can manually fontify the prefix as comment later on.
-     (0 (when (get-text-property (match-beginning 0) 'ess-roxy-examples)
-          (add-text-properties (match-beginning 0) (match-end 0)
-                               (list 'ess-roxy-prefix t
-                                     'font-lock-face 'font-lock-comment-face))
-          (string-to-syntax "-")))))
-   start end))
-
-(defun ess-roxy-fontify-region (start end loudly)
-  (prog1 (font-lock-default-fontify-region start end loudly)
-    (when (and ess-adjust-chunk-faces ess-buffer-has-chunks)
-      (let* ((prop 'ess-adjust-face-background)
-             (end (line-end-position))
-             (adjust-start (or (and (get-text-property start prop)
-                                    (previous-single-property-change start prop))
-                               (next-single-property-change start prop nil end)))
-             next-pos)
-        (while (progn
-                 (when (get-text-property adjust-start 'ess-face-adjusted)
-                   (setq adjust-start (next-single-property-change
-                                       adjust-start 'ess-face-adjusted nil end)))
-                 (< adjust-start end))
-          (setq next-pos (next-single-property-change adjust-start prop nil end))
-          (when (text-property-not-all adjust-start end 'ess-face-adjusted t)
-            (ess-adjust-face-background adjust-start next-pos))
-          (setq adjust-start (next-single-property-change next-pos prop nil end)))))))
-
-(defun ess-roxy-unfontify-region (start end)
-  (font-lock-default-unfontify-region start end)
-  (remove-list-of-text-properties start end (list 'ess-face-adjusted)))
-
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing ROxygen documentation."
   :keymap ess-roxy-mode-map
@@ -216,15 +145,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
             (ess-roxy-hide-all)))
         ;;  Outline Integration
         (when ess-roxy-fold-examples
-          (ess-roxy-hide-all-examples))
-        ;; Fontification
-        (when ess-roxy-fontify-examples
-          (add-hook 'syntax-propertize-extend-region-functions
-                    #'ess-roxy-extend-region-to-field
-                    'append 'local)
-          (setq-local syntax-propertize-function #'ess-roxy-syntax-propertize)
-          (setq-local font-lock-fontify-region-function #'ess-roxy-fontify-region)
-          (setq-local font-lock-unfontify-region-function #'ess-roxy-unfontify-region)))
+          (ess-roxy-hide-all-examples)))
     (when (and ess-roxy-hide-show-p
                (bound-and-true-p hs-minor-mode))
       (hs-show-all)
@@ -232,10 +153,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
     (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)
     (setq-local syntax-propertize-function nil)
     (setq-local font-lock-fontify-region-function nil)
-    (setq-local font-lock-unfontify-region-function nil)
-    (remove-hook 'syntax-propertize-extend-region-functions
-                 #'ess-roxy-extend-region-to-field
-                 'local))
+    (setq-local font-lock-unfontify-region-function nil))
   (when font-lock-mode
     (if (fboundp 'font-lock-flush)
         (font-lock-flush)
