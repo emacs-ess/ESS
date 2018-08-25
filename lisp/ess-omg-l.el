@@ -280,7 +280,7 @@
                  'font-lock-constant-face)     ; assign
            (cons (regexp-opt ess-S-constants 'words)
                  'font-lock-type-face)          ; constants
-           (cons (regexp-opt ess-S-modifyiers 'words)
+           (cons (regexp-opt ess-S-modifiers 'words)
                  'font-lock-constant-face)     ; modify search list or source
 
            (cons ess-S-function-name-regexp
