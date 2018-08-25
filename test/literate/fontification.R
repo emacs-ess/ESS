@@ -38,7 +38,7 @@ while¶() for¶() if¶() function¶()
 ¶switch() ¶return() ¶on.exit() ¶stop() ¶tryCatch()
 ¶withRestarts() ¶invokeRestart() ¶recover() ¶browser()
 
-##! (should (eq (face-at-point) 'ess-r-control-flow-keyword-face))
+##! (should (eq (face-at-point) 'ess-keyword-face))
 ##> (ess-forward-sexp)
 ##> (should (not (face-at-point)))
 
@@ -50,7 +50,7 @@ withRestarts¶() invokeRestart¶() recover¶() browser¶()
 
 ¶message() ¶warning() ¶signalCondition() ¶withCallingHandlers()
 
-##! (should (eq (face-at-point) 'ess-r-signal-keyword-face))
+##! (should (eq (face-at-point) 'ess-modifiers-face))
 ##> (ess-forward-sexp)
 ##> (should (not (face-at-point)))
 
@@ -139,7 +139,7 @@ foobar ¶foobaz()
 
 ¶stop()
 
-##! (let (ess-R-control-flow-keywords)
+##! (let (ess-R-keywords)
 ##>   (ess-r-mode)
 ##>   (font-lock-ensure))
 ##> (should (not (face-at-point)))

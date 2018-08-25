@@ -2637,21 +2637,11 @@ If you change the value of this variable, restart Emacs for it to take effect."
           '("T" "F")))
 
 (defvar ess-R-keywords
-  '("if" "else" "repeat" "while" "function" "for" "in" "next" "break")
-  "Reserved words in the R language.")
-
-(defvar ess-R-control-flow-keywords
-  '("switch" "function" "return" "on.exit" "stop"
-    "tryCatch" "withRestarts" "invokeRestart"
+  '("if" "else" "repeat" "while" "function" "for" "in" "next" "break"
+    "switch" "function" "return" "on.exit" "stop" "tryCatch"
+    "withRestarts" "invokeRestart"
     "recover" "browser")
-  "Keywords that impact control flow.
-These keywords either cause a control flow jump or establish a
-jump target.")
-
-(defvar ess-R-signal-keywords
-  '("message" "warning" "signalCondition" "withCallingHandlers")
-  "Keywords for condition signalling.
-These keywords might cause a control flow jump but do not necessarily.")
+  "Reserved words or special functions in the R language.")
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
@@ -2661,11 +2651,15 @@ These keywords might cause a control flow jump but do not necessarily.")
   '("if" "for" "function" "while"))
 
 ;; first the common ones
-(defvar ess-S-modifyiers
-  '("library" "attach" "detach" "source" "module"))
-(defvar ess-R-modifyiers
-  '("library" "attach" "detach" "source" "require"))
+(defvar ess-S-modifiers
+  '("library" "attach" "detach" "source" "module" "message" "warning"))
+(define-obsolete-variable-alias 'ess-S-modifyiers 'ess-S-modifiers "18.09")
 
+(defvar ess-R-modifiers
+  '("library" "attach" "detach" "source" "require"
+    "setwd" "options" "par" "load" "rm"
+    "message" "warning" "signalCondition" "withCallingHandlers"))
+(define-obsolete-variable-alias 'ess-R-modifyiers 'ess-R-modifiers "18.09")
 
 (defvar ess-R-message-prefixes
   '("Error:" "Error in"
@@ -2675,13 +2669,10 @@ These keywords might cause a control flow jump but do not necessarily.")
   (append ess-R-message-prefixes
           '("Syntax error:" "Dumped")))
 
-;;
 (defvar ess-R-assign-ops
-  '("<<-" "<-" "->" "->>") ; don't want "=" here which is not only for assign
-  ;; VS??: it's good to have different colour for = anyhow,
-  ;; very helpful to read code like foo(x=xa, p=pa, x_not_na)
-  )
-(defvar ess-S-assign-ops ess-R-assign-ops) ; since "_" is deprecated for S-plus as well
+  ;; don't want "=" here which is not only for assign
+  '("<<-" "<-" "->" "->>"))
+(defvar ess-S-assign-ops ess-R-assign-ops)
 
 (defvar ess-R-function-name-regexp
   (concat "\\("      "\\sw+" "\\)"
@@ -2689,8 +2680,7 @@ These keywords might cause a control flow jump but do not necessarily.")
           "[ \t\n]*" "function\\b"))
 
 (defvar ess-S-function-name-regexp
-  ess-R-function-name-regexp ; since "_" is deprecated for S-plus as well
-  )
+  ess-R-function-name-regexp)
 
 (defvar ess-font-lock-keywords nil
   "Internal. Holds a name of the dialect sepcific font-lock
@@ -2718,16 +2708,14 @@ for an example.")
   (cons "[-=+></%]+" 'ess-operator-face)
   "Operators.")
 
-;;; fl-keywords S
 (defvar ess-S-fl-keyword:modifiers
-  (cons (regexp-opt ess-S-modifyiers 'words)
+  (cons (regexp-opt ess-S-modifiers 'words)
         'ess-modifiers-face)     ; modify search list or source (i.e. directives)
   "Font lock keyword R modifiers.")
 
 (defvar ess-S-fl-keyword:fun-defs
   (cons ess-S-function-name-regexp
-        '(1 font-lock-function-name-face t)  ; override
-        )
+        '(1 font-lock-function-name-face t))
   "Font-lock function definitions keyword.")
 
 (defvar ess-S-fl-keyword:keywords
@@ -2745,82 +2733,85 @@ for an example.")
   '((ess-S-fl-keyword:modifiers . t)
     (ess-S-fl-keyword:fun-defs  . t)
     (ess-S-fl-keyword:keywords  . t)
-    (ess-S-fl-keyword:assign-ops        . t)
+    (ess-S-fl-keyword:assign-ops . t)
     (ess-S-fl-keyword:constants . t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
     (ess-fl-keyword:delimiters)
-    (ess-fl-keyword:=)
-    )
+    (ess-fl-keyword:=))
   "An alist of available font-lock keywords for the S mode.
 The key of each cons cell is a name of the keyword. The value
 should be t or nil to indicate if the keyword is activated by
 default or not."
   :group 'ess-S
   :group 'ess-faces
-  :type 'alist)
+  :type '(repeat (cons symbol boolean)))
 
-
-;;; fl-keywords R
 (defvar ess-R-fl-keyword:modifiers
-  '(eval . (cons (concat "\\(" (regexp-opt ess-R-modifyiers 'words) "\\)\\s-*(")
+  '(eval . (cons (concat "\\(" (regexp-opt ess-R-modifiers 'words) "\\)\\s-*(")
                  '(1 ess-modifiers-face)))
-  "Font-lock keyword R modifiers.")
+  "Font-lock keyword R modifiers.
+See `ess-R-modifiers' for the list of modifiers.")
 
 (defvar ess-R-fl-keyword:fun-defs
   '(eval . (cons ess-R-function-name-regexp
                  '(1 font-lock-function-name-face nil)))
-  "Font-lock keyword - function defintions for R.")
+  "Font-lock keyword for function names in function definitions.
+When this keyword is on, function names on the left hand side of
+<- are highlighted with `font-lock-function-name-face'.")
 
-(defvar ess-r--bare-keywords
+(defvar ess-r--non-fn-kwds
   '("in" "else" "break" "next" "repeat"))
 
-(defvar ess-R-fl-keyword:bare-keywords
-  '(eval . (let ((bare-keywords (delq nil (mapcar (lambda (keyword)
-                                                    (car (member keyword ess-r--bare-keywords)))
-                                                  ess-R-keywords))))
-             (cons (regexp-opt bare-keywords 'words) 'ess-keyword-face)))
-  "Font-lock keywords that do not precede an opening parenthesis.")
+(defvar-local ess-r--keyword-regexp nil)
+(defun ess-r--find-fl-keyword (limit)
+  "Search for R keyword and set the match data.
+To be used as part of `font-lock-defaults' keywords."
+  (unless ess-r--keyword-regexp
+    (let (fn-kwds non-fn-kwds)
+      (dolist (kw ess-R-keywords)
+        (if (member kw ess-r--non-fn-kwds)
+            (push kw non-fn-kwds)
+          (push kw fn-kwds)))
+      (setq ess-r--keyword-regexp
+            (concat "\\("
+                    (regexp-opt non-fn-kwds 'words)
+                    "\\)\\|\\("
+                    (regexp-opt fn-kwds 'words)
+                    "\\)"))))
+  (let (out)
+    (while (and (not out)
+                (re-search-forward ess-r--keyword-regexp limit t))
+      (setq out (or (match-beginning 1)
+                    ;; fn-kwds matched; check if they are followed by an open paren
+                    (looking-at-p "\\s-*("))))
+    out))
 
 (defvar ess-R-fl-keyword:keywords
-  '(eval . (let ((function-kwords
-                  (delq nil
-                        (mapcar (lambda (k) (unless (member k ess-r--bare-keywords) k))
-                                ess-R-keywords))))
-             (cons (concat "\\(" (regexp-opt function-kwords 'words) "\\)\\s-*(")
-                   '(1 ess-keyword-face))))
-  "Font-lock keywords that precede an opening parenthesis.")
-
-(defvar ess-R-fl-keyword:control-flow-keywords
-  '(eval . (cons (concat "\\(" (regexp-opt ess-R-control-flow-keywords 'words) "\\)\\s-*(")
-                 '(1 ess-r-control-flow-keyword-face))))
-
-(defvar ess-R-fl-keyword:signal-keywords
-  '(eval . (cons (concat "\\(" (regexp-opt ess-R-signal-keywords 'words) "\\)\\s-*(")
-                 '(1 ess-r-signal-keyword-face))))
+  '(ess-r--find-fl-keyword . ess-keyword-face)
+  "Font lock keyword for `ess-R-keywords'.")
 
 (defvar ess-R-fl-keyword:assign-ops
   '(eval . (cons (regexp-opt ess-R-assign-ops) 'ess-assignment-face))
-  "Font-lock assign operators.")
+  "Font-lock assign operators.
+See `ess-R-assign-ops' for the ops.")
 
 (defvar ess-R-fl-keyword:constants
   '(eval . (cons (regexp-opt ess-R-constants 'words) 'ess-constant-face))
-  "Font-lock constants keyword.")
+  "Font-lock constants keyword.
+See `ess-R-constants' for the list of constants.")
 
 (defvar ess-R-fl-keyword:F&T
-  (cons "\\b[FT]\\b" 'ess-f-t-face)
+  '("\\b[FT]\\b" . ess-constant-face)
   "Highlight T and F in addition to TRUE and FALSE in R.")
 
 (defcustom ess-R-font-lock-keywords
-  '((ess-R-fl-keyword:modifiers  . t)
-    (ess-R-fl-keyword:fun-defs   . t)
-    (ess-R-fl-keyword:keywords . t)
-    (ess-R-fl-keyword:bare-keywords . t)
-    (ess-R-fl-keyword:control-flow-keywords . t)
-    (ess-R-fl-keyword:signal-keywords . t)
-    (ess-R-fl-keyword:assign-ops . t)
+  '((ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:constants  . t)
+    (ess-R-fl-keyword:modifiers  . t)
+    (ess-R-fl-keyword:fun-defs   . t)
+    (ess-R-fl-keyword:assign-ops . t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
@@ -2832,8 +2823,7 @@ The key of each cons cell is a name of the keyword. The value
 should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :group 'ess-faces
-  :type 'alist)
-
+  :type '(repeat (cons symbol boolean)))
 
 (defvar inferior-ess-font-lock-keywords nil
   "Internal. Holds a name of the dialect sepcific font-lock
@@ -2859,15 +2849,14 @@ keywords in the current buffer. See
   "Inferior-ess problems or errors.")
 
 (defcustom inferior-ess-R-font-lock-keywords
-  '((ess-S-fl-keyword:prompt   . t) ;; comint is bad at prompt highlighting
-    (ess-R-fl-keyword:messages  . t)
-    (ess-R-fl-keyword:modifiers . t)
-    (ess-R-fl-keyword:fun-defs  . t)
-    (ess-R-fl-keyword:bare-keywords . t)
-    (ess-R-fl-keyword:keywords . t)
-    (ess-R-fl-keyword:assign-ops	. t)
-    (ess-R-fl-keyword:constants . t)
-    (ess-fl-keyword:matrix-labels	. t)
+  '((ess-S-fl-keyword:prompt      . t) ;; comint is bad at prompt highlighting
+    (ess-R-fl-keyword:keywords    . t)
+    (ess-R-fl-keyword:constants   . t)
+    (ess-R-fl-keyword:modifiers   . t)
+    (ess-R-fl-keyword:messages    . t)
+    (ess-R-fl-keyword:fun-defs    . t)
+    (ess-R-fl-keyword:assign-ops  . t)
+    (ess-fl-keyword:matrix-labels . t)
     (ess-fl-keyword:fun-calls)
     (ess-fl-keyword:numbers)
     (ess-fl-keyword:operators)
@@ -2879,7 +2868,7 @@ The key of each cons cell is a name of the keyword.  The value
 should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :group 'ess-faces
-  :type 'alist)
+  :type '(repeat (cons symbol boolean)))
 (defvaralias 'inferior-r-font-lock-keywords 'inferior-ess-R-font-lock-keywords)
 
 (defvar ess-S-fl-keyword:messages
@@ -2906,7 +2895,7 @@ should be t or nil to indicate if the keyword is active by
 default."
   :group 'ess-S
   :group 'ess-faces
-  :type 'alist)
+  :type '(repeat (cons symbol boolean)))
 
 
 
@@ -3007,10 +2996,10 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defconst ess-modifiers-face 'ess-modifiers-face)
 (defface ess-modifiers-face
-  '((default (:inherit font-lock-constant-face)))
+  '((default (:weight bold :inherit font-lock-constant-face)))
   "Font lock face used to highlight modifiers.
 In `R-mode', for example, this includes \"library,\" \"attach,\"
-and others, see `ess-R-modifyiers'."
+and others. See `ess-R-modifiers'."
   :group 'ess-faces)
 
 (defconst ess-constant-face 'ess-constant-face)
@@ -3045,22 +3034,10 @@ In `R-mode', for example, this includes \"while,\" \"if/else\",
 (defface ess-r-control-flow-keyword-face
   '((default (:inherit ess-keyword-face)))
   "Font lock face used to highlight control flow keywords.
-In `R-mode', for example, this includes \"switch(),\" \"tryCatch()\",
-and \"stop(),\". See `ess-R-control-flow-keywords'.
-
-By default, these keywords are highlighted with the same face as
-`ess-R-keywords'"
-  :group 'ess-faces)
-
-(defconst ess-r-signal-keyword-face 'ess-r-signal-keyword-face)
-(defface ess-r-signal-keyword-face
-  '((default (:inherit ess-modifiers-face)))
-  "Font lock face used to highlight weak keywords.
-In `R-mode', for example, this includes \"message(),\" \"warning()\",
-and \"withCallingHandlers(),\". See `ess-R-signal-keywords'.
-
-By default, these keywords are highlighted with the same face as
-`ess-R-modifyiers'"
+In `R-mode', for example, this includes \"switch(),\"
+\"tryCatch()\", and \"stop(),\". See
+`ess-R-control-flow-keywords'. By default, these keywords are
+highlighted with the same face as `ess-R-keywords'"
   :group 'ess-faces)
 
 (defcustom ess-help-kill-bogus-buffers t
