@@ -21,7 +21,7 @@ endif
 #ICONS = $(wildcard icons/*.xpm)
 ICONS = icons/*.xpm
 
-ESSR_UTIL_FILES = ESSR/LOADREMOTE ESSR/VERSION
+ESSR_UTIL_FILES = ESSR/VERSION
 ESSR_CODE_FILES = ESSR/R/*.R ESSR/R/.*.R
 # ESSR_tarball = ESSR_$(ESSR_VERSION).tar.gz
 

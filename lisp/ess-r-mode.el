@@ -1265,12 +1265,15 @@ we flush the cache.")
   "Load/INSTALL/Update ESSR."
   (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" pkg-dir)))
-    (if (not (or (and (boundp 'ess-remote) ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
-      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+    (if (or (bound-and-true-p ess-remote)
+            (file-remote-p (ess-get-process-variable 'default-directory)))
+        (inferior-ess-r-load-ESSR--remote pkg-dir src-dir)
+      (inferior-ess-r-load-ESSR--local pkg-dir src-dir))))
 
 (defun inferior-ess-r-load-ESSR--local (pkg-dir src-dir)
+  "Load ESSR.
+PKG-DIR is unused, SRC-DIR should be the location of the R
+directory inside ESSR."
   (let ((cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
                           load.ESSR('%s')
@@ -1283,26 +1286,41 @@ we flush the cache.")
           (message (format "load ESSR: %s" msg)))))))
 
 (defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
-  (let* ((verfile (expand-file-name "VERSION" pkg-dir))
-         (loadremote (expand-file-name "LOADREMOTE" pkg-dir))
-         (version (if (file-exists-p verfile)
-                      (with-temp-buffer
-                        (insert-file-contents verfile)
-                        (buffer-string))
-                    (error "Cannot find ESSR source code")))
-         (r-load-code (with-temp-buffer
-                        (insert-file-contents loadremote)
-                        (buffer-string))))
-    (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
-                                         verfile loadremote))
-    (unless (ess-boolean-command (format r-load-code version) nil 0.1)
-      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-            (files (directory-files src-dir t "\\.R$")))
-        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-        ;; should not happen, unless extrem conditions (ancient R or failed download))
-        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
-        (mapc #'ess--inject-code-from-file files)))))
+  "Load ESSR on a remote machine.
+PKG-DIR should be the location of ESSR on the local machine,
+SRC-DIR the location of the R directory inside ESSR on the local
+machine. We check if ESSR already exists in ~/.config/ESSR and is
+at least as new a version as the one on the local machine. If so,
+load it. Otherwise copy ESSR from the local machine to the remote
+then load it."
+  (require 'tramp)
+  (with-parsed-tramp-file-name default-directory nil
+    (let ((essr-location (tramp-make-tramp-file-name
+                          method user domain host port
+                          ;; TODO: We should let users customize remote
+                          ;; location of ESSR
+                          (expand-file-name ".config/ESSR"
+                                            (substitute-in-file-name "$HOME"))
+                          hop))
+          (local-essr-version (with-temp-buffer (insert-file-contents
+                                                 (expand-file-name "VERSION" pkg-dir))
+                                                (buffer-string))))
+      (unless (and (file-directory-p essr-location)
+                   ;; Check to make sure the remote ESSR copy isn't old
+                   (version<= local-essr-version
+                              (with-temp-buffer
+                                (insert-file-contents
+                                 (tramp-make-tramp-file-name method user domain
+                                                             host port
+                                                             (expand-file-name ".config/ESSR/VERSION")
+                                                             (substitute-in-file-name "$HOME")))
+                                (buffer-string))))
+        ;; If we're here, copy ESSR from the local machine to the remote machine
+        (mkdir essr-location t)
+        (tramp-sh-handle-copy-directory pkg-dir essr-location nil t t))
+      ;; Actually load ESSR now. Don't need to deal with tramp for ~
+      ;; here as it gets passed directly to R as a string.
+      (inferior-ess-r-load-ESSR--local nil "~/.config/ESSR/R"))))
 
 (ess-defmethod R ess-quit (&optional no-save)
   (let (cmd
