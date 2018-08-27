@@ -96,7 +96,7 @@ for ESS, such as icons.")
 
 ;; R and Julia
 (require 'ess-r-mode)
-(require 'ess-julia)
+(require 'ess-julia nil 'no-error)
 
 ;; S-PLUS (MathSoft/StatSci/Insightful/TIBCO)
 (require 'ess-sp3-d)

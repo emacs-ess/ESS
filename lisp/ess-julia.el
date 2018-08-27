@@ -2,10 +2,10 @@
 ;;
 ;; Copyright (C) 2012-2015 Vitalie Spinu and the ESS Core team.
 ;;
-;; Filename: ess-julia.el
-;; Author: Vitalie Spinu (based on julia-mode.el from julia-lang project)
+;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
+;; Package-Requires: ((julia-mode "0.3"))
 ;; Keywords: ESS, julia
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -60,17 +60,12 @@
 (declare-function julia-latexsub "julia-mode")
 (declare-function julia-mode "julia-mode")
 
-
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
   :group 'ess-julia
   :type 'string)
 
-;;;--- ALL the following only if  julia-mode is found and loaded correctly : ----------
-(condition-case nil
-      (progn
-        (require 'julia-mode)
-        (when (featurep 'julia-mode)
+(require 'julia-mode)
 
 (eval-when-compile
   (require 'cl-lib))
@@ -218,8 +213,8 @@ objects from that MODULE."
         (push (cons (match-string 1) (match-string 2)) list))
       (when cache?
         (let ((objects (process-get proc 'objects)))
-         (push (cons obj list) objects)
-         (process-put proc 'objects objects)))
+          (push (cons obj list) objects)
+          (process-put proc 'objects objects)))
       list)))
 
 (defun ess-julia-get-object-help-string (sym)
@@ -417,14 +412,14 @@ to julia, put them in the variable `inferior-julia-args'."
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
     (let* ((jl-start-args
-	    (concat inferior-julia-args " " ; add space just in case
-		    (if start-args
-			(read-string
+	        (concat inferior-julia-args " " ; add space just in case
+		            (if start-args
+			            (read-string
                          (concat "Starting Args"
                                  (if inferior-julia-args
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
-		      nil))))
+		              nil))))
       (inferior-ess jl-start-args)
 
       (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -452,6 +447,5 @@ to julia, put them in the variable `inferior-julia-args'."
 
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . ess-julia-mode))
 
-))  (error nil))
 (provide 'ess-julia)
 ;;; ess-julia.el ends here
