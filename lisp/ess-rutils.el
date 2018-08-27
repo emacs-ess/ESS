@@ -420,7 +420,7 @@ Options should be separated by value of `crm-default-separator'."
 (easy-menu-add-item inferior-ess-mode-menu nil ess-rutils-mode-menu "Utils")
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys)
 
-(make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "2018-06")
+(make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "ESS 18.09")
 
 (provide 'ess-rutils)
 

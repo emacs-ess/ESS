@@ -3008,7 +3008,7 @@ NO-ERROR prevents errors when this has not been implemented for
 
 (defalias 'ess-change-directory 'ess-set-working-directory)
 (define-obsolete-function-alias
-  'ess-use-dir 'ess-set-working-directory "2018-06-11")
+  'ess-use-dir 'ess-set-working-directory "ESS 18.09")
 
 (defun ess-use-this-dir (&optional no-force-current)
   "Set the current process directory to the directory of this file.
