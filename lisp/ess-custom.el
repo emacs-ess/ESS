@@ -3024,7 +3024,7 @@ others. See `ess-R-constants'."
 
 (defconst ess-keyword-face 'ess-keyword-face)
 (defface ess-keyword-face
-  '((default (:inherit font-lock-keyword-face)))
+  '((default (:weight bold :inherit font-lock-keyword-face)))
   "Font lock face used to highlight reserved keywords.
 In `R-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
