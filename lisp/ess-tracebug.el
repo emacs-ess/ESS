@@ -102,8 +102,8 @@ Currently only R is supported."
   :group 'ess)
 
 (defvar ess-tracebug-indicator " TB"
-  "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-tracebug-mode is turned on. ")
+  "String to be displayed in mode-line alongside the process name.
+Indicates that ess-tracebug-mode is turned on.")
 
 ;; (defvar ess--tracebug-p nil
 ;;   "Non nil if ess-tracebug is turned on for current process.
@@ -139,14 +139,13 @@ Currently only R is supported."
 
 
 (defcustom ess-tracebug-prefix nil
-  "*Key to be used as prefix for all ess-tracebug commands.
+  "*Key to be used as prefix for all `ess-tracebug' commands.
 Set this to a key cominbation you don't use often, like:
 
  (setq ess-tracebug-prefix \"\\M-t\")
 
 The postfix keys are defined in `ess-tracebug-map':
-\\{ess-tracebug-map}
-"
+\\{ess-tracebug-map}"
   :type '(choice (const nil) (string))
   :group 'ess-tracebug)
 
@@ -156,8 +155,7 @@ The postfix keys are defined in `ess-tracebug-map':
 
 (defcustom ess-tracebug-search-path nil
   "List of directories to search for source files.
-Elements should be directory names, not file names of directories.
-"
+Elements should be directory names, not file names of directories."
   :type '(choice (const :tag "Unset" nil)
                  (repeat :tag "Directory list" (string :tag "Directory")))
   :group 'ess-debug)
@@ -166,7 +164,7 @@ Elements should be directory names, not file names of directories.
   "Name of the watch buffer.")
 
 (defcustom ess-watch-height-threshold nil
-  "Minimum height for splitting *R* windwow sensibly to make space for watch window.
+  "Minimum height for splitting *R* window sensibly to make space for watch window.
 See `split-height-threshold' for a detailed description.
 
 If nil, the value of `split-height-threshold' is used."
@@ -174,7 +172,7 @@ If nil, the value of `split-height-threshold' is used."
   :type '(choice (const nil) (integer)))
 
 (defcustom ess-watch-width-threshold nil
-  "Minimum width for splitting *R* windwow sensibly to make space for watch window.
+  "Minimum width for splitting *R* window sensibly to make space for watch window.
 See `split-width-threshold' for a detailed description.
 
 If nil, the value of `split-width-threshold' is used."
@@ -206,7 +204,8 @@ subprocess to keep the source code references.
 
 If this variable is t, you won't be able to execute blocks which
 don't form a valid R expression. That is, if your expression
-spreads multiple paragraphs, and you call C-c C-c on first
+spreads multiple paragraphs, and you call
+\\[ess-eval-region-or-function-or-paragraph-and-step] on first
 paragraph, R will report an error."
   :group 'ess-tracebug
   :type '(choice (const nil) (const function) (const function-and-buffer) (const t)))
@@ -214,13 +213,13 @@ paragraph, R will report an error."
 (define-obsolete-variable-alias 'ess-tracebug-inject-source-p 'ess-inject-source "ESS v13.09")
 
 (defcustom ess-tracebug-enter-hook nil
-  "List of functions to call on entry to ess-tracebug mode.
+  "List of functions to call on entry to `ess-tracebug' mode.
 Use `add-hook' to insert append your functions to this list."
   :group 'ess-tracebug
   :type 'hook)
 
 (defcustom ess-tracebug-exit-hook nil
-  "List of functions to call on exit of ess-tracebug mode.
+  "List of functions to call on exit of `ess-tracebug' mode.
 Use `add-hook' to insert append your functions to this list."
   :group 'ess-tracebug
   :type 'hook)
@@ -229,7 +228,7 @@ Use `add-hook' to insert append your functions to this list."
 
 (defvar ess--tracebug-eval-index 0
   "This is used by to track source references in evaluation with source.
-For example, each time ess-eval-function is called the evaluated
+For example, each time `ess-eval-function' is called the evaluated
 region is marked.  When debugger enteres the code it desplayes
 this reference number. Ess-debug finds this number in the
 referenced buffer.")
@@ -254,6 +253,7 @@ applications, like org-babel,  that call ess evaluation functions
 from temporary buffers.")
 
 (defun ess-tracebug-p ()
+  "Return non-nil if tracebug is running."
   (ess-process-get 'tracebug))
 
 (defun ess-make-source-refd-command (beg end visibly process)
@@ -397,9 +397,7 @@ by `ess-inject-source' variable."
 * Navigation to errors (general emacs functionality):
 
  C-x `, M-g n   . `next-error'
- M-g p          . `previous-error'
-
-")
+ M-g p          . `previous-error'")
 
 
 ;; * Input Ring:
@@ -409,12 +407,13 @@ by `ess-inject-source' variable."
 
 
 (defun ess-tracebug-show-help (&optional ev)
+  "Show help for `ess-tracebug'."
   (interactive)
   (describe-variable 'ess-tracebug-help))
 
 (defun ess-tracebug--propertize (dummy bitmap face &optional string )
-  "If window-system propertize DUMMY with fringe BITMAP and FACE,
-else propertize  line-prefix and margin  with STRING and  FACE"
+  "If `window-system' propertize DUMMY with fringe BITMAP and FACE.
+Otherwise, propertize line-prefix and margin with STRING and FACE"
   (unless string
     (setq string dummy))
   (if window-system
@@ -427,15 +426,15 @@ else propertize  line-prefix and margin  with STRING and  FACE"
 
 
 (defun ess-tracebug (&optional arg)
-  "Toggle ess-tracebug mode.
-With ARG, turn ess-tracebug mode on if and only if ARG is
+  "Toggle `ess-tracebug' mode.
+With ARG, turn `ess-tracebug' mode on if and only if ARG is
 positive.
 
 This mode adds to ESS the interactive debugging, breakpoint and
-error navigation functionality.  Strictly speaking ess-tracebug
+error navigation functionality.  Strictly speaking `ess-tracebug'
 is not a minor mode. It integrates globally into ESS and iESS.
 
-Note: Currently, ess-tracebug does not detect some of R's debug
+Note: Currently, `ess-tracebug' does not detect some of R's debug
 related messages in non-English locales. To set your R messages
 to English add the following line to your .Rprofile init file:
 
@@ -546,7 +545,7 @@ Local in iESS buffers with `ess-tracebug' mode enabled.")
 Local in iESS buffers.")
 
 (defvar ess--busy-count 0
-  "Used to compute the busy indicator")
+  "Used to compute the busy indicator.")
 (make-variable-buffer-local 'ess--busy-count)
 
 ;; (unless (boundp 'ess--busy-slash)
@@ -571,7 +570,7 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
   :type '(repeat string))
 
 (defvar ess--busy-timer nil
-  "Timer used for busy process indication")
+  "Timer used for busy process indication.")
 
 (defcustom inferior-ess-replace-long+ t
   "Determines if ESS replaces long + sequences in output.
@@ -605,7 +604,7 @@ ESS internal code assumes default R prompts.")
 
 
 (defun ess--tb-start ()
-  "Start traceback session "
+  "Start traceback session."
   (with-current-buffer (process-buffer (get-process ess-local-process-name))
     (unless ess-error-regexp-alist
       (error "Can not activate the traceback for %s dialect" ess-dialect))
@@ -643,7 +642,7 @@ ESS internal code assumes default R prompts.")
       (defalias 'ess-parse-errors (symbol-function 'next-error)))))
 
 (defun ess--tb-stop ()
-  "Stop ess traceback session in the current ess process"
+  "Stop ess traceback session in the current ess process."
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
     ;; restore original definitions
     (when (equal ess-dialect "R")
@@ -663,13 +662,13 @@ ESS internal code assumes default R prompts.")
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))))
 
 (defvar ess--dbg-forward-ring (make-ring 10)
-  "Ring of markers to the positions of the user inputs
- when the  debugger or traceback events are initiated.  It is used in
- `ess--dbg-goto-input-point'.")
+  "Ring of markers to the positions of user inputs when the
+debugger or traceback events are initiated. It is used in
+`ess--dbg-goto-input-point'.")
 
 (defvar ess--dbg-backward-ring (make-ring 10)
   "Ring of markers to the positions from which `ess--dbg-goto-input-point' is called.
- See the also `ess--dbg-goto-debug-point'")
+See the also `ess--dbg-goto-debug-point'")
 
 ;; (setq ess-R--tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
@@ -682,8 +681,7 @@ for `next-error' and `previous-error' respectively.
 
 You can bind 'no-select' versions of this commands:
 \(define-key compilation-minor-mode-map [(?n)] 'next-error-no-select\)
-\(define-key compilation-minor-mode-map [(?p)] 'previous-error-no-select\)
-"
+\(define-key compilation-minor-mode-map [(?p)] 'previous-error-no-select\)"
   (interactive)
   (if (null ess-traceback-command)
       (error "Not implemented for dialect %s" ess-dialect)
@@ -828,8 +826,7 @@ have the form (DISP SYMB ACTION) where DISP is the string to be
 displayed in the mode line when the action is in place. SYMB is
 the symbolic name of an action. ACTION is the string giving the
 actual expression to be assigned to 'error' user option. See R's
-help ?options for more details.
-"
+help ?options for more details."
   :type '(alist :key-type string
                 :value-type (group string string))
   :group 'ess-debug)
@@ -857,9 +854,9 @@ help ?options for more details.
 
 (defvar ess--dbg-current-debug-position (make-marker)
   "Marker to the current debugged line.
- It always point to the beginning of the currently debugged line
+It always point to the beginning of the currently debugged line
 and is used by overlay-arrow.
-In no-windowed emacs an `overlay-arrow' is displayed at this position.")
+In no-windowed Emacs an `overlay-arrow' is displayed at this position.")
 
 (unless  window-system
   (add-to-list 'overlay-arrow-variable-list 'ess--dbg-current-debug-position))
@@ -880,11 +877,10 @@ In no-windowed emacs an `overlay-arrow' is displayed at this position.")
 
 
 (defcustom ess-debug-blink-interval .2
-  "Time in seconds to blink the background
- of the current debug line on exceptional events.
- Currently two exceptional events are defined 'ref-not-found'
- and 'same-ref'. Blinking colors for these events can be
- customized by corresponding faces."
+  "Time in seconds to blink the background of the debug line.
+Currently two events are defined 'ref-not-found' and 'same-ref'.
+Blinking colors for these events can be customized by
+corresponding faces."
   :group 'ess-debug
   :type 'float)
 
@@ -949,25 +945,25 @@ by default."
   "Keymap used to define commands for single key input mode.
 This commands are triggered by `ess-electric-selection' .
 
-\\{ess-electric-selection-map}
-")
+\\{ess-electric-selection-map}")
 
 (ess-if-verbose-write "\n<- debug-vars done")
 
 ;;;_ + debug functions
 (defun ess-debug-set-error-action (spec)
-  "Set the on-error action. The ACTION should be  one
-of components of `ess-debug-error-action-alist' (a cons!)."
+  "Set the on-error action.
+The SPEC should be one of the components of
+`ess-debug-error-action-alist'."
   (let ((proc (get-process ess-local-process-name)))
     (if spec
         (with-current-buffer (process-buffer proc)
           (process-put proc 'on-error-action (car spec))
           (ess-command (format "options(error= %s )\n" (nth 2 spec))))
-      (error "Unknown action."))))
+      (error "Unknown action"))))
 
 (defun ess-debug-toggle-error-action ()
   "Toggle the 'on-error' action.
-The action list is in `ess-debug-error-action-alist'. "
+The action list is in `ess-debug-error-action-alist'."
   (interactive)
   (ess-force-buffer-current)
   (let* ((alist ess-debug-error-action-alist)
@@ -1022,8 +1018,7 @@ The input-event-S-ring is a virtual object which consists of two
 rings `ess--dbg-forward-ring' and `ess--dbg-backward-ring' which
 are joint at their tops.
 
-See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
-"
+See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow"
   (interactive)
   (let* ((ev last-command-event)
          (com-char  (event-basic-type ev))
@@ -1052,7 +1047,7 @@ See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow
     (push ev unread-command-events)))
 
 (defun ess-debug-goto-debug-point ()
-  "Returns to the debugging position.
+  "Return to the debugging position.
 Jump to markers stored in `ess--dbg-backward-ring'. If debug
 session is active, first jump to current debug line.
 
@@ -1082,16 +1077,16 @@ of the ring."
     (push ev unread-command-events)))
 
 (defun ess-debug-insert-in-forward-ring ()
+  "Insert `point-marker' into the forward-ring."
   (interactive)
-  "Inserts point-marker into the forward-ring."
   (ring-insert ess--dbg-forward-ring (point-marker))
   (message "Point inserted into the forward-ring"))
 
 (defvar ess-debug-indicator " DB"
-  "String to be displayed in mode-line alongside the process
-  name. Indicates that ess-debug-mode is turned on. When the
-  debugger is in active state this string is shown in upper case
-  and highlighted.")
+  "String to be displayed in mode-line alongside the process name.
+Indicates that ess-debug-mode is turned on. When the debugger is
+in active state this string is shown in upper case and
+highlighted.")
 
 (defvar-local ess--dbg-mode-line-debug
   '(:eval (let ((proc (get-process ess-local-process-name)))
@@ -1113,7 +1108,7 @@ of the ring."
 (put 'ess--dbg-mode-line-error-action 'risky-local-variable t)
 
 (defun ess--dbg-remove-empty-lines (string)
-  "Remove empty lines (which interfere with evals) during debug.
+  "Remove empty lines from STRING (which interfere with evals) during debug.
 This function is placed in `ess-presend-filter-functions'."
   ;; the process here is an ugly reliance on dynamic scope
   (if (and ess--dbg-del-empty-p (ess-process-get 'dbg-active))
@@ -1182,7 +1177,7 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 
 (defun ess--make-busy-timer-function (process)
-  "Display the spiner of prompt if ess-process is busy."
+  "Display the spiner of prompt if PROCESS is busy."
   `(lambda ()
      (let ((pb ,process))
        (when (eq (process-status pb) 'run) ;; only when the process is alive
@@ -1248,7 +1243,7 @@ Kill the *ess.dbg.[R_name]* buffer."
   (message (format "Error in inferior: %s" msg)))
 
 (defun ess-mpi:eval (expr &optional callback)
-  "Evaluate EXP as emacs expression.
+  "Evaluate EXP as Emacs expression.
 If present, the CALLBACK string is passed through `format' with
 returned value from EXPR and then sent to the subprocess."
   (let ((result (eval (read expr))))
@@ -1409,11 +1404,11 @@ prompts."
             (erase-buffer)))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
-  "Standard output filter for the inferior ESS process when
-`ess-debug' is active. Call `inferior-ess-output-filter'. Check
-for debug reg-expressions (see `ess--dbg-regexp-debug',...), when
-found puts iESS in the debugging state. If in debugging state,
-mirrors the output into *ess.dbg* buffer."
+  "Standard output filter for the inferior ESS process when `ess-debug' is active.
+Call `inferior-ess-output-filter'. Check for debug
+reg-expressions (see `ess--dbg-regexp-debug',...), when found
+puts iESS in the debugging state. If in debugging state, mirrors
+the output into *ess.dbg* buffer."
   (let* ((is-iess (member major-mode (list 'inferior-ess-mode 'ess-watch-mode)))
          (pbuf (process-buffer proc))
          (abuf (ess--accumulation-buffer proc))
@@ -1549,12 +1544,11 @@ mirrors the output into *ess.dbg* buffer."
   :keymap ess-debug-minor-mode-map)
 
 (defun ess--dbg-goto-last-ref-and-mark (dbuff &optional other-window)
-  "Open the most recent debug reference, and set all the
-necessary marks and overlays.
-
-It's called from `inferior-ess-tracebug-output-filter'.  DBUFF must be
-the *ess.dbg* buffer associated with the process. If OTHER-WINDOW
-is non nil, attempt to open the location in a different window."
+  "Open the most recent debug reference, and set all the necessary marks and overlays.
+It's called from `inferior-ess-tracebug-output-filter'. DBUFF
+must be the *ess.dbg* buffer associated with the process. If
+OTHER-WINDOW is non nil, attempt to open the location in a
+different window."
   (interactive)
   (let (t-debug-position ref)
     (with-current-buffer dbuff
@@ -1586,7 +1580,7 @@ is non nil, attempt to open the location in a different window."
           (message "Reference %s not found" (car ref)))))))
 
 (defun ess--dbg-goto-ref (other-window file line &optional col)
-  "Opens the reference given by FILE, LINE and COL,
+  "Opens the reference given by FILE, LINE and COL.
 Try to open in a different window if OTHER-WINDOW is nil.  Return
 the buffer if found, or nil otherwise be found.
 `ess--dbg-find-buffer' is used to find the FILE and open the
@@ -1719,11 +1713,10 @@ next message, default to (point).  BOUND is the limiting position
 of the search.  REG is the regular expression to search with.  nF
 - sub-expression of REG giving the 'file'; defaults to 1.  nL -
 giving the 'line'; defaults to 2.  nC - sub-expr giving the
-'column'; defaults to 3.
-"
+'column'; defaults to 3."
   (interactive "p")
   (unless ess--dbg-buf-p
-    (error "Not in *ess.dbg* buffer."))
+    (error "Not in *ess.dbg* buffer"))
   (setq nF (or nF 1)
         nL (or nL 2)
         nC (or nC 3))
@@ -1735,9 +1728,8 @@ giving the 'line'; defaults to 2.  nC - sub-expr giving the
     nil))
 
 (defun ess--dbg-next-ref-function (n &optional reset)
-  "Advance to the next reference and visit the location
-given by the reference.  This is the value of
-`next-error-function' in *ess.dbg* buffers."
+  "Advance to the next reference and visit the location given by the reference.
+This is the value of `next-error-function' in *ess.dbg* buffers."
   (interactive "p")
   (if reset
       (set-marker ess--dbg-current-ref ess--dbg-last-ref-marker))
@@ -1832,7 +1824,7 @@ triggered the command."
 
 (defun ess-debug-command-digit (&optional ev)
   "Digit commands in selection mode.
-If suplied ev must be a proper key event or a string representing the digit."
+If supplied, EV must be a proper key event or a string representing the digit."
   (interactive)
   (ess-force-buffer-current)
   (unless (ess--dbg-is-recover-p)
@@ -2041,7 +2033,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
 
 
 (defun ess-bp-get-bp-specs (type &optional condition no-error)
-  "get specs for TYPE "
+  "Get specs for TYPE."
   (let ((spec-alist (cond
                      ((eq type 'conditional)
                       (let ((tl (copy-sequence  ess-bp-conditional-spec)))
@@ -2065,7 +2057,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
 
 (defun ess-bp-create (type &optional condition no-error)
   "Set breakpoint for the current line.
- Returns the begging position of the hidden text."
+Returns the beginning position of the hidden text."
   (let* ((bp-specs (ess-bp-get-bp-specs type condition no-error))
          (init-pos (point-marker))
          (fringe-bitmap (nth 3 bp-specs))
@@ -2108,7 +2100,7 @@ List format is identical to that of `ess-bp-type-spec-alist'."
       insertion-pos)))
 
 (defun ess-bp-recreate-all ()
-  "internal function to recreate all bp"
+  "Internal function to recreate all bp."
   (save-excursion
     (save-restriction
       (with-silent-modifications
@@ -2174,11 +2166,12 @@ List format is identical to that of `ess-bp-type-spec-alist'."
 
 
 (defun ess-bp-get-bp-position-nearby ()
-  "Return the cons (beg . end) of breakpoint limit points
-closest to the current position.  Only currently visible region of the
-buffer is searched.  This command is intended for use in
-interactive commands like `ess-bp-toggle-state' and `ess-bp-kill'.
-Use `ess-bp-previous-position' in programs."
+  "Get nearby break points.
+Return the cons (beg . end) of breakpoint limit points closest to
+the current position. Only currently visible region of the buffer
+is searched. This command is intended for use in interactive
+commands like `ess-bp-toggle-state' and `ess-bp-kill'. Use
+`ess-bp-previous-position' in programs."
   (interactive)
   (let*  ((pos-end (if (get-char-property (1- (point)) 'ess-bp)
                        (point)
@@ -2204,8 +2197,9 @@ Use `ess-bp-previous-position' in programs."
 
 
 (defun ess-bp-previous-position ()
-  "Returns the cons (beg . end) of breakpoint limit points closest
-to the current position, nil if not found. "
+  "Get previous breakpoints.
+Return the cons (beg . end) of breakpoint limit points closest
+to the current position, nil if not found."
   (let* ( (pos-end (if (get-char-property (1- (point)) 'ess-bp)
                        (point)
                      (previous-single-property-change (point) 'ess-bp ))))
@@ -2213,6 +2207,7 @@ to the current position, nil if not found. "
         (cons (previous-single-property-change pos-end 'ess-bp) pos-end))))
 
 (defun ess-bp-set ()
+  "Set a breakpoint."
   (interactive)
   (let* ((pos (ess-bp-get-bp-position-nearby))
          (same-line (and pos
@@ -2261,7 +2256,7 @@ to the current position, nil if not found. "
   (indent-for-tab-command))
 
 (defun ess-bp-kill (&optional interactive?)
-  "Remove the breakpoint nearby"
+  "Remove the breakpoint nearby."
   (interactive "p")
   (let ((pos (ess-bp-get-bp-position-nearby))
         (init-pos (make-marker)))
@@ -2346,7 +2341,7 @@ If there is no active R session, this command triggers an error."
 
 
 (defun ess-bp-make-visible ()
-  "Makes bp text visible."
+  "Make bp text visible."
   (interactive)
   (let ((pos (ess-bp-get-bp-position-nearby)))
     (set-text-properties (car pos) (cdr pos) (list 'display nil))))
@@ -2390,14 +2385,14 @@ If there is no active R session, this command triggers an error."
       [#b00001100] nil nil '(top t)))
 
 (defun ess-tracebug--set-left-margin ()
-  "Set the margin on non-X displays"
+  "Set the margin on non-X displays."
   (unless window-system
     (when (= left-margin-width 0)
       (setq left-margin-width 1)
       (set-window-buffer (selected-window) (current-buffer)))))
 
 (defun ess-watch-mode ()
-  "Major mode in ess-watch window.
+  "Major mode in `ess-watch' window.
 \\{ess-watch-mode-map}"
   (let ((cur-block (max 1 (ess-watch-block-at-point)))
         (dummy-string
@@ -2422,12 +2417,11 @@ If there is no active R session, this command triggers an error."
       )))
 
 (defun ess-watch ()
-  "Run ess-watch mode on R objects.
+  "Run `ess-watch' mode on R objects.
 This is the trigger function.  See documentation of
 `ess-watch-mode' for more information.
 
-\\{ess-watch-mode-map}
-"
+\\{ess-watch-mode-map}"
   (interactive)
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
@@ -2494,7 +2488,7 @@ respectively."
 
 
 (defun ess-watch-revert-buffer (ignore noconfirm)
-  "Update the watch buffer
+  "Update the watch buffer.
 Arguments IGNORE and NOCONFIRM currently not used."
   (ess-watch)
   (message "Watch reverted"))
@@ -2520,10 +2514,10 @@ Arguments IGNORE and NOCONFIRM currently not used."
 (defvar ess-watch-help nil
   "Keymap for the *R watch* buffer.
 
-\\{ess-watch-mode-map}
-")
+\\{ess-watch-mode-map}")
 
 (defun ess-watch-help ()
+  "Help on `ess-watch'."
   (interactive)
   (describe-variable 'ess-watch-help))
 
@@ -2547,7 +2541,7 @@ Arguments IGNORE and NOCONFIRM currently not used."
       (list start-pos end-pos))))
 
 (defun ess-watch-block-at-point ()
-  "return the current block's order count, 0 if no block was found."
+  "Return the current block's order count, 0 if no block was found."
   (save-excursion
     (let ((cur-point (point))
           (count 0))
@@ -2557,7 +2551,7 @@ Arguments IGNORE and NOCONFIRM currently not used."
       count)))
 
 (defun ess-watch-set-current (nr)
-  "Move the overlay over the block with count NR in current watch buffer"
+  "Move the overlay over the block with count NR in current watch buffer."
   (goto-char (point-min))
   (re-search-forward ess-watch-start-expression nil t nr)
   (goto-char (match-end 0))
@@ -2565,7 +2559,7 @@ Arguments IGNORE and NOCONFIRM currently not used."
 
 
 (defun ess-watch--make-alist ()
-  "Create an association list of expression from current buffer (better be a watch buffer).
+  "Create an alist of expressions from the current watch buffer.
 Each element of assoc list is of the form (pos name expr) where
 pos is an unique integer identifying watch blocks by position,
 name is a string giving the name of expression block, expr is a
@@ -2623,7 +2617,7 @@ buffer."
 ;;;_  + MOTION
 (defun ess-watch-next-block (&optional n)
   "Move the overlay over the next block.
-Optional N if supplied gives the number of steps forward backward-char."
+Optional N if supplied gives the number of steps forward `backward-char'."
   (interactive "P")
   (setq n (prefix-numeric-value n))
   (goto-char (overlay-end ess-watch-current-block-overlay))
@@ -2646,7 +2640,7 @@ Optional N if supplied gives the number of backward steps."
 
 ;;;_  + BLOCK MANIPULATION and EDITING
 (defun ess-watch-rename ()
-  "Rename the currently selected watch block. "
+  "Rename the currently selected watch block."
   (interactive)
   (end-of-line)
   (unless (re-search-backward ess-watch-start-block nil t)
@@ -2672,7 +2666,7 @@ Optional N if supplied gives the number of backward steps."
     (ess-watch-refresh-buffer-visibly (current-buffer))))
 
 (defun ess-watch-edit-expression ()
-  "Edit in the minibuffer the R expression from the current watch block. "
+  "Edit in the minibuffer the R expression from the current watch block."
   (interactive)
   (end-of-line)
   (unless (re-search-backward ess-watch-start-block nil 1)
@@ -2695,7 +2689,7 @@ Optional N if supplied gives the number of backward steps."
     (ess-watch-refresh-buffer-visibly (current-buffer))))
 
 (defun ess-watch-add ()
-  "Ask for new R expression and name and append it to the end of the list of watch expressions"
+  "Ask for new R expression and name and append it to the end of the list of watch expressions."
   (interactive)
   (let (nr expr name)
     (goto-char (point-max))
@@ -2709,7 +2703,7 @@ Optional N if supplied gives the number of backward steps."
     (ess-watch--install-.ess_watch_expressions)))
 
 (defun ess-watch-insert ()
-  "Ask for new R expression and name and insert it in front of current watch block"
+  "Ask for new R expression and name and insert it in front of current watch block."
   (interactive)
   (let (nr expr name)
     (setq nr (number-to-string (ess-watch-block-at-point)))
@@ -2754,7 +2748,7 @@ Optional N if supplied gives the number of backward steps."
       (setq buffer-read-only t))))
 
 (defun ess-watch-kill ()
-  "Kill the current block"
+  "Kill the current block."
   (interactive)
   (setq buffer-read-only nil)
   (apply 'delete-region (ess-watch-block-limits-at-point))
@@ -2762,7 +2756,7 @@ Optional N if supplied gives the number of backward steps."
 
 ;;;_ + Debug/Undebug at point
 (defun ess--dbg-get-signatures (method)
-  "Get signatures for the method METHOD"
+  "Get signatures for the method METHOD."
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo
         signatures curr-point)
     (save-excursion
@@ -2875,7 +2869,7 @@ for signature and trace it with browser tracer."
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text
 (defadvice delete-char (around ess-delete-backward-char-intangible activate)
-  "When about to delete a char that's intangible, delete the whole intangible region
+  "When deleting an intangible char, delete the whole intangible region.
 Only do this when #chars is 1"
   (if (and (eq major-mode 'ess-mode)
            (= (ad-get-arg 0) 1)
@@ -2887,8 +2881,8 @@ Only do this when #chars is 1"
     ad-do-it))
 
 (defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
-  "When about to delete a char that's intangible, delete the whole intangible region
-Only do this when called interactively and  #chars is 1"
+  "When deleting an intangible char, delete the whole intangible region.
+Only do this when called interactively and #chars is 1"
   (if (and (eq major-mode 'ess-mode)
            (= (ad-get-arg 0) 1)
            (> (point) (point-min))

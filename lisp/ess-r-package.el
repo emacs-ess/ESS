@@ -216,7 +216,7 @@ Root is determined by locating `ess-r-package-root-file'."
          (pkg-info (cons pkg-name pkg-path)))
     (unless (and pkg-name pkg-path
                  (file-exists-p (expand-file-name ess-r-package-root-file pkg-path)))
-      (error "Not a valid package. No '%s' found in `%s'." ess-r-package-root-file pkg-path))
+      (error "Not a valid package. No '%s' found in `%s'" ess-r-package-root-file pkg-path))
     (message (format "%s selected and added to file-local variables" pkg-name))
     (save-excursion
       (add-file-local-variable 'ess-r-package--project-cache pkg-info))
@@ -329,7 +329,7 @@ With prefix ARG run with `valgrind = TRUE'."
 
 (defun ess-r-devtools-build (&optional arg)
   "Interface for `devtools::build()'.
-With prefix arg, build with 'vignettes = FALSE'."
+With prefix ARG, build with 'vignettes = FALSE'."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::build(%s)\n" "Building %s" arg
@@ -382,7 +382,7 @@ With prefix ARG ask for extra arguments."
 
 (defun ess-r-devtools-install-package (&optional arg)
   "Interface to `devtools::install()'.
-On prefix ARG (C-u), build the package first outside of current
+On prefix ARG \\[universal-argument], build the package first outside of current
 tree (local = FALSE). With double prefix ARG (C-u C-u) install
 quickly (quick = TRUE, upgrade_dependencies = FALSE)."
   (interactive "P")
@@ -440,7 +440,7 @@ When called with prefix ARG asks for additional arguments."
 
 (defcustom ess-r-package-auto-activate t
   "If non-nil, `ess-r-package-mode' is turned on within R packages.
-If `t' the minor mode auto-activates in R packages. See
+If 't' the minor mode auto-activates in R packages. See
 `ess-r-package-exclude-modes' if you wish to inhibit
 `ess-r-package-mode' in specific buffers."
   :group 'ess-r-package
@@ -467,8 +467,8 @@ The check is done with `derived-mode-p'."
   '(:eval (let ((pkg-name (ess-r-package-name)))
             (when pkg-name
               (format " [pkg:%s]" pkg-name))))
-  "Mode line for ESS developer. Set this variable to nil to
-disable the mode line entirely."
+  "Mode line for ESS developer.
+Set this variable to nil to disable the mode line entirely."
   :group 'ess-r-package
   :type 'sexp
   :risky t)
@@ -550,7 +550,7 @@ package mode. Use this function if state of the buffer such as
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional val)
-  (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead."))
+  (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead"))
 
 (defalias 'ess-toggle-developer 'ess-developer)
 (define-obsolete-function-alias 'ess-r-devtools-check-package-buildwin 'ess-r-devtools-check-with-winbuilder)

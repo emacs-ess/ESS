@@ -129,8 +129,9 @@ Useful bindings to handle package loading and installing.
       nil)))
 
 (defun ess-rutils-repos-pkgs ()
-  "List available packages from the repositories as listed by
-getOptions(\"repos\") in the current R session."
+  "List available packages.
+Use the repositories as listed by getOptions(\"repos\") in the
+current R session."
   (interactive)
   (if (get-buffer ess-rutils-buf)
       (progn
@@ -229,10 +230,11 @@ User is asked for confirmation."
       (message "no packages flagged to install"))))
 
 (defun ess-rutils-update-pkgs (lib repos)
-  "Update packages in library LIB and repos REPOS. Defaults are the first
-element returned by .libPaths() for LIB, and the repository named CRAN
-returned by getOption(\"repos\") for REPOS. This also uses checkBuilt=TRUE
-to rebuild installed packages if needed."
+  "Update packages in library LIB and repos REPOS.
+Defaults are the first element returned by .libPaths() for LIB,
+and the repository named CRAN returned by getOption(\"repos\")
+for REPOS. This also uses checkBuilt=TRUE to rebuild installed
+packages if needed."
   (interactive "DPath to library to update: \nsrepos: ")
   (if (string= "" lib)
       (setq lib
@@ -305,11 +307,12 @@ the 'R_HOME' directory on a remote server (defaults to NULL)."
     (kill-buffer tmpbuf)))
 
 (defun ess-rutils-rsitesearch (string)
-  "Search the R archives for STRING, using default criteria, and show results
-using `browse-url'.  If called with a prefix, options are offered (with
-completion) for matches per page, sections of the archives to search,
-displaying results in long or short formats, and sorting by any given field.
-Options should be separated by value of `crm-default-separator'."
+  "Search the R archives for STRING, and show results using `browse-url'.
+If called with a prefix, options are offered (with completion)
+for matches per page, sections of the archives to search,
+displaying results in long or short formats, and sorting by any
+given field. Options should be separated by value of
+`crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
         (okstring (replace-regexp-in-string " +" "+" string)))

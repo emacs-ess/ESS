@@ -88,7 +88,7 @@ srcrefs point to temporary locations."
   "Look in the source directory of the R package containing symbol SYMBOL for R-SRC-FILE."
   (let* ((env-name (ess-string-command (format ".ess_fn_pkg(\"%s\")\n" symbol)))
          (pkg (if (string-equal env-name "")
-                  (error "Can't find package for symbol %s." symbol)
+                  (error "Can't find package for symbol %s" symbol)
                 env-name))
          (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
                   (cond ((stringp ess-r-package-library-paths)
@@ -101,7 +101,7 @@ srcrefs point to temporary locations."
          (file (when dir (expand-file-name r-src-file dir))))
     (when file
       (unless (file-readable-p file)
-        (error "Can't read %s." file))
+        (error "Can't read %s" file))
       ;; Cache package's source directory.
       (unless (assoc pkg ess-r-xref-pkg-sources)
         (push `(,pkg . ,dir) ess-r-xref-pkg-sources))

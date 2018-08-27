@@ -143,7 +143,7 @@
     (define-key ess-extra-map "w" 'ess-execute-screen-options)
     (define-key ess-extra-map "/" 'ess-set-working-directory)
     ess-extra-map)
-  "ESS extra map")
+  "ESS extra map.")
 
 (easy-menu-define
   ess-mode-menu ess-mode-map
@@ -329,7 +329,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 `CLB' (quoted from C language style)."
   (setq alist (or alist
                   (buffer-local-value 'ess-local-customize-alist (current-buffer))
-                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set.")))
+                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set")))
   (unless is-derived
     (kill-all-local-variables)) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
   (ess-setq-vars-local alist)
@@ -386,7 +386,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
 Internal function to be used for dynamic mode-line dysplay in
-ess-mode."
+`ess-mode'."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))
              (buff (when proc (process-buffer proc))))
@@ -414,16 +414,16 @@ Currently works only for R."
 ;;;*;;; Motion / manipulation commands
 
 (defun ess-goto-beginning-of-function-or-para ()
-  "If inside a function go to the beginning of it, otherwise go to the beginning
-  of paragraph."
+  "If inside a function go to the beginning of it.
+Otherwise go to the beginning of paragraph."
   (interactive)
   (or (ess-beginning-of-function 'no-error)
       (backward-paragraph))
   (point))
 
 (defun ess-goto-end-of-function-or-para ()
-  "If inside a function go to end of it, otherwise go to the end
-  of paragraph."
+  "If inside a function go to end of it.
+Otherwise go to the end of paragraph."
   (interactive)
   (or (ess-end-of-function nil 'no-error)
       (forward-paragraph))
@@ -454,6 +454,7 @@ current function."
 (define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
 
 (defun ess-newline-and-indent ()
+  "Like `newline-and-indent' but accounts for roxygen comments."
   (interactive)
   (cond ((and (fboundp 'ess-roxy-newline-and-indent)
               (string= ess-dialect "R"))
@@ -462,6 +463,7 @@ current function."
          (newline-and-indent))))
 
 (defun ess-indent-new-comment-line ()
+  "Like `indent-new-comment-line' but accounts for roxygen comments."
   (interactive)
   (cond ((and (fboundp 'ess-roxy-indent-new-comment-line)
               (string= ess-dialect "R"))
@@ -473,10 +475,10 @@ current function."
 ;;;*;;; Formatting / indentation
 
 (defun ess-set-style (&optional style quiet)
-  "Set up the `ess-mode' style variables from the `ess-style' variable
-or if STYLE argument is given, use that.  It makes the ESS indentation
-style variables buffer local."
-
+  "Set up the `ess-mode' style variables from the `ess-style' variable.
+If STYLE argument is given, use that instead. It makes the ESS
+indentation style variables buffer local. When non-nil, QUIET
+suppresses messaging."
   (interactive)
   (let ((ess-styles (mapcar 'symbol-name (mapcar 'car ess-style-alist))))
     (unless style
@@ -536,9 +538,9 @@ of the expression are preserved."
       (funcall indent-line-function))))
 
 (defun ess-indent-or-complete ()
-  "When region is selected indent the region, otherwise, if
-`ess-tab-complete-in-script' is non-nil, try to indent, if code
-is already indented, complete instead.
+  "When region is selected indent the region.
+Otherwise, if `ess-tab-complete-in-script' is non-nil, try to
+indent, if code is already indented, complete instead.
 
 The default of `ess-tab-complete-in-script' is nil.  Also see
 `ess-first-tab-never-complete'."
@@ -615,7 +617,7 @@ generate the source buffer."
       (if (y-or-n-p                     ; Approved
            (format "Directory %s does not exist. Create it? " dirname))
           (make-directory (directory-file-name dirname))
-        (error "Directory %s does not exist." dirname)))
+        (error "Directory %s does not exist" dirname)))
 
     ;; Three options:
     ;;  (1) Pop to an existing buffer containing the file in question
@@ -642,7 +644,7 @@ generate the source buffer."
   (let ((complete-dump-command (format inferior-ess-dump-command
                                        object filename)))
     (if (file-writable-p filename) nil
-      (error "Can't dump %s as %f is not writeable." object filename))
+      (error "Can't dump %s as %f is not writeable" object filename))
 
     (:override
      ;; Make sure we start fresh
@@ -730,6 +732,7 @@ Function defined using `ess-define-runner'."
                      (SAS))))))))
 
 (defun ess-version ()
+  "Return a string with ESS version information."
   (interactive)
   (message (format "ess-version: %s (loaded from %s)"
                    (ess-version-string)

@@ -176,7 +176,7 @@ or \\[ess-internal-complete-object-name] otherwise."
   (ess-complete-object-name))
 
 (defun ess-complete-object-name-deprecated ()
-  "Gives a deprecated message "
+  "Gives a deprecated message."
   (interactive)
   (ess-complete-object-name)
   (message "C-c TAB is deprecated, completions has been moved to [M-TAB] (aka C-M-i)")
@@ -189,7 +189,7 @@ The object is compared against those objects known by
 `ess-get-object-list' and any additional characters up to ambiguity are
 inserted.  Completion only works on globally-known objects (including
 elements of attached data frames), and thus is most suitable for
-interactive command-line entry, and not so much for function editing
+interactive `command-line' entry, and not so much for function editing
 since local objects (e.g. argument names) aren't known.
 
 Use \\[ess-resynch] to re-read the names of the attached directories.
@@ -447,7 +447,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (candidates . ess-ac-candidates)
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     (document   . ess-ac-help))
-  "Combined ad-completion source for R function arguments and R objects")
+  "Combined ad-completion source for R function arguments and R objects.")
 
 (defun ess-ac-start ()
   (when (ess-process-live-p)
@@ -455,7 +455,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
         (ess-symbol-start))))
 
 (defun ess-ac-candidates ()
-  "OBJECTS + ARGS"
+  "OBJECTS + ARGS."
   (let ((args (ess-ac-args)))
     ;; sort of intrusive but right
     (if (and ac-auto-start
@@ -476,10 +476,10 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     ;; (requires   . 2)
     (candidates . ess-ac-objects)
     (document   . ess-r-get-object-help-string))
-  "Auto-completion source for R objects")
+  "Auto-completion source for R objects.")
 
 (defun ess-ac-objects (&optional no-kill)
-  "Get all cached objects"
+  "Get all cached objects."
  (let ((aprf ac-prefix))
    (when (and aprf (ess-process-live-p))
      (unless no-kill ;; workaround
@@ -493,7 +493,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (candidates . ess-ac-args)
     ;; (action     . ess-ac-action-args)
     (document   . ess-r-get-arg-help-string))
-  "Auto-completion source for R function arguments")
+  "Auto-completion source for R function arguments.")
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
@@ -511,3 +511,5 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "getArgHelp('%s','%s')")
 
 (provide 'ess-r-completion)
+
+;;; ess-r-completion.el ends here

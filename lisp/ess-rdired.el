@@ -56,7 +56,7 @@
 
 ;; Most of the hardwork is done by the R routine .rdired.objects(),
 ;; which, when called, produces the list of objects in a tidy format.
-;; This function is stored within the lisp variable `ess-rdired-objects',
+;; This function is stored within the Lisp variable `ess-rdired-objects',
 ;; and can be altered to provide other information if you so need it.
 ;; (Martin Maechler suggested providing output from str() here.)
 
@@ -106,9 +106,9 @@
   d
   }
 }; cat('\n'); print(.rdired.objects(ls()))}\n"
-  "Function to call within R to print information on objects.  The last
-line of this string should be the instruction to call the
-function which prints the output for rdired.")
+  "Function to call within R to print information on objects.
+The last line of this string should be the instruction to call
+the function which prints the output for rdired.")
 
 (defvar ess-rdired-buffer "*R dired*"
   "Name of buffer for displaying R objects.")
@@ -154,7 +154,7 @@ function which prints the output for rdired.")
 list of current objects in the current environment, one-per-line.  You
 can then examine these objects, plot them, and so on.
 \\{ess-rdired-mode-map}"
-  ;; (kill-all-local-variables) 
+  ;; (kill-all-local-variables)
   (make-local-variable 'revert-buffer-function)
   (setq revert-buffer-function 'ess-rdired-revert-buffer)
   (use-local-map ess-rdired-mode-map)
@@ -241,14 +241,14 @@ Handle special case when object contains spaces."
                  nil "R view" )))
 
 (defun ess-rdired-get (name)
-  "Generate R code to get the value of the variable name.
+  "Generate R code to get the value of the variable NAME.
 This is complicated because some variables might have spaces in their names.
 Otherwise, we could just pass the variable name directly to *R*."
   (concat "get(" (ess-rdired-quote name) ")")
   )
 
 (defun ess-rdired-quote (name)
-  "Quote name if not already quoted."
+  "Quote NAME if not already quoted."
   (if (equal (substring name 0 1) "\"")
       name
     (concat "\"" name "\"")))
@@ -498,4 +498,4 @@ After switching to a new process, the buffer is updated."
 
 (provide 'ess-rdired)
 
-;;; ess-rdired.el ends here.
+;;; ess-rdired.el ends here
