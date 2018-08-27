@@ -59,12 +59,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
-  "Return non-nil if  BUFFER  looks like a bogus ESS help buffer.
-Return the pair (match-beg. match-end) which can be used in error message.
-NR-FIRST is the number of characters at the start of the buffer
-to examine when deciding if the buffer if bogus.  If nil, the
-first 150 characters of the buffer are searched."
-
+  "Return non-nil if BUFFER looks like a bogus ESS help buffer.
+Return the pair (match-beg. match-end) which can be used in error
+message. NR-FIRST is the number of characters at the start of the
+buffer to examine when deciding if the buffer if bogus. If nil,
+the first 150 characters of the buffer are searched."
   (if (not nr-first) (setq nr-first 150))
 
   (with-current-buffer buffer
@@ -108,13 +107,13 @@ first 150 characters of the buffer are searched."
 
 (defvar ess-help-type nil
   "Type of help file, help, index, vingettes etc.
-Local in ess-help buffers.")
+Local in `ess-help' buffers.")
 (make-variable-buffer-local 'ess-help-type)
 
 (defvar ess-help-object nil
   "Name of the object the help is displayed for.
 Is name of the package for package index.
-Local in ess-help buffers.")
+Local in `ess-help' buffers.")
 (make-variable-buffer-local 'ess-help-object)
 
 ;;;###autoload
@@ -177,7 +176,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
     (setq truncate-lines nil)))
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
-  "Internal, try to kill bogus buffer with message. Return t if killed."
+  "Internal, try to kill bogus BUFFER with message. Return t if killed."
   (when ess-help-kill-bogus-buffers
     (let ((bog-mes  (ess--help-get-bogus-buffer-substring buffer)))
       (when bog-mes
@@ -535,17 +534,17 @@ For internal use.  Take into account variable `ess-help-own-frame'."
       (display-buffer buff action))))
 
 (defun ess-help-web-search ()
-  "Search the web for documentation"
+  "Search the web for documentation."
   (interactive)
   (ess-execute-dialect-specific ess-help-web-search-command "Search for: "))
 
 (defun ess-manual-lookup ()
-  "Search manual for topic"
+  "Search manual for topic."
   (interactive)
   (ess-execute-dialect-specific ess-manual-lookup-command ))
 
 (defun ess-reference-lookup ()
-  "Search manual for topic"
+  "Search manual for topic."
   (interactive)
   (ess-execute-dialect-specific ess-reference-lookup-command))
 
@@ -660,7 +659,7 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     "-"
     ["Handy commands"		ess-handy-commands t]
     ["Describe ESS-help Mode"	ess-describe-help-mode t])
-  "Menu used in ess-help mode.")
+  "Menu used in `ess-help-mode'.")
 
 (defun ess-help-mode ()
 ;;; Largely ripped from more-mode.el,
@@ -710,10 +709,11 @@ Other keybindings are as follows:
 ;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
-  "Jump to a section heading of a help buffer.  The section selected
-is determined by the command letter used to invoke the command, as
-indicated by `ess-help-sec-keys-alist'.  Use \\[ess-describe-sec-map]
-to see which keystrokes find which sections."
+  "Jump to a section heading of a help buffer.
+The section selected is determined by the command letter used to
+invoke the command, as indicated by `ess-help-sec-keys-alist'.
+Use \\[ess-describe-sec-map] to see which keystrokes find which
+sections."
   (interactive)
   (let ((old-point (point))
         (case-fold-search nil))
@@ -786,10 +786,11 @@ Keystroke    Section
     object))
 ;;;###autoload
 (defun ess-helpobjs-at-point (slist)
-  ;; Return a list (def obj fun) where OBJ is a name at point, FUN - name of
-  ;; the function call point is in. DEF is either OBJ or FUN (in that order)
-  ;; which has a a help file, i.e. it is a member of slist (string-list). nil
-  ;; otherwise
+  "Return a list (def obj fun).
+Obj is a name at point, fun is the name of the function call
+point is in, and def is either obj or fun (in that order) which
+has a a help file, i.e. it is a member of slist (string-list).
+nil otherwise."
   (let* ((obj (ess-helpobjs-at-point--read-obj))
          (unqualified-obj (and obj (ess-unqualify-symbol obj)))
          ;; FIXME: probably should use syntactic logic here
@@ -898,21 +899,21 @@ Note that we can't search SAS, Stata or XLispStat for additional information."
  ;; describe object at point
 
 (defvar ess-describe-object-at-point-commands nil
-  "Commands cycled by `ess-describe-object-at-point'. Dialect
-specific.")
+  "Commands cycled by `ess-describe-object-at-point'.
+Dialect specific.")
 (make-variable-buffer-local 'ess-describe-at-point-commands)
 
 (defvar ess--descr-o-a-p-commands nil)
 
 (defun ess-describe-object-at-point ()
-  "Get info for object at point, and display it in an electric buffer or tooltip.
+  "Get info for object at point, & display it in an electric buffer or tooltip.
 If region is active use it instead of the object at point.
 
 This is an electric command (`ess--execute-electric-command'),
 which means that you can use the last key to cycle through the
 action set (in this case `C-e').
 
-After invocation of this command all standard emacs commands,
+After invocation of this command all standard Emacs commands,
 except those containing 'window' in their names, remove the
 electric *ess-describe* buffer. Use `other-window' to switch to
 *ess-describe* window.
@@ -981,7 +982,7 @@ option for other dialects)."
  ; Bug Reporting
 ;;;###autoload
 (defun ess-submit-bug-report ()
-  "Submit a bug report on the ess-mode package."
+  "Submit a bug report to the ESS maintainers."
   (interactive)
   (require 'ess)
   (require 'reporter)

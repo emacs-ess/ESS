@@ -6,7 +6,7 @@ Changes and New Features in development version:
 
 @item @ESS: Font-lock keywords are now generated lazily. That means you
 can now add or remove keywords from variables like @code{ess-R-keywords}
-in your Emacs config after loading ESS (i.e. in the @code{:config}
+in your Emacs configuration file after loading ESS (i.e. in the @code{:config}
 section for @code{use-package} users).
 
 @item @ESS{[R]}: Interaction with inferior process in non-R files within
@@ -59,7 +59,7 @@ keywords inherit from @code{ess-modifiers-face} (the face used for
 @item @ESS{[R]}: The package development minor mode now only activates
 within editing buffers by default, i.e. ones that inherit from
 @code{prog-mode} or @code{text-mode}. If you want to restore the old
-behaviour and activate the package mode in all buffers (that have a
+behavior and activate the package mode in all buffers (that have a
 @code{default-directory} that is part of a package path), set
 @code{ess-r-package-auto-activate} to @code{t}.
 
@@ -90,7 +90,7 @@ So, for example, R buffers will now show ESS[R] rather than ESS[S].
 @item @ESS{[R]}: @code{Makevars} files are now automatically opened
 with @code{makefile-mode}.
 
-@item New varaible @code{ess-write-to-dribble}.
+@item New variable @code{ess-write-to-dribble}.
 This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
 
 @item ESS now respects Emacs conventions for keybindings.
@@ -132,7 +132,7 @@ ess-disable-smart-S-assign.
 Customize new option @code{ess-assign-list} instead.
 
 @item @code{C-c C-=} is now bound to @code{ess-cycle-assignment} by default
-See the docstring for details. New user customization option
+See the documentation for details. New user customization option
 @code{ess-assign-list} controls what assignment operators are cycled
 through.
 
@@ -148,7 +148,7 @@ now do @code{(use-package ess :defer t)} to take advantage of this
 behavior.
 
 @item Commands that send the region to the inferior process now deal with rectangular regions.
-See the docstring of @code{ess-eval-region} for details. This only
+See the documentation of @code{ess-eval-region} for details. This only
 works on Emacs 25.1 and newer.
 
 @end itemize

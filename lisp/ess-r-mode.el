@@ -77,7 +77,6 @@
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
-    ;; Note: some of these comand are automatically redefined by those in
     (define-key ess-dev-map "\C-s" 'ess-r-set-evaluation-env)
     (define-key ess-dev-map "s" 'ess-r-set-evaluation-env)
     (define-key ess-dev-map "T" 'ess-toggle-tracebug)
@@ -451,8 +450,7 @@ before ess-site is loaded) for it to take effect.")
 ;;;*;;; Mode init
 
 (defvar ess-r-post-run-hook nil
-  "Functions run in process buffer after the initialization of R
-  process.")
+  "Functions run in process buffer after the initialization of R process.")
 (defalias 'ess-R-post-run-hook 'ess-r-post-run-hook)
 
 (defun ess-r-mode-p ()
@@ -621,16 +619,17 @@ Executed in process buffer."
 ;;*;; Miscellaneous
 
 (defun ess-R-arch-2-bit (arch)
-  "Translate R's architecture shortcuts/directory names to 'bits',
- i.e., \"32\" or \"64\" (for now)."
+  "Translate R's architecture shortcuts/directory names to 'bits'.
+ARCH \"32\" or \"64\" (for now)."
   (if (string= arch "i386")  "32"
     ;; else:
     "64"))
 
 (defun ess-rterm-arch-version (long-path &optional give-cons)
-  "Find an architecture-specific name for LONG-PATH, an absolute (long name) path
- to R on Windows. Returns either Name, a string, or a (Name . Path) cons, such as
- (\"R-2.12.1-64bit\"  .  \"C:/Program Files/R/R-2.12.1/bin/x64/Rterm.exe\")
+  "Find a name for LONG-PATH, an absolute path to R on Windows.
+Returns either Name, a string, or a (Name . Path) cons, such as
+
+(\"R-2.12.1-64bit\"  .  \"C:/Program Files/R/R-2.12.1/bin/x64/Rterm.exe\")
 
 \"R-x.y.z/bin/Rterm.exe\" will return \"R-x.y.z\", for R-2.11.x and older.
 \"R-x.y.z/bin/i386/Rterm.exe\" will return \"R-x.y.z-32bit\", for R-2.12.x and newer.
@@ -687,9 +686,9 @@ as `ess-r-created-runners' upon ESS initialization."
   'ess-r-versions-create 'ess-r-define-runners "ESS 18.09")
 
 (defvar ess-newest-R nil
-  "Stores the newest version of R that has been found.  Used as a cache,
-within ess-find-newest-R.  Do not use this value directly, but
-instead call the function \\[ess-find-newest-R].")
+  "Stores the newest version of R that has been found.
+Used as a cache, within `ess-find-newest-R'. Do not use this value
+directly, but instead call the function \\[ess-find-newest-R].")
 
 
 (defcustom ess-prefer-higher-bit t
@@ -700,10 +699,10 @@ by the code on Windows for finding the newest version of R."
   :type 'boolean)
 
 (defun ess-rterm-prefer-higher-bit ()
-  "Optionally remove 32bit Rterms from being candidate for R-newest.
-Return the list of candidates for being R-newest.  Filtering is done
-iff `ess-prefer-higher-bit' is non-nil.
-This is used only by Windows when running `ess-find-newest-R'."
+  "Optionally remove 32bit Rterms from being candidate for `R-newest'.
+Return the list of candidates for being `R-newest'. Filtering is
+done iff `ess-prefer-higher-bit' is non-nil. This is used only by
+Windows when running `ess-find-newest-R'."
   (if ess-prefer-higher-bit
     ;; filter out 32 bit elements
     (let ((filtered
@@ -718,9 +717,10 @@ This is used only by Windows when running `ess-find-newest-R'."
 
 
 (defun ess-find-newest-R ()
-  "Find the newest version of R on the system.  Once the value is found,
-cache it in the variable `ess-newest-R' for future use as finding the
-newest version of R can be potentially time-consuming."
+  "Find the newest version of R on the system.
+Once the value is found, cache it in the variable `ess-newest-R'
+for future use as finding the newest version of R can be
+potentially time-consuming."
   (or ess-newest-R
       (progn (message "Finding all versions of R on your system...")
              ;;(sleep-for 3)
@@ -751,7 +751,7 @@ prompt for command line arguments."
   (interactive "P")
   (let ((rnewest (ess-find-newest-R)))
     (if (not rnewest)
-        (error "No version of R could be found.")
+        (error "No version of R could be found")
       ;; Else: we have a working version of R.
       ;; Have to be careful to avoid recursion...
       (message (concat "Newest version of R is " rnewest))
@@ -791,7 +791,7 @@ returned."
     (cons date rver)))
 
 (defun ess-current-R-version ()
-  "Get the version of R currently running in the ESS buffer as a string"
+  "Get the version of R currently running in the ESS buffer as a string."
   (ess-make-buffer-current)
   (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
 
@@ -836,11 +836,13 @@ If the value returned is nil, no valid newest version of R could be found."
 
 (defun ess-find-rterm (&optional ess-R-root-dir bin-Rterm-exe)
   "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
-If ESS-R-ROOT-DIR is nil, construct it by looking for an occurence of Rterm.exe
-in the exec-path.  If there are no occurences of Rterm.exe in the exec-path,
-then use `ess-program-files' (which evaluates to something like \"c:/progra~1/R/\"
-in English locales) which is the default location for the R distribution.
-If BIN-RTERM-EXE is nil, then use \"bin/Rterm.exe\"."
+If ESS-R-ROOT-DIR is nil, construct it by looking for an
+occurence of Rterm.exe in the `exec-path'. If there are no
+occurences of Rterm.exe in the `exec-path', then use
+`ess-program-files' (which evaluates to something like
+\"c:/progra~1/R/\" in English locales) which is the default
+location for the R distribution. If BIN-RTERM-EXE is nil, then
+use \"bin/Rterm.exe\"."
   (if (not ess-R-root-dir)
       (let ((Rpath (executable-find "Rterm")))
         (setq ess-R-root-dir
@@ -928,14 +930,15 @@ not issue messages."
   "ESS 18.09")
 
 (defvar ess--packages-cache nil
-  "Cache var to store package names. Used by
-  `ess-r-install-library'.")
+  "Cache var to store package names.
+Used by `ess-r-install-library'.")
 
 (defvar ess--CRAN-mirror nil
   "CRAN mirror name cache.")
 
 (defun ess-r-install-library (&optional update pack)
-  "Prompt and install R package. With argument, update cached packages list."
+  "Prompt and install R package PACK.
+With argument UPDATE, update cached packages list."
   (interactive "P")
   (inferior-ess-r-force)
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
@@ -955,14 +958,14 @@ not issue messages."
     (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
 
 (defun ess-setRepositories ()
-  "Call setRepositories()"
+  "Call setRepositories()."
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
     (ess-eval-linewise "setRepositories(FALSE)\n")))
 
 (defun ess-setCRANMiror (&optional mirror)
-  "Set cran mirror"
+  "Set cran MIRROR."
   (interactive)
   (let ((mirror-cmd "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n"))
     (if mirror
@@ -994,7 +997,7 @@ not issue messages."
   (ess-eval-linewise (format "sos::findFn(\"%s\", maxPages=10)" cmd)))
 
 (defun ess-R-scan-for-library-call (string)
-  "Detect `library/require' calls in string and update tracking vars.
+  "Detect `library/require' call in STRING and update tracking vars.
 Placed into `ess-presend-filter-functions' for R dialects."
   (when (string-match-p "\\blibrary(\\|\\brequire(" string)
     (ess--mark-search-list-as-changed))
@@ -1006,7 +1009,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
 Note that add-ons in R are called 'packages' and the name of this
 function has nothing to do with R package mechanism, but it
 rather serves a generic, dialect independent purpose. It is also
-similar to `load-library' emacs function."
+similar to `load-library' Emacs function."
   (interactive)
   (if (not (string-match "^R" ess-dialect))
       (message "Sorry, not available for %s" ess-dialect)
@@ -1198,8 +1201,8 @@ selected (see `ess-r-set-evaluation-env')."
 (defconst inferior-ess-r--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
 (defvar ess-help-r--last-help-type nil
-  "Variable holding the last known help type. If it changes,
-we flush the cache.")
+  "Variable holding the last known help type.
+If it changes, we flush the cache.")
 
 (defun ess-help-r--check-last-help-type ()
   (let ((help-type (ess-string-command "getOption('help_type')\n")))
@@ -1248,7 +1251,7 @@ we flush the cache.")
            (ess-display-help-on-object help-?-match "%s\n")))))
 
 (defun ess-help-r--sanitize-topic (string)
-  ;; Enclose help topics into `` to avoid ?while ?if etc hangs
+  "Enclose help topic STRING into `` to avoid ?while ?if etc hangs."
   (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
       (format "%s`%s`" (match-string 1 string) (match-string 2 string))
     (format "`%s`" string)))
@@ -1835,8 +1838,7 @@ Returns nil if line starts inside a string, t if in a comment."
                (ess-calculate-indent--continued)))))))
 
 (defun ess-calculate-indent--continued ()
-  "If a continuation line, return an indent of this line,
-otherwise nil."
+  "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
     (let* ((start-line (line-number-at-pos))
            (prev-pos 0)
@@ -1941,8 +1943,9 @@ otherwise nil."
   "Backup of original code to cycle back to original state.")
 
 (defvar ess-fill--second-state nil
-  "Backup of code produce by very first cycling. If this is equal
-  to orig-state, no need to cycle back to original state.")
+  "Backup of code produce by very first cycling.
+If this is equal to orig-state, no need to cycle back to original
+state.")
 
 (defvar ess-fill--style-level nil
   "Filling style used in last cycle.")

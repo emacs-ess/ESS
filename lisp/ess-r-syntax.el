@@ -65,8 +65,8 @@
     t))
 
 (defun ess-goto-char (pos)
-  "Go to `pos' if it is non-nil.
-If `pos' is nil, return nil.  Otherwise return `pos' itself."
+  "Go to POS if it is non-nil.
+If POS is nil, return nil.  Otherwise return position itself."
   (when pos
     (goto-char pos)))
 
@@ -94,7 +94,7 @@ be advised"
                 (goto-char orig-point))))))
 
 (defmacro ess-while (test &rest body)
-  "Like (while) but return `t' when body gets executed once."
+  "Like `while' for TEST but return t when BODY gets executed once."
   (declare (indent 1)
            (debug (&rest form)))
   `(let (executed)
@@ -122,10 +122,9 @@ be advised"
      (progn ,@body)))
 
 (defmacro ess-any (&rest forms)
-  "Evaluates all arguments and return non-nil if one of the
-arguments is non-nil. This is useful to trigger
-side-effects. FORMS follows the same syntax as arguments to
-`(cond)'."
+  "Evaluate all arguments and return non-nil if one of the arguments is non-nil.
+This is useful to trigger side-effects. FORMS follows the same
+syntax as arguments to `cond'."
   (declare (indent 0) (debug nil))
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
      (cl-some 'identity (mapcar 'eval forms))))
@@ -145,7 +144,7 @@ side-effects. FORMS follows the same syntax as arguments to
   (ess-token-type (ess-refine-token token)))
 
 (defun ess-token-after (&optional token)
-  "Returns next token.
+  "Return next TOKEN.
 Cons cell containing the token type and string representation."
   (save-excursion
     (when token
@@ -153,7 +152,7 @@ Cons cell containing the token type and string representation."
     (ess-jump-token)))
 
 (defun ess-token-before (&optional token)
-  "Returns previous token.
+  "Return previous TOKEN.
 Cons cell containing the token type and string representation."
   (save-excursion
     (when token
@@ -255,9 +254,8 @@ Cons cell containing the token type and string representation."
 
 (defun ess-jump-token (&optional type string)
   "Consume a token forward.
-Returns a cons cell containing the token type and the token
-string content. Returns nil when the end of the buffer is
-reached."
+Return a cons cell containing the token type and the token string
+content. Return nil when the end of the buffer is reached."
   (ess-save-excursion-when-nil
     (ess-skip-blanks-forward t)
     (let* ((token-start (point))
@@ -729,7 +727,7 @@ reached."
 
 (defun backward-ess-r-sexp ()
   (interactive)
-  (error "todo"))
+  (error "Todo"))
 
 (defun ess-parser-tree-assoc (key tree)
   (let ((next tree)
@@ -751,7 +749,7 @@ reached."
 ;;*;; Point predicates
 
 (defun ess-inside-call-p (&optional call)
-  "Is point in a function or indexing call?"
+  "Return non-nil if point is in a function or indexing call."
   (let ((containing-sexp (or (bound-and-true-p containing-sexp)
                              (ess-containing-sexp-position))))
     (save-excursion
@@ -782,12 +780,12 @@ reached."
     (ess-climb-call-name call)))
 
 (defun ess-inside-prefixed-block-p (&optional call)
-  "Is point in a prefixed block? Prefixed blocks refer to the
-blocks following function declarations, control flow statements,
-etc.
+  "Return non-nil if point is in a prefixed block.
+Prefixed blocks refer to the blocks following function
+declarations, control flow statements, etc.
 
-If CALL not nil, check if the prefix corresponds to CALL. If nil,
-return the prefix."
+If CALL is not nil, check if the prefix corresponds to CALL. If
+nil, return the prefix."
   (save-excursion
     (ess-escape-prefixed-block call)))
 
@@ -797,8 +795,7 @@ return the prefix."
 ;;;*;;; Blanks, Characters, Comments and Delimiters
 
 (defun ess-skip-blanks-backward (&optional newlines)
-  "Skip blanks and newlines backward, taking end-of-line comments
-into account."
+  "Skip blanks and newlines backward, taking end-of-line comments into account."
   (ess-any ((ess-skip-blanks-backward-1))
            ((when newlines
               (ess-while (and (/= (point) (point-min))
@@ -812,8 +809,7 @@ into account."
        (/= 0 (skip-syntax-backward " "))))
 
 (defun ess-skip-blanks-forward (&optional newlines)
-  "Skip blanks and newlines forward, taking end-of-line comments
-into account."
+  "Skip blanks and newlines forward, taking end-of-line comments into account."
   (ess-any ((/= 0 (skip-syntax-forward " ")))
            ((ess-while (and newlines
                             (= (point) (ess-code-end-position))
@@ -938,9 +934,9 @@ position of the control flow function (if, for, while, etc)."
          (point))))
 
 (defun ess-climb-block-prefix (&optional call ignore-ifelse)
-  "Climb the prefix of a prefixed block. Prefixed blocks refer to
-the blocks following function declarations, control flow
-statements, etc.
+  "Climb the prefix of a prefixed block.
+Prefixed blocks refer to the blocks following function
+declarations, control flow statements, etc.
 
 Should be called either in front of a naked block or in front
 of the curly brackets of a braced block.
@@ -1028,8 +1024,8 @@ return the prefix."
     (ess-climb-object)))
 
 (defun ess-ahead-param-assign-p ()
-  "Are we looking at a function argument? To be called just
-before the `=' sign."
+  "Return non-nil if looking at a function argument.
+To be called just before the `=' sign."
   (ess-refined-token= (ess-token-before) "param-assign"))
 
 (defun ess-behind-arg-p ()

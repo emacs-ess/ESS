@@ -24,6 +24,10 @@
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
+
+;;; Commentary:
+;;
+
 ;;; Code:
 (require 'ess-custom)
 (require 'ess-utils)
@@ -218,10 +222,10 @@ All Rd mode abbrevs start with a grave accent (`).")
   "Menu used in Rd mode.")
 
 (defvar Rd-mode-hook nil
-  "*Hook to be run when Rd mode is entered.")
+  "Hook to be run when Rd mode is entered.")
 
 (defvar Rd-to-help-command "R CMD Rd2txt"
-  "*Shell command for converting R documentation source to help text.")
+  "Shell command for converting R documentation source to help text.")
 
 
 (defvar Rd-font-list
@@ -234,13 +238,11 @@ All Rd mode abbrevs start with a grave accent (`).")
     (?\C-q "\\eqn{"     "}")
     (?\C-u "\\url{"     "}")
     )
-  "List of ``fonts'' used by Rd-font.
-
-Each entry is a list.
-The first element is the key to activate the font.
-The second element is the string to insert before point, and the third
-element is the string to insert after point."
-  )
+  "List of \"fonts\" used by `Rd-font'.
+Each entry is a list. The first element is the key to activate
+the font. The second element is the string to insert before
+point, and the third element is the string to insert after
+point.")
 
 
 ;;;###autoload
@@ -273,8 +275,7 @@ following lines to your `.emacs' file:
 
   (add-hook 'Rd-mode-hook
             (lambda ()
-              (abbrev-mode 1)))
-"
+              (abbrev-mode 1)))"
 
   (interactive)
   (text-mode)
@@ -316,7 +317,7 @@ following lines to your `.emacs' file:
 
 ;; FIXME: The following should be moved to ess-utils.el, no? (MM thinks)
 (defun ess-point (position)
-  "Returns the value of point at certain positions."
+  "Return the value of point at a certain POSITION."
   (save-excursion
     (cond
      ((eq position 'bol)  (beginning-of-line))
@@ -324,7 +325,7 @@ following lines to your `.emacs' file:
      ((eq position 'boi)  (back-to-indentation))
      ((eq position 'bonl) (forward-line 1))
      ((eq position 'bopl) (forward-line -1))
-     (t (error "unknown buffer position requested: %s" position)))
+     (t (error "Unknown buffer position requested: %s" position)))
     (point)))
 
 (defun Rd-describe-major-mode ()
@@ -432,7 +433,7 @@ following lines to your `.emacs' file:
 
 (defun Rd-font (what)
   "Insert template for font command.
- WHAT determines the font to use, as specified by `Rd-font-list'."
+WHAT determines the font to use, as specified by `Rd-font-list'."
   (interactive "c")
   ;;TeX had : (Rd-update-style)
   (let* ((entry (assoc what Rd-font-list))
@@ -475,8 +476,7 @@ following lines to your `.emacs' file:
   "Preview the current Rd buffer contents as help.
 If optional VIA-SHELL is set, using `Rd-to-help-command'.
 If the current buffer is not associated with a file, create a
-temporary one in `temporary-file-directory'.
-"
+temporary one in `temporary-file-directory'."
   (interactive "P")
   (require 'ess-help)
   (let ((file buffer-file-name)
@@ -533,9 +533,8 @@ temporary one in `temporary-file-directory'.
      'Rd-indent-level))))
 
 
-;; Provide ourself
-(provide 'ess-rd)
 ;; Legacy feature
 (provide 'essddr)
+(provide 'ess-rd)
 
-;; ess-rd.el ends here
+;;; ess-rd.el ends here

@@ -24,6 +24,10 @@
 ;; A copy of the GNU General Public License is available at
 ;; http://www.r-project.org/Licenses/
 
+
+;;; Commentary:
+;; Various utilities for ESS.
+
 ;;; Code:
 
 (eval-when-compile
@@ -49,7 +53,7 @@
     (if load-file-name
         (file-truename load-file-name)
       (locate-library "ess-utils") )))
-  "Directory containing ess-site.el(c) and other ESS lisp files.")
+  "Directory containing ess-site.el(c) and other ESS Lisp files.")
 
 (defvar ess-etc-directory nil
   "Location of the ESS etc/ directory.
@@ -96,16 +100,15 @@ Used in noweb modes.")
     (forward-line (1- line))))
 
 (defun ess-line-end-position (&optional N)
-  "return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
+  "Return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
   (save-excursion
     (end-of-line N)
     (point)))
 
 (defun ess-search-except (regexp &optional except backward)
-  "Search for a regexp, store as match 1, optionally ignore
-strings that match exceptions."
+  "Search for a REGEXP and store as match 1.
+Optionally ignore strings that match exceptions."
   (interactive)
-
   (let ((continue t) (exit nil))
 
     (while continue
@@ -144,18 +147,18 @@ Return t if buffer was modified, nil otherwise."
     ess-temp-return-value))
 
 (defun ess-get-file-or-buffer (file-or-buffer)
-  "Return file-or-buffer if it is a buffer; otherwise return the buffer
-associated with the file which must be qualified by it's path; if the
-buffer does not exist, return nil."
+  "Return FILE-OR-BUFFER if it is a buffer.
+Otherwise return the buffer associated with the file which must
+be qualified by it's path; if the buffer does not exist, return
+nil."
   (interactive)
-
   (if file-or-buffer
       (if (bufferp file-or-buffer) file-or-buffer
         (find-buffer-visiting file-or-buffer))))
 
 (defun ess-set-local-variables (alist &optional file-or-buffer)
-  "Set local variables from ALIST in current buffer; if file-or-buffer
-is specified, perform action in that buffer."
+  "Set local variables from ALIST in current buffer.
+If FILE-OR-BUFFER is specified, perform action in that buffer."
   (interactive)
   (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
 
@@ -165,7 +168,7 @@ is specified, perform action in that buffer."
           alist))
 
 (defun ess-return-list (ess-arg)
-  "Given an item, if it is a list return it, else return item in a list."
+  "If ESS-ARG is a list return it, else return ESS-ARG in a list."
   (if (listp ess-arg) ess-arg (list ess-arg)))
 
 ;; Copyright (C) 1994 Simon Marshall.
@@ -192,7 +195,7 @@ This function will work even if LIST is unsorted.  See also `ess-uniq-list'."
   (ess-uniq items 'delete))
 
 (defun ess-flatten-list (&rest list)
-  "Take the arguments and flatten them into one long list.
+  "Take the arguments and flatten them into one long LIST.
 Drops 'nil' entries."
   ;; Taken from lpr.el
   ;; `lpr-flatten-list' is defined here (copied from "message.el" and
@@ -310,7 +313,7 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
     ess-tmp-exec))
 
 (defun ess-drop-non-directories (file-strings)
-  "Drop all entries that do not \"look like\" directories."
+  "Drop all entries in FILE-STRINGS that do not \"look like\" directories."
   (ess-flatten-list (mapcar 'file-name-directory file-strings)))
 
 (defun ess--parent-dir (path n)
@@ -345,8 +348,7 @@ Variable  *proc*  is bound  to  the  current process  during  the
 evaluation of BODY.
 
 Should be used in `ess-idle-timer-functions' which call the
-process to avoid excessive requests.
-"
+process to avoid excessive requests."
   (declare (indent 1) (debug t))
   `(with-ess-process-buffer 'no-error
      (let ((le (process-get *proc* 'last-eval))
@@ -358,7 +360,7 @@ process to avoid excessive requests.
            out)))))
 
 (defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
-  "Execute dialect specific command.
+  "Execute dialect specific COMMAND.
 
 -- If command is nil issue warning 'Not available for dialect X'
 -- If command is a elisp function, execute it with ARGS
@@ -371,8 +373,7 @@ When PROMPT is non-nil ask the user for a string value and
 prepend the response to ARGS.
 
 If prompt is a string just pass it to `read-string'. If a list, pass it
-to `ess-completing-read'.
-"
+to `ess-completing-read'."
   `(if (null ,command)
        (message "Not implemented for dialect %s" ess-dialect)
      (let* ((com  (if (symbolp ,command)
@@ -400,8 +401,7 @@ to `ess-completing-read'.
               (error "Argument COMMAND must be either a function or a string"))))))
 
 (defcustom ess-idle-timer-interval 1
-  "Number of idle seconds to wait before running function in
-  `ess-idle-timer-functions'."
+  "Number of idle seconds to wait before running function in `ess-idle-timer-functions'."
   :type '(integer)
   :group 'ess)
 
@@ -419,11 +419,10 @@ Most likely you will need a local hook. Then you should specify
 the LOCAL argument to `add-hook' and initialise it in
 `ess-mode-hook' or `ess-post-run-hook', or one of the more
 specialised hooks `ess-r-post-run-hook',`ess-stata-post-run-hook'
-etc.
-")
+etc.")
 
 (defun ess--idle-timer-function nil
-  "Internal function executed by `ess--idle-timer'"
+  "Internal function executed by `ess--idle-timer'."
   ;; (while-no-input
   (run-hooks 'ess-idle-timer-functions))
 
@@ -448,7 +447,7 @@ etc.
 ;;;*;;; Font Lock
 
 (defun ess--fl-keywords-values ()
-  "Return a cons (STANDARD-VALUE . CUSTOM-VALUE) of ess-font-lock-keywords."
+  "Return a cons (STANDARD-VALUE . CUSTOM-VALUE) of `ess-font-lock-keywords'."
   (let ((sym (if (derived-mode-p 'ess-mode)
                  ess-font-lock-keywords
                ;; also in transcript mode
@@ -643,8 +642,7 @@ supplementary arguments passed to the commands.
 
 EXIT-FORM should be supplied for a more refined control of the
 read-even loop. The loop is exited when EXIT-FORM evaluates to
-t. See examples in the tracebug code.
-"
+t. See examples in the tracebug code."
   ;;VS[09-06-2013]: check: it seems that set-temporary-overlay-map is designed
   ;;for this type of things; see also repeat.el package.
   `(let* ((ev last-command-event)
@@ -694,7 +692,7 @@ Invoke this command with C-u C-u C-y."
     ))
 
 (defun ess-yank (&optional ARG)
-  "With double prefix (C-u C-u) call `ess-yank-cleaned-commands"
+  "With double prefix (C-u C-u) call `ess-yank-cleaned-commands."
   (interactive "*P")
   (if (equal '(16) ARG)
       (ess-yank-cleaned-commands)
@@ -714,7 +712,7 @@ and ask the subprocess to build the tags. Otherwise use imenu
 regexp and call find .. | etags .. in a shell command. You must
 have 'find' and 'etags' programs installed.
 
-Use M-. to navigate to a tag. M-x `visit-tags-table' to
+Use M-. to navigate to a tag. \\[visit-tags-table] to
 append/replace the currently used tag table.
 
 If prefix is given, force tag generation based on imenu. Might be
@@ -771,8 +769,7 @@ Otherwise try a list of fixed known viewers."
 (defun ess-get-pdf-viewer ()
   "Get external PDF viewer to be used from ESS.
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
-Otherwise try a list of fixed known viewers.
-"
+Otherwise try a list of fixed known viewers."
   (let ((viewer (or ess-pdf-viewer-pref
                     ;; (and (stringp ess-pdf-viewer-pref)         ; -> ./ess-custom.el
                     ;;      (executable-find ess-pdf-viewer-pref))
@@ -1031,7 +1028,7 @@ we simply do not break it (instead of breaking after the first word)."
   (cadr (syntax-ppss)))
 
 (defun ess-code-end-position ()
-  "Like (line-end-position) but stops at comments"
+  "Like (line-end-position) but stops at comments."
   (save-excursion
     (goto-char (1+ (line-end-position)))
     (forward-comment -1)
@@ -1049,7 +1046,7 @@ we simply do not break it (instead of breaking after the first word)."
 
 (defvar ess-r-symbol-pattern
   "\\(\\sw\\|\\s_\\)"
-  "The regular expression for matching an R symbol")
+  "The regular expression for matching an R symbol.")
 
 (defvar ess-r-name-pattern
   (concat "\\(" ess-r-symbol-pattern "+\\|\\(`\\).+`\\)")
@@ -1253,7 +1250,7 @@ it cannot find a function beginning."
         (if no-error
             (setq  done t  beg nil)
           ;; else [default]:
-          (error "Point is not in a function according to 'ess-function-pattern'.")))
+          (error "Point is not in a function according to 'ess-function-pattern'")))
       (unless done
         (setq beg (point))
         (ess-write-to-dribble-buffer
@@ -1274,7 +1271,7 @@ it cannot find a function beginning."
 
 (defun ess-end-of-function (&optional beginning no-error)
   "Leave the point at the end of the current ESS function.
-Optional argument for location of beginning.  Return '(beg end)."
+Optional argument for location of BEGINNING.  Return '(beg end)."
   (interactive)
   (if beginning
       (goto-char beginning)
@@ -1330,7 +1327,7 @@ symbols (like aaa$bbb and aaa@bbb in R)."
   (car (ess-bounds-of-symbol)))
 
 (defun ess-arg-start ()
-  "Get initial position for args completion"
+  "Get initial position for args completion."
   (when (not (ess-inside-string-p))
     (when (ess--fn-name-start)
       (if (looking-back "[(,]+[ \t\n]*" nil)
@@ -1357,7 +1354,7 @@ POS defaults to `point'."
 
 (defun ess-inside-brackets-p (&optional pos curly?)
   "Return t if position POS is inside brackets.
-POS defaults to point if no value is given. If curly? is non nil
+POS defaults to point if no value is given. If CURLY?? is non nil
 also return t if inside curly brackets."
   (save-excursion
     (let ((ppss (syntax-ppss pos))
@@ -1384,17 +1381,18 @@ also return t if inside curly brackets."
 ;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
 ;; is "wrongly" returning   "p1"  for word "p1.part2" :
 (defun ess-extract-word-name ()
-  "Get the word you're on (cheap algorithm). Use `ess-read-object-name-default'
-for a better but slower version."
+  "Get the word you're on (cheap algorithm).
+Use `ess-read-object-name-default' for a better but slower
+version."
   (save-excursion
     (re-search-forward "\\<\\w+\\>" nil t)
     (buffer-substring (match-beginning 0) (match-end 0))))
 
 (defun ess-rep-regexp (regexp to-string &optional fixedcase literal verbose)
   "Instead of (replace-regexp..) -- do NOT replace in strings or comments.
- If FIXEDCASE is non-nil, do *not* alter case of replacement text.
- If LITERAL   is non-nil, do *not* treat `\\' as special.
- If VERBOSE   is non-nil, (message ..) about replacements."
+If FIXEDCASE is non-nil, do *not* alter case of replacement text.
+If LITERAL   is non-nil, do *not* treat `\\' as special.
+If VERBOSE   is non-nil, (message ..) about replacements."
   (let ((case-fold-search (and case-fold-search
                                (not fixedcase))); t  <==> ignore case in search
         (ppt (point)); previous point
@@ -1428,8 +1426,8 @@ from the beginning of the buffer."
       (query-replace-regexp regexp to-string nil))))
 
 (defun ess-space-around (word &optional from verbose)
-  "Replace-regexp .. ensuring space around all occurences of WORD,
- starting from FROM {defaults to (point)}."
+  "Replace-regexp .. ensuring space around all occurences of WORD.
+Start at from FROM, which defaults to point."
   (interactive "d\nP"); Defaults: point and prefix (C-u)
   (save-excursion
     (goto-char from)
@@ -1442,8 +1440,8 @@ from the beginning of the buffer."
   )
 
 (defun ess-time-string (&optional clock)
-  "Returns a string for use as a timestamp. + hr:min if CLOCK is non-nil,
- like \"13 Mar 1992\".  Redefine to taste."
+  "Return a string for use as a timestamp, like \"13 Mar 1992\".
+Include hr:min if CLOCK is non-nil. Redefine to taste."
   (format-time-string (concat "%e %b %Y" (if clock ", %H:%M"))))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)
@@ -1516,21 +1514,21 @@ Otherwise treat \\ in NEWTEXT string as special:
 
 (defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask
   "*[Dis]activates (ess-nuke-trailing-whitespace).
- Disabled if `nil'; if `t', it works unconditionally, otherwise,
- the user is queried.
- Note that setting the default to `t' may not be a good idea when you edit
- binary files!")
+Disabled if nil; if t, it works unconditionally, otherwise,
+the user is queried.
+Note that setting the default to t may not be a good idea when you edit
+binary files!")
 
 ;;; MM: Newer Emacsen now have  delete-trailing-whitespace
 ;;; --  but no customization like  nuke-trailing-whitespace-p ..
 (defun ess-nuke-trailing-whitespace ()
   "Nuke all trailing whitespace in the buffer.
 Whitespace in this case is just spaces or tabs.
-This is a useful function to put on write-file-hooks.
+This is a useful function to put on `write-file-hooks'.
 
-If the variable `ess-nuke-trailing-whitespace-p' is `nil', this function is
-disabled.  If `t', unreservedly strip trailing whitespace.
-If not `nil' and not `t', query for each instance."
+If the variable `ess-nuke-trailing-whitespace-p' is nil, this function is
+disabled.  If t, unreservedly strip trailing whitespace.
+If not nil and not t, query for each instance."
   (interactive)
   (let ((bname (buffer-name)))
     (cond ((or
@@ -1594,7 +1592,7 @@ not contain chunks.")
   "Default intensity for adjusting faces.")
 
 (defun ess-adjust-face-background (start end &optional intensity)
-  "Adjust face background between BEG and END.
+  "Adjust face background between START and END.
 On dark background, lighten.  Oposite on light."
   (let* ((intensity (or intensity ess-adjust-face-intensity))
          (color (color-lighten-name
@@ -1632,7 +1630,7 @@ Adds the `ess-face-adjusted' property so we only adjust face once."
            (overlays-at pos)))
 
 (defun ess-sleep ()
-  "Put emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
+  "Put Emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
 
 (defun ess-setq-vars-local (alist &optional buf)
