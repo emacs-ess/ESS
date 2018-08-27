@@ -2996,7 +2996,7 @@ the variable `ess-help-own-frame' is non-nil."
 
 (defconst ess-modifiers-face 'ess-modifiers-face)
 (defface ess-modifiers-face
-  '((default (:weight bold :inherit font-lock-constant-face)))
+  '((default (:inherit font-lock-constant-face)))
   "Font lock face used to highlight modifiers.
 In `R-mode', for example, this includes \"library,\" \"attach,\"
 and others. See `ess-R-modifiers'."
@@ -3024,7 +3024,7 @@ others. See `ess-R-constants'."
 
 (defconst ess-keyword-face 'ess-keyword-face)
 (defface ess-keyword-face
-  '((default (:weight bold :inherit font-lock-keyword-face)))
+  '((default (:inherit font-lock-keyword-face)))
   "Font lock face used to highlight reserved keywords.
 In `R-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
