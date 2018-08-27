@@ -620,7 +620,7 @@ ARG as the number of times to insert."
 
 (defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-insert-assign'."
-  (declare (obsolete "Use ess-smart-S-assign-key instead." "2018-06-08"))
+  (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.09"))
   (setq ess-smart-S-assign-key nil))
 
 (defun ess-add-MM-keys ()
@@ -787,13 +787,13 @@ return it.  Otherwise, return `ess-help-topics-list'."
 (fset 'S-mode 's-mode)
 
 
-(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "2018-06-08")
-(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "2018-06-08")
-(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "2018-06-21")
-(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "2018-07-02")
+(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.09")
+(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.09")
+(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
+(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.09")
 
-(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "2018-06-08")
-(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "2018-06-08")
+(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.09")
+(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "ESS 18.09")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))

@@ -170,7 +170,7 @@ before ess-site is loaded) for it to take effect.")
 
 (defvar ess-s-created-runners)
 (define-obsolete-variable-alias
-  'ess-s-versions-created 'ess-s-created-runners "2018-05-12")
+  'ess-s-versions-created 'ess-s-created-runners "ESS 18.09")
 (defun ess-s-define-runners ()
   "Generate functions for starting other versions of S.
 See `ess-s-versions' for strings that determine which functions are created.
@@ -205,7 +205,7 @@ ESS initialization."
      (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
   (ess-s-define-runners))
 (define-obsolete-function-alias
-  'ess-s-versions-create 'ess-s-define-runners "2018-05-12")
+  'ess-s-versions-create 'ess-s-define-runners "ESS 18.09")
 
 
 

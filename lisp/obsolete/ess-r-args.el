@@ -179,25 +179,25 @@
 ;; These defvars were previously defcustoms in ess-custom
 (defvar ess-r-args-noargsmsg "No args found."
   "Message returned if \\[ess-r-args-get] cannot find a list of arguments.")
-(make-obsolete-variable 'ess-r-args-noargsmsg "Use `eldoc-mode' instead." "2018-05-22")
+(make-obsolete-variable 'ess-r-args-noargsmsg "Use `eldoc-mode' instead." "ESS 18.09")
 
 (defvar ess-r-args-show-prefix "ARGS: "
   "A prefix string that is shown before the arguments list.")
-(make-obsolete-variable 'ess-r-args-show-prefix "Use `eldoc-mode' instead." "2018-05-22")
+(make-obsolete-variable 'ess-r-args-show-prefix "Use `eldoc-mode' instead." "ESS 18.09")
 
 (defvar ess-r-args-show-as 'message
   "How ess-r-args-show should show the argument list. Possible values
 are: 'message' (the default) or 'tooltip'.")
-(make-obsolete-variable 'ess-r-args-show-as "Use `eldoc-mode' instead." "2018-05-22")
+(make-obsolete-variable 'ess-r-args-show-as "Use `eldoc-mode' instead." "ESS 18.09")
 
 (defvar ess-r-args-keep-silent ess-S-non-functions
   "List of functions names which should *not* trigger \\[ess-r-args-show];
 Defaults to `ess-S-non-functions'.")
-(make-obsolete-variable 'ess-r-args-keep-silent "Use `eldoc-mode' instead." "2018-05-22")
+(make-obsolete-variable 'ess-r-args-keep-silent "Use `eldoc-mode' instead." "ESS 18.09")
 
 (defvar ess-r-args-electric-paren nil
   "Non-nil means re-assign \"(\" to \\[ess-r-args-auto-show].")
-(make-obsolete-variable 'ess-r-args-electric-paren "Use `eldoc-mode' instead." "2018-05-22")
+(make-obsolete-variable 'ess-r-args-electric-paren "Use `eldoc-mode' instead." "ESS 18.09")
 
 (defun ess-r-args-current-function ()
   "Returns the name of the R function assuming point is currently
@@ -211,7 +211,7 @@ found."
       (let ((rfunname (buffer-substring-no-properties posend (point))))
         (if (posix-string-match "^[a-zA-Z0-9_\.]+$" rfunname)
             rfunname nil)))))
-(make-obsolete 'ess-r-args-current-function "See `eldoc-mode'" "2018-05-22")
+(make-obsolete 'ess-r-args-current-function "See `eldoc-mode'" "ESS 18.09")
 
 (defun ess-r-args-get (&optional function trim)
   "Returns string of arguments and their default values of R
@@ -231,7 +231,7 @@ buffer readjustments for multiline string)."
                (cadr (ess-function-arguments function))
                ", ")))
 
-(make-obsolete 'ess-r-args-get "See `eldoc-mode'" "2018-05-22")
+(make-obsolete 'ess-r-args-get "See `eldoc-mode'" "ESS 18.09")
 
 ;;;###autoload
 (defun ess-r-args-show (&optional function)
@@ -257,7 +257,7 @@ buffer readjustments for multiline string)."
           ;; lines of text
           (ess-tooltip-show-at-point args 0 30))
         ))))
-(make-obsolete 'ess-r-args-show "See `eldoc-mode'" "2018-05-22")
+(make-obsolete 'ess-r-args-show "See `eldoc-mode'" "ESS 18.09")
 
 ;;;###autoload
 (defun ess-r-args-auto-show ()
@@ -269,7 +269,7 @@ and their default values of an R function. Built on \\[ess-r-args-show]."
            ess-local-process-name ; has a process and it must still be running
            (ess-get-process ess-local-process-name))
       (ess-r-args-show)))
-(make-obsolete 'ess-r-args-auto-show "See `eldoc-mode'" "2018-05-22")
+(make-obsolete 'ess-r-args-auto-show "See `eldoc-mode'" "ESS 18.09")
 
 ;; MM: I would strongly discourage use of the following:
 ;;     it leads to clueless newbie-users  who indeed
@@ -286,7 +286,7 @@ ess-r-args-current-function if no argument given."
             (pointpos (point)))
         (insert args)
         (goto-char pointpos))))
-(make-obsolete 'ess-r-args-insert "See `eldoc-mode'" "2018-05-22")
+(make-obsolete 'ess-r-args-insert "See `eldoc-mode'" "ESS 18.09")
 
 
 ;; (defvar ess-r-object-tooltip-alist

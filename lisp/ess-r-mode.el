@@ -446,7 +446,7 @@ before ess-site is loaded) for it to take effect.")
 
 (defvar ess-r-created-runners nil
   "List of R-versions found from `ess-r-versions' on the system.")
-(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "2018-05-05")
+(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.09")
 
 ;;;*;;; Mode init
 
@@ -684,7 +684,7 @@ as `ess-r-created-runners' upon ESS initialization."
         (easy-menu-add-item ess-mode-menu '("Start Process")
                             (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
-  'ess-r-versions-create 'ess-r-define-runners "2018-05-12")
+  'ess-r-versions-create 'ess-r-define-runners "ESS 18.09")
 
 (defvar ess-newest-R nil
   "Stores the newest version of R that has been found.  Used as a cache,
@@ -925,7 +925,7 @@ not issue messages."
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
                     'fixcase nil (not quietly))))
 (define-obsolete-function-alias 'R-fix-T-F 'ess-r-fix-T-F
-  "2018-07-25")
+  "ESS 18.09")
 
 (defvar ess--packages-cache nil
   "Cache var to store package names. Used by
