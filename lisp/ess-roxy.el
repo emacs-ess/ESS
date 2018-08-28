@@ -111,25 +111,6 @@
   "Whether to fold `@examples' when opening a buffer.
 Use you regular key for `outline-show-entry' to reveal it.")
 
-(defun ess-roxy-modify-examples (overlay after start end &optional length)
-  (when (and overlay after)
-    (ess-roxy-delete-examples-field overlay (min (1+ (overlay-end overlay))
-                                                 (point-max)))))
-
-(defun ess-roxy-insert-behind-examples (overlay after start end &optional length)
-  (when (and overlay after)
-    (ess-roxy-delete-examples-field overlay (1+ end))))
-
-(defun ess-roxy-delete-examples-field (overlay header-end)
-  (let ((inhibit-modification-hooks t))
-    (delete-overlay overlay)
-    (when (get-text-property header-end 'ess-roxy-examples)
-      (let ((field-end (next-single-property-change header-end 'ess-roxy-examples)))
-        (remove-list-of-text-properties header-end field-end
-                                        (list 'ess-roxy-examples
-                                              'ess-face-adjusted
-                                              'ess-adjust-face-background))))))
-
 (define-minor-mode ess-roxy-mode
   "Minor mode for editing ROxygen documentation."
   :keymap ess-roxy-mode-map
