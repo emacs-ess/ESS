@@ -442,8 +442,7 @@ to julia, put them in the variable `inferior-julia-args'."
       ;; --> julia helpers from ../etc/ess-julia.jl :
       (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
       (with-ess-process-buffer nil
-        (run-mode-hooks 'ess-julia-post-run-hook))
-      )))
+        (run-mode-hooks 'ess-julia-post-run-hook)))))
 
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . ess-julia-mode))
 
