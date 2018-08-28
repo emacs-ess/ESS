@@ -5,13 +5,8 @@ macro current_module()
     return VERSION >= v"0.7-" ? :(@__MODULE__) : :(current_module())
 end
 
-function parse(str)
-    return VERSION >= v"0.7-" ? Base.Meta.parse(str) : Base.parse(str)
-end
-
-function function_module(f)
-    return VERSION >= v"0.7-" ? Base.parentmodule(f) : Base.function_module(f)
-end
+parse = VERSION >= v"0.7-" ? Base.Meta.parse : Base.parse
+function_module = VERSION >= v"0.7-" ? Base.parentmodule : Base.function_module
 
 function all_help_topics()
     ## There are not clear topics anymore. Approximate those with a very general
