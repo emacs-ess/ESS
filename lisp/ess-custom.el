@@ -1690,9 +1690,9 @@ non-nil."
   :type 'integer)
 
 
-(defcustom inferior-ess-r-program (or (executable-find "Rterm")
-                                      (executable-find "R")
-                                      "R")
+(defcustom inferior-ess-r-program (if ess-microsoft-p
+                                      "Rterm"
+                                    "R")
   "Program name for invoking an inferior ESS with \\[R]."
   :group 'ess-R
   :type '(choice (string) file))
@@ -1857,8 +1857,7 @@ menu."
 (define-obsolete-variable-alias 'inferior-S3-program-name
   'inferior-S3-program "ESS 18.09")
 
-(defcustom inferior-S+3-program (or (executable-find "Splus")
-                                    "Splus")
+(defcustom inferior-S+3-program "Splus"
   "Program name for invoking an inferior ESS with S+3()."
   :group 'ess-SPLUS
   :type '(choice (string) file))
@@ -1941,16 +1940,14 @@ different computer."
   'inferior-ESS-elsewhere-program-name
   'inferior-ESS-elsewhere-program "ESS 18.09")
 
-(defcustom inferior-S4-program (or (executable-find "S4")
-                                   "S4")
+(defcustom inferior-S4-program "S4"
   "Program name to invoke an inferior ESS with S4()."
   :group 'ess-S
   :type '(choice (string) (file)))
 (define-obsolete-variable-alias 'inferior-S4-program-name
   'inferior-S4-program "ESS 18.09")
 
-(defcustom inferior-S+5-program (or (executable-find "Splus5")
-                                    "Splus5")
+(defcustom inferior-S+5-program "Splus5"
   "Program name to invoke an inferior ESS with S+5()."
   :group 'ess-SPLUS
   :type '(choice (string) (file)))
@@ -1971,8 +1968,7 @@ Easily changeable in a user's `.emacs'."
 (defcustom inferior-S+-program
   (if ess-microsoft-p
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
-    (or (executable-find "Splus")
-        "Splus"))
+    "Splus")
   "Program name to invoke S+.
 On Unix/Linux, use the Splus executable.  On Windows, the default
 value is correct for a default installation of S-Plus 8.1 and
@@ -2070,40 +2066,35 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-S
   :type '(choice (const nil) (const t) (const ask)))
 
-(defcustom inferior-XLS-program (or (executable-find "xlispstat")
-                                    "xlispstat")
+(defcustom inferior-XLS-program "xlispstat"
   "Program name for invoking an inferior ESS with \\[XLS]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 (define-obsolete-variable-alias 'inferior-XLS-program-name
   'inferior-XLS-program "ESS 18.09")
 
-(defcustom inferior-VST-program (or (executable-find "vista")
-                                    "vista")
+(defcustom inferior-VST-program "vista"
   "Program name for invoking an inferior ESS with \\[ViSta]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 (define-obsolete-variable-alias 'inferior-VST-program-name
   'inferior-VST-program "ESS 18.09")
 
-(defcustom inferior-ARC-program (or (executable-find "arc")
-                                    "arc")
+(defcustom inferior-ARC-program "arc"
   "Program name for invoking an inferior ESS with \\[ARC]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 (define-obsolete-variable-alias 'inferior-ARC-program-name
   'inferior-ARC-program "ESS 18.09")
 
-(defcustom inferior-SAS-program (or (executable-find "sas")
-                                    "sas")
+(defcustom inferior-SAS-program "sas"
   "Program name for invoking an inferior ESS with SAS()."
   :group 'ess-sas
   :type '(choice (string) (file)))
 (define-obsolete-variable-alias 'inferior-SAS-program-name
   'inferior-SAS-program "ESS 18.09")
 
-(defcustom inferior-STA-program (or (executable-find "stata")
-                                    "stata")
+(defcustom inferior-STA-program "stata"
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
@@ -2117,8 +2108,7 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type 'boolean)
 
-(defcustom inferior-OMG-program (or (executable-find "omegahat")
-                                    "omegahat")
+(defcustom inferior-OMG-program "omegahat"
   "Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG
   :type '(choice (string) (file)))
@@ -3094,7 +3084,6 @@ See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
  ; julia-mode
 (defcustom inferior-julia-program (or (executable-find "julia-basic")
-                                      (executable-find "julia")
                                       "julia")
   "Executable for Julia.
 Should be an absolute path to the julia executable."
