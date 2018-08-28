@@ -45,27 +45,16 @@
 (require 'compile)
 (require 'ess-utils)
 (require 'ess-r-mode)
+(require 'julia-mode)
 
 (defvar ac-prefix)
 (declare-function company-in-string-or-comment "company")
 (declare-function company-doc-buffer "company")
 
-;; Silence the byte compiler. It emits wonky warnings because most of
-;; this file is only loaded if julia-mode is found.
-(declare-function ess-julia--get-objects "ess-julia")
-(declare-function ess-julia--retrive-topics "ess-julia")
-(declare-function ess-julia--get-components "ess-julia")
-(declare-function ess-julia-objects "ess-julia")
-(declare-function ess-julia-get-object-help-string "ess-julia")
-(declare-function julia-latexsub "julia-mode")
-(declare-function julia-mode "julia-mode")
-
 (defcustom inferior-julia-args ""
   "String of arguments (see 'julia --help') used when starting julia."
   :group 'ess-julia
   :type 'string)
-
-(require 'julia-mode)
 
 (eval-when-compile
   (require 'cl-lib))

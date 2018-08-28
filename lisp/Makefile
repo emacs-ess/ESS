@@ -23,42 +23,18 @@ NOWEAVE=noweave
 # that sets byte compiler options.
 COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
-
-ELC =   ess.elc ess-site.elc ess-custom.elc \
-	ess-dde.elc ess-font-lock.elc \
-	ess-help.elc ess-inf.elc \
-	ess-mouse.elc mouseme.elc \
-	ess-swv.elc ess-toolbar.elc \
-	ess-trns.elc ess-utils.elc \
-	essd-els.elc ess-gretl.elc \
-	ess-lsp-l.elc ess-xls-d.elc ess-vst-d.elc ess-arc-d.elc \
-	ess-sas-l.elc ess-sas-d.elc ess-sas-a.elc \
-	ess-stata-lang.elc ess-stata-mode.elc make-regexp.elc \
-	ess-omg-l.elc ess-omg-d.elc \
-	ess-bugs-l.elc ess-bugs-d.elc ess-jags-d.elc \
-	ess-noweb.elc ess-noweb-mode.elc ess-noweb-font-lock-mode.elc \
-	ess-roxy.elc ess-rutils.elc ess-r-completion.elc \
-	ess-s-lang.elc ess-s3-d.elc ess-s4-d.elc \
-	ess-sp3-d.elc ess-sp4-d.elc ess-sp5-d.elc ess-sp6-d.elc \
-	ess-rdired.elc ess-r-syntax.elc ess-r-mode.elc ess-rd.elc \
-	ess-r-flymake.elc ess-r-package.elc ess-r-xref.elc ess-tracebug.elc ess-julia.elc\
-	julia-mode.elc\
-	ess-generics.elc ess-r-gui.elc\
-	obsolete/msdos.elc obsolete/ess-eldoc.elc obsolete/ess-r-args.elc\
-	ess-sp6w-d.elc
-##  ^^^^^^^^^^^^^^ Windows only (but be platform-oblivious)
-## julia-mode.el : really from the julia sources -- but want in tarball!
-
+ELS = $(wildcard *.el)
+ELC = $(ELS:.el=.elc)
 
 # ESSR_VER =`cat ../etc/ESSR-VERSION`
 ##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
 
 ### Targets
 
-all: $(ELC) ess-custom.el
+all: julia-mode.el $(ELC) ess-custom.el
 
 .PHONY: dist
-dist: all julia-mode.el
+dist: all
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
@@ -79,6 +55,7 @@ uninstall:
 	fi;
 clean:
 	rm -f $(ELC)
+	rm -f julia-mode.el
 
 distclean: clean
 # and potentially more
@@ -97,6 +74,8 @@ ess-custom.el: ../VERSION
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
 	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
+
+ess-julia.elc: julia-mode.elc
 
 ### File Dependencies
 
