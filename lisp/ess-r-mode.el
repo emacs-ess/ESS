@@ -237,7 +237,7 @@
 ;; TOTHINK: Prevent string delimiting characters from messing up output in the
 ;; inferior buffer
 (defvar inferior-ess-r-syntax-table (copy-syntax-table ess-r-syntax-table))
-;; (modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
+(modify-syntax-entry ?\' "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?\" "." inferior-ess-r-syntax-table)
 ;; (modify-syntax-entry ?` "." inferior-ess-r-syntax-table)
 (modify-syntax-entry ?% "." inferior-ess-r-syntax-table)
