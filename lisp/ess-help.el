@@ -1014,7 +1014,7 @@ option for other dialects)."
        (insert "This bug report will be sent to the ESS bugs email list\n")
        (insert "Press C-c C-c when you are ready to send your message.\n")
        (insert "-------------------------------------------------------\n\n")
-       (insert (with-current-buffer "*ESS*"
+       (insert (with-current-buffer ess-dribble-buffer
                  (goto-char (point-max))
                  (forward-line -100)
                  (buffer-substring-no-properties (point) (point-max))))

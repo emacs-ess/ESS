@@ -504,7 +504,7 @@ Sqpe.  `ESS-SHOME-VERSIONS' is normally taken from
 functions are created.  This works by creating a temp buffer where the
 template function `Sqpe+template' is edited by replacing the string
 'Sqpe+template' by the version name.  The list of functions actually
-created appears in the *ESS* buffer.  If `X64' is not nil, then
+created appears in the `ess-dribble-buffer'.  If `X64' is not nil, then
 modify the function name to show \"-64bit\" in its name.
 
 The result `ess-sqpe-versions-created' will store a list of the new

@@ -1556,22 +1556,16 @@ If not nil and not t, query for each instance."
 
 ;;*;; Debugging tools
 
-(defvar ess-dribble-buffer)
 (defun ess-write-to-dribble-buffer (text)
-  "Write TEXT to dribble ('*ESS*') buffer."
-  (unless (or ess-verbose ess-write-to-dribble)
-    (unless (buffer-live-p ess-dribble-buffer)
-      ;; ESS dribble buffer must be re-created.
-      (setq ess-dribble-buffer (get-buffer-create "*ESS*")))
-    (let (deactivate-mark)
-      (with-current-buffer ess-dribble-buffer
-        (goto-char (point-max))
-        (insert-before-markers text)))))
+  "Write TEXT to `ess-dribble-buffer'."
+  (when (or ess-verbose ess-write-to-dribble)
+    (with-current-buffer (get-buffer-create ess-dribble-buffer)
+      (goto-char (point-max))
+      (insert-before-markers text))))
 
-;; Shortcut to render "dribbling" statements less cluttering:
 (defun ess-if-verbose-write (text)
-  "Write TEXT to dribble buffer ('*ESS*') only *if* `ess-verbose'."
-  (if ess-verbose (ess-write-to-dribble-buffer text)))
+  "Write TEXT to `ess-dribble-buffer' only if `ess-verbose' is non-nil."
+  (when ess-verbose (ess-write-to-dribble-buffer text)))
 
 
 (defun ess-kill-last-line ()
