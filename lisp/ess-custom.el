@@ -3138,8 +3138,7 @@ See also `ess-verbose'."
   :type 'boolean)
 
 (defvar ess-dribble-buffer "*ESS*"
-  "Name of buffer for temporary use for setting default variable values.
-Used for recording status of the program, mainly for debugging.")
+  "Buffer or name of buffer for printing debugging information.")
 
 (defvar ess-customize-alist nil
   "Variable settings to use for proper behavior.
