@@ -217,16 +217,13 @@ This may be useful for debugging."
 
             (when ess-history-file
               ;; Load past history
-              (if (eq t ess-history-file)
-                  (set (make-local-variable 'ess-history-file)
-                       (concat "." ess-dialect "history"))
-                ;; otherwise must be a string "..."
-                (unless (stringp ess-history-file)
-                  (error "`ess-history-file' must be nil, t, or a string")))
-              (setq comint-input-ring-file-name
-                    (expand-file-name ess-history-file
-                                      (or ess-history-directory start-directory)))
-              (comint-read-input-ring))
+              (when (eq t ess-history-file)
+                (setq-local ess-history-file (concat "." ess-dialect "history")))
+              (let ((histfile (expand-file-name ess-history-file
+                                                (or ess-history-directory start-directory))))
+                (when (file-readable-p histfile)
+                  (setq comint-input-ring-file-name histfile)
+                  (comint-read-input-ring))))
 
             ;; create and run process.
             (setq buf
