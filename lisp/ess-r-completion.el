@@ -309,12 +309,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 ;;; ARGUMENTS
 
+(define-obsolete-variable-alias 'ess-ac-R-argument-suffix 'ess-R-argument-suffix "15.3")
 (defcustom ess-R-argument-suffix " = "
   "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
   :group 'R
   :type 'string)
-
-(define-obsolete-variable-alias 'ess-ac-R-argument-suffix 'ess-R-argument-suffix "15.3")
 
 (defvar ess-r--funargs-pre-cache
   '(("plot"

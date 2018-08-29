@@ -29,11 +29,9 @@
 ;; Various utilities for ESS.
 
 ;;; Code:
-
+(require 'cl-lib)
 (eval-when-compile
-  (require 'tramp)
-  (require 'cl-lib))
-
+  (require 'tramp))
 ;; The only ESS file this file should depend on is ess-custom.el
 (require 'comint)
 (require 'ess-custom)

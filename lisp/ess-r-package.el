@@ -44,6 +44,8 @@
   "If nil provide completion for all installed R packages.
 If non-nil, only look for attached packages.")
 
+(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
+(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 (defcustom ess-r-package-auto-enable-namespaced-evaluation t
   "If non-nil, evaluation env is set to package env automatically.
 See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
@@ -56,12 +58,12 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 
+(define-obsolete-variable-alias 'ess-r-package-library-path 'ess-r-package-library-paths "v18.04")
 (defcustom ess-r-package-library-paths nil
   "Default path to find user packages.
 Can be either a string specifying a directory or a list of directories."
   :group 'ess-r-package-library-paths
   :type `(choice string (repeat string)))
-(define-obsolete-variable-alias 'ess-r-package-library-path 'ess-r-package-library-paths "v18.04")
 
 (defvar ess-r-package-root-file "DESCRIPTION"
   "Presence of this file indicates the project's root.")
@@ -554,9 +556,7 @@ package mode. Use this function if state of the buffer such as
 
 (defalias 'ess-toggle-developer 'ess-developer)
 (define-obsolete-function-alias 'ess-r-devtools-check-package-buildwin 'ess-r-devtools-check-with-winbuilder)
-(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 (define-obsolete-function-alias 'ess-r-devtools-ask 'ess-r-devtools-execute-command "18.04")
-(define-obsolete-variable-alias 'ess-r-package-auto-set-evaluation-env 'ess-r-package-auto-enable-namespaced-evaluation "18.04")
 
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")

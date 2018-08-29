@@ -178,7 +178,7 @@ REPORT-FN is flymake's callback function."
            (not (ess-process-live-p)))
       (progn
         (funcall report-fn nil)
-        (flymake-delete-own-overlays))
+        (mapc #'delete-overlay (flymake--overlays)))
     (let ((src-buffer (current-buffer)))
       (setq ess-r--flymake-proc
             (make-process

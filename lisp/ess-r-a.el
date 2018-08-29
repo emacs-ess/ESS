@@ -32,6 +32,8 @@
 ;; ESS R mode tools.
 
 ;;; Code:
+(require 'ess-inf)
+(require 'ess-r-mode)
 
 ;; you can invoke ESS/R from emacs by typing
 ;;      C-u M-x essr
