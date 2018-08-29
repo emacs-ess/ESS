@@ -210,7 +210,7 @@ Any results of the   !system.command   typed at the S prompt in the
 Splus Commands window appear in this buffer.\n\n")
     (goto-char (point-max))             ; comint-mode-map makes '(ddeESS [S+4])'
     ;;  (use-local-map comint-mode-map) ;a shell buffer after Splus is finished.
-    (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
+    (set-process-coding-system (get-process ess-local-process-name) 'raw-text-dos 'raw-text-unix)
     (setq buffer-read-only t)           ; force buffer to be read-only
     (setq mode-name "ddeESS")
     ;;  (ess-eval-linewise inferior-S+4-editor-pager-command)
@@ -349,7 +349,7 @@ is here to allow slow disks to start the Splus program."
 ;;; end of what belongs in customize-alist
     (setq comint-input-sender 'comint-simple-send)
     (setq comint-process-echoes nil)
-    (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
+    (set-process-coding-system (get-process ess-local-process-name) 'raw-text-dos 'raw-text-dos)
     (goto-char (point-max))
     (insert (concat inferior-S+4-program " "
                     inferior-ess-start-args)) ; Note: there is no final "&".

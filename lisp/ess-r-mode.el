@@ -33,8 +33,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl-lib))
+(require 'cl-lib)
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
@@ -443,9 +442,10 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
+(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.09")
 (defvar ess-r-created-runners nil
   "List of R-versions found from `ess-r-versions' on the system.")
-(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.09")
+
 
 ;;;*;;; Mode init
 

@@ -67,6 +67,7 @@
 ;; TODO: This is a LOT. Can we move some of this around?
 (defvar ess--dbg-del-empty-p)
 (defvar inferior-ess-mode-map)
+(defvar ess-mode-map)
 (declare-function ess--accumulation-buffer "ess-inf")
 (declare-function ess--if-verbose-write-process-state "ess-inf")
 (declare-function ess--run-presend-hooks "ess-inf")
@@ -209,8 +210,6 @@ spreads multiple paragraphs, and you call
 paragraph, R will report an error."
   :group 'ess-tracebug
   :type '(choice (const nil) (const function) (const function-and-buffer) (const t)))
-
-(define-obsolete-variable-alias 'ess-tracebug-inject-source-p 'ess-inject-source "ESS v13.09")
 
 (defcustom ess-tracebug-enter-hook nil
   "List of functions to call on entry to `ess-tracebug' mode.

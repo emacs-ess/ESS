@@ -36,12 +36,10 @@
 ;;; Code:
 
  ; Requires and autoloads
-
+(require 'cl-lib)
 (eval-when-compile
-  (require 'cl-lib)
   (require 'tramp)
   (require 'reporter))
-
 (require 'info)
 (require 'ess)
 (require 'ess-inf)

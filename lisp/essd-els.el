@@ -33,8 +33,7 @@
 ;;; Code:
 
 (require 'ess-arc-d)
-(when (require 'julia-mode nil 'no-error)
-  (require 'ess-julia))
+(require 'ess-julia)
 (require 'ess-omg-d)
 (require 'ess-s-lang)
 (require 'ess-s3-d)

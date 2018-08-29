@@ -1180,9 +1180,9 @@ Keep in mind that the maximum command line length in MS-DOS is
     (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
   (ess-sas-goto-log))
 
-(defvar ess-sas-created-runners)
 (define-obsolete-variable-alias
   'ess-sas-versions-created 'ess-sas-created-runners "ESS 18.09")
+(defvar ess-sas-created-runners)
 (defun ess-sas-define-runners ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.
 See `ess-sas-versions' for strings that determine which functions are created.

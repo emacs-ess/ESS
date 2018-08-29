@@ -187,7 +187,7 @@ independent Rgui R Console."
      "This is a placeholder buffer.  You can't type anything here.\n
 You may ignore the 'options' error in this buffer.\n\n")
     (goto-char (point-max))
-    (set-buffer-process-coding-system 'raw-text-dos 'raw-text-unix)
+    (set-process-coding-system (get-process ess-local-process-name) 'raw-text-dos 'raw-text-unix)
     (setq buffer-read-only t) ; force buffer to be read-only
     (setq mode-name "ddeESS")
 
