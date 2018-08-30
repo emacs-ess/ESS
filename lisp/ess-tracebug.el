@@ -1913,11 +1913,11 @@ Equivalent of `Q' at the R prompt."
   (interactive)
   (ess-force-buffer-current)
   (cond ((ess--dbg-is-recover-p)
-         (ess-send-string (ess-get-process) "0"))
+         (ess-send-string (ess-get-process) "0" t))
         ;; if recover is called in a loop the following stalls emacs
         ;; (ess-wait-for-process proc nil 0.05)
         ((ess--dbg-is-active-p)
-         (ess-send-string (ess-get-process) "Q"))
+         (ess-send-string (ess-get-process) "Q" t))
         (t
          (error "Debugger is not active"))))
 
