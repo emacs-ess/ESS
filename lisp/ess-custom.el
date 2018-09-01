@@ -2983,12 +2983,6 @@ In `R-mode', for example, this includes TRUE, FALSE, Inf and
 others. See `ess-R-constants'."
   :group 'ess-faces)
 
-(defconst ess-f-t-face 'ess-f-t-face)
-(defface ess-f-t-face
-  '((default (:inherit ess-constant-face)))
-  "Font lock face used to highlight F and T."
-  :group 'ess-faces)
-
 (defconst ess-matrix-face 'ess-matrix-face)
 (defface ess-matrix-face
   '((default (:inherit font-lock-constant-face)))
