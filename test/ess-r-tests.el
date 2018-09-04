@@ -204,5 +204,6 @@
    (string= " <- "
             (ess-r-test-with-temp-text ""
               (progn
+                (setq last-input-event ?_)
                 (call-interactively 'ess-insert-S-assign)
                 (buffer-substring (point-min) (point-max)))))))
