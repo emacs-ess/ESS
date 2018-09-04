@@ -111,8 +111,6 @@
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
-    (when ess-smart-S-assign-key
-      (define-key map ess-smart-S-assign-key 'ess-insert-assign))
     (define-key map (kbd "C-c C-=") 'ess-cycle-assignment)
     map)
   "Keymap for `ess-mode'.")
@@ -354,6 +352,8 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
+  (when ess-smart-S-assign-key
+    (local-set-key ess-smart-S-assign-key #'ess-insert-assign))
   (when ess-mode-syntax-table
     (set-syntax-table ess-mode-syntax-table))
 
