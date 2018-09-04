@@ -609,7 +609,12 @@ ARG as the number of times to insert."
       (let* ((assign (car ess-assign-list))
              (event (event-basic-type last-input-event))
              (char (ignore-errors (format "%c" event))))
-        (cond ((and char (ess-inside-string-or-comment-p))
+        (cond ((and char (not (string= char ess-smart-S-assign-key)))
+               ;; Unregister previous key if it was changed by user
+               (define-key ess-mode-map char nil)
+               (define-key inferior-ess-mode-map char nil)
+               (insert char))
+              ((and char (ess-inside-string-or-comment-p))
                (insert char))
               ((re-search-backward assign (- (point) (length assign)) t)
                (if (and char (numberp event))
