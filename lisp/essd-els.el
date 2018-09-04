@@ -149,6 +149,7 @@ buffer on the local computer."
 (defvar ess-remote nil
   "Indicator, t in ess-remote buffers.")
 
+;;;###autoload
 (defun ess-remote (&optional proc-name dialect)
   "Execute this command from within a buffer running a process.  It
 runs `ess-add-ess-process' to add the process to
