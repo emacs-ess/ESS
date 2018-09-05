@@ -111,6 +111,7 @@
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
+    (define-key map "_"          'ess--smart-assign-sentinel)
     (define-key map (kbd "C-c C-=") 'ess-cycle-assignment)
     map)
   "Keymap for `ess-mode'.")
@@ -352,8 +353,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
 
   (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
-  (when ess-smart-S-assign-key
-    (local-set-key ess-smart-S-assign-key #'ess-insert-assign--smart-key))
+  (ess--define-smart-assign-key ess-mode-map)
   (when ess-mode-syntax-table
     (set-syntax-table ess-mode-syntax-table))
 
@@ -394,6 +394,24 @@ Internal function to be used for dynamic mode-line dysplay in
             (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
           "none"))
     "none"))
+
+;; The following are compatibility helpers. The sentinel helps detect
+;; whether user has unbinded "_" in the ESS maps.
+(defun ess--smart-assign-sentinel (arg)
+  (interactive "p")
+  (funcall #'self-insert-command arg))
+
+;; We redefine the smart key each time we enter ESS mode so users can
+;; redefine the key. Check that the sentinel is still bound, otherwise
+;; this means user has set the key to nil.
+(defun ess--define-smart-assign-key (map)
+  (when (and ess-smart-S-assign-key
+             ;; For compatibility check if user has unbinded "_" key
+             (if (string= ess-smart-S-assign-key "_")
+                 (cdr (assq ?_ map))
+               t))
+    (define-key map ess-smart-S-assign-key #'ess-insert-assign--smart-key)))
+
 
 
 ;;*;; User commands in ess-mode

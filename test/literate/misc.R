@@ -79,8 +79,10 @@ foo_¶
 
 ##! ;; Reset
 ##! (setq ess-smart-S-assign-key "_")
+##! (R-mode)
+##! "_"
 
-foo¶
+foo <- ¶
 
 
 ### 3 Can bind `ess-insert-assign` -----------------------------------
@@ -119,4 +121,18 @@ foo_¶
 ##> "_"
 
 foo_ <~ ¶
+
+
+### 5 Can unbind "_" key from ESS maps -------------------------------
+
+foo¶
+
+##! "_"
+
+foo <- ¶
+
+##! (define-key ess-mode-map "_" nil)
+##! "_"
+
+foo_¶
 

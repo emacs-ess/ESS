@@ -616,8 +616,11 @@ If the character before point is the first element of
              (char (ignore-errors (format "%c" event))))
         (cond ((and char (not (string= char ess-smart-S-assign-key)))
                ;; Unregister previous key if it was changed by user
-               (define-key ess-mode-map char nil)
-               (define-key inferior-ess-mode-map char nil)
+               ;; and restore the compatibility sentinel if needed
+               (let ((cmd (when (string= char "_")
+                            #'ess--smart-assign-sentinel)))
+                 (define-key ess-mode-map char cmd)
+                 (define-key inferior-ess-mode-map char cmd))
                (insert char))
               ((and char (ess-inside-string-or-comment-p))
                (insert char))

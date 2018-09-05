@@ -1950,6 +1950,7 @@ meaning as for `ess-eval-region'."
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
+    (define-key map "_"          'ess--smart-assign-sentinel)
     map)
   "Keymap for `inferior-ess' mode.")
 
@@ -2106,8 +2107,7 @@ to continue it."
           ess--local-mode-line-process-indicator
           "]: %s"))
   (use-local-map inferior-ess-mode-map)
-  (when ess-smart-S-assign-key
-    (local-set-key ess-smart-S-assign-key #'ess-insert-assign--smart-key))
+  (ess--define-smart-assign-key inferior-ess-mode-map)
   (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
                               ess-mode-syntax-table)))
     (when inf-syntax-table
