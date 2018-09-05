@@ -597,12 +597,17 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
      (define-key map (kbd key) #'ess-cycle-assignment)
      map)))
 
-(defun ess-insert-assign (arg)
-  "Insert the first element of `ess-assign-list' unless in string or comment.
+(defun ess-insert-assign (&optional default)
+  "Insert the first element of `ess-assign-list'.
 If the character before point is the first element of
-`ess-assign-list', replace it with the last character typed. If
-`ess-smart-S-assign-key' is nil, do `self-insert-command' using
-ARG as the number of times to insert."
+`ess-assign-list', replace it with DEFAULT."
+  (interactive)
+  (let ((assign (car ess-assign-list)))
+    (if (re-search-backward assign (- (point) (length assign)) t)
+        (replace-match (or default "") t t)
+      (insert assign))))
+
+(defun ess-insert-assign--smart-key (arg)
   (interactive "p")
   (if (and ess-smart-S-assign-key
            (string= ess-language "S"))
@@ -616,11 +621,9 @@ ARG as the number of times to insert."
                (insert char))
               ((and char (ess-inside-string-or-comment-p))
                (insert char))
-              ((re-search-backward assign (- (point) (length assign)) t)
-               (if (and char (numberp event))
-                   (replace-match char t t)
-                 (replace-match "")))
-              (t (insert assign))))
+              (t
+               (ess-insert-assign (when (numberp event)
+                                    char)))))
     (funcall #'self-insert-command arg)))
 
 (defun ess-disable-smart-S-assign (&rest _ignore)

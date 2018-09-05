@@ -2107,7 +2107,7 @@ to continue it."
           "]: %s"))
   (use-local-map inferior-ess-mode-map)
   (when ess-smart-S-assign-key
-    (local-set-key ess-smart-S-assign-key #'ess-insert-assign))
+    (local-set-key ess-smart-S-assign-key #'ess-insert-assign--smart-key))
   (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
                               ess-mode-syntax-table)))
     (when inf-syntax-table

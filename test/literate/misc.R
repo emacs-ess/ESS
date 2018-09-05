@@ -82,3 +82,23 @@ foo_¶
 
 foo¶
 
+
+### 3 Can bind `ess-insert-assign` -----------------------------------
+
+foo¶
+
+##! (let ((map (make-sparse-keymap)))
+##!   (define-key map (kbd "M--") #'ess-insert-assign)
+##!   (use-local-map map))
+##! "M--"
+
+foo <- ¶
+
+##> "M--"
+
+foo¶
+
+##> "M--"
+
+foo <- ¶
+

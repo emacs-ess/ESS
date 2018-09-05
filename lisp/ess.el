@@ -353,7 +353,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (ess-set-style ess-style t)
   (use-local-map ess-mode-map)
   (when ess-smart-S-assign-key
-    (local-set-key ess-smart-S-assign-key #'ess-insert-assign))
+    (local-set-key ess-smart-S-assign-key #'ess-insert-assign--smart-key))
   (when ess-mode-syntax-table
     (set-syntax-table ess-mode-syntax-table))
 
