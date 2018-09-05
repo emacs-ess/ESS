@@ -102,3 +102,21 @@ foo¶
 
 foo <- ¶
 
+
+### 4 Smart assign uses `ess-assign-list` ----------------------------
+
+foo¶
+
+##! (setq-local ess-assign-list '(" <~ "))
+##! "_"
+
+foo <~ ¶
+
+##> "_"
+
+foo_¶
+
+##> "_"
+
+foo_ <~ ¶
+
