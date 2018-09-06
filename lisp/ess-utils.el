@@ -1133,53 +1133,6 @@ variable `ess--fn-name-start-cache'."
                           (cons funname (- (point) (length funname))))))
                   (error nil))))))))
 
-(defun ess-function-arguments (funname &optional proc)
-  "Get FUNARGS from cache or ask the process for it.
-
-Return FUNARGS - a list with the first element being a
-cons (package_name . time_stamp_of_request), second element is a
-string giving arguments of the function as they appear in
-documentation, third element is a list of arguments of all
-methods.
-
-If package_name is nil, and time_stamp is less recent than the
-time of the last user interaction to the process, then update the
-entry.
-
-Package_name is also nil when funname was not found, or funname
-is a special name that contains :,$ or @.
-
-If PROC is given, it should be an ESS process which should be
-queried for arguments."
-  (when (and funname ;; usually returned by ess--fn-name-start (might be nil)
-             (or proc (and (fboundp 'ess-process-live-p)
-                           (ess-process-live-p))))
-    (let* ((proc (or proc (get-process ess-local-process-name)))
-           (args (gethash funname (process-get proc 'funargs-cache)))
-           (pack (caar args))
-           (ts   (cdar args)))
-      (when (and args
-                 (and (time-less-p ts (process-get proc 'last-eval))
-                      (or (null pack)
-                          (equal pack ""))))
-        ;; reset cache
-        (setq args nil))
-      (or args
-          (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	      (and
-	       (not (process-get proc 'busy))
-	       (with-current-buffer (ess-command (format ess-funargs-command
-						                             (ess-quote-special-chars funname))
-					                         nil nil nil nil proc)
-	         (goto-char (point-min))
-	         (when (re-search-forward "(list" nil t)
-	           (goto-char (match-beginning 0))
-	           (setq args (ignore-errors (eval (read (current-buffer)))))
-	           (if args
-		           (setcar args (cons (car args) (current-time)))))
-	         ;; push even if nil
-	         (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
-
 (defun ess-beginning-of-function (&optional no-error)
   "Leave (and return) the point at the beginning of the current ESS function.
 If the optional argument NO-ERROR is non-nil, the function returns nil when
@@ -1410,14 +1363,11 @@ If VERBOSE   is non-nil, (message ..) about replacements."
     ;;or  (message "s/%s/%s/ at %s" regexp to-string pl))
     ) )
 
-(defun ess-replace-regexp-dump-to-src
-  (regexp to-string &optional dont-query verbose ensure-mode)
-  "Depending on dont-query, call `ess-rep-regexp' or `query-replace-regexp'
-from the beginning of the buffer."
+(defun ess-replace-regexp-dump-to-src (regexp to-string &optional dont-query verbose)
+  "Replace REGEXP matches from beginning of buffer with TO-STRING.
+If DONT-QUERY is non-nil, call `ess-rep-regexp' else call
+`query-replace-regexp'. VERBOSE can be passed to `ess-rep-regexp'."
   (save-excursion
-    (if (and ensure-mode
-             (not (equal major-mode 'ess-mode)))
-        (ess-mode))
     (goto-char (point-min))
     (if dont-query
         (ess-rep-regexp     regexp to-string nil nil verbose)

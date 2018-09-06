@@ -422,9 +422,10 @@ and ensure space before subsequent text."
 (defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
+  (ess-mode)
   (ess-replace-regexp-dump-to-src  "^\"\\([a-z.][a-z.0-9]*\\)\" *<-\n"
                                    "\n\\1 <- "
-                                   dont-query verbose 'ensure-ess))
+                                   dont-query verbose))
 
 (defun ess-num-var-round (&optional dont-query verbose)
   "Is VERY useful for dump(.)'ed numeric variables; ROUND some of them by
