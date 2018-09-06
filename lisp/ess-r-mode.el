@@ -47,7 +47,7 @@
 (require 'ess-trns)
 (when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
 ;; TODO: Remove when we drop support for Emacs 24:
-(declare-function ess-r-xref-backend "exx-r-xref")
+(declare-function ess-r-xref-backend "ess-r-xref")
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
 ;; TODO: Refactor so as to not rely on dynamic scoping.  After that
@@ -540,6 +540,21 @@ will be prompted to enter arguments interactively."
 
 ;;;###autoload
 (defalias 'R #'run-ess-r)
+
+(defun inferior-ess-r--adjust-startup-directory (dir dialect)
+  "Adjust startup directory DIR if DIALECT is R.
+If in a package project, prefer the tests directory but only if
+the package directory was selected in the first place."
+  (if (string= dialect "R")
+      (let* ((project-dir (cdr (ess-r-package-project)))
+             (tests-dir (expand-file-name (file-name-as-directory "tests")
+                                          project-dir)))
+        (if (and project-dir
+                 (string= project-dir dir)
+                 (string= default-directory tests-dir))
+            tests-dir
+          dir))
+    dir))
 
 (defun R-initialize-on-start (&optional proc string)
   "This function is run after the first R prompt.

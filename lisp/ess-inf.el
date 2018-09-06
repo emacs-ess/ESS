@@ -567,29 +567,15 @@ This marks the process with a message, at a particular time point."
                  default-directory)))
     (directory-file-name dir)))
 
-;; FIXME: Move all that R stuff elsewhere
-(defun inferior-ess-r--adjust-startup-directory (dir dialect)
-  (if (string= dialect "R")
-      (let* ((project-dir (cdr (ess-r-package-project)))
-             (tests-dir (expand-file-name (file-name-as-directory "tests")
-                                          project-dir)))
-        ;; Prefer the `tests' directory but only if the package
-        ;; directory was selected in the first place
-        (if (and project-dir
-                 (string= project-dir dir)
-                 (string= default-directory tests-dir))
-            tests-dir
-          dir))
-    dir))
-
 (defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
   "Possibly prompt for a startup directory.
 When `ess-ask-for-ess-directory' is non-nil, prompt.  PROCNAME is
 the name of the inferior process (e.g. \"R:1\"), and DIALECT is
 the language dialect (e.g. \"R\")."
-  (let ((default-dir (inferior-ess-r--adjust-startup-directory
-                      (inferior-ess--get-startup-directory)
-                      dialect)))
+  (let ((default-dir (if (fboundp 'inferior-ess-r--adjust-startup-directory)
+                         (inferior-ess-r--adjust-startup-directory
+                          (inferior-ess--get-startup-directory) dialect)
+                       (inferior-ess--get-startup-directory))))
     (if ess-ask-for-ess-directory
         (let ((prompt (format "%s starting project directory? " procname)))
           (ess-prompt-for-directory default-dir prompt))
@@ -2697,6 +2683,52 @@ In all cases, the value is an list of object names."
 (defun ess-slot-names (obj)
   "Return alist of S4 slot names of S4 object OBJ."
   (ess-get-words-from-vector (format "slotNames(%s)\n" obj)))
+
+(defun ess-function-arguments (funname &optional proc)
+  "Get FUNARGS from cache or ask the process for it.
+
+Return FUNARGS - a list with the first element being a
+cons (package_name . time_stamp_of_request), second element is a
+string giving arguments of the function as they appear in
+documentation, third element is a list of arguments of all
+methods.
+
+If package_name is nil, and time_stamp is less recent than the
+time of the last user interaction to the process, then update the
+entry.
+
+Package_name is also nil when FUNNAME was not found, or FUNNAME
+is a special name that contains :,$ or @.
+
+If PROC is given, it should be an ESS process which should be
+queried for arguments."
+  (when (and funname ;; usually returned by ess--fn-name-start (might be nil)
+             (or proc (ess-process-live-p)))
+    (let* ((proc (or proc (get-process ess-local-process-name)))
+           (args (gethash funname (process-get proc 'funargs-cache)))
+           (pack (caar args))
+           (ts   (cdar args)))
+      (when (and args
+                 (and (time-less-p ts (process-get proc 'last-eval))
+                      (or (null pack)
+                          (equal pack ""))))
+        ;; reset cache
+        (setq args nil))
+      (or args
+          (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
+	  (and
+	   (not (process-get proc 'busy))
+	   (with-current-buffer (ess-command (format ess-funargs-command
+						     (ess-quote-special-chars funname))
+					     nil nil nil nil proc)
+	     (goto-char (point-min))
+	     (when (re-search-forward "(list" nil t)
+	       (goto-char (match-beginning 0))
+	       (setq args (ignore-errors (eval (read (current-buffer)))))
+	       (if args
+		   (setcar args (cons (car args) (current-time)))))
+	     ;; push even if nil
+	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
 
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.

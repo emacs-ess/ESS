@@ -37,6 +37,8 @@
 (defvar ess-help-r-sec-regex)
 (defvar ess-help-r-sec-keys-alist)
 
+(defvar ess-r-customize-alist)
+
 (defvar essddr-version "0.9-1"
   "Current version of ess-rd.el.")
 
