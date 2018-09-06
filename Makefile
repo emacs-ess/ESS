@@ -32,6 +32,10 @@ generate-indent-cases:
 julia:
 	cd lisp; $(MAKE) julia-mode.el
 
+.PHONY: autoloads
+autoloads:
+	cd lisp; $(MAKE) ess-autoloads.el
+
 ## the rest of the targets are for ESS developer's use only :
 
 ## --- PRE-release ---

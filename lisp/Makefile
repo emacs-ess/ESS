@@ -24,6 +24,7 @@ NOWEAVE=noweave
 COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 ELS = $(wildcard *.el)
+ELS := $(filter-out ess-autoloads.el, $(ELS))
 ELC = $(ELS:.el=.elc)
 
 # ESSR_VER =`cat ../etc/ESSR-VERSION`
@@ -31,7 +32,7 @@ ELC = $(ELS:.el=.elc)
 
 ### Targets
 
-all: julia-mode.el $(ELC) ess-custom.el
+all: julia-mode.el $(ELC) ess-custom.el ess-autoloads.el
 
 .PHONY: dist
 dist: all
@@ -53,8 +54,10 @@ uninstall:
 	then \
 		cd $(SITELISP) && $(UNINSTALL) ess-site.el ; \
 	fi;
+
 clean:
 	rm -f $(ELC)
+	rm -f ess-autoloads.el
 
 distclean: clean
 # and potentially more
@@ -75,6 +78,14 @@ julia-mode.el:
 	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
 
 ess-julia.elc: julia-mode.elc
+
+ess-autoloads.el:
+	@printf	"\nGenerating $@\n"
+	$(EMACSBATCH) --eval "(progn\
+	(setq make-backup-files nil)\
+	(setq generated-autoload-file (expand-file-name \"$@\"))\
+	(setq find-file-visit-truename t)\
+	(update-directory-autoloads default-directory))"
 
 ### File Dependencies
 
