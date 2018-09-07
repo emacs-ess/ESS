@@ -128,7 +128,7 @@ If at the start of the line, or numeric prefix provided, call
 
 Would like to implement a debugger akin to Norm Matloff's work:
 
-http://cran.r-project.org/web/packages/edtdbg/index.html
+https://cran.r-project.org/web/packages/edtdbg/index.html
 
 http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR/
 

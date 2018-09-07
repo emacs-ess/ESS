@@ -504,7 +504,7 @@ way to start a remote ESS connection is through @code{ess-remote}.
 @enumerate
 @item Start a new shell, telnet or ssh buffer and connect to the remote computer
 (e.g. use, @samp{M-x shell}, @samp{M-x telnet} or @samp{M-x ssh}; ssh.el is available at
-@uref{http://www.splode.com/~friedman/software/emacs-lisp/src/ssh.el}).
+@uref{https://www.splode.com/~friedman/software/emacs-lisp/src/ssh.el}).
 
 @item Start the ESS process on the remote machine, for example with one of
 the commands @samp{R}, @samp{Splus}, or @samp{sas -stdio}.
@@ -2341,7 +2341,7 @@ it to @code{'script-only} to only activate company in R scripts.
 @section Icicles
 @cindex icicles
 Another option for comprehensively handling completion in Emacs is via
-Icicles (@uref{http://www.emacswiki.org/emacs/Icicles}).  It allows
+Icicles (@uref{https://www.emacswiki.org/emacs/Icicles}).  It allows
 users to have completions shown temporarily in the standard
 @samp{*Completions*} buffer, and interactively select completion
 candidates using several methods.  As of version 2013.04.04, Icicles
@@ -2457,9 +2457,9 @@ To configure how electric watch window splits the display see
 variables.
 
 A more detailed ess-tracebug documentation with screenshots is available
-at @uref{http://code.google.com/p/ess-tracebug/}.
+at @uref{https://code.google.com/p/ess-tracebug/}.
 
-A short tutorial is at @uref{http://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
+A short tutorial is at @uref{https://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
 
 
 @emph{Note:} Currently, ess-tracebug does not detect some of R's debug
@@ -2748,7 +2748,7 @@ loaded and if you start with .GlobalEnv and iteratively call
 parent.env() you will get eventually to 'package:foo'. Thus all methods
 and functions defined in .GlobalEnv can "see" objects in 'package:foo'
 environment. See also
-@uref{http://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
+@uref{https://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
 Ocasionally you want to evaluate into a package from a non-package file,
 or the other way around, evaluate into @code{GlobalEnv} from inside a
@@ -3174,10 +3174,10 @@ in @code{ess-rutils-mode}, providing useful key bindings in this mode
 @node Org
 @section Interaction with Org mode
 
-Org-mode (@uref{http://orgmode.org}) now supports reproducible research
+Org-mode (@uref{https://orgmode.org}) now supports reproducible research
 and literate programming in many languages (including R) -- see chapter
 14 of the Org manual
-(@uref{http://orgmode.org/org.html#Working-With-Source-Code}).  For ESS
+(@uref{https://orgmode.org/org.html#Working-With-Source-Code}).  For ESS
 users, this offers a document-based work environment within which to
 embed ESS usage.  R code lives in code blocks of an Org document, from
 which it can be edited in ess-mode, evaluated, extracted ("tangled") to
@@ -3192,7 +3192,7 @@ R process.  (This section contributed by Dan Davison and Eric Schulte.)
 @section Support for Sweave in ESS and AUCTeX
 
 ESS provides support for writing and processing Sweave
-(@uref{http://www.statistik.lmu.de/~leisch/Sweave}), building up on
+(@uref{https://www.statistik.lmu.de/~leisch/Sweave}), building up on
 Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
 document, the following key bindings are available:
 
@@ -3228,7 +3228,7 @@ Sweave'ing with @code{ess-swv-weave} starts an inferior-ESS process, if
 one is not available.  Other commands are available from the
 @samp{Sweaving, Tangling, ...} submenu of the Noweb menu.
 
-AUCTeX (@uref{http://www.gnu.org/software/auctex}) users may prefer to
+AUCTeX (@uref{https://www.gnu.org/software/auctex}) users may prefer to
 set the variable @code{ess-swv-plug-into-AUCTeX-p} (available from the
 ``ESS Sweave'' customization group) to t.  Alternatively, the same can
 be achieved by activating the entry ``AUCTeX Interface'' from the
@@ -3311,7 +3311,7 @@ Emacs is a complex editor with many abilities that we do not have space
 to describe here.  If you have problems with other features of Emacs
 (e.g. printing), there are several sources to consult, including the
 Emacs FAQs (try @kbd{M-x view-emacs-faq})
-and EmacsWiki (@uref{http://www.emacswiki.org}).  Please consult them
+and EmacsWiki (@uref{https://www.emacswiki.org}).  Please consult them
 before asking on the mailing list about issues that are not specific to
 ESS.
 

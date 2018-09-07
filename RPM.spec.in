@@ -10,8 +10,8 @@ Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/Editors
-Source: http://ESS.R-project.org/downloads/ess/ess-%{version}.tgz
-URL: http://ESS.R-project.org/
+Source: https://ESS.R-project.org/downloads/ess/ess-%{version}.tgz
+URL: https://ESS.R-project.org/
 Packager: Detlef Steuer <.........de>
 BuildRoot: %{_tmppath}/%{name}-root
 Prefix: %{_prefix}

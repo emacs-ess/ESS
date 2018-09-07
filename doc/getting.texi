@@ -1,6 +1,6 @@
 @subsection Source code
 You may download the latest ESS release source code from the
-@uref{http://ess.r-project.org, ESS web page} or
+@uref{https://ess.r-project.org, ESS web page} or
 @uref{http://lib.stat.cmu.edu/general/ESS/, StatLib}
 
 @subsection Git for ESS development

@@ -20,7 +20,7 @@
 ;; for more details.
 ;;
 ;; A copy of the GNU General Public License is available on the World
-;; Wide Web at http://www.gnu.org/copyleft/gpl.html.  You can also
+;; Wide Web at https://www.gnu.org/copyleft/gpl.html.  You can also
 ;; obtain it by writing to the Free Software Foundation, Inc., 675 Mass
 ;; Ave, Cambridge, MA 02139, USA.
 
@@ -300,8 +300,8 @@ following lines to your `.emacs' file:
 
   ;; Here is a workaround for an Emacs bug related to indirect buffers and
   ;; spurious lockfiles that rears its ugly head with .Rd files
-  ;; http://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
-  ;; http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
+  ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
+  ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
   (make-local-variable 'create-lockfiles)
   (setq create-lockfiles nil)
 

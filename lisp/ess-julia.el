@@ -24,7 +24,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -89,11 +89,11 @@ VISIBLY is not currently used."
 (defvar ess-julia--manual-topics nil)
 (defun ess-julia-manual-lookup-function (&rest args) ; args are not used
   (interactive)
-  "Look up topics at http://docs.julialang.org/en/latest/manual/"
+  "Look up topics at https://docs.julialang.org/en/latest/manual/"
   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
-                          (ess-julia--retrive-topics "http://docs.julialang.org/en/latest/manual/"))))
+                          (ess-julia--retrive-topics "https://docs.julialang.org/en/latest/manual/"))))
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
@@ -309,7 +309,7 @@ to look up any doc strings."
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
     (ess-get-help-topics-function  . 'ess-julia-get-help-topics)
-    (ess-help-web-search-command   . "http://docs.julialang.org/en/latest/search/?q=%s")
+    (ess-help-web-search-command   . "https://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command     . 'ess-julia-manual-lookup-function)
     ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)
     (ess-load-command              . "include(\"%s\")\n")

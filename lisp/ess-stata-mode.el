@@ -23,7 +23,7 @@
 ;; GNU General Public License for more details.
 
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 
 ;;; Commentary:
 
@@ -50,7 +50,7 @@
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
-    (ess-help-web-search-command   . "http://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
+    (ess-help-web-search-command   . "https://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
     (ess-eval-linewise-function    . #'stata-eval-linewise)
     (inferior-ess-program          . inferior-STA-program)
     (inferior-ess-objects-command  . "describe\n")

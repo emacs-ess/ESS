@@ -8,7 +8,7 @@
 ;; Maintainer: Vitalie Spinu
 ;; Copyright (C) 2010-2012, Vitalie Spinu, all rights reserved.
 ;; Created: Oct 14 14:15:22 2010
-;; URL: http://code.google.com/p/ess-tracebug/
+;; URL: https://code.google.com/p/ess-tracebug/
 ;; Keywords: tools, languages
 ;;
 ;; This file is *NOT* part of GNU Emacs.
@@ -23,7 +23,7 @@
 ;; details.
 ;;
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 
 ;;
 ;; Features that might be required by this library:
@@ -44,8 +44,8 @@
 ;;  - interactive traceback.
 ;;
 ;;  For a complete description please see the documentation at
-;;  http://code.google.com/p/ess-tracebug/ and a brief tutorial at
-;;  http://code.google.com/p/ess-tracebug/wiki/GettingStarted
+;;  https://code.google.com/p/ess-tracebug/ and a brief tutorial at
+;;  https://code.google.com/p/ess-tracebug/wiki/GettingStarted
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1017,7 +1017,7 @@ The input-event-S-ring is a virtual object which consists of two
 rings `ess--dbg-forward-ring' and `ess--dbg-backward-ring' which
 are joint at their tops.
 
-See the more info at http://code.google.com/p/ess-tracebug/#Work-Flow"
+See the more info at https://code.google.com/p/ess-tracebug/#Work-Flow"
   (interactive)
   (let* ((ev last-command-event)
          (com-char  (event-basic-type ev))

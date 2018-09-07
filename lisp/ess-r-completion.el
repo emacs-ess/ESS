@@ -21,7 +21,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 ;;
 ;;; Commentary:
 ;;
@@ -370,7 +370,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 
 ;;; COMPANY
-;;; http://company-mode.github.io/
+;;; https://company-mode.github.io/
 
 (defun company-R-objects (command &optional arg &rest ignored)
   (interactive (list 'interactive))

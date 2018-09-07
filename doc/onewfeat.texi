@@ -949,7 +949,7 @@ subsection ``Changing indentation styles''.
 @item @ESS{[R]}: Now finds all R versions, both 64-bit and 32-bit, on some
  64-bit Windows machines.  Please report back to ess-core success or failure
  on your 64-bit Windows machine.
-@item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
+@item ESS Manual now more visually pleasing; @uref{https://ess.r-project.org/Manual/ess.html}
 @item @ESS{[R]}: Roxygen on XEmacs no longer font locks for now
  (as it required missing features and hence broke ESS startup, there).
 @item @ESS{[R]}: Roxygen has a sub-menu on the [ESS] menu.
@@ -1464,13 +1464,13 @@ Changes/New Features in 5.1.22:
 @itemize @bullet
 @item Besides info documentation, PDF and HTML
 documentation are also provided (instead of built using "make") and available
-on the web as well; see @uref{http://ess.r-project.org/,
+on the web as well; see @uref{https://ess.r-project.org/,
  ESS web page} and @uref{http://lib.stat.cmu.edu/general/ESS/doc, StatLib}
 @item Now that info documentation is available, the
 README.* files are no longer supported.  However, they
 are still distributed for what it's worth.
 @item ESS is now an XEmacs package!  See
-@uref{http://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO}
+@uref{https://www.xemacs.org/Install/index.html, XEmacs Installation HOWTO}
 for details (specifically, items 10-15).
 @item @ESS{[SAS]}: more user-friendly enhancements for remote
 SAS batch jobs with Kermit file transfers (LOG and OUTPUT

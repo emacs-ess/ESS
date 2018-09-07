@@ -22,7 +22,7 @@
 ;; GNU General Public License for more details.
 
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 
 ;; This provides a dired-like buffer for R objects.  Instead of
 ;; operating on files, we operate on R objects in the current

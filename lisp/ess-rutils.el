@@ -18,7 +18,7 @@
 ;; GNU General Public License for more details.
 
 ;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;; https://www.r-project.org/Licenses/
 
 ;;; Commentary:
 
@@ -314,7 +314,7 @@ displaying results in long or short formats, and sorting by any
 given field. Options should be separated by value of
 `crm-default-separator'."
   (interactive "sSearch string: ")
-  (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
+  (let ((site "https://search.r-project.org/cgi-bin/namazu.cgi?query=")
         (okstring (replace-regexp-in-string " +" "+" string)))
     (if current-prefix-arg
         (let ((mpp (concat

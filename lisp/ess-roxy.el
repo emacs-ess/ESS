@@ -21,13 +21,13 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see
-;; <http://www.gnu.org/licenses/>.
+;; <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
 
 ;; Lots of inspiration from doc-mode,
-;; http://nschum.de/src/emacs/doc-mode/
+;; https://nschum.de/src/emacs/doc-mode/
 ;;
 ;; Features::
 ;;

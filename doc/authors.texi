@@ -3,39 +3,39 @@
 @c ~~~~~~~~~~
 @itemize @bullet
 @item
-@c @uref{http://www.google.com/,A.J. Rossini}
+@c @uref{https://www.google.com/,A.J. Rossini}
 @uref{mailto:blindglobe@@gmail.com, A.J. Rossini}
 @c --------
 @item
-@c @uref{http://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
+@c @uref{https://www.sbm.temple.edu/departments/statistics/,Richard M. Heiberger}
 @uref{mailto:rmh@@temple.edu, Richard M. Heiberger}
 @c --------
 @item
-@c @uref{http://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
+@c @uref{https://www.ci.tuwien.ac.at/~hornik,Kurt Hornik}
 @uref{mailto:Kurt.Hornik@@R-project.org, Kurt Hornik}
 @c --------
 @item
-@c @uref{http://stat.ethz.ch/people/maechler/,Martin Maechler}
+@c @uref{https://stat.ethz.ch/people/maechler/,Martin Maechler}
 @uref{mailto:maechler@@stat.math.ethz.ch, Martin Maechler}
 @c --------
 @item
-@c @uref{http://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani}
+@c @uref{https://www.mcw.edu/pcor/rsparapa,Rodney A. Sparapani}
 @uref{mailto:rsparapa@@mcw.edu, Rodney A. Sparapani}
 @c --------
 @item
-@c @uref{http://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen}
+@c @uref{https://www.damtp.cam.ac.uk/user/eglen,Stephen Eglen}
 @uref{mailto:stephen@@gnu.org, Stephen Eglen}
 @c --------
 @item
-@c @uref{http://www.ucs.mun.ca/~sluque,Sebastian P. Luque}
+@c @uref{https://www.ucs.mun.ca/~sluque,Sebastian P. Luque}
 @uref{mailto:spluque@@gmail.com, Sebastian P. Luque}
 @c --------
 @item
-@c @uref{http://www.google.com,Henning Redestig}
+@c @uref{https://www.google.com,Henning Redestig}
 @uref{mailto:henning.red@@googlemail.com, Henning Redestig}
 @c --------
 @item
-@c @uref{http://www.google.com/, Vitalie Spinu}
+@c @uref{https://www.google.com/, Vitalie Spinu}
 @uref{mailto:spinuvit@@gmail.com, Vitalie Spinu}
 @c --------
 @item
