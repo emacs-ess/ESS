@@ -147,7 +147,7 @@ foobar ¶foobaz()
 ¶stop()
 
 
-### 10 Can remove bare keywords from `ess-R-keywords'
+### 10 Can remove bare keywords from `ess-R-keywords' ----------------
 
 ¶in else
 
@@ -163,4 +163,52 @@ in ¶else
 ##> (should (not (face-at-point)))
 
 in ¶else
+
+
+### 11 Can disable backquoted function definition fontification ------
+
+¶`[.foo` <- function(...) NULL
+¶"[.foo" <- function(...) NULL
+
+##! (should (eq (face-at-point) 'font-lock-function-name-face))
+
+¶`[.foo` <- function(...) NULL
+¶"[.foo" <- function(...) NULL
+
+##! (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:fun-defs
+##!   (font-lock-ensure)
+##!   (should (memq (face-at-point) '(ess-backquoted-face font-lock-string-face)))))
+
+¶`[.foo` <- function(...) NULL
+¶"[.foo" <- function(...) NULL
+
+
+### 12 Can disable backquoted function call fontification ------------
+
+¶fun()
+
+##! (should (not (face-at-point)))
+
+¶fun()
+
+##! (with-ess-toggled-font-lock-keyword 'ess-fl-keyword:fun-calls
+##!   (font-lock-ensure)
+##!   (should (eq (face-at-point) 'ess-function-call-face))))
+
+¶fun()
+
+
+### 13 Can disable special-op fontification --------------------------
+
+foo ¶%>% bar()
+
+##! (should (not (face-at-point)))
+
+foo ¶%>% bar()
+
+##! (ess-font-lock-toggle-keyword 'ess-R-fl-keyword:%op%)
+##! (font-lock-ensure)
+##! (should (eq (face-at-point) 'ess-%op%-face))
+
+foo ¶%>% bar()
 

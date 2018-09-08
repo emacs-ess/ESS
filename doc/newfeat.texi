@@ -4,6 +4,10 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: Fixed fontification toggling of certain syntactic
+elements such as @code{%op%} operators and backquoted function
+definitions.
+
 @item @ESS{[R]}: Fixed a bug that prevented @code{ess-font-lock-toggle-keyword}
 to be called interactively. This command asks with completion for a
 font-lock group to toggle. This functionality is equivalent to the

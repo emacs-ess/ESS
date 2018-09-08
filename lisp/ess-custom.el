@@ -2779,6 +2779,9 @@ See `ess-R-constants' for the list of constants.")
   '("\\b[FT]\\b" . ess-constant-face)
   "Highlight T and F in addition to TRUE and FALSE in R.")
 
+(defvar ess-R-fl-keyword:%op% nil
+  "Highlight %op% operators.")
+
 (defcustom ess-R-font-lock-keywords
   '((ess-R-fl-keyword:keywords . t)
     (ess-R-fl-keyword:constants  . t)
@@ -2790,7 +2793,8 @@ See `ess-R-constants' for the list of constants.")
     (ess-fl-keyword:operators)
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
-    (ess-R-fl-keyword:F&T))
+    (ess-R-fl-keyword:F&T)
+    (ess-R-fl-keyword:%op%))
   "An alist of available font-lock keywords for the R mode.
 The key of each cons cell is a name of the keyword. The value
 should be t or nil to indicate if the keyword is active or not."
