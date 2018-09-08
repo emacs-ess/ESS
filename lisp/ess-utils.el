@@ -479,15 +479,17 @@ variable."
                     (symbol-value (car c))))
                 (ess--extract-fl-keywords))))
 
-(defun ess-font-lock-toggle-keyword (keyword)
+(defun ess-font-lock-toggle-keyword (&optional keyword)
   (interactive)
   (let* ((values (ess--fl-keywords-values))
          (keyword (or keyword
-                      (intern (ess-completing-read
-                               "Keyword to toggle"
-                               (mapcar (lambda (el) (symbol-name (car el)))
-                                       (car values))
-                               nil t))))
+                      (if (called-interactively-p)
+                          (intern (ess-completing-read
+                                   "Keyword to toggle"
+                                   (mapcar (lambda (el) (symbol-name (car el)))
+                                           (car values))
+                                   nil t))
+                        (error "Wrong number of arguments"))))
          (kwd (cond
                ;; already in custom values
                ((assoc keyword (cdr values)))

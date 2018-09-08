@@ -4,6 +4,11 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: Fixed a bug that prevented @code{ess-font-lock-toggle-keyword}
+to be called interactively. This command asks with completion for a
+font-lock group to toggle. This functionality is equivalent to the
+font-lock menu.
+
 @item @ESS: Font-lock keywords are now generated lazily. That means you
 can now add or remove keywords from variables like @code{ess-R-keywords}
 in your Emacs configuration file after loading ESS (i.e. in the @code{:config}
