@@ -1085,28 +1085,36 @@ and `ess-load-command', in that order."
    (and ess-load-command
         (format ess-load-command file))))
 
-(defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay)
+(defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay timeout)
   "Wait for 'busy property of the process to become nil.
 If SEC-PROMPT is non-nil return if secondary prompt is detected
-regardless of whether primary prompt was detected or not.  If
-WAIT is non-nil wait for WAIT seconds for process output before
-the prompt check, default 0.002s. When FORCE-REDISPLAY is non-nil
+regardless of whether primary prompt was detected or not. If WAIT
+is non-nil wait for WAIT seconds for process output before the
+prompt check, default 0.002s. When FORCE-REDISPLAY is non-nil
 force redisplay. You better use WAIT >= 0.1 if you need
-FORCE-REDISPLAY to avoid excesive redisplay."
+FORCE-REDISPLAY to avoid excesive redisplay. If TIMEOUT is
+non-nil stop waiting for output after TIMEOUT seconds."
   (setq proc (or proc (get-process ess-local-process-name)))
-  (unless (eq (process-status proc) 'run)
-    (ess-error "ESS process has died unexpectedly"))
-  ;; 2ms is a good default for remotes
-  (setq wait (or wait 0.002))
-  (let ((start-time (float-time)))
+  (setq wait (or wait 0.005))
+  (setq timeout (or timeout most-positive-fixnum))
+  (let ((start-time (float-time))
+        (elapsed 0))
     (save-excursion
-      (while (or (accept-process-output proc wait)
-                 (unless (and sec-prompt (process-get proc 'sec-prompt))
-                   (process-get proc 'busy)))
+      (while (and
+              (or (eq (process-status proc) 'run)
+                  (progn
+                    (when (process-buffer proc)
+                      (display-buffer (process-buffer proc)))
+                    (error "ESS process has died unexpectedly")))
+              (< elapsed timeout)
+              (or (accept-process-output proc wait)
+                  (unless (and sec-prompt (process-get proc 'sec-prompt))
+                    (process-get proc 'busy))))
         (when force-redisplay
           (redisplay 'force))
-        (when (> (- (float-time) start-time) .5)
-          (setq wait .5))))))
+        (setq elapsed (- (float-time) start-time))
+        (when (>  elapsed .3)
+          (setq wait .3))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
   (inferior-ess-set-status proc string t)
