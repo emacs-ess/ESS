@@ -18,10 +18,6 @@ can now add or remove keywords from variables like @code{ess-R-keywords}
 in your Emacs configuration file after loading ESS (i.e. in the @code{:config}
 section for @code{use-package} users).
 
-@item @ESS{[R]}: Interaction with inferior process in non-R files within
-packages (for instance C or C++ files) has been improved. This is a work
-in progress.
-
 @item @ESS{[R]}: @code{ess-r-package-use-dir} (which sets the working
 directory to the root of the current package) now works with any mode
 (e.g. in C or C++ files within @code{/src}).
@@ -85,9 +81,6 @@ these options using @kbd{M-x customize-group RET ess-faces}.
 @item @ESS{[R]}: Gained support for xref in Emacs 25+.
 @xref{Xref,,, emacs, The Gnu Emacs Reference Manual}
 
-@item @ESS{[R]}: Changing the working directory is now always reflected
-in the process buffer.
-
 @item @ESS{[R]}: The startup screen has been cleaned up and displays
 the startup directory with an explicit @code{setwd()}.
 
@@ -116,9 +109,6 @@ This is accomplished by having the pretty symbols occupy the same
 number of characters as their non-pretty cousins.  You may customize
 the new variable @code{ess-r-prettify-symbols} to control this
 behavior.
-
-@item Variable @code{ess-s-versions-list} is obsolete and ignored.
-Use @code{ess-s-versions} instead.  You may pass arguments by starting the inferior process with the universal argument.
 
 @item The @code{ess-r-args.el} library has obsoleted and will be removed in a future release.
 Use @code{eldoc-mode} instead, which is on by default.
@@ -159,6 +149,20 @@ behavior.
 @item Commands that send the region to the inferior process now deal with rectangular regions.
 See the documentation of @code{ess-eval-region} for details. This only
 works on Emacs 25.1 and newer.
+
+@item @ESS{}: Inferior process buffers are now always displayed on startup
+and don't hang Emacs on failures.
+
+@item @ESS{[R]}: Interaction with inferior process in non-R files within
+packages (for instance C or C++ files) has been improved. This is a work
+in progress.
+
+@item @ESS{[R]}: Changing the working directory is now always reflected
+in the process buffer.
+
+@item Variable @code{ess-s-versions-list} is obsolete and ignored.
+Use @code{ess-s-versions} instead. You may pass arguments by starting
+the inferior process with the universal argument.
 
 @end itemize
 

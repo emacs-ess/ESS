@@ -225,7 +225,19 @@ This may be useful for debugging."
                   (setq comint-input-ring-file-name histfile)
                   (comint-read-input-ring))))
 
-            ;; create and run process.
+            (with-current-buffer buf
+              (rename-buffer buf-name-str t))
+
+            ;; before the start, display the buffer depending on user settings:
+            (cond (inferior-ess-own-frame
+                   (progn
+                     (make-frame inferior-ess-frame-alist)
+                     (switch-to-buffer buf)))
+                  (inferior-ess-same-window
+                   (switch-to-buffer buf))
+                  (t (pop-to-buffer buf)))
+
+            ;; create the process
             (setq buf
                   (if switches
                       (inferior-ess-make-comint buf-name-str
@@ -238,9 +250,9 @@ This may be useful for debugging."
             (set-buffer buf)
             (setq proc (get-buffer-process buf))
 
-            ;; Set the process sentinel to save the history
+            ;; set the process sentinel to save the history
             (set-process-sentinel proc 'ess-process-sentinel)
-            ;; Add this process to ess-process-name-list, if needed
+            ;; add this process to ess-process-name-list, if needed
             (let ((conselt (assoc procname ess-process-name-list)))
               (unless conselt
                 (setq ess-process-name-list
@@ -249,13 +261,16 @@ This may be useful for debugging."
             (goto-char (point-max))
             (setq ess-sl-modtime-alist nil)
 
-            ;; Add the process filter to catch certain output
+            ;; add the process filter to catch certain output
             (set-process-filter proc 'inferior-ess-output-filter)
             (inferior-ess-mark-as-busy proc)
 
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-              (ess-wait-for-process proc nil 0.01))
+              (ess-wait-for-process proc nil 0.01 t))
+
+            (unless (and proc (eq (process-status proc) 'run))
+              (error "Process %s failed to start" procname))
 
             ;; arguments cache
             (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
@@ -280,20 +295,7 @@ This may be useful for debugging."
             ;; user initialization can take some time ...
             (unless no-wait
               (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-              (ess-wait-for-process proc)))
-
-          (with-current-buffer buf
-            (rename-buffer buf-name-str t))
-
-          ;; Show the buffer in a new frame, window, or selected
-          ;; window depending on user settings:
-          (cond (inferior-ess-own-frame
-                 (progn
-                   (make-frame inferior-ess-frame-alist)
-                   (switch-to-buffer buf)))
-                (inferior-ess-same-window
-                 (switch-to-buffer buf))
-                (t (pop-to-buffer buf))))))))
+              (ess-wait-for-process proc))))))))
 
 (defun ess--accumulation-buffer (proc)
   (let ((abuf (process-get proc :accum-buffer)))
