@@ -1333,8 +1333,7 @@ This handles Tramp when working on a remote."
                 (ess-get-process ess-local-process-name)))))
     (unless no-prompt-check
       (when (process-get proc 'busy)
-        (ess-error
-         "ESS process not ready. Finish your command before trying again")))
+        (user-error "ESS process not ready. Finish your command before trying again")))
     proc))
 
 (ess-defgeneric ess-command (cmd &optional out-buffer sleep no-prompt-check wait proc force-redisplay)
@@ -2251,7 +2250,7 @@ If in the output field, goes to the begining of previous input."
     (while (and (> (forward-line -1) -1)
                 (looking-at inferior-ess-secondary-prompt))))
   (unless (looking-at inferior-ess-prompt)
-    (ess-error "Beggining of input not found"))
+    (error "Beggining of input not found"))
   (comint-skip-prompt))
 
 (defun inferior-ess--get-old-input:regexp ()
@@ -3274,8 +3273,10 @@ RESET is for compatibility with `next-error' and is ignored."
 (defun ess-error (msg)
   "Something bad has happened.
 Display the S buffer, and cause an error displaying MSG."
-  (display-buffer (process-buffer (ess-get-process ess-current-process-name)))
+  (display-buffer (process-buffer (get-process ess-local-process-name)))
   (error msg))
+
+(make-obsolete 'ess-error nil "18.09")
 
  ; Provide package
 
