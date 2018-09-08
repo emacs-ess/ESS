@@ -162,7 +162,7 @@ in the region, leaving only the S commands.  Other keybindings are:
   (setq comint-use-prompt-regexp t)
   (make-local-variable 'comint-prompt-regexp)
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-  (setq inferior-ess-font-lock-keywords 'inferior-R-font-lock-keywords)
+  (setq inferior-ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq font-lock-defaults '(ess-build-font-lock-keywords
                              nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
 

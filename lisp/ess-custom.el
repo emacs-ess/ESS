@@ -2801,7 +2801,7 @@ should be t or nil to indicate if the keyword is active or not."
 (defvar inferior-ess-font-lock-keywords nil
   "Internal. Holds a name of the dialect sepcific font-lock
 keywords in the current buffer. See
-`inferior-R-font-lock-keywords' for an example.")
+`inferior-ess-r-font-lock-keywords' for an example.")
 (make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
 (defvar comint-highlight-prompt 'comint-highlight-prompt)
@@ -2821,8 +2821,8 @@ keywords in the current buffer. See
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
-(defvaralias 'inferior-r-font-lock-keywords 'inferior-ess-R-font-lock-keywords)
-(defcustom inferior-ess-R-font-lock-keywords
+(defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-R-font-lock-keywords)
+(defcustom inferior-ess-r-font-lock-keywords
   '((ess-S-fl-keyword:prompt      . t) ;; comint is bad at prompt highlighting
     (ess-R-fl-keyword:keywords    . t)
     (ess-R-fl-keyword:constants   . t)

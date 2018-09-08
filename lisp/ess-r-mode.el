@@ -342,7 +342,7 @@ namespace.")
 (setcdr (assoc 'ess-font-lock-keywords ess-r-customize-alist)
         (quote 'ess-R-font-lock-keywords))
 (setcdr (assoc 'inferior-ess-font-lock-keywords ess-r-customize-alist)
-        (quote 'inferior-ess-R-font-lock-keywords))
+        (quote 'inferior-ess-r-font-lock-keywords))
 
 (defalias 'R-customize-alist 'ess-r-customize-alist)
 

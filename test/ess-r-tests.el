@@ -206,3 +206,10 @@
               (progn
                 (call-interactively 'ess-insert-S-assign)
                 (buffer-substring (point-min) (point-max)))))))
+
+(ert-deftest ess-Rout-file ()
+  (let ((buf (find-file-noselect "fixtures/file.Rout")))
+    (with-current-buffer buf
+      (should (eq major-mode 'ess-transcript-mode))
+      (font-lock-default-fontify-buffer)
+      (should (eq (face-at-point) 'font-lock-function-name-face)))))

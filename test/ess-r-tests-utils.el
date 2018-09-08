@@ -190,4 +190,7 @@ split arbitrary."
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)
                                         (concat "Result: \n" output)))))))
 
+(defun face-at-point ()
+  (get-char-property (point) 'face))
+
 (provide 'ess-r-tests-utils)
