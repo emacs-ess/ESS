@@ -185,17 +185,17 @@ in ¶else
 
 ### 12 Can disable backquoted function call fontification ------------
 
-¶fun()
+¶`fun`()
 
-##! (should (not (face-at-point)))
+##! (should (eq (face-at-point) 'ess-backquoted-face))
 
-¶fun()
+¶`fun`()
 
 ##! (with-ess-toggled-font-lock-keyword 'ess-fl-keyword:fun-calls
 ##!   (font-lock-ensure)
 ##!   (should (eq (face-at-point) 'ess-function-call-face))))
 
-¶fun()
+¶`fun`()
 
 
 ### 13 Can disable special-op fontification --------------------------
