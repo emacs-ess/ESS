@@ -399,16 +399,15 @@ Internal function to be used for dynamic mode-line dysplay in
 ;; whether user has unbinded "_" in the ESS maps.
 (defun ess--smart-assign-sentinel (arg)
   (interactive "p")
-  (funcall #'self-insert-command arg))
+  (self-insert-command arg))
 
 ;; We redefine the smart key each time we enter ESS mode so users can
 ;; redefine the key. Check that the sentinel is still bound, otherwise
-;; this means user has set the key to nil.
+;; this means user has set the key to nil or a custom command.
 (defun ess--define-smart-assign-key (map)
   (when (and ess-smart-S-assign-key
-             ;; For compatibility check if user has unbinded "_" key
              (if (string= ess-smart-S-assign-key "_")
-                 (cdr (assq ?_ map))
+                 (eq (cdr (assq ?_ map)) 'ess--smart-assign-sentinel)
                t))
     (define-key map ess-smart-S-assign-key #'ess-insert-assign--smart-key)))
 

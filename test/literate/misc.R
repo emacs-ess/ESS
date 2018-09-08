@@ -136,3 +136,15 @@ foo <- ¶
 
 foo_¶
 
+
+### 6 Custom "_" key in ESS maps has precedence ----------------------
+
+foo¶
+
+##! (define-key ess-mode-map "_" (lambda () (interactive) (insert "FOO")))
+##! (setq ess-smart-S-assign-key "_")
+##! (R-mode)
+##! "_"
+
+fooFOO¶
+
