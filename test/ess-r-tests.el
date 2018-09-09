@@ -217,9 +217,17 @@
 (ert-deftest inferior-ess-r-fontification ()
   (with-r-running nil
     (with-ess-process-buffer nil
+      ;; Function-like keywords
       (should (eq major-mode 'inferior-ess-mode))
       (insert-fontified "for")
       (should (not (face-at -1)))
       (insert-fontified "(")
-      (should (eq (face-at -2) 'ess-keyword-face)))))
-
+      (should (eq (face-at -2) 'ess-keyword-face))
+      ;; `in` keyword
+      (insert-fontified "foo in bar)")
+      (search-backward "in")
+      (should (eq (face-at-point) 'ess-keyword-face))
+      (erase-buffer)
+      (insert-fontified "for foo in bar")
+      (search-backward "in")
+      (should (not (face-at-point))))))

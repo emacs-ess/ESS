@@ -288,6 +288,49 @@ namespace.")
      (t
       font-lock-comment-face))))
 
+(defvar ess-r--non-fn-kwds
+  '("in" "else" "break" "next" "repeat"))
+
+(defvar-local ess-r--keyword-regexp nil)
+(defun ess-r--find-fl-keyword (limit)
+  "Search for R keyword and set the match data.
+To be used as part of `font-lock-defaults' keywords."
+  (unless ess-r--keyword-regexp
+    (let (fn-kwds non-fn-kwds)
+      (dolist (kw ess-R-keywords)
+        (if (member kw ess-r--non-fn-kwds)
+            (push kw non-fn-kwds)
+          (push kw fn-kwds)))
+      (setq ess-r--keyword-regexp
+            (concat "\\("
+                    (regexp-opt non-fn-kwds 'words)
+                    "\\)\\|\\("
+                    (regexp-opt fn-kwds 'words)
+                    "\\)"))))
+  (let (out)
+    (while (and (not out)
+                (re-search-forward ess-r--keyword-regexp limit t))
+      (save-match-data
+        (setq out (if (match-beginning 1)
+                      ;; Non-function-like keywords: Always fontified
+                      ;; except for `in` for which we check it's part
+                      ;; of a `for` construct. Ideally we'd check that
+                      ;; other keywords like `break` or `next` are
+                      ;; part of the right syntactic construct but
+                      ;; that requires robust and efficient detection
+                      ;; of complete expressions.
+                      (if (string= (match-string 1) "in")
+                          (save-excursion
+                            (goto-char (match-beginning 1))
+                            (and (ess-backward-up-list)
+                                 (forward-word -1)
+                                 (looking-at "for\\s-*(")))
+                        t)
+                    ;; Function-like keywords: check if they are
+                    ;; followed by an open paren
+                    (looking-at "\\s-*(")))))
+    out))
+
 (defvar ess-r-customize-alist
   (append
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
