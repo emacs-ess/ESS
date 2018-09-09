@@ -2,17 +2,9 @@
 ## -*- mode: R -*-
 ## code to build ESSR environemnt.
 ## Assume that current directory is etc/ESSR
-## run "./BUILDESSR destdir" to create ESSR_<version>.rda in destdir
-## where <version>  is picked form ./VERSION file
-
-
-args <- commandArgs(TRUE)
-dir <- if(length(args)) args[[1]] else "."
-ver <- scan("./VERSION", what = "character", quiet = TRUE)
-rda_file <- sprintf("%s/ESSR_%s.rda", dir, ver)
+## run "./BUILDESSR" to create ../ESSR.rda
 
 ## exactly as in inferior-ess-r-load-ESSR in ess-r-d.el
 source('./R/.load.R', local=TRUE)
 ESSR <- load.ESSR('./R/')
-
-save(ESSR, file = rda_file)
+saveRDS(ESSR, file = "../ESSR.rds")

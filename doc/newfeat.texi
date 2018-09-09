@@ -150,6 +150,9 @@ init file. Users of the popular @code{use-package} Emacs package can
 now do @code{(use-package ess :defer t)} to take advantage of this
 behavior.
 
+@item @ESS{[R]} On remotes ESSR package is now fetched from github
+instead of a private site
+
 @item Commands that send the region to the inferior process now deal with rectangular regions.
 See the documentation of @code{ess-eval-region} for details. This only
 works on Emacs 25.1 and newer.

@@ -1,23 +1,23 @@
 ## -*- mode: R -*-
 ## loading code which is first sent to R on remote sessions
 local({
-    curver <- '%s'
-    ## MM: ok for Windows?
-    ## VS: Should be fine (who is using win remote anyways?)
-    .c.dir <- '~/.config/ESSR'
-    verfile <- file.path(.c.dir, 'VERSION')
-    envfile <- file.path(.c.dir, 'ESSR.rda')
-    ver <- if(file.exists(verfile)) scan(verfile, what = "string") else "0.0"
+    ver <- '1.3'
+    root <- '~/.config/ESSR'
+    if(!file.exists(root))
+        dir.create(root, recursive = TRUE)
+    ## cannot use sprintf here
+    essr_file <- file.path(root, paste('ESSRv', ver, '.rds', sep = ''))
     tryCatch({
-        if(ver < curver) {
-            url <- paste('https://vitalie.spinu.info/ESSR/ESSR_', curver, '.rda', sep = '')
-            if(!file.exists(.c.dir))
-                dir.create(.c.dir, recursive = TRUE)
-            utils::download.file(url, envfile)
-            cat(curver, file = verfile)
+        if(!file.exists(essr_file)) {
+            url <- paste('https://github.com/emacs-ess/ESS/raw/ESSRv', ver, '/etc/ESSR.rds', sep = '')
+            utils::download.file(url, essr_file)
         }
-        load(envfile)
+        ESSR <- readRDS(essr_file)
         attach(ESSR)
         print(TRUE)
-    } , error = function(e) print(FALSE))
+    },
+    error = function(e) {
+      print(e)
+      print(FALSE)
+    })
 })
