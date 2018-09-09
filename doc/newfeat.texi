@@ -4,6 +4,10 @@
 Changes and New Features in development version:
 @itemize @bullet
 
+@item @ESS{[R]}: The @code{in} keyword is now only fontified when
+inside a @code{for} construct. This avoids spurious fontification,
+especially in the output buffer where `in` is a commond English word.
+
 @item @ESS{[R]}: Fixed fontification toggling of certain syntactic
 elements such as @code{%op%} operators and backquoted function
 definitions.

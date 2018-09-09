@@ -54,6 +54,9 @@
         (progn (up-list N) t))
     (error nil)))
 
+(defun ess-backward-up-list (&optional N)
+  (ess-up-list (- (or N 1))))
+
 (defun ess-forward-char (&optional N)
   (unless (= (point) (point-max))
     (forward-char (or N 1))

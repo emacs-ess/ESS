@@ -57,13 +57,31 @@ withRestarts¶() invokeRestart¶() recover¶() browser¶()
 message¶() warning¶() signalCondition¶() withCallingHandlers¶()
 
 
-### 3 Simple keywords are always fontified ---------------------------
+### 3a Simple keywords are always fontified --------------------------
 
-¶in ¶else ¶break ¶next ¶repeat
+¶else ¶break ¶next ¶repeat
 
 ##! (should (eq (face-at-point) 'ess-keyword-face))
 
-¶in ¶else ¶break ¶next ¶repeat
+¶else ¶break ¶next ¶repeat
+
+
+### 3b `in` is fontified inside `for ()` -----------------------------
+
+for (foo ¶in bar) {}
+
+##! (should (eq (face-at-point) 'ess-keyword-face))
+
+for (foo ¶in bar) {}
+
+
+### 3c `in` is not fontified outside `for ()` ------------------------
+
+for foo ¶in bar {}
+
+##! (should (not (face-at-point)))
+
+for foo ¶in bar {}
 
 
 ### 4 Search list modifiers are not fontified if not in function position
@@ -149,20 +167,16 @@ foobar ¶foobaz()
 
 ### 10 Can remove bare keywords from `ess-R-keywords' ----------------
 
-¶in else
+¶for (foo ¶in bar) NULL
 
 ##! (let ((ess-R-keywords '("in")))
-##>   (ess-r-mode)
-##>   (font-lock-ensure))
-##> (should (eq (face-at-point) 'ess-keyword-face))
-##> (forward-word)
-##> (forward-char)
+##!   (ess-r-mode)
+##!   (font-lock-ensure))
+##! (if (looking-at "for")
+##!     (should (not (face-at-point)))
+##!   (should (eq (face-at-point) 'ess-keyword-face)))
 
-in ¶else
-
-##> (should (not (face-at-point)))
-
-in ¶else
+¶for (foo ¶in bar) NULL
 
 
 ### 11 Can disable backquoted function definition fontification ------

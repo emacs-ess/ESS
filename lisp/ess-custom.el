@@ -2734,33 +2734,6 @@ See `ess-R-modifiers' for the list of modifiers.")
 When this keyword is on, function names on the left hand side of
 <- are highlighted with `font-lock-function-name-face'.")
 
-(defvar ess-r--non-fn-kwds
-  '("in" "else" "break" "next" "repeat"))
-
-(defvar-local ess-r--keyword-regexp nil)
-(defun ess-r--find-fl-keyword (limit)
-  "Search for R keyword and set the match data.
-To be used as part of `font-lock-defaults' keywords."
-  (unless ess-r--keyword-regexp
-    (let (fn-kwds non-fn-kwds)
-      (dolist (kw ess-R-keywords)
-        (if (member kw ess-r--non-fn-kwds)
-            (push kw non-fn-kwds)
-          (push kw fn-kwds)))
-      (setq ess-r--keyword-regexp
-            (concat "\\("
-                    (regexp-opt non-fn-kwds 'words)
-                    "\\)\\|\\("
-                    (regexp-opt fn-kwds 'words)
-                    "\\)"))))
-  (let (out)
-    (while (and (not out)
-                (re-search-forward ess-r--keyword-regexp limit t))
-      (setq out (or (match-beginning 1)
-                    ;; fn-kwds matched; check if they are followed by an open paren
-                    (looking-at-p "\\s-*("))))
-    out))
-
 (defvar ess-R-fl-keyword:keywords
   '(ess-r--find-fl-keyword . ess-keyword-face)
   "Font lock keyword for `ess-R-keywords'.")

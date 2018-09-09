@@ -200,8 +200,8 @@ split arbitrary."
       (forward-char point))
     (get-char-property (point) 'face)))
 
-(defun insert-fontified (arg)
-  (insert arg)
+(defun insert-fontified (&rest args)
+  (apply #'insert args)
   (font-lock-default-fontify-buffer))
 
 
