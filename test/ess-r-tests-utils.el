@@ -193,4 +193,16 @@ split arbitrary."
 (defun face-at-point ()
   (get-char-property (point) 'face))
 
+(defun face-at (point)
+  (save-excursion
+    (if (>= point 0)
+        (goto-char point)
+      (forward-char point))
+    (get-char-property (point) 'face)))
+
+(defun insert-fontified (arg)
+  (insert arg)
+  (font-lock-default-fontify-buffer))
+
+
 (provide 'ess-r-tests-utils)

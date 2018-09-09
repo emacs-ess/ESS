@@ -213,3 +213,13 @@
       (should (eq major-mode 'ess-transcript-mode))
       (font-lock-default-fontify-buffer)
       (should (eq (face-at-point) 'font-lock-function-name-face)))))
+
+(ert-deftest inferior-ess-r-fontification ()
+  (with-r-running nil
+    (with-ess-process-buffer nil
+      (should (eq major-mode 'inferior-ess-mode))
+      (insert-fontified "for")
+      (should (not (face-at -1)))
+      (insert-fontified "(")
+      (should (eq (face-at -2) 'ess-keyword-face)))))
+
