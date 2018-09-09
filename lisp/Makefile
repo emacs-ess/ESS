@@ -55,7 +55,6 @@ uninstall:
 	fi;
 clean:
 	rm -f $(ELC)
-	rm -f julia-mode.el
 
 distclean: clean
 # and potentially more

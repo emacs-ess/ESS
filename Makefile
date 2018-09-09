@@ -28,6 +28,10 @@ test: version
 generate-indent-cases:
 	cd test; $(EMACS) --script generate-indent-cases
 
+.PHONY: julia
+julia:
+	cd lisp; $(MAKE) julia-mode.el
+
 ## the rest of the targets are for ESS developer's use only :
 
 ## --- PRE-release ---
