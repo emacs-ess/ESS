@@ -1,6 +1,16 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 19.04 (unreleased):
+@itemize @bullet
+
+@item New option ess-auto-width controls setting the width option on window changes.
+Users can change it to 'frame, 'window, or an integer. See the
+docstring for details. @code{ess-auto-width-visible} controls
+visibility.
+
+@end itemize
+
 Changes and New Features in 18.10:
 @itemize @bullet
 

@@ -2099,6 +2099,7 @@ to continue it."
       (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
   (make-local-variable 'kill-buffer-hook)
   (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
+  (add-hook 'window-configuration-change-hook #'ess-set-width nil t)
   (run-mode-hooks 'inferior-ess-mode-hook)
   (ess-write-to-dribble-buffer
    (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
@@ -2299,26 +2300,61 @@ in `ess-r-post-run-hook' or `ess-S+-post-run-hook'."
   (interactive)
   (if (null ess-execute-screen-options-command)
       (message "Not implemented for '%s'" ess-dialect)
-    ;; We cannot use (window-width) here because it returns sizes in default
-    ;; (frame) characters which leads to incorrect sizes with scaled fonts.To
-    ;; solve this we approximate font width in pixels and use window-pixel-width
-    ;; to compute the approximate number of characters that fit into line.
-    (let* ((wedges (window-inside-pixel-edges))
-           (wwidth (- (nth 2 wedges) (nth 0 wedges)))
-           (nchars (if (fboundp 'default-font-width)
-                       (floor (/ wwidth (default-font-width)))
-                     ;; emacs 24
-                     (if (display-graphic-p)
-                         (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
-                                (charh (aref (font-info (face-font 'default)) 3))
-                                (charw (/ charh  r)))
-                           (- (floor (/ wwidth charw)) 1))
-                       ;; e.g., no X11 as in  'emacs -nw'
-                       (- (window-width) 2))))
-           (command (format ess-execute-screen-options-command nchars)))
+    (let ((command (ess-calculate-width 'window)))
       (if invisibly
           (ess-command command)
         (ess-eval-linewise command nil nil nil 'wait-prompt)))))
+
+(defun ess-calculate-width (opt)
+  "Calculate width command given OPT.
+OPT can be 'window, 'frame, or an integer. Return a command
+suitable to send to the inferior process (e.g. \"options(width=80, length=999999)\")."
+  (when (null ess-execute-screen-options-command)
+    (error "Not implemented for %s" ess-dialect))
+  (let (command)
+    (cond ((integerp opt)
+           (setq command (format ess-execute-screen-options-command opt)))
+          ((eql 'window opt)
+           ;; We cannot use (window-width) here because it returns sizes
+           ;; in default (frame) characters which leads to incorrect
+           ;; sizes with scaled fonts.To solve this we approximate font
+           ;; width in pixels and use window-pixel-width to compute the
+           ;; approximate number of characters that fit into line.
+           (let* ((wedges (window-inside-pixel-edges))
+                  (wwidth (- (nth 2 wedges) (nth 0 wedges)))
+                  (nchars (if (fboundp 'default-font-width)
+                              (floor (/ wwidth (default-font-width)))
+                            ;; emacs 24
+                            (if (display-graphic-p)
+                                (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
+                                       (charh (aref (font-info (face-font 'default)) 3))
+                                       (charw (/ charh  r)))
+                                  (- (floor (/ wwidth charw)) 1))
+                              ;; e.g., no X11 as in  'emacs -nw'
+                              (- (window-width) 2)))))
+             (setq command (format ess-execute-screen-options-command
+                                   nchars))))
+          ((eql 'frame opt)
+           (setq command
+                 (format ess-execute-screen-options-command (frame-width))))
+          (t (error "OPT (%s) not 'window, 'frame or an integer" opt)))
+    command))
+
+(defun ess-set-width ()
+  "Set the width option.
+A part of `window-configuration-change-hook' in inferior ESS
+buffers."
+  (when ess-auto-width
+    ;; `window-configuration-change-hook' runs with the window selected.
+    (let ((proc (get-buffer-process (window-buffer)))
+          command)
+      ;; TODO: Set the width once the process is no longer busy.
+      (when (and (process-live-p proc)
+                 (not (process-get proc 'busy)))
+        (setq command (ess-calculate-width ess-auto-width))
+        (if ess-auto-width-visible
+            (ess-eval-linewise command nil nil nil 'wait-prompt)
+          (ess-command command))))))
 
 (defun ess-execute (command &optional invert buff message)
   "Send a command to the ESS process.

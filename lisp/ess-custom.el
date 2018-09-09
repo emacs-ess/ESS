@@ -175,6 +175,26 @@ as `ess-imenu-use-S'."
 (defvar ess-imenu-generic-expression nil
   "Placeholder for imenu-generic-expression. Dialect specific.")
 
+(defcustom ess-auto-width-visible nil
+  "When non-nil, echo width setting in the inferior buffer.
+See `ess-auto-width'. Be warned that ESS can set the width a
+lot."
+  :group 'ess
+  :type 'boolean
+  :package-version '(ess . "19.04"))
+
+(defcustom ess-auto-width nil
+  "When non-nil, set the width option when the window configuration changes.
+When 'frame, set the width to the frame width. When 'window, set
+the width to the window width. If an integer, set the width to
+that integer. Anything else is treated as 'window."
+  :group 'ess
+  :type '(choice (const :tag "Do nothing" :value nil)
+                 (const :tag "Frame width" :value 'frame)
+                 (const :tag "Window width" :value 'window)
+                 (integer :tag "Integer value"))
+  :package-version '(ess . "19.04"))
+
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
                                 ("install.packages"     . ess-install-library)
                                 ("library"              . ess-library)
