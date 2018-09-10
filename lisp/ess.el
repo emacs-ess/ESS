@@ -1,34 +1,41 @@
 ;;; ess.el --- Emacs Speaks Statistics
-
-;; Copyright (C) 1989-1994 Doug Bates, Ed Kademan, Frank Ritter, David Smith.
-;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
-
+;;
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
+;;         A.J. Rossini <blindglobe@gmail.com>
+;;         Richard M. Heiberger <rmh@temple.edu>
+;;         Kurt Hornik <Kurt.Hornik@R-project.org>
+;;         Martin Maechler <maechler@stat.math.ethz.ch>
+;;         Rodney A. Sparapani <rsparapa@mcw.edu>
+;;         Stephen Eglen <stephen@gnu.org>
+;;         Sebastian P. Luque <spluque@gmail.com>
+;;         Henning Redestig <henning.red@googlemail.com>
+;;         Vitalie Spinu <spinuvit@gmail.com>
+;;         Lionel Henry <lionel.hry@gmail.com>
+;;         J. Alexander Branham <alex.branham@gmail.com>
+;;
+;; Maintainer: ESS Core Team <ESS-core@r-project.org>
+;; Copyright (C) 1997-2018 ESS Core Team <ESS-core@r-project.org>
 ;; Created: 7 Jan 1994
-;; Maintainer: ESS-core <ESS-core@r-project.org>
-
-;; This file is part of ESS
-
+;; Version: 18.09-dev
+;; Package-Requires: ((julia-mode "0.3"))
+;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
-
+;;
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; A copy of the GNU General Public License is available at
 ;; https://www.r-project.org/Licenses/
-
+;;
 ;;; Commentary:
-
-;; Code for editing ESS source code.
-
+;;
+;; Header of this file is used for package.el
+;;
 ;;; Code:
 
 (eval-when-compile

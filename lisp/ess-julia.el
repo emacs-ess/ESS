@@ -5,7 +5,6 @@
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
-;; Package-Requires: ((julia-mode "0.3"))
 ;; Keywords: ESS, julia
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
