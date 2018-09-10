@@ -20,9 +20,13 @@ You will need to add
 @end example
 
 @noindent
-to your Emacs configuration file in order to activate ESS.  Advanced
-users may activate only a particular language by loading @code{(require
-'ess-r-mode)} instead.
+to your Emacs configuration file in order to activate ESS. Instead of
+activating ESS when Emacs starts up (which can take some time), you
+can load ESS when needed by loading the autoload file:
+
+@example
+(load "ess-autoloads.el")
+@end example
 
 Users of the nonfree operating systems macOS and Windows may be
 interested in downloading the Emacs binary by Vincent Goulet:
@@ -95,6 +99,9 @@ for R, you may use
 @noindent
 instead of ess-site.  Note that support for loading only part of ESS is
 recommended only for experienced Emacs users.
+
+Instead of requiring all or part of ESS at startup, you may want to
+load the autoloads file to defer loading. See above.
 
 @item Check installation
 Restart your Emacs and check that ESS was loaded from a correct
