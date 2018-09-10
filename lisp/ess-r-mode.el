@@ -131,7 +131,6 @@
     (define-key ess-r-package-check-map "c" 'ess-r-devtools-check-package)
     (define-key ess-r-package-check-map "\C-w" 'ess-r-devtools-check-with-winbuilder)
     (define-key ess-r-package-check-map "w" 'ess-r-devtools-check-with-winbuilder)
-    (define-key ess-r-package-check-map "\C-h" 'ess-r-rhub-check-package)
     (define-key ess-r-package-check-map "h" 'ess-r-rhub-check-package)
     ess-r-package-check-map)
   "Keymap for R package checks.")
