@@ -2,14 +2,18 @@ This is the Debian GNU/Linux ess package of Emacs Speaks Statistics (ESS)
 which provides a common, generic, and useful interface, through emacs,
 to many statistical packages.
 
-Upstream Authors: A.J. Rossini <rossini@stat.sc.edu>,
-                  Richard M. Heiberger <rmh@temple.edu>,
-                  Kurt Hornik <kurt.hornik@R-project.org>,
-                  Martin Maechler <maechler@stat.math.ethz.ch>,
-                  Rodney A. Sparapani <rsparapa@mcw.edu>,
-		  Stephen Eglen <stephen@gnu.org>,
-		  Sebastian P. Luque <spluque@gmail.com>,
-		  Henning Redestig <henning.red@googlemail.com>
+Upstream Authors: David Smith <dsmith@stats.adelaide.edu.au>
+         A.J. Rossini <blindglobe@gmail.com>
+         Richard M. Heiberger <rmh@temple.edu>
+         Kurt Hornik <Kurt.Hornik@R-project.org>
+         Martin Maechler <maechler@stat.math.ethz.ch>
+         Rodney A. Sparapani <rsparapa@mcw.edu>
+         Stephen Eglen <stephen@gnu.org>
+         Sebastian P. Luque <spluque@gmail.com>
+         Henning Redestig <henning.red@googlemail.com>
+         Vitalie Spinu <spinuvit@gmail.com>
+         Lionel Henry <lionel.hry@gmail.com>
+         J. Alexander Branham <alex.branham@gmail.com>
 
 ESS has a home page at `https://ESS.R-project.org/'. It is free software
 distributed under a GNU-style copyleft.
@@ -24,15 +28,7 @@ Sources were downloaded from https://ESS.R-project.org/downloads/ess/ and
 changes, typically only to files in the Debian/ directory are fully documented
 in the file /usr/share/doc/ess/changelog.Debian.gz
 
-Copyright (C) 1994 - 2010 Martin Maechler
-Copyright (C) 1994 - 2010 A.J. Rossini
-Copyright (C) 1994 - 2010 Richard M. Heiberger
-Copyright (C) 1994 - 2010 Kurt Hornik
-Copyright (C) 1999 - 2010 Rodney A. Sparapani
-Copyright (C) 2002 - 2010 Stephen Eglen
-Copyright (C) 2010        Sebastian P. Luque
-Copyright (C) 2010        Henning Redestig
-
+Copyright (C) 1994 - 2018 ESS Core Team
 
 License: GPL
 

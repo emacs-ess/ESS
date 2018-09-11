@@ -1,7 +1,2 @@
-# format version number, currently 2; this line is compulsory!
-version=2
-
-# This is one format for an HTTP site, which is the same as the FTP format
-https://ess.r-project.org/downloads/ess/ess-([-0-9\.]*).tgz
-
-
+version=4
+http://ess.r-project.org/downloads ess/ess-(\d.+).tgz
