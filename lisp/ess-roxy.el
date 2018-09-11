@@ -799,7 +799,7 @@ placed in `ess-presend-filter-functions'."
            (with-temp-buffer
              (insert string)
              (ess-roxy-entry-p)))
-      (replace-regexp-in-string ess-roxy-re "" string)
+      (replace-regexp-in-string (concat ess-roxy-re "\\s-*") "" string)
     string))
 (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil)
 
