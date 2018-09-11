@@ -576,7 +576,7 @@ and one that is well formatted in emacs ess-mode."
     (ess-if-verbose-write "ess-fix-misc __end__\n");___D___
     ))
 
-(defun ess-cycle-assignment ()
+(defun ess-cycle-assign ()
   "Cycle between assignment symbols in `ess-assign-list'.
 On consecutive calls, replace the assignment symbol before point
 with the next symbol from that list. This function sets the last
