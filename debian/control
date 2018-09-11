@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Standards-Version: 4.1.4
 Build-Depends: debhelper (>= 11), dh-elpa (>= 1.7)
-Build-Depends-Indep: texlive-base, texlive-latex-base, texlive-latex-recommended, texlive-latex-extra, texlive-generic-recommended, texlive-extra-utils, texlive-fonts-recommended, texinfo, autotools-dev
+Build-Depends-Indep: texlive-base, texlive-latex-base, texinfo, autotools-dev
 Homepage: https://ess.r-project.org
 Vcs-Browser: https://github.com/emacs-ess/ESS
 Vcs-Git: https://github.com/emacs-ess/ESS.git

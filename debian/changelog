@@ -1,9 +1,15 @@
-ess (16.10-2) unstable; urgency=medium
+ess (18.09-1ubuntu1) UNRELEASED; urgency=medium
+
+  * Move to elpa install
+
+ -- vspinu <vspinu@gmail.com>  Tue, 11 Sep 2018 22:48:32 +0200
+
+ess (17.10-2) unstable; urgency=medium
 
   * debian/emacsen-install: Improvement suggested in #850041 install
   * debian/control: Increased Standards-Version: to current version
 
- --
+ -- Dirk Eddelbuettel <edd@debian.org>  Sat, 22 Oct 2017 11:04:13 -0500
 
 ess (16.10-1) unstable; urgency=medium
 
@@ -15,7 +21,6 @@ ess (16.04-2) unstable; urgency=medium
 
   * debian/emacsen-install: Skip installation for emacs23
   * debian/control: Note requirement for emacs24 or later
-  
   * debian/control: Increased Standards-Version: to current version
 
  -- Dirk Eddelbuettel <edd@debian.org>  Sun, 22 May 2016 15:30:40 -0500

@@ -1,2 +1,3 @@
-lisp/ess.el
 lisp/*.el
+etc/*
+doc/*

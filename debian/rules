@@ -1,19 +1,18 @@
 #!/usr/bin/make -f
 
-include /usr/share/dpkg/pkg-info.mk
-
 %:
 	dh $@ --with elpa
 
 override_dh_auto_build:
-	make info
 	@echo do not run make
 
 override_dh_auto_install:
 	@echo do not run make install
 
-override_dh_elpa_test:
-	make test
+override_dh_installdocs:
+	@echo do no install docs
 
-override_dh_clean:
-	dh_clean
+override_dh_elpa_test:
+	@echo do no install docs
+##	make test
+
