@@ -605,8 +605,7 @@ If the character before point is the first element of
 `ess-smart-S-assign-key' is nil, do `self-insert-command' using
 ARG as the number of times to insert."
   (interactive "p")
-  (if (and ess-smart-S-assign-key
-           (string= ess-language "S"))
+  (if (string= ess-language "S")
       (let* ((assign (car ess-assign-list))
              (event (event-basic-type last-input-event))
              (char (ignore-errors (format "%c" event))))

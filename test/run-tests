@@ -40,7 +40,8 @@
   (elt-deftest test-ess-r-misc () "misc.R")
   (elt-deftest test-ess-r-syntax () "syntax.R")
   (elt-deftest test-ess-r-tokens () "tokens.R")
-  (elt-deftest test-ess-r-fontification () "fontification.R"))
+  (elt-deftest test-ess-r-fontification () "fontification.R")
+  (elt-deftest test-ess-r-fontification () "keybindings.R"))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)
