@@ -109,10 +109,11 @@ for ESS, such as icons.")
 ;; S-elsewhere, on another machine by telnet
 (require 'essd-els)
 
-;; Stata, SAS and batch BUGS
+;; Stata, SAS, BUGS, and JAGS
 (require 'ess-stata-mode)
 (require 'ess-sas-d)
-(require 'ess-bugs-l)
+(require 'ess-bugs-d)
+(require 'ess-jags-d)
 
 (ess-write-to-dribble-buffer
  (format "[ess-site.el]: ess-customize-alist=%s \n"
