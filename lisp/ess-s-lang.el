@@ -598,25 +598,36 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
      (define-key map (kbd key) #'ess-cycle-assignment)
      map)))
 
-(defun ess-insert-assign (arg)
-  "Insert the first element of `ess-assign-list' unless in string or comment.
+(defun ess-insert-assign (&optional default)
+  "Insert the first element of `ess-assign-list'.
 If the character before point is the first element of
-`ess-assign-list', replace it with the last character typed. If
-`ess-smart-S-assign-key' is nil, do `self-insert-command' using
-ARG as the number of times to insert."
+`ess-assign-list', replace it with DEFAULT."
+  (interactive)
+  (let ((assign (car ess-assign-list)))
+    (if (re-search-backward assign (- (point) (length assign)) t)
+        (replace-match (or default "") t t)
+      (insert assign))))
+
+(defun ess-insert-assign--smart-key (arg)
   (interactive "p")
   (if (and ess-smart-S-assign-key
            (string= ess-language "S"))
       (let* ((assign (car ess-assign-list))
              (event (event-basic-type last-input-event))
              (char (ignore-errors (format "%c" event))))
-        (cond ((and char (ess-inside-string-or-comment-p))
+        (cond ((and char (not (string= char ess-smart-S-assign-key)))
+               ;; Unregister previous key if it was changed by user
+               ;; and restore the compatibility sentinel if needed
+               (let ((cmd (when (string= char "_")
+                            #'ess--smart-assign-sentinel)))
+                 (define-key ess-mode-map char cmd)
+                 (define-key inferior-ess-mode-map char cmd))
                (insert char))
-              ((re-search-backward assign (- (point) (length assign)) t)
-               (if (and char (numberp event))
-                   (replace-match char t t)
-                 (replace-match "")))
-              (t (insert assign))))
+              ((and char (ess-inside-string-or-comment-p))
+               (insert char))
+              (t
+               (ess-insert-assign (when (numberp event)
+                                    char)))))
     (funcall #'self-insert-command arg)))
 
 (defun ess-disable-smart-S-assign (&rest _ignore)

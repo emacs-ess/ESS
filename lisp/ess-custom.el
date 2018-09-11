@@ -555,12 +555,10 @@ Used to avoid annoying jumping by ess-eval.*-and-step to end of
 buffer or end chunks etc.")
 
 (defcustom ess-smart-S-assign-key "_"
-  "Key used by `ess-smart-S-assign'.
+  "Smart key for calling `ess-insert-assign'.
 Should be nil or a \"simple\" key, in other words no key
-modifiers.
-
-You may change this to nil at any time. However, if you change it
-to another string, it must be set before ESS is loaded."
+modifiers. On repetition, the assign symbol is replaced with the
+key."
   :group 'ess-S
   :type '(choice (const :tag "Nothing" :value nil) string))
 
