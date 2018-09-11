@@ -569,7 +569,7 @@ choice with `define-key' or similar."
 (defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")
                                  '(" <<- " " = " " -> " " ->> "))
   "List of assignment operators.
-`ess-cycle-assignment' uses this list.  These strings must
+`ess-cycle-assign' uses this list.  These strings must
 contain spaces on either side."
   ;; Note that spaces on either side is not strictly true (as in the
   ;; function won't error), but matching <-/<<- is broken without

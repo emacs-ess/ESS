@@ -123,7 +123,7 @@
     (define-key map "\C-c\C-t"   'ess-dev-map)
     (when ess-smart-S-assign-key
       (define-key map ess-smart-S-assign-key 'ess-smart-S-assign))
-    (define-key map (kbd "C-c C-=") 'ess-cycle-assignment)
+    (define-key map (kbd "C-c C-=") 'ess-cycle-assign)
     map)
   "Keymap for `ess-mode'.")
 

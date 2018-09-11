@@ -141,7 +141,7 @@ ess-disable-smart-S-assign.
 @item The option ess-S-assign has been removed.
 Customize new option @code{ess-assign-list} instead.
 
-@item @code{C-c C-=} is now bound to @code{ess-cycle-assignment} by default
+@item @code{C-c C-=} is now bound to @code{ess-cycle-assign} by default
 See the documentation for details. New user customization option
 @code{ess-assign-list} controls what assignment operators are cycled
 through.

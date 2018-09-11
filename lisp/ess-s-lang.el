@@ -595,7 +595,7 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
   (set-transient-map
    (let ((map (make-sparse-keymap))
          (key (format "%c" (event-basic-type last-input-event))))
-     (define-key map (kbd key) #'ess-cycle-assignment)
+     (define-key map (kbd key) #'ess-cycle-assign)
      map)))
 
 (defun ess-insert-assign (arg)
