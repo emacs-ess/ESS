@@ -55,6 +55,7 @@
 (require 'compile)
 (require 'overlay)
 (eval-when-compile
+  (require 'cl)
   (require 'cl-lib))
 (require 'ess-custom)
 (require 'ess-utils)
