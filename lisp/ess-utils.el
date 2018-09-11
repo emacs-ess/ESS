@@ -483,7 +483,7 @@ variable."
   (interactive)
   (let* ((values (ess--fl-keywords-values))
          (keyword (or keyword
-                      (if (called-interactively-p)
+                      (if (called-interactively-p 'any)
                           (intern (ess-completing-read
                                    "Keyword to toggle"
                                    (mapcar (lambda (el) (symbol-name (car el)))
