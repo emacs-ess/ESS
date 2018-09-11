@@ -123,12 +123,19 @@ will need to update their customization to
 @code{inferior-ess-R-program}. These variables are treated as risky
 variables.
 
-@item @code{ess-smart-S-assign} changed name to @code{ess-insert-S-assign}.
-By default, it provides similar functionality. Since many users
-dislike this functionality, it is easier to disable; set
-@code{ess-smart-S-assign-key} to nil. The following functions have
-been made obsolete and will be removed in the next release of ESS:
-ess-smart-S-assign, ess-toggle-S-assign, ess-toggle-S-assign-key,
+@item @code{ess-smart-S-assign} was renamed to @code{ess-insert-assign}.
+It provides similar functionality but for any keybinding, not just `_`.
+For instance if you bind it to `;`, repeated invokations cycle through
+between assignment and inserting `;`.
+
+The variable @code{ess-smart-S-assign-key} is now deprecated. If you
+would like to continue using `_` for insterting assign in future
+releases, please bind @code{ess-insert-assign} in @code{ess-mode-map}
+the normal way.
+
+In addition the following functions have been made obsolete and will be
+removed in the next release of ESS: ess-smart-S-assign,
+ess-toggle-S-assign, ess-toggle-S-assign-key,
 ess-disable-smart-S-assign.
 
 @item The option ess-S-assign has been removed.
