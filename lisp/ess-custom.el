@@ -559,10 +559,12 @@ buffer or end chunks etc.")
 Should be nil or a \"simple\" key, in other words no key
 modifiers.
 
-You may change this to nil at any time. However, if you change it
-to another string, it must be set before ESS is loaded."
+This variable is deprecated and will be removed in the future.
+Please bind `ess-insert-assign' in `ess-mode-map' to your key of
+choice with `define-key' or similar."
   :group 'ess-S
   :type '(choice (const :tag "Nothing" :value nil) string))
+(make-obsolete-variable 'ess-smart-S-assign-key nil "ESS 18.09")
 
 (defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")
                                  '(" <<- " " = " " -> " " ->> "))

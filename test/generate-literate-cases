@@ -18,4 +18,4 @@
 (mapc (lambda (file)
         (elt-do 'regenerate (expand-file-name file ess-literate-path)))
       '("elt.R" "roxy.R" "code-fill.R" "misc.R" "syntax.R" "tokens.R"
-        "fontification.R"))
+        "fontification.R" "keybindings.R"))

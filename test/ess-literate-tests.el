@@ -298,6 +298,7 @@
 (defun elt--unalias-key (key)
   "Call command that corresponds to KEY.
 Insert KEY if there's no command."
+  (setq last-input-event (aref key 0))
   (let ((cmd (key-binding key)))
     (if (eq cmd 'self-insert-command)
         (insert key)

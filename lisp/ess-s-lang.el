@@ -605,8 +605,7 @@ If the character before point is the first element of
 `ess-smart-S-assign-key' is nil, do `self-insert-command' using
 ARG as the number of times to insert."
   (interactive "p")
-  (if (and ess-smart-S-assign-key
-           (string= ess-language "S"))
+  (if (string= ess-language "S")
       (let* ((assign (car ess-assign-list))
              (event (event-basic-type last-input-event))
              (char (ignore-errors (format "%c" event))))
@@ -618,6 +617,16 @@ ARG as the number of times to insert."
                  (replace-match "")))
               (t (insert assign))))
     (funcall #'self-insert-command arg)))
+
+(defun ess-smart-S-assign (arg)
+  "Insert `ess-smart-S-assign-key'.
+Please use `ess-insert-assign'."
+  (interactive "p")
+  (if ess-smart-S-assign-key
+      (ess-insert-assign arg)
+    (self-insert-command arg)))
+
+(make-obsolete 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
 
 (defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-insert-assign'."
@@ -790,7 +799,6 @@ return it.  Otherwise, return `ess-help-topics-list'."
 
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.09")
 (define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.09")
-(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
 (define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.09")
 
 (define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.09")

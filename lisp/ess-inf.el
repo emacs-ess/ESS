@@ -1946,7 +1946,7 @@ meaning as for `ess-eval-region'."
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
     (when ess-smart-S-assign-key
-      (define-key map ess-smart-S-assign-key 'ess-insert-assign))
+      (define-key map ess-smart-S-assign-key 'ess-smart-S-assign))
     map)
   "Keymap for `inferior-ess' mode.")
 
