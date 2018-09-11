@@ -557,7 +557,7 @@ buffer or end chunks etc.")
 (defcustom ess-smart-S-assign-key "_"
   "Key used by `ess-smart-S-assign'.
 Should be nil or a \"simple\" key, in other words no key
-modifiers. Can only be changed before ESS is loaded.
+modifiers.
 
 This variable is deprecated and will be removed in the future.
 Please bind `ess-insert-assign' in `ess-mode-map' to your key of

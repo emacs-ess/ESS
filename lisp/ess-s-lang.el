@@ -618,6 +618,16 @@ ARG as the number of times to insert."
               (t (insert assign))))
     (funcall #'self-insert-command arg)))
 
+(defun ess-smart-S-assign (arg)
+  "Insert `ess-smart-S-assign-key'.
+Please use `ess-insert-assign'."
+  (interactive "p")
+  (if ess-smart-S-assign-key
+      (ess-insert-assign arg)
+    (self-insert-command arg)))
+
+(make-obsolete 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
+
 (defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-insert-assign'."
   (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.09"))
@@ -789,7 +799,6 @@ return it.  Otherwise, return `ess-help-topics-list'."
 
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.09")
 (define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.09")
-(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
 (define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.09")
 
 (define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.09")

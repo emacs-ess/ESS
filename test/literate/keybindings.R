@@ -1,7 +1,7 @@
 
 ##### Assignment
 
-### 1 Smart assign key -----------------------------------------------
+### 1a Smart assign key ----------------------------------------------
 
 foo¶
 
@@ -18,6 +18,25 @@ foo_¶
 foo_ <- ¶
 
 
+### 1b Can set `ess-smart-S-assign` to nil at any time ---------------
+
+foo¶
+
+##! (setq ess-smart-S-assign-key nil)
+##! "_"
+
+foo_¶
+
+##> "_"
+
+foo__¶
+
+##> (setq ess-smart-S-assign-key "_") ; Reset
+##> "_"
+
+foo__ <- ¶
+
+
 ### 2 Unbinding smart key --------------------------------------------
 
 foo¶
@@ -27,7 +46,7 @@ foo¶
 
 foo_¶
 
-##> (define-key ess-mode-map "_" #'ess-insert-assign) ; Reset
+##> (define-key ess-mode-map "_" #'ess-smart-S-assign) ; Reset
 ##> "_"
 
 foo_ <- ¶
@@ -65,6 +84,7 @@ foo <- ¶
 foo;¶
 
 ##> (define-key ess-mode-map ";" nil) ; Reset
+##> (setq ess-smart-S-assign-key "_") ; Reset
 ##> ";"
 
 foo;;¶
