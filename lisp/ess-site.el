@@ -112,7 +112,8 @@ for ESS, such as icons.")
 ;; Stata, SAS and batch BUGS
 (require 'ess-stata-mode)
 (require 'ess-sas-d)
-(require 'ess-bugs-l)
+(require 'ess-bugs-d)
+(require 'ess-jags-d)
 
 (ess-write-to-dribble-buffer
  (format "[ess-site.el]: ess-customize-alist=%s \n"
