@@ -40,17 +40,21 @@
 (require 'project nil t)
 
 (defcustom ess-r-flymake-linters
-  '("commented_code_linter = NULL"
-    "single_quotes_linter = NULL"
+  '("closed_curly_linter = NULL"
+    "commas_linter = NULL"
+    "commented_code_linter = NULL"
     "infix_spaces_linter = NULL"
     "line_length_linter = NULL"
+    "object_length_linter = NULL"
     "object_name_linter = NULL"
     "object_usage_linter = NULL"
     "open_curly_linter = NULL"
     "pipe_continuation_linter = NULL"
+    "single_quotes_linter = NULL"
+    "spaces_inside_linter = NULL"
     "spaces_left_parentheses_linter = NULL"
-    "trailing_whitespace_linter = NULL"
-    "trailing_blank_lines_linter = NULL")
+    "trailing_blank_lines_linter = NULL"
+    "trailing_whitespace_linter = NULL")
   "Default linters to use.
 Can be either a string with R expression to be used as
 is (e.g. 'lintr::default_linters').  Or a list of strings where
