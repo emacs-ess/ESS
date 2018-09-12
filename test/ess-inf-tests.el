@@ -152,3 +152,43 @@ some. text
 (ert-deftest ess-build-load-command-test ()
   (should (string= (ess-build-load-command "file")
                    "source('file')\n")))
+
+;; Test runners
+
+;; Note that we add R-3.2.1 to continuous integration via a symlink to
+;; the actual R binary. These tests will likely fail locally for you
+;; unless you have R-3.2.1 somewhere on `exec-path' when ESS was first
+;; loaded. They're skipped unless you've defined the environment
+;; variable CONTINUOUS_INTEGRATION or R-3.2.1 is found by
+;; `executable-find'.
+(when (> emacs-major-version 24)        ; ERT lacks `skip-unless' in Emacs 24
+  (ert-deftest runner-R-3.2.1-defined ()
+    (skip-unless (or (executable-find "R-3.2.1")
+                     (getenv "CONTINUOUS_INTEGRATION")))
+    (should (fboundp 'R-3.2.1)))
+
+  (ert-deftest runner-R-3.2.1-buffer-name ()
+    (skip-unless (or (executable-find "R-3.2.1")
+                     (getenv "CONTINUOUS_INTEGRATION")))
+    (should
+     (string= "*R-3.2.1*"
+              (let ((ess-use-inferior-program-in-buffer-name t)
+                    (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
+                    (ess-ask-for-ess-directory nil)
+                    (name))
+                (R-3.2.1)
+                (setq name (buffer-name))
+                (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
+                (kill-buffer name)
+                name)))
+    (should
+     (string= "*R-3.2.1*"
+              (let ((ess-use-inferior-program-name-in-buffer-name t)
+                    (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
+                    (ess-ask-for-ess-directory nil)
+                    (name))
+                (R-3.2.1)
+                (setq name (buffer-name))
+                (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
+                (kill-buffer name)
+                name)))))

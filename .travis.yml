@@ -19,6 +19,15 @@ before_install:
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
 
+before_script:
+  # link R executable to test defining runners based on other R
+  # versions found on PATH. We're lying here that it is in fact a
+  # different R version but that doesn't matter.
+  - mkdir ess-r
+  - ln -s $(which R) $PWD/ess-r/R-3.2.1
+  - export PATH=$PATH:$PWD/ess-r/
+
+
 script:
 - emacs --version
 - make all
