@@ -175,7 +175,12 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
       (setq buffer-read-only nil)
       (font-lock-mode 1))
 
-    (ess-load-extras)
+    (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+    (ess-process-put 'funargs-pre-cache nil)
+    ;; auto-complete
+    (ess--setup-auto-complete ess-r-ac-sources t)
+    ;; company
+    (ess--setup-company ess-r-company-backends t)
 
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start
