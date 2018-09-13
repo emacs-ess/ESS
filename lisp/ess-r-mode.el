@@ -366,7 +366,6 @@ To be used as part of `font-lock-defaults' keywords."
      (inferior-ess-exit-prompt              . "Save workspace image? [y/n/c]: ")
      (inferior-ess-start-file               . nil)
      (inferior-ess-start-args               . "")
-     (inferior-ess-mode-syntax-table        . inferior-ess-r-syntax-table)
      (ess-error-regexp-alist                . ess-r-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-r-describe-object-at-point-commands)
      (ess-STERM                             . "iESS")
