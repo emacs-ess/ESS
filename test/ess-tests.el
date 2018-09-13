@@ -14,13 +14,10 @@
 ;; Ensure that major modes can be invoked without errors:
 
 (ert-deftest R-mode ()
-  (should (string= 'ess-mode (with-temp-buffer (R-mode) major-mode))))
+  (should (string= 'ess-r-mode (with-temp-buffer (R-mode) major-mode))))
 
 (ert-deftest STA-mode ()
-  (should (string= 'ess-mode (with-temp-buffer (STA-mode) major-mode))))
-
-(ert-deftest S-mode ()
-  (should (string= 'ess-mode (with-temp-buffer (S-mode) major-mode))))
+  (should (string= 'ess-stata-mode (with-temp-buffer (STA-mode) major-mode))))
 
 (ert-deftest ess-jags-mode ()
   (should (string= 'ess-jags-mode (with-temp-buffer (ess-jags-mode) major-mode))))
@@ -32,7 +29,7 @@
   (should (string= 'ess-julia-mode (with-temp-buffer (ess-julia-mode) major-mode))))
 
 (ert-deftest sas-mode ()
-  (should (string= 'ess-mode (with-temp-buffer (SAS-mode) major-mode))))
+  (should (string= 'SAS-mode (with-temp-buffer (SAS-mode) major-mode))))
 
 ;; Various tests from e.g. ess-utils.el
 

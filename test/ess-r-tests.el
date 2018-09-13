@@ -45,12 +45,10 @@
                      (ess-build-load-command:R "file")))))
 
 (ert-deftest inferior-ess-inherits-from-comint ()
-  (with-inferior-r-buffer
+  (with-temp-buffer
+    (inferior-ess-r-mode)
     ;; Derive from comint
     (should (derived-mode-p 'comint-mode))
-    ;; Use R-mode's syntax table
-    (should (eql (char-table-parent inferior-ess-mode-syntax-table)
-                 ess-r-syntax-table))
     (should
      ;; Test that comint-mode-map is a keymap-parent
      (let ((map (current-local-map))
@@ -282,7 +280,7 @@
 (ert-deftest ess-Rout-file ()
   (let ((buf (find-file-noselect "fixtures/file.Rout")))
     (with-current-buffer buf
-      (should (eq major-mode 'ess-transcript-mode))
+      (should (eq major-mode 'ess-r-transcript-mode))
       (font-lock-default-fontify-buffer)
       (should (eq (face-at-point) 'font-lock-function-name-face)))))
 
@@ -290,7 +288,7 @@
   (with-r-running nil
     (with-ess-process-buffer nil
       ;; Function-like keywords
-      (should (eq major-mode 'inferior-ess-mode))
+      (should (eq major-mode 'inferior-ess-r-mode))
       (insert-fontified "for")
       (should (not (face-at -1)))
       (insert-fontified "(")
