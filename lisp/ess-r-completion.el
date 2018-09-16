@@ -30,8 +30,7 @@
 
 ;;; ElDoc
 
-(eval-when-compile
-  (require 'cl-lib))
+(require 'cl-lib)
 (require 'ess-utils)
 (require 'ess-inf)
 (require 'ess-help)
