@@ -428,7 +428,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-library))
-    (prefix (and (string= "library" (car-safe (ess--fn-name-start 'symbol)))
+    (prefix (and (cl-member (car-safe (ess--fn-name-start 'symbol))
+                            '("library" "require") :test 'string=)
               (let ((start (ess-symbol-start)))
                 (and start (buffer-substring start (point))))))
     (candidates (all-completions arg (company-R-library-all-completions)))
