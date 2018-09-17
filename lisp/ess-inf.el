@@ -144,7 +144,8 @@ This may be useful for debugging."
                          (setq ntry (1+ ntry)))
                        (ess-proc-name ntry temp-dialect)))
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
-           (default-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
+           (cur-dir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
+           (default-directory cur-dir)
            buf method)
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
@@ -171,7 +172,7 @@ This may be useful for debugging."
        (t
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           default-directory
+                                                           cur-dir
                                                            "")))
                         (if (string= transfilename "")
                             (get-buffer-create buf-name-str)
@@ -180,10 +181,10 @@ This may be useful for debugging."
         (setq method 3)))
 
       (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method default-directory buf))
+       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method cur-dir buf))
 
-      ;; Now that we have the buffer, set buffer-local variables.
       (set-buffer buf)
+      (set 'default-directory cur-dir)
       (ess-setq-vars-local ess-customize-alist)
 
       (ess-write-to-dribble-buffer
@@ -206,7 +207,7 @@ This may be useful for debugging."
                  (switches
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
-            (set-buffer buf)
+
             (inferior-ess-mode)
             (ess-write-to-dribble-buffer
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
@@ -214,13 +215,12 @@ This may be useful for debugging."
             (setq ess-local-process-name procname)
             (goto-char (point-max))
 
-
             (when ess-history-file
               ;; Load past history
               (when (eq t ess-history-file)
                 (setq-local ess-history-file (concat "." ess-dialect "history")))
               (let ((histfile (expand-file-name ess-history-file
-                                                (or ess-history-directory default-directory))))
+                                                (or ess-history-directory cur-dir))))
                 (when (file-readable-p histfile)
                   (setq comint-input-ring-file-name histfile)
                   (comint-read-input-ring))))
@@ -247,7 +247,10 @@ This may be useful for debugging."
                     (inferior-ess-make-comint buf-name-str
                                               procname
                                               infargs)))
+
             (set-buffer buf)
+            (set 'default-directory cur-dir)
+
             (setq proc (get-buffer-process buf))
 
             ;; set the process sentinel to save the history
@@ -282,12 +285,8 @@ This may be useful for debugging."
             (set (make-local-variable 'font-lock-fontify-region-function)
                  #'inferior-ess-fontify-region)
 
-            ;; This sets `default-directory' in the process buffer,
-            ;; ensures a visible `setwd' in the inferior process and
-            ;; this makes sure we catch the prompt if user comp is
-            ;; super-duper fast
             (when ess-setwd-command
-              (ess-set-working-directory default-directory))
+              (ess-set-working-directory cur-dir))
 
             (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
@@ -3038,8 +3037,8 @@ NO-ERROR prevents errors when this has not been implemented for
                         (with-parsed-tramp-file-name path v v-localname)
                       path)))
         (ess-eval-linewise (format ess-setwd-command lpath))
-        ;; use file-name-as-directory to ensure it has trailing /
-        (setq default-directory (file-name-as-directory path)))
+        ;; use set instead of setq to take effect even when let bound
+        (set 'default-directory (file-name-as-directory path)))
     (unless no-error
       (error "Not implemented for dialect %s" ess-dialect))))
 
