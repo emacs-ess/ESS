@@ -415,12 +415,19 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
 
-;; installed.packages maintains its own cache
-(defun company-R-library-all-completions ()
+(defvar-local ess-r--installed-packages-cache nil)
+
+(defun ess-r-installed-packages ()
+  "Return a list of currently installed R packages.
+The value is cached once per session and is not updated if new
+packages are installed."
   (let ((proc (ess-get-next-available-process)))
     (when proc
-      (ess-get-words-from-vector
-       "local({ out <- try({rownames(installed.packages())}); print(out, max=1e6) })\n"))))
+      (with-current-buffer (process-buffer proc)
+        (or ess-r--installed-packages-cache
+            (setq ess-r--installed-packages-cache
+                  (ess-get-words-from-vector
+                   "print(unlist(lapply(.libPaths(), dir)), max=1e6)\n")))))))
 
 ;; completion for library names -- only active within 'library(...)'
 (defun company-R-library (command &optional arg &rest ignored)
@@ -431,7 +438,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
-    (candidates (all-completions arg (company-R-library-all-completions)))
+    (candidates (all-completions arg (ess-r-installed-packages)))
     (annotation "<pkg>")
     (duplicates nil)
     (sorted t)))
