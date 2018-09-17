@@ -385,15 +385,15 @@ With prefix ARG ask for extra arguments."
 
 (defun ess-r-devtools-install-package (&optional arg)
   "Interface to `devtools::install()'.
-On prefix ARG \\[universal-argument], build the package first outside of current
-tree (local = FALSE). With double prefix ARG (C-u C-u) install
-quickly (quick = TRUE, upgrade_dependencies = FALSE)."
+By default the instalation is \"quick\" with arguments quick =
+TRUE, upgrade = FALSE, build = FALSE. On prefix ARG
+\\[universal-argument] install with the default
+`devtools::install()' arguments."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::install(%s)\n" "Installing %s" arg
-   '("quick = TRUE, upgrade_dependencies = FALSE, keep_source = TRUE"
-     (read-string "Arguments: " "keep_source = TRUE")
-     (read-string "Arguments: " "local = FALSE, keep_source = TRUE"))))
+   '("quick = TRUE, build = FALSE, upgrade = FALSE, keep_source = TRUE"
+     (read-string "Arguments: " "keep_source = TRUE"))))
 
 (defvar ess-r-devtools--install-github-history nil)
 (defun ess-r-devtools-install-github (&optional arg)
