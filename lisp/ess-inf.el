@@ -144,7 +144,7 @@ This may be useful for debugging."
                          (setq ntry (1+ ntry)))
                        (ess-proc-name ntry temp-dialect)))
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
-           (start-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
+           (default-directory (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
            buf method)
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
@@ -171,7 +171,7 @@ This may be useful for debugging."
        (t
         (setq buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           start-directory
+                                                           default-directory
                                                            "")))
                         (if (string= transfilename "")
                             (get-buffer-create buf-name-str)
@@ -180,7 +180,7 @@ This may be useful for debugging."
         (setq method 3)))
 
       (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method start-directory buf))
+       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method default-directory buf))
 
       ;; Now that we have the buffer, set buffer-local variables.
       (set-buffer buf)
@@ -220,7 +220,7 @@ This may be useful for debugging."
               (when (eq t ess-history-file)
                 (setq-local ess-history-file (concat "." ess-dialect "history")))
               (let ((histfile (expand-file-name ess-history-file
-                                                (or ess-history-directory start-directory))))
+                                                (or ess-history-directory default-directory))))
                 (when (file-readable-p histfile)
                   (setq comint-input-ring-file-name histfile)
                   (comint-read-input-ring))))
@@ -287,7 +287,7 @@ This may be useful for debugging."
             ;; this makes sure we catch the prompt if user comp is
             ;; super-duper fast
             (when ess-setwd-command
-              (ess-set-working-directory start-directory))
+              (ess-set-working-directory default-directory))
 
             (run-hooks 'ess-post-run-hook)
             (ess-load-extras t)
