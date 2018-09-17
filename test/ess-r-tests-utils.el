@@ -124,41 +124,41 @@ split arbitrary."
       (set-buffer-modified-p nil)
       (should (not-change-on-indent buff)))))
 
-
-;;; NB: !!! Uses inferior-ess-ordinary-filter which is not representative to the
-;;; common tracebug case.
-
-(defmacro with-r-running (file &rest body)
+;; !!! NB: proc functionality from now on uses inferior-ess-ordinary-filter and
+;; !!! *proc* dynamic var
+(defmacro with-r-running (buffer-or-file &rest body)
+  "Run BODY within BUFFER-OR-FILE with attached R process.
+If BUFFER-OR-FILE is a file, the file is visited first. The R
+process is run with `inferior-ess-ordinary-filter' which is not
+representative to the common interactive use with tracebug on."
   (declare (indent 1) (debug (form body)))
-  `(apply #'with-r-running- (list ,file '(,@body))))
+  `(let* ((inhibit-message ess-inhibit-message-in-tests)
+          (buffer-or-file ,buffer-or-file)
+          (r-file-buffer (cond ((bufferp buffer-or-file)
+                                buffer-or-file)
+                               ((stringp buffer-or-file)
+                                (find-file-noselect buffer-or-file))
+                               (t
+                                (generate-new-buffer " *with-r-file-temp*")))))
+     (save-window-excursion
+       (switch-to-buffer r-file-buffer)
+       (R-mode)
+       (let* ((*proc* (ess-vanila-R))
+              (ess-local-process-name (process-name *proc*))
+              (output-buffer (process-buffer *proc*)))
+         (unwind-protect
+             (progn
+               (setq ess-r-tests-current-output-buffer (process-buffer *proc*))
+               (let ((inhibit-read-only t))
+                 (with-current-buffer ess-r-tests-current-output-buffer
+                   (erase-buffer)))
+               (set-process-filter *proc* 'inferior-ess-ordinary-filter)
+               (prog1 (progn ,@body)
+                 (ess-wait-for-process *proc*)))
+           (kill-process *proc*)
+           (setq ess-r-tests-current-output-buffer nil))))))
 
 (defvar ess-r-tests-current-output-buffer nil)
-
-(defun with-r-running- (file body)
-  (let ((inhibit-message ess-inhibit-message-in-tests)
-        (r-file-buffer (cond ((bufferp file)
-                              file)
-                             ((stringp file)
-                              (find-file-noselect file))
-                             (t
-                              (generate-new-buffer " *with-r-file-temp*")))))
-    (save-window-excursion
-      (switch-to-buffer r-file-buffer)
-      (R-mode)
-      (let* ((proc (ess-vanila-R))
-             (ess-local-process-name (process-name proc))
-             (output-buffer (process-buffer proc)))
-        (unwind-protect
-            (progn
-              (setq ess-r-tests-current-output-buffer (process-buffer proc))
-              (let ((inhibit-read-only t))
-                (with-current-buffer ess-r-tests-current-output-buffer
-                  (erase-buffer)))
-              (set-process-filter proc 'inferior-ess-ordinary-filter)
-              (prog1 (car (last (mapcar #'eval body)))
-                (ess-wait-for-process proc)))
-          (kill-process proc)
-          (setq ess-r-tests-current-output-buffer nil))))))
 
 ;; The following retrieve the last output and clean the output
 ;; buffer. This is useful to continue testing without restarting a
@@ -171,9 +171,9 @@ split arbitrary."
 (defmacro output (&rest body)
   (declare (indent 1) (debug (&rest body)))
   `(progn
-     (ess-wait-for-process proc)
+     (ess-wait-for-process *proc*)
      ,@body
-     (ess-wait-for-process proc)
+     (ess-wait-for-process *proc*)
      (with-current-buffer ess-r-tests-current-output-buffer
        (ess-kill-last-line)
        (prog1 (buffer-substring-no-properties (point-min) (point-max))
