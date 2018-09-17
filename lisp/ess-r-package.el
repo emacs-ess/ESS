@@ -240,8 +240,7 @@ Namespaced evaluation is enabled if
                  (let ((subpath (substring default-directory
                                            (1+ (length path))
                                            (length default-directory))))
-                   (string= (substring subpath 0 2)
-                            (file-name-as-directory "R"))))
+                   (string= (directory-file-name subpath) "R")))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
 (add-hook 'R-mode-hook 'ess-r-package-enable-namespaced-evaluation)
