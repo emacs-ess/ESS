@@ -157,9 +157,6 @@ can then examine these objects, plot them, and so on.
   (setq-local revert-buffer-function 'ess-rdired-revert-buffer)
   (setq mode-name (concat "RDired " ess-local-process-name)))
 
-(defun ess-rdired-mode-hook  nil
-  "Run upon entering `ess-rdired-mode'.")
-
 (defvar ess-rdired-sort-num nil)        ;silence the compiler.
 ;; but see following defun -- maybe it should be buffer local.
 
