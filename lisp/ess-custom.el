@@ -3050,10 +3050,6 @@ Should be an absolute path to the julia executable."
   :group 'ess-Julia
   :type '(choice (string) (file)))
 
-(defvar julia-basic-offset 4
-  "Offset for julia code editing.")
-
-
  ; ess-mode: editing S source
 
 ;;; This syntax table is required by ess-mode.el, ess-inf.el and
