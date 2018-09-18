@@ -37,6 +37,7 @@ while¶() for¶() if¶() function¶()
 
 ¶switch() ¶return() ¶on.exit() ¶stop() ¶tryCatch()
 ¶withRestarts() ¶invokeRestart() ¶recover() ¶browser()
+¶.Defunct()
 
 ##! (should (eq (face-at-point) 'ess-keyword-face))
 ##> (ess-forward-sexp)
@@ -44,17 +45,20 @@ while¶() for¶() if¶() function¶()
 
 switch¶() return¶() on.exit¶() stop¶() tryCatch¶()
 withRestarts¶() invokeRestart¶() recover¶() browser¶()
+.Defunct¶()
 
 
 ### 2c Function-like signal keywords are fontified ---------------------
 
 ¶message() ¶warning() ¶signalCondition() ¶withCallingHandlers()
+¶.Deprecated()
 
 ##! (should (eq (face-at-point) 'ess-modifiers-face))
 ##> (ess-forward-sexp)
 ##> (should (not (face-at-point)))
 
 message¶() warning¶() signalCondition¶() withCallingHandlers¶()
+.Deprecated¶()
 
 
 ### 3a Simple keywords are always fontified --------------------------

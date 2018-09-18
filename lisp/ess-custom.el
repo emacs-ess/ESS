@@ -2613,7 +2613,7 @@ If you change the value of this variable, restart Emacs for it to take effect."
 
 (defvar ess-R-keywords
   '("if" "else" "repeat" "while" "function" "for" "in" "next" "break"
-    "switch" "function" "return" "on.exit" "stop" "tryCatch"
+    "switch" "function" "return" "on.exit" "stop" ".Defunct" "tryCatch"
     "withRestarts" "invokeRestart"
     "recover" "browser")
   "Reserved words or special functions in the R language.")
@@ -2628,13 +2628,15 @@ If you change the value of this variable, restart Emacs for it to take effect."
 ;; first the common ones
 (define-obsolete-variable-alias 'ess-S-modifyiers 'ess-S-modifiers "18.09")
 (defvar ess-S-modifiers
-  '("library" "attach" "detach" "source" "module" "message" "warning"))
+  '("library" "attach" "detach" "source" "module"
+    "message" "warning"))
 
 (define-obsolete-variable-alias 'ess-R-modifyiers 'ess-R-modifiers "18.09")
 (defvar ess-R-modifiers
   '("library" "attach" "detach" "source" "require"
     "setwd" "options" "par" "load" "rm"
-    "message" "warning" "signalCondition" "withCallingHandlers"))
+    "message" "warning"  ".Deprecated"
+    "signalCondition" "withCallingHandlers"))
 
 (defvar ess-R-message-prefixes
   '("Error:" "Error in"
