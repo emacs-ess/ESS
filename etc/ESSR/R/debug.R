@@ -2,15 +2,15 @@
 .ESSBP. <- new.env()
 
 ### DEBUG/UNDEBUG
-.ess_find_funcs <- function(env)
-{
+.ess_find_funcs <- function(env) {
     objs <- ls(envir = env, all.names = TRUE)
-    objs[sapply(objs, exists, envir = env,
-                mode = 'function', inherits = FALSE)]
+    if (length(objs) > 0)
+        objs <- objs[sapply(objs, exists, envir = env,
+                            mode = 'function', inherits = FALSE)]
+    objs
 }
 
-.ess_all_functions <- function(packages = c(), env = NULL)
-{
+.ess_all_functions <- function(packages = c(), env = NULL) {
     if(is.null(env))
         env <- parent.frame()
     empty <- emptyenv()
