@@ -392,7 +392,7 @@ TRUE, upgrade = FALSE, build = FALSE. On prefix ARG
   (ess-r-package-eval-linewise
    "devtools::install(%s)\n" "Installing %s" arg
    '("quick = TRUE, build = FALSE, upgrade = FALSE, keep_source = TRUE"
-     (read-string "Arguments: " "keep_source = TRUE"))))
+     (read-string "Arguments: " "keep_source = TRUE, force = TRUE"))))
 
 (defvar ess-r-devtools--install-github-history nil)
 (defun ess-r-devtools-install-github (&optional arg)
