@@ -275,10 +275,6 @@ This may be useful for debugging."
             (unless (and proc (eq (process-status proc) 'run))
               (error "Process %s failed to start" procname))
 
-            ;; arguments cache
-            (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
-            (ess-process-put 'funargs-pre-cache nil)
-
             ;; don't font-lock strings over process prompt
             (set (make-local-variable 'syntax-begin-function) ;; fixme: obsolete in emacs 25.1
                  #'inferior-ess-last-prompt-end)
@@ -2695,26 +2691,24 @@ In all cases, the value is an list of object names."
 
 (defun ess-function-arguments (funname &optional proc)
   "Get FUNARGS from cache or ask the process for it.
-
 Return FUNARGS - a list with the first element being a
-cons (package_name . time_stamp_of_request), second element is a
-string giving arguments of the function as they appear in
-documentation, third element is a list of arguments of all
-methods.
+cons (PACKAGE_NAME . TIME_STAMP), second element is a string
+giving arguments of the function as they appear in documentation,
+third element is a list of arguments of all methods. If PROC is
+given, it should be an ESS process.
 
-If package_name is nil, and time_stamp is less recent than the
+If PACKAGE_NAME is nil, and TIME_STAMP is less recent than the
 time of the last user interaction to the process, then update the
-entry.
-
-Package_name is also nil when FUNNAME was not found, or FUNNAME
-is a special name that contains :,$ or @.
-
-If PROC is given, it should be an ESS process which should be
-queried for arguments."
+entry. PACKAGE_NAME is also nil when FUNNAME was not found, or
+FUNNAME is a special name that contains :,$ or @."
   (when (and funname ;; usually returned by ess--fn-name-start (might be nil)
              (or proc (ess-process-live-p)))
     (let* ((proc (or proc (get-process ess-local-process-name)))
-           (args (gethash funname (process-get proc 'funargs-cache)))
+           (cache (or (process-get proc 'funargs-cache)
+                      (let ((cache (make-hash-table :test 'equal)))
+                        (process-put proc 'funargs-cache cache)
+                        cache)))
+           (args (gethash funname cache))
            (pack (caar args))
            (ts   (cdar args)))
       (when (and args
@@ -2725,19 +2719,19 @@ queried for arguments."
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	  (and
-	   (not (process-get proc 'busy))
-	   (with-current-buffer (ess-command (format ess-funargs-command
-						     (ess-quote-special-chars funname))
-					     nil nil nil nil proc)
-	     (goto-char (point-min))
-	     (when (re-search-forward "(list" nil t)
-	       (goto-char (match-beginning 0))
-	       (setq args (ignore-errors (eval (read (current-buffer)))))
-	       (if args
-		   (setcar args (cons (car args) (current-time)))))
-	     ;; push even if nil
-	     (puthash (substring-no-properties funname) args (process-get proc 'funargs-cache))))))))
+	      (and
+	       (not (process-get proc 'busy))
+	       (with-current-buffer (ess-command (format ess-funargs-command
+						                             (ess-quote-special-chars funname))
+					                         nil nil nil nil proc)
+	         (goto-char (point-min))
+	         (when (re-search-forward "(list" nil t)
+	           (goto-char (match-beginning 0))
+	           (setq args (ignore-errors (eval (read (current-buffer)))))
+	           (if args
+		           (setcar args (cons (car args) (current-time)))))
+	         ;; push even if nil
+	         (puthash (substring-no-properties funname) args cache)))))))
 
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.
