@@ -631,6 +631,7 @@ Please use `ess-insert-assign'."
 
 (defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-insert-assign'."
+  (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.09"))
   (with-no-warnings                   ; Obsolete key variable
     (setq ess-smart-S-assign-key nil)))
 
