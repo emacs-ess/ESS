@@ -2800,7 +2800,7 @@ keywords in the current buffer. See
         'font-lock-warning-face)
   "Inferior-ess problems or errors.")
 
-(defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-R-font-lock-keywords)
+(defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
 (defcustom inferior-ess-r-font-lock-keywords
   '((ess-S-fl-keyword:prompt      . t) ;; comint is bad at prompt highlighting
     (ess-R-fl-keyword:keywords    . t)
