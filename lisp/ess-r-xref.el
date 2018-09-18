@@ -57,11 +57,14 @@ srcrefs point to temporary locations."
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
-  (symbol-name (ess-symbol-at-point)))
+  (let ((sym (ess-symbol-at-point)))
+    (when sym
+      (symbol-name sym))))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
   (let ((xref (ess-r-xref--xref symbol)))
-    (when xref (list xref))))
+    (when xref
+      (list xref))))
 
 (cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
   ;; Not yet supported.
