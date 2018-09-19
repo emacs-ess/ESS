@@ -321,6 +321,7 @@ With prefix ARG build with R-devel instead of R-patched."
   "Interface for `rhub::check()'.
 With prefix ARG run with `valgrind = TRUE'."
   (interactive "P")
+  (inferior-ess-r-force)
   (ess-r-check-install-package "rhub")
   (let* ((platforms (ess-get-words-from-vector "rhub::platforms()$name\n"))
          (platform (completing-read "Platform: " platforms nil t  nil
