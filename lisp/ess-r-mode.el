@@ -1045,8 +1045,8 @@ With argument UPDATE, update cached packages list."
 (defun ess-r-check-install-package (pkg)
   "Check if package PKG is installed and offer to install if not."
   (unless (ess-boolean-command (format "print(requireNamespace('%s', quietly = TRUE))\n" pkg))
-    (if (y-or-n-p "Library 'sos' is not installed. Install? ")
-        (ess-eval-linewise "install.packages('sos')\n")
+    (if (y-or-n-p (format "Package '%s' is not installed. Install? " pkg))
+        (ess-eval-linewise (format "install.packages('%s')\n" pkg))
       (signal 'quit nil))
     (message nil)))
 
