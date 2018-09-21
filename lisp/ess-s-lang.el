@@ -586,8 +586,10 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
   (if (eq last-command this-command)
       (let ((slist ess-assign-list)
             str)
-        (while (and (setq str (car slist)
-                          slist (cdr slist))
+        ;; The or statements in the setq allow cycling past the end of
+        ;; ess-assign-list.
+        (while (and (setq str (or (car slist) (car ess-assign-list))
+                          slist (or (cdr slist) ess-assign-list))
                     (not (and (re-search-backward str
                                                   (- (point) (length str)) t)
                               (not (replace-match (car slist))))))))
