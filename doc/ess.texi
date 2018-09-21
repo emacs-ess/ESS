@@ -2386,6 +2386,10 @@ packages:
 @cindex ESS tracebug
 @findex ess-tracebug
 
+@menu
+* Getting started with tracebug:: Quick tutorial
+@end menu
+
 ESS @code{tracebug} offers visual debugging, interactive error
 navigation, interactive backtrace, breakpoint manipulation, control over
 R error actions, watch window and interactive flagging/unflagging of
@@ -2456,12 +2460,6 @@ To configure how electric watch window splits the display see
 @code{ess-watch-width-threshold} and @code{ess-watch-height-threshold}
 variables.
 
-A more detailed ess-tracebug documentation with screenshots is available
-at @uref{https://code.google.com/p/ess-tracebug/}.
-
-A short tutorial is at @uref{https://code.google.com/p/ess-tracebug/wiki/GettingStarted}.
-
-
 @emph{Note:} Currently, ess-tracebug does not detect some of R's debug
 related messages in non-English locales. To set your R messages to
 English add the following line to your .Rprofile init file:
@@ -2469,6 +2467,66 @@ English add the following line to your .Rprofile init file:
 @verbatim
    Sys.setlocale("LC_MESSAGES", "C")
 @end verbatim
+
+@node Getting started with tracebug
+@subsection Getting started with tracebug
+@cindex tracebug tutorial
+@findex getting started with tracebug
+
+Consider a buffer with the following function:
+
+@verbatim
+test <- function(x){
+  mean(x),
+}
+@end verbatim
+
+Evaluating the function (e.g. @code{C-c C-c}) results in an error
+about an unexpected comma. You can use @code{next-error} (bound by
+default to @code{C-x `}, @code{M-g n}, and @code{M-g M-n}) to jump to
+the place where the error occurred. Alternatively, use the mouse to
+click on the error to jump to where it occurred.
+
+Correct the error by deleting the comma. Now put point on @code{mean}
+and set the breakpoint using @kbd{C-c C-t b} (@code{ess-bp-set}) and
+reevaluate the function. Jump to the inferior buffer (possibly using
+@code{C-c C-z}) and evaluate @code{test(1:10)}. An interactive debug
+process starts, stopping at the breakpoint we just specified. Here you
+can debug your function (what is @code{x} at this point?). Use
+@code{M-N} to continue.
+
+Let's replace our test function with one slightly more complicated:
+
+@verbatim
+test <- function(x){
+  x <- x + 1
+  y <- mean(x)
+  x <- ifelse(x > 5, x, x - 100)
+  list(x, y)
+}
+@end verbatim
+
+Try setting multiple breakpoints. You can unset a breakpoint by killing
+it with @kbd{C-c C-t k}. You can set conditional breakpoints too. Try
+setting one by placing point on the line @code{x <- x + 1} and doing
+@kbd{C-c C-t B}. ESS will ask for the condition. Let's set it to
+@code{!is.numeric(x)}. After re-evaluating @code{test}, try calling
+@code{test(1:100)} and @code{test('foo')}.
+
+You can remove all breakpoints with @kbd{C-c C-t K}.
+
+You can flag a function for debugging (similar to calling
+@code{debug(test)} at R's prompt) by doing @kbd{C-c C-t d}. Try this
+yourself by putting point over @code{test} and doing @kbd{C-c C-t d}.
+
+If an error occurs, you can get the complete call stack by doing
+@kbd{C-c `} or @kbd{C-c C-t `} (@code{ess-show-traceback}).
+
+Tracebug also offers a watch window where you can watch values of
+objects. Open it with @kbd{C-c C-t w} (@code{ess-watch}). Initially you
+aren't watching anything. Add something with @kbd{a} (e.g. @code{a
+test}). The watch window displays what the object is at any given time
+and automatically updates. Quit the watch window with @kbd{q}.
 
 @node Editing documentation
 @section Editing documentation
