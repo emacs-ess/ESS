@@ -4,147 +4,17 @@
 Changes and New Features in development version:
 @itemize @bullet
 
-@item @ESS{[R]}: The @code{in} keyword is now only fontified when
-inside a @code{for} construct. This avoids spurious fontification,
-especially in the output buffer where `in` is a commond English word.
-
-@item @ESS{[R]}: Fixed fontification toggling of certain syntactic
-elements such as @code{%op%} operators and backquoted function
-definitions.
-
-@item @ESS{[R]}: Fixed a bug that prevented @code{ess-font-lock-toggle-keyword}
-to be called interactively. This command asks with completion for a
-font-lock group to toggle. This functionality is equivalent to the
-font-lock menu.
-
-@item @ESS: Font-lock keywords are now generated lazily. That means you
-can now add or remove keywords from variables like @code{ess-R-keywords}
-in your Emacs configuration file after loading ESS (i.e. in the @code{:config}
-section for @code{use-package} users).
-
-@item @ESS{[R]}: @code{ess-r-package-use-dir} (which sets the working
-directory to the root of the current package) now works with any mode
-(e.g. in C or C++ files within @code{/src}).
-
-@item This is the last release to support Emacs older than 25.1
+@item This is the last release to support Emacs older than 25.1.
 Going forward, only GNU Emacs 25.1 and newer will be supported. Soon
 after this release, support for older Emacs versions will be dropped
 from the git master branch. Note that MELPA uses the git master branch
 to produce ESS snapshots, so if you are using Emacs < 25.1 from MELPA
 and are unable to upgrade, you should switch to MELPA-stable.
 
-@item @ESS{[R]}: Long + + prompts in the inferior no longer offset output.
-New option @code{strip} for @code{inferior-ess-replace-long+} strips the
-entire + + sequence.
-
-@item @ESS{[R]}: Fontification of roxygen @code{@@param} keywords now
-supports comma-separated parameters.
-
-@item @ESS{[R]}: Function-like keywords such as @code{if ()} or
-@code{stop()} are no longer fontified as keyword if not followed by an
-opening parenthesis. The same holds for search path modifiers like
-@code{library()} or @code{require()}. This feature is only available in
-Emacs >= 25.
-
-@item @ESS{[R]}: We have improved fontification of keywords so they
-better reflect the semantics of the R language. @code{ess-R-keywords}
-now only contains words reserved by the R parser.
-@code{ess-R-control-flow-keywords} contains words of base functions that
-cause non-contiguous control flow, such as @code{return()} and
-@code{stop()}. It includes the following variables that were previously
-not fontified: @code{on.exit()}, @code{tryCatch()},
-@code{withRestarts()}, @code{invokeRestart()}, @code{recover()} and
-@code{browser()}
-
-Finally, @code{ess-R-signal-keywords} contains functions part of the
-condition system that only potentially impact control flow:
-@code{message()}, @code{warning()} (moved from @code{ess-R-keywords}),
-@code{signalCondition()} and @code{withCallingHandlers()}. These
-keywords inherit from @code{ess-modifiers-face} (the face used for
-@code{library()} etc).
-
-@item ESS modes now inherit from @code{prog-mode}.
-
-@item @ESS{[R]}: The package development minor mode now only activates
-within editing buffers by default, i.e. ones that inherit from
-@code{prog-mode} or @code{text-mode}. If you want to restore the old
-behavior and activate the package mode in all buffers (that have a
-@code{default-directory} that is part of a package path), set
-@code{ess-r-package-auto-activate} to @code{t}.
-
-@item ESS now provides support for flymake in R buffers for Emacs 26 and newer.
-Users need to install the @code{lintr} package (available on CRAN) to
-use it. Customizable options include @code{ess-use-flymake},
-@code{ess-r-flymake-linters}, and @code{ess-r-flymake-lintr-cache}.
-
-@item Improved customization for faces.
-ESS now provides custom faces for (nearly) all faces used and places
-face customization options into their own group. Users can customize
-these options using @kbd{M-x customize-group RET ess-faces}.
-
-@item @ESS{[R]}: Gained support for xref in Emacs 25+.
-@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}
-
-@item @ESS{[R]}: The startup screen has been cleaned up and displays
-the startup directory with an explicit @code{setwd()}.
-
-@item ESS now displays the language dialect in the mode-line
+@item ESS now displays the language dialect in the mode-line.
 So, for example, R buffers will now show ESS[R] rather than ESS[S].
 
 @item The ESS manual has been updated and revised.
-
-@item @ESS{[R]}: @code{Makevars} files are now automatically opened
-with @code{makefile-mode}.
-
-@item New variable @code{ess-write-to-dribble}.
-This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
-
-@item ESS now respects Emacs conventions for keybindings.
-This means that The @code{C-c [letter]} bindings have been
-removed. This affects @code{C-c h}, which was bound to
-@code{ess-eval-line-and-step-invisibly} in @code{sas-mode-local-map};
-@code{C-c f}, which was bound to @code{ess-insert-function-outline} in
-@code{ess-add-MM-keys}; and @code{C-c h}, which was bound to
-@code{ess-handy-commands} in @code{Rd-mode-map},
-@code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
-
-@item prettify-symbols-mode no longer breaks indentation
-This is accomplished by having the pretty symbols occupy the same
-number of characters as their non-pretty cousins.  You may customize
-the new variable @code{ess-r-prettify-symbols} to control this
-behavior.
-
-@item The @code{ess-r-args.el} library has obsoleted and will be removed in a future release.
-Use @code{eldoc-mode} instead, which is on by default.
-
-@item All of the @code{*-program-name} variables have been renamed to @code{*-program}.
-Users who previously customized e.g. @code{inferior-ess-R-program-name}
-will need to update their customization to
-@code{inferior-ess-R-program}. These variables are treated as risky
-variables.
-
-@item @code{ess-smart-S-assign} was renamed to @code{ess-insert-assign}.
-It provides similar functionality but for any keybinding, not just `_`.
-For instance if you bind it to `;`, repeated invokations cycle through
-between assignment and inserting `;`.
-
-The variable @code{ess-smart-S-assign-key} is now deprecated. If you
-would like to continue using `_` for insterting assign in future
-releases, please bind @code{ess-insert-assign} in @code{ess-mode-map}
-the normal way.
-
-In addition the following functions have been made obsolete and will be
-removed in the next release of ESS: ess-smart-S-assign,
-ess-toggle-S-assign, ess-toggle-S-assign-key,
-ess-disable-smart-S-assign.
-
-@item The option ess-S-assign has been removed.
-Customize new option @code{ess-assign-list} instead.
-
-@item @code{C-c C-=} is now bound to @code{ess-cycle-assign} by default
-See the documentation for details. New user customization option
-@code{ess-assign-list} controls what assignment operators are cycled
-through.
 
 @item The ESS initialization process has been further streamlined.
 If you update the autoloads (which installation from
@@ -157,29 +27,151 @@ init file. Users of the popular @code{use-package} Emacs package can
 now do @code{(use-package ess :defer t)} to take advantage of this
 behavior.
 
-@item @ESS{[R]} On remotes ESSR package is now fetched from github
-instead of a private site
+@item ESS now respects Emacs conventions for keybindings.
+This means that The @code{C-c [letter]} bindings have been
+removed. This affects @code{C-c h}, which was bound to
+@code{ess-eval-line-and-step-invisibly} in @code{sas-mode-local-map};
+@code{C-c f}, which was bound to @code{ess-insert-function-outline} in
+@code{ess-add-MM-keys}; and @code{C-c h}, which was bound to
+@code{ess-handy-commands} in @code{Rd-mode-map},
+@code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
+
+@item @ESS{[R]}: @code{ess-r-package-use-dir} now works with any mode.
+This sets the working directory to the root of the current package
+including for example C or C++ files within @code{/src}).
+
+@item @ESS{[R]}: Long + + prompts in the inferior no longer offset output.
+
+@item @ESS{[R]}: New option @code{strip} for @code{inferior-ess-replace-long+}.
+This strips the entire + + sequence.
+
+@item ESS modes now inherit from @code{prog-mode}.
+In the next release, ESS modes will use @code{define-derived-mode} so
+that each mode will have (for example) its own hooks and keymaps.
+
+@item @ESS{[R]}: Supports flymake in R buffers for Emacs 26 and newer.
+Users need to install the @code{lintr} package to use it. Customizable
+options include @code{ess-use-flymake}, @code{ess-r-flymake-linters},
+and @code{ess-r-flymake-lintr-cache}.
+
+@item @ESS{[R]}: Gained support for xref in Emacs 25+.
+@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}
+
+@item @ESS{[R]}: The startup screen is cleaner.
+It also displays the startup directory with an explicit @code{setwd()}.
+
+@item @ESS{[R]}: Changing the working directory is now always reflected in the process buffer.
+
+@item @ESS{[R]}: @code{Makevars} files open with @code{makefile-mode}.
+
+@item New variable @code{ess-write-to-dribble}.
+This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
+
+@item All of the @code{*-program-name} variables have been renamed to @code{*-program}.
+Users who previously customized e.g. @code{inferior-ess-R-program-name}
+will need to update their customization to
+@code{inferior-ess-R-program}. These variables are treated as risky
+variables.
+
+@item @code{ess-smart-S-assign} was renamed to @code{ess-insert-assign}.
+It provides similar functionality but for any keybinding, not just `_`.
+For instance if you bind it to `;`, repeated invokations cycle through
+between assignment and inserting `;`.
+
+@item @code{C-c C-=} is now bound to @code{ess-cycle-assign} by default.
+See the documentation for details. New user customization option
+@code{ess-assign-list} controls which assignment operators are cycled.
+
+@item @ESS{[R]} In remote sessions, the ESSR package is now fetched from GitHub.
 
 @item Commands that send the region to the inferior process now deal with rectangular regions.
 See the documentation of @code{ess-eval-region} for details. This only
 works on Emacs 25.1 and newer.
 
-@item @ESS{}: Inferior process buffers are now always displayed on startup
-and don't hang Emacs on failures.
+@item @ESS{[R]}: Improvements to interacting with iESS in non-R files.
+Interaction with inferior process in non-R files within packages (for
+instance C or C++ files) has been improved. This is a work in
+progress.
 
-@item @ESS{[R]}: Interaction with inferior process in non-R files within
-packages (for instance C or C++ files) has been improved. This is a work
-in progress.
+@item @ESS{[R]}: Changing the working directory is now always reflected in the process buffer.
 
-@item @ESS{[R]}: Changing the working directory is now always reflected
-in the process buffer.
+@end itemize
+Many improvements to fontification:
 
-@item Variable @code{ess-s-versions-list} is obsolete and ignored.
+@itemize @bullet
+
+@item Improved customization for faces.
+ESS now provides custom faces for (nearly) all faces used and places
+face customization options into their own group. Users can customize
+these options using @kbd{M-x customize-group RET ess-faces}.
+
+@item Many new keywords were added to @code{ess-R-keywords} and @code{ess-R-modifiers}.
+See the documentation for details.
+
+@item @ESS{[R]}: @code{in} is now only fontified when inside a @code{for} construct.
+This avoids spurious fontification, especially in the output buffer
+where `in` is a commond English word.
+
+@item @ESS: Font-lock keywords are now generated lazily.
+That means you can now add or remove keywords from variables like
+@code{ess-R-keywords} in your Emacs configuration file after loading
+ESS (i.e. in the @code{:config} section for @code{use-package} users).
+
+@item @ESS{[R]}: Fontification of roxygen @code{@@param} keywords now supports comma-separated parameters.
+
+@item @ESS{[R]}: Certain keywords are only fontified if followed by a parenthesis.
+Function-like keywords such as @code{if ()} or
+@code{stop()} are no longer fontified as keyword if not followed by an
+opening parenthesis. The same holds for search path modifiers like
+@code{library()} or @code{require()}.
+
+@item @ESS{[R]}: Fixed fontification toggling.
+Especially certain syntactic elements such as @code{%op%} operators
+and backquoted function definitions.
+
+@item @ESS{[R]}: @code{ess-font-lock-toggle-keyword} can be called interactively.
+This command asks with completion for a font-lock group to toggle.
+This functionality is equivalent to the font-lock menu.
+
+@end itemize
+
+Notable bug fixes:
+
+@itemize @bullet
+
+@item @code{prettify-symbols-mode} no longer breaks indentation.
+This is accomplished by having the pretty symbols occupy the same
+number of characters as their non-pretty cousins.  You may customize
+the new variable @code{ess-r-prettify-symbols} to control this
+behavior.
+
+@item @ESS{}: Inferior process buffers are now always displayed on startup.
+Additionally, they don't hang Emacs on failures.
+@end itemize
+
+Obsolete libraries, functions, and variables:
+
+@itemize @bullet
+
+@item The @code{ess-r-args.el} library has been obsoleted and will be removed in the next release.
+Use @code{eldoc-mode} instead, which is on by default.
+
+@item Functions and options dealing with the smart assign key are obsolete.
+The following functions have been made obsolete and will be removed in
+the next release of ESS: @code{ess-smart-S-assign},
+@code{ess-toggle-S-assign}, @code{ess-toggle-S-assign-key},
+@code{ess-disable-smart-S-assign}.
+
+The variable @code{ess-smart-S-assign-key} is now deprecated and will
+be removed in the next release. If you would like to continue using
+`_` for insterting assign in future releases, please bind
+@code{ess-insert-assign} in @code{ess-mode-map} the normal way.
+
+@item @ESS{[S]}: Variable @code{ess-s-versions-list} is obsolete and ignored.
 Use @code{ess-s-versions} instead. You may pass arguments by starting
 the inferior process with the universal argument.
 
 @end itemize
-
 
 Changes and New Features in 17.11:
 @itemize @bullet
