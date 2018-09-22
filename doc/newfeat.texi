@@ -95,6 +95,8 @@ progress.
 
 @item @ESS{[R]}: Changing the working directory is now always reflected in the process buffer.
 
+@item @ESS{[JAGS]}: *.jog and *.jmd files no longer automatically open in JAGS mode.
+
 @end itemize
 Many improvements to fontification:
 
