@@ -4,10 +4,7 @@
 include ./Makeconf
 
 .PHONY: all install uninstall
-all install uninstall: version
-	cd etc; $(MAKE) $@
-	cd lisp; $(MAKE) $@
-	cd doc; $(MAKE) $@
+all install uninstall: lisp doc etc
 
 .PHONY: version
 version:
@@ -20,6 +17,14 @@ version:
 .PHONY: lisp
 lisp: version
 	cd lisp; $(MAKE)
+
+.PHONY: doc
+doc: version
+	cd doc; $(MAKE)
+
+.PHONY: etc
+etc: version
+	cd etc; $(MAKE)
 
 .PHONY: test
 test: version
