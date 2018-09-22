@@ -173,11 +173,6 @@ Full documentation will be available after autoloading the function."
 
 ;; Menus and pulldowns.
 
-(defcustom ess-funcmenu-use-p (fboundp 'func-menu)
-  "Non-nil means use func-menu."
-  :group 'ess
-  :type  'boolean)
-
 (defcustom ess-speedbar-use-p (fboundp 'speedbar)
   "Non-nil means use speedbar."
   :group 'ess
