@@ -477,7 +477,8 @@ If 'process, only check if the buffer has an inferior process."
   :group 'ess
   :type '(choice (const :tag "Always" t)
                  (const :tag "With running inferior process" process)
-                 (const :tag "Never" nil)))
+                 (const :tag "Never" nil))
+  :package-version '(ess . "18.09"))
 
 (defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
@@ -575,7 +576,8 @@ contain spaces on either side."
   ;; function won't error), but matching <-/<<- is broken without
   ;; them.
   :type '(repeat string)
-  :group 'ess)
+  :group 'ess
+  :package-version '(ess "18.09"))
 (defvar ess-S-assign)
 (make-obsolete-variable 'ess-S-assign 'ess-assign-list "ESS 18.09")
 
@@ -596,7 +598,8 @@ contain spaces on either side."
 This gets appended to `prettify-symbols-alist', so set it to nil
 if you want to disable R specific prettification."
   :group 'ess-R
-  :type '(alist :key-type string :value-type symbol))
+  :type '(alist :key-type string :value-type symbol)
+  :package-version '(ess . "18.09"))
 
 ;;*;; Variables concerning editing behaviour
 
