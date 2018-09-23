@@ -1235,7 +1235,7 @@ selected (see `ess-r-set-evaluation-env')."
 (defun ess-r-build-help-command--get-package-dir (object dont-ask)
   ;; Ugly hack to avoid tcl/tk dialogues
   (let ((pkgs (ess-get-words-from-vector
-               (format "as.character(help('%s'))\n" object))))
+               (format "as.character(utils::help('%s'))\n" object))))
     (when (> (length pkgs) 1)
       (if dont-ask
           (car pkgs)
