@@ -11,7 +11,6 @@ version:
 	@echo "********************* VERSIONS **************************"
 	@echo $(shell $(EMACS) --version | sed -n 1p)
 	@echo ESS $(ESSVERSION)
-	@echo git HEAD $(shell git rev-parse --short HEAD)
 	@echo "*********************************************************"
 
 .PHONY: lisp
@@ -51,6 +50,8 @@ tarballs: $(ESSDIR)
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
 	@echo "** Creating .tgz file **"
+	cd doc/ ; $(MAKE) pdf
+	cd doc/ ; $(MAKE) html
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "** Creating .zip file **"

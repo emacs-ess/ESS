@@ -33,14 +33,15 @@ ESSINFONODE3='                        (S/S+/R, SAS, BUGS, Stata, XLisp-Stat).'
 PDFs = ess.pdf readme.pdf refcard/refcard.pdf
 TXTs = ../README ../ANNOUNCE ../NEWS ../ONEWS
 
-all  : info text html pdf
-docs : info text html
+# Don't build pdf/html by default
+all  : info text
 info : info/ess.info
 text : $(TXTs)
 html : html/ess.html html/readme.html html/news.html
 pdf  : $(PDFs)
 
-ess.pdf : $(TEXISRC); $(TEXI2PDF) ess.texi
+ess.pdf : $(TEXISRC)
+	$(TEXI2PDF) ess.texi
 
 readme.pdf : $(TEXISRC); $(TEXI2PDF) readme.texi
 
