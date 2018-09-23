@@ -63,12 +63,10 @@ message. NR-FIRST is the number of characters at the start of the
 buffer to examine when deciding if the buffer if bogus. If nil,
 the first 150 characters of the buffer are searched."
   (if (not nr-first) (setq nr-first 150))
-
   (with-current-buffer buffer
     (let ((PM (point-min))
           (case-fold-search t)
           searching res)
-
       (setq res
             (or  ;; evaluate up to first non-nil (or end):
              (< (- (point-max) PM) 80); buffer less than 80 chars
@@ -81,11 +79,9 @@ the first 150 characters of the buffer are searched."
              (progn (goto-char PM) ;; S version 3 ; R :
                     (re-search-forward "no documentation .+" nr-first t))
              (progn (goto-char PM) ;; stata
-                    (re-search-forward "^help .*not found" nr-first t))
-             ))
+                    (re-search-forward "^help .*not found" nr-first t))))
       (ess-write-to-dribble-buffer
        (format " |--> %s [searching %s]\n" res searching))
-
       (when res
         (if searching
             (buffer-substring (match-beginning 0) (match-end 0))
@@ -119,13 +115,12 @@ Local in `ess-help' buffers.")
   "Display documentation for OBJECT in another window.
 If prefix arg is given, force an update of the cached help topics
 and query the ESS process for the help file instead of reusing an
-existing buffer if it exists.  Uses the variable
-`inferior-ess-help-command' for the actual help command.  Prompts
+existing buffer if it exists. Uses the variable
+`inferior-ess-help-command' for the actual help command. Prompts
 for the object name based on the cursor location for all cases
-except the S-Plus GUI.  With S-Plus on Windows (both GUI and in
-an inferior Emacs buffer) the GUI help window is used.
-
-If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
+except the S-Plus GUI. With S-Plus on Windows (both GUI and in an
+inferior Emacs buffer) the GUI help window is used. If COMMAND is
+suplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
@@ -148,6 +143,7 @@ If COMMAND is suplied, it is used instead of `inferior-ess-help-command'."
           (ess--flush-help-into-current-buffer object command)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
+
 ;;;###autoload
 (defalias 'ess-help 'ess-display-help-on-object)
 
@@ -261,28 +257,21 @@ if necessary.  It is bound to RET and C-m in R-index pages."
             reg-start              ":"
             ))
      (t (error "Not implemented for %s " ess-dialect)))
-
     (when (and com-package-for-object
                ess-help-object
                (eq ess-help-type 'help))
       (setq pack (car (ess-get-words-from-vector
                        (format com-package-for-object ess-help-object)))))
-
     (setq all-packs (ess-get-words-from-vector com-packages))
     (unless pack ;try symbol at point
       (setq pack  (car (member (ess-read-object-name-default) all-packs))))
     (setq pack (ess-completing-read "Index of"
                                     all-packs nil nil nil nil pack))
-    ;; (setq buff  (get-buffer-create (format "*help[%s](index:%s)*"  ess-dialect pack)))
-
-
     (ess--display-indexed-help-page
      (format com-package-index pack)
      reg-keyword
      (format "*help[%s](index:%s)*"  ess-dialect pack)
-     'index nil nil reg-start pack)
-    ))
-
+     'index nil nil reg-start pack)))
 
 (defalias 'ess-display-index 'ess-display-package-index)
 (make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
@@ -327,7 +316,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                               'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
                               'follow-link t
                               'help-echo (or help-echo "help on object")))))
-
       ;; (save-excursion ;; why R places all these spaces?
       ;;   (goto-char (point-min))
       ;;   (while (re-search-forward " \\{10,\\} *" nil t)
@@ -365,7 +353,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
            (setq com "demo()\n"
                  regexp "^\\([^ \n:]+\\)  +"))
           (t (error "Not implemented for dialect %s" ess-dialect)))
-
     (ess--display-indexed-help-page
      com regexp
      (format "*ess-demos[%s]*" ess-current-process-name)
@@ -457,8 +444,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
                                   'action #'ess--action-open-in-emacs
                                   'follow-link t
                                   'help-echo (concat path "/doc/" (nth 4 el2)))
-              (insert (format "\t%s\n" (nth 0 el2)))
-              ))))
+              (insert (format "\t%s\n" (nth 0 el2)))))))
       (goto-char (point-min))
       (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
       (unless (eobp) (delete-char 1))
@@ -622,7 +608,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     (define-key map "\C-c\M-l" 'ess-load-file); alias, as in 'iESS' where C-c C-l is comint-list-*
     (define-key map "\C-c\C-v" 'ess-display-help-on-object)
     (define-key map "\C-c\C-k" 'ess-request-a-process)
-
     (define-key map "\C-c\C-d"   'ess-doc-map)
     (define-key map "\C-c\C-e"   'ess-extra-map)
     (define-key map "\C-c\C-t"   'ess-dev-map)
@@ -675,25 +660,19 @@ Other keybindings are as follows:
   (setq mode-name "ESS Help")
   (setq font-lock-mode nil)
   (use-local-map ess-help-mode-map)
-
   ;;; Keep <tabs> out of the code.
   (make-local-variable 'indent-tabs-mode)
   (setq indent-tabs-mode nil)
-
   (if ess-mode-syntax-table ;;set in advance by ess-setq-local
       (set-syntax-table ess-mode-syntax-table))
-
   (require 'easymenu)
   (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
     "Menu keymap for ess-help mode." ess-help-mode-menu)
-
   ;; Add the keys for navigating among sections; this is done
   ;; dynamically since different languages (e.g. S vs R) have different
   ;; section headings.
-
   (setq ess-help-sec-map (make-sparse-keymap))
   (setq-local show-trailing-whitespace nil)
-
   (dolist (pair ess-help-sec-keys-alist)
     (define-key ess-help-sec-map (char-to-string (car pair))
       'ess-skip-to-help-section))
@@ -701,9 +680,9 @@ Other keybindings are as follows:
   (define-key ess-help-sec-map ">" 'end-of-buffer)
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
   (define-key ess-help-mode-map "s" ess-help-sec-map)
-
   (run-mode-hooks 'ess-help-mode-hook))
 
+
 ;;*;; User commands defined in ESS help mode
 
 (defun ess-skip-to-help-section nil
@@ -782,6 +761,7 @@ Keystroke    Section
   (if (string-match "^[[:alnum:].]+::?" object)
       (substring object (match-end 0))
     object))
+
 ;;;###autoload
 (defun ess-helpobjs-at-point (slist)
   "Return a list (def obj fun).
@@ -823,7 +803,7 @@ Note that we can't search SAS, Stata or XLispStat for additional information."
    (t
     (read-string (format "%s: " p-string)))))
 
-
+
 ;;*;; Utility functions
 
 (defun ess-get-help-files-list ()
@@ -893,8 +873,8 @@ Note that we can't search SAS, Stata or XLispStat for additional information."
   ;;(other-window 1)
   (Info-goto-node (concat "(ess)" node)))
 
-
- ;; describe object at point
+
+;; describe object at point
 
 (defvar ess-describe-object-at-point-commands nil
   "Commands cycled by `ess-describe-object-at-point'.
@@ -909,18 +889,15 @@ If region is active use it instead of the object at point.
 
 This is an electric command (`ess--execute-electric-command'),
 which means that you can use the last key to cycle through the
-action set (in this case `C-e').
-
-After invocation of this command all standard Emacs commands,
-except those containing 'window' in their names, remove the
-electric *ess-describe* buffer. Use `other-window' to switch to
-*ess-describe* window.
+action set (in this case `C-e'). After invocation of this command
+all standard Emacs commands, except those containing 'window' in
+their names, remove the electric *ess-describe* buffer. Use
+`other-window' to switch to *ess-describe* window.
 
 Customize `ess-describe-at-point-method' if you wan to display
-the description in a tooltip.
-
-See also `ess-r-describe-object-at-point-commands' (and similar
-option for other dialects)."
+the description in a tooltip. See also
+`ess-r-describe-object-at-point-commands' (and similar option for
+other dialects)."
   (interactive)
   (if (not ess-describe-object-at-point-commands)
       (message "Not implemented for dialect %s" ess-dialect)
@@ -947,8 +924,7 @@ option for other dialects)."
                        (not (string-match "window" (symbol-name command)))))
           (kill-buffer buf)) ;; bury does not work here :( (emacs bug?)
         (setq unread-command-events
-              (append keys unread-command-events)))
-      )))
+              (append keys unread-command-events))))))
 
 (defun ess--describe-object-at-point (ev objname)
   (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
@@ -976,8 +952,9 @@ option for other dialects)."
       (set-window-point (get-buffer-window buf) pos) ;; don't move window point
       buf)))
 
+
+;;; Bug Reporting
 
- ; Bug Reporting
 ;;;###autoload
 (defun ess-submit-bug-report ()
   "Submit a bug report to the ESS maintainers."
@@ -1015,13 +992,8 @@ option for other dialects)."
        (insert (with-current-buffer ess-dribble-buffer
                  (goto-char (point-max))
                  (forward-line -100)
-                 (buffer-substring-no-properties (point) (point-max))))
-       ))))
+                 (buffer-substring-no-properties (point) (point-max))))))))
 
-
-
-;;; Provide
 
 (provide 'ess-help)
-
 ;;; ess-help.el ends here
