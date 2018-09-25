@@ -51,12 +51,12 @@
 ;;
 ;;; Code:
 
-(require 'tramp)
-(require 'compile)
-(require 'overlay)
 (eval-when-compile
   (require 'cl)
-  (require 'cl-lib))
+  (require 'cl-lib)
+  (require 'tramp))
+(require 'compile)
+(require 'overlay)
 (require 'ess-custom)
 (require 'ess-utils)
 
@@ -95,6 +95,12 @@
 (declare-function ess-r-package--all-source-dirs "ess-r-package")
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
+
+;; Do not require tramp at runtime. It is expensive to load. Instead,
+;; guard calls with (require 'tramp) and silence the byte compiler
+;; here.
+(declare-function tramp-dissect-file-name "tramp")
+(declare-function tramp-get-remote-tmpdir "tramp")
 
 
 (defgroup ess-tracebug nil

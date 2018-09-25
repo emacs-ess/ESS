@@ -34,19 +34,23 @@
 ;;; Code:
 
  ; Requires and autoloads
-
-;; Silence byte-compiler
+(eval-when-compile
+  (require 'tramp))
 (require 'ess-generics)
 (require 'ess-utils)
-(require 'tramp)
-(require 'newcomment nil t)
+(require 'newcomment)
 (require 'comint)
 (require 'overlay)
 (require 'compile)
 (require 'format-spec)
 (require 'ess-tracebug)
 
+;; Don't require tramp at run time. It's an expensive library to load.
+;; Instead, guard calls with (require 'tramp) and silence the byte
+;; compiler.
 (declare-function tramp-sh-handle-expand-file-name "tramp-sh")
+(declare-function tramp-dissect-file-name "tramp")
+(declare-function tramp-tramp-file-p "tramp")
 
 ;; TODO: refactor and remove file-local variable
 ;; byte-compile-warnings. See ess-r-mode.el also
@@ -1261,8 +1265,8 @@ type of the region."
 
 (defun ess-load-file--normalise-file (file)
   "Handle Tramp and system peculiarities."
-  (let* ((file (if (and (fboundp 'tramp-tramp-file-p)
-                        (tramp-tramp-file-p file))
+  (require 'tramp)
+  (let* ((file (if (tramp-tramp-file-p file)
                    (tramp-file-name-localname (tramp-dissect-file-name file))
                  file))
          (file (if ess-microsoft-p
