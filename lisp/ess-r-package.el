@@ -453,7 +453,8 @@ If 't' the minor mode auto-activates in R packages. See
   "A list of modes where `ess-r-package' must not be activated.
 The check is done with `derived-mode-p'."
   :group 'ess-r-package
-  :type '(repeat symbol))
+  :type '(repeat symbol)
+  :package-version '(ess "18.09"))
 
 (defcustom ess-r-package-enter-hook nil
   "Normal hook run on entering `ess-r-package-mode'."

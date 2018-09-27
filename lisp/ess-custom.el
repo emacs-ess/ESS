@@ -2811,7 +2811,8 @@ See also `inferior-ess-own-frame'."
 This defaults to `default-frame-alist' and is used only when
 the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
-  :type 'alist)
+  :type 'alist
+  :package-version '(ess . "18.09"))
 
 
  ; Faces
@@ -2995,7 +2996,8 @@ Created for each process."
   "Non-nil means write to `ess-dribble-buffer'.
 See also `ess-verbose'."
   :group 'ess-proc
-  :type 'boolean)
+  :type 'boolean
+  :package-version '(ess . "18.09"))
 
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
