@@ -1,4 +1,4 @@
-;;; ess-utils.el --- General Emacs utility functions used by ESS
+;;; ess-utils.el --- General Emacs utility functions used by ESS  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1998--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -281,7 +281,6 @@ Search for the executables in ESS-EXEC-DIR (which defaults to
   (let* ((ess-exec-path
           (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
          (ess-tmp-exec nil)
-         (ess-tmp-path-count (length ess-exec-path))
          (ess-tmp-dir nil)
          (ess-tmp-files nil)
          (ess-tmp-file nil))
@@ -434,7 +433,7 @@ etc.")
 
 ;;;*;;; Menus
 
-(defun ess--generate-eval-visibly-submenu (menu)
+(defun ess--generate-eval-visibly-submenu (_menu)
   '(["yes" (lambda () (interactive) (setq ess-eval-visibly t))
      :style radio :enable t :selected (eq ess-eval-visibly t)]
     ["nowait" (lambda () (interactive) (setq ess-eval-visibly 'nowait))
@@ -515,8 +514,8 @@ variable."
                   (font-lock-refresh-defaults))))
             (buffer-list)))))
 
-(defun ess--generate-font-lock-submenu (menu)
-  "Generate ESS font-lock submenu in MENU."
+(defun ess--generate-font-lock-submenu (_menu)
+  "Generate ESS font-lock submenu."
   (append (mapcar (lambda (el)
                     `[,(symbol-name (car el))
                       (lambda () (interactive)
@@ -536,6 +535,13 @@ variable."
 
 
 ;;;*;;; External modes
+
+;; Define these here for the byte compiler since ido dynamically
+;; let-binds them:
+(defvar ido-choice-list)
+(defvar ido-context-switch-command)
+(defvar ido-directory-too-big)
+(defvar ido-directory-nonreadable)
 
 (defun ess-completing-read (prompt collection &optional predicate
                                    require-match initial-input hist def)
@@ -563,9 +569,6 @@ See also `ess-use-ido'."
               sel)
           (unwind-protect
               (progn
-                ;; Can remove this call when we drop support for Emacs
-                ;; < 25.1, as it is aliased to ignore then
-                (ido-init-completion-maps)
                 (add-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
                 (add-hook 'choose-completion-string-functions 'ido-choose-completion-string)
                 (setq sel (ido-read-internal 'list prompt hist def require-match initial-input))
@@ -887,17 +890,17 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
     (set-mouse-position frame (1- (frame-width frame)) 0)))
 
 (defun ess-do-auto-fill ()
-  "This is the same as \\[do-auto-fill] in GNU emacs 21.3, with one major
-difference: if we could not find a suitable place to break the line,
-we simply do not break it (instead of breaking after the first word)."
-  (let (fc justify bol give-up
+  "This is nearly same as \\[do-auto-fill] in GNU Emacs 21.3.
+The major difference is if we could not find a suitable place to
+break the line, we simply do not break it (instead of breaking
+after the first word)."
+  (let (fc justify give-up
            (fill-prefix fill-prefix))
     (if (or (not (setq justify (current-justification)))
             (null (setq fc (current-fill-column)))
             (and (eq justify 'left)
                  (<= (current-column) fc))
             (save-excursion (beginning-of-line)
-                            (setq bol (point))
                             (and auto-fill-inhibit-regexp
                                  (looking-at auto-fill-inhibit-regexp))))
         nil ;; Auto-filling not required
@@ -918,8 +921,7 @@ we simply do not break it (instead of breaking after the first word)."
         ;; Determine where to split the line.
         (let* (after-prefix
                (fill-point
-                (let ((opoint (point))
-                      bounce
+                (let (bounce
                       (first t))
                   (save-excursion
                     (beginning-of-line)
@@ -1052,62 +1054,63 @@ we simply do not break it (instead of breaking after the first word)."
   (concat "\\(" ess-r-symbol-pattern "+\\|\\(`\\).+`\\)")
   "The regular expression for matching a R name.")
 
-(let* ((Q     "\\s\"")                    ; quote
-       (repl "\\(<-\\)?")                 ; replacement (function)
-       (Sym-0 "\\(\\sw\\|\\s_\\)")        ; symbol
-       (Symb (concat Sym-0 "+"))
-       (xSymb "[^ \t\n\"']+") ;; (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
-       ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
-       (_or_  "\\)\\|\\(")                ; OR
-       (space "\\(\\s-\\|\n\\)*")         ; white space
+(defvar ess--r-s-function-pattern
+  (let* ((Q     "\\s\"")                    ; quote
+         (Sym-0 "\\(\\sw\\|\\s_\\)")        ; symbol
+         (Symb (concat Sym-0 "+"))
+         (xSymb "[^ \t\n\"']+") ;; (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
+         ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
+         (regex-or  "\\)\\|\\(")                ; OR
+         (space "\\(\\s-\\|\n\\)*")         ; white space
 
-       (part-1 (concat
-                "\\(" ;;--------outer Either-------
-                "\\(\\("          ; EITHER
-                Q xSymb Q         ; any function name between quotes
-                _or_
-                "\\(^\\|[ ]\\)" Symb ; (beginning of name) + ess-r-symbol-pattern
-                "\\)\\)"))        ; END EITHER OR
+         (part-1 (concat
+                  "\\(" ;;--------outer Either-------
+                  "\\(\\("          ; EITHER
+                  Q xSymb Q         ; any function name between quotes
+                  regex-or
+                  "\\(^\\|[ ]\\)" Symb ; (beginning of name) + ess-r-symbol-pattern
+                  "\\)\\)"))        ; END EITHER OR
 
-       (set-S4-exp
-        (concat
-         "^set\\(As\\|Method\\|Generic\\|GroupGeneric\\|ReplaceMethod\\)(" ; S4 ...
-         Q xSymb Q "," space
-         ;; and now often `` signature(......), : ''
-         ".*" ;; <<< FIXME ???
-         ))
+         (set-S4-exp
+          (concat
+           "^set\\(As\\|Method\\|Generic\\|GroupGeneric\\|ReplaceMethod\\)(" ; S4 ...
+           Q xSymb Q "," space
+           ;; and now often `` signature(......), : ''
+           ".*" ;; <<< FIXME ???
+           ))
 
-       (part-2 (concat
-                "\\|" ;;--------outer Or ---------
-                set-S4-exp
-                "\\)" ;;--------end outer Either/Or-------
+         (part-2 (concat
+                  "\\|" ;;--------outer Or ---------
+                  set-S4-exp
+                  "\\)" ;;--------end outer Either/Or-------
 
-                "\\(" space "\\s<.*\\s>\\)*"      ; whitespace, comment
-                ;; FIXME: in principle we should skip 'definition *= *' here
-                space "function\\s-*(" ; whitespace, function keyword, parenthesis
-                )))
+                  "\\(" space "\\s<.*\\s>\\)*"      ; whitespace, comment
+                  ;; FIXME: in principle we should skip 'definition *= *' here
+                  space "function\\s-*(" ; whitespace, function keyword, parenthesis
+                  )))
+    `(,part-1 ,part-2))
+  "Placeholder for use in constructing `ess-r-function-pattern' and `ess-s-function-pattern'.")
 
-  (defvar ess-r-function-pattern
-    (concat part-1
-            "\\s-*\\(<-\\|=\\)" ; whitespace, assign
-            part-2)
-    "The regular expression for matching the beginning of an R function.")
+(defvar ess-r-function-pattern
+  (concat (car ess--r-s-function-pattern)
+          "\\s-*\\(<-\\|=\\)" ; whitespace, assign
+          (nth 1 ess--r-s-function-pattern))
+  "The regular expression for matching the beginning of an R function.")
 
-  (defvar ess-s-function-pattern
-    (concat part-1
-            "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign (incl. "_")
-            part-2)
-    "The regular expression for matching the beginning of an S function."))
+(defvar ess-s-function-pattern
+  (concat (car ess--r-s-function-pattern)
+          "\\s-*\\(<-\\|_\\|=\\)" ; whitespace, assign (incl. "_")
+          (nth 1 ess--r-s-function-pattern))
+  "The regular expression for matching the beginning of an S function.")
 
 
 (defvar ess--fn-name-start-cache nil)
 
-(defun ess--fn-name-start (&optional look-back)
+(defun ess--fn-name-start ()
   "Return (FN-NAME . START-POS).
 FN-NAME is a function name located before the pointer. START-POS
-is the position where FN-NAME starts. LOOK-BACK is a number of
-characters to look back; defaults to 2000. Store this cons in
-variable `ess--fn-name-start-cache'."
+is the position where FN-NAME starts. Store this cons in variable
+`ess--fn-name-start-cache'."
   (save-excursion
     (save-restriction
       (let* ((proc (get-buffer-process (current-buffer)))
@@ -1232,7 +1235,7 @@ Optional argument for location of BEGINNING.  Return '(beg end)."
   (if beginning
       ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
       (let ((in-set-S4 (looking-at ess-r-set-function-start))
-            (end-pos) (npos))
+            (end-pos))
         (ess-write-to-dribble-buffer
          (format "ess-END-of-fun: S4=%s, beginning = %d\n" in-set-S4 beginning))
         (forward-list 1)      ; get over arguments || whole set*(..)

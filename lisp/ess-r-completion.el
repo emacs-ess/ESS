@@ -434,7 +434,7 @@ packages are installed."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-library))
-    (prefix (and (member (car (ess--fn-name-start 'symbol))
+    (prefix (and (member (car (ess--fn-name-start))
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
