@@ -65,7 +65,6 @@ The default value is nil."
   (append
    '((ess-local-customize-alist         . 'S+elsewhere-customize-alist)
      (ess-dialect                       . S+elsewhere-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
      (inferior-ess-program              . inferior-S-elsewhere-program)
      (inferior-ess-help-command         . "help(\"%s\", pager=\"cat\", window=F)\n")

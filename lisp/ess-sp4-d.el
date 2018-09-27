@@ -55,7 +55,6 @@ connects it to the '(ddeESS [S+4])' window.")
   (append
    '((ess-local-customize-alist         . 'S+4-customize-alist)
      (ess-dialect                       . S+4-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout) ;fixme: dialect spec.
      (ess-object-name-db-file           . "ess-sp4-namedb.el" )
      (inferior-ess-program              . inferior-S+4-program)
      (inferior-ess-help-command         . "help(\"%s\")\n")

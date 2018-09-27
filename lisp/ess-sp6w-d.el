@@ -54,7 +54,6 @@ connects it to the '(ddeESS [S+])' window.")
   (append
    '((ess-local-customize-alist  . 'S+-customize-alist)
      (ess-dialect                . S+-dialect-name)
-     (ess-loop-timeout          . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file    . "ess-sp6-namedb.el" )
      (ess-display-help-on-object-function . #'ess-chm-display-help-on-object)
      (inferior-ess-program       . inferior-S+-program)

@@ -43,7 +43,6 @@
   (append
    '((ess-local-customize-alist         . 'S4-customize-alist)
      (ess-dialect                       . "S4")
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-change-sp-regexp              . ess-S-change-sp-regexp)
      (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
      (ess-object-name-db-file           . "ess-s4-namedb.el")

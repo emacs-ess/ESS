@@ -120,7 +120,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-change-sp-regexp             . ess-r-change-sp-regexp)
      (ess-help-sec-regex               . ess-help-r-sec-regex)
      (ess-help-sec-keys-alist          . ess-help-r-sec-keys-alist)
-     (ess-loop-timeout                 . ess-S-loop-timeout);fixme: dialect spec.
      (ess-function-pattern             . ess-r-function-pattern)
      (ess-object-name-db-file          . "ess-r-namedb.el" )
      (ess-send-region-function         . #'ess-dde-rgui-send-region)

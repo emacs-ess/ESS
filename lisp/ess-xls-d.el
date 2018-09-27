@@ -52,7 +52,6 @@
     (ess-language                  . "XLS"               )
     (ess-dialect                   . "XLS"               )
     (ess-mode-editing-alist        . XLS-editing-alist   )
-    (ess-loop-timeout              . ess-XLS-loop-timeout)
     (ess-object-name-db-file       . "ess-xls-namedb.el" )
     (ess-help-sec-regex            . "^[A-Z. ---]+:$")
     (ess-help-sec-keys-alist       . ess-help-XLS-sec-keys-alist)

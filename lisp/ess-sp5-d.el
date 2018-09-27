@@ -49,7 +49,6 @@
   (append
    '((ess-local-customize-alist         . 'S+5-customize-alist)
      (ess-dialect                       . S+5-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-sp5-namedb.el")
      (inferior-ess-program              . inferior-S+5-program)
      ;;(inferior-ess-objects-pattern    . ".*") ; for new s4 stuff

@@ -40,7 +40,6 @@
   (append
    '((ess-local-customize-alist         . 'S+3-customize-alist)
      (ess-dialect                       . S+3-dialect-name)
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-object-name-db-file           . "ess-s+3-namedb.el" )
      (inferior-ess-program              . inferior-S+3-program)
      (inferior-ess-help-command         . "help(\"%s\", pager=\"cat\", window=FALSE)\n")

@@ -37,7 +37,6 @@
   (append
    '((ess-local-customize-alist         . 'S3-customize-alist)
      (ess-dialect                       . "S3")
-     (ess-loop-timeout                  . ess-S-loop-timeout);fixme: dialect spec.
      (ess-change-sp-regexp              . ess-S-change-sp-regexp)
      (ess-help-sec-keys-alist           . ess-help-S3-sec-keys-alist)
      (ess-object-name-db-file           . "ess-s3-namedb.el" )

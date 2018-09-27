@@ -357,7 +357,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-change-sp-regexp                  . ess-r-change-sp-regexp)
      (ess-help-sec-regex                    . ess-help-r-sec-regex)
      (ess-help-sec-keys-alist               . ess-help-r-sec-keys-alist)
-     (ess-loop-timeout                      . ess-r-loop-timeout)
      (ess-function-pattern                  . ess-r-function-pattern)
      (ess-object-name-db-file               . "ess-r-namedb.el")
      (ess-smart-operators                   . ess-r-smart-operators)
@@ -410,9 +409,6 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (defvar ess-r-company-backends
   '((company-R-library company-R-args company-R-objects :separate)))
-
-(defvar ess-r-loop-timeout
-  2000000)
 
 (defvar ess-r-editing-alist
   ;; copy the S-alist and modify :

@@ -43,7 +43,6 @@
   '((ess-customize-alist           .  ARC-customize-alist )
     (ess-language                  .  "XLS"               )
     (ess-dialect                   .  "ARC"               )
-    (ess-loop-timeout              .  ess-XLS-loop-timeout)
     (ess-object-name-db-file       .  "ess-xls-namedb.el" )
     (ess-help-sec-regex            .  " ")
     (ess-help-sec-keys-alist       .  " ")

@@ -335,7 +335,6 @@ to look up any doc strings."
     (ess-change-sp-regexp          . nil );ess-r-change-sp-regexp)
     (ess-help-sec-regex            . ess-help-r-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-r-sec-keys-alist)
-    (ess-loop-timeout              . ess-S-loop-timeout);fixme: dialect spec.
     (ess-function-pattern          . ess-r-function-pattern)
     (ess-object-name-db-file       . "ess-jl-namedb.el" )
     (ess-smart-operators           . ess-r-smart-operators)

@@ -2507,26 +2507,6 @@ See also function `ess-create-object-name-db'.")
 
 (make-variable-buffer-local 'ess-object-name-db)
 
-(defvar ess-loop-timeout nil
-  "Number of loops ess-mode will wait for prompt before signalling an error.")
-
-(defcustom ess-S-loop-timeout 2000000
-  "Integer specifying how many loops ess-mode will wait for the prompt
-before signaling an error. Will be set to `ess-loop-timeout' in the S dialects'
-alists.  Increase this, if you have a fast(er) machine."
-  :group 'ess-proc
-  :type 'integer)
-
-(defcustom ess-XLS-loop-timeout 50000
-  "Integer specifying how many loops ess-mode will wait for the prompt
-before signaling an error. Will be set to `ess-loop-timeout' in the XLispStat
-dialects' alists.  Increase this, if you have a fast(er) machine."
-  :group 'ess-proc
-  :type 'integer)
-
-;; NOTA BENE: Other languages/dialect currently set `ess-loop-timeout'
-;;            **directly** in their ess-*-d.el alist !!
-
 ;;;*;;; Font-lock support
 
 ;;; for programming, transcript, and inferior process modes.
@@ -3054,6 +3034,8 @@ Used to store the values for passing on to newly created buffers.")
 (defvar ess--enable-experimental-projects nil
   "Enable experimental project support in ESS.")
 
+(make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.09")
 (provide 'ess-custom)
 
 ;;; ess-custom.el ends here
