@@ -298,35 +298,16 @@ See also `ess-blink-delay'"
   :type 'boolean)
 
 (defvar ess-language nil
-  "Prefix of all ESS processes, and defines the dialect in use.
-Currently acceptable values are `S',  `XLS', `SAS'.
-Can be changed, e.g., to `R'.  Use `setq-default' if setting it in
-.emacs (also see ess-site.el).")
-;; :group 'ess
-;; :type '(choice (const :tag "Initial" :value nil)
-;;                (const :tag "S"       :value "S")
-;;                (const :tag "XLS"     :value "XLS")
-;;                (const :tag "SAS"     :value "SAS")
-;;                (const :tag "R"       :value "R")))
-
+  "Determines the language to use for the current buffer.
+See also `ess-dialect'.")
 (make-variable-buffer-local 'ess-language)
 
 (defvar ess-dialect nil
   "String version of the dialect being run for the inferior process.
 This, plus `ess-language', should be able to determine the exact
 version of the statistical package being executed in the particular
-buffer.
-
-Current values could include:
-for `ess-dialect' = S3, S4, Sp3, Sp4, Sp5, S+, R, XLS, SAS, Stata, Julia
-
-Used to adjust for changes in versions of the program.")
-
+buffer.")
 (make-variable-buffer-local 'ess-dialect)
-;;(setq-default ess-dialect "Initial-dialect")
-(setq-default ess-dialect nil)
-;;; SJE -- why use "Initial-dialect"?  If we use nil, it matches "None"
-;;; in the custom choice.
 
 (defcustom ess-directory-function nil
   "Function to return the directory that ESS is run from.
@@ -1906,22 +1887,6 @@ change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-SPLUS
   :type '(choice (const nil) (string)))
-;;(if ess-microsoft-p
-;;    (let* ((SHOME (getenv "SHOME"))
-;;         (PATH (getenv "PATH"))
-;;         (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-;;         (num 0)
-;;         pathname)
-;;      (if (not SHOME)
-;;        (while (< num (length split-PATH))
-;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-;;          (if (not (file-exists-p pathname))
-;;              (setq num (1+ num))
-;;            (progn
-;;              (setq num (length split-PATH))
-;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
-;;      (setq-default inferior-Sqpe+4-SHOME-name SHOME)))
-
 
 (define-obsolete-variable-alias
   'inferior-S-elsewhere-program-name
@@ -2040,21 +2005,6 @@ change this value in ess-site.el or site-start.el.  Use the 8.3
 version of the pathname."
   :group 'ess-SPLUS
   :type '(choice (const nil) (string)))
-;;(if ess-microsoft-p
-;;    (let* ((SHOME (getenv "SHOME"))
-;;         (PATH (getenv "PATH"))
-;;         (split-PATH (split-string PATH ";")) ;; Unix uses ":"
-;;         (num 0)
-;;         pathname)
-;;      (if (not SHOME)
-;;        (while (< num (length split-PATH))
-;;          (setq pathname (concat (nth num split-PATH) "/Sqpe.exe"))
-;;          (if (not (file-exists-p pathname))
-;;              (setq num (1+ num))
-;;            (progn
-;;              (setq num (length split-PATH))
-;;              (setq SHOME (expand-file-name (concat pathname "/../..")))))))
-;;      (setq-default inferior-Sqpe+6-SHOME-name SHOME)))
 
 (defcustom ess-S-quit-kill-buffers-p nil
   "Controls whether S buffers should also be killed once a process is killed.
@@ -2175,8 +2125,6 @@ for help files.  The default value is nil for other systems."
   :group 'ess-proc
   :type '(choice (const nil) (string)))
 (make-variable-buffer-local 'inferior-ess-help-filetype)
-(setq-default inferior-ess-help-filetype nil)
-
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
@@ -2205,12 +2153,10 @@ for help files.  The default value is nil for other systems."
 (define-obsolete-variable-alias 'inferior-ess-program-name
   'inferior-ess-program "ESS 18.09")
 (defvar inferior-ess-program nil ;inferior-S-program
-  "Default program name for invoking inferior-ess.
+  "Default program name for invoking `inferior-ess'.
 The other variables ...-program should be changed, for the
 corresponding program.")
 (make-variable-buffer-local 'inferior-ess-program)
-;; (setq-default inferior-ess-program inferior-S-program)
-
 
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
@@ -2406,10 +2352,7 @@ Use second %s to substitute the dump file name."
   "Format-string for building the ESS command to ask for help on an object.
 
 This format string should use %s to substitute an object name.")
-
 (make-variable-buffer-local 'inferior-ess-help-command)
-(setq-default inferior-ess-help-command "help(\"%s\")\n")
-
 
 (defcustom inferior-ess-r-help-command ".ess.help('%s')\n"
   "Format-string for building the R command to ask for help on an object.
@@ -2442,9 +2385,7 @@ If set, changes will take effect when next R session is started."
 This format string should use %s to substitute an object name."
   :group 'ess-command
   :type 'string)
-
 (make-variable-buffer-local 'inferior-ess-exit-command)
-(setq-default inferior-ess-exit-command "q()\n")
 
 (defvar inferior-ess-search-list-command nil
   "`ess-language' command that prints out the search list;
@@ -2565,9 +2506,7 @@ The file ess-namedb.el is loaded (if it exists) to define this variable.
 See also function `ess-create-object-name-db'.")
 
 (make-variable-buffer-local 'ess-object-name-db)
-(setq-default ess-object-name-db nil)
 
-;; SJE: 2007-07-16 -- add to quieten byte compile.
 (defvar ess-loop-timeout nil
   "Number of loops ess-mode will wait for prompt before signalling an error.")
 
