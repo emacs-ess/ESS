@@ -1,4 +1,4 @@
-#!/usr/bin/env emacs --script
+#!/usr/bin/env -S emacs --script
 
 ;; This script must be run from the test directory
 ;; With no argument, run all tests. Otherwise run only mentioned tests.
