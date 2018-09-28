@@ -77,36 +77,37 @@ split arbitrary."
     (ess--flush-accumulated-output proc)
     (unwind-protect
         (with-current-buffer (process-buffer proc)
-          (erase-buffer)
-          ;; (switch-to-buffer (current-buffer)) ; for debugging
-          (cond
-           ((or (null type) (eq type 'string))
-            (ess-send-string proc input))
-           ((eq type 'repl)
-            (insert input)
-            (inferior-ess-send-input))
-           ((or (eq type 'region)
-                (eq type 'c-c))
-            (with-temp-buffer
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            ;; (switch-to-buffer (current-buffer)) ; for debugging
+            (cond
+             ((or (null type) (eq type 'string))
+              (ess-send-string proc input))
+             ((eq type 'repl)
               (insert input)
-              (goto-char (point-min))
-              (R-mode)
-              (setq ess-current-process-name (process-name proc))
-              (if (eq type 'region)
-                  (ess-eval-region (point-min) (point-max) nil)
-                (ess-eval-region-or-function-or-paragraph nil))))
-           (t (error "Invalid TYPE parameter")))
-          (process-send-string proc "cat('END')\n")
-          ;; wait till we have our end marker
-          (while (not (looking-back "\n?END> " nil t))
-            (sleep-for 0.01)
-            (goto-char (point-max)))
-          ;; remove END>
-          (delete-region (match-beginning 0) (match-end 0))
-          ;; (buffer-substring-no-properties (point-min) (point-max))
-          (replace-regexp-in-string
-           prompt-regexp "> "
-           (buffer-substring-no-properties (point-min) (point-max)))
+              (inferior-ess-send-input))
+             ((or (eq type 'region)
+                  (eq type 'c-c))
+              (with-temp-buffer
+                (insert input)
+                (goto-char (point-min))
+                (R-mode)
+                (setq ess-current-process-name (process-name proc))
+                (if (eq type 'region)
+                    (ess-eval-region (point-min) (point-max) nil)
+                  (ess-eval-region-or-function-or-paragraph nil))))
+             (t (error "Invalid TYPE parameter")))
+            (process-send-string proc "cat('END')\n")
+            ;; wait till we have our end marker
+            (while (not (looking-back "\n?END> " nil t))
+              (sleep-for 0.01)
+              (goto-char (point-max)))
+            ;; remove END>
+            (delete-region (match-beginning 0) (match-end 0))
+            ;; (buffer-substring-no-properties (point-min) (point-max))
+            (replace-regexp-in-string
+             prompt-regexp "> "
+             (buffer-substring-no-properties (point-min) (point-max))))
           )
       (kill-process proc)
       ;; fixme: kill in sentinel; this doesn't work in batch mode
