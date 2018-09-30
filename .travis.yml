@@ -6,8 +6,12 @@ env:
   - EVM_EMACS=emacs-git-snapshot-travis
 
 before_install:
-  - sudo apt-get install -y --no-install-recommends
-      r-base
+  - echo "deb https://cloud.r-project.org/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
+  - sudo add-apt-repository ppa:marutter/c2d4u -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -y --no-install-recommends --allow-unauthenticated
+      r-recommended
+      r-cran-roxygen2
       texinfo
       texlive-latex-base
       texlive-latex-recommended
@@ -27,8 +31,8 @@ before_script:
   - ln -s $(which R) $PWD/ess-r/R-3.2.1
   - export PATH=$PATH:$PWD/ess-r/
 
-
 script:
 - emacs --version
+- R --version
 - make all
 - make test

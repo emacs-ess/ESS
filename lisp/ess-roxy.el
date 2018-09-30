@@ -576,26 +576,25 @@ string. Convenient for editing example fields."
 `ess-roxy-package' to generate the Rd code for entry at point, place it
 in a temporary buffer and return that buffer."
   (let* ((beg (ess-roxy-beg-of-entry))
-        (tmpf (make-temp-file "ess-roxy"))
-        (roxy-buf (get-buffer-create " *RoxygenPreview*"))
-        (R-old-roxy
-         (concat
-          "..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");"
-          "cat(vapply(..results, function(x) roxygen2:::rd_out_cache$compute(x, format(x)), character(1)))" ))
-        (R-new-roxy
-         (concat
-          "..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));"
-          "cat(vapply(..results, format, character(1)))" ))
-        (out-rd-roclet
-         (cond ((string= "roxygen" ess-roxy-package)
-                "make.Rd2.roclet()$parse")
-               ;; must not line break strings to avoid getting +s in the output
-               ((string= "roxygen2" ess-roxy-package)
-                (concat "(function(P) { if(packageVersion('roxygen2') < '3.0.0') {"
-                        R-old-roxy "} else {" R-new-roxy "} })"))
-               (t (error "Need to hard code the roclet output call for roxygen package '%s'"
-                         ess-roxy-package))))
-        )
+         (tmpf (make-temp-file "ess-roxy"))
+         (roxy-buf (get-buffer-create " *RoxygenPreview*"))
+         (R-old-roxy
+          (concat
+           "..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");"
+           "cat(vapply(..results, function(x) roxygen2:::rd_out_cache$compute(x, format(x)), character(1)))" ))
+         (R-new-roxy
+          (concat
+           "..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));"
+           "cat(vapply(..results, format, character(1)), \"\n\")" ))
+         (out-rd-roclet
+          (cond ((string= "roxygen" ess-roxy-package)
+                 "make.Rd2.roclet()$parse")
+                ;; must not line break strings to avoid getting +s in the output
+                ((string= "roxygen2" ess-roxy-package)
+                 (concat "(function(P) { if(packageVersion('roxygen2') < '3.0.0') {"
+                         R-old-roxy "} else {" R-new-roxy "} })"))
+                (t (error "Need to hard code the roclet output call for roxygen package '%s'"
+                          ess-roxy-package)))))
     (if (= beg 0)
         (error "Point is not in a Roxygen entry"))
     (save-excursion
@@ -607,15 +606,18 @@ in a temporary buffer and return that buffer."
                     (not (looking-at ess-roxy-re))))
         (append-to-file beg (point) tmpf))
       (ess-force-buffer-current)
-      (ess-command (concat "print(suppressWarnings(require(" ess-roxy-package
-                           ", quietly=TRUE)))\n")
-                   roxy-buf)
+      (unless (ess-boolean-command (concat "print(suppressWarnings(require(" ess-roxy-package
+                                           ", quietly=TRUE)))\n"))
+        (error (concat "Failed to load the " ess-roxy-package " package; "
+                       "in R, try  install.packages(\"" ess-roxy-package "\")")))
+      (ess-command (concat out-rd-roclet "(\"" tmpf "\")\n") roxy-buf)
       (with-current-buffer roxy-buf
-        (goto-char 1)
-        (if (search-forward-regexp "FALSE" nil t)
-            (error (concat "Failed to load the " ess-roxy-package " package; "
-                           "in R, try  install.packages(\"" ess-roxy-package "\")"))))
-      (ess-command (concat out-rd-roclet "(\"" tmpf "\")\n") roxy-buf))
+        ;; Kill characters up to % in case we missed stripping prompts
+        ;; or +'s:
+        (goto-char (point-min))
+        (when (re-search-forward "%" (line-end-position) t)
+          (backward-char)
+          (delete-region (line-beginning-position) (point)))))
     (delete-file tmpf)
     roxy-buf))
 
