@@ -1,7 +1,7 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes and New Features in development version:
+Changes and New Features in 18.10:
 @itemize @bullet
 
 @item This is the last release to support Emacs older than 25.1.
