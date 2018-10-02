@@ -2971,14 +2971,6 @@ and R Transcript Mode buffers.
 @cindex font-lock mode
 @cindex highlighting
 
-Syntax highlighting within ESS buffers is controlled by:
-
-@defvr {User Option} ess-font-lock-mode
-Non-@samp{nil} means we use font lock support for ESS buffers.  Default
-is @samp{t}, to use font lock support.  If you change the value of this
-variable, restart Emacs for it to take effect.
-@end defvr
-
 The font-lock patterns are defined by the following variables, which you
 may modify if desired:
 

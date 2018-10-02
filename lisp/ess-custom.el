@@ -27,7 +27,7 @@
 ;; https://www.r-project.org/Licenses/
 
 ;;; Code:
-
+(require 'comint)
 (require 'custom)
 (require 'executable)
 (require 'font-lock)
@@ -154,29 +154,11 @@
 Is set  by \\[ess-version-string].")
 
 
-(defvar no-doc
-  "This function is part of ESS, but has not yet been loaded.
-Full documentation will be available after autoloading the function."
-  "Documentation for autoload functions.")
-
-
  ; User changeable variables
-
-;;; Common user changeable variable are described and documented in
-;;; ess-site.el.  Please check there first!
-;;;=====================================================
-;;; In general: Variables with document strings starting with a * are
-;;; the ones you can generally change safely, and may have to upon
-;;; occasion.
 
 ;;*;; Options and Initialization
 
 ;; Menus and pulldowns.
-
-(defcustom ess-speedbar-use-p (fboundp 'speedbar)
-  "Non-nil means use speedbar."
-  :group 'ess
-  :type  'boolean)
 
 (defcustom ess-imenu-use-p (fboundp 'imenu)
   "Non-nil means use imenu facility.
@@ -192,10 +174,6 @@ as `ess-imenu-use-S'."
 
 (defvar ess-imenu-generic-expression nil
   "Placeholder for imenu-generic-expression. Dialect specific.")
-
-
-
-;;
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
                                 ("install.packages"     . ess-install-library)
@@ -729,8 +707,6 @@ blink the filling region."
   :group 'ess-edit
   :type 'boolean)
 
-;;; From ess-mode:
-
 (defcustom ess-mode-silently-save t
   "Non-nil means automatically save ESS source buffers before loading."
   :group 'ess-edit
@@ -747,10 +723,6 @@ this string. Point will be placed after the first parenthesis or
 bracket."
   :group 'ess-edit
   :type 'string)
-
-;;; By K.Shibayama 5.14.1992
-;;; Setting any of the following variables in your .emacs is equivalent
-;;; to modifying the DEFAULT style.
 
 ;;;*;;; Indentation parameters
 
@@ -1353,7 +1325,7 @@ global) values from ESS indentation variables."
 ;;*;; Variables controlling behaviour of dump files
 
 (defcustom ess-source-directory
-  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp")
+  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") temporary-file-directory)
   "Directory in which to place dump files.
 This can be a string (an absolute directory name ending in a slash) or
 a lambda expression of no arguments which will return a suitable string
@@ -1363,7 +1335,8 @@ current buffer.
 This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
   :group 'ess-edit
-  :type 'directory)
+  :type 'directory
+  :package-version '(ess . "18.09"))
 
 (defvar ess-dump-filename-template nil
   "Internal. Initialized by dialects")
@@ -1389,11 +1362,6 @@ to edit more than one object at a time, though.
 
 (defcustom ess-mode-hook nil
   "Hook for customizing ESS each time it is entered."
-  :group 'ess-hooks
-  :type 'hook)
-
-(defcustom ess-mode-load-hook nil
-  "Hook to call when ess.el is loaded."
   :group 'ess-hooks
   :type 'hook)
 
@@ -1641,7 +1609,6 @@ by `ess-function-template'."
 
  ; ess-inf: variables for inferior-ess.
 
-;;*;; System dependent variables
 (defcustom inferior-ess-own-frame nil
   "Non-nil means that inferior ESS buffers should start in their own frame.
 The parameters of this frame are stored in `inferior-ess-frame-alist'."
@@ -2065,19 +2032,6 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess-OMG
   :type '(choice (string) (file)))
 
-;;;;; names for setting the pager and editor options of the
-;;;;; inferior-ess-process
-;;;
-;;; S-editor and S-pager,
-;;; R-editor and R-pager,
-;;; ess-editor and ess-pager,
-;;; and inferior-ess-language-start
-;;; apply in principle to the 15 files essd[s-]*.el
-;;; Several of the files (ess-sp4-d.el and ess-sp6w-d.el) have more
-;;; than one *-customize-alist.
-;;; These variables are currently used only with the S language files for
-;;; S S-Plus R.
-
 (defvaralias 'R-editor 'ess-r-editor)
 (defcustom ess-r-editor "emacsclient"
   "Editor called by R process with 'edit()' command."
@@ -2228,29 +2182,9 @@ the process output, otherwise not.
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 
-;; (when (boundp 'ess-eval-visibly-p)
-;;   (setq ess-eval-visibly ess-eval-visibly-p))
-
-
-
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
   "Non-nil means that after ess-eval- commands the mark is deactivated,
  (see \\[deactivate-mark])."
-  :group 'ess-proc
-  :type 'boolean)
-
-(defcustom ess-synchronize-evals nil
-  "Non-nil means all evaluations will synchronize with the ESS process.
-This means ess-mode will wait for S to dent a prompt before sending the next
-line of code. This allows users of Emacs version 18.57 or less to
-evaluate large regions of code without causing an error.  Users of newer
-Emacsen usually do not want this feature, since it locks up use
-of Emacs until the code has been successfully evaluated."
-  :group 'ess-proc
-  :type 'boolean)
-
-(defcustom ess-eval-visibly-at-end t
-  "Non-nil means ess-eval- commands display output at end of process buffer."
   :group 'ess-proc
   :type 'boolean)
 
@@ -2379,13 +2313,10 @@ If set, changes will take effect when next R session is started."
 (make-variable-buffer-local 'ess-find-help-file-function)
 (make-variable-buffer-local 'ess-build-help-command-function)
 
-(defcustom inferior-ess-exit-command "q()\n"
+(defvar-local inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
 
-This format string should use %s to substitute an object name."
-  :group 'ess-command
-  :type 'string)
-(make-variable-buffer-local 'inferior-ess-exit-command)
+This format string should use %s to substitute an object name.")
 
 (defvar inferior-ess-search-list-command nil
   "`ess-language' command that prints out the search list;
@@ -2395,23 +2326,12 @@ when it searches for objects.
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
 (make-variable-buffer-local 'inferior-ess-search-list-command)
 
-;; and hence made buffer-local via that scheme...
-
-;; ;; FIXME: this is nowhere used :
-;; (defcustom inferior-ess-names-command "names(%s)\n"
-;;   "Format string for ESS command to extract names from an object.
-
-;; %s is replaced by the object name -- usually a list or data frame."
-;;   :group 'ess-command
-;;   :type 'string)
-
 (defcustom inferior-ess-safe-names-command
   "tryCatch(base::print(base::names(%s), max=1e6), error=function(e){})\n"
   "Format string for ESS command to extract names from an object *safely*.
 
 %s is replaced by an \"object name\" -- usually a list or data frame, but in R also
  e.g., 'package:stats'."
-
   :group 'ess-command
   :type 'string)
 
@@ -2508,15 +2428,6 @@ See also function `ess-create-object-name-db'.")
 (make-variable-buffer-local 'ess-object-name-db)
 
 ;;;*;;; Font-lock support
-
-;;; for programming, transcript, and inferior process modes.
-
-(defcustom ess-font-lock-mode global-font-lock-mode
-  "Non-nil means we use font lock support for ESS buffers.
-Default is t, to use font lock support.
-If you change the value of this variable, restart Emacs for it to take effect."
-  :group 'ess
-  :type 'boolean)
 
 ;; "Reserved Words" -- part 1 --
 (defvar ess-RS-constants
@@ -2702,9 +2613,6 @@ keywords in the current buffer. See
 `inferior-ess-r-font-lock-keywords' for an example.")
 (make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
-(defvar comint-highlight-prompt 'comint-highlight-prompt)
-;; needed for proper font-lock
-
 (defvar ess-S-fl-keyword:prompt
   (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
   "Highlight prompts missed by comint.")
@@ -2721,7 +2629,7 @@ keywords in the current buffer. See
 
 (defvaralias 'inferior-R-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
 (defcustom inferior-ess-r-font-lock-keywords
-  '((ess-S-fl-keyword:prompt      . t) ;; comint is bad at prompt highlighting
+  '((ess-S-fl-keyword:prompt      . t)
     (ess-R-fl-keyword:keywords    . t)
     (ess-R-fl-keyword:constants   . t)
     (ess-R-fl-keyword:modifiers   . t)
@@ -2767,7 +2675,6 @@ default."
   :group 'ess-S
   :group 'ess-faces
   :type '(repeat (cons symbol boolean)))
-
 
 
 ;;;*;;; ess-help variables
@@ -2977,12 +2884,6 @@ Should be an absolute path to the julia executable."
 
  ; Buffer local customization stuff
 
-(defvar ess-source-modes '(ess-mode)
-  "A list of modes used to determine if a buffer contains ess source code.")
-;;; If a file is loaded into a buffer that is in one of these major modes, it
-;;; is considered an ess source file.  The function ess-load-file uses this to
-;;; determine defaults.
-
 (defcustom ess-error-buffer-name "*ESS-errors*"
   "Name of buffer to keep process error messages in.
 Created for each process."
@@ -3038,6 +2939,11 @@ Used to store the values for passing on to newly created buffers.")
 
 (make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.09")
 (make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-mode-load-hook "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-speedbar-use-p "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-synchronize-evals "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-eval-visibly-at-end "It is ignored." "ESS 18.09")
+(make-obsolete-variable 'ess-font-lock-mode 'global-font-lock-mode "ESS 18.09")
 (provide 'ess-custom)
 
 ;;; ess-custom.el ends here
