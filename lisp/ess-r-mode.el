@@ -483,7 +483,7 @@ Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
-(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.09")
+(define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.10")
 (defvar ess-r-created-runners nil
   "List of R-versions found from `ess-r-versions' on the system.")
 
@@ -739,7 +739,7 @@ as `ess-r-created-runners' upon ESS initialization."
         (easy-menu-add-item ess-mode-menu '("Start Process")
                             (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
-  'ess-r-versions-create 'ess-r-define-runners "ESS 18.09")
+  'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
 
 (defvar ess-newest-R nil
   "Stores the newest version of R that has been found.
@@ -983,7 +983,7 @@ not issue messages."
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
                     'fixcase nil (not quietly))))
 (define-obsolete-function-alias 'R-fix-T-F 'ess-r-fix-T-F
-  "ESS 18.09")
+  "ESS 18.10")
 
 (defvar ess--packages-cache nil
   "Cache var to store package names.

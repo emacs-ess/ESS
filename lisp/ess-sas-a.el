@@ -473,7 +473,7 @@ current buffer if nil."
   (ess-sas--change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
 (define-obsolete-function-alias
-  'ess-change-alist 'ess-sas--change-alist "ESS 18.09")
+  'ess-change-alist 'ess-sas--change-alist "ESS 18.10")
 
 (defun ess-sas-data-view-fsview (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
@@ -1181,7 +1181,7 @@ Keep in mind that the maximum command line length in MS-DOS is
   (ess-sas-goto-log))
 
 (define-obsolete-variable-alias
-  'ess-sas-versions-created 'ess-sas-created-runners "ESS 18.09")
+  'ess-sas-versions-created 'ess-sas-created-runners "ESS 18.10")
 (defvar ess-sas-created-runners)
 (defun ess-sas-define-runners ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.
@@ -1204,7 +1204,7 @@ be placed on the menubar upon ESS initialization."
     (setq ess-sas-created-runners
           (mapc (lambda (v) (ess-define-runner v "SAS")) versions))))
 (define-obsolete-function-alias
-  'ess-sas-create-versions 'ess-sas-define-runners "ESS 18.09")
+  'ess-sas-create-versions 'ess-sas-define-runners "ESS 18.10")
 
 
 ;;; Section 3:  Key Definitions

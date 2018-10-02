@@ -167,7 +167,7 @@ of S using this method.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 (define-obsolete-variable-alias
-  'ess-s-versions-created 'ess-s-created-runners "ESS 18.09")
+  'ess-s-versions-created 'ess-s-created-runners "ESS 18.10")
 (defvar ess-s-created-runners)
 (defun ess-s-define-runners ()
   "Generate functions for starting other versions of S.
@@ -203,7 +203,7 @@ ESS initialization."
      (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
   (ess-s-define-runners))
 (define-obsolete-function-alias
-  'ess-s-versions-create 'ess-s-define-runners "ESS 18.09")
+  'ess-s-versions-create 'ess-s-define-runners "ESS 18.10")
 
 
 

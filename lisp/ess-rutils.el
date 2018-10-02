@@ -423,7 +423,7 @@ given field. Options should be separated by value of
 (easy-menu-add-item inferior-ess-mode-menu nil ess-rutils-mode-menu "Utils")
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys)
 
-(make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "ESS 18.09")
+(make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "ESS 18.10")
 
 (provide 'ess-rutils)
 

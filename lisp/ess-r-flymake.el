@@ -61,13 +61,13 @@ is (e.g. 'lintr::default_linters').  Or a list of strings where
 each element is passed as argument to 'lintr::with_defaults'."
   :group 'ess-R
   :type '(choice string (repeat string))
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 (defcustom ess-r-flymake-lintr-cache t
   "If non-nil, cache lintr results."
   :group 'ess-R
   :type 'boolean
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 (defvar-local ess-r--flymake-proc nil)
 

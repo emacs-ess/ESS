@@ -334,7 +334,7 @@ for all projects."
 
 (define-obsolete-variable-alias
   'ess-use-inferior-program-name-in-buffer-name
-  'ess-use-inferior-program-in-buffer-name "ESS 18.09")
+  'ess-use-inferior-program-in-buffer-name "ESS 18.10")
 (defcustom ess-use-inferior-program-in-buffer-name nil
   "For R, use e.g., 'R-2.1.0' or 'R-devel' (the program name) for buffer name.
 Avoids the plain dialect name."
@@ -432,7 +432,7 @@ If 'process, only check if the buffer has an inferior process."
   :type '(choice (const :tag "Always" t)
                  (const :tag "With running inferior process" process)
                  (const :tag "Never" nil))
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 (defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
@@ -519,7 +519,7 @@ Please bind `ess-insert-assign' in `ess-mode-map' to your key of
 choice with `define-key' or similar."
   :group 'ess-S
   :type '(choice (const :tag "Nothing" :value nil) string))
-(make-obsolete-variable 'ess-smart-S-assign-key nil "ESS 18.09")
+(make-obsolete-variable 'ess-smart-S-assign-key nil "ESS 18.10")
 
 (defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")
                                  '(" <<- " " = " " -> " " ->> "))
@@ -531,9 +531,9 @@ contain spaces on either side."
   ;; them.
   :type '(repeat string)
   :group 'ess
-  :package-version '(ess "18.09"))
+  :package-version '(ess "18.10"))
 (defvar ess-S-assign)
-(make-obsolete-variable 'ess-S-assign 'ess-assign-list "ESS 18.09")
+(make-obsolete-variable 'ess-S-assign 'ess-assign-list "ESS 18.10")
 
 (defcustom ess-r-prettify-symbols
   '(("<-" . (?\s (Br . Bl) ?\s (Bc . Bc) ?←))
@@ -553,7 +553,7 @@ This gets appended to `prettify-symbols-alist', so set it to nil
 if you want to disable R specific prettification."
   :group 'ess-R
   :type '(alist :key-type string :value-type symbol)
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 ;;*;; Variables concerning editing behaviour
 
@@ -1336,7 +1336,7 @@ This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
   :group 'ess-edit
   :type 'directory
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 (defvar ess-dump-filename-template nil
   "Internal. Initialized by dialects")
@@ -1638,9 +1638,9 @@ non-nil."
 
 (defvaralias 'inferior-R-program 'inferior-ess-r-program)
 (define-obsolete-variable-alias 'inferior-R-program-name
-  'inferior-ess-r-program "ESS 18.09")
+  'inferior-ess-r-program "ESS 18.10")
 (define-obsolete-variable-alias 'inferior-ess-r-program-name
-  'inferior-ess-r-program "ESS 18.09")
+  'inferior-ess-r-program "ESS 18.10")
 (defcustom inferior-ess-r-program (if ess-microsoft-p
                                       "Rterm"
                                     "R")
@@ -1797,23 +1797,23 @@ menu."
   :type '(repeat string))
 
 (define-obsolete-variable-alias 'inferior-S3-program-name
-  'inferior-S3-program "ESS 18.09")
+  'inferior-S3-program "ESS 18.10")
 (defcustom inferior-S3-program "/disk05/s/S"
   "Program name for invoking an inferior ESS with S3()."
   :group 'ess-S
   :type 'string)
 
 (define-obsolete-variable-alias 'inferior-S+3-program-name
-  'inferior-S+3-program "ESS 18.09")
+  'inferior-S+3-program "ESS 18.10")
 (define-obsolete-variable-alias 'inferior-S-program-name
-  'inferior-S+3-program "ESS 18.09")
+  'inferior-S+3-program "ESS 18.10")
 (defcustom inferior-S+3-program "Splus"
   "Program name for invoking an inferior ESS with S+3()."
   :group 'ess-SPLUS
   :type '(choice (string) file))
 
 (define-obsolete-variable-alias 'inferior-S+4-program-name
-  'inferior-S+4-program "ESS 18.09")
+  'inferior-S+4-program "ESS 18.10")
 (defcustom inferior-S+4-program
   (concat ess-program-files "/spls45se/cmd/Splus.exe")
   "Program name for invoking an external GUI S+4.
@@ -1838,7 +1838,7 @@ in S+4 Commands window and in Sqpe+4 buffer."
   :type 'string)
 
 (define-obsolete-variable-alias 'inferior-Sqpe+4-program-name
-  'inferior-Sqpe+4-program "ESS 18.09")
+  'inferior-Sqpe+4-program "ESS 18.10")
 (defcustom inferior-Sqpe+4-program
   (concat ess-program-files "/spls45se/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+4()."
@@ -1857,7 +1857,7 @@ version of the pathname."
 
 (define-obsolete-variable-alias
   'inferior-S-elsewhere-program-name
-  'inferior-S-elsewhere-program "ESS 18.09")
+  'inferior-S-elsewhere-program "ESS 18.10")
 (defcustom inferior-S-elsewhere-program "sh"
   "Program name to invoke an inferior ESS with S on a different computer."
   :group 'ess-proc
@@ -1865,7 +1865,7 @@ version of the pathname."
 
 (define-obsolete-variable-alias
   'inferior-ESS-elsewhere-program-name
-  'inferior-ESS-elsewhere-program "ESS 18.09")
+  'inferior-ESS-elsewhere-program "ESS 18.10")
 (defcustom inferior-ESS-elsewhere-program "sh"
   "Program name to invoke an inferior ESS with program on a
 different computer."
@@ -1873,14 +1873,14 @@ different computer."
   :type 'string)
 
 (define-obsolete-variable-alias 'inferior-S4-program-name
-  'inferior-S4-program "ESS 18.09")
+  'inferior-S4-program "ESS 18.10")
 (defcustom inferior-S4-program "S4"
   "Program name to invoke an inferior ESS with S4()."
   :group 'ess-S
   :type '(choice (string) (file)))
 
 (define-obsolete-variable-alias 'inferior-S+5-program-name
-  'inferior-S+5-program "ESS 18.09")
+  'inferior-S+5-program "ESS 18.10")
 (defcustom inferior-S+5-program "Splus5"
   "Program name to invoke an inferior ESS with S+5()."
   :group 'ess-SPLUS
@@ -1895,10 +1895,10 @@ Easily changeable in a user's `.emacs'."
 
 (defvaralias 'inferior-S+6-program 'inferior-S+-program)
 (define-obsolete-variable-alias 'inferior-S+6-program-name
-  'inferior-S+-program "ESS 18.09")
+  'inferior-S+-program "ESS 18.10")
 
 (define-obsolete-variable-alias 'inferior-S+-program-name
-  'inferior-S+-program "ESS 18.09")
+  'inferior-S+-program "ESS 18.10")
 (defcustom inferior-S+-program
   (if ess-microsoft-p
       (concat ess-program-files "/TIBCO/splus82/cmd/Splus.exe")
@@ -1955,7 +1955,7 @@ for Windows Commands window and in Sqpe+6 for Windows buffer."
 
 (defvaralias 'inferior-Sqpe+6-program 'inferior-Sqpe+-program)
 (define-obsolete-variable-alias 'inferior-Sqpe+-program-name
-  'inferior-Sqpe+-program "ESS 18.09")
+  'inferior-Sqpe+-program "ESS 18.10")
 (defcustom inferior-Sqpe+-program
   (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
   "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
@@ -1984,35 +1984,35 @@ ask - ask the user whether the S buffers should be killed."
   :type '(choice (const nil) (const t) (const ask)))
 
 (define-obsolete-variable-alias 'inferior-XLS-program-name
-  'inferior-XLS-program "ESS 18.09")
+  'inferior-XLS-program "ESS 18.10")
 (defcustom inferior-XLS-program "xlispstat"
   "Program name for invoking an inferior ESS with \\[XLS]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
 (define-obsolete-variable-alias 'inferior-VST-program-name
-  'inferior-VST-program "ESS 18.09")
+  'inferior-VST-program "ESS 18.10")
 (defcustom inferior-VST-program "vista"
   "Program name for invoking an inferior ESS with \\[ViSta]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
 (define-obsolete-variable-alias 'inferior-ARC-program-name
-  'inferior-ARC-program "ESS 18.09")
+  'inferior-ARC-program "ESS 18.10")
 (defcustom inferior-ARC-program "arc"
   "Program name for invoking an inferior ESS with \\[ARC]."
   :group 'ess-XLS
   :type '(choice (string) (file)))
 
 (define-obsolete-variable-alias 'inferior-SAS-program-name
-  'inferior-SAS-program "ESS 18.09")
+  'inferior-SAS-program "ESS 18.10")
 (defcustom inferior-SAS-program "sas"
   "Program name for invoking an inferior ESS with SAS()."
   :group 'ess-sas
   :type '(choice (string) (file)))
 
 (define-obsolete-variable-alias 'inferior-STA-program-name
-  'inferior-STA-program "ESS 18.09")
+  'inferior-STA-program "ESS 18.10")
 (defcustom inferior-STA-program "stata"
   "Program name for invoking an inferior ESS with stata().
 This is NOT Stata, because we need to call stata with TERM=emacs in
@@ -2026,7 +2026,7 @@ order for it to work right.  And Emacs is too smart for it."
   :type 'boolean)
 
 (define-obsolete-variable-alias 'inferior-OMG-program-name
-  'inferior-OMG-program "ESS 18.09")
+  'inferior-OMG-program "ESS 18.10")
 (defcustom inferior-OMG-program "omegahat"
   "Program name for invoking an inferior ESS with omegahat()."
   :group 'ess-OMG
@@ -2105,7 +2105,7 @@ for help files.  The default value is nil for other systems."
   "Program name for invoking an inferior ESS with S.")
 
 (define-obsolete-variable-alias 'inferior-ess-program-name
-  'inferior-ess-program "ESS 18.09")
+  'inferior-ess-program "ESS 18.10")
 (defvar inferior-ess-program nil ;inferior-S-program
   "Default program name for invoking `inferior-ess'.
 The other variables ...-program should be changed, for the
@@ -2454,12 +2454,12 @@ See also function `ess-create-object-name-db'.")
   '("if" "for" "function" "while"))
 
 ;; first the common ones
-(define-obsolete-variable-alias 'ess-S-modifyiers 'ess-S-modifiers "18.09")
+(define-obsolete-variable-alias 'ess-S-modifyiers 'ess-S-modifiers "18.10")
 (defvar ess-S-modifiers
   '("library" "attach" "detach" "source" "module"
     "message" "warning"))
 
-(define-obsolete-variable-alias 'ess-R-modifyiers 'ess-R-modifiers "18.09")
+(define-obsolete-variable-alias 'ess-R-modifyiers 'ess-R-modifiers "18.10")
 (defvar ess-R-modifiers
   '("library" "attach" "detach" "source" "require"
     "setwd" "options" "par" "load" "rm"
@@ -2719,7 +2719,7 @@ This defaults to `default-frame-alist' and is used only when
 the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
   :type 'alist
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 
  ; Faces
@@ -2861,7 +2861,7 @@ See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
 
  ; julia-mode
 (define-obsolete-variable-alias 'inferior-julia-program-name
-  'inferior-julia-program "ESS 18.09")
+  'inferior-julia-program "ESS 18.10")
 (defcustom inferior-julia-program (or (executable-find "julia-basic")
                                       "julia")
   "Executable for Julia.
@@ -2898,7 +2898,7 @@ Created for each process."
 See also `ess-verbose'."
   :group 'ess-proc
   :type 'boolean
-  :package-version '(ess . "18.09"))
+  :package-version '(ess . "18.10"))
 
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
@@ -2937,13 +2937,13 @@ Used to store the values for passing on to newly created buffers.")
 (defvar ess--enable-experimental-projects nil
   "Enable experimental project support in ESS.")
 
-(make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-mode-load-hook "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-speedbar-use-p "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-synchronize-evals "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-eval-visibly-at-end "It is ignored." "ESS 18.09")
-(make-obsolete-variable 'ess-font-lock-mode 'global-font-lock-mode "ESS 18.09")
+(make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-mode-load-hook "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-speedbar-use-p "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-synchronize-evals "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-eval-visibly-at-end "It is ignored." "ESS 18.10")
+(make-obsolete-variable 'ess-font-lock-mode 'global-font-lock-mode "ESS 18.10")
 (provide 'ess-custom)
 
 ;;; ess-custom.el ends here

@@ -629,11 +629,11 @@ Please use `ess-insert-assign'."
         (ess-insert-assign arg)
       (self-insert-command arg))))
 
-(make-obsolete 'ess-smart-S-assign 'ess-insert-assign "ESS 18.09")
+(make-obsolete 'ess-smart-S-assign 'ess-insert-assign "ESS 18.10")
 
 (defun ess-disable-smart-S-assign (&rest _ignore)
   "Disable `ess-insert-assign'."
-  (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.09"))
+  (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.10"))
   (with-no-warnings                   ; Obsolete key variable
     (setq ess-smart-S-assign-key nil)))
 
@@ -801,12 +801,12 @@ return it.  Otherwise, return `ess-help-topics-list'."
 (fset 'S-mode 's-mode)
 
 
-(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.09")
-(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.09")
-(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.09")
+(define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.10")
+(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.10")
 
-(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.09")
-(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "ESS 18.09")
+(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "ESS 18.10")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))

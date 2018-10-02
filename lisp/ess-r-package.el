@@ -454,7 +454,7 @@ If 't' the minor mode auto-activates in R packages. See
 The check is done with `derived-mode-p'."
   :group 'ess-r-package
   :type '(repeat symbol)
-  :package-version '(ess "18.09"))
+  :package-version '(ess "18.10"))
 
 (defcustom ess-r-package-enter-hook nil
   "Normal hook run on entering `ess-r-package-mode'."
