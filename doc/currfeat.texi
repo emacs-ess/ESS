@@ -16,11 +16,11 @@
   @item Batch execution (SAS, BUGS/JAGS)
   @item Use of imenu to provide links to appropriate functions
   @end itemize
-@item Interacting with the process (R family, SAS, Stata, Julia)
+@item Interacting with the process (S family, SAS, Stata, Julia)
   @itemize @bullet
   @item Command-line editing
   @item Searchable Command history
-  @item Command-line completion of R family object names and file names
+  @item Command-line completion of S family object names and file names
   @item Quick access to object lists and search lists
   @item Transcript recording
   @item Interface to the help system
