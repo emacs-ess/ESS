@@ -99,10 +99,11 @@ cleanup-dist:
 	rm -f $(ESSDIR)/etc/.IS.RELEASE $(ESSDIR)/etc/git-ref
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
+
 ##  should only be called manually (if at all):
 cleanup-rel:
-	@rm -f $(ESSDIR)*
-##	@rm -f dist lisp/dist $(ESSDIR)*
+	@rm -rf $(ESSDIR)*
+	@rm -f tarballs dist tag homepage upload rel
 
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
@@ -170,4 +171,3 @@ clean distclean: cleanup-dist
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
-#	rm -f etc/SVN-REVISION*
