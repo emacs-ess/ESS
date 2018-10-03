@@ -126,4 +126,8 @@ GNUTAR=tar
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 
+GPG=$(shell (gpg2 --version > /dev/null 2>&1 && echo gpg2 ) || echo gpg )
+
+
+
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc

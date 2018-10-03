@@ -54,9 +54,13 @@ tarballs: $(ESSDIR)
 	cd doc/ ; $(MAKE) html
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
+	@echo "Signing tgz file"
+	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
+	@echo "Signing zip file"
+	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
 	touch $@
 
 # Create the "release" directory
@@ -122,7 +126,8 @@ ChangeLog: VERSION
 tag:
 	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
 	git pull --tags
-	git tag -a -m'release tagging' v$(ESSVERSION)
+	@echo "Creating tag and signing using $(GPG)"
+	git tag -s -m'release tagging' v$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
 	git push origin v$(ESSVERSION)
 	@touch $@
@@ -149,7 +154,8 @@ rel: ChangeLog dist tag homepage upload
 	touch $@
 
 
-## TODO (when MM has GPG set up properly): add this to 'rel'
+## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
+##     by the down stream maintainers:
 .PHONY: buildrpm
 buildrpm: dist
 	rpmbuild -ta --sign $(ESSDIR).tgz
