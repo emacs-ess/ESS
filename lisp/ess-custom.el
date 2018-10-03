@@ -2937,6 +2937,9 @@ Used to store the values for passing on to newly created buffers.")
 (defvar ess--enable-experimental-projects nil
   "Enable experimental project support in ESS.")
 
+(defvar ess-STERM nil
+  "Placeholder for dialect-specific STERM.")
+
 (make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.10")
 (make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.10")
 (make-obsolete-variable 'ess-mode-load-hook "It is ignored." "ESS 18.10")
