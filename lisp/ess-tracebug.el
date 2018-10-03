@@ -55,8 +55,10 @@
   (require 'cl)
   (require 'cl-lib)
   (require 'tramp))
+(require 'comint)
 (require 'compile)
 (require 'overlay)
+(require 'ring)
 (require 'ess-custom)
 (require 'ess-utils)
 
