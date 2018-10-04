@@ -81,7 +81,6 @@ $(ESSDIR): all RPM.spec cleanup-dist
 #	just in case: update from VERSION:
 	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/; cd ..
 	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
-	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
@@ -153,16 +152,6 @@ upload:
 rel: ChangeLog dist tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 	touch $@
-
-
-## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
-##     by the down stream maintainers:
-.PHONY: buildrpm
-buildrpm: dist
-	rpmbuild -ta --sign $(ESSDIR).tgz
-
-builddeb:
-	dpkg-buildpackage -uc -us -rfakeroot -tc
 
 ## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
