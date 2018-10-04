@@ -2614,7 +2614,7 @@ keywords in the current buffer. See
 (make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
 (defvar ess-S-fl-keyword:prompt
-  (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)
+  (cons (concat "^" inferior-S-prompt) 'ess-highlight-prompt-face)
   "Highlight prompts missed by comint.")
 
 (defvar ess-fl-keyword:matrix-labels
@@ -2725,7 +2725,11 @@ the variable `ess-help-own-frame' is non-nil."
  ; Faces
 ;;;=====================================================
 
-(defconst comint-highlight-prompt 'comint-highlight-prompt)
+(defconst ess-highlight-prompt-face 'ess-highlight-prompt-face)
+(defface ess-highlight-prompt-face
+  '((default (:inherit comint-highlight-prompt)))
+  "Font lock face used to highlight the prompt in inferior buffers."
+  :group 'ess-faces)
 
 (defconst ess-function-call-face 'ess-function-call-face)
 (defface ess-function-call-face
