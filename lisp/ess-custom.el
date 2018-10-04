@@ -2725,6 +2725,8 @@ the variable `ess-help-own-frame' is non-nil."
  ; Faces
 ;;;=====================================================
 
+(defconst comint-highlight-prompt 'comint-highlight-prompt)
+
 (defconst ess-function-call-face 'ess-function-call-face)
 (defface ess-function-call-face
   '((default (:slant normal :inherit font-lock-function-name-face)))
