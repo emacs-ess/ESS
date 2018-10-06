@@ -193,7 +193,7 @@ foobar ¶foobaz()
 ¶`[.foo` <- function(...) NULL
 ¶"[.foo" <- function(...) NULL
 
-##! (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:fun-defs
+##! (with-ess-disabled-font-lock-keyword 'ess-R-fl-keyword:fun-defs
 ##!   (font-lock-ensure)
 ##!   (if (looking-at "\"")
 ##!       (should (eq (face-at-point) 'font-lock-string-face))
@@ -211,7 +211,7 @@ foobar ¶foobaz()
 
 ¶`fun`()
 
-##! (with-ess-toggled-font-lock-keyword 'ess-fl-keyword:fun-calls
+##! (with-ess-enabled-font-lock-keyword 'ess-fl-keyword:fun-calls
 ##!   (font-lock-ensure)
 ##!   (should (eq (face-at-point) 'ess-function-call-face))))
 
@@ -226,16 +226,16 @@ foo ¶%>% bar()
 
 foo ¶%>% bar()
 
-##! (with-ess-toggled-font-lock-keyword 'ess-fl-keyword:operators
-##!   (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:%op%
-##!     (font-lock-ensure)
-##!     (should (eq (face-at-point) 'default))
-##!     (forward-char)
-##!     (should (eq (face-at-point) 'default))))
+##! (with-ess-disabled-font-lock-keyword '(ess-fl-keyword:operators
+##!                                        ess-R-fl-keyword:%op%)
+##!   (font-lock-ensure)
+##!   (should (eq (face-at-point) 'default))
+##!   (forward-char)
+##!   (should (eq (face-at-point) 'default)))
 
 foo %¶>% bar()
 
-##! (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:%op%
+##! (with-ess-disabled-font-lock-keyword 'ess-R-fl-keyword:%op%
 ##!   (font-lock-ensure)
 ##!   (should (eq (face-at-point) 'default)))
 
