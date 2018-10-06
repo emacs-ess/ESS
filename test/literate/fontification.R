@@ -222,13 +222,21 @@ foobar ¶foobaz()
 
 foo ¶%>% bar()
 
-##! (should (not (face-at-point)))
+##! (should (eq (face-at-point) 'default))
 
 foo ¶%>% bar()
 
-##! (ess-font-lock-toggle-keyword 'ess-R-fl-keyword:%op%)
-##! (font-lock-ensure)
-##! (should (eq (face-at-point) 'ess-%op%-face))
+##! (with-ess-toggled-font-lock-keyword 'ess-fl-keyword:operators
+##!   (font-lock-ensure)
+##!   (should (eq (face-at-point) 'default))
+##!   (forward-char)
+##!   (should (eq (face-at-point) 'default)))
+
+foo %¶>% bar()
+
+##! (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:%op%
+##!   (font-lock-ensure)
+##!   (should (eq (face-at-point) 'ess-%op%-face)))
 
 foo ¶%>% bar()
 

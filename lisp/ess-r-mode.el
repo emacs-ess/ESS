@@ -266,8 +266,9 @@ namespace.")
       (put-text-property (nth 8 state) string-end 'ess-r-backquoted t))
     (cond
      ((eq (nth 3 state) ?%)
-      (when (cdr (assq 'ess-R-fl-keyword:%op% ess-R-font-lock-keywords))
-        'ess-%op%-face))
+      (if (cdr (assq 'ess-R-fl-keyword:%op% ess-R-font-lock-keywords))
+          'ess-%op%-face
+        'default))
      ((save-excursion
         (and (cdr (assq 'ess-R-fl-keyword:fun-defs ess-R-font-lock-keywords))
              (ess-goto-char string-end)
