@@ -36,8 +36,7 @@
 (require 'ess-custom)
 (require 'ess-inf)
 (require 'flymake)
-;; TODO: When remove support for Emacs 24, remove the nil t:
-(require 'project nil t)
+(require 'project)
 
 (defcustom ess-r-flymake-linters
   '("closed_curly_linter = NULL"
@@ -102,8 +101,7 @@ the user's home directory.  Return nil if we couldn't find a .lintr file."
         ;; Project root
         ((and (fboundp 'ess-r-package-project)
               (ess-r-package-project)) (expand-file-name ".lintr" (cdr (ess-r-package-project))))
-        ((and (fboundp 'project-roots)  ; checking that project-roots is defined can be removed when drop Emacs 24
-              (project-current)
+        ((and (project-current)
               (project-roots (project-current)))
          (expand-file-name ".lintr" (car (project-roots (project-current)))))
         ;; Home directory

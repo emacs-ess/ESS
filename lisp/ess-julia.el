@@ -366,7 +366,6 @@ It makes underscores and dots word constituent chars.")
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
   "Major mode for editing julia source.  See `ess-mode' for more help."
   (ess-mode ess-julia-customize-alist nil t)
-  ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)

@@ -1,4 +1,4 @@
-ESS supports GNU Emacs versions 24.3 and newer.
+ESS supports GNU Emacs versions 25.1 and newer.
 
 ESS is most likely to work with current/recent versions of the following
 statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.

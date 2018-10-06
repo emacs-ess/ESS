@@ -1197,7 +1197,6 @@ Kill the *ess.dbg.[R_name]* buffer."
                  (redisplay))
              (setq ess--busy-count (1+ (mod  ess--busy-count  (1- (length ess-busy-strings)))))
              (force-mode-line-update)
-             ;; looks like redisplay is necessary for emacs > 24.4
              (redisplay)))))))
 
 ;; (ess--make-busy-prompt-function (get-process "R"))

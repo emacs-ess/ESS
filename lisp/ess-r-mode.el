@@ -45,9 +45,7 @@
 (require 'ess-r-syntax)
 (require 'ess-r-package)
 (require 'ess-trns)
-(when (>= emacs-major-version 25) (require 'ess-r-xref)) ;; Xref API was added in Emacs 25.1
-;; TODO: Remove when we drop support for Emacs 24:
-(declare-function ess-r-xref-backend "ess-r-xref")
+(require 'ess-r-xref)
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
 ;; TODO: Refactor so as to not rely on dynamic scoping.  After that
@@ -565,8 +563,7 @@ will be prompted to enter arguments interactively."
     (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
     (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
     (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-    (when (>= emacs-major-version 25)
-      (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local))
+    (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
     (setq comint-input-sender 'inferior-ess-r-input-sender)
 
     (if gdbp
@@ -627,12 +624,10 @@ Executed in process buffer."
   (setq ess-customize-alist ess-r-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-mode ess-r-customize-alist proc-name)
-  ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  (when (>= emacs-major-version 25)
-    (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local))
+  (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (when ess-imenu-use-S

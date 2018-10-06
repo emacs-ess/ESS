@@ -135,11 +135,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
     (setq-local font-lock-fontify-region-function nil)
     (setq-local font-lock-unfontify-region-function nil))
   (when font-lock-mode
-    (if (fboundp 'font-lock-flush)
-        (font-lock-flush)
-      ;; font-lock-fontify-buffer call can be removed when we drop
-      ;; support for Emacs older than 25.1
-      (with-no-warnings (font-lock-fontify-buffer))))
+    (font-lock-flush))
   ;; Autofill
   (setq-local paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
   (setq-local paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
@@ -670,10 +666,7 @@ facilitate saving that file."
     (Rd-mode)
     ;; why should the following be needed here? [[currently has no effect !!]]
     ;; usually in a *.Rd file fontification happens automatically
-    (if (fboundp 'font-lock-ensure)
-        (font-lock-ensure)
-      ;; emacs <= 24.x.y:
-      (with-no-warnings (font-lock-fontify-buffer)))))
+    (font-lock-ensure)))
 
 
 (defun ess-roxy-guess-str (&optional not-here)

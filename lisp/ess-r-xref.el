@@ -5,7 +5,6 @@
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 ;;
 ;; Keywords: languages, statistics, xref
-;; Package-Requires: ((emacs "25"))
 ;;
 ;; This file is part of ESS.
 ;;
@@ -28,13 +27,7 @@
 
 ;;; Code:
 
-(when (>= emacs-major-version 25)
-  (require 'subr-x)
-  (require 'xref))
-;; Cludge to silence the byte compiler until we drop support for Emacs 24.
-(declare-function xref-make "xref")
-(declare-function xref-make-buffer-location "xref")
-(declare-function xref-make-file-location "xref")
+(require 'xref)
 (require 'ess-inf)
 (require 'ess-utils)
 (require 'ess-r-package)

@@ -376,7 +376,7 @@ name. PROJECTILE-ROOT is directory name returned by
 has been found use `ess-gen-proc-buffer-name:simple'. See
 `ess-gen-proc-buffer-name-function'."
   (let ((proj (and (fboundp 'projectile-project-p)
-		           (projectile-project-p))))
+		   (projectile-project-p))))
     (if proj
         (format "*%s:%s*" proc-name (file-name-nondirectory
                                      (directory-file-name proj)))
@@ -391,7 +391,7 @@ name. PROJECTILE-ROOT is directory name returned by
 has been found, use `ess-gen-proc-buffer-name:directory'. See
 `ess-gen-proc-buffer-name-function'."
   (let ((proj (and (fboundp 'projectile-project-p)
-		           (projectile-project-p))))
+		   (projectile-project-p))))
     (if proj
         (format "*%s:%s*" proc-name (file-name-nondirectory
                                      (directory-file-name proj)))
@@ -2322,16 +2322,7 @@ suitable to send to the inferior process (e.g. \"options(width=80, length=999999
            ;; approximate number of characters that fit into line.
            (let* ((wedges (window-inside-pixel-edges))
                   (wwidth (- (nth 2 wedges) (nth 0 wedges)))
-                  (nchars (if (fboundp 'default-font-width)
-                              (floor (/ wwidth (default-font-width)))
-                            ;; emacs 24
-                            (if (display-graphic-p)
-                                (let* ((r (/ (float (frame-char-height)) (frame-char-width)))
-                                       (charh (aref (font-info (face-font 'default)) 3))
-                                       (charw (/ charh  r)))
-                                  (- (floor (/ wwidth charw)) 1))
-                              ;; e.g., no X11 as in  'emacs -nw'
-                              (- (window-width) 2)))))
+                  (nchars (floor (/ wwidth (default-font-width)))))
              (setq command (format ess-execute-screen-options-command
                                    nchars))))
           ((eql 'frame opt)
@@ -2701,19 +2692,19 @@ name that contains :,$ or @."
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	      (and
-	       (not (process-get proc 'busy))
-	       (with-current-buffer (ess-command (format ess-funargs-command
-						                             (ess-quote-special-chars funname))
-					                         nil nil nil nil proc)
-	         (goto-char (point-min))
-	         (when (re-search-forward "(list" nil t)
-	           (goto-char (match-beginning 0))
-	           (setq args (ignore-errors (eval (read (current-buffer)))))
-	           (if args
-		           (setcar args (cons (car args) (current-time)))))
-	         ;; push even if nil
-	         (puthash (substring-no-properties funname) args cache)))))))
+	  (and
+	   (not (process-get proc 'busy))
+	   (with-current-buffer (ess-command (format ess-funargs-command
+						     (ess-quote-special-chars funname))
+					     nil nil nil nil proc)
+	     (goto-char (point-min))
+	     (when (re-search-forward "(list" nil t)
+	       (goto-char (match-beginning 0))
+	       (setq args (ignore-errors (eval (read (current-buffer)))))
+	       (if args
+		   (setcar args (cons (car args) (current-time)))))
+	     ;; push even if nil
+	     (puthash (substring-no-properties funname) args cache)))))))
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.
 ;;; rmh: Wed 5 Jan 2005 --- bring it back for use on Windows
@@ -2772,7 +2763,6 @@ directory in the `load-path'."
   (ess-get-modtime-list))
 
 (defun ess-filename-completion ()
-  ;; > emacs 24
   "Return completion only within string or comment."
   (save-restriction ;; explicitely handle inferior-ess
     (ignore-errors
