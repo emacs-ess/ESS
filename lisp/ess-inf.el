@@ -1847,9 +1847,6 @@ to continue it."
                             ess-history-directory))
     (comint-read-input-ring))
 
-  ;; don't font-lock strings over process prompt
-  (setq-local syntax-begin-function ;; fixme: obsolete in emacs 25.1
-              #'inferior-ess-last-prompt-end)
   (setq-local font-lock-fontify-region-function
               #'inferior-ess-fontify-region)
 
@@ -1886,8 +1883,6 @@ to continue it."
 
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
 
-  ;;; Keep <tabs> out of the code.
-  (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
   (add-hook 'window-configuration-change-hook #'ess-set-width nil t)
   (setq-local indent-tabs-mode nil)
 
