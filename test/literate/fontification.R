@@ -195,7 +195,9 @@ foobar ¶foobaz()
 
 ##! (with-ess-toggled-font-lock-keyword 'ess-R-fl-keyword:fun-defs
 ##!   (font-lock-ensure)
-##!   (should (eq (face-at-point) font-lock-string-face))))
+##!   (if (looking-at "\"")
+##!       (should (eq (face-at-point) 'font-lock-string-face))
+##!     (should (not (face-at-point))))))
 
 ¶`[.foo` <- function(...) NULL
 ¶"[.foo" <- function(...) NULL
