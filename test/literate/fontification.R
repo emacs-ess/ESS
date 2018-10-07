@@ -241,3 +241,35 @@ foo %¶>% bar()
 
 foo ¶%>% bar()
 
+
+### 14 Modulo operator is fontified independently from special ops ---
+
+foo ¶%% bar
+
+##! (with-ess-disabled-font-lock-keyword 'ess-R-fl-keyword:%op%
+##!   (with-ess-enabled-font-lock-keyword 'ess-fl-keyword:operators
+##!     (font-lock-ensure)
+##!     (should (eq (face-at-point) 'ess-operator-face))
+##!     (forward-char)
+##!     (should (eq (face-at-point) 'ess-operator-face))))
+
+foo %¶% bar
+
+##! (with-ess-enabled-font-lock-keyword '(ess-R-fl-keyword:%op%
+##!                                       ess-fl-keyword:operators)
+##!   (font-lock-ensure)
+##!     (should (eq (face-at-point) 'ess-operator-face))
+##!     (forward-char)
+##!     (should (eq (face-at-point) 'ess-operator-face)))
+
+foo %¶% bar
+
+##! (with-ess-disabled-font-lock-keyword '(ess-R-fl-keyword:%op%
+##!                                        ess-fl-keyword:operators)
+##!   (font-lock-ensure)
+##!   (should (not (face-at-point)))
+##!   (forward-char)
+##!   (should (not (face-at-point))))
+
+foo %¶% bar
+
