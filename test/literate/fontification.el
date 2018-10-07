@@ -9,12 +9,14 @@
   (declare (indent 2)
            (debug (&rest form)))
   `(progn
-     (let ((keywords (if (listp ,keywords)
-                         ,keywords
-                       (list ,keywords)))
-           toggled)
+     (let* ((enable ,enable)
+            (keywords ,keywords)
+            (keywords (if (listp keywords)
+                          keywords
+                        (list keywords)))
+            toggled)
        (mapc (lambda (kw)
-               (if (cdr (assq kw ess-R-font-lock-keywords))
+               (if (not (eq enable (cdr (assq kw ess-R-font-lock-keywords))))
                    (progn
                      (ess-font-lock-toggle-keyword kw)
                      (push kw toggled))))
@@ -26,9 +28,9 @@
 (defmacro with-ess-disabled-font-lock-keyword (keywords &rest body)
   (declare (indent 1)
            (debug (&rest form)))
-  `(with-ess-toggled-font-lock-keyword t ,keywords ,@body))
+  `(with-ess-toggled-font-lock-keyword nil ,keywords ,@body))
 
 (defmacro with-ess-enabled-font-lock-keyword (keywords &rest body)
   (declare (indent 1)
            (debug (&rest form)))
-  `(with-ess-toggled-font-lock-keyword nil ,keywords ,@body))
+  `(with-ess-toggled-font-lock-keyword t ,keywords ,@body))
