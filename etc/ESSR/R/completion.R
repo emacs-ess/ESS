@@ -1,5 +1,11 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
+
+if(is.function(FN <- utils:::.addFunctionInfo)) {
+    FN(c = c("recursive", "use.names")) ; rm(FN)
+}
+
+
 .ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
     tryCatch(base::eval(base::parse(text=str), envir = env),
