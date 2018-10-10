@@ -1,9 +1,14 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
-
-if(is.function(FN <- utils:::.addFunctionInfo)) {
-    FN(c = c("recursive", "use.names")) ; rm(FN)
-}
+##' Robust version of
+##'    utils:::.addFunctionInfo(c = c("recursive", "use.names"))
+local({
+    U <- asNamespace("utils"); fn <- ".addFunctionInfo"
+    EX <- exists(fn, envir=U)
+    if(EX && is.function(FN <- get(fn, envir=U))) {
+        FN(c = c("recursive", "use.names")); ##dbg: cat("Calling utils:::",fn,"(c = ...)\n")
+    }
+})
 
 
 .ess_eval <- function(str, env = globalenv()) {
@@ -52,7 +57,7 @@ if(is.function(FN <- utils:::.addFunctionInfo)) {
 .ess_funargs <- function(funname) {
     if(.ess.Rversion > '2.14.1') {
         ## temporarily disable JIT compilation and errors
-        comp <- compiler::enableJIT(0) 
+        comp <- compiler::enableJIT(0)
         op <- options(error=NULL)
         on.exit({ options(op); compiler::enableJIT(comp) })
     }
