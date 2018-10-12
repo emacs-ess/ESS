@@ -25,7 +25,8 @@ defer loading your ESS config, you may want to do something like
 @code{(with-require-after-load "ess" <ess-config-here>)} in your Emacs
 init file. Users of the popular @code{use-package} Emacs package can
 now do @code{(use-package ess :defer t)} to take advantage of this
-behavior.
+behavior. @xref{Activating and Loading ESS,,, ess,} for more
+information on this feature.
 
 @item ESS now respects Emacs conventions for keybindings.
 This means that The @code{C-c [letter]} bindings have been

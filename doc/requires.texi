@@ -1,12 +1,7 @@
+ESS supports GNU Emacs versions 24.3 and newer.
+
 ESS is most likely to work with current/recent versions of the following
 statistical packages: R/S-PLUS, SAS, Stata, OpenBUGS and JAGS.
 
-ESS supports current, and recent, stable versions of GNU Emacs
-(currently, 24.3 or higher; alpha/beta/pre-release versions are NOT SUPPORTED).  
-
-Due to XEmacs lacking some features that ESS requires, ESS
-support of XEmacs ended with ESS 12.04-4.
-
 To build the PDF documentation, you will need a version of TeX Live or
-texinfo that includes texi2dvi (BEWARE: recent TeX Live, and some
-texinfo RPMs, do NOT include texi2dvi).
+texinfo that includes texi2dvi.

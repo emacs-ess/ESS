@@ -1,7 +1,0 @@
-All recent released versions are meant to be release-quality versions.
-While some new features are being introduced, we are cleaning up and
-improving the interface.  We know that there are many remaining
-opportunities for documentation improvements, but all contributors are
-volunteers and time is precious. Patches or suggested fixes with bug
-reports are much appreciated!
-

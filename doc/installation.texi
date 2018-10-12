@@ -1,67 +1,71 @@
-@subsection Packaged ESS
+@include requires.texi
 
-You may install ESS from Emacs by using @code{M-x package-install} if
-you add the third-party package archive MELPA to
-@code{package-archives}. Instructions on how to do so are found on
-@uref{https://melpa.org/, MELPA's website}. MELPA also hosts
-MELPA-stable with stable ESS builds. You may choose between MELPA with
-the latest and greatest features (and bugs) or MELPA-stable, which may
-lag a bit behind but should be more stable.
+There are two main methods used for installing ESS. You may install from
+a third-party repository or from source code. Once you install it, you
+must also activate or load ESS in each Emacs session, though
+installation from a third-party repository likely takes care of that for
+you. See @ref{Activating and Loading ESS} for more details.
 
-Alternatively, many GNU/Linux distributions package and distribute ESS,
-check with your distribution to see if this is the case.  You may need
-to add the above require statement to your configuration file in order
-to activate ESS.
+@menu
+* Installing from a third-party repository::
+* Installing from source::
+* Activating and Loading ESS::
+* Check Installation::
+@end menu
 
-You will need to add
+@node Installing from a third-party repository
+@section Installing from a third-party repository
+
+ESS is packaged by many third party repositories. Many GNU/Linux
+distributions package it, usually with the name ``emacs-ess'' or
+similar.
+
+ESS is also available through Milkypostman’s Emacs Lisp Package Archive
+(MELPA), a popular repository for Emacs packages. Instructions on how to
+do so are found on @uref{https://melpa.org/, MELPA's website}. MELPA
+also hosts MELPA-stable with stable ESS builds. You may choose between
+MELPA with the latest and greatest features (and bugs) or MELPA-stable,
+which may lag a bit behind but should be more stable.
+
+After installing, users should make sure ESS is activated or loaded in
+each Emacs session. See @ref{Activating and Loading ESS}. Depending on
+install method, this may be taken care of automatically.
+
+@node Installing from source
+@section Installing from source
+
+Stable versions of ESS are available at the
+@uref{https://ess.r-project.org, ESS web page} as a .tgz file or .zip
+file. ESS releases are GPG-signed, you should check the signature by
+downloading the accompanying @code{.sig} file and doing:
 
 @example
-(require 'ess-site)
+gpg --verify ess-18.10.tgz.sig
 @end example
 
-@noindent
-to your Emacs configuration file in order to activate ESS. Instead of
-activating ESS when Emacs starts up (which can take some time), you
-can load ESS when needed by loading the autoload file:
-
-@example
-(load "ess-autoloads.el")
-@end example
-
-Users of the nonfree operating systems macOS and Windows may be
-interested in downloading the Emacs binary by Vincent Goulet:
-@enumerate
-@item macOS
-@uref{https://vigou3.github.io/emacs-modified-macos/, Emacs Modified for macOS}
-@item Windows
-@uref{https://vigou3.github.io/emacs-modified-windows/, Emacs Modified for Windows}.
-@end enumerate
-
-@subsection From source
-
-Users who wish to install ESS from the source code may follow these instructions:
-
-@enumerate
-@item Obtain the ESS source files.
-
-@xref{Latest Version,,, ESS, ESS}
+Alternatively, you may download the git repository. ESS is currently
+hosted on Github: @uref{https://github.com/emacs-ess/ESS}. @code{git
+clone https://github.com/emacs-ess/ESS.git} will download it to a new
+directory @code{ESS} in the current working directory.
 
 We will refer to the location of the ESS source files as
 @file{/path/to/ESS/} hereafter.
 
-@item @b{Optionally}, compile elisp files and build the documentation:
+After installing, users should make sure they activate or load ESS in
+each Emacs session, see @ref{Activating and Loading ESS}
+
+Optionally, compile elisp files, build the documentation, and the
+autoloads:
 @example
 cd /path/to/ESS/
 make
 @end example
-Without this step, info, pdf and html documentation and reference card
+Without this step the documentation, reference card, and autoloads
 will not be available. Uncompiled ESS will also run slower.
 
-@item @b{Optionally}, install site-wide:
-
-You may make ESS available to all users of a machine by installing it
-site-wide. To do so, run @code{make install}. You might need
-administrative privileges:
+Optionally, you may make ESS available to all users of a machine by
+installing it site-wide. To do so, run @code{make install}. You might
+need administrative privileges:
 
 @example
 make install
@@ -72,38 +76,46 @@ run correctly on macOS, you will need to adjust the @file{PREFIX}
 path in @file{Makeconf}. The necessary code and instructions are
 commented in that file.
 
-@item Initialize ESS
+@node Activating and Loading ESS
+@section Activating and Loading ESS
 
-If you have performed the @code{make install} step from above, add:
+After installing ESS, you must activate or load it each Emacs session.
+ESS can be autoloaded, and if you used a third-party repository (such as
+your Linux distribution or MELPA) to install, you can likely skip this
+section and proceed directly to @ref{Check Installation}
+
+Otherwise, you may need to add the path to ESS to @code{load-path} with:
+
+@example
+(add-to-list 'load-path "/path/to/ESS/lisp")
+@end example
+
+You then need to decide whether to take advantage of deferred loading
+(which will result in a faster Emacs startup time) or require ESS when
+Emacs is loaded. To autoload ESS when needed (note that if installed
+from source, you must have run @code{make}):
+
+@example
+(load "ess-autoloads")
+@end example
+
+To require ESS on startup, you can either put
 
 @example
 (require 'ess-site)
 @end example
 
-to your Emacs configuration file. Otherwise, you should add
-@file{/path/to/ESS/lisp/} to your Emacs load path and then load ESS with
-the following lines in your Emacs configuration file:
-
-@example
-(add-to-list 'load-path "/path/to/ESS/lisp/")
-(require 'ess-site)
-@end example
-
-ess-site.el loads all ESS languages.  If you only want to load support
-for R, you may use
+or
 
 @example
 (require 'ess-r-mode)
 @end example
 
-@noindent
-instead of ess-site.  Note that support for loading only part of ESS is
-recommended only for experienced Emacs users.
+In your configuration file, depending on whether you want all ESS
+features or only R related features.
 
-Instead of requiring all or part of ESS at startup, you may want to
-load the autoloads file to defer loading. See above.
-
-@item Check installation
-Restart your Emacs and check that ESS was loaded from a correct
+@node Check Installation
+@section Check Installation
+Restart Emacs and check that ESS was loaded from a correct
 location with @code{M-x ess-version}.
-@end enumerate
+
