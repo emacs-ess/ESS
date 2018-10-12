@@ -4,6 +4,14 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item smart-underscore and 'ess-smart-S-assign-key' have been removed.
+Users who liked the previous behavior (i.e. underscore inserting
+``<-'') should bind @code{ess-insert-assign} to the underscore in
+their Emacs initialization file. For example, @code{(define-key
+ess-mode-map "_" #'ess-insert-assign)} and @code{(define-key
+inferior-ess-mode-map "_" #'ess-insert-assign)} will activate it in
+all ESS buffers. 
+
 @item New option ess-auto-width controls setting the width option on window changes.
 Users can change it to 'frame, 'window, or an integer. See the
 docstring for details. @code{ess-auto-width-visible} controls

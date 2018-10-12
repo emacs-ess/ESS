@@ -603,9 +603,9 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
 (defun ess-insert-assign (arg)
   "Insert the first element of `ess-assign-list' unless in string or comment.
 If the character before point is the first element of
-`ess-assign-list', replace it with the last character typed. If
-`ess-smart-S-assign-key' is nil, do `self-insert-command' using
-ARG as the number of times to insert."
+`ess-assign-list', replace it with the last character typed.
+
+If `ess-language' is not \"S\", call `self-insert-command' with ARG."
   (interactive "p")
   (if (string= ess-language "S")
       (let* ((assign (car ess-assign-list))
@@ -620,22 +620,9 @@ ARG as the number of times to insert."
               (t (insert assign))))
     (funcall #'self-insert-command arg)))
 
-(defun ess-smart-S-assign (arg)
-  "Insert `ess-smart-S-assign-key'.
-Please use `ess-insert-assign'."
-  (interactive "p")
-  (with-no-warnings                   ; Obsolete key variable
-    (if ess-smart-S-assign-key
-        (ess-insert-assign arg)
-      (self-insert-command arg))))
-
-(make-obsolete 'ess-smart-S-assign 'ess-insert-assign "ESS 18.10")
-
-(defun ess-disable-smart-S-assign (&rest _ignore)
-  "Disable `ess-insert-assign'."
-  (declare (obsolete "Use ess-smart-S-assign-key instead." "ESS 18.10"))
-  (with-no-warnings                   ; Obsolete key variable
-    (setq ess-smart-S-assign-key nil)))
+;; In case people had this in their config don't cause errors:
+(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-disable-smart-S-assign #'ignore "ESS 18.10")
 
 (defun ess-add-MM-keys ()
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and

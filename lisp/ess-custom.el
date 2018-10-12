@@ -529,16 +529,6 @@ ess-smart-comma only, but will be enriched in the near future.")
 Used to avoid annoying jumping by ess-eval.*-and-step to end of
 buffer or end chunks etc.")
 
-(defcustom ess-smart-S-assign-key "_"
-  "Key used by `ess-smart-S-assign'.
-Should be nil or a \"simple\" key, in other words no key
-modifiers.
-
-This variable is deprecated and will be removed in the future.
-Please bind `ess-insert-assign' in `ess-mode-map' to your key of
-choice with `define-key' or similar."
-  :group 'ess-S
-  :type '(choice (const :tag "Nothing" :value nil) string))
 (make-obsolete-variable 'ess-smart-S-assign-key nil "ESS 18.10")
 
 (defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")

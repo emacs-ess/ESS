@@ -5,6 +5,7 @@
 
 foo¶
 
+##! (define-key ess-mode-map "_" #'ess-insert-assign)
 ##! "_"
 
 foo <- ¶
@@ -13,40 +14,6 @@ foo <- ¶
 
 foo_¶
 
-##> "_"
-
-foo_ <- ¶
-
-
-### 1b Can set `ess-smart-S-assign` to nil at any time ---------------
-
-foo¶
-
-##! (setq ess-smart-S-assign-key nil)
-##! "_"
-
-foo_¶
-
-##> "_"
-
-foo__¶
-
-##> (setq ess-smart-S-assign-key "_") ; Reset
-##> "_"
-
-foo__ <- ¶
-
-
-### 2 Unbinding smart key --------------------------------------------
-
-foo¶
-
-##! (define-key ess-mode-map "_" nil)
-##! "_"
-
-foo_¶
-
-##> (define-key ess-mode-map "_" #'ess-smart-S-assign) ; Reset
 ##> "_"
 
 foo_ <- ¶
@@ -110,6 +77,7 @@ foo-¶
 
 foo¶
 
+##! (local-set-key "_" #'ess-insert-assign)
 ##! (setq-local ess-assign-list '(" <~ "))
 ##! "_"
 
