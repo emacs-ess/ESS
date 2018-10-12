@@ -2530,7 +2530,7 @@ for an example.")
   "Font lock for equal sign (=).")
 
 (defvar ess-fl-keyword:operators
-  (cons "[-=+></%]+" 'ess-operator-face)
+  (cons "[-=+></]+" 'ess-operator-face)
   "Operators.")
 
 (defvar ess-S-fl-keyword:modifiers
