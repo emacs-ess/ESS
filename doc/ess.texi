@@ -617,6 +617,15 @@ frame, customize the variable @code{inferior-ess-own-frame}.
 Alternatively, change @code{inferior-ess-same-window} if you wish the
 process to appear within another window of the current frame.
 
+@vindex ess-auto-width
+@vindex ess-auto-width-visible
+
+ESS can set the width option of inferior processes automatically when
+the window configuration changes. To do so, set @code{ess-auto-width}
+to a non-nil value. By default, the change will not be shown in the
+inferior buffer. If you want it to be shown, set
+@code{ess-auto-width-visible} to a non-nil value.
+
 @node Entering commands
 @chapter Interacting with the ESS process
 @cindex entering commands
