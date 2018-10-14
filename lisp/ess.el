@@ -741,7 +741,7 @@ Function defined using `ess-define-runner'."
                    (let ((inferior-SAS-program (or path name)))
                      (require 'ess-sas-d)
                      (SAS))))))))
-
+;;;###autoload
 (defun ess-version ()
   "Return a string with ESS version information."
   (interactive)

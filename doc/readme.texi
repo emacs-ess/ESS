@@ -91,13 +91,6 @@ Table of Contents
 
 @include requires.texi
 
-@node Latest Version, Installation, Requirements, General Information
-@comment  node-name,  next,  previous,  up
-@section Getting the Latest Version
-
-@include getting.texi
-@c NOTE: The above INCLUDES inst_svn.texi (Subversion/SVN Installation)
-
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
 @node Installation, Starting up, Latest Version, General Information
 @comment  node-name,  next,  previous,  up

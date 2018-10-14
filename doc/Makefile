@@ -19,10 +19,10 @@ TEXI2PDF = LANG=C texi2dvi --pdf
 #### no user servicable parts beyond this point ####
 
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi \
-	credits.texi currfeat.texi ess.texi ess-defs.texi getting.texi \
+	credits.texi currfeat.texi ess.texi ess-defs.texi \
 	help-s.texi help-sas.texi installation.texi \
 	license.texi mailing.texi onewfeat.texi news.texi onews.texi \
-	newfeat.texi requires.texi stabilty.texi help-bugs.texi \
+	newfeat.texi requires.texi help-bugs.texi \
         help-jags.texi allnews.texi Makefile ../Makeconf ../VERSION
 
 ESSINFONODE1='* ESS: (ess).'

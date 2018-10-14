@@ -16,7 +16,7 @@ ESS version
 @c                                 ~~~~~~~~~~~~~~
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
 @author M. Maechler, R.A. Sparapani, S.J. Eglen,
-@author S.P. Luque, H. Redestig, V. Spinu and L. Henry)
+@author S.P. Luque, H. Redestig, V. Spinu, L. Henry, and J.A. Branham)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
@@ -69,7 +69,8 @@ by  A.J. Rossini,
     S.P. Luque,
     H. Redestig,
     V. Spinu,
-and L. Henry.
+    L. Henry,
+and J.A. Branham.
 @end display
 
 @c (Formerly: Doug
@@ -87,12 +88,13 @@ knowledge.  ESS assists in interactive and batch execution of statements
 written in these statistical analysis languages.
 @end quotation
 
+@include license.texi
+
 @end ifnottex
 
 @menu
 * Introduction::                Overview of features provided by this package
 * Installation::                Installing ESS on your system
-
 * Interactive ESS::             Interacting with statistical programs
 * Entering commands::           Interacting with the ESS process
 * Evaluating code::             Sending code to the ESS process
@@ -102,7 +104,6 @@ written in these statistical analysis languages.
 * Completion::                  Various completion mechanisms
 * Developing with ESS::         Tools for package development and debugging
 * Extras::                      Other ESS features for the S family
-
 * ESS for R::                   Overview of ESS features for the S family
 * ESS for SAS::
 * ESS for BUGS::
@@ -110,8 +111,6 @@ written in these statistical analysis languages.
 * Mailing lists/bug reports::   How to get assistance with ESS
 * Customization::               Customizing ESS
 * Indices::
-@c @detailmenu
-@c
 @end menu
 
 @node Introduction
@@ -337,44 +336,7 @@ defer this section until you are more familiar with ESS.
 @node Installation
 @chapter Installing ESS on your system
 @cindex installation
-
-The following section details those steps necessary to get ESS running
-on your system.
-
-@menu
-* Latest version::              Getting the latest version of ESS
-* Installation instructions::
-* License::  Free software under the GPL version 2+
-* Stability::
-* Requirements::
-@end menu
-
-@node Latest version
-@section Getting the latest version of ESS
-
-@include getting.texi
-
-@subsection Packaged ESS
-You may also be interested in obtaining ESS through your operating
-system's package manager or an Emacs Lisp Package Archive,
-@xref{Installation instructions}.
-
-@node Installation instructions
-@section Installation instructions
 @include installation.texi
-
-@node License
-@section License
-@include license.texi
-
-@node Stability
-@section Stability
-@include stabilty.texi
-
-@node Requirements
-@section Requirements
-@include requires.texi
-
 
 @node Interactive ESS
 @chapter Interacting with statistical programs

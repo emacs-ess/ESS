@@ -47,7 +47,7 @@ please read the README files that come with ESS.
 
 @node Latest Version, Current Features, Announce, Announce
 @section Getting the Latest Version
-@include getting.texi
+@include installation.texi
 
 @node Current Features, Requirements, Latest Version, Announce
 @section Current Features
