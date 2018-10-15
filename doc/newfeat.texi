@@ -17,6 +17,14 @@ Users can change it to 'frame, 'window, or an integer. See the
 docstring for details. @code{ess-auto-width-visible} controls
 visibility.
 
+@item Options for 'ess-gen-proc-buffer-name-function' have been renamed.
+ess-gen-proc-buffer-name:projectile-or-simple was renamed to
+ess-gen-proc-buffer-name:project-or-simple and
+ess-gen-proc-buffer-name:projectile-or-directory was renamed to
+ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
+these now rely on project.el (included with Emacs) rather than
+projectile.el, which is a third-party package.
+
 @end itemize
 
 Changes and New Features in 18.10:

@@ -35,12 +35,14 @@
 
  ; Requires and autoloads
 (eval-when-compile
-  (require 'tramp))
+  (require 'tramp)
+  (require 'subr-x))
 (require 'ess-generics)
 (require 'ess-utils)
 (require 'newcomment)
 (require 'comint)
 (require 'overlay)
+(require 'project)
 (require 'compile)
 (require 'format-spec)
 (require 'ess-tracebug)
@@ -367,35 +369,38 @@ name. Abbreviation is performed by `abbreviate-file-name'. See
 `ess-gen-proc-buffer-name-function'."
   (format "*%s:%s*" proc-name (abbreviate-file-name default-directory)))
 
-(defun ess-gen-proc-buffer-name:projectile-or-simple (proc-name)
-  "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
-PROC-NAME is a string representing an internal process
-name. PROJECTILE-ROOT is directory name returned by
-`projectile-project-p' if defined. If
-`projectile-project-p' is undefined or no project directory
-has been found use `ess-gen-proc-buffer-name:simple'. See
+(defun ess-gen-proc-buffer-name:project-or-simple (proc-name)
+  "Function to generate buffer name in the form *PROC-NAME:PROJECT-ROOT*.
+PROC-NAME is a string representing an internal process name.
+PROJECT-ROOT is directory name returned by `project-roots'. If no
+project directory has been found use
+`ess-gen-proc-buffer-name:simple'. See
 `ess-gen-proc-buffer-name-function'."
-  (let ((proj (and (fboundp 'projectile-project-p)
-		   (projectile-project-p))))
-    (if proj
-        (format "*%s:%s*" proc-name (file-name-nondirectory
-                                     (directory-file-name proj)))
-      (ess-gen-proc-buffer-name:simple proc-name))))
+  (if-let ((p (project-current))
+           (proj (car (project-roots p))))
+      (format "*%s:%s*" proc-name (file-name-nondirectory
+                                   (directory-file-name proj)))
+    (ess-gen-proc-buffer-name:simple proc-name)))
 
-(defun ess-gen-proc-buffer-name:projectile-or-directory (proc-name)
-  "Function to generate buffer name in the form *PROC-NAME:PROJECTILE-ROOT*.
-PROC-NAME is a string representing an internal process
-name. PROJECTILE-ROOT is directory name returned by
-`projectile-project-p' if defined. If
-`projectile-project-p' is undefined, or no project directory
-has been found, use `ess-gen-proc-buffer-name:directory'. See
+(defun ess-gen-proc-buffer-name:project-or-directory (proc-name)
+  "Function to generate buffer name in the form *PROC-NAME:PROJECT-ROOT*.
+PROC-NAME is a string representing an internal process name.
+PROJECT-ROOT is directory name returned by `project-roots' if
+defined. If no project directory has been found, use
+`ess-gen-proc-buffer-name:directory'. See
 `ess-gen-proc-buffer-name-function'."
-  (let ((proj (and (fboundp 'projectile-project-p)
-		   (projectile-project-p))))
-    (if proj
-        (format "*%s:%s*" proc-name (file-name-nondirectory
-                                     (directory-file-name proj)))
-      (ess-gen-proc-buffer-name:directory proc-name))))
+  (if-let ((p (project-current))
+           (proj (car (project-roots p))))
+      (format "*%s:%s*" proc-name (file-name-nondirectory
+                                   (directory-file-name proj)))
+    (ess-gen-proc-buffer-name:directory proc-name)))
+
+;; This ensures that people who have this set in their init file don't
+;; get errors about undefined functions after upgrading ESS:
+(define-obsolete-function-alias 'ess-gen-proc-buffer-name:projectile-or-simple
+  'ess-gen-proc-buffer-name:project-or-simple "ESS 19.04")
+(define-obsolete-function-alias 'ess-gen-proc-buffer-name:projectile-or-directory
+  'ess-gen-proc-buffer-name:project-or-directory "ESS 19.04")
 
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC.

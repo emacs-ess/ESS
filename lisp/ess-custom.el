@@ -1554,30 +1554,35 @@ process buffer."
   :group 'ess
   :type 'boolean)
 
-(defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:projectile-or-simple
-  "Function used for generation of the buffer name of the newly created ESS process.
+(defcustom ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:project-or-simple
+  "Function used for generation of the buffer name of the new ESS processes.
 It should accept one argument PROC-NAME, a string specifying
 internal process name (R, R:2, etc).
 
 Provided default options are:
 
-  `ess-gen-proc-buffer-name:simple'    -- *proc*
-  `ess-gen-proc-buffer-name:directory' -- *proc:dir*
-  `ess-gen-proc-buffer-name:abbr-long-directory' -- *proc:abbr-long-dir*
-  `ess-gen-proc-buffer-name:projectile-or-simple'    -- *proc:projectile-root* or *proc*.
-  `ess-gen-proc-buffer-name:projectile-or-directory' -- *proc:projectile-root* or *proc:dir*.
+`ess-gen-proc-buffer-name:simple'
+ *proc*
 
-Strategies based on projectile default to built-in strategies if
-projectile.el is not loaded or there is no project root in the
-current directory.
-"
+`ess-gen-proc-buffer-name:directory'
+  *proc:dir*
+`ess-gen-proc-buffer-name:abbr-long-directory'
+  *proc:abbr-long-dir*
+`ess-gen-proc-buffer-name:project-or-simple'
+  *proc:project-root* or *proc*
+`ess-gen-proc-buffer-name:project-or-directory'
+  *proc:project-root* or *proc:dir*
+
+Strategies based on projects default to built-in strategies if
+there is no project root in the current directory."
   :group 'ess
   :type '(choice (const :tag "*proc*"     ess-gen-proc-buffer-name:simple)
                  (const :tag "*proc:dir*" ess-gen-proc-buffer-name:directory)
                  (const :tag "*proc:abbr-long-dir*" ess-gen-proc-buffer-name:abbr-long-directory)
-                 (const :tag "*proc:projectile-root* or *proc*"     ess-gen-proc-buffer-name:projectile-or-simple)
-                 (const :tag "*proc:projectile-root* or *proc:dir*" ess-gen-proc-buffer-name:projectile-or-directory)
-                 function))
+                 (const :tag "*proc:project-root* or *proc*"     ess-gen-proc-buffer-name:project-or-simple)
+                 (const :tag "*proc:project-root* or *proc:dir*" ess-gen-proc-buffer-name:project-or-directory)
+                 function)
+  :package-version '(ess . "19.04"))
 
 
 (defcustom ess-kermit-command "gkermit -T"
