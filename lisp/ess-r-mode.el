@@ -285,7 +285,7 @@ namespace.")
              (ess-looking-at "(")))
       ess-function-call-face)
      ((eq (nth 3 state) ?`)
-      nil)
+      'default)
      ((nth 3 state)
       font-lock-string-face)
      (t
