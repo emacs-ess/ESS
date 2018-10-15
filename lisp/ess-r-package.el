@@ -29,7 +29,8 @@
 ;; see apropriate documentation section of ESS user manual
 
 ;;; Code:
-
+(require 'cl-lib)
+(require 'project)
 (require 'ess-custom)
 (require 'ess-inf)
 (require 'ess-utils)
@@ -107,6 +108,10 @@ is searched from that directory instead of `default-directory'."
       (setq-local ess-r-package--project-cache (or project (list nil)))
       (when (car project)
         (cons 'r-package (cdr project))))))
+
+(cl-defmethod project-roots ((project (head ess-r-package)))
+  "Return the project root for ESS R packages"
+  (list (cdr project)))
 
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
