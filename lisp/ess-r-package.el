@@ -95,14 +95,14 @@ all source dirs recursively within the current package.")
 
 (defun ess-r-package-project (&optional dir)
   "Return the current package as an Emacs project instance.
-A project instance is a cons cell of the project name as symbol
+A project instance is a cons cell of the project type as symbol
 and the project path as string. If DIR is provided, the package
 is searched from that directory instead of `default-directory'."
   (if (car ess-r-package--project-cache)
       ess-r-package--project-cache
     (let* ((pkg-path (ess-r-package--find-package-path (or dir default-directory)))
            (project (when pkg-path
-                      (cons (ess-r-package--find-package-name pkg-path) pkg-path))))
+                      (cons 'ess-r-package pkg-path))))
       ;; Cache info for better performance on remotes
       (setq-local ess-r-package--project-cache (or project (list nil)))
       (when (car project)
