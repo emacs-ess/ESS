@@ -61,8 +61,6 @@ Table of Contents
 
 @menu
 * License::
-* Stability::
-* Requirements::
 * Latest Version::
 * Installation::
 * Starting up::
@@ -78,18 +76,6 @@ Table of Contents
 @section License
 
 @include license.texi
-
-@node Stability, Requirements, License, General Information
-@comment  node-name,  next,  previous,  up
-@section Stability
-
-@include stabilty.texi
-
-@node Requirements, Latest Version, Stability, General Information
-@comment  node-name,  next,  previous,  up
-@section Requirements
-
-@include requires.texi
 
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
 @node Installation, Starting up, Latest Version, General Information

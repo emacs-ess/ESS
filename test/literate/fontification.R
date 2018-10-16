@@ -197,7 +197,7 @@ foobar ¶foobaz()
 ##!   (font-lock-ensure)
 ##!   (if (looking-at "\"")
 ##!       (should (eq (face-at-point) 'font-lock-string-face))
-##!     (should (not (face-at-point))))))
+##!     (should (eq (face-at-point) 'default)))))
 
 ¶`[.foo` <- function(...) NULL
 ¶"[.foo" <- function(...) NULL
@@ -207,7 +207,7 @@ foobar ¶foobaz()
 
 ¶`fun`()
 
-##! (should (not (face-at-point)))
+##! (should (eq (face-at-point) 'default))
 
 ¶`fun`()
 
@@ -272,4 +272,20 @@ foo %¶% bar
 ##!   (should (not (face-at-point))))
 
 foo %¶% bar
+
+
+### 14 Backticked names are fontified with default face --------------
+
+`¶repeat`
+`¶%>%`
+`¶-`
+
+##! (with-ess-enabled-font-lock-keyword '(ess-R-fl-keyword:%op%
+##!                                       ess-fl-keyword:operators)
+##!   (font-lock-ensure)
+##!   (should (eq (face-at-point) 'default)))
+
+`¶repeat`
+`¶%>%`
+`¶-`
 
