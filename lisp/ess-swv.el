@@ -382,7 +382,7 @@ file and latex the result."
 
 
 ;;; Now bind some keys.
-(define-key ess-noweb-minor-mode-map "\M-ns" 'ess-swv-weave)
+(define-key ess-noweb-minor-mode-map "\M-ns" 'ess-swv-sweave)
 (define-key ess-noweb-minor-mode-map "\M-nT" 'ess-swv-tangle)
 (define-key ess-noweb-minor-mode-map "\M-nl" 'ess-swv-latex)
 (define-key ess-noweb-minor-mode-map "\M-np" 'ess-swv-PS)
@@ -390,6 +390,7 @@ file and latex the result."
 (define-key ess-noweb-minor-mode-map "\M-nr" 'ess-swv-knit)
 (define-key ess-noweb-minor-mode-map "\M-nu" 'ess-swv-purl)
 (define-key ess-noweb-minor-mode-map "\M-nv" 'ess-swv-weave-PDF)
+(define-key ess-noweb-minor-mode-map "\M-nw" 'ess-swv-weave); depends on proc.
 
 (define-key ess-noweb-minor-mode-map "\M-nx" 'ess-insert-Sexpr)
 
@@ -399,7 +400,7 @@ file and latex the result."
   "Submenu for use in `Rnw-mode'."
 
   '("Sweaving, Tangling, ..."
-    ["Sweave" ess-swv-weave   t]
+    ["Sweave" ess-swv-sweave  t]
     ["Tangle" ess-swv-tangle  t]
     ["LaTeX"  ess-swv-latex   t]
     ["PDF(LaTeX)" ess-swv-PDF t]
@@ -407,6 +408,7 @@ file and latex the result."
     ["Knit" ess-swv-knit   t]
     ["Purl" ess-swv-purl   t]
     ["View PDF" ess-swv-weave-PDF t]
+    ["Weave (Sweave/Knit)" ess-swv-weave t]
     ["Insert Sexpr" ess-insert-Sexpr t]
     ["AUCTeX Interface" ess-swv-toggle-plug-into-AUCTeX
      :style toggle :selected ess-swv-plug-into-AUCTeX-p]
