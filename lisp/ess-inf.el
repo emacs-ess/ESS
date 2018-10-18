@@ -54,8 +54,6 @@
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
 
-(declare-function ess-skip-blanks-backward "ess-r-syntax")
-(declare-function ess-skip-blanks-forward "ess-r-syntax")
 (declare-function ess-mode "ess")
 
 ;; TODO: refactor and remove file-local variable
@@ -1471,9 +1469,9 @@ they might throw off the debugger."
     (skip-chars-backward "\n\t ")
     (setq end (point))))
 
-(defun ess-eval-region (start end toggle &optional message type)
+(defun ess-eval-region (start end vis &optional message type)
   "Send the region from START to END to the inferior ESS process.
-TOGGLE switches the meaning of `ess-eval-visibly'. If given,
+VIS switches the meaning of `ess-eval-visibly'. If given,
 MESSAGE is `message'ed. TYPE is a symbol indicating what type of
 region this is. If command `rectangle-mark-mode' is active, send
 the lines of the rectangle separately to the inferior process."
@@ -1493,15 +1491,15 @@ the lines of the rectangle separately to the inferior process."
       ;; rectangle. Send them separately.
       (let ((reclines (extract-rectangle-bounds (min (mark) (point)) (max (mark) (point)))))
         (mapc (lambda (l)
-                (ess--eval-region (car l) (cdr l) toggle message type))
+                (ess--eval-region (car l) (cdr l) vis message type))
               reclines))
-    (ess--eval-region start end toggle message type)))
+    (ess--eval-region start end vis message type)))
 
-(defun ess--eval-region (start end toggle &optional message type)
+(defun ess--eval-region (start end vis &optional message type)
   "Helper function for `ess-eval-region', which see.
-START, END, TOGGLE, MESSAGE, and TYPE described there."
+START, END, VIS, MESSAGE, and TYPE described there."
   (ess-eval-region--normalise-region)
-  (let ((visibly (if toggle (not ess-eval-visibly) ess-eval-visibly))
+  (let ((visibly (if vis (not ess-eval-visibly) ess-eval-visibly))
         (message (or message "Eval region"))
         (proc (ess-get-process)))
     (save-excursion
@@ -1510,19 +1508,19 @@ START, END, TOGGLE, MESSAGE, and TYPE described there."
     (ess-deactivate-mark))
   (list start end))
 
-(defun ess-eval-buffer (vis)
+(defun ess-eval-buffer (&optional vis)
   "Send the current buffer to the inferior ESS process.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-region (point-min) (point-max) vis "Eval buffer" 'buffer))
 
-(defun ess-eval-buffer-from-beg-to-here (vis)
+(defun ess-eval-buffer-from-beg-to-here (&optional vis)
   "Send region from beginning to point to the inferior ESS process.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-region (point-min) (point) vis "Eval buffer till point"))
 
-(defun ess-eval-buffer-from-here-to-end (vis)
+(defun ess-eval-buffer-from-here-to-end (&optional vis)
   "Send region from point to end of buffer to the inferior ESS process.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
@@ -1562,60 +1560,36 @@ current function, otherwise (in case of an error) return nil."
             (ess-send-region proc beg end visibly msg)))
           beg-end)))))
 
-;; This is from  Mary Lindstrom <lindstro@Biostat.Wisc.Edu>
-;; 31 Aug 1995 14:11:43         To: S-mode@stat.math.ethz.ch
-(defun ess-eval-paragraph (vis)
+(defun ess-eval-paragraph (&optional vis)
   "Send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
   (save-excursion
-    (forward-paragraph)
-    ;; Skip blank code to avoid sending surrounding comments
-    (ess-skip-blanks-backward 'multiline)
-    (let ((end (point)))
-      (backward-paragraph)
-      (ess-skip-blanks-forward 'multiline)
-      (ess-eval-region (point) end vis "Eval paragraph"))))
+    (let ((beg (progn (backward-paragraph) (point)))
+          (end (progn (forward-paragraph) (point))))
+      (ess-eval-region beg end vis))))
 
-;; ;; Experimental - after suggestion from Jenny Brian for an 'eval-multiline'
-;; ;; 'sentence' is too much : almost like 'paragraph'
-;; ;; 'sexp'     is close, but too little [when point is inside function call;
-;; ;;         it moves all the way to the end - which is fine]
-;; (defun ess-eval-sexp (vis)
-;;   "Send the current sexp to the inferior ESS process.
-;; Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
-;;   (interactive "P")
-;;   (save-excursion
-;;     (forward-sexp)
-;;     (let ((end (point)))
-;;       (backward-sexp)
-;;       (ess-eval-region (point) end vis "Eval sexp"))))
+(defun ess-eval-function-or-paragraph (&optional vis)
+  "Send the current function if \\[point] is inside one.
+Otherwise send the current paragraph to the inferior ESS process.
+Prefix arg VIS toggles visibility of ess-code as for
+`ess-eval-region'. Returns 'function if a function was evaluated
+or 'paragraph if a paragraph."
+  (interactive "P")
+  (if (ess-eval-function vis 'noerror)
+      'function
+    (ess-eval-paragraph vis)
+    'paragraph))
 
-(defun ess-eval-function-or-paragraph (vis)
+(defun ess-eval-function-or-paragraph-and-step (&optional vis)
   "Send the current function if \\[point] is inside one.
 Otherwise send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (let ((beg-end (ess-eval-function vis 'no-error)))
-    (if (null beg-end) ; not a function
-        (ess-eval-paragraph vis))))
+  (ess-step-line (ess-eval-function-or-paragraph vis)))
 
-(defun ess-eval-function-or-paragraph-and-step (vis)
-  "Send the current function if \\[point] is inside one.
-Otherwise send the current paragraph to the inferior ESS process.
-Prefix arg VIS toggles visibility of ess-code as for
-`ess-eval-region'."
-  (interactive "P")
-  (let ((beg-end (ignore-errors (ess-eval-function vis 'no-error)))) ;; ignore-errors is a hack, ess-eval-function gives stupid errors sometimes
-    (if (null beg-end) ; not a function
-        (ess-eval-paragraph-and-step vis)
-      (goto-char (cadr beg-end))
-      (if ess-eval-empty
-          (forward-line 1)
-        (ess-next-code-line 1)))))
-
-(defun ess-eval-region-or-function-or-paragraph (vis)
+(defun ess-eval-region-or-function-or-paragraph (&optional vis)
   "Send the region, function, or paragraph depending on context.
 Send the region if it is active. If not, send function if `point'
 is inside one, otherwise the current paragraph. Treats
@@ -1626,7 +1600,7 @@ toggles visibility of ess-code as for `ess-eval-region'."
       (ess-eval-region (region-beginning) (region-end) vis)
     (ess-eval-function-or-paragraph vis)))
 
-(defun ess-eval-region-or-function-or-paragraph-and-step (vis)
+(defun ess-eval-region-or-function-or-paragraph-and-step (&optional vis)
   "Send the region, function, or paragraph depending on context.
 Send the region if it is active. If not, send function if `point'
 is inside one, otherwise the current paragraph. Treats
@@ -1635,18 +1609,12 @@ step to the next code line or to the end of region if region was
 active. Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (if (use-region-p)
-      (let ((end (region-end)))
-        (ess-eval-region (region-beginning) end vis)
-        (goto-char end))
-    (ess-eval-function-or-paragraph-and-step vis)))
+  (ess-step-line (ess-eval-region-or-function-or-paragraph vis)))
 
 (defun ess-eval-region-or-line-and-step (&optional vis)
-  "Evaluate region if active, otherwise the current line and step.
-Prefix arg VIS toggles visibility of ess-code when evaluating the
-region (as for `ess-eval-region') and has no effect for
-evaluation of the line. Treats rectangular regions as
-`ess-eval-region' does."
+  "Evaluate region if active, otherwise `ess-eval-line-and-step'.
+See `ess-eval-region' for the meaning of VIS. Treats rectangular
+regions as `ess-eval-region' does."
   (interactive "P")
   (if (use-region-p)
       (ess-eval-region (region-beginning) (region-end) vis)
@@ -1675,30 +1643,29 @@ VIS has same meaning as for `ess-eval-region'."
     (ess-eval-region beg end vis msg)))
 
 (defun ess-eval-line-and-step (&optional vis)
-  "Evaluate the current line and step to the \"next\" line."
+  "Evaluate the current line and `ess-step-line' to the \"next\" line.
+See `ess-eval-region' for VIS."
   (interactive "P")
   (ess-eval-line vis)
-  (ess-next-code-line 1))
+  (ess-step-line 'line))
 
-(defun ess-eval-line-visibly-and-step (&optional simple-next even-empty)
+(defun ess-eval-line-visibly-and-step (&optional simple-next)
   "Evaluate the current line visibly and step to the \"next\" line.
 If SIMPLE-NEXT is non-nil, possibly via prefix arg, first skip
-empty and commented lines. If 2nd arg EVEN-EMPTY [prefix as
-well], also send empty lines.  When the variable `ess-eval-empty'
+empty and commented lines. When the variable `ess-eval-empty'
 is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
 true.
 
 Note that when inside a package and namespaced evaluation is in
 place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
-  (interactive "P\nP"); prefix sets BOTH!
+  (interactive "P")
   (ess-force-buffer-current)
   (display-buffer (ess-get-process-buffer))
-  (let ((ess-eval-visibly t))
-    (ess-eval-line))
-  (if (or simple-next ess-eval-empty even-empty)
-      (forward-line 1)
-    (ess-next-code-line 1)))
+  (let ((ess-eval-visibly t)
+        (ess-eval-empty (or ess-eval-empty simple-next)))
+    (ess-eval-line)
+    (ess-step-line 'line)))
 
 (defun ess-eval-line-invisibly-and-step ()
   "Evaluate the current line invisibly and step to the next line.
@@ -1708,42 +1675,10 @@ Evaluate all comments and empty lines."
     (ess-eval-line-and-step)))
 (define-obsolete-function-alias 'ess-eval-line-and-step-invisibly 'ess-eval-line-invisibly-and-step "18.10")
 
-(defun ess-next-code-line (&optional arg skip-to-eob)
-  "Move ARG lines of code forward (backward if ARG is negative).
-Skips past all empty and comment lines. Default for ARG is 1.
-Don't skip the last empty and comment lines in the buffer unless
-SKIP-TO-EOB is non-nil. On success, return 0. Otherwise, go as
-far as possible and return -1."
-  (interactive "p")
-  (or arg (setq arg 1))
-  (beginning-of-line)
-  (let ((pos (point))
-        (n 0)
-        (inc (if (> arg 0) 1 -1)))
-    (while (and (/= arg 0) (= n 0))
-      (setq n (forward-line inc)); n=0 is success
-      (if (not (fboundp 'comment-beginning))
-          (while (and (= n 0)
-                      (looking-at "\\s-*\\($\\|\\s<\\)"))
-            (setq n (forward-line inc)))
-        (comment-beginning)
-        (beginning-of-line)
-        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
-        )
-      (if (or skip-to-eob
-              (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
-          (setq arg (- arg inc))
-        (goto-char pos)
-        (setq arg 0)
-        (forward-line 1));; stop at next empty line
-      (setq pos (point)))
-    (goto-char pos)
-    n))
-
 
 ;;;*;;; Evaluate and switch to S
 
-(defun ess-eval-region-and-go (start end vis)
+(defun ess-eval-region-and-go (start end &optional vis)
   "Send region from START to END to the inferior process buffer.
 START and END default to the current region, and rectangular
 regions are treated as `ess-eval-region'. VIS has same meaning as
@@ -1752,44 +1687,41 @@ for `ess-eval-region'."
   (ess-eval-region start end vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-buffer-and-go (vis)
+(defun ess-eval-buffer-and-go (&optional vis)
   "Send the current buffer to the inferior S and switch to the process buffer.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-buffer vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-function-and-go (vis)
+(defun ess-eval-function-and-go (&optional vis)
   "Send the current function, then switch to the inferior process buffer.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-function vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-line-and-go (vis)
+(defun ess-eval-line-and-go (&optional vis)
   "Send the current line, then switch to the inferior process buffer.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-line vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-paragraph-and-go (vis)
+(defun ess-eval-paragraph-and-go (&optional vis)
   "Send the current paragraph, then switch to the inferior process buffer.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-paragraph vis)
   (ess-switch-to-ESS t))
 
-(defun ess-eval-paragraph-and-step (vis)
+(defun ess-eval-paragraph-and-step (&optional vis)
   "Evaluate the current paragraph and move point to the next line.
 If not inside a paragraph, evaluate the next one. VIS has same
 meaning as for `ess-eval-region'."
   (interactive "P")
-  (let ((beg-end (ess-eval-paragraph vis)))
-    (goto-char (cadr beg-end))
-    (if ess-eval-empty
-        (forward-line 1)
-      (ess-next-code-line 1))))
+  (ess-eval-paragraph vis)
+  (ess-step-line 'paragraph))
 
  ; Inferior S mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
