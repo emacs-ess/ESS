@@ -997,7 +997,7 @@ With argument UPDATE, update cached packages list."
   (interactive "P")
   (inferior-ess-r-force)
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
-    (ess-setCRANMiror ess--CRAN-mirror)
+    (ess-set-CRAN-mirror ess--CRAN-mirror)
     (ess-wait-for-process (get-process ess-current-process-name))
     (unless pack (setq update t)))
   (when (or update
@@ -1019,7 +1019,7 @@ With argument UPDATE, update cached packages list."
       (message "Sorry, not available for %s" ess-dialect)
     (ess-eval-linewise "setRepositories(FALSE)\n")))
 
-(defun ess-setCRANMiror (&optional mirror)
+(defun ess-set-CRAN-mirror (&optional mirror)
   "Set cran MIRROR."
   (interactive)
   (let ((mirror-cmd "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n"))
@@ -1036,6 +1036,7 @@ With argument UPDATE, update cached packages list."
           (setq ess--CRAN-mirror mirror)
           (ess-command (format mirror-cmd mirror))))))
   (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
+(define-obsolete-function-alias 'ess-setCRANMiror 'ess-set-CRAN-mirror "ESS 18.10")
 
 (defun ess-r-check-install-package (pkg)
   "Check if package PKG is installed and offer to install if not."

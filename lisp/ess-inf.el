@@ -1731,12 +1731,24 @@ active. Prefix arg VIS toggles visibility of ess-code as for
   "Send the current line to the inferior ESS process.
 VIS has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (save-excursion
-    (end-of-line)
-    (let ((end (point)))
-      (beginning-of-line)
-      (princ (concat "Loading line: " (ess-extract-word-name) " ...") t)
-      (ess-eval-region (point) end vis "Eval line"))))
+  (let* ((beg (point-at-bol))
+         (end (point-at-eol))
+         (msg (format "Loading line: %s" (buffer-substring beg end))))
+    (ess-eval-region beg end vis msg)))
+
+(defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
+  "Evaluate the current line visibly and step to the \"next\" line.
+If SIMPLE-NEXT is non-nil, possibly via prefix arg, first skip
+empty and commented lines. If 2nd arg EVEN-EMPTY [prefix as
+well], also send empty lines.  When the variable `ess-eval-empty'
+is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
+true."
+  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
+  (interactive "P\nP"); prefix sets BOTH!
+  (ess-eval-line)
+  (if (or simple-next ess-eval-empty even-empty)
+      (forward-line 1)
+    (ess-next-code-line 1)))
 
 (defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
@@ -1769,27 +1781,6 @@ far as possible and return -1."
       (setq pos (point)))
     (goto-char pos)
     n))
-
-(defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
-  "Evaluate the current line visibly and step to the \"next\" line.
-If SIMPLE-NEXT is non-nil, possibly via prefix arg, first skip
-empty and commented lines. If 2nd arg EVEN-EMPTY [prefix as
-well], also send empty lines.  When the variable `ess-eval-empty'
-is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
-true."
-  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
-  (interactive "P\nP"); prefix sets BOTH !
-  (ess-force-buffer-current "Process to load into: ")
-  (save-excursion
-    (end-of-line)
-    (let ((end (point)))
-      (beginning-of-line)
-      ;; go to end of process buffer so user can see result
-      (ess-eval-linewise (buffer-substring (point) end)
-                         invisibly 'eob (or even-empty ess-eval-empty))))
-  (if (or simple-next ess-eval-empty even-empty)
-      (forward-line 1)
-    (ess-next-code-line 1)))
 
 (defun ess-eval-region-or-line-and-step (&optional vis)
   "Evaluate region if there is an active one, otherwise the current line.
