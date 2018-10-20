@@ -2556,7 +2556,8 @@ FILTER may be the keyword 'non-... or nil. To avoid truncation of
 long vectors, wrap your command (%s) like this, or a version with
 explicit options(max.print=1e6): \"local({ out <- try({%s});
 print(out, max=1e6) })\n\"."
-  (inferior-ess-force)
+  (unless proc
+    (inferior-ess-force))
   (let* ((tbuffer (get-buffer-create
                    " *ess-get-words*")); initial space: disable-undo
          (word-RE
