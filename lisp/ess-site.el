@@ -95,18 +95,13 @@ for ESS, such as icons.")
 ;;; Loading popular dialects (they should become optional in the future)
 
 ;; R and Julia
+(require 'ess-sp6-d)
 (require 'ess-r-mode)
 
 (when (require 'julia-mode nil 'no-error)
   (require 'ess-julia))
 
-;; S-PLUS (MathSoft/StatSci/Insightful/TIBCO)
-(require 'ess-sp3-d)
-(if ess-microsoft-p
-    (require 'ess-sp6w-d)
-  (require 'ess-sp6-d))
-
-;; S-elsewhere, on another machine by telnet
+;; ess-remote
 (require 'essd-els)
 
 ;; Stata, SAS, BUGS, and JAGS

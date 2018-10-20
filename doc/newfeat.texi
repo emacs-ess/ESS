@@ -25,6 +25,9 @@ ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
 these now rely on project.el (included with Emacs) rather than
 projectile.el, which is a third-party package.
 
+@item ESS removed support for many unused languages.
+This includes old versions of S+, ARC, OMG, VST, and XLS.
+
 @end itemize
 
 Changes and New Features in 18.10:

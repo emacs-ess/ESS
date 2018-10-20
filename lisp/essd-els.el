@@ -32,24 +32,12 @@
 
 ;;; Code:
 
-(require 'ess-arc-d)
 (require 'ess-julia)
-(require 'ess-omg-d)
 (require 'ess-s-lang)
-(require 'ess-s3-d)
-(require 'ess-s4-d)
 (require 'ess-sas-d)
-(require 'ess-sp3-d)
-(require 'ess-sp4-d)
-(require 'ess-sp5-d)
-(require 'ess-sp6-d)
-(require 'ess-sp6w-d)
 (require 'ess-stata-mode)
 (require 'ess-trns)
 (require 'ess-utils)
-(require 'ess-vst-d)
-(require 'ess-xls-d)
-
 (defvar S+elsewhere-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS at another location.")
                                         ;easily changeable in a user's .emacs
@@ -112,23 +100,10 @@ The default value is nil."
                       (ess-completing-read "Dialect" dialects nil t))))
     (cond
      ((string= dialect "julia") ess-julia-customize-alist)
-     ((string= dialect "arc")   ARC-customize-alist)
-     ((string= dialect "vst")   VST-customize-alist)
-     ((string= dialect "omg")   OMG-customize-alist)
-     ((string= dialect "s3")    S3-customize-alist)
-     ((string= dialect "s4")    S4-customize-alist)
      ((string= dialect "stata") STA-customize-alist)
      ((string= dialect "R")     ess-r-customize-alist)
-     ((string= dialect "sp3")   S+3-customize-alist)
-     ((string= dialect "sp4")   S+4-customize-alist)
-     ((string= dialect "sqpe4") Sqpe+4-customize-alist)
-     ((string= dialect "sp5")   S+5-customize-alist)
-     ((string= dialect "S+")    S+-customize-alist)
-     ((string= dialect "sqpe") Sqpe+-customize-alist)
-     ((string= dialect "XLS")   XLS-customize-alist)
-     ((string= dialect "SAS")   SAS-customize-alist);was S+elsewhere-customize-alist?
-     (t                         S+elsewhere-customize-alist)
-     )))
+     ((string= dialect "SAS")   SAS-customize-alist)
+     (t                         S+elsewhere-customize-alist))))
 
 (defun ess-add-ess-process ()
   "Execute this command from within a buffer running a process to add
