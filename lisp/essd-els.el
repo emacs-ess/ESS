@@ -34,6 +34,7 @@
 
 (require 'ess-julia)
 (require 'ess-s-lang)
+(require 'ess-sp6-d)
 (require 'ess-sas-d)
 (require 'ess-stata-mode)
 (require 'ess-trns)

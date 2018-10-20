@@ -37,6 +37,7 @@
 (require 'ess-custom)
 (require 'ido)
 (defvar ac-modes)
+(declare-function ess-eval-linewise "ess-inf")
 (declare-function evil-visual-state-p "evil")
 (declare-function evil-normal-state "evil")
 (declare-function color-lighten-name "color")

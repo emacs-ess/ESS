@@ -197,11 +197,7 @@ ESS initialization."
           (easy-menu-add-item ess-mode-menu '("Start Process")
                               (cons "Other" new-menu)))))))
 ;; Define the runners
-(if ess-microsoft-p
-    (nconc
-     (ess-sqpe-versions-create ess-SHOME-versions) ;; 32-bit
-     (ess-sqpe-versions-create ess-SHOME-versions-64 "-64-bit")) ;; 64-bit
-  (ess-s-define-runners))
+(ess-s-define-runners)
 (define-obsolete-function-alias
   'ess-s-versions-create 'ess-s-define-runners "ESS 18.10")
 
