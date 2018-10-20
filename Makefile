@@ -124,14 +124,20 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	git commit -m 'Version $(ESSVERSION)' ChangeLog
 
+
 tag:
 	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
 	git pull --tags
-	@echo "Creating tag and signing using $(GPG)"
-	git tag -s -m'release tagging' v$(ESSVERSION)
+	@echo "Creating tag (no signing, as that fails for MM)"
+	git tag -m'release tagging' v$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
 	git push origin v$(ESSVERSION)
 	@touch $@
+
+# signing fails for MM (gpg2 / gpg ??) --> use a non-signed tag above
+
+# @echo "Creating tag and signing using $(GPG)"
+# git tag -s -m'release tagging' v$(ESSVERSION)
 
 homepage:
 	@echo "** Updating ESS Webpage **"

@@ -37,7 +37,6 @@ please read the README files that come with ESS.
 * Latest Version::
 * Current Features::
 * Requirements::
-* Stability::
 * Mailing List::
 * Reporting Bugs::
 * Authors::
@@ -53,15 +52,11 @@ please read the README files that come with ESS.
 @section Current Features
 @include currfeat.texi
 
-@node Requirements, Stability, Current Features, Announce
+@node Requirements, Mailing List, Current Features, Announce
 @section Requirements
 @include requires.texi
 
-@node Stability, Mailing List, Requirements, Announce
-@section Stability
-@include stabilty.texi
-
-@node Mailing List, Reporting Bugs, Stability, Announce
+@node Mailing List, Reporting Bugs, Requirements, Announce
 @section Mailing List
 @include mailing.texi
 
