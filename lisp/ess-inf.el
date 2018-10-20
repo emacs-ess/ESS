@@ -54,6 +54,10 @@
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
 
+(declare-function ess-skip-blanks-backward "ess-r-syntax")
+(declare-function ess-skip-blanks-forward "ess-r-syntax")
+(declare-function ess-mode "ess")
+
 ;; TODO: refactor and remove file-local variable
 ;; byte-compile-warnings. See ess-r-mode.el also
 (defvar proc)

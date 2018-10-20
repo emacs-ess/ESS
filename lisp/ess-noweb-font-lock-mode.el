@@ -241,7 +241,6 @@ Each chunk is fontified in accordance with its own mode."
   (save-excursion
     (font-lock-set-defaults)
     ;; (setq old-beginning-of-syntax font-lock-beginning-of-syntax-function)
-    (setq syntax-begin-function #'ess-noweb-start-of-syntax)
     (setq font-lock-keywords
           ;;         (append font-lock-keywords
           ;;                 '(("\\(\\[\\[\\)\\([^]]*\\]*\\)\\(\\]\\]\\|\\$\\)"

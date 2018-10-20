@@ -843,13 +843,13 @@ and y-offsets for the toolbar from point."
     (setq frame-left (if (not (consp fx))
                          fx
                        (if (eq (car fx) '-)
-                           (- (x-display-pixel-width) (car (cdr fx)) fw)
+                           (- (display-pixel-width) (car (cdr fx)) fw)
                          (car (cdr fx)))))
 
     (setq frame-top (if (not (consp fy))
                         fy
                       (if (eq (car fy) '-)
-                          (- (x-display-pixel-height) (car (cdr fy)) fh)
+                          (- (display-pixel-height) (car (cdr fy)) fh)
                         (car (cdr fy)))))
 
     ;; calculate the offset from point, use xo and yo to adjust to preference
