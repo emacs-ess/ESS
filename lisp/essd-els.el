@@ -85,10 +85,7 @@ The default value is nil."
   (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
   (ess-mode))
 
-(defun S+elsewhere-transcript-mode ()
-  "S-PLUS 3.x transcript mode."
-  (interactive)
-  (ess-transcript-mode S+elsewhere-customize-alist))
+(define-obsolete-function-alias 'S+elsewhere-transcript-mode #'S-transcript-mode "2000")
 
 ;; This REALLY shouldn't need an editing mode.  Just a transcript and
 ;; an inferior process handler.

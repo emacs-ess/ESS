@@ -57,6 +57,7 @@
 (declare-function ess-inferior-stata-mode "ess-stata-mode")
 
 (declare-function ess-mode "ess")
+(declare-function ess-complete-object-name "ess-r-completion")
 
 ;; TODO: refactor and remove file-local variable
 ;; byte-compile-warnings. See ess-r-mode.el also

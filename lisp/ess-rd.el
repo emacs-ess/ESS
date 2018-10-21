@@ -36,6 +36,7 @@
 ;; Silence the byte compiler, see TODO below; can we remove these?
 (defvar ess-help-r-sec-regex)
 (defvar ess-help-r-sec-keys-alist)
+(defvar ess-r-customize-alist)
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
