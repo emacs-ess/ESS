@@ -147,8 +147,8 @@ homepage:
 
 upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	@echo "** Placing .tgz and .zip files **"
-	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
+	@echo "** Placing .tgz and .zip files and their .sig's **"
+	cp -p $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
