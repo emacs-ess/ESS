@@ -87,7 +87,6 @@
 (declare-function ess-process-live-p "ess-inf")
 (declare-function ess-process-put "ess-inf")
 (declare-function ess-send-string "ess-inf")
-(declare-function ess-show-buffer "ess-inf")
 (declare-function ess-switch-to-ESS "ess-inf")
 (declare-function ess-wait-for-process "ess-inf")
 (declare-function inferior-ess-run-callback "ess-inf")
@@ -1039,7 +1038,7 @@ See the more info at https://code.google.com/p/ess-tracebug/#Work-Flow"
       (ring-insert ess--dbg-backward-ring (point-marker)) ;; insert in backward ring ;;todo: check if the marker to this (close by?) position is already in the ring
       (setq input-point (ring-ref ess--dbg-forward-ring 0)))
     (when (marker-buffer input-point) ;; todo: give a message here if buff is not found
-      (switch-to-buffer (marker-buffer input-point))
+      (pop-to-buffer-same-window (marker-buffer input-point))
       (when (marker-position input-point)
         (goto-char (marker-position input-point))))
     (while  (eq (event-basic-type  (event-basic-type (setq ev (read-event)))) com-char)
@@ -1051,7 +1050,7 @@ See the more info at https://code.google.com/p/ess-tracebug/#Work-Flow"
         ;; get it from forward-ring
         (setq input-point (ring-ref ess--dbg-forward-ring ring-el)) )
       (when (marker-buffer input-point)
-        (switch-to-buffer (marker-buffer input-point))
+        (pop-to-buffer-same-window (marker-buffer input-point))
         (when (marker-position input-point)
           (goto-char (marker-position input-point)))))
     (push ev unread-command-events)))
@@ -1070,10 +1069,10 @@ of the ring."
          (ring-el 0))
     (if (ess--dbg-is-active-p)
         (progn
-          (switch-to-buffer (marker-buffer ess--dbg-current-debug-position))
+          (pop-to-buffer-same-window (marker-buffer ess--dbg-current-debug-position))
           (goto-char (marker-position ess--dbg-current-debug-position ))
           (back-to-indentation))
-      (switch-to-buffer (marker-buffer debug-point))
+      (pop-to-buffer-same-window (marker-buffer debug-point))
       (goto-char (marker-position debug-point)))
     (while  (eq (event-basic-type (setq ev (read-event))) com-char)
       (if (memq 'shift (event-modifiers ev))
@@ -1081,7 +1080,7 @@ of the ring."
         (setq ring-el (1+ ring-el)))
       (setq debug-point (ring-ref ess--dbg-backward-ring ring-el))
       (when (marker-buffer debug-point)
-        (switch-to-buffer (marker-buffer debug-point))
+        (pop-to-buffer-same-window (marker-buffer debug-point))
         (when (marker-position debug-point)
           (goto-char (marker-position debug-point)))))
     (push ev unread-command-events)))
@@ -1353,7 +1352,7 @@ prompts."
           (goto-char (point-min))
           (let ((case-fold-search nil))
             (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
-              (ess-show-buffer (process-buffer proc))))
+              (display-buffer (process-buffer proc))))
           (goto-char (point-min))
           ;; First long + + in the output mirrors the sent input by the user and
           ;; is unnecessary in nowait case. A single + can be a continuation in
@@ -1529,7 +1528,7 @@ the output into *ess.dbg* buffer."
        (ess--debug-keys-message-string))
       (unless match-jump
         ;; no source reference, simply show the inferiro
-        (ess-show-buffer pbuf)))
+        (display-buffer pbuf)))
 
     (when match-selection ;(and (not was-in-recover) match-selection)
       (ess-electric-selection t))))
@@ -1599,19 +1598,19 @@ associated buffer. If FILE is nil return nil."
         (lpn ess-local-process-name))
     (when mrk
       (let ((buf (marker-buffer mrk)))
-	    (if (not other-window)
-	        (switch-to-buffer buf)
-	      (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
-	        (display-buffer buf)
-	        ;; simple save-frame-excursion
-	        (unless (eq this-frame (window-frame (get-buffer-window buf t)))
-	          (ess-select-frame-set-input-focus this-frame))))
-	    ;; set or re-set to lpn as this is the process with debug session on
-	    (with-current-buffer buf
-	      (setq ess-local-process-name lpn)
-	      (goto-char mrk)
+	(if (not other-window)
+	    (pop-to-buffer-same-window buf)
+	  (let ((this-frame (window-frame (get-buffer-window (current-buffer)))))
+	    (display-buffer buf)
+	    ;; simple save-frame-excursion
+	    (unless (eq this-frame (window-frame (get-buffer-window buf t)))
+	      (ess-select-frame-set-input-focus this-frame))))
+	;; set or re-set to lpn as this is the process with debug session on
+	(with-current-buffer buf
+	  (setq ess-local-process-name lpn)
+	  (goto-char mrk)
           (set-window-point (get-buffer-window buf) mrk))
-	    buf))))
+	buf))))
 
 ;; temporary, hopefully org folks implement something similar
 (defvar org-babel-tangled-file nil)
@@ -1751,7 +1750,7 @@ This is the value of `next-error-function' in *ess.dbg* buffers."
           (set-marker ess--dbg-current-ref (line-end-position))
           (set-marker overlay-arrow-position (line-beginning-position))
           (setq dbuff (ess--dbg-find-buffer  (car loc)))
-          (switch-to-buffer dbuff)
+          (pop-to-buffer-same-window dbuff)
           (save-restriction
             (widen)
             (goto-char 1)

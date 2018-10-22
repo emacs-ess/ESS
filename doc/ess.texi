@@ -573,11 +573,28 @@ It is not normally necessary to pass arguments to the iESS program; in
 particular do not pass the @samp{-e} option to @code{Splus}, since ESS
 provides its own command history mechanism.
 
-By default, the new process will be displayed in the same window in the
-current frame.  If you wish your iESS process to appear in a separate
-frame, customize the variable @code{inferior-ess-own-frame}.
-Alternatively, change @code{inferior-ess-same-window} if you wish the
-process to appear within another window of the current frame.
+To control where buffer containing the process is displayed, customize
+@code{display-buffer-alist}, @xref{Window Choice,,, emacs}. For
+example, to ensure Help buffers always appear at the right side of the
+current frame and inferior R buffers always appear at the bottom of
+the current frame, you could add this to your Emacs initialization
+file:
+
+@example
+(add-to-list 'display-buffer-alist
+             '("*Help"
+               (display-buffer-reuse-window display-buffer-in-side-window)
+               (side . right)
+               (window-width . 0.33)
+               (reusable-frames . nil)))
+
+(add-to-list 'display-buffer-alist
+             '("*R"
+               (display-buffer-reuse-window display-buffer-at-bottom)
+               (window-height . 0.5)
+               (reusable-frames . nil)))
+@end example
+
 
 @vindex ess-auto-width
 @vindex ess-auto-width-visible

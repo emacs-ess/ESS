@@ -269,7 +269,7 @@ arguments, or expressions which return R arguments."
     (message msg pkg-name)
     (with-ess-process-buffer nil
       (setq ess-r-package--project-cache ess-r-package--project-cache))
-    (ess-show-buffer (ess-get-process-buffer))
+    (display-buffer (ess-get-process-buffer))
     (ess-eval-linewise (format command (concat pkg-path args)))))
 
 (defun ess-r-command--build-args (ix &optional actions)
@@ -415,7 +415,7 @@ re-installation when called with a prefix ARG."
                   (ess-r-command--build-args 0 '((read-string "Arguments: " "force = TRUE")))
                 "")))
     (inferior-ess-r-force)
-    (ess-show-buffer (ess-get-process-buffer))
+    (display-buffer (ess-get-process-buffer))
     (message "Installing %s from github" repo)
     (ess-eval-linewise (format command repo args))))
 

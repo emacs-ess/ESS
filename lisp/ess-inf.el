@@ -105,10 +105,9 @@ An initialization file (dumped into the process) is specified by
 `inferior-ess-start-file', and `inferior-ess-start-args' is used
 to accompany the call for `inferior-ess-program'.
 
-When creating a new process, the process buffer replaces the
-current window if `inferior-ess-same-window' is non-nil.
-Alternatively, it can appear in its own frame if
-`inferior-ess-own-frame' is non-nil.
+See Info node `(ess)Customizing startup' and
+`display-buffer-alist' to control where and how the buffer is
+displayed.
 
 \(Type \\[describe-mode] in the process buffer for a list of
 commands.)
@@ -238,14 +237,12 @@ This may be useful for debugging."
             (with-current-buffer buf
               (rename-buffer buf-name-str t))
 
-            ;; before the start, display the buffer depending on user settings:
-            (cond (inferior-ess-own-frame
-                   (progn
-                     (make-frame inferior-ess-frame-alist)
-                     (switch-to-buffer buf)))
-                  (inferior-ess-same-window
-                   (switch-to-buffer buf))
-                  (t (pop-to-buffer buf)))
+            ;; Show the buffer
+            ;; TODO: Remove inferior-ess-own-frame in ESS 19.04, then just have:
+            ;; (pop-to-buffer buf)
+            (pop-to-buffer buf (with-no-warnings
+                                 (when inferior-ess-own-frame
+                                   '(display-buffer-pop-up-frame))))
 
             ;; create the process
             (setq buf
@@ -783,7 +780,6 @@ Returns the name of the selected process."
                             (when (assoc ess-local-process-name ess-process-name-list)
                               (list ess-local-process-name)))))
          (num-processes (length pname-list))
-         (inferior-ess-same-window nil) ;; this should produce the inferior process in other window
          (auto-started?))
     (if (or (= 0 num-processes)
             (and (= 1 num-processes)
@@ -831,8 +827,8 @@ Returns the name of the selected process."
                   ))
               )))
       (if noswitch
-          (pop-to-buffer (current-buffer)) ;; VS: this is weired, but is necessary
-        (pop-to-buffer (buffer-name (process-buffer (get-process proc))) t))
+          (pop-to-buffer (current-buffer)) ;; VS: this is weird, but is necessary
+        (pop-to-buffer (buffer-name (process-buffer (get-process proc)))))
       proc)))
 
 (defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
@@ -894,20 +890,11 @@ no such process has been found."
 
 (defun ess-switch-to-ESS (eob-p)
   "Switch to the current inferior ESS process buffer.
-With (prefix) EOB-P non-nil, positions cursor at end of buffer.
-This function should follow the description in `ess-show-buffer'
-for showing the iESS buffer, except that the iESS buffer is also
-made current."
+With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (interactive "P")
   (ess-force-buffer-current)
-  (if (and ess-current-process-name (get-process ess-current-process-name))
-      (progn
-        (ess-show-buffer
-         (buffer-name (process-buffer (get-process ess-current-process-name)))
-         t)
-        (if eob-p (goto-char (point-max))))
-    (message "No inferior ESS process")
-    (ding)))
+  (pop-to-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+  (when eob-p (goto-char (point-max))))
 
 (defun ess-switch-to-ESS-deprecated (eob-p)
   (interactive "P")
@@ -952,7 +939,7 @@ toggled."
                                    ))))
               (pop blist))
             (if blist
-                (ess-show-buffer (car blist) t)
+                (pop-to-buffer (car blist))
               (message "Found no buffers for ess-dialect %s associated with process %s"
                        dialect loc-proc-name))))))
     (ess--execute-electric-command map nil nil nil EOB)))
@@ -973,83 +960,6 @@ toggled."
       (setq ess-process-name-list (delq pointer ess-process-name-list))))
   (if (eq (length ess-process-name-list) 0)
       (setq ess-current-process-name nil)))
-
-(defcustom ess-show-buffer-action
-  '((display-buffer-pop-up-window display-buffer-use-some-window))
-  "Actions for `ess-show-buffer', passed to `display-buffer'."
-  :group 'ess
-  :type '(list (repeat function)))
-
-(defun ess-show-buffer (buf &optional visit)
-  "Ensure the ESS buffer BUF is visible.
-The buffer, specified as a string, is typically an iESS (e.g.
-*R*) buffer. This handles several cases:
-
-1. If BUF is visible in the current frame, nothing is done.
-2. If BUF is visible in another frame, then we ensure that frame is
-visible (it may have been iconified).
-3. If buffer is not visible in any frame, simply show it in another window
-in the current frame.
-
-If VISIT is non-nil, as well as making BUF visible, we also select it
-as the current buffer."
-  (let ((frame))
-    (if (ess-buffer-visible-this-frame buf)
-        ;;1. Nothing to do, BUF visible in this frame; just return window
-        ;; where this buffer is.
-        t
-      ;; 2. Maybe BUF visible in another frame.
-      (setq frame (ess-buffer-visible-other-frame buf))
-      (if frame
-          ;; BUF is visible in frame, so just check frame is raised.
-          (if (not (eq (frame-visible-p frame) t))
-              ;; frame is not yet visible, so raise it.
-              (raise-frame frame))
-        ;; 3. else BUF not visible in any frame, so show it (but do
-        ;; not select it) in another window in current frame.
-        (display-buffer buf ess-show-buffer-action)))
-    ;; At this stage, the buffer should now be visible on screen,
-    ;; although it won't have been made current.
-    (when visit
-      ;; Need to select the buffer.
-      ;;
-      ;; First of all, check case 2 if buffer is in another frame
-      ;; but that frame may not be selected.
-      (if frame
-          (ess-select-frame-set-input-focus frame))
-      (select-window (get-buffer-window buf 0)))))
-
-(defvar ess-bufs-in-frame nil)          ;silence the compiler.
-;; The next few functions are copied from my (SJE) iswitchb library.
-(defun ess-get-bufname (win)
-  "Used by `ess-get-buffers-in-frames' to walk through all windows."
-  (let ((buf (buffer-name (window-buffer win))))
-    (if (not (member buf ess-bufs-in-frame))
-        ;; Only add buf if it is not already in list.
-        ;; This prevents same buf in two different windows being
-        ;; put into the list twice.
-        (setq ess-bufs-in-frame
-              (cons buf ess-bufs-in-frame)))))
-
-(defun ess-get-buffers-in-frames (&optional current)
-  "Return the list of buffers that are visible in the current frame.
-If optional argument CURRENT is given, restrict searching to the
-current frame, rather than all frames."
-  (let ((ess-bufs-in-frame nil))
-    (walk-windows 'ess-get-bufname nil (if current nil 0))
-    ess-bufs-in-frame))
-
-(defun ess-buffer-visible-this-frame (buf)
-  "Return t if BUF is visible in current frame."
-  (member buf (ess-get-buffers-in-frames t)))
-
-(defun ess-buffer-visible-other-frame (buf)
-  "Return t if BUF is visible in another frame.
-Assumes that buffer has not already been in found in current frame."
-  (if (member (buffer-name (get-buffer buf)) (ess-get-buffers-in-frames))
-      (window-frame (get-buffer-window buf 0))
-    nil))
-
 
 
 ;;; Functions for evaluating code
@@ -1532,7 +1442,7 @@ TEXT."
          (when (or (> (length text) 0)
                    wait-last-prompt)
            (ess-wait-for-process sprocess t wait-sec)))
-       (if eob (ess-show-buffer (buffer-name sbuffer) nil))
+       (if eob (with-temp-buffer (buffer-name sbuffer)))
        (goto-char (marker-position (process-mark sprocess)))
        (when win
          (with-selected-window win
@@ -1751,7 +1661,7 @@ place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive)
   (ess-force-buffer-current)
-  (ess-show-buffer (ess-get-process-buffer))
+  (display-buffer (ess-get-process-buffer))
   (let ((ess-eval-visibly t))
     (ess-eval-region-or-line-and-step)))
 
@@ -1783,7 +1693,7 @@ place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive "P\nP"); prefix sets BOTH!
   (ess-force-buffer-current)
-  (ess-show-buffer (ess-get-process-buffer))
+  (display-buffer (ess-get-process-buffer))
   (let ((ess-eval-visibly t))
     (ess-eval-line))
   (if (or simple-next ess-eval-empty even-empty)

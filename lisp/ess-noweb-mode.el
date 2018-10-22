@@ -1413,12 +1413,12 @@ ess-noweb-set-doc-mode) before calling this function"
 
 (defun ess-noweb-log (s)
   (let ((b (current-buffer)))
-    (switch-to-buffer (get-buffer-create "*noweb-log*"))
+    (pop-to-buffer-same-window (get-buffer-create "*noweb-log*"))
     (goto-char (point-max))
     (setq buffer-read-only nil)
     (insert s)
     (setq buffer-read-only t)
-    (switch-to-buffer b)))
+    (pop-to-buffer-same-window b)))
 
 
 

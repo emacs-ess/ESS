@@ -149,8 +149,8 @@ set this command to \"%s(%s)\"."
               (ess-eval-linewise (concat Sw-cmd "\n") nil nil nil t)
               (message "Finished %s()ing %S" cmd rnw-file))
           (ess-execute Sw-cmd 'buffer nil nil)
-          (switch-to-buffer rnw-buf)
-          (ess-show-buffer (buffer-name sbuffer) nil))))))
+          (pop-to-buffer-same-window rnw-buf)
+          (display-buffer (buffer-name sbuffer)))))))
 
 (defcustom ess-swv-processor 'sweave
   "Processor to use for weaving and tangling.

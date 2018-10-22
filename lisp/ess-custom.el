@@ -1614,26 +1614,18 @@ by `ess-function-template'."
 
  ; ess-inf: variables for inferior-ess.
 
-(defcustom inferior-ess-own-frame nil
+(defvar inferior-ess-own-frame nil
   "Non-nil means that inferior ESS buffers should start in their own frame.
-The parameters of this frame are stored in `inferior-ess-frame-alist'."
-  :group 'ess-proc
-  :type 'boolean)
+This variable is deprecated.
+please add an entry to `display-buffer-alist' instead. See Info
+node `(ess)Customizing startup'. For example:
 
-(defcustom inferior-ess-frame-alist default-frame-alist
-  "Alist of frame parameters used to create new frames for iESS buffers.
-This defaults to `default-frame-alist' and is used only when
-the variable `inferior-ess-own-frame' is non-nil."
-  :group 'ess-proc
-  :type 'alist)
-
-(defcustom inferior-ess-same-window t
-  "Non-nil indicates new inferior ESS process appears in current window.
-Otherwise, the new inferior ESS buffer is shown in another window in the
-current frame.  This variable is ignored if `inferior-ess-own-frame' is
-non-nil."
-  :group 'ess-proc
-  :type 'boolean)
+\(add-to-list 'display-buffer-alist
+             '(\"*R\"
+  (display-buffer-reuse-window display-buffer-pop-up-frame)))")
+(make-obsolete-variable 'inferior-ess-own-frame 'display-buffer-alist "ESS 19.04")
+(make-obsolete-variable 'inferior-ess-frame-alist "It is ignored. Use `display-buffer-alist' and `pop-up-frame-alist' instead." "ESS 19.04")
+(make-obsolete-variable 'inferior-ess-same-window 'display-buffer-alist "ESS 19.04")
 
 (defcustom inferior-ess-jit-lock-chunk-size 10000
   "Default for (buffer local) `jit-lock-chunk-size' in inferior ESS buffers."

@@ -189,13 +189,13 @@ the string one more time by embedding it in a \"page()\" command."
           (if (not value-returned)
               nil
             (sleep-for 2)
-            (switch-to-buffer (car (buffer-list)))))
+            (pop-to-buffer-same-window (car (buffer-list)))))
       (ess-make-buffer-current)
-      (switch-to-buffer commands-buffer)
+      (pop-to-buffer-same-window commands-buffer)
       (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
       (setq ess-local-process-name lproc-name)
       (ess-command (concat scommand "\n") commands-buffer)
-      (if (not value-returned) (switch-to-buffer (nth 1 (buffer-list)))))
+      (if (not value-returned) (pop-to-buffer-same-window (nth 1 (buffer-list)))))
     (if (not value-returned)
         nil
       (if ess-microsoft-p                      ;; there ought to be a filter

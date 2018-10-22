@@ -164,7 +164,7 @@ file into an emacs buffer and displays it."
     (sleep-for sleep)
     (if (not bufname)
         (find-file filename)
-      (switch-to-buffer bufname))
+      (pop-to-buffer-same-window bufname))
     (revert-buffer t t) ;; this allows the user to reuse the BUF name
     ))
 

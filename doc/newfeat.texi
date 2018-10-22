@@ -17,6 +17,31 @@ Users can change it to 'frame, 'window, or an integer. See the
 docstring for details. @code{ess-auto-width-visible} controls
 visibility.
 
+@item ESS now respects @code{display-buffer-alist}.
+Users can now use @code{display-buffer-alist} to manage how and where
+windows appear. For example, to ensure help buffers always appear at
+the right side of the current frame and inferior R buffers always
+appear at the bottom, you could add something like the following to
+your Emacs file:
+
+@example
+(add-to-list 'display-buffer-alist
+             '("*Help"
+               (display-buffer-reuse-window display-buffer-in-side-window)
+               (side . right)
+               (window-width . 0.33)
+               (reusable-frames . nil)))
+
+(add-to-list 'display-buffer-alist
+             '("*R"
+               (display-buffer-reuse-window display-buffer-at-bottom)
+               (window-height . 0.5)
+               (reusable-frames . nil)))
+@end example
+
+See the documentation of @code{display-buffer-alist},
+@code{display-buffer}, and @xref{Window Choice,,, emacs} for details.
+
 @item Options for 'ess-gen-proc-buffer-name-function' have been renamed.
 ess-gen-proc-buffer-name:projectile-or-simple was renamed to
 ess-gen-proc-buffer-name:project-or-simple and
@@ -29,6 +54,19 @@ projectile.el, which is a third-party package.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
 @end itemize
+
+The following have been made obsolete, see their documentation for more detail:
+
+@itemize @bullet
+
+@item User options for controlling display of buffers.
+This includes @code{ess-show-buffer-action},
+@code{inferior-ess-same-window}, @code{inferior-ess-own-frame}, and
+@code{inferior-ess-frame-alist}. See above about ESS respecting
+@code{display-buffer-alist}.
+
+@end itemize
+
 
 Changes and New Features in 18.10-1:
 @itemize @bullet
