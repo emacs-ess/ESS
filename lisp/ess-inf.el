@@ -1733,6 +1733,28 @@ active. Prefix arg VIS toggles visibility of ess-code as for
         (goto-char end))
     (ess-eval-function-or-paragraph-and-step vis)))
 
+(defun ess-eval-region-or-line-and-step (&optional vis)
+  "Evaluate region if active, otherwise the current line and step.
+Prefix arg VIS toggles visibility of ess-code when evaluating the
+region (as for `ess-eval-region') and has no effect for
+evaluation of the line. Treats rectangular regions as
+`ess-eval-region' does."
+  (interactive "P")
+  (if (use-region-p)
+      (ess-eval-region (region-beginning) (region-end) vis)
+    (ess-eval-line-and-step)))
+
+(defun ess-eval-region-or-line-visibly-and-step ()
+  "Evaluate region if active, otherwise the current line and step.
+Evaluation is done visibly.
+
+Note that when inside a package and namespaced evaluation is in
+place (see `ess-r-set-evaluation-env') evaluation of multiline
+input will fail."
+  (interactive)
+  (let ((ess-eval-visibly t))
+    (ess-eval-region-or-line-and-step)))
+
 (defun ess-eval-line (&optional vis)
   "Send the current line to the inferior ESS process.
 VIS has same meaning as for `ess-eval-region'."
@@ -1742,19 +1764,37 @@ VIS has same meaning as for `ess-eval-region'."
          (msg (format "Loading line: %s" (buffer-substring beg end))))
     (ess-eval-region beg end vis msg)))
 
-(defun ess-eval-line-and-step (&optional simple-next even-empty invisibly)
+(defun ess-eval-line-and-step (&optional vis)
+  "Evaluate the current line and step to the \"next\" line."
+  (interactive "P")
+  (ess-eval-line vis)
+  (ess-next-code-line 1))
+
+(defun ess-eval-line-visibly-and-step (&optional simple-next even-empty)
   "Evaluate the current line visibly and step to the \"next\" line.
 If SIMPLE-NEXT is non-nil, possibly via prefix arg, first skip
 empty and commented lines. If 2nd arg EVEN-EMPTY [prefix as
 well], also send empty lines.  When the variable `ess-eval-empty'
 is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
-true."
-  ;; From an idea by Rod Ball (rod@marcam.dsir.govt.nz)
+true.
+
+Note that when inside a package and namespaced evaluation is in
+place (see `ess-r-set-evaluation-env') evaluation of multiline
+input will fail."
   (interactive "P\nP"); prefix sets BOTH!
-  (ess-eval-line)
+  (let ((ess-eval-visibly t))
+    (ess-eval-line))
   (if (or simple-next ess-eval-empty even-empty)
       (forward-line 1)
     (ess-next-code-line 1)))
+
+(defun ess-eval-line-invisibly-and-step ()
+  "Evaluate the current line invisibly and step to the next line.
+Evaluate all comments and empty lines."
+  (interactive)
+  (let ((ess-eval-visibly nil))
+    (ess-eval-line-and-step)))
+(define-obsolete-function-alias 'ess-eval-line-and-step-invisibly 'ess-eval-line-invisibly-and-step "18.10")
 
 (defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
@@ -1787,23 +1827,6 @@ far as possible and return -1."
       (setq pos (point)))
     (goto-char pos)
     n))
-
-(defun ess-eval-region-or-line-and-step (&optional vis)
-  "Evaluate region if there is an active one, otherwise the current line.
-Prefix arg VIS toggles visibility of ess-code when evaluating the
-region (as for `ess-eval-region') and has no effect for
-evaluation of the line. Treats rectangular regions as
-`ess-eval-region' does."
-  (interactive "P")
-  (if (use-region-p)
-      (ess-eval-region (region-beginning) (region-end) vis)
-    (ess-eval-line-and-step)))
-
-(defun ess-eval-line-and-step-invisibly ()
-  "Evaluate the current line invisibly and step to the next line.
-Evaluate all comments and empty lines."
-  (interactive)
-  (ess-eval-line-and-step t t t))
 
 
 ;;;*;;; Evaluate and switch to S
