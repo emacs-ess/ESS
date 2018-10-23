@@ -95,8 +95,7 @@ $(ESSDIR): all RPM.spec cleanup-dist
 
 dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
-	  $(ESSDIR)/lisp/ess-custom.el
-	touch $@
+	  $(ESSDIR)/lisp/ess-custom.el > $@
 
 .PHONY: cleanup-dist cleanup-rel dist
 cleanup-dist:
@@ -107,7 +106,7 @@ cleanup-dist:
 
 ##  should only be called manually (if at all):
 cleanup-rel:
-	@rm -rf $(ESSDIR)*
+#	@rm -rf $(ESSDIR)*
 	@rm -f tarballs dist tag homepage upload rel
 
 %.spec: %.spec.in VERSION
