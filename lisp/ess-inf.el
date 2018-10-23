@@ -1752,6 +1752,8 @@ Note that when inside a package and namespaced evaluation is in
 place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive)
+  (ess-force-buffer-current)
+  (ess-show-buffer (ess-get-process-buffer))
   (let ((ess-eval-visibly t))
     (ess-eval-region-or-line-and-step)))
 
@@ -1782,6 +1784,8 @@ Note that when inside a package and namespaced evaluation is in
 place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive "P\nP"); prefix sets BOTH!
+  (ess-force-buffer-current)
+  (ess-show-buffer (ess-get-process-buffer))
   (let ((ess-eval-visibly t))
     (ess-eval-line))
   (if (or simple-next ess-eval-empty even-empty)
