@@ -4,8 +4,7 @@
 include ./Makeconf
 
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
-## NB: 'all' must not be .PHONY as used e.g. in 'tarballs'!
-.PHONY: install uninstall
+.PHONY: all install uninstall
 all install uninstall: $(ETC_FILES)
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
@@ -70,8 +69,10 @@ tarballs: $(ESSDIR)
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
-# no longer 'cleanup-dist' : otherwise, e.g. 'make rel' builds the 'tarballs' twice!
-$(ESSDIR): all RPM.spec
+# NB 'all', 'cleanup-dist' must not be targets: otherwise, e.g.
+#    'make tarball' re-builds the tarballs always!
+$(ESSDIR): RPM.spec
+	$(MAKE) all
 #	remove previous ESSDIR, etc:
 	$(MAKE) cleanup-dist
 	@echo "**********************************************************"
