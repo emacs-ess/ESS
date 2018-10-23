@@ -33,10 +33,13 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'subr-x))
 (require 'cl-lib)
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
+(require 'seq)
 (require 'ess)
 (require 'ess-help)
 (require 'ess-s-lang)
@@ -1025,16 +1028,12 @@ With argument UPDATE, update cached packages list."
   (let ((mirror-cmd "local({r <- getOption('repos'); r['CRAN'] <- '%s';options(repos=r)})\n"))
     (if mirror
         (ess-command (format mirror-cmd mirror))
-      (let* ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
-             (M2 (mapcar (lambda (el)
-                           (string-match "\\(.*\\)\\[\\(.*\\)\\]$" el)
-                           (propertize (match-string 1 el) 'URL (match-string 2 el)))
-                         M1))
-             (mirror  (ess-completing-read "Choose CRAN mirror" M2 nil t)))
-        (when mirror
-          (setq mirror (get-text-property 0 'URL mirror))
-          (setq ess--CRAN-mirror mirror)
-          (ess-command (format mirror-cmd mirror))))))
+      (when-let ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
+                 (mirror (ess-completing-read "Choose CRAN mirror" M1 nil t))
+                 (url (seq-contains M1 mirror #'string=)))
+        (setq ess--CRAN-mirror (progn (string-match "\\(.*\\)\\[\\(.*\\)\\]$" url)
+                                      (match-string 2 url)))
+        (ess-command (format mirror-cmd ess--CRAN-mirror)))))
   (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
 (define-obsolete-function-alias 'ess-setCRANMiror 'ess-set-CRAN-mirror "ESS 18.10")
 
