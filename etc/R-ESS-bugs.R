@@ -938,6 +938,12 @@ scored <- read.csv(scored_path, comment.char="#")
 ## MM: but I don't see this, so told him to upgrade ESS (he had 16.10, Windows)
 
 
+## This is a problem only inside package code [ess-tracebug related]
+rm(old,new)
+old <- 10    # line 1, use ess-eval-line,          i.e., C-c C-j
+new <- old+1 # line 2, use ess-eval-line-and-step, i.e., C-c C-n
+
+
 
 
 ### Local Variables:
