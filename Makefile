@@ -3,8 +3,12 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
+## 'all' is the default target, i.e. 'make' and 'make all' are the same.
 .PHONY: all install uninstall
-all install uninstall: lisp doc etc
+all install uninstall: $(ETC_FILES)
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+	cd etc; $(MAKE) $@
 
 .PHONY: version
 version:
@@ -65,7 +69,12 @@ tarballs: $(ESSDIR)
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
-$(ESSDIR): all RPM.spec cleanup-dist
+# NB 'all', 'cleanup-dist' must not be targets: otherwise, e.g.
+#    'make tarball' re-builds the tarballs always!
+$(ESSDIR): RPM.spec
+	$(MAKE) all
+#	remove previous ESSDIR, etc:
+	$(MAKE) cleanup-dist
 	@echo "**********************************************************"
 	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
@@ -90,10 +99,9 @@ $(ESSDIR): all RPM.spec cleanup-dist
 
 dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
-	  $(ESSDIR)/lisp/ess-custom.el
-	touch $@
+	  $(ESSDIR)/lisp/ess-custom.el > $@
 
-.PHONY: cleanup-dist cleanup-rel dist
+.PHONY: cleanup-dist cleanup-rel
 cleanup-dist:
 	@echo "** Cleaning up **"
 	rm -f $(ESSDIR)/etc/.IS.RELEASE $(ESSDIR)/etc/git-ref
@@ -102,7 +110,7 @@ cleanup-dist:
 
 ##  should only be called manually (if at all):
 cleanup-rel:
-	@rm -rf $(ESSDIR)*
+#	@rm -rf $(ESSDIR)*
 	@rm -f tarballs dist tag homepage upload rel
 
 %.spec: %.spec.in VERSION
@@ -124,14 +132,20 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	git commit -m 'Version $(ESSVERSION)' ChangeLog
 
+
 tag:
 	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
 	git pull --tags
-	@echo "Creating tag and signing using $(GPG)"
-	git tag -s -m'release tagging' v$(ESSVERSION)
+	@echo "Creating tag (no signing, as that fails for MM)"
+	git tag -m'release tagging' v$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
 	git push origin v$(ESSVERSION)
 	@touch $@
+
+# signing fails for MM (gpg2 / gpg ??) --> use a non-signed tag above
+
+# @echo "Creating tag and signing using $(GPG)"
+# git tag -s -m'release tagging' v$(ESSVERSION)
 
 homepage:
 	@echo "** Updating ESS Webpage **"
@@ -141,8 +155,8 @@ homepage:
 
 upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	@echo "** Placing .tgz and .zip files **"
-	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
+	@echo "** Placing .tgz and .zip files and their .sig's **"
+	cp -p $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)

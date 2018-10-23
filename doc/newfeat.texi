@@ -30,6 +30,14 @@ This includes old versions of S+, ARC, OMG, VST, and XLS.
 
 @end itemize
 
+Changes and New Features in 18.10-1:
+@itemize @bullet
+
+@item New functions @code{ess-eval-line-visibly-and-step} (@kbd{C-c C-n} and @code{ess-eval-region-or-line-visibly-and-step} (@kbd{C-RET})
+which behave as the old versions of @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}.
+
+@end itemize
+
 Changes and New Features in 18.10:
 @itemize @bullet
 
@@ -65,6 +73,9 @@ removed. This affects @code{C-c h}, which was bound to
 @code{ess-add-MM-keys}; and @code{C-c h}, which was bound to
 @code{ess-handy-commands} in @code{Rd-mode-map},
 @code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
+
+@item Functions @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}
+now behave consistently with other evaluation function inside a package.
 
 @item @ESS{[R]}: @code{ess-r-package-use-dir} now works with any mode.
 This sets the working directory to the root of the current package
@@ -261,7 +272,7 @@ roxygen examples fields. This is turned off by default. Set
 @item @ESS{[R]}: New package development command @code{ess-r-devtools-ask}
 bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
 command that takes @code{pkg} as argument.
-@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process. 
+@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process.
 Currently only implemented for R. The R method runs @code{inferior-ess-r-reload-hook}
 on reloading.
 @item @ESS{[R]}: @code{ess-r-package-mode} is now activated in non-file buffers as well.
