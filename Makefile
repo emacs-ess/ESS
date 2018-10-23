@@ -3,13 +3,19 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-.PHONY: all install uninstall
 ## This is the default target, i.e. 'make' and 'make all' are the same.
-all install uninstall: $(ETC_FILES)
+## NB: must not be .PHONY as used e.g. in 'tarballs'!
+all: $(ETC_FILES)
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 	cd etc; $(MAKE) $@
+	touch $@
 
+.PHONY: install uninstall
+install uninstall: $(ETC_FILES)
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+	cd etc; $(MAKE) $@
 
 .PHONY: version
 version:
@@ -70,7 +76,10 @@ tarballs: $(ESSDIR)
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
-$(ESSDIR): all RPM.spec cleanup-dist
+# no longer 'cleanup-dist' : otherwise, e.g. 'make rel' builds the 'tarballs' twice!
+$(ESSDIR): all RPM.spec
+#	remove previous ESSDIR, etc:
+	$(MAKE) cleanup-dist
 	@echo "**********************************************************"
 	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
@@ -97,7 +106,7 @@ dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el > $@
 
-.PHONY: cleanup-dist cleanup-rel dist
+.PHONY: cleanup-dist cleanup-rel
 cleanup-dist:
 	@echo "** Cleaning up **"
 	rm -f $(ESSDIR)/etc/.IS.RELEASE $(ESSDIR)/etc/git-ref
