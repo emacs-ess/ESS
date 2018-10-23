@@ -3,16 +3,10 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-## This is the default target, i.e. 'make' and 'make all' are the same.
-## NB: must not be .PHONY as used e.g. in 'tarballs'!
-all: $(ETC_FILES)
-	cd lisp; $(MAKE) $@
-	cd doc; $(MAKE) $@
-	cd etc; $(MAKE) $@
-	touch $@
-
+## 'all' is the default target, i.e. 'make' and 'make all' are the same.
+## NB: 'all' must not be .PHONY as used e.g. in 'tarballs'!
 .PHONY: install uninstall
-install uninstall: $(ETC_FILES)
+all install uninstall: $(ETC_FILES)
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 	cd etc; $(MAKE) $@

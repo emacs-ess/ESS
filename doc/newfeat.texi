@@ -3,6 +3,7 @@
 
 Changes and New Features in 18.10-1:
 @itemize @bullet
+
 @item New functions @code{ess-eval-line-visibly-and-step} (@kbd{C-c C-n} and @code{ess-eval-region-or-line-visibly-and-step} (@kbd{C-RET})
 which behave as the old versions of @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}.
 @end itemize
