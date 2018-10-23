@@ -447,7 +447,7 @@ Return the 'busy state."
         (when suppress
           (process-put proc 'suppress-next-output? t))
         (process-put proc 'callbacks nil)
-        (condition-case err
+        (condition-case-unless-debug err
             (funcall cb proc string)
           (error (message "%s" (error-message-string err))))))))
 
