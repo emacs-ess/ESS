@@ -346,8 +346,9 @@ by `ess-inject-source' variable."
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
                           (t (or (eq ess-inject-source t)
-                                 ;; we need to always inject with namespaced
-                                 ;; evaluation (fixme: not right place for this)
+                                 ;; We need to always inject with namespaced
+                                 ;; evaluation (fixme: not right place for
+                                 ;; this).
                                  (ess-r-get-evaluation-env)))))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
@@ -355,12 +356,13 @@ by `ess-inject-source' variable."
                    (ess-process-buffer-substring process start end)))
          (message (if (fboundp ess-build-eval-message-function)
                       (funcall ess-build-eval-message-function message)
-                    message))
-         ;; Visible evaluation is not nice when sourcing temporary files
-         ;; You get .ess.eval(*code*) instead of *code*
-         (visibly (unless inject-p visibly)))
-    ;; Don't run the presend hooks twice
+                    message)))
+    ;; Don't run the presend hooks twice.
     (let ((ess--inhibit-presend-hooks t))
+      (process-put process :eval-visibly visibly)
+      ;; Visible evaluation is not nice when sourcing temporary files. You get
+      ;; .ess.eval(*code*) instead of *code*.
+      (setq visibly (unless inject-p visibly))
       (ess-send-string process string visibly message))))
 
 (defun ess-tracebug-send-function (proc start end &optional visibly message)
@@ -1334,10 +1336,11 @@ value as it might be a continuation prompt."
   "Flush accumulated output of PROC into its output buffer.
 Insertion happens chunk by chunk. A chunk is a region between two
 prompts."
-  (let ((abuf (ess--accumulation-buffer proc))
-        (pbuf (process-buffer proc))
-        (nowait (eq ess-eval-visibly 'nowait))
-        (flush-timer (process-get proc 'flush-timer)))
+  (let* ((abuf (ess--accumulation-buffer proc))
+         (pbuf (process-buffer proc))
+         (visibly (process-get proc :eval-visibly))
+         (nowait (eq visibly 'nowait))
+         (flush-timer (process-get proc 'flush-timer)))
     (when (> (buffer-size abuf) 0)
       (when (timerp flush-timer)
         (cancel-timer flush-timer))
@@ -1362,7 +1365,7 @@ prompts."
                 ;; if this is the last prompt in the output back-up one prompt
                 ;; (cannot happen after \n)
                 (backward-char 2))))
-          (let ((do-clean (not (eq ess-eval-visibly t)))
+          (let ((do-clean (not (eq visibly t)))
                 (pos2 (point))
                 (pos1 (point))
                 (tpos nil)
