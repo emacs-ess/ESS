@@ -4,7 +4,12 @@
 include ./Makeconf
 
 .PHONY: all install uninstall
-all install uninstall: lisp doc etc
+## This is the default target, i.e. 'make' and 'make all' are the same.
+all install uninstall: $(ETC_FILES)
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+	cd etc; $(MAKE) $@
+
 
 .PHONY: version
 version:
