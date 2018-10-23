@@ -1,7 +1,7 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes and New Features in 18.10:
+Changes and New Features in 18.10-1:
 @itemize @bullet
 @item New functions @code{ess-eval-line-visibly-and-step} (@kbd{C-c C-n} and @code{ess-eval-region-or-line-visibly-and-step} (@kbd{C-RET})
 which behave as the old versions of @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}.
@@ -241,7 +241,7 @@ roxygen examples fields. This is turned off by default. Set
 @item @ESS{[R]}: New package development command @code{ess-r-devtools-ask}
 bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
 command that takes @code{pkg} as argument.
-@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process. 
+@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process.
 Currently only implemented for R. The R method runs @code{inferior-ess-r-reload-hook}
 on reloading.
 @item @ESS{[R]}: @code{ess-r-package-mode} is now activated in non-file buffers as well.
