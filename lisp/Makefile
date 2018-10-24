@@ -23,7 +23,7 @@ NOWEAVE=noweave
 # that sets byte compiler options.
 COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
-ELS = $(wildcard *.el)
+ELS = $(wildcard *.el obsolete/*.el)
 ELS := $(filter-out ess-autoloads.el, $(ELS))
 ELC = $(ELS:.el=.elc)
 
