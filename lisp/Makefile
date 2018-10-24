@@ -129,14 +129,6 @@ ess-r-mode.elc : ess-r-mode.el ess-s-lang.elc ess.elc
 
 ess-swv.elc: ess-swv.el ess-noweb.elc
 
-## Lisp Languages
-
-ess-lsp-l.elc : ess-lsp-l.el ess.elc
-
-ess-xls-d.elc : ess-xls-d.el ess-lsp-l.elc ess.elc
-
-ess-vst-d.elc : ess-vst-d.el ess-lsp-l.elc ess.elc
-
 ## SAS
 
 ess-sas-l.elc : ess-sas-l.el ess-sas-a.el ess.elc

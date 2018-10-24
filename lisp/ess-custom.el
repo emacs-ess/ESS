@@ -106,16 +106,6 @@
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-XLS nil
-  "ESS: XLispStat."
-  :group 'ess
-  :prefix "ess-")
-
-(defgroup ess-OMG nil
-  "ESS: Omegahat."
-  :group 'ess
-  :prefix "ess-")
-
 (defgroup ess-mouse nil ;; FIXME: this is not used yet <--> ./ess-mous.el
   "ESS: Mouse."
   :group 'ess
@@ -1998,27 +1988,6 @@ ask - ask the user whether the S buffers should be killed."
   :group 'ess-S
   :type '(choice (const nil) (const t) (const ask)))
 
-(define-obsolete-variable-alias 'inferior-XLS-program-name
-  'inferior-XLS-program "ESS 18.10")
-(defcustom inferior-XLS-program "xlispstat"
-  "Program name for invoking an inferior ESS with \\[XLS]."
-  :group 'ess-XLS
-  :type '(choice (string) (file)))
-
-(define-obsolete-variable-alias 'inferior-VST-program-name
-  'inferior-VST-program "ESS 18.10")
-(defcustom inferior-VST-program "vista"
-  "Program name for invoking an inferior ESS with \\[ViSta]."
-  :group 'ess-XLS
-  :type '(choice (string) (file)))
-
-(define-obsolete-variable-alias 'inferior-ARC-program-name
-  'inferior-ARC-program "ESS 18.10")
-(defcustom inferior-ARC-program "arc"
-  "Program name for invoking an inferior ESS with \\[ARC]."
-  :group 'ess-XLS
-  :type '(choice (string) (file)))
-
 (define-obsolete-variable-alias 'inferior-SAS-program-name
   'inferior-SAS-program "ESS 18.10")
 (defcustom inferior-SAS-program "sas"
@@ -2039,13 +2008,6 @@ order for it to work right.  And Emacs is too smart for it."
   "Non-nil means convert embedded semi-colons to newlines for Stata processing."
   :group 'ess-Stata
   :type 'boolean)
-
-(define-obsolete-variable-alias 'inferior-OMG-program-name
-  'inferior-OMG-program "ESS 18.10")
-(defcustom inferior-OMG-program "omegahat"
-  "Program name for invoking an inferior ESS with omegahat()."
-  :group 'ess-OMG
-  :type '(choice (string) (file)))
 
 (defvaralias 'R-editor 'ess-r-editor)
 (defcustom ess-r-editor "emacsclient"
@@ -2958,7 +2920,6 @@ Used to store the values for passing on to newly created buffers.")
   "Placeholder for dialect-specific STERM.")
 
 (make-obsolete-variable 'ess-S-loop-timeout "It is ignored." "ESS 18.10")
-(make-obsolete-variable 'ess-XLS-loop-timeout "It is ignored." "ESS 18.10")
 (make-obsolete-variable 'ess-mode-load-hook "It is ignored." "ESS 18.10")
 (make-obsolete-variable 'ess-speedbar-use-p "It is ignored." "ESS 18.10")
 (make-obsolete-variable 'ess-synchronize-evals "It is ignored." "ESS 18.10")
