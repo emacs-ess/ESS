@@ -392,7 +392,7 @@ To be used as part of `font-lock-defaults' keywords."
 (setcdr (assoc 'inferior-ess-font-lock-keywords ess-r-customize-alist)
         (quote 'inferior-ess-r-font-lock-keywords))
 
-(defalias 'R-customize-alist 'ess-r-customize-alist)
+(defvaralias 'R-customize-alist 'ess-r-customize-alist)
 
 (defvar ess-r-build-tags-command
   "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
@@ -496,7 +496,7 @@ before ess-site is loaded) for it to take effect.")
 
 (defvar ess-r-post-run-hook nil
   "Functions run in process buffer after the initialization of R process.")
-(defalias 'ess-R-post-run-hook 'ess-r-post-run-hook)
+(defvaralias 'ess-R-post-run-hook 'ess-r-post-run-hook)
 
 (defun ess-r-mode-p ()
   "Check whether we have a buffer running in R mode.
