@@ -39,9 +39,7 @@ dist: all
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
-	$(INSTALL) *.elc $(LISPDIR)
-	$(INSTALL) obsolete/*.elc $(LISPDIR)
-	-export J; for I in *.elc; do J=$$I; $(INSTALL) `basename $$J .elc`.el $(LISPDIR); done
+	$(INSTALL) $(ELC) $(LISPDIR)
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
