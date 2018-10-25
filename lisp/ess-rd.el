@@ -189,7 +189,7 @@ All Rd mode abbrevs start with a grave accent (`).")
     ;;  ^C^F ^L : \link{ . }
     ;;  ^C^F  L : \code{\link{ . }}  etc
     (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
-    (define-key map "\C-c\C-n" 'ess-eval-line-and-step)
+    (define-key map "\C-c\C-n" 'ess-eval-line-visibly-and-step)
     (define-key map "\C-c\C-r" 'ess-eval-region)
     (define-key map "\C-c\C-c" 'ess-eval-region-or-function-or-paragraph-and-step)
     (define-key map "\C-\M-x"  'ess-eval-region-or-function-or-paragraph)
@@ -209,7 +209,7 @@ All Rd mode abbrevs start with a grave accent (`).")
         "-"
         ["Preview"                      Rd-preview-help t]
         "-"
-        ["Eval Line"                    ess-eval-line-and-step t]
+        ["Eval Line"                    ess-eval-line-visibly-and-step t]
         ["Eval Region"                  ess-eval-region t]
         ["Switch to ESS Process"        ess-switch-to-ESS t]
         ["Switch the ESS Process"       ess-switch-process t]

@@ -143,7 +143,7 @@ is)."
   ;; (ajr::scroll-to-end::peterD "emacs")
 
   (global-set-key [f11] 'show-max-other-window)
-  (global-set-key [f12] 'ess-eval-line-and-step))
+  (global-set-key [f12] 'ess-eval-line-visibly-and-step))
 
 
  ; Provide package
