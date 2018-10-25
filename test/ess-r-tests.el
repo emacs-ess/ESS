@@ -58,6 +58,27 @@
       (should (output= (ess-eval-buffer nil)
                 "[1] \"hop\"")))))
 
+(ert-deftest ess-eval-line ()
+  (with-r-running nil
+    (insert "1 + 1")
+    (let (ess-eval-visibly)
+      (should (output= (ess-eval-line)
+                       "[1] 2")))
+    (let ((ess-eval-visibly t))
+      (should (output= (ess-eval-line)
+                       "1 + 1\n[1] 2")))))
+
+(ert-deftest ess-eval-region ()
+  (with-r-running nil
+    (insert "1 + \n1")
+    (let (ess-eval-visibly)
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       ;; We seem to be emitting an extra + here:
+                       "+ [1] 2")))
+    (let ((ess-eval-visibly t))
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       "1 + \n1\n[1] 2")))))
+
 (ert-deftest ess-r-eval-rectangle-mark-mode ()
   (with-r-running nil
     (insert "x <- 1\nx\nx + 1\nx  +  2\n")
