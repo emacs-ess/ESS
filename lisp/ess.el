@@ -164,7 +164,7 @@
     ["Load file"                ess-load-file t]
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-    ["Eval region | line" ess-eval-region-or-line-and-step t]
+    ["Eval region | line" ess-eval-region-or-line-visibly-and-step t]
     ["Enter expression" ess-execute                 t]
     ;; sub menus
     "------"
@@ -194,7 +194,7 @@
     ("ESS Eval"
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
      ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
-     ["Eval region | line" ess-eval-region-or-line-and-step t]
+     ["Eval region | line & step" ess-eval-region-or-line-visibly-and-step t]
      "-----"
      ["Eval buffer"     ess-eval-buffer                   t]
      ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
