@@ -200,7 +200,7 @@ REPORT-FN is flymake's callback function."
                                   ;; --args as a character vector
                                   "esslint(commandArgs(TRUE)"
                                   (unless ess-r--lintr-file
-                                    ", linters = " (ess-r--flymake-linters))
+                                    (concat ", linters = " (ess-r--flymake-linters)))
                                   (when ess-r-flymake-lintr-cache
                                     ", cache = TRUE")
                                   ")")
