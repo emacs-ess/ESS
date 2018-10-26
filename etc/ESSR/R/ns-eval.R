@@ -10,12 +10,12 @@
 ## evaluate the STRING by saving into a file and calling .ess.ns_source
 .ess.ns_eval <- function(string, visibly, output, package,
                          file = tempfile("ESSDev"), verbose = FALSE,
-                         fallback_env = NULL) {
+                         fallback_env = NULL, local_env = parent.frame()) {
     cat(string, file = file)
     on.exit(.ess.file.remove(file))
     .ess.ns_source(file, visibly, output, package = package,
                    verbose = verbose, fake.source = TRUE,
-                   fallback_env = fallback_env)
+                   fallback_env = fallback_env, local_env = local_env)
 }
 
 ##' Source FILE into an environment. After having a look at each new object in
@@ -26,7 +26,8 @@
 .ess.ns_source <- function(file, visibly, output, expr,
                            package = "", verbose = FALSE,
                            fake.source = FALSE,
-                           fallback_env = NULL) {
+                           fallback_env = NULL,
+                           local_env = NULL) {
     oldopts <- options(warn = 2)
     on.exit(options(oldopts))
     pname <- paste("package:", package, sep = "")
@@ -35,9 +36,9 @@
         if (require(package, quietly = TRUE, character.only = TRUE)) {
             envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
         } else {
-            ## no such package; source in current environment
+            ## no such package; source in current (local) user environment
             return(.ess.source(file, visibly = visibly,
-                               output = output, local = fallback_env, 
+                               output = output, local = local_env,
                                fake.source = fake.source))
         }
 
