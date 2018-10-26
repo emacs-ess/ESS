@@ -1245,7 +1245,7 @@ described in `ess-eval-visibly'. STRING need not end with
       (t
        (process-send-string process (ess--concat-new-line-maybe string))))
      (when message
-       (message message)))))
+       (message "%s" message)))))
 
 (ess-defgeneric ess-send-region (process start end &optional visibly message type)
   "Low level ESS version of `process-send-region'.
