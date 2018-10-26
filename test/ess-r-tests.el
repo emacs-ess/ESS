@@ -224,6 +224,44 @@
                 (call-interactively 'ess-insert-S-assign)
                 (buffer-substring (point-min) (point-max)))))))
 
+(ert-deftest ess-skip-thing ()
+  (should (eql 18
+               (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
+                 (progn
+                   (goto-char (point-min))
+                   (ess-skip-thing 'line)
+                   (point)))))
+  (should (eql 30
+               (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
+                 (progn
+                   (goto-char (point-min))
+                   (ess-skip-thing 'function)
+                   (point)))))
+  (should (eql 31
+               (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
+                 (progn
+                   (goto-char (point-min))
+                   (ess-skip-thing 'paragraph)
+                   (point)))))
+  (should-error (ess-r-test-with-temp-text "mean(1:10)"
+                  (progn
+                    (goto-char (point-min))
+                    (ess-skip-thing 'function)))))
+
+(ert-deftest ess-step-line ()
+  (should (eql 5
+               (ess-r-test-with-temp-text "1+1\n#2+2\n#3+3\n4+4"
+                 (let ((ess-eval-empty t))
+                   (goto-char (point-min))
+                   (ess-step-line)
+                   (point)))))
+  (should (eql 15
+               (ess-r-test-with-temp-text "1+1\n#2+2\n#3+3\n4+4"
+                 (let (ess-eval-empty)
+                   (goto-char (point-min))
+                   (ess-step-line)
+                   (point))))))
+
 (ert-deftest ess-Rout-file ()
   (let ((buf (find-file-noselect "fixtures/file.Rout")))
     (with-current-buffer buf
