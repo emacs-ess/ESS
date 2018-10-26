@@ -61,7 +61,6 @@ Table of Contents
 
 @menu
 * License::
-* Latest Version::
 * Installation::
 * Starting up::
 * Current Features::
@@ -71,14 +70,14 @@ Table of Contents
 * Authors::
 @end menu
 
-@node License, Stability, General Information, General Information
+@node License, Installation, General Information, General Information
 @comment  node-name,  next,  previous,  up
 @section License
 
 @include license.texi
 
 @c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
-@node Installation, Starting up, Latest Version, General Information
+@node Installation, Starting up, License, General Information
 @comment  node-name,  next,  previous,  up
 @section Installation
 @include installation.texi
