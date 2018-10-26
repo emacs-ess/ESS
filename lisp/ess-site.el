@@ -110,18 +110,6 @@ for ESS, such as icons.")
 (require 'ess-bugs-d)
 (require 'ess-jags-d)
 
-(ess-write-to-dribble-buffer
- (format "[ess-site.el]: ess-customize-alist=%s \n"
-         ess-customize-alist))
-
-;;; Literate Data Analysis
-(require 'ess-noweb)
-(require 'ess-swv)
-
-(ess-write-to-dribble-buffer
- (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
-         ess-customize-alist))
-
 ;;; Speedbar and mouse
 (require 'ess-mouse)
 

@@ -1792,6 +1792,32 @@ thread."
       (ess-noweb-tangle-thread chunk-name buffer))))
                                         ;menu functions
 
+;;;###autoload
+(defun Rnw-mode ()
+  "Major mode for editing Sweave(R) source.
+See `ess-noweb-mode' and `R-mode' for more help."
+  (interactive)
+  (require 'ess-noweb);; << probably someplace else
+  (setq ess--make-local-vars-permanent t)
+  (ess-noweb-mode 1); turn it on
+  (ess-noweb-set-doc-mode 'latex-mode)
+  (ess-noweb-set-code-mode 'R-mode)
+  (setq ess--local-handy-commands
+        (append '(("weave"      . ess-swv-weave)
+                  ("tangle"     . ess-swv-tangle))
+                ess-handy-commands)
+        ess-dialect "R"
+        ess-language "S")
+  (put 'ess--local-handy-commands 'permanent-local t)
+  (run-mode-hooks 'Rnw-mode-hook))
+
+(fset 'Snw-mode 'Rnw-mode); just a synonym (for now or ever)
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[rR]nw\\'" . Rnw-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.[sS]nw\\'" . Snw-mode))
+
 
 ;;; Finale
 

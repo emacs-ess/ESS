@@ -50,9 +50,6 @@
 (require 'ess-utils)
 (require 'ess-inf)
 
-;; FIXME: should this be optional?
-(require 'ess-noweb-mode)
-
 ;; Silence the byte compiler
 (declare-function run-ess-r "ess-r-mode")
 (declare-function S+ "ess-sp6-d")

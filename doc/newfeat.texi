@@ -77,6 +77,14 @@ documentation for more detail:
 
 @itemize @bullet
 
+@item Libraries for literate data analysis are obsolete and not loaded by default.
+This includes @code{ess-noweb}, @code{ess-swv}, and related
+functionality like @code{Rnw-mode}. Users are encouraged to switch to
+one of several other packages that deal with these modes. For example,
+polymode @url{https://github.com/polymode/poly-R/},
+@url{https://polymode.github.io/}, or markdown-mode with edit-indirect
+@url{https://jblevins.org/projects/markdown-mode}.
+
 @item User options for controlling display of buffers.
 This includes @code{ess-show-buffer-action},
 @code{inferior-ess-same-window}, @code{inferior-ess-own-frame}, and
