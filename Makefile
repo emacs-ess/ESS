@@ -53,9 +53,10 @@ autoloads:
 tarballs: $(ESSDIR)
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
+	@echo "** Making pdf and html documentation"
+	cd $(ESSDIR)/doc/ ; $(MAKE) pdf
+	cd $(ESSDIR)/doc/ ; $(MAKE) html
 	@echo "** Creating .tgz file **"
-	cd doc/ ; $(MAKE) pdf
-	cd doc/ ; $(MAKE) html
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
