@@ -213,7 +213,7 @@ objects from that MODULE."
       (let ((buf (get-buffer-create " *ess-command-output*")))
         (with-current-buffer (process-buffer proc)
           (ess-with-current-buffer buf
-            (ess--flush-help-into-current-buffer sym nil t)))
+            (ess--flush-help-into-current-buffer sym nil)))
         (with-current-buffer buf
           (ess-help-underline)
           (goto-char (point-min))

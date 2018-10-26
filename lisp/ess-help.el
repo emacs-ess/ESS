@@ -1,4 +1,4 @@
-;;; ess-help.el --- Support for viewing ESS help files
+;;; ess-help.el --- Support for viewing ESS help files  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989-1994, 2017 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997, A.J. Rossini <rossini@stat.sc.edu>
@@ -153,7 +153,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
     ;; TODO-CLEANUP: Remove the inferior- prefix for consistency
     (format inferior-ess-help-command object)))
 
-(defun ess--flush-help-into-current-buffer (object &optional command dont-ask)
+(defun ess--flush-help-into-current-buffer (object &optional command)
   (let ((inhibit-modification-hooks t)
         (inhibit-read-only t))
     (delete-region (point-min) (point-max))
@@ -230,10 +230,8 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
   (interactive)
-  (let ((object (buffer-name))
-        (alist ess-local-customize-alist)
-        (pname ess-local-process-name)
-        pack buff all-packs  not-implemented
+  (let (
+        pack all-packs
         ;; Available customization for ess languages/dialects:
         com-package-for-object ;command to get the package of current help object
         com-packages ;command to get a list of available packages (REQUIRED)
@@ -288,7 +286,6 @@ if necessary.  It is bound to RET and C-m in R-index pages."
   ;; REG-START gives the start location from where to search linkifying"
   (interactive)
   (let ((inhibit-modification-hooks t)
-        (object (buffer-name))
         (alist          ess-local-customize-alist)
         (pname ess-local-process-name)
         (buff (get-buffer-create title)))
@@ -906,7 +903,7 @@ other dialects)."
           (objname (or (and (use-region-p)
                             (buffer-substring-no-properties (point) (mark)))
                        (ess-symbol-at-point)))
-          bs ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
+          ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
       (unless objname (error "No object at point "))
       (define-key map (vector last-command-event) 'ess--describe-object-at-point)
       ;; todo: put digits into the map
@@ -926,7 +923,7 @@ other dialects)."
         (setq unread-command-events
               (append keys unread-command-events))))))
 
-(defun ess--describe-object-at-point (ev objname)
+(defun ess--describe-object-at-point (_ev objname)
   (setq ess--descr-o-a-p-commands (or ess--descr-o-a-p-commands
                                       (symbol-value ess-describe-object-at-point-commands)))
   (let* ((com (format (car (pop ess--descr-o-a-p-commands)) objname))

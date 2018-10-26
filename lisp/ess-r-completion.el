@@ -348,7 +348,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (setq sym (match-string 1 sym)))
         (with-current-buffer (process-buffer proc)
           (ess-with-current-buffer buf
-            (ess--flush-help-into-current-buffer sym nil t)))
+            (ess--flush-help-into-current-buffer sym nil)))
         (with-current-buffer buf
           (ess-help-underline)
           (goto-char (point-min))
