@@ -647,7 +647,6 @@ Executed in process buffer."
   (ess-roxy-mode t)
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
-  (ad-activate 'back-to-indentation)
   (ad-activate 'ess-eval-line-and-step)
 
   ;; FIXME: Why advice our own function?
@@ -1472,7 +1471,7 @@ Returns nil if line starts inside a string, t if in a comment."
            (state (syntax-ppss))
            (containing-sexp (cadr state))
            (prev-containing-sexp (car (last (butlast (nth 9 state))))))
-      (ess-back-to-indentation)
+      (back-to-indentation)
       (cond
        ;; Strings
        ((ess-inside-string-p)
@@ -1614,7 +1613,7 @@ Returns nil if line starts inside a string, t if in a comment."
                (looking-at "{")
                (progn
                  (forward-line)
-                 (ess-back-to-indentation)
+                 (back-to-indentation)
                  (/= (line-number-at-pos) start-line))
                (not (looking-at "[ \t]*\\(#\\|$\\)"))
                (save-excursion
@@ -1630,7 +1629,7 @@ Returns nil if line starts inside a string, t if in a comment."
              (goto-char containing-sexp)
              (ess-block-opening-p)
              (equal (point) (save-excursion
-                              (ess-back-to-indentation)
+                              (back-to-indentation)
                               (point))))
         (+ (current-column) offset))))))
 
@@ -1830,7 +1829,7 @@ Returns nil if line starts inside a string, t if in a comment."
          max-col)
     (while (< (line-number-at-pos) to-line)
       (forward-line)
-      (ess-back-to-indentation)
+      (back-to-indentation)
       ;; Ignore the line with the function call, the line to be
       ;; indented, and empty lines.
       (unless (or (>= (line-number-at-pos) to-line)
@@ -1871,7 +1870,7 @@ Returns nil if line starts inside a string, t if in a comment."
                      (looking-at "### "))
           (setq max-col (min max-col (current-column))))
         (forward-line)
-        (ess-back-to-indentation)))
+        (back-to-indentation)))
     max-col))
 
 (defun ess-calculate-indent--prefixed-block-curly ()
@@ -2113,7 +2112,7 @@ state.")
     ;; at `=' sign
     (while (looking-at "[ \t]*[\n#]")
       (forward-line)
-      (ess-back-to-indentation))
+      (back-to-indentation))
     (setq start-pos (point))
     (while (and (< (current-column) fill-column)
                 (not (looking-at "[])]"))

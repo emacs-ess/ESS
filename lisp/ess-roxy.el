@@ -88,6 +88,7 @@
     (define-key map (kbd "C-c C-o C-w") 'ess-roxy-preview-HTML)
     (define-key map (kbd "C-c C-o C-t")   'ess-roxy-preview-text)
     (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
+    (define-key map [remap back-to-indentation] 'ess-roxy-goto-end-of-roxy-comment)
     map))
 
 (defvar ess-roxy-font-lock-keywords
@@ -858,7 +859,7 @@ placed in `ess-presend-filter-functions'."
    ;; Filling of code comments in @examples roxy field
    ((and (ess-roxy-entry-p)
          (save-excursion
-           (back-to-indentation)
+           (ess-roxy-goto-end-of-roxy-comment)
            (looking-at "#")))
     (ess-roxy-with-filling-context t
       ad-do-it))
@@ -926,14 +927,16 @@ placed in `ess-presend-filter-functions'."
           ad-do-it))
     ad-do-it))
 
-(defadvice back-to-indentation (around ess-roxy-back-to-indentation)
-  "Handle `back-to-indentation' in roxygen doc."
+(defun ess-roxy-goto-end-of-roxy-comment ()
+  "Leave point at the end of a roxygen comment.
+If not in a roxygen entry, call `back-to-indentation'."
+  (interactive)
   (if (ess-roxy-entry-p)
       (progn
         (end-of-line)
         (re-search-backward (concat ess-roxy-re " *") (point-at-bol) t)
         (goto-char (match-end 0)))
-    ad-do-it))
+    (back-to-indentation)))
 
 (defun ess-roxy-indent-new-comment-line ()
   (if (not (ess-roxy-entry-p))

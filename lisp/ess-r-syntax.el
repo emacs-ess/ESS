@@ -79,15 +79,6 @@ If POS is nil, return nil.  Otherwise return position itself."
     (ess-skip-blanks-forward newlines)
     (looking-at regex)))
 
-(defun ess-back-to-indentation ()
-  "Move point to the first non-whitespace character on this line.
-This non-interactive version of (back-to-indentation) should not
-be advised"
-  (beginning-of-line 1)
-  (skip-syntax-forward " " (line-end-position))
-  ;; Move back over chars that have whitespace syntax but have the p flag.
-  (backward-prefix-chars))
-
 (defmacro ess-save-excursion-when-nil (&rest body)
   (declare (indent 0)
            (debug (&rest form)))
@@ -111,7 +102,7 @@ be advised"
            (debug (&rest form)))
   `(save-excursion
      (goto-char indent-point)
-     (ess-back-to-indentation)
+     (back-to-indentation)
      (progn ,@body)))
 
 (defvar containing-sexp)
@@ -820,7 +811,7 @@ nil, return the prefix."
                                     ;; Handles corner cases such as point being on last line
                                     (let ((orig-point (point)))
                                       (forward-line)
-                                      (ess-back-to-indentation)
+                                      (back-to-indentation)
                                       (> (point) orig-point)))
                               (skip-chars-forward " \t")
                               t))))))
