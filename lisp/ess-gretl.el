@@ -39,10 +39,8 @@
 (require 'compile); for compilation-* below
 (require 'ess-r-mode)
 
-
 ;;; Code:
-(defvar gretl-mode-hook nil)
-(add-to-list 'auto-mode-alist '("\\.inp$" . gretl-mode))
+(add-to-list 'auto-mode-alist '("\\.inp$" . ess-gretl-mode))
 
 
 (defvar gretl-syntax-table
@@ -78,13 +76,13 @@
     (modify-syntax-entry ?\# "<"  table)
     (modify-syntax-entry ?\n ">"  table)
     table)
-  "Syntax table for `gretl-mode'.")
+  "Syntax table for `ess-gretl-mode'.")
 
 ;; syntax table that holds within strings
-(defvar gretl-mode-string-syntax-table
+(defvar ess-gretl-mode-string-syntax-table
   (let ((table (make-syntax-table)))
     table)
-  "Syntax table for `gretl-mode' that holds within strings.")
+  "Syntax table for `ess-gretl-mode' that holds within strings.")
 
 (defcustom gretl-continuation-offset 4
   "*Extra indentation applied to Gretl continuation lines."
@@ -95,7 +93,7 @@
   "[^#%\n]*\\(\\\\\\|\\.\\.\\.\\)\\s-*\\(\\s<.*\\)?$")
 
 (defcustom gretl-continuation-string "\\"
-  "*Character string used for Gretl continuation lines.  Normally \\."
+  "Character string used for Gretl continuation lines.  Normally \\."
   :type 'string
   :group 'ess-gretl)
 
@@ -384,60 +382,35 @@ end keywords as associated values.")
 
 
 (defun gretl-indent-line ()
-  "Indent current line of gretl code"
+  "Indent current line of gretl code."
   (interactive)
 					;  (save-excursion
-    (end-of-line)
-    (indent-line-to
-     (or (and (ess-inside-string-p (point-at-bol)) 0)
-	 (save-excursion (ignore-errors (gretl-form-indent)))
-         (save-excursion
-           (let ((endtok (progn
-                           (beginning-of-line)
-                           (forward-to-indentation 0)
-                           (gretl-at-keyword gretl-block-end-keywords))))
-             (ignore-errors (+ (gretl-last-open-block (point-min))
-                               (if endtok (- gretl-basic-offset) 0)))))
-	 ;; previous line ends in =
-	 (save-excursion
-	   (if (and (not (equal (point-min) (line-beginning-position)))
-		    (progn
-		      (forward-line -1)
-		      (end-of-line) (backward-char 1)
-		      (equal (char-after (point)) ?=)))
-	       (+ gretl-basic-offset (current-indentation))
-	     nil))
-	 ;; take same indentation as previous line
-	 (save-excursion (forward-line -1)
-			 (current-indentation))
-         0))
-    (when (gretl-at-keyword gretl-block-end-keywords)
-      (forward-word 1)))
-
-
-(defvar gretl-editing-alist
-  '((paragraph-start		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-separate		  . (concat "\\s-*$\\|" page-delimiter))
-    (paragraph-ignore-fill-prefix . t)
-    (require-final-newline	  . mode-require-final-newline)
-    (comment-start		  . "# ")
-    (comment-add                  . 1)
-    (comment-start-skip		  . "\\s<+\\s-*")
-    (comment-column		  . 40)
-    ;;(comment-indent-function	  . 'S-comment-indent)
-    ;;(ess-comment-indent	  . 'S-comment-indent)
-    ;;(ess-indent-line		  . 'S-indent-line)
-    (ess-calculate-indent	  . 'ess-calculate-indent)
-    (ess-indent-line-function	  . 'gretl-indent-line)
-    (parse-sexp-ignore-comments	  . t)
-    (ess-style		  	  . ess-default-style) ;; ignored
-    (ess-local-process-name	  . nil)
-    ;;(ess-keep-dump-files	    . 'ask)
-    (ess-mode-syntax-table	  . gretl-syntax-table)
-    ;;  (add-log-current-defun-header-regexp . "^.*function[ \t]*\\([^ \t(]*\\)[ \t]*(")
-    )
-  "General options for gretl source files.")
-
+  (end-of-line)
+  (indent-line-to
+   (or (and (ess-inside-string-p (point-at-bol)) 0)
+       (save-excursion (ignore-errors (gretl-form-indent)))
+       (save-excursion
+         (let ((endtok (progn
+                         (beginning-of-line)
+                         (forward-to-indentation 0)
+                         (gretl-at-keyword gretl-block-end-keywords))))
+           (ignore-errors (+ (gretl-last-open-block (point-min))
+                             (if endtok (- gretl-basic-offset) 0)))))
+       ;; previous line ends in =
+       (save-excursion
+	 (if (and (not (equal (point-min) (line-beginning-position)))
+		  (progn
+		    (forward-line -1)
+		    (end-of-line) (backward-char 1)
+		    (equal (char-after (point)) ?=)))
+	     (+ gretl-basic-offset (current-indentation))
+	   nil))
+       ;; take same indentation as previous line
+       (save-excursion (forward-line -1)
+		       (current-indentation))
+       0))
+  (when (gretl-at-keyword gretl-block-end-keywords)
+    (forward-word 1)))
 
 ;; (defun gretl-send-string-function (process string visibly)
 ;;   (let ((gretl-process (get-process "gretlcli")))
@@ -492,7 +465,6 @@ end keywords as associated values.")
     (ess-local-customize-alist		. 'gretl-customize-alist)
     (inferior-ess-program		. "gretlcli")
     (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
-    (font-lock-defaults		  . '(gretl-font-lock-keywords))
     (ess-load-command   		. "open \"%s\"\n")
     ;; (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     ;; (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
@@ -505,10 +477,9 @@ end keywords as associated values.")
     (ess-dialect			. "gretl")
     (ess-suffix				. "inp")
     (ess-dump-filename-template		. (replace-regexp-in-string
-					                   "S$" ess-suffix ; in the one from custom:
-					                   ess-dump-filename-template-proto))
+					   "S$" ess-suffix ; in the one from custom:
+					   ess-dump-filename-template-proto))
     (ess-mode-syntax-table		. gretl-syntax-table)
-    (ess-mode-editing-alist	        . gretl-editing-alist)
     (ess-change-sp-regexp		. nil );ess-r-change-sp-regexp)
     (ess-help-sec-regex			. ess-help-r-sec-regex)
     (ess-help-sec-keys-alist		. ess-help-r-sec-keys-alist)
@@ -524,7 +495,7 @@ end keywords as associated values.")
     (inferior-ess-language-start	. nil)
     (ess-STERM		. "iESS")
     )
-  "Variables to customize for Gretl -- set up later than emacs initialization.")
+  "Variables to customize for Gretl -- set up later than Emacs initialization.")
 
 ;; (defcustom inferior-gretl-program "gretlcli"
 ;;   "*The program to use for running gretl scripts."
@@ -545,26 +516,29 @@ been created using the variable `ess-r-versions'."
   :type 'string)
 
 ;;;###autoload
-(defun gretl-mode  (&optional proc-name)
+(define-derived-mode ess-gretl-mode ess-mode "ESS[gretl]"
   "Major mode for editing gretl source.  See `ess-mode' for more help."
-  (interactive "P")
   ;; (setq ess-customize-alist gretl-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
+  (ess-setq-vars-local gretl-customize-alist)
+  (setq font-lock-defaults `(,gretl-font-lock-keywords))
+  (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local require-final-newline mode-require-final-newline)
+  (setq-local comment-start "# ")
+  (setq-local comment-add 1)
+  (setq-local comment-start-skip "\\s<+\\s-*")
+  (setq-local comment-column 40)
+  (setq-local ess-indent-line-function 'gretl-indent-line)
+  (setq-local parse-sexp-ignore-comments t)
   (setq-local ess-local-customize-alist gretl-customize-alist)
-  (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
-  ;; (local-set-key  "\t" 'gretl-indent-line) ;; temp workaround
-  ;; (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
-  ;; (ess-imenu-gretl)
-  (run-mode-hooks 'gretl-mode-hook))
+  (setq-local end-of-defun-function 'ess-end-of-function))
 
 
 (defvar ess-gretl-post-run-hook nil
-  "Functions run in process buffer after the initialization of
-  Gretl process.")
-
-
+  "Functions run in process buffer after Gretl starts.")
 
 ;;;###autoload
 (defun gretl (&optional start-args)
@@ -636,9 +610,6 @@ to gretl, put them in the variable `inferior-gretl-args'."
 ;;   (setq imenu-generic-expression gretl-imenu-generic-expression)
 ;;   (imenu-add-to-menubar "Imenu-jl"))
 
-
-(provide 'ess-gretl)
-;; (provide 'ess-gretl)
 
 (provide 'ess-gretl)
 
