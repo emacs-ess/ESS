@@ -647,8 +647,6 @@ Executed in process buffer."
   (ess-roxy-mode t)
   (ad-activate 'fill-paragraph)
   (ad-activate 'move-beginning-of-line)
-  (ad-activate 'ess-eval-line-and-step)
-
   ;; FIXME: Why advice our own function?
   (when ess-roxy-hide-show-p
     (ad-activate 'ess-indent-command))

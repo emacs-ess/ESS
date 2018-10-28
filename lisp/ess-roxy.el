@@ -836,13 +836,6 @@ placed in `ess-presend-filter-functions'."
        (with-syntax-table temp-table
          ,@body))))
 
-(defadvice ess-eval-line-and-step (around ess-eval-line-and-step-roxy)
-  "Evaluate line but do not skip over comment (roxy) lines."
-  (if (ess-roxy-entry-p)
-      (let ((simple-next t))
-        ad-do-it)
-    ad-do-it))
-
 (defadvice ess-indent-command (around ess-roxy-toggle-hiding)
   "Hide this block if we are at the beginning of the line."
   (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)

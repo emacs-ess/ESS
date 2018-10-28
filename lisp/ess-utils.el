@@ -143,7 +143,9 @@ THING can be 'function, 'paragraph, or 'line."
 Depending on `ess-eval-empty', step one line or to the next code
 line. When given, SKIP gets passed to `ess-skip-thing'."
   (when skip (ess-skip-thing skip))
-  (if ess-eval-empty
+  (if (or ess-eval-empty
+          (and (fboundp 'ess-roxy-entry-p)
+               (ess-roxy-entry-p)))
       (forward-line 1)
     (ess-next-code-line)))
 
