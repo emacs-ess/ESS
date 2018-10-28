@@ -646,7 +646,6 @@ Executed in process buffer."
 
   (ess-roxy-mode t)
   (ad-activate 'fill-paragraph)
-  (ad-activate 'move-beginning-of-line)
   (run-mode-hooks 'R-mode-hook))
 ;;;###autoload
 (defalias 'r-mode #'R-mode)

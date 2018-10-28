@@ -36,7 +36,7 @@
 ;;   - C-c C-o C-o :: update template
 ;; - navigating and filling roxygen fields
 ;;   - C-c TAB, M-q, C-a, ENTER, M-h :: advised tag completion, fill-paragraph,
-;;        move-beginning-of-line, newline-and-indent
+;;        ess-roxy-move-beginning-of-line, newline-and-indent
 ;;   - C-c C-o n,p :: next, previous roxygen entry
 ;;   - C-c C-o C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
@@ -89,6 +89,8 @@
     (define-key map (kbd "C-c C-o C-t")   'ess-roxy-preview-text)
     (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
     (define-key map [remap back-to-indentation] 'ess-roxy-goto-end-of-roxy-comment)
+    (define-key map [remap move-beginning-of-line] 'ess-roxy-move-beginning-of-line)
+    (define-key map [remap beginning-of-visual-line] 'ess-roxy-move-beginning-of-line)
     map))
 
 (defvar ess-roxy-font-lock-keywords
@@ -901,18 +903,19 @@ placed in `ess-presend-filter-functions'."
    (t
     ad-do-it)))
 
-(defadvice move-beginning-of-line (around ess-roxy-beginning-of-line)
-  "Move to start."
+(defun ess-roxy-move-beginning-of-line (arg)
+  "Move point to the beginning of the current line or roxygen comment.
+If not in a roxygen comment, call `move-beginning-of-line', which
+see for ARG. If in a roxygen field, leave point at the end of a
+roxygen comment. If already there, move to the beginning of the
+line."
+  (interactive "^p")
   (if (ess-roxy-entry-p)
-      (let ((new-pos (save-excursion
-                       (end-of-line)
-                       (and (re-search-backward (concat ess-roxy-re " ?") (point-at-bol) t)
-                            (match-end 0)))))
-        (if (or (bolp)
-                (< new-pos (point)))
-            (goto-char new-pos)
-          ad-do-it))
-    ad-do-it))
+      (let ((pos (point)))
+        (ess-roxy-goto-end-of-roxy-comment)
+        (when (eql (point) pos)
+          (move-beginning-of-line nil)))
+    (move-beginning-of-line arg)))
 
 (defun ess-roxy-goto-end-of-roxy-comment ()
   "Leave point at the end of a roxygen comment.

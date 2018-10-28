@@ -2757,9 +2757,9 @@ visibility of the Roxygen entry at point.
 @code{fill-paragraph} Fill the Roxygen field at point.
 
 @item C-a
-@findex move-beginning-of-line
-@code{move-beginning-of-line} Move to the point directly to the right of
-the Roxygen start string.
+@findex ess-roxy-move-beginning-of-line
+@code{ess-roxy-move-beginning-of-line} Move to the point directly to the right of
+the Roxygen start string. If already there, move to the beginning of the line.
 
 @item RET
 @findex newline-and-indent
