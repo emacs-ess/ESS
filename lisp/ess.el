@@ -518,32 +518,42 @@ the left margin or in the line's indentation; otherwise insert a tab.
 A numeric argument, regardless of its value, means indent rigidly all
 the lines of the expression starting after point so that this line
 becomes properly indented.  The relative indentation among the lines
-of the expression are preserved."
+of the expression are preserved.
+
+If in a roxygen block at the beginning of the line with
+`ess-roxy-hide-show-p' non-nil, call `ess-roxy-toggle-hiding'
+instead of indenting."
   (interactive "P")
-  (if whole-exp
-      ;; If arg, always indent this line as S
-      ;; and shift remaining lines of expression the same amount.
-      (let ((shift-amt (ess-indent-line))
-            beg end)
-        (save-excursion
-          (if ess-tab-always-indent
-              (beginning-of-line))
-          (setq beg (point))
-          (backward-up-list 1)
-          (forward-list 1)
-          (setq end (point))
-          (goto-char beg)
-          (forward-line 1)
-          (setq beg (point)))
-        (if (> end beg)
-            (indent-code-rigidly beg end shift-amt)))
-    (if (and (not ess-tab-always-indent)
-             (save-excursion
-               (skip-chars-backward " \t")
-               (not (bolp))))
-        (insert-tab)
-      ;; call ess-indent-line
-      (funcall indent-line-function))))
+  (cond ((and (fboundp 'ess-roxy-entry-p)
+              (fboundp 'ess-roxy-toggle-hiding)
+              (bolp)
+              (ess-roxy-entry-p)
+              ess-roxy-hide-show-p)
+         (ess-roxy-toggle-hiding))
+        (whole-exp
+         ;; If arg, always indent this line as S
+         ;; and shift remaining lines of expression the same amount.
+         (let ((shift-amt (ess-indent-line))
+               beg end)
+           (save-excursion
+             (if ess-tab-always-indent
+                 (beginning-of-line))
+             (setq beg (point))
+             (backward-up-list 1)
+             (forward-list 1)
+             (setq end (point))
+             (goto-char beg)
+             (forward-line 1)
+             (setq beg (point)))
+           (if (> end beg)
+               (indent-code-rigidly beg end shift-amt))))
+        ((and (not ess-tab-always-indent)
+              (save-excursion
+                (skip-chars-backward " \t")
+                (not (bolp))))
+         (insert-tab))
+        ;; call ess-indent-line
+        (t (funcall indent-line-function))))
 
 (defun ess-indent-or-complete ()
   "When region is selected indent the region.

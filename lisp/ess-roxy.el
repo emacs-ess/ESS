@@ -836,12 +836,6 @@ placed in `ess-presend-filter-functions'."
        (with-syntax-table temp-table
          ,@body))))
 
-(defadvice ess-indent-command (around ess-roxy-toggle-hiding)
-  "Hide this block if we are at the beginning of the line."
-  (if (and (= (point) (point-at-bol)) (ess-roxy-entry-p) 'ess-roxy-hide-show-p)
-      (progn (ess-roxy-toggle-hiding))
-    ad-do-it))
-
 (defadvice fill-paragraph (around ess-roxy-fill-advise)
   "Fill roxygen paragraphs."
   (cond
