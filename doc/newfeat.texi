@@ -1,10 +1,12 @@
 @comment @itemize @w{}
 @comment @item
 
-Bug Fixes in 18.10-2:
+Bug Fixes in 18.10.2:
 @itemize @bullet
 @item @ESS{[R]} Fix namespace evaluation in non-installed packages.
 Evaluation is directed into GlobalEnv as originally intended.
+@item @file{Makefile} fixes, notably for @code{make install} and including
+full docs in the tarballs.
 @end itemize
 
 Bug Fixes in 18.10-1:
