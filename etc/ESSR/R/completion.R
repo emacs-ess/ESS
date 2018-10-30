@@ -1,5 +1,13 @@
 ## Do *NOT* use  1L -- it gives  parse errors in historical versions of R
 
+## Try a setup working in as old R as possible.
+## ===>
+##    1)  do not use "_" in names!   --- seems impossible for the Millenials ..
+##    2)  use our own simplified definition of  '::' and ':::' ?
+##
+if(!exists("local"))
+    local <- function(expr, envir = environment()) { invisible(eval(expr, envir=envir)) }
+
 ##' Robust version of
 ##'    utils:::.addFunctionInfo(c = c("recursive", "use.names"))
 local({
