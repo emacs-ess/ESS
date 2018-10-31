@@ -289,7 +289,7 @@ default using the first entry of `ess-swv-pdflatex-commands' and display it."
                     (fboundp 'w32-shell-dos-semantics))
                (w32-shell-dos-semantics))
           (shell-command cmdstr-win)
-        (message (mapconcat 'identity cmd " "))
+        (message "%s" (mapconcat 'identity cmd " "))
         (apply 'start-process  (car cmd) nil cmd))
       (unless hide-compile-buffer (display-buffer tex-buf))
       (message "%s finished with status %d" pdflatex-cmd pdf-status))))

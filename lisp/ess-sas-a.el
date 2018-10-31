@@ -339,7 +339,7 @@ in SAS-mode and related modes.")
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*") ; GNU Emacs needs this
          (beg (string-match exit-done string)))
     (if beg
-        (message (substring string beg (match-end 0))))))
+        (message "%s" (substring string beg (match-end 0))))))
 
 
 (defun ess-sas-append-log ()

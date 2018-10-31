@@ -710,7 +710,6 @@ You can bind 'no-select' versions of this commands:
         (if (re-search-forward "No traceback available" nil t)
             (message "No traceback available")
           (ess-dirs)
-          (message nil)
           (make-local-variable 'compilation-error-regexp-alist)
           (when (boundp 'ess-r-error-regexp-alist)
             (setq compilation-error-regexp-alist ess-r-error-regexp-alist))
@@ -2771,8 +2770,8 @@ Optional N if supplied gives the number of backward steps."
     (save-excursion
       (ess-if-verbose-write (format "ess-get-signatures*(%s).. " method))
       (ess-command (concat "showMethods(\"" method "\")\n") tbuffer)
-      (message ess-local-process-name)
-      (message ess-current-process-name)
+      (message "%s" ess-local-process-name)
+      (message "%s" ess-current-process-name)
       (ess-if-verbose-write " [ok] ..\n")
       (set-buffer tbuffer)
       (goto-char (point-min))
@@ -2830,7 +2829,7 @@ for signature and trace it with browser tracer."
             (ess-command (format "trace('%s', tracer = browser, signature = c('%s'))\n" ufunc signature) tbuffer))
           (with-current-buffer tbuffer
             ;; give appropriate message or error
-            (message (buffer-substring-no-properties (point-min) (point-max)))))
+            (message "%s" (buffer-substring-no-properties (point-min) (point-max)))))
 
       ;;else, not an S4 generic
       (when (ess-boolean-command (format "as.character(.knownS3Generics['%s'])\n" ufunc))
@@ -2873,7 +2872,7 @@ for signature and trace it with browser tracer."
             (setq out-message (format  "Undebugged '%s' " fun))
           (setq out-message (buffer-substring-no-properties (point-min) (point-max))) ;; untrace info or warning, or error occurred
           )))
-    (message out-message)))
+    (message "%s" out-message)))
 
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text

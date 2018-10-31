@@ -183,7 +183,7 @@ and `ess-bugs-file-dir'."
   "ESS[BUGS]: Detect completion or failure of submitted job and notify the user."
   (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*")
          (beg (string-match exit-done string)))
-    (if beg (message (substring string beg (match-end 0))))))
+    (if beg (message "%s" (substring string beg (match-end 0))))))
 
 (defun ess-bugs-hot-arrow ()
   "*ESS[BUGS]: Substitute <- for = key press"

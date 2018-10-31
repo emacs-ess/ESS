@@ -802,7 +802,7 @@ prompt for command line arguments."
         (error "No version of R could be found")
       ;; Else: we have a working version of R.
       ;; Have to be careful to avoid recursion...
-      (message (concat "Newest version of R is " rnewest))
+      (message "%s" (concat "Newest version of R is " rnewest))
       (fset 'R-newest
             (intern
              (if ess-microsoft-p
@@ -1032,8 +1032,7 @@ With argument UPDATE, update cached packages list."
   (unless (ess-boolean-command (format "print(requireNamespace('%s', quietly = TRUE))\n" pkg))
     (if (y-or-n-p (format "Package '%s' is not installed. Install? " pkg))
         (ess-eval-linewise (format "install.packages('%s')\n" pkg))
-      (signal 'quit nil))
-    (message nil)))
+      (signal 'quit nil))))
 
 (defun ess-r-sos (cmd)
   "Interface to findFn in the library sos."
