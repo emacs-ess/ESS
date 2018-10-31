@@ -335,7 +335,7 @@ To be used as part of `font-lock-defaults' keywords."
                     (looking-at "\\s-*(")))))
     out))
 
-(define-obsolete-variable-alias 'R-customize-alist 'ess-r-customize-alist "ESS 18.10-2")
+(define-obsolete-variable-alias 'R-customize-alist 'ess-r-customize-alist "ESS 18.10.2")
 (defvar ess-r-customize-alist
   (append
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
@@ -494,7 +494,7 @@ before ess-site is loaded) for it to take effect.")
 
 ;;;*;;; Mode init
 
-(define-obsolete-variable-alias 'ess-R-post-run-hook 'ess-r-post-run-hook "ESS 18.10-2")
+(define-obsolete-variable-alias 'ess-R-post-run-hook 'ess-r-post-run-hook "ESS 18.10.2")
 (defvar ess-r-post-run-hook nil
   "Functions run in process buffer after the initialization of R process.")
 

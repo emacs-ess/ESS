@@ -67,7 +67,7 @@ This includes @code{ess-show-buffer-action},
 
 @end itemize
 
-Bug Fixes in 18.10-2:
+Bug Fixes in 18.10.2:
 @itemize @bullet
 @item @ESS{[R]} Fix namespace evaluation in non-installed packages.
 Evaluation is directed into GlobalEnv as originally intended.
