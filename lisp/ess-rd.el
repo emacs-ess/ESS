@@ -248,7 +248,6 @@ the following to your Emacs configuration file:
   (setq-local comment-end "")
   (setq font-lock-defaults
         '(Rd-font-lock-keywords nil nil))
-  ;; (set (make-local-variable 'parse-sexp-ignore-comments) t)
 
   ;; Here is a workaround for an Emacs bug related to indirect buffers and
   ;; spurious lockfiles that rears its ugly head with .Rd files

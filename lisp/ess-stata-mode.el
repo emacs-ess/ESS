@@ -114,8 +114,6 @@
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
   (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
-  (setq-local parse-sexp-ignore-comments t)
-  (setq-local require-final-newline mode-require-final-newline)
   (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
 
 (defalias 'STA-mode 'ess-stata-mode)
@@ -199,8 +197,6 @@ This function is placed in `ess-presend-filter-functions'.
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
   (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
-  (setq-local parse-sexp-ignore-comments t)
-  (setq-local require-final-newline mode-require-final-newline)
   (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
 
 (defalias 'STA-transcript-mode 'ess-stata-mode-syntax-table)
