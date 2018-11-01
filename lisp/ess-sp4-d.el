@@ -34,7 +34,7 @@
 
 ;;; Requires and Autoloads:
 
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-s-lang)
 (require 'ess-dde)

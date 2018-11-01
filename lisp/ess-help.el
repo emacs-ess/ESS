@@ -41,7 +41,7 @@
   (require 'tramp)
   (require 'reporter))
 (require 'info)
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-utils)
 
@@ -959,7 +959,7 @@ other dialects)."
 (defun ess-submit-bug-report ()
   "Submit a bug report to the ESS maintainers."
   (interactive)
-  (require 'ess)
+  (require 'ess-mode)
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report

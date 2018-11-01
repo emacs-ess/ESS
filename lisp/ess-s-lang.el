@@ -32,7 +32,7 @@
 
  ; Requires and autoloads
 
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-help)
 (require 'ess-utils)
 (require 'ess-inf)
@@ -641,7 +641,7 @@ Please use `ess-insert-assign'."
   "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and
  \\<inferior-ess-mode-map>\\[ess-execute-screen-options]."
   (interactive)
-  (require 'ess); typically unnecessary
+  (require 'ess-mode); typically unnecessary
   (require 'ess-inf); dito
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
 

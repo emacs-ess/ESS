@@ -51,7 +51,7 @@
 ;;; Code:
 
 (require 'ess-utils)
-(require 'ess)
+(require 'ess-mode)
 
 (defgroup ess-toolbar nil
   "ESS: toolbar support."

@@ -37,7 +37,7 @@
 (require 'ess-custom)
 (require 'ess-lsp-l)
 (require 'ess-utils)
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-trns)
 

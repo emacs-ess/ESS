@@ -25,7 +25,7 @@
 
 ;;; Code:
 
-(require 'ess)
+(require 'ess-mode)
 ;; Silence the byte compiler
 ;; FIXME: This is a lot, perhaps they can be moved?
 (defvar sas-indent-width)

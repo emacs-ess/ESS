@@ -27,7 +27,7 @@
 (require 'ess-utils)
 (require 'ess-inf)
 (require 'ess-custom)
-(require 'ess)
+(require 'ess-mode)
 
 (setq auto-mode-alist
       (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
