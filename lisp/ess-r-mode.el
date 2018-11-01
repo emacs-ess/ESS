@@ -631,9 +631,7 @@ Executed in process buffer."
                 (ess-beginning-of-function 'no-error)))
   (setq-local end-of-defun-function
               'ess-end-of-function)
-
-  (ess-roxy-mode t)
-  (ad-activate 'fill-paragraph))
+  (ess-roxy-mode))
 ;;;###autoload
 (defalias 'R-mode 'ess-r-mode)
 ;;;###autoload

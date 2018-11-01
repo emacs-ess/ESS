@@ -32,15 +32,15 @@
 
 ;; Borrowed from org
 (defmacro ess-r-test-with-temp-text (text &rest body)
-  "Run body in a temporary buffer with `R-mode' as the active
+  "Run body in a temporary buffer with `ess-r-mode' as the active
 mode holding TEXT.  If the string \"¶\" appears in TEXT
 then remove it and place the point there before running BODY,
 otherwise place the point at the beginning of the inserted text."
   (declare (indent 1))
   `(let ((inside-text (if (stringp ,text) ,text (eval ,text)))
-	 (org-mode-hook nil))
+	 (ess-r-mode-hook nil))
      (with-temp-buffer
-       (R-mode)
+       (ess-r-mode)
        (let ((point (string-match "¶" inside-text)))
 	 (if point
 	     (progn
@@ -49,7 +49,29 @@ otherwise place the point at the beginning of the inserted text."
 	   (insert inside-text)
 	   (goto-char (point-min))))
        ,@body)))
-(def-edebug-spec org-test-with-temp-text (form body))
+(def-edebug-spec ess-r-test-with-temp-text (form body))
+
+(defmacro ess-cpp-test-with-temp-text (text &rest body)
+  "Run body in a temporary buffer with `cpp-mode' as the active
+mode holding TEXT. Turn on `ess-roxy-mode'. If the string \"¶\"
+appears in TEXT then remove it and place the point there before
+running BODY, otherwise place the point at the beginning of the
+inserted text."
+  (declare (indent 1))
+  `(let ((inside-text (if (stringp ,text) ,text (eval ,text)))
+	 (c++-mode-hook nil))
+     (with-temp-buffer
+       (c++-mode)
+       (ess-roxy-mode)
+       (let ((point (string-match "¶" inside-text)))
+	 (if point
+	     (progn
+	       (insert (replace-match "" nil nil inside-text))
+	       (goto-char (1+ (match-beginning 0))))
+	   (insert inside-text)
+	   (goto-char (point-min))))
+       ,@body)))
+(def-edebug-spec ess-cpp-test-with-temp-text (form body))
 
 (defun ess-vanila-R ()
   "Start vanila R process and return the process object."

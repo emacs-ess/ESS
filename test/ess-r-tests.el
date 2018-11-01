@@ -2,6 +2,7 @@
 (require 'ert)
 (require 'ess-site)
 (require 'ess-r-tests-utils)
+(require 'cc-mode)
 
 ;;; R
 
@@ -322,6 +323,7 @@ Add together two numbers. add(10, 1)
 "
               (with-temp-buffer
                 (R-mode)
+                (ess-roxy-mode)
                 (insert
                  "##' Add together two numbers.
 ##' add(10, 1)
@@ -336,3 +338,37 @@ add <- function(x, y) {
                 (forward-line 1)
                 (kill-whole-line)
                 (buffer-substring-no-properties (point-min) (point-max)))))))
+
+(ert-deftest ess-roxy-cpp ()
+  ;; Test M-q
+  (should (string=
+           "//' Title
+//'
+//' @param Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+//'   sed do eiusmod.
+//' @param Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+//'   sed do eiusmod.
+//' @examples
+//' mean()
+"
+           (ess-cpp-test-with-temp-text
+               "//' Title
+//'
+//' @param Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+//' @param ¶Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+//' @examples
+//' mean()
+"
+             (c-fill-paragraph)
+             (buffer-substring-no-properties (point-min) (point-max)))))
+  ;; Test newline
+  (should (string=
+           "//'\n//' "
+           (ess-cpp-test-with-temp-text "//' ¶"
+             (ess-roxy-newline-and-indent)
+             (buffer-substring-no-properties (point-min) (point-max)))))
+  (should (string=
+           "//\n"
+           (ess-cpp-test-with-temp-text "//¶"
+             (ess-roxy-newline-and-indent)
+             (buffer-substring-no-properties (point-min) (point-max))))))

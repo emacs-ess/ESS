@@ -63,8 +63,6 @@
 
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
-    ;; By popular demand:
-    (define-key map (kbd "RET")  'ess-newline-and-indent)
     (define-key map [remap yank] 'ess-yank)
     (define-key map "\C-c\C-r"   'ess-eval-region)
     (define-key map "\C-c\M-r"   'ess-eval-region-and-go)
@@ -413,15 +411,6 @@ current function."
       (narrow-to-region beg end))))
 
 (define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
-
-(defun ess-newline-and-indent ()
-  "Like `newline-and-indent' but accounts for roxygen comments."
-  (interactive)
-  (cond ((and (fboundp 'ess-roxy-newline-and-indent)
-              (string= ess-dialect "R"))
-         (ess-roxy-newline-and-indent))
-        (t
-         (newline-and-indent))))
 
 (defun ess-indent-new-comment-line ()
   "Like `indent-new-comment-line' but accounts for roxygen comments."

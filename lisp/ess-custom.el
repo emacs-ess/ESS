@@ -1494,11 +1494,6 @@ the line at point"
   :group 'ess-roxy
   :type 'string)
 
-(defcustom ess-roxy-re "^#+'"
-  "Regular expression to recognize roxygen blocks."
-  :group 'ess-roxy
-  :type 'string)
-
 (defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
   "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
 the first entry is the default command."
@@ -1513,7 +1508,7 @@ to sweave the current noweb file and latex the result."
                  (const :tag "On" t)))
 
 (defvar ess-roxy-insert-prefix-on-newline t
-  "When non-nil, `ess-newline-and-indent' will make sure the new
+  "When non-nil, `ess-roxy-newline-and-indent' will make sure the new
 line starts with the roxy prefix.")
 
  ; System variables

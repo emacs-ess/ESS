@@ -47,6 +47,10 @@ your Emacs file:
 See the documentation of @code{display-buffer-alist},
 @code{display-buffer}, and @xref{Window Choice,,, emacs} for details.
 
+@item @code{ess-roxy-mode} can now be enabled in non-R buffers.
+This is primarily intended to support roxygen documentation for cpp
+buffers. Preview functionality is not supported outside R buffers.
+
 @item Options for 'ess-gen-proc-buffer-name-function' have been renamed.
 ess-gen-proc-buffer-name:projectile-or-simple was renamed to
 ess-gen-proc-buffer-name:project-or-simple and
