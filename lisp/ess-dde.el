@@ -32,7 +32,7 @@
 ;;; Code:
 
 (require 'ess-custom)
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-utils)
 
 (defun ess-ddeclient-p ()

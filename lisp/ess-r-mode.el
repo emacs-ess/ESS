@@ -40,7 +40,7 @@
 (require 'easymenu)
 (require 'eldoc)
 (require 'seq)
-(require 'ess)
+(require 'ess-mode)
 (require 'ess-help)
 (require 'ess-s-lang)
 (require 'ess-roxy)

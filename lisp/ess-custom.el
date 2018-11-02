@@ -235,7 +235,7 @@ See also `tooltip-hide-delay' and `tooltip-delay'.
 
 The value of each element is nil and is not used in current
 implementation."
-  :group 'R
+  :group 'ess-R
   :type 'alist)
 
 (defcustom ess-S-describe-object-at-point-commands
