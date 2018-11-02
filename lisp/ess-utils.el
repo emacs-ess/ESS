@@ -260,15 +260,8 @@ Drops 'nil' entries."
             (ess-flatten-list-1 (cdr list))))
    (t (list list))))
 
-(defun ess-delete-blank-lines ()
-  "Convert 2 or more lines of white space into one."
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (save-match-data
-      (while (search-forward-regexp "^[ \t]*\n[ \t]*\n" nil t)
-        ;;(goto-char (match-beginning 0))
-        (delete-blank-lines)))))
+(define-obsolete-function-alias 'ess-delete-blank-lines
+  'delete-blank-lines "ESS 19.04")
 
 ;; Parse a line into its constituent parts (words separated by
 ;; whitespace).    Return a list of the words.
