@@ -39,7 +39,7 @@
   (require 'subr-x))
 (require 'ess-generics)
 (require 'ess-utils)
-(require 'newcomment)
+
 (require 'comint)
 (require 'overlay)
 (require 'project)

@@ -36,6 +36,7 @@
 (require 'comint)
 (require 'ess-custom)
 (require 'ido)
+(require 'newcomment)
 (defvar ac-modes)
 (declare-function ess-eval-linewise "ess-inf")
 (declare-function evil-visual-state-p "evil")
@@ -106,14 +107,9 @@ far as possible and return -1."
         (inc (if (> arg 0) 1 -1)))
     (while (and (/= arg 0) (= n 0))
       (setq n (forward-line inc)); n=0 is success
-      (if (not (fboundp 'comment-beginning))
-          (while (and (= n 0)
-                      (looking-at "\\s-*\\($\\|\\s<\\)"))
-            (setq n (forward-line inc)))
-        (comment-beginning)
-        (beginning-of-line)
-        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
-        )
+      (comment-beginning)
+      (beginning-of-line)
+      (forward-comment (* inc (buffer-size))) ;; as suggested in info file
       (if (or skip-to-eob
               (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
           (setq arg (- arg inc))
