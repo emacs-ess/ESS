@@ -161,7 +161,7 @@ file \"Splus7\" is found and this variable includes the string
 version of S.
 If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
-ignored by calling `ess-uniq-list'.
+ignored by calling `delete-dups'.
 Set this variable to nil to disable searching for other versions
 of S using this method.
 If you set this variable, you need to restart Emacs (and set this variable
@@ -179,7 +179,7 @@ created.  The functions will normally be placed on the menubar upon
 ESS initialization."
   (when ess-s-versions
     (let ((versions
-           (ess-uniq-list
+           (delete-dups
             (mapcar #'file-name-nondirectory
                     (apply #'nconc
                            (mapcar #'ess-find-exec-completions

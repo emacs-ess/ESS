@@ -482,7 +482,7 @@ file \"R-1.8.1\" is found and this variable includes the string
 version of R.
 If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
-ignored by calling `ess-uniq-list'.
+ignored by calling `delete-dups'.
 Set this variable to nil to disable searching for other versions of R.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
@@ -712,24 +712,24 @@ as `ess-r-created-runners' upon ESS initialization."
            (if ess-microsoft-p
                (mapcar (lambda (v) (car (ess-rterm-arch-version v 'give-cons)))
                        ess-rterm-version-paths)
-             (ess-uniq-list
+             (delete-dups
               (mapcar #'file-name-nondirectory
                       (apply #'nconc
                              (mapcar #'ess-find-exec-completions
                                      ess-r-versions)))))))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners versions)
-    (if ess-microsoft-p
-        (cl-mapcar (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
-      (mapc (lambda (v) (ess-define-runner v "R")) versions))
-    ;; Add to menu
-    (when ess-r-created-runners
-      ;; new-menu will be a list of 3-vectors, of the form:
-      ;; ["R-1.8.1" R-1.8.1 t]
-      (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
-                              ess-r-created-runners)))
-        (easy-menu-add-item ess-mode-menu '("Start Process")
-                            (cons "Other" new-menu)))))))
+      (if ess-microsoft-p
+          (cl-mapcar (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
+        (mapc (lambda (v) (ess-define-runner v "R")) versions))
+      ;; Add to menu
+      (when ess-r-created-runners
+        ;; new-menu will be a list of 3-vectors, of the form:
+        ;; ["R-1.8.1" R-1.8.1 t]
+        (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
+                                ess-r-created-runners)))
+          (easy-menu-add-item ess-mode-menu '("Start Process")
+                              (cons "Other" new-menu)))))))
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
 
@@ -2208,7 +2208,7 @@ state.")
 ;; FIXME: Should be set in ess-custom
 (setq ess-rterm-version-paths
       (ess-flatten-list
-       (ess-uniq-list
+       (delete-dups
         (if (not ess-directory-containing-R)
             (if (getenv "ProgramW6432")
                 (let ((P-1 (getenv "ProgramFiles(x86)"))

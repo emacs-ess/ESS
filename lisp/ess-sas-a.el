@@ -296,7 +296,7 @@ file \"sas8\" is found and this variable includes the string
 version of SAS.
 If duplicate versions of the same program are found (which happens if
 the same path is listed on `exec-path' more than once), they are
-ignored by calling `ess-uniq-list'.
+ignored by calling `delete-dups'.
 If you set this variable, you need to restart Emacs (and set this variable
 before ess-site is loaded) for it to take effect.")
 
@@ -1195,7 +1195,7 @@ be placed on the menubar upon ESS initialization."
   (let ((versions
          ;; Find which versions of SAS we want.  Remove the pathname,
          ;; leaving just the name of the executable.
-         (ess-uniq-list
+         (delete-dups
           (mapcar #'file-name-nondirectory
                   (apply #'nconc
                          (mapcar #'ess-find-exec-completions

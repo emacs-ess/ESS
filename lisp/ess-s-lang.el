@@ -740,7 +740,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
           (ess-process-get 'sp-for-help-changed?))
       (ess-process-put 'sp-for-help-changed? nil)
       (setq ess-help-topics-list
-            (ess-uniq-list
+            (delete-dups
              (append (ess-get-object-list name 'exclude-1st)
                      (ess-get-help-files-list)
                      (ess-get-help-aliases-list)))))

@@ -2436,7 +2436,7 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
                   (append result
                           (ess-extract-onames-from-alist alist i)))
             (setq i (1+ i)))
-          (setq ess-object-list (ess-uniq-list result))))))
+          (setq ess-object-list (delete-dups result))))))
 
 (defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
   "Evaluate the S command COMMAND, which returns a character vector.

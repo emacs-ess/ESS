@@ -217,28 +217,19 @@ If FILE-OR-BUFFER is specified, perform action in that buffer."
   "If ESS-ARG is a list return it, else return ESS-ARG in a list."
   (if (listp ess-arg) ess-arg (list ess-arg)))
 
-;; Copyright (C) 1994 Simon Marshall.
-;; Author: Simon Marshall <Simon.Marshall@mail.esrin.esa.it>
-;; LCD Archive Entry:
-;; unique|Simon Marshall|Simon.Marshall@mail.esrin.esa.it|
-;; Functions and commands to uniquify lists or buffer text (cf. sort).
-;; 23-Apr-1994|1.00|~/packages/unique.el.Z|
-;;
-;; MM: renamed from 'unique' to 'ess-unique', then
 (defun ess-uniq (list predicate)
   "Uniquify LIST, stably, deleting elements using PREDICATE.
 Return the list with subsequent duplicate items removed by side effects.
 PREDICATE is called with an element of LIST and a list of elements from LIST,
 and should return the list of elements with occurrences of the element removed.
-This function will work even if LIST is unsorted.  See also `ess-uniq-list'."
+This function will work even if LIST is unsorted.  See also `delete-dups'."
+  (declare (obsolete 'delete-dups "ESS 19.04"))
   (let ((list list))
     (while list
       (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
   list)
 
-(defun ess-uniq-list (items)
-  "Delete all duplicate entries in ITEMS list, calling `ess-uniq'."
-  (ess-uniq items 'delete))
+(define-obsolete-function-alias 'ess-uniq-list 'delete-dups "ESS 19.04")
 
 (defun ess-flatten-list (&rest list)
   "Take the arguments and flatten them into one long LIST.
