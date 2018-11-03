@@ -450,6 +450,7 @@ Misc:
     (add-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
     (add-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
     (setq ess-noweb-doc-mode-syntax-table nil)
+    (setq ess-use-flymake nil)
     (run-hooks 'ess-noweb-mode-hook)
     (message
      "noweb mode: use `M-x ess-noweb-describe-mode' for further information"))
