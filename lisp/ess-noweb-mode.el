@@ -422,6 +422,7 @@ Misc:
             ess-local-process-name ;; also made permanent in ess-mode, but let it be
             ess-dialect
             ess-language
+            ess-use-flymake
             after-change-functions
             before-change-functions
             ess-noweb-narrowing
@@ -433,6 +434,7 @@ Misc:
             ess-noweb-code-mode
             ess-noweb-default-code-mode
             ess-noweb-last-chunk-index))
+    (setq-local ess-use-flymake nil)
     (ess-noweb-update-chunk-vector)
     (setq ess-noweb-last-chunk-index
           (if (equal 0 (ess-noweb-find-chunk-index-buffer)) 1 0))
@@ -450,7 +452,6 @@ Misc:
     (add-hook 'isearch-mode-hook 'ess-noweb-note-isearch-mode)
     (add-hook 'isearch-mode-end-hook 'ess-noweb-note-isearch-mode-end)
     (setq ess-noweb-doc-mode-syntax-table nil)
-    (setq ess-use-flymake nil)
     (run-hooks 'ess-noweb-mode-hook)
     (message
      "noweb mode: use `M-x ess-noweb-describe-mode' for further information"))

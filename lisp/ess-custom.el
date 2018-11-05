@@ -433,7 +433,6 @@ If 'process, only check if the buffer has an inferior process."
                  (const :tag "With running inferior process" process)
                  (const :tag "Never" nil))
   :package-version '(ess . "18.10"))
-(make-variable-buffer-local 'ess-use-flymake)
 
 (defcustom ess-use-auto-complete t
   "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
