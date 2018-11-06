@@ -202,17 +202,6 @@ nil."
       (if (bufferp file-or-buffer) file-or-buffer
         (find-buffer-visiting file-or-buffer))))
 
-(defun ess-set-local-variables (alist &optional file-or-buffer)
-  "Set local variables from ALIST in current buffer.
-If FILE-OR-BUFFER is specified, perform action in that buffer."
-  (interactive)
-  (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
-
-  (mapcar (lambda (pair)
-            (make-local-variable (car pair))
-            (set (car pair) (eval (cdr pair))))
-          alist))
-
 (defun ess-return-list (ess-arg)
   "If ESS-ARG is a list return it, else return ESS-ARG in a list."
   (if (listp ess-arg) ess-arg (list ess-arg)))
