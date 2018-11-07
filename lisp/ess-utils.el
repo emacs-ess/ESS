@@ -715,16 +715,16 @@ Invoke this command with C-u C-u C-y."
         (setq this-command 'yank))
     ))
 
-(defun ess-yank (&optional ARG)
-  "With double prefix (C-u C-u) call `ess-yank-cleaned-commands."
+(defun ess-yank (&optional arg)
+  "With double prefix ARG (C-u C-u) call `ess-yank-cleaned-commands'."
   (interactive "*P")
-  (if (equal '(16) ARG)
+  (if (equal '(16) arg)
       (ess-yank-cleaned-commands)
     (let* ((remapped (command-remapping 'yank (point)))
            (command (cond ((eq remapped 'ess-yank) 'yank)
                           ((null remapped) 'yank)
                           (t remapped))))
-      (funcall command ARG))))
+      (funcall command arg))))
 
 (put 'ess-yank 'delete-selection 'yank)
 
