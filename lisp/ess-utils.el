@@ -227,9 +227,6 @@ Drops 'nil' entries."
   ;; `lpr-flatten-list' is defined here (copied from "message.el" and
   ;; enhanced to handle dotted pairs as well) until we can get some
   ;; sensible autoloads, or `flatten-list' gets put somewhere decent.
-
-  ;; (ess-flatten-list '((a . b) c (d . e) (f g h) i . j))
-  ;; => (a b c d e f g h i j)
   (ess-flatten-list-1 list))
 
 (defun ess-flatten-list-1 (list)

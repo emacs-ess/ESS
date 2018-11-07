@@ -33,3 +33,9 @@
 
 (ert-deftest sas-mode ()
   (should (string= 'ess-mode (with-temp-buffer (SAS-mode) major-mode))))
+
+;; Various tests from e.g. ess-utils.el
+
+(ert-deftest ess-flatten-list ()
+  (should (equal (list 'a 'b 'c 'd 'e 'f 'g 'h 'i 'j)
+                 (ess-flatten-list '((a . b) c (d . e) (f g h) i . j)))))
