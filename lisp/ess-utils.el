@@ -275,23 +275,7 @@ Drops 'nil' entries."
                                                              t)
     nil))
 
-
-(defun ess-find-exec (ess-root-arg ess-root-dir)
-  "Given a root directory and the root of an executable file name,
-find it's full name and path, if it exists, anywhere in the sub-tree."
-  (let* ((ess-tmp-dirs (directory-files ess-root-dir t "^[^.]"))
-         (ess-tmp-return (ess-find-exec-completions ess-root-arg ess-root-dir))
-         (ess-tmp-dir nil))
-
-    (while ess-tmp-dirs
-      (setq ess-tmp-dir (car ess-tmp-dirs)
-            ess-tmp-dirs (cdr ess-tmp-dirs))
-      (if (file-accessible-directory-p ess-tmp-dir)
-          (setq ess-tmp-return
-                (nconc ess-tmp-return
-                       (ess-find-exec ess-root-arg ess-tmp-dir)))))
-    ess-tmp-return))
-
+(define-obsolete-function-alias 'ess-find-exec 'ess-find-exec-completions "ESS 19.04")
 (defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
   "Given the root of an executable file name, find all possible completions.
 Search for the executables in ESS-EXEC-DIR (which defaults to
