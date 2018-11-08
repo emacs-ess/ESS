@@ -229,7 +229,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
   (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
-
+  (define-key sas-mode-local-map (kbd "\C-c\C-w") 'ess-multi-frame-SAS)
   ;; this is a mess
   ;; interactive and batch commands share sas-mode-local-map,
   ;; but the associated commands are very different
@@ -325,12 +325,6 @@ their own frames."
     (make-frame))
   (with-current-buffer "*SAS.lst*"
     (make-frame)))
-
-
-(add-hook 'ess-mode-hook
-          (lambda ()
-            (when (string= ess-language "SAS") ;; e.g. not for R-only users
-              (local-set-key "\C-c\C-w" 'ess-multi-frame-SAS))))
 
 (defun ess-num-or-zero (arg)
   "*If a number, then return that number, otherwise return 0."
