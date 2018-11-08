@@ -643,19 +643,14 @@ Currently, this needs to:
    2. format the statement,
    3. c/function/Sfunc/
 and I need to relearn emacs lisp (but I had to, anyway."
-
   (interactive "sFunction ? ")
   (let* ((buffname "ess-complete.R")
          (buf (ess-execute (format "args(%s)" Sfunc) t buffname)))
     (pop-to-buffer buf)
-    (message "here yet?")
     (while (search-forward "function" nil t)
       (replace-match Sfunc nil t))
-    (ess-setq-vars-local ess-customize-alist); (current-buffer))
-    (setq major-mode 'ess-mode)
-    (use-local-map ess-mode-map)
-    (set-syntax-table ess-mode-syntax-table)
-    ))
+    (when (fboundp 'ess-r-mode)
+      (ess-r-mode))))
 
 (defun ess-chm-display-help-on-object (object &rest args)
   (ess-eval-linewise (concat "help(" object ")")))
