@@ -479,7 +479,6 @@ end keywords as associated values.")
     (ess-dump-filename-template		. (replace-regexp-in-string
 					   "S$" ess-suffix ; in the one from custom:
 					   ess-dump-filename-template-proto))
-    (ess-mode-syntax-table		. gretl-syntax-table)
     (ess-change-sp-regexp		. nil );ess-r-change-sp-regexp)
     (ess-help-sec-regex			. ess-help-r-sec-regex)
     (ess-help-sec-keys-alist		. ess-help-r-sec-keys-alist)

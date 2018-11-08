@@ -69,7 +69,6 @@
     (ess-dialect                   . STA-dialect-name)
     (ess-suffix                    . "ado")
     (ess-mode-editing-alist        . STA-editing-alist)
-    (ess-mode-syntax-table         . ess-stata-mode-syntax-table)
     (ess-help-sec-regex            . ess-help-STA-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
@@ -184,7 +183,6 @@ This function is placed in `ess-presend-filter-functions'.
 (define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
   :syntax-table ess-stata-mode-syntax-table
   "Stata transcript mode."
-  (ess-set-local-variables STA-customize-alist)
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)

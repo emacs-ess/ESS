@@ -1101,7 +1101,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (ess-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . ess-stata-mode-syntax-table)
     (font-lock-defaults           . '(ess-STA-mode-font-lock-defaults
                                       nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")

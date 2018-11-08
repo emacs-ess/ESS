@@ -82,7 +82,6 @@
     (indent-line-function         . 'ess-indent-line)
     (ess-style                    . ess-default-style)
     ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function"))
   "General options for S and S+ source files.")
@@ -134,7 +133,6 @@
 (defconst S+common-cust-alist
   (append
    '((ess-suffix                . "S")
-     (ess-mode-syntax-table     . S-syntax-table)
      (ess-help-sec-regex        . ess-help-S+-sec-regex)
      (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
      (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
