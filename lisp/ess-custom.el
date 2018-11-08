@@ -1376,13 +1376,6 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-;;; make it possible to save an inferior-ess-mode buffer without losing
-;;; the connection to the running ESS process.
-(put 'inferior-ess-mode 'mode-class 'special)
-;; FIXME AJR: Should the above be there?  I don't think so!
-;;       MM : the functionality should be, right? Move statement to ./ess.el ?
-;;       AJR: No, we should move the statement to ./ess-inf.el
-
 (defcustom ess-help-mode-hook nil
   "Functions to call when entering `ess-help-mode'."
   :group 'ess-hooks
