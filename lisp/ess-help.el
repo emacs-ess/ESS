@@ -40,10 +40,14 @@
 (eval-when-compile
   (require 'tramp)
   (require 'reporter))
+(require 'easymenu)
 (require 'info)
 (require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-utils)
+
+(declare-function ess-r-help-mode 'ess-r-mode)
+(declare-function ess-stata-help-mode "ess-stata-lang")
 
 (defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
@@ -55,6 +59,14 @@
 ;;;; * The function ess-display-help-on-object
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun ess--help-major-mode (&optional dialect)
+  "Determine which help major mode to call, and call it.
+DIALECT defaults to `ess-dialect'."
+  (let ((ess-dialect (or dialect ess-dialect)))
+    (cond ((string= ess-dialect "R") (require 'ess-r-mode) (ess-r-help-mode))
+          ((string= ess-dialect "stata") (require 'ess-stata-lang) (ess-stata-help-mode))
+          (t (ess-help-mode)))))
 
 (defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
   "Return non-nil if BUFFER looks like a bogus ESS help buffer.
@@ -157,7 +169,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
   (let ((inhibit-modification-hooks t)
         (inhibit-read-only t))
     (delete-region (point-min) (point-max))
-    (ess-help-mode)
+    (ess--help-major-mode)
     (let ((command (if (and command (string-match-p "%s" command))
                        (format command object)
                      command)))
@@ -276,14 +288,14 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
                                                &optional action help-echo reg-start help-object)
-  "Internal function to display help pages with linked actions
-  ;; COMMAND to produce the indexed help page
-  ;; ITEM-REGEXP -- first subexpression is highlighted
-  ;; TITLE of the help page
-  ;; HELP-TYPE to be stored in `ess-help-type' local variable
-  ;; ACTION is a function with no argument (default is `ess--button-action')
-  ;; HELP-ECHO
-  ;; REG-START gives the start location from where to search linkifying"
+  "Internal function to display help pages with linked actions.
+COMMAND to produce the indexed help page,
+ITEM-REGEXP -- first subexpression is highlighted,
+TITLE of the help page,
+HELP-TYPE to be stored in `ess-help-type' local variable,
+ACTION is a function with no argument (default is `ess--button-action'),
+HELP-ECHO if given becomes the help-echo property of the button,
+REG-START gives the start location from where to search linkifying, and HELP-OBJECT becomes `ess-help-object'."
   (interactive)
   (let ((inhibit-modification-hooks t)
         (alist          ess-local-customize-alist)
@@ -296,7 +308,7 @@ if necessary.  It is bound to RET and C-m in R-index pages."
             ess-local-process-name pname)
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
-      (ess-help-mode)
+      (ess--help-major-mode)
       (ess-command command buff)
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
@@ -401,7 +413,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
       (setq ess-help-sec-regex "^\\w+:$"
             ess-help-type 'vignettes
             ess-local-process-name proc-name)
-      (ess-help-mode)
+      (ess--help-major-mode)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
       (dolist (el vslist)
@@ -416,9 +428,9 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
                               ;; incorrect number of arguments on Both 26+ and 25 emacses.
                               (if (>= emacs-major-version 26)
                                   (with-parsed-tramp-file-name default-directory nil
-                                    (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
+                                                               (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
                                 (with-parsed-tramp-file-name default-directory nil
-                                  (tramp-make-tramp-file-name method user host (nth 1 el2)))))
+                                                             (tramp-make-tramp-file-name method user host (nth 1 el2)))))
                           (nth 1 el2))))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight
@@ -463,8 +475,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
     (dolist (f (frame-list))
       (when (frame-visible-p f)
         (dolist (w (window-list f))
-          (when (eq (buffer-local-value 'major-mode (window-buffer w))
-                    'ess-help-mode)
+          (when (with-current-buffer (window-buffer w) (derived-mode-p 'ess-help-mode))
             (throw 'win w)))))))
 
 (defun ess--switch-to-help-buffer (buff)
@@ -561,12 +572,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
 
 (defvar ess-help-mode-map
   (let ((map (make-keymap))); Full keymap, in order to
-    (suppress-keymap map)   ; suppress all usual "printing" characters
-    (when (boundp 'special-mode-map)
-      (set-keymap-parent map (make-composed-keymap
-                              button-buffer-map
-                              special-mode-map)))
-    (define-key map "q" 'quit-window)
     (define-key map "\C-m" 'next-line)
     ;; (define-key map "s" ess-help-sec-map)
     (define-key map "h" 'ess-display-help-on-object)
@@ -574,7 +579,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     (define-key map "i" 'ess-display-package-index)
     (define-key map "a" 'ess-display-help-apropos)
     (define-key map "v" 'ess-display-vignettes)
-    ;; TODO: `electric mouse-2'
     ;; (define-key map [mouse-2] 'ess-display-help-on-object)
     (define-key map "l" 'ess-eval-line-visibly-and-step)
     (define-key map "r" 'ess-eval-region-and-go)
@@ -584,7 +588,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     (define-key map "/" 'isearch-forward)
     (define-key map "x" 'ess-kill-buffer-and-go)
     (define-key map "k" 'kill-this-buffer)
-    (define-key map "?" 'ess-describe-help-mode)
     ;;-- those should be "inherited" from ess-mode-map ( ./ess-mode.el )
     (define-key map "\C-c\C-s" 'ess-switch-process)
     (define-key map "\C-c\C-r" 'ess-eval-region)
@@ -637,47 +640,31 @@ For internal use.  Take into account variable `ess-help-own-frame'."
     ["Kill Buffer"			kill-this-buffer t]
     ["Kill Buffer & Go"		ess-kill-buffer-and-go t]
     "-"
-    ["Handy commands"		ess-handy-commands t]
-    ["Describe ESS-help Mode"	ess-describe-help-mode t])
-  "Menu used in `ess-help-mode'.")
+    ["Handy commands"		ess-handy-commands t])
+  "Menu used in ess-help mode.")
 
-(defun ess-help-mode ()
-;;; Largely ripped from more-mode.el,
-;;; originally by Wolfgang Rupprecht wolfgang@mgm.mit.edu
-  "Mode for viewing ESS help files.
-Use SPC and DEL to page back and forth through the file.
-Use `n'  and `p' to move to next and previous section,
-    `s' to jump to a particular section;   `s ?' for help.
-Use `q' to return to your ESS session; `x' to kill this buffer first.
-The usual commands for evaluating ESS source are available.
-Other keybindings are as follows:
-\\{ess-help-mode-map}"
-  (interactive)
-  (setq major-mode 'ess-help-mode)
-  (setq mode-name "ESS Help")
-  (setq font-lock-mode nil)
-  (use-local-map ess-help-mode-map)
-  ;;; Keep <tabs> out of the code.
-  (make-local-variable 'indent-tabs-mode)
-  (setq indent-tabs-mode nil)
-  (if ess-mode-syntax-table ;;set in advance by ess-setq-local
-      (set-syntax-table ess-mode-syntax-table))
-  (require 'easymenu)
-  (easy-menu-define ess-help-mode-menu-map ess-help-mode-map
-    "Menu keymap for ess-help mode." ess-help-mode-menu)
+(easy-menu-define ess-help-mode-menu-map ess-help-mode-map
+  "Menu keymap for ess-help mode." ess-help-mode-menu)
+
+(define-derived-mode ess-help-mode special-mode "ESS Help"
+  "Mode for viewing ESS help files."
+  ;; FIXME
+  ;; (if ess-mode-syntax-table ;;set in advance by ess-setq-local
+  ;;     (set-syntax-table ess-mode-syntax-table))
+  (setq show-trailing-whitespace nil)
+
   ;; Add the keys for navigating among sections; this is done
   ;; dynamically since different languages (e.g. S vs R) have different
   ;; section headings.
-  (setq ess-help-sec-map (make-sparse-keymap))
-  (setq-local show-trailing-whitespace nil)
-  (dolist (pair ess-help-sec-keys-alist)
-    (define-key ess-help-sec-map (char-to-string (car pair))
-      'ess-skip-to-help-section))
-  (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
-  (define-key ess-help-sec-map ">" 'end-of-buffer)
-  (define-key ess-help-sec-map "<" 'beginning-of-buffer)
-  (define-key ess-help-mode-map "s" ess-help-sec-map)
-  (run-mode-hooks 'ess-help-mode-hook))
+  ;; FIXME: define ess-r-help-mode and others, move these there:
+  ;; (setq ess-help-sec-map (make-sparse-keymap))
+  ;; (dolist (pair ess-help-sec-keys-alist)
+  ;;   (define-key ess-help-sec-map (char-to-string (car pair))
+  ;;     'ess-skip-to-help-section))
+  ;; (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
+  ;; (define-key ess-help-sec-map ">" 'end-of-buffer)
+  ;; (define-key ess-help-sec-map "<" 'beginning-of-buffer)
+  )
 
 
 ;;*;; User commands defined in ESS help mode
@@ -713,11 +700,6 @@ sections."
   (let ((case-fold-search nil))
     (if (re-search-backward ess-help-sec-regex nil 'no-error) nil
       (message "No previous section."))))
-
-(defun ess-describe-help-mode nil
-  "Display help for `ess-mode'."
-  (interactive)
-  (describe-function 'ess-help-mode))
 
 (defun ess-kill-buffer-and-go nil
   "Kill the current buffer and switch back to the ESS process."
@@ -759,7 +741,6 @@ Keystroke    Section
       (substring object (match-end 0))
     object))
 
-;;;###autoload
 (defun ess-helpobjs-at-point (slist)
   "Return a list (def obj fun).
 Obj is a name at point, fun is the name of the function call
@@ -956,7 +937,6 @@ other dialects)."
 (defun ess-submit-bug-report ()
   "Submit a bug report to the ESS maintainers."
   (interactive)
-  (require 'ess-mode)
   (require 'reporter)
   (let ((reporter-prompt-for-summary-p 't))
     (reporter-submit-bug-report

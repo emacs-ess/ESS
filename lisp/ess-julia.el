@@ -45,6 +45,7 @@
 (require 'ess-utils)
 (require 'ess-r-mode)
 (require 'julia-mode)
+(require 'ess-inf)
 
 (defvar ac-prefix)
 (declare-function company-in-string-or-comment "company")
@@ -224,7 +225,7 @@ objects from that MODULE."
     (requires   . 2)
     (candidates . ess-ac-julia-objects)
     (document   . ess-julia-get-object-help-string))
-  "Auto-completion source for julia objects")
+  "Auto-completion source for julia objects.")
 
 (defun ess-ac-julia-objects ()
   (require 'auto-complete)
@@ -300,9 +301,7 @@ to look up any doc strings."
 
 ;;; CORE
 (defvar ess-julia-customize-alist
-  '((comint-use-prompt-regexp      . t)
-    (ess-eldoc-function            . 'ess-julia-eldoc-function)
-    (inferior-ess-primary-prompt   . "a> ") ;; from julia>
+  '((inferior-ess-primary-prompt   . "a> ") ;; from julia>
     (inferior-ess-secondary-prompt . nil)
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
@@ -317,7 +316,6 @@ to look up any doc strings."
     (ess-error-regexp              . "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist        . ess-julia-error-regexp-alist)
     (ess-imenu-generic-expression  . ess-julia-imenu-generic-expression)
-    (ess-mode-syntax-table         . julia-mode-syntax-table)
     (ess-mode-completion-syntax-table . ess-julia-completion-syntax-table)
     ;; (inferior-ess-objects-command    . inferior-ess-r-objects-command)
     ;; (inferior-ess-search-list-command        . "search()\n")
@@ -326,8 +324,6 @@ to look up any doc strings."
     (ess-language                  . "julia")
     (ess-dialect                   . "julia")
     (ess-suffix                    . "jl")
-    (ess-ac-sources                . '(ac-source-ess-julia-objects))
-    (ess-company-backends          . '(company-ess-julia-objects))
     (ess-dump-filename-template    . (replace-regexp-in-string
                                       "S$" ess-suffix ; in the one from custom:
                                       ess-dump-filename-template-proto))
@@ -348,12 +344,11 @@ to look up any doc strings."
     (ess-editor                    . ess-r-editor)
     (ess-pager                     . ess-r-pager)
     (ess-getwd-command             . "pwd()\n")
-    (ess-setwd-command             . "cd(expanduser(\"%s\"))\n")
-    )
-  "Variables to customize for Julia -- set up later than emacs initialization.")
+    (ess-setwd-command             . "cd(expanduser(\"%s\"))\n"))
+  "Variables to customize for Julia.")
 
 (defvar ess-julia-completion-syntax-table
-  (let ((table (make-syntax-table ess-r-syntax-table)))
+  (let ((table (copy-syntax-table ess-r-mode-syntax-table)))
     (modify-syntax-entry ?. "_" table)
     ;; (modify-syntax-entry ?: "_" table)
     ;; (modify-syntax-entry ?$ "_" table)
@@ -362,18 +357,60 @@ to look up any doc strings."
   "Syntax table used for completion and help symbol lookup.
 It makes underscores and dots word constituent chars.")
 
+(defvar ess-julia-mode-syntax-table (copy-syntax-table julia-mode-syntax-table))
+
+(defvar ess-julia-mode-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map ess-mode-map)
+    map)
+  "Keymap for `ess-julia-mode'.")
+
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
-  "Major mode for editing julia source.  See `ess-mode' for more help."
-  (ess-mode ess-julia-customize-alist nil t)
+  "Major mode for julia files."
+  (setq-local ess-local-customize-alist ess-julia-customize-alist)
+  (setq ess-dialect "julia")
+  (ess-setq-vars-local ess-julia-customize-alist)
+  ;; eldoc
+  (add-function :before-until (local 'eldoc-documentation-function)
+                #'ess-julia-eldoc-function)
+  (when ess-use-eldoc (eldoc-mode))
+  ;; auto-complete
+  (ess--setup-auto-complete '(ac-source-ess-julia-objects))
+  ;; company
+  (ess--setup-company '(company-ess-julia-objects))
+  ;; for emacs >= 24
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl")
-  (run-mode-hooks 'ess-julia-mode-hook))
+  (imenu-add-to-menubar "Imenu-jl"))
+
+;; Inferior mode
+(defvar ess-inferior-julia-mode-syntax-table
+  (copy-syntax-table ess-julia-mode-syntax-table)
+  "Syntax table for `ess-inferior-julia-mode'.")
+
+(define-derived-mode ess-inferior-julia-mode inferior-ess-mode "iESS[julia]"
+  "Major mode for inferior julia processes."
+  (ess-setq-vars-local ess-julia-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq ess-dialect "julia")
+  ;; eldoc
+  (add-function :before-until (local 'eldoc-documentation-function)
+                #'ess-julia-eldoc-function)
+  (when ess-use-eldoc (eldoc-mode))
+  ;; auto-complete
+  (ess--setup-auto-complete '(ac-source-ess-julia-objects) t)
+  ;; company
+  (ess--setup-company '(company-ess-julia-objects) t)
+  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
+  (setq comint-input-sender #'ess-julia-input-sender))
 
 (defvar ess-julia-mode-hook nil)
 (defvar ess-julia-post-run-hook nil
@@ -381,11 +418,12 @@ It makes underscores and dots word constituent chars.")
 
 ;;;###autoload
 (defun julia (&optional start-args)
-  "Call 'julia'.
-Optional prefix (C-u) allows to set command line arguments, such as
---load=<file>.  This should be OS agnostic.
-If you have certain command line arguments that should always be passed
-to julia, put them in the variable `inferior-julia-args'."
+  "Start an inferior julia process.
+Optional prefix START-ARGS (\\[universal-argument]) allows to set
+command line arguments, such as --load=<file>. This should be OS
+agnostic. If you have certain command line arguments that should
+always be passed to julia, put them in the variable
+`inferior-julia-args'."
   (interactive "P")
   ;; get settings, notably inferior-julia-program :
   (if (null inferior-julia-program)
@@ -405,12 +443,6 @@ to julia, put them in the variable `inferior-julia-args'."
                                  " ? "))
 		              nil))))
       (inferior-ess jl-start-args)
-
-      (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-      (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
-      (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-      (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
-      (setq comint-input-sender 'ess-julia-input-sender)
 
       (ess--tb-start)
       ;; remove ` from julia's logo

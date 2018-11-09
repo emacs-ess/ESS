@@ -46,51 +46,40 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Major mode definition
-(defvar ess-transcript-mode-map nil "Keymap for `ess-transcript-mode'.")
-(unless ess-transcript-mode-map
-  (setq ess-transcript-mode-map (make-sparse-keymap))
-
-  (define-key ess-transcript-mode-map "\C-c\C-s" 'ess-switch-process)
-  (define-key ess-transcript-mode-map "\C-c\C-r" 'ess-eval-region)
-  (define-key ess-transcript-mode-map "\C-c\M-r" 'ess-eval-region-and-go)
-  ;;  (define-key ess-transcript-mode-map "\M-\C-x"  'ess-eval-function)
-  ;;  (define-key ess-transcript-mode-map "\C-c\M-f" 'ess-eval-function-and-go)
-  ;;  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-eval-line)
-  ;;  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-eval-line-and-go)
-
-  (define-key ess-transcript-mode-map "\C-c\C-k"    'ess-force-buffer-current)
-  (define-key ess-transcript-mode-map "\C-c\C-q"    'ess-quit)
-
-  (define-key ess-transcript-mode-map "\C-c\C-j" 'ess-transcript-send-command)
-  (define-key ess-transcript-mode-map "\C-c\M-j" 'ess-transcript-send-command-and-move)
-  (define-key ess-transcript-mode-map "\M-\C-a"  'ess-goto-end-of-function-or-para)
-  (define-key ess-transcript-mode-map "\M-\C-e"  'ess-goto-end-of-function-or-para)
-  (define-key ess-transcript-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
-  (define-key ess-transcript-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
-  (define-key ess-transcript-mode-map "\C-c\C-v" 'ess-display-help-on-object)
-  (define-key ess-transcript-mode-map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
-  (define-key ess-transcript-mode-map "\C-c\t"   'ess-complete-object-name-deprecated)
-  (define-key ess-transcript-mode-map "\C-a"     'comint-bol)
-  (define-key ess-transcript-mode-map "\M-\t"    'comint-replace-by-expanded-filename)
-  (define-key ess-transcript-mode-map "\M-?"     'comint-dynamic-list-completions)
-  (define-key ess-transcript-mode-map "\C-c\C-k" 'ess-request-a-process)
-  (define-key ess-transcript-mode-map "{"        'skeleton-pair-insert-maybe)
-  (define-key ess-transcript-mode-map "}"        'skeleton-pair-insert-maybe)
-  (define-key ess-transcript-mode-map "\e\C-h"   'ess-mark-function)
-  (define-key ess-transcript-mode-map "\e\C-q"   'ess-indent-exp)
-                                        ;(define-key ess-transcript-mode-map "\177"    'backward-delete-char-untabify)
-  (define-key ess-transcript-mode-map "\t"       'ess-indent-command)
-
-  (define-key ess-transcript-mode-map "\C-c\C-p" 'comint-previous-prompt)
-  (define-key ess-transcript-mode-map "\C-c\C-n" 'comint-next-prompt)
-  ;; (define-key ess-transcript-mode-map "\C-c\C-n"    'ess-eval-line-and-step)
-
-  (define-key ess-transcript-mode-map "\r"       'ess-transcript-send-command-and-move)
-  (define-key ess-transcript-mode-map "\M-\r"    'ess-transcript-send-command)
-  (define-key ess-transcript-mode-map "\C-c\r"   'ess-transcript-copy-command)
-  (define-key ess-transcript-mode-map "\C-c\C-w" 'ess-transcript-DO-clean-region)
-  (define-key ess-transcript-mode-map "\C-c\M-c" 'ess-transcript-clean-buffer)
-  )
+(defvar ess-transcript-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\C-c\C-s" 'ess-switch-process)
+    (define-key map "\C-c\C-r" 'ess-eval-region)
+    (define-key map "\C-c\M-r" 'ess-eval-region-and-go)
+    (define-key map "\C-c\C-k" 'ess-force-buffer-current)
+    (define-key map "\C-c\C-q" 'ess-quit)
+    (define-key map "\C-c\C-j" 'ess-transcript-send-command)
+    (define-key map "\C-c\M-j" 'ess-transcript-send-command-and-move)
+    (define-key map "\M-\C-a"  'ess-goto-end-of-function-or-para)
+    (define-key map "\M-\C-e"  'ess-goto-end-of-function-or-para)
+    (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
+    (define-key map "\C-c\C-v" 'ess-display-help-on-object)
+    (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
+    (define-key map "\C-c\t"   'ess-complete-object-name-deprecated)
+    (define-key map "\C-a"     'comint-bol)
+    (define-key map "\M-\t"    'comint-replace-by-expanded-filename)
+    (define-key map "\M-?"     'comint-dynamic-list-completions)
+    (define-key map "\C-c\C-k" 'ess-request-a-process)
+    (define-key map "{"        'skeleton-pair-insert-maybe)
+    (define-key map "}"        'skeleton-pair-insert-maybe)
+    (define-key map "\e\C-h"   'ess-mark-function)
+    (define-key map "\e\C-q"   'ess-indent-exp)
+    (define-key map "\t"       'ess-indent-command)
+    (define-key map "\C-c\C-p" 'comint-previous-prompt)
+    (define-key map "\C-c\C-n" 'comint-next-prompt)
+    (define-key map "\r"       'ess-transcript-send-command-and-move)
+    (define-key map "\M-\r"    'ess-transcript-send-command)
+    (define-key map "\C-c\r"   'ess-transcript-copy-command)
+    (define-key map "\C-c\C-w" 'ess-transcript-DO-clean-region)
+    (define-key map "\C-c\M-c" 'ess-transcript-clean-buffer)
+    map)
+  "Keymap for `ess-transcript-mode'.")
 
 (easy-menu-define
   ess-transcript-mode-menu ess-transcript-mode-map
@@ -113,39 +102,21 @@
     ["Switch S process" ess-switch-process		t]
     ))
 
-(if (featurep 'ess-trans)
-    (define-key ess-transcript-mode-map [menu-bar ess-trans]
-      (cons "ess-trans" ess-transcript-mode-menu))
-  (eval-after-load "ess-trans"
-    '(define-key ess-transcript-mode-map
-       [menu-bar ess-trans]
-       (cons "ess-trans"
-             ess-transcript-mode-menu))))
 ;;;###autoload
-(defun ess-transcript-mode (alist &optional proc)
-  "Major mode for manipulating {ESS} transcript files.
+(define-derived-mode ess-transcript-mode ess-mode "ESS Transcript"
+  "Major mode for transcript files.
 
 Type \\[ess-transcript-send-command] to send a command in the
-transcript to the current S process. \\[ess-transcript-copy-command]
+transcript to the current inferior process. \\[ess-transcript-copy-command]
 copies the command but does not execute it, allowing you to edit it in
 the process buffer first.
 
 Type \\[ess-transcript-clean-region] to delete all outputs and prompts
-in the region, leaving only the S commands.  Other keybindings are:
-
-\\{ess-transcript-mode-map}"
-  (kill-all-local-variables)
-  (setq buffer-read-only t) ;; to protect the buffer.
-  (ess-setq-vars-local alist); (current-buffer))
-  (setq major-mode 'ess-transcript-mode)
-  (setq mode-name "ESS Transcript")
-  (use-local-map ess-transcript-mode-map)
-  (set-syntax-table (or inferior-ess-mode-syntax-table
-                        ess-mode-syntax-table))
-  (setq mode-line-process
-        '(" [" ess-local-process-name "]"))
-  (make-local-variable 'ess-local-process-name)
-  (setq ess-local-process-name nil)
+in the region, leaving only the commands."
+  (setq buffer-read-only t
+        ess-local-process-name nil
+        mode-line-process '(" [" ess-local-process-name "]"))
+  ;; TODO: Set this more normally in various major modes
   (unless inferior-ess-prompt ;; For S languages it is set in custom-alist
     (setq inferior-ess-prompt
           ;; Do not anchor to bol with `^'
@@ -154,23 +125,13 @@ in the region, leaving only the S commands.  Other keybindings are:
                   "\\|"
                   inferior-ess-secondary-prompt
                   "\\)")))
-  (make-local-variable 'paragraph-start)
-  (setq paragraph-start (concat "^" inferior-ess-prompt "\\|^\^L"))
-  (make-local-variable 'paragraph-separate)
-  (setq paragraph-separate "^\^L")
-  (make-local-variable 'comint-use-prompt-regexp)
-  (setq comint-use-prompt-regexp t)
-  (make-local-variable 'comint-prompt-regexp)
-  (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
+  (setq-local paragraph-start (concat "^" inferior-ess-prompt "\\|^\^L"))
+  (setq-local paragraph-separate "^\^L")
+  (setq-local comint-use-prompt-regexp t)
+  (setq-local comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq inferior-ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq font-lock-defaults '(ess-build-font-lock-keywords
-                             nil nil ((?\. . "w") (?\_ . "w") (?' . "."))))
-
-  ;;; Keep <tabs> out of the code.
-  (make-local-variable 'indent-tabs-mode)
-  (setq indent-tabs-mode nil)
-
-  (run-mode-hooks 'ess-transcript-mode-hook))
+                             nil nil ((?\. . "w") (?\_ . "w") (?' . ".")))))
 
 ;;*;; Commands used in S transcript mode
 
@@ -257,30 +218,6 @@ clean even if the buffer is \\[read-only]."
           (replace-match "" nil nil)))
 
       (if do-toggle (setq buffer-read-only t)))))
-
-
-;; unfinished idea :-----------------------
-
-;; (defun ess-clean-region-in-new-transcript (beg end)
-;;   "Copy the region into a new ess-transcript buffer, and clean it there,
-;;  using \\[ess-transcript-clean-region]."
-;;   (interactive "r")
-
-;;   (let ((bname (buffer-file-name)))
-;;     (setq bname (if bname .. ..))
-;;     (let
-;;       (fbase (if fname (file-name-sans-extension (file-name-nondirectory fname))
-;;                (buffer-name)))
-;;
-;;       ;; the buffer name should be like a file name
-;;       (buf-nam ....)
-;;       (trns-buf (get-buffer-create fbase))
-;;     (pop-to-buffer trns-buf)
-;;     (ess-transcript-mode .....)
-;; )))
-
-
-
 
 (defun ess-transcript-DO-clean-region (beg end)
   "Clean the current via \\[ess-transcript-clean-region] even if the buffer is read-only."

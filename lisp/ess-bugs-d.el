@@ -29,9 +29,6 @@
 (require 'ess-custom)
 (require 'ess-mode)
 
-(setq auto-mode-alist
-      (append '(("\\.[bB][uU][gG]\\'" . ess-bugs-mode)) auto-mode-alist))
-
 (defvar ess-bugs-command "OpenBUGS" "Default BUGS program in PATH.")
 (make-local-variable 'ess-bugs-command)
 
@@ -246,23 +243,14 @@
   )
 
 ;;;###autoload
-(defun ess-bugs-mode ()
-  "ESS[BUGS]: Major mode for BUGS."
-  (interactive)
-  (kill-all-local-variables)
-  (ess-setq-vars-local '((comment-start . "#")))
-  (setq major-mode 'ess-bugs-mode)
-  (setq mode-name "ESS[BUGS]")
-  (use-local-map ess-bugs-mode-map)
-  (make-local-variable 'font-lock-defaults)
+(define-derived-mode ess-bugs-mode ess-mode "ESS[BUGS]"
+  "Major mode for BUGS."
+  (setq-local comment-start "#")
   (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
   (setq ess-language "S") ; mimic S for ess-smart-underscore
-  (run-mode-hooks 'ess-bugs-mode-hook)
-
   (unless (when (fboundp 'w32-shell-dos-semantics)
             (w32-shell-dos-semantics))
-    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
-  )
+    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Bb][Uu][Gg]\\'" . ess-bugs-mode))
@@ -304,7 +292,6 @@
 
                                        (replace-match ess-temp-replacement-string))))))
 
-(setq features (delete 'ess-bugs-d features))
 (provide 'ess-bugs-d)
 
 ;;; ess-bugs-d.el ends here

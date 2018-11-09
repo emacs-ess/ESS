@@ -1,6 +1,7 @@
 ;; ess-org-test.el --- Test for org-babel integration -*- lexical-binding: t -*-
 
 (require 'ert)
+(require 'ess-site)
 (require 'ess-r-tests-utils)
 (require 'ob-R)
 

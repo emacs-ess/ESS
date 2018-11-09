@@ -8,9 +8,14 @@ Changes and New Features in 19.04 (unreleased):
 Users who liked the previous behavior (i.e. underscore inserting
 ``<-'') should bind @code{ess-insert-assign} to the underscore in
 their Emacs initialization file. For example, @code{(define-key
-ess-mode-map "_" #'ess-insert-assign)} and @code{(define-key
-inferior-ess-mode-map "_" #'ess-insert-assign)} will activate it in
-all ESS buffers. 
+ess-r-mode-map "_" #'ess-insert-assign)} and @code{(define-key
+inferior-ess-r-mode-map "_" #'ess-insert-assign)} will activate it in
+all ESS R buffers.
+
+@item ESS major modes are now defined using 'define-derived-mode'.
+This makes ESS major modes respect modern conventions such as having
+<language>-mode-hook and <language>-mode-map. Users are encouraged to
+place customizations under the appropriate mode.
 
 @item New option ess-auto-width controls setting the width option on window changes.
 Users can change it to 'frame, 'window, or an integer. See the

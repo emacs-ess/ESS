@@ -43,7 +43,8 @@
 
 (eval-when-compile
   (require 'cl)
-  (require 'cl-lib))
+  (require 'cl-lib)
+  (require 'subr-x))
 (require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-generics)
@@ -57,26 +58,14 @@
 (declare-function S+ "ess-sp6w-d")
 (declare-function SAS "ess-sas-d")
 
- ; ESS mode
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; In this section:
-;;;;
-;;;; * The major mode ess-mode
-;;;; * Commands for ess-mode
-;;;; * Code evaluation commands
-;;;; * Indenting code and commands
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;*;; Major mode definition
+;; ESS mode
+;; Major mode definition
 
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
-
     ;; By popular demand:
     (define-key map (kbd "RET")  'ess-newline-and-indent)
     (define-key map [remap yank] 'ess-yank)
-
     (define-key map "\C-c\C-r"   'ess-eval-region)
     (define-key map "\C-c\M-r"   'ess-eval-region-and-go)
     (define-key map "\C-c\C-b"   'ess-eval-buffer)
@@ -255,16 +244,12 @@
     ["Send bug report"  ess-submit-bug-report           t]))
 
 ;;;###autoload
-(defun ess-mode (&optional alist proc-name is-derived)
+(define-derived-mode ess-mode prog-mode "ESS"
   "Major mode for editing ESS source.
 Optional arg ALIST describes how to customize the editing mode.
 Optional arg PROC-NAME is name of associated inferior process.
 
 \\{ess-mode-map}
-
-Extra binding to note:  'ESC C-\\' indent-region.
-
-Entry to this mode runs the hooks in ess-mode-hook.
 
 You can send text to the inferior ESS process from other buffers containing
 ESS source.
@@ -333,41 +318,17 @@ Variables controlling indentation style:
     Non-nil means distinguish between #, ##, and ### for indentation.
 
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
-indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
-`CLB' (quoted from C language style)."
-  (setq alist (or alist
-                  (buffer-local-value 'ess-local-customize-alist (current-buffer))
-                  (error "Customise alist is not specified, nor  ess-local-customize-alist is set")))
-  (unless is-derived
-    (kill-all-local-variables)) ;; NOTICE THIS! *** NOTICE THIS! *** NOTICE THIS! ***
-  (ess-setq-vars-local alist)
-  (ess-write-to-dribble-buffer
-   (format "(ess-mode-1): ess-language=%s, ess-dialect=%s buf=%s \n"
-           ess-language
-           ess-dialect
-           (current-buffer)))
-  ;; (ess-write-to-dribble-buffer
-  ;;  (format "(ess-mode-1.2): ess-process=%s \n"
-  ;;   (ess-local-process-name ess-local-process-name "none")))
-  (ess-write-to-dribble-buffer
-   (format "(ess-mode-1.5): alist=%s \n" alist))
-  (unless is-derived
-    (setq major-mode 'ess-mode)
-    (setq mode-name (concat "ESS[" (or ess-dialect ess-language) "]")))
-  ;; The following line does the next 20 or so :-).
-  (ess-write-to-dribble-buffer
-   (format "(ess-mode-1.6): editing-alist=%s \n"
-           ess-mode-editing-alist))
-  (ess-setq-vars-local ess-mode-editing-alist)
+indentation style. See `ess-style-alist' for predefined styles."
+  ;; TODO: get rid of these and rely on modes to set variables properly
+  (when-let ((alist (buffer-local-value 'ess-local-customize-alist (current-buffer))))
+    (ess-setq-vars-local alist))
+  (when-let ((alist ess-mode-editing-alist))
+    (ess-setq-vars-local alist))
 
   (ess-set-style ess-style t)
-  (use-local-map ess-mode-map)
-  (when ess-mode-syntax-table
-    (set-syntax-table ess-mode-syntax-table))
 
   ;; Keep <tabs> out of the code.
-  (make-local-variable 'indent-tabs-mode)
-  (setq indent-tabs-mode nil)
+  (setq-local indent-tabs-mode nil)
 
   (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process
@@ -381,15 +342,7 @@ indentation style. At present, predefined style are `BSD', `GNU', `K&R', `C++',
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
 
-  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
-  (ess-load-extras)
-  (run-mode-hooks 'prog-mode-hook)
-  (run-mode-hooks 'ess-mode-hook)
-  (ess-write-to-dribble-buffer "\nFinished setting up ESS-mode.\n"))
-
-;; Set parent to `prog-mode'
-(put 'ess-mode 'derived-mode-parent 'prog-mode)
-(set-keymap-parent ess-mode-map prog-mode-map)
+  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
@@ -705,7 +658,8 @@ generate the source buffer."
 
   ;; Generate a buffer with the dumped data
   (find-file-other-window filename)
-  (ess-mode ess-customize-alist)
+  (setq-local ess-local-customize-alist ess-customize-alist)
+  (ess-mode)
 
   (auto-save-mode 1)            ; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)

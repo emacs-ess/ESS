@@ -75,16 +75,13 @@
   '((paragraph-start              . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-separate           . (concat "\\s-*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . mode-require-final-newline)
     ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line                      . 'S-indent-line)
     ;;(ess-calculate-indent           . 'ess-calculate-indent)
     (indent-line-function         . 'ess-indent-line)
-    (parse-sexp-ignore-comments   . t)
     (ess-style                    . ess-default-style)
     ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . S-syntax-table)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function"))
   "General options for S and S+ source files.")
@@ -136,7 +133,6 @@
 (defconst S+common-cust-alist
   (append
    '((ess-suffix                . "S")
-     (ess-mode-syntax-table     . S-syntax-table)
      (ess-help-sec-regex        . ess-help-S+-sec-regex)
      (ess-help-sec-keys-alist   . ess-help-S+sec-keys-alist)
      (ess-change-sp-regexp      . ess-S+-change-sp-regexp)
@@ -647,19 +643,14 @@ Currently, this needs to:
    2. format the statement,
    3. c/function/Sfunc/
 and I need to relearn emacs lisp (but I had to, anyway."
-
   (interactive "sFunction ? ")
   (let* ((buffname "ess-complete.R")
          (buf (ess-execute (format "args(%s)" Sfunc) t buffname)))
     (pop-to-buffer buf)
-    (message "here yet?")
     (while (search-forward "function" nil t)
       (replace-match Sfunc nil t))
-    (ess-setq-vars-local ess-customize-alist); (current-buffer))
-    (setq major-mode 'ess-mode)
-    (use-local-map ess-mode-map)
-    (set-syntax-table ess-mode-syntax-table)
-    ))
+    (when (fboundp 'ess-r-mode)
+      (ess-r-mode))))
 
 (defun ess-chm-display-help-on-object (object &rest args)
   (ess-eval-linewise (concat "help(" object ")")))

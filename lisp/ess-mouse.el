@@ -201,7 +201,7 @@ the string one more time by embedding it in a \"page()\" command."
       (if ess-microsoft-p                      ;; there ought to be a filter
           (while (search-forward "\r" nil t)   ;; function to keep the ^M
             (replace-match "" nil t)))         ;; from showing up at all
-      (ess-transcript-mode (eval ess-mouse-customize-alist))
+      (ess-transcript-mode)
       (setq ess-local-process-name lproc-name)
       (rename-buffer scommand))))
 

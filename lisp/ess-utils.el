@@ -33,6 +33,7 @@
 (eval-when-compile
   (require 'tramp))
 ;; The only ESS file this file should depend on is ess-custom.el
+(require 'cl-lib)
 (require 'comint)
 (require 'ess-custom)
 (require 'ido)
@@ -443,6 +444,11 @@ etc.")
     ["no" (lambda () (interactive) (setq ess-eval-visibly nil))
      :style radio :enable t :selected (eq ess-eval-visibly nil) ]))
 
+(defun ess-derived-mode-p ()
+  "Non-nil if the current major mode is an ESS major mode."
+  (or (derived-mode-p 'ess-mode)
+      (derived-mode-p 'ess-julia-mode)))
+
 ;;;*;;; Font Lock
 
 (defun ess--fl-keywords-values ()
@@ -584,49 +590,35 @@ See also `ess-use-ido'."
       ;; else usual completion
       (completing-read prompt collection predicate require-match initial-input hist def))))
 
-(defun ess-load-extras (&optional inferior)
-  "Load all the extra features depending on custom settings."
+(defun ess--setup-auto-complete (sources &optional inferior)
+  "Setup auto-complete depending on user settings.
+SOURCES gets added to `ac-sources', INFERIOR should be t for
+inferior buffers."
+  ;; auto-complete
+  (when (and (boundp 'ac-sources)
+             (if inferior
+                 (eq ess-use-auto-complete t)
+               ess-use-auto-complete))
+    (add-to-list 'ac-modes major-mode)
+    ;; files should be in front; ugly, but needed
+    (setq ac-sources
+          (delq 'ac-source-filename ac-sources))
+    (mapc (lambda (el) (add-to-list 'ac-sources el))
+          sources)
+    (add-to-list 'ac-sources 'ac-source-filename)))
 
-  (let ((mode (if inferior 'inferior-ess-mode 'ess-mode))
-        (isR (string-match "^R" ess-dialect)))
-
-    ;; auto-complete
-    (when (and (boundp 'ac-sources)
-               (if inferior
-                   (eq ess-use-auto-complete t)
-                 ess-use-auto-complete))
-      (add-to-list 'ac-modes mode)
-      ;; files should be in front; ugly, but needed
-      (when ess-ac-sources
-        (setq ac-sources
-              (delq 'ac-source-filename ac-sources))
-        (mapc (lambda (el) (add-to-list 'ac-sources el))
-              ess-ac-sources)
-        (add-to-list 'ac-sources 'ac-source-filename)))
-
-    ;; company
-    (when (and (boundp 'company-backends)
-               (if inferior
-                   (eq ess-use-company t)
-                 ess-use-company))
-      (when ess-company-backends
-        (set (make-local-variable 'company-backends)
-             (cl-copy-list (append ess-company-backends company-backends)))
-        (delq 'company-capf company-backends)))
-
-    ;; eldoc)
-    (require 'eldoc)
-    (when (and ess-eldoc-function ;; if mode provide this, it suports eldoc
-               (or (and (not inferior) ess-use-eldoc)
-                   (and inferior (eq ess-use-eldoc t))))
-      (when (> eldoc-idle-delay 0.4) ;; default is too slow for paren help
-        (set (make-local-variable 'eldoc-idle-delay) 0.1))
-      (set (make-local-variable 'eldoc-documentation-function) ess-eldoc-function)
-      (eldoc-mode 1))
-
-    ;; tracebug
-    (when (and ess-use-tracebug inferior isR (fboundp 'ess-tracebug))
-      (ess-tracebug 1))))
+(defun ess--setup-company (sources &optional inferior)
+  "Setup company depending on user settings.
+SOURCES gets added to `company-backends', and when t, INFERIOR
+specifies inferior buffers."
+  ;; company
+  (when (and (boundp 'company-backends)
+             (if inferior
+                 (eq ess-use-company t)
+               ess-use-company))
+    (setq-local company-backends
+                (cl-copy-list (append sources company-backends)))
+    (delq 'company-capf company-backends)))
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
@@ -1261,7 +1253,6 @@ Optional argument for location of BEGINNING.  Return '(beg end)."
 Fully qualified names include accessor symbols (like aaa$bbb and
 aaa@bbb in R)."
   (with-syntax-table (or ess-mode-completion-syntax-table
-                         ess-mode-syntax-table
                          (syntax-table))
     (symbol-at-point)))
 
@@ -1269,7 +1260,6 @@ aaa@bbb in R)."
   "Get bounds of symbol at point.
 Intended for completion."
   (let ((bounds (with-syntax-table (or ess-mode-completion-syntax-table
-                                       ess-mode-syntax-table
                                        (syntax-table))
                   (bounds-of-thing-at-point 'symbol))))
     (and bounds

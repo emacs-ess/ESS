@@ -82,12 +82,10 @@ The default value is nil."
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+elsewhere-customize-alist)
-  (ess-mode S+elsewhere-customize-alist proc-name))
+  (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
+  (ess-mode))
 
-(defun S+elsewhere-transcript-mode ()
-  "S-PLUS 3.x transcript mode."
-  (interactive)
-  (ess-transcript-mode S+elsewhere-customize-alist))
+(define-obsolete-function-alias 'S+elsewhere-transcript-mode #'S-transcript-mode "2000")
 
 ;; This REALLY shouldn't need an editing mode.  Just a transcript and
 ;; an inferior process handler.
@@ -174,7 +172,12 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
       (setq buffer-read-only nil)
       (font-lock-mode 1))
 
-    (ess-load-extras)
+    (ess-process-put 'funargs-cache (make-hash-table :test 'equal))
+    (ess-process-put 'funargs-pre-cache nil)
+    ;; auto-complete
+    (ess--setup-auto-complete ess-r-ac-sources t)
+    ;; company
+    (ess--setup-company ess-r-company-backends t)
 
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start

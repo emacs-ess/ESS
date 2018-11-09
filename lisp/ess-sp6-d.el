@@ -141,15 +141,15 @@ New way to do it."
   "Major mode for editing S+ source.  See `ess-mode' for more help."
   (interactive)
   (setq ess-customize-alist S+-customize-alist)
-  (ess-mode S+-customize-alist proc-name)
+  (setq-local ess-local-customize-alist S+-customize-alist)
+  (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   (if ess-imenu-use-S (ess-imenu-S)))
 
 (defalias 'S+6-transcript-mode 'S+-transcript-mode)
-(defun S+-transcript-mode ()
+(define-derived-mode S+-transcript-mode ess-transcript-mode "ESS S Transcript"
   "S-PLUS 6 transcript mode."
-  (interactive)
-  (ess-transcript-mode S+-customize-alist))
+  :syntax-table S-syntax-table)
 
 (defvar ess-s-versions '("Splus")
   "List of partial strings for versions of S to access within ESS.

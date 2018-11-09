@@ -47,18 +47,14 @@
 
 ;;; Code:
 
+(declare-function ess-help-mode "ess-help")
+
 (require 'make-regexp)  ; it's now local to the directory.
 ;;(load-library "make-regexp") ;; this is necessary for
 ;; ado-set-font-lock-keywords
 ;; only needed in Emacs >= 22.x
-(unless (boundp 'c-emacs-features)
-  (require 'cc-vars));; for syntax-table
 (require 'comint)
 (require 'ess-trns)
-
-                                        ;(setq max-lisp-eval-depth 500)
-(eval-when-compile
-  (setq max-lisp-eval-depth (max 600 max-lisp-eval-depth)))
 
 (defconst ess-help-STA-sec-keys-alist
   '((?d . "Description")
@@ -76,32 +72,6 @@ regexp-search, and so specials should be quoted.
 
 (defconst ess-help-STA-sec-regex "^[A-Z a-z]+:?\n-+\\|http:"
   "Reg(ular) Ex(pression) of section headers in help file.")
-
-(defvar STA-syntax-table
-  (let ((tbl (make-syntax-table)))
-    (modify-syntax-entry ?\\ "." tbl) ;nullify escape meaning
-    (modify-syntax-entry ?\$ "." tbl)
-    (modify-syntax-entry ?` "(\'" tbl)
-    (modify-syntax-entry ?\' ")`" tbl)
-    ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
-    (modify-syntax-entry ?/  ". 124b" tbl)
-    (modify-syntax-entry ?*  ". 23"   tbl)
-    (modify-syntax-entry ?\n "> b"  tbl)
-    ;; Give CR the same syntax as newline, for selective-display
-    (modify-syntax-entry ?\^m "> b" tbl)
-    ;;--------- end cut-and-paste ------------------
-    (modify-syntax-entry ?+ "." tbl)
-    (modify-syntax-entry ?- "." tbl)
-    (modify-syntax-entry ?= "." tbl)
-    (modify-syntax-entry ?% "." tbl)
-    (modify-syntax-entry ?< "." tbl)
-    (modify-syntax-entry ?> "." tbl)
-    (modify-syntax-entry ?& "." tbl)
-    (modify-syntax-entry ?| "." tbl)
-    (modify-syntax-entry ?~ "." tbl)
-
-    tbl)
-   "Syntax table for Stata code.")
 
 (defun ado-set-font-lock-keywords ()
   "Create font lock keywords for Stata syntax. This is from the
@@ -1122,18 +1092,15 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
   '((paragraph-start              . (concat "[ \t\f]*$\\|" page-delimiter))
     (paragraph-separate           . (concat  "[ \t\f]*$\\|" page-delimiter))
     (paragraph-ignore-fill-prefix . t)
-    (require-final-newline        . mode-require-final-newline)
     (comment-column               . 40)
     ;;(comment-indent-function      . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
     ;;(ess-indent-line              . 'S-indent-line)
     ;;(ess-calculate-indent         . 'ess-calculate-indent)
     (indent-line-function         . 'ess-indent-line)
-    (parse-sexp-ignore-comments   . t)
     (ess-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
-    (ess-mode-syntax-table        . STA-syntax-table)
     (font-lock-defaults           . '(ess-STA-mode-font-lock-defaults
                                       nil nil ((?\. . "w")))))
   "General options for editing Stata do and ado source files.")
@@ -1249,15 +1216,10 @@ PROC is the stata process. Does not change point."
              (if (< (point) start-of-output) (goto-char start-of-output))
              (not (looking-at "^. "))))))
 
-(defun stata-help-mode ()
+(define-derived-mode ess-stata-help-mode ess-help-mode "Stata help"
   "Major mode for displaying Stata help in a read-only buffer.
 Active commands are Help (\\[stata-help]) and hyperlink
-(\\[stata-rehelp] or mouse-2)."
-  (interactive)
-  (setq major-mode 'stata-help-mode)
-  (setq mode-name "Stata help")
-  ;;(use-local-map stata-help-mode-map)
-  (setq buffer-read-only t))
+(\\[stata-rehelp] or mouse-2).")
 
 ;;; Suggested function from Brendan Halpin:
 (defvar ess-STA-delimit-do-file "delimit-do.do")

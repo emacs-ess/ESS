@@ -38,14 +38,37 @@
 (defvar STA-dialect-name "stata"
   "Name of 'dialect' for Stata.");easily changeable in a user's .emacs
 
+(defvar ess-stata-mode-syntax-table
+  (let ((tbl (copy-syntax-table ess-mode-syntax-table)))
+    (modify-syntax-entry ?\\ "." tbl) ;nullify escape meaning
+    (modify-syntax-entry ?\$ "." tbl)
+    (modify-syntax-entry ?` "(\'" tbl)
+    (modify-syntax-entry ?\' ")`" tbl)
+    ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
+    (modify-syntax-entry ?/  ". 124b" tbl)
+    (modify-syntax-entry ?*  ". 23"   tbl)
+    (modify-syntax-entry ?\n "> b"  tbl)
+    ;; Give CR the same syntax as newline, for selective-display
+    (modify-syntax-entry ?\^m "> b" tbl)
+    ;;--------- end cut-and-paste ------------------
+    (modify-syntax-entry ?+ "." tbl)
+    (modify-syntax-entry ?- "." tbl)
+    (modify-syntax-entry ?= "." tbl)
+    (modify-syntax-entry ?% "." tbl)
+    (modify-syntax-entry ?< "." tbl)
+    (modify-syntax-entry ?> "." tbl)
+    (modify-syntax-entry ?& "." tbl)
+    (modify-syntax-entry ?| "." tbl)
+    (modify-syntax-entry ?~ "." tbl)
+    tbl)
+  "Syntax table for `ess-stata-mode'.")
+
 (defvar STA-customize-alist
   '((ess-local-customize-alist     . 'STA-customize-alist)
     (ess-language                  . "STA")
     (ess-dialect                   . STA-dialect-name)
     (ess-suffix                    . "ado")
     (ess-mode-editing-alist        . STA-editing-alist)
-    (ess-mode-syntax-table         . STA-syntax-table)
-    (ess-mode-edit                 . 'STA-mode)
     (ess-help-sec-regex            . ess-help-STA-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
@@ -76,19 +99,30 @@
 
 
 ;;;###autoload
-(defun STA-mode (&optional proc-name)
-  "Major mode for editing Stata source.  See `ess-mode' for more help."
-  (interactive)
-  (setq ess-customize-alist STA-customize-alist)
-  (ess-mode STA-customize-alist proc-name))
+(define-derived-mode ess-stata-mode ess-mode "ESS[STA]"
+  "Major mode for editing Stata source."
+  (ess-setq-vars-local STA-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq-local comment-column 40)
+  (setq-local comment-end " \*/")
+  (setq-local comment-start "/\* ")
+  (setq-local comment-start-skip "/\\*+ *")
+  (setq-local comment-use-syntax t)
+  (setq-local ess-style ess-default-style)
+  (setq-local indent-line-function 'ess-indent-line)
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
+  (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
+  (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
 
-(fset 'stata-mode 'STA-mode)
-(fset 'Stata-mode 'STA-mode)
+(defalias 'STA-mode 'ess-stata-mode)
+(defalias 'stata-mode 'ess-stata-mode)
+(defalias 'Stata-mode 'ess-stata-mode)
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.do\\'" . STA-mode))
+(add-to-list 'auto-mode-alist '("\\.do\\'" . ess-stata-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.ado\\'" . STA-mode))
+(add-to-list 'auto-mode-alist '("\\.ado\\'" . ess-stata-mode))
 
 
 (defun ess-sta-remove-comments (string)
@@ -134,11 +168,36 @@ This function is placed in `ess-presend-filter-functions'.
         (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
         (run-mode-hooks 'ess-stata-post-run-hook)))))
 
+(defvar ess-inferior-stata-mode-syntax-table
+  (let ((tab (copy-syntax-table ess-stata-mode-syntax-table)))
+    tab)
+  "Syntax table for `ess-inferior-stata-mode'.")
 
-(defun STA-transcript-mode ()
+(define-derived-mode ess-inferior-stata-mode inferior-ess-mode "iESS"
+  "Inferior `stata' mode."
+  (ess-setq-vars-local STA-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
+
+
+(define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
+  :syntax-table ess-stata-mode-syntax-table
   "Stata transcript mode."
-  (interactive)
-  (ess-transcript-mode STA-customize-alist))
+  (ess-setq-vars-local STA-customize-alist)
+  (setq-local comint-use-prompt-regexp t)
+  (setq-local comment-column 40)
+  (setq-local comment-end " \*/")
+  (setq-local comment-start "/\* ")
+  (setq-local comment-start-skip "/\\*+ *")
+  (setq-local comment-use-syntax t)
+  (setq-local ess-style ess-default-style)
+  (setq-local indent-line-function 'ess-indent-line)
+  (setq-local paragraph-ignore-fill-prefix t)
+  (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
+  (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
+  (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
+
+(defalias 'STA-transcript-mode 'ess-stata-mode-syntax-table)
 
 (defun ess--STA-retrive-topics-from-search ()
   (with-current-buffer (ess-command inferior-ess-search-list-command)
@@ -166,8 +225,6 @@ This function is placed in `ess-presend-filter-functions'.
                   (ess-replace-in-string text ";" "\n")
                 text)))
     (apply #'ess-eval-linewise text t args)))
-
- ; Provide package
 
 (provide 'ess-stata-mode)
 

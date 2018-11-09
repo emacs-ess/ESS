@@ -167,10 +167,6 @@
   "Does nothing. Defined not to break old users' code."
   (interactive))
 
-;; For now, while testing, switch on ess-eldoc.  Later, ths could be removed
-;; and instead ask user to add it.
-;; (add-hook 'R-mode-hook 'ess-use-eldoc)
-
 (provide 'ess-eldoc)
 
 ;;; ess-eldoc.el ends here

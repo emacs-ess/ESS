@@ -402,7 +402,7 @@ aggressive and dangerous).
                  (const t)))
 
 (defcustom ess-use-eldoc t
-  "If t, activate eldoc in ess-mode and inferior-ess-mode buffers.
+  "If t, activate eldoc in `ess-mode' and `inferior-ess-mode' buffers.
 If 'script-only activate in ess-mode buffers only.
 
 See also `ess-eldoc-show-on-symbol'."
@@ -485,13 +485,6 @@ might want to set this to nil.
 "
   :group 'ess
   :type 'boolean)
-
-
-(defvar ess-ac-sources nil
-  "Dialect specific, ESS specific list of ac-sources")
-
-(defvar ess-company-backends nil
-  "Dialect specific, ESS specific list of `company-backends'")
 
 (defvar ess--completing-hist nil
   "Variable to store completion history.
@@ -1383,13 +1376,6 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-;;; make it possible to save an inferior-ess-mode buffer without losing
-;;; the connection to the running ESS process.
-(put 'inferior-ess-mode 'mode-class 'special)
-;; FIXME AJR: Should the above be there?  I don't think so!
-;;       MM : the functionality should be, right? Move statement to ./ess.el ?
-;;       AJR: No, we should move the statement to ./ess-inf.el
-
 (defcustom ess-help-mode-hook nil
   "Functions to call when entering `ess-help-mode'."
   :group 'ess-hooks
@@ -1405,10 +1391,12 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-(defcustom R-mode-hook nil
+(define-obsolete-variable-alias 'R-mode-hook 'ess-r-mode-hook "19.04")
+(defcustom ess-r-mode-hook nil
   "Hook run when entering R mode."
   :type 'hook
   :group 'ess-R)
+
 
 (defcustom Rnw-mode-hook nil
   "Hook run when entering Rnw mode."
@@ -2612,7 +2600,7 @@ keywords in the current buffer. See
     (ess-fl-keyword:delimiters)
     (ess-fl-keyword:=)
     (ess-R-fl-keyword:F&T))
-  "Font-lock patterns used in inferior-R-mode buffers.
+  "Font-lock patterns used in `inferior-ess-r-mode' buffers.
 The key of each cons cell is a name of the keyword.  The value
 should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
@@ -2750,7 +2738,7 @@ and others. See `ess-R-modifiers'."
 (defface ess-constant-face
   '((default (:inherit font-lock-type-face)))
   "Font lock face used to highlight constants.
-In `R-mode', for example, this includes TRUE, FALSE, Inf and
+In `ess-r-mode', for example, this includes TRUE, FALSE, Inf and
 others. See `ess-R-constants'."
   :group 'ess-faces)
 
@@ -2764,7 +2752,7 @@ others. See `ess-R-constants'."
 (defface ess-keyword-face
   '((default (:inherit font-lock-keyword-face)))
   "Font lock face used to highlight reserved keywords.
-In `R-mode', for example, this includes \"while,\" \"if/else\",
+In `ess-r-mode', for example, this includes \"while,\" \"if/else\",
 \"function,\" and others. See `ess-R-keywords'."
   :group 'ess-faces)
 
@@ -2807,10 +2795,6 @@ See `ess-function-arguments' and .ess_funargs command in R and
 S+ for details of the format that should be returned.")
 (make-variable-buffer-local 'ess-funargs-command)
 
-(defvar ess-eldoc-function nil
-  "Holds a dialect specific eldoc function.
-See `ess-r-eldoc-function' and `ess-julia-eldoc-function' for examples.")
-
  ; System variables
 ;;;=====================================================
 ;;; Users note: You will rarely have to change these
@@ -2840,18 +2824,9 @@ Should be an absolute path to the julia executable."
   :group 'ess-Julia
   :type '(choice (string) (file)))
 
- ; ess-mode: editing S source
-
-;;; This syntax table is required by ess-mode.el, ess-inf.el and
-;;; ess-trns.el, so we provide it here.
-(defvar ess-mode-syntax-table nil "Syntax table for `ess-mode'.")
+;; FIXME
 (defvar ess-mode-completion-syntax-table nil "Completion and help syntax table for `ess-mode'.")
-(make-variable-buffer-local 'ess-mode-syntax-table)
 (make-variable-buffer-local 'ess-mode-completion-syntax-table)
-
-(defvar inferior-ess-mode-syntax-table nil "Syntax table for `inferior-ess-mode'.")
-(make-variable-buffer-local 'inferior-ess-mode-syntax-table)
-
 
  ; Buffer local customization stuff
 

@@ -115,8 +115,7 @@ cleaned-prompts >
   (let ((input "cat(\"some. text\\n\")
 head(cars, 2)
 ")
-        (output "
-some. text
+        (output "some. text
 > 
   speed dist
 1     4    2
@@ -170,24 +169,29 @@ some. text
   (skip-unless (or (executable-find "R-3.2.1")
                    (getenv "CONTINUOUS_INTEGRATION")))
   (should
-   (string= "*R-3.2.1*"
+   (string= "*R-3.2.1:1*"
             (let ((ess-use-inferior-program-in-buffer-name t)
+                  (ess-plain-first-buffername nil)
                   (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
                   (ess-ask-for-ess-directory nil)
                   (name))
               (R-3.2.1)
               (setq name (buffer-name))
               (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-buffer name)
+              (kill-process (get-buffer-process name))
+              ;; FIXME: Does not work in batch mode
+              ;; (kill-buffer name)
               name)))
   (should
-   (string= "*R-3.2.1*"
+   (string= "*R-3.2.1:2*"
             (let ((ess-use-inferior-program-name-in-buffer-name t)
+                  (ess-plain-first-buffername nil)
                   (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
                   (ess-ask-for-ess-directory nil)
                   (name))
               (R-3.2.1)
               (setq name (buffer-name))
               (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-buffer name)
+              (kill-process (get-buffer-process name))
+              ;; (kill-buffer name)
               name))))

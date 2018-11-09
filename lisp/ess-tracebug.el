@@ -122,8 +122,6 @@ Indicates that ess-tracebug-mode is turned on.")
 
 (defvar ess-watch-mode-map
   (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map special-mode-map)
-    (define-key map "?" 'ess-watch-help)
     (define-key map "k" 'ess-watch-kill)
     ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
     ;; editing requires a little more work.
@@ -142,9 +140,7 @@ Indicates that ess-tracebug-mode is turned on.")
     (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
     map)
-  "Keymap for the *R watch* buffer.
-
-\\{ess-watch-mode-map}")
+  "Keymap for `ess-watch-mode'.")
 
 
 (defcustom ess-tracebug-prefix nil
@@ -1412,12 +1408,14 @@ prompts."
             (erase-buffer)))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
-  "Standard output filter for the inferior ESS process when `ess-debug' is active.
-Call `inferior-ess-output-filter'. Check for debug
+  "Standard output filter for the inferior ESS process.
+When `ess-debug' is active, this is the filter. Call
+`inferior-ess-output-filter'. Check for debug
 reg-expressions (see `ess--dbg-regexp-debug',...), when found
 puts iESS in the debugging state. If in debugging state, mirrors
 the output into *ess.dbg* buffer."
-  (let* ((is-iess (member major-mode (list 'inferior-ess-mode 'ess-watch-mode)))
+  (let* ((is-iess (or (derived-mode-p 'ess-watch-mode)
+                      (derived-mode-p 'inferior-ess-mode)))
          (pbuf (process-buffer proc))
          (abuf (ess--accumulation-buffer proc))
          (dbuff (process-get proc 'dbg-buffer))
@@ -2170,7 +2168,7 @@ Returns the beginning position of the hidden text."
                 ;;                              'bp-substring 'comment)))
                 ))))))))
 
-(add-hook 'R-mode-hook 'ess-bp-recreate-all)
+(add-hook 'ess-r-mode-hook 'ess-bp-recreate-all)
 
 
 (defun ess-bp-get-bp-position-nearby ()
@@ -2399,37 +2397,28 @@ If there is no active R session, this command triggers an error."
       (setq left-margin-width 1)
       (set-window-buffer (selected-window) (current-buffer)))))
 
-(defun ess-watch-mode ()
-  "Major mode in `ess-watch' window.
-\\{ess-watch-mode-map}"
+(define-derived-mode ess-watch-mode special-mode "ESS watch"
+  "Major mode in `ess-watch' window."
   (let ((cur-block (max 1 (ess-watch-block-at-point)))
         (dummy-string
          (ess-tracebug--propertize "|" 'current-watch-bar 'font-lock-keyword-face)))
-    (kill-all-local-variables)
     (ess-tracebug--set-left-margin)
-    (make-local-variable 'revert-buffer-function)
-    (setq revert-buffer-function 'ess-watch-revert-buffer)
-    (use-local-map ess-watch-mode-map)
-    (setq major-mode 'ess-watch-mode)
-    (setq mode-name (concat "watch " ess-current-process-name))
+    (setq-local revert-buffer-function 'ess-watch-revert-buffer)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
     (overlay-put ess-watch-current-block-overlay 'line-prefix dummy-string)
     (overlay-put ess-watch-current-block-overlay 'face 'ess-watch-current-block-face)
     (ess-watch-set-current cur-block) ;;
-    (when (require 'face-remap nil t)
-      ;; scale the font
-      (setq text-scale-mode-amount ess-watch-scale-amount)
-      (text-scale-mode 1)                                        ;    (text-scale-mode -1) ;;restore to default
-      )))
+    (require 'face-remap)
+    ;; scale the font
+    (setq text-scale-mode-amount ess-watch-scale-amount)
+    (text-scale-mode)))
 
 (defun ess-watch ()
-  "Run `ess-watch' mode on R objects.
+  "Run `ess-watch-mode' on R objects.
 This is the trigger function.  See documentation of
-`ess-watch-mode' for more information.
-
-\\{ess-watch-mode-map}"
+`ess-watch-mode' for more information."
   (interactive)
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
@@ -2518,16 +2507,6 @@ Arguments IGNORE and NOCONFIRM currently not used."
   ;; :group 'ess-debug
   ;; :type 'string
   )
-
-(defvar ess-watch-help nil
-  "Keymap for the *R watch* buffer.
-
-\\{ess-watch-mode-map}")
-
-(defun ess-watch-help ()
-  "Help on `ess-watch'."
-  (interactive)
-  (describe-variable 'ess-watch-help))
 
 (defun ess-watch-block-limits-at-point ()
   "Return start and end positions of the watch block."
@@ -2879,7 +2858,7 @@ for signature and trace it with browser tracer."
 (defadvice delete-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when #chars is 1"
-  (if (and (eq major-mode 'ess-mode)
+  (if (and (ess-derived-mode-p)
            (= (ad-get-arg 0) 1)
            (get-text-property (point) 'intangible))
       (progn
@@ -2891,7 +2870,7 @@ Only do this when #chars is 1"
 (defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
   "When deleting an intangible char, delete the whole intangible region.
 Only do this when called interactively and #chars is 1"
-  (if (and (eq major-mode 'ess-mode)
+  (if (and (ess-derived-mode-p)
            (= (ad-get-arg 0) 1)
            (> (point) (point-min))
            (get-text-property (1- (point)) 'intangible))

@@ -33,7 +33,6 @@
 
 ;;; Code:
 
- ; Requires and autoloads
 (eval-when-compile
   (require 'tramp)
   (require 'subr-x))
@@ -53,14 +52,46 @@
 (declare-function tramp-sh-handle-expand-file-name "tramp-sh")
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
+(declare-function inferior-ess-r-mode "ess-r-mode")
+(declare-function ess-inferior-julia-mode "ess-julia")
+(declare-function ess-inferior-stata-mode "ess-stata-mode")
 
 (declare-function ess-mode "ess")
+(declare-function ess-complete-object-name "ess-r-completion")
 
 ;; TODO: refactor and remove file-local variable
 ;; byte-compile-warnings. See ess-r-mode.el also
 (defvar proc)
 (defvar start)
 (defvar end)
+
+(defvar inferior-ess-mode-syntax-table
+  (let ((tab (copy-syntax-table comint-mode-syntax-table)))
+    tab)
+  "Syntax table for `inferior-ess-mode'.")
+
+(defun ess--inferior-major-mode (dialect)
+  "Set major mode according to DIALECT."
+  (cond ((string= "R" dialect)
+         (progn (require 'ess-r-mode)
+                (inferior-ess-r-mode)))
+        ((string= "julia" dialect)
+         (progn (require 'ess-julia)
+                (ess-inferior-julia-mode)))
+        ((string= "stata" dialect)
+         (progn (require 'ess-stata-mode)
+                (ess-inferior-stata-mode)))
+        ;; FIXME: we need this horrible hack so that
+        ;; inferior-ess-mode-syntax-table gets set for
+        ;; languages that still rely on the old way of doing
+        ;; things (before we used define-derived-mode for
+        ;; inferior modes).
+        (t
+         (progn
+           (setq-local inferior-ess-mode-syntax-table
+                       (eval (or (alist-get 'inferior-ess-mode-syntax-table ess-customize-alist)
+                                 (alist-get 'ess-mode-syntax-table ess-customize-alist))))
+           (inferior-ess-mode)))))
 
  ;;*;; Process handling
 
@@ -74,7 +105,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;*;; Starting a process
-;;;###autoload
 (defun ess-proc-name (n name)
   "Return name of process N, as a string, with NAME prepended.
 If `ess-plain-first-buffername', then initial process is number-free."
@@ -83,7 +113,6 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
-;;;###autoload
 (defun inferior-ess (&optional ess-start-args customize-alist no-wait)
   "Start inferior ESS process.
 
@@ -113,26 +142,14 @@ commands.)
 CUSTOMIZE-ALIST is the list of dialect-specific variables.  When
 non-nil, NO-WAIT tells ESS not to wait for the process to finish.
 This may be useful for debugging."
-
   ;; Use the current buffer if it is in inferior-ess-mode or ess-trans-mode
   ;; If not, maybe ask about starting directory and/or transcript file.
   ;; If no transfile, use buffer *S*
-  ;;
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
-
-  ;; Once, long ago, it was used for switching buffers, but we don't
-  ;; do that any more (at least not from here).
-
-  (interactive)
-
-  (let* ((ess-customize-alist (or customize-alist
-                                  ess-customize-alist))
-         (temp-ess-dialect (eval (cdr (assoc 'ess-dialect
-                                             ess-customize-alist))))
-         (temp-ess-lang (eval (cdr (assoc 'ess-language
-                                          ess-customize-alist)))))
-
+  (let* ((ess-customize-alist (or customize-alist ess-customize-alist))
+         (temp-ess-dialect (eval (cdr (assoc 'ess-dialect ess-customize-alist))))
+         (temp-ess-lang (eval (cdr (assoc 'ess-language ess-customize-alist)))))
     (run-hooks 'ess-pre-run-hook)
     (ess-write-to-dribble-buffer
      (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
@@ -161,7 +178,7 @@ This may be useful for debugging."
       (cond
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
-             (eq major-mode 'inferior-ess-mode))
+             (derived-mode-p 'inferior-ess-mode))
         (setq buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
@@ -192,6 +209,8 @@ This may be useful for debugging."
 
       (set-buffer buf)
       (set 'default-directory cur-dir)
+      ;; TODO: Get rid of this, we should rely on modes to set the
+      ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
 
       (ess-write-to-dribble-buffer
@@ -214,23 +233,11 @@ This may be useful for debugging."
                  (switches
                   (when (and switches-symbol (boundp switches-symbol))
                     (symbol-value switches-symbol))))
-
-            (inferior-ess-mode)
+            (ess--inferior-major-mode ess-dialect)
             (ess-write-to-dribble-buffer
              (format "(inf-ess 3.0): prog=%s, start-args=%s, echoes=%s\n"
                      inferior-ess-program infargs comint-process-echoes))
             (setq ess-local-process-name procname)
-            (goto-char (point-max))
-
-            (when ess-history-file
-              ;; Load past history
-              (when (eq t ess-history-file)
-                (setq-local ess-history-file (concat "." ess-dialect "history")))
-              (let ((histfile (expand-file-name ess-history-file
-                                                (or ess-history-directory cur-dir))))
-                (when (file-readable-p histfile)
-                  (setq comint-input-ring-file-name histfile)
-                  (comint-read-input-ring))))
 
             (with-current-buffer buf
               (rename-buffer buf-name-str t))
@@ -287,7 +294,6 @@ This may be useful for debugging."
               (ess-set-working-directory cur-dir))
 
             (run-hooks 'ess-post-run-hook)
-            (ess-load-extras t)
 
             ;; user initialization can take some time ...
             (unless no-wait
@@ -507,13 +513,14 @@ This marks the process with a message, at a particular time point."
              (process-name proc) message (current-time-string)))))
 
 (defun inferior-ess-make-comint (bufname procname infargs &rest switches)
-  "Make an S comint process in buffer BUFNAME with process PROCNAME."
+  "Make a comint process in buffer BUFNAME with process PROCNAME.
+INFARGS gets passed to SWITCHES from `comint-exec'."
 ;;; This function is a modification of make-comint from the comint.el
 ;;; code of Olin Shivers.
   (let*  ((buffer (get-buffer-create bufname))
           (proc (get-process procname)))
-    ;; If no process, or nuked process, crank up a new one and put buffer in
-    ;; comint mode. Otherwise, leave buffer and existing process alone.
+    ;; If no process, or nuked process, crank up a new one Otherwise,
+    ;; leave buffer and existing process alone.
     (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
            (with-current-buffer  buffer
              (if (eq (buffer-size) 0) nil
@@ -720,8 +727,6 @@ process was killed."
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process.
 Typically from a language-specific buffer, using LANGUAGE (and DIALECT)."
-  (unless dialect
-    (error "The value of `dialect' is nil"))
   (save-current-buffer
     (let ((dsymb (intern dialect)))
       (ess-write-to-dribble-buffer
@@ -741,9 +746,7 @@ Typically from a language-specific buffer, using LANGUAGE (and DIALECT)."
         ;; ess-force-buffer-current("Process to load into: ")
         ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
         (error "No ESS processes running; not yet implemented to start (%s,%s)"
-               language dialect)))
-      ;; save excursion is not working here !!! bad bad bad !!
-      )))
+               language dialect))))))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
@@ -920,7 +923,7 @@ toggled."
                ess-switch-to-end-of-proc-buffer)))
     (define-key map (vector last-command-event)
       (lambda (ev eob) (interactive)
-        (if (not (eq major-mode 'inferior-ess-mode))
+        (if (not (derived-mode-p 'inferior-ess-mode))
             (ess-switch-to-ESS eob)
           (let ((dialect ess-dialect)
                 (loc-proc-name ess-local-process-name)
@@ -928,11 +931,11 @@ toggled."
             (while (and blist
                         (with-current-buffer (car blist)
                           (not (or (and
-                                    (memq major-mode '(ess-mode ess-julia-mode))
+                                    (ess-derived-mode-p)
                                     (equal dialect ess-dialect)
                                     (null ess-local-process-name))
                                    (and
-                                    (memq major-mode '(ess-mode ess-julia-mode))
+                                    (ess-derived-mode-p)
                                     (equal loc-proc-name ess-local-process-name))
                                    ))))
               (pop blist))
@@ -1195,7 +1198,7 @@ type of the region."
 (ess-defgeneric ess-load-file (&optional filename)
   "Load a source file into an inferior ESS process.
 This handles Tramp when working on a remote."
-  (interactive (list (or (and (memq major-mode '(ess-mode ess-julia-mode))
+  (interactive (list (or (and (ess-derived-mode-p)
                               (buffer-file-name))
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))
@@ -1723,7 +1726,7 @@ meaning as for `ess-eval-region'."
   (ess-eval-paragraph vis)
   (ess-step-line 'paragraph))
 
- ; Inferior S mode
+ ; Inferior ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
 ;;;;
@@ -1736,7 +1739,6 @@ meaning as for `ess-eval-region'."
 
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map comint-mode-map)
     (define-key map "\C-y"              'ess-yank)
     (define-key map "\r"       'inferior-ess-send-input)
     (define-key map "\C-a"     'comint-bol)
@@ -1826,81 +1828,36 @@ meaning as for `ess-eval-region'."
     map)
   "Keymap used in `ess-execute'.")
 
-;;;###autoload
-(defun inferior-ess-mode ()
+(define-derived-mode inferior-ess-mode comint-mode "iESS"
   "Major mode for interacting with an inferior ESS process.
-Runs an S interactive job as a subprocess of Emacs, with I/O through an
-Emacs buffer.  Variable `inferior-ess-program' controls which S
-is run.
 
-Commands are sent to the ESS process by typing them, and pressing
-\\[inferior-ess-send-input].  Pressing \\[complete-dynamic-complete]
-completes known object names or filenames, as appropriate.  Other
-keybindings for this mode are:
+To learn more about how to use inferior ess modes, see Info node `(ess)Top'.
 
-\\{inferior-ess-mode-map}
-
-When editing S objects, the use of \\[ess-load-file] is advocated.
-`ess-load-file' keeps source files (if `ess-keep-dump-files' is non-nil) in
-the directory specified by `ess-source-directory', with the
-filename chosen according to `ess-dump-filename-template'. When a file is
-loaded, `ess-mode' parses error messages and jumps to the appropriate file
-if errors occur. The ess-eval- commands do not do this.
-
-Customization: Entry to this mode runs the hooks on `comint-mode-hook' and
-`inferior-ess-mode-hook' (in that order).
-
-You can send text to the inferior ESS process from other buffers
-containing source code. The key bindings of these commands can be
-found by typing \\[describe-mode].
-
-    `ess-eval-region' sends the current region to the ESS process.
-    `ess-eval-buffer' sends the current buffer to the ESS process.
-    `ess-eval-function' sends the current function to the ESS process.
-    `ess-eval-line' sends the current line to the ESS process.
-    `ess-beginning-of-function' and `ess-end-of-function' move the point to
-        the beginning and end of the current S function.
-    `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
-    `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
-        buffer and puts point at the end of it.
-
-    `ess-eval-region-and-go', `ess-eval-buffer-and-go',
-        `ess-eval-function-and-go', and `ess-eval-line-and-go' switch to the S
-        process buffer after sending their text.
-    `ess-dump-object-into-edit-buffer' moves an S object into a temporary file
-        and buffer for editing
-    `ess-load-file' sources a file of commands to the ESS process.
-
-Commands:
-Return after the end of the process' output sends the text from the
-    end of process to point.
-Return before the end of the process' output copies the sexp ending at point
-    to the end of the process' output, and sends it.
-Delete converts tabs to spaces as it moves back.
-C-M-q does Tab on each line starting within following expression.
-Paragraphs are separated only by blank lines.  Crosshatches start comments.
 If you accidentally suspend your process, use \\[comint-continue-subjob]
 to continue it."
-  (interactive)
-  (delay-mode-hooks
-    (comint-mode))
-  (set (make-local-variable 'comint-input-sender) 'inferior-ess-input-sender)
-  (set (make-local-variable 'process-connection-type) t)
   ;; initialize all custom vars:
-  (ess-setq-vars-local ess-customize-alist) ; (current-buffer))
+  (when ess-customize-alist
+    (ess-setq-vars-local ess-customize-alist))
+  (setq-local comint-input-sender 'inferior-ess-input-sender)
+
+  (when ess-history-file
+    (setq comint-input-ring-file-name
+          (expand-file-name (if (eql t ess-history-file)
+                                (concat "." ess-dialect "history")
+                              ess-history-file)
+                            ess-history-directory))
+    (comint-read-input-ring))
+
+  (setq-local font-lock-fontify-region-function
+              #'inferior-ess-fontify-region)
+
 
   ;; If comint-process-echoes is t  inferior-ess-input-sender
-  ;; recopies the input, otherwise not. VS[03-09-2012]: should be in customize-alist
-  (set (make-local-variable 'comint-process-echoes)
-       (not (member ess-language '("SAS" "XLS" "OMG" "julia")))) ;; these don't echo
-
-  (when (and (member ess-dialect '("R")) ;; S+ echoes!!
-             (not (eq ess-eval-visibly t)))
-    ;; when 'nowait or nil, don't wait for process
-    (setq comint-process-echoes nil))
+  ;; recopies the input, otherwise not
+  (setq-local comint-process-echoes (not (member ess-language '("SAS" "XLS" "OMG" "julia"))))
 
   (when comint-use-prompt-regexp ;; why comint is not setting this? bug?
-    (set (make-local-variable 'inhibit-field-text-motion) t))
+    (setq-local inhibit-field-text-motion t))
 
   (unless inferior-ess-prompt ;; build when unset
     (setq inferior-ess-prompt
@@ -1910,71 +1867,30 @@ to continue it."
                   inferior-ess-secondary-prompt
                   "\\)")))
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
-  (setq comint-get-old-input 'inferior-ess-get-old-input) ;; todo: this is R specific
-  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local) ;; R and S specific
 
-  (setq major-mode 'inferior-ess-mode)
-  (setq mode-name "iESS")               ;(concat "iESS:" ess-dialect))
   (setq mode-line-process
         '(" ["
           ess--mode-line-process-indicator
           ess--local-mode-line-process-indicator
           "]: %s"))
-  (use-local-map inferior-ess-mode-map)
-  (let ((inf-syntax-table (or inferior-ess-mode-syntax-table
-                              ess-mode-syntax-table)))
-    (when inf-syntax-table
-      (set-syntax-table inf-syntax-table)))
-
-  (ess-write-to-dribble-buffer
-   (format "(i-ess 1): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-           (current-buffer) ess-language
-           comint-process-echoes comint-input-sender))
-
-  (when (string= ess-language "S") ;; todo: what is this doing here?
-    (local-set-key "\M-\r"    'ess-dirs))
-
-  ;; SJE 2007-06-28: Emacs 22.1 has a bug in that comint-mode will set
-  ;; this variable to t, when we need it to be nil.  The Emacs 22
-  ;; solution to this bug is to use define-derived-mode to derive
-  ;; inferior-ess-mode from comint-mode.  Not sure if we can go down
-  ;; that route yet.  I've used the when condition so that if the var
-  ;; is nil, don't bother setting it -- as setting it will make a new
-  ;; local var.
-  (when font-lock-keywords-only
-    (setq font-lock-keywords-only nil))
 
   ;;; Completion support ----------------
   (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the hook
   (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  ;; (setq comint-completion-addsuffix nil) ; To avoid spaces after filenames
-  ;; KH: next 2 lines solve.
-  (set (make-local-variable 'comint-completion-addsuffix)
-       (cons "/" ""))
+
+  ;; Avoid spaces after filenames
+  (setq-local comint-completion-addsuffix (cons "/" ""))
+
   (setq comint-input-autoexpand t) ; Only for completion, not on input.
-  ;; timers
-  ;; (add-hook 'ess-idle-timer-functions 'ess-cache-search-list nil 'local)
-  ;; (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local)
-  ;;; Keep <tabs> out of the code.
-  (set (make-local-variable 'indent-tabs-mode) nil)
-  (set (make-local-variable 'paragraph-start)
-       (concat inferior-ess-primary-prompt "\\|\^L"))
-  (set (make-local-variable 'paragraph-separate) "\^L")
-  (if (featurep 'jit-lock)
-      (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
-  (make-local-variable 'kill-buffer-hook)
-  (add-hook 'kill-buffer-hook 'ess-kill-buffer-function)
+
   (add-hook 'window-configuration-change-hook #'ess-set-width nil t)
-  (run-mode-hooks 'inferior-ess-mode-hook)
-  (ess-write-to-dribble-buffer
-   (format "(i-ess end): buf=%s, lang=%s, comint..echo=%s, comint..sender=%s,\n"
-           (current-buffer) ess-language
-           comint-process-echoes comint-input-sender))
-  (message
-   (concat (substitute-command-keys
-            "Type \\[describe-mode] for help on ESS version ")
-           ess-version)))
+  (setq-local indent-tabs-mode nil)
+
+  (setq-local paragraph-start (concat inferior-ess-primary-prompt "\\|\^L"))
+  (setq-local paragraph-separate "\^L")
+  (setq-local jit-lock-chunk-size inferior-ess-jit-lock-chunk-size))
+
 
 
 ;;*;; Commands used exclusively in inferior-ess-mode
@@ -2354,12 +2270,10 @@ after issuing a quit command as the latter assumes a live process."
       (when (> (- (float-time) start-time) 1)
         (error "Timeout while quitting process")))))
 
-(defun ess-kill-buffer-function ()
-  "Function run just before an ESS process buffer is killed."
-  ;; This simply deletes the buffers process to avoid an Emacs bug
-  ;; where the sentinel is run *after* the buffer is deleted
-  (let ((proc (get-buffer-process (current-buffer))))
-    (if (processp proc) (delete-process proc))))
+(defun ess-list-object-completions nil
+  "List all possible completions of the object name at point."
+  (interactive)
+  (ess-complete-object-name))
 
 
 ;;;*;;; Support functions
@@ -2633,7 +2547,7 @@ directory in the `load-path'."
   "Return completion only within string or comment."
   (save-restriction ;; explicitely handle inferior-ess
     (ignore-errors
-      (when (and (eq major-mode 'inferior-ess-mode)
+      (when (and (derived-mode-p 'inferior-ess-mode)
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
@@ -2644,7 +2558,7 @@ directory in the `load-path'."
   "Do file completion only within strings."
   (save-restriction ;; explicitely handle inferior-ess
     (ignore-errors
-      (when (and (eq major-mode 'inferior-ess-mode)
+      (when (and (derived-mode-p 'inferior-ess-mode)
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
@@ -2843,7 +2757,7 @@ list."
           (progn
             (delete-horizontal-space)
             (insert ", ")
-            (unless (eq major-mode 'inferior-ess-mode)
+            (unless (derived-mode-p 'inferior-ess-mode)
               (indent-according-to-mode)))
         (insert ",")))))
 
@@ -3091,7 +3005,10 @@ is for compatibility with `next-error' and is ignored."
                (if fbuffer nil
                  (setq fbuffer (find-file-noselect filename))
                  (with-current-buffer fbuffer
-                   (ess-mode)))
+                   ;; TODO: ess-mode is surely wrong here, but I don't
+                   ;; think we need this whole function anymore?
+                   (when (fboundp 'ess-mode)
+                     (ess-mode))))
                (pop-to-buffer fbuffer)
                (ess-goto-line linenum))
              (princ errmess t)))

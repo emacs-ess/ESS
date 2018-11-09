@@ -36,15 +36,7 @@
 ;; Silence the byte compiler, see TODO below; can we remove these?
 (defvar ess-help-r-sec-regex)
 (defvar ess-help-r-sec-keys-alist)
-
 (defvar ess-r-customize-alist)
-
-(defvar essddr-version "0.9-1"
-  "Current version of ess-rd.el.")
-
-(defvar essddr-maintainer-address
-  "ESS Core Team <ess-core@r-project.org>"
-  "Current maintainer of ess-rd.el.")
 
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
@@ -83,40 +75,37 @@ All Rd mode abbrevs start with a grave accent (`).")
   (define-abbrev Rd-mode-abbrev-table "`us" "\\usage")
   (define-abbrev Rd-mode-abbrev-table "`va" "\\value"))
 
-(defvar Rd-mode-syntax-table nil
-  "Syntax table for Rd mode.")
-(if Rd-mode-syntax-table
-    ()
-  (setq Rd-mode-syntax-table (copy-syntax-table text-mode-syntax-table))
-  (modify-syntax-entry ?\\ "\\" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\{ "(}" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\} "){" Rd-mode-syntax-table)
-  ;; Nice for editing, not for parsing ...
-  (modify-syntax-entry ?\( "()" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\) ")(" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\[ "(]" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\] ")[" Rd-mode-syntax-table)
-  ;; To get strings right
-  ;; (modify-syntax-entry ?\' "\"" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\" "\"" Rd-mode-syntax-table)
-  ;; To make abbrevs starting with a grave accent work ...
-  (modify-syntax-entry ?\` "w" Rd-mode-syntax-table)
-  ;; Comments
-  (modify-syntax-entry ?\% "<" Rd-mode-syntax-table)
-  (modify-syntax-entry ?\n ">" Rd-mode-syntax-table))
+(defvar Rd-mode-syntax-table
+  (let ((tab (copy-syntax-table text-mode-syntax-table)))
+    (modify-syntax-entry ?\\ "\\" tab)
+    (modify-syntax-entry ?\{ "(}" tab)
+    (modify-syntax-entry ?\} "){" tab)
+    ;; Nice for editing, not for parsing ...
+    (modify-syntax-entry ?\( "()" tab)
+    (modify-syntax-entry ?\) ")(" tab)
+    (modify-syntax-entry ?\[ "(]" tab)
+    (modify-syntax-entry ?\] ")[" tab)
+    ;; To get strings right
+    ;; (modify-syntax-entry ?\' "\"" Rd-mode-syntax-table)
+    (modify-syntax-entry ?\" "\"" tab)
+    ;; To make abbrevs starting with a grave accent work ...
+    (modify-syntax-entry ?\` "w" tab)
+    ;; Comments
+    (modify-syntax-entry ?\% "<" tab)
+    (modify-syntax-entry ?\n ">" tab)
+    tab)
+  "Syntax table for `Rd-mode'.")
 
-(defvar Rd-mode-parse-syntax-table nil
+(defvar Rd-mode-parse-syntax-table
+  (let ((tab (copy-syntax-table Rd-mode-syntax-table)))
+    ;; To make parse-partial-sexps do the thing we want for computing
+    ;; indentations
+    (modify-syntax-entry ?\( "_" tab)
+    (modify-syntax-entry ?\) "_" tab)
+    (modify-syntax-entry ?\[ "_" tab)
+    (modify-syntax-entry ?\] "_" tab)
+    tab)
   "Syntax table for parsing Rd mode.")
-(if Rd-mode-parse-syntax-table
-    ()
-  (setq Rd-mode-parse-syntax-table
-        (copy-syntax-table Rd-mode-syntax-table))
-  ;; To make parse-partial-sexps do the thing we want for computing
-  ;; indentations
-  (modify-syntax-entry ?\( "_" Rd-mode-parse-syntax-table)
-  (modify-syntax-entry ?\) "_" Rd-mode-parse-syntax-table)
-  (modify-syntax-entry ?\[ "_" Rd-mode-parse-syntax-table)
-  (modify-syntax-entry ?\] "_" Rd-mode-parse-syntax-table))
 
 (defvar Rd-section-names
   '("Rdversion" "arguments" "alias" "author" "concept" "describe" "description"
@@ -146,13 +135,6 @@ All Rd mode abbrevs start with a grave accent (`).")
     "packageTitle" "packageDescription" "packageAuthor"
     "packageMaintainer" "packageDESCRIPTION" "packageIndices"
     ))
-
-;; Need to fix Rd-bold-face problem.
-;;
-;; (defvar Rd-bold-face 'bold)
-                                        ;(defvar Rd-bold-face nil)
-                                        ;(make-face Rd-bold-face "R documentation bold face")
-                                        ;(make-face-bold Rd-bold-face
 
 (defvar Rd-font-lock-keywords
   (list
@@ -248,71 +230,36 @@ point.")
 
 
 ;;;###autoload
-(defun Rd-mode ()
+(define-derived-mode Rd-mode text-mode "Rd"
   "Major mode for editing R documentation source files.
 
-This mode makes it easier to write R documentation by helping with
-indentation, doing some of the typing for you (with Abbrev mode) and by
-showing keywords, strings, etc. in different faces (with Font Lock mode
-on terminals that support it).
+Type \\[list-abbrevs] to display the built-in abbrevs for Rd
+keywords.To automatically turn on the abbrev(iate) features, add
+the following to your Emacs configuration file:
 
-Type \\[list-abbrevs] to display the built-in abbrevs for Rd keywords.
+  (add-hook 'Rd-mode-hook #'abbrev-mode)"
+  (setq ess-language "S" ess-dialect  "R")
+  (ess-setq-vars-local ess-r-customize-alist)
 
-Keybindings
-===========
-
-\\{Rd-mode-map}
-
-Variables you can use to customize Rd mode
-==========================================
-
-`Rd-indent-level'
-  Indentation of Rd code with respect to containing blocks.
-  Default is 2.
-
-Turning on Rd mode runs the hook `Rd-mode-hook'.
-
-To automatically turn on the abbrev(iate) features, add the
-following lines to your `.emacs' file:
-
-  (add-hook 'Rd-mode-hook
-            (lambda ()
-              (abbrev-mode 1)))"
-
-  (interactive)
-  (text-mode)
-  (kill-all-local-variables)
-  (ess-setq-vars-local ess-r-customize-alist) ;same functionality is available as in R buffers
-  (use-local-map Rd-mode-map)
-  (setq mode-name "Rd")
-  (setq major-mode 'Rd-mode)
-  (setq local-abbrev-table Rd-mode-abbrev-table)
-  (set-syntax-table Rd-mode-syntax-table)
-
-  (set (make-local-variable 'indent-line-function) 'Rd-mode-indent-line)
-  (set (make-local-variable 'fill-column) 72)
-  (set (make-local-variable 'comment-start-skip) "\\s<+\\s-*")
-  (set (make-local-variable 'comment-start) "% ")
-  (set (make-local-variable 'comment-end) "")
-  (set (make-local-variable 'font-lock-defaults)
-       '(Rd-font-lock-keywords nil nil))
-  ;; (set (make-local-variable 'parse-sexp-ignore-comments) t)
+  (setq-local indent-line-function 'Rd-mode-indent-line)
+  (setq fill-column 72)
+  (setq-local comment-start-skip "\\s<+\\s-*")
+  (setq-local comment-start "% ")
+  (setq-local comment-end "")
+  (setq font-lock-defaults
+        '(Rd-font-lock-keywords nil nil))
 
   ;; Here is a workaround for an Emacs bug related to indirect buffers and
   ;; spurious lockfiles that rears its ugly head with .Rd files
   ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2013-02/msg01368.html
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
-  (make-local-variable 'create-lockfiles)
-  (setq create-lockfiles nil)
+  (setq-local create-lockfiles nil)
 
   (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
     "Menu keymap for Rd mode." Rd-mode-menu)
 
-  (turn-on-auto-fill)
-  (message "Rd mode version %s" essddr-version)
-  (setq ess-language "S" ess-dialect  "R"); (buffer local)
-  (run-mode-hooks 'Rd-mode-hook))
+  (turn-on-auto-fill))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.Rd\\'" . Rd-mode))
@@ -473,7 +420,7 @@ WHAT determines the font to use, as specified by `Rd-font-list'."
            (insert before)
            (save-excursion
              (insert after))))))
-;;;###autoload
+
 (defun Rd-preview-help (&optional via-shell)
   "Preview the current Rd buffer contents as help.
 If optional VIA-SHELL is set, using `Rd-to-help-command'.
@@ -511,7 +458,7 @@ temporary one in `temporary-file-directory'."
           ess-help-sec-keys-alist ess-help-r-sec-keys-alist)
     ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):
     (ess-help-underline)
-    (ess-help-mode)
+    (ess--help-major-mode)
     (goto-char (point-min))
     (set-buffer-modified-p 'nil)
     (setq buffer-read-only t)
@@ -520,23 +467,8 @@ temporary one in `temporary-file-directory'."
     (unless (get-buffer-window pbuf 'visible)
       (display-buffer pbuf t))))
 
-;; Bug reporting
-(defun Rd-submit-bug-report ()
-  "Submit a bug report on Rd mode via mail."
-  (interactive)
-  (require 'reporter)
-  (and
-   (y-or-n-p "Do you want to submit a bug report? ")
-   (reporter-submit-bug-report
-    essddr-maintainer-address
-    (concat "Emacs version " emacs-version)
-    (list
-     'essddr-version
-     'Rd-indent-level))))
+(define-obsolete-function-alias 'Rd-submit-bug-report 'ess-submit-bug-report "2018-08-16")
 
-
-;; Legacy feature
-(provide 'essddr)
 (provide 'ess-rd)
 
 ;;; ess-rd.el ends here

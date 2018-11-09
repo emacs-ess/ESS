@@ -148,22 +148,14 @@ the function which prints the output for rdired.")
     (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
     ess-rdired-mode-map))
 
-(defun ess-rdired-mode ()
+(define-derived-mode ess-rdired-mode special-mode "Rdired"
   "Major mode for output from `ess-rdired'.
 `ess-rdired' provides a dired-like mode for R objects.  It shows the
 list of current objects in the current environment, one-per-line.  You
 can then examine these objects, plot them, and so on.
 \\{ess-rdired-mode-map}"
-  ;; (kill-all-local-variables)
-  (make-local-variable 'revert-buffer-function)
-  (setq revert-buffer-function 'ess-rdired-revert-buffer)
-  (use-local-map ess-rdired-mode-map)
-  (setq major-mode 'ess-rdired-mode)
-  (setq mode-name (concat "RDired " ess-local-process-name))
-  (run-mode-hooks 'ess-rdired-mode-hook))
-
-(defun ess-rdired-mode-hook  nil
-  "Run upon entering `ess-rdired-mode'.")
+  (setq-local revert-buffer-function 'ess-rdired-revert-buffer)
+  (setq mode-name (concat "RDired " ess-local-process-name)))
 
 (defvar ess-rdired-sort-num nil)        ;silence the compiler.
 ;; but see following defun -- maybe it should be buffer local.
@@ -172,38 +164,31 @@ can then examine these objects, plot them, and so on.
 (defun ess-rdired ()
   "Run dired-like mode on R objects.
 This is the main function.  See documentation for `ess-rdired-mode' though
-for more information!"
+for more information."
   (interactive)
   (let  ((proc ess-local-process-name)
          (buff (get-buffer-create ess-rdired-buffer)))
-
     (ess-command ess-rdired-objects buff)
     (ess-setq-vars-local (symbol-value ess-local-customize-alist) buff)
-    
     (with-current-buffer buff
       (setq ess-local-process-name proc)
       (ess-rdired-mode)
-
       ;; When definiting the function .rdired.objects(), a "+ " is printed
       ;; for every line of the function definition; these are deleted
       ;; here.
       (goto-char (point-min))
-      (delete-region (point-min) (1+ (point-at-eol)))
-
-      ;; todo: not sure how to make ess-rdired-sort-num buffer local?
-      ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
-      ;;(make-variable-buffer-local 'ess-rdired-sort-num)
-      (setq ess-rdired-sort-num 1)
-      (ess-rdired-insert-set-properties (save-excursion
-                                          (goto-char (point-min))
-                                          (forward-line 1)
-                                          (point))
-                                        (point-max))
-      (setq buffer-read-only t)
-      )
-    
-    (pop-to-buffer buff)
-    ))
+      (let ((buffer-read-only nil))
+        (delete-region (point-min) (1+ (point-at-eol)))
+        ;; todo: not sure how to make ess-rdired-sort-num buffer local?
+        ;;(set (make-local-variable 'ess-rdired-sort-num) 2)
+        ;;(make-variable-buffer-local 'ess-rdired-sort-num)
+        (setq ess-rdired-sort-num 1)
+        (ess-rdired-insert-set-properties (save-excursion
+                                            (goto-char (point-min))
+                                            (forward-line 1)
+                                            (point))
+                                          (point-max))))
+    (pop-to-buffer buff)))
 
 
 (defun ess-rdired-object ()
@@ -427,7 +412,7 @@ Rotate between the alternative sorting methods."
            (sort-numeric-fields 3 beg end))
           ((eq ess-rdired-sort-num 4)
            (sort-numeric-fields 4 beg end)))))
-           
+
 (defun ess-rdired-reverse ()
   "Reverse the current sort order."
   (interactive)
@@ -438,7 +423,7 @@ Rotate between the alternative sorting methods."
                (point)))
         (end (point-max)))
     (reverse-region beg end)))
-    
+
 (defun ess-rdired-next-line (arg)
   "Move down lines then position at object.
 Optional prefix ARG says how many lines to move; default is one line."

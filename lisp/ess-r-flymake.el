@@ -24,7 +24,7 @@
 ;;; Commentary:
 ;;
 ;; Flymake is the built-in Emacs package that supports on-the-fly
-;; syntax checking.  This file adds support for this in R-mode by
+;; syntax checking.  This file adds support for this in ess-r-mode by
 ;; relying on the lintr package, available on CRAN and currently
 ;; hosted at https://github.com/jimhester/lintr.
 ;;

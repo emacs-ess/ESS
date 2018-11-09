@@ -60,34 +60,26 @@
 (defvar ess-rutils-buf "*R temp*"
   "Name of temporary R buffer.")
 
-(defvar ess-rutils-mode-map nil
+(defvar ess-rutils-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "l" 'ess-rutils-loadpkg)
+    (define-key map "i" 'ess-rutils-mark-install)
+    (define-key map "I" 'ess-rutils-install)
+    (define-key map "u" 'ess-rutils-unmark)
+    (define-key map "q" 'ess-rutils-quit)
+    map)
   "Keymap for the *R temp* buffer.")
 
-(unless ess-rutils-mode-map
-  (setq ess-rutils-mode-map (make-sparse-keymap))
-  (define-key ess-rutils-mode-map "l" 'ess-rutils-loadpkg)
-  (define-key ess-rutils-mode-map "i" 'ess-rutils-mark-install)
-  (define-key ess-rutils-mode-map "I" 'ess-rutils-install)
-  (define-key ess-rutils-mode-map "u" 'ess-rutils-unmark)
-  (define-key ess-rutils-mode-map "q" 'ess-rutils-quit)
-  (define-key ess-rutils-mode-map "?" 'ess-rutils-help))
-
-(defun ess-rutils-mode ()
+(define-derived-mode ess-rutils-mode special-mode "R utils"
   "Major mode for output from `ess-rutils-local-pkgs' and `ess-rutils-repos-pkgs'.
-Useful bindings to handle package loading and installing.
-\\{ess-rutils-mode-map}"
-  (kill-all-local-variables)
-  (use-local-map ess-rutils-mode-map)
-  (setq major-mode 'ess-rutils-mode)
-  (setq mode-name (concat "R utils " ess-local-process-name)))
+Useful bindings to handle package loading and installing."
+  (setq ess-dialect "R"))
 
 (defun ess-rutils-local-pkgs ()
   "List all packages in all libraries."
   (interactive)
-  (if (get-buffer ess-rutils-buf)
-      (progn
-        (set-buffer ess-rutils-buf)
-        (setq buffer-read-only nil)))
+  (with-current-buffer (get-buffer-create ess-rutils-buf)
+    (setq buffer-read-only nil))
   (ess-execute
    "writeLines(paste('  ', sort(.packages(all.available=TRUE)), sep=''))"
    nil
@@ -96,10 +88,7 @@ Useful bindings to handle package loading and installing.
   (save-excursion
     (beginning-of-line) (open-line 1)
     (insert "**Available packages in all local R libraries**"))
-  (setq buffer-read-only t)
-  (ess-rutils-mode)
-  (if (fboundp 'fit-frame)
-      (fit-frame)))
+  (ess-rutils-mode))
 
 (defun ess-rutils-namepkg ()
   "Return name of the package on current line."
@@ -133,10 +122,8 @@ Useful bindings to handle package loading and installing.
 Use the repositories as listed by getOptions(\"repos\") in the
 current R session."
   (interactive)
-  (if (get-buffer ess-rutils-buf)
-      (progn
-        (set-buffer ess-rutils-buf)
-        (setq buffer-read-only nil)))
+  (with-current-buffer (get-buffer-create ess-rutils-buf)
+    (setq buffer-read-only nil))
   (ess-execute (concat "writeLines(paste('  \"', "
                        "rownames(available.packages()), '\"', sep=''))")
                nil
@@ -145,10 +132,7 @@ current R session."
   (save-excursion
     (kill-line 5)
     (insert "**packages available to install**\n"))
-  (setq buffer-read-only t)
-  (ess-rutils-mode)
-  (if (fboundp 'fit-frame)
-      (fit-frame)))
+  (ess-rutils-mode))
 
 (defun ess-rutils-mark-install (arg)
   "Mark the current package for installing.
@@ -251,15 +235,12 @@ packages if needed."
 (defun ess-rutils-apropos (string)
   "Search for STRING using apropos."
   (interactive "sApropos search for? ")
-  (if (get-buffer ess-rutils-buf)
-      (progn
-        (set-buffer ess-rutils-buf)
-        (setq buffer-read-only nil)))
+  (with-current-buffer (get-buffer-create ess-rutils-buf)
+    (setq buffer-read-only nil))
   (ess-execute (concat "apropos('" string "')")
                nil
                (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
-  (setq buffer-read-only t)
   (ess-rutils-mode))
 
 (defun ess-rutils-rm-all ()
@@ -351,23 +332,15 @@ given field. Options should be separated by value of
       (browse-url (concat site okstring "&max=20&result=normal&sort=score"
                           "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
 
-(defun ess-rutils-help ()
-  "Show help on `ess-rutils-mode'."
-  (interactive)
-  (describe-function 'ess-rutils-mode))
-
 (defun ess-rutils-help-search (string)
   "Search for STRING using help.search()."
   (interactive "sString to search for? ")
-  (if (get-buffer ess-rutils-buf)
-      (progn
-        (set-buffer ess-rutils-buf)
-        (setq buffer-read-only nil)))
+  (with-current-buffer (get-buffer-create ess-rutils-buf)
+    (setq buffer-read-only nil))
   (ess-execute (concat "help.search('" string "')")
                nil
                (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
-  (setq buffer-read-only t)
   (ess-rutils-mode))
 
 ;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
