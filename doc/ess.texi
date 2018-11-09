@@ -2770,7 +2770,7 @@ and functions defined in .GlobalEnv can "see" objects in 'package:foo'
 environment. See also
 @uref{https://cran.r-project.org/doc/manuals/R-ints.html#Namespaces}.
 
-Ocasionally you want to evaluate into a package from a non-package file,
+Occasionally you want to evaluate into a package from a non-package file,
 or the other way around, evaluate into @code{GlobalEnv} from inside a
 package. In such cases @kbd{C-c C-t C-s} is your friend.
 
