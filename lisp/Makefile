@@ -2,6 +2,10 @@
 ###
 
 ## Before making changes here, please take a look at Makeconf
+LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
+ifneq ($(LOCAL_CONF),)
+	include ../Makeconf.local
+endif
 include ../Makeconf
 
 ## For noweb extraction of code and documentation.
@@ -27,6 +31,8 @@ ELS = $(wildcard *.el obsolete/*.el)
 ELS := $(filter-out ess-autoloads.el, $(ELS))
 ELC = $(ELS:.el=.elc)
 
+PKBUILD:=2.3
+
 # ESSR_VER =`cat ../etc/ESSR-VERSION`
 ##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
 
@@ -37,10 +43,44 @@ all: julia-mode.el $(ELC) ess-custom.el ess-autoloads.el
 .PHONY: dist
 dist: all
 
-install: dist
+dist/package.out: 
+	$(INSTALLDIR) dist
+	if [ ! -s "dist/$(PKBUILD).tar.gz" ] ; then \
+	  cd dist ; curl -sLOk https://github.com/melpa/package-build/archive/$(PKBUILD).tar.gz ; fi
+	cd dist ; tar xfz $(PKBUILD).tar.gz
+	cd dist/package-build-$(PKBUILD) ; make -s loaddefs
+	$(INSTALLDIR) dist/recipes
+	if [ ! -s "dist/recipes/ess" ] ; then \
+	  cd dist/recipes ; curl -sLOk https://raw.githubusercontent.com/melpa/melpa/master/recipes/ess ; fi
+	$(EMACSBATCH) -L dist/package-build-$(PKBUILD) \
+	--eval "(require 'package-build)" \
+	--eval "(setq debug-on-error t)" \
+	--eval "(setq package-user-dir (expand-file-name \"dist\"))" \
+	--eval "(package-initialize)" \
+	--eval "(add-to-list 'package-archives '(\"melpa\" . \"http://melpa.org/packages/\"))" \
+	--eval "(package-refresh-contents)" \
+	--eval "(setq rcp (package-recipe-lookup \"ess\"))" \
+	--eval "(unless (file-exists-p package-build-archive-dir) \
+	           (make-directory package-build-archive-dir))" \
+	--eval "(unless (zerop (length \"$(TRAVIS_PULL_REQUEST_SLUG)\")) \
+	          (oset rcp :repo \"$(TRAVIS_PULL_REQUEST_SLUG)\") \
+	          (oset rcp :branch \"$(TRAVIS_PULL_REQUEST_BRANCH)\") \
+	          (oset rcp :commit \"$(TRAVIS_PULL_REQUEST_SHA)\"))" \
+	--eval "(package-build--package rcp (package-build--checkout rcp))" \
+	--eval "(package-install-file (car (file-expand-wildcards (concat package-build-archive-dir \"ess*.tar\"))))" > dist/package.out 2>&1
+
+.PHONY: test-install
+test-install:
+	-rm -f dist/package.out
+	$(MAKE) test-install-1
+
+test-install-1: dist/package.out
+	@! ( cat dist/package.out | egrep -a "Error: " )
+
+install: dist dist/package.out ess-autoloads.el
 	-$(INSTALLDIR) $(LISPDIR)
-	$(INSTALL) $(ELS) $(LISPDIR)
-	$(INSTALL) ess-autoloads.el $(LISPDIR)
+	$(INSTALL) dist/ess-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].*/ess-pkg.el $(LISPDIR)
+	$(INSTALL) $(ELS) ess-autoloads.el $(LISPDIR)
 	$(INSTALL) $(ELC) $(LISPDIR)
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
@@ -58,8 +98,10 @@ uninstall:
 clean:
 	rm -f $(ELC)
 	rm -f ess-autoloads.el
+	rm -rf dist
 
 distclean: clean
+
 # and potentially more
 
 ### Targets below here are only for developers - and these must have perl
@@ -79,13 +121,8 @@ julia-mode.el:
 
 ess-julia.elc: julia-mode.elc
 
-ess-autoloads.el:
-	@printf	"\nGenerating $@\n"
-	$(EMACSBATCH) --eval "(progn\
-	(setq make-backup-files nil)\
-	(setq generated-autoload-file (expand-file-name \"$@\"))\
-	(setq find-file-visit-truename t)\
-	(update-directory-autoloads default-directory))"
+ess-autoloads.el: $(ELS)
+	$(EMACSBATCH) --eval "(package-initialize)" --eval "(package-generate-autoloads \"ess\" \".\")"
 
 ### File Dependencies
 

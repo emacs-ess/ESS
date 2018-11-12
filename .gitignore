@@ -6,6 +6,7 @@ doc/ess.*
 doc/info/ess.info
 doc/readme.*
 doc/refcard/refcard.*
+doc/*.log
 *history
 *NEWS
 *VERSION
@@ -31,3 +32,4 @@ lisp/ess-autoloads.el
 tmp*
 .DS_Store
 ._.DS_Store
+Makeconf.local

@@ -1,6 +1,10 @@
 ## Top Level Makefile
 
 ## Before making changes here, please take a look at Makeconf
+LOCAL_CONF := $(strip $(wildcard ./Makeconf.local))
+ifneq ($(LOCAL_CONF),)
+	include ./Makeconf.local
+endif
 include ./Makeconf
 
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
@@ -32,6 +36,7 @@ etc: version
 .PHONY: test
 test: version
 	cd test; $(EMACS) --script run-tests
+	cd lisp; $(MAKE) test-install
 
 generate-indent-cases:
 	cd test; $(EMACS) --script generate-indent-cases

@@ -4,6 +4,15 @@
 ## 1. Edit Section 1 and 2 below
 ## 2. Execute: gmake install
 
+## To install ESS for yourself:
+## 1. cat > Makeconf.local -<<EOF
+##    PREFIX=/home/<user>/.local
+##    SITELISP=/home/<user>/.emacs.d/elpa
+##    INFODIR=$(LISPDIR)
+##    ETCDIR=$(LISPDIR)/etc
+##    EOF
+## 2. Execute: gmake install
+
 ## Section 1
 ## Installation variables for your emacs variant
 ##
@@ -17,14 +26,14 @@
 ## PREFIX(DESTDIR) Directory prepended to SITELISP, INFODIR, DOCDIR & ETCDIR
 ##                 Specify either PREFIX or DESTDIR to over-ride /usr
 DESTDIR=/usr
-PREFIX=$(DESTDIR)
+PREFIX ?= $(DESTDIR)
 
 ##__ GNU Emacs __
 EMACS ?= emacs
-SITELISP=$(PREFIX)/share/emacs/site-lisp
+SITELISP ?= $(PREFIX)/share/emacs/site-lisp
 LISPDIR=$(SITELISP)/ess
-INFODIR=$(PREFIX)/share/info
-ETCDIR =$(PREFIX)/share/emacs/etc/ess
+INFODIR ?= $(PREFIX)/share/info
+ETCDIR  ?= $(PREFIX)/share/emacs/etc/ess
 
 ##__ XEmacs __
 #EMACS=$(PREFIX)/bin/xemacs
@@ -50,7 +59,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # ETCDIR=$(PREFIX)/ess-mode/etc
 
 ## the following command is the same for recent versions of both Emacs and XEmacs
-EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
+EMACSBATCH = $(EMACS) -Q --batch
 
 ## Section 2
 ## Installation variables for your unix variant

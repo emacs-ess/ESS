@@ -2,6 +2,10 @@
 ###
 
 ## Before making changes here, please take a look at Makeconf
+LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
+ifneq ($(LOCAL_CONF),)
+	include ../Makeconf.local
+endif
 include ../Makeconf
 
 # In ../Makefile we already construct the  ESSR-VERSION  file :
