@@ -34,6 +34,7 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'cl-lib)
   (require 'tramp)
   (require 'subr-x))
 (require 'ess-generics)
@@ -2171,19 +2172,23 @@ to the command if BUFF is not given.)"
 
 ;;;*;;; Quitting
 
-(ess-defgeneric ess-quit (&rest args)
-  "Issue an exiting command to the inferior process, additionally
-also running \\[ess-cleanup]."
-  (interactive)
+(cl-defgeneric ess-quit--override (arg)
+  "Stops the inferior process"
+  (let ((proc (ess-get-process)))
+    (ess-cleanup)
+    (goto-char (marker-position (process-mark proc)))
+    (insert inferior-ess-exit-command)
+    (process-send-string proc inferior-ess-exit-command)))
+
+(defun ess-quit (&optional arg)
+  "Issue an exiting command to the inferior process.
+Runs `ess-cleanup'. ARG gets passed to a language specific
+method, see `ess-quit--override'."
+  (interactive "P")
   (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
   (ess-interrupt)
   (ess-make-buffer-current)
-  (:override
-   (let ((proc (ess-get-process)))
-     (ess-cleanup)
-     (goto-char (marker-position (process-mark proc)))
-     (insert inferior-ess-exit-command)
-     (process-send-string proc inferior-ess-exit-command))))
+  (ess-quit--override arg))
 
 (defun ess-interrupt ()
   "Interrupt the inferior process.

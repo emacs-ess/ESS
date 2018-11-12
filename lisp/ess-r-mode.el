@@ -1348,13 +1348,15 @@ If it changes, we flush the cache.")
         (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
-(ess-defmethod R ess-quit (&optional no-save)
+(cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
+  "With ARG, do not offer to save the workspace."
   (let (cmd
         (sprocess (ess-get-process ess-current-process-name)))
     (when (not sprocess) (error "No ESS process running"))
     (ess-cleanup)
-    (setq cmd (format "base::q('%s')\n" (if no-save "no" "default")))
+    (setq cmd (format "base::q('%s')\n" (if arg "no" "default")))
     (goto-char (marker-position (process-mark sprocess)))
+    (insert cmd)
     (process-send-string sprocess cmd)))
 
 (defcustom inferior-ess-r-reload-hook nil
