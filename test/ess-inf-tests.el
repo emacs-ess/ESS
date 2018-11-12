@@ -9,7 +9,7 @@
 ;;; Startup
 
 (defun ess-r-tests-startup-output ()
-  (let* ((proc (ess-vanila-R))
+  (let* ((proc (ess-vanilla-R))
          (output-buffer (process-buffer proc)))
     (unwind-protect
         (with-current-buffer output-buffer
@@ -194,30 +194,32 @@ some. text
   (skip-unless (and (or (executable-find "R-3.2.1")
                         (getenv "CONTINUOUS_INTEGRATION"))
                     (> emacs-major-version 25)))
-  (should
-   (string= "*R-3.2.1:1*"
-            (let ((ess-use-inferior-program-in-buffer-name t)
-                  (ess-plain-first-buffername nil)
-                  (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
-                  (ess-ask-for-ess-directory nil)
-                  (name))
-              (R-3.2.1)
-              (setq name (buffer-name))
-              (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-process (get-buffer-process name))
-              ;; FIXME: Does not work in batch mode
-              ;; (kill-buffer name)
-              name)))
-  (should
-   (string= "*R-3.2.1:2*"
-            (let ((ess-use-inferior-program-name-in-buffer-name t)
-                  (ess-plain-first-buffername nil)
-                  (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
-                  (ess-ask-for-ess-directory nil)
-                  (name))
-              (R-3.2.1)
-              (setq name (buffer-name))
-              (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-process (get-buffer-process name))
-              ;; (kill-buffer name)
-              name))))
+  (let (to-kill)
+    (should
+     (string= "*R-3.2.1:1*"
+              (let ((ess-use-inferior-program-in-buffer-name t)
+                    (ess-plain-first-buffername nil)
+                    (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
+                    (ess-ask-for-ess-directory nil)
+                    (name))
+                (R-3.2.1)
+                (setq name (buffer-name))
+                (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
+                (push (get-buffer-process name) to-kill)
+                ;; FIXME: Does not work in batch mode
+                ;; (kill-buffer name)
+                name)))
+    (should
+     (string= "*R-3.2.1:2*"
+              (let ((ess-use-inferior-program-name-in-buffer-name t)
+                    (ess-plain-first-buffername nil)
+                    (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
+                    (ess-ask-for-ess-directory nil)
+                    (name))
+                (R-3.2.1)
+                (setq name (buffer-name))
+                (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
+                (push (get-buffer-process name) to-kill)
+                ;; (kill-buffer name)
+                name)))
+    (mapc #'kill-process to-kill)))

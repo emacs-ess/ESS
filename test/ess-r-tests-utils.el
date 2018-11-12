@@ -73,7 +73,7 @@ inserted text."
        ,@body)))
 (def-edebug-spec ess-cpp-test-with-temp-text (form body))
 
-(defun ess-vanila-R ()
+(defun ess-vanilla-R ()
   "Start vanila R process and return the process object."
   (save-window-excursion
     (let ((inhibit-message ess-inhibit-message-in-tests)
@@ -92,7 +92,7 @@ prompts in the output are replaced with '> '. There is no full
 proof way to test for prompts given that process output could be
 split arbitrary."
   (let ((prompt-regexp "^\\([+.>] \\)\\{2,\\}")
-        (proc (ess-vanila-R))
+        (proc (ess-vanilla-R))
         (inhibit-message ess-inhibit-message-in-tests))
     ;; just in case
     (ess-wait-for-process proc)
@@ -166,7 +166,7 @@ representative to the common interactive use with tracebug on."
      (save-window-excursion
        (switch-to-buffer r-file-buffer)
        (R-mode)
-       (let* ((*proc* (ess-vanila-R))
+       (let* ((*proc* (ess-vanilla-R))
               (ess-local-process-name (process-name *proc*))
               (output-buffer (process-buffer *proc*)))
          (unwind-protect

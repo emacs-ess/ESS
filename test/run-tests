@@ -15,6 +15,7 @@
 (require 'ess-r-tests-utils)
 (setq ess-inhibit-message-in-tests t)
 (setq ert-batch-backtrace-right-margin 130)
+(setq ess-history-file nil)
 
 ;; lintr probably isn't installed in the test suite and flymake will
 ;; complain about that. Disable it during tests.

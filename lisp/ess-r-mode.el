@@ -235,7 +235,6 @@
     table)
   "Syntax table for `ess-r-mode'.")
 
-
 (defvar ess-r-completion-syntax-table
   (let ((table (copy-syntax-table ess-r-mode-syntax-table)))
     (modify-syntax-entry ?. "_" table)
@@ -2312,6 +2311,44 @@ state.")
 
 
 
+(define-derived-mode ess-r-source-mode special-mode "R Source"
+  "Major mode for navigating the source of local/byte-compiled R functions."
+  :group 'ess-r-source
+  :syntax-table ess-r-mode-syntax-table
+  (let ((inhibit-read-only t))
+    (setq header-line-format
+          (concat "Environment: " 
+                  (ess-r-source--parse-environment (current-buffer))
+                  (and (ess-r-source--parse-byte-compiled-p (current-buffer))
+                       " (byte-compiled)")))))
+
+(defun ess-r-source--parse-environment (buff)
+  "Determine the environment of the R function printed in BUFF.
+
+This also erases the metadata once the environment has been
+determined."
+  (with-current-buffer buff
+    (goto-char (point-max))
+    (let* ((found (re-search-backward "^<environment: \\(.*\\)>$" nil 'noerror))
+           (env (or (when found (match-string-no-properties 1)) ".GlobalEnv")))
+      ;; Delete the metadata, if it's there.
+      (when found (beginning-of-line) (kill-whole-line))
+      env)))
+
+(defun ess-r-source--parse-byte-compiled-p (buff)
+  "Determine whether the R function printed in BUFF is byte-compiled.
+
+This also erases the metadata once the compilation status has
+been determined."
+  (with-current-buffer buff
+    (goto-char (point-max))
+    (when (re-search-backward "^<bytecode" nil 'noerror)
+      ;; Delete the metadata, if it's there.
+      (beginning-of-line)
+      (kill-whole-line)
+      t)))
+
+
 
 ;; Create functions that can be called for running different versions
 ;; of R.

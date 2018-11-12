@@ -1501,6 +1501,9 @@ line starts with the roxy prefix.")
 
 ;; SJE -- this should not be defcustom - user does not set it.
 (defvaralias 'ess-current-process-name 'ess-local-process-name)
+
+;; should this have been make-buffer-local-variable?
+;; we always setq-local `ess-local-process-name' per buffer
 (defvar ess-local-process-name nil
   "The name of the ESS process associated with the current buffer.")
 (put 'ess-local-process-name 'risky-local-variable t)

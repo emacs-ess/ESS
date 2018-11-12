@@ -18,6 +18,15 @@ local({
     }
 })
 
+.ess_attach_libs <- function(file) {
+    invisible(base::lapply(parse("example.R"), function(x) {
+        if (is.call(x) && length(x) >= 2 && is.name(x[[2]]) &&
+            (identical(x[[1]], as.name('library')) ||
+             identical(x[[1]], as.name('require')))) {
+            eval(call(as.character(x[[1]]), x[[2]], quietly=TRUE))
+        }
+    }))
+}
 
 .ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
@@ -50,16 +59,10 @@ local({
 }
 
 .ess_fn_pkg <- function(fn_name) {
-    fn <- .ess_eval(fn_name)
-    env_name <- base::environmentName(base::environment(fn))
-    out <- if (base::is.primitive(fn)) { # environment() does not work on primitives.
-               "base"
-           } else if (base::is.function(fn) && env_name != "R_GlobalEnv") {
-               env_name
-           } else {
-               ""
-           }
-    base::cat(base::sprintf("%s\n", out))
+    env <- if(is.null(.ess_eval(fn_name)))
+               NULL else base::environment(.ess_eval(fn_name))
+    pkg <- tryCatch(utils::packageName(env=env), error=function(e) NULL)
+    cat(sprintf("%s\n", pkg))
 }
 
 .ess_funargs <- function(funname) {

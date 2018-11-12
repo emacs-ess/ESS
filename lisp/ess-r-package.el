@@ -59,13 +59,6 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
 Cons cell of two strings. CAR is the package name active in the
 current buffer. CDR is the path to its source directory.")
 
-(define-obsolete-variable-alias 'ess-r-package-library-path 'ess-r-package-library-paths "v18.04")
-(defcustom ess-r-package-library-paths nil
-  "Default path to find user packages.
-Can be either a string specifying a directory or a list of directories."
-  :group 'ess-r-package-library-paths
-  :type `(choice string (repeat string)))
-
 (defvar ess-r-package-root-file "DESCRIPTION"
   "Presence of this file indicates the project's root.")
 
@@ -90,6 +83,10 @@ a R package.")
 All children of these directories are also considered source
 containing directories.  Use `ess-r-package-source-dirs' to get
 all source dirs recursively within the current package.")
+
+(defsubst ess-r-package-library-paths ()
+  "Return output of .libPaths()"
+  (ess-get-words-from-vector ".libPaths()\n"))
 
 
 ;;;*;;; Package Detection
@@ -215,9 +212,7 @@ Root is determined by locating `ess-r-package-root-file'."
   (interactive)
   (let* ((pkg-path (read-directory-name
                     "Path: " (or (ess-r-package--find-package-path)
-                                 (if (stringp ess-r-package-library-paths)
-                                     ess-r-package-library-paths
-                                   (car ess-r-package-library-paths)))
+                                 (car (ess-r-package-library-paths)))
                     nil t))
          (pkg-name (ess-r-package--find-package-name pkg-path))
          (pkg-info (cons pkg-name pkg-path)))
@@ -425,9 +420,7 @@ Default location is determined by the first element of
 `ess-r-package-library-paths'."
   (interactive)
   (let* ((command "devtools::create(\"%s\")")
-         (default-path (if (stringp ess-r-package-library-paths)
-                           ess-r-package-library-paths
-                         (car ess-r-package-library-paths)))
+         (default-path (car (ess-r-package-library-paths)))
          (path (read-directory-name "Path: " default-path)))
     (ess-eval-linewise (format command path))))
 

@@ -7,7 +7,7 @@
 
 (defun test-org-R-ouput (expect input)
   (declare (indent 1))
-  (let ((proc (ess-vanila-R))
+  (let ((proc (ess-vanilla-R))
         (org-confirm-babel-evaluate nil)
         (ess-ask-for-ess-directory nil)
         (inhibit-message ess-inhibit-message-in-tests))

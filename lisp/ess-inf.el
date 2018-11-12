@@ -2317,12 +2317,11 @@ If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv).
 
 (defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
   "Evaluate the S command COMMAND, which returns a character vector.
-Return the elements of the result of COMMAND as an alist of
+Return the elements of the result of COMMAND as a list of
 strings. COMMAND should have a terminating newline.
 NO-PROMPT-CHECK, WAIT, and PROC are passed to `ess-command'.
-FILTER may be the keyword 'non-... or nil. To avoid truncation of
-long vectors, wrap your command (%s) like this, or a version with
-explicit options(max.print=1e6): \"local({ out <- try({%s});
+To avoid truncation of long vectors, wrap your command (%s) like this, 
+or a version with explicit options(max.print=1e6): \"local({ out <- try({%s});
 print(out, max=1e6) })\n\"."
   (unless proc
     (inferior-ess-force))

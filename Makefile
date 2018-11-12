@@ -42,8 +42,9 @@ etc: version
 	cd etc; $(MAKE)
 
 .PHONY: test
-test: version
+test: version all
 	cd test; $(EMACS) --script run-tests
+	cd test; Rscript test-ESSR.R
 
 generate-indent-cases:
 	cd test; $(EMACS) --script generate-indent-cases
