@@ -2243,6 +2243,8 @@ state.")
 
 (defvar ess-r-help-mode-map
   (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map (make-composed-keymap button-buffer-map
+                                                 ess-help-mode-map))
     (define-key map "s<" 'beginning-of-buffer)
     (define-key map "s>" 'end-of-buffer)
     (define-key map "sa" 'ess-skip-to-help-section)
@@ -2267,7 +2269,36 @@ state.")
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
         inferior-ess-help-command inferior-ess-r-help-command
         ess-get-help-topics-function #'ess-s-get-help-topics-function
-        inferior-ess-help-filetype nil))
+        inferior-ess-help-filetype nil)
+  (ess-r-help-add-links))
+
+(define-button-type 'ess-r-help-link
+  'follow-link t
+  'action (lambda (_) (ess-r-help-button-action)))
+
+(defun ess-r-help-button-action ()
+  "Display help for button at point."
+  (let ((text (get-text-property (point) 'ess-r-help-link-text)))
+    (ess-display-help-on-object text)))
+
+(defun ess-r-help-add-links ()
+  "Add links to the help buffer."
+  (save-excursion
+    ;; Search for fancy quotes only. If users have
+    ;; options(useFancyQuotes) set to something other than TRUE this
+    ;; probably won't work. If it's FALSE, R outputs ascii ', but
+    ;; searching through the whole buffer takes too long.
+    (while (re-search-forward "‘[^[:space:]]+?’" nil t)
+      (let ((inhibit-read-only t)
+            (beg (match-beginning 0))
+            (end (match-end 0))
+            ;; Remove surrounding quotes so the text property is the
+            ;; name of the link:
+            (text (string-trim (match-string 0) "[\"‘]*" "[\"’]*")))
+        (add-text-properties beg end (list 'ess-r-help-link-text text))
+        (make-text-button beg end
+                          'type 'ess-r-help-link
+                          'help-echo (format "mouse-2, RET: Help on %s" text))))))
 
 
 

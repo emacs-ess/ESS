@@ -2668,7 +2668,6 @@ the variable `ess-help-own-frame' is non-nil."
   :type 'alist
   :package-version '(ess . "18.10"))
 
-
  ; Faces
 ;;;=====================================================
 

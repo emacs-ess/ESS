@@ -169,7 +169,6 @@ suplied, it is used instead of `inferior-ess-help-command'."
   (let ((inhibit-modification-hooks t)
         (inhibit-read-only t))
     (delete-region (point-min) (point-max))
-    (ess--help-major-mode)
     (let ((command (if (and command (string-match-p "%s" command))
                        (format command object)
                      command)))
@@ -179,7 +178,8 @@ suplied, it is used instead of `inferior-ess-help-command'."
       (ess-nuke-help-bs))
     (goto-char (point-min))
     (set-buffer-modified-p 'nil)
-    (setq truncate-lines nil)))
+    (setq truncate-lines nil)
+    (ess--help-major-mode)))
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus BUFFER with message. Return t if killed."

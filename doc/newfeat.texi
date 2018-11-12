@@ -61,6 +61,12 @@ ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
 these now rely on project.el (included with Emacs) rather than
 projectile.el, which is a third-party package.
 
+@item ESS[R] help pages now provide links to other help topics.
+This is similar with what you would see with, for example
+@code{options(help_type = ``html'')} but works with the plain-text
+version as well. This only works with @code{options(useFancyQuotes =
+TRUE)} (the default).
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
