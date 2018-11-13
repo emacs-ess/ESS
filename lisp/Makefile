@@ -40,6 +40,7 @@ dist: all
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) $(ELS) $(LISPDIR)
+	$(INSTALL) ess-autoloads.el $(LISPDIR)
 	$(INSTALL) $(ELC) $(LISPDIR)
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
