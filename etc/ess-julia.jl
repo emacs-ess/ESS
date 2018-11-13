@@ -76,9 +76,9 @@ end
 # add                           Function
 # free                          Function
 function components(m::Module)
-    for v in sort(names(m))
+    for v in sort(names(m, all=true, imported=true))
         s = string(v)
-        if isdefined(m,v)
+        if !startswith(s, "#") && isdefined(m,v)
             println(rpad(s, 30), summary(Core.eval(m,v)))
         end
     end
