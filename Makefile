@@ -1,11 +1,12 @@
 ## Top Level Makefile
 
-## Before making changes here, please take a look at Makeconf
-LOCAL_CONF := $(strip $(wildcard ./Makeconf.local))
-ifneq ($(LOCAL_CONF),)
-	include ./Makeconf.local
-endif
 include ./Makeconf
+LOCAL_CONF := $(strip $(wildcard ./Makeconf.local))
+ifeq ($(LOCAL_CONF),)
+$(error "No ./Makeconf.local found.  Please read INSTALL")
+else
+include ./Makeconf.local
+endif
 
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
 .PHONY: all install uninstall

@@ -34,5 +34,6 @@ before_script:
 script:
 - emacs --version
 - R --version
+- cp Makeconf.local.template Makeconf.local
 - make all
 - make test

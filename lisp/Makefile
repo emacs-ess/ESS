@@ -1,12 +1,13 @@
 ### Makefile - for compiled e-lisp of ESS distribution.
 ###
 
-## Before making changes here, please take a look at Makeconf
-LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
-ifneq ($(LOCAL_CONF),)
-	include ../Makeconf.local
-endif
 include ../Makeconf
+LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
+ifeq ($(LOCAL_CONF),)
+$(error "No ../Makeconf.local found.  Please read INSTALL")
+else
+include ../Makeconf.local
+endif
 
 ## For noweb extraction of code and documentation.
 
@@ -65,7 +66,7 @@ install: dist install-dry ess-autoloads.el
 	-$(INSTALLDIR) $(LISPDIR)
 	$(INSTALL) dist/ess-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].*/ess-pkg.el $(LISPDIR)
 	$(INSTALL) $(ELS) $(LISPDIR)
-	$(INSTALL) $(ELC) $(LISPDIR)
+	$(INSTALL) $(filter-out ess-autoloads.elc, $(ELC)) $(LISPDIR)
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
 		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
@@ -105,7 +106,7 @@ julia-mode.el:
 
 ess-julia.elc: julia-mode.elc
 
-ess-autoloads.el: $(ELS)
+ess-autoloads.el: $(filter-out ess-autoloads.el, $(ELS))
 	$(EMACSBATCH) --eval "(package-initialize)" --eval "(package-generate-autoloads \"ess\" \".\")"
 
 ### File Dependencies

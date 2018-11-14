@@ -1,12 +1,13 @@
 ### Makefile - for scripts and icons (./etc) of ESS distribution.
 ###
 
-## Before making changes here, please take a look at Makeconf
-LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
-ifneq ($(LOCAL_CONF),)
-	include ../Makeconf.local
-endif
 include ../Makeconf
+LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
+ifeq ($(LOCAL_CONF),)
+$(error "No ../Makeconf.local found.  Please read INSTALL")
+else
+include ../Makeconf.local
+endif
 
 # In ../Makefile we already construct the  ESSR-VERSION  file :
 # ESSR_VERSION = $(shell cat ESSR-VERSION)

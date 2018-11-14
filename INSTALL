@@ -1,0 +1,7 @@
+To install from source
+
+cp Makeconf.local.template Makeconf.local
+
+and set variables in Makeconf.local as necessary.  Then
+
+make install

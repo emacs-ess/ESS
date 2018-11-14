@@ -1,12 +1,13 @@
 ### Makefile - for DOCUMENTATION (./doc) of ESS distribution.
 ###
 
-## Before making changes here, please take a look at Makeconf
-LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
-ifneq ($(LOCAL_CONF),)
-	include ../Makeconf.local
-endif
 include ../Makeconf
+LOCAL_CONF := $(strip $(wildcard ../Makeconf.local))
+ifeq ($(LOCAL_CONF),)
+$(error "No ../Makeconf.local found.  Please read INSTALL")
+else
+include ../Makeconf.local
+endif
 
 # program to convert .texi{nfo} to .html
 #MM: use makeinfo (i.e. MAKEHTML from above) which is more

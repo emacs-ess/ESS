@@ -29,6 +29,7 @@ ess-[1-9]*.[0-9][0-9]-[0-9]
 ess-[1-9]*.[0-9][0-9]-[0-9][-.]???
 lisp/julia-mode.el
 lisp/ess-autoloads.el
+lisp/dist
 tmp*
 .DS_Store
 ._.DS_Store

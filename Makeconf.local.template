@@ -1,0 +1,2 @@
+## overrides variables from Makeconf here, e.g.,
+# SITELISP=$$HOME/.emacs.d/lisp
