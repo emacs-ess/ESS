@@ -751,8 +751,6 @@ Function defined using `ess-define-runner'."
 
 (defun ess-version-string ()
   (let* ((ess-dir (file-name-directory ess-lisp-directory)) ; if(<from source>) the top-level 'ess/'
-         (is-release (file-exists-p (concat ess-etc-directory ".IS.RELEASE")))
-         (rel-string (if is-release "Released "))
          (git-ref-fn (concat ess-dir ".git/HEAD"))
          (git-ref (when (file-exists-p git-ref-fn)
                     (with-current-buffer (find-file-noselect git-ref-fn)
@@ -775,10 +773,7 @@ Function defined using `ess-define-runner'."
                                                        (file-name-nondirectory
                                                         (substring ess-dir 1 -1)))))))
     ;; Set the "global" ess-revision:
-    (setq ess-revision (format "%s%s%s"
-                               (or rel-string "")
-                               (or git-rev "")
-                               (or elpa-rev "")))
+    (setq ess-revision (format "%s%s" (or git-rev "") (or elpa-rev "")))
     (when (string= ess-revision "")
       (setq ess-revision "<unknown>"))
     (concat ess-version " [" ess-revision "]")))

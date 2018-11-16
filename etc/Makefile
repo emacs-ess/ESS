@@ -11,12 +11,7 @@ include ../Makeconf
 #ETCFILES = ESSR.R ess-developer.R SVN-REVISION *.S sas-keys.* ess-sas-sh-command
 # ETCFILES_1 = *.S sas-keys.* ess-sas-sh-command *.jl
 ETCFILES_1 = ess-sas-sh-command *.jl
-isRELEASE=$(shell test -f .IS.RELEASE && echo 'yes')
-ifeq ($(isRELEASE),yes)
-  ETCFILES = .IS.RELEASE git-ref $(ETCFILES_1)
-else
-  ETCFILES =                     $(ETCFILES_1)
-endif
+ETCFILES =                     $(ETCFILES_1)
 
 #ICONS = $(wildcard icons/*.xpm)
 ICONS = icons/*.xpm
