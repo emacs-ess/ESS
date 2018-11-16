@@ -1101,11 +1101,12 @@ similar to `load-library' Emacs function."
          (rargs (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" rargs file ")\n")))
 
-(ess-defmethod R ess-build-load-command (file &optional visibly output namespace)
-  (let* ((namespace (or namespace (ess-r-get-evaluation-env)))
+(cl-defmethod ess-build-load-command (string &context ((string= ess-dialect "R") (eql t))
+                                             &optional visibly output file &rest args)
+  (let* ((namespace (or file (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
-         (args (ess-r-build-args visibly output namespace)))
-    (concat cmd "('" file "'" args ")\n")))
+         (rargs (ess-r-build-args visibly output namespace)))
+    (concat cmd "('" string "'" rargs ")\n")))
 
 (defun ess-r-build-eval-message (message)
   (let ((env (cond (ess-debug-minor-mode

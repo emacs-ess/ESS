@@ -983,13 +983,12 @@ Wrap STRING with `ess-quote-special-chars' and dispatch on
                     `((?s . ,string)
                       (?f . ,file)))))
 
-(ess-defgeneric ess-build-load-command (file &optional visibly output &rest args)
+(cl-defgeneric ess-build-load-command (file &optional visibly output &rest args)
   "Format a loading command.
 Dispatches on the dialect-specific `ess-build-load-command'
 and `ess-load-command', in that order."
-  (:override
-   (and ess-load-command
-        (format ess-load-command file))))
+  (and ess-load-command
+       (format ess-load-command file)))
 
 (defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay timeout)
   "Wait for 'busy property of the process to become nil.

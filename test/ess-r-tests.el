@@ -31,16 +31,14 @@
     (should (string= (ess-build-eval-command command t t "file.ext" "foo")
                      ".ess.ns_eval(\"command(\\\"string\\\")\", visibly = TRUE, output = TRUE, package = 'foo', verbose = TRUE, file = 'file.ext')\n"))))
 
-(ert-deftest ess-build-load-command:R ()
-  (should (string= (ess-build-load-command:R "file.ext")
-                   ".ess.source('file.ext', visibly = FALSE, output = FALSE)\n"))
-  (should (string= (ess-build-load-command:R "file.ext" t t)
-                   ".ess.source('file.ext', visibly = TRUE, output = TRUE)\n"))
-  (should (string= (ess-build-load-command:R "file.ext" nil t "foo")
-                   ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo', verbose = TRUE)\n"))
-  (with-r-file nil
-    (should (string= (ess-build-load-command "file")
-                     (ess-build-load-command:R "file")))))
+(ert-deftest ess-build-load-command-R ()
+  (let ((ess-dialect "R"))
+    (should (string= (ess-build-load-command "file.ext")
+                     ".ess.source('file.ext', visibly = FALSE, output = FALSE)\n"))
+    (should (string= (ess-build-load-command "file.ext" t t)
+                     ".ess.source('file.ext', visibly = TRUE, output = TRUE)\n"))
+    (should (string= (ess-build-load-command "file.ext" nil t "foo")
+                     ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo', verbose = TRUE)\n"))))
 
 (ert-deftest inferior-ess-inherits-from-comint ()
   (with-temp-buffer

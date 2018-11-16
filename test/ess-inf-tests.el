@@ -149,8 +149,9 @@ some. text
                      "command(\\\"string\\\") - file"))))
 
 (ert-deftest ess-build-load-command-test ()
-  (should (string= (ess-build-load-command "file")
-                   "source('file')\n")))
+  (let ((ess-dialect nil))
+    (should (string= (ess-build-load-command "file")
+                     "source('file')\n"))))
 
 ;; Test runners
 
