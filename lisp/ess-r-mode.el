@@ -2260,6 +2260,7 @@ state.")
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
         inferior-ess-help-command inferior-ess-r-help-command
+        ess-get-help-topics-function #'ess-s-get-help-topics-function
         inferior-ess-help-filetype nil))
 
 
