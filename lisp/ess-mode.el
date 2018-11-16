@@ -1,4 +1,4 @@
-;;; ess-mode.el -- Emacs Speaks Statistics (ESS).
+;;; ess-mode.el -- Emacs Speaks Statistics (ESS).  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 1994-2018 ESS Core Team
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -29,3 +29,5 @@
 (require 'ess)
 
 (provide 'ess-mode)
+
+;;; ess-mode.el ends here

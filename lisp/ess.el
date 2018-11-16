@@ -1,4 +1,4 @@
-;;; ess.el --- Emacs Speaks Statistics
+;;; ess.el --- Emacs Speaks Statistics  -*- lexical-binding: t; -*-
 ;;
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;;         A.J. Rossini <blindglobe@gmail.com>
