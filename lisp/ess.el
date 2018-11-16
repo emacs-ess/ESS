@@ -367,7 +367,8 @@ With UPDATE, update cached package list."
 
 (cl-defgeneric ess-install-library--override (update package)
   "See `ess-install-library' for UPDATE, PACKAGE."
-  (error "Not available for %s" ess-dialect))
+  (when update (message "Don't know how to update for %s" ess-dialect))
+  (error "Cannot install %s, not available for %s" package ess-dialect))
 
 
 ;;;*;;; Motion / manipulation commands
