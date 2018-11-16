@@ -1135,7 +1135,7 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
 ;;;;;;;;; Things to change
 
 (defvar stata-switches "-q"
-  "*Switches to apply to stata invocation.")
+  "Switches to apply to stata invocation.")
 
 (defvar stata-profile "~/.stataprofile"
   "File to read on startup (nil for no file).")

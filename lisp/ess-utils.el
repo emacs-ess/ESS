@@ -1458,7 +1458,7 @@ Otherwise treat \\ in NEWTEXT string as special:
 ;;           (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
 
 (defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask
-  "*[Dis]activates (ess-nuke-trailing-whitespace).
+  "[Dis]activates (ess-nuke-trailing-whitespace).
 Disabled if nil; if t, it works unconditionally, otherwise,
 the user is queried.
 Note that setting the default to t may not be a good idea when you edit

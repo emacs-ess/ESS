@@ -158,7 +158,7 @@ as `ess-imenu-use-S'."
   :type  'boolean)
 
 (defcustom ess-imenu-use-S ess-imenu-use-p
-  "*Non-nil means include an Imenu menu item in S buffers."
+  "Non-nil means include an Imenu menu item in S buffers."
   :group 'ess
   :type  'boolean)
 
@@ -2008,14 +2008,14 @@ order for it to work right.  And Emacs is too smart for it."
   :type 'string)
 
 (defvar ess-editor nil
-  "*Editor by which the process sends information to an emacs buffer
+  "Editor by which the process sends information to an Emacs buffer
 for editing and then to be returned to the process.")
 
 (defvar ess-pager nil
-  "*Pager by which the process sends information to an emacs buffer.")
+  "Pager by which the process sends information to an Emacs buffer.")
 
 (defvar inferior-ess-language-start nil
-  "*Initialization commands sent to the ESS process.")
+  "Initialization commands sent to the ESS process.")
 
 (make-variable-buffer-local 'ess-editor)
 (make-variable-buffer-local 'ess-pager)
@@ -2153,7 +2153,7 @@ the process output, otherwise not.
   :type '(choice (const nil) number))
 
 (defcustom ess-sleep-for-shell (if ess-microsoft-p 5 1)
-  "*Pause before sending output to the shell."
+  "Pause before sending output to the shell."
   :group 'ess-proc
   :type  'number)
 

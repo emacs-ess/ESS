@@ -96,7 +96,7 @@
 ;;   " ")
 
 (defvar ess-noweb-mode-prefix "\M-n"
-  "*Prefix key to use for noweb mode commands.
+  "Prefix key to use for noweb mode commands.
 The value of this variable is checked as part of loading noweb mode.
 After that, changing the prefix key requires manipulating keymaps.")
 

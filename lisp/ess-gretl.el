@@ -85,7 +85,7 @@
   "Syntax table for `ess-gretl-mode' that holds within strings.")
 
 (defcustom gretl-continuation-offset 4
-  "*Extra indentation applied to Gretl continuation lines."
+  "Extra indentation applied to Gretl continuation lines."
   :type 'integer
   :group 'ess-gretl)
 

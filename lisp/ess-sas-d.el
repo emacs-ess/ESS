@@ -40,7 +40,7 @@
 (require 'ess-sas-l)
 
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp -nosyntaxcheck"
-  "*Arguments to use for starting SAS.")
+  "Arguments to use for starting SAS.")
 
 (defvar inferior-SAS-args-temp nil
   "Hack variable, needed for args preprocessing.
@@ -327,7 +327,7 @@ their own frames."
     (make-frame)))
 
 (defun ess-num-or-zero (arg)
-  "*If a number, then return that number, otherwise return 0."
+  "If a number, then return that number, otherwise return 0."
   (or (and (numberp arg) arg) 0))
 
  ; Provide package

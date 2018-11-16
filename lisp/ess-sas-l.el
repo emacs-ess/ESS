@@ -157,17 +157,17 @@ A .lst file is a SAS listing file when:
 (fset 'sas-listing-mode    'SAS-listing-mode)
 
 (defcustom  sas-indent-width 4
-  "*Amount to indent sas statements."
+  "Amount to indent sas statements."
   :group 'ess-sas
   :type  'integer)
 
 (defcustom sas-indent-ignore-comment "*"
-  "*Comments that start with this string are ignored in indentation."
+  "Comments that start with this string are ignored in indentation."
   :group 'ess-sas
   :type  'string)
 
 (defcustom sas-require-confirmation t
-  "*Require confirmation when revisiting a modified sas-output file."
+  "Require confirmation when revisiting a modified sas-output file."
   :group 'ess-sas
   :type  'boolean)
 
@@ -176,19 +176,13 @@ A .lst file is a SAS listing file when:
   :group 'ess-sas
   :type  'hook)
 
-                                        ;never used--see ess-sas-submit-command-options in ess-sas-a.el
-                                        ;(defcustom sas-options-string ""
-                                        ;  "*Options to be passed to sas as if typed on the command line."
-                                        ;  :group 'ess-sas
-                                        ;  :type  'string)
-
 (defcustom sas-notify t
-  "*Beep and display message when job is done."
+  "Beep and display message when job is done."
   :group 'ess-sas
   :type  'boolean)
 
 (defcustom sas-error-notify t
-  "*If `sas-notify' t, indicate errors in log file upon completion."
+  "If `sas-notify' t, indicate errors in log file upon completion."
   :group 'ess-sas
   :type  'boolean)
 
@@ -204,23 +198,23 @@ A .lst file is a SAS listing file when:
   :group 'ess-sas)
 
 (defcustom sas-page-number-max-line 3
-  "*Number of lines from the page break, to search for the page
+  "Number of lines from the page break, to search for the page
 number."
   :group 'ess-sas
   :type  'integer)
 
 (defcustom sas-notify-popup nil
-  "*If this and sas-notify are t), popup a window when SAS job ends."
+  "If this and `sas-notify' are t), popup a window when SAS job ends."
   :group 'ess-sas
   :type  'boolean)
 
 (defcustom sas-tmp-libname "_tmp_"
-  "*Libname to use for sas-get-dataset."
+  "Libname to use for sas-get-dataset."
   :group 'ess-sas
   :type  'string)
 
 (defcustom sas-file-name nil
-  "*The name of the current sas file."
+  "The name of the current sas file."
   :group 'ess-sas
   :type '(choice (const nil) file))
 

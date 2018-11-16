@@ -144,7 +144,7 @@ Indicates that ess-tracebug-mode is turned on.")
 
 
 (defcustom ess-tracebug-prefix nil
-  "*Key to be used as prefix for all `ess-tracebug' commands.
+  "Key to be used as prefix for all `ess-tracebug' commands.
 Set this to a key cominbation you don't use often, like:
 
  (setq ess-tracebug-prefix \"\\M-t\")

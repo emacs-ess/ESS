@@ -66,7 +66,7 @@
   :group 'hypermedia)
 
 (defcustom mouse-me-get-string-function 'mouse-me-get-string
-  "*Function used by `mouse-me' to get string when no region selected.
+  "Function used by `mouse-me' to get string when no region selected.
 The default is `mouse-me-get-string' but this variable may commonly
 be made buffer local and set to something more appropriate for
 a specific mode (e.g., `word-at-point').  The function will be called
@@ -79,7 +79,7 @@ string in the buffer."
   :group 'mouseme)
 
 (defcustom mouse-me-build-menu-function 'mouse-me-build-menu
-  "*Function used by `mouse-me' to build the popup menu.
+  "Function used by `mouse-me' to build the popup menu.
 The default is `mouse-me-build-menu' but this variable may commonly
 be made buffer local and set to something more appropriate for
 a specific mode.  The function will be called with one argument,
@@ -89,7 +89,7 @@ the string selected, as returned by `mouse-me-get-string-function'."
   :group 'mouseme)
 
 (defvar mouse-me-grep-use-extension 't
-  "*If non-nil `mouse-me-grep' grep's in files with current file's extension.")
+  "If non-nil `mouse-me-grep' grep's in files with current file's extension.")
 
 (defcustom mouse-me-menu-commands
   '(("Copy" . kill-new)
@@ -117,7 +117,7 @@ the string selected, as returned by `mouse-me-get-string-function'."
     ("Command Info" . mouse-me-emacs-command-info)
     ("Man Page" . (if (fboundp 'woman) 'woman 'man))
     ("Profile Function" . mouse-me-elp-instrument-function))
-  "*Command menu used by `mouse-me-build-menu'.
+  "Command menu used by `mouse-me-build-menu'.
 A list of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals

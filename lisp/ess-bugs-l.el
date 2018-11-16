@@ -67,7 +67,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 
 (defcustom ess-bugs-batch-post-command
   (if (equal ess-bugs-batch-method 'sh) "&" " ")
-  "*ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
+  "ESS[BUGS]: Modifiers at the end of the batch BUGS command line."
   :group 'ess-bugs
   :type  'string
   )
@@ -75,7 +75,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
 (defcustom ess-bugs-batch-pre-command
   (if (equal ess-bugs-batch-method 'sh) "nohup nice time"
     (if ess-microsoft-p "start"))
-  "*ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
+  "ESS[BUGS]: Modifiers at the beginning of the batch BUGS command line."
   :group 'ess-bugs
   :type  'string
   )
@@ -94,7 +94,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
   )
 
 (defvar ess-bugs-batch-command ";"
-  "*ESS[BUGS]: The name of the command to run BUGS in batch mode."
+  "ESS[BUGS]: The name of the command to run BUGS in batch mode."
   )
 
 (defvar ess-bugs-file "."
@@ -125,7 +125,7 @@ Users whose default is not 'sh, but are accessing a remote machine with
   )
 
 (defcustom ess-bugs-mode-hook nil
-  "*ESS[BUGS]: List of functions to call upon entering mode."
+  "ESS[BUGS]: List of functions to call upon entering mode."
   :group 'ess-bugs
   :type 'hook)
 
@@ -186,7 +186,7 @@ and `ess-bugs-file-dir'."
     (if beg (message "%s" (substring string beg (match-end 0))))))
 
 (defun ess-bugs-hot-arrow ()
-  "*ESS[BUGS]: Substitute <- for = key press"
+  "ESS[BUGS]: Substitute <- for = key press"
   (interactive)
   (insert " <- "))
 
@@ -245,12 +245,12 @@ and `ess-bugs-file-dir'."
   :prefix "ess-")
 
 (defcustom ess-bugs-shell-buffer-name "BUGS"
-  "*ESS[BUGS-Shell]: The name of the BUGS-Shell buffer."
+  "ESS[BUGS-Shell]: The name of the BUGS-Shell buffer."
   :group 'ess-bugs-shell
   :type  'string)
 
 (defcustom ess-bugs-shell-command "OpenBUGS"
-  "*ESS[BUGS-Shell]: The name of the command to run BUGS interactively.
+  "ESS[BUGS-Shell]: The name of the command to run BUGS interactively.
 
 Set to the name of the batch BUGS script that comes with ESS or
 to the name of BUGS command. Make sure it is in your PATH or
@@ -259,12 +259,12 @@ add path to the command name."
   :type  'string)
 
 (defcustom ess-bugs-shell-default-output-file-root "bugs"
-  "*ESS[BUGS-Shell]: Default value for the root of output files."
+  "ESS[BUGS-Shell]: Default value for the root of output files."
   :group 'ess-bugs-shell
   :type  'string)
 
 (defcustom ess-bugs-shell-mode-hook nil
-  "*ESS[BUGS-Shell]: List of functions to call upon entering mode."
+  "ESS[BUGS-Shell]: List of functions to call upon entering mode."
   :group 'ess-bugs-shell
   :type 'hook)
 

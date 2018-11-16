@@ -117,7 +117,7 @@
     "----"
     ("Browser on"  . ess-mouse-me-browser-on)
     ("Browser off" . ess-mouse-me-browser-off))
-  "*Command menu used by `mouse-me-build-menu'.
+  "Command menu used by `mouse-me-build-menu'.
 A alist of elements where each element is either a cons cell or a string.
 If a cons cell the car is a string to be displayed in the menu and the
 cdr is either a function to call passing a string to, or a list which evals

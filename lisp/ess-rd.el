@@ -155,7 +155,7 @@ All Rd mode abbrevs start with a grave accent (`).")
   "Additional Rd expressions to highlight.")
 
 (defvar Rd-indent-level 2
-  "*Indentation of Rd code with respect to containing blocks.")
+  "Indentation of Rd code with respect to containing blocks.")
 
 (defvar Rd-mode-map
   (let ((map (make-sparse-keymap)))
