@@ -1,4 +1,4 @@
-;;; ess-custom.el --- Customize variables for ESS
+;;; ess-custom.el --- Customize variables for ESS  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -1672,7 +1672,8 @@ Should contain a formating %s to be replaced by a
 path (as in 'setwd(%s)\\n'.")
 
 (defcustom ess-program-files ;; 32 bit version
-  (if ess-microsoft-p
+  (if (and ess-microsoft-p
+           (fboundp 'w32-short-file-name))
       (if (getenv "ProgramW6432")
           (w32-short-file-name (getenv "ProgramFiles(x86)"));; always 32 on 64 bit OS
         (w32-short-file-name (getenv "ProgramFiles")))      ;; always 32 on 32 bit OS
@@ -1682,9 +1683,8 @@ path (as in 'setwd(%s)\\n'.")
   :type '(choice (string) (const nil)))
 
 (defcustom ess-program-files-64 ;; 64 bit version
-  (if (and ess-microsoft-p (getenv "ProgramW6432"))
-      (w32-short-file-name (getenv "ProgramW6432"))
-    nil)
+  (when (and ess-microsoft-p (fboundp 'w32-short-file-name) (getenv "ProgramW6432"))
+    (w32-short-file-name (getenv "ProgramW6432")))
   "Safe (no embedded blanks) 8.3 name for 64-bit programs that works across internationalization."
   :group 'ess
   :type '(choice (string) (const nil)))
