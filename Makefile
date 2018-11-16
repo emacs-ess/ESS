@@ -3,7 +3,7 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-## 'all' is the default target, i.e. 'make' and 'make all' are the same.
+.DEFAULT_GOAL := all
 .PHONY: all install uninstall
 all install uninstall: $(ETC_FILES)
 	cd lisp; $(MAKE) $@

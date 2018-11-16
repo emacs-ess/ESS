@@ -34,5 +34,6 @@ before_script:
 script:
 - emacs --version
 - R --version
-- make all
+- make
 - make test
+- make dist
