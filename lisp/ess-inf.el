@@ -968,18 +968,20 @@ toggled."
 
 ;;*;; Utils for evaluation
 
-(ess-defgeneric ess-build-eval-command (string &optional visibly output file &rest args)
+(defun ess-build-eval-command (string &optional visibly output file &rest args)
   "Format an evaluation command.
-Wrap STRING with `ess-quote-special-chars' and dispatch on the
-dialect-specific `ess-build-eval-command' function and
-`ess-eval-command', in that order. If none of the above is
-defined, return nil."
+Wrap STRING with `ess-quote-special-chars' and dispatch on
+`ess-build-eval-command--override'."
   (setq string (ess-quote-special-chars string))
-  (:override
-   (and ess-eval-command
-        (format-spec ess-eval-command
-                     `((?s . ,string)
-                       (?f . ,file))))))
+  (ess-build-eval-command--override string visibly output file args))
+
+(cl-defgeneric ess-build-eval-command--override
+    (string &optional visibly output file &rest args)
+  "Default method to build eval command."
+  (and ess-eval-command
+       (format-spec ess-eval-command
+                    `((?s . ,string)
+                      (?f . ,file)))))
 
 (ess-defgeneric ess-build-load-command (file &optional visibly output &rest args)
   "Format a loading command.
