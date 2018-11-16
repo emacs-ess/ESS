@@ -38,7 +38,7 @@ install: dist
 	$(INSTALL) $(ELC) $(LISPDIR)
 	if [ -f /etc/debian_version -a -n "$(SITELISP)" -a ! -f "$(SITELISP)/ess-site.el" ] ; \
 	then \
-		ln -s $(LISPDIR)/ess-site.el $(SITELISP)/ess-site.el ; \
+		cd $(SITELISP) ; ln -s ess/ess-site.el . ; \
 	fi;
 
 uninstall:

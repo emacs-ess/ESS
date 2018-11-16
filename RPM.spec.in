@@ -1,14 +1,14 @@
 # This is an RPM spec file that specifies how to package
 # ESS for Fedora Core Linux and, possibly, similar systems.
 
-%define name emacs-ess
+%define name ess
 %define version @@VERSION@@
 %define release 1.tgm
 Summary: Emacs Speaks Statistics add-on package for Emacs
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Copyright: GPL
+License: GPL
 Group: Applications/Editors
 Source: https://ESS.R-project.org/downloads/ess/ess-%{version}.tgz
 URL: https://ESS.R-project.org/
@@ -99,7 +99,11 @@ INFODIR=${RPM_BUILD_ROOT}%{_infodir}
 %doc README README.RPM ANNOUNCE COPYING VERSION ChangeLog doc
 %dir %{_datadir}/emacs/site-lisp/%{name}-%{version}
 %{_datadir}/emacs/site-lisp/%{name}-%{version}/*
+%{_datadir}/emacs/site-lisp/ess-site.el
 %{_datadir}/emacs/site-lisp/site-start.d/*
+%{_datadir}/doc/%{name}/*
+%{_datadir}/emacs/etc/%{name}/.IS.RELEASE
+%{_datadir}/emacs/etc/%{name}/*
 %{_infodir}/*.gz
 
 %post

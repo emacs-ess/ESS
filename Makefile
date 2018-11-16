@@ -1,7 +1,8 @@
 ## Top Level Makefile
 
-## Before making changes here, please take a look at Makeconf
 include ./Makeconf
+
+.DEFAULT_GOAL := all
 
 ESSVERSION := $(shell cat VERSION)
 PKGVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
@@ -13,10 +14,8 @@ ifneq ($(ESSVERSION), $(PKGVERSION))
 endif
 
 ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
-
-
 .PHONY: all install uninstall
-all install uninstall: $(ETC_FILES)
+all install uninstall:
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 	cd etc; $(MAKE) $@
@@ -72,70 +71,60 @@ essr: VERSION
 
 # Create .tgz and .zip files only
 # GNUTAR=gtar make tarballs
-tarballs: $(ESSDIR)
+.PHONY: rel-tarballs
+rel-tarballs: rel-staging
 	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for release $(ESSVERSION) from $(ESSDIR)/"
-	@echo "** Making pdf and html documentation"
-#	the making of pdf, html, ESSR.rds shall go into `make dist' #752
-	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
-	@cd $(ESSDIR)/doc/ ; $(MAKE) html
-	@echo "** Creating .tgz file **"
+	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
+	grep -E 'defvar ess-(version|revision)' $(ESSDIR)/lisp/ess-custom.el
+	@echo "** Creating .tgz file **"
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
-	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
+	-$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "Signing zip file"
-	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
-	touch $@
+	-$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
-# NB 'all', 'cleanup-dist' must not be targets: otherwise, e.g.
-#    'make tarball' re-builds the tarballs always!
-$(ESSDIR): RPM.spec
-	$(MAKE) all
-#	remove previous ESSDIR, etc:
-	$(MAKE) cleanup-dist
+# NB 'all', 'cleanup-rel' must not be targets: otherwise, e.g.
+#    'make tarball' re-builds the tarballs always!  (??? -- dickmao)
+.PHONY: rel-staging
+rel-staging: cleanup-rel RPM.spec
 	@echo "**********************************************************"
 	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	git clone git@github.com:emacs-ess/ESS.git $(ESSDIR)-git
+	mkdir -p $(ESSDIR)-git
+	stash=`git stash create`; git archive --format tar $${stash:-HEAD} | (cd $(ESSDIR)-git ; $(GNUTAR) xf -)
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
-	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
-	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
-	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
-	 $(MAKE) all cleanaux ; cd $$CD; fi
-#   just in case: update from VERSION:
-	cd lisp; $(INSTALL) ess.el ../$(ESSDIR)/lisp/; cd ..
-	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
+	cd $(ESSDIR) ; $(MAKE) dist
+	cd $(ESSDIR)/doc ; $(MAKE) cleanaux
+	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/
+	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/
 	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
-	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
+	if git diff-index --quiet HEAD -- ; then commit=`git stash create | cut -c 1-12` ; else commit=`git rev-parse HEAD | cut -c 1-12` ; fi ; echo $commit > $(ESSDIR)/etc/git-ref
 
-dist: VERSION tarballs
-	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
-	  $(ESSDIR)/lisp/ess-custom.el > $@
+dist:
+	cd etc; $(MAKE) $@
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
 
-.PHONY: cleanup-dist cleanup-rel
-cleanup-dist:
+.PHONY: cleanup-rel
+cleanup-rel:
 	@echo "** Cleaning up **"
-	rm -f $(ESSDIR)/etc/.IS.RELEASE $(ESSDIR)/etc/git-ref
+	rm -f $(ESSDIR).tgz* $(ESSDIR).zip*
+	rm -rf test/BUILDROOT
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
-
-##  should only be called manually (if at all):
-cleanup-rel:
-#	@rm -rf $(ESSDIR)*
-	@rm -f tarballs dist tag homepage upload rel
 
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
@@ -183,7 +172,7 @@ upload:
 
 #==== RELEASE : ====
 
-rel: ChangeLog dist tag homepage upload
+rel: ChangeLog rel-tarballs tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 	touch $@
 
@@ -191,16 +180,17 @@ rel: ChangeLog dist tag homepage upload
 ## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
 ##     by the down stream maintainers:
 .PHONY: buildrpm
-buildrpm: dist
+buildrpm: rel-tarballs
 	rpmbuild -ta --sign $(ESSDIR).tgz
 
-builddeb:
-	dpkg-buildpackage -uc -us -rfakeroot -tc
+.PHONY: test-buildrpm
+test-buildrpm: rel-tarballs
+	rpmbuild --define "_topdir $$PWD/test" --nodeps -ta --nodeps $(ESSDIR).tgz
 
 ## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
 ## 'distclean' removes also things in VC (svn, when they are remade by "make"):
-clean distclean: cleanup-dist
+clean distclean: cleanup-rel
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@

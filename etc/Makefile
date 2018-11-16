@@ -23,6 +23,9 @@ ESSR_CODE_FILES = ESSR/R/*.R ESSR/R/.*.R
 
 all:
 
+.PHONY: dist
+dist: all
+
 show-etc:
 	@echo $(ETCFILES)
 	ls -l $(ETCFILES)

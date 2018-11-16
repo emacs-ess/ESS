@@ -40,6 +40,9 @@ text : $(TXTs)
 html : html/ess.html html/readme.html html/news.html
 pdf  : $(PDFs)
 
+.PHONY: dist
+dist : all html pdf
+
 ess.pdf : $(TEXISRC)
 	$(TEXI2PDF) ess.texi
 
