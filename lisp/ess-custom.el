@@ -207,11 +207,6 @@ that integer. Anything else is treated as 'window."
   "Store handy commands locally")
 (make-variable-buffer-local 'ess--local-handy-commands)
 
-(defvar ess-install-library-function nil
-  "Dialect-specific function to install a library.")
-(make-variable-buffer-local 'ess-install-library-function)
-
-
 (defcustom ess-describe-at-point-method nil
   "Whether `ess-describe-object-at-point' should use a tooltip.
 If nil display in an electric buffer. If 'tooltip display in

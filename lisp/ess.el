@@ -359,15 +359,15 @@ Internal function to be used for dynamic mode-line dysplay in
 
 ;;;*;;; Miscellaneous
 
-(defun ess-install-library ()
-  "Install library/package for current dialect.
-Currently works only for R."
-  (interactive)
-  (cond
-   ((fboundp ess-install-library-function)
-    (funcall ess-install-library-function))
-   (t
-    (error "Sorry, not available for %s" ess-dialect))))
+(defun ess-install-library (&optional update package)
+  "Install PACKAGE for current dialect.
+With UPDATE, update cached package list."
+  (interactive "P")
+  (ess-install-library--override update package))
+
+(cl-defgeneric ess-install-library--override (update package)
+  "See `ess-install-library' for UPDATE, PACKAGE."
+  (error "Not available for %s" ess-dialect))
 
 
 ;;;*;;; Motion / manipulation commands

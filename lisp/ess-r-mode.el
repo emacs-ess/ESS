@@ -347,7 +347,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-load-file-function                . #'ess-r-load-file)
      (ess-make-source-refd-command-function . #'ess-r-make-source-refd-command)
      (ess-format-eval-message-function      . #'ess-r-format-eval-message)
-     (ess-install-library-function          . #'ess-r-install-library)
      (ess-help-web-search-command           . #'ess-r-sos)
      (ess-build-help-command-function       . #'ess-r-build-help-command)
      (ess-dump-filename-template            . ess-r-dump-filename-template)
@@ -981,25 +980,25 @@ Used by `ess-r-install-library'.")
 (defvar ess--CRAN-mirror nil
   "CRAN mirror name cache.")
 
-(defun ess-r-install-library (&optional update pack)
-  "Prompt and install R package PACK.
+(cl-defmethod ess-install-library--override
+  (update package &context ((string= ess-dialect "R") (eql t)))
+  "Prompt and install R PACKAGE.
 With argument UPDATE, update cached packages list."
-  (interactive "P")
   (inferior-ess-r-force)
   (when (equal "@CRAN@" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n")))
     (ess-set-CRAN-mirror ess--CRAN-mirror)
     (ess-wait-for-process (get-process ess-current-process-name))
-    (unless pack (setq update t)))
+    (unless package (setq update t)))
   (when (or update
             (not ess--packages-cache))
     (message "Fetching R packages ... ")
     (setq ess--packages-cache
           (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
   (let* ((ess-eval-visibly-p t)
-         (pack (or pack
-                   (ess-completing-read "Package to install" ess--packages-cache))))
+         (package (or package
+                      (ess-completing-read "Package to install" ess--packages-cache))))
     (process-send-string (get-process ess-current-process-name)
-                         (format "install.packages('%s')\n" pack))
+                         (format "install.packages('%s')\n" package))
     (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
 
 (defun ess-setRepositories ()
