@@ -31,3 +31,4 @@ lisp/ess-autoloads.el
 tmp*
 .DS_Store
 ._.DS_Store
+.dependencies

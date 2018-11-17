@@ -3,7 +3,6 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-# N.B. $(shell) is a GNU-ism: we need a workaround to be UNIX make friendly
 ESSVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
 OLDVERSION := $(shell sed -n 's/Version: *\(.*\) */\1/p' VERSION)
 ESSDIR := ess-$(ESSVERSION)
