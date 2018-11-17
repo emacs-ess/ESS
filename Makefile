@@ -12,6 +12,9 @@ ifneq ($(ESSVERSION), $(OLDVERSION))
   ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
 endif
 
+ESSR-VERSION := `sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el`
+
+
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
 .PHONY: all install uninstall
 all install uninstall: $(ETC_FILES)
@@ -24,7 +27,9 @@ version:
 	@echo "********************* VERSIONS **************************"
 	@echo $(shell $(EMACS) --version | sed -n 1p)
 	@echo ESS $(ESSVERSION)
+	@echo ESSR $(ESSR-VERSION)
 	@echo "*********************************************************"
+
 
 .PHONY: lisp
 lisp: version
@@ -52,6 +57,19 @@ julia:
 .PHONY: autoloads
 autoloads:
 	cd lisp; $(MAKE) ess-autoloads.el
+
+.PHONY: essr
+essr: VERSION
+	@echo "**********************************************************"
+	@echo "** Making ESSR $(ESSR-VERSION) **"
+	@echo ESS $(ESSVERSION)
+	@sed -i "s/(defconst essr-version .*/(defconst essr-version \"$(ESSR-VERSION)\"/" lisp/ess.el
+	@echo "$(ESSR-VERSION)" > etc/ESSR/VERSION
+	@cd etc/ESSR/; ./BUILDESSR; cd -
+	@git add etc/ESSR.rds etc/ESSR/VERSION lisp/ess.el
+	git commit -m"ESSR Version $(ESSR-VERSION)"
+	git tag "ESSRv"$(ESSR-VERSION)
+
 
 ## the rest of the targets are for ESS developer's use only :
 
