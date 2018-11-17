@@ -122,7 +122,7 @@ dist:
 cleanup-rel:
 	@echo "** Cleaning up **"
 	rm -f $(ESSDIR).tgz* $(ESSDIR).zip*
-	rm -rf test/BUILDROOT
+	rm -rf test/BUILDROOT test/BUILD test/SRPMS test/RPMS
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
 
