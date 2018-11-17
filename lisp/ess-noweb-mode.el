@@ -1355,6 +1355,7 @@ The only sensible way to do this is to add a mode line to the chunk"
 
 ;;; Misc
 
+(defvar ess-version)
 (defun ess-noweb-mode-version ()
   "Echo the RCS identification of noweb mode."
   (interactive)
