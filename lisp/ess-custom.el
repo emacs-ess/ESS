@@ -134,15 +134,6 @@
   :group 'ess
   :prefix "ess-")
 
-;; Variables (not user-changeable)
-
-(defvar ess-version "18.10.3" ;; updated by 'make'
-  "Version of ESS currently loaded.")
-
-(defvar ess-revision nil ;; set
-  "The subversion revision and date of ESS.
-Is set  by \\[ess-version-string].")
-
 
  ; User changeable variables
 

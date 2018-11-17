@@ -3,6 +3,15 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
+# N.B. $(shell) is a GNU-ism: we need a workaround to be UNIX make friendly
+ESSVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
+OLDVERSION := $(shell sed -n 's/Version: *\(.*\) */\1/p' VERSION)
+ESSDIR := ess-$(ESSVERSION)
+ifneq ($(ESSVERSION), $(OLDVERSION))
+  $(shell sed -i 's/Version: .*/Version: $(ESSVERSION)/' VERSION)
+  ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
+endif
+
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
 .PHONY: all install uninstall
 all install uninstall: $(ETC_FILES)
@@ -88,8 +97,8 @@ $(ESSDIR): RPM.spec
 	CLEANUP="user-* useR-* Why_* README.*"; ED=$(ESSDIR)/doc; \
 	 if [ -d $$ED ] ; then CD=`pwd`; cd $$ED; chmod -R u+w $$CLEANUP; rm -rf $$CLEANUP; \
 	 $(MAKE) all cleanaux ; cd $$CD; fi
-#	just in case: update from VERSION:
-	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/; cd ..
+#   just in case: update from VERSION:
+	cd lisp; $(INSTALL) ess.el ../$(ESSDIR)/lisp/; cd ..
 	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
 	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
@@ -117,12 +126,8 @@ cleanup-rel:
 %.spec: %.spec.in VERSION
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
-
 ## --- RELEASE section ---
 
-## NB: Typically use  'make -W VERSION ChangeLog' before 'make rel' <<--- MUST
-##	since          ~~~~~~~~~~~~~~~~~~~~~~~~~
-## 	ChangeLog often ends up newer than VERSION
 ChangeLog: VERSION
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
