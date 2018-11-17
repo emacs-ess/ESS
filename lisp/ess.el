@@ -698,7 +698,7 @@ Function defined using `ess-define-runner'."
 ;; Variables (not user-changeable)
 
 ;; updated by 'make'!
-(defconst ess-version "18.10.3-snapshot"
+(defconst ess-version "18.10.3-git"
   "Version of ESS currently loaded.")
 
 ;; updated by 'make'!
