@@ -18,6 +18,7 @@
 ;; Created: 7 Jan 1994
 ;; Version: 18.10.3-git
 ;; Package-Requires: ((julia-mode "0.3"))
+;; ESSR-Version: 1.4
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

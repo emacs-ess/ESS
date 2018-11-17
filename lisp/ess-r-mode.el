@@ -1331,25 +1331,19 @@ If it changes, we flush the cache.")
           (message (format "load ESSR: %s" msg)))))))
 
 (defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
-  (let* ((verfile (expand-file-name "VERSION" pkg-dir))
-         (loadremote (expand-file-name "LOADREMOTE" pkg-dir))
-         (version (if (file-exists-p verfile)
-                      (with-temp-buffer
-                        (insert-file-contents verfile)
-                        (buffer-string))
-                    (error "Cannot find ESSR source code")))
-         (r-load-code (with-temp-buffer
-                        (insert-file-contents loadremote)
-                        (buffer-string))))
-    (ess-write-to-dribble-buffer (format "version file: %s\nloadremote file: %s\n"
-                                         verfile loadremote))
-    (unless (ess-boolean-command (format r-load-code version) nil 0.1)
+  (let* ((loadremote (expand-file-name "LOADREMOTE" pkg-dir))
+         (r-load-code (if (file-exists-p loadremote)
+                          (with-temp-buffer
+                            (insert-file-contents loadremote)
+                            (buffer-string))
+                        (error "Cannot find ESSR source code"))))
+    (unless (ess-boolean-command (format r-load-code essr-version) nil 0.1)
       (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
             (files (directory-files src-dir t "\\.R$")))
         (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
         ;; should not happen, unless extrem conditions (ancient R or failed download))
         (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" version)) ; cannot do this at R level
+        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version)) ; cannot do this at R level
         (mapc #'ess--inject-code-from-file files)))))
 
 (cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
