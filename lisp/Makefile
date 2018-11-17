@@ -27,9 +27,7 @@ ELS = $(wildcard *.el obsolete/*.el)
 ELS := $(filter-out ess-autoloads.el, $(ELS))
 ELC = $(ELS:.el=.elc)
 
-# ESSR_VER =`cat ../etc/ESSR-VERSION`
-##ESSR_VER = $(shell cat ../etc/ESSR-VERSION)
-
+
 ### Targets
 
 all: julia-mode.el $(ELC) ess-custom.el ess-autoloads.el
@@ -60,17 +58,9 @@ clean:
 	rm -f ess-autoloads.el
 
 distclean: clean
-# and potentially more
 
-### Targets below here are only for developers - and these must have perl
-
-### Replace Version numbers (as in ../doc/Makefile !):
-## "../VERSION" if that changes, *definitely* need to update ess-custom.el
-ess-custom.el: ../VERSION
-	EV='$(ESSVERSION)'; perl -pi -e "s/\".*\"/\"$$EV\"/ if /ess-version/" $@
-
-# ess-r-mode.el: ../etc/ESSR-VERSION
-# 	sed -i -e '/let.*ESSR-version/s/"[-.0-9]*"/"$(ESSR_VER)"/' $@
+
+## File Targets
 
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
