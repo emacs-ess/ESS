@@ -50,7 +50,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # ETCDIR=$(PREFIX)/ess-mode/etc
 
 ## the following command is the same for recent versions of both Emacs and XEmacs
-EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
+EMACSBATCH = $(EMACS) -batch -Q
 
 ## Section 2
 ## Installation variables for your unix variant
@@ -104,12 +104,6 @@ DOWNLOAD=$(shell which wget > /dev/null && echo 'wget -qO -' || which curl)
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
 
-# N.B. $(shell) is a GNU-ism: we need a workaround to be UNIX make friendly
-ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
-#F: but the following use of  `..` *FAILS*
-#F: ESSVERSION=`cat ./VERSION 2> /dev/null || cat ../VERSION`
-#ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
-
 ## SVN repo retired
 ## Currently only works when run in top ess/ directory; not in etc/ or lisp/ :
 # ESSfromSVN=$(shell test -d .svn && echo 'yes')
@@ -120,14 +114,11 @@ ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 # endif
 # ESSVERSIONTAG=$(ESSVERSIONsvn)
 
-ESSDIR=ess-$(ESSVERSION)
 GNUTAR=tar
 # SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
 ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 
 GPG=$(shell (gpg2 --version > /dev/null 2>&1 && echo gpg2 ) || echo gpg )
-
-
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc

@@ -16,7 +16,7 @@
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 ;; Copyright (C) 1997-2018 ESS Core Team <ESS-core@r-project.org>
 ;; Created: 7 Jan 1994
-;; Version: 18.10.2
+;; Version: 18.10.3-git
 ;; Package-Requires: ((julia-mode "0.3"))
 ;;
 ;; This file is free software; you can redistribute it and/or modify
@@ -687,6 +687,22 @@ Function defined using `ess-define-runner'."
                    (let ((inferior-SAS-program (or path name)))
                      (require 'ess-sas-d)
                      (SAS))))))))
+
+
+;; Variables (not user-changeable)
+
+;; updated by 'make'!
+(defconst ess-version "18.10.3-snapshot"
+  "Version of ESS currently loaded.")
+
+;; updated by 'make'!
+(defconst essr-version "1.4"
+  "Version of ESSR package.")
+
+(defvar ess-revision nil
+  "The revision and date of ESS.
+Is set  by \\[ess-version-string].")
+
 ;;;###autoload
 (defun ess-version ()
   "Return a string with ESS version information."
