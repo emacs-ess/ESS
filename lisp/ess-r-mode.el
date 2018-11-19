@@ -1369,7 +1369,10 @@ If it changes, we flush the cache.")
   :type 'hook
   :group 'ess-R)
 
-(ess-defmethod R inferior-ess-reload (&optional start-args)
+(cl-defmethod inferior-ess-reload--override (start-args
+                                             &context ((string= ess-dialect "R") (eql t)))
+  "Call `run-ess-r' with START-ARGS.
+Then run `inferior-ess-r-reload-hook'."
   (run-ess-r start-args)
   (run-hooks 'inferior-ess-r-reload-hook))
 

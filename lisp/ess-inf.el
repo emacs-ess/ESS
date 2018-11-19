@@ -2250,8 +2250,10 @@ before you quit.  It is run automatically by \\[ess-quit]."
             (kill-buffer buf)))))
     (ess-switch-to-ESS nil)))
 
-(ess-defgeneric inferior-ess-reload (&optional start-args)
-  "Reload the inferior process."
+(defun inferior-ess-reload (&optional start-args)
+  "Reload the inferior process.
+START-ARGS gets passed to the dialect-specific
+`inferior-ess-reload-override'."
   (interactive)
   (inferior-ess-force)
   ;; Interrupt early so we can get working directory
@@ -2265,8 +2267,10 @@ before you quit.  It is run automatically by \\[ess-quit]."
           (ess-ask-for-ess-directory nil))
       (ess-quit 'no-save)
       (inferior-ess--wait-for-exit (ess-get-process))
-      (:override
-       (error "Unimplemented for this dialect")))))
+      (inferior-ess-reload--override start-args))))
+
+(cl-defmethod inferior-ess-reload--override (start-args)
+  (user-error "Reloading not implemented for %s %s" ess-dialect start-args))
 
 (defun inferior-ess--wait-for-exit (proc)
   "Wait for process exit.
