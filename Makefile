@@ -81,7 +81,7 @@ $(ESSDIR): RPM.spec
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
 	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	git clone git@github.com:emacs-ess/ESS.git $(ESSDIR)-git
+	git clone -b ess-18.10 --single-branch git@github.com:emacs-ess/ESS.git $(ESSDIR)-git
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
