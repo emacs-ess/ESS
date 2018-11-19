@@ -50,7 +50,7 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # ETCDIR=$(PREFIX)/ess-mode/etc
 
 ## the following command is the same for recent versions of both Emacs and XEmacs
-EMACSBATCH = $(EMACS) -batch -Q
+EMACSBATCH ?= $(EMACS) -batch -Q
 
 ## Section 2
 ## Installation variables for your unix variant

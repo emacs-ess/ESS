@@ -38,9 +38,7 @@ script:
 - R --version
 - cd lisp; make julia-mode.elc
 - cd ..
-- make -k all "EMACSBATCH = 
-  emacs -batch -no-site-file -no-init-file 
-  --eval \"(put 'if-let 'byte-obsolete-info nil)\" 
-  --eval \"(put 'when-let 'byte-obsolete-info nil)\" 
-  --eval \"(setq byte-compile-error-on-warn (= emacs-major-version 26))\""
+- cp targets/travis-setup.el setup
+- cp targets/travis-setup.el lisp/setup
+- make -k all "EMACSBATCH = emacs -batch -Q -l setup"
 - make test
