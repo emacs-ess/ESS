@@ -96,7 +96,7 @@ $(ESSDIR): RPM.spec
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
-	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
+	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/* > $(ESSDIR)/etc/git-ref
 
 dist: VERSION tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
