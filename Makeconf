@@ -113,7 +113,11 @@ DOWNLOAD=$(shell which wget > /dev/null && echo 'wget -qO -' || which curl)
 #   ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
 # endif
 # ESSVERSIONTAG=$(ESSVERSIONsvn)
-
+ESSVERSION=$(shell gitver=$$(git describe --tags --abbrev=0) ; echo $${gitver\#v}-snapshot)
+ifneq ($(NEXT_ESSVERSION),)
+ESSVERSION=$(NEXT_ESSVERSION)
+endif
+ESSDIR=ess-$(ESSVERSION)
 GNUTAR=tar
 # SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess

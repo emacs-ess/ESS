@@ -36,6 +36,7 @@
  ; Requires and autoloads
 (eval-when-compile
   (require 'tramp))
+(require 'ess)
 (require 'ess-generics)
 (require 'ess-utils)
 (require 'newcomment)

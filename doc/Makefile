@@ -3,6 +3,9 @@
 
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
+ifneq ($(NEXT_ESSVERSION),)
+$(shell rm -f announc.texi)
+endif
 
 # program to convert .texi{nfo} to .html
 #MM: use makeinfo (i.e. MAKEHTML from above) which is more
@@ -23,7 +26,7 @@ TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi \
 	help-s.texi help-sas.texi installation.texi \
 	license.texi mailing.texi onewfeat.texi news.texi onews.texi \
 	newfeat.texi requires.texi help-bugs.texi \
-        help-jags.texi allnews.texi Makefile ../Makeconf ../VERSION
+        help-jags.texi allnews.texi Makefile ../Makeconf
 
 ESSINFONODE1='* ESS: (ess).'
 ESSINFONODE2='	        Emacs Speaks Statistics'
@@ -40,6 +43,9 @@ text : $(TXTs)
 html : html/ess.html html/readme.html html/news.html
 pdf  : $(PDFs)
 
+announc.texi:
+	sed -e 's/@@VERSION@@/$(ESSVERSION)/g' announc.texi.in > $@
+
 ess.pdf : $(TEXISRC)
 	$(TEXI2PDF) ess.texi
 
@@ -50,7 +56,7 @@ cleanaux:
 	        *.pg *.pgs *.tmp *.toc *.tp *.vr *.vrs
 ## this shall remove *exactly* those things that are *not* in version control:
 clean: cleanaux
-	-@rm -f $(TXTs) $(PDFs) info/*.info* html/*
+	-@rm -f announc.texi $(TXTs) $(PDFs) info/*.info* html/*
 
 ## this removes also things in VC (svn, when they are remade by "make"):
 distclean : clean
@@ -61,7 +67,7 @@ distclean : clean
 	| perl -pe 'last if /^Concept Index/;' > $@
 #	| perl -pe 'last if /^Concept Index/; print "For INSTALLATION, see way below.\n\n" if /^\s*ESS grew out of/' \
 
-../ANNOUNCE: $(TEXISRC)
+../ANNOUNCE: $(TEXISRC) announc.texi
 	-$(MAKETXT) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > $@
 
@@ -77,7 +83,7 @@ README.Microsoft : README.Microsoft.texi
 
 ### File Dependencies
 
-info/ess.info: $(TEXISRC) ../VERSION
+info/ess.info: $(TEXISRC)
 	@echo "making Info documentation..."
 	-$(MAKEINFO) ess.texi
 	mv -f ess.info info/

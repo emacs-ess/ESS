@@ -16,9 +16,8 @@
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 ;; Copyright (C) 1997-2018 ESS Core Team <ESS-core@r-project.org>
 ;; Created: 7 Jan 1994
-;; Version: 18.10.3-snapshot
 ;; Package-Requires: ((julia-mode "0.3"))
-;; ESSR-Version: 1.4
+;; Version: @@VERSION@@
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -42,6 +41,15 @@
 ;;
 ;;; Code:
 
+(defconst ess-version "@@VERSION@@"
+  "Version of ESS currently loaded.")
+
+(defsubst ess-version-release ()
+  "Public version upon which `ess-version' is based, e.g., for ess-version=18.0.2-snapshot, ess-version-release=18.0.2"
+  (string-match "\\([0-9]+\.\\)\\([0-9]+\\)\\(?:\\(\.[0-9]+\\)\\)?" ess-version)
+  (concat (match-string 1 ess-version)
+          (match-string 2 ess-version)
+          (match-string 3 ess-version)))
 
 (provide 'ess)
 

@@ -728,14 +728,6 @@ Function defined using `ess-define-runner'."
                      (require 'ess-sas-d)
                      (SAS))))))))
 
-;; updated by 'make'!
-(defconst ess-version "18.10.3-snapshot"
-  "Version of ESS currently loaded.")
-
-;; updated by 'make'!
-(defconst essr-version "1.4"
-  "Version of ESSR package.")
-
 (defvar ess-revision nil
   "The revision and date of ESS.
 Is set  by \\[ess-version-string].")

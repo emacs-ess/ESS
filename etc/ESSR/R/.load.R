@@ -26,11 +26,6 @@ load.ESSR <- function(dir){
 
     assign(".ess.Rversion", Rver, envir = ESSR)
 
-    ESSRver <- scan(paste(dirname(dir), "/VERSION", sep = ""),
-                    what = "character", quiet = TRUE)
-    assign(".ess.ESSRversion", ESSRver, envir = ESSR)
-
-
     ## .basic.R:
     try(.source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE))
 

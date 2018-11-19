@@ -9,7 +9,7 @@ local({
     essr_file <- file.path(root, paste('ESSRv', ver, '.rds', sep = ''))
     tryCatch({
         if(!file.exists(essr_file)) {
-            url <- paste('https://github.com/emacs-ess/ESS/raw/ESSRv', ver, '/etc/ESSR.rds', sep = '')
+            url <- paste('https://github.com/emacs-ess/ESS/tree/v', ver, '/etc/ESSR.rds', sep = '')
             utils::download.file(url, essr_file)
         }
         ESSR <- readRDS(essr_file)

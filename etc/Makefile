@@ -4,9 +4,6 @@
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
 
-# In ../Makefile we already construct the  ESSR-VERSION  file :
-# ESSR_VERSION = $(shell cat ESSR-VERSION)
-
 #ETCFILES = $(wildcard BACKBUG[S5].BAT backbug[s5] *.S sas-keys.*)
 #ETCFILES = ESSR.R ess-developer.R SVN-REVISION *.S sas-keys.* ess-sas-sh-command
 # ETCFILES_1 = *.S sas-keys.* ess-sas-sh-command *.jl
@@ -21,20 +18,15 @@ endif
 #ICONS = $(wildcard icons/*.xpm)
 ICONS = icons/*.xpm
 
-ESSR_UTIL_FILES = ESSR/LOADREMOTE ESSR/VERSION
+ESSR_UTIL_FILES = ESSR/LOADREMOTE
 ESSR_CODE_FILES = ESSR/R/*.R ESSR/R/.*.R
-# ESSR_tarball = ESSR_$(ESSR_VERSION).tar.gz
 
-all: #ESSR-VERSION $(ESSR_tarball) library/ESSR
+all:
 
 show-etc:
 	@echo $(ETCFILES)
 	ls -l $(ETCFILES)
 
-
-## happens "above" as it is need also in ../lisp/ :
-# ESSR-VERSION: $(ESSR_FILES)
-#	(cd .. ; make etc/ESSR-VERSION)
 
 # $(ESSR_tarball): $(ESSR_FILES)
 #	R CMD build ESSR

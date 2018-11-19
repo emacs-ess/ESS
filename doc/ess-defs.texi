@@ -20,10 +20,6 @@
 @w{i@ESS{\ARG\}}
 @end macro
 
-@macro ESSVER
-@include ../VERSION
-@end macro
-
 @macro R{}
 R
 @end macro

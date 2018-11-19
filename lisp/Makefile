@@ -2,6 +2,9 @@
 
 ## Before making changes here, please take a look at Makeconf
 include ../Makeconf
+ifneq ($(NEXT_ESSVERSION),)
+$(shell rm -f ess.el)
+endif
 
 ## For noweb extraction of code and documentation.
 
@@ -24,12 +27,13 @@ COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 
 ### Targets
-
-ELS = $(wildcard *.el obsolete/*.el)
+ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el) julia-mode.el ess.el)
 ELC = $(ELS:.el=.elc)
 
 .PHONY: all
-all: julia-mode.elc $(ELC) ess-autoloads.el
+all: $(ELC) ess-autoloads.el
+
+$(ELC): julia-mode.el ess.el
 
 .PHONY: dist
 dist: all
@@ -52,7 +56,7 @@ uninstall:
 	fi;
 
 clean:
-	rm -f $(ELC) ess-autoloads.el julia-mode.el .dependencies
+	rm -f $(ELC) ess-autoloads.el julia-mode.el .dependencies ess.el
 
 distclean: clean
 
@@ -61,12 +65,12 @@ distclean: clean
 
 .dependencies: $(ELS)
 	@echo Computing dependencies
-	@rm -f .dependencies
-	@for f in $(ELS); do \
-	  sed -n "s/^(require '\(ess.*\)).*$$/$${f}c: \1.elc/p" $${f} >> .dependencies;\
+	rm -f .dependencies
+	for f in $(ELS); do \
+	  sed -n "s|^(require '\(ess.*\)).*$$|$${f}c: \1.elc|p" $${f} >> .dependencies;\
 	done
 
--include .dependencies
+# -include .dependencies ;; ??? dickmao
 
 .el.elc:
 	$(COMPILE) $<
@@ -76,7 +80,8 @@ julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
 	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
 
-ess-julia.elc: julia-mode.el julia-mode.elc
+ess.el:
+	sed -e 's/@@VERSION@@/$(ESSVERSION)/g' ess.el.in > $@
 
 ess-autoloads.el:
 	@printf	"\nGenerating $@\n"

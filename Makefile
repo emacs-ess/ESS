@@ -3,17 +3,6 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-ESSVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
-OLDVERSION := $(shell sed -n 's/Version: *\(.*\) */\1/p' VERSION)
-ESSDIR := ess-$(ESSVERSION)
-ifneq ($(ESSVERSION), $(OLDVERSION))
-  $(shell sed -i 's/Version: .*/Version: $(ESSVERSION)/' VERSION)
-  ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
-endif
-
-ESSR-VERSION := `sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el`
-
-
 ## 'all' is the default target, i.e. 'make' and 'make all' are the same.
 .PHONY: all install uninstall
 all install uninstall: $(ETC_FILES)
@@ -26,7 +15,6 @@ version:
 	@echo "********************* VERSIONS **************************"
 	@echo $(shell $(EMACS) --version | sed -n 1p)
 	@echo ESS $(ESSVERSION)
-	@echo ESSR $(ESSR-VERSION)
 	@echo "*********************************************************"
 
 
@@ -58,30 +46,23 @@ autoloads:
 	cd lisp; $(MAKE) ess-autoloads.el
 
 .PHONY: essr
-essr: VERSION
+essr:
 	@echo "**********************************************************"
-	@echo "** Making ESSR $(ESSR-VERSION) **"
-	@echo ESS $(ESSVERSION)
-	@sed -i "s/(defconst essr-version .*/(defconst essr-version \"$(ESSR-VERSION)\"/" lisp/ess.el
-	@echo "$(ESSR-VERSION)" > etc/ESSR/VERSION
-	@cd etc/ESSR/; ./BUILDESSR; cd -
-	@git add etc/ESSR.rds etc/ESSR/VERSION lisp/ess.el
-	git commit -m"ESSR Version $(ESSR-VERSION)"
-	git tag "ESSRv"$(ESSR-VERSION)
+	@echo "** Making ESSR $(ESSVERSION) **"
 
 
 ## the rest of the targets are for ESS developer's use only :
-
-## --- PRE-release ---
 
 # Create .tgz and .zip files only
 # GNUTAR=gtar make tarballs
 tarballs: $(ESSDIR)
 	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
+	@echo "** Making distribution of ESS for release $(ESSVERSION) from $(ESSDIR)/"
 	@echo "** Making pdf and html documentation"
-	cd $(ESSDIR)/doc/ ; $(MAKE) pdf
-	cd $(ESSDIR)/doc/ ; $(MAKE) html
+#	the making of pdf, html, ESSR.rds shall go into `make dist' #752
+	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
+	@cd $(ESSDIR)/doc/ ; $(MAKE) html
+	@cd etc/ESSR/; ./BUILDESSR;
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
@@ -124,7 +105,7 @@ $(ESSDIR): RPM.spec
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
 	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
 
-dist: VERSION tarballs
+dist: tarballs
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el > $@
 
@@ -137,45 +118,47 @@ cleanup-dist:
 
 ##  should only be called manually (if at all):
 cleanup-rel:
-#	@rm -rf $(ESSDIR)*
-	@rm -f tarballs dist tag homepage upload rel
+	@rm -f tarballs dist
 
-%.spec: %.spec.in VERSION
+%.spec: %.spec.in
 	sed 's/@@VERSION@@/$(ESSVERSION)/g' $< > $@
 
 ## --- RELEASE section ---
 
-ChangeLog: VERSION
+ChangeLog:
+	@if [ -z "$(NEXT_ESSVERSION)" ]; then \
+	  echo >&2 "Require NEXT_ESSVERSION environment variable"; \
+	  false; \
+	fi
 	@echo "** Adding log-entry to ChangeLog file"
 	mv ChangeLog ChangeLog.old
 	(echo `date "+%Y-%m-%d "` \
 	     " ESS Maintainers <ESS-core@r-project.org>" ; \
-	 echo; echo "  * Version $(ESSVERSION) released."; echo; \
+	 echo; echo "  * Version $(NEXT_ESSVERSION) released."; echo; \
 	 cat ChangeLog.old ) > ChangeLog
 	@rm ChangeLog.old
-	git commit -m 'Version $(ESSVERSION)' ChangeLog
+	git commit -m "Version $(NEXT_ESSVERSION)" ChangeLog
 
-
+.PHONY: tag
 tag:
-	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
-	git pull --tags
-	@echo "Creating tag (no signing, as that fails for MM)"
-	git tag -m'release tagging' v$(ESSVERSION)
-	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
-	git push origin v$(ESSVERSION)
-	@touch $@
+	@if [ -z "$(NEXT_ESSVERSION)" ]; then \
+	  echo >&2 "Require NEXT_ESSVERSION environment variable"; \
+	  false; \
+	fi
+	git tag -a v$(NEXT_ESSVERSION) -m "release tagging"
+	git push origin v$(NEXT_ESSVERSION)
 
-# signing fails for MM (gpg2 / gpg ??) --> use a non-signed tag above
-
-# @echo "Creating tag and signing using $(GPG)"
-# git tag -s -m'release tagging' v$(ESSVERSION)
-
+.PHONY: homepage
 homepage:
+	@if [ -z "$(NEXT_ESSVERSION)" ]; then \
+	  echo >&2 "Require NEXT_ESSVERSION environment variable"; \
+	  false; \
+	fi
 	@echo "** Updating ESS Webpage **"
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
-	@touch $@
+	cd $(ESS_HOMEPAGE); ./update-VERSION $(NEXT_ESSVERSION)
 
+.PHONY: upload
 upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files and their .sig's **"
@@ -183,14 +166,11 @@ upload:
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
-	touch $@
 
 #==== RELEASE : ====
 
-rel: ChangeLog dist tag homepage upload
-	@echo "If all is perfect, eventually call   'make cleanup-rel'"
-	touch $@
-
+.PHONY: rel
+rel: ChangeLog tag dist homepage upload
 
 ## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
 ##     by the down stream maintainers:

@@ -10,8 +10,8 @@
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
-The ESS Developers proudly announce the release of ESS
-@include ../VERSION
+The ESS Developers proudly announce the release of ESS version
+@@VERSION@@
 
 @c --------------------------------------------------------------------
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
