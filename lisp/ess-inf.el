@@ -1158,7 +1158,7 @@ MESSAGE is a message to display."
     (when message
       (message "%s" message))))
 
-(ess-defgeneric ess-send-region (process start end &optional visibly message type)
+(defun ess-send-region (process start end &optional visibly message type)
   "Low level ESS version of `process-send-region'.
 If VISIBLY call `ess-eval-linewise', else call
 `ess-send-string'. If MESSAGE is supplied, display it at the
@@ -1168,8 +1168,10 @@ type of the region."
   (cond
    ((ess-tracebug-p)
     (ess-tracebug-send-region proc start end visibly message type))
-   (t (:override
-       (ess-send-string process (buffer-substring start end) visibly message type)))))
+   (t (ess-send-region--override process start end visibly message type))))
+
+(cl-defgeneric ess-send-region--override (process start end visibly message type)
+  (ess-send-string process (buffer-substring start end) visibly message type))
 
 
 ;;*;; Evaluation commands
