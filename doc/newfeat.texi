@@ -84,6 +84,11 @@ This includes @code{ess-show-buffer-action},
 
 @end itemize
 
+Bug Fixes in 18.10.3:
+@itemize @bullet
+@item More @file{Makefile} fixes, notably installing @file{*.el}s.
+@end itemize
+
 Bug Fixes in 18.10.2:
 @itemize @bullet
 @item @ESS{[R]} Fix namespace evaluation in non-installed packages.
