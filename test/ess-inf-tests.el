@@ -167,8 +167,9 @@ some. text
   (should (fboundp 'R-3.2.1)))
 
 (ert-deftest runner-R-3.2.1-buffer-name ()
-  (skip-unless (or (executable-find "R-3.2.1")
-                   (getenv "CONTINUOUS_INTEGRATION")))
+  (skip-unless (and (or (executable-find "R-3.2.1")
+                        (getenv "CONTINUOUS_INTEGRATION"))
+                    (> emacs-major-version 25)))
   (should
    (string= "*R-3.2.1:1*"
             (let ((ess-use-inferior-program-in-buffer-name t)
