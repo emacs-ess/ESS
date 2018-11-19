@@ -32,7 +32,7 @@
 
  ; Requires and autoloads
 
-(require 'ess)
+(require 'ess-mode)
 
 (defun ess-check-source (fname)
   "If file FNAME has an unsaved buffer, offer to save it.
