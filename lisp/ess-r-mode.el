@@ -1167,7 +1167,7 @@ attached packages."
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")
 
-(ess-defmethod R ess-load-file (file)
+(cl-defmethod ess-load-file--override (file &context ((string= ess-dialect "R") (eql t)))
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)

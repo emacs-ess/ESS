@@ -1199,8 +1199,8 @@ type of the region."
       (ess-force-buffer-current "Process to load into: "))))
 
 ;;;###autoload
-(ess-defgeneric ess-load-file (&optional filename)
-  "Load a source file into an inferior ESS process.
+(defun ess-load-file (&optional filename)
+  "Load FILENAME into an inferior ESS process.
 This handles Tramp when working on a remote."
   (interactive (list (or (and (ess-derived-mode-p)
                               (buffer-file-name))
@@ -1210,10 +1210,12 @@ This handles Tramp when working on a remote."
   ;; Pop up an inferior window
   (save-selected-window
     (ess-switch-to-ESS t))
-  (:override
-   (let ((file (ess-load-file--normalise-file filename)))
-     (let ((command (ess-build-load-command file nil t)))
-       (ess-send-string (ess-get-process) command t)))))
+  (ess-load-file--override filename))
+
+(cl-defgeneric ess-load-file--override (filename)
+  (let ((file (ess-load-file--normalise-file filename)))
+    (let ((command (ess-build-load-command file nil t)))
+      (ess-send-string (ess-get-process) command t))))
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()
