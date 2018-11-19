@@ -37,7 +37,6 @@
   (require 'cl-lib)
   (require 'tramp)
   (require 'subr-x))
-(require 'ess-generics)
 (require 'ess-utils)
 
 (require 'comint)

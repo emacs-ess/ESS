@@ -47,7 +47,6 @@
   (require 'subr-x))
 (require 'ess-custom)
 (require 'ess-utils)
-(require 'ess-generics)
 (require 'ess-inf)
 
 ;; FIXME: should this be optional?
