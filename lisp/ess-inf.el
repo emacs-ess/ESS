@@ -1116,7 +1116,7 @@ Hide all the junk output in temporary buffer."
 
 ;;*;; Evaluation primitives
 
-(ess-defgeneric ess-send-string (process string &optional visibly message type)
+(defun ess-send-string (process string &optional visibly message type)
   "ESS wrapper for `process-send-string'.
 Run `comint-input-filter-functions' and current buffer's and
 PROCESS' `ess-presend-filter-functions' hooks on the input
@@ -1125,7 +1125,8 @@ the behavior is as with 'nowait with the differences that
 inserted string is VISIBLY instead of STRING (evaluated command
 is still STRING).  In all other cases the behavior is as
 described in `ess-eval-visibly'. STRING need not end with
-\\n. TYPE is a symbol indicating type of the string."
+\\n. TYPE is a symbol indicating type of the string.
+MESSAGE is a message to display."
   ;; No support of `visibly' when there's no secondary prompt
   (let ((visibly (if (and (eq visibly t)
                           (null inferior-ess-secondary-prompt))
@@ -1134,29 +1135,28 @@ described in `ess-eval-visibly'. STRING need not end with
         (string (ess--run-presend-hooks process string)))
     (inferior-ess--interrupt-subjob-maybe process)
     (inferior-ess-mark-as-busy process)
-    (:override
-     (cond
-      ;; Wait after each line
-      ((eq visibly t)
-       (let ((ess--inhibit-presend-hooks t))
-         (ess-eval-linewise string)))
-      ;; Insert command and eval invisibly
-      ((or (stringp visibly)
-           (eq visibly 'nowait))
-       (with-current-buffer (process-buffer process)
-         (save-excursion
-           (goto-char (process-mark process))
-           (insert-before-markers
-            (propertize (format "%s\n"
-                                (replace-regexp-in-string
-                                 "\n" "\n+ "
-                                 (if (stringp visibly) visibly string)))
-                        'font-lock-face 'comint-highlight-input)))
-         (process-send-string process (ess--concat-new-line-maybe string))))
-      (t
-       (process-send-string process (ess--concat-new-line-maybe string))))
-     (when message
-       (message "%s" message)))))
+    (cond
+     ;; Wait after each line
+     ((eq visibly t)
+      (let ((ess--inhibit-presend-hooks t))
+        (ess-eval-linewise string)))
+     ;; Insert command and eval invisibly
+     ((or (stringp visibly)
+          (eq visibly 'nowait))
+      (with-current-buffer (process-buffer process)
+        (save-excursion
+          (goto-char (process-mark process))
+          (insert-before-markers
+           (propertize (format "%s\n"
+                               (replace-regexp-in-string
+                                "\n" "\n+ "
+                                (if (stringp visibly) visibly string)))
+                       'font-lock-face 'comint-highlight-input)))
+        (process-send-string process (ess--concat-new-line-maybe string))))
+     (t
+      (process-send-string process (ess--concat-new-line-maybe string))))
+    (when message
+      (message "%s" message))))
 
 (ess-defgeneric ess-send-region (process start end &optional visibly message type)
   "Low level ESS version of `process-send-region'.
