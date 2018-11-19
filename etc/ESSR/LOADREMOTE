@@ -1,7 +1,7 @@
 ## -*- mode: R -*-
 ## loading code which is first sent to R on remote sessions
 local({
-    ver <- '1.3'
+    ver <- '%s' ## <- passed from elisp
     root <- '~/.config/ESSR'
     if(!file.exists(root))
         dir.create(root, recursive = TRUE)
