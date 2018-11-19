@@ -2695,16 +2695,15 @@ backward compatibility only."
 ;;; Miscellaneous routines
 
 ;;;*;;; Routines for reading object names
-(ess-defgeneric ess-read-object-name (p-string)
+(defun ess-read-object-name (p-string)
   "Read an object name from the minibuffer with completion, and return it.
 P-STRING is the prompt string."
-  (:override
-   (let* ((default (ess-read-object-name-dump))
-          (object-list (ess-get-object-list ess-local-process-name))
-          (spec (ess-completing-read p-string object-list nil nil nil nil default)))
-     (list (cond
-            ((string= spec "") default)
-            (t spec))))))
+  (let* ((default (ess-read-object-name-dump))
+         (object-list (ess-get-object-list ess-local-process-name))
+         (spec (ess-completing-read p-string object-list nil nil nil nil default)))
+    (list (cond
+           ((string= spec "") default)
+           (t spec)))))
 
 (defun ess-read-object-name-default ()
   "Return the object name at point, or nil if none."
