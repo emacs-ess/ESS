@@ -42,7 +42,6 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl)
   (require 'cl-lib)
   (require 'subr-x))
 (require 'ess-custom)
@@ -668,9 +667,9 @@ generate the source buffer."
 This function starts the inferior process with the specified
 version. DIALECT can be \"R,\" \"S,\", \"SAS.\" If given, PATH
 should be the absolute path to the program. It defaults to NAME."
-  (lexical-let ((name name)
-                (dialect dialect)
-                (path path))
+  (let ((name name)
+        (dialect dialect)
+        (path path))
     (fset (intern name)
           (lambda (&optional start-args)
             "Start this process version in an inferior ESS buffer.
