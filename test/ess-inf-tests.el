@@ -1,5 +1,6 @@
 
 (require 'ert)
+(require 'cl-lib)
 
 ;; As we use the R inferior for the generic tests
 (require 'ess-r-tests-utils)
@@ -152,6 +153,13 @@ some. text
   (let ((ess-dialect nil))
     (should (string= (ess-build-load-command "file")
                      "source('file')\n"))))
+
+(ert-deftest ess-get-words-from-vector ()
+  (with-r-running nil
+    (should (cl-every #'string= (ess-get-words-from-vector "c('1')\n") '("1")))
+    (should (cl-every #'string= (ess-get-words-from-vector "c('1', \"2\")\n") '("1" "2")))
+    (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
+                      '("aaa" "bbb\\\"ccc" "dddd")))))
 
 ;; Test runners
 
