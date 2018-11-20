@@ -1,4 +1,4 @@
-;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.
+;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2002--2004 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -381,9 +381,8 @@ User is queried first to check that objects should really be deleted."
   (interactive)
   (kill-buffer ess-rdired-buffer))
 
-(defun ess-rdired-revert-buffer (ignore noconfirm)
-  "Update the buffer list (in case object list has changed).
-Arguments IGNORE and NOCONFIRM currently not used."
+(defun ess-rdired-revert-buffer ()
+  "Update the buffer list (in case object list has changed)."
   (ess-rdired))
 
 (defun ess-rdired-help ()
