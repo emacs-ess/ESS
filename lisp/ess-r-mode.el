@@ -1343,7 +1343,8 @@ If it changes, we flush the cache.")
         (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
         ;; should not happen, unless extrem conditions (ancient R or failed download))
         (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version)) ; cannot do this at R level
+        ;; For this case we cannot do it at R level
+        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
         (mapc #'ess--inject-code-from-file files)))))
 
 (cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
