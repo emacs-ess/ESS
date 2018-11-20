@@ -104,16 +104,6 @@ DOWNLOAD=$(shell which wget > /dev/null && echo 'wget -qO -' || which curl)
 ## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
 
-## SVN repo retired
-## Currently only works when run in top ess/ directory; not in etc/ or lisp/ :
-# ESSfromSVN=$(shell test -d .svn && echo 'yes')
-# ifeq ($(ESSfromSVN),yes)
-#   ESSVERSIONsvn=$(shell svn up && echo "`date +%y-%m`-r`svnversion`")
-# else
-#   ESSVERSIONsvn=$(shell echo "`date +%y-%m`_not_svn")
-# endif
-# ESSVERSIONTAG=$(ESSVERSIONsvn)
-
 GNUTAR=tar
 # SVN_URL = https://svn.r-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess

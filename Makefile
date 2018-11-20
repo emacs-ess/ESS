@@ -71,16 +71,15 @@ essr: VERSION
 
 ## the rest of the targets are for ESS developer's use only :
 
-## --- PRE-release ---
-
 # Create .tgz and .zip files only
 # GNUTAR=gtar make tarballs
 tarballs: $(ESSDIR)
 	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
+	@echo "** Making distribution of ESS for release $(ESSVERSION) from $(ESSDIR)/"
 	@echo "** Making pdf and html documentation"
-	cd $(ESSDIR)/doc/ ; $(MAKE) pdf
-	cd $(ESSDIR)/doc/ ; $(MAKE) html
+#	the making of pdf, html, ESSR.rds shall go into `make dist' #752
+	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
+	@cd $(ESSDIR)/doc/ ; $(MAKE) html
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
@@ -153,7 +152,6 @@ ChangeLog: VERSION
 	 cat ChangeLog.old ) > ChangeLog
 	@rm ChangeLog.old
 	git commit -m 'Version $(ESSVERSION)' ChangeLog
-
 
 tag:
 	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"

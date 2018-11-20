@@ -25,12 +25,12 @@ COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 ### Targets
 
-ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el))
-ELC = $(ELS:.el=.elc)
-
 .PHONY: all dist install uninstall distclean clean
 
-all dist: julia-mode.elc $(ELC) ess-autoloads.el
+ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) julia-mode.el
+ELC = $(ELS:.el=.elc)
+
+all dist: $(ELC) ess-autoloads.el
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)
@@ -58,7 +58,7 @@ distclean clean:
 	@echo Computing dependencies
 	@rm -f .dependencies
 	@for f in $(ELS); do \
-	  sed -n "s/^(require '\(ess[^)]*\)).*$$/$${f}c: \1.elc/p" $${f} >> .dependencies;\
+	  sed -n "s|^(require '\(ess.*\)).*$$|$${f}c: \1.elc|p" $${f} >> .dependencies;\
 	done
 
 -include .dependencies
@@ -70,8 +70,6 @@ distclean clean:
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
 	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
-
-ess-julia.elc: julia-mode.el
 
 ess-autoloads.el:
 	@printf	"\nGenerating $@\n"
