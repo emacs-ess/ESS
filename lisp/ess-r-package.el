@@ -1,4 +1,4 @@
-;;; ess-r-package.el --- Package development mode for R.
+;;; ess-r-package.el --- Package development mode for R.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2011-2015 Lionel Henry, Vitalie Spinu, A.J. Rossini, Richard
 ;;      M. Heiberger, Martin Maechler, Kurt Hornik, Rodney Sparapani, and
@@ -558,7 +558,7 @@ package mode. Use this function if state of the buffer such as
 
 
 ;;;*;;; Deprecated variables and functions
-(defun ess-developer (&optional val)
+(defun ess-developer (&optional _val)
   (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead"))
 
 (defalias 'ess-toggle-developer 'ess-developer)
