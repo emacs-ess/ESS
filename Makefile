@@ -12,7 +12,7 @@ ifneq ($(ESSVERSION), $(PKGVERSION))
   ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
 endif
 
-ESSR-VERSION := `sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el`
+ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
 
 
 .PHONY: all install uninstall
@@ -28,7 +28,6 @@ version:
 	@echo ESS $(ESSVERSION)
 	@echo ESSR $(ESSR-VERSION)
 	@echo "*********************************************************"
-
 
 .PHONY: lisp
 lisp: version
@@ -60,12 +59,11 @@ autoloads:
 .PHONY: essr
 essr: VERSION
 	@echo "**********************************************************"
-	@echo "** Making ESSR $(ESSR-VERSION) **"
-	@echo ESS $(ESSVERSION)
+	@echo "** Making ESSRv$(ESSR-VERSION) **"
+	@sed -i "s/^ *VERSION <- .*/    VERSION <- \"$(ESSR-VERSION)\"/" etc/ESSR/R/.load.R
 	@sed -i "s/(defconst essr-version .*/(defconst essr-version \"$(ESSR-VERSION)\"/" lisp/ess.el
-	@echo "$(ESSR-VERSION)" > etc/ESSR/VERSION
 	@cd etc/ESSR/; ./BUILDESSR; cd -
-	@git add etc/ESSR.rds etc/ESSR/VERSION lisp/ess.el
+	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"
 	git tag "ESSRv"$(ESSR-VERSION)
 

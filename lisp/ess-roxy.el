@@ -938,7 +938,7 @@ passes ARGS to it."
            (ess-roxy-goto-end-of-roxy-comment)
            (looking-at "#")))
     (ess-roxy-with-filling-context t
-                                   (apply orig-fun args)))
+        (apply orig-fun args)))
    ((and (not (ess-roxy-entry-p))
          (ess-inside-comment-p))
     (apply orig-fun args))
