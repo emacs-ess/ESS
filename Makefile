@@ -185,7 +185,7 @@ buildrpm: rel-tarballs
 
 .PHONY: test-buildrpm
 test-buildrpm: rel-tarballs
-	rpmbuild --define "_topdir $$PWD/test" --nodeps -ta --nodeps $(ESSDIR).tgz
+	rpmbuild --define "_topdir $$PWD/test" --nodeps -ta $(ESSDIR).tgz
 
 ## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
