@@ -3,11 +3,12 @@
 ## Before making changes here, please take a look at Makeconf
 include ./Makeconf
 
-ESSVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
-OLDVERSION := $(shell sed -n 's/Version: *\(.*\) */\1/p' VERSION)
+ESSVERSION := $(shell cat VERSION)
+PKGVERSION := $(shell sed -n 's/;; Version: *\(.*\) */\1/p' lisp/ess.el)
 ESSDIR := ess-$(ESSVERSION)
-ifneq ($(ESSVERSION), $(OLDVERSION))
+ifneq ($(ESSVERSION), $(PKGVERSION))
   $(shell sed -i 's/Version: .*/Version: $(ESSVERSION)/' VERSION)
+  ${shell sed -i 's/;; Version: .*/;; Version: $(ESSVERSION)/' lisp/ess.el}
   ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
 endif
 
