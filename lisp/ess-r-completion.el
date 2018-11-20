@@ -1,4 +1,4 @@
-;;; ess-r-completion.el --- R completion
+;;; ess-r-completion.el --- R completion  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler, Kurt
 ;;      Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
@@ -86,8 +86,7 @@ to look up any doc strings."
            ;; Subtract 1 from window width since will cause a wraparound and
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
-                     (+ 2 (length funname)))))
-           newdoc)
+                     (+ 2 (length funname))))))
       (setq doc
             (if (or (<= (length doc) W)
                     (null ess-eldoc-abbreviation-style)
@@ -277,7 +276,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defvar ess--cached-sp-objects nil)
 
-(defun ess--get-cached-completions (prefix &optional point)
+(defun ess--get-cached-completions (prefix &optional _point)
   (if (string-match-p "[]:$@[]" prefix)
       ;; call proc for objects
       (cdr (ess-r-get-rcompletions nil nil prefix))
