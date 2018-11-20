@@ -737,15 +737,15 @@ Return the list of candidates for being `R-newest'. Filtering is
 done iff `ess-prefer-higher-bit' is non-nil. This is used only by
 Windows when running `ess-find-newest-R'."
   (if ess-prefer-higher-bit
-    ;; filter out 32 bit elements
-    (let ((filtered
-           (delq nil
-            (mapcar (lambda (x) (unless (string-match "/i386/Rterm.exe" x) x))
-                    ess-rterm-version-paths))))
-      (if (null filtered)
-          ;; if none survived filtering, keep the original list
-          ess-rterm-version-paths
-        filtered))
+      ;; filter out 32 bit elements
+      (let ((filtered
+             (delq nil
+                   (mapcar (lambda (x) (unless (string-match "/i386/Rterm.exe" x) x))
+                           ess-rterm-version-paths))))
+        (if (null filtered)
+            ;; if none survived filtering, keep the original list
+            ess-rterm-version-paths
+          filtered))
     ess-rterm-version-paths))
 
 
