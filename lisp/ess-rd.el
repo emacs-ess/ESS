@@ -1,4 +1,4 @@
-;; ess-rd.el --- Support for editing R documentation (Rd) source
+;; ess-rd.el --- Support for editing R documentation (Rd) source  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--2005  A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
