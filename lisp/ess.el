@@ -16,7 +16,7 @@
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 ;; Copyright (C) 1997-2018 ESS Core Team <ESS-core@r-project.org>
 ;; Created: 7 Jan 1994
-;; Version: 18.10.3-git
+;; Version: 18.10.2-git
 ;; Package-Requires: ((julia-mode "0.3"))
 ;; ESSR-Version: 1.4
 ;;
@@ -693,7 +693,7 @@ Function defined using `ess-define-runner'."
 ;; Variables (not user-changeable)
 
 ;; updated by 'make'!
-(defconst ess-version "18.10.3-git"
+(defconst ess-version "18.10.2-git"
   "Version of ESS currently loaded.")
 
 ;; updated by 'make'!
