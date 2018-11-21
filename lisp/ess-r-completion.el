@@ -301,7 +301,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           ;; reread new package, but not rda, much faster and not needed anyways
           (process-put *proc* 'sp-for-ac-changed? nil)))
       (apply 'append
-             (cddar ess-sl-modtime-alist) ; .GlobalEnv
+             (cl-cddar ess-sl-modtime-alist) ; .GlobalEnv
              (mapcar 'cddr ess--cached-sp-objects)))))
 
 

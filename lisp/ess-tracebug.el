@@ -93,6 +93,12 @@
 ;; here.
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-get-remote-tmpdir "tramp")
+;; The following declares can be removed once we drop Emacs 25
+(declare-function tramp-file-name-method "tramp")
+(declare-function tramp-file-name-user "tramp")
+(declare-function tramp-file-name-host "tramp")
+(declare-function tramp-file-name-localname "tramp")
+(declare-function tramp-file-name-hop "tramp")
 
 
 (defgroup ess-tracebug nil

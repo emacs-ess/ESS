@@ -38,6 +38,12 @@
 (require 'flymake)
 (require 'project)
 
+;; Appease the byte compiler for Emacs 25. Remove after dropping
+;; support for Emacs 25.
+(declare-function flymake-diag-region "flymake")
+(declare-function flymake-make-diagnostic "flymake")
+(declare-function flymake--overlays "flymake")
+
 (defcustom ess-r-flymake-linters
   '("closed_curly_linter = NULL"
     "commas_linter = NULL"

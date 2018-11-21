@@ -59,6 +59,13 @@
 (declare-function ess-mode "ess")
 (declare-function ess-complete-object-name "ess-r-completion")
 
+;; The following declares can be removed once we drop Emacs 25
+(declare-function tramp-file-name-method "tramp")
+(declare-function tramp-file-name-user "tramp")
+(declare-function tramp-file-name-host "tramp")
+(declare-function tramp-file-name-localname "tramp")
+(declare-function tramp-file-name-hop "tramp")
+
 (defvar inferior-ess-mode-syntax-table
   (let ((tab (copy-syntax-table comint-mode-syntax-table)))
     tab)

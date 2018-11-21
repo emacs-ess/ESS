@@ -44,6 +44,12 @@
 (declare-function evil-normal-state "evil")
 (declare-function color-lighten-name "color")
 (declare-function tramp-dissect-file-name "tramp")
+;; The following declares can be removed once we drop Emacs 25
+(declare-function tramp-file-name-method "tramp")
+(declare-function tramp-file-name-user "tramp")
+(declare-function tramp-file-name-host "tramp")
+(declare-function tramp-file-name-localname "tramp")
+(declare-function tramp-file-name-hop "tramp")
 
 
 ;;*;; Internal ESS tools and variables
