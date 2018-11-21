@@ -18,6 +18,7 @@ before_install:
       texlive-latex-base
       texlive-latex-recommended
       texlive-latex-extra
+      rpm
 
   - git clone https://github.com/rejeep/evm.git $HOME/.evm
   - export PATH=$HOME/.evm/bin:$PATH
@@ -42,4 +43,4 @@ script:
 - cp targets/travis-setup.el lisp/setup
 - make -k all "EMACSBATCH = emacs -batch -Q -l setup"
 - make test
-- make rel-tarballs
+- make test-buildrpm

@@ -95,7 +95,7 @@ endif
 # NB 'all', 'cleanup-rel' must not be targets: otherwise, e.g.
 #    'make tarball' re-builds the tarballs always!  (??? -- dickmao)
 .PHONY: rel-staging
-rel-staging: cleanup-rel
+rel-staging: cleanup-rel RPM.spec
 	@echo "**********************************************************"
 	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
@@ -109,6 +109,7 @@ rel-staging: cleanup-rel
 	cd $(ESSDIR)/doc ; $(MAKE) cleanaux
 	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/
 	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/
+	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
@@ -123,6 +124,7 @@ rel-staging: cleanup-rel
 cleanup-rel:
 	@echo "** Cleaning up **"
 	rm -f $(ESSDIR).tgz* $(ESSDIR).zip*
+	rm -rf test/BUILDROOT test/BUILD test/SRPMS test/RPMS
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
 
@@ -175,6 +177,17 @@ upload:
 rel: ChangeLog rel-tarballs tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 	touch $@
+
+
+## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
+##     by the down stream maintainers:
+.PHONY: buildrpm
+buildrpm: rel-tarballs
+	rpmbuild -ta --sign $(ESSDIR).tgz
+
+.PHONY: test-buildrpm
+test-buildrpm: rel-tarballs
+	rpmbuild --define "_topdir $$PWD/test" --nodeps -ta $(ESSDIR).tgz
 
 ## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
