@@ -2294,17 +2294,17 @@ state.")
             (text (match-string 0)))
         ;; Remove surrounding quotes so the text property is the
         ;; name of the link:)
-        (if (> emacs-major-version 25)
-            (setq text (string-trim (match-string 0) "[\"‘]*" "[\"’]*"))
-          (progn
-            ;; TODO: Remove this when we drop support for Emacs 25
-            (setq text
-                  (if (string-match "^[\"‘]*" text)
-                      (substring text (match-end 0))
-                    text))
-            (setq text (if (string-match "[\"’]*$" text)
-                           (substring text 0 (match-beginning 0))
-                         text))))
+        (progn
+          ;; TODO: Replace all this with:
+          ;; (string-trim (match-string 0) "[\"‘]*" "[\"’]*")
+          ;; after dropping support for Emacs 25
+          (setq text
+                (if (string-match "^[\"‘]*" text)
+                    (substring text (match-end 0))
+                  text))
+          (setq text (if (string-match "[\"’]*$" text)
+                         (substring text 0 (match-beginning 0))
+                       text)))
         (add-text-properties beg end (list 'ess-r-help-link-text text))
         (make-text-button beg end
                           'type 'ess-r-help-link
