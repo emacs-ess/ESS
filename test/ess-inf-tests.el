@@ -40,6 +40,22 @@
                          (buffer-string))
                        "[1] TRUE")))))
 
+(ert-deftest ess-async-command ()
+  ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+  ;;                    (lambda (proc) (message "done")))
+  ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+  ;;                    (lambda (proc) (message "done"))
+  ;;                    t)
+  ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
+  ;;                    (lambda (proc) (message "done"))
+  (with-r-running nil
+    (let ((output-buffer (get-buffer-create " *ess-async-text-command-output*"))
+          output)
+      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n" output-buffer (get-process "R")
+                         (lambda (proc string) (setq output string)))
+      (sleep-for 0.6)
+      (should (string= "2 3 4 5 6> " output)))))
+
 (ert-deftest ess-run-presend-hooks-test ()
   (with-r-running nil
     (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\""))))
