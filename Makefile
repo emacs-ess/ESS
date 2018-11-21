@@ -72,27 +72,40 @@ essr: VERSION
 
 
 ## the rest of the targets are for ESS developer's use only :
+.PHONY: tarballs
+tarballs: ess-$(ESSVERSION).tar ess-$(ESSVERSION).tgz ess-$(ESSVERSION).zip # TODO: ess-plus-$(VERSION).tar
 
-# Create .tgz and .zip files only
-# GNUTAR=gtar make tarballs
-tarballs: $(ESSDIR)
-	@echo "**********************************************************"
-	@echo "** Making distribution of ESS for release $(ESSVERSION) from $(ESSDIR)/"
-	@echo "** Making pdf and html documentation"
-#	the making of pdf, html, ESSR.rds shall go into `make dist' #752
-	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
-	@cd $(ESSDIR)/doc/ ; $(MAKE) html
+.PHONY: tgz
+tgz: ess-$(ESSVERSION).tgz
+ess-$(ESSVERSION).tgz: $(ESSDIR)
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
 	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
+
+.PHONY: zip
+zip: ess-$(ESSVERSION).zip
+ess-$(ESSVERSION).zip: $(ESSDIR)
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "Signing zip file"
 	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
-	touch $@
+
+.PHONY: package
+package: ess-$(ESSVERSION).tar
+ess-$(ESSVERSION).tar:
+	@echo "Creating $@"
+	@rm -rf $(ESSDIR)
+	@git archive HEAD -o ess-$(ESSVERSION).tar
+	@mkdir ess-$(ESSVERSION)
+	@$(GNUTAR) -C ess-$(ESSVERSION) -xf ess-$(ESSVERSION).tar
+	@cd ess-$(ESSVERSION) && $(EMACS) -Q --script "targets/create-pkg-file.el"
+	@$(GNUTAR) c -f ess-$(ESSVERSION).tar ess-$(ESSVERSION)
+	@echo "Signing $@"
+	@$(GPG) -ba -o $(ESSDIR).tar.sig $(ESSDIR).tar
+	@rm -rf ess-$(ESSVERSION)/
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
@@ -102,12 +115,8 @@ $(ESSDIR): RPM.spec
 	$(MAKE) all
 #	remove previous ESSDIR, etc:
 	$(MAKE) cleanup-dist
-	@echo "**********************************************************"
-	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
-	@echo "** (must have setup git / github with cached authentication, prior for security)"
-	@echo "**********************************************************"
 	@echo "** Exporting Files **"
-	git clone git@github.com:emacs-ess/ESS.git $(ESSDIR)-git
+	git clone . $(ESSDIR)-git
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
@@ -125,6 +134,9 @@ $(ESSDIR): RPM.spec
 	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
 
 dist: VERSION tarballs
+	@echo "** Making pdf and html documentation"
+	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
+	@cd $(ESSDIR)/doc/ ; $(MAKE) html
 	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
 	  $(ESSDIR)/lisp/ess-custom.el > $@
 
