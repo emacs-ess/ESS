@@ -43,4 +43,4 @@ script:
 - cp targets/travis-setup.el lisp/setup
 - make -k all "EMACSBATCH = emacs -batch -Q -l setup"
 - make test
-- make test-buildrpm
+- make rel-tarballs

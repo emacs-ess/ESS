@@ -76,7 +76,6 @@ rel-tarballs: rel-staging
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for (pre)release $(ESSVERSION) from $(ESSDIR)/"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
-	grep -E 'defvar ess-(version|revision)' $(ESSDIR)/lisp/ess-custom.el
 	@echo "** Creating .tgz file **"
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
@@ -92,7 +91,7 @@ rel-tarballs: rel-staging
 # NB 'all', 'cleanup-rel' must not be targets: otherwise, e.g.
 #    'make tarball' re-builds the tarballs always!  (??? -- dickmao)
 .PHONY: rel-staging
-rel-staging: cleanup-rel RPM.spec
+rel-staging: cleanup-rel
 	@echo "**********************************************************"
 	@echo "** Making $(ESSDIR) directory of ESS for release $(ESSVERSION),"
 	@echo "** (must have setup git / github with cached authentication, prior for security)"
@@ -106,12 +105,15 @@ rel-staging: cleanup-rel RPM.spec
 	cd $(ESSDIR)/doc ; $(MAKE) cleanaux
 	cd lisp; $(MAKE) ess-custom.el; $(INSTALL) ess-custom.el ../$(ESSDIR)/lisp/
 	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/
-	$(INSTALL) RPM.spec $(ESSDIR)/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
-	if git diff-index --quiet HEAD -- ; then commit=`git stash create | cut -c 1-12` ; else commit=`git rev-parse HEAD | cut -c 1-12` ; fi ; echo $commit > $(ESSDIR)/etc/git-ref
+	if git diff-index --quiet HEAD -- ; then \
+	  commit=`git stash create | cut -c 1-12` ; \
+	else \
+	  commit=`git rev-parse HEAD | cut -c 1-12` ; \
+	fi ; echo $commit > $(ESSDIR)/etc/git-ref
 
 dist:
 	cd etc; $(MAKE) $@
@@ -122,7 +124,6 @@ dist:
 cleanup-rel:
 	@echo "** Cleaning up **"
 	rm -f $(ESSDIR).tgz* $(ESSDIR).zip*
-	rm -rf test/BUILDROOT test/BUILD test/SRPMS test/RPMS
 	(if [ -d $(ESSDIR) ] ; then \
 	  chmod -R u+w $(ESSDIR) $(ESSDIR)-git && rm -rf $(ESSDIR) $(ESSDIR)-git; fi)
 
@@ -175,17 +176,6 @@ upload:
 rel: ChangeLog rel-tarballs tag homepage upload
 	@echo "If all is perfect, eventually call   'make cleanup-rel'"
 	touch $@
-
-
-## NB: The rpm (SuSE, RH, FC) and debian packages are built *and* signed
-##     by the down stream maintainers:
-.PHONY: buildrpm
-buildrpm: rel-tarballs
-	rpmbuild -ta --sign $(ESSDIR).tgz
-
-.PHONY: test-buildrpm
-test-buildrpm: rel-tarballs
-	rpmbuild --define "_topdir $$PWD/test" --nodeps -ta $(ESSDIR).tgz
 
 ## Old Note (clean and distclean are now the same):
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
