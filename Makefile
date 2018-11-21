@@ -42,7 +42,6 @@ etc: version
 
 .PHONY: test
 test: version
-	cd lisp; $(MAKE) test
 	cd test; $(EMACS) --script run-tests
 
 generate-indent-cases:
@@ -80,14 +79,14 @@ rel-tarballs: rel-staging
 	@echo "** Creating .tgz file **"
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
-ifeq ($(TRAVIS),)
+ifeq ($(CONTINUOUS_INTEGRATION),)
 	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
 endif
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "Signing zip file"
-ifeq ($(TRAVIS),)
+ifeq ($(CONTINUOUS_INTEGRATION),)
 	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
 endif
 
