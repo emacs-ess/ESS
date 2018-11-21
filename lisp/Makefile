@@ -53,7 +53,16 @@ distclean clean:
 
 .PHONY: test
 test:
-	! ( $(COMPILE) $(shell git ls-files *.el) 2>&1 | awk '{if (/^ /) { gsub(/^ +/, " ", $$0); printf "%s", $$0 } else { printf "\n%s", $$0 }}' | egrep -a "not known|Error|free variable|error for|Use of gv-ref" )
+	! ( $(COMPILE) $(shell git ls-files *.el) 2>&1 | \
+	  awk '{ \
+	         if (/^ /) { \
+	           gsub(/^ +/, " ", $$0); \
+	           printf "%s", $$0 \
+	         } else { \
+	           printf "\n%s", $$0 \
+	         } \
+	       }' \
+	  | egrep -a "not known|Error|free variable|error for|Use of gv-ref" )
 	rm -f $(ELC)
 
 
