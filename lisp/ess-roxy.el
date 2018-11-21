@@ -93,6 +93,7 @@
     (define-key map (kbd "C-c C-o C-c") 'ess-roxy-toggle-roxy-region)
     (define-key map [remap back-to-indentation] 'ess-roxy-goto-end-of-roxy-comment)
     (define-key map [remap newline] 'ess-roxy-newline-and-indent)
+    (define-key map [remap newline-and-indent] 'ess-roxy-newline-and-indent)
     (define-key map [remap ess-indent-command] 'ess-roxy-ess-indent-command)
     (define-key map [remap move-beginning-of-line] 'ess-roxy-move-beginning-of-line)
     (define-key map [remap beginning-of-visual-line] 'ess-roxy-move-beginning-of-line)
