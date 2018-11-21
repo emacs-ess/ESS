@@ -2293,7 +2293,8 @@ state.")
             (end (match-end 0))
             ;; Remove surrounding quotes so the text property is the
             ;; name of the link:
-            (text (string-trim (match-string 0) "[\"‘]*" "[\"’]*")))
+            (text (replace-regexp-in-string "^[\"']+" "" 
+                   (replace-regexp-in-string "[\"']+$" "" (match-string 0)))))
         (add-text-properties beg end (list 'ess-r-help-link-text text))
         (make-text-button beg end
                           'type 'ess-r-help-link

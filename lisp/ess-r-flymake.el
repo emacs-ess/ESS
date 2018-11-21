@@ -163,9 +163,13 @@ into a list and call REPORT-FN on it."
        for msg = (match-string 4)
        for (beg . end) = (let ((line (string-to-number (match-string 1)))
                                (col (string-to-number (match-string 2))))
-                           (flymake-diag-region src-buffer line col))
+                           (if (fboundp 'flymake-diag-region)
+                               (flymake-diag-region src-buffer line col)
+                             (error "flymake-diag-region unbound (emacs-26 required)")))
        for type = (ess-r--flymake-msg-type (match-string 3))
-       collect (flymake-make-diagnostic src-buffer beg end type msg)
+       collect (if (fboundp 'flymake-make-diagnostic)
+                   (flymake-make-diagnostic src-buffer beg end type msg)
+                 (error "flymake-make-diagnostic unbound (emacs-26 required)"))
        into diags
        finally (funcall report-fn diags)))))
 
@@ -182,7 +186,9 @@ REPORT-FN is flymake's callback function."
            (not (ess-process-live-p)))
       (progn
         (funcall report-fn nil)
-        (mapc #'delete-overlay (flymake--overlays)))
+        (if (fboundp 'flymake--overlays)
+            (mapc #'delete-overlay (flymake--overlays))
+          (error "flymake--overlays unbound (emacs-26 required)")))
     (let ((src-buffer (current-buffer)))
       (setq ess-r--flymake-proc
             (make-process
