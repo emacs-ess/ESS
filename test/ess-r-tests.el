@@ -300,7 +300,7 @@
 
 ;; roxy
 (ert-deftest ess-roxy-preview-Rd ()
-  ;; (skip-unless (member "roxygen2" (ess-r-installed-packages)))
+  (skip-unless (member "roxygen2" (ess-r-installed-packages)))
   (with-r-running nil
     (should (member "roxygen2" (ess-r-installed-packages)))
     (should
