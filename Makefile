@@ -14,8 +14,8 @@ ifneq ($(ESSVERSION), $(PKGVERSION))
 endif
 
 ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
-.PHONY: all install uninstall
-all install uninstall:
+.PHONY: all install uninstall dist
+all install uninstall dist:
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 	cd etc; $(MAKE) $@
@@ -114,11 +114,6 @@ rel-staging: cleanup-rel
 	else \
 	  commit=`git rev-parse HEAD | cut -c 1-12` ; \
 	fi ; echo $commit > $(ESSDIR)/etc/git-ref
-
-dist:
-	cd etc; $(MAKE) $@
-	cd lisp; $(MAKE) $@
-	cd doc; $(MAKE) $@
 
 .PHONY: cleanup-rel
 cleanup-rel:
