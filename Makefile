@@ -79,12 +79,16 @@ rel-tarballs: rel-staging
 	@echo "** Creating .tgz file **"
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
 	@echo "Signing tgz file"
-	-$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
+ifeq ($(TRAVIS),)
+	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
+endif
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
 	@echo "Signing zip file"
-	-$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
+ifeq ($(TRAVIS),)
+	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
+endif
 
 # Create the "release" directory
 # run in the foreground so you can accept the certificate
