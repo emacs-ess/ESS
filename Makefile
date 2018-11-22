@@ -43,6 +43,7 @@ etc: version
 
 .PHONY: test
 test: version
+	cd lisp; $(MAKE) test
 	cd test; $(EMACS) --script run-tests
 
 generate-indent-cases:
