@@ -14,9 +14,14 @@ endif
 
 ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
 
+.PHONY: install-pkg
+install-pkg:
+	rm -rf dist
+	cask package
+	emacs -Q --batch --eval "(package-initialize)" --eval "(package-install-file (car (file-expand-wildcards \"dist/ess*.tar\")))"
 
 .PHONY: all install uninstall
-all install uninstall: $(ETC_FILES)
+all install uninstall:
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@
 	cd etc; $(MAKE) $@
