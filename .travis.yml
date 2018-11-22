@@ -1,21 +1,11 @@
-language: generic
-
-cache:
-  directories:
-  - $HOME/local
-
+language: emacs-lisp
 env:
-  global:
-    - PATH=$HOME/local/bin:$HOME/local/evm/bin:$HOME/local/cask/bin:$PATH
-
-# When there's a new major Emacs release, also update
-# byte-compile-error-on-warn to the new release, below
-matrix:
-  include:
-    - env: EVM_EMACS=emacs-25.1-travis
-    - env: EVM_EMACS=emacs-25.3-travis
-    - env: EVM_EMACS=emacs-26.1-travis
-    - env: EVM_EMACS=emacs-git-snapshot-travis
+  # When there's a new major Emacs release, also update
+  # byte-compile-error-on-warn to the new release, below
+  - EVM_EMACS=emacs-25.1-travis
+  - EVM_EMACS=emacs-25.3-travis
+  - EVM_EMACS=emacs-26.1-travis
+  - EVM_EMACS=emacs-git-snapshot-travis
 
 before_install:
   - echo "deb https://cloud.r-project.org/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
@@ -29,12 +19,13 @@ before_install:
       texlive-latex-recommended
       texlive-latex-extra
 
-before_script:
-  - sh targets/install-evm.sh
+  - git clone https://github.com/rejeep/evm.git $HOME/.evm
+  - export PATH=$HOME/.evm/bin:$PATH
+
   - evm config path /tmp
   - evm install $EVM_EMACS --use --skip
-  - sh targets/install-cask.sh
 
+before_script:
   # link R executable to test defining runners based on other R
   # versions found on PATH. We're lying here that it is in fact a
   # different R version but that doesn't matter.
