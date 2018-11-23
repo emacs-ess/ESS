@@ -54,7 +54,7 @@
 
 ;; Silence the byte compiler
 (declare-function run-ess-r "ess-r-mode")
-(declare-function S+ "ess-sp6w-d")
+(declare-function S+ "ess-sp6-d")
 (declare-function SAS "ess-sas-d")
 
 ;; ESS mode

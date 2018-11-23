@@ -41,7 +41,6 @@
 (require 'ess-s-lang)
 (require 'ess-dde)
 (require 'ess-trns)
-(when ess-microsoft-p (require 'ess-sp6w-d))
 
 
 ;; You now need to make sure you've defined if you are running 5.0 or 5.1.
