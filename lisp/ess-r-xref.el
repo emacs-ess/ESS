@@ -27,13 +27,7 @@
 
 ;;; Code:
 
-(when (>= emacs-major-version 25)
-  (require 'subr-x)
-  (require 'xref))
-;; Kludge to silence the byte compiler until we drop support for Emacs 24.
-(declare-function xref-make "xref")
-(declare-function xref-make-buffer-location "xref")
-(declare-function xref-make-file-location "xref")
+(require 'xref)
 (require 'ess-inf)
 (require 'ess-utils)
 (require 'ess-r-package)
@@ -56,7 +50,7 @@ srcrefs point to temporary locations."
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
   (inferior-ess-r-force)
-  (when (and (eq major-mode 'ess-mode) (string= ess-language "S"))
+  (when (and (eq major-mode 'ess-r-mode) (string= ess-language "S"))
     (let ((tempfile (make-temp-file ".ess_attach_libs")))
       (with-temp-file tempfile
         (insert (buffer-string)))
