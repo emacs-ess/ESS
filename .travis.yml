@@ -43,3 +43,7 @@ script:
 - cd lisp; make julia-mode.elc
 - cd ..
 - make -C test -k all
+# Create package.el-installable tar file, test that it installs
+# successfully:
+- make package
+- emacs --script targets/travis-install-package.el
