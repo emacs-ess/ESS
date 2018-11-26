@@ -79,8 +79,6 @@
      (inferior-ess-help-filetype       . nil)
      (inferior-ess-search-list-command . "searchPaths()\n")
 
-     (ess-send-region-function         . #'ess-dde-send-region)
-     (ess-load-file-function           . #'ess-dde-load-file)
      (ess-command-function             . #'ess-dde-command)
      (ess-eval-linewise-function       . #'ess-dde-eval-linewise)
      (ess-dump-object-function         . #'ess-dde-dump-object)

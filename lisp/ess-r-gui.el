@@ -120,8 +120,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-help-sec-keys-alist          . ess-help-r-sec-keys-alist)
      (ess-function-pattern             . ess-r-function-pattern)
      (ess-object-name-db-file          . "ess-r-namedb.el" )
-     (ess-send-region-function         . #'ess-dde-rgui-send-region)
-     (ess-load-file-function           . #'ess-dde-load-file)
      (ess-command-function             . #'ess-dde-command)
      (ess-eval-linewise-function       . #'ess-dde-eval-linewise)
      (ess-dump-object-function         . #'ess-dde-dump-object)
@@ -135,7 +133,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (inferior-ess-help-command        . "help(\"%s\")\n")
      (inferior-ess-help-filetype       . nil) ;; "chm") ;;?
      (inferior-ess-exit-command        . "q()")
-     (inferior-ess-exit-prompt         . "Save workspace image? [y/n/c]: ")
      (inferior-ess-primary-prompt      . "\\([A-Z/][][A-Za-z0-9./]*\\)*[>$] ")
      (inferior-ess-secondary-prompt    . "+ ?")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
