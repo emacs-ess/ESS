@@ -72,8 +72,16 @@ essr: VERSION
 
 
 ## the rest of the targets are for ESS developer's use only :
-.PHONY: tarballs
-tarballs: ess-$(ESSVERSION).tar ess-$(ESSVERSION).tgz ess-$(ESSVERSION).zip # TODO: ess-plus-$(VERSION).tar
+.PHONY: tarballs sign-tarballs
+TARBALLS = ess-$(ESSVERSION).tar ess-$(ESSVERSION).tgz ess-$(ESSVERSION).zip # TODO: ess-plus-$(VERSION).tar
+tarballs: $(TARBALLS)
+
+SIGNED_TARBALLS = $(addsuffix .sig, $(TARBALLS))
+sign-tarballs: $(SIGNED_TARBALLS)
+$(SIGNED_TARBALLS): $(TARBALLS)
+	@echo "Signing $@"
+	$(GPG) -ba -o $@ $<
+
 
 .PHONY: tgz
 tgz: ess-$(ESSVERSION).tgz
@@ -81,8 +89,6 @@ ess-$(ESSVERSION).tgz: $(ESSDIR)
 	@echo "** Creating .tgz file **"
 	test -f $(ESSDIR).tgz && rm -rf $(ESSDIR).tgz || true
 	$(GNUTAR) hcvofz $(ESSDIR).tgz $(ESSDIR)
-	@echo "Signing tgz file"
-	$(GPG) -ba -o $(ESSDIR).tgz.sig $(ESSDIR).tgz
 
 .PHONY: zip
 zip: ess-$(ESSVERSION).zip
@@ -90,8 +96,6 @@ ess-$(ESSVERSION).zip: $(ESSDIR)
 	@echo "** Creating .zip file **"
 	test -f $(ESSDIR).zip && rm -rf $(ESSDIR).zip || true
 	zip -r $(ESSDIR).zip $(ESSDIR)
-	@echo "Signing zip file"
-	$(GPG) -ba -o $(ESSDIR).zip.sig $(ESSDIR).zip
 
 .PHONY: package
 package: ess-$(ESSVERSION).tar
@@ -103,8 +107,6 @@ ess-$(ESSVERSION).tar:
 	@$(GNUTAR) -C ess-$(ESSVERSION) -xf ess-$(ESSVERSION).tar
 	@cd ess-$(ESSVERSION) && $(EMACS) -Q --script "targets/create-pkg-file.el"
 	@$(GNUTAR) c -f ess-$(ESSVERSION).tar ess-$(ESSVERSION)
-	@echo "Signing $@"
-	@$(GPG) -ba -o $(ESSDIR).tar.sig $(ESSDIR).tar
 	@rm -rf ess-$(ESSVERSION)/
 
 # Create the "release" directory
@@ -131,7 +133,7 @@ $(ESSDIR): RPM.spec
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
 #	# Get (the first 12 hexdigits of) the git version into the release tarball:
-	cut -c 1-12 $(ESSDIR)-git/.git/refs/heads/master > $(ESSDIR)/etc/git-ref
+	$(shell git-rev-parse master | cut -c 1-12 ) > $(ESSDIR)/etc/git-ref
 
 dist: VERSION tarballs
 	@echo "** Making pdf and html documentation"
