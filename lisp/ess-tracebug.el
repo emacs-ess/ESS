@@ -25,14 +25,6 @@
 ;; A copy of the GNU General Public License is available at
 ;; https://www.r-project.org/Licenses/
 
-;;
-;; Features that might be required by this library:
-;;
-;;   ESS - required
-;;   ido, face-remap, cl -  desirable and are part of default emacs
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
 ;;; Commentary:
 ;;  Ess-tracebug is a package for interactive debugging of R code from
 ;;  ESS and provides such features as:
@@ -43,9 +35,8 @@
 ;;  - highlighting of error source references and easy error navigation
 ;;  - interactive traceback.
 ;;
-;;  For a complete description please see the documentation at
-;;  https://code.google.com/p/ess-tracebug/ and a brief tutorial at
-;;  https://code.google.com/p/ess-tracebug/wiki/GettingStarted
+;;  For a complete description please see the documentation in the ESS
+;;  manual.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
