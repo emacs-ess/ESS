@@ -17,6 +17,7 @@
 ;; Copyright (C) 1997-2018 ESS Core Team <ESS-core@r-project.org>
 ;; Created: 7 Jan 1994
 ;; Version: 18.10.2-git
+;; URL: https://ess.r-project.org/
 ;; Package-Requires: ((julia-mode "0.3"))
 ;; ESSR-Version: 1.4
 ;;
