@@ -453,12 +453,12 @@ temporary one in `temporary-file-directory'."
     ;; (ess--flush-help-into-current-buffer file "tools::Rd2txt(\"%s\")\n")
     ;; instead of all this :
     (ess-setq-vars-local ess-r-customize-alist)
-    ;; FIXME: Is this really needed?
-    (setq ess-help-sec-regex ess-help-r-sec-regex
-          ess-help-sec-keys-alist ess-help-r-sec-keys-alist)
     ;; mostly cut'n'paste from ess--flush-help* (see FIXME(2)):
     (ess-help-underline)
     (ess--help-major-mode)
+    ;; FIXME: Is this really needed?
+    (setq ess-help-sec-regex ess-help-r-sec-regex
+          ess-help-sec-keys-alist ess-help-r-sec-keys-alist)
     (goto-char (point-min))
     (set-buffer-modified-p 'nil)
     (setq buffer-read-only t)

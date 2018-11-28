@@ -178,8 +178,8 @@ suplied, it is used instead of `inferior-ess-help-command'."
       (ess-nuke-help-bs))
     (goto-char (point-min))
     (set-buffer-modified-p 'nil)
-    (setq truncate-lines nil)
-    (ess--help-major-mode)))
+    (ess--help-major-mode)
+    (setq truncate-lines nil)))
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus BUFFER with message. Return t if killed."
@@ -302,13 +302,13 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
         (pname ess-local-process-name)
         (buff (get-buffer-create title)))
     (with-current-buffer buff
+      (setq buffer-read-only nil)
+      (delete-region (point-min) (point-max))
+      (ess--help-major-mode)
       (setq ess-help-object help-object)
       (ess-setq-vars-local (eval alist))
       (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
             ess-local-process-name pname)
-      (setq buffer-read-only nil)
-      (delete-region (point-min) (point-max))
-      (ess--help-major-mode)
       (ess-command command buff)
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
@@ -410,10 +410,10 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
       (ess-setq-vars-local (eval alist))
+      (ess--help-major-mode)
       (setq ess-help-sec-regex "^\\w+:$"
             ess-help-type 'vignettes
             ess-local-process-name proc-name)
-      (ess--help-major-mode)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
       (dolist (el vslist)
@@ -428,9 +428,9 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
                               ;; incorrect number of arguments on Both 26+ and 25 emacses.
                               (if (>= emacs-major-version 26)
                                   (with-parsed-tramp-file-name default-directory nil
-                                                               (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
+                                    (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
                                 (with-parsed-tramp-file-name default-directory nil
-                                                             (tramp-make-tramp-file-name method user host (nth 1 el2)))))
+                                  (tramp-make-tramp-file-name method user host (nth 1 el2)))))
                           (nth 1 el2))))
               (insert-text-button "Pdf"
                                   'mouse-face 'highlight
