@@ -149,10 +149,11 @@ suplied, it is used instead of `inferior-ess-help-command'."
                 current-prefix-arg
                 (ess--help-get-bogus-buffer-substring old-hb-p))
         (ess-with-current-buffer tbuffer
-          (setq ess-help-object object
-                ess-help-type 'help)
-          (setq buffer-read-only t)
-          (ess--flush-help-into-current-buffer object command)))
+          (ess--flush-help-into-current-buffer object command)
+          (ess--help-major-mode)
+          (setq truncate-lines nil
+                ess-help-object object
+                ess-help-type 'help)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
 
@@ -177,9 +178,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
     (unless (string= ess-language "STA")
       (ess-nuke-help-bs))
     (goto-char (point-min))
-    (set-buffer-modified-p 'nil)
-    (ess--help-major-mode)
-    (setq truncate-lines nil)))
+    (set-buffer-modified-p 'nil)))
 
 (defun ess--help-kill-bogus-buffer-maybe (buffer)
   "Internal, try to kill bogus BUFFER with message. Return t if killed."
@@ -239,52 +238,44 @@ if necessary.  It is bound to RET and C-m in R-index pages."
                     (funcall ess-build-help-command-function string))))
     (ess-display-help-on-object string command)))
 
+(cl-defgeneric ess-help-commands ()
+  "Return an alist of dialect specific retriever commands.
+Currently understood commands:
+ - package-for-object - command to get the package of current help object
+ - packages - command to get a list of available packages (REQUIRED)
+ - package-index - command to get the package index (REQUIRED)
+ - index-keyword-reg - regexp used to find keywords for linking in index listing
+                 only (1st subexpression is used)
+ - index-start-reg - regexp from where to start searching for keywords in index listing"
+  (user-error "Not implemented for %s " ess-dialect))
+
+(cl-defmethod ess-help-commands (&context ((string= ess-dialect "R") (eql t)))
+  '((package-for-object . "sub('package:', '', .ess.findFUN('%s'))\n")
+    (packages           . ".packages(all.available=TRUE)\n")
+    (package-index      . ".ess.help(package='%s', help.type='text')\n")
+    (index-keyword-reg  . "^\\([^ \t\n:]+\\)")
+    (index-start-reg    . "^Index:")))
+
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
   (interactive)
-  (let (
-        pack all-packs
-        ;; Available customization for ess languages/dialects:
-        com-package-for-object ;command to get the package of current help object
-        com-packages ;command to get a list of available packages (REQUIRED)
-        com-package-index ;command to get the package index (REQUIRED)
-        reg-keyword ;regexp used to find keywords for linking in index listing
-                                        ; only (1st subexpression is used)
-        reg-start ;regexp from where to start searching for keywords in index listing
-        )
-    (cond
-     ((string-match "^R" ess-dialect)
-      ;; carefully using syntax to be parsed in old R versions (no '::', '_'):
-      (setq com-package-for-object "sub('package:', '', .ess.findFUN('%s'))\n"
-            com-packages           ".packages(all.available=TRUE)\n"
-            com-package-index      ".ess.help(package='%s', help.type='text')\n"
-            reg-keyword             "^\\([^ \t\n:]+\\)"
-            reg-start              "^Index:"))
-     ((string-match "julia" ess-dialect)
-      (setq com-packages           "_ess_list_categories()\n"
-            com-package-index      "_ess_print_index(\"%s\")\n"
-            reg-keyword             "^\\(.*+\\):$*"
-            reg-start              ":"
-            ))
-     (t (error "Not implemented for %s " ess-dialect)))
-    (when (and com-package-for-object
-               ess-help-object
-               (eq ess-help-type 'help))
-      (setq pack (car (ess-get-words-from-vector
-                       (format com-package-for-object ess-help-object)))))
-    (setq all-packs (ess-get-words-from-vector com-packages))
-    (unless pack ;try symbol at point
-      (setq pack  (car (member (ess-read-object-name-default) all-packs))))
-    (setq pack (ess-completing-read "Index of"
-                                    all-packs nil nil nil nil pack))
+  (let* ((pack nil)
+         (all-packs nil)
+         (coms (ess-help-commands))
+         (all-packs (ess-get-words-from-vector (cdr (assoc 'packages coms))))
+         (pack (or (when (and ess-help-object
+                              (cdr (assoc 'package-for-object coms))
+                              (eq ess-help-type 'help))
+                     (car (ess-get-words-from-vector
+                           (format (cdr (assoc 'package-for-object coms))
+                                   ess-help-object))))
+                   (car (member (ess-read-object-name-default) all-packs)))))
+    (setq pack (ess-completing-read "Index of" all-packs nil nil nil nil pack))
     (ess--display-indexed-help-page
-     (format com-package-index pack)
-     reg-keyword
+     (format (cdr (assoc 'package-index coms)) pack)
+     (cdr (assoc 'index-keyword-reg coms))
      (format "*help[%s](index:%s)*"  ess-dialect pack)
-     'index nil nil reg-start pack)))
-
-(defalias 'ess-display-index 'ess-display-package-index)
-(make-obsolete 'ess-display-index 'ess-display-package-index "ESS[12.09]")
+     'index nil nil (cdr (assoc 'index-start-reg coms)) pack)))
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
                                                &optional action help-echo reg-start help-object)

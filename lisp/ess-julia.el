@@ -44,6 +44,7 @@
 (require 'compile)
 (require 'ess-utils)
 (require 'ess-r-mode)
+(require 'ess-help)
 (require 'julia-mode)
 (require 'ess-inf)
 
@@ -356,6 +357,12 @@ to look up any doc strings."
     table)
   "Syntax table used for completion and help symbol lookup.
 It makes underscores and dots word constituent chars.")
+
+(cl-defmethod ess-help-commands (&context ((string= ess-dialect "julia") (eql t)))
+  '((packages      . "_ess_list_categories()\n")
+    (package-index . "_ess_print_index(\"%s\")\n")
+    (index-keyword-reg . "^\\(.*+\\):$*")
+    (index-start-reg   . ":")))
 
 (defvar ess-julia-mode-syntax-table (copy-syntax-table julia-mode-syntax-table))
 
