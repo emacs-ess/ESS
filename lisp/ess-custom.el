@@ -1623,16 +1623,9 @@ for file name completion.  This can mess up ess evaluation completely."
   :group 'ess-R
   :type 'boolean)
 
-(defcustom inferior-STA-start-file nil
-  "Initialization file for Stata."
-  :group 'ess-Stata
-  :type '(choice (const nil) string))
-
 (defcustom inferior-STA-start-args ""
   "String of switches used when starting stata.
-Don't use this to send initialization command to stata, use
-`inferior-STA-start-file' instead. Also see
-`inferior-STA-program'."
+Also see `inferior-STA-program'."
   :group 'ess-Stata
   :type 'string)
 
@@ -2038,11 +2031,6 @@ corresponding program.")
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
 If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
-
-(defcustom inferior-ess-start-file nil
-  "File dumped into process, if non-nil."
-  :group 'ess-proc
-  :type '(choice (const nil) file))
 
 (defcustom inferior-ess-pager (if ess-microsoft-p "console" "cat")
   "Pager to use for reporting help files and similar things."

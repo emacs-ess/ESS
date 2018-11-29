@@ -129,9 +129,8 @@ buffer name will be like *R* or *R2*, determined by
 `ess-gen-proc-buffer-name-function'.
 
 Takes the program name from the variable `inferior-ess-program'.
-An initialization file (dumped into the process) is specified by
-`inferior-ess-start-file', and `inferior-ess-start-args' is used
-to accompany the call for `inferior-ess-program'.
+Arguments to `inferior-ess-program' can be given with
+`inferior-ess-start-args'.
 
 See Info node `(ess)Customizing startup' and
 `display-buffer-alist' to control where and how the buffer is
@@ -515,7 +514,7 @@ SWITCHES is passed to `comint-exec'."
              (comint-exec buffer
                           procname
                           inferior-ess-program
-                          inferior-ess-start-file
+                          nil
                           (ess-line-to-list-of-words
                            switches)))))
     buffer))

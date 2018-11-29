@@ -72,7 +72,8 @@ This includes old versions of S+, ARC, OMG, VST, and XLS.
 
 @end itemize
 
-The following have been made obsolete, see their documentation for more detail:
+The following have been made obsolete or removed, see their
+documentation for more detail:
 
 @itemize @bullet
 
@@ -81,6 +82,11 @@ This includes @code{ess-show-buffer-action},
 @code{inferior-ess-same-window}, @code{inferior-ess-own-frame}, and
 @code{inferior-ess-frame-alist}. See above about ESS respecting
 @code{display-buffer-alist}.
+
+@item @code{inferior-ess-*-start-file} variables.
+All modes except Stata did not respect customization of this variable.
+In order to load a file on startup, you should put a function on
+@code{ess-*-post-run-hook}.
 
 @end itemize
 

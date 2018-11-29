@@ -57,8 +57,6 @@ The default value is nil."
      (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
      (inferior-ess-program              . inferior-S-elsewhere-program)
      (inferior-ess-help-command         . "help(\"%s\", pager=\"cat\", window=F)\n")
-
-     (inferior-ess-start-file           . nil) ;"~/.ess-S+3")
      (inferior-ess-start-args           . "-i")
      (ess-STERM  . "iESS")
      )

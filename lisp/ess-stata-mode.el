@@ -83,7 +83,6 @@
     (inferior-ess-primary-prompt   . "[.:] \\|--more--") 
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
-    (inferior-ess-start-file       . inferior-STA-start-file) ;"~/.ess-stata")
     (inferior-ess-start-args       . inferior-STA-start-args)
     (ess-get-help-topics-function  . 'ess-get-STA-help-topics)
     (inferior-ess-search-list-command   . "set more off\n search()\n")

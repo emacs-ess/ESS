@@ -134,7 +134,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (inferior-ess-primary-prompt      . "\\([A-Z/][][A-Za-z0-9./]*\\)*[>$] ")
      (inferior-ess-secondary-prompt    . "+ ?")
      ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-     (inferior-ess-start-file          . nil) ;; "~/.ess-R"
      (inferior-ess-start-args          . "")
      (inferior-ess-ddeclient           . "execdde")
      (ess-STERM                        . "ddeSS")

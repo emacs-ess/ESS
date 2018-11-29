@@ -536,11 +536,23 @@ variable is nil.
 
 @end enumerate
 
+@vindex ess-ask-for-ess-directory
+@vindex ess-pre-run-hook
 If @code{ess-ask-for-ess-directory} has a non-@code{nil} value (as it
 does by default) then the value determined by the above rules provides
 the default when prompting for the starting directory.  Incidentally,
 @code{ess-directory} is an ideal variable to set in
 @code{ess-pre-run-hook}.
+
+@vindex ess-post-run-hook
+You may also customize @code{ess-post-run-hook} and the
+dialect-specific @code{ess-*-post-run-hook} variables. For example,
+you may want to use @code{ess-load-file} to load a file when ESS
+starts R:
+
+@example
+(add-hook 'ess-r-post-run-hook (lambda () (ess-load-file "foo.R")))
+@end example
 
 If you like to keep a record of your R actions, set the variable
 @code{ess-ask-about-transfile} to @code{t}, and you will be asked for a
