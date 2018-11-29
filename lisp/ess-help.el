@@ -259,9 +259,7 @@ Currently understood commands:
 (defun ess-display-package-index ()
   "Prompt for package name and display its index."
   (interactive)
-  (let* ((pack nil)
-         (all-packs nil)
-         (coms (ess-help-commands))
+  (let* ((coms (ess-help-commands))
          (all-packs (ess-get-words-from-vector (cdr (assoc 'packages coms))))
          (pack (or (when (and ess-help-object
                               (cdr (assoc 'package-for-object coms))
