@@ -336,7 +336,6 @@ To be used as part of `font-lock-defaults' keywords."
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
      (ess-dialect                           . "R")
      (ess-suffix                            . "R")
-     (ess-build-tags-command                . ess-r-build-tags-command)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
@@ -373,7 +372,8 @@ To be used as part of `font-lock-defaults' keywords."
   'inferior-ess-r-font-lock-keywords)
 
 
-(defvar ess-r-build-tags-command
+(cl-defmethod ess-build-tags-command (&context ((string= ess-dialect "R") (eql t)))
+  "Return tags command for R."
   "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
 
 (defvar ess-r-traceback-command

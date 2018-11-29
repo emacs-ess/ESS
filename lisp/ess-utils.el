@@ -660,12 +660,12 @@ t. See examples in the tracebug code."
          (push ev unread-command-events))
        out)))
 
-(defvar ess-build-tags-command nil
+(cl-defgeneric ess-build-tags-command ()
   "Command passed to generate tags.
-
 If nil, `ess-build-tags-for-directory' uses the mode's imenu
-regexpresion. Othersiwe, it should be a string with two %s
-formats: one for directory and another for the output file.")
+expression. Otherwise, it should be a string with two %s
+formats: one for directory and another for the output file."
+  nil)
 
 ;;;*;;; Emacs itself
 
@@ -727,8 +727,8 @@ GTags file (default TAGS): ")
   (when (file-remote-p dir)
     (require 'tramp)
     (setq dir (with-parsed-tramp-file-name dir foo foo-localname)))
-  (if (and ess-build-tags-command (null current-prefix-arg))
-      (ess-eval-linewise (format ess-build-tags-command dir tagfile))
+  (if (and (ess-build-tags-command) (null current-prefix-arg))
+      (ess-eval-linewise (format (ess-build-tags-command) dir tagfile))
     ;; else generate from imenu
     (unless (or imenu-generic-expression ess-imenu-generic-expression) ;; need both!!
       (error "No ess-tag-command found, and no imenu-generic-expression defined"))
