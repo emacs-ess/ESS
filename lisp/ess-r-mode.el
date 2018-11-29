@@ -1343,14 +1343,12 @@ If it changes, we flush the cache.")
 
 (cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
   "With ARG, do not offer to save the workspace."
-  (let (cmd
+  (let ((cmd (format "base::q('%s')\n" (if arg "no" "default")))
         (sprocess (ess-get-process ess-current-process-name)))
     (when (not sprocess) (error "No ESS process running"))
     (ess-cleanup)
-    (setq cmd (format "base::q('%s')\n" (if arg "no" "default")))
     (goto-char (marker-position (process-mark sprocess)))
-    (insert cmd)
-    (process-send-string sprocess cmd)))
+    (ess-send-string sprocess cmd t)))
 
 (defcustom inferior-ess-r-reload-hook nil
   "Hook run when reloading the R inferior buffer."
