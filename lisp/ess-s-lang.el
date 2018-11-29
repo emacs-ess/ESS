@@ -720,8 +720,6 @@ If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
   (with-ess-process-buffer nil
-    (ess-write-to-dribble-buffer
-     (format "(ess-get-help-topics-list %s) .." name))
     (when (fboundp 'ess-help-r--check-last-help-type)
       (ess-help-r--check-last-help-type))
     (cond

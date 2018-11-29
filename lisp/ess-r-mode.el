@@ -2294,10 +2294,11 @@ state.")
           (setq text (if (string-match "[\"’]*$" text)
                          (substring text 0 (match-beginning 0))
                        text)))
-        (add-text-properties beg end (list 'ess-r-help-link-text text))
-        (make-text-button beg end
-                          'type 'ess-r-help-link
-                          'help-echo (format "mouse-2, RET: Help on %s" text))))))
+        (when (member text (ess-s-get-help-topics-function ess-local-process-name))
+          (add-text-properties beg end (list 'ess-r-help-link-text text))
+          (make-text-button beg end
+                            'type 'ess-r-help-link
+                            'help-echo (format "mouse-2, RET: Help on %s" text)))))))
 
 
 
