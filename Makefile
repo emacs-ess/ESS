@@ -42,8 +42,7 @@ etc: version
 	cd etc; $(MAKE)
 
 .PHONY: test
-test: version
-	cd test; $(EMACS) --script run-tests
+	$(MAKE) -C test all
 
 generate-indent-cases:
 	cd test; $(EMACS) --script generate-indent-cases

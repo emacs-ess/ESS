@@ -25,12 +25,14 @@ COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
 
 ### Targets
 
-.PHONY: all dist install uninstall distclean clean
+.PHONY: all dist install uninstall distclean clean compile
 
 ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) julia-mode.el
 ELC = $(ELS:.el=.elc)
 
-all dist: $(ELC) ess-autoloads.el
+all dist: compile ess-autoloads.el
+
+compile: $(ELC)
 
 install: dist
 	-$(INSTALLDIR) $(LISPDIR)

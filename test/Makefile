@@ -3,7 +3,7 @@ EMACS?=emacs
 .PHONY: literate
 
 
-all:
+all: compile
 	${EMACS} -Q --script run-tests
 
 ess:
@@ -29,3 +29,8 @@ indent-cases:
 
 literate-cases:
 	${EMACS} -Q --script generate-literate-cases
+
+.PHONY: compile
+compile:
+	@cd ../lisp && make -k all \
+		"EMACSBATCH = emacs --batch --eval \"(setq byte-compile-error-on-warn t)\""

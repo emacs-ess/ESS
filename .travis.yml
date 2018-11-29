@@ -7,6 +7,10 @@ env:
   - EVM_EMACS=emacs-26.1-travis
   - EVM_EMACS=emacs-git-snapshot-travis
 
+matrix:
+  allow_failures:
+    - env: EVM_EMACS=emacs-git-snapshot-travis
+
 before_install:
   - echo "deb https://cloud.r-project.org/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
   - sudo add-apt-repository ppa:marutter/c2d4u -y
@@ -38,7 +42,4 @@ script:
 - R --version
 - cd lisp; make julia-mode.elc
 - cd ..
-- cp targets/travis-setup.el setup
-- cp targets/travis-setup.el lisp/setup
-- make -k all "EMACSBATCH = emacs -batch -Q -l setup"
-- make test
+- make -C test -k all
