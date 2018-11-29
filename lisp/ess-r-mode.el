@@ -2283,18 +2283,23 @@ state.")
             (text (match-string 0)))
         ;; Remove surrounding quotes so the text property is the
         ;; name of the link:)
-        (progn
-          ;; TODO: Replace all this with:
-          ;; (string-trim (match-string 0) "[\"‘]*" "[\"’]*")
-          ;; after dropping support for Emacs 25
-          (setq text
-                (if (string-match "^[\"‘]*" text)
-                    (substring text (match-end 0))
-                  text))
-          (setq text (if (string-match "[\"’]*$" text)
-                         (substring text 0 (match-beginning 0))
-                       text)))
+        (save-match-data
+          (progn
+            ;; TODO: Replace all this with:
+            ;; (string-trim (match-string 0) "[\"‘]*" "[\"’]*")
+            ;; after dropping support for Emacs 25
+            (setq text
+                  (if (string-match "^[\"‘]*" text)
+                      (substring text (match-end 0))
+                    text))
+            (setq text (if (string-match "[\"’]*$" text)
+                           (substring text 0 (match-beginning 0))
+                         text))))
         (when (member text (ess-s-get-help-topics-function ess-local-process-name))
+          ;; Remove fancy quotes, they're unneeded with buttons.
+          (replace-match text)
+          (setq end (- end 2))
+          ;; Ad text property so we can get the button
           (add-text-properties beg end (list 'ess-r-help-link-text text))
           (make-text-button beg end
                             'type 'ess-r-help-link
