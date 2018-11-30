@@ -2075,7 +2075,8 @@ suitable to send to the inferior process (e.g. \"options(width=80, length=999999
   "Set the width option.
 A part of `window-configuration-change-hook' in inferior ESS
 buffers."
-  (when ess-auto-width
+  (when (and ess-auto-width
+             ess-execute-screen-options-command)
     ;; `window-configuration-change-hook' runs with the window selected.
     (let ((proc (get-buffer-process (window-buffer)))
           command)
