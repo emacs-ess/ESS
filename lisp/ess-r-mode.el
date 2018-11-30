@@ -354,7 +354,6 @@ To be used as part of `font-lock-defaults' keywords."
      (inferior-ess-objects-command          . inferior-ess-r-objects-command)
      (inferior-ess-search-list-command      . "search()\n")
      (inferior-ess-help-command             . inferior-ess-r-help-command)
-     (inferior-ess-help-filetype            . nil)
      (inferior-ess-exit-command             . "q()")
      (inferior-ess-start-file               . nil)
      (inferior-ess-start-args               . "")
@@ -2258,8 +2257,7 @@ state.")
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
         inferior-ess-help-command inferior-ess-r-help-command
-        ess-get-help-topics-function #'ess-s-get-help-topics-function
-        inferior-ess-help-filetype nil)
+        ess-get-help-topics-function #'ess-s-get-help-topics-function)
   (ess-r-help-add-links))
 
 (define-button-type 'ess-r-help-link

@@ -335,7 +335,6 @@ to look up any doc strings."
     (ess-function-pattern          . ess-r-function-pattern)
     (ess-object-name-db-file       . "ess-jl-namedb.el" )
     (ess-smart-operators           . ess-r-smart-operators)
-    (inferior-ess-help-filetype    . nil)
     (inferior-ess-exit-command     . "exit()\n")
     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
     (inferior-ess-start-file       . nil) ;; "~/.ess-R"

@@ -76,7 +76,6 @@
      (ess-object-name-db-file          . "ess-sp6-namedb.el")
      (inferior-ess-program             . inferior-S+-program)
      (inferior-ess-help-command        . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
-     (inferior-ess-help-filetype       . nil)
      (inferior-ess-search-list-command . "searchPaths()\n")
 
      (ess-command-function             . #'ess-dde-command)

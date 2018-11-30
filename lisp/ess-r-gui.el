@@ -131,7 +131,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (inferior-ess-font-lock-keywords  . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")
      (inferior-ess-help-command        . "help(\"%s\")\n")
-     (inferior-ess-help-filetype       . nil) ;; "chm") ;;?
      (inferior-ess-exit-command        . "q()")
      (inferior-ess-primary-prompt      . "\\([A-Z/][][A-Za-z0-9./]*\\)*[>$] ")
      (inferior-ess-secondary-prompt    . "+ ?")

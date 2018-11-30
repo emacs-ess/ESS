@@ -822,12 +822,8 @@ there is only one process running."
       (if (and ess-local-process-name (not force) no-autostart)
           (error "Process %s has died" ess-local-process-name)
         ;; ess-local-process-name is nil -- which process to attach to
-        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1))
-              temp-ess-help-filetype)
-          (with-current-buffer (process-buffer (get-process proc))
-            (setq temp-ess-help-filetype inferior-ess-help-filetype))
-          (setq ess-local-process-name proc)
-          (setq inferior-ess-help-filetype temp-ess-help-filetype))))))
+        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1)))
+          (setq ess-local-process-name proc))))))
 
 (defalias 'inferior-ess-force #'ess-force-buffer-current)
 
