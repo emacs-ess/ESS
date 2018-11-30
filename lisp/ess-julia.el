@@ -88,9 +88,9 @@ VISIBLY is not currently used."
       (nreverse out))))
 
 (defvar ess-julia--manual-topics nil)
-(defun ess-julia-manual-lookup-function (&rest args) ; args are not used
+(defun ess-julia-manual-lookup-function (&rest _args)
+  "Look up topics at https://docs.julialang.org/en/latest/manual/."
   (interactive)
-  "Look up topics at https://docs.julialang.org/en/latest/manual/"
   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
@@ -99,6 +99,8 @@ VISIBLY is not currently used."
     (browse-url (get-text-property 1 :manual page))))
 
 (defun ess-julia-input-sender (proc string)
+  "Function to send PROC STRING submitted by user.
+See `comint-input-sender'."
   (save-current-buffer
     (let* ((help-?-regexp "^ *\\(?:\\(?1: *?\\? *\\)\\(?2:.+\\)\\)")
            (help-?-match (string-match help-?-regexp string)))
@@ -108,27 +110,17 @@ VISIBLY is not currently used."
             (t ;; normal command
              (inferior-ess-input-sender proc string))))))
 
-;; julia 0.3.0 doesn't provide categories. Thus we don't support this anymore.
-;; (defun ess-julia-reference-lookup-function (&rest args) ; args are not used
-;;   (interactive)
-;;   "Look up reference topics"
-;;   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
-;;   (let* ((pages (ess-get-words-from-vector "ESS.help_categories()\n")))
-;;     (ess-display-help-on-object
-;;      (ess-completing-read "Category" pages nil t))))
-
-
 
 ;;; COMPLETION
 (defun ess-julia-latexsub-completion ()
-  "Complete latex input, and returns in a format required by `completion-at-point-functions'."
+  "Complete latex input, and return format required by `completion-at-point-functions'."
   (if (julia-latexsub) ; julia-latexsub returns nil if it performed a completion, the point otherwise
       nil
     (lambda () t) ;; bypass other completion methods
     ))
 
 (defun ess-julia-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'. "
+  "Return completions at point in a format required by `completion-at-point-functions'."
   (let ((proc (ess-get-next-available-process ess-dialect t))
         (beg (ess-symbol-start)))
     (if proc
