@@ -1,4 +1,4 @@
-;; ess-julia.el --- ESS julia mode and inferior interaction
+;; ess-julia.el --- ESS julia mode and inferior interaction  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2012-2015 Vitalie Spinu and the ESS Core team.
 ;;
@@ -60,7 +60,7 @@
 (eval-when-compile
   (require 'cl-lib))
 
-(defun ess-julia-send-string-function (process string visibly)
+(defun ess-julia-send-string-function (process string _visibly)
   "Send the Julia STRING to the PROCESS.
 VISIBLY is not currently used."
   (let ((file (concat temporary-file-directory "julia_eval_region.jl")))
