@@ -1038,24 +1038,13 @@ Placed into `ess-presend-filter-functions' for R dialects."
     (ess--mark-search-list-as-changed))
   string)
 
-(defun ess-load-library ()
-  "Prompt and load dialect specific library/package/module.
+(cl-defmethod ess-installed-packages (&context ((string= ess-dialect "R") (eql t)))
+  ;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
+  (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
 
-Note that add-ons in R are called 'packages' and the name of this
-function has nothing to do with R package mechanism, but it
-rather serves a generic, dialect independent purpose. It is also
-similar to `load-library' Emacs function."
-  (interactive)
-  (if (not (string-match "^R" ess-dialect))
-      (message "Sorry, not available for %s" ess-dialect)
-    (let ((ess-eval-visibly-p t)
-;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
-          (packs (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
-          pack)
-      (setq pack (ess-completing-read "Load" packs))
-      (ess-eval-linewise (format "library('%s')\n" pack))
-      (ess--mark-search-list-as-changed)
-      (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name)))))))
+(cl-defmethod ess-load-library--override (pack &context ((string= ess-dialect "R") (eql t)))
+  "Load an R package."
+  (ess-eval-linewise (format "library('%s')\n" pack)))
 
 (define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
 

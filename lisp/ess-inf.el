@@ -1340,6 +1340,27 @@ of `ess-async-command' with an explicit interrupt-callback."
                        (ess-async-command ,com ,buf ,proc ,callback ',int-cb)))))
     (run-with-idle-timer delay nil com-fun)))
 
+(defun ess-load-library ()
+  "Prompt and load dialect specific library/package/module.
+Note that add-ons in R are called 'packages' and the name of this
+function has nothing to do with R package mechanism, but it
+rather serves a generic, dialect independent purpose. It is also
+similar to `load-library' Emacs function."
+  (interactive)
+  (let ((ess-eval-visibly-p t)
+        (packs (ess-installed-packages))
+        pack)
+    (setq pack (ess-completing-read "Load" packs))
+    (ess-load-library--override pack)
+    (ess--mark-search-list-as-changed)
+    (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
+
+(cl-defgeneric ess-installed-packages ()
+  "Return a list of installed packages.")
+
+(cl-defgeneric ess-load-library--override (pack)
+  "Load library/package PACK.")
+
 
 ;;*;;  Evaluating lines, paragraphs, regions, and buffers.
 

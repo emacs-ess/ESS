@@ -110,6 +110,14 @@ See `comint-input-sender'."
             (t ;; normal command
              (inferior-ess-input-sender proc string))))))
 
+(cl-defmethod ess-installed-packages (&context ((string= ess-dialect "julia") (eql t)))
+  "Return list of installed julia packages."
+  ;; FIXME: This doesn't work if the user hasn't done "using Pkg" yet
+  (ess-get-words-from-vector "keys(Pkg.installed())\n"))
+
+(cl-defmethod ess-load-library--override (pack &context ((string= ess-dialect "julia") (eql t)))
+  (ess-eval-linewise (format "using %s\n" pack)))
+
 
 ;;; COMPLETION
 (defun ess-julia-latexsub-completion ()
