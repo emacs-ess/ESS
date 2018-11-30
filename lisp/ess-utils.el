@@ -1446,13 +1446,6 @@ Adds the `ess-face-adjusted' property so we only adjust face once."
             (put (car pair) 'permanent-local t))) ;; hack for Rnw
         alist))
 
-(defun ess-setq-vars-default (alist &optional buf)
-  "Set language variables from ALIST, in buffer BUF, if desired."
-  (when buf (set-buffer buf))
-  (mapc (lambda (pair)
-          (set-default (car pair) (eval (cdr pair))))
-        alist))
-
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
 
