@@ -1200,16 +1200,6 @@ also return t if inside curly brackets."
    (replace-regexp-in-string ;; replace backslashes
     "\\\\" "\\\\" string nil t)))
 
-;; simple alternative to ess-read-object-name-default of ./ess-inf.el :
-;; is "wrongly" returning   "p1"  for word "p1.part2" :
-(defun ess-extract-word-name ()
-  "Get the word you're on (cheap algorithm).
-Use `ess-read-object-name-default' for a better but slower
-version."
-  (save-excursion
-    (re-search-forward "\\<\\w+\\>" nil t)
-    (buffer-substring (match-beginning 0) (match-end 0))))
-
 (defun ess-rep-regexp (regexp to-string &optional fixedcase literal verbose)
   "Instead of (replace-regexp..) -- do NOT replace in strings or comments.
 If FIXEDCASE is non-nil, do *not* alter case of replacement text.
