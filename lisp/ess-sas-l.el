@@ -1511,13 +1511,10 @@ page ;
 
 ;;  variables section
 (defvar sas-dir-mode-map nil)
-(defvar sas-directory-name nil
+(defvar-local sas-directory-name nil
   "Name of directory associated with this buffer.")
-(make-variable-buffer-local 'sas-directory-name)
-(defvar sas-dir-buf-end nil)
-(make-variable-buffer-local 'sas-dir-buf-end)
-(defvar sas-sorted-by-num nil)
-(make-variable-buffer-local 'sas-sorted-by-num)
+(defvar-local sas-dir-buf-end nil)
+(defvar-local sas-sorted-by-num nil)
 ;; user variables
 
 ;; keymaps etc...

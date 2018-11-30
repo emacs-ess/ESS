@@ -111,12 +111,6 @@ Currently only R is supported."
   "String to be displayed in mode-line alongside the process name.
 Indicates that ess-tracebug-mode is turned on.")
 
-;; (defvar ess--tracebug-p nil
-;;   "Non nil if ess-tracebug is turned on for current process.
-;; Function `ess-tracebug'  toggles on/off this variable.")
-;; (make-variable-buffer-local 'ess--tracebug-p)
-;; (add-to-list 'minor-mode-alist '(ess--tracebug-p ess-tracebug-indicator))
-
 (defvar ess-watch-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "k" 'ess-watch-kill)
@@ -189,9 +183,8 @@ of steps decreases the height by the same amount)"
   :group 'ess-debug
   :type 'integer)
 
-(defvar  ess-watch-current-block-overlay nil
+(defvar-local ess-watch-current-block-overlay nil
   "The overlay for currently selected block in the R watch buffer .")
-(make-variable-buffer-local 'ess-watch-current-block-overlay)
 
 (defcustom ess-inject-source 'function-and-buffer
   "Control the source injection into evaluated code.
@@ -546,9 +539,8 @@ Local in iESS buffers with `ess-tracebug' mode enabled.")
   "Overlay to highlight the position of last input in iESS buffer.
 Local in iESS buffers.")
 
-(defvar ess--busy-count 0
+(defvar-local ess--busy-count 0
   "Used to compute the busy indicator.")
-(make-variable-buffer-local 'ess--busy-count)
 
 ;; (unless (boundp 'ess--busy-slash)
 ;; (defvar ess--busy-slash '(32 ?\u2014 92 47))
@@ -835,17 +827,14 @@ help ?options for more details."
 (defvar ess--dbg-output-buf-prefix " *ess.dbg"
   "The prefix of the buffer name the R debug output is directed to."  )
 
-(defvar ess--dbg-current-ref (make-marker)
+(defvar-local ess--dbg-current-ref (make-marker)
   "Current debug reference in *ess.dbg* buffers (a marker).")
-(make-variable-buffer-local 'ess--dbg-current-ref)
 
-(defvar ess--dbg-last-ref-marker (make-marker)
+(defvar-local ess--dbg-last-ref-marker (make-marker)
   "Last debug reference in *ess.dbg* buffer (a marker).")
-(make-variable-buffer-local 'ess--dbg-last-ref-marker)
 
-(defvar ess--dbg-buf-p nil
+(defvar-local ess--dbg-buf-p nil
   "This is t in ess.dbg buffers.")
-(make-variable-buffer-local 'ess--dbg-buf-p)
 
 ;; (defcustom ess--dbg-auto-single-key-p t
 ;;   "If t entering the debug state triggers single-key mode.

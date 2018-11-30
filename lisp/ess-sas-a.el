@@ -69,6 +69,7 @@ or `ess-sas-data-view-insight'."
   :group 'ess-sas
   :type  'string)
 
+
 (make-variable-buffer-local 'ess-sas-data-view-fsview-statement)
 
 (defcustom ess-sas-data-view-insight-command "; proc insight data="
@@ -177,7 +178,7 @@ Virtual PC emulator on your Mac; buffer-local."
 
 (make-variable-buffer-local 'ess-sas-submit-command-options)
 
-(defvar ess-sas-submit-method
+(defvar-local ess-sas-submit-method
   (if (and (and ess-microsoft-p
                 (fboundp 'w32-shell-dos-semantics))
            (w32-shell-dos-semantics))
@@ -197,8 +198,6 @@ Windows users running MS-DOS in *shell* will get 'ms-dos by default.
 Users accessing a remote machine with `telnet', `rlogin', `ssh', etc.,
 should set this variable to 'sh regardless of their local shell
 (since their remote shell is 'sh).")
-
-(make-variable-buffer-local 'ess-sas-submit-method)
 
 (defcustom ess-sas-graph-view-viewer-default
   (if ess-microsoft-p "explorer"

@@ -111,16 +111,14 @@ the first 150 characters of the buffer are searched."
          buffer)))
    (buffer-list)))
 
-(defvar ess-help-type nil
+(defvar-local ess-help-type nil
   "Type of help file, help, index, vingettes etc.
 Local in `ess-help' buffers.")
-(make-variable-buffer-local 'ess-help-type)
 
-(defvar ess-help-object nil
+(defvar-local ess-help-object nil
   "Name of the object the help is displayed for.
 Is name of the package for package index.
 Local in `ess-help' buffers.")
-(make-variable-buffer-local 'ess-help-object)
 
 ;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
@@ -530,8 +528,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
   (ess-execute-dialect-specific ess-reference-lookup-command))
 
 (defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
-;; this breaks "s ?" rather than to fix any (unbroken !) thing:
-;; (make-variable-buffer-local 'ess-help-sec-map)
 
 (defvar ess-doc-map
   (let (ess-doc-map)
@@ -843,10 +839,9 @@ Note that we can't search SAS, Stata or XLispStat for additional information."
 
 ;; describe object at point
 
-(defvar ess-describe-object-at-point-commands nil
+(defvar-local ess-describe-object-at-point-commands nil
   "Commands cycled by `ess-describe-object-at-point'.
 Dialect specific.")
-(make-variable-buffer-local 'ess-describe-at-point-commands)
 
 (defvar ess--descr-o-a-p-commands nil)
 

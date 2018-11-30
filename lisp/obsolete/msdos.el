@@ -66,8 +66,7 @@ environment variable."
   :type '(choice (const :tag "None" nil) file)
   :group 'shell)
 
-(make-variable-buffer-local 'msdos-minor-mode)
-(defvar msdos-minor-mode nil
+(defvar-local msdos-minor-mode nil
   "Non-nil if using msdos-minor mode as a minor mode of some other mode.")
 
 (defun msdos ()

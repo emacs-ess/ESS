@@ -194,9 +194,8 @@ that integer. Anything else is treated as 'window."
   :group 'ess
   :type 'alist)
 
-(defvar ess--local-handy-commands nil
-  "Store handy commands locally")
-(make-variable-buffer-local 'ess--local-handy-commands)
+(defvar-local ess--local-handy-commands nil
+  "Store handy commands locally.")
 
 (defcustom ess-describe-at-point-method nil
   "Whether `ess-describe-object-at-point' should use a tooltip.
@@ -271,17 +270,15 @@ See also `ess-blink-delay'"
   :group 'ess
   :type 'boolean)
 
-(defvar ess-language nil
+(defvar-local ess-language nil
   "Determines the language to use for the current buffer.
 See also `ess-dialect'.")
-(make-variable-buffer-local 'ess-language)
 
-(defvar ess-dialect nil
+(defvar-local ess-dialect nil
   "String version of the dialect being run for the inferior process.
 This, plus `ess-language', should be able to determine the exact
 version of the statistical package being executed in the particular
 buffer.")
-(make-variable-buffer-local 'ess-dialect)
 
 (defcustom ess-directory-function nil
   "Function to return the directory that ESS is run from.
@@ -476,11 +473,10 @@ might want to set this to nil.
   "Variable to store completion history.
 Used by `ess-completion-read' command.")
 
-(defvar ess-smart-operators ()
+(defvar-local ess-smart-operators ()
   "List of smart operators to be used in ESS and IESS modes.
 Not to be set by users. It is redefined by mode specific
 settings, such as `ess-r-smart-operators'.")
-(make-variable-buffer-local 'ess-smart-operators)
 
 (defvaralias 'ess-R-smart-operators 'ess-r-smart-operators)
 (defvar ess-r-smart-operators nil
@@ -717,10 +713,9 @@ regardless of where in the line point is when the TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
-(defvar ess-indent-line-function nil
+(defvar-local ess-indent-line-function nil
   "Function to be used for the current dialect
 nil means to use R/S indentation.")
-(make-variable-buffer-local 'ess-indent-line-function)
 
 (define-obsolete-variable-alias 'ess-indent-level 'ess-indent-offset "15.09")
 (defvar ess-indent-offset 2
@@ -1501,11 +1496,10 @@ line starts with the roxy prefix.")
 
 ;; SJE -- this should not be defcustom - user does not set it.
 (defvaralias 'ess-current-process-name 'ess-local-process-name)
-(defvar ess-local-process-name nil
+(defvar-local ess-local-process-name nil
   "The name of the ESS process associated with the current buffer.")
 (put 'ess-local-process-name 'risky-local-variable t)
 (put 'ess-local-process-name 'permanent-local t)
-(make-variable-buffer-local 'ess-local-process-name)
 
 (defcustom ess-switch-to-end-of-proc-buffer t
   "If t, `ess-switch-to-inferior-or-script-buffer goes to end of
@@ -1993,19 +1987,22 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess
   :type 'string)
 
-(defvar ess-editor nil
+(defvar-local ess-editor nil
   "Editor by which the process sends information to an Emacs buffer
 for editing and then to be returned to the process.")
 
-(defvar ess-pager nil
+(defvar-local ess-pager nil
   "Pager by which the process sends information to an Emacs buffer.")
 
-(defvar inferior-ess-language-start nil
+(defvar-local inferior-ess-language-start nil
   "Initialization commands sent to the ESS process.")
 
-(make-variable-buffer-local 'ess-editor)
-(make-variable-buffer-local 'ess-pager)
-(make-variable-buffer-local 'inferior-ess-language-start)
+(defcustom inferior-ess-help-filetype nil
+  "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype
+for help files.  The default value is nil for other systems."
+  :group 'ess-proc
+  :type '(choice (const nil) (string)))
+(make-variable-buffer-local 'inferior-ess-help-filetype)
 
 ;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
 
@@ -2033,11 +2030,10 @@ for editing and then to be returned to the process.")
 
 (define-obsolete-variable-alias 'inferior-ess-program-name
   'inferior-ess-program "ESS 18.10")
-(defvar inferior-ess-program nil ;inferior-S-program
+(defvar-local inferior-ess-program nil ;inferior-S-program
   "Default program name for invoking `inferior-ess'.
 The other variables ...-program should be changed, for the
 corresponding program.")
-(make-variable-buffer-local 'inferior-ess-program)
 
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
@@ -2053,15 +2049,13 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   :group 'ess-proc
   :type 'string)
 
-(defvar inferior-ess-primary-prompt "> "
+(defvar-local inferior-ess-primary-prompt "> "
   "Regular expression used by `ess-mode' to detect the primary prompt.")
-(make-variable-buffer-local 'inferior-ess-primary-prompt)
 
-(defvar inferior-ess-secondary-prompt nil
+(defvar-local inferior-ess-secondary-prompt nil
   "Regular expression used by ess-mode to detect the secondary prompt.
 This is issued by S to continue an incomplete expression.
 Set to nil if language doesn't support secondary prompt.")
-(make-variable-buffer-local 'inferior-ess-secondary-prompt)
 
 (defvar ess-traceback-command nil
   "Command to generate error traceback.")
@@ -2137,7 +2131,7 @@ the process output, otherwise not.
 
 ;;*;; Variables relating to multiple processes
 
-(defvar ess--mode-line-process-indicator '("" ess-local-process-name)
+(defvar-local ess--mode-line-process-indicator '("" ess-local-process-name)
   "List of ESS mode-line indicators.
 Local in process buffers and must start with a string. Changes of
 this variable are automatically reflected in mode-lines of the
@@ -2155,30 +2149,28 @@ customize this variable to indicate changes in the process
 status.
 ")
 (put 'ess--mode-line-process-indicator 'risky-local-variable t)
-(make-variable-buffer-local 'ess--mode-line-process-indicator)
 
-(defvar ess--local-mode-line-process-indicator '("")
+(defvar-local ess--local-mode-line-process-indicator '("")
   "List of local process indicators.
 See `ess--mode-line-process-indicator' for how to set it.
 
 This is an internal varialbe used by tools like `ess-developer'
 and `ess-tracebug'.")
 (put 'ess--local-mode-line-process-indicator 'risky-local-variable t)
-(make-variable-buffer-local 'ess--local-mode-line-process-indicator)
 
 (defvar ess-process-name-list nil
   "Alist of active ESS processes.")
 
 ;;*;; Inferior ESS commands
 
-(defvar ess-load-command "source('%s')\n"
+(defvar-local ess-load-command "source('%s')\n"
   "Dialect specific format-string for building the ess command to load a file.
 
 This format string should use %s to substitute a file name and should
 result in an ESS expression that will command the inferior ESS to load
 that file.")
 
-(defvar ess-eval-command nil
+(defvar-local ess-eval-command nil
   "Dialect specific format-string for building the command to evaluate a string.
 
 It is usually faster to send a string to remote processes than a
@@ -2194,12 +2186,8 @@ The resulting command should not echo code or print any
 transitory output.  See also `ess-eval-visibly-command' and
 `ess-eval-visibly-noecho-command'.")
 
-(defvar ess-build-eval-message-function nil
+(defvar-local ess-build-eval-message-function nil
   "Dialect-specific function for formatting an evaluation message.")
-
-(make-variable-buffer-local 'ess-eval-command)
-(make-variable-buffer-local 'ess-load-command)
-(make-variable-buffer-local 'ess-build-eval-message-function)
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
@@ -2209,11 +2197,10 @@ Use second %s to substitute the dump file name."
   :group 'ess-command
   :type 'string)
 
-(defvar inferior-ess-help-command "help(\"%s\")\n"
+(defvar-local inferior-ess-help-command "help(\"%s\")\n"
   "Format-string for building the ESS command to ask for help on an object.
 
 This format string should use %s to substitute an object name.")
-(make-variable-buffer-local 'inferior-ess-help-command)
 
 (defcustom inferior-ess-r-help-command ".ess.help('%s')\n"
   "Format-string for building the R command to ask for help on an object.
@@ -2223,35 +2210,29 @@ If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
-(defvar ess-get-help-topics-function nil
+(defvar-local ess-get-help-topics-function nil
   "Dialect specific help topics retrieval")
 
-(defvar ess-display-help-on-object-function nil
+(defvar-local ess-display-help-on-object-function nil
   "Dialect specific function for displaying help on object.")
 
-(defvar ess-find-help-file-function nil
+(defvar-local ess-find-help-file-function nil
   "Dialect specific function for displaying help on object.")
 
-(defvar ess-build-help-command-function nil
+(defvar-local ess-build-help-command-function nil
   "Dialect specific function for building an help command.")
-
-(make-variable-buffer-local 'ess-get-help-topics-function)
-(make-variable-buffer-local 'ess-display-help-on-object-function)
-(make-variable-buffer-local 'ess-find-help-file-function)
-(make-variable-buffer-local 'ess-build-help-command-function)
 
 (defvar-local inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
 
 This format string should use %s to substitute an object name.")
 
-(defvar inferior-ess-search-list-command nil
+(defvar-local inferior-ess-search-list-command nil
   "`ess-language' command that prints out the search list;
 i.e. the list of directories and (recursive) objects that `ess-language' uses
 when it searches for objects.
 
 Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
-(make-variable-buffer-local 'inferior-ess-search-list-command)
 
 (defcustom inferior-ess-safe-names-command
   "tryCatch(base::print(base::names(%s), max=1e6), error=function(e){})\n"
@@ -2268,7 +2249,7 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :type 'string)
 
 ;;*;; Regular expressions
-(defvar inferior-ess-prompt nil
+(defvar-local inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
 
 It is always used in transcript mode.  In inferior ess mode it is
@@ -2277,11 +2258,9 @@ used only if `comint-use-prompt-regexp' is t.
 If not set in language's customise-alist it is constructed at run time
 from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 
-(make-variable-buffer-local 'inferior-ess-prompt)
 
-(defvar ess-change-sp-regexp ""
+(defvar-local ess-change-sp-regexp ""
   "The regexp for matching the S/R/.. commands that change the search path.")
-(make-variable-buffer-local 'ess-change-sp-regexp)
 
 (defvar ess-S+-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|module(\\|source(\\)"
@@ -2302,36 +2281,28 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
   "Deprecated. Use (ess-search-list) or (ess-process-get 'search-list) instead.")
 (make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
 
-(defvar ess-sl-modtime-alist nil
+(defvar-local ess-sl-modtime-alist nil
   "Alist of modification times for all ess directories accessed this session.")
-(make-variable-buffer-local 'ess-sl-modtime-alist)
 
 (defvar ess-sp-change nil
   "Variable not used. Use (ess-process-get 'sp-for-help-changed?) instead.")
 (make-obsolete-variable 'ess-sp-change nil "ESS[12.09]")
 ;; (make-variable-buffer-local 'ess-sp-change)
 
-(defvar ess-prev-load-dir/file nil
+(defvar-local ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last
 `ess-load-file' command.  Used for determining the default in the next one.")
 
-(make-variable-buffer-local 'ess-prev-load-dir/file)
-
-(defvar ess-object-list nil
+(defvar-local ess-object-list nil
   ;; This is a list of the currently known object names.  It is
   ;; current only for one command entry; it exists under the
   ;; assumption that the list of objects doesn't change while entering
   ;; a command.
-  "Cache of object names")
+  "Cache of object names.")
 
-(make-variable-buffer-local 'ess-object-list)
-
-(defvar ess-help-topics-list nil
+(defvar-local ess-help-topics-list nil
   ;; List of currently known help topics.
-  "Cache of help topics")
-
-(make-variable-buffer-local 'ess-help-topics-list)
-
+  "Cache of help topics.")
 
 ;;*;; Miscellaneous system variables
 
@@ -2347,12 +2318,10 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 (defvar ess-object-name-db-file-loaded '()
   "List of programs whose name-db file has been loaded.")
 
-(defvar ess-object-name-db nil
+(defvar-local ess-object-name-db nil
   "Alist of lists of object names, with directory names as keys.
 The file ess-namedb.el is loaded (if it exists) to define this variable.
 See also function `ess-create-object-name-db'.")
-
-(make-variable-buffer-local 'ess-object-name-db)
 
 ;;;*;;; Font-lock support
 
@@ -2731,26 +2700,22 @@ highlighted with the same face as `ess-R-keywords'"
 (defvar ess-execute-screen-options-command nil
   "Dialect specific command run by `ess-execute-screen-options'.")
 
-(defvar ess-help-web-search-command nil
+(defvar-local ess-help-web-search-command nil
   "Dialect specific command web help search.
 Passed to `ess-execute-dialect-specific' which see.")
-(make-variable-buffer-local 'ess-help-web-search-command)
 
-(defvar ess-manual-lookup-command nil
+(defvar-local ess-manual-lookup-command nil
   "Dialect specific command manual lookup.
 Passed to `ess-execute-dialect-specific' which see.")
-(make-variable-buffer-local 'ess-manual-lookup-command)
 
-(defvar ess-reference-lookup-command nil
+(defvar-local ess-reference-lookup-command nil
   "Dialect specific command for reference lookup.
 Passed to `ess-execute-dialect-specific' which see.")
-(make-variable-buffer-local 'ess-reference-lookup-command)
 
-(defvar ess-funargs-command  nil
+(defvar-local ess-funargs-command  nil
   "Dialect specific command to return a list of function arguments.
 See `ess-function-arguments' and .ess_funargs command in R and
 S+ for details of the format that should be returned.")
-(make-variable-buffer-local 'ess-funargs-command)
 
  ; System variables
 ;;;=====================================================
@@ -2761,15 +2726,11 @@ S+ for details of the format that should be returned.")
 
 ;;-- ess-help-S-.. and  ess-help-R-.. : in  ess-s-lang.el (are used in ess-inf).
 
-(defvar ess-help-sec-keys-alist nil
+(defvar-local ess-help-sec-keys-alist nil
   "Alist of (key . string) pairs for use in section searching.")
 
-(defvar ess-help-sec-regex nil
+(defvar-local ess-help-sec-regex nil
   "Reg(ular) Ex(pression) of section headers in help file.")
-
-(make-variable-buffer-local 'ess-help-sec-keys-alist)
-(make-variable-buffer-local 'ess-help-sec-regex)
-
 
  ; julia-mode
 (define-obsolete-variable-alias 'inferior-julia-program-name
@@ -2782,8 +2743,7 @@ Should be an absolute path to the julia executable."
   :type '(choice (string) (file)))
 
 ;; FIXME
-(defvar ess-mode-completion-syntax-table nil "Completion and help syntax table for `ess-mode'.")
-(make-variable-buffer-local 'ess-mode-completion-syntax-table)
+(defvar-local ess-mode-completion-syntax-table nil "Completion and help syntax table for `ess-mode'.")
 
  ; Buffer local customization stuff
 
@@ -2818,24 +2778,18 @@ Not buffer local!")
 ;; (make-variable-buffer-local 'ess-customize-alist)
 ;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
 
-(defvar ess-local-customize-alist nil
+(defvar-local ess-local-customize-alist nil
   "Buffer local settings for proper behavior.
 Used to store the values for passing on to newly created buffers.")
-
-(make-variable-buffer-local 'ess-local-customize-alist)
 
 (defvar ess-mode-editing-alist nil
   "Variable settings for `ess-mode'.")
 
-(defvar ess-transcript-minor-mode nil
+(defvar-local ess-transcript-minor-mode nil
   "Non-nil if using `ess-transcript-mode' as a minor mode of some other mode.")
 
-(make-variable-buffer-local 'ess-transcript-minor-mode)
-
-(defvar ess-listing-minor-mode nil
+(defvar-local ess-listing-minor-mode nil
   "Non-nil if using `ess-listing-minor-mode'.")
-
-(make-variable-buffer-local 'ess-listing-minor-mode)
 
 (defvar ess--enable-experimental-projects nil
   "Enable experimental project support in ESS.")
