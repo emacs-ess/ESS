@@ -365,12 +365,13 @@ To be used as part of `font-lock-defaults' keywords."
    S-common-cust-alist)
   "Variables to customize for R.")
 
-;; VS[24-08-2018]: FIXME: make initialization of custom-alist tail-to-top and
-;; put this into the above alist
-(setcdr (assoc 'ess-font-lock-keywords ess-r-customize-alist)
-        (quote 'ess-R-font-lock-keywords))
-(setcdr (assoc 'inferior-ess-font-lock-keywords ess-r-customize-alist)
-        (quote 'inferior-ess-r-font-lock-keywords))
+(cl-defmethod ess-font-lock-keywords
+  (&context (major-mode ess-r-mode))
+  'ess-R-font-lock-keywords)
+(cl-defmethod ess-font-lock-keywords
+  (&context (major-mode inferior-ess-r-mode))
+  'inferior-ess-r-font-lock-keywords)
+
 
 (defvar ess-r-build-tags-command
   "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
@@ -923,6 +924,9 @@ See `ess-noweb-mode' and `ess-r-mode' for more help."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[sS]nw\\'" . Snw-mode))
 
+(cl-defmethod ess-font-lock-keywords (&context (major-mode ess-r-transcript-mode))
+  'ess-R-font-lock-keywords)
+
 ;;;###autoload
 (define-derived-mode ess-r-transcript-mode ess-transcript-mode "ESS R Transcript"
   "A Major mode for R transcript files."
@@ -936,7 +940,6 @@ See `ess-noweb-mode' and `ess-r-mode' for more help."
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)
-  (setq inferior-ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq font-lock-defaults '(ess-build-font-lock-keywords
                              nil nil ((?\. . "w") (?\_ . "w") (?' . ".")))))
 

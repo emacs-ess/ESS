@@ -2414,12 +2414,6 @@ See also function `ess-create-object-name-db'.")
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp)
 
-(defvar ess-font-lock-keywords nil
-  "Internal. Holds a name of the dialect sepcific font-lock
-keywords in the current buffer. See `ess-R-font-lock-keywords'
-for an example.")
-(make-variable-buffer-local 'ess-font-lock-keywords)
-
 (defvar ess-fl-keyword:fun-calls
   (cons "\\(\\sw+\\)[\t ]*(" '(1 ess-function-call-face keep))
   "Font lock for function calls.")
@@ -2533,12 +2527,6 @@ should be t or nil to indicate if the keyword is active or not."
   :group 'ess-R
   :group 'ess-faces
   :type '(repeat (cons symbol boolean)))
-
-(defvar inferior-ess-font-lock-keywords nil
-  "Internal. Holds a name of the dialect sepcific font-lock
-keywords in the current buffer. See
-`inferior-ess-r-font-lock-keywords' for an example.")
-(make-variable-buffer-local 'inferior-ess-font-lock-keywords)
 
 (defvar ess-S-fl-keyword:prompt
   (cons (concat "^" inferior-S-prompt) 'comint-highlight-prompt)

@@ -123,8 +123,6 @@
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
     (fill-nobreak-predicate     . 'ess-inside-string-p)
     (ess-execute-screen-options-command . "options(width=%d, length=99999)\n")
-    (inferior-ess-font-lock-keywords . 'inferior-S-font-lock-keywords)
-    (ess-font-lock-keywords       . 'ess-S-font-lock-keywords)
     (font-lock-defaults           . '(ess-build-font-lock-keywords
                                       nil nil ((?\. . "w") (?\_ . "w")))))
   "S-language common settings for all <dialect>-customize-alist s")

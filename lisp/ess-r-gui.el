@@ -128,7 +128,6 @@ PROC, VISIBLY and MESSAGE are ignored."
      (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
      (inferior-ess-program             . inferior-Rgui-program)
      (inferior-ess-objects-command     . inferior-ess-r-objects-command)
-     (inferior-ess-font-lock-keywords  . 'inferior-ess-r-font-lock-keywords)
      (inferior-ess-search-list-command . "search()\n")
      (inferior-ess-help-command        . "help(\"%s\")\n")
      (inferior-ess-exit-command        . "q()")

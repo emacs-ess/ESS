@@ -129,7 +129,6 @@ in the region, leaving only the commands."
   (setq-local paragraph-separate "^\^L")
   (setq-local comint-use-prompt-regexp t)
   (setq-local comint-prompt-regexp (concat "^" inferior-ess-prompt))
-  (setq inferior-ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq font-lock-defaults '(ess-build-font-lock-keywords
                              nil nil ((?\. . "w") (?\_ . "w") (?' . ".")))))
 
