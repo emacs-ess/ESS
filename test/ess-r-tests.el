@@ -180,6 +180,12 @@
   (with-r-file "dummy-pkg/R/test.R"
     (should (string= (ess-r-package-name) "foo"))))
 
+(ert-deftest ess-r-package-project ()
+  (let ((path (expand-file-name "dummy-pkg")))
+    (with-r-file "dummy-pkg/R/test.R"
+      (should (equal (ess-r-package-project)
+        (cons 'ess-r-package path))))))
+
 ;;; Namespaced evaluation
 
 (ert-deftest ess-r-run-presend-hooks ()

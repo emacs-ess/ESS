@@ -108,7 +108,7 @@ is searched from that directory instead of `default-directory'."
       ;; Cache info for better performance on remotes
       (setq-local ess-r-package--project-cache (or project (list nil)))
       (when (car project)
-        (cons 'r-package (cdr project))))))
+        project))))
 
 (cl-defmethod project-roots ((project (head ess-r-package)))
   "Return the project root for ESS R packages"
