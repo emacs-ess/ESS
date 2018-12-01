@@ -30,11 +30,13 @@
 
 ;;; Code:
 (require 'cl-lib)
-(require 'subr-x)
 (require 'project)
 (require 'ess-custom)
 (require 'ess-inf)
 (require 'ess-utils)
+
+(eval-when-compile
+  (require 'subr-x))
 ;; Silence the byte compiler, OK because this file is only loaded by
 ;; ess-r-mode and has no autoloads.
 (defvar ess-r-customize-alist)
