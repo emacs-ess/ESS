@@ -30,6 +30,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'subr-x)
 (require 'project)
 (require 'ess-custom)
 (require 'ess-inf)
@@ -115,9 +116,8 @@ is searched from that directory instead of `default-directory'."
 
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
-  (let ((project (ess-r-package-project dir)))
-    (when project
-      (symbol-name (car ess-r-package--project-cache)))))
+  (when-let ((project (ess-r-package-project dir)))
+    (symbol-name (ess-r-package--find-package-name (cdr project)))))
 
 (defun ess-r-package-get-info ()
   "Deprecated function to get package info.
@@ -191,15 +191,20 @@ Root is determined by locating `ess-r-package-root-file'."
     (when pkg-path
       (directory-file-name pkg-path))))
 
+(defvar-local ess-r-package-name--cache nil)
 (defun ess-r-package--find-package-name (path)
-  (let ((file (expand-file-name ess-r-package-root-file path))
-        (case-fold-search t))
-    (when (file-exists-p file)
-      (with-temp-buffer
-        (insert-file-contents file)
-        (goto-char (point-min))
-        (when (re-search-forward "package: \\(.*\\)" nil t)
-          (intern (match-string 1)))))))
+  (if ess-r-package-name--cache
+      ess-r-package-name--cache
+    (let ((file (expand-file-name ess-r-package-root-file path))
+          (case-fold-search t))
+      (when (file-exists-p file)
+        (with-temp-buffer
+          (insert-file-contents file)
+          (goto-char (point-min))
+          (when (re-search-forward "package: \\(.*\\)" nil t)
+            (setq-local ess-r-package-name--cache
+                        (intern (match-string 1)))
+            ess-r-package-name--cache))))))
 
 
 ;;;*;;; UI

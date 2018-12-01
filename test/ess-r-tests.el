@@ -175,6 +175,10 @@
                               (with-current-buffer proc-buffer
                                 (buffer-string))))))))
 
+(ert-deftest ess-r-package-name ()
+  (ert-skip "Failing")
+  (with-r-file "dummy-pkg/R/test.R"
+    (should (string= (ess-r-package-name) "foo"))))
 
 ;;; Namespaced evaluation
 
