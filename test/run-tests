@@ -12,7 +12,6 @@
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
 
-(require 'ess-site)
 (require 'ess-r-tests-utils)
 (setq ess-inhibit-message-in-tests t)
 (setq ert-batch-backtrace-right-margin 130)

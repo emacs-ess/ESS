@@ -1,5 +1,6 @@
 
 (require 'ert)
+(require 'ess-site)
 
 (unless (fboundp 'provided-mode-derived-p)
   ;; From dev Emacs

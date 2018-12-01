@@ -9,7 +9,7 @@
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
 
-(require 'ess-site)
+(require 'ess-r-mode)
 (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t)
 
 ;; The RRR file is taken as a model, so modify this file to add or

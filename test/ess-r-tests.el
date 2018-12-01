@@ -1,6 +1,6 @@
 
 (require 'ert)
-(require 'ess-site)
+(require 'ess-r-mode)
 (require 'ess-r-tests-utils)
 (require 'cc-mode)
 

@@ -10,7 +10,7 @@
 (add-to-list 'load-path ess-test-path)
 
 (require 'ert)
-(require 'ess-site)
+(require 'ess-r-mode)
 (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
 
 (message "\nStarting literate tests")
