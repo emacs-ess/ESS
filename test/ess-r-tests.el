@@ -67,7 +67,7 @@
     (insert "\"hop\"\n")
     (let (ess-eval-visibly)
       (should (output= (ess-eval-buffer nil)
-                "[1] \"hop\"")))))
+                       "[1] \"hop\"")))))
 
 (ert-deftest ess-eval-line ()
   (with-r-running nil
@@ -108,82 +108,13 @@
     (ess-set-working-directory "/")
     (ess-eval-linewise "getwd()" 'invisible)
     (should (output= (ess-eval-buffer nil)
-              "setwd('/')\n> [1] \"/\""))
+                     "setwd('/')\n> [1] \"/\""))
     (should (string= default-directory "/"))))
 
 (ert-deftest ess-inferior-force ()
   (with-r-running nil
     (should (equal (ess-get-words-from-vector "letters[1:2]\n")
                    (list "a" "b")))))
-
-
-;;; ess-r-package-mode
-
-(ert-deftest ess-r-package-auto-activation ()
-  (let ((inhibit-message ess-inhibit-message-in-tests))
-    (with-temp-buffer
-      (text-mode)
-      (hack-local-variables)
-      (should (not ess-r-package-mode)))
-    (with-r-file "dummy-pkg/R/test.R"
-      (hack-local-variables)
-      (should ess-r-package-mode))))
-
-(ert-deftest ess-r-package-auto-activation-in-shell ()
-  (let ((kill-buffer-query-functions nil))
-    (with-r-file "dummy-pkg/R/test.R"
-      (shell)
-      (should ess-r-package-mode)
-      (kill-buffer))
-    (with-r-file "dummy-pkg/R/test.R"
-      (let ((ess-r-package-auto-activate t))
-        (shell)
-        (should ess-r-package-mode))
-      (kill-buffer))))
-
-(ert-deftest ess-r-package-auto-no-activation-in-shell ()
-  (let ((kill-buffer-query-functions nil))
-    (with-r-file "dummy-pkg/R/test.R"
-      (let ((ess-r-package-exclude-modes '(shell-mode)))
-        (shell)
-        (should (not ess-r-package-mode))
-        (kill-buffer)))
-    (with-r-file "dummy-pkg/R/test.R"
-      (let ((ess-r-package-auto-activate nil))
-        (shell)
-        (should (not ess-r-package-mode))
-        (kill-buffer)))))
-
-(ert-deftest ess-r-package-vars ()
-  (with-c-file "dummy-pkg/src/test.c"
-    (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
-          (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
-      (should (string= ess-setwd-command r-setwd-cmd))
-      (should (string= ess-getwd-command r-getwd-cmd)))
-    (let ((pkg-dir (file-truename (cdr (ess-r-package-project))))
-          ;; Not sure why this is needed:
-          ess-ask-for-ess-directory)
-      (ess-set-working-directory (expand-file-name "src" pkg-dir))
-      (ess-r-package-use-dir)
-      (should (string= pkg-dir (file-truename (directory-file-name default-directory))))
-      (ess-wait-for-process)
-      (should (string= pkg-dir (file-truename (ess-get-working-directory))))
-      (ess-wait-for-process)
-      (let ((proc-buffer (ess-get-process-buffer)))
-        (inferior-ess-reload)
-        (should (string-match "Process R\\(:.\\)? \\(finished\\|killed\\)"
-                              (with-current-buffer proc-buffer
-                                (buffer-string))))))))
-
-(ert-deftest ess-r-package-name ()
-  (with-r-file "dummy-pkg/R/test.R"
-    (should (string= (ess-r-package-name) "foo"))))
-
-(ert-deftest ess-r-package-project ()
-  (let ((path (expand-file-name "dummy-pkg")))
-    (with-r-file "dummy-pkg/R/test.R"
-      (should (equal (ess-r-package-project)
-        (cons 'ess-r-package path))))))
 
 ;;; Namespaced evaluation
 
@@ -194,7 +125,7 @@
           ess-eval-visibly)
       (insert "\"foo\"\n")
       (should (output= (ess-eval-region (point-min) (point-max) nil)
-                "[1] \"bar\"")))))
+                       "[1] \"bar\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-sourced-message ()
   (with-r-running nil
