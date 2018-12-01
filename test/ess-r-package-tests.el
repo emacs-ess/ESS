@@ -57,3 +57,17 @@
         (should (string-match "Process R\\(:.\\)? \\(finished\\|killed\\)"
                               (with-current-buffer proc-buffer
                                 (buffer-string))))))))
+
+(ert-deftest ess-r-package-package-info-test ()
+  (let ((kill-buffer-query-functions nil)
+        (ess-r-package-auto-activate nil))
+    (with-r-file "dummy-pkg/R/test.R"
+      (let ((pkg-info (ess-r-package-info)))
+        (should (string= (car pkg-info) "foo"))
+        (should (string-match-p "dummy-pkg$" (cdr pkg-info)))
+        (kill-buffer)))
+    (with-c-file "dummy-pkg/src/test.c"
+      (let ((pkg-info (ess-r-package-info)))
+        (should (string= (car pkg-info) "foo"))
+        (should (string-match-p "dummy-pkg$" (cdr pkg-info)))
+        (kill-buffer)))))
