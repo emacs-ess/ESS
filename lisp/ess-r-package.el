@@ -266,7 +266,7 @@ arguments, or expressions which return R arguments."
          (pkg-name (ess-r-package-name))
          (pkg-path (or pkg-path (concat "'" (abbreviate-file-name (cdr pkg-info)) "'")))
          (args (ess-r-command--build-args p actions)))
-    (message "%s %s" msg pkg-name)
+    (message msg pkg-name)
     (with-ess-process-buffer nil
       (setq ess-r-package--project-cache ess-r-package--project-cache))
     (display-buffer (ess-get-process-buffer))
