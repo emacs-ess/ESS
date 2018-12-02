@@ -20,7 +20,7 @@ NOWEAVE=noweave
 # Have to preload the files that contain macro definitions or the byte compiler
 # will compile everything that references them incorrectly. Also preload a file
 # that sets byte compiler options.
-COMPILE = $(EMACSBATCH) --directory . -f batch-byte-compile
+COMPILE = $(EMACSBATCH) --directory . --directory ./obsolete -f batch-byte-compile
 
 
 ### Targets
@@ -62,11 +62,15 @@ distclean clean:
 	@for f in $(ELS); do \
 	  sed -n "s|^(require '\(ess.*\)).*$$|$${f}c: \1.elc|p" $${f} >> .dependencies;\
 	done
+	@for f in obsolete/*.el; do \
+	  echo "$$(basename $${f}c):$${f}c" >> .dependencies;\
+	done
 
 -include .dependencies
 
 .el.elc:
 	$(COMPILE) $<
+
 
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
