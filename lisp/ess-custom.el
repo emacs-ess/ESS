@@ -2371,6 +2371,11 @@ See also function `ess-create-object-name-db'.")
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp)
 
+(defvar ess-font-lock-keywords nil
+  "Internal. Holds a name of the dialect sepcific font-lock
+keywords in the current buffer. See `ess-R-font-lock-keywords'
+for an example.")
+
 (defvar ess-fl-keyword:fun-calls
   (cons "\\(\\sw+\\)[\t ]*(" '(1 ess-function-call-face keep))
   "Font lock for function calls.")

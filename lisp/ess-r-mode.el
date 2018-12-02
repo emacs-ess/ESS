@@ -363,14 +363,6 @@ To be used as part of `font-lock-defaults' keywords."
    S-common-cust-alist)
   "Variables to customize for R.")
 
-(cl-defmethod ess-font-lock-keywords
-  (&context (major-mode ess-r-mode))
-  'ess-R-font-lock-keywords)
-(cl-defmethod ess-font-lock-keywords
-  (&context (major-mode inferior-ess-r-mode))
-  'inferior-ess-r-font-lock-keywords)
-
-
 (cl-defmethod ess-build-tags-command (&context ((string= ess-dialect "R") (eql t)))
   "Return tags command for R."
   "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
@@ -588,6 +580,7 @@ Executed in process buffer."
 (define-derived-mode ess-r-mode ess-mode "ESS[R]"
   "Major mode for editing R source.  See `ess-mode' for more help."
   (ess-setq-vars-local ess-r-customize-alist)
+  (setq-local ess-font-lock-keywords 'ess-R-font-lock-keywords)
   (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-ignore-fill-prefix t)
@@ -923,14 +916,12 @@ See `ess-noweb-mode' and `ess-r-mode' for more help."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[sS]nw\\'" . Snw-mode))
 
-(cl-defmethod ess-font-lock-keywords (&context (major-mode ess-r-transcript-mode))
-  'ess-R-font-lock-keywords)
-
 ;;;###autoload
 (define-derived-mode ess-r-transcript-mode ess-transcript-mode "ESS R Transcript"
   "A Major mode for R transcript files."
   :syntax-table ess-r-mode-syntax-table
   (ess-setq-vars-local ess-r-customize-alist)
+  (setq-local ess-font-lock-keywords 'ess-R-font-lock-keywords)
   (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-ignore-fill-prefix t)
@@ -2205,6 +2196,7 @@ state.")
 
 (define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
   "Major mode for interacting with inferior R processes."
+  (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)

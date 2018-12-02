@@ -456,18 +456,15 @@ etc.")
 
 ;;;*;;; Font Lock
 
-(cl-defgeneric ess-font-lock-keywords ()
-  "Return a symbol of a custom variable suitable for `ess--fl-keywords-values'.")
-
 (defun ess--fl-keywords-values ()
   "Return a cons (STANDARD-VALUE . CUSTOM-VALUE) of `ess-font-lock-keywords'."
-  (let ((sym (ess-font-lock-keywords)))
+  (let ((sym ess-font-lock-keywords))
     (if (and (symbolp sym)
              (custom-variable-p sym))
         (cons
          (eval (car (get sym 'standard-value)))
          (symbol-value sym))
-      (error "`ess-font-lock-keywords' must return a symbol of a custom variable"))))
+      (error "`ess-font-lock-keywords' must be a symbol of a custom variable"))))
 
 (defun ess--extract-fl-keywords ()
   (let ((values (ess--fl-keywords-values)))
@@ -482,7 +479,7 @@ etc.")
   "Retrieve `font-lock-keywords' from ess-[dialect]-font-lock-keywords.
 Merge the customized values of that variable on top of the
 standard values and return the new list. For this to work,
-`ess-font-lock-keywords' return a name of the
+`ess-font-lock-keywords' should be a name of the
 ess-[dialect]-font-lock-keywords variable."
   (delq nil
         (mapcar (lambda (c)
@@ -508,7 +505,7 @@ ess-[dialect]-font-lock-keywords variable."
                ;; we add new keywords but the user has the old value saved in
                ;; .emacs-custom.el)
                ((let ((kwd (assoc keyword (car values)))
-                      (sym (ess-font-lock-keywords)))
+                      (sym ess-font-lock-keywords))
                   (when kwd
                     (set sym (cons kwd (symbol-value sym)))
                     kwd)))
@@ -537,7 +534,7 @@ ess-[dialect]-font-lock-keywords variable."
           (list "-----"
                 ["Save to custom"
                  (lambda () (interactive)
-                   (customize-save-variable (ess-font-lock-keywords)
+                   (customize-save-variable ess-font-lock-keywords
                                             (ess--extract-fl-keywords)))
                  t])))
 

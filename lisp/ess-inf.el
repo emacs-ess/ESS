@@ -1784,7 +1784,7 @@ meaning as for `ess-eval-region'."
     ("end-dev" :visible nil)
     "------"
     ("Font Lock"
-     :active (ess-font-lock-keywords)
+     :active ess-font-lock-keywords
      :filter ess--generate-font-lock-submenu)
     "------"
     ["Describe"         describe-mode                       t]
