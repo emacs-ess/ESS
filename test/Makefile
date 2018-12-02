@@ -1,11 +1,14 @@
-EMACS?=emacs
 
-.PHONY: literate
+include ../Makeconf
 
-all: compile
-	${EMACS} -Q --script run-tests
+.PHONY: literate all julia lisp ess inf r r-indent literate cases indent-cases literate-cases
 
-lisp:
+all: compile lisp
+
+julia:
+	$(MAKE) -C .. julia
+
+lisp: julia
 	${EMACS} -Q --script run-tests
 
 ess:

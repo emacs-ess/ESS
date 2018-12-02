@@ -42,10 +42,10 @@ etc: version
 	cd etc; $(MAKE)
 
 .PHONY: test
-test:
+test: version
 	$(MAKE) -C test all
 
-test-%:
+test-%: version
 	$(MAKE) -C test $*
 
 generate-indent-cases:

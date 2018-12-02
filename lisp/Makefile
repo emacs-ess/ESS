@@ -71,7 +71,6 @@ distclean clean:
 .el.elc:
 	$(COMPILE) $<
 
-
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
