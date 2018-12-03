@@ -21,7 +21,7 @@
 (setq ess-use-flymake nil)
 
 (when (= (length argv) 0)
-  (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent" "--literate")))
+  (setq argv '("--ess" "--inf" "--rstats" "--rstats-indent" "--literate" "--julia")))
 
 (when (member "--ess" argv)
   (load (expand-file-name "ess-tests.el" ess-test-path) nil t))
@@ -33,6 +33,8 @@
   (load (expand-file-name "ess-r-package-tests.el" ess-test-path) nil t))
 (when (member "--rstats-indent" argv)
   (load (expand-file-name "ess-indentation-tests.el" ess-test-path) nil t))
+(when (member "--julia" argv)
+  (load (expand-file-name "ess-julia-tests.el" ess-test-path) nil t))
 (when (member "--literate" argv)
   (load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
   (elt-deftest test-elt () "elt.R")

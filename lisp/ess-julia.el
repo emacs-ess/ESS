@@ -364,6 +364,52 @@ It makes underscores and dots word constituent chars.")
 
 (defvar ess-julia-mode-syntax-table (copy-syntax-table julia-mode-syntax-table))
 
+(defvar ess-julia-function-pattern
+  ;; (rx (or "function"
+  ;;         "macro"
+  ;;         (seq (0+ nonl) "(" (1+ nonl) ")" (0+ whitespace) "=")))
+  "function\\|macro\\|.*(.+)[[:space:]]*="
+  "Regular expression to match the beginning of a function in Julia buffers.")
+
+(cl-defmethod ess-beginning-of-function--override
+  (no-error &context ((string= ess-dialect "julia") (eql t)))
+  "Find the beginning of the function in Julia."
+  (let ((p (point))
+        (bound (or (julia-last-open-block (point-min))
+                   (point-min))))
+    (goto-char p)
+    ;; Calling `beginning-of-line' here excludes nested fu
+    (beginning-of-line)
+    (while (and (not (looking-at-p ess-function-pattern))
+                (< bound (point)))
+      (forward-line -1)
+      (beginning-of-line))
+    (if (looking-at-p ess-function-pattern)
+        (point)
+      (unless no-error (user-error "Point not inside function")))))
+
+(cl-defmethod ess-end-of-function--override
+  (&context ((string= ess-dialect "julia") (eql t)))
+  "Find the end of the function in Julia."
+  (if (looking-at-p "\\(function\\|macro\\)")
+      ;; TODO: Can probably do better than assuming whitespace is
+      ;; proper.
+      (let ((col (current-column))
+            stop)
+        (while (not stop)
+          (search-forward "end")
+          (goto-char (match-beginning 0))
+          (setq stop (eql col (current-column)))
+          (goto-char (match-end 0)))
+        (point))
+    ;; Else, we're in a function like f(x) = ...
+    (while (and (forward-line)
+                (not (eobp))
+                (julia-indent-hanging)))
+    (forward-line -1)
+    (end-of-line)
+    (point)))
+
 (defvar ess-julia-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map ess-mode-map)
@@ -376,6 +422,7 @@ It makes underscores and dots word constituent chars.")
   (setq-local ess-local-customize-alist ess-julia-customize-alist)
   (setq ess-dialect "julia")
   (ess-setq-vars-local ess-julia-customize-alist)
+  (setq ess-function-pattern ess-julia-function-pattern)
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-julia-eldoc-function)
@@ -389,7 +436,8 @@ It makes underscores and dots word constituent chars.")
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
+  (setq-local beginning-of-defun-function #'ess-beginning-of-function)
+  (setq-local end-of-defun-function #'ess-end-of-function)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl"))
 

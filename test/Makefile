@@ -1,12 +1,17 @@
 
 include ../Makeconf
 
-.PHONY: literate all julia lisp ess inf r r-indent literate cases indent-cases literate-cases
+.PHONY: literate all julia julia-tests \
+	lisp ess inf r r-indent literate \
+	cases indent-cases literate-cases
 
 all: compile lisp
 
 julia:
 	$(MAKE) -C .. julia
+
+julia-tests: julia
+	${EMACS} -Q --script run-tests --julia
 
 lisp: julia
 	${EMACS} -Q --script run-tests
