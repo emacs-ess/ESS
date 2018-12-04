@@ -20,13 +20,13 @@
   (should (string-match "to quit R.\n\n> setwd(.*)$" (ess-r-tests-startup-output))))
 
 (ert-deftest ess-startup-default-directory-preserved-test ()
-  (let ((default-directory "foo")
+  (let ((default-directory user-emacs-directory)
         (ess-startup-directory temporary-file-directory)
         ess-ask-for-ess-directory)
     (with-r-running nil
-      (should (string= default-directory "foo"))
+      (should (string= default-directory user-emacs-directory))
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
-    (should (string= default-directory "foo"))))
+    (should (string= default-directory user-emacs-directory))))
 
 
 ;;; Evaluation
