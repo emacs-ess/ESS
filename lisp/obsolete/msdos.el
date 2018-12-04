@@ -149,7 +149,7 @@ d. strips ctrl-m from output.
   (set (make-local-variable 'comint-completion-addsuffix) '("\\" . " "))
   (setq comint-process-echoes t)
   (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
-  (set-buffer-process-coding-system 'raw-text-dos 'raw-text-dos)
+  (set-process-coding-system (get-buffer-process (current-buffer)) 'raw-text-dos 'raw-text-dos)
   ;; buffer-process-coding-system is critical.
   )
 
