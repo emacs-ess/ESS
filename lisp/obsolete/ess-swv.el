@@ -88,10 +88,30 @@
 (require 'ess-r-mode); for Rnw-mode
 (require 'easymenu)
 
+
+
 (defvar TeX-command-list)
 (defvar TeX-command-default)
 (defvar TeX-file-extensions)
 (declare-function TeX-normal-mode "tex")
+
+(defgroup ess-sweave nil
+  "Mode for editing Sweave (*.[SR]nw) files."
+  :group 'ess-S
+  :prefix "ess-")
+
+(defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
+  "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
+the first entry is the default command."
+  :group 'ess-sweave
+  :type '(repeat string))
+
+(defcustom ess-swv-plug-into-AUCTeX-p nil
+  "Non-nil means add commands to AUCTeX's \\[TeX-command-list]
+to sweave the current noweb file and latex the result."
+  :group 'ess-sweave
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "On" t)))
 
 (defcustom ess-swv-processing-command ".ess_weave(%s, %s)"
   "Command used by `ess-swv-run-in-R'.

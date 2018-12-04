@@ -119,11 +119,6 @@
   :prefix "ess-" ;; << -- added for ESS integration  FIXME??
   :group 'tools)
 
-(defgroup ess-sweave nil
-  "Mode for editing Sweave (*.[SR]nw) files."
-  :group 'ess-S
-  :prefix "ess-")
-
 (defgroup ess-extras nil
   "Extra utilities for ESS"
   :group 'ess
@@ -1474,19 +1469,6 @@ blocks. In existing roxygen blocks, the prefix is taken from
 the line at point"
   :group 'ess-roxy
   :type 'string)
-
-(defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
-  "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
-the first entry is the default command."
-  :group 'ess-sweave
-  :type '(repeat string))
-
-(defcustom ess-swv-plug-into-AUCTeX-p nil
-  "Non-nil means add commands to AUCTeX's \\[TeX-command-list]
-to sweave the current noweb file and latex the result."
-  :group 'ess-sweave
-  :type '(choice (const :tag "Off" nil)
-                 (const :tag "On" t)))
 
 (defvar ess-roxy-insert-prefix-on-newline t
   "When non-nil, `ess-roxy-newline-and-indent' will make sure the new
