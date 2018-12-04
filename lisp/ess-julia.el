@@ -60,6 +60,62 @@
 (eval-when-compile
   (require 'cl-lib))
 
+;; make ess-eval-function work with julia
+;; ignores anonymous functions -- not sure if there is a reason to include them
+(defvar ess-julia-function-pattern
+  (eval-when-compile
+    (let ((sym "\\_<\\(\\sw\\|\\s_\\)+") ;function name
+          (pars "\\s-*([^)]*)\\s-*"))    ;parameter list (...)
+      (concat "\\("
+              "\\(\\(function\\|macro\\)\\s-+" sym pars "\\|" ;function x(...)
+              sym pars "=\\)"                                 ;f(x,y,...) = ...
+              ;; "\\(\\([^[:space:]-]+\\|([^)]*)\\)\\s-*->\\)" ;anonymous functions
+              "\\)"
+              ))))
+
+;; Replacements for `ess-end-of-function' and `ess-beginning-of-function' since
+;; `forward-sexp' doesn't curently work with julia code
+;; If julia-mode switches to smie for indentation or had some other functions to
+;; match the proper "end" tokens that would be preferable. These functions
+;; ignore nested functions, skipping over them.
+;;
+;; For single line functions, eg. f(x, y) = x + y, the function body may span
+;; multiple lines.
+(defun ess-julia-beginning-of-function (&optional no-error)
+  "Leave the point at beginning of outermost function, skipping nested functions.
+If the optional argument NO-ERROR is non-nil, retun nil when not in a function,
+otherwise return point at beginning of function."
+  (interactive)
+  (let ((pnt (point)))
+    (while (and (not (looking-at-p ess-julia-function-pattern))
+                (julia-last-open-block (point-min)))) ;skip nested functions
+    (while (julia-indent-hanging)          ;dangling simple functions
+      (forward-line -1))
+    (beginning-of-line)
+    (if (looking-at-p ess-julia-function-pattern)
+        (point)
+      (goto-char pnt)
+      (and (not no-error)
+           (error "Point is not in a function according to \
+'ess-function-pattern'")))))
+
+(defun ess-julia-end-of-function (&optional beginning no-error)
+  "Leave the point at end of current outermost julia function.
+Optional argument for location of BEGINNING. Return '(beg end)."
+  (interactive)
+  (if beginning
+      (goto-char beginning)
+    (setq beginning (ess-julia-beginning-of-function no-error)))
+  (when beginning
+    (if (looking-at-p "\\(function\\|macro\\)") ;hack, assumes unindented "end" token
+        (re-search-forward "^end")
+      ;; simple function form: f(x, y) = ...
+      (while (and (not (eobp)) (forward-line) (julia-indent-hanging)))
+      (unless (eobp)              ;went one line too far unless end of buffer
+        (forward-line -1)
+        (end-of-line)))
+    (list beginning (point))))
+
 (defun ess-julia-send-string-function (process string _visibly)
   "Send the Julia STRING to the PROCESS.
 VISIBLY is not currently used."
@@ -332,7 +388,7 @@ to look up any doc strings."
     (ess-change-sp-regexp          . nil );ess-r-change-sp-regexp)
     (ess-help-sec-regex            . ess-help-r-sec-regex)
     (ess-help-sec-keys-alist       . ess-help-r-sec-keys-alist)
-    (ess-function-pattern          . ess-r-function-pattern)
+    (ess-function-pattern          . ess-julia-function-pattern)
     (ess-object-name-db-file       . "ess-jl-namedb.el" )
     (ess-smart-operators           . ess-r-smart-operators)
     (inferior-ess-exit-command     . "exit()\n")
@@ -367,6 +423,9 @@ It makes underscores and dots word constituent chars.")
 (defvar ess-julia-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map ess-mode-map)
+    (define-key map [remap ess-beginning-of-function]
+      'ess-julia-beginning-of-function)
+    (define-key map [remap ess-end-of-function] 'ess-julia-end-of-function)
     map)
   "Keymap for `ess-julia-mode'.")
 
@@ -389,7 +448,9 @@ It makes underscores and dots word constituent chars.")
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
+  ;; movement commands
+  (setq-local end-of-defun-function 'ess-julia-end-of-function)
+  ;; (set (make-local-variable 'end-of-defun-function) 'ess-end-of-function)
   (setq imenu-generic-expression ess-julia-imenu-generic-expression)
   (imenu-add-to-menubar "Imenu-jl"))
 
