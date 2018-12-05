@@ -91,6 +91,18 @@
       (should (output= (ess-eval-region (point-min) (point-max) nil)
                        "1 + \n1\n[1] 2")))))
 
+(ert-deftest ess-eval-function ()
+  (with-r-running nil
+    (let (ess-eval-visibly)
+      (insert "x <- function(a){\n a + 1\n}")
+      (forward-line -1)
+      (ess-eval-function)
+      (delete-region (progn (beginning-of-defun) (point))
+                     (progn (end-of-defun) (point)))
+      (insert "x(1)")
+      (should (output= (ess-eval-region (point-min) (point-max) nil)
+                       "+ + > [1] 2")))))
+
 (ert-deftest ess-r-eval-rectangle-mark-mode-test ()
   (with-r-running nil
     (insert "x <- 1\nx\nx + 1\nx  +  2\n")
@@ -183,7 +195,7 @@
                    (goto-char (point-min))
                    (ess-skip-thing 'line)
                    (point)))))
-  (should (eql 30
+  (should (eql 31
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
                  (progn
                    (goto-char (point-min))
@@ -309,3 +321,22 @@ add <- function(x, y) {
            (ess-cpp-test-with-temp-text "//¶"
              (ess-roxy-newline-and-indent)
              (buffer-substring-no-properties (point-min) (point-max))))))
+
+;; Navigation
+(ert-deftest ess-r-function-beg-end ()
+  (ess-r-test-with-temp-text
+      "x <- function(a){\n  a + 1\n}"
+    (search-forward "(a)")
+    (beginning-of-defun)
+    (should (eql (point) 1))
+    (search-forward "(a)")
+    (end-of-defun)
+    (should (eql (point) 28)))
+  (ess-r-test-with-temp-text
+      "1 + 1"
+    (search-forward "+")
+    (should-error (end-of-defun))))
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

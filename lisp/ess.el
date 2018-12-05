@@ -252,8 +252,6 @@ ESS source.
     `ess-eval-buffer' sends the current buffer to the ESS process.
     `ess-eval-function' sends the current function to the ESS process.
     `ess-eval-line' sends the current line to the ESS process.
-    `ess-beginning-of-function' and `ess-end-of-function' move the point to
-        the beginning and end of the current ESS function.
     `ess-switch-to-ESS' switches the current buffer to the ESS process buffer.
     `ess-switch-to-end-of-ESS' switches the current buffer to the ESS process
         buffer and puts point at the end of it.
@@ -374,7 +372,7 @@ With UPDATE, update cached package list."
   "If inside a function go to the beginning of it.
 Otherwise go to the beginning of paragraph."
   (interactive)
-  (or (ess-beginning-of-function 'no-error)
+  (or (beginning-of-defun)
       (backward-paragraph))
   (point))
 
@@ -382,7 +380,7 @@ Otherwise go to the beginning of paragraph."
   "If inside a function go to end of it.
 Otherwise go to the end of paragraph."
   (interactive)
-  (or (ess-end-of-function nil 'no-error)
+  (or (end-of-defun)
       (forward-paragraph))
   (point))
 
@@ -401,7 +399,6 @@ Otherwise go to the end of paragraph."
 If text is already narrowed, this is removed before narrowing to the
 current function."
   (interactive)
-  ;; if point is not in a function, ess-end-of-function catches the error.
   (save-excursion
     (widen)
     (let* ((beg (ess-goto-beginning-of-function-or-para))

@@ -787,7 +787,7 @@ See `hs-show-block' and `ess-roxy-hide-block'."
   (save-excursion
     (let ((args-txt
            (progn
-             (ess-beginning-of-function)
+             (beginning-of-defun)
              (buffer-substring-no-properties
               (progn
                 (search-forward-regexp "\\([=,-]+ *function *\\|^\s*function\\)" nil nil 1)

@@ -528,8 +528,7 @@ been created using the variable `ess-r-versions'."
   (setq-local comment-column 40)
   (setq-local ess-indent-line-function 'gretl-indent-line)
   (setq-local ess-local-customize-alist gretl-customize-alist)
-  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (setq-local end-of-defun-function 'ess-end-of-function))
+  (when (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 
 
 (defvar ess-gretl-post-run-hook nil
