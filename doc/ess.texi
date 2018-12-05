@@ -3250,7 +3250,7 @@ polymode @url{https://github.com/polymode/poly-R/},
 @url{https://jblevins.org/projects/markdown-mode}.
 
 ESS provides support for writing and processing Sweave
-(@uref{https://www.statistik.lmu.de/~leisch/Sweave}), building up on
+(@uref{https://leisch.userweb.mwn.de/Sweave/}), building up on
 Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
 document, the following key bindings are available:
 
