@@ -1546,6 +1546,10 @@ current function, otherwise (in case of an error) return nil."
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
   (save-excursion
+    (ignore-errors
+      ;; Evaluation is forward oriented
+      (forward-line -1)
+      (ess-next-code-line 1))
     (let ((beg (progn (backward-paragraph) (point)))
           (end (progn (forward-paragraph) (point))))
       (ess-eval-region beg end vis))))
