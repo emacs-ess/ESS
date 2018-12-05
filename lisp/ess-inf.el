@@ -476,17 +476,20 @@ flash or you'll hear a beep.  Taken from octave-mod.el."
 (defun ess-process-sentinel (proc message)
   "Sentinel for use with ESS processes.
 This marks the process with a message, at a particular time point."
-  (save-excursion
-    (let ((abuf (process-get proc :accum-buffer)))
-      (when (buffer-live-p abuf)
-        (kill-buffer abuf)))
-    (setq message (substring message 0 -1)) ; strip newline
-    (set-buffer (process-buffer proc))
-    (comint-write-input-ring)
-    (goto-char (point-max))
-    (insert-before-markers
-     (format "\nProcess %s %s at %s\n"
-             (process-name proc) message (current-time-string)))))
+  (let ((abuf (process-get proc :accum-buffer)))
+    (when (buffer-live-p abuf)
+      (kill-buffer abuf)))
+  (let ((pbuf (process-buffer proc)))
+    (when (buffer-live-p pbuf)
+      (with-current-buffer pbuf
+        (save-excursion
+          (setq message (substring message 0 -1)) ; strip newline
+          (set-buffer (process-buffer proc))
+          (comint-write-input-ring)
+          (goto-char (point-max))
+          (insert-before-markers
+           (format "\nProcess %s %s at %s\n"
+                   (process-name proc) message (current-time-string))))))))
 
 (defun inferior-ess-make-comint (bufname procname switches)
   "Make a comint process in buffer BUFNAME with process PROCNAME.
