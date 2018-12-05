@@ -1,4 +1,5 @@
 (require 'ert)
+(require 'ess-r-mode)
 (require 'ess-r-package)
 (require 'ess-r-tests-utils)
 
@@ -63,11 +64,11 @@
         (ess-r-package-auto-activate nil))
     (with-r-file "dummy-pkg/R/test.R"
       (let ((pkg-info (ess-r-package-info)))
-        (should (string= (car pkg-info) "foo"))
-        (should (string-match-p "dummy-pkg$" (cdr pkg-info)))
+        (should (string= (alist-get :name pkg-info) "foo"))
+        (should (string-match-p "dummy-pkg$" (alist-get :root pkg-info)))
         (kill-buffer)))
     (with-c-file "dummy-pkg/src/test.c"
       (let ((pkg-info (ess-r-package-info)))
-        (should (string= (car pkg-info) "foo"))
-        (should (string-match-p "dummy-pkg$" (cdr pkg-info)))
+        (should (string= (alist-get :name pkg-info) "foo"))
+        (should (string-match-p "dummy-pkg$" (alist-get :root pkg-info)))
         (kill-buffer)))))
