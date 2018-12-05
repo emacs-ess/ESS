@@ -1568,7 +1568,8 @@ Otherwise send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (ess-step-line (ess-eval-function-or-paragraph vis)))
+  (ess-skip-thing (ess-eval-function-or-paragraph vis))
+  (ess-next-code-line))
 
 (defun ess-eval-region-or-function-or-paragraph (&optional vis)
   "Send the region, function, or paragraph depending on context.
@@ -1590,7 +1591,8 @@ step to the next code line or to the end of region if region was
 active. Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (ess-step-line (ess-eval-region-or-function-or-paragraph vis)))
+  (ess-eval-region-or-function-or-paragraph vis)
+  (ess-next-code-line))
 
 (defun ess-eval-region-or-line-and-step (&optional vis)
   "Evaluate region if active, otherwise `ess-eval-line-and-step'.
@@ -1624,11 +1626,12 @@ VIS has same meaning as for `ess-eval-region'."
     (ess-eval-region beg end vis msg)))
 
 (defun ess-eval-line-and-step (&optional vis)
-  "Evaluate the current line and `ess-step-line' to the \"next\" line.
+  "Evaluate the current line and step to the \"next\" line.
 See `ess-eval-region' for VIS."
   (interactive "P")
   (ess-eval-line vis)
-  (ess-step-line 'line))
+  (ess-skip-thing 'line)
+  (ess-next-code-line))
 
 (defun ess-eval-line-visibly-and-step (&optional simple-next)
   "Evaluate the current line visibly and step to the \"next\" line.
@@ -1638,15 +1641,16 @@ is non-nil both SIMPLE-NEXT and EVEN-EMPTY are interpreted as
 true.
 
 Note that when inside a package and namespaced evaluation is in
-place (see `ess-r-set-evaluation-env') evaluation of multiline
-input will fail."
+place (see `ess-r-set-evaluation-env'), the evaluation of
+multiline input will fail."
   (interactive "P")
   (ess-force-buffer-current)
   (display-buffer (ess-get-process-buffer))
   (let ((ess-eval-visibly t)
         (ess-eval-empty (or ess-eval-empty simple-next)))
     (ess-eval-line)
-    (ess-step-line 'line)))
+    (ess-skip-thing 'line)
+    (ess-next-code-line)))
 
 (defun ess-eval-line-invisibly-and-step ()
   "Evaluate the current line invisibly and step to the next line.
@@ -1702,7 +1706,8 @@ If not inside a paragraph, evaluate the next one. VIS has same
 meaning as for `ess-eval-region'."
   (interactive "P")
   (ess-eval-paragraph vis)
-  (ess-step-line 'paragraph))
+  (ess-skip-thing 'paragraph)
+  (ess-next-code-line))
 
  ; Inferior ESS mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

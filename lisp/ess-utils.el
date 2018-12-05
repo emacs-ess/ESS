@@ -101,30 +101,35 @@ Used in noweb modes.")
 
 (defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
-Skips past all empty and comment lines. Default for ARG is 1.
-Don't skip the last empty and comment lines in the buffer unless
-SKIP-TO-EOB is non-nil. On success, return 0. Otherwise, go as
-far as possible and return -1."
+If `ess-eval-empty' is non-nil, skip past all empty and comment
+lines. Default for ARG is 1. Don't skip the last empty and
+comment lines in the buffer unless SKIP-TO-EOB is non-nil. On
+success, return 0. Otherwise, go as far as possible and return
+-1."
   (interactive "p")
   (or arg (setq arg 1))
-  (beginning-of-line)
-  (let ((pos (point))
-        (n 0)
-        (inc (if (> arg 0) 1 -1)))
-    (while (and (/= arg 0) (= n 0))
-      (setq n (forward-line inc)); n=0 is success
-      (comment-beginning)
-      (beginning-of-line)
-      (forward-comment (* inc (buffer-size))) ;; as suggested in info file
-      (if (or skip-to-eob
-              (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
-          (setq arg (- arg inc))
-        (goto-char pos)
-        (setq arg 0)
-        (forward-line 1));; stop at next empty line
-      (setq pos (point)))
-    (goto-char pos)
-    n))
+  (if (or ess-eval-empty
+          (and (fboundp 'ess-roxy-entry-p)
+               (ess-roxy-entry-p)))
+      (forward-line arg)
+    (beginning-of-line)
+    (let ((pos (point))
+          (n 0)
+          (inc (if (> arg 0) 1 -1)))
+      (while (and (/= arg 0) (= n 0))
+        (setq n (forward-line inc))     ; n=0 is success
+        (comment-beginning)
+        (beginning-of-line)
+        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
+        (if (or skip-to-eob
+                (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
+            (setq arg (- arg inc))
+          (goto-char pos)
+          (setq arg 0)
+          (forward-line 1)) ;; stop at next empty line
+        (setq pos (point)))
+      (goto-char pos)
+      n)))
 
 (defun ess-goto-line (line)
   (save-restriction
@@ -139,17 +144,6 @@ THING can be 'function, 'paragraph, or 'line."
    ((eql thing 'line) (goto-char (line-end-position)))
    ((eql thing 'paragraph) (forward-paragraph))
    ((eql thing 'function) (goto-char (cadr (ess-end-of-function nil 'no-error))))))
-
-(defun ess-step-line (&optional skip)
-  "Step forward to the \"next\" line.
-Depending on `ess-eval-empty', step one line or to the next code
-line. When given, SKIP gets passed to `ess-skip-thing'."
-  (when skip (ess-skip-thing skip))
-  (if (or ess-eval-empty
-          (and (fboundp 'ess-roxy-entry-p)
-               (ess-roxy-entry-p)))
-      (forward-line 1)
-    (ess-next-code-line)))
 
 (defun ess-line-end-position (&optional N)
   "Return the 'point' at the end of N lines. N defaults to 1, i.e., current line."

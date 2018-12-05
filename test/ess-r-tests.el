@@ -199,18 +199,18 @@
                     (goto-char (point-min))
                     (ess-skip-thing 'function)))))
 
-(ert-deftest ess-step-line ()
+(ert-deftest ess-next-code-line-test ()
   (should (eql 5
                (ess-r-test-with-temp-text "1+1\n#2+2\n#3+3\n4+4"
                  (let ((ess-eval-empty t))
                    (goto-char (point-min))
-                   (ess-step-line)
+                   (ess-next-code-line)
                    (point)))))
   (should (eql 15
                (ess-r-test-with-temp-text "1+1\n#2+2\n#3+3\n4+4"
                  (let (ess-eval-empty)
                    (goto-char (point-min))
-                   (ess-step-line)
+                   (ess-next-code-line)
                    (point))))))
 
 (ert-deftest ess-Rout-file ()
