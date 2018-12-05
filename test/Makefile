@@ -18,10 +18,13 @@ inf:
 	${EMACS} -Q --script run-tests --inf
 
 r:
-	${EMACS} -Q --script run-tests --rstats
+	${EMACS} -Q --script run-tests --r
 
 r-indent:
-	${EMACS} -Q --script run-tests --rstats-indent
+	${EMACS} -Q --script run-tests --r-indent
+
+r-pkg:
+	${EMACS} -Q --script run-tests --r-pkg
 
 literate:
 	${EMACS} -Q --script run-tests --literate
