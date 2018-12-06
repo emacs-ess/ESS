@@ -2231,38 +2231,21 @@ state.")
 
 (defun ess-r-help-add-links ()
   "Add links to the help buffer."
-  (save-excursion
-    ;; Search for fancy quotes only. If users have
-    ;; options(useFancyQuotes) set to something other than TRUE this
-    ;; probably won't work. If it's FALSE, R outputs ascii ', but
-    ;; searching through the whole buffer takes too long.
-    (while (re-search-forward "‘[^[:space:]]+?’" nil t)
-      (let ((inhibit-read-only t)
-            (beg (match-beginning 0))
-            (end (match-end 0))
-            (text (match-string 0)))
-        ;; Remove surrounding quotes so the text property is the
-        ;; name of the link:
-        (progn
-          ;; TODO: Replace all this with:
-          ;; (string-trim (match-string 0) "[\"‘]*" "[\"’]*")
-          ;; after dropping support for Emacs 25
-          (setq text
-                (if (string-match "^[\"‘]*" text)
-                    (substring text (match-end 0))
-                  text))
-          (setq text (if (string-match "[\"’]*$" text)
-                         (substring text 0 (match-beginning 0))
-                       text)))
-        (when (member text (ess-s-get-help-topics-function ess-local-process-name))
-          (add-text-properties beg end (list 'ess-r-help-link-text text))
-          (make-text-button beg end
-                            'type 'ess-r-help-link
-                            'help-echo (format "mouse-2, RET: Help on %s" text))
-          (goto-char beg)
-          (delete-char 1)
-          (goto-char (1- end))
-          (delete-char -1))))))
+  (let ((help-topics (ess-s-get-help-topics-function ess-local-process-name))
+        (inhibit-read-only t))
+    (save-excursion
+      ;; Search for fancy quotes only. If users have
+      ;; options(useFancyQuotes) set to something other than TRUE this
+      ;; probably won't work. If it's FALSE, R outputs ascii ', but
+      ;; searching through the whole buffer takes too long.
+      (while (re-search-forward "‘\\([^[:space:]]+?\\)’" nil t)
+        (let ((text (match-string 1)))
+          (when (member text help-topics)
+            (delete-region (match-beginning 0) (match-end 0))
+            (insert-text-button text
+                                'ess-r-help-link-text text
+                                'type 'ess-r-help-link
+                                'help-echo (format "mouse-2, RET: Help on %s" text))))))))
 
 
 
