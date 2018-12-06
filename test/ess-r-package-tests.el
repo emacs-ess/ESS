@@ -14,7 +14,8 @@
       (should ess-r-package-mode))))
 
 (ert-deftest ess-r-package-auto-activation-in-shell-test ()
-  (let ((kill-buffer-query-functions nil))
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (kill-buffer-query-functions nil))
     (with-r-file "dummy-pkg/R/test.R"
       (shell)
       (should ess-r-package-mode)
