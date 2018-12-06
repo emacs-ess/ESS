@@ -23,23 +23,23 @@
           (should (re-search-backward expect nil t)))
       (kill-process proc))))
 
-(ert-deftest test-org-ob-R-output ()
+(ert-deftest test-org-ob-R-output-test ()
   (test-org-R-ouput "hello"
     "#+BEGIN_SRC R :results output\n  \"hello\"\n#+END_SRC"))
 
-(ert-deftest test-org-ob-R-session-output ()
+(ert-deftest test-org-ob-R-session-output-test ()
   (test-org-R-ouput "hello"
     "#+BEGIN_SRC R :session :results output\n  \"hello\"\n#+END_SRC"))
 
-(ert-deftest test-org-ob-R-value ()
+(ert-deftest test-org-ob-R-value-test ()
   (test-org-R-ouput "hello"
     "#+BEGIN_SRC R :results value\n  \"hello\"\n#+END_SRC"))
 
-(ert-deftest test-org-ob-R-session-value ()
+(ert-deftest test-org-ob-R-session-value-test ()
   (test-org-R-ouput "hello"
     "#+BEGIN_SRC R :session :results value\n  \"hello\"\n#+END_SRC"))
 
-(ert-deftest test-org-ob-R-data-frame ()
+(ert-deftest test-org-ob-R-data-frame-test ()
   (test-org-R-ouput "| 3 | c |"
     "#+BEGIN_SRC R :session :results value :colnames yes\n  data.frame(x=1:3, y=c(\"a\",\"b\",\"c\"))\n#+END_SRC"))
 
