@@ -3,29 +3,29 @@
 (require 'ess-r-package)
 (require 'ess-r-tests-utils)
 
-(ert-deftest ess-r-package-auto-activation ()
+(ert-deftest ess-r-package-auto-activation-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
     (with-temp-buffer
       (text-mode)
       (hack-local-variables)
       (should (not ess-r-package-mode)))
     (with-r-file "dummy-pkg/R/test.R"
-                 (hack-local-variables)
-                 (should ess-r-package-mode))))
+      (hack-local-variables)
+      (should ess-r-package-mode))))
 
-(ert-deftest ess-r-package-auto-activation-in-shell ()
+(ert-deftest ess-r-package-auto-activation-in-shell-test ()
   (let ((kill-buffer-query-functions nil))
     (with-r-file "dummy-pkg/R/test.R"
-                 (shell)
-                 (should ess-r-package-mode)
-                 (kill-buffer))
+      (shell)
+      (should ess-r-package-mode)
+      (kill-buffer))
     (with-r-file "dummy-pkg/R/test.R"
-                 (let ((ess-r-package-auto-activate t))
-                   (shell)
-                   (should ess-r-package-mode))
-                 (kill-buffer))))
+      (let ((ess-r-package-auto-activate t))
+        (shell)
+        (should ess-r-package-mode))
+      (kill-buffer))))
 
-(ert-deftest ess-r-package-auto-no-activation-in-shell ()
+(ert-deftest ess-r-package-auto-no-activation-in-shell-test ()
   (let ((kill-buffer-query-functions nil))
     (with-r-file "dummy-pkg/R/test.R"
       (let ((ess-r-package-exclude-modes '(shell-mode)))
@@ -38,7 +38,7 @@
         (should (not ess-r-package-mode))
         (kill-buffer)))))
 
-(ert-deftest ess-r-package-vars ()
+(ert-deftest ess-r-package-vars-test ()
   (with-c-file "dummy-pkg/src/test.c"
     (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
           (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))

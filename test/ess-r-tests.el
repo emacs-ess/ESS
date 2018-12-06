@@ -6,7 +6,7 @@
 
 ;;; R
 
-(ert-deftest ess-r-inherits-prog-mode ()
+(ert-deftest ess-r-inherits-prog-mode-test ()
   (let ((prog-mode-hook (lambda () (setq ess-test-prog-hook t))))
     (with-r-file nil
       (should (derived-mode-p 'prog-mode))
@@ -21,7 +21,7 @@
              (setq map (keymap-parent map))))
          found)))))
 
-(ert-deftest ess-build-eval-command-R ()
+(ert-deftest ess-build-eval-command-R-test ()
   (let ((command "command(\"string\")")
         (ess-dialect "R"))
     (should (string= (ess-build-eval-command command)
@@ -31,7 +31,7 @@
     (should (string= (ess-build-eval-command command t t "file.ext" "foo")
                      ".ess.ns_eval(\"command(\\\"string\\\")\", visibly = TRUE, output = TRUE, package = 'foo', verbose = TRUE, file = 'file.ext')\n"))))
 
-(ert-deftest ess-build-load-command-R ()
+(ert-deftest ess-build-load-command-R-test ()
   (let ((ess-dialect "R"))
     (should (string= (ess-build-load-command "file.ext")
                      ".ess.source('file.ext', visibly = FALSE, output = FALSE)\n"))
@@ -40,7 +40,7 @@
     (should (string= (ess-build-load-command "file.ext" nil t "foo")
                      ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo', verbose = TRUE)\n"))))
 
-(ert-deftest inferior-ess-inherits-from-comint ()
+(ert-deftest inferior-ess-inherits-from-comint-test ()
   (with-temp-buffer
     (inferior-ess-r-mode)
     ;; Derive from comint
@@ -55,21 +55,21 @@
            (setq map (keymap-parent map))))
        found))))
 
-(ert-deftest ess-r-send-single-quoted-strings ()
+(ert-deftest ess-r-send-single-quoted-strings-test ()
   (with-r-running nil
     (insert "'hop'\n")
     (let (ess-eval-visibly)
       (should (output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
-(ert-deftest ess-r-send-double-quoted-strings ()
+(ert-deftest ess-r-send-double-quoted-strings-test ()
   (with-r-running nil
     (insert "\"hop\"\n")
     (let (ess-eval-visibly)
       (should (output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
-(ert-deftest ess-eval-line ()
+(ert-deftest ess-eval-line-test ()
   (with-r-running nil
     (insert "1 + 1")
     (let (ess-eval-visibly)
@@ -79,7 +79,7 @@
       (should (output= (ess-eval-line)
                        "1 + 1\n[1] 2")))))
 
-(ert-deftest ess-eval-region ()
+(ert-deftest ess-eval-region-test ()
   (with-r-running nil
     (insert "1 + \n1")
     (let (ess-eval-visibly)
@@ -90,7 +90,7 @@
       (should (output= (ess-eval-region (point-min) (point-max) nil)
                        "1 + \n1\n[1] 2")))))
 
-(ert-deftest ess-r-eval-rectangle-mark-mode ()
+(ert-deftest ess-r-eval-rectangle-mark-mode-test ()
   (with-r-running nil
     (insert "x <- 1\nx\nx + 1\nx  +  2\n")
     (let (ess-eval-visibly)
@@ -103,7 +103,7 @@
                          (ess-eval-region-or-line-and-step))
                        "> [1] 1\n> [1] 2\n> [1] 3")))))
 
-(ert-deftest ess-set-working-directory ()
+(ert-deftest ess-set-working-directory-test ()
   (with-r-running nil
     (ess-set-working-directory "/")
     (ess-eval-linewise "getwd()" 'invisible)
@@ -111,14 +111,14 @@
                      "setwd('/')\n> [1] \"/\""))
     (should (string= default-directory "/"))))
 
-(ert-deftest ess-inferior-force ()
+(ert-deftest ess-inferior-force-test ()
   (with-r-running nil
     (should (equal (ess-get-words-from-vector "letters[1:2]\n")
                    (list "a" "b")))))
 
 ;;; Namespaced evaluation
 
-(ert-deftest ess-r-run-presend-hooks ()
+(ert-deftest ess-r-run-presend-hooks-test ()
   (with-r-running nil
     (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\"")))
           (ess-r-evaluation-env "base")
@@ -127,7 +127,7 @@
       (should (output= (ess-eval-region (point-min) (point-max) nil)
                        "[1] \"bar\"")))))
 
-(ert-deftest ess-r-namespaced-eval-no-sourced-message ()
+(ert-deftest ess-r-namespaced-eval-no-sourced-message-test ()
   (with-r-running nil
     (let ((ess-r-evaluation-env "base")
           ess-eval-visibly)
@@ -135,7 +135,7 @@
       (should (output= (ess-eval-region (point-min) (point-max) nil)
                        "[1] \"foo\"")))))
 
-(ert-deftest ess-r-namespaced-eval-no-srcref-in-errors ()
+(ert-deftest ess-r-namespaced-eval-no-srcref-in-errors-test ()
   ;; Fails since https://github.com/emacs-ess/ESS/commit/3a7d913
   (when nil
     (with-r-running nil
@@ -150,14 +150,14 @@
 
 ;;; Misc
 
-(ert-deftest ess-r-makevars-mode ()
+(ert-deftest ess-r-makevars-mode-test ()
   (save-window-excursion
     (mapc (lambda (file)
             (switch-to-buffer (find-file-noselect file))
             (should (eq major-mode 'makefile-mode)))
           '("fixtures/Makevars" "fixtures/Makevars.win"))))
 
-(ert-deftest ess-find-newest-date ()
+(ert-deftest ess-find-newest-date-test ()
   (should (equal (ess-find-newest-date '(("2003-10-04" . "R-1.7")
                                          ("2006-11-19" . "R-2.2")
                                          ("2007-07-01" . "R-dev")
@@ -165,7 +165,7 @@
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
 
-(ert-deftest ess-insert-S-assign ()
+(ert-deftest ess-insert-S-assign-test ()
   ;; one call should insert assignment:
   (should
    (string= " <- "
@@ -175,7 +175,7 @@
                 (call-interactively 'ess-insert-S-assign)
                 (buffer-substring (point-min) (point-max)))))))
 
-(ert-deftest ess-skip-thing ()
+(ert-deftest ess-skip-thing-test ()
   (should (eql 18
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
                  (progn
@@ -213,14 +213,14 @@
                    (ess-next-code-line)
                    (point))))))
 
-(ert-deftest ess-Rout-file ()
+(ert-deftest ess-Rout-file-test ()
   (let ((buf (find-file-noselect "fixtures/file.Rout")))
     (with-current-buffer buf
       (should (eq major-mode 'ess-r-transcript-mode))
       (font-lock-default-fontify-buffer)
       (should (eq (face-at-point) 'font-lock-function-name-face)))))
 
-(ert-deftest inferior-ess-r-fontification ()
+(ert-deftest inferior-ess-r-fontification-test ()
   (with-r-running nil
     (with-ess-process-buffer nil
       ;; Function-like keywords
@@ -239,7 +239,7 @@
       (should (not (face-at-point))))))
 
 ;; roxy
-(ert-deftest ess-roxy-preview-Rd ()
+(ert-deftest ess-roxy-preview-Rd-test ()
   (skip-unless (or (getenv "CONTINUOUS_INTEGRATION")
                    (member "roxygen2" (ess-r-installed-packages))))
   (with-r-running nil
@@ -275,7 +275,7 @@ add <- function(x, y) {
                 (kill-whole-line)
                 (buffer-substring-no-properties (point-min) (point-max)))))))
 
-(ert-deftest ess-roxy-cpp ()
+(ert-deftest ess-roxy-cpp-test ()
   ;; Test M-q
   (should (string=
            "//' Title

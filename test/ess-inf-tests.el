@@ -40,7 +40,7 @@
                          (buffer-string))
                        "[1] TRUE")))))
 
-(ert-deftest ess-async-command ()
+(ert-deftest ess-async-command-test ()
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
   ;;                    (lambda (proc) (message "done")))
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
@@ -200,7 +200,7 @@ some. text
     (should (string= (ess-build-load-command "file")
                      "source('file')\n"))))
 
-(ert-deftest ess-get-words-from-vector ()
+(ert-deftest ess-get-words-from-vector-test ()
   (with-r-running nil
     (should (cl-every #'string= (ess-get-words-from-vector "c('1')\n") '("1")))
     (should (cl-every #'string= (ess-get-words-from-vector "c('1', \"2\")\n") '("1" "2")))
@@ -215,12 +215,12 @@ some. text
 ;; loaded. They're skipped unless you've defined the environment
 ;; variable CONTINUOUS_INTEGRATION or R-3.2.1 is found by
 ;; `executable-find'.
-(ert-deftest runner-R-3.2.1-defined ()
+(ert-deftest runner-R-3.2.1-defined-test ()
   (skip-unless (or (executable-find "R-3.2.1")
                    (getenv "CONTINUOUS_INTEGRATION")))
   (should (fboundp 'R-3.2.1)))
 
-(ert-deftest runner-R-3.2.1-buffer-name ()
+(ert-deftest runner-R-3.2.1-buffer-name-test ()
   (skip-unless (and (or (executable-find "R-3.2.1")
                         (getenv "CONTINUOUS_INTEGRATION"))
                     (> emacs-major-version 25)))
