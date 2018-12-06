@@ -71,6 +71,36 @@
 
 ;;; Inferior interaction
 
+(defmacro ess-test-interactive-eval (out-string &rest body)
+  "Evaluate BODY in a temp buffer with R-mod eon.
+OUT-STRING is the content of the region captured by
+`ess-send-region' function."
+  (declare (indent 1))
+  `(cl-letf (((symbol-function 'ess-force-buffer-current) #'ignore)
+             ((symbol-function 'ess-get-process) #'ignore)
+             ((symbol-function 'ess-send-region)
+              (lambda (_ start end &rest _ignore)
+                (should (string= (buffer-substring-no-properties start end)
+                                 ,out-string)))))
+     (with-temp-buffer
+       (R-mode)
+       ,@body)))
+
+(ert-deftest ess-eval-and-step-test ()
+
+  (let ((output "\nreal <- code\n"))
+    (ess-test-interactive-eval output
+      (insert (format "## comment\n%s" output))
+      (forward-line -1)
+      (ess-eval-region-or-function-or-paragraph-and-step)))
+
+  (let ((output "\nxyz <- function {\n}\n"))
+    (ess-test-interactive-eval output
+      (insert (format "## comment\n%s" output))
+      (goto-char (point-min))
+      (forward-line 1)
+      (ess-eval-region-or-function-or-paragraph-and-step))))
+
 (ert-deftest ess-verbose-setwd-test ()
   (with-r-running nil
     (should (output= (ess-set-working-directory temporary-file-directory)
