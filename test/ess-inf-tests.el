@@ -87,19 +87,19 @@ OUT-STRING is the content of the region captured by
        ,@body)))
 
 (ert-deftest ess-eval-and-step-test ()
+  (let ((inhibit-message ess-inhibit-message-in-tests))
+    (let ((output "\nreal <- code\n"))
+      (ess-test-interactive-eval output
+        (insert (format "## comment\n%s" output))
+        (forward-line -1)
+        (ess-eval-region-or-function-or-paragraph-and-step)))
 
-  (let ((output "\nreal <- code\n"))
-    (ess-test-interactive-eval output
-      (insert (format "## comment\n%s" output))
-      (forward-line -1)
-      (ess-eval-region-or-function-or-paragraph-and-step)))
-
-  (let ((output "\nxyz <- function {\n}\n"))
-    (ess-test-interactive-eval output
-      (insert (format "## comment\n%s" output))
-      (goto-char (point-min))
-      (forward-line 1)
-      (ess-eval-region-or-function-or-paragraph-and-step))))
+    (let ((output "\nxyz <- function {\n}\n"))
+      (ess-test-interactive-eval output
+        (insert (format "## comment\n%s" output))
+        (goto-char (point-min))
+        (forward-line 1)
+        (ess-eval-region-or-function-or-paragraph-and-step)))))
 
 (ert-deftest ess-verbose-setwd-test ()
   (with-r-running nil

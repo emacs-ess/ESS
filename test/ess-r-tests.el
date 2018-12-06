@@ -41,19 +41,20 @@
                      ".ess.ns_source('file.ext', visibly = FALSE, output = TRUE, package = 'foo', verbose = TRUE)\n"))))
 
 (ert-deftest inferior-ess-inherits-from-comint-test ()
-  (with-temp-buffer
-    (inferior-ess-r-mode)
-    ;; Derive from comint
-    (should (derived-mode-p 'comint-mode))
-    (should
-     ;; Test that comint-mode-map is a keymap-parent
-     (let ((map (current-local-map))
-           found)
-       (while (and map (not found))
-         (if (eq (keymap-parent map) comint-mode-map)
-             (setq found t)
-           (setq map (keymap-parent map))))
-       found))))
+  (let ((inhibit-message ess-inhibit-message-in-tests))
+    (with-temp-buffer
+      (inferior-ess-r-mode)
+      ;; Derive from comint
+      (should (derived-mode-p 'comint-mode))
+      (should
+       ;; Test that comint-mode-map is a keymap-parent
+       (let ((map (current-local-map))
+             found)
+         (while (and map (not found))
+           (if (eq (keymap-parent map) comint-mode-map)
+               (setq found t)
+             (setq map (keymap-parent map))))
+         found)))))
 
 (ert-deftest ess-r-send-single-quoted-strings-test ()
   (with-r-running nil
