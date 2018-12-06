@@ -893,37 +893,36 @@ Else call `ess-indent-command'."
       (progn (ess-roxy-toggle-hiding))
     (ess-indent-command whole-exp)))
 
-(defun ess--roxy-fill-block (fun &rest args)
+(defun ess--roxy-fill-block (fun &optional args)
   "Fill a roxygen block.
 FUN should be a filling function and ARGS gets passed to it."
-  (save-excursion
-    (let* ((saved-pos (point))
-           (saved-line (line-number-at-pos))
-           (saved-col (current-column))
-           (buffer (current-buffer))
-           (par-start (save-excursion
-                        (if (save-excursion
-                              (and (backward-paragraph)
-                                   (forward-paragraph)
-                                   (<= (point) saved-pos)))
-                            (line-beginning-position)
-                          (progn (backward-paragraph) (point)))))
-           (par-end (ess-roxy-find-par-end
-                     (save-excursion
-                       (forward-paragraph)
-                       (point))
-                     (concat ess-roxy-re "[ \t]*@examples\\b") "^[^#]")))
-      ;; Refill the whole structural paragraph sequentially, field by
-      ;; field, stopping at @examples
-      (ess-roxy-with-filling-context nil
-          (save-excursion
-            (save-restriction
-              (narrow-to-region par-start par-end)
-              (goto-char (point-min))
-              (while (< (point) (point-max))
-                (ess-roxy-maybe-indent-line)
-                (apply fun args)
-                (forward-paragraph))))))))
+  (let* ((saved-pos (point))
+         (saved-line (line-number-at-pos))
+         (saved-col (current-column))
+         (buffer (current-buffer))
+         (par-start (save-excursion
+                      (if (save-excursion
+                            (and (backward-paragraph)
+                                 (forward-paragraph)
+                                 (<= (point) saved-pos)))
+                          (line-beginning-position)
+                        (progn (backward-paragraph) (point)))))
+         (par-end (ess-roxy-find-par-end
+                   (save-excursion
+                     (forward-paragraph)
+                     (point))
+                   (concat ess-roxy-re "[ \t]*@examples\\b") "^[^#]")))
+    ;; Refill the whole structural paragraph sequentially, field by
+    ;; field, stopping at @examples
+    (ess-roxy-with-filling-context nil
+        (save-excursion
+          (save-restriction
+            (narrow-to-region par-start par-end)
+            (goto-char (point-min))
+            (while (< (point) (point-max))
+              (ess-roxy-maybe-indent-line)
+              (apply fun args)
+              (forward-paragraph)))))))
 
 (defun ess-r--fill-paragraph (orig-fun &rest args)
   "ESS fill paragraph for R mode.
