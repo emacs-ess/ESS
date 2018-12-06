@@ -213,9 +213,6 @@ representative to the common interactive use with tracebug on."
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)
                                         (concat "Result: \n" output)))))))
 
-(defun face-at-point ()
-  (get-char-property (point) 'face))
-
 (defun face-at (point)
   (save-excursion
     (if (>= point 0)
