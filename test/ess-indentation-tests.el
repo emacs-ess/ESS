@@ -40,6 +40,7 @@
 ;;; Code:
 
 (require 'ert)
+(require 'ess-r-mode)
 (require 'ess-r-tests-utils)
 
 ;;; Indentation tests

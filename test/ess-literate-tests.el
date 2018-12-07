@@ -1,4 +1,5 @@
 
+(require 'ess-r-mode)
 (eval-when-compile
   (require 'cl-lib))
 (require 'ert)

@@ -17,8 +17,8 @@ ess:
 inf:
 	${EMACS} -Q --script run-tests --inf
 
-r:
-	${EMACS} -Q --script run-tests --r
+r r-core:
+	${EMACS} -Q --script run-tests --r-core
 
 r-indent:
 	${EMACS} -Q --script run-tests --r-indent
