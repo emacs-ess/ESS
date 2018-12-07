@@ -291,11 +291,11 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
     (with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
+      (setq ess-local-process-name pname)
       (ess--help-major-mode)
-      (setq ess-help-object help-object)
       (ess-setq-vars-local (eval alist))
-      (setq ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)"
-            ess-local-process-name pname)
+      (setq ess-help-object help-object
+            ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)")
       (ess-command command buff)
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
