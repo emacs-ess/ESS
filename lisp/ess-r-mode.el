@@ -748,17 +748,6 @@ potentially time-consuming."
                (add-to-list 'ess-r-created-runners
                             inferior-ess-r-program))))))
 
-(defun ess-check-R-program ()
-  "Check if `inferior-ess-r-program' points to an executable version of R.
-If not, try to find the newest version of R elsewhere on the system, and
-update `inferior-ess-r-program' accordingly."
-  (unless (executable-find inferior-ess-r-program)
-    ;; need to check if we can find another name.
-    (let ((newest (ess-find-newest-R)))
-      (if newest
-          (setq inferior-ess-r-program newest)
-        (message "Sorry, no version of R could be found on your system.")))))
-
 (defun R-newest (&optional start-args)
   "Find the newest version of R available, and run it.
 Subsequent calls to `R-newest' will run that version, rather than searching
